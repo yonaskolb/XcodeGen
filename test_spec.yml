@@ -1,0 +1,20 @@
+settingGroups:
+  test:
+    CLANG_ENABLE_MODULES: 'YES'
+configs:
+  Staging Test:
+    settingGroups:
+      - debug
+      - test
+    settings:
+targets:
+  Axis iOS:
+    type: application
+    sources:
+      - Sources
+schemes:
+  iOS Test:
+    build:
+      targets:
+        Axis iOS:
+          archive: true

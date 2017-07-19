@@ -1,0 +1,62 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = (
+	);
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		OBJECT_10 /* .DS_Store in Sources */ = {isa = PBXBuildFile; fileRef = OBJECT_3 /* .DS_Store */; };
+		OBJECT_11 /* Decoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJECT_4 /* Decoding.swift */; };
+		OBJECT_12 /* Generator.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJECT_5 /* Generator.swift */; };
+		OBJECT_13 /* Scheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJECT_6 /* Scheme.swift */; };
+		OBJECT_14 /* Spec.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJECT_7 /* Spec.swift */; };
+		OBJECT_8 /* .DS_Store in Sources */ = {isa = PBXBuildFile; fileRef = OBJECT_1 /* .DS_Store */; };
+		OBJECT_9 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJECT_2 /* main.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		OBJECT_1 /* .DS_Store */ = {isa = PBXFileReference; path = .DS_Store; sourceTree = "<group>"; };
+		OBJECT_2 /* main.swift */ = {isa = PBXFileReference; path = main.swift; sourceTree = "<group>"; };
+		OBJECT_3 /* .DS_Store */ = {isa = PBXFileReference; path = .DS_Store; sourceTree = "<group>"; };
+		OBJECT_4 /* Decoding.swift */ = {isa = PBXFileReference; path = Decoding.swift; sourceTree = "<group>"; };
+		OBJECT_5 /* Generator.swift */ = {isa = PBXFileReference; path = Generator.swift; sourceTree = "<group>"; };
+		OBJECT_6 /* Scheme.swift */ = {isa = PBXFileReference; path = Scheme.swift; sourceTree = "<group>"; };
+		OBJECT_7 /* Spec.swift */ = {isa = PBXFileReference; path = Spec.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXNativeTarget section */
+		OBJECT_0 /* Axis iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 234 /* Build configuration list for PBXNativeTarget "Axis iOS" */;
+			buildPhases = (
+				OBJECT_15 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Axis iOS;
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXSourcesBuildPhase section */
+		OBJECT_15 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				OBJECT_13 /* Scheme.swift in Sources */,
+				OBJECT_8 /* .DS_Store in Sources */,
+				OBJECT_9 /* main.swift in Sources */,
+				OBJECT_12 /* Generator.swift in Sources */,
+				OBJECT_10 /* .DS_Store in Sources */,
+				OBJECT_11 /* Decoding.swift in Sources */,
+				OBJECT_14 /* Spec.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+	};
+	rootObject = 12345 /* Project object */;
+}
