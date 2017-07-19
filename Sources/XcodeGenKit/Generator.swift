@@ -57,10 +57,10 @@ public struct Generator {
 //            }
             let buildAction = XCScheme.BuildAction(buildActionEntries: [], parallelizeBuild: true, buildImplicitDependencies: true)
 
-            return XCScheme(path: path, lastUpgradeVersion: nil, version: nil, buildAction: buildAction, testAction: nil, launchAction: nil, profileAction: nil, analyzeAction: nil, archiveAction: nil)
+            return XCScheme(path: path + "xcshareddata/xcschemes/\(schemeSpec.name)", lastUpgradeVersion: nil, version: nil, buildAction: buildAction, testAction: nil, launchAction: nil, profileAction: nil, analyzeAction: nil, archiveAction: nil)
         }
 
-        let sharedData = XCSharedData(path: path, schemes: schemes)
+        let sharedData = XCSharedData(path: path + "xcshareddata", schemes: schemes)
         let project = XcodeProj(path: path, workspace: workspace, pbxproj: pbxProject, sharedData: sharedData)
 
         try project.write(override: true)
@@ -76,5 +76,12 @@ extension XcodeProj: Writable {
         
         try path.mkpath()
         try pbxproj.write(override: override)
+
+        if let sharedData = sharedData {
+            for scheme in sharedData.schemes {
+                try scheme.path.mkpath()
+                try scheme.write(override: override)
+            }
+        }
     }
 }
