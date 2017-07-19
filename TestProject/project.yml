@@ -1,0 +1,10 @@
+version: 2.2.0
+configurations:
+  debug:
+  release:
+targets:
+  Axis iOS:
+    type: ":application"
+    platform: ios
+    sources:
+      - TestProject

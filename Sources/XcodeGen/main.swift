@@ -10,9 +10,12 @@ import Foundation
 import PathKit
 import Commander
 import XcodeGenKit
+import xcodeproj
+
 
 func generate(spec: String) {
-    let specPath = Path("~/Developer/XcodeGen/test_spec.yml").normalize()
+
+    let specPath = Path("~/Developer/XcodeGen/TestProject/spec.yml").normalize()
 
     let spec: Spec
     do {
@@ -26,7 +29,7 @@ func generate(spec: String) {
     }
 
     do {
-        try Generator.generate(spec: spec, path: Path("~/Developer/XcodeGen/test_project.xcodeproj").normalize())
+        try Generator.generate(spec: spec, path: Path("~/Developer/XcodeGen/TestProject/spec.xcodeproj").normalize())
         print("Generated Xcode Project")
     } catch {
         print("Generation failed: \(error)")

@@ -11,7 +11,7 @@ targets:
   Axis iOS:
     type: application
     sources:
-      - Sources
+      - TestProject
 schemes:
   iOS Test:
     build:
