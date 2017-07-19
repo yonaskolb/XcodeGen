@@ -39,7 +39,7 @@ public struct Generator {
             let buildPhase = PBXSourcesBuildPhase(reference: id(), files: Set(buildFiles.map { $0.reference }))
             let buildPhases = [buildPhase]
 
-            let nativeTarget = PBXNativeTarget(reference: "OBJECT_\(objects.count)", buildConfigurationList: "234", buildPhases: buildPhases.map{ $0.reference }, buildRules: [], dependencies: [], name: target.name)
+            let nativeTarget = PBXNativeTarget(reference: "OBJECT_\(objects.count)", buildConfigurationList: "234", buildPhases: buildPhases.map{ $0.reference }, buildRules: [], dependencies: [], name: target.name, productType: target.type)
 
             objects += buildFiles.map { .pbxBuildFile($0) }
             objects += fileReferences.map { .pbxFileReference($0) }

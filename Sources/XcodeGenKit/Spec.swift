@@ -7,8 +7,7 @@
 //
 
 import Foundation
-
-
+import xcodeproj
 import JSONUtilities
 import PathKit
 import Yams
@@ -55,7 +54,7 @@ public struct Spec {
 
 public struct TargetSpec {
     public var name: String
-    public var type: String
+    public var type: PBXProductType
     public var localizedSource: String?
     public var sources: [String]
     public var sourceExludes: [String]
@@ -68,7 +67,16 @@ extension TargetSpec: NamedJSONObjectConvertible {
 
     public init(name: String, jsonDictionary: JSONDictionary) throws {
         self.name = name
-        type = try jsonDictionary.json(atKeyPath: "type")
+        let typeString: String = try jsonDictionary.json(atKeyPath: "type")
+        if let type = PBXProductType(rawValue: typeString) {
+            self.type = type
+        } else {
+        switch typeString {
+            case "application": type = .application
+            case "framework": type = .framework
+        default: throw SpecError.unknownTargetType(typeString)
+        }
+        }
         sources = jsonDictionary.json(atKeyPath: "sources") ?? []
         sourceExludes = jsonDictionary.json(atKeyPath: "sourceExludes") ?? []
         dependancies = jsonDictionary.json(atKeyPath: "dependancies") ?? []
