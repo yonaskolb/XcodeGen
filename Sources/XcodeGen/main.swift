@@ -15,27 +15,28 @@ import xcodeproj
 
 func generate(spec: String) {
 
-    let specPath = Path("~/Developer/XcodeGen/TestProject/spec.yml").normalize()
+    let specPath = Path(spec).normalize()
+    let projectPath = specPath.parent() + "\(specPath.lastComponent).xcodeproj"
 
     let spec: Spec
     do {
         spec = try Spec(path: specPath)
-        print(spec)
-        print("")
-
+        print("Loaded spec: \(spec.targets.count) targets, \(spec.schemes.count) schemes, \(spec.configs.count) configs")
     } catch {
         print("Parsing spec failed: \(error)")
         return
     }
 
     do {
-        try Generator.generate(spec: spec, path: Path("~/Developer/XcodeGen/TestProject/spec.xcodeproj").normalize())
-        print("Generated Xcode Project")
+        let projectGenerator = ProjectGenerator(spec: spec, path: projectPath)
+        let project = try projectGenerator.generate()
+        print("Generated project")
+        try project.write(override: true)
+        print("Wrote project to file \(projectPath.string)")
     } catch {
-        print("Generation failed: \(error)")
+        print("Project Generation failed: \(error)")
     }
 }
-
 
 command(
     Option<String>("spec", "", flag: "p", description: "The path to the spec file"),

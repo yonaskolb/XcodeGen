@@ -1,0 +1,156 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = (
+	);
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		6F4922F45568161A8CDF4AD2299F6D23 /* Main.storyboard in Sources */ = {isa = PBXBuildFile; fileRef = D3D9446802A44259755D38E6D163E820 /* Main.storyboard */; };
+		70EFDF2EC9B086079795C442636B55FB /* LaunchScreen.storyboard in Sources */ = {isa = PBXBuildFile; fileRef = 45C48CCE2E2D7FBDEA1AFC51C7C6AD26 /* LaunchScreen.storyboard */; };
+		9BF31C7FF062936A96D3C8BD1F8F2FF3 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4DA3B7FBBCE2345D7772B0674A318D5 /* ViewController.swift */; };
+		AAB3238922BCC25A6F606EB525FFDC56 /* Info.plist in Sources */ = {isa = PBXBuildFile; fileRef = A87FF679A2F3E71D9181A67B7542122C /* Info.plist */; };
+		C51CE410C124A10E0DB5E4B97FC2AF39 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECCBC87E4B5CE2FE28308FD9F2A7BAF3 /* AppDelegate.swift */; };
+		C74D97B01EAE257E44AA9D5BADE97BAF /* Contents.json in Sources */ = {isa = PBXBuildFile; fileRef = 1679091C5A880FAF6FB5E6087EB1B2DC /* Contents.json */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		1679091C5A880FAF6FB5E6087EB1B2DC /* Contents.json */ = {isa = PBXFileReference; path = Contents.json; sourceTree = "<group>"; };
+		3C59DC048E8850243BE8079A5C74D079 /* Axis iOS */ = {isa = PBXFileReference; includeInIndex = 0; path = "Axis iOS"; sourceTree = BUILT_PRODUCTS_DIR; };
+		45C48CCE2E2D7FBDEA1AFC51C7C6AD26 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		A87FF679A2F3E71D9181A67B7542122C /* Info.plist */ = {isa = PBXFileReference; path = Info.plist; sourceTree = "<group>"; };
+		D3D9446802A44259755D38E6D163E820 /* Main.storyboard */ = {isa = PBXFileReference; path = Main.storyboard; sourceTree = "<group>"; };
+		E4DA3B7FBBCE2345D7772B0674A318D5 /* ViewController.swift */ = {isa = PBXFileReference; path = ViewController.swift; sourceTree = "<group>"; };
+		ECCBC87E4B5CE2FE28308FD9F2A7BAF3 /* AppDelegate.swift */ = {isa = PBXFileReference; path = AppDelegate.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		37693CFC748049E45D87B8C7D8B9AACD = {
+			isa = PBXGroup;
+			children = (
+				C20AD4D76FE97759AA27A0C99BFF6710 /* TestProject */,
+			);
+			sourceTree = "<group>";
+		};
+		6512BD43D9CAA6E02C990B0A82652DCA /* Base.lproj */ = {
+			isa = PBXGroup;
+			children = (
+				45C48CCE2E2D7FBDEA1AFC51C7C6AD26 /* LaunchScreen.storyboard */,
+				D3D9446802A44259755D38E6D163E820 /* Main.storyboard */,
+			);
+			name = Base.lproj;
+			path = Base.lproj;
+			sourceTree = "<group>";
+		};
+		8F14E45FCEEA167A5A36DEDD4BEA2543 /* AppIcon.appiconset */ = {
+			isa = PBXGroup;
+			children = (
+				1679091C5A880FAF6FB5E6087EB1B2DC /* Contents.json */,
+			);
+			name = AppIcon.appiconset;
+			path = AppIcon.appiconset;
+			sourceTree = "<group>";
+		};
+		C20AD4D76FE97759AA27A0C99BFF6710 /* TestProject */ = {
+			isa = PBXGroup;
+			children = (
+				E4DA3B7FBBCE2345D7772B0674A318D5 /* ViewController.swift */,
+				ECCBC87E4B5CE2FE28308FD9F2A7BAF3 /* AppDelegate.swift */,
+				C9F0F895FB98AB9159F51FD0297E236D /* Assets.xcassets */,
+				6512BD43D9CAA6E02C990B0A82652DCA /* Base.lproj */,
+				A87FF679A2F3E71D9181A67B7542122C /* Info.plist */,
+			);
+			name = TestProject;
+			path = TestProject;
+			sourceTree = "<group>";
+		};
+		C9F0F895FB98AB9159F51FD0297E236D /* Assets.xcassets */ = {
+			isa = PBXGroup;
+			children = (
+				8F14E45FCEEA167A5A36DEDD4BEA2543 /* AppIcon.appiconset */,
+			);
+			name = Assets.xcassets;
+			path = Assets.xcassets;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		B6D767D2F8ED5D21A44B0E5886680CB9 /* Axis iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 98F13708210194C475687BE6106A3B84 /* Build configuration list for PBXNativeTarget "Axis iOS" */;
+			buildPhases = (
+				1F0E3DAD99908345F7439F8FFABDFFC4 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Axis iOS";
+			productReference = 3C59DC048E8850243BE8079A5C74D079;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		1FF1DE774005F8DA13F42943881C655F /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+			};
+			buildConfigurationList = C81E728D9D4C2F636F067F89CC14862C /* Build configuration list for PBXProject "Generated_Project" */;
+			compatibilityVersion = "Xcode 3.2";
+			knownRegions = (
+			);
+			mainGroup = 37693CFC748049E45D87B8C7D8B9AACD;
+			targets = (
+				B6D767D2F8ED5D21A44B0E5886680CB9 /* Axis iOS */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		1F0E3DAD99908345F7439F8FFABDFFC4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C51CE410C124A10E0DB5E4B97FC2AF39 /* AppDelegate.swift in Sources */,
+				6F4922F45568161A8CDF4AD2299F6D23 /* Main.storyboard in Sources */,
+				9BF31C7FF062936A96D3C8BD1F8F2FF3 /* ViewController.swift in Sources */,
+				AAB3238922BCC25A6F606EB525FFDC56 /* Info.plist in Sources */,
+				70EFDF2EC9B086079795C442636B55FB /* LaunchScreen.storyboard in Sources */,
+				C74D97B01EAE257E44AA9D5BADE97BAF /* Contents.json in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		C4CA4238A0B923820DCC509A6F75849B /* Staging Test */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = "Staging Test";
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		98F13708210194C475687BE6106A3B84 /* Build configuration list for PBXNativeTarget "Axis iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "";
+		};
+		C81E728D9D4C2F636F067F89CC14862C /* Build configuration list for PBXProject "Generated_Project" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C4CA4238A0B923820DCC509A6F75849B /* Staging Test */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "Staging Test";
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 1FF1DE774005F8DA13F42943881C655F /* Project object */;
+}

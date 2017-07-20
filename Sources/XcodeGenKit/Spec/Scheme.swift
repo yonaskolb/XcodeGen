@@ -10,7 +10,7 @@ import Foundation
 import xcodeproj
 import JSONUtilities
 
-public struct SchemeSpec {
+public struct Scheme {
 
     public var name: String
     public var build: Build
@@ -25,7 +25,7 @@ public struct SchemeSpec {
     }
 }
 
-extension SchemeSpec: NamedJSONObjectConvertible {
+extension Scheme: NamedJSONObjectConvertible {
 
     public init(name: String, jsonDictionary: JSONDictionary) throws {
         self.name = name
@@ -33,14 +33,14 @@ extension SchemeSpec: NamedJSONObjectConvertible {
     }
 }
 
-extension SchemeSpec.Build: JSONObjectConvertible {
+extension Scheme.Build: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
         entries = try jsonDictionary.json(atKeyPath: "targets")
     }
 }
 
-extension SchemeSpec.BuildEntry: NamedJSONObjectConvertible {
+extension Scheme.BuildEntry: NamedJSONObjectConvertible {
 
     public init(name: String, jsonDictionary: JSONDictionary) throws {
         target = name
