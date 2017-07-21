@@ -3,8 +3,18 @@ configurations:
   debug:
   release:
 targets:
-  Axis iOS:
+  TestProject:
     type: ":application"
     platform: ios
     sources:
       - TestProject
+    configuration:
+      INFOPLIST_FILE: TestProject/Info.plist
+    references:
+      - target: MyFramework
+        copy: true
+        codeSignOnCopy: true
+  MyFramework:
+    type: ":framework"
+    platform: ios
+    sources: MyFramework

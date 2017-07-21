@@ -11,7 +11,7 @@ import JSONUtilities
 
 extension Dictionary where Key: JSONKey {
 
-    public func json<T: NamedJSONObjectConvertible>(atKeyPath keyPath: KeyPath, invalidItemBehaviour: InvalidItemBehaviour<T> = .remove) throws -> [T] {
+    public func json<T: NamedJSONDictionaryConvertible>(atKeyPath keyPath: KeyPath, invalidItemBehaviour: InvalidItemBehaviour<T> = .remove) throws -> [T] {
         guard let dictionary = json(atKeyPath: keyPath) as JSONDictionary? else {
             return []
         }
@@ -23,9 +23,26 @@ extension Dictionary where Key: JSONKey {
         }
         return items
     }
+
+    public func json<T: NamedJSONConvertible>(atKeyPath keyPath: KeyPath, invalidItemBehaviour: InvalidItemBehaviour<T> = .remove) throws -> [T] {
+        guard let dictionary = json(atKeyPath: keyPath) as JSONDictionary? else {
+            return []
+        }
+        var items: [T] = []
+        for (key, value) in dictionary {
+            let item = try T(name: key, json: value)
+            items.append(item)
+        }
+        return items
+    }
 }
 
-public protocol NamedJSONObjectConvertible {
+public protocol NamedJSONDictionaryConvertible {
 
     init(name: String, jsonDictionary: JSONDictionary) throws
+}
+
+public protocol NamedJSONConvertible {
+
+    init(name: String, json: Any) throws
 }

@@ -25,7 +25,7 @@ public struct Scheme {
     }
 }
 
-extension Scheme: NamedJSONObjectConvertible {
+extension Scheme: NamedJSONDictionaryConvertible {
 
     public init(name: String, jsonDictionary: JSONDictionary) throws {
         self.name = name
@@ -40,7 +40,7 @@ extension Scheme.Build: JSONObjectConvertible {
     }
 }
 
-extension Scheme.BuildEntry: NamedJSONObjectConvertible {
+extension Scheme.BuildEntry: NamedJSONDictionaryConvertible {
 
     public init(name: String, jsonDictionary: JSONDictionary) throws {
         target = name

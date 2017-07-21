@@ -12,16 +12,18 @@ import JSONUtilities
 
 public struct BuildSettingGroup {
     public var name: String
-    public var buildSettings: [String: String]
+    public var buildSettings: BuildSettings
+
+    public init(name: String, buildSettings: BuildSettings) {
+        self.name = name
+        self.buildSettings = buildSettings
+    }
 }
 
-extension BuildSettingGroup: NamedJSONObjectConvertible {
+extension BuildSettingGroup: NamedJSONDictionaryConvertible {
 
     public init(name: String, jsonDictionary: JSONDictionary) throws {
         self.name = name
-        buildSettings = [:]
-        for (key, value) in jsonDictionary {
-            buildSettings[key] = String(describing: value)
-        }
+        self.buildSettings = BuildSettings(dictionary: jsonDictionary)
     }
 }

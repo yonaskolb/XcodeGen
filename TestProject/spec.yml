@@ -1,17 +1,29 @@
 settingGroups:
-  test:
-    CLANG_ENABLE_MODULES: 'YES'
+  testGroup:
+    CLANG_ENABLE_MODULES: YES
 configs:
-  Staging Test:
+  debug:
+    type: debug
     settingGroups:
-      - debug
-      - test
+      - testGroup
     settings:
+  release:
+    type: release
 targets:
-  Axis iOS:
+  TestProject:
     type: application
+    platform: iOS
     sources:
       - TestProject
+    buildSettings:
+      INFOPLIST_FILE: TestProject/Info.plist
+  MyFramework:
+    type: framework
+    platform: iOS
+    sources:
+      - MyFramework
+    buildSettings:
+      INFOPLIST_FILE: MyFramework/Info.plist
 schemes:
   iOS Test:
     build:

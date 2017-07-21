@@ -13,15 +13,17 @@ import JSONUtilities
 public struct Target {
     public var name: String
     public var type: PBXProductType
+    public var platform: Platform
     public var localizedSource: String?
     public var sources: [String]
     public var sourceExludes: [String]
     public var dependancies: [Dependancy]
     public var prebuildScripts: [String]
     public var postbuildScripts: [String]
+    public var buildSettings: TargetBuildSettings?
 }
 
-extension Target: NamedJSONObjectConvertible {
+extension Target: NamedJSONDictionaryConvertible {
 
     public init(name: String, jsonDictionary: JSONDictionary) throws {
         self.name = name
@@ -35,6 +37,8 @@ extension Target: NamedJSONObjectConvertible {
             default: throw SpecError.unknownTargetType(typeString)
             }
         }
+        platform = try jsonDictionary.json(atKeyPath: "platform")
+        buildSettings = jsonDictionary.json(atKeyPath: "buildSettings")
         sources = jsonDictionary.json(atKeyPath: "sources") ?? []
         sourceExludes = jsonDictionary.json(atKeyPath: "sourceExludes") ?? []
         dependancies = jsonDictionary.json(atKeyPath: "dependancies") ?? []

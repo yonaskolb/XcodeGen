@@ -10,6 +10,8 @@ import Foundation
 import PathKit
 import xcodeproj
 import xcodeprojprotocols
+import JSONUtilities
+import Yams
 
 public class ProjectGenerator {
 
@@ -20,6 +22,37 @@ public class ProjectGenerator {
     var fileReferences: [PBXFileReference] = []
     var groupsByPath: [String: String] = [:]
     var ids = 0
+
+    var buildSettingGroups: [String: BuildSettings] = [:]
+
+    enum BuildSettingGroupType {
+        case config(String)
+        case platform(Platform)
+        case product(PBXProductType)
+        case base
+
+        var path: String {
+            switch self {
+            case let .config(config): return "configs/\(config)"
+            case let .platform(platform): return "platforms/\(platform.rawValue)"
+            case let .product(product): return "products/\(product.rawValue)"
+            case .base: return "base"
+            }
+        }
+    }
+
+    func getBuildSettingGroup(_ type: BuildSettingGroupType) throws -> BuildSettings? {
+        if let group = buildSettingGroups[type.path] {
+            return group
+        }
+        let path = Path(#file).parent().parent().parent() + "setting_groups/\(type.path).yml"
+        guard path.exists else { return nil }
+        let content: String = try path.read()
+        let yaml = try Yams.load(yaml: content)
+        let buildSettings = BuildSettings(dictionary: yaml as! JSONDictionary)
+        buildSettingGroups[type.path] = buildSettings
+        return buildSettings
+    }
 
     public init(spec: Spec, path: Path) {
         self.spec = spec
@@ -43,8 +76,7 @@ public class ProjectGenerator {
         var objects: [PBXObject] = []
 
         let buildConfigs = spec.configs.map { config in
-
-            XCBuildConfiguration(reference: id(), name: config.name, baseConfigurationReference: nil, buildSettings: BuildSettings(dictionary: config.settings))
+            XCBuildConfiguration(reference: id(), name: config.name, baseConfigurationReference: nil, buildSettings: config.settings)
         }
         let buildConfigList = XCConfigurationList(reference: id(), buildConfigurations: buildConfigs.referenceSet, defaultConfigurationName: buildConfigs.first?.name ?? "", defaultConfigurationIsVisible: 0)
 
@@ -70,8 +102,12 @@ public class ProjectGenerator {
             let buildPhases = [buildPhase]
             objects += buildPhases.map { .pbxSourcesBuildPhase($0) }
 
-
-            let buildConfigList = XCConfigurationList(reference: id(), buildConfigurations: [], defaultConfigurationName: "")
+            let configs: [XCBuildConfiguration] = try spec.configs.map { config in
+                let buildSettings = try getTargetBuildSettings(config: config, target: target)
+                return XCBuildConfiguration(reference: id(), name: config.name, baseConfigurationReference: nil, buildSettings: buildSettings)
+            }
+            objects += configs.map { .xcBuildConfiguration($0) }
+            let buildConfigList = XCConfigurationList(reference: id(), buildConfigurations: configs.referenceSet, defaultConfigurationName: "")
             objects.append(.xcConfigurationList(buildConfigList))
 
 
@@ -91,6 +127,21 @@ public class ProjectGenerator {
         objects.append(.pbxProject(pbxProjectRoot))
 
         return PBXProj(path: path + "project.pbxproj", name: path.lastComponentWithoutExtension, archiveVersion: 1, objectVersion: 46, rootObject: pbxProjectRoot.reference, objects: objects)
+    }
+
+    func getTargetBuildSettings(config: Config, target: Target) throws -> BuildSettings {
+        var buildSettings = BuildSettings()
+
+        buildSettings += try getBuildSettingGroup(.base)
+        if let configType = config.type {
+            buildSettings += try getBuildSettingGroup(.config(configType))
+        }
+        buildSettings += try getBuildSettingGroup(.platform(target.platform))
+        buildSettings += try getBuildSettingGroup(.product(target.type))
+        buildSettings += target.buildSettings?.buildSettings
+        buildSettings += target.buildSettings?.configSettings[config.name]
+
+        return buildSettings
     }
 
     func getGroup(path: Path) throws -> PBXGroup {
@@ -117,7 +168,7 @@ public class ProjectGenerator {
     }
 
     func generateWorkspace() throws -> XCWorkspace {
-        let workspaceReferences: [XCWorkspace.Data.FileRef] = [XCWorkspace.Data.FileRef.project(path: path)]
+        let workspaceReferences: [XCWorkspace.Data.FileRef] = [XCWorkspace.Data.FileRef.project(path: Path(""))]
         let workspaceData = XCWorkspace.Data(path: path + "project.xcworkspace/contents.xcworkspacedata", references: workspaceReferences)
         return XCWorkspace(path: path + "project.xcworkspace", data: workspaceData)
     }
@@ -145,8 +196,8 @@ extension XcodeProj: Writable {
         }
 
         // write workspace
-//        try workspace.data.path.mkpath()
-//        try workspace.data.write(override: true)
+        try workspace.data.path.mkpath()
+        try workspace.data.write(override: override)
 
         // write pbxproj
         try pbxproj.path.mkpath()

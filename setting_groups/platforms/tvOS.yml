@@ -1,0 +1,5 @@
+---
+TARGETED_DEVICE_FAMILY: 3
+SDKROOT: 'appletvos'
+TVOS_DEPLOYMENT_TARGET: '10.1'
+LD_RUNPATH_SEARCH_PATHS: "$(inherited) @executable_path/Frameworks"
