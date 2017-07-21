@@ -16,7 +16,7 @@ import xcodeproj
 func generate(spec: String) {
 
     let specPath = Path(spec).normalize()
-    let projectPath = specPath.parent() + "\(specPath.lastComponent).xcodeproj"
+    let projectPath = specPath.parent() + "\(specPath.lastComponentWithoutExtension).xcodeproj"
 
     let spec: Spec
     do {

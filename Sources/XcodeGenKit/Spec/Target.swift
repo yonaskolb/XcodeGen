@@ -42,3 +42,23 @@ extension Target: NamedJSONObjectConvertible {
         postbuildScripts = jsonDictionary.json(atKeyPath: "postbuildScripts") ?? []
     }
 }
+
+public struct Dependancy {
+
+    public var path: String
+    public var type: DependancyType
+
+    public enum DependancyType: String {
+        case target
+        case system
+    }
+}
+
+extension Dependancy: JSONObjectConvertible {
+
+    public init(jsonDictionary: JSONDictionary) throws {
+        path = try jsonDictionary.json(atKeyPath: "path")
+        type = try jsonDictionary.json(atKeyPath: "type")
+    }
+}
+

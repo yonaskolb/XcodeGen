@@ -16,26 +16,31 @@ public class ProjectGenerator {
     let spec: Spec
     let path: Path
 
+    var groups: [PBXGroup] = []
+    var fileReferences: [PBXFileReference] = []
+    var groupsByPath: [String: String] = [:]
+    var ids = 0
+
     public init(spec: Spec, path: Path) {
         self.spec = spec
         self.path = path
     }
 
+    func id() -> String {
+        ids += 1
+//        return ids.description.md5().uppercased()
+        return "OBJECT_\(ids)"
+    }
+
     public func generate() throws -> XcodeProj {
+        let pbxProject = try generatePBXProj()
+        let workspace = try generateWorkspace()
+        let sharedData = try generateSharedData()
+        return XcodeProj(path: path, workspace: workspace, pbxproj: pbxProject, sharedData: sharedData)
+    }
 
-        let workspaceReferences: [XCWorkspace.Data.FileRef] = [XCWorkspace.Data.FileRef.project(path: path)]
-        let workspaceData = XCWorkspace.Data(path: path + "project.xcworkspace/contents.xcworkspacedata", references: workspaceReferences)
-        let workspace = XCWorkspace(path: path + "project.xcworkspace", data: workspaceData)
-
+    func generatePBXProj() throws -> PBXProj {
         var objects: [PBXObject] = []
-        var groupsByPath: [String: String] = [:]
-        var ids = 0
-
-        func id() -> String {
-            ids += 1
-            return ids.description.md5().uppercased()
-//            return "OBJECT_\(ids)"
-        }
 
         let buildConfigs = spec.configs.map { config in
 
@@ -43,36 +48,10 @@ public class ProjectGenerator {
         }
         let buildConfigList = XCConfigurationList(reference: id(), buildConfigurations: buildConfigs.referenceSet, defaultConfigurationName: buildConfigs.first?.name ?? "", defaultConfigurationIsVisible: 0)
 
-
         objects += buildConfigs.map { .xcBuildConfiguration($0) }
         objects.append(.xcConfigurationList(buildConfigList))
 
-
-        var groups: [PBXGroup] = []
-        var fileReferences: [PBXFileReference] = []
         var topLevelGroups: [PBXGroup] = []
-
-        func getGroup(path: Path) throws -> PBXGroup {
-
-            let directories = try path.children().filter { $0.isDirectory }
-            let files = try path.children().filter { $0.isFile }
-            var children: [String] = []
-
-            for path in files {
-                let fileReference = PBXFileReference(reference: id(), sourceTree: .group, path: path.lastComponent)
-                fileReferences.append(fileReference)
-                children.append(fileReference.reference)
-            }
-
-            for path in directories {
-                let group = try getGroup(path: path)
-                children.append(group.reference)
-            }
-
-            let group = PBXGroup(reference: id(), children: Set(children), sourceTree: .group, name: path.lastComponent, path: path.lastComponent)
-            groups.append(group)
-            return group
-        }
 
         var targets: [String] = []
         for target in spec.targets {
@@ -111,22 +90,50 @@ public class ProjectGenerator {
         let pbxProjectRoot = PBXProject(reference: id(), buildConfigurationList: buildConfigList.reference, compatibilityVersion: "Xcode 3.2", mainGroup: mainGroup.reference, targets: targets)
         objects.append(.pbxProject(pbxProjectRoot))
 
-        let pbxProject = PBXProj(path: path + "project.pbxproj", name: "Generated_Project", archiveVersion: 1, objectVersion: 46, rootObject: pbxProjectRoot.reference, objects: objects)
+        return PBXProj(path: path + "project.pbxproj", name: path.lastComponentWithoutExtension, archiveVersion: 1, objectVersion: 46, rootObject: pbxProjectRoot.reference, objects: objects)
+    }
 
+    func getGroup(path: Path) throws -> PBXGroup {
+
+        let directories = try path.children().filter { $0.isDirectory && $0.extension == nil }
+        let files = try path.children().filter { $0.isFile || $0.extension != nil }
+        var children: [String] = []
+
+        let fileReferences = files.map { path in
+            PBXFileReference(reference: id(), sourceTree: .group, path: path.lastComponent)
+        }
+
+        self.fileReferences += fileReferences
+        children += fileReferences.referenceList
+
+        for path in directories {
+            let group = try getGroup(path: path)
+            children.append(group.reference)
+        }
+
+        let group = PBXGroup(reference: id(), children: Set(children), sourceTree: .group, name: path.lastComponent, path: path.lastComponent)
+        groups.append(group)
+        return group
+    }
+
+    func generateWorkspace() throws -> XCWorkspace {
+        let workspaceReferences: [XCWorkspace.Data.FileRef] = [XCWorkspace.Data.FileRef.project(path: path)]
+        let workspaceData = XCWorkspace.Data(path: path + "project.xcworkspace/contents.xcworkspacedata", references: workspaceReferences)
+        return XCWorkspace(path: path + "project.xcworkspace", data: workspaceData)
+    }
+
+    func generateSharedData() throws -> XCSharedData {
         let schemes: [XCScheme] = spec.schemes.map { schemeSpec in
-//            let buildEntries: [XCScheme.BuildAction.Entry] = schemeSpec.build.entries.map { build in
-//                let buildableReference: XCScheme.BuildableReference? = nil
-//                return XCScheme.BuildAction.Entry(buildableReference: buildableReference!, buildFor: build.buildTypes)
-//            }
+            //            let buildEntries: [XCScheme.BuildAction.Entry] = schemeSpec.build.entries.map { build in
+            //                let buildableReference: XCScheme.BuildableReference? = nil
+            //                return XCScheme.BuildAction.Entry(buildableReference: buildableReference!, buildFor: build.buildTypes)
+            //            }
             let buildAction = XCScheme.BuildAction(buildActionEntries: [], parallelizeBuild: true, buildImplicitDependencies: true)
 
             return XCScheme(path: path + "xcshareddata/xcschemes/\(schemeSpec.name)", lastUpgradeVersion: nil, version: nil, buildAction: buildAction, testAction: nil, launchAction: nil, profileAction: nil, analyzeAction: nil, archiveAction: nil)
         }
 
-        let sharedData = XCSharedData(path: path + "xcshareddata", schemes: schemes)
-        let project = XcodeProj(path: path, workspace: workspace, pbxproj: pbxProject, sharedData: sharedData)
-
-        return project
+        return XCSharedData(path: path + "xcshareddata", schemes: schemes)
     }
 }
 
