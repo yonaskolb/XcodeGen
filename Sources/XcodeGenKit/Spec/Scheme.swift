@@ -15,13 +15,26 @@ public struct Scheme {
     public var name: String
     public var build: Build
 
+    public init(name: String, build: Build) {
+        self.name = name
+        self.build = build
+    }
+
     public struct Build {
         public var entries: [BuildEntry]
+        public init(entries: [BuildEntry]) {
+            self.entries = entries
+        }
     }
 
     public struct BuildEntry {
         public var target: String
         public var buildTypes: [XCScheme.BuildAction.Entry.BuildFor]
+
+        public init(target: String, buildTypes: [XCScheme.BuildAction.Entry.BuildFor] = XCScheme.BuildAction.Entry.BuildFor.default) {
+            self.target = target
+            self.buildTypes = buildTypes
+        }
     }
 }
 
@@ -44,7 +57,7 @@ extension Scheme.BuildEntry: NamedJSONDictionaryConvertible {
 
     public init(name: String, jsonDictionary: JSONDictionary) throws {
         target = name
-        buildTypes = jsonDictionary.json(atKeyPath: "buildTypes") ?? [.running, .testing, .archiving, .analyzing]
+        buildTypes = jsonDictionary.json(atKeyPath: "buildTypes") ?? XCScheme.BuildAction.Entry.BuildFor.default
     }
 }
 

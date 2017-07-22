@@ -45,9 +45,17 @@ extension Spec {
 
 public struct Spec {
 
+    public var path: Path
+    public var targets: [Target]
     public var settingGroups: [BuildSettingGroup]
     public var configs: [Config]
-    public var targets: [Target]
     public var schemes: [Scheme]
-    public var path: Path
+
+    public init(path: Path, targets: [Target] = [], configs: [Config] = [], settingGroups: [BuildSettingGroup] = [], schemes: [Scheme] = []) {
+        self.path = path
+        self.targets = targets
+        self.configs = configs
+        self.settingGroups = settingGroups
+        self.schemes = schemes
+    }
 }

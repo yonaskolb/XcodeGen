@@ -14,13 +14,12 @@ public struct Target {
     public var name: String
     public var type: PBXProductType
     public var platform: Platform
-    public var localizedSource: String?
+    public var buildSettings: TargetBuildSettings?
     public var sources: [String]
     public var sourceExludes: [String]
     public var dependencies: [Dependency]
     public var prebuildScripts: [String]
     public var postbuildScripts: [String]
-    public var buildSettings: TargetBuildSettings?
 
     public var filename: String {
         var name = self.name
@@ -28,6 +27,18 @@ public struct Target {
             name += ".\(fileExtension)"
         }
         return name
+    }
+
+    public init(name: String, type: PBXProductType, platform: Platform, buildSettings: TargetBuildSettings?, sources: [String] = [], sourceExludes: [String] = [], dependencies: [Dependency] = [], prebuildScripts: [String] = [], postbuildScripts: [String]) {
+        self.name = name
+        self.type = type
+        self.platform = platform
+        self.buildSettings = buildSettings
+        self.sources = sources
+        self.sourceExludes = sourceExludes
+        self.dependencies = dependencies
+        self.prebuildScripts = prebuildScripts
+        self.postbuildScripts = postbuildScripts
     }
 }
 
@@ -63,6 +74,11 @@ public struct Dependency {
     public enum DependancyType: String {
         case target
         case system
+    }
+
+    public init(name: String, type: DependancyType) {
+        self.name = name
+        self.type = type
     }
 }
 

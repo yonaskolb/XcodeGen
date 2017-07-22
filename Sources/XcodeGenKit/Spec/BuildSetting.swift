@@ -12,8 +12,13 @@ import xcodeproj
 
 public struct TargetBuildSettings: JSONObjectConvertible {
 
-    let buildSettings: BuildSettings
-    let configSettings: [String: BuildSettings]
+    public let buildSettings: BuildSettings
+    public let configSettings: [String: BuildSettings]
+
+    public init(buildSettings: BuildSettings, configSettings: [String: BuildSettings] = [:]) {
+        self.buildSettings = buildSettings
+        self.configSettings = configSettings
+    }
 
     public init(jsonDictionary: JSONDictionary) throws {
         if jsonDictionary["$base"] != nil {

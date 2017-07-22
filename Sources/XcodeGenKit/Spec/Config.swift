@@ -30,7 +30,6 @@ public enum ConfigType: String {
     case release
 }
 
-
 extension Config: NamedJSONDictionaryConvertible {
 
     public init(name: String, jsonDictionary: JSONDictionary) throws {
