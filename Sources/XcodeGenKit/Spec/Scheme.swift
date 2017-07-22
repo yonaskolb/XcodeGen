@@ -66,6 +66,13 @@ extension XCScheme.BuildAction.Entry.BuildFor: JSONPrimitiveConvertible {
     public typealias JSONType = String
 
     public static func from(jsonValue: String) -> XCScheme.BuildAction.Entry.BuildFor? {
-        return .testing
+        switch jsonValue {
+            case "test","testing": return .testing
+            case "profile", "profiling": return .profiling
+            case "run", "running": return .running
+            case "archive", "archiving": return .archiving
+            case "analyze", "analyzing": return .analyzing
+        default: return nil
+        }
     }
 }

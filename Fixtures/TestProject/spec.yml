@@ -1,6 +1,6 @@
 settingGroups:
   testGroup:
-    CLANG_ENABLE_MODULES: YES
+    TEST_SETTING: test value
 configs:
   debug:
     type: debug

@@ -1,6 +1,6 @@
 import XCTest
-@testable import XcodeGenTests
+@testable import XcodeGenKitTests
 
 XCTMain([
-    testCase(XcodeGenTests.allTests),
+    testCase(XcodeGenKitTests.allTests),
 ])

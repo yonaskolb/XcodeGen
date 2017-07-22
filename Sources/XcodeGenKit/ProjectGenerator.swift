@@ -107,6 +107,8 @@ public class ProjectGenerator {
 
         for target in spec.targets {
             let source = spec.path.parent() + target.sources.first!
+            //TODO: handle multiple sources
+            //TODO: handle targets with shared sources
 
             groups = []
             fileReferences = []
