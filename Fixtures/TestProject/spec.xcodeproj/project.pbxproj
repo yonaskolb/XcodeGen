@@ -1,151 +1,138 @@
 // !$*UTF8*$!
 {
 	archiveVersion = 1;
-	classes = {
-	};
+	classes = (
+	);
 	objectVersion = 46;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		CCA720151F22A38800F772C1 /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = CCA720141F22A38800F772C1 /* FrameworkFile.swift */; };
-		OBJECT_21 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJECT_15 /* AppDelegate.swift */; };
-		OBJECT_22 /* Assets.xcassets in Sources */ = {isa = PBXBuildFile; fileRef = OBJECT_16 /* Assets.xcassets */; };
-		OBJECT_23 /* Base.lproj in Sources */ = {isa = PBXBuildFile; fileRef = OBJECT_17 /* Base.lproj */; };
-		OBJECT_24 /* Info.plist in Sources */ = {isa = PBXBuildFile; fileRef = OBJECT_18 /* Info.plist */; };
-		OBJECT_25 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJECT_19 /* ViewController.swift */; };
-		OBJECT_7 /* Info.plist in Sources */ = {isa = PBXBuildFile; fileRef = OBJECT_4 /* Info.plist */; };
-		OBJECT_8 /* MyFramework.h in Sources */ = {isa = PBXBuildFile; fileRef = OBJECT_5 /* MyFramework.h */; };
+		OBJECT_10 /* MyFramework.h in Sources */ = {isa = PBXBuildFile; fileRef = OBJECT_6 /* MyFramework.h */; };
+		OBJECT_23 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJECT_17 /* AppDelegate.swift */; };
+		OBJECT_24 /* Assets.xcassets in Sources */ = {isa = PBXBuildFile; fileRef = OBJECT_18 /* Assets.xcassets */; };
+		OBJECT_25 /* Base.lproj in Sources */ = {isa = PBXBuildFile; fileRef = OBJECT_19 /* Base.lproj */; };
+		OBJECT_26 /* Info.plist in Sources */ = {isa = PBXBuildFile; fileRef = OBJECT_20 /* Info.plist */; };
+		OBJECT_27 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJECT_21 /* ViewController.swift */; };
+		OBJECT_8 /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJECT_4 /* FrameworkFile.swift */; };
+		OBJECT_9 /* Info.plist in Sources */ = {isa = PBXBuildFile; fileRef = OBJECT_5 /* Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		CCA720111F22A35600F772C1 /* MyFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MyFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		CCA720131F22A35600F772C1 /* TestProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		CCA720141F22A38800F772C1 /* FrameworkFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FrameworkFile.swift; sourceTree = "<group>"; };
-		OBJECT_15 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		OBJECT_16 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		OBJECT_17 /* Base.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Base.lproj; sourceTree = "<group>"; };
-		OBJECT_18 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		OBJECT_19 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		OBJECT_4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		OBJECT_5 /* MyFramework.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyFramework.h; sourceTree = "<group>"; };
+		OBJECT_15 /* MyFramework */ = {isa = PBXFileReference; includeInIndex = 0; path = MyFramework; sourceTree = BUILT_PRODUCTS_DIR; };
+		OBJECT_17 /* AppDelegate.swift */ = {isa = PBXFileReference; path = AppDelegate.swift; sourceTree = "<group>"; };
+		OBJECT_18 /* Assets.xcassets */ = {isa = PBXFileReference; path = Assets.xcassets; sourceTree = "<group>"; };
+		OBJECT_19 /* Base.lproj */ = {isa = PBXFileReference; path = Base.lproj; sourceTree = "<group>"; };
+		OBJECT_20 /* Info.plist */ = {isa = PBXFileReference; path = Info.plist; sourceTree = "<group>"; };
+		OBJECT_21 /* ViewController.swift */ = {isa = PBXFileReference; path = ViewController.swift; sourceTree = "<group>"; };
+		OBJECT_32 /* TestProject */ = {isa = PBXFileReference; includeInIndex = 0; path = TestProject; sourceTree = BUILT_PRODUCTS_DIR; };
+		OBJECT_4 /* FrameworkFile.swift */ = {isa = PBXFileReference; path = FrameworkFile.swift; sourceTree = "<group>"; };
+		OBJECT_5 /* Info.plist */ = {isa = PBXFileReference; path = Info.plist; sourceTree = "<group>"; };
+		OBJECT_6 /* MyFramework.h */ = {isa = PBXFileReference; path = MyFramework.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
-		CCA720121F22A35600F772C1 /* Products */ = {
+		OBJECT_22 /* TestProject */ = {
 			isa = PBXGroup;
 			children = (
-				CCA720111F22A35600F772C1 /* MyFramework.framework */,
-				CCA720131F22A35600F772C1 /* TestProject.app */,
+				OBJECT_20 /* Info.plist */,
+				OBJECT_19 /* Base.lproj */,
+				OBJECT_21 /* ViewController.swift */,
+				OBJECT_17 /* AppDelegate.swift */,
+				OBJECT_18 /* Assets.xcassets */,
 			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		OBJECT_20 /* TestProject */ = {
-			isa = PBXGroup;
-			children = (
-				OBJECT_18 /* Info.plist */,
-				OBJECT_19 /* ViewController.swift */,
-				OBJECT_15 /* AppDelegate.swift */,
-				OBJECT_17 /* Base.lproj */,
-				OBJECT_16 /* Assets.xcassets */,
-			);
+			name = TestProject;
 			path = TestProject;
 			sourceTree = "<group>";
 		};
-		OBJECT_32 = {
+		OBJECT_34 = {
 			isa = PBXGroup;
 			children = (
-				OBJECT_6 /* MyFramework */,
-				OBJECT_20 /* TestProject */,
-				CCA720121F22A35600F772C1 /* Products */,
+				OBJECT_7 /* MyFramework */,
+				OBJECT_22 /* TestProject */,
 			);
 			sourceTree = "<group>";
 		};
-		OBJECT_6 /* MyFramework */ = {
+		OBJECT_7 /* MyFramework */ = {
 			isa = PBXGroup;
 			children = (
-				OBJECT_5 /* MyFramework.h */,
-				OBJECT_4 /* Info.plist */,
-				CCA720141F22A38800F772C1 /* FrameworkFile.swift */,
+				OBJECT_5 /* Info.plist */,
+				OBJECT_6 /* MyFramework.h */,
+				OBJECT_4 /* FrameworkFile.swift */,
 			);
+			name = MyFramework;
 			path = MyFramework;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		OBJECT_14 /* MyFramework */ = {
+		OBJECT_16 /* MyFramework */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = OBJECT_12 /* Build configuration list for PBXNativeTarget "MyFramework" */;
+			buildConfigurationList = OBJECT_14 /* Build configuration list for PBXNativeTarget "MyFramework" */;
 			buildPhases = (
-				OBJECT_9 /* Sources */,
+				OBJECT_11 /* Sources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = MyFramework;
-			productName = MyFramework;
-			productReference = CCA720111F22A35600F772C1 /* MyFramework.framework */;
+			productReference = OBJECT_15;
 			productType = "com.apple.product-type.framework";
 		};
-		OBJECT_31 /* TestProject */ = {
+		OBJECT_33 /* TestProject */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = OBJECT_29 /* Build configuration list for PBXNativeTarget "TestProject" */;
+			buildConfigurationList = OBJECT_31 /* Build configuration list for PBXNativeTarget "TestProject" */;
 			buildPhases = (
-				OBJECT_26 /* Sources */,
+				OBJECT_28 /* Sources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = TestProject;
-			productName = TestProject;
-			productReference = CCA720131F22A35600F772C1 /* TestProject.app */;
+			productReference = OBJECT_32;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		OBJECT_33 /* Project object */ = {
+		OBJECT_35 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 			};
 			buildConfigurationList = OBJECT_3 /* Build configuration list for PBXProject "spec" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
-			hasScannedForEncodings = 0;
-			mainGroup = OBJECT_32;
-			productRefGroup = CCA720121F22A35600F772C1 /* Products */;
-			projectDirPath = "";
-			projectRoot = "";
+			knownRegions = (
+			);
+			mainGroup = OBJECT_34;
 			targets = (
-				OBJECT_14 /* MyFramework */,
-				OBJECT_31 /* TestProject */,
+				OBJECT_16 /* MyFramework */,
+				OBJECT_33 /* TestProject */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		OBJECT_26 /* Sources */ = {
+		OBJECT_11 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				OBJECT_25 /* ViewController.swift in Sources */,
-				OBJECT_21 /* AppDelegate.swift in Sources */,
-				OBJECT_23 /* Base.lproj in Sources */,
-				OBJECT_24 /* Info.plist in Sources */,
-				OBJECT_22 /* Assets.xcassets in Sources */,
+				OBJECT_8 /* FrameworkFile.swift in Sources */,
+				OBJECT_9 /* Info.plist in Sources */,
+				OBJECT_10 /* MyFramework.h in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		OBJECT_9 /* Sources */ = {
+		OBJECT_28 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				OBJECT_8 /* MyFramework.h in Sources */,
-				CCA720151F22A38800F772C1 /* FrameworkFile.swift in Sources */,
-				OBJECT_7 /* Info.plist in Sources */,
+				OBJECT_25 /* Base.lproj in Sources */,
+				OBJECT_24 /* Assets.xcassets in Sources */,
+				OBJECT_23 /* AppDelegate.swift in Sources */,
+				OBJECT_26 /* Info.plist in Sources */,
+				OBJECT_27 /* ViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -158,9 +145,10 @@
 			};
 			name = debug;
 		};
-		OBJECT_10 /* debug */ = {
+		OBJECT_12 /* debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = true;
 				ALWAYS_SEARCH_USER_PATHS = false;
 				CLANG_ANALYZER_NONNULL = true;
@@ -181,7 +169,6 @@
 				CLANG_WARN_SUSPICIOUS_MOVES = true;
 				CLANG_WARN_UNREACHABLE_CODE = true;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = true;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = true;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
@@ -216,9 +203,10 @@
 			};
 			name = debug;
 		};
-		OBJECT_11 /* release */ = {
+		OBJECT_13 /* release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = true;
 				ALWAYS_SEARCH_USER_PATHS = false;
 				CLANG_ANALYZER_NONNULL = true;
@@ -239,7 +227,6 @@
 				CLANG_WARN_SUSPICIOUS_MOVES = true;
 				CLANG_WARN_UNREACHABLE_CODE = true;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = true;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = false;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -275,9 +262,10 @@
 			};
 			name = release;
 		};
-		OBJECT_27 /* debug */ = {
+		OBJECT_29 /* debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = true;
 				ALWAYS_SEARCH_USER_PATHS = false;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -299,7 +287,6 @@
 				CLANG_WARN_SUSPICIOUS_MOVES = true;
 				CLANG_WARN_UNREACHABLE_CODE = true;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = true;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = true;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = true;
@@ -330,9 +317,10 @@
 			};
 			name = debug;
 		};
-		OBJECT_28 /* release */ = {
+		OBJECT_30 /* release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = true;
 				ALWAYS_SEARCH_USER_PATHS = false;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -354,7 +342,6 @@
 				CLANG_WARN_SUSPICIOUS_MOVES = true;
 				CLANG_WARN_UNREACHABLE_CODE = true;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = true;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = false;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = false;
@@ -382,20 +369,11 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		OBJECT_12 /* Build configuration list for PBXNativeTarget "MyFramework" */ = {
+		OBJECT_14 /* Build configuration list for PBXNativeTarget "MyFramework" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				OBJECT_10 /* debug */,
-				OBJECT_11 /* release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "";
-		};
-		OBJECT_29 /* Build configuration list for PBXNativeTarget "TestProject" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				OBJECT_28 /* release */,
-				OBJECT_27 /* debug */,
+				OBJECT_12 /* debug */,
+				OBJECT_13 /* release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "";
@@ -409,7 +387,16 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = debug;
 		};
+		OBJECT_31 /* Build configuration list for PBXNativeTarget "TestProject" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				OBJECT_29 /* debug */,
+				OBJECT_30 /* release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "";
+		};
 /* End XCConfigurationList section */
 	};
-	rootObject = OBJECT_33 /* Project object */;
+	rootObject = OBJECT_35 /* Project object */;
 }
