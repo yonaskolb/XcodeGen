@@ -13,10 +13,22 @@ import XcodeGenKit
 import xcodeproj
 
 
-func generate(spec: String) {
+func generate(spec: String, project: String?) {
 
     let specPath = Path(spec).normalize()
-    let projectPath = specPath.parent() + "\(specPath.lastComponentWithoutExtension).xcodeproj"
+    let projectPath: Path
+    if let project = project {
+        var path = Path(project).normalize()
+        if path.isRelative {
+            path = specPath.parent() + project
+        }
+        if path.extension == nil {
+            path = path.parent() + (path.lastComponent + ".xcodeproj")
+        }
+        projectPath = path
+    } else {
+        projectPath = specPath.parent() + "\(specPath.lastComponentWithoutExtension).xcodeproj"
+    }
 
     var spec: Spec
     do {
@@ -48,6 +60,7 @@ func generate(spec: String) {
 }
 
 command(
-    Option<String>("spec", "", flag: "p", description: "The path to the spec file"),
+    Option<String>("spec", "", flag: "s", description: "The path to the spec file"),
+    Option<String>("project", "", flag: "p", description: "The path to the generated project"),
     generate)
     .run()
