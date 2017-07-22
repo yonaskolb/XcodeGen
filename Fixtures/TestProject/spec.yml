@@ -1,14 +1,14 @@
 settingGroups:
   testGroup:
     CLANG_ENABLE_MODULES: YES
-# configs:
-#   debug:
-#     type: debug
-#     settingGroups:
-#       - testGroup
-#     buildSettings:
-#   release:
-#     type: release
+configs:
+  debug:
+    type: debug
+    settingGroups:
+      - testGroup
+    buildSettings:
+  release:
+    type: release
 targets:
   TestProject:
     type: application
