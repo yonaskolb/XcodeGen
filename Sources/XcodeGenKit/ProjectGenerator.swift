@@ -21,7 +21,13 @@ public class ProjectGenerator {
     var groups: [PBXGroup] = []
     var fileReferences: [PBXFileReference] = []
     var groupsByPath: [String: String] = [:]
+
+    var targetNativeReferences: [String: String] = [:]
+    var targetBuildFileReferences: [String: String] = [:]
+    var targetFileReferences: [String: String] = [:]
+
     var ids = 0
+    var projectReference: String
 
     var buildSettingGroups: [String: BuildSettings] = [:]
 
@@ -57,6 +63,8 @@ public class ProjectGenerator {
     public init(spec: Spec, path: Path) {
         self.spec = spec
         self.path = path
+        projectReference = ""
+        projectReference = id()
     }
 
     func id() -> String {
@@ -85,7 +93,18 @@ public class ProjectGenerator {
 
         var topLevelGroups: [PBXGroup] = []
 
-        var targets: [String] = []
+        for target in spec.targets {
+            targetNativeReferences[target.name] = id()
+
+            let fileReference = PBXFileReference(reference: id(), sourceTree: .buildProductsDir, explicitFileType: target.type.fileExtension, path: target.filename, includeInIndex: 0)
+            objects.append(.pbxFileReference(fileReference))
+            targetFileReferences[target.name] = fileReference.reference
+
+            let buildFile = PBXBuildFile(reference: id(), fileRef: fileReference.reference)
+            objects.append(.pbxBuildFile(buildFile))
+            targetBuildFileReferences[target.name] = buildFile.reference
+        }
+
         for target in spec.targets {
             let source = spec.path.parent() + target.sources.first!
 
@@ -98,9 +117,6 @@ public class ProjectGenerator {
 
             let buildFiles = fileReferences.map { PBXBuildFile(reference: id(), fileRef: $0.reference) }
             objects += buildFiles.map { .pbxBuildFile($0) }
-            let buildPhase = PBXSourcesBuildPhase(reference: id(), files: buildFiles.referenceSet)
-            let buildPhases = [buildPhase]
-            objects += buildPhases.map { .pbxSourcesBuildPhase($0) }
 
             let configs: [XCBuildConfiguration] = try spec.configs.map { config in
                 let buildSettings = try getTargetBuildSettings(config: config, target: target)
@@ -110,23 +126,71 @@ public class ProjectGenerator {
             let buildConfigList = XCConfigurationList(reference: id(), buildConfigurations: configs.referenceSet, defaultConfigurationName: "")
             objects.append(.xcConfigurationList(buildConfigList))
 
+            var dependancies: [String] = []
+            var frameworkFiles: [String] = []
+            var copyFiles: [String] = []
+            for dependancy in target.dependencies {
+                switch dependancy.type {
+                case .target:
+                    let targetProxy = PBXContainerItemProxy(reference: id(), containerPortal: projectReference, remoteGlobalIDString: targetNativeReferences[dependancy.name]!, proxyType: .nativeTarget, remoteInfo: dependancy.name)
+                    let targetDependancy = PBXTargetDependency(reference: id(), target: targetNativeReferences[dependancy.name]!, targetProxy: targetProxy.reference )
 
-            let productReference = PBXFileReference(reference: id(), sourceTree: .buildProductsDir, path: target.name, includeInIndex: 0)
-            objects.append(.pbxFileReference(productReference))
+                    objects.append(.pbxContainerItemProxy(targetProxy))
+                    objects.append(.pbxTargetDependency(targetDependancy))
+                    dependancies.append(targetDependancy.reference)
 
-            let nativeTarget = PBXNativeTarget(reference: id(), buildConfigurationList: buildConfigList.reference, buildPhases: buildPhases.referenceList, buildRules: [], dependencies: [], name: target.name, productReference: productReference.reference, productType: target.type)
+                    let dependencyBuildFile = targetBuildFileReferences[dependancy.name]!
+                    frameworkFiles.append(dependencyBuildFile)
+                    copyFiles.append(dependencyBuildFile)
+                case .system:
+                    //TODO: handle system frameworks
+                    break
+                }
+            }
+
+            let fileReference = targetFileReferences[target.name]!
+            if target.type == .framework {
+                let buildFile = PBXBuildFile(reference: targetBuildFileReferences[target.name]!, fileRef: fileReference)
+                objects.append(.pbxBuildFile(buildFile))
+            }
+
+            var buildPhases: [String] = []
+
+            let buildPhase = PBXSourcesBuildPhase(reference: id(), files: buildFiles.referenceSet)
+            objects.append(.pbxSourcesBuildPhase(buildPhase))
+            buildPhases.append(buildPhase.reference)
+
+            let frameworkPhase = PBXFrameworksBuildPhase(reference: id(), files: Set(frameworkFiles), runOnlyForDeploymentPostprocessing: 0)
+            objects.append(.pbxFrameworksBuildPhase(frameworkPhase))
+            buildPhases.append(frameworkPhase.reference)
+
+            let copyPhase = PBXCopyFilesBuildPhase(reference: id(), dstPath: "", dstSubfolderSpec: .frameworks, files: Set(copyFiles))
+            objects.append(.pbxCopyFilesBuildPhase(copyPhase))
+            buildPhases.append(copyPhase.reference)
+
+            let nativeTarget = PBXNativeTarget(
+                reference: targetNativeReferences[target.name]!,
+                buildConfigurationList: buildConfigList.reference,
+                buildPhases: buildPhases,
+                buildRules: [],
+                dependencies: dependancies,
+                name: target.name,
+                productReference: fileReference,
+                productType: target.type)
             objects.append(.pbxNativeTarget(nativeTarget))
-
-            targets.append(nativeTarget.reference)
         }
+
+        let productGroup = PBXGroup(reference: id(), children: Set(targetFileReferences.values), sourceTree: .group, name: "Products")
+        objects.append(.pbxGroup(productGroup))
+        topLevelGroups.append(productGroup)
 
         let mainGroup = PBXGroup(reference: id(), children: topLevelGroups.referenceSet, sourceTree: .group)
         objects.append(.pbxGroup(mainGroup))
 
-        let pbxProjectRoot = PBXProject(reference: id(), buildConfigurationList: buildConfigList.reference, compatibilityVersion: "Xcode 3.2", mainGroup: mainGroup.reference, targets: targets)
+        let pbxProjectRoot = PBXProject(reference: projectReference, buildConfigurationList: buildConfigList.reference, compatibilityVersion: "Xcode 3.2", mainGroup: mainGroup.reference, targets: Array(targetNativeReferences.values))
         objects.append(.pbxProject(pbxProjectRoot))
 
-        return PBXProj(path: path + "project.pbxproj", name: path.lastComponentWithoutExtension, archiveVersion: 1, objectVersion: 46, rootObject: pbxProjectRoot.reference, objects: objects)
+        return PBXProj(path: path + "project.pbxproj", name: path.lastComponentWithoutExtension, archiveVersion: 1, objectVersion: 46, rootObject: projectReference, objects: objects)
     }
 
     func getTargetBuildSettings(config: Config, target: Target) throws -> BuildSettings {

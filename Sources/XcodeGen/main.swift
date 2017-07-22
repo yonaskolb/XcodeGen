@@ -26,6 +26,7 @@ func generate(spec: String) {
         spec = specLintingResults.spec
         if !specLintingResults.errors.isEmpty {
             print("Spec errors: \n\t- \(specLintingResults.errors.map{$0.description}.joined(separator: "\n\t- "))")
+            return
         }
         if !specLintingResults.appliedFixits.isEmpty {
             print("Applied spec fixits:\n\t- \(specLintingResults.appliedFixits.map{$0.description}.joined(separator: "\n\t- "))")

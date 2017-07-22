@@ -20,16 +20,24 @@ public struct SpecLinter {
             fixits.append(.createdConfigs)
         }
 
+        for target in spec.targets {
+            for dependency in target.dependencies {
+                if dependency.type == .target && !spec.targets.contains(where: { $0.name == dependency.name}) {
+                    errors.append(.invalidTargetDependency(dependency.name))
+                }
+            }
+        }
+
         return (spec, fixits, errors)
     }
 }
 
 public enum SpecLinterError: CustomStringConvertible {
-    case invalidDependancy(String)
+    case invalidTargetDependency(String)
 
     public var description: String {
         switch self {
-        case let .invalidDependancy(dependancy): return "Invalid dependancy \(dependancy)"
+        case let .invalidTargetDependency(dependency): return "Invalid target dependency \(dependency)"
         }
     }
 }

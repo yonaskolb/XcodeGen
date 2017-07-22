@@ -17,6 +17,9 @@ targets:
       - TestProject
     buildSettings:
       INFOPLIST_FILE: TestProject/Info.plist
+    dependencies:
+      - name: MyFramework
+        type: target
   MyFramework:
     type: framework
     platform: iOS

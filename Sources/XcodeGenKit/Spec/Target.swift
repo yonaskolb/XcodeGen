@@ -17,10 +17,18 @@ public struct Target {
     public var localizedSource: String?
     public var sources: [String]
     public var sourceExludes: [String]
-    public var dependancies: [Dependancy]
+    public var dependencies: [Dependency]
     public var prebuildScripts: [String]
     public var postbuildScripts: [String]
     public var buildSettings: TargetBuildSettings?
+
+    public var filename: String {
+        var name = self.name
+        if let fileExtension = type.fileExtension {
+            name += ".\(fileExtension)"
+        }
+        return name
+    }
 }
 
 extension Target: NamedJSONDictionaryConvertible {
@@ -41,13 +49,13 @@ extension Target: NamedJSONDictionaryConvertible {
         buildSettings = jsonDictionary.json(atKeyPath: "buildSettings")
         sources = jsonDictionary.json(atKeyPath: "sources") ?? []
         sourceExludes = jsonDictionary.json(atKeyPath: "sourceExludes") ?? []
-        dependancies = jsonDictionary.json(atKeyPath: "dependancies") ?? []
+        dependencies = jsonDictionary.json(atKeyPath: "dependencies") ?? []
         prebuildScripts = jsonDictionary.json(atKeyPath: "prebuildScripts") ?? []
         postbuildScripts = jsonDictionary.json(atKeyPath: "postbuildScripts") ?? []
     }
 }
 
-public struct Dependancy {
+public struct Dependency {
 
     public var name: String
     public var type: DependancyType
@@ -58,7 +66,7 @@ public struct Dependancy {
     }
 }
 
-extension Dependancy: JSONObjectConvertible {
+extension Dependency: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
         name = try jsonDictionary.json(atKeyPath: "name")

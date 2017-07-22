@@ -7,145 +7,215 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		OBJECT_10 /* MyFramework.h in Sources */ = {isa = PBXBuildFile; fileRef = OBJECT_6 /* MyFramework.h */; };
-		OBJECT_23 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJECT_17 /* AppDelegate.swift */; };
-		OBJECT_24 /* Assets.xcassets in Sources */ = {isa = PBXBuildFile; fileRef = OBJECT_18 /* Assets.xcassets */; };
-		OBJECT_25 /* Base.lproj in Sources */ = {isa = PBXBuildFile; fileRef = OBJECT_19 /* Base.lproj */; };
-		OBJECT_26 /* Info.plist in Sources */ = {isa = PBXBuildFile; fileRef = OBJECT_20 /* Info.plist */; };
-		OBJECT_27 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJECT_21 /* ViewController.swift */; };
-		OBJECT_8 /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJECT_4 /* FrameworkFile.swift */; };
-		OBJECT_9 /* Info.plist in Sources */ = {isa = PBXBuildFile; fileRef = OBJECT_5 /* Info.plist */; };
+		OBJECT_10 = {isa = PBXBuildFile; fileRef = OBJECT_9 /* TestProject.app */; };
+		OBJECT_15 /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJECT_11 /* FrameworkFile.swift */; };
+		OBJECT_16 /* Info.plist in Sources */ = {isa = PBXBuildFile; fileRef = OBJECT_12 /* Info.plist */; };
+		OBJECT_17 /* MyFramework.h in Sources */ = {isa = PBXBuildFile; fileRef = OBJECT_13 /* MyFramework.h */; };
+		OBJECT_30 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJECT_24 /* AppDelegate.swift */; };
+		OBJECT_31 /* Assets.xcassets in Sources */ = {isa = PBXBuildFile; fileRef = OBJECT_25 /* Assets.xcassets */; };
+		OBJECT_32 /* Base.lproj in Sources */ = {isa = PBXBuildFile; fileRef = OBJECT_26 /* Base.lproj */; };
+		OBJECT_33 /* Info.plist in Sources */ = {isa = PBXBuildFile; fileRef = OBJECT_27 /* Info.plist */; };
+		OBJECT_34 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJECT_28 /* ViewController.swift */; };
+		OBJECT_7 /* MyFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = OBJECT_6 /* MyFramework.framework */; };
+		OBJECT_7 /* MyFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = OBJECT_6 /* MyFramework.framework */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		OBJECT_38 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = OBJECT_1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = OBJECT_5;
+			remoteInfo = MyFramework;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		OBJECT_23 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		OBJECT_42 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				OBJECT_7 /* MyFramework.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
-		OBJECT_15 /* MyFramework */ = {isa = PBXFileReference; includeInIndex = 0; path = MyFramework; sourceTree = BUILT_PRODUCTS_DIR; };
-		OBJECT_17 /* AppDelegate.swift */ = {isa = PBXFileReference; path = AppDelegate.swift; sourceTree = "<group>"; };
-		OBJECT_18 /* Assets.xcassets */ = {isa = PBXFileReference; path = Assets.xcassets; sourceTree = "<group>"; };
-		OBJECT_19 /* Base.lproj */ = {isa = PBXFileReference; path = Base.lproj; sourceTree = "<group>"; };
-		OBJECT_20 /* Info.plist */ = {isa = PBXFileReference; path = Info.plist; sourceTree = "<group>"; };
-		OBJECT_21 /* ViewController.swift */ = {isa = PBXFileReference; path = ViewController.swift; sourceTree = "<group>"; };
-		OBJECT_32 /* TestProject */ = {isa = PBXFileReference; includeInIndex = 0; path = TestProject; sourceTree = BUILT_PRODUCTS_DIR; };
-		OBJECT_4 /* FrameworkFile.swift */ = {isa = PBXFileReference; path = FrameworkFile.swift; sourceTree = "<group>"; };
-		OBJECT_5 /* Info.plist */ = {isa = PBXFileReference; path = Info.plist; sourceTree = "<group>"; };
-		OBJECT_6 /* MyFramework.h */ = {isa = PBXFileReference; path = MyFramework.h; sourceTree = "<group>"; };
+		OBJECT_11 /* FrameworkFile.swift */ = {isa = PBXFileReference; path = FrameworkFile.swift; sourceTree = "<group>"; };
+		OBJECT_12 /* Info.plist */ = {isa = PBXFileReference; path = Info.plist; sourceTree = "<group>"; };
+		OBJECT_13 /* MyFramework.h */ = {isa = PBXFileReference; path = MyFramework.h; sourceTree = "<group>"; };
+		OBJECT_24 /* AppDelegate.swift */ = {isa = PBXFileReference; path = AppDelegate.swift; sourceTree = "<group>"; };
+		OBJECT_25 /* Assets.xcassets */ = {isa = PBXFileReference; path = Assets.xcassets; sourceTree = "<group>"; };
+		OBJECT_26 /* Base.lproj */ = {isa = PBXFileReference; path = Base.lproj; sourceTree = "<group>"; };
+		OBJECT_27 /* Info.plist */ = {isa = PBXFileReference; path = Info.plist; sourceTree = "<group>"; };
+		OBJECT_28 /* ViewController.swift */ = {isa = PBXFileReference; path = ViewController.swift; sourceTree = "<group>"; };
+		OBJECT_6 /* MyFramework.framework */ = {isa = PBXFileReference; explicitFileType = framework; includeInIndex = 0; path = MyFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		OBJECT_9 /* TestProject.app */ = {isa = PBXFileReference; explicitFileType = app; includeInIndex = 0; path = TestProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFrameworksBuildPhase section */
+		OBJECT_22 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		OBJECT_41 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				OBJECT_7,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
 /* Begin PBXGroup section */
-		OBJECT_22 /* TestProject */ = {
+		OBJECT_14 /* MyFramework */ = {
 			isa = PBXGroup;
 			children = (
-				OBJECT_20 /* Info.plist */,
-				OBJECT_19 /* Base.lproj */,
-				OBJECT_21 /* ViewController.swift */,
-				OBJECT_17 /* AppDelegate.swift */,
-				OBJECT_18 /* Assets.xcassets */,
-			);
-			name = TestProject;
-			path = TestProject;
-			sourceTree = "<group>";
-		};
-		OBJECT_34 = {
-			isa = PBXGroup;
-			children = (
-				OBJECT_7 /* MyFramework */,
-				OBJECT_22 /* TestProject */,
-			);
-			sourceTree = "<group>";
-		};
-		OBJECT_7 /* MyFramework */ = {
-			isa = PBXGroup;
-			children = (
-				OBJECT_5 /* Info.plist */,
-				OBJECT_6 /* MyFramework.h */,
-				OBJECT_4 /* FrameworkFile.swift */,
+				OBJECT_13 /* MyFramework.h */,
+				OBJECT_11 /* FrameworkFile.swift */,
+				OBJECT_12 /* Info.plist */,
 			);
 			name = MyFramework;
 			path = MyFramework;
 			sourceTree = "<group>";
 		};
+		OBJECT_29 /* TestProject */ = {
+			isa = PBXGroup;
+			children = (
+				OBJECT_25 /* Assets.xcassets */,
+				OBJECT_28 /* ViewController.swift */,
+				OBJECT_24 /* AppDelegate.swift */,
+				OBJECT_26 /* Base.lproj */,
+				OBJECT_27 /* Info.plist */,
+			);
+			name = TestProject;
+			path = TestProject;
+			sourceTree = "<group>";
+		};
+		OBJECT_43 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				OBJECT_6 /* MyFramework.framework */,
+				OBJECT_9 /* TestProject.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		OBJECT_44 = {
+			isa = PBXGroup;
+			children = (
+				OBJECT_14 /* MyFramework */,
+				OBJECT_29 /* TestProject */,
+				OBJECT_43 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		OBJECT_16 /* MyFramework */ = {
+		OBJECT_5 /* MyFramework */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = OBJECT_14 /* Build configuration list for PBXNativeTarget "MyFramework" */;
+			buildConfigurationList = OBJECT_20 /* Build configuration list for PBXNativeTarget "MyFramework" */;
 			buildPhases = (
-				OBJECT_11 /* Sources */,
+				OBJECT_21 /* Sources */,
+				OBJECT_22 /* Frameworks */,
+				OBJECT_23 /* Copy Files */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = MyFramework;
-			productReference = OBJECT_15;
+			productReference = OBJECT_6;
 			productType = "com.apple.product-type.framework";
 		};
-		OBJECT_33 /* TestProject */ = {
+		OBJECT_8 /* TestProject */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = OBJECT_31 /* Build configuration list for PBXNativeTarget "TestProject" */;
+			buildConfigurationList = OBJECT_37 /* Build configuration list for PBXNativeTarget "TestProject" */;
 			buildPhases = (
-				OBJECT_28 /* Sources */,
+				OBJECT_40 /* Sources */,
+				OBJECT_41 /* Frameworks */,
+				OBJECT_42 /* Copy Files */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				OBJECT_39 /* PBXTargetDependency */,
 			);
 			name = TestProject;
-			productReference = OBJECT_32;
+			productReference = OBJECT_9;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		OBJECT_35 /* Project object */ = {
+		OBJECT_1 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 			};
-			buildConfigurationList = OBJECT_3 /* Build configuration list for PBXProject "spec" */;
+			buildConfigurationList = OBJECT_4 /* Build configuration list for PBXProject "spec" */;
 			compatibilityVersion = "Xcode 3.2";
 			knownRegions = (
 			);
-			mainGroup = OBJECT_34;
+			mainGroup = OBJECT_44;
 			targets = (
-				OBJECT_16 /* MyFramework */,
-				OBJECT_33 /* TestProject */,
+				OBJECT_5 /* MyFramework */,
+				OBJECT_8 /* TestProject */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		OBJECT_11 /* Sources */ = {
+		OBJECT_21 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				OBJECT_8 /* FrameworkFile.swift in Sources */,
-				OBJECT_9 /* Info.plist in Sources */,
-				OBJECT_10 /* MyFramework.h in Sources */,
+				OBJECT_15 /* FrameworkFile.swift in Sources */,
+				OBJECT_17 /* MyFramework.h in Sources */,
+				OBJECT_16 /* Info.plist in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		OBJECT_28 /* Sources */ = {
+		OBJECT_40 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				OBJECT_25 /* Base.lproj in Sources */,
-				OBJECT_24 /* Assets.xcassets in Sources */,
-				OBJECT_23 /* AppDelegate.swift in Sources */,
-				OBJECT_26 /* Info.plist in Sources */,
-				OBJECT_27 /* ViewController.swift in Sources */,
+				OBJECT_33 /* Info.plist in Sources */,
+				OBJECT_31 /* Assets.xcassets in Sources */,
+				OBJECT_34 /* ViewController.swift in Sources */,
+				OBJECT_30 /* AppDelegate.swift in Sources */,
+				OBJECT_32 /* Base.lproj in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
-/* Begin XCBuildConfiguration section */
-		OBJECT_1 /* debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-			};
-			name = debug;
+/* Begin PBXTargetDependency section */
+		OBJECT_39 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = OBJECT_5 /* MyFramework */;
+			targetProxy = OBJECT_38 /* PBXContainerItemProxy */;
 		};
-		OBJECT_12 /* debug */ = {
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		OBJECT_18 /* debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -203,7 +273,7 @@
 			};
 			name = debug;
 		};
-		OBJECT_13 /* release */ = {
+		OBJECT_19 /* release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -256,13 +326,19 @@
 			};
 			name = release;
 		};
-		OBJECT_2 /* release */ = {
+		OBJECT_2 /* debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = debug;
+		};
+		OBJECT_3 /* release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 			};
 			name = release;
 		};
-		OBJECT_29 /* debug */ = {
+		OBJECT_35 /* debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -317,7 +393,7 @@
 			};
 			name = debug;
 		};
-		OBJECT_30 /* release */ = {
+		OBJECT_36 /* release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -369,34 +445,34 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		OBJECT_14 /* Build configuration list for PBXNativeTarget "MyFramework" */ = {
+		OBJECT_20 /* Build configuration list for PBXNativeTarget "MyFramework" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				OBJECT_12 /* debug */,
-				OBJECT_13 /* release */,
+				OBJECT_19 /* release */,
+				OBJECT_18 /* debug */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "";
 		};
-		OBJECT_3 /* Build configuration list for PBXProject "spec" */ = {
+		OBJECT_37 /* Build configuration list for PBXNativeTarget "TestProject" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				OBJECT_1 /* debug */,
-				OBJECT_2 /* release */,
+				OBJECT_35 /* debug */,
+				OBJECT_36 /* release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "";
+		};
+		OBJECT_4 /* Build configuration list for PBXProject "spec" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				OBJECT_3 /* release */,
+				OBJECT_2 /* debug */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = debug;
 		};
-		OBJECT_31 /* Build configuration list for PBXNativeTarget "TestProject" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				OBJECT_29 /* debug */,
-				OBJECT_30 /* release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "";
-		};
 /* End XCConfigurationList section */
 	};
-	rootObject = OBJECT_35 /* Project object */;
+	rootObject = OBJECT_1 /* Project object */;
 }
