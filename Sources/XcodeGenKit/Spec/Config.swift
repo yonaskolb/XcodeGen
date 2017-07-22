@@ -12,10 +12,24 @@ import JSONUtilities
 
 public struct Config {
     public var name: String
-    public var type: String?
+    public var type: ConfigType?
     public var buildSettingGroups: [BuildSettingGroup]
-    public var settings: BuildSettings
+    public var buildSettings: BuildSettings
+
+    public init(name: String, type: ConfigType? = nil, buildSettingGroups: [BuildSettingGroup] = [], buildSettings: BuildSettings = .init()) {
+        self.name = name
+        self.buildSettingGroups = buildSettingGroups
+        self.buildSettings = buildSettings
+        self.type = type
+    }
 }
+
+
+public enum ConfigType: String {
+    case debug
+    case release
+}
+
 
 extension Config: NamedJSONDictionaryConvertible {
 
@@ -23,6 +37,6 @@ extension Config: NamedJSONDictionaryConvertible {
         self.name = name
         type = jsonDictionary.json(atKeyPath: "type")
         buildSettingGroups = try jsonDictionary.json(atKeyPath: "settingGroups")
-        settings = BuildSettings(dictionary: jsonDictionary.json(atKeyPath: "settings") ?? [:])
+        buildSettings = BuildSettings(dictionary: jsonDictionary.json(atKeyPath: "buildSettings") ?? [:])
     }
 }

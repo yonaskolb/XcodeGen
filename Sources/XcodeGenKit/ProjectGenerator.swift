@@ -26,14 +26,14 @@ public class ProjectGenerator {
     var buildSettingGroups: [String: BuildSettings] = [:]
 
     enum BuildSettingGroupType {
-        case config(String)
+        case config(ConfigType)
         case platform(Platform)
         case product(PBXProductType)
         case base
 
         var path: String {
             switch self {
-            case let .config(config): return "configs/\(config)"
+            case let .config(config): return "configs/\(config.rawValue)"
             case let .platform(platform): return "platforms/\(platform.rawValue)"
             case let .product(product): return "products/\(product.rawValue)"
             case .base: return "base"
@@ -76,7 +76,7 @@ public class ProjectGenerator {
         var objects: [PBXObject] = []
 
         let buildConfigs = spec.configs.map { config in
-            XCBuildConfiguration(reference: id(), name: config.name, baseConfigurationReference: nil, buildSettings: config.settings)
+            XCBuildConfiguration(reference: id(), name: config.name, baseConfigurationReference: nil, buildSettings: config.buildSettings)
         }
         let buildConfigList = XCConfigurationList(reference: id(), buildConfigurations: buildConfigs.referenceSet, defaultConfigurationName: buildConfigs.first?.name ?? "", defaultConfigurationIsVisible: 0)
 

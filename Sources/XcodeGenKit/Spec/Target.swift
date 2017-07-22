@@ -49,7 +49,7 @@ extension Target: NamedJSONDictionaryConvertible {
 
 public struct Dependancy {
 
-    public var path: String
+    public var name: String
     public var type: DependancyType
 
     public enum DependancyType: String {
@@ -61,7 +61,7 @@ public struct Dependancy {
 extension Dependancy: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
-        path = try jsonDictionary.json(atKeyPath: "path")
+        name = try jsonDictionary.json(atKeyPath: "name")
         type = try jsonDictionary.json(atKeyPath: "type")
     }
 }

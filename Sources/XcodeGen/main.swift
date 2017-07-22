@@ -18,10 +18,18 @@ func generate(spec: String) {
     let specPath = Path(spec).normalize()
     let projectPath = specPath.parent() + "\(specPath.lastComponentWithoutExtension).xcodeproj"
 
-    let spec: Spec
+    var spec: Spec
     do {
         spec = try Spec(path: specPath)
         print("Loaded spec: \(spec.targets.count) targets, \(spec.schemes.count) schemes, \(spec.configs.count) configs")
+        let specLintingResults = SpecLinter.lint(spec)
+        spec = specLintingResults.spec
+        if !specLintingResults.errors.isEmpty {
+            print("Spec errors: \n\t- \(specLintingResults.errors.map{$0.description}.joined(separator: "\n\t- "))")
+        }
+        if !specLintingResults.appliedFixits.isEmpty {
+            print("Applied spec fixits:\n\t- \(specLintingResults.appliedFixits.map{$0.description}.joined(separator: "\n\t- "))")
+        }
     } catch {
         print("Parsing spec failed: \(error)")
         return
