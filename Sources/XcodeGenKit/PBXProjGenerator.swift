@@ -133,8 +133,14 @@ public class PBXProjGenerator {
                 dependancies.append(targetDependancy.reference)
 
                 let dependencyBuildFile = targetBuildFileReferences[dependancy.name]!
+                //link
                 frameworkFiles.append(dependencyBuildFile)
-                copyFiles.append(dependencyBuildFile)
+
+                //embed
+                let embedSettings: [String: Any] = ["ATTRIBUTES": ["CodeSignOnCopy", "RemoveHeadersOnCopy"]]
+                let embedFile = PBXBuildFile(reference: id(), fileRef: targetFileReferences[dependancy.name]!, settings: embedSettings)
+                objects.append(.pbxBuildFile(embedFile))
+                copyFiles.append(embedFile.reference)
             case .system:
                 //TODO: handle system frameworks
                 break
@@ -170,9 +176,9 @@ public class PBXProjGenerator {
         objects.append(.pbxFrameworksBuildPhase(frameworkBuildPhase))
         buildPhases.append(frameworkBuildPhase.reference)
 
-//        let copyFilesPhase = PBXCopyFilesBuildPhase(reference: id(), dstPath: "", dstSubfolderSpec: .frameworks, files: Set(copyFiles))
-//        objects.append(.pbxCopyFilesBuildPhase(copyFilesPhase))
-//        buildPhases.append(copyFilesPhase.reference)
+        let copyFilesPhase = PBXCopyFilesBuildPhase(reference: id(), dstPath: "", dstSubfolderSpec: .frameworks, files: Set(copyFiles))
+        objects.append(.pbxCopyFilesBuildPhase(copyFilesPhase))
+        buildPhases.append(copyFilesPhase.reference)
 
         let nativeTarget = PBXNativeTarget(
             reference: targetNativeReferences[target.name]!,
