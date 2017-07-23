@@ -188,7 +188,7 @@ public class PBXProjGenerator {
     func getBuildPhaseForPath(_ path: Path) -> BuildPhase? {
         if let fileExtension = path.extension {
             switch fileExtension {
-            case "swift": return .sources
+            case "swift", "m": return .sources
             case "h", "hh", "hpp", "ipp", "tpp", "hxx", "def": return .headers
             default: return .resources
             }
