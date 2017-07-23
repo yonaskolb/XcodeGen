@@ -31,14 +31,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		OBJECT_11 /* FrameworkFile.swift */ = {isa = PBXFileReference; name = FrameworkFile.swift; path = FrameworkFile.swift; sourceTree = "<group>"; };
-		OBJECT_12 /* Info.plist */ = {isa = PBXFileReference; name = Info.plist; path = Info.plist; sourceTree = "<group>"; };
-		OBJECT_13 /* MyFramework.h */ = {isa = PBXFileReference; name = MyFramework.h; path = MyFramework.h; sourceTree = "<group>"; };
-		OBJECT_25 /* AppDelegate.swift */ = {isa = PBXFileReference; name = AppDelegate.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		OBJECT_26 /* Assets.xcassets */ = {isa = PBXFileReference; name = Assets.xcassets; path = Assets.xcassets; sourceTree = "<group>"; };
-		OBJECT_27 /* Base.lproj */ = {isa = PBXFileReference; name = Base.lproj; path = Base.lproj; sourceTree = "<group>"; };
-		OBJECT_28 /* Info.plist */ = {isa = PBXFileReference; name = Info.plist; path = Info.plist; sourceTree = "<group>"; };
-		OBJECT_29 /* ViewController.swift */ = {isa = PBXFileReference; name = ViewController.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		OBJECT_11 /* FrameworkFile.swift */ = {isa = PBXFileReference; path = FrameworkFile.swift; sourceTree = "<group>"; };
+		OBJECT_12 /* Info.plist */ = {isa = PBXFileReference; path = Info.plist; sourceTree = "<group>"; };
+		OBJECT_13 /* MyFramework.h */ = {isa = PBXFileReference; path = MyFramework.h; sourceTree = "<group>"; };
+		OBJECT_25 /* AppDelegate.swift */ = {isa = PBXFileReference; path = AppDelegate.swift; sourceTree = "<group>"; };
+		OBJECT_26 /* Assets.xcassets */ = {isa = PBXFileReference; path = Assets.xcassets; sourceTree = "<group>"; };
+		OBJECT_27 /* Base.lproj */ = {isa = PBXFileReference; path = Base.lproj; sourceTree = "<group>"; };
+		OBJECT_28 /* Info.plist */ = {isa = PBXFileReference; path = Info.plist; sourceTree = "<group>"; };
+		OBJECT_29 /* ViewController.swift */ = {isa = PBXFileReference; path = ViewController.swift; sourceTree = "<group>"; };
 		OBJECT_6 /* MyFramework.framework */ = {isa = PBXFileReference; explicitFileType = framework; includeInIndex = 0; path = MyFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		OBJECT_9 /* TestProject.app */ = {isa = PBXFileReference; explicitFileType = app; includeInIndex = 0; path = TestProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
