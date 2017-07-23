@@ -169,7 +169,7 @@
 			isa = PBXProject;
 			attributes = {
 			};
-			buildConfigurationList = OBJECT_4 /* Build configuration list for PBXProject "spec" */;
+			buildConfigurationList = OBJECT_4 /* Build configuration list for PBXProject */;
 			compatibilityVersion = "Xcode 3.2";
 			knownRegions = (
 			);
@@ -463,7 +463,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "";
 		};
-		OBJECT_4 /* Build configuration list for PBXProject "spec" */ = {
+		OBJECT_4 /* Build configuration list for PBXProject */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				OBJECT_3 /* release */,

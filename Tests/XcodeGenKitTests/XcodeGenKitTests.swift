@@ -11,9 +11,9 @@ class XcodeGenTests: XCTestCase {
         let spec = try Spec(path: specPath)
         let lintedSpec = SpecLinter.lint(spec)
         if lintedSpec.errors.isEmpty {
-            let generator = ProjectGenerator(spec: lintedSpec.spec, path: fixturePath + "TestProject/spec.xcodeproj")
+            let generator = ProjectGenerator(spec: lintedSpec.spec)
             let project = try generator.generate()
-            try project.write(override: true)
+            try project.write(path: fixturePath + "TestProject/spec.xcodeproj", override: true)
         } else {
             XCTFail("Spec has errors:\n\(lintedSpec.errors.map { $0.description}.joined(separator: "\n"))")
         }

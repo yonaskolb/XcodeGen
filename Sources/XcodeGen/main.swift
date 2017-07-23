@@ -17,7 +17,7 @@ func generate(spec: String, project: String?) {
 
     let specPath = Path(spec).normalize()
     let projectPath: Path
-    if let project = project {
+    if let project = project, !project.isEmpty {
         var path = Path(project).normalize()
         if path.isRelative {
             path = specPath.parent() + project
@@ -49,10 +49,10 @@ func generate(spec: String, project: String?) {
     }
 
     do {
-        let projectGenerator = ProjectGenerator(spec: spec, path: projectPath)
+        let projectGenerator = ProjectGenerator(spec: spec)
         let project = try projectGenerator.generate()
         print("Generated project")
-        try project.write(override: true)
+        try project.write(path: projectPath, override: true)
         print("Wrote project to file \(projectPath.string)")
     } catch {
         print("Project Generation failed: \(error)")

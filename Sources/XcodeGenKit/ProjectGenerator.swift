@@ -16,7 +16,6 @@ import Yams
 public class ProjectGenerator {
 
     let spec: Spec
-    let path: Path
 
     var groups: [PBXGroup] = []
     var fileReferences: [PBXFileReference] = []
@@ -60,9 +59,8 @@ public class ProjectGenerator {
         return buildSettings
     }
 
-    public init(spec: Spec, path: Path) {
+    public init(spec: Spec) {
         self.spec = spec
-        self.path = path
         projectReference = ""
         projectReference = id()
     }
@@ -77,7 +75,7 @@ public class ProjectGenerator {
         let pbxProject = try generatePBXProj()
         let workspace = try generateWorkspace()
         let sharedData = try generateSharedData()
-        return XcodeProj(path: path, workspace: workspace, pbxproj: pbxProject, sharedData: sharedData)
+        return XcodeProj(workspace: workspace, pbxproj: pbxProject, sharedData: sharedData)
     }
 
     func generatePBXProj() throws -> PBXProj {
@@ -192,7 +190,7 @@ public class ProjectGenerator {
         let pbxProjectRoot = PBXProject(reference: projectReference, buildConfigurationList: buildConfigList.reference, compatibilityVersion: "Xcode 3.2", mainGroup: mainGroup.reference, targets: Array(targetNativeReferences.values))
         objects.append(.pbxProject(pbxProjectRoot))
 
-        return PBXProj(path: path + "project.pbxproj", name: path.lastComponentWithoutExtension, archiveVersion: 1, objectVersion: 46, rootObject: projectReference, objects: objects)
+        return PBXProj(archiveVersion: 1, objectVersion: 46, rootObject: projectReference, objects: objects)
     }
 
     func getTargetBuildSettings(config: Config, target: Target) throws -> BuildSettings {
@@ -235,8 +233,8 @@ public class ProjectGenerator {
 
     func generateWorkspace() throws -> XCWorkspace {
         let workspaceReferences: [XCWorkspace.Data.FileRef] = [XCWorkspace.Data.FileRef.project(path: Path(""))]
-        let workspaceData = XCWorkspace.Data(path: path + "project.xcworkspace/contents.xcworkspacedata", references: workspaceReferences)
-        return XCWorkspace(path: path + "project.xcworkspace", data: workspaceData)
+        let workspaceData = XCWorkspace.Data(references: workspaceReferences)
+        return XCWorkspace(data: workspaceData)
     }
 
     func generateSharedData() throws -> XCSharedData {
@@ -247,34 +245,9 @@ public class ProjectGenerator {
             //            }
             let buildAction = XCScheme.BuildAction(buildActionEntries: [], parallelizeBuild: true, buildImplicitDependencies: true)
 
-            return XCScheme(path: path + "xcshareddata/xcschemes/\(schemeSpec.name)", lastUpgradeVersion: nil, version: nil, buildAction: buildAction, testAction: nil, launchAction: nil, profileAction: nil, analyzeAction: nil, archiveAction: nil)
+            return XCScheme(name: schemeSpec.name, lastUpgradeVersion: nil, version: nil, buildAction: buildAction, testAction: nil, launchAction: nil, profileAction: nil, analyzeAction: nil, archiveAction: nil)
         }
 
-        return XCSharedData(path: path + "xcshareddata", schemes: schemes)
-    }
-}
-
-extension XcodeProj: Writable {
-
-    public func write(override: Bool) throws {
-        if override && path.exists {
-            try path.delete()
-        }
-
-        // write workspace
-        try workspace.data.path.mkpath()
-        try workspace.data.write(override: override)
-
-        // write pbxproj
-        try pbxproj.path.mkpath()
-        try pbxproj.write(override: override)
-
-        // write shared data
-        if let sharedData = sharedData {
-            for scheme in sharedData.schemes {
-                try scheme.path.mkpath()
-                try scheme.write(override: override)
-            }
-        }
+        return XCSharedData(schemes: schemes)
     }
 }

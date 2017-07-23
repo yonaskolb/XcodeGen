@@ -15,14 +15,7 @@ import Yams
 extension Spec {
 
     public init(path: Path) throws {
-        var url = URL(string: path.string)!
-        if url.scheme == nil {
-            url = URL(fileURLWithPath: path.string)
-        }
-
-        let data = try Data(contentsOf: url)
-        let string = String(data: data, encoding: .utf8)!
-
+        let string: String = try path.read()
         try self.init(path: path, string: string)
     }
 

@@ -23,7 +23,7 @@
       "package": "JSONUtilities",
       "reason": null,
       "repositoryURL": "https://github.com/yonaskolb/JSONUtilities.git",
-      "version": "3.3.5"
+      "version": "3.3.8"
     },
     {
       "package": "PathKit",
@@ -59,7 +59,7 @@
       "package": "xcodeproj",
       "reason": null,
       "repositoryURL": "https://github.com/yonaskolb/xcodeproj.git",
-      "version": "0.0.4"
+      "version": "0.0.9"
     }
   ],
   "version": 1
