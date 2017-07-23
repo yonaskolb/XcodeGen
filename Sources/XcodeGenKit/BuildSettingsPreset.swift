@@ -20,9 +20,9 @@ enum BuildSettingsPreset {
 
     var path: String {
         switch self {
-        case let .config(config): return "configs/\(config.rawValue)"
-        case let .platform(platform): return "platforms/\(platform.rawValue)"
-        case let .product(product): return "products/\(product.rawValue)"
+        case let .config(config): return "Configs/\(config.rawValue)"
+        case let .platform(platform): return "Platforms/\(platform.rawValue)"
+        case let .product(product): return "Products/\(product.rawValue)"
         case .base: return "base"
         }
     }
@@ -33,7 +33,7 @@ enum BuildSettingsPreset {
         if let group = BuildSettingsPreset.buildSettings[path] {
             return group
         }
-        let settingsPath = Path(#file).parent().parent().parent() + "setting_groups/\(path).yml"
+        let settingsPath = Path(#file).parent().parent().parent() + "SettingPresets/\(path).yml"
         guard settingsPath.exists else { return nil }
         let buildSettings = try BuildSettings(path: settingsPath)
         BuildSettingsPreset.buildSettings[path] = buildSettings
