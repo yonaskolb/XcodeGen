@@ -1,25 +1,28 @@
 // !$*UTF8*$!
 {
 	archiveVersion = 1;
-	classes = {
-	};
+	classes = (
+	);
 	objectVersion = 46;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		OBJECT_15 /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJECT_11 /* FrameworkFile.swift */; };
-		OBJECT_16 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = OBJECT_12 /* Info.plist */; };
+		OBJECT_10 = {isa = PBXBuildFile; fileRef = OBJECT_9 /* TestProject.app */; };
+		OBJECT_15 /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJECT_11 /* FrameworkFile.swift */; settings = {}; };
+		OBJECT_16 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = OBJECT_12 /* Info.plist */; settings = {}; };
 		OBJECT_17 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = OBJECT_13 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		OBJECT_31 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJECT_25 /* AppDelegate.swift */; };
-		OBJECT_32 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = OBJECT_26 /* Assets.xcassets */; };
-		OBJECT_33 /* Base.lproj in Resources */ = {isa = PBXBuildFile; fileRef = OBJECT_27 /* Base.lproj */; };
-		OBJECT_34 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = OBJECT_28 /* Info.plist */; };
-		OBJECT_35 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJECT_29 /* ViewController.swift */; };
+		OBJECT_34 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJECT_25 /* AppDelegate.swift */; settings = {}; };
+		OBJECT_35 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = OBJECT_26 /* Assets.xcassets */; settings = {}; };
+		OBJECT_36 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = OBJECT_27 /* Info.plist */; settings = {}; };
+		OBJECT_37 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJECT_28 /* ViewController.swift */; settings = {}; };
+		OBJECT_38 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = OBJECT_30 /* LaunchScreen.storyboard */; settings = {}; };
+		OBJECT_39 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = OBJECT_32 /* Main.storyboard */; settings = {}; };
+		OBJECT_7 /* MyFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = OBJECT_6 /* MyFramework.framework */; };
 		OBJECT_7 /* MyFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = OBJECT_6 /* MyFramework.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		OBJECT_39 /* PBXContainerItemProxy */ = {
+		OBJECT_43 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = OBJECT_1 /* Project object */;
 			proxyType = 1;
@@ -29,16 +32,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		OBJECT_11 /* FrameworkFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameworkFile.swift; sourceTree = "<group>"; };
-		OBJECT_12 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		OBJECT_13 /* MyFramework.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyFramework.h; sourceTree = "<group>"; };
-		OBJECT_25 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		OBJECT_26 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		OBJECT_27 /* Base.lproj */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Base.lproj; sourceTree = "<group>"; };
-		OBJECT_28 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		OBJECT_29 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		OBJECT_6 /* MyFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MyFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		OBJECT_9 /* TestProject.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = TestProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		OBJECT_11 /* FrameworkFile.swift */ = {isa = PBXFileReference; path = FrameworkFile.swift; sourceTree = "<group>"; };
+		OBJECT_12 /* Info.plist */ = {isa = PBXFileReference; path = Info.plist; sourceTree = "<group>"; };
+		OBJECT_13 /* MyFramework.h */ = {isa = PBXFileReference; path = MyFramework.h; sourceTree = "<group>"; };
+		OBJECT_25 /* AppDelegate.swift */ = {isa = PBXFileReference; path = AppDelegate.swift; sourceTree = "<group>"; };
+		OBJECT_26 /* Assets.xcassets */ = {isa = PBXFileReference; path = Assets.xcassets; sourceTree = "<group>"; };
+		OBJECT_27 /* Info.plist */ = {isa = PBXFileReference; path = Info.plist; sourceTree = "<group>"; };
+		OBJECT_28 /* ViewController.swift */ = {isa = PBXFileReference; path = ViewController.swift; sourceTree = "<group>"; };
+		OBJECT_29 /* Base */ = {isa = PBXFileReference; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		OBJECT_31 /* Base */ = {isa = PBXFileReference; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		OBJECT_6 /* MyFramework.framework */ = {isa = PBXFileReference; explicitFileType = framework; includeInIndex = 0; path = MyFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		OBJECT_9 /* TestProject.app */ = {isa = PBXFileReference; explicitFileType = app; includeInIndex = 0; path = TestProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -49,11 +53,11 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		OBJECT_44 /* Frameworks */ = {
+		OBJECT_48 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				OBJECT_7 /* MyFramework.framework in Frameworks */,
+				OBJECT_7,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -67,22 +71,25 @@
 				OBJECT_11 /* FrameworkFile.swift */,
 				OBJECT_12 /* Info.plist */,
 			);
+			name = MyFramework;
 			path = MyFramework;
 			sourceTree = "<group>";
 		};
-		OBJECT_30 /* TestProject */ = {
+		OBJECT_33 /* TestProject */ = {
 			isa = PBXGroup;
 			children = (
 				OBJECT_25 /* AppDelegate.swift */,
-				OBJECT_28 /* Info.plist */,
+				OBJECT_28 /* ViewController.swift */,
 				OBJECT_26 /* Assets.xcassets */,
-				OBJECT_29 /* ViewController.swift */,
-				OBJECT_27 /* Base.lproj */,
+				OBJECT_32 /* Main.storyboard */,
+				OBJECT_27 /* Info.plist */,
+				OBJECT_30 /* LaunchScreen.storyboard */,
 			);
+			name = TestProject;
 			path = TestProject;
 			sourceTree = "<group>";
 		};
-		OBJECT_45 /* Products */ = {
+		OBJECT_49 /* Products */ = {
 			isa = PBXGroup;
 			children = (
 				OBJECT_6 /* MyFramework.framework */,
@@ -91,27 +98,27 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		OBJECT_46 = {
+		OBJECT_50 = {
 			isa = PBXGroup;
 			children = (
+				OBJECT_49 /* Products */,
 				OBJECT_14 /* MyFramework */,
-				OBJECT_30 /* TestProject */,
-				OBJECT_45 /* Products */,
+				OBJECT_33 /* TestProject */,
 			);
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		OBJECT_23 /* Headers */ = {
+		OBJECT_23 /* Frameworks */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				OBJECT_17 /* MyFramework.h in Headers */,
+				OBJECT_17,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		OBJECT_43 /* Headers */ = {
+		OBJECT_47 /* Frameworks */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -135,27 +142,25 @@
 			dependencies = (
 			);
 			name = MyFramework;
-			productName = MyFramework;
-			productReference = OBJECT_6 /* MyFramework.framework */;
+			productReference = OBJECT_6;
 			productType = "com.apple.product-type.framework";
 		};
 		OBJECT_8 /* TestProject */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = OBJECT_38 /* Build configuration list for PBXNativeTarget "TestProject" */;
+			buildConfigurationList = OBJECT_42 /* Build configuration list for PBXNativeTarget "TestProject" */;
 			buildPhases = (
-				OBJECT_41 /* Sources */,
-				OBJECT_42 /* Resources */,
-				OBJECT_43 /* Headers */,
-				OBJECT_44 /* Frameworks */,
+				OBJECT_45 /* Sources */,
+				OBJECT_46 /* Resources */,
+				OBJECT_47 /* Headers */,
+				OBJECT_48 /* Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				OBJECT_40 /* PBXTargetDependency */,
+				OBJECT_44 /* PBXTargetDependency */,
 			);
 			name = TestProject;
-			productName = TestProject;
-			productReference = OBJECT_9 /* TestProject.app */;
+			productReference = OBJECT_9;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -165,17 +170,14 @@
 			isa = PBXProject;
 			attributes = {
 			};
-			buildConfigurationList = OBJECT_4 /* Build configuration list for PBXProject "spec" */;
+			buildConfigurationList = OBJECT_4 /* Build configuration list for PBXProject */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
-			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
 			);
-			mainGroup = OBJECT_46;
-			projectDirPath = "";
-			projectRoot = "";
+			mainGroup = OBJECT_50;
 			targets = (
 				OBJECT_5 /* MyFramework */,
 				OBJECT_8 /* TestProject */,
@@ -188,17 +190,18 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				OBJECT_16 /* Info.plist in Resources */,
+				OBJECT_16,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		OBJECT_42 /* Resources */ = {
+		OBJECT_46 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				OBJECT_33 /* Base.lproj in Resources */,
-				OBJECT_34 /* Info.plist in Resources */,
-				OBJECT_32 /* Assets.xcassets in Resources */,
+				OBJECT_35,
+				OBJECT_39,
+				OBJECT_38,
+				OBJECT_36,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -213,29 +216,49 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		OBJECT_41 /* Sources */ = {
+		OBJECT_45 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				OBJECT_35 /* ViewController.swift in Sources */,
-				OBJECT_31 /* AppDelegate.swift in Sources */,
+				OBJECT_34 /* AppDelegate.swift in Sources */,
+				OBJECT_37 /* ViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		OBJECT_40 /* PBXTargetDependency */ = {
+		OBJECT_44 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = OBJECT_5 /* MyFramework */;
-			targetProxy = OBJECT_39 /* PBXContainerItemProxy */;
+			targetProxy = OBJECT_43 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		OBJECT_30 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				OBJECT_29 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		OBJECT_32 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				OBJECT_31 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		OBJECT_18 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -255,7 +278,6 @@
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -284,6 +306,7 @@
 		OBJECT_19 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -303,7 +326,6 @@
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -362,9 +384,10 @@
 			};
 			name = Debug;
 		};
-		OBJECT_36 /* Release */ = {
+		OBJECT_40 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -385,7 +408,6 @@
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -407,9 +429,10 @@
 			};
 			name = Release;
 		};
-		OBJECT_37 /* Debug */ = {
+		OBJECT_41 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -430,7 +453,6 @@
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -464,16 +486,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "";
 		};
-		OBJECT_38 /* Build configuration list for PBXNativeTarget "TestProject" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				OBJECT_36 /* Release */,
-				OBJECT_37 /* Debug */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "";
-		};
-		OBJECT_4 /* Build configuration list for PBXProject "spec" */ = {
+		OBJECT_4 /* Build configuration list for PBXProject */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				OBJECT_3 /* Debug */,
@@ -481,6 +494,15 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		OBJECT_42 /* Build configuration list for PBXNativeTarget "TestProject" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				OBJECT_41 /* Debug */,
+				OBJECT_40 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "";
 		};
 /* End XCConfigurationList section */
 	};

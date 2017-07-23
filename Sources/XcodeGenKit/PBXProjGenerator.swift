@@ -19,7 +19,7 @@ public class PBXProjGenerator {
     let spec: Spec
 
     var objects: [PBXObject] = []
-    var fileReferencesByPath: [Path: PBXFileReference] = [:]
+    var fileReferencesByPath: [Path: String] = [:]
     var groupsByPath: [String: String] = [:]
 
     var targetNativeReferences: [String: String] = [:]
@@ -87,7 +87,7 @@ public class PBXProjGenerator {
 
     struct SourceFile {
         let path: Path
-        let fileReference: PBXFileReference
+        let fileReference: String
         let buildFile: PBXBuildFile
     }
 
@@ -97,7 +97,7 @@ public class PBXProjGenerator {
         if getBuildPhaseForPath(path) == .headers {
             settings["ATTRIBUTES"] = ["Public"]
         }
-        let buildFile = PBXBuildFile(reference: id(), fileRef: fileReference.reference, settings: settings)
+        let buildFile = PBXBuildFile(reference: id(), fileRef: fileReference, settings: settings)
         objects.append(.pbxBuildFile(buildFile))
         return SourceFile(path: path, fileReference: fileReference, buildFile: buildFile)
     }
@@ -215,18 +215,35 @@ public class PBXProjGenerator {
 
     func getGroup(path: Path) throws -> (filePaths: [Path], group: PBXGroup) {
 
-        let directories = try path.children().filter { $0.isDirectory && $0.extension == nil }
-        var filePaths = try path.children().filter { $0.isFile || $0.extension != nil }
+        let directories = try path.children().filter { $0.isDirectory && $0.extension == nil && $0.extension != "lproj" }
+        var filePaths = try path.children().filter { $0.isFile || $0.extension != nil && $0.extension != "lproj" }
+        let localisedDirectories = try path.children().filter { $0.extension == "lproj" }
+
         var groupChildren: [String] = []
 
         for path in filePaths {
             if let fileReference = fileReferencesByPath[path] {
-                groupChildren.append(fileReference.reference)
+                groupChildren.append(fileReference)
             } else {
                 let fileReference = PBXFileReference(reference: id(), sourceTree: .group, path: path.lastComponent)
                 objects.append(.pbxFileReference(fileReference))
-                fileReferencesByPath[path] = fileReference
+                fileReferencesByPath[path] = fileReference.reference
                 groupChildren.append(fileReference.reference)
+            }
+        }
+
+        for localisedDirectory in localisedDirectories {
+            for path in try localisedDirectory.children() {
+                let filePath = "\(localisedDirectory.lastComponent)/\(path.lastComponent)"
+                let fileReference = PBXFileReference(reference: id(), sourceTree: .group, name: localisedDirectory.lastComponentWithoutExtension, path: filePath)
+                objects.append(.pbxFileReference(fileReference))
+
+                let variantGroup = PBXVariantGroup(reference: id(), children: Set([fileReference.reference]), name: path.lastComponent, sourceTree: .group)
+                objects.append(.pbxVariantGroup(variantGroup))
+
+                fileReferencesByPath[path] = variantGroup.reference
+                groupChildren.append(variantGroup.reference)
+                filePaths.append(path)
             }
         }
 
