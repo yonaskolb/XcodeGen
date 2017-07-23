@@ -12,7 +12,6 @@ import Commander
 import XcodeGenKit
 import xcodeproj
 
-
 func generate(spec: String, project: String?) {
 
     let specPath = Path(spec).normalize()

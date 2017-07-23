@@ -8,6 +8,7 @@
 
 import Foundation
 import xcodeproj
+import PathKit
 
 extension Array where Element: ProjectElement {
 
@@ -45,3 +46,4 @@ func +=( lhs: inout BuildSettings, rhs: BuildSettings?) {
     guard let rhs = rhs else { return }
     lhs.merge(rhs)
 }
+

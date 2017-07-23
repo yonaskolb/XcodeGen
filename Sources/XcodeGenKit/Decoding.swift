@@ -8,6 +8,8 @@
 
 import Foundation
 import JSONUtilities
+import PathKit
+import Yams
 
 extension Dictionary where Key: JSONKey {
 
@@ -45,4 +47,16 @@ public protocol NamedJSONDictionaryConvertible {
 public protocol NamedJSONConvertible {
 
     init(name: String, json: Any) throws
+}
+
+extension JSONObjectConvertible {
+
+    public init(path: Path) throws {
+        let content: String = try path.read()
+        let yaml = try Yams.load(yaml: content)
+        guard let jsonDictionary = yaml as? JSONDictionary else {
+            throw JSONUtilsError.fileNotAJSONDictionary
+        }
+        try self.init(jsonDictionary: jsonDictionary)
+    }
 }
