@@ -1,4 +1,3 @@
----
 DEBUG_INFORMATION_FORMAT: dwarf-with-dsym
 SWIFT_OPTIMIZATION_LEVEL: "-Owholemodule"
 COPY_PHASE_STRIP: 'NO'
