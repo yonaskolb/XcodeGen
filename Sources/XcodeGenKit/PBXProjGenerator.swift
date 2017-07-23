@@ -78,7 +78,8 @@ public class PBXProjGenerator {
         let mainGroup = PBXGroup(reference: id(), children: topLevelGroups.referenceSet, sourceTree: .group)
         objects.append(.pbxGroup(mainGroup))
 
-        let pbxProjectRoot = PBXProject(reference: projectReference, buildConfigurationList: buildConfigList.reference, compatibilityVersion: "Xcode 3.2", mainGroup: mainGroup.reference, targets: Array(targetNativeReferences.values))
+        let knownRegions: [String] = ["en", "Base"]
+        let pbxProjectRoot = PBXProject(reference: projectReference, buildConfigurationList: buildConfigList.reference, compatibilityVersion: "Xcode 3.2", mainGroup: mainGroup.reference, developmentRegion: "English", knownRegions: knownRegions, targets: Array(targetNativeReferences.values))
         objects.append(.pbxProject(pbxProjectRoot))
 
         return PBXProj(archiveVersion: 1, objectVersion: 46, rootObject: projectReference, objects: objects)

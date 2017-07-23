@@ -2,12 +2,12 @@ settingGroups:
   testGroup:
     TEST_SETTING: test value
 configs:
-  debug:
+  Debug:
     type: debug
     settingGroups:
       - testGroup
     buildSettings:
-  release:
+  Release:
     type: release
 targets:
   TestProject:
