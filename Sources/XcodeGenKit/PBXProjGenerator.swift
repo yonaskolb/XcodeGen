@@ -43,8 +43,12 @@ public class PBXProjGenerator {
     }
 
     public func generate() throws -> PBXProj {
-        let buildConfigs = spec.configs.map { config in
-            XCBuildConfiguration(reference: id(), name: config.name, baseConfigurationReference: nil, buildSettings: config.buildSettings)
+        let buildConfigs: [XCBuildConfiguration] = try spec.configs.map { config in
+            var buildSettings = config.buildSettings
+            if let type = config.type, let typeBuildSettings = try BuildSettingsPreset.config(type).getBuildSettings() {
+                buildSettings = typeBuildSettings.merged(buildSettings)
+            }
+            return XCBuildConfiguration(reference: id(), name: config.name, baseConfigurationReference: nil, buildSettings: buildSettings)
         }
         let buildConfigList = XCConfigurationList(reference: id(), buildConfigurations: buildConfigs.referenceSet, defaultConfigurationName: buildConfigs.first?.name ?? "", defaultConfigurationIsVisible: 0)
 
@@ -200,9 +204,6 @@ public class PBXProjGenerator {
         }
 
         buildSettings += try getBuildSettingPreset(.base)
-        if let configType = config.type {
-            buildSettings += try getBuildSettingPreset(.config(configType))
-        }
         buildSettings += try getBuildSettingPreset(.platform(target.platform))
         buildSettings += try getBuildSettingPreset(.product(target.type))
         buildSettings += target.buildSettings?.buildSettings

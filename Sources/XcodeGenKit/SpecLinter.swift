@@ -16,7 +16,7 @@ public struct SpecLinter {
         var fixits: [SpecLinterFixit] = []
 
         if spec.configs.isEmpty {
-            spec.configs = [Config(name: "debug", type: .debug), Config(name: "release", type: .release)]
+            spec.configs = [Config(name: "Debug", type: .debug), Config(name: "Release", type: .release)]
             fixits.append(.createdConfigs)
         }
 
