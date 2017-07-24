@@ -145,14 +145,18 @@ targets:
 ```
 
 #### dependencies
-Species the dependencies for the target. This can be another target, a path to a framework (INCOMPLETE), or an sdk framework (INCOMPLETE)
+Species the dependencies for the target. This can be another target, a framework path, or a carthage dependency. 
+
+Carthage dependencies look for frameworks in `Carthage/Build/PLATFORM/FRAMEWORK.framework` where `PLATFORM` is your target's platform, and `FRAMEWORK` is the carthage framework you've specified. 
+If any applications contain carthage dependencies within itself or any dependent targets, a carthage copy files script is automatically added to the application containing all the relevant frameworks
+
 ```yaml
 targets:
   - name: MyTarget
     dependencies:
       - target: MyFramework
       - framework: path/to/framework.framework
-      - sdk: UIKit  
+      - carthage: Result  
   - name: MyFramework
 ```
 
