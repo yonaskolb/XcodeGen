@@ -107,7 +107,7 @@ public class PBXProjGenerator {
         //TODO: handle multiple sources
         //TODO: handle targets with shared sources
 
-        let sourceGroup = try getGroup(path: source)
+        let sourceGroup = try getGroup(path: source, groupReference: id())
         topLevelGroups.append(sourceGroup.group)
         let sourceFiles = sourceGroup.filePaths.map(generateSourceFile)
 
@@ -219,13 +219,19 @@ public class PBXProjGenerator {
         return buildSettings
     }
 
-    func getGroup(path: Path) throws -> (filePaths: [Path], group: PBXGroup) {
+    func getGroup(path: Path, groupReference: String, depth: Int = 0) throws -> (filePaths: [Path], group: PBXGroup) {
 
         let directories = try path.children().filter { $0.isDirectory && $0.extension == nil && $0.extension != "lproj" }
         var filePaths = try path.children().filter { $0.isFile || $0.extension != nil && $0.extension != "lproj" }
         let localisedDirectories = try path.children().filter { $0.extension == "lproj" }
-
         var groupChildren: [String] = []
+
+        let childGroupReference = directories.map { _ in id() }
+        for (reference, path) in zip(childGroupReference,directories) {
+            let subGroup = try getGroup(path: path, groupReference: reference, depth: depth + 1)
+            filePaths += subGroup.filePaths
+            groupChildren.append(subGroup.group.reference)
+        }
 
         for path in filePaths {
             if let fileReference = fileReferencesByPath[path] {
@@ -253,13 +259,8 @@ public class PBXProjGenerator {
             }
         }
 
-        for path in directories {
-            let subGroup = try getGroup(path: path)
-            filePaths += subGroup.filePaths
-            groupChildren.append(subGroup.group.reference)
-        }
-
-        let group = PBXGroup(reference: id(), children: Set(groupChildren), sourceTree: .group, name: path.lastComponent, path: path.lastComponent)
+        let groupPath: String = depth == 0 ? path.string.replacingOccurrences(of: "\(spec.path.parent().string)/", with: "") : path.lastComponent
+        let group = PBXGroup(reference: groupReference, children: Set(groupChildren), sourceTree: .group, name: path.lastComponent, path: groupPath)
         objects.append(.pbxGroup(group))
         return (filePaths, group)
     }
