@@ -1,7 +1,8 @@
 # XcodeGen
 
 ![Package Managers](https://img.shields.io/badge/package%20managers-SwiftPM-yellow.svg)
-[![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/yonaskolb/SwagGen/blob/master/LICENSE)
+[![Build Status](https://img.shields.io/travis/yonaskolb/XcodeGen/master.svg?style=flat)](https://travis-ci.org/yonaskolb/XcodeGen)
+[![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/yonaskolb/XcodeGen/blob/master/LICENSE)
 
 A command line tool that generates your Xcode project from a YAML project spec and your folder structure. 
 This allows for easy configuration which is git friendly, and means your project structure represents exacty what's on disk. The project can be re-generated on demand which means you can remove your xcode project from git and say goodbye to .xcodeproj merge conflicts!
