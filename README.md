@@ -7,9 +7,14 @@
 A command line tool that generates your Xcode project from a YAML project spec and your folder structure. 
 This allows for easy configuration which is git friendly, and means your project structure represents exacty what's on disk. The project can be re-generated on demand which means you can remove your xcode project from git and say goodbye to .xcodeproj merge conflicts!
 
-Given the following spec file:
+Given the simple project spec file:
 ```yaml
-targets
+configs:
+  debug:
+    type: debug
+  release:
+    type: release
+targets:
   - name: MyApp
     type: application
     platform: iOS
@@ -24,7 +29,7 @@ targets
     platform: iOS
     sources: MyFramework
 ```
-A project would be created with 2 targets and default `Debug` and `Release` configurations.
+A project would be created with 2 connected targets, with all the required build settings. See below for the full spec and all the options it provides.
 
 ## Install
 Make sure Xcode 8 is installed and run the following commands in the same directory as this repo. You can either build via the Swift Package Manager on the command line or Xcode
@@ -66,6 +71,7 @@ configs:
   Release:
     type: release
 ```
+If no configs are specified, default `Debug` and `Release` configs will be created for you
 
 ## targets
 This is list of targets
@@ -116,7 +122,7 @@ targets:
 #### buildSettings
 Species the build settings for the target. This can either be a simple map of build settings, or they can be broken down into specific configurations. If supplying configuration specific settings, a `$base` configuration may be used to provide default build settings that apply accross all configurations
 ```yaml
-configs
+configs:
   test:
     type: debug
   staging:
