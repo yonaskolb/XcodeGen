@@ -42,10 +42,10 @@ public struct Target {
     }
 }
 
-extension Target: NamedJSONDictionaryConvertible {
+extension Target: JSONObjectConvertible {
 
-    public init(name: String, jsonDictionary: JSONDictionary) throws {
-        self.name = name
+    public init(jsonDictionary: JSONDictionary) throws {
+        name = try jsonDictionary.json(atKeyPath: "name")
         let typeString: String = try jsonDictionary.json(atKeyPath: "type")
         if let type = PBXProductType(string: typeString) {
             self.type = type

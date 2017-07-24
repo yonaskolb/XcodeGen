@@ -10,7 +10,7 @@ configs:
   Release:
     type: release
 targets:
-  TestProject:
+  - name: TestProject
     type: application
     platform: iOS
     sources:
@@ -20,7 +20,7 @@ targets:
       PRODUCT_BUNDLE_IDENTIFIER: com.test
     dependencies:
       - target: MyFramework
-  MyFramework:
+  - name: MyFramework
     type: framework
     platform: iOS
     sources:
