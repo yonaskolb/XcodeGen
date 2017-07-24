@@ -47,14 +47,10 @@ extension Target: NamedJSONDictionaryConvertible {
     public init(name: String, jsonDictionary: JSONDictionary) throws {
         self.name = name
         let typeString: String = try jsonDictionary.json(atKeyPath: "type")
-        if let type = PBXProductType(rawValue: typeString) {
+        if let type = PBXProductType(string: typeString) {
             self.type = type
         } else {
-            switch typeString {
-            case "application": type = .application
-            case "framework": type = .framework
-            default: throw SpecError.unknownTargetType(typeString)
-            }
+            throw SpecError.unknownTargetType(typeString)
         }
         platform = try jsonDictionary.json(atKeyPath: "platform")
         buildSettings = jsonDictionary.json(atKeyPath: "buildSettings")

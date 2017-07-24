@@ -47,3 +47,16 @@ func +=( lhs: inout BuildSettings, rhs: BuildSettings?) {
     lhs.merge(rhs)
 }
 
+extension PBXProductType {
+
+    init?(string: String) {
+        if let type = PBXProductType(rawValue: string) {
+            self = type
+        } else if let type = PBXProductType(rawValue: "com.apple.product-type.\(string)") {
+            self = type
+        } else {
+            return nil
+        }
+    }
+}
+
