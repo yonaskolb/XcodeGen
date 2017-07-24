@@ -2,3 +2,4 @@ TARGETED_DEVICE_FAMILY: 3
 SDKROOT: 'appletvos'
 TVOS_DEPLOYMENT_TARGET: '10.1'
 LD_RUNPATH_SEARCH_PATHS: "$(inherited) @executable_path/Frameworks"
+ASSETCATALOG_COMPILER_APPICON_NAME: App Icon & Top Shelf Image
