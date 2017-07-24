@@ -27,6 +27,7 @@ public class PBXProjGenerator {
     var targetFileReferences: [String: String] = [:]
     var topLevelGroups: [PBXGroup] = []
     var carthageFrameworksByPlatform: [String: [String]] = [:]
+    var frameworkFiles: [String] = []
 
     var ids = 0
     var projectReference: String
@@ -90,6 +91,12 @@ public class PBXProjGenerator {
             topLevelGroups.append(carthageGroup)
         }
 
+        if !frameworkFiles.isEmpty {
+            let group = PBXGroup(reference: id(), children: frameworkFiles, sourceTree: .group, name: "Frameworks")
+            objects.append(.pbxGroup(group))
+            topLevelGroups.append(group)
+        }
+
         let mainGroup = PBXGroup(reference: id(), children: topLevelGroups.referenceList, sourceTree: .group)
         objects.append(.pbxGroup(mainGroup))
 
@@ -138,7 +145,7 @@ public class PBXProjGenerator {
         objects.append(.xcConfigurationList(buildConfigList))
 
         var dependancies: [String] = []
-        var frameworkFiles: [String] = []
+        var targetFrameworkBuildFiles: [String] = []
         var copyFiles: [String] = []
         for dependancy in target.dependencies {
             switch dependancy {
@@ -152,29 +159,38 @@ public class PBXProjGenerator {
 
                 let dependencyBuildFile = targetBuildFileReferences[dependencyTarget]!
                 //link
-                frameworkFiles.append(dependencyBuildFile)
+                targetFrameworkBuildFiles.append(dependencyBuildFile)
 
                 //embed
                 let embedSettings: [String: Any] = ["ATTRIBUTES": ["CodeSignOnCopy", "RemoveHeadersOnCopy"]]
                 let embedFile = PBXBuildFile(reference: id(), fileRef: targetFileReferences[dependencyTarget]!, settings: embedSettings)
                 objects.append(.pbxBuildFile(embedFile))
                 copyFiles.append(embedFile.reference)
-            case .system:
-                //TODO: handle system frameworks
-                break
+            case let .framework(framework):
+                let fileReference = getFileReference(path: Path(framework), inPath: spec.path)
+                let buildFile = PBXBuildFile(reference: id(), fileRef: fileReference)
+                objects.append(.pbxBuildFile(buildFile))
+                targetFrameworkBuildFiles.append(buildFile.reference)
+                if !frameworkFiles.contains(fileReference) {
+                    frameworkFiles.append(fileReference)
+                }
             case let .carthage(carthage):
                 if carthageFrameworksByPlatform[target.platform.rawValue] == nil {
                     carthageFrameworksByPlatform[target.platform.rawValue] = []
                 }
                 let carthagePath: Path = "Carthage/Build"
-                let frameworkPath = carthagePath + target.platform.rawValue + carthage
-                let fileReference = getFileReference(path: frameworkPath)
+                var platformPath = carthagePath + target.platform.rawValue
+                var frameworkPath = platformPath + carthage
+                if frameworkPath.extension == nil {
+                    frameworkPath = Path(frameworkPath.string + ".framework")
+                }
+                let fileReference = getFileReference(path: frameworkPath, inPath: platformPath)
 
                 let buildFile = PBXBuildFile(reference: id(), fileRef: fileReference)
                 objects.append(.pbxBuildFile(buildFile))
                 carthageFrameworksByPlatform[target.platform.rawValue]?.append(fileReference)
 
-                frameworkFiles.append(buildFile.reference)
+                targetFrameworkBuildFiles.append(buildFile.reference)
             }
         }
 
@@ -205,7 +221,7 @@ public class PBXProjGenerator {
         objects.append(.pbxHeadersBuildPhase(headersBuildPhase))
         buildPhases.append(headersBuildPhase.reference)
 
-        let frameworkBuildPhase = PBXFrameworksBuildPhase(reference: id(), files: Set(frameworkFiles), runOnlyForDeploymentPostprocessing: 0)
+        let frameworkBuildPhase = PBXFrameworksBuildPhase(reference: id(), files: Set(targetFrameworkBuildFiles), runOnlyForDeploymentPostprocessing: 0)
         objects.append(.pbxFrameworksBuildPhase(frameworkBuildPhase))
         buildPhases.append(frameworkBuildPhase.reference)
 
@@ -257,11 +273,11 @@ public class PBXProjGenerator {
         return buildSettings
     }
 
-    func getFileReference(path: Path) -> String {
+    func getFileReference(path: Path, inPath: Path) -> String {
         if let fileReference = fileReferencesByPath[path] {
             return fileReference
         } else {
-            let fileReference = PBXFileReference(reference: id(), sourceTree: .group, path: path.lastComponent)
+            let fileReference = PBXFileReference(reference: id(), sourceTree: .group, path: path.byRemovingBase(path: inPath).string)
             objects.append(.pbxFileReference(fileReference))
             fileReferencesByPath[path] = fileReference.reference
             return fileReference.reference
@@ -285,8 +301,8 @@ public class PBXProjGenerator {
             groups += subGroups.groups
         }
 
-        for path in filePaths {
-            let fileReference = getFileReference(path: path)
+        for filePath in filePaths {
+            let fileReference = getFileReference(path: filePath, inPath: path)
             groupChildren.append(fileReference)
         }
 

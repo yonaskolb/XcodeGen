@@ -72,7 +72,7 @@ extension Target: JSONObjectConvertible {
 public enum Dependency {
 
     case target(String)
-    case system(String)
+    case framework(String)
     case carthage(String)
 
 }
@@ -82,8 +82,8 @@ extension Dependency: JSONObjectConvertible {
     public init(jsonDictionary: JSONDictionary) throws {
         if let target: String = jsonDictionary.json(atKeyPath: "target") {
             self = .target(target)
-        } else if let system: String = jsonDictionary.json(atKeyPath: "system") {
-            self = .system(system)
+        } else if let framework: String = jsonDictionary.json(atKeyPath: "framework") {
+            self = .framework(framework)
         } else if let carthage: String = jsonDictionary.json(atKeyPath: "carthage") {
             self = .carthage(carthage)
         } else {
