@@ -229,6 +229,32 @@ public class PBXProjGenerator {
         objects.append(.pbxCopyFilesBuildPhase(copyFilesPhase))
         buildPhases.append(copyFilesPhase.reference)
 
+
+        if target.type == .application {
+            func getCarthageFrameworks(target: Target) -> [String] {
+                var frameworks: [String] = []
+                for dependency in target.dependencies {
+                    switch dependency {
+                    case .carthage(let framework): frameworks.append(framework)
+                    case .target(let targetName):
+                        if let target = spec.targets.first(where: {$0.name == targetName}) {
+                            frameworks += getCarthageFrameworks(target: target)
+                        }
+                    default: break
+                    }
+                }
+                return frameworks
+            }
+
+            let carthageFrameworks = Set(getCarthageFrameworks(target: target))
+            if !carthageFrameworks.isEmpty {
+                let inputPaths = carthageFrameworks.map { "$(SRCROOT)/Carthage/Build/\(target.platform)/\($0)\($0.contains(".") ? "" : ".framework")" }
+                let carthageScript = PBXShellScriptBuildPhase(reference: id(), files: [], name: "Carthage", inputPaths: Set(inputPaths), outputPaths: [], shellPath: "/bin/sh", shellScript: "/usr/local/bin/carthage copy-frameworks\n")
+                objects.append(.pbxShellScriptBuildPhase(carthageScript))
+                buildPhases.append(carthageScript.reference)
+            }
+        }
+
         let nativeTarget = PBXNativeTarget(
             reference: targetNativeReferences[target.name]!,
             buildConfigurationList: buildConfigList.reference,
