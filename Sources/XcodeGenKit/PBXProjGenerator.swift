@@ -224,11 +224,12 @@ public class PBXProjGenerator {
         var filePaths = try path.children().filter { $0.isFile || $0.extension != nil && $0.extension != "lproj" }
         let localisedDirectories = try path.children().filter { $0.extension == "lproj" }
         var groupChildren: [String] = []
+        var allFilePaths: [Path] = filePaths
 
         let childGroupReference = directories.map { _ in id() }
         for (reference, path) in zip(childGroupReference,directories) {
             let subGroup = try getGroup(path: path, groupReference: reference, depth: depth + 1)
-            filePaths += subGroup.filePaths
+            allFilePaths += subGroup.filePaths
             groupChildren.append(subGroup.group.reference)
         }
 
@@ -261,7 +262,7 @@ public class PBXProjGenerator {
         let groupPath: String = depth == 0 ? path.string.replacingOccurrences(of: "\(spec.path.parent().string)/", with: "") : path.lastComponent
         let group = PBXGroup(reference: groupReference, children: Set(groupChildren), sourceTree: .group, name: path.lastComponent, path: groupPath)
         objects.append(.pbxGroup(group))
-        return (filePaths, group)
+        return (allFilePaths, group)
     }
 
 }
