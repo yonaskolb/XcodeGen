@@ -157,3 +157,23 @@ targets:
       Debug: configs/debug.xcconfig
       Release: configs/release.xcconfig
 ```
+
+---
+
+## Attributions
+
+This tool is powered by:
+
+- [xcodeproj](https://github.com/carambalabs/xcodeproj)
+- [JSONUtilities](https://github.com/yonaskolb/JSONUtilities)
+- [Spectre](https://github.com/kylef/Spectre)
+- [PathKit](https://github.com/kylef/PathKit)
+- [Commander](https://github.com/kylef/Commander)
+- [Yams](https://github.com/jpsim/Yams)
+
+## Contributions
+Pull requests and issues are welcome
+
+## License
+
+SwagGen is licensed under the MIT license. See [LICENSE](LICENSE) for more info.
