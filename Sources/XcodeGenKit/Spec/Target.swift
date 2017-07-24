@@ -66,27 +66,23 @@ extension Target: NamedJSONDictionaryConvertible {
     }
 }
 
-public struct Dependency {
+public enum Dependency {
 
-    public var name: String
-    public var type: DependancyType
+    case target(String)
+    case system(String)
 
-    public enum DependancyType: String {
-        case target
-        case system
-    }
-
-    public init(name: String, type: DependancyType) {
-        self.name = name
-        self.type = type
-    }
 }
 
 extension Dependency: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
-        name = try jsonDictionary.json(atKeyPath: "name")
-        type = try jsonDictionary.json(atKeyPath: "type")
+        if let target: String = jsonDictionary.json(atKeyPath: "target") {
+            self = .target(target)
+        } else if let system: String = jsonDictionary.json(atKeyPath: "system") {
+            self = .system(system)
+        } else {
+            throw SpecError.invalidDependency(jsonDictionary)
+        }
     }
 }
 

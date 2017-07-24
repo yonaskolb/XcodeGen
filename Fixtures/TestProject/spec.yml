@@ -19,8 +19,7 @@ targets:
       INFOPLIST_FILE: TestProject/Info.plist
       PRODUCT_BUNDLE_IDENTIFIER: com.test
     dependencies:
-      - name: MyFramework
-        type: target
+      - target: MyFramework
   MyFramework:
     type: framework
     platform: iOS

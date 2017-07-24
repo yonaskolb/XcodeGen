@@ -10,4 +10,5 @@ import Foundation
 
 enum SpecError: Error {
     case unknownTargetType(String)
+    case invalidDependency([String: Any])
 }

@@ -123,22 +123,22 @@ public class PBXProjGenerator {
         var frameworkFiles: [String] = []
         var copyFiles: [String] = []
         for dependancy in target.dependencies {
-            switch dependancy.type {
-            case .target:
-                let targetProxy = PBXContainerItemProxy(reference: id(), containerPortal: projectReference, remoteGlobalIDString: targetNativeReferences[dependancy.name]!, proxyType: .nativeTarget, remoteInfo: dependancy.name)
-                let targetDependancy = PBXTargetDependency(reference: id(), target: targetNativeReferences[dependancy.name]!, targetProxy: targetProxy.reference )
+            switch dependancy {
+            case let .target(dependencyTarget):
+                let targetProxy = PBXContainerItemProxy(reference: id(), containerPortal: projectReference, remoteGlobalIDString: targetNativeReferences[dependencyTarget]!, proxyType: .nativeTarget, remoteInfo: dependencyTarget)
+                let targetDependancy = PBXTargetDependency(reference: id(), target: targetNativeReferences[dependencyTarget]!, targetProxy: targetProxy.reference )
 
                 objects.append(.pbxContainerItemProxy(targetProxy))
                 objects.append(.pbxTargetDependency(targetDependancy))
                 dependancies.append(targetDependancy.reference)
 
-                let dependencyBuildFile = targetBuildFileReferences[dependancy.name]!
+                let dependencyBuildFile = targetBuildFileReferences[dependencyTarget]!
                 //link
                 frameworkFiles.append(dependencyBuildFile)
 
                 //embed
                 let embedSettings: [String: Any] = ["ATTRIBUTES": ["CodeSignOnCopy", "RemoveHeadersOnCopy"]]
-                let embedFile = PBXBuildFile(reference: id(), fileRef: targetFileReferences[dependancy.name]!, settings: embedSettings)
+                let embedFile = PBXBuildFile(reference: id(), fileRef: targetFileReferences[dependencyTarget]!, settings: embedSettings)
                 objects.append(.pbxBuildFile(embedFile))
                 copyFiles.append(embedFile.reference)
             case .system:

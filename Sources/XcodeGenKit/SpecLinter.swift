@@ -22,8 +22,8 @@ public struct SpecLinter {
 
         for target in spec.targets {
             for dependency in target.dependencies {
-                if dependency.type == .target && !spec.targets.contains(where: { $0.name == dependency.name}) {
-                    errors.append(.invalidTargetDependency(dependency.name))
+                if case .target(let target) = dependency, !spec.targets.contains(where: { $0.name == target}) {
+                    errors.append(.invalidTargetDependency(target))
                 }
             }
         }
