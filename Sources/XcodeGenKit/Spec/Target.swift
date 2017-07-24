@@ -54,7 +54,11 @@ extension Target: NamedJSONDictionaryConvertible {
         }
         platform = try jsonDictionary.json(atKeyPath: "platform")
         buildSettings = jsonDictionary.json(atKeyPath: "buildSettings")
-        sources = jsonDictionary.json(atKeyPath: "sources") ?? []
+        if let source: String = jsonDictionary.json(atKeyPath: "sources") {
+            sources = [source]
+        } else {
+            sources = jsonDictionary.json(atKeyPath: "sources") ?? []
+        }
         sourceExludes = jsonDictionary.json(atKeyPath: "sourceExludes") ?? []
         dependencies = jsonDictionary.json(atKeyPath: "dependencies") ?? []
         prebuildScripts = jsonDictionary.json(atKeyPath: "prebuildScripts") ?? []
