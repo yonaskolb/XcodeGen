@@ -204,8 +204,8 @@
 			);
 			mainGroup = OBJECT_53;
 			targets = (
-				OBJECT_8 /* MyFramework */,
 				OBJECT_5 /* TestProject */,
+				OBJECT_8 /* MyFramework */,
 			);
 		};
 /* End PBXProject section */

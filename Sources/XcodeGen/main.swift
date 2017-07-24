@@ -51,6 +51,7 @@ func generate(spec: String, project: String?) {
         let projectGenerator = ProjectGenerator(spec: spec)
         let project = try projectGenerator.generate()
         print("Generated project")
+        print("Writing project")
         try project.write(path: projectPath, override: true)
         print("Wrote project to file \(projectPath.string)")
     } catch {

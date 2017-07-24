@@ -67,9 +67,7 @@ public class PBXProjGenerator {
             targetBuildFileReferences[target.name] = buildFile.reference
         }
 
-        for target in spec.targets {
-            try generateTarget(target)
-        }
+        let targets = try spec.targets.map(generateTarget)
 
         let productGroup = PBXGroup(reference: id(), children: Set(targetFileReferences.values), sourceTree: .group, name: "Products")
         objects.append(.pbxGroup(productGroup))
@@ -79,7 +77,7 @@ public class PBXProjGenerator {
         objects.append(.pbxGroup(mainGroup))
 
         let knownRegions: [String] = ["en", "Base"]
-        let pbxProjectRoot = PBXProject(reference: projectReference, buildConfigurationList: buildConfigList.reference, compatibilityVersion: "Xcode 3.2", mainGroup: mainGroup.reference, developmentRegion: "English", knownRegions: knownRegions, targets: Array(targetNativeReferences.values))
+        let pbxProjectRoot = PBXProject(reference: projectReference, buildConfigurationList: buildConfigList.reference, compatibilityVersion: "Xcode 3.2", mainGroup: mainGroup.reference, developmentRegion: "English", knownRegions: knownRegions, targets: targets.referenceList)
         objects.append(.pbxProject(pbxProjectRoot))
 
         return PBXProj(archiveVersion: 1, objectVersion: 46, rootObject: projectReference, objects: objects)
@@ -102,7 +100,7 @@ public class PBXProjGenerator {
         return SourceFile(path: path, fileReference: fileReference, buildFile: buildFile)
     }
 
-    func generateTarget(_ target: Target) throws {
+    func generateTarget(_ target: Target) throws -> PBXNativeTarget  {
         let source = spec.path.parent() + target.sources.first!
         //TODO: handle multiple sources
         //TODO: handle targets with shared sources
@@ -190,6 +188,7 @@ public class PBXProjGenerator {
             productReference: fileReference,
             productType: target.type)
         objects.append(.pbxNativeTarget(nativeTarget))
+        return nativeTarget
     }
 
     func getBuildPhaseForPath(_ path: Path) -> BuildPhase? {
