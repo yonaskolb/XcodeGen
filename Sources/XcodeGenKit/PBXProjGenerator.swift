@@ -30,6 +30,10 @@ public class PBXProjGenerator {
     var ids = 0
     var projectReference: String
 
+    var basePath: Path {
+        return spec.path.parent()
+    }
+
     public init(spec: Spec) {
         self.spec = spec
         projectReference = ""
@@ -101,17 +105,23 @@ public class PBXProjGenerator {
     }
 
     func generateTarget(_ target: Target) throws -> PBXNativeTarget  {
-        let source = spec.path.parent() + target.sources.first!
+        let source = basePath + target.sources.first!
         //TODO: handle multiple sources
         //TODO: handle targets with shared sources
 
         let sourceGroup = try getGroup(path: source, groupReference: id())
         topLevelGroups.append(sourceGroup.group)
         let sourceFiles = sourceGroup.filePaths.map(generateSourceFile)
+        //TODO: don't generate build files for files that won't be built
 
         let configs: [XCBuildConfiguration] = try spec.configs.map { config in
             let buildSettings = try getTargetBuildSettings(config: config, target: target)
-            return XCBuildConfiguration(reference: id(), name: config.name, baseConfigurationReference: nil, buildSettings: buildSettings)
+            var baseConfigurationReference: String?
+            if let configPath = target.configs[config.name] {
+                let path = basePath + configPath
+                baseConfigurationReference = fileReferencesByPath[path]
+            }
+            return XCBuildConfiguration(reference: id(), name: config.name, baseConfigurationReference: baseConfigurationReference, buildSettings: buildSettings)
         }
         objects += configs.map { .xcBuildConfiguration($0) }
         let buildConfigList = XCConfigurationList(reference: id(), buildConfigurations: configs.referenceSet, defaultConfigurationName: "")
@@ -263,7 +273,7 @@ public class PBXProjGenerator {
             }
         }
 
-        let groupPath: String = depth == 0 ? path.string.replacingOccurrences(of: "\(spec.path.parent().string)/", with: "") : path.lastComponent
+        let groupPath: String = depth == 0 ? path.byRemovingBase(path: basePath).string : path.lastComponent
         let group = PBXGroup(reference: groupReference, children: Set(groupChildren), sourceTree: .group, name: path.lastComponent, path: groupPath)
         objects.append(.pbxGroup(group))
         return (allFilePaths, group)

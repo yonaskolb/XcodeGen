@@ -20,6 +20,7 @@ public struct Target {
     public var dependencies: [Dependency]
     public var prebuildScripts: [String]
     public var postbuildScripts: [String]
+    public var configs: [String: String]
 
     public var filename: String {
         var name = self.name
@@ -29,11 +30,12 @@ public struct Target {
         return name
     }
 
-    public init(name: String, type: PBXProductType, platform: Platform, buildSettings: TargetBuildSettings?, sources: [String] = [], sourceExludes: [String] = [], dependencies: [Dependency] = [], prebuildScripts: [String] = [], postbuildScripts: [String]) {
+    public init(name: String, type: PBXProductType, platform: Platform, buildSettings: TargetBuildSettings?, configs: [String: String] = [:], sources: [String] = [], sourceExludes: [String] = [], dependencies: [Dependency] = [], prebuildScripts: [String] = [], postbuildScripts: [String]) {
         self.name = name
         self.type = type
         self.platform = platform
         self.buildSettings = buildSettings
+        self.configs = configs
         self.sources = sources
         self.sourceExludes = sourceExludes
         self.dependencies = dependencies
@@ -54,6 +56,7 @@ extension Target: JSONObjectConvertible {
         }
         platform = try jsonDictionary.json(atKeyPath: "platform")
         buildSettings = jsonDictionary.json(atKeyPath: "buildSettings")
+        configs = jsonDictionary.json(atKeyPath: "configs") ?? [:]
         if let source: String = jsonDictionary.json(atKeyPath: "sources") {
             sources = [source]
         } else {
