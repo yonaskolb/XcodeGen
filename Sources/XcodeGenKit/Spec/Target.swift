@@ -73,6 +73,7 @@ public enum Dependency {
 
     case target(String)
     case system(String)
+    case carthage(String)
 
 }
 
@@ -83,6 +84,8 @@ extension Dependency: JSONObjectConvertible {
             self = .target(target)
         } else if let system: String = jsonDictionary.json(atKeyPath: "system") {
             self = .system(system)
+        } else if let carthage: String = jsonDictionary.json(atKeyPath: "carthage") {
+            self = .carthage(carthage)
         } else {
             throw SpecError.invalidDependency(jsonDictionary)
         }

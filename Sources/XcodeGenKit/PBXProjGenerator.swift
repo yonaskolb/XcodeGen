@@ -26,6 +26,7 @@ public class PBXProjGenerator {
     var targetBuildFileReferences: [String: String] = [:]
     var targetFileReferences: [String: String] = [:]
     var topLevelGroups: [PBXGroup] = []
+    var carthageFrameworksByPlatform: [String: [String]] = [:]
 
     var ids = 0
     var projectReference: String
@@ -76,6 +77,18 @@ public class PBXProjGenerator {
         let productGroup = PBXGroup(reference: id(), children: Array(targetFileReferences.values), sourceTree: .group, name: "Products")
         objects.append(.pbxGroup(productGroup))
         topLevelGroups.append(productGroup)
+
+        if !carthageFrameworksByPlatform.isEmpty {
+            var platforms: [PBXGroup] = []
+            for (platform, fileReferences) in carthageFrameworksByPlatform {
+                let platformGroup = PBXGroup(reference: id(), children: fileReferences, sourceTree: .group, name: platform, path: platform)
+                objects.append(.pbxGroup(platformGroup))
+                platforms.append(platformGroup)
+            }
+            let carthageGroup = PBXGroup(reference: id(), children: platforms.referenceList, sourceTree: .group, name: "Carthage", path: "Carthage/Build")
+            objects.append(.pbxGroup(carthageGroup))
+            topLevelGroups.append(carthageGroup)
+        }
 
         let mainGroup = PBXGroup(reference: id(), children: topLevelGroups.referenceList, sourceTree: .group)
         objects.append(.pbxGroup(mainGroup))
@@ -149,6 +162,19 @@ public class PBXProjGenerator {
             case .system:
                 //TODO: handle system frameworks
                 break
+            case let .carthage(carthage):
+                if carthageFrameworksByPlatform[target.platform.rawValue] == nil {
+                    carthageFrameworksByPlatform[target.platform.rawValue] = []
+                }
+                let carthagePath: Path = "Carthage/Build"
+                let frameworkPath = carthagePath + target.platform.rawValue + carthage
+                let fileReference = getFileReference(path: frameworkPath)
+
+                let buildFile = PBXBuildFile(reference: id(), fileRef: fileReference)
+                objects.append(.pbxBuildFile(buildFile))
+                carthageFrameworksByPlatform[target.platform.rawValue]?.append(fileReference)
+
+                frameworkFiles.append(buildFile.reference)
             }
         }
 
@@ -231,6 +257,17 @@ public class PBXProjGenerator {
         return buildSettings
     }
 
+    func getFileReference(path: Path) -> String {
+        if let fileReference = fileReferencesByPath[path] {
+            return fileReference
+        } else {
+            let fileReference = PBXFileReference(reference: id(), sourceTree: .group, path: path.lastComponent)
+            objects.append(.pbxFileReference(fileReference))
+            fileReferencesByPath[path] = fileReference.reference
+            return fileReference.reference
+        }
+    }
+
     func getGroups(path: Path, groupReference: String, depth: Int = 0) throws -> (filePaths: [Path], groups: [PBXGroup]) {
 
         let directories = try path.children().filter { $0.isDirectory && $0.extension == nil && $0.extension != "lproj" }
@@ -249,14 +286,8 @@ public class PBXProjGenerator {
         }
 
         for path in filePaths {
-            if let fileReference = fileReferencesByPath[path] {
-                groupChildren.append(fileReference)
-            } else {
-                let fileReference = PBXFileReference(reference: id(), sourceTree: .group, path: path.lastComponent)
-                objects.append(.pbxFileReference(fileReference))
-                fileReferencesByPath[path] = fileReference.reference
-                groupChildren.append(fileReference.reference)
-            }
+            let fileReference = getFileReference(path: path)
+            groupChildren.append(fileReference)
         }
 
         for localisedDirectory in localisedDirectories {
