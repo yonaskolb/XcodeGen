@@ -192,10 +192,14 @@ public class PBXProjGenerator {
     }
 
     func getBuildPhaseForPath(_ path: Path) -> BuildPhase? {
+        if path.lastComponent == "Info.plist" {
+            return nil
+        }
         if let fileExtension = path.extension {
             switch fileExtension {
             case "swift", "m": return .sources
             case "h", "hh", "hpp", "ipp", "tpp", "hxx", "def": return .headers
+            case "xcconfig": return nil
             default: return .resources
             }
         }
