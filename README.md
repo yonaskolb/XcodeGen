@@ -145,7 +145,7 @@ targets:
 ```
 
 #### dependencies
-Species the dependencies for the target. This can be another target, a path to a framework, or an sdk framework (INCOMPLETE)
+Species the dependencies for the target. This can be another target, a path to a framework (INCOMPLETE), or an sdk framework (INCOMPLETE)
 ```yaml
 targets:
   - name: MyTarget
