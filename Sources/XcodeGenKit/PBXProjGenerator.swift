@@ -20,7 +20,7 @@ public class PBXProjGenerator {
 
     var objects: [PBXObject] = []
     var fileReferencesByPath: [Path: String] = [:]
-    var groupsByPath: [String: String] = [:]
+    var groupsByPath: [String: PBXGroup] = [:]
 
     var targetNativeReferences: [String: String] = [:]
     var targetBuildFileReferences: [String: String] = [:]
@@ -109,9 +109,8 @@ public class PBXProjGenerator {
         //TODO: handle multiple sources
         //TODO: handle targets with shared sources
 
-        let sourceGroup = try getGroup(path: source, groupReference: id())
-        topLevelGroups.append(sourceGroup.group)
-        let sourceFiles = sourceGroup.filePaths.map(generateSourceFile)
+        let sourceGroups = try getGroups(path: source, groupReference: id())
+        let sourceFiles = sourceGroups.filePaths.map(generateSourceFile)
         //TODO: don't generate build files for files that won't be built
 
         let configs: [XCBuildConfiguration] = try spec.configs.map { config in
@@ -232,19 +231,21 @@ public class PBXProjGenerator {
         return buildSettings
     }
 
-    func getGroup(path: Path, groupReference: String, depth: Int = 0) throws -> (filePaths: [Path], group: PBXGroup) {
+    func getGroups(path: Path, groupReference: String, depth: Int = 0) throws -> (filePaths: [Path], groups: [PBXGroup]) {
 
         let directories = try path.children().filter { $0.isDirectory && $0.extension == nil && $0.extension != "lproj" }
         var filePaths = try path.children().filter { $0.isFile || $0.extension != nil && $0.extension != "lproj" }
         let localisedDirectories = try path.children().filter { $0.extension == "lproj" }
         var groupChildren: [String] = []
         var allFilePaths: [Path] = filePaths
+        var groups: [PBXGroup] = []
 
         let childGroupReference = directories.map { _ in id() }
         for (reference, path) in zip(childGroupReference,directories) {
-            let subGroup = try getGroup(path: path, groupReference: reference, depth: depth + 1)
-            allFilePaths += subGroup.filePaths
-            groupChildren.append(subGroup.group.reference)
+            let subGroups = try getGroups(path: path, groupReference: reference, depth: depth + 1)
+            allFilePaths += subGroups.filePaths
+            groupChildren.append(subGroups.groups.first!.reference)
+            groups += subGroups.groups
         }
 
         for path in filePaths {
@@ -274,9 +275,19 @@ public class PBXProjGenerator {
         }
 
         let groupPath: String = depth == 0 ? path.byRemovingBase(path: basePath).string : path.lastComponent
-        let group = PBXGroup(reference: groupReference, children: Set(groupChildren), sourceTree: .group, name: path.lastComponent, path: groupPath)
-        objects.append(.pbxGroup(group))
-        return (allFilePaths, group)
+        let group: PBXGroup
+        if let cachedGroup = groupsByPath[groupPath] {
+            group = cachedGroup
+        } else {
+            group = PBXGroup(reference: groupReference, children: Set(groupChildren), sourceTree: .group, name: path.lastComponent, path: groupPath)
+            objects.append(.pbxGroup(group))
+            if depth == 0 {
+                topLevelGroups.append(group)
+            }
+            groupsByPath[groupPath] = group
+        }
+        groups.insert(group, at: 0)
+        return (allFilePaths, groups)
     }
 
 }

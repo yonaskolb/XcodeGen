@@ -11,11 +11,11 @@
 		OBJECT_10 /* MyFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = OBJECT_9 /* MyFramework.framework */; };
 		OBJECT_20 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJECT_12 /* AppDelegate.swift */; settings = {}; };
 		OBJECT_21 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = OBJECT_13 /* Assets.xcassets */; settings = {}; };
-		OBJECT_22 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = OBJECT_14 /* Info.plist */; settings = {}; };
+		OBJECT_22 = {isa = PBXBuildFile; fileRef = OBJECT_14 /* Info.plist */; settings = {}; };
 		OBJECT_23 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJECT_15 /* ViewController.swift */; settings = {}; };
 		OBJECT_29 = {isa = PBXBuildFile; fileRef = OBJECT_9 /* MyFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		OBJECT_39 /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = OBJECT_36 /* FrameworkFile.swift */; settings = {}; };
-		OBJECT_40 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = OBJECT_37 /* Info.plist */; settings = {}; };
+		OBJECT_40 = {isa = PBXBuildFile; fileRef = OBJECT_37 /* Info.plist */; settings = {}; };
 		OBJECT_41 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = OBJECT_38 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		OBJECT_7 = {isa = PBXBuildFile; fileRef = OBJECT_6 /* TestProject.app */; };
 /* End PBXBuildFile section */
@@ -214,7 +214,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				OBJECT_21,
-				OBJECT_22,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -222,7 +221,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				OBJECT_40,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
