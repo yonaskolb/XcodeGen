@@ -7,7 +7,7 @@
 A command line tool that generates your Xcode project from a YAML project spec and your folder structure. 
 This allows for easy configuration which is git friendly, and means your project structure represents exacty what's on disk. The project can be re-generated on demand which means you can remove your xcode project from git and say goodbye to .xcodeproj merge conflicts!
 
-Given the simple project spec file:
+Given a simple project spec file:
 ```yaml
 configs:
   debug:
@@ -38,7 +38,7 @@ Make sure Xcode 8 is installed and run the following commands in the same direct
 ```
 swift build
 ```
-This compiles a release build via the Swift Package Manager. You can find the output in the build directory which by default is at `.build/debug/XcodeGen`. You can simply run it with:
+This compiles a build via the Swift Package Manager. You can find the output in the build directory which by default is at `.build/debug/XcodeGen`. You can simply run it with:
 
 ```
 .build/debug/XcodeGen ..arguments
@@ -61,7 +61,7 @@ Use `XcodeGen -help` to see the list of options:
 # XcodeGen project spec
 ## configs
 Configs specify the configurations in your project. 
-Each config can specify a `type` of either `debug` or `release` which will then apply the default build settings for those types. A config can also specify it's own `buildSettings`
+Each config can specify a `type` of either `debug` or `release` which will then apply the default build settings for those types. A config can also specify its own list of `buildSettings`
 ```yaml
 configs:
   Debug:
@@ -108,7 +108,7 @@ TSpecifies the platform for the target. This will provide default build settings
 - watchOS
 
 #### sources
-Specifies the source directories for the target. This can either be a single path or a list of paths
+Specifies the source directories for the target. This can either be a single path or a list of paths. Applicable source files, resources, headers, and lproj files will be parsed appropriately
 ```yaml
 targets:
   - name: MyTarget
@@ -162,8 +162,8 @@ Specifies `.xcconfig` files for each configuration for the target.
 targets:
   - name: MyTarget
     configs:
-      Debug: configs/debug.xcconfig
-      Release: configs/release.xcconfig
+      Debug: config_files/debug.xcconfig
+      Release: config_files/release.xcconfig
 ```
 
 ---
