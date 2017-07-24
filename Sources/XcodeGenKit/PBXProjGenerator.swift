@@ -73,11 +73,11 @@ public class PBXProjGenerator {
 
         let targets = try spec.targets.map(generateTarget)
 
-        let productGroup = PBXGroup(reference: id(), children: Set(targetFileReferences.values), sourceTree: .group, name: "Products")
+        let productGroup = PBXGroup(reference: id(), children: Array(targetFileReferences.values), sourceTree: .group, name: "Products")
         objects.append(.pbxGroup(productGroup))
         topLevelGroups.append(productGroup)
 
-        let mainGroup = PBXGroup(reference: id(), children: topLevelGroups.referenceSet, sourceTree: .group)
+        let mainGroup = PBXGroup(reference: id(), children: topLevelGroups.referenceList, sourceTree: .group)
         objects.append(.pbxGroup(mainGroup))
 
         let knownRegions: [String] = ["en", "Base"]
@@ -279,7 +279,7 @@ public class PBXProjGenerator {
         if let cachedGroup = groupsByPath[groupPath] {
             group = cachedGroup
         } else {
-            group = PBXGroup(reference: groupReference, children: Set(groupChildren), sourceTree: .group, name: path.lastComponent, path: groupPath)
+            group = PBXGroup(reference: groupReference, children: groupChildren, sourceTree: .group, name: path.lastComponent, path: groupPath)
             objects.append(.pbxGroup(group))
             if depth == 0 {
                 topLevelGroups.append(group)

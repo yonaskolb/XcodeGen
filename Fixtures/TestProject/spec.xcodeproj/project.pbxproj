@@ -88,12 +88,12 @@
 		OBJECT_11 /* TestProject */ = {
 			isa = PBXGroup;
 			children = (
-				OBJECT_19 /* Main.storyboard */,
-				OBJECT_13 /* Assets.xcassets */,
-				OBJECT_15 /* ViewController.swift */,
-				OBJECT_14 /* Info.plist */,
 				OBJECT_12 /* AppDelegate.swift */,
+				OBJECT_13 /* Assets.xcassets */,
+				OBJECT_14 /* Info.plist */,
+				OBJECT_15 /* ViewController.swift */,
 				OBJECT_17 /* LaunchScreen.storyboard */,
+				OBJECT_19 /* Main.storyboard */,
 			);
 			name = TestProject;
 			path = TestProject;
@@ -102,9 +102,9 @@
 		OBJECT_35 /* MyFramework */ = {
 			isa = PBXGroup;
 			children = (
-				OBJECT_38 /* MyFramework.h */,
 				OBJECT_36 /* FrameworkFile.swift */,
 				OBJECT_37 /* Info.plist */,
+				OBJECT_38 /* MyFramework.h */,
 			);
 			name = MyFramework;
 			path = MyFramework;
@@ -122,8 +122,8 @@
 		OBJECT_51 = {
 			isa = PBXGroup;
 			children = (
-				OBJECT_35 /* MyFramework */,
 				OBJECT_11 /* TestProject */,
+				OBJECT_35 /* MyFramework */,
 				OBJECT_50 /* Products */,
 			);
 			sourceTree = "<group>";
