@@ -6,7 +6,7 @@
 A command line tool that generates an Xcode project from a YAML project spec
 
 Given the following spec file:
-```
+```yaml
 targets
   - name: MyApp
     type: application
@@ -55,7 +55,7 @@ Use `XcodeGen -help` to see the list of options:
 ## configs
 Configs specify the configurations in your project. 
 Each config can specify a `type` of either `debug` or `release` which will then apply the default build settings for those types. A config can also specify it's own `buildSettings`
-```
+```yaml
 configs:
   Debug:
     type: debug
@@ -67,7 +67,7 @@ configs:
 
 ## targets
 This is list of targets
-```
+```yaml
 targets:
   - name: MyTarget
 ```
@@ -101,7 +101,7 @@ TSpecifies the platform for the target. This will provide default build settings
 
 #### sources
 Specifies the source directories for the target. This can either be a single path or a list of paths
-```
+```yaml
 targets:
   - name: MyTarget
     sources: MyTargetSource
@@ -113,7 +113,7 @@ targets:
 
 #### buildSettings
 Species the build settings for the target. This can either be a simple map of build settings, or they can be broken down into specific configurations. If supplying configuration specific settings, a `$base` configuration may be used to provide default build settings that apply accross all configurations
-```
+```yaml
 configs
   test:
     type: debug
@@ -138,7 +138,7 @@ targets:
 
 #### dependencies
 Species the dependencies for the target. This can be another target, a path to a framework, or an sdk framework (INCOMPLETE)
-```
+```yaml
 targets:
   - name: MyTarget
     dependencies:
@@ -150,7 +150,7 @@ targets:
 
 #### configs
 Specifies `.xcconfig` files for each configuration for the target.
-```
+```yaml
 targets:
   - name: MyTarget
     configs:
