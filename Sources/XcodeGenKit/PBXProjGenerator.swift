@@ -20,7 +20,7 @@ public class PBXProjGenerator {
 
     var objects: [PBXObject] = []
     var fileReferencesByPath: [Path: String] = [:]
-    var groupsByPath: [String: PBXGroup] = [:]
+    var groupsByPath: [Path: PBXGroup] = [:]
 
     var targetNativeReferences: [String: String] = [:]
     var targetBuildFileReferences: [String: String] = [:]
@@ -110,8 +110,6 @@ public class PBXProjGenerator {
         //TODO: handle targets with shared sources
 
         let sourceGroups = try getGroups(path: source, groupReference: id())
-        let sourceFiles = sourceGroups.filePaths.map(generateSourceFile)
-        //TODO: don't generate build files for files that won't be built
 
         let configs: [XCBuildConfiguration] = try spec.configs.map { config in
             let buildSettings = try getTargetBuildSettings(config: config, target: target)
@@ -162,8 +160,10 @@ public class PBXProjGenerator {
             objects.append(.pbxBuildFile(buildFile))
         }
 
+        //TODO: don't generate build files for files that won't be built
+
         func getBuildFilesForPhase(_ buildPhase: BuildPhase) -> Set<String> {
-            let files = sourceFiles.filter { getBuildPhaseForPath($0.path) == buildPhase }
+            let files = sourceGroups.filePaths.filter { getBuildPhaseForPath($0) == buildPhase }.map(generateSourceFile)
             return Set(files.map { $0.buildFile.reference })
         }
 
@@ -276,7 +276,7 @@ public class PBXProjGenerator {
 
         let groupPath: String = depth == 0 ? path.byRemovingBase(path: basePath).string : path.lastComponent
         let group: PBXGroup
-        if let cachedGroup = groupsByPath[groupPath] {
+        if let cachedGroup = groupsByPath[path] {
             group = cachedGroup
         } else {
             group = PBXGroup(reference: groupReference, children: groupChildren, sourceTree: .group, name: path.lastComponent, path: groupPath)
@@ -284,7 +284,7 @@ public class PBXProjGenerator {
             if depth == 0 {
                 topLevelGroups.append(group)
             }
-            groupsByPath[groupPath] = group
+            groupsByPath[path] = group
         }
         groups.insert(group, at: 0)
         return (allFilePaths, groups)
