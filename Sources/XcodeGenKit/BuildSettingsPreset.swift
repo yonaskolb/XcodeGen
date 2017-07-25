@@ -34,8 +34,8 @@ enum BuildSettingsPreset {
             return group
         }
         let settingsPath = Path(#file).parent().parent().parent() + "SettingPresets/\(path).yml"
-        guard settingsPath.exists else { return nil }
-        let buildSettings = try BuildSettings(path: settingsPath)
+        guard settingsPath.exists,
+        let buildSettings = try? BuildSettings(path: settingsPath) else { return nil }
         BuildSettingsPreset.buildSettings[path] = buildSettings
         return buildSettings
     }
