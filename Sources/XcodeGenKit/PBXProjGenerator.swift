@@ -17,6 +17,7 @@ import Yams
 public class PBXProjGenerator {
 
     let spec: Spec
+    let basePath: Path
 
     var objects: [PBXObject] = []
     var fileReferencesByPath: [Path: String] = [:]
@@ -32,12 +33,9 @@ public class PBXProjGenerator {
     var ids = 0
     var projectReference: String
 
-    var basePath: Path {
-        return spec.path.parent()
-    }
-
-    public init(spec: Spec) {
+    public init(spec: Spec, path: Path) {
         self.spec = spec
+        self.basePath = path
         projectReference = ""
         projectReference = id()
     }
@@ -167,7 +165,7 @@ public class PBXProjGenerator {
                 objects.append(.pbxBuildFile(embedFile))
                 copyFiles.append(embedFile.reference)
             case let .framework(framework):
-                let fileReference = getFileReference(path: Path(framework), inPath: spec.path)
+                let fileReference = getFileReference(path: Path(framework), inPath: basePath)
                 let buildFile = PBXBuildFile(reference: id(), fileRef: fileReference)
                 objects.append(.pbxBuildFile(buildFile))
                 targetFrameworkBuildFiles.append(buildFile.reference)

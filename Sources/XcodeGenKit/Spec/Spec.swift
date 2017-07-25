@@ -12,6 +12,23 @@ import JSONUtilities
 import PathKit
 import Yams
 
+public struct Spec {
+
+    public var name: String
+    public var targets: [Target]
+    public var settingGroups: [BuildSettingGroup]
+    public var configs: [Config]
+    public var schemes: [Scheme]
+
+    public init(name: String, targets: [Target] = [], configs: [Config] = [], settingGroups: [BuildSettingGroup] = [], schemes: [Scheme] = []) {
+        self.name = name
+        self.targets = targets
+        self.configs = configs
+        self.settingGroups = settingGroups
+        self.schemes = schemes
+    }
+}
+
 extension Spec {
 
     public init(path: Path) throws {
@@ -23,35 +40,14 @@ extension Spec {
         let yaml = try Yams.load(yaml: string)
         let json = yaml as! JSONDictionary
 
-        try self.init(path: path, jsonDictionary: json)
+        try self.init(jsonDictionary: json)
     }
 
-    public init(path: Path, jsonDictionary: JSONDictionary) throws {
-        self.path = path
+    public init(jsonDictionary: JSONDictionary) throws {
         name = try jsonDictionary.json(atKeyPath: "name")
         settingGroups = try jsonDictionary.json(atKeyPath: "settingGroups")
         configs = try jsonDictionary.json(atKeyPath: "configs")
         targets = try jsonDictionary.json(atKeyPath: "targets")
         schemes = try jsonDictionary.json(atKeyPath: "schemes")
-    }
-}
-
-
-public struct Spec {
-
-    public var path: Path
-    public var name: String
-    public var targets: [Target]
-    public var settingGroups: [BuildSettingGroup]
-    public var configs: [Config]
-    public var schemes: [Scheme]
-
-    public init(path: Path, name: String, targets: [Target] = [], configs: [Config] = [], settingGroups: [BuildSettingGroup] = [], schemes: [Scheme] = []) {
-        self.path = path
-        self.name = name
-        self.targets = targets
-        self.configs = configs
-        self.settingGroups = settingGroups
-        self.schemes = schemes
     }
 }
