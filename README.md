@@ -9,6 +9,7 @@ This allows for easy configuration which is git friendly, and means your project
 
 Given a simple project spec file:
 ```yaml
+name: My Project
 configs:
   debug:
     type: debug

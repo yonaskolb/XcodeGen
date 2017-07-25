@@ -15,18 +15,15 @@ import xcodeproj
 func generate(spec: String, project: String?) {
 
     let specPath = Path(spec).normalize()
-    let projectPath: Path
+    var projectPath: Path
     if let project = project, !project.isEmpty {
         var path = Path(project).normalize()
         if path.isRelative {
             path = specPath.parent() + project
         }
-        if path.extension == nil {
-            path = path.parent() + (path.lastComponent + ".xcodeproj")
-        }
         projectPath = path
     } else {
-        projectPath = specPath.parent() + "\(specPath.lastComponentWithoutExtension).xcodeproj"
+        projectPath = specPath.parent()
     }
 
     var spec: Spec
@@ -52,6 +49,8 @@ func generate(spec: String, project: String?) {
         let project = try projectGenerator.generate()
         print("Generated project")
         print("Writing project")
+
+        projectPath = projectPath + "\(spec.name).xcodeproj"
         try project.write(path: projectPath, override: true)
         print("Wrote project to file \(projectPath.string)")
     } catch {

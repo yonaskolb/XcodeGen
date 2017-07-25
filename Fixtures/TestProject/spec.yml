@@ -1,3 +1,4 @@
+name: GeneratedProject
 settingGroups:
   testGroup:
     TEST_SETTING: test value

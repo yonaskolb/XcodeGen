@@ -22,7 +22,7 @@ class XcodeGenTests: XCTestCase {
 
 
     func test_project_generation() throws {
-        try testGeneration(specPath: fixturePath + "TestProject/spec.yml", projectPath: fixturePath + "TestProject/spec.xcodeproj")
+        try testGeneration(specPath: fixturePath + "TestProject/spec.yml", projectPath: fixturePath + "TestProject/GeneratedProject.xcodeproj")
     }
 
     static var allTests = [

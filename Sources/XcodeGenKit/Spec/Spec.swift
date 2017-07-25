@@ -28,6 +28,7 @@ extension Spec {
 
     public init(path: Path, jsonDictionary: JSONDictionary) throws {
         self.path = path
+        name = try jsonDictionary.json(atKeyPath: "name")
         settingGroups = try jsonDictionary.json(atKeyPath: "settingGroups")
         configs = try jsonDictionary.json(atKeyPath: "configs")
         targets = try jsonDictionary.json(atKeyPath: "targets")
@@ -39,13 +40,15 @@ extension Spec {
 public struct Spec {
 
     public var path: Path
+    public var name: String
     public var targets: [Target]
     public var settingGroups: [BuildSettingGroup]
     public var configs: [Config]
     public var schemes: [Scheme]
 
-    public init(path: Path, targets: [Target] = [], configs: [Config] = [], settingGroups: [BuildSettingGroup] = [], schemes: [Scheme] = []) {
+    public init(path: Path, name: String, targets: [Target] = [], configs: [Config] = [], settingGroups: [BuildSettingGroup] = [], schemes: [Scheme] = []) {
         self.path = path
+        self.name = name
         self.targets = targets
         self.configs = configs
         self.settingGroups = settingGroups
