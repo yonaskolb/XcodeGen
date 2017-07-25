@@ -1,4 +1,4 @@
-import XCTest
+import Spectre
 import PathKit
 import XcodeGenKit
 import xcodeproj
@@ -14,17 +14,16 @@ func generate(specPath: Path, projectPath: Path) throws {
         try project.write(path: projectPath, override: true)
         _ = try XcodeProj(path: projectPath)
     } else {
-        XCTFail("Spec has errors:\n\(lintedSpec.errors.map { $0.description}.joined(separator: "\n"))")
+        throw failure("Spec has errors:\n\(lintedSpec.errors.map { $0.description}.joined(separator: "\n"))")
     }
 }
 
-class FixtureTests: XCTestCase {
+func fixtureTests() {
 
-    func testGeneration() throws {
-        try generate(specPath: fixturePath + "TestProject/spec.yml", projectPath: fixturePath + "TestProject/GeneratedProject.xcodeproj")
+
+    describe("Test Project") {
+        $0.it("generates") {
+            try generate(specPath: fixturePath + "TestProject/spec.yml", projectPath: fixturePath + "TestProject/GeneratedProject.xcodeproj")
+        }
     }
-
-    static var allTests = [
-        ("testGeneration", testGeneration),
-        ]
 }

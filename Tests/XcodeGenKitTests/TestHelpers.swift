@@ -1,12 +1,14 @@
 import Foundation
-import XCTest
+import Spectre
 
-func expectError(_ expectedError: Error, closure: () throws -> ()) {
+func expectError<T: Error>(_ expectedError: T, closure: () throws -> ()) throws where T: CustomStringConvertible {
     do {
         try closure()
-        XCTFail("Supposed to fail with \"\(expectedError)\"")
+    } catch let error as T {
+        try expect(error.description) == expectedError.description
+        return
     } catch {
-        XCTAssert(error.localizedDescription == expectedError.localizedDescription,
-                  "Expected error \"\(expectedError.localizedDescription)\" but got \"\(error.localizedDescription)\"")
+        throw failure("Supposed to fail with \"\(expectedError)\"")
     }
+    throw failure("Supposed to fail with \"\(expectedError)\"")
 }

@@ -1,9 +1,9 @@
-import XCTest
+import Spectre
 import XcodeGenKit
 import xcodeproj
 import PathKit
 
-class GeneratorTests: XCTestCase {
+func generatorTests() {
 
     func getProject(_ spec: Spec) throws -> XcodeProj {
         let lintedSpec = SpecLinter.lint(spec)
@@ -11,12 +11,13 @@ class GeneratorTests: XCTestCase {
         return try generator.generate()
     }
 
-    func testGeneratorGeneratesDefaultConfigs() throws {
-        let project = try getProject(Spec(name: "test"))
-        XCTAssert(project.pbxproj.objects.buildConfigurations.count == 2)
-    }
+    describe("Generator") {
 
-    static var allTests = [
-        ("testGeneratorGeneratesDefaultConfigs", testGeneratorGeneratesDefaultConfigs),
-        ]
+        $0.it("provide defaults") {
+            let project = try getProject(Spec(name: "test"))
+            try expect(project.pbxproj.objects.buildConfigurations.count) == 2
+
+        }
+    }
 }
+

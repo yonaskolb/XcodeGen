@@ -68,7 +68,11 @@ extension Target: JSONObjectConvertible {
             sources = jsonDictionary.json(atKeyPath: "sources") ?? []
         }
         sourceExludes = jsonDictionary.json(atKeyPath: "sourceExludes") ?? []
-        dependencies = jsonDictionary.json(atKeyPath: "dependencies") ?? []
+        if jsonDictionary["dependencies"] == nil {
+            dependencies = []
+        } else {
+            dependencies = try jsonDictionary.json(atKeyPath: "dependencies", invalidItemBehaviour: .fail)
+        }
         prebuildScripts = jsonDictionary.json(atKeyPath: "prebuildScripts") ?? []
         postbuildScripts = jsonDictionary.json(atKeyPath: "postbuildScripts") ?? []
     }
