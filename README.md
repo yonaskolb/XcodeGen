@@ -101,7 +101,7 @@ This specifies the product type of the target. This will provide default build s
 - xpc-service
 
 ### platform
-TSpecifies the platform for the target. This will provide default build settings for that platform. Platform can be any of the following:
+Specifies the platform for the target. This will provide default build settings for that platform. It can be any of the following:
 - iOS
 - tvOS
 - macOS
