@@ -8,7 +8,8 @@
 
 import Foundation
 
-enum SpecError: Error {
+public enum SpecError: Error {
     case unknownTargetType(String)
+    case unknownTargetPlatform(String)
     case invalidDependency([String: Any])
 }

@@ -2,5 +2,7 @@ import XCTest
 @testable import XcodeGenKitTests
 
 XCTMain([
-    testCase(XcodeGenKitTests.allTests),
+    testCase(GeneratorTests.allTests),
+    testCase(SpecLoadingTests.allTests),
+    testCase(FixtureTests.allTests),
 ])

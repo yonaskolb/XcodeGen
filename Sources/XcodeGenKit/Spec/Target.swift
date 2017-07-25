@@ -54,7 +54,12 @@ extension Target: JSONObjectConvertible {
         } else {
             throw SpecError.unknownTargetType(typeString)
         }
-        platform = try jsonDictionary.json(atKeyPath: "platform")
+        let platformString: String = try jsonDictionary.json(atKeyPath: "platform")
+        if let platform = Platform(rawValue: platformString)  {
+            self.platform = platform
+        } else {
+            throw SpecError.unknownTargetPlatform(platformString)
+        }
         buildSettings = jsonDictionary.json(atKeyPath: "buildSettings")
         configs = jsonDictionary.json(atKeyPath: "configs") ?? [:]
         if let source: String = jsonDictionary.json(atKeyPath: "sources") {

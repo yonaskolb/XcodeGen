@@ -5,11 +5,11 @@ import xcodeproj
 
 let fixturePath = Path(#file).parent().parent().parent() + "Fixtures"
 
-func testGeneration(specPath: Path, projectPath: Path) throws {
+func generate(specPath: Path, projectPath: Path) throws {
     let spec = try Spec(path: specPath)
     let lintedSpec = SpecLinter.lint(spec)
     if lintedSpec.errors.isEmpty {
-        let generator = ProjectGenerator(spec: lintedSpec.spec)
+        let generator = ProjectGenerator(spec: lintedSpec.spec, path: specPath.parent())
         let project = try generator.generate()
         try project.write(path: projectPath, override: true)
         _ = try XcodeProj(path: projectPath)
@@ -18,14 +18,13 @@ func testGeneration(specPath: Path, projectPath: Path) throws {
     }
 }
 
-class XcodeGenTests: XCTestCase {
+class FixtureTests: XCTestCase {
 
-
-    func test_project_generation() throws {
-        try testGeneration(specPath: fixturePath + "TestProject/spec.yml", projectPath: fixturePath + "TestProject/GeneratedProject.xcodeproj")
+    func testGeneration() throws {
+        try generate(specPath: fixturePath + "TestProject/spec.yml", projectPath: fixturePath + "TestProject/GeneratedProject.xcodeproj")
     }
 
     static var allTests = [
-        ("testGeneration", test_project_generation),
+        ("testGeneration", testGeneration),
         ]
 }

@@ -47,7 +47,11 @@ extension Spec {
         name = try jsonDictionary.json(atKeyPath: "name")
         settingGroups = try jsonDictionary.json(atKeyPath: "settingGroups")
         configs = try jsonDictionary.json(atKeyPath: "configs")
-        targets = try jsonDictionary.json(atKeyPath: "targets")
+        if jsonDictionary["targets"] == nil {
+            targets = []
+        } else {
+            targets = try jsonDictionary.json(atKeyPath: "targets", invalidItemBehaviour: .fail)
+        }
         schemes = try jsonDictionary.json(atKeyPath: "schemes")
     }
 }
