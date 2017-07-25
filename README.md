@@ -56,10 +56,11 @@ If you want to pass the required arguments when running in XCode, you can edit t
 ## Usage
 Use `XcodeGen -help` to see the list of options:
 
-- **spec** (required): This is the path to the yaml project spec.
+- **spec** (required): This is the path to the yaml project spec. If none is specified, XcodeGen will look for a `xcodegen.yml` file
 - **project**: (optional): This is an optional path the generated xcode project file. If it is left out, the file will be written to the same directory as the spec, and with the same name as the spec file
 
 # XcodeGen project spec
+
 ## configs
 Configs specify the configurations in your project. 
 Each config can specify a `type` of either `debug` or `release` which will then apply the default build settings for those types. A config can also specify its own list of `buildSettings`

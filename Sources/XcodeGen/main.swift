@@ -14,7 +14,7 @@ import xcodeproj
 
 func generate(spec: String, project: String?) {
 
-    let specPath = Path(spec).normalize()
+    let specPath = spec.isEmpty ? Path("xcodegen.yml") : Path(spec).normalize()
     var projectPath: Path
     if let project = project, !project.isEmpty {
         var path = Path(project).normalize()
