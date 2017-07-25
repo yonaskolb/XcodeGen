@@ -14,8 +14,7 @@ targets:
   - name: TestProject
     type: application
     platform: iOS
-    sources:
-      - TestProject
+    sources: TestProject
     buildSettings:
       INFOPLIST_FILE: TestProject/Info.plist
       PRODUCT_BUNDLE_IDENTIFIER: com.test
@@ -24,8 +23,7 @@ targets:
   - name: MyFramework
     type: framework
     platform: iOS
-    sources:
-      - MyFramework
+    sources: MyFramework
     buildSettings:
       INFOPLIST_FILE: MyFramework/Info.plist
 schemes:
