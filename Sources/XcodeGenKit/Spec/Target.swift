@@ -21,6 +21,7 @@ public struct Target {
     public var prebuildScripts: [String]
     public var postbuildScripts: [String]
     public var configs: [String: String]
+    public var generateSchemes: Bool
 
     public var filename: String {
         var name = self.name
@@ -30,7 +31,7 @@ public struct Target {
         return name
     }
 
-    public init(name: String, type: PBXProductType, platform: Platform, buildSettings: TargetBuildSettings?, configs: [String: String] = [:], sources: [String] = [], sourceExludes: [String] = [], dependencies: [Dependency] = [], prebuildScripts: [String] = [], postbuildScripts: [String] = []) {
+    public init(name: String, type: PBXProductType, platform: Platform, buildSettings: TargetBuildSettings?, configs: [String: String] = [:], sources: [String] = [], sourceExludes: [String] = [], dependencies: [Dependency] = [], prebuildScripts: [String] = [], postbuildScripts: [String] = [], generateSchemes: Bool = false) {
         self.name = name
         self.type = type
         self.platform = platform
@@ -41,6 +42,7 @@ public struct Target {
         self.dependencies = dependencies
         self.prebuildScripts = prebuildScripts
         self.postbuildScripts = postbuildScripts
+        self.generateSchemes = false
     }
 }
 
@@ -75,6 +77,7 @@ extension Target: JSONObjectConvertible {
         }
         prebuildScripts = jsonDictionary.json(atKeyPath: "prebuildScripts") ?? []
         postbuildScripts = jsonDictionary.json(atKeyPath: "postbuildScripts") ?? []
+        generateSchemes = jsonDictionary.json(atKeyPath: "generateSchemes") ?? false
     }
 }
 

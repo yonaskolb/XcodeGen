@@ -68,6 +68,7 @@ public class PBXProjGenerator {
             }
             return XCBuildConfiguration(reference: id(), name: config.name, baseConfigurationReference: nil, buildSettings: buildSettings)
         }
+
         let buildConfigList = XCConfigurationList(reference: id(), buildConfigurations: buildConfigs.referenceSet, defaultConfigurationName: buildConfigs.first?.name ?? "", defaultConfigurationIsVisible: 0)
 
         objects += buildConfigs.map { .xcBuildConfiguration($0) }
