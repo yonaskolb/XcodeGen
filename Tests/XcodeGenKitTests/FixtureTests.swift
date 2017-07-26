@@ -7,15 +7,10 @@ let fixturePath = Path(#file).parent().parent().parent() + "Fixtures"
 
 func generate(specPath: Path, projectPath: Path) throws {
     let spec = try Spec(path: specPath)
-    let lintedSpec = SpecLinter.lint(spec)
-    if lintedSpec.errors.isEmpty {
-        let generator = ProjectGenerator(spec: lintedSpec.spec, path: specPath.parent())
-        let project = try generator.generateProject()
-        try project.write(path: projectPath, override: true)
-        _ = try XcodeProj(path: projectPath)
-    } else {
-        throw failure("Spec has errors:\n\(lintedSpec.errors.map { $0.description}.joined(separator: "\n"))")
-    }
+    let generator = ProjectGenerator(spec: spec, path: specPath.parent())
+    let project = try generator.generateProject()
+    try project.write(path: projectPath, override: true)
+    _ = try XcodeProj(path: projectPath)
 }
 
 func fixtureTests() {

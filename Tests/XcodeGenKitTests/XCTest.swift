@@ -4,7 +4,7 @@ import XCTest
 class XCodeGenKitTests: XCTestCase {
 
     func testXcodeGenKit() {
-        generatorTests()
+        projectGeneratorTests()
         specLoadingTests()
         fixtureTests()
     }

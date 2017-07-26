@@ -27,8 +27,7 @@ targets:
     buildSettings:
       INFOPLIST_FILE: MyFramework/Info.plist
 schemes:
-  iOS Test:
+  MyScheme:
     build:
       targets:
-        Axis iOS:
-          archive: true
+        TestProject: all

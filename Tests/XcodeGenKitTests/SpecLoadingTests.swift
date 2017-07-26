@@ -50,17 +50,28 @@ func specLoadingTests() {
         }
 
         $0.it("parses target dependencies") {
-            var target = validTarget
-            target["dependencies"] = [
+            var targetDictionary = validTarget
+            targetDictionary["dependencies"] = [
                 ["target": "name"],
                 ["carthage": "name"],
                 ["framework": "path"],
                 ]
-            let specTarget = try Target(jsonDictionary: target)
-            try expect(specTarget.dependencies.count) == 3
-            try expect(specTarget.dependencies[0]) == .target("name")
-            try expect(specTarget.dependencies[1]) == .carthage("name")
-            try expect(specTarget.dependencies[2]) == .framework("path")
+            let target = try Target(jsonDictionary: targetDictionary)
+            try expect(target.dependencies.count) == 3
+            try expect(target.dependencies[0]) == .target("name")
+            try expect(target.dependencies[1]) == .carthage("name")
+            try expect(target.dependencies[2]) == .framework("path")
+        }
+
+        $0.it("parses schemes") {
+            let schemeDictionary: [String: Any] = [
+                "build": ["targets": ["Target": "all"]]
+            ]
+            let scheme = try Scheme(name: "Scheme", jsonDictionary: schemeDictionary)
+            let target = scheme.build.targets.first!
+            try expect(scheme.name) == "Scheme"
+            try expect(target.target) == "Target"
+            try expect(target.buildTypes) == [.running, .testing, .profiling, .analyzing, .archiving]
         }
     }
 
