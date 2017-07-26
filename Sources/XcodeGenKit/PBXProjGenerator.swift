@@ -123,11 +123,14 @@ public class PBXProjGenerator {
     }
 
     func generateTarget(_ target: Target) throws -> PBXNativeTarget  {
-        let source = basePath + target.sources.first!
-        //TODO: handle multiple sources
-        //TODO: handle targets with shared sources
 
-        let sourceGroups = try getGroups(path: source, groupReference: id())
+        let sourcePaths = target.sources.map { basePath + $0 }
+        var sourceFilePaths: [Path] = []
+
+        for source in sourcePaths {
+            let sourceGroups = try getGroups(path: source, groupReference: id())
+            sourceFilePaths += sourceGroups.filePaths
+        }
 
         let configs: [XCBuildConfiguration] = try spec.configs.map { config in
             let buildSettings = try getTargetBuildSettings(config: config, target: target)
@@ -203,7 +206,7 @@ public class PBXProjGenerator {
         //TODO: don't generate build files for files that won't be built
 
         func getBuildFilesForPhase(_ buildPhase: BuildPhase) -> Set<String> {
-            let files = sourceGroups.filePaths.filter { getBuildPhaseForPath($0) == buildPhase }.map(generateSourceFile)
+            let files = sourceFilePaths.filter { getBuildPhaseForPath($0) == buildPhase }.map(generateSourceFile)
             return Set(files.map { $0.buildFile.reference })
         }
 
