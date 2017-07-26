@@ -19,13 +19,11 @@ public struct Spec {
     public var settingGroups: [BuildSettingGroup]
     public var configs: [Config]
     public var schemes: [Scheme]
-    public var configVariants: [String]
-    
-    public init(name: String, targets: [Target] = [], configs: [Config] = [], configVariants: [String] = [], settingGroups: [BuildSettingGroup] = [], schemes: [Scheme] = []) {
+
+    public init(name: String, configs: [Config] = [], targets: [Target] = [], settingGroups: [BuildSettingGroup] = [], schemes: [Scheme] = []) {
         self.name = name
         self.targets = targets
         self.configs = configs
-        self.configVariants = configVariants
         self.settingGroups = settingGroups
         self.schemes = schemes
     }
@@ -63,6 +61,5 @@ extension Spec {
             targets = try jsonDictionary.json(atKeyPath: "targets", invalidItemBehaviour: .fail)
         }
         schemes = try jsonDictionary.json(atKeyPath: "schemes")
-        configVariants = jsonDictionary.json(atKeyPath: "configVariants") ?? []
     }
 }

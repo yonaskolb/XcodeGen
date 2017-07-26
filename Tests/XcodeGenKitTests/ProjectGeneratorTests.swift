@@ -42,29 +42,7 @@ func projectGeneratorTests() {
                 try expect(configs).contains(name: "config1")
                 try expect(configs).contains(name: "config2")
             }
-
-            $0.it("generates config variants") {
-                let spec = Spec(name: "test", configVariants: ["Test", "Production"])
-                let project = try getProject(spec)
-                let configs = project.pbxproj.objects.buildConfigurations
-                try expect(configs.count) == 4
-                try expect(configs).contains(name: "Test Debug")
-                try expect(configs).contains(name: "Test Release")
-                try expect(configs).contains(name: "Production Debug")
-                try expect(configs).contains(name: "Production Release")
-            }
-
-            $0.it("use config variants instead of configs") {
-                let spec = Spec(name: "test", configs: [Config(name: "Other"), Config(name: "Other2")], configVariants: ["Test", "Production"])
-                let project = try getProject(spec)
-                let configs = project.pbxproj.objects.buildConfigurations
-                try expect(configs).contains(name: "Test Debug")
-                try expect(configs).contains(name: "Test Release")
-                try expect(configs).contains(name: "Production Debug")
-                try expect(configs).contains(name: "Production Release")
-            }
         }
-
 
         $0.describe("Targets") {
 
@@ -120,9 +98,17 @@ func projectGeneratorTests() {
             }
 
             $0.it("generates target schemes from config variant") {
+                let configVariants = ["Test", "Production"]
                 var target = application
-                target.generateSchemes = true
-                let spec = Spec(name: "test", targets: [target, framework], configVariants: ["Test", "Production"])
+                target.generateSchemes = configVariants
+                let configs: [Config] = [
+                    Config(name: "Test Debug", type: .debug),
+                    Config(name: "Production Debug", type: .debug),
+                    Config(name: "Test Release", type: .release),
+                    Config(name: "Production Release", type: .release),
+                    ]
+
+                let spec = Spec(name: "test", configs: configs, targets: [target, framework])
                 let project = try getProject(spec)
 
                 try expect(project.sharedData?.schemes.count) == 2

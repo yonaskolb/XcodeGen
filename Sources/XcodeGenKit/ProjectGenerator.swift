@@ -34,38 +34,38 @@ public class ProjectGenerator {
 
     func validate() throws {
 
-        let defaultConfigs = [Config(name: "Debug", type: .debug), Config(name: "Release", type: .release)]
-
-        if !spec.configVariants.isEmpty  {
-            spec.configs = defaultConfigs.reduce([]) { all, config in
-                all + spec.configVariants.map { variant in
-                    let name = "\(variant) \(config.name)"
-                    return Config(name: name, type: config.type, buildSettingGroups: config.buildSettingGroups, buildSettings: config.buildSettings)
-                }
-            }
-        } else if spec.configs.isEmpty {
-            spec.configs = defaultConfigs
+        if spec.configs.isEmpty {
+            spec.configs = [Config(name: "Debug", type: .debug), Config(name: "Release", type: .release)]
         }
 
         var errors: [SpecValidationError.Error] = []
 
         for target in spec.targets {
             for dependency in target.dependencies {
-                if case .target(let target) = dependency, spec.getTarget(target) == nil {
-                    errors.append(.invalidTargetDependency(target))
+                if case .target(let targetName) = dependency, spec.getTarget(targetName) == nil {
+                    errors.append(.invalidTargetDependency(target: target.name, dependency: targetName))
                 }
             }
             if let buildSettings = target.buildSettings {
                 for config in buildSettings.configSettings.keys {
                     if spec.getConfig(config) == nil {
-                        errors.append(.invalidBuildSettingConfig(config))
+                        errors.append(.invalidBuildSettingConfig(config: config))
                     }
                 }
             }
             for source in target.sources {
                 let sourcePath = path + source
                 if !sourcePath.exists {
-                    errors.append(.missingTargetSource(sourcePath.string))
+                    errors.append(.missingTargetSource(target: target.name, source: sourcePath.string))
+                }
+            }
+
+            for generatedScheme in target.generateSchemes {
+                if !spec.configs.contains(where: { $0.name.contains(generatedScheme) && $0.type == .debug }) {
+                    errors.append(.invalidTargetGeneratedSchema(target: target.name, scheme: generatedScheme, configType: .debug))
+                }
+                if !spec.configs.contains(where: { $0.name.contains(generatedScheme) && $0.type == .release }) {
+                    errors.append(.invalidTargetGeneratedSchema(target: target.name, scheme: generatedScheme, configType: .release))
                 }
             }
         }
@@ -73,23 +73,23 @@ public class ProjectGenerator {
         for scheme in spec.schemes {
             for buildTarget in scheme.build.targets {
                 if spec.getTarget(buildTarget.target) == nil {
-                    errors.append(.invalidSchemeTarget(buildTarget.target))
+                    errors.append(.invalidSchemeTarget(scheme: scheme.name, target: buildTarget.target))
                 }
             }
             if let buildAction = scheme.run, spec.getConfig(buildAction.config) == nil  {
-                errors.append(.invalidSchemeConfig(buildAction.config))
+                errors.append(.invalidSchemeConfig(scheme: scheme.name, config: buildAction.config))
             }
             if let buildAction = scheme.test, spec.getConfig(buildAction.config) == nil  {
-                errors.append(.invalidSchemeConfig(buildAction.config))
+                errors.append(.invalidSchemeConfig(scheme: scheme.name, config: buildAction.config))
             }
             if let buildAction = scheme.profile, spec.getConfig(buildAction.config) == nil  {
-                errors.append(.invalidSchemeConfig(buildAction.config))
+                errors.append(.invalidSchemeConfig(scheme: scheme.name, config: buildAction.config))
             }
             if let buildAction = scheme.analyze, spec.getConfig(buildAction.config) == nil  {
-                errors.append(.invalidSchemeConfig(buildAction.config))
+                errors.append(.invalidSchemeConfig(scheme: scheme.name, config: buildAction.config))
             }
             if let buildAction = scheme.archive, spec.getConfig(buildAction.config) == nil  {
-                errors.append(.invalidSchemeConfig(buildAction.config))
+                errors.append(.invalidSchemeConfig(scheme: scheme.name, config: buildAction.config))
             }
         }
 
@@ -161,17 +161,15 @@ public class ProjectGenerator {
         }
 
         for target in spec.targets {
-            if target.generateSchemes {
-                for variant in spec.configVariants {
-                    let schemeName = "\(target.name) \(variant)"
+            for generatedScheme in target.generateSchemes {
+                let schemeName = "\(target.name) \(generatedScheme)"
 
-                    let debugConfig = spec.configs.first { $0.type == .debug && $0.name.contains(variant) }!
-                    let releaseConfig = spec.configs.first { $0.type == .release && $0.name.contains(variant) }!
+                let debugConfig = spec.configs.first { $0.type == .debug && $0.name.contains(generatedScheme) }!
+                let releaseConfig = spec.configs.first { $0.type == .release && $0.name.contains(generatedScheme) }!
 
-                    let specScheme = Scheme(name: schemeName, targets: [Scheme.BuildTarget(target: target.name)], debugConfig: debugConfig.name, releaseConfig: releaseConfig.name)
-                    let scheme = try generateScheme(specScheme, pbxProject: pbxProject)
-                    xcschemes.append(scheme)
-                }
+                let specScheme = Scheme(name: schemeName, targets: [Scheme.BuildTarget(target: target.name)], debugConfig: debugConfig.name, releaseConfig: releaseConfig.name)
+                let scheme = try generateScheme(specScheme, pbxProject: pbxProject)
+                xcschemes.append(scheme)
             }
         }
 
@@ -184,19 +182,21 @@ public struct SpecValidationError: Error, CustomStringConvertible {
     public var errors: [Error]
 
     public enum Error: CustomStringConvertible {
-        case invalidTargetDependency(String)
-        case invalidSchemeTarget(String)
-        case invalidSchemeConfig(String)
-        case invalidBuildSettingConfig(String)
-        case missingTargetSource(String)
+        case invalidTargetDependency(target: String, dependency: String)
+        case invalidSchemeTarget(scheme: String, target: String)
+        case invalidSchemeConfig(scheme: String, config: String)
+        case invalidBuildSettingConfig(config: String)
+        case missingTargetSource(target: String, source: String)
+        case invalidTargetGeneratedSchema(target: String, scheme: String, configType: ConfigType)
 
         public var description: String {
             switch self {
-            case let .invalidTargetDependency(dependency): return "Target has invalid dependency: \(dependency)"
-            case let .invalidSchemeTarget(target): return "Scheme has invalid build target: \(target)"
-            case let .invalidSchemeConfig(config): return "Scheme has invalid build configuration: \(config)"
-            case let .invalidBuildSettingConfig(config): return "Build setting has invalid build configuration: \(config)"
-            case let .missingTargetSource(source): return "Target has a missing source directory: \(source)"
+            case let .invalidTargetDependency(target, dependency): return "Target \(target.quoted) has invalid dependency: \(dependency.quoted)"
+            case let .invalidSchemeTarget(scheme, target): return "Scheme \(scheme.quoted) has invalid build target \(target.quoted)"
+            case let .invalidSchemeConfig(scheme, config): return "Scheme \(scheme.quoted) has invalid build configuration \(config.quoted)"
+            case let .invalidBuildSettingConfig(config): return "Build setting has invalid build configuration \(config.quoted)"
+            case let .missingTargetSource(target, source): return "Target \(target.quoted) has a missing source directory \(source.quoted)"
+            case let .invalidTargetGeneratedSchema(target, scheme, configType): return "Target \(target.quoted) has an invalid schema generation name which requires a config that has a \(configType.rawValue.quoted) type and contains the name \(scheme.quoted)"
             }
         }
     }
@@ -206,8 +206,8 @@ public struct SpecValidationError: Error, CustomStringConvertible {
         if errors.count == 1 {
             title = "Spec validation error: "
         } else {
-            title = "\(errors.count) Spec validations errors:\n"
+            title = "\(errors.count) Spec validations errors:\n\t- "
         }
-        return "\(title)" + errors.map { $0.description }.joined(separator: "\n")
+        return "\(title)" + errors.map { $0.description }.joined(separator: "\n\t- ")
     }
 }
