@@ -29,6 +29,7 @@ public class PBXProjGenerator {
     var topLevelGroups: [PBXGroup] = []
     var carthageFrameworksByPlatform: [String: [String]] = [:]
     var frameworkFiles: [String] = []
+    let generatedConfigs: [Config]
 
     var ids = 0
     var projectReference: String
@@ -36,6 +37,18 @@ public class PBXProjGenerator {
     public init(spec: Spec, path: Path) {
         self.spec = spec
         self.basePath = path
+        
+        if spec.configVariants.isEmpty {
+            generatedConfigs = spec.configs
+        } else {
+            generatedConfigs = spec.configs.reduce([]) { all, config in
+                all + spec.configVariants.map { variant in
+                    let name = "\(variant) \(config.name)"
+                    return Config(name: name, type: config.type, buildSettingGroups: config.buildSettingGroups, buildSettings: config.buildSettings)
+                }
+            }
+        }
+
         projectReference = ""
         projectReference = id()
     }
@@ -47,7 +60,8 @@ public class PBXProjGenerator {
     }
 
     public func generate() throws -> PBXProj {
-        let buildConfigs: [XCBuildConfiguration] = try spec.configs.map { config in
+        let buildConfigs: [XCBuildConfiguration] = try generatedConfigs.map { config in
+
             var buildSettings = config.buildSettings
             if let type = config.type, let typeBuildSettings = try BuildSettingsPreset.config(type).getBuildSettings() {
                 buildSettings = typeBuildSettings.merged(buildSettings)
@@ -132,8 +146,8 @@ public class PBXProjGenerator {
             sourceFilePaths += sourceGroups.filePaths
         }
 
-        let configs: [XCBuildConfiguration] = try spec.configs.map { config in
-            let buildSettings = try getTargetBuildSettings(config: config, target: target)
+        let configs: [XCBuildConfiguration] = try generatedConfigs.map { config in
+            let buildSettings = try getTargetBuildSettings(config: config.name, target: target)
             var baseConfigurationReference: String?
             if let configPath = target.configs[config.name] {
                 let path = basePath + configPath
@@ -284,7 +298,7 @@ public class PBXProjGenerator {
         return nil
     }
 
-    func getTargetBuildSettings(config: Config, target: Target) throws -> BuildSettings {
+    func getTargetBuildSettings(config: String, target: Target) throws -> BuildSettings {
         var buildSettings = BuildSettings()
 
         func getBuildSettingPreset(_ type: BuildSettingsPreset) throws -> BuildSettings? {
@@ -295,7 +309,7 @@ public class PBXProjGenerator {
         buildSettings += try getBuildSettingPreset(.platform(target.platform))
         buildSettings += try getBuildSettingPreset(.product(target.type))
         buildSettings += target.buildSettings?.buildSettings
-        buildSettings += target.buildSettings?.configSettings[config.name]
+        buildSettings += target.buildSettings?.configSettings[config]
 
         return buildSettings
     }
