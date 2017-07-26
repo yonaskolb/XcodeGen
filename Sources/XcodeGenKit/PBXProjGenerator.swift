@@ -48,12 +48,8 @@ public class PBXProjGenerator {
     }
 
     public func generate() throws -> PBXProj {
-        let buildConfigs: [XCBuildConfiguration] = try spec.configs.map { config in
-
-            var buildSettings = config.buildSettings
-            if let type = config.type, let typeBuildSettings = try BuildSettingsPreset.config(type).getBuildSettings() {
-                buildSettings = typeBuildSettings.merged(buildSettings)
-            }
+        let buildConfigs: [XCBuildConfiguration] = spec.configs.map { config in
+            let buildSettings = spec.getProjectBuildSettings(config: config)
             return XCBuildConfiguration(reference: id(), name: config.name, baseConfigurationReference: nil, buildSettings: buildSettings)
         }
 
@@ -135,9 +131,10 @@ public class PBXProjGenerator {
             sourceFilePaths += sourceGroups.filePaths
         }
 
-        let configs: [XCBuildConfiguration] = try spec.configs.map { config in
-            let buildSettings = try getTargetBuildSettings(config: config.name, target: target)
+        let configs: [XCBuildConfiguration] = spec.configs.map { config in
+            let buildSettings = spec.getTargetBuildSettings(target: target, config: config)
             var baseConfigurationReference: String?
+
             if let configPath = target.configs[config.name] {
                 let path = basePath + configPath
                 baseConfigurationReference = fileReferencesByPath[path]
@@ -285,22 +282,6 @@ public class PBXProjGenerator {
             }
         }
         return nil
-    }
-
-    func getTargetBuildSettings(config: String, target: Target) throws -> BuildSettings {
-        var buildSettings = BuildSettings()
-
-        func getBuildSettingPreset(_ type: BuildSettingsPreset) throws -> BuildSettings? {
-            return try type.getBuildSettings()
-        }
-
-        buildSettings += try getBuildSettingPreset(.base)
-        buildSettings += try getBuildSettingPreset(.platform(target.platform))
-        buildSettings += try getBuildSettingPreset(.product(target.type))
-        buildSettings += target.buildSettings?.buildSettings
-        buildSettings += target.buildSettings?.configSettings[config]
-
-        return buildSettings
     }
 
     func getFileReference(path: Path, inPath: Path) -> String {

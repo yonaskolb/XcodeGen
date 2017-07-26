@@ -40,19 +40,39 @@ public class ProjectGenerator {
 
         var errors: [SpecValidationError.Error] = []
 
+        func validateSettingPresets(_ settingsPresets: [String]) -> [SpecValidationError.Error] {
+            var errors: [SpecValidationError.Error] = []
+            for preset in settingsPresets {
+                if let settingsPreset = spec.settingPresets[preset] {
+                    errors += validateSettingPresets(settingsPreset.settingPresets)
+                } else {
+                    errors.append(.invalidSettingsPreset(preset))
+                }
+            }
+            return errors
+        }
+
+        for settingPreset in spec.settingPresets.values {
+            errors += validateSettingPresets(settingPreset.settingPresets)
+        }
+
+        for config in spec.configs {
+            errors += validateSettingPresets(config.settingPresets)
+        }
+
         for target in spec.targets {
             for dependency in target.dependencies {
                 if case .target(let targetName) = dependency, spec.getTarget(targetName) == nil {
                     errors.append(.invalidTargetDependency(target: target.name, dependency: targetName))
                 }
             }
-            if let buildSettings = target.buildSettings {
-                for config in buildSettings.configSettings.keys {
-                    if spec.getConfig(config) == nil {
-                        errors.append(.invalidBuildSettingConfig(config: config))
-                    }
+
+            for config in target.settings.configSettings.keys {
+                if spec.getConfig(config) == nil {
+                    errors.append(.invalidBuildSettingConfig(config))
                 }
             }
+
             for source in target.sources {
                 let sourcePath = path + source
                 if !sourcePath.exists {
@@ -68,6 +88,8 @@ public class ProjectGenerator {
                     errors.append(.invalidTargetGeneratedSchema(target: target.name, scheme: generatedScheme, configType: .release))
                 }
             }
+
+            errors += validateSettingPresets(target.settingPresets)
         }
 
         for scheme in spec.schemes {
@@ -185,7 +207,8 @@ public struct SpecValidationError: Error, CustomStringConvertible {
         case invalidTargetDependency(target: String, dependency: String)
         case invalidSchemeTarget(scheme: String, target: String)
         case invalidSchemeConfig(scheme: String, config: String)
-        case invalidBuildSettingConfig(config: String)
+        case invalidBuildSettingConfig(String)
+        case invalidSettingsPreset(String)
         case missingTargetSource(target: String, source: String)
         case invalidTargetGeneratedSchema(target: String, scheme: String, configType: ConfigType)
 
@@ -196,6 +219,7 @@ public struct SpecValidationError: Error, CustomStringConvertible {
             case let .invalidSchemeConfig(scheme, config): return "Scheme \(scheme.quoted) has invalid build configuration \(config.quoted)"
             case let .invalidBuildSettingConfig(config): return "Build setting has invalid build configuration \(config.quoted)"
             case let .missingTargetSource(target, source): return "Target \(target.quoted) has a missing source directory \(source.quoted)"
+            case let .invalidSettingsPreset(preset): return "Invalid settings preset \(preset.quoted)"
             case let .invalidTargetGeneratedSchema(target, scheme, configType): return "Target \(target.quoted) has an invalid schema generation name which requires a config that has a \(configType.rawValue.quoted) type and contains the name \(scheme.quoted)"
             }
         }

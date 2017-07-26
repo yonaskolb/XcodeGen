@@ -1,0 +1,50 @@
+name: SettingsTest
+settingPresets:
+  preset1:
+    settingPresets:
+      - preset2
+    settings:
+      SETTING 1: value 1
+  preset2:
+    SETTING 2: value 2
+  preset3:
+    settingPresets:
+      - preset2
+    settings:
+      default:
+        SETTING 9: value 9
+      configs:
+        config1:
+          SETTING 8: value 8
+configs:
+  config1:
+    type: debug
+    settingPresets:
+      - preset1
+    settings:
+      SETTING 3: value 3
+  config2:
+    type: release
+    settingPresets:
+      - preset2
+    settings:
+      SETTING 4: value 4
+targets:
+  - name: Target1
+    type: application
+    platform: iOS
+    settingPresets:
+      - preset1
+    settings:
+      SETTING 5: value 5
+  - name: Target2
+    type: application
+    platform: iOS
+    settingPresets:
+      - preset3
+    settings:
+      default:
+        SETTING 7: value 7
+      configs:
+        config1:
+          SETTING 6: value 6

@@ -21,28 +21,32 @@ extension Array where Element: ProjectElement {
     }
 }
 
-extension BuildSettings {
+extension BuildSettings: CustomStringConvertible {
 
-    init() {
+    public init() {
         dictionary = [:]
     }
 
-    static var empty = BuildSettings()
+    public static let empty = BuildSettings()
 
-    func merged(_ buildSettings: BuildSettings) -> BuildSettings {
+    public func merged(_ buildSettings: BuildSettings) -> BuildSettings {
         var mergedSettings = self
         mergedSettings.merge(buildSettings)
         return mergedSettings
     }
 
-    mutating func merge(_ buildSettings: BuildSettings) {
+    public mutating func merge(_ buildSettings: BuildSettings) {
         for (key, value) in buildSettings.dictionary {
             dictionary[key] = value
         }
     }
+
+    public var description: String {
+        return dictionary.map { "\($0) = \($1)" }.joined(separator: "\n")
+    }
 }
 
-func +=( lhs: inout BuildSettings, rhs: BuildSettings?) {
+public func +=( lhs: inout BuildSettings, rhs: BuildSettings?) {
     guard let rhs = rhs else { return }
     lhs.merge(rhs)
 }

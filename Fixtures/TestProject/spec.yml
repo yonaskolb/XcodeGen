@@ -1,21 +1,10 @@
 name: GeneratedProject
-settingGroups:
-  testGroup:
-    TEST_SETTING: test value
-configs:
-  Debug:
-    type: debug
-    settingGroups:
-      - testGroup
-    buildSettings:
-  Release:
-    type: release
 targets:
   - name: TestProject
     type: application
     platform: iOS
     sources: TestProject
-    buildSettings:
+    settings:
       INFOPLIST_FILE: TestProject/Info.plist
       PRODUCT_BUNDLE_IDENTIFIER: com.test
     dependencies:
@@ -24,10 +13,5 @@ targets:
     type: framework
     platform: iOS
     sources: MyFramework
-    buildSettings:
+    settings:
       INFOPLIST_FILE: MyFramework/Info.plist
-schemes:
-  MyScheme:
-    build:
-      targets:
-        TestProject: all

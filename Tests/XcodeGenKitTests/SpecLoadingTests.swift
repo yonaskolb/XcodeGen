@@ -73,6 +73,23 @@ func specLoadingTests() {
             try expect(target.target) == "Target"
             try expect(target.buildTypes) == [.running, .testing, .profiling, .analyzing, .archiving]
         }
+
+        $0.it("parses settings") {
+            let spec = try Spec(path: fixturePath + "settings_test.yml")
+            try expect(spec.settingPresets.count) == 3
+            let preset1 = SettingPreset(settings: ["SETTING 1": "value 1"], settingPresets: ["preset2"])
+            let preset2 = SettingPreset(settings: ["SETTING 2": "value 2"])
+            let preset3 = SettingPreset(settings: Settings(buildSettings: ["SETTING 9": "value 9"], configSettings: ["config1": ["SETTING 8": "value 8"]]), settingPresets: ["preset2"])
+
+            let config1 = Config(name: "config1", type: .debug, settings: BuildSettings(dictionary: ["SETTING 3": "value 3"]), settingPresets: ["preset1"])
+            let config2 = Config(name: "config2", type: .release, settings: BuildSettings(dictionary: ["SETTING 4": "value 4"]), settingPresets: ["preset2"])
+            try expect(spec.settingPresets["preset1"]) == preset1
+            try expect(spec.settingPresets["preset2"]) == preset2
+            try expect(spec.settingPresets["preset3"]) == preset3
+
+            try expect(spec.getConfig("config1")) == config1
+            try expect(spec.getConfig("config2")) == config2
+        }
     }
 
 }

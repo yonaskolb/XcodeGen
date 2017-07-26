@@ -14,7 +14,8 @@ public struct Target {
     public var name: String
     public var type: PBXProductType
     public var platform: Platform
-    public var buildSettings: TargetBuildSettings?
+    public var settings: Settings
+    public var settingPresets: [String]
     public var sources: [String]
     public var sourceExludes: [String]
     public var dependencies: [Dependency]
@@ -31,11 +32,12 @@ public struct Target {
         return name
     }
 
-    public init(name: String, type: PBXProductType, platform: Platform, buildSettings: TargetBuildSettings?, configs: [String: String] = [:], sources: [String] = [], sourceExludes: [String] = [], dependencies: [Dependency] = [], prebuildScripts: [String] = [], postbuildScripts: [String] = [], generateSchemes: [String] = []) {
+    public init(name: String, type: PBXProductType, platform: Platform, settings: Settings = .empty, settingPresets: [String] = [], configs: [String: String] = [:], sources: [String] = [], sourceExludes: [String] = [], dependencies: [Dependency] = [], prebuildScripts: [String] = [], postbuildScripts: [String] = [], generateSchemes: [String] = []) {
         self.name = name
         self.type = type
         self.platform = platform
-        self.buildSettings = buildSettings
+        self.settings = settings
+        self.settingPresets = settingPresets
         self.configs = configs
         self.sources = sources
         self.sourceExludes = sourceExludes
@@ -62,7 +64,8 @@ extension Target: JSONObjectConvertible {
         } else {
             throw SpecError.unknownTargetPlatform(platformString)
         }
-        buildSettings = jsonDictionary.json(atKeyPath: "buildSettings")
+        settings = jsonDictionary.json(atKeyPath: "settings") ?? .empty
+        settingPresets = jsonDictionary.json(atKeyPath: "settingsPresets") ?? []
         configs = jsonDictionary.json(atKeyPath: "configs") ?? [:]
         if let source: String = jsonDictionary.json(atKeyPath: "sources") {
             sources = [source]

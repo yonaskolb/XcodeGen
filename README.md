@@ -8,6 +8,7 @@ A command line tool that generates your Xcode project from a YAML project spec a
 This allows for easy configuration which is git friendly, and means your project structure represents exacty what's on disk. The project can be re-generated on demand which means you can remove your xcode project from git and say goodbye to .xcodeproj merge conflicts!
 
 Given a simple project spec file:
+
 ```yaml
 name: My Project
 configs:
@@ -20,7 +21,7 @@ targets:
     type: application
     platform: iOS
     sources: MyApp
-    buildSettings:
+    settings:
       INFOPLIST_FILE: MyApp/Info.plist
       PRODUCT_BUNDLE_IDENTIFIER: com.myapp
     dependencies:
@@ -60,23 +61,49 @@ Use `XcodeGen -help` to see the list of options:
 - **project**: (optional): This is an optional path the generated xcode project file. If it is left out, the file will be written to the same directory as the spec, and with the same name as the spec file
 
 # XcodeGen project spec
+Each spec must contain a name which is used for the generated project name
 
 ## configs
 Configs specify the configurations in your project. 
-Each config can specify a `type` of either `debug` or `release` which will then apply the default build settings for those types. A config can also specify its own list of `buildSettings`
+Each config can specify a `type` of either `debug` or `release` which will then apply the default build settings for those types. A config can also specify its own list of `settings `
+
 ```yaml
 configs:
   Debug:
     type: debug
-    buildSettings:
+    settings:
       MY_COOL_SETTING: value
   Release:
     type: release
 ```
 If no configs are specified, default `Debug` and `Release` configs will be created for you
 
+## settingPresets
+Setting presets can be used to group build settings together and reuse them elsewhere. Each preset specifies a list of settings. It can also list other setting presets that will be merged in.
+
+```yaml
+settingPresets:
+	preset:
+		BUILD_SETTING: value
+	preset2:
+		settings:
+			BUILD_SETTING: value
+		settingPresets:
+			- preset
+	preset3:
+		settings:
+			base:
+			  BUILD_SETTING: value
+			configs:
+				debug:
+				  BUILD_SETTING: value
+		settingPresets:
+			- preset
+```
+
 ## targets
 This is list of targets
+
 ```yaml
 targets:
   - name: MyTarget
@@ -111,6 +138,7 @@ Specifies the platform for the target. This will provide default build settings 
 
 #### sources
 Specifies the source directories for the target. This can either be a single path or a list of paths. Applicable source files, resources, headers, and lproj files will be parsed appropriately
+
 ```yaml
 targets:
   - name: MyTarget
@@ -121,8 +149,9 @@ targets:
       - MyOtherTargetSource2
 ```
 
-#### buildSettings
-Species the build settings for the target. This can either be a simple map of build settings, or they can be broken down into specific configurations. If supplying configuration specific settings, a `$base` configuration may be used to provide default build settings that apply accross all configurations
+#### settings
+Species the build settings for the target. This can either be a simple list of build settings, or you can specify a map of configs to settings. If supplying such config specific settings, then a `default` settings list can be provided for build settings that apply across all configurations
+
 ```yaml
 configs:
   test:
@@ -133,17 +162,27 @@ configs:
     type: release
 targets:
   - name: MyTarget
-    buildSettings:
+    settings:
       INFO_PLIST: Info.plist
   - name: MyOtherTarget
-    buildSettings: 
-      $base:
+    settings: 
+      default:
         MY_SETTING: default
         MY_OTHER_SETTING: value
-      test:
-        MY_SETTING: test value
-      staging:
-        MY_SETTING: staging value
+      configs:
+        test:
+        	MY_SETTING: test value
+```
+
+#### settingPresets
+Specifies the target specific settingPresets. This is a simple list that maps to the top level setting presets. These settings will be merged in before any custom settings
+
+```yaml
+targets:
+  - name: MyTarget
+    settingPresets:
+      - mypreset1
+      - mypreset2
 ```
 
 #### dependencies
@@ -164,12 +203,46 @@ targets:
 
 #### configs
 Specifies `.xcconfig` files for each configuration for the target.
+
 ```yaml
 targets:
   - name: MyTarget
     configs:
       Debug: config_files/debug.xcconfig
       Release: config_files/release.xcconfig
+```
+
+#### generateSchemes
+This is a conveniance used to automatically generate schemes for a target based on large amount of configs. A list of names is provided, then for each of these names a scheme is created, using configs that contain the name with debug and release variants. This is useful for having different environment schemes.
+
+For example, the following spec would create 3 schemes called:
+
+- MyApp Test
+- MyApp Staging
+- MyApp Production
+
+Each scheme would use different build configuration for the different build types, specifically debug configs for `run`, `test`, and `anaylze`, and release configs for `profile` and `archive`
+
+```
+configs:
+  Test Debug:
+    type: debug
+  Staging Debug:
+    type: debug
+  Production Debug:
+    type: debug
+  Test Release:
+    type: release
+  Staging Release:
+    type: release
+  Production Release:
+    type: release
+targets
+  - name: MyApp
+    generateSchemes:
+      - Test
+      - Staging
+      - Production
 ```
 
 ---

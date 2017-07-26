@@ -10,17 +10,24 @@ import Foundation
 import xcodeproj
 import JSONUtilities
 
-public struct Config {
+public struct Config: Equatable {
     public var name: String
     public var type: ConfigType?
-    public var buildSettingGroups: [BuildSettingGroup]
-    public var buildSettings: BuildSettings
+    public var settings: BuildSettings
+    public var settingPresets: [String]
 
-    public init(name: String, type: ConfigType? = nil, buildSettingGroups: [BuildSettingGroup] = [], buildSettings: BuildSettings = .init()) {
+    public init(name: String, type: ConfigType? = nil, settings: BuildSettings = .empty, settingPresets: [String] = []) {
         self.name = name
-        self.buildSettingGroups = buildSettingGroups
-        self.buildSettings = buildSettings
+        self.settings = settings
+        self.settingPresets = settingPresets
         self.type = type
+    }
+
+    public static func ==(lhs: Config, rhs: Config) -> Bool {
+        return lhs.name == rhs.name &&
+        lhs.type == rhs.type &&
+        lhs.settings == rhs.settings &&
+        lhs.settingPresets == rhs.settingPresets
     }
 }
 
@@ -35,7 +42,7 @@ extension Config: NamedJSONDictionaryConvertible {
     public init(name: String, jsonDictionary: JSONDictionary) throws {
         self.name = name
         type = jsonDictionary.json(atKeyPath: "type")
-        buildSettingGroups = try jsonDictionary.json(atKeyPath: "settingGroups")
-        buildSettings = BuildSettings(dictionary: jsonDictionary.json(atKeyPath: "buildSettings") ?? [:])
+        settings = BuildSettings(dictionary: jsonDictionary.json(atKeyPath: "settings") ?? [:])
+        settingPresets = jsonDictionary.json(atKeyPath: "settingPresets") ?? []
     }
 }

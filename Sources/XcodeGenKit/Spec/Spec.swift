@@ -16,23 +16,25 @@ public struct Spec {
 
     public var name: String
     public var targets: [Target]
-    public var settingGroups: [BuildSettingGroup]
+    public var settings: Settings
+    public var settingPresets: [String: SettingPreset]
     public var configs: [Config]
     public var schemes: [Scheme]
 
-    public init(name: String, configs: [Config] = [], targets: [Target] = [], settingGroups: [BuildSettingGroup] = [], schemes: [Scheme] = []) {
+    public init(name: String, configs: [Config] = [], targets: [Target] = [], settings: Settings = .empty, settingPresets: [String: SettingPreset] = [:], schemes: [Scheme] = []) {
         self.name = name
         self.targets = targets
         self.configs = configs
-        self.settingGroups = settingGroups
+        self.settings = settings
+        self.settingPresets = settingPresets
         self.schemes = schemes
     }
 
-    func getTarget(_ targetName: String) -> Target? {
+    public func getTarget(_ targetName: String) -> Target? {
         return targets.first { $0.name == targetName }
     }
 
-    func getConfig(_ configName: String) -> Config? {
+    public func getConfig(_ configName: String) -> Config? {
         return configs.first { $0.name == configName }
     }
 }
@@ -53,7 +55,8 @@ extension Spec {
 
     public init(jsonDictionary: JSONDictionary) throws {
         name = try jsonDictionary.json(atKeyPath: "name")
-        settingGroups = try jsonDictionary.json(atKeyPath: "settingGroups")
+        settings = jsonDictionary.json(atKeyPath: "settings") ?? .empty
+        settingPresets = jsonDictionary.json(atKeyPath: "settingPresets") ?? [:]
         configs = try jsonDictionary.json(atKeyPath: "configs")
         if jsonDictionary["targets"] == nil {
             targets = []
