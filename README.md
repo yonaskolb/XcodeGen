@@ -83,22 +83,23 @@ Setting presets can be used to group build settings together and reuse them else
 
 ```yaml
 settingPresets:
-	preset:
-		BUILD_SETTING: value
-	preset2:
-		settings:
-			BUILD_SETTING: value
-		settingPresets:
-			- preset
-	preset3:
-		settings:
-			base:
-			  BUILD_SETTING: value
-			configs:
-				debug:
-				  BUILD_SETTING: value
-		settingPresets:
-			- preset
+settingPresets:
+  preset1:
+    BUILD_SETTING: value
+  preset2:
+    settings:
+      BUILD_SETTING: value
+    settingPresets:
+      - preset
+  preset3:
+    settings:
+      default:
+        BUILD_SETTING: value
+      configs:
+        debug:
+          BUILD_SETTING: value
+    settingPresets:
+      - preset
 ```
 
 ## targets
