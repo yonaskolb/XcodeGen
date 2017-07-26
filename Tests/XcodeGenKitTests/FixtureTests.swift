@@ -10,7 +10,7 @@ func generate(specPath: Path, projectPath: Path) throws {
     let lintedSpec = SpecLinter.lint(spec)
     if lintedSpec.errors.isEmpty {
         let generator = ProjectGenerator(spec: lintedSpec.spec, path: specPath.parent())
-        let project = try generator.generate()
+        let project = try generator.generateProject()
         try project.write(path: projectPath, override: true)
         _ = try XcodeProj(path: projectPath)
     } else {

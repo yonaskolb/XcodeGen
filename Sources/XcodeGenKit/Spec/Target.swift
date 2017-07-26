@@ -30,7 +30,7 @@ public struct Target {
         return name
     }
 
-    public init(name: String, type: PBXProductType, platform: Platform, buildSettings: TargetBuildSettings?, configs: [String: String] = [:], sources: [String] = [], sourceExludes: [String] = [], dependencies: [Dependency] = [], prebuildScripts: [String] = [], postbuildScripts: [String]) {
+    public init(name: String, type: PBXProductType, platform: Platform, buildSettings: TargetBuildSettings?, configs: [String: String] = [:], sources: [String] = [], sourceExludes: [String] = [], dependencies: [Dependency] = [], prebuildScripts: [String] = [], postbuildScripts: [String] = []) {
         self.name = name
         self.type = type
         self.platform = platform
@@ -78,12 +78,20 @@ extension Target: JSONObjectConvertible {
     }
 }
 
-public enum Dependency {
+public enum Dependency: Equatable {
 
     case target(String)
     case framework(String)
     case carthage(String)
 
+    public static func ==(lhs: Dependency, rhs: Dependency) -> Bool {
+        switch (lhs, rhs) {
+        case (let .target(lhs), let .target(rhs)): return lhs == rhs
+        case (let .framework(lhs), let .framework(rhs)): return lhs == rhs
+        case (let .carthage(lhs), let .carthage(rhs)): return lhs == rhs
+        default: return false
+        }
+    }
 }
 
 extension Dependency: JSONObjectConvertible {

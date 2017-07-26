@@ -46,7 +46,7 @@ func generate(spec: String, project: String?) {
 
     do {
         let projectGenerator = ProjectGenerator(spec: spec, path: specPath.parent())
-        let project = try projectGenerator.generate()
+        let project = try projectGenerator.generateProject()
         print("Generated project")
         print("Writing project")
 

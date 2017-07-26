@@ -1,7 +1,7 @@
 import Foundation
 import Spectre
 
-func expectError<T: Error>(_ expectedError: T, closure: () throws -> ()) throws where T: CustomStringConvertible {
+func expectError<T: Error>(_ expectedError: T, _ closure: () throws -> ()) throws where T: CustomStringConvertible {
     do {
         try closure()
     } catch let error as T {

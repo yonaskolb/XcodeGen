@@ -15,17 +15,16 @@ import Yams
 
 public class ProjectGenerator {
 
-    let spec: Spec
-    let path: Path
-    let pbxProjGenerator: PBXProjGenerator
+    var spec: Spec
+    var path: Path
 
     public init(spec: Spec, path: Path) {
         self.spec = spec
         self.path = path
-        pbxProjGenerator = PBXProjGenerator(spec: spec, path: path)
     }
 
-    public func generate() throws -> XcodeProj {
+    public func generateProject() throws -> XcodeProj {
+        let pbxProjGenerator = PBXProjGenerator(spec: spec, path: path)
         let pbxProject = try pbxProjGenerator.generate()
         let workspace = try generateWorkspace()
         let sharedData = try generateSharedData()
