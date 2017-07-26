@@ -21,14 +21,21 @@ public struct Spec {
     public var schemes: [Scheme]
     public var configVariants: [String]
     
-    public init(path: Path, name: String, targets: [Target] = [], configs: [Config] = [], configVariants: [String] = [], settingGroups: [BuildSettingGroup] = [], schemes: [Scheme] = []) {
-        self.path = path
+    public init(name: String, targets: [Target] = [], configs: [Config] = [], configVariants: [String] = [], settingGroups: [BuildSettingGroup] = [], schemes: [Scheme] = []) {
         self.name = name
         self.targets = targets
         self.configs = configs
         self.configVariants = configVariants
         self.settingGroups = settingGroups
         self.schemes = schemes
+    }
+
+    func getTarget(_ targetName: String) -> Target? {
+        return targets.first { $0.name == targetName }
+    }
+
+    func getConfig(_ configName: String) -> Config? {
+        return configs.first { $0.name == configName }
     }
 }
 

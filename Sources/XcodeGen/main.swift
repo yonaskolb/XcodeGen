@@ -26,21 +26,12 @@ func generate(spec: String, project: String?) {
         projectPath = specPath.parent()
     }
 
-    var spec: Spec
+    let spec: Spec
     do {
         spec = try Spec(path: specPath)
         print("Loaded spec: \(spec.targets.count) targets, \(spec.schemes.count) schemes, \(spec.configs.count) configs")
-        let specLintingResults = SpecLinter.lint(spec)
-        spec = specLintingResults.spec
-        if !specLintingResults.errors.isEmpty {
-            print("Spec errors: \n\t- \(specLintingResults.errors.map{$0.description}.joined(separator: "\n\t- "))")
-            return
-        }
-        if !specLintingResults.appliedFixits.isEmpty {
-            print("Applied spec fixits:\n\t- \(specLintingResults.appliedFixits.map{$0.description}.joined(separator: "\n\t- "))")
-        }
     } catch {
-        print("Parsing spec failed: \(error)")
+        print("Parsing spec failed: \(error.localizedDescription)")
         return
     }
 
@@ -53,8 +44,10 @@ func generate(spec: String, project: String?) {
         projectPath = projectPath + "\(spec.name).xcodeproj"
         try project.write(path: projectPath, override: true)
         print("Wrote project to file \(projectPath.string)")
+    } catch let error as SpecValidationError {
+        print(error.description)
     } catch {
-        print("Project Generation failed: \(error)")
+        print("Project Generation failed: \(error.localizedDescription)")
     }
 }
 
