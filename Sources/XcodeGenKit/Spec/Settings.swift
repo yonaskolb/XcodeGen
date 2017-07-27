@@ -51,21 +51,29 @@ public struct Settings: Equatable, JSONObjectConvertible, CustomStringConvertibl
     public var description: String {
         var string: String = ""
         if !buildSettings.dictionary.isEmpty {
-            string += buildSettings.description
+            let buildSettingDescription = buildSettings.description
+            if !configSettings.isEmpty || !presets.isEmpty {
+                string += "base:\n  " + buildSettingDescription.replacingOccurrences(of: "(.)\n", with: "$1\n  ", options: .regularExpression, range: nil)
+            } else {
+                string += buildSettingDescription
+            }
         }
-        for (config, buildSettings) in configSettings {
-            if !buildSettings.description.isEmpty {
-                if !string.isEmpty {
-                    string += "\n"
+        if !configSettings.isEmpty {
+            if !string.isEmpty {
+                string += "\n"
+            }
+            for (config, buildSettings) in configSettings {
+                if !buildSettings.description.isEmpty {
+                    string += "configs:\n"
+                    string += "  \(config):\n    " + buildSettings.description.replacingOccurrences(of: "(.)\n", with: "$1\n    ", options: .regularExpression, range: nil)
                 }
-                string += "\(config):\n  " + buildSettings.description.replacingOccurrences(of: "(.)\n  ", with: "$1\n    ", options: .regularExpression, range: nil)
             }
         }
         if !presets.isEmpty {
             if !string.isEmpty {
                 string += "\n"
             }
-            string += "Presets:\(presets.joined(separator: ","))"
+            string += "presets:\n  \(presets.joined(separator: "\n  "))"
         }
         return string
     }
