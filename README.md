@@ -72,7 +72,7 @@ configs:
 If no configs are specified, default `Debug` and `Release` configs will be created automatically
 
 #### settings
-Project settings use the [Settings](#settings) spec. Default base and config type settings will be applied first before any custom settings
+Project settings use the [Settings](#settings-spec) spec. Default base and config type settings will be applied first before any custom settings
 
 #### settingPresets
 Setting presets can be used to group build settings together and reuse them elsewhere. Each preset is a Settings schema, so can include other presets
@@ -93,7 +93,7 @@ settingPresets:
             - preset
 ```
 
-## Settings
+## Settings Spec
 Settings can be defined on the project and each target, and the format is the same. Settings can either be a simple list of build settings or can be more advanced with the following properties:
 
 - `presets`: a list of presets to include and merge
@@ -168,7 +168,7 @@ targets:
 ```
 
 #### settings
-Species the build settings for the target. This uses the same [Settings](#settings) spec as the project. Default platform and product type settings will be applied first before any custom settings
+Species the build settings for the target. This uses the same [Settings](#settings-spec) spec as the project. Default platform and product type settings will be applied first before any custom settings
 
 #### dependencies
 Species the dependencies for the target. This can be another target, a framework path, or a carthage dependency.
