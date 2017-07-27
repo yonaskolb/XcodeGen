@@ -13,32 +13,39 @@ import xcodeproj
 public struct Settings: Equatable, JSONObjectConvertible, CustomStringConvertible  {
 
     public let buildSettings: BuildSettings
-    public let configSettings: [String: BuildSettings]
+    public let configSettings: [String: Settings]
+    public let presets: [String]
 
-    public init(buildSettings: BuildSettings, configSettings: [String: BuildSettings] = [:]) {
+    public init(buildSettings: BuildSettings = .empty, configSettings: [String: Settings] = [:], presets: [String] = []) {
         self.buildSettings = buildSettings
         self.configSettings = configSettings
+        self.presets = presets
     }
 
     public init(dictionary: [String: Any]) {
         self.buildSettings = BuildSettings(dictionary: dictionary)
         self.configSettings = [:]
+        self.presets = []
     }
 
-    static let empty: Settings = Settings(buildSettings: BuildSettings())
+    static let empty: Settings = Settings(dictionary: [:])
 
     public init(jsonDictionary: JSONDictionary) throws {
-        if let configSettings: [String: BuildSettings] = jsonDictionary.json(atKeyPath: "configs") {
-            buildSettings = jsonDictionary.json(atKeyPath: "default") ?? [:]
-            self.configSettings = configSettings
+        if jsonDictionary["configs"] != nil || jsonDictionary["presets"] != nil || jsonDictionary["base"] != nil {
+            presets = jsonDictionary.json(atKeyPath: "presets") ?? []
+            buildSettings = jsonDictionary.json(atKeyPath: "base") ?? [:]
+            configSettings = jsonDictionary.json(atKeyPath: "configs") ?? [:]
         } else {
             buildSettings = BuildSettings(dictionary: jsonDictionary)
             configSettings = [:]
+            presets = []
         }
     }
 
     public static func ==(lhs: Settings, rhs: Settings) -> Bool {
-        return lhs.buildSettings == rhs.buildSettings && lhs.configSettings == rhs.configSettings
+        return lhs.buildSettings == rhs.buildSettings &&
+            lhs.configSettings == rhs.configSettings &&
+            lhs.presets == rhs.presets
     }
 
     public var description: String {
@@ -47,9 +54,18 @@ public struct Settings: Equatable, JSONObjectConvertible, CustomStringConvertibl
             string += buildSettings.description
         }
         for (config, buildSettings) in configSettings {
-            if !buildSettings.dictionary.isEmpty {
-                string += "\n\(config)\n\t" + buildSettings.description.replacingOccurrences(of: "\n", with: "\n\t")
+            if !buildSettings.description.isEmpty {
+                if !string.isEmpty {
+                    string += "\n"
+                }
+                string += "\(config):\n  " + buildSettings.description.replacingOccurrences(of: "(.)\n  ", with: "$1\n    ", options: .regularExpression, range: nil)
             }
+        }
+        if !presets.isEmpty {
+            if !string.isEmpty {
+                string += "\n"
+            }
+            string += "Presets:\(presets.joined(separator: ","))"
         }
         return string
     }

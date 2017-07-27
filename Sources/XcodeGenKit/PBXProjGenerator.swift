@@ -135,7 +135,7 @@ public class PBXProjGenerator {
             let buildSettings = spec.getTargetBuildSettings(target: target, config: config)
             var baseConfigurationReference: String?
 
-            if let configPath = target.configs[config.name] {
+            if let configPath = target.configFiles[config.name] {
                 let path = basePath + configPath
                 baseConfigurationReference = fileReferencesByPath[path]
             }

@@ -40,11 +40,11 @@ public class ProjectGenerator {
 
         var errors: [SpecValidationError.Error] = []
 
-        func validateSettingPresets(_ settingsPresets: [String]) -> [SpecValidationError.Error] {
+        func validateSettings(_ settings: Settings) -> [SpecValidationError.Error] {
             var errors: [SpecValidationError.Error] = []
-            for preset in settingsPresets {
-                if let settingsPreset = spec.settingPresets[preset] {
-                    errors += validateSettingPresets(settingsPreset.settingPresets)
+            for preset in settings.presets {
+                if let settings = spec.settingPresets[preset] {
+                    errors += validateSettings(settings)
                 } else {
                     errors.append(.invalidSettingsPreset(preset))
                 }
@@ -52,12 +52,8 @@ public class ProjectGenerator {
             return errors
         }
 
-        for settingPreset in spec.settingPresets.values {
-            errors += validateSettingPresets(settingPreset.settingPresets)
-        }
-
-        for config in spec.configs {
-            errors += validateSettingPresets(config.settingPresets)
+        for settings in spec.settingPresets.values {
+            errors += validateSettings(settings)
         }
 
         for target in spec.targets {
@@ -89,7 +85,7 @@ public class ProjectGenerator {
                 }
             }
 
-            errors += validateSettingPresets(target.settingPresets)
+            errors += validateSettings(target.settings)
         }
 
         for scheme in spec.schemes {

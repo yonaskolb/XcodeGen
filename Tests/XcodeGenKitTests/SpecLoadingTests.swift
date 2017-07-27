@@ -76,19 +76,28 @@ func specLoadingTests() {
 
         $0.it("parses settings") {
             let spec = try Spec(path: fixturePath + "settings_test.yml")
-            try expect(spec.settingPresets.count) == 3
-            let preset1 = SettingPreset(settings: ["SETTING 1": "value 1"], settingPresets: ["preset2"])
-            let preset2 = SettingPreset(settings: ["SETTING 2": "value 2"])
-            let preset3 = SettingPreset(settings: Settings(buildSettings: ["SETTING 9": "value 9"], configSettings: ["config1": ["SETTING 8": "value 8"]]), settingPresets: ["preset2"])
+            let buildSettings: BuildSettings = ["SETTING": "value"]
+            let configSettings: [String: Settings] = ["config1": Settings(buildSettings: ["SETTING1": "value"])]
+            let presets = ["preset1"]
 
-            let config1 = Config(name: "config1", type: .debug, settings: BuildSettings(dictionary: ["SETTING 3": "value 3"]), settingPresets: ["preset1"])
-            let config2 = Config(name: "config2", type: .release, settings: BuildSettings(dictionary: ["SETTING 4": "value 4"]), settingPresets: ["preset2"])
+            let preset1 = Settings(buildSettings: buildSettings, configSettings: [:], presets: [])
+            let preset2 = Settings(buildSettings: .empty, configSettings: configSettings, presets: [])
+            let preset3 = Settings(buildSettings: buildSettings, configSettings: configSettings, presets: [])
+            let preset4 = Settings(buildSettings: buildSettings, configSettings: [:], presets: [])
+            let preset5 = Settings(buildSettings: buildSettings, configSettings: [:], presets: presets)
+            let preset6 = Settings(buildSettings: buildSettings, configSettings: configSettings, presets: presets)
+            let preset7 = Settings(buildSettings: buildSettings, configSettings: ["config1": Settings(buildSettings: buildSettings, presets: presets)])
+            let preset8 = Settings(buildSettings: .empty, configSettings: ["config1": Settings(configSettings: configSettings)])
+
+            try expect(spec.settingPresets.count) == 8
             try expect(spec.settingPresets["preset1"]) == preset1
             try expect(spec.settingPresets["preset2"]) == preset2
             try expect(spec.settingPresets["preset3"]) == preset3
-
-            try expect(spec.getConfig("config1")) == config1
-            try expect(spec.getConfig("config2")) == config2
+            try expect(spec.settingPresets["preset4"]) == preset4
+            try expect(spec.settingPresets["preset5"]) == preset5
+            try expect(spec.settingPresets["preset6"]) == preset6
+            try expect(spec.settingPresets["preset7"]) == preset7
+            try expect(spec.settingPresets["preset8"]) == preset8
         }
     }
 

@@ -21,11 +21,7 @@ extension Spec {
             buildSettings += SettingsPresetFile.config(type).getBuildSettings()
         }
 
-        for preset in config.settingPresets {
-            buildSettings += getBuildSettings(preset: preset, config: config)
-        }
-
-        buildSettings += config.settings
+        buildSettings += getBuildSettings(settings: settings, config: config)
 
         return buildSettings
     }
@@ -35,25 +31,7 @@ extension Spec {
 
         buildSettings += SettingsPresetFile.platform(target.platform).getBuildSettings()
         buildSettings += SettingsPresetFile.product(target.type).getBuildSettings()
-
-        for preset in target.settingPresets {
-            buildSettings += getBuildSettings(preset: preset, config: config)
-        }
-
         buildSettings += getBuildSettings(settings: target.settings, config: config)
-
-        return buildSettings
-    }
-
-    public func getBuildSettings(preset: String, config: Config) -> BuildSettings {
-        var buildSettings: BuildSettings = .empty
-        let settingPreset = settingPresets[preset]!
-
-        for preset in settingPreset.settingPresets {
-            buildSettings += getBuildSettings(preset: preset, config: config)
-        }
-
-        buildSettings += getBuildSettings(settings: settingPreset.settings, config: config)
 
         return buildSettings
     }
@@ -61,8 +39,16 @@ extension Spec {
     public func getBuildSettings(settings: Settings, config: Config) -> BuildSettings {
         var buildSettings: BuildSettings = .empty
 
+        for preset in settings.presets {
+            let presetSettings = settingPresets[preset]!
+            buildSettings += getBuildSettings(settings: presetSettings, config: config)
+        }
+
         buildSettings += settings.buildSettings
-        buildSettings += settings.configSettings[config.name]
+
+        if let configSettings = settings.configSettings[config.name] {
+            buildSettings += getBuildSettings(settings: configSettings, config: config)
+        }
 
         return buildSettings
     }

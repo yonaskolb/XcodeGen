@@ -4,7 +4,7 @@
 [![Build Status](https://img.shields.io/travis/yonaskolb/XcodeGen/master.svg?style=flat)](https://travis-ci.org/yonaskolb/XcodeGen)
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/yonaskolb/XcodeGen/blob/master/LICENSE)
 
-A command line tool that generates your Xcode project from a YAML project spec and your folder structure. 
+A command line tool that generates your Xcode project from a YAML project spec and your folder structure.
 This allows for easy configuration which is git friendly, and means your project structure represents exacty what's on disk. The project can be re-generated on demand which means you can remove your xcode project from git and say goodbye to .xcodeproj merge conflicts!
 
 Given a simple project spec file:
@@ -12,10 +12,8 @@ Given a simple project spec file:
 ```yaml
 name: My Project
 configs:
-  debug:
-    type: debug
-  release:
-    type: release
+  debug: debug
+  release: release
 targets:
   - name: MyApp
     type: application
@@ -61,46 +59,65 @@ Use `XcodeGen -help` to see the list of options:
 - **project**: (optional): This is an optional path the generated xcode project file. If it is left out, the file will be written to the same directory as the spec, and with the same name as the spec file
 
 # XcodeGen project spec
-Each spec must contain a name which is used for the generated project name
+Each spec must contain a name which is used for the generated project name.
 
-## configs
-Configs specify the configurations in your project. 
-Each config can specify a `type` of either `debug` or `release` which will then apply the default build settings for those types. A config can also specify its own list of `settings `
-
+#### configs
+Configs specify the build configurations in the project.
+Each config maps to a build type of either `debug` or `release` which will then apply default build settings for those types. Any value other than `debug` or `release` (for example "none"), will mean no default build settings will be loaded
 ```yaml
 configs:
-  Debug:
-    type: debug
-    settings:
-      MY_COOL_SETTING: value
-  Release:
-    type: release
+  Debug: debug
+  Release: release
 ```
-If no configs are specified, default `Debug` and `Release` configs will be created for you
+If no configs are specified, default `Debug` and `Release` configs will be created automatically
 
-## settingPresets
-Setting presets can be used to group build settings together and reuse them elsewhere. Each preset specifies a list of settings. It can also list other setting presets that will be merged in.
+#### settings
+Project settings use the [Settings](#settings) spec. Default base and config type settings will be applied first before any custom settings
+
+#### settingPresets
+Setting presets can be used to group build settings together and reuse them elsewhere. Each preset is a Settings schema, so can include other presets
 
 ```yaml
-settingPresets:
 settingPresets:
   preset1:
     BUILD_SETTING: value
   preset2:
-    settings:
+    base:
       BUILD_SETTING: value
-    settingPresets:
+    presets:
       - preset
   preset3:
-    settings:
-      default:
-        BUILD_SETTING: value
-      configs:
+     configs:
         debug:
-          BUILD_SETTING: value
-    settingPresets:
-      - preset
+        	presets:
+            - preset
 ```
+
+## Settings
+Settings can be defined on the project and each target, and the format is the same. Settings can either be a simple list of build settings or can be more advanced with the following properties:
+
+- `presets`: a list of presets to include and merge
+- `configs`: a mapping of config name to a new nested settings spec. These settings will only be applied for that config
+- `base`: used to specify default settings that apply to any config
+
+```yaml
+settings:
+  BUILD_SETTING_1: value 1
+  BUILD_SETTING_2: value 2
+```
+
+```yaml
+settings:
+  base:
+    BUILD_SETTING_1: value 1
+  configs:
+    my_config:
+      BUILD_SETTING_2: value 2
+  presets:
+    - my_settings
+```
+
+Settings are merged in the following order: presets, configs, base.
 
 ## targets
 This is list of targets
@@ -130,7 +147,7 @@ This specifies the product type of the target. This will provide default build s
 - app-extension.messages-sticker-pack
 - xpc-service
 
-### platform
+#### platform
 Specifies the platform for the target. This will provide default build settings for that platform. It can be any of the following:
 - iOS
 - tvOS
@@ -145,51 +162,18 @@ targets:
   - name: MyTarget
     sources: MyTargetSource
   - name: MyOtherTarget
-    sources: 
+    sources:
       - MyOtherTargetSource1
       - MyOtherTargetSource2
 ```
 
 #### settings
-Species the build settings for the target. This can either be a simple list of build settings, or you can specify a map of configs to settings. If supplying such config specific settings, then a `default` settings list can be provided for build settings that apply across all configurations
-
-```yaml
-configs:
-  test:
-    type: debug
-  staging:
-    type: debug
-  production:
-    type: release
-targets:
-  - name: MyTarget
-    settings:
-      INFO_PLIST: Info.plist
-  - name: MyOtherTarget
-    settings: 
-      default:
-        MY_SETTING: default
-        MY_OTHER_SETTING: value
-      configs:
-        test:
-        	MY_SETTING: test value
-```
-
-#### settingPresets
-Specifies the target specific settingPresets. This is a simple list that maps to the top level setting presets. These settings will be merged in before any custom settings
-
-```yaml
-targets:
-  - name: MyTarget
-    settingPresets:
-      - mypreset1
-      - mypreset2
-```
+Species the build settings for the target. This uses the same [Settings](#settings) spec as the project. Default platform and product type settings will be applied first before any custom settings
 
 #### dependencies
-Species the dependencies for the target. This can be another target, a framework path, or a carthage dependency. 
+Species the dependencies for the target. This can be another target, a framework path, or a carthage dependency.
 
-Carthage dependencies look for frameworks in `Carthage/Build/PLATFORM/FRAMEWORK.framework` where `PLATFORM` is your target's platform, and `FRAMEWORK` is the carthage framework you've specified. 
+Carthage dependencies look for frameworks in `Carthage/Build/PLATFORM/FRAMEWORK.framework` where `PLATFORM` is the target's platform, and `FRAMEWORK` is the carthage framework you've specified.
 If any applications contain carthage dependencies within itself or any dependent targets, a carthage copy files script is automatically added to the application containing all the relevant frameworks
 
 ```yaml
@@ -202,13 +186,13 @@ targets:
   - name: MyFramework
 ```
 
-#### configs
+#### configFiles
 Specifies `.xcconfig` files for each configuration for the target.
 
 ```yaml
 targets:
   - name: MyTarget
-    configs:
+    configFiles:
       Debug: config_files/debug.xcconfig
       Release: config_files/release.xcconfig
 ```
@@ -226,18 +210,12 @@ Each scheme would use different build configuration for the different build type
 
 ```
 configs:
-  Test Debug:
-    type: debug
-  Staging Debug:
-    type: debug
-  Production Debug:
-    type: debug
-  Test Release:
-    type: release
-  Staging Release:
-    type: release
-  Production Release:
-    type: release
+  Test Debug: debug
+  Staging Debug: debug
+  Production Debug: debug
+  Test Release: release
+  Staging Release: release
+  Production Release: release
 targets
   - name: MyApp
     generateSchemes:

@@ -17,11 +17,11 @@ public struct Spec {
     public var name: String
     public var targets: [Target]
     public var settings: Settings
-    public var settingPresets: [String: SettingPreset]
+    public var settingPresets: [String: Settings]
     public var configs: [Config]
     public var schemes: [Scheme]
 
-    public init(name: String, configs: [Config] = [], targets: [Target] = [], settings: Settings = .empty, settingPresets: [String: SettingPreset] = [:], schemes: [Scheme] = []) {
+    public init(name: String, configs: [Config] = [], targets: [Target] = [], settings: Settings = .empty, settingPresets: [String: Settings] = [:], schemes: [Scheme] = []) {
         self.name = name
         self.targets = targets
         self.configs = configs
@@ -57,7 +57,8 @@ extension Spec {
         name = try jsonDictionary.json(atKeyPath: "name")
         settings = jsonDictionary.json(atKeyPath: "settings") ?? .empty
         settingPresets = jsonDictionary.json(atKeyPath: "settingPresets") ?? [:]
-        configs = try jsonDictionary.json(atKeyPath: "configs")
+        let configs: [String: String] = jsonDictionary.json(atKeyPath: "configs") ?? [:]
+        self.configs = configs.map { Config(name: $0, type: ConfigType(rawValue: $1)) }
         if jsonDictionary["targets"] == nil {
             targets = []
         } else {

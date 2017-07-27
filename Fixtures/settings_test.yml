@@ -1,50 +1,84 @@
+settings:
+  BUILD_SETTING_1: value
+  BUILD_SETTING_2: value 2
+
+settings:
+  base:
+    BUILD_SETTING_1: value 1
+  configs:
+    my_config:
+      BUILD_SETTING_2: value 2
+  presets:
+    - my_settings
+
 name: SettingsTest
 settingPresets:
   preset1:
-    settingPresets:
-      - preset2
-    settings:
-      SETTING 1: value 1
+    SETTING: value
   preset2:
-    SETTING 2: value 2
+    configs:
+      config1:
+        SETTING1: value
   preset3:
-    settingPresets:
-      - preset2
-    settings:
-      default:
-        SETTING 9: value 9
-      configs:
-        config1:
-          SETTING 8: value 8
+    base:
+      SETTING: value
+    configs:
+      config1:
+        SETTING1: value
+  preset4:
+    base:
+      SETTING: value
+  preset5:
+    presets:
+      - preset1
+    base:
+      SETTING: value
+  preset6:
+    presets:
+      - preset1
+    base:
+      SETTING: value
+    configs:
+      config1:
+        SETTING1: value
+  preset7:
+    base:
+      SETTING: value
+    configs:
+      config1:
+        presets:
+          - preset1
+        base:
+          SETTING: value
+  preset8:
+    configs:
+      config1:
+        configs:
+          config1:
+            SETTING1: value
+settings:
+  base:
+    SETTING 5: value 5
+  presets:
+    - preset7
+  configs:
+    config1:
+      SETTING 6: value 6
 configs:
-  config1:
-    type: debug
-    settingPresets:
-      - preset1
-    settings:
-      SETTING 3: value 3
-  config2:
-    type: release
-    settingPresets:
-      - preset2
-    settings:
-      SETTING 4: value 4
+  config1: debug
+  config2: release
 targets:
-  - name: Target1
+  - name: Target
     type: application
     platform: iOS
-    settingPresets:
-      - preset1
     settings:
-      SETTING 5: value 5
-  - name: Target2
-    type: application
-    platform: iOS
-    settingPresets:
-      - preset3
-    settings:
-      default:
-        SETTING 7: value 7
+      presets:
+        - preset7
+      base:
+        SETTING 2: value 2
       configs:
         config1:
-          SETTING 6: value 6
+          presets:
+            - preset1
+          base:
+            SETTING 3: value 3

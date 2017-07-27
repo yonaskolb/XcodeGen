@@ -15,13 +15,12 @@ public struct Target {
     public var type: PBXProductType
     public var platform: Platform
     public var settings: Settings
-    public var settingPresets: [String]
     public var sources: [String]
     public var sourceExludes: [String]
     public var dependencies: [Dependency]
     public var prebuildScripts: [String]
     public var postbuildScripts: [String]
-    public var configs: [String: String]
+    public var configFiles: [String: String]
     public var generateSchemes: [String]
 
     public var filename: String {
@@ -32,13 +31,12 @@ public struct Target {
         return name
     }
 
-    public init(name: String, type: PBXProductType, platform: Platform, settings: Settings = .empty, settingPresets: [String] = [], configs: [String: String] = [:], sources: [String] = [], sourceExludes: [String] = [], dependencies: [Dependency] = [], prebuildScripts: [String] = [], postbuildScripts: [String] = [], generateSchemes: [String] = []) {
+    public init(name: String, type: PBXProductType, platform: Platform, settings: Settings = .empty, configFiles: [String: String] = [:], sources: [String] = [], sourceExludes: [String] = [], dependencies: [Dependency] = [], prebuildScripts: [String] = [], postbuildScripts: [String] = [], generateSchemes: [String] = []) {
         self.name = name
         self.type = type
         self.platform = platform
         self.settings = settings
-        self.settingPresets = settingPresets
-        self.configs = configs
+        self.configFiles = configFiles
         self.sources = sources
         self.sourceExludes = sourceExludes
         self.dependencies = dependencies
@@ -65,8 +63,7 @@ extension Target: JSONObjectConvertible {
             throw SpecError.unknownTargetPlatform(platformString)
         }
         settings = jsonDictionary.json(atKeyPath: "settings") ?? .empty
-        settingPresets = jsonDictionary.json(atKeyPath: "settingsPresets") ?? []
-        configs = jsonDictionary.json(atKeyPath: "configs") ?? [:]
+        configFiles = jsonDictionary.json(atKeyPath: "configFiles") ?? [:]
         if let source: String = jsonDictionary.json(atKeyPath: "sources") {
             sources = [source]
         } else {

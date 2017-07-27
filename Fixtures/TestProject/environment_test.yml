@@ -1,0 +1,24 @@
+name: EnvironmentTest
+settingPresets:
+  app:
+    PRODUCT_BUNDLE_IDENTIFIER: com.app$(BUNDLE_ID_SUFFIX)$(BUNDLE_ID_EXTENSION_SUFFIX)
+  test:
+    BUNDLE_ID_SUFFIX: .test
+  staging:
+    BUNDLE_ID_SUFFIX: .staging
+settings:
+  configs:
+    Test Debug:
+configs:
+  Test Debug:
+    type: debug
+  Staging Debug:
+    type: debug
+  Production Debug:
+    type: debug
+  Test Release:
+    type: release
+  Staging Release:
+    type: release
+  Production Release:
+    type: release

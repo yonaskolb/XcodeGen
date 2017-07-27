@@ -45,30 +45,27 @@ func projectGeneratorTests() {
 
             $0.it("merges settings") {
                 let spec = try Spec(path: fixturePath + "settings_test.yml")
-                let project = try getProject(spec)
-                let configs = project.pbxproj.objects.buildConfigurations
-                try expect(configs.count) == 6
                 guard let config = spec.getConfig("config1") else { throw failure("Couldn't find config1") }
                 let debugProjectSettings = spec.getProjectBuildSettings(config: config)
-                guard let target = spec.getTarget("Target2") else { throw failure("Couldn't find Target2") }
+
+                guard let target = spec.getTarget("Target") else { throw failure("Couldn't find Target") }
                 let targetDebugSettings = spec.getTargetBuildSettings(target: target, config: config)
 
                 var buildSettings = BuildSettings()
                 buildSettings += SettingsPresetFile.base.getBuildSettings()
                 buildSettings += SettingsPresetFile.config(.debug).getBuildSettings()
 
-                buildSettings += ["SETTING 1": "value 1",
-                                  "SETTING 2": "value 2",
-                                  "SETTING 3": "value 3"]
+                buildSettings += ["SETTING": "value",
+                                  "SETTING 5": "value 5",
+                                  "SETTING 6": "value 6"]
                 try expect(debugProjectSettings) == buildSettings
 
                 var expectedTargetDebugSettings = BuildSettings()
                 expectedTargetDebugSettings += SettingsPresetFile.product(.application).getBuildSettings()
                 expectedTargetDebugSettings += SettingsPresetFile.platform(.iOS).getBuildSettings()
-                expectedTargetDebugSettings += ["SETTING 7": "value 7", "SETTING 6": "value 6"]
+                expectedTargetDebugSettings += ["SETTING 2": "value 2", "SETTING 3": "value 3", "SETTING": "value"]
 
                 try expect(targetDebugSettings) == expectedTargetDebugSettings
-
             }
         }
 
