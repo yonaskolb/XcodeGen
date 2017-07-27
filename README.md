@@ -36,9 +36,9 @@ Make sure Xcode 8 is installed and run the following commands in the same direct
 
 ### 1. Command Line
 ```
-swift build
+swift build -c release
 ```
-This compiles a build via the Swift Package Manager. You can find the output in the build directory which by default is at `.build/debug/XcodeGen`. You can simply run it with:
+This compiles a build via the Swift Package Manager. You can find the output in the build directory which by default is at `.build/release/XcodeGen`. You can simply run it with:
 
 ```
 .build/debug/XcodeGen ..arguments
