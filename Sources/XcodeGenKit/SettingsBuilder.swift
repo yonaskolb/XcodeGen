@@ -31,7 +31,6 @@ extension Spec {
     }
 
     public func getTargetBuildSettings(target: Target, config: Config) -> BuildSettings {
-
         var buildSettings = BuildSettings()
 
         buildSettings += SettingsPresetFile.platform(target.platform).getBuildSettings()
@@ -49,11 +48,13 @@ extension Spec {
     public func getBuildSettings(preset: String, config: Config) -> BuildSettings {
         var buildSettings: BuildSettings = .empty
         let settingPreset = settingPresets[preset]!
-        buildSettings += getBuildSettings(settings: settingPreset.settings, config: config)
 
         for preset in settingPreset.settingPresets {
             buildSettings += getBuildSettings(preset: preset, config: config)
         }
+
+        buildSettings += getBuildSettings(settings: settingPreset.settings, config: config)
+
         return buildSettings
     }
 
