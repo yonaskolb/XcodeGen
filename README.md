@@ -1,6 +1,7 @@
 # XcodeGen
 
 ![Package Managers](https://img.shields.io/badge/package%20managers-SwiftPM-yellow.svg)
+[![Git Version](https://img.shields.io/github/release/yonaskolb/xcodegen.svg)](https://github.com/yonaskolb/XcodeGen/releases)
 [![Build Status](https://img.shields.io/travis/yonaskolb/XcodeGen/master.svg?style=flat)](https://travis-ci.org/yonaskolb/XcodeGen)
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/yonaskolb/XcodeGen/blob/master/LICENSE)
 
