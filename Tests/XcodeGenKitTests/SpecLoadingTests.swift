@@ -2,25 +2,26 @@ import Spectre
 import PathKit
 import XcodeGenKit
 import xcodeproj
+import ProjectSpec
 
 func specLoadingTests() {
 
     @discardableResult
-    func getSpec(_ spec: [String: Any]) throws -> Spec {
+    func getProjectSpec(_ spec: [String: Any]) throws -> ProjectSpec {
         var specDictionary: [String: Any] = ["name": "test"]
         for (key, value) in spec {
             specDictionary[key] = value
         }
-        return try Spec(jsonDictionary: specDictionary)
+        return try ProjectSpec(jsonDictionary: specDictionary)
     }
 
-    func expectSpecError(_ spec: [String: Any], _ expectedError: SpecError) throws {
+    func expectProjectSpecError(_ spec: [String: Any], _ expectedError: ProjectSpecError) throws {
         try expectError(expectedError) {
-            try getSpec(spec)
+            try getProjectSpec(spec)
         }
     }
 
-    func expectTargetError( _ target: [String: Any], _ expectedError: SpecError) throws {
+    func expectTargetError( _ target: [String: Any], _ expectedError: ProjectSpecError) throws {
         try expectError(expectedError) {
             _ = try Target(jsonDictionary: target)
         }
@@ -75,7 +76,7 @@ func specLoadingTests() {
         }
 
         $0.it("parses settings") {
-            let spec = try Spec(path: fixturePath + "settings_test.yml")
+            let spec = try ProjectSpec(path: fixturePath + "settings_test.yml")
             let buildSettings: BuildSettings = ["SETTING": "value"]
             let configSettings: [String: Settings] = ["config1": Settings(buildSettings: ["SETTING1": "value"])]
             let presets = ["preset1"]

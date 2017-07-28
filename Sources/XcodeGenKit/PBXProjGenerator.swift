@@ -13,10 +13,11 @@ import xcodeproj
 import xcodeprojprotocols
 import JSONUtilities
 import Yams
+import ProjectSpec
 
 public class PBXProjGenerator {
 
-    let spec: Spec
+    let spec: ProjectSpec
     let basePath: Path
 
     var objects: [PBXObject] = []
@@ -33,10 +34,10 @@ public class PBXProjGenerator {
     var uuids:Set<String> = []
     var projectReference: String
 
-    public init(spec: Spec, path: Path) {
+    public init(spec: ProjectSpec, path: Path) {
         self.spec = spec
         self.basePath = path
-        
+
         projectReference = ""
         projectReference = generateUUID(PBXProject.self, spec.name)
     }

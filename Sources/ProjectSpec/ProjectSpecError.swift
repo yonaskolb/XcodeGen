@@ -8,7 +8,7 @@
 
 import Foundation
 
-public enum SpecError: Error, CustomStringConvertible {
+public enum ProjectSpecError: Error, CustomStringConvertible {
     case unknownTargetType(String)
     case unknownTargetPlatform(String)
     case invalidDependency([String: Any])

@@ -2,15 +2,16 @@ import Spectre
 import XcodeGenKit
 import xcodeproj
 import PathKit
+import ProjectSpec
 
 func projectGeneratorTests() {
 
-    func getProject(_ spec: Spec) throws -> XcodeProj {
+    func getProject(_ spec: ProjectSpec) throws -> XcodeProj {
         let generator = ProjectGenerator(spec: spec, path: Path(""))
         return try generator.generateProject()
     }
 
-    func getPbxProj(_ spec: Spec) throws -> PBXProj {
+    func getPbxProj(_ spec: ProjectSpec) throws -> PBXProj {
         return try getProject(spec).pbxproj
     }
 
@@ -26,7 +27,7 @@ func projectGeneratorTests() {
         $0.describe("Config") {
 
             $0.it("generates config defaults") {
-                let spec = Spec(name: "test")
+                let spec = ProjectSpec(name: "test")
                 let project = try getProject(spec)
                 let configs = project.pbxproj.objects.buildConfigurations
                 try expect(configs.count) == 2
@@ -35,7 +36,7 @@ func projectGeneratorTests() {
             }
 
             $0.it("generates configs") {
-                let spec = Spec(name: "test", configs: [Config(name: "config1"), Config(name: "config2")])
+                let spec = ProjectSpec(name: "test", configs: [Config(name: "config1"), Config(name: "config2")])
                 let project = try getProject(spec)
                 let configs = project.pbxproj.objects.buildConfigurations
                 try expect(configs.count) == 2
@@ -44,7 +45,7 @@ func projectGeneratorTests() {
             }
 
             $0.it("merges settings") {
-                let spec = try Spec(path: fixturePath + "settings_test.yml")
+                let spec = try ProjectSpec(path: fixturePath + "settings_test.yml")
                 guard let config = spec.getConfig("config1") else { throw failure("Couldn't find config1") }
                 let debugProjectSettings = spec.getProjectBuildSettings(config: config)
 
@@ -71,7 +72,7 @@ func projectGeneratorTests() {
 
         $0.describe("Targets") {
 
-            let spec = Spec(name: "test", targets: [application, framework])
+            let spec = ProjectSpec(name: "test", targets: [application, framework])
 
             $0.it("generates targets") {
                 let pbxProject = try getPbxProj(spec)
@@ -95,7 +96,7 @@ func projectGeneratorTests() {
             let buildTarget = Scheme.BuildTarget(target: application.name)
             $0.it("generates scheme") {
                 let scheme = Scheme(name: "MyScheme", build: Scheme.Build(targets: [buildTarget]))
-                let spec = Spec(name: "test", targets: [application, framework], schemes: [scheme])
+                let spec = ProjectSpec(name: "test", targets: [application, framework], schemes: [scheme])
                 let project = try getProject(spec)
                 guard let target = project.pbxproj.objects.nativeTargets.first (where: { $0.name == application.name }) else { throw failure("Target not found") }
                 guard let xcscheme = project.sharedData?.schemes.first else { throw failure("Scheme not found") }
@@ -133,7 +134,7 @@ func projectGeneratorTests() {
                     Config(name: "Production Release", type: .release),
                     ]
 
-                let spec = Spec(name: "test", configs: configs, targets: [target, framework])
+                let spec = ProjectSpec(name: "test", configs: configs, targets: [target, framework])
                 let project = try getProject(spec)
 
                 try expect(project.sharedData?.schemes.count) == 2

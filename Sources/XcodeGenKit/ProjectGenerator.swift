@@ -12,14 +12,15 @@ import xcodeproj
 import xcodeprojprotocols
 import JSONUtilities
 import Yams
+import ProjectSpec
 
 public class ProjectGenerator {
 
-    var spec: Spec
+    var spec: ProjectSpec
     var path: Path
     let currentXcodeVersion = "0830"
 
-    public init(spec: Spec, path: Path) {
+    public init(spec: ProjectSpec, path: Path) {
         self.spec = spec
         self.path = path
     }

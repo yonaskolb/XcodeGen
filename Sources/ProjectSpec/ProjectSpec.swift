@@ -12,7 +12,7 @@ import JSONUtilities
 import PathKit
 import Yams
 
-public struct Spec {
+public struct ProjectSpec {
 
     public var name: String
     public var targets: [Target]
@@ -39,7 +39,7 @@ public struct Spec {
     }
 }
 
-extension Spec {
+extension ProjectSpec {
 
     public init(path: Path) throws {
         let string: String = try path.read()

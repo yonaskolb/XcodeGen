@@ -9,8 +9,9 @@
 import Foundation
 import xcodeproj
 import PathKit
+import ProjectSpec
 
-extension Spec {
+extension ProjectSpec {
 
     public func getProjectBuildSettings(config: Config) -> BuildSettings {
 

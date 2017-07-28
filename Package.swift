@@ -6,7 +6,8 @@ let package = Package(
     name: "XcodeGen",
     targets: [
         Target(name: "XcodeGen", dependencies: ["XcodeGenKit"]),
-        Target(name: "XcodeGenKit"),
+        Target(name: "XcodeGenKit", dependencies: ["ProjectSpec"]),
+        Target(name: "ProjectSpec"),
     ],
     dependencies: [
         .Package(url: "https://github.com/kylef/PathKit.git", majorVersion: 0, minor: 8),

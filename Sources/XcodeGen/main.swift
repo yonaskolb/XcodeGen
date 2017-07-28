@@ -11,6 +11,7 @@ import PathKit
 import Commander
 import XcodeGenKit
 import xcodeproj
+import ProjectSpec
 
 func generate(spec: String, project: String?) {
 
@@ -26,9 +27,9 @@ func generate(spec: String, project: String?) {
         projectPath = specPath.parent()
     }
 
-    let spec: Spec
+    let spec: ProjectSpec
     do {
-        spec = try Spec(path: specPath)
+        spec = try ProjectSpec(path: specPath)
         print("Loaded spec: \(spec.targets.count) targets, \(spec.schemes.count) schemes, \(spec.configs.count) configs")
     } catch {
         print("Parsing spec failed: \(error.localizedDescription)")

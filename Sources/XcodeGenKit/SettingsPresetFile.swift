@@ -8,6 +8,7 @@
 
 import Foundation
 import xcodeproj
+import ProjectSpec
 
 public enum SettingsPresetFile {
     case config(ConfigType)

@@ -54,13 +54,13 @@ extension Target: JSONObjectConvertible {
         if let type = PBXProductType(string: typeString) {
             self.type = type
         } else {
-            throw SpecError.unknownTargetType(typeString)
+            throw ProjectSpecError.unknownTargetType(typeString)
         }
         let platformString: String = try jsonDictionary.json(atKeyPath: "platform")
         if let platform = Platform(rawValue: platformString)  {
             self.platform = platform
         } else {
-            throw SpecError.unknownTargetPlatform(platformString)
+            throw ProjectSpecError.unknownTargetPlatform(platformString)
         }
         settings = jsonDictionary.json(atKeyPath: "settings") ?? .empty
         configFiles = jsonDictionary.json(atKeyPath: "configFiles") ?? [:]
@@ -107,7 +107,7 @@ extension Dependency: JSONObjectConvertible {
         } else if let carthage: String = jsonDictionary.json(atKeyPath: "carthage") {
             self = .carthage(carthage)
         } else {
-            throw SpecError.invalidDependency(jsonDictionary)
+            throw ProjectSpecError.invalidDependency(jsonDictionary)
         }
     }
 }

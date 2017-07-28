@@ -12,11 +12,11 @@ import PathKit
 
 extension Array where Element: ProjectElement {
 
-    var referenceList: [String] {
+    public var referenceList: [String] {
         return map { $0.reference }
     }
 
-    var referenceSet: Set<String> {
+    public var referenceSet: Set<String> {
         return Set(referenceList)
     }
 }
