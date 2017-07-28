@@ -12,9 +12,6 @@ Given a simple project spec file:
 
 ```yaml
 name: My Project
-configs:
-  debug: debug
-  release: release
 targets:
   - name: MyApp
     type: application
@@ -30,7 +27,7 @@ targets:
     platform: iOS
     sources: MyFramework
 ```
-A project would be created with 2 connected targets, with all the required build settings. See below for the full spec and all the options it provides.
+A project would be created with 2 connected targets, with all the required configurations and build settings. See below for the full spec and all the options it provides.
 
 ## Installing
 Make sure Xcode 8.3 is installed first.
