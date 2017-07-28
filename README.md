@@ -32,32 +32,52 @@ targets:
 ```
 A project would be created with 2 connected targets, with all the required build settings. See below for the full spec and all the options it provides.
 
-## Install
-Make sure Xcode 8 is installed and run the following commands in the same directory as this repo. You can either build via the Swift Package Manager on the command line or Xcode
+## Installing
+Make sure Xcode 8.3 is installed first.
 
-### 1. Command Line
-```
-swift build -c release
-```
-This compiles a build via the Swift Package Manager. You can find the output in the build directory which by default is at `.build/release/XcodeGen`. You can simply run it with:
+**Make**:
 
 ```
-.build/debug/XcodeGen ..arguments
+$ git clone https://github.com/yonaskolb/XcodeGen.git
+$ cd XcodeGen
+$ make
 ```
 
-### 2. Xcode
-```
-swift package generate-xcodeproj
-```
-will create an `xcodeproj` file that you can open, edit and run in Xcode, which also makes editing any code easier.
+**Swift Package Manager**:
 
-If you want to pass the required arguments when running in XCode, you can edit the scheme to include launch arguments.
+Add the following to your Package.swift file's dependencies:
+
+```
+.Package(url: "https://github.com/yonaskolb/XcodeGen.git", majorVersion: 0)
+```
+
+And then import wherever needed:
+
+```
+import XcodeGenKit
+```
 
 ## Usage
-Use `XcodeGen -help` to see the list of options:
 
-- **spec** (required): This is the path to the yaml project spec. If none is specified, XcodeGen will look for a `xcodegen.yml` file
-- **project**: (optional): This is an optional path the generated xcode project file. If it is left out, the file will be written to the same directory as the spec, and with the same name as the spec file
+```
+$ xcodegen
+```
+This will look for a project spec in the current directory called `xcodegen.yml`
+
+Use `xcodegen help` to see the list of options:
+
+- **--spec**: This is an optional path to the yaml project spec
+- **--project**: This is an optional path the generated xcode project file. If it is left out, the file will be written to the same directory as the spec, and with the name included in the spec
+
+## Editing
+```
+$ git clone https://github.com/yonaskolb/XcodeGen.git
+$ cd XcodeGen
+$ swift package generate-xcodeproj
+```
+This use Swift Project Manager to create an `xcodeproj` file that you can open, edit and run in Xcode, which makes editing any code easier.
+
+If you want to pass any required arguments when running in XCode, you can edit the scheme to include launch arguments.
 
 # XcodeGen project spec
 Each spec must contain a name which is used for the generated project name.
