@@ -1,6 +1,6 @@
 <p align="center">
 <a href="https://github.com/yonaskolb/XcodeGen">
-<img src="Assets/Logo.png" srcset="Assets/Logo@2x.png 2x" alt="XcodeGen" />
+<img width="200" height="197" src="Assets/Logo.png" srcset="Assets/Logo@2x.png 2x" alt="XcodeGen" />
 </a>
 </p>
 <p align="center">
