@@ -1,3 +1,9 @@
+<p align="center">
+<a href="https://github.com/yonaskolb/XcodeGen">
+<img src="Assets/Logo.png" srcset="Assets/Logo@2x.png 2x" alt="XcodeGen" />
+</a>
+</p>
+
 # XcodeGen
 
 ![Package Managers](https://img.shields.io/badge/package%20managers-SwiftPM-yellow.svg)
