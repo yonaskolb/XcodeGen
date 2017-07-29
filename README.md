@@ -12,8 +12,8 @@ A command line tool that generates your Xcode project from a YAML project spec a
 - ✅ Create projects on demand and remove your `.xcodeproj` file from git, which means **no merge conflicts**!
 - ✅ Easily **copy and paste** files and directories without having to edit anything in xcode
 - ✅ Share build settings across multiple targets with **build setting presets**
-- ✅ Automatically generate Schemes for **different environments** like test and production which use the correct debug and release settings
-- ✅ Easily **create new projects** with complicated setups without messing around with targets, linkages and build settings
+- ✅ Automatically generate Schemes for **different environments** like test and production
+- ✅ Easily **create new projects** with complicated setups on demand without messing around with Xcode
 - ✅ Generate from anywhere including **Continuous Delivery** servers
 
 
@@ -41,7 +41,7 @@ A project would be created with 2 connected targets, with all the required confi
 ## Installing
 Make sure Xcode 8.3 is installed first.
 
-###Make
+### Make
 
 ```
 $ git clone https://github.com/yonaskolb/XcodeGen.git
@@ -50,7 +50,7 @@ $ make
 ```
 This will install XcodeGen to `usr/local/bin` so it can be used from anywhere
 
-###Swift Package Manager
+### Swift Package Manager
 
 **Use CI tool**
 
