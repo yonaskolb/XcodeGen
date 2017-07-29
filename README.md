@@ -3,15 +3,22 @@
 <img src="Assets/Logo.png" srcset="Assets/Logo@2x.png 2x" alt="XcodeGen" />
 </a>
 </p>
+<p align="center">
+  <img src="https://img.shields.io/badge/package%20managers-SwiftPM-yellow.svg"/>
+  <a href="https://github.com/yonaskolb/XcodeGen/releases">
+    <img src="https://img.shields.io/github/release/yonaskolb/xcodegen.svg"/>
+  </a>
+  <a href="https://travis-ci.org/yonaskolb/XcodeGen">
+    <img src="https://img.shields.io/travis/yonaskolb/XcodeGen/master.svg?style=flat"/>
+  </a>
+  <a href="https://github.com/yonaskolb/XcodeGen/blob/master/LICENSE">
+    <img src="https://img.shields.io/github/license/mashape/apistatus.svg"/>
+  </a>
+</p>
 
 # XcodeGen
 
-![Package Managers](https://img.shields.io/badge/package%20managers-SwiftPM-yellow.svg)
-[![Git Version](https://img.shields.io/github/release/yonaskolb/xcodegen.svg)](https://github.com/yonaskolb/XcodeGen/releases)
-[![Build Status](https://img.shields.io/travis/yonaskolb/XcodeGen/master.svg?style=flat)](https://travis-ci.org/yonaskolb/XcodeGen)
-[![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/yonaskolb/XcodeGen/blob/master/LICENSE)
-
-A command line tool that generates your Xcode project from a YAML project spec and your folder structure.
+A command line tool that generates an Xcode project from a YAML project spec and your folder structure.
 
 - ✅ Easy **configuration** of projects which is human readable and git friendly
 - ✅ Groups in Xcode are always **synced** to your directories on disk
