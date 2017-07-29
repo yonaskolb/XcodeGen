@@ -6,9 +6,18 @@
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/yonaskolb/XcodeGen/blob/master/LICENSE)
 
 A command line tool that generates your Xcode project from a YAML project spec and your folder structure.
-This allows for easy configuration which is git friendly, and means your project structure represents exacty what's on disk. The project can be re-generated on demand which means you can remove your xcode project from git and say goodbye to .xcodeproj merge conflicts!
 
-Given a simple project spec file:
+- ✅ Easy **configuration** of projects which is human readable and git friendly
+- ✅ Groups in Xcode are always **synced** to your directories on disk
+- ✅ Create projects on demand and remove your `.xcodeproj` file from git, which means **no merge conflicts**!
+- ✅ Easily **copy and paste** files and directories without having to edit anything in xcode
+- ✅ Share build settings across multiple targets with **build setting presets**
+- ✅ Automatically generate Schemes for **different environments** like test and production which use the correct debug and release settings
+- ✅ Easily **create new projects** with complicated setups without messing around with targets, linkages and build settings
+- ✅ Generate from anywhere including **Continuous Delivery** servers
+
+
+Given a very simple project spec file like this:
 
 ```yaml
 name: My Project
@@ -32,15 +41,27 @@ A project would be created with 2 connected targets, with all the required confi
 ## Installing
 Make sure Xcode 8.3 is installed first.
 
-**Make**:
+###Make
 
 ```
 $ git clone https://github.com/yonaskolb/XcodeGen.git
 $ cd XcodeGen
 $ make
 ```
+This will install XcodeGen to `usr/local/bin` so it can be used from anywhere
 
-**Swift Package Manager**:
+###Swift Package Manager
+
+**Use CI tool**
+
+```
+$ git clone https://github.com/yonaskolb/XcodeGen.git
+$ cd XcodeGen
+$ swift build -c release
+$ .build/release/XcodeGen
+```
+
+**Use as dependency**
 
 Add the following to your Package.swift file's dependencies:
 
@@ -48,17 +69,16 @@ Add the following to your Package.swift file's dependencies:
 .Package(url: "https://github.com/yonaskolb/XcodeGen.git", majorVersion: 0)
 ```
 
-And then import wherever needed:
-
-```
-import XcodeGenKit
-```
+And then import wherever needed: `import XcodeGenKit`
 
 ## Usage
+
+Simply run:
 
 ```
 $ xcodegen
 ```
+
 This will look for a project spec in the current directory called `xcodegen.yml`
 
 Use `xcodegen help` to see the list of options:
@@ -90,7 +110,7 @@ This tool is powered by:
 - [Commander](https://github.com/kylef/Commander)
 - [Yams](https://github.com/jpsim/Yams)
 
-Inspriration for this tool came from:
+Inspiration for this tool came from:
 
 - [struct](https://github.com/workshop/struct)
 - [xcake](https://github.com/jcampbell05/xcake)
@@ -101,4 +121,4 @@ Pull requests and issues are welcome
 
 ## License
 
-SwagGen is licensed under the MIT license. See [LICENSE](LICENSE) for more info.
+XcodeGen is licensed under the MIT license. See [LICENSE](LICENSE) for more info.
