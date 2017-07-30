@@ -1,9 +1,16 @@
 # Project spec
-Each spec must contain a name which is used for the generated project name.
+The project spec can be written in either YAML or JSON. All the examples below use YAML
 
+### name
+Each spec must contain a name which is used for the generated project name
+
+```yaml
+name: My Project
+```
 #### configs
 Configs specify the build configurations in the project.
 Each config maps to a build type of either `debug` or `release` which will then apply default build settings for those types. Any value other than `debug` or `release` (for example "none"), will mean no default build settings will be loaded
+
 ```yaml
 configs:
   Debug: debug
@@ -68,6 +75,7 @@ targets:
 ```
 #### type
 This specifies the product type of the target. This will provide default build settings for that product type. Type can be any of the following:
+
 - application
 - framework
 - library.dynamic
@@ -89,6 +97,7 @@ This specifies the product type of the target. This will provide default build s
 
 #### platform
 Specifies the platform for the target. This will provide default build settings for that platform. It can be any of the following:
+
 - iOS
 - tvOS
 - macOS
