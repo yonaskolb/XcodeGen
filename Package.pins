@@ -53,7 +53,7 @@
       "package": "Yams",
       "reason": null,
       "repositoryURL": "https://github.com/jpsim/Yams.git",
-      "version": "0.2.0"
+      "version": "0.3.3"
     },
     {
       "package": "xcodeproj",
