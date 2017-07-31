@@ -2,7 +2,7 @@ import Foundation
 import Spectre
 import xcodeproj
 
-func expectError<T: Error>(_ expectedError: T, _ closure: () throws -> ()) throws where T: CustomStringConvertible {
+func expectError<T: Error>(_ expectedError: T, _ closure: () throws -> Void) throws where T: CustomStringConvertible {
     do {
         try closure()
     } catch let error as T {
@@ -14,7 +14,7 @@ func expectError<T: Error>(_ expectedError: T, _ closure: () throws -> ()) throw
     throw failure("Supposed to fail with \"\(expectedError)\"")
 }
 
-struct ExpectationFailure : FailureType {
+struct ExpectationFailure: FailureType {
     let file: String
     let line: Int
     let function: String
@@ -29,7 +29,7 @@ struct ExpectationFailure : FailureType {
     }
 }
 
-open class ArrayExpectation<T> : ExpectationType {
+open class ArrayExpectation<T>: ExpectationType {
     public typealias ValueType = Array<T>
     open let expression: () throws -> ValueType?
 
@@ -53,7 +53,7 @@ open class ArrayExpectation<T> : ExpectationType {
     }
 }
 
-public func expect<T>( _ expression: @autoclosure @escaping () throws -> [T]?, file: String = #file, line: Int = #line, function: String = #function) -> ArrayExpectation<T> {
+public func expect<T>(_ expression: @autoclosure @escaping () throws -> [T]?, file: String = #file, line: Int = #line, function: String = #function) -> ArrayExpectation<T> {
     return ArrayExpectation(file: file, line: line, function: function, expression: expression)
 }
 
@@ -74,7 +74,7 @@ extension ArrayExpectation where T: Named {
     public func contains(name: String) throws {
         let value = try expression()
         if let value = value {
-            if !value.contains(where: { $0.name == name}) {
+            if !value.contains(where: { $0.name == name }) {
                 throw failure("Array does not contain item with name \(name)")
             }
         }
@@ -85,6 +85,6 @@ public protocol Named {
     var name: String { get }
 }
 
-extension XCBuildConfiguration: Named { }
-extension PBXNativeTarget: Named { }
-extension XCScheme: Named { }
+extension XCBuildConfiguration: Named {}
+extension PBXNativeTarget: Named {}
+extension XCScheme: Named {}

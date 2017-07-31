@@ -57,7 +57,7 @@ extension Target: JSONObjectConvertible {
             throw ProjectSpecError.unknownTargetType(typeString)
         }
         let platformString: String = try jsonDictionary.json(atKeyPath: "platform")
-        if let platform = Platform(rawValue: platformString)  {
+        if let platform = Platform(rawValue: platformString) {
             self.platform = platform
         } else {
             throw ProjectSpecError.unknownTargetPlatform(platformString)
@@ -89,9 +89,9 @@ public enum Dependency: Equatable {
 
     public static func ==(lhs: Dependency, rhs: Dependency) -> Bool {
         switch (lhs, rhs) {
-        case (let .target(lhs), let .target(rhs)): return lhs == rhs
-        case (let .framework(lhs), let .framework(rhs)): return lhs == rhs
-        case (let .carthage(lhs), let .carthage(rhs)): return lhs == rhs
+        case let (.target(lhs), .target(rhs)): return lhs == rhs
+        case let (.framework(lhs), .framework(rhs)): return lhs == rhs
+        case let (.carthage(lhs), .carthage(rhs)): return lhs == rhs
         default: return false
         }
     }
@@ -111,4 +111,3 @@ extension Dependency: JSONObjectConvertible {
         }
     }
 }
-

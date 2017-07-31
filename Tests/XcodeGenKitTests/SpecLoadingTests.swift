@@ -21,7 +21,7 @@ func specLoadingTests() {
         }
     }
 
-    func expectTargetError( _ target: [String: Any], _ expectedError: ProjectSpecError) throws {
+    func expectTargetError(_ target: [String: Any], _ expectedError: ProjectSpecError) throws {
         try expectError(expectedError) {
             _ = try Target(jsonDictionary: target)
         }
@@ -56,7 +56,7 @@ func specLoadingTests() {
                 ["target": "name"],
                 ["carthage": "name"],
                 ["framework": "path"],
-                ]
+            ]
             let target = try Target(jsonDictionary: targetDictionary)
             try expect(target.dependencies.count) == 3
             try expect(target.dependencies[0]) == .target("name")
@@ -66,7 +66,7 @@ func specLoadingTests() {
 
         $0.it("parses schemes") {
             let schemeDictionary: [String: Any] = [
-                "build": ["targets": ["Target": "all"]]
+                "build": ["targets": ["Target": "all"]],
             ]
             let scheme = try Scheme(name: "Scheme", jsonDictionary: schemeDictionary)
             let target = scheme.build.targets.first!
@@ -101,5 +101,4 @@ func specLoadingTests() {
             try expect(spec.settingPresets["preset8"]) == preset8
         }
     }
-
 }

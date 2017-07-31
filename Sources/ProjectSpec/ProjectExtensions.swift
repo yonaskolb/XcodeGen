@@ -46,7 +46,7 @@ extension BuildSettings: CustomStringConvertible {
     }
 }
 
-public func +=( lhs: inout BuildSettings, rhs: BuildSettings?) {
+public func +=(lhs: inout BuildSettings, rhs: BuildSettings?) {
     guard let rhs = rhs else { return }
     lhs.merge(rhs)
 }
@@ -63,4 +63,3 @@ extension PBXProductType {
         }
     }
 }
-

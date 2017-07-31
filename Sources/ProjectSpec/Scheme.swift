@@ -105,24 +105,28 @@ extension Scheme.Run: JSONObjectConvertible {
         config = try jsonDictionary.json(atKeyPath: "config")
     }
 }
+
 extension Scheme.Test: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
         config = try jsonDictionary.json(atKeyPath: "config")
     }
 }
+
 extension Scheme.Profile: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
         config = try jsonDictionary.json(atKeyPath: "config")
     }
 }
+
 extension Scheme.Analyze: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
         config = try jsonDictionary.json(atKeyPath: "config")
     }
 }
+
 extension Scheme.Archive: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
@@ -152,14 +156,14 @@ extension Scheme.Build: JSONObjectConvertible {
 
         for (key, value) in dictionary {
             let buildTypes: [XCScheme.BuildAction.Entry.BuildFor]
-                switch value {
-                    case "all": buildTypes = [.running, .testing, .profiling, .analyzing, .archiving]
-                    case "none": buildTypes = []
-                    case "testing": buildTypes = [.testing,.analyzing]
-                    case "indexing": buildTypes = [.testing, .analyzing, .archiving]
-                    default: buildTypes = [.running, .testing, .profiling, .analyzing, .archiving]
-                }
-          targets.append(Scheme.BuildTarget(target: key, buildTypes: buildTypes))
+            switch value {
+            case "all": buildTypes = [.running, .testing, .profiling, .analyzing, .archiving]
+            case "none": buildTypes = []
+            case "testing": buildTypes = [.testing, .analyzing]
+            case "indexing": buildTypes = [.testing, .analyzing, .archiving]
+            default: buildTypes = [.running, .testing, .profiling, .analyzing, .archiving]
+            }
+            targets.append(Scheme.BuildTarget(target: key, buildTypes: buildTypes))
         }
 
         self.targets = targets
@@ -172,11 +176,11 @@ extension XCScheme.BuildAction.Entry.BuildFor: JSONPrimitiveConvertible {
 
     public static func from(jsonValue: String) -> XCScheme.BuildAction.Entry.BuildFor? {
         switch jsonValue {
-            case "test","testing": return .testing
-            case "profile", "profiling": return .profiling
-            case "run", "running": return .running
-            case "archive", "archiving": return .archiving
-            case "analyze", "analyzing": return .analyzing
+        case "test", "testing": return .testing
+        case "profile", "profiling": return .profiling
+        case "run", "running": return .running
+        case "archive", "archiving": return .archiving
+        case "analyze", "analyzing": return .analyzing
         default: return nil
         }
     }

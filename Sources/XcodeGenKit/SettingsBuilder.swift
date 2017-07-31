@@ -55,7 +55,6 @@ extension ProjectSpec {
     }
 }
 
-
 private var buildSettingFiles: [String: BuildSettings] = [:]
 
 extension SettingsPresetFile {

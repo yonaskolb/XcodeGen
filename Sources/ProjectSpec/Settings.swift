@@ -10,7 +10,7 @@ import Foundation
 import JSONUtilities
 import xcodeproj
 
-public struct Settings: Equatable, JSONObjectConvertible, CustomStringConvertible  {
+public struct Settings: Equatable, JSONObjectConvertible, CustomStringConvertible {
 
     public let buildSettings: BuildSettings
     public let configSettings: [String: Settings]
@@ -23,9 +23,9 @@ public struct Settings: Equatable, JSONObjectConvertible, CustomStringConvertibl
     }
 
     public init(dictionary: [String: Any]) {
-        self.buildSettings = BuildSettings(dictionary: dictionary)
-        self.configSettings = [:]
-        self.presets = []
+        buildSettings = BuildSettings(dictionary: dictionary)
+        configSettings = [:]
+        presets = []
     }
 
     static let empty: Settings = Settings(dictionary: [:])
@@ -86,7 +86,6 @@ extension Settings: ExpressibleByDictionaryLiteral {
         elements.forEach { dictionary[$0.0] = $0.1 }
         self.init(dictionary: dictionary)
     }
-
 }
 
 extension BuildSettings: JSONObjectConvertible {

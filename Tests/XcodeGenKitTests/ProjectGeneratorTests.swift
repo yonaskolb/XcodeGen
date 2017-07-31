@@ -56,9 +56,11 @@ func projectGeneratorTests() {
                 buildSettings += SettingsPresetFile.base.getBuildSettings()
                 buildSettings += SettingsPresetFile.config(.debug).getBuildSettings()
 
-                buildSettings += ["SETTING": "value",
-                                  "SETTING 5": "value 5",
-                                  "SETTING 6": "value 6"]
+                buildSettings += [
+                    "SETTING": "value",
+                    "SETTING 5": "value 5",
+                    "SETTING 6": "value 6",
+                ]
                 try expect(debugProjectSettings) == buildSettings
 
                 var expectedTargetDebugSettings = BuildSettings()
@@ -78,8 +80,8 @@ func projectGeneratorTests() {
                 let pbxProject = try getPbxProj(spec)
                 let nativeTargets = pbxProject.objects.nativeTargets
                 try expect(nativeTargets.count) == 2
-                try expect(nativeTargets.contains{ $0.name == application.name }).beTrue()
-                try expect(nativeTargets.contains{ $0.name == framework.name}).beTrue()
+                try expect(nativeTargets.contains { $0.name == application.name }).beTrue()
+                try expect(nativeTargets.contains { $0.name == framework.name }).beTrue()
             }
 
             $0.it("generates dependencies") {
@@ -98,7 +100,7 @@ func projectGeneratorTests() {
                 let scheme = Scheme(name: "MyScheme", build: Scheme.Build(targets: [buildTarget]))
                 let spec = ProjectSpec(name: "test", targets: [application, framework], schemes: [scheme])
                 let project = try getProject(spec)
-                guard let target = project.pbxproj.objects.nativeTargets.first (where: { $0.name == application.name }) else { throw failure("Target not found") }
+                guard let target = project.pbxproj.objects.nativeTargets.first(where: { $0.name == application.name }) else { throw failure("Target not found") }
                 guard let xcscheme = project.sharedData?.schemes.first else { throw failure("Scheme not found") }
                 try expect(scheme.name) == "MyScheme"
                 guard let buildActionEntry = xcscheme.buildAction?.buildActionEntries.first else { throw failure("Build Action entry not found") }
@@ -108,7 +110,8 @@ func projectGeneratorTests() {
                     buildActionEntry.buildableReference,
                     xcscheme.launchAction?.buildableProductRunnable.buildableReference,
                     xcscheme.profileAction?.buildableProductRunnable.buildableReference,
-                    xcscheme.testAction?.macroExpansion].flatMap { $0 }
+                    xcscheme.testAction?.macroExpansion,
+                ].flatMap { $0 }
 
                 for buildableReference in buildableReferences {
                     try expect(buildableReference.blueprintIdentifier) == target.reference
@@ -132,14 +135,14 @@ func projectGeneratorTests() {
                     Config(name: "Production Debug", type: .debug),
                     Config(name: "Test Release", type: .release),
                     Config(name: "Production Release", type: .release),
-                    ]
+                ]
 
                 let spec = ProjectSpec(name: "test", configs: configs, targets: [target, framework])
                 let project = try getProject(spec)
 
                 try expect(project.sharedData?.schemes.count) == 2
 
-                guard let nativeTarget = project.pbxproj.objects.nativeTargets.first (where: { $0.name == application.name }) else { throw failure("Target not found") }
+                guard let nativeTarget = project.pbxproj.objects.nativeTargets.first(where: { $0.name == application.name }) else { throw failure("Target not found") }
                 guard let xcscheme = project.sharedData?.schemes.first(where: { $0.name == "\(target.name) Test" }) else { throw failure("Scheme not found") }
                 guard let buildActionEntry = xcscheme.buildAction?.buildActionEntries.first else { throw failure("Build Action entry not found") }
                 try expect(buildActionEntry.buildableReference.blueprintIdentifier) == nativeTarget.reference
@@ -150,8 +153,6 @@ func projectGeneratorTests() {
                 try expect(xcscheme.analyzeAction?.buildConfiguration) == "Test Debug"
                 try expect(xcscheme.archiveAction?.buildConfiguration) == "Test Release"
             }
-            
         }
     }
 }
-

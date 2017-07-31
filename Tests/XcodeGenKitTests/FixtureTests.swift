@@ -16,7 +16,6 @@ func generate(specPath: Path, projectPath: Path) throws {
 
 func fixtureTests() {
 
-
     describe("Test Project") {
         $0.it("generates") {
             try generate(specPath: fixturePath + "TestProject/spec.yml", projectPath: fixturePath + "TestProject/GeneratedProject.xcodeproj")

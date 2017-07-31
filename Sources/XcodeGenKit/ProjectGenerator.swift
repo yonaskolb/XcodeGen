@@ -59,7 +59,7 @@ public class ProjectGenerator {
 
         for target in spec.targets {
             for dependency in target.dependencies {
-                if case .target(let targetName) = dependency, spec.getTarget(targetName) == nil {
+                if case let .target(targetName) = dependency, spec.getTarget(targetName) == nil {
                     errors.append(.invalidTargetDependency(target: target.name, dependency: targetName))
                 }
             }
@@ -95,19 +95,19 @@ public class ProjectGenerator {
                     errors.append(.invalidSchemeTarget(scheme: scheme.name, target: buildTarget.target))
                 }
             }
-            if let buildAction = scheme.run, spec.getConfig(buildAction.config) == nil  {
+            if let buildAction = scheme.run, spec.getConfig(buildAction.config) == nil {
                 errors.append(.invalidSchemeConfig(scheme: scheme.name, config: buildAction.config))
             }
-            if let buildAction = scheme.test, spec.getConfig(buildAction.config) == nil  {
+            if let buildAction = scheme.test, spec.getConfig(buildAction.config) == nil {
                 errors.append(.invalidSchemeConfig(scheme: scheme.name, config: buildAction.config))
             }
-            if let buildAction = scheme.profile, spec.getConfig(buildAction.config) == nil  {
+            if let buildAction = scheme.profile, spec.getConfig(buildAction.config) == nil {
                 errors.append(.invalidSchemeConfig(scheme: scheme.name, config: buildAction.config))
             }
-            if let buildAction = scheme.analyze, spec.getConfig(buildAction.config) == nil  {
+            if let buildAction = scheme.analyze, spec.getConfig(buildAction.config) == nil {
                 errors.append(.invalidSchemeConfig(scheme: scheme.name, config: buildAction.config))
             }
-            if let buildAction = scheme.archive, spec.getConfig(buildAction.config) == nil  {
+            if let buildAction = scheme.archive, spec.getConfig(buildAction.config) == nil {
                 errors.append(.invalidSchemeConfig(scheme: scheme.name, config: buildAction.config))
             }
         }
@@ -148,7 +148,7 @@ public class ProjectGenerator {
 
         let buildAction = XCScheme.BuildAction(buildActionEntries: buildActionEntries, parallelizeBuild: true, buildImplicitDependencies: true)
 
-        let testAction = XCScheme.TestAction(buildConfiguration: scheme.test?.config ?? defaultDebugConfig.name,  macroExpansion: buildableReference)
+        let testAction = XCScheme.TestAction(buildConfiguration: scheme.test?.config ?? defaultDebugConfig.name, macroExpansion: buildableReference)
 
         let launchAction = XCScheme.LaunchAction(buildableProductRunnable: productRunabke,
                                                  buildConfiguration: scheme.run?.config ?? defaultDebugConfig.name)
