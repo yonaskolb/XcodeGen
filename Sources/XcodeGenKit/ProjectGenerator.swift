@@ -33,7 +33,16 @@ public class ProjectGenerator {
         return spec.configs.first { $0.type == .release }!
     }
 
-    func validate() throws {
+    func getPath(_ path: String) -> Path {
+        let currentPath = Path(path)
+        if currentPath.isRelative {
+            return self.path + currentPath
+        } else {
+            return currentPath
+        }
+    }
+
+    public func validate() throws {
 
         if spec.configs.isEmpty {
             spec.configs = [Config(name: "Debug", type: .debug), Config(name: "Release", type: .release)]
@@ -71,7 +80,7 @@ public class ProjectGenerator {
             }
 
             for source in target.sources {
-                let sourcePath = path + source
+                let sourcePath = getPath(source)
                 if !sourcePath.exists {
                     errors.append(.missingTargetSource(target: target.name, source: sourcePath.string))
                 }
