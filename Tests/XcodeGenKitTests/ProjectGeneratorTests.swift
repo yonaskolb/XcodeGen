@@ -91,6 +91,26 @@ func projectGeneratorTests() {
                 try expect(dependencies.count) == 1
                 try expect(dependencies.first!.target) == nativeTargets.first { $0.name == framework.name }!.reference
             }
+
+            $0.it("generates dependencies") {
+                let pbxProject = try getPbxProj(spec)
+                let nativeTargets = pbxProject.objects.nativeTargets
+                let dependencies = pbxProject.objects.targetDependencies
+                try expect(dependencies.count) == 1
+                try expect(dependencies.first!.target) == nativeTargets.first { $0.name == framework.name }!.reference
+            }
+
+            $0.it("generates run scripts") {
+                var scriptSpec = spec
+                scriptSpec.targets[0].prebuildScripts = [RunScript(script: .script("swiftlint"), name: "Swiftlint")]
+                let pbxProject = try getPbxProj(scriptSpec)
+
+                let scripts = pbxProject.objects.shellScriptBuildPhases
+                try expect(scripts.count) == 1
+                guard let script = scripts.first else { throw failure("Run script not found") }
+
+                try expect(script.shellScript) == "swiftlint"
+            }
         }
 
         $0.describe("Schemes") {

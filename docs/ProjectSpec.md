@@ -146,8 +146,42 @@ targets:
       Release: config_files/release.xcconfig
 ```
 
+#### Run Scripts
+Run script phases can be added via **prebuildScripts** or **postBuildScripts** which run before or after any other build phases respectively. They run in the order defined. Each script can contain
+
+- **path:** a relative or absolute path to a shell script
+- **script:** an inline shell script
+- **name:** optional name of a script. Defaults to `Run Script`
+- **inputFiles:** optional  list of input files
+- **outputFiles:** optional  list of output files
+- **shell:** optional shell used for the script. Defaults to `/bin/sh`
+
+Either a **path** or **script** must be defined, the rest are optional.
+
+A multiline script can be written using the various YAML multiline methods, for example with `|` as below:
+
+```yaml
+targets:
+  - name: MyTarget
+    prebuildScripts:
+      - path: myscripts/my_script.sh
+        name: My Script
+        inputFiles:
+          - $(SRCROOT)/file1
+          - $(SRCROOT)/file2
+        outputFiles:
+          - $(DERIVED_FILE_DIR)/file1
+          - $(DERIVED_FILE_DIR)/file2
+    postbuildScripts:
+      - script: swiftlint
+        name: Swiftlint
+      - script: |
+      		command do
+      		othercommand
+```
+
 #### generateSchemes
-This is a conveniance used to automatically generate schemes for a target based on large amount of configs. A list of names is provided, then for each of these names a scheme is created, using configs that contain the name with debug and release variants. This is useful for having different environment schemes.
+This is a convenience used to automatically generate schemes for a target based on large amount of configs. A list of names is provided, then for each of these names a scheme is created, using configs that contain the name with debug and release variants. This is useful for having different environment schemes.
 
 For example, the following spec would create 3 schemes called:
 

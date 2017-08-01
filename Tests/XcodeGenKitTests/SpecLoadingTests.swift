@@ -100,5 +100,24 @@ func specLoadingTests() {
             try expect(spec.settingPresets["preset7"]) == preset7
             try expect(spec.settingPresets["preset8"]) == preset8
         }
+
+        $0.it("parses run scripts") {
+            var target = validTarget
+            let scripts: [[String: Any]] = [
+                ["path": "script.sh"],
+                ["script": "shell script\ndo thing", "name": "myscript", "inputFiles": ["file","file2"], "outputFiles": ["file","file2"], "shell": "bin/customshell"],
+            ]
+            target["prebuildScripts"] = scripts
+            target["postbuildScripts"] = scripts
+
+            let expectedScripts = [
+                RunScript(script: .path("script.sh")),
+                RunScript(script: .script("shell script\ndo thing"), name: "myscript", inputFiles: ["file","file2"], outputFiles: ["file","file2"], shell: "bin/customshell"),
+                ]
+
+            let parsedTarget = try Target(jsonDictionary: target)
+            try expect(parsedTarget.prebuildScripts) == expectedScripts
+            try expect(parsedTarget.postbuildScripts) == expectedScripts
+        }
     }
 }

@@ -95,6 +95,15 @@ public class ProjectGenerator {
                 }
             }
 
+            let scripts = target.prebuildScripts + target.postbuildScripts
+            for script in scripts {
+                if case let .path(path) = script.script {
+                    if !getPath(path).exists {
+                        errors.append(.invalidRunScriptPath(target: target.name, path: path))
+                    }
+                }
+            }
+
             errors += validateSettings(target.settings)
         }
 
@@ -217,6 +226,7 @@ public struct SpecValidationError: Error, CustomStringConvertible {
         case invalidSettingsPreset(String)
         case missingTargetSource(target: String, source: String)
         case invalidTargetGeneratedSchema(target: String, scheme: String, configType: ConfigType)
+        case invalidRunScriptPath(target: String, path: String)
 
         public var description: String {
             switch self {
@@ -226,6 +236,7 @@ public struct SpecValidationError: Error, CustomStringConvertible {
             case let .invalidBuildSettingConfig(config): return "Build setting has invalid build configuration \(config.quoted)"
             case let .missingTargetSource(target, source): return "Target \(target.quoted) has a missing source directory \(source.quoted)"
             case let .invalidSettingsPreset(preset): return "Invalid settings preset \(preset.quoted)"
+            case let .invalidRunScriptPath(target, path): return "Target \(target.quoted) has a script path that doesn't exist \(path.quoted)"
             case let .invalidTargetGeneratedSchema(target, scheme, configType): return "Target \(target.quoted) has an invalid schema generation name which requires a config that has a \(configType.rawValue.quoted) type and contains the name \(scheme.quoted)"
             }
         }
