@@ -1,4 +1,5 @@
 class Xcodegen < Formula
+  
   desc "XcodeGen is a command line tool that generates your Xcode project using your folder structure and a simple project spec."
   homepage "https://github.com/yonaskolb/XcodeGen"
   version "0.1.0"
@@ -9,10 +10,15 @@ class Xcodegen < Formula
   depends_on :xcode
 
   def install
+    yaml_lib_path = ".build/release/libCYaml.dylib"
+    xcodegen_path = ".build/release/XcodeGen"
     ohai "Building XcodeGen"
-    system("swift build")
+    system("swift build -c release -Xlinker -rpath -Xlinker @executable_path -Xswiftc -static-stdlib")
     odie "Error building XcodeGen" if $?.exitstatus != 0
-    bin.install ".build/debug/XcodeGen"
+    system("install_name_tool -change #{yaml_lib_path} #{frameworks}/libCYaml.dylib #{xcodegen_path}")
+    odie "Error linking dependencies" if $?.exitstatus != 0
+    frameworks.install yaml_lib_path
+    bin.install xcodegen_path
   end
 
 end
