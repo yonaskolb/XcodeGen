@@ -149,7 +149,7 @@ public class PBXProjGenerator {
                 let path = basePath + configPath
                 baseConfigurationReference = fileReferencesByPath[path]
             }
-            return XCBuildConfiguration(reference: generateUUID(XCBuildConfiguration.self, config.name), name: config.name, baseConfigurationReference: baseConfigurationReference, buildSettings: buildSettings)
+            return XCBuildConfiguration(reference: generateUUID(XCBuildConfiguration.self, config.name + target.name), name: config.name, baseConfigurationReference: baseConfigurationReference, buildSettings: buildSettings)
         }
         objects += configs.map { .xcBuildConfiguration($0) }
         let buildConfigList = XCConfigurationList(reference: generateUUID(XCConfigurationList.self, target.name), buildConfigurations: configs.referenceSet, defaultConfigurationName: "")
@@ -162,7 +162,7 @@ public class PBXProjGenerator {
             switch dependancy {
             case let .target(dependencyTarget):
                 let targetProxy = PBXContainerItemProxy(reference: generateUUID(PBXContainerItemProxy.self, target.name), containerPortal: projectReference, remoteGlobalIDString: targetNativeReferences[dependencyTarget]!, proxyType: .nativeTarget, remoteInfo: dependencyTarget)
-                let targetDependancy = PBXTargetDependency(reference: generateUUID(PBXTargetDependency.self, dependencyTarget), target: targetNativeReferences[dependencyTarget]!, targetProxy: targetProxy.reference)
+                let targetDependancy = PBXTargetDependency(reference: generateUUID(PBXTargetDependency.self, dependencyTarget + target.name), target: targetNativeReferences[dependencyTarget]!, targetProxy: targetProxy.reference)
 
                 objects.append(.pbxContainerItemProxy(targetProxy))
                 objects.append(.pbxTargetDependency(targetDependancy))
@@ -174,12 +174,12 @@ public class PBXProjGenerator {
 
                 // embed
                 let embedSettings: [String: Any] = ["ATTRIBUTES": ["CodeSignOnCopy", "RemoveHeadersOnCopy"]]
-                let embedFile = PBXBuildFile(reference: generateUUID(PBXBuildFile.self, targetFileReferences[dependencyTarget]!), fileRef: targetFileReferences[dependencyTarget]!, settings: embedSettings)
+                let embedFile = PBXBuildFile(reference: generateUUID(PBXBuildFile.self, targetFileReferences[dependencyTarget]! + target.name), fileRef: targetFileReferences[dependencyTarget]!, settings: embedSettings)
                 objects.append(.pbxBuildFile(embedFile))
                 copyFiles.append(embedFile.reference)
             case let .framework(framework):
                 let fileReference = getFileReference(path: Path(framework), inPath: basePath)
-                let buildFile = PBXBuildFile(reference: generateUUID(PBXBuildFile.self, fileReference), fileRef: fileReference)
+                let buildFile = PBXBuildFile(reference: generateUUID(PBXBuildFile.self, fileReference + target.name), fileRef: fileReference)
                 objects.append(.pbxBuildFile(buildFile))
                 targetFrameworkBuildFiles.append(buildFile.reference)
                 if !frameworkFiles.contains(fileReference) {
@@ -201,7 +201,7 @@ public class PBXProjGenerator {
                 }
                 let fileReference = getFileReference(path: frameworkPath, inPath: platformPath)
 
-                let buildFile = PBXBuildFile(reference: generateUUID(PBXBuildFile.self, fileReference), fileRef: fileReference)
+                let buildFile = PBXBuildFile(reference: generateUUID(PBXBuildFile.self, fileReference + target.name), fileRef: fileReference)
                 objects.append(.pbxBuildFile(buildFile))
                 carthageFrameworksByPlatform[target.platform.rawValue]?.append(fileReference)
 
@@ -235,7 +235,7 @@ public class PBXProjGenerator {
             }
             let escapedScript = shellScript.replacingOccurrences(of: "\"", with: "\\\"").replacingOccurrences(of: "\n", with: "\\n")
             let shellScriptPhase = PBXShellScriptBuildPhase(
-                reference: generateUUID(PBXShellScriptBuildPhase.self, String(describing: runScript.name) + shellScript),
+                reference: generateUUID(PBXShellScriptBuildPhase.self, String(describing: runScript.name) + shellScript + target.name),
                 files: [],
                 name: runScript.name ?? "Run Script",
                 inputPaths: Set(runScript.inputFiles),
@@ -289,7 +289,7 @@ public class PBXProjGenerator {
             let carthageFrameworks = Set(getCarthageFrameworks(target: target))
             if !carthageFrameworks.isEmpty {
                 let inputPaths = carthageFrameworks.map { "$(SRCROOT)/Carthage/Build/\(target.platform)/\($0)\($0.contains(".") ? "" : ".framework")" }
-                let carthageScript = PBXShellScriptBuildPhase(reference: generateUUID(PBXShellScriptBuildPhase.self, "Carthage"), files: [], name: "Carthage", inputPaths: Set(inputPaths), outputPaths: [], shellPath: "/bin/sh", shellScript: "/usr/local/bin/carthage copy-frameworks\n")
+                let carthageScript = PBXShellScriptBuildPhase(reference: generateUUID(PBXShellScriptBuildPhase.self, "Carthage" + target.name), files: [], name: "Carthage", inputPaths: Set(inputPaths), outputPaths: [], shellPath: "/bin/sh", shellScript: "/usr/local/bin/carthage copy-frameworks\n")
                 objects.append(.pbxShellScriptBuildPhase(carthageScript))
                 buildPhases.append(carthageScript.reference)
             }

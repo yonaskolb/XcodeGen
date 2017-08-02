@@ -11,9 +11,9 @@
 		BF1744565901 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR6218091901 /* ViewController.swift */; settings = {}; };
 		BF2753556301 /* MyFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR2993497801 /* MyFramework.framework */; };
 		BF2753556301 /* MyFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR2993497801 /* MyFramework.framework */; };
-		BF2753556302 = {isa = PBXBuildFile; fileRef = FR2993497801 /* MyFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BF3154421201 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FR5980633301 /* Assets.xcassets */; settings = {}; };
 		BF3515549501 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = FR7740960501 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BF3862341101 = {isa = PBXBuildFile; fileRef = FR2993497801 /* MyFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BF5986511201 = {isa = PBXBuildFile; fileRef = FR6523263101 /* TestProject.app */; };
 		BF9155249601 /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR7078510801 /* FrameworkFile.swift */; settings = {}; };
 /* End PBXBuildFile section */
@@ -44,7 +44,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				BF2753556302 /* MyFramework.framework in CopyFiles */,
+				BF3862341101 /* MyFramework.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -156,7 +156,7 @@
 				HBP299349701 /* Headers */,
 				FBP299349701 /* Frameworks */,
 				CFBP29934901 /* Copy Files */,
-				SSBP25860702 /* Run Script */,
+				SSBP30211001 /* Run Script */,
 			);
 			buildRules = (
 			);
@@ -175,12 +175,12 @@
 				HBP652326301 /* Headers */,
 				FBP652326301 /* Frameworks */,
 				CFBP65232601 /* Copy Files */,
-				SSBP25860701 /* Run Script */,
+				SSBP46803701 /* Run Script */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				TD2993497801 /* PBXTargetDependency */,
+				TD6170761801 /* PBXTargetDependency */,
 			);
 			name = TestProject;
 			productReference = FR6523263101;
@@ -227,7 +227,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		SSBP25860701 /* Run Script */ = {
+		SSBP30211001 /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -241,7 +241,7 @@
 			shellPath = /bin/sh;
 			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
-		SSBP25860702 /* Run Script */ = {
+		SSBP46803701 /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -278,7 +278,7 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		TD2993497801 /* PBXTargetDependency */ = {
+		TD6170761801 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = NT2993497801 /* MyFramework */;
 			targetProxy = CIP652326301 /* PBXContainerItemProxy */;
@@ -305,6 +305,36 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		XCBC19846901 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				ENABLE_TESTABILITY = YES;
+				INFOPLIST_FILE = MyFramework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Debug;
+		};
+		XCBC37128501 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = TestProject/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.test;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
 		XCBC47994501 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -356,7 +386,7 @@
 			};
 			name = Debug;
 		};
-		XCBC47994502 /* Debug */ = {
+		XCBC86437501 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -367,24 +397,7 @@
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
-			name = Debug;
-		};
-		XCBC47994503 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				ENABLE_TESTABILITY = YES;
-				INFOPLIST_FILE = MyFramework/Info.plist;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-			};
-			name = Debug;
+			name = Release;
 		};
 		XCBC88111401 /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -430,20 +443,7 @@
 			};
 			name = Release;
 		};
-		XCBC88111402 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				INFOPLIST_FILE = TestProject/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.test;
-				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
-		XCBC88111403 /* Release */ = {
+		XCBC89204001 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -466,8 +466,8 @@
 		XCCL29934901 /* Build configuration list for PBXNativeTarget "MyFramework" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				XCBC88111403 /* Release */,
-				XCBC47994503 /* Debug */,
+				XCBC19846901 /* Debug */,
+				XCBC89204001 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "";
@@ -475,8 +475,8 @@
 		XCCL65232601 /* Build configuration list for PBXNativeTarget "TestProject" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				XCBC47994502 /* Debug */,
-				XCBC88111402 /* Release */,
+				XCBC37128501 /* Debug */,
+				XCBC86437501 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "";
