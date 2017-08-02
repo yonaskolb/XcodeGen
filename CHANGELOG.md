@@ -3,7 +3,7 @@
 ## 0.2.0
 
 ### Added
-- Added Target build scripts with `Target.prebuildScripts` and `Target.postbuildScripts`
+- Added Target build scripts with `Target.prebuildScripts` and `Target.postbuildScripts` #17
 - Support for absolute paths in target sources, run script files, and config files
 - Add validation for incorrect `Target.configFiles`
 

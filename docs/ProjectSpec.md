@@ -146,8 +146,8 @@ targets:
       Release: config_files/release.xcconfig
 ```
 
-#### Run Scripts
-Run script phases can be added via **prebuildScripts** or **postBuildScripts** which run before or after any other build phases respectively. They run in the order defined. Each script can contain
+#### Build Scripts
+Run script build phases can be added via **prebuildScripts** or **postBuildScripts** which run before or after any other build phases respectively. They run in the order defined. Each script can contain:
 
 - **path:** a relative or absolute path to a shell script
 - **script:** an inline shell script
