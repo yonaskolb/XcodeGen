@@ -21,4 +21,9 @@ class Xcodegen < Formula
     bin.install xcodegen_path
   end
 
+  test do
+    output = `#{bin}/XcodeGen`
+    assert !output.empty?, "Failed installing XcodeGen"
+  end
+
 end
