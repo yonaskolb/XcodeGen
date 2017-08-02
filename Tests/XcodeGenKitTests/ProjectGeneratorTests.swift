@@ -24,6 +24,8 @@ func projectGeneratorTests() {
         let framework = Target(name: "MyFramework", type: .framework, platform: .iOS,
                                settings: Settings(buildSettings: BuildSettings(dictionary: ["SETTING_2": "VALUE"])))
 
+        let targets = [application, framework]
+
         $0.describe("Config") {
 
             $0.it("generates config defaults") {
@@ -74,7 +76,7 @@ func projectGeneratorTests() {
 
         $0.describe("Targets") {
 
-            let spec = ProjectSpec(name: "test", targets: [application, framework])
+            let spec = ProjectSpec(name: "test", targets: targets)
 
             $0.it("generates targets") {
                 let pbxProject = try getPbxProj(spec)
@@ -102,14 +104,21 @@ func projectGeneratorTests() {
 
             $0.it("generates run scripts") {
                 var scriptSpec = spec
-                scriptSpec.targets[0].prebuildScripts = [RunScript(script: .script("swiftlint"), name: "Swiftlint")]
+                scriptSpec.targets[0].prebuildScripts = [RunScript(script: .script("script1"))]
+                scriptSpec.targets[0].postbuildScripts = [RunScript(script: .script("script2"))]
                 let pbxProject = try getPbxProj(scriptSpec)
 
-                let scripts = pbxProject.objects.shellScriptBuildPhases
-                try expect(scripts.count) == 1
-                guard let script = scripts.first else { throw failure("Run script not found") }
+                guard let buildPhases = pbxProject.objects.nativeTargets.first?.buildPhases else { throw failure("Build phases not found") }
 
-                try expect(script.shellScript) == "swiftlint"
+                let scripts = pbxProject.objects.shellScriptBuildPhases
+                let script1 = scripts[0]
+                let script2 = scripts[1]
+                try expect(scripts.count) == 2
+                try expect(buildPhases.first) == script1.reference
+                try expect(buildPhases.last) == script2.reference
+
+                try expect(script1.shellScript) == "script1"
+                try expect(script2.shellScript) == "script2"
             }
         }
 
