@@ -33,15 +33,6 @@ public class ProjectGenerator {
         return spec.configs.first { $0.type == .release }!
     }
 
-    func getPath(_ path: String) -> Path {
-        let currentPath = Path(path)
-        if currentPath.isRelative {
-            return self.path + currentPath
-        } else {
-            return currentPath
-        }
-    }
-
     public func validate() throws {
 
         if spec.configs.isEmpty {
@@ -80,7 +71,7 @@ public class ProjectGenerator {
             }
 
             for source in target.sources {
-                let sourcePath = getPath(source)
+                let sourcePath = path + source
                 if !sourcePath.exists {
                     errors.append(.missingTargetSource(target: target.name, source: sourcePath.string))
                 }
@@ -97,9 +88,10 @@ public class ProjectGenerator {
 
             let scripts = target.prebuildScripts + target.postbuildScripts
             for script in scripts {
-                if case let .path(path) = script.script {
-                    if !getPath(path).exists {
-                        errors.append(.invalidRunScriptPath(target: target.name, path: path))
+                if case let .path(pathString) = script.script {
+                    let scriptPath = path + pathString
+                    if !scriptPath.exists {
+                        errors.append(.invalidRunScriptPath(target: target.name, path: pathString))
                     }
                 }
             }

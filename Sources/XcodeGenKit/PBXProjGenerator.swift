@@ -42,15 +42,6 @@ public class PBXProjGenerator {
         projectReference = generateUUID(PBXProject.self, spec.name)
     }
 
-    func getPath(_ path: String) -> Path {
-        let currentPath = Path(path)
-        if currentPath.isRelative {
-            return basePath + currentPath
-        } else {
-            return currentPath
-        }
-    }
-
     public func generateUUID<T: ProjectElement>(_ element: T.Type, _ id: String) -> String {
         var uuid: String = ""
         var counter: UInt = 0
@@ -141,7 +132,7 @@ public class PBXProjGenerator {
 
     func generateTarget(_ target: Target) throws -> PBXNativeTarget {
 
-        let sourcePaths = target.sources.map { getPath($0) }
+        let sourcePaths = target.sources.map { basePath + $0 }
         var sourceFilePaths: [Path] = []
 
         for source in sourcePaths {
@@ -154,7 +145,7 @@ public class PBXProjGenerator {
             var baseConfigurationReference: String?
 
             if let configPath = target.configFiles[config.name] {
-                let path = getPath(configPath)
+                let path = basePath + configPath
                 baseConfigurationReference = fileReferencesByPath[path]
             }
             return XCBuildConfiguration(reference: generateUUID(XCBuildConfiguration.self, config.name), name: config.name, baseConfigurationReference: baseConfigurationReference, buildSettings: buildSettings)
@@ -237,7 +228,7 @@ public class PBXProjGenerator {
             let shellScript: String
             switch runScript.script {
             case let .path(path):
-                shellScript = try getPath(path).read()
+                shellScript = try (basePath + path).read()
             case let .script(script):
                 shellScript = script
             }
