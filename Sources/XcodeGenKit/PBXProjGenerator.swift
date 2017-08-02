@@ -52,6 +52,7 @@ public class PBXProjGenerator {
             counter += 1
             uuid = "\(classAcronym)\(stringID)\(String(format: "%02d", counter))"
         } while (uuids.contains(uuid))
+        uuids.insert(uuid)
         return uuid
     }
 
@@ -223,6 +224,32 @@ public class PBXProjGenerator {
             return Set(files.map { $0.buildFile.reference })
         }
 
+        func getRunScript(runScript: RunScript) throws -> PBXShellScriptBuildPhase {
+
+            let shellScript: String
+            switch runScript.script {
+            case let .path(path):
+                shellScript = try (basePath + path).read()
+            case let .script(script):
+                shellScript = script
+            }
+            let escapedScript = shellScript.replacingOccurrences(of: "\"", with: "\\\"").replacingOccurrences(of: "\n", with: "\\n")
+            let shellScriptPhase = PBXShellScriptBuildPhase(
+                reference: generateUUID(PBXShellScriptBuildPhase.self, String(describing: runScript.name) + shellScript),
+                files: [],
+                name: runScript.name ?? "Run Script",
+                inputPaths: Set(runScript.inputFiles),
+                outputPaths: Set(runScript.outputFiles),
+                shellPath: runScript.shell ?? "/bin/sh",
+                shellScript: escapedScript)
+
+            objects.append(.pbxShellScriptBuildPhase(shellScriptPhase))
+            buildPhases.append(shellScriptPhase.reference)
+            return shellScriptPhase
+        }
+
+        _ = try target.prebuildScripts.map(getRunScript)
+
         let sourcesBuildPhase = PBXSourcesBuildPhase(reference: generateUUID(PBXSourcesBuildPhase.self, target.name), files: getBuildFilesForPhase(.sources))
         objects.append(.pbxSourcesBuildPhase(sourcesBuildPhase))
         buildPhases.append(sourcesBuildPhase.reference)
@@ -267,6 +294,8 @@ public class PBXProjGenerator {
                 buildPhases.append(carthageScript.reference)
             }
         }
+
+        _ = try target.postbuildScripts.map(getRunScript)
 
         let nativeTarget = PBXNativeTarget(
             reference: targetNativeReferences[target.name]!,

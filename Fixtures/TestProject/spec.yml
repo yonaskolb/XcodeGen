@@ -9,9 +9,20 @@ targets:
       PRODUCT_BUNDLE_IDENTIFIER: com.test
     dependencies:
       - target: MyFramework
+    postbuildScripts:
+      - name: Swiftlint
+        script: |
+          if which swiftlint >/dev/null; then
+            swiftlint
+          else
+            echo "warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint"
+          fi
   - name: MyFramework
     type: framework
     platform: iOS
     sources: MyFramework
     settings:
       INFOPLIST_FILE: MyFramework/Info.plist
+    postbuildScripts:
+      - name: Swiftlint
+        path: scripts/swiftlint.sh

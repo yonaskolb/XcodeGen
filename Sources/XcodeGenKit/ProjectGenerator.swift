@@ -33,7 +33,7 @@ public class ProjectGenerator {
         return spec.configs.first { $0.type == .release }!
     }
 
-    func validate() throws {
+    public func validate() throws {
 
         if spec.configs.isEmpty {
             spec.configs = [Config(name: "Debug", type: .debug), Config(name: "Release", type: .release)]
@@ -83,6 +83,16 @@ public class ProjectGenerator {
                 }
                 if !spec.configs.contains(where: { $0.name.contains(generatedScheme) && $0.type == .release }) {
                     errors.append(.invalidTargetGeneratedSchema(target: target.name, scheme: generatedScheme, configType: .release))
+                }
+            }
+
+            let scripts = target.prebuildScripts + target.postbuildScripts
+            for script in scripts {
+                if case let .path(pathString) = script.script {
+                    let scriptPath = path + pathString
+                    if !scriptPath.exists {
+                        errors.append(.invalidRunScriptPath(target: target.name, path: pathString))
+                    }
                 }
             }
 
@@ -208,6 +218,7 @@ public struct SpecValidationError: Error, CustomStringConvertible {
         case invalidSettingsPreset(String)
         case missingTargetSource(target: String, source: String)
         case invalidTargetGeneratedSchema(target: String, scheme: String, configType: ConfigType)
+        case invalidRunScriptPath(target: String, path: String)
 
         public var description: String {
             switch self {
@@ -217,6 +228,7 @@ public struct SpecValidationError: Error, CustomStringConvertible {
             case let .invalidBuildSettingConfig(config): return "Build setting has invalid build configuration \(config.quoted)"
             case let .missingTargetSource(target, source): return "Target \(target.quoted) has a missing source directory \(source.quoted)"
             case let .invalidSettingsPreset(preset): return "Invalid settings preset \(preset.quoted)"
+            case let .invalidRunScriptPath(target, path): return "Target \(target.quoted) has a script path that doesn't exist \(path.quoted)"
             case let .invalidTargetGeneratedSchema(target, scheme, configType): return "Target \(target.quoted) has an invalid schema generation name which requires a config that has a \(configType.rawValue.quoted) type and contains the name \(scheme.quoted)"
             }
         }

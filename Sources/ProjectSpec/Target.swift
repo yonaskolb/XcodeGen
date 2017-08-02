@@ -18,8 +18,8 @@ public struct Target {
     public var sources: [String]
     public var sourceExludes: [String]
     public var dependencies: [Dependency]
-    public var prebuildScripts: [String]
-    public var postbuildScripts: [String]
+    public var prebuildScripts: [RunScript]
+    public var postbuildScripts: [RunScript]
     public var configFiles: [String: String]
     public var generateSchemes: [String]
 
@@ -31,7 +31,7 @@ public struct Target {
         return name
     }
 
-    public init(name: String, type: PBXProductType, platform: Platform, settings: Settings = .empty, configFiles: [String: String] = [:], sources: [String] = [], sourceExludes: [String] = [], dependencies: [Dependency] = [], prebuildScripts: [String] = [], postbuildScripts: [String] = [], generateSchemes: [String] = []) {
+    public init(name: String, type: PBXProductType, platform: Platform, settings: Settings = .empty, configFiles: [String: String] = [:], sources: [String] = [], sourceExludes: [String] = [], dependencies: [Dependency] = [], prebuildScripts: [RunScript] = [], postbuildScripts: [RunScript] = [], generateSchemes: [String] = []) {
         self.name = name
         self.type = type
         self.platform = platform
