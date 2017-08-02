@@ -52,6 +52,7 @@ public class PBXProjGenerator {
             counter += 1
             uuid = "\(classAcronym)\(stringID)\(String(format: "%02d", counter))"
         } while (uuids.contains(uuid))
+        uuids.insert(uuid)
         return uuid
     }
 
