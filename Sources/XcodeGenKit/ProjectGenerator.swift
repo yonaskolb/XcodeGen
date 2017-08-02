@@ -64,6 +64,12 @@ public class ProjectGenerator {
                 }
             }
 
+            for (config, configFile) in target.configFiles {
+                if !(path + configFile).exists {
+                    errors.append(.invalidTargetConfigFile(configFile: configFile, config: config, target: target.name))
+                }
+            }
+
             for config in target.settings.configSettings.keys {
                 if spec.getConfig(config) == nil {
                     errors.append(.invalidBuildSettingConfig(config))
@@ -214,6 +220,7 @@ public struct SpecValidationError: Error, CustomStringConvertible {
         case invalidTargetDependency(target: String, dependency: String)
         case invalidSchemeTarget(scheme: String, target: String)
         case invalidSchemeConfig(scheme: String, config: String)
+        case invalidTargetConfigFile(configFile: String, config: String, target: String)
         case invalidBuildSettingConfig(String)
         case invalidSettingsPreset(String)
         case missingTargetSource(target: String, source: String)
@@ -223,6 +230,7 @@ public struct SpecValidationError: Error, CustomStringConvertible {
         public var description: String {
             switch self {
             case let .invalidTargetDependency(target, dependency): return "Target \(target.quoted) has invalid dependency: \(dependency.quoted)"
+            case let .invalidTargetConfigFile(configFile, config, target): return "Target \(target.quoted) has invalid config file \(configFile.quoted) for config \(config.quoted)"
             case let .invalidSchemeTarget(scheme, target): return "Scheme \(scheme.quoted) has invalid build target \(target.quoted)"
             case let .invalidSchemeConfig(scheme, config): return "Scheme \(scheme.quoted) has invalid build configuration \(config.quoted)"
             case let .invalidBuildSettingConfig(config): return "Build setting has invalid build configuration \(config.quoted)"
