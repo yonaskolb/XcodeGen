@@ -83,14 +83,24 @@ public class ProjectGenerator {
                 }
             }
 
-            for generatedScheme in target.generateSchemes {
-                if !spec.configs.contains(where: { $0.name.contains(generatedScheme) && $0.type == .debug }) {
-                    errors.append(.invalidTargetGeneratedSchema(target: target.name, scheme: generatedScheme, configType: .debug))
+            if let scheme = target.scheme {
+
+                for configVariant in scheme.configVariants {
+                    if !spec.configs.contains(where: { $0.name.contains(configVariant) && $0.type == .debug }) {
+                        errors.append(.invalidTargetSchemeConfigVariant(target: target.name, configVariant: configVariant, configType: .debug))
+                    }
+                    if !spec.configs.contains(where: { $0.name.contains(configVariant) && $0.type == .release }) {
+                        errors.append(.invalidTargetSchemeConfigVariant(target: target.name, configVariant: configVariant, configType: .release))
+                    }
                 }
-                if !spec.configs.contains(where: { $0.name.contains(generatedScheme) && $0.type == .release }) {
-                    errors.append(.invalidTargetGeneratedSchema(target: target.name, scheme: generatedScheme, configType: .release))
+
+                for testTarget in scheme.testTargets {
+                    if spec.getTarget(testTarget) == nil {
+                        errors.append(.invalidTargetSchemeTest(target: target.name, testTarget: testTarget))
+                    }
                 }
             }
+
 
             let scripts = target.prebuildScripts + target.postbuildScripts
             for script in scripts {
@@ -148,28 +158,40 @@ public class ProjectGenerator {
         return XCWorkspace(data: workspaceData)
     }
 
-    func generateScheme(_ scheme: Scheme, pbxProject: PBXProj) throws -> XCScheme {
+    func generateScheme(_ scheme: Scheme, pbxProject: PBXProj, tests: [String] = []) throws -> XCScheme {
 
-        let buildActionEntries: [XCScheme.BuildAction.Entry] = scheme.build.targets.map { target in
+        func getBuildEntry(_ buildTarget: Scheme.BuildTarget) -> XCScheme.BuildAction.Entry {
 
-            let targetReference = pbxProject.objects.nativeTargets.first { $0.name == target.target }!
+            let targetReference = pbxProject.objects.nativeTargets.first { $0.name == buildTarget.target }!
 
-            let buildableReference = XCScheme.BuildableReference(referencedContainer: "container:\(spec.name).xcodeproj", blueprintIdentifier: targetReference.reference, buildableName: "\(target.target).\(targetReference.productType!.fileExtension!)", blueprintName: scheme.name)
+            let buildableReference = XCScheme.BuildableReference(referencedContainer: "container:\(spec.name).xcodeproj", blueprintIdentifier: targetReference.reference, buildableName: "\(buildTarget.target).\(targetReference.productType!.fileExtension!)", blueprintName: scheme.name)
 
-            return XCScheme.BuildAction.Entry(buildableReference: buildableReference, buildFor: target.buildTypes)
+            return XCScheme.BuildAction.Entry(buildableReference: buildableReference, buildFor: buildTarget.buildTypes)
         }
 
+        let testBuildTargets = tests.map {
+            Scheme.BuildTarget(target: $0, buildTypes: BuildType.testOnly)
+        }
+
+        let testBuildTargetEntries = testBuildTargets.map(getBuildEntry)
+
+        let buildActionEntries: [XCScheme.BuildAction.Entry] = scheme.build.targets.map(getBuildEntry) + testBuildTargetEntries
+
         let buildableReference = buildActionEntries.first!.buildableReference
-        let productRunabke = XCScheme.BuildableProductRunnable(buildableReference: buildableReference)
+        let productRunable = XCScheme.BuildableProductRunnable(buildableReference: buildableReference)
 
         let buildAction = XCScheme.BuildAction(buildActionEntries: buildActionEntries, parallelizeBuild: true, buildImplicitDependencies: true)
 
-        let testAction = XCScheme.TestAction(buildConfiguration: scheme.test?.config ?? defaultDebugConfig.name, macroExpansion: buildableReference)
+        let testables = testBuildTargetEntries.map { XCScheme.TestableReference(skipped: false, buildableReference: $0.buildableReference) }
 
-        let launchAction = XCScheme.LaunchAction(buildableProductRunnable: productRunabke,
+        let testAction = XCScheme.TestAction(buildConfiguration: scheme.test?.config ?? defaultDebugConfig.name,
+                                             macroExpansion: buildableReference,
+                                             testables: testables)
+
+        let launchAction = XCScheme.LaunchAction(buildableProductRunnable: productRunable,
                                                  buildConfiguration: scheme.run?.config ?? defaultDebugConfig.name)
 
-        let profileAction = XCScheme.ProfileAction(buildableProductRunnable: productRunabke,
+        let profileAction = XCScheme.ProfileAction(buildableProductRunnable: productRunable,
                                                    buildConfiguration: scheme.profile?.config ?? defaultReleaseConfig.name)
 
         let analyzeAction = XCScheme.AnalyzeAction(buildConfiguration: scheme.analyze?.config ?? defaultDebugConfig.name)
@@ -196,15 +218,31 @@ public class ProjectGenerator {
         }
 
         for target in spec.targets {
-            for generatedScheme in target.generateSchemes {
-                let schemeName = "\(target.name) \(generatedScheme)"
+            if let scheme = target.scheme {
 
-                let debugConfig = spec.configs.first { $0.type == .debug && $0.name.contains(generatedScheme) }!
-                let releaseConfig = spec.configs.first { $0.type == .release && $0.name.contains(generatedScheme) }!
+                if scheme.configVariants.isEmpty {
+                    let schemeName = target.name
 
-                let specScheme = Scheme(name: schemeName, targets: [Scheme.BuildTarget(target: target.name)], debugConfig: debugConfig.name, releaseConfig: releaseConfig.name)
-                let scheme = try generateScheme(specScheme, pbxProject: pbxProject)
-                xcschemes.append(scheme)
+                    let debugConfig = spec.configs.first { $0.type == .debug}!
+                    let releaseConfig = spec.configs.first { $0.type == .release}!
+
+                    let specScheme = Scheme(name: schemeName, targets: [Scheme.BuildTarget(target: target.name)], debugConfig: debugConfig.name, releaseConfig: releaseConfig.name)
+                    let scheme = try generateScheme(specScheme, pbxProject: pbxProject, tests: scheme.testTargets)
+                    xcschemes.append(scheme)
+                }
+                else {
+                    for configVariant in scheme.configVariants {
+
+                        let schemeName = "\(target.name) \(configVariant)"
+
+                        let debugConfig = spec.configs.first { $0.type == .debug && $0.name.contains(configVariant) }!
+                        let releaseConfig = spec.configs.first { $0.type == .release && $0.name.contains(configVariant) }!
+
+                        let specScheme = Scheme(name: schemeName, targets: [Scheme.BuildTarget(target: target.name)], debugConfig: debugConfig.name, releaseConfig: releaseConfig.name)
+                        let scheme = try generateScheme(specScheme, pbxProject: pbxProject, tests: scheme.testTargets)
+                        xcschemes.append(scheme)
+                    }
+                }
             }
         }
 
@@ -224,8 +262,9 @@ public struct SpecValidationError: Error, CustomStringConvertible {
         case invalidBuildSettingConfig(String)
         case invalidSettingsPreset(String)
         case missingTargetSource(target: String, source: String)
-        case invalidTargetGeneratedSchema(target: String, scheme: String, configType: ConfigType)
         case invalidRunScriptPath(target: String, path: String)
+        case invalidTargetSchemeConfigVariant(target: String, configVariant: String, configType: ConfigType)
+        case invalidTargetSchemeTest(target: String, testTarget: String)
 
         public var description: String {
             switch self {
@@ -237,7 +276,8 @@ public struct SpecValidationError: Error, CustomStringConvertible {
             case let .missingTargetSource(target, source): return "Target \(target.quoted) has a missing source directory \(source.quoted)"
             case let .invalidSettingsPreset(preset): return "Invalid settings preset \(preset.quoted)"
             case let .invalidRunScriptPath(target, path): return "Target \(target.quoted) has a script path that doesn't exist \(path.quoted)"
-            case let .invalidTargetGeneratedSchema(target, scheme, configType): return "Target \(target.quoted) has an invalid schema generation name which requires a config that has a \(configType.rawValue.quoted) type and contains the name \(scheme.quoted)"
+            case let .invalidTargetSchemeConfigVariant(target, configVariant, configType): return "Target \(target.quoted) has invalid scheme config varians which requires a config that has a \(configType.rawValue.quoted) type and contains the name \(configVariant.quoted)"
+            case let .invalidTargetSchemeTest(target, test): return "Target \(target.quoted) scheme has invalid test \(test.quoted)"
             }
         }
     }

@@ -158,7 +158,7 @@ func projectGeneratorTests() {
             $0.it("generates target schemes from config variant") {
                 let configVariants = ["Test", "Production"]
                 var target = application
-                target.generateSchemes = configVariants
+                target.scheme = TargetScheme(configVariants: configVariants)
                 let configs: [Config] = [
                     Config(name: "Test Debug", type: .debug),
                     Config(name: "Production Debug", type: .debug),
