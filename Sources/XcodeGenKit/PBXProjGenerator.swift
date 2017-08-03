@@ -286,7 +286,7 @@ public class PBXProjGenerator {
         objects.append(.pbxCopyFilesBuildPhase(copyFilesPhase))
         buildPhases.append(copyFilesPhase.reference)
 
-        if target.type == .application {
+        if target.type.isApp {
             func getCarthageFrameworks(target: Target) -> [String] {
                 var frameworks: [String] = []
                 for dependency in target.dependencies {
