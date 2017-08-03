@@ -122,9 +122,9 @@ public class PBXProjGenerator {
 
     func generateSourceFile(path: Path) -> SourceFile {
         let fileReference = fileReferencesByPath[path]!
-        var settings: [String: Any] = [:]
+        var settings: [String: Any]?
         if getBuildPhaseForPath(path) == .headers {
-            settings["ATTRIBUTES"] = ["Public"]
+            settings = ["ATTRIBUTES": ["Public"]]
         }
         let buildFile = PBXBuildFile(reference: generateUUID(PBXBuildFile.self, fileReference), fileRef: fileReference, settings: settings)
         objects.append(.pbxBuildFile(buildFile))
