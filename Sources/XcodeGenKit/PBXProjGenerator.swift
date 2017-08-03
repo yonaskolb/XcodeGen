@@ -158,25 +158,41 @@ public class PBXProjGenerator {
         var dependancies: [String] = []
         var targetFrameworkBuildFiles: [String] = []
         var copyFiles: [String] = []
+        var extensions: [String] = []
+
         for dependancy in target.dependencies {
             switch dependancy {
-            case let .target(dependencyTarget):
-                let targetProxy = PBXContainerItemProxy(reference: generateUUID(PBXContainerItemProxy.self, target.name), containerPortal: projectReference, remoteGlobalIDString: targetNativeReferences[dependencyTarget]!, proxyType: .nativeTarget, remoteInfo: dependencyTarget)
-                let targetDependancy = PBXTargetDependency(reference: generateUUID(PBXTargetDependency.self, dependencyTarget + target.name), target: targetNativeReferences[dependencyTarget]!, targetProxy: targetProxy.reference)
+            case let .target(dependencyTargetName):
+                guard let dependencyTarget = spec.getTarget(dependencyTargetName) else { continue }
+                let dependencyFileReference = targetFileReferences[dependencyTargetName]!
+
+                let targetProxy = PBXContainerItemProxy(reference: generateUUID(PBXContainerItemProxy.self, target.name), containerPortal: projectReference, remoteGlobalIDString: targetNativeReferences[dependencyTargetName]!, proxyType: .nativeTarget, remoteInfo: dependencyTargetName)
+                let targetDependancy = PBXTargetDependency(reference: generateUUID(PBXTargetDependency.self, dependencyTargetName + target.name), target: targetNativeReferences[dependencyTargetName]!, targetProxy: targetProxy.reference)
 
                 objects.append(.pbxContainerItemProxy(targetProxy))
                 objects.append(.pbxTargetDependency(targetDependancy))
                 dependancies.append(targetDependancy.reference)
 
-                let dependencyBuildFile = targetBuildFileReferences[dependencyTarget]!
+                let dependencyBuildFile = targetBuildFileReferences[dependencyTargetName]!
                 // link
                 targetFrameworkBuildFiles.append(dependencyBuildFile)
 
-                // embed
-                let embedSettings: [String: Any] = ["ATTRIBUTES": ["CodeSignOnCopy", "RemoveHeadersOnCopy"]]
-                let embedFile = PBXBuildFile(reference: generateUUID(PBXBuildFile.self, targetFileReferences[dependencyTarget]! + target.name), fileRef: targetFileReferences[dependencyTarget]!, settings: embedSettings)
-                objects.append(.pbxBuildFile(embedFile))
-                copyFiles.append(embedFile.reference)
+                if target.type.isApp {
+                    if dependencyTarget.type.isExtension {
+                        // embed app extensions
+                        let embedSettings: [String: Any] = ["ATTRIBUTES": ["RemoveHeadersOnCopy"]]
+                        let embedFile = PBXBuildFile(reference: generateUUID(PBXBuildFile.self, dependencyFileReference + target.name), fileRef: dependencyFileReference, settings: embedSettings)
+                        objects.append(.pbxBuildFile(embedFile))
+                        extensions.append(embedFile.reference)
+                    } else {
+                        // embed frameworks
+                        let embedSettings: [String: Any] = ["ATTRIBUTES": ["CodeSignOnCopy", "RemoveHeadersOnCopy"]]
+                        let embedFile = PBXBuildFile(reference: generateUUID(PBXBuildFile.self, dependencyFileReference + target.name), fileRef: dependencyFileReference, settings: embedSettings)
+                        objects.append(.pbxBuildFile(embedFile))
+                        copyFiles.append(embedFile.reference)
+                    }
+                }
+
             case let .framework(framework):
                 let fileReference = getFileReference(path: Path(framework), inPath: basePath)
                 let buildFile = PBXBuildFile(reference: generateUUID(PBXBuildFile.self, fileReference + target.name), fileRef: fileReference)

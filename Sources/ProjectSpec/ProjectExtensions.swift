@@ -62,4 +62,8 @@ extension PBXProductType {
             return nil
         }
     }
+
+    public var isExtension: Bool {
+        return fileExtension == "appex"
+    }
 }
