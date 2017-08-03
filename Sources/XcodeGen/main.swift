@@ -12,6 +12,7 @@ import Commander
 import XcodeGenKit
 import xcodeproj
 import ProjectSpec
+import JSONUtilities
 
 func generate(spec: String, project: String?) {
 
@@ -31,6 +32,9 @@ func generate(spec: String, project: String?) {
     do {
         spec = try ProjectSpec(path: specPath)
         print("Loaded spec: \(spec.targets.count) targets, \(spec.schemes.count) schemes, \(spec.configs.count) configs")
+    } catch let error as DecodingError {
+        print("Parsing spec failed: \(error.description)")
+        return
     } catch {
         print("Parsing spec failed: \(error.localizedDescription)")
         return
