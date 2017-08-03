@@ -133,7 +133,7 @@ func projectGeneratorTests() {
                 guard let xcscheme = project.sharedData?.schemes.first else { throw failure("Scheme not found") }
                 try expect(scheme.name) == "MyScheme"
                 guard let buildActionEntry = xcscheme.buildAction?.buildActionEntries.first else { throw failure("Build Action entry not found") }
-                try expect(buildActionEntry.buildFor) == XCScheme.BuildAction.Entry.BuildFor.default
+                try expect(buildActionEntry.buildFor) == BuildType.all
 
                 let buildableReferences: [XCScheme.BuildableReference] = [
                     buildActionEntry.buildableReference,

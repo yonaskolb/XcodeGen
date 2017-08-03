@@ -156,7 +156,7 @@ public class ProjectGenerator {
 
             let buildableReference = XCScheme.BuildableReference(referencedContainer: "container:\(spec.name).xcodeproj", blueprintIdentifier: targetReference.reference, buildableName: "\(target.target).\(targetReference.productType!.fileExtension!)", blueprintName: scheme.name)
 
-            return XCScheme.BuildAction.Entry(buildableReference: buildableReference, buildFor: XCScheme.BuildAction.Entry.BuildFor.default)
+            return XCScheme.BuildAction.Entry(buildableReference: buildableReference, buildFor: target.buildTypes)
         }
 
         let buildableReference = buildActionEntries.first!.buildableReference

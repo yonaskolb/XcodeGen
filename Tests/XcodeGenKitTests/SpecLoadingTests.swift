@@ -66,13 +66,26 @@ func specLoadingTests() {
 
         $0.it("parses schemes") {
             let schemeDictionary: [String: Any] = [
-                "build": ["targets": ["Target": "all"]],
+                "build": ["targets": [
+                    ["target": "Target"],
+                    ["target": "Target", "buildTypes": "testing"],
+                    ["target": "Target", "buildTypes": "none"],
+                    ["target": "Target", "buildTypes": "all"],
+                    ["target": "Target", "buildTypes": ["testing": true]],
+                    ["target": "Target", "buildTypes": ["testing": false]],
+                    ]],
             ]
             let scheme = try Scheme(name: "Scheme", jsonDictionary: schemeDictionary)
-            let target = scheme.build.targets.first!
+            let expectedTargets: [Scheme.BuildTarget] = [
+                Scheme.BuildTarget(target: "Target", buildTypes: BuildType.all),
+                Scheme.BuildTarget(target: "Target", buildTypes: [.testing, .analyzing]),
+                Scheme.BuildTarget(target: "Target", buildTypes: []),
+                Scheme.BuildTarget(target: "Target", buildTypes: BuildType.all),
+                Scheme.BuildTarget(target: "Target", buildTypes: [.testing]),
+                Scheme.BuildTarget(target: "Target", buildTypes: []),
+                ]
             try expect(scheme.name) == "Scheme"
-            try expect(target.target) == "Target"
-            try expect(target.buildTypes) == [.running, .testing, .profiling, .analyzing, .archiving]
+            try expect(scheme.build.targets) == expectedTargets
         }
 
         $0.it("parses settings") {

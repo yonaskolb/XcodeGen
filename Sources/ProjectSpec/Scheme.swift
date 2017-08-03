@@ -10,7 +10,9 @@ import Foundation
 import xcodeproj
 import JSONUtilities
 
-public struct Scheme {
+public typealias BuildType = XCScheme.BuildAction.Entry.BuildFor
+
+public struct Scheme: Equatable {
 
     public var name: String
     public var build: Build
@@ -40,10 +42,14 @@ public struct Scheme {
                   archive: .init(config: releaseConfig))
     }
 
-    public struct Build {
+    public struct Build: Equatable {
         public var targets: [BuildTarget]
         public init(targets: [BuildTarget]) {
             self.targets = targets
+        }
+
+        public static func ==(lhs: Build, rhs: Build) -> Bool {
+            return lhs.targets == rhs.targets
         }
     }
 
@@ -52,12 +58,20 @@ public struct Scheme {
         public init(config: String) {
             self.config = config
         }
+
+        public static func ==(lhs: Run, rhs: Run) -> Bool {
+            return lhs.config == rhs.config
+        }
     }
 
     public struct Test: BuildAction {
         public var config: String
         public init(config: String) {
             self.config = config
+        }
+
+        public static func ==(lhs: Test, rhs: Test) -> Bool {
+            return lhs.config == rhs.config
         }
     }
 
@@ -66,12 +80,20 @@ public struct Scheme {
         public init(config: String) {
             self.config = config
         }
+
+        public static func ==(lhs: Analyze, rhs: Analyze) -> Bool {
+            return lhs.config == rhs.config
+        }
     }
 
     public struct Profile: BuildAction {
         public var config: String
         public init(config: String) {
             self.config = config
+        }
+
+        public static func ==(lhs: Profile, rhs: Profile) -> Bool {
+            return lhs.config == rhs.config
         }
     }
 
@@ -80,24 +102,42 @@ public struct Scheme {
         public init(config: String) {
             self.config = config
         }
+
+        public static func ==(lhs: Archive, rhs: Archive) -> Bool {
+            return lhs.config == rhs.config
+        }
     }
 
-    public struct BuildTarget {
+    public struct BuildTarget: Equatable {
         public var target: String
-        public var buildTypes: [XCScheme.BuildAction.Entry.BuildFor]
+        public var buildTypes: [BuildType]
 
-        public init(target: String, buildTypes: [XCScheme.BuildAction.Entry.BuildFor] = XCScheme.BuildAction.Entry.BuildFor.default) {
+        public init(target: String, buildTypes: [BuildType] = BuildType.all) {
             self.target = target
             self.buildTypes = buildTypes
         }
+
+        public static func ==(lhs: BuildTarget, rhs: BuildTarget) -> Bool {
+            return lhs.target == rhs.target && lhs.buildTypes == rhs.buildTypes
+        }
+    }
+
+    public static func ==(lhs: Scheme, rhs: Scheme) -> Bool {
+        return lhs.build == rhs.build &&
+            lhs.run == rhs.run &&
+        lhs.test == rhs.test &&
+        lhs.analyze == rhs.analyze &&
+        lhs.profile == rhs.profile &&
+        lhs.archive == rhs.archive
     }
 }
 
-protocol BuildAction {
+protocol BuildAction: Equatable {
     var config: String { get }
 
     init(config: String)
 }
+
 
 extension Scheme.Run: JSONObjectConvertible {
 
@@ -150,27 +190,40 @@ extension Scheme: NamedJSONDictionaryConvertible {
 extension Scheme.Build: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
-
-        var targets: [Scheme.BuildTarget] = []
-        let dictionary: [String: String] = try jsonDictionary.json(atKeyPath: "targets")
-
-        for (key, value) in dictionary {
-            let buildTypes: [XCScheme.BuildAction.Entry.BuildFor]
-            switch value {
-            case "all": buildTypes = [.running, .testing, .profiling, .analyzing, .archiving]
-            case "none": buildTypes = []
-            case "testing": buildTypes = [.testing, .analyzing]
-            case "indexing": buildTypes = [.testing, .analyzing, .archiving]
-            default: buildTypes = [.running, .testing, .profiling, .analyzing, .archiving]
-            }
-            targets.append(Scheme.BuildTarget(target: key, buildTypes: buildTypes))
-        }
-
-        self.targets = targets
+        targets = try jsonDictionary.json(atKeyPath: "targets")
     }
 }
 
-extension XCScheme.BuildAction.Entry.BuildFor: JSONPrimitiveConvertible {
+extension Scheme.BuildTarget: JSONObjectConvertible {
+
+    public init(jsonDictionary: JSONDictionary) throws {
+        target = try jsonDictionary.json(atKeyPath: "target")
+        if jsonDictionary["buildTypes"] == nil {
+            buildTypes = BuildType.all
+        } else {
+            if let types: String = jsonDictionary.json(atKeyPath: "buildTypes") {
+                switch types {
+                case "all": buildTypes = BuildType.all
+                case "none": buildTypes = []
+                case "testing": buildTypes = [.testing, .analyzing]
+                case "indexing": buildTypes = [.testing, .analyzing, .archiving]
+                default: buildTypes = BuildType.all
+                }
+            } else {
+                let types: [String: Bool] = try jsonDictionary.json(atKeyPath: "buildTypes")
+                var buildTypes: [BuildType] = []
+                for (type, build) in types {
+                    if build , let buildType = BuildType.from(jsonValue: type) {
+                        buildTypes.append(buildType)
+                    }
+                }
+                self.buildTypes = buildTypes
+            }
+        }
+    }
+}
+
+extension BuildType: JSONPrimitiveConvertible {
 
     public typealias JSONType = String
 
@@ -183,5 +236,9 @@ extension XCScheme.BuildAction.Entry.BuildFor: JSONPrimitiveConvertible {
         case "analyze", "analyzing": return .analyzing
         default: return nil
         }
+    }
+    
+    public static var all: [BuildType] {
+        return [.running, .testing, .profiling, .analyzing, .archiving]
     }
 }
