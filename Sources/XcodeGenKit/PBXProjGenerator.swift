@@ -228,13 +228,6 @@ public class PBXProjGenerator {
         let fileReference = targetFileReferences[target.name]!
         var buildPhases: [String] = []
 
-        if target.type == .framework {
-            let buildFile = PBXBuildFile(reference: targetBuildFileReferences[target.name]!, fileRef: fileReference)
-            objects.append(.pbxBuildFile(buildFile))
-        }
-
-        // TODO: don't generate build files for files that won't be built
-
         func getBuildFilesForPhase(_ buildPhase: BuildPhase) -> Set<String> {
             let files = sourceFilePaths.filter { getBuildPhaseForPath($0) == buildPhase }.map(generateSourceFile)
             return Set(files.map { $0.buildFile.reference })
@@ -278,13 +271,40 @@ public class PBXProjGenerator {
         objects.append(.pbxHeadersBuildPhase(headersBuildPhase))
         buildPhases.append(headersBuildPhase.reference)
 
-        let frameworkBuildPhase = PBXFrameworksBuildPhase(reference: generateUUID(PBXFrameworksBuildPhase.self, target.name), files: Set(targetFrameworkBuildFiles), runOnlyForDeploymentPostprocessing: 0)
-        objects.append(.pbxFrameworksBuildPhase(frameworkBuildPhase))
-        buildPhases.append(frameworkBuildPhase.reference)
+        if !targetFrameworkBuildFiles.isEmpty {
 
-        let copyFilesPhase = PBXCopyFilesBuildPhase(reference: generateUUID(PBXCopyFilesBuildPhase.self, target.name), dstPath: "", dstSubfolderSpec: .frameworks, files: Set(copyFiles))
-        objects.append(.pbxCopyFilesBuildPhase(copyFilesPhase))
-        buildPhases.append(copyFilesPhase.reference)
+            let frameworkBuildPhase = PBXFrameworksBuildPhase(
+                reference: generateUUID(PBXFrameworksBuildPhase.self, target.name),
+                files: Set(targetFrameworkBuildFiles),
+                runOnlyForDeploymentPostprocessing: 0)
+
+            objects.append(.pbxFrameworksBuildPhase(frameworkBuildPhase))
+            buildPhases.append(frameworkBuildPhase.reference)
+        }
+
+        if !extensions.isEmpty {
+
+            let copyFilesPhase = PBXCopyFilesBuildPhase(
+                reference: generateUUID(PBXCopyFilesBuildPhase.self, "embed app extensions" + target.name),
+                dstPath: "",
+                dstSubfolderSpec: .plugins,
+                files: Set(extensions))
+
+            objects.append(.pbxCopyFilesBuildPhase(copyFilesPhase))
+            buildPhases.append(copyFilesPhase.reference)
+        }
+
+        if !copyFiles.isEmpty {
+
+            let copyFilesPhase = PBXCopyFilesBuildPhase(
+                reference: generateUUID(PBXCopyFilesBuildPhase.self, "embed frameworks" + target.name),
+                dstPath: "",
+                dstSubfolderSpec: .frameworks,
+                files: Set(copyFiles))
+
+            objects.append(.pbxCopyFilesBuildPhase(copyFilesPhase))
+            buildPhases.append(copyFilesPhase.reference)
+        }
 
         if target.type.isApp {
             func getCarthageFrameworks(target: Target) -> [String] {
