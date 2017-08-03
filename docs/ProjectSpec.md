@@ -180,16 +180,20 @@ targets:
       		othercommand
 ```
 
-#### generateSchemes
-This is a convenience used to automatically generate schemes for a target based on large amount of configs. A list of names is provided, then for each of these names a scheme is created, using configs that contain the name with debug and release variants. This is useful for having different environment schemes.
+#### scheme
+This is a convenience used to automatically generate schemes for a target based on different configs  or included tests.
 
-For example, the following spec would create 3 schemes called:
+- **configVariants**: This generates a scheme for each entry, using configs that contain the name with debug and release variants. This is useful for having different environment schemes.
+- **testTargets**: a list of test targets that should be included in the scheme. These will be added to the build targets and the test entries
+
+For example, the spec below would create 3 schemes called:
 
 - MyApp Test
 - MyApp Staging
 - MyApp Production
 
-Each scheme would use different build configuration for the different build types, specifically debug configs for `run`, `test`, and `anaylze`, and release configs for `profile` and `archive`
+Each scheme would use different build configuration for the different build types, specifically debug configs for `run`, `test`, and `anaylze`, and release configs for `profile` and `archive`.
+The MyUnitTests target would also be linked.
 
 ```
 configs:
@@ -201,8 +205,12 @@ configs:
   Production Release: release
 targets
   - name: MyApp
-    generateSchemes:
-      - Test
-      - Staging
-      - Production
+    scheme:
+      testTargets:
+        - MyUnitTests
+      configVariants:
+        - Test
+        - Staging
+        - Production
+  - name: MyUnitTests
 ```

@@ -8,16 +8,25 @@
 
 /* Begin PBXBuildFile section */
 		BF1073850101 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR1332263601 /* AppDelegate.swift */; };
+		BF1462768401 = {isa = PBXBuildFile; fileRef = FR2653659501 /* TestProjectTests.xctest */; };
 		BF1744565901 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR6218091901 /* ViewController.swift */; };
 		BF2753556301 /* MyFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR2993497801 /* MyFramework.framework */; };
 		BF3154421201 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FR5980633301 /* Assets.xcassets */; };
 		BF3515549501 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = FR7740960501 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BF3862341101 = {isa = PBXBuildFile; fileRef = FR2993497801 /* MyFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		BF5986511201 = {isa = PBXBuildFile; fileRef = FR6523263101 /* TestProject.app */; };
+		BF5986511201 /* TestProject.app in Frameworks */ = {isa = PBXBuildFile; fileRef = FR6523263101 /* TestProject.app */; };
+		BF9001417701 /* TestProjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR6877173101 /* TestProjectTests.swift */; };
 		BF9155249601 /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR7078510801 /* FrameworkFile.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		CIP265365901 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = P81399456601 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = NT6523263101;
+			remoteInfo = TestProject;
+		};
 		CIP652326301 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = P81399456601 /* Project object */;
@@ -44,17 +53,28 @@
 		FR1332263601 /* AppDelegate.swift */ = {isa = PBXFileReference; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FR1345298501 /* Info.plist */ = {isa = PBXFileReference; path = Info.plist; sourceTree = "<group>"; };
 		FR1345298502 /* Info.plist */ = {isa = PBXFileReference; path = Info.plist; sourceTree = "<group>"; };
+		FR1345298503 /* Info.plist */ = {isa = PBXFileReference; path = Info.plist; sourceTree = "<group>"; };
+		FR2653659501 /* TestProjectTests.xctest */ = {isa = PBXFileReference; explicitFileType = xctest; includeInIndex = 0; path = TestProjectTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR2993497801 /* MyFramework.framework */ = {isa = PBXFileReference; explicitFileType = framework; includeInIndex = 0; path = MyFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR3676338401 /* Base */ = {isa = PBXFileReference; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FR3676338402 /* Base */ = {isa = PBXFileReference; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		FR5980633301 /* Assets.xcassets */ = {isa = PBXFileReference; path = Assets.xcassets; sourceTree = "<group>"; };
 		FR6218091901 /* ViewController.swift */ = {isa = PBXFileReference; path = ViewController.swift; sourceTree = "<group>"; };
 		FR6523263101 /* TestProject.app */ = {isa = PBXFileReference; explicitFileType = app; includeInIndex = 0; path = TestProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FR6877173101 /* TestProjectTests.swift */ = {isa = PBXFileReference; path = TestProjectTests.swift; sourceTree = "<group>"; };
 		FR7078510801 /* FrameworkFile.swift */ = {isa = PBXFileReference; path = FrameworkFile.swift; sourceTree = "<group>"; };
 		FR7740960501 /* MyFramework.h */ = {isa = PBXFileReference; path = MyFramework.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		FBP265365901 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF5986511201,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		FBP652326301 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -66,6 +86,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		G26536595301 /* TestProjectTests */ = {
+			isa = PBXGroup;
+			children = (
+				FR1345298503 /* Info.plist */,
+				FR6877173101 /* TestProjectTests.swift */,
+			);
+			name = TestProjectTests;
+			path = TestProjectTests;
+			sourceTree = "<group>";
+		};
 		G29934978701 /* MyFramework */ = {
 			isa = PBXGroup;
 			children = (
@@ -96,6 +126,7 @@
 			children = (
 				G65232631501 /* TestProject */,
 				G29934978701 /* MyFramework */,
+				G26536595301 /* TestProjectTests */,
 				G86202385201 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -104,6 +135,7 @@
 			isa = PBXGroup;
 			children = (
 				FR2993497801 /* MyFramework.framework */,
+				FR2653659501 /* TestProjectTests.xctest */,
 				FR6523263101 /* TestProject.app */,
 			);
 			name = Products;
@@ -112,6 +144,13 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
+		HBP265365901 /* Frameworks */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		HBP299349701 /* Frameworks */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -130,6 +169,24 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		NT2653659501 /* TestProjectTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = XCCL26536501 /* Build configuration list for PBXNativeTarget "TestProjectTests" */;
+			buildPhases = (
+				SBP265365901 /* Sources */,
+				RBP265365901 /* Resources */,
+				HBP265365901 /* Headers */,
+				FBP265365901 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				TD8877980201 /* PBXTargetDependency */,
+			);
+			name = TestProjectTests;
+			productReference = FR2653659501;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		NT2993497801 /* MyFramework */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = XCCL29934901 /* Build configuration list for PBXNativeTarget "MyFramework" */;
@@ -185,11 +242,19 @@
 			targets = (
 				NT6523263101 /* TestProject */,
 				NT2993497801 /* MyFramework */,
+				NT2653659501 /* TestProjectTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		RBP265365901 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		RBP299349701 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -239,6 +304,14 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		SBP265365901 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF9001417701 /* TestProjectTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		SBP299349701 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -263,6 +336,11 @@
 			isa = PBXTargetDependency;
 			target = NT2993497801 /* MyFramework */;
 			targetProxy = CIP652326301 /* PBXContainerItemProxy */;
+		};
+		TD8877980201 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = NT6523263101 /* TestProject */;
+			targetProxy = CIP265365901 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -367,6 +445,20 @@
 			};
 			name = Debug;
 		};
+		XCBC60448901 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = TestProjectTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestProject.app/TestProject";
+			};
+			name = Release;
+		};
 		XCBC86437501 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -424,6 +516,20 @@
 			};
 			name = Release;
 		};
+		XCBC89077001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = TestProjectTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestProject.app/TestProject";
+			};
+			name = Debug;
+		};
 		XCBC89204001 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -444,6 +550,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		XCCL26536501 /* Build configuration list for PBXNativeTarget "TestProjectTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				XCBC60448901 /* Release */,
+				XCBC89077001 /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "";
+		};
 		XCCL29934901 /* Build configuration list for PBXNativeTarget "MyFramework" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

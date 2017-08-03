@@ -21,7 +21,7 @@ public struct Target {
     public var prebuildScripts: [RunScript]
     public var postbuildScripts: [RunScript]
     public var configFiles: [String: String]
-    public var generateSchemes: [String]
+    public var scheme: TargetScheme?
 
     public var filename: String {
         var name = self.name
@@ -31,7 +31,7 @@ public struct Target {
         return name
     }
 
-    public init(name: String, type: PBXProductType, platform: Platform, settings: Settings = .empty, configFiles: [String: String] = [:], sources: [String] = [], sourceExludes: [String] = [], dependencies: [Dependency] = [], prebuildScripts: [RunScript] = [], postbuildScripts: [RunScript] = [], generateSchemes: [String] = []) {
+    public init(name: String, type: PBXProductType, platform: Platform, settings: Settings = .empty, configFiles: [String: String] = [:], sources: [String] = [], sourceExludes: [String] = [], dependencies: [Dependency] = [], prebuildScripts: [RunScript] = [], postbuildScripts: [RunScript] = [], scheme: TargetScheme? = nil) {
         self.name = name
         self.type = type
         self.platform = platform
@@ -42,7 +42,25 @@ public struct Target {
         self.dependencies = dependencies
         self.prebuildScripts = prebuildScripts
         self.postbuildScripts = postbuildScripts
-        self.generateSchemes = generateSchemes
+        self.scheme = scheme
+    }
+}
+
+public struct TargetScheme {
+    public let testTargets: [String]
+    public let configVariants: [String]
+
+    public init(testTargets: [String] = [], configVariants: [String] = []) {
+        self.testTargets = testTargets
+        self.configVariants = configVariants
+    }
+}
+
+extension TargetScheme: JSONObjectConvertible {
+
+    public init(jsonDictionary: JSONDictionary) throws {
+        testTargets = jsonDictionary.json(atKeyPath: "testTargets") ?? []
+        configVariants = jsonDictionary.json(atKeyPath: "configVariants") ?? []
     }
 }
 
@@ -77,7 +95,7 @@ extension Target: JSONObjectConvertible {
         }
         prebuildScripts = jsonDictionary.json(atKeyPath: "prebuildScripts") ?? []
         postbuildScripts = jsonDictionary.json(atKeyPath: "postbuildScripts") ?? []
-        generateSchemes = jsonDictionary.json(atKeyPath: "generateSchemes") ?? []
+        scheme = jsonDictionary.json(atKeyPath: "scheme")
     }
 }
 

@@ -9,6 +9,9 @@ targets:
       PRODUCT_BUNDLE_IDENTIFIER: com.test
     dependencies:
       - target: MyFramework
+    scheme:
+      testTargets:
+        - TestProjectTests
     postbuildScripts:
       - name: Swiftlint
         script: |
@@ -26,3 +29,12 @@ targets:
     postbuildScripts:
       - name: Swiftlint
         path: scripts/swiftlint.sh
+  - name: TestProjectTests
+    type: bundle.unit-test
+    platform: iOS
+    sources: TestProjectTests
+    settings:
+      TEST_HOST: $(BUILT_PRODUCTS_DIR)/TestProject.app/TestProject
+      INFOPLIST_FILE: TestProjectTests/Info.plist
+    dependencies:
+      - target: TestProject
