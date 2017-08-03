@@ -8,12 +8,6 @@
       "version": "4.1.0"
     },
     {
-      "package": "CCommonCrypto",
-      "reason": null,
-      "repositoryURL": "https://github.com/Bouke/CCommonCrypto.git",
-      "version": "1.0.0"
-    },
-    {
       "package": "Commander",
       "reason": null,
       "repositoryURL": "https://github.com/kylef/Commander.git",
@@ -35,7 +29,7 @@
       "package": "Rainbow",
       "reason": null,
       "repositoryURL": "https://github.com/onevcat/Rainbow",
-      "version": "2.0.1"
+      "version": "2.1.0"
     },
     {
       "package": "Spectre",
@@ -53,13 +47,13 @@
       "package": "Yams",
       "reason": null,
       "repositoryURL": "https://github.com/jpsim/Yams.git",
-      "version": "0.3.3"
+      "version": "0.3.4"
     },
     {
       "package": "xcodeproj",
       "reason": null,
       "repositoryURL": "https://github.com/carambalabs/xcodeproj.git",
-      "version": "0.0.7"
+      "version": "0.0.9"
     }
   ],
   "version": 1
