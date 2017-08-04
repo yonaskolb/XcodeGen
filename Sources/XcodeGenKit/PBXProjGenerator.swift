@@ -10,7 +10,6 @@ import Foundation
 import Foundation
 import PathKit
 import xcodeproj
-import xcodeprojprotocols
 import JSONUtilities
 import Yams
 import ProjectSpec
