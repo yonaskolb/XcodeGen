@@ -1,28 +1,47 @@
-# Project spec
-The project spec can be written in either YAML or JSON. All the examples below use YAML
+# Project Spec
+The project spec can be written in either YAML or JSON. All the examples below use YAML.  
 
-### name
-Each spec must contain a name which is used for the generated project name
+Some of the examples below don't show all the required properties when trying to explain something. For example not all target examples will have a platform or type, even though they are required.
 
-```yaml
-name: My Project
-```
-#### configs
-Configs specify the build configurations in the project.
-Each config maps to a build type of either `debug` or `release` which will then apply default build settings for those types. Any value other than `debug` or `release` (for example "none"), will mean no default build settings will be loaded
+Required properties are marked 🔵 and optional properties with ⚪️.
+
+### Index
+
+- [Project](#project)
+	- [Configs](#configs)
+	- [Setting Presets](#setting-presets)
+- [Settings](#settings)
+- [Target](#target) 
+	- [Product Type](#product-type)
+	- [Platform](#platform)
+	- [Sources](#sources)
+	- [Config Files](#config-files)
+	- [Settings](#settings)
+	- [Build Script](#build-script)
+	- [Dependency](#dependency)
+	- [Target Scheme](#target-scheme)
+
+## Project
+
+- 🔵 **name**: `String` - Name of the generated project
+- ⚪️ **configs**: [Configs](#configs) - Project build configurations. Defaults to `Debug` and `Release` configs
+- ⚪️ **settings**: [Settings](#settings) - Project specific settings. Default base and config type settings will be applied first before any settings defined here
+- ⚪️ **settingPresets**: [Setting Presets](#setting-presets) - Setting presets mapped by name
+- ⚪️ **targets**: [[Target](#target)] - The list of targets in the project
+
+#### Configs
+Each config maps to a build type of either `debug` or `release` which will then apply default build settings. Any value other than `debug` or `release` (for example "none"), will mean no default build settings will be applied.
 
 ```yaml
 configs:
   Debug: debug
   Release: release
 ```
-If no configs are specified, default `Debug` and `Release` configs will be created automatically
+If no configs are specified, default `Debug` and `Release` configs will be created automatically.
 
-#### settings
-Project settings use the [Settings](#settings-spec) spec. Default base and config type settings will be applied first before any custom settings
 
-#### settingPresets
-Setting presets can be used to group build settings together and reuse them elsewhere. Each preset is a Settings schema, so can include other presets
+#### Setting Presets
+Setting presets are named groups of build settings that can be reused elsewhere. Each preset is a [Settings](#settings) schema, so can include other presets
 
 ```yaml
 settingPresets:
@@ -40,12 +59,12 @@ settingPresets:
             - preset
 ```
 
-## Settings Spec
-Settings can be defined on the project and each target, and the format is the same. Settings can either be a simple list of build settings or can be more advanced with the following properties:
+## Settings
+Settings can either be a simple map of build settings `[String: String]`, or can be more advanced with the following properties:
 
-- `presets`: a list of presets to include and merge
-- `configs`: a mapping of config name to a new nested settings spec. These settings will only be applied for that config
-- `base`: used to specify default settings that apply to any config
+- ⚪️ **presets**: `[String]` - List of presets to include and merge
+- ⚪️ **configs**: [String: [Settings](#settings)] - Mapping of config name to a settings spec. These settings will only be applied for that config
+- ⚪️ **base**: `[String: String]` - Used to specify default settings that apply to any config
 
 ```yaml
 settings:
@@ -66,15 +85,21 @@ settings:
 
 Settings are merged in the following order: presets, configs, base.
 
-## targets
-This is list of targets
+## Target
 
-```yaml
-targets:
-  - name: MyTarget
-```
-#### type
-This specifies the product type of the target. This will provide default build settings for that product type. Type can be any of the following:
+- 🔵 **name**: `String` - Name of the target
+- 🔵 **type**: [Product Type](#product-type) - Product type of the target
+- 🔵 **platform**: [Platform](#platform) - Platform of the target
+- ⚪️ **sources**: [Sources](#sources) - Source directories of the target
+- ⚪️ **configFiles**: [Config Files](#config-files) - `.xcconfig` files per config
+- ⚪️ **settings**: [Settings](#settings) - Target specific build settings. Default platform and product type settings will be applied first before any custom settings defined here
+- ⚪️ **prebuildScripts**: [[Build Script](#build-script)] - Build scripts that run *before* any other build phases
+- ⚪️ **postbuildScripts**: [[Build Script](#build-script)] - Build scripts that run *after* any other build phases
+- ⚪️ **dependencies**: [[Dependency](#dependency)] - Dependencies for the target
+- ⚪️ **scheme**: [Target Scheme](#target-scheme) - Generated scheme with tests or config variants
+
+#### Product Type
+This will provide default build settings for a certain product type. It can be any of the following:
 
 - application
 - framework
@@ -95,16 +120,16 @@ This specifies the product type of the target. This will provide default build s
 - app-extension.messages-sticker-pack
 - xpc-service
 
-#### platform
-Specifies the platform for the target. This will provide default build settings for that platform. It can be any of the following:
+#### Platform
+This will provide default build settings for a certain platform. It can be any of the following:
 
 - iOS
 - tvOS
 - macOS
 - watchOS
 
-#### sources
-Specifies the source directories for the target. This can either be a single path or a list of paths. Applicable source files, resources, headers, and lproj files will be parsed appropriately
+#### Sources
+Specifies the source directories for a target. This can either be a single path or a list of paths. Applicable source files, resources, headers, and lproj files will be parsed appropriately
 
 ```yaml
 targets:
@@ -116,13 +141,12 @@ targets:
       - MyOtherTargetSource2
 ```
 
-#### settings
-Species the build settings for the target. This uses the same [Settings](#settings-spec) spec as the project. Default platform and product type settings will be applied first before any custom settings
+#### Dependency
+A dependency can be one of a few types:
 
-#### dependencies
-Species the dependencies for the target. This can be another target, a framework path, or a carthage dependency.
-
-Carthage dependencies look for frameworks in `Carthage/Build/PLATFORM/FRAMEWORK.framework` where `PLATFORM` is the target's platform, and `FRAMEWORK` is the carthage framework you've specified.
+- **target:** `target name` - links to another target
+- **framework:** `framework path` - links to a framework
+- **carthage:** `framework name`  - looks for frameworks in `Carthage/Build/PLATFORM/FRAMEWORK.framework` where `PLATFORM` is the target's platform, and `FRAMEWORK` is the carthage framework you've specified.
 If any applications contain carthage dependencies within itself or any dependent targets, a carthage copy files script is automatically added to the application containing all the relevant frameworks
 
 ```yaml
@@ -135,8 +159,8 @@ targets:
   - name: MyFramework
 ```
 
-#### configFiles
-Specifies `.xcconfig` files for each configuration for the target.
+#### Config Files
+Specifies `.xcconfig` files for each configuration.
 
 ```yaml
 targets:
@@ -146,15 +170,15 @@ targets:
       Release: config_files/release.xcconfig
 ```
 
-#### Build Scripts
-Run script build phases can be added via **prebuildScripts** or **postBuildScripts** which run before or after any other build phases respectively. They run in the order defined. Each script can contain:
+#### Build Script
+Run script build phases added via **prebuildScripts** or **postBuildScripts**. They run before or after any other build phases respectively and in the order defined. Each script can contain:
 
-- **path:** a relative or absolute path to a shell script
-- **script:** an inline shell script
-- **name:** optional name of a script. Defaults to `Run Script`
-- **inputFiles:** optional  list of input files
-- **outputFiles:** optional  list of output files
-- **shell:** optional shell used for the script. Defaults to `/bin/sh`
+- 🔵 **path**: `String` - a relative or absolute path to a shell script
+- 🔵 **script**: `String` - an inline shell script
+- ⚪️ **name**: `String` - name of a script. Defaults to `Run Script`
+- ⚪️ **inputFiles**: `[String]` - list of input files
+- ⚪️ **outputFiles**: `[String]` - list of output files
+- ⚪️ **shell**: `String` - shell used for the script. Defaults to `/bin/sh`
 
 Either a **path** or **script** must be defined, the rest are optional.
 
@@ -180,11 +204,11 @@ targets:
       		othercommand
 ```
 
-#### scheme
-This is a convenience used to automatically generate schemes for a target based on different configs  or included tests.
+####  Target Scheme
+This is a convenience used to automatically generate schemes for a target based on different configs or included tests.
 
-- **configVariants**: This generates a scheme for each entry, using configs that contain the name with debug and release variants. This is useful for having different environment schemes.
-- **testTargets**: a list of test targets that should be included in the scheme. These will be added to the build targets and the test entries
+- 🔵 **configVariants**: `[String]` - This generates a scheme for each entry, using configs that contain the name with debug and release variants. This is useful for having different environment schemes.
+- ⚪️ **testTargets**: `[String]` - a list of test targets that should be included in the scheme. These will be added to the build targets and the test entries
 
 For example, the spec below would create 3 schemes called:
 
