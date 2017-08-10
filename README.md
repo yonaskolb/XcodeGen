@@ -129,7 +129,7 @@ Inspiration for this tool came from:
 
 - [struct](https://github.com/workshop/struct)
 - [xcake](https://github.com/jcampbell05/xcake)
-- [Cocoapods Xcodeproj](https://github.com/CocoaPods/Xcodeproj)
+- [CocoaPods Xcodeproj](https://github.com/CocoaPods/Xcodeproj)
 
 ## Contributions
 Pull requests and issues are welcome
