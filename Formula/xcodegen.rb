@@ -15,6 +15,7 @@ class Xcodegen < Formula
     system("install_name_tool -change #{yaml_lib_path} #{frameworks}/libCYaml.dylib #{xcodegen_path}")
     frameworks.install yaml_lib_path
     bin.install xcodegen_path
+    pkgshare.install "SettingPresets"
   end
 
   test do
