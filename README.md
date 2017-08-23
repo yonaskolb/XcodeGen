@@ -68,8 +68,8 @@ This will install XcodeGen to `usr/local/bin` so it can be used from anywhere
 ### Homebrew
 
 ```
-brew tap yonaskolb/XcodeGen git@github.com:yonaskolb/XcodeGen.git
-brew install XcodeGen
+$ brew tap yonaskolb/XcodeGen https://github.com/yonaskolb/XcodeGen.git
+$ brew install XcodeGen
 ```
 
 ### Swift Package Manager
