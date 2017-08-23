@@ -64,8 +64,11 @@ extension SettingsPresetFile {
             return group
         }
         let relativePath = "SettingPresets/\(path).yml"
-        let settingsPath = Path(#file).parent().parent().parent() + relativePath
-
+        var settingsPath = Path("../share/xcodegen/\(relativePath)")
+        if !settingsPath.exists {
+            // maybe running locally
+            settingsPath = Path(#file).parent().parent().parent() + relativePath
+        }
         guard settingsPath.exists else {
             switch self {
             case .base, .config, .platform:
