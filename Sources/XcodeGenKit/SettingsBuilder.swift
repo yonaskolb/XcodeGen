@@ -63,9 +63,23 @@ extension SettingsPresetFile {
         if let group = buildSettingFiles[path] {
             return group
         }
-        let settingsPath = Path(#file).parent().parent().parent() + "SettingPresets/\(path).yml"
-        guard settingsPath.exists,
-            let buildSettings = try? BuildSettings(path: settingsPath) else { return nil }
+        let relativePath = "SettingPresets/\(path).yml"
+        let settingsPath = Path(#file).parent().parent().parent() + relativePath
+
+        guard settingsPath.exists else {
+            switch self {
+            case .base, .config, .platform:
+                print("No \"\(name)\" settings found at \(settingsPath)")
+            case .product:
+                break
+            }
+            return nil
+        }
+
+        guard let buildSettings = try? BuildSettings(path: settingsPath) else {
+            print("Error parsing \"\(name)\" settings")
+            return nil
+        }
         buildSettingFiles[path] = buildSettings
         return buildSettings
     }

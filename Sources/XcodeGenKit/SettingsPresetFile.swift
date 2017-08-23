@@ -24,4 +24,13 @@ public enum SettingsPresetFile {
         case .base: return "base"
         }
     }
+
+    var name: String {
+        switch self {
+        case let .config(config): return "\(config.rawValue) config"
+        case let .platform(platform): return platform.rawValue
+        case let .product(product): return product.name
+        case .base: return "base"
+        }
+    }
 }

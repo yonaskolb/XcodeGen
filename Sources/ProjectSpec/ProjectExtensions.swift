@@ -70,4 +70,8 @@ extension PBXProductType {
     public var isApp: Bool {
         return fileExtension == "app"
     }
+
+    public var name: String {
+        return rawValue.replacingOccurrences(of: "com.apple.product-type.", with: "")
+    }
 }
