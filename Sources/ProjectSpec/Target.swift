@@ -111,7 +111,7 @@ extension Target {
                 targets.append(json)
             }
         }
-        
+
         return try targets.map { try Target(jsonDictionary: $0) }
     }
 }
@@ -196,9 +196,11 @@ extension Target: JSONObjectConvertible {
 
 public struct Dependency: Equatable {
 
-    public let type: DependencyType
-    public let reference: String
-    public let embed: Bool?
+    public var type: DependencyType
+    public var reference: String
+    public var embed: Bool?
+    public var codeSign: Bool = true
+    public var removeHeaders: Bool = true
 
     public init(type: DependencyType, reference: String, embed: Bool? = nil) {
         self.type = type
@@ -214,15 +216,27 @@ public struct Dependency: Equatable {
 
     public static func ==(lhs: Dependency, rhs: Dependency) -> Bool {
         return lhs.reference == rhs.reference &&
-        lhs.type == rhs.type &&
-        lhs.embed == rhs.embed
+            lhs.type == rhs.type &&
+            lhs.codeSign == rhs.codeSign &&
+            lhs.removeHeaders == rhs.removeHeaders &&
+            lhs.embed == rhs.embed
+    }
+
+    public var buildSettings: [String: Any] {
+        var attributes: [String] = []
+        if codeSign {
+            attributes.append("CodeSignOnCopy")
+        }
+        if removeHeaders {
+            attributes.append("RemoveHeadersOnCopy")
+        }
+        return ["ATTRIBUTES": attributes]
     }
 }
 
 extension Dependency: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
-        embed = jsonDictionary.json(atKeyPath: "embed")
         if let target: String = jsonDictionary.json(atKeyPath: "target") {
             type = .target
             reference = target
@@ -234,6 +248,15 @@ extension Dependency: JSONObjectConvertible {
             reference = carthage
         } else {
             throw ProjectSpecError.invalidDependency(jsonDictionary)
+        }
+
+        embed = jsonDictionary.json(atKeyPath: "embed")
+        
+        if let bool: Bool = jsonDictionary.json(atKeyPath: "codeSign") {
+            codeSign = bool
+        }
+        if let bool: Bool = jsonDictionary.json(atKeyPath: "removeHeaders") {
+            removeHeaders = bool
         }
     }
 }

@@ -19,7 +19,7 @@ func projectGeneratorTests() {
 
         let application = Target(name: "MyApp", type: .application, platform: .iOS,
                                  settings: Settings(buildSettings: ["SETTING_1": "VALUE"]),
-                                 dependencies: [.target("MyFramework")])
+                                 dependencies: [Dependency(type: .target, reference: "MyFramework")])
 
         let framework = Target(name: "MyFramework", type: .framework, platform: .iOS,
                                settings: Settings(buildSettings: ["SETTING_2": "VALUE"]))

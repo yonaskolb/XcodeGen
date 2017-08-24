@@ -203,6 +203,8 @@ public class PBXProjGenerator {
         var extensions: [String] = []
 
         for dependancy in target.dependencies {
+
+            let embed = dependancy.embed ?? (target.type.isApp ? true : false)
             switch dependancy.type {
             case .target:
                 let dependencyTargetName = dependancy.reference
@@ -220,36 +222,42 @@ public class PBXProjGenerator {
                 // link
                 targetFrameworkBuildFiles.append(dependencyBuildFile)
 
-                if target.type.isApp {
+                if embed {
+                    let embedSettings = dependancy.buildSettings
+                    let embedFile = PBXBuildFile(reference: generateUUID(PBXBuildFile.self, dependencyFileReference + target.name), fileRef: dependencyFileReference, settings: embedSettings)
+                    addObject(embedFile)
+
                     if dependencyTarget.type.isExtension {
-                        // embed app extensions
-                        let embedSettings: [String: Any] = ["ATTRIBUTES": ["RemoveHeadersOnCopy"]]
-                        let embedFile = PBXBuildFile(reference: generateUUID(PBXBuildFile.self, dependencyFileReference + target.name), fileRef: dependencyFileReference, settings: embedSettings)
-                        addObject(embedFile)
+                        // embed app extension
                         extensions.append(embedFile.reference)
                     } else {
-                        // embed frameworks
-                        let embedSettings: [String: Any] = ["ATTRIBUTES": ["CodeSignOnCopy", "RemoveHeadersOnCopy"]]
-                        let embedFile = PBXBuildFile(reference: generateUUID(PBXBuildFile.self, dependencyFileReference + target.name), fileRef: dependencyFileReference, settings: embedSettings)
-                        addObject(embedFile)
                         copyFiles.append(embedFile.reference)
                     }
                 }
 
             case .framework:
+
                 let fileReference = getFileReference(path: Path(dependancy.reference), inPath: basePath)
+
                 let buildFile = PBXBuildFile(reference: generateUUID(PBXBuildFile.self, fileReference + target.name), fileRef: fileReference)
                 addObject(buildFile)
+
                 targetFrameworkBuildFiles.append(buildFile.reference)
                 if !frameworkFiles.contains(fileReference) {
                     frameworkFiles.append(fileReference)
+                }
+
+                if embed {
+                    let embedFile = PBXBuildFile(reference: generateUUID(PBXBuildFile.self, fileReference + target.name), fileRef: fileReference, settings: dependancy.buildSettings)
+                    addObject(embedFile)
+                    copyFiles.append(buildFile.reference)
                 }
             case .carthage:
                 if carthageFrameworksByPlatform[target.platform.rawValue] == nil {
                     carthageFrameworksByPlatform[target.platform.rawValue] = []
                 }
                 var platformPath = Path(getCarthageBuildPath(platform: target.platform))
-                var frameworkPath = platformPath + carthage
+                var frameworkPath = platformPath + dependancy.reference
                 if frameworkPath.extension == nil {
                     frameworkPath = Path(frameworkPath.string + ".framework")
                 }
@@ -381,10 +389,10 @@ public class PBXProjGenerator {
     func getCarthageFrameworks(target: Target) -> [String] {
         var frameworks: [String] = []
         for dependency in target.dependencies {
-            switch dependency {
-            case let .carthage(framework): frameworks.append(framework)
-            case let .target(targetName):
-                if let target = spec.targets.first(where: { $0.name == targetName }) {
+            switch dependency.type {
+            case .carthage: frameworks.append(dependency.reference)
+            case .target:
+                if let target = spec.getTarget(dependency.reference) {
                     frameworks += getCarthageFrameworks(target: target)
                 }
             default: break
@@ -455,7 +463,7 @@ public class PBXProjGenerator {
                 allFilePaths.append(path)
             }
         }
-
+        
         let groupPath: String = depth == 0 ? path.byRemovingBase(path: basePath).string : path.lastComponent
         let group: PBXGroup
         if let cachedGroup = groupsByPath[path] {
