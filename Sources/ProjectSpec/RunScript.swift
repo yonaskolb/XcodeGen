@@ -16,6 +16,7 @@ public struct RunScript: Equatable {
     public var shell: String?
     public var inputFiles: [String]
     public var outputFiles: [String]
+    public var runOnlyWhenInstalling: Bool
 
     public enum ScriptType: Equatable {
         case path(String)
@@ -30,12 +31,13 @@ public struct RunScript: Equatable {
         }
     }
 
-    public init(script: ScriptType, name: String? = nil, inputFiles: [String] = [], outputFiles: [String] = [], shell: String? = nil) {
+    public init(script: ScriptType, name: String? = nil, inputFiles: [String] = [], outputFiles: [String] = [], shell: String? = nil, runOnlyWhenInstalling: Bool = false) {
         self.script = script
         self.name = name
         self.inputFiles = inputFiles
         self.outputFiles = outputFiles
         self.shell = shell
+        self.runOnlyWhenInstalling = runOnlyWhenInstalling
     }
 
     public static func ==(lhs: RunScript, rhs: RunScript) -> Bool {
@@ -44,7 +46,8 @@ public struct RunScript: Equatable {
             lhs.script == rhs.script &&
             lhs.inputFiles == rhs.inputFiles &&
             lhs.outputFiles == rhs.outputFiles &&
-            lhs.shell == rhs.shell
+            lhs.shell == rhs.shell &&
+            lhs.runOnlyWhenInstalling == rhs.runOnlyWhenInstalling
     }
 }
 
@@ -62,5 +65,6 @@ extension RunScript: JSONObjectConvertible {
             script = .path(path)
         }
         shell = jsonDictionary.json(atKeyPath: "shell")
+        runOnlyWhenInstalling = jsonDictionary.json(atKeyPath: "runOnlyWhenInstalling") ?? false
     }
 }

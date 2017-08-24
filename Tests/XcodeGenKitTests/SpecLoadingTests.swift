@@ -118,14 +118,14 @@ func specLoadingTests() {
             var target = validTarget
             let scripts: [[String: Any]] = [
                 ["path": "script.sh"],
-                ["script": "shell script\ndo thing", "name": "myscript", "inputFiles": ["file","file2"], "outputFiles": ["file","file2"], "shell": "bin/customshell"],
+                ["script": "shell script\ndo thing", "name": "myscript", "inputFiles": ["file","file2"], "outputFiles": ["file","file2"], "shell": "bin/customshell", "runOnlyWhenInstalling": true],
             ]
             target["prebuildScripts"] = scripts
             target["postbuildScripts"] = scripts
 
             let expectedScripts = [
                 RunScript(script: .path("script.sh")),
-                RunScript(script: .script("shell script\ndo thing"), name: "myscript", inputFiles: ["file","file2"], outputFiles: ["file","file2"], shell: "bin/customshell"),
+                RunScript(script: .script("shell script\ndo thing"), name: "myscript", inputFiles: ["file","file2"], outputFiles: ["file","file2"], shell: "bin/customshell", runOnlyWhenInstalling: true),
                 ]
 
             let parsedTarget = try Target(jsonDictionary: target)
