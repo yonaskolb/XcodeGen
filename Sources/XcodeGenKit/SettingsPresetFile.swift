@@ -20,7 +20,7 @@ public enum SettingsPresetFile {
         switch self {
         case let .config(config): return "Configs/\(config.rawValue)"
         case let .platform(platform): return "Platforms/\(platform.rawValue)"
-        case let .product(product): return "Products/\(product.rawValue)"
+        case let .product(product): return "Products/\(product.name)"
         case .base: return "base"
         }
     }
