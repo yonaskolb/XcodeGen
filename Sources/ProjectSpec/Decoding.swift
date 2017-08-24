@@ -53,6 +53,10 @@ extension JSONObjectConvertible {
 
     public init(path: Path) throws {
         let content: String = try path.read()
+        if content == "" {
+            try self.init(jsonDictionary: [:])
+            return
+        }
         let yaml = try Yams.load(yaml: content)
         guard let jsonDictionary = yaml as? JSONDictionary else {
             throw JSONUtilsError.fileNotAJSONDictionary
