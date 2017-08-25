@@ -32,6 +32,10 @@ public class PBXProjGenerator {
     var uuids: Set<String> = []
     var project: PBXProj!
 
+    var carthageBuildPath: String {
+        return spec.options.carthageBuildPath ?? "Carthage/Build"
+    }
+
     public init(spec: ProjectSpec, path: Path) {
         self.spec = spec
         basePath = path
@@ -114,7 +118,7 @@ public class PBXProjGenerator {
                 addObject(platformGroup)
                 platforms.append(platformGroup)
             }
-            let carthageGroup = PBXGroup(reference: generateUUID(PBXGroup.self, "Carthage"), children: platforms.referenceList, sourceTree: .group, name: "Carthage", path: "Carthage/Build")
+            let carthageGroup = PBXGroup(reference: generateUUID(PBXGroup.self, "Carthage"), children: platforms.referenceList, sourceTree: .group, name: "Carthage", path: carthageBuildPath)
             addObject(carthageGroup)
             topLevelGroups.append(carthageGroup)
         }
@@ -226,7 +230,7 @@ public class PBXProjGenerator {
                 if carthageFrameworksByPlatform[target.platform.rawValue] == nil {
                     carthageFrameworksByPlatform[target.platform.rawValue] = []
                 }
-                let carthagePath: Path = "Carthage/Build"
+                let carthagePath = Path(carthageBuildPath)
                 var platformName = target.platform.rawValue
                 if target.platform == .macOS {
                     platformName = "Mac"
@@ -344,7 +348,7 @@ public class PBXProjGenerator {
 
             let carthageFrameworks = Set(getCarthageFrameworks(target: target))
             if !carthageFrameworks.isEmpty {
-                let inputPaths = carthageFrameworks.map { "$(SRCROOT)/Carthage/Build/\(target.platform)/\($0)\($0.contains(".") ? "" : ".framework")" }
+                let inputPaths = carthageFrameworks.map { "$(SRCROOT)/\(carthageBuildPath)/\(target.platform)/\($0)\($0.contains(".") ? "" : ".framework")" }
                 let carthageScript = PBXShellScriptBuildPhase(reference: generateUUID(PBXShellScriptBuildPhase.self, "Carthage" + target.name), files: [], name: "Carthage", inputPaths: Set(inputPaths), outputPaths: [], shellPath: "/bin/sh", shellScript: "/usr/local/bin/carthage copy-frameworks\n")
                 addObject(carthageScript)
                 buildPhases.append(carthageScript.reference)
