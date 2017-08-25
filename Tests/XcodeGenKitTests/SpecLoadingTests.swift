@@ -95,13 +95,13 @@ func specLoadingTests() {
             let presets = ["preset1"]
 
             let preset1 = Settings(buildSettings: buildSettings, configSettings: [:], presets: [])
-            let preset2 = Settings(buildSettings: .empty, configSettings: configSettings, presets: [])
+            let preset2 = Settings(buildSettings: [:], configSettings: configSettings, presets: [])
             let preset3 = Settings(buildSettings: buildSettings, configSettings: configSettings, presets: [])
             let preset4 = Settings(buildSettings: buildSettings, configSettings: [:], presets: [])
             let preset5 = Settings(buildSettings: buildSettings, configSettings: [:], presets: presets)
             let preset6 = Settings(buildSettings: buildSettings, configSettings: configSettings, presets: presets)
             let preset7 = Settings(buildSettings: buildSettings, configSettings: ["config1": Settings(buildSettings: buildSettings, presets: presets)])
-            let preset8 = Settings(buildSettings: .empty, configSettings: ["config1": Settings(configSettings: configSettings)])
+            let preset8 = Settings(buildSettings: [:], configSettings: ["config1": Settings(configSettings: configSettings)])
 
             try expect(spec.settingPresets.count) == 8
             try expect(spec.settingPresets["preset1"]) == preset1

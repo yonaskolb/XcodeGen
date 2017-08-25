@@ -10,7 +10,7 @@ import Foundation
 import xcodeproj
 import PathKit
 
-extension Array where Element: ProjectElement {
+extension Array where Element: Referenceable {
 
     public var referenceList: [String] {
         return map { $0.reference }
@@ -21,28 +21,22 @@ extension Array where Element: ProjectElement {
     }
 }
 
-extension BuildSettings: CustomStringConvertible {
+extension Dictionary where Key == String, Value: Any {
 
-    public init() {
-        dictionary = [:]
+    public func merged(_ dictionary: [Key: Value]) -> [Key: Value] {
+        var mergedDictionary = self
+        mergedDictionary.merge(dictionary)
+        return mergedDictionary
     }
 
-    public static let empty = BuildSettings()
-
-    public func merged(_ buildSettings: BuildSettings) -> BuildSettings {
-        var mergedSettings = self
-        mergedSettings.merge(buildSettings)
-        return mergedSettings
-    }
-
-    public mutating func merge(_ buildSettings: BuildSettings) {
-        for (key, value) in buildSettings.dictionary {
-            dictionary[key] = value
+    public mutating func merge(_ dictionary: [Key: Value]) {
+        for (key, value) in dictionary {
+            self[key] = value
         }
     }
 
-    public var description: String {
-        return dictionary.map { "\($0) = \($1)" }.joined(separator: "\n")
+    public func equals(_ dictionary: BuildSettings) -> Bool {
+        return NSDictionary(dictionary: self).isEqual(to: dictionary)
     }
 }
 

@@ -10,12 +10,14 @@ import Foundation
 import xcodeproj
 import PathKit
 import ProjectSpec
+import Yams
+import JSONUtilities
 
 extension ProjectSpec {
 
     public func getProjectBuildSettings(config: Config) -> BuildSettings {
 
-        var buildSettings: BuildSettings = .empty
+        var buildSettings: BuildSettings = [:]
         buildSettings += SettingsPresetFile.base.getBuildSettings()
 
         if let type = config.type {
@@ -38,7 +40,7 @@ extension ProjectSpec {
     }
 
     public func getBuildSettings(settings: Settings, config: Config) -> BuildSettings {
-        var buildSettings: BuildSettings = .empty
+        var buildSettings: BuildSettings = [:]
 
         for preset in settings.presets {
             let presetSettings = settingPresets[preset]!
@@ -80,11 +82,23 @@ extension SettingsPresetFile {
             return nil
         }
 
-        guard let buildSettings = try? BuildSettings(path: settingsPath) else {
+        guard let buildSettings = try? loadSettings(path: settingsPath) else {
             print("Error parsing \"\(name)\" settings")
             return nil
         }
         buildSettingFiles[path] = buildSettings
         return buildSettings
+    }
+
+    public func loadSettings(path: Path) throws -> BuildSettings {
+        let content: String = try path.read()
+        if content == "" {
+            return [:]
+        }
+        let yaml = try Yams.load(yaml: content)
+        guard let dictionary = yaml as? JSONDictionary else {
+            throw JSONUtilsError.fileNotAJSONDictionary
+        }
+        return dictionary
     }
 }

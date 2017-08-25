@@ -47,13 +47,13 @@
       "package": "Yams",
       "reason": null,
       "repositoryURL": "https://github.com/jpsim/Yams.git",
-      "version": "0.3.4"
+      "version": "0.3.5"
     },
     {
       "package": "xcodeproj",
       "reason": null,
       "repositoryURL": "https://github.com/carambalabs/xcodeproj.git",
-      "version": "0.0.9"
+      "version": "0.1.1"
     }
   ],
   "version": 1

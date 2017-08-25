@@ -43,7 +43,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				BF3862341101 /* MyFramework.framework in CopyFiles */,
+				BF3862341101 /* MyFramework.framework */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -71,7 +71,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF5986511201,
+				BF5986511201 /* TestProject.app */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -79,7 +79,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF2753556301,
+				BF2753556301 /* MyFramework.framework */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -155,7 +155,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF3515549501,
+				BF3515549501 /* MyFramework.h */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -266,7 +266,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF3154421201,
+				BF3154421201 /* Assets.xcassets */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -308,7 +308,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF9001417701 /* TestProjectTests.swift in Sources */,
+				BF9001417701 /* TestProjectTests.swift */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -316,7 +316,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF9155249601 /* FrameworkFile.swift in Sources */,
+				BF9155249601 /* FrameworkFile.swift */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -324,8 +324,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF1073850101 /* AppDelegate.swift in Sources */,
-				BF1744565901 /* ViewController.swift in Sources */,
+				BF1073850101 /* AppDelegate.swift */,
+				BF1744565901 /* ViewController.swift */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
