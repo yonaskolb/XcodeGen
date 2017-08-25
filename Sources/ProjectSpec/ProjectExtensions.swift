@@ -21,26 +21,26 @@ extension Array where Element: Referenceable {
     }
 }
 
-extension BuildSettings: CustomStringConvertible {
+extension Dictionary where Key == String, Value: Any {
 
-    public convenience init() {
-        self.init(dictionary: [:])
+    public func merged(_ dictionary: [Key: Value]) -> [Key: Value] {
+        var mergedDictionary = self
+        mergedDictionary.merge(dictionary)
+        return mergedDictionary
     }
 
-    public static let empty = BuildSettings()
-
-    public func merge(_ buildSettings: BuildSettings) {
-        for (key, value) in buildSettings.dictionary {
-            dictionary[key] = value
+    public mutating func merge(_ dictionary: [Key: Value]) {
+        for (key, value) in dictionary {
+            self[key] = value
         }
     }
 
-    public var description: String {
-        return dictionary.map { "\($0) = \($1)" }.joined(separator: "\n")
+    public func equals(_ dictionary: BuildSettings) -> Bool {
+        return NSDictionary(dictionary: self).isEqual(to: dictionary)
     }
 }
 
-public func +=(lhs: BuildSettings, rhs: BuildSettings?) {
+public func +=(lhs: inout BuildSettings, rhs: BuildSettings?) {
     guard let rhs = rhs else { return }
     lhs.merge(rhs)
 }

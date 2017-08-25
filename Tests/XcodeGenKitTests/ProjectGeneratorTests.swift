@@ -18,11 +18,11 @@ func projectGeneratorTests() {
     describe("Project Generator") {
 
         let application = Target(name: "MyApp", type: .application, platform: .iOS,
-                                 settings: Settings(buildSettings: BuildSettings(dictionary: ["SETTING_1": "VALUE"])),
+                                 settings: Settings(buildSettings: ["SETTING_1": "VALUE"]),
                                  dependencies: [.target("MyFramework")])
 
         let framework = Target(name: "MyFramework", type: .framework, platform: .iOS,
-                               settings: Settings(buildSettings: BuildSettings(dictionary: ["SETTING_2": "VALUE"])))
+                               settings: Settings(buildSettings: ["SETTING_2": "VALUE"]))
 
         let targets = [application, framework]
 
@@ -63,14 +63,14 @@ func projectGeneratorTests() {
                     "SETTING 5": "value 5",
                     "SETTING 6": "value 6",
                 ]
-                try expect(debugProjectSettings) == buildSettings
+                try expect(debugProjectSettings.equals(buildSettings)).beTrue()
 
                 var expectedTargetDebugSettings = BuildSettings()
                 expectedTargetDebugSettings += SettingsPresetFile.product(.application).getBuildSettings()
                 expectedTargetDebugSettings += SettingsPresetFile.platform(.iOS).getBuildSettings()
                 expectedTargetDebugSettings += ["SETTING 2": "value 2", "SETTING 3": "value 3", "SETTING": "value"]
 
-                try expect(targetDebugSettings) == expectedTargetDebugSettings
+                try expect(targetDebugSettings.equals(expectedTargetDebugSettings)).beTrue()
             }
         }
 
