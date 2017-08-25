@@ -1,5 +1,19 @@
 # Change Log
 
+## 0.4.0
+### Added
+- Homebrew support #16 by @pepibumur
+- Added `runOnlyWhenInstalling` to build scripts #32
+- Added `carthageBuildPath` option #34
+
+### Fixed
+- Fixed installations of XcodeGen not applying build setting presets for configs, products, and platforms, due to missing resources
+
+### Changed
+- Upgraded to https://github.com/swift-xcode/xcodeproj 0.1.1 #33
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/0.3.0...0.4.0)
+
 ## 0.3.0 - Extensions and Scheme Tests
 
 ### Added
