@@ -125,10 +125,10 @@ public struct Scheme: Equatable {
     public static func ==(lhs: Scheme, rhs: Scheme) -> Bool {
         return lhs.build == rhs.build &&
             lhs.run == rhs.run &&
-        lhs.test == rhs.test &&
-        lhs.analyze == rhs.analyze &&
-        lhs.profile == rhs.profile &&
-        lhs.archive == rhs.archive
+            lhs.test == rhs.test &&
+            lhs.analyze == rhs.analyze &&
+            lhs.profile == rhs.profile &&
+            lhs.archive == rhs.archive
     }
 }
 
@@ -137,7 +137,6 @@ protocol BuildAction: Equatable {
 
     init(config: String)
 }
-
 
 extension Scheme.Run: JSONObjectConvertible {
 
@@ -213,7 +212,7 @@ extension Scheme.BuildTarget: JSONObjectConvertible {
                 let types: [String: Bool] = try jsonDictionary.json(atKeyPath: "buildTypes")
                 var buildTypes: [BuildType] = []
                 for (type, build) in types {
-                    if build , let buildType = BuildType.from(jsonValue: type) {
+                    if build, let buildType = BuildType.from(jsonValue: type) {
                         buildTypes.append(buildType)
                     }
                 }
@@ -237,7 +236,7 @@ extension BuildType: JSONPrimitiveConvertible {
         default: return nil
         }
     }
-    
+
     public static var all: [BuildType] {
         return [.running, .testing, .profiling, .analyzing, .archiving]
     }

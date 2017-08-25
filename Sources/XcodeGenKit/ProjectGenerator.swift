@@ -100,7 +100,6 @@ public class ProjectGenerator {
                 }
             }
 
-
             let scripts = target.prebuildScripts + target.postbuildScripts
             for script in scripts {
                 if case let .path(pathString) = script.script {
@@ -222,14 +221,13 @@ public class ProjectGenerator {
                 if scheme.configVariants.isEmpty {
                     let schemeName = target.name
 
-                    let debugConfig = spec.configs.first { $0.type == .debug}!
-                    let releaseConfig = spec.configs.first { $0.type == .release}!
+                    let debugConfig = spec.configs.first { $0.type == .debug }!
+                    let releaseConfig = spec.configs.first { $0.type == .release }!
 
                     let specScheme = Scheme(name: schemeName, targets: [Scheme.BuildTarget(target: target.name)], debugConfig: debugConfig.name, releaseConfig: releaseConfig.name)
                     let scheme = try generateScheme(specScheme, pbxProject: pbxProject, tests: scheme.testTargets)
                     xcschemes.append(scheme)
-                }
-                else {
+                } else {
                     for configVariant in scheme.configVariants {
 
                         let schemeName = "\(target.name) \(configVariant)"

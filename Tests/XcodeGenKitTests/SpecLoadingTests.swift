@@ -73,7 +73,7 @@ func specLoadingTests() {
                     ["target": "Target", "buildTypes": "all"],
                     ["target": "Target", "buildTypes": ["testing": true]],
                     ["target": "Target", "buildTypes": ["testing": false]],
-                    ]],
+                ]],
             ]
             let scheme = try Scheme(name: "Scheme", jsonDictionary: schemeDictionary)
             let expectedTargets: [Scheme.BuildTarget] = [
@@ -83,7 +83,7 @@ func specLoadingTests() {
                 Scheme.BuildTarget(target: "Target", buildTypes: BuildType.all),
                 Scheme.BuildTarget(target: "Target", buildTypes: [.testing]),
                 Scheme.BuildTarget(target: "Target", buildTypes: []),
-                ]
+            ]
             try expect(scheme.name) == "Scheme"
             try expect(scheme.build.targets) == expectedTargets
         }
@@ -118,15 +118,15 @@ func specLoadingTests() {
             var target = validTarget
             let scripts: [[String: Any]] = [
                 ["path": "script.sh"],
-                ["script": "shell script\ndo thing", "name": "myscript", "inputFiles": ["file","file2"], "outputFiles": ["file","file2"], "shell": "bin/customshell", "runOnlyWhenInstalling": true],
+                ["script": "shell script\ndo thing", "name": "myscript", "inputFiles": ["file", "file2"], "outputFiles": ["file", "file2"], "shell": "bin/customshell", "runOnlyWhenInstalling": true],
             ]
             target["prebuildScripts"] = scripts
             target["postbuildScripts"] = scripts
 
             let expectedScripts = [
                 RunScript(script: .path("script.sh")),
-                RunScript(script: .script("shell script\ndo thing"), name: "myscript", inputFiles: ["file","file2"], outputFiles: ["file","file2"], shell: "bin/customshell", runOnlyWhenInstalling: true),
-                ]
+                RunScript(script: .script("shell script\ndo thing"), name: "myscript", inputFiles: ["file", "file2"], outputFiles: ["file", "file2"], shell: "bin/customshell", runOnlyWhenInstalling: true),
+            ]
 
             let parsedTarget = try Target(jsonDictionary: target)
             try expect(parsedTarget.prebuildScripts) == expectedScripts
@@ -135,7 +135,7 @@ func specLoadingTests() {
 
         $0.it("parses options") {
             let expected = ProjectSpec(name: "test", options: .init(carthageBuildPath: "../Carthage/Build"))
-            let parsedSpec = try getProjectSpec(["options":["carthageBuildPath": "../Carthage/Build"]])
+            let parsedSpec = try getProjectSpec(["options": ["carthageBuildPath": "../Carthage/Build"]])
             try expect(parsedSpec) == expected
         }
     }

@@ -53,12 +53,12 @@ extension ProjectSpec: Equatable {
 
     public static func ==(lhs: ProjectSpec, rhs: ProjectSpec) -> Bool {
         return lhs.name == rhs.name &&
-        lhs.targets == rhs.targets &&
-        lhs.settings == rhs.settings &&
-        lhs.settingPresets == rhs.settingPresets &&
-        lhs.configs == rhs.configs &&
-        lhs.schemes == rhs.schemes &&
-        lhs.options == rhs.options
+            lhs.targets == rhs.targets &&
+            lhs.settings == rhs.settings &&
+            lhs.settingPresets == rhs.settingPresets &&
+            lhs.configs == rhs.configs &&
+            lhs.schemes == rhs.schemes &&
+            lhs.options == rhs.options
     }
 }
 
