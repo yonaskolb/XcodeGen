@@ -132,5 +132,11 @@ func specLoadingTests() {
             try expect(parsedTarget.prebuildScripts) == expectedScripts
             try expect(parsedTarget.postbuildScripts) == expectedScripts
         }
+
+        $0.it("parses options") {
+            let expected = ProjectSpec(name: "test", options: .init(carthageBuildPath: "../Carthage/Build"))
+            let parsedSpec = try getProjectSpec(["options":["carthageBuildPath": "../Carthage/Build"]])
+            try expect(parsedSpec) == expected
+        }
     }
 }

@@ -20,14 +20,24 @@ public struct ProjectSpec {
     public var settingPresets: [String: Settings]
     public var configs: [Config]
     public var schemes: [Scheme]
+    public var options: Options
 
-    public init(name: String, configs: [Config] = [], targets: [Target] = [], settings: Settings = .empty, settingPresets: [String: Settings] = [:], schemes: [Scheme] = []) {
+    public struct Options {
+        public var carthageBuildPath: String?
+
+        public init(carthageBuildPath: String? = nil) {
+            self.carthageBuildPath = carthageBuildPath
+        }
+    }
+
+    public init(name: String, configs: [Config] = [], targets: [Target] = [], settings: Settings = .empty, settingPresets: [String: Settings] = [:], schemes: [Scheme] = [], options: Options = Options()) {
         self.name = name
         self.targets = targets
         self.configs = configs
         self.settings = settings
         self.settingPresets = settingPresets
         self.schemes = schemes
+        self.options = options
     }
 
     public func getTarget(_ targetName: String) -> Target? {
@@ -36,6 +46,26 @@ public struct ProjectSpec {
 
     public func getConfig(_ configName: String) -> Config? {
         return configs.first { $0.name == configName }
+    }
+}
+
+extension ProjectSpec: Equatable {
+
+    public static func ==(lhs: ProjectSpec, rhs: ProjectSpec) -> Bool {
+        return lhs.name == rhs.name &&
+        lhs.targets == rhs.targets &&
+        lhs.settings == rhs.settings &&
+        lhs.settingPresets == rhs.settingPresets &&
+        lhs.configs == rhs.configs &&
+        lhs.schemes == rhs.schemes &&
+        lhs.options == rhs.options
+    }
+}
+
+extension ProjectSpec.Options: Equatable {
+
+    public static func ==(lhs: ProjectSpec.Options, rhs: ProjectSpec.Options) -> Bool {
+        return lhs.carthageBuildPath == rhs.carthageBuildPath
     }
 }
 
@@ -65,5 +95,17 @@ extension ProjectSpec {
             targets = try jsonDictionary.json(atKeyPath: "targets", invalidItemBehaviour: .fail)
         }
         schemes = try jsonDictionary.json(atKeyPath: "schemes")
+        if jsonDictionary["options"] != nil {
+            options = try jsonDictionary.json(atKeyPath: "options")
+        } else {
+            options = Options()
+        }
+    }
+}
+
+extension ProjectSpec.Options: JSONObjectConvertible {
+
+    public init(jsonDictionary: JSONDictionary) throws {
+        carthageBuildPath = jsonDictionary.json(atKeyPath: "carthageBuildPath")
     }
 }

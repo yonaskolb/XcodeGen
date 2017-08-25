@@ -46,6 +46,23 @@ public struct Target {
     }
 }
 
+extension Target: Equatable {
+
+    public static func ==(lhs: Target, rhs: Target) -> Bool {
+        return lhs.name == rhs.name &&
+            lhs.type == rhs.type &&
+            lhs.platform == rhs.platform &&
+            lhs.settings == rhs.settings &&
+            lhs.configFiles == rhs.configFiles &&
+            lhs.sources == rhs.sources &&
+            lhs.sourceExludes == rhs.sourceExludes &&
+            lhs.dependencies == rhs.dependencies &&
+            lhs.prebuildScripts == rhs.prebuildScripts &&
+            lhs.postbuildScripts == rhs.postbuildScripts &&
+            lhs.scheme == rhs.scheme
+    }
+}
+
 public struct TargetScheme {
     public let testTargets: [String]
     public let configVariants: [String]
@@ -53,6 +70,14 @@ public struct TargetScheme {
     public init(testTargets: [String] = [], configVariants: [String] = []) {
         self.testTargets = testTargets
         self.configVariants = configVariants
+    }
+}
+
+extension TargetScheme: Equatable {
+
+    public static func ==(lhs: TargetScheme, rhs: TargetScheme) -> Bool {
+        return lhs.testTargets == rhs.testTargets &&
+            lhs.configVariants == rhs.configVariants
     }
 }
 
