@@ -241,15 +241,14 @@ public class PBXProjGenerator {
             case let .script(script):
                 shellScript = script
             }
-            let escapedScript = shellScript.replacingOccurrences(of: "\"", with: "\\\"").replacingOccurrences(of: "\n", with: "\\n")
-            var shellScriptPhase = PBXShellScriptBuildPhase(
+            let shellScriptPhase = PBXShellScriptBuildPhase(
                 reference: generateUUID(PBXShellScriptBuildPhase.self, String(describing: runScript.name) + shellScript + target.name),
                 files: [],
                 name: runScript.name ?? "Run Script",
                 inputPaths: Set(runScript.inputFiles),
                 outputPaths: Set(runScript.outputFiles),
                 shellPath: runScript.shell ?? "/bin/sh",
-                shellScript: escapedScript)
+                shellScript: shellScript)
             shellScriptPhase.runOnlyForDeploymentPostprocessing = runScript.runOnlyWhenInstalling ? 1 : 0
             objects.append(.pbxShellScriptBuildPhase(shellScriptPhase))
             buildPhases.append(shellScriptPhase.reference)
