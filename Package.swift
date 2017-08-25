@@ -16,6 +16,6 @@ let package = Package(
         .Package(url: "https://github.com/yonaskolb/JSONUtilities.git", majorVersion: 3, minor: 3),
         .Package(url: "https://github.com/kylef/Spectre.git", majorVersion: 0, minor: 7),
         .Package(url: "https://github.com/onevcat/Rainbow", majorVersion: 2),
-        .Package(url: "https://github.com/carambalabs/xcodeproj.git", majorVersion: 0, minor: 1),
+        .Package(url: "https://github.com/swift-xcode/xcodeproj.git", majorVersion: 0, minor: 1),
     ]
 )

@@ -52,7 +52,7 @@
     {
       "package": "xcodeproj",
       "reason": null,
-      "repositoryURL": "https://github.com/carambalabs/xcodeproj.git",
+      "repositoryURL": "https://github.com/swift-xcode/xcodeproj.git",
       "version": "0.1.1"
     }
   ],
