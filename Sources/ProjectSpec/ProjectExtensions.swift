@@ -10,7 +10,7 @@ import Foundation
 import xcodeproj
 import PathKit
 
-extension Array where Element: ProjectElement {
+extension Array where Element: Referenceable {
 
     public var referenceList: [String] {
         return map { $0.reference }
@@ -23,19 +23,13 @@ extension Array where Element: ProjectElement {
 
 extension BuildSettings: CustomStringConvertible {
 
-    public init() {
-        dictionary = [:]
+    public convenience init() {
+        self.init(dictionary: [:])
     }
 
     public static let empty = BuildSettings()
 
-    public func merged(_ buildSettings: BuildSettings) -> BuildSettings {
-        var mergedSettings = self
-        mergedSettings.merge(buildSettings)
-        return mergedSettings
-    }
-
-    public mutating func merge(_ buildSettings: BuildSettings) {
+    public func merge(_ buildSettings: BuildSettings) {
         for (key, value) in buildSettings.dictionary {
             dictionary[key] = value
         }
@@ -46,7 +40,7 @@ extension BuildSettings: CustomStringConvertible {
     }
 }
 
-public func +=(lhs: inout BuildSettings, rhs: BuildSettings?) {
+public func +=(lhs: BuildSettings, rhs: BuildSettings?) {
     guard let rhs = rhs else { return }
     lhs.merge(rhs)
 }

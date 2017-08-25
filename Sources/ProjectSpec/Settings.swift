@@ -9,7 +9,8 @@
 import Foundation
 import JSONUtilities
 import xcodeproj
-
+import PathKit
+import Yams
 public struct Settings: Equatable, JSONObjectConvertible, CustomStringConvertible {
 
     public let buildSettings: BuildSettings
@@ -33,7 +34,8 @@ public struct Settings: Equatable, JSONObjectConvertible, CustomStringConvertibl
     public init(jsonDictionary: JSONDictionary) throws {
         if jsonDictionary["configs"] != nil || jsonDictionary["presets"] != nil || jsonDictionary["base"] != nil {
             presets = jsonDictionary.json(atKeyPath: "presets") ?? []
-            buildSettings = jsonDictionary.json(atKeyPath: "base") ?? [:]
+            let buildSettingsDictionary: JSONDictionary = jsonDictionary.json(atKeyPath: "base") ?? [:]
+            buildSettings = BuildSettings(dictionary: buildSettingsDictionary)
             configSettings = jsonDictionary.json(atKeyPath: "configs") ?? [:]
         } else {
             buildSettings = BuildSettings(dictionary: jsonDictionary)
@@ -88,9 +90,18 @@ extension Settings: ExpressibleByDictionaryLiteral {
     }
 }
 
-extension BuildSettings: JSONObjectConvertible {
+extension BuildSettings {
 
-    public init(jsonDictionary: JSONDictionary) throws {
+    public convenience init(path: Path) throws {
+        let content: String = try path.read()
+        if content == "" {
+            self.init(dictionary: [:])
+            return
+        }
+        let yaml = try Yams.load(yaml: content)
+        guard let jsonDictionary = yaml as? JSONDictionary else {
+            throw JSONUtilsError.fileNotAJSONDictionary
+        }
         self.init(dictionary: jsonDictionary)
     }
 }

@@ -31,7 +31,7 @@ func projectGeneratorTests() {
             $0.it("generates config defaults") {
                 let spec = ProjectSpec(name: "test")
                 let project = try getProject(spec)
-                let configs = project.pbxproj.objects.buildConfigurations
+                let configs = project.pbxproj.buildConfigurations
                 try expect(configs.count) == 2
                 try expect(configs).contains(name: "Debug")
                 try expect(configs).contains(name: "Release")
@@ -40,7 +40,7 @@ func projectGeneratorTests() {
             $0.it("generates configs") {
                 let spec = ProjectSpec(name: "test", configs: [Config(name: "config1"), Config(name: "config2")])
                 let project = try getProject(spec)
-                let configs = project.pbxproj.objects.buildConfigurations
+                let configs = project.pbxproj.buildConfigurations
                 try expect(configs.count) == 2
                 try expect(configs).contains(name: "config1")
                 try expect(configs).contains(name: "config2")
@@ -80,7 +80,7 @@ func projectGeneratorTests() {
 
             $0.it("generates targets") {
                 let pbxProject = try getPbxProj(spec)
-                let nativeTargets = pbxProject.objects.nativeTargets
+                let nativeTargets = pbxProject.nativeTargets
                 try expect(nativeTargets.count) == 2
                 try expect(nativeTargets.contains { $0.name == application.name }).beTrue()
                 try expect(nativeTargets.contains { $0.name == framework.name }).beTrue()
@@ -88,16 +88,16 @@ func projectGeneratorTests() {
 
             $0.it("generates dependencies") {
                 let pbxProject = try getPbxProj(spec)
-                let nativeTargets = pbxProject.objects.nativeTargets
-                let dependencies = pbxProject.objects.targetDependencies
+                let nativeTargets = pbxProject.nativeTargets
+                let dependencies = pbxProject.targetDependencies
                 try expect(dependencies.count) == 1
                 try expect(dependencies.first!.target) == nativeTargets.first { $0.name == framework.name }!.reference
             }
 
             $0.it("generates dependencies") {
                 let pbxProject = try getPbxProj(spec)
-                let nativeTargets = pbxProject.objects.nativeTargets
-                let dependencies = pbxProject.objects.targetDependencies
+                let nativeTargets = pbxProject.nativeTargets
+                let dependencies = pbxProject.targetDependencies
                 try expect(dependencies.count) == 1
                 try expect(dependencies.first!.target) == nativeTargets.first { $0.name == framework.name }!.reference
             }
@@ -108,9 +108,9 @@ func projectGeneratorTests() {
                 scriptSpec.targets[0].postbuildScripts = [RunScript(script: .script("script2"))]
                 let pbxProject = try getPbxProj(scriptSpec)
 
-                guard let buildPhases = pbxProject.objects.nativeTargets.first?.buildPhases else { throw failure("Build phases not found") }
+                guard let buildPhases = pbxProject.nativeTargets.first?.buildPhases else { throw failure("Build phases not found") }
 
-                let scripts = pbxProject.objects.shellScriptBuildPhases
+                let scripts = pbxProject.shellScriptBuildPhases
                 let script1 = scripts[0]
                 let script2 = scripts[1]
                 try expect(scripts.count) == 2
@@ -129,7 +129,7 @@ func projectGeneratorTests() {
                 let scheme = Scheme(name: "MyScheme", build: Scheme.Build(targets: [buildTarget]))
                 let spec = ProjectSpec(name: "test", targets: [application, framework], schemes: [scheme])
                 let project = try getProject(spec)
-                guard let target = project.pbxproj.objects.nativeTargets.first(where: { $0.name == application.name }) else { throw failure("Target not found") }
+                guard let target = project.pbxproj.nativeTargets.first(where: { $0.name == application.name }) else { throw failure("Target not found") }
                 guard let xcscheme = project.sharedData?.schemes.first else { throw failure("Scheme not found") }
                 try expect(scheme.name) == "MyScheme"
                 guard let buildActionEntry = xcscheme.buildAction?.buildActionEntries.first else { throw failure("Build Action entry not found") }
@@ -171,7 +171,7 @@ func projectGeneratorTests() {
 
                 try expect(project.sharedData?.schemes.count) == 2
 
-                guard let nativeTarget = project.pbxproj.objects.nativeTargets.first(where: { $0.name == application.name }) else { throw failure("Target not found") }
+                guard let nativeTarget = project.pbxproj.nativeTargets.first(where: { $0.name == application.name }) else { throw failure("Target not found") }
                 guard let xcscheme = project.sharedData?.schemes.first(where: { $0.name == "\(target.name) Test" }) else { throw failure("Scheme not found") }
                 guard let buildActionEntry = xcscheme.buildAction?.buildActionEntries.first else { throw failure("Build Action entry not found") }
                 try expect(buildActionEntry.buildableReference.blueprintIdentifier) == nativeTarget.reference
