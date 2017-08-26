@@ -120,7 +120,7 @@ public class PBXProjGenerator {
             }
             let carthageGroup = PBXGroup(reference: generateUUID(PBXGroup.self, "Carthage"), children: platforms.referenceList, sourceTree: .group, name: "Carthage", path: carthageBuildPath)
             addObject(carthageGroup)
-            topLevelGroups.append(carthageGroup)
+            frameworkFiles.append(carthageGroup.reference)
         }
 
         if !frameworkFiles.isEmpty {
