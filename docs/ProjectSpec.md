@@ -88,7 +88,7 @@ settings:
     - my_settings
 ```
 
-Settings are merged in the following order: groups, configs, base.
+Settings are merged in the following order: groups, base, configs.
 
 ## Target
 
