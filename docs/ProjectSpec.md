@@ -185,7 +185,7 @@ Carthage frameworks expected to be in `CARTHAGE_BUILD_PATH/PLATFORM/FRAMEWORK.fr
  - `PLATFORM` = the target's platform
  - `FRAMEWORK` = the specified name.
 
-If any applications contain carthage dependencies within itself or any dependent targets, a carthage copy files script is automatically added to the application containing all the relevant frameworks
+If any applications contain carthage dependencies within itself or any dependent targets, a carthage copy files script is automatically added to the application containing all the relevant frameworks. A `FRAMEWORK_SEARCH_PATHS` setting is also automatically added
 
 ```yaml
 targets:
