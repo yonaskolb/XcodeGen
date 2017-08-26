@@ -48,7 +48,7 @@ targets:
       - target: MyFramework
   - name: MyFramework
     type: framework
-    platform: iOS
+    platform: [iOS, tvOS]
     sources: MyFramework
 ```
 A project would be created with 2 connected targets, with all the required configurations and build settings. See the [Project Spec](docs/ProjectSpec.md) documentation for all the options you can specify.
