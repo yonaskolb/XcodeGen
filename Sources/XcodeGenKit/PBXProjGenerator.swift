@@ -400,7 +400,7 @@ public class PBXProjGenerator {
 
         let excludedFiles: [String] = [".DS_Store"]
         let directories = try path.children().filter { $0.isDirectory && $0.extension == nil && $0.extension != "lproj" }
-        var filePaths = try path.children().filter { $0.isFile || $0.extension != nil && $0.extension != "lproj" }.filter { !excludedFiles.contains($0.lastComponent) }
+        let filePaths = try path.children().filter { $0.isFile || $0.extension != nil && $0.extension != "lproj" }.filter { !excludedFiles.contains($0.lastComponent) }
         let localisedDirectories = try path.children().filter { $0.extension == "lproj" }
         var groupChildren: [String] = []
         var allFilePaths: [Path] = filePaths
@@ -429,7 +429,7 @@ public class PBXProjGenerator {
 
                 fileReferencesByPath[path] = variantGroup.reference
                 groupChildren.append(variantGroup.reference)
-                filePaths.append(path)
+                allFilePaths.append(path)
             }
         }
 
