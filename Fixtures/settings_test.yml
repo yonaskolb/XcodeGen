@@ -8,11 +8,11 @@ settings:
   configs:
     my_config:
       BUILD_SETTING_2: value 2
-  presets:
+  groups:
     - my_settings
 
 name: SettingsTest
-settingPresets:
+settingGroups:
   preset1:
     SETTING: value
   preset2:
@@ -29,12 +29,12 @@ settingPresets:
     base:
       SETTING: value
   preset5:
-    presets:
+    groups:
       - preset1
     base:
       SETTING: value
   preset6:
-    presets:
+    groups:
       - preset1
     base:
       SETTING: value
@@ -46,7 +46,7 @@ settingPresets:
       SETTING: value
     configs:
       config1:
-        presets:
+        groups:
           - preset1
         base:
           SETTING: value
@@ -59,7 +59,7 @@ settingPresets:
 settings:
   base:
     SETTING 5: value 5
-  presets:
+  groups:
     - preset7
   configs:
     config1:
@@ -72,13 +72,13 @@ targets:
     type: application
     platform: iOS
     settings:
-      presets:
+      groups:
         - preset7
       base:
         SETTING 2: value 2
       configs:
         config1:
-          presets:
+          groups:
             - preset1
           base:
             SETTING 3: value 3

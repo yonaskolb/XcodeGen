@@ -17,7 +17,7 @@ public struct ProjectSpec {
     public var name: String
     public var targets: [Target]
     public var settings: Settings
-    public var settingPresets: [String: Settings]
+    public var settingGroups: [String: Settings]
     public var configs: [Config]
     public var schemes: [Scheme]
     public var options: Options
@@ -30,12 +30,12 @@ public struct ProjectSpec {
         }
     }
 
-    public init(name: String, configs: [Config] = [], targets: [Target] = [], settings: Settings = .empty, settingPresets: [String: Settings] = [:], schemes: [Scheme] = [], options: Options = Options()) {
+    public init(name: String, configs: [Config] = [], targets: [Target] = [], settings: Settings = .empty, settingGroups: [String: Settings] = [:], schemes: [Scheme] = [], options: Options = Options()) {
         self.name = name
         self.targets = targets
         self.configs = configs
         self.settings = settings
-        self.settingPresets = settingPresets
+        self.settingGroups = settingGroups
         self.schemes = schemes
         self.options = options
     }
@@ -55,7 +55,7 @@ extension ProjectSpec: Equatable {
         return lhs.name == rhs.name &&
             lhs.targets == rhs.targets &&
             lhs.settings == rhs.settings &&
-            lhs.settingPresets == rhs.settingPresets &&
+            lhs.settingGroups == rhs.settingGroups &&
             lhs.configs == rhs.configs &&
             lhs.schemes == rhs.schemes &&
             lhs.options == rhs.options
@@ -86,7 +86,7 @@ extension ProjectSpec {
     public init(jsonDictionary: JSONDictionary) throws {
         name = try jsonDictionary.json(atKeyPath: "name")
         settings = jsonDictionary.json(atKeyPath: "settings") ?? .empty
-        settingPresets = jsonDictionary.json(atKeyPath: "settingPresets") ?? [:]
+        settingGroups = jsonDictionary.json(atKeyPath: "settingGroups") ?? jsonDictionary.json(atKeyPath: "settingPresets") ?? [:]
         let configs: [String: String] = jsonDictionary.json(atKeyPath: "configs") ?? [:]
         self.configs = configs.map { Config(name: $0, type: ConfigType(rawValue: $1)) }
         self.targets = try Target.decodeTargets(jsonDictionary: jsonDictionary)

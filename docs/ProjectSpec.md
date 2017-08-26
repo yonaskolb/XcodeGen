@@ -10,9 +10,9 @@ Required properties are marked 🔵 and optional properties with ⚪️.
 - [Project](#project)
 	- [Options](#options)
 	- [Configs](#configs)
-	- [Setting Presets](#setting-presets)
+	- [Setting Groups](#setting-groups)
 - [Settings](#settings)
-- [Target](#target) 
+- [Target](#target)
 	- [Product Type](#product-type)
 	- [Platform](#platform)
 	- [Sources](#sources)
@@ -28,7 +28,7 @@ Required properties are marked 🔵 and optional properties with ⚪️.
 - ⚪️ **options**: [Options](#options) - Various options to override default behaviour
 - ⚪️ **configs**: [Configs](#configs) - Project build configurations. Defaults to `Debug` and `Release` configs
 - ⚪️ **settings**: [Settings](#settings) - Project specific settings. Default base and config type settings will be applied first before any settings defined here
-- ⚪️ **settingPresets**: [Setting Presets](#setting-presets) - Setting presets mapped by name
+- ⚪️ **settingGroups**: [Setting Groups](#setting-groups) - Setting groups mapped by name
 - ⚪️ **targets**: [[Target](#target)] - The list of targets in the project
 
 ### Options
@@ -45,29 +45,29 @@ configs:
 If no configs are specified, default `Debug` and `Release` configs will be created automatically.
 
 
-### Setting Presets
-Setting presets are named groups of build settings that can be reused elsewhere. Each preset is a [Settings](#settings) schema, so can include other presets
+### Setting Groups
+Setting groups are named groups of build settings that can be reused elsewhere. Each preset is a [Settings](#settings) schema, so can include other groups
 
 ```yaml
-settingPresets:
+settingGroups:
   preset1:
     BUILD_SETTING: value
   preset2:
     base:
       BUILD_SETTING: value
-    presets:
+    groups:
       - preset
   preset3:
      configs:
         debug:
-        	presets:
+        	groups:
             - preset
 ```
 
 ## Settings
 Settings can either be a simple map of build settings `[String: String]`, or can be more advanced with the following properties:
 
-- ⚪️ **presets**: `[String]` - List of presets to include and merge
+- ⚪️ **groups**: `[String]` - List of setting groups to include and merge
 - ⚪️ **configs**: [String: [Settings](#settings)] - Mapping of config name to a settings spec. These settings will only be applied for that config
 - ⚪️ **base**: `[String: String]` - Used to specify default settings that apply to any config
 
@@ -84,11 +84,11 @@ settings:
   configs:
     my_config:
       BUILD_SETTING_2: value 2
-  presets:
+  groups:
     - my_settings
 ```
 
-Settings are merged in the following order: presets, configs, base.
+Settings are merged in the following order: groups, configs, base.
 
 ## Target
 
@@ -152,7 +152,7 @@ settings:
     INFOPLIST_FILE: MyApp/Info.plist
     PRODUCT_BUNDLE_IDENTIFIER: com.myapp
     MY_SETTING: platform $platform
-  presets:
+  groups:
     - $platform
 ```
 The above will generate 2 targets named `MyFramework_iOS` and `MyFramework_tvOS`, with all the relevant platform build settings. They will both have a `PRODUCT_NAME` of `MyFramework`

@@ -26,7 +26,7 @@ The project spec is a YAML or JSON file that defines your targets, configuration
 - ✅ Groups in Xcode are always **synced** to your directories on disk
 - ✅ Create projects on demand and remove your `.xcodeproj` file from git, which means **no merge conflicts**!
 - ✅ Easily **copy and paste** files and directories without having to edit anything in xcode
-- ✅ Share build settings across multiple targets with **build setting presets**
+- ✅ Share build settings across multiple targets with **build setting groups**
 - ✅ Automatically generate Schemes for **different environments** like test and production
 - ✅ Easily **create new projects** with complicated setups on demand without messing around with Xcode
 - ✅ Generate from anywhere including **Continuous Delivery** servers

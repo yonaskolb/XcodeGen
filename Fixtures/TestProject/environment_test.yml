@@ -1,5 +1,5 @@
 name: EnvironmentTest
-settingPresets:
+settingGroups:
   app:
     PRODUCT_BUNDLE_IDENTIFIER: com.app$(BUNDLE_ID_SUFFIX)$(BUNDLE_ID_EXTENSION_SUFFIX)
   test:

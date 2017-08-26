@@ -42,8 +42,8 @@ extension ProjectSpec {
     public func getBuildSettings(settings: Settings, config: Config) -> BuildSettings {
         var buildSettings: BuildSettings = [:]
 
-        for preset in settings.presets {
-            let presetSettings = settingPresets[preset]!
+        for preset in settings.groups {
+            let presetSettings = settingGroups[preset]!
             buildSettings += getBuildSettings(settings: presetSettings, config: config)
         }
 

@@ -114,26 +114,26 @@ func specLoadingTests() {
             let spec = try ProjectSpec(path: fixturePath + "settings_test.yml")
             let buildSettings: BuildSettings = ["SETTING": "value"]
             let configSettings: [String: Settings] = ["config1": Settings(buildSettings: ["SETTING1": "value"])]
-            let presets = ["preset1"]
+            let groups = ["preset1"]
 
-            let preset1 = Settings(buildSettings: buildSettings, configSettings: [:], presets: [])
-            let preset2 = Settings(buildSettings: [:], configSettings: configSettings, presets: [])
-            let preset3 = Settings(buildSettings: buildSettings, configSettings: configSettings, presets: [])
-            let preset4 = Settings(buildSettings: buildSettings, configSettings: [:], presets: [])
-            let preset5 = Settings(buildSettings: buildSettings, configSettings: [:], presets: presets)
-            let preset6 = Settings(buildSettings: buildSettings, configSettings: configSettings, presets: presets)
-            let preset7 = Settings(buildSettings: buildSettings, configSettings: ["config1": Settings(buildSettings: buildSettings, presets: presets)])
+            let preset1 = Settings(buildSettings: buildSettings, configSettings: [:], groups: [])
+            let preset2 = Settings(buildSettings: [:], configSettings: configSettings, groups: [])
+            let preset3 = Settings(buildSettings: buildSettings, configSettings: configSettings, groups: [])
+            let preset4 = Settings(buildSettings: buildSettings, configSettings: [:], groups: [])
+            let preset5 = Settings(buildSettings: buildSettings, configSettings: [:], groups: groups)
+            let preset6 = Settings(buildSettings: buildSettings, configSettings: configSettings, groups: groups)
+            let preset7 = Settings(buildSettings: buildSettings, configSettings: ["config1": Settings(buildSettings: buildSettings, groups: groups)])
             let preset8 = Settings(buildSettings: [:], configSettings: ["config1": Settings(configSettings: configSettings)])
 
-            try expect(spec.settingPresets.count) == 8
-            try expect(spec.settingPresets["preset1"]) == preset1
-            try expect(spec.settingPresets["preset2"]) == preset2
-            try expect(spec.settingPresets["preset3"]) == preset3
-            try expect(spec.settingPresets["preset4"]) == preset4
-            try expect(spec.settingPresets["preset5"]) == preset5
-            try expect(spec.settingPresets["preset6"]) == preset6
-            try expect(spec.settingPresets["preset7"]) == preset7
-            try expect(spec.settingPresets["preset8"]) == preset8
+            try expect(spec.settingGroups.count) == 8
+            try expect(spec.settingGroups["preset1"]) == preset1
+            try expect(spec.settingGroups["preset2"]) == preset2
+            try expect(spec.settingGroups["preset3"]) == preset3
+            try expect(spec.settingGroups["preset4"]) == preset4
+            try expect(spec.settingGroups["preset5"]) == preset5
+            try expect(spec.settingGroups["preset6"]) == preset6
+            try expect(spec.settingGroups["preset7"]) == preset7
+            try expect(spec.settingGroups["preset8"]) == preset8
         }
 
         $0.it("parses run scripts") {

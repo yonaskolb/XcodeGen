@@ -92,7 +92,7 @@ extension Target {
                     platformTarget["name"] = platformPrefix + name + platformSuffix
 
                     var settings = platformTarget["settings"] as? JSONDictionary ?? [:]
-                    if settings["configs"] != nil || settings["presets"] != nil || settings["base"] != nil {
+                    if settings["configs"] != nil || settings["groups"] != nil || settings["base"] != nil {
                         var base = settings["base"] as? JSONDictionary ?? [:]
                         if base["PRODUCT_NAME"] == nil {
                             base["PRODUCT_NAME"] = name
