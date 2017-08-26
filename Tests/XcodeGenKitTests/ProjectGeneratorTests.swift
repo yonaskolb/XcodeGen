@@ -104,8 +104,8 @@ func projectGeneratorTests() {
 
             $0.it("generates run scripts") {
                 var scriptSpec = spec
-                scriptSpec.targets[0].prebuildScripts = [RunScript(script: .script("script1"))]
-                scriptSpec.targets[0].postbuildScripts = [RunScript(script: .script("script2"))]
+                scriptSpec.targets[0].prebuildScripts = [BuildScript(script: .script("script1"))]
+                scriptSpec.targets[0].postbuildScripts = [BuildScript(script: .script("script2"))]
                 let pbxProject = try getPbxProj(scriptSpec)
 
                 guard let buildPhases = pbxProject.nativeTargets.first?.buildPhases else { throw failure("Build phases not found") }

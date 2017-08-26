@@ -124,8 +124,8 @@ func specLoadingTests() {
             target["postbuildScripts"] = scripts
 
             let expectedScripts = [
-                RunScript(script: .path("script.sh")),
-                RunScript(script: .script("shell script\ndo thing"), name: "myscript", inputFiles: ["file", "file2"], outputFiles: ["file", "file2"], shell: "bin/customshell", runOnlyWhenInstalling: true),
+                BuildScript(script: .path("script.sh")),
+                BuildScript(script: .script("shell script\ndo thing"), name: "myscript", inputFiles: ["file", "file2"], outputFiles: ["file", "file2"], shell: "bin/customshell", runOnlyWhenInstalling: true),
             ]
 
             let parsedTarget = try Target(jsonDictionary: target)

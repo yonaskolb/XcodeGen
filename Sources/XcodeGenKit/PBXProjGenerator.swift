@@ -258,30 +258,30 @@ public class PBXProjGenerator {
             return Set(files.map { $0.buildFile.reference })
         }
 
-        func getRunScript(runScript: RunScript) throws -> PBXShellScriptBuildPhase {
+        func getBuildScript(buildScript: BuildScript) throws -> PBXShellScriptBuildPhase {
 
             let shellScript: String
-            switch runScript.script {
+            switch buildScript.script {
             case let .path(path):
                 shellScript = try (basePath + path).read()
             case let .script(script):
                 shellScript = script
             }
             let shellScriptPhase = PBXShellScriptBuildPhase(
-                reference: generateUUID(PBXShellScriptBuildPhase.self, String(describing: runScript.name) + shellScript + target.name),
+                reference: generateUUID(PBXShellScriptBuildPhase.self, String(describing: buildScript.name) + shellScript + target.name),
                 files: [],
-                name: runScript.name ?? "Run Script",
-                inputPaths: Set(runScript.inputFiles),
-                outputPaths: Set(runScript.outputFiles),
-                shellPath: runScript.shell ?? "/bin/sh",
+                name: buildScript.name ?? "Run Script",
+                inputPaths: Set(buildScript.inputFiles),
+                outputPaths: Set(buildScript.outputFiles),
+                shellPath: buildScript.shell ?? "/bin/sh",
                 shellScript: shellScript)
-            shellScriptPhase.runOnlyForDeploymentPostprocessing = runScript.runOnlyWhenInstalling ? 1 : 0
+            shellScriptPhase.runOnlyForDeploymentPostprocessing = buildScript.runOnlyWhenInstalling ? 1 : 0
             addObject(shellScriptPhase)
             buildPhases.append(shellScriptPhase.reference)
             return shellScriptPhase
         }
 
-        _ = try target.prebuildScripts.map(getRunScript)
+        _ = try target.prebuildScripts.map(getBuildScript)
 
         let sourcesBuildPhase = PBXSourcesBuildPhase(reference: generateUUID(PBXSourcesBuildPhase.self, target.name), files: getBuildFilesForPhase(.sources))
         addObject(sourcesBuildPhase)
@@ -355,7 +355,7 @@ public class PBXProjGenerator {
             }
         }
 
-        _ = try target.postbuildScripts.map(getRunScript)
+        _ = try target.postbuildScripts.map(getBuildScript)
 
         let nativeTarget = PBXNativeTarget(
             reference: targetNativeReferences[target.name]!,
