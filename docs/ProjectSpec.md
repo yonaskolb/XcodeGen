@@ -133,6 +133,30 @@ This will provide default build settings for a certain platform. It can be any o
 - macOS
 - watchOS
 
+**Multi Platform targets**
+
+You can also specify an array of platforms. This will generate a target for each platform.
+If you reference the string `$platform` anywhere within the target spec, that will be replaced with the platform.
+
+The generated targets by default will have a suffix of `_$platform` applied, you can change this by specifying a `platformSuffix` or `platformPrefix`.
+
+If no `PRODUCT_NAME` build setting is specified for a target, this will be set to the target name, so that this target can be imported under a single name.
+
+```
+name: MyFramework
+sources: MyFramework
+platform: [iOS, tvOS]
+type: framework
+settings:
+  base:
+    INFOPLIST_FILE: MyApp/Info.plist
+    PRODUCT_BUNDLE_IDENTIFIER: com.myapp
+    MY_SETTING: platform $platform
+  presets:
+    - $platform
+```
+The above will generate 2 targets named `MyFramework_iOS` and `MyFramework_tvOS`, with all the relevant platform build settings. They will both have a `PRODUCT_NAME` of `MyFramework`
+
 ### Sources
 Specifies the source directories for a target. This can either be a single path or a list of paths. Applicable source files, resources, headers, and lproj files will be parsed appropriately
 

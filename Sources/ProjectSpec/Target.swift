@@ -46,6 +46,76 @@ public struct Target {
     }
 }
 
+extension Target {
+
+    static func decodeTargets(jsonDictionary: JSONDictionary) throws -> [Target]  {
+        guard jsonDictionary["targets"] != nil else {
+            return []
+        }
+        let array: [JSONDictionary] = try jsonDictionary.json(atKeyPath: "targets", invalidItemBehaviour: .fail)
+
+        var targets: [JSONDictionary] = []
+
+        let platformReplacement = "$platform"
+
+        for json in array {
+
+            if let platforms = json["platform"] as? [String] {
+
+                for platform in platforms {
+                    var platformTarget = json
+
+                    func replacePlatform(_ dictionary: JSONDictionary) -> JSONDictionary {
+                        var replaced = dictionary
+                        for (key, value) in dictionary {
+                            switch value {
+                            case let dictionary as JSONDictionary:
+                                replaced[key] = replacePlatform(dictionary)
+                            case let string as String:
+                                replaced[key] = string.replacingOccurrences(of: platformReplacement, with: platform)
+                            case let array as [JSONDictionary]:
+                                replaced[key] = array.map(replacePlatform)
+                            case let array as [String]:
+                                replaced[key] = array.map { $0.replacingOccurrences(of: platformReplacement, with: platform) }
+                            default: break
+                            }
+                        }
+                        return replaced
+                    }
+
+                    platformTarget = replacePlatform(platformTarget)
+
+                    platformTarget["platform"] = platform
+                    let platformSuffix = platformTarget["platformSuffix"] as? String ?? "_\(platform)"
+                    let platformPrefix = platformTarget["platformPrefix"] as? String ?? ""
+                    let name = platformTarget["name"] as? String ?? ""
+                    platformTarget["name"] = platformPrefix + name + platformSuffix
+
+                    var settings = platformTarget["settings"] as? JSONDictionary ?? [:]
+                    if settings["configs"] != nil || settings["presets"] != nil || settings["base"] != nil {
+                        var base = settings["base"] as? JSONDictionary ?? [:]
+                        if base["PRODUCT_NAME"] == nil {
+                            base["PRODUCT_NAME"] = name
+                        }
+                        settings["base"] = base
+                    } else {
+                        if settings["PRODUCT_NAME"] == nil {
+                            settings["PRODUCT_NAME"] = name
+                        }
+                    }
+                    platformTarget["settings"] = settings
+
+                    targets.append(platformTarget)
+                }
+            } else {
+                targets.append(json)
+            }
+        }
+        
+        return try targets.map { try Target(jsonDictionary: $0) }
+    }
+}
+
 extension Target: Equatable {
 
     public static func ==(lhs: Target, rhs: Target) -> Bool {

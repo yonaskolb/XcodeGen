@@ -89,11 +89,7 @@ extension ProjectSpec {
         settingPresets = jsonDictionary.json(atKeyPath: "settingPresets") ?? [:]
         let configs: [String: String] = jsonDictionary.json(atKeyPath: "configs") ?? [:]
         self.configs = configs.map { Config(name: $0, type: ConfigType(rawValue: $1)) }
-        if jsonDictionary["targets"] == nil {
-            targets = []
-        } else {
-            targets = try jsonDictionary.json(atKeyPath: "targets", invalidItemBehaviour: .fail)
-        }
+        self.targets = try Target.decodeTargets(jsonDictionary: jsonDictionary)
         schemes = try jsonDictionary.json(atKeyPath: "schemes")
         if jsonDictionary["options"] != nil {
             options = try jsonDictionary.json(atKeyPath: "options")
