@@ -64,6 +64,28 @@ func specLoadingTests() {
             try expect(target.dependencies[2]) == .framework("path")
         }
 
+        $0.it("parsed cross platform targets") {
+            let targetDictionary: [String: Any] = [
+                "name":"Framework",
+                "platform": ["iOS", "tvOS"],
+                "type": "framework",
+                "sources": ["Framework", "Framework $platform"],
+                "settings": ["SETTING": "value_$platform"],
+            ]
+
+            let spec = try getProjectSpec(["targets":[targetDictionary]])
+            var target_iOS = Target(name: "Framework_iOS", type: .framework, platform: .iOS)
+            var target_tvOS = Target(name: "Framework_tvOS", type: .framework, platform: .tvOS)
+
+            target_iOS.sources = ["Framework","Framework iOS"]
+            target_tvOS.sources = ["Framework","Framework tvOS"]
+            target_iOS.settings = ["PRODUCT_NAME": "Framework", "SETTING": "value_iOS"]
+            target_tvOS.settings = ["PRODUCT_NAME": "Framework", "SETTING": "value_tvOS"]
+
+            try expect(spec.targets.count) == 2
+            try expect(spec.targets) == [target_iOS, target_tvOS]
+        }
+
         $0.it("parses schemes") {
             let schemeDictionary: [String: Any] = [
                 "build": ["targets": [
@@ -138,5 +160,6 @@ func specLoadingTests() {
             let parsedSpec = try getProjectSpec(["options": ["carthageBuildPath": "../Carthage/Build"]])
             try expect(parsedSpec) == expected
         }
+
     }
 }
