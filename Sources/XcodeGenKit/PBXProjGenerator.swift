@@ -168,8 +168,20 @@ public class PBXProjGenerator {
             sourceFilePaths += sourceGroups.filePaths
         }
 
+        // find all Info.plist
+        let infoPlists: [Path] = sourcePaths.reduce([]) {
+            $0 + ((try? $1.recursiveChildren()) ?? []).filter { $0.lastComponent == "Info.plist" }
+        }
+
         let configs: [XCBuildConfiguration] = spec.configs.map { config in
             var buildSettings = spec.getTargetBuildSettings(target: target, config: config)
+
+            // automatically set INFOPLIST_FILE path
+            if buildSettings["INFOPLIST_FILE"] == nil {
+                if let plistPath = infoPlists.first {
+                    buildSettings["INFOPLIST_FILE"] = plistPath.byRemovingBase(path: basePath)
+                }
+            }
 
             // set Carthage search paths
             if !carthageFrameworks.isEmpty {
