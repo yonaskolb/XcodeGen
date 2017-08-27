@@ -194,31 +194,44 @@ extension Target: JSONObjectConvertible {
     }
 }
 
-public enum Dependency: Equatable {
+public struct Dependency: Equatable {
 
-    case target(String)
-    case framework(String)
-    case carthage(String)
+    public let type: DependencyType
+    public let reference: String
+    public let embed: Bool?
+
+    public init(type: DependencyType, reference: String, embed: Bool? = nil) {
+        self.type = type
+        self.reference = reference
+        self.embed = embed
+    }
+
+    public enum DependencyType {
+        case target
+        case framework
+        case carthage
+    }
 
     public static func ==(lhs: Dependency, rhs: Dependency) -> Bool {
-        switch (lhs, rhs) {
-        case let (.target(lhs), .target(rhs)): return lhs == rhs
-        case let (.framework(lhs), .framework(rhs)): return lhs == rhs
-        case let (.carthage(lhs), .carthage(rhs)): return lhs == rhs
-        default: return false
-        }
+        return lhs.reference == rhs.reference &&
+        lhs.type == rhs.type &&
+        lhs.embed == rhs.embed
     }
 }
 
 extension Dependency: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
+        embed = jsonDictionary.json(atKeyPath: "embed")
         if let target: String = jsonDictionary.json(atKeyPath: "target") {
-            self = .target(target)
+            type = .target
+            reference = target
         } else if let framework: String = jsonDictionary.json(atKeyPath: "framework") {
-            self = .framework(framework)
+            type = .framework
+            reference = framework
         } else if let carthage: String = jsonDictionary.json(atKeyPath: "carthage") {
-            self = .carthage(carthage)
+            type = .carthage
+            reference = carthage
         } else {
             throw ProjectSpecError.invalidDependency(jsonDictionary)
         }

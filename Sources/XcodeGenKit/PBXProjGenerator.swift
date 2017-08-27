@@ -203,8 +203,9 @@ public class PBXProjGenerator {
         var extensions: [String] = []
 
         for dependancy in target.dependencies {
-            switch dependancy {
-            case let .target(dependencyTargetName):
+            switch dependancy.type {
+            case .target:
+                let dependencyTargetName = dependancy.reference
                 guard let dependencyTarget = spec.getTarget(dependencyTargetName) else { continue }
                 let dependencyFileReference = targetFileReferences[dependencyTargetName]!
 
@@ -235,15 +236,15 @@ public class PBXProjGenerator {
                     }
                 }
 
-            case let .framework(framework):
-                let fileReference = getFileReference(path: Path(framework), inPath: basePath)
+            case .framework:
+                let fileReference = getFileReference(path: Path(dependancy.reference), inPath: basePath)
                 let buildFile = PBXBuildFile(reference: generateUUID(PBXBuildFile.self, fileReference + target.name), fileRef: fileReference)
                 addObject(buildFile)
                 targetFrameworkBuildFiles.append(buildFile.reference)
                 if !frameworkFiles.contains(fileReference) {
                     frameworkFiles.append(fileReference)
                 }
-            case let .carthage(carthage):
+            case .carthage:
                 if carthageFrameworksByPlatform[target.platform.rawValue] == nil {
                     carthageFrameworksByPlatform[target.platform.rawValue] = []
                 }
