@@ -97,7 +97,9 @@ Settings are merged in the following order: groups, base, configs.
 - 🔵 **platform**: [Platform](#platform) - Platform of the target
 - ⚪️ **sources**: [Sources](#sources) - Source directories of the target
 - ⚪️ **configFiles**: [Config Files](#config-files) - `.xcconfig` files per config
-- ⚪️ **settings**: [Settings](#settings) - Target specific build settings. Default platform and product type settings will be applied first before any custom settings defined here
+- ⚪️ **settings**: [Settings](#settings) - Target specific build settings. Default platform and product type settings will be applied first before any custom settings defined here. Other context dependant settings will be set automatically as well:
+	- `INFOPLIST_FILE`: If it doesn't exist your sources will be searched for `Info.plist` files and the first one found will be used for this setting
+	- `FRAMEWORK_SEARCH_PATHS`: If carthage dependencies are used, the platform build path will be added to this setting
 - ⚪️ **prebuildScripts**: [[Build Script](#build-script)] - Build scripts that run *before* any other build phases
 - ⚪️ **postbuildScripts**: [[Build Script](#build-script)] - Build scripts that run *after* any other build phases
 - ⚪️ **dependencies**: [[Dependency](#dependency)] - Dependencies for the target

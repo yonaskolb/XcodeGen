@@ -1,5 +1,21 @@
 # Change Log
 
+## 0.5.0
+### Added
+- Added multi platform targets #35
+- Automatically generate platform specific `FRAMEWORK_SEARCH_PATHS` for Carthage dependencies #38
+- Automatically find Info.plist and set `INFOPLIST_FILE` build setting if it doesn't exist on a target #40
+- Add options for controlling embedding of dependencies #37
+
+### Fixed
+- Fixed localized files not being added to a target's resources
+
+### Changed
+- Renamed Setting Presets to Setting Groups
+- Carthage group is now created under top level Frameworks group
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/0.4.0...0.5.0)
+
 ## 0.4.0
 ### Added
 - Homebrew support #16 by @pepibumur
