@@ -158,6 +158,8 @@ public class PBXProjGenerator {
 
     func generateTarget(_ target: Target) throws -> PBXNativeTarget {
 
+        let carthageFrameworks = Set(getCarthageFrameworks(target: target))
+
         let sourcePaths = target.sources.map { basePath + $0 }
         var sourceFilePaths: [Path] = []
 
@@ -167,9 +169,24 @@ public class PBXProjGenerator {
         }
 
         let configs: [XCBuildConfiguration] = spec.configs.map { config in
-            let buildSettings = spec.getTargetBuildSettings(target: target, config: config)
-            var baseConfigurationReference: String?
+            var buildSettings = spec.getTargetBuildSettings(target: target, config: config)
 
+            // set Carthage search paths
+            if !carthageFrameworks.isEmpty {
+                let frameworkSearchPaths = "FRAMEWORK_SEARCH_PATHS"
+                let carthagePlatformBuildPath = "$(PROJECT_DIR)/" + getCarthageBuildPath(platform: target.platform)
+                var newSettings: [String] = []
+                if var array = buildSettings[frameworkSearchPaths] as? [String] {
+                    array.append(carthagePlatformBuildPath)
+                    buildSettings[frameworkSearchPaths] = array
+                } else if let string = buildSettings[frameworkSearchPaths] as? String {
+                    buildSettings[frameworkSearchPaths] = [string, carthagePlatformBuildPath]
+                } else {
+                    buildSettings[frameworkSearchPaths] = carthagePlatformBuildPath
+                }
+            }
+
+            var baseConfigurationReference: String?
             if let configPath = target.configFiles[config.name] {
                 let path = basePath + configPath
                 baseConfigurationReference = fileReferencesByPath[path]
@@ -230,12 +247,7 @@ public class PBXProjGenerator {
                 if carthageFrameworksByPlatform[target.platform.rawValue] == nil {
                     carthageFrameworksByPlatform[target.platform.rawValue] = []
                 }
-                let carthagePath = Path(carthageBuildPath)
-                var platformName = target.platform.rawValue
-                if target.platform == .macOS {
-                    platformName = "Mac"
-                }
-                var platformPath = carthagePath + platformName
+                var platformPath = Path(getCarthageBuildPath(platform: target.platform))
                 var frameworkPath = platformPath + carthage
                 if frameworkPath.extension == nil {
                     frameworkPath = Path(frameworkPath.string + ".framework")
@@ -330,24 +342,9 @@ public class PBXProjGenerator {
             buildPhases.append(copyFilesPhase.reference)
         }
 
-        if target.type.isApp {
-            func getCarthageFrameworks(target: Target) -> [String] {
-                var frameworks: [String] = []
-                for dependency in target.dependencies {
-                    switch dependency {
-                    case let .carthage(framework): frameworks.append(framework)
-                    case let .target(targetName):
-                        if let target = spec.targets.first(where: { $0.name == targetName }) {
-                            frameworks += getCarthageFrameworks(target: target)
-                        }
-                    default: break
-                    }
-                }
-                return frameworks
-            }
+        if !carthageFrameworks.isEmpty {
 
-            let carthageFrameworks = Set(getCarthageFrameworks(target: target))
-            if !carthageFrameworks.isEmpty {
+            if target.type.isApp {
                 let inputPaths = carthageFrameworks.map { "$(SRCROOT)/\(carthageBuildPath)/\(target.platform)/\($0)\($0.contains(".") ? "" : ".framework")" }
                 let carthageScript = PBXShellScriptBuildPhase(reference: generateUUID(PBXShellScriptBuildPhase.self, "Carthage" + target.name), files: [], name: "Carthage", inputPaths: Set(inputPaths), outputPaths: [], shellPath: "/bin/sh", shellScript: "/usr/local/bin/carthage copy-frameworks\n")
                 addObject(carthageScript)
@@ -368,6 +365,31 @@ public class PBXProjGenerator {
             productType: target.type)
         addObject(nativeTarget)
         return nativeTarget
+    }
+
+    func getCarthageBuildPath(platform: Platform) -> String {
+
+        let carthagePath = Path(carthageBuildPath)
+        var platformName = platform.rawValue
+        if platform == .macOS {
+            platformName = "Mac"
+        }
+        return "\(carthagePath)/\(platformName)"
+    }
+
+    func getCarthageFrameworks(target: Target) -> [String] {
+        var frameworks: [String] = []
+        for dependency in target.dependencies {
+            switch dependency {
+            case let .carthage(framework): frameworks.append(framework)
+            case let .target(targetName):
+                if let target = spec.targets.first(where: { $0.name == targetName }) {
+                    frameworks += getCarthageFrameworks(target: target)
+                }
+            default: break
+            }
+        }
+        return frameworks
     }
 
     func getBuildPhaseForPath(_ path: Path) -> BuildPhase? {
