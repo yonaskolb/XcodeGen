@@ -194,7 +194,7 @@ public class PBXProjGenerator {
                 } else if let string = buildSettings[frameworkSearchPaths] as? String {
                     buildSettings[frameworkSearchPaths] = [string, carthagePlatformBuildPath]
                 } else {
-                    buildSettings[frameworkSearchPaths] = carthagePlatformBuildPath
+                    buildSettings[frameworkSearchPaths] = ["$(inherited)", carthagePlatformBuildPath]
                 }
             }
 
