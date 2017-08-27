@@ -171,15 +171,23 @@ targets:
 ```
 
 ### Dependency
-A dependency can be one of a few types:
+A dependency can be one of a 3 types:
 
 - `target: name` - links to another target
 - `framework: path` - links to a framework
 - `carthage: name` - helper for linking to a carthage framework
 
-**Carthage notes**
+**Embed options**:
 
-Carthage frameworks expected to be in `CARTHAGE_BUILD_PATH/PLATFORM/FRAMEWORK.framework` where:
+These only applied to `target` and `framework` dependencies.
+
+- ⚪️ **embed**: `Bool` - Whether to embed the dependency. Defaults to true for application target and false for non application targets.
+- ⚪️ **codeSign**: `Bool` - Whether the `codeSignOnCopy` setting is applied when embedding framework. Defaults to true
+- ⚪️ **removeHeaders**: `Bool` - Whether the `removeHeadersOnCopy` setting is applied when embedding the framework. Defaults to true
+
+**Carthage Dependency**
+
+Carthage frameworks are expected to be in `CARTHAGE_BUILD_PATH/PLATFORM/FRAMEWORK.framework` where:
 
  - `CARTHAGE_BUILD_PATH` = `options.carthageBuildPath` or `Carthage/Build` by default
  - `PLATFORM` = the target's platform

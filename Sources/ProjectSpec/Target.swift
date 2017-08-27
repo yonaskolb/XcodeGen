@@ -111,7 +111,7 @@ extension Target {
                 targets.append(json)
             }
         }
-        
+
         return try targets.map { try Target(jsonDictionary: $0) }
     }
 }
@@ -194,19 +194,43 @@ extension Target: JSONObjectConvertible {
     }
 }
 
-public enum Dependency: Equatable {
+public struct Dependency: Equatable {
 
-    case target(String)
-    case framework(String)
-    case carthage(String)
+    public var type: DependencyType
+    public var reference: String
+    public var embed: Bool?
+    public var codeSign: Bool = true
+    public var removeHeaders: Bool = true
+
+    public init(type: DependencyType, reference: String, embed: Bool? = nil) {
+        self.type = type
+        self.reference = reference
+        self.embed = embed
+    }
+
+    public enum DependencyType {
+        case target
+        case framework
+        case carthage
+    }
 
     public static func ==(lhs: Dependency, rhs: Dependency) -> Bool {
-        switch (lhs, rhs) {
-        case let (.target(lhs), .target(rhs)): return lhs == rhs
-        case let (.framework(lhs), .framework(rhs)): return lhs == rhs
-        case let (.carthage(lhs), .carthage(rhs)): return lhs == rhs
-        default: return false
+        return lhs.reference == rhs.reference &&
+            lhs.type == rhs.type &&
+            lhs.codeSign == rhs.codeSign &&
+            lhs.removeHeaders == rhs.removeHeaders &&
+            lhs.embed == rhs.embed
+    }
+
+    public var buildSettings: [String: Any] {
+        var attributes: [String] = []
+        if codeSign {
+            attributes.append("CodeSignOnCopy")
         }
+        if removeHeaders {
+            attributes.append("RemoveHeadersOnCopy")
+        }
+        return ["ATTRIBUTES": attributes]
     }
 }
 
@@ -214,13 +238,25 @@ extension Dependency: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
         if let target: String = jsonDictionary.json(atKeyPath: "target") {
-            self = .target(target)
+            type = .target
+            reference = target
         } else if let framework: String = jsonDictionary.json(atKeyPath: "framework") {
-            self = .framework(framework)
+            type = .framework
+            reference = framework
         } else if let carthage: String = jsonDictionary.json(atKeyPath: "carthage") {
-            self = .carthage(carthage)
+            type = .carthage
+            reference = carthage
         } else {
             throw ProjectSpecError.invalidDependency(jsonDictionary)
+        }
+
+        embed = jsonDictionary.json(atKeyPath: "embed")
+        
+        if let bool: Bool = jsonDictionary.json(atKeyPath: "codeSign") {
+            codeSign = bool
+        }
+        if let bool: Bool = jsonDictionary.json(atKeyPath: "removeHeaders") {
+            removeHeaders = bool
         }
     }
 }

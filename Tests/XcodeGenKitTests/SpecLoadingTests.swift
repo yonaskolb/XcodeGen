@@ -53,15 +53,15 @@ func specLoadingTests() {
         $0.it("parses target dependencies") {
             var targetDictionary = validTarget
             targetDictionary["dependencies"] = [
-                ["target": "name"],
+                ["target": "name", "embed": false],
                 ["carthage": "name"],
                 ["framework": "path"],
             ]
             let target = try Target(jsonDictionary: targetDictionary)
             try expect(target.dependencies.count) == 3
-            try expect(target.dependencies[0]) == .target("name")
-            try expect(target.dependencies[1]) == .carthage("name")
-            try expect(target.dependencies[2]) == .framework("path")
+            try expect(target.dependencies[0]) == Dependency(type: .target, reference: "name", embed: false)
+            try expect(target.dependencies[1]) == Dependency(type: .carthage, reference: "name")
+            try expect(target.dependencies[2]) == Dependency(type: .framework, reference: "path")
         }
 
         $0.it("parsed cross platform targets") {

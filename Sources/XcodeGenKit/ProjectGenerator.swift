@@ -58,8 +58,8 @@ public class ProjectGenerator {
 
         for target in spec.targets {
             for dependency in target.dependencies {
-                if case let .target(targetName) = dependency, spec.getTarget(targetName) == nil {
-                    errors.append(.invalidTargetDependency(target: target.name, dependency: targetName))
+                if dependency.type == .target, spec.getTarget(dependency.reference) == nil {
+                    errors.append(.invalidTargetDependency(target: target.name, dependency: dependency.reference))
                 }
             }
 
