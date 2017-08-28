@@ -293,13 +293,14 @@ public class PBXProjGenerator {
 
         func getBuildScript(buildScript: BuildScript) throws -> PBXShellScriptBuildPhase {
 
-            let shellScript: String
+            var shellScript: String
             switch buildScript.script {
             case let .path(path):
                 shellScript = try (basePath + path).read()
             case let .script(script):
                 shellScript = script
             }
+            shellScript = shellScript.replacingOccurrences(of: "\"", with: "\\\"") // TODO: remove when xcodeproj escaped values
             let shellScriptPhase = PBXShellScriptBuildPhase(
                 reference: generateUUID(PBXShellScriptBuildPhase.self, String(describing: buildScript.name) + shellScript + target.name),
                 files: [],
