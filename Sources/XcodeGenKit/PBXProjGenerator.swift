@@ -262,7 +262,7 @@ public class PBXProjGenerator {
                 if embed {
                     let embedFile = PBXBuildFile(reference: generateUUID(PBXBuildFile.self, fileReference + target.name), fileRef: fileReference, settings: dependancy.buildSettings)
                     addObject(embedFile)
-                    copyFiles.append(buildFile.reference)
+                    copyFiles.append(embedFile.reference)
                 }
             case .carthage:
                 if carthageFrameworksByPlatform[target.platform.rawValue] == nil {
