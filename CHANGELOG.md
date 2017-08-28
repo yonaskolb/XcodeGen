@@ -1,5 +1,14 @@
 # Change Log
 
+## 0.5.1
+
+### Fixed
+- Fix embedded framework dependencies
+- Add `CODE_SIGN_IDENTITY[sdk=iphoneos*]` back to iOS targets
+- Fix build scripts with "" generating invalid projects [PR#43](https://github.com/yonaskolb/XcodeGen/pull/43)
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/0.5.0...0.5.1)
+
 ## 0.5.0
 ### Added
 - Added multi platform targets [PR#35](https://github.com/yonaskolb/XcodeGen/pull/35)
@@ -61,4 +70,3 @@
 
 ## 0.1.0
 First official release
-
