@@ -13,6 +13,9 @@ targets:
       testTargets:
         - TestProjectTests
     postbuildScripts:
+      - path: scripts/strip-frameworks.sh
+        name: Strip Unused Architectures from Frameworks
+        runOnlyWhenInstalling: true
       - name: Swiftlint
         script: |
           if which swiftlint >/dev/null; then
