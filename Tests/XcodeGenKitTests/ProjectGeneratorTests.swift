@@ -66,8 +66,9 @@ func projectGeneratorTests() {
                 try expect(debugProjectSettings.equals(buildSettings)).beTrue()
 
                 var expectedTargetDebugSettings = BuildSettings()
-                expectedTargetDebugSettings += SettingsPresetFile.product(.application).getBuildSettings()
                 expectedTargetDebugSettings += SettingsPresetFile.platform(.iOS).getBuildSettings()
+                expectedTargetDebugSettings += SettingsPresetFile.product(.application).getBuildSettings()
+                expectedTargetDebugSettings += SettingsPresetFile.productPlatform(.application,.iOS).getBuildSettings()
                 expectedTargetDebugSettings += ["SETTING 2": "value 2", "SETTING 3": "value 3", "SETTING": "value"]
 
                 try expect(targetDebugSettings.equals(expectedTargetDebugSettings)).beTrue()
