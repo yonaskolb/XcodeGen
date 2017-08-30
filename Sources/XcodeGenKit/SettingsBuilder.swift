@@ -34,6 +34,7 @@ extension ProjectSpec {
 
         buildSettings += SettingsPresetFile.platform(target.platform).getBuildSettings()
         buildSettings += SettingsPresetFile.product(target.type).getBuildSettings()
+        buildSettings += SettingsPresetFile.productPlatform(target.type, target.platform).getBuildSettings()
         buildSettings += getBuildSettings(settings: target.settings, config: config)
 
         return buildSettings
@@ -76,7 +77,7 @@ extension SettingsPresetFile {
             switch self {
             case .base, .config, .platform:
                 print("No \"\(name)\" settings found at \(settingsPath)")
-            case .product:
+            case .product, .productPlatform:
                 break
             }
             return nil
