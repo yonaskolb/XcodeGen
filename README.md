@@ -100,12 +100,12 @@ Simply run:
 $ xcodegen
 ```
 
-This will look for a project spec in the current directory called `xcodegen.yml`
+This will look for a project spec in the current directory called `project.yml`
 
 Use `xcodegen help` to see the list of options:
 
-- **--spec**: This is an optional path to a `.yml` or `.json` project spec
-- **--project**: This is an optional path the generated xcode project file. If it is left out, the file will be written to the same directory as the spec, and with the name included in the spec
+- **--spec**: An optional path to a `.yml` or `.json` project spec
+- **--project**: An optional path to a directory where the project will be generated. By default this is the current directory
 
 ## Editing
 ```

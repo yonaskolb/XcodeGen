@@ -14,19 +14,10 @@ import xcodeproj
 import ProjectSpec
 import JSONUtilities
 
-func generate(spec: String, project: String?) {
+func generate(spec: String, project: String) {
 
-    let specPath = spec.isEmpty ? Path("xcodegen.yml") : Path(spec).normalize()
-    var projectPath: Path
-    if let project = project, !project.isEmpty {
-        var path = Path(project).normalize()
-        if path.isRelative {
-            path = specPath.parent() + project
-        }
-        projectPath = path
-    } else {
-        projectPath = specPath.parent()
-    }
+    let specPath = Path(spec).normalize()
+    let projectPath = Path(project).normalize()
 
     let spec: ProjectSpec
     do {
@@ -46,9 +37,9 @@ func generate(spec: String, project: String?) {
         print("Generated project")
         print("Writing project")
 
-        projectPath = projectPath + "\(spec.name).xcodeproj"
-        try project.write(path: projectPath, override: true)
-        print("Wrote project to file \(projectPath.string)")
+        let projectFile = projectPath + "\(spec.name).xcodeproj"
+        try project.write(path: projectFile, override: true)
+        print("Wrote project to file \(projectFile.string)")
     } catch let error as SpecValidationError {
         print(error.description)
     } catch {
@@ -57,7 +48,7 @@ func generate(spec: String, project: String?) {
 }
 
 command(
-    Option<String>("spec", "", flag: "s", description: "The path to the spec file"),
-    Option<String>("project", "", flag: "p", description: "The path to the generated project"),
+    Option<String>("spec", "project.yml", flag: "s", description: "The path to the spec file"),
+    Option<String>("project", "", flag: "p", description: "The path to the folder where the project should be generated"),
     generate)
     .run()
