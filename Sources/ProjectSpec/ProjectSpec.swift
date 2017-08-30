@@ -21,6 +21,7 @@ public struct ProjectSpec {
     public var configs: [Config]
     public var schemes: [Scheme]
     public var options: Options
+    public var attributes: [String: Any]
 
     public struct Options {
         public var carthageBuildPath: String?
@@ -30,7 +31,7 @@ public struct ProjectSpec {
         }
     }
 
-    public init(name: String, configs: [Config] = [], targets: [Target] = [], settings: Settings = .empty, settingGroups: [String: Settings] = [:], schemes: [Scheme] = [], options: Options = Options()) {
+    public init(name: String, configs: [Config] = [], targets: [Target] = [], settings: Settings = .empty, settingGroups: [String: Settings] = [:], schemes: [Scheme] = [], options: Options = Options(), attributes: [String: Any] = [:]) {
         self.name = name
         self.targets = targets
         self.configs = configs
@@ -38,6 +39,7 @@ public struct ProjectSpec {
         self.settingGroups = settingGroups
         self.schemes = schemes
         self.options = options
+        self.attributes = attributes
     }
 
     public func getTarget(_ targetName: String) -> Target? {
@@ -79,6 +81,7 @@ extension ProjectSpec: JSONObjectConvertible {
         self.configs = configs.map { Config(name: $0, type: ConfigType(rawValue: $1)) }
         targets = try Target.decodeTargets(jsonDictionary: jsonDictionary)
         schemes = try jsonDictionary.json(atKeyPath: "schemes")
+        attributes = jsonDictionary.json(atKeyPath: "attributes") ?? [:]
         if jsonDictionary["options"] != nil {
             options = try jsonDictionary.json(atKeyPath: "options")
         } else {

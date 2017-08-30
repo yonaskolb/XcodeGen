@@ -18,6 +18,7 @@ public class PBXProjGenerator {
 
     let spec: ProjectSpec
     let basePath: Path
+    let currentXcodeVersion = "0830"
 
     var fileReferencesByPath: [Path: String] = [:]
     var groupsByPath: [Path: PBXGroup] = [:]
@@ -133,7 +134,15 @@ public class PBXProjGenerator {
         addObject(mainGroup)
 
         let knownRegions: [String] = ["en", "Base"]
-        let root = PBXProject(reference: project.rootObject, buildConfigurationList: buildConfigList.reference, compatibilityVersion: "Xcode 3.2", mainGroup: mainGroup.reference, developmentRegion: "English", knownRegions: knownRegions, targets: targets.referenceList)
+        let projectAttributes: [String: Any] = spec.attributes.isEmpty ? ["LastUpgradeCheck": currentXcodeVersion] : spec.attributes
+        let root = PBXProject(reference: project.rootObject,
+                              buildConfigurationList: buildConfigList.reference,
+                              compatibilityVersion: "Xcode 3.2",
+                              mainGroup: mainGroup.reference,
+                              developmentRegion: "English",
+                              knownRegions: knownRegions,
+                              targets: targets.referenceList,
+                              attributes: projectAttributes)
         project.projects.append(root)
 
         return project
