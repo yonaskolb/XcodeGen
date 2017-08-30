@@ -1,5 +1,16 @@
 # Change Log
 
+## 0.6.0
+
+### Added
+- Allow a project spec to include other project specs [PR#44](https://github.com/yonaskolb/XcodeGen/pull/44)
+
+### Changed
+- Changed default spec path to `project.yml`
+- Changed default project directory to the current directory instead of the spec file's directory
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/0.5.1...0.6.0)
+
 ## 0.5.1
 
 ### Fixed
