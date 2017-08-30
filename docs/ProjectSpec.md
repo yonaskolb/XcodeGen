@@ -27,6 +27,7 @@ Required properties are marked 🔵 and optional properties with ⚪️.
 - 🔵 **name**: `String` - Name of the generated project
 - ⚪️ **include**: `[String]` - The paths to other specs. They will be merged in order and then the current spec will be merged on top
 - ⚪️ **options**: [Options](#options) - Various options to override default behaviour
+- ⚪️ **attributes**: `map` - The PBXProject attributes. This is for advanced use. Defaults to ``{"LastUpgradeCheck": "0830"}``
 - ⚪️ **configs**: [Configs](#configs) - Project build configurations. Defaults to `Debug` and `Release` configs
 - ⚪️ **settings**: [Settings](#settings) - Project specific settings. Default base and config type settings will be applied first before any settings defined here
 - ⚪️ **settingGroups**: [Setting Groups](#setting-groups) - Setting groups mapped by name
