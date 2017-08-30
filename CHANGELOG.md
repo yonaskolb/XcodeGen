@@ -1,5 +1,16 @@
 # Change Log
 
+## 0.6.1
+
+### Added
+- Ability to set PBXProject attributes [PR#45](https://github.com/yonaskolb/XcodeGen/pull/45)
+
+### Changed
+- Don't bother linking target frameworks for target dependencies.
+- Move code signing default settings from all iOS targets to iOS application targets, via Product + Platform setting preset files [PR#46](https://github.com/yonaskolb/XcodeGen/pull/46)
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/0.6.0...0.6.1)
+
 ## 0.6.0
 
 ### Added
