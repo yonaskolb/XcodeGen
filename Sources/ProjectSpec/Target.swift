@@ -48,7 +48,7 @@ public struct Target {
 
 extension Target {
 
-    static func decodeTargets(jsonDictionary: JSONDictionary) throws -> [Target]  {
+    static func decodeTargets(jsonDictionary: JSONDictionary) throws -> [Target] {
         guard jsonDictionary["targets"] != nil else {
             return []
         }
@@ -251,7 +251,7 @@ extension Dependency: JSONObjectConvertible {
         }
 
         embed = jsonDictionary.json(atKeyPath: "embed")
-        
+
         if let bool: Bool = jsonDictionary.json(atKeyPath: "codeSign") {
             codeSign = bool
         }
