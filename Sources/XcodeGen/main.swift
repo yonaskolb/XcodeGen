@@ -30,7 +30,7 @@ func generate(spec: String, project: String?) {
 
     let spec: ProjectSpec
     do {
-        spec = try ProjectSpec(path: specPath)
+        spec = try SpecLoader.loadSpec(path: specPath)
         print("Loaded spec: \(spec.targets.count) targets, \(spec.schemes.count) schemes, \(spec.configs.count) configs")
     } catch let error as DecodingError {
         print("Parsing spec failed: \(error.description)")

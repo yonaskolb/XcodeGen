@@ -69,19 +69,7 @@ extension ProjectSpec.Options: Equatable {
     }
 }
 
-extension ProjectSpec {
-
-    public init(path: Path) throws {
-        let string: String = try path.read()
-        try self.init(path: path, string: string)
-    }
-
-    public init(path: Path, string: String) throws {
-        let yaml = try Yams.load(yaml: string)
-        let json = yaml as! JSONDictionary
-
-        try self.init(jsonDictionary: json)
-    }
+extension ProjectSpec: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
         name = try jsonDictionary.json(atKeyPath: "name")
@@ -89,7 +77,7 @@ extension ProjectSpec {
         settingGroups = jsonDictionary.json(atKeyPath: "settingGroups") ?? jsonDictionary.json(atKeyPath: "settingPresets") ?? [:]
         let configs: [String: String] = jsonDictionary.json(atKeyPath: "configs") ?? [:]
         self.configs = configs.map { Config(name: $0, type: ConfigType(rawValue: $1)) }
-        self.targets = try Target.decodeTargets(jsonDictionary: jsonDictionary)
+        targets = try Target.decodeTargets(jsonDictionary: jsonDictionary)
         schemes = try jsonDictionary.json(atKeyPath: "schemes")
         if jsonDictionary["options"] != nil {
             options = try jsonDictionary.json(atKeyPath: "options")

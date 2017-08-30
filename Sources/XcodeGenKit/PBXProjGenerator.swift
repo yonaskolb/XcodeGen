@@ -476,7 +476,7 @@ public class PBXProjGenerator {
                 allFilePaths.append(path)
             }
         }
-        
+
         let groupPath: String = depth == 0 ? path.byRemovingBase(path: basePath).string : path.lastComponent
         let group: PBXGroup
         if let cachedGroup = groupsByPath[path] {

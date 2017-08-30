@@ -30,6 +30,7 @@ The project spec is a YAML or JSON file that defines your targets, configuration
 - ✅ Automatically generate Schemes for **different environments** like test and production
 - ✅ Easily **create new projects** with complicated setups on demand without messing around with Xcode
 - ✅ Generate from anywhere including **Continuous Delivery** servers
+- ✅ Distribute your spec amongst multiple files for easy **sharing** and overriding
 
 
 Given a very simple project spec file like this:

@@ -1,0 +1,12 @@
+include: [included.yml]
+name: NewName
+settingGroups:
+  test:
+    MY_SETTING1: NEW VALUE
+    MY_SETTING3: VALUE3
+  new:
+    MY_SETTING: VALUE
+targets:
+  - name: NewTarget
+    type: application
+    platform: iOS

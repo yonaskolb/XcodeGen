@@ -30,6 +30,23 @@ func specLoadingTests() {
     let validTarget: [String: Any] = ["name": "test", "type": "application", "platform": "iOS"]
     let invalid = "invalid"
 
+    describe("Spec Loader") {
+        $0.it("merges includes") {
+            let path = fixturePath + "include_test.yml"
+            let spec = try SpecLoader.loadSpec(path: path)
+
+            try expect(spec.name) == "NewName"
+            try expect(spec.settingGroups) == [
+                "test": Settings(dictionary: ["MY_SETTING1": "NEW VALUE", "MY_SETTING2": "VALUE2", "MY_SETTING3": "VALUE3"]),
+                "new": Settings(dictionary: ["MY_SETTING": "VALUE"]),
+            ]
+            try expect(spec.targets) == [
+                Target(name: "IncludedTarget", type: .application, platform: .iOS),
+                Target(name: "NewTarget", type: .application, platform: .iOS),
+            ]
+        }
+    }
+
     describe("Project Spec") {
 
         $0.it("fails with incorrect platform") {
@@ -66,19 +83,19 @@ func specLoadingTests() {
 
         $0.it("parsed cross platform targets") {
             let targetDictionary: [String: Any] = [
-                "name":"Framework",
+                "name": "Framework",
                 "platform": ["iOS", "tvOS"],
                 "type": "framework",
                 "sources": ["Framework", "Framework $platform"],
                 "settings": ["SETTING": "value_$platform"],
             ]
 
-            let spec = try getProjectSpec(["targets":[targetDictionary]])
+            let spec = try getProjectSpec(["targets": [targetDictionary]])
             var target_iOS = Target(name: "Framework_iOS", type: .framework, platform: .iOS)
             var target_tvOS = Target(name: "Framework_tvOS", type: .framework, platform: .tvOS)
 
-            target_iOS.sources = ["Framework","Framework iOS"]
-            target_tvOS.sources = ["Framework","Framework tvOS"]
+            target_iOS.sources = ["Framework", "Framework iOS"]
+            target_tvOS.sources = ["Framework", "Framework tvOS"]
             target_iOS.settings = ["PRODUCT_NAME": "Framework", "SETTING": "value_iOS"]
             target_tvOS.settings = ["PRODUCT_NAME": "Framework", "SETTING": "value_tvOS"]
 
@@ -160,6 +177,5 @@ func specLoadingTests() {
             let parsedSpec = try getProjectSpec(["options": ["carthageBuildPath": "../Carthage/Build"]])
             try expect(parsedSpec) == expected
         }
-
     }
 }
