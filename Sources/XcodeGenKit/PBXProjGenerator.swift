@@ -230,9 +230,9 @@ public class PBXProjGenerator {
                 addObject(targetDependancy)
                 dependancies.append(targetDependancy.reference)
 
-                let dependencyBuildFile = targetBuildFileReferences[dependencyTargetName]!
-                // link
-                targetFrameworkBuildFiles.append(dependencyBuildFile)
+                // don't bother linking a target dependency
+                // let dependencyBuildFile = targetBuildFileReferences[dependencyTargetName]!
+                // targetFrameworkBuildFiles.append(dependencyBuildFile)
 
                 if embed {
                     let embedSettings = dependancy.buildSettings
