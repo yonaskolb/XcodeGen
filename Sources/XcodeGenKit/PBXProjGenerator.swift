@@ -429,7 +429,7 @@ public class PBXProjGenerator {
         }
         if let fileExtension = path.extension {
             switch fileExtension {
-            case "swift", "m": return .sources
+            case "swift", "m", "cpp": return .sources
             case "h", "hh", "hpp", "ipp", "tpp", "hxx", "def": return .headers
             case "xcconfig": return nil
             default: return .resources
