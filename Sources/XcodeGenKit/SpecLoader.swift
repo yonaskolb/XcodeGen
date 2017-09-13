@@ -16,7 +16,8 @@ public struct SpecLoader {
 
     public static func loadSpec(path: Path) throws -> ProjectSpec {
         let dictionary = try loadDictionary(path: path)
-        return try ProjectSpec(jsonDictionary: dictionary)
+        let filteredDictionary = SpecLoader.filterNull(dictionary) as! [String:Any]
+        return try ProjectSpec(jsonDictionary: filteredDictionary)
     }
 
     private static func loadDictionary(path: Path) throws -> JSONDictionary {
@@ -51,5 +52,24 @@ public struct SpecLoader {
             }
         }
         return merged
+    }
+
+    private static func filterNull(_ object:Any) -> Any {
+        var returnedValue : Any = object
+        if let dict = object as? [String:Any] {
+            var mutabledic : [String: Any] = [:]
+            for (key, value) in dict {
+                mutabledic[key] = SpecLoader.filterNull(value)
+            }
+            returnedValue = mutabledic
+        }
+        else if let array = object as? [Any] {
+            var mutableArray: [Any] = array
+            for (index, value) in array.enumerated() {
+                mutableArray[index] = SpecLoader.filterNull(value)
+            }
+            returnedValue = mutableArray
+        }
+        return (object is NSNull) ? "" : returnedValue
     }
 }
