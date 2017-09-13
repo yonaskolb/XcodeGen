@@ -212,6 +212,7 @@
 		P81399456601 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastUpgradeCheck = 0830;
 			};
 			buildConfigurationList = XCCL81399401 /* Build configuration list for PBXProject */;
 			compatibilityVersion = "Xcode 3.2";
