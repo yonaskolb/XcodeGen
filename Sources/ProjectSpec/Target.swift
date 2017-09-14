@@ -159,7 +159,7 @@ extension TargetScheme: JSONObjectConvertible {
 extension Target: NamedJSONDictionaryConvertible {
 
     public init(name: String, jsonDictionary: JSONDictionary) throws {
-        self.name = name
+        self.name = jsonDictionary.json(atKeyPath: "name") ?? name
         let typeString: String = try jsonDictionary.json(atKeyPath: "type")
         if let type = PBXProductType(string: typeString) {
             self.type = type

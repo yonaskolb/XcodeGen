@@ -11,4 +11,6 @@ targets:
     type: application
     platform: iOS
   IncludedTarget:
+    name: IncludedTargetNew
     platform: tvOS
+    sources: Target

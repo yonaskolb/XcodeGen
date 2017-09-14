@@ -41,7 +41,7 @@ func specLoadingTests() {
                 "new": Settings(dictionary: ["MY_SETTING": "VALUE"]),
             ]
             try expect(spec.targets) == [
-                Target(name: "IncludedTarget", type: .application, platform: .tvOS),
+                Target(name: "IncludedTargetNew", type: .application, platform: .tvOS, sources: ["Target"]),
                 Target(name: "NewTarget", type: .application, platform: .iOS),
             ]
         }
