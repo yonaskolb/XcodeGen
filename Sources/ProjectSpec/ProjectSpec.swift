@@ -74,12 +74,13 @@ extension ProjectSpec.Options: Equatable {
 extension ProjectSpec: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
+        let jsonDictionary = try ProjectSpec.filterJSON(jsonDictionary: jsonDictionary)
         name = try jsonDictionary.json(atKeyPath: "name")
         settings = jsonDictionary.json(atKeyPath: "settings") ?? .empty
         settingGroups = jsonDictionary.json(atKeyPath: "settingGroups") ?? jsonDictionary.json(atKeyPath: "settingPresets") ?? [:]
         let configs: [String: String] = jsonDictionary.json(atKeyPath: "configs") ?? [:]
         self.configs = configs.map { Config(name: $0, type: ConfigType(rawValue: $1)) }
-        targets = try Target.decodeTargets(jsonDictionary: jsonDictionary)
+        targets = try jsonDictionary.json(atKeyPath: "targets").sorted { $0.name < $1.name }
         schemes = try jsonDictionary.json(atKeyPath: "schemes")
         attributes = jsonDictionary.json(atKeyPath: "attributes") ?? [:]
         if jsonDictionary["options"] != nil {
@@ -87,6 +88,10 @@ extension ProjectSpec: JSONObjectConvertible {
         } else {
             options = Options()
         }
+    }
+
+    static func filterJSON(jsonDictionary: JSONDictionary) throws -> JSONDictionary {
+        return try Target.generateCrossPlaformTargets(jsonDictionary: jsonDictionary)
     }
 }
 

@@ -31,7 +31,7 @@ Required properties are marked 🔵 and optional properties with ⚪️.
 - ⚪️ **configs**: [Configs](#configs) - Project build configurations. Defaults to `Debug` and `Release` configs
 - ⚪️ **settings**: [Settings](#settings) - Project specific settings. Default base and config type settings will be applied first before any settings defined here
 - ⚪️ **settingGroups**: [Setting Groups](#setting-groups) - Setting groups mapped by name
-- ⚪️ **targets**: [[Target](#target)] - The list of targets in the project
+- ⚪️ **targets**: [String: [Target](#target)] - The list of targets in the project mapped by name
 
 ### Options
 - ⚪️ **carthageBuildPath**: `String` - The path to the carthage build directory. Defaults to `Carthage/Build`. This is used when specifying target carthage dependencies
@@ -94,7 +94,6 @@ Settings are merged in the following order: groups, base, configs.
 
 ## Target
 
-- 🔵 **name**: `String` - Name of the target
 - 🔵 **type**: [Product Type](#product-type) - Product type of the target
 - 🔵 **platform**: [Platform](#platform) - Platform of the target
 - ⚪️ **sources**: [Sources](#sources) - Source directories of the target
@@ -146,18 +145,19 @@ The generated targets by default will have a suffix of `_$platform` applied, you
 
 If no `PRODUCT_NAME` build setting is specified for a target, this will be set to the target name, so that this target can be imported under a single name.
 
-```
-name: MyFramework
-sources: MyFramework
-platform: [iOS, tvOS]
-type: framework
-settings:
-  base:
-    INFOPLIST_FILE: MyApp/Info.plist
-    PRODUCT_BUNDLE_IDENTIFIER: com.myapp
-    MY_SETTING: platform $platform
-  groups:
-    - $platform
+```yaml
+targets:
+  MyFramework:
+    sources: MyFramework
+    platform: [iOS, tvOS]
+    type: framework
+    settings:
+      base:
+        INFOPLIST_FILE: MyApp/Info.plist
+        PRODUCT_BUNDLE_IDENTIFIER: com.myapp
+        MY_SETTING: platform $platform
+      groups:
+        - $platform
 ```
 The above will generate 2 targets named `MyFramework_iOS` and `MyFramework_tvOS`, with all the relevant platform build settings. They will both have a `PRODUCT_NAME` of `MyFramework`
 
@@ -166,9 +166,9 @@ Specifies the source directories for a target. This can either be a single path 
 
 ```yaml
 targets:
-  - name: MyTarget
+  MyTarget
     sources: MyTargetSource
-  - name: MyOtherTarget
+  MyOtherTarget
     sources:
       - MyOtherTargetSource1
       - MyOtherTargetSource2
@@ -201,12 +201,13 @@ If any applications contain carthage dependencies within itself or any dependent
 
 ```yaml
 targets:
-  - name: MyTarget
+  MyTarget:
     dependencies:
       - target: MyFramework
       - framework: path/to/framework.framework
       - carthage: Result  
-  - name: MyFramework
+  MyFramework:
+    type: framework
 ```
 
 ### Config Files
@@ -214,7 +215,7 @@ Specifies `.xcconfig` files for each configuration.
 
 ```yaml
 targets:
-  - name: MyTarget
+  MyTarget:
     configFiles:
       Debug: config_files/debug.xcconfig
       Release: config_files/release.xcconfig
@@ -237,7 +238,7 @@ A multiline script can be written using the various YAML multiline methods, for 
 
 ```yaml
 targets:
-  - name: MyTarget
+  MyTarget:
     prebuildScripts:
       - path: myscripts/my_script.sh
         name: My Script
@@ -279,7 +280,7 @@ configs:
   Staging Release: release
   Production Release: release
 targets
-  - name: MyApp
+  MyApp:
     scheme:
       testTargets:
         - MyUnitTests
@@ -287,5 +288,6 @@ targets
         - Test
         - Staging
         - Production
-  - name: MyUnitTests
+  MyUnitTests:
+    sources: Tests
 ```

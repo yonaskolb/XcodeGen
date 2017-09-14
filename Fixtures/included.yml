@@ -4,6 +4,6 @@ settingGroups:
     MY_SETTING1: VALUE1
     MY_SETTING2: VALUE2
 targets:
-  - name: IncludedTarget
+  IncludedTarget:
     type: application
     platform: iOS

@@ -23,11 +23,11 @@ func specLoadingTests() {
 
     func expectTargetError(_ target: [String: Any], _ expectedError: ProjectSpecError) throws {
         try expectError(expectedError) {
-            _ = try Target(jsonDictionary: target)
+            _ = try Target(name: "test", jsonDictionary: target)
         }
     }
 
-    let validTarget: [String: Any] = ["name": "test", "type": "application", "platform": "iOS"]
+    let validTarget: [String: Any] = ["type": "application", "platform": "iOS"]
     let invalid = "invalid"
 
     describe("Spec Loader") {
@@ -74,7 +74,7 @@ func specLoadingTests() {
                 ["carthage": "name"],
                 ["framework": "path"],
             ]
-            let target = try Target(jsonDictionary: targetDictionary)
+            let target = try Target(name: "test", jsonDictionary: targetDictionary)
             try expect(target.dependencies.count) == 3
             try expect(target.dependencies[0]) == Dependency(type: .target, reference: "name", embed: false)
             try expect(target.dependencies[1]) == Dependency(type: .carthage, reference: "name")
@@ -83,14 +83,13 @@ func specLoadingTests() {
 
         $0.it("parsed cross platform targets") {
             let targetDictionary: [String: Any] = [
-                "name": "Framework",
                 "platform": ["iOS", "tvOS"],
                 "type": "framework",
                 "sources": ["Framework", "Framework $platform"],
                 "settings": ["SETTING": "value_$platform"],
             ]
 
-            let spec = try getProjectSpec(["targets": [targetDictionary]])
+            let spec = try getProjectSpec(["targets": ["Framework": targetDictionary]])
             var target_iOS = Target(name: "Framework_iOS", type: .framework, platform: .iOS)
             var target_tvOS = Target(name: "Framework_tvOS", type: .framework, platform: .tvOS)
 
@@ -167,7 +166,7 @@ func specLoadingTests() {
                 BuildScript(script: .script("shell script\ndo thing"), name: "myscript", inputFiles: ["file", "file2"], outputFiles: ["file", "file2"], shell: "bin/customshell", runOnlyWhenInstalling: true),
             ]
 
-            let parsedTarget = try Target(jsonDictionary: target)
+            let parsedTarget = try Target(name: "test", jsonDictionary: target)
             try expect(parsedTarget.prebuildScripts) == expectedScripts
             try expect(parsedTarget.postbuildScripts) == expectedScripts
         }

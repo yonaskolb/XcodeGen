@@ -38,7 +38,7 @@ Given a very simple project spec file like this:
 ```yaml
 name: My Project
 targets:
-  - name: MyApp
+  MyApp:
     type: application
     platform: iOS
     sources: MyApp
@@ -46,7 +46,7 @@ targets:
       PRODUCT_BUNDLE_IDENTIFIER: com.myapp
     dependencies:
       - target: MyFramework
-  - name: MyFramework
+  MyFramework:
     type: framework
     platform: iOS
     sources: MyFramework

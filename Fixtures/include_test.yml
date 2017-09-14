@@ -7,6 +7,6 @@ settingGroups:
   new:
     MY_SETTING: VALUE
 targets:
-  - name: NewTarget
+  NewTarget:
     type: application
     platform: iOS

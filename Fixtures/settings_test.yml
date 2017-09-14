@@ -68,7 +68,7 @@ configs:
   config1: debug
   config2: release
 targets:
-  - name: Target
+  Target:
     type: application
     platform: iOS
     settings:
