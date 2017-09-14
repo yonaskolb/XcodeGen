@@ -10,17 +10,6 @@ import Foundation
 import xcodeproj
 import PathKit
 
-extension Array where Element: Referenceable {
-
-    public var referenceList: [String] {
-        return map { $0.reference }
-    }
-
-    public var referenceSet: Set<String> {
-        return Set(referenceList)
-    }
-}
-
 extension Dictionary where Key == String, Value: Any {
 
     public func merged(_ dictionary: [Key: Value]) -> [Key: Value] {
