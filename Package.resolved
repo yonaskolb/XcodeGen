@@ -12,7 +12,7 @@
       },
       {
         "package": "Commander",
-        "repositoryURL": "https://github.com/kylef/Commander",
+        "repositoryURL": "https://github.com/kylef/Commander.git",
         "state": {
           "branch": null,
           "revision": "4c320a3507d621d27f89514eb576664becfee643",
@@ -78,8 +78,8 @@
         "repositoryURL": "https://github.com/swift-xcode/xcodeproj.git",
         "state": {
           "branch": null,
-          "revision": "a0d05f36203a50daa1a8e736f82bfa3124e98c40",
-          "version": "0.1.1"
+          "revision": "8686e141c85912cd4ce7b686cbed23d498430e09",
+          "version": "0.1.2"
         }
       }
     ]

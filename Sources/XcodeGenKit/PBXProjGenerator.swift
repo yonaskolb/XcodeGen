@@ -57,27 +57,7 @@ public class PBXProjGenerator {
     }
 
     func addObject(_ object: PBXObject) {
-        switch object {
-        case let object as PBXBuildFile: project.buildFiles.append(object)
-        case let object as PBXAggregateTarget: project.aggregateTargets.append(object)
-        case let object as PBXContainerItemProxy: project.containerItemProxies.append(object)
-        case let object as PBXCopyFilesBuildPhase: project.copyFilesBuildPhases.append(object)
-        case let object as PBXGroup: project.groups.append(object)
-        case let object as PBXFileElement: project.fileElements.append(object)
-        case let object as XCConfigurationList: project.configurationLists.append(object)
-        case let object as XCBuildConfiguration: project.buildConfigurations.append(object)
-        case let object as PBXVariantGroup: project.variantGroups.append(object)
-        case let object as PBXTargetDependency: project.targetDependencies.append(object)
-        case let object as PBXSourcesBuildPhase: project.sourcesBuildPhases.append(object)
-        case let object as PBXShellScriptBuildPhase: project.shellScriptBuildPhases.append(object)
-        case let object as PBXResourcesBuildPhase: project.resourcesBuildPhases.append(object)
-        case let object as PBXFrameworksBuildPhase: project.frameworksBuildPhases.append(object)
-        case let object as PBXHeadersBuildPhase: project.headersBuildPhases.append(object)
-        case let object as PBXNativeTarget: project.nativeTargets.append(object)
-        case let object as PBXFileReference: project.fileReferences.append(object)
-        case let object as PBXProject: project.projects.append(object)
-        default: break
-        }
+        project.addObject(object)
     }
 
     public func generate() throws -> PBXProj {
@@ -89,7 +69,7 @@ public class PBXProjGenerator {
             return XCBuildConfiguration(reference: generateUUID(XCBuildConfiguration.self, config.name), name: config.name, baseConfigurationReference: nil, buildSettings: buildSettings)
         }
 
-        let buildConfigList = XCConfigurationList(reference: generateUUID(XCConfigurationList.self, spec.name), buildConfigurations: buildConfigs.referenceSet, defaultConfigurationName: buildConfigs.first?.name ?? "", defaultConfigurationIsVisible: 0)
+        let buildConfigList = XCConfigurationList(reference: generateUUID(XCConfigurationList.self, spec.name), buildConfigurations: buildConfigs.references, defaultConfigurationName: buildConfigs.first?.name ?? "", defaultConfigurationIsVisible: 0)
 
         buildConfigs.forEach(addObject)
         addObject(buildConfigList)
@@ -119,7 +99,7 @@ public class PBXProjGenerator {
                 addObject(platformGroup)
                 platforms.append(platformGroup)
             }
-            let carthageGroup = PBXGroup(reference: generateUUID(PBXGroup.self, "Carthage"), children: platforms.referenceList, sourceTree: .group, name: "Carthage", path: carthageBuildPath)
+            let carthageGroup = PBXGroup(reference: generateUUID(PBXGroup.self, "Carthage"), children: platforms.references, sourceTree: .group, name: "Carthage", path: carthageBuildPath)
             addObject(carthageGroup)
             frameworkFiles.append(carthageGroup.reference)
         }
@@ -130,7 +110,7 @@ public class PBXProjGenerator {
             topLevelGroups.append(group)
         }
 
-        let mainGroup = PBXGroup(reference: generateUUID(PBXGroup.self, "Project"), children: topLevelGroups.referenceList, sourceTree: .group)
+        let mainGroup = PBXGroup(reference: generateUUID(PBXGroup.self, "Project"), children: topLevelGroups.references, sourceTree: .group)
         addObject(mainGroup)
 
         let knownRegions: [String] = ["en", "Base"]
@@ -141,7 +121,7 @@ public class PBXProjGenerator {
                               mainGroup: mainGroup.reference,
                               developmentRegion: "English",
                               knownRegions: knownRegions,
-                              targets: targets.referenceList,
+                              targets: targets.references,
                               attributes: projectAttributes)
         project.projects.append(root)
 
@@ -215,7 +195,7 @@ public class PBXProjGenerator {
             return XCBuildConfiguration(reference: generateUUID(XCBuildConfiguration.self, config.name + target.name), name: config.name, baseConfigurationReference: baseConfigurationReference, buildSettings: buildSettings)
         }
         configs.forEach(addObject)
-        let buildConfigList = XCConfigurationList(reference: generateUUID(XCConfigurationList.self, target.name), buildConfigurations: configs.referenceSet, defaultConfigurationName: "")
+        let buildConfigList = XCConfigurationList(reference: generateUUID(XCConfigurationList.self, target.name), buildConfigurations: configs.references, defaultConfigurationName: "")
         addObject(buildConfigList)
 
         var dependancies: [String] = []
@@ -295,9 +275,9 @@ public class PBXProjGenerator {
         let fileReference = targetFileReferences[target.name]!
         var buildPhases: [String] = []
 
-        func getBuildFilesForPhase(_ buildPhase: BuildPhase) -> Set<String> {
+        func getBuildFilesForPhase(_ buildPhase: BuildPhase) -> [String] {
             let files = sourceFilePaths.filter { getBuildPhaseForPath($0) == buildPhase }.map(generateSourceFile)
-            return Set(files.map { $0.buildFile.reference })
+            return files.map { $0.buildFile.reference }
         }
 
         func getBuildScript(buildScript: BuildScript) throws -> PBXShellScriptBuildPhase {
@@ -314,10 +294,12 @@ public class PBXProjGenerator {
                 reference: generateUUID(PBXShellScriptBuildPhase.self, String(describing: buildScript.name) + shellScript + target.name),
                 files: [],
                 name: buildScript.name ?? "Run Script",
-                inputPaths: Set(buildScript.inputFiles),
-                outputPaths: Set(buildScript.outputFiles),
-                shellPath: buildScript.shell ?? "/bin/sh",
+                inputPaths: buildScript.inputFiles,
+                outputPaths: buildScript.outputFiles,
                 shellScript: shellScript)
+            if let shell = buildScript.shell {
+                shellScriptPhase.shellPath = shell
+            }
             shellScriptPhase.runOnlyForDeploymentPostprocessing = buildScript.runOnlyWhenInstalling ? 1 : 0
             addObject(shellScriptPhase)
             buildPhases.append(shellScriptPhase.reference)
@@ -342,7 +324,7 @@ public class PBXProjGenerator {
 
             let frameworkBuildPhase = PBXFrameworksBuildPhase(
                 reference: generateUUID(PBXFrameworksBuildPhase.self, target.name),
-                files: Set(targetFrameworkBuildFiles),
+                files: targetFrameworkBuildFiles,
                 runOnlyForDeploymentPostprocessing: 0)
 
             addObject(frameworkBuildPhase)
@@ -355,7 +337,7 @@ public class PBXProjGenerator {
                 reference: generateUUID(PBXCopyFilesBuildPhase.self, "embed app extensions" + target.name),
                 dstPath: "",
                 dstSubfolderSpec: .plugins,
-                files: Set(extensions))
+                files: extensions)
 
             addObject(copyFilesPhase)
             buildPhases.append(copyFilesPhase.reference)
@@ -367,7 +349,7 @@ public class PBXProjGenerator {
                 reference: generateUUID(PBXCopyFilesBuildPhase.self, "embed frameworks" + target.name),
                 dstPath: "",
                 dstSubfolderSpec: .frameworks,
-                files: Set(copyFiles))
+                files: copyFiles)
 
             addObject(copyFilesPhase)
             buildPhases.append(copyFilesPhase.reference)
@@ -377,7 +359,7 @@ public class PBXProjGenerator {
 
             if target.type.isApp {
                 let inputPaths = carthageFrameworks.map { "$(SRCROOT)/\(carthageBuildPath)/\(target.platform)/\($0)\($0.contains(".") ? "" : ".framework")" }
-                let carthageScript = PBXShellScriptBuildPhase(reference: generateUUID(PBXShellScriptBuildPhase.self, "Carthage" + target.name), files: [], name: "Carthage", inputPaths: Set(inputPaths), outputPaths: [], shellPath: "/bin/sh", shellScript: "/usr/local/bin/carthage copy-frameworks\n")
+                let carthageScript = PBXShellScriptBuildPhase(reference: generateUUID(PBXShellScriptBuildPhase.self, "Carthage" + target.name), files: [], name: "Carthage", inputPaths: inputPaths, outputPaths: [], shellPath: "/bin/sh", shellScript: "/usr/local/bin/carthage copy-frameworks\n")
                 addObject(carthageScript)
                 buildPhases.append(carthageScript.reference)
             }
