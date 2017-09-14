@@ -29,7 +29,7 @@ public struct Settings: Equatable, JSONObjectConvertible, CustomStringConvertibl
         groups = []
     }
 
-    static let empty: Settings = Settings(dictionary: [:])
+    public static let empty: Settings = Settings(dictionary: [:])
 
     public init(jsonDictionary: JSONDictionary) throws {
         if jsonDictionary["configs"] != nil || jsonDictionary["groups"] != nil || jsonDictionary["base"] != nil {

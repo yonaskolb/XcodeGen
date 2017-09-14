@@ -1,0 +1,88 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "AEXML",
+        "repositoryURL": "https://github.com/tadija/AEXML.git",
+        "state": {
+          "branch": null,
+          "revision": "2981eccd86a69ea12a7f71a4c6b4d5177c2972a9",
+          "version": "4.1.0"
+        }
+      },
+      {
+        "package": "Commander",
+        "repositoryURL": "https://github.com/kylef/Commander",
+        "state": {
+          "branch": null,
+          "revision": "4c320a3507d621d27f89514eb576664becfee643",
+          "version": "0.6.1"
+        }
+      },
+      {
+        "package": "JSONUtilities",
+        "repositoryURL": "https://github.com/yonaskolb/JSONUtilities",
+        "state": {
+          "branch": null,
+          "revision": "6403a5455f30add5413095d1b5a70e8a5eb83ba0",
+          "version": "3.3.8"
+        }
+      },
+      {
+        "package": "PathKit",
+        "repositoryURL": "https://github.com/kylef/PathKit.git",
+        "state": {
+          "branch": null,
+          "revision": "891a3fec2699fc43aed18b7649950677c0152a22",
+          "version": "0.8.0"
+        }
+      },
+      {
+        "package": "Rainbow",
+        "repositoryURL": "https://github.com/onevcat/Rainbow.git",
+        "state": {
+          "branch": null,
+          "revision": "df197437d8acefb2ae01ab073be1d531fe7781ef",
+          "version": "2.1.0"
+        }
+      },
+      {
+        "package": "Spectre",
+        "repositoryURL": "https://github.com/kylef/Spectre.git",
+        "state": {
+          "branch": null,
+          "revision": "e46b75cf03ad5e563b4b0a5068d3d6f04d77d80b",
+          "version": "0.7.2"
+        }
+      },
+      {
+        "package": "Unbox",
+        "repositoryURL": "https://github.com/JohnSundell/Unbox",
+        "state": {
+          "branch": null,
+          "revision": "17ad6aa1cc2f1efa27a0bbbdb66f79796708aa95",
+          "version": "2.5.0"
+        }
+      },
+      {
+        "package": "Yams",
+        "repositoryURL": "https://github.com/jpsim/Yams",
+        "state": {
+          "branch": null,
+          "revision": "5ac9248b378b5e12201c255ba74caf990d1e0f4b",
+          "version": "0.3.6"
+        }
+      },
+      {
+        "package": "xcodeproj",
+        "repositoryURL": "https://github.com/swift-xcode/xcodeproj.git",
+        "state": {
+          "branch": null,
+          "revision": "a0d05f36203a50daa1a8e736f82bfa3124e98c40",
+          "version": "0.1.1"
+        }
+      }
+    ]
+  },
+  "version": 1
+}

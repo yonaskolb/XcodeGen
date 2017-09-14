@@ -23,7 +23,7 @@ func generate(spec: String, project: String) {
     do {
         spec = try SpecLoader.loadSpec(path: specPath)
         print("Loaded spec: \(spec.targets.count) targets, \(spec.schemes.count) schemes, \(spec.configs.count) configs")
-    } catch let error as DecodingError {
+    } catch let error as JSONUtilities.DecodingError {
         print("Parsing spec failed: \(error.description)")
         return
     } catch {
