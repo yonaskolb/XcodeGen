@@ -8,12 +8,9 @@ class Xcodegen < Formula
   depends_on :xcode
 
   def install
-    yaml_lib_path = "#{buildpath}/.build/release/libCYaml.dylib"
     xcodegen_path = "#{buildpath}/.build/release/XcodeGen"
     ohai "Building XcodeGen"
-    system("swift build -c release -Xlinker -rpath -Xlinker @executable_path -Xswiftc -static-stdlib")
-    system("install_name_tool -change #{yaml_lib_path} #{frameworks}/libCYaml.dylib #{xcodegen_path}")
-    frameworks.install yaml_lib_path
+    system("swift build -c release -Xswiftc -static-stdlib")
     bin.install xcodegen_path
     pkgshare.install "SettingPresets"
   end
@@ -22,7 +19,7 @@ class Xcodegen < Formula
     (testpath/"xcodegen.yml").write <<-EOS.undent
       name: GeneratedProject
       targets:
-        - name: TestProject
+        TestProject:
           type: application
           platform: iOS
           sources: TestProject
