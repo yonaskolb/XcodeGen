@@ -83,7 +83,7 @@
 			isa = PBXGroup;
 			children = (
 				FR7078510801 /* FrameworkFile.swift */,
-				FR1345298502 /* Info.plist */,
+				FR1345298501 /* Info.plist */,
 				FR7740960501 /* MyFramework.h */,
 			);
 			name = MyFramework;
@@ -95,7 +95,7 @@
 			children = (
 				FR1332263601 /* AppDelegate.swift */,
 				FR5980633301 /* Assets.xcassets */,
-				FR1345298501 /* Info.plist */,
+				FR1345298502 /* Info.plist */,
 				FR6218091901 /* ViewController.swift */,
 				VG6405436301 /* LaunchScreen.storyboard */,
 				VG1473702401 /* Main.storyboard */,
@@ -107,8 +107,8 @@
 		G84487712001 = {
 			isa = PBXGroup;
 			children = (
-				G65232631501 /* TestProject */,
 				G29934978701 /* MyFramework */,
+				G65232631501 /* TestProject */,
 				G26536595301 /* TestProjectTests */,
 				G86202385201 /* Products */,
 			);
@@ -223,8 +223,8 @@
 			);
 			mainGroup = G84487712001;
 			targets = (
-				NT6523263101 /* TestProject */,
 				NT2993497801 /* MyFramework */,
+				NT6523263101 /* TestProject */,
 				NT2653659501 /* TestProjectTests */,
 			);
 		};

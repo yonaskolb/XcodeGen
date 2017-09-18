@@ -1,6 +1,6 @@
 name: GeneratedProject
 targets:
-  - name: TestProject
+  TestProject:
     type: application
     platform: iOS
     sources: TestProject
@@ -23,7 +23,7 @@ targets:
           else
             echo "warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint"
           fi
-  - name: MyFramework
+  MyFramework:
     type: framework
     platform: iOS
     sources: MyFramework
@@ -32,7 +32,7 @@ targets:
     postbuildScripts:
       - name: Swiftlint
         path: scripts/swiftlint.sh
-  - name: TestProjectTests
+  TestProjectTests:
     type: bundle.unit-test
     platform: iOS
     sources: TestProjectTests

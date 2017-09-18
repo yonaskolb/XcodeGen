@@ -48,22 +48,20 @@ public struct Target {
 
 extension Target {
 
-    static func decodeTargets(jsonDictionary: JSONDictionary) throws -> [Target] {
-        guard jsonDictionary["targets"] != nil else {
-            return []
+    static func generateCrossPlaformTargets(jsonDictionary: JSONDictionary) throws -> JSONDictionary {
+        guard let targetsDictionary: [String: JSONDictionary] = jsonDictionary["targets"] as? [String: JSONDictionary] else {
+            return jsonDictionary
         }
-        let array: [JSONDictionary] = try jsonDictionary.json(atKeyPath: "targets", invalidItemBehaviour: .fail)
-
-        var targets: [JSONDictionary] = []
 
         let platformReplacement = "$platform"
+        var crossPlatformTargets: [String: JSONDictionary] = [:]
 
-        for json in array {
+        for (targetName, target) in targetsDictionary {
 
-            if let platforms = json["platform"] as? [String] {
+            if let platforms = target["platform"] as? [String] {
 
                 for platform in platforms {
-                    var platformTarget = json
+                    var platformTarget = target
 
                     func replacePlatform(_ dictionary: JSONDictionary) -> JSONDictionary {
                         var replaced = dictionary
@@ -88,31 +86,30 @@ extension Target {
                     platformTarget["platform"] = platform
                     let platformSuffix = platformTarget["platformSuffix"] as? String ?? "_\(platform)"
                     let platformPrefix = platformTarget["platformPrefix"] as? String ?? ""
-                    let name = platformTarget["name"] as? String ?? ""
-                    platformTarget["name"] = platformPrefix + name + platformSuffix
+                    let newTargetName = platformPrefix + targetName + platformSuffix
 
                     var settings = platformTarget["settings"] as? JSONDictionary ?? [:]
                     if settings["configs"] != nil || settings["groups"] != nil || settings["base"] != nil {
                         var base = settings["base"] as? JSONDictionary ?? [:]
                         if base["PRODUCT_NAME"] == nil {
-                            base["PRODUCT_NAME"] = name
+                            base["PRODUCT_NAME"] = targetName
                         }
                         settings["base"] = base
                     } else {
                         if settings["PRODUCT_NAME"] == nil {
-                            settings["PRODUCT_NAME"] = name
+                            settings["PRODUCT_NAME"] = targetName
                         }
                     }
                     platformTarget["settings"] = settings
-
-                    targets.append(platformTarget)
+                    crossPlatformTargets[newTargetName] = platformTarget
                 }
             } else {
-                targets.append(json)
+                crossPlatformTargets[targetName] = target
             }
         }
-
-        return try targets.map { try Target(jsonDictionary: $0) }
+        var merged = jsonDictionary
+        merged["targets"] = crossPlatformTargets
+        return merged
     }
 }
 
@@ -159,10 +156,10 @@ extension TargetScheme: JSONObjectConvertible {
     }
 }
 
-extension Target: JSONObjectConvertible {
+extension Target: NamedJSONDictionaryConvertible {
 
-    public init(jsonDictionary: JSONDictionary) throws {
-        name = try jsonDictionary.json(atKeyPath: "name")
+    public init(name: String, jsonDictionary: JSONDictionary) throws {
+        self.name = jsonDictionary.json(atKeyPath: "name") ?? name
         let typeString: String = try jsonDictionary.json(atKeyPath: "type")
         if let type = PBXProductType(string: typeString) {
             self.type = type

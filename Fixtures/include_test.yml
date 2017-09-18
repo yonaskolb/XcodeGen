@@ -7,6 +7,10 @@ settingGroups:
   new:
     MY_SETTING: VALUE
 targets:
-  - name: NewTarget
+  NewTarget:
     type: application
     platform: iOS
+  IncludedTarget:
+    name: IncludedTargetNew
+    platform: tvOS
+    sources: Target
