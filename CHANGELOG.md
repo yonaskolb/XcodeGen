@@ -1,5 +1,22 @@
 # Change Log
 
+## 1.0.0
+
+### Added
+- Swift 4 support [PR#52](https://github.com/yonaskolb/XcodeGen/pull/52)
+- Support for C and C++ files [PR#48](https://github.com/yonaskolb/XcodeGen/pull/48) by @antoniocasero
+- Xcode 9 default settings
+
+### Fixed
+- fixed empty string in YAML not being parsed properly [PR#50](https://github.com/yonaskolb/XcodeGen/pull/50) by @antoniocasero
+
+### Changed
+- updated to xcodeproj 0.1.2 [PR#56](https://github.com/yonaskolb/XcodeGen/pull/56)
+- **BREAKING**: changed target definitions from list to map [PR#54](https://github.com/yonaskolb/XcodeGen/pull/54) See [Project Spec](docs/ProjectSpec.md) 
+
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/0.6.1...1.0.0)
+
 ## 0.6.1
 
 ### Added
