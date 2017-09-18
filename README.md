@@ -64,7 +64,7 @@ $ cd XcodeGen
 $ make
 ```
 
-### Homebrew
+### Homebrew (Having issues with Xcode 9)
 
 ```
 $ brew tap yonaskolb/XcodeGen https://github.com/yonaskolb/XcodeGen.git
