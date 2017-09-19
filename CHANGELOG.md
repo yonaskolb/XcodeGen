@@ -1,5 +1,13 @@
 # Change Log
 
+## 1.0.1
+
+### Fixed
+- fixed incorrect default build script shell path
+- fixed install scripts 
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/1.0.0...1.0.1)
+
 ## 1.0.0
 
 ### Added
