@@ -64,11 +64,11 @@ $ cd XcodeGen
 $ make
 ```
 
-### Homebrew (Having issues with Xcode 9)
+### Homebrew
 
 ```
 $ brew tap yonaskolb/XcodeGen https://github.com/yonaskolb/XcodeGen.git
-$ brew install XcodeGen
+$ brew install XcodeGen --no-sandbox
 ```
 
 ### Swift Package Manager
