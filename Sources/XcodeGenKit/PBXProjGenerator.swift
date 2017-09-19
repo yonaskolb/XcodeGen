@@ -18,7 +18,7 @@ public class PBXProjGenerator {
 
     let spec: ProjectSpec
     let basePath: Path
-    let currentXcodeVersion = "0830"
+    let currentXcodeVersion: String
 
     var fileReferencesByPath: [Path: String] = [:]
     var groupsByPath: [Path: PBXGroup] = [:]
@@ -37,7 +37,8 @@ public class PBXProjGenerator {
         return spec.options.carthageBuildPath ?? "Carthage/Build"
     }
 
-    public init(spec: ProjectSpec, path: Path) {
+    public init(spec: ProjectSpec, path: Path, currentXcodeVersion: String) {
+        self.currentXcodeVersion = currentXcodeVersion
         self.spec = spec
         basePath = path
     }
@@ -114,7 +115,7 @@ public class PBXProjGenerator {
         addObject(mainGroup)
 
         let knownRegions: [String] = ["en", "Base"]
-        let projectAttributes: [String: Any] = spec.attributes.isEmpty ? ["LastUpgradeCheck": currentXcodeVersion] : spec.attributes
+        let projectAttributes: [String: Any] = ["LastUpgradeCheck": currentXcodeVersion].merged(spec.attributes)
         let root = PBXProject(reference: project.rootObject,
                               buildConfigurationList: buildConfigList.reference,
                               compatibilityVersion: "Xcode 3.2",
