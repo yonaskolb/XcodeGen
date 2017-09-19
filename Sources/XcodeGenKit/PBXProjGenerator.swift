@@ -296,10 +296,8 @@ public class PBXProjGenerator {
                 name: buildScript.name ?? "Run Script",
                 inputPaths: buildScript.inputFiles,
                 outputPaths: buildScript.outputFiles,
+                shellPath: buildScript.shell ?? "/bin/sh",
                 shellScript: shellScript)
-            if let shell = buildScript.shell {
-                shellScriptPhase.shellPath = shell
-            }
             shellScriptPhase.runOnlyForDeploymentPostprocessing = buildScript.runOnlyWhenInstalling ? 1 : 0
             addObject(shellScriptPhase)
             buildPhases.append(shellScriptPhase.reference)
