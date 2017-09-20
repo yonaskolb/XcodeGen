@@ -1,5 +1,13 @@
 # Change Log
 
+## 1.1.0
+
+### Changed
+- set project version to Xcode 9 - `LastUpgradeVersion` attribute to `0900`
+- set default Swift version to 4.0 - `SWIFT_VERSION` build setting to `4.0`
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/1.0.1...1.1.0)
+
 ## 1.0.1
 
 ### Fixed
