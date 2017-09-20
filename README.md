@@ -78,8 +78,7 @@ $ brew install XcodeGen --no-sandbox
 ```
 $ git clone https://github.com/yonaskolb/XcodeGen.git
 $ cd XcodeGen
-$ swift build -c release
-$ .build/release/XcodeGen
+$ swift run
 ```
 
 **Use as dependency**
