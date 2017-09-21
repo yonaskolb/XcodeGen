@@ -173,7 +173,14 @@ extension Target: NamedJSONDictionaryConvertible {
             throw ProjectSpecError.unknownTargetPlatform(platformString)
         }
         settings = jsonDictionary.json(atKeyPath: "settings") ?? .empty
-        configurationFiles = jsonDictionary.json(atKeyPath: "configurationFiles") ?? [:]
+        var configurationFiles: [String: String] = jsonDictionary.json(atKeyPath: "configurationFiles") ?? [:]
+        if configurationFiles.isEmpty {
+            if let configFiles: [String: String] = jsonDictionary.json(atKeyPath: "configFiles") {
+                configurationFiles = configFiles
+                print("[warning] `configFiles` is deprecated. Use `configurationFiles` instead.")
+            }
+        }
+        self.configurationFiles = configurationFiles
         if let source: String = jsonDictionary.json(atKeyPath: "sources") {
             sources = [source]
         } else {

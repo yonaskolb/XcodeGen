@@ -78,7 +78,13 @@ extension ProjectSpec: JSONObjectConvertible {
         name = try jsonDictionary.json(atKeyPath: "name")
         settings = jsonDictionary.json(atKeyPath: "settings") ?? .empty
         settingGroups = jsonDictionary.json(atKeyPath: "settingGroups") ?? jsonDictionary.json(atKeyPath: "settingPresets") ?? [:]
-        let configurations: [String: String] = jsonDictionary.json(atKeyPath: "configurations") ?? [:]
+        var configurations: [String: String] = jsonDictionary.json(atKeyPath: "configurations") ?? [:]
+        if configurations.isEmpty {
+            if let configs: [String: String] = jsonDictionary.json(atKeyPath: "configs") {
+                configurations = configs
+                print("[warning] `configs` is deprecated. Use `configurations` instead.")
+            }
+        }
         self.configurations = configurations.map { Configuration(name: $0, type: ConfigurationType(rawValue: $1)) }
         targets = try jsonDictionary.json(atKeyPath: "targets").sorted { $0.name < $1.name }
         schemes = try jsonDictionary.json(atKeyPath: "schemes")
