@@ -26,37 +26,37 @@ func projectGeneratorTests() {
 
         let targets = [application, framework]
 
-        $0.describe("Config") {
+        $0.describe("Configuration") {
 
-            $0.it("generates config defaults") {
+            $0.it("generates configuration defaults") {
                 let spec = ProjectSpec(name: "test")
                 let project = try getProject(spec)
-                let configs = project.pbxproj.buildConfigurations
-                try expect(configs.count) == 2
-                try expect(configs).contains(name: "Debug")
-                try expect(configs).contains(name: "Release")
+                let configurations = project.pbxproj.buildConfigurations
+                try expect(configurations.count) == 2
+                try expect(configurations).contains(name: "Debug")
+                try expect(configurations).contains(name: "Release")
             }
 
-            $0.it("generates configs") {
-                let spec = ProjectSpec(name: "test", configs: [Config(name: "config1"), Config(name: "config2")])
+            $0.it("generates configurations") {
+                let spec = ProjectSpec(name: "test", configurations: [Configuration(name: "configuration1"), Configuration(name: "configuration2")])
                 let project = try getProject(spec)
-                let configs = project.pbxproj.buildConfigurations
-                try expect(configs.count) == 2
-                try expect(configs).contains(name: "config1")
-                try expect(configs).contains(name: "config2")
+                let configurations = project.pbxproj.buildConfigurations
+                try expect(configurations.count) == 2
+                try expect(configurations).contains(name: "configuration1")
+                try expect(configurations).contains(name: "configuration2")
             }
 
             $0.it("merges settings") {
                 let spec = try ProjectSpec(path: fixturePath + "settings_test.yml")
-                guard let config = spec.getConfig("config1") else { throw failure("Couldn't find config1") }
-                let debugProjectSettings = spec.getProjectBuildSettings(config: config)
+                guard let configuration = spec.getConfiguration("configuration1") else { throw failure("Couldn't find configuration1") }
+                let debugProjectSettings = spec.getProjectBuildSettings(configuration: configuration)
 
                 guard let target = spec.getTarget("Target") else { throw failure("Couldn't find Target") }
-                let targetDebugSettings = spec.getTargetBuildSettings(target: target, config: config)
+                let targetDebugSettings = spec.getTargetBuildSettings(target: target, configuration: configuration)
 
                 var buildSettings = BuildSettings()
                 buildSettings += SettingsPresetFile.base.getBuildSettings()
-                buildSettings += SettingsPresetFile.config(.debug).getBuildSettings()
+                buildSettings += SettingsPresetFile.configuration(.debug).getBuildSettings()
 
                 buildSettings += [
                     "SETTING": "value",
@@ -156,18 +156,18 @@ func projectGeneratorTests() {
                 try expect(xcscheme.archiveAction?.buildConfiguration) == "Release"
             }
 
-            $0.it("generates target schemes from config variant") {
-                let configVariants = ["Test", "Production"]
+            $0.it("generates target schemes from configuration variant") {
+                let configurationVariants = ["Test", "Production"]
                 var target = application
-                target.scheme = TargetScheme(configVariants: configVariants)
-                let configs: [Config] = [
-                    Config(name: "Test Debug", type: .debug),
-                    Config(name: "Production Debug", type: .debug),
-                    Config(name: "Test Release", type: .release),
-                    Config(name: "Production Release", type: .release),
+                target.scheme = TargetScheme(configurationVariants: configurationVariants)
+                let configurations: [Configuration] = [
+                    Configuration(name: "Test Debug", type: .debug),
+                    Configuration(name: "Production Debug", type: .debug),
+                    Configuration(name: "Test Release", type: .release),
+                    Configuration(name: "Production Release", type: .release),
                 ]
 
-                let spec = ProjectSpec(name: "test", configs: configs, targets: [target, framework])
+                let spec = ProjectSpec(name: "test", configurations: configurations, targets: [target, framework])
                 let project = try getProject(spec)
 
                 try expect(project.sharedData?.schemes.count) == 2

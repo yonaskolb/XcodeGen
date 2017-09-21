@@ -9,14 +9,14 @@ Required properties are marked 🔵 and optional properties with ⚪️.
 
 - [Project](#project)
 	- [Options](#options)
-	- [Configs](#configs)
+	- [Configurations](#configurations)
 	- [Setting Groups](#setting-groups)
 - [Settings](#settings)
 - [Target](#target)
 	- [Product Type](#product-type)
 	- [Platform](#platform)
 	- [Sources](#sources)
-	- [Config Files](#config-files)
+	- [Configuration Files](#configuration-files)
 	- [Settings](#settings)
 	- [Build Script](#build-script)
 	- [Dependency](#dependency)
@@ -28,23 +28,23 @@ Required properties are marked 🔵 and optional properties with ⚪️.
 - ⚪️ **include**: `[String]` - The paths to other specs. They will be merged in order and then the current spec will be merged on top. Target names can be changed by adding a `name` property
 - ⚪️ **options**: [Options](#options) - Various options to override default behaviour
 - ⚪️ **attributes**: `map` - The PBXProject attributes. This is for advanced use. Defaults to ``{"LastUpgradeCheck": "0900"}``
-- ⚪️ **configs**: [Configs](#configs) - Project build configurations. Defaults to `Debug` and `Release` configs
-- ⚪️ **settings**: [Settings](#settings) - Project specific settings. Default base and config type settings will be applied first before any settings defined here
+- ⚪️ **configurations**: [Configurations](#configurations) - Project build configurations. Defaults to `Debug` and `Release` configurations
+- ⚪️ **settings**: [Settings](#settings) - Project specific settings. Default base and configuration type settings will be applied first before any settings defined here
 - ⚪️ **settingGroups**: [Setting Groups](#setting-groups) - Setting groups mapped by name
 - ⚪️ **targets**: [Target](#target) - The list of targets in the project mapped by name
 
 ### Options
 - ⚪️ **carthageBuildPath**: `String` - The path to the carthage build directory. Defaults to `Carthage/Build`. This is used when specifying target carthage dependencies
 
-### Configs
-Each config maps to a build type of either `debug` or `release` which will then apply default build settings. Any value other than `debug` or `release` (for example "none"), will mean no default build settings will be applied.
+### Configurations
+Each configuration maps to a build type of either `debug` or `release` which will then apply default build settings. Any value other than `debug` or `release` (for example "none"), will mean no default build settings will be applied.
 
 ```yaml
-configs:
+configurations:
   Debug: debug
   Release: release
 ```
-If no configs are specified, default `Debug` and `Release` configs will be created automatically.
+If no configurations are specified, default `Debug` and `Release` configurations will be created automatically.
 
 
 ### Setting Groups
@@ -60,7 +60,7 @@ settingGroups:
     groups:
       - preset
   preset3:
-     configs:
+     configurations:
         debug:
         	groups:
             - preset
@@ -70,7 +70,7 @@ settingGroups:
 Settings can either be a simple map of build settings `[String: String]`, or can be more advanced with the following properties:
 
 - ⚪️ **groups**: `[String]` - List of setting groups to include and merge
-- ⚪️ **configs**: [String: [Settings](#settings)] - Mapping of config name to a settings spec. These settings will only be applied for that config
+- ⚪️ **configurations**: [String: [Settings](#settings)] - Mapping of configuration name to a settings spec. These settings will only be applied for that config
 - ⚪️ **base**: `[String: String]` - Used to specify default settings that apply to any config
 
 ```yaml
@@ -83,28 +83,28 @@ settings:
 settings:
   base:
     BUILD_SETTING_1: value 1
-  configs:
-    my_config:
+  configurations:
+    my_configuration:
       BUILD_SETTING_2: value 2
   groups:
     - my_settings
 ```
 
-Settings are merged in the following order: groups, base, configs.
+Settings are merged in the following order: groups, base, configurations.
 
 ## Target
 
 - 🔵 **type**: [Product Type](#product-type) - Product type of the target
 - 🔵 **platform**: [Platform](#platform) - Platform of the target
 - ⚪️ **sources**: [Sources](#sources) - Source directories of the target
-- ⚪️ **configFiles**: [Config Files](#config-files) - `.xcconfig` files per config
+- ⚪️ **configurationFiles**: [Configuration Files](#configuration-files) - `.xcconfig` files per config
 - ⚪️ **settings**: [Settings](#settings) - Target specific build settings. Default platform and product type settings will be applied first before any custom settings defined here. Other context dependant settings will be set automatically as well:
 	- `INFOPLIST_FILE`: If it doesn't exist your sources will be searched for `Info.plist` files and the first one found will be used for this setting
 	- `FRAMEWORK_SEARCH_PATHS`: If carthage dependencies are used, the platform build path will be added to this setting
 - ⚪️ **prebuildScripts**: [[Build Script](#build-script)] - Build scripts that run *before* any other build phases
 - ⚪️ **postbuildScripts**: [[Build Script](#build-script)] - Build scripts that run *after* any other build phases
 - ⚪️ **dependencies**: [[Dependency](#dependency)] - Dependencies for the target
-- ⚪️ **scheme**: [Target Scheme](#target-scheme) - Generated scheme with tests or config variants
+- ⚪️ **scheme**: [Target Scheme](#target-scheme) - Generated scheme with tests or configuration variants
 
 ### Product Type
 This will provide default build settings for a certain product type. It can be any of the following:
@@ -210,15 +210,15 @@ targets:
     type: framework
 ```
 
-### Config Files
+### Configuration Files
 Specifies `.xcconfig` files for each configuration.
 
 ```yaml
 targets:
   MyTarget:
-    configFiles:
-      Debug: config_files/debug.xcconfig
-      Release: config_files/release.xcconfig
+    configurationFiles:
+      Debug: configuration_files/debug.xcconfig
+      Release: configuration_files/release.xcconfig
 ```
 
 ### Build Script
@@ -257,9 +257,9 @@ targets:
 ```
 
 ###  Target Scheme
-This is a convenience used to automatically generate schemes for a target based on different configs or included tests.
+This is a convenience used to automatically generate schemes for a target based on different configurations or included tests.
 
-- 🔵 **configVariants**: `[String]` - This generates a scheme for each entry, using configs that contain the name with debug and release variants. This is useful for having different environment schemes.
+- 🔵 **configurationVariants**: `[String]` - This generates a scheme for each entry, using configurations that contain the name with debug and release variants. This is useful for having different environment schemes.
 - ⚪️ **testTargets**: `[String]` - a list of test targets that should be included in the scheme. These will be added to the build targets and the test entries
 
 For example, the spec below would create 3 schemes called:
@@ -268,11 +268,11 @@ For example, the spec below would create 3 schemes called:
 - MyApp Staging
 - MyApp Production
 
-Each scheme would use different build configuration for the different build types, specifically debug configs for `run`, `test`, and `anaylze`, and release configs for `profile` and `archive`.
+Each scheme would use different build configuration for the different build types, specifically debug configurations for `run`, `test`, and `anaylze`, and release configurations for `profile` and `archive`.
 The MyUnitTests target would also be linked.
 
 ```
-configs:
+configurations:
   Test Debug: debug
   Staging Debug: debug
   Production Debug: debug
@@ -284,7 +284,7 @@ targets
     scheme:
       testTargets:
         - MyUnitTests
-      configVariants:
+      configurationVariants:
         - Test
         - Staging
         - Production

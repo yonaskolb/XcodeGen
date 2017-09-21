@@ -7,9 +7,9 @@ settingGroups:
   staging:
     BUNDLE_ID_SUFFIX: .staging
 settings:
-  configs:
+  configurations:
     Test Debug:
-configs:
+configurations:
   Test Debug:
     type: debug
   Staging Debug:

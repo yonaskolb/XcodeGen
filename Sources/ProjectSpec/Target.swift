@@ -20,7 +20,7 @@ public struct Target {
     public var dependencies: [Dependency]
     public var prebuildScripts: [BuildScript]
     public var postbuildScripts: [BuildScript]
-    public var configFiles: [String: String]
+    public var configurationFiles: [String: String]
     public var scheme: TargetScheme?
 
     public var filename: String {
@@ -31,12 +31,12 @@ public struct Target {
         return name
     }
 
-    public init(name: String, type: PBXProductType, platform: Platform, settings: Settings = .empty, configFiles: [String: String] = [:], sources: [String] = [], sourceExludes: [String] = [], dependencies: [Dependency] = [], prebuildScripts: [BuildScript] = [], postbuildScripts: [BuildScript] = [], scheme: TargetScheme? = nil) {
+    public init(name: String, type: PBXProductType, platform: Platform, settings: Settings = .empty, configurationFiles: [String: String] = [:], sources: [String] = [], sourceExludes: [String] = [], dependencies: [Dependency] = [], prebuildScripts: [BuildScript] = [], postbuildScripts: [BuildScript] = [], scheme: TargetScheme? = nil) {
         self.name = name
         self.type = type
         self.platform = platform
         self.settings = settings
-        self.configFiles = configFiles
+        self.configurationFiles = configurationFiles
         self.sources = sources
         self.sourceExludes = sourceExludes
         self.dependencies = dependencies
@@ -89,7 +89,7 @@ extension Target {
                     let newTargetName = platformPrefix + targetName + platformSuffix
 
                     var settings = platformTarget["settings"] as? JSONDictionary ?? [:]
-                    if settings["configs"] != nil || settings["groups"] != nil || settings["base"] != nil {
+                    if settings["configurations"] != nil || settings["groups"] != nil || settings["base"] != nil {
                         var base = settings["base"] as? JSONDictionary ?? [:]
                         if base["PRODUCT_NAME"] == nil {
                             base["PRODUCT_NAME"] = targetName
@@ -120,7 +120,7 @@ extension Target: Equatable {
             lhs.type == rhs.type &&
             lhs.platform == rhs.platform &&
             lhs.settings == rhs.settings &&
-            lhs.configFiles == rhs.configFiles &&
+            lhs.configurationFiles == rhs.configurationFiles &&
             lhs.sources == rhs.sources &&
             lhs.sourceExludes == rhs.sourceExludes &&
             lhs.dependencies == rhs.dependencies &&
@@ -132,11 +132,11 @@ extension Target: Equatable {
 
 public struct TargetScheme {
     public let testTargets: [String]
-    public let configVariants: [String]
+    public let configurationVariants: [String]
 
-    public init(testTargets: [String] = [], configVariants: [String] = []) {
+    public init(testTargets: [String] = [], configurationVariants: [String] = []) {
         self.testTargets = testTargets
-        self.configVariants = configVariants
+        self.configurationVariants = configurationVariants
     }
 }
 
@@ -144,7 +144,7 @@ extension TargetScheme: Equatable {
 
     public static func ==(lhs: TargetScheme, rhs: TargetScheme) -> Bool {
         return lhs.testTargets == rhs.testTargets &&
-            lhs.configVariants == rhs.configVariants
+            lhs.configurationVariants == rhs.configurationVariants
     }
 }
 
@@ -152,7 +152,7 @@ extension TargetScheme: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
         testTargets = jsonDictionary.json(atKeyPath: "testTargets") ?? []
-        configVariants = jsonDictionary.json(atKeyPath: "configVariants") ?? []
+        configurationVariants = jsonDictionary.json(atKeyPath: "configurationVariants") ?? []
     }
 }
 
@@ -173,7 +173,7 @@ extension Target: NamedJSONDictionaryConvertible {
             throw ProjectSpecError.unknownTargetPlatform(platformString)
         }
         settings = jsonDictionary.json(atKeyPath: "settings") ?? .empty
-        configFiles = jsonDictionary.json(atKeyPath: "configFiles") ?? [:]
+        configurationFiles = jsonDictionary.json(atKeyPath: "configurationFiles") ?? [:]
         if let source: String = jsonDictionary.json(atKeyPath: "sources") {
             sources = [source]
         } else {

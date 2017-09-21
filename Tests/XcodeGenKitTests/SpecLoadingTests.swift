@@ -129,17 +129,17 @@ func specLoadingTests() {
         $0.it("parses settings") {
             let spec = try ProjectSpec(path: fixturePath + "settings_test.yml")
             let buildSettings: BuildSettings = ["SETTING": "value"]
-            let configSettings: [String: Settings] = ["config1": Settings(buildSettings: ["SETTING1": "value"])]
+            let configurationSettings: [String: Settings] = ["configuration1": Settings(buildSettings: ["SETTING1": "value"])]
             let groups = ["preset1"]
 
-            let preset1 = Settings(buildSettings: buildSettings, configSettings: [:], groups: [])
-            let preset2 = Settings(buildSettings: [:], configSettings: configSettings, groups: [])
-            let preset3 = Settings(buildSettings: buildSettings, configSettings: configSettings, groups: [])
-            let preset4 = Settings(buildSettings: buildSettings, configSettings: [:], groups: [])
-            let preset5 = Settings(buildSettings: buildSettings, configSettings: [:], groups: groups)
-            let preset6 = Settings(buildSettings: buildSettings, configSettings: configSettings, groups: groups)
-            let preset7 = Settings(buildSettings: buildSettings, configSettings: ["config1": Settings(buildSettings: buildSettings, groups: groups)])
-            let preset8 = Settings(buildSettings: [:], configSettings: ["config1": Settings(configSettings: configSettings)])
+            let preset1 = Settings(buildSettings: buildSettings, configurationSettings: [:], groups: [])
+            let preset2 = Settings(buildSettings: [:], configurationSettings: configurationSettings, groups: [])
+            let preset3 = Settings(buildSettings: buildSettings, configurationSettings: configurationSettings, groups: [])
+            let preset4 = Settings(buildSettings: buildSettings, configurationSettings: [:], groups: [])
+            let preset5 = Settings(buildSettings: buildSettings, configurationSettings: [:], groups: groups)
+            let preset6 = Settings(buildSettings: buildSettings, configurationSettings: configurationSettings, groups: groups)
+            let preset7 = Settings(buildSettings: buildSettings, configurationSettings: ["configuration1": Settings(buildSettings: buildSettings, groups: groups)])
+            let preset8 = Settings(buildSettings: [:], configurationSettings: ["configuration1": Settings(configurationSettings: configurationSettings)])
 
             try expect(spec.settingGroups.count) == 8
             try expect(spec.settingGroups["preset1"]) == preset1

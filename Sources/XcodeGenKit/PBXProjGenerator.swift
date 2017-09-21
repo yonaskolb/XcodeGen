@@ -65,15 +65,15 @@ public class PBXProjGenerator {
         uuids = []
         project = PBXProj(archiveVersion: 1, objectVersion: 46, rootObject: generateUUID(PBXProject.self, spec.name))
 
-        let buildConfigs: [XCBuildConfiguration] = spec.configs.map { config in
-            let buildSettings = spec.getProjectBuildSettings(config: config)
-            return XCBuildConfiguration(reference: generateUUID(XCBuildConfiguration.self, config.name), name: config.name, baseConfigurationReference: nil, buildSettings: buildSettings)
+        let buildConfigurations: [XCBuildConfiguration] = spec.configurations.map { configuration in
+            let buildSettings = spec.getProjectBuildSettings(configuration: configuration)
+            return XCBuildConfiguration(reference: generateUUID(XCBuildConfiguration.self, configuration.name), name: configuration.name, baseConfigurationReference: nil, buildSettings: buildSettings)
         }
 
-        let buildConfigList = XCConfigurationList(reference: generateUUID(XCConfigurationList.self, spec.name), buildConfigurations: buildConfigs.references, defaultConfigurationName: buildConfigs.first?.name ?? "", defaultConfigurationIsVisible: 0)
+        let buildConfigurationList = XCConfigurationList(reference: generateUUID(XCConfigurationList.self, spec.name), buildConfigurations: buildConfigurations.references, defaultConfigurationName: buildConfigurations.first?.name ?? "", defaultConfigurationIsVisible: 0)
 
-        buildConfigs.forEach(addObject)
-        addObject(buildConfigList)
+        buildConfigurations.forEach(addObject)
+        addObject(buildConfigurationList)
 
         for target in spec.targets {
             targetNativeReferences[target.name] = generateUUID(PBXNativeTarget.self, target.name)
@@ -117,7 +117,7 @@ public class PBXProjGenerator {
         let knownRegions: [String] = ["en", "Base"]
         let projectAttributes: [String: Any] = ["LastUpgradeCheck": currentXcodeVersion].merged(spec.attributes)
         let root = PBXProject(reference: project.rootObject,
-                              buildConfigurationList: buildConfigList.reference,
+                              buildConfigurationList: buildConfigurationList.reference,
                               compatibilityVersion: "Xcode 3.2",
                               mainGroup: mainGroup.reference,
                               developmentRegion: "English",
@@ -163,8 +163,8 @@ public class PBXProjGenerator {
             $0 + ((try? $1.recursiveChildren()) ?? []).filter { $0.lastComponent == "Info.plist" }
         }
 
-        let configs: [XCBuildConfiguration] = spec.configs.map { config in
-            var buildSettings = spec.getTargetBuildSettings(target: target, config: config)
+        let configurations: [XCBuildConfiguration] = spec.configurations.map { configuration in
+            var buildSettings = spec.getTargetBuildSettings(target: target, configuration: configuration)
 
             // automatically set INFOPLIST_FILE path
             if buildSettings["INFOPLIST_FILE"] == nil {
@@ -189,15 +189,15 @@ public class PBXProjGenerator {
             }
 
             var baseConfigurationReference: String?
-            if let configPath = target.configFiles[config.name] {
-                let path = basePath + configPath
+            if let configurationPath = target.configurationFiles[configuration.name] {
+                let path = basePath + configurationPath
                 baseConfigurationReference = fileReferencesByPath[path]
             }
-            return XCBuildConfiguration(reference: generateUUID(XCBuildConfiguration.self, config.name + target.name), name: config.name, baseConfigurationReference: baseConfigurationReference, buildSettings: buildSettings)
+            return XCBuildConfiguration(reference: generateUUID(XCBuildConfiguration.self, configuration.name + target.name), name: configuration.name, baseConfigurationReference: baseConfigurationReference, buildSettings: buildSettings)
         }
-        configs.forEach(addObject)
-        let buildConfigList = XCConfigurationList(reference: generateUUID(XCConfigurationList.self, target.name), buildConfigurations: configs.references, defaultConfigurationName: "")
-        addObject(buildConfigList)
+        configurations.forEach(addObject)
+        let buildConfigurationList = XCConfigurationList(reference: generateUUID(XCConfigurationList.self, target.name), buildConfigurations: configurations.references, defaultConfigurationName: "")
+        addObject(buildConfigurationList)
 
         var dependancies: [String] = []
         var targetFrameworkBuildFiles: [String] = []
@@ -368,7 +368,7 @@ public class PBXProjGenerator {
 
         let nativeTarget = PBXNativeTarget(
             reference: targetNativeReferences[target.name]!,
-            buildConfigurationList: buildConfigList.reference,
+            buildConfigurationList: buildConfigurationList.reference,
             buildPhases: buildPhases,
             buildRules: [],
             dependencies: dependancies,
