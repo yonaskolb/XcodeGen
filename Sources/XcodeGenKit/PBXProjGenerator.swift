@@ -167,10 +167,9 @@ public class PBXProjGenerator {
             var buildSettings = spec.getTargetBuildSettings(target: target, config: config)
 
             // automatically set INFOPLIST_FILE path
-            if buildSettings["INFOPLIST_FILE"] == nil {
-                if let plistPath = infoPlists.first {
-                    buildSettings["INFOPLIST_FILE"] = plistPath.byRemovingBase(path: basePath)
-                }
+            if let plistPath = infoPlists.first,
+                !spec.targetHasBuildSetting("INFOPLIST_FILE", basePath: basePath, target: target, config: config, includeProject: false) {
+                buildSettings["INFOPLIST_FILE"] = plistPath.byRemovingBase(path: basePath)
             }
 
             // set Carthage search paths

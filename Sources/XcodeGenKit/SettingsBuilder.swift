@@ -56,6 +56,27 @@ extension ProjectSpec {
 
         return buildSettings
     }
+
+    // combines all levels of a target's settings
+    public func getCombinedBuildSettings(basePath: Path, target: Target, config: Config, includeProject: Bool) -> BuildSettings {
+        var buildSettings: BuildSettings = [:]
+        if includeProject {
+            buildSettings += getProjectBuildSettings(config: config)
+        }
+        if let configFilePath = target.configFiles[config.name] {
+            let path = basePath + configFilePath
+            if let configFile = try? XCConfig(path: path) {
+                buildSettings += configFile.flattenedBuildSettings()
+            }
+        }
+        buildSettings += getTargetBuildSettings(target: target, config: config)
+        return buildSettings
+    }
+
+    public func targetHasBuildSetting(_ setting: String, basePath: Path, target: Target, config: Config, includeProject: Bool) -> Bool {
+        let buildSettings = getCombinedBuildSettings(basePath: basePath, target: target, config: config, includeProject: includeProject)
+        return buildSettings[setting] != nil
+    }
 }
 
 private var buildSettingFiles: [String: BuildSettings] = [:]
