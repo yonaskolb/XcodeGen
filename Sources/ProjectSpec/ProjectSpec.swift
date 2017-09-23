@@ -23,6 +23,7 @@ public struct ProjectSpec {
     public var options: Options
     public var attributes: [String: Any]
     public var groups: [String]
+    public var configFiles: [String: String]
 
     public struct Options {
         public var carthageBuildPath: String?
@@ -32,7 +33,7 @@ public struct ProjectSpec {
         }
     }
 
-    public init(name: String, configs: [Config] = [], targets: [Target] = [], settings: Settings = .empty, settingGroups: [String: Settings] = [:], schemes: [Scheme] = [], options: Options = Options(), groups: [String] = [], attributes: [String: Any] = [:]) {
+    public init(name: String, configs: [Config] = [], targets: [Target] = [], settings: Settings = .empty, settingGroups: [String: Settings] = [:], schemes: [Scheme] = [], options: Options = Options(), groups: [String] = [], configFiles: [String: String] = [:], attributes: [String: Any] = [:]) {
         self.name = name
         self.targets = targets
         self.configs = configs
@@ -41,6 +42,7 @@ public struct ProjectSpec {
         self.schemes = schemes
         self.options = options
         self.groups = groups
+        self.configFiles = configFiles
         self.attributes = attributes
     }
 
@@ -63,6 +65,7 @@ extension ProjectSpec: Equatable {
             lhs.configs == rhs.configs &&
             lhs.schemes == rhs.schemes &&
             lhs.groups == rhs.groups &&
+            lhs.configFiles == rhs.configFiles &&
             lhs.options == rhs.options
     }
 }
@@ -86,6 +89,7 @@ extension ProjectSpec: JSONObjectConvertible {
         targets = try jsonDictionary.json(atKeyPath: "targets").sorted { $0.name < $1.name }
         schemes = try jsonDictionary.json(atKeyPath: "schemes")
         groups = jsonDictionary.json(atKeyPath: "groups") ?? []
+        configFiles = jsonDictionary.json(atKeyPath: "configFiles") ?? [:]
         attributes = jsonDictionary.json(atKeyPath: "attributes") ?? [:]
         if jsonDictionary["options"] != nil {
             options = try jsonDictionary.json(atKeyPath: "options")
