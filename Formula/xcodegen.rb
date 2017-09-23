@@ -10,7 +10,7 @@ class Xcodegen < Formula
   def install
     xcodegen_path = "#{buildpath}/.build/release/XcodeGen"
     ohai "Building XcodeGen"
-    system("swift build -c release -Xswiftc -static-stdlib")
+    system("swift build --disable-sandbox -c release -Xswiftc -static-stdlib")
     bin.install xcodegen_path
     pkgshare.install "SettingPresets"
   end

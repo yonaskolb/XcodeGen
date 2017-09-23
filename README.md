@@ -68,7 +68,7 @@ $ make
 
 ```
 $ brew tap yonaskolb/XcodeGen https://github.com/yonaskolb/XcodeGen.git
-$ brew install XcodeGen --no-sandbox
+$ brew install XcodeGen
 ```
 
 ### Swift Package Manager
