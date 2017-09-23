@@ -65,6 +65,10 @@ public class PBXProjGenerator {
         uuids = []
         project = PBXProj(archiveVersion: 1, objectVersion: 46, rootObject: generateUUID(PBXProject.self, spec.name))
 
+        for group in spec.groups {
+            _ = try getGroups(path: basePath + group)
+        }
+
         let buildConfigs: [XCBuildConfiguration] = spec.configs.map { config in
             let buildSettings = spec.getProjectBuildSettings(config: config)
             return XCBuildConfiguration(reference: generateUUID(XCBuildConfiguration.self, config.name), name: config.name, baseConfigurationReference: nil, buildSettings: buildSettings)

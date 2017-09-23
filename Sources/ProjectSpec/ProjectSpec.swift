@@ -22,6 +22,7 @@ public struct ProjectSpec {
     public var schemes: [Scheme]
     public var options: Options
     public var attributes: [String: Any]
+    public var groups: [String]
 
     public struct Options {
         public var carthageBuildPath: String?
@@ -31,7 +32,7 @@ public struct ProjectSpec {
         }
     }
 
-    public init(name: String, configs: [Config] = [], targets: [Target] = [], settings: Settings = .empty, settingGroups: [String: Settings] = [:], schemes: [Scheme] = [], options: Options = Options(), attributes: [String: Any] = [:]) {
+    public init(name: String, configs: [Config] = [], targets: [Target] = [], settings: Settings = .empty, settingGroups: [String: Settings] = [:], schemes: [Scheme] = [], options: Options = Options(), groups: [String] = [], attributes: [String: Any] = [:]) {
         self.name = name
         self.targets = targets
         self.configs = configs
@@ -39,6 +40,7 @@ public struct ProjectSpec {
         self.settingGroups = settingGroups
         self.schemes = schemes
         self.options = options
+        self.groups = groups
         self.attributes = attributes
     }
 
@@ -60,6 +62,7 @@ extension ProjectSpec: Equatable {
             lhs.settingGroups == rhs.settingGroups &&
             lhs.configs == rhs.configs &&
             lhs.schemes == rhs.schemes &&
+            lhs.groups == rhs.groups &&
             lhs.options == rhs.options
     }
 }
@@ -82,6 +85,7 @@ extension ProjectSpec: JSONObjectConvertible {
         self.configs = configs.map { Config(name: $0, type: ConfigType(rawValue: $1)) }
         targets = try jsonDictionary.json(atKeyPath: "targets").sorted { $0.name < $1.name }
         schemes = try jsonDictionary.json(atKeyPath: "schemes")
+        groups = jsonDictionary.json(atKeyPath: "groups") ?? []
         attributes = jsonDictionary.json(atKeyPath: "attributes") ?? [:]
         if jsonDictionary["options"] != nil {
             options = try jsonDictionary.json(atKeyPath: "options")

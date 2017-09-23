@@ -1,4 +1,6 @@
 name: GeneratedProject
+groups:
+  - Configs
 targets:
   TestProject:
     type: application
