@@ -189,8 +189,7 @@ public class PBXProjGenerator {
 
             var baseConfigurationReference: String?
             if let configPath = target.configFiles[config.name] {
-                let path = basePath + configPath
-                baseConfigurationReference = fileReferencesByPath[path]
+                baseConfigurationReference = getFileReference(path: basePath + configPath, inPath: basePath)
             }
             return XCBuildConfiguration(reference: generateUUID(XCBuildConfiguration.self, config.name + target.name), name: config.name, baseConfigurationReference: baseConfigurationReference, buildSettings: buildSettings)
         }
