@@ -180,6 +180,10 @@ public class PBXProjGenerator {
                 buildSettings["INFOPLIST_FILE"] = plistPath.byRemovingBase(path: basePath)
             }
 
+            if let bundleIdPrefix = spec.bundleIdPrefix, !spec.targetHasBuildSetting("PRODUCT_BUNDLE_IDENTIFIER", basePath: basePath, target: target, config: config) {
+                buildSettings["PRODUCT_BUNDLE_IDENTIFIER"] = bundleIdPrefix + "." + target.name
+            }
+
             // set Carthage search paths
             if !carthageFrameworks.isEmpty {
                 let frameworkSearchPaths = "FRAMEWORK_SEARCH_PATHS"

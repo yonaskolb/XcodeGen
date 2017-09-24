@@ -390,7 +390,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.test.framework;
+				PRODUCT_BUNDLE_IDENTIFIER = com.test.MyFramework;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -409,7 +409,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.test.application;
+				PRODUCT_BUNDLE_IDENTIFIER = com.test.TestProject;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -483,6 +483,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks @loader_path/Frameworks",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.test.TestProjectTests;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestProject.app/TestProject";
@@ -500,7 +501,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.test.application;
+				PRODUCT_BUNDLE_IDENTIFIER = com.test.TestProject;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -566,6 +567,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks @loader_path/Frameworks",
 				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.test.TestProjectTests;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestProject.app/TestProject";
@@ -586,7 +588,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.test.framework;
+				PRODUCT_BUNDLE_IDENTIFIER = com.test.MyFramework;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
