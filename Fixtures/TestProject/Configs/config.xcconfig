@@ -1,0 +1,4 @@
+#include "base.xcconfig"
+
+CONFIG_SETTING = configSetting
+OVERWRITTEN_SETTING = new

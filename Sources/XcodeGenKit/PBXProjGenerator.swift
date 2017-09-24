@@ -65,9 +65,17 @@ public class PBXProjGenerator {
         uuids = []
         project = PBXProj(archiveVersion: 1, objectVersion: 46, rootObject: generateUUID(PBXProject.self, spec.name))
 
+        for group in spec.fileGroups {
+            _ = try getGroups(path: basePath + group)
+        }
+
         let buildConfigs: [XCBuildConfiguration] = spec.configs.map { config in
             let buildSettings = spec.getProjectBuildSettings(config: config)
-            return XCBuildConfiguration(reference: generateUUID(XCBuildConfiguration.self, config.name), name: config.name, baseConfigurationReference: nil, buildSettings: buildSettings)
+            var baseConfigurationReference: String?
+            if let configPath = spec.configFiles[config.name] {
+                baseConfigurationReference = getFileReference(path: basePath + configPath, inPath: basePath)
+            }
+            return XCBuildConfiguration(reference: generateUUID(XCBuildConfiguration.self, config.name), name: config.name, baseConfigurationReference: baseConfigurationReference, buildSettings: buildSettings)
         }
 
         let buildConfigList = XCConfigurationList(reference: generateUUID(XCConfigurationList.self, spec.name), buildConfigurations: buildConfigs.references, defaultConfigurationName: buildConfigs.first?.name ?? "", defaultConfigurationIsVisible: 0)
@@ -168,7 +176,7 @@ public class PBXProjGenerator {
 
             // automatically set INFOPLIST_FILE path
             if let plistPath = infoPlists.first,
-                !spec.targetHasBuildSetting("INFOPLIST_FILE", basePath: basePath, target: target, config: config, includeProject: false) {
+                !spec.targetHasBuildSetting("INFOPLIST_FILE", basePath: basePath, target: target, config: config) {
                 buildSettings["INFOPLIST_FILE"] = plistPath.byRemovingBase(path: basePath)
             }
 
@@ -189,8 +197,7 @@ public class PBXProjGenerator {
 
             var baseConfigurationReference: String?
             if let configPath = target.configFiles[config.name] {
-                let path = basePath + configPath
-                baseConfigurationReference = fileReferencesByPath[path]
+                baseConfigurationReference = getFileReference(path: basePath + configPath, inPath: basePath)
             }
             return XCBuildConfiguration(reference: generateUUID(XCBuildConfiguration.self, config.name + target.name), name: config.name, baseConfigurationReference: baseConfigurationReference, buildSettings: buildSettings)
         }

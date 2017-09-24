@@ -58,10 +58,12 @@
 		FR1345298503 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FR2653659501 /* TestProjectTests.xctest */ = {isa = PBXFileReference; explicitFileType = xctest; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = TestProjectTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR2993497801 /* MyFramework.framework */ = {isa = PBXFileReference; explicitFileType = framework; includeInIndex = 0; lastKnownFileType = wrapper.framework; path = MyFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FR3546283901 /* base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = base.xcconfig; sourceTree = "<group>"; };
 		FR3676338401 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FR3676338402 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		FR5980633301 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FR6218091901 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		FR6334256101 /* config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = config.xcconfig; sourceTree = "<group>"; };
 		FR6523263101 /* TestProject.app */ = {isa = PBXFileReference; explicitFileType = app; includeInIndex = 0; lastKnownFileType = wrapper.application; path = TestProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR6877173101 /* TestProjectTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestProjectTests.swift; sourceTree = "<group>"; };
 		FR7078510801 /* FrameworkFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameworkFile.swift; sourceTree = "<group>"; };
@@ -104,9 +106,20 @@
 			path = TestProject;
 			sourceTree = "<group>";
 		};
+		G83406189501 /* Configs */ = {
+			isa = PBXGroup;
+			children = (
+				FR3546283901 /* base.xcconfig */,
+				FR6334256101 /* config.xcconfig */,
+			);
+			name = Configs;
+			path = Configs;
+			sourceTree = "<group>";
+		};
 		G84487712001 = {
 			isa = PBXGroup;
 			children = (
+				G83406189501 /* Configs */,
 				G29934978701 /* MyFramework */,
 				G65232631501 /* TestProject */,
 				G26536595301 /* TestProjectTests */,
@@ -386,6 +399,7 @@
 		};
 		XCBC37128501 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = FR6334256101 /* config.xcconfig */;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
