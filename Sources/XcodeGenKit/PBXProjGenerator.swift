@@ -65,7 +65,7 @@ public class PBXProjGenerator {
         uuids = []
         project = PBXProj(archiveVersion: 1, objectVersion: 46, rootObject: generateUUID(PBXProject.self, spec.name))
 
-        for group in spec.groups {
+        for group in spec.fileGroups {
             _ = try getGroups(path: basePath + group)
         }
 

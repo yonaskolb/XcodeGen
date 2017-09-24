@@ -1,5 +1,5 @@
 name: GeneratedProject
-groups:
+fileGroups:
   - Configs
 targets:
   TestProject:

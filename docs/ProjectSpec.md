@@ -33,7 +33,7 @@ Required properties are marked 🔵 and optional properties with ⚪️.
 - ⚪️ **settings**: [Settings](#settings) - Project specific settings. Default base and config type settings will be applied first before any settings defined here
 - ⚪️ **settingGroups**: [Setting Groups](#setting-groups) - Setting groups mapped by name
 - ⚪️ **targets**: [Target](#target) - The list of targets in the project mapped by name
-- ⚪️ **groups**: `[String]` - A list of paths to add to the top level groups. These are files that aren't build files but that you'd like in the project heirachy. For example a folder xcconfig files that aren't already added by any target sources.
+- ⚪️ **fileGroups**: `[String]` - A list of paths to add to the top level groups. These are files that aren't build files but that you'd like in the project heirachy. For example a folder xcconfig files that aren't already added by any target sources.
 
 ### Options
 - ⚪️ **carthageBuildPath**: `String` - The path to the carthage build directory. Defaults to `Carthage/Build`. This is used when specifying target carthage dependencies
