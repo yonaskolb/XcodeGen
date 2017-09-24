@@ -176,7 +176,7 @@ public class PBXProjGenerator {
 
             // automatically set INFOPLIST_FILE path
             if let plistPath = infoPlists.first,
-                !spec.targetHasBuildSetting("INFOPLIST_FILE", basePath: basePath, target: target, config: config, includeProject: false) {
+                !spec.targetHasBuildSetting("INFOPLIST_FILE", basePath: basePath, target: target, config: config) {
                 buildSettings["INFOPLIST_FILE"] = plistPath.byRemovingBase(path: basePath)
             }
 
