@@ -13,6 +13,7 @@ import XcodeGenKit
 import xcodeproj
 import ProjectSpec
 import JSONUtilities
+import Rainbow
 
 func generate(spec: String, project: String) {
 
@@ -24,10 +25,10 @@ func generate(spec: String, project: String) {
         spec = try SpecLoader.loadSpec(path: specPath)
         print("Loaded spec: \(spec.targets.count) targets, \(spec.schemes.count) schemes, \(spec.configs.count) configs")
     } catch let error as JSONUtilities.DecodingError {
-        print("Parsing spec failed: \(error.description)")
+        print("Parsing spec failed: \(error.description)".red)
         return
     } catch {
-        print("Parsing spec failed: \(error.localizedDescription)")
+        print("Parsing spec failed: \(error.localizedDescription)".red)
         return
     }
 
@@ -41,9 +42,9 @@ func generate(spec: String, project: String) {
         try project.write(path: projectFile, override: true)
         print("Wrote project to file \(projectFile.string)")
     } catch let error as SpecValidationError {
-        print(error.description)
+        print(error.description.red)
     } catch {
-        print("Project Generation failed: \(error.localizedDescription)")
+        print("Project Generation failed: \(error.localizedDescription)".red)
     }
 }
 
