@@ -15,43 +15,43 @@ import JSONUtilities
 
 extension ProjectSpec {
 
-    public func getProjectBuildSettings(config: Config) -> BuildSettings {
+    public func getProjectBuildSettings(configuration: Configuration) -> BuildSettings {
 
         var buildSettings: BuildSettings = [:]
         buildSettings += SettingsPresetFile.base.getBuildSettings()
 
-        if let type = config.type {
-            buildSettings += SettingsPresetFile.config(type).getBuildSettings()
+        if let type = configuration.type {
+            buildSettings += SettingsPresetFile.configuration(type).getBuildSettings()
         }
 
-        buildSettings += getBuildSettings(settings: settings, config: config)
+        buildSettings += getBuildSettings(settings: settings, configuration: configuration)
 
         return buildSettings
     }
 
-    public func getTargetBuildSettings(target: Target, config: Config) -> BuildSettings {
+    public func getTargetBuildSettings(target: Target, configuration: Configuration) -> BuildSettings {
         var buildSettings = BuildSettings()
 
         buildSettings += SettingsPresetFile.platform(target.platform).getBuildSettings()
         buildSettings += SettingsPresetFile.product(target.type).getBuildSettings()
         buildSettings += SettingsPresetFile.productPlatform(target.type, target.platform).getBuildSettings()
-        buildSettings += getBuildSettings(settings: target.settings, config: config)
+        buildSettings += getBuildSettings(settings: target.settings, configuration: configuration)
 
         return buildSettings
     }
 
-    public func getBuildSettings(settings: Settings, config: Config) -> BuildSettings {
+    public func getBuildSettings(settings: Settings, configuration: Configuration) -> BuildSettings {
         var buildSettings: BuildSettings = [:]
 
         for preset in settings.groups {
             let presetSettings = settingGroups[preset]!
-            buildSettings += getBuildSettings(settings: presetSettings, config: config)
+            buildSettings += getBuildSettings(settings: presetSettings, configuration: configuration)
         }
 
         buildSettings += settings.buildSettings
 
-        if let configSettings = settings.configSettings[config.name] {
-            buildSettings += getBuildSettings(settings: configSettings, config: config)
+        if let configurationSettings = settings.configurationSettings[configuration.name] {
+            buildSettings += getBuildSettings(settings: configurationSettings, configuration: configuration)
         }
 
         return buildSettings
@@ -96,7 +96,7 @@ extension SettingsPresetFile {
         }
         guard settingsPath.exists else {
             switch self {
-            case .base, .config, .platform:
+            case .base, .configuration, .platform:
                 print("No \"\(name)\" settings found at \(settingsPath)")
             case .product, .productPlatform:
                 break

@@ -5,8 +5,8 @@ settings:
 settings:
   base:
     BUILD_SETTING_1: value 1
-  configs:
-    my_config:
+  configurations:
+    my_configuration:
       BUILD_SETTING_2: value 2
   groups:
     - my_settings
@@ -16,14 +16,14 @@ settingGroups:
   preset1:
     SETTING: value
   preset2:
-    configs:
-      config1:
+    configurations:
+      configuration1:
         SETTING1: value
   preset3:
     base:
       SETTING: value
-    configs:
-      config1:
+    configurations:
+      configuration1:
         SETTING1: value
   preset4:
     base:
@@ -38,35 +38,35 @@ settingGroups:
       - preset1
     base:
       SETTING: value
-    configs:
-      config1:
+    configurations:
+      configuration1:
         SETTING1: value
   preset7:
     base:
       SETTING: value
-    configs:
-      config1:
+    configurations:
+      configuration1:
         groups:
           - preset1
         base:
           SETTING: value
   preset8:
-    configs:
-      config1:
-        configs:
-          config1:
+    configurations:
+      configuration1:
+        configurations:
+          configuration1:
             SETTING1: value
 settings:
   base:
     SETTING 5: value 5
   groups:
     - preset7
-  configs:
-    config1:
+  configurations:
+    configuration1:
       SETTING 6: value 6
-configs:
-  config1: debug
-  config2: release
+configurations:
+  configuration1: debug
+  configuration2: release
 targets:
   Target:
     type: application
@@ -76,8 +76,8 @@ targets:
         - preset7
       base:
         SETTING 2: value 2
-      configs:
-        config1:
+      configurations:
+        configuration1:
           groups:
             - preset1
           base:

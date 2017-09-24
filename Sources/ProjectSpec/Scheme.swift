@@ -32,14 +32,14 @@ public struct Scheme: Equatable {
         self.archive = archive
     }
 
-    public init(name: String, targets: [BuildTarget], debugConfig: String, releaseConfig: String) {
+    public init(name: String, targets: [BuildTarget], debugConfiguration: String, releaseConfiguration: String) {
         self.init(name: name,
                   build: .init(targets: targets),
-                  run: .init(config: debugConfig),
-                  test: .init(config: debugConfig),
-                  profile: .init(config: releaseConfig),
-                  analyze: .init(config: debugConfig),
-                  archive: .init(config: releaseConfig))
+                  run: .init(configuration: debugConfiguration),
+                  test: .init(configuration: debugConfiguration),
+                  profile: .init(configuration: releaseConfiguration),
+                  analyze: .init(configuration: debugConfiguration),
+                  archive: .init(configuration: releaseConfiguration))
     }
 
     public struct Build: Equatable {
@@ -54,57 +54,57 @@ public struct Scheme: Equatable {
     }
 
     public struct Run: BuildAction {
-        public var config: String
-        public init(config: String) {
-            self.config = config
+        public var configuration: String
+        public init(configuration: String) {
+            self.configuration = configuration
         }
 
         public static func ==(lhs: Run, rhs: Run) -> Bool {
-            return lhs.config == rhs.config
+            return lhs.configuration == rhs.configuration
         }
     }
 
     public struct Test: BuildAction {
-        public var config: String
-        public init(config: String) {
-            self.config = config
+        public var configuration: String
+        public init(configuration: String) {
+            self.configuration = configuration
         }
 
         public static func ==(lhs: Test, rhs: Test) -> Bool {
-            return lhs.config == rhs.config
+            return lhs.configuration == rhs.configuration
         }
     }
 
     public struct Analyze: BuildAction {
-        public var config: String
-        public init(config: String) {
-            self.config = config
+        public var configuration: String
+        public init(configuration: String) {
+            self.configuration = configuration
         }
 
         public static func ==(lhs: Analyze, rhs: Analyze) -> Bool {
-            return lhs.config == rhs.config
+            return lhs.configuration == rhs.configuration
         }
     }
 
     public struct Profile: BuildAction {
-        public var config: String
-        public init(config: String) {
-            self.config = config
+        public var configuration: String
+        public init(configuration: String) {
+            self.configuration = configuration
         }
 
         public static func ==(lhs: Profile, rhs: Profile) -> Bool {
-            return lhs.config == rhs.config
+            return lhs.configuration == rhs.configuration
         }
     }
 
     public struct Archive: BuildAction {
-        public var config: String
-        public init(config: String) {
-            self.config = config
+        public var configuration: String
+        public init(configuration: String) {
+            self.configuration = configuration
         }
 
         public static func ==(lhs: Archive, rhs: Archive) -> Bool {
-            return lhs.config == rhs.config
+            return lhs.configuration == rhs.configuration
         }
     }
 
@@ -133,43 +133,43 @@ public struct Scheme: Equatable {
 }
 
 protocol BuildAction: Equatable {
-    var config: String { get }
+    var configuration: String { get }
 
-    init(config: String)
+    init(configuration: String)
 }
 
 extension Scheme.Run: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
-        config = try jsonDictionary.json(atKeyPath: "config")
+        configuration = try jsonDictionary.json(atKeyPath: "configuration")
     }
 }
 
 extension Scheme.Test: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
-        config = try jsonDictionary.json(atKeyPath: "config")
+        configuration = try jsonDictionary.json(atKeyPath: "configuration")
     }
 }
 
 extension Scheme.Profile: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
-        config = try jsonDictionary.json(atKeyPath: "config")
+        configuration = try jsonDictionary.json(atKeyPath: "configuration")
     }
 }
 
 extension Scheme.Analyze: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
-        config = try jsonDictionary.json(atKeyPath: "config")
+        configuration = try jsonDictionary.json(atKeyPath: "configuration")
     }
 }
 
 extension Scheme.Archive: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
-        config = try jsonDictionary.json(atKeyPath: "config")
+        configuration = try jsonDictionary.json(atKeyPath: "configuration")
     }
 }
 

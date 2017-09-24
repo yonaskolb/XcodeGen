@@ -87,7 +87,7 @@
 - Added `carthageBuildPath` option [PR#34](https://github.com/yonaskolb/XcodeGen/pull/34)
 
 ### Fixed
-- Fixed installations of XcodeGen not applying build setting presets for configs, products, and platforms, due to missing resources
+- Fixed installations of XcodeGen not applying build setting presets for configurations, products, and platforms, due to missing resources
 
 ### Changed
 - Upgraded to https://github.com/swift-xcode/xcodeproj 0.1.1 [PR#33](https://github.com/yonaskolb/XcodeGen/pull/33)
@@ -107,7 +107,7 @@
 - Fixed watch and messages apps not copying carthage dependencies
 
 ### Breaking changes
-- Changed `Target.generatedSchemes` to `Target.scheme.configVariants`
+- Changed `Target.generatedSchemes` to `Target.scheme.configurationVariants`
 
 [Commits](https://github.com/yonaskolb/XcodeGen/compare/0.2...0.3.0)
 
@@ -115,8 +115,8 @@
 
 ### Added
 - Added Target build scripts with `Target.prebuildScripts` and `Target.postbuildScripts` [PR#17](https://github.com/yonaskolb/XcodeGen/pull/17)
-- Support for absolute paths in target sources, run script files, and config files
-- Add validation for incorrect `Target.configFiles`
+- Support for absolute paths in target sources, run script files, and configuration files
+- Add validation for incorrect `Target.configurationFiles`
 
 ### Fixed
 - Fixed some project objects sometimes having duplicate ids

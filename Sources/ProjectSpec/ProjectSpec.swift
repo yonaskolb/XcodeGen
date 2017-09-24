@@ -18,7 +18,7 @@ public struct ProjectSpec {
     public var targets: [Target]
     public var settings: Settings
     public var settingGroups: [String: Settings]
-    public var configs: [Config]
+    public var configurations: [Configuration]
     public var schemes: [Scheme]
     public var options: Options
     public var attributes: [String: Any]
@@ -31,10 +31,10 @@ public struct ProjectSpec {
         }
     }
 
-    public init(name: String, configs: [Config] = [], targets: [Target] = [], settings: Settings = .empty, settingGroups: [String: Settings] = [:], schemes: [Scheme] = [], options: Options = Options(), attributes: [String: Any] = [:]) {
+    public init(name: String, configurations: [Configuration] = [], targets: [Target] = [], settings: Settings = .empty, settingGroups: [String: Settings] = [:], schemes: [Scheme] = [], options: Options = Options(), attributes: [String: Any] = [:]) {
         self.name = name
         self.targets = targets
-        self.configs = configs
+        self.configurations = configurations
         self.settings = settings
         self.settingGroups = settingGroups
         self.schemes = schemes
@@ -46,8 +46,8 @@ public struct ProjectSpec {
         return targets.first { $0.name == targetName }
     }
 
-    public func getConfig(_ configName: String) -> Config? {
-        return configs.first { $0.name == configName }
+    public func getConfiguration(_ configurationName: String) -> Configuration? {
+        return configurations.first { $0.name == configurationName }
     }
 }
 
@@ -58,7 +58,7 @@ extension ProjectSpec: Equatable {
             lhs.targets == rhs.targets &&
             lhs.settings == rhs.settings &&
             lhs.settingGroups == rhs.settingGroups &&
-            lhs.configs == rhs.configs &&
+            lhs.configurations == rhs.configurations &&
             lhs.schemes == rhs.schemes &&
             lhs.options == rhs.options
     }
@@ -78,8 +78,14 @@ extension ProjectSpec: JSONObjectConvertible {
         name = try jsonDictionary.json(atKeyPath: "name")
         settings = jsonDictionary.json(atKeyPath: "settings") ?? .empty
         settingGroups = jsonDictionary.json(atKeyPath: "settingGroups") ?? jsonDictionary.json(atKeyPath: "settingPresets") ?? [:]
-        let configs: [String: String] = jsonDictionary.json(atKeyPath: "configs") ?? [:]
-        self.configs = configs.map { Config(name: $0, type: ConfigType(rawValue: $1)) }
+        var configurations: [String: String] = jsonDictionary.json(atKeyPath: "configurations") ?? [:]
+        if configurations.isEmpty {
+            if let configs: [String: String] = jsonDictionary.json(atKeyPath: "configs") {
+                configurations = configs
+                print("[warning] `configs` is deprecated. Use `configurations` instead.")
+            }
+        }
+        self.configurations = configurations.map { Configuration(name: $0, type: ConfigurationType(rawValue: $1)) }
         targets = try jsonDictionary.json(atKeyPath: "targets").sorted { $0.name < $1.name }
         schemes = try jsonDictionary.json(atKeyPath: "schemes")
         attributes = jsonDictionary.json(atKeyPath: "attributes") ?? [:]

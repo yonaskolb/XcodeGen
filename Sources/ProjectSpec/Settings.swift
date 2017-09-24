@@ -14,39 +14,39 @@ import Yams
 public struct Settings: Equatable, JSONObjectConvertible, CustomStringConvertible {
 
     public let buildSettings: BuildSettings
-    public let configSettings: [String: Settings]
+    public let configurationSettings: [String: Settings]
     public let groups: [String]
 
-    public init(buildSettings: BuildSettings = [:], configSettings: [String: Settings] = [:], groups: [String] = []) {
+    public init(buildSettings: BuildSettings = [:], configurationSettings: [String: Settings] = [:], groups: [String] = []) {
         self.buildSettings = buildSettings
-        self.configSettings = configSettings
+        self.configurationSettings = configurationSettings
         self.groups = groups
     }
 
     public init(dictionary: [String: Any]) {
         buildSettings = dictionary
-        configSettings = [:]
+        configurationSettings = [:]
         groups = []
     }
 
     public static let empty: Settings = Settings(dictionary: [:])
 
     public init(jsonDictionary: JSONDictionary) throws {
-        if jsonDictionary["configs"] != nil || jsonDictionary["groups"] != nil || jsonDictionary["base"] != nil {
+        if jsonDictionary["configurations"] != nil || jsonDictionary["groups"] != nil || jsonDictionary["base"] != nil {
             groups = jsonDictionary.json(atKeyPath: "groups") ?? jsonDictionary.json(atKeyPath: "presets") ?? []
             let buildSettingsDictionary: JSONDictionary = jsonDictionary.json(atKeyPath: "base") ?? [:]
             buildSettings = buildSettingsDictionary
-            configSettings = jsonDictionary.json(atKeyPath: "configs") ?? [:]
+            configurationSettings = jsonDictionary.json(atKeyPath: "configurations") ?? [:]
         } else {
             buildSettings = jsonDictionary
-            configSettings = [:]
+            configurationSettings = [:]
             groups = []
         }
     }
 
     public static func ==(lhs: Settings, rhs: Settings) -> Bool {
         return NSDictionary(dictionary: lhs.buildSettings).isEqual(to: rhs.buildSettings) &&
-            lhs.configSettings == rhs.configSettings &&
+            lhs.configurationSettings == rhs.configurationSettings &&
             lhs.groups == rhs.groups
     }
 
@@ -54,20 +54,20 @@ public struct Settings: Equatable, JSONObjectConvertible, CustomStringConvertibl
         var string: String = ""
         if !buildSettings.isEmpty {
             let buildSettingDescription = buildSettings.map { "\($0) = \($1)" }.joined(separator: "\n")
-            if !configSettings.isEmpty || !groups.isEmpty {
+            if !configurationSettings.isEmpty || !groups.isEmpty {
                 string += "base:\n  " + buildSettingDescription.replacingOccurrences(of: "(.)\n", with: "$1\n  ", options: .regularExpression, range: nil)
             } else {
                 string += buildSettingDescription
             }
         }
-        if !configSettings.isEmpty {
+        if !configurationSettings.isEmpty {
             if !string.isEmpty {
                 string += "\n"
             }
-            for (config, buildSettings) in configSettings {
+            for (configuration, buildSettings) in configurationSettings {
                 if !buildSettings.description.isEmpty {
-                    string += "configs:\n"
-                    string += "  \(config):\n    " + buildSettings.description.replacingOccurrences(of: "(.)\n", with: "$1\n    ", options: .regularExpression, range: nil)
+                    string += "configurations:\n"
+                    string += "  \(configuration):\n    " + buildSettings.description.replacingOccurrences(of: "(.)\n", with: "$1\n    ", options: .regularExpression, range: nil)
                 }
             }
         }
