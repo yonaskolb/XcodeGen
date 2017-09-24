@@ -31,6 +31,18 @@ extension ProjectSpec {
             return errors
         }
 
+        for fileGroup in fileGroups {
+            if !(path + fileGroup).exists {
+                errors.append(.invalidFileGroup(fileGroup))
+            }
+        }
+
+        for (config, configFile) in configFiles {
+            if !(path + configFile).exists {
+                errors.append(.invalidConfigFile(configFile: configFile, config: config))
+            }
+        }
+
         for settings in settingGroups.values {
             errors += validateSettings(settings)
         }
@@ -129,6 +141,7 @@ public struct SpecValidationError: Error, CustomStringConvertible {
         case invalidTargetDependency(target: String, dependency: String)
         case invalidSchemeTarget(scheme: String, target: String)
         case invalidSchemeConfig(scheme: String, config: String)
+        case invalidConfigFile(configFile: String, config: String)
         case invalidTargetConfigFile(configFile: String, config: String, target: String)
         case invalidBuildSettingConfig(String)
         case invalidSettingsPreset(String)
@@ -136,11 +149,13 @@ public struct SpecValidationError: Error, CustomStringConvertible {
         case invalidBuildScriptPath(target: String, path: String)
         case invalidTargetSchemeConfigVariant(target: String, configVariant: String, configType: ConfigType)
         case invalidTargetSchemeTest(target: String, testTarget: String)
+        case invalidFileGroup(String)
 
         public var description: String {
             switch self {
             case let .invalidTargetDependency(target, dependency): return "Target \(target.quoted) has invalid dependency: \(dependency.quoted)"
             case let .invalidTargetConfigFile(configFile, config, target): return "Target \(target.quoted) has invalid config file \(configFile.quoted) for config \(config.quoted)"
+            case let .invalidConfigFile(configFile, config): return "Invalid config file \(configFile.quoted) for config \(config.quoted)"
             case let .invalidSchemeTarget(scheme, target): return "Scheme \(scheme.quoted) has invalid build target \(target.quoted)"
             case let .invalidSchemeConfig(scheme, config): return "Scheme \(scheme.quoted) has invalid build configuration \(config.quoted)"
             case let .invalidBuildSettingConfig(config): return "Build setting has invalid build configuration \(config.quoted)"
@@ -149,6 +164,7 @@ public struct SpecValidationError: Error, CustomStringConvertible {
             case let .invalidBuildScriptPath(target, path): return "Target \(target.quoted) has a script path that doesn't exist \(path.quoted)"
             case let .invalidTargetSchemeConfigVariant(target, configVariant, configType): return "Target \(target.quoted) has invalid scheme config varians which requires a config that has a \(configType.rawValue.quoted) type and contains the name \(configVariant.quoted)"
             case let .invalidTargetSchemeTest(target, test): return "Target \(target.quoted) scheme has invalid test \(test.quoted)"
+            case let .invalidFileGroup(group): return "Invalid file group \(group.quoted)"
             }
         }
     }
