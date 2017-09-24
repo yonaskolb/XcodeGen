@@ -27,7 +27,16 @@ public struct SpecLoader {
             throw JSONUtilsError.fileNotAJSONDictionary
         }
 
-        if let includes = json["include"] as? [String] {
+        var includes: [String]
+        if let includeString = json["include"] as? String {
+            includes = [includeString]
+        } else if let includeArray = json["include"] as? [String] {
+            includes = includeArray
+        } else {
+            includes = []
+        }
+
+        if !includes.isEmpty {
             var includeDictionary: JSONDictionary = [:]
             for include in includes {
                 let includePath = path.parent() + include
