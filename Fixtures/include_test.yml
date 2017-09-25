@@ -6,6 +6,8 @@ settingGroups:
     MY_SETTING3: VALUE3
   new:
     MY_SETTING: VALUE
+  toReplace:REPLACE:
+    MY_SETTING2: VALUE2
 targets:
   NewTarget:
     type: application
@@ -13,4 +15,4 @@ targets:
   IncludedTarget:
     name: IncludedTargetNew
     platform: tvOS
-    sources: Target
+    sources:REPLACE: NewSource
