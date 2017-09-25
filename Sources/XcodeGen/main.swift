@@ -26,10 +26,10 @@ func generate(spec: String, project: String) {
         print("📋 Loaded spec:\n  \(spec.debugDescription.replacingOccurrences(of: "\n", with: "\n  "))")
     } catch let error as JSONUtilities.DecodingError {
         print("Parsing spec failed: \(error.description)".red)
-        return
+        exit(1)
     } catch {
         print("Parsing spec failed: \(error.localizedDescription)".red)
-        return
+        exit(1)
     }
 
     do {
@@ -43,7 +43,8 @@ func generate(spec: String, project: String) {
     } catch let error as SpecValidationError {
         print(error.description.red)
     } catch {
-        print("S Generation failed: \(error.localizedDescription)".red)
+        print("Generation failed: \(error.localizedDescription)".red)
+        exit(1)
     }
 }
 
