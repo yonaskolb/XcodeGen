@@ -23,7 +23,7 @@ func generate(spec: String, project: String) {
     let spec: ProjectSpec
     do {
         spec = try SpecLoader.loadSpec(path: specPath)
-        print("Loaded spec: \(spec.targets.count) targets, \(spec.schemes.count) schemes, \(spec.configs.count) configs")
+        print("📋 Loaded spec:\n  \(spec.debugDescription.replacingOccurrences(of: "\n", with: "\n  "))")
     } catch let error as JSONUtilities.DecodingError {
         print("Parsing spec failed: \(error.description)".red)
         return
@@ -35,16 +35,15 @@ func generate(spec: String, project: String) {
     do {
         let projectGenerator = ProjectGenerator(spec: spec, path: specPath.parent())
         let project = try projectGenerator.generateProject()
-        print("Generated project")
-        print("Writing project")
+        print("⚙️ Generated project")
 
         let projectFile = projectPath + "\(spec.name).xcodeproj"
         try project.write(path: projectFile, override: true)
-        print("Wrote project to file \(projectFile.string)")
+        print("💾 Saved project to \(projectFile.string)".green)
     } catch let error as SpecValidationError {
         print(error.description.red)
     } catch {
-        print("Project Generation failed: \(error.localizedDescription)".red)
+        print("S Generation failed: \(error.localizedDescription)".red)
     }
 }
 

@@ -24,6 +24,7 @@ public struct ProjectSpec {
     public var attributes: [String: Any]
     public var fileGroups: [String]
     public var configFiles: [String: String]
+    public var include: [String] = []
 
     public struct Options {
         public var carthageBuildPath: String?
@@ -52,6 +53,27 @@ public struct ProjectSpec {
 
     public func getConfig(_ configName: String) -> Config? {
         return configs.first { $0.name == configName }
+    }
+}
+
+extension ProjectSpec: CustomDebugStringConvertible {
+
+    public var debugDescription: String {
+        var string = "Name: \(name)"
+        let indent = "  "
+        if !include.isEmpty {
+            string += "\nInclude:\n\(indent)" + include.map { "📄 \($0)" }.joined(separator: "\n\(indent)")
+        }
+
+        if !settingGroups.isEmpty {
+            string += "\nSetting Groups:\n\(indent)" + settingGroups.keys.sorted().map { "⚙️ \($0)" }.joined(separator: "\n\(indent)")
+        }
+
+        if !targets.isEmpty {
+            string += "\nTargets:\n\(indent)" + targets.map { $0.description }.joined(separator: "\n\(indent)")
+        }
+
+        return string
     }
 }
 
@@ -91,6 +113,7 @@ extension ProjectSpec: JSONObjectConvertible {
         fileGroups = jsonDictionary.json(atKeyPath: "fileGroups") ?? []
         configFiles = jsonDictionary.json(atKeyPath: "configFiles") ?? [:]
         attributes = jsonDictionary.json(atKeyPath: "attributes") ?? [:]
+        include = jsonDictionary.json(atKeyPath: "include") ?? []
         if jsonDictionary["options"] != nil {
             options = try jsonDictionary.json(atKeyPath: "options")
         } else {

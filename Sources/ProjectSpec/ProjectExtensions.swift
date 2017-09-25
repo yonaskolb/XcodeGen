@@ -58,3 +58,15 @@ extension PBXProductType {
         return rawValue.replacingOccurrences(of: "com.apple.product-type.", with: "")
     }
 }
+
+extension Platform {
+
+    public var emoji: String {
+        switch self {
+        case .iOS: return "📱"
+        case .watchOS: return "⌚️"
+        case .tvOS: return "📺"
+        case .macOS: return "🖥"
+        }
+    }
+}
