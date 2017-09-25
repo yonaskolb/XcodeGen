@@ -21,11 +21,11 @@ extension ProjectSpec {
 
         func validateSettings(_ settings: Settings) -> [SpecValidationError.Error] {
             var errors: [SpecValidationError.Error] = []
-            for preset in settings.groups {
-                if let settings = settingGroups[preset] {
+            for group in settings.groups {
+                if let settings = settingGroups[group] {
                     errors += validateSettings(settings)
                 } else {
-                    errors.append(.invalidSettingsPreset(preset))
+                    errors.append(.invalidSettingsGroup(group))
                 }
             }
             return errors
@@ -144,7 +144,7 @@ public struct SpecValidationError: Error, CustomStringConvertible {
         case invalidConfigFile(configFile: String, config: String)
         case invalidTargetConfigFile(configFile: String, config: String, target: String)
         case invalidBuildSettingConfig(String)
-        case invalidSettingsPreset(String)
+        case invalidSettingsGroup(String)
         case missingTargetSource(target: String, source: String)
         case invalidBuildScriptPath(target: String, path: String)
         case invalidTargetSchemeConfigVariant(target: String, configVariant: String, configType: ConfigType)
@@ -160,7 +160,7 @@ public struct SpecValidationError: Error, CustomStringConvertible {
             case let .invalidSchemeConfig(scheme, config): return "Scheme \(scheme.quoted) has invalid build configuration \(config.quoted)"
             case let .invalidBuildSettingConfig(config): return "Build setting has invalid build configuration \(config.quoted)"
             case let .missingTargetSource(target, source): return "Target \(target.quoted) has a missing source directory \(source.quoted)"
-            case let .invalidSettingsPreset(preset): return "Invalid settings preset \(preset.quoted)"
+            case let .invalidSettingsGroup(group): return "Invalid settings group \(group.quoted)"
             case let .invalidBuildScriptPath(target, path): return "Target \(target.quoted) has a script path that doesn't exist \(path.quoted)"
             case let .invalidTargetSchemeConfigVariant(target, configVariant, configType): return "Target \(target.quoted) has invalid scheme config varians which requires a config that has a \(configType.rawValue.quoted) type and contains the name \(configVariant.quoted)"
             case let .invalidTargetSchemeTest(target, test): return "Target \(target.quoted) scheme has invalid test \(test.quoted)"
