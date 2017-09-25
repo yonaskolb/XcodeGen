@@ -52,7 +52,10 @@ public struct SpecLoader {
         var merged = base
 
         for (key, value) in dictionary {
-            if let dictionary = value as? JSONDictionary, let base = merged[key] as? JSONDictionary {
+            if key.hasSuffix(":REPLACE") {
+                let newKey = key.replacingOccurrences(of: ":REPLACE", with: "")
+                merged[newKey] = value
+            } else if let dictionary = value as? JSONDictionary, let base = merged[key] as? JSONDictionary {
                 merged[key] = merge(dictionary: dictionary, onto: base)
             } else if let array = value as? [Any], let base = merged[key] as? [Any] {
                 merged[key] = base + array
