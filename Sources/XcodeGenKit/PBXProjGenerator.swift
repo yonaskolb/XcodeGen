@@ -181,7 +181,9 @@ public class PBXProjGenerator {
             }
 
             if let bundleIdPrefix = spec.options.bundleIdPrefix, !spec.targetHasBuildSetting("PRODUCT_BUNDLE_IDENTIFIER", basePath: basePath, target: target, config: config) {
-                buildSettings["PRODUCT_BUNDLE_IDENTIFIER"] = bundleIdPrefix + "." + target.name
+                let characterSet = CharacterSet.alphanumerics.union(CharacterSet(charactersIn: "-.")).inverted
+                let escapedTargetName = target.name.replacingOccurrences(of: "_", with: "-").components(separatedBy: characterSet).joined(separator: "")
+                buildSettings["PRODUCT_BUNDLE_IDENTIFIER"] = bundleIdPrefix + "." + escapedTargetName
             }
 
             // set Carthage search paths
