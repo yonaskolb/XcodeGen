@@ -8,6 +8,7 @@ Required properties are marked 🔵 and optional properties with ⚪️.
 ### Index
 
 - [Project](#project)
+	- [Include](#include)
 	- [Options](#options)
 	- [Configs](#configs)
 	- [Setting Groups](#setting-groups)
@@ -25,7 +26,7 @@ Required properties are marked 🔵 and optional properties with ⚪️.
 ## Project
 
 - 🔵 **name**: `String` - Name of the generated project
-- ⚪️ **include**: `[String]` - The paths to other specs. They will be merged in order and then the current spec will be merged on top. Target names can be changed by adding a `name` property. This can also be set as a single path string
+- ⚪️ **include**: [Include](#include) - One or more paths to other specs
 - ⚪️ **options**: [Options](#options) - Various options to override default behaviour
 - ⚪️ **attributes**: `map` - The PBXProject attributes. This is for advanced use. Defaults to ``{"LastUpgradeCheck": "0900"}``
 - ⚪️ **configs**: [Configs](#configs) - Project build configurations. Defaults to `Debug` and `Release` configs
@@ -34,6 +35,31 @@ Required properties are marked 🔵 and optional properties with ⚪️.
 - ⚪️ **settingGroups**: [Setting Groups](#setting-groups) - Setting groups mapped by name
 - ⚪️ **targets**: [Target](#target) - The list of targets in the project mapped by name
 - ⚪️ **fileGroups**: `[String]` - A list of paths to add to the top level groups. These are files that aren't build files but that you'd like in the project hierachy. For example a folder xcconfig files that aren't already added by any target sources.
+
+### Include
+One or more specs can be included in the project spec. This can be used to split your project spec into multiple files, for easier structuring or sharing between multiple specs. Included specs can also include other specs and so on.
+
+Include can either be a list of string paths or a single string path. They will be merged in order and then the current spec will be merged on top.
+By default specs are merged additively. That is for every value:
+
+- if existing value and new value are both dictionaries merge them and continue down the hierachy
+- if existing value and new value are both an array then add the new value to the end of the array
+- otherwise replace the existing value with the new value
+
+This merging behaviour can be overriden on a value basis. If you wish to replace a whole value (set a new dictionary or new array instead of merging them) then just affix `:REPLACE` to the key
+
+
+```yaml
+include: 
+  - base.yml
+name: CustomSpec
+targets:
+  MyTarget: # target lives in base.yml
+    sources:REPLACE:
+      - my_new_sources
+```
+
+Note that target names can also be changed by adding a `name` property to a target. 
 
 ### Options
 - ⚪️ **carthageBuildPath**: `String` - The path to the carthage build directory. Defaults to `Carthage/Build`. This is used when specifying target carthage dependencies
