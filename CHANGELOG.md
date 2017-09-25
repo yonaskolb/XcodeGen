@@ -1,5 +1,18 @@
 # Change Log
 
+## Master
+
+### Added
+- `include` now supports a single string as well as a list
+- add support setting xcconfig files on a project with `configFiles` [PR#64](https://github.com/yonaskolb/XcodeGen/pull/64)
+- add `fileGroups` to project spec for adding groups of files that aren't target source files [PR#64](https://github.com/yonaskolb/XcodeGen/pull/64)
+- print errors in red
+
+### Fixed
+- fixed install scripts
+- fixed target xcconfig files not working via `configFiles` [PR#64](https://github.com/yonaskolb/XcodeGen/pull/64)
+- look for `INFOPLIST_FILE` setting in project and xcconfig files before adding it automatically. It was just looking in target settings before [PR#64](https://github.com/yonaskolb/XcodeGen/pull/64)
+
 ## 1.1.0
 
 ### Changed
