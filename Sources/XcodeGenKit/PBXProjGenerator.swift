@@ -22,6 +22,7 @@ public class PBXProjGenerator {
 
     var fileReferencesByPath: [Path: String] = [:]
     var groupsByPath: [Path: PBXGroup] = [:]
+    var variantGroupsByPath: [Path: PBXVariantGroup] = [:]
 
     var targetNativeReferences: [String: String] = [:]
     var targetBuildFileReferences: [String: String] = [:]
@@ -151,7 +152,6 @@ public class PBXProjGenerator {
             settings = ["ATTRIBUTES": ["Public"]]
         }
         let buildFile = PBXBuildFile(reference: generateUUID(PBXBuildFile.self, fileReference), fileRef: fileReference, settings: settings)
-        addObject(buildFile)
         return SourceFile(path: path, fileReference: fileReference, buildFile: buildFile)
     }
 
@@ -160,11 +160,11 @@ public class PBXProjGenerator {
         let carthageDependencies = getAllCarthageDependencies(target: target)
 
         let sourcePaths = target.sources.map { basePath + $0 }
-        var sourceFilePaths: [Path] = []
+        var sourceFiles: [SourceFile] = []
 
         for source in sourcePaths {
             let sourceGroups = try getGroups(path: source)
-            sourceFilePaths += sourceGroups.filePaths
+            sourceFiles += sourceGroups.sourceFiles
         }
 
         // find all Info.plist
@@ -310,7 +310,8 @@ public class PBXProjGenerator {
         var buildPhases: [String] = []
 
         func getBuildFilesForPhase(_ buildPhase: BuildPhase) -> [String] {
-            let files = sourceFilePaths.filter { getBuildPhaseForPath($0) == buildPhase }.map(generateSourceFile)
+            let files = sourceFiles.filter { getBuildPhaseForPath($0.path) == buildPhase }
+            files.forEach { addObject($0.buildFile) }
             return files.map { $0.buildFile.reference }
         }
 
@@ -467,7 +468,7 @@ public class PBXProjGenerator {
         }
     }
 
-    func getGroups(path: Path, depth: Int = 0) throws -> (filePaths: [Path], groups: [PBXGroup]) {
+    func getGroups(path: Path, depth: Int = 0) throws -> (sourceFiles: [SourceFile], groups: [PBXGroup]) {
 
         let excludedFiles: [String] = [".DS_Store"]
 
@@ -484,34 +485,76 @@ public class PBXProjGenerator {
             .filter { $0.extension == "lproj" }
             .sorted { $0.lastComponent < $1.lastComponent }
 
-        var groupChildren: [String] = []
-        var allFilePaths: [Path] = filePaths
+        var groupChildren: [String] = filePaths.map { getFileReference(path: $0, inPath: path) }
+        var allSourceFiles: [SourceFile] = filePaths.map { generateSourceFile(path: $0) }
         var groups: [PBXGroup] = []
 
         for path in directories {
             let subGroups = try getGroups(path: path, depth: depth + 1)
-            allFilePaths += subGroups.filePaths
+            allSourceFiles += subGroups.sourceFiles
             groupChildren.append(subGroups.groups.first!.reference)
             groups += subGroups.groups
         }
 
-        for filePath in filePaths {
-            let fileReference = getFileReference(path: filePath, inPath: path)
-            groupChildren.append(fileReference)
+        // create variant groups of the base localisation first
+        var baseLocalisationVariantGroups:[PBXVariantGroup] = []
+        if let baseLocalisedDirectory = localisedDirectories.first(where: { $0.lastComponent == "Base.lproj" }) {
+            for path in try baseLocalisedDirectory.children() {
+                let filePath = "\(baseLocalisedDirectory.lastComponent)/\(path.lastComponent)"
+
+                let variantGroup: PBXVariantGroup
+                if let cachedGroup = variantGroupsByPath[path] {
+                    variantGroup = cachedGroup
+                } else {
+                    variantGroup = PBXVariantGroup(reference: generateUUID(PBXVariantGroup.self, filePath),
+                                                   children: [],
+                                                   name: path.lastComponent,
+                                                   sourceTree: .group)
+                    variantGroupsByPath[path] = variantGroup
+                    
+                    addObject(variantGroup)
+                    groupChildren.append(variantGroup.reference)
+                }
+
+                baseLocalisationVariantGroups.append(variantGroup)
+
+                let buildFile = PBXBuildFile(reference: generateUUID(PBXBuildFile.self, variantGroup.reference), fileRef: variantGroup.reference, settings: nil)
+                allSourceFiles.append(SourceFile(path: path, fileReference: variantGroup.reference, buildFile: buildFile))
+            }
         }
 
+        // add references to localised resources into base localisation variant groups
         for localisedDirectory in localisedDirectories {
+            let localisationName = localisedDirectory.lastComponentWithoutExtension
             for path in try localisedDirectory.children().sorted { $0.lastComponent < $1.lastComponent } {
+                guard fileReferencesByPath[path] == nil else {
+                    continue
+                }
+
                 let filePath = "\(localisedDirectory.lastComponent)/\(path.lastComponent)"
-                let fileReference = PBXFileReference(reference: generateUUID(PBXFileReference.self, localisedDirectory.lastComponent), sourceTree: .group, name: localisedDirectory.lastComponentWithoutExtension, path: filePath)
-                addObject(fileReference)
 
-                let variantGroup = PBXVariantGroup(reference: generateUUID(PBXVariantGroup.self, path.lastComponent), children: [fileReference.reference], name: path.lastComponent, sourceTree: .group)
-                addObject(variantGroup)
+                // find base localisation variant group
+                let name = path.lastComponentWithoutExtension
+                let variantGroup = baseLocalisationVariantGroups.first(where: { Path($0.name).lastComponentWithoutExtension == name })
 
-                fileReferencesByPath[path] = variantGroup.reference
-                groupChildren.append(variantGroup.reference)
-                allFilePaths.append(path)
+                let reference = PBXFileReference(reference: generateUUID(PBXFileReference.self, path.lastComponent),
+                                                 sourceTree: .group,
+                                                 name: variantGroup != nil ? localisationName : path.lastComponent,
+                                                 path: filePath)
+                addObject(reference)
+                fileReferencesByPath[path] = reference.reference
+                let fileReference = reference.reference
+
+                if let variantGroup = variantGroup {
+                    variantGroup.children.append(fileReference)
+                } else {
+                    // add SourceFile to group if there is no Base.lproj directory
+                    let buildFile = PBXBuildFile(reference: generateUUID(PBXBuildFile.self, fileReference),
+                                                 fileRef: fileReference,
+                                                 settings: nil)
+                    allSourceFiles.append(SourceFile(path: path, fileReference: fileReference, buildFile: buildFile))
+                    groupChildren.append(fileReference)
+                }
             }
         }
 
@@ -528,6 +571,6 @@ public class PBXProjGenerator {
             groupsByPath[path] = group
         }
         groups.insert(group, at: 0)
-        return (allFilePaths, groups)
+        return (allSourceFiles, groups)
     }
 }
