@@ -24,17 +24,17 @@ public struct ProjectSpec {
     public var attributes: [String: Any]
     public var fileGroups: [String]
     public var configFiles: [String: String]
-    public var bundleIdPrefix: String?
 
     public struct Options {
         public var carthageBuildPath: String?
+        public var bundleIdPrefix: String?
 
-        public init(carthageBuildPath: String? = nil) {
-            self.carthageBuildPath = carthageBuildPath
+        public init() {
+
         }
     }
 
-    public init(name: String, configs: [Config] = [], targets: [Target] = [], settings: Settings = .empty, settingGroups: [String: Settings] = [:], schemes: [Scheme] = [], options: Options = Options(), fileGroups: [String] = [], configFiles: [String: String] = [:], attributes: [String: Any] = [:], bundleIdPrefix: String? = nil) {
+    public init(name: String, configs: [Config] = [], targets: [Target] = [], settings: Settings = .empty, settingGroups: [String: Settings] = [:], schemes: [Scheme] = [], options: Options = Options(), fileGroups: [String] = [], configFiles: [String: String] = [:], attributes: [String: Any] = [:]) {
         self.name = name
         self.targets = targets
         self.configs = configs
@@ -45,7 +45,6 @@ public struct ProjectSpec {
         self.fileGroups = fileGroups
         self.configFiles = configFiles
         self.attributes = attributes
-        self.bundleIdPrefix = bundleIdPrefix
     }
 
     public func getTarget(_ targetName: String) -> Target? {
@@ -69,8 +68,7 @@ extension ProjectSpec: Equatable {
             lhs.fileGroups == rhs.fileGroups &&
             lhs.configFiles == rhs.configFiles &&
             lhs.options == rhs.options &&
-            NSDictionary(dictionary: lhs.attributes).isEqual(to: rhs.attributes) &&
-            lhs.bundleIdPrefix == rhs.bundleIdPrefix
+            NSDictionary(dictionary: lhs.attributes).isEqual(to: rhs.attributes)
     }
 }
 
@@ -95,7 +93,6 @@ extension ProjectSpec: JSONObjectConvertible {
         fileGroups = jsonDictionary.json(atKeyPath: "fileGroups") ?? []
         configFiles = jsonDictionary.json(atKeyPath: "configFiles") ?? [:]
         attributes = jsonDictionary.json(atKeyPath: "attributes") ?? [:]
-        bundleIdPrefix = jsonDictionary.json(atKeyPath: "bundleIdPrefix")
         if jsonDictionary["options"] != nil {
             options = try jsonDictionary.json(atKeyPath: "options")
         } else {
@@ -112,5 +109,6 @@ extension ProjectSpec.Options: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
         carthageBuildPath = jsonDictionary.json(atKeyPath: "carthageBuildPath")
+        bundleIdPrefix = jsonDictionary.json(atKeyPath: "bundleIdPrefix")
     }
 }

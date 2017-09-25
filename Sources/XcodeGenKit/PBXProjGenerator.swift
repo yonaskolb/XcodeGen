@@ -180,7 +180,7 @@ public class PBXProjGenerator {
                 buildSettings["INFOPLIST_FILE"] = plistPath.byRemovingBase(path: basePath)
             }
 
-            if let bundleIdPrefix = spec.bundleIdPrefix, !spec.targetHasBuildSetting("PRODUCT_BUNDLE_IDENTIFIER", basePath: basePath, target: target, config: config) {
+            if let bundleIdPrefix = spec.options.bundleIdPrefix, !spec.targetHasBuildSetting("PRODUCT_BUNDLE_IDENTIFIER", basePath: basePath, target: target, config: config) {
                 buildSettings["PRODUCT_BUNDLE_IDENTIFIER"] = bundleIdPrefix + "." + target.name
             }
 
