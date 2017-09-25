@@ -26,6 +26,23 @@ func projectGeneratorTests() {
 
         let targets = [application, framework]
 
+        $0.describe("Options") {
+
+            $0.it("generates bundle id") {
+                var options = ProjectSpec.Options()
+                options.bundleIdPrefix = "com.test"
+                let spec = ProjectSpec(name: "test", targets: [framework], options: options)
+                let project = try getProject(spec)
+                guard let target = project.pbxproj.nativeTargets.first,
+                    let buildConfigs = project.pbxproj.configurationLists.getReference(target.buildConfigurationList),
+                    let buildConfigReference = buildConfigs.buildConfigurations.first,
+                    let buildConfig = project.pbxproj.buildConfigurations.getReference(buildConfigReference) else {
+                        throw failure("Build Config not found")
+                }
+                try expect(buildConfig.buildSettings["PRODUCT_BUNDLE_IDENTIFIER"] as? String) == "com.test.MyFramework"
+            }
+        }
+
         $0.describe("Config") {
 
             $0.it("generates config defaults") {
