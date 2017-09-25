@@ -21,7 +21,7 @@
       },
       {
         "package": "JSONUtilities",
-        "repositoryURL": "https://github.com/yonaskolb/JSONUtilities",
+        "repositoryURL": "https://github.com/yonaskolb/JSONUtilities.git",
         "state": {
           "branch": null,
           "revision": "6403a5455f30add5413095d1b5a70e8a5eb83ba0",
@@ -66,7 +66,7 @@
       },
       {
         "package": "Yams",
-        "repositoryURL": "https://github.com/jpsim/Yams",
+        "repositoryURL": "https://github.com/jpsim/Yams.git",
         "state": {
           "branch": null,
           "revision": "5ac9248b378b5e12201c255ba74caf990d1e0f4b",
@@ -78,8 +78,8 @@
         "repositoryURL": "https://github.com/swift-xcode/xcodeproj.git",
         "state": {
           "branch": null,
-          "revision": "8686e141c85912cd4ce7b686cbed23d498430e09",
-          "version": "0.1.2"
+          "revision": "16db8728879bcfe21adf64f12b55a456e1d0e2e8",
+          "version": "0.2.0"
         }
       }
     ]
