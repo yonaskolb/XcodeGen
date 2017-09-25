@@ -28,9 +28,10 @@ public struct ProjectSpec {
 
     public struct Options {
         public var carthageBuildPath: String?
+        public var bundleIdPrefix: String?
 
-        public init(carthageBuildPath: String? = nil) {
-            self.carthageBuildPath = carthageBuildPath
+        public init() {
+
         }
     }
 
@@ -88,7 +89,8 @@ extension ProjectSpec: Equatable {
             lhs.schemes == rhs.schemes &&
             lhs.fileGroups == rhs.fileGroups &&
             lhs.configFiles == rhs.configFiles &&
-            lhs.options == rhs.options
+            lhs.options == rhs.options &&
+            NSDictionary(dictionary: lhs.attributes).isEqual(to: rhs.attributes)
     }
 }
 
@@ -130,5 +132,6 @@ extension ProjectSpec.Options: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
         carthageBuildPath = jsonDictionary.json(atKeyPath: "carthageBuildPath")
+        bundleIdPrefix = jsonDictionary.json(atKeyPath: "bundleIdPrefix")
     }
 }

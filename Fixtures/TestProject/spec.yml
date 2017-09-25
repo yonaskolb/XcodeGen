@@ -1,4 +1,6 @@
 name: GeneratedProject
+options:
+  bundleIdPrefix: com.test
 fileGroups:
   - Configs
 targets:
@@ -8,7 +10,6 @@ targets:
     sources: TestProject
     settings:
       INFOPLIST_FILE: TestProject/Info.plist
-      PRODUCT_BUNDLE_IDENTIFIER: com.test.application
     dependencies:
       - target: MyFramework
     scheme:
@@ -33,7 +34,6 @@ targets:
     sources: MyFramework
     settings:
       INFOPLIST_FILE: MyFramework/Info.plist
-      PRODUCT_BUNDLE_IDENTIFIER: com.test.framework
     postbuildScripts:
       - name: Swiftlint
         path: scripts/swiftlint.sh

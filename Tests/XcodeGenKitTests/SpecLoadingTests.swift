@@ -172,8 +172,11 @@ func specLoadingTests() {
         }
 
         $0.it("parses options") {
-            let expected = ProjectSpec(name: "test", options: .init(carthageBuildPath: "../Carthage/Build"))
-            let parsedSpec = try getProjectSpec(["options": ["carthageBuildPath": "../Carthage/Build"]])
+            var options = ProjectSpec.Options()
+            options.carthageBuildPath = "../Carthage/Build"
+            options.bundleIdPrefix = "com.test"
+            let expected = ProjectSpec(name: "test", options: options)
+            let parsedSpec = try getProjectSpec(["options": ["carthageBuildPath": "../Carthage/Build", "bundleIdPrefix": "com.test"]])
             try expect(parsedSpec) == expected
         }
     }
