@@ -63,11 +63,11 @@ extension ProjectSpec: CustomDebugStringConvertible {
         var string = "Name: \(name)"
         let indent = "  "
         if !include.isEmpty {
-            string += "\nInclude:\n\(indent)" + include.map { "📄 \($0)" }.joined(separator: "\n\(indent)")
+            string += "\nInclude:\n\(indent)" + include.map { "📄  \($0)" }.joined(separator: "\n\(indent)")
         }
 
         if !settingGroups.isEmpty {
-            string += "\nSetting Groups:\n\(indent)" + settingGroups.keys.sorted().map { "⚙️ \($0)" }.joined(separator: "\n\(indent)")
+            string += "\nSetting Groups:\n\(indent)" + settingGroups.keys.sorted().map { "⚙️  \($0)" }.joined(separator: "\n\(indent)")
         }
 
         if !targets.isEmpty {
