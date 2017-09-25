@@ -54,8 +54,8 @@
 		CC2A0EBF1F33D50E00C324B9 /* TestProjectTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TestProjectTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CC2A0EC11F33D50E00C324B9 /* TestProjectTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestProjectTests.swift; sourceTree = "<group>"; };
 		CC2A0EC31F33D50E00C324B9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		CC9392651F76EDF800C1934A /* base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = base.xcconfig; path = Configs/base.xcconfig; sourceTree = SOURCE_ROOT; };
-		CC9392661F76EDF800C1934A /* config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = config.xcconfig; path = Configs/config.xcconfig; sourceTree = SOURCE_ROOT; };
+		CC9393011F79483C00C1934A /* base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = base.xcconfig; sourceTree = "<group>"; };
+		CC9393021F79483C00C1934A /* config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = config.xcconfig; sourceTree = "<group>"; };
 		CCA4B60A1F1FC00500DF34A1 /* TestProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TestProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CCA4B60D1F1FC00500DF34A1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CCA4B60F1F1FC00500DF34A1 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -104,20 +104,19 @@
 			path = TestProjectTests;
 			sourceTree = "<group>";
 		};
-		CC9392641F76EDE600C1934A /* Configs */ = {
+		CC9393001F79483C00C1934A /* Configs */ = {
 			isa = PBXGroup;
 			children = (
-				CC9392651F76EDF800C1934A /* base.xcconfig */,
-				CC9392661F76EDF800C1934A /* config.xcconfig */,
+				CC9393011F79483C00C1934A /* base.xcconfig */,
+				CC9393021F79483C00C1934A /* config.xcconfig */,
 			);
-			name = Configs;
-			path = "New Group";
+			path = Configs;
 			sourceTree = "<group>";
 		};
 		CCA4B6011F1FC00500DF34A1 = {
 			isa = PBXGroup;
 			children = (
-				CC9392641F76EDE600C1934A /* Configs */,
+				CC9393001F79483C00C1934A /* Configs */,
 				CCA4B60C1F1FC00500DF34A1 /* TestProject */,
 				CCA71FE91F225E4C00F772C1 /* MyFramework */,
 				CC2A0EC01F33D50E00C324B9 /* TestProjectTests */,
@@ -522,7 +521,7 @@
 		};
 		CCA4B61D1F1FC00500DF34A1 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CC9392661F76EDF800C1934A /* config.xcconfig */;
+			baseConfigurationReference = CC9393021F79483C00C1934A /* config.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
