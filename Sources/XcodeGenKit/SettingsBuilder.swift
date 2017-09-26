@@ -93,16 +93,17 @@ extension SettingsPresetFile {
             return group
         }
         let relativePath = "SettingPresets/\(path).yml"
-        var settingsPath = Path(Bundle.main.bundlePath) + "../share/xcodegen/\(relativePath)"
+        let possibleSettingsPaths: [Path] = [
+            Path(relativePath),
+            Path(Bundle.main.bundlePath) + relativePath,
+            Path(Bundle.main.bundlePath) + "../share/xcodegen/\(relativePath)",
+            Path(#file).parent().parent().parent() + relativePath,
+        ]
 
-        if !settingsPath.exists {
-            // maybe running locally
-            settingsPath = Path(#file).parent().parent().parent() + relativePath
-        }
-        guard settingsPath.exists else {
+        guard let settingsPath = possibleSettingsPaths.first(where: { $0.exists }) else {
             switch self {
             case .base, .config, .platform:
-                print("No \"\(name)\" settings found at \(settingsPath)")
+                print("No \"\(name)\" settings found")
             case .product, .productPlatform:
                 break
             }
