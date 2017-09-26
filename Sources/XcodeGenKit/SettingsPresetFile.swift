@@ -14,7 +14,7 @@ public enum SettingsPresetFile {
     case config(ConfigType)
     case platform(Platform)
     case product(PBXProductType)
-    case productPlatform(PBXProductType,Platform)
+    case productPlatform(PBXProductType, Platform)
     case base
 
     var path: String {

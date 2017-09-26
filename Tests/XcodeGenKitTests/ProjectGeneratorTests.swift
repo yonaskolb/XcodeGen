@@ -37,7 +37,7 @@ func projectGeneratorTests() {
                     let buildConfigs = project.pbxproj.configurationLists.getReference(target.buildConfigurationList),
                     let buildConfigReference = buildConfigs.buildConfigurations.first,
                     let buildConfig = project.pbxproj.buildConfigurations.getReference(buildConfigReference) else {
-                        throw failure("Build Config not found")
+                    throw failure("Build Config not found")
                 }
                 try expect(buildConfig.buildSettings["PRODUCT_BUNDLE_IDENTIFIER"] as? String) == "com.test.MyFramework"
             }
@@ -85,7 +85,7 @@ func projectGeneratorTests() {
                 var expectedTargetDebugSettings = BuildSettings()
                 expectedTargetDebugSettings += SettingsPresetFile.platform(.iOS).getBuildSettings()
                 expectedTargetDebugSettings += SettingsPresetFile.product(.application).getBuildSettings()
-                expectedTargetDebugSettings += SettingsPresetFile.productPlatform(.application,.iOS).getBuildSettings()
+                expectedTargetDebugSettings += SettingsPresetFile.productPlatform(.application, .iOS).getBuildSettings()
                 expectedTargetDebugSettings += ["SETTING 2": "value 2", "SETTING 3": "value 3", "SETTING": "value"]
 
                 try expect(targetDebugSettings.equals(expectedTargetDebugSettings)).beTrue()
