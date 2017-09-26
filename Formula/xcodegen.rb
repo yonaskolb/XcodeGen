@@ -8,11 +8,7 @@ class Xcodegen < Formula
   depends_on :xcode
 
   def install
-    xcodegen_path = "#{buildpath}/.build/release/XcodeGen"
-    ohai "Building XcodeGen"
-    system("swift build --disable-sandbox -c release -Xswiftc -static-stdlib")
-    bin.install xcodegen_path
-    pkgshare.install "SettingPresets"
+    system "make", "install", "PREFIX=#{prefix}"
   end
 
   test do
