@@ -1,5 +1,5 @@
 TOOL_NAME = XcodeGen
-VERSION = 1.1.0
+VERSION = 1.2.0
 
 PREFIX = /usr/local
 INSTALL_PATH = $(PREFIX)/bin/$(TOOL_NAME)
