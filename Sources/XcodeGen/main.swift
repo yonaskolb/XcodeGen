@@ -28,7 +28,7 @@ func generate(spec: String, project: String) {
         print("Parsing spec failed: \(error.description)".red)
         exit(1)
     } catch {
-        print("💾  Parsing spec failed: \(error.localizedDescription)".red)
+        print("Parsing spec failed: \(error.localizedDescription)".red)
         exit(1)
     }
 
