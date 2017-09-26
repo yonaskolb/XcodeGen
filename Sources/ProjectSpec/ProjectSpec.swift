@@ -109,7 +109,7 @@ extension ProjectSpec: JSONObjectConvertible {
         settings = jsonDictionary.json(atKeyPath: "settings") ?? .empty
         settingGroups = jsonDictionary.json(atKeyPath: "settingGroups") ?? jsonDictionary.json(atKeyPath: "settingPresets") ?? [:]
         let configs: [String: String] = jsonDictionary.json(atKeyPath: "configs") ?? [:]
-        self.configs = configs.map { Config(name: $0, type: ConfigType(rawValue: $1)) }
+        self.configs = configs.map { Config(name: $0, type: ConfigType(rawValue: $1)) }.sorted { $0.name < $1.name }
         targets = try jsonDictionary.json(atKeyPath: "targets").sorted { $0.name < $1.name }
         schemes = try jsonDictionary.json(atKeyPath: "schemes")
         fileGroups = jsonDictionary.json(atKeyPath: "fileGroups") ?? []
