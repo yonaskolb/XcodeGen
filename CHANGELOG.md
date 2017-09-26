@@ -2,16 +2,24 @@
 
 ## Master
 
+## 1.2.0
+
 ### Added
 - `include` now supports a single string as well as a list
 - add support setting xcconfig files on a project with `configFiles` [PR#64](https://github.com/yonaskolb/XcodeGen/pull/64)
 - add `fileGroups` to project spec for adding groups of files that aren't target source files [PR#64](https://github.com/yonaskolb/XcodeGen/pull/64)
-- print errors in red
+- better output (more info, emoji, colors)
+- add `options.bundleIdPrefix` for autogenerating `PRODUCT_BUNDLE_IDENTIFIER` [PR#67](https://github.com/yonaskolb/XcodeGen/pull/67)
+- add `:REPLACE` syntax when merging `include` [PR#68](https://github.com/yonaskolb/XcodeGen/pull/68)
+- add `mint` installation support
 
 ### Fixed
-- fixed install scripts
+- fixed homebrew installation
 - fixed target xcconfig files not working via `configFiles` [PR#64](https://github.com/yonaskolb/XcodeGen/pull/64)
 - look for `INFOPLIST_FILE` setting in project and xcconfig files before adding it automatically. It was just looking in target settings before [PR#64](https://github.com/yonaskolb/XcodeGen/pull/64)
+- exit with error on failure
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/1.1.0...1.2.0)
 
 ## 1.1.0
 
@@ -25,7 +33,7 @@
 
 ### Fixed
 - fixed incorrect default build script shell path
-- fixed install scripts 
+- fixed install scripts
 
 [Commits](https://github.com/yonaskolb/XcodeGen/compare/1.0.0...1.0.1)
 
@@ -41,7 +49,7 @@
 
 ### Changed
 - updated to xcodeproj 0.1.2 [PR#56](https://github.com/yonaskolb/XcodeGen/pull/56)
-- **BREAKING**: changed target definitions from list to map [PR#54](https://github.com/yonaskolb/XcodeGen/pull/54) See [Project Spec](docs/ProjectSpec.md) 
+- **BREAKING**: changed target definitions from list to map [PR#54](https://github.com/yonaskolb/XcodeGen/pull/54) See [Project Spec](docs/ProjectSpec.md)
 
 
 [Commits](https://github.com/yonaskolb/XcodeGen/compare/0.6.1...1.0.0)
