@@ -73,7 +73,7 @@ $ brew install XcodeGen
 
 ### Swift Package Manager
 
-**Use CI tool**
+**Use as CLI**
 
 ```
 $ git clone https://github.com/yonaskolb/XcodeGen.git
