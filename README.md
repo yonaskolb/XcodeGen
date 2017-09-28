@@ -4,7 +4,9 @@
 </a>
 </p>
 <p align="center">
-  <img src="https://img.shields.io/badge/package%20managers-SwiftPM-yellow.svg"/>
+  <a href="https://swift.org/package-manager">
+    <img src="https://img.shields.io/badge/spm-compatible-brightgreen.svg?style=flat" alt="Swift Package Manager" />
+  </a>
   <a href="https://github.com/yonaskolb/XcodeGen/releases">
     <img src="https://img.shields.io/github/release/yonaskolb/xcodegen.svg"/>
   </a>
