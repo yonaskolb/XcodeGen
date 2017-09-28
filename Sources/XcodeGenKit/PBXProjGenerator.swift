@@ -180,10 +180,25 @@ public class PBXProjGenerator {
                 buildSettings["INFOPLIST_FILE"] = plistPath.byRemovingBase(path: basePath)
             }
 
-            if let bundleIdPrefix = spec.options.bundleIdPrefix, !spec.targetHasBuildSetting("PRODUCT_BUNDLE_IDENTIFIER", basePath: basePath, target: target, config: config) {
+            // automatically calculate bundle id
+            if let bundleIdPrefix = spec.options.bundleIdPrefix,
+                !spec.targetHasBuildSetting("PRODUCT_BUNDLE_IDENTIFIER", basePath: basePath, target: target, config: config) {
                 let characterSet = CharacterSet.alphanumerics.union(CharacterSet(charactersIn: "-.")).inverted
                 let escapedTargetName = target.name.replacingOccurrences(of: "_", with: "-").components(separatedBy: characterSet).joined(separator: "")
                 buildSettings["PRODUCT_BUNDLE_IDENTIFIER"] = bundleIdPrefix + "." + escapedTargetName
+            }
+
+            // automatically set test target name
+            if target.type == .uiTestBundle,
+                !spec.targetHasBuildSetting("TEST_TARGET_NAME", basePath: basePath, target: target, config: config) {
+                for dependency in target.dependencies {
+                    if dependency.type == .target,
+                        let dependencyTarget = spec.getTarget(dependency.reference),
+                        dependencyTarget.type == .application {
+                        buildSettings["TEST_TARGET_NAME"] = dependencyTarget.name
+                        break
+                    }
+                }
             }
 
             // set Carthage search paths
