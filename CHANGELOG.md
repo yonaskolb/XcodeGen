@@ -2,17 +2,17 @@
 
 ## Master
 
-## 1.2.1
+## 1.2.2
 
 ### Added
 - automatically set `TEST_TARGET_NAME` on UI test targets if one of the dependencies is an application target
 
-
 ### Fixed
 - set `DYLIB_INSTALL_NAME_BASE` to `@rpath` in framework target presets
+- fixed tvOS launch screen setting. `ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME` is now `LaunchImage` not `tvOS LaunchImage`
 
 
-[Commits](https://github.com/yonaskolb/XcodeGen/compare/1.2.0...1.2.1)
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/1.2.0...1.2.2)
 
 ## 1.2.0
 
