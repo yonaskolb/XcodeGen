@@ -58,6 +58,11 @@ A project would be created with 2 connected targets, with all the required confi
 ## Installing
 Make sure Xcode 9 is installed first.
 
+###🌱 [Mint](https://github.com/yonaskolb/mint)
+```sh
+$ mint run yonaskolb/xcodegen
+```
+
 ### Make
 
 ```
