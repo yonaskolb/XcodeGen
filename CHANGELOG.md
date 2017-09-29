@@ -4,6 +4,7 @@
 
 ### Fixed
 - Fixed wrong carthage directory name reference for macOS [#74](https://github.com/yonaskolb/XcodeGen/pull/74)
+- Removed unnecessary `carthage copy-frameworks` for macOS app target [#76](https://github.com/yonaskolb/XcodeGen/pull/76)
 
 ## 1.2.2
 
