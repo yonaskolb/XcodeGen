@@ -282,8 +282,8 @@ public class PBXProjGenerator {
                     copyFiles.append(embedFile.reference)
                 }
             case .carthage:
-                if carthageFrameworksByPlatform[target.platform.rawValue] == nil {
-                    carthageFrameworksByPlatform[target.platform.rawValue] = []
+                if carthageFrameworksByPlatform[target.platform.carthageDirectoryName] == nil {
+                    carthageFrameworksByPlatform[target.platform.carthageDirectoryName] = []
                 }
                 var platformPath = Path(getCarthageBuildPath(platform: target.platform))
                 var frameworkPath = platformPath + dependancy.reference
@@ -294,7 +294,7 @@ public class PBXProjGenerator {
 
                 let buildFile = PBXBuildFile(reference: generateUUID(PBXBuildFile.self, fileReference + target.name), fileRef: fileReference)
                 addObject(buildFile)
-                carthageFrameworksByPlatform[target.platform.rawValue]?.append(fileReference)
+                carthageFrameworksByPlatform[target.platform.carthageDirectoryName]?.append(fileReference)
 
                 targetFrameworkBuildFiles.append(buildFile.reference)
             }
@@ -409,10 +409,7 @@ public class PBXProjGenerator {
     func getCarthageBuildPath(platform: Platform) -> String {
 
         let carthagePath = Path(carthageBuildPath)
-        var platformName = platform.rawValue
-        if platform == .macOS {
-            platformName = "Mac"
-        }
+        let platformName = platform.carthageDirectoryName
         return "\(carthagePath)/\(platformName)"
     }
 
