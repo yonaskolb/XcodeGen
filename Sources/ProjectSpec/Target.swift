@@ -203,13 +203,15 @@ public struct Dependency: Equatable {
     public var type: DependencyType
     public var reference: String
     public var embed: Bool?
+    public var link: Bool?
     public var codeSign: Bool = true
     public var removeHeaders: Bool = true
 
-    public init(type: DependencyType, reference: String, embed: Bool? = nil) {
+    public init(type: DependencyType, reference: String, embed: Bool? = nil, link: Bool? = nil) {
         self.type = type
         self.reference = reference
         self.embed = embed
+        self.link = link
     }
 
     public enum DependencyType {
@@ -255,6 +257,8 @@ extension Dependency: JSONObjectConvertible {
         }
 
         embed = jsonDictionary.json(atKeyPath: "embed")
+
+        link = jsonDictionary.json(atKeyPath: "link")
 
         if let bool: Bool = jsonDictionary.json(atKeyPath: "codeSign") {
             codeSign = bool
