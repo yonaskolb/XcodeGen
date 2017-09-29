@@ -231,28 +231,28 @@ public class PBXProjGenerator {
         var copyFiles: [String] = []
         var extensions: [String] = []
 
-        for dependancy in target.dependencies {
+        for dependency in target.dependencies {
 
-            let embed = dependancy.embed ?? (target.type.isApp ? true : false)
-            switch dependancy.type {
+            let embed = dependency.embed ?? (target.type.isApp ? true : false)
+            switch dependency.type {
             case .target:
-                let dependencyTargetName = dependancy.reference
+                let dependencyTargetName = dependency.reference
                 guard let dependencyTarget = spec.getTarget(dependencyTargetName) else { continue }
                 let dependencyFileReference = targetFileReferences[dependencyTargetName]!
 
                 let targetProxy = PBXContainerItemProxy(reference: generateUUID(PBXContainerItemProxy.self, target.name), containerPortal: project.rootObject, remoteGlobalIDString: targetNativeReferences[dependencyTargetName]!, proxyType: .nativeTarget, remoteInfo: dependencyTargetName)
-                let targetDependancy = PBXTargetDependency(reference: generateUUID(PBXTargetDependency.self, dependencyTargetName + target.name), target: targetNativeReferences[dependencyTargetName]!, targetProxy: targetProxy.reference)
+                let targetDependency = PBXTargetDependency(reference: generateUUID(PBXTargetDependency.self, dependencyTargetName + target.name), target: targetNativeReferences[dependencyTargetName]!, targetProxy: targetProxy.reference)
 
                 addObject(targetProxy)
-                addObject(targetDependancy)
-                dependancies.append(targetDependancy.reference)
+                addObject(targetDependency)
+                dependancies.append(targetDependency.reference)
 
                 // don't bother linking a target dependency
                 // let dependencyBuildFile = targetBuildFileReferences[dependencyTargetName]!
                 // targetFrameworkBuildFiles.append(dependencyBuildFile)
 
                 if embed {
-                    let embedSettings = dependancy.buildSettings
+                    let embedSettings = dependency.buildSettings
                     let embedFile = PBXBuildFile(reference: generateUUID(PBXBuildFile.self, dependencyFileReference + target.name), fileRef: dependencyFileReference, settings: embedSettings)
                     addObject(embedFile)
 
@@ -266,7 +266,7 @@ public class PBXProjGenerator {
 
             case .framework:
 
-                let fileReference = getFileReference(path: Path(dependancy.reference), inPath: basePath)
+                let fileReference = getFileReference(path: Path(dependency.reference), inPath: basePath)
 
                 let buildFile = PBXBuildFile(reference: generateUUID(PBXBuildFile.self, fileReference + target.name), fileRef: fileReference)
                 addObject(buildFile)
@@ -277,7 +277,7 @@ public class PBXProjGenerator {
                 }
 
                 if embed {
-                    let embedFile = PBXBuildFile(reference: generateUUID(PBXBuildFile.self, fileReference + target.name), fileRef: fileReference, settings: dependancy.buildSettings)
+                    let embedFile = PBXBuildFile(reference: generateUUID(PBXBuildFile.self, fileReference + target.name), fileRef: fileReference, settings: dependency.buildSettings)
                     addObject(embedFile)
                     copyFiles.append(embedFile.reference)
                 }
@@ -286,7 +286,7 @@ public class PBXProjGenerator {
                     carthageFrameworksByPlatform[target.platform.rawValue] = []
                 }
                 var platformPath = Path(getCarthageBuildPath(platform: target.platform))
-                var frameworkPath = platformPath + dependancy.reference
+                var frameworkPath = platformPath + dependency.reference
                 if frameworkPath.extension == nil {
                     frameworkPath = Path(frameworkPath.string + ".framework")
                 }
