@@ -16,16 +16,11 @@ public struct SpecLoader {
 
     public static func loadSpec(path: Path) throws -> ProjectSpec {
         let dictionary = try loadDictionary(path: path)
-        let filteredDictionary = SpecLoader.filterNull(dictionary) as! [String: Any]
-        return try ProjectSpec(jsonDictionary: filteredDictionary)
+        return try ProjectSpec(jsonDictionary: dictionary)
     }
 
     private static func loadDictionary(path: Path) throws -> JSONDictionary {
-        let string: String = try path.read()
-        let yaml = try Yams.load(yaml: string)
-        guard var json = yaml as? JSONDictionary else {
-            throw JSONUtilsError.fileNotAJSONDictionary
-        }
+        var json = try loadYamlDictionary(path: path)
 
         var includes: [String]
         if let includeString = json["include"] as? String {
@@ -64,23 +59,5 @@ public struct SpecLoader {
             }
         }
         return merged
-    }
-
-    private static func filterNull(_ object: Any) -> Any {
-        var returnedValue: Any = object
-        if let dict = object as? [String: Any] {
-            var mutabledic: [String: Any] = [:]
-            for (key, value) in dict {
-                mutabledic[key] = SpecLoader.filterNull(value)
-            }
-            returnedValue = mutabledic
-        } else if let array = object as? [Any] {
-            var mutableArray: [Any] = array
-            for (index, value) in array.enumerated() {
-                mutableArray[index] = SpecLoader.filterNull(value)
-            }
-            returnedValue = mutableArray
-        }
-        return (object is NSNull) ? "" : returnedValue
     }
 }

@@ -110,23 +110,11 @@ extension SettingsPresetFile {
             return nil
         }
 
-        guard let buildSettings = try? loadSettings(path: settingsPath) else {
+        guard let buildSettings = try? loadYamlDictionary(path: settingsPath) else {
             print("Error parsing \"\(name)\" settings")
             return nil
         }
         buildSettingFiles[path] = buildSettings
         return buildSettings
-    }
-
-    public func loadSettings(path: Path) throws -> BuildSettings {
-        let content: String = try path.read()
-        if content == "" {
-            return [:]
-        }
-        let yaml = try Yams.load(yaml: content)
-        guard let dictionary = yaml as? JSONDictionary else {
-            throw JSONUtilsError.fileNotAJSONDictionary
-        }
-        return dictionary
     }
 }
