@@ -2,6 +2,9 @@
 
 ## Master
 
+### Fixed
+- Fixed potential code-signing failure on framework target [#78](https://github.com/yonaskolb/XcodeGen/pull/78) @toshi0383
+
 ## 1.2.3
 
 ### Fixed
