@@ -2,6 +2,9 @@
 
 ## Master
 
+### Fixed
+- Always embed frameworks for macOS, but provide link option for ObjC selector calls [#79](https://github.com/yonaskolb/XcodeGen/pull/79) @toshi0383
+
 ## 1.2.3
 
 ### Fixed

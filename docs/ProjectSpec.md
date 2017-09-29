@@ -218,6 +218,12 @@ These only applied to `target` and `framework` dependencies.
 - ⚪️ **codeSign**: `Bool` - Whether the `codeSignOnCopy` setting is applied when embedding framework. Defaults to true
 - ⚪️ **removeHeaders**: `Bool` - Whether the `removeHeadersOnCopy` setting is applied when embedding the framework. Defaults to true
 
+**Carthage link option for macOS**:
+
+For macOS, Carthage frameworks are to be always embedded. But sometime you need to link, too.
+
+- ⚪️ **link**: `Bool` - [macOS only] Whether to link the dependency. Defaults to false.
+
 **Carthage Dependency**
 
 Carthage frameworks are expected to be in `CARTHAGE_BUILD_PATH/PLATFORM/FRAMEWORK.framework` where:
