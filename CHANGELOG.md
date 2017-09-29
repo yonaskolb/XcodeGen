@@ -2,6 +2,9 @@
 
 ## Master
 
+### Fixed
+- Fixed wrong carthage directory name reference for macOS [#74](https://github.com/yonaskolb/XcodeGen/pull/74)
+
 ## 1.2.2
 
 ### Added
