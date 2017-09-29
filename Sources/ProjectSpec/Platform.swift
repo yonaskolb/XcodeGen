@@ -13,4 +13,12 @@ public enum Platform: String {
     case watchOS
     case tvOS
     case macOS
+    public var carthageDirectoryName: String {
+        switch self {
+        case .macOS:
+            return "Mac"
+        default:
+            return self.rawValue
+        }
+    }
 }
