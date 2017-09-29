@@ -79,6 +79,7 @@ public class PBXProjGenerator {
                     for (k, _) in configFile.flattenedBuildSettings() {
                         // FIXME: Catch platform specifier. e.g. LD_RUNPATH_SEARCH_PATHS[sdk=iphone*]
                         buildSettings.removeValue(forKey: k)
+                        buildSettings.removeValue(forKey: "\"\(k)\"")
                     }
                 }
             }
@@ -186,6 +187,7 @@ public class PBXProjGenerator {
                     for (k, _) in configFile.flattenedBuildSettings() {
                         // FIXME: Catch platform specifier. e.g. LD_RUNPATH_SEARCH_PATHS[sdk=iphone*]
                         buildSettings.removeValue(forKey: k)
+                        buildSettings.removeValue(forKey: "\"\(k)\"")
                     }
                 }
             }
@@ -195,6 +197,7 @@ public class PBXProjGenerator {
                     for (k, _) in configFile.flattenedBuildSettings() {
                         // FIXME: Catch platform specifier. e.g. LD_RUNPATH_SEARCH_PATHS[sdk=iphone*]
                         buildSettings.removeValue(forKey: k)
+                        buildSettings.removeValue(forKey: "\"\(k)\"")
                     }
                 }
             }
