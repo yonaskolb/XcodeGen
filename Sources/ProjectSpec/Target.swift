@@ -225,7 +225,8 @@ public struct Dependency: Equatable {
             lhs.type == rhs.type &&
             lhs.codeSign == rhs.codeSign &&
             lhs.removeHeaders == rhs.removeHeaders &&
-            lhs.embed == rhs.embed
+            lhs.embed == rhs.embed &&
+            lhs.link == rhs.link
     }
 
     public var buildSettings: [String: Any] {
