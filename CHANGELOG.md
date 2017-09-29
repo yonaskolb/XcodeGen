@@ -2,9 +2,14 @@
 
 ## Master
 
+## 1.2.3
+
 ### Fixed
-- Fixed wrong carthage directory name reference for macOS [#74](https://github.com/yonaskolb/XcodeGen/pull/74)
-- Removed unnecessary `carthage copy-frameworks` for macOS app target [#76](https://github.com/yonaskolb/XcodeGen/pull/76)
+- Fixed wrong carthage directory name reference for macOS [#74](https://github.com/yonaskolb/XcodeGen/pull/74) @toshi0383
+- Removed unnecessary `carthage copy-frameworks` for macOS app target [#76](https://github.com/yonaskolb/XcodeGen/pull/76) @toshi0383
+- Added some missing default settings for framework targets. `SKIP_INSTALL: YES` fixes archiving
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/1.2.2...1.2.3)
 
 ## 1.2.2
 
