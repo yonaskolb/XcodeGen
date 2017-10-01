@@ -457,9 +457,20 @@ public class PBXProjGenerator {
     func getGroups(path: Path, depth: Int = 0) throws -> (filePaths: [Path], groups: [PBXGroup]) {
 
         let excludedFiles: [String] = [".DS_Store"]
-        let directories = try path.children().filter { $0.isDirectory && $0.extension == nil && $0.extension != "lproj" }
-        let filePaths = try path.children().filter { $0.isFile || $0.extension != nil && $0.extension != "lproj" }.filter { !excludedFiles.contains($0.lastComponent) }
-        let localisedDirectories = try path.children().filter { $0.extension == "lproj" }
+
+        let directories = try path.children()
+            .filter { $0.isDirectory && $0.extension == nil && $0.extension != "lproj" }
+            .sorted { $0.lastComponent < $1.lastComponent }
+
+        let filePaths = try path.children()
+            .filter { $0.isFile || $0.extension != nil && $0.extension != "lproj" }
+            .filter { !excludedFiles.contains($0.lastComponent) }
+            .sorted { $0.lastComponent < $1.lastComponent }
+
+        let localisedDirectories = try path.children()
+            .filter { $0.extension == "lproj" }
+            .sorted { $0.lastComponent < $1.lastComponent }
+
         var groupChildren: [String] = []
         var allFilePaths: [Path] = filePaths
         var groups: [PBXGroup] = []
@@ -477,7 +488,7 @@ public class PBXProjGenerator {
         }
 
         for localisedDirectory in localisedDirectories {
-            for path in try localisedDirectory.children() {
+            for path in try localisedDirectory.children().sorted { $0.lastComponent < $1.lastComponent } {
                 let filePath = "\(localisedDirectory.lastComponent)/\(path.lastComponent)"
                 let fileReference = PBXFileReference(reference: generateUUID(PBXFileReference.self, localisedDirectory.lastComponent), sourceTree: .group, name: localisedDirectory.lastComponentWithoutExtension, path: filePath)
                 addObject(fileReference)

@@ -74,8 +74,8 @@
 		G26536595301 /* TestProjectTests */ = {
 			isa = PBXGroup;
 			children = (
-				FR6877173101 /* TestProjectTests.swift */,
 				FR1345298503 /* Info.plist */,
+				FR6877173101 /* TestProjectTests.swift */,
 			);
 			name = TestProjectTests;
 			path = TestProjectTests;
@@ -84,9 +84,9 @@
 		G29934978701 /* MyFramework */ = {
 			isa = PBXGroup;
 			children = (
-				FR7740960501 /* MyFramework.h */,
 				FR7078510801 /* FrameworkFile.swift */,
 				FR1345298501 /* Info.plist */,
+				FR7740960501 /* MyFramework.h */,
 			);
 			name = MyFramework;
 			path = MyFramework;
@@ -95,10 +95,10 @@
 		G65232631501 /* TestProject */ = {
 			isa = PBXGroup;
 			children = (
-				FR6218091901 /* ViewController.swift */,
-				FR5980633301 /* Assets.xcassets */,
 				FR1332263601 /* AppDelegate.swift */,
+				FR5980633301 /* Assets.xcassets */,
 				FR1345298502 /* Info.plist */,
+				FR6218091901 /* ViewController.swift */,
 				VG6405436301 /* LaunchScreen.storyboard */,
 				VG1473702401 /* Main.storyboard */,
 			);
@@ -109,8 +109,8 @@
 		G83406189501 /* Configs */ = {
 			isa = PBXGroup;
 			children = (
-				FR6334256101 /* config.xcconfig */,
 				FR3546283901 /* base.xcconfig */,
+				FR6334256101 /* config.xcconfig */,
 			);
 			name = Configs;
 			path = Configs;
@@ -336,8 +336,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF1744565901 /* ViewController.swift in Sources */,
 				BF1073850101 /* AppDelegate.swift in Sources */,
+				BF1744565901 /* ViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
