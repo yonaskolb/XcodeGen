@@ -156,7 +156,7 @@ public class PBXProjGenerator {
 
     func generateTarget(_ target: Target) throws -> PBXNativeTarget {
 
-        let carthageFrameworks = Set(getCarthageFrameworks(target: target))
+        let carthageDependencies = getAllCarthageDependencies(target: target)
 
         let sourcePaths = target.sources.map { basePath + $0 }
         var sourceFilePaths: [Path] = []
@@ -202,7 +202,7 @@ public class PBXProjGenerator {
             }
 
             // set Carthage search paths
-            if !carthageFrameworks.isEmpty {
+            if !carthageDependencies.isEmpty {
                 let frameworkSearchPaths = "FRAMEWORK_SEARCH_PATHS"
                 let carthagePlatformBuildPath = "$(PROJECT_DIR)/" + getCarthageBuildPath(platform: target.platform)
                 var newSettings: [String] = []
@@ -381,10 +381,13 @@ public class PBXProjGenerator {
             buildPhases.append(copyFilesPhase.reference)
         }
 
-        if !carthageFrameworks.isEmpty {
+        let carthageFrameworksToEmbed = carthageDependencies
+            .filter { ($0.embed ?? true) }
+            .map { $0.reference }
+        if !carthageFrameworksToEmbed.isEmpty {
 
             if target.type.isApp && target.platform != .macOS {
-                let inputPaths = carthageFrameworks.map { "$(SRCROOT)/\(carthageBuildPath)/\(target.platform)/\($0)\($0.contains(".") ? "" : ".framework")" }
+                let inputPaths = Set(carthageFrameworksToEmbed).map { "$(SRCROOT)/\(carthageBuildPath)/\(target.platform)/\($0)\($0.contains(".") ? "" : ".framework")" }
                 let carthageScript = PBXShellScriptBuildPhase(reference: generateUUID(PBXShellScriptBuildPhase.self, "Carthage" + target.name), files: [], name: "Carthage", inputPaths: inputPaths, outputPaths: [], shellPath: "/bin/sh", shellScript: "/usr/local/bin/carthage copy-frameworks\n")
                 addObject(carthageScript)
                 buildPhases.append(carthageScript.reference)
@@ -413,14 +416,15 @@ public class PBXProjGenerator {
         return "\(carthagePath)/\(platformName)"
     }
 
-    func getCarthageFrameworks(target: Target) -> [String] {
-        var frameworks: [String] = []
+    func getAllCarthageDependencies(target: Target) -> [Dependency] {
+        var frameworks: [Dependency] = []
         for dependency in target.dependencies {
             switch dependency.type {
-            case .carthage: frameworks.append(dependency.reference)
+            case .carthage:
+                frameworks.append(dependency)
             case .target:
                 if let target = spec.getTarget(dependency.reference) {
-                    frameworks += getCarthageFrameworks(target: target)
+                    frameworks += getAllCarthageDependencies(target: target)
                 }
             default: break
             }
