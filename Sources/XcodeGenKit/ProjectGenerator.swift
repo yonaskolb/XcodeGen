@@ -8,7 +8,7 @@
 
 import Foundation
 import PathKit
-import xcodeproj
+import xcproj
 import JSONUtilities
 import Yams
 import ProjectSpec

@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import xcodeproj
+import xcproj
 import ProjectSpec
 
 public enum SettingsPresetFile {

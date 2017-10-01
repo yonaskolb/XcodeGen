@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import xcodeproj
+import xcproj
 import JSONUtilities
 
 public typealias BuildType = XCScheme.BuildAction.Entry.BuildFor

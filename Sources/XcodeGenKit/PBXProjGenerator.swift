@@ -9,7 +9,7 @@
 import Foundation
 import Foundation
 import PathKit
-import xcodeproj
+import xcproj
 import JSONUtilities
 import Yams
 import ProjectSpec
@@ -482,7 +482,7 @@ public class PBXProjGenerator {
                 let fileReference = PBXFileReference(reference: generateUUID(PBXFileReference.self, localisedDirectory.lastComponent), sourceTree: .group, name: localisedDirectory.lastComponentWithoutExtension, path: filePath)
                 addObject(fileReference)
 
-                let variantGroup = PBXVariantGroup(reference: generateUUID(PBXVariantGroup.self, path.lastComponent), children: Set([fileReference.reference]), name: path.lastComponent, sourceTree: .group)
+                let variantGroup = PBXVariantGroup(reference: generateUUID(PBXVariantGroup.self, path.lastComponent), children: [fileReference.reference], name: path.lastComponent, sourceTree: .group)
                 addObject(variantGroup)
 
                 fileReferencesByPath[path] = variantGroup.reference

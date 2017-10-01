@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import xcodeproj
+import xcproj
 import PathKit
 
 extension Dictionary where Key == String, Value: Any {

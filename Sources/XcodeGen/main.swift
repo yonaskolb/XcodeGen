@@ -10,7 +10,7 @@ import Foundation
 import PathKit
 import Commander
 import XcodeGenKit
-import xcodeproj
+import xcproj
 import ProjectSpec
 import JSONUtilities
 import Rainbow

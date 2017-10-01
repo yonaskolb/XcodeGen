@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import xcodeproj
+import xcproj
 import PathKit
 import ProjectSpec
 import Yams

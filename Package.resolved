@@ -57,7 +57,7 @@
       },
       {
         "package": "Unbox",
-        "repositoryURL": "https://github.com/JohnSundell/Unbox",
+        "repositoryURL": "https://github.com/JohnSundell/Unbox.git",
         "state": {
           "branch": null,
           "revision": "17ad6aa1cc2f1efa27a0bbbdb66f79796708aa95",
@@ -74,12 +74,12 @@
         }
       },
       {
-        "package": "xcodeproj",
-        "repositoryURL": "https://github.com/swift-xcode/xcodeproj.git",
+        "package": "xcproj",
+        "repositoryURL": "https://github.com/xcodeswift/xcproj.git",
         "state": {
           "branch": null,
-          "revision": "16db8728879bcfe21adf64f12b55a456e1d0e2e8",
-          "version": "0.2.0"
+          "revision": "e937b43cefa9c67a1787aba482ceb2f3ba172baf",
+          "version": "0.3.0"
         }
       }
     ]
