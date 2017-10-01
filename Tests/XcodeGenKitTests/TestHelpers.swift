@@ -1,6 +1,6 @@
 import Foundation
 import Spectre
-import xcodeproj
+import xcproj
 
 func expectError<T: Error>(_ expectedError: T, _ closure: () throws -> Void) throws where T: CustomStringConvertible {
     do {

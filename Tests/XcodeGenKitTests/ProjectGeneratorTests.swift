@@ -1,6 +1,6 @@
 import Spectre
 import XcodeGenKit
-import xcodeproj
+import xcproj
 import PathKit
 import ProjectSpec
 

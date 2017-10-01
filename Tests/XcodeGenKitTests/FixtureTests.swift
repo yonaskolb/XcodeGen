@@ -1,7 +1,7 @@
 import Spectre
 import PathKit
 import XcodeGenKit
-import xcodeproj
+import xcproj
 import ProjectSpec
 
 let fixturePath = Path(#file).parent().parent().parent() + "Fixtures"
