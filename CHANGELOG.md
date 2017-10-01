@@ -2,6 +2,18 @@
 
 ## Master
 
+## 1.2.4
+
+### Fixed
+- setting presets only apply `ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES: YES` to applications
+- don't add carthage dependency to `copy-frameworks` script if `embed: false`
+- sort group children on APFS
+
+### Changed
+- update to xcproj 0.3.0
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/1.2.3...1.2.4)
+
 ## 1.2.3
 
 ### Fixed
