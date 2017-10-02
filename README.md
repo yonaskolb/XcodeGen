@@ -93,7 +93,7 @@ $ swift run
 Add the following to your Package.swift file's dependencies:
 
 ```
-.Package(url: "https://github.com/yonaskolb/XcodeGen.git", majorVersion: 0)
+.package(url: "https://github.com/yonaskolb/XcodeGen.git", from: "1.0.0"),
 ```
 
 And then import wherever needed: `import XcodeGenKit`
