@@ -226,7 +226,7 @@ public class PBXProjGenerator {
         let buildConfigList = XCConfigurationList(reference: generateUUID(XCConfigurationList.self, target.name), buildConfigurations: configs.references, defaultConfigurationName: "")
         addObject(buildConfigList)
 
-        var dependancies: [String] = []
+        var dependencies: [String] = []
         var targetFrameworkBuildFiles: [String] = []
         var copyFiles: [String] = []
         var extensions: [String] = []
@@ -245,7 +245,7 @@ public class PBXProjGenerator {
 
                 addObject(targetProxy)
                 addObject(targetDependency)
-                dependancies.append(targetDependency.reference)
+                dependencies.append(targetDependency.reference)
 
                 // don't bother linking a target dependency
                 // let dependencyBuildFile = targetBuildFileReferences[dependencyTargetName]!
@@ -401,7 +401,7 @@ public class PBXProjGenerator {
             buildConfigurationList: buildConfigList.reference,
             buildPhases: buildPhases,
             buildRules: [],
-            dependencies: dependancies,
+            dependencies: dependencies,
             name: target.name,
             productReference: fileReference,
             productType: target.type)
