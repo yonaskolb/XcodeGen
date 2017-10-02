@@ -67,14 +67,22 @@ extension ProjectSpec {
                     buildSettings += configFile.flattenedBuildSettings()
                 }
             }
-            buildSettings += getProjectBuildSettings(config: config)
+            for (k, v) in getProjectBuildSettings(config: config) {
+                if buildSettings[k] == nil {
+                    buildSettings[k] = v
+                }
+            }
         }
         if let configFilePath = target.configFiles[config.name] {
             if let configFile = try? XCConfig(path: basePath + configFilePath) {
                 buildSettings += configFile.flattenedBuildSettings()
             }
         }
-        buildSettings += getTargetBuildSettings(target: target, config: config)
+        for (k, v) in getTargetBuildSettings(target: target, config: config) {
+            if buildSettings[k] == nil {
+                buildSettings[k] = v
+            }
+        }
         return buildSettings
     }
 
