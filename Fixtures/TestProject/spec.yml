@@ -12,6 +12,7 @@ targets:
       INFOPLIST_FILE: TestProject/Info.plist
     dependencies:
       - target: MyFramework
+      - carthage: Result
     scheme:
       testTargets:
         - TestProjectTests
