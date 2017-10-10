@@ -56,15 +56,6 @@
         }
       },
       {
-        "package": "Unbox",
-        "repositoryURL": "https://github.com/JohnSundell/Unbox.git",
-        "state": {
-          "branch": null,
-          "revision": "17ad6aa1cc2f1efa27a0bbbdb66f79796708aa95",
-          "version": "2.5.0"
-        }
-      },
-      {
         "package": "Yams",
         "repositoryURL": "https://github.com/jpsim/Yams.git",
         "state": {
@@ -78,8 +69,8 @@
         "repositoryURL": "https://github.com/xcodeswift/xcproj.git",
         "state": {
           "branch": null,
-          "revision": "e937b43cefa9c67a1787aba482ceb2f3ba172baf",
-          "version": "0.3.0"
+          "revision": "e25c5dfa28cbabec51bc7df0d4a11664be1bbb5f",
+          "version": "0.4.0"
         }
       }
     ]
