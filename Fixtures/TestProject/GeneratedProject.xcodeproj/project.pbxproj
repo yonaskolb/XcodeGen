@@ -1,8 +1,8 @@
 // !$*UTF8*$!
 {
 	archiveVersion = 1;
-	classes = (
-	);
+	classes = {
+	};
 	objectVersion = 46;
 	objects = {
 
@@ -14,7 +14,7 @@
 		BF2753556301 = {isa = PBXBuildFile; fileRef = FR2993497801 /* MyFramework.framework */; };
 		BF3154421201 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FR5980633301 /* Assets.xcassets */; };
 		BF3515549501 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = FR7740960501 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		BF3862341101 /* MyFramework.framework in Copy Files */ = {isa = PBXBuildFile; fileRef = FR2993497801 /* MyFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BF3862341101 /* MyFramework.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = FR2993497801 /* MyFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BF4946816301 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = VG1473702401 /* Main.storyboard */; };
 		BF5986511201 = {isa = PBXBuildFile; fileRef = FR6523263101 /* TestProject.app */; };
 		BF6182896901 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR9215298301 /* Result.framework */; };
@@ -46,7 +46,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				BF3862341101 /* MyFramework.framework in Copy Files */,
+				BF3862341101 /* MyFramework.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -269,7 +269,7 @@
 			attributes = {
 				LastUpgradeCheck = 0900;
 			};
-			buildConfigurationList = XCCL81399401 /* Build configuration list for PBXProject */;
+			buildConfigurationList = XCCL81399401 /* Build configuration list for PBXProject "GeneratedProject" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			knownRegions = (
@@ -709,7 +709,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "";
 		};
-		XCCL81399401 /* Build configuration list for PBXProject */ = {
+		XCCL81399401 /* Build configuration list for PBXProject "GeneratedProject" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				XCBC47994501 /* Debug */,

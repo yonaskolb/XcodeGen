@@ -124,7 +124,8 @@ public class PBXProjGenerator {
 
         let knownRegions: [String] = ["en", "Base"]
         let projectAttributes: [String: Any] = ["LastUpgradeCheck": currentXcodeVersion].merged(spec.attributes)
-        let root = PBXProject(reference: project.rootObject,
+        let root = PBXProject(name: spec.name,
+                              reference: project.rootObject,
                               buildConfigurationList: buildConfigList.reference,
                               compatibilityVersion: "Xcode 3.2",
                               mainGroup: mainGroup.reference,
