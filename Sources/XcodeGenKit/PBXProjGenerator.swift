@@ -527,23 +527,26 @@ public class PBXProjGenerator {
         for localisedDirectory in localisedDirectories {
             let localisationName = localisedDirectory.lastComponentWithoutExtension
             for path in try localisedDirectory.children().sorted { $0.lastComponent < $1.lastComponent } {
-                guard fileReferencesByPath[path] == nil else {
-                    continue
-                }
+
 
                 let filePath = "\(localisedDirectory.lastComponent)/\(path.lastComponent)"
 
                 // find base localisation variant group
                 let name = path.lastComponentWithoutExtension
-                let variantGroup = baseLocalisationVariantGroups.first(where: { Path($0.name).lastComponentWithoutExtension == name })
+                let variantGroup = baseLocalisationVariantGroups.first { Path($0.name).lastComponentWithoutExtension == name }
 
-                let reference = PBXFileReference(reference: generateUUID(PBXFileReference.self, path.lastComponent),
-                                                 sourceTree: .group,
-                                                 name: variantGroup != nil ? localisationName : path.lastComponent,
-                                                 path: filePath)
-                addObject(reference)
-                fileReferencesByPath[path] = reference.reference
-                let fileReference = reference.reference
+                let fileReference: String
+                if let cachedFileReference = fileReferencesByPath[path] {
+                    fileReference = cachedFileReference
+                } else {
+                    let reference = PBXFileReference(reference: generateUUID(PBXFileReference.self, path.lastComponent),
+                                                     sourceTree: .group,
+                                                     name: variantGroup != nil ? localisationName : path.lastComponent,
+                                                     path: filePath)
+                    addObject(reference)
+                    fileReference = reference.reference
+                    fileReferencesByPath[path] = fileReference
+                }
 
                 if let variantGroup = variantGroup {
                     variantGroup.children.append(fileReference)
