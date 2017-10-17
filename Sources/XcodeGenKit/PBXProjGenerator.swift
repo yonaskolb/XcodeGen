@@ -256,7 +256,8 @@ public class PBXProjGenerator {
                     targetFrameworkBuildFiles.append(buildFile.reference)
                 }
 
-                if embed {
+                if embed && !dependencyTarget.type.isLibrary {
+
                     let embedSettings = dependency.buildSettings
                     let embedFile = PBXBuildFile(reference: generateUUID(PBXBuildFile.self, dependencyFileReference + target.name), fileRef: dependencyFileReference, settings: embedSettings)
                     addObject(embedFile)
