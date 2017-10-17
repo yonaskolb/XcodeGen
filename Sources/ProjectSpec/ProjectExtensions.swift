@@ -46,6 +46,10 @@ extension PBXProductType {
         }
     }
 
+    public var isFramework: Bool {
+        return fileExtension == "framework"
+    }
+
     public var isExtension: Bool {
         return fileExtension == "appex"
     }
