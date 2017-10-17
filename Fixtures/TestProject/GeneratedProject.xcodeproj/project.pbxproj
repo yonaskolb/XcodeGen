@@ -19,6 +19,7 @@
 		BF3862341101 /* MyFramework.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = FR2993497801 /* MyFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BF5986511201 = {isa = PBXBuildFile; fileRef = FR6523263101 /* TestProject.app */; };
 		BF6182896901 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR9215298301 /* Result.framework */; };
+		BF7015992001 /* MyFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR2993497801 /* MyFramework.framework */; };
 		BF9001417701 /* TestProjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR6877173101 /* TestProjectTests.swift */; };
 		BF9155249601 /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR7078510801 /* FrameworkFile.swift */; };
 /* End PBXBuildFile section */
@@ -80,6 +81,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BF7015992001 /* MyFramework.framework in Frameworks */,
 				BF6182896901 /* Result.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
