@@ -16,6 +16,7 @@ install: build
 
 build:
 	swift build --disable-sandbox -c release -Xswiftc -static-stdlib
+	strip $(BUILD_PATH)
 
 uninstall:
 	rm -f $(INSTALL_PATH)
