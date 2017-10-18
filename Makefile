@@ -14,6 +14,7 @@ install: build
 	mkdir -p $(SHARE_PATH)
 	cp -R $(CURRENT_PATH)/SettingPresets $(SHARE_PATH)/SettingPresets
 
+.PHONY: build
 build:
 	swift build --disable-sandbox -c release -Xswiftc -static-stdlib
 
