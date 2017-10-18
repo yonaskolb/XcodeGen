@@ -230,6 +230,7 @@ public class PBXProjGenerator {
         var dependencies: [String] = []
         var targetFrameworkBuildFiles: [String] = []
         var copyFiles: [String] = []
+        var copyWatchReferences: [String] = []
         var extensions: [String] = []
 
         for dependency in target.dependencies {
@@ -260,6 +261,8 @@ public class PBXProjGenerator {
                     if dependencyTarget.type.isExtension {
                         // embed app extension
                         extensions.append(embedFile.reference)
+                    } else if dependencyTarget.type.isApp && dependencyTarget.platform == .watchOS {
+                        copyWatchReferences.append(embedFile.reference)
                     } else {
                         copyFiles.append(embedFile.reference)
                     }
@@ -388,6 +391,18 @@ public class PBXProjGenerator {
             buildPhases.append(copyFilesPhase.reference)
         }
 
+        if !copyWatchReferences.isEmpty {
+
+            let copyFilesPhase = PBXCopyFilesBuildPhase(
+                reference: generateUUID(PBXCopyFilesBuildPhase.self, "embed watch content" + target.name),
+                dstPath: "$(CONTENTS_FOLDER_PATH)/Watch",
+                dstSubfolderSpec: .productsDirectory,
+                files: copyWatchReferences)
+
+            addObject(copyFilesPhase)
+            buildPhases.append(copyFilesPhase.reference)
+        }
+
         let carthageFrameworksToEmbed = Array(Set(carthageDependencies
             .filter { $0.embed ?? true }
             .map { $0.reference }))
@@ -511,7 +526,7 @@ public class PBXProjGenerator {
                                                    name: path.lastComponent,
                                                    sourceTree: .group)
                     variantGroupsByPath[path] = variantGroup
-                    
+
                     addObject(variantGroup)
                     groupChildren.append(variantGroup.reference)
                 }
