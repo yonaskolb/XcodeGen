@@ -47,7 +47,11 @@ extension PBXProductType {
     }
 
     public var isFramework: Bool {
-        return fileExtension == "framework"
+        return self == .framework
+    }
+
+    public var isLibrary: Bool {
+        return self == .staticLibrary || self == .dynamicLibrary
     }
 
     public var isExtension: Bool {

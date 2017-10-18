@@ -25,7 +25,7 @@ public class PBXProjGenerator {
     var variantGroupsByPath: [Path: PBXVariantGroup] = [:]
 
     var targetNativeReferences: [String: String] = [:]
-    var targetBuildFileReferences: [String: String] = [:]
+    var targetBuildFiles: [String: PBXBuildFile] = [:]
     var targetFileReferences: [String: String] = [:]
     var topLevelGroups: [PBXGroup] = []
     var carthageFrameworksByPlatform: [String: [String]] = [:]
@@ -93,7 +93,7 @@ public class PBXProjGenerator {
 
             let buildFile = PBXBuildFile(reference: generateUUID(PBXBuildFile.self, fileReference.reference), fileRef: fileReference.reference)
             addObject(buildFile)
-            targetBuildFileReferences[target.name] = buildFile.reference
+            targetBuildFiles[target.name] = buildFile
         }
 
         let targets = try spec.targets.map(generateTarget)
@@ -250,11 +250,15 @@ public class PBXProjGenerator {
                 addObject(targetDependency)
                 dependencies.append(targetDependency.reference)
 
-                // don't bother linking a target dependency
-                // let dependencyBuildFile = targetBuildFileReferences[dependencyTargetName]!
-                // targetFrameworkBuildFiles.append(dependencyBuildFile)
+                if dependencyTarget.type.isLibrary || dependencyTarget.type.isFramework {
+                    let dependencyBuildFile = targetBuildFiles[dependencyTargetName]!
+                    let buildFile = PBXBuildFile(reference: generateUUID(PBXBuildFile.self, dependencyBuildFile.reference + target.name), fileRef: dependencyBuildFile.fileRef)
+                    addObject(buildFile)
+                    targetFrameworkBuildFiles.append(buildFile.reference)
+                }
 
-                if embed {
+                if embed && !dependencyTarget.type.isLibrary {
+
                     let embedSettings = dependency.buildSettings
                     let embedFile = PBXBuildFile(reference: generateUUID(PBXBuildFile.self, dependencyFileReference + target.name), fileRef: dependencyFileReference, settings: embedSettings)
                     addObject(embedFile)
