@@ -16,6 +16,9 @@
   <a href="https://github.com/yonaskolb/XcodeGen/blob/master/LICENSE">
     <img src="https://img.shields.io/github/license/mashape/apistatus.svg"/>
   </a>
+  <a href="http://xcodeswift.herokuapp.com/">
+    <img src="https://xcodeswift.herokuapp.com/badge.svg">
+  </a>
 </p>
 
 # XcodeGen
