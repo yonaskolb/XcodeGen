@@ -16,11 +16,10 @@ import JSONUtilities
 extension ProjectSpec {
 
     public func getProjectBuildSettings(config: Config) -> BuildSettings {
-
         var buildSettings: BuildSettings = [:]
-        buildSettings += SettingsPresetFile.base.getBuildSettings()
 
         if let type = config.type {
+            buildSettings += SettingsPresetFile.base.getBuildSettings()
             buildSettings += SettingsPresetFile.config(type).getBuildSettings()
         }
 
