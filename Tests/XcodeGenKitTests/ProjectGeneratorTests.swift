@@ -41,6 +41,16 @@ func projectGeneratorTests() {
                 }
                 try expect(buildConfig.buildSettings["PRODUCT_BUNDLE_IDENTIFIER"] as? String) == "com.test.MyFramework"
             }
+            
+            $0.it("clears setting presets") {
+                var options = ProjectSpec.Options()
+                options.applySettingPresets = .none
+                let spec = ProjectSpec(name: "test", targets: [framework], options: options)
+                let project = try getProject(spec)
+                let allSettings = project.pbxproj.buildConfigurations.reduce([:]) { $0.merged($1.buildSettings)}.keys.sorted()
+                try expect(allSettings) == ["SETTING_2"]
+            }
+
         }
 
         $0.describe("Config") {

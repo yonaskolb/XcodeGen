@@ -29,6 +29,28 @@ public struct ProjectSpec {
     public struct Options {
         public var carthageBuildPath: String?
         public var bundleIdPrefix: String?
+        public var applySettingPresets: SettingPresets = .all
+        
+        public enum SettingPresets: String {
+            case all
+            case none
+            case project
+            case targets
+            
+            public var applyTarget: Bool {
+                switch self {
+                case .all, .targets: return true
+                default: return false
+                }
+            }
+            
+            public var applyProject: Bool {
+                switch self {
+                case .all, .project: return true
+                default: return false
+                }
+            }
+        }
 
         public init() {
         }
@@ -133,5 +155,6 @@ extension ProjectSpec.Options: JSONObjectConvertible {
     public init(jsonDictionary: JSONDictionary) throws {
         carthageBuildPath = jsonDictionary.json(atKeyPath: "carthageBuildPath")
         bundleIdPrefix = jsonDictionary.json(atKeyPath: "bundleIdPrefix")
+        applySettingPresets = jsonDictionary.json(atKeyPath: "applySettingPresets") ?? .all
     }
 }
