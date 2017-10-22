@@ -15,7 +15,7 @@ import JSONUtilities
 
 extension ProjectSpec {
 
-    public func getProjectBuildSettings(config: Config) -> BuildSettings {
+    public func getProjectBuildSettings(basePath: Path, config: Config) -> BuildSettings {
         var buildSettings: BuildSettings = [:]
 
         if let type = config.type {
@@ -24,18 +24,47 @@ extension ProjectSpec {
         }
 
         buildSettings += getBuildSettings(settings: settings, config: config)
+        if let configPath = configFiles[config.name] {
+            // Do not overwrite project xcconfig's value.
+            if let configFile = try? XCConfig(path: basePath + configPath) {
+                for (k, _) in configFile.flattenedBuildSettings() {
+                    // FIXME: Catch platform specifier. e.g. LD_RUNPATH_SEARCH_PATHS[sdk=iphone*]
+                    buildSettings.removeValue(forKey: k)
+                    buildSettings.removeValue(forKey: "\"\(k)\"")
+                }
+            }
+        }
 
         return buildSettings
     }
 
-    public func getTargetBuildSettings(target: Target, config: Config) -> BuildSettings {
+    public func getTargetBuildSettings(basePath: Path, target: Target, config: Config) -> BuildSettings {
         var buildSettings = BuildSettings()
 
         buildSettings += SettingsPresetFile.platform(target.platform).getBuildSettings()
         buildSettings += SettingsPresetFile.product(target.type).getBuildSettings()
         buildSettings += SettingsPresetFile.productPlatform(target.type, target.platform).getBuildSettings()
         buildSettings += getBuildSettings(settings: target.settings, config: config)
-
+        // Do not overwrite target xcconfig's values.
+        if let configPath = target.configFiles[config.name] {
+            if let configFile = try? XCConfig(path: basePath + configPath) {
+                for (k, _) in configFile.flattenedBuildSettings() {
+                    // FIXME: Catch platform specifier. e.g. LD_RUNPATH_SEARCH_PATHS[sdk=iphone*]
+                    buildSettings.removeValue(forKey: k)
+                    buildSettings.removeValue(forKey: "\"\(k)\"")
+                }
+            }
+        }
+        // Avoid overwriting target xcconfig's values by base presets' values.
+        if let configPath = configFiles[config.name] {
+            if let configFile = try? XCConfig(path: basePath + configPath) {
+                for (k, _) in configFile.flattenedBuildSettings() {
+                    // FIXME: Catch platform specifier. e.g. LD_RUNPATH_SEARCH_PATHS[sdk=iphone*]
+                    buildSettings.removeValue(forKey: k)
+                    buildSettings.removeValue(forKey: "\"\(k)\"")
+                }
+            }
+        }
         return buildSettings
     }
 
@@ -66,22 +95,14 @@ extension ProjectSpec {
                     buildSettings += configFile.flattenedBuildSettings()
                 }
             }
-            for (k, v) in getProjectBuildSettings(config: config) {
-                if buildSettings[k] == nil {
-                    buildSettings[k] = v
-                }
-            }
+            buildSettings += getProjectBuildSettings(basePath: basePath, config: config)
         }
         if let configFilePath = target.configFiles[config.name] {
             if let configFile = try? XCConfig(path: basePath + configFilePath) {
                 buildSettings += configFile.flattenedBuildSettings()
             }
         }
-        for (k, v) in getTargetBuildSettings(target: target, config: config) {
-            if buildSettings[k] == nil {
-                buildSettings[k] = v
-            }
-        }
+        buildSettings += getTargetBuildSettings(basePath: basePath, target: target, config: config)
         return buildSettings
     }
 

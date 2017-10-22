@@ -71,18 +71,10 @@ public class PBXProjGenerator {
         }
 
         let buildConfigs: [XCBuildConfiguration] = spec.configs.map { config in
-            var buildSettings = spec.getProjectBuildSettings(config: config)
+            let buildSettings = spec.getProjectBuildSettings(basePath: basePath, config: config)
             var baseConfigurationReference: String?
             if let configPath = spec.configFiles[config.name] {
                 baseConfigurationReference = getFileReference(path: basePath + configPath, inPath: basePath)
-                // Do not overwrite xcconfig's value.
-                if let configFile = try? XCConfig(path: basePath + configPath) {
-                    for (k, _) in configFile.flattenedBuildSettings() {
-                        // FIXME: Catch platform specifier. e.g. LD_RUNPATH_SEARCH_PATHS[sdk=iphone*]
-                        buildSettings.removeValue(forKey: k)
-                        buildSettings.removeValue(forKey: "\"\(k)\"")
-                    }
-                }
             }
             return XCBuildConfiguration(reference: generateUUID(XCBuildConfiguration.self, config.name), name: config.name, baseConfigurationReference: baseConfigurationReference, buildSettings: buildSettings)
         }
@@ -181,27 +173,7 @@ public class PBXProjGenerator {
         }
 
         let configs: [XCBuildConfiguration] = spec.configs.map { config in
-            var buildSettings = spec.getTargetBuildSettings(target: target, config: config)
-            // Do not overwrite target's xcconfig values.
-            if let configPath = spec.targets.flatMap({ $0 == target ? $0.configFiles[config.name] : nil }).first {
-                if let configFile = try? XCConfig(path: basePath + configPath) {
-                    for (k, _) in configFile.flattenedBuildSettings() {
-                        // FIXME: Catch platform specifier. e.g. LD_RUNPATH_SEARCH_PATHS[sdk=iphone*]
-                        buildSettings.removeValue(forKey: k)
-                        buildSettings.removeValue(forKey: "\"\(k)\"")
-                    }
-                }
-            }
-            // Do not overwrite base xcconfig values.
-            if let configPath = spec.configFiles[config.name] {
-                if let configFile = try? XCConfig(path: basePath + configPath) {
-                    for (k, _) in configFile.flattenedBuildSettings() {
-                        // FIXME: Catch platform specifier. e.g. LD_RUNPATH_SEARCH_PATHS[sdk=iphone*]
-                        buildSettings.removeValue(forKey: k)
-                        buildSettings.removeValue(forKey: "\"\(k)\"")
-                    }
-                }
-            }
+            var buildSettings = spec.getTargetBuildSettings(basePath: basePath, target: target, config: config)
 
             // automatically set INFOPLIST_FILE path
             if let plistPath = infoPlists.first,
