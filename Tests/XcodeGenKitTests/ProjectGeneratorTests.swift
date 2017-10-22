@@ -74,11 +74,12 @@ func projectGeneratorTests() {
 
             $0.it("merges settings") {
                 let spec = try ProjectSpec(path: fixturePath + "settings_test.yml")
+                let basePath = Path(".")
                 guard let config = spec.getConfig("config1") else { throw failure("Couldn't find config1") }
-                let debugProjectSettings = spec.getProjectBuildSettings(config: config)
+                let debugProjectSettings = spec.getProjectBuildSettings(basePath: basePath, config: config)
 
                 guard let target = spec.getTarget("Target") else { throw failure("Couldn't find Target") }
-                let targetDebugSettings = spec.getTargetBuildSettings(target: target, config: config)
+                let targetDebugSettings = spec.getTargetBuildSettings(basePath: basePath, target: target, config: config)
 
                 var buildSettings = BuildSettings()
                 buildSettings += SettingsPresetFile.base.getBuildSettings()
