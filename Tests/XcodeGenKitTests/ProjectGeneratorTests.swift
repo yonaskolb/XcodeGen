@@ -44,7 +44,7 @@ func projectGeneratorTests() {
             
             $0.it("clears setting presets") {
                 var options = ProjectSpec.Options()
-                options.applySettingPresets = .none
+                options.settingPresets = .none
                 let spec = ProjectSpec(name: "test", targets: [framework], options: options)
                 let project = try getProject(spec)
                 let allSettings = project.pbxproj.buildConfigurations.reduce([:]) { $0.merged($1.buildSettings)}.keys.sorted()

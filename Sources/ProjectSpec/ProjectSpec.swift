@@ -29,7 +29,7 @@ public struct ProjectSpec {
     public struct Options {
         public var carthageBuildPath: String?
         public var bundleIdPrefix: String?
-        public var applySettingPresets: SettingPresets = .all
+        public var settingPresets: SettingPresets = .all
         
         public enum SettingPresets: String {
             case all
@@ -155,6 +155,6 @@ extension ProjectSpec.Options: JSONObjectConvertible {
     public init(jsonDictionary: JSONDictionary) throws {
         carthageBuildPath = jsonDictionary.json(atKeyPath: "carthageBuildPath")
         bundleIdPrefix = jsonDictionary.json(atKeyPath: "bundleIdPrefix")
-        applySettingPresets = jsonDictionary.json(atKeyPath: "applySettingPresets") ?? .all
+        settingPresets = jsonDictionary.json(atKeyPath: "settingPresets") ?? .all
     }
 }
