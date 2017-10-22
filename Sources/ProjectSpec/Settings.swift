@@ -11,6 +11,7 @@ import JSONUtilities
 import xcproj
 import PathKit
 import Yams
+
 public struct Settings: Equatable, JSONObjectConvertible, CustomStringConvertible {
 
     public let buildSettings: BuildSettings

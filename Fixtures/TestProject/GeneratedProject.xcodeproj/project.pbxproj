@@ -1,8 +1,8 @@
 // !$*UTF8*$!
 {
 	archiveVersion = 1;
-	classes = (
-	);
+	classes = {
+	};
 	objectVersion = 46;
 	objects = {
 
@@ -10,13 +10,16 @@
 		BF1073850101 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR1332263601 /* AppDelegate.swift */; };
 		BF1462768401 = {isa = PBXBuildFile; fileRef = FR2653659501 /* TestProjectTests.xctest */; };
 		BF1744565901 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR6218091901 /* ViewController.swift */; };
-		BF1911148401 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = VG6405436301 /* LaunchScreen.storyboard */; };
+		BF2250910101 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = VG2043127501 /* Main.storyboard */; };
+		BF2445564001 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = VG2858723001 /* LaunchScreen.storyboard */; };
+		BF2513089601 /* LocalizedStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = VG3182922801 /* LocalizedStoryboard.storyboard */; };
 		BF2753556301 = {isa = PBXBuildFile; fileRef = FR2993497801 /* MyFramework.framework */; };
 		BF3154421201 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FR5980633301 /* Assets.xcassets */; };
 		BF3515549501 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = FR7740960501 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		BF3862341101 /* MyFramework.framework in Copy Files */ = {isa = PBXBuildFile; fileRef = FR2993497801 /* MyFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		BF4946816301 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = VG1473702401 /* Main.storyboard */; };
+		BF3862341101 /* MyFramework.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = FR2993497801 /* MyFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BF5986511201 = {isa = PBXBuildFile; fileRef = FR6523263101 /* TestProject.app */; };
+		BF6182896901 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR9215298301 /* Result.framework */; };
+		BF7015992001 /* MyFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR2993497801 /* MyFramework.framework */; };
 		BF9001417701 /* TestProjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR6877173101 /* TestProjectTests.swift */; };
 		BF9155249601 /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR7078510801 /* FrameworkFile.swift */; };
 /* End PBXBuildFile section */
@@ -45,7 +48,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				BF3862341101 /* MyFramework.framework in Copy Files */,
+				BF3862341101 /* MyFramework.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -56,21 +59,44 @@
 		FR1345298501 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FR1345298502 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FR1345298503 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FR1473702401 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		FR2653659501 /* TestProjectTests.xctest */ = {isa = PBXFileReference; explicitFileType = xctest; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = TestProjectTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR2993497801 /* MyFramework.framework */ = {isa = PBXFileReference; explicitFileType = framework; includeInIndex = 0; lastKnownFileType = wrapper.framework; path = MyFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR3546283901 /* base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = base.xcconfig; sourceTree = "<group>"; };
-		FR3676338401 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		FR3676338402 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		FR4822987701 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LocalizedStoryboard.storyboard; sourceTree = "<group>"; };
 		FR5980633301 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FR6218091901 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		FR6334256101 /* config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = config.xcconfig; sourceTree = "<group>"; };
+		FR6405436301 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FR6523263101 /* TestProject.app */ = {isa = PBXFileReference; explicitFileType = app; includeInIndex = 0; lastKnownFileType = wrapper.application; path = TestProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR6877173101 /* TestProjectTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestProjectTests.swift; sourceTree = "<group>"; };
 		FR7078510801 /* FrameworkFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameworkFile.swift; sourceTree = "<group>"; };
 		FR7740960501 /* MyFramework.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyFramework.h; sourceTree = "<group>"; };
+		FR8182352201 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LocalizedStoryboard.strings; sourceTree = "<group>"; };
+		FR9215298301 /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Result.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFrameworksBuildPhase section */
+		FBP652326301 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF7015992001 /* MyFramework.framework in Frameworks */,
+				BF6182896901 /* Result.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
 /* Begin PBXGroup section */
+		G19527407101 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				G28836901501 /* Carthage */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		G26536595301 /* TestProjectTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -79,6 +105,15 @@
 			);
 			name = TestProjectTests;
 			path = TestProjectTests;
+			sourceTree = "<group>";
+		};
+		G28836901501 /* Carthage */ = {
+			isa = PBXGroup;
+			children = (
+				G47994500501 /* iOS */,
+			);
+			name = Carthage;
+			path = Carthage/Build;
 			sourceTree = "<group>";
 		};
 		G29934978701 /* MyFramework */ = {
@@ -92,6 +127,15 @@
 			path = MyFramework;
 			sourceTree = "<group>";
 		};
+		G47994500501 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				FR9215298301 /* Result.framework */,
+			);
+			name = iOS;
+			path = iOS;
+			sourceTree = "<group>";
+		};
 		G65232631501 /* TestProject */ = {
 			isa = PBXGroup;
 			children = (
@@ -99,8 +143,9 @@
 				FR5980633301 /* Assets.xcassets */,
 				FR1345298502 /* Info.plist */,
 				FR6218091901 /* ViewController.swift */,
-				VG6405436301 /* LaunchScreen.storyboard */,
-				VG1473702401 /* Main.storyboard */,
+				VG2858723001 /* LaunchScreen.storyboard */,
+				VG3182922801 /* LocalizedStoryboard.storyboard */,
+				VG2043127501 /* Main.storyboard */,
 			);
 			name = TestProject;
 			path = TestProject;
@@ -124,6 +169,7 @@
 				G65232631501 /* TestProject */,
 				G26536595301 /* TestProjectTests */,
 				G86202385201 /* Products */,
+				G19527407101 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -206,7 +252,9 @@
 				SBP652326301 /* Sources */,
 				RBP652326301 /* Resources */,
 				HBP652326301 /* Headers */,
+				FBP652326301 /* Frameworks */,
 				CFBP50493301 /* CopyFiles */,
+				SSBP58567701 /* Carthage */,
 				SSBP24648001 /* Strip Unused Architectures from Frameworks */,
 				SSBP19207501 /* Swiftlint */,
 			);
@@ -227,7 +275,7 @@
 			attributes = {
 				LastUpgradeCheck = 0900;
 			};
-			buildConfigurationList = XCCL81399401 /* Build configuration list for PBXProject */;
+			buildConfigurationList = XCCL81399401 /* Build configuration list for PBXProject "GeneratedProject" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			knownRegions = (
@@ -263,8 +311,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				BF3154421201 /* Assets.xcassets in Resources */,
-				BF1911148401 /* LaunchScreen.storyboard in Resources */,
-				BF4946816301 /* Main.storyboard in Resources */,
+				BF2445564001 /* LaunchScreen.storyboard in Resources */,
+				BF2513089601 /* LocalizedStoryboard.storyboard in Resources */,
+				BF2250910101 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -313,6 +362,22 @@
 			shellPath = /bin/sh;
 			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
+		SSBP58567701 /* Carthage */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/Result.framework",
+			);
+			name = Carthage;
+			outputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Result.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -357,20 +422,29 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		VG1473702401 /* Main.storyboard */ = {
+		VG2043127501 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				FR3676338402 /* Base */,
+				FR1473702401 /* Base */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
-		VG6405436301 /* LaunchScreen.storyboard */ = {
+		VG2858723001 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				FR3676338401 /* Base */,
+				FR6405436301 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		VG3182922801 /* LocalizedStoryboard.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FR4822987701 /* Base */,
+				FR8182352201 /* en */,
+			);
+			name = LocalizedStoryboard.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -409,6 +483,10 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = TestProject/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -482,6 +560,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = TestProjectTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -501,6 +583,10 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = TestProject/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -566,6 +652,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = TestProjectTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -635,7 +725,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "";
 		};
-		XCCL81399401 /* Build configuration list for PBXProject */ = {
+		XCCL81399401 /* Build configuration list for PBXProject "GeneratedProject" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				XCBC47994501 /* Debug */,

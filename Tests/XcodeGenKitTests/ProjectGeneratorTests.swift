@@ -62,6 +62,15 @@ func projectGeneratorTests() {
                 try expect(configs).contains(name: "config1")
                 try expect(configs).contains(name: "config2")
             }
+            
+            $0.it("clears config settings when missing type") {
+                let spec = ProjectSpec(name: "test", configs: [Config(name: "config")])
+                let project = try getProject(spec)
+                guard let config = project.pbxproj.buildConfigurations.first else {
+                    throw failure("configuration not found")
+                }
+                try expect(config.buildSettings.isEmpty).to.beTrue()
+            }
 
             $0.it("merges settings") {
                 let spec = try ProjectSpec(path: fixturePath + "settings_test.yml")

@@ -2,6 +2,26 @@
 
 ## Master
 
+### Added
+- generate output files for Carthage copy-frameworks script [#84](https://github.com/yonaskolb/XcodeGen/pull/84) @mironal
+
+### Changed
+- updated to xcproj 0.4.1 [#85](https://github.com/yonaskolb/XcodeGen/pull/85) @enmiller
+- don't copy base settings if config type has been left out [#100](https://github.com/yonaskolb/XcodeGen/pull/100) @yonaskolb
+- generate localised files under a single variant group [#70](https://github.com/yonaskolb/XcodeGen/pull/70) @ryohey
+
+### Fixed
+- embed Carthage frameworks for macOS [#82](https://github.com/yonaskolb/XcodeGen/pull/82) @toshi0383
+- fixed copying of watchOS app resources [#96](https://github.com/yonaskolb/XcodeGen/pull/96) @keith
+- automatically ignore more file types for a target's sources (entitlements, gpx, apns) [#94](https://github.com/yonaskolb/XcodeGen/pull/94) @keith
+- change make build to a PHONY task [#98](https://github.com/yonaskolb/XcodeGen/pull/98) @keith
+- allow copying of resource files from dependant targets [#95](https://github.com/yonaskolb/XcodeGen/pull/95) @keith
+- fixed library linking [#93](https://github.com/yonaskolb/XcodeGen/pull/93) @keith
+
+
+
+
+
 ## 1.2.4
 
 ### Fixed

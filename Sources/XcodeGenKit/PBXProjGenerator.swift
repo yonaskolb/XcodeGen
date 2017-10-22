@@ -22,9 +22,10 @@ public class PBXProjGenerator {
 
     var fileReferencesByPath: [Path: String] = [:]
     var groupsByPath: [Path: PBXGroup] = [:]
+    var variantGroupsByPath: [Path: PBXVariantGroup] = [:]
 
     var targetNativeReferences: [String: String] = [:]
-    var targetBuildFileReferences: [String: String] = [:]
+    var targetBuildFiles: [String: PBXBuildFile] = [:]
     var targetFileReferences: [String: String] = [:]
     var topLevelGroups: [PBXGroup] = []
     var carthageFrameworksByPlatform: [String: [String]] = [:]
@@ -100,7 +101,7 @@ public class PBXProjGenerator {
 
             let buildFile = PBXBuildFile(reference: generateUUID(PBXBuildFile.self, fileReference.reference), fileRef: fileReference.reference)
             addObject(buildFile)
-            targetBuildFileReferences[target.name] = buildFile.reference
+            targetBuildFiles[target.name] = buildFile
         }
 
         let targets = try spec.targets.map(generateTarget)
@@ -132,7 +133,8 @@ public class PBXProjGenerator {
 
         let knownRegions: [String] = ["en", "Base"]
         let projectAttributes: [String: Any] = ["LastUpgradeCheck": currentXcodeVersion].merged(spec.attributes)
-        let root = PBXProject(reference: project.rootObject,
+        let root = PBXProject(name: spec.name,
+                              reference: project.rootObject,
                               buildConfigurationList: buildConfigList.reference,
                               compatibilityVersion: "Xcode 3.2",
                               mainGroup: mainGroup.reference,
@@ -158,7 +160,6 @@ public class PBXProjGenerator {
             settings = ["ATTRIBUTES": ["Public"]]
         }
         let buildFile = PBXBuildFile(reference: generateUUID(PBXBuildFile.self, fileReference), fileRef: fileReference, settings: settings)
-        addObject(buildFile)
         return SourceFile(path: path, fileReference: fileReference, buildFile: buildFile)
     }
 
@@ -167,11 +168,11 @@ public class PBXProjGenerator {
         let carthageDependencies = getAllCarthageDependencies(target: target)
 
         let sourcePaths = target.sources.map { basePath + $0 }
-        var sourceFilePaths: [Path] = []
+        var sourceFiles: [SourceFile] = []
 
         for source in sourcePaths {
             let sourceGroups = try getGroups(path: source)
-            sourceFilePaths += sourceGroups.filePaths
+            sourceFiles += sourceGroups.sourceFiles
         }
 
         // find all Info.plist
@@ -256,7 +257,9 @@ public class PBXProjGenerator {
 
         var dependencies: [String] = []
         var targetFrameworkBuildFiles: [String] = []
-        var copyFiles: [String] = []
+        var copyFrameworksReferences: [String] = []
+        var copyResourcesReferences: [String] = []
+        var copyWatchReferences: [String] = []
         var extensions: [String] = []
 
         for dependency in target.dependencies {
@@ -275,11 +278,15 @@ public class PBXProjGenerator {
                 addObject(targetDependency)
                 dependencies.append(targetDependency.reference)
 
-                // don't bother linking a target dependency
-                // let dependencyBuildFile = targetBuildFileReferences[dependencyTargetName]!
-                // targetFrameworkBuildFiles.append(dependencyBuildFile)
+                if dependencyTarget.type.isLibrary || dependencyTarget.type.isFramework {
+                    let dependencyBuildFile = targetBuildFiles[dependencyTargetName]!
+                    let buildFile = PBXBuildFile(reference: generateUUID(PBXBuildFile.self, dependencyBuildFile.reference + target.name), fileRef: dependencyBuildFile.fileRef)
+                    addObject(buildFile)
+                    targetFrameworkBuildFiles.append(buildFile.reference)
+                }
 
-                if embed {
+                if embed && !dependencyTarget.type.isLibrary {
+
                     let embedSettings = dependency.buildSettings
                     let embedFile = PBXBuildFile(reference: generateUUID(PBXBuildFile.self, dependencyFileReference + target.name), fileRef: dependencyFileReference, settings: embedSettings)
                     addObject(embedFile)
@@ -287,8 +294,12 @@ public class PBXProjGenerator {
                     if dependencyTarget.type.isExtension {
                         // embed app extension
                         extensions.append(embedFile.reference)
+                    } else if dependencyTarget.type.isFramework {
+                        copyFrameworksReferences.append(embedFile.reference)
+                    } else if dependencyTarget.type.isApp && dependencyTarget.platform == .watchOS {
+                        copyWatchReferences.append(embedFile.reference)
                     } else {
-                        copyFiles.append(embedFile.reference)
+                        copyResourcesReferences.append(embedFile.reference)
                     }
                 }
 
@@ -307,7 +318,7 @@ public class PBXProjGenerator {
                 if embed {
                     let embedFile = PBXBuildFile(reference: generateUUID(PBXBuildFile.self, fileReference + target.name), fileRef: fileReference, settings: dependency.buildSettings)
                     addObject(embedFile)
-                    copyFiles.append(embedFile.reference)
+                    copyFrameworksReferences.append(embedFile.reference)
                 }
             case .carthage:
                 if carthageFrameworksByPlatform[target.platform.carthageDirectoryName] == nil {
@@ -325,6 +336,11 @@ public class PBXProjGenerator {
                 carthageFrameworksByPlatform[target.platform.carthageDirectoryName]?.append(fileReference)
 
                 targetFrameworkBuildFiles.append(buildFile.reference)
+                if target.platform == .macOS && target.type.isApp {
+                    let embedFile = PBXBuildFile(reference: generateUUID(PBXBuildFile.self, fileReference + target.name), fileRef: fileReference, settings: dependency.buildSettings)
+                    addObject(embedFile)
+                    copyFrameworksReferences.append(embedFile.reference)
+                }
             }
         }
 
@@ -332,7 +348,8 @@ public class PBXProjGenerator {
         var buildPhases: [String] = []
 
         func getBuildFilesForPhase(_ buildPhase: BuildPhase) -> [String] {
-            let files = sourceFilePaths.filter { getBuildPhaseForPath($0) == buildPhase }.map(generateSourceFile)
+            let files = sourceFiles.filter { getBuildPhaseForPath($0.path) == buildPhase }
+            files.forEach { addObject($0.buildFile) }
             return files.map { $0.buildFile.reference }
         }
 
@@ -366,7 +383,7 @@ public class PBXProjGenerator {
         addObject(sourcesBuildPhase)
         buildPhases.append(sourcesBuildPhase.reference)
 
-        let resourcesBuildPhase = PBXResourcesBuildPhase(reference: generateUUID(PBXResourcesBuildPhase.self, target.name), files: getBuildFilesForPhase(.resources))
+        let resourcesBuildPhase = PBXResourcesBuildPhase(reference: generateUUID(PBXResourcesBuildPhase.self, target.name), files: getBuildFilesForPhase(.resources) + copyResourcesReferences)
         addObject(resourcesBuildPhase)
         buildPhases.append(resourcesBuildPhase.reference)
 
@@ -397,26 +414,41 @@ public class PBXProjGenerator {
             buildPhases.append(copyFilesPhase.reference)
         }
 
-        if !copyFiles.isEmpty {
+        if !copyFrameworksReferences.isEmpty {
 
             let copyFilesPhase = PBXCopyFilesBuildPhase(
                 reference: generateUUID(PBXCopyFilesBuildPhase.self, "embed frameworks" + target.name),
                 dstPath: "",
                 dstSubfolderSpec: .frameworks,
-                files: copyFiles)
+                files: copyFrameworksReferences)
 
             addObject(copyFilesPhase)
             buildPhases.append(copyFilesPhase.reference)
         }
 
-        let carthageFrameworksToEmbed = carthageDependencies
-            .filter { ($0.embed ?? true) }
-            .map { $0.reference }
+        if !copyWatchReferences.isEmpty {
+
+            let copyFilesPhase = PBXCopyFilesBuildPhase(
+                reference: generateUUID(PBXCopyFilesBuildPhase.self, "embed watch content" + target.name),
+                dstPath: "$(CONTENTS_FOLDER_PATH)/Watch",
+                dstSubfolderSpec: .productsDirectory,
+                files: copyWatchReferences)
+
+            addObject(copyFilesPhase)
+            buildPhases.append(copyFilesPhase.reference)
+        }
+
+        let carthageFrameworksToEmbed = Array(Set(carthageDependencies
+            .filter { $0.embed ?? true }
+            .map { $0.reference }))
+            .sorted()
+
         if !carthageFrameworksToEmbed.isEmpty {
 
             if target.type.isApp && target.platform != .macOS {
-                let inputPaths = Set(carthageFrameworksToEmbed).map { "$(SRCROOT)/\(carthageBuildPath)/\(target.platform)/\($0)\($0.contains(".") ? "" : ".framework")" }
-                let carthageScript = PBXShellScriptBuildPhase(reference: generateUUID(PBXShellScriptBuildPhase.self, "Carthage" + target.name), files: [], name: "Carthage", inputPaths: inputPaths, outputPaths: [], shellPath: "/bin/sh", shellScript: "/usr/local/bin/carthage copy-frameworks\n")
+                let inputPaths = carthageFrameworksToEmbed.map { "$(SRCROOT)/\(carthageBuildPath)/\(target.platform)/\($0)\($0.contains(".") ? "" : ".framework")" }
+                let outputPaths = carthageFrameworksToEmbed.map { "$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/\($0)\($0.contains(".") ? "" : ".framework")" }
+                let carthageScript = PBXShellScriptBuildPhase(reference: generateUUID(PBXShellScriptBuildPhase.self, "Carthage" + target.name), files: [], name: "Carthage", inputPaths: inputPaths, outputPaths: outputPaths, shellPath: "/bin/sh", shellScript: "/usr/local/bin/carthage copy-frameworks\n")
                 addObject(carthageScript)
                 buildPhases.append(carthageScript.reference)
             }
@@ -468,7 +500,7 @@ public class PBXProjGenerator {
             switch fileExtension {
             case "swift", "m", "cpp": return .sources
             case "h", "hh", "hpp", "ipp", "tpp", "hxx", "def": return .headers
-            case "xcconfig": return nil
+            case "xcconfig", "entitlements", "gpx", "lproj", "apns": return nil
             default: return .resources
             }
         }
@@ -486,7 +518,7 @@ public class PBXProjGenerator {
         }
     }
 
-    func getGroups(path: Path, depth: Int = 0) throws -> (filePaths: [Path], groups: [PBXGroup]) {
+    func getGroups(path: Path, depth: Int = 0) throws -> (sourceFiles: [SourceFile], groups: [PBXGroup]) {
 
         let excludedFiles: [String] = [".DS_Store"]
 
@@ -503,34 +535,79 @@ public class PBXProjGenerator {
             .filter { $0.extension == "lproj" }
             .sorted { $0.lastComponent < $1.lastComponent }
 
-        var groupChildren: [String] = []
-        var allFilePaths: [Path] = filePaths
+        var groupChildren: [String] = filePaths.map { getFileReference(path: $0, inPath: path) }
+        var allSourceFiles: [SourceFile] = filePaths.map { generateSourceFile(path: $0) }
         var groups: [PBXGroup] = []
 
         for path in directories {
             let subGroups = try getGroups(path: path, depth: depth + 1)
-            allFilePaths += subGroups.filePaths
+            allSourceFiles += subGroups.sourceFiles
             groupChildren.append(subGroups.groups.first!.reference)
             groups += subGroups.groups
         }
 
-        for filePath in filePaths {
-            let fileReference = getFileReference(path: filePath, inPath: path)
-            groupChildren.append(fileReference)
+        // create variant groups of the base localisation first
+        var baseLocalisationVariantGroups:[PBXVariantGroup] = []
+        if let baseLocalisedDirectory = localisedDirectories.first(where: { $0.lastComponent == "Base.lproj" }) {
+            for path in try baseLocalisedDirectory.children() {
+                let filePath = "\(baseLocalisedDirectory.lastComponent)/\(path.lastComponent)"
+
+                let variantGroup: PBXVariantGroup
+                if let cachedGroup = variantGroupsByPath[path] {
+                    variantGroup = cachedGroup
+                } else {
+                    variantGroup = PBXVariantGroup(reference: generateUUID(PBXVariantGroup.self, filePath),
+                                                   children: [],
+                                                   name: path.lastComponent,
+                                                   sourceTree: .group)
+                    variantGroupsByPath[path] = variantGroup
+
+                    addObject(variantGroup)
+                    groupChildren.append(variantGroup.reference)
+                }
+
+                baseLocalisationVariantGroups.append(variantGroup)
+
+                let buildFile = PBXBuildFile(reference: generateUUID(PBXBuildFile.self, variantGroup.reference), fileRef: variantGroup.reference, settings: nil)
+                allSourceFiles.append(SourceFile(path: path, fileReference: variantGroup.reference, buildFile: buildFile))
+            }
         }
 
+        // add references to localised resources into base localisation variant groups
         for localisedDirectory in localisedDirectories {
+            let localisationName = localisedDirectory.lastComponentWithoutExtension
             for path in try localisedDirectory.children().sorted { $0.lastComponent < $1.lastComponent } {
+
+
                 let filePath = "\(localisedDirectory.lastComponent)/\(path.lastComponent)"
-                let fileReference = PBXFileReference(reference: generateUUID(PBXFileReference.self, localisedDirectory.lastComponent), sourceTree: .group, name: localisedDirectory.lastComponentWithoutExtension, path: filePath)
-                addObject(fileReference)
 
-                let variantGroup = PBXVariantGroup(reference: generateUUID(PBXVariantGroup.self, path.lastComponent), children: [fileReference.reference], name: path.lastComponent, sourceTree: .group)
-                addObject(variantGroup)
+                // find base localisation variant group
+                let name = path.lastComponentWithoutExtension
+                let variantGroup = baseLocalisationVariantGroups.first { Path($0.name).lastComponentWithoutExtension == name }
 
-                fileReferencesByPath[path] = variantGroup.reference
-                groupChildren.append(variantGroup.reference)
-                allFilePaths.append(path)
+                let fileReference: String
+                if let cachedFileReference = fileReferencesByPath[path] {
+                    fileReference = cachedFileReference
+                } else {
+                    let reference = PBXFileReference(reference: generateUUID(PBXFileReference.self, path.lastComponent),
+                                                     sourceTree: .group,
+                                                     name: variantGroup != nil ? localisationName : path.lastComponent,
+                                                     path: filePath)
+                    addObject(reference)
+                    fileReference = reference.reference
+                    fileReferencesByPath[path] = fileReference
+                }
+
+                if let variantGroup = variantGroup {
+                    variantGroup.children.append(fileReference)
+                } else {
+                    // add SourceFile to group if there is no Base.lproj directory
+                    let buildFile = PBXBuildFile(reference: generateUUID(PBXBuildFile.self, fileReference),
+                                                 fileRef: fileReference,
+                                                 settings: nil)
+                    allSourceFiles.append(SourceFile(path: path, fileReference: fileReference, buildFile: buildFile))
+                    groupChildren.append(fileReference)
+                }
             }
         }
 
@@ -547,6 +624,6 @@ public class PBXProjGenerator {
             groupsByPath[path] = group
         }
         groups.insert(group, at: 0)
-        return (allFilePaths, groups)
+        return (allSourceFiles, groups)
     }
 }
