@@ -18,7 +18,7 @@ extension ProjectSpec {
     public func getProjectBuildSettings(config: Config) -> BuildSettings {
         var buildSettings: BuildSettings = [:]
 
-        if let type = config.type {
+        if let type = config.type, options.settingPresets.applyProject {
             buildSettings += SettingsPresetFile.base.getBuildSettings()
             buildSettings += SettingsPresetFile.config(type).getBuildSettings()
         }
@@ -30,10 +30,12 @@ extension ProjectSpec {
 
     public func getTargetBuildSettings(target: Target, config: Config) -> BuildSettings {
         var buildSettings = BuildSettings()
-
-        buildSettings += SettingsPresetFile.platform(target.platform).getBuildSettings()
-        buildSettings += SettingsPresetFile.product(target.type).getBuildSettings()
-        buildSettings += SettingsPresetFile.productPlatform(target.type, target.platform).getBuildSettings()
+        
+        if options.settingPresets.applyTarget {
+            buildSettings += SettingsPresetFile.platform(target.platform).getBuildSettings()
+            buildSettings += SettingsPresetFile.product(target.type).getBuildSettings()
+            buildSettings += SettingsPresetFile.productPlatform(target.type, target.platform).getBuildSettings()
+        }
         buildSettings += getBuildSettings(settings: target.settings, config: config)
 
         return buildSettings
