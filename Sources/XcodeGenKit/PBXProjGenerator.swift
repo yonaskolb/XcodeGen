@@ -549,8 +549,6 @@ public class PBXProjGenerator {
         for localisedDirectory in localisedDirectories {
             let localisationName = localisedDirectory.lastComponentWithoutExtension
             for path in try localisedDirectory.children().sorted { $0.lastComponent < $1.lastComponent } {
-
-
                 let filePath = "\(localisedDirectory.lastComponent)/\(path.lastComponent)"
 
                 // find base localisation variant group
@@ -571,7 +569,9 @@ public class PBXProjGenerator {
                 }
 
                 if let variantGroup = variantGroup {
-                    variantGroup.children.append(fileReference)
+                    if !variantGroup.children.contains(fileReference) {
+                        variantGroup.children.append(fileReference)
+                    }
                 } else {
                     // add SourceFile to group if there is no Base.lproj directory
                     let buildFile = PBXBuildFile(reference: generateUUID(PBXBuildFile.self, fileReference),
