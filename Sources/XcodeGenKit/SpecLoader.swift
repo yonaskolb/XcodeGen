@@ -16,7 +16,7 @@ public struct SpecLoader {
 
     public static func loadSpec(path: Path) throws -> ProjectSpec {
         let dictionary = try loadDictionary(path: path)
-        return try ProjectSpec(jsonDictionary: dictionary)
+        return try ProjectSpec(basePath: path.parent(), jsonDictionary: dictionary)
     }
 
     private static func loadDictionary(path: Path) throws -> JSONDictionary {

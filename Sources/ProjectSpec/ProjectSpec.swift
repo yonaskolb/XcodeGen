@@ -14,6 +14,7 @@ import Yams
 
 public struct ProjectSpec {
 
+    public var basePath: Path
     public var name: String
     public var targets: [Target]
     public var settings: Settings
@@ -56,7 +57,8 @@ public struct ProjectSpec {
         }
     }
 
-    public init(name: String, configs: [Config] = [], targets: [Target] = [], settings: Settings = .empty, settingGroups: [String: Settings] = [:], schemes: [Scheme] = [], options: Options = Options(), fileGroups: [String] = [], configFiles: [String: String] = [:], attributes: [String: Any] = [:]) {
+    public init(basePath: Path, name: String, configs: [Config] = [], targets: [Target] = [], settings: Settings = .empty, settingGroups: [String: Settings] = [:], schemes: [Scheme] = [], options: Options = Options(), fileGroups: [String] = [], configFiles: [String: String] = [:], attributes: [String: Any] = [:]) {
+        self.basePath = basePath
         self.name = name
         self.targets = targets
         self.configs = configs
@@ -124,9 +126,10 @@ extension ProjectSpec.Options: Equatable {
     }
 }
 
-extension ProjectSpec: JSONObjectConvertible {
+extension ProjectSpec {
 
-    public init(jsonDictionary: JSONDictionary) throws {
+    public init(basePath: Path, jsonDictionary: JSONDictionary) throws {
+        self.basePath = basePath
         let jsonDictionary = try ProjectSpec.filterJSON(jsonDictionary: jsonDictionary)
         name = try jsonDictionary.json(atKeyPath: "name")
         settings = jsonDictionary.json(atKeyPath: "settings") ?? .empty

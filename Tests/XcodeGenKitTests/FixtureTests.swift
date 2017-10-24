@@ -7,8 +7,8 @@ import ProjectSpec
 let fixturePath = Path(#file).parent().parent().parent() + "Fixtures"
 
 func generate(specPath: Path, projectPath: Path) throws -> XcodeProj {
-    let spec = try ProjectSpec(path: specPath)
-    let generator = ProjectGenerator(spec: spec, path: specPath.parent())
+    let spec = try SpecLoader.loadSpec(path: specPath)
+    let generator = ProjectGenerator(spec: spec)
     let project = try generator.generateProject()
     let oldProject = try XcodeProj(path: projectPath)
     try project.write(path: projectPath, override: true)

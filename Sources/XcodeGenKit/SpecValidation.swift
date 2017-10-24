@@ -11,7 +11,7 @@ import PathKit
 
 extension ProjectSpec {
 
-    public mutating func validate(path: Path) throws {
+    public mutating func validate() throws {
 
         if configs.isEmpty {
             configs = [Config(name: "Debug", type: .debug), Config(name: "Release", type: .release)]
@@ -32,13 +32,13 @@ extension ProjectSpec {
         }
 
         for fileGroup in fileGroups {
-            if !(path + fileGroup).exists {
+            if !(basePath + fileGroup).exists {
                 errors.append(.invalidFileGroup(fileGroup))
             }
         }
 
         for (config, configFile) in configFiles {
-            if !(path + configFile).exists {
+            if !(basePath + configFile).exists {
                 errors.append(.invalidConfigFile(configFile: configFile, config: config))
             }
         }
@@ -55,7 +55,7 @@ extension ProjectSpec {
             }
 
             for (config, configFile) in target.configFiles {
-                if !(path + configFile).exists {
+                if !(basePath + configFile).exists {
                     errors.append(.invalidTargetConfigFile(configFile: configFile, config: config, target: target.name))
                 }
             }
@@ -67,7 +67,7 @@ extension ProjectSpec {
             }
 
             for source in target.sources {
-                let sourcePath = path + source
+                let sourcePath = basePath + source
                 if !sourcePath.exists {
                     errors.append(.missingTargetSource(target: target.name, source: sourcePath.string))
                 }
@@ -94,7 +94,7 @@ extension ProjectSpec {
             let scripts = target.prebuildScripts + target.postbuildScripts
             for script in scripts {
                 if case let .path(pathString) = script.script {
-                    let scriptPath = path + pathString
+                    let scriptPath = basePath + pathString
                     if !scriptPath.exists {
                         errors.append(.invalidBuildScriptPath(target: target.name, path: pathString))
                     }
