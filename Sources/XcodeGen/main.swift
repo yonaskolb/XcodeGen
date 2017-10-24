@@ -20,6 +20,11 @@ func generate(spec: String, project: String) {
     let specPath = Path(spec).normalize()
     let projectPath = Path(project).normalize()
 
+    if !specPath.exists {
+        print("No project spec found at \(specPath.absolute())".red)
+        exit(1)
+    }
+
     let spec: ProjectSpec
     do {
         spec = try SpecLoader.loadSpec(path: specPath)
@@ -42,6 +47,7 @@ func generate(spec: String, project: String) {
         print("💾  Saved project to \(projectFile.string)".green)
     } catch let error as SpecValidationError {
         print(error.description.red)
+        exit(1)
     } catch {
         print("Generation failed: \(error.localizedDescription)".red)
         exit(1)
