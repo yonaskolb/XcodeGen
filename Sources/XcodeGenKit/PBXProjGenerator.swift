@@ -17,7 +17,6 @@ import ProjectSpec
 public class PBXProjGenerator {
 
     let spec: ProjectSpec
-    let basePath: Path
     let currentXcodeVersion: String
 
     var fileReferencesByPath: [Path: String] = [:]
@@ -38,10 +37,9 @@ public class PBXProjGenerator {
         return spec.options.carthageBuildPath ?? "Carthage/Build"
     }
 
-    public init(spec: ProjectSpec, path: Path, currentXcodeVersion: String) {
+    public init(spec: ProjectSpec, currentXcodeVersion: String) {
         self.currentXcodeVersion = currentXcodeVersion
         self.spec = spec
-        basePath = path
     }
 
     public func generateUUID<T: PBXObject>(_ element: T.Type, _ id: String) -> String {
@@ -67,14 +65,14 @@ public class PBXProjGenerator {
         project = PBXProj(archiveVersion: 1, objectVersion: 46, rootObject: generateUUID(PBXProject.self, spec.name))
 
         for group in spec.fileGroups {
-            _ = try getGroups(path: basePath + group)
+            _ = try getGroups(path: spec.basePath + group)
         }
 
         let buildConfigs: [XCBuildConfiguration] = spec.configs.map { config in
             let buildSettings = spec.getProjectBuildSettings(config: config)
             var baseConfigurationReference: String?
             if let configPath = spec.configFiles[config.name] {
-                baseConfigurationReference = getFileReference(path: basePath + configPath, inPath: basePath)
+                baseConfigurationReference = getFileReference(path: spec.basePath + configPath, inPath: spec.basePath)
             }
             return XCBuildConfiguration(reference: generateUUID(XCBuildConfiguration.self, config.name), name: config.name, baseConfigurationReference: baseConfigurationReference, buildSettings: buildSettings)
         }
@@ -159,7 +157,7 @@ public class PBXProjGenerator {
 
         let carthageDependencies = getAllCarthageDependencies(target: target)
 
-        let sourcePaths = target.sources.map { basePath + $0 }
+        let sourcePaths = target.sources.map { spec.basePath + $0 }
         var sourceFiles: [SourceFile] = []
 
         for source in sourcePaths {
@@ -177,13 +175,13 @@ public class PBXProjGenerator {
 
             // automatically set INFOPLIST_FILE path
             if let plistPath = infoPlists.first,
-                !spec.targetHasBuildSetting("INFOPLIST_FILE", basePath: basePath, target: target, config: config) {
-                buildSettings["INFOPLIST_FILE"] = plistPath.byRemovingBase(path: basePath)
+                !spec.targetHasBuildSetting("INFOPLIST_FILE", basePath: spec.basePath, target: target, config: config) {
+                buildSettings["INFOPLIST_FILE"] = plistPath.byRemovingBase(path: spec.basePath)
             }
 
             // automatically calculate bundle id
             if let bundleIdPrefix = spec.options.bundleIdPrefix,
-                !spec.targetHasBuildSetting("PRODUCT_BUNDLE_IDENTIFIER", basePath: basePath, target: target, config: config) {
+                !spec.targetHasBuildSetting("PRODUCT_BUNDLE_IDENTIFIER", basePath: spec.basePath, target: target, config: config) {
                 let characterSet = CharacterSet.alphanumerics.union(CharacterSet(charactersIn: "-.")).inverted
                 let escapedTargetName = target.name.replacingOccurrences(of: "_", with: "-").components(separatedBy: characterSet).joined(separator: "")
                 buildSettings["PRODUCT_BUNDLE_IDENTIFIER"] = bundleIdPrefix + "." + escapedTargetName
@@ -191,7 +189,7 @@ public class PBXProjGenerator {
 
             // automatically set test target name
             if target.type == .uiTestBundle,
-                !spec.targetHasBuildSetting("TEST_TARGET_NAME", basePath: basePath, target: target, config: config) {
+                !spec.targetHasBuildSetting("TEST_TARGET_NAME", basePath: spec.basePath, target: target, config: config) {
                 for dependency in target.dependencies {
                     if dependency.type == .target,
                         let dependencyTarget = spec.getTarget(dependency.reference),
@@ -219,7 +217,7 @@ public class PBXProjGenerator {
 
             var baseConfigurationReference: String?
             if let configPath = target.configFiles[config.name] {
-                baseConfigurationReference = getFileReference(path: basePath + configPath, inPath: basePath)
+                baseConfigurationReference = getFileReference(path: spec.basePath + configPath, inPath: spec.basePath)
             }
             return XCBuildConfiguration(reference: generateUUID(XCBuildConfiguration.self, config.name + target.name), name: config.name, baseConfigurationReference: baseConfigurationReference, buildSettings: buildSettings)
         }
@@ -277,7 +275,7 @@ public class PBXProjGenerator {
 
             case .framework:
 
-                let fileReference = getFileReference(path: Path(dependency.reference), inPath: basePath)
+                let fileReference = getFileReference(path: Path(dependency.reference), inPath: spec.basePath)
 
                 let buildFile = PBXBuildFile(reference: generateUUID(PBXBuildFile.self, fileReference + target.name), fileRef: fileReference)
                 addObject(buildFile)
@@ -330,7 +328,7 @@ public class PBXProjGenerator {
             var shellScript: String
             switch buildScript.script {
             case let .path(path):
-                shellScript = try (basePath + path).read()
+                shellScript = try (spec.basePath + path).read()
             case let .script(script):
                 shellScript = script
             }
@@ -583,7 +581,7 @@ public class PBXProjGenerator {
             }
         }
 
-        let groupPath: String = depth == 0 ? path.byRemovingBase(path: basePath).string : path.lastComponent
+        let groupPath: String = depth == 0 ? path.byRemovingBase(path: spec.basePath).string : path.lastComponent
         let group: PBXGroup
         if let cachedGroup = groupsByPath[path] {
             group = cachedGroup

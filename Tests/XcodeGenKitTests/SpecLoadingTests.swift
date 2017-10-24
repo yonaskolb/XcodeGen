@@ -12,7 +12,7 @@ func specLoadingTests() {
         for (key, value) in spec {
             specDictionary[key] = value
         }
-        return try ProjectSpec(jsonDictionary: specDictionary)
+        return try ProjectSpec(basePath: "", jsonDictionary: specDictionary)
     }
 
     func expectProjectSpecError(_ spec: [String: Any], _ expectedError: ProjectSpecError) throws {
@@ -82,7 +82,7 @@ func specLoadingTests() {
             try expect(target.dependencies[2]) == Dependency(type: .framework, reference: "path")
         }
 
-        $0.it("parsed cross platform targets") {
+        $0.it("parses cross platform targets") {
             let targetDictionary: [String: Any] = [
                 "platform": ["iOS", "tvOS"],
                 "type": "framework",
@@ -128,7 +128,7 @@ func specLoadingTests() {
         }
 
         $0.it("parses settings") {
-            let spec = try ProjectSpec(path: fixturePath + "settings_test.yml")
+            let spec = try SpecLoader.loadSpec(path: fixturePath + "settings_test.yml")
             let buildSettings: BuildSettings = ["SETTING": "value"]
             let configSettings: [String: Settings] = ["config1": Settings(buildSettings: ["SETTING1": "value"])]
             let groups = ["preset1"]
@@ -176,7 +176,7 @@ func specLoadingTests() {
             var options = ProjectSpec.Options()
             options.carthageBuildPath = "../Carthage/Build"
             options.bundleIdPrefix = "com.test"
-            let expected = ProjectSpec(name: "test", options: options)
+            let expected = ProjectSpec(basePath: "", name: "test", options: options)
             let parsedSpec = try getProjectSpec(["options": ["carthageBuildPath": "../Carthage/Build", "bundleIdPrefix": "com.test"]])
             try expect(parsedSpec) == expected
         }
