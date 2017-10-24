@@ -34,7 +34,8 @@ func projectGeneratorTests() {
                 let spec = ProjectSpec(name: "test", targets: [framework], options: options)
                 let project = try getProject(spec)
                 guard let target = project.pbxproj.nativeTargets.first,
-                    let buildConfigs = project.pbxproj.configurationLists.getReference(target.buildConfigurationList),
+                    let buildConfigList = target.buildConfigurationList,
+                    let buildConfigs = project.pbxproj.configurationLists.getReference(buildConfigList),
                     let buildConfigReference = buildConfigs.buildConfigurations.first,
                     let buildConfig = project.pbxproj.buildConfigurations.getReference(buildConfigReference) else {
                     throw failure("Build Config not found")
