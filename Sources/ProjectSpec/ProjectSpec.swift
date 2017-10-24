@@ -119,7 +119,8 @@ extension ProjectSpec.Options: Equatable {
 
     public static func ==(lhs: ProjectSpec.Options, rhs: ProjectSpec.Options) -> Bool {
         return lhs.carthageBuildPath == rhs.carthageBuildPath &&
-            lhs.bundleIdPrefix == rhs.bundleIdPrefix
+            lhs.bundleIdPrefix == rhs.bundleIdPrefix &&
+            lhs.settingPresets == rhs.settingPresets
     }
 }
 
