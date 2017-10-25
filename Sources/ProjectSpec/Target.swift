@@ -16,7 +16,6 @@ public struct Target {
     public var platform: Platform
     public var settings: Settings
     public var sources: [String]
-    public var sourceExludes: [String]
     public var dependencies: [Dependency]
     public var prebuildScripts: [BuildScript]
     public var postbuildScripts: [BuildScript]
@@ -31,14 +30,13 @@ public struct Target {
         return name
     }
 
-    public init(name: String, type: PBXProductType, platform: Platform, settings: Settings = .empty, configFiles: [String: String] = [:], sources: [String] = [], sourceExludes: [String] = [], dependencies: [Dependency] = [], prebuildScripts: [BuildScript] = [], postbuildScripts: [BuildScript] = [], scheme: TargetScheme? = nil) {
+    public init(name: String, type: PBXProductType, platform: Platform, settings: Settings = .empty, configFiles: [String: String] = [:], sources: [String] = [], dependencies: [Dependency] = [], prebuildScripts: [BuildScript] = [], postbuildScripts: [BuildScript] = [], scheme: TargetScheme? = nil) {
         self.name = name
         self.type = type
         self.platform = platform
         self.settings = settings
         self.configFiles = configFiles
         self.sources = sources
-        self.sourceExludes = sourceExludes
         self.dependencies = dependencies
         self.prebuildScripts = prebuildScripts
         self.postbuildScripts = postbuildScripts
@@ -129,7 +127,6 @@ extension Target: Equatable {
             lhs.settings == rhs.settings &&
             lhs.configFiles == rhs.configFiles &&
             lhs.sources == rhs.sources &&
-            lhs.sourceExludes == rhs.sourceExludes &&
             lhs.dependencies == rhs.dependencies &&
             lhs.prebuildScripts == rhs.prebuildScripts &&
             lhs.postbuildScripts == rhs.postbuildScripts &&
@@ -186,7 +183,6 @@ extension Target: NamedJSONDictionaryConvertible {
         } else {
             sources = jsonDictionary.json(atKeyPath: "sources") ?? []
         }
-        sourceExludes = jsonDictionary.json(atKeyPath: "sourceExludes") ?? []
         if jsonDictionary["dependencies"] == nil {
             dependencies = []
         } else {
