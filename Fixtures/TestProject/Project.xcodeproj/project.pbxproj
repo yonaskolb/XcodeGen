@@ -165,6 +165,15 @@
 				FR7078510801 /* FrameworkFile.swift */,
 				FR1345298503 /* Info.plist */,
 				FR7740960501 /* MyFramework.h */,
+				FR7078510801 /* FrameworkFile.swift */,
+				FR1345298503 /* Info.plist */,
+				FR7740960501 /* MyFramework.h */,
+				FR7078510801 /* FrameworkFile.swift */,
+				FR1345298503 /* Info.plist */,
+				FR7740960501 /* MyFramework.h */,
+				FR7078510801 /* FrameworkFile.swift */,
+				FR1345298503 /* Info.plist */,
+				FR7740960501 /* MyFramework.h */,
 			);
 			name = Framework;
 			path = Framework;
@@ -257,6 +266,9 @@
 				G66512504301 /* StandaloneFiles */,
 				G82523211001 /* App_iOS */,
 				G78312289901 /* App_iOS_Tests */,
+				G46615002701 /* Framework */,
+				G46615002701 /* Framework */,
+				G46615002701 /* Framework */,
 				G46615002701 /* Framework */,
 				G86202385201 /* Products */,
 				G19527407101 /* Frameworks */,

@@ -29,6 +29,7 @@ public struct ProjectSpec {
 
     public struct Options {
         public var carthageBuildPath: String?
+        public var createIntermediateGroups: Bool
         public var bundleIdPrefix: String?
         public var settingPresets: SettingPresets = .all
 
@@ -54,6 +55,7 @@ public struct ProjectSpec {
         }
 
         public init() {
+            createIntermediateGroups = false
         }
     }
 
@@ -160,5 +162,6 @@ extension ProjectSpec.Options: JSONObjectConvertible {
         carthageBuildPath = jsonDictionary.json(atKeyPath: "carthageBuildPath")
         bundleIdPrefix = jsonDictionary.json(atKeyPath: "bundleIdPrefix")
         settingPresets = jsonDictionary.json(atKeyPath: "settingPresets") ?? .all
+        createIntermediateGroups = jsonDictionary.json(atKeyPath: "createIntermediateGroups") ?? false
     }
 }

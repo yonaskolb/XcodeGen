@@ -512,6 +512,47 @@ public class PBXProjGenerator {
         return (fromFiles + fromDirs).flatMap { $0.sourceFiles }
     }
 
+    func getSingleGroup(path: Path, mergingChildren children: [String], depth: Int = 0) -> PBXGroup {
+        let group: PBXGroup
+        if let cachedGroup = groupsByPath[path] {
+            cachedGroup.children += children
+            group = cachedGroup
+        } else {
+            group = PBXGroup(
+                reference: generateUUID(PBXGroup.self, path.lastComponent),
+                children: children,
+                sourceTree: .group,
+                name: path.lastComponent,
+                path: depth == 0 && !spec.options.createIntermediateGroups ?
+                    path.byRemovingBase(path: spec.basePath).string :
+                    path.lastComponent
+            )
+            addObject(group)
+            groupsByPath[path] = group
+        }
+        return group
+    }
+
+    // Add groups for all parents recursively
+    // ex: path/foo/bar/baz/Hello.swift -> path:[foo:[bar:[baz:[Hello.swift]]]]
+    func getIntermediateGroups(path: Path, group: PBXGroup) -> PBXGroup {
+        // verify path is a subpath of spec.basePath
+        guard Path(components: zip(path.components, spec.basePath.components).map{ $0.0 }) == spec.basePath else {
+            return group
+        }
+
+        // base case
+        if path == spec.basePath {
+            return group
+        }
+
+        // recursive case
+        return getIntermediateGroups(
+            path: path.parent(),
+            group: getSingleGroup(path: path, mergingChildren: [group.reference])
+        )
+    }
+
     func getSources(path: Path, children: [Path]? = nil, depth: Int = 0) throws -> (sourceFiles: [SourceFile], groups: [PBXGroup]) {
         let children = try children ?? (try path.children())
         let excludedFiles: [String] = [".DS_Store"]
@@ -605,17 +646,18 @@ public class PBXProjGenerator {
             }
         }
 
-        let groupPath: String = depth == 0 ? path.byRemovingBase(path: spec.basePath).string : path.lastComponent
         let group: PBXGroup
-        if let cachedGroup = groupsByPath[path] {
-            group = cachedGroup
+        if spec.options.createIntermediateGroups {
+            group = getIntermediateGroups(
+                path: path.parent(),
+                group: getSingleGroup(path: path, mergingChildren: groupChildren, depth: depth)
+            )
         } else {
-            group = PBXGroup(reference: generateUUID(PBXGroup.self, path.lastComponent), children: groupChildren, sourceTree: .group, name: path.lastComponent, path: groupPath)
-            addObject(group)
-            if depth == 0 {
-                topLevelGroups.append(group)
-            }
-            groupsByPath[path] = group
+            group = getSingleGroup(path: path, mergingChildren: groupChildren, depth: depth)
+        }
+
+        if depth == 0 {
+            topLevelGroups.append(group)
         }
         groups.insert(group, at: 0)
         return (allSourceFiles, groups)
