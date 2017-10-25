@@ -248,7 +248,7 @@ public class PBXProjGenerator {
                 addObject(targetDependency)
                 dependencies.append(targetDependency.reference)
 
-                if dependencyTarget.type.isLibrary || dependencyTarget.type.isFramework {
+                if (dependencyTarget.type.isLibrary || dependencyTarget.type.isFramework) && dependency.link {
                     let dependencyBuildFile = targetBuildFiles[dependencyTargetName]!
                     let buildFile = PBXBuildFile(reference: generateUUID(PBXBuildFile.self, dependencyBuildFile.reference + target.name), fileRef: dependencyBuildFile.fileRef)
                     addObject(buildFile)
