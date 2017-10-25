@@ -27,7 +27,7 @@ public class PBXProjGenerator {
     var targetBuildFiles: [String: PBXBuildFile] = [:]
     var targetFileReferences: [String: String] = [:]
     var topLevelGroups: [PBXGroup] = []
-    var carthageFrameworksByPlatform: [String: [String]] = [:]
+    var carthageFrameworksByPlatform: [String: Set<String>] = [:]
     var frameworkFiles: [String] = []
 
     var uuids: Set<String> = []
@@ -103,11 +103,11 @@ public class PBXProjGenerator {
         if !carthageFrameworksByPlatform.isEmpty {
             var platforms: [PBXGroup] = []
             for (platform, fileReferences) in carthageFrameworksByPlatform {
-                let platformGroup = PBXGroup(reference: generateUUID(PBXGroup.self, platform), children: fileReferences, sourceTree: .group, name: platform, path: platform)
+                let platformGroup = PBXGroup(reference: generateUUID(PBXGroup.self, platform), children: fileReferences.sorted(), sourceTree: .group, name: platform, path: platform)
                 addObject(platformGroup)
                 platforms.append(platformGroup)
             }
-            let carthageGroup = PBXGroup(reference: generateUUID(PBXGroup.self, "Carthage"), children: platforms.references, sourceTree: .group, name: "Carthage", path: carthageBuildPath)
+            let carthageGroup = PBXGroup(reference: generateUUID(PBXGroup.self, "Carthage"), children: platforms.references.sorted(), sourceTree: .group, name: "Carthage", path: carthageBuildPath)
             addObject(carthageGroup)
             frameworkFiles.append(carthageGroup.reference)
         }
@@ -291,9 +291,6 @@ public class PBXProjGenerator {
                     copyFrameworksReferences.append(embedFile.reference)
                 }
             case .carthage:
-                if carthageFrameworksByPlatform[target.platform.carthageDirectoryName] == nil {
-                    carthageFrameworksByPlatform[target.platform.carthageDirectoryName] = []
-                }
                 var platformPath = Path(getCarthageBuildPath(platform: target.platform))
                 var frameworkPath = platformPath + dependency.reference
                 if frameworkPath.extension == nil {
@@ -303,7 +300,7 @@ public class PBXProjGenerator {
 
                 let buildFile = PBXBuildFile(reference: generateUUID(PBXBuildFile.self, fileReference + target.name), fileRef: fileReference)
                 addObject(buildFile)
-                carthageFrameworksByPlatform[target.platform.carthageDirectoryName]?.append(fileReference)
+                carthageFrameworksByPlatform[target.platform.carthageDirectoryName, default: []].insert(fileReference)
 
                 targetFrameworkBuildFiles.append(buildFile.reference)
                 if target.platform == .macOS && target.type.isApp {
