@@ -2,13 +2,20 @@
 
 ## Master
 
+## 1.3.0
+
 ### Added
 - generate output files for Carthage copy-frameworks script [#84](https://github.com/yonaskolb/XcodeGen/pull/84) @mironal
+- added options.settingPreset to choose which setting presets get applied [#100](https://github.com/yonaskolb/XcodeGen/pull/101) @yonaskolb
+- added `link` option for target dependencies [#109](https://github.com/yonaskolb/XcodeGen/pull/109) @keith
 
 ### Changed
 - updated to xcproj 0.4.1 [#85](https://github.com/yonaskolb/XcodeGen/pull/85) @enmiller
 - don't copy base settings if config type has been left out [#100](https://github.com/yonaskolb/XcodeGen/pull/100) @yonaskolb
 - generate localised files under a single variant group [#70](https://github.com/yonaskolb/XcodeGen/pull/70) @ryohey
+- don't apply common project settings to configs with no type [#100](https://github.com/yonaskolb/XcodeGen/pull/100) @yonaskolb
+- config references in settings can now be partially matched and are case insensitive [#111](https://github.com/yonaskolb/XcodeGen/pull/111) @yonaskolb
+- other small internal changes @yonaskolb
 
 ### Fixed
 - embed Carthage frameworks for macOS [#82](https://github.com/yonaskolb/XcodeGen/pull/82) @toshi0383
@@ -17,10 +24,9 @@
 - change make build to a PHONY task [#98](https://github.com/yonaskolb/XcodeGen/pull/98) @keith
 - allow copying of resource files from dependant targets [#95](https://github.com/yonaskolb/XcodeGen/pull/95) @keith
 - fixed library linking [#93](https://github.com/yonaskolb/XcodeGen/pull/93) @keith
+- fixed duplicate carthage file references [#107](https://github.com/yonaskolb/XcodeGen/pull/107) @yonaskolb
 
-
-
-
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/1.2.4...1.3.0)
 
 ## 1.2.4
 
