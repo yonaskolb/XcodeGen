@@ -25,6 +25,7 @@
 - allow copying of resource files from dependant targets [#95](https://github.com/yonaskolb/XcodeGen/pull/95) @keith
 - fixed library linking [#93](https://github.com/yonaskolb/XcodeGen/pull/93) @keith
 - fixed duplicate carthage file references [#107](https://github.com/yonaskolb/XcodeGen/pull/107) @yonaskolb
+- an error is now shown if you try and generate a target scheme and don't have debug and release builds @yonaskolb
 
 [Commits](https://github.com/yonaskolb/XcodeGen/compare/1.2.4...1.3.0)
 
