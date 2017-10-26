@@ -53,7 +53,7 @@ extension ProjectSpec {
         buildSettings += settings.buildSettings
 
         for (configVariant, settings) in settings.configSettings {
-            if config.name.contains(configVariant) {
+            if config.name.lowercased().contains(configVariant.lowercased()) {
                 buildSettings += getBuildSettings(settings: settings, config: config)
             }
         }

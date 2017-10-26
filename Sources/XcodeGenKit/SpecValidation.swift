@@ -29,7 +29,7 @@ extension ProjectSpec {
                 }
             }
             for config in settings.configSettings.keys {
-                if !configs.contains(where: { $0.name.contains(config)}) {
+                if !configs.contains(where: { $0.name.lowercased().contains(config.lowercased())}) {
                     errors.append(.invalidConfigReference(config))
                 }
             }

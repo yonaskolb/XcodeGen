@@ -114,7 +114,7 @@ func projectGeneratorTests() {
                 let spec = ProjectSpec(basePath: "", name: "test", configs: [
                     Config(name: "Staging Debug", type: .debug),
                     Config(name: "Staging Release", type: .release)],
-                                       settings: Settings(configSettings: ["Staging": ["SETTING1": "VALUE1"], "Debug": ["SETTING2": "VALUE2"]]))
+                                       settings: Settings(configSettings: ["staging": ["SETTING1": "VALUE1"], "debug": ["SETTING2": "VALUE2"]]))
 
                 var buildSettings = spec.getProjectBuildSettings(config: spec.configs.first!)
                 try expect(buildSettings["SETTING1"] as? String) == "VALUE1"
