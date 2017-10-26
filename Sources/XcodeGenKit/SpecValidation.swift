@@ -89,6 +89,15 @@ extension ProjectSpec {
                     }
                 }
 
+                if scheme.configVariants.isEmpty {
+                    if !configs.contains(where: { $0.type == .debug }) {
+                        errors.append(.missingConfigTypeForGeneratedTargetScheme(target: target.name, configType: .debug))
+                    }
+                    if !configs.contains(where: { $0.type == .release }) {
+                        errors.append(.missingConfigTypeForGeneratedTargetScheme(target: target.name, configType: .release))
+                    }
+                }
+
                 for testTarget in scheme.testTargets {
                     if getTarget(testTarget) == nil {
                         errors.append(.invalidTargetSchemeTest(target: target.name, testTarget: testTarget))
@@ -156,6 +165,7 @@ public struct SpecValidationError: Error, CustomStringConvertible {
         case invalidTargetSchemeTest(target: String, testTarget: String)
         case invalidFileGroup(String)
         case invalidConfigReference(String)
+        case missingConfigTypeForGeneratedTargetScheme(target: String, configType: ConfigType)
 
         public var description: String {
             switch self {
@@ -168,10 +178,11 @@ public struct SpecValidationError: Error, CustomStringConvertible {
             case let .missingTargetSource(target, source): return "Target \(target.quoted) has a missing source directory \(source.quoted)"
             case let .invalidSettingsGroup(group): return "Invalid settings group \(group.quoted)"
             case let .invalidBuildScriptPath(target, path): return "Target \(target.quoted) has a script path that doesn't exist \(path.quoted)"
-            case let .invalidTargetSchemeConfigVariant(target, configVariant, configType): return "Target \(target.quoted) has invalid scheme config varians which requires a config that has a \(configType.rawValue.quoted) type and contains the name \(configVariant.quoted)"
+            case let .invalidTargetSchemeConfigVariant(target, configVariant, configType): return "Target \(target.quoted) has an invalid scheme config variant which requires a config that has a \(configType.rawValue.quoted) type and contains the name \(configVariant.quoted)"
             case let .invalidTargetSchemeTest(target, test): return "Target \(target.quoted) scheme has invalid test \(test.quoted)"
             case let .invalidFileGroup(group): return "Invalid file group \(group.quoted)"
             case let .invalidConfigReference(config): return "Invalid config reference \(config.quoted)"
+            case let .missingConfigTypeForGeneratedTargetScheme(target, configType): return "Target \(target.quoted) is missing a config of type \(configType.rawValue) to generate its scheme"
             }
         }
     }
