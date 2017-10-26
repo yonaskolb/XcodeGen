@@ -37,7 +37,7 @@ func projectGeneratorTests() {
                     let buildConfigs = project.pbxproj.configurationLists.getReference(target.buildConfigurationList),
                     let buildConfigReference = buildConfigs.buildConfigurations.first,
                     let buildConfig = project.pbxproj.buildConfigurations.getReference(buildConfigReference) else {
-                    throw failure("Build Config not found")
+                        throw failure("Build Config not found")
                 }
                 try expect(buildConfig.buildSettings["PRODUCT_BUNDLE_IDENTIFIER"] as? String) == "com.test.MyFramework"
             }
@@ -108,6 +108,17 @@ func projectGeneratorTests() {
                 expectedTargetDebugSettings += ["SETTING 2": "value 2", "SETTING 3": "value 3", "SETTING": "value"]
 
                 try expect(targetDebugSettings.equals(expectedTargetDebugSettings)).beTrue()
+            }
+
+            $0.it("applies partial config settings") {
+                let spec = ProjectSpec(basePath: "", name: "test", configs: [
+                    Config(name: "Staging Debug", type: .debug),
+                    Config(name: "Staging Release", type: .release)],
+                                       settings: Settings(configSettings: ["staging": ["SETTING1": "VALUE1"], "debug": ["SETTING2": "VALUE2"]]))
+
+                var buildSettings = spec.getProjectBuildSettings(config: spec.configs.first!)
+                try expect(buildSettings["SETTING1"] as? String) == "VALUE1"
+                try expect(buildSettings["SETTING2"] as? String) == "VALUE2"
             }
         }
 

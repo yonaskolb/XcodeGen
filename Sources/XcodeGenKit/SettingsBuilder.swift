@@ -52,8 +52,10 @@ extension ProjectSpec {
 
         buildSettings += settings.buildSettings
 
-        if let configSettings = settings.configSettings[config.name] {
-            buildSettings += getBuildSettings(settings: configSettings, config: config)
+        for (configVariant, settings) in settings.configSettings {
+            if config.name.lowercased().contains(configVariant.lowercased()) {
+                buildSettings += getBuildSettings(settings: settings, config: config)
+            }
         }
 
         return buildSettings

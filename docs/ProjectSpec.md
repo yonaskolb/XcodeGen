@@ -103,7 +103,7 @@ settingGroups:
 Settings can either be a simple map of build settings `[String: String]`, or can be more advanced with the following properties:
 
 - ⚪️ **groups**: `[String]` - List of setting groups to include and merge
-- ⚪️ **configs**: [String: [Settings](#settings)] - Mapping of config name to a settings spec. These settings will only be applied for that config
+- ⚪️ **configs**: [String: [Settings](#settings)] - Mapping of config name to a settings spec. These settings will only be applied for that config. Each key will be matched to any configs that contain the key and is case insensitive. So if you had `Staging Debug` and `Staging Release`, you could apply settings to both of them using `staging`.
 - ⚪️ **base**: `[String: String]` - Used to specify default settings that apply to any config
 
 ```yaml
