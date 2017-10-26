@@ -28,6 +28,11 @@ extension ProjectSpec {
                     errors.append(.invalidSettingsGroup(group))
                 }
             }
+            for config in settings.configSettings.keys {
+                if getConfig(config) == nil {
+                    errors.append(.invalidConfigReference(config))
+                }
+            }
             return errors
         }
 
@@ -150,6 +155,7 @@ public struct SpecValidationError: Error, CustomStringConvertible {
         case invalidTargetSchemeConfigVariant(target: String, configVariant: String, configType: ConfigType)
         case invalidTargetSchemeTest(target: String, testTarget: String)
         case invalidFileGroup(String)
+        case invalidConfigReference(String)
 
         public var description: String {
             switch self {
@@ -165,6 +171,7 @@ public struct SpecValidationError: Error, CustomStringConvertible {
             case let .invalidTargetSchemeConfigVariant(target, configVariant, configType): return "Target \(target.quoted) has invalid scheme config varians which requires a config that has a \(configType.rawValue.quoted) type and contains the name \(configVariant.quoted)"
             case let .invalidTargetSchemeTest(target, test): return "Target \(target.quoted) scheme has invalid test \(test.quoted)"
             case let .invalidFileGroup(group): return "Invalid file group \(group.quoted)"
+            case let .invalidConfigReference(config): return "Invalid config reference \(config.quoted)"
             }
         }
     }
