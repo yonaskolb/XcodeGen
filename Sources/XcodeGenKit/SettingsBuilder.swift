@@ -15,7 +15,7 @@ import JSONUtilities
 
 extension ProjectSpec {
 
-    public func getProjectBuildSettings(basePath: Path, config: Config) -> BuildSettings {
+    public func getProjectBuildSettings(config: Config) -> BuildSettings {
         var buildSettings: BuildSettings = [:]
 
         if let type = config.type, options.settingPresets.applyProject {
@@ -38,7 +38,7 @@ extension ProjectSpec {
         return buildSettings
     }
 
-    public func getTargetBuildSettings(basePath: Path, target: Target, config: Config) -> BuildSettings {
+    public func getTargetBuildSettings(target: Target, config: Config) -> BuildSettings {
         var buildSettings = BuildSettings()
         
         if options.settingPresets.applyTarget {
@@ -99,14 +99,14 @@ extension ProjectSpec {
                     buildSettings += configFile.flattenedBuildSettings()
                 }
             }
-            buildSettings += getProjectBuildSettings(basePath: basePath, config: config)
+            buildSettings += getProjectBuildSettings(config: config)
         }
         if let configFilePath = target.configFiles[config.name] {
             if let configFile = try? XCConfig(path: basePath + configFilePath) {
                 buildSettings += configFile.flattenedBuildSettings()
             }
         }
-        buildSettings += getTargetBuildSettings(basePath: basePath, target: target, config: config)
+        buildSettings += getTargetBuildSettings(target: target, config: config)
         return buildSettings
     }
 

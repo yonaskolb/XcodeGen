@@ -69,7 +69,7 @@ public class PBXProjGenerator {
         }
 
         let buildConfigs: [XCBuildConfiguration] = spec.configs.map { config in
-            let buildSettings = spec.getProjectBuildSettings(basePath: basePath, config: config)
+            let buildSettings = spec.getProjectBuildSettings(config: config)
             var baseConfigurationReference: String?
             if let configPath = spec.configFiles[config.name] {
                 baseConfigurationReference = getFileReference(path: spec.basePath + configPath, inPath: spec.basePath)
@@ -171,7 +171,7 @@ public class PBXProjGenerator {
         }
 
         let configs: [XCBuildConfiguration] = spec.configs.map { config in
-            var buildSettings = spec.getTargetBuildSettings(basePath: basePath, target: target, config: config)
+            var buildSettings = spec.getTargetBuildSettings(target: target, config: config)
 
             // automatically set INFOPLIST_FILE path
             if let plistPath = infoPlists.first,
