@@ -23,7 +23,6 @@ extension ProjectSpec {
             buildSettings += SettingsPresetFile.config(type).getBuildSettings()
         }
 
-        buildSettings += getBuildSettings(settings: settings, config: config)
         if let configPath = configFiles[config.name] {
             // Do not overwrite project xcconfig's value.
             if let configFile = try? XCConfig(path: basePath + configPath) {
@@ -34,6 +33,8 @@ extension ProjectSpec {
                 }
             }
         }
+
+        buildSettings += getBuildSettings(settings: settings, config: config)
 
         return buildSettings
     }
@@ -46,7 +47,7 @@ extension ProjectSpec {
             buildSettings += SettingsPresetFile.product(target.type).getBuildSettings()
             buildSettings += SettingsPresetFile.productPlatform(target.type, target.platform).getBuildSettings()
         }
-        buildSettings += getBuildSettings(settings: target.settings, config: config)
+
         // Do not overwrite target xcconfig's values.
         if let configPath = target.configFiles[config.name] {
             if let configFile = try? XCConfig(path: basePath + configPath) {
@@ -67,6 +68,9 @@ extension ProjectSpec {
                 }
             }
         }
+
+        buildSettings += getBuildSettings(settings: target.settings, config: config)
+
         return buildSettings
     }
 
