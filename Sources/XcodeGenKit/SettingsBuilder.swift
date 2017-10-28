@@ -26,11 +26,7 @@ extension ProjectSpec {
         if let configPath = configFiles[config.name] {
             // Do not overwrite project xcconfig's value.
             if let configFile = try? XCConfig(path: basePath + configPath) {
-                for (k, _) in configFile.flattenedBuildSettings() {
-                    // FIXME: Catch platform specifier. e.g. LD_RUNPATH_SEARCH_PATHS[sdk=iphone*]
-                    buildSettings.removeValue(forKey: k)
-                    buildSettings.removeValue(forKey: "\"\(k)\"")
-                }
+                removeValues(for: configFile.flattenedBuildSettings().keys, buildSettings: &buildSettings)
             }
         }
 
@@ -51,21 +47,13 @@ extension ProjectSpec {
         // Do not overwrite target xcconfig's values.
         if let configPath = target.configFiles[config.name] {
             if let configFile = try? XCConfig(path: basePath + configPath) {
-                for (k, _) in configFile.flattenedBuildSettings() {
-                    // FIXME: Catch platform specifier. e.g. LD_RUNPATH_SEARCH_PATHS[sdk=iphone*]
-                    buildSettings.removeValue(forKey: k)
-                    buildSettings.removeValue(forKey: "\"\(k)\"")
-                }
+                removeValues(for: configFile.flattenedBuildSettings().keys, buildSettings: &buildSettings)
             }
         }
         // Avoid overwriting target xcconfig's values by base presets' values.
         if let configPath = configFiles[config.name] {
             if let configFile = try? XCConfig(path: basePath + configPath) {
-                for (k, _) in configFile.flattenedBuildSettings() {
-                    // FIXME: Catch platform specifier. e.g. LD_RUNPATH_SEARCH_PATHS[sdk=iphone*]
-                    buildSettings.removeValue(forKey: k)
-                    buildSettings.removeValue(forKey: "\"\(k)\"")
-                }
+                removeValues(for: configFile.flattenedBuildSettings().keys, buildSettings: &buildSettings)
             }
         }
 
@@ -117,6 +105,19 @@ extension ProjectSpec {
     public func targetHasBuildSetting(_ setting: String, basePath: Path, target: Target, config: Config, includeProject: Bool = true) -> Bool {
         let buildSettings = getCombinedBuildSettings(basePath: basePath, target: target, config: config, includeProject: includeProject)
         return buildSettings[setting] != nil
+    }
+
+    // MARK: private
+
+    /// Removes values for specified keys in buildSettings
+    /// - parameter keys: Keys for values to remove
+    /// - paramerter buildSettings: inout dictionary
+    private func removeValues(for keys: BuildSettings.Keys, buildSettings: inout BuildSettings) {
+        for k in keys {
+            // FIXME: Catch platform specifier. e.g. LD_RUNPATH_SEARCH_PATHS[sdk=iphone*]
+            buildSettings.removeValue(forKey: k)
+            buildSettings.removeValue(forKey: "\"\(k)\"")
+        }
     }
 }
 
