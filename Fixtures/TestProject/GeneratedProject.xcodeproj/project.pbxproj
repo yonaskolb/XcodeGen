@@ -1,6 +1,5 @@
 // !$*UTF8*$!
 {
-	archiveVersion = 1;
 	classes = {
 	};
 	objectVersion = 46;
@@ -44,13 +43,11 @@
 /* Begin PBXCopyFilesBuildPhase section */
 		CFBP50493301 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
 				BF3862341101 /* MyFramework.framework in CopyFiles */,
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
@@ -191,7 +188,6 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 		HBP299349701 /* Frameworks */ = {
 			isa = PBXHeadersBuildPhase;
@@ -199,14 +195,12 @@
 			files = (
 				BF3515549501 /* MyFramework.h in Headers */,
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 		HBP652326301 /* Frameworks */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
@@ -297,14 +291,12 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 		RBP299349701 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 		RBP652326301 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
@@ -315,7 +307,6 @@
 				BF2513089601 /* LocalizedStoryboard.storyboard in Resources */,
 				BF2250910101 /* Main.storyboard in Resources */,
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
@@ -387,7 +378,6 @@
 			files = (
 				BF9001417701 /* TestProjectTests.swift in Sources */,
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 		SBP299349701 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -395,7 +385,6 @@
 			files = (
 				BF9155249601 /* FrameworkFile.swift in Sources */,
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 		SBP652326301 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -404,7 +393,6 @@
 				BF1073850101 /* AppDelegate.swift in Sources */,
 				BF1744565901 /* ViewController.swift in Sources */,
 			);
-			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
@@ -704,7 +692,6 @@
 				XCBC89077001 /* Debug */,
 				XCBC60448901 /* Release */,
 			);
-			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "";
 		};
 		XCCL29934901 /* Build configuration list for PBXNativeTarget "MyFramework" */ = {
@@ -713,7 +700,6 @@
 				XCBC19846901 /* Debug */,
 				XCBC89204001 /* Release */,
 			);
-			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "";
 		};
 		XCCL65232601 /* Build configuration list for PBXNativeTarget "TestProject" */ = {
@@ -722,7 +708,6 @@
 				XCBC37128501 /* Debug */,
 				XCBC86437501 /* Release */,
 			);
-			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "";
 		};
 		XCCL81399401 /* Build configuration list for PBXProject "GeneratedProject" */ = {

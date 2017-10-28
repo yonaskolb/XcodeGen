@@ -62,7 +62,7 @@ public class PBXProjGenerator {
 
     public func generate() throws -> PBXProj {
         uuids = []
-        project = PBXProj(archiveVersion: 1, objectVersion: 46, rootObject: generateUUID(PBXProject.self, spec.name))
+        project = PBXProj(objectVersion: 46, rootObject: generateUUID(PBXProject.self, spec.name))
 
         for group in spec.fileGroups {
             _ = try getGroups(path: spec.basePath + group)
@@ -250,7 +250,7 @@ public class PBXProjGenerator {
 
                 if (dependencyTarget.type.isLibrary || dependencyTarget.type.isFramework) && dependency.link {
                     let dependencyBuildFile = targetBuildFiles[dependencyTargetName]!
-                    let buildFile = PBXBuildFile(reference: generateUUID(PBXBuildFile.self, dependencyBuildFile.reference + target.name), fileRef: dependencyBuildFile.fileRef)
+                    let buildFile = PBXBuildFile(reference: generateUUID(PBXBuildFile.self, dependencyBuildFile.reference + target.name), fileRef: dependencyBuildFile.fileRef!)
                     addObject(buildFile)
                     targetFrameworkBuildFiles.append(buildFile.reference)
                 }
@@ -425,11 +425,11 @@ public class PBXProjGenerator {
 
         let nativeTarget = PBXNativeTarget(
             reference: targetNativeReferences[target.name]!,
+            name: target.name,
             buildConfigurationList: buildConfigList.reference,
             buildPhases: buildPhases,
             buildRules: [],
             dependencies: dependencies,
-            name: target.name,
             productReference: fileReference,
             productType: target.type)
         addObject(nativeTarget)
@@ -548,7 +548,7 @@ public class PBXProjGenerator {
 
                 // find base localisation variant group
                 let name = path.lastComponentWithoutExtension
-                let variantGroup = baseLocalisationVariantGroups.first { Path($0.name).lastComponentWithoutExtension == name }
+                let variantGroup = baseLocalisationVariantGroups.first { Path($0.name!).lastComponentWithoutExtension == name }
 
                 let fileReference: String
                 if let cachedFileReference = fileReferencesByPath[path] {
