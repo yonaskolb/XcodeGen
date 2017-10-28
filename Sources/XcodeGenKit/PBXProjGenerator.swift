@@ -17,7 +17,6 @@ import ProjectSpec
 public class PBXProjGenerator {
 
     let spec: ProjectSpec
-    let basePath: Path
     let currentXcodeVersion: String
 
     var fileReferencesByPath: [Path: String] = [:]
@@ -28,7 +27,7 @@ public class PBXProjGenerator {
     var targetBuildFiles: [String: PBXBuildFile] = [:]
     var targetFileReferences: [String: String] = [:]
     var topLevelGroups: [PBXGroup] = []
-    var carthageFrameworksByPlatform: [String: [String]] = [:]
+    var carthageFrameworksByPlatform: [String: Set<String>] = [:]
     var frameworkFiles: [String] = []
 
     var uuids: Set<String> = []
@@ -38,10 +37,9 @@ public class PBXProjGenerator {
         return spec.options.carthageBuildPath ?? "Carthage/Build"
     }
 
-    public init(spec: ProjectSpec, path: Path, currentXcodeVersion: String) {
+    public init(spec: ProjectSpec, currentXcodeVersion: String) {
         self.currentXcodeVersion = currentXcodeVersion
         self.spec = spec
-        basePath = path
     }
 
     public func generateUUID<T: PBXObject>(_ element: T.Type, _ id: String) -> String {
@@ -64,17 +62,17 @@ public class PBXProjGenerator {
 
     public func generate() throws -> PBXProj {
         uuids = []
-        project = PBXProj(archiveVersion: 1, objectVersion: 46, rootObject: generateUUID(PBXProject.self, spec.name))
+        project = PBXProj(objectVersion: 46, rootObject: generateUUID(PBXProject.self, spec.name))
 
         for group in spec.fileGroups {
-            _ = try getGroups(path: basePath + group)
+            _ = try getGroups(path: spec.basePath + group)
         }
 
         let buildConfigs: [XCBuildConfiguration] = spec.configs.map { config in
             let buildSettings = spec.getProjectBuildSettings(basePath: basePath, config: config)
             var baseConfigurationReference: String?
             if let configPath = spec.configFiles[config.name] {
-                baseConfigurationReference = getFileReference(path: basePath + configPath, inPath: basePath)
+                baseConfigurationReference = getFileReference(path: spec.basePath + configPath, inPath: spec.basePath)
             }
             return XCBuildConfiguration(reference: generateUUID(XCBuildConfiguration.self, config.name), name: config.name, baseConfigurationReference: baseConfigurationReference, buildSettings: buildSettings)
         }
@@ -105,11 +103,11 @@ public class PBXProjGenerator {
         if !carthageFrameworksByPlatform.isEmpty {
             var platforms: [PBXGroup] = []
             for (platform, fileReferences) in carthageFrameworksByPlatform {
-                let platformGroup = PBXGroup(reference: generateUUID(PBXGroup.self, platform), children: fileReferences, sourceTree: .group, name: platform, path: platform)
+                let platformGroup = PBXGroup(reference: generateUUID(PBXGroup.self, platform), children: fileReferences.sorted(), sourceTree: .group, name: platform, path: platform)
                 addObject(platformGroup)
                 platforms.append(platformGroup)
             }
-            let carthageGroup = PBXGroup(reference: generateUUID(PBXGroup.self, "Carthage"), children: platforms.references, sourceTree: .group, name: "Carthage", path: carthageBuildPath)
+            let carthageGroup = PBXGroup(reference: generateUUID(PBXGroup.self, "Carthage"), children: platforms.references.sorted(), sourceTree: .group, name: "Carthage", path: carthageBuildPath)
             addObject(carthageGroup)
             frameworkFiles.append(carthageGroup.reference)
         }
@@ -159,7 +157,7 @@ public class PBXProjGenerator {
 
         let carthageDependencies = getAllCarthageDependencies(target: target)
 
-        let sourcePaths = target.sources.map { basePath + $0 }
+        let sourcePaths = target.sources.map { spec.basePath + $0 }
         var sourceFiles: [SourceFile] = []
 
         for source in sourcePaths {
@@ -177,13 +175,13 @@ public class PBXProjGenerator {
 
             // automatically set INFOPLIST_FILE path
             if let plistPath = infoPlists.first,
-                !spec.targetHasBuildSetting("INFOPLIST_FILE", basePath: basePath, target: target, config: config) {
-                buildSettings["INFOPLIST_FILE"] = plistPath.byRemovingBase(path: basePath)
+                !spec.targetHasBuildSetting("INFOPLIST_FILE", basePath: spec.basePath, target: target, config: config) {
+                buildSettings["INFOPLIST_FILE"] = plistPath.byRemovingBase(path: spec.basePath)
             }
 
             // automatically calculate bundle id
             if let bundleIdPrefix = spec.options.bundleIdPrefix,
-                !spec.targetHasBuildSetting("PRODUCT_BUNDLE_IDENTIFIER", basePath: basePath, target: target, config: config) {
+                !spec.targetHasBuildSetting("PRODUCT_BUNDLE_IDENTIFIER", basePath: spec.basePath, target: target, config: config) {
                 let characterSet = CharacterSet.alphanumerics.union(CharacterSet(charactersIn: "-.")).inverted
                 let escapedTargetName = target.name.replacingOccurrences(of: "_", with: "-").components(separatedBy: characterSet).joined(separator: "")
                 buildSettings["PRODUCT_BUNDLE_IDENTIFIER"] = bundleIdPrefix + "." + escapedTargetName
@@ -191,7 +189,7 @@ public class PBXProjGenerator {
 
             // automatically set test target name
             if target.type == .uiTestBundle,
-                !spec.targetHasBuildSetting("TEST_TARGET_NAME", basePath: basePath, target: target, config: config) {
+                !spec.targetHasBuildSetting("TEST_TARGET_NAME", basePath: spec.basePath, target: target, config: config) {
                 for dependency in target.dependencies {
                     if dependency.type == .target,
                         let dependencyTarget = spec.getTarget(dependency.reference),
@@ -219,7 +217,7 @@ public class PBXProjGenerator {
 
             var baseConfigurationReference: String?
             if let configPath = target.configFiles[config.name] {
-                baseConfigurationReference = getFileReference(path: basePath + configPath, inPath: basePath)
+                baseConfigurationReference = getFileReference(path: spec.basePath + configPath, inPath: spec.basePath)
             }
             return XCBuildConfiguration(reference: generateUUID(XCBuildConfiguration.self, config.name + target.name), name: config.name, baseConfigurationReference: baseConfigurationReference, buildSettings: buildSettings)
         }
@@ -250,9 +248,9 @@ public class PBXProjGenerator {
                 addObject(targetDependency)
                 dependencies.append(targetDependency.reference)
 
-                if dependencyTarget.type.isLibrary || dependencyTarget.type.isFramework {
+                if (dependencyTarget.type.isLibrary || dependencyTarget.type.isFramework) && dependency.link {
                     let dependencyBuildFile = targetBuildFiles[dependencyTargetName]!
-                    let buildFile = PBXBuildFile(reference: generateUUID(PBXBuildFile.self, dependencyBuildFile.reference + target.name), fileRef: dependencyBuildFile.fileRef)
+                    let buildFile = PBXBuildFile(reference: generateUUID(PBXBuildFile.self, dependencyBuildFile.reference + target.name), fileRef: dependencyBuildFile.fileRef!)
                     addObject(buildFile)
                     targetFrameworkBuildFiles.append(buildFile.reference)
                 }
@@ -277,7 +275,7 @@ public class PBXProjGenerator {
 
             case .framework:
 
-                let fileReference = getFileReference(path: Path(dependency.reference), inPath: basePath)
+                let fileReference = getFileReference(path: Path(dependency.reference), inPath: spec.basePath)
 
                 let buildFile = PBXBuildFile(reference: generateUUID(PBXBuildFile.self, fileReference + target.name), fileRef: fileReference)
                 addObject(buildFile)
@@ -293,9 +291,6 @@ public class PBXProjGenerator {
                     copyFrameworksReferences.append(embedFile.reference)
                 }
             case .carthage:
-                if carthageFrameworksByPlatform[target.platform.carthageDirectoryName] == nil {
-                    carthageFrameworksByPlatform[target.platform.carthageDirectoryName] = []
-                }
                 var platformPath = Path(getCarthageBuildPath(platform: target.platform))
                 var frameworkPath = platformPath + dependency.reference
                 if frameworkPath.extension == nil {
@@ -305,7 +300,7 @@ public class PBXProjGenerator {
 
                 let buildFile = PBXBuildFile(reference: generateUUID(PBXBuildFile.self, fileReference + target.name), fileRef: fileReference)
                 addObject(buildFile)
-                carthageFrameworksByPlatform[target.platform.carthageDirectoryName]?.append(fileReference)
+                carthageFrameworksByPlatform[target.platform.carthageDirectoryName, default: []].insert(fileReference)
 
                 targetFrameworkBuildFiles.append(buildFile.reference)
                 if target.platform == .macOS && target.type.isApp {
@@ -330,7 +325,7 @@ public class PBXProjGenerator {
             var shellScript: String
             switch buildScript.script {
             case let .path(path):
-                shellScript = try (basePath + path).read()
+                shellScript = try (spec.basePath + path).read()
             case let .script(script):
                 shellScript = script
             }
@@ -430,11 +425,11 @@ public class PBXProjGenerator {
 
         let nativeTarget = PBXNativeTarget(
             reference: targetNativeReferences[target.name]!,
+            name: target.name,
             buildConfigurationList: buildConfigList.reference,
             buildPhases: buildPhases,
             buildRules: [],
             dependencies: dependencies,
-            name: target.name,
             productReference: fileReference,
             productType: target.type)
         addObject(nativeTarget)
@@ -549,13 +544,11 @@ public class PBXProjGenerator {
         for localisedDirectory in localisedDirectories {
             let localisationName = localisedDirectory.lastComponentWithoutExtension
             for path in try localisedDirectory.children().sorted { $0.lastComponent < $1.lastComponent } {
-
-
                 let filePath = "\(localisedDirectory.lastComponent)/\(path.lastComponent)"
 
                 // find base localisation variant group
                 let name = path.lastComponentWithoutExtension
-                let variantGroup = baseLocalisationVariantGroups.first { Path($0.name).lastComponentWithoutExtension == name }
+                let variantGroup = baseLocalisationVariantGroups.first { Path($0.name!).lastComponentWithoutExtension == name }
 
                 let fileReference: String
                 if let cachedFileReference = fileReferencesByPath[path] {
@@ -571,7 +564,9 @@ public class PBXProjGenerator {
                 }
 
                 if let variantGroup = variantGroup {
-                    variantGroup.children.append(fileReference)
+                    if !variantGroup.children.contains(fileReference) {
+                        variantGroup.children.append(fileReference)
+                    }
                 } else {
                     // add SourceFile to group if there is no Base.lproj directory
                     let buildFile = PBXBuildFile(reference: generateUUID(PBXBuildFile.self, fileReference),
@@ -583,7 +578,7 @@ public class PBXProjGenerator {
             }
         }
 
-        let groupPath: String = depth == 0 ? path.byRemovingBase(path: basePath).string : path.lastComponent
+        let groupPath: String = depth == 0 ? path.byRemovingBase(path: spec.basePath).string : path.lastComponent
         let group: PBXGroup
         if let cachedGroup = groupsByPath[path] {
             group = cachedGroup

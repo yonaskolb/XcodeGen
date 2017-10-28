@@ -16,7 +16,6 @@ public struct Target {
     public var platform: Platform
     public var settings: Settings
     public var sources: [String]
-    public var sourceExludes: [String]
     public var dependencies: [Dependency]
     public var prebuildScripts: [BuildScript]
     public var postbuildScripts: [BuildScript]
@@ -31,14 +30,13 @@ public struct Target {
         return name
     }
 
-    public init(name: String, type: PBXProductType, platform: Platform, settings: Settings = .empty, configFiles: [String: String] = [:], sources: [String] = [], sourceExludes: [String] = [], dependencies: [Dependency] = [], prebuildScripts: [BuildScript] = [], postbuildScripts: [BuildScript] = [], scheme: TargetScheme? = nil) {
+    public init(name: String, type: PBXProductType, platform: Platform, settings: Settings = .empty, configFiles: [String: String] = [:], sources: [String] = [], dependencies: [Dependency] = [], prebuildScripts: [BuildScript] = [], postbuildScripts: [BuildScript] = [], scheme: TargetScheme? = nil) {
         self.name = name
         self.type = type
         self.platform = platform
         self.settings = settings
         self.configFiles = configFiles
         self.sources = sources
-        self.sourceExludes = sourceExludes
         self.dependencies = dependencies
         self.prebuildScripts = prebuildScripts
         self.postbuildScripts = postbuildScripts
@@ -49,7 +47,7 @@ public struct Target {
 extension Target: CustomStringConvertible {
 
     public var description: String {
-        return "\(platform.emoji)  \(type): \(name)"
+        return "\(platform.emoji)  \(name) - \(type)"
     }
 }
 
@@ -129,7 +127,6 @@ extension Target: Equatable {
             lhs.settings == rhs.settings &&
             lhs.configFiles == rhs.configFiles &&
             lhs.sources == rhs.sources &&
-            lhs.sourceExludes == rhs.sourceExludes &&
             lhs.dependencies == rhs.dependencies &&
             lhs.prebuildScripts == rhs.prebuildScripts &&
             lhs.postbuildScripts == rhs.postbuildScripts &&
@@ -186,7 +183,6 @@ extension Target: NamedJSONDictionaryConvertible {
         } else {
             sources = jsonDictionary.json(atKeyPath: "sources") ?? []
         }
-        sourceExludes = jsonDictionary.json(atKeyPath: "sourceExludes") ?? []
         if jsonDictionary["dependencies"] == nil {
             dependencies = []
         } else {
@@ -205,6 +201,7 @@ public struct Dependency: Equatable {
     public var embed: Bool?
     public var codeSign: Bool = true
     public var removeHeaders: Bool = true
+    public var link: Bool = true
 
     public init(type: DependencyType, reference: String, embed: Bool? = nil) {
         self.type = type
@@ -223,7 +220,8 @@ public struct Dependency: Equatable {
             lhs.type == rhs.type &&
             lhs.codeSign == rhs.codeSign &&
             lhs.removeHeaders == rhs.removeHeaders &&
-            lhs.embed == rhs.embed
+            lhs.embed == rhs.embed &&
+            lhs.link == rhs.link
     }
 
     public var buildSettings: [String: Any] {
@@ -256,6 +254,9 @@ extension Dependency: JSONObjectConvertible {
 
         embed = jsonDictionary.json(atKeyPath: "embed")
 
+        if let bool: Bool = jsonDictionary.json(atKeyPath: "link") {
+            link = bool
+        }
         if let bool: Bool = jsonDictionary.json(atKeyPath: "codeSign") {
             codeSign = bool
         }

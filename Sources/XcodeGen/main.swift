@@ -15,10 +15,17 @@ import ProjectSpec
 import JSONUtilities
 import Rainbow
 
+let version = "1.3.0"
+
 func generate(spec: String, project: String) {
 
     let specPath = Path(spec).normalize()
     let projectPath = Path(project).normalize()
+
+    if !specPath.exists {
+        print("No project spec found at \(specPath.absolute())".red)
+        exit(1)
+    }
 
     let spec: ProjectSpec
     do {
@@ -33,7 +40,7 @@ func generate(spec: String, project: String) {
     }
 
     do {
-        let projectGenerator = ProjectGenerator(spec: spec, path: specPath.parent())
+        let projectGenerator = ProjectGenerator(spec: spec)
         let project = try projectGenerator.generateProject()
         print("⚙️  Generated project")
 
@@ -42,6 +49,7 @@ func generate(spec: String, project: String) {
         print("💾  Saved project to \(projectFile.string)".green)
     } catch let error as SpecValidationError {
         print(error.description.red)
+        exit(1)
     } catch {
         print("Generation failed: \(error.localizedDescription)".red)
         exit(1)
@@ -52,4 +60,4 @@ command(
     Option<String>("spec", "project.yml", flag: "s", description: "The path to the spec file"),
     Option<String>("project", "", flag: "p", description: "The path to the folder where the project should be generated"),
     generate)
-    .run()
+    .run(version)

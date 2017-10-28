@@ -16,12 +16,10 @@ import ProjectSpec
 public class ProjectGenerator {
 
     var spec: ProjectSpec
-    var path: Path
     let currentXcodeVersion = "0900"
 
-    public init(spec: ProjectSpec, path: Path) {
+    public init(spec: ProjectSpec) {
         self.spec = spec
-        self.path = path
     }
 
     var defaultDebugConfig: Config {
@@ -33,8 +31,8 @@ public class ProjectGenerator {
     }
 
     public func generateProject() throws -> XcodeProj {
-        try spec.validate(path: path)
-        let pbxProjGenerator = PBXProjGenerator(spec: spec, path: path, currentXcodeVersion: currentXcodeVersion)
+        try spec.validate()
+        let pbxProjGenerator = PBXProjGenerator(spec: spec, currentXcodeVersion: currentXcodeVersion)
         let pbxProject = try pbxProjGenerator.generate()
         let workspace = try generateWorkspace()
         let sharedData = try generateSharedData(pbxProject: pbxProject)

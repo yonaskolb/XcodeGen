@@ -11,7 +11,7 @@ import PathKit
 
 extension ProjectSpec {
 
-    public mutating func validate(path: Path) throws {
+    public mutating func validate() throws {
 
         if configs.isEmpty {
             configs = [Config(name: "Debug", type: .debug), Config(name: "Release", type: .release)]
@@ -28,17 +28,22 @@ extension ProjectSpec {
                     errors.append(.invalidSettingsGroup(group))
                 }
             }
+            for config in settings.configSettings.keys {
+                if !configs.contains(where: { $0.name.lowercased().contains(config.lowercased())}) {
+                    errors.append(.invalidConfigReference(config))
+                }
+            }
             return errors
         }
 
         for fileGroup in fileGroups {
-            if !(path + fileGroup).exists {
+            if !(basePath + fileGroup).exists {
                 errors.append(.invalidFileGroup(fileGroup))
             }
         }
 
         for (config, configFile) in configFiles {
-            if !(path + configFile).exists {
+            if !(basePath + configFile).exists {
                 errors.append(.invalidConfigFile(configFile: configFile, config: config))
             }
         }
@@ -55,7 +60,7 @@ extension ProjectSpec {
             }
 
             for (config, configFile) in target.configFiles {
-                if !(path + configFile).exists {
+                if !(basePath + configFile).exists {
                     errors.append(.invalidTargetConfigFile(configFile: configFile, config: config, target: target.name))
                 }
             }
@@ -67,7 +72,7 @@ extension ProjectSpec {
             }
 
             for source in target.sources {
-                let sourcePath = path + source
+                let sourcePath = basePath + source
                 if !sourcePath.exists {
                     errors.append(.missingTargetSource(target: target.name, source: sourcePath.string))
                 }
@@ -84,6 +89,15 @@ extension ProjectSpec {
                     }
                 }
 
+                if scheme.configVariants.isEmpty {
+                    if !configs.contains(where: { $0.type == .debug }) {
+                        errors.append(.missingConfigTypeForGeneratedTargetScheme(target: target.name, configType: .debug))
+                    }
+                    if !configs.contains(where: { $0.type == .release }) {
+                        errors.append(.missingConfigTypeForGeneratedTargetScheme(target: target.name, configType: .release))
+                    }
+                }
+
                 for testTarget in scheme.testTargets {
                     if getTarget(testTarget) == nil {
                         errors.append(.invalidTargetSchemeTest(target: target.name, testTarget: testTarget))
@@ -94,7 +108,7 @@ extension ProjectSpec {
             let scripts = target.prebuildScripts + target.postbuildScripts
             for script in scripts {
                 if case let .path(pathString) = script.script {
-                    let scriptPath = path + pathString
+                    let scriptPath = basePath + pathString
                     if !scriptPath.exists {
                         errors.append(.invalidBuildScriptPath(target: target.name, path: pathString))
                     }
@@ -150,6 +164,8 @@ public struct SpecValidationError: Error, CustomStringConvertible {
         case invalidTargetSchemeConfigVariant(target: String, configVariant: String, configType: ConfigType)
         case invalidTargetSchemeTest(target: String, testTarget: String)
         case invalidFileGroup(String)
+        case invalidConfigReference(String)
+        case missingConfigTypeForGeneratedTargetScheme(target: String, configType: ConfigType)
 
         public var description: String {
             switch self {
@@ -162,9 +178,11 @@ public struct SpecValidationError: Error, CustomStringConvertible {
             case let .missingTargetSource(target, source): return "Target \(target.quoted) has a missing source directory \(source.quoted)"
             case let .invalidSettingsGroup(group): return "Invalid settings group \(group.quoted)"
             case let .invalidBuildScriptPath(target, path): return "Target \(target.quoted) has a script path that doesn't exist \(path.quoted)"
-            case let .invalidTargetSchemeConfigVariant(target, configVariant, configType): return "Target \(target.quoted) has invalid scheme config varians which requires a config that has a \(configType.rawValue.quoted) type and contains the name \(configVariant.quoted)"
+            case let .invalidTargetSchemeConfigVariant(target, configVariant, configType): return "Target \(target.quoted) has an invalid scheme config variant which requires a config that has a \(configType.rawValue.quoted) type and contains the name \(configVariant.quoted)"
             case let .invalidTargetSchemeTest(target, test): return "Target \(target.quoted) scheme has invalid test \(test.quoted)"
             case let .invalidFileGroup(group): return "Invalid file group \(group.quoted)"
+            case let .invalidConfigReference(config): return "Invalid config reference \(config.quoted)"
+            case let .missingConfigTypeForGeneratedTargetScheme(target, configType): return "Target \(target.quoted) is missing a config of type \(configType.rawValue) to generate its scheme"
             }
         }
     }

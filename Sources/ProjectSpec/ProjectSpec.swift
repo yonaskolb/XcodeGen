@@ -14,6 +14,7 @@ import Yams
 
 public struct ProjectSpec {
 
+    public var basePath: Path
     public var name: String
     public var targets: [Target]
     public var settings: Settings
@@ -29,12 +30,35 @@ public struct ProjectSpec {
     public struct Options {
         public var carthageBuildPath: String?
         public var bundleIdPrefix: String?
+        public var settingPresets: SettingPresets = .all
+        
+        public enum SettingPresets: String {
+            case all
+            case none
+            case project
+            case targets
+            
+            public var applyTarget: Bool {
+                switch self {
+                case .all, .targets: return true
+                default: return false
+                }
+            }
+            
+            public var applyProject: Bool {
+                switch self {
+                case .all, .project: return true
+                default: return false
+                }
+            }
+        }
 
         public init() {
         }
     }
 
-    public init(name: String, configs: [Config] = [], targets: [Target] = [], settings: Settings = .empty, settingGroups: [String: Settings] = [:], schemes: [Scheme] = [], options: Options = Options(), fileGroups: [String] = [], configFiles: [String: String] = [:], attributes: [String: Any] = [:]) {
+    public init(basePath: Path, name: String, configs: [Config] = [], targets: [Target] = [], settings: Settings = .empty, settingGroups: [String: Settings] = [:], schemes: [Scheme] = [], options: Options = Options(), fileGroups: [String] = [], configFiles: [String: String] = [:], attributes: [String: Any] = [:]) {
+        self.basePath = basePath
         self.name = name
         self.targets = targets
         self.configs = configs
@@ -97,13 +121,15 @@ extension ProjectSpec.Options: Equatable {
 
     public static func ==(lhs: ProjectSpec.Options, rhs: ProjectSpec.Options) -> Bool {
         return lhs.carthageBuildPath == rhs.carthageBuildPath &&
-            lhs.bundleIdPrefix == rhs.bundleIdPrefix
+            lhs.bundleIdPrefix == rhs.bundleIdPrefix &&
+            lhs.settingPresets == rhs.settingPresets
     }
 }
 
-extension ProjectSpec: JSONObjectConvertible {
+extension ProjectSpec {
 
-    public init(jsonDictionary: JSONDictionary) throws {
+    public init(basePath: Path, jsonDictionary: JSONDictionary) throws {
+        self.basePath = basePath
         let jsonDictionary = try ProjectSpec.filterJSON(jsonDictionary: jsonDictionary)
         name = try jsonDictionary.json(atKeyPath: "name")
         settings = jsonDictionary.json(atKeyPath: "settings") ?? .empty
@@ -133,5 +159,6 @@ extension ProjectSpec.Options: JSONObjectConvertible {
     public init(jsonDictionary: JSONDictionary) throws {
         carthageBuildPath = jsonDictionary.json(atKeyPath: "carthageBuildPath")
         bundleIdPrefix = jsonDictionary.json(atKeyPath: "bundleIdPrefix")
+        settingPresets = jsonDictionary.json(atKeyPath: "settingPresets") ?? .all
     }
 }
