@@ -20,7 +20,29 @@ public struct SpecLoader {
     }
 
     private static func loadDictionary(path: Path) throws -> JSONDictionary {
-        var json = try loadYamlDictionary(path: path)
+        // Get the current path extension
+        guard let pathExtension = path.`extension` else {
+            fatalError("File path must end with either .yaml or .json")
+        }
+
+        // Depending on the extension we will either load the file as YAML or JSON
+        var json = [String:Any]()
+        switch pathExtension.lowercased() {
+        case "yml", "yaml":
+            json = try loadYamlDictionary(path: path)
+        case "json":
+            let string: String = try path.read()
+            guard let stringData = string.data(using: .utf8) else {
+                fatalError("Error decoding file at path \(path)")
+            }
+            guard let jsonObj = try JSONSerialization.jsonObject(with: stringData,
+                                                                 options: .allowFragments) as? [String:Any] else {
+                                                                    fatalError("Invalid JSON at path \(path)")
+            }
+            json = jsonObj
+        default:
+            fatalError("Unable to process file with extension: \(pathExtension). Please use .yml or .json")
+        }
 
         var includes: [String]
         if let includeString = json["include"] as? String {
@@ -61,3 +83,4 @@ public struct SpecLoader {
         return merged
     }
 }
+
