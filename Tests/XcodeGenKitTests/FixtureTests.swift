@@ -31,7 +31,7 @@ func fixtureTests() {
         }
 
         $0.it("generates variant group") {
-            guard let project = project else { throw failure("Project is not generated") }
+            guard let project = project else { return }
 
             func getFileReferences(_ path: String) -> [PBXFileReference] {
                 return project.pbxproj.fileReferences.filter { $0.path == path }
