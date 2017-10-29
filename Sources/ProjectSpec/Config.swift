@@ -19,7 +19,7 @@ public struct Config: Equatable {
         self.type = type
     }
 
-    public static func ==(lhs: Config, rhs: Config) -> Bool {
+    public static func == (lhs: Config, rhs: Config) -> Bool {
         return lhs.name == rhs.name && lhs.type == rhs.type
     }
 

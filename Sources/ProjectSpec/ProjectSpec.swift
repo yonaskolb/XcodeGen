@@ -31,20 +31,20 @@ public struct ProjectSpec {
         public var carthageBuildPath: String?
         public var bundleIdPrefix: String?
         public var settingPresets: SettingPresets = .all
-        
+
         public enum SettingPresets: String {
             case all
             case none
             case project
             case targets
-            
+
             public var applyTarget: Bool {
                 switch self {
                 case .all, .targets: return true
                 default: return false
                 }
             }
-            
+
             public var applyProject: Bool {
                 switch self {
                 case .all, .project: return true
@@ -103,7 +103,7 @@ extension ProjectSpec: CustomDebugStringConvertible {
 
 extension ProjectSpec: Equatable {
 
-    public static func ==(lhs: ProjectSpec, rhs: ProjectSpec) -> Bool {
+    public static func == (lhs: ProjectSpec, rhs: ProjectSpec) -> Bool {
         return lhs.name == rhs.name &&
             lhs.targets == rhs.targets &&
             lhs.settings == rhs.settings &&
@@ -119,7 +119,7 @@ extension ProjectSpec: Equatable {
 
 extension ProjectSpec.Options: Equatable {
 
-    public static func ==(lhs: ProjectSpec.Options, rhs: ProjectSpec.Options) -> Bool {
+    public static func == (lhs: ProjectSpec.Options, rhs: ProjectSpec.Options) -> Bool {
         return lhs.carthageBuildPath == rhs.carthageBuildPath &&
             lhs.bundleIdPrefix == rhs.bundleIdPrefix &&
             lhs.settingPresets == rhs.settingPresets

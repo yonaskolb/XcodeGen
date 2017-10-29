@@ -48,7 +48,7 @@ public struct Scheme: Equatable {
             self.targets = targets
         }
 
-        public static func ==(lhs: Build, rhs: Build) -> Bool {
+        public static func == (lhs: Build, rhs: Build) -> Bool {
             return lhs.targets == rhs.targets
         }
     }
@@ -59,7 +59,7 @@ public struct Scheme: Equatable {
             self.config = config
         }
 
-        public static func ==(lhs: Run, rhs: Run) -> Bool {
+        public static func == (lhs: Run, rhs: Run) -> Bool {
             return lhs.config == rhs.config
         }
     }
@@ -70,7 +70,7 @@ public struct Scheme: Equatable {
             self.config = config
         }
 
-        public static func ==(lhs: Test, rhs: Test) -> Bool {
+        public static func == (lhs: Test, rhs: Test) -> Bool {
             return lhs.config == rhs.config
         }
     }
@@ -81,7 +81,7 @@ public struct Scheme: Equatable {
             self.config = config
         }
 
-        public static func ==(lhs: Analyze, rhs: Analyze) -> Bool {
+        public static func == (lhs: Analyze, rhs: Analyze) -> Bool {
             return lhs.config == rhs.config
         }
     }
@@ -92,7 +92,7 @@ public struct Scheme: Equatable {
             self.config = config
         }
 
-        public static func ==(lhs: Profile, rhs: Profile) -> Bool {
+        public static func == (lhs: Profile, rhs: Profile) -> Bool {
             return lhs.config == rhs.config
         }
     }
@@ -103,7 +103,7 @@ public struct Scheme: Equatable {
             self.config = config
         }
 
-        public static func ==(lhs: Archive, rhs: Archive) -> Bool {
+        public static func == (lhs: Archive, rhs: Archive) -> Bool {
             return lhs.config == rhs.config
         }
     }
@@ -117,12 +117,12 @@ public struct Scheme: Equatable {
             self.buildTypes = buildTypes
         }
 
-        public static func ==(lhs: BuildTarget, rhs: BuildTarget) -> Bool {
+        public static func == (lhs: BuildTarget, rhs: BuildTarget) -> Bool {
             return lhs.target == rhs.target && lhs.buildTypes == rhs.buildTypes
         }
     }
 
-    public static func ==(lhs: Scheme, rhs: Scheme) -> Bool {
+    public static func == (lhs: Scheme, rhs: Scheme) -> Bool {
         return lhs.build == rhs.build &&
             lhs.run == rhs.run &&
             lhs.test == rhs.test &&

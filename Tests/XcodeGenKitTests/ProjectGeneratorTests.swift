@@ -38,20 +38,19 @@ func projectGeneratorTests() {
                     let buildConfigs = project.pbxproj.configurationLists.getReference(buildConfigList),
                     let buildConfigReference = buildConfigs.buildConfigurations.first,
                     let buildConfig = project.pbxproj.buildConfigurations.getReference(buildConfigReference) else {
-                        throw failure("Build Config not found")
+                    throw failure("Build Config not found")
                 }
                 try expect(buildConfig.buildSettings["PRODUCT_BUNDLE_IDENTIFIER"] as? String) == "com.test.MyFramework"
             }
-            
+
             $0.it("clears setting presets") {
                 var options = ProjectSpec.Options()
                 options.settingPresets = .none
                 let spec = ProjectSpec(basePath: "", name: "test", targets: [framework], options: options)
                 let project = try getProject(spec)
-                let allSettings = project.pbxproj.buildConfigurations.reduce([:]) { $0.merged($1.buildSettings)}.keys.sorted()
+                let allSettings = project.pbxproj.buildConfigurations.reduce([:]) { $0.merged($1.buildSettings) }.keys.sorted()
                 try expect(allSettings) == ["SETTING_2"]
             }
-
         }
 
         $0.describe("Config") {
@@ -73,7 +72,7 @@ func projectGeneratorTests() {
                 try expect(configs).contains(name: "config1")
                 try expect(configs).contains(name: "config2")
             }
-            
+
             $0.it("clears config settings when missing type") {
                 let spec = ProjectSpec(basePath: "", name: "test", configs: [Config(name: "config")])
                 let project = try getProject(spec)
@@ -114,8 +113,9 @@ func projectGeneratorTests() {
             $0.it("applies partial config settings") {
                 let spec = ProjectSpec(basePath: "", name: "test", configs: [
                     Config(name: "Staging Debug", type: .debug),
-                    Config(name: "Staging Release", type: .release)],
-                                       settings: Settings(configSettings: ["staging": ["SETTING1": "VALUE1"], "debug": ["SETTING2": "VALUE2"]]))
+                    Config(name: "Staging Release", type: .release),
+                ],
+                settings: Settings(configSettings: ["staging": ["SETTING1": "VALUE1"], "debug": ["SETTING2": "VALUE2"]]))
 
                 var buildSettings = spec.getProjectBuildSettings(config: spec.configs.first!)
                 try expect(buildSettings["SETTING1"] as? String) == "VALUE1"

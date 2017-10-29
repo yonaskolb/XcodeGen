@@ -44,7 +44,7 @@ public struct Settings: Equatable, JSONObjectConvertible, CustomStringConvertibl
         }
     }
 
-    public static func ==(lhs: Settings, rhs: Settings) -> Bool {
+    public static func == (lhs: Settings, rhs: Settings) -> Bool {
         return NSDictionary(dictionary: lhs.buildSettings).isEqual(to: rhs.buildSettings) &&
             lhs.configSettings == rhs.configSettings &&
             lhs.groups == rhs.groups
@@ -109,7 +109,7 @@ extension Dictionary where Key == String, Value: Any {
     }
 }
 
-public func +=(lhs: inout BuildSettings, rhs: BuildSettings?) {
+public func += (lhs: inout BuildSettings, rhs: BuildSettings?) {
     guard let rhs = rhs else { return }
     lhs.merge(rhs)
 }

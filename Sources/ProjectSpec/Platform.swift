@@ -18,7 +18,7 @@ public enum Platform: String {
         case .macOS:
             return "Mac"
         default:
-            return self.rawValue
+            return rawValue
         }
     }
 }

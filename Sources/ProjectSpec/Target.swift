@@ -120,7 +120,7 @@ extension Target {
 
 extension Target: Equatable {
 
-    public static func ==(lhs: Target, rhs: Target) -> Bool {
+    public static func == (lhs: Target, rhs: Target) -> Bool {
         return lhs.name == rhs.name &&
             lhs.type == rhs.type &&
             lhs.platform == rhs.platform &&
@@ -146,7 +146,7 @@ public struct TargetScheme {
 
 extension TargetScheme: Equatable {
 
-    public static func ==(lhs: TargetScheme, rhs: TargetScheme) -> Bool {
+    public static func == (lhs: TargetScheme, rhs: TargetScheme) -> Bool {
         return lhs.testTargets == rhs.testTargets &&
             lhs.configVariants == rhs.configVariants
     }

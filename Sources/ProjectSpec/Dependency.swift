@@ -30,7 +30,7 @@ public struct Dependency: Equatable {
         case carthage
     }
 
-    public static func ==(lhs: Dependency, rhs: Dependency) -> Bool {
+    public static func == (lhs: Dependency, rhs: Dependency) -> Bool {
         return lhs.reference == rhs.reference &&
             lhs.type == rhs.type &&
             lhs.codeSign == rhs.codeSign &&
