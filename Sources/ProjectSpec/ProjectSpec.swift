@@ -57,7 +57,7 @@ public struct ProjectSpec {
         }
     }
 
-    public init(basePath: Path, name: String, configs: [Config] = [], targets: [Target] = [], settings: Settings = .empty, settingGroups: [String: Settings] = [:], schemes: [Scheme] = [], options: Options = Options(), fileGroups: [String] = [], configFiles: [String: String] = [:], attributes: [String: Any] = [:]) {
+    public init(basePath: Path, name: String, configs: [Config] = Config.defaultConfigs, targets: [Target] = [], settings: Settings = .empty, settingGroups: [String: Settings] = [:], schemes: [Scheme] = [], options: Options = Options(), fileGroups: [String] = [], configFiles: [String: String] = [:], attributes: [String: Any] = [:]) {
         self.basePath = basePath
         self.name = name
         self.targets = targets
@@ -135,7 +135,7 @@ extension ProjectSpec {
         settings = jsonDictionary.json(atKeyPath: "settings") ?? .empty
         settingGroups = jsonDictionary.json(atKeyPath: "settingGroups") ?? jsonDictionary.json(atKeyPath: "settingPresets") ?? [:]
         let configs: [String: String] = jsonDictionary.json(atKeyPath: "configs") ?? [:]
-        self.configs = configs.map { Config(name: $0, type: ConfigType(rawValue: $1)) }.sorted { $0.name < $1.name }
+        self.configs = configs.isEmpty ? Config.defaultConfigs : configs.map { Config(name: $0, type: ConfigType(rawValue: $1)) }.sorted { $0.name < $1.name }
         targets = try jsonDictionary.json(atKeyPath: "targets").sorted { $0.name < $1.name }
         schemes = try jsonDictionary.json(atKeyPath: "schemes")
         fileGroups = jsonDictionary.json(atKeyPath: "fileGroups") ?? []

@@ -15,7 +15,7 @@ import ProjectSpec
 
 public class ProjectGenerator {
 
-    var spec: ProjectSpec
+    let spec: ProjectSpec
     let currentXcodeVersion = "0900"
 
     public init(spec: ProjectSpec) {
