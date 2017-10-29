@@ -80,7 +80,7 @@ func projectSpecTests() {
                 try expectValidationError(spec, .invalidTargetDependency(target: "target1", dependency: "invalidDependency"))
                 try expectValidationError(spec, .invalidTargetConfigFile(target: "target1", configFile: "invalidConfigFile", config: "invalidConfig"))
                 try expectValidationError(spec, .invalidTargetSchemeTest(target: "target1", testTarget: "invalidTarget"))
-                try expectValidationError(spec, .missingTargetSource(target: "target1", source: "invalidSource"))
+                try expectValidationError(spec, .invalidTargetSource(target: "target1", source: "invalidSource"))
                 try expectValidationError(spec, .invalidBuildSettingConfig("invalidConfig"))
                 try expectValidationError(spec, .invalidSettingsGroup("invalidSettingGroup"))
                 try expectValidationError(spec, .invalidBuildScriptPath(target:"target1", name: "prebuildScript1", path: "invalidPrebuildScript"))

@@ -10,7 +10,6 @@ import Foundation
 import JSONUtilities
 import xcproj
 import PathKit
-import Yams
 
 public struct Settings: Equatable, JSONObjectConvertible, CustomStringConvertible {
 
@@ -89,4 +88,28 @@ extension Settings: ExpressibleByDictionaryLiteral {
         elements.forEach { dictionary[$0.0] = $0.1 }
         self.init(dictionary: dictionary)
     }
+}
+
+extension Dictionary where Key == String, Value: Any {
+
+    public func merged(_ dictionary: [Key: Value]) -> [Key: Value] {
+        var mergedDictionary = self
+        mergedDictionary.merge(dictionary)
+        return mergedDictionary
+    }
+
+    public mutating func merge(_ dictionary: [Key: Value]) {
+        for (key, value) in dictionary {
+            self[key] = value
+        }
+    }
+
+    public func equals(_ dictionary: BuildSettings) -> Bool {
+        return NSDictionary(dictionary: self).isEqual(to: dictionary)
+    }
+}
+
+public func +=(lhs: inout BuildSettings, rhs: BuildSettings?) {
+    guard let rhs = rhs else { return }
+    lhs.merge(rhs)
 }

@@ -15,13 +15,13 @@ func specLoadingTests() {
         return try ProjectSpec(basePath: "", jsonDictionary: specDictionary)
     }
 
-    func expectProjectSpecError(_ spec: [String: Any], _ expectedError: ProjectSpecError) throws {
+    func expectProjectSpecError(_ spec: [String: Any], _ expectedError: SpecParsingError) throws {
         try expectError(expectedError) {
             try getProjectSpec(spec)
         }
     }
 
-    func expectTargetError(_ target: [String: Any], _ expectedError: ProjectSpecError) throws {
+    func expectTargetError(_ target: [String: Any], _ expectedError: SpecParsingError) throws {
         try expectError(expectedError) {
             _ = try Target(name: "test", jsonDictionary: target)
         }
@@ -33,7 +33,7 @@ func specLoadingTests() {
     describe("Spec Loader") {
         $0.it("merges includes") {
             let path = fixturePath + "include_test.yml"
-            let spec = try SpecLoader.loadSpec(path: path)
+            let spec = try ProjectSpec(path: path)
 
             try expect(spec.name) == "NewName"
             try expect(spec.settingGroups) == [
@@ -128,7 +128,7 @@ func specLoadingTests() {
         }
 
         $0.it("parses settings") {
-            let spec = try SpecLoader.loadSpec(path: fixturePath + "settings_test.yml")
+            let spec = try ProjectSpec(path: fixturePath + "settings_test.yml")
             let buildSettings: BuildSettings = ["SETTING": "value"]
             let configSettings: [String: Settings] = ["config1": Settings(buildSettings: ["SETTING1": "value"])]
             let groups = ["preset1"]

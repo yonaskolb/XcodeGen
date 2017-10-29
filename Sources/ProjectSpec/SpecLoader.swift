@@ -7,16 +7,15 @@
 //
 
 import Foundation
-import ProjectSpec
 import PathKit
 import Yams
 import JSONUtilities
 
-public struct SpecLoader {
+extension ProjectSpec {
 
-    public static func loadSpec(path: Path) throws -> ProjectSpec {
-        let dictionary = try loadDictionary(path: path)
-        return try ProjectSpec(basePath: path.parent(), jsonDictionary: dictionary)
+    public init(path: Path) throws {
+        let dictionary = try ProjectSpec.loadDictionary(path: path)
+        try self.init(basePath: path.parent(), jsonDictionary: dictionary)
     }
 
     private static func loadDictionary(path: Path) throws -> JSONDictionary {

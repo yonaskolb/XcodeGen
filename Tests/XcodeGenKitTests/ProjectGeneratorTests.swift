@@ -84,7 +84,7 @@ func projectGeneratorTests() {
             }
 
             $0.it("merges settings") {
-                let spec = try SpecLoader.loadSpec(path: fixturePath + "settings_test.yml")
+                let spec = try ProjectSpec(path: fixturePath + "settings_test.yml")
                 guard let config = spec.getConfig("config1") else { throw failure("Couldn't find config1") }
                 let debugProjectSettings = spec.getProjectBuildSettings(config: config)
 
