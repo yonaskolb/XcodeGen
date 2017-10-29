@@ -1,49 +1,47 @@
-name: GeneratedProject
+name: Project
+include: [environments.yml]
 options:
-  bundleIdPrefix: com.test
+  bundleIdPrefix: com.project
 fileGroups:
   - Configs
+configFiles:
+  Test Debug: Configs/config.xcconfig
 targets:
-  TestProject:
+  App_iOS:
     type: application
     platform: iOS
-    sources: TestProject
+    sources: App_iOS
     settings:
-      INFOPLIST_FILE: TestProject/Info.plist
+      PRODUCT_BUNDLE_IDENTIFIER: com.project$(BUNDLE_ID_SUFFIX)
+      INFOPLIST_FILE: App_iOS/Info.plist
     dependencies:
-      - target: MyFramework
-      - carthage: Result
+      - target: Framework_iOS
+      - carthage: Alamofire
     scheme:
       testTargets:
-        - TestProjectTests
+        - App_iOS_Tests
     postbuildScripts:
       - path: scripts/strip-frameworks.sh
         name: Strip Unused Architectures from Frameworks
         runOnlyWhenInstalling: true
-      - name: Swiftlint
+      - name: MyScript
         script: |
-          if which swiftlint >/dev/null; then
-            swiftlint
-          else
-            echo "warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint"
-          fi
-    configFiles:
-      Debug: Configs/config.xcconfig
-  MyFramework:
+          echo "You ran a script!"
+  Framework:
     type: framework
-    platform: iOS
-    sources: MyFramework
-    settings:
-      INFOPLIST_FILE: MyFramework/Info.plist
+    platform: [iOS, tvOS, watchOS, macOS]
+    sources: Framework
     postbuildScripts:
-      - name: Swiftlint
-        path: scripts/swiftlint.sh
-  TestProjectTests:
+      - name: MyScript
+        path: scripts/script.sh
+    dependencies:
+      - carthage: Alamofire
+  App_iOS_Tests:
     type: bundle.unit-test
     platform: iOS
-    sources: TestProjectTests
+    sources: App_iOS_Tests
     settings:
       TEST_HOST: $(BUILT_PRODUCTS_DIR)/TestProject.app/TestProject
       INFOPLIST_FILE: TestProjectTests/Info.plist
     dependencies:
-      - target: TestProject
+      - target: App_iOS

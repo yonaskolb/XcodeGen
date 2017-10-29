@@ -27,7 +27,7 @@ func fixtureTests() {
         var project: XcodeProj?
 
         $0.it("generates") {
-            project = try generate(specPath: fixturePath + "TestProject/spec.yml", projectPath: fixturePath + "TestProject/GeneratedProject.xcodeproj")
+            project = try generate(specPath: fixturePath + "TestProject/spec.yml", projectPath: fixturePath + "TestProject/Project.xcodeproj")
         }
 
         $0.it("generates variant group") {

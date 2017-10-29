@@ -1,0 +1,13 @@
+settings:
+  configs:
+    Test:
+      BUNDLE_ID_SUFFIX: .test
+    Staging:
+      BUNDLE_ID_SUFFIX: .staging
+configs:
+  Test Debug: debug
+  Staging Debug: debug
+  Production Debug: debug
+  Test Release: release
+  Staging Release: release
+  Production Release: release
