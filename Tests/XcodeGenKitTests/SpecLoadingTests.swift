@@ -48,7 +48,7 @@ func specLoadingTests() {
         }
     }
 
-    describe("Project Spec") {
+    describe("Project Spec Parser") {
 
         $0.it("fails with incorrect platform") {
             var target = validTarget

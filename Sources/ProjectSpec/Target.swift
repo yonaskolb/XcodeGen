@@ -135,8 +135,8 @@ extension Target: Equatable {
 }
 
 public struct TargetScheme {
-    public let testTargets: [String]
-    public let configVariants: [String]
+    public var testTargets: [String]
+    public var configVariants: [String]
 
     public init(testTargets: [String] = [], configVariants: [String] = []) {
         self.testTargets = testTargets
