@@ -69,7 +69,7 @@ extension ProjectSpec {
             }
 
             for source in target.sources {
-                let sourcePath = basePath + source
+                let sourcePath = basePath + source.path
                 if !sourcePath.exists {
                     errors.append(.invalidTargetSource(target: target.name, source: sourcePath.string))
                 }

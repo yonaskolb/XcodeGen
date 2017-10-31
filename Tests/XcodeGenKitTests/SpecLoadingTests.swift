@@ -68,6 +68,22 @@ func specLoadingTests() {
             try expectTargetError(target, .invalidDependency([invalid: "name"]))
         }
 
+        $0.it("parses sources") {
+            var targetDictionary1 = validTarget
+            targetDictionary1["sources"] = [
+                "source1",
+                ["path": "source2"],
+            ]
+            var targetDictionary2 = validTarget
+            targetDictionary2["sources"] = "source3"
+
+            let target1 = try Target(name: "test", jsonDictionary: targetDictionary1)
+            let target2 = try Target(name: "test", jsonDictionary: targetDictionary2)
+
+            try expect(target1.sources) == [Source(path: "source1"), Source(path: "source2")]
+            try expect(target2.sources) == [Source(path: "source3")]
+        }
+
         $0.it("parses target dependencies") {
             var targetDictionary = validTarget
             targetDictionary["dependencies"] = [

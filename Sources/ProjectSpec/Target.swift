@@ -15,7 +15,7 @@ public struct Target {
     public var type: PBXProductType
     public var platform: Platform
     public var settings: Settings
-    public var sources: [String]
+    public var sources: [Source]
     public var dependencies: [Dependency]
     public var prebuildScripts: [BuildScript]
     public var postbuildScripts: [BuildScript]
@@ -30,7 +30,7 @@ public struct Target {
         return name
     }
 
-    public init(name: String, type: PBXProductType, platform: Platform, settings: Settings = .empty, configFiles: [String: String] = [:], sources: [String] = [], dependencies: [Dependency] = [], prebuildScripts: [BuildScript] = [], postbuildScripts: [BuildScript] = [], scheme: TargetScheme? = nil) {
+    public init(name: String, type: PBXProductType, platform: Platform, settings: Settings = .empty, configFiles: [String: String] = [:], sources: [Source] = [], dependencies: [Dependency] = [], prebuildScripts: [BuildScript] = [], postbuildScripts: [BuildScript] = [], scheme: TargetScheme? = nil) {
         self.name = name
         self.type = type
         self.platform = platform
@@ -179,9 +179,19 @@ extension Target: NamedJSONDictionaryConvertible {
         settings = jsonDictionary.json(atKeyPath: "settings") ?? .empty
         configFiles = jsonDictionary.json(atKeyPath: "configFiles") ?? [:]
         if let source: String = jsonDictionary.json(atKeyPath: "sources") {
-            sources = [source]
+            sources = [Source(path: source)]
+        } else if let array = jsonDictionary["sources"] as? [Any] {
+            sources = try array.flatMap { source in
+                if let string = source as? String {
+                    return Source(path: string)
+                } else if let dictionary = source as? [String: Any] {
+                    return try Source(jsonDictionary: dictionary)
+                } else {
+                    return nil
+                }
+            }
         } else {
-            sources = jsonDictionary.json(atKeyPath: "sources") ?? []
+            sources = []
         }
         if jsonDictionary["dependencies"] == nil {
             dependencies = []
