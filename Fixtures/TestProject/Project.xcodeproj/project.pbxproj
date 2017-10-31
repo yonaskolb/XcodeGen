@@ -295,18 +295,6 @@
 				BF3515549503 /* MyFramework.h in Headers */,
 			);
 		};
-		HBP783122801 /* Frameworks */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-		};
-		HBP825232101 /* Frameworks */ = {
-			isa = PBXHeadersBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
@@ -388,7 +376,6 @@
 			buildPhases = (
 				SBP783122801 /* Sources */,
 				RBP783122801 /* Resources */,
-				HBP783122801 /* Headers */,
 			);
 			buildRules = (
 			);
@@ -405,7 +392,6 @@
 			buildPhases = (
 				SBP825232101 /* Sources */,
 				RBP825232101 /* Resources */,
-				HBP825232101 /* Headers */,
 				FBP825232101 /* Frameworks */,
 				CFBP64939301 /* CopyFiles */,
 				SSBP81062201 /* Carthage */,
