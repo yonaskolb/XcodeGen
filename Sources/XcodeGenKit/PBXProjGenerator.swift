@@ -358,9 +358,11 @@ public class PBXProjGenerator {
         addObject(resourcesBuildPhase)
         buildPhases.append(resourcesBuildPhase.reference)
 
-        let headersBuildPhase = PBXHeadersBuildPhase(reference: generateUUID(PBXHeadersBuildPhase.self, target.name), files: getBuildFilesForPhase(.headers))
-        addObject(headersBuildPhase)
-        buildPhases.append(headersBuildPhase.reference)
+        if target.type == .framework || target.type == .dynamicLibrary {
+            let headersBuildPhase = PBXHeadersBuildPhase(reference: generateUUID(PBXHeadersBuildPhase.self, target.name), files: getBuildFilesForPhase(.headers))
+            addObject(headersBuildPhase)
+            buildPhases.append(headersBuildPhase.reference)
+        }
 
         if !targetFrameworkBuildFiles.isEmpty {
 
