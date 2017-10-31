@@ -65,7 +65,8 @@ public class PBXProjGenerator {
         project = PBXProj(objectVersion: 46, rootObject: generateUUID(PBXProject.self, spec.name))
 
         for group in spec.fileGroups {
-            _ = try getGroups(path: spec.basePath + group)
+            //TODO: call a seperate function that only creates groups not source files
+            _ = try getSourceFiles(path: spec.basePath + group)
         }
 
         let buildConfigs: [XCBuildConfiguration] = spec.configs.map { config in
@@ -157,17 +158,20 @@ public class PBXProjGenerator {
 
         let carthageDependencies = getAllCarthageDependencies(target: target)
 
-        let sourcePaths = target.sources.map { spec.basePath + $0 }
-        var sourceFiles: [SourceFile] = []
+        let sourceFiles = try target.sources.flatMap(getSourceFiles)
 
-        for source in sourcePaths {
-            let sourceGroups = try getGroups(path: source)
-            sourceFiles += sourceGroups.sourceFiles
-        }
-
-        // find all Info.plist
-        let infoPlists: [Path] = sourcePaths.reduce([]) {
-            $0 + ((try? $1.recursiveChildren()) ?? []).filter { $0.lastComponent == "Info.plist" }
+        // find all Info.plist files
+        let infoPlists: [Path] = target.sources.map { spec.basePath + $0.path }.flatMap { (path) -> [Path] in
+            if path.isFile {
+                if path.lastComponent == "Info.plist" {
+                    return [path]
+                }
+            } else {
+                if let children = try? path.recursiveChildren() {
+                    return children.filter { $0.lastComponent == "Info.plist" }
+                }
+            }
+            return []
         }
 
         let configs: [XCBuildConfiguration] = spec.configs.map { config in
@@ -406,8 +410,8 @@ public class PBXProjGenerator {
         }
 
         let carthageFrameworksToEmbed = Array(Set(carthageDependencies
-            .filter { $0.embed ?? true }
-            .map { $0.reference }))
+                .filter { $0.embed ?? true }
+                .map { $0.reference }))
             .sorted()
 
         if !carthageFrameworksToEmbed.isEmpty {
@@ -485,7 +489,12 @@ public class PBXProjGenerator {
         }
     }
 
-    func getGroups(path: Path, depth: Int = 0) throws -> (sourceFiles: [SourceFile], groups: [PBXGroup]) {
+    func getSourceFiles(source: Source) throws -> [SourceFile] {
+        //TODO: add support for source files as well as directories
+        return try getSourceFiles(path: spec.basePath + source.path, depth: 0).sourceFiles
+    }
+
+    func getSourceFiles(path: Path, depth: Int = 0) throws -> (sourceFiles: [SourceFile], groups: [PBXGroup]) {
 
         let excludedFiles: [String] = [".DS_Store"]
 
@@ -507,14 +516,14 @@ public class PBXProjGenerator {
         var groups: [PBXGroup] = []
 
         for path in directories {
-            let subGroups = try getGroups(path: path, depth: depth + 1)
+            let subGroups = try getSourceFiles(path: path, depth: depth + 1)
             allSourceFiles += subGroups.sourceFiles
             groupChildren.append(subGroups.groups.first!.reference)
             groups += subGroups.groups
         }
 
         // create variant groups of the base localisation first
-        var baseLocalisationVariantGroups:[PBXVariantGroup] = []
+        var baseLocalisationVariantGroups: [PBXVariantGroup] = []
         if let baseLocalisedDirectory = localisedDirectories.first(where: { $0.lastComponent == "Base.lproj" }) {
             for path in try baseLocalisedDirectory.children() {
                 let filePath = "\(baseLocalisedDirectory.lastComponent)/\(path.lastComponent)"
