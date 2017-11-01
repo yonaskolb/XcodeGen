@@ -66,8 +66,7 @@ public class PBXProjGenerator {
 
         for group in spec.fileGroups {
             //TODO: call a seperate function that only creates groups not source files
-            let path = spec.basePath + group
-            _ = try getSourceFiles(path: path, children: try path.children())
+            _ = try getSources(path: spec.basePath + group)
         }
 
         let buildConfigs: [XCBuildConfiguration] = spec.configs.map { config in
@@ -504,17 +503,17 @@ public class PBXProjGenerator {
         }
         
         let fromFiles = try filesByParent.map{ parent, files in
-            try getSourceFiles(path: parent, children: files)
+            try getSources(path: parent, children: files)
         }
         let fromDirs = try dirs.map{ dir in
-            try getSourceFiles(path: dir, children: try dir.children())
+            try getSources(path: dir)
         }
         
         return (fromFiles + fromDirs).flatMap{ $0.sourceFiles }
     }
     
-    func getSourceFiles(path: Path, children: [Path], depth: Int = 0) throws -> (sourceFiles: [SourceFile], groups: [PBXGroup]) {
-
+    func getSources(path: Path, children: [Path]? = nil, depth: Int = 0) throws -> (sourceFiles: [SourceFile], groups: [PBXGroup]) {
+        let children = try children ?? (try path.children())
         let excludedFiles: [String] = [".DS_Store"]
 
         let directories = children
@@ -535,7 +534,7 @@ public class PBXProjGenerator {
         var groups: [PBXGroup] = []
 
         for path in directories {
-            let subGroups = try getSourceFiles(path: path, children: try path.children(), depth: depth + 1)
+            let subGroups = try getSources(path: path, depth: depth + 1)
             allSourceFiles += subGroups.sourceFiles
             groupChildren.append(subGroups.groups.first!.reference)
             groups += subGroups.groups
