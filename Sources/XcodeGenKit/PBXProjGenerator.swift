@@ -65,7 +65,7 @@ public class PBXProjGenerator {
         project = PBXProj(objectVersion: 46, rootObject: generateUUID(PBXProject.self, spec.name))
 
         for group in spec.fileGroups {
-            //TODO: call a seperate function that only creates groups not source files
+            // TODO: call a seperate function that only creates groups not source files
             _ = try getSources(path: spec.basePath + group)
         }
 
@@ -490,28 +490,28 @@ public class PBXProjGenerator {
             return fileReference.reference
         }
     }
-    
-    func getAllSourceFiles(sources: [Source]) throws -> [SourceFile] {
-        let sourcePaths = sources.map{ spec.basePath + $0.path }
 
-        let (files, dirs) = (sourcePaths.filter{ $0.isFile }, sourcePaths.filter{ $0.isDirectory })
+    func getAllSourceFiles(sources: [Source]) throws -> [SourceFile] {
+        let sourcePaths = sources.map { spec.basePath + $0.path }
+
+        let (files, dirs) = (sourcePaths.filter { $0.isFile }, sourcePaths.filter { $0.isDirectory })
         let filesByParent: [Path: [Path]] = files.reduce([:]) { acc, file in
             var mut = acc
             let group = file.parent()
             mut[group, default: []].append(file)
             return mut
         }
-        
-        let fromFiles = try filesByParent.map{ parent, files in
+
+        let fromFiles = try filesByParent.map { parent, files in
             try getSources(path: parent, children: files)
         }
-        let fromDirs = try dirs.map{ dir in
+        let fromDirs = try dirs.map { dir in
             try getSources(path: dir)
         }
-        
-        return (fromFiles + fromDirs).flatMap{ $0.sourceFiles }
+
+        return (fromFiles + fromDirs).flatMap { $0.sourceFiles }
     }
-    
+
     func getSources(path: Path, children: [Path]? = nil, depth: Int = 0) throws -> (sourceFiles: [SourceFile], groups: [PBXGroup]) {
         let children = try children ?? (try path.children())
         let excludedFiles: [String] = [".DS_Store"]
