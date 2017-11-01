@@ -8,6 +8,7 @@
 /* Begin PBXBuildFile section */
 		BF1073850101 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR1332263601 /* AppDelegate.swift */; };
 		BF1401236301 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR3032072501 /* Alamofire.framework */; };
+		BF1628293501 /* Standalone.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR2554453101 /* Standalone.swift */; };
 		BF1744565901 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR6218091901 /* ViewController.swift */; };
 		BF2018435801 /* Framework_iOS.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = FR4722960401 /* Framework_iOS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BF2250910101 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = VG2043127501 /* Main.storyboard */; };
@@ -70,6 +71,7 @@
 		FR1345298502 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FR1345298503 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FR1473702401 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		FR2554453101 /* Standalone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Standalone.swift; sourceTree = "<group>"; };
 		FR3032072501 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Alamofire.framework; sourceTree = "<group>"; };
 		FR3032072502 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Alamofire.framework; sourceTree = "<group>"; };
 		FR3032072503 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Alamofire.framework; sourceTree = "<group>"; };
@@ -195,6 +197,15 @@
 			path = tvOS;
 			sourceTree = "<group>";
 		};
+		G66512504301 /* StandaloneFiles */ = {
+			isa = PBXGroup;
+			children = (
+				FR2554453101 /* Standalone.swift */,
+			);
+			name = StandaloneFiles;
+			path = StandaloneFiles;
+			sourceTree = "<group>";
+		};
 		G67871650901 /* watchOS */ = {
 			isa = PBXGroup;
 			children = (
@@ -243,6 +254,7 @@
 			isa = PBXGroup;
 			children = (
 				G83406189501 /* Configs */,
+				G66512504301 /* StandaloneFiles */,
 				G82523211001 /* App_iOS */,
 				G78312289901 /* App_iOS_Tests */,
 				G46615002701 /* Framework */,
@@ -620,6 +632,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BF1628293501 /* Standalone.swift in Sources */,
 				BF1073850101 /* AppDelegate.swift in Sources */,
 				BF1744565901 /* ViewController.swift in Sources */,
 			);
