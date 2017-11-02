@@ -196,7 +196,14 @@ targets:
 The above will generate 2 targets named `MyFramework_iOS` and `MyFramework_tvOS`, with all the relevant platform build settings. They will both have a `PRODUCT_NAME` of `MyFramework`
 
 ### Sources
-Specifies the source directories for a target. This can either be a single path or a list of paths. Applicable source files, resources, headers, and lproj files will be parsed appropriately
+Specifies the source directories for a target. This can either be a single source or a list of sources. Applicable source files, resources, headers, and lproj files will be parsed appropriately.
+
+A source can be provided via a string (the path) or an object of the form:
+
+**Source Object**:
+
+- 🔵 **path**: `String` - The path to the source file or directory.
+- ⚪️ **compilerFlags**: `[String]` or `String` - A list of compilerFlags to add to files under this specific path provided as a list or a space delimitted string. Defaults to empty.
 
 ```yaml
 targets:
@@ -205,7 +212,12 @@ targets:
   MyOtherTarget
     sources:
       - MyOtherTargetSource1
-      - MyOtherTargetSource2
+      - path: MyOtherTargetSource2
+        compilerFlags:
+          - "-Werror"
+          - "-Wextra"
+      - path: MyOtherTargetSource3
+        compilerFlags: "-Werror -Wextra"
 ```
 
 ### Dependency

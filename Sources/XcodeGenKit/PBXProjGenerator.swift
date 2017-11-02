@@ -66,7 +66,7 @@ public class PBXProjGenerator {
 
         for group in spec.fileGroups {
             // TODO: call a seperate function that only creates groups not source files
-            _ = try getSources(path: spec.basePath + group)
+            _ = try getSources(sourceMetadata: Source(path: group), path: spec.basePath + group)
         }
 
         let buildConfigs: [XCBuildConfiguration] = spec.configs.map { config in
@@ -144,13 +144,17 @@ public class PBXProjGenerator {
         let buildFile: PBXBuildFile
     }
 
-    func generateSourceFile(path: Path) -> SourceFile {
+    func generateSourceFile(sourceMetadata source: Source, path: Path) -> SourceFile {
         let fileReference = fileReferencesByPath[path]!
-        var settings: [String: Any]?
+        var settings: [String: Any] = [:]
         if getBuildPhaseForPath(path) == .headers {
             settings = ["ATTRIBUTES": ["Public"]]
         }
-        let buildFile = PBXBuildFile(reference: generateUUID(PBXBuildFile.self, fileReference), fileRef: fileReference, settings: settings)
+        if source.compilerFlags.count > 0 {
+            settings["COMPILER_FLAGS"] = source.compilerFlags.joined(separator: " ")
+        }
+        
+        let buildFile = PBXBuildFile(reference: generateUUID(PBXBuildFile.self, fileReference), fileRef: fileReference, settings: settings.isEmpty ? nil : settings)
         return SourceFile(path: path, fileReference: fileReference, buildFile: buildFile)
     }
 
@@ -492,24 +496,7 @@ public class PBXProjGenerator {
     }
 
     func getAllSourceFiles(sources: [Source]) throws -> [SourceFile] {
-        let sourcePaths = sources.map { spec.basePath + $0.path }
-
-        let (files, dirs) = (sourcePaths.filter { $0.isFile }, sourcePaths.filter { $0.isDirectory })
-        let filesByParent: [Path: [Path]] = files.reduce([:]) { acc, file in
-            var mut = acc
-            let group = file.parent()
-            mut[group, default: []].append(file)
-            return mut
-        }
-
-        let fromFiles = try filesByParent.map { parent, files in
-            try getSources(path: parent, children: files)
-        }
-        let fromDirs = try dirs.map { dir in
-            try getSources(path: dir)
-        }
-
-        return (fromFiles + fromDirs).flatMap { $0.sourceFiles }
+        return try sources.flatMap{ try getSources(sourceMetadata: $0, path: spec.basePath + $0.path).sourceFiles }
     }
 
     func getSingleGroup(path: Path, mergingChildren children: [String], depth: Int = 0) -> PBXGroup {
@@ -553,8 +540,12 @@ public class PBXProjGenerator {
         )
     }
 
-    func getSources(path: Path, children: [Path]? = nil, depth: Int = 0) throws -> (sourceFiles: [SourceFile], groups: [PBXGroup]) {
-        let children = try children ?? (try path.children())
+    func getSources(sourceMetadata source: Source, path: Path, depth: Int = 0) throws -> (sourceFiles: [SourceFile], groups: [PBXGroup]) {
+        // if we have a file, move it to children and use the parent as the path
+        let (children, path) = path.isFile ?
+            ([path], path.parent()) :
+            (try path.children(), path)
+
         let excludedFiles: [String] = [".DS_Store"]
 
         let directories = children
@@ -571,11 +562,13 @@ public class PBXProjGenerator {
             .sorted { $0.lastComponent < $1.lastComponent }
 
         var groupChildren: [String] = filePaths.map { getFileReference(path: $0, inPath: path) }
-        var allSourceFiles: [SourceFile] = filePaths.map { generateSourceFile(path: $0) }
+        var allSourceFiles: [SourceFile] = filePaths.map {
+            generateSourceFile(sourceMetadata: Source(path: $0.string, compilerFlags: source.compilerFlags), path: $0)
+        }
         var groups: [PBXGroup] = []
 
         for path in directories {
-            let subGroups = try getSources(path: path, depth: depth + 1)
+            let subGroups = try getSources(sourceMetadata: source, path: path, depth: depth + 1)
             allSourceFiles += subGroups.sourceFiles
             groupChildren.append(subGroups.groups.first!.reference)
             groups += subGroups.groups

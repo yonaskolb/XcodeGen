@@ -73,6 +73,8 @@ func specLoadingTests() {
             targetDictionary1["sources"] = [
                 "source1",
                 ["path": "source2"],
+                ["path": "sourceWithFlags", "compilerFlags": ["-Werror"]],
+                ["path": "sourceWithFlagsStr", "compilerFlags": "-Werror -Wextra"]
             ]
             var targetDictionary2 = validTarget
             targetDictionary2["sources"] = "source3"
@@ -80,7 +82,7 @@ func specLoadingTests() {
             let target1 = try Target(name: "test", jsonDictionary: targetDictionary1)
             let target2 = try Target(name: "test", jsonDictionary: targetDictionary2)
 
-            try expect(target1.sources) == [Source(path: "source1"), Source(path: "source2")]
+            try expect(target1.sources) == [Source(path: "source1"), Source(path: "source2"), Source(path: "sourceWithFlags", compilerFlags: ["-Werror"]), Source(path: "sourceWithFlagsStr", compilerFlags: ["-Werror", "-Wextra"])]
             try expect(target2.sources) == [Source(path: "source3")]
         }
 
