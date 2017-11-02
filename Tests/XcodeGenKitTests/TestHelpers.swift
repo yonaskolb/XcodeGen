@@ -63,7 +63,7 @@ extension ArrayExpectation {
         let value = try expression()
         if let value = value {
             if try !value.contains(where: predicate) {
-                throw failure("value does not contain")
+                throw failure("value does not contain item: \(value)")
             }
         }
     }

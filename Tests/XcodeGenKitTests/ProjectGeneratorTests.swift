@@ -3,6 +3,7 @@ import XcodeGenKit
 import xcproj
 import PathKit
 import ProjectSpec
+import Yams
 
 func projectGeneratorTests() {
 
@@ -12,6 +13,7 @@ func projectGeneratorTests() {
     }
 
     func getPbxProj(_ spec: ProjectSpec) throws -> PBXProj {
+        try spec.validate()
         return try getProject(spec).pbxproj
     }
 
@@ -232,5 +234,159 @@ func projectGeneratorTests() {
                 try expect(xcscheme.archiveAction?.buildConfiguration) == "Test Release"
             }
         }
+
+        $0.describe("Sources") {
+
+            let directoryPath = Path("TestDirectory")
+
+            var target = Target(name: "Test", type: .application, platform: .iOS)
+            var spec = ProjectSpec(basePath: directoryPath, name: "Test", targets: [target])
+
+            func createDirectories(_ directories: String) throws {
+
+                let yaml = try Yams.load(yaml: directories)!
+
+                func getFiles(_ file: Any, path: Path) -> [Path] {
+                    if let array = file as? [Any] {
+                        return array.flatMap { getFiles($0, path: path) }
+                    } else if let string = file as? String {
+                        return [path + string]
+                    } else if let dictionary = file as? [String: Any] {
+                        var array: [Path] = []
+                        for (key, value) in dictionary {
+                            array += getFiles(value, path: path + key)
+                        }
+                        return array
+                    } else {
+                        return []
+                    }
+                }
+
+                let files = getFiles(yaml, path: directoryPath).filter { $0.extension != nil }
+                for file in files {
+                    try file.parent().mkpath()
+                    try file.write("")
+                }
+            }
+
+            func removeDirectories() {
+                try? directoryPath.delete()
+            }
+
+            $0.before {
+                removeDirectories()
+            }
+
+            $0.after {
+                removeDirectories()
+            }
+
+            $0.it("generates source groups") {
+                let directories = """
+                Sources:
+                  A:
+                    - a.swift
+                    - B:
+                      - b.swift
+                """
+                try createDirectories(directories)
+
+                target.sources = ["Sources"]
+                spec.targets = [target]
+
+                let project = try getPbxProj(spec)
+                try project.expectFile(paths: ["Sources", "A", "a.swift"], buildPhase: .sources)
+                try project.expectFile(paths: ["Sources", "A", "B", "b.swift"], buildPhase: .sources)
+            }
+
+            $0.it("generates file sources") {
+                let directories = """
+                Sources:
+                  A:
+                    - a.swift
+                    - B:
+                      - b.swift
+                      - c.jpg
+                """
+                try createDirectories(directories)
+
+                target.sources = [
+                    "Sources/A/a.swift",
+                    "Sources/A/B/b.swift",
+                    "Sources/A/B/c.jpg",
+                ]
+                spec.targets = [target]
+
+                let project = try getPbxProj(spec)
+                try project.expectFile(paths: ["Sources/A", "a.swift"], names: ["A", "a.swift"], buildPhase: .sources)
+                try project.expectFile(paths: ["Sources/A/B", "b.swift"], names: ["B", "b.swift"], buildPhase: .sources)
+                try project.expectFile(paths: ["Sources/A/B", "c.jpg"], names: ["B", "c.jpg"], buildPhase: .resources)
+            }
+        }
+    }
+}
+
+extension PBXProj {
+
+    /// expect a file within groups of the paths, using optional different names
+    func expectFile(paths: [String], names: [String]? = nil, buildPhase: BuildPhase? = nil) throws {
+        let names = names ?? paths
+        guard let fileReference = getFileReference(paths: paths, names: names) else {
+            throw failure("Could not find file at path \(paths.joined(separator: "/").quoted) and name \(paths.joined(separator: "/").quoted)")
+        }
+
+        if let buildPhase = buildPhase {
+            guard let buildFile = buildFiles.first(where: { $0.fileRef == fileReference.reference}),
+            getBuildPhases(buildPhase).contains(where: { $0.files.contains(buildFile.reference)}) else {
+                throw failure("File \(paths.joined(separator: "/").quoted) is not in a \(buildPhase.rawValue.quoted) build phase")
+            }
+        }
+    }
+
+    func getFileReference(paths: [String], names: [String]) -> PBXFileReference? {
+        guard let project = projects.first else { return nil }
+        guard let mainGroup = groups.getReference(project.mainGroup) else { return nil }
+
+        return getFileReference(group: mainGroup, paths: paths, names: names)
+    }
+
+    private func getFileReference(group: PBXGroup, paths: [String], names: [String]) -> PBXFileReference? {
+
+        guard !paths.isEmpty else { return nil }
+        let path = paths.first!
+        let name = names.first!
+        let restOfPath = Array(paths.dropFirst())
+        let restOfName = Array(names.dropFirst())
+        if restOfPath.isEmpty {
+            let fileReferences = group.children.flatMap { self.fileReferences.getReference($0) }
+            return fileReferences.first { $0.path == path && $0.nameOrPath == name }
+        } else {
+            let groups = group.children.flatMap { self.groups.getReference($0) }
+            guard let group = groups.first(where: { $0.path == path && $0.nameOrPath == name }) else { return nil }
+            return getFileReference(group: group, paths: restOfPath, names: restOfName)
+        }
+    }
+
+    func getBuildPhases(_ buildPhase: BuildPhase) -> [PBXBuildPhase] {
+        switch buildPhase {
+        case .copyFiles: return copyFilesBuildPhases
+        case .sources: return sourcesBuildPhases
+        case .frameworks: return frameworksBuildPhases
+        case .resources: return resourcesBuildPhases
+        case .runScript: return shellScriptBuildPhases
+        case .headers: return headersBuildPhases
+        }
+    }
+}
+
+extension PBXFileReference {
+    var nameOrPath: String? {
+        return name ?? path
+    }
+}
+
+extension PBXGroup {
+    var nameOrPath: String? {
+        return name ?? path
     }
 }
