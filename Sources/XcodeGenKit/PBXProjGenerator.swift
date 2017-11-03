@@ -561,7 +561,7 @@ public class PBXProjGenerator {
         // if we have a file, move it to children and use the parent as the path
         let (children, path) = path.isFile ?
             ([path], path.parent()) :
-            (try path.children(), path)
+            (try path.children().sorted(), path)
 
         let excludedFiles: [String] = [".DS_Store"]
 
@@ -594,7 +594,7 @@ public class PBXProjGenerator {
         // create variant groups of the base localisation first
         var baseLocalisationVariantGroups: [PBXVariantGroup] = []
         if let baseLocalisedDirectory = localisedDirectories.first(where: { $0.lastComponent == "Base.lproj" }) {
-            for filePath in try baseLocalisedDirectory.children() {
+            for filePath in try baseLocalisedDirectory.children().sorted() {
                 let variantGroup = getVariantGroup(path: filePath, inPath: path)
                 groupChildren.append(variantGroup.reference)
                 baseLocalisationVariantGroups.append(variantGroup)
