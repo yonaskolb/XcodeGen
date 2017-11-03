@@ -11,8 +11,10 @@ targets:
     type: application
     platform: iOS
     sources:
-      - App_iOS
-      - StandaloneFiles/Standalone.swift
+      - path: App_iOS
+        compilerFlags:
+          - "-Werror"
+      - path: StandaloneFiles/Standalone.swift
     settings:
       PRODUCT_BUNDLE_IDENTIFIER: com.project$(BUNDLE_ID_SUFFIX)
       INFOPLIST_FILE: App_iOS/Info.plist
