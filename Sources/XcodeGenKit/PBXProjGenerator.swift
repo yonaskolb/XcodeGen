@@ -607,8 +607,9 @@ public class PBXProjGenerator {
             let localisationName = localisedDirectory.lastComponentWithoutExtension
             for filePath in try localisedDirectory.children().sorted { $0.lastComponent < $1.lastComponent } {
                 // find base localisation variant group
-                let name = filePath.lastComponentWithoutExtension
-                let variantGroup = baseLocalisationVariantGroups.first { Path($0.name!).lastComponentWithoutExtension == name }
+                // ex: Foo.strings will be added to Foo.strings or Foo.storyboard variant group
+                let variantGroup = baseLocalisationVariantGroups.first { Path($0.name!).lastComponent == filePath.lastComponent } ??
+                    baseLocalisationVariantGroups.first { Path($0.name!).lastComponentWithoutExtension == filePath.lastComponentWithoutExtension }
 
                 let fileReference = getFileReference(path: filePath, inPath: path, name: variantGroup != nil ? localisationName : filePath.lastComponent)
 
