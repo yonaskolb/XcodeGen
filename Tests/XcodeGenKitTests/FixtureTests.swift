@@ -7,7 +7,7 @@ import ProjectSpec
 let fixturePath = Path(#file).parent().parent().parent() + "Fixtures"
 
 func generate(specPath: Path, projectPath: Path) throws -> XcodeProj {
-    let spec = try SpecLoader.loadSpec(path: specPath)
+    let spec = try ProjectSpec(path: specPath)
     let generator = ProjectGenerator(spec: spec)
     let project = try generator.generateProject()
     let oldProject = try XcodeProj(path: projectPath)
@@ -27,11 +27,11 @@ func fixtureTests() {
         var project: XcodeProj?
 
         $0.it("generates") {
-            project = try generate(specPath: fixturePath + "TestProject/spec.yml", projectPath: fixturePath + "TestProject/GeneratedProject.xcodeproj")
+            project = try generate(specPath: fixturePath + "TestProject/spec.yml", projectPath: fixturePath + "TestProject/Project.xcodeproj")
         }
 
         $0.it("generates variant group") {
-            guard let project = project else { throw failure("Project is not generated") }
+            guard let project = project else { return }
 
             func getFileReferences(_ path: String) -> [PBXFileReference] {
                 return project.pbxproj.fileReferences.filter { $0.path == path }

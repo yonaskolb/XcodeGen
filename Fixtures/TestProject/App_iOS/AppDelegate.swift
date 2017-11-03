@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import MyFramework
+import Framework
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -17,7 +17,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        let frameworkStruct = FrameworkStruct()
+        _ = FrameworkStruct()
+        // Standalone files added to project by path-to-file.
+        _ = standaloneHello()
         return true
     }
 

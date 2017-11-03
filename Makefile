@@ -4,17 +4,19 @@ VERSION = 1.3.0
 PREFIX = /usr/local
 INSTALL_PATH = $(PREFIX)/bin/$(TOOL_NAME)
 SHARE_PATH = $(PREFIX)/share/$(TOOL_NAME)
-BUILD_PATH = .build/release/$(TOOL_NAME)
 CURRENT_PATH = $(PWD)
-TAR_FILENAME = $(TOOL_NAME)-$(VERSION).tar.gz
+REPO = https://github.com/yonaskolb/$(TOOL_NAME)
+RELEASE_TAR = $(REPO)/archive/$(VERSION).tar.gz
+SHA = $(shell curl -L -s $(RELEASE_TAR) | shasum -a 256 | sed 's/ .*//')
+
+.PHONY: install build uninstall format_code update_brew release
 
 install: build
 	mkdir -p $(PREFIX)/bin
-	cp -f $(BUILD_PATH) $(INSTALL_PATH)
+	cp -f .build/release/$(TOOL_NAME) $(INSTALL_PATH)
 	mkdir -p $(SHARE_PATH)
 	cp -R $(CURRENT_PATH)/SettingPresets $(SHARE_PATH)/SettingPresets
 
-.PHONY: build
 build:
 	swift build --disable-sandbox -c release -Xswiftc -static-stdlib
 
@@ -22,7 +24,20 @@ uninstall:
 	rm -f $(INSTALL_PATH)
 	rm -rf $(SHARE_PATH)
 
-get_sha:
-	wget https://github.com/yonaskolb/$(TOOL_NAME)/archive/$(VERSION).tar.gz -O $(TAR_FILENAME)
-	shasum -a 256 $(TAR_FILENAME)
-	rm $(TAR_FILENAME)
+format_code:
+	swiftformat Tests --stripunusedargs closure-only
+	swiftformat sources --stripunusedargs closure-only
+
+update_brew:
+	sed -i '' 's|\(url ".*/archive/\)\(.*\)\(.tar\)|\1$(VERSION)\3|' Formula/xcodegen.rb
+	sed -i '' 's|\(sha256 "\)\(.*\)\("\)|\1$(SHA)\3|' Formula/xcodegen.rb
+
+	git add .
+	git commit -m "Update brew to $(VERSION)"
+
+release: format_code
+	sed -i '' 's|\(let version = "\)\(.*\)\("\)|\1$(VERSION)\3|' Sources/XcodeGen/main.swift
+
+	git add .
+	git commit -m "Update to $(VERSION)"
+	git tag $(VERSION)

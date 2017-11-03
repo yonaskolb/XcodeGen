@@ -22,7 +22,7 @@ public struct BuildScript: Equatable {
         case path(String)
         case script(String)
 
-        public static func ==(lhs: ScriptType, rhs: ScriptType) -> Bool {
+        public static func == (lhs: ScriptType, rhs: ScriptType) -> Bool {
             switch (lhs, rhs) {
             case let (.path(lhs), .path(rhs)): return lhs == rhs
             case let (.script(lhs), .script(rhs)): return lhs == rhs
@@ -40,7 +40,7 @@ public struct BuildScript: Equatable {
         self.runOnlyWhenInstalling = runOnlyWhenInstalling
     }
 
-    public static func ==(lhs: BuildScript, rhs: BuildScript) -> Bool {
+    public static func == (lhs: BuildScript, rhs: BuildScript) -> Bool {
         return lhs.script == rhs.script &&
             lhs.name == rhs.name &&
             lhs.script == rhs.script &&

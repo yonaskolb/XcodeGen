@@ -37,7 +37,7 @@ extension ProjectSpec {
 
     public func getTargetBuildSettings(target: Target, config: Config) -> BuildSettings {
         var buildSettings = BuildSettings()
-        
+
         if options.settingPresets.applyTarget {
             buildSettings += SettingsPresetFile.platform(target.platform).getBuildSettings()
             buildSettings += SettingsPresetFile.product(target.type).getBuildSettings()

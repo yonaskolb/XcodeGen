@@ -29,7 +29,7 @@ func generate(spec: String, project: String) {
 
     let spec: ProjectSpec
     do {
-        spec = try SpecLoader.loadSpec(path: specPath)
+        spec = try ProjectSpec(path: specPath)
         print("📋  Loaded spec:\n  \(spec.debugDescription.replacingOccurrences(of: "\n", with: "\n  "))")
     } catch let error as JSONUtilities.DecodingError {
         print("Parsing spec failed: \(error.description)".red)

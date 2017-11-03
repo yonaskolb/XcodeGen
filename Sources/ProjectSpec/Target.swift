@@ -15,7 +15,7 @@ public struct Target {
     public var type: PBXProductType
     public var platform: Platform
     public var settings: Settings
-    public var sources: [String]
+    public var sources: [Source]
     public var dependencies: [Dependency]
     public var prebuildScripts: [BuildScript]
     public var postbuildScripts: [BuildScript]
@@ -30,7 +30,7 @@ public struct Target {
         return name
     }
 
-    public init(name: String, type: PBXProductType, platform: Platform, settings: Settings = .empty, configFiles: [String: String] = [:], sources: [String] = [], dependencies: [Dependency] = [], prebuildScripts: [BuildScript] = [], postbuildScripts: [BuildScript] = [], scheme: TargetScheme? = nil) {
+    public init(name: String, type: PBXProductType, platform: Platform, settings: Settings = .empty, configFiles: [String: String] = [:], sources: [Source] = [], dependencies: [Dependency] = [], prebuildScripts: [BuildScript] = [], postbuildScripts: [BuildScript] = [], scheme: TargetScheme? = nil) {
         self.name = name
         self.type = type
         self.platform = platform
@@ -120,7 +120,7 @@ extension Target {
 
 extension Target: Equatable {
 
-    public static func ==(lhs: Target, rhs: Target) -> Bool {
+    public static func == (lhs: Target, rhs: Target) -> Bool {
         return lhs.name == rhs.name &&
             lhs.type == rhs.type &&
             lhs.platform == rhs.platform &&
@@ -135,8 +135,8 @@ extension Target: Equatable {
 }
 
 public struct TargetScheme {
-    public let testTargets: [String]
-    public let configVariants: [String]
+    public var testTargets: [String]
+    public var configVariants: [String]
 
     public init(testTargets: [String] = [], configVariants: [String] = []) {
         self.testTargets = testTargets
@@ -146,7 +146,7 @@ public struct TargetScheme {
 
 extension TargetScheme: Equatable {
 
-    public static func ==(lhs: TargetScheme, rhs: TargetScheme) -> Bool {
+    public static func == (lhs: TargetScheme, rhs: TargetScheme) -> Bool {
         return lhs.testTargets == rhs.testTargets &&
             lhs.configVariants == rhs.configVariants
     }
@@ -168,20 +168,30 @@ extension Target: NamedJSONDictionaryConvertible {
         if let type = PBXProductType(string: typeString) {
             self.type = type
         } else {
-            throw ProjectSpecError.unknownTargetType(typeString)
+            throw SpecParsingError.unknownTargetType(typeString)
         }
         let platformString: String = try jsonDictionary.json(atKeyPath: "platform")
         if let platform = Platform(rawValue: platformString) {
             self.platform = platform
         } else {
-            throw ProjectSpecError.unknownTargetPlatform(platformString)
+            throw SpecParsingError.unknownTargetPlatform(platformString)
         }
         settings = jsonDictionary.json(atKeyPath: "settings") ?? .empty
         configFiles = jsonDictionary.json(atKeyPath: "configFiles") ?? [:]
         if let source: String = jsonDictionary.json(atKeyPath: "sources") {
-            sources = [source]
+            sources = [Source(path: source)]
+        } else if let array = jsonDictionary["sources"] as? [Any] {
+            sources = try array.flatMap { source in
+                if let string = source as? String {
+                    return Source(path: string)
+                } else if let dictionary = source as? [String: Any] {
+                    return try Source(jsonDictionary: dictionary)
+                } else {
+                    return nil
+                }
+            }
         } else {
-            sources = jsonDictionary.json(atKeyPath: "sources") ?? []
+            sources = []
         }
         if jsonDictionary["dependencies"] == nil {
             dependencies = []
@@ -191,77 +201,5 @@ extension Target: NamedJSONDictionaryConvertible {
         prebuildScripts = jsonDictionary.json(atKeyPath: "prebuildScripts") ?? []
         postbuildScripts = jsonDictionary.json(atKeyPath: "postbuildScripts") ?? []
         scheme = jsonDictionary.json(atKeyPath: "scheme")
-    }
-}
-
-public struct Dependency: Equatable {
-
-    public var type: DependencyType
-    public var reference: String
-    public var embed: Bool?
-    public var codeSign: Bool = true
-    public var removeHeaders: Bool = true
-    public var link: Bool = true
-
-    public init(type: DependencyType, reference: String, embed: Bool? = nil) {
-        self.type = type
-        self.reference = reference
-        self.embed = embed
-    }
-
-    public enum DependencyType {
-        case target
-        case framework
-        case carthage
-    }
-
-    public static func ==(lhs: Dependency, rhs: Dependency) -> Bool {
-        return lhs.reference == rhs.reference &&
-            lhs.type == rhs.type &&
-            lhs.codeSign == rhs.codeSign &&
-            lhs.removeHeaders == rhs.removeHeaders &&
-            lhs.embed == rhs.embed &&
-            lhs.link == rhs.link
-    }
-
-    public var buildSettings: [String: Any] {
-        var attributes: [String] = []
-        if codeSign {
-            attributes.append("CodeSignOnCopy")
-        }
-        if removeHeaders {
-            attributes.append("RemoveHeadersOnCopy")
-        }
-        return ["ATTRIBUTES": attributes]
-    }
-}
-
-extension Dependency: JSONObjectConvertible {
-
-    public init(jsonDictionary: JSONDictionary) throws {
-        if let target: String = jsonDictionary.json(atKeyPath: "target") {
-            type = .target
-            reference = target
-        } else if let framework: String = jsonDictionary.json(atKeyPath: "framework") {
-            type = .framework
-            reference = framework
-        } else if let carthage: String = jsonDictionary.json(atKeyPath: "carthage") {
-            type = .carthage
-            reference = carthage
-        } else {
-            throw ProjectSpecError.invalidDependency(jsonDictionary)
-        }
-
-        embed = jsonDictionary.json(atKeyPath: "embed")
-
-        if let bool: Bool = jsonDictionary.json(atKeyPath: "link") {
-            link = bool
-        }
-        if let bool: Bool = jsonDictionary.json(atKeyPath: "codeSign") {
-            codeSign = bool
-        }
-        if let bool: Bool = jsonDictionary.json(atKeyPath: "removeHeaders") {
-            removeHeaders = bool
-        }
     }
 }

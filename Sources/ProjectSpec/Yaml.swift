@@ -9,7 +9,7 @@ import Foundation
 import Yams
 import PathKit
 
-func loadYamlDictionary(path: Path) throws -> [String: Any] {
+public func loadYamlDictionary(path: Path) throws -> [String: Any] {
     let string: String = try path.read()
     if string == "" {
         return [:]

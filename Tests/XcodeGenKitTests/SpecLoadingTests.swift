@@ -15,13 +15,13 @@ func specLoadingTests() {
         return try ProjectSpec(basePath: "", jsonDictionary: specDictionary)
     }
 
-    func expectProjectSpecError(_ spec: [String: Any], _ expectedError: ProjectSpecError) throws {
+    func expectProjectSpecError(_ spec: [String: Any], _ expectedError: SpecParsingError) throws {
         try expectError(expectedError) {
             try getProjectSpec(spec)
         }
     }
 
-    func expectTargetError(_ target: [String: Any], _ expectedError: ProjectSpecError) throws {
+    func expectTargetError(_ target: [String: Any], _ expectedError: SpecParsingError) throws {
         try expectError(expectedError) {
             _ = try Target(name: "test", jsonDictionary: target)
         }
@@ -33,7 +33,7 @@ func specLoadingTests() {
     describe("Spec Loader") {
         $0.it("merges includes") {
             let path = fixturePath + "include_test.yml"
-            let spec = try SpecLoader.loadSpec(path: path)
+            let spec = try ProjectSpec(path: path)
 
             try expect(spec.name) == "NewName"
             try expect(spec.settingGroups) == [
@@ -48,7 +48,7 @@ func specLoadingTests() {
         }
     }
 
-    describe("Project Spec") {
+    describe("Project Spec Parser") {
 
         $0.it("fails with incorrect platform") {
             var target = validTarget
@@ -66,6 +66,24 @@ func specLoadingTests() {
             var target = validTarget
             target["dependencies"] = [[invalid: "name"]]
             try expectTargetError(target, .invalidDependency([invalid: "name"]))
+        }
+
+        $0.it("parses sources") {
+            var targetDictionary1 = validTarget
+            targetDictionary1["sources"] = [
+                "source1",
+                ["path": "source2"],
+                ["path": "sourceWithFlags", "compilerFlags": ["-Werror"]],
+                ["path": "sourceWithFlagsStr", "compilerFlags": "-Werror -Wextra"]
+            ]
+            var targetDictionary2 = validTarget
+            targetDictionary2["sources"] = "source3"
+
+            let target1 = try Target(name: "test", jsonDictionary: targetDictionary1)
+            let target2 = try Target(name: "test", jsonDictionary: targetDictionary2)
+
+            try expect(target1.sources) == [Source(path: "source1"), Source(path: "source2"), Source(path: "sourceWithFlags", compilerFlags: ["-Werror"]), Source(path: "sourceWithFlagsStr", compilerFlags: ["-Werror", "-Wextra"])]
+            try expect(target2.sources) == [Source(path: "source3")]
         }
 
         $0.it("parses target dependencies") {
@@ -128,7 +146,7 @@ func specLoadingTests() {
         }
 
         $0.it("parses settings") {
-            let spec = try SpecLoader.loadSpec(path: fixturePath + "settings_test.yml")
+            let spec = try ProjectSpec(path: fixturePath + "settings_test.yml")
             let buildSettings: BuildSettings = ["SETTING": "value"]
             let configSettings: [String: Settings] = ["config1": Settings(buildSettings: ["SETTING1": "value"])]
             let groups = ["preset1"]
