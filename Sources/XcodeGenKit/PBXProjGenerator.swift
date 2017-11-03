@@ -29,6 +29,7 @@ public class PBXProjGenerator {
     var topLevelGroups: [PBXGroup] = []
     var carthageFrameworksByPlatform: [String: Set<String>] = [:]
     var frameworkFiles: [String] = []
+    var bundleFiles: [Path: SourceFile] = [:]
 
     var uuids: Set<String> = []
     var project: PBXProj!
@@ -557,6 +558,30 @@ public class PBXProjGenerator {
         return variantGroup
     }
 
+    func getBundle(atPath path: Path) -> SourceFile {
+        // It is possible for several targets to depend on the same bundle.
+        // Do not attempt to create a bundle for each target.
+        if let cachedBundle = bundleFiles[path] {
+            return cachedBundle
+        }
+        let fileReference = PBXFileReference(reference: generateUUID(PBXFileReference.self, path.lastComponent),
+                                             sourceTree: .group,
+                                             explicitFileType: "wrapper.plug-in",
+                                             path: path.lastComponent, includeInIndex: 1)
+        fileReferencesByPath[path] = fileReference.reference
+        addObject(fileReference)
+        // Add the bundle to the parent's group.
+        let group = getIntermediateGroups(
+            path: path.parent().parent(),
+            group: getSingleGroup(path: path.parent(), mergingChildren: [fileReference.reference], depth: 0)
+        )
+        addObject(group)
+        let buildFile =  PBXBuildFile(reference: generateUUID(PBXBuildFile.self, fileReference.reference), fileRef: fileReference.reference)
+        let source = SourceFile(path: path, fileReference: fileReference.reference, buildFile: buildFile)
+        bundleFiles[path] = source
+        return source
+    }
+
     func getSources(sourceMetadata source: Source, path: Path, depth: Int = 0) throws -> (sourceFiles: [SourceFile], groups: [PBXGroup]) {
         // if we have a file, move it to children and use the parent as the path
         let (children, path) = path.isFile ?
@@ -564,6 +589,12 @@ public class PBXProjGenerator {
             (try path.children().sorted(), path)
 
         let excludedFiles: [String] = [".DS_Store"]
+
+        // Don't process the files of a bundle. Bundles are a special file type
+        // in Xcode ( not directories ).
+        if path.extension == "bundle" {
+            return ([getBundle(atPath: path)], [])
+        }
 
         let directories = children
             .filter { $0.isDirectory && $0.extension == nil && $0.extension != "lproj" }

@@ -29,6 +29,7 @@
 		BF6380159901 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR3032072502 /* Alamofire.framework */; };
 		BF7121748201 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR3032072504 /* Alamofire.framework */; };
 		BF7642939101 = {isa = PBXBuildFile; fileRef = FR8252321101 /* App_iOS.app */; };
+		BF8072003401 /* App.bundle in Resources */ = {isa = PBXBuildFile; fileRef = FR3840011601 /* App.bundle */; settings = {COMPILER_FLAGS = "-Werror"; }; };
 		BF8298265901 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR3032072501 /* Alamofire.framework */; };
 		BF8660115801 = {isa = PBXBuildFile; fileRef = FR4722960401 /* Framework_iOS.framework */; };
 		BF9001417701 /* TestProjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR6877173101 /* TestProjectTests.swift */; };
@@ -79,6 +80,7 @@
 		FR3032072503 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Alamofire.framework; sourceTree = "<group>"; };
 		FR3032072504 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Alamofire.framework; sourceTree = "<group>"; };
 		FR3546283901 /* base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = base.xcconfig; sourceTree = "<group>"; };
+		FR3840011601 /* App.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = App.bundle; sourceTree = "<group>"; };
 		FR3899172901 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		FR3899172902 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		FR4387045301 /* Framework_watchOS.framework */ = {isa = PBXFileReference; explicitFileType = framework; includeInIndex = 0; lastKnownFileType = wrapper.framework; path = Framework_watchOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -243,6 +245,7 @@
 		G82523211001 /* App_iOS */ = {
 			isa = PBXGroup;
 			children = (
+				FR3840011601 /* App.bundle */,
 				FR1332263601 /* AppDelegate.swift */,
 				FR5980633301 /* Assets.xcassets */,
 				FR1345298501 /* Info.plist */,
@@ -501,6 +504,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BF8072003401 /* App.bundle in Resources */,
 				BF3154421201 /* Assets.xcassets in Resources */,
 				BF2445564001 /* LaunchScreen.storyboard in Resources */,
 				BF3371332801 /* Localizable.strings in Resources */,
