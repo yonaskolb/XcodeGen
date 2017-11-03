@@ -23,11 +23,9 @@ extension ProjectSpec {
             buildSettings += SettingsPresetFile.config(type).getBuildSettings()
         }
 
+        // Prevent setting presets from overrwriting settings in project xcconfig files
         if let configPath = configFiles[config.name] {
-            // Do not overwrite project xcconfig's value.
-            if let configFile = try? XCConfig(path: basePath + configPath) {
-                removeValues(for: configFile.flattenedBuildSettings().keys, buildSettings: &buildSettings)
-            }
+            buildSettings = removeConfigFileSettings(from: buildSettings, configPath: configPath)
         }
 
         buildSettings += getBuildSettings(settings: settings, config: config)
@@ -44,17 +42,13 @@ extension ProjectSpec {
             buildSettings += SettingsPresetFile.productPlatform(target.type, target.platform).getBuildSettings()
         }
 
-        // Do not overwrite target xcconfig's values.
+        // Prevent setting presets from overrwriting settings in target xcconfig files
         if let configPath = target.configFiles[config.name] {
-            if let configFile = try? XCConfig(path: basePath + configPath) {
-                removeValues(for: configFile.flattenedBuildSettings().keys, buildSettings: &buildSettings)
-            }
+            buildSettings = removeConfigFileSettings(from: buildSettings, configPath: configPath)
         }
-        // Avoid overwriting target xcconfig's values by base presets' values.
+        // Prevent setting presets from overrwriting settings in project xcconfig files
         if let configPath = configFiles[config.name] {
-            if let configFile = try? XCConfig(path: basePath + configPath) {
-                removeValues(for: configFile.flattenedBuildSettings().keys, buildSettings: &buildSettings)
-            }
+            buildSettings = removeConfigFileSettings(from: buildSettings, configPath: configPath)
         }
 
         buildSettings += getBuildSettings(settings: target.settings, config: config)
@@ -106,18 +100,22 @@ extension ProjectSpec {
         let buildSettings = getCombinedBuildSettings(basePath: basePath, target: target, config: config, includeProject: includeProject)
         return buildSettings[setting] != nil
     }
-
-    // MARK: private
-
-    /// Removes values for specified keys in buildSettings
-    /// - parameter keys: Keys for values to remove
-    /// - paramerter buildSettings: inout dictionary
-    private func removeValues(for keys: BuildSettings.Keys, buildSettings: inout BuildSettings) {
-        for k in keys {
-            // FIXME: Catch platform specifier. e.g. LD_RUNPATH_SEARCH_PATHS[sdk=iphone*]
-            buildSettings.removeValue(forKey: k)
-            buildSettings.removeValue(forKey: "\"\(k)\"")
+    
+    /// Removes values from build settings if they are defined in an xcconfig file
+    private func removeConfigFileSettings(from buildSettings: BuildSettings, configPath: String) -> BuildSettings {
+        var buildSettings = buildSettings
+        
+        if let configFile = try? XCConfig(path: basePath + configPath) {
+            let configSettings = configFile.flattenedBuildSettings()
+            
+            for key in configSettings.keys {
+                // FIXME: Catch platform specifier. e.g. LD_RUNPATH_SEARCH_PATHS[sdk=iphone*]
+                buildSettings.removeValue(forKey: key)
+                buildSettings.removeValue(forKey: key.quoted)
+            }
         }
+        
+        return buildSettings
     }
 }
 
