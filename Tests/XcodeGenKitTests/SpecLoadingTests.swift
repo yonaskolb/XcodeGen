@@ -48,6 +48,25 @@ func specLoadingTests() {
         }
     }
 
+    describe("Spec Loader JSON") {
+        $0.it("merges includes") {
+            let path = fixturePath + "include_test.json"
+            let spec = try ProjectSpec(path: path)
+
+            try expect(spec.name) == "NewName"
+            try expect(spec.settingGroups) == [
+                "test": Settings(dictionary: ["MY_SETTING1": "NEW VALUE", "MY_SETTING2": "VALUE2", "MY_SETTING3": "VALUE3"]),
+                "new": Settings(dictionary: ["MY_SETTING": "VALUE"]),
+                "toReplace": Settings(dictionary: ["MY_SETTING2": "VALUE2"]),
+            ]
+            try expect(spec.targets) == [
+                Target(name: "IncludedTargetNew", type: .application, platform: .tvOS, sources: ["NewSource"]),
+                Target(name: "NewTarget", type: .application, platform: .iOS),
+            ]
+        }
+    }
+
+
     describe("Project Spec Parser") {
 
         $0.it("fails with incorrect platform") {
