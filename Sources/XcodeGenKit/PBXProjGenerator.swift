@@ -323,7 +323,9 @@ public class PBXProjGenerator {
         var buildPhases: [String] = []
 
         func getBuildFilesForPhase(_ buildPhase: BuildPhase) -> [String] {
-            let files = sourceFiles.filter { getBuildPhaseForPath($0.path) == buildPhase }
+            let files = sourceFiles
+                .filter { getBuildPhaseForPath($0.path) == buildPhase }
+                .sorted { $0.path.lastComponent < $1.path.lastComponent }
             files.forEach { addObject($0.buildFile) }
             return files.map { $0.buildFile.reference }
         }

@@ -655,8 +655,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				BF1073850101 /* AppDelegate.swift in Sources */,
-				BF1744565901 /* ViewController.swift in Sources */,
 				BF1628293501 /* Standalone.swift in Sources */,
+				BF1744565901 /* ViewController.swift in Sources */,
 			);
 		};
 /* End PBXSourcesBuildPhase section */
