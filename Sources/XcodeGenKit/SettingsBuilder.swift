@@ -81,16 +81,12 @@ extension ProjectSpec {
         var buildSettings: BuildSettings = [:]
         if includeProject {
             if let configFilePath = configFiles[config.name] {
-                if let configFile = try? XCConfig(path: basePath + configFilePath) {
-                    buildSettings += configFile.flattenedBuildSettings()
-                }
+               buildSettings += loadConfigFileBuildSettings(path: configFilePath)
             }
             buildSettings += getProjectBuildSettings(config: config)
         }
         if let configFilePath = target.configFiles[config.name] {
-            if let configFile = try? XCConfig(path: basePath + configFilePath) {
-                buildSettings += configFile.flattenedBuildSettings()
-            }
+            buildSettings += loadConfigFileBuildSettings(path: configFilePath)
         }
         buildSettings += getTargetBuildSettings(target: target, config: config)
         return buildSettings
@@ -105,9 +101,7 @@ extension ProjectSpec {
     private func removeConfigFileSettings(from buildSettings: BuildSettings, configPath: String) -> BuildSettings {
         var buildSettings = buildSettings
         
-        if let configFile = try? XCConfig(path: basePath + configPath) {
-            let configSettings = configFile.flattenedBuildSettings()
-            
+        if let configSettings = loadConfigFileBuildSettings(path: configPath) {
             for key in configSettings.keys {
                 // FIXME: Catch platform specifier. e.g. LD_RUNPATH_SEARCH_PATHS[sdk=iphone*]
                 buildSettings.removeValue(forKey: key)
@@ -117,14 +111,31 @@ extension ProjectSpec {
         
         return buildSettings
     }
+    
+    /// Returns cached build settings from a config file
+    private func loadConfigFileBuildSettings(path: String) -> BuildSettings? {
+        let configFilePath = basePath + path
+        if let settings = configFileSettings[configFilePath.string] {
+            return settings
+        } else {
+            guard let configFile = try? XCConfig(path:configFilePath) else { return nil }
+            let settings = configFile.flattenedBuildSettings()
+            configFileSettings[configFilePath.string] = settings
+            return settings
+        }
+    }
 }
 
-private var buildSettingFiles: [String: BuildSettings] = [:]
+// cached flattened xcconfig file settings
+private var configFileSettings: [String: BuildSettings] = [:]
+
+// cached setting preset settings
+private var settingPresetSettings: [String: BuildSettings] = [:]
 
 extension SettingsPresetFile {
 
     public func getBuildSettings() -> BuildSettings? {
-        if let group = buildSettingFiles[path] {
+        if let group = settingPresetSettings[path] {
             return group
         }
         let relativePath = "SettingPresets/\(path).yml"
@@ -149,7 +160,7 @@ extension SettingsPresetFile {
             print("Error parsing \"\(name)\" settings")
             return nil
         }
-        buildSettingFiles[path] = buildSettings
+        settingPresetSettings[path] = buildSettings
         return buildSettings
     }
 }
