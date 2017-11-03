@@ -29,6 +29,7 @@ public class PBXProjGenerator {
     var topLevelGroups: [PBXGroup] = []
     var carthageFrameworksByPlatform: [String: Set<String>] = [:]
     var frameworkFiles: [String] = []
+    var bundleFiles: [Path: SourceFile] = [:]
 
     var uuids: Set<String> = []
     var project: PBXProj!
@@ -524,7 +525,7 @@ public class PBXProjGenerator {
 
     // Add groups for all parents recursively
     // ex: path/foo/bar/baz/Hello.swift -> path:[foo:[bar:[baz:[Hello.swift]]]]
-    func getIntermediateGroups(path: Path, group: PBXGroup) -> PBXGroup {
+    func getGroups(path: Path, group: PBXGroup) -> PBXGroup {
         // verify path is a subpath of spec.basePath
         guard Path(components: zip(path.components, spec.basePath.components).map{ $0.0 }) == spec.basePath else {
             return group
@@ -536,7 +537,7 @@ public class PBXProjGenerator {
         }
 
         // recursive case
-        return getIntermediateGroups(
+        return getGroups(
             path: path.parent(),
             group: getSingleGroup(path: path, mergingChildren: [group.reference])
         )
@@ -557,6 +558,37 @@ public class PBXProjGenerator {
         return variantGroup
     }
 
+    func getBundle(atPath path: Path) -> SourceFile {
+        // It is possible for several targets to depend on the same bundle.
+        // Do not attempt to create a bundle for each target.
+        if let cachedBundle = bundleFiles[path] {
+            return cachedBundle
+        }
+        let fileReference = PBXFileReference(reference: generateUUID(PBXFileReference.self, path.lastComponent),
+                                             sourceTree: .group,
+                                             explicitFileType: "wrapper.plug-in",
+                                             path: path.lastComponent, includeInIndex: 1)
+        fileReferencesByPath[path] = fileReference.reference
+        addObject(fileReference)
+        addObject(getGroup(path: path.parent(),mergingChildren: [fileReference.reference], depth: 0))
+        let buildFile =  PBXBuildFile(reference: generateUUID(PBXBuildFile.self, fileReference.reference), fileRef: fileReference.reference)
+        let source = SourceFile(path: path, fileReference: fileReference.reference, buildFile: buildFile)
+        bundleFiles[path] = source
+        return source
+    }
+
+    /// Return the top level group for a given path
+    func getGroup(path: Path, mergingChildren children: [String], depth: Int = 0) -> PBXGroup {
+        if spec.options.createIntermediateGroups {
+            return getGroups(
+                path: path.parent(),
+                group: getSingleGroup(path: path, mergingChildren: children, depth: depth)
+            )
+        } else {
+            return getSingleGroup(path: path, mergingChildren: children, depth: depth)
+        }
+    }
+
     func getSources(sourceMetadata source: Source, path: Path, depth: Int = 0) throws -> (sourceFiles: [SourceFile], groups: [PBXGroup]) {
         // if we have a file, move it to children and use the parent as the path
         let (children, path) = path.isFile ?
@@ -564,6 +596,12 @@ public class PBXProjGenerator {
             (try path.children().sorted(), path)
 
         let excludedFiles: [String] = [".DS_Store"]
+
+        // Don't process the files of a bundle. Bundles are a special file type
+        // in Xcode ( not directories ).
+        if path.extension == "bundle" {
+            return ([getBundle(atPath: path)], [])
+        }
 
         let directories = children
             .filter { $0.isDirectory && $0.extension == nil && $0.extension != "lproj" }
@@ -630,16 +668,7 @@ public class PBXProjGenerator {
             }
         }
 
-        let group: PBXGroup
-        if spec.options.createIntermediateGroups {
-            group = getIntermediateGroups(
-                path: path.parent(),
-                group: getSingleGroup(path: path, mergingChildren: groupChildren, depth: depth)
-            )
-        } else {
-            group = getSingleGroup(path: path, mergingChildren: groupChildren, depth: depth)
-        }
-
+        let group = getGroup(path: path, mergingChildren: groupChildren, depth: depth)
         if depth == 0 {
             topLevelGroups.append(group)
         }
