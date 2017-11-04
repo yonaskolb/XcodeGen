@@ -568,6 +568,7 @@ public class PBXProjGenerator {
             (try path.children().sorted(), path)
 
         let excludedFiles: [String] = [".DS_Store"]
+        let sourceExcludedFiles: [String] = source.excludes.map { "\(source.path)/\($0)" }
 
         let directories = children
             .filter { $0.isDirectory && $0.extension == nil && $0.extension != "lproj" }
@@ -576,6 +577,7 @@ public class PBXProjGenerator {
         let filePaths = children
             .filter { $0.isFile || $0.extension != nil && $0.extension != "lproj" }
             .filter { !excludedFiles.contains($0.lastComponent) }
+            .filter { !sourceExcludedFiles.contains($0.string) }
             .sorted { $0.lastComponent < $1.lastComponent }
 
         let localisedDirectories = children

@@ -13,10 +13,12 @@ public struct Source {
 
     public var path: String
     public var compilerFlags: [String]
+    public var excludes: [String]
 
-    public init(path: String, compilerFlags: [String] = []) {
+    public init(path: String, compilerFlags: [String] = [], excludes: [String] = []) {
         self.path = path
         self.compilerFlags = compilerFlags
+        self.excludes = excludes
     }
 }
 
@@ -43,6 +45,10 @@ extension Source: JSONObjectConvertible {
         let maybeCompilerFlagsArray: [String]? = jsonDictionary.json(atKeyPath: "compilerFlags")
         compilerFlags = maybeCompilerFlagsArray ??
             maybeCompilerFlagsString.map{ $0.split(separator: " ").map{ String($0) } } ?? []
+        let maybeExcludesString: String? = jsonDictionary.json(atKeyPath: "excludes")
+        let maybeExcludesArray: [String]? = jsonDictionary.json(atKeyPath: "excludes")
+        excludes = maybeExcludesArray ??
+            maybeExcludesString.map{ $0.split(separator: " ").map{ String($0) } } ?? []        
     }
 }
 

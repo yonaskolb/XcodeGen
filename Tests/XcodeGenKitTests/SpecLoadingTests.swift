@@ -93,7 +93,11 @@ func specLoadingTests() {
                 "source1",
                 ["path": "source2"],
                 ["path": "sourceWithFlags", "compilerFlags": ["-Werror"]],
-                ["path": "sourceWithFlagsStr", "compilerFlags": "-Werror -Wextra"]
+                ["path": "sourceWithFlagsStr", "compilerFlags": "-Werror -Wextra"],
+                ["path": "sourceWithExcludes", "excludes": ["Foo.swift"]],
+                ["path": "sourceWithExcludesStr", "excludes": "Foo.swift Bar.swift"],
+                ["path": "sourceWithCompilerFlagsExcludes", "compilerFlags": ["-Werror"], "excludes": ["Foo.swift"]],
+                ["path": "sourceWithCompilerFlagsExcludesStr", "compilerFlags": "-Werror -Wextra", "excludes": "Foo.swift Bar.swift"],
             ]
             var targetDictionary2 = validTarget
             targetDictionary2["sources"] = "source3"
@@ -101,7 +105,16 @@ func specLoadingTests() {
             let target1 = try Target(name: "test", jsonDictionary: targetDictionary1)
             let target2 = try Target(name: "test", jsonDictionary: targetDictionary2)
 
-            try expect(target1.sources) == [Source(path: "source1"), Source(path: "source2"), Source(path: "sourceWithFlags", compilerFlags: ["-Werror"]), Source(path: "sourceWithFlagsStr", compilerFlags: ["-Werror", "-Wextra"])]
+            let target1SourcesExpect = [Source(path: "source1"), 
+                                        Source(path: "source2"), 
+                                        Source(path: "sourceWithFlags", compilerFlags: ["-Werror"]), 
+                                        Source(path: "sourceWithFlagsStr", compilerFlags: ["-Werror", "-Wextra"]),
+                                        Source(path: "sourceWithExcludes", excludes: ["Foo.swift"]), 
+                                        Source(path: "sourceWithExcludesStr", excludes: ["Foo.swift", "Bar.swift"]),
+                                        Source(path: "sourceWithCompilerFlagsExcludes", compilerFlags: ["-Werror"], excludes: ["Foo.swift"]),
+                                        Source(path: "sourceWithCompilerFlagsExcludesStr", compilerFlags: ["-Werror", "-Wextra"], excludes: ["Foo.swift", "Bar.swift"])]
+
+            try expect(target1.sources) == target1SourcesExpect
             try expect(target2.sources) == [Source(path: "source3")]
         }
 
