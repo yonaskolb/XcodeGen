@@ -518,6 +518,10 @@ public class PBXProjGenerator {
             )
             addObject(group)
             groupsByPath[path] = group
+            
+            if depth == 0 {
+                topLevelGroups.append(group)
+            }
         }
         return group
     }
@@ -556,7 +560,7 @@ public class PBXProjGenerator {
         }
         return variantGroup
     }
-
+    
     func getSources(sourceMetadata source: Source, path: Path, depth: Int = 0) throws -> (sourceFiles: [SourceFile], groups: [PBXGroup]) {
         // if we have a file, move it to children and use the parent as the path
         let (children, path) = path.isFile ?
@@ -640,9 +644,6 @@ public class PBXProjGenerator {
             group = getSingleGroup(path: path, mergingChildren: groupChildren, depth: depth)
         }
 
-        if depth == 0 {
-            topLevelGroups.append(group)
-        }
         groups.insert(group, at: 0)
         return (allSourceFiles, groups)
     }
