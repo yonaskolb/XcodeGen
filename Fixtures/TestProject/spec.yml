@@ -4,6 +4,7 @@ options:
   bundleIdPrefix: com.project
 fileGroups:
   - Configs
+  - FileGroup
 configFiles:
   Test Debug: Configs/config.xcconfig
 targets:
@@ -15,6 +16,7 @@ targets:
         compilerFlags:
           - "-Werror"
       - path: StandaloneFiles/Standalone.swift
+      - FileGroup/UnderFileGroup
     settings:
       PRODUCT_BUNDLE_IDENTIFIER: com.project$(BUNDLE_ID_SUFFIX)
       INFOPLIST_FILE: App_iOS/Info.plist
