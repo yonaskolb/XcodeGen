@@ -46,8 +46,8 @@ public class PBXProjGenerator {
         var uuid: String = ""
         var counter: UInt = 0
         let className: String = String(describing: T.self).replacingOccurrences(of: "PBX", with: "")
-        let classAcronym = String(className.characters.filter { String($0).lowercased() != String($0) })
-        let stringID = String(abs(id.hashValue).description.characters.prefix(10 - classAcronym.characters.count))
+        let classAcronym = String(className.filter { String($0).lowercased() != String($0) })
+        let stringID = String(abs(id.hashValue).description.prefix(10 - classAcronym.count))
         repeat {
             counter += 1
             uuid = "\(classAcronym)\(stringID)\(String(format: "%02d", counter))"
