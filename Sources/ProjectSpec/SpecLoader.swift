@@ -19,20 +19,17 @@ extension ProjectSpec {
     }
 
     private static func loadDictionary(path: Path) throws -> JSONDictionary {
-        // Get the current path extension
-        let pathExtension = path.`extension`
 
         // Depending on the extension we will either load the file as YAML or JSON
-        var json = [String:Any]()
-        switch pathExtension?.lowercased() {
-        case .some("json"):
-            let string: String = try path.read()
-            guard let stringData = string.data(using: .utf8) else { fatalError("Error decoding file at path \(path)") }
-            guard let jsonObj = try JSONSerialization.jsonObject(with: stringData, options: .allowFragments) as? [String:Any] else {
-                                                                    fatalError("Invalid JSON at path \(path)")
+        var json: [String: Any]
+        if path.extension?.lowercased() == "json" {
+            let data: Data = try path.read()
+            let jsonData = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
+            guard let jsonDictionary = jsonData as? [String:Any] else {
+                fatalError("Invalid JSON at path \(path)")
             }
-            json = jsonObj
-        default:
+            json = jsonDictionary
+        } else {
             json = try loadYamlDictionary(path: path)
         }
 
