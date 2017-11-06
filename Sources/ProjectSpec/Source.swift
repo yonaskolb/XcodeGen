@@ -47,8 +47,7 @@ extension Source: JSONObjectConvertible {
         compilerFlags = maybeCompilerFlagsArray ??
             maybeCompilerFlagsString.map{ $0.split(separator: " ").map{ String($0) } } ?? []
 
-        let maybeExcludesArray: [String]? = jsonDictionary.json(atKeyPath: "excludes")
-        excludes = maybeExcludesArray ?? []
+        excludes = jsonDictionary.json(atKeyPath: "excludes") ?? []
     }
 }
 
