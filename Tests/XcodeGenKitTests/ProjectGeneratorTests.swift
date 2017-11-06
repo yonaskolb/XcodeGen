@@ -299,6 +299,55 @@ func projectGeneratorTests() {
                 try project.expectFile(paths: ["Sources", "A", "B", "b.swift"], buildPhase: .sources)
             }
 
+            $0.it("generates source groups with excludes") {
+                let directories = """
+                Sources:
+                  A:
+                    - a.swift
+                    - B:
+                      - b.swift
+                  B:
+                    - b.swift
+                  C:
+                    - c.swift
+                    - c.m
+                    - c.h
+                  D:
+                    - d.h
+                    - d.m
+                  E:
+                    - e.jpg
+                    - e.h
+                    - e.m
+                    - F:
+                      - f.swift
+                """
+                try createDirectories(directories)
+
+                let excludes = [
+                    "B",
+                    "*.h",
+                    "f.swift"
+                ]
+
+                target.sources = [Source(path: "Sources", excludes: excludes)]
+                spec.targets = [target]
+
+                let project = try getPbxProj(spec)
+                try project.expectFile(paths: ["Sources", "A", "a.swift"], buildPhase: .sources)
+                try project.expectFile(paths: ["Sources", "C", "c.swift"], buildPhase: .sources)
+                try project.expectFile(paths: ["Sources", "C", "c.m"], buildPhase: .sources)
+                try project.expectFile(paths: ["Sources", "D", "d.m"], buildPhase: .sources)
+                try project.expectFile(paths: ["Sources", "E", "e.jpg"], buildPhase: .resources)
+                try project.expectFile(paths: ["Sources", "E", "e.m"], buildPhase: .sources)
+                try project.expectFileMissing(paths: ["Sources", "A", "B", "b.swift"])
+                try project.expectFileMissing(paths: ["Sources", "B", "b.swift"])
+                try project.expectFileMissing(paths: ["Sources", "C", "c.h"])
+                try project.expectFileMissing(paths: ["Sources", "D", "d.h"])
+                try project.expectFileMissing(paths: ["Sources", "E", "e.h"])
+                try project.expectFileMissing(paths: ["Sources", "E", "F", "f.swift"])
+            }
+
             $0.it("generates file sources") {
                 let directories = """
                 Sources:
@@ -343,6 +392,14 @@ extension PBXProj {
         }
     }
 
+    /// expect a missing file within groups of the paths, using optional different names
+    func expectFileMissing(paths: [String], names: [String]? = nil) throws {
+        let names = names ?? paths
+        if getFileReference(paths: paths, names: names) != nil {
+            throw failure("Found file at path \(paths.joined(separator: "/").quoted) and name \(paths.joined(separator: "/").quoted)")
+        }
+    }
+    
     func getFileReference(paths: [String], names: [String]) -> PBXFileReference? {
         guard let project = projects.first else { return nil }
         guard let mainGroup = groups.getReference(project.mainGroup) else { return nil }
