@@ -321,13 +321,18 @@ func projectGeneratorTests() {
                     - e.m
                     - F:
                       - f.swift
+                  G:
+                    H:
+                     - h.swift
                 """
                 try createDirectories(directories)
 
                 let excludes = [
                     "B",
-                    "*.h",
-                    "f.swift"
+                    "C/*.h",
+                    "d.m",
+                    "E/F/*.swift",
+                    "G/H/"
                 ]
 
                 target.sources = [Source(path: "Sources", excludes: excludes)]
@@ -337,15 +342,15 @@ func projectGeneratorTests() {
                 try project.expectFile(paths: ["Sources", "A", "a.swift"], buildPhase: .sources)
                 try project.expectFile(paths: ["Sources", "C", "c.swift"], buildPhase: .sources)
                 try project.expectFile(paths: ["Sources", "C", "c.m"], buildPhase: .sources)
+                try project.expectFile(paths: ["Sources", "D", "d.h"])
                 try project.expectFile(paths: ["Sources", "D", "d.m"], buildPhase: .sources)
                 try project.expectFile(paths: ["Sources", "E", "e.jpg"], buildPhase: .resources)
                 try project.expectFile(paths: ["Sources", "E", "e.m"], buildPhase: .sources)
-                try project.expectFileMissing(paths: ["Sources", "A", "B", "b.swift"])
-                try project.expectFileMissing(paths: ["Sources", "B", "b.swift"])
-                try project.expectFileMissing(paths: ["Sources", "C", "c.h"])
-                try project.expectFileMissing(paths: ["Sources", "D", "d.h"])
-                try project.expectFileMissing(paths: ["Sources", "E", "e.h"])
-                try project.expectFileMissing(paths: ["Sources", "E", "F", "f.swift"])
+                try project.expectFile(paths: ["Sources", "E", "e.h"])
+                try project.expectFileMissing(paths: ["Sources/B", "b.swift"])
+                try project.expectFileMissing(paths: ["Sources/C", "c.h"])
+                try project.expectFileMissing(paths: ["Sources/E/F", "f.swift"])
+                try project.expectFileMissing(paths: ["Sources/G/H", "h.swift"])
             }
 
             $0.it("generates file sources") {
@@ -396,7 +401,7 @@ extension PBXProj {
     func expectFileMissing(paths: [String], names: [String]? = nil) throws {
         let names = names ?? paths
         if getFileReference(paths: paths, names: names) != nil {
-            throw failure("Found file at path \(paths.joined(separator: "/").quoted) and name \(paths.joined(separator: "/").quoted)")
+            throw failure("Found unexpected file at path \(paths.joined(separator: "/").quoted) and name \(paths.joined(separator: "/").quoted)")
         }
     }
     
