@@ -322,6 +322,42 @@ func projectGeneratorTests() {
                 try project.expectFile(paths: ["Sources/A/B", "b.swift"], names: ["B", "b.swift"], buildPhase: .sources)
                 try project.expectFile(paths: ["Sources/A/B", "c.jpg"], names: ["B", "c.jpg"], buildPhase: .resources)
             }
+
+            $0.it("generates shared sources") {
+                let directories = """
+                Sources:
+                  A:
+                    - a.swift
+                    - B:
+                      - b.swift
+                      - c.jpg
+                """
+                try createDirectories(directories)
+
+                var target1 = Target(name: "Test1", type: .framework, platform: .iOS, sources: ["Sources"])
+                var target2 = Target(name: "Test2", type: .framework, platform: .tvOS, sources: ["Sources"])
+
+                spec.targets = [target1, target2]
+                let proj = try getPbxProj(spec)
+
+                guard let project = proj.projects.first,
+                    let mainGroup = proj.groups.getReference(project.mainGroup) else {
+                    throw failure("Couldn't find main group")
+                }
+
+                func validateGroup(_ group: PBXGroup) throws {
+                    let hasDuplicatedChildren = group.children.count != Set(group.children).count
+                    if hasDuplicatedChildren {
+                        throw failure("Group \"\(group.nameOrPath ?? "")\" has duplicated children:\n - \(group.children.sorted().joined(separator: "\n - "))")
+                    }
+                    for child in group.children {
+                        if let group = proj.groups.getReference(child) {
+                            try validateGroup(group)
+                        }
+                    }
+                }
+                try validateGroup(mainGroup)
+            }
         }
     }
 }
