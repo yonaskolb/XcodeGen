@@ -12,6 +12,7 @@ targets:
     type: application
     platform: iOS
     sources:
+      - StandaloneFiles/StandaloneAssets.xcassets
       - path: App_iOS
         compilerFlags:
           - "-Werror"

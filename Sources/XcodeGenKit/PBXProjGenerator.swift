@@ -477,7 +477,7 @@ public class PBXProjGenerator {
         }
         if let fileExtension = path.extension {
             switch fileExtension {
-            case "swift", "m", "mm", "cpp", "c": return .sources
+            case "swift", "m", "mm", "cpp", "c", "S": return .sources
             case "h", "hh", "hpp", "ipp", "tpp", "hxx", "def": return .headers
             case "xcconfig", "entitlements", "gpx", "lproj", "apns": return nil
             default: return .resources
@@ -504,7 +504,8 @@ public class PBXProjGenerator {
     func getSingleGroup(path: Path, mergingChildren children: [String], depth: Int = 0) -> PBXGroup {
         let group: PBXGroup
         if let cachedGroup = groupsByPath[path] {
-            cachedGroup.children += children
+            // only add the children, that aren't already in the cachedGroup
+            cachedGroup.children += children.filter{ !cachedGroup.children.contains($0) }
             group = cachedGroup
         } else {
             group = PBXGroup(
@@ -562,7 +563,10 @@ public class PBXProjGenerator {
     }
     
     func getSources(sourceMetadata source: Source, path: Path, depth: Int = 0) throws -> (sourceFiles: [SourceFile], groups: [PBXGroup]) {
-        let (children, path) = path.isFile ?
+
+        // if we have a file, move it to children and use the parent as the path
+        // pretend xcassets are files
+        let (children, path) = path.isFile || path.extension == "xcassets" ?
             ([path], path.parent()) :
             (try getSourceChildren(sourceMetadata: source, dirPath: path).sorted(), path)
 
