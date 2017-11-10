@@ -160,8 +160,8 @@
 		G28836901501 /* Carthage */ = {
 			isa = PBXGroup;
 			children = (
-				G47994500501 /* iOS */,
 				G47994500502 /* Mac */,
+				G47994500501 /* iOS */,
 				G47994500901 /* tvOS */,
 				G67871650901 /* watchOS */,
 			);
@@ -228,8 +228,8 @@
 		G66512504301 /* StandaloneFiles */ = {
 			isa = PBXGroup;
 			children = (
-				FR5557707101 /* StandaloneAssets.xcassets */,
 				FR2554453101 /* Standalone.swift */,
+				FR5557707101 /* StandaloneAssets.xcassets */,
 			);
 			name = StandaloneFiles;
 			path = StandaloneFiles;
@@ -284,26 +284,26 @@
 		G84487712001 = {
 			isa = PBXGroup;
 			children = (
-				G83406189501 /* Configs */,
-				G32346300301 /* FileGroup */,
-				G66512504301 /* StandaloneFiles */,
 				G82523211001 /* App_iOS */,
 				G78312289901 /* App_iOS_Tests */,
+				G83406189501 /* Configs */,
+				G32346300301 /* FileGroup */,
 				G46615002701 /* Framework */,
-				G86202385201 /* Products */,
 				G19527407101 /* Frameworks */,
+				G86202385201 /* Products */,
+				G66512504301 /* StandaloneFiles */,
 			);
 			sourceTree = "<group>";
 		};
 		G86202385201 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				FR5251191201 /* Framework_macOS.framework */,
+				FR8252321101 /* App_iOS.app */,
 				FR7831228901 /* App_iOS_Tests.xctest */,
 				FR4722960401 /* Framework_iOS.framework */,
+				FR5251191201 /* Framework_macOS.framework */,
 				FR6623158301 /* Framework_tvOS.framework */,
 				FR4387045301 /* Framework_watchOS.framework */,
-				FR8252321101 /* App_iOS.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
