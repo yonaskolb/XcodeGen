@@ -504,7 +504,8 @@ public class PBXProjGenerator {
     func getSingleGroup(path: Path, mergingChildren children: [String], depth: Int = 0) -> PBXGroup {
         let group: PBXGroup
         if let cachedGroup = groupsByPath[path] {
-            cachedGroup.children += children
+            // only add the children, that aren't already in the cachedGroup
+            cachedGroup.children += children.filter{ !cachedGroup.children.contains($0) }
             group = cachedGroup
         } else {
             group = PBXGroup(

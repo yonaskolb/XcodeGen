@@ -180,7 +180,6 @@
 			isa = PBXGroup;
 			children = (
 				FR8488480101 /* MoreUnder.swift */,
-				FR8488480101 /* MoreUnder.swift */,
 			);
 			name = UnderFileGroup;
 			path = UnderFileGroup;
@@ -189,15 +188,6 @@
 		G46615002701 /* Framework */ = {
 			isa = PBXGroup;
 			children = (
-				FR7078510801 /* FrameworkFile.swift */,
-				FR1345298503 /* Info.plist */,
-				FR7740960501 /* MyFramework.h */,
-				FR7078510801 /* FrameworkFile.swift */,
-				FR1345298503 /* Info.plist */,
-				FR7740960501 /* MyFramework.h */,
-				FR7078510801 /* FrameworkFile.swift */,
-				FR1345298503 /* Info.plist */,
-				FR7740960501 /* MyFramework.h */,
 				FR7078510801 /* FrameworkFile.swift */,
 				FR1345298503 /* Info.plist */,
 				FR7740960501 /* MyFramework.h */,
