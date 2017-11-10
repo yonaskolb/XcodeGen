@@ -563,13 +563,16 @@ public class PBXProjGenerator {
     }
     
     func getSources(sourceMetadata source: Source, path: Path, depth: Int = 0) throws -> (sourceFiles: [SourceFile], groups: [PBXGroup]) {
+
         // if we have a file, move it to children and use the parent as the path
         // pretend xcassets are files
         let (children, path) = path.isFile || path.extension == "xcassets" ?
             ([path], path.parent()) :
-            (try path.children().sorted(), path)
+            (try getSourceChildren(sourceMetadata: source, dirPath: path).sorted(), path)
 
-        let excludedFiles: [String] = [".DS_Store"]
+        guard children.count > 0 else {
+            return ([], [])
+        }
 
         let directories = children
             .filter { $0.isDirectory && $0.extension == nil && $0.extension != "lproj" }
@@ -577,7 +580,6 @@ public class PBXProjGenerator {
 
         let filePaths = children
             .filter { $0.isFile || $0.extension != nil && $0.extension != "lproj" }
-            .filter { !excludedFiles.contains($0.lastComponent) }
             .sorted { $0.lastComponent < $1.lastComponent }
 
         let localisedDirectories = children
@@ -592,8 +594,18 @@ public class PBXProjGenerator {
 
         for path in directories {
             let subGroups = try getSources(sourceMetadata: source, path: path, depth: depth + 1)
+
+            guard !subGroups.sourceFiles.isEmpty else {
+                continue
+            }
+
             allSourceFiles += subGroups.sourceFiles
-            groupChildren.append(subGroups.groups.first!.reference)
+
+            guard let first = subGroups.groups.first else {
+                continue
+            }
+
+            groupChildren.append(first.reference)
             groups += subGroups.groups
         }
 
@@ -648,5 +660,52 @@ public class PBXProjGenerator {
 
         groups.insert(group, at: 0)
         return (allSourceFiles, groups)
+    }
+
+    func getSourceChildren(sourceMetadata source: Source, dirPath: Path) throws -> [Path] {
+        
+        func getSourceExcludes(sourceMetadata source: Source, dirPath: Path) -> [Path] {
+            return source.excludes.map { 
+                return Path.glob("\(dirPath)/\($0)")
+                .map { 
+                    guard $0.isDirectory else {
+                        return [$0]
+                    }
+
+                    return (try? $0.recursiveChildren().filter { $0.isFile }) ?? []
+                }
+                .reduce([], +)
+            }
+            .reduce([], +)
+        }
+
+        let defaultExcludedFiles = [".DS_Store"].map { dirPath + Path($0) }
+
+        let sourcePath = Path(source.path)
+
+        /*
+            Exclude following if mentioned in Source.excludes.
+            Any path related to source dirPath
+            + Pre-defined Excluded files
+        */
+
+        let sourceExcludeFilePaths: Set<Path> = Set(getSourceExcludes(sourceMetadata: source, dirPath: sourcePath)
+                + defaultExcludedFiles)
+
+        return try dirPath.children()
+        .filter {
+            if $0.isDirectory {
+                let pathChildren = try $0.children()
+                .filter { 
+                    return !sourceExcludeFilePaths.contains($0) 
+                }
+
+                return !pathChildren.isEmpty
+            } else if $0.isFile {
+                return !sourceExcludeFilePaths.contains($0)
+            } else {
+                return false
+            }
+        }
     }
 }
