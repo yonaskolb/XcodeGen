@@ -31,8 +31,7 @@ func projectGeneratorTests() {
         $0.describe("Options") {
 
             $0.it("generates bundle id") {
-                var options = ProjectSpec.Options()
-                options.bundleIdPrefix = "com.test"
+                let options = ProjectSpec.Options(bundleIdPrefix: "com.test")
                 let spec = ProjectSpec(basePath: "", name: "test", targets: [framework], options: options)
                 let project = try getProject(spec)
                 guard let target = project.pbxproj.nativeTargets.first,
@@ -46,8 +45,7 @@ func projectGeneratorTests() {
             }
 
             $0.it("clears setting presets") {
-                var options = ProjectSpec.Options()
-                options.settingPresets = .none
+                let options = ProjectSpec.Options(settingPresets: .none)
                 let spec = ProjectSpec(basePath: "", name: "test", targets: [framework], options: options)
                 let project = try getProject(spec)
                 let allSettings = project.pbxproj.buildConfigurations.reduce([:]) { $0.merged($1.buildSettings) }.keys.sorted()
@@ -239,9 +237,6 @@ func projectGeneratorTests() {
 
             let directoryPath = Path("TestDirectory")
 
-            var target = Target(name: "Test", type: .application, platform: .iOS)
-            var spec = ProjectSpec(basePath: directoryPath, name: "Test", targets: [target])
-
             func createDirectories(_ directories: String) throws {
 
                 let yaml = try Yams.load(yaml: directories)!
@@ -291,8 +286,8 @@ func projectGeneratorTests() {
                 """
                 try createDirectories(directories)
 
-                target.sources = ["Sources"]
-                spec.targets = [target]
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: ["Sources"])
+                let spec = ProjectSpec(basePath: directoryPath, name: "Test", targets: [target])
 
                 let project = try getPbxProj(spec)
                 try project.expectFile(paths: ["Sources", "A", "a.swift"], buildPhase: .sources)
@@ -310,12 +305,12 @@ func projectGeneratorTests() {
                 """
                 try createDirectories(directories)
 
-                target.sources = [
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: [
                     "Sources/A/a.swift",
                     "Sources/A/B/b.swift",
                     "Sources/A/B/c.jpg",
-                ]
-                spec.targets = [target]
+                    ])
+                let spec = ProjectSpec(basePath: directoryPath, name: "Test", targets: [target])
 
                 let project = try getPbxProj(spec)
                 try project.expectFile(paths: ["Sources/A", "a.swift"], names: ["A", "a.swift"], buildPhase: .sources)
@@ -336,8 +331,8 @@ func projectGeneratorTests() {
 
                 var target1 = Target(name: "Test1", type: .framework, platform: .iOS, sources: ["Sources"])
                 var target2 = Target(name: "Test2", type: .framework, platform: .tvOS, sources: ["Sources"])
+                let spec = ProjectSpec(basePath: directoryPath, name: "Test", targets: [target1, target2])
 
-                spec.targets = [target1, target2]
                 let proj = try getPbxProj(spec)
 
                 guard let project = proj.projects.first,
@@ -368,7 +363,11 @@ extension PBXProj {
     func expectFile(paths: [String], names: [String]? = nil, buildPhase: BuildPhase? = nil) throws {
         let names = names ?? paths
         guard let fileReference = getFileReference(paths: paths, names: names) else {
-            throw failure("Could not find file at path \(paths.joined(separator: "/").quoted) and name \(paths.joined(separator: "/").quoted)")
+            var error = "Could not find file at path \(paths.joined(separator: "/").quoted)"
+            if paths != names {
+                error += " and name \(paths.joined(separator: "/").quoted)"
+            }
+            throw failure(error)
         }
 
         if let buildPhase = buildPhase {
