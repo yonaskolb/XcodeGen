@@ -16,6 +16,7 @@
 		BF2445564001 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = VG2858723001 /* LaunchScreen.storyboard */; };
 		BF2513089601 /* LocalizedStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = VG3182922801 /* LocalizedStoryboard.storyboard */; };
 		BF2535278401 = {isa = PBXBuildFile; fileRef = FR4387045301 /* Framework_watchOS.framework */; };
+		BF2754797601 /* StandaloneAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FR5557707101 /* StandaloneAssets.xcassets */; };
 		BF3008399601 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR3032072503 /* Alamofire.framework */; };
 		BF3154421201 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FR5980633301 /* Assets.xcassets */; settings = {COMPILER_FLAGS = "-Werror"; }; };
 		BF3314441201 = {isa = PBXBuildFile; fileRef = FR5251191201 /* Framework_macOS.framework */; };
@@ -86,6 +87,7 @@
 		FR4722960401 /* Framework_iOS.framework */ = {isa = PBXFileReference; explicitFileType = framework; includeInIndex = 0; lastKnownFileType = wrapper.framework; path = Framework_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR4822987701 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LocalizedStoryboard.storyboard; sourceTree = "<group>"; };
 		FR5251191201 /* Framework_macOS.framework */ = {isa = PBXFileReference; explicitFileType = framework; includeInIndex = 0; lastKnownFileType = wrapper.framework; path = Framework_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FR5557707101 /* StandaloneAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = StandaloneAssets.xcassets; sourceTree = "<group>"; };
 		FR5980633301 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FR6218091901 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		FR6334256101 /* config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = config.xcconfig; sourceTree = "<group>"; };
@@ -226,6 +228,7 @@
 		G66512504301 /* StandaloneFiles */ = {
 			isa = PBXGroup;
 			children = (
+				FR5557707101 /* StandaloneAssets.xcassets */,
 				FR2554453101 /* Standalone.swift */,
 			);
 			name = StandaloneFiles;
@@ -283,8 +286,8 @@
 			children = (
 				G83406189501 /* Configs */,
 				G32346300301 /* FileGroup */,
-				G82523211001 /* App_iOS */,
 				G66512504301 /* StandaloneFiles */,
+				G82523211001 /* App_iOS */,
 				G78312289901 /* App_iOS_Tests */,
 				G46615002701 /* Framework */,
 				G86202385201 /* Products */,
@@ -516,6 +519,7 @@
 				BF4414242001 /* Localizable.stringsdict in Resources */,
 				BF2513089601 /* LocalizedStoryboard.storyboard in Resources */,
 				BF2250910101 /* Main.storyboard in Resources */,
+				BF2754797601 /* StandaloneAssets.xcassets in Resources */,
 			);
 		};
 /* End PBXResourcesBuildPhase section */

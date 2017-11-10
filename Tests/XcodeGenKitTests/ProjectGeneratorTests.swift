@@ -299,6 +299,7 @@ func projectGeneratorTests() {
                 Sources:
                   A:
                     - a.swift
+                    - Assets.xcassets
                     - B:
                       - b.swift
                       - c.jpg
@@ -308,6 +309,7 @@ func projectGeneratorTests() {
                 let target = Target(name: "Test", type: .application, platform: .iOS, sources: [
                     "Sources/A/a.swift",
                     "Sources/A/B/b.swift",
+                    "Sources/A/Assets.xcassets",
                     "Sources/A/B/c.jpg",
                     ])
                 let spec = ProjectSpec(basePath: directoryPath, name: "Test", targets: [target])
@@ -316,6 +318,7 @@ func projectGeneratorTests() {
                 try project.expectFile(paths: ["Sources/A", "a.swift"], names: ["A", "a.swift"], buildPhase: .sources)
                 try project.expectFile(paths: ["Sources/A/B", "b.swift"], names: ["B", "b.swift"], buildPhase: .sources)
                 try project.expectFile(paths: ["Sources/A/B", "c.jpg"], names: ["B", "c.jpg"], buildPhase: .resources)
+                try project.expectFile(paths: ["Sources/A", "Assets.xcassets"], names: ["A", "Assets.xcassets"], buildPhase: .resources)
             }
 
             $0.it("generates shared sources") {

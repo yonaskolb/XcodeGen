@@ -564,7 +564,8 @@ public class PBXProjGenerator {
     
     func getSources(sourceMetadata source: Source, path: Path, depth: Int = 0) throws -> (sourceFiles: [SourceFile], groups: [PBXGroup]) {
         // if we have a file, move it to children and use the parent as the path
-        let (children, path) = path.isFile ?
+        // pretend xcassets are files
+        let (children, path) = path.isFile || path.extension == "xcassets" ?
             ([path], path.parent()) :
             (try path.children().sorted(), path)
 
