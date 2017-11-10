@@ -294,7 +294,7 @@ func projectGeneratorTests() {
                 try project.expectFile(paths: ["Sources", "A", "B", "b.swift"], buildPhase: .sources)
             }
 
-            $0.it("generates source groups with excludes") {
+            $0.it("excludes sources") {
                 let directories = """
                 Sources:
                   A:
@@ -330,8 +330,8 @@ func projectGeneratorTests() {
                     "G/H/"
                 ]
 
-                target.sources = [Source(path: "Sources", excludes: excludes)]
-                spec.targets = [target]
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: [Source(path: "Sources", excludes: excludes)])
+                let spec = ProjectSpec(basePath: directoryPath, name: "Test", targets: [target])
 
                 let project = try getPbxProj(spec)
                 try project.expectFile(paths: ["Sources", "A", "a.swift"], buildPhase: .sources)
