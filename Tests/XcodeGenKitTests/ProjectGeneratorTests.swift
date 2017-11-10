@@ -410,6 +410,26 @@ func projectGeneratorTests() {
                 }
                 try validateGroup(mainGroup)
             }
+
+            $0.it("generate intermediate groups") {
+
+                let directories = """
+                Sources:
+                  A:
+                    - B:
+                      - b.swift
+                """
+                try createDirectories(directories)
+
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: [
+                    "Sources/A/B/b.swift",
+                    ])
+                let options = ProjectSpec.Options(createIntermediateGroups: true)
+                let spec = ProjectSpec(basePath: directoryPath, name: "Test", targets: [target], options: options)
+
+                let project = try getPbxProj(spec)
+                try project.expectFile(paths: ["Sources/A/B", "b.swift"], names: ["B", "b.swift"], buildPhase: .sources)
+            }
         }
     }
 }
