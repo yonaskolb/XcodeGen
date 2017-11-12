@@ -13,7 +13,6 @@ func projectGeneratorTests() {
     }
 
     func getPbxProj(_ spec: ProjectSpec) throws -> PBXProj {
-        try spec.validate()
         let project = try getProject(spec).pbxproj
         try project.validate()
         return project
@@ -170,6 +169,14 @@ func projectGeneratorTests() {
 
                 try expect(script1.shellScript) == "script1"
                 try expect(script2.shellScript) == "script2"
+            }
+
+            $0.it("generates targets with cylical dependencies") {
+                let target1 = Target(name: "target1", type: .framework, platform: .iOS, dependencies: [Dependency(type: .target, reference: "target2")])
+                let target2 = Target(name: "target2", type: .framework, platform: .iOS, dependencies: [Dependency(type: .target, reference: "target1")])
+                let spec = ProjectSpec(basePath: "", name: "test", targets: [target1, target2])
+
+                _ = try getPbxProj(spec)
             }
         }
 
