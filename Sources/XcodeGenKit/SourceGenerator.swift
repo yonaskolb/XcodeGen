@@ -26,20 +26,15 @@ class SourceGenerator {
     private let spec: ProjectSpec
     private let referenceGenerator: ReferenceGenerator
     private let proj: PBXProj
-    var createObject: (PBXObject) -> ()
+    var addObject: (PBXObject) -> ()
 
-    init(spec: ProjectSpec, proj: PBXProj, referenceGenerator: ReferenceGenerator, createObject: @escaping (PBXObject) -> ()) {
+    init(spec: ProjectSpec, proj: PBXProj, referenceGenerator: ReferenceGenerator, addObject: @escaping (PBXObject) -> ()) {
         self.spec = spec
         self.proj = proj
         self.referenceGenerator = referenceGenerator
-        self.createObject = createObject
+        self.addObject = addObject
     }
-    
 
-    func addObject(_ object: PBXObject) {
-        createObject(object)
-    }
-    
     func getAllSourceFiles(sources: [TargetSource]) throws -> [SourceFile] {
         return try sources.flatMap{ try getSources(targetSource: $0, path: spec.basePath + $0.path, isRootSource: true).sourceFiles }
     }

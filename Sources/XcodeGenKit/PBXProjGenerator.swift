@@ -44,7 +44,7 @@ public class PBXProjGenerator {
         self.spec = spec
         self.proj = PBXProj(objectVersion: 46, rootObject: referenceGenerator.generate(PBXProject.self, spec.name))
         self.sourceGenerator = SourceGenerator(spec: spec, proj: proj, referenceGenerator: referenceGenerator) { _ in }
-        sourceGenerator.createObject = { [weak self] object in
+        sourceGenerator.addObject = { [weak self] object in
             self?.addObject(object)
         }
     }
