@@ -260,12 +260,12 @@
 				FR1332263601 /* AppDelegate.swift */,
 				FR5980633301 /* Assets.xcassets */,
 				FR1345298501 /* Info.plist */,
-				FR6218091901 /* ViewController.swift */,
 				VG2858723001 /* LaunchScreen.storyboard */,
 				VG5506161801 /* Localizable.strings */,
 				VG1597538701 /* Localizable.stringsdict */,
 				VG3182922801 /* LocalizedStoryboard.storyboard */,
 				VG2043127501 /* Main.storyboard */,
+				FR6218091901 /* ViewController.swift */,
 			);
 			name = App_iOS;
 			path = App_iOS;
