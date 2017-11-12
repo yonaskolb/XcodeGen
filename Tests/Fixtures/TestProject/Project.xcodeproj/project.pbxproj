@@ -10,6 +10,7 @@
 		BF1401236301 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR3032072501 /* Alamofire.framework */; };
 		BF1628293501 /* Standalone.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR2554453101 /* Standalone.swift */; };
 		BF1744565901 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR6218091901 /* ViewController.swift */; settings = {COMPILER_FLAGS = "-Werror"; }; };
+		BF1762863701 /* MyBundle.bundle in Resources */ = {isa = PBXBuildFile; fileRef = FR2691220401 /* MyBundle.bundle */; };
 		BF2018435801 /* Framework_iOS.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = FR4722960401 /* Framework_iOS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BF2250910101 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = VG2043127501 /* Main.storyboard */; };
 		BF2301913502 /* MoreUnder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR8488480101 /* MoreUnder.swift */; };
@@ -76,6 +77,7 @@
 		FR1345298503 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FR1473702401 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		FR2554453101 /* Standalone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Standalone.swift; sourceTree = "<group>"; };
+		FR2691220401 /* MyBundle.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = MyBundle.bundle; sourceTree = "<group>"; };
 		FR3032072501 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Alamofire.framework; sourceTree = "<group>"; };
 		FR3032072502 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Alamofire.framework; sourceTree = "<group>"; };
 		FR3032072503 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Alamofire.framework; sourceTree = "<group>"; };
@@ -244,6 +246,15 @@
 			path = watchOS;
 			sourceTree = "<group>";
 		};
+		G71894349401 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				FR2691220401 /* MyBundle.bundle */,
+			);
+			name = Resources;
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		G78312289901 /* App_iOS_Tests */ = {
 			isa = PBXGroup;
 			children = (
@@ -291,6 +302,7 @@
 				G46615002701 /* Framework */,
 				G19527407101 /* Frameworks */,
 				G86202385201 /* Products */,
+				G71894349401 /* Resources */,
 				G66512504301 /* StandaloneFiles */,
 			);
 			sourceTree = "<group>";
@@ -519,6 +531,7 @@
 				BF4414242001 /* Localizable.stringsdict in Resources */,
 				BF2513089601 /* LocalizedStoryboard.storyboard in Resources */,
 				BF2250910101 /* Main.storyboard in Resources */,
+				BF1762863701 /* MyBundle.bundle in Resources */,
 				BF2754797601 /* StandaloneAssets.xcassets in Resources */,
 			);
 		};
