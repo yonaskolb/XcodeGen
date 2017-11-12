@@ -200,10 +200,12 @@ Specifies the source directories for a target. This can either be a single sourc
 
 A source can be provided via a string (the path) or an object of the form:
 
-**Source Object**:
+**Target Source Object**:
 
 - 🔵 **path**: `String` - The path to the source file or directory.
+- ⚪️ **name**: `String` - Can be used to override the name of the source file or directory. By default the last component of the path is used for the name
 - ⚪️ **compilerFlags**: `[String]` or `String` - A list of compilerFlags to add to files under this specific path provided as a list or a space delimitted string. Defaults to empty.
+
 
 ```yaml
 targets:
@@ -213,6 +215,7 @@ targets:
     sources:
       - MyOtherTargetSource1
       - path: MyOtherTargetSource2
+        name: MyNewName
         compilerFlags:
           - "-Werror"
           - "-Wextra"
