@@ -4,7 +4,7 @@ import XcodeGenKit
 import xcproj
 import ProjectSpec
 
-let fixturePath = Path(#file).parent().parent().parent() + "Fixtures"
+let fixturePath = Path(#file).parent().parent() + "Fixtures"
 
 func generate(specPath: Path, projectPath: Path) throws -> XcodeProj {
     let spec = try ProjectSpec(path: specPath)

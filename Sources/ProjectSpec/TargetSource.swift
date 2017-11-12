@@ -9,7 +9,7 @@ import Foundation
 import JSONUtilities
 import PathKit
 
-public struct Source {
+public struct TargetSource {
 
     public var path: String
     public var compilerFlags: [String]
@@ -22,22 +22,22 @@ public struct Source {
     }
 }
 
-extension Source: ExpressibleByStringLiteral {
+extension TargetSource: ExpressibleByStringLiteral {
 
     public init(stringLiteral value: String) {
-        self = Source(path: value)
+        self = TargetSource(path: value)
     }
 
     public init(extendedGraphemeClusterLiteral value: String) {
-        self = Source(path: value)
+        self = TargetSource(path: value)
     }
 
     public init(unicodeScalarLiteral value: String) {
-        self = Source(path: value)
+        self = TargetSource(path: value)
     }
 }
 
-extension Source: JSONObjectConvertible {
+extension TargetSource: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
         path = try jsonDictionary.json(atKeyPath: "path")
@@ -51,16 +51,16 @@ extension Source: JSONObjectConvertible {
     }
 }
 
-extension Source: Equatable {
+extension TargetSource: Equatable {
 
-    public static func == (lhs: Source, rhs: Source) -> Bool {
+    public static func == (lhs: TargetSource, rhs: TargetSource) -> Bool {
         return lhs.path == rhs.path 
             && lhs.compilerFlags == rhs.compilerFlags
             && lhs.excludes == rhs.excludes
     }
 }
 
-extension Source: Hashable {
+extension TargetSource: Hashable {
     public var hashValue: Int {
         return path.hashValue 
             ^ compilerFlags.joined(separator: ":").hashValue

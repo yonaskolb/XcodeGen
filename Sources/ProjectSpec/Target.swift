@@ -15,7 +15,7 @@ public struct Target {
     public var type: PBXProductType
     public var platform: Platform
     public var settings: Settings
-    public var sources: [Source]
+    public var sources: [TargetSource]
     public var dependencies: [Dependency]
     public var prebuildScripts: [BuildScript]
     public var postbuildScripts: [BuildScript]
@@ -30,7 +30,7 @@ public struct Target {
         return name
     }
 
-    public init(name: String, type: PBXProductType, platform: Platform, settings: Settings = .empty, configFiles: [String: String] = [:], sources: [Source] = [], dependencies: [Dependency] = [], prebuildScripts: [BuildScript] = [], postbuildScripts: [BuildScript] = [], scheme: TargetScheme? = nil) {
+    public init(name: String, type: PBXProductType, platform: Platform, settings: Settings = .empty, configFiles: [String: String] = [:], sources: [TargetSource] = [], dependencies: [Dependency] = [], prebuildScripts: [BuildScript] = [], postbuildScripts: [BuildScript] = [], scheme: TargetScheme? = nil) {
         self.name = name
         self.type = type
         self.platform = platform
@@ -179,13 +179,13 @@ extension Target: NamedJSONDictionaryConvertible {
         settings = jsonDictionary.json(atKeyPath: "settings") ?? .empty
         configFiles = jsonDictionary.json(atKeyPath: "configFiles") ?? [:]
         if let source: String = jsonDictionary.json(atKeyPath: "sources") {
-            sources = [Source(path: source)]
+            sources = [TargetSource(path: source)]
         } else if let array = jsonDictionary["sources"] as? [Any] {
             sources = try array.flatMap { source in
                 if let string = source as? String {
-                    return Source(path: string)
+                    return TargetSource(path: string)
                 } else if let dictionary = source as? [String: Any] {
-                    return try Source(jsonDictionary: dictionary)
+                    return try TargetSource(jsonDictionary: dictionary)
                 } else {
                     return nil
                 }

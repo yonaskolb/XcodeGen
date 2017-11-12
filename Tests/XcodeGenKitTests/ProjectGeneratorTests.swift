@@ -14,7 +14,9 @@ func projectGeneratorTests() {
 
     func getPbxProj(_ spec: ProjectSpec) throws -> PBXProj {
         try spec.validate()
-        return try getProject(spec).pbxproj
+        let project = try getProject(spec).pbxproj
+        try project.validate()
+        return project
     }
 
     describe("Project Generator") {
@@ -236,6 +238,7 @@ func projectGeneratorTests() {
         $0.describe("Sources") {
 
             let directoryPath = Path("TestDirectory")
+            let outOfRootPath = Path("OtherDirectory")
 
             func createDirectories(_ directories: String) throws {
 
@@ -266,6 +269,7 @@ func projectGeneratorTests() {
 
             func removeDirectories() {
                 try? directoryPath.delete()
+                try? outOfRootPath.delete()
             }
 
             $0.before {
@@ -330,7 +334,7 @@ func projectGeneratorTests() {
                     "G/H/"
                 ]
 
-                let target = Target(name: "Test", type: .application, platform: .iOS, sources: [Source(path: "Sources", excludes: excludes)])
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: [TargetSource(path: "Sources", excludes: excludes)])
                 let spec = ProjectSpec(basePath: directoryPath, name: "Test", targets: [target])
 
                 let project = try getPbxProj(spec)
@@ -386,29 +390,69 @@ func projectGeneratorTests() {
                 """
                 try createDirectories(directories)
 
-                var target1 = Target(name: "Test1", type: .framework, platform: .iOS, sources: ["Sources"])
-                var target2 = Target(name: "Test2", type: .framework, platform: .tvOS, sources: ["Sources"])
+                let target1 = Target(name: "Test1", type: .framework, platform: .iOS, sources: ["Sources"])
+                let target2 = Target(name: "Test2", type: .framework, platform: .tvOS, sources: ["Sources"])
                 let spec = ProjectSpec(basePath: directoryPath, name: "Test", targets: [target1, target2])
 
-                let proj = try getPbxProj(spec)
+                _ = try getPbxProj(spec)
+                //TODO: check there are build files for both targets
+            }
 
-                guard let project = proj.projects.first,
-                    let mainGroup = proj.groups.getReference(project.mainGroup) else {
-                    throw failure("Couldn't find main group")
-                }
+            $0.it("generates intermediate groups") {
 
-                func validateGroup(_ group: PBXGroup) throws {
-                    let hasDuplicatedChildren = group.children.count != Set(group.children).count
-                    if hasDuplicatedChildren {
-                        throw failure("Group \"\(group.nameOrPath ?? "")\" has duplicated children:\n - \(group.children.sorted().joined(separator: "\n - "))")
-                    }
-                    for child in group.children {
-                        if let group = proj.groups.getReference(child) {
-                            try validateGroup(group)
-                        }
-                    }
-                }
-                try validateGroup(mainGroup)
+                let directories = """
+                Sources:
+                  A:
+                    - b.swift
+                  F:
+                    - G:
+                      - h.swift
+                """
+                try createDirectories(directories)
+                let outOfSourceFile = outOfRootPath + "C/D/e.swift"
+                try outOfSourceFile.parent().mkpath()
+                try outOfSourceFile.write("")
+
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: [
+                    "Sources/A/b.swift",
+                    "Sources/F/G/h.swift",
+                    "../OtherDirectory/C/D/e.swift"
+                    ])
+                let options = ProjectSpec.Options(createIntermediateGroups: true)
+                let spec = ProjectSpec(basePath: directoryPath, name: "Test", targets: [target], options: options)
+
+                let project = try getPbxProj(spec)
+                try project.expectFile(paths: ["Sources", "A", "b.swift"], buildPhase: .sources)
+                try project.expectFile(paths: ["Sources", "F", "G", "h.swift"], buildPhase: .sources)
+                try project.expectFile(paths: [(outOfRootPath + "C/D").string, "e.swift"], names: ["D", "e.swift"], buildPhase: .sources)
+            }
+        }
+
+        $0.describe("Reference Generator") {
+
+            let referenceGenerator = ReferenceGenerator()
+            $0.before {
+                referenceGenerator.clear()
+            }
+
+            $0.it("generates prefixes") {
+                let references = [
+                    referenceGenerator.generate(PBXGroup.self, "a"),
+                    referenceGenerator.generate(PBXFileReference.self, "a"),
+                    referenceGenerator.generate(XCConfigurationList.self, "a"),
+                ]
+                try expect(references[0].hasPrefix("G")).to.beTrue()
+                try expect(references[1].hasPrefix("FR")).to.beTrue()
+                try expect(references[2].hasPrefix("CL")).to.beTrue()
+            }
+
+            $0.it("handles duplicates") {
+                let first = referenceGenerator.generate(PBXGroup.self, "a")
+                let second = referenceGenerator.generate(PBXGroup.self, "a")
+
+                try expect(first) != second
+                try expect(first.hasSuffix("01")).to.beTrue()
+                try expect(second.hasSuffix("02")).to.beTrue()
             }
         }
     }
@@ -416,13 +460,34 @@ func projectGeneratorTests() {
 
 extension PBXProj {
 
+    // validates that a PBXProj is correct
+    // TODO: Use xclint?
+    func validate() throws {
+        let mainGroup = try getMainGroup()
+
+        func validateGroup(_ group: PBXGroup) throws {
+            let hasDuplicatedChildren = group.children.count != Set(group.children).count
+            if hasDuplicatedChildren {
+                throw failure("Group \"\(group.childName)\" has duplicated children:\n - \(group.children.sorted().joined(separator: "\n - "))")
+            }
+            for child in group.children {
+                if let group = groups.getReference(child) {
+                    try validateGroup(group)
+                }
+            }
+        }
+        try validateGroup(mainGroup)
+    }
+}
+
+extension PBXProj {
+
     /// expect a file within groups of the paths, using optional different names
     func expectFile(paths: [String], names: [String]? = nil, buildPhase: BuildPhase? = nil) throws {
-        let names = names ?? paths
-        guard let fileReference = getFileReference(paths: paths, names: names) else {
+        guard let fileReference = getFileReference(paths: paths, names: names ?? paths) else {
             var error = "Could not find file at path \(paths.joined(separator: "/").quoted)"
-            if paths != names {
-                error += " and name \(paths.joined(separator: "/").quoted)"
+            if let names = names, names != paths {
+                error += " and name \(names.joined(separator: "/").quoted)"
             }
             throw failure(error)
         }
@@ -450,6 +515,16 @@ extension PBXProj {
         return getFileReference(group: mainGroup, paths: paths, names: names)
     }
 
+    func getMainGroup() throws -> PBXGroup {
+        guard let project = projects.first else {
+            throw failure("Couldn't find project")
+        }
+        guard let mainGroup = groups.getReference(project.mainGroup) else {
+                throw failure("Couldn't find main group")
+        }
+        return mainGroup
+    }
+
     private func getFileReference(group: PBXGroup, paths: [String], names: [String]) -> PBXFileReference? {
 
         guard !paths.isEmpty else { return nil }
@@ -459,10 +534,10 @@ extension PBXProj {
         let restOfName = Array(names.dropFirst())
         if restOfPath.isEmpty {
             let fileReferences = group.children.flatMap { self.fileReferences.getReference($0) }
-            return fileReferences.first { $0.path == path && $0.nameOrPath == name }
+            return fileReferences.first { $0.path == path && $0.childName == name }
         } else {
             let groups = group.children.flatMap { self.groups.getReference($0) }
-            guard let group = groups.first(where: { $0.path == path && $0.nameOrPath == name }) else { return nil }
+            guard let group = groups.first(where: { $0.path == path && $0.childName == name }) else { return nil }
             return getFileReference(group: group, paths: restOfPath, names: restOfName)
         }
     }
@@ -479,14 +554,3 @@ extension PBXProj {
     }
 }
 
-extension PBXFileReference {
-    var nameOrPath: String? {
-        return name ?? path
-    }
-}
-
-extension PBXGroup {
-    var nameOrPath: String? {
-        return name ?? path
-    }
-}

@@ -103,15 +103,15 @@ func specLoadingTests() {
             let target1 = try Target(name: "test", jsonDictionary: targetDictionary1)
             let target2 = try Target(name: "test", jsonDictionary: targetDictionary2)
 
-            let target1SourcesExpect = [Source(path: "source1"), 
-                                        Source(path: "source2"), 
-                                        Source(path: "sourceWithFlags", compilerFlags: ["-Werror"]), 
-                                        Source(path: "sourceWithFlagsStr", compilerFlags: ["-Werror", "-Wextra"]),
-                                        Source(path: "sourceWithExcludes", excludes: ["Foo.swift"]), 
-                                        Source(path: "sourceWithCompilerFlagsExcludes", compilerFlags: ["-Werror"], excludes: ["Foo.swift"])]
+            let target1SourcesExpect = [TargetSource(path: "source1"),
+                                        TargetSource(path: "source2"),
+                                        TargetSource(path: "sourceWithFlags", compilerFlags: ["-Werror"]),
+                                        TargetSource(path: "sourceWithFlagsStr", compilerFlags: ["-Werror", "-Wextra"]),
+                                        TargetSource(path: "sourceWithExcludes", excludes: ["Foo.swift"]),
+                                        TargetSource(path: "sourceWithCompilerFlagsExcludes", compilerFlags: ["-Werror"], excludes: ["Foo.swift"])]
 
             try expect(target1.sources) == target1SourcesExpect
-            try expect(target2.sources) == [Source(path: "source3")]
+            try expect(target2.sources) == ["source3"]
         }
 
         $0.it("parses target dependencies") {
