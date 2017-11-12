@@ -357,16 +357,23 @@ public class PBXProjGenerator {
 
         _ = try target.prebuildScripts.map(getBuildScript)
 
-        let sourcesBuildPhase = PBXSourcesBuildPhase(reference: referenceGenerator.generate(PBXSourcesBuildPhase.self, target.name), files: getBuildFilesForPhase(.sources))
-        addObject(sourcesBuildPhase)
-        buildPhases.append(sourcesBuildPhase.reference)
+        let sourcesBuildPhaseFiles = getBuildFilesForPhase(.sources)
+        if !sourcesBuildPhaseFiles.isEmpty {
+            let sourcesBuildPhase = PBXSourcesBuildPhase(reference: referenceGenerator.generate(PBXSourcesBuildPhase.self, target.name), files: sourcesBuildPhaseFiles)
+            addObject(sourcesBuildPhase)
+            buildPhases.append(sourcesBuildPhase.reference)
+        }
 
-        let resourcesBuildPhase = PBXResourcesBuildPhase(reference: referenceGenerator.generate(PBXResourcesBuildPhase.self, target.name), files: getBuildFilesForPhase(.resources) + copyResourcesReferences)
-        addObject(resourcesBuildPhase)
-        buildPhases.append(resourcesBuildPhase.reference)
+        let resourcesBuildPhaseFiles = getBuildFilesForPhase(.resources) + copyResourcesReferences
+        if !resourcesBuildPhaseFiles.isEmpty {
+            let resourcesBuildPhase = PBXResourcesBuildPhase(reference: referenceGenerator.generate(PBXResourcesBuildPhase.self, target.name), files: resourcesBuildPhaseFiles)
+            addObject(resourcesBuildPhase)
+            buildPhases.append(resourcesBuildPhase.reference)
+        }
 
-        if target.type == .framework || target.type == .dynamicLibrary {
-            let headersBuildPhase = PBXHeadersBuildPhase(reference: referenceGenerator.generate(PBXHeadersBuildPhase.self, target.name), files: getBuildFilesForPhase(.headers))
+        let headersBuildPhaseFiles = getBuildFilesForPhase(.headers)
+        if !headersBuildPhaseFiles.isEmpty && (target.type == .framework || target.type == .dynamicLibrary) {
+            let headersBuildPhase = PBXHeadersBuildPhase(reference: referenceGenerator.generate(PBXHeadersBuildPhase.self, target.name), files: headersBuildPhaseFiles)
             addObject(headersBuildPhase)
             buildPhases.append(headersBuildPhase.reference)
         }
