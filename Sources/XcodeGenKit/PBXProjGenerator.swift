@@ -456,15 +456,25 @@ public class PBXProjGenerator {
         return "\(carthagePath)/\(platformName)"
     }
 
-    func getAllCarthageDependencies(target: Target) -> [Dependency] {
+    func getAllCarthageDependencies(target: Target, visitedTargets: [String: Bool] = [:]) -> [Dependency] {
+
+        // this is used to resolve cyclical target dependencies
+        var visitedTargets = visitedTargets
+        visitedTargets[target.name] = true
+
         var frameworks: [Dependency] = []
+
         for dependency in target.dependencies {
             switch dependency.type {
             case .carthage:
                 frameworks.append(dependency)
             case .target:
-                if let target = spec.getTarget(dependency.reference) {
-                    frameworks += getAllCarthageDependencies(target: target)
+                let targetName = dependency.reference
+                if visitedTargets[targetName] == true {
+                    return []
+                }
+                if let target = spec.getTarget(targetName) {
+                    frameworks += getAllCarthageDependencies(target: target, visitedTargets: visitedTargets)
                 }
             default: break
             }
