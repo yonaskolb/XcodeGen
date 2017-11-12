@@ -2,6 +2,34 @@
 
 ## Master
 
+#### Added
+- added `--version` flag [#112](https://github.com/yonaskolb/XcodeGen/pull/112) @mironal
+- added support for adding individual file sources [#106](https://github.com/yonaskolb/XcodeGen/pull/106) [#133](https://github.com/yonaskolb/XcodeGen/pull/133) [#142](https://github.com/yonaskolb/XcodeGen/pull/142) [#139](https://github.com/yonaskolb/XcodeGen/pull/139) @bkase
+- added source compiler flag support [#121](https://github.com/yonaskolb/XcodeGen/pull/121) @ bkase
+- added `mm`, `c` and `S` file source support [#120](https://github.com/yonaskolb/XcodeGen/pull/120) [#125](https://github.com/yonaskolb/XcodeGen/pull/125) [#138](https://github.com/yonaskolb/XcodeGen/pull/138) @bkase @enmiller
+- added `spec.options.createIntermediateGroups` [#108](https://github.com/yonaskolb/XcodeGen/pull/108) @bkase
+- added json loading support [#127](https://github.com/yonaskolb/XcodeGen/pull/127) @rahul-malik
+- added support for source excludes [#135](https://github.com/yonaskolb/XcodeGen/pull/135) @peymankh
+- added source name for customizing names of source directories and file [#146](https://github.com/yonaskolb/XcodeGen/pull/146) @yonaskolb
+
+#### Changed
+- updated to xcproj 1.2.0 [#113](https://github.com/yonaskolb/XcodeGen/pull/113) @yonaskolb
+- build settings from presets will be removed if they are provided in `xcconfig` files [#77](https://github.com/yonaskolb/XcodeGen/pull/77) @toshi0383
+- all files and groups are sorted by type and then alphabetically [#144](https://github.com/yonaskolb/XcodeGen/pull/144) @yonaskolb
+- target sources can now have an expanded form [#119](https://github.com/yonaskolb/XcodeGen/pull/119) @yonaskolb
+
+### Fixed
+- only add headers to frameworks and libraries [#118](https://github.com/yonaskolb/XcodeGen/pull/118) @ryohey
+- fixed localized files with the same name [#126](https://github.com/yonaskolb/XcodeGen/pull/126) @ryohey
+- fix intermediate sources [#144](https://github.com/yonaskolb/XcodeGen/pull/144) @yonaskolb
+- fix cyclical target dependencies not working [#147](https://github.com/yonaskolb/XcodeGen/pull/147) @yonaskolb
+- fix directory bundles not being added properly when referenced directly [#148](https://github.com/yonaskolb/XcodeGen/pull/1478) @yonaskolb
+
+#### Internal
+- refactoring
+- more tests
+- added release scripts
+
 ## 1.3.0
 
 #### Added
