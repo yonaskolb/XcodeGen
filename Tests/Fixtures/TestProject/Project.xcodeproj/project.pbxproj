@@ -344,7 +344,7 @@
 /* Begin PBXNativeTarget section */
 		NT4387045301 /* Framework_watchOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = XCCL43870401 /* Build configuration list for PBXNativeTarget "Framework_watchOS" */;
+			buildConfigurationList = CL4387045301 /* Build configuration list for PBXNativeTarget "Framework_watchOS" */;
 			buildPhases = (
 				SBP438704501 /* Sources */,
 				RBP438704501 /* Resources */,
@@ -362,7 +362,7 @@
 		};
 		NT4722960401 /* Framework_iOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = XCCL47229601 /* Build configuration list for PBXNativeTarget "Framework_iOS" */;
+			buildConfigurationList = CL4722960401 /* Build configuration list for PBXNativeTarget "Framework_iOS" */;
 			buildPhases = (
 				SBP472296001 /* Sources */,
 				RBP472296001 /* Resources */,
@@ -380,7 +380,7 @@
 		};
 		NT5251191201 /* Framework_macOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = XCCL52511901 /* Build configuration list for PBXNativeTarget "Framework_macOS" */;
+			buildConfigurationList = CL5251191201 /* Build configuration list for PBXNativeTarget "Framework_macOS" */;
 			buildPhases = (
 				SBP525119101 /* Sources */,
 				RBP525119101 /* Resources */,
@@ -398,7 +398,7 @@
 		};
 		NT6623158301 /* Framework_tvOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = XCCL66231501 /* Build configuration list for PBXNativeTarget "Framework_tvOS" */;
+			buildConfigurationList = CL6623158301 /* Build configuration list for PBXNativeTarget "Framework_tvOS" */;
 			buildPhases = (
 				SBP662315801 /* Sources */,
 				RBP662315801 /* Resources */,
@@ -416,7 +416,7 @@
 		};
 		NT7831228901 /* App_iOS_Tests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = XCCL78312201 /* Build configuration list for PBXNativeTarget "App_iOS_Tests" */;
+			buildConfigurationList = CL7831228901 /* Build configuration list for PBXNativeTarget "App_iOS_Tests" */;
 			buildPhases = (
 				SBP783122801 /* Sources */,
 				RBP783122801 /* Resources */,
@@ -432,7 +432,7 @@
 		};
 		NT8252321101 /* App_iOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = XCCL82523201 /* Build configuration list for PBXNativeTarget "App_iOS" */;
+			buildConfigurationList = CL8252321101 /* Build configuration list for PBXNativeTarget "App_iOS" */;
 			buildPhases = (
 				SBP825232101 /* Sources */,
 				RBP825232101 /* Resources */,
@@ -459,7 +459,7 @@
 			attributes = {
 				LastUpgradeCheck = 0900;
 			};
-			buildConfigurationList = XCCL84487701 /* Build configuration list for PBXProject "Project" */;
+			buildConfigurationList = CL8448771201 /* Build configuration list for PBXProject "Project" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			knownRegions = (
@@ -735,7 +735,7 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		XCBC10805301 /* Test Debug */ = {
+		BC1080536401 /* Test Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -763,7 +763,7 @@
 			};
 			name = "Test Debug";
 		};
-		XCBC12810301 /* Production Release */ = {
+		BC1281035301 /* Production Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -785,7 +785,7 @@
 			};
 			name = "Production Release";
 		};
-		XCBC21030701 /* Staging Release */ = {
+		BC2103075801 /* Staging Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -807,7 +807,7 @@
 			};
 			name = "Staging Release";
 		};
-		XCBC21033801 /* Test Release */ = {
+		BC2103388701 /* Test Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -838,7 +838,7 @@
 			};
 			name = "Test Release";
 		};
-		XCBC24058701 /* Test Debug */ = {
+		BC2405875601 /* Test Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -860,7 +860,7 @@
 			};
 			name = "Test Debug";
 		};
-		XCBC24209601 /* Production Release */ = {
+		BC2420963201 /* Production Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -908,7 +908,7 @@
 			};
 			name = "Production Release";
 		};
-		XCBC26523001 /* Staging Release */ = {
+		BC2652303201 /* Staging Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -930,7 +930,7 @@
 			};
 			name = "Staging Release";
 		};
-		XCBC27534701 /* Production Debug */ = {
+		BC2753477601 /* Production Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
@@ -962,7 +962,7 @@
 			};
 			name = "Production Debug";
 		};
-		XCBC28299301 /* Production Release */ = {
+		BC2829935501 /* Production Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -990,7 +990,7 @@
 			};
 			name = "Production Release";
 		};
-		XCBC31310301 /* Staging Debug */ = {
+		BC3131031101 /* Staging Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1021,7 +1021,7 @@
 			};
 			name = "Staging Debug";
 		};
-		XCBC35117901 /* Test Debug */ = {
+		BC3511790701 /* Test Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1052,7 +1052,7 @@
 			};
 			name = "Test Debug";
 		};
-		XCBC36855501 /* Production Release */ = {
+		BC3685553201 /* Production Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1074,7 +1074,7 @@
 			};
 			name = "Production Release";
 		};
-		XCBC38070301 /* Test Release */ = {
+		BC3807031001 /* Test Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
@@ -1106,7 +1106,7 @@
 			};
 			name = "Test Release";
 		};
-		XCBC38157701 /* Production Release */ = {
+		BC3815774801 /* Production Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1133,7 +1133,7 @@
 			};
 			name = "Production Release";
 		};
-		XCBC39733901 /* Staging Debug */ = {
+		BC3973397601 /* Staging Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -1190,7 +1190,7 @@
 			};
 			name = "Staging Debug";
 		};
-		XCBC48068801 /* Staging Debug */ = {
+		BC4806885401 /* Staging Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -1212,7 +1212,7 @@
 			};
 			name = "Staging Debug";
 		};
-		XCBC49305201 /* Production Release */ = {
+		BC4930524301 /* Production Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
@@ -1244,7 +1244,7 @@
 			};
 			name = "Production Release";
 		};
-		XCBC49932501 /* Production Debug */ = {
+		BC4993250401 /* Production Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1271,7 +1271,7 @@
 			};
 			name = "Production Debug";
 		};
-		XCBC51730601 /* Staging Release */ = {
+		BC5173063401 /* Staging Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1302,7 +1302,7 @@
 			};
 			name = "Staging Release";
 		};
-		XCBC53075501 /* Test Release */ = {
+		BC5307552001 /* Test Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -1324,7 +1324,7 @@
 			};
 			name = "Test Release";
 		};
-		XCBC53348101 /* Staging Debug */ = {
+		BC5334811001 /* Staging Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
@@ -1356,7 +1356,7 @@
 			};
 			name = "Staging Debug";
 		};
-		XCBC56330801 /* Staging Debug */ = {
+		BC5633087801 /* Staging Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1383,7 +1383,7 @@
 			};
 			name = "Staging Debug";
 		};
-		XCBC56888601 /* Production Debug */ = {
+		BC5688860401 /* Production Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1405,7 +1405,7 @@
 			};
 			name = "Production Debug";
 		};
-		XCBC57537401 /* Test Release */ = {
+		BC5753743601 /* Test Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -1454,7 +1454,7 @@
 			};
 			name = "Test Release";
 		};
-		XCBC59484901 /* Production Release */ = {
+		BC5948496601 /* Production Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1485,7 +1485,7 @@
 			};
 			name = "Production Release";
 		};
-		XCBC62247101 /* Production Debug */ = {
+		BC6224715501 /* Production Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1516,7 +1516,7 @@
 			};
 			name = "Production Debug";
 		};
-		XCBC64473701 /* Staging Debug */ = {
+		BC6447378901 /* Staging Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1538,7 +1538,7 @@
 			};
 			name = "Staging Debug";
 		};
-		XCBC65575201 /* Test Debug */ = {
+		BC6557520901 /* Test Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
@@ -1570,7 +1570,7 @@
 			};
 			name = "Test Debug";
 		};
-		XCBC68513501 /* Test Release */ = {
+		BC6851358201 /* Test Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1597,7 +1597,7 @@
 			};
 			name = "Test Release";
 		};
-		XCBC70527901 /* Production Debug */ = {
+		BC7052795601 /* Production Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1625,7 +1625,7 @@
 			};
 			name = "Production Debug";
 		};
-		XCBC70994701 /* Production Debug */ = {
+		BC7099476801 /* Production Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -1681,7 +1681,7 @@
 			};
 			name = "Production Debug";
 		};
-		XCBC73052101 /* Staging Release */ = {
+		BC7305212601 /* Staging Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -1730,7 +1730,7 @@
 			};
 			name = "Staging Release";
 		};
-		XCBC74135901 /* Test Release */ = {
+		BC7413594401 /* Test Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1758,7 +1758,7 @@
 			};
 			name = "Test Release";
 		};
-		XCBC74939301 /* Test Debug */ = {
+		BC7493932701 /* Test Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -1780,7 +1780,7 @@
 			};
 			name = "Test Debug";
 		};
-		XCBC76016801 /* Staging Release */ = {
+		BC7601686801 /* Staging Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
@@ -1812,7 +1812,7 @@
 			};
 			name = "Staging Release";
 		};
-		XCBC76544101 /* Staging Release */ = {
+		BC7654417401 /* Staging Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1840,7 +1840,7 @@
 			};
 			name = "Staging Release";
 		};
-		XCBC79071101 /* Staging Release */ = {
+		BC7907116101 /* Staging Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1867,7 +1867,7 @@
 			};
 			name = "Staging Release";
 		};
-		XCBC79371401 /* Test Release */ = {
+		BC7937145401 /* Test Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1889,7 +1889,7 @@
 			};
 			name = "Test Release";
 		};
-		XCBC79991601 /* Production Debug */ = {
+		BC7999166001 /* Production Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -1911,7 +1911,7 @@
 			};
 			name = "Production Debug";
 		};
-		XCBC83210001 /* Test Debug */ = {
+		BC8321007901 /* Test Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FR6334256101 /* config.xcconfig */;
 			buildSettings = {
@@ -1969,7 +1969,7 @@
 			};
 			name = "Test Debug";
 		};
-		XCBC83591101 /* Test Debug */ = {
+		BC8359115501 /* Test Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -1996,7 +1996,7 @@
 			};
 			name = "Test Debug";
 		};
-		XCBC87900001 /* Staging Debug */ = {
+		BC8790004401 /* Staging Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -2027,87 +2027,87 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		XCCL43870401 /* Build configuration list for PBXNativeTarget "Framework_watchOS" */ = {
+		CL4387045301 /* Build configuration list for PBXNativeTarget "Framework_watchOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				XCBC49932501 /* Production Debug */,
-				XCBC38157701 /* Production Release */,
-				XCBC56330801 /* Staging Debug */,
-				XCBC79071101 /* Staging Release */,
-				XCBC83591101 /* Test Debug */,
-				XCBC68513501 /* Test Release */,
+				BC4993250401 /* Production Debug */,
+				BC3815774801 /* Production Release */,
+				BC5633087801 /* Staging Debug */,
+				BC7907116101 /* Staging Release */,
+				BC8359115501 /* Test Debug */,
+				BC6851358201 /* Test Release */,
 			);
 			defaultConfigurationName = "";
 		};
-		XCCL47229601 /* Build configuration list for PBXNativeTarget "Framework_iOS" */ = {
+		CL4722960401 /* Build configuration list for PBXNativeTarget "Framework_iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				XCBC62247101 /* Production Debug */,
-				XCBC59484901 /* Production Release */,
-				XCBC31310301 /* Staging Debug */,
-				XCBC51730601 /* Staging Release */,
-				XCBC35117901 /* Test Debug */,
-				XCBC21033801 /* Test Release */,
+				BC6224715501 /* Production Debug */,
+				BC5948496601 /* Production Release */,
+				BC3131031101 /* Staging Debug */,
+				BC5173063401 /* Staging Release */,
+				BC3511790701 /* Test Debug */,
+				BC2103388701 /* Test Release */,
 			);
 			defaultConfigurationName = "";
 		};
-		XCCL52511901 /* Build configuration list for PBXNativeTarget "Framework_macOS" */ = {
+		CL5251191201 /* Build configuration list for PBXNativeTarget "Framework_macOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				XCBC70527901 /* Production Debug */,
-				XCBC28299301 /* Production Release */,
-				XCBC87900001 /* Staging Debug */,
-				XCBC76544101 /* Staging Release */,
-				XCBC10805301 /* Test Debug */,
-				XCBC74135901 /* Test Release */,
+				BC7052795601 /* Production Debug */,
+				BC2829935501 /* Production Release */,
+				BC8790004401 /* Staging Debug */,
+				BC7654417401 /* Staging Release */,
+				BC1080536401 /* Test Debug */,
+				BC7413594401 /* Test Release */,
 			);
 			defaultConfigurationName = "";
 		};
-		XCCL66231501 /* Build configuration list for PBXNativeTarget "Framework_tvOS" */ = {
+		CL6623158301 /* Build configuration list for PBXNativeTarget "Framework_tvOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				XCBC27534701 /* Production Debug */,
-				XCBC49305201 /* Production Release */,
-				XCBC53348101 /* Staging Debug */,
-				XCBC76016801 /* Staging Release */,
-				XCBC65575201 /* Test Debug */,
-				XCBC38070301 /* Test Release */,
+				BC2753477601 /* Production Debug */,
+				BC4930524301 /* Production Release */,
+				BC5334811001 /* Staging Debug */,
+				BC7601686801 /* Staging Release */,
+				BC6557520901 /* Test Debug */,
+				BC3807031001 /* Test Release */,
 			);
 			defaultConfigurationName = "";
 		};
-		XCCL78312201 /* Build configuration list for PBXNativeTarget "App_iOS_Tests" */ = {
+		CL7831228901 /* Build configuration list for PBXNativeTarget "App_iOS_Tests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				XCBC56888601 /* Production Debug */,
-				XCBC36855501 /* Production Release */,
-				XCBC64473701 /* Staging Debug */,
-				XCBC21030701 /* Staging Release */,
-				XCBC24058701 /* Test Debug */,
-				XCBC79371401 /* Test Release */,
+				BC5688860401 /* Production Debug */,
+				BC3685553201 /* Production Release */,
+				BC6447378901 /* Staging Debug */,
+				BC2103075801 /* Staging Release */,
+				BC2405875601 /* Test Debug */,
+				BC7937145401 /* Test Release */,
 			);
 			defaultConfigurationName = "";
 		};
-		XCCL82523201 /* Build configuration list for PBXNativeTarget "App_iOS" */ = {
+		CL8252321101 /* Build configuration list for PBXNativeTarget "App_iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				XCBC79991601 /* Production Debug */,
-				XCBC12810301 /* Production Release */,
-				XCBC48068801 /* Staging Debug */,
-				XCBC26523001 /* Staging Release */,
-				XCBC74939301 /* Test Debug */,
-				XCBC53075501 /* Test Release */,
+				BC7999166001 /* Production Debug */,
+				BC1281035301 /* Production Release */,
+				BC4806885401 /* Staging Debug */,
+				BC2652303201 /* Staging Release */,
+				BC7493932701 /* Test Debug */,
+				BC5307552001 /* Test Release */,
 			);
 			defaultConfigurationName = "";
 		};
-		XCCL84487701 /* Build configuration list for PBXProject "Project" */ = {
+		CL8448771201 /* Build configuration list for PBXProject "Project" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				XCBC70994701 /* Production Debug */,
-				XCBC24209601 /* Production Release */,
-				XCBC39733901 /* Staging Debug */,
-				XCBC73052101 /* Staging Release */,
-				XCBC83210001 /* Test Debug */,
-				XCBC57537401 /* Test Release */,
+				BC7099476801 /* Production Debug */,
+				BC2420963201 /* Production Release */,
+				BC3973397601 /* Staging Debug */,
+				BC7305212601 /* Staging Release */,
+				BC8321007901 /* Test Debug */,
+				BC5753743601 /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Production Debug";
