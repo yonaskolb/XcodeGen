@@ -298,6 +298,26 @@ func projectGeneratorTests() {
                 try project.expectFile(paths: ["Sources", "A", "B", "b.swift"], buildPhase: .sources)
             }
 
+            $0.it("renames sources") {
+                let directories = """
+                Sources:
+                    - a.swift
+                OtherSource:
+                    - b.swift
+                """
+                try createDirectories(directories)
+
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: [
+                    TargetSource(path: "Sources", name: "NewSource"),
+                    TargetSource(path: "OtherSource/b.swift", name: "c.swift"),
+                    ])
+                let spec = ProjectSpec(basePath: directoryPath, name: "Test", targets: [target])
+
+                let project = try getPbxProj(spec)
+                try project.expectFile(paths: ["Sources", "a.swift"], names: ["NewSource", "a.swift"], buildPhase: .sources)
+                try project.expectFile(paths: ["OtherSource", "b.swift"], names: ["OtherSource", "c.swift"], buildPhase: .sources)
+            }
+
             $0.it("excludes sources") {
                 let directories = """
                 Sources:

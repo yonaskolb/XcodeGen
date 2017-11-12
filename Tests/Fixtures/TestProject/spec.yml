@@ -14,6 +14,7 @@ targets:
     sources:
       - StandaloneFiles/StandaloneAssets.xcassets
       - path: App_iOS
+        name: App
         compilerFlags:
           - "-Werror"
       - path: StandaloneFiles/Standalone.swift

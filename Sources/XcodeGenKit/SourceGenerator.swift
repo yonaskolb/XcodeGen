@@ -90,7 +90,7 @@ class SourceGenerator {
         }
     }
 
-    private func getGroup(path: Path, mergingChildren children: [String], isRootGroup: Bool) -> PBXGroup {
+    private func getGroup(path: Path, name: String? = nil, mergingChildren children: [String], isRootGroup: Bool) -> PBXGroup {
         let group: PBXGroup
 
         if let cachedGroup = groupsByPath[path] {
@@ -102,7 +102,7 @@ class SourceGenerator {
                 reference: referenceGenerator.generate(PBXGroup.self, path.lastComponent),
                 children: children,
                 sourceTree: .group,
-                name: path.lastComponent,
+                name: name ?? path.lastComponent,
                 path: isRootGroup ?
                     path.byRemovingBase(path: spec.basePath).string :
                     path.lastComponent
@@ -183,9 +183,13 @@ class SourceGenerator {
 
     private func getSources(targetSource: TargetSource, path: Path, isRootSource: Bool) throws -> (sourceFiles: [SourceFile], groups: [PBXGroup]) {
 
+        let directoryFiles = ["xcassets"] // these are directories we should treat as files
+        let isDirectoryFile = path.extension != nil && directoryFiles.contains(path.extension!)
+        let isFile = path.isFile || isDirectoryFile
+        let fileName = isFile && isRootSource ? targetSource.name : nil
+
         // if we have a file, move it to children and use the parent as the path
-        // pretend xcassets are files
-        let (children, path) = path.isFile || path.extension == "xcassets" ?
+        let (children, path) = isFile ?
             ([path], path.parent()) :
             (try getSourceChildren(targetSource: targetSource, dirPath: path).sorted(), path)
 
@@ -205,7 +209,7 @@ class SourceGenerator {
             .filter { $0.extension == "lproj" }
             .sorted { $0.lastComponent < $1.lastComponent }
 
-        var groupChildren: [String] = filePaths.map { getFileReference(path: $0, inPath: path) }
+        var groupChildren: [String] = filePaths.map { getFileReference(path: $0, inPath: path, name: fileName) }
         var allSourceFiles: [SourceFile] = filePaths.map {
             generateSourceFile(targetSource: targetSource, path: $0)
         }
@@ -270,7 +274,7 @@ class SourceGenerator {
         let isOutOfBasePath = !path.string.contains(spec.basePath.string)
         let isRootPath = isOutOfBasePath || path.parent() == spec.basePath
         let isRootGroup = (isRootSource && !spec.options.createIntermediateGroups) || isRootPath
-        let group = getGroup(path: path, mergingChildren: groupChildren, isRootGroup: isRootGroup)
+        let group = getGroup(path: path, name: isRootSource && !isFile ? targetSource.name : nil, mergingChildren: groupChildren, isRootGroup: isRootGroup)
         if spec.options.createIntermediateGroups {
             createIntermediaGroups(for: group, at: path)
         }

@@ -254,7 +254,7 @@
 			path = App_iOS_Tests;
 			sourceTree = "<group>";
 		};
-		G82523211001 /* App_iOS */ = {
+		G82523211001 /* App */ = {
 			isa = PBXGroup;
 			children = (
 				FR1332263601 /* AppDelegate.swift */,
@@ -267,7 +267,7 @@
 				VG2043127501 /* Main.storyboard */,
 				FR6218091901 /* ViewController.swift */,
 			);
-			name = App_iOS;
+			name = App;
 			path = App_iOS;
 			sourceTree = "<group>";
 		};
@@ -284,7 +284,7 @@
 		G84487712001 = {
 			isa = PBXGroup;
 			children = (
-				G82523211001 /* App_iOS */,
+				G82523211001 /* App */,
 				G78312289901 /* App_iOS_Tests */,
 				G83406189501 /* Configs */,
 				G32346300301 /* FileGroup */,

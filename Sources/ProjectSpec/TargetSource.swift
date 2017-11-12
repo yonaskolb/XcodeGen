@@ -12,11 +12,13 @@ import PathKit
 public struct TargetSource {
 
     public var path: String
+    public var name: String?
     public var compilerFlags: [String]
     public var excludes: [String]
 
-    public init(path: String, compilerFlags: [String] = [], excludes: [String] = []) {
+    public init(path: String, name: String? = nil, compilerFlags: [String] = [], excludes: [String] = []) {
         self.path = path
+        self.name = name
         self.compilerFlags = compilerFlags
         self.excludes = excludes
     }
@@ -41,6 +43,7 @@ extension TargetSource: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
         path = try jsonDictionary.json(atKeyPath: "path")
+        name = jsonDictionary.json(atKeyPath: "name")
 
         let maybeCompilerFlagsString: String? = jsonDictionary.json(atKeyPath: "compilerFlags")
         let maybeCompilerFlagsArray: [String]? = jsonDictionary.json(atKeyPath: "compilerFlags")
@@ -55,6 +58,7 @@ extension TargetSource: Equatable {
 
     public static func == (lhs: TargetSource, rhs: TargetSource) -> Bool {
         return lhs.path == rhs.path 
+            && lhs.name == rhs.name
             && lhs.compilerFlags == rhs.compilerFlags
             && lhs.excludes == rhs.excludes
     }
