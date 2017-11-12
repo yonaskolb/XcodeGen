@@ -183,9 +183,8 @@ class SourceGenerator {
 
     private func getSources(targetSource: TargetSource, path: Path, isRootSource: Bool) throws -> (sourceFiles: [SourceFile], groups: [PBXGroup]) {
 
-        let directoryFiles = ["xcassets"] // these are directories we should treat as files
-        let isDirectoryFile = path.extension != nil && directoryFiles.contains(path.extension!)
-        let isFile = path.isFile || isDirectoryFile
+        // treat all directories with extensions as files
+        let isFile = path.isFile || path.extension != nil
         let fileName = isFile && isRootSource ? targetSource.name : nil
 
         // if we have a file, move it to children and use the parent as the path
