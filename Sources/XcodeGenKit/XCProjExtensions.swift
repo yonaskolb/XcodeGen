@@ -39,6 +39,6 @@ extension PBXVariantGroup: GroupChild {
     }
 
     var sortOrder: Int {
-        return 2
+        return 1
     }
 }
