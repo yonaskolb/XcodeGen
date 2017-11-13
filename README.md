@@ -56,7 +56,7 @@ targets:
     platform: iOS
     sources: MyFramework
 ```
-A project would be created with 2 connected targets, with all the required configurations and build settings. See the [Project Spec](docs/ProjectSpec.md) documentation for all the options you can specify.
+A project would be created with 2 connected targets, with all the required configurations and build settings. See the [Project Spec](Docs/ProjectSpec.md) documentation for all the options you can specify.
 
 ## Installing
 Make sure Xcode 9 is installed first.
@@ -127,7 +127,7 @@ This use Swift Project Manager to create an `xcodeproj` file that you can open, 
 If you want to pass any required arguments when running in XCode, you can edit the scheme to include launch arguments.
 
 ## Project Spec
-See Project Spec documentation [here](docs/ProjectSpec.md)
+See Project Spec documentation [here](Docs/ProjectSpec.md)
 
 ## Attributions
 
