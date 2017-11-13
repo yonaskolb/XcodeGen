@@ -66,7 +66,6 @@ func specLoadingTests() {
         }
     }
 
-
     describe("Project Spec Parser") {
 
         $0.it("fails with incorrect platform") {
@@ -103,12 +102,14 @@ func specLoadingTests() {
             let target1 = try Target(name: "test", jsonDictionary: targetDictionary1)
             let target2 = try Target(name: "test", jsonDictionary: targetDictionary2)
 
-            let target1SourcesExpect = [TargetSource(path: "source1"),
-                                        TargetSource(path: "source2"),
-                                        TargetSource(path: "sourceWithFlags", compilerFlags: ["-Werror"]),
-                                        TargetSource(path: "sourceWithFlagsStr", compilerFlags: ["-Werror", "-Wextra"]),
-                                        TargetSource(path: "sourceWithExcludes", excludes: ["Foo.swift"]),
-                                        TargetSource(path: "sourceWithCompilerFlagsExcludes", compilerFlags: ["-Werror"], excludes: ["Foo.swift"])]
+            let target1SourcesExpect = [
+                TargetSource(path: "source1"),
+                TargetSource(path: "source2"),
+                TargetSource(path: "sourceWithFlags", compilerFlags: ["-Werror"]),
+                TargetSource(path: "sourceWithFlagsStr", compilerFlags: ["-Werror", "-Wextra"]),
+                TargetSource(path: "sourceWithExcludes", excludes: ["Foo.swift"]),
+                TargetSource(path: "sourceWithCompilerFlagsExcludes", compilerFlags: ["-Werror"], excludes: ["Foo.swift"]),
+            ]
 
             try expect(target1.sources) == target1SourcesExpect
             try expect(target2.sources) == ["source3"]

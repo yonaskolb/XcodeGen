@@ -22,13 +22,13 @@ class SourceGenerator {
     private var fileReferencesByPath: [Path: String] = [:]
     private var groupsByPath: [Path: PBXGroup] = [:]
     private var variantGroupsByPath: [Path: PBXVariantGroup] = [:]
-    
+
     private let spec: ProjectSpec
     private let referenceGenerator: ReferenceGenerator
     private let proj: PBXProj
-    var addObject: (PBXObject) -> ()
+    var addObject: (PBXObject) -> Void
 
-    init(spec: ProjectSpec, proj: PBXProj, referenceGenerator: ReferenceGenerator, addObject: @escaping (PBXObject) -> ()) {
+    init(spec: ProjectSpec, proj: PBXProj, referenceGenerator: ReferenceGenerator, addObject: @escaping (PBXObject) -> Void) {
         self.spec = spec
         self.proj = proj
         self.referenceGenerator = referenceGenerator
@@ -36,7 +36,7 @@ class SourceGenerator {
     }
 
     func getAllSourceFiles(sources: [TargetSource]) throws -> [SourceFile] {
-        return try sources.flatMap{ try getSources(targetSource: $0, path: spec.basePath + $0.path, isRootSource: true).sourceFiles }
+        return try sources.flatMap { try getSources(targetSource: $0, path: spec.basePath + $0.path, isRootSource: true).sourceFiles }
     }
 
     func getBuildPhaseForPath(_ path: Path) -> BuildPhase? {
@@ -133,7 +133,7 @@ class SourceGenerator {
 
         func getSourceExcludes(targetSource: TargetSource, dirPath: Path) -> [Path] {
             return targetSource.excludes.map {
-                return Path.glob("\(dirPath)/\($0)")
+                Path.glob("\(dirPath)/\($0)")
                     .map {
                         guard $0.isDirectory else {
                             return [$0]
@@ -142,8 +142,8 @@ class SourceGenerator {
                         return (try? $0.recursiveChildren().filter { $0.isFile }) ?? []
                     }
                     .reduce([], +)
-                }
-                .reduce([], +)
+            }
+            .reduce([], +)
         }
 
         let defaultExcludedFiles = [".DS_Store"].map { dirPath + Path($0) }
@@ -165,7 +165,7 @@ class SourceGenerator {
                     let pathChildren = try $0.children()
                         .filter {
                             return !sourceExcludeFilePaths.contains($0)
-                    }
+                        }
 
                     return !pathChildren.isEmpty
                 } else if $0.isFile {
@@ -173,7 +173,7 @@ class SourceGenerator {
                 } else {
                     return false
                 }
-        }
+            }
     }
 
     private func getSources(targetSource: TargetSource, path: Path, isRootSource: Bool) throws -> (sourceFiles: [SourceFile], groups: [PBXGroup]) {

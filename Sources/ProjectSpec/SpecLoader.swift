@@ -25,7 +25,7 @@ extension ProjectSpec {
         if path.extension?.lowercased() == "json" {
             let data: Data = try path.read()
             let jsonData = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
-            guard let jsonDictionary = jsonData as? [String:Any] else {
+            guard let jsonDictionary = jsonData as? [String: Any] else {
                 fatalError("Invalid JSON at path \(path)")
             }
             json = jsonDictionary
@@ -72,4 +72,3 @@ extension ProjectSpec {
         return merged
     }
 }
-

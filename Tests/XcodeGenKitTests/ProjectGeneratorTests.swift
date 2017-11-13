@@ -317,7 +317,7 @@ func projectGeneratorTests() {
                 let target = Target(name: "Test", type: .application, platform: .iOS, sources: [
                     TargetSource(path: "Sources", name: "NewSource"),
                     TargetSource(path: "OtherSource/b.swift", name: "c.swift"),
-                    ])
+                ])
                 let spec = ProjectSpec(basePath: directoryPath, name: "Test", targets: [target])
 
                 let project = try getPbxProj(spec)
@@ -358,7 +358,7 @@ func projectGeneratorTests() {
                     "C/*.h",
                     "d.m",
                     "E/F/*.swift",
-                    "G/H/"
+                    "G/H/",
                 ]
 
                 let target = Target(name: "Test", type: .application, platform: .iOS, sources: [TargetSource(path: "Sources", excludes: excludes)])
@@ -396,7 +396,7 @@ func projectGeneratorTests() {
                     "Sources/A/B/b.swift",
                     "Sources/A/Assets.xcassets",
                     "Sources/A/B/c.jpg",
-                    ])
+                ])
                 let spec = ProjectSpec(basePath: directoryPath, name: "Test", targets: [target])
 
                 let project = try getPbxProj(spec)
@@ -422,7 +422,7 @@ func projectGeneratorTests() {
                 let spec = ProjectSpec(basePath: directoryPath, name: "Test", targets: [target1, target2])
 
                 _ = try getPbxProj(spec)
-                //TODO: check there are build files for both targets
+                // TODO: check there are build files for both targets
             }
 
             $0.it("generates intermediate groups") {
@@ -443,8 +443,8 @@ func projectGeneratorTests() {
                 let target = Target(name: "Test", type: .application, platform: .iOS, sources: [
                     "Sources/A/b.swift",
                     "Sources/F/G/h.swift",
-                    "../OtherDirectory/C/D/e.swift"
-                    ])
+                    "../OtherDirectory/C/D/e.swift",
+                ])
                 let options = ProjectSpec.Options(createIntermediateGroups: true)
                 let spec = ProjectSpec(basePath: directoryPath, name: "Test", targets: [target], options: options)
 
@@ -520,8 +520,8 @@ extension PBXProj {
         }
 
         if let buildPhase = buildPhase {
-            guard let buildFile = buildFiles.first(where: { $0.fileRef == fileReference.reference}),
-            getBuildPhases(buildPhase).contains(where: { $0.files.contains(buildFile.reference)}) else {
+            guard let buildFile = buildFiles.first(where: { $0.fileRef == fileReference.reference }),
+                getBuildPhases(buildPhase).contains(where: { $0.files.contains(buildFile.reference) }) else {
                 throw failure("File \(paths.joined(separator: "/").quoted) is not in a \(buildPhase.rawValue.quoted) build phase")
             }
         }
@@ -534,7 +534,7 @@ extension PBXProj {
             throw failure("Found unexpected file at path \(paths.joined(separator: "/").quoted) and name \(paths.joined(separator: "/").quoted)")
         }
     }
-    
+
     func getFileReference(paths: [String], names: [String]) -> PBXFileReference? {
         guard let project = projects.first else { return nil }
         guard let mainGroup = groups.getReference(project.mainGroup) else { return nil }
@@ -547,7 +547,7 @@ extension PBXProj {
             throw failure("Couldn't find project")
         }
         guard let mainGroup = groups.getReference(project.mainGroup) else {
-                throw failure("Couldn't find main group")
+            throw failure("Couldn't find main group")
         }
         return mainGroup
     }
@@ -580,4 +580,3 @@ extension PBXProj {
         }
     }
 }
-

@@ -48,7 +48,7 @@ extension TargetSource: JSONObjectConvertible {
         let maybeCompilerFlagsString: String? = jsonDictionary.json(atKeyPath: "compilerFlags")
         let maybeCompilerFlagsArray: [String]? = jsonDictionary.json(atKeyPath: "compilerFlags")
         compilerFlags = maybeCompilerFlagsArray ??
-            maybeCompilerFlagsString.map{ $0.split(separator: " ").map{ String($0) } } ?? []
+            maybeCompilerFlagsString.map { $0.split(separator: " ").map { String($0) } } ?? []
 
         excludes = jsonDictionary.json(atKeyPath: "excludes") ?? []
     }
@@ -57,7 +57,7 @@ extension TargetSource: JSONObjectConvertible {
 extension TargetSource: Equatable {
 
     public static func == (lhs: TargetSource, rhs: TargetSource) -> Bool {
-        return lhs.path == rhs.path 
+        return lhs.path == rhs.path
             && lhs.name == rhs.name
             && lhs.compilerFlags == rhs.compilerFlags
             && lhs.excludes == rhs.excludes
@@ -66,7 +66,7 @@ extension TargetSource: Equatable {
 
 extension TargetSource: Hashable {
     public var hashValue: Int {
-        return path.hashValue 
+        return path.hashValue
             ^ compilerFlags.joined(separator: ":").hashValue
             ^ excludes.joined(separator: ":").hashValue
     }

@@ -13,7 +13,6 @@ public class ReferenceGenerator {
     private var references: Set<String> = []
 
     public init() {
-        
     }
 
     public func generate<T: PBXObject>(_ element: T.Type, _ id: String) -> String {

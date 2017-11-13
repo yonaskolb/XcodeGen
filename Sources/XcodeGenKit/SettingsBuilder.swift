@@ -81,7 +81,7 @@ extension ProjectSpec {
         var buildSettings: BuildSettings = [:]
         if includeProject {
             if let configFilePath = configFiles[config.name] {
-               buildSettings += loadConfigFileBuildSettings(path: configFilePath)
+                buildSettings += loadConfigFileBuildSettings(path: configFilePath)
             }
             buildSettings += getProjectBuildSettings(config: config)
         }
@@ -96,11 +96,11 @@ extension ProjectSpec {
         let buildSettings = getCombinedBuildSettings(basePath: basePath, target: target, config: config, includeProject: includeProject)
         return buildSettings[setting] != nil
     }
-    
+
     /// Removes values from build settings if they are defined in an xcconfig file
     private func removeConfigFileSettings(from buildSettings: BuildSettings, configPath: String) -> BuildSettings {
         var buildSettings = buildSettings
-        
+
         if let configSettings = loadConfigFileBuildSettings(path: configPath) {
             for key in configSettings.keys {
                 // FIXME: Catch platform specifier. e.g. LD_RUNPATH_SEARCH_PATHS[sdk=iphone*]
@@ -108,17 +108,17 @@ extension ProjectSpec {
                 buildSettings.removeValue(forKey: key.quoted)
             }
         }
-        
+
         return buildSettings
     }
-    
+
     /// Returns cached build settings from a config file
     private func loadConfigFileBuildSettings(path: String) -> BuildSettings? {
         let configFilePath = basePath + path
         if let settings = configFileSettings[configFilePath.string] {
             return settings
         } else {
-            guard let configFile = try? XCConfig(path:configFilePath) else { return nil }
+            guard let configFile = try? XCConfig(path: configFilePath) else { return nil }
             let settings = configFile.flattenedBuildSettings()
             configFileSettings[configFilePath.string] = settings
             return settings
