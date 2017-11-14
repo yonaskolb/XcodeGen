@@ -305,6 +305,27 @@ func projectGeneratorTests() {
                 try project.expectFile(paths: ["Sources", "A", "B", "b.swift"], buildPhase: .sources)
             }
 
+            $0.it("handles duplicate names") {
+                let directories = """
+                Sources:
+                  - a.swift
+                  - a:
+                    - a.swift
+                    - a:
+                      - a.swift
+
+                """
+                try createDirectories(directories)
+
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: ["Sources"])
+                let spec = ProjectSpec(basePath: directoryPath, name: "Test", targets: [target], fileGroups: ["Sources"])
+
+                let project = try getPbxProj(spec)
+                try project.expectFile(paths: ["Sources", "a.swift"], buildPhase: .sources)
+                try project.expectFile(paths: ["Sources", "a", "a.swift"], buildPhase: .sources)
+                try project.expectFile(paths: ["Sources", "a", "a", "a.swift"], buildPhase: .sources)
+            }
+
             $0.it("renames sources") {
                 let directories = """
                 Sources:
