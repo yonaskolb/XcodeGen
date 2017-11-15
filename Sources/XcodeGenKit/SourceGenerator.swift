@@ -29,6 +29,8 @@ class SourceGenerator {
     private let proj: PBXProj
     var addObject: (PBXObject) -> Void
 
+    var targetName: String = ""
+
     init(spec: ProjectSpec, proj: PBXProj, referenceGenerator: ReferenceGenerator, addObject: @escaping (PBXObject) -> Void) {
         self.spec = spec
         self.proj = proj
@@ -59,7 +61,7 @@ class SourceGenerator {
         }
 
         //TODO: add the target name to the reference generator string so shared files don't have same reference (that will be escaped by appending a number)
-        let buildFile = PBXBuildFile(reference: referenceGenerator.generate(PBXBuildFile.self, fileReference), fileRef: fileReference, settings: settings.isEmpty ? nil : settings)
+        let buildFile = PBXBuildFile(reference: referenceGenerator.generate(PBXBuildFile.self, fileReference + targetName), fileRef: fileReference, settings: settings.isEmpty ? nil : settings)
         return SourceFile(path: path, fileReference: fileReference, buildFile: buildFile, buildPhase: buildPhase)
     }
 
@@ -67,7 +69,7 @@ class SourceGenerator {
         if let fileReference = fileReferencesByPath[path] {
             return fileReference
         } else {
-            let fileReference = PBXFileReference(reference: referenceGenerator.generate(PBXFileReference.self, path.lastComponent), sourceTree: sourceTree, name: name, path: path.byRemovingBase(path: inPath).string)
+            let fileReference = PBXFileReference(reference: referenceGenerator.generate(PBXFileReference.self, path.byRemovingBase(path: spec.basePath).string), sourceTree: sourceTree, name: name, path: path.byRemovingBase(path: inPath).string)
             addObject(fileReference)
             fileReferencesByPath[path] = fileReference.reference
             return fileReference.reference
@@ -109,7 +111,7 @@ class SourceGenerator {
             let isTopLevelGroup = (isBaseGroup && !createIntermediateGroups) || isRootPath
 
             group = PBXGroup(
-                reference: referenceGenerator.generate(PBXGroup.self, path.lastComponent),
+                reference: referenceGenerator.generate(PBXGroup.self, path.byRemovingBase(path: spec.basePath).string),
                 children: children,
                 sourceTree: .group,
                 name: name ?? path.lastComponent,
@@ -132,7 +134,7 @@ class SourceGenerator {
         if let cachedGroup = variantGroupsByPath[path] {
             variantGroup = cachedGroup
         } else {
-            variantGroup = PBXVariantGroup(reference: referenceGenerator.generate(PBXVariantGroup.self, path.byRemovingBase(path: inPath).string),
+            variantGroup = PBXVariantGroup(reference: referenceGenerator.generate(PBXVariantGroup.self, path.byRemovingBase(path: spec.basePath).string),
                                            children: [],
                                            name: path.lastComponent,
                                            sourceTree: .group)
@@ -236,7 +238,7 @@ class SourceGenerator {
                 groupChildren.append(variantGroup.reference)
                 baseLocalisationVariantGroups.append(variantGroup)
 
-                let buildFile = PBXBuildFile(reference: referenceGenerator.generate(PBXBuildFile.self, variantGroup.reference), fileRef: variantGroup.reference, settings: nil)
+                let buildFile = PBXBuildFile(reference: referenceGenerator.generate(PBXBuildFile.self, variantGroup.reference + targetName), fileRef: variantGroup.reference, settings: nil)
                 allSourceFiles.append(SourceFile(path: filePath, fileReference: variantGroup.reference, buildFile: buildFile, buildPhase: .resources))
             }
         }
@@ -258,7 +260,7 @@ class SourceGenerator {
                     }
                 } else {
                     // add SourceFile to group if there is no Base.lproj directory
-                    let buildFile = PBXBuildFile(reference: referenceGenerator.generate(PBXBuildFile.self, fileReference),
+                    let buildFile = PBXBuildFile(reference: referenceGenerator.generate(PBXBuildFile.self, fileReference + targetName),
                                                  fileRef: fileReference,
                                                  settings: nil)
                     allSourceFiles.append(SourceFile(path: filePath, fileReference: fileReference, buildFile: buildFile, buildPhase: .resources))
