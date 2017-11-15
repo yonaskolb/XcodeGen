@@ -31,6 +31,8 @@ class SourceGenerator {
 
     var targetName: String = ""
 
+    private(set) var knownRegions: [String] = []
+
     init(spec: ProjectSpec, proj: PBXProj, referenceGenerator: ReferenceGenerator, addObject: @escaping (PBXObject) -> Void) {
         self.spec = spec
         self.proj = proj
@@ -251,6 +253,8 @@ class SourceGenerator {
             return findLocalisedDirectory(by: "Base") ??
                 findLocalisedDirectory(by: NSLocale.canonicalLanguageIdentifier(from: spec.options.developmentLanguage ?? "en"))
         }()
+
+        knownRegions = Array(Set(knownRegions + localisedDirectories.map { $0.lastComponentWithoutExtension }))
 
         // create variant groups of the base localisation first
         var baseLocalisationVariantGroups: [PBXVariantGroup] = []
