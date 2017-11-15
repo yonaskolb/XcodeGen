@@ -102,7 +102,7 @@ class SourceGenerator {
         } else {
 
             // lives outside the spec base path
-            let isOutOfBasePath = !path.string.contains(spec.basePath.string)
+            let isOutOfBasePath = !path.absolute().string.contains(spec.basePath.absolute().string)
 
             // has no valid parent paths
             let isRootPath = isOutOfBasePath || path.parent() == spec.basePath
