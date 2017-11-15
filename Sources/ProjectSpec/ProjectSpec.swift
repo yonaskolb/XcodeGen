@@ -32,6 +32,7 @@ public struct ProjectSpec {
         public var createIntermediateGroups: Bool
         public var bundleIdPrefix: String?
         public var settingPresets: SettingPresets
+        public var developmentLanguage: String?
 
         public enum SettingPresets: String {
             case all
@@ -54,11 +55,12 @@ public struct ProjectSpec {
             }
         }
 
-        public init(carthageBuildPath: String? = nil, createIntermediateGroups: Bool = false, bundleIdPrefix: String? = nil, settingPresets: SettingPresets = .all) {
+        public init(carthageBuildPath: String? = nil, createIntermediateGroups: Bool = false, bundleIdPrefix: String? = nil, settingPresets: SettingPresets = .all, developmentLanguage: String? = nil) {
             self.carthageBuildPath = carthageBuildPath
             self.createIntermediateGroups = createIntermediateGroups
             self.bundleIdPrefix = bundleIdPrefix
             self.settingPresets = settingPresets
+            self.developmentLanguage = developmentLanguage
         }
     }
 

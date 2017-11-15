@@ -129,7 +129,7 @@ public class PBXProjGenerator {
                               buildConfigurationList: buildConfigList.reference,
                               compatibilityVersion: "Xcode 3.2",
                               mainGroup: mainGroup.reference,
-                              developmentRegion: "English",
+                              developmentRegion: spec.options.developmentLanguage ?? "en",
                               knownRegions: knownRegions,
                               targets: targets.references,
                               attributes: projectAttributes)

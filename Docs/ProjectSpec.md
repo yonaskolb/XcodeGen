@@ -69,7 +69,9 @@ Note that target names can also be changed by adding a `name` property to a targ
 	- `all`: project and target settings
 	- `project`: only project settings
 	- `targets`: only target settings
-	- `none`: no settings are automatically applied	
+	- `none`: no settings are automatically applied
+- ⚪️ **developmentLanguage**: `String` - Sets the development language of the project. Defaults to `en`
+
 ### Configs
 Each config maps to a build type of either `debug` or `release` which will then apply default build settings to the project. Any value other than `debug` or `release` (for example `none`), will mean no default build settings will be applied to the project.
 
