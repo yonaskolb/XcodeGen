@@ -473,8 +473,8 @@
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = en;
 			knownRegions = (
-				en,
 				Base,
+				en,
 			);
 			mainGroup = G_8448771205358;
 			targets = (
