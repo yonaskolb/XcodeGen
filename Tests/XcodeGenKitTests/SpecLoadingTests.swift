@@ -89,12 +89,14 @@ func specLoadingTests() {
         $0.it("parses sources") {
             var targetDictionary1 = validTarget
             targetDictionary1["sources"] = [
-                "source1",
-                ["path": "source2"],
-                ["path": "sourceWithFlags", "compilerFlags": ["-Werror"]],
-                ["path": "sourceWithFlagsStr", "compilerFlags": "-Werror -Wextra"],
+                "sourceString",
+                ["path": "sourceObject"],
+                ["path": "sourceWithFlagsArray", "compilerFlags": ["-Werror"]],
+                ["path": "sourceWithFlagsString", "compilerFlags": "-Werror -Wextra"],
                 ["path": "sourceWithExcludes", "excludes": ["Foo.swift"]],
-                ["path": "sourceWithCompilerFlagsExcludes", "compilerFlags": ["-Werror"], "excludes": ["Foo.swift"]],
+                ["path": "sourceWithFileType", "type": "file"],
+                ["path": "sourceWithGroupType", "type": "group"],
+                ["path": "sourceWithFolderType", "type": "folder"],
             ]
             var targetDictionary2 = validTarget
             targetDictionary2["sources"] = "source3"
@@ -103,12 +105,14 @@ func specLoadingTests() {
             let target2 = try Target(name: "test", jsonDictionary: targetDictionary2)
 
             let target1SourcesExpect = [
-                TargetSource(path: "source1"),
-                TargetSource(path: "source2"),
-                TargetSource(path: "sourceWithFlags", compilerFlags: ["-Werror"]),
-                TargetSource(path: "sourceWithFlagsStr", compilerFlags: ["-Werror", "-Wextra"]),
+                TargetSource(path: "sourceString"),
+                TargetSource(path: "sourceObject"),
+                TargetSource(path: "sourceWithFlagsArray", compilerFlags: ["-Werror"]),
+                TargetSource(path: "sourceWithFlagsString", compilerFlags: ["-Werror", "-Wextra"]),
                 TargetSource(path: "sourceWithExcludes", excludes: ["Foo.swift"]),
-                TargetSource(path: "sourceWithCompilerFlagsExcludes", compilerFlags: ["-Werror"], excludes: ["Foo.swift"]),
+                TargetSource(path: "sourceWithFileType", type: .file),
+                TargetSource(path: "sourceWithGroupType", type: .group),
+                TargetSource(path: "sourceWithFolderType", type: .folder),
             ]
 
             try expect(target1.sources) == target1SourcesExpect

@@ -474,6 +474,25 @@ func projectGeneratorTests() {
                 try project.expectFile(paths: ["Sources", "F", "G", "h.swift"], buildPhase: .sources)
                 try project.expectFile(paths: [(outOfRootPath + "C/D").string, "e.swift"], names: ["D", "e.swift"], buildPhase: .sources)
             }
+
+            $0.it("generates folder references") {
+                let directories = """
+                Sources:
+                  A:
+                    - a.resource
+                    - b.resource
+                """
+                try createDirectories(directories)
+
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: [
+                    TargetSource(path: "Sources/A", type: .folder),
+                    ])
+                let spec = ProjectSpec(basePath: directoryPath, name: "Test", targets: [target])
+
+                let project = try getPbxProj(spec)
+                try project.expectFile(paths: ["Sources/A"], names: ["A"], buildPhase: .resources)
+                try project.expectFileMissing(paths: ["Sources", "A", "a.swift"])
+            }
         }
 
         $0.describe("Reference Generator") {

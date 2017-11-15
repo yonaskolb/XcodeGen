@@ -30,6 +30,7 @@
 		BF4530793601 /* Framework_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR4722960401 /* Framework_iOS.framework */; };
 		BF5539436901 = {isa = PBXBuildFile; fileRef = FR6623158301 /* Framework_tvOS.framework */; };
 		BF6380159901 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR3032072502 /* Alamofire.framework */; };
+		BF6882875401 /* ResourceFolder in Resources */ = {isa = PBXBuildFile; fileRef = FR6060058201 /* ResourceFolder */; };
 		BF7121748201 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR3032072504 /* Alamofire.framework */; };
 		BF7642939101 = {isa = PBXBuildFile; fileRef = FR8252321101 /* App_iOS.app */; };
 		BF8298265901 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR3032072501 /* Alamofire.framework */; };
@@ -91,6 +92,7 @@
 		FR5251191201 /* Framework_macOS.framework */ = {isa = PBXFileReference; explicitFileType = framework; includeInIndex = 0; lastKnownFileType = wrapper.framework; path = Framework_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR5557707101 /* StandaloneAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = StandaloneAssets.xcassets; sourceTree = "<group>"; };
 		FR5980633301 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		FR6060058201 /* ResourceFolder */ = {isa = PBXFileReference; name = ResourceFolder; path = Resources/ResourceFolder; sourceTree = SOURCE_ROOT; };
 		FR6218091901 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		FR6334256101 /* config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = config.xcconfig; sourceTree = "<group>"; };
 		FR6405436301 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -304,6 +306,7 @@
 				G86202385201 /* Products */,
 				G71894349401 /* Resources */,
 				G66512504301 /* StandaloneFiles */,
+				FR6060058201 /* ResourceFolder */,
 			);
 			sourceTree = "<group>";
 		};
@@ -497,6 +500,7 @@
 				BF2513089601 /* LocalizedStoryboard.storyboard in Resources */,
 				BF2250910101 /* Main.storyboard in Resources */,
 				BF1762863701 /* MyBundle.bundle in Resources */,
+				BF6882875401 /* ResourceFolder in Resources */,
 				BF2754797601 /* StandaloneAssets.xcassets in Resources */,
 			);
 		};

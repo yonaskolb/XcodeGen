@@ -15,12 +15,20 @@ public struct TargetSource {
     public var name: String?
     public var compilerFlags: [String]
     public var excludes: [String]
+    public var type: SourceType?
 
-    public init(path: String, name: String? = nil, compilerFlags: [String] = [], excludes: [String] = []) {
+    public enum SourceType: String {
+        case group
+        case file
+        case folder
+    }
+
+    public init(path: String, name: String? = nil, compilerFlags: [String] = [], excludes: [String] = [], type: SourceType? = nil) {
         self.path = path
         self.name = name
         self.compilerFlags = compilerFlags
         self.excludes = excludes
+        self.type = type
     }
 }
 
@@ -51,6 +59,7 @@ extension TargetSource: JSONObjectConvertible {
             maybeCompilerFlagsString.map { $0.split(separator: " ").map { String($0) } } ?? []
 
         excludes = jsonDictionary.json(atKeyPath: "excludes") ?? []
+        type = jsonDictionary.json(atKeyPath: "type")
     }
 }
 
@@ -61,13 +70,7 @@ extension TargetSource: Equatable {
             && lhs.name == rhs.name
             && lhs.compilerFlags == rhs.compilerFlags
             && lhs.excludes == rhs.excludes
+            && lhs.type == rhs.type
     }
 }
 
-extension TargetSource: Hashable {
-    public var hashValue: Int {
-        return path.hashValue
-            ^ compilerFlags.joined(separator: ":").hashValue
-            ^ excludes.joined(separator: ":").hashValue
-    }
-}

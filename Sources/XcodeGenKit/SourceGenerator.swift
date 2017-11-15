@@ -14,11 +14,12 @@ struct SourceFile {
     let path: Path
     let fileReference: String
     let buildFile: PBXBuildFile
+    let buildPhase: BuildPhase?
 }
 
 class SourceGenerator {
 
-    var rootGroups: [String] = []
+    var rootGroups: Set<String> = []
     private var fileReferencesByPath: [Path: String] = [:]
     private var groupsByPath: [Path: PBXGroup] = [:]
     private var variantGroupsByPath: [Path: PBXVariantGroup] = [:]
@@ -36,10 +37,45 @@ class SourceGenerator {
     }
 
     func getAllSourceFiles(sources: [TargetSource]) throws -> [SourceFile] {
-        return try sources.flatMap { try getSources(targetSource: $0, path: spec.basePath + $0.path, isRootSource: true).sourceFiles }
+        return try sources.flatMap { try getSourceFiles(targetSource: $0, path: spec.basePath + $0.path) }
     }
 
-    func getBuildPhaseForPath(_ path: Path) -> BuildPhase? {
+    // get groups without build files. Use for Project.fileGroups
+    func getFileGroups(path: String) throws {
+        // TODO: call a seperate function that only creates groups not source files
+        _ = try getGroupSources(targetSource: TargetSource(path: path), path: spec.basePath + path, isBaseGroup: true)
+    }
+
+    func generateSourceFile(targetSource: TargetSource, path: Path, buildPhase: BuildPhase? = nil) -> SourceFile {
+        let fileReference = fileReferencesByPath[path]!
+        var settings: [String: Any] = [:]
+        let buildPhase = buildPhase ?? getDefaultBuildPhase(for: path)
+
+        if buildPhase == .headers {
+            settings = ["ATTRIBUTES": ["Public"]]
+        }
+        if targetSource.compilerFlags.count > 0 {
+            settings["COMPILER_FLAGS"] = targetSource.compilerFlags.joined(separator: " ")
+        }
+
+        //TODO: add the target name to the reference generator string so shared files don't have same reference (that will be escaped by appending a number)
+        let buildFile = PBXBuildFile(reference: referenceGenerator.generate(PBXBuildFile.self, fileReference), fileRef: fileReference, settings: settings.isEmpty ? nil : settings)
+        return SourceFile(path: path, fileReference: fileReference, buildFile: buildFile, buildPhase: buildPhase)
+    }
+
+    func getFileReference(path: Path, inPath: Path, name: String? = nil, sourceTree: PBXSourceTree = .group) -> String {
+        if let fileReference = fileReferencesByPath[path] {
+            return fileReference
+        } else {
+            let fileReference = PBXFileReference(reference: referenceGenerator.generate(PBXFileReference.self, path.lastComponent), sourceTree: sourceTree, name: name, path: path.byRemovingBase(path: inPath).string)
+            addObject(fileReference)
+            fileReferencesByPath[path] = fileReference.reference
+            return fileReference.reference
+        }
+    }
+
+
+    private func getDefaultBuildPhase(for path: Path) -> BuildPhase? {
         if path.lastComponent == "Info.plist" {
             return nil
         }
@@ -54,61 +90,38 @@ class SourceGenerator {
         return nil
     }
 
-    // get groups without build files. Use for Project.fileGroups
-    func getFileGroups(path: String) throws {
-        // TODO: call a seperate function that only creates groups not source files
-        _ = try getSources(targetSource: TargetSource(path: path), path: spec.basePath + path, isRootSource: true)
-    }
-
-    func generateSourceFile(targetSource: TargetSource, path: Path) -> SourceFile {
-        let fileReference = fileReferencesByPath[path]!
-        var settings: [String: Any] = [:]
-        if getBuildPhaseForPath(path) == .headers {
-            settings = ["ATTRIBUTES": ["Public"]]
-        }
-        if targetSource.compilerFlags.count > 0 {
-            settings["COMPILER_FLAGS"] = targetSource.compilerFlags.joined(separator: " ")
-        }
-
-        let buildFile = PBXBuildFile(reference: referenceGenerator.generate(PBXBuildFile.self, fileReference), fileRef: fileReference, settings: settings.isEmpty ? nil : settings)
-        return SourceFile(path: path, fileReference: fileReference, buildFile: buildFile)
-    }
-
-    func getFileReference(path: Path, inPath: Path, name: String? = nil) -> String {
-        if let fileReference = fileReferencesByPath[path] {
-            return fileReference
-        } else {
-            let fileReference = PBXFileReference(reference: referenceGenerator.generate(PBXFileReference.self, path.lastComponent), sourceTree: .group, name: name, path: path.byRemovingBase(path: inPath).string)
-            addObject(fileReference)
-            fileReferencesByPath[path] = fileReference.reference
-            return fileReference.reference
-        }
-    }
-
-    private func getGroup(path: Path, name: String? = nil, mergingChildren children: [String], isRootGroup: Bool) -> PBXGroup {
+    private func getGroup(path: Path, name: String? = nil, mergingChildren children: [String], createIntermediateGroups: Bool, isBaseGroup: Bool) -> PBXGroup {
         let group: PBXGroup
-
+        
         if let cachedGroup = groupsByPath[path] {
             // only add the children that aren't already in the cachedGroup
             cachedGroup.children = Array(Set(cachedGroup.children + children))
             group = cachedGroup
         } else {
+
+            // lives outside the spec base path
+            let isOutOfBasePath = !path.string.contains(spec.basePath.string)
+
+            // has no valid parent paths
+            let isRootPath = isOutOfBasePath || path.parent() == spec.basePath
+
+            // is a top level group in the project
+            let isTopLevelGroup = (isBaseGroup && !createIntermediateGroups) || isRootPath
+
             group = PBXGroup(
                 reference: referenceGenerator.generate(PBXGroup.self, path.lastComponent),
                 children: children,
                 sourceTree: .group,
                 name: name ?? path.lastComponent,
-                path: isRootGroup ?
+                path: isTopLevelGroup ?
                     path.byRemovingBase(path: spec.basePath).string :
                     path.lastComponent
             )
             addObject(group)
             groupsByPath[path] = group
 
-            if isRootGroup {
-                if !rootGroups.contains(group.reference) {
-                    rootGroups.append(group.reference)
-                }
+            if isTopLevelGroup {
+                rootGroups.insert(group.reference)
             }
         }
         return group
@@ -176,20 +189,9 @@ class SourceGenerator {
             }
     }
 
-    private func getSources(targetSource: TargetSource, path: Path, isRootSource: Bool) throws -> (sourceFiles: [SourceFile], groups: [PBXGroup]) {
+    private func getGroupSources(targetSource: TargetSource, path: Path, isBaseGroup: Bool) throws -> (sourceFiles: [SourceFile], groups: [PBXGroup]) {
 
-        // treat all directories with extensions as files
-        let isFile = path.isFile || path.extension != nil
-        let fileName = isFile && isRootSource ? targetSource.name : nil
-
-        // if we have a file, move it to children and use the parent as the path
-        let (children, path) = isFile ?
-            ([path], path.parent()) :
-            (try getSourceChildren(targetSource: targetSource, dirPath: path).sorted(), path)
-
-        guard children.count > 0 else {
-            return ([], [])
-        }
+        let children = try getSourceChildren(targetSource: targetSource, dirPath: path)
 
         let directories = children
             .filter { $0.isDirectory && $0.extension == nil && $0.extension != "lproj" }
@@ -203,14 +205,14 @@ class SourceGenerator {
             .filter { $0.extension == "lproj" }
             .sorted { $0.lastComponent < $1.lastComponent }
 
-        var groupChildren: [String] = filePaths.map { getFileReference(path: $0, inPath: path, name: fileName) }
+        var groupChildren: [String] = filePaths.map { getFileReference(path: $0, inPath: path) }
         var allSourceFiles: [SourceFile] = filePaths.map {
             generateSourceFile(targetSource: targetSource, path: $0)
         }
         var groups: [PBXGroup] = []
 
         for path in directories {
-            let subGroups = try getSources(targetSource: targetSource, path: path, isRootSource: false)
+            let subGroups = try getGroupSources(targetSource: targetSource, path: path, isBaseGroup: false)
 
             guard !subGroups.sourceFiles.isEmpty else {
                 continue
@@ -235,7 +237,7 @@ class SourceGenerator {
                 baseLocalisationVariantGroups.append(variantGroup)
 
                 let buildFile = PBXBuildFile(reference: referenceGenerator.generate(PBXBuildFile.self, variantGroup.reference), fileRef: variantGroup.reference, settings: nil)
-                allSourceFiles.append(SourceFile(path: filePath, fileReference: variantGroup.reference, buildFile: buildFile))
+                allSourceFiles.append(SourceFile(path: filePath, fileReference: variantGroup.reference, buildFile: buildFile, buildPhase: .resources))
             }
         }
 
@@ -259,26 +261,73 @@ class SourceGenerator {
                     let buildFile = PBXBuildFile(reference: referenceGenerator.generate(PBXBuildFile.self, fileReference),
                                                  fileRef: fileReference,
                                                  settings: nil)
-                    allSourceFiles.append(SourceFile(path: filePath, fileReference: fileReference, buildFile: buildFile))
+                    allSourceFiles.append(SourceFile(path: filePath, fileReference: fileReference, buildFile: buildFile, buildPhase: .resources))
                     groupChildren.append(fileReference)
                 }
             }
         }
 
-        let isOutOfBasePath = !path.string.contains(spec.basePath.string)
-        let isRootPath = isOutOfBasePath || path.parent() == spec.basePath
-        let isRootGroup = (isRootSource && !spec.options.createIntermediateGroups) || isRootPath
-        let group = getGroup(path: path, name: isRootSource && !isFile ? targetSource.name : nil, mergingChildren: groupChildren, isRootGroup: isRootGroup)
+        let group = getGroup(path: path, mergingChildren: groupChildren, createIntermediateGroups: spec.options.createIntermediateGroups, isBaseGroup: isBaseGroup)
         if spec.options.createIntermediateGroups {
-            createIntermediaGroups(for: group, at: path)
+            createIntermediaGroups(for: group.reference, at: path)
         }
 
         groups.insert(group, at: 0)
         return (allSourceFiles, groups)
     }
 
+    private func getSourceFiles(targetSource: TargetSource, path: Path) throws -> [SourceFile] {
+
+        let type = targetSource.type ?? (path.isFile || path.extension != nil ? .file : .group)
+        let createIntermediateGroups = spec.options.createIntermediateGroups
+
+        var sourceFiles: [SourceFile] = []
+        let sourceReference: String
+        var sourcePath = path
+        switch type {
+        case .folder:
+            let folderPath = Path(targetSource.path)
+            let fileReference = getFileReference(path: folderPath, inPath: spec.basePath, name: targetSource.name ?? folderPath.lastComponent, sourceTree: .sourceRoot)
+
+            if !createIntermediateGroups {
+                rootGroups.insert(fileReference)
+            }
+
+            let sourceFile = generateSourceFile(targetSource: targetSource, path: folderPath, buildPhase: .resources)
+
+            sourceFiles.append(sourceFile)
+            sourceReference = fileReference
+        case .file:
+            let parentPath = path.parent()
+            let fileReference = getFileReference(path: path, inPath: parentPath, name: targetSource.name)
+
+            let sourceFile = generateSourceFile(targetSource: targetSource, path: path)
+
+            let parentGroup = getGroup(path: parentPath, mergingChildren: [fileReference], createIntermediateGroups: createIntermediateGroups, isBaseGroup: true)
+
+            sourcePath = parentPath
+            sourceFiles.append(sourceFile)
+            sourceReference = parentGroup.reference
+        case .group:
+            let (groupSourceFiles, groups) = try getGroupSources(targetSource: targetSource, path: path, isBaseGroup: true)
+            let group = groups.first!
+            if let name = targetSource.name {
+                group.name = name
+            }
+
+            sourceFiles += groupSourceFiles
+            sourceReference = group.reference
+        }
+
+        if createIntermediateGroups {
+            createIntermediaGroups(for: sourceReference, at: sourcePath)
+        }
+
+        return sourceFiles
+    }
+
     // Add groups for all parents recursively
-    private func createIntermediaGroups(for group: PBXGroup, at path: Path) {
+    private func createIntermediaGroups(for groupReference: String, at path: Path) {
 
         let parentPath = path.parent()
         guard parentPath != spec.basePath && path.string.contains(spec.basePath.string) else {
@@ -287,11 +336,10 @@ class SourceGenerator {
         }
 
         let hasParentGroup = groupsByPath[parentPath] != nil
-        let isRootGroup = parentPath.parent() == spec.basePath
-        let parentGroup = getGroup(path: parentPath, mergingChildren: [group.reference], isRootGroup: isRootGroup)
+        let parentGroup = getGroup(path: parentPath, mergingChildren: [groupReference], createIntermediateGroups: true, isBaseGroup: false)
 
         if !hasParentGroup {
-            createIntermediaGroups(for: parentGroup, at: parentPath)
+            createIntermediaGroups(for: parentGroup.reference, at: parentPath)
         }
     }
 }
