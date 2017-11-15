@@ -67,7 +67,7 @@ public class PBXProjGenerator {
             let buildSettings = spec.getProjectBuildSettings(config: config)
             var baseConfigurationReference: String?
             if let configPath = spec.configFiles[config.name] {
-                baseConfigurationReference = sourceGenerator.getFileReference(path: spec.basePath + configPath, inPath: spec.basePath)
+                baseConfigurationReference = sourceGenerator.getContainedFileReference(path: spec.basePath + configPath)
             }
             return XCBuildConfiguration(reference: referenceGenerator.generate(XCBuildConfiguration.self, config.name), name: config.name, baseConfigurationReference: baseConfigurationReference, buildSettings: buildSettings)
         }
@@ -225,7 +225,7 @@ public class PBXProjGenerator {
 
             var baseConfigurationReference: String?
             if let configPath = target.configFiles[config.name] {
-                baseConfigurationReference = sourceGenerator.getFileReference(path: spec.basePath + configPath, inPath: spec.basePath)
+                baseConfigurationReference =  sourceGenerator.getContainedFileReference(path: spec.basePath + configPath)
             }
             return XCBuildConfiguration(reference: referenceGenerator.generate(XCBuildConfiguration.self, config.name + target.name), name: config.name, baseConfigurationReference: baseConfigurationReference, buildSettings: buildSettings)
         }

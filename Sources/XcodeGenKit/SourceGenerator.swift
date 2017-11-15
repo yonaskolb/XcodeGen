@@ -65,6 +65,19 @@ class SourceGenerator {
         return SourceFile(path: path, fileReference: fileReference, buildFile: buildFile, buildPhase: buildPhase)
     }
 
+    func getContainedFileReference(path: Path) -> String {
+        let createIntermediateGroups = spec.options.createIntermediateGroups
+
+        let parentPath = path.parent()
+        let fileReference = getFileReference(path: path, inPath: parentPath)
+        let parentGroup = getGroup(path: parentPath, mergingChildren: [fileReference], createIntermediateGroups: createIntermediateGroups, isBaseGroup: true)
+
+        if createIntermediateGroups {
+            createIntermediaGroups(for: parentGroup.reference, at: parentPath)
+        }
+        return fileReference
+    }
+
     func getFileReference(path: Path, inPath: Path, name: String? = nil, sourceTree: PBXSourceTree = .group) -> String {
         if let fileReference = fileReferencesByPath[path] {
             return fileReference
