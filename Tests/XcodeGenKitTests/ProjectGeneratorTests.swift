@@ -52,6 +52,16 @@ func projectGeneratorTests() {
                 let allSettings = project.pbxproj.buildConfigurations.reduce([:]) { $0.merged($1.buildSettings) }.keys.sorted()
                 try expect(allSettings) == ["SETTING_2"]
             }
+
+            $0.it("generates development language") {
+                let options = ProjectSpec.Options(developmentLanguage: "de")
+                let spec = ProjectSpec(basePath: "", name: "test", options: options)
+                let project = try getProject(spec)
+                guard let pbxProject = project.pbxproj.projects.first else {
+                    throw failure("Could't find PBXProject")
+                }
+                try expect(pbxProject.developmentRegion) == "de"
+            }
         }
 
         $0.describe("Config") {
