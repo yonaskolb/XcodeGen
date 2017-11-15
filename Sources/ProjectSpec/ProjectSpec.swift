@@ -129,7 +129,9 @@ extension ProjectSpec.Options: Equatable {
     public static func == (lhs: ProjectSpec.Options, rhs: ProjectSpec.Options) -> Bool {
         return lhs.carthageBuildPath == rhs.carthageBuildPath &&
             lhs.bundleIdPrefix == rhs.bundleIdPrefix &&
-            lhs.settingPresets == rhs.settingPresets
+            lhs.settingPresets == rhs.settingPresets &&
+            lhs.createIntermediateGroups == rhs.createIntermediateGroups &&
+            lhs.developmentLanguage == rhs.developmentLanguage
     }
 }
 
@@ -168,5 +170,6 @@ extension ProjectSpec.Options: JSONObjectConvertible {
         bundleIdPrefix = jsonDictionary.json(atKeyPath: "bundleIdPrefix")
         settingPresets = jsonDictionary.json(atKeyPath: "settingPresets") ?? .all
         createIntermediateGroups = jsonDictionary.json(atKeyPath: "createIntermediateGroups") ?? false
+        developmentLanguage = jsonDictionary.json(atKeyPath: "developmentLanguage")
     }
 }

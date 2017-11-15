@@ -225,9 +225,11 @@ func specLoadingTests() {
 
         $0.it("parses options") {
             let options = ProjectSpec.Options(carthageBuildPath: "../Carthage/Build",
-                                              bundleIdPrefix: "com.test")
+                                              createIntermediateGroups: true,
+                                              bundleIdPrefix: "com.test",
+                                              developmentLanguage: "ja")
             let expected = ProjectSpec(basePath: "", name: "test", options: options)
-            let parsedSpec = try getProjectSpec(["options": ["carthageBuildPath": "../Carthage/Build", "bundleIdPrefix": "com.test"]])
+            let parsedSpec = try getProjectSpec(["options": ["carthageBuildPath": "../Carthage/Build", "bundleIdPrefix": "com.test", "createIntermediateGroups": true, "developmentLanguage": "ja"]])
             try expect(parsedSpec) == expected
         }
     }
