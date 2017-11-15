@@ -26,7 +26,7 @@ public class PBXProjGenerator {
     var targetNativeReferences: [String: String] = [:]
     var targetBuildFiles: [String: PBXBuildFile] = [:]
     var targetFileReferences: [String: String] = [:]
-    var topLevelGroups: [PBXGroup] = []
+    var topLevelGroups: Set<String> = []
     var carthageFrameworksByPlatform: [String: Set<String>] = [:]
     var frameworkFiles: [String] = []
 
@@ -93,7 +93,7 @@ public class PBXProjGenerator {
 
         let productGroup = PBXGroup(reference: referenceGenerator.generate(PBXGroup.self, "Products"), children: Array(targetFileReferences.values), sourceTree: .group, name: "Products")
         addObject(productGroup)
-        topLevelGroups.append(productGroup)
+        topLevelGroups.insert(productGroup.reference)
 
         if !carthageFrameworksByPlatform.isEmpty {
             var platforms: [PBXGroup] = []
@@ -110,16 +110,14 @@ public class PBXProjGenerator {
         if !frameworkFiles.isEmpty {
             let group = PBXGroup(reference: referenceGenerator.generate(PBXGroup.self, "Frameworks"), children: frameworkFiles, sourceTree: .group, name: "Frameworks")
             addObject(group)
-            topLevelGroups.append(group)
+            topLevelGroups.insert(group.reference)
         }
 
         for rootGroup in sourceGenerator.rootGroups {
-            if !topLevelGroups.contains(reference: rootGroup), let group = proj.groups.getReference(rootGroup) {
-                topLevelGroups.append(group)
-            }
+            topLevelGroups.insert(rootGroup)
         }
 
-        let mainGroup = PBXGroup(reference: referenceGenerator.generate(PBXGroup.self, "Project"), children: topLevelGroups.references, sourceTree: .group)
+        let mainGroup = PBXGroup(reference: referenceGenerator.generate(PBXGroup.self, "Project"), children: Array(topLevelGroups), sourceTree: .group)
         addObject(mainGroup)
 
         sortGroups(group: mainGroup)
@@ -325,7 +323,7 @@ public class PBXProjGenerator {
 
         func getBuildFilesForPhase(_ buildPhase: BuildPhase) -> [String] {
             let files = sourceFiles
-                .filter { sourceGenerator.getBuildPhaseForPath($0.path) == buildPhase }
+                .filter { $0.buildPhase == buildPhase }
                 .sorted { $0.path.lastComponent < $1.path.lastComponent }
             files.forEach { addObject($0.buildFile) }
             return files.map { $0.buildFile.reference }
