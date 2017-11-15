@@ -98,7 +98,7 @@ public class PBXProjGenerator {
         if !carthageFrameworksByPlatform.isEmpty {
             var platforms: [PBXGroup] = []
             for (platform, fileReferences) in carthageFrameworksByPlatform {
-                let platformGroup = PBXGroup(reference: referenceGenerator.generate(PBXGroup.self, platform), children: fileReferences.sorted(), sourceTree: .group, name: platform, path: platform)
+                let platformGroup = PBXGroup(reference: referenceGenerator.generate(PBXGroup.self, "Carthage" + platform), children: fileReferences.sorted(), sourceTree: .group, name: platform, path: platform)
                 addObject(platformGroup)
                 platforms.append(platformGroup)
             }
@@ -159,6 +159,7 @@ public class PBXProjGenerator {
 
     func generateTarget(_ target: Target) throws -> PBXNativeTarget {
 
+        sourceGenerator.targetName = target.name
         let carthageDependencies = getAllCarthageDependencies(target: target)
 
         let sourceFiles = try sourceGenerator.getAllSourceFiles(sources: target.sources)

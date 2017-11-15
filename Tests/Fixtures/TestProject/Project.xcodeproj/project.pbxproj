@@ -6,40 +6,40 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		BF1073850101 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR1332263601 /* AppDelegate.swift */; settings = {COMPILER_FLAGS = "-Werror"; }; };
-		BF1401236301 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR3032072501 /* Alamofire.framework */; };
-		BF1628293501 /* Standalone.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR2554453101 /* Standalone.swift */; };
-		BF1744565901 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR6218091901 /* ViewController.swift */; settings = {COMPILER_FLAGS = "-Werror"; }; };
-		BF1762863701 /* MyBundle.bundle in Resources */ = {isa = PBXBuildFile; fileRef = FR2691220401 /* MyBundle.bundle */; };
+		BF1249797701 /* TestProjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR6271445501 /* TestProjectTests.swift */; };
+		BF1491551901 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = FR3494361301 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BF1745452401 /* ResourceFolder in Resources */ = {isa = PBXBuildFile; fileRef = FR2570739301 /* ResourceFolder */; };
 		BF2018435801 /* Framework_iOS.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = FR4722960401 /* Framework_iOS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		BF2250910101 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = VG2043127501 /* Main.storyboard */; };
-		BF2301913502 /* MoreUnder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR8488480101 /* MoreUnder.swift */; };
-		BF2445564001 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = VG2858723001 /* LaunchScreen.storyboard */; };
-		BF2513089601 /* LocalizedStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = VG3182922801 /* LocalizedStoryboard.storyboard */; };
 		BF2535278401 = {isa = PBXBuildFile; fileRef = FR4387045301 /* Framework_watchOS.framework */; };
-		BF2754797601 /* StandaloneAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FR5557707101 /* StandaloneAssets.xcassets */; };
-		BF3008399601 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR3032072503 /* Alamofire.framework */; };
-		BF3154421201 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FR5980633301 /* Assets.xcassets */; settings = {COMPILER_FLAGS = "-Werror"; }; };
+		BF2570399501 /* MoreUnder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR6771499101 /* MoreUnder.swift */; };
+		BF2832655501 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = FR3494361301 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BF2850569201 /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR6665373301 /* FrameworkFile.swift */; };
+		BF2925055001 /* Standalone.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR8781288401 /* Standalone.swift */; };
 		BF3314441201 = {isa = PBXBuildFile; fileRef = FR5251191201 /* Framework_macOS.framework */; };
-		BF3371332801 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = VG5506161801 /* Localizable.strings */; };
-		BF3515549501 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = FR7740960501 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		BF3515549502 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = FR7740960501 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		BF3515549503 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = FR7740960501 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		BF3515549504 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = FR7740960501 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		BF4414242001 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = VG1597538701 /* Localizable.stringsdict */; };
+		BF3342981801 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = VG9044989001 /* Main.storyboard */; };
+		BF3392001201 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = VG2803749801 /* Localizable.strings */; };
+		BF3861743101 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = FR3494361301 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BF4229834401 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR7523946501 /* Alamofire.framework */; };
 		BF4530793601 /* Framework_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR4722960401 /* Framework_iOS.framework */; };
+		BF5002945501 /* StandaloneAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FR6251741101 /* StandaloneAssets.xcassets */; };
+		BF5074155201 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = VG1573928501 /* Localizable.stringsdict */; };
+		BF5440900501 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR9466782101 /* ViewController.swift */; settings = {COMPILER_FLAGS = "-Werror"; }; };
 		BF5539436901 = {isa = PBXBuildFile; fileRef = FR6623158301 /* Framework_tvOS.framework */; };
-		BF6380159901 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR3032072502 /* Alamofire.framework */; };
-		BF6882875401 /* ResourceFolder in Resources */ = {isa = PBXBuildFile; fileRef = FR6060058201 /* ResourceFolder */; };
-		BF7121748201 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR3032072504 /* Alamofire.framework */; };
+		BF5870324801 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR4528530201 /* Alamofire.framework */; };
+		BF6000165001 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR4205282201 /* AppDelegate.swift */; settings = {COMPILER_FLAGS = "-Werror"; }; };
+		BF6164993701 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FR5576873701 /* Assets.xcassets */; settings = {COMPILER_FLAGS = "-Werror"; }; };
+		BF6243485901 /* MyBundle.bundle in Resources */ = {isa = PBXBuildFile; fileRef = FR9067657301 /* MyBundle.bundle */; };
+		BF6536007501 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = FR3494361301 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BF6848902801 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = VG4821502701 /* LaunchScreen.storyboard */; };
+		BF6890014401 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR4106450501 /* Alamofire.framework */; };
 		BF7642939101 = {isa = PBXBuildFile; fileRef = FR8252321101 /* App_iOS.app */; };
-		BF8298265901 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR3032072501 /* Alamofire.framework */; };
+		BF7908705201 /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR6665373301 /* FrameworkFile.swift */; };
+		BF8263522501 /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR6665373301 /* FrameworkFile.swift */; };
+		BF8390563801 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR2575165801 /* Alamofire.framework */; };
 		BF8660115801 = {isa = PBXBuildFile; fileRef = FR4722960401 /* Framework_iOS.framework */; };
-		BF9001417701 /* TestProjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR6877173101 /* TestProjectTests.swift */; };
-		BF9155249601 /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR7078510801 /* FrameworkFile.swift */; };
-		BF9155249602 /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR7078510801 /* FrameworkFile.swift */; };
-		BF9155249603 /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR7078510801 /* FrameworkFile.swift */; };
-		BF9155249604 /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR7078510801 /* FrameworkFile.swift */; };
+		BF8675946201 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR4106450501 /* Alamofire.framework */; };
+		BF8716631901 /* LocalizedStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = VG2650077701 /* LocalizedStoryboard.storyboard */; };
+		BF8839784101 /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR6665373301 /* FrameworkFile.swift */; };
 		BF9552530301 = {isa = PBXBuildFile; fileRef = FR7831228901 /* App_iOS_Tests.xctest */; };
 /* End PBXBuildFile section */
 
@@ -72,40 +72,40 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		FR1332263601 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		FR1345298501 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		FR1345298502 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		FR1345298503 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		FR1473702401 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		FR2554453101 /* Standalone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Standalone.swift; sourceTree = "<group>"; };
-		FR2691220401 /* MyBundle.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = MyBundle.bundle; sourceTree = "<group>"; };
-		FR3032072501 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Alamofire.framework; sourceTree = "<group>"; };
-		FR3032072502 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Alamofire.framework; sourceTree = "<group>"; };
-		FR3032072503 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Alamofire.framework; sourceTree = "<group>"; };
-		FR3032072504 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Alamofire.framework; sourceTree = "<group>"; };
-		FR3546283901 /* base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = base.xcconfig; sourceTree = "<group>"; };
-		FR3899172901 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
-		FR3899172902 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		FR1573928501 /* Base */ = {isa = PBXFileReference; name = Base; path = Base.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
+		FR2570739301 /* ResourceFolder */ = {isa = PBXFileReference; name = ResourceFolder; path = Resources/ResourceFolder; sourceTree = SOURCE_ROOT; };
+		FR2575165801 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Alamofire.framework; sourceTree = "<group>"; };
+		FR2650077701 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LocalizedStoryboard.storyboard; sourceTree = "<group>"; };
+		FR2773775701 /* base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = base.xcconfig; sourceTree = "<group>"; };
+		FR2803749801 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
+		FR3328853801 /* config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = config.xcconfig; sourceTree = "<group>"; };
+		FR3494361301 /* MyFramework.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyFramework.h; sourceTree = "<group>"; };
+		FR3786086401 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		FR3942625301 /* en */ = {isa = PBXFileReference; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
+		FR4106450501 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Alamofire.framework; sourceTree = "<group>"; };
+		FR4205282201 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FR4387045301 /* Framework_watchOS.framework */ = {isa = PBXFileReference; explicitFileType = framework; includeInIndex = 0; lastKnownFileType = wrapper.framework; path = Framework_watchOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FR4528530201 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Alamofire.framework; sourceTree = "<group>"; };
 		FR4722960401 /* Framework_iOS.framework */ = {isa = PBXFileReference; explicitFileType = framework; includeInIndex = 0; lastKnownFileType = wrapper.framework; path = Framework_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		FR4822987701 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LocalizedStoryboard.storyboard; sourceTree = "<group>"; };
+		FR4767894801 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LocalizedStoryboard.strings; sourceTree = "<group>"; };
+		FR4821502701 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		FR5244118101 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FR5251191201 /* Framework_macOS.framework */ = {isa = PBXFileReference; explicitFileType = framework; includeInIndex = 0; lastKnownFileType = wrapper.framework; path = Framework_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		FR5557707101 /* StandaloneAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = StandaloneAssets.xcassets; sourceTree = "<group>"; };
-		FR5980633301 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		FR6060058201 /* ResourceFolder */ = {isa = PBXFileReference; name = ResourceFolder; path = Resources/ResourceFolder; sourceTree = SOURCE_ROOT; };
-		FR6218091901 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		FR6334256101 /* config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = config.xcconfig; sourceTree = "<group>"; };
-		FR6405436301 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		FR5576873701 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		FR5996825101 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FR6251741101 /* StandaloneAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = StandaloneAssets.xcassets; sourceTree = "<group>"; };
+		FR6271445501 /* TestProjectTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestProjectTests.swift; sourceTree = "<group>"; };
 		FR6623158301 /* Framework_tvOS.framework */ = {isa = PBXFileReference; explicitFileType = framework; includeInIndex = 0; lastKnownFileType = wrapper.framework; path = Framework_tvOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		FR6877173101 /* TestProjectTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestProjectTests.swift; sourceTree = "<group>"; };
-		FR7078510801 /* FrameworkFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameworkFile.swift; sourceTree = "<group>"; };
-		FR7740960501 /* MyFramework.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyFramework.h; sourceTree = "<group>"; };
+		FR6665373301 /* FrameworkFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameworkFile.swift; sourceTree = "<group>"; };
+		FR6771499101 /* MoreUnder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreUnder.swift; sourceTree = "<group>"; };
+		FR7523946501 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Alamofire.framework; sourceTree = "<group>"; };
 		FR7831228901 /* App_iOS_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = xctest; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = App_iOS_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		FR8182352201 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LocalizedStoryboard.strings; sourceTree = "<group>"; };
 		FR8252321101 /* App_iOS.app */ = {isa = PBXFileReference; explicitFileType = app; includeInIndex = 0; lastKnownFileType = wrapper.application; path = App_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		FR8488480101 /* MoreUnder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreUnder.swift; sourceTree = "<group>"; };
-		FR9612050601 /* Base */ = {isa = PBXFileReference; name = Base; path = Base.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
-		FR9612050602 /* en */ = {isa = PBXFileReference; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
+		FR8781288401 /* Standalone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Standalone.swift; sourceTree = "<group>"; };
+		FR9044989001 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		FR9067657301 /* MyBundle.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = MyBundle.bundle; sourceTree = "<group>"; };
+		FR9111616401 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FR9466782101 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,7 +113,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF7121748201 /* Alamofire.framework in Frameworks */,
+				BF4229834401 /* Alamofire.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -121,7 +121,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF8298265901 /* Alamofire.framework in Frameworks */,
+				BF8675946201 /* Alamofire.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -129,7 +129,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF6380159901 /* Alamofire.framework in Frameworks */,
+				BF8390563801 /* Alamofire.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -137,7 +137,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF3008399601 /* Alamofire.framework in Frameworks */,
+				BF5870324801 /* Alamofire.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -146,7 +146,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BF4530793601 /* Framework_iOS.framework in Frameworks */,
-				BF1401236301 /* Alamofire.framework in Frameworks */,
+				BF6890014401 /* Alamofire.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -161,152 +161,124 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		G28836901501 /* Carthage */ = {
+		G22620174301 /* iOS */ = {
 			isa = PBXGroup;
 			children = (
-				G47994500502 /* Mac */,
-				G47994500501 /* iOS */,
-				G47994500901 /* tvOS */,
-				G67871650901 /* watchOS */,
-			);
-			name = Carthage;
-			path = Carthage/Build;
-			sourceTree = "<group>";
-		};
-		G32346300301 /* FileGroup */ = {
-			isa = PBXGroup;
-			children = (
-				G41880875201 /* UnderFileGroup */,
-			);
-			name = FileGroup;
-			path = FileGroup;
-			sourceTree = "<group>";
-		};
-		G41880875201 /* UnderFileGroup */ = {
-			isa = PBXGroup;
-			children = (
-				FR8488480101 /* MoreUnder.swift */,
-			);
-			name = UnderFileGroup;
-			path = UnderFileGroup;
-			sourceTree = "<group>";
-		};
-		G46615002701 /* Framework */ = {
-			isa = PBXGroup;
-			children = (
-				FR7078510801 /* FrameworkFile.swift */,
-				FR1345298503 /* Info.plist */,
-				FR7740960501 /* MyFramework.h */,
-			);
-			name = Framework;
-			path = Framework;
-			sourceTree = "<group>";
-		};
-		G47994500501 /* iOS */ = {
-			isa = PBXGroup;
-			children = (
-				FR3032072501 /* Alamofire.framework */,
+				FR4106450501 /* Alamofire.framework */,
 			);
 			name = iOS;
 			path = iOS;
 			sourceTree = "<group>";
 		};
-		G47994500502 /* Mac */ = {
+		G22620174401 /* Mac */ = {
 			isa = PBXGroup;
 			children = (
-				FR3032072502 /* Alamofire.framework */,
+				FR2575165801 /* Alamofire.framework */,
 			);
 			name = Mac;
 			path = Mac;
 			sourceTree = "<group>";
 		};
-		G47994500901 /* tvOS */ = {
+		G28836901501 /* Carthage */ = {
 			isa = PBXGroup;
 			children = (
-				FR3032072503 /* Alamofire.framework */,
+				G22620174401 /* Mac */,
+				G22620174301 /* iOS */,
+				G86288971601 /* tvOS */,
+				G82444885701 /* watchOS */,
 			);
-			name = tvOS;
-			path = tvOS;
+			name = Carthage;
+			path = Carthage/Build;
 			sourceTree = "<group>";
 		};
-		G66512504301 /* StandaloneFiles */ = {
+		G44713406301 /* FileGroup */ = {
 			isa = PBXGroup;
 			children = (
-				FR2554453101 /* Standalone.swift */,
-				FR5557707101 /* StandaloneAssets.xcassets */,
+				G45089084401 /* UnderFileGroup */,
 			);
-			name = StandaloneFiles;
-			path = StandaloneFiles;
+			name = FileGroup;
+			path = FileGroup;
 			sourceTree = "<group>";
 		};
-		G67871650901 /* watchOS */ = {
+		G45089084401 /* UnderFileGroup */ = {
 			isa = PBXGroup;
 			children = (
-				FR3032072504 /* Alamofire.framework */,
+				FR6771499101 /* MoreUnder.swift */,
 			);
-			name = watchOS;
-			path = watchOS;
+			name = UnderFileGroup;
+			path = UnderFileGroup;
 			sourceTree = "<group>";
 		};
-		G71894349401 /* Resources */ = {
+		G58351906101 /* Configs */ = {
 			isa = PBXGroup;
 			children = (
-				FR2691220401 /* MyBundle.bundle */,
-			);
-			name = Resources;
-			path = Resources;
-			sourceTree = "<group>";
-		};
-		G78312289901 /* App_iOS_Tests */ = {
-			isa = PBXGroup;
-			children = (
-				FR1345298502 /* Info.plist */,
-				FR6877173101 /* TestProjectTests.swift */,
-			);
-			name = App_iOS_Tests;
-			path = App_iOS_Tests;
-			sourceTree = "<group>";
-		};
-		G82523211001 /* App */ = {
-			isa = PBXGroup;
-			children = (
-				FR1332263601 /* AppDelegate.swift */,
-				FR5980633301 /* Assets.xcassets */,
-				FR1345298501 /* Info.plist */,
-				VG2858723001 /* LaunchScreen.storyboard */,
-				VG5506161801 /* Localizable.strings */,
-				VG1597538701 /* Localizable.stringsdict */,
-				VG3182922801 /* LocalizedStoryboard.storyboard */,
-				VG2043127501 /* Main.storyboard */,
-				FR6218091901 /* ViewController.swift */,
-			);
-			name = App;
-			path = App_iOS;
-			sourceTree = "<group>";
-		};
-		G83406189501 /* Configs */ = {
-			isa = PBXGroup;
-			children = (
-				FR3546283901 /* base.xcconfig */,
-				FR6334256101 /* config.xcconfig */,
+				FR2773775701 /* base.xcconfig */,
+				FR3328853801 /* config.xcconfig */,
 			);
 			name = Configs;
 			path = Configs;
 			sourceTree = "<group>";
 		};
+		G58400756001 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				FR4205282201 /* AppDelegate.swift */,
+				FR5576873701 /* Assets.xcassets */,
+				FR9111616401 /* Info.plist */,
+				VG4821502701 /* LaunchScreen.storyboard */,
+				VG2803749801 /* Localizable.strings */,
+				VG1573928501 /* Localizable.stringsdict */,
+				VG2650077701 /* LocalizedStoryboard.storyboard */,
+				VG9044989001 /* Main.storyboard */,
+				FR9466782101 /* ViewController.swift */,
+			);
+			name = App;
+			path = App_iOS;
+			sourceTree = "<group>";
+		};
+		G60979446801 /* Framework */ = {
+			isa = PBXGroup;
+			children = (
+				FR6665373301 /* FrameworkFile.swift */,
+				FR5244118101 /* Info.plist */,
+				FR3494361301 /* MyFramework.h */,
+			);
+			name = Framework;
+			path = Framework;
+			sourceTree = "<group>";
+		};
+		G61590799001 /* App_iOS_Tests */ = {
+			isa = PBXGroup;
+			children = (
+				FR5996825101 /* Info.plist */,
+				FR6271445501 /* TestProjectTests.swift */,
+			);
+			name = App_iOS_Tests;
+			path = App_iOS_Tests;
+			sourceTree = "<group>";
+		};
+		G82444885701 /* watchOS */ = {
+			isa = PBXGroup;
+			children = (
+				FR7523946501 /* Alamofire.framework */,
+			);
+			name = watchOS;
+			path = watchOS;
+			sourceTree = "<group>";
+		};
 		G84487712001 = {
 			isa = PBXGroup;
 			children = (
-				G82523211001 /* App */,
-				G78312289901 /* App_iOS_Tests */,
-				G83406189501 /* Configs */,
-				G32346300301 /* FileGroup */,
-				G46615002701 /* Framework */,
+				G58400756001 /* App */,
+				G61590799001 /* App_iOS_Tests */,
+				G58351906101 /* Configs */,
+				G44713406301 /* FileGroup */,
+				G60979446801 /* Framework */,
 				G19527407101 /* Frameworks */,
 				G86202385201 /* Products */,
-				G71894349401 /* Resources */,
-				G66512504301 /* StandaloneFiles */,
-				FR6060058201 /* ResourceFolder */,
+				G88110460401 /* Resources */,
+				G90062874401 /* StandaloneFiles */,
+				FR2570739301 /* ResourceFolder */,
 			);
 			sourceTree = "<group>";
 		};
@@ -323,6 +295,34 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		G86288971601 /* tvOS */ = {
+			isa = PBXGroup;
+			children = (
+				FR4528530201 /* Alamofire.framework */,
+			);
+			name = tvOS;
+			path = tvOS;
+			sourceTree = "<group>";
+		};
+		G88110460401 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				FR9067657301 /* MyBundle.bundle */,
+			);
+			name = Resources;
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		G90062874401 /* StandaloneFiles */ = {
+			isa = PBXGroup;
+			children = (
+				FR8781288401 /* Standalone.swift */,
+				FR6251741101 /* StandaloneAssets.xcassets */,
+			);
+			name = StandaloneFiles;
+			path = StandaloneFiles;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -330,28 +330,28 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF3515549504 /* MyFramework.h in Headers */,
+				BF2832655501 /* MyFramework.h in Headers */,
 			);
 		};
 		HBP472296001 /* Frameworks */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF3515549501 /* MyFramework.h in Headers */,
+				BF3861743101 /* MyFramework.h in Headers */,
 			);
 		};
 		HBP525119101 /* Frameworks */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF3515549502 /* MyFramework.h in Headers */,
+				BF6536007501 /* MyFramework.h in Headers */,
 			);
 		};
 		HBP662315801 /* Frameworks */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF3515549503 /* MyFramework.h in Headers */,
+				BF1491551901 /* MyFramework.h in Headers */,
 			);
 		};
 /* End PBXHeadersBuildPhase section */
@@ -493,15 +493,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF3154421201 /* Assets.xcassets in Resources */,
-				BF2445564001 /* LaunchScreen.storyboard in Resources */,
-				BF3371332801 /* Localizable.strings in Resources */,
-				BF4414242001 /* Localizable.stringsdict in Resources */,
-				BF2513089601 /* LocalizedStoryboard.storyboard in Resources */,
-				BF2250910101 /* Main.storyboard in Resources */,
-				BF1762863701 /* MyBundle.bundle in Resources */,
-				BF6882875401 /* ResourceFolder in Resources */,
-				BF2754797601 /* StandaloneAssets.xcassets in Resources */,
+				BF6164993701 /* Assets.xcassets in Resources */,
+				BF6848902801 /* LaunchScreen.storyboard in Resources */,
+				BF3392001201 /* Localizable.strings in Resources */,
+				BF5074155201 /* Localizable.stringsdict in Resources */,
+				BF8716631901 /* LocalizedStoryboard.storyboard in Resources */,
+				BF3342981801 /* Main.storyboard in Resources */,
+				BF6243485901 /* MyBundle.bundle in Resources */,
+				BF1745452401 /* ResourceFolder in Resources */,
+				BF5002945501 /* StandaloneAssets.xcassets in Resources */,
 			);
 		};
 /* End PBXResourcesBuildPhase section */
@@ -614,45 +614,45 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF9155249604 /* FrameworkFile.swift in Sources */,
+				BF2850569201 /* FrameworkFile.swift in Sources */,
 			);
 		};
 		SBP472296001 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF9155249601 /* FrameworkFile.swift in Sources */,
+				BF8839784101 /* FrameworkFile.swift in Sources */,
 			);
 		};
 		SBP525119101 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF9155249602 /* FrameworkFile.swift in Sources */,
+				BF8263522501 /* FrameworkFile.swift in Sources */,
 			);
 		};
 		SBP662315801 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF9155249603 /* FrameworkFile.swift in Sources */,
+				BF7908705201 /* FrameworkFile.swift in Sources */,
 			);
 		};
 		SBP783122801 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF9001417701 /* TestProjectTests.swift in Sources */,
+				BF1249797701 /* TestProjectTests.swift in Sources */,
 			);
 		};
 		SBP825232101 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF1073850101 /* AppDelegate.swift in Sources */,
-				BF2301913502 /* MoreUnder.swift in Sources */,
-				BF1628293501 /* Standalone.swift in Sources */,
-				BF1744565901 /* ViewController.swift in Sources */,
+				BF6000165001 /* AppDelegate.swift in Sources */,
+				BF2570399501 /* MoreUnder.swift in Sources */,
+				BF2925055001 /* Standalone.swift in Sources */,
+				BF5440900501 /* ViewController.swift in Sources */,
 			);
 		};
 /* End PBXSourcesBuildPhase section */
@@ -671,47 +671,47 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
-		VG1597538701 /* Localizable.stringsdict */ = {
+		VG1573928501 /* Localizable.stringsdict */ = {
 			isa = PBXVariantGroup;
 			children = (
-				FR9612050601 /* Base */,
-				FR9612050602 /* en */,
+				FR1573928501 /* Base */,
+				FR3942625301 /* en */,
 			);
 			name = Localizable.stringsdict;
 			sourceTree = "<group>";
 		};
-		VG2043127501 /* Main.storyboard */ = {
+		VG2650077701 /* LocalizedStoryboard.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				FR1473702401 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		VG2858723001 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				FR6405436301 /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-		VG3182922801 /* LocalizedStoryboard.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				FR4822987701 /* Base */,
-				FR8182352201 /* en */,
+				FR2650077701 /* Base */,
+				FR4767894801 /* en */,
 			);
 			name = LocalizedStoryboard.storyboard;
 			sourceTree = "<group>";
 		};
-		VG5506161801 /* Localizable.strings */ = {
+		VG2803749801 /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				FR3899172901 /* Base */,
-				FR3899172902 /* en */,
+				FR2803749801 /* Base */,
+				FR3786086401 /* en */,
 			);
 			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		VG4821502701 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FR4821502701 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		VG9044989001 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FR9044989001 /* Base */,
+			);
+			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -1895,7 +1895,7 @@
 		};
 		BC8321007901 /* Test Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FR6334256101 /* config.xcconfig */;
+			baseConfigurationReference = FR3328853801 /* config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				BUNDLE_ID_SUFFIX = .test;
