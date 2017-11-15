@@ -5,31 +5,31 @@
 	<TestAction selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" shouldUseLaunchSchemeArgsEnv="YES" buildConfiguration="Production Debug">
 		<Testables>
 			<TestableReference skipped="NO">
-				<BuildableReference BlueprintIdentifier="NT7831228901" ReferencedContainer="container:Project.xcodeproj" BuildableName="App_iOS_Tests.xctest" BlueprintName="App_iOS" BuildableIdentifier="primary" />
+				<BuildableReference BlueprintIdentifier="NT_783122899910" ReferencedContainer="container:Project.xcodeproj" BuildableName="App_iOS_Tests.xctest" BlueprintName="App_iOS" BuildableIdentifier="primary" />
 			</TestableReference>
 		</Testables>
 		<MacroExpansion>
-			<BuildableReference BlueprintIdentifier="NT8252321101" ReferencedContainer="container:Project.xcodeproj" BuildableName="App_iOS.app" BlueprintName="App_iOS" BuildableIdentifier="primary" />
+			<BuildableReference BlueprintIdentifier="NT_825232110500" ReferencedContainer="container:Project.xcodeproj" BuildableName="App_iOS.app" BlueprintName="App_iOS" BuildableIdentifier="primary" />
 		</MacroExpansion>
 	</TestAction>
 	<ProfileAction savedToolIdentifier="" useCustomWorkingDirectory="NO" shouldUseLaunchSchemeArgsEnv="YES" buildConfiguration="Production Release" debugDocumentVersioning="YES">
 		<BuildableProductRunnable runnableDebuggingMode="0">
-			<BuildableReference BlueprintIdentifier="NT8252321101" ReferencedContainer="container:Project.xcodeproj" BuildableName="App_iOS.app" BlueprintName="App_iOS" BuildableIdentifier="primary" />
+			<BuildableReference BlueprintIdentifier="NT_825232110500" ReferencedContainer="container:Project.xcodeproj" BuildableName="App_iOS.app" BlueprintName="App_iOS" BuildableIdentifier="primary" />
 		</BuildableProductRunnable>
 	</ProfileAction>
 	<BuildAction parallelizeBuildables="YES" buildImplicitDependencies="YES">
 		<BuildActionEntries>
 			<BuildActionEntry buildForArchiving="YES" buildForTesting="YES" buildForRunning="YES" buildForProfiling="YES" buildForAnalyzing="YES">
-				<BuildableReference BlueprintIdentifier="NT8252321101" ReferencedContainer="container:Project.xcodeproj" BuildableName="App_iOS.app" BlueprintName="App_iOS" BuildableIdentifier="primary" />
+				<BuildableReference BlueprintIdentifier="NT_825232110500" ReferencedContainer="container:Project.xcodeproj" BuildableName="App_iOS.app" BlueprintName="App_iOS" BuildableIdentifier="primary" />
 			</BuildActionEntry>
 			<BuildActionEntry buildForArchiving="NO" buildForTesting="YES" buildForRunning="NO" buildForProfiling="NO" buildForAnalyzing="YES">
-				<BuildableReference BlueprintIdentifier="NT7831228901" ReferencedContainer="container:Project.xcodeproj" BuildableName="App_iOS_Tests.xctest" BlueprintName="App_iOS" BuildableIdentifier="primary" />
+				<BuildableReference BlueprintIdentifier="NT_783122899910" ReferencedContainer="container:Project.xcodeproj" BuildableName="App_iOS_Tests.xctest" BlueprintName="App_iOS" BuildableIdentifier="primary" />
 			</BuildActionEntry>
 		</BuildActionEntries>
 	</BuildAction>
 	<LaunchAction selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" launchStyle="0" buildConfiguration="Production Debug" debugServiceExtension="internal" ignoresPersistentStateOnLaunch="NO" useCustomWorkingDirectory="NO" allowLocationSimulation="YES" debugDocumentVersioning="YES">
 		<BuildableProductRunnable runnableDebuggingMode="0">
-			<BuildableReference BlueprintIdentifier="NT8252321101" ReferencedContainer="container:Project.xcodeproj" BuildableName="App_iOS.app" BlueprintName="App_iOS" BuildableIdentifier="primary" />
+			<BuildableReference BlueprintIdentifier="NT_825232110500" ReferencedContainer="container:Project.xcodeproj" BuildableName="App_iOS.app" BlueprintName="App_iOS" BuildableIdentifier="primary" />
 		</BuildableProductRunnable>
 	</LaunchAction>
 </Scheme>

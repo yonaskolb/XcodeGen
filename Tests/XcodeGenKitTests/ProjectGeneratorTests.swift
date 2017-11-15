@@ -242,6 +242,33 @@ func projectGeneratorTests() {
             }
         }
 
+        $0.describe("Reference Generator") {
+
+            let referenceGenerator = ReferenceGenerator()
+            $0.before {
+                referenceGenerator.clear()
+            }
+
+            $0.it("generates prefixes") {
+                let references = [
+                    referenceGenerator.generate(PBXGroup.self, "a"),
+                    referenceGenerator.generate(PBXFileReference.self, "a"),
+                    referenceGenerator.generate(XCConfigurationList.self, "a"),
+                    ]
+                try expect(references[0].hasPrefix("G")).to.beTrue()
+                try expect(references[1].hasPrefix("FR")).to.beTrue()
+                try expect(references[2].hasPrefix("CL")).to.beTrue()
+            }
+
+            $0.it("handles duplicates") {
+                let first = referenceGenerator.generate(PBXGroup.self, "a")
+                let second = referenceGenerator.generate(PBXGroup.self, "a")
+
+                try expect(first) != second
+                try expect(second.hasSuffix("-1")).to.beTrue()
+            }
+        }
+
         $0.describe("Sources") {
 
             let directoryPath = Path("TestDirectory")
@@ -492,34 +519,6 @@ func projectGeneratorTests() {
                 let project = try getPbxProj(spec)
                 try project.expectFile(paths: ["Sources/A"], names: ["A"], buildPhase: .resources)
                 try project.expectFileMissing(paths: ["Sources", "A", "a.swift"])
-            }
-        }
-
-        $0.describe("Reference Generator") {
-
-            let referenceGenerator = ReferenceGenerator()
-            $0.before {
-                referenceGenerator.clear()
-            }
-
-            $0.it("generates prefixes") {
-                let references = [
-                    referenceGenerator.generate(PBXGroup.self, "a"),
-                    referenceGenerator.generate(PBXFileReference.self, "a"),
-                    referenceGenerator.generate(XCConfigurationList.self, "a"),
-                ]
-                try expect(references[0].hasPrefix("G")).to.beTrue()
-                try expect(references[1].hasPrefix("FR")).to.beTrue()
-                try expect(references[2].hasPrefix("CL")).to.beTrue()
-            }
-
-            $0.it("handles duplicates") {
-                let first = referenceGenerator.generate(PBXGroup.self, "a")
-                let second = referenceGenerator.generate(PBXGroup.self, "a")
-
-                try expect(first) != second
-                try expect(first.hasSuffix("01")).to.beTrue()
-                try expect(second.hasSuffix("02")).to.beTrue()
             }
         }
     }
