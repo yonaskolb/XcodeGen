@@ -243,9 +243,19 @@ class SourceGenerator {
             groups += subGroups.groups
         }
 
+        // find the base localised directory
+        let baseLocalisedDirectory: Path? = {
+            func findLocalisedDirectory(by languageId: String) -> Path? {
+                return localisedDirectories.first { $0.lastComponent == "\(languageId).lproj" }
+            }
+            return findLocalisedDirectory(by: "Base") ??
+                findLocalisedDirectory(by: NSLocale.canonicalLanguageIdentifier(from: spec.options.developmentLanguage ?? "en"))
+        }()
+
         // create variant groups of the base localisation first
         var baseLocalisationVariantGroups: [PBXVariantGroup] = []
-        if let baseLocalisedDirectory = localisedDirectories.first(where: { $0.lastComponent == "Base.lproj" }) {
+
+        if let baseLocalisedDirectory = baseLocalisedDirectory {
             for filePath in try baseLocalisedDirectory.children().sorted() {
                 let variantGroup = getVariantGroup(path: filePath, inPath: path)
                 groupChildren.append(variantGroup.reference)
