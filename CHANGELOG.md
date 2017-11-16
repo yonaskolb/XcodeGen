@@ -29,6 +29,8 @@
 - fix cyclical target dependencies not working [#147](https://github.com/yonaskolb/XcodeGen/pull/147) @yonaskolb
 - fix directory bundles not being added properly when referenced directly [#148](https://github.com/yonaskolb/XcodeGen/pull/1478) @yonaskolb
 - made `mm`, `c` and `S` file be parsed as source files [#120](https://github.com/yonaskolb/XcodeGen/pull/120) [#125](https://github.com/yonaskolb/XcodeGen/pull/125) [#138](https://github.com/yonaskolb/XcodeGen/pull/138) @bkase @enmiller
+- fix the generation of localized variant groups if there is no `Base.lproj` [#157](https://github.com/yonaskolb/XcodeGen/pull/157) @ryohey
+- all localizations found are added to a projects known regions [#157](https://github.com/yonaskolb/XcodeGen/pull/157) @ryohey
 
 #### Internal
 - refactoring
