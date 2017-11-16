@@ -30,9 +30,6 @@ public class PBXProjGenerator {
     var carthageFrameworksByPlatform: [String: Set<String>] = [:]
     var frameworkFiles: [String] = []
 
-    // TODO: remove when xcproj has performant object caching
-    var objects: [String: PBXObject] = [:]
-
     var generated = false
 
     var carthageBuildPath: String {
@@ -50,8 +47,7 @@ public class PBXProjGenerator {
     }
 
     func addObject(_ object: PBXObject) {
-        proj.addObject(object)
-        objects[object.reference] = object
+        proj.objects.addObject(object)
     }
 
     public func generate() throws -> PBXProj {
@@ -132,16 +128,15 @@ public class PBXProjGenerator {
                               knownRegions: sourceGenerator.knownRegions.sorted(),
                               targets: targets.references,
                               attributes: projectAttributes)
-        proj.projects.append(root)
+        proj.objects.projects.append(root)
 
         return proj
     }
 
     func sortGroups(group: PBXGroup) {
-
         // sort children
         let children: [GroupChild] = group.children
-            .flatMap { objects[$0] as? GroupChild }
+            .flatMap { proj.objects.groups[$0] ?? proj.objects.fileReferences[$0] ?? proj.objects.variantGroups[$0] }
             .sorted { child1, child2 in
                 if child1.sortOrder == child2.sortOrder {
                     return child1.childName < child2.childName
@@ -152,7 +147,7 @@ public class PBXProjGenerator {
         group.children = children.map { $0.reference }.filter { $0 != group.reference }
 
         // sort sub groups
-        let childGroups = group.children.flatMap { objects[$0] as? PBXGroup }
+        let childGroups = group.children.flatMap { proj.objects.groups[$0] }
         childGroups.forEach(sortGroups)
     }
 

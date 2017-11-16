@@ -35,11 +35,11 @@ func projectGeneratorTests() {
                 let options = ProjectSpec.Options(bundleIdPrefix: "com.test")
                 let spec = ProjectSpec(basePath: "", name: "test", targets: [framework], options: options)
                 let project = try getProject(spec)
-                guard let target = project.pbxproj.nativeTargets.first,
+                guard let target = project.pbxproj.objects.nativeTargets.first?.value,
                     let buildConfigList = target.buildConfigurationList,
-                    let buildConfigs = project.pbxproj.configurationLists.getReference(buildConfigList),
+                    let buildConfigs = project.pbxproj.objects.configurationLists.getReference(buildConfigList),
                     let buildConfigReference = buildConfigs.buildConfigurations.first,
-                    let buildConfig = project.pbxproj.buildConfigurations.getReference(buildConfigReference) else {
+                    let buildConfig = project.pbxproj.objects.buildConfigurations.getReference(buildConfigReference) else {
                     throw failure("Build Config not found")
                 }
                 try expect(buildConfig.buildSettings["PRODUCT_BUNDLE_IDENTIFIER"] as? String) == "com.test.MyFramework"
@@ -49,7 +49,7 @@ func projectGeneratorTests() {
                 let options = ProjectSpec.Options(settingPresets: .none)
                 let spec = ProjectSpec(basePath: "", name: "test", targets: [framework], options: options)
                 let project = try getProject(spec)
-                let allSettings = project.pbxproj.buildConfigurations.reduce([:]) { $0.merged($1.buildSettings) }.keys.sorted()
+                let allSettings = project.pbxproj.objects.buildConfigurations.referenceValues.reduce([:]) { $0.merged($1.buildSettings) }.keys.sorted()
                 try expect(allSettings) == ["SETTING_2"]
             }
 
@@ -57,7 +57,7 @@ func projectGeneratorTests() {
                 let options = ProjectSpec.Options(developmentLanguage: "de")
                 let spec = ProjectSpec(basePath: "", name: "test", options: options)
                 let project = try getProject(spec)
-                guard let pbxProject = project.pbxproj.projects.first else {
+                guard let pbxProject = project.pbxproj.objects.projects.first?.value else {
                     throw failure("Could't find PBXProject")
                 }
                 try expect(pbxProject.developmentRegion) == "de"
@@ -69,7 +69,7 @@ func projectGeneratorTests() {
             $0.it("generates config defaults") {
                 let spec = ProjectSpec(basePath: "", name: "test")
                 let project = try getProject(spec)
-                let configs = project.pbxproj.buildConfigurations
+                let configs = project.pbxproj.objects.buildConfigurations.referenceValues
                 try expect(configs.count) == 2
                 try expect(configs).contains(name: "Debug")
                 try expect(configs).contains(name: "Release")
@@ -78,7 +78,7 @@ func projectGeneratorTests() {
             $0.it("generates configs") {
                 let spec = ProjectSpec(basePath: "", name: "test", configs: [Config(name: "config1"), Config(name: "config2")])
                 let project = try getProject(spec)
-                let configs = project.pbxproj.buildConfigurations
+                let configs = project.pbxproj.objects.buildConfigurations.referenceValues
                 try expect(configs.count) == 2
                 try expect(configs).contains(name: "config1")
                 try expect(configs).contains(name: "config2")
@@ -87,7 +87,7 @@ func projectGeneratorTests() {
             $0.it("clears config settings when missing type") {
                 let spec = ProjectSpec(basePath: "", name: "test", configs: [Config(name: "config")])
                 let project = try getProject(spec)
-                guard let config = project.pbxproj.buildConfigurations.first else {
+                guard let config = project.pbxproj.objects.buildConfigurations.first?.value else {
                     throw failure("configuration not found")
                 }
                 try expect(config.buildSettings.isEmpty).to.beTrue()
@@ -140,7 +140,7 @@ func projectGeneratorTests() {
 
             $0.it("generates targets") {
                 let pbxProject = try getPbxProj(spec)
-                let nativeTargets = pbxProject.nativeTargets
+                let nativeTargets = pbxProject.objects.nativeTargets.referenceValues
                 try expect(nativeTargets.count) == 2
                 try expect(nativeTargets.contains { $0.name == application.name }).beTrue()
                 try expect(nativeTargets.contains { $0.name == framework.name }).beTrue()
@@ -148,16 +148,16 @@ func projectGeneratorTests() {
 
             $0.it("generates dependencies") {
                 let pbxProject = try getPbxProj(spec)
-                let nativeTargets = pbxProject.nativeTargets
-                let dependencies = pbxProject.targetDependencies
+                let nativeTargets = pbxProject.objects.nativeTargets.referenceValues
+                let dependencies = pbxProject.objects.targetDependencies.referenceValues
                 try expect(dependencies.count) == 1
                 try expect(dependencies.first!.target) == nativeTargets.first { $0.name == framework.name }!.reference
             }
 
             $0.it("generates dependencies") {
                 let pbxProject = try getPbxProj(spec)
-                let nativeTargets = pbxProject.nativeTargets
-                let dependencies = pbxProject.targetDependencies
+                let nativeTargets = pbxProject.objects.nativeTargets.referenceValues
+                let dependencies = pbxProject.objects.targetDependencies.referenceValues
                 try expect(dependencies.count) == 1
                 try expect(dependencies.first!.target) == nativeTargets.first { $0.name == framework.name }!.reference
             }
@@ -168,9 +168,12 @@ func projectGeneratorTests() {
                 scriptSpec.targets[0].postbuildScripts = [BuildScript(script: .script("script2"))]
                 let pbxProject = try getPbxProj(scriptSpec)
 
-                guard let buildPhases = pbxProject.nativeTargets.first?.buildPhases else { throw failure("Build phases not found") }
+                guard let nativeTarget = pbxProject.objects.nativeTargets.referenceValues.first(where: { !$0.buildPhases.isEmpty }) else {
+                    throw failure("Target with build phases not found")
+                }
+                let buildPhases = nativeTarget.buildPhases
 
-                let scripts = pbxProject.shellScriptBuildPhases
+                let scripts = pbxProject.objects.shellScriptBuildPhases.referenceValues
                 let script1 = scripts[0]
                 let script2 = scripts[1]
                 try expect(scripts.count) == 2
@@ -197,7 +200,7 @@ func projectGeneratorTests() {
                 let scheme = Scheme(name: "MyScheme", build: Scheme.Build(targets: [buildTarget]))
                 let spec = ProjectSpec(basePath: "", name: "test", targets: [application, framework], schemes: [scheme])
                 let project = try getProject(spec)
-                guard let target = project.pbxproj.nativeTargets.first(where: { $0.name == application.name }) else { throw failure("Target not found") }
+                guard let target = project.pbxproj.objects.nativeTargets.referenceValues.first(where: { $0.name == application.name }) else { throw failure("Target not found") }
                 guard let xcscheme = project.sharedData?.schemes.first else { throw failure("Scheme not found") }
                 try expect(scheme.name) == "MyScheme"
                 guard let buildActionEntry = xcscheme.buildAction?.buildActionEntries.first else { throw failure("Build Action entry not found") }
@@ -239,7 +242,7 @@ func projectGeneratorTests() {
 
                 try expect(project.sharedData?.schemes.count) == 2
 
-                guard let nativeTarget = project.pbxproj.nativeTargets.first(where: { $0.name == application.name }) else { throw failure("Target not found") }
+                guard let nativeTarget = project.pbxproj.objects.nativeTargets.referenceValues.first(where: { $0.name == application.name }) else { throw failure("Target not found") }
                 guard let xcscheme = project.sharedData?.schemes.first(where: { $0.name == "\(target.name) Test" }) else { throw failure("Scheme not found") }
                 guard let buildActionEntry = xcscheme.buildAction?.buildActionEntries.first else { throw failure("Build Action entry not found") }
                 try expect(buildActionEntry.buildableReference.blueprintIdentifier) == nativeTarget.reference
@@ -547,7 +550,7 @@ extension PBXProj {
                 throw failure("Group \"\(group.childName)\" has duplicated children:\n - \(group.children.sorted().joined(separator: "\n - "))")
             }
             for child in group.children {
-                if let group = groups.getReference(child) {
+                if let group = objects.groups.getReference(child) {
                     try validateGroup(group)
                 }
             }
@@ -569,8 +572,8 @@ extension PBXProj {
         }
 
         if let buildPhase = buildPhase {
-            guard let buildFile = buildFiles.first(where: { $0.fileRef == fileReference.reference }),
-                getBuildPhases(buildPhase).contains(where: { $0.files.contains(buildFile.reference) }) else {
+            guard let buildFile = objects.buildFiles.referenceValues.first(where: { $0.fileRef == fileReference.reference }),
+                objects.buildPhases.referenceValues.contains(where: { $0.files.contains(buildFile.reference) }) else {
                 throw failure("File \(paths.joined(separator: "/").quoted) is not in a \(buildPhase.rawValue.quoted) build phase")
             }
         }
@@ -585,17 +588,17 @@ extension PBXProj {
     }
 
     func getFileReference(paths: [String], names: [String]) -> PBXFileReference? {
-        guard let project = projects.first else { return nil }
-        guard let mainGroup = groups.getReference(project.mainGroup) else { return nil }
+        guard let project = objects.projects.first?.value else { return nil }
+        guard let mainGroup = objects.groups.getReference(project.mainGroup) else { return nil }
 
         return getFileReference(group: mainGroup, paths: paths, names: names)
     }
 
     func getMainGroup() throws -> PBXGroup {
-        guard let project = projects.first else {
+        guard let project = objects.projects.first?.value else {
             throw failure("Couldn't find project")
         }
-        guard let mainGroup = groups.getReference(project.mainGroup) else {
+        guard let mainGroup = objects.groups.getReference(project.mainGroup) else {
             throw failure("Couldn't find main group")
         }
         return mainGroup
@@ -609,23 +612,12 @@ extension PBXProj {
         let restOfPath = Array(paths.dropFirst())
         let restOfName = Array(names.dropFirst())
         if restOfPath.isEmpty {
-            let fileReferences = group.children.flatMap { self.fileReferences.getReference($0) }
+            let fileReferences = group.children.flatMap { self.objects.fileReferences.getReference($0) }
             return fileReferences.first { $0.path == path && $0.childName == name }
         } else {
-            let groups = group.children.flatMap { self.groups.getReference($0) }
+            let groups = group.children.flatMap { self.objects.groups.getReference($0) }
             guard let group = groups.first(where: { $0.path == path && $0.childName == name }) else { return nil }
             return getFileReference(group: group, paths: restOfPath, names: restOfName)
-        }
-    }
-
-    func getBuildPhases(_ buildPhase: BuildPhase) -> [PBXBuildPhase] {
-        switch buildPhase {
-        case .copyFiles: return copyFilesBuildPhases
-        case .sources: return sourcesBuildPhases
-        case .frameworks: return frameworksBuildPhases
-        case .resources: return resourcesBuildPhases
-        case .runScript: return shellScriptBuildPhases
-        case .headers: return headersBuildPhases
         }
     }
 }
