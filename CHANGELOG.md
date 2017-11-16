@@ -10,7 +10,6 @@
 - added source compiler flag support [#121](https://github.com/yonaskolb/XcodeGen/pull/121) @ bkase
 - added `ProjectSpec.options.createIntermediateGroups` [#108](https://github.com/yonaskolb/XcodeGen/pull/108) @bkase
 - added better json loading support [#127](https://github.com/yonaskolb/XcodeGen/pull/127) @rahul-malik
-- added support for source exclude patterns [#135](https://github.com/yonaskolb/XcodeGen/pull/135) @peymankh
 - added source `name` for customizing names of source directories and file [#146](https://github.com/yonaskolb/XcodeGen/pull/146) @yonaskolb
 - added folder reference source support via a new `type` property [#151](https://github.com/yonaskolb/XcodeGen/pull/151) @yonaskolb
 - added `ProjectSpec.options.developmentLanguage` [#155](https://github.com/yonaskolb/XcodeGen/pull/155) @yonaskolb
