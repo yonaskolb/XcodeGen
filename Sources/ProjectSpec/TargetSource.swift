@@ -73,4 +73,3 @@ extension TargetSource: Equatable {
             && lhs.type == rhs.type
     }
 }
-

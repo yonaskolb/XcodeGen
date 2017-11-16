@@ -62,7 +62,7 @@ class SourceGenerator {
             settings["COMPILER_FLAGS"] = targetSource.compilerFlags.joined(separator: " ")
         }
 
-        //TODO: add the target name to the reference generator string so shared files don't have same reference (that will be escaped by appending a number)
+        // TODO: add the target name to the reference generator string so shared files don't have same reference (that will be escaped by appending a number)
         let buildFile = PBXBuildFile(reference: referenceGenerator.generate(PBXBuildFile.self, fileReference + targetName), fileRef: fileReference, settings: settings.isEmpty ? nil : settings)
         return SourceFile(path: path, fileReference: fileReference, buildFile: buildFile, buildPhase: buildPhase)
     }
@@ -91,7 +91,6 @@ class SourceGenerator {
         }
     }
 
-
     private func getDefaultBuildPhase(for path: Path) -> BuildPhase? {
         if path.lastComponent == "Info.plist" {
             return nil
@@ -109,7 +108,7 @@ class SourceGenerator {
 
     private func getGroup(path: Path, name: String? = nil, mergingChildren children: [String], createIntermediateGroups: Bool, isBaseGroup: Bool) -> PBXGroup {
         let group: PBXGroup
-        
+
         if let cachedGroup = groupsByPath[path] {
             // only add the children that aren't already in the cachedGroup
             cachedGroup.children = Array(Set(cachedGroup.children + children))

@@ -264,7 +264,7 @@ func projectGeneratorTests() {
                     referenceGenerator.generate(PBXGroup.self, "a"),
                     referenceGenerator.generate(PBXFileReference.self, "a"),
                     referenceGenerator.generate(XCConfigurationList.self, "a"),
-                    ]
+                ]
                 try expect(references[0].hasPrefix("G")).to.beTrue()
                 try expect(references[1].hasPrefix("FR")).to.beTrue()
                 try expect(references[2].hasPrefix("CL")).to.beTrue()
@@ -523,7 +523,7 @@ func projectGeneratorTests() {
 
                 let target = Target(name: "Test", type: .application, platform: .iOS, sources: [
                     TargetSource(path: "Sources/A", type: .folder),
-                    ])
+                ])
                 let spec = ProjectSpec(basePath: directoryPath, name: "Test", targets: [target])
 
                 let project = try getPbxProj(spec)

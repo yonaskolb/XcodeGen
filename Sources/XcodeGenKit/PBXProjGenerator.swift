@@ -224,7 +224,7 @@ public class PBXProjGenerator {
 
             var baseConfigurationReference: String?
             if let configPath = target.configFiles[config.name] {
-                baseConfigurationReference =  sourceGenerator.getContainedFileReference(path: spec.basePath + configPath)
+                baseConfigurationReference = sourceGenerator.getContainedFileReference(path: spec.basePath + configPath)
             }
             return XCBuildConfiguration(reference: referenceGenerator.generate(XCBuildConfiguration.self, config.name + target.name), name: config.name, baseConfigurationReference: baseConfigurationReference, buildSettings: buildSettings)
         }

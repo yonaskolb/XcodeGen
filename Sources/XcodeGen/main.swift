@@ -15,7 +15,7 @@ import ProjectSpec
 import JSONUtilities
 import Rainbow
 
-let version = "1.3.0"
+let version = "1.4.0"
 
 func generate(spec: String, project: String) {
 
