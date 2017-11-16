@@ -18,10 +18,11 @@ public struct Dependency: Equatable {
     public var removeHeaders: Bool = true
     public var link: Bool = true
 
-    public init(type: DependencyType, reference: String, embed: Bool? = nil) {
+    public init(type: DependencyType, reference: String, embed: Bool? = nil, link: Bool = true) {
         self.type = type
         self.reference = reference
         self.embed = embed
+        self.link = link
     }
 
     public enum DependencyType {
