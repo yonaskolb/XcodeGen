@@ -7,7 +7,7 @@
 #### Added
 - added `--version` flag [#112](https://github.com/yonaskolb/XcodeGen/pull/112) @mironal
 - added support for adding individual file sources [#106](https://github.com/yonaskolb/XcodeGen/pull/106) [#133](https://github.com/yonaskolb/XcodeGen/pull/133) [#142](https://github.com/yonaskolb/XcodeGen/pull/142) [#139](https://github.com/yonaskolb/XcodeGen/pull/139) @bkase
-- added source compiler flag support [#121](https://github.com/yonaskolb/XcodeGen/pull/121) @ bkase
+- added source compiler flag support [#121](https://github.com/yonaskolb/XcodeGen/pull/121) @bkase
 - added `ProjectSpec.options.createIntermediateGroups` [#108](https://github.com/yonaskolb/XcodeGen/pull/108) @bkase
 - added better json loading support [#127](https://github.com/yonaskolb/XcodeGen/pull/127) @rahul-malik
 - added source `name` for customizing names of source directories and file [#146](https://github.com/yonaskolb/XcodeGen/pull/146) @yonaskolb
