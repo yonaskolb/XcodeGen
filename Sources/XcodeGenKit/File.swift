@@ -8,16 +8,24 @@
 import Foundation
 import PathKit
 
-internal struct FilePath {
+public struct FilePath {
     var string: String
     var basename: String { return NSString(string: string).lastPathComponent }
     var `extension`: String { return NSString(string: basename).pathExtension }
     var basenameWithoutExtension: String { return NSString(string: basename).deletingPathExtension }
 }
 
-internal indirect enum File {
+public indirect enum File {
     case directory(FilePath, [File]) // path, children
     case file(FilePath) // path
+
+    public init(_ path: String) {
+        self = .file(FilePath(string: path))
+    }
+
+    public init(_ path: String, _ children: [File]) {
+        self = .directory(FilePath(string: path), children)
+    }
 
     var isDirectory: Bool {
         switch self {
@@ -41,7 +49,7 @@ internal indirect enum File {
     }
 }
 
-internal extension Path {
+extension Path {
     func getFileTree() throws -> File {
         if isFile {
             return .file(FilePath(string: string))

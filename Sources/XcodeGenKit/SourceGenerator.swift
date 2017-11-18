@@ -17,7 +17,7 @@ struct SourceFile {
     let buildPhase: BuildPhase?
 }
 
-class SourceGenerator {
+public class SourceGenerator {
 
     var rootGroups: Set<String> = []
     private var fileReferencesByPath: [Path: String] = [:]
@@ -31,9 +31,9 @@ class SourceGenerator {
 
     var targetName: String = ""
 
-    private(set) var knownRegions: Set<String> = []
+    public private(set) var knownRegions: Set<String> = []
 
-    init(spec: ProjectSpec, proj: PBXProj, referenceGenerator: ReferenceGenerator, addObject: @escaping (PBXObject) -> Void) {
+    public init(spec: ProjectSpec, proj: PBXProj, referenceGenerator: ReferenceGenerator, addObject: @escaping (PBXObject) -> Void) {
         self.spec = spec
         self.proj = proj
         self.referenceGenerator = referenceGenerator
@@ -51,7 +51,7 @@ class SourceGenerator {
         getFileGroups(in: directory)
     }
 
-    func getFileGroups(in directory: File) {
+    public func getFileGroups(in directory: File) {
         _ = getGroupSources(targetSource: TargetSource(path: directory.path.string), directory: directory, isBaseGroup: true)
     }
 
