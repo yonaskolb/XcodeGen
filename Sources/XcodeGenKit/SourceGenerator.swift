@@ -47,7 +47,12 @@ class SourceGenerator {
     // get groups without build files. Use for Project.fileGroups
     func getFileGroups(path: String) throws {
         // TODO: call a seperate function that only creates groups not source files
-        _ = try getGroupSources(targetSource: TargetSource(path: path), path: spec.basePath + path, isBaseGroup: true)
+        let directory = try (spec.basePath + path).getFileTree()
+        getFileGroups(in: directory)
+    }
+
+    func getFileGroups(in directory: File) {
+        _ = getGroupSources(targetSource: TargetSource(path: directory.path.string), directory: directory, isBaseGroup: true)
     }
 
     func generateSourceFile(targetSource: TargetSource, path: Path, buildPhase: BuildPhase? = nil) -> SourceFile {
@@ -158,11 +163,11 @@ class SourceGenerator {
         return variantGroup
     }
 
-    private func getGroupSources(targetSource: TargetSource, path: Path, isBaseGroup: Bool) throws -> (sourceFiles: [SourceFile], groups: [PBXGroup]) {
-        let file = try path.getFileTree()
-        guard case let .directory(filename, children) = file else {
-            return ([], [])
+    private func getGroupSources(targetSource: TargetSource, directory: File, isBaseGroup: Bool) -> (sourceFiles: [SourceFile], groups: [PBXGroup]) {
+        guard case let .directory(filename, children) = directory else {
+            fatalError("you must pass directory path")
         }
+        let path = Path(directory.path.string)
 
         let directories = children
             .filter { $0.isDirectory && $0.path.extension.count == 0 }
@@ -184,7 +189,7 @@ class SourceGenerator {
         var groups: [PBXGroup] = []
 
         for dir in directories {
-            let subGroups = try getGroupSources(targetSource: targetSource, path: Path(dir.path.string), isBaseGroup: false)
+            let subGroups = getGroupSources(targetSource: targetSource, directory: dir, isBaseGroup: false)
 
             guard !subGroups.sourceFiles.isEmpty else {
                 continue
@@ -297,7 +302,8 @@ class SourceGenerator {
             sourceFiles.append(sourceFile)
             sourceReference = parentGroup.reference
         case .group:
-            let (groupSourceFiles, groups) = try getGroupSources(targetSource: targetSource, path: path, isBaseGroup: true)
+            let directory = try path.getFileTree()
+            let (groupSourceFiles, groups) = getGroupSources(targetSource: targetSource, directory: directory, isBaseGroup: true)
             let group = groups.first!
             if let name = targetSource.name {
                 group.name = name
