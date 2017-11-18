@@ -8,5 +8,6 @@ class XCodeGenKitTests: XCTestCase {
         specLoadingTests()
         fixtureTests()
         projectSpecTests()
+        sourceGeneratorTests()
     }
 }
