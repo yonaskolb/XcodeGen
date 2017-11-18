@@ -158,53 +158,6 @@ class SourceGenerator {
         return variantGroup
     }
 
-    private func getSourceChildren(targetSource: TargetSource, dirPath: Path) throws -> [Path] {
-
-        func getSourceExcludes(targetSource: TargetSource, dirPath: Path) -> [Path] {
-            return targetSource.excludes.map {
-                Path.glob("\(dirPath)/\($0)")
-                    .map {
-                        guard $0.isDirectory else {
-                            return [$0]
-                        }
-
-                        return (try? $0.recursiveChildren().filter { $0.isFile }) ?? []
-                    }
-                    .reduce([], +)
-            }
-            .reduce([], +)
-        }
-
-        let defaultExcludedFiles = [".DS_Store"].map { dirPath + Path($0) }
-
-        let sourcePath = Path(targetSource.path)
-
-        /*
-         Exclude following if mentioned in TargetSource.excludes.
-         Any path related to source dirPath
-         + Pre-defined Excluded files
-         */
-
-        let sourceExcludeFilePaths: Set<Path> = Set(getSourceExcludes(targetSource: targetSource, dirPath: sourcePath)
-            + defaultExcludedFiles)
-
-        return try dirPath.children()
-            .filter {
-                if $0.isDirectory {
-                    let pathChildren = try $0.children()
-                        .filter {
-                            return !sourceExcludeFilePaths.contains($0)
-                        }
-
-                    return !pathChildren.isEmpty
-                } else if $0.isFile {
-                    return !sourceExcludeFilePaths.contains($0)
-                } else {
-                    return false
-                }
-            }
-    }
-
     private func getGroupSources(targetSource: TargetSource, path: Path, isBaseGroup: Bool) throws -> (sourceFiles: [SourceFile], groups: [PBXGroup]) {
         let file = try path.getFileTree()
         guard case let .directory(filename, children) = file else {
