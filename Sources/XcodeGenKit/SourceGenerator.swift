@@ -206,29 +206,32 @@ class SourceGenerator {
     }
 
     private func getGroupSources(targetSource: TargetSource, path: Path, isBaseGroup: Bool) throws -> (sourceFiles: [SourceFile], groups: [PBXGroup]) {
-
-        let children = try getSourceChildren(targetSource: targetSource, dirPath: path)
+        let file = try path.getFileTree()
+        guard case let .directory(filename, children) = file else {
+            return ([], [])
+        }
 
         let directories = children
-            .filter { $0.isDirectory && $0.extension == nil && $0.extension != "lproj" }
-            .sorted { $0.lastComponent < $1.lastComponent }
+            .filter { $0.isDirectory && $0.path.extension.count == 0 }
+            .sorted { $0.path.basename < $1.path.basename }
 
         let filePaths = children
-            .filter { $0.isFile || $0.extension != nil && $0.extension != "lproj" }
-            .sorted { $0.lastComponent < $1.lastComponent }
+            .filter { $0.isFile || ($0.isDirectory && $0.path.extension == "xcassets") }
+            .sorted { $0.path.basename < $1.path.basename }
+            .map { $0.path }
 
         let localisedDirectories = children
-            .filter { $0.extension == "lproj" }
-            .sorted { $0.lastComponent < $1.lastComponent }
+            .filter { $0.isDirectory && $0.path.extension == "lproj" }
+            .sorted { $0.path.basename < $1.path.basename }
 
-        var groupChildren: [String] = filePaths.map { getFileReference(path: $0, inPath: path) }
+        var groupChildren: [String] = filePaths.map { getFileReference(path: Path($0.string), inPath: path) }
         var allSourceFiles: [SourceFile] = filePaths.map {
-            generateSourceFile(targetSource: targetSource, path: $0)
+            generateSourceFile(targetSource: targetSource, path: Path($0.string))
         }
         var groups: [PBXGroup] = []
 
-        for path in directories {
-            let subGroups = try getGroupSources(targetSource: targetSource, path: path, isBaseGroup: false)
+        for dir in directories {
+            let subGroups = try getGroupSources(targetSource: targetSource, path: Path(dir.path.string), isBaseGroup: false)
 
             guard !subGroups.sourceFiles.isEmpty else {
                 continue
@@ -245,40 +248,44 @@ class SourceGenerator {
         }
 
         // find the base localised directory
-        let baseLocalisedDirectory: Path? = {
-            func findLocalisedDirectory(by languageId: String) -> Path? {
-                return localisedDirectories.first { $0.lastComponent == "\(languageId).lproj" }
+        let baseLocalisedDirectory: File? = {
+            func findLocalisedDirectory(by languageId: String) -> File? {
+                return localisedDirectories.first { $0.path.basenameWithoutExtension == languageId }
             }
             return findLocalisedDirectory(by: "Base") ??
                 findLocalisedDirectory(by: NSLocale.canonicalLanguageIdentifier(from: spec.options.developmentLanguage ?? "en"))
         }()
 
-        knownRegions.formUnion(localisedDirectories.map { $0.lastComponentWithoutExtension })
+        knownRegions.formUnion(localisedDirectories.map { $0.path.basenameWithoutExtension })
 
         // create variant groups of the base localisation first
         var baseLocalisationVariantGroups: [PBXVariantGroup] = []
 
-        if let baseLocalisedDirectory = baseLocalisedDirectory {
-            for filePath in try baseLocalisedDirectory.children().sorted() {
-                let variantGroup = getVariantGroup(path: filePath, inPath: path)
+        if case let .directory(_, children)? = baseLocalisedDirectory {
+            for child in children.sorted(by: { $0.path.basename < $1.path.basename }) {
+                let filePath = child.path
+
+                let variantGroup = getVariantGroup(path: Path(filePath.string), inPath: path)
                 groupChildren.append(variantGroup.reference)
                 baseLocalisationVariantGroups.append(variantGroup)
 
                 let buildFile = PBXBuildFile(reference: referenceGenerator.generate(PBXBuildFile.self, variantGroup.reference + targetName), fileRef: variantGroup.reference, settings: nil)
-                allSourceFiles.append(SourceFile(path: filePath, fileReference: variantGroup.reference, buildFile: buildFile, buildPhase: .resources))
+                allSourceFiles.append(SourceFile(path: Path(filePath.string), fileReference: variantGroup.reference, buildFile: buildFile, buildPhase: .resources))
             }
         }
 
         // add references to localised resources into base localisation variant groups
-        for localisedDirectory in localisedDirectories {
-            let localisationName = localisedDirectory.lastComponentWithoutExtension
-            for filePath in try localisedDirectory.children().sorted { $0.lastComponent < $1.lastComponent } {
+        for case let .directory(dir, children) in localisedDirectories {
+            let localisationName = dir.basenameWithoutExtension
+            for child in children.sorted(by: { $0.path.basename < $1.path.basename }) {
+                let filePath = child.path
+
                 // find base localisation variant group
                 // ex: Foo.strings will be added to Foo.strings or Foo.storyboard variant group
-                let variantGroup = baseLocalisationVariantGroups.first { Path($0.name!).lastComponent == filePath.lastComponent } ??
-                    baseLocalisationVariantGroups.first { Path($0.name!).lastComponentWithoutExtension == filePath.lastComponentWithoutExtension }
+                let variantGroup = baseLocalisationVariantGroups.first { Path($0.name!).lastComponent == filePath.basename } ??
+                    baseLocalisationVariantGroups.first { Path($0.name!).lastComponentWithoutExtension == filePath.basenameWithoutExtension }
 
-                let fileReference = getFileReference(path: filePath, inPath: path, name: variantGroup != nil ? localisationName : filePath.lastComponent)
+                let fileReference = getFileReference(path: Path(filePath.string), inPath: path, name: variantGroup != nil ? localisationName : filePath.basename)
 
                 if let variantGroup = variantGroup {
                     if !variantGroup.children.contains(fileReference) {
@@ -289,7 +296,7 @@ class SourceGenerator {
                     let buildFile = PBXBuildFile(reference: referenceGenerator.generate(PBXBuildFile.self, fileReference + targetName),
                                                  fileRef: fileReference,
                                                  settings: nil)
-                    allSourceFiles.append(SourceFile(path: filePath, fileReference: fileReference, buildFile: buildFile, buildPhase: .resources))
+                    allSourceFiles.append(SourceFile(path: Path(filePath.string), fileReference: fileReference, buildFile: buildFile, buildPhase: .resources))
                     groupChildren.append(fileReference)
                 }
             }
