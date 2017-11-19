@@ -66,11 +66,11 @@
       },
       {
         "package": "xcproj",
-        "repositoryURL": "https://github.com/rahul-malik/xcproj.git",
+        "repositoryURL": "https://github.com/xcodeswift/xcproj.git",
         "state": {
           "branch": null,
-          "revision": "1923c0f53d9dfb7257b2ff08e4819be8efe25001",
-          "version": null
+          "revision": "a6a1b9b2cbb89e89e09456037ad92906e2a1507a",
+          "version": "1.4.0"
         }
       }
     ]
