@@ -160,7 +160,7 @@ class SourceGenerator {
 
     private func getSourceChildren(targetSource: TargetSource, dirPath: Path) throws -> [Path] {
 
-        func getSourceExcludes(targetSource: TargetSource, dirPath: Path) -> [Path] {
+        func getSourceExcludes(dirPath: Path) -> [Path] {
             return targetSource.excludes.map {
                 Path.glob("\(dirPath)/\($0)")
                     .map {
@@ -177,7 +177,7 @@ class SourceGenerator {
 
         let defaultExcludedFiles = [".DS_Store"].map { dirPath + Path($0) }
 
-        let sourcePath = Path(targetSource.path)
+        let rootSourcePath = spec.basePath + targetSource.path
 
         /*
          Exclude following if mentioned in TargetSource.excludes.
@@ -185,7 +185,7 @@ class SourceGenerator {
          + Pre-defined Excluded files
          */
 
-        let sourceExcludeFilePaths: Set<Path> = Set(getSourceExcludes(targetSource: targetSource, dirPath: sourcePath)
+        let sourceExcludeFilePaths: Set<Path> = Set(getSourceExcludes(dirPath: rootSourcePath)
             + defaultExcludedFiles)
 
         return try dirPath.children()
