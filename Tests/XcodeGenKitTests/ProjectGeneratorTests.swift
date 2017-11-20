@@ -431,10 +431,10 @@ func projectGeneratorTests() {
                 try project.expectFile(paths: ["Sources", "E", "e.jpg"], buildPhase: .resources)
                 try project.expectFile(paths: ["Sources", "E", "e.m"], buildPhase: .sources)
                 try project.expectFile(paths: ["Sources", "E", "e.h"])
-                try project.expectFileMissing(paths: ["Sources/B", "b.swift"])
-                try project.expectFileMissing(paths: ["Sources/C", "c.h"])
-                try project.expectFileMissing(paths: ["Sources/E/F", "f.swift"])
-                try project.expectFileMissing(paths: ["Sources/G/H", "h.swift"])
+                try project.expectFileMissing(paths: ["Sources", "B", "b.swift"])
+                try project.expectFileMissing(paths: ["Sources", "C", "c.h"])
+                try project.expectFileMissing(paths: ["Sources", "E", "F", "f.swift"])
+                try project.expectFileMissing(paths: ["Sources", "G", "H", "h.swift"])
             }
 
             $0.it("generates file sources") {
