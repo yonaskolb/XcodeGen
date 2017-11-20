@@ -49,7 +49,7 @@ public class ProjectGenerator {
 
         func getBuildEntry(_ buildTarget: Scheme.BuildTarget) -> XCScheme.BuildAction.Entry {
 
-            let targetReference = pbxProject.nativeTargets.first { $0.name == buildTarget.target }!
+            let targetReference = pbxProject.objects.nativeTargets.referenceValues.first { $0.name == buildTarget.target }!
 
             let buildableReference = XCScheme.BuildableReference(referencedContainer: "container:\(spec.name).xcodeproj", blueprintIdentifier: targetReference.reference, buildableName: "\(buildTarget.target).\(targetReference.productType!.fileExtension!)", blueprintName: scheme.name)
 

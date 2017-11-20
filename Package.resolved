@@ -69,8 +69,8 @@
         "repositoryURL": "https://github.com/xcodeswift/xcproj.git",
         "state": {
           "branch": null,
-          "revision": "fc8cbfce8a6bc1a98773181afe8da97c2516b722",
-          "version": "1.2.0"
+          "revision": "a6a1b9b2cbb89e89e09456037ad92906e2a1507a",
+          "version": "1.4.0"
         }
       }
     ]
