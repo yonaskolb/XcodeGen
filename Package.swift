@@ -7,6 +7,7 @@ let package = Package(
     products: [
         .executable(name: "XcodeGen", targets: ["XcodeGen"]),
         .library(name: "XcodeGenKit", targets: ["XcodeGenKit"]),
+        .library(name: "ProjectSpec", targets: ["ProjectSpec"]),
     ],
     dependencies: [
         .package(url: "https://github.com/kylef/PathKit.git", from: "0.8.0"),
