@@ -249,9 +249,9 @@ These only applied to `target` and `framework` dependencies.
 
 **Implicit Framework options**:
 
-This only applies to `framework` dependencies.
+This only applies to `framework` dependencies. Implicit framework dependencies are useful in Xcode Workspaces which have multiple `.xcodeproj` that are not embedded within each other yet have a dependency on a framework built in an adjacent `.xcodeproj`. 
 
-- ⚪️ **implicit**: `Bool` - Whether the framework is an implicit dependency. This can be useful in a Workspace where projects are not nested within each other.
+- ⚪️ **implicit**: `Bool` - Whether the framework is an implicit dependency. Defaults to `false` .
 
 **Carthage Dependency**
 

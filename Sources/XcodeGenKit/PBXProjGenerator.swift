@@ -277,7 +277,7 @@ public class PBXProjGenerator {
 
             case .framework:
                 let fileReference: String
-                if let implicit = dependency.implicit, implicit == true {
+                if dependency.implicit {
                     fileReference = sourceGenerator.getFileReference(path: Path(dependency.reference), inPath: spec.basePath, sourceTree: .buildProductsDir)
                 } else {
                     fileReference = sourceGenerator.getFileReference(path: Path(dependency.reference), inPath: spec.basePath)

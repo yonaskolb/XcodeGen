@@ -17,9 +17,9 @@ public struct Dependency: Equatable {
     public var codeSign: Bool = true
     public var removeHeaders: Bool = true
     public var link: Bool = true
-    public var implicit: Bool?
+    public var implicit: Bool = false
 
-    public init(type: DependencyType, reference: String, embed: Bool? = nil, link: Bool = true, implicit: Bool? = nil) {
+    public init(type: DependencyType, reference: String, embed: Bool? = nil, link: Bool = true, implicit: Bool = false) {
         self.type = type
         self.reference = reference
         self.embed = embed
@@ -71,8 +71,7 @@ extension Dependency: JSONObjectConvertible {
         }
 
         embed = jsonDictionary.json(atKeyPath: "embed")
-        implicit = jsonDictionary.json(atKeyPath: "implicit")
-
+        
         if let bool: Bool = jsonDictionary.json(atKeyPath: "link") {
             link = bool
         }
@@ -81,6 +80,9 @@ extension Dependency: JSONObjectConvertible {
         }
         if let bool: Bool = jsonDictionary.json(atKeyPath: "removeHeaders") {
             removeHeaders = bool
+        }
+        if let bool: Bool = jsonDictionary.json(atKeyPath: "implicit") {
+            implicit = bool
         }
     }
 }
