@@ -24,6 +24,7 @@ public struct Dependency: Equatable {
         self.reference = reference
         self.embed = embed
         self.link = link
+        self.implicit = implicit
     }
 
     public enum DependencyType {
