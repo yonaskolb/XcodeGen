@@ -154,14 +154,6 @@ func projectGeneratorTests() {
                 try expect(dependencies.first!.target) == nativeTargets.first { $0.name == framework.name }!.reference
             }
 
-            $0.it("generates dependencies") {
-                let pbxProject = try getPbxProj(spec)
-                let nativeTargets = pbxProject.objects.nativeTargets.referenceValues
-                let dependencies = pbxProject.objects.targetDependencies.referenceValues
-                try expect(dependencies.count) == 1
-                try expect(dependencies.first!.target) == nativeTargets.first { $0.name == framework.name }!.reference
-            }
-
             $0.it("generates run scripts") {
                 var scriptSpec = spec
                 scriptSpec.targets[0].prebuildScripts = [BuildScript(script: .script("script1"))]
