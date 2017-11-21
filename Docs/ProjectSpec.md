@@ -247,6 +247,12 @@ These only applied to `target` and `framework` dependencies.
 - ⚪️ **codeSign**: `Bool` - Whether the `codeSignOnCopy` setting is applied when embedding framework. Defaults to true
 - ⚪️ **removeHeaders**: `Bool` - Whether the `removeHeadersOnCopy` setting is applied when embedding the framework. Defaults to true
 
+**Implicit Framework options**:
+
+This only applies to `framework` dependencies.
+
+- ⚪️ **implicit**: `Bool` - Whether the framework is an implicit dependency. This can be useful in a Workspace where projects are not nested within each other.
+
 **Carthage Dependency**
 
 Carthage frameworks are expected to be in `CARTHAGE_BUILD_PATH/PLATFORM/FRAMEWORK.framework` where:
