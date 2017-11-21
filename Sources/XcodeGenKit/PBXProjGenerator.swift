@@ -276,8 +276,12 @@ public class PBXProjGenerator {
                 }
 
             case .framework:
-
-                let fileReference = sourceGenerator.getFileReference(path: Path(dependency.reference), inPath: spec.basePath)
+                let fileReference: String
+                if dependency.implicit {
+                    fileReference = sourceGenerator.getFileReference(path: Path(dependency.reference), inPath: spec.basePath, sourceTree: .buildProductsDir)
+                } else {
+                    fileReference = sourceGenerator.getFileReference(path: Path(dependency.reference), inPath: spec.basePath)
+                }
 
                 let buildFile = PBXBuildFile(reference: referenceGenerator.generate(PBXBuildFile.self, fileReference + target.name), fileRef: fileReference)
                 addObject(buildFile)
