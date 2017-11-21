@@ -249,7 +249,7 @@ These only applied to `target` and `framework` dependencies.
 
 **Implicit Framework options**:
 
-This only applies to `framework` dependencies. Implicit framework dependencies are useful in Xcode Workspaces which have multiple `.xcodeproj` that are not embedded within each other yet have a dependency on a framework built in an adjacent `.xcodeproj`. 
+This only applies to `framework` dependencies. Implicit framework dependencies are useful in Xcode Workspaces which have multiple `.xcodeproj` that are not embedded within each other yet have a dependency on a framework built in an adjacent `.xcodeproj`.  By having `Find Implicit Dependencies` checked within your scheme `Build Options` Xcode can link built frameworks in `BUILT_PRODUCTS_DIR`.
 
 - ⚪️ **implicit**: `Bool` - Whether the framework is an implicit dependency. Defaults to `false` .
 
