@@ -26,16 +26,14 @@ class SourceGenerator {
 
     private let spec: ProjectSpec
     private let referenceGenerator: ReferenceGenerator
-    private let proj: PBXProj
     var addObject: (PBXObject) -> Void
 
     var targetName: String = ""
 
     private(set) var knownRegions: Set<String> = []
 
-    init(spec: ProjectSpec, proj: PBXProj, referenceGenerator: ReferenceGenerator, addObject: @escaping (PBXObject) -> Void) {
+    init(spec: ProjectSpec, referenceGenerator: ReferenceGenerator, addObject: @escaping (PBXObject) -> Void) {
         self.spec = spec
-        self.proj = proj
         self.referenceGenerator = referenceGenerator
         self.addObject = addObject
     }

@@ -40,7 +40,7 @@ public class PBXProjGenerator {
         self.currentXcodeVersion = currentXcodeVersion
         self.spec = spec
         proj = PBXProj(objectVersion: 46, rootObject: referenceGenerator.generate(PBXProject.self, spec.name))
-        sourceGenerator = SourceGenerator(spec: spec, proj: proj, referenceGenerator: referenceGenerator) { _ in }
+        sourceGenerator = SourceGenerator(spec: spec, referenceGenerator: referenceGenerator) { _ in }
         sourceGenerator.addObject = { [weak self] object in
             self?.addObject(object)
         }
