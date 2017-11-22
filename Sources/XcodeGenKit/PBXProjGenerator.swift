@@ -1,12 +1,3 @@
-//
-//  PBXProjGenerator.swift
-//  XcodeGen
-//
-//  Created by Yonas Kolb on 23/7/17.
-//
-//
-
-import Foundation
 import Foundation
 import PathKit
 import xcproj

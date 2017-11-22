@@ -1,11 +1,3 @@
-//
-//  main.swift
-//  SwiftySwagger
-//
-//  Created by Yonas Kolb on 17/09/2016.
-//  Copyright © 2016 Yonas Kolb. All rights reserved.
-//
-
 import Foundation
 import PathKit
 import Commander

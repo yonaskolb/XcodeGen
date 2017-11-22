@@ -1,11 +1,3 @@
-//
-//  SpecLoader.swift
-//  XcodeGen
-//
-//  Created by Yonas Kolb on 30/8/17.
-//
-//
-
 import Foundation
 import PathKit
 import Yams

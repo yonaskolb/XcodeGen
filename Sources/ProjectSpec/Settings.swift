@@ -1,11 +1,3 @@
-//
-//  BuildSetting.swift
-//  XcodeGen
-//
-//  Created by Yonas Kolb on 21/7/17.
-//
-//
-
 import Foundation
 import JSONUtilities
 import xcproj

@@ -1,11 +1,3 @@
-//
-//  ProjectExtensions.swift
-//  XcodeGen
-//
-//  Created by Yonas Kolb on 19/7/17.
-//
-//
-
 import Foundation
 import xcproj
 import PathKit

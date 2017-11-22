@@ -1,11 +1,3 @@
-//
-//  BuildScript.swift
-//  XcodeGen
-//
-//  Created by Yonas Kolb on 1/8/17.
-//
-//
-
 import Foundation
 import JSONUtilities
 

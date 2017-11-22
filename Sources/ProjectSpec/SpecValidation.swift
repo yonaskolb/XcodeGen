@@ -1,10 +1,3 @@
-//
-//  SpecValidation.swift
-//  XcodeGenKit
-//
-//  Created by Yonas Kolb on 24/9/17.
-//
-
 import Foundation
 import PathKit
 

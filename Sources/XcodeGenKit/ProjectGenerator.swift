@@ -1,11 +1,3 @@
-//
-//  Generator.swift
-//  XcodeGen
-//
-//  Created by Yonas Kolb on 19/5/17.
-//
-//
-
 import Foundation
 import PathKit
 import xcproj

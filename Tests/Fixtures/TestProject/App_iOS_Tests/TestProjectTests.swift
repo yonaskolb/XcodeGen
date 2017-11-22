@@ -1,11 +1,3 @@
-//
-//  TestProjectTests.swift
-//  TestProjectTests
-//
-//  Created by Yonas Kolb on 4/8/17.
-//  Copyright © 2017 Yonas Kolb. All rights reserved.
-//
-
 import XCTest
 
 class TestProjectTests: XCTestCase {

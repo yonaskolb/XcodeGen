@@ -1,10 +1,3 @@
-//
-//  YamsExtensions.swift
-//  XcodeGenKit
-//
-//  Created by Yonas Kolb on 29/9/17.
-//
-
 import Foundation
 import Yams
 import PathKit

@@ -1,10 +1,3 @@
-//
-//  Source.swift
-//  ProjectSpec
-//
-//  Created by Yonas Kolb on 31/10/17.
-//
-
 import Foundation
 import JSONUtilities
 import PathKit

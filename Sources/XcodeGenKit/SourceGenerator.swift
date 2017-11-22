@@ -1,10 +1,3 @@
-//
-//  SourceGenerator.swift
-//  XcodeGenKit
-//
-//  Created by Yonas Kolb on 11/11/17.
-//
-
 import Foundation
 import ProjectSpec
 import PathKit

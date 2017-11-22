@@ -1,10 +1,3 @@
-//
-//  SpecValidationError.swift
-//  ProjectSpec
-//
-//  Created by Yonas Kolb on 29/10/17.
-//
-
 import Foundation
 
 public struct SpecValidationError: Error, CustomStringConvertible {

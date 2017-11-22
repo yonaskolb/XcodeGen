@@ -1,11 +1,3 @@
-//
-//  SettingsPresetFile.swift
-//  XcodeGen
-//
-//  Created by Yonas Kolb on 27/7/17.
-//
-//
-
 import Foundation
 import xcproj
 import ProjectSpec

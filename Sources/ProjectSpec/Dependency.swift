@@ -1,10 +1,3 @@
-//
-//  Dependency.swift
-//  ProjectSpec
-//
-//  Created by Yonas Kolb on 29/10/17.
-//
-
 import Foundation
 import xcproj
 import JSONUtilities
@@ -71,7 +64,7 @@ extension Dependency: JSONObjectConvertible {
         }
 
         embed = jsonDictionary.json(atKeyPath: "embed")
-        
+
         if let bool: Bool = jsonDictionary.json(atKeyPath: "link") {
             link = bool
         }

@@ -1,11 +1,3 @@
-//
-//  AppDelegate.swift
-//  TestProject
-//
-//  Created by Yonas Kolb on 19/7/17.
-//  Copyright © 2017 Yonas Kolb. All rights reserved.
-//
-
 import UIKit
 import Framework
 

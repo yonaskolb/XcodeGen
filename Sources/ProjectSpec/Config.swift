@@ -1,11 +1,3 @@
-//
-//  Config.swift
-//  XcodeGen
-//
-//  Created by Yonas Kolb on 20/7/17.
-//
-//
-
 import Foundation
 import xcproj
 import JSONUtilities

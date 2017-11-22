@@ -1,11 +1,3 @@
-//
-//  PathExtensions.swift
-//  XcodeGen
-//
-//  Created by Yonas Kolb on 24/7/17.
-//
-//
-
 import Foundation
 import PathKit
 
