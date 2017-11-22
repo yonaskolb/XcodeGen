@@ -26,7 +26,7 @@ uninstall:
 
 format_code:
 	swiftformat Tests --stripunusedargs closure-only --header strip
-	swiftformat sources --stripunusedargs closure-only --header strip
+	swiftformat Sources --stripunusedargs closure-only --header strip
 
 update_brew:
 	sed -i '' 's|\(url ".*/archive/\)\(.*\)\(.tar\)|\1$(VERSION)\3|' Formula/xcodegen.rb
