@@ -146,7 +146,7 @@ extension Scheme.Test: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
         config = try jsonDictionary.json(atKeyPath: "config")
-        codeCoverageEnabled = try jsonDictionary.json(atKeyPath: "codeCoverageEnabled")
+        codeCoverageEnabled = try jsonDictionary.json(atKeyPath: "codeCoverageEnabled") ?? false
     }
 }
 
