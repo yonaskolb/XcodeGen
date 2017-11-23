@@ -17,7 +17,7 @@ struct Logger {
 
     // MARK: - Logging
 
-    func fatal(_ message: String) {
+    func error(_ message: String) {
         print(isColored ? message.red : message)
     }
 

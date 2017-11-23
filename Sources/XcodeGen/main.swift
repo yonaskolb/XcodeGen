@@ -11,12 +11,16 @@ let version = "1.4.0"
 func generate(spec: String, project: String, isQuiet: Bool) {
     let logger = Logger(isQuiet: isQuiet)
 
+    func fatalError(_ message: String) -> Never {
+        logger.error(message)
+        exit(1)
+    }
+
     let specPath = Path(spec).normalize()
     let projectPath = Path(project).normalize()
 
     if !specPath.exists {
-        logger.fatal("No project spec found at \(specPath.absolute())")
-        exit(1)
+        fatalError("No project spec found at \(specPath.absolute())")
     }
 
     let spec: ProjectSpec
@@ -24,11 +28,9 @@ func generate(spec: String, project: String, isQuiet: Bool) {
         spec = try ProjectSpec(path: specPath)
         logger.info("📋  Loaded spec:\n  \(spec.debugDescription.replacingOccurrences(of: "\n", with: "\n  "))")
     } catch let error as JSONUtilities.DecodingError {
-        logger.fatal("Parsing spec failed: \(error.description)")
-        exit(1)
+        fatalError("Parsing spec failed: \(error.description)")
     } catch {
-        logger.fatal("Parsing spec failed: \(error.localizedDescription)")
-        exit(1)
+        fatalError("Parsing spec failed: \(error.localizedDescription)")
     }
 
     do {
@@ -41,11 +43,9 @@ func generate(spec: String, project: String, isQuiet: Bool) {
         try project.write(path: projectFile, override: true)
         logger.success("💾  Saved project to \(projectFile.string)")
     } catch let error as SpecValidationError {
-        logger.fatal(error.description)
-        exit(1)
+        fatalError(error.description)
     } catch {
-        logger.fatal("Generation failed: \(error.localizedDescription)")
-        exit(1)
+        fatalError("Generation failed: \(error.localizedDescription)")
     }
 }
 
