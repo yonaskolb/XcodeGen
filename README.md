@@ -113,8 +113,9 @@ This will look for a project spec in the current directory called `project.yml`
 
 Use `xcodegen --help` to see the list of options:
 
-- **--spec**: An optional path to a `.yml` or `.json` project spec
-- **--project**: An optional path to a directory where the project will be generated. By default this is the current directory
+- **--spec**: An optional path to a `.yml` or `.json` project spec.
+- **--project**: An optional path to a directory where the project will be generated. By default this is the current directory.
+- **--quiet**: Suppress informational and success messages. By default this is disabled.
 
 ## Editing
 ```

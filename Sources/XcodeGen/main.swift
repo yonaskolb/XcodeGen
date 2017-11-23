@@ -5,45 +5,45 @@ import XcodeGenKit
 import xcproj
 import ProjectSpec
 import JSONUtilities
-import Rainbow
 
 let version = "1.4.0"
 
-func generate(spec: String, project: String) {
+func generate(spec: String, project: String, isQuiet: Bool) {
+    let logger = Logger(isQuiet: isQuiet)
 
     let specPath = Path(spec).normalize()
     let projectPath = Path(project).normalize()
 
     if !specPath.exists {
-        print("No project spec found at \(specPath.absolute())".red)
+        logger.fatal("No project spec found at \(specPath.absolute())")
         exit(1)
     }
 
     let spec: ProjectSpec
     do {
         spec = try ProjectSpec(path: specPath)
-        print("📋  Loaded spec:\n  \(spec.debugDescription.replacingOccurrences(of: "\n", with: "\n  "))")
+        logger.info("📋  Loaded spec:\n  \(spec.debugDescription.replacingOccurrences(of: "\n", with: "\n  "))")
     } catch let error as JSONUtilities.DecodingError {
-        print("Parsing spec failed: \(error.description)".red)
+        logger.fatal("Parsing spec failed: \(error.description)")
         exit(1)
     } catch {
-        print("Parsing spec failed: \(error.localizedDescription)".red)
+        logger.fatal("Parsing spec failed: \(error.localizedDescription)")
         exit(1)
     }
 
     do {
         let projectGenerator = ProjectGenerator(spec: spec)
         let project = try projectGenerator.generateProject()
-        print("⚙️  Generated project")
+        logger.info("⚙️  Generated project")
 
         let projectFile = projectPath + "\(spec.name).xcodeproj"
         try project.write(path: projectFile, override: true)
-        print("💾  Saved project to \(projectFile.string)".green)
+        logger.success("💾  Saved project to \(projectFile.string)")
     } catch let error as SpecValidationError {
-        print(error.description.red)
+        logger.fatal(error.description)
         exit(1)
     } catch {
-        print("Generation failed: \(error.localizedDescription)".red)
+        logger.fatal("Generation failed: \(error.localizedDescription)")
         exit(1)
     }
 }
@@ -51,5 +51,6 @@ func generate(spec: String, project: String) {
 command(
     Option<String>("spec", "project.yml", flag: "s", description: "The path to the spec file"),
     Option<String>("project", "", flag: "p", description: "The path to the folder where the project should be generated"),
-    generate)
-    .run(version)
+    Flag("quiet", flag: "q", description: "Suppress printing of informational and success messages", default: false),
+    generate
+).run(version)
