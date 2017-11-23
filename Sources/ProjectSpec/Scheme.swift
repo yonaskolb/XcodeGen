@@ -59,10 +59,7 @@ public struct Scheme: Equatable {
     public struct Test: BuildAction {
         public var config: String
         public var codeCoverageEnabled: Bool
-        public init(config: String) {
-            self.init(config: config, codeCoverageEnabled: false)
-        }
-        public init(config: String, codeCoverageEnabled: Bool) {
+        public init(config: String, codeCoverageEnabled: Bool = false) {
             self.config = config
             self.codeCoverageEnabled = codeCoverageEnabled
         }
@@ -131,8 +128,6 @@ public struct Scheme: Equatable {
 
 protocol BuildAction: Equatable {
     var config: String { get }
-
-    init(config: String)
 }
 
 extension Scheme.Run: JSONObjectConvertible {
