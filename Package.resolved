@@ -60,17 +60,17 @@
         "repositoryURL": "https://github.com/jpsim/Yams.git",
         "state": {
           "branch": null,
-          "revision": "05921531200acff0d8d9caab5ec77b2bcf300b6b",
-          "version": "0.3.7"
+          "revision": "95f45caf07472ec78223ebada45255086a85b01a",
+          "version": "0.5.0"
         }
       },
       {
         "package": "xcproj",
         "repositoryURL": "https://github.com/xcodeswift/xcproj.git",
         "state": {
-          "branch": null,
-          "revision": "a6a1b9b2cbb89e89e09456037ad92906e2a1507a",
-          "version": "1.4.0"
+          "branch": "master",
+          "revision": "feaa00e0ab941e6e7fbe43b4b52b3d429140c341",
+          "version": null
         }
       }
     ]

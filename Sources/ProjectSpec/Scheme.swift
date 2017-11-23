@@ -24,11 +24,11 @@ public struct Scheme: Equatable {
         self.archive = archive
     }
 
-    public init(name: String, targets: [BuildTarget], debugConfig: String, releaseConfig: String) {
+    public init(name: String, targets: [BuildTarget], debugConfig: String, releaseConfig: String, codeCoverageEnabled: Bool = false) {
         self.init(name: name,
                   build: .init(targets: targets),
                   run: .init(config: debugConfig),
-                  test: .init(config: debugConfig),
+                  test: .init(config: debugConfig, codeCoverageEnabled: codeCoverageEnabled),
                   profile: .init(config: releaseConfig),
                   analyze: .init(config: debugConfig),
                   archive: .init(config: releaseConfig))
@@ -58,8 +58,13 @@ public struct Scheme: Equatable {
 
     public struct Test: BuildAction {
         public var config: String
+        public var codeCoverageEnabled: Bool
         public init(config: String) {
+            self.init(config: config, codeCoverageEnabled: false)
+        }
+        public init(config: String, codeCoverageEnabled: Bool) {
             self.config = config
+            self.codeCoverageEnabled = codeCoverageEnabled
         }
 
         public static func == (lhs: Test, rhs: Test) -> Bool {
@@ -141,6 +146,7 @@ extension Scheme.Test: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
         config = try jsonDictionary.json(atKeyPath: "config")
+        codeCoverageEnabled = try jsonDictionary.json(atKeyPath: "codeCoverageEnabled")
     }
 }
 

@@ -2,6 +2,9 @@
 
 ## Master
 
+#### Added
+- added support for codeCoverageEnabled flag in target schemes [#170](https://github.com/yonaskolb/XcodeGen/pull/170) @alexruperez
+
 ## 1.4.0
 
 #### Added
