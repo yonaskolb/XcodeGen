@@ -66,7 +66,7 @@ public class ProjectGenerator {
         let testAction = XCScheme.TestAction(buildConfiguration: scheme.test?.config ?? defaultDebugConfig.name,
                                              macroExpansion: buildableReference,
                                              testables: testables,
-                                             codeCoverageEnabled: scheme.test?.codeCoverageEnabled ?? false)
+                                             codeCoverageEnabled: scheme.test?.gatherCoverageData ?? false)
 
         let launchAction = XCScheme.LaunchAction(buildableProductRunnable: productRunable,
                                                  buildConfiguration: scheme.run?.config ?? defaultDebugConfig.name)
@@ -106,7 +106,7 @@ public class ProjectGenerator {
                     let debugConfig = spec.configs.first { $0.type == .debug }!
                     let releaseConfig = spec.configs.first { $0.type == .release }!
 
-                    let specScheme = Scheme(name: schemeName, targets: [Scheme.BuildTarget(target: target.name)], debugConfig: debugConfig.name, releaseConfig: releaseConfig.name, codeCoverageEnabled: scheme.codeCoverageEnabled)
+                    let specScheme = Scheme(name: schemeName, targets: [Scheme.BuildTarget(target: target.name)], debugConfig: debugConfig.name, releaseConfig: releaseConfig.name, gatherCoverageData: scheme.gatherCoverageData)
                     let scheme = try generateScheme(specScheme, pbxProject: pbxProject, tests: scheme.testTargets)
                     xcschemes.append(scheme)
                 } else {
@@ -117,7 +117,7 @@ public class ProjectGenerator {
                         let debugConfig = spec.configs.first { $0.type == .debug && $0.name.contains(configVariant) }!
                         let releaseConfig = spec.configs.first { $0.type == .release && $0.name.contains(configVariant) }!
 
-                        let specScheme = Scheme(name: schemeName, targets: [Scheme.BuildTarget(target: target.name)], debugConfig: debugConfig.name, releaseConfig: releaseConfig.name, codeCoverageEnabled: scheme.codeCoverageEnabled)
+                        let specScheme = Scheme(name: schemeName, targets: [Scheme.BuildTarget(target: target.name)], debugConfig: debugConfig.name, releaseConfig: releaseConfig.name, gatherCoverageData: scheme.gatherCoverageData)
                         let scheme = try generateScheme(specScheme, pbxProject: pbxProject, tests: scheme.testTargets)
                         xcschemes.append(scheme)
                     }

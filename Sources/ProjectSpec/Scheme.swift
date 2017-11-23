@@ -24,11 +24,11 @@ public struct Scheme: Equatable {
         self.archive = archive
     }
 
-    public init(name: String, targets: [BuildTarget], debugConfig: String, releaseConfig: String, codeCoverageEnabled: Bool = false) {
+    public init(name: String, targets: [BuildTarget], debugConfig: String, releaseConfig: String, gatherCoverageData: Bool = false) {
         self.init(name: name,
                   build: .init(targets: targets),
                   run: .init(config: debugConfig),
-                  test: .init(config: debugConfig, codeCoverageEnabled: codeCoverageEnabled),
+                  test: .init(config: debugConfig, gatherCoverageData: gatherCoverageData),
                   profile: .init(config: releaseConfig),
                   analyze: .init(config: debugConfig),
                   archive: .init(config: releaseConfig))
@@ -58,10 +58,10 @@ public struct Scheme: Equatable {
 
     public struct Test: BuildAction {
         public var config: String
-        public var codeCoverageEnabled: Bool
-        public init(config: String, codeCoverageEnabled: Bool = false) {
+        public var gatherCoverageData: Bool
+        public init(config: String, gatherCoverageData: Bool = false) {
             self.config = config
-            self.codeCoverageEnabled = codeCoverageEnabled
+            self.gatherCoverageData = gatherCoverageData
         }
 
         public static func == (lhs: Test, rhs: Test) -> Bool {
@@ -141,7 +141,7 @@ extension Scheme.Test: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
         config = try jsonDictionary.json(atKeyPath: "config")
-        codeCoverageEnabled = try jsonDictionary.json(atKeyPath: "codeCoverageEnabled") ?? false
+        gatherCoverageData = try jsonDictionary.json(atKeyPath: "gatherCoverageData") ?? false
     }
 }
 
