@@ -32,10 +32,11 @@ func generate(spec: String, project: String, isQuiet: Bool) {
     }
 
     do {
+        logger.info("⚙️  Generating project...")
         let projectGenerator = ProjectGenerator(spec: spec)
         let project = try projectGenerator.generateProject()
-        logger.info("⚙️  Generated project")
 
+        logger.info("⚙️  Writing project...")
         let projectFile = projectPath + "\(spec.name).xcodeproj"
         try project.write(path: projectFile, override: true)
         logger.success("💾  Saved project to \(projectFile.string)")
