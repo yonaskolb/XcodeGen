@@ -129,10 +129,12 @@ extension Target: Equatable {
 public struct TargetScheme {
     public var testTargets: [String]
     public var configVariants: [String]
+    public var gatherCoverageData: Bool
 
-    public init(testTargets: [String] = [], configVariants: [String] = []) {
+    public init(testTargets: [String] = [], configVariants: [String] = [], gatherCoverageData: Bool = false) {
         self.testTargets = testTargets
         self.configVariants = configVariants
+        self.gatherCoverageData = gatherCoverageData
     }
 }
 
@@ -149,6 +151,7 @@ extension TargetScheme: JSONObjectConvertible {
     public init(jsonDictionary: JSONDictionary) throws {
         testTargets = jsonDictionary.json(atKeyPath: "testTargets") ?? []
         configVariants = jsonDictionary.json(atKeyPath: "configVariants") ?? []
+        gatherCoverageData = jsonDictionary.json(atKeyPath: "gatherCoverageData") ?? false
     }
 }
 

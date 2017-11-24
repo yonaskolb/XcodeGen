@@ -2,6 +2,11 @@
 
 ## Master
 
+## 1.5.0
+
+#### Added
+- added support for gatherCoverageData flag in target schemes [#170](https://github.com/yonaskolb/XcodeGen/pull/170) @alexruperez
+
 ## 1.4.0
 
 #### Added

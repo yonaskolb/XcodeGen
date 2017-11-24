@@ -24,11 +24,11 @@ public struct Scheme: Equatable {
         self.archive = archive
     }
 
-    public init(name: String, targets: [BuildTarget], debugConfig: String, releaseConfig: String) {
+    public init(name: String, targets: [BuildTarget], debugConfig: String, releaseConfig: String, gatherCoverageData: Bool = false) {
         self.init(name: name,
                   build: .init(targets: targets),
                   run: .init(config: debugConfig),
-                  test: .init(config: debugConfig),
+                  test: .init(config: debugConfig, gatherCoverageData: gatherCoverageData),
                   profile: .init(config: releaseConfig),
                   analyze: .init(config: debugConfig),
                   archive: .init(config: releaseConfig))
@@ -58,8 +58,10 @@ public struct Scheme: Equatable {
 
     public struct Test: BuildAction {
         public var config: String
-        public init(config: String) {
+        public var gatherCoverageData: Bool
+        public init(config: String, gatherCoverageData: Bool = false) {
             self.config = config
+            self.gatherCoverageData = gatherCoverageData
         }
 
         public static func == (lhs: Test, rhs: Test) -> Bool {
@@ -126,8 +128,6 @@ public struct Scheme: Equatable {
 
 protocol BuildAction: Equatable {
     var config: String { get }
-
-    init(config: String)
 }
 
 extension Scheme.Run: JSONObjectConvertible {
@@ -141,6 +141,7 @@ extension Scheme.Test: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
         config = try jsonDictionary.json(atKeyPath: "config")
+        gatherCoverageData = jsonDictionary.json(atKeyPath: "gatherCoverageData") ?? false
     }
 }
 

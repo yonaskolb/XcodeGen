@@ -31,6 +31,7 @@ targets:
     scheme:
       testTargets:
         - App_iOS_Tests
+      gatherCoverageData: true
     postbuildScripts:
       - path: scripts/strip-frameworks.sh
         name: Strip Unused Architectures from Frameworks

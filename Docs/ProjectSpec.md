@@ -325,6 +325,7 @@ This is a convenience used to automatically generate schemes for a target based 
 
 - 🔵 **configVariants**: `[String]` - This generates a scheme for each entry, using configs that contain the name with debug and release variants. This is useful for having different environment schemes.
 - ⚪️ **testTargets**: `[String]` - a list of test targets that should be included in the scheme. These will be added to the build targets and the test entries
+- ⚪️ **gatherCoverageData**: `Bool` - a boolean that indicates if this scheme should gather coverage data
 
 For example, the spec below would create 3 schemes called:
 
@@ -352,6 +353,7 @@ targets
         - Test
         - Staging
         - Production
+      gatherCoverageData: true
   MyUnitTests:
     sources: Tests
 ```
