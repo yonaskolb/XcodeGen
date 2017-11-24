@@ -141,7 +141,7 @@ extension Scheme.Test: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
         config = try jsonDictionary.json(atKeyPath: "config")
-        gatherCoverageData = try jsonDictionary.json(atKeyPath: "gatherCoverageData") ?? false
+        gatherCoverageData = jsonDictionary.json(atKeyPath: "gatherCoverageData") ?? false
     }
 }
 
