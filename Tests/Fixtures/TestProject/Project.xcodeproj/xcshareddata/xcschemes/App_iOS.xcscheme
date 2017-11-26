@@ -11,11 +11,13 @@
 		<MacroExpansion>
 			<BuildableReference BlueprintIdentifier="NT_825232110500" ReferencedContainer="container:Project.xcodeproj" BuildableName="App_iOS.app" BlueprintName="App_iOS" BuildableIdentifier="primary" />
 		</MacroExpansion>
+		<CommandLineArguments />
 	</TestAction>
 	<ProfileAction savedToolIdentifier="" useCustomWorkingDirectory="NO" shouldUseLaunchSchemeArgsEnv="YES" buildConfiguration="Production Release" debugDocumentVersioning="YES">
 		<BuildableProductRunnable runnableDebuggingMode="0">
 			<BuildableReference BlueprintIdentifier="NT_825232110500" ReferencedContainer="container:Project.xcodeproj" BuildableName="App_iOS.app" BlueprintName="App_iOS" BuildableIdentifier="primary" />
 		</BuildableProductRunnable>
+		<CommandLineArguments />
 	</ProfileAction>
 	<BuildAction parallelizeBuildables="YES" buildImplicitDependencies="YES">
 		<BuildActionEntries>
@@ -31,5 +33,6 @@
 		<BuildableProductRunnable runnableDebuggingMode="0">
 			<BuildableReference BlueprintIdentifier="NT_825232110500" ReferencedContainer="container:Project.xcodeproj" BuildableName="App_iOS.app" BlueprintName="App_iOS" BuildableIdentifier="primary" />
 		</BuildableProductRunnable>
+		<CommandLineArguments />
 	</LaunchAction>
 </Scheme>

@@ -63,16 +63,22 @@ public class ProjectGenerator {
 
         let testables = testBuildTargetEntries.map { XCScheme.TestableReference(skipped: false, buildableReference: $0.buildableReference) }
 
+        let testCommandLineArgs = scheme.test?.commandLineArguments ?? [String:Bool]()
+        let launchCommandLineArgs = scheme.run?.commandLineArguments ?? [String:Bool]()
+        let profileCommandLineArgs = scheme.profile?.commandLineArguments ?? [String:Bool]()
         let testAction = XCScheme.TestAction(buildConfiguration: scheme.test?.config ?? defaultDebugConfig.name,
                                              macroExpansion: buildableReference,
                                              testables: testables,
-                                             codeCoverageEnabled: scheme.test?.gatherCoverageData ?? false)
+                                             codeCoverageEnabled: scheme.test?.gatherCoverageData ?? false,
+                                             commandlineArguments: XCScheme.CommandLineArguments(testCommandLineArgs))
 
         let launchAction = XCScheme.LaunchAction(buildableProductRunnable: productRunable,
-                                                 buildConfiguration: scheme.run?.config ?? defaultDebugConfig.name)
+                                                 buildConfiguration: scheme.run?.config ?? defaultDebugConfig.name,
+                                                 commandlineArguments: XCScheme.CommandLineArguments(launchCommandLineArgs))
 
         let profileAction = XCScheme.ProfileAction(buildableProductRunnable: productRunable,
-                                                   buildConfiguration: scheme.profile?.config ?? defaultReleaseConfig.name)
+                                                   buildConfiguration: scheme.profile?.config ?? defaultReleaseConfig.name,
+                                                   commandlineArguments: XCScheme.CommandLineArguments(profileCommandLineArgs))
 
         let analyzeAction = XCScheme.AnalyzeAction(buildConfiguration: scheme.analyze?.config ?? defaultDebugConfig.name)
 

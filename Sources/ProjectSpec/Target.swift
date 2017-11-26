@@ -130,11 +130,13 @@ public struct TargetScheme {
     public var testTargets: [String]
     public var configVariants: [String]
     public var gatherCoverageData: Bool
+    public var commandLineArguments: [String: Bool]
 
-    public init(testTargets: [String] = [], configVariants: [String] = [], gatherCoverageData: Bool = false) {
+    public init(testTargets: [String] = [], configVariants: [String] = [], gatherCoverageData: Bool = false, commandLineArguments: [String: Bool] = [:]) {
         self.testTargets = testTargets
         self.configVariants = configVariants
         self.gatherCoverageData = gatherCoverageData
+        self.commandLineArguments = commandLineArguments
     }
 }
 
@@ -152,6 +154,7 @@ extension TargetScheme: JSONObjectConvertible {
         testTargets = jsonDictionary.json(atKeyPath: "testTargets") ?? []
         configVariants = jsonDictionary.json(atKeyPath: "configVariants") ?? []
         gatherCoverageData = jsonDictionary.json(atKeyPath: "gatherCoverageData") ?? false
+        commandLineArguments = jsonDictionary.json(atKeyPath: "commandLineArguments") ?? [:]
     }
 }
 

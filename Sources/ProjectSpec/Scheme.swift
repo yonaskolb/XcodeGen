@@ -24,14 +24,16 @@ public struct Scheme: Equatable {
         self.archive = archive
     }
 
-    public init(name: String, targets: [BuildTarget], debugConfig: String, releaseConfig: String, gatherCoverageData: Bool = false) {
-        self.init(name: name,
-                  build: .init(targets: targets),
-                  run: .init(config: debugConfig),
-                  test: .init(config: debugConfig, gatherCoverageData: gatherCoverageData),
-                  profile: .init(config: releaseConfig),
-                  analyze: .init(config: debugConfig),
-                  archive: .init(config: releaseConfig))
+    public init(name: String, targets: [BuildTarget], debugConfig: String, releaseConfig: String, gatherCoverageData: Bool = false, commandLineArguments: [String: Bool] = [:]) {
+        self.init(
+            name: name,
+            build: .init(targets: targets),
+            run: .init(config: debugConfig, commandLineArguments: commandLineArguments),
+            test: .init(config: debugConfig, gatherCoverageData: gatherCoverageData, commandLineArguments: commandLineArguments),
+            profile: .init(config: releaseConfig, commandLineArguments: commandLineArguments),
+            analyze: .init(config: debugConfig),
+            archive: .init(config: releaseConfig)
+        )
     }
 
     public struct Build: Equatable {
@@ -47,8 +49,10 @@ public struct Scheme: Equatable {
 
     public struct Run: BuildAction {
         public var config: String
-        public init(config: String) {
+        public var commandLineArguments: [String: Bool]
+        public init(config: String, commandLineArguments: [String: Bool] = [:]) {
             self.config = config
+            self.commandLineArguments = commandLineArguments
         }
 
         public static func == (lhs: Run, rhs: Run) -> Bool {
@@ -59,9 +63,11 @@ public struct Scheme: Equatable {
     public struct Test: BuildAction {
         public var config: String
         public var gatherCoverageData: Bool
-        public init(config: String, gatherCoverageData: Bool = false) {
+        public var commandLineArguments: [String: Bool]
+        public init(config: String, gatherCoverageData: Bool = false, commandLineArguments: [String: Bool] = [:]) {
             self.config = config
             self.gatherCoverageData = gatherCoverageData
+            self.commandLineArguments = commandLineArguments
         }
 
         public static func == (lhs: Test, rhs: Test) -> Bool {
@@ -82,8 +88,10 @@ public struct Scheme: Equatable {
 
     public struct Profile: BuildAction {
         public var config: String
-        public init(config: String) {
+        public var commandLineArguments: [String: Bool]
+        public init(config: String, commandLineArguments: [String: Bool] = [:]) {
             self.config = config
+            self.commandLineArguments = commandLineArguments
         }
 
         public static func == (lhs: Profile, rhs: Profile) -> Bool {
@@ -134,6 +142,7 @@ extension Scheme.Run: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
         config = try jsonDictionary.json(atKeyPath: "config")
+        commandLineArguments = jsonDictionary.json(atKeyPath: "commandLineArguments") ?? [:]
     }
 }
 
@@ -142,6 +151,7 @@ extension Scheme.Test: JSONObjectConvertible {
     public init(jsonDictionary: JSONDictionary) throws {
         config = try jsonDictionary.json(atKeyPath: "config")
         gatherCoverageData = jsonDictionary.json(atKeyPath: "gatherCoverageData") ?? false
+        commandLineArguments = jsonDictionary.json(atKeyPath: "commandLineArguments") ?? [:]
     }
 }
 
@@ -149,6 +159,7 @@ extension Scheme.Profile: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
         config = try jsonDictionary.json(atKeyPath: "config")
+        commandLineArguments = jsonDictionary.json(atKeyPath: "commandLineArguments") ?? [:]
     }
 }
 
