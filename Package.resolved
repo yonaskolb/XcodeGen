@@ -6,8 +6,8 @@
         "repositoryURL": "https://github.com/tadija/AEXML.git",
         "state": {
           "branch": null,
-          "revision": "fde572da768c08bdd41d370f0eec2723f9ce6c30",
-          "version": null
+          "revision": "09f27784d9e328670ef0a181c832cce497117131",
+          "version": "4.2.2"
         }
       },
       {
@@ -75,10 +75,10 @@
       },
       {
         "package": "xcproj",
-        "repositoryURL": "https://github.com/rahul-malik/xcproj.git",
+        "repositoryURL": "https://github.com/xcodeswift/xcproj.git",
         "state": {
           "branch": null,
-          "revision": "1525c6fcf8673eae995db7acf59f72cc966e79c7",
+          "revision": "ab794ebba7d290f0381a37902e22baa19561e8e5",
           "version": null
         }
       }

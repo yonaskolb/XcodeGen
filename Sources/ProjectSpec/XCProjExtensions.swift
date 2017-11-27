@@ -50,7 +50,7 @@ extension Platform {
 extension XCScheme.CommandLineArguments {
     // Dictionary is a mapping from argument name and if it is enabled by default
     public convenience init(_ dict: [String: Bool]) {
-        let args  = dict.map { tuple in
+        let args = dict.map { tuple in
             XCScheme.CommandLineArguments.CommandLineArgument(name: tuple.key, enabled: tuple.value)
         }
         self.init(arguments: args)
