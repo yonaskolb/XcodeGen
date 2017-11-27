@@ -5,7 +5,8 @@
 ## 1.5.0
 
 #### Added
-- added support for gatherCoverageData flag in target schemes [#170](https://github.com/yonaskolb/XcodeGen/pull/170) @alexruperez
+- added support for `gatherCoverageData` flag in target schemes [#170](https://github.com/yonaskolb/XcodeGen/pull/170) @alexruperez
+- added support for `commandLineOptions` in target schemes [#172](https://github.com/yonaskolb/XcodeGen/pull/172) @rahul-malik
 
 ## 1.4.0
 

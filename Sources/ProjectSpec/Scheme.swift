@@ -56,7 +56,8 @@ public struct Scheme: Equatable {
         }
 
         public static func == (lhs: Run, rhs: Run) -> Bool {
-            return lhs.config == rhs.config
+            return lhs.config == rhs.config &&
+                lhs.commandLineArguments == rhs.commandLineArguments
         }
     }
 
@@ -71,7 +72,9 @@ public struct Scheme: Equatable {
         }
 
         public static func == (lhs: Test, rhs: Test) -> Bool {
-            return lhs.config == rhs.config
+            return lhs.config == rhs.config &&
+                lhs.commandLineArguments == rhs.commandLineArguments &&
+                lhs.gatherCoverageData == rhs.gatherCoverageData
         }
     }
 
@@ -95,7 +98,7 @@ public struct Scheme: Equatable {
         }
 
         public static func == (lhs: Profile, rhs: Profile) -> Bool {
-            return lhs.config == rhs.config
+            return lhs.config == rhs.config && lhs.commandLineArguments == rhs.commandLineArguments
         }
     }
 
