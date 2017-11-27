@@ -8,7 +8,12 @@ import JSONUtilities
 
 let version = "1.4.0"
 
-func generate(spec: String, project: String, isQuiet: Bool) {
+func generate(spec: String, project: String, isQuiet: Bool, justVersion: Bool) {
+    if justVersion {
+        print(version)
+        exit(EXIT_SUCCESS)
+    }
+
     let logger = Logger(isQuiet: isQuiet)
 
     func fatalError(_ message: String) -> Never {
@@ -53,5 +58,6 @@ command(
     Option<String>("spec", "project.yml", flag: "s", description: "The path to the spec file"),
     Option<String>("project", "", flag: "p", description: "The path to the folder where the project should be generated"),
     Flag("quiet", flag: "q", description: "Suppress printing of informational and success messages", default: false),
+    Flag("version", flag: "v", description: "Show XcodeGen version", default: false),
     generate
 ).run(version)
