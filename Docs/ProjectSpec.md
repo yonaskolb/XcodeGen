@@ -1,5 +1,5 @@
 # Project Spec
-The project spec can be written in either YAML or JSON. All the examples below use YAML.  
+The project spec can be written in either YAML or JSON. All the examples below use YAML.
 
 Some of the examples below don't show all the required properties when trying to explain something. For example not all target examples will have a platform or type, even though they are required.
 
@@ -269,7 +269,7 @@ targets:
     dependencies:
       - target: MyFramework
       - framework: path/to/framework.framework
-      - carthage: Result  
+      - carthage: Result
   MyFramework:
     type: framework
 ```
@@ -326,6 +326,7 @@ This is a convenience used to automatically generate schemes for a target based 
 - 🔵 **configVariants**: `[String]` - This generates a scheme for each entry, using configs that contain the name with debug and release variants. This is useful for having different environment schemes.
 - ⚪️ **testTargets**: `[String]` - a list of test targets that should be included in the scheme. These will be added to the build targets and the test entries
 - ⚪️ **gatherCoverageData**: `Bool` - a boolean that indicates if this scheme should gather coverage data
+- ⚪️ **commandLineArguments**: `[String:Bool]` - a dictionary from the argument name (`String`) to if it is enabled (`Bool`). These arguments will be added to the Test, Profile and Run scheme actions
 
 For example, the spec below would create 3 schemes called:
 
@@ -354,6 +355,9 @@ targets
         - Staging
         - Production
       gatherCoverageData: true
+      commandLineArguments:
+        MyEnabledArg: true
+        MyDisabledArg: false
   MyUnitTests:
     sources: Tests
 ```

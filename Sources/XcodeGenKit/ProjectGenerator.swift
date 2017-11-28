@@ -63,16 +63,23 @@ public class ProjectGenerator {
 
         let testables = testBuildTargetEntries.map { XCScheme.TestableReference(skipped: false, buildableReference: $0.buildableReference) }
 
+        let testCommandLineArgs = scheme.test.map { XCScheme.CommandLineArguments($0.commandLineArguments) }
+        let launchCommandLineArgs = scheme.run.map { XCScheme.CommandLineArguments($0.commandLineArguments) }
+        let profileCommandLineArgs = scheme.profile.map { XCScheme.CommandLineArguments($0.commandLineArguments) }
+
         let testAction = XCScheme.TestAction(buildConfiguration: scheme.test?.config ?? defaultDebugConfig.name,
                                              macroExpansion: buildableReference,
                                              testables: testables,
-                                             codeCoverageEnabled: scheme.test?.gatherCoverageData ?? false)
+                                             codeCoverageEnabled: scheme.test?.gatherCoverageData ?? false,
+                                             commandlineArguments: testCommandLineArgs)
 
         let launchAction = XCScheme.LaunchAction(buildableProductRunnable: productRunable,
-                                                 buildConfiguration: scheme.run?.config ?? defaultDebugConfig.name)
+                                                 buildConfiguration: scheme.run?.config ?? defaultDebugConfig.name,
+                                                 commandlineArguments: launchCommandLineArgs)
 
         let profileAction = XCScheme.ProfileAction(buildableProductRunnable: productRunable,
-                                                   buildConfiguration: scheme.profile?.config ?? defaultReleaseConfig.name)
+                                                   buildConfiguration: scheme.profile?.config ?? defaultReleaseConfig.name,
+                                                   commandlineArguments: profileCommandLineArgs)
 
         let analyzeAction = XCScheme.AnalyzeAction(buildConfiguration: scheme.analyze?.config ?? defaultDebugConfig.name)
 
@@ -106,7 +113,7 @@ public class ProjectGenerator {
                     let debugConfig = spec.configs.first { $0.type == .debug }!
                     let releaseConfig = spec.configs.first { $0.type == .release }!
 
-                    let specScheme = Scheme(name: schemeName, targets: [Scheme.BuildTarget(target: target.name)], debugConfig: debugConfig.name, releaseConfig: releaseConfig.name, gatherCoverageData: scheme.gatherCoverageData)
+                    let specScheme = Scheme(name: schemeName, targets: [Scheme.BuildTarget(target: target.name)], debugConfig: debugConfig.name, releaseConfig: releaseConfig.name, gatherCoverageData: scheme.gatherCoverageData, commandLineArguments: scheme.commandLineArguments)
                     let scheme = try generateScheme(specScheme, pbxProject: pbxProject, tests: scheme.testTargets)
                     xcschemes.append(scheme)
                 } else {
@@ -117,7 +124,7 @@ public class ProjectGenerator {
                         let debugConfig = spec.configs.first { $0.type == .debug && $0.name.contains(configVariant) }!
                         let releaseConfig = spec.configs.first { $0.type == .release && $0.name.contains(configVariant) }!
 
-                        let specScheme = Scheme(name: schemeName, targets: [Scheme.BuildTarget(target: target.name)], debugConfig: debugConfig.name, releaseConfig: releaseConfig.name, gatherCoverageData: scheme.gatherCoverageData)
+                        let specScheme = Scheme(name: schemeName, targets: [Scheme.BuildTarget(target: target.name)], debugConfig: debugConfig.name, releaseConfig: releaseConfig.name, gatherCoverageData: scheme.gatherCoverageData, commandLineArguments: scheme.commandLineArguments)
                         let scheme = try generateScheme(specScheme, pbxProject: pbxProject, tests: scheme.testTargets)
                         xcschemes.append(scheme)
                     }
@@ -128,3 +135,4 @@ public class ProjectGenerator {
         return XCSharedData(schemes: xcschemes)
     }
 }
+
