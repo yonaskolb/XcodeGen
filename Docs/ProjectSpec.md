@@ -356,8 +356,8 @@ targets
         - Production
       gatherCoverageData: true
       commandLineArguments:
-        MyEnabledArg: true
-        MyDisabledArg: false
+        "-MyEnabledArg": true
+        "-MyDisabledArg": false
   MyUnitTests:
     sources: Tests
 ```
