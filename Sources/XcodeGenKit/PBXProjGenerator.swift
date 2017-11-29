@@ -65,7 +65,9 @@ public class PBXProjGenerator {
         addObject(buildConfigList)
 
         for target in spec.targets {
-            targetNativeReferences[target.name] = referenceGenerator.generate(PBXNativeTarget.self, target.name)
+            targetNativeReferences[target.name] =
+                referenceGenerator.generate(
+                    target.isLegacy ? PBXLegacyTarget.self : PBXNativeTarget.self, target.name)
 
             let fileReference = PBXFileReference(reference: referenceGenerator.generate(PBXFileReference.self, target.name), sourceTree: .buildProductsDir, explicitFileType: target.type.fileExtension, path: target.filename, includeInIndex: 0)
             addObject(fileReference)
@@ -141,8 +143,8 @@ public class PBXProjGenerator {
         let childGroups = group.children.flatMap { proj.objects.groups[$0] }
         childGroups.forEach(sortGroups)
     }
-
-    func generateTarget(_ target: Target) throws -> PBXNativeTarget {
+    
+    func generateTarget(_ target: Target) throws -> PBXTarget {
 
         sourceGenerator.targetName = target.name
         let carthageDependencies = getAllCarthageDependencies(target: target)
@@ -431,17 +433,35 @@ public class PBXProjGenerator {
 
         _ = try target.postbuildScripts.map(getBuildScript)
 
-        let nativeTarget = PBXNativeTarget(
-            reference: targetNativeReferences[target.name]!,
-            name: target.name,
-            buildConfigurationList: buildConfigList.reference,
-            buildPhases: buildPhases,
-            buildRules: [],
-            dependencies: dependencies,
-            productReference: fileReference,
-            productType: target.type)
-        addObject(nativeTarget)
-        return nativeTarget
+        let pbxtarget: PBXTarget
+        if target.isLegacy {
+            pbxtarget = PBXLegacyTarget(
+                reference: targetNativeReferences[target.name]!,
+                name: target.name,
+                buildToolPath: target.legacy?.toolPath,
+                buildArgumentsString: target.legacy?.arguments,
+                passBuildSettingsInEnvironment: target.legacy?.passSettings ?? false,
+                buildWorkingDirectory: target.legacy?.workingDirectory,
+                buildConfigurationList: buildConfigList.reference,
+                buildPhases: buildPhases,
+                buildRules: [],
+                dependencies: dependencies,
+                productReference: fileReference,
+                productType: nil
+            )
+        } else {
+            pbxtarget = PBXNativeTarget(
+                reference: targetNativeReferences[target.name]!,
+                name: target.name,
+                buildConfigurationList: buildConfigList.reference,
+                buildPhases: buildPhases,
+                buildRules: [],
+                dependencies: dependencies,
+                productReference: fileReference,
+                productType: target.type)
+        }
+        addObject(pbxtarget)
+        return pbxtarget
     }
 
     func getCarthageBuildPath(platform: Platform) -> String {

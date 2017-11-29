@@ -8,9 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		BF_130062884703 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_257516580010 /* Alamofire.framework */; };
+		BF_164567025213 = {isa = PBXBuildFile; fileRef = FR_479264660374 /* Legacy */; };
 		BF_186245454304 /* LocalizedStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = VG_118219888726 /* LocalizedStoryboard.storyboard */; };
 		BF_211435872001 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = VG_473000061463 /* Localizable.strings */; };
 		BF_243071719122 /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_172952167809 /* FrameworkFile.swift */; };
+		BF_244180036636 /* Legacy in Resources */ = {isa = PBXBuildFile; fileRef = FR_479264660374 /* Legacy */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BF_279581961655 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FR_868653349092 /* Assets.xcassets */; settings = {COMPILER_FLAGS = "-Werror"; }; };
 		BF_280535243540 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = VG_609193904586 /* Main.storyboard */; };
 		BF_284620660317 /* MyBundle.bundle in Resources */ = {isa = PBXBuildFile; fileRef = FR_238161558082 /* MyBundle.bundle */; };
@@ -49,14 +51,21 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = P_8448771205358 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = NT_825232110500;
+			remoteGlobalIDString = T_8252321105004;
 			remoteInfo = App_iOS;
 		};
 		CIP_82523211050 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = P_8448771205358 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = NT_472296042419;
+			remoteGlobalIDString = T_4792646603740;
+			remoteInfo = Legacy;
+		};
+		"CIP_82523211050-1" /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = P_8448771205358 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = T_4722960424192;
 			remoteInfo = Framework_iOS;
 		};
 /* End PBXContainerItemProxy section */
@@ -90,6 +99,7 @@
 		FR_452853029807 /* Alamofire.framework */ = {isa = PBXFileReference; path = Alamofire.framework; sourceTree = "<group>"; };
 		FR_472296042419 /* Framework_iOS.framework */ = {isa = PBXFileReference; explicitFileType = framework; includeInIndex = 0; path = Framework_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR_473000061463 /* Base */ = {isa = PBXFileReference; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
+		FR_479264660374 /* Legacy */ = {isa = PBXFileReference; includeInIndex = 0; path = Legacy; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR_481575785861 /* ViewController.swift */ = {isa = PBXFileReference; path = ViewController.swift; sourceTree = "<group>"; };
 		FR_500792082643 /* en */ = {isa = PBXFileReference; name = en; path = en.lproj/LocalizedStoryboard.strings; sourceTree = "<group>"; };
 		FR_525119120469 /* Framework_macOS.framework */ = {isa = PBXFileReference; explicitFileType = framework; includeInIndex = 0; path = Framework_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -313,6 +323,7 @@
 				FR_525119120469 /* Framework_macOS.framework */,
 				FR_662315837182 /* Framework_tvOS.framework */,
 				FR_438704538506 /* Framework_watchOS.framework */,
+				FR_479264660374 /* Legacy */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -364,7 +375,7 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		NT_438704538506 /* Framework_watchOS */ = {
+		T_4387045385063 /* Framework_watchOS */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = CL_438704538506 /* Build configuration list for PBXNativeTarget "Framework_watchOS" */;
 			buildPhases = (
@@ -381,7 +392,7 @@
 			productReference = FR_438704538506 /* Framework_watchOS.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		NT_472296042419 /* Framework_iOS */ = {
+		T_4722960424192 /* Framework_iOS */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = CL_472296042419 /* Build configuration list for PBXNativeTarget "Framework_iOS" */;
 			buildPhases = (
@@ -398,7 +409,7 @@
 			productReference = FR_472296042419 /* Framework_iOS.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		NT_525119120469 /* Framework_macOS */ = {
+		T_5251191204695 /* Framework_macOS */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = CL_525119120469 /* Build configuration list for PBXNativeTarget "Framework_macOS" */;
 			buildPhases = (
@@ -415,7 +426,7 @@
 			productReference = FR_525119120469 /* Framework_macOS.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		NT_662315837182 /* Framework_tvOS */ = {
+		T_6623158371826 /* Framework_tvOS */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = CL_662315837182 /* Build configuration list for PBXNativeTarget "Framework_tvOS" */;
 			buildPhases = (
@@ -432,7 +443,7 @@
 			productReference = FR_662315837182 /* Framework_tvOS.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		NT_783122899910 /* App_iOS_Tests */ = {
+		T_7831228999101 /* App_iOS_Tests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = CL_783122899910 /* Build configuration list for PBXNativeTarget "App_iOS_Tests" */;
 			buildPhases = (
@@ -447,7 +458,7 @@
 			productReference = FR_783122899910 /* App_iOS_Tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		NT_825232110500 /* App_iOS */ = {
+		T_8252321105004 /* App_iOS */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = CL_825232110500 /* Build configuration list for PBXNativeTarget "App_iOS" */;
 			buildPhases = (
@@ -462,6 +473,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				TD_742119822021 /* PBXTargetDependency */,
 				TD_354342487294 /* PBXTargetDependency */,
 			);
 			name = App_iOS;
@@ -469,6 +481,23 @@
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
+
+/* Begin PBXLegacyTarget section */
+		T_4792646603740 /* Legacy */ = {
+			isa = PBXLegacyTarget;
+			buildConfigurationList = CL_479264660374 /* Build configuration list for PBXLegacyTarget "Legacy" */;
+			buildPhases = (
+			);
+			buildRules = (
+			);
+			buildToolPath = /usr/bin/true;
+			dependencies = (
+			);
+			name = Legacy;
+			passBuildSettingsInEnvironment = 1;
+			productReference = FR_479264660374 /* Legacy */;
+		};
+/* End PBXLegacyTarget section */
 
 /* Begin PBXProject section */
 		P_8448771205358 /* Project object */ = {
@@ -488,12 +517,13 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				NT_825232110500 /* App_iOS */,
-				NT_783122899910 /* App_iOS_Tests */,
-				NT_472296042419 /* Framework_iOS */,
-				NT_525119120469 /* Framework_macOS */,
-				NT_662315837182 /* Framework_tvOS */,
-				NT_438704538506 /* Framework_watchOS */,
+				T_8252321105004 /* App_iOS */,
+				T_7831228999101 /* App_iOS_Tests */,
+				T_4722960424192 /* Framework_iOS */,
+				T_5251191204695 /* Framework_macOS */,
+				T_6623158371826 /* Framework_tvOS */,
+				T_4387045385063 /* Framework_watchOS */,
+				T_4792646603740 /* Legacy */,
 			);
 		};
 /* End PBXProject section */
@@ -512,6 +542,7 @@
 				BF_284620660317 /* MyBundle.bundle in Resources */,
 				BF_721498080533 /* ResourceFolder in Resources */,
 				BF_860391087135 /* StandaloneAssets.xcassets in Resources */,
+				BF_244180036636 /* Legacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -677,13 +708,18 @@
 /* Begin PBXTargetDependency section */
 		TD_354342487294 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = NT_472296042419 /* Framework_iOS */;
-			targetProxy = CIP_82523211050 /* PBXContainerItemProxy */;
+			target = T_4722960424192 /* Framework_iOS */;
+			targetProxy = "CIP_82523211050-1" /* PBXContainerItemProxy */;
 		};
 		TD_436638162860 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = NT_825232110500 /* App_iOS */;
+			target = T_8252321105004 /* App_iOS */;
 			targetProxy = CIP_78312289991 /* PBXContainerItemProxy */;
+		};
+		TD_742119822021 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = T_4792646603740 /* Legacy */;
+			targetProxy = CIP_82523211050 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -783,6 +819,21 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = "Production Release";
+		};
+		BC_129177384103 /* Test Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.Legacy;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Test Release";
 		};
 		BC_210307580165 /* Staging Release */ = {
 			isa = XCBuildConfiguration;
@@ -1189,6 +1240,36 @@
 			};
 			name = "Staging Debug";
 		};
+		BC_444705348320 /* Staging Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.Legacy;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Staging Debug";
+		};
+		BC_467730755629 /* Production Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.Legacy;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Production Release";
+		};
 		BC_480688547948 /* Staging Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1536,6 +1617,21 @@
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestProject.app/TestProject";
 			};
 			name = "Staging Debug";
+		};
+		BC_645651856160 /* Staging Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.Legacy;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Staging Release";
 		};
 		BC_655752097950 /* Test Debug */ = {
 			isa = XCBuildConfiguration;
@@ -1888,6 +1984,21 @@
 			};
 			name = "Test Release";
 		};
+		BC_799591451484 /* Test Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.Legacy;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Test Debug";
+		};
 		BC_799916603316 /* Production Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1905,6 +2016,21 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.project$(BUNDLE_ID_SUFFIX)";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Production Debug";
+		};
+		BC_805283956103 /* Production Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.Legacy;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -2048,6 +2174,19 @@
 				BC_517306343059 /* Staging Release */,
 				BC_351179072988 /* Test Debug */,
 				BC_210338877784 /* Test Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "";
+		};
+		CL_479264660374 = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BC_805283956103 /* Production Debug */,
+				BC_467730755629 /* Production Release */,
+				BC_444705348320 /* Staging Debug */,
+				BC_645651856160 /* Staging Release */,
+				BC_799591451484 /* Test Debug */,
+				BC_129177384103 /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "";
