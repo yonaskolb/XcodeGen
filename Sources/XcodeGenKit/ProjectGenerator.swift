@@ -24,10 +24,14 @@ public class ProjectGenerator {
         let schemeGenerator = SchemeGenerator(project: project, pbxProj: pbxProj)
         let schemes = try schemeGenerator.generateSchemes()
 
+        // generate Breakpoints
+        let breakpointGenerator = BreakpointGenerator(project: project)
+        let xcbreakpointlist = try breakpointGenerator.generateBreakpointList()
+
         // generate Workspace
         let workspace = try generateWorkspace()
 
-        let sharedData = XCSharedData(schemes: schemes)
+        let sharedData = XCSharedData(schemes: schemes, breakpoints: xcbreakpointlist)
         return XcodeProj(workspace: workspace, pbxproj: pbxProj, sharedData: sharedData)
     }
 
