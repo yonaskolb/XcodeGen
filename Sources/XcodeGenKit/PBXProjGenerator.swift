@@ -420,7 +420,7 @@ public class PBXProjGenerator {
 
         if !carthageFrameworksToEmbed.isEmpty {
 
-            if target.type.isApp && target.platform != .macOS {
+            if target.type.isApp && spec.options.carthageCopyScript && target.platform != .macOS {
                 let inputPaths = carthageFrameworksToEmbed.map { "$(SRCROOT)/\(carthageBuildPath)/\(target.platform)/\($0)\($0.contains(".") ? "" : ".framework")" }
                 let outputPaths = carthageFrameworksToEmbed.map { "$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/\($0)\($0.contains(".") ? "" : ".framework")" }
                 let carthageScript = PBXShellScriptBuildPhase(reference: referenceGenerator.generate(PBXShellScriptBuildPhase.self, "Carthage" + target.name), files: [], name: "Carthage", inputPaths: inputPaths, outputPaths: outputPaths, shellPath: "/bin/sh", shellScript: "/usr/local/bin/carthage copy-frameworks\n")
