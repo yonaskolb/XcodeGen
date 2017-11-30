@@ -21,6 +21,7 @@ public struct ProjectSpec {
 
     public struct Options {
         public var carthageBuildPath: String?
+        public var carthageCopyScript: Bool
         public var createIntermediateGroups: Bool
         public var bundleIdPrefix: String?
         public var settingPresets: SettingPresets
@@ -47,8 +48,9 @@ public struct ProjectSpec {
             }
         }
 
-        public init(carthageBuildPath: String? = nil, createIntermediateGroups: Bool = false, bundleIdPrefix: String? = nil, settingPresets: SettingPresets = .all, developmentLanguage: String? = nil) {
+        public init(carthageBuildPath: String? = nil, carthageCopyScript: Bool = true, createIntermediateGroups: Bool = false, bundleIdPrefix: String? = nil, settingPresets: SettingPresets = .all, developmentLanguage: String? = nil) {
             self.carthageBuildPath = carthageBuildPath
+            self.carthageCopyScript = carthageCopyScript
             self.createIntermediateGroups = createIntermediateGroups
             self.bundleIdPrefix = bundleIdPrefix
             self.settingPresets = settingPresets
@@ -120,6 +122,7 @@ extension ProjectSpec.Options: Equatable {
 
     public static func == (lhs: ProjectSpec.Options, rhs: ProjectSpec.Options) -> Bool {
         return lhs.carthageBuildPath == rhs.carthageBuildPath &&
+            lhs.carthageCopyScript == rhs.carthageCopyScript &&
             lhs.bundleIdPrefix == rhs.bundleIdPrefix &&
             lhs.settingPresets == rhs.settingPresets &&
             lhs.createIntermediateGroups == rhs.createIntermediateGroups &&
@@ -159,6 +162,7 @@ extension ProjectSpec.Options: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
         carthageBuildPath = jsonDictionary.json(atKeyPath: "carthageBuildPath")
+        carthageCopyScript = jsonDictionary.json(atKeyPath: "carthageCopyScript") ?? true
         bundleIdPrefix = jsonDictionary.json(atKeyPath: "bundleIdPrefix")
         settingPresets = jsonDictionary.json(atKeyPath: "settingPresets") ?? .all
         createIntermediateGroups = jsonDictionary.json(atKeyPath: "createIntermediateGroups") ?? false
