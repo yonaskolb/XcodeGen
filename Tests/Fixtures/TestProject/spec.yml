@@ -7,6 +7,8 @@ fileGroups:
   - FileGroup
 configFiles:
   Test Debug: Configs/config.xcconfig
+breakpoints:
+  - extensionID: exception
 targets:
   App_iOS:
     type: application

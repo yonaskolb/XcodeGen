@@ -7,6 +7,7 @@
 #### Added
 - added support for `gatherCoverageData` flag in target schemes [#170](https://github.com/yonaskolb/XcodeGen/pull/170) @alexruperez
 - added support for `commandLineOptions` in target schemes [#172](https://github.com/yonaskolb/XcodeGen/pull/172) @rahul-malik
+- added shared breakpoints support [#177](https://github.com/yonaskolb/XcodeGen/pull/177) [@alexruperez](https://github.com/alexruperez)
 
 ## 1.4.0
 

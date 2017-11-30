@@ -247,6 +247,17 @@ func projectGeneratorTests() {
             }
         }
 
+        $0.describe("Breakpoints") {
+
+            $0.it("generates breakpoint") {
+                let breakpoint = Breakpoint(extensionID: "exception")
+                let spec = ProjectSpec(basePath: "", name: "test", targets: [], breakpoints: [breakpoint])
+                let project = try getProject(spec)
+                guard let xcbreakpoint = project.sharedData?.breakpoints?.breakpoints.first else { throw failure("Breakpoint not found") }
+                try expect(xcbreakpoint.breakpointExtensionID.rawValue) == "Xcode.Breakpoint.ExceptionBreakpoint"
+            }
+        }
+
         $0.describe("Reference Generator") {
 
             let referenceGenerator = ReferenceGenerator()

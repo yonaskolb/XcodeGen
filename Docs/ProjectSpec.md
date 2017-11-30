@@ -10,6 +10,7 @@ Required properties are marked 🔵 and optional properties with ⚪️.
 - [Project](#project)
 	- [Include](#include)
 	- [Options](#options)
+	- [Breakpoints](#breakpoints)
 	- [Configs](#configs)
 	- [Setting Groups](#setting-groups)
 - [Settings](#settings)
@@ -29,6 +30,7 @@ Required properties are marked 🔵 and optional properties with ⚪️.
 - ⚪️ **include**: [Include](#include) - One or more paths to other specs
 - ⚪️ **options**: [Options](#options) - Various options to override default behaviour
 - ⚪️ **attributes**: `map` - The PBXProject attributes. This is for advanced use. Defaults to ``{"LastUpgradeCheck": "0900"}``
+- ⚪️ **breakpoints**: [Breakpoints](#breakpoints) - Add shared breakpoints to the generated project
 - ⚪️ **configs**: [Configs](#configs) - Project build configurations. Defaults to `Debug` and `Release` configs
 - ⚪️ **configFiles**: [Config Files](#config-files) - `.xcconfig` files per config
 - ⚪️ **settings**: [Settings](#settings) - Project specific settings. Default base and config type settings will be applied first before any settings defined here
@@ -71,6 +73,20 @@ Note that target names can also be changed by adding a `name` property to a targ
 	- `targets`: only target settings
 	- `none`: no settings are automatically applied
 - ⚪️ **developmentLanguage**: `String` - Sets the development language of the project. Defaults to `en`
+
+### Breakpoints
+
+```yaml
+breakpoints:
+  - extensionID: exception
+    enabled: true
+    ignoreCount: 0
+    continueAfterRunningActions: false
+    actions:
+      - extensionID: sound
+        soundName: Blow
+        
+```
 
 ### Configs
 Each config maps to a build type of either `debug` or `release` which will then apply default build settings to the project. Any value other than `debug` or `release` (for example `none`), will mean no default build settings will be applied to the project.

@@ -75,10 +75,10 @@
       },
       {
         "package": "xcproj",
-        "repositoryURL": "https://github.com/xcodeswift/xcproj.git",
+        "repositoryURL": "https://github.com/alexruperez/xcproj.git",
         "state": {
-          "branch": null,
-          "revision": "ab794ebba7d290f0381a37902e22baa19561e8e5",
+          "branch": "feature/breakpoints_support",
+          "revision": "40a9466b37bd702f17c822970bfd1fd300915ef6",
           "version": null
         }
       }

@@ -13,6 +13,7 @@ public struct ProjectSpec {
     public var settingGroups: [String: Settings]
     public var configs: [Config]
     public var schemes: [Scheme]
+    public var breakpoints: [Breakpoint]
     public var options: Options
     public var attributes: [String: Any]
     public var fileGroups: [String]
@@ -56,7 +57,7 @@ public struct ProjectSpec {
         }
     }
 
-    public init(basePath: Path, name: String, configs: [Config] = Config.defaultConfigs, targets: [Target] = [], settings: Settings = .empty, settingGroups: [String: Settings] = [:], schemes: [Scheme] = [], options: Options = Options(), fileGroups: [String] = [], configFiles: [String: String] = [:], attributes: [String: Any] = [:]) {
+    public init(basePath: Path, name: String, configs: [Config] = Config.defaultConfigs, targets: [Target] = [], settings: Settings = .empty, settingGroups: [String: Settings] = [:], schemes: [Scheme] = [], breakpoints: [Breakpoint] = [], options: Options = Options(), fileGroups: [String] = [], configFiles: [String: String] = [:], attributes: [String: Any] = [:]) {
         self.basePath = basePath
         self.name = name
         self.targets = targets
@@ -64,6 +65,7 @@ public struct ProjectSpec {
         self.settings = settings
         self.settingGroups = settingGroups
         self.schemes = schemes
+        self.breakpoints = breakpoints
         self.options = options
         self.fileGroups = fileGroups
         self.configFiles = configFiles
@@ -109,6 +111,7 @@ extension ProjectSpec: Equatable {
             lhs.settingGroups == rhs.settingGroups &&
             lhs.configs == rhs.configs &&
             lhs.schemes == rhs.schemes &&
+            lhs.breakpoints == rhs.breakpoints &&
             lhs.fileGroups == rhs.fileGroups &&
             lhs.configFiles == rhs.configFiles &&
             lhs.options == rhs.options &&
@@ -139,6 +142,7 @@ extension ProjectSpec {
         self.configs = configs.isEmpty ? Config.defaultConfigs : configs.map { Config(name: $0, type: ConfigType(rawValue: $1)) }.sorted { $0.name < $1.name }
         targets = try jsonDictionary.json(atKeyPath: "targets").sorted { $0.name < $1.name }
         schemes = try jsonDictionary.json(atKeyPath: "schemes")
+        breakpoints = jsonDictionary.json(atKeyPath: "breakpoints") ?? []
         fileGroups = jsonDictionary.json(atKeyPath: "fileGroups") ?? []
         configFiles = jsonDictionary.json(atKeyPath: "configFiles") ?? [:]
         attributes = jsonDictionary.json(atKeyPath: "attributes") ?? [:]

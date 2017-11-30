@@ -19,6 +19,8 @@ public struct SpecValidationError: Error, CustomStringConvertible {
         case invalidFileGroup(String)
         case invalidConfigFileConfig(String)
         case missingConfigTypeForGeneratedTargetScheme(target: String, configType: ConfigType)
+        case invalidBreakpointExtensionID(String)
+        case invalidBreakpointActionExtensionID(String)
 
         public var description: String {
             switch self {
@@ -36,6 +38,8 @@ public struct SpecValidationError: Error, CustomStringConvertible {
             case let .invalidFileGroup(group): return "Invalid file group \(group.quoted)"
             case let .invalidConfigFileConfig(config): return "Config file has invalid config \(config.quoted)"
             case let .missingConfigTypeForGeneratedTargetScheme(target, configType): return "Target \(target.quoted) is missing a config of type \(configType.rawValue) to generate its scheme"
+            case let .invalidBreakpointExtensionID(extensionID): return "Invalid breakpoint extension id \(extensionID)"
+            case let .invalidBreakpointActionExtensionID(extensionID): return "Invalid breakpoint action extension id \(extensionID)"
             }
         }
     }
