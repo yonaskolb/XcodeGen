@@ -8,6 +8,7 @@ let package = Package(
         .executable(name: "XcodeGen", targets: ["XcodeGen"]),
         .library(name: "XcodeGenKit", targets: ["XcodeGenKit"]),
         .library(name: "ProjectSpec", targets: ["ProjectSpec"]),
+        .library(name: "ProjectDescription", type: .dynamic, targets: ["ProjectDescription"])
     ],
     dependencies: [
         .package(url: "https://github.com/kylef/PathKit.git", from: "0.8.0"),
@@ -35,6 +36,7 @@ let package = Package(
           "xcproj",
           "Yams",
         ]),
+        .target(name: "ProjectDescription", dependencies: []),
         .testTarget(name: "XcodeGenKitTests", dependencies: [
           "XcodeGenKit",
         ])
