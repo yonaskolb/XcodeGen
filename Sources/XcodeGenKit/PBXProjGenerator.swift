@@ -8,7 +8,6 @@ import ProjectSpec
 public class PBXProjGenerator {
 
     let spec: ProjectSpec
-    let currentXcodeVersion: String
 
     let proj: PBXProj
     let sourceGenerator: SourceGenerator
@@ -26,9 +25,8 @@ public class PBXProjGenerator {
     var carthageBuildPath: String {
         return spec.options.carthageBuildPath ?? "Carthage/Build"
     }
-
-    public init(spec: ProjectSpec, currentXcodeVersion: String) {
-        self.currentXcodeVersion = currentXcodeVersion
+    
+    public init(spec: ProjectSpec) {
         self.spec = spec
         proj = PBXProj(objectVersion: 46, rootObject: referenceGenerator.generate(PBXProject.self, spec.name))
         sourceGenerator = SourceGenerator(spec: spec, referenceGenerator: referenceGenerator) { _ in }
@@ -109,7 +107,7 @@ public class PBXProjGenerator {
 
         sortGroups(group: mainGroup)
 
-        let projectAttributes: [String: Any] = ["LastUpgradeCheck": currentXcodeVersion].merged(spec.attributes)
+        let projectAttributes: [String: Any] = ["LastUpgradeCheck": spec.options.currentXcodeVersion].merged(spec.attributes)
         let root = PBXProject(name: spec.name,
                               reference: proj.rootObject,
                               buildConfigurationList: buildConfigList.reference,
