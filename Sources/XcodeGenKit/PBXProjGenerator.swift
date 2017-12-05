@@ -126,11 +126,11 @@ public class PBXProjGenerator {
 
     func sortGroups(group: PBXGroup) {
         // sort children
-        let children: [GroupChild] = group.children
-            .flatMap { proj.getGroupChild(reference: $0) }
+        let children = group.children
+            .flatMap { proj.objects.getFileElement(reference: $0) }
             .sorted { child1, child2 in
                 if child1.sortOrder == child2.sortOrder {
-                    return child1.childName < child2.childName
+                    return child1.nameOrPath < child2.nameOrPath
                 } else {
                     return child1.sortOrder < child2.sortOrder
                 }

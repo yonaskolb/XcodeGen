@@ -539,7 +539,7 @@ extension PBXProj {
         func validateGroup(_ group: PBXGroup) throws {
             let hasDuplicatedChildren = group.children.count != Set(group.children).count
             if hasDuplicatedChildren {
-                throw failure("Group \"\(group.childName)\" has duplicated children:\n - \(group.children.sorted().joined(separator: "\n - "))")
+                throw failure("Group \"\(group.nameOrPath)\" has duplicated children:\n - \(group.children.sorted().joined(separator: "\n - "))")
             }
             for child in group.children {
                 if let group = objects.groups.getReference(child) {
@@ -605,10 +605,10 @@ extension PBXProj {
         let restOfName = Array(names.dropFirst())
         if restOfPath.isEmpty {
             let fileReferences = group.children.flatMap { self.objects.fileReferences.getReference($0) }
-            return fileReferences.first { $0.path == path && $0.childName == name }
+            return fileReferences.first { $0.path == path && $0.nameOrPath == name }
         } else {
             let groups = group.children.flatMap { self.objects.groups.getReference($0) }
-            guard let group = groups.first(where: { $0.path == path && $0.childName == name }) else { return nil }
+            guard let group = groups.first(where: { $0.path == path && $0.nameOrPath == name }) else { return nil }
             return getFileReference(group: group, paths: restOfPath, names: restOfName)
         }
     }

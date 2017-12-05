@@ -1,38 +1,18 @@
 import Foundation
 import xcproj
 
-public protocol GroupChild: Referenceable {
-    var childName: String { get }
-    var sortOrder: Int { get }
-}
+extension PBXFileElement {
 
-extension PBXFileReference: GroupChild {
-    public var childName: String {
+    public var nameOrPath: String {
         return name ?? path ?? ""
     }
 
     public var sortOrder: Int {
-        return 1
-    }
-}
-
-extension PBXGroup: GroupChild {
-    public var childName: String {
-        return name ?? path ?? ""
-    }
-
-    public var sortOrder: Int {
-        return 0
-    }
-}
-
-extension PBXVariantGroup: GroupChild {
-    public var childName: String {
-        return name ?? ""
-    }
-
-    public var sortOrder: Int {
-        return 1
+        if self is PBXGroup {
+            return 0
+        } else {
+            return 1
+        }
     }
 }
 
@@ -46,20 +26,18 @@ extension PBXProj {
     }
 
     public func printGroup(group: PBXGroup) -> String {
-        var string = group.childName
+        var string = group.nameOrPath
         for reference in group.children {
             if let group = objects.groups.getReference(reference) {
                 string += "\n 📁  " + printGroup(group: group).replacingOccurrences(of: "\n ", with: "\n    ")
             } else if let fileReference = objects.fileReferences.getReference(reference) {
-                string += "\n 📄  " + fileReference.childName
+                string += "\n 📄  " + fileReference.nameOrPath
             } else if let variantGroup = objects.variantGroups.getReference(reference) {
-                string += "\n 🌎  " + variantGroup.childName
+                string += "\n 🌎  " + variantGroup.nameOrPath
+            } else if let versionGroup = objects.versionGroups.getReference(reference) {
+                string += "\n 🔢  " + versionGroup.nameOrPath
             }
         }
         return string
-    }
-
-    public func getGroupChild(reference: String) -> GroupChild? {
-        return objects.groups.getReference(reference) ?? objects.fileReferences.getReference(reference) ?? objects.variantGroups.getReference(reference)
     }
 }
