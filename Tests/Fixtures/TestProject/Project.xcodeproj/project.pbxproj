@@ -528,7 +528,7 @@
 				SBP_43870453850 /* Sources */,
 				HBP_43870453850 /* Headers */,
 				FBP_43870453850 /* Frameworks */,
-				SSBP_8769777310 /* MyScript */,
+				SSBP_2467869845 /* MyScript */,
 			);
 			buildRules = (
 			);
@@ -545,7 +545,7 @@
 				SBP_47229604241 /* Sources */,
 				HBP_47229604241 /* Headers */,
 				FBP_47229604241 /* Frameworks */,
-				SSBP_7909350562 /* MyScript */,
+				SSBP_3886691194 /* MyScript */,
 			);
 			buildRules = (
 			);
@@ -562,7 +562,7 @@
 				SBP_52511912046 /* Sources */,
 				HBP_52511912046 /* Headers */,
 				FBP_52511912046 /* Frameworks */,
-				SSBP_3642175431 /* MyScript */,
+				SSBP_8255377629 /* MyScript */,
 			);
 			buildRules = (
 			);
@@ -579,7 +579,7 @@
 				SBP_66231583718 /* Sources */,
 				HBP_66231583718 /* Headers */,
 				FBP_66231583718 /* Frameworks */,
-				SSBP_7793755940 /* MyScript */,
+				SSBP_6331376344 /* MyScript */,
 			);
 			buildRules = (
 			);
@@ -613,8 +613,8 @@
 				FBP_82523211050 /* Frameworks */,
 				CFBP_6493932244 /* CopyFiles */,
 				SSBP_8106229290 /* Carthage */,
-				SSBP_4276308994 /* Strip Unused Architectures from Frameworks */,
-				SSBP_1262062879 /* MyScript */,
+				SSBP_5106020372 /* Strip Unused Architectures from Frameworks */,
+				SSBP_8706434794 /* MyScript */,
 			);
 			buildRules = (
 			);
@@ -675,7 +675,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		SSBP_1262062879 /* MyScript */ = {
+		SSBP_2467869845 /* MyScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -687,9 +687,9 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "echo \\\"You ran a script!\\\"\n";
+			shellScript = "echo \"You ran a script\"\n";
 		};
-		SSBP_3642175431 /* MyScript */ = {
+		SSBP_3886691194 /* MyScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -701,9 +701,9 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "echo \\\"You ran a script\\\"\n";
+			shellScript = "echo \"You ran a script\"\n";
 		};
-		SSBP_4276308994 /* Strip Unused Architectures from Frameworks */ = {
+		SSBP_5106020372 /* Strip Unused Architectures from Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -715,9 +715,9 @@
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
-			shellScript = "################################################################################\n#\n# Copyright 2015 Realm Inc.\n#\n# Licensed under the Apache License, Version 2.0 (the \\\"License\\\");\n# you may not use this file except in compliance with the License.\n# You may obtain a copy of the License at\n#\n# http://www.apache.org/licenses/LICENSE-2.0\n#\n# Unless required by applicable law or agreed to in writing, software\n# distributed under the License is distributed on an \\\"AS IS\\\" BASIS,\n# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n# See the License for the specific language governing permissions and\n# limitations under the License.\n#\n################################################################################\n\n# This script strips all non-valid architectures from dynamic libraries in\n# the application's `Frameworks` directory.\n#\n# The following environment variables are required:\n#\n# BUILT_PRODUCTS_DIR\n# FRAMEWORKS_FOLDER_PATH\n# VALID_ARCHS\n# EXPANDED_CODE_SIGN_IDENTITY\n\n\n# Signs a framework with the provided identity\ncode_sign() {\n  # Use the current code_sign_identitiy\n  echo \\\"Code Signing $1 with Identity ${EXPANDED_CODE_SIGN_IDENTITY_NAME}\\\"\n  echo \\\"/usr/bin/codesign --force --sign ${EXPANDED_CODE_SIGN_IDENTITY} --preserve-metadata=identifier,entitlements $1\\\"\n  /usr/bin/codesign --force --sign ${EXPANDED_CODE_SIGN_IDENTITY} --preserve-metadata=identifier,entitlements \\\"$1\\\"\n}\n\n# Set working directory to product’s embedded frameworks\ncd \\\"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\\\"\n\nif [ \\\"$ACTION\\\" = \\\"install\\\" ]; then\n  echo \\\"Copy .bcsymbolmap files to .xcarchive\\\"\n  find . -name '*.bcsymbolmap' -type f -exec mv {} \\\"${CONFIGURATION_BUILD_DIR}\\\" \\;\nelse\n  # Delete *.bcsymbolmap files from framework bundle unless archiving\n  find . -name '*.bcsymbolmap' -type f -exec rm -rf \\\"{}\\\" +\\;\nfi\n\necho \\\"Stripping frameworks\\\"\n\nfor file in $(find . -type f -perm +111); do\n  # Skip non-dynamic libraries\n  if ! [[ \\\"$(file \\\"$file\\\")\\\" == *\\\"dynamically linked shared library\\\"* ]]; then\n    continue\n  fi\n  # Get architectures for current file\n  archs=\\\"$(lipo -info \\\"${file}\\\" | rev | cut -d ':' -f1 | rev)\\\"\n  stripped=\\\"\\\"\n  for arch in $archs; do\n    if ! [[ \\\"${VALID_ARCHS}\\\" == *\\\"$arch\\\"* ]]; then\n      # Strip non-valid architectures in-place\n      lipo -remove \\\"$arch\\\" -output \\\"$file\\\" \\\"$file\\\" || exit 1\n      stripped=\\\"$stripped $arch\\\"\n    fi\n  done\n  if [[ \\\"$stripped\\\" != \\\"\\\" ]]; then\n    echo \\\"Stripped $file of architectures:$stripped\\\"\n    if [ \\\"${CODE_SIGNING_REQUIRED}\\\" == \\\"YES\\\" ]; then\n      code_sign \\\"${file}\\\"\n    fi\n  fi\ndone\n";
+			shellScript = "################################################################################\n#\n# Copyright 2015 Realm Inc.\n#\n# Licensed under the Apache License, Version 2.0 (the \"License\");\n# you may not use this file except in compliance with the License.\n# You may obtain a copy of the License at\n#\n# http://www.apache.org/licenses/LICENSE-2.0\n#\n# Unless required by applicable law or agreed to in writing, software\n# distributed under the License is distributed on an \"AS IS\" BASIS,\n# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n# See the License for the specific language governing permissions and\n# limitations under the License.\n#\n################################################################################\n\n# This script strips all non-valid architectures from dynamic libraries in\n# the application's `Frameworks` directory.\n#\n# The following environment variables are required:\n#\n# BUILT_PRODUCTS_DIR\n# FRAMEWORKS_FOLDER_PATH\n# VALID_ARCHS\n# EXPANDED_CODE_SIGN_IDENTITY\n\n\n# Signs a framework with the provided identity\ncode_sign() {\n  # Use the current code_sign_identitiy\n  echo \"Code Signing $1 with Identity ${EXPANDED_CODE_SIGN_IDENTITY_NAME}\"\n  echo \"/usr/bin/codesign --force --sign ${EXPANDED_CODE_SIGN_IDENTITY} --preserve-metadata=identifier,entitlements $1\"\n  /usr/bin/codesign --force --sign ${EXPANDED_CODE_SIGN_IDENTITY} --preserve-metadata=identifier,entitlements \"$1\"\n}\n\n# Set working directory to product’s embedded frameworks\ncd \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\"\n\nif [ \"$ACTION\" = \"install\" ]; then\n  echo \"Copy .bcsymbolmap files to .xcarchive\"\n  find . -name '*.bcsymbolmap' -type f -exec mv {} \"${CONFIGURATION_BUILD_DIR}\" \\;\nelse\n  # Delete *.bcsymbolmap files from framework bundle unless archiving\n  find . -name '*.bcsymbolmap' -type f -exec rm -rf \"{}\" +\\;\nfi\n\necho \"Stripping frameworks\"\n\nfor file in $(find . -type f -perm +111); do\n  # Skip non-dynamic libraries\n  if ! [[ \"$(file \"$file\")\" == *\"dynamically linked shared library\"* ]]; then\n    continue\n  fi\n  # Get architectures for current file\n  archs=\"$(lipo -info \"${file}\" | rev | cut -d ':' -f1 | rev)\"\n  stripped=\"\"\n  for arch in $archs; do\n    if ! [[ \"${VALID_ARCHS}\" == *\"$arch\"* ]]; then\n      # Strip non-valid architectures in-place\n      lipo -remove \"$arch\" -output \"$file\" \"$file\" || exit 1\n      stripped=\"$stripped $arch\"\n    fi\n  done\n  if [[ \"$stripped\" != \"\" ]]; then\n    echo \"Stripped $file of architectures:$stripped\"\n    if [ \"${CODE_SIGNING_REQUIRED}\" == \"YES\" ]; then\n      code_sign \"${file}\"\n    fi\n  fi\ndone\n";
 		};
-		SSBP_7793755940 /* MyScript */ = {
+		SSBP_6331376344 /* MyScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -729,21 +729,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "echo \\\"You ran a script\\\"\n";
-		};
-		SSBP_7909350562 /* MyScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = MyScript;
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "echo \\\"You ran a script\\\"\n";
+			shellScript = "echo \"You ran a script\"\n";
 		};
 		SSBP_8106229290 /* Carthage */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -761,7 +747,7 @@
 			shellPath = /bin/sh;
 			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
 		};
-		SSBP_8769777310 /* MyScript */ = {
+		SSBP_8255377629 /* MyScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -773,7 +759,21 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "echo \\\"You ran a script\\\"\n";
+			shellScript = "echo \"You ran a script\"\n";
+		};
+		SSBP_8706434794 /* MyScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = MyScript;
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "echo \"You ran a script!\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
