@@ -21,7 +21,7 @@ func generate(spec: String, project: String, isQuiet: Bool, justVersion: Bool) {
         exit(1)
     }
 
-    let specPath = Path(URL(fileURLWithPath: spec).path).normalize()
+    let specPath = Path(spec).absolute()
     let projectPath = Path(project).normalize()
 
     if !specPath.exists {
