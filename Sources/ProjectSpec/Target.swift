@@ -13,7 +13,19 @@ public struct Target {
     public var postbuildScripts: [BuildScript]
     public var configFiles: [String: String]
     public var scheme: TargetScheme?
+    public var headerMap: HeaderVisibilityMap?
 
+    public struct HeaderVisibilityMap {
+        public var publicHeaders: [String]
+        public var privateHeaders: [String]
+        
+        public init(publicHeaders: [String] = [], privateHeaders:[String] = []) {
+            self.publicHeaders = publicHeaders
+            self.privateHeaders = privateHeaders
+        }
+    }
+    
+    
     public var filename: String {
         var name = self.name
         if let fileExtension = type.fileExtension {
@@ -22,7 +34,7 @@ public struct Target {
         return name
     }
 
-    public init(name: String, type: PBXProductType, platform: Platform, settings: Settings = .empty, configFiles: [String: String] = [:], sources: [TargetSource] = [], dependencies: [Dependency] = [], prebuildScripts: [BuildScript] = [], postbuildScripts: [BuildScript] = [], scheme: TargetScheme? = nil) {
+    public init(name: String, type: PBXProductType, platform: Platform, settings: Settings = .empty, configFiles: [String: String] = [:], sources: [TargetSource] = [], dependencies: [Dependency] = [], prebuildScripts: [BuildScript] = [], postbuildScripts: [BuildScript] = [], scheme: TargetScheme? = nil, headerMap: HeaderVisibilityMap? = nil) {
         self.name = name
         self.type = type
         self.platform = platform
@@ -33,6 +45,7 @@ public struct Target {
         self.prebuildScripts = prebuildScripts
         self.postbuildScripts = postbuildScripts
         self.scheme = scheme
+        self.headerMap = headerMap
     }
 }
 
@@ -122,7 +135,8 @@ extension Target: Equatable {
             lhs.dependencies == rhs.dependencies &&
             lhs.prebuildScripts == rhs.prebuildScripts &&
             lhs.postbuildScripts == rhs.postbuildScripts &&
-            lhs.scheme == rhs.scheme
+            lhs.scheme == rhs.scheme &&
+            lhs.headerMap == rhs.headerMap
     }
 }
 
@@ -199,5 +213,23 @@ extension Target: NamedJSONDictionaryConvertible {
         prebuildScripts = jsonDictionary.json(atKeyPath: "prebuildScripts") ?? []
         postbuildScripts = jsonDictionary.json(atKeyPath: "postbuildScripts") ?? []
         scheme = jsonDictionary.json(atKeyPath: "scheme")
+        headerMap = jsonDictionary.json(atKeyPath: "headers")
     }
 }
+
+// Mark: - Visibility map
+extension Target.HeaderVisibilityMap: Equatable {
+    public static func ==(lhs: Target.HeaderVisibilityMap, rhs: Target.HeaderVisibilityMap) -> Bool {
+        return lhs.privateHeaders == rhs.privateHeaders &&
+            lhs.publicHeaders == rhs.publicHeaders
+    }
+}
+
+extension Target.HeaderVisibilityMap: JSONObjectConvertible {
+    public init(jsonDictionary: JSONDictionary) throws {
+        self.publicHeaders = jsonDictionary.json(atKeyPath: "public") ?? []
+        self.privateHeaders = jsonDictionary.json(atKeyPath: "private") ?? []
+    }
+}
+
+
