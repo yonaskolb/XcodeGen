@@ -75,197 +75,40 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		FR_118219888726 /* Base */ = {
-			isa = PBXFileReference;
-			name = Base;
-			path = Base.lproj/LocalizedStoryboard.storyboard;
-			sourceTree = "<group>";
-		};
-		FR_172952167809 /* FrameworkFile.swift */ = {
-			isa = PBXFileReference;
-			path = FrameworkFile.swift;
-			sourceTree = "<group>";
-		};
-		FR_183521624014 /* MyFramework.h */ = {
-			isa = PBXFileReference;
-			path = MyFramework.h;
-			sourceTree = "<group>";
-		};
-		FR_196911129660 /* MoreUnder.swift */ = {
-			isa = PBXFileReference;
-			path = MoreUnder.swift;
-			sourceTree = "<group>";
-		};
-		FR_238161558082 /* MyBundle.bundle */ = {
-			isa = PBXFileReference;
-			path = MyBundle.bundle;
-			sourceTree = "<group>";
-		};
-		FR_247808626608 /* Info.plist */ = {
-			isa = PBXFileReference;
-			path = Info.plist;
-			sourceTree = "<group>";
-		};
-		FR_256263906698 /* Base */ = {
-			isa = PBXFileReference;
-			name = Base;
-			path = Base.lproj/LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-		FR_257073931060 /* ResourceFolder */ = {
-			isa = PBXFileReference;
-			name = ResourceFolder;
-			path = Resources/ResourceFolder;
-			sourceTree = SOURCE_ROOT;
-		};
-		FR_257516580010 /* Alamofire.framework */ = {
-			isa = PBXFileReference;
-			path = Alamofire.framework;
-			sourceTree = "<group>";
-		};
-		FR_408537768279 /* StandaloneAssets.xcassets */ = {
-			isa = PBXFileReference;
-			path = StandaloneAssets.xcassets;
-			sourceTree = "<group>";
-		};
-		FR_410645050443 /* Alamofire.framework */ = {
-			isa = PBXFileReference;
-			path = Alamofire.framework;
-			sourceTree = "<group>";
-		};
-		FR_438704538506 /* Framework_watchOS.framework */ = {
-			isa = PBXFileReference;
-			explicitFileType = framework;
-			includeInIndex = 0;
-			path = Framework_watchOS.framework;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		FR_452853029807 /* Alamofire.framework */ = {
-			isa = PBXFileReference;
-			path = Alamofire.framework;
-			sourceTree = "<group>";
-		};
-		FR_472296042419 /* Framework_iOS.framework */ = {
-			isa = PBXFileReference;
-			explicitFileType = framework;
-			includeInIndex = 0;
-			path = Framework_iOS.framework;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		FR_473000061463 /* Base */ = {
-			isa = PBXFileReference;
-			name = Base;
-			path = Base.lproj/Localizable.strings;
-			sourceTree = "<group>";
-		};
-		FR_481575785861 /* ViewController.swift */ = {
-			isa = PBXFileReference;
-			path = ViewController.swift;
-			sourceTree = "<group>";
-		};
-		FR_500792082643 /* en */ = {
-			isa = PBXFileReference;
-			name = en;
-			path = en.lproj/LocalizedStoryboard.strings;
-			sourceTree = "<group>";
-		};
-		FR_525119120469 /* Framework_macOS.framework */ = {
-			isa = PBXFileReference;
-			explicitFileType = framework;
-			includeInIndex = 0;
-			path = Framework_macOS.framework;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		FR_602633703434 /* en */ = {
-			isa = PBXFileReference;
-			name = en;
-			path = en.lproj/Localizable.stringsdict;
-			sourceTree = "<group>";
-		};
-		FR_609193904586 /* Base */ = {
-			isa = PBXFileReference;
-			name = Base;
-			path = Base.lproj/Main.storyboard;
-			sourceTree = "<group>";
-		};
-		FR_635802719871 /* base.xcconfig */ = {
-			isa = PBXFileReference;
-			path = base.xcconfig;
-			sourceTree = "<group>";
-		};
-		FR_655678458041 /* Info.plist */ = {
-			isa = PBXFileReference;
-			path = Info.plist;
-			sourceTree = "<group>";
-		};
-		FR_660690926982 /* config.xcconfig */ = {
-			isa = PBXFileReference;
-			path = config.xcconfig;
-			sourceTree = "<group>";
-		};
-		FR_662315837182 /* Framework_tvOS.framework */ = {
-			isa = PBXFileReference;
-			explicitFileType = framework;
-			includeInIndex = 0;
-			path = Framework_tvOS.framework;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		FR_675266829517 /* Standalone.swift */ = {
-			isa = PBXFileReference;
-			path = Standalone.swift;
-			sourceTree = "<group>";
-		};
-		FR_722239415598 /* TestProjectTests.swift */ = {
-			isa = PBXFileReference;
-			path = TestProjectTests.swift;
-			sourceTree = "<group>";
-		};
-		FR_725187762757 /* Info.plist */ = {
-			isa = PBXFileReference;
-			path = Info.plist;
-			sourceTree = "<group>";
-		};
-		FR_746876637628 /* Base */ = {
-			isa = PBXFileReference;
-			name = Base;
-			path = Base.lproj/Localizable.stringsdict;
-			sourceTree = "<group>";
-		};
-		FR_752394658615 /* Alamofire.framework */ = {
-			isa = PBXFileReference;
-			path = Alamofire.framework;
-			sourceTree = "<group>";
-		};
-		FR_771029596306 /* en */ = {
-			isa = PBXFileReference;
-			name = en;
-			path = en.lproj/Localizable.strings;
-			sourceTree = "<group>";
-		};
-		FR_783122899910 /* App_iOS_Tests.xctest */ = {
-			isa = PBXFileReference;
-			explicitFileType = xctest;
-			includeInIndex = 0;
-			path = App_iOS_Tests.xctest;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		FR_825232110500 /* App_iOS.app */ = {
-			isa = PBXFileReference;
-			explicitFileType = app;
-			includeInIndex = 0;
-			path = App_iOS.app;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		FR_854336462818 /* AppDelegate.swift */ = {
-			isa = PBXFileReference;
-			path = AppDelegate.swift;
-			sourceTree = "<group>";
-		};
-		FR_868653349092 /* Assets.xcassets */ = {
-			isa = PBXFileReference;
-			path = Assets.xcassets;
-			sourceTree = "<group>";
-		};
+		FR_118219888726 /* Base */ = {isa = PBXFileReference; name = Base; path = Base.lproj/LocalizedStoryboard.storyboard; sourceTree = "<group>"; };
+		FR_172952167809 /* FrameworkFile.swift */ = {isa = PBXFileReference; path = FrameworkFile.swift; sourceTree = "<group>"; };
+		FR_183521624014 /* MyFramework.h */ = {isa = PBXFileReference; path = MyFramework.h; sourceTree = "<group>"; };
+		FR_196911129660 /* MoreUnder.swift */ = {isa = PBXFileReference; path = MoreUnder.swift; sourceTree = "<group>"; };
+		FR_238161558082 /* MyBundle.bundle */ = {isa = PBXFileReference; path = MyBundle.bundle; sourceTree = "<group>"; };
+		FR_247808626608 /* Info.plist */ = {isa = PBXFileReference; path = Info.plist; sourceTree = "<group>"; };
+		FR_256263906698 /* Base */ = {isa = PBXFileReference; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		FR_257073931060 /* ResourceFolder */ = {isa = PBXFileReference; name = ResourceFolder; path = Resources/ResourceFolder; sourceTree = SOURCE_ROOT; };
+		FR_257516580010 /* Alamofire.framework */ = {isa = PBXFileReference; path = Alamofire.framework; sourceTree = "<group>"; };
+		FR_408537768279 /* StandaloneAssets.xcassets */ = {isa = PBXFileReference; path = StandaloneAssets.xcassets; sourceTree = "<group>"; };
+		FR_410645050443 /* Alamofire.framework */ = {isa = PBXFileReference; path = Alamofire.framework; sourceTree = "<group>"; };
+		FR_438704538506 /* Framework_watchOS.framework */ = {isa = PBXFileReference; explicitFileType = framework; includeInIndex = 0; path = Framework_watchOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FR_452853029807 /* Alamofire.framework */ = {isa = PBXFileReference; path = Alamofire.framework; sourceTree = "<group>"; };
+		FR_472296042419 /* Framework_iOS.framework */ = {isa = PBXFileReference; explicitFileType = framework; includeInIndex = 0; path = Framework_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FR_473000061463 /* Base */ = {isa = PBXFileReference; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
+		FR_481575785861 /* ViewController.swift */ = {isa = PBXFileReference; path = ViewController.swift; sourceTree = "<group>"; };
+		FR_500792082643 /* en */ = {isa = PBXFileReference; name = en; path = en.lproj/LocalizedStoryboard.strings; sourceTree = "<group>"; };
+		FR_525119120469 /* Framework_macOS.framework */ = {isa = PBXFileReference; explicitFileType = framework; includeInIndex = 0; path = Framework_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FR_602633703434 /* en */ = {isa = PBXFileReference; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
+		FR_609193904586 /* Base */ = {isa = PBXFileReference; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		FR_635802719871 /* base.xcconfig */ = {isa = PBXFileReference; path = base.xcconfig; sourceTree = "<group>"; };
+		FR_655678458041 /* Info.plist */ = {isa = PBXFileReference; path = Info.plist; sourceTree = "<group>"; };
+		FR_660690926982 /* config.xcconfig */ = {isa = PBXFileReference; path = config.xcconfig; sourceTree = "<group>"; };
+		FR_662315837182 /* Framework_tvOS.framework */ = {isa = PBXFileReference; explicitFileType = framework; includeInIndex = 0; path = Framework_tvOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FR_675266829517 /* Standalone.swift */ = {isa = PBXFileReference; path = Standalone.swift; sourceTree = "<group>"; };
+		FR_722239415598 /* TestProjectTests.swift */ = {isa = PBXFileReference; path = TestProjectTests.swift; sourceTree = "<group>"; };
+		FR_725187762757 /* Info.plist */ = {isa = PBXFileReference; path = Info.plist; sourceTree = "<group>"; };
+		FR_746876637628 /* Base */ = {isa = PBXFileReference; name = Base; path = Base.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
+		FR_752394658615 /* Alamofire.framework */ = {isa = PBXFileReference; path = Alamofire.framework; sourceTree = "<group>"; };
+		FR_771029596306 /* en */ = {isa = PBXFileReference; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		FR_783122899910 /* App_iOS_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = xctest; includeInIndex = 0; path = App_iOS_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		FR_825232110500 /* App_iOS.app */ = {isa = PBXFileReference; explicitFileType = app; includeInIndex = 0; path = App_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FR_854336462818 /* AppDelegate.swift */ = {isa = PBXFileReference; path = AppDelegate.swift; sourceTree = "<group>"; };
+		FR_868653349092 /* Assets.xcassets */ = {isa = PBXFileReference; path = Assets.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
