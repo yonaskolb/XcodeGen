@@ -302,7 +302,10 @@
 				G_6651250437419 /* StandaloneFiles */,
 				FR_257073931060 /* ResourceFolder */,
 			);
+			indentWidth = 2;
 			sourceTree = "<group>";
+			tabWidth = 2;
+			usesTabs = 0;
 		};
 		G_8620238527590 /* Products */ = {
 			isa = PBXGroup;
