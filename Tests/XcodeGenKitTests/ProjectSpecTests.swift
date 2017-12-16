@@ -8,7 +8,7 @@ func projectSpecTests() {
     describe("ProjectSpec") {
 
         let framework = Target(name: "MyFramework", type: .framework, platform: .iOS,
-                               settings: Settings(buildSettings: ["SETTING_2": "VALUE"]))
+                               settings: Settings(buildSettings: ["SETTING_2": "VALUE"]), headerMap: Target.HeaderVisibilityMap(publicHeaders: ["Some"]))
         let staticLibrary = Target(name: "MyStaticLibrary", type: .staticLibrary, platform: .iOS,
                                    settings: Settings(buildSettings: ["SETTING_2": "VALUE"]))
         let dynamicLibrary = Target(name: "MyDynamicLibrary", type: .dynamicLibrary, platform: .iOS,
@@ -71,7 +71,8 @@ func projectSpecTests() {
                                        dependencies: [Dependency(type: .target, reference: "invalidDependency")],
                                        prebuildScripts: [BuildScript(script: .path("invalidPrebuildScript"), name: "prebuildScript1")],
                                        postbuildScripts: [BuildScript(script: .path("invalidPostbuildScript"))],
-                                       scheme: TargetScheme(testTargets: ["invalidTarget"])
+                                       scheme: TargetScheme(testTargets: ["invalidTarget"]),
+                                       headerMap: Target.HeaderVisibilityMap(publicHeaders: ["Some"])
                 )]
 
                 try expectValidationError(spec, .invalidTargetDependency(target: "target1", dependency: "invalidDependency"))
@@ -85,7 +86,8 @@ func projectSpecTests() {
 
                 try expectValidationError(spec, .missingConfigTypeForGeneratedTargetScheme(target: "target1", configType: .debug))
                 try expectValidationError(spec, .missingConfigTypeForGeneratedTargetScheme(target: "target1", configType: .release))
-
+                try expectValidationError(spec, .invalidHeaderMapForTarget(target: "target1"))
+                
                 spec.targets[0].scheme?.configVariants = ["invalidVariant"]
                 try expectValidationError(spec, .invalidTargetSchemeConfigVariant(target: "target1", configVariant: "invalidVariant", configType: .debug))
             }

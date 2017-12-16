@@ -45,10 +45,7 @@ class SourceGenerator {
         let fileReference = fileReferencesByPath[path]!
         var settings: [String: Any] = [:]
         let buildPhase = buildPhase ?? getDefaultBuildPhase(for: path)
-
-        if buildPhase == .headers {
-            settings = ["ATTRIBUTES": ["Public"]]
-        }
+  
         if targetSource.compilerFlags.count > 0 {
             settings["COMPILER_FLAGS"] = targetSource.compilerFlags.joined(separator: " ")
         }

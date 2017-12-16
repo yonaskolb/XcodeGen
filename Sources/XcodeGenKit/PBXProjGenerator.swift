@@ -148,7 +148,31 @@ public class PBXProjGenerator {
         let carthageDependencies = getAllCarthageDependencies(target: target)
 
         let sourceFiles = try sourceGenerator.getAllSourceFiles(sources: target.sources)
+        
+        // Look for headers and apply map
+        if let map = target.headerMap {
+            
+            let dirName = spec.basePath.string
+            let absolutePrivateHeaders = map.privateHeaders.flatMap { Path.glob("\(dirName)/\($0)") }.map { $0.string }
+            let absolutePublicHeaders = map.publicHeaders.flatMap { Path.glob("\(dirName)/\($0)") }.map { $0.string }
+            
+            for sourceFile in sourceFiles {
+                let fileName = sourceFile.path.string
+                
+                if absolutePrivateHeaders.contains(fileName) {
+                    var settings: [String: Any] = sourceFile.buildFile.settings ?? [:]
+                    settings["ATTRIBUTES"] = ["Private"]
+                    sourceFile.buildFile.settings = settings
+                }
 
+                if absolutePublicHeaders.contains(fileName) {
+                    var settings: [String: Any] = sourceFile.buildFile.settings ?? [:]
+                    settings["ATTRIBUTES"] = ["Public"]
+                    sourceFile.buildFile.settings = settings
+                }
+            }
+        }
+        
         // find all Info.plist files
         let infoPlists: [Path] = target.sources.map { spec.basePath + $0.path }.flatMap { (path) -> [Path] in
             if path.isFile {

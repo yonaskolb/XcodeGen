@@ -67,7 +67,22 @@ extension ProjectSpec {
                     errors.append(.invalidTargetSource(target: target.name, source: sourcePath.string))
                 }
             }
-
+            
+            if target.headerMap != nil && target.type != .framework {
+                errors.append(.invalidHeaderMapForTarget(target: target.name))
+            } else if let map = target.headerMap {
+                let allHeaders = map.privateHeaders + map.publicHeaders
+            
+                let allPossiblePath = allHeaders.flatMap { Path.glob("\(basePath.string)/\($0)")}.map { $0.string }
+                for header in allPossiblePath {
+                    
+                    let path = basePath + Path(header)
+                    if !path.exists {
+                        errors.append(.invalidHeaderPathForTarget(target: target.name, path: header))
+                    }
+                }
+            }
+            
             if let scheme = target.scheme {
 
                 for configVariant in scheme.configVariants {
