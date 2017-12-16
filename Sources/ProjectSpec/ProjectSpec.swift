@@ -5,7 +5,7 @@ import PathKit
 import Yams
 
 public struct ProjectSpec {
-
+    
     public var basePath: Path
     public var name: String
     public var targets: [Target]
@@ -20,6 +20,9 @@ public struct ProjectSpec {
     public var include: [String] = []
 
     public struct Options {
+        fileprivate static let defaultXcodeVersion = "0910"
+        
+        public var currentXcodeVersion: String
         public var carthageBuildPath: String?
         public var createIntermediateGroups: Bool
         public var bundleIdPrefix: String?
@@ -47,7 +50,8 @@ public struct ProjectSpec {
             }
         }
 
-        public init(carthageBuildPath: String? = nil, createIntermediateGroups: Bool = false, bundleIdPrefix: String? = nil, settingPresets: SettingPresets = .all, developmentLanguage: String? = nil) {
+        public init(currentXcodeVersion: String? = nil, carthageBuildPath: String? = nil, createIntermediateGroups: Bool = false, bundleIdPrefix: String? = nil, settingPresets: SettingPresets = .all, developmentLanguage: String? = nil) {
+            self.currentXcodeVersion = currentXcodeVersion ?? Options.defaultXcodeVersion
             self.carthageBuildPath = carthageBuildPath
             self.createIntermediateGroups = createIntermediateGroups
             self.bundleIdPrefix = bundleIdPrefix
@@ -119,7 +123,8 @@ extension ProjectSpec: Equatable {
 extension ProjectSpec.Options: Equatable {
 
     public static func == (lhs: ProjectSpec.Options, rhs: ProjectSpec.Options) -> Bool {
-        return lhs.carthageBuildPath == rhs.carthageBuildPath &&
+        return lhs.currentXcodeVersion == rhs.currentXcodeVersion &&
+            lhs.carthageBuildPath == rhs.carthageBuildPath &&
             lhs.bundleIdPrefix == rhs.bundleIdPrefix &&
             lhs.settingPresets == rhs.settingPresets &&
             lhs.createIntermediateGroups == rhs.createIntermediateGroups &&
@@ -158,6 +163,7 @@ extension ProjectSpec {
 extension ProjectSpec.Options: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
+        currentXcodeVersion = jsonDictionary.json(atKeyPath: "currentXcodeVersion") ?? ProjectSpec.Options.defaultXcodeVersion
         carthageBuildPath = jsonDictionary.json(atKeyPath: "carthageBuildPath")
         bundleIdPrefix = jsonDictionary.json(atKeyPath: "bundleIdPrefix")
         settingPresets = jsonDictionary.json(atKeyPath: "settingPresets") ?? .all
