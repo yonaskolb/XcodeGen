@@ -10,11 +10,11 @@ let package = Package(
         .library(name: "ProjectSpec", targets: ["ProjectSpec"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/kylef/PathKit.git", from: "0.8.0"),
-        .package(url: "https://github.com/kylef/Commander.git", from: "0.6.1"),
+        .package(url: "https://github.com/kylef/PathKit.git", .revision("a667cd3")),
+        .package(url: "https://github.com/kylef/Commander.git", from: "0.8.0"),
         .package(url: "https://github.com/jpsim/Yams.git", from: "0.3.6"),
         .package(url: "https://github.com/yonaskolb/JSONUtilities.git", from: "3.3.0"),
-        .package(url: "https://github.com/kylef/Spectre.git", from: "0.7.0"),
+        .package(url: "https://github.com/kylef/Spectre.git", from: "0.8.0"),
         .package(url: "https://github.com/onevcat/Rainbow.git", from: "3.0.0"),
         .package(url: "https://github.com/xcodeswift/xcproj.git", from: "1.6.0")
     ],
@@ -37,6 +37,7 @@ let package = Package(
         ]),
         .testTarget(name: "XcodeGenKitTests", dependencies: [
           "XcodeGenKit",
+          "Spectre"
         ])
     ]
 )

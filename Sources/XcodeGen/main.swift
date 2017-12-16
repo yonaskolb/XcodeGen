@@ -55,9 +55,9 @@ func generate(spec: String, project: String, isQuiet: Bool, justVersion: Bool) {
 }
 
 command(
-    Option<String>("spec", "project.yml", flag: "s", description: "The path to the spec file"),
-    Option<String>("project", "", flag: "p", description: "The path to the folder where the project should be generated"),
-    Flag("quiet", flag: "q", description: "Suppress printing of informational and success messages", default: false),
-    Flag("version", flag: "v", description: "Show XcodeGen version", default: false),
+    Option<String>("spec", default: "project.yml", flag: "s", description: "The path to the spec file"),
+    Option<String>("project", default: "", flag: "p", description: "The path to the folder where the project should be generated"),
+    Flag("quiet", default: false, flag: "q", description: "Suppress printing of informational and success messages"),
+    Flag("version", default: false, flag: "v", description: "Show XcodeGen version"),
     generate
 ).run(version)
