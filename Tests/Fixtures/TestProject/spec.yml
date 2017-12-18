@@ -8,6 +8,12 @@ fileGroups:
 configFiles:
   Test Debug: Configs/config.xcconfig
 targets:
+  Legacy:
+    type: ""
+    platform: iOS
+    legacy:
+      toolPath: /usr/bin/true
+      passSettings: true
   App_iOS:
     type: application
     platform: iOS
@@ -26,6 +32,7 @@ targets:
       PRODUCT_BUNDLE_IDENTIFIER: com.project$(BUNDLE_ID_SUFFIX)
       INFOPLIST_FILE: App_iOS/Info.plist
     dependencies:
+      - target: Legacy
       - target: Framework_iOS
       - carthage: Alamofire
     scheme:

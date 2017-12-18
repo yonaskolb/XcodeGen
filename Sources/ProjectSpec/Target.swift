@@ -2,6 +2,22 @@ import Foundation
 import xcproj
 import JSONUtilities
 
+public struct LegacyTarget {
+    public var toolPath: String
+    public var arguments: String?
+    public var passSettings: Bool
+    public var workingDirectory: String?
+}
+
+extension LegacyTarget: Equatable {
+    public static func ==(lhs: LegacyTarget, rhs: LegacyTarget) -> Bool {
+        return lhs.toolPath == rhs.toolPath &&
+            lhs.arguments == rhs.arguments &&
+            lhs.passSettings == rhs.passSettings &&
+            lhs.workingDirectory == rhs.workingDirectory
+    }
+}
+
 public struct Target {
     public var name: String
     public var type: PBXProductType
@@ -13,6 +29,11 @@ public struct Target {
     public var postbuildScripts: [BuildScript]
     public var configFiles: [String: String]
     public var scheme: TargetScheme?
+    public var legacy: LegacyTarget?
+    
+    public var isLegacy: Bool {
+        return legacy != nil
+    }
 
     public var filename: String {
         var name = self.name
@@ -22,7 +43,7 @@ public struct Target {
         return name
     }
 
-    public init(name: String, type: PBXProductType, platform: Platform, settings: Settings = .empty, configFiles: [String: String] = [:], sources: [TargetSource] = [], dependencies: [Dependency] = [], prebuildScripts: [BuildScript] = [], postbuildScripts: [BuildScript] = [], scheme: TargetScheme? = nil) {
+    public init(name: String, type: PBXProductType, platform: Platform, settings: Settings = .empty, configFiles: [String: String] = [:], sources: [TargetSource] = [], dependencies: [Dependency] = [], prebuildScripts: [BuildScript] = [], postbuildScripts: [BuildScript] = [], scheme: TargetScheme? = nil, legacy: LegacyTarget? = nil) {
         self.name = name
         self.type = type
         self.platform = platform
@@ -33,6 +54,7 @@ public struct Target {
         self.prebuildScripts = prebuildScripts
         self.postbuildScripts = postbuildScripts
         self.scheme = scheme
+        self.legacy = legacy
     }
 }
 
@@ -122,7 +144,8 @@ extension Target: Equatable {
             lhs.dependencies == rhs.dependencies &&
             lhs.prebuildScripts == rhs.prebuildScripts &&
             lhs.postbuildScripts == rhs.postbuildScripts &&
-            lhs.scheme == rhs.scheme
+            lhs.scheme == rhs.scheme &&
+            lhs.legacy == rhs.legacy
     }
 }
 
@@ -155,6 +178,16 @@ extension TargetScheme: JSONObjectConvertible {
         configVariants = jsonDictionary.json(atKeyPath: "configVariants") ?? []
         gatherCoverageData = jsonDictionary.json(atKeyPath: "gatherCoverageData") ?? false
         commandLineArguments = jsonDictionary.json(atKeyPath: "commandLineArguments") ?? [:]
+    }
+}
+
+extension LegacyTarget: JSONObjectConvertible {
+    
+    public init(jsonDictionary: JSONDictionary) throws {
+        toolPath = try jsonDictionary.json(atKeyPath: "toolPath")
+        arguments = jsonDictionary.json(atKeyPath: "arguments")
+        passSettings = jsonDictionary.json(atKeyPath: "passSettings") ?? false
+        workingDirectory = jsonDictionary.json(atKeyPath: "workingDirectory")
     }
 }
 
@@ -199,5 +232,6 @@ extension Target: NamedJSONDictionaryConvertible {
         prebuildScripts = jsonDictionary.json(atKeyPath: "prebuildScripts") ?? []
         postbuildScripts = jsonDictionary.json(atKeyPath: "postbuildScripts") ?? []
         scheme = jsonDictionary.json(atKeyPath: "scheme")
+        legacy = jsonDictionary.json(atKeyPath: "legacy")
     }
 }

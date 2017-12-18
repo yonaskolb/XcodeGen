@@ -41,9 +41,10 @@ public class ProjectGenerator {
 
         func getBuildEntry(_ buildTarget: Scheme.BuildTarget) -> XCScheme.BuildAction.Entry {
 
-            let targetReference = pbxProject.objects.nativeTargets.referenceValues.first { $0.name == buildTarget.target }!
+            let predicate: (PBXTarget) -> Bool = { $0.name == buildTarget.target }
+            let targetReference = pbxProject.objects.nativeTargets.referenceValues.first{ predicate($0 as PBXTarget) } ?? pbxProject.objects.legacyTargets.referenceValues.first{ predicate($0 as PBXTarget) }!
 
-            let buildableReference = XCScheme.BuildableReference(referencedContainer: "container:\(spec.name).xcodeproj", blueprintIdentifier: targetReference.reference, buildableName: "\(buildTarget.target).\(targetReference.productType!.fileExtension!)", blueprintName: scheme.name)
+            let buildableReference = XCScheme.BuildableReference(referencedContainer: "container:\(spec.name).xcodeproj", blueprintIdentifier: targetReference.reference, buildableName: buildTarget.target + (targetReference.productType?.fileExtension.map{ ".\($0)" } ?? ""), blueprintName: scheme.name)
 
             return XCScheme.BuildAction.Entry(buildableReference: buildableReference, buildFor: buildTarget.buildTypes)
         }

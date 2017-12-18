@@ -141,6 +141,7 @@ Settings are merged in the following order: groups, base, configs.
 - ⚪️ **postbuildScripts**: [[Build Script](#build-script)] - Build scripts that run *after* any other build phases
 - ⚪️ **dependencies**: [[Dependency](#dependency)] - Dependencies for the target
 - ⚪️ **scheme**: [Target Scheme](#target-scheme) - Generated scheme with tests or config variants
+- ⚪️ **legacy**: [Legacy Target](#legacy-target) - When present, opt-in to make an Xcode "External Build System" legacy target instead.
 
 ### Product Type
 This will provide default build settings for a certain product type. It can be any of the following:
@@ -163,6 +164,7 @@ This will provide default build settings for a certain product type. It can be a
 - app-extension.messages
 - app-extension.messages-sticker-pack
 - xpc-service
+- "" (used for legacy targets)
 
 ### Platform
 This will provide default build settings for a certain platform. It can be any of the following:
@@ -361,3 +363,12 @@ targets
   MyUnitTests:
     sources: Tests
 ```
+
+###  Legacy Target
+By providing a legacy target, you are opting in to the "Legacy Target" mode. This is the "External Build Tool" from the Xcode GUI. This is useful for scripts that you want to run as dependencies of other targets, but you want to make sure that it only runs once even if it is specified as a dependency from multiple other targets.
+
+- 🔵 **toolPath**: String - Path to the build tool used in the legacy target.
+- ⚪️ **arguments**: String - Build arguments used for the build tool in the legacy target
+- ⚪️ **passSettings**: Bool - Whether or not to pass build settings down to the build tool in the legacy target.
+- ⚪️ **workingDirectory**: String - The working directory under which the build tool will be invoked in the legacy target.
+
