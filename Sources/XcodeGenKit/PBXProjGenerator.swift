@@ -8,18 +8,14 @@ import ProjectSpec
 public class PBXProjGenerator {
 
     let spec: ProjectSpec
-
     let proj: PBXProj
     let sourceGenerator: SourceGenerator
-    let referenceGenerator = ReferenceGenerator()
-
     var targetNativeReferences: [String: String] = [:]
-    var targetBuildFiles: [String: PBXBuildFile] = [:]
+    var targetBuildFiles: [String: (reference: String, buildFile: PBXBuildFile)] = [:]
     var targetFileReferences: [String: String] = [:]
     var topLevelGroups: Set<String> = []
     var carthageFrameworksByPlatform: [String: Set<String>] = [:]
     var frameworkFiles: [String] = []
-
     var generated = false
 
     var carthageBuildPath: String {
@@ -28,18 +24,18 @@ public class PBXProjGenerator {
 
     public init(spec: ProjectSpec) {
         self.spec = spec
-        proj = PBXProj(objectVersion: 46, rootObject: referenceGenerator.generate(PBXProject.self, spec.name))
-        sourceGenerator = SourceGenerator(spec: spec, referenceGenerator: referenceGenerator) { _ in }
-        sourceGenerator.addObject = { [weak self] object in
-            self?.addObject(object)
+        proj = PBXProj(objectVersion: 46, rootObject: "")
+        sourceGenerator = SourceGenerator(spec: spec, generateReference: { self.proj.objects.generateReference($0, $1) }) { (_, _) in }
+        sourceGenerator.addObject = { [weak self] (object, reference) in
+            self?.addObject(object, reference: reference)
         }
     }
 
-    func addObject(_ object: PBXObject) {
-        proj.objects.addObject(object)
+    func addObject(_ object: PBXObject, reference: String) {
+        proj.objects.addObject(object, reference: reference)
     }
 
-    public func generate() throws -> PBXProj {
+    public func generate() throws -> (reference: String, project: PBXProj) {
         if generated {
             fatalError("Cannot use PBXProjGenerator to generate more than once")
         }
@@ -48,7 +44,7 @@ public class PBXProjGenerator {
             try sourceGenerator.getFileGroups(path: group)
         }
 
-        let buildConfigs: [XCBuildConfiguration] = spec.configs.map { config in
+        let buildConfigs: [(reference: String, config: XCBuildConfiguration)] = spec.configs.map { config in
             let buildSettings = spec.getProjectBuildSettings(config: config)
             var baseConfigurationReference: String?
             if let configPath = spec.configFiles[config.name] {
@@ -69,8 +65,9 @@ public class PBXProjGenerator {
             defaultConfigurationIsVisible: 0
         )
 
-        buildConfigs.forEach(addObject)
-        addObject(buildConfigList)
+        buildConfigs.forEach { addObject($0.config, reference: $0.reference) }
+        let buildConfigListReference = proj.objects.generateReference(buildConfigList, spec.name)
+        addObject(buildConfigList, reference: buildConfigListReference)
 
         for target in spec.targets {
             targetNativeReferences[target.name] =
@@ -109,7 +106,7 @@ public class PBXProjGenerator {
         topLevelGroups.insert(productGroup.reference)
 
         if !carthageFrameworksByPlatform.isEmpty {
-            var platforms: [PBXGroup] = []
+            var platformsReferences: [String] = []
             for (platform, fileReferences) in carthageFrameworksByPlatform {
                 let platformGroup = PBXGroup(
                     reference: referenceGenerator.generate(PBXGroup.self, "Carthage" + platform),
@@ -157,7 +154,7 @@ public class PBXProjGenerator {
         )
         addObject(mainGroup)
 
-        sortGroups(group: mainGroup)
+        sortGroups(group: mainGroup, reference: mainGroupReference)
 
         let projectAttributes: [String: Any] = ["LastUpgradeCheck": spec.xcodeVersion].merged(spec.attributes)
         let root = PBXProject(
@@ -176,22 +173,26 @@ public class PBXProjGenerator {
         return proj
     }
 
-    func sortGroups(group: PBXGroup) {
+    func sortGroups(group: PBXGroup, reference: String) {
         // sort children
         let children = group.children
-            .flatMap { proj.objects.getFileElement(reference: $0) }
+            .flatMap { reference in
+                return proj.objects.getFileElement(reference: reference).flatMap({ (reference: reference, object: $0) })
+            }
             .sorted { child1, child2 in
-                if child1.sortOrder == child2.sortOrder {
-                    return child1.nameOrPath < child2.nameOrPath
+                if child1.object.sortOrder == child2.object.sortOrder {
+                    return child1.object.nameOrPath < child2.object.nameOrPath
                 } else {
-                    return child1.sortOrder < child2.sortOrder
+                    return child1.object.sortOrder < child2.object.sortOrder
                 }
             }
-        group.children = children.map { $0.reference }.filter { $0 != group.reference }
+        group.children = children.map { $0.reference }.filter { $0 != reference }
 
         // sort sub groups
-        let childGroups = group.children.flatMap { proj.objects.groups[$0] }
-        childGroups.forEach(sortGroups)
+        let childGroups = group.children.flatMap { reference in
+            return proj.objects.groups[reference].flatMap({(group: $0, reference: reference)})
+        }
+        childGroups.forEach({ sortGroups(group: $0.group, reference: $0.reference) })
     }
 
     func generateTarget(_ target: Target) throws -> PBXTarget {
@@ -204,7 +205,7 @@ public class PBXProjGenerator {
         var plistPath: Path?
         var searchForPlist = true
 
-        let configs: [XCBuildConfiguration] = spec.configs.map { config in
+        let configs: [(reference: String, configuration: XCBuildConfiguration)] = spec.configs.map { config in
             var buildSettings = spec.getTargetBuildSettings(target: target, config: config)
 
             // automatically set INFOPLIST_FILE path
@@ -331,13 +332,13 @@ public class PBXProjGenerator {
 
                     if dependencyTarget.type.isExtension {
                         // embed app extension
-                        extensions.append(embedFile.reference)
+                        extensions.append(embedFileReference)
                     } else if dependencyTarget.type.isFramework {
-                        copyFrameworksReferences.append(embedFile.reference)
+                        copyFrameworksReferences.append(embedFileReference)
                     } else if dependencyTarget.type.isApp && dependencyTarget.platform == .watchOS {
-                        copyWatchReferences.append(embedFile.reference)
+                        copyWatchReferences.append(embedFileReference)
                     } else {
-                        copyResourcesReferences.append(embedFile.reference)
+                        copyResourcesReferences.append(embedFileReference)
                     }
                 }
 
@@ -391,7 +392,7 @@ public class PBXProjGenerator {
                 addObject(buildFile)
                 carthageFrameworksByPlatform[target.platform.carthageDirectoryName, default: []].insert(fileReference)
 
-                targetFrameworkBuildFiles.append(buildFile.reference)
+                targetFrameworkBuildFiles.append(buildFileReference)
                 if target.platform == .macOS && target.type.isApp {
                     let embedFile = PBXBuildFile(
                         reference: referenceGenerator.generate(PBXBuildFile.self, fileReference + target.name),
@@ -411,8 +412,8 @@ public class PBXProjGenerator {
             let files = sourceFiles
                 .filter { $0.buildPhase == buildPhase }
                 .sorted { $0.path.lastComponent < $1.path.lastComponent }
-            files.forEach { addObject($0.buildFile) }
-            return files.map { $0.buildFile.reference }
+            files.forEach { addObject($0.buildFile, reference: $0.reference) }
+            return files.map { $0.reference }
         }
 
         func getBuildScript(buildScript: BuildScript) throws -> PBXShellScriptBuildPhase {
@@ -426,7 +427,6 @@ public class PBXProjGenerator {
             }
 
             let shellScriptPhase = PBXShellScriptBuildPhase(
-                reference: referenceGenerator.generate(PBXShellScriptBuildPhase.self, String(describing: buildScript.name) + shellScript + target.name),
                 files: [],
                 name: buildScript.name ?? "Run Script",
                 inputPaths: buildScript.inputFiles,
@@ -435,8 +435,8 @@ public class PBXProjGenerator {
                 shellScript: shellScript
             )
             shellScriptPhase.runOnlyForDeploymentPostprocessing = buildScript.runOnlyWhenInstalling ? 1 : 0
-            addObject(shellScriptPhase)
-            buildPhases.append(shellScriptPhase.reference)
+            addObject(shellScriptPhase, reference: shellScriptPhaseReference)
+            buildPhases.append(shellScriptPhaseReference)
             return shellScriptPhase
         }
 
@@ -444,29 +444,30 @@ public class PBXProjGenerator {
 
         let sourcesBuildPhaseFiles = getBuildFilesForPhase(.sources)
         if !sourcesBuildPhaseFiles.isEmpty {
-            let sourcesBuildPhase = PBXSourcesBuildPhase(reference: referenceGenerator.generate(PBXSourcesBuildPhase.self, target.name), files: sourcesBuildPhaseFiles)
-            addObject(sourcesBuildPhase)
-            buildPhases.append(sourcesBuildPhase.reference)
+            let sourcesBuildPhase = PBXSourcesBuildPhase(files: sourcesBuildPhaseFiles)
+            let sourcesBuildPhaseReference = proj.objects.generateReference(sourcesBuildPhase, target.name)
+            addObject(sourcesBuildPhase, reference: sourcesBuildPhaseReference)
+            buildPhases.append(sourcesBuildPhaseReference)
         }
 
         let resourcesBuildPhaseFiles = getBuildFilesForPhase(.resources) + copyResourcesReferences
         if !resourcesBuildPhaseFiles.isEmpty {
-            let resourcesBuildPhase = PBXResourcesBuildPhase(reference: referenceGenerator.generate(PBXResourcesBuildPhase.self, target.name), files: resourcesBuildPhaseFiles)
-            addObject(resourcesBuildPhase)
-            buildPhases.append(resourcesBuildPhase.reference)
+            let resourcesBuildPhase = PBXResourcesBuildPhase(files: resourcesBuildPhaseFiles)
+            let resourcesBuildPhaseReference = proj.objects.generateReference(resourcesBuildPhase, target.name)
+            addObject(resourcesBuildPhase, reference: resourcesBuildPhaseReference)
+            buildPhases.append(resourcesBuildPhaseReference)
         }
 
         let headersBuildPhaseFiles = getBuildFilesForPhase(.headers)
         if !headersBuildPhaseFiles.isEmpty && (target.type == .framework || target.type == .dynamicLibrary) {
-            let headersBuildPhase = PBXHeadersBuildPhase(reference: referenceGenerator.generate(PBXHeadersBuildPhase.self, target.name), files: headersBuildPhaseFiles)
-            addObject(headersBuildPhase)
-            buildPhases.append(headersBuildPhase.reference)
+            let headersBuildPhase = PBXHeadersBuildPhase(files: headersBuildPhaseFiles)
+            let headersBuildPhaseReference = proj.objects.generateReference(headersBuildPhase, target.name)
+            addObject(headersBuildPhase, reference: headersBuildPhaseReference)
+            buildPhases.append(headersBuildPhaseReference)
         }
 
         if !targetFrameworkBuildFiles.isEmpty {
-
             let frameworkBuildPhase = PBXFrameworksBuildPhase(
-                reference: referenceGenerator.generate(PBXFrameworksBuildPhase.self, target.name),
                 files: targetFrameworkBuildFiles,
                 runOnlyForDeploymentPostprocessing: 0
             )
@@ -476,9 +477,7 @@ public class PBXProjGenerator {
         }
 
         if !extensions.isEmpty {
-
             let copyFilesPhase = PBXCopyFilesBuildPhase(
-                reference: referenceGenerator.generate(PBXCopyFilesBuildPhase.self, "embed app extensions" + target.name),
                 dstPath: "",
                 dstSubfolderSpec: .plugins,
                 files: extensions
@@ -489,9 +488,7 @@ public class PBXProjGenerator {
         }
 
         if !copyFrameworksReferences.isEmpty {
-
             let copyFilesPhase = PBXCopyFilesBuildPhase(
-                reference: referenceGenerator.generate(PBXCopyFilesBuildPhase.self, "embed frameworks" + target.name),
                 dstPath: "",
                 dstSubfolderSpec: .frameworks,
                 files: copyFrameworksReferences
@@ -502,9 +499,7 @@ public class PBXProjGenerator {
         }
 
         if !copyWatchReferences.isEmpty {
-
             let copyFilesPhase = PBXCopyFilesBuildPhase(
-                reference: referenceGenerator.generate(PBXCopyFilesBuildPhase.self, "embed watch content" + target.name),
                 dstPath: "$(CONTENTS_FOLDER_PATH)/Watch",
                 dstSubfolderSpec: .productsDirectory,
                 files: copyWatchReferences

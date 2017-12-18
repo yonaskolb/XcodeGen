@@ -1,0 +1,153 @@
+### Swift dependencies file v0 ###
+provides-top-level:
+- "CodesParser"
+- "ConsoleCodesParser"
+- "XcodeColorsCodesParser"
+provides-nominal:
+- "7Rainbow11CodesParserP"
+- "7Rainbow18ConsoleCodesParserV"
+- "7Rainbow22XcodeColorsCodesParserV"
+provides-member:
+- ["7Rainbow11CodesParserP", ""]
+- ["7Rainbow18ConsoleCodesParserV", ""]
+- ["7Rainbow22XcodeColorsCodesParserV", ""]
+provides-dynamic-lookup:
+depends-top-level:
+- !private "=="
+- !private "Array"
+- "AssignmentPrecedence"
+- "BackgroundColor"
+- "CodesParser"
+- "Color"
+- "ConsoleCodesParser"
+- "String"
+- "Style"
+- "UInt8"
+- "XcodeColorsCodesParser"
+depends-member:
+- !private ["Sa", "append"]
+- !private ["7Rainbow15BackgroundColorO", "deinit"]
+- !private ["7Rainbow15BackgroundColorO", "init"]
+- !private ["s23BidirectionalCollectionP", "append"]
+- !private ["Sb", "_getBuiltinLogicValue"]
+- !private ["s7CVarArgP", "append"]
+- ["7Rainbow11CodesParserP", "BackgroundColor"]
+- ["7Rainbow11CodesParserP", "Color"]
+- ["7Rainbow11CodesParserP", "SourceType"]
+- ["7Rainbow11CodesParserP", "Style"]
+- ["7Rainbow11CodesParserP", "parse"]
+- ["7Rainbow11CodesParserP", ""]
+- !private ["s10CollectionP", "append"]
+- !private ["7Rainbow5ColorO", "deinit"]
+- !private ["7Rainbow5ColorO", "init"]
+- ["7Rainbow18ConsoleCodesParserV", "BackgroundColor"]
+- ["7Rainbow18ConsoleCodesParserV", "Color"]
+- ["7Rainbow18ConsoleCodesParserV", "SourceType"]
+- ["7Rainbow18ConsoleCodesParserV", "Style"]
+- ["7Rainbow18ConsoleCodesParserV", "UInt8"]
+- ["7Rainbow18ConsoleCodesParserV", "deinit"]
+- ["7Rainbow18ConsoleCodesParserV", "init"]
+- ["7Rainbow18ConsoleCodesParserV", "parse"]
+- !private ["s28CustomDebugStringConvertibleP", "append"]
+- !private ["s29CustomPlaygroundQuickLookableP", "_getBuiltinLogicValue"]
+- !private ["s17CustomReflectableP", "_getBuiltinLogicValue"]
+- !private ["s17CustomReflectableP", "append"]
+- !private ["s23CustomStringConvertibleP", "_getBuiltinLogicValue"]
+- !private ["s23CustomStringConvertibleP", "append"]
+- !private ["s9DecodableP", "_getBuiltinLogicValue"]
+- !private ["s9DecodableP", "append"]
+- !private ["s9EncodableP", "_getBuiltinLogicValue"]
+- !private ["s9EncodableP", "append"]
+- !private ["s9EquatableP", "_getBuiltinLogicValue"]
+- !private ["s9EquatableP", "init"]
+- !private ["s25ExpressibleByArrayLiteralP", "append"]
+- !private ["s27ExpressibleByBooleanLiteralP", "_getBuiltinLogicValue"]
+- !private ["s8HashableP", "_getBuiltinLogicValue"]
+- !private ["s8HashableP", "init"]
+- !private ["s25LosslessStringConvertibleP", "_getBuiltinLogicValue"]
+- !private ["7Rainbow8ModeCodeP", "init"]
+- !private ["s17MutableCollectionP", "append"]
+- !private ["s22RandomAccessCollectionP", "append"]
+- !private ["s26RangeReplaceableCollectionP", "append"]
+- !private ["s16RawRepresentableP", "init"]
+- !private ["s8SequenceP", "append"]
+- !private ["7Rainbow5StyleO", "deinit"]
+- !private ["7Rainbow5StyleO", "init"]
+- ["7Rainbow22XcodeColorsCodesParserV", "BackgroundColor"]
+- ["7Rainbow22XcodeColorsCodesParserV", "Color"]
+- ["7Rainbow22XcodeColorsCodesParserV", "SourceType"]
+- ["7Rainbow22XcodeColorsCodesParserV", "String"]
+- ["7Rainbow22XcodeColorsCodesParserV", "Style"]
+- ["7Rainbow22XcodeColorsCodesParserV", "deinit"]
+- ["7Rainbow22XcodeColorsCodesParserV", "init"]
+- ["7Rainbow22XcodeColorsCodesParserV", "parse"]
+- !private ["7Rainbow22XcodeColorsConvertibleP", "init"]
+- !private ["s14_ArrayProtocolP", "append"]
+- !private ["s23_BidirectionalIndexableP", "append"]
+- !private ["s24_DestructorSafeContainerP", "append"]
+- !private ["s35_ExpressibleByBuiltinBooleanLiteralP", "_getBuiltinLogicValue"]
+- !private ["s10_IndexableP", "append"]
+- !private ["s14_IndexableBaseP", "append"]
+- !private ["s17_MutableIndexableP", "append"]
+- !private ["s21_ObjectiveCBridgeableP", "_getBuiltinLogicValue"]
+- !private ["s21_ObjectiveCBridgeableP", "append"]
+- !private ["s22_RandomAccessIndexableP", "append"]
+- !private ["s26_RangeReplaceableIndexableP", "append"]
+depends-nominal:
+- !private "Sa"
+- !private "7Rainbow15BackgroundColorO"
+- !private "s23BidirectionalCollectionP"
+- !private "Sb"
+- !private "s7CVarArgP"
+- "7Rainbow11CodesParserP"
+- !private "s10CollectionP"
+- !private "7Rainbow5ColorO"
+- "7Rainbow18ConsoleCodesParserV"
+- !private "s28CustomDebugStringConvertibleP"
+- !private "s29CustomPlaygroundQuickLookableP"
+- !private "s17CustomReflectableP"
+- !private "s23CustomStringConvertibleP"
+- !private "s9DecodableP"
+- !private "s9EncodableP"
+- !private "s9EquatableP"
+- !private "s25ExpressibleByArrayLiteralP"
+- !private "s27ExpressibleByBooleanLiteralP"
+- !private "s8HashableP"
+- !private "s25LosslessStringConvertibleP"
+- !private "7Rainbow8ModeCodeP"
+- !private "s17MutableCollectionP"
+- !private "s22RandomAccessCollectionP"
+- !private "s26RangeReplaceableCollectionP"
+- !private "s16RawRepresentableP"
+- !private "s8SequenceP"
+- !private "7Rainbow5StyleO"
+- "7Rainbow22XcodeColorsCodesParserV"
+- !private "7Rainbow22XcodeColorsConvertibleP"
+- !private "s14_ArrayProtocolP"
+- !private "s23_BidirectionalIndexableP"
+- !private "s24_DestructorSafeContainerP"
+- !private "s35_ExpressibleByBuiltinBooleanLiteralP"
+- !private "s10_IndexableP"
+- !private "s14_IndexableBaseP"
+- !private "s17_MutableIndexableP"
+- !private "s21_ObjectiveCBridgeableP"
+- !private "s22_RandomAccessIndexableP"
+- !private "s26_RangeReplaceableIndexableP"
+depends-dynamic-lookup:
+depends-external:
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/x86_64/Dispatch.apinotesc"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/x86_64/ObjectiveC.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/x86_64/Dispatch.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/x86_64/Darwin.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/x86_64/Foundation.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/x86_64/CoreFoundation.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/x86_64/CoreGraphics.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/x86_64/Swift.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/x86_64/IOKit.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/x86_64/SwiftOnoneSupport.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/usr/include/objc/ObjectiveC.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/usr/include/Darwin.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/System/Library/Frameworks/Foundation.framework/Headers/Foundation.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CoreGraphics.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/System/Library/Frameworks/CoreText.framework/Headers/CoreText.apinotes"
+interface-hash: "bce80b1a069d54951e10cc86bc6833ad"

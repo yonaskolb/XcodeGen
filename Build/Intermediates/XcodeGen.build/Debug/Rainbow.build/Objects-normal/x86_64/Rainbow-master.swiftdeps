@@ -1,0 +1,15 @@
+version: "Apple Swift version 4.0.3 (swiftlang-900.0.74.1 clang-900.0.39.2)"
+options: "0a0b39640ef9a46607317d9ee23c763f"
+build_time: [1514303541, 811993000]
+inputs:
+  "/Users/pepibumur/code/XcodeGen/.build/checkouts/Rainbow.git-2499542794955463186/Sources/BackgroundColor.swift": [1514302837, 0]
+  "/Users/pepibumur/code/XcodeGen/.build/checkouts/Rainbow.git-2499542794955463186/Sources/CodesParser.swift": [1514302837, 0]
+  "/Users/pepibumur/code/XcodeGen/.build/checkouts/Rainbow.git-2499542794955463186/Sources/Color.swift": [1514302837, 0]
+  "/Users/pepibumur/code/XcodeGen/.build/checkouts/Rainbow.git-2499542794955463186/Sources/ControlCode.swift": [1514302837, 0]
+  "/Users/pepibumur/code/XcodeGen/.build/checkouts/Rainbow.git-2499542794955463186/Sources/ModesExtractor.swift": [1514302837, 0]
+  "/Users/pepibumur/code/XcodeGen/.build/checkouts/Rainbow.git-2499542794955463186/Sources/OutputTarget.swift": [1514302837, 0]
+  "/Users/pepibumur/code/XcodeGen/.build/checkouts/Rainbow.git-2499542794955463186/Sources/Rainbow.swift": [1514302837, 0]
+  "/Users/pepibumur/code/XcodeGen/.build/checkouts/Rainbow.git-2499542794955463186/Sources/String+Rainbow.swift": [1514302837, 0]
+  "/Users/pepibumur/code/XcodeGen/.build/checkouts/Rainbow.git-2499542794955463186/Sources/StringGenerator.swift": [1514302837, 0]
+  "/Users/pepibumur/code/XcodeGen/.build/checkouts/Rainbow.git-2499542794955463186/Sources/Style.swift": [1514302837, 0]
+  "/Users/pepibumur/code/XcodeGen/.build/checkouts/Rainbow.git-2499542794955463186/Sources/XcodeColorsSupport.swift": [1514302837, 0]

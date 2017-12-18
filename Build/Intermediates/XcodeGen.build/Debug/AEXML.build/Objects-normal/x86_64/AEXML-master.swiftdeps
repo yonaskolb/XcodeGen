@@ -1,0 +1,9 @@
+version: "Apple Swift version 4.0.3 (swiftlang-900.0.74.1 clang-900.0.39.2)"
+options: "b25b7af7601756622b7ad90b13e63457"
+build_time: [1514303542, 680630000]
+inputs:
+  "/Users/pepibumur/code/XcodeGen/.build/checkouts/AEXML.git--1992474868199569405/Sources/Document.swift": [1514302836, 0]
+  "/Users/pepibumur/code/XcodeGen/.build/checkouts/AEXML.git--1992474868199569405/Sources/Element.swift": [1514302836, 0]
+  "/Users/pepibumur/code/XcodeGen/.build/checkouts/AEXML.git--1992474868199569405/Sources/Error.swift": [1514302836, 0]
+  "/Users/pepibumur/code/XcodeGen/.build/checkouts/AEXML.git--1992474868199569405/Sources/Options.swift": [1514302836, 0]
+  "/Users/pepibumur/code/XcodeGen/.build/checkouts/AEXML.git--1992474868199569405/Sources/Parser.swift": [1514302836, 0]

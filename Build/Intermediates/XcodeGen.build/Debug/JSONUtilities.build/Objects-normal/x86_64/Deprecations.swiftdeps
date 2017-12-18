@@ -1,0 +1,142 @@
+### Swift dependencies file v0 ###
+provides-top-level:
+- "Transformable"
+- "Decodable"
+provides-nominal:
+provides-member:
+- ["s10DictionaryV", ""]
+- ["s10DictionaryV", "fromFile"]
+- ["s10DictionaryV", "fromData"]
+- ["s10DictionaryV", "jsonKey"]
+- ["s10DictionaryV", "jsonKey"]
+- ["s10DictionaryV", "jsonKey"]
+- ["s10DictionaryV", "jsonKey"]
+- ["s10DictionaryV", "jsonKey"]
+- ["s10DictionaryV", "jsonKey"]
+- ["s10DictionaryV", "jsonKey"]
+- ["s10DictionaryV", "jsonKey"]
+- ["s10DictionaryV", "jsonKey"]
+- ["s10DictionaryV", "jsonKey"]
+- ["s10DictionaryV", "jsonKey"]
+- ["s10DictionaryV", "jsonKey"]
+- ["s10DictionaryV", "jsonKey"]
+- ["s10DictionaryV", "jsonKey"]
+- ["s10DictionaryV", "jsonKey"]
+- ["s10DictionaryV", "jsonKey"]
+- ["s10DictionaryV", "jsonKey"]
+- ["s10DictionaryV", "jsonKey"]
+- ["s10DictionaryV", "jsonKey"]
+- ["s10DictionaryV", "jsonKey"]
+provides-dynamic-lookup:
+depends-top-level:
+- "Data"
+- "Decodable"
+- "Dictionary"
+- "JSONDictionary"
+- "JSONKey"
+- "JSONObjectConvertible"
+- "JSONPrimitiveConvertible"
+- "JSONRawType"
+- "RawRepresentable"
+- "String"
+- "Transformable"
+depends-member:
+- ["s7CVarArgP", "JSONKey"]
+- !private ["s7CVarArgP", "from"]
+- !private ["s7CVarArgP", "json"]
+- ["s10CollectionP", "JSONKey"]
+- !private ["s10CollectionP", "from"]
+- !private ["s10CollectionP", "json"]
+- ["s28CustomDebugStringConvertibleP", "JSONKey"]
+- !private ["s28CustomDebugStringConvertibleP", "from"]
+- !private ["s28CustomDebugStringConvertibleP", "json"]
+- ["s17CustomReflectableP", "JSONKey"]
+- !private ["s17CustomReflectableP", "from"]
+- !private ["s17CustomReflectableP", "json"]
+- ["s23CustomStringConvertibleP", "JSONKey"]
+- !private ["s23CustomStringConvertibleP", "from"]
+- !private ["s23CustomStringConvertibleP", "json"]
+- ["s9DecodableP", "JSONKey"]
+- !private ["s9DecodableP", "from"]
+- !private ["s9DecodableP", "json"]
+- ["s10DictionaryV", "Data"]
+- ["s10DictionaryV", "JSONDictionary"]
+- ["s10DictionaryV", "JSONKey"]
+- ["s10DictionaryV", "JSONObjectConvertible"]
+- ["s10DictionaryV", "JSONPrimitiveConvertible"]
+- ["s10DictionaryV", "JSONRawType"]
+- ["s10DictionaryV", "Key"]
+- ["s10DictionaryV", "RawRepresentable"]
+- ["s10DictionaryV", "String"]
+- !private ["s10DictionaryV", "from"]
+- ["s10DictionaryV", "fromData"]
+- ["s10DictionaryV", "fromFile"]
+- !private ["s10DictionaryV", "json"]
+- ["s10DictionaryV", "jsonKey"]
+- ["s9EncodableP", "JSONKey"]
+- !private ["s9EncodableP", "from"]
+- !private ["s9EncodableP", "json"]
+- !private ["s9EquatableP", "key"]
+- ["s30ExpressibleByDictionaryLiteralP", "JSONKey"]
+- !private ["s30ExpressibleByDictionaryLiteralP", "from"]
+- !private ["s30ExpressibleByDictionaryLiteralP", "json"]
+- !private ["s43ExpressibleByExtendedGraphemeClusterLiteralP", "key"]
+- !private ["s26ExpressibleByStringLiteralP", "key"]
+- !private ["s33ExpressibleByUnicodeScalarLiteralP", "key"]
+- !private ["s8HashableP", "key"]
+- !private ["13JSONUtilities7JSONKeyP", "key"]
+- !private ["13JSONUtilities7KeyPathO", "deinit"]
+- !private ["13JSONUtilities7KeyPathO", "key"]
+- ["s8SequenceP", "JSONKey"]
+- !private ["s8SequenceP", "from"]
+- !private ["s8SequenceP", "json"]
+- !private ["SS", "deinit"]
+- ["s10_IndexableP", "JSONKey"]
+- !private ["s10_IndexableP", "from"]
+- !private ["s10_IndexableP", "json"]
+- ["s14_IndexableBaseP", "JSONKey"]
+- !private ["s14_IndexableBaseP", "from"]
+- !private ["s14_IndexableBaseP", "json"]
+- ["s21_ObjectiveCBridgeableP", "JSONKey"]
+- !private ["s21_ObjectiveCBridgeableP", "from"]
+- !private ["s21_ObjectiveCBridgeableP", "json"]
+depends-nominal:
+- "s7CVarArgP"
+- "s10CollectionP"
+- "s28CustomDebugStringConvertibleP"
+- "s17CustomReflectableP"
+- "s23CustomStringConvertibleP"
+- "s9DecodableP"
+- "s10DictionaryV"
+- "s9EncodableP"
+- !private "s9EquatableP"
+- "s30ExpressibleByDictionaryLiteralP"
+- !private "s43ExpressibleByExtendedGraphemeClusterLiteralP"
+- !private "s26ExpressibleByStringLiteralP"
+- !private "s33ExpressibleByUnicodeScalarLiteralP"
+- !private "s8HashableP"
+- !private "13JSONUtilities7JSONKeyP"
+- !private "13JSONUtilities7KeyPathO"
+- "s8SequenceP"
+- !private "SS"
+- "s10_IndexableP"
+- "s14_IndexableBaseP"
+- "s21_ObjectiveCBridgeableP"
+depends-dynamic-lookup:
+depends-external:
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/x86_64/Dispatch.apinotesc"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/x86_64/ObjectiveC.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/x86_64/Dispatch.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/x86_64/Darwin.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/x86_64/Foundation.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/x86_64/CoreFoundation.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/x86_64/CoreGraphics.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/x86_64/Swift.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/x86_64/IOKit.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/x86_64/SwiftOnoneSupport.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/usr/include/objc/ObjectiveC.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/usr/include/Darwin.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/System/Library/Frameworks/Foundation.framework/Headers/Foundation.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CoreGraphics.apinotes"
+- "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/System/Library/Frameworks/CoreText.framework/Headers/CoreText.apinotes"
+interface-hash: "1c4ae443ba56712bb486ee7e5d87f494"

@@ -1,0 +1,919 @@
+### Swift dependencies file v0 ###
+provides-top-level:
+- "YAMLDecoder"
+- "_Decoder"
+- "_KeyedDecodingContainer"
+- "_UnkeyedDecodingContainer"
+provides-nominal:
+- "4Yams11YAMLDecoderC"
+- "4Yams8_DecoderV"
+- "4Yams23_KeyedDecodingContainerV"
+- "4Yams25_UnkeyedDecodingContainerV"
+- "s5Int16V"
+- "s5Int32V"
+- "s5Int64V"
+- "s4Int8V"
+- "s6UInt16V"
+- "s6UInt32V"
+- "s6UInt64V"
+- "s5UInt8V"
+- "SC7DecimalV"
+- "10Foundation3URLV"
+provides-member:
+- ["4Yams11YAMLDecoderC", ""]
+- ["4Yams8_DecoderV", ""]
+- ["4Yams23_KeyedDecodingContainerV", ""]
+- ["4Yams25_UnkeyedDecodingContainerV", ""]
+- ["s17FixedWidthIntegerP", ""]
+- ["s5Int16V", ""]
+- ["s5Int32V", ""]
+- ["s5Int64V", ""]
+- ["s4Int8V", ""]
+- ["s6UInt16V", ""]
+- ["s6UInt32V", ""]
+- ["s6UInt64V", ""]
+- ["s5UInt8V", ""]
+- ["SC7DecimalV", ""]
+- ["10Foundation3URLV", ""]
+- ["s17FixedWidthIntegerP", "construct"]
+- ["s17FixedWidthIntegerP", "construct"]
+provides-dynamic-lookup:
+depends-top-level:
+- !private "!="
+- !private "+"
+- !private "+="
+- !private "=="
+- !private ">="
+- !private "??"
+- !private "Array"
+- "AssignmentPrecedence"
+- "Bool"
+- !private "BooleanLiteralType"
+- !private "CastingPrecedence"
+- "CodingKey"
+- "CodingUserInfoKey"
+- "Decimal"
+- "Decodable"
+- "Decoder"
+- !private "DecodingError"
+- "Double"
+- "FixedWidthInteger"
+- "Float"
+- "Int"
+- "Int16"
+- "Int32"
+- "Int64"
+- "Int8"
+- "KeyedDecodingContainer"
+- "KeyedDecodingContainerProtocol"
+- !private "NSNull"
+- "Node"
+- "ScalarConstructible"
+- "SignedInteger"
+- "SingleValueDecodingContainer"
+- "String"
+- !private "StringLiteralType"
+- "Swift"
+- !private "Tag"
+- "UInt"
+- "UInt16"
+- "UInt32"
+- "UInt64"
+- "UInt8"
+- "URL"
+- "UnkeyedDecodingContainer"
+- "UnsignedInteger"
+- "YAMLDecoder"
+- !private "Yams"
+- "_Decoder"
+- "_KeyedDecodingContainer"
+- "_UnkeyedDecodingContainer"
+- !private "_YAMLCodingKey"
+- !private "_keyNotFound"
+- !private "_typeMismatch"
+- !private "_valueNotFound"
+- !private "assert"
+- !private "compose"
+- !private "type"
+depends-member:
+- !private ["s23BidirectionalCollectionP", "count"]
+- !private ["s23BidirectionalCollectionP", "init"]
+- !private ["s23BidirectionalCollectionP", "subscript"]
+- !private ["s13BinaryIntegerP", "Int"]
+- ["s13BinaryIntegerP", "Node"]
+- ["s13BinaryIntegerP", "Self"]
+- ["s13BinaryIntegerP", "SignedInteger"]
+- !private ["s13BinaryIntegerP", "UInt"]
+- ["s13BinaryIntegerP", "UnsignedInteger"]
+- ["s13BinaryIntegerP", "construct"]
+- !private ["s13BinaryIntegerP", "init"]
+- !private ["Sb", "_getBuiltinLogicValue"]
+- !private ["Sb", "deinit"]
+- ["s7CVarArgP", "construct"]
+- !private ["s7CVarArgP", "init"]
+- !private ["s9CodingKeyP", "init"]
+- !private ["s9CodingKeyP", "stringValue"]
+- !private ["s9CodingKeyP", "super"]
+- !private ["s10CollectionP", "count"]
+- !private ["s10CollectionP", "flatMap"]
+- !private ["s10CollectionP", "init"]
+- !private ["s10CollectionP", "keys"]
+- !private ["s10CollectionP", "subscript"]
+- !private ["s10ComparableP", "Decimal"]
+- !private ["s10ComparableP", "Int"]
+- ["s10ComparableP", "Mapping"]
+- ["s10ComparableP", "Node"]
+- ["s10ComparableP", "Self"]
+- ["s10ComparableP", "Sequence"]
+- ["s10ComparableP", "SignedInteger"]
+- !private ["s10ComparableP", "UInt"]
+- ["s10ComparableP", "UnsignedInteger"]
+- !private ["s10ComparableP", "assert"]
+- ["s10ComparableP", "construct"]
+- !private ["s10ComparableP", "count"]
+- !private ["s10ComparableP", "init"]
+- !private ["s10ComparableP", "isScalar"]
+- !private ["s10ComparableP", "keys"]
+- !private ["s10ComparableP", "mapping"]
+- !private ["s10ComparableP", "null"]
+- !private ["s10ComparableP", "scalar"]
+- !private ["s10ComparableP", "sequence"]
+- !private ["s10ComparableP", "string"]
+- !private ["s10ComparableP", "subscript"]
+- !private ["s13DecodingErrorO7ContextV", "init"]
+- !private ["s28CustomDebugStringConvertibleP", "URL"]
+- !private ["s28CustomDebugStringConvertibleP", "assert"]
+- ["s28CustomDebugStringConvertibleP", "construct"]
+- !private ["s28CustomDebugStringConvertibleP", "flatMap"]
+- !private ["s28CustomDebugStringConvertibleP", "init"]
+- !private ["s29CustomPlaygroundQuickLookableP", "URL"]
+- !private ["s29CustomPlaygroundQuickLookableP", "_getBuiltinLogicValue"]
+- !private ["s29CustomPlaygroundQuickLookableP", "assert"]
+- ["s29CustomPlaygroundQuickLookableP", "construct"]
+- !private ["s29CustomPlaygroundQuickLookableP", "init"]
+- !private ["s17CustomReflectableP", "_getBuiltinLogicValue"]
+- ["s17CustomReflectableP", "construct"]
+- !private ["s17CustomReflectableP", "flatMap"]
+- !private ["s17CustomReflectableP", "init"]
+- !private ["s23CustomStringConvertibleP", "Decimal"]
+- !private ["s23CustomStringConvertibleP", "Int"]
+- ["s23CustomStringConvertibleP", "Node"]
+- ["s23CustomStringConvertibleP", "Self"]
+- ["s23CustomStringConvertibleP", "SignedInteger"]
+- !private ["s23CustomStringConvertibleP", "UInt"]
+- !private ["s23CustomStringConvertibleP", "URL"]
+- ["s23CustomStringConvertibleP", "UnsignedInteger"]
+- !private ["s23CustomStringConvertibleP", "_getBuiltinLogicValue"]
+- !private ["s23CustomStringConvertibleP", "assert"]
+- ["s23CustomStringConvertibleP", "construct"]
+- !private ["s23CustomStringConvertibleP", "init"]
+- ["SC7DecimalV", "Decimal"]
+- ["SC7DecimalV", "Node"]
+- !private ["SC7DecimalV", "assert"]
+- ["SC7DecimalV", "construct"]
+- ["SC7DecimalV", "deinit"]
+- !private ["SC7DecimalV", "init"]
+- !private ["s9DecodableP", "Decimal"]
+- !private ["s9DecodableP", "URL"]
+- !private ["s9DecodableP", "_getBuiltinLogicValue"]
+- !private ["s9DecodableP", "assert"]
+- ["s9DecodableP", "construct"]
+- !private ["s9DecodableP", "flatMap"]
+- !private ["s9DecodableP", "init"]
+- !private ["s7DecoderP", "NSNull"]
+- !private ["s7DecoderP", "Node"]
+- !private ["s7DecoderP", "_KeyedDecodingContainer"]
+- !private ["s7DecoderP", "_UnkeyedDecodingContainer"]
+- !private ["s7DecoderP", "_typeMismatch"]
+- !private ["s7DecoderP", "_valueNotFound"]
+- ["s7DecoderP", "codingPath"]
+- !private ["s7DecoderP", "construct"]
+- ["s7DecoderP", "container"]
+- ["s7DecoderP", "decode"]
+- ["s7DecoderP", "decodeNil"]
+- !private ["s7DecoderP", "decoder"]
+- !private ["s7DecoderP", "init"]
+- !private ["s7DecoderP", "node"]
+- ["s7DecoderP", "singleValueContainer"]
+- ["s7DecoderP", "unkeyedContainer"]
+- ["s7DecoderP", "userInfo"]
+- ["s7DecoderP", ""]
+- !private ["s13DecodingErrorO", "Context"]
+- !private ["s13DecodingErrorO", "dataCorrupted"]
+- !private ["s13DecodingErrorO", "keyNotFound"]
+- !private ["s13DecodingErrorO", "typeMismatch"]
+- !private ["s13DecodingErrorO", "valueNotFound"]
+- !private ["Sd", "deinit"]
+- !private ["s9EncodableP", "Decimal"]
+- !private ["s9EncodableP", "URL"]
+- !private ["s9EncodableP", "_getBuiltinLogicValue"]
+- !private ["s9EncodableP", "assert"]
+- ["s9EncodableP", "construct"]
+- !private ["s9EncodableP", "flatMap"]
+- !private ["s9EncodableP", "init"]
+- !private ["s9EquatableP", "Decimal"]
+- !private ["s9EquatableP", "Int"]
+- ["s9EquatableP", "Mapping"]
+- ["s9EquatableP", "Node"]
+- ["s9EquatableP", "Self"]
+- ["s9EquatableP", "Sequence"]
+- ["s9EquatableP", "SignedInteger"]
+- !private ["s9EquatableP", "UInt"]
+- !private ["s9EquatableP", "URL"]
+- ["s9EquatableP", "UnsignedInteger"]
+- !private ["s9EquatableP", "_getBuiltinLogicValue"]
+- !private ["s9EquatableP", "assert"]
+- ["s9EquatableP", "construct"]
+- !private ["s9EquatableP", "count"]
+- !private ["s9EquatableP", "init"]
+- !private ["s9EquatableP", "isScalar"]
+- !private ["s9EquatableP", "keys"]
+- !private ["s9EquatableP", "mapping"]
+- !private ["s9EquatableP", "null"]
+- !private ["s9EquatableP", "scalar"]
+- !private ["s9EquatableP", "sequence"]
+- !private ["s9EquatableP", "string"]
+- !private ["s9EquatableP", "subscript"]
+- !private ["s5ErrorP", "Context"]
+- !private ["s5ErrorP", "dataCorrupted"]
+- !private ["s5ErrorP", "keyNotFound"]
+- !private ["s5ErrorP", "typeMismatch"]
+- !private ["s5ErrorP", "valueNotFound"]
+- ["s25ExpressibleByArrayLiteralP", "Mapping"]
+- ["s25ExpressibleByArrayLiteralP", "Sequence"]
+- !private ["s25ExpressibleByArrayLiteralP", "count"]
+- !private ["s25ExpressibleByArrayLiteralP", "init"]
+- !private ["s25ExpressibleByArrayLiteralP", "isScalar"]
+- !private ["s25ExpressibleByArrayLiteralP", "mapping"]
+- !private ["s25ExpressibleByArrayLiteralP", "null"]
+- !private ["s25ExpressibleByArrayLiteralP", "scalar"]
+- !private ["s25ExpressibleByArrayLiteralP", "sequence"]
+- !private ["s25ExpressibleByArrayLiteralP", "string"]
+- !private ["s25ExpressibleByArrayLiteralP", "subscript"]
+- !private ["s27ExpressibleByBooleanLiteralP", "_getBuiltinLogicValue"]
+- ["s30ExpressibleByDictionaryLiteralP", "Mapping"]
+- ["s30ExpressibleByDictionaryLiteralP", "Sequence"]
+- !private ["s30ExpressibleByDictionaryLiteralP", "init"]
+- !private ["s30ExpressibleByDictionaryLiteralP", "isScalar"]
+- !private ["s30ExpressibleByDictionaryLiteralP", "keys"]
+- !private ["s30ExpressibleByDictionaryLiteralP", "mapping"]
+- !private ["s30ExpressibleByDictionaryLiteralP", "null"]
+- !private ["s30ExpressibleByDictionaryLiteralP", "scalar"]
+- !private ["s30ExpressibleByDictionaryLiteralP", "sequence"]
+- !private ["s30ExpressibleByDictionaryLiteralP", "string"]
+- !private ["s30ExpressibleByDictionaryLiteralP", "subscript"]
+- ["s43ExpressibleByExtendedGraphemeClusterLiteralP", "Mapping"]
+- ["s43ExpressibleByExtendedGraphemeClusterLiteralP", "Sequence"]
+- !private ["s43ExpressibleByExtendedGraphemeClusterLiteralP", "init"]
+- !private ["s43ExpressibleByExtendedGraphemeClusterLiteralP", "isScalar"]
+- !private ["s43ExpressibleByExtendedGraphemeClusterLiteralP", "mapping"]
+- !private ["s43ExpressibleByExtendedGraphemeClusterLiteralP", "null"]
+- !private ["s43ExpressibleByExtendedGraphemeClusterLiteralP", "scalar"]
+- !private ["s43ExpressibleByExtendedGraphemeClusterLiteralP", "sequence"]
+- !private ["s43ExpressibleByExtendedGraphemeClusterLiteralP", "string"]
+- !private ["s25ExpressibleByFloatLiteralP", "Decimal"]
+- ["s25ExpressibleByFloatLiteralP", "Mapping"]
+- ["s25ExpressibleByFloatLiteralP", "Sequence"]
+- !private ["s25ExpressibleByFloatLiteralP", "assert"]
+- ["s25ExpressibleByFloatLiteralP", "construct"]
+- !private ["s25ExpressibleByFloatLiteralP", "init"]
+- !private ["s25ExpressibleByFloatLiteralP", "isScalar"]
+- !private ["s25ExpressibleByFloatLiteralP", "mapping"]
+- !private ["s25ExpressibleByFloatLiteralP", "null"]
+- !private ["s25ExpressibleByFloatLiteralP", "scalar"]
+- !private ["s25ExpressibleByFloatLiteralP", "sequence"]
+- !private ["s25ExpressibleByFloatLiteralP", "string"]
+- !private ["s27ExpressibleByIntegerLiteralP", "Decimal"]
+- !private ["s27ExpressibleByIntegerLiteralP", "Int"]
+- ["s27ExpressibleByIntegerLiteralP", "Mapping"]
+- ["s27ExpressibleByIntegerLiteralP", "Node"]
+- ["s27ExpressibleByIntegerLiteralP", "Self"]
+- ["s27ExpressibleByIntegerLiteralP", "Sequence"]
+- ["s27ExpressibleByIntegerLiteralP", "SignedInteger"]
+- !private ["s27ExpressibleByIntegerLiteralP", "UInt"]
+- ["s27ExpressibleByIntegerLiteralP", "UnsignedInteger"]
+- !private ["s27ExpressibleByIntegerLiteralP", "assert"]
+- ["s27ExpressibleByIntegerLiteralP", "construct"]
+- !private ["s27ExpressibleByIntegerLiteralP", "init"]
+- !private ["s27ExpressibleByIntegerLiteralP", "isScalar"]
+- !private ["s27ExpressibleByIntegerLiteralP", "mapping"]
+- !private ["s27ExpressibleByIntegerLiteralP", "null"]
+- !private ["s27ExpressibleByIntegerLiteralP", "scalar"]
+- !private ["s27ExpressibleByIntegerLiteralP", "sequence"]
+- !private ["s27ExpressibleByIntegerLiteralP", "string"]
+- !private ["s23ExpressibleByNilLiteralP", "flatMap"]
+- ["s26ExpressibleByStringLiteralP", "Mapping"]
+- ["s26ExpressibleByStringLiteralP", "Sequence"]
+- !private ["s26ExpressibleByStringLiteralP", "init"]
+- !private ["s26ExpressibleByStringLiteralP", "isScalar"]
+- !private ["s26ExpressibleByStringLiteralP", "mapping"]
+- !private ["s26ExpressibleByStringLiteralP", "null"]
+- !private ["s26ExpressibleByStringLiteralP", "scalar"]
+- !private ["s26ExpressibleByStringLiteralP", "sequence"]
+- !private ["s26ExpressibleByStringLiteralP", "string"]
+- ["s33ExpressibleByUnicodeScalarLiteralP", "Mapping"]
+- ["s33ExpressibleByUnicodeScalarLiteralP", "Sequence"]
+- !private ["s33ExpressibleByUnicodeScalarLiteralP", "init"]
+- !private ["s33ExpressibleByUnicodeScalarLiteralP", "isScalar"]
+- !private ["s33ExpressibleByUnicodeScalarLiteralP", "mapping"]
+- !private ["s33ExpressibleByUnicodeScalarLiteralP", "null"]
+- !private ["s33ExpressibleByUnicodeScalarLiteralP", "scalar"]
+- !private ["s33ExpressibleByUnicodeScalarLiteralP", "sequence"]
+- !private ["s33ExpressibleByUnicodeScalarLiteralP", "string"]
+- !private ["s17FixedWidthIntegerP", "Int"]
+- ["s17FixedWidthIntegerP", "Node"]
+- ["s17FixedWidthIntegerP", "Self"]
+- ["s17FixedWidthIntegerP", "SignedInteger"]
+- !private ["s17FixedWidthIntegerP", "UInt"]
+- ["s17FixedWidthIntegerP", "UnsignedInteger"]
+- ["s17FixedWidthIntegerP", "construct"]
+- !private ["s17FixedWidthIntegerP", "init"]
+- !private ["Sf", "deinit"]
+- !private ["s8HashableP", "Decimal"]
+- !private ["s8HashableP", "Int"]
+- ["s8HashableP", "Mapping"]
+- ["s8HashableP", "Node"]
+- ["s8HashableP", "Self"]
+- ["s8HashableP", "Sequence"]
+- ["s8HashableP", "SignedInteger"]
+- !private ["s8HashableP", "UInt"]
+- !private ["s8HashableP", "URL"]
+- ["s8HashableP", "UnsignedInteger"]
+- !private ["s8HashableP", "_getBuiltinLogicValue"]
+- !private ["s8HashableP", "assert"]
+- ["s8HashableP", "construct"]
+- !private ["s8HashableP", "init"]
+- !private ["s8HashableP", "isScalar"]
+- !private ["s8HashableP", "mapping"]
+- !private ["s8HashableP", "null"]
+- !private ["s8HashableP", "scalar"]
+- !private ["s8HashableP", "sequence"]
+- !private ["s8HashableP", "string"]
+- !private ["Si", "construct"]
+- !private ["Si", "deinit"]
+- ["s5Int16V", "construct"]
+- ["s5Int16V", "deinit"]
+- ["s5Int32V", "construct"]
+- ["s5Int32V", "deinit"]
+- ["s5Int64V", "construct"]
+- ["s5Int64V", "deinit"]
+- ["s4Int8V", "construct"]
+- ["s4Int8V", "deinit"]
+- !private ["s22KeyedDecodingContainerV", "init"]
+- ["s30KeyedDecodingContainerProtocolP", "Key"]
+- !private ["s30KeyedDecodingContainerProtocolP", "Node"]
+- !private ["s30KeyedDecodingContainerProtocolP", "Tag"]
+- !private ["s30KeyedDecodingContainerProtocolP", "_YAMLCodingKey"]
+- !private ["s30KeyedDecodingContainerProtocolP", "_keyNotFound"]
+- ["s30KeyedDecodingContainerProtocolP", "allKeys"]
+- ["s30KeyedDecodingContainerProtocolP", "codingPath"]
+- ["s30KeyedDecodingContainerProtocolP", "contains"]
+- ["s30KeyedDecodingContainerProtocolP", "decode"]
+- ["s30KeyedDecodingContainerProtocolP", "decodeIfPresent"]
+- ["s30KeyedDecodingContainerProtocolP", "decodeNil"]
+- !private ["s30KeyedDecodingContainerProtocolP", "decoder"]
+- !private ["s30KeyedDecodingContainerProtocolP", "init"]
+- !private ["s30KeyedDecodingContainerProtocolP", "mapping"]
+- ["s30KeyedDecodingContainerProtocolP", "nestedContainer"]
+- ["s30KeyedDecodingContainerProtocolP", "nestedUnkeyedContainer"]
+- !private ["s30KeyedDecodingContainerProtocolP", "node"]
+- ["s30KeyedDecodingContainerProtocolP", "superDecoder"]
+- ["s30KeyedDecodingContainerProtocolP", ""]
+- !private ["s22LazyCollectionProtocolP", "flatMap"]
+- !private ["s17LazyMapCollectionV", "flatMap"]
+- !private ["s20LazySequenceProtocolP", "flatMap"]
+- !private ["10Foundation14LocalizedErrorP", "Context"]
+- !private ["10Foundation14LocalizedErrorP", "dataCorrupted"]
+- !private ["10Foundation14LocalizedErrorP", "keyNotFound"]
+- !private ["10Foundation14LocalizedErrorP", "typeMismatch"]
+- !private ["10Foundation14LocalizedErrorP", "valueNotFound"]
+- !private ["s25LosslessStringConvertibleP", "Int"]
+- ["s25LosslessStringConvertibleP", "Node"]
+- ["s25LosslessStringConvertibleP", "Self"]
+- ["s25LosslessStringConvertibleP", "SignedInteger"]
+- !private ["s25LosslessStringConvertibleP", "UInt"]
+- ["s25LosslessStringConvertibleP", "UnsignedInteger"]
+- !private ["s25LosslessStringConvertibleP", "_getBuiltinLogicValue"]
+- ["s25LosslessStringConvertibleP", "construct"]
+- !private ["s25LosslessStringConvertibleP", "init"]
+- !private ["4Yams4NodeO7MappingV", "deinit"]
+- !private ["4Yams4NodeO7MappingV", "keys"]
+- !private ["4Yams4NodeO7MappingV", "subscript"]
+- !private ["s10MirrorPathP", "construct"]
+- !private ["s10MirrorPathP", "init"]
+- !private ["s17MutableCollectionP", "count"]
+- !private ["s17MutableCollectionP", "keys"]
+- !private ["s17MutableCollectionP", "subscript"]
+- !private ["So8NSCodingP", "init"]
+- !private ["So9NSCopyingP", "init"]
+- !private ["So21NSItemProviderReadingP", "init"]
+- !private ["So21NSItemProviderWritingP", "init"]
+- !private ["So16NSMutableCopyingP", "init"]
+- !private ["So6NSNullC", "init"]
+- !private ["So8NSObjectC", "init"]
+- !private ["So16NSObjectProtocolP", "init"]
+- !private ["So14NSSecureCodingP", "init"]
+- !private ["So8NSStringC", "init"]
+- !private ["4Yams3TagC4NameV", "null"]
+- ["4Yams4NodeO", "Mapping"]
+- ["4Yams4NodeO", "Sequence"]
+- !private ["4Yams4NodeO", "deinit"]
+- !private ["4Yams4NodeO", "init"]
+- !private ["4Yams4NodeO", "isScalar"]
+- !private ["4Yams4NodeO", "mapping"]
+- !private ["4Yams4NodeO", "null"]
+- !private ["4Yams4NodeO", "scalar"]
+- !private ["4Yams4NodeO", "sequence"]
+- !private ["4Yams4NodeO", "string"]
+- !private ["4Yams17NodeRepresentableP", "Decimal"]
+- ["4Yams17NodeRepresentableP", "Mapping"]
+- ["4Yams17NodeRepresentableP", "Sequence"]
+- !private ["4Yams17NodeRepresentableP", "URL"]
+- !private ["4Yams17NodeRepresentableP", "_getBuiltinLogicValue"]
+- !private ["4Yams17NodeRepresentableP", "assert"]
+- ["4Yams17NodeRepresentableP", "construct"]
+- !private ["4Yams17NodeRepresentableP", "flatMap"]
+- !private ["4Yams17NodeRepresentableP", "init"]
+- !private ["4Yams17NodeRepresentableP", "isScalar"]
+- !private ["4Yams17NodeRepresentableP", "mapping"]
+- !private ["4Yams17NodeRepresentableP", "null"]
+- !private ["4Yams17NodeRepresentableP", "scalar"]
+- !private ["4Yams17NodeRepresentableP", "sequence"]
+- !private ["4Yams17NodeRepresentableP", "string"]
+- !private ["s7NumericP", "Decimal"]
+- !private ["s7NumericP", "Int"]
+- ["s7NumericP", "Node"]
+- ["s7NumericP", "Self"]
+- ["s7NumericP", "SignedInteger"]
+- !private ["s7NumericP", "UInt"]
+- ["s7NumericP", "UnsignedInteger"]
+- !private ["s7NumericP", "assert"]
+- ["s7NumericP", "construct"]
+- !private ["s7NumericP", "init"]
+- !private ["Sq", "flatMap"]
+- !private ["s22RandomAccessCollectionP", "count"]
+- !private ["s22RandomAccessCollectionP", "subscript"]
+- !private ["s26RangeReplaceableCollectionP", "count"]
+- !private ["s26RangeReplaceableCollectionP", "init"]
+- !private ["s26RangeReplaceableCollectionP", "subscript"]
+- !private ["s16RawRepresentableP", "null"]
+- !private ["10Foundation20ReferenceConvertibleP", "URL"]
+- !private ["10Foundation20ReferenceConvertibleP", "assert"]
+- ["10Foundation20ReferenceConvertibleP", "construct"]
+- !private ["10Foundation20ReferenceConvertibleP", "init"]
+- !private ["4Yams8ResolverC", "basic"]
+- !private ["4Yams4NodeO6ScalarV", "string"]
+- !private ["4Yams19ScalarConstructibleP", "Decimal"]
+- !private ["4Yams19ScalarConstructibleP", "URL"]
+- !private ["4Yams19ScalarConstructibleP", "_getBuiltinLogicValue"]
+- !private ["4Yams19ScalarConstructibleP", "assert"]
+- ["4Yams19ScalarConstructibleP", "construct"]
+- !private ["4Yams19ScalarConstructibleP", "init"]
+- ["4Yams19ScalarConstructibleP", ""]
+- !private ["4Yams19ScalarRepresentableP", "Decimal"]
+- !private ["4Yams19ScalarRepresentableP", "URL"]
+- !private ["4Yams19ScalarRepresentableP", "_getBuiltinLogicValue"]
+- !private ["4Yams19ScalarRepresentableP", "assert"]
+- ["4Yams19ScalarRepresentableP", "construct"]
+- !private ["4Yams19ScalarRepresentableP", "init"]
+- !private ["4Yams4NodeO8SequenceV", "count"]
+- !private ["4Yams4NodeO8SequenceV", "deinit"]
+- !private ["4Yams4NodeO8SequenceV", "subscript"]
+- !private ["s8SequenceP", "count"]
+- !private ["s8SequenceP", "flatMap"]
+- !private ["s8SequenceP", "init"]
+- !private ["s8SequenceP", "keys"]
+- !private ["s8SequenceP", "subscript"]
+- !private ["4Yams22SexagesimalConvertibleP", "construct"]
+- !private ["s13SignedIntegerP", "Int"]
+- ["s13SignedIntegerP", "Node"]
+- ["s13SignedIntegerP", "Self"]
+- ["s13SignedIntegerP", "construct"]
+- !private ["s13SignedIntegerP", "init"]
+- !private ["s13SignedNumericP", "Decimal"]
+- !private ["s13SignedNumericP", "Int"]
+- ["s13SignedNumericP", "Node"]
+- ["s13SignedNumericP", "Self"]
+- !private ["s13SignedNumericP", "assert"]
+- ["s13SignedNumericP", "construct"]
+- !private ["s13SignedNumericP", "init"]
+- !private ["s28SingleValueDecodingContainerP", "NSNull"]
+- !private ["s28SingleValueDecodingContainerP", "Node"]
+- !private ["s28SingleValueDecodingContainerP", "_KeyedDecodingContainer"]
+- !private ["s28SingleValueDecodingContainerP", "_UnkeyedDecodingContainer"]
+- !private ["s28SingleValueDecodingContainerP", "_typeMismatch"]
+- !private ["s28SingleValueDecodingContainerP", "_valueNotFound"]
+- ["s28SingleValueDecodingContainerP", "codingPath"]
+- !private ["s28SingleValueDecodingContainerP", "construct"]
+- ["s28SingleValueDecodingContainerP", "container"]
+- ["s28SingleValueDecodingContainerP", "decode"]
+- ["s28SingleValueDecodingContainerP", "decodeNil"]
+- !private ["s28SingleValueDecodingContainerP", "decoder"]
+- !private ["s28SingleValueDecodingContainerP", "init"]
+- !private ["s28SingleValueDecodingContainerP", "node"]
+- ["s28SingleValueDecodingContainerP", "singleValueContainer"]
+- ["s28SingleValueDecodingContainerP", "unkeyedContainer"]
+- ["s28SingleValueDecodingContainerP", "userInfo"]
+- ["s28SingleValueDecodingContainerP", ""]
+- !private ["s12StaticStringV", "init"]
+- !private ["s10StrideableP", "Decimal"]
+- !private ["s10StrideableP", "Int"]
+- ["s10StrideableP", "Node"]
+- ["s10StrideableP", "Self"]
+- ["s10StrideableP", "SignedInteger"]
+- !private ["s10StrideableP", "UInt"]
+- ["s10StrideableP", "UnsignedInteger"]
+- !private ["s10StrideableP", "assert"]
+- ["s10StrideableP", "construct"]
+- !private ["s10StrideableP", "init"]
+- !private ["SS", "deinit"]
+- !private ["SS", "init"]
+- !private ["s14StringProtocolP", "init"]
+- !private ["4Yams3TagC", "init"]
+- !private ["4Yams13TagResolvableP", "count"]
+- !private ["4Yams13TagResolvableP", "keys"]
+- !private ["4Yams13TagResolvableP", "string"]
+- !private ["4Yams13TagResolvableP", "subscript"]
+- !private ["s16TextOutputStreamP", "init"]
+- !private ["s20TextOutputStreamableP", "init"]
+- !private ["Su", "construct"]
+- !private ["Su", "deinit"]
+- ["s6UInt16V", "construct"]
+- ["s6UInt16V", "deinit"]
+- ["s6UInt32V", "construct"]
+- ["s6UInt32V", "deinit"]
+- ["s6UInt64V", "construct"]
+- ["s6UInt64V", "deinit"]
+- ["s5UInt8V", "construct"]
+- ["s5UInt8V", "deinit"]
+- ["10Foundation3URLV", "Node"]
+- ["10Foundation3URLV", "URL"]
+- !private ["10Foundation3URLV", "assert"]
+- ["10Foundation3URLV", "construct"]
+- ["10Foundation3URLV", "deinit"]
+- !private ["10Foundation3URLV", "init"]
+- !private ["s24UnkeyedDecodingContainerP", "Decoder"]
+- !private ["s24UnkeyedDecodingContainerP", "KeyedDecodingContainer"]
+- !private ["s24UnkeyedDecodingContainerP", "Node"]
+- !private ["s24UnkeyedDecodingContainerP", "Tag"]
+- !private ["s24UnkeyedDecodingContainerP", "UnkeyedDecodingContainer"]
+- !private ["s24UnkeyedDecodingContainerP", "_YAMLCodingKey"]
+- !private ["s24UnkeyedDecodingContainerP", "_valueNotFound"]
+- ["s24UnkeyedDecodingContainerP", "codingPath"]
+- !private ["s24UnkeyedDecodingContainerP", "construct"]
+- ["s24UnkeyedDecodingContainerP", "count"]
+- !private ["s24UnkeyedDecodingContainerP", "currentDecoder"]
+- ["s24UnkeyedDecodingContainerP", "currentIndex"]
+- !private ["s24UnkeyedDecodingContainerP", "currentKey"]
+- !private ["s24UnkeyedDecodingContainerP", "currentNode"]
+- ["s24UnkeyedDecodingContainerP", "decode"]
+- ["s24UnkeyedDecodingContainerP", "decodeIfPresent"]
+- ["s24UnkeyedDecodingContainerP", "decodeNil"]
+- !private ["s24UnkeyedDecodingContainerP", "decoder"]
+- !private ["s24UnkeyedDecodingContainerP", "init"]
+- ["s24UnkeyedDecodingContainerP", "isAtEnd"]
+- ["s24UnkeyedDecodingContainerP", "nestedContainer"]
+- ["s24UnkeyedDecodingContainerP", "nestedUnkeyedContainer"]
+- !private ["s24UnkeyedDecodingContainerP", "sequence"]
+- ["s24UnkeyedDecodingContainerP", "superDecoder"]
+- !private ["s24UnkeyedDecodingContainerP", "throwErrorIfAtEnd"]
+- ["s24UnkeyedDecodingContainerP", ""]
+- ["s15UnsignedIntegerP", "Node"]
+- ["s15UnsignedIntegerP", "Self"]
+- !private ["s15UnsignedIntegerP", "UInt"]
+- ["s15UnsignedIntegerP", "construct"]
+- !private ["s15UnsignedIntegerP", "init"]
+- ["4Yams11YAMLDecoderC", "CodingUserInfoKey"]
+- !private ["4Yams11YAMLDecoderC", "DecodingError"]
+- ["4Yams11YAMLDecoderC", "String"]
+- ["4Yams11YAMLDecoderC", "Swift"]
+- !private ["4Yams11YAMLDecoderC", "Yams"]
+- !private ["4Yams11YAMLDecoderC", "_Decoder"]
+- ["4Yams11YAMLDecoderC", "decode"]
+- ["4Yams11YAMLDecoderC", "deinit"]
+- ["4Yams11YAMLDecoderC", "init"]
+- !private ["s23_BidirectionalIndexableP", "count"]
+- !private ["s23_BidirectionalIndexableP", "init"]
+- !private ["s23_BidirectionalIndexableP", "subscript"]
+- !private ["s18_BitwiseOperationsP", "Int"]
+- ["s18_BitwiseOperationsP", "Node"]
+- ["s18_BitwiseOperationsP", "Self"]
+- ["s18_BitwiseOperationsP", "SignedInteger"]
+- !private ["s18_BitwiseOperationsP", "UInt"]
+- ["s18_BitwiseOperationsP", "UnsignedInteger"]
+- ["s18_BitwiseOperationsP", "construct"]
+- !private ["s18_BitwiseOperationsP", "init"]
+- ["s15_CVarArgAlignedP", "construct"]
+- ["4Yams8_DecoderV", "Bool"]
+- ["4Yams8_DecoderV", "CodingKey"]
+- ["4Yams8_DecoderV", "CodingUserInfoKey"]
+- ["4Yams8_DecoderV", "Decodable"]
+- ["4Yams8_DecoderV", "Double"]
+- ["4Yams8_DecoderV", "Float"]
+- ["4Yams8_DecoderV", "Int"]
+- ["4Yams8_DecoderV", "Int16"]
+- ["4Yams8_DecoderV", "Int32"]
+- ["4Yams8_DecoderV", "Int64"]
+- ["4Yams8_DecoderV", "Int8"]
+- ["4Yams8_DecoderV", "KeyedDecodingContainer"]
+- !private ["4Yams8_DecoderV", "NSNull"]
+- ["4Yams8_DecoderV", "Node"]
+- !private ["4Yams8_DecoderV", "ScalarConstructible"]
+- ["4Yams8_DecoderV", "SingleValueDecodingContainer"]
+- ["4Yams8_DecoderV", "String"]
+- ["4Yams8_DecoderV", "UInt"]
+- ["4Yams8_DecoderV", "UInt16"]
+- ["4Yams8_DecoderV", "UInt32"]
+- ["4Yams8_DecoderV", "UInt64"]
+- ["4Yams8_DecoderV", "UInt8"]
+- ["4Yams8_DecoderV", "UnkeyedDecodingContainer"]
+- !private ["4Yams8_DecoderV", "_Decoder"]
+- !private ["4Yams8_DecoderV", "_KeyedDecodingContainer"]
+- !private ["4Yams8_DecoderV", "_UnkeyedDecodingContainer"]
+- !private ["4Yams8_DecoderV", "_typeMismatch"]
+- !private ["4Yams8_DecoderV", "_valueNotFound"]
+- ["4Yams8_DecoderV", "codingPath"]
+- !private ["4Yams8_DecoderV", "construct"]
+- ["4Yams8_DecoderV", "container"]
+- ["4Yams8_DecoderV", "decode"]
+- ["4Yams8_DecoderV", "decodeNil"]
+- !private ["4Yams8_DecoderV", "decoder"]
+- ["4Yams8_DecoderV", "deinit"]
+- ["4Yams8_DecoderV", "init"]
+- !private ["4Yams8_DecoderV", "node"]
+- ["4Yams8_DecoderV", "singleValueContainer"]
+- ["4Yams8_DecoderV", "unkeyedContainer"]
+- ["4Yams8_DecoderV", "userInfo"]
+- !private ["s35_ExpressibleByBuiltinBooleanLiteralP", "_getBuiltinLogicValue"]
+- !private ["s51_ExpressibleByBuiltinExtendedGraphemeClusterLiteralP", "init"]
+- ["s35_ExpressibleByBuiltinIntegerLiteralP", "construct"]
+- !private ["s34_ExpressibleByBuiltinStringLiteralP", "init"]
+- !private ["s39_ExpressibleByBuiltinUTF16StringLiteralP", "init"]
+- !private ["s41_ExpressibleByBuiltinUnicodeScalarLiteralP", "init"]
+- !private ["s34_ExpressibleByFileReferenceLiteralP", "URL"]
+- !private ["s34_ExpressibleByFileReferenceLiteralP", "assert"]
+- ["s34_ExpressibleByFileReferenceLiteralP", "construct"]
+- !private ["s34_ExpressibleByFileReferenceLiteralP", "init"]
+- !private ["s33_ExpressibleByStringInterpolationP", "init"]
+- !private ["s35_HasCustomAnyHashableRepresentationP", "init"]
+- !private ["s10_IndexableP", "count"]
+- !private ["s10_IndexableP", "flatMap"]
+- !private ["s10_IndexableP", "init"]
+- !private ["s10_IndexableP", "keys"]
+- !private ["s10_IndexableP", "subscript"]
+- !private ["s14_IndexableBaseP", "count"]
+- !private ["s14_IndexableBaseP", "flatMap"]
+- !private ["s14_IndexableBaseP", "init"]
+- !private ["s14_IndexableBaseP", "keys"]
+- !private ["s14_IndexableBaseP", "subscript"]
+- !private ["10Foundation27_KeyValueCodingAndObservingP", "init"]
+- ["4Yams23_KeyedDecodingContainerV", "Bool"]
+- ["4Yams23_KeyedDecodingContainerV", "CodingKey"]
+- ["4Yams23_KeyedDecodingContainerV", "Decodable"]
+- ["4Yams23_KeyedDecodingContainerV", "Decoder"]
+- ["4Yams23_KeyedDecodingContainerV", "Double"]
+- ["4Yams23_KeyedDecodingContainerV", "Float"]
+- ["4Yams23_KeyedDecodingContainerV", "Int"]
+- ["4Yams23_KeyedDecodingContainerV", "Int16"]
+- ["4Yams23_KeyedDecodingContainerV", "Int32"]
+- ["4Yams23_KeyedDecodingContainerV", "Int64"]
+- ["4Yams23_KeyedDecodingContainerV", "Int8"]
+- ["4Yams23_KeyedDecodingContainerV", "K"]
+- ["4Yams23_KeyedDecodingContainerV", "Key"]
+- ["4Yams23_KeyedDecodingContainerV", "KeyedDecodingContainer"]
+- ["4Yams23_KeyedDecodingContainerV", "Node"]
+- ["4Yams23_KeyedDecodingContainerV", "String"]
+- !private ["4Yams23_KeyedDecodingContainerV", "Tag"]
+- ["4Yams23_KeyedDecodingContainerV", "UInt"]
+- ["4Yams23_KeyedDecodingContainerV", "UInt16"]
+- ["4Yams23_KeyedDecodingContainerV", "UInt32"]
+- ["4Yams23_KeyedDecodingContainerV", "UInt64"]
+- ["4Yams23_KeyedDecodingContainerV", "UInt8"]
+- ["4Yams23_KeyedDecodingContainerV", "UnkeyedDecodingContainer"]
+- ["4Yams23_KeyedDecodingContainerV", "_Decoder"]
+- !private ["4Yams23_KeyedDecodingContainerV", "_YAMLCodingKey"]
+- !private ["4Yams23_KeyedDecodingContainerV", "_keyNotFound"]
+- ["4Yams23_KeyedDecodingContainerV", "allKeys"]
+- ["4Yams23_KeyedDecodingContainerV", "codingPath"]
+- ["4Yams23_KeyedDecodingContainerV", "contains"]
+- ["4Yams23_KeyedDecodingContainerV", "decode"]
+- ["4Yams23_KeyedDecodingContainerV", "decodeIfPresent"]
+- ["4Yams23_KeyedDecodingContainerV", "decodeNil"]
+- !private ["4Yams23_KeyedDecodingContainerV", "decoder"]
+- ["4Yams23_KeyedDecodingContainerV", "deinit"]
+- !private ["4Yams23_KeyedDecodingContainerV", "init"]
+- !private ["4Yams23_KeyedDecodingContainerV", "mapping"]
+- ["4Yams23_KeyedDecodingContainerV", "nestedContainer"]
+- ["4Yams23_KeyedDecodingContainerV", "nestedUnkeyedContainer"]
+- !private ["4Yams23_KeyedDecodingContainerV", "node"]
+- ["4Yams23_KeyedDecodingContainerV", "superDecoder"]
+- !private ["s17_MutableIndexableP", "count"]
+- !private ["s17_MutableIndexableP", "keys"]
+- !private ["s17_MutableIndexableP", "subscript"]
+- !private ["s21_ObjectiveCBridgeableP", "Decimal"]
+- !private ["s21_ObjectiveCBridgeableP", "URL"]
+- !private ["s21_ObjectiveCBridgeableP", "_getBuiltinLogicValue"]
+- !private ["s21_ObjectiveCBridgeableP", "assert"]
+- ["s21_ObjectiveCBridgeableP", "construct"]
+- !private ["s21_ObjectiveCBridgeableP", "flatMap"]
+- !private ["s21_ObjectiveCBridgeableP", "init"]
+- !private ["s22_RandomAccessIndexableP", "count"]
+- !private ["s22_RandomAccessIndexableP", "subscript"]
+- !private ["s26_RangeReplaceableIndexableP", "count"]
+- !private ["s26_RangeReplaceableIndexableP", "init"]
+- !private ["s26_RangeReplaceableIndexableP", "subscript"]
+- !private ["s11_StrideableP", "Decimal"]
+- !private ["s11_StrideableP", "Int"]
+- ["s11_StrideableP", "Node"]
+- ["s11_StrideableP", "Self"]
+- ["s11_StrideableP", "SignedInteger"]
+- !private ["s11_StrideableP", "UInt"]
+- ["s11_StrideableP", "UnsignedInteger"]
+- !private ["s11_StrideableP", "assert"]
+- ["s11_StrideableP", "construct"]
+- !private ["s11_StrideableP", "init"]
+- ["s14_StringElementP", "construct"]
+- !private ["s16_SwiftStringViewP", "init"]
+- ["4Yams25_UnkeyedDecodingContainerV", "Bool"]
+- ["4Yams25_UnkeyedDecodingContainerV", "CodingKey"]
+- ["4Yams25_UnkeyedDecodingContainerV", "Decodable"]
+- ["4Yams25_UnkeyedDecodingContainerV", "Decoder"]
+- ["4Yams25_UnkeyedDecodingContainerV", "Double"]
+- ["4Yams25_UnkeyedDecodingContainerV", "Float"]
+- ["4Yams25_UnkeyedDecodingContainerV", "Int"]
+- ["4Yams25_UnkeyedDecodingContainerV", "Int16"]
+- ["4Yams25_UnkeyedDecodingContainerV", "Int32"]
+- ["4Yams25_UnkeyedDecodingContainerV", "Int64"]
+- ["4Yams25_UnkeyedDecodingContainerV", "Int8"]
+- ["4Yams25_UnkeyedDecodingContainerV", "KeyedDecodingContainer"]
+- ["4Yams25_UnkeyedDecodingContainerV", "Node"]
+- !private ["4Yams25_UnkeyedDecodingContainerV", "ScalarConstructible"]
+- ["4Yams25_UnkeyedDecodingContainerV", "String"]
+- !private ["4Yams25_UnkeyedDecodingContainerV", "Tag"]
+- ["4Yams25_UnkeyedDecodingContainerV", "UInt"]
+- ["4Yams25_UnkeyedDecodingContainerV", "UInt16"]
+- ["4Yams25_UnkeyedDecodingContainerV", "UInt32"]
+- ["4Yams25_UnkeyedDecodingContainerV", "UInt64"]
+- ["4Yams25_UnkeyedDecodingContainerV", "UInt8"]
+- ["4Yams25_UnkeyedDecodingContainerV", "UnkeyedDecodingContainer"]
+- ["4Yams25_UnkeyedDecodingContainerV", "_Decoder"]
+- !private ["4Yams25_UnkeyedDecodingContainerV", "_YAMLCodingKey"]
+- !private ["4Yams25_UnkeyedDecodingContainerV", "_valueNotFound"]
+- ["4Yams25_UnkeyedDecodingContainerV", "codingPath"]
+- !private ["4Yams25_UnkeyedDecodingContainerV", "construct"]
+- ["4Yams25_UnkeyedDecodingContainerV", "count"]
+- !private ["4Yams25_UnkeyedDecodingContainerV", "currentDecoder"]
+- ["4Yams25_UnkeyedDecodingContainerV", "currentIndex"]
+- !private ["4Yams25_UnkeyedDecodingContainerV", "currentKey"]
+- !private ["4Yams25_UnkeyedDecodingContainerV", "currentNode"]
+- ["4Yams25_UnkeyedDecodingContainerV", "decode"]
+- ["4Yams25_UnkeyedDecodingContainerV", "decodeIfPresent"]
+- ["4Yams25_UnkeyedDecodingContainerV", "decodeNil"]
+- !private ["4Yams25_UnkeyedDecodingContainerV", "decoder"]
+- ["4Yams25_UnkeyedDecodingContainerV", "deinit"]
+- !private ["4Yams25_UnkeyedDecodingContainerV", "init"]
+- ["4Yams25_UnkeyedDecodingContainerV", "isAtEnd"]
+- ["4Yams25_UnkeyedDecodingContainerV", "nestedContainer"]
+- ["4Yams25_UnkeyedDecodingContainerV", "nestedUnkeyedContainer"]
+- !private ["4Yams25_UnkeyedDecodingContainerV", "sequence"]
+- ["4Yams25_UnkeyedDecodingContainerV", "superDecoder"]
+- !private ["4Yams25_UnkeyedDecodingContainerV", "throwErrorIfAtEnd"]
+- !private ["4Yams14_YAMLCodingKeyV", "deinit"]
+- !private ["4Yams14_YAMLCodingKeyV", "init"]
+- !private ["4Yams14_YAMLCodingKeyV", "super"]
+depends-nominal:
+- !private "s23BidirectionalCollectionP"
+- "s13BinaryIntegerP"
+- !private "Sb"
+- "s7CVarArgP"
+- !private "s9CodingKeyP"
+- !private "s10CollectionP"
+- "s10ComparableP"
+- !private "s13DecodingErrorO7ContextV"
+- "s28CustomDebugStringConvertibleP"
+- "s29CustomPlaygroundQuickLookableP"
+- "s17CustomReflectableP"
+- "s23CustomStringConvertibleP"
+- "SC7DecimalV"
+- "s9DecodableP"
+- "s7DecoderP"
+- !private "s13DecodingErrorO"
+- !private "Sd"
+- "s9EncodableP"
+- "s9EquatableP"
+- !private "s5ErrorP"
+- "s25ExpressibleByArrayLiteralP"
+- !private "s27ExpressibleByBooleanLiteralP"
+- "s30ExpressibleByDictionaryLiteralP"
+- "s43ExpressibleByExtendedGraphemeClusterLiteralP"
+- "s25ExpressibleByFloatLiteralP"
+- "s27ExpressibleByIntegerLiteralP"
+- !private "s23ExpressibleByNilLiteralP"
+- "s26ExpressibleByStringLiteralP"
+- "s33ExpressibleByUnicodeScalarLiteralP"
+- "s17FixedWidthIntegerP"
+- !private "Sf"
+- "s8HashableP"
+- !private "Si"
+- "s5Int16V"
+- "s5Int32V"
+- "s5Int64V"
+- "s4Int8V"
+- !private "s22KeyedDecodingContainerV"
+- "s30KeyedDecodingContainerProtocolP"
+- !private "s22LazyCollectionProtocolP"
+- !private "s17LazyMapCollectionV"
+- !private "s20LazySequenceProtocolP"
+- !private "10Foundation14LocalizedErrorP"
+- "s25LosslessStringConvertibleP"
+- !private "4Yams4NodeO7MappingV"
+- !private "s10MirrorPathP"
+- !private "s17MutableCollectionP"
+- !private "So8NSCodingP"
+- !private "So9NSCopyingP"
+- !private "So21NSItemProviderReadingP"
+- !private "So21NSItemProviderWritingP"
+- !private "So16NSMutableCopyingP"
+- !private "So6NSNullC"
+- !private "So8NSObjectC"
+- !private "So16NSObjectProtocolP"
+- !private "So14NSSecureCodingP"
+- !private "So8NSStringC"
+- !private "4Yams3TagC4NameV"
+- "4Yams4NodeO"
+- "4Yams17NodeRepresentableP"
+- "s7NumericP"
+- !private "Sq"
+- !private "s22RandomAccessCollectionP"
+- !private "s26RangeReplaceableCollectionP"
+- !private "s16RawRepresentableP"
+- "10Foundation20ReferenceConvertibleP"
+- !private "4Yams8ResolverC"
+- !private "4Yams4NodeO6ScalarV"
+- "4Yams19ScalarConstructibleP"
+- "4Yams19ScalarRepresentableP"
+- !private "4Yams4NodeO8SequenceV"
+- !private "s8SequenceP"
+- !private "4Yams22SexagesimalConvertibleP"
+- "s13SignedIntegerP"
+- "s13SignedNumericP"
+- "s28SingleValueDecodingContainerP"
+- !private "s12StaticStringV"
+- "s10StrideableP"
+- !private "SS"
+- !private "s14StringProtocolP"
+- !private "4Yams3TagC"
+- !private "4Yams13TagResolvableP"
+- !private "s16TextOutputStreamP"
+- !private "s20TextOutputStreamableP"
+- !private "Su"
+- "s6UInt16V"
+- "s6UInt32V"
+- "s6UInt64V"
+- "s5UInt8V"
+- "10Foundation3URLV"
+- "s24UnkeyedDecodingContainerP"
+- "s15UnsignedIntegerP"
+- "4Yams11YAMLDecoderC"
+- !private "s23_BidirectionalIndexableP"
+- "s18_BitwiseOperationsP"
+- "s15_CVarArgAlignedP"
+- "4Yams8_DecoderV"
+- !private "s35_ExpressibleByBuiltinBooleanLiteralP"
+- !private "s51_ExpressibleByBuiltinExtendedGraphemeClusterLiteralP"
+- "s35_ExpressibleByBuiltinIntegerLiteralP"
+- !private "s34_ExpressibleByBuiltinStringLiteralP"
+- !private "s39_ExpressibleByBuiltinUTF16StringLiteralP"
+- !private "s41_ExpressibleByBuiltinUnicodeScalarLiteralP"
+- "s34_ExpressibleByFileReferenceLiteralP"
+- !private "s33_ExpressibleByStringInterpolationP"
+- !private "s35_HasCustomAnyHashableRepresentationP"
+- !private "s10_IndexableP"
+- !private "s14_IndexableBaseP"
+- !private "10Foundation27_KeyValueCodingAndObservingP"
+- "4Yams23_KeyedDecodingContainerV"
+- !private "s17_MutableIndexableP"
+- "s21_ObjectiveCBridgeableP"
+- !private "s22_RandomAccessIndexableP"
+- !private "s26_RangeReplaceableIndexableP"
+- "s11_StrideableP"
+- "s14_StringElementP"
+- !private "s16_SwiftStringViewP"
+- "4Yams25_UnkeyedDecodingContainerV"
+- !private "4Yams14_YAMLCodingKeyV"
+depends-dynamic-lookup:
+depends-external:
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/x86_64/Dispatch.apinotesc"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/x86_64/ObjectiveC.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/x86_64/Dispatch.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/x86_64/Darwin.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/x86_64/Foundation.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/x86_64/CoreFoundation.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/x86_64/CoreGraphics.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/x86_64/Swift.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/x86_64/IOKit.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/x86_64/SwiftOnoneSupport.swiftmodule"
+- "/Users/pepibumur/code/XcodeGen/.build/checkouts/Yams.git-8068124914099325722/Sources/CYaml/include/CYaml.h"
+- "/Users/pepibumur/code/XcodeGen/.build/checkouts/Yams.git-8068124914099325722/Sources/CYaml/include/yaml.h"
+- "/Users/pepibumur/code/XcodeGen/XcodeGen.xcodeproj/GeneratedModuleMap/CYaml/module.modulemap"
+interface-hash: "7e2baacfb5cfce3d988e720c689fe4e0"

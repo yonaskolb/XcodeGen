@@ -1,0 +1,265 @@
+### Swift dependencies file v0 ###
+provides-top-level:
+- "<"
+- "=="
+provides-nominal:
+- "4Yams4NodeO6ScalarV"
+- "4Yams4NodeO6ScalarV5StyleO"
+provides-member:
+- ["4Yams4NodeO", ""]
+- ["4Yams4NodeO6ScalarV", ""]
+- ["4Yams4NodeO6ScalarV5StyleO", ""]
+- ["4Yams4NodeO", "Scalar"]
+- ["4Yams4NodeO", "scalar"]
+provides-dynamic-lookup:
+depends-top-level:
+- !private "&&"
+- "<"
+- "<="
+- "=="
+- ">"
+- ">="
+- "AssignmentPrecedence"
+- "Bool"
+- "Comparable"
+- "Equatable"
+- "FloatLiteralType"
+- "IntegerLiteralType"
+- "Mark"
+- "Node"
+- "Resolver"
+- "String"
+- "Tag"
+- "TagResolvable"
+- "TernaryPrecedence"
+- "UInt32"
+- !private "~="
+depends-member:
+- !private ["s13BinaryIntegerP", "hashValue"]
+- !private ["Sb", "_getBuiltinLogicValue"]
+- !private ["s7CVarArgP", "hashValue"]
+- ["s10ComparableP", "Scalar"]
+- ["s10ComparableP", "Tag"]
+- ["s10ComparableP", "defaultTagName"]
+- !private ["s10ComparableP", "hashValue"]
+- !private ["s10ComparableP", "mark"]
+- ["s10ComparableP", "resolveTag"]
+- !private ["s10ComparableP", "resolvedTag"]
+- ["s10ComparableP", "scalar"]
+- !private ["s10ComparableP", "string"]
+- !private ["s10ComparableP", "style"]
+- ["s10ComparableP", "tag"]
+- ["s10ComparableP", ""]
+- !private ["s29CustomPlaygroundQuickLookableP", "_getBuiltinLogicValue"]
+- !private ["s29CustomPlaygroundQuickLookableP", "hashValue"]
+- !private ["s17CustomReflectableP", "_getBuiltinLogicValue"]
+- !private ["s17CustomReflectableP", "hashValue"]
+- ["s23CustomStringConvertibleP", "Name"]
+- !private ["s23CustomStringConvertibleP", "_getBuiltinLogicValue"]
+- !private ["s23CustomStringConvertibleP", "hashValue"]
+- !private ["s23CustomStringConvertibleP", "implicit"]
+- !private ["s23CustomStringConvertibleP", "name"]
+- !private ["s9DecodableP", "_getBuiltinLogicValue"]
+- !private ["s9DecodableP", "hashValue"]
+- !private ["s9EncodableP", "_getBuiltinLogicValue"]
+- !private ["s9EncodableP", "hashValue"]
+- ["s9EquatableP", "Name"]
+- ["s9EquatableP", "RawValue"]
+- ["s9EquatableP", "Scalar"]
+- ["s9EquatableP", "Tag"]
+- !private ["s9EquatableP", "_getBuiltinLogicValue"]
+- !private ["s9EquatableP", "any"]
+- ["s9EquatableP", "defaultTagName"]
+- ["s9EquatableP", "hashValue"]
+- !private ["s9EquatableP", "implicit"]
+- ["s9EquatableP", "init"]
+- !private ["s9EquatableP", "mark"]
+- !private ["s9EquatableP", "name"]
+- ["s9EquatableP", "rawValue"]
+- ["s9EquatableP", "resolveTag"]
+- !private ["s9EquatableP", "resolvedTag"]
+- ["s9EquatableP", "scalar"]
+- ["s9EquatableP", "str"]
+- !private ["s9EquatableP", "string"]
+- !private ["s9EquatableP", "style"]
+- ["s9EquatableP", "tag"]
+- ["s9EquatableP", ""]
+- ["s25ExpressibleByArrayLiteralP", "Scalar"]
+- ["s25ExpressibleByArrayLiteralP", "scalar"]
+- !private ["s27ExpressibleByBooleanLiteralP", "_getBuiltinLogicValue"]
+- ["s30ExpressibleByDictionaryLiteralP", "Scalar"]
+- ["s30ExpressibleByDictionaryLiteralP", "scalar"]
+- ["s43ExpressibleByExtendedGraphemeClusterLiteralP", "Scalar"]
+- !private ["s43ExpressibleByExtendedGraphemeClusterLiteralP", "implicit"]
+- ["s43ExpressibleByExtendedGraphemeClusterLiteralP", "scalar"]
+- ["s43ExpressibleByExtendedGraphemeClusterLiteralP", "str"]
+- ["s25ExpressibleByFloatLiteralP", "Scalar"]
+- ["s25ExpressibleByFloatLiteralP", "scalar"]
+- ["s27ExpressibleByIntegerLiteralP", "Scalar"]
+- !private ["s27ExpressibleByIntegerLiteralP", "hashValue"]
+- ["s27ExpressibleByIntegerLiteralP", "scalar"]
+- ["s26ExpressibleByStringLiteralP", "Scalar"]
+- !private ["s26ExpressibleByStringLiteralP", "implicit"]
+- ["s26ExpressibleByStringLiteralP", "scalar"]
+- ["s26ExpressibleByStringLiteralP", "str"]
+- ["s33ExpressibleByUnicodeScalarLiteralP", "Scalar"]
+- !private ["s33ExpressibleByUnicodeScalarLiteralP", "implicit"]
+- ["s33ExpressibleByUnicodeScalarLiteralP", "scalar"]
+- ["s33ExpressibleByUnicodeScalarLiteralP", "str"]
+- !private ["s17FixedWidthIntegerP", "hashValue"]
+- ["s8HashableP", "Name"]
+- ["s8HashableP", "RawValue"]
+- ["s8HashableP", "Scalar"]
+- !private ["s8HashableP", "_getBuiltinLogicValue"]
+- !private ["s8HashableP", "any"]
+- ["s8HashableP", "hashValue"]
+- !private ["s8HashableP", "implicit"]
+- ["s8HashableP", "init"]
+- !private ["s8HashableP", "name"]
+- ["s8HashableP", "rawValue"]
+- ["s8HashableP", "scalar"]
+- ["s8HashableP", "str"]
+- ["s8HashableP", ""]
+- !private ["Si", "hashValue"]
+- !private ["s25LosslessStringConvertibleP", "_getBuiltinLogicValue"]
+- !private ["s25LosslessStringConvertibleP", "hashValue"]
+- !private ["s10MirrorPathP", "hashValue"]
+- !private ["4Yams3TagC4NameV", "implicit"]
+- ["4Yams3TagC4NameV", "str"]
+- ["4Yams4NodeO", "Mark"]
+- ["4Yams4NodeO", "Scalar"]
+- ["4Yams4NodeO", "String"]
+- ["4Yams4NodeO", "Tag"]
+- ["4Yams4NodeO", "UInt32"]
+- ["4Yams4NodeO", "scalar"]
+- ["4Yams17NodeRepresentableP", "Scalar"]
+- !private ["4Yams17NodeRepresentableP", "_getBuiltinLogicValue"]
+- !private ["4Yams17NodeRepresentableP", "hashValue"]
+- ["4Yams17NodeRepresentableP", "scalar"]
+- !private ["s7NumericP", "hashValue"]
+- ["s16RawRepresentableP", "RawValue"]
+- !private ["s16RawRepresentableP", "any"]
+- ["s16RawRepresentableP", "hashValue"]
+- !private ["s16RawRepresentableP", "implicit"]
+- ["s16RawRepresentableP", "init"]
+- ["s16RawRepresentableP", "rawValue"]
+- ["s16RawRepresentableP", "str"]
+- ["s16RawRepresentableP", ""]
+- !private ["4Yams8ResolverC", "resolveTag"]
+- ["4Yams4NodeO6ScalarV", "<"]
+- ["4Yams4NodeO6ScalarV", "=="]
+- ["4Yams4NodeO6ScalarV", "Bool"]
+- ["4Yams4NodeO6ScalarV", "Mark"]
+- ["4Yams4NodeO6ScalarV", "Node"]
+- ["4Yams4NodeO6ScalarV", "Resolver"]
+- ["4Yams4NodeO6ScalarV", "String"]
+- ["4Yams4NodeO6ScalarV", "Style"]
+- ["4Yams4NodeO6ScalarV", "Tag"]
+- ["4Yams4NodeO6ScalarV", "UInt32"]
+- ["4Yams4NodeO6ScalarV", "defaultTagName"]
+- ["4Yams4NodeO6ScalarV", "deinit"]
+- ["4Yams4NodeO6ScalarV", "init"]
+- ["4Yams4NodeO6ScalarV", "mark"]
+- ["4Yams4NodeO6ScalarV", "resolveTag"]
+- !private ["4Yams4NodeO6ScalarV", "resolvedTag"]
+- ["4Yams4NodeO6ScalarV", "string"]
+- ["4Yams4NodeO6ScalarV", "style"]
+- ["4Yams4NodeO6ScalarV", "tag"]
+- !private ["4Yams19ScalarConstructibleP", "_getBuiltinLogicValue"]
+- !private ["4Yams19ScalarConstructibleP", "hashValue"]
+- !private ["4Yams19ScalarRepresentableP", "_getBuiltinLogicValue"]
+- !private ["4Yams19ScalarRepresentableP", "hashValue"]
+- !private ["4Yams22SexagesimalConvertibleP", "hashValue"]
+- !private ["s13SignedIntegerP", "hashValue"]
+- !private ["s13SignedNumericP", "hashValue"]
+- !private ["s10StrideableP", "hashValue"]
+- ["4Yams4NodeO6ScalarV5StyleO", "RawValue"]
+- ["4Yams4NodeO6ScalarV5StyleO", "any"]
+- ["4Yams4NodeO6ScalarV5StyleO", "deinit"]
+- ["4Yams4NodeO6ScalarV5StyleO", "doubleQuoted"]
+- ["4Yams4NodeO6ScalarV5StyleO", "folded"]
+- ["4Yams4NodeO6ScalarV5StyleO", "hashValue"]
+- ["4Yams4NodeO6ScalarV5StyleO", "init"]
+- ["4Yams4NodeO6ScalarV5StyleO", "literal"]
+- ["4Yams4NodeO6ScalarV5StyleO", "plain"]
+- ["4Yams4NodeO6ScalarV5StyleO", "rawValue"]
+- ["4Yams4NodeO6ScalarV5StyleO", "singleQuoted"]
+- ["4Yams3TagC", "Name"]
+- !private ["4Yams3TagC", "implicit"]
+- !private ["4Yams3TagC", "name"]
+- ["4Yams13TagResolvableP", "Tag"]
+- ["4Yams13TagResolvableP", "defaultTagName"]
+- !private ["4Yams13TagResolvableP", "mark"]
+- ["4Yams13TagResolvableP", "resolveTag"]
+- !private ["4Yams13TagResolvableP", "resolvedTag"]
+- !private ["4Yams13TagResolvableP", "string"]
+- !private ["4Yams13TagResolvableP", "style"]
+- ["4Yams13TagResolvableP", "tag"]
+- ["4Yams13TagResolvableP", ""]
+- !private ["s18_BitwiseOperationsP", "hashValue"]
+- !private ["s35_ExpressibleByBuiltinBooleanLiteralP", "_getBuiltinLogicValue"]
+- !private ["s35_ExpressibleByBuiltinIntegerLiteralP", "hashValue"]
+- !private ["s21_ObjectiveCBridgeableP", "_getBuiltinLogicValue"]
+- !private ["s21_ObjectiveCBridgeableP", "hashValue"]
+- !private ["s11_StrideableP", "hashValue"]
+depends-nominal:
+- !private "s13BinaryIntegerP"
+- !private "Sb"
+- !private "s7CVarArgP"
+- "s10ComparableP"
+- !private "s29CustomPlaygroundQuickLookableP"
+- !private "s17CustomReflectableP"
+- "s23CustomStringConvertibleP"
+- !private "s9DecodableP"
+- !private "s9EncodableP"
+- "s9EquatableP"
+- "s25ExpressibleByArrayLiteralP"
+- !private "s27ExpressibleByBooleanLiteralP"
+- "s30ExpressibleByDictionaryLiteralP"
+- "s43ExpressibleByExtendedGraphemeClusterLiteralP"
+- "s25ExpressibleByFloatLiteralP"
+- "s27ExpressibleByIntegerLiteralP"
+- "s26ExpressibleByStringLiteralP"
+- "s33ExpressibleByUnicodeScalarLiteralP"
+- !private "s17FixedWidthIntegerP"
+- "s8HashableP"
+- !private "Si"
+- !private "s25LosslessStringConvertibleP"
+- !private "s10MirrorPathP"
+- "4Yams3TagC4NameV"
+- "4Yams4NodeO"
+- "4Yams17NodeRepresentableP"
+- !private "s7NumericP"
+- "s16RawRepresentableP"
+- !private "4Yams8ResolverC"
+- "4Yams4NodeO6ScalarV"
+- !private "4Yams19ScalarConstructibleP"
+- !private "4Yams19ScalarRepresentableP"
+- !private "4Yams22SexagesimalConvertibleP"
+- !private "s13SignedIntegerP"
+- !private "s13SignedNumericP"
+- !private "s10StrideableP"
+- "4Yams4NodeO6ScalarV5StyleO"
+- "4Yams3TagC"
+- "4Yams13TagResolvableP"
+- !private "s18_BitwiseOperationsP"
+- !private "s35_ExpressibleByBuiltinBooleanLiteralP"
+- !private "s35_ExpressibleByBuiltinIntegerLiteralP"
+- !private "s21_ObjectiveCBridgeableP"
+- !private "s11_StrideableP"
+depends-dynamic-lookup:
+depends-external:
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/x86_64/Dispatch.apinotesc"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/x86_64/ObjectiveC.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/x86_64/Dispatch.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/x86_64/Darwin.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/x86_64/Foundation.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/x86_64/CoreFoundation.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/x86_64/CoreGraphics.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/x86_64/Swift.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/x86_64/IOKit.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/x86_64/SwiftOnoneSupport.swiftmodule"
+- "/Users/pepibumur/code/XcodeGen/.build/checkouts/Yams.git-8068124914099325722/Sources/CYaml/include/CYaml.h"
+- "/Users/pepibumur/code/XcodeGen/.build/checkouts/Yams.git-8068124914099325722/Sources/CYaml/include/yaml.h"
+- "/Users/pepibumur/code/XcodeGen/XcodeGen.xcodeproj/GeneratedModuleMap/CYaml/module.modulemap"
+interface-hash: "11d2391e894687105abbdbdebde1ff45"

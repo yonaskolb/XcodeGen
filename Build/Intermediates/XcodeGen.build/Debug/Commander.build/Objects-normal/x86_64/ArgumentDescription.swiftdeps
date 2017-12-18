@@ -1,0 +1,670 @@
+### Swift dependencies file v0 ###
+provides-top-level:
+- "ArgumentType"
+- "ArgumentDescriptor"
+- "VariadicArgument"
+- "VaradicArgument"
+- "Argument"
+- "Option"
+- "Options"
+- "VariadicOption"
+- "Flag"
+- "BoxedArgumentDescriptor"
+- "UsageError"
+- "Help"
+provides-nominal:
+- "9Commander12ArgumentTypeO"
+- "9Commander18ArgumentDescriptorP"
+- "9Commander16VariadicArgumentC"
+- "9Commander8ArgumentC"
+- "9Commander6OptionC"
+- "9Commander7OptionsC"
+- "9Commander14VariadicOptionC"
+- "9Commander4FlagC"
+- "9Commander23BoxedArgumentDescriptorC"
+- "9Commander10UsageErrorC"
+- "9Commander4HelpC"
+provides-member:
+- ["9Commander12ArgumentTypeO", ""]
+- ["9Commander18ArgumentDescriptorP", ""]
+- ["9Commander19ArgumentConvertibleP", ""]
+- ["9Commander16VariadicArgumentC", ""]
+- ["9Commander8ArgumentC", ""]
+- ["9Commander6OptionC", ""]
+- ["9Commander7OptionsC", ""]
+- ["9Commander14VariadicOptionC", ""]
+- ["9Commander4FlagC", ""]
+- ["9Commander23BoxedArgumentDescriptorC", ""]
+- ["9Commander10UsageErrorC", ""]
+- ["9Commander4HelpC", ""]
+- ["9Commander19ArgumentConvertibleP", "init"]
+provides-dynamic-lookup:
+depends-top-level:
+- !private "!"
+- !private "+"
+- !private "+="
+- "=="
+- !private "??"
+- !private "ANSI"
+- "ANSIConvertible"
+- "Argument"
+- "ArgumentConvertible"
+- "ArgumentDescriptor"
+- !private "ArgumentError"
+- "ArgumentParser"
+- "ArgumentType"
+- !private "Array"
+- "AssignmentPrecedence"
+- "Bool"
+- "BooleanLiteralType"
+- "BoxedArgumentDescriptor"
+- "CastingPrecedence"
+- "Character"
+- "CustomStringConvertible"
+- "Error"
+- "Flag"
+- !private "FloatLiteralType"
+- "Group"
+- "Help"
+- "Int"
+- !private "IntegerLiteralType"
+- "Option"
+- "Options"
+- "String"
+- !private "StringLiteralType"
+- !private "UnicodeScalarType"
+- "UsageError"
+- "VaradicArgument"
+- "VariadicArgument"
+- "VariadicOption"
+depends-member:
+- !private ["9Commander4ANSIO", "blue"]
+- !private ["9Commander4ANSIO", "deinit"]
+- !private ["9Commander4ANSIO", "green"]
+- !private ["9Commander4ANSIO", "reset"]
+- !private ["9Commander15ANSIConvertibleP", "ANSI"]
+- !private ["9Commander15ANSIConvertibleP", "ArgumentType"]
+- !private ["9Commander15ANSIConvertibleP", "Help"]
+- !private ["9Commander15ANSIConvertibleP", "String"]
+- ["9Commander15ANSIConvertibleP", "_code"]
+- ["9Commander15ANSIConvertibleP", "_domain"]
+- ["9Commander15ANSIConvertibleP", "_getEmbeddedNSError"]
+- ["9Commander15ANSIConvertibleP", "_userInfo"]
+- ["9Commander15ANSIConvertibleP", "ansiDescription"]
+- !private ["9Commander15ANSIConvertibleP", "command"]
+- ["9Commander15ANSIConvertibleP", "description"]
+- !private ["9Commander15ANSIConvertibleP", "descriptors"]
+- !private ["9Commander15ANSIConvertibleP", "group"]
+- !private ["9Commander15ANSIConvertibleP", "help"]
+- !private ["9Commander15ANSIConvertibleP", "init"]
+- !private ["9Commander15ANSIConvertibleP", "message"]
+- ["9Commander15ANSIConvertibleP", ""]
+- !private ["9Commander8ArgumentC", "ArgumentError"]
+- ["9Commander8ArgumentC", "ArgumentParser"]
+- ["9Commander8ArgumentC", "ArgumentType"]
+- ["9Commander8ArgumentC", "String"]
+- ["9Commander8ArgumentC", "T"]
+- ["9Commander8ArgumentC", "Validator"]
+- ["9Commander8ArgumentC", "ValueType"]
+- ["9Commander8ArgumentC", "deinit"]
+- ["9Commander8ArgumentC", "description"]
+- ["9Commander8ArgumentC", "init"]
+- ["9Commander8ArgumentC", "name"]
+- ["9Commander8ArgumentC", "parse"]
+- ["9Commander8ArgumentC", "type"]
+- ["9Commander8ArgumentC", "validator"]
+- !private ["9Commander19ArgumentConvertibleP", "ArgumentParser"]
+- ["9Commander19ArgumentConvertibleP", "String"]
+- !private ["9Commander19ArgumentConvertibleP", "description"]
+- !private ["9Commander19ArgumentConvertibleP", "hasFlag"]
+- !private ["9Commander19ArgumentConvertibleP", "hasOption"]
+- !private ["9Commander19ArgumentConvertibleP", "hashValue"]
+- ["9Commander19ArgumentConvertibleP", "init"]
+- !private ["9Commander19ArgumentConvertibleP", "isEmpty"]
+- !private ["9Commander19ArgumentConvertibleP", "shiftValue"]
+- !private ["9Commander19ArgumentConvertibleP", "shiftValues"]
+- !private ["9Commander18ArgumentDescriptorP", "ArgumentError"]
+- ["9Commander18ArgumentDescriptorP", "ArgumentParser"]
+- ["9Commander18ArgumentDescriptorP", "ArgumentType"]
+- !private ["9Commander18ArgumentDescriptorP", "Array"]
+- ["9Commander18ArgumentDescriptorP", "String"]
+- !private ["9Commander18ArgumentDescriptorP", "T"]
+- ["9Commander18ArgumentDescriptorP", "ValueType"]
+- !private ["9Commander18ArgumentDescriptorP", "count"]
+- !private ["9Commander18ArgumentDescriptorP", "default"]
+- ["9Commander18ArgumentDescriptorP", "description"]
+- !private ["9Commander18ArgumentDescriptorP", "disabledFlag"]
+- !private ["9Commander18ArgumentDescriptorP", "disabledName"]
+- !private ["9Commander18ArgumentDescriptorP", "flag"]
+- !private ["9Commander18ArgumentDescriptorP", "init"]
+- ["9Commander18ArgumentDescriptorP", "name"]
+- ["9Commander18ArgumentDescriptorP", "parse"]
+- ["9Commander18ArgumentDescriptorP", "type"]
+- !private ["9Commander18ArgumentDescriptorP", "validator"]
+- ["9Commander18ArgumentDescriptorP", ""]
+- !private ["9Commander13ArgumentErrorO", "deinit"]
+- ["9Commander13ArgumentErrorO", "missingValue"]
+- !private ["9Commander14ArgumentParserC", "deinit"]
+- !private ["9Commander14ArgumentParserC", "hasFlag"]
+- !private ["9Commander14ArgumentParserC", "hasOption"]
+- !private ["9Commander14ArgumentParserC", "init"]
+- !private ["9Commander14ArgumentParserC", "shiftValue"]
+- !private ["9Commander14ArgumentParserC", "shiftValues"]
+- ["9Commander12ArgumentTypeO", "__derived_enum_equals"]
+- ["9Commander12ArgumentTypeO", "argument"]
+- ["9Commander12ArgumentTypeO", "deinit"]
+- ["9Commander12ArgumentTypeO", "hashValue"]
+- ["9Commander12ArgumentTypeO", "option"]
+- !private ["Sa", "append"]
+- !private ["Sa", "filter"]
+- !private ["Sa", "init"]
+- !private ["Sa", "isEmpty"]
+- !private ["Sa", "joined"]
+- !private ["Sa", "map"]
+- !private ["s23BidirectionalCollectionP", "append"]
+- !private ["s23BidirectionalCollectionP", "description"]
+- !private ["s23BidirectionalCollectionP", "filter"]
+- !private ["s23BidirectionalCollectionP", "init"]
+- !private ["s23BidirectionalCollectionP", "isEmpty"]
+- !private ["s23BidirectionalCollectionP", "joined"]
+- !private ["s23BidirectionalCollectionP", "map"]
+- !private ["s13BinaryIntegerP", "description"]
+- !private ["s13BinaryIntegerP", "hashValue"]
+- !private ["Sb", "_getBuiltinLogicValue"]
+- !private ["Sb", "description"]
+- ["9Commander23BoxedArgumentDescriptorC", "ArgumentDescriptor"]
+- ["9Commander23BoxedArgumentDescriptorC", "ArgumentType"]
+- !private ["9Commander23BoxedArgumentDescriptorC", "Flag"]
+- !private ["9Commander23BoxedArgumentDescriptorC", "Int"]
+- !private ["9Commander23BoxedArgumentDescriptorC", "Option"]
+- ["9Commander23BoxedArgumentDescriptorC", "String"]
+- ["9Commander23BoxedArgumentDescriptorC", "default"]
+- ["9Commander23BoxedArgumentDescriptorC", "deinit"]
+- ["9Commander23BoxedArgumentDescriptorC", "description"]
+- ["9Commander23BoxedArgumentDescriptorC", "init"]
+- ["9Commander23BoxedArgumentDescriptorC", "name"]
+- ["9Commander23BoxedArgumentDescriptorC", "type"]
+- !private ["s7CVarArgP", "description"]
+- !private ["s7CVarArgP", "hashValue"]
+- !private ["s10CollectionP", "append"]
+- !private ["s10CollectionP", "description"]
+- !private ["s10CollectionP", "filter"]
+- !private ["s10CollectionP", "init"]
+- !private ["s10CollectionP", "isEmpty"]
+- !private ["s10CollectionP", "joined"]
+- !private ["s10CollectionP", "map"]
+- !private ["9Commander11CommandTypeP", "commands"]
+- !private ["s10ComparableP", "description"]
+- !private ["s10ComparableP", "hashValue"]
+- !private ["s10ComparableP", "init"]
+- !private ["s10ComparableP", "isEmpty"]
+- !private ["s28CustomDebugStringConvertibleP", "append"]
+- !private ["s28CustomDebugStringConvertibleP", "description"]
+- !private ["s28CustomDebugStringConvertibleP", "filter"]
+- !private ["s28CustomDebugStringConvertibleP", "init"]
+- !private ["s28CustomDebugStringConvertibleP", "isEmpty"]
+- !private ["s28CustomDebugStringConvertibleP", "joined"]
+- !private ["s28CustomDebugStringConvertibleP", "map"]
+- !private ["s29CustomPlaygroundQuickLookableP", "_getBuiltinLogicValue"]
+- !private ["s29CustomPlaygroundQuickLookableP", "description"]
+- !private ["s29CustomPlaygroundQuickLookableP", "hashValue"]
+- !private ["s29CustomPlaygroundQuickLookableP", "init"]
+- !private ["s29CustomPlaygroundQuickLookableP", "isEmpty"]
+- !private ["s17CustomReflectableP", "_getBuiltinLogicValue"]
+- !private ["s17CustomReflectableP", "append"]
+- !private ["s17CustomReflectableP", "description"]
+- !private ["s17CustomReflectableP", "filter"]
+- !private ["s17CustomReflectableP", "hashValue"]
+- !private ["s17CustomReflectableP", "init"]
+- !private ["s17CustomReflectableP", "isEmpty"]
+- !private ["s17CustomReflectableP", "joined"]
+- !private ["s17CustomReflectableP", "map"]
+- !private ["s23CustomStringConvertibleP", "ANSI"]
+- !private ["s23CustomStringConvertibleP", "ArgumentParser"]
+- !private ["s23CustomStringConvertibleP", "ArgumentType"]
+- !private ["s23CustomStringConvertibleP", "Help"]
+- ["s23CustomStringConvertibleP", "String"]
+- ["s23CustomStringConvertibleP", "_code"]
+- ["s23CustomStringConvertibleP", "_domain"]
+- !private ["s23CustomStringConvertibleP", "_getBuiltinLogicValue"]
+- ["s23CustomStringConvertibleP", "_getEmbeddedNSError"]
+- ["s23CustomStringConvertibleP", "_userInfo"]
+- ["s23CustomStringConvertibleP", "ansiDescription"]
+- !private ["s23CustomStringConvertibleP", "append"]
+- !private ["s23CustomStringConvertibleP", "blue"]
+- !private ["s23CustomStringConvertibleP", "command"]
+- ["s23CustomStringConvertibleP", "description"]
+- !private ["s23CustomStringConvertibleP", "descriptors"]
+- !private ["s23CustomStringConvertibleP", "filter"]
+- !private ["s23CustomStringConvertibleP", "green"]
+- !private ["s23CustomStringConvertibleP", "group"]
+- !private ["s23CustomStringConvertibleP", "hasFlag"]
+- !private ["s23CustomStringConvertibleP", "hasOption"]
+- !private ["s23CustomStringConvertibleP", "hashValue"]
+- !private ["s23CustomStringConvertibleP", "help"]
+- !private ["s23CustomStringConvertibleP", "init"]
+- !private ["s23CustomStringConvertibleP", "isEmpty"]
+- !private ["s23CustomStringConvertibleP", "joined"]
+- !private ["s23CustomStringConvertibleP", "map"]
+- !private ["s23CustomStringConvertibleP", "message"]
+- ["s23CustomStringConvertibleP", "missingValue"]
+- !private ["s23CustomStringConvertibleP", "reset"]
+- !private ["s23CustomStringConvertibleP", "shiftValue"]
+- !private ["s23CustomStringConvertibleP", "shiftValues"]
+- ["s23CustomStringConvertibleP", ""]
+- !private ["s9DecodableP", "_getBuiltinLogicValue"]
+- !private ["s9DecodableP", "append"]
+- !private ["s9DecodableP", "description"]
+- !private ["s9DecodableP", "filter"]
+- !private ["s9DecodableP", "hashValue"]
+- !private ["s9DecodableP", "init"]
+- !private ["s9DecodableP", "isEmpty"]
+- !private ["s9DecodableP", "joined"]
+- !private ["s9DecodableP", "map"]
+- !private ["s9EncodableP", "_getBuiltinLogicValue"]
+- !private ["s9EncodableP", "append"]
+- !private ["s9EncodableP", "description"]
+- !private ["s9EncodableP", "filter"]
+- !private ["s9EncodableP", "hashValue"]
+- !private ["s9EncodableP", "init"]
+- !private ["s9EncodableP", "isEmpty"]
+- !private ["s9EncodableP", "joined"]
+- !private ["s9EncodableP", "map"]
+- !private ["s9EquatableP", "_getBuiltinLogicValue"]
+- !private ["s9EquatableP", "argument"]
+- !private ["s9EquatableP", "blue"]
+- !private ["s9EquatableP", "description"]
+- !private ["s9EquatableP", "green"]
+- ["s9EquatableP", "hashValue"]
+- !private ["s9EquatableP", "init"]
+- !private ["s9EquatableP", "isEmpty"]
+- ["s9EquatableP", "missingValue"]
+- !private ["s9EquatableP", "option"]
+- !private ["s9EquatableP", "reset"]
+- ["s9EquatableP", ""]
+- !private ["s5ErrorP", "ANSI"]
+- !private ["s5ErrorP", "ArgumentType"]
+- !private ["s5ErrorP", "Help"]
+- !private ["s5ErrorP", "String"]
+- ["s5ErrorP", "_code"]
+- ["s5ErrorP", "_domain"]
+- ["s5ErrorP", "_getEmbeddedNSError"]
+- ["s5ErrorP", "_userInfo"]
+- ["s5ErrorP", "ansiDescription"]
+- !private ["s5ErrorP", "command"]
+- ["s5ErrorP", "description"]
+- !private ["s5ErrorP", "descriptors"]
+- !private ["s5ErrorP", "group"]
+- !private ["s5ErrorP", "help"]
+- !private ["s5ErrorP", "init"]
+- !private ["s5ErrorP", "message"]
+- ["s5ErrorP", "missingValue"]
+- ["s5ErrorP", ""]
+- !private ["s25ExpressibleByArrayLiteralP", "append"]
+- !private ["s25ExpressibleByArrayLiteralP", "filter"]
+- !private ["s25ExpressibleByArrayLiteralP", "init"]
+- !private ["s25ExpressibleByArrayLiteralP", "isEmpty"]
+- !private ["s25ExpressibleByArrayLiteralP", "joined"]
+- !private ["s25ExpressibleByArrayLiteralP", "map"]
+- !private ["s27ExpressibleByBooleanLiteralP", "_getBuiltinLogicValue"]
+- !private ["s27ExpressibleByBooleanLiteralP", "description"]
+- !private ["s43ExpressibleByExtendedGraphemeClusterLiteralP", "description"]
+- !private ["s43ExpressibleByExtendedGraphemeClusterLiteralP", "init"]
+- !private ["s43ExpressibleByExtendedGraphemeClusterLiteralP", "isEmpty"]
+- !private ["s27ExpressibleByIntegerLiteralP", "description"]
+- !private ["s27ExpressibleByIntegerLiteralP", "hashValue"]
+- !private ["s26ExpressibleByStringLiteralP", "description"]
+- !private ["s26ExpressibleByStringLiteralP", "init"]
+- !private ["s26ExpressibleByStringLiteralP", "isEmpty"]
+- !private ["s33ExpressibleByUnicodeScalarLiteralP", "description"]
+- !private ["s33ExpressibleByUnicodeScalarLiteralP", "init"]
+- !private ["s33ExpressibleByUnicodeScalarLiteralP", "isEmpty"]
+- !private ["s17FixedWidthIntegerP", "description"]
+- !private ["s17FixedWidthIntegerP", "hashValue"]
+- ["9Commander4FlagC", "ArgumentParser"]
+- ["9Commander4FlagC", "ArgumentType"]
+- ["9Commander4FlagC", "Bool"]
+- ["9Commander4FlagC", "Character"]
+- ["9Commander4FlagC", "String"]
+- ["9Commander4FlagC", "ValueType"]
+- ["9Commander4FlagC", "default"]
+- ["9Commander4FlagC", "deinit"]
+- ["9Commander4FlagC", "description"]
+- ["9Commander4FlagC", "disabledFlag"]
+- ["9Commander4FlagC", "disabledName"]
+- ["9Commander4FlagC", "flag"]
+- ["9Commander4FlagC", "init"]
+- ["9Commander4FlagC", "name"]
+- ["9Commander4FlagC", "parse"]
+- ["9Commander4FlagC", "type"]
+- !private ["9Commander5GroupC", "commands"]
+- !private ["s8HashableP", "_getBuiltinLogicValue"]
+- !private ["s8HashableP", "argument"]
+- !private ["s8HashableP", "blue"]
+- !private ["s8HashableP", "description"]
+- !private ["s8HashableP", "green"]
+- ["s8HashableP", "hashValue"]
+- !private ["s8HashableP", "init"]
+- !private ["s8HashableP", "isEmpty"]
+- !private ["s8HashableP", "option"]
+- !private ["s8HashableP", "reset"]
+- ["s8HashableP", ""]
+- !private ["9Commander4HelpC", "ANSI"]
+- !private ["9Commander4HelpC", "ArgumentType"]
+- ["9Commander4HelpC", "BoxedArgumentDescriptor"]
+- ["9Commander4HelpC", "Group"]
+- ["9Commander4HelpC", "Help"]
+- ["9Commander4HelpC", "String"]
+- ["9Commander4HelpC", "_code"]
+- ["9Commander4HelpC", "_domain"]
+- ["9Commander4HelpC", "_getEmbeddedNSError"]
+- ["9Commander4HelpC", "_userInfo"]
+- ["9Commander4HelpC", "ansiDescription"]
+- ["9Commander4HelpC", "command"]
+- ["9Commander4HelpC", "deinit"]
+- ["9Commander4HelpC", "description"]
+- ["9Commander4HelpC", "descriptors"]
+- ["9Commander4HelpC", "group"]
+- ["9Commander4HelpC", "init"]
+- ["9Commander4HelpC", "reraise"]
+- ["Si", "deinit"]
+- !private ["Si", "description"]
+- !private ["Si", "hashValue"]
+- !private ["s25LosslessStringConvertibleP", "_getBuiltinLogicValue"]
+- !private ["s25LosslessStringConvertibleP", "description"]
+- !private ["s25LosslessStringConvertibleP", "hashValue"]
+- !private ["s25LosslessStringConvertibleP", "init"]
+- !private ["s25LosslessStringConvertibleP", "isEmpty"]
+- !private ["s10MirrorPathP", "description"]
+- !private ["s10MirrorPathP", "hashValue"]
+- !private ["s10MirrorPathP", "init"]
+- !private ["s10MirrorPathP", "isEmpty"]
+- !private ["s17MutableCollectionP", "append"]
+- !private ["s17MutableCollectionP", "filter"]
+- !private ["s17MutableCollectionP", "init"]
+- !private ["s17MutableCollectionP", "isEmpty"]
+- !private ["s17MutableCollectionP", "joined"]
+- !private ["s17MutableCollectionP", "map"]
+- !private ["s7NumericP", "description"]
+- !private ["s7NumericP", "hashValue"]
+- ["9Commander6OptionC", "ArgumentParser"]
+- ["9Commander6OptionC", "ArgumentType"]
+- ["9Commander6OptionC", "Character"]
+- ["9Commander6OptionC", "String"]
+- ["9Commander6OptionC", "T"]
+- ["9Commander6OptionC", "Validator"]
+- ["9Commander6OptionC", "ValueType"]
+- ["9Commander6OptionC", "default"]
+- ["9Commander6OptionC", "deinit"]
+- ["9Commander6OptionC", "description"]
+- ["9Commander6OptionC", "flag"]
+- ["9Commander6OptionC", "init"]
+- ["9Commander6OptionC", "name"]
+- ["9Commander6OptionC", "parse"]
+- ["9Commander6OptionC", "type"]
+- ["9Commander6OptionC", "validator"]
+- ["9Commander7OptionsC", "ArgumentParser"]
+- ["9Commander7OptionsC", "ArgumentType"]
+- ["9Commander7OptionsC", "Character"]
+- ["9Commander7OptionsC", "Int"]
+- ["9Commander7OptionsC", "String"]
+- ["9Commander7OptionsC", "T"]
+- ["9Commander7OptionsC", "Validator"]
+- ["9Commander7OptionsC", "ValueType"]
+- ["9Commander7OptionsC", "count"]
+- ["9Commander7OptionsC", "default"]
+- ["9Commander7OptionsC", "deinit"]
+- ["9Commander7OptionsC", "description"]
+- ["9Commander7OptionsC", "flag"]
+- ["9Commander7OptionsC", "init"]
+- ["9Commander7OptionsC", "name"]
+- ["9Commander7OptionsC", "parse"]
+- ["9Commander7OptionsC", "type"]
+- ["9Commander7OptionsC", "validator"]
+- !private ["s22RandomAccessCollectionP", "append"]
+- !private ["s22RandomAccessCollectionP", "filter"]
+- !private ["s22RandomAccessCollectionP", "init"]
+- !private ["s22RandomAccessCollectionP", "isEmpty"]
+- !private ["s22RandomAccessCollectionP", "joined"]
+- !private ["s22RandomAccessCollectionP", "map"]
+- !private ["s26RangeReplaceableCollectionP", "append"]
+- !private ["s26RangeReplaceableCollectionP", "description"]
+- !private ["s26RangeReplaceableCollectionP", "filter"]
+- !private ["s26RangeReplaceableCollectionP", "init"]
+- !private ["s26RangeReplaceableCollectionP", "isEmpty"]
+- !private ["s26RangeReplaceableCollectionP", "joined"]
+- !private ["s26RangeReplaceableCollectionP", "map"]
+- !private ["s16RawRepresentableP", "blue"]
+- !private ["s16RawRepresentableP", "green"]
+- !private ["s16RawRepresentableP", "reset"]
+- !private ["s8SequenceP", "append"]
+- !private ["s8SequenceP", "description"]
+- !private ["s8SequenceP", "filter"]
+- !private ["s8SequenceP", "init"]
+- !private ["s8SequenceP", "isEmpty"]
+- !private ["s8SequenceP", "joined"]
+- !private ["s8SequenceP", "map"]
+- !private ["s13SignedIntegerP", "description"]
+- !private ["s13SignedIntegerP", "hashValue"]
+- !private ["s13SignedNumericP", "description"]
+- !private ["s13SignedNumericP", "hashValue"]
+- !private ["s10StrideableP", "description"]
+- !private ["s10StrideableP", "hashValue"]
+- ["SS", "deinit"]
+- !private ["SS", "description"]
+- !private ["SS", "init"]
+- !private ["SS", "isEmpty"]
+- !private ["s14StringProtocolP", "description"]
+- !private ["s14StringProtocolP", "init"]
+- !private ["s14StringProtocolP", "isEmpty"]
+- !private ["9Commander5GroupC10SubCommandV", "description"]
+- !private ["9Commander5GroupC10SubCommandV", "name"]
+- !private ["s16TextOutputStreamP", "description"]
+- !private ["s16TextOutputStreamP", "init"]
+- !private ["s16TextOutputStreamP", "isEmpty"]
+- !private ["s20TextOutputStreamableP", "description"]
+- !private ["s20TextOutputStreamableP", "init"]
+- !private ["s20TextOutputStreamableP", "isEmpty"]
+- ["9Commander10UsageErrorC", "Help"]
+- ["9Commander10UsageErrorC", "String"]
+- ["9Commander10UsageErrorC", "_code"]
+- ["9Commander10UsageErrorC", "_domain"]
+- ["9Commander10UsageErrorC", "_getEmbeddedNSError"]
+- ["9Commander10UsageErrorC", "_userInfo"]
+- ["9Commander10UsageErrorC", "ansiDescription"]
+- ["9Commander10UsageErrorC", "deinit"]
+- ["9Commander10UsageErrorC", "description"]
+- ["9Commander10UsageErrorC", "help"]
+- ["9Commander10UsageErrorC", "init"]
+- ["9Commander10UsageErrorC", "message"]
+- ["9Commander16VariadicArgumentC", "ArgumentParser"]
+- ["9Commander16VariadicArgumentC", "ArgumentType"]
+- !private ["9Commander16VariadicArgumentC", "Array"]
+- ["9Commander16VariadicArgumentC", "String"]
+- ["9Commander16VariadicArgumentC", "T"]
+- ["9Commander16VariadicArgumentC", "Validator"]
+- ["9Commander16VariadicArgumentC", "ValueType"]
+- ["9Commander16VariadicArgumentC", "deinit"]
+- ["9Commander16VariadicArgumentC", "description"]
+- ["9Commander16VariadicArgumentC", "init"]
+- ["9Commander16VariadicArgumentC", "name"]
+- ["9Commander16VariadicArgumentC", "parse"]
+- ["9Commander16VariadicArgumentC", "type"]
+- ["9Commander16VariadicArgumentC", "validator"]
+- ["9Commander14VariadicOptionC", "ArgumentParser"]
+- ["9Commander14VariadicOptionC", "ArgumentType"]
+- ["9Commander14VariadicOptionC", "Character"]
+- ["9Commander14VariadicOptionC", "String"]
+- ["9Commander14VariadicOptionC", "T"]
+- ["9Commander14VariadicOptionC", "Validator"]
+- ["9Commander14VariadicOptionC", "ValueType"]
+- ["9Commander14VariadicOptionC", "default"]
+- ["9Commander14VariadicOptionC", "deinit"]
+- ["9Commander14VariadicOptionC", "description"]
+- ["9Commander14VariadicOptionC", "flag"]
+- ["9Commander14VariadicOptionC", "init"]
+- ["9Commander14VariadicOptionC", "name"]
+- ["9Commander14VariadicOptionC", "parse"]
+- ["9Commander14VariadicOptionC", "type"]
+- ["9Commander14VariadicOptionC", "validator"]
+- !private ["s14_ArrayProtocolP", "append"]
+- !private ["s14_ArrayProtocolP", "filter"]
+- !private ["s14_ArrayProtocolP", "init"]
+- !private ["s14_ArrayProtocolP", "isEmpty"]
+- !private ["s14_ArrayProtocolP", "joined"]
+- !private ["s14_ArrayProtocolP", "map"]
+- !private ["s23_BidirectionalIndexableP", "append"]
+- !private ["s23_BidirectionalIndexableP", "description"]
+- !private ["s23_BidirectionalIndexableP", "filter"]
+- !private ["s23_BidirectionalIndexableP", "init"]
+- !private ["s23_BidirectionalIndexableP", "isEmpty"]
+- !private ["s23_BidirectionalIndexableP", "joined"]
+- !private ["s23_BidirectionalIndexableP", "map"]
+- !private ["s18_BitwiseOperationsP", "description"]
+- !private ["s18_BitwiseOperationsP", "hashValue"]
+- !private ["s24_DestructorSafeContainerP", "append"]
+- !private ["s24_DestructorSafeContainerP", "filter"]
+- !private ["s24_DestructorSafeContainerP", "init"]
+- !private ["s24_DestructorSafeContainerP", "isEmpty"]
+- !private ["s24_DestructorSafeContainerP", "joined"]
+- !private ["s24_DestructorSafeContainerP", "map"]
+- !private ["s35_ExpressibleByBuiltinBooleanLiteralP", "_getBuiltinLogicValue"]
+- !private ["s35_ExpressibleByBuiltinBooleanLiteralP", "description"]
+- !private ["s51_ExpressibleByBuiltinExtendedGraphemeClusterLiteralP", "description"]
+- !private ["s51_ExpressibleByBuiltinExtendedGraphemeClusterLiteralP", "init"]
+- !private ["s51_ExpressibleByBuiltinExtendedGraphemeClusterLiteralP", "isEmpty"]
+- !private ["s35_ExpressibleByBuiltinIntegerLiteralP", "description"]
+- !private ["s35_ExpressibleByBuiltinIntegerLiteralP", "hashValue"]
+- !private ["s34_ExpressibleByBuiltinStringLiteralP", "description"]
+- !private ["s34_ExpressibleByBuiltinStringLiteralP", "init"]
+- !private ["s34_ExpressibleByBuiltinStringLiteralP", "isEmpty"]
+- !private ["s39_ExpressibleByBuiltinUTF16StringLiteralP", "description"]
+- !private ["s39_ExpressibleByBuiltinUTF16StringLiteralP", "init"]
+- !private ["s39_ExpressibleByBuiltinUTF16StringLiteralP", "isEmpty"]
+- !private ["s41_ExpressibleByBuiltinUnicodeScalarLiteralP", "description"]
+- !private ["s41_ExpressibleByBuiltinUnicodeScalarLiteralP", "init"]
+- !private ["s41_ExpressibleByBuiltinUnicodeScalarLiteralP", "isEmpty"]
+- !private ["s33_ExpressibleByStringInterpolationP", "description"]
+- !private ["s33_ExpressibleByStringInterpolationP", "init"]
+- !private ["s33_ExpressibleByStringInterpolationP", "isEmpty"]
+- !private ["s10_IndexableP", "append"]
+- !private ["s10_IndexableP", "description"]
+- !private ["s10_IndexableP", "filter"]
+- !private ["s10_IndexableP", "init"]
+- !private ["s10_IndexableP", "isEmpty"]
+- !private ["s10_IndexableP", "joined"]
+- !private ["s10_IndexableP", "map"]
+- !private ["s14_IndexableBaseP", "append"]
+- !private ["s14_IndexableBaseP", "description"]
+- !private ["s14_IndexableBaseP", "filter"]
+- !private ["s14_IndexableBaseP", "init"]
+- !private ["s14_IndexableBaseP", "isEmpty"]
+- !private ["s14_IndexableBaseP", "joined"]
+- !private ["s14_IndexableBaseP", "map"]
+- !private ["s17_MutableIndexableP", "append"]
+- !private ["s17_MutableIndexableP", "filter"]
+- !private ["s17_MutableIndexableP", "init"]
+- !private ["s17_MutableIndexableP", "isEmpty"]
+- !private ["s17_MutableIndexableP", "joined"]
+- !private ["s17_MutableIndexableP", "map"]
+- !private ["s22_RandomAccessIndexableP", "append"]
+- !private ["s22_RandomAccessIndexableP", "filter"]
+- !private ["s22_RandomAccessIndexableP", "init"]
+- !private ["s22_RandomAccessIndexableP", "isEmpty"]
+- !private ["s22_RandomAccessIndexableP", "joined"]
+- !private ["s22_RandomAccessIndexableP", "map"]
+- !private ["s26_RangeReplaceableIndexableP", "append"]
+- !private ["s26_RangeReplaceableIndexableP", "description"]
+- !private ["s26_RangeReplaceableIndexableP", "filter"]
+- !private ["s26_RangeReplaceableIndexableP", "init"]
+- !private ["s26_RangeReplaceableIndexableP", "isEmpty"]
+- !private ["s26_RangeReplaceableIndexableP", "joined"]
+- !private ["s26_RangeReplaceableIndexableP", "map"]
+- !private ["s11_StrideableP", "description"]
+- !private ["s11_StrideableP", "hashValue"]
+- !private ["s16_SwiftStringViewP", "description"]
+- !private ["s16_SwiftStringViewP", "init"]
+- !private ["s16_SwiftStringViewP", "isEmpty"]
+depends-nominal:
+- !private "9Commander4ANSIO"
+- "9Commander15ANSIConvertibleP"
+- "9Commander8ArgumentC"
+- "9Commander19ArgumentConvertibleP"
+- "9Commander18ArgumentDescriptorP"
+- "9Commander13ArgumentErrorO"
+- !private "9Commander14ArgumentParserC"
+- "9Commander12ArgumentTypeO"
+- !private "Sa"
+- !private "s23BidirectionalCollectionP"
+- !private "s13BinaryIntegerP"
+- !private "Sb"
+- "9Commander23BoxedArgumentDescriptorC"
+- !private "s7CVarArgP"
+- !private "s10CollectionP"
+- !private "9Commander11CommandTypeP"
+- !private "s10ComparableP"
+- !private "s28CustomDebugStringConvertibleP"
+- !private "s29CustomPlaygroundQuickLookableP"
+- !private "s17CustomReflectableP"
+- "s23CustomStringConvertibleP"
+- !private "s9DecodableP"
+- !private "s9EncodableP"
+- "s9EquatableP"
+- "s5ErrorP"
+- !private "s25ExpressibleByArrayLiteralP"
+- !private "s27ExpressibleByBooleanLiteralP"
+- !private "s43ExpressibleByExtendedGraphemeClusterLiteralP"
+- !private "s27ExpressibleByIntegerLiteralP"
+- !private "s26ExpressibleByStringLiteralP"
+- !private "s33ExpressibleByUnicodeScalarLiteralP"
+- !private "s17FixedWidthIntegerP"
+- "9Commander4FlagC"
+- !private "9Commander5GroupC"
+- "s8HashableP"
+- "9Commander4HelpC"
+- "Si"
+- !private "s25LosslessStringConvertibleP"
+- !private "s10MirrorPathP"
+- !private "s17MutableCollectionP"
+- !private "s7NumericP"
+- "9Commander6OptionC"
+- "9Commander7OptionsC"
+- !private "s22RandomAccessCollectionP"
+- !private "s26RangeReplaceableCollectionP"
+- !private "s16RawRepresentableP"
+- !private "s8SequenceP"
+- !private "s13SignedIntegerP"
+- !private "s13SignedNumericP"
+- !private "s10StrideableP"
+- "SS"
+- !private "s14StringProtocolP"
+- !private "9Commander5GroupC10SubCommandV"
+- !private "s16TextOutputStreamP"
+- !private "s20TextOutputStreamableP"
+- "9Commander10UsageErrorC"
+- "9Commander16VariadicArgumentC"
+- "9Commander14VariadicOptionC"
+- !private "s14_ArrayProtocolP"
+- !private "s23_BidirectionalIndexableP"
+- !private "s18_BitwiseOperationsP"
+- !private "s24_DestructorSafeContainerP"
+- !private "s35_ExpressibleByBuiltinBooleanLiteralP"
+- !private "s51_ExpressibleByBuiltinExtendedGraphemeClusterLiteralP"
+- !private "s35_ExpressibleByBuiltinIntegerLiteralP"
+- !private "s34_ExpressibleByBuiltinStringLiteralP"
+- !private "s39_ExpressibleByBuiltinUTF16StringLiteralP"
+- !private "s41_ExpressibleByBuiltinUnicodeScalarLiteralP"
+- !private "s33_ExpressibleByStringInterpolationP"
+- !private "s10_IndexableP"
+- !private "s14_IndexableBaseP"
+- !private "s17_MutableIndexableP"
+- !private "s22_RandomAccessIndexableP"
+- !private "s26_RangeReplaceableIndexableP"
+- !private "s11_StrideableP"
+- !private "s16_SwiftStringViewP"
+depends-dynamic-lookup:
+depends-external:
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/x86_64/Darwin.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/x86_64/Swift.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/macosx/x86_64/SwiftOnoneSupport.swiftmodule"
+interface-hash: "6b5b700f89fe4244d3d6c913cd7cc57e"

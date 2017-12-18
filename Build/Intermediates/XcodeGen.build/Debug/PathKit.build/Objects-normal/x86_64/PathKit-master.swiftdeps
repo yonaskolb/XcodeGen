@@ -1,0 +1,5 @@
+version: "Apple Swift version 4.0.3 (swiftlang-900.0.74.1 clang-900.0.39.2)"
+options: "7ac2fd42d16f4c1b8203aeaa8f858e9c"
+build_time: [1514303543, 351996000]
+inputs:
+  "/Users/pepibumur/code/XcodeGen/.build/checkouts/PathKit.git--1865447967743163058/Sources/PathKit.swift": [1514302836, 0]

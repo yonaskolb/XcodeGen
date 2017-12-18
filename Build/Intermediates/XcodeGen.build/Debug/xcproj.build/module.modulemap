@@ -1,0 +1,4 @@
+framework module xcproj {
+    header "xcproj-Swift.h"
+    requires objc
+}

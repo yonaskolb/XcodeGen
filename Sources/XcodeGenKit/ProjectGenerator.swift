@@ -26,8 +26,8 @@ public class ProjectGenerator {
         let pbxProjGenerator = PBXProjGenerator(spec: spec)
         let pbxProject = try pbxProjGenerator.generate()
         let workspace = try generateWorkspace()
-        let sharedData = try generateSharedData(pbxProject: pbxProject)
-        return XcodeProj(workspace: workspace, pbxproj: pbxProject, sharedData: sharedData)
+        let sharedData = try generateSharedData(pbxProject: pbxProject.project)
+        return XcodeProj(workspace: workspace, pbxproj: pbxProject.project, sharedData: sharedData)
     }
 
     func generateWorkspace() throws -> XCWorkspace {

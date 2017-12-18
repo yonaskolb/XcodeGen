@@ -1,0 +1,4 @@
+framework module Commander {
+    header "Commander-Swift.h"
+    requires objc
+}

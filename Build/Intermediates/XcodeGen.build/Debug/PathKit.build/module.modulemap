@@ -1,0 +1,4 @@
+framework module PathKit {
+    header "PathKit-Swift.h"
+    requires objc
+}
