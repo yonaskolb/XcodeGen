@@ -65,6 +65,7 @@ public struct Breakpoint: Equatable {
     public var module: String?
     public var scope: String?
     public var stopOnStyle: String?
+    public var condition: String?
     public var actions: [Breakpoint.Action]
     public var locations: [Breakpoint.Location]
 
@@ -83,6 +84,7 @@ public struct Breakpoint: Equatable {
                 module: String? = nil,
                 scope: String? = nil,
                 stopOnStyle: String? = nil,
+                condition: String? = nil,
                 actions: [Breakpoint.Action] = [],
                 locations: [Breakpoint.Location] = []) {
         self.extensionID = extensionID
@@ -100,6 +102,7 @@ public struct Breakpoint: Equatable {
         self.module = module
         self.scope = scope
         self.stopOnStyle = stopOnStyle
+        self.condition = condition
         self.actions = actions
         self.locations = locations
     }
@@ -156,6 +159,7 @@ extension Breakpoint: JSONObjectConvertible {
         module = jsonDictionary.json(atKeyPath: "module")
         scope = jsonDictionary.json(atKeyPath: "scope")
         stopOnStyle = jsonDictionary.json(atKeyPath: "stopOnStyle")
+        condition = jsonDictionary.json(atKeyPath: "condition")
         actions = jsonDictionary.json(atKeyPath: "actions") ?? []
         locations = jsonDictionary.json(atKeyPath: "locations") ?? []
     }

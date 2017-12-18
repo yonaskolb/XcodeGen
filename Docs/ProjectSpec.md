@@ -170,16 +170,78 @@ Default settings for file extensions. See [Sources](#sources) for more documenta
 
 ### Breakpoints
 
+- [x] **extensionID**: **String** - Breakpoint type
+    - `file`: file brakpoint
+    - `exception`: exception breakpoint
+    - `swiftError`: swift error breakpoint
+    - `openGLError`: OpenGL breakpoint
+    - `symbolic`: symbolic breakpoint
+    - `ideConstraintError`: IDE constraint breakpoint
+    - `ideTestFailure`: IDE test failure breakpoint
+- [ ] **enabled**: **Bool** - indicates whether it should be active
+- [ ] **ignoreCount**: **String** - indicates how many times it should be ignored before stopping
+- [ ] **continueAfterRunningActions**: **Bool** - indicates if should automatically continue after evaluating actions
+- [ ] **timestamp**: **String** - breakpoint timestamp
+- [ ] **filePath**: **String** - breakpoint file path (only used by file breakpoints)
+- [ ] **startingColumn**: **String** - breakpoint starting column (only used by file breakpoints)
+- [ ] **endingColumn**: **String** - breakpoint ending column (only used by file breakpoints)
+- [ ] **startingLine**: **String** - breakpoint starting line (only used by file breakpoints)
+- [ ] **endingLine**: **String** - breakpoint ending line (only used by file breakpoints)
+- [ ] **breakpointStackSelectionBehavior**: **String** - breakpoint stack selection behavior
+- [ ] **symbol**: **String** - breakpoint symbol (only used by symbolic breakpoints)
+- [ ] **module**: **String** - breakpoint module (only used by symbolic breakpoints)
+- [ ] **scope**: **String** - breakpoint scope (only used by exception breakpoints)
+- [ ] **stopOnStyle**: **String** - indicates if should stop on style (only used by exception breakpoints)
+- [ ] **condition**: **String** - breakpoint condition
+- [ ] **locations**: **[Location]** - breakpoint locations (currently not used by Apple)
+- [ ] **actions**: **[[Breakpoint Action](#breakpoint-action)]** - breakpoint actions
+
 ```yaml
 breakpoints:
   - extensionID: exception
     enabled: true
     ignoreCount: 0
     continueAfterRunningActions: false
-    actions:
-      - extensionID: sound
-        soundName: Blow
         
+```
+
+#### Breakpoint Action
+
+- [x] **extensionID**: **String** - Breakpoint action type
+    - `debuggerCommand`: execute debugger command
+    - `log`: log message
+    - `shellCommand`: execute shell command
+    - `graphicsTrace`: capture GPU frame
+    - `appleScript`: execute AppleScript
+    - `sound`: play sound
+    - `openGLError`: throw OpenGL error
+- [ ] **consoleCommand**: **String** - debugger command (only used by debugger command breakpoint action)
+- [ ] **message**: **String** - log message (only used log message breakpoint action)
+- [ ] **conveyanceType**: **String** - conveyance type (only used by log message breakpoint action)
+- [ ] **command**: **String** - shell command (only used by shell command breakpoint action)
+- [ ] **arguments**: **String** - shell command arguments (only used by shell command breakpoint action)
+- [ ] **waitUntilDone**: **String** - indicates whether it should wait until done (only used by shell command breakpoint action)
+- [ ] **script**: **String** - AppleScript (only used by AppleScript breakpoint action)
+- [ ] **soundName**: **String** - sound name (only used by sound breakpoint action)
+    - `Basso`
+    - `Blow`
+    - `Bottle`
+    - `Frog`
+    - `Funk`
+    - `Glass`
+    - `Hero`
+    - `Morse`
+    - `Ping`
+    - `Pop`
+    - `Purr`
+    - `Sosumi`
+    - `Submarine`
+    - `Tink`
+
+```yaml
+actions:
+  - extensionID: sound
+    soundName: Blow
 ```
 
 ### Configs
