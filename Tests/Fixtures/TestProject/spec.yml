@@ -2,6 +2,9 @@ name: Project
 include: [environments.yml]
 options:
   bundleIdPrefix: com.project
+  usesTabs: false
+  indentWidth: 2
+  tabWidth: 2
 fileGroups:
   - Configs
   - FileGroup

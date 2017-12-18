@@ -106,7 +106,7 @@ public class PBXProjGenerator {
             topLevelGroups.insert(rootGroup)
         }
 
-        let mainGroup = PBXGroup(reference: referenceGenerator.generate(PBXGroup.self, "Project"), children: Array(topLevelGroups), sourceTree: .group)
+        let mainGroup = PBXGroup(reference: referenceGenerator.generate(PBXGroup.self, "Project"), children: Array(topLevelGroups), sourceTree: .group, usesTabs: spec.options.usesTabs.map{ $0 ? 1 : 0 }, indentWidth: spec.options.indentWidth, tabWidth: spec.options.tabWidth)
         addObject(mainGroup)
 
         sortGroups(group: mainGroup)
