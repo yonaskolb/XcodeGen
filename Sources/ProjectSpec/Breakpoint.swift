@@ -117,11 +117,7 @@ public struct Breakpoint: Equatable {
 
 extension Breakpoint.Action: JSONObjectConvertible {
     public init(jsonDictionary: JSONDictionary) throws {
-        if let extensionID: String = jsonDictionary.json(atKeyPath: "extensionID") {
-            self.extensionID = extensionID
-        } else {
-            throw SpecParsingError.invalidBreakpoint(jsonDictionary)
-        }
+        extensionID = try jsonDictionary.json(atKeyPath: "extensionID")
         consoleCommand = jsonDictionary.json(atKeyPath: "consoleCommand")
         message = jsonDictionary.json(atKeyPath: "message")
         conveyanceType = jsonDictionary.json(atKeyPath: "conveyanceType")
@@ -140,11 +136,7 @@ extension Breakpoint.Location: JSONObjectConvertible {
 extension Breakpoint: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
-        if let extensionID: String = jsonDictionary.json(atKeyPath: "extensionID") {
-            self.extensionID = extensionID
-        } else {
-            throw SpecParsingError.invalidBreakpoint(jsonDictionary)
-        }
+        extensionID = try jsonDictionary.json(atKeyPath: "extensionID")
         enabled = jsonDictionary.json(atKeyPath: "enabled") ?? true
         ignoreCount = jsonDictionary.json(atKeyPath: "ignoreCount") ?? "0"
         continueAfterRunningActions = jsonDictionary.json(atKeyPath: "continueAfterRunningActions") ?? false
