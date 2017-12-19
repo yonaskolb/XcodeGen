@@ -2,11 +2,26 @@
 
 ## Master
 
-## 1.5.0
-
 #### Added
 - added support for `gatherCoverageData` flag in target schemes [#170](https://github.com/yonaskolb/XcodeGen/pull/170) @alexruperez
 - added support for `commandLineOptions` in target schemes [#172](https://github.com/yonaskolb/XcodeGen/pull/172) @rahul-malik
+- added Project spec as a SwiftPM library for reuse in other projects [#164](https://github.com/yonaskolb/XcodeGen/pull/164) @soffes
+- added `implicit` option for framework dependencies [#166](https://github.com/yonaskolb/XcodeGen/pull/166) @sbarow
+- added `--quite` option to CLI [#167](https://github.com/yonaskolb/XcodeGen/pull/167) @soffes
+- can now print version with `-v` in addition to `--version` [#174](https://github.com/yonaskolb/XcodeGen/pull/174) @kastiglione
+- added support for legacy targets [#175](https://github.com/yonaskolb/XcodeGen/pull/175) @bkase
+- added support for indentation options [#190](https://github.com/yonaskolb/XcodeGen/pull/190) @bkase
+
+
+#### Changed
+- huge performance improvements when writing the project file due to changes in xcproj
+- updated dependencies
+- minor logging changes
+
+#### Fixed
+- fix shell scripts escaping quotes twice [#186](https://github.com/yonaskolb/XcodeGen/pull/186) @allu22
+- fix `createIntermediateGroups` when using a relative spec path [#184](https://github.com/yonaskolb/XcodeGen/pull/184) @kastiglione
+
 
 ## 1.4.0
 
