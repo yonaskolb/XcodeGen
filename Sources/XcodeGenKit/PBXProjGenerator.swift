@@ -160,7 +160,7 @@ public class PBXProjGenerator {
             // automatically set INFOPLIST_FILE path
             if !spec.targetHasBuildSetting("INFOPLIST_FILE", basePath: spec.basePath, target: target, config: config) {
                 if searchForPlist {
-                    plistPath = getInfoPlist(spec, target.sources)
+                    plistPath = getInfoPlist(target.sources)
                     searchForPlist = false
                 }
                 if let plistPath = plistPath {
@@ -458,10 +458,10 @@ public class PBXProjGenerator {
         return pbxtarget
     }
 
-    func getInfoPlist(_ spec: ProjectSpec, _ sources: [TargetSource]) -> Path? {
+    func getInfoPlist(_ sources: [TargetSource]) -> Path? {
         return sources
             .lazy
-            .map { spec.basePath + $0.path }
+            .map { self.spec.basePath + $0.path }
             .flatMap { (path) -> Path? in
                 if path.isFile {
                     return path.lastComponent == "Info.plist" ? path : nil
