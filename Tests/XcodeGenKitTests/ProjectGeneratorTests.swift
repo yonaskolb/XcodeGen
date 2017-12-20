@@ -381,55 +381,83 @@ func projectGeneratorTests() {
             $0.it("excludes sources") {
                 let directories = """
                 Sources:
-                  A:
+                  - A:
                     - a.swift
                     - B:
                       - b.swift
-                  B:
+                      - b.ignored
+                    - a.ignored
+                  - B:
                     - b.swift
-                  C:
-                    - c.swift
-                    - c.m
-                    - c.h
-                  D:
+                  - D:
                     - d.h
                     - d.m
-                  E:
+                  - E:
                     - e.jpg
                     - e.h
                     - e.m
                     - F:
                       - f.swift
-                  G:
-                    H:
-                     - h.swift
+                  - G:
+                    - H:
+                      - h.swift
+                  - types:
+                    - a.swift
+                    - a.m
+                    - a.h
+                    - a.x
+                  - numbers:
+                    - file1.a
+                    - file2.a
+                    - file3.a
+                    - file4.a
+                  - partial:
+                    - file_part
+                  - ignore.file
+                  - a.ignored
+
                 """
                 try createDirectories(directories)
 
                 let excludes = [
                     "B",
-                    "C/*.h",
                     "d.m",
                     "E/F/*.swift",
                     "G/H/",
+                    "types/*.[hx]",
+                    "numbers/file[2-3].a",
+                    "partial/*_part",
+                    "ignore.file",
+                    "*.ignored",
+                    // not supported
+                    //"**/*.ignored",
+
                 ]
 
                 let target = Target(name: "Test", type: .application, platform: .iOS, sources: [TargetSource(path: "Sources", excludes: excludes)])
                 let spec = ProjectSpec(basePath: directoryPath, name: "Test", targets: [target])
 
                 let project = try getPbxProj(spec)
-                try project.expectFile(paths: ["Sources", "A", "a.swift"], buildPhase: .sources)
-                try project.expectFile(paths: ["Sources", "C", "c.swift"], buildPhase: .sources)
-                try project.expectFile(paths: ["Sources", "C", "c.m"], buildPhase: .sources)
+                try project.expectFile(paths: ["Sources", "A", "a.swift"])
                 try project.expectFile(paths: ["Sources", "D", "d.h"])
-                try project.expectFile(paths: ["Sources", "D", "d.m"], buildPhase: .sources)
-                try project.expectFile(paths: ["Sources", "E", "e.jpg"], buildPhase: .resources)
-                try project.expectFile(paths: ["Sources", "E", "e.m"], buildPhase: .sources)
+                try project.expectFile(paths: ["Sources", "D", "d.m"])
+                try project.expectFile(paths: ["Sources", "E", "e.jpg"])
+                try project.expectFile(paths: ["Sources", "E", "e.m"])
                 try project.expectFile(paths: ["Sources", "E", "e.h"])
+                try project.expectFile(paths: ["Sources", "types", "a.swift"])
+                try project.expectFile(paths: ["Sources", "numbers", "file1.a"])
+                try project.expectFile(paths: ["Sources", "numbers", "file4.a"])
                 try project.expectFileMissing(paths: ["Sources", "B", "b.swift"])
-                try project.expectFileMissing(paths: ["Sources", "C", "c.h"])
                 try project.expectFileMissing(paths: ["Sources", "E", "F", "f.swift"])
                 try project.expectFileMissing(paths: ["Sources", "G", "H", "h.swift"])
+                try project.expectFileMissing(paths: ["Sources", "types", "a.h"])
+                try project.expectFileMissing(paths: ["Sources", "types", "a.x"])
+                try project.expectFileMissing(paths: ["Sources", "numbers", "file2.a"])
+                try project.expectFileMissing(paths: ["Sources", "numbers", "file3.a"])
+                try project.expectFileMissing(paths: ["Sources", "partial", "file_part"])
+                try project.expectFileMissing(paths: ["Sources", "a.ignored"])
+                try project.expectFileMissing(paths: ["Sources", "ignore.file"])
+
             }
 
             $0.it("generates file sources") {
