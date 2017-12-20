@@ -4,7 +4,7 @@ import ProjectSpec
 extension ProjectSpec {
 
     var xcodeVersion: String {
-        return XCodeVersion.parse(options.xcodeVersion ?? "9.0")
+        return XCodeVersion.parse(options.xcodeVersion ?? "9.2")
     }
 }
 
