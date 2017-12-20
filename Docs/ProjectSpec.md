@@ -212,6 +212,7 @@ A source can be provided via a string (the path) or an object of the form:
 - 🔵 **path**: `String` - The path to the source file or directory.
 - ⚪️ **name**: `String` - Can be used to override the name of the source file or directory. By default the last component of the path is used for the name
 - ⚪️ **compilerFlags**: `[String]` or `String` - A list of compilerFlags to add to files under this specific path provided as a list or a space delimitted string. Defaults to empty.
+- ⚪️ **excludes**: `[String]` or `String` - A list of global patterns representing the files to exclude.
 - ⚪️ **type**: `String`: This can be one of the following values
 	- `file`: a file reference with a parent group will be created (Default for files or directories with extensions)
 	- `group`: a group with all it's containing files. (Default for directories without extensions)
@@ -227,6 +228,10 @@ targets:
       - MyOtherTargetSource1
       - path: MyOtherTargetSource2
         name: MyNewName
+        excludes: 
+          - "ios/*.[mh]"
+          - "configs/server[0-2].json"
+          - "*-Private.h"
         compilerFlags:
           - "-Werror"
           - "-Wextra"
