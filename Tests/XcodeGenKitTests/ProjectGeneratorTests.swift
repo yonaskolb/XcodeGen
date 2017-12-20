@@ -62,6 +62,24 @@ func projectGeneratorTests() {
                 }
                 try expect(pbxProject.developmentRegion) == "de"
             }
+
+            $0.it("formats xcode version") {
+                let versions: [String: String] = [
+                    "0900": "0900",
+                    "1010": "1010",
+                    "9": "0900",
+                    "9.0": "0900",
+                    "9.1": "0910",
+                    "9.1.1": "0911",
+                    "10": "1000",
+                    "10.1": "1010",
+                    "10.1.2": "1012",
+                ]
+
+                for (version, expected) in versions {
+                    try expect(XCodeVersion.parse(version)) == expected
+                }
+            }
         }
 
         $0.describe("Config") {
