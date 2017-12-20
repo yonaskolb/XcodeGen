@@ -24,12 +24,12 @@ public struct Scheme: Equatable {
         self.archive = archive
     }
 
-    public init(name: String, targets: [BuildTarget], debugConfig: String, releaseConfig: String, gatherCoverageData: Bool = false, commandLineArguments: [String: Bool] = [:]) {
+    public init(name: String, targets: [BuildTarget], debugConfig: String, releaseConfig: String, gatherCoverageData: Bool = false, commandLineArguments: [String: Bool] = [:], testables: [String] = []) {
         self.init(
             name: name,
             build: .init(targets: targets),
             run: .init(config: debugConfig, commandLineArguments: commandLineArguments),
-            test: .init(config: debugConfig, gatherCoverageData: gatherCoverageData, commandLineArguments: commandLineArguments),
+            test: .init(config: debugConfig, gatherCoverageData: gatherCoverageData, commandLineArguments: commandLineArguments, targets: testables),
             profile: .init(config: releaseConfig, commandLineArguments: commandLineArguments),
             analyze: .init(config: debugConfig),
             archive: .init(config: releaseConfig)
@@ -65,16 +65,20 @@ public struct Scheme: Equatable {
         public var config: String
         public var gatherCoverageData: Bool
         public var commandLineArguments: [String: Bool]
-        public init(config: String, gatherCoverageData: Bool = false, commandLineArguments: [String: Bool] = [:]) {
+        public var targets: [String]
+
+        public init(config: String, gatherCoverageData: Bool = false, commandLineArguments: [String: Bool] = [:], targets: [String] = []) {
             self.config = config
             self.gatherCoverageData = gatherCoverageData
             self.commandLineArguments = commandLineArguments
+            self.targets = targets
         }
 
         public static func == (lhs: Test, rhs: Test) -> Bool {
             return lhs.config == rhs.config &&
                 lhs.commandLineArguments == rhs.commandLineArguments &&
-                lhs.gatherCoverageData == rhs.gatherCoverageData
+                lhs.gatherCoverageData == rhs.gatherCoverageData &&
+                lhs.targets == rhs.targets
         }
     }
 
@@ -155,6 +159,7 @@ extension Scheme.Test: JSONObjectConvertible {
         config = try jsonDictionary.json(atKeyPath: "config")
         gatherCoverageData = jsonDictionary.json(atKeyPath: "gatherCoverageData") ?? false
         commandLineArguments = jsonDictionary.json(atKeyPath: "commandLineArguments") ?? [:]
+        targets = jsonDictionary.json(atKeyPath: "targets") ?? []
     }
 }
 
