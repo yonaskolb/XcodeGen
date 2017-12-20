@@ -8,7 +8,6 @@ import ProjectSpec
 public class ProjectGenerator {
 
     let spec: ProjectSpec
-    let currentXcodeVersion = "0900"
 
     public init(spec: ProjectSpec) {
         self.spec = spec
@@ -24,7 +23,7 @@ public class ProjectGenerator {
 
     public func generateProject() throws -> XcodeProj {
         try spec.validate()
-        let pbxProjGenerator = PBXProjGenerator(spec: spec, currentXcodeVersion: currentXcodeVersion)
+        let pbxProjGenerator = PBXProjGenerator(spec: spec)
         let pbxProject = try pbxProjGenerator.generate()
         let workspace = try generateWorkspace()
         let sharedData = try generateSharedData(pbxProject: pbxProject)
@@ -87,7 +86,7 @@ public class ProjectGenerator {
         let archiveAction = XCScheme.ArchiveAction(buildConfiguration: scheme.archive?.config ?? defaultReleaseConfig.name, revealArchiveInOrganizer: true)
 
         return XCScheme(name: scheme.name,
-                        lastUpgradeVersion: currentXcodeVersion,
+                        lastUpgradeVersion: spec.xcodeVersion,
                         version: "1.3",
                         buildAction: buildAction,
                         testAction: testAction,

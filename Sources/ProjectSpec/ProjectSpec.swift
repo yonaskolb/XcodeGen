@@ -19,7 +19,7 @@ public struct ProjectSpec {
     public var configFiles: [String: String]
     public var include: [String] = []
 
-    public struct Options {
+    public struct Options: Equatable {
         public var carthageBuildPath: String?
         public var createIntermediateGroups: Bool
         public var bundleIdPrefix: String?
@@ -28,6 +28,7 @@ public struct ProjectSpec {
         public var usesTabs: Bool?
         public var tabWidth: Int?
         public var indentWidth: Int?
+        public var xcodeVersion: String?
 
         public enum SettingPresets: String {
             case all
@@ -50,7 +51,7 @@ public struct ProjectSpec {
             }
         }
 
-        public init(carthageBuildPath: String? = nil, createIntermediateGroups: Bool = false, bundleIdPrefix: String? = nil, settingPresets: SettingPresets = .all, developmentLanguage: String? = nil, indentWidth: Int? = nil, tabWidth: Int? = nil, usesTabs: Bool? = nil) {
+        public init(carthageBuildPath: String? = nil, createIntermediateGroups: Bool = false, bundleIdPrefix: String? = nil, settingPresets: SettingPresets = .all, developmentLanguage: String? = nil, indentWidth: Int? = nil, tabWidth: Int? = nil, usesTabs: Bool? = nil, xcodeVersion: String? = nil) {
             self.carthageBuildPath = carthageBuildPath
             self.createIntermediateGroups = createIntermediateGroups
             self.bundleIdPrefix = bundleIdPrefix
@@ -59,6 +60,19 @@ public struct ProjectSpec {
             self.tabWidth = tabWidth
             self.indentWidth = indentWidth
             self.usesTabs = usesTabs
+            self.xcodeVersion = xcodeVersion
+        }
+
+        public static func == (lhs: ProjectSpec.Options, rhs: ProjectSpec.Options) -> Bool {
+            return lhs.carthageBuildPath == rhs.carthageBuildPath &&
+            lhs.bundleIdPrefix == rhs.bundleIdPrefix &&
+            lhs.settingPresets == rhs.settingPresets &&
+            lhs.createIntermediateGroups == rhs.createIntermediateGroups &&
+            lhs.developmentLanguage == rhs.developmentLanguage &&
+            lhs.tabWidth == rhs.tabWidth &&
+            lhs.indentWidth == rhs.indentWidth &&
+            lhs.usesTabs == rhs.usesTabs &&
+            lhs.xcodeVersion == rhs.xcodeVersion
         }
     }
 
@@ -119,17 +133,6 @@ extension ProjectSpec: Equatable {
             lhs.configFiles == rhs.configFiles &&
             lhs.options == rhs.options &&
             NSDictionary(dictionary: lhs.attributes).isEqual(to: rhs.attributes)
-    }
-}
-
-extension ProjectSpec.Options: Equatable {
-
-    public static func == (lhs: ProjectSpec.Options, rhs: ProjectSpec.Options) -> Bool {
-        return lhs.carthageBuildPath == rhs.carthageBuildPath &&
-            lhs.bundleIdPrefix == rhs.bundleIdPrefix &&
-            lhs.settingPresets == rhs.settingPresets &&
-            lhs.createIntermediateGroups == rhs.createIntermediateGroups &&
-            lhs.developmentLanguage == rhs.developmentLanguage
     }
 }
 
