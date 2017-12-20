@@ -74,6 +74,7 @@ Note that target names can also be changed by adding a `name` property to a targ
 - ⚪️ **usesTabs**: `Bool` - If this is specified, the Xcode project will override the user's setting determining whether or not tabs or spaces should be used in the project.
 - ⚪️ **indentWidth**: `Int` - If this is specified, the Xcode project will override the user's setting for indent width in number of spaces.
 - ⚪️ **tabWidth**: `Int` - If this is specified, the Xcode project will override the user's setting for indent width in number of spaces.
+- ⚪️ **xcodeVersion**: `String` - The version of Xcode. This defaults to the latest version periodically. You can specify it in the format `0910` or `9.1`
 
 ### Configs
 Each config maps to a build type of either `debug` or `release` which will then apply default build settings to the project. Any value other than `debug` or `release` (for example `none`), will mean no default build settings will be applied to the project.
@@ -374,4 +375,3 @@ By providing a legacy target, you are opting in to the "Legacy Target" mode. Thi
 - ⚪️ **arguments**: String - Build arguments used for the build tool in the legacy target
 - ⚪️ **passSettings**: Bool - Whether or not to pass build settings down to the build tool in the legacy target.
 - ⚪️ **workingDirectory**: String - The working directory under which the build tool will be invoked in the legacy target.
-
