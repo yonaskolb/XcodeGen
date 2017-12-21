@@ -211,25 +211,25 @@ extension Scheme.BuildTarget: JSONObjectConvertible {
         target = try jsonDictionary.json(atKeyPath: "target")
         if jsonDictionary["buildTypes"] == nil {
             buildTypes = BuildType.all
-        } else {
-            if let types: String = jsonDictionary.json(atKeyPath: "buildTypes") {
-                switch types {
-                case "all": buildTypes = BuildType.all
-                case "none": buildTypes = []
-                case "testing": buildTypes = [.testing, .analyzing]
-                case "indexing": buildTypes = [.testing, .analyzing, .archiving]
-                default: buildTypes = BuildType.all
-                }
-            } else {
-                let types: [String: Bool] = try jsonDictionary.json(atKeyPath: "buildTypes")
-                var buildTypes: [BuildType] = []
-                for (type, build) in types {
-                    if build, let buildType = BuildType.from(jsonValue: type) {
-                        buildTypes.append(buildType)
-                    }
-                }
-                self.buildTypes = buildTypes
+        } else if let types: String = jsonDictionary.json(atKeyPath: "buildTypes") {
+            switch types {
+            case "all": buildTypes = BuildType.all
+            case "none": buildTypes = []
+            case "testing": buildTypes = [.testing, .analyzing]
+            case "indexing": buildTypes = [.testing, .analyzing, .archiving]
+            default: buildTypes = BuildType.all
             }
+        } else if let types: [String: Bool] = jsonDictionary.json(atKeyPath: "buildTypes") {
+            var buildTypes: [BuildType] = []
+            for (type, build) in types {
+                if build, let buildType = BuildType.from(jsonValue: type) {
+                    buildTypes.append(buildType)
+                }
+            }
+            self.buildTypes = buildTypes
+        } else {
+            let stringBuildTypes: [String] = try jsonDictionary.json(atKeyPath: "buildTypes")
+            self.buildTypes = stringBuildTypes.flatMap(BuildType.from)
         }
     }
 }
