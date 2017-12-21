@@ -11,17 +11,22 @@
 - can now print version with `-v` in addition to `--version` [#174](https://github.com/yonaskolb/XcodeGen/pull/174) @kastiglione
 - added support for legacy targets [#175](https://github.com/yonaskolb/XcodeGen/pull/175) @bkase
 - added support for indentation options [#190](https://github.com/yonaskolb/XcodeGen/pull/190) @bkase
-
+- added source excludes [#135](https://github.com/yonaskolb/XcodeGen/pull/135) [#161](https://github.com/yonaskolb/XcodeGen/pull/161) [#190](https://github.com/yonaskolb/XcodeGen/pull/190) @peymankh @
+- added `options.xcodeVersion` [#197](https://github.com/yonaskolb/XcodeGen/pull/197) @yonaskolb @peymankh
+- add test targets to Scheme [#195](https://github.com/yonaskolb/XcodeGen/pull/195) @vhbit
+- add option to make a source file optional incase it will be generated later [#200](https://github.com/yonaskolb/XcodeGen/pull/200) @vhbit
+- finalize Scheme spec [#201](https://github.com/yonaskolb/XcodeGen/pull/201) @yonaskolb
 
 #### Changed
 - huge performance improvements when writing the project file due to changes in xcproj
 - updated dependencies
 - minor logging changes
+- scan for `Info.plist` lazely [#194](https://github.com/yonaskolb/XcodeGen/pull/194) @kastiglione
 
 #### Fixed
 - fix shell scripts escaping quotes twice [#186](https://github.com/yonaskolb/XcodeGen/pull/186) @allu22
 - fix `createIntermediateGroups` when using a relative spec path [#184](https://github.com/yonaskolb/XcodeGen/pull/184) @kastiglione
-
+- fix command line arguments for test and profile from being override [#199](https://github.com/yonaskolb/XcodeGen/pull/199) @vhbit
 
 ## 1.4.0
 
