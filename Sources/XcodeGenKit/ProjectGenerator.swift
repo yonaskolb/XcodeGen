@@ -116,7 +116,7 @@ public class ProjectGenerator {
                     let debugConfig = spec.configs.first { $0.type == .debug }!
                     let releaseConfig = spec.configs.first { $0.type == .release }!
 
-                    let specScheme = Scheme(name: schemeName, targets: [Scheme.BuildTarget(target: target.name)], debugConfig: debugConfig.name, releaseConfig: releaseConfig.name, gatherCoverageData: scheme.gatherCoverageData, commandLineArguments: scheme.commandLineArguments, testables: scheme.testTargets)
+                    let specScheme = Scheme(name: schemeName, targets: [Scheme.BuildTarget(target: target.name)], debugConfig: debugConfig.name, releaseConfig: releaseConfig.name, gatherCoverageData: scheme.gatherCoverageData, commandLineArguments: scheme.commandLineArguments, testTargets: scheme.testTargets)
                     let scheme = try generateScheme(specScheme, pbxProject: pbxProject)
                     xcschemes.append(scheme)
                 } else {
@@ -127,7 +127,7 @@ public class ProjectGenerator {
                         let debugConfig = spec.configs.first { $0.type == .debug && $0.name.contains(configVariant) }!
                         let releaseConfig = spec.configs.first { $0.type == .release && $0.name.contains(configVariant) }!
 
-                        let specScheme = Scheme(name: schemeName, targets: [Scheme.BuildTarget(target: target.name)], debugConfig: debugConfig.name, releaseConfig: releaseConfig.name, gatherCoverageData: scheme.gatherCoverageData, commandLineArguments: scheme.commandLineArguments, testables: scheme.testTargets)
+                        let specScheme = Scheme(name: schemeName, targets: [Scheme.BuildTarget(target: target.name)], debugConfig: debugConfig.name, releaseConfig: releaseConfig.name, gatherCoverageData: scheme.gatherCoverageData, commandLineArguments: scheme.commandLineArguments, testTargets: scheme.testTargets)
                         let scheme = try generateScheme(specScheme, pbxProject: pbxProject)
                         xcschemes.append(scheme)
                     }
