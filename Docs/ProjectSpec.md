@@ -22,19 +22,22 @@ Required properties are marked 🔵 and optional properties with ⚪️.
 	- [Build Script](#build-script)
 	- [Dependency](#dependency)
 	- [Target Scheme](#target-scheme)
+	- [Legacy Target](#legacy-target)
+- [Scheme](#scheme)
 
 ## Project
 
 - 🔵 **name**: `String` - Name of the generated project
 - ⚪️ **include**: [Include](#include) - One or more paths to other specs
 - ⚪️ **options**: [Options](#options) - Various options to override default behaviour
-- ⚪️ **attributes**: `map` - The PBXProject attributes. This is for advanced use. Defaults to ``{"LastUpgradeCheck": "0900"}``
+- ⚪️ **attributes**: `map` - The PBXProject attributes. This is for advanced use. This defaults to ``{"LastUpgradeCheck": "XcodeVersion"}`` with `xcodeVersion` being set by `options.xcodeVersion`
 - ⚪️ **configs**: [Configs](#configs) - Project build configurations. Defaults to `Debug` and `Release` configs
 - ⚪️ **configFiles**: [Config Files](#config-files) - `.xcconfig` files per config
 - ⚪️ **settings**: [Settings](#settings) - Project specific settings. Default base and config type settings will be applied first before any settings defined here
 - ⚪️ **settingGroups**: [Setting Groups](#setting-groups) - Setting groups mapped by name
 - ⚪️ **targets**: [Target](#target) - The list of targets in the project mapped by name
 - ⚪️ **fileGroups**: `[String]` - A list of paths to add to the top level groups. These are files that aren't build files but that you'd like in the project hierachy. For example a folder xcconfig files that aren't already added by any target sources.
+- ⚪️ **schemes**: [Scheme](#scheme) - A list of schemes by name. This allows more control over what is found in [Target Scheme](#target-scheme)
 
 ### Include
 One or more specs can be included in the project spec. This can be used to split your project spec into multiple files, for easier structuring or sharing between multiple specs. Included specs can also include other specs and so on.
@@ -333,11 +336,11 @@ targets:
 ```
 
 ###  Target Scheme
-This is a convenience used to automatically generate schemes for a target based on different configs or included tests.
+This is a convenience used to automatically generate schemes for a target based on different configs or included tests. If you want more control check out the top level [Scheme](#scheme).
 
 - 🔵 **configVariants**: `[String]` - This generates a scheme for each entry, using configs that contain the name with debug and release variants. This is useful for having different environment schemes.
 - ⚪️ **testTargets**: `[String]` - a list of test targets that should be included in the scheme. These will be added to the build targets and the test entries
-- ⚪️ **gatherCoverageData**: `Bool` - a boolean that indicates if this scheme should gather coverage data
+- ⚪️ **gatherCoverageData**: `Bool` - a boolean that indicates if this scheme should gather coverage data. This defaults to false
 - ⚪️ **commandLineArguments**: `[String:Bool]` - a dictionary from the argument name (`String`) to if it is enabled (`Bool`). These arguments will be added to the Test, Profile and Run scheme actions
 
 For example, the spec below would create 3 schemes called:
@@ -381,3 +384,60 @@ By providing a legacy target, you are opting in to the "Legacy Target" mode. Thi
 - ⚪️ **arguments**: String - Build arguments used for the build tool in the legacy target
 - ⚪️ **passSettings**: Bool - Whether or not to pass build settings down to the build tool in the legacy target.
 - ⚪️ **workingDirectory**: String - The working directory under which the build tool will be invoked in the legacy target.
+
+## Scheme
+
+Schemes allows for more control than the convenience [Target Scheme](#target-scheme) on [Target](#target)
+
+- 🔵 **build**: Build options
+- ⚪️ **run**: The run action
+- ⚪️ **test**: The test action
+- ⚪️ **profile**: The profile action
+- ⚪️ **analyze**: The analyze action
+- ⚪️ **archive**: The archive action
+
+### Build
+- 🔵 **targets**: `[Build Target]` - A list of targets to build
+ - 🔵 **name**: `String` - the name of the target
+ - ⚪️ **buildTypes**: `[String]` - A list of build types for this target. The default is all types. The build types are:
+		- `run`
+		- `test`
+		- `profile`
+		- `analyze`
+		- `archive`
+
+### Common Build Action options
+The different actions share some properties:
+
+- ⚪️ **config**: `String` - All build actions can be set to use a certain config. If this is not set the first configuration found of a certain type wil be used, according to the following:
+	- run, test, analyze: `debug`
+	- profile, archive: `release`
+- ⚪️ **commandLineArguments**: `[String:Bool]` - `run`, `test` and `profile` actions have a map of command line arguments to whether they are enabled
+
+### Test Action
+- ⚪️ **gatherCoverageData**: `Bool` - a boolean that indicates if this scheme should gather coverage data. This defaults to false
+- ⚪️ **targets**: `[String]` - a list of targets to test
+
+```
+scheme:
+  Production:
+    build:
+      targets:
+        - name: MyTarget1
+        - name: MyTarget2
+          buildTypes: [run, archive]
+    run:
+      config: prod-debug
+      commandLineArguments: "--option value"
+    test:
+      config: prod-debug
+      commandLineArguments: "--option testValue"
+      gatherCoverageData: true
+      targets: [Tester1, Tester2]
+    profile:
+      config: prod-release
+    analyze:
+      config: prod-debug
+    archive:
+      config: prod-release
+```

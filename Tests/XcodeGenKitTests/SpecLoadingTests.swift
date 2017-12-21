@@ -163,6 +163,7 @@ func specLoadingTests() {
                     ["target": "Target", "buildTypes": "all"],
                     ["target": "Target", "buildTypes": ["testing": true]],
                     ["target": "Target", "buildTypes": ["testing": false]],
+                    ["target": "Target", "buildTypes": ["test", "analyze"]],
                 ]],
             ]
             let scheme = try Scheme(name: "Scheme", jsonDictionary: schemeDictionary)
@@ -173,6 +174,7 @@ func specLoadingTests() {
                 Scheme.BuildTarget(target: "Target", buildTypes: BuildType.all),
                 Scheme.BuildTarget(target: "Target", buildTypes: [.testing]),
                 Scheme.BuildTarget(target: "Target", buildTypes: []),
+                Scheme.BuildTarget(target: "Target", buildTypes: [.testing, .analyzing]),
             ]
             try expect(scheme.name) == "Scheme"
             try expect(scheme.build.targets) == expectedTargets

@@ -93,9 +93,10 @@ func projectSpecTests() {
             $0.it("fails with invalid scheme") {
                 var spec = baseSpec
                 spec.schemes = [Scheme(name: "scheme1",
-                                       targets: [Scheme.BuildTarget(target: "invalidTarget")],
-                                       debugConfig: "debugInvalid",
-                                       releaseConfig: "releaseInvalid")]
+                                       build: .init(targets: [.init(target: "invalidTarget")]),
+                                       run: .init(config: "debugInvalid"),
+                                       archive: .init(config: "releaseInvalid")
+                    )]
 
                 try expectValidationError(spec, .invalidSchemeTarget(scheme: "scheme1", target: "invalidTarget"))
                 try expectValidationError(spec, .invalidSchemeConfig(scheme: "scheme1", config: "debugInvalid"))

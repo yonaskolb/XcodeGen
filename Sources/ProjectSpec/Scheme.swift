@@ -24,18 +24,6 @@ public struct Scheme: Equatable {
         self.archive = archive
     }
 
-    public init(name: String, targets: [BuildTarget], debugConfig: String, releaseConfig: String, gatherCoverageData: Bool = false, commandLineArguments: [String: Bool] = [:], testTargets: [String] = []) {
-        self.init(
-            name: name,
-            build: .init(targets: targets),
-            run: .init(config: debugConfig, commandLineArguments: commandLineArguments),
-            test: .init(config: debugConfig, gatherCoverageData: gatherCoverageData, commandLineArguments: commandLineArguments, targets: testTargets),
-            profile: .init(config: releaseConfig, commandLineArguments: commandLineArguments),
-            analyze: .init(config: debugConfig),
-            archive: .init(config: releaseConfig)
-        )
-    }
-
     public struct Build: Equatable {
         public var targets: [BuildTarget]
         public init(targets: [BuildTarget]) {
@@ -211,25 +199,25 @@ extension Scheme.BuildTarget: JSONObjectConvertible {
         target = try jsonDictionary.json(atKeyPath: "target")
         if jsonDictionary["buildTypes"] == nil {
             buildTypes = BuildType.all
-        } else {
-            if let types: String = jsonDictionary.json(atKeyPath: "buildTypes") {
-                switch types {
-                case "all": buildTypes = BuildType.all
-                case "none": buildTypes = []
-                case "testing": buildTypes = [.testing, .analyzing]
-                case "indexing": buildTypes = [.testing, .analyzing, .archiving]
-                default: buildTypes = BuildType.all
-                }
-            } else {
-                let types: [String: Bool] = try jsonDictionary.json(atKeyPath: "buildTypes")
-                var buildTypes: [BuildType] = []
-                for (type, build) in types {
-                    if build, let buildType = BuildType.from(jsonValue: type) {
-                        buildTypes.append(buildType)
-                    }
-                }
-                self.buildTypes = buildTypes
+        } else if let types: String = jsonDictionary.json(atKeyPath: "buildTypes") {
+            switch types {
+            case "all": buildTypes = BuildType.all
+            case "none": buildTypes = []
+            case "testing": buildTypes = [.testing, .analyzing]
+            case "indexing": buildTypes = [.testing, .analyzing, .archiving]
+            default: buildTypes = BuildType.all
             }
+        } else if let types: [String: Bool] = jsonDictionary.json(atKeyPath: "buildTypes") {
+            var buildTypes: [BuildType] = []
+            for (type, build) in types {
+                if build, let buildType = BuildType.from(jsonValue: type) {
+                    buildTypes.append(buildType)
+                }
+            }
+            self.buildTypes = buildTypes
+        } else {
+            let stringBuildTypes: [String] = try jsonDictionary.json(atKeyPath: "buildTypes")
+            self.buildTypes = stringBuildTypes.flatMap(BuildType.from)
         }
     }
 }
