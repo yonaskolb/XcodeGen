@@ -9,6 +9,7 @@ public struct TargetSource {
     public var compilerFlags: [String]
     public var excludes: [String]
     public var type: SourceType?
+    public var optional: Bool
 
     public enum SourceType: String {
         case group
@@ -16,12 +17,13 @@ public struct TargetSource {
         case folder
     }
 
-    public init(path: String, name: String? = nil, compilerFlags: [String] = [], excludes: [String] = [], type: SourceType? = nil) {
+    public init(path: String, name: String? = nil, compilerFlags: [String] = [], excludes: [String] = [], type: SourceType? = nil, optional: Bool = false) {
         self.path = path
         self.name = name
         self.compilerFlags = compilerFlags
         self.excludes = excludes
         self.type = type
+        self.optional = optional
     }
 }
 
@@ -53,6 +55,7 @@ extension TargetSource: JSONObjectConvertible {
 
         excludes = jsonDictionary.json(atKeyPath: "excludes") ?? []
         type = jsonDictionary.json(atKeyPath: "type")
+        optional = jsonDictionary.json(atKeyPath: "optional") ?? false
     }
 }
 
@@ -64,5 +67,6 @@ extension TargetSource: Equatable {
             && lhs.compilerFlags == rhs.compilerFlags
             && lhs.excludes == rhs.excludes
             && lhs.type == rhs.type
+            && lhs.optional == rhs.optional
     }
 }

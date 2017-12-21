@@ -101,6 +101,16 @@ func projectSpecTests() {
                 try expectValidationError(spec, .invalidSchemeConfig(scheme: "scheme1", config: "debugInvalid"))
                 try expectValidationError(spec, .invalidSchemeConfig(scheme: "scheme1", config: "releaseInvalid"))
             }
+
+            $0.it("allows missing optional file") {
+                var spec = baseSpec
+                spec.targets = [Target(name: "target1",
+                                       type: .application,
+                                       platform: .iOS,
+                                       sources: [.init(path: "generated.swift", optional: true)]
+                    )]
+                try spec.validate()
+            }
         }
     }
 }
