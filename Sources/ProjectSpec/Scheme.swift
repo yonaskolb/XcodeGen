@@ -24,18 +24,6 @@ public struct Scheme: Equatable {
         self.archive = archive
     }
 
-    public init(name: String, targets: [BuildTarget], debugConfig: String, releaseConfig: String, gatherCoverageData: Bool = false, commandLineArguments: [String: Bool] = [:], testTargets: [String] = []) {
-        self.init(
-            name: name,
-            build: .init(targets: targets),
-            run: .init(config: debugConfig, commandLineArguments: commandLineArguments),
-            test: .init(config: debugConfig, gatherCoverageData: gatherCoverageData, commandLineArguments: commandLineArguments, targets: testTargets),
-            profile: .init(config: releaseConfig, commandLineArguments: commandLineArguments),
-            analyze: .init(config: debugConfig),
-            archive: .init(config: releaseConfig)
-        )
-    }
-
     public struct Build: Equatable {
         public var targets: [BuildTarget]
         public init(targets: [BuildTarget]) {
