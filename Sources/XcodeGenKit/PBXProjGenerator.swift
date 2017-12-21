@@ -149,27 +149,21 @@ public class PBXProjGenerator {
 
         let sourceFiles = try sourceGenerator.getAllSourceFiles(sources: target.sources)
 
-        // find all Info.plist files
-        let infoPlists: [Path] = target.sources.map { spec.basePath + $0.path }.flatMap { (path) -> [Path] in
-            if path.isFile {
-                if path.lastComponent == "Info.plist" {
-                    return [path]
-                }
-            } else {
-                if let children = try? path.recursiveChildren() {
-                    return children.filter { $0.lastComponent == "Info.plist" }
-                }
-            }
-            return []
-        }
+        var plistPath: Path? = nil
+        var searchForPlist = true
 
         let configs: [XCBuildConfiguration] = spec.configs.map { config in
             var buildSettings = spec.getTargetBuildSettings(target: target, config: config)
 
             // automatically set INFOPLIST_FILE path
-            if let plistPath = infoPlists.first,
-                !spec.targetHasBuildSetting("INFOPLIST_FILE", basePath: spec.basePath, target: target, config: config) {
-                buildSettings["INFOPLIST_FILE"] = plistPath.byRemovingBase(path: spec.basePath)
+            if !spec.targetHasBuildSetting("INFOPLIST_FILE", basePath: spec.basePath, target: target, config: config) {
+                if searchForPlist {
+                    plistPath = getInfoPlist(target.sources)
+                    searchForPlist = false
+                }
+                if let plistPath = plistPath {
+                    buildSettings["INFOPLIST_FILE"] = plistPath.byRemovingBase(path: spec.basePath)
+                }
             }
 
             // automatically calculate bundle id
@@ -460,6 +454,20 @@ public class PBXProjGenerator {
         }
         addObject(pbxtarget)
         return pbxtarget
+    }
+
+    func getInfoPlist(_ sources: [TargetSource]) -> Path? {
+        return sources
+            .lazy
+            .map { self.spec.basePath + $0.path }
+            .flatMap { (path) -> Path? in
+                if path.isFile {
+                    return path.lastComponent == "Info.plist" ? path : nil
+                } else {
+                    return path.first(where: { $0.lastComponent == "Info.plist" })
+                }
+            }
+            .first
     }
 
     func getCarthageBuildPath(platform: Platform) -> String {
