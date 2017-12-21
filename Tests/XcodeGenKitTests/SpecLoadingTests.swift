@@ -157,24 +157,22 @@ func specLoadingTests() {
         $0.it("parses schemes") {
             let schemeDictionary: [String: Any] = [
                 "build": ["targets": [
-                    ["target": "Target"],
-                    ["target": "Target", "buildTypes": "testing"],
-                    ["target": "Target", "buildTypes": "none"],
-                    ["target": "Target", "buildTypes": "all"],
-                    ["target": "Target", "buildTypes": ["testing": true]],
-                    ["target": "Target", "buildTypes": ["testing": false]],
-                    ["target": "Target", "buildTypes": ["test", "analyze"]],
+                    "Target1": "all",
+                    "Target2": "testing",
+                    "Target3": "none",
+                    "Target4": ["testing": true],
+                    "Target5": ["testing": false],
+                    "Target6": ["test", "analyze"],
                 ]],
             ]
             let scheme = try Scheme(name: "Scheme", jsonDictionary: schemeDictionary)
             let expectedTargets: [Scheme.BuildTarget] = [
-                Scheme.BuildTarget(target: "Target", buildTypes: BuildType.all),
-                Scheme.BuildTarget(target: "Target", buildTypes: [.testing, .analyzing]),
-                Scheme.BuildTarget(target: "Target", buildTypes: []),
-                Scheme.BuildTarget(target: "Target", buildTypes: BuildType.all),
-                Scheme.BuildTarget(target: "Target", buildTypes: [.testing]),
-                Scheme.BuildTarget(target: "Target", buildTypes: []),
-                Scheme.BuildTarget(target: "Target", buildTypes: [.testing, .analyzing]),
+                Scheme.BuildTarget(target: "Target1", buildTypes: BuildType.all),
+                Scheme.BuildTarget(target: "Target2", buildTypes: [.testing, .analyzing]),
+                Scheme.BuildTarget(target: "Target3", buildTypes: []),
+                Scheme.BuildTarget(target: "Target4", buildTypes: [.testing]),
+                Scheme.BuildTarget(target: "Target5", buildTypes: []),
+                Scheme.BuildTarget(target: "Target6", buildTypes: [.testing, .analyzing]),
             ]
             try expect(scheme.name) == "Scheme"
             try expect(scheme.build.targets) == expectedTargets
