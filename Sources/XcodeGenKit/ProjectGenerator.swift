@@ -70,6 +70,7 @@ public class ProjectGenerator {
         let testAction = XCScheme.TestAction(buildConfiguration: scheme.test?.config ?? defaultDebugConfig.name,
                                              macroExpansion: buildableReference,
                                              testables: testables,
+                                             shouldUseLaunchSchemeArgsEnv: scheme.test?.commandLineArguments.isEmpty ?? true,
                                              codeCoverageEnabled: scheme.test?.gatherCoverageData ?? false,
                                              commandlineArguments: testCommandLineArgs)
 
@@ -79,6 +80,7 @@ public class ProjectGenerator {
 
         let profileAction = XCScheme.ProfileAction(buildableProductRunnable: productRunable,
                                                    buildConfiguration: scheme.profile?.config ?? defaultReleaseConfig.name,
+                                                   shouldUseLaunchSchemeArgsEnv: scheme.profile?.commandLineArguments.isEmpty ?? true,
                                                    commandlineArguments: profileCommandLineArgs)
 
         let analyzeAction = XCScheme.AnalyzeAction(buildConfiguration: scheme.analyze?.config ?? defaultDebugConfig.name)
