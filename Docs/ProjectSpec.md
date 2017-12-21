@@ -422,9 +422,10 @@ The different actions share some properties:
 scheme:
   Production:
     build:
-      - name: MyTarget1
-      - name: MyTarget2
-        buildTypes: [run, archive]
+      targets:
+        - name: MyTarget1
+        - name: MyTarget2
+          buildTypes: [run, archive]
     run:
       config: prod-debug
       commandLineArguments: "--option value"
