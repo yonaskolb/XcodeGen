@@ -36,7 +36,7 @@ public class ProjectGenerator {
         return XCWorkspace(data: workspaceData)
     }
 
-    func generateScheme(_ scheme: Scheme, pbxProject: PBXProj, tests: [String] = []) throws -> XCScheme {
+    func generateScheme(_ scheme: Scheme, pbxProject: PBXProj) throws -> XCScheme {
 
         func getBuildEntry(_ buildTarget: Scheme.BuildTarget) -> XCScheme.BuildAction.Entry {
 
@@ -48,13 +48,14 @@ public class ProjectGenerator {
             return XCScheme.BuildAction.Entry(buildableReference: buildableReference, buildFor: buildTarget.buildTypes)
         }
 
-        let testBuildTargets = tests.map {
+        let testTargetNames = scheme.test?.targets ?? []
+        let testBuildTargets = testTargetNames.map {
             Scheme.BuildTarget(target: $0, buildTypes: BuildType.testOnly)
         }
 
         let testBuildTargetEntries = testBuildTargets.map(getBuildEntry)
 
-        let buildActionEntries: [XCScheme.BuildAction.Entry] = scheme.build.targets.map(getBuildEntry) + testBuildTargetEntries
+        let buildActionEntries: [XCScheme.BuildAction.Entry] = scheme.build.targets.map(getBuildEntry)
 
         let buildableReference = buildActionEntries.first!.buildableReference
         let productRunable = XCScheme.BuildableProductRunnable(buildableReference: buildableReference)
@@ -115,8 +116,8 @@ public class ProjectGenerator {
                     let debugConfig = spec.configs.first { $0.type == .debug }!
                     let releaseConfig = spec.configs.first { $0.type == .release }!
 
-                    let specScheme = Scheme(name: schemeName, targets: [Scheme.BuildTarget(target: target.name)], debugConfig: debugConfig.name, releaseConfig: releaseConfig.name, gatherCoverageData: scheme.gatherCoverageData, commandLineArguments: scheme.commandLineArguments)
-                    let scheme = try generateScheme(specScheme, pbxProject: pbxProject, tests: scheme.testTargets)
+                    let specScheme = Scheme(name: schemeName, targets: [Scheme.BuildTarget(target: target.name)], debugConfig: debugConfig.name, releaseConfig: releaseConfig.name, gatherCoverageData: scheme.gatherCoverageData, commandLineArguments: scheme.commandLineArguments, testTargets: scheme.testTargets)
+                    let scheme = try generateScheme(specScheme, pbxProject: pbxProject)
                     xcschemes.append(scheme)
                 } else {
                     for configVariant in scheme.configVariants {
@@ -126,8 +127,8 @@ public class ProjectGenerator {
                         let debugConfig = spec.configs.first { $0.type == .debug && $0.name.contains(configVariant) }!
                         let releaseConfig = spec.configs.first { $0.type == .release && $0.name.contains(configVariant) }!
 
-                        let specScheme = Scheme(name: schemeName, targets: [Scheme.BuildTarget(target: target.name)], debugConfig: debugConfig.name, releaseConfig: releaseConfig.name, gatherCoverageData: scheme.gatherCoverageData, commandLineArguments: scheme.commandLineArguments)
-                        let scheme = try generateScheme(specScheme, pbxProject: pbxProject, tests: scheme.testTargets)
+                        let specScheme = Scheme(name: schemeName, targets: [Scheme.BuildTarget(target: target.name)], debugConfig: debugConfig.name, releaseConfig: releaseConfig.name, gatherCoverageData: scheme.gatherCoverageData, commandLineArguments: scheme.commandLineArguments, testTargets: scheme.testTargets)
+                        let scheme = try generateScheme(specScheme, pbxProject: pbxProject)
                         xcschemes.append(scheme)
                     }
                 }
