@@ -218,6 +218,7 @@ A source can be provided via a string (the path) or an object of the form:
 	- `file`: a file reference with a parent group will be created (Default for files or directories with extensions)
 	- `group`: a group with all it's containing files. (Default for directories without extensions)
 	- `folder`: a folder reference.
+  - ⚪️ **optional**: `Bool` - Disable missing path check. Defaults to false.
 
 
 ```yaml
