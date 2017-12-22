@@ -82,7 +82,7 @@ Note that target names can also be changed by adding a `name` property to a targ
 	- watchOS
 	- macOS
 
-```
+```yaml
 options:
   platformVersions:
     watchOS: 2.0
@@ -369,7 +369,7 @@ For example, the spec below would create 3 schemes called:
 Each scheme would use different build configuration for the different build types, specifically debug configs for `run`, `test`, and `analyze`, and release configs for `profile` and `archive`.
 The MyUnitTests target would also be linked.
 
-```
+```yaml
 configs:
   Test Debug: debug
   Staging Debug: debug
