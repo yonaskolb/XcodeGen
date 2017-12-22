@@ -13,4 +13,6 @@ public enum Platform: String {
             return rawValue
         }
     }
+
+    public static var all: [Platform] = [.iOS, .tvOS, .watchOS, .macOS]
 }
