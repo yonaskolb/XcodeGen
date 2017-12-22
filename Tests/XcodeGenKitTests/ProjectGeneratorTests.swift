@@ -571,6 +571,89 @@ func projectGeneratorTests() {
                 try project.expectFile(paths: ["Sources/A"], names: ["A"], buildPhase: .resources)
                 try project.expectFileMissing(paths: ["Sources", "A", "a.swift"])
             }
+
+            $0.it("adds files to correct build phase") {
+                let directories = """
+                  A:
+                    - file.swift
+                    - file.xcassets
+                    - file.h
+                    - Info.plist
+                    - file.xcconfig
+                  B:
+                    - file.swift
+                    - file.xcassets
+                    - file.h
+                    - Info.plist
+                    - file.xcconfig
+                  C:
+                    - file.swift
+                    - file.m
+                    - file.mm
+                    - file.cpp
+                    - file.c
+                    - file.S
+                    - file.h
+                    - file.hh
+                    - file.hpp
+                    - file.ipp
+                    - file.tpp
+                    - file.hxx
+                    - file.def
+                    - file.xcconfig
+                    - file.entitlements
+                    - file.gpx
+                    - file.apns
+                    - file.123
+                    - file.xcassets
+                    - Info.plist
+                """
+                try createDirectories(directories)
+
+                let target = Target(name: "Test", type: .framework, platform: .iOS, sources: [
+                    TargetSource(path: "A", buildPhase: .resources),
+                    TargetSource(path: "B", buildPhase: .none),
+                    TargetSource(path: "C", buildPhase: nil),
+                    ])
+                let spec = ProjectSpec(basePath: directoryPath, name: "Test", targets: [target])
+
+                let project = try getPbxProj(spec)
+                try project.expectFile(paths: ["A", "file.swift"], buildPhase: .resources)
+                try project.expectFile(paths: ["A", "file.xcassets"], buildPhase: .resources)
+                try project.expectFile(paths: ["A", "file.h"], buildPhase: .resources)
+                try project.expectFile(paths: ["A", "Info.plist"], buildPhase: .none)
+                try project.expectFile(paths: ["A", "file.xcconfig"], buildPhase: .resources)
+
+                try project.expectFile(paths: ["B", "file.swift"], buildPhase: .none)
+                try project.expectFile(paths: ["B", "file.xcassets"], buildPhase: .none)
+                try project.expectFile(paths: ["B", "file.h"], buildPhase: .none)
+                try project.expectFile(paths: ["B", "Info.plist"], buildPhase: .none)
+                try project.expectFile(paths: ["B", "file.xcconfig"], buildPhase: .none)
+
+                try project.expectFile(paths: ["C", "file.swift"], buildPhase: .sources)
+                try project.expectFile(paths: ["C", "file.m"], buildPhase: .sources)
+                try project.expectFile(paths: ["C", "file.mm"], buildPhase: .sources)
+                try project.expectFile(paths: ["C", "file.cpp"], buildPhase: .sources)
+                try project.expectFile(paths: ["C", "file.c"], buildPhase: .sources)
+                try project.expectFile(paths: ["C", "file.S"], buildPhase: .sources)
+                try project.expectFile(paths: ["C", "file.h"], buildPhase: .headers)
+                try project.expectFile(paths: ["C", "file.hh"], buildPhase: .headers)
+                try project.expectFile(paths: ["C", "file.hpp"], buildPhase: .headers)
+                try project.expectFile(paths: ["C", "file.ipp"], buildPhase: .headers)
+                try project.expectFile(paths: ["C", "file.tpp"], buildPhase: .headers)
+                try project.expectFile(paths: ["C", "file.hxx"], buildPhase: .headers)
+                try project.expectFile(paths: ["C", "file.def"], buildPhase: .headers)
+                try project.expectFile(paths: ["C", "file.xcconfig"], buildPhase: .none)
+                try project.expectFile(paths: ["C", "file.entitlements"], buildPhase: .none)
+                try project.expectFile(paths: ["C", "file.gpx"], buildPhase: .none)
+                try project.expectFile(paths: ["C", "file.apns"], buildPhase: .none)
+                try project.expectFile(paths: ["C", "file.xcconfig"], buildPhase: .none)
+                try project.expectFile(paths: ["C", "file.xcconfig"], buildPhase: .none)
+                try project.expectFile(paths: ["C", "file.xcconfig"], buildPhase: .none)
+                try project.expectFile(paths: ["C", "file.xcassets"], buildPhase: .resources)
+                try project.expectFile(paths: ["C", "file.123"], buildPhase: .resources)
+                try project.expectFile(paths: ["C", "Info.plist"], buildPhase: .none)
+            }
         }
     }
 }
@@ -600,7 +683,7 @@ extension PBXProj {
 extension PBXProj {
 
     /// expect a file within groups of the paths, using optional different names
-    func expectFile(paths: [String], names: [String]? = nil, buildPhase: BuildPhase? = nil) throws {
+    func expectFile(paths: [String], names: [String]? = nil, buildPhase: TargetSource.BuildPhase? = nil) throws {
         guard let fileReference = getFileReference(paths: paths, names: names ?? paths) else {
             var error = "Could not find file at path \(paths.joined(separator: "/").quoted)"
             if let names = names, names != paths {
@@ -610,9 +693,23 @@ extension PBXProj {
         }
 
         if let buildPhase = buildPhase {
-            guard let buildFile = objects.buildFiles.referenceValues.first(where: { $0.fileRef == fileReference.reference }),
-                objects.buildPhases.referenceValues.contains(where: { $0.files.contains(buildFile.reference) }) else {
-                throw failure("File \(paths.joined(separator: "/").quoted) is not in a \(buildPhase.rawValue.quoted) build phase")
+            let buildFile = objects.buildFiles.referenceValues.first(where: { $0.fileRef == fileReference.reference })
+            let actualBuildPhase = buildFile.flatMap { buildFile in objects.buildPhases.referenceValues.first { $0.files.contains(buildFile.reference) } }?.buildPhase
+
+            var error: String?
+            if let buildPhase = buildPhase.buildPhase {
+                if actualBuildPhase != buildPhase {
+                    if let actualBuildPhase = actualBuildPhase {
+                        error = "is in the \(actualBuildPhase.rawValue) build phase instead of the expected \(buildPhase.rawValue.quoted)"
+                    } else {
+                        error = "isn't in a build phase when it's expected to be in \(buildPhase.rawValue.quoted)"
+                    }
+                }
+            } else if let actualBuildPhase = actualBuildPhase  {
+                error = "is in the \(actualBuildPhase.rawValue.quoted) build phase when it's expected to not be in any"
+            }
+            if let error = error {
+                throw failure("File \(paths.joined(separator: "/").quoted) \(error)")
             }
         }
     }
