@@ -396,14 +396,12 @@ Schemes allows for more control than the convenience [Target Scheme](#target-sch
 - [ ] ***archive***: The archive action
 
 ### Build
-- [x] **targets**: **[Build Target]** - A list of targets to build
- - [x] **name**: **String** - the name of the target
- - [ ] **buildTypes**: **[String]** - A list of build types for this target. The default is all types. The build types are:
-		- `run`
-		- `test`
-		- `profile`
-		- `analyze`
-		- `archive`
+- [x] **targets**: **String** or **[String]** - A map of target names to build and which build types they should be enabled for. The buildTypes can either be `all`, `none` or an array of the following types:
+	- `run`
+	- `test`
+	- `profile`
+	- `analyze`
+	- `archive`
 
 ### Common Build Action options
 The different actions share some properties:
@@ -422,9 +420,8 @@ scheme:
   Production:
     build:
       targets:
-        - name: MyTarget1
-        - name: MyTarget2
-          buildTypes: [run, archive]
+        MyTarget1: all
+        MyTarget2: [run, archive]
     run:
       config: prod-debug
       commandLineArguments: "--option value"

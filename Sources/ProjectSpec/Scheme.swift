@@ -189,36 +189,28 @@ extension Scheme: NamedJSONDictionaryConvertible {
 extension Scheme.Build: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
-        targets = try jsonDictionary.json(atKeyPath: "targets")
-    }
-}
-
-extension Scheme.BuildTarget: JSONObjectConvertible {
-
-    public init(jsonDictionary: JSONDictionary) throws {
-        target = try jsonDictionary.json(atKeyPath: "target")
-        if jsonDictionary["buildTypes"] == nil {
-            buildTypes = BuildType.all
-        } else if let types: String = jsonDictionary.json(atKeyPath: "buildTypes") {
-            switch types {
-            case "all": buildTypes = BuildType.all
-            case "none": buildTypes = []
-            case "testing": buildTypes = [.testing, .analyzing]
-            case "indexing": buildTypes = [.testing, .analyzing, .archiving]
-            default: buildTypes = BuildType.all
-            }
-        } else if let types: [String: Bool] = jsonDictionary.json(atKeyPath: "buildTypes") {
-            var buildTypes: [BuildType] = []
-            for (type, build) in types {
-                if build, let buildType = BuildType.from(jsonValue: type) {
-                    buildTypes.append(buildType)
+        let targetDictionary: JSONDictionary = try jsonDictionary.json(atKeyPath: "targets")
+        var targets: [Scheme.BuildTarget] = []
+        for (target, possibleBuildTypes) in targetDictionary {
+            let buildTypes: [BuildType]
+            if let string = possibleBuildTypes as? String {
+                switch string {
+                case "all": buildTypes = BuildType.all
+                case "none": buildTypes = []
+                case "testing": buildTypes = [.testing, .analyzing]
+                case "indexing": buildTypes = [.testing, .analyzing, .archiving]
+                default: buildTypes = BuildType.all
                 }
+            } else if let enabledDictionary = possibleBuildTypes as? [String: Bool] {
+                buildTypes = enabledDictionary.filter { $0.value }.flatMap { BuildType.from(jsonValue: $0.key) }
+            } else if let array = possibleBuildTypes as? [String] {
+                buildTypes = array.flatMap(BuildType.from)
+            } else {
+                buildTypes = BuildType.all
             }
-            self.buildTypes = buildTypes
-        } else {
-            let stringBuildTypes: [String] = try jsonDictionary.json(atKeyPath: "buildTypes")
-            self.buildTypes = stringBuildTypes.flatMap(BuildType.from)
+            targets.append(Scheme.BuildTarget(target: target, buildTypes: buildTypes))
         }
+        self.targets = targets.sorted { $0.target < $1.target }
     }
 }
 
