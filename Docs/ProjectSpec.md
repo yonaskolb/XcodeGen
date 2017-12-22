@@ -76,6 +76,18 @@ Note that target names can also be changed by adding a `name` property to a targ
 - [ ] **indentWidth**: **Int** - If this is specified, the Xcode project will override the user's setting for indent width in number of spaces.
 - [ ] **tabWidth**: **Int** - If this is specified, the Xcode project will override the user's setting for indent width in number of spaces.
 - [ ] **xcodeVersion**: **String** - The version of Xcode. This defaults to the latest version periodically. You can specify it in the format `0910` or `9.1`
+- [ ] **platformVersions**: **[String: String]** - A project wide SDK version can be specified for each platform otherwise the default SDK version in Xcode will be used. This will be overriden by any custom build settings that also apply a version eg `IPHONEOS_DEPLOYMENT_TARGET`. The available platforms are:
+	- iOS
+	- tvOS
+	- watchOS
+	- macOS
+
+```
+options:
+  platformVersions:
+    watchOS: 2.0
+    tvOS: 10.0
+```
 
 ### Configs
 Each config maps to a build type of either `debug` or `release` which will then apply default build settings to the project. Any value other than `debug` or `release` (for example `none`), will mean no default build settings will be applied to the project.
@@ -137,6 +149,7 @@ Settings are merged in the following order: groups, base, configs.
 
 - [x] **type**: **[Product Type](#product-type)** - Product type of the target
 - [x] **platform**: **[Platform](#platform)** - Platform of the target
+- [ ] **platformVersion**: **String or Double** - The SDK version to use. If this is not specified the value from the project set in [Options](#options)`.platformVersions.PLATFORM` will be used.
 - [ ] **sources**: **[Sources](#sources)** - Source directories of the target
 - [ ] **configFiles**: **[Config Files](#config-files)** - `.xcconfig` files per config
 - [ ] **settings**: **[Settings](#settings)** - Target specific build settings. Default platform and product type settings will be applied first before any custom settings defined here. Other context dependant settings will be set automatically as well:
