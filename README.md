@@ -42,13 +42,16 @@ Given a very simple project spec file like this:
 
 ```yaml
 name: My Project
+options: 
+  bundleIdPrefix: com.myapp
 targets:
   MyApp:
     type: application
     platform: iOS
+    deploymentTarget: 10.0
     sources: MyApp
     settings:
-      PRODUCT_BUNDLE_IDENTIFIER: com.myapp
+      My_CUSTOM_SETTING: my_value
     dependencies:
       - target: MyFramework
   MyFramework:
