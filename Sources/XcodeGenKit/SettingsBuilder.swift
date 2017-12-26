@@ -17,8 +17,8 @@ extension ProjectSpec {
 
         // apply custom platform version
         for platform in Platform.all {
-            if let version = options.platformVersions.version(for: platform) {
-                buildSettings[platform.versionBuildSetting] = version.platformVersion
+            if let version = options.deploymentTargets.version(for: platform) {
+                buildSettings[platform.deploymentTargetSetting] = version.deploymentTarget
             }
         }
 
@@ -42,8 +42,8 @@ extension ProjectSpec {
         }
 
         // apply custom platform version
-        if let version = target.platformVersion {
-            buildSettings[target.platform.versionBuildSetting] = version.platformVersion
+        if let version = target.deploymentTarget {
+            buildSettings[target.platform.deploymentTargetSetting] = version.deploymentTarget
         }
 
         // Prevent setting presets from overrwriting settings in target xcconfig files

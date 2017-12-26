@@ -9,7 +9,7 @@ import Foundation
 import xcproj
 import JSONUtilities
 
-public struct PlatformVersions: Equatable {
+public struct DeploymentTargets: Equatable {
 
     public var iOS: Version?
     public var tvOS: Version?
@@ -32,7 +32,7 @@ public struct PlatformVersions: Equatable {
         }
     }
 
-    public static func == (lhs: PlatformVersions, rhs: PlatformVersions) -> Bool {
+    public static func == (lhs: DeploymentTargets, rhs: DeploymentTargets) -> Bool {
         return lhs.iOS == rhs.iOS &&
             lhs.tvOS == rhs.tvOS &&
             lhs.watchOS == rhs.watchOS &&
@@ -42,7 +42,7 @@ public struct PlatformVersions: Equatable {
 
 extension Platform {
 
-    public var versionBuildSetting: String {
+    public var deploymentTargetSetting: String {
         switch self {
         case .iOS: return "IPHONEOS_DEPLOYMENT_TARGET"
         case .tvOS: return "TVOS_DEPLOYMENT_TARGET"
@@ -54,13 +54,13 @@ extension Platform {
 
 extension Version {
 
-    /// doesn't print patch
-    public var platformVersion: String {
+    /// doesn't print patch if 0
+    public var deploymentTarget: String {
         return "\(major).\(minor)\(patch > 0 ? ".\(patch)" : "")"
     }
 }
 
-extension PlatformVersions: JSONObjectConvertible {
+extension DeploymentTargets: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
 

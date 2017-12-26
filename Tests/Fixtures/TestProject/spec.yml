@@ -5,7 +5,7 @@ options:
   usesTabs: false
   indentWidth: 2
   tabWidth: 2
-  platformVersions:
+  deploymentTargets:
     watchOS: 2.0
 fileGroups:
   - Configs
@@ -22,7 +22,7 @@ targets:
   App_iOS:
     type: application
     platform: iOS
-    platformVersion: 10.0
+    deploymentTarget: 10.0
     sources:
       - StandaloneFiles/StandaloneAssets.xcassets
       - path: App_iOS

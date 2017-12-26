@@ -39,26 +39,26 @@ func projectSpecTests() {
             }
         }
 
-        $0.describe("Deployment Version") {
+        $0.describe("Deployment Target") {
 
             $0.it("has correct build setting") {
-                try expect(Platform.iOS.versionBuildSetting) == "IPHONEOS_DEPLOYMENT_TARGET"
-                try expect(Platform.tvOS.versionBuildSetting) == "TVOS_DEPLOYMENT_TARGET"
-                try expect(Platform.watchOS.versionBuildSetting) == "WATCHOS_DEPLOYMENT_TARGET"
-                try expect(Platform.macOS.versionBuildSetting) == "MACOSX_DEPLOYMENT_TARGET"
+                try expect(Platform.iOS.deploymentTargetSetting) == "IPHONEOS_DEPLOYMENT_TARGET"
+                try expect(Platform.tvOS.deploymentTargetSetting) == "TVOS_DEPLOYMENT_TARGET"
+                try expect(Platform.watchOS.deploymentTargetSetting) == "WATCHOS_DEPLOYMENT_TARGET"
+                try expect(Platform.macOS.deploymentTargetSetting) == "MACOSX_DEPLOYMENT_TARGET"
             }
 
-            $0.it("parses versions correctly") {
-                try expect(Version("2").platformVersion) == "2.0"
-                try expect(Version("2.0").platformVersion) == "2.0"
-                try expect(Version("2.1").platformVersion) == "2.1"
-                try expect(Version("2.1.0").platformVersion) == "2.1"
-                try expect(Version("2.12.0").platformVersion) == "2.12"
-                try expect(Version("2.1.2").platformVersion) == "2.1.2"
-                try expect(Version("2.0.2").platformVersion) == "2.0.2"
-                try expect(Version(2).platformVersion) == "2.0"
-                try expect(Version(2.0).platformVersion) == "2.0"
-                try expect(Version(2.1).platformVersion) == "2.1"
+            $0.it("parses version correctly") {
+                try expect(Version("2").deploymentTarget) == "2.0"
+                try expect(Version("2.0").deploymentTarget) == "2.0"
+                try expect(Version("2.1").deploymentTarget) == "2.1"
+                try expect(Version("2.1.0").deploymentTarget) == "2.1"
+                try expect(Version("2.12.0").deploymentTarget) == "2.12"
+                try expect(Version("2.1.2").deploymentTarget) == "2.1.2"
+                try expect(Version("2.0.2").deploymentTarget) == "2.0.2"
+                try expect(Version(2).deploymentTarget) == "2.0"
+                try expect(Version(2.0).deploymentTarget) == "2.0"
+                try expect(Version(2.1).deploymentTarget) == "2.1"
             }
         }
 

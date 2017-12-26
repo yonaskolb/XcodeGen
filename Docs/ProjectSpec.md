@@ -76,15 +76,11 @@ Note that target names can also be changed by adding a `name` property to a targ
 - [ ] **indentWidth**: **Int** - If this is specified, the Xcode project will override the user's setting for indent width in number of spaces.
 - [ ] **tabWidth**: **Int** - If this is specified, the Xcode project will override the user's setting for indent width in number of spaces.
 - [ ] **xcodeVersion**: **String** - The version of Xcode. This defaults to the latest version periodically. You can specify it in the format `0910` or `9.1`
-- [ ] **platformVersions**: **[String: String]** - A project wide SDK version can be specified for each platform otherwise the default SDK version in Xcode will be used. This will be overriden by any custom build settings that also apply a version eg `IPHONEOS_DEPLOYMENT_TARGET`. The available platforms are:
-	- iOS
-	- tvOS
-	- watchOS
-	- macOS
+- [ ] **deploymentTargets**: **[[Platform](#platform): String]** - A project wide deployment target can be specified for each platform otherwise the default SDK version in Xcode will be used. This will be overridden by any custom build settings that set the deployment target eg `IPHONEOS_DEPLOYMENT_TARGET`. Target specific deployment targets can also be set with [Target](#target).deploymentTarget.
 
 ```yaml
 options:
-  platformVersions:
+  deploymentTargets:
     watchOS: 2.0
     tvOS: 10.0
 ```
@@ -149,7 +145,7 @@ Settings are merged in the following order: groups, base, configs.
 
 - [x] **type**: **[Product Type](#product-type)** - Product type of the target
 - [x] **platform**: **[Platform](#platform)** - Platform of the target
-- [ ] **platformVersion**: **String or Double** - The SDK version to use. If this is not specified the value from the project set in [Options](#options)`.platformVersions.PLATFORM` will be used.
+- [ ] **deploymentTarget**: **String or Double** - The deployment target eg (11.0). If this is not specified the value from the project set in [Options](#options)`.deploymentTargets.PLATFORM` will be used.
 - [ ] **sources**: **[Sources](#sources)** - Source directories of the target
 - [ ] **configFiles**: **[Config Files](#config-files)** - `.xcconfig` files per config
 - [ ] **settings**: **[Settings](#settings)** - Target specific build settings. Default platform and product type settings will be applied first before any custom settings defined here. Other context dependant settings will be set automatically as well:

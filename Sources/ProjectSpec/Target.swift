@@ -30,7 +30,7 @@ public struct Target {
     public var configFiles: [String: String]
     public var scheme: TargetScheme?
     public var legacy: LegacyTarget?
-    public var platformVersion: Version?
+    public var deploymentTarget: Version?
     
     public var isLegacy: Bool {
         return legacy != nil
@@ -44,11 +44,11 @@ public struct Target {
         return name
     }
 
-    public init(name: String, type: PBXProductType, platform: Platform, platformVersion: Version? = nil, settings: Settings = .empty, configFiles: [String: String] = [:], sources: [TargetSource] = [], dependencies: [Dependency] = [], prebuildScripts: [BuildScript] = [], postbuildScripts: [BuildScript] = [], scheme: TargetScheme? = nil, legacy: LegacyTarget? = nil) {
+    public init(name: String, type: PBXProductType, platform: Platform, deploymentTarget: Version? = nil, settings: Settings = .empty, configFiles: [String: String] = [:], sources: [TargetSource] = [], dependencies: [Dependency] = [], prebuildScripts: [BuildScript] = [], postbuildScripts: [BuildScript] = [], scheme: TargetScheme? = nil, legacy: LegacyTarget? = nil) {
         self.name = name
         self.type = type
         self.platform = platform
-        self.platformVersion = platformVersion
+        self.deploymentTarget = deploymentTarget
         self.settings = settings
         self.configFiles = configFiles
         self.sources = sources
@@ -140,7 +140,7 @@ extension Target: Equatable {
         return lhs.name == rhs.name &&
             lhs.type == rhs.type &&
             lhs.platform == rhs.platform &&
-            lhs.platformVersion == rhs.platformVersion &&
+            lhs.deploymentTarget == rhs.deploymentTarget &&
             lhs.settings == rhs.settings &&
             lhs.configFiles == rhs.configFiles &&
             lhs.sources == rhs.sources &&
@@ -211,12 +211,12 @@ extension Target: NamedJSONDictionaryConvertible {
             throw SpecParsingError.unknownTargetPlatform(platformString)
         }
 
-        if let string: String = jsonDictionary.json(atKeyPath: "platformVersion") {
-            platformVersion = try Version(string)
-        } else if let double: Double = jsonDictionary.json(atKeyPath: "platformVersion") {
-            platformVersion = try Version(double)
+        if let string: String = jsonDictionary.json(atKeyPath: "deploymentTarget") {
+            deploymentTarget = try Version(string)
+        } else if let double: Double = jsonDictionary.json(atKeyPath: "deploymentTarget") {
+            deploymentTarget = try Version(double)
         } else {
-            platformVersion = nil
+            deploymentTarget = nil
         }
 
         settings = jsonDictionary.json(atKeyPath: "settings") ?? .empty
