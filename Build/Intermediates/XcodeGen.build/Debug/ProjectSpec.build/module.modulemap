@@ -1,4 +1,0 @@
-framework module ProjectSpec {
-    header "ProjectSpec-Swift.h"
-    requires objc
-}

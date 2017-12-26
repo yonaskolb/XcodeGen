@@ -1,4 +1,0 @@
-framework module Yams {
-    header "Yams-Swift.h"
-    requires objc
-}

@@ -1,4 +1,0 @@
-framework module Rainbow {
-    header "Rainbow-Swift.h"
-    requires objc
-}

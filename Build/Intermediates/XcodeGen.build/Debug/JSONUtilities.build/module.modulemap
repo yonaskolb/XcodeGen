@@ -1,4 +1,0 @@
-framework module JSONUtilities {
-    header "JSONUtilities-Swift.h"
-    requires objc
-}

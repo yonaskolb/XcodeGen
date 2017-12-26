@@ -1,4 +1,0 @@
-framework module XcodeGenKit {
-    header "XcodeGenKit-Swift.h"
-    requires objc
-}

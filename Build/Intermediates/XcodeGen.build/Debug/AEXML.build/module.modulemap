@@ -1,4 +1,0 @@
-framework module AEXML {
-    header "AEXML-Swift.h"
-    requires objc
-}
