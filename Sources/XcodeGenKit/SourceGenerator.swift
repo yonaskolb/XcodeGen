@@ -98,11 +98,16 @@ class SourceGenerator {
         if let fileReference = fileReferencesByPath[path] {
             return fileReference
         } else {
+            let fileReferencePath = path.byRemovingBase(path: inPath)
+            var fileReferenceName: String? = name ?? fileReferencePath.lastComponent
+            if fileReferencePath.string == fileReferenceName {
+                fileReferenceName = nil
+            }
             let fileReference = PBXFileReference(
                 reference: referenceGenerator.generate(PBXFileReference.self, path.byRemovingBase(path: spec.basePath).string),
                 sourceTree: sourceTree,
-                name: name,
-                path: path.byRemovingBase(path: inPath).string
+                name: fileReferenceName,
+                path: fileReferencePath.string
             )
             addObject(fileReference)
             fileReferencesByPath[path] = fileReference.reference
