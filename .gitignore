@@ -5,3 +5,4 @@ xcuserdata
 *.xccheckout
 *.xcuserstate
 XcodeGen.xcodeproj
+Build/
