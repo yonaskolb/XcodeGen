@@ -230,7 +230,7 @@ func specLoadingTests() {
                                               createIntermediateGroups: true,
                                               bundleIdPrefix: "com.test",
                                               developmentLanguage: "ja",
-                                              deploymentTargets: DeploymentTargets(
+                                              deploymentTarget: DeploymentTarget(
                                                 iOS: "11.1",
                                                 tvOS: "10.0",
                                                 watchOS: "3.0",
@@ -241,7 +241,7 @@ func specLoadingTests() {
                 "bundleIdPrefix": "com.test",
                 "createIntermediateGroups": true,
                 "developmentLanguage": "ja",
-                "deploymentTargets": ["iOS": 11.1, "tvOS": 10.0, "watchOS": "3", "macOS": "10.12.1" ]
+                "deploymentTarget": ["iOS": 11.1, "tvOS": 10.0, "watchOS": "3", "macOS": "10.12.1" ]
                 ]]
             let parsedSpec = try getProjectSpec(dictionary)
             try expect(parsedSpec) == expected

@@ -5,7 +5,7 @@ options:
   usesTabs: false
   indentWidth: 2
   tabWidth: 2
-  deploymentTargets:
+  deploymentTarget:
     watchOS: 2.0
 fileGroups:
   - Configs

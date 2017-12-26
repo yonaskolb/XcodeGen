@@ -9,7 +9,7 @@ import Foundation
 import xcproj
 import JSONUtilities
 
-public struct DeploymentTargets: Equatable {
+public struct DeploymentTarget: Equatable {
 
     public var iOS: Version?
     public var tvOS: Version?
@@ -32,7 +32,7 @@ public struct DeploymentTargets: Equatable {
         }
     }
 
-    public static func == (lhs: DeploymentTargets, rhs: DeploymentTargets) -> Bool {
+    public static func == (lhs: DeploymentTarget, rhs: DeploymentTarget) -> Bool {
         return lhs.iOS == rhs.iOS &&
             lhs.tvOS == rhs.tvOS &&
             lhs.watchOS == rhs.watchOS &&
@@ -60,7 +60,7 @@ extension Version {
     }
 }
 
-extension DeploymentTargets: JSONObjectConvertible {
+extension DeploymentTarget: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
 

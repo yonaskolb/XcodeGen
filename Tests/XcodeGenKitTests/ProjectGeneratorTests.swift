@@ -166,7 +166,7 @@ func projectGeneratorTests() {
 
             $0.it("generates platform version") {
                 let target = Target(name: "Target", type: .application, platform: .watchOS, deploymentTarget: "2.0")
-                let spec = ProjectSpec(basePath: "", name: "", targets: [target], options: .init(deploymentTargets: DeploymentTargets(iOS: "10.0", watchOS: "3.0")))
+                let spec = ProjectSpec(basePath: "", name: "", targets: [target], options: .init(deploymentTarget: DeploymentTarget(iOS: "10.0", watchOS: "3.0")))
 
                 let pbxProject = try getPbxProj(spec)
 

@@ -29,7 +29,7 @@ public struct ProjectSpec {
         public var tabWidth: Int?
         public var indentWidth: Int?
         public var xcodeVersion: String?
-        public var deploymentTargets: DeploymentTargets
+        public var deploymentTarget: DeploymentTarget
 
         public enum SettingPresets: String {
             case all
@@ -52,7 +52,7 @@ public struct ProjectSpec {
             }
         }
 
-        public init(carthageBuildPath: String? = nil, createIntermediateGroups: Bool = false, bundleIdPrefix: String? = nil, settingPresets: SettingPresets = .all, developmentLanguage: String? = nil, indentWidth: Int? = nil, tabWidth: Int? = nil, usesTabs: Bool? = nil, xcodeVersion: String? = nil, deploymentTargets: DeploymentTargets = .init()) {
+        public init(carthageBuildPath: String? = nil, createIntermediateGroups: Bool = false, bundleIdPrefix: String? = nil, settingPresets: SettingPresets = .all, developmentLanguage: String? = nil, indentWidth: Int? = nil, tabWidth: Int? = nil, usesTabs: Bool? = nil, xcodeVersion: String? = nil, deploymentTarget: DeploymentTarget = .init()) {
             self.carthageBuildPath = carthageBuildPath
             self.createIntermediateGroups = createIntermediateGroups
             self.bundleIdPrefix = bundleIdPrefix
@@ -62,7 +62,7 @@ public struct ProjectSpec {
             self.indentWidth = indentWidth
             self.usesTabs = usesTabs
             self.xcodeVersion = xcodeVersion
-            self.deploymentTargets = deploymentTargets
+            self.deploymentTarget = deploymentTarget
         }
 
         public static func == (lhs: ProjectSpec.Options, rhs: ProjectSpec.Options) -> Bool {
@@ -75,7 +75,7 @@ public struct ProjectSpec {
             lhs.indentWidth == rhs.indentWidth &&
             lhs.usesTabs == rhs.usesTabs &&
             lhs.xcodeVersion == rhs.xcodeVersion &&
-            lhs.deploymentTargets == rhs.deploymentTargets
+            lhs.deploymentTarget == rhs.deploymentTarget
         }
     }
 
@@ -178,6 +178,6 @@ extension ProjectSpec.Options: JSONObjectConvertible {
         usesTabs = jsonDictionary.json(atKeyPath: "usesTabs")
         indentWidth = jsonDictionary.json(atKeyPath: "indentWidth")
         tabWidth = jsonDictionary.json(atKeyPath: "tabWidth")
-        deploymentTargets = jsonDictionary.json(atKeyPath: "deploymentTargets") ?? DeploymentTargets()
+        deploymentTarget = jsonDictionary.json(atKeyPath: "deploymentTarget") ?? DeploymentTarget()
     }
 }
