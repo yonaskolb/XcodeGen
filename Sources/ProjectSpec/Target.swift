@@ -30,7 +30,7 @@ public struct Target {
     public var configFiles: [String: String]
     public var scheme: TargetScheme?
     public var legacy: LegacyTarget?
-    public var platformVersion: String?
+    public var platformVersion: Version?
     
     public var isLegacy: Bool {
         return legacy != nil
@@ -44,7 +44,7 @@ public struct Target {
         return name
     }
 
-    public init(name: String, type: PBXProductType, platform: Platform, platformVersion: String? = nil, settings: Settings = .empty, configFiles: [String: String] = [:], sources: [TargetSource] = [], dependencies: [Dependency] = [], prebuildScripts: [BuildScript] = [], postbuildScripts: [BuildScript] = [], scheme: TargetScheme? = nil, legacy: LegacyTarget? = nil) {
+    public init(name: String, type: PBXProductType, platform: Platform, platformVersion: Version? = nil, settings: Settings = .empty, configFiles: [String: String] = [:], sources: [TargetSource] = [], dependencies: [Dependency] = [], prebuildScripts: [BuildScript] = [], postbuildScripts: [BuildScript] = [], scheme: TargetScheme? = nil, legacy: LegacyTarget? = nil) {
         self.name = name
         self.type = type
         self.platform = platform
@@ -212,9 +212,9 @@ extension Target: NamedJSONDictionaryConvertible {
         }
 
         if let string: String = jsonDictionary.json(atKeyPath: "platformVersion") {
-            platformVersion = string
+            platformVersion = try Version(string)
         } else if let double: Double = jsonDictionary.json(atKeyPath: "platformVersion") {
-            platformVersion = String(double)
+            platformVersion = try Version(double)
         } else {
             platformVersion = nil
         }

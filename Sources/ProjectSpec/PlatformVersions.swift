@@ -11,19 +11,19 @@ import JSONUtilities
 
 public struct PlatformVersions: Equatable {
 
-    public var iOS: String?
-    public var tvOS: String?
-    public var watchOS: String?
-    public var macOS: String?
+    public var iOS: Version?
+    public var tvOS: Version?
+    public var watchOS: Version?
+    public var macOS: Version?
 
-    public init(iOS: String? = nil, tvOS: String? = nil, watchOS: String? = nil, macOS: String? = nil) {
+    public init(iOS: Version? = nil, tvOS: Version? = nil, watchOS: Version? = nil, macOS: Version? = nil) {
         self.iOS = iOS
         self.tvOS = tvOS
         self.watchOS = watchOS
         self.macOS = macOS
     }
 
-    public func version(for platform: Platform) -> String? {
+    public func version(for platform: Platform) -> Version? {
         switch platform {
         case .iOS: return iOS
         case .tvOS: return tvOS
@@ -52,23 +52,31 @@ extension Platform {
     }
 }
 
+extension Version {
+
+    /// doesn't print patch
+    public var platformVersion: String {
+        return "\(major).\(minor)\(patch > 0 ? ".\(patch)" : "")"
+    }
+}
+
 extension PlatformVersions: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
 
-        func parseVersion(_ platform: String) -> String? {
+        func parseVersion(_ platform: String) throws -> Version? {
             if let string: String = jsonDictionary.json(atKeyPath: .key(platform)) {
-                return string
+                return try Version(string)
             } else if let double: Double = jsonDictionary.json(atKeyPath: .key(platform)) {
-                return String(double)
+                return try Version(double)
             } else {
                 return nil
             }
         }
-        iOS = parseVersion("iOS")
-        tvOS = parseVersion("tvOS")
-        watchOS = parseVersion("watchOS")
-        macOS = parseVersion("macOS")
+        iOS = try parseVersion("iOS")
+        tvOS = try parseVersion("tvOS")
+        watchOS = try parseVersion("watchOS")
+        macOS = try parseVersion("macOS")
     }
     
 }

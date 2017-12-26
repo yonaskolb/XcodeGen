@@ -1,6 +1,7 @@
 import Foundation
 import Spectre
 import xcproj
+import ProjectSpec
 
 func expectError<T: Error>(_ expectedError: T, _ closure: () throws -> Void) throws where T: CustomStringConvertible {
     do {
@@ -88,3 +89,11 @@ public protocol Named {
 extension XCBuildConfiguration: Named {}
 extension PBXNativeTarget: Named {}
 extension XCScheme: Named {}
+
+extension Version: ExpressibleByStringLiteral {
+
+    /// Will return nil literal not Semver
+    public init(stringLiteral value: String) {
+        try! self.init(value)
+    }
+}
