@@ -48,7 +48,7 @@ public struct Version: CustomStringConvertible, Equatable {
         return Version(major: major, minor: minor, patch: patch + 1)
     }
 
-    public static func ==(lhs: Version, rhs: Version) -> Bool {
+    public static func == (lhs: Version, rhs: Version) -> Bool {
         return lhs.major == rhs.major &&
             lhs.minor == rhs.minor &&
             lhs.patch == rhs.patch

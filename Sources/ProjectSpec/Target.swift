@@ -10,7 +10,7 @@ public struct LegacyTarget {
 }
 
 extension LegacyTarget: Equatable {
-    public static func ==(lhs: LegacyTarget, rhs: LegacyTarget) -> Bool {
+    public static func == (lhs: LegacyTarget, rhs: LegacyTarget) -> Bool {
         return lhs.toolPath == rhs.toolPath &&
             lhs.arguments == rhs.arguments &&
             lhs.passSettings == rhs.passSettings &&
@@ -31,7 +31,7 @@ public struct Target {
     public var scheme: TargetScheme?
     public var legacy: LegacyTarget?
     public var deploymentTarget: Version?
-    
+
     public var isLegacy: Bool {
         return legacy != nil
     }
@@ -185,7 +185,7 @@ extension TargetScheme: JSONObjectConvertible {
 }
 
 extension LegacyTarget: JSONObjectConvertible {
-    
+
     public init(jsonDictionary: JSONDictionary) throws {
         toolPath = try jsonDictionary.json(atKeyPath: "toolPath")
         arguments = jsonDictionary.json(atKeyPath: "arguments")

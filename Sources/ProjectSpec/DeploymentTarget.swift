@@ -1,10 +1,3 @@
-//
-//  Version.swift
-//  ProjectSpec
-//
-//  Created by Yonas Kolb on 22/12/17.
-//
-
 import Foundation
 import xcproj
 import JSONUtilities
@@ -78,5 +71,4 @@ extension DeploymentTarget: JSONObjectConvertible {
         watchOS = try parseVersion("watchOS")
         macOS = try parseVersion("macOS")
     }
-    
 }

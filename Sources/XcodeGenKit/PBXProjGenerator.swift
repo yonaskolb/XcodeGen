@@ -104,7 +104,7 @@ public class PBXProjGenerator {
             topLevelGroups.insert(rootGroup)
         }
 
-        let mainGroup = PBXGroup(reference: referenceGenerator.generate(PBXGroup.self, "Project"), children: Array(topLevelGroups), sourceTree: .group, usesTabs: spec.options.usesTabs.map{ $0 ? 1 : 0 }, indentWidth: spec.options.indentWidth, tabWidth: spec.options.tabWidth)
+        let mainGroup = PBXGroup(reference: referenceGenerator.generate(PBXGroup.self, "Project"), children: Array(topLevelGroups), sourceTree: .group, usesTabs: spec.options.usesTabs.map { $0 ? 1 : 0 }, indentWidth: spec.options.indentWidth, tabWidth: spec.options.tabWidth)
         addObject(mainGroup)
 
         sortGroups(group: mainGroup)
@@ -141,7 +141,7 @@ public class PBXProjGenerator {
         let childGroups = group.children.flatMap { proj.objects.groups[$0] }
         childGroups.forEach(sortGroups)
     }
-    
+
     func generateTarget(_ target: Target) throws -> PBXTarget {
 
         sourceGenerator.targetName = target.name
@@ -149,7 +149,7 @@ public class PBXProjGenerator {
 
         let sourceFiles = try sourceGenerator.getAllSourceFiles(sources: target.sources)
 
-        var plistPath: Path? = nil
+        var plistPath: Path?
         var searchForPlist = true
 
         let configs: [XCBuildConfiguration] = spec.configs.map { config in

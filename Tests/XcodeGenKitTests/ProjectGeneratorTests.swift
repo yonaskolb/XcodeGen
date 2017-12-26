@@ -173,15 +173,15 @@ func projectGeneratorTests() {
                 guard let projectConfigListReference = pbxProject.objects.projects.values.first?.buildConfigurationList,
                     let projectConfigReference = pbxProject.objects.configurationLists[projectConfigListReference]?.buildConfigurations.first,
                     let projectConfig = pbxProject.objects.buildConfigurations[projectConfigReference]
-                    else {
-                        throw failure("Couldn't find Project config")
+                else {
+                    throw failure("Couldn't find Project config")
                 }
 
                 guard let targetConfigListReference = pbxProject.objects.nativeTargets.referenceValues.first?.buildConfigurationList,
                     let targetConfigReference = pbxProject.objects.configurationLists[targetConfigListReference]?.buildConfigurations.first,
                     let targetConfig = pbxProject.objects.buildConfigurations[targetConfigReference]
-                    else {
-                        throw failure("Couldn't find Target config")
+                else {
+                    throw failure("Couldn't find Target config")
                 }
 
                 try expect(projectConfig.buildSettings["IPHONEOS_DEPLOYMENT_TARGET"] as? String) == "10.0"
@@ -477,8 +477,7 @@ func projectGeneratorTests() {
                     "ignore.file",
                     "*.ignored",
                     // not supported
-                    //"**/*.ignored",
-
+                    // "**/*.ignored",
                 ]
 
                 let target = Target(name: "Test", type: .application, platform: .iOS, sources: [TargetSource(path: "Sources", excludes: excludes)])
@@ -504,7 +503,6 @@ func projectGeneratorTests() {
                 try project.expectFileMissing(paths: ["Sources", "partial", "file_part"])
                 try project.expectFileMissing(paths: ["Sources", "a.ignored"])
                 try project.expectFileMissing(paths: ["Sources", "ignore.file"])
-
             }
 
             $0.it("generates file sources") {
@@ -643,7 +641,7 @@ func projectGeneratorTests() {
                     TargetSource(path: "A", buildPhase: .resources),
                     TargetSource(path: "B", buildPhase: .none),
                     TargetSource(path: "C", buildPhase: nil),
-                    ])
+                ])
                 let spec = ProjectSpec(basePath: directoryPath, name: "Test", targets: [target])
 
                 let project = try getPbxProj(spec)
@@ -734,7 +732,7 @@ extension PBXProj {
                         error = "isn't in a build phase when it's expected to be in \(buildPhase.rawValue.quoted)"
                     }
                 }
-            } else if let actualBuildPhase = actualBuildPhase  {
+            } else if let actualBuildPhase = actualBuildPhase {
                 error = "is in the \(actualBuildPhase.rawValue.quoted) build phase when it's expected to not be in any"
             }
             if let error = error {

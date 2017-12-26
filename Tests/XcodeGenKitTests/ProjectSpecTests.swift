@@ -119,7 +119,7 @@ func projectSpecTests() {
                                        build: .init(targets: [.init(target: "invalidTarget")]),
                                        run: .init(config: "debugInvalid"),
                                        archive: .init(config: "releaseInvalid")
-                    )]
+                )]
 
                 try expectValidationError(spec, .invalidSchemeTarget(scheme: "scheme1", target: "invalidTarget"))
                 try expectValidationError(spec, .invalidSchemeConfig(scheme: "scheme1", config: "debugInvalid"))
@@ -132,7 +132,7 @@ func projectSpecTests() {
                                        type: .application,
                                        platform: .iOS,
                                        sources: [.init(path: "generated.swift", optional: true)]
-                    )]
+                )]
                 try spec.validate()
             }
         }

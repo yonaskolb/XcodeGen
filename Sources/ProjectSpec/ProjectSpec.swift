@@ -67,15 +67,15 @@ public struct ProjectSpec {
 
         public static func == (lhs: ProjectSpec.Options, rhs: ProjectSpec.Options) -> Bool {
             return lhs.carthageBuildPath == rhs.carthageBuildPath &&
-            lhs.bundleIdPrefix == rhs.bundleIdPrefix &&
-            lhs.settingPresets == rhs.settingPresets &&
-            lhs.createIntermediateGroups == rhs.createIntermediateGroups &&
-            lhs.developmentLanguage == rhs.developmentLanguage &&
-            lhs.tabWidth == rhs.tabWidth &&
-            lhs.indentWidth == rhs.indentWidth &&
-            lhs.usesTabs == rhs.usesTabs &&
-            lhs.xcodeVersion == rhs.xcodeVersion &&
-            lhs.deploymentTarget == rhs.deploymentTarget
+                lhs.bundleIdPrefix == rhs.bundleIdPrefix &&
+                lhs.settingPresets == rhs.settingPresets &&
+                lhs.createIntermediateGroups == rhs.createIntermediateGroups &&
+                lhs.developmentLanguage == rhs.developmentLanguage &&
+                lhs.tabWidth == rhs.tabWidth &&
+                lhs.indentWidth == rhs.indentWidth &&
+                lhs.usesTabs == rhs.usesTabs &&
+                lhs.xcodeVersion == rhs.xcodeVersion &&
+                lhs.deploymentTarget == rhs.deploymentTarget
         }
     }
 

@@ -229,18 +229,18 @@ func specLoadingTests() {
                                               bundleIdPrefix: "com.test",
                                               developmentLanguage: "ja",
                                               deploymentTarget: DeploymentTarget(
-                                                iOS: "11.1",
-                                                tvOS: "10.0",
-                                                watchOS: "3.0",
-                                                macOS: "10.12.1"))
+                                                  iOS: "11.1",
+                                                  tvOS: "10.0",
+                                                  watchOS: "3.0",
+                                                  macOS: "10.12.1"))
             let expected = ProjectSpec(basePath: "", name: "test", options: options)
             let dictionary: [String: Any] = ["options": [
                 "carthageBuildPath": "../Carthage/Build",
                 "bundleIdPrefix": "com.test",
                 "createIntermediateGroups": true,
                 "developmentLanguage": "ja",
-                "deploymentTarget": ["iOS": 11.1, "tvOS": 10.0, "watchOS": "3", "macOS": "10.12.1" ]
-                ]]
+                "deploymentTarget": ["iOS": 11.1, "tvOS": 10.0, "watchOS": "3", "macOS": "10.12.1"],
+            ]]
             let parsedSpec = try getProjectSpec(dictionary)
             try expect(parsedSpec) == expected
         }
