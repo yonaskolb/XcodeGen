@@ -14,17 +14,6 @@ func projectSpecTests() {
         let dynamicLibrary = Target(name: "MyDynamicLibrary", type: .dynamicLibrary, platform: .iOS,
                                     settings: Settings(buildSettings: ["SETTING_2": "VALUE"]))
 
-        $0.describe("Types") {
-            $0.it("is a framework when it has the right extension") {
-                try expect(framework.type.isFramework).to.beTrue()
-            }
-
-            $0.it("is a library when it has the right type") {
-                try expect(staticLibrary.type.isLibrary).to.beTrue()
-                try expect(dynamicLibrary.type.isLibrary).to.beTrue()
-            }
-        }
-
         func expectValidationError(_ spec: ProjectSpec, _ expectedError: SpecValidationError.ValidationError) throws {
             do {
                 try spec.validate()
@@ -37,6 +26,40 @@ func projectSpecTests() {
                 throw failure("Supposed to fail with \"\(expectedError)\"")
             }
             throw failure("Supposed to fail with \"\(expectedError)\"")
+        }
+
+        $0.describe("Types") {
+            $0.it("is a framework when it has the right extension") {
+                try expect(framework.type.isFramework).to.beTrue()
+            }
+
+            $0.it("is a library when it has the right type") {
+                try expect(staticLibrary.type.isLibrary).to.beTrue()
+                try expect(dynamicLibrary.type.isLibrary).to.beTrue()
+            }
+        }
+
+        $0.describe("Deployment Target") {
+
+            $0.it("has correct build setting") {
+                try expect(Platform.iOS.deploymentTargetSetting) == "IPHONEOS_DEPLOYMENT_TARGET"
+                try expect(Platform.tvOS.deploymentTargetSetting) == "TVOS_DEPLOYMENT_TARGET"
+                try expect(Platform.watchOS.deploymentTargetSetting) == "WATCHOS_DEPLOYMENT_TARGET"
+                try expect(Platform.macOS.deploymentTargetSetting) == "MACOSX_DEPLOYMENT_TARGET"
+            }
+
+            $0.it("parses version correctly") {
+                try expect(Version("2").deploymentTarget) == "2.0"
+                try expect(Version("2.0").deploymentTarget) == "2.0"
+                try expect(Version("2.1").deploymentTarget) == "2.1"
+                try expect(Version("2.1.0").deploymentTarget) == "2.1"
+                try expect(Version("2.12.0").deploymentTarget) == "2.12"
+                try expect(Version("2.1.2").deploymentTarget) == "2.1.2"
+                try expect(Version("2.0.2").deploymentTarget) == "2.0.2"
+                try expect(Version(2).deploymentTarget) == "2.0"
+                try expect(Version(2.0).deploymentTarget) == "2.0"
+                try expect(Version(2.1).deploymentTarget) == "2.1"
+            }
         }
 
         $0.describe("Validation") {

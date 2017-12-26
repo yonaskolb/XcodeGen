@@ -5,6 +5,7 @@ public enum SpecParsingError: Error, CustomStringConvertible {
     case unknownTargetPlatform(String)
     case invalidDependency([String: Any])
     case unknownSourceBuildPhase(String)
+    case invalidVersion(String)
 
     public var description: String {
         switch self {
@@ -12,6 +13,7 @@ public enum SpecParsingError: Error, CustomStringConvertible {
         case let .unknownTargetPlatform(platform): return "Unknown Target platform: \(platform)"
         case let .invalidDependency(dependency): return "Unknown Target dependency: \(dependency)"
         case let .unknownSourceBuildPhase(buildPhase): return "Unknown Source Build Phase: \(buildPhase)"
+        case let .invalidVersion(version): return "Invalid version: \(version)"
         }
     }
 }

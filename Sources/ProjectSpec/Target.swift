@@ -30,6 +30,7 @@ public struct Target {
     public var configFiles: [String: String]
     public var scheme: TargetScheme?
     public var legacy: LegacyTarget?
+    public var deploymentTarget: Version?
     
     public var isLegacy: Bool {
         return legacy != nil
@@ -43,10 +44,11 @@ public struct Target {
         return name
     }
 
-    public init(name: String, type: PBXProductType, platform: Platform, settings: Settings = .empty, configFiles: [String: String] = [:], sources: [TargetSource] = [], dependencies: [Dependency] = [], prebuildScripts: [BuildScript] = [], postbuildScripts: [BuildScript] = [], scheme: TargetScheme? = nil, legacy: LegacyTarget? = nil) {
+    public init(name: String, type: PBXProductType, platform: Platform, deploymentTarget: Version? = nil, settings: Settings = .empty, configFiles: [String: String] = [:], sources: [TargetSource] = [], dependencies: [Dependency] = [], prebuildScripts: [BuildScript] = [], postbuildScripts: [BuildScript] = [], scheme: TargetScheme? = nil, legacy: LegacyTarget? = nil) {
         self.name = name
         self.type = type
         self.platform = platform
+        self.deploymentTarget = deploymentTarget
         self.settings = settings
         self.configFiles = configFiles
         self.sources = sources
@@ -138,6 +140,7 @@ extension Target: Equatable {
         return lhs.name == rhs.name &&
             lhs.type == rhs.type &&
             lhs.platform == rhs.platform &&
+            lhs.deploymentTarget == rhs.deploymentTarget &&
             lhs.settings == rhs.settings &&
             lhs.configFiles == rhs.configFiles &&
             lhs.sources == rhs.sources &&
@@ -207,6 +210,15 @@ extension Target: NamedJSONDictionaryConvertible {
         } else {
             throw SpecParsingError.unknownTargetPlatform(platformString)
         }
+
+        if let string: String = jsonDictionary.json(atKeyPath: "deploymentTarget") {
+            deploymentTarget = try Version(string)
+        } else if let double: Double = jsonDictionary.json(atKeyPath: "deploymentTarget") {
+            deploymentTarget = try Version(double)
+        } else {
+            deploymentTarget = nil
+        }
+
         settings = jsonDictionary.json(atKeyPath: "settings") ?? .empty
         configFiles = jsonDictionary.json(atKeyPath: "configFiles") ?? [:]
         if let source: String = jsonDictionary.json(atKeyPath: "sources") {

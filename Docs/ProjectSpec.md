@@ -76,6 +76,14 @@ Note that target names can also be changed by adding a `name` property to a targ
 - [ ] **indentWidth**: **Int** - If this is specified, the Xcode project will override the user's setting for indent width in number of spaces.
 - [ ] **tabWidth**: **Int** - If this is specified, the Xcode project will override the user's setting for indent width in number of spaces.
 - [ ] **xcodeVersion**: **String** - The version of Xcode. This defaults to the latest version periodically. You can specify it in the format `0910` or `9.1`
+- [ ] **deploymentTarget**: **[[Platform](#platform): String]** - A project wide deployment target can be specified for each platform otherwise the default SDK version in Xcode will be used. This will be overridden by any custom build settings that set the deployment target eg `IPHONEOS_DEPLOYMENT_TARGET`. Target specific deployment targets can also be set with [Target](#target).deploymentTarget.
+
+```yaml
+options:
+  deploymentTarget:
+    watchOS: 2.0
+    tvOS: 10.0
+```
 
 ### Configs
 Each config maps to a build type of either `debug` or `release` which will then apply default build settings to the project. Any value other than `debug` or `release` (for example `none`), will mean no default build settings will be applied to the project.
@@ -137,6 +145,7 @@ Settings are merged in the following order: groups, base, configs.
 
 - [x] **type**: **[Product Type](#product-type)** - Product type of the target
 - [x] **platform**: **[Platform](#platform)** - Platform of the target
+- [ ] **deploymentTarget**: **String or Double** - The deployment target eg (11.0). If this is not specified the value from the project set in [Options](#options)`.deploymentTarget.PLATFORM` will be used.
 - [ ] **sources**: **[Sources](#sources)** - Source directories of the target
 - [ ] **configFiles**: **[Config Files](#config-files)** - `.xcconfig` files per config
 - [ ] **settings**: **[Settings](#settings)** - Target specific build settings. Default platform and product type settings will be applied first before any custom settings defined here. Other context dependant settings will be set automatically as well:
@@ -356,7 +365,7 @@ For example, the spec below would create 3 schemes called:
 Each scheme would use different build configuration for the different build types, specifically debug configs for `run`, `test`, and `analyze`, and release configs for `profile` and `archive`.
 The MyUnitTests target would also be linked.
 
-```
+```yaml
 configs:
   Test Debug: debug
   Staging Debug: debug

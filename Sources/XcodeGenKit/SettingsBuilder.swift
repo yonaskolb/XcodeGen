@@ -15,6 +15,13 @@ extension ProjectSpec {
             buildSettings += SettingsPresetFile.config(type).getBuildSettings()
         }
 
+        // apply custom platform version
+        for platform in Platform.all {
+            if let version = options.deploymentTarget.version(for: platform) {
+                buildSettings[platform.deploymentTargetSetting] = version.deploymentTarget
+            }
+        }
+
         // Prevent setting presets from overrwriting settings in project xcconfig files
         if let configPath = configFiles[config.name] {
             buildSettings = removeConfigFileSettings(from: buildSettings, configPath: configPath)
@@ -32,6 +39,11 @@ extension ProjectSpec {
             buildSettings += SettingsPresetFile.platform(target.platform).getBuildSettings()
             buildSettings += SettingsPresetFile.product(target.type).getBuildSettings()
             buildSettings += SettingsPresetFile.productPlatform(target.type, target.platform).getBuildSettings()
+        }
+
+        // apply custom platform version
+        if let version = target.deploymentTarget {
+            buildSettings[target.platform.deploymentTargetSetting] = version.deploymentTarget
         }
 
         // Prevent setting presets from overrwriting settings in target xcconfig files

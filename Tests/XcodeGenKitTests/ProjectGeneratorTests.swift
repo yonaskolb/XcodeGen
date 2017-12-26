@@ -164,6 +164,35 @@ func projectGeneratorTests() {
                 try expect(nativeTargets.contains { $0.name == framework.name }).beTrue()
             }
 
+            $0.it("generates platform version") {
+                let target = Target(name: "Target", type: .application, platform: .watchOS, deploymentTarget: "2.0")
+                let spec = ProjectSpec(basePath: "", name: "", targets: [target], options: .init(deploymentTarget: DeploymentTarget(iOS: "10.0", watchOS: "3.0")))
+
+                let pbxProject = try getPbxProj(spec)
+
+                guard let projectConfigListReference = pbxProject.objects.projects.values.first?.buildConfigurationList,
+                    let projectConfigReference = pbxProject.objects.configurationLists[projectConfigListReference]?.buildConfigurations.first,
+                    let projectConfig = pbxProject.objects.buildConfigurations[projectConfigReference]
+                    else {
+                        throw failure("Couldn't find Project config")
+                }
+
+                guard let targetConfigListReference = pbxProject.objects.nativeTargets.referenceValues.first?.buildConfigurationList,
+                    let targetConfigReference = pbxProject.objects.configurationLists[targetConfigListReference]?.buildConfigurations.first,
+                    let targetConfig = pbxProject.objects.buildConfigurations[targetConfigReference]
+                    else {
+                        throw failure("Couldn't find Target config")
+                }
+
+                try expect(projectConfig.buildSettings["IPHONEOS_DEPLOYMENT_TARGET"] as? String) == "10.0"
+                try expect(projectConfig.buildSettings["WATCHOS_DEPLOYMENT_TARGET"] as? String) == "3.0"
+                try expect(projectConfig.buildSettings["TVOS_DEPLOYMENT_TARGET"]).beNil()
+
+                try expect(targetConfig.buildSettings["IPHONEOS_DEPLOYMENT_TARGET"]).beNil()
+                try expect(targetConfig.buildSettings["WATCHOS_DEPLOYMENT_TARGET"] as? String) == "2.0"
+                try expect(targetConfig.buildSettings["TVOS_DEPLOYMENT_TARGET"]).beNil()
+            }
+
             $0.it("generates dependencies") {
                 let pbxProject = try getPbxProj(spec)
                 let nativeTargets = pbxProject.objects.nativeTargets.referenceValues
