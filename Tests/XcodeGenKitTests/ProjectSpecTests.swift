@@ -125,8 +125,8 @@ func projectSpecTests() {
                 try expectValidationError(spec, .invalidBuildScriptPath(target: "target1", name: "prebuildScript1", path: "invalidPrebuildScript"))
                 try expectValidationError(spec, .invalidBuildScriptPath(target: "target1", name: nil, path: "invalidPostbuildScript"))
 
-                try expectValidationError(spec, .missingConfigTypeForGeneratedTargetScheme(target: "target1", configType: .debug))
-                try expectValidationError(spec, .missingConfigTypeForGeneratedTargetScheme(target: "target1", configType: .release))
+                try expectValidationError(spec, .missingConfigForTargetScheme(target: "target1", configType: .debug))
+                try expectValidationError(spec, .missingConfigForTargetScheme(target: "target1", configType: .release))
 
                 spec.targets[0].scheme?.configVariants = ["invalidVariant"]
                 try expectValidationError(spec, .invalidTargetSchemeConfigVariant(target: "target1", configVariant: "invalidVariant", configType: .debug))

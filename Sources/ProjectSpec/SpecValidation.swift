@@ -89,10 +89,10 @@ extension ProjectSpec {
 
                 if scheme.configVariants.isEmpty {
                     if !configs.contains(where: { $0.type == .debug }) {
-                        errors.append(.missingConfigTypeForGeneratedTargetScheme(target: target.name, configType: .debug))
+                        errors.append(.missingConfigForTargetScheme(target: target.name, configType: .debug))
                     }
                     if !configs.contains(where: { $0.type == .release }) {
-                        errors.append(.missingConfigTypeForGeneratedTargetScheme(target: target.name, configType: .release))
+                        errors.append(.missingConfigForTargetScheme(target: target.name, configType: .release))
                     }
                 }
 

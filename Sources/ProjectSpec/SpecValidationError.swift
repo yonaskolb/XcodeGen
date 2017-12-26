@@ -18,7 +18,7 @@ public struct SpecValidationError: Error, CustomStringConvertible {
         case invalidBuildScriptPath(target: String, name: String?, path: String)
         case invalidFileGroup(String)
         case invalidConfigFileConfig(String)
-        case missingConfigTypeForGeneratedTargetScheme(target: String, configType: ConfigType)
+        case missingConfigForTargetScheme(target: String, configType: ConfigType)
 
         public var description: String {
             switch self {
@@ -48,7 +48,7 @@ public struct SpecValidationError: Error, CustomStringConvertible {
                 return "Invalid file group \(group.quoted)"
             case let .invalidConfigFileConfig(config):
                 return "Config file has invalid config \(config.quoted)"
-            case let .missingConfigTypeForGeneratedTargetScheme(target, configType):
+            case let .missingConfigForTargetScheme(target, configType):
                 return "Target \(target.quoted) is missing a config of type \(configType.rawValue) to generate its scheme"
             }
         }

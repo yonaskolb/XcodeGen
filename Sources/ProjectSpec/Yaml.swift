@@ -10,7 +10,7 @@ public func loadYamlDictionary(path: Path) throws -> [String: Any] {
     guard let yaml = try Yams.load(yaml: string) else {
         return [:]
     }
-    return filterNull(yaml) as! [String: Any]
+    return filterNull(yaml) as? [String: Any] ?? [:]
 }
 
 fileprivate func filterNull(_ object: Any) -> Any {
