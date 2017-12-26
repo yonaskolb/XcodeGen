@@ -44,9 +44,17 @@ class SourceGenerator {
     func generateSourceFile(targetSource: TargetSource, path: Path, buildPhase: BuildPhase? = nil) -> SourceFile {
         let fileReference = fileReferencesByPath[path]!
         var settings: [String: Any] = [:]
-        let buildPhase = buildPhase ?? getDefaultBuildPhase(for: path)
+        let chosenBuildPhase: BuildPhase?
 
-        if buildPhase == .headers {
+        if let buildPhase = buildPhase {
+            chosenBuildPhase = buildPhase
+        } else if let buildPhase = targetSource.buildPhase {
+            chosenBuildPhase = buildPhase.buildPhase
+        } else {
+            chosenBuildPhase = getDefaultBuildPhase(for: path)
+        }
+
+        if chosenBuildPhase == .headers {
             settings = ["ATTRIBUTES": ["Public"]]
         }
         if targetSource.compilerFlags.count > 0 {
@@ -55,7 +63,7 @@ class SourceGenerator {
 
         // TODO: add the target name to the reference generator string so shared files don't have same reference (that will be escaped by appending a number)
         let buildFile = PBXBuildFile(reference: referenceGenerator.generate(PBXBuildFile.self, fileReference + targetName), fileRef: fileReference, settings: settings.isEmpty ? nil : settings)
-        return SourceFile(path: path, fileReference: fileReference, buildFile: buildFile, buildPhase: buildPhase)
+        return SourceFile(path: path, fileReference: fileReference, buildFile: buildFile, buildPhase: chosenBuildPhase)
     }
 
     func getContainedFileReference(path: Path) -> String {
