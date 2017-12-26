@@ -377,6 +377,23 @@
 		};
 /* End PBXHeadersBuildPhase section */
 
+/* Begin PBXLegacyTarget section */
+		T_4792646603740 /* Legacy */ = {
+			isa = PBXLegacyTarget;
+			buildConfigurationList = CL_479264660374 /* Build configuration list for PBXLegacyTarget "Legacy" */;
+			buildPhases = (
+			);
+			buildRules = (
+			);
+			buildToolPath = /usr/bin/true;
+			dependencies = (
+			);
+			name = Legacy;
+			passBuildSettingsInEnvironment = 1;
+			productReference = FR_479264660374 /* Legacy */;
+		};
+/* End PBXLegacyTarget section */
+
 /* Begin PBXNativeTarget section */
 		T_4387045385063 /* Framework_watchOS */ = {
 			isa = PBXNativeTarget;
@@ -484,23 +501,6 @@
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
-
-/* Begin PBXLegacyTarget section */
-		T_4792646603740 /* Legacy */ = {
-			isa = PBXLegacyTarget;
-			buildConfigurationList = CL_479264660374 /* Build configuration list for PBXLegacyTarget "Legacy" */;
-			buildPhases = (
-			);
-			buildRules = (
-			);
-			buildToolPath = /usr/bin/true;
-			dependencies = (
-			);
-			name = Legacy;
-			passBuildSettingsInEnvironment = 1;
-			productReference = FR_479264660374 /* Legacy */;
-		};
-/* End PBXLegacyTarget section */
 
 /* Begin PBXProject section */
 		P_8448771205358 /* Project object */ = {

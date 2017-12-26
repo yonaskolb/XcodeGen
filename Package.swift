@@ -10,7 +10,7 @@ let package = Package(
         .library(name: "ProjectSpec", targets: ["ProjectSpec"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/kylef/PathKit.git", .revision("a667cd3")),
+        .package(url: "https://github.com/kylef/PathKit.git", from: "0.9.0"),
         .package(url: "https://github.com/kylef/Commander.git", from: "0.8.0"),
         .package(url: "https://github.com/jpsim/Yams.git", from: "0.3.6"),
         .package(url: "https://github.com/yonaskolb/JSONUtilities.git", from: "3.3.0"),
