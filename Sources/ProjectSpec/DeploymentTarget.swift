@@ -9,7 +9,12 @@ public struct DeploymentTarget: Equatable {
     public var watchOS: Version?
     public var macOS: Version?
 
-    public init(iOS: Version? = nil, tvOS: Version? = nil, watchOS: Version? = nil, macOS: Version? = nil) {
+    public init(
+        iOS: Version? = nil,
+        tvOS: Version? = nil,
+        watchOS: Version? = nil,
+        macOS: Version? = nil
+    ) {
         self.iOS = iOS
         self.tvOS = tvOS
         self.watchOS = watchOS

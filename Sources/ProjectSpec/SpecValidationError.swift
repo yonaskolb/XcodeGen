@@ -22,20 +22,34 @@ public struct SpecValidationError: Error, CustomStringConvertible {
 
         public var description: String {
             switch self {
-            case let .invalidTargetDependency(target, dependency): return "Target \(target.quoted) has invalid dependency: \(dependency.quoted)"
-            case let .invalidTargetConfigFile(target, configFile, config): return "Target \(target.quoted) has invalid config file \(configFile.quoted) for config \(config.quoted)"
-            case let .invalidTargetSource(target, source): return "Target \(target.quoted) has a missing source directory \(source.quoted)"
-            case let .invalidTargetSchemeConfigVariant(target, configVariant, configType): return "Target \(target.quoted) has an invalid scheme config variant which requires a config that has a \(configType.rawValue.quoted) type and contains the name \(configVariant.quoted)"
-            case let .invalidTargetSchemeTest(target, test): return "Target \(target.quoted) scheme has invalid test \(test.quoted)"
-            case let .invalidConfigFile(configFile, config): return "Invalid config file \(configFile.quoted) for config \(config.quoted)"
-            case let .invalidSchemeTarget(scheme, target): return "Scheme \(scheme.quoted) has invalid build target \(target.quoted)"
-            case let .invalidSchemeConfig(scheme, config): return "Scheme \(scheme.quoted) has invalid build configuration \(config.quoted)"
-            case let .invalidBuildSettingConfig(config): return "Build setting has invalid build configuration \(config.quoted)"
-            case let .invalidSettingsGroup(group): return "Invalid settings group \(group.quoted)"
-            case let .invalidBuildScriptPath(target, name, path): return "Target \(target.quoted) has a script \(name != nil ? "\(name!.quoted) which has a " : "")path that doesn't exist \(path.quoted)"
-            case let .invalidFileGroup(group): return "Invalid file group \(group.quoted)"
-            case let .invalidConfigFileConfig(config): return "Config file has invalid config \(config.quoted)"
-            case let .missingConfigTypeForGeneratedTargetScheme(target, configType): return "Target \(target.quoted) is missing a config of type \(configType.rawValue) to generate its scheme"
+            case let .invalidTargetDependency(target, dependency):
+                return "Target \(target.quoted) has invalid dependency: \(dependency.quoted)"
+            case let .invalidTargetConfigFile(target, configFile, config):
+                return "Target \(target.quoted) has invalid config file \(configFile.quoted) for config \(config.quoted)"
+            case let .invalidTargetSource(target, source):
+                return "Target \(target.quoted) has a missing source directory \(source.quoted)"
+            case let .invalidTargetSchemeConfigVariant(target, configVariant, configType):
+                return "Target \(target.quoted) has an invalid scheme config variant which requires a config that has a \(configType.rawValue.quoted) type and contains the name \(configVariant.quoted)"
+            case let .invalidTargetSchemeTest(target, test):
+                return "Target \(target.quoted) scheme has invalid test \(test.quoted)"
+            case let .invalidConfigFile(configFile, config):
+                return "Invalid config file \(configFile.quoted) for config \(config.quoted)"
+            case let .invalidSchemeTarget(scheme, target):
+                return "Scheme \(scheme.quoted) has invalid build target \(target.quoted)"
+            case let .invalidSchemeConfig(scheme, config):
+                return "Scheme \(scheme.quoted) has invalid build configuration \(config.quoted)"
+            case let .invalidBuildSettingConfig(config):
+                return "Build setting has invalid build configuration \(config.quoted)"
+            case let .invalidSettingsGroup(group):
+                return "Invalid settings group \(group.quoted)"
+            case let .invalidBuildScriptPath(target, name, path):
+                return "Target \(target.quoted) has a script \(name != nil ? "\(name!.quoted) which has a " : "")path that doesn't exist \(path.quoted)"
+            case let .invalidFileGroup(group):
+                return "Invalid file group \(group.quoted)"
+            case let .invalidConfigFileConfig(config):
+                return "Config file has invalid config \(config.quoted)"
+            case let .missingConfigTypeForGeneratedTargetScheme(target, configType):
+                return "Target \(target.quoted) is missing a config of type \(configType.rawValue) to generate its scheme"
             }
         }
     }

@@ -52,7 +52,18 @@ public struct ProjectSpec {
             }
         }
 
-        public init(carthageBuildPath: String? = nil, createIntermediateGroups: Bool = false, bundleIdPrefix: String? = nil, settingPresets: SettingPresets = .all, developmentLanguage: String? = nil, indentWidth: Int? = nil, tabWidth: Int? = nil, usesTabs: Bool? = nil, xcodeVersion: String? = nil, deploymentTarget: DeploymentTarget = .init()) {
+        public init(
+            carthageBuildPath: String? = nil,
+            createIntermediateGroups: Bool = false,
+            bundleIdPrefix: String? = nil,
+            settingPresets: SettingPresets = .all,
+            developmentLanguage: String? = nil,
+            indentWidth: Int? = nil,
+            tabWidth: Int? = nil,
+            usesTabs: Bool? = nil,
+            xcodeVersion: String? = nil,
+            deploymentTarget: DeploymentTarget = .init()
+        ) {
             self.carthageBuildPath = carthageBuildPath
             self.createIntermediateGroups = createIntermediateGroups
             self.bundleIdPrefix = bundleIdPrefix
@@ -79,7 +90,19 @@ public struct ProjectSpec {
         }
     }
 
-    public init(basePath: Path, name: String, configs: [Config] = Config.defaultConfigs, targets: [Target] = [], settings: Settings = .empty, settingGroups: [String: Settings] = [:], schemes: [Scheme] = [], options: Options = Options(), fileGroups: [String] = [], configFiles: [String: String] = [:], attributes: [String: Any] = [:]) {
+    public init(
+        basePath: Path,
+        name: String,
+        configs: [Config] = Config.defaultConfigs,
+        targets: [Target] = [],
+        settings: Settings = .empty,
+        settingGroups: [String: Settings] = [:],
+        schemes: [Scheme] = [],
+        options: Options = Options(),
+        fileGroups: [String] = [],
+        configFiles: [String: String] = [:],
+        attributes: [String: Any] = [:]
+    ) {
         self.basePath = basePath
         self.name = name
         self.targets = targets
@@ -112,7 +135,10 @@ extension ProjectSpec: CustomDebugStringConvertible {
         }
 
         if !settingGroups.isEmpty {
-            string += "\nSetting Groups:\n\(indent)" + settingGroups.keys.sorted().map { "⚙️  \($0)" }.joined(separator: "\n\(indent)")
+            string += "\nSetting Groups:\n\(indent)" + settingGroups.keys
+                .sorted()
+                .map { "⚙️  \($0)" }
+                .joined(separator: "\n\(indent)")
         }
 
         if !targets.isEmpty {
@@ -146,9 +172,11 @@ extension ProjectSpec {
         let jsonDictionary = try ProjectSpec.filterJSON(jsonDictionary: jsonDictionary)
         name = try jsonDictionary.json(atKeyPath: "name")
         settings = jsonDictionary.json(atKeyPath: "settings") ?? .empty
-        settingGroups = jsonDictionary.json(atKeyPath: "settingGroups") ?? jsonDictionary.json(atKeyPath: "settingPresets") ?? [:]
+        settingGroups = jsonDictionary.json(atKeyPath: "settingGroups")
+            ?? jsonDictionary.json(atKeyPath: "settingPresets") ?? [:]
         let configs: [String: String] = jsonDictionary.json(atKeyPath: "configs") ?? [:]
-        self.configs = configs.isEmpty ? Config.defaultConfigs : configs.map { Config(name: $0, type: ConfigType(rawValue: $1)) }.sorted { $0.name < $1.name }
+        self.configs = configs.isEmpty ? Config.defaultConfigs :
+            configs.map { Config(name: $0, type: ConfigType(rawValue: $1)) }.sorted { $0.name < $1.name }
         targets = try jsonDictionary.json(atKeyPath: "targets").sorted { $0.name < $1.name }
         schemes = try jsonDictionary.json(atKeyPath: "schemes")
         fileGroups = jsonDictionary.json(atKeyPath: "fileGroups") ?? []

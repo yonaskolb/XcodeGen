@@ -72,10 +72,18 @@ extension ProjectSpec {
 
                 for configVariant in scheme.configVariants {
                     if !configs.contains(where: { $0.name.contains(configVariant) && $0.type == .debug }) {
-                        errors.append(.invalidTargetSchemeConfigVariant(target: target.name, configVariant: configVariant, configType: .debug))
+                        errors.append(.invalidTargetSchemeConfigVariant(
+                            target: target.name,
+                            configVariant: configVariant,
+                            configType: .debug
+                        ))
                     }
                     if !configs.contains(where: { $0.name.contains(configVariant) && $0.type == .release }) {
-                        errors.append(.invalidTargetSchemeConfigVariant(target: target.name, configVariant: configVariant, configType: .release))
+                        errors.append(.invalidTargetSchemeConfigVariant(
+                            target: target.name,
+                            configVariant: configVariant,
+                            configType: .release
+                        ))
                     }
                 }
 

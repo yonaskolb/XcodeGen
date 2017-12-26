@@ -20,12 +20,20 @@ func projectGeneratorTests() {
 
     describe("Project Generator") {
 
-        let application = Target(name: "MyApp", type: .application, platform: .iOS,
-                                 settings: Settings(buildSettings: ["SETTING_1": "VALUE"]),
-                                 dependencies: [Dependency(type: .target, reference: "MyFramework")])
+        let application = Target(
+            name: "MyApp",
+            type: .application,
+            platform: .iOS,
+            settings: Settings(buildSettings: ["SETTING_1": "VALUE"]),
+            dependencies: [Dependency(type: .target, reference: "MyFramework")]
+        )
 
-        let framework = Target(name: "MyFramework", type: .framework, platform: .iOS,
-                               settings: Settings(buildSettings: ["SETTING_2": "VALUE"]))
+        let framework = Target(
+            name: "MyFramework",
+            type: .framework,
+            platform: .iOS,
+            settings: Settings(buildSettings: ["SETTING_2": "VALUE"])
+        )
 
         let targets = [application, framework]
 
@@ -94,7 +102,11 @@ func projectGeneratorTests() {
             }
 
             $0.it("generates configs") {
-                let spec = ProjectSpec(basePath: "", name: "test", configs: [Config(name: "config1"), Config(name: "config2")])
+                let spec = ProjectSpec(
+                    basePath: "",
+                    name: "test",
+                    configs: [Config(name: "config1"), Config(name: "config2")]
+                )
                 let project = try getProject(spec)
                 let configs = project.pbxproj.objects.buildConfigurations.referenceValues
                 try expect(configs.count) == 2
@@ -103,7 +115,11 @@ func projectGeneratorTests() {
             }
 
             $0.it("clears config settings when missing type") {
-                let spec = ProjectSpec(basePath: "", name: "test", configs: [Config(name: "config")])
+                let spec = ProjectSpec(
+                    basePath: "",
+                    name: "test",
+                    configs: [Config(name: "config")]
+                )
                 let project = try getProject(spec)
                 guard let config = project.pbxproj.objects.buildConfigurations.first?.value else {
                     throw failure("configuration not found")
@@ -140,11 +156,15 @@ func projectGeneratorTests() {
             }
 
             $0.it("applies partial config settings") {
-                let spec = ProjectSpec(basePath: "", name: "test", configs: [
-                    Config(name: "Staging Debug", type: .debug),
-                    Config(name: "Staging Release", type: .release),
-                ],
-                settings: Settings(configSettings: ["staging": ["SETTING1": "VALUE1"], "debug": ["SETTING2": "VALUE2"]]))
+                let spec = ProjectSpec(
+                    basePath: "",
+                    name: "test",
+                    configs: [
+                        Config(name: "Staging Debug", type: .debug),
+                        Config(name: "Staging Release", type: .release),
+                    ],
+                    settings: Settings(configSettings: ["staging": ["SETTING1": "VALUE1"], "debug": ["SETTING2": "VALUE2"]])
+                )
 
                 var buildSettings = spec.getProjectBuildSettings(config: spec.configs.first!)
                 try expect(buildSettings["SETTING1"] as? String) == "VALUE1"
@@ -207,7 +227,8 @@ func projectGeneratorTests() {
                 scriptSpec.targets[0].postbuildScripts = [BuildScript(script: .script("script2"))]
                 let pbxProject = try getPbxProj(scriptSpec)
 
-                guard let nativeTarget = pbxProject.objects.nativeTargets.referenceValues.first(where: { !$0.buildPhases.isEmpty }) else {
+                guard let nativeTarget = pbxProject.objects.nativeTargets.referenceValues
+                    .first(where: { !$0.buildPhases.isEmpty }) else {
                     throw failure("Target with build phases not found")
                 }
                 let buildPhases = nativeTarget.buildPhases
@@ -224,9 +245,23 @@ func projectGeneratorTests() {
             }
 
             $0.it("generates targets with cylical dependencies") {
-                let target1 = Target(name: "target1", type: .framework, platform: .iOS, dependencies: [Dependency(type: .target, reference: "target2")])
-                let target2 = Target(name: "target2", type: .framework, platform: .iOS, dependencies: [Dependency(type: .target, reference: "target1")])
-                let spec = ProjectSpec(basePath: "", name: "test", targets: [target1, target2])
+                let target1 = Target(
+                    name: "target1",
+                    type: .framework,
+                    platform: .iOS,
+                    dependencies: [Dependency(type: .target, reference: "target2")]
+                )
+                let target2 = Target(
+                    name: "target2",
+                    type: .framework,
+                    platform: .iOS,
+                    dependencies: [Dependency(type: .target, reference: "target1")]
+                )
+                let spec = ProjectSpec(
+                    basePath: "",
+                    name: "test",
+                    targets: [target1, target2]
+                )
 
                 _ = try getPbxProj(spec)
             }
@@ -236,13 +271,28 @@ func projectGeneratorTests() {
 
             let buildTarget = Scheme.BuildTarget(target: application.name)
             $0.it("generates scheme") {
-                let scheme = Scheme(name: "MyScheme", build: Scheme.Build(targets: [buildTarget]))
-                let spec = ProjectSpec(basePath: "", name: "test", targets: [application, framework], schemes: [scheme])
+                let scheme = Scheme(
+                    name: "MyScheme",
+                    build: Scheme.Build(targets: [buildTarget])
+                )
+                let spec = ProjectSpec(
+                    basePath: "",
+                    name: "test",
+                    targets: [application, framework],
+                    schemes: [scheme]
+                )
                 let project = try getProject(spec)
-                guard let target = project.pbxproj.objects.nativeTargets.referenceValues.first(where: { $0.name == application.name }) else { throw failure("Target not found") }
-                guard let xcscheme = project.sharedData?.schemes.first else { throw failure("Scheme not found") }
+                guard let target = project.pbxproj.objects.nativeTargets.referenceValues
+                    .first(where: { $0.name == application.name }) else {
+                    throw failure("Target not found")
+                }
+                guard let xcscheme = project.sharedData?.schemes.first else {
+                    throw failure("Scheme not found")
+                }
                 try expect(scheme.name) == "MyScheme"
-                guard let buildActionEntry = xcscheme.buildAction?.buildActionEntries.first else { throw failure("Build Action entry not found") }
+                guard let buildActionEntry = xcscheme.buildAction?.buildActionEntries.first else {
+                    throw failure("Build Action entry not found")
+                }
                 try expect(buildActionEntry.buildFor) == BuildType.all
 
                 let buildableReferences: [XCScheme.BuildableReference] = [
@@ -281,9 +331,17 @@ func projectGeneratorTests() {
 
                 try expect(project.sharedData?.schemes.count) == 2
 
-                guard let nativeTarget = project.pbxproj.objects.nativeTargets.referenceValues.first(where: { $0.name == application.name }) else { throw failure("Target not found") }
-                guard let xcscheme = project.sharedData?.schemes.first(where: { $0.name == "\(target.name) Test" }) else { throw failure("Scheme not found") }
-                guard let buildActionEntry = xcscheme.buildAction?.buildActionEntries.first else { throw failure("Build Action entry not found") }
+                guard let nativeTarget = project.pbxproj.objects.nativeTargets.referenceValues
+                    .first(where: { $0.name == application.name }) else {
+                    throw failure("Target not found")
+                }
+                guard let xcscheme = project.sharedData?.schemes
+                    .first(where: { $0.name == "\(target.name) Test" }) else {
+                    throw failure("Scheme not found")
+                }
+                guard let buildActionEntry = xcscheme.buildAction?.buildActionEntries.first else {
+                    throw failure("Build Action entry not found")
+                }
                 try expect(buildActionEntry.buildableReference.blueprintIdentifier) == nativeTarget.reference
 
                 try expect(xcscheme.launchAction?.buildConfiguration) == "Test Debug"
@@ -397,7 +455,12 @@ func projectGeneratorTests() {
                 try createDirectories(directories)
 
                 let target = Target(name: "Test", type: .application, platform: .iOS, sources: ["Sources"])
-                let spec = ProjectSpec(basePath: directoryPath, name: "Test", targets: [target], fileGroups: ["Sources"])
+                let spec = ProjectSpec(
+                    basePath: directoryPath,
+                    name: "Test",
+                    targets: [target],
+                    fileGroups: ["Sources"]
+                )
 
                 let project = try getPbxProj(spec)
                 try project.expectFile(paths: ["Sources", "a.swift"], buildPhase: .sources)
@@ -720,8 +783,10 @@ extension PBXProj {
         }
 
         if let buildPhase = buildPhase {
-            let buildFile = objects.buildFiles.referenceValues.first(where: { $0.fileRef == fileReference.reference })
-            let actualBuildPhase = buildFile.flatMap { buildFile in objects.buildPhases.referenceValues.first { $0.files.contains(buildFile.reference) } }?.buildPhase
+            let buildFile = objects.buildFiles.referenceValues
+                .first(where: { $0.fileRef == fileReference.reference })
+            let actualBuildPhase = buildFile
+                .flatMap { buildFile in objects.buildPhases.referenceValues.first { $0.files.contains(buildFile.reference) } }?.buildPhase
 
             var error: String?
             if let buildPhase = buildPhase.buildPhase {

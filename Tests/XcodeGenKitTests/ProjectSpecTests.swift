@@ -7,18 +7,31 @@ func projectSpecTests() {
 
     describe("ProjectSpec") {
 
-        let framework = Target(name: "MyFramework", type: .framework, platform: .iOS,
-                               settings: Settings(buildSettings: ["SETTING_2": "VALUE"]))
-        let staticLibrary = Target(name: "MyStaticLibrary", type: .staticLibrary, platform: .iOS,
-                                   settings: Settings(buildSettings: ["SETTING_2": "VALUE"]))
-        let dynamicLibrary = Target(name: "MyDynamicLibrary", type: .dynamicLibrary, platform: .iOS,
-                                    settings: Settings(buildSettings: ["SETTING_2": "VALUE"]))
+        let framework = Target(
+            name: "MyFramework",
+            type: .framework,
+            platform: .iOS,
+            settings: Settings(buildSettings: ["SETTING_2": "VALUE"])
+        )
+        let staticLibrary = Target(
+            name: "MyStaticLibrary",
+            type: .staticLibrary,
+            platform: .iOS,
+            settings: Settings(buildSettings: ["SETTING_2": "VALUE"])
+        )
+        let dynamicLibrary = Target(
+            name: "MyDynamicLibrary",
+            type: .dynamicLibrary,
+            platform: .iOS,
+            settings: Settings(buildSettings: ["SETTING_2": "VALUE"])
+        )
 
         func expectValidationError(_ spec: ProjectSpec, _ expectedError: SpecValidationError.ValidationError) throws {
             do {
                 try spec.validate()
             } catch let error as SpecValidationError {
-                if !error.errors.contains(where: { $0.description == expectedError.description }) {
+                if !error.errors
+                    .contains(where: { $0.description == expectedError.description }) {
                     throw failure("Supposed to fail with:\n\(expectedError)\nbut got:\n\(error.errors.map { $0.description }.joined(separator: "\n"))")
                 }
                 return
@@ -65,14 +78,19 @@ func projectSpecTests() {
         $0.describe("Validation") {
 
             let baseSpec = ProjectSpec(basePath: "", name: "", configs: [Config(name: "invalid")])
-            let invalidSettings = Settings(configSettings: ["invalidConfig": [:]],
-                                           groups: ["invalidSettingGroup"])
+            let invalidSettings = Settings(
+                configSettings: ["invalidConfig": [:]],
+                groups: ["invalidSettingGroup"]
+            )
             $0.it("fails with invalid project") {
                 var spec = baseSpec
                 spec.settings = invalidSettings
                 spec.configFiles = ["invalidConfig": "invalidConfigFile"]
                 spec.fileGroups = ["invalidFileGroup"]
-                spec.settingGroups = ["settingGroup1": Settings(configSettings: ["invalidSettingGroupConfig": [:]], groups: ["invalidSettingGroupSettingGroup"])]
+                spec.settingGroups = ["settingGroup1": Settings(
+                    configSettings: ["invalidSettingGroupConfig": [:]],
+                    groups: ["invalidSettingGroupSettingGroup"]
+                )]
 
                 try expectValidationError(spec, .invalidConfigFileConfig("invalidConfig"))
                 try expectValidationError(spec, .invalidBuildSettingConfig("invalidConfig"))
@@ -85,16 +103,17 @@ func projectSpecTests() {
 
             $0.it("fails with invalid target") {
                 var spec = baseSpec
-                spec.targets = [Target(name: "target1",
-                                       type: .application,
-                                       platform: .iOS,
-                                       settings: invalidSettings,
-                                       configFiles: ["invalidConfig": "invalidConfigFile"],
-                                       sources: ["invalidSource"],
-                                       dependencies: [Dependency(type: .target, reference: "invalidDependency")],
-                                       prebuildScripts: [BuildScript(script: .path("invalidPrebuildScript"), name: "prebuildScript1")],
-                                       postbuildScripts: [BuildScript(script: .path("invalidPostbuildScript"))],
-                                       scheme: TargetScheme(testTargets: ["invalidTarget"])
+                spec.targets = [Target(
+                    name: "target1",
+                    type: .application,
+                    platform: .iOS,
+                    settings: invalidSettings,
+                    configFiles: ["invalidConfig": "invalidConfigFile"],
+                    sources: ["invalidSource"],
+                    dependencies: [Dependency(type: .target, reference: "invalidDependency")],
+                    prebuildScripts: [BuildScript(script: .path("invalidPrebuildScript"), name: "prebuildScript1")],
+                    postbuildScripts: [BuildScript(script: .path("invalidPostbuildScript"))],
+                    scheme: TargetScheme(testTargets: ["invalidTarget"])
                 )]
 
                 try expectValidationError(spec, .invalidTargetDependency(target: "target1", dependency: "invalidDependency"))
@@ -115,10 +134,11 @@ func projectSpecTests() {
 
             $0.it("fails with invalid scheme") {
                 var spec = baseSpec
-                spec.schemes = [Scheme(name: "scheme1",
-                                       build: .init(targets: [.init(target: "invalidTarget")]),
-                                       run: .init(config: "debugInvalid"),
-                                       archive: .init(config: "releaseInvalid")
+                spec.schemes = [Scheme(
+                    name: "scheme1",
+                    build: .init(targets: [.init(target: "invalidTarget")]),
+                    run: .init(config: "debugInvalid"),
+                    archive: .init(config: "releaseInvalid")
                 )]
 
                 try expectValidationError(spec, .invalidSchemeTarget(scheme: "scheme1", target: "invalidTarget"))
@@ -128,10 +148,11 @@ func projectSpecTests() {
 
             $0.it("allows missing optional file") {
                 var spec = baseSpec
-                spec.targets = [Target(name: "target1",
-                                       type: .application,
-                                       platform: .iOS,
-                                       sources: [.init(path: "generated.swift", optional: true)]
+                spec.targets = [Target(
+                    name: "target1",
+                    type: .application,
+                    platform: .iOS,
+                    sources: [.init(path: "generated.swift", optional: true)]
                 )]
                 try spec.validate()
             }

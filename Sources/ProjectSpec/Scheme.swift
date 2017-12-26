@@ -14,7 +14,15 @@ public struct Scheme: Equatable {
     public var test: Test?
     public var profile: Profile?
 
-    public init(name: String, build: Build, run: Run? = nil, test: Test? = nil, profile: Profile? = nil, analyze: Analyze? = nil, archive: Archive? = nil) {
+    public init(
+        name: String,
+        build: Build,
+        run: Run? = nil,
+        test: Test? = nil,
+        profile: Profile? = nil,
+        analyze: Analyze? = nil,
+        archive: Archive? = nil
+    ) {
         self.name = name
         self.build = build
         self.run = run
@@ -55,7 +63,12 @@ public struct Scheme: Equatable {
         public var commandLineArguments: [String: Bool]
         public var targets: [String]
 
-        public init(config: String, gatherCoverageData: Bool = false, commandLineArguments: [String: Bool] = [:], targets: [String] = []) {
+        public init(
+            config: String,
+            gatherCoverageData: Bool = false,
+            commandLineArguments: [String: Bool] = [:],
+            targets: [String] = []
+        ) {
             self.config = config
             self.gatherCoverageData = gatherCoverageData
             self.commandLineArguments = commandLineArguments

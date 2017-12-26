@@ -41,9 +41,16 @@ public class ProjectGenerator {
         func getBuildEntry(_ buildTarget: Scheme.BuildTarget) -> XCScheme.BuildAction.Entry {
 
             let predicate: (PBXTarget) -> Bool = { $0.name == buildTarget.target }
-            let targetReference = pbxProject.objects.nativeTargets.referenceValues.first { predicate($0 as PBXTarget) } ?? pbxProject.objects.legacyTargets.referenceValues.first { predicate($0 as PBXTarget) }!
+            let targetReference =
+                pbxProject.objects.nativeTargets.referenceValues.first { predicate($0 as PBXTarget) } ??
+                pbxProject.objects.legacyTargets.referenceValues.first { predicate($0 as PBXTarget) }!
 
-            let buildableReference = XCScheme.BuildableReference(referencedContainer: "container:\(spec.name).xcodeproj", blueprintIdentifier: targetReference.reference, buildableName: buildTarget.target + (targetReference.productType?.fileExtension.map { ".\($0)" } ?? ""), blueprintName: scheme.name)
+            let buildableReference = XCScheme.BuildableReference(
+                referencedContainer: "container:\(spec.name).xcodeproj",
+                blueprintIdentifier: targetReference.reference,
+                buildableName: buildTarget.target + (targetReference.productType?.fileExtension.map { ".\($0)" } ?? ""),
+                blueprintName: scheme.name
+            )
 
             return XCScheme.BuildAction.Entry(buildableReference: buildableReference, buildFor: buildTarget.buildTypes)
         }
@@ -60,43 +67,60 @@ public class ProjectGenerator {
         let buildableReference = buildActionEntries.first!.buildableReference
         let productRunable = XCScheme.BuildableProductRunnable(buildableReference: buildableReference)
 
-        let buildAction = XCScheme.BuildAction(buildActionEntries: buildActionEntries, parallelizeBuild: true, buildImplicitDependencies: true)
+        let buildAction = XCScheme.BuildAction(
+            buildActionEntries: buildActionEntries,
+            parallelizeBuild: true,
+            buildImplicitDependencies: true
+        )
 
-        let testables = testBuildTargetEntries.map { XCScheme.TestableReference(skipped: false, buildableReference: $0.buildableReference) }
+        let testables = testBuildTargetEntries.map {
+            XCScheme.TestableReference(skipped: false, buildableReference: $0.buildableReference)
+        }
 
         let testCommandLineArgs = scheme.test.map { XCScheme.CommandLineArguments($0.commandLineArguments) }
         let launchCommandLineArgs = scheme.run.map { XCScheme.CommandLineArguments($0.commandLineArguments) }
         let profileCommandLineArgs = scheme.profile.map { XCScheme.CommandLineArguments($0.commandLineArguments) }
 
-        let testAction = XCScheme.TestAction(buildConfiguration: scheme.test?.config ?? defaultDebugConfig.name,
-                                             macroExpansion: buildableReference,
-                                             testables: testables,
-                                             shouldUseLaunchSchemeArgsEnv: scheme.test?.commandLineArguments.isEmpty ?? true,
-                                             codeCoverageEnabled: scheme.test?.gatherCoverageData ?? false,
-                                             commandlineArguments: testCommandLineArgs)
+        let testAction = XCScheme.TestAction(
+            buildConfiguration: scheme.test?.config ?? defaultDebugConfig.name,
+            macroExpansion: buildableReference,
+            testables: testables,
+            shouldUseLaunchSchemeArgsEnv: scheme.test?.commandLineArguments.isEmpty ?? true,
+            codeCoverageEnabled: scheme.test?.gatherCoverageData ?? false,
+            commandlineArguments: testCommandLineArgs
+        )
 
-        let launchAction = XCScheme.LaunchAction(buildableProductRunnable: productRunable,
-                                                 buildConfiguration: scheme.run?.config ?? defaultDebugConfig.name,
-                                                 commandlineArguments: launchCommandLineArgs)
+        let launchAction = XCScheme.LaunchAction(
+            buildableProductRunnable: productRunable,
+            buildConfiguration: scheme.run?.config ?? defaultDebugConfig.name,
+            commandlineArguments: launchCommandLineArgs
+        )
 
-        let profileAction = XCScheme.ProfileAction(buildableProductRunnable: productRunable,
-                                                   buildConfiguration: scheme.profile?.config ?? defaultReleaseConfig.name,
-                                                   shouldUseLaunchSchemeArgsEnv: scheme.profile?.commandLineArguments.isEmpty ?? true,
-                                                   commandlineArguments: profileCommandLineArgs)
+        let profileAction = XCScheme.ProfileAction(
+            buildableProductRunnable: productRunable,
+            buildConfiguration: scheme.profile?.config ?? defaultReleaseConfig.name,
+            shouldUseLaunchSchemeArgsEnv: scheme.profile?.commandLineArguments.isEmpty ?? true,
+            commandlineArguments: profileCommandLineArgs
+        )
 
         let analyzeAction = XCScheme.AnalyzeAction(buildConfiguration: scheme.analyze?.config ?? defaultDebugConfig.name)
 
-        let archiveAction = XCScheme.ArchiveAction(buildConfiguration: scheme.archive?.config ?? defaultReleaseConfig.name, revealArchiveInOrganizer: true)
+        let archiveAction = XCScheme.ArchiveAction(
+            buildConfiguration: scheme.archive?.config ?? defaultReleaseConfig.name,
+            revealArchiveInOrganizer: true
+        )
 
-        return XCScheme(name: scheme.name,
-                        lastUpgradeVersion: spec.xcodeVersion,
-                        version: "1.3",
-                        buildAction: buildAction,
-                        testAction: testAction,
-                        launchAction: launchAction,
-                        profileAction: profileAction,
-                        analyzeAction: analyzeAction,
-                        archiveAction: archiveAction)
+        return XCScheme(
+            name: scheme.name,
+            lastUpgradeVersion: spec.xcodeVersion,
+            version: "1.3",
+            buildAction: buildAction,
+            testAction: testAction,
+            launchAction: launchAction,
+            profileAction: profileAction,
+            analyzeAction: analyzeAction,
+            archiveAction: archiveAction
+        )
     }
 
     func generateSharedData(pbxProject: PBXProj) throws -> XCSharedData {
@@ -116,7 +140,13 @@ public class ProjectGenerator {
                     let debugConfig = spec.configs.first { $0.type == .debug }!
                     let releaseConfig = spec.configs.first { $0.type == .release }!
 
-                    let scheme = Scheme(name: schemeName, target: target, targetScheme: targetScheme, debugConfig: debugConfig.name, releaseConfig: releaseConfig.name)
+                    let scheme = Scheme(
+                        name: schemeName,
+                        target: target,
+                        targetScheme: targetScheme,
+                        debugConfig: debugConfig.name,
+                        releaseConfig: releaseConfig.name
+                    )
                     let xcscheme = try generateScheme(scheme, pbxProject: pbxProject)
                     xcschemes.append(xcscheme)
                 } else {
@@ -124,10 +154,18 @@ public class ProjectGenerator {
 
                         let schemeName = "\(target.name) \(configVariant)"
 
-                        let debugConfig = spec.configs.first { $0.type == .debug && $0.name.contains(configVariant) }!
-                        let releaseConfig = spec.configs.first { $0.type == .release && $0.name.contains(configVariant) }!
+                        let debugConfig = spec.configs
+                            .first { $0.type == .debug && $0.name.contains(configVariant) }!
+                        let releaseConfig = spec.configs
+                            .first { $0.type == .release && $0.name.contains(configVariant) }!
 
-                        let scheme = Scheme(name: schemeName, target: target, targetScheme: targetScheme, debugConfig: debugConfig.name, releaseConfig: releaseConfig.name)
+                        let scheme = Scheme(
+                            name: schemeName,
+                            target: target,
+                            targetScheme: targetScheme,
+                            debugConfig: debugConfig.name,
+                            releaseConfig: releaseConfig.name
+                        )
                         let xcscheme = try generateScheme(scheme, pbxProject: pbxProject)
                         xcschemes.append(xcscheme)
                     }
@@ -144,9 +182,20 @@ extension Scheme {
         self.init(
             name: name,
             build: .init(targets: [Scheme.BuildTarget(target: target.name)]),
-            run: .init(config: debugConfig, commandLineArguments: targetScheme.commandLineArguments),
-            test: .init(config: debugConfig, gatherCoverageData: targetScheme.gatherCoverageData, commandLineArguments: targetScheme.commandLineArguments, targets: targetScheme.testTargets),
-            profile: .init(config: releaseConfig, commandLineArguments: targetScheme.commandLineArguments),
+            run: .init(
+                config: debugConfig,
+                commandLineArguments: targetScheme.commandLineArguments
+            ),
+            test: .init(
+                config: debugConfig,
+                gatherCoverageData: targetScheme.gatherCoverageData,
+                commandLineArguments: targetScheme.commandLineArguments,
+                targets: targetScheme.testTargets
+            ),
+            profile: .init(
+                config: releaseConfig,
+                commandLineArguments: targetScheme.commandLineArguments
+            ),
             analyze: .init(config: debugConfig),
             archive: .init(config: releaseConfig)
         )

@@ -12,7 +12,13 @@ public struct Dependency: Equatable {
     public var link: Bool = true
     public var implicit: Bool = false
 
-    public init(type: DependencyType, reference: String, embed: Bool? = nil, link: Bool = true, implicit: Bool = false) {
+    public init(
+        type: DependencyType,
+        reference: String,
+        embed: Bool? = nil,
+        link: Bool = true,
+        implicit: Bool = false
+    ) {
         self.type = type
         self.reference = reference
         self.embed = embed

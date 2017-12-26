@@ -19,7 +19,8 @@ extension PBXFileElement {
 extension PBXProj {
 
     public func printGroups() -> String {
-        guard let project = objects.projects.first?.value, let mainGroup = objects.groups.getReference(project.mainGroup) else {
+        guard let project = objects.projects.first?.value,
+            let mainGroup = objects.groups.getReference(project.mainGroup) else {
             return ""
         }
         return printGroup(group: mainGroup)

@@ -35,7 +35,15 @@ public struct TargetSource {
         case folder
     }
 
-    public init(path: String, name: String? = nil, compilerFlags: [String] = [], excludes: [String] = [], type: SourceType? = nil, optional: Bool = false, buildPhase: BuildPhase? = nil) {
+    public init(
+        path: String,
+        name: String? = nil,
+        compilerFlags: [String] = [],
+        excludes: [String] = [],
+        type: SourceType? = nil,
+        optional: Bool = false,
+        buildPhase: BuildPhase? = nil
+    ) {
         self.path = path
         self.name = name
         self.compilerFlags = compilerFlags

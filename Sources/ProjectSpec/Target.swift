@@ -44,7 +44,20 @@ public struct Target {
         return name
     }
 
-    public init(name: String, type: PBXProductType, platform: Platform, deploymentTarget: Version? = nil, settings: Settings = .empty, configFiles: [String: String] = [:], sources: [TargetSource] = [], dependencies: [Dependency] = [], prebuildScripts: [BuildScript] = [], postbuildScripts: [BuildScript] = [], scheme: TargetScheme? = nil, legacy: LegacyTarget? = nil) {
+    public init(
+        name: String,
+        type: PBXProductType,
+        platform: Platform,
+        deploymentTarget: Version? = nil,
+        settings: Settings = .empty,
+        configFiles: [String: String] = [:],
+        sources: [TargetSource] = [],
+        dependencies: [Dependency] = [],
+        prebuildScripts: [BuildScript] = [],
+        postbuildScripts: [BuildScript] = [],
+        scheme: TargetScheme? = nil,
+        legacy: LegacyTarget? = nil
+    ) {
         self.name = name
         self.type = type
         self.platform = platform
@@ -158,7 +171,12 @@ public struct TargetScheme {
     public var gatherCoverageData: Bool
     public var commandLineArguments: [String: Bool]
 
-    public init(testTargets: [String] = [], configVariants: [String] = [], gatherCoverageData: Bool = false, commandLineArguments: [String: Bool] = [:]) {
+    public init(
+        testTargets: [String] = [],
+        configVariants: [String] = [],
+        gatherCoverageData: Bool = false,
+        commandLineArguments: [String: Bool] = [:]
+    ) {
         self.testTargets = testTargets
         self.configVariants = configVariants
         self.gatherCoverageData = gatherCoverageData

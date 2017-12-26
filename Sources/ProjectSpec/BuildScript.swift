@@ -23,7 +23,14 @@ public struct BuildScript: Equatable {
         }
     }
 
-    public init(script: ScriptType, name: String? = nil, inputFiles: [String] = [], outputFiles: [String] = [], shell: String? = nil, runOnlyWhenInstalling: Bool = false) {
+    public init(
+        script: ScriptType,
+        name: String? = nil,
+        inputFiles: [String] = [],
+        outputFiles: [String] = [],
+        shell: String? = nil,
+        runOnlyWhenInstalling: Bool = false
+    ) {
         self.script = script
         self.name = name
         self.inputFiles = inputFiles
