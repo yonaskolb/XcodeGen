@@ -36,12 +36,12 @@ The project spec is a YAML or JSON file that defines your targets, configuration
 - ✅ Easily **create new projects** with complicated setups on demand without messing around with Xcode
 - ✅ Generate from anywhere including **Continuous Delivery** servers
 - ✅ Distribute your spec amongst multiple files for easy **sharing** and overriding
-
+- ✅ Easily create **multi-platform** frameworks
 
 Given a very simple project spec file like this:
 
 ```yaml
-name: My Project
+name: MyProject
 options:
   bundleIdPrefix: com.myapp
 targets:
