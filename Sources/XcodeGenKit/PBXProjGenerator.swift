@@ -73,11 +73,9 @@ public class PBXProjGenerator {
         addObject(buildConfigList)
 
         for target in spec.targets {
-            targetNativeReferences[target.name] =
-                referenceGenerator.generate(
-                    target.isLegacy ? PBXLegacyTarget.self : PBXNativeTarget.self,
-                    target.name
-                )
+            targetNativeReferences[target.name] = target.isLegacy ?
+                referenceGenerator.generate(PBXLegacyTarget.self, target.name) :
+                referenceGenerator.generate(PBXNativeTarget.self, target.name)
 
             let fileReference = PBXFileReference(
                 reference: referenceGenerator.generate(PBXFileReference.self, target.name),
