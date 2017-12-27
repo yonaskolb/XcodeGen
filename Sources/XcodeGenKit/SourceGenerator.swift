@@ -1,6 +1,6 @@
 import Foundation
-import ProjectSpec
 import PathKit
+import ProjectSpec
 import xcproj
 
 struct SourceFile {
@@ -61,8 +61,6 @@ class SourceGenerator {
             settings["COMPILER_FLAGS"] = targetSource.compilerFlags.joined(separator: " ")
         }
 
-        // TODO: add the target name to the reference generator string so shared files don't have same reference
-        // (that will be escaped by appending a number)
         let buildFile = PBXBuildFile(
             reference: referenceGenerator.generate(PBXBuildFile.self, fileReference + targetName),
             fileRef: fileReference,

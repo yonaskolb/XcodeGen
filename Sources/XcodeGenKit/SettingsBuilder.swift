@@ -1,9 +1,9 @@
 import Foundation
-import xcproj
+import JSONUtilities
 import PathKit
 import ProjectSpec
+import xcproj
 import Yams
-import JSONUtilities
 
 extension ProjectSpec {
 
