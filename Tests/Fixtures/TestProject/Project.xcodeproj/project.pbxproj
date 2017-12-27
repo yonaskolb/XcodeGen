@@ -390,6 +390,7 @@
 			);
 			name = Legacy;
 			passBuildSettingsInEnvironment = 1;
+			productName = Legacy;
 			productReference = FR_479264660374 /* Legacy */;
 		};
 /* End PBXLegacyTarget section */
@@ -409,6 +410,7 @@
 			dependencies = (
 			);
 			name = Framework_watchOS;
+			productName = Framework_watchOS;
 			productReference = FR_438704538506 /* Framework_watchOS.framework */;
 			productType = "com.apple.product-type.framework";
 		};
@@ -426,6 +428,7 @@
 			dependencies = (
 			);
 			name = Framework_iOS;
+			productName = Framework_iOS;
 			productReference = FR_472296042419 /* Framework_iOS.framework */;
 			productType = "com.apple.product-type.framework";
 		};
@@ -443,6 +446,7 @@
 			dependencies = (
 			);
 			name = Framework_macOS;
+			productName = Framework_macOS;
 			productReference = FR_525119120469 /* Framework_macOS.framework */;
 			productType = "com.apple.product-type.framework";
 		};
@@ -460,6 +464,7 @@
 			dependencies = (
 			);
 			name = Framework_tvOS;
+			productName = Framework_tvOS;
 			productReference = FR_662315837182 /* Framework_tvOS.framework */;
 			productType = "com.apple.product-type.framework";
 		};
@@ -475,6 +480,7 @@
 				TD_436638162860 /* PBXTargetDependency */,
 			);
 			name = App_iOS_Tests;
+			productName = App_iOS_Tests;
 			productReference = FR_783122899910 /* App_iOS_Tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
@@ -497,6 +503,7 @@
 				TD_354342487294 /* PBXTargetDependency */,
 			);
 			name = App_iOS;
+			productName = App_iOS;
 			productReference = FR_825232110500 /* App_iOS.app */;
 			productType = "com.apple.product-type.application";
 		};
