@@ -27,12 +27,15 @@
 - scan for `Info.plist` lazely [#194](https://github.com/yonaskolb/XcodeGen/pull/194) @kastiglione
 - change setting presets so that icon settings only get applied to application targets [#204](https://github.com/yonaskolb/XcodeGen/pull/204) @yonaskolb
 - changed scheme build targets format [#203](https://github.com/yonaskolb/XcodeGen/pull/203) @yonaskolb
+- when specifying a `--spec` argument, the default for the `--project` path is now the directory containing the spec [#211](https://github.com/yonaskolb/XcodeGen/pull/211) @yonaskolb
 
 #### Fixed
 - fixed shell scripts escaping quotes twice [#186](https://github.com/yonaskolb/XcodeGen/pull/186) @allu22
 - fixed `createIntermediateGroups` when using a relative spec path [#184](https://github.com/yonaskolb/XcodeGen/pull/184) @kastiglione
 - fixed command line arguments for test and profile from being overridden [#199](https://github.com/yonaskolb/XcodeGen/pull/199) @vhbit
 - fixed files deep within a hierarchy having the path for a name
+- fixed source files from being duplicated if referenced with different casing [#212](https://github.com/yonaskolb/XcodeGen/pull/212) @yonaskolb
+- fixed target product name not being written. Fixes integration with R.swift [#213](https://github.com/yonaskolb/XcodeGen/pull/213) @yonaskolb
 
 ## 1.4.0
 
