@@ -22,7 +22,7 @@ func generate(spec: String, project: String, isQuiet: Bool, justVersion: Bool) {
     }
 
     let specPath = Path(spec).absolute()
-    let projectPath = Path(project).normalize()
+    let projectPath = project == "" ? specPath.parent() : Path(project).absolute()
 
     if !specPath.exists {
         fatalError("No project spec found at \(specPath.absolute())")
