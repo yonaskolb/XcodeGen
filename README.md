@@ -49,15 +49,15 @@ targets:
     type: application
     platform: iOS
     deploymentTarget: 10.0
-    sources: MyApp
+    sources: [MyApp]
     settings:
-      My_CUSTOM_SETTING: my_value
+      CUSTOM_BUILD_SETTING: my_value
     dependencies:
       - target: MyFramework
   MyFramework:
     type: framework
     platform: iOS
-    sources: MyFramework
+    sources: [MyFramework]
 ```
 A project would be created with 2 connected targets, with all the required configurations and build settings. See the [Project Spec](Docs/ProjectSpec.md) documentation for all the options you can specify.
 
