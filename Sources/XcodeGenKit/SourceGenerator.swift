@@ -13,7 +13,7 @@ struct SourceFile {
 class SourceGenerator {
 
     var rootGroups: Set<String> = []
-    private var fileReferencesByPath: [Path: String] = [:]
+    private var fileReferencesByPath: [String: String] = [:]
     private var groupsByPath: [Path: PBXGroup] = [:]
     private var variantGroupsByPath: [Path: PBXVariantGroup] = [:]
 
@@ -42,7 +42,7 @@ class SourceGenerator {
     }
 
     func generateSourceFile(targetSource: TargetSource, path: Path, buildPhase: BuildPhase? = nil) -> SourceFile {
-        let fileReference = fileReferencesByPath[path]!
+        let fileReference = fileReferencesByPath[path.string.lowercased()]!
         var settings: [String: Any] = [:]
         let chosenBuildPhase: BuildPhase?
 
@@ -95,7 +95,7 @@ class SourceGenerator {
     }
 
     func getFileReference(path: Path, inPath: Path, name: String? = nil, sourceTree: PBXSourceTree = .group) -> String {
-        if let fileReference = fileReferencesByPath[path] {
+        if let fileReference = fileReferencesByPath[path.string.lowercased()] {
             return fileReference
         } else {
             let fileReferencePath = path.byRemovingBase(path: inPath)
@@ -110,7 +110,7 @@ class SourceGenerator {
                 path: fileReferencePath.string
             )
             addObject(fileReference)
-            fileReferencesByPath[path] = fileReference.reference
+            fileReferencesByPath[path.string.lowercased()] = fileReference.reference
             return fileReference.reference
         }
     }
