@@ -225,6 +225,7 @@ A source can be provided via a string (the path) or an object of the form:
 - [ ] **name**: **String** - Can be used to override the name of the source file or directory. By default the last component of the path is used for the name
 - [ ] **compilerFlags**: **[String]** or **String** - A list of compilerFlags to add to files under this specific path provided as a list or a space delimitted string. Defaults to empty.
 - [ ] **excludes**: **[String]** or **String** - A list of global patterns representing the files to exclude.
+- [ ] **optional**: **Bool** - Disable missing path check. Defaults to false.
 - [ ] **buildPhase**: **String** - This manually sets the build phase this file or files in this directory will be added to, otherwise XcodeGen will guess based on the file extension. Note that `Info.plist` files will never be added to any build phases, no matter what this setting is. Possible values are:
 	- `sources` - Compile Sources phase
 	- `resources` - Copy Bundle Resources phase
@@ -234,8 +235,6 @@ A source can be provided via a string (the path) or an object of the form:
 	- `file`: a file reference with a parent group will be created (Default for files or directories with extensions)
 	- `group`: a group with all it's containing files. (Default for directories without extensions)
 	- `folder`: a folder reference.
-  - [ ] **optional**: **Bool** - Disable missing path check. Defaults to false.
-
 
 ```yaml
 targets:
