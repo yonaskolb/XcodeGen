@@ -1,5 +1,5 @@
 TOOL_NAME = xcodegen
-VERSION = 1.4.0
+VERSION = 1.5.0
 
 PREFIX = /usr/local
 INSTALL_PATH = $(PREFIX)/bin/$(TOOL_NAME)
