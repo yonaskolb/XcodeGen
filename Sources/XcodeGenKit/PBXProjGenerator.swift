@@ -557,6 +557,7 @@ public class PBXProjGenerator {
                 buildPhases: buildPhases,
                 buildRules: [],
                 dependencies: dependencies,
+                productName: target.name,
                 productReference: fileReference,
                 productType: nil
             )
@@ -568,6 +569,7 @@ public class PBXProjGenerator {
                 buildPhases: buildPhases,
                 buildRules: [],
                 dependencies: dependencies,
+                productName: target.name,
                 productReference: fileReference,
                 productType: target.type
             )
