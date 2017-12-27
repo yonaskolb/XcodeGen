@@ -5,7 +5,7 @@ import PackageDescription
 let package = Package(
     name: "XcodeGen",
     products: [
-        .executable(name: "XcodeGen", targets: ["XcodeGen"]),
+        .executable(name: "xcodegen", targets: ["XcodeGen"]),
         .library(name: "XcodeGenKit", targets: ["XcodeGenKit"]),
         .library(name: "ProjectSpec", targets: ["ProjectSpec"]),
     ],

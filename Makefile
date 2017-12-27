@@ -1,4 +1,4 @@
-TOOL_NAME = XcodeGen
+TOOL_NAME = xcodegen
 VERSION = 1.4.0
 
 PREFIX = /usr/local

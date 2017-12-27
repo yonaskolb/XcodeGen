@@ -91,7 +91,7 @@ $ brew install XcodeGen
 ```
 $ git clone https://github.com/yonaskolb/XcodeGen.git
 $ cd XcodeGen
-$ swift run
+$ swift run xcodegen
 ```
 
 **Use as dependency**
