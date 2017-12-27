@@ -81,12 +81,7 @@ extension ProjectSpec {
     }
 
     // combines all levels of a target's settings: target, target config, project, project config
-    public func getCombinedBuildSettings(
-        basePath: Path,
-        target: Target,
-        config: Config,
-        includeProject: Bool = true
-    ) -> BuildSettings {
+    public func getCombinedBuildSettings(basePath: Path, target: Target, config: Config, includeProject: Bool = true) -> BuildSettings {
         var buildSettings: BuildSettings = [:]
         if includeProject {
             if let configFilePath = configFiles[config.name] {
@@ -101,13 +96,7 @@ extension ProjectSpec {
         return buildSettings
     }
 
-    public func targetHasBuildSetting(
-        _ setting: String,
-        basePath: Path,
-        target: Target,
-        config: Config,
-        includeProject: Bool = true
-    ) -> Bool {
+    public func targetHasBuildSetting(_ setting: String, basePath: Path, target: Target, config: Config, includeProject: Bool = true) -> Bool {
         let buildSettings = getCombinedBuildSettings(
             basePath: basePath,
             target: target,

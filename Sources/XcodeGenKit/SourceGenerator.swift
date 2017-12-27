@@ -233,11 +233,8 @@ class SourceGenerator {
             }
     }
 
-    private func getGroupSources(
-        targetSource: TargetSource,
-        path: Path,
-        isBaseGroup: Bool
-    ) throws -> (sourceFiles: [SourceFile], groups: [PBXGroup]) {
+    private func getGroupSources(targetSource: TargetSource, path: Path, isBaseGroup: Bool)
+        throws -> (sourceFiles: [SourceFile], groups: [PBXGroup]) {
 
         let children = try getSourceChildren(targetSource: targetSource, dirPath: path)
 
