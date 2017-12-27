@@ -2,6 +2,8 @@
 
 ## Master
 
+## 1.5.0
+
 #### Added
 - added support for `gatherCoverageData` flag in target schemes [#170](https://github.com/yonaskolb/XcodeGen/pull/170) @alexruperez
 - added support for `commandLineOptions` in target schemes [#172](https://github.com/yonaskolb/XcodeGen/pull/172) @rahul-malik
@@ -36,6 +38,8 @@
 - fixed files deep within a hierarchy having the path for a name
 - fixed source files from being duplicated if referenced with different casing [#212](https://github.com/yonaskolb/XcodeGen/pull/212) @yonaskolb
 - fixed target product name not being written. Fixes integration with R.swift [#213](https://github.com/yonaskolb/XcodeGen/pull/213) @yonaskolb
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/1.4.0...1.5.0)
 
 ## 1.4.0
 
