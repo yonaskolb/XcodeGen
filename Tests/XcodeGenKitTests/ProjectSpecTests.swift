@@ -1,6 +1,7 @@
 import Spectre
 import XcodeGenKit
 import xcproj
+import PathKit
 import ProjectSpec
 
 func projectSpecTests() {
@@ -92,13 +93,19 @@ func projectSpecTests() {
                     groups: ["invalidSettingGroupSettingGroup"]
                 )]
 
-                try expectValidationError(spec, .invalidConfigFileConfig("invalidConfig"))
                 try expectValidationError(spec, .invalidBuildSettingConfig("invalidConfig"))
                 try expectValidationError(spec, .invalidConfigFile(configFile: "invalidConfigFile", config: "invalidConfig"))
                 try expectValidationError(spec, .invalidSettingsGroup("invalidSettingGroup"))
                 try expectValidationError(spec, .invalidFileGroup("invalidFileGroup"))
                 try expectValidationError(spec, .invalidSettingsGroup("invalidSettingGroupSettingGroup"))
                 try expectValidationError(spec, .invalidBuildSettingConfig("invalidSettingGroupConfig"))
+            }
+
+            $0.it("allows non-existent configurations") {
+                var spec = baseSpec
+                let configPath = fixturePath + "test.xcconfig"
+                spec.configFiles = ["missingConfiguration": configPath.string]
+                try spec.validate()
             }
 
             $0.it("fails with invalid target") {

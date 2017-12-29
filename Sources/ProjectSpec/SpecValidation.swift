@@ -36,9 +36,6 @@ extension ProjectSpec {
             if !(basePath + configFile).exists {
                 errors.append(.invalidConfigFile(configFile: configFile, config: config))
             }
-            if getConfig(config) == nil {
-                errors.append(.invalidConfigFileConfig(config))
-            }
         }
 
         for settings in settingGroups.values {
@@ -55,9 +52,6 @@ extension ProjectSpec {
             for (config, configFile) in target.configFiles {
                 if !(basePath + configFile).exists {
                     errors.append(.invalidTargetConfigFile(target: target.name, configFile: configFile, config: config))
-                }
-                if getConfig(config) == nil {
-                    errors.append(.invalidConfigFileConfig(config))
                 }
             }
 
