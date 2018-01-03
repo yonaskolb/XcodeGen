@@ -19,6 +19,7 @@ public class PBXProjGenerator {
     var topLevelGroups: Set<String> = []
     var carthageFrameworksByPlatform: [String: Set<String>] = [:]
     var frameworkFiles: [String] = []
+    var resourceBundleFiles: [String] = []
 
     var generated = false
 
@@ -353,18 +354,18 @@ public class PBXProjGenerator {
                         inPath: spec.basePath
                     )
                 }
-
+                
                 let buildFile = PBXBuildFile(
                     reference: referenceGenerator.generate(PBXBuildFile.self, fileReference + target.name),
                     fileRef: fileReference
                 )
                 addObject(buildFile)
-
+                
                 targetFrameworkBuildFiles.append(buildFile.reference)
                 if !frameworkFiles.contains(fileReference) {
                     frameworkFiles.append(fileReference)
                 }
-
+                
                 if embed {
                     let embedFile = PBXBuildFile(
                         reference: referenceGenerator.generate(PBXBuildFile.self, fileReference + target.name),
@@ -373,6 +374,35 @@ public class PBXProjGenerator {
                     )
                     addObject(embedFile)
                     copyFrameworksReferences.append(embedFile.reference)
+                }
+                
+            case .resourceBundle:
+                let fileReference: String
+                if dependency.implicit {
+                    fileReference = sourceGenerator.getFileReference(
+                        path: Path(dependency.reference),
+                        inPath: spec.basePath,
+                        sourceTree: .buildProductsDir
+                    )
+                } else {
+                    fileReference = sourceGenerator.getFileReference(
+                        path: Path(dependency.reference),
+                        inPath: spec.basePath
+                    )
+                }
+                
+                if !resourceBundleFiles.contains(fileReference) {
+                    resourceBundleFiles.append(fileReference)
+                }
+                
+                if embed {
+                    let embedFile = PBXBuildFile(
+                        reference: referenceGenerator.generate(PBXBuildFile.self, fileReference + target.name),
+                        fileRef: fileReference,
+                        settings: dependency.buildSettings
+                    )
+                    addObject(embedFile)
+                    copyResourcesReferences.append(embedFile.reference)
                 }
             case .carthage:
                 var platformPath = Path(getCarthageBuildPath(platform: target.platform))
