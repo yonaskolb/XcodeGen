@@ -408,6 +408,11 @@ public class PBXProjGenerator {
         func getBuildFilesForPhase(_ buildPhase: BuildPhase) -> [String] {
             let files = sourceFiles
                 .filter { $0.buildPhase == buildPhase }
+                .reduce(into: [SourceFile]()) { (output, sourceFile) in
+                  if !output.contains(where: { $0.fileReference == sourceFile.fileReference }) {
+                      output.append(sourceFile)
+                  }
+                }
                 .sorted { $0.path.lastComponent < $1.path.lastComponent }
             files.forEach { addObject($0.buildFile) }
             return files.map { $0.buildFile.reference }

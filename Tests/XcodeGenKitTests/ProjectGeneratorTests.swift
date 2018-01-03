@@ -744,6 +744,31 @@ func projectGeneratorTests() {
                 try project.expectFile(paths: ["C", "file.123"], buildPhase: .resources)
                 try project.expectFile(paths: ["C", "Info.plist"], buildPhase: .none)
             }
+
+
+            $0.it("duplicate TargetSource is included once in sources build phase") {
+                let directories = """
+                  Sources:
+                    A:
+                      - a.swift
+                  """
+                try createDirectories(directories)
+
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: [
+                    "Sources/A/a.swift",
+                    "Sources/A/a.swift",
+                ])
+                let spec = ProjectSpec(basePath: directoryPath, name: "Test", targets: [target])
+
+                let project = try getPbxProj(spec)
+                try project.expectFile(paths: ["Sources/A", "a.swift"], names: ["A", "a.swift"], buildPhase: .sources)
+
+                let sourcesBuildPhase = project.objects.buildPhases
+                    .first(where: { $0.1.buildPhase == BuildPhase.sources })!
+                    .value
+
+                try expect(sourcesBuildPhase.files.count) == 1
+            }
         }
     }
 }
