@@ -141,6 +141,17 @@ public class PBXProjGenerator {
             addObject(group)
             topLevelGroups.insert(group.reference)
         }
+        
+        if !resourceBundleFiles.isEmpty {
+            let group = PBXGroup(
+                reference: referenceGenerator.generate(PBXGroup.self, "Resources"),
+                children: resourceBundleFiles,
+                sourceTree: .group,
+                name: "Resources"
+            )
+            addObject(group)
+            topLevelGroups.insert(group.reference)
+        }
 
         for rootGroup in sourceGenerator.rootGroups {
             topLevelGroups.insert(rootGroup)
