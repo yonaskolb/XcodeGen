@@ -3,6 +3,10 @@ import PathKit
 
 extension ProjectSpec {
 
+    public enum ValidationType: String {
+        case missingConfigs
+    }
+
     public func validate() throws {
 
         var errors: [SpecValidationError.ValidationError] = []
@@ -18,7 +22,9 @@ extension ProjectSpec {
             }
             for config in settings.configSettings.keys {
                 if !configs.contains(where: { $0.name.lowercased().contains(config.lowercased()) }) {
-                    errors.append(.invalidBuildSettingConfig(config))
+                    if !options.disabledValidations.contains(.missingConfigs) {
+                        errors.append(.invalidBuildSettingConfig(config))
+                    }
                 }
             }
             return errors
@@ -36,7 +42,7 @@ extension ProjectSpec {
             if !(basePath + configFile).exists {
                 errors.append(.invalidConfigFile(configFile: configFile, config: config))
             }
-            if getConfig(config) == nil {
+            if !options.disabledValidations.contains(.missingConfigs) && getConfig(config) == nil {
                 errors.append(.invalidConfigFileConfig(config))
             }
         }
@@ -56,7 +62,7 @@ extension ProjectSpec {
                 if !(basePath + configFile).exists {
                     errors.append(.invalidTargetConfigFile(target: target.name, configFile: configFile, config: config))
                 }
-                if getConfig(config) == nil {
+                if !options.disabledValidations.contains(.missingConfigs) && getConfig(config) == nil {
                     errors.append(.invalidConfigFileConfig(config))
                 }
             }
