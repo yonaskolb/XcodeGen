@@ -552,7 +552,7 @@ public class PBXProjGenerator {
                 reference: referenceGenerator.generate(PBXCopyFilesBuildPhase.self, "embed resource bundles" + target.name),
                 dstPath: "",
                 dstSubfolderSpec: .resources,
-                files: copyFrameworksReferences
+                files: copyResourceBundleReferences
             )
             
             addObject(copyFilesPhase)
