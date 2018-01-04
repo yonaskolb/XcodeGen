@@ -539,6 +539,7 @@ public class PBXProjGenerator {
                 reference: referenceGenerator.generate(PBXCopyFilesBuildPhase.self, "embed frameworks" + target.name),
                 dstPath: "",
                 dstSubfolderSpec: .frameworks,
+                name: "Embed Frameworks",
                 files: copyFrameworksReferences
             )
             
@@ -552,6 +553,7 @@ public class PBXProjGenerator {
                 reference: referenceGenerator.generate(PBXCopyFilesBuildPhase.self, "embed resource bundles" + target.name),
                 dstPath: "",
                 dstSubfolderSpec: .resources,
+                name: "Embed Resource Bundles",
                 files: copyResourceBundleReferences
             )
             

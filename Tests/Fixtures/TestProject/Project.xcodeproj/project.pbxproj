@@ -43,7 +43,7 @@
 		BF_860391087135 /* StandaloneAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FR_408537768279 /* StandaloneAssets.xcassets */; };
 		BF_892119987440 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_854336462818 /* AppDelegate.swift */; settings = {COMPILER_FLAGS = "-Werror"; }; };
 		BF_901390118565 /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_172952167809 /* FrameworkFile.swift */; };
-		BF_905038616071 /* Framework_iOS.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = FR_472296042419 /* Framework_iOS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BF_905038616071 /* Framework_iOS.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FR_472296042419 /* Framework_iOS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,14 +71,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		CFBP_6493932244 /* CopyFiles */ = {
+		CFBP_6493932244 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				BF_905038616071 /* Framework_iOS.framework in CopyFiles */,
+				BF_905038616071 /* Framework_iOS.framework in Embed Frameworks */,
 			);
+			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -491,7 +492,7 @@
 				SBP_82523211050 /* Sources */,
 				RBP_82523211050 /* Resources */,
 				FBP_82523211050 /* Frameworks */,
-				CFBP_6493932244 /* CopyFiles */,
+				CFBP_6493932244 /* Embed Frameworks */,
 				SSBP_8106229290 /* Carthage */,
 				SSBP_5106020372 /* Strip Unused Architectures from Frameworks */,
 				SSBP_8706434794 /* MyScript */,
