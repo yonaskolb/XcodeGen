@@ -17,7 +17,6 @@ public struct SpecValidationError: Error, CustomStringConvertible {
         case invalidSettingsGroup(String)
         case invalidBuildScriptPath(target: String, name: String?, path: String)
         case invalidFileGroup(String)
-        case invalidConfigFileConfig(String)
         case missingConfigForTargetScheme(target: String, configType: ConfigType)
 
         public var description: String {
@@ -46,8 +45,6 @@ public struct SpecValidationError: Error, CustomStringConvertible {
                 return "Target \(target.quoted) has a script \(name != nil ? "\(name!.quoted) which has a " : "")path that doesn't exist \(path.quoted)"
             case let .invalidFileGroup(group):
                 return "Invalid file group \(group.quoted)"
-            case let .invalidConfigFileConfig(config):
-                return "Config file has invalid config \(config.quoted)"
             case let .missingConfigForTargetScheme(target, configType):
                 return "Target \(target.quoted) is missing a config of type \(configType.rawValue) to generate its scheme"
             }

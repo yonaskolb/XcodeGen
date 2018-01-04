@@ -2,6 +2,9 @@
 
 ## Master
 
+#### Changed
+- stop validating configurations that do not exist the project
+
 ## 1.5.0
 
 #### Added
