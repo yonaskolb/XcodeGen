@@ -347,6 +347,8 @@ public class PBXProjGenerator {
                         copyFrameworksReferences.append(embedFile.reference)
                     } else if dependencyTarget.type.isApp && dependencyTarget.platform == .watchOS {
                         copyWatchReferences.append(embedFile.reference)
+                    } else if dependencyTarget.type.isBundle {
+                        copyResourceBundleReferences.append(embedFile.reference)
                     } else {
                         copyResourcesReferences.append(embedFile.reference)
                     }

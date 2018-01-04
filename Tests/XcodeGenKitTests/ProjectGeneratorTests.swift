@@ -27,7 +27,7 @@ func projectGeneratorTests() {
             settings: Settings(buildSettings: ["SETTING_1": "VALUE"]),
             dependencies: [
                 Dependency(type: .target, reference: "MyFramework"),
-                Dependency(type: .resourceBundle, reference: "MyResourceBundle", embed: true)
+                Dependency(type: .target, reference: "MyResourceBundle", embed: true)
             ]
         )
 
@@ -40,7 +40,7 @@ func projectGeneratorTests() {
 
         let resourceBundle = Target(
             name: "MyResourceBundle",
-            type: .framework,
+            type: .bundle,
             platform: .iOS,
             settings: .empty
         )
@@ -228,7 +228,7 @@ func projectGeneratorTests() {
                 let pbxProject = try getPbxProj(spec)
                 let nativeTargets = pbxProject.objects.nativeTargets.referenceValues
                 let dependencies = pbxProject.objects.targetDependencies.referenceValues
-                try expect(dependencies.count) == 1
+                try expect(dependencies.count) == 2
                 try expect(dependencies.first!.target) == nativeTargets.first { $0.name == framework.name }!.reference
             }
             
@@ -299,7 +299,7 @@ func projectGeneratorTests() {
                 let spec = ProjectSpec(
                     basePath: "",
                     name: "test",
-                    targets: [application, framework],
+                    targets: [application, framework, resourceBundle],
                     schemes: [scheme]
                 )
                 let project = try getProject(spec)
@@ -347,7 +347,7 @@ func projectGeneratorTests() {
                     Config(name: "Production Release", type: .release),
                 ]
 
-                let spec = ProjectSpec(basePath: "", name: "test", configs: configs, targets: [target, framework])
+                let spec = ProjectSpec(basePath: "", name: "test", configs: configs, targets: [target, framework, resourceBundle])
                 let project = try getProject(spec)
 
                 try expect(project.sharedData?.schemes.count) == 2
