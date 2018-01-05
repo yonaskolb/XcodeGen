@@ -159,7 +159,7 @@ public class PBXProjGenerator {
 
         let projectAttributes: [String: Any] = ["LastUpgradeCheck": spec.xcodeVersion]
             .merged(spec.attributes)
-            .merged(self.targetAttributes)
+            .merged(self.generateTargetAttributes() ?? [:])
         
         let root = PBXProject(
             name: spec.name,
@@ -177,44 +177,35 @@ public class PBXProjGenerator {
         return proj
     }
     
-    var targetAttributes: [String: Any] {
+    func generateTargetAttributes() -> [String: Any]? {
         
-        func configs(_ configurationList: String?) -> [XCBuildConfiguration] {
-            guard let ref = configurationList else { return [] }
-            
-            let configReferences = self.proj.objects.configurationLists[ref]?.buildConfigurations ?? []
-            
-            return configReferences
-                .flatMap { self.proj.objects.buildConfigurations[$0]  }
-        }
-        
-        func target(name: String) -> PBXTarget? {
-            return self.proj.objects.targets(named: name).first
-        }
-        
-        func values(buildSetting: String, configurationList: String?) -> [Any] {
-            return configs(configurationList)
-                .flatMap { $0.buildSettings[buildSetting] }
-        }
-        
-        let uiTestBundles = self.proj.objects.nativeTargets.values
-            .filter { $0.productType == .uiTestBundle }
-            
-            
-        let uiTestRefToTargetNames = uiTestBundles
-            .map { ($0.reference, values(buildSetting: "TEST_TARGET_NAME", configurationList: $0.buildConfigurationList)) }
-            .map { (ref, values) in (ref, values.flatMap { $0 as? String }) }
         
         var targetAttributes: [String: Any] = [:]
         
-        for (ref, targetNames) in uiTestRefToTargetNames {
+        // look up TEST_TARGET_NAME build setting
+        func testTargetName(_ target: PBXTarget) -> String? {
+            guard let configurationList = target.buildConfigurationList else { return nil }
+            guard let buildConfigurationReferences = self.proj.objects.configurationLists[configurationList]?.buildConfigurations else { return nil }
             
-            guard let name = targetNames.first else { continue }
-            guard let target = target(name: name) else { continue }
+            let configs = buildConfigurationReferences
+                .flatMap { ref in self.proj.objects.buildConfigurations[ref] }
             
-            
-            targetAttributes[ref] = [ "TestTargetID": target.reference]
+            return configs
+                .flatMap { $0.buildSettings["TEST_TARGET_NAME"] as? String }
+                .first
         }
+            
+        let uiTestTargets = self.proj.objects.nativeTargets.values
+            .filter { $0.productType == .uiTestBundle }
+        
+        for uiTestTarget in uiTestTargets {
+            guard let name = testTargetName(uiTestTarget) else { continue }
+            guard let target = self.proj.objects.targets(named: name).first else { continue }
+            
+            targetAttributes[uiTestTarget.reference] = [ "TestTargetID": target.reference]
+        }
+        
+        guard !targetAttributes.isEmpty else { return nil }
 
         return [
             "TargetAttributes": targetAttributes
