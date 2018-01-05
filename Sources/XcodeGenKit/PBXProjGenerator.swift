@@ -157,7 +157,10 @@ public class PBXProjGenerator {
 
         sortGroups(group: mainGroup)
 
-        let projectAttributes: [String: Any] = ["LastUpgradeCheck": spec.xcodeVersion].merged(spec.attributes)
+        let projectAttributes: [String: Any] = ["LastUpgradeCheck": spec.xcodeVersion]
+            .merged(spec.attributes)
+            .merged(self.targetAttributes)
+        
         let root = PBXProject(
             name: spec.name,
             reference: proj.rootObject,
@@ -172,6 +175,51 @@ public class PBXProjGenerator {
         proj.objects.projects.append(root)
 
         return proj
+    }
+    
+    var targetAttributes: [String: Any] {
+        
+        func configs(_ configurationList: String?) -> [XCBuildConfiguration] {
+            guard let ref = configurationList else { return [] }
+            
+            let configReferences = self.proj.objects.configurationLists[ref]?.buildConfigurations ?? []
+            
+            return configReferences
+                .flatMap { self.proj.objects.buildConfigurations[$0]  }
+        }
+        
+        func target(name: String) -> PBXTarget? {
+            return self.proj.objects.targets(named: name).first
+        }
+        
+        func values(buildSetting: String, configurationList: String?) -> [Any] {
+            return configs(configurationList)
+                .flatMap { $0.buildSettings[buildSetting] }
+        }
+        
+        let uiTestBundles = self.proj.objects.nativeTargets.values
+            .filter { $0.productType == .uiTestBundle }
+            
+            
+        let uiTestRefToTargetNames = uiTestBundles
+            .map { ($0.reference, values(buildSetting: "TEST_TARGET_NAME", configurationList: $0.buildConfigurationList)) }
+            .map { (ref, values) in (ref, values.flatMap { $0 as? String }) }
+        
+        var targetAttributes: [String: Any] = [:]
+        
+        for (ref, targetNames) in uiTestRefToTargetNames {
+            
+            guard let name = targetNames.first else { continue }
+            guard let target = target(name: name) else { continue }
+            
+            
+            targetAttributes[ref] = [ "TestTargetID": target.reference]
+        }
+
+        return [
+            "TargetAttributes": targetAttributes
+        ]
+        
     }
 
     func sortGroups(group: PBXGroup) {
