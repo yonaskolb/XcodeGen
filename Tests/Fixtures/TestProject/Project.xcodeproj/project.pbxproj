@@ -1016,7 +1016,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-iOS-UITests";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestProject.app/TestProject";
 				TEST_TARGET_NAME = App_iOS;
 			};
 			name = "Staging Release";
@@ -1157,7 +1156,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-iOS-UITests";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestProject.app/TestProject";
 				TEST_TARGET_NAME = App_iOS;
 			};
 			name = "Production Debug";
@@ -1301,7 +1299,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-iOS-UITests";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestProject.app/TestProject";
 				TEST_TARGET_NAME = App_iOS;
 			};
 			name = "Production Release";
@@ -1329,7 +1326,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-iOS-UITests";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestProject.app/TestProject";
 				TEST_TARGET_NAME = App_iOS;
 			};
 			name = "Test Debug";
@@ -1357,7 +1353,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-iOS-UITests";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestProject.app/TestProject";
 				TEST_TARGET_NAME = App_iOS;
 			};
 			name = "Test Release";
@@ -1968,7 +1963,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-iOS-UITests";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestProject.app/TestProject";
 				TEST_TARGET_NAME = App_iOS;
 			};
 			name = "Staging Debug";

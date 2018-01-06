@@ -79,7 +79,6 @@ targets:
     platform: iOS
     sources: App_iOS_UITests
     settings:
-      TEST_HOST: $(BUILT_PRODUCTS_DIR)/TestProject.app/TestProject
       INFOPLIST_FILE: TestProjectUITests/Info.plist
     dependencies:
       - target: App_iOS
