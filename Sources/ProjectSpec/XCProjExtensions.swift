@@ -21,6 +21,10 @@ extension PBXProductType {
     public var isLibrary: Bool {
         return self == .staticLibrary || self == .dynamicLibrary
     }
+    
+    public var isBundle: Bool {
+        return self == .bundle
+    }
 
     public var isExtension: Bool {
         return fileExtension == "appex"

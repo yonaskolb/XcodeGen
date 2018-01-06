@@ -25,7 +25,10 @@ func projectGeneratorTests() {
             type: .application,
             platform: .iOS,
             settings: Settings(buildSettings: ["SETTING_1": "VALUE"]),
-            dependencies: [Dependency(type: .target, reference: "MyFramework")]
+            dependencies: [
+                Dependency(type: .target, reference: "MyFramework"),
+                Dependency(type: .target, reference: "MyResourceBundle", embed: true)
+            ]
         )
 
         let framework = Target(
@@ -35,7 +38,14 @@ func projectGeneratorTests() {
             settings: Settings(buildSettings: ["SETTING_2": "VALUE"])
         )
 
-        let targets = [application, framework]
+        let resourceBundle = Target(
+            name: "MyResourceBundle",
+            type: .bundle,
+            platform: .iOS,
+            settings: .empty
+        )
+
+        let targets = [application, framework, resourceBundle]
 
         $0.describe("Options") {
 
@@ -179,9 +189,10 @@ func projectGeneratorTests() {
             $0.it("generates targets") {
                 let pbxProject = try getPbxProj(spec)
                 let nativeTargets = pbxProject.objects.nativeTargets.referenceValues
-                try expect(nativeTargets.count) == 2
+                try expect(nativeTargets.count) == 3
                 try expect(nativeTargets.contains { $0.name == application.name }).beTrue()
                 try expect(nativeTargets.contains { $0.name == framework.name }).beTrue()
+                try expect(nativeTargets.contains { $0.name == resourceBundle.name }).beTrue()
             }
 
             $0.it("generates platform version") {
@@ -217,8 +228,18 @@ func projectGeneratorTests() {
                 let pbxProject = try getPbxProj(spec)
                 let nativeTargets = pbxProject.objects.nativeTargets.referenceValues
                 let dependencies = pbxProject.objects.targetDependencies.referenceValues
-                try expect(dependencies.count) == 1
+                try expect(dependencies.count) == 2
                 try expect(dependencies.first!.target) == nativeTargets.first { $0.name == framework.name }!.reference
+            }
+            
+            
+            $0.it("generates embeds resource bundle") {
+                let pbxProject = try getPbxProj(spec)
+                
+                let scripts = pbxProject.objects.copyFilesBuildPhases.referenceValues
+                    .filter { $0.dstSubfolderSpec == .resources }
+                
+                try expect(scripts.count) == 1
             }
 
             $0.it("generates run scripts") {
@@ -278,7 +299,7 @@ func projectGeneratorTests() {
                 let spec = ProjectSpec(
                     basePath: "",
                     name: "test",
-                    targets: [application, framework],
+                    targets: [application, framework, resourceBundle],
                     schemes: [scheme]
                 )
                 let project = try getProject(spec)
@@ -326,7 +347,7 @@ func projectGeneratorTests() {
                     Config(name: "Production Release", type: .release),
                 ]
 
-                let spec = ProjectSpec(basePath: "", name: "test", configs: configs, targets: [target, framework])
+                let spec = ProjectSpec(basePath: "", name: "test", configs: configs, targets: [target, framework, resourceBundle])
                 let project = try getProject(spec)
 
                 try expect(project.sharedData?.schemes.count) == 2

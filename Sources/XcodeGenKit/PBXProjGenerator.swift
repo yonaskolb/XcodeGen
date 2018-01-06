@@ -19,6 +19,7 @@ public class PBXProjGenerator {
     var topLevelGroups: Set<String> = []
     var carthageFrameworksByPlatform: [String: Set<String>] = [:]
     var frameworkFiles: [String] = []
+    var resourceBundleFiles: [String] = []
 
     var generated = false
 
@@ -136,6 +137,17 @@ public class PBXProjGenerator {
                 children: frameworkFiles,
                 sourceTree: .group,
                 name: "Frameworks"
+            )
+            addObject(group)
+            topLevelGroups.insert(group.reference)
+        }
+        
+        if !resourceBundleFiles.isEmpty {
+            let group = PBXGroup(
+                reference: referenceGenerator.generate(PBXGroup.self, "Resources"),
+                children: resourceBundleFiles,
+                sourceTree: .group,
+                name: "Resources"
             )
             addObject(group)
             topLevelGroups.insert(group.reference)
@@ -277,6 +289,7 @@ public class PBXProjGenerator {
         var dependencies: [String] = []
         var targetFrameworkBuildFiles: [String] = []
         var copyFrameworksReferences: [String] = []
+        var copyResourceBundleReferences: [String] = []
         var copyResourcesReferences: [String] = []
         var copyWatchReferences: [String] = []
         var extensions: [String] = []
@@ -334,6 +347,8 @@ public class PBXProjGenerator {
                         copyFrameworksReferences.append(embedFile.reference)
                     } else if dependencyTarget.type.isApp && dependencyTarget.platform == .watchOS {
                         copyWatchReferences.append(embedFile.reference)
+                    } else if dependencyTarget.type.isBundle {
+                        copyResourceBundleReferences.append(embedFile.reference)
                     } else {
                         copyResourcesReferences.append(embedFile.reference)
                     }
@@ -353,18 +368,18 @@ public class PBXProjGenerator {
                         inPath: spec.basePath
                     )
                 }
-
+                
                 let buildFile = PBXBuildFile(
                     reference: referenceGenerator.generate(PBXBuildFile.self, fileReference + target.name),
                     fileRef: fileReference
                 )
                 addObject(buildFile)
-
+                
                 targetFrameworkBuildFiles.append(buildFile.reference)
                 if !frameworkFiles.contains(fileReference) {
                     frameworkFiles.append(fileReference)
                 }
-
+                
                 if embed {
                     let embedFile = PBXBuildFile(
                         reference: referenceGenerator.generate(PBXBuildFile.self, fileReference + target.name),
@@ -373,6 +388,35 @@ public class PBXProjGenerator {
                     )
                     addObject(embedFile)
                     copyFrameworksReferences.append(embedFile.reference)
+                }
+                
+            case .resourceBundle:
+                let fileReference: String
+                if dependency.implicit {
+                    fileReference = sourceGenerator.getFileReference(
+                        path: Path(dependency.reference),
+                        inPath: spec.basePath,
+                        sourceTree: .buildProductsDir
+                    )
+                } else {
+                    fileReference = sourceGenerator.getFileReference(
+                        path: Path(dependency.reference),
+                        inPath: spec.basePath
+                    )
+                }
+                
+                if !resourceBundleFiles.contains(fileReference) {
+                    resourceBundleFiles.append(fileReference)
+                }
+                
+                if embed {
+                    let embedFile = PBXBuildFile(
+                        reference: referenceGenerator.generate(PBXBuildFile.self, fileReference + target.name),
+                        fileRef: fileReference,
+                        settings: dependency.buildSettings
+                    )
+                    addObject(embedFile)
+                    copyResourceBundleReferences.append(embedFile.reference)
                 }
             case .carthage:
                 var platformPath = Path(getCarthageBuildPath(platform: target.platform))
@@ -492,17 +536,34 @@ public class PBXProjGenerator {
         }
 
         if !copyFrameworksReferences.isEmpty {
-
+            
             let copyFilesPhase = PBXCopyFilesBuildPhase(
                 reference: referenceGenerator.generate(PBXCopyFilesBuildPhase.self, "embed frameworks" + target.name),
                 dstPath: "",
                 dstSubfolderSpec: .frameworks,
+                name: "Embed Frameworks",
                 files: copyFrameworksReferences
             )
-
+            
             addObject(copyFilesPhase)
             buildPhases.append(copyFilesPhase.reference)
         }
+        
+        if !copyResourceBundleReferences.isEmpty {
+            
+            let copyFilesPhase = PBXCopyFilesBuildPhase(
+                reference: referenceGenerator.generate(PBXCopyFilesBuildPhase.self, "embed resource bundles" + target.name),
+                dstPath: "",
+                dstSubfolderSpec: .resources,
+                name: "Embed Resource Bundles",
+                files: copyResourceBundleReferences
+            )
+            
+            addObject(copyFilesPhase)
+            buildPhases.append(copyFilesPhase.reference)
+        }
+        
+        
 
         if !copyWatchReferences.isEmpty {
 

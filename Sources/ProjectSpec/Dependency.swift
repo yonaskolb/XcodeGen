@@ -30,6 +30,7 @@ public struct Dependency: Equatable {
         case target
         case framework
         case carthage
+        case resourceBundle
     }
 
     public static func == (lhs: Dependency, rhs: Dependency) -> Bool {
@@ -65,6 +66,9 @@ extension Dependency: JSONObjectConvertible {
         } else if let carthage: String = jsonDictionary.json(atKeyPath: "carthage") {
             type = .carthage
             reference = carthage
+        } else if let resourceBundle: String = jsonDictionary.json(atKeyPath: "resourceBundle") {
+            type = .resourceBundle
+            reference = resourceBundle
         } else {
             throw SpecParsingError.invalidDependency(jsonDictionary)
         }
