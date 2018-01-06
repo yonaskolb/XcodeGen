@@ -1,6 +1,6 @@
 import XCTest
 
-class TestProjectTests: XCTestCase {
+class TestProjectUITests: XCTestCase {
 
     override func setUp() {
         super.setUp()
