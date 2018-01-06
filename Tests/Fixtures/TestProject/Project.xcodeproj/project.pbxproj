@@ -38,15 +38,24 @@
 		BF_729846993631 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_410645050443 /* Alamofire.framework */; };
 		BF_734036107922 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = FR_183521624014 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BF_757906110813 = {isa = PBXBuildFile; fileRef = FR_662315837182 /* Framework_tvOS.framework */; };
+		BF_811575032959 /* TestProjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_288425329739 /* TestProjectTests.swift */; };
 		BF_813358525536 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = FR_183521624014 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BF_854463933379 = {isa = PBXBuildFile; fileRef = FR_438704538506 /* Framework_watchOS.framework */; };
 		BF_860391087135 /* StandaloneAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FR_408537768279 /* StandaloneAssets.xcassets */; };
 		BF_892119987440 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_854336462818 /* AppDelegate.swift */; settings = {COMPILER_FLAGS = "-Werror"; }; };
 		BF_901390118565 /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_172952167809 /* FrameworkFile.swift */; };
 		BF_905038616071 /* Framework_iOS.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = FR_472296042419 /* Framework_iOS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BF_940936137577 = {isa = PBXBuildFile; fileRef = FR_123503999387 /* App_iOS_UITests.xctest */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		CIP_12350399938 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = P_8448771205358 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = NT_825232110500;
+			remoteInfo = App_iOS;
+		};
 		CIP_78312289991 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = P_8448771205358 /* Project object */;
@@ -85,6 +94,7 @@
 
 /* Begin PBXFileReference section */
 		FR_118219888726 /* Base */ = {isa = PBXFileReference; name = Base; path = Base.lproj/LocalizedStoryboard.storyboard; sourceTree = "<group>"; };
+		FR_123503999387 /* App_iOS_UITests.xctest */ = {isa = PBXFileReference; explicitFileType = xctest; includeInIndex = 0; path = App_iOS_UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR_172952167809 /* FrameworkFile.swift */ = {isa = PBXFileReference; path = FrameworkFile.swift; sourceTree = "<group>"; };
 		FR_183521624014 /* MyFramework.h */ = {isa = PBXFileReference; path = MyFramework.h; sourceTree = "<group>"; };
 		FR_196911129660 /* MoreUnder.swift */ = {isa = PBXFileReference; path = MoreUnder.swift; sourceTree = "<group>"; };
@@ -93,6 +103,7 @@
 		FR_256263906698 /* Base */ = {isa = PBXFileReference; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FR_257073931060 /* ResourceFolder */ = {isa = PBXFileReference; name = ResourceFolder; path = Resources/ResourceFolder; sourceTree = SOURCE_ROOT; };
 		FR_257516580010 /* Alamofire.framework */ = {isa = PBXFileReference; path = Alamofire.framework; sourceTree = "<group>"; };
+		FR_288425329739 /* TestProjectTests.swift */ = {isa = PBXFileReference; path = TestProjectTests.swift; sourceTree = "<group>"; };
 		FR_408537768279 /* StandaloneAssets.xcassets */ = {isa = PBXFileReference; path = StandaloneAssets.xcassets; sourceTree = "<group>"; };
 		FR_410645050443 /* Alamofire.framework */ = {isa = PBXFileReference; path = Alamofire.framework; sourceTree = "<group>"; };
 		FR_438704538506 /* Framework_watchOS.framework */ = {isa = PBXFileReference; explicitFileType = framework; includeInIndex = 0; path = Framework_watchOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -106,6 +117,7 @@
 		FR_602633703434 /* en */ = {isa = PBXFileReference; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		FR_609193904586 /* Base */ = {isa = PBXFileReference; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		FR_635802719871 /* base.xcconfig */ = {isa = PBXFileReference; path = base.xcconfig; sourceTree = "<group>"; };
+		FR_643034527839 /* Info.plist */ = {isa = PBXFileReference; path = Info.plist; sourceTree = "<group>"; };
 		FR_655678458041 /* Info.plist */ = {isa = PBXFileReference; path = Info.plist; sourceTree = "<group>"; };
 		FR_660690926982 /* config.xcconfig */ = {isa = PBXFileReference; path = config.xcconfig; sourceTree = "<group>"; };
 		FR_662315837182 /* Framework_tvOS.framework */ = {isa = PBXFileReference; explicitFileType = framework; includeInIndex = 0; path = Framework_tvOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -166,6 +178,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		G_1235039993875 /* App_iOS_UITests */ = {
+			isa = PBXGroup;
+			children = (
+				FR_643034527839 /* Info.plist */,
+				FR_288425329739 /* TestProjectTests.swift */,
+			);
+			name = App_iOS_UITests;
+			path = App_iOS_UITests;
+			sourceTree = "<group>";
+		};
 		G_1952740716080 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -303,6 +325,7 @@
 			children = (
 				G_8252321105004 /* App */,
 				G_7831228999101 /* App_iOS_Tests */,
+				G_1235039993875 /* App_iOS_UITests */,
 				G_8340618952527 /* Configs */,
 				G_3234630030493 /* FileGroup */,
 				G_4661500274312 /* Framework */,
@@ -322,6 +345,7 @@
 			children = (
 				FR_825232110500 /* App_iOS.app */,
 				FR_783122899910 /* App_iOS_Tests.xctest */,
+				FR_123503999387 /* App_iOS_UITests.xctest */,
 				FR_472296042419 /* Framework_iOS.framework */,
 				FR_525119120469 /* Framework_macOS.framework */,
 				FR_662315837182 /* Framework_tvOS.framework */,
@@ -396,6 +420,22 @@
 /* End PBXLegacyTarget section */
 
 /* Begin PBXNativeTarget section */
+		NT_123503999387 /* App_iOS_UITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CL_123503999387 /* Build configuration list for PBXNativeTarget "App_iOS_UITests" */;
+			buildPhases = (
+				SBP_12350399938 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				TD_432517223942 /* PBXTargetDependency */,
+			);
+			name = App_iOS_UITests;
+			productName = App_iOS_UITests;
+			productReference = FR_123503999387 /* App_iOS_UITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		NT_438704538506 /* Framework_watchOS */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = CL_438704538506 /* Build configuration list for PBXNativeTarget "Framework_watchOS" */;
@@ -514,6 +554,11 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0920;
+				TargetAttributes = {
+					NT_123503999387 = {
+						TestTargetID = NT_825232110500;
+					};
+				};
 			};
 			buildConfigurationList = CL_844877120535 /* Build configuration list for PBXProject "Project" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -529,6 +574,7 @@
 			targets = (
 				NT_825232110500 /* App_iOS */,
 				NT_783122899910 /* App_iOS_Tests */,
+				NT_123503999387 /* App_iOS_UITests */,
 				NT_472296042419 /* Framework_iOS */,
 				NT_525119120469 /* Framework_macOS */,
 				NT_662315837182 /* Framework_tvOS */,
@@ -662,6 +708,14 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		SBP_12350399938 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF_811575032959 /* TestProjectTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		SBP_43870453850 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -720,6 +774,11 @@
 			isa = PBXTargetDependency;
 			target = NT_472296042419 /* Framework_iOS */;
 			targetProxy = "CIP_82523211050-1" /* PBXContainerItemProxy */;
+		};
+		TD_432517223942 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = NT_825232110500 /* App_iOS */;
+			targetProxy = CIP_12350399938 /* PBXContainerItemProxy */;
 		};
 		TD_436638162860 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -944,6 +1003,24 @@
 			};
 			name = "Production Release";
 		};
+		BC_257261481133 /* Staging Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
+				INFOPLIST_FILE = TestProjectUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-iOS-UITests";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestProject.app/TestProject";
+				TEST_TARGET_NAME = App_iOS;
+			};
+			name = "Staging Release";
+		};
 		BC_265230327262 /* Staging Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1066,6 +1143,24 @@
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = "Test Debug";
+		};
+		BC_355674198163 /* Production Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
+				INFOPLIST_FILE = TestProjectUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-iOS-UITests";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestProject.app/TestProject";
+				TEST_TARGET_NAME = App_iOS;
+			};
+			name = "Production Debug";
 		};
 		BC_368555321779 /* Production Release */ = {
 			isa = XCBuildConfiguration;
@@ -1193,6 +1288,24 @@
 			};
 			name = "Staging Debug";
 		};
+		BC_437463937945 /* Production Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
+				INFOPLIST_FILE = TestProjectUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-iOS-UITests";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestProject.app/TestProject";
+				TEST_TARGET_NAME = App_iOS;
+			};
+			name = "Production Release";
+		};
 		BC_444705348320 /* Staging Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1203,6 +1316,24 @@
 			};
 			name = "Staging Debug";
 		};
+		BC_447998896881 /* Test Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
+				INFOPLIST_FILE = TestProjectUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-iOS-UITests";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestProject.app/TestProject";
+				TEST_TARGET_NAME = App_iOS;
+			};
+			name = "Test Debug";
+		};
 		BC_467730755629 /* Production Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1212,6 +1343,24 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = "Production Release";
+		};
+		BC_474716674004 /* Test Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
+				INFOPLIST_FILE = TestProjectUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-iOS-UITests";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestProject.app/TestProject";
+				TEST_TARGET_NAME = App_iOS;
+			};
+			name = "Test Release";
 		};
 		BC_480688547948 /* Staging Debug */ = {
 			isa = XCBuildConfiguration;
@@ -1806,6 +1955,24 @@
 			};
 			name = "Staging Release";
 		};
+		BC_769258280401 /* Staging Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
+				INFOPLIST_FILE = TestProjectUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-iOS-UITests";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TestProject.app/TestProject";
+				TEST_TARGET_NAME = App_iOS;
+			};
+			name = "Staging Debug";
+		};
 		BC_790711614758 /* Staging Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2000,6 +2167,19 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		CL_123503999387 /* Build configuration list for PBXNativeTarget "App_iOS_UITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BC_355674198163 /* Production Debug */,
+				BC_437463937945 /* Production Release */,
+				BC_769258280401 /* Staging Debug */,
+				BC_257261481133 /* Staging Release */,
+				BC_447998896881 /* Test Debug */,
+				BC_474716674004 /* Test Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "";
+		};
 		CL_438704538506 /* Build configuration list for PBXNativeTarget "Framework_watchOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
