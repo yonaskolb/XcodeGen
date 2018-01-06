@@ -248,7 +248,7 @@ func projectGeneratorTests() {
                 let dependencies = pbxProject.objects.targetDependencies.referenceValues
                 try expect(dependencies.count) == 2
                 try expect(dependencies[0].target) == nativeTargets.first { $0.name == framework.name }!.reference
-                try expect(dependencies[1].target) == nativeTargets.first { $0.name == uiTest.name }!.reference
+                try expect(dependencies[1].target) == nativeTargets.first { $0.name == application.name }!.reference
             }
 
             $0.it("generates run scripts") {
