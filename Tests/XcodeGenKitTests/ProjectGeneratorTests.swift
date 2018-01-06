@@ -34,8 +34,16 @@ func projectGeneratorTests() {
             platform: .iOS,
             settings: Settings(buildSettings: ["SETTING_2": "VALUE"])
         )
+        
+        let uiTest = Target(
+            name: "MyAppUITests",
+            type: .uiTestBundle,
+            platform: .iOS,
+            settings: Settings(buildSettings: ["SETTING_3": "VALUE"]),
+            dependencies: [Dependency(type: .target, reference: "MyApp")]
+        )
 
-        let targets = [application, framework]
+        let targets = [application, framework, uiTest]
 
         $0.describe("Options") {
 
@@ -179,9 +187,29 @@ func projectGeneratorTests() {
             $0.it("generates targets") {
                 let pbxProject = try getPbxProj(spec)
                 let nativeTargets = pbxProject.objects.nativeTargets.referenceValues
-                try expect(nativeTargets.count) == 2
+                try expect(nativeTargets.count) == 3
                 try expect(nativeTargets.contains { $0.name == application.name }).beTrue()
                 try expect(nativeTargets.contains { $0.name == framework.name }).beTrue()
+                try expect(nativeTargets.contains { $0.name == uiTest.name }).beTrue()
+            }
+            
+            $0.it("generates target attributes") {
+
+                let pbxProject = try getPbxProj(spec)
+  
+                guard let targetAttributes = pbxProject.objects.projects.referenceValues.first?.attributes["TargetAttributes"] as? [String: [String: Any]] else {
+                    throw failure("Couldn't find Project TargetAttributes")
+                }
+                
+                guard let appTarget = pbxProject.objects.targets(named: application.name).first else {
+                    throw failure("Couldn't find App Target")
+                }
+                
+                guard let uiTestTarget = pbxProject.objects.targets(named: uiTest.name).first else {
+                    throw failure("Couldn't find UITest Target")
+                }
+                
+                try expect(targetAttributes[uiTestTarget.reference]?["TestTargetID"] as? String) == appTarget.reference
             }
 
             $0.it("generates platform version") {
@@ -215,10 +243,12 @@ func projectGeneratorTests() {
 
             $0.it("generates dependencies") {
                 let pbxProject = try getPbxProj(spec)
+                
                 let nativeTargets = pbxProject.objects.nativeTargets.referenceValues
                 let dependencies = pbxProject.objects.targetDependencies.referenceValues
-                try expect(dependencies.count) == 1
-                try expect(dependencies.first!.target) == nativeTargets.first { $0.name == framework.name }!.reference
+                try expect(dependencies.count) == 2
+                try expect(dependencies[0].target) == nativeTargets.first { $0.name == framework.name }!.reference
+                try expect(dependencies[1].target) == nativeTargets.first { $0.name == uiTest.name }!.reference
             }
 
             $0.it("generates run scripts") {
