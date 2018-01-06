@@ -2,6 +2,9 @@
 
 ## Master
 
+#### Added
+- add `disabledValidations` to options to disable the `missingConfigs` project validation error [#220](https://github.com/yonaskolb/XcodeGen/pull/220) @keith
+
 ## 1.5.0
 
 #### Added
