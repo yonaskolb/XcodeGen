@@ -44,6 +44,7 @@ targets:
     scheme:
       testTargets:
         - App_iOS_Tests
+        - App_iOS_UITests
       gatherCoverageData: true
       commandLineArguments:
           MyEnabledArgument: true
@@ -71,5 +72,13 @@ targets:
     settings:
       TEST_HOST: $(BUILT_PRODUCTS_DIR)/TestProject.app/TestProject
       INFOPLIST_FILE: TestProjectTests/Info.plist
+    dependencies:
+      - target: App_iOS
+  App_iOS_UITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources: App_iOS_UITests
+    settings:
+      INFOPLIST_FILE: TestProjectUITests/Info.plist
     dependencies:
       - target: App_iOS

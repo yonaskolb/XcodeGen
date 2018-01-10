@@ -157,7 +157,10 @@ public class PBXProjGenerator {
 
         sortGroups(group: mainGroup)
 
-        let projectAttributes: [String: Any] = ["LastUpgradeCheck": spec.xcodeVersion].merged(spec.attributes)
+        let projectAttributes: [String: Any] = ["LastUpgradeCheck": spec.xcodeVersion]
+            .merged(spec.attributes)
+            .merged(self.generateTargetAttributes() ?? [:])
+        
         let root = PBXProject(
             name: spec.name,
             reference: proj.rootObject,
@@ -172,6 +175,42 @@ public class PBXProjGenerator {
         proj.objects.projects.append(root)
 
         return proj
+    }
+    
+    func generateTargetAttributes() -> [String: Any]? {
+        
+        
+        var targetAttributes: [String: Any] = [:]
+        
+        // look up TEST_TARGET_NAME build setting
+        func testTargetName(_ target: PBXTarget) -> String? {
+            guard let configurationList = target.buildConfigurationList else { return nil }
+            guard let buildConfigurationReferences = self.proj.objects.configurationLists[configurationList]?.buildConfigurations else { return nil }
+            
+            let configs = buildConfigurationReferences
+                .flatMap { ref in self.proj.objects.buildConfigurations[ref] }
+            
+            return configs
+                .flatMap { $0.buildSettings["TEST_TARGET_NAME"] as? String }
+                .first
+        }
+            
+        let uiTestTargets = self.proj.objects.nativeTargets.values
+            .filter { $0.productType == .uiTestBundle }
+        
+        for uiTestTarget in uiTestTargets {
+            guard let name = testTargetName(uiTestTarget) else { continue }
+            guard let target = self.proj.objects.targets(named: name).first else { continue }
+            
+            targetAttributes[uiTestTarget.reference] = [ "TestTargetID": target.reference]
+        }
+        
+        guard !targetAttributes.isEmpty else { return nil }
+
+        return [
+            "TargetAttributes": targetAttributes
+        ]
+        
     }
 
     func sortGroups(group: PBXGroup) {
