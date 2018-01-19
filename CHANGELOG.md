@@ -3,7 +3,14 @@
 ## Master
 
 #### Added
-- add `disabledValidations` to options to disable the `missingConfigs` project validation error [#220](https://github.com/yonaskolb/XcodeGen/pull/220) @keith
+- Added `options.disabledValidations` including `missingConfigs` to disable project validation errors [#220](https://github.com/yonaskolb/XcodeGen/pull/220) @keith
+- Generate UI Test Target Attributes [#221](https://github.com/yonaskolb/XcodeGen/pull/221) @anreitersimon
+
+#### Fixed
+- Filter out duplicate source files [#217](https://github.com/yonaskolb/XcodeGen/pull/217) @allu22
+
+#### Changed
+- Change arrays to strings in setting presets [#218](https://github.com/yonaskolb/XcodeGen/pull/218) @allu22
 
 ## 1.5.0
 
