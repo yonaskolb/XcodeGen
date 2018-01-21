@@ -29,6 +29,14 @@ extension PBXProductType {
     public var isApp: Bool {
         return fileExtension == "app"
     }
+    
+    public var isTestBundle: Bool {
+        return fileExtension == "xctest"
+    }
+    
+    public var shouldEmbedDynamicFrameworks: Bool {
+        return isApp || isExtension || isTestBundle
+    }
 
     public var name: String {
         return rawValue.replacingOccurrences(of: "com.apple.product-type.", with: "")
