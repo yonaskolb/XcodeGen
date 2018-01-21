@@ -113,7 +113,6 @@ public class PBXProjGenerator {
                     reference: referenceGenerator.generate(PBXGroup.self, "Carthage" + platform),
                     children: fileReferences.sorted(),
                     sourceTree: .group,
-                    name: platform,
                     path: platform
                 )
                 addObject(platformGroup)

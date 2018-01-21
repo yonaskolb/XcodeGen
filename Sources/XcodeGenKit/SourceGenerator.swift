@@ -146,14 +146,16 @@ class SourceGenerator {
             // is a top level group in the project
             let isTopLevelGroup = (isBaseGroup && !createIntermediateGroups) || isRootPath
 
+            let groupName = name ?? path.lastComponent
+            let groupPath = isTopLevelGroup ?
+                path.byRemovingBase(path: spec.basePath).string :
+                path.lastComponent
             group = PBXGroup(
                 reference: referenceGenerator.generate(PBXGroup.self, path.byRemovingBase(path: spec.basePath).string),
                 children: children,
                 sourceTree: .group,
-                name: name ?? path.lastComponent,
-                path: isTopLevelGroup ?
-                    path.byRemovingBase(path: spec.basePath).string :
-                    path.lastComponent
+                name: groupName != groupPath ? groupName : nil,
+                path: groupPath
             )
             addObject(group)
             groupsByPath[path] = group

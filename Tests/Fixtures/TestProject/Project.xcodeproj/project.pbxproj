@@ -184,7 +184,6 @@
 				FR_643034527839 /* Info.plist */,
 				FR_145531354566 /* TestProjectUITests.swift */,
 			);
-			name = App_iOS_UITests;
 			path = App_iOS_UITests;
 			sourceTree = "<group>";
 		};
@@ -201,7 +200,6 @@
 			children = (
 				FR_410645050443 /* Alamofire.framework */,
 			);
-			name = iOS;
 			path = iOS;
 			sourceTree = "<group>";
 		};
@@ -210,7 +208,6 @@
 			children = (
 				FR_257516580010 /* Alamofire.framework */,
 			);
-			name = Mac;
 			path = Mac;
 			sourceTree = "<group>";
 		};
@@ -231,7 +228,6 @@
 			children = (
 				G_8030722683864 /* UnderFileGroup */,
 			);
-			name = FileGroup;
 			path = FileGroup;
 			sourceTree = "<group>";
 		};
@@ -242,7 +238,6 @@
 				FR_247808626608 /* Info.plist */,
 				FR_183521624014 /* MyFramework.h */,
 			);
-			name = Framework;
 			path = Framework;
 			sourceTree = "<group>";
 		};
@@ -252,7 +247,6 @@
 				FR_675266829517 /* Standalone.swift */,
 				FR_408537768279 /* StandaloneAssets.xcassets */,
 			);
-			name = StandaloneFiles;
 			path = StandaloneFiles;
 			sourceTree = "<group>";
 		};
@@ -261,7 +255,6 @@
 			children = (
 				FR_238161558082 /* MyBundle.bundle */,
 			);
-			name = Resources;
 			path = Resources;
 			sourceTree = "<group>";
 		};
@@ -271,7 +264,6 @@
 				FR_655678458041 /* Info.plist */,
 				FR_722239415598 /* TestProjectTests.swift */,
 			);
-			name = App_iOS_Tests;
 			path = App_iOS_Tests;
 			sourceTree = "<group>";
 		};
@@ -280,7 +272,6 @@
 			children = (
 				FR_196911129660 /* MoreUnder.swift */,
 			);
-			name = UnderFileGroup;
 			path = UnderFileGroup;
 			sourceTree = "<group>";
 		};
@@ -289,7 +280,6 @@
 			children = (
 				FR_752394658615 /* Alamofire.framework */,
 			);
-			name = watchOS;
 			path = watchOS;
 			sourceTree = "<group>";
 		};
@@ -316,7 +306,6 @@
 				FR_635802719871 /* base.xcconfig */,
 				FR_660690926982 /* config.xcconfig */,
 			);
-			name = Configs;
 			path = Configs;
 			sourceTree = "<group>";
 		};
@@ -360,7 +349,6 @@
 			children = (
 				FR_452853029807 /* Alamofire.framework */,
 			);
-			name = tvOS;
 			path = tvOS;
 			sourceTree = "<group>";
 		};
