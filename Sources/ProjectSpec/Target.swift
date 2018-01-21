@@ -31,17 +31,19 @@ public struct Target {
     public var scheme: TargetScheme?
     public var legacy: LegacyTarget?
     public var deploymentTarget: Version?
+    internal var productName: String?
 
     public var isLegacy: Bool {
         return legacy != nil
     }
 
+
     public var filename: String {
-        var name = self.name
+        var filename = productName ?? name
         if let fileExtension = type.fileExtension {
-            name += ".\(fileExtension)"
+            filename += ".\(fileExtension)"
         }
-        return name
+        return filename
     }
 
     public init(
@@ -134,6 +136,7 @@ extension Target {
                             settings["PRODUCT_NAME"] = targetName
                         }
                     }
+                    platformTarget["productName"] = targetName
                     platformTarget["settings"] = settings
                     crossPlatformTargets[newTargetName] = platformTarget
                 }
@@ -216,6 +219,7 @@ extension Target: NamedJSONDictionaryConvertible {
 
     public init(name: String, jsonDictionary: JSONDictionary) throws {
         self.name = jsonDictionary.json(atKeyPath: "name") ?? name
+        self.productName = jsonDictionary.json(atKeyPath: "productName")
         let typeString: String = try jsonDictionary.json(atKeyPath: "type")
         if let type = PBXProductType(string: typeString) {
             self.type = type

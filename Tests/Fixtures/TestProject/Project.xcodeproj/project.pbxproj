@@ -17,10 +17,10 @@
 		BF_279581961655 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FR_868653349092 /* Assets.xcassets */; settings = {COMPILER_FLAGS = "-Werror"; }; };
 		BF_280535243540 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = VG_609193904586 /* Main.storyboard */; };
 		BF_284620660317 /* MyBundle.bundle in Resources */ = {isa = PBXBuildFile; fileRef = FR_238161558082 /* MyBundle.bundle */; };
-		BF_292474606791 = {isa = PBXBuildFile; fileRef = FR_525119120469 /* Framework_macOS.framework */; };
-		BF_303822704662 = {isa = PBXBuildFile; fileRef = FR_472296042419 /* Framework_iOS.framework */; };
+		BF_292474606791 = {isa = PBXBuildFile; fileRef = FR_525119120469 /* Framework.framework */; };
+		BF_303822704662 = {isa = PBXBuildFile; fileRef = FR_472296042419 /* Framework.framework */; };
 		BF_314868376788 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = VG_746876637628 /* Localizable.stringsdict */; };
-		BF_324363145049 /* Framework_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_472296042419 /* Framework_iOS.framework */; };
+		BF_324363145049 /* Framework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_472296042419 /* Framework.framework */; };
 		BF_331192862207 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_481575785861 /* ViewController.swift */; settings = {COMPILER_FLAGS = "-Werror"; }; };
 		BF_334778067417 = {isa = PBXBuildFile; fileRef = FR_783122899910 /* App_iOS_Tests.xctest */; };
 		BF_360196406184 /* TestProjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_722239415598 /* TestProjectTests.swift */; };
@@ -38,13 +38,13 @@
 		BF_721498080533 /* ResourceFolder in Resources */ = {isa = PBXBuildFile; fileRef = FR_257073931060 /* ResourceFolder */; };
 		BF_729846993631 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_410645050443 /* Alamofire.framework */; };
 		BF_734036107922 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = FR_183521624014 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		BF_757906110813 = {isa = PBXBuildFile; fileRef = FR_662315837182 /* Framework_tvOS.framework */; };
+		BF_757906110813 = {isa = PBXBuildFile; fileRef = FR_662315837182 /* Framework.framework */; };
 		BF_813358525536 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = FR_183521624014 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		BF_854463933379 = {isa = PBXBuildFile; fileRef = FR_438704538506 /* Framework_watchOS.framework */; };
+		BF_854463933379 = {isa = PBXBuildFile; fileRef = FR_438704538506 /* Framework.framework */; };
 		BF_860391087135 /* StandaloneAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FR_408537768279 /* StandaloneAssets.xcassets */; };
 		BF_892119987440 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_854336462818 /* AppDelegate.swift */; settings = {COMPILER_FLAGS = "-Werror"; }; };
 		BF_901390118565 /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_172952167809 /* FrameworkFile.swift */; };
-		BF_905038616071 /* Framework_iOS.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = FR_472296042419 /* Framework_iOS.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BF_905038616071 /* Framework.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = FR_472296042419 /* Framework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BF_940936137577 = {isa = PBXBuildFile; fileRef = FR_123503999387 /* App_iOS_UITests.xctest */; };
 /* End PBXBuildFile section */
 
@@ -86,7 +86,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				BF_905038616071 /* Framework_iOS.framework in CopyFiles */,
+				BF_905038616071 /* Framework.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -106,21 +106,21 @@
 		FR_257516580010 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Alamofire.framework; sourceTree = "<group>"; };
 		FR_408537768279 /* StandaloneAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = StandaloneAssets.xcassets; sourceTree = "<group>"; };
 		FR_410645050443 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Alamofire.framework; sourceTree = "<group>"; };
-		FR_438704538506 /* Framework_watchOS.framework */ = {isa = PBXFileReference; explicitFileType = framework; includeInIndex = 0; path = Framework_watchOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FR_438704538506 /* Framework.framework */ = {isa = PBXFileReference; explicitFileType = framework; includeInIndex = 0; path = Framework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR_452853029807 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Alamofire.framework; sourceTree = "<group>"; };
-		FR_472296042419 /* Framework_iOS.framework */ = {isa = PBXFileReference; explicitFileType = framework; includeInIndex = 0; path = Framework_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FR_472296042419 /* Framework.framework */ = {isa = PBXFileReference; explicitFileType = framework; includeInIndex = 0; path = Framework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR_473000061463 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		FR_479264660374 /* Legacy */ = {isa = PBXFileReference; includeInIndex = 0; path = Legacy; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR_481575785861 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		FR_500792082643 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LocalizedStoryboard.strings; sourceTree = "<group>"; };
-		FR_525119120469 /* Framework_macOS.framework */ = {isa = PBXFileReference; explicitFileType = framework; includeInIndex = 0; path = Framework_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FR_525119120469 /* Framework.framework */ = {isa = PBXFileReference; explicitFileType = framework; includeInIndex = 0; path = Framework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR_602633703434 /* en */ = {isa = PBXFileReference; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		FR_609193904586 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		FR_635802719871 /* base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = base.xcconfig; sourceTree = "<group>"; };
 		FR_643034527839 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FR_655678458041 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FR_660690926982 /* config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = config.xcconfig; sourceTree = "<group>"; };
-		FR_662315837182 /* Framework_tvOS.framework */ = {isa = PBXFileReference; explicitFileType = framework; includeInIndex = 0; path = Framework_tvOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FR_662315837182 /* Framework.framework */ = {isa = PBXFileReference; explicitFileType = framework; includeInIndex = 0; path = Framework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR_675266829517 /* Standalone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Standalone.swift; sourceTree = "<group>"; };
 		FR_722239415598 /* TestProjectTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestProjectTests.swift; sourceTree = "<group>"; };
 		FR_725187762757 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -170,7 +170,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF_324363145049 /* Framework_iOS.framework in Frameworks */,
+				BF_324363145049 /* Framework.framework in Frameworks */,
 				BF_729846993631 /* Alamofire.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -335,10 +335,10 @@
 				FR_825232110500 /* App_iOS.app */,
 				FR_783122899910 /* App_iOS_Tests.xctest */,
 				FR_123503999387 /* App_iOS_UITests.xctest */,
-				FR_472296042419 /* Framework_iOS.framework */,
-				FR_525119120469 /* Framework_macOS.framework */,
-				FR_662315837182 /* Framework_tvOS.framework */,
-				FR_438704538506 /* Framework_watchOS.framework */,
+				FR_662315837182 /* Framework.framework */,
+				FR_438704538506 /* Framework.framework */,
+				FR_525119120469 /* Framework.framework */,
+				FR_472296042419 /* Framework.framework */,
 				FR_479264660374 /* Legacy */,
 			);
 			name = Products;
@@ -439,7 +439,7 @@
 			);
 			name = Framework_watchOS;
 			productName = Framework_watchOS;
-			productReference = FR_438704538506 /* Framework_watchOS.framework */;
+			productReference = FR_438704538506 /* Framework.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		NT_472296042419 /* Framework_iOS */ = {
@@ -457,7 +457,7 @@
 			);
 			name = Framework_iOS;
 			productName = Framework_iOS;
-			productReference = FR_472296042419 /* Framework_iOS.framework */;
+			productReference = FR_472296042419 /* Framework.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		NT_525119120469 /* Framework_macOS */ = {
@@ -475,7 +475,7 @@
 			);
 			name = Framework_macOS;
 			productName = Framework_macOS;
-			productReference = FR_525119120469 /* Framework_macOS.framework */;
+			productReference = FR_525119120469 /* Framework.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		NT_662315837182 /* Framework_tvOS */ = {
@@ -493,7 +493,7 @@
 			);
 			name = Framework_tvOS;
 			productName = Framework_tvOS;
-			productReference = FR_662315837182 /* Framework_tvOS.framework */;
+			productReference = FR_662315837182 /* Framework.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		NT_783122899910 /* App_iOS_Tests */ = {
