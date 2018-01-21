@@ -101,10 +101,12 @@ class SourceGenerator {
             if fileReferencePath.string == fileReferenceName {
                 fileReferenceName = nil
             }
+            let lastKnownFileType = PBXFileReference.fileType(path: path)
             let fileReference = PBXFileReference(
                 reference: referenceGenerator.generate(PBXFileReference.self, path.byRemovingBase(path: spec.basePath).string),
                 sourceTree: sourceTree,
                 name: fileReferenceName,
+                lastKnownFileType: lastKnownFileType,
                 path: fileReferencePath.string
             )
             addObject(fileReference)
