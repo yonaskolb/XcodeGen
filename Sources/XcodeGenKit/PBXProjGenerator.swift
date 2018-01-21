@@ -77,11 +77,20 @@ public class PBXProjGenerator {
                 referenceGenerator.generate(PBXLegacyTarget.self, target.name) :
                 referenceGenerator.generate(PBXNativeTarget.self, target.name)
 
+            var explicitFileType: String?
+            var lastKnownFileType: String?
+            let fileType = PBXFileReference.fileType(path: Path(target.filename))
+            if (target.platform == .macOS || target.type == .framework) {
+                explicitFileType = fileType
+            } else {
+                lastKnownFileType = fileType
+            }
+
             let fileReference = PBXFileReference(
                 reference: referenceGenerator.generate(PBXFileReference.self, target.name),
                 sourceTree: .buildProductsDir,
-                explicitFileType: target.type.fileExtension,
-                lastKnownFileType: PBXFileReference.fileType(path: Path(target.filename)),
+                explicitFileType: explicitFileType,
+                lastKnownFileType: lastKnownFileType,
                 path: target.filename,
                 includeInIndex: 0
             )
