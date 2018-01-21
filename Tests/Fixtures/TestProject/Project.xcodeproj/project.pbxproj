@@ -94,7 +94,7 @@
 
 /* Begin PBXFileReference section */
 		FR_118219888726 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LocalizedStoryboard.storyboard; sourceTree = "<group>"; };
-		FR_123503999387 /* App_iOS_UITests.xctest */ = {isa = PBXFileReference; explicitFileType = xctest; includeInIndex = 0; path = App_iOS_UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		FR_123503999387 /* App_iOS_UITests.xctest */ = {isa = PBXFileReference; explicitFileType = xctest; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = App_iOS_UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR_145531354566 /* TestProjectUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestProjectUITests.swift; sourceTree = "<group>"; };
 		FR_172952167809 /* FrameworkFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameworkFile.swift; sourceTree = "<group>"; };
 		FR_183521624014 /* MyFramework.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyFramework.h; sourceTree = "<group>"; };
@@ -106,29 +106,29 @@
 		FR_257516580010 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Alamofire.framework; sourceTree = "<group>"; };
 		FR_408537768279 /* StandaloneAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = StandaloneAssets.xcassets; sourceTree = "<group>"; };
 		FR_410645050443 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Alamofire.framework; sourceTree = "<group>"; };
-		FR_438704538506 /* Framework.framework */ = {isa = PBXFileReference; explicitFileType = framework; includeInIndex = 0; path = Framework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FR_438704538506 /* Framework.framework */ = {isa = PBXFileReference; explicitFileType = framework; includeInIndex = 0; lastKnownFileType = wrapper.framework; path = Framework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR_452853029807 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Alamofire.framework; sourceTree = "<group>"; };
-		FR_472296042419 /* Framework.framework */ = {isa = PBXFileReference; explicitFileType = framework; includeInIndex = 0; path = Framework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FR_472296042419 /* Framework.framework */ = {isa = PBXFileReference; explicitFileType = framework; includeInIndex = 0; lastKnownFileType = wrapper.framework; path = Framework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR_473000061463 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		FR_479264660374 /* Legacy */ = {isa = PBXFileReference; includeInIndex = 0; path = Legacy; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR_481575785861 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		FR_500792082643 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LocalizedStoryboard.strings; sourceTree = "<group>"; };
-		FR_525119120469 /* Framework.framework */ = {isa = PBXFileReference; explicitFileType = framework; includeInIndex = 0; path = Framework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FR_525119120469 /* Framework.framework */ = {isa = PBXFileReference; explicitFileType = framework; includeInIndex = 0; lastKnownFileType = wrapper.framework; path = Framework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR_602633703434 /* en */ = {isa = PBXFileReference; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		FR_609193904586 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		FR_635802719871 /* base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = base.xcconfig; sourceTree = "<group>"; };
 		FR_643034527839 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FR_655678458041 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FR_660690926982 /* config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = config.xcconfig; sourceTree = "<group>"; };
-		FR_662315837182 /* Framework.framework */ = {isa = PBXFileReference; explicitFileType = framework; includeInIndex = 0; path = Framework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FR_662315837182 /* Framework.framework */ = {isa = PBXFileReference; explicitFileType = framework; includeInIndex = 0; lastKnownFileType = wrapper.framework; path = Framework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR_675266829517 /* Standalone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Standalone.swift; sourceTree = "<group>"; };
 		FR_722239415598 /* TestProjectTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestProjectTests.swift; sourceTree = "<group>"; };
 		FR_725187762757 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FR_746876637628 /* Base */ = {isa = PBXFileReference; name = Base; path = Base.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		FR_752394658615 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Alamofire.framework; sourceTree = "<group>"; };
 		FR_771029596306 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
-		FR_783122899910 /* App_iOS_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = xctest; includeInIndex = 0; path = App_iOS_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		FR_825232110500 /* App_iOS.app */ = {isa = PBXFileReference; explicitFileType = app; includeInIndex = 0; path = App_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FR_783122899910 /* App_iOS_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = xctest; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = App_iOS_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		FR_825232110500 /* App_iOS.app */ = {isa = PBXFileReference; explicitFileType = app; includeInIndex = 0; lastKnownFileType = wrapper.application; path = App_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR_854336462818 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FR_868653349092 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */

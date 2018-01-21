@@ -81,6 +81,7 @@ public class PBXProjGenerator {
                 reference: referenceGenerator.generate(PBXFileReference.self, target.name),
                 sourceTree: .buildProductsDir,
                 explicitFileType: target.type.fileExtension,
+                lastKnownFileType: PBXFileReference.fileType(path: Path(target.filename)),
                 path: target.filename,
                 includeInIndex: 0
             )
