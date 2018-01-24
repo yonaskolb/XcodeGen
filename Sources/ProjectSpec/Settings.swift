@@ -1,7 +1,7 @@
 import Foundation
 import JSONUtilities
-import xcproj
 import PathKit
+import xcproj
 
 public struct Settings: Equatable, JSONObjectConvertible, CustomStringConvertible {
 

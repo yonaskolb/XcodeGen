@@ -1,8 +1,8 @@
-import Spectre
 import PathKit
+import ProjectSpec
+import Spectre
 import XcodeGenKit
 import xcproj
-import ProjectSpec
 
 let fixturePath = Path(#file).parent().parent() + "Fixtures"
 
@@ -33,8 +33,8 @@ func fixtureTests() {
         $0.it("generates variant group") {
             guard let project = project else { return }
 
-            func getFileReferences(_ path: String) -> [PBXFileReference] {
-                return project.pbxproj.objects.fileReferences.referenceValues.filter { $0.path == path }
+            func getFileReferences(_ path: String) -> [ObjectReference<PBXFileReference>] {
+                return project.pbxproj.objects.fileReferences.objectReferences.filter { $0.object.path == path }
             }
 
             func getVariableGroups(_ name: String?) -> [PBXVariantGroup] {

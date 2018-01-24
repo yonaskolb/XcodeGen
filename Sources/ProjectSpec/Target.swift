@@ -1,6 +1,6 @@
 import Foundation
-import xcproj
 import JSONUtilities
+import xcproj
 
 public struct LegacyTarget {
     public var toolPath: String
@@ -36,7 +36,6 @@ public struct Target {
     public var isLegacy: Bool {
         return legacy != nil
     }
-
 
     public var filename: String {
         var filename = productName ?? name
@@ -219,7 +218,7 @@ extension Target: NamedJSONDictionaryConvertible {
 
     public init(name: String, jsonDictionary: JSONDictionary) throws {
         self.name = jsonDictionary.json(atKeyPath: "name") ?? name
-        self.productName = jsonDictionary.json(atKeyPath: "productName")
+        productName = jsonDictionary.json(atKeyPath: "productName")
         let typeString: String = try jsonDictionary.json(atKeyPath: "type")
         if let type = PBXProductType(string: typeString) {
             self.type = type

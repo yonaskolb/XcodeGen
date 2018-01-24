@@ -1,6 +1,6 @@
 import Foundation
-import Yams
 import PathKit
+import Yams
 
 public func loadYamlDictionary(path: Path) throws -> [String: Any] {
     let string: String = try path.read()

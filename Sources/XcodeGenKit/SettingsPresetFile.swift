@@ -1,6 +1,6 @@
 import Foundation
-import xcproj
 import ProjectSpec
+import xcproj
 
 public enum SettingsPresetFile {
     case config(ConfigType)

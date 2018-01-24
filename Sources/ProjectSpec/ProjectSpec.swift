@@ -1,7 +1,7 @@
 import Foundation
-import xcproj
 import JSONUtilities
 import PathKit
+import xcproj
 import Yams
 
 public struct ProjectSpec {

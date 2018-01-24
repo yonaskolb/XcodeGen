@@ -1,5 +1,5 @@
-import XCTest
 @testable import XcodeGenKitTests
+import XCTest
 
 XCTMain([
     testCase(GeneratorTests.allTests),

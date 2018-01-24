@@ -1,8 +1,8 @@
+import PathKit
+import ProjectSpec
 import Spectre
 import XcodeGenKit
 import xcproj
-import PathKit
-import ProjectSpec
 import Yams
 
 func projectGeneratorTests() {
@@ -34,7 +34,7 @@ func projectGeneratorTests() {
             platform: .iOS,
             settings: Settings(buildSettings: ["SETTING_2": "VALUE"])
         )
-        
+
         let uiTest = Target(
             name: "MyAppUITests",
             type: .uiTestBundle,
@@ -192,23 +192,23 @@ func projectGeneratorTests() {
                 try expect(nativeTargets.contains { $0.name == framework.name }).beTrue()
                 try expect(nativeTargets.contains { $0.name == uiTest.name }).beTrue()
             }
-            
+
             $0.it("generates target attributes") {
 
                 let pbxProject = try getPbxProj(spec)
-  
+
                 guard let targetAttributes = pbxProject.objects.projects.referenceValues.first?.attributes["TargetAttributes"] as? [String: [String: Any]] else {
                     throw failure("Couldn't find Project TargetAttributes")
                 }
-                
+
                 guard let appTarget = pbxProject.objects.targets(named: application.name).first else {
                     throw failure("Couldn't find App Target")
                 }
-                
+
                 guard let uiTestTarget = pbxProject.objects.targets(named: uiTest.name).first else {
                     throw failure("Couldn't find UITest Target")
                 }
-                
+
                 try expect(targetAttributes[uiTestTarget.reference]?["TestTargetID"] as? String) == appTarget.reference
             }
 
@@ -243,12 +243,12 @@ func projectGeneratorTests() {
 
             $0.it("generates dependencies") {
                 let pbxProject = try getPbxProj(spec)
-                
-                let nativeTargets = pbxProject.objects.nativeTargets.referenceValues
-                let dependencies = pbxProject.objects.targetDependencies.referenceValues
+
+                let nativeTargets = pbxProject.objects.nativeTargets.objectReferences
+                let dependencies = pbxProject.objects.targetDependencies.objectReferences
                 try expect(dependencies.count) == 2
-                try expect(dependencies[0].target) == nativeTargets.first { $0.name == framework.name }!.reference
-                try expect(dependencies[1].target) == nativeTargets.first { $0.name == application.name }!.reference
+                try expect(dependencies[0].object.target) == nativeTargets.first { $0.object.name == framework.name }!.reference
+                try expect(dependencies[1].object.target) == nativeTargets.first { $0.object.name == application.name }!.reference
             }
 
             $0.it("generates run scripts") {
@@ -263,15 +263,15 @@ func projectGeneratorTests() {
                 }
                 let buildPhases = nativeTarget.buildPhases
 
-                let scripts = pbxProject.objects.shellScriptBuildPhases.referenceValues
+                let scripts = pbxProject.objects.shellScriptBuildPhases.objectReferences
                 let script1 = scripts[0]
                 let script2 = scripts[1]
                 try expect(scripts.count) == 2
                 try expect(buildPhases.first) == script1.reference
                 try expect(buildPhases.last) == script2.reference
 
-                try expect(script1.shellScript) == "script1"
-                try expect(script2.shellScript) == "script2"
+                try expect(script1.object.shellScript) == "script1"
+                try expect(script2.object.shellScript) == "script2"
             }
 
             $0.it("generates targets with cylical dependencies") {
@@ -312,8 +312,8 @@ func projectGeneratorTests() {
                     schemes: [scheme]
                 )
                 let project = try getProject(spec)
-                guard let target = project.pbxproj.objects.nativeTargets.referenceValues
-                    .first(where: { $0.name == application.name }) else {
+                guard let target = project.pbxproj.objects.nativeTargets.objectReferences
+                    .first(where: { $0.object.name == application.name }) else {
                     throw failure("Target not found")
                 }
                 guard let xcscheme = project.sharedData?.schemes.first else {
@@ -327,15 +327,15 @@ func projectGeneratorTests() {
 
                 let buildableReferences: [XCScheme.BuildableReference] = [
                     buildActionEntry.buildableReference,
-                    xcscheme.launchAction?.buildableProductRunnable.buildableReference,
-                    xcscheme.profileAction?.buildableProductRunnable.buildableReference,
+                    xcscheme.launchAction?.buildableProductRunnable?.buildableReference,
+                    xcscheme.profileAction?.buildableProductRunnable?.buildableReference,
                     xcscheme.testAction?.macroExpansion,
                 ].flatMap { $0 }
 
                 for buildableReference in buildableReferences {
                     try expect(buildableReference.blueprintIdentifier) == target.reference
                     try expect(buildableReference.blueprintName) == scheme.name
-                    try expect(buildableReference.buildableName) == "\(target.name).\(target.productType!.fileExtension!)"
+                    try expect(buildableReference.buildableName) == "\(target.object.name).\(target.object.productType!.fileExtension!)"
                 }
 
                 try expect(xcscheme.launchAction?.buildConfiguration) == "Debug"
@@ -361,8 +361,8 @@ func projectGeneratorTests() {
 
                 try expect(project.sharedData?.schemes.count) == 2
 
-                guard let nativeTarget = project.pbxproj.objects.nativeTargets.referenceValues
-                    .first(where: { $0.name == application.name }) else {
+                guard let nativeTarget = project.pbxproj.objects.nativeTargets.objectReferences
+                    .first(where: { $0.object.name == application.name }) else {
                     throw failure("Target not found")
                 }
                 guard let xcscheme = project.sharedData?.schemes
@@ -775,13 +775,12 @@ func projectGeneratorTests() {
                 try project.expectFile(paths: ["C", "Info.plist"], buildPhase: .none)
             }
 
-
             $0.it("duplicate TargetSource is included once in sources build phase") {
                 let directories = """
-                  Sources:
-                    A:
-                      - a.swift
-                  """
+                Sources:
+                  A:
+                    - a.swift
+                """
                 try createDirectories(directories)
 
                 let target = Target(name: "Test", type: .application, platform: .iOS, sources: [
@@ -838,8 +837,8 @@ extension PBXProj {
         }
 
         if let buildPhase = buildPhase {
-            let buildFile = objects.buildFiles.referenceValues
-                .first(where: { $0.fileRef == fileReference.reference })
+            let buildFile = objects.buildFiles.objectReferences
+                .first(where: { $0.object.fileRef == fileReference.reference })
             let actualBuildPhase = buildFile
                 .flatMap { buildFile in objects.buildPhases.referenceValues.first { $0.files.contains(buildFile.reference) } }?.buildPhase
 
@@ -869,7 +868,7 @@ extension PBXProj {
         }
     }
 
-    func getFileReference(paths: [String], names: [String]) -> PBXFileReference? {
+    func getFileReference(paths: [String], names: [String]) -> ObjectReference<PBXFileReference>? {
         guard let project = objects.projects.first?.value else { return nil }
         guard let mainGroup = objects.groups.getReference(project.mainGroup) else { return nil }
 
@@ -886,7 +885,7 @@ extension PBXProj {
         return mainGroup
     }
 
-    private func getFileReference(group: PBXGroup, paths: [String], names: [String]) -> PBXFileReference? {
+    private func getFileReference(group: PBXGroup, paths: [String], names: [String]) -> ObjectReference<PBXFileReference>? {
 
         guard !paths.isEmpty else { return nil }
         let path = paths.first!
@@ -894,8 +893,14 @@ extension PBXProj {
         let restOfPath = Array(paths.dropFirst())
         let restOfName = Array(names.dropFirst())
         if restOfPath.isEmpty {
-            let fileReferences = group.children.flatMap { self.objects.fileReferences.getReference($0) }
-            return fileReferences.first { $0.path == path && $0.nameOrPath == name }
+            let fileReferences: [ObjectReference<PBXFileReference>] = group.children.flatMap { reference in
+                if let fileReference = self.objects.fileReferences.getReference(reference) {
+                    return ObjectReference(reference: reference, object: fileReference)
+                } else {
+                    return nil
+                }
+            }
+            return fileReferences.first { $0.object.path == path && $0.object.nameOrPath == name }
         } else {
             let groups = group.children.flatMap { self.objects.groups.getReference($0) }
             guard let group = groups.first(where: { $0.path == path && $0.nameOrPath == name }) else { return nil }
