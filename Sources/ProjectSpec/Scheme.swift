@@ -212,7 +212,7 @@ extension Scheme.Build: JSONObjectConvertible {
                 case "none": buildTypes = []
                 case "testing": buildTypes = [.testing, .analyzing]
                 case "indexing": buildTypes = [.testing, .analyzing, .archiving]
-                default: buildTypes = BuildType.all
+                default: buildTypes = BuildType.from(jsonValue: string).map { [$0] } ?? BuildType.all
                 }
             } else if let enabledDictionary = possibleBuildTypes as? [String: Bool] {
                 buildTypes = enabledDictionary.filter { $0.value }.flatMap { BuildType.from(jsonValue: $0.key) }
