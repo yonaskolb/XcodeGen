@@ -66,6 +66,8 @@ public class ProjectGenerator {
 
         let buildAction = XCScheme.BuildAction(
             buildActionEntries: buildActionEntries,
+            preActions: scheme.build.preActions.map(XCScheme.ExecutionAction.init),
+            postActions: scheme.build.postActions.map(XCScheme.ExecutionAction.init),
             parallelizeBuild: true,
             buildImplicitDependencies: true
         )
@@ -82,6 +84,8 @@ public class ProjectGenerator {
             buildConfiguration: scheme.test?.config ?? defaultDebugConfig.name,
             macroExpansion: buildableReference,
             testables: testables,
+            preActions: scheme.test?.preActions.map(XCScheme.ExecutionAction.init) ?? [],
+            postActions: scheme.test?.postActions.map(XCScheme.ExecutionAction.init) ?? [],
             shouldUseLaunchSchemeArgsEnv: scheme.test?.commandLineArguments.isEmpty ?? true,
             codeCoverageEnabled: scheme.test?.gatherCoverageData ?? false,
             commandlineArguments: testCommandLineArgs
@@ -90,12 +94,16 @@ public class ProjectGenerator {
         let launchAction = XCScheme.LaunchAction(
             buildableProductRunnable: productRunable,
             buildConfiguration: scheme.run?.config ?? defaultDebugConfig.name,
+            preActions: scheme.run?.preActions.map(XCScheme.ExecutionAction.init) ?? [],
+            postActions: scheme.run?.postActions.map(XCScheme.ExecutionAction.init) ?? [],
             commandlineArguments: launchCommandLineArgs
         )
 
         let profileAction = XCScheme.ProfileAction(
             buildableProductRunnable: productRunable,
             buildConfiguration: scheme.profile?.config ?? defaultReleaseConfig.name,
+            preActions: scheme.profile?.preActions.map(XCScheme.ExecutionAction.init) ?? [],
+            postActions: scheme.profile?.postActions.map(XCScheme.ExecutionAction.init) ?? [],
             shouldUseLaunchSchemeArgsEnv: scheme.profile?.commandLineArguments.isEmpty ?? true,
             commandlineArguments: profileCommandLineArgs
         )
@@ -104,7 +112,9 @@ public class ProjectGenerator {
 
         let archiveAction = XCScheme.ArchiveAction(
             buildConfiguration: scheme.archive?.config ?? defaultReleaseConfig.name,
-            revealArchiveInOrganizer: true
+            revealArchiveInOrganizer: true,
+            preActions: scheme.archive?.preActions.map(XCScheme.ExecutionAction.init) ?? [],
+            postActions: scheme.archive?.postActions.map(XCScheme.ExecutionAction.init) ?? []
         )
 
         return XCScheme(

@@ -209,6 +209,12 @@ protocol BuildAction: Equatable {
     var config: String { get }
 }
 
+extension XCScheme.ExecutionAction {
+    public convenience init(_ executionAction: Scheme.ExecutionAction) {
+        self.init(scriptText: executionAction.script, title: executionAction.name)
+    }
+}
+
 extension Scheme.ExecutionAction: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
