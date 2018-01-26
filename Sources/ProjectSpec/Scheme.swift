@@ -318,7 +318,7 @@ extension BuildType: JSONPrimitiveConvertible {
 
     public typealias JSONType = String
 
-    public static func from(jsonValue: String) -> XCScheme.BuildAction.Entry.BuildFor? {
+    public static func from(jsonValue: String) -> BuildType? {
         switch jsonValue {
         case "test", "testing": return .testing
         case "profile", "profiling": return .profiling
