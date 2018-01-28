@@ -42,8 +42,8 @@
         "repositoryURL": "https://github.com/onevcat/Rainbow.git",
         "state": {
           "branch": null,
-          "revision": "f407235c7e473c3cb2d2907bb6822616d22a0b78",
-          "version": "3.0.3"
+          "revision": "f69961599ad524251d677fbec9e4bac57385d6fc",
+          "version": "3.1.1"
         }
       },
       {
@@ -51,8 +51,8 @@
         "repositoryURL": "https://github.com/JohnSundell/ShellOut.git",
         "state": {
           "branch": null,
-          "revision": "479a89d9bfa7585496bd4a3e4faffac5b01af37f",
-          "version": "2.0.0"
+          "revision": "f1c253a34a40df4bfd268b09fdb101b059f6d52d",
+          "version": "2.1.0"
         }
       },
       {
@@ -77,9 +77,9 @@
         "package": "xcproj",
         "repositoryURL": "https://github.com/xcodeswift/xcproj.git",
         "state": {
-          "branch": "8fb1284",
-          "revision": "8fb12846996875c2dacbe8845be141c7c5e56d28",
-          "version": null
+          "branch": null,
+          "revision": "5f68ad74627a537cdd3d022644edd0fa7a80d4a7",
+          "version": "4.0.0"
         }
       }
     ]

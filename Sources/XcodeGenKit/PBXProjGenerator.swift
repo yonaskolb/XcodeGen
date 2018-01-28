@@ -74,8 +74,7 @@ public class PBXProjGenerator {
             id: spec.name,
             XCConfigurationList(
                 buildConfigurations: buildConfigs.map { $0.reference },
-                defaultConfigurationName: buildConfigs.first?.object.name ?? "",
-                defaultConfigurationIsVisible: false
+                defaultConfigurationName: buildConfigs.first?.object.name ?? ""
             )
         )
 
@@ -85,8 +84,8 @@ public class PBXProjGenerator {
                 children: [],
                 sourceTree: .group,
                 usesTabs: spec.options.usesTabs,
-                indentWidth: spec.options.indentWidth.map { UInt($0) },
-                tabWidth: spec.options.tabWidth.map { UInt($0) }
+                indentWidth: spec.options.indentWidth,
+                tabWidth: spec.options.tabWidth
             )
         )
 
@@ -544,10 +543,7 @@ public class PBXProjGenerator {
 
             let frameworkBuildPhase = createObject(
                 id: target.name,
-                PBXFrameworksBuildPhase(
-                    files: targetFrameworkBuildFiles,
-                    runOnlyForDeploymentPostprocessing: false
-                )
+                PBXFrameworksBuildPhase(files: targetFrameworkBuildFiles)
             )
             buildPhases.append(frameworkBuildPhase.reference)
         }
