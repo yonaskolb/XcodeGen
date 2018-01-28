@@ -27,7 +27,7 @@ public class PBXProjGenerator {
 
     public init(spec: ProjectSpec) {
         self.spec = spec
-        proj = PBXProj(objectVersion: 46, rootObject: "")
+        proj = PBXProj(rootObject: "", objectVersion: 46)
         sourceGenerator = SourceGenerator(spec: spec) { [unowned self] id, object in
             self.addObject(id: id, object)
         }
@@ -74,8 +74,7 @@ public class PBXProjGenerator {
             id: spec.name,
             XCConfigurationList(
                 buildConfigurations: buildConfigs.map { $0.reference },
-                defaultConfigurationName: buildConfigs.first?.object.name ?? "",
-                defaultConfigurationIsVisible: 0
+                defaultConfigurationName: buildConfigs.first?.object.name ?? ""
             )
         )
 
@@ -84,7 +83,7 @@ public class PBXProjGenerator {
             PBXGroup(
                 children: [],
                 sourceTree: .group,
-                usesTabs: spec.options.usesTabs.map { $0 ? 1 : 0 },
+                usesTabs: spec.options.usesTabs,
                 indentWidth: spec.options.indentWidth,
                 tabWidth: spec.options.tabWidth
             )
@@ -136,7 +135,7 @@ public class PBXProjGenerator {
                     explicitFileType: explicitFileType,
                     lastKnownFileType: lastKnownFileType,
                     path: target.filename,
-                    includeInIndex: 0
+                    includeInIndex: false
                 )
             )
 
@@ -515,7 +514,7 @@ public class PBXProjGenerator {
                 shellPath: buildScript.shell ?? "/bin/sh",
                 shellScript: shellScript
             )
-            shellScriptPhase.runOnlyForDeploymentPostprocessing = buildScript.runOnlyWhenInstalling ? 1 : 0
+            shellScriptPhase.runOnlyForDeploymentPostprocessing = buildScript.runOnlyWhenInstalling
             let shellScriptPhaseReference = createObject(id: String(describing: buildScript.name) + shellScript + target.name, shellScriptPhase)
             buildPhases.append(shellScriptPhaseReference.reference)
         }
@@ -544,10 +543,7 @@ public class PBXProjGenerator {
 
             let frameworkBuildPhase = createObject(
                 id: target.name,
-                PBXFrameworksBuildPhase(
-                    files: targetFrameworkBuildFiles,
-                    runOnlyForDeploymentPostprocessing: 0
-                )
+                PBXFrameworksBuildPhase(files: targetFrameworkBuildFiles)
             )
             buildPhases.append(frameworkBuildPhase.reference)
         }
