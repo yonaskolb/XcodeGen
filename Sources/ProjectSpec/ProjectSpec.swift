@@ -1,7 +1,7 @@
 import Foundation
-import xcproj
 import JSONUtilities
 import PathKit
+import xcproj
 import Yams
 
 public struct ProjectSpec {
@@ -27,8 +27,8 @@ public struct ProjectSpec {
         public var disabledValidations: [ValidationType]
         public var developmentLanguage: String?
         public var usesTabs: Bool?
-        public var tabWidth: Int?
-        public var indentWidth: Int?
+        public var tabWidth: UInt?
+        public var indentWidth: UInt?
         public var xcodeVersion: String?
         public var deploymentTarget: DeploymentTarget
 
@@ -59,8 +59,8 @@ public struct ProjectSpec {
             bundleIdPrefix: String? = nil,
             settingPresets: SettingPresets = .all,
             developmentLanguage: String? = nil,
-            indentWidth: Int? = nil,
-            tabWidth: Int? = nil,
+            indentWidth: UInt? = nil,
+            tabWidth: UInt? = nil,
             usesTabs: Bool? = nil,
             xcodeVersion: String? = nil,
             deploymentTarget: DeploymentTarget = .init(),
@@ -208,8 +208,8 @@ extension ProjectSpec.Options: JSONObjectConvertible {
         createIntermediateGroups = jsonDictionary.json(atKeyPath: "createIntermediateGroups") ?? false
         developmentLanguage = jsonDictionary.json(atKeyPath: "developmentLanguage")
         usesTabs = jsonDictionary.json(atKeyPath: "usesTabs")
-        indentWidth = jsonDictionary.json(atKeyPath: "indentWidth")
-        tabWidth = jsonDictionary.json(atKeyPath: "tabWidth")
+        indentWidth = (jsonDictionary.json(atKeyPath: "indentWidth") as Int?).flatMap(UInt.init)
+        tabWidth = (jsonDictionary.json(atKeyPath: "tabWidth") as Int?).flatMap(UInt.init)
         deploymentTarget = jsonDictionary.json(atKeyPath: "deploymentTarget") ?? DeploymentTarget()
         disabledValidations = jsonDictionary.json(atKeyPath: "disabledValidations") ?? []
     }

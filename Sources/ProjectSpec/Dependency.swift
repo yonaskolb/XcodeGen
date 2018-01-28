@@ -1,6 +1,6 @@
 import Foundation
-import xcproj
 import JSONUtilities
+import xcproj
 
 public struct Dependency: Equatable {
 

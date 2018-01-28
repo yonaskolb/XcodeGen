@@ -1,7 +1,7 @@
 import Foundation
+import ProjectSpec
 import Spectre
 import xcproj
-import ProjectSpec
 
 func expectError<T: Error>(_ expectedError: T, _ closure: () throws -> Void) throws where T: CustomStringConvertible {
     do {

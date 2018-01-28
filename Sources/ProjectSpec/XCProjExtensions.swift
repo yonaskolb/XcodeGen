@@ -1,6 +1,6 @@
 import Foundation
-import xcproj
 import PathKit
+import xcproj
 
 extension PBXProductType {
 

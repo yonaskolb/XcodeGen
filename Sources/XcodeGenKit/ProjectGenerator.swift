@@ -1,9 +1,9 @@
 import Foundation
-import PathKit
-import xcproj
 import JSONUtilities
-import Yams
+import PathKit
 import ProjectSpec
+import xcproj
+import Yams
 
 public class ProjectGenerator {
 
@@ -31,8 +31,8 @@ public class ProjectGenerator {
     }
 
     func generateWorkspace() throws -> XCWorkspace {
-        let workspaceReferences: [XCWorkspace.Data.FileRef] = [XCWorkspace.Data.FileRef.project(path: Path(""))]
-        let workspaceData = XCWorkspace.Data(references: workspaceReferences)
+        let dataElement: XCWorkspaceDataElement = .file(XCWorkspaceDataFileRef(location: .`self`("")))
+        let workspaceData = XCWorkspaceData(children: [dataElement])
         return XCWorkspace(data: workspaceData)
     }
 
@@ -40,15 +40,12 @@ public class ProjectGenerator {
 
         func getBuildEntry(_ buildTarget: Scheme.BuildTarget) -> XCScheme.BuildAction.Entry {
 
-            let predicate: (PBXTarget) -> Bool = { $0.name == buildTarget.target }
-            let targetReference =
-                pbxProject.objects.nativeTargets.referenceValues.first { predicate($0 as PBXTarget) } ??
-                pbxProject.objects.legacyTargets.referenceValues.first { predicate($0 as PBXTarget) }!
+            let targetReference = pbxProject.objects.targets(named: buildTarget.target).first!
 
             let buildableReference = XCScheme.BuildableReference(
                 referencedContainer: "container:\(spec.name).xcodeproj",
                 blueprintIdentifier: targetReference.reference,
-                buildableName: buildTarget.target + (targetReference.productType?.fileExtension.map { ".\($0)" } ?? ""),
+                buildableName: buildTarget.target + (targetReference.object.productType?.fileExtension.map { ".\($0)" } ?? ""),
                 blueprintName: scheme.name
             )
 

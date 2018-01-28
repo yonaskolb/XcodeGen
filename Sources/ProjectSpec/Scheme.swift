@@ -1,6 +1,6 @@
 import Foundation
-import xcproj
 import JSONUtilities
+import xcproj
 
 public typealias BuildType = XCScheme.BuildAction.Entry.BuildFor
 

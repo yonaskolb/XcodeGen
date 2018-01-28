@@ -1,10 +1,10 @@
-import Foundation
-import PathKit
 import Commander
+import Foundation
+import JSONUtilities
+import PathKit
+import ProjectSpec
 import XcodeGenKit
 import xcproj
-import ProjectSpec
-import JSONUtilities
 
 let version = "1.5.0"
 

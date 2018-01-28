@@ -1,7 +1,7 @@
 import Foundation
+import JSONUtilities
 import PathKit
 import Yams
-import JSONUtilities
 
 extension ProjectSpec {
 

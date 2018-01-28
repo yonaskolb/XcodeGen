@@ -1,8 +1,8 @@
-import Spectre
 import PathKit
+import ProjectSpec
+import Spectre
 import XcodeGenKit
 import xcproj
-import ProjectSpec
 
 func specLoadingTests() {
 
