@@ -35,13 +35,17 @@ public struct Scheme: Equatable {
     public struct ExecutionAction: Equatable {
         public var script: String
         public var name: String
-        public init(name: String, script: String) {
-            self.name = name
+        public var settingsTarget: String?
+        public init(name: String, script: String, settingsTarget: String?) {
             self.script = script
+            self.name = name
+            self.settingsTarget = settingsTarget
         }
 
         public static func == (lhs: ExecutionAction, rhs: ExecutionAction) -> Bool {
-            return lhs.name == rhs.name && lhs.script == rhs.script
+            return lhs.script == rhs.script &&
+                lhs.name == rhs.name &&
+                lhs.settingsTarget == rhs.settingsTarget
         }
     }
 
@@ -209,17 +213,12 @@ protocol BuildAction: Equatable {
     var config: String { get }
 }
 
-extension XCScheme.ExecutionAction {
-    public convenience init(_ executionAction: Scheme.ExecutionAction) {
-        self.init(scriptText: executionAction.script, title: executionAction.name)
-    }
-}
-
 extension Scheme.ExecutionAction: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
         script = try jsonDictionary.json(atKeyPath: "script")
         name = jsonDictionary.json(atKeyPath: "name") ?? "Run Script"
+        settingsTarget = jsonDictionary.json(atKeyPath: "settingsTarget")
     }
 }
 
