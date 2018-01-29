@@ -425,6 +425,17 @@ The different actions share some properties:
 	- `debug`: run, test, analyze
 	- `release`: profile, archive
 - [ ] **commandLineArguments**: **[String:Bool]** - `run`, `test` and `profile` actions have a map of command line arguments to whether they are enabled
+- [ ] **preActions**: **[[Execution Action](#execution-action)]** - Scheme run scripts that run *before* the action is run
+- [ ] **postActions**: **[[Execution Action](#execution-action)]** - Scheme run scripts that run *after* the action is run
+
+### Execution Action
+Scheme run scripts added via **preActions** or **postActions**. They run before or after a build action, respectively, and in the order defined. Each execution action can contain:
+
+- [x] **script**: **String** - an inline shell script
+- [ ] **name**: **String** - name of a script. Defaults to `Run Script`
+- [ ] **settingsTarget**: **String** - name of a build or test target whose settings will be available as environment variables.
+
+A multiline script can be written using the various YAML multiline methods, for example with `|`. See [Build Script](#build-script).
 
 ### Test Action
 - [ ] **gatherCoverageData**: **Bool** - a boolean that indicates if this scheme should gather coverage data. This defaults to false
