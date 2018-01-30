@@ -32,28 +32,66 @@ public struct Scheme: Equatable {
         self.archive = archive
     }
 
+    public struct ExecutionAction: Equatable {
+        public var script: String
+        public var name: String
+        public var settingsTarget: String?
+        public init(name: String, script: String, settingsTarget: String?) {
+            self.script = script
+            self.name = name
+            self.settingsTarget = settingsTarget
+        }
+
+        public static func == (lhs: ExecutionAction, rhs: ExecutionAction) -> Bool {
+            return lhs.script == rhs.script &&
+                lhs.name == rhs.name &&
+                lhs.settingsTarget == rhs.settingsTarget
+        }
+    }
+
     public struct Build: Equatable {
         public var targets: [BuildTarget]
-        public init(targets: [BuildTarget]) {
+        public var preActions: [ExecutionAction]
+        public var postActions: [ExecutionAction]
+        public init(
+            targets: [BuildTarget],
+            preActions: [ExecutionAction] = [],
+            postActions: [ExecutionAction] = []
+        ) {
             self.targets = targets
+            self.preActions = preActions
+            self.postActions = postActions
         }
 
         public static func == (lhs: Build, rhs: Build) -> Bool {
-            return lhs.targets == rhs.targets
+            return lhs.targets == rhs.targets &&
+                lhs.preActions == rhs.postActions &&
+                lhs.postActions == rhs.postActions
         }
     }
 
     public struct Run: BuildAction {
         public var config: String
         public var commandLineArguments: [String: Bool]
-        public init(config: String, commandLineArguments: [String: Bool] = [:]) {
+        public var preActions: [ExecutionAction]
+        public var postActions: [ExecutionAction]
+        public init(
+            config: String,
+            commandLineArguments: [String: Bool] = [:],
+            preActions: [ExecutionAction] = [],
+            postActions: [ExecutionAction] = []
+        ) {
             self.config = config
             self.commandLineArguments = commandLineArguments
+            self.preActions = preActions
+            self.postActions = postActions
         }
 
         public static func == (lhs: Run, rhs: Run) -> Bool {
             return lhs.config == rhs.config &&
-                lhs.commandLineArguments == rhs.commandLineArguments
+                lhs.commandLineArguments == rhs.commandLineArguments &&
+                lhs.preActions == rhs.postActions &&
+                lhs.postActions == rhs.postActions
         }
     }
 
@@ -62,24 +100,31 @@ public struct Scheme: Equatable {
         public var gatherCoverageData: Bool
         public var commandLineArguments: [String: Bool]
         public var targets: [String]
-
+        public var preActions: [ExecutionAction]
+        public var postActions: [ExecutionAction]
         public init(
             config: String,
             gatherCoverageData: Bool = false,
             commandLineArguments: [String: Bool] = [:],
-            targets: [String] = []
+            targets: [String] = [],
+            preActions: [ExecutionAction] = [],
+            postActions: [ExecutionAction] = []
         ) {
             self.config = config
             self.gatherCoverageData = gatherCoverageData
             self.commandLineArguments = commandLineArguments
             self.targets = targets
+            self.preActions = preActions
+            self.postActions = postActions
         }
 
         public static func == (lhs: Test, rhs: Test) -> Bool {
             return lhs.config == rhs.config &&
                 lhs.commandLineArguments == rhs.commandLineArguments &&
                 lhs.gatherCoverageData == rhs.gatherCoverageData &&
-                lhs.targets == rhs.targets
+                lhs.targets == rhs.targets &&
+                lhs.preActions == rhs.postActions &&
+                lhs.postActions == rhs.postActions
         }
     }
 
@@ -97,24 +142,46 @@ public struct Scheme: Equatable {
     public struct Profile: BuildAction {
         public var config: String
         public var commandLineArguments: [String: Bool]
-        public init(config: String, commandLineArguments: [String: Bool] = [:]) {
+        public var preActions: [ExecutionAction]
+        public var postActions: [ExecutionAction]
+        public init(
+            config: String,
+            commandLineArguments: [String: Bool] = [:],
+            preActions: [ExecutionAction] = [],
+            postActions: [ExecutionAction] = []
+        ) {
             self.config = config
             self.commandLineArguments = commandLineArguments
+            self.preActions = preActions
+            self.postActions = postActions
         }
 
         public static func == (lhs: Profile, rhs: Profile) -> Bool {
-            return lhs.config == rhs.config && lhs.commandLineArguments == rhs.commandLineArguments
+            return lhs.config == rhs.config &&
+                lhs.commandLineArguments == rhs.commandLineArguments &&
+                lhs.preActions == rhs.postActions &&
+                lhs.postActions == rhs.postActions
         }
     }
 
     public struct Archive: BuildAction {
         public var config: String
-        public init(config: String) {
+        public var preActions: [ExecutionAction]
+        public var postActions: [ExecutionAction]
+        public init(
+            config: String,
+            preActions: [ExecutionAction] = [],
+            postActions: [ExecutionAction] = []
+        ) {
             self.config = config
+            self.preActions = preActions
+            self.postActions = postActions
         }
 
         public static func == (lhs: Archive, rhs: Archive) -> Bool {
-            return lhs.config == rhs.config
+            return lhs.config == rhs.config &&
+                lhs.preActions == rhs.postActions &&
+                lhs.postActions == rhs.postActions
         }
     }
 
@@ -146,11 +213,22 @@ protocol BuildAction: Equatable {
     var config: String { get }
 }
 
+extension Scheme.ExecutionAction: JSONObjectConvertible {
+
+    public init(jsonDictionary: JSONDictionary) throws {
+        script = try jsonDictionary.json(atKeyPath: "script")
+        name = jsonDictionary.json(atKeyPath: "name") ?? "Run Script"
+        settingsTarget = jsonDictionary.json(atKeyPath: "settingsTarget")
+    }
+}
+
 extension Scheme.Run: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
         config = try jsonDictionary.json(atKeyPath: "config")
         commandLineArguments = jsonDictionary.json(atKeyPath: "commandLineArguments") ?? [:]
+        preActions = try jsonDictionary.json(atKeyPath: "preActions")?.map(Scheme.ExecutionAction.init) ?? []
+        postActions = try jsonDictionary.json(atKeyPath: "postActions")?.map(Scheme.ExecutionAction.init) ?? []
     }
 }
 
@@ -161,6 +239,8 @@ extension Scheme.Test: JSONObjectConvertible {
         gatherCoverageData = jsonDictionary.json(atKeyPath: "gatherCoverageData") ?? false
         commandLineArguments = jsonDictionary.json(atKeyPath: "commandLineArguments") ?? [:]
         targets = jsonDictionary.json(atKeyPath: "targets") ?? []
+        preActions = try jsonDictionary.json(atKeyPath: "preActions")?.map(Scheme.ExecutionAction.init) ?? []
+        postActions = try jsonDictionary.json(atKeyPath: "postActions")?.map(Scheme.ExecutionAction.init) ?? []
     }
 }
 
@@ -169,6 +249,8 @@ extension Scheme.Profile: JSONObjectConvertible {
     public init(jsonDictionary: JSONDictionary) throws {
         config = try jsonDictionary.json(atKeyPath: "config")
         commandLineArguments = jsonDictionary.json(atKeyPath: "commandLineArguments") ?? [:]
+        preActions = try jsonDictionary.json(atKeyPath: "preActions")?.map(Scheme.ExecutionAction.init) ?? []
+        postActions = try jsonDictionary.json(atKeyPath: "postActions")?.map(Scheme.ExecutionAction.init) ?? []
     }
 }
 
@@ -183,6 +265,8 @@ extension Scheme.Archive: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
         config = try jsonDictionary.json(atKeyPath: "config")
+        preActions = try jsonDictionary.json(atKeyPath: "preActions")?.map(Scheme.ExecutionAction.init) ?? []
+        postActions = try jsonDictionary.json(atKeyPath: "postActions")?.map(Scheme.ExecutionAction.init) ?? []
     }
 }
 
@@ -224,6 +308,8 @@ extension Scheme.Build: JSONObjectConvertible {
             targets.append(Scheme.BuildTarget(target: target, buildTypes: buildTypes))
         }
         self.targets = targets.sorted { $0.target < $1.target }
+        preActions = try jsonDictionary.json(atKeyPath: "preActions")?.map(Scheme.ExecutionAction.init) ?? []
+        postActions = try jsonDictionary.json(atKeyPath: "postActions")?.map(Scheme.ExecutionAction.init) ?? []
     }
 }
 
@@ -231,7 +317,7 @@ extension BuildType: JSONPrimitiveConvertible {
 
     public typealias JSONType = String
 
-    public static func from(jsonValue: String) -> XCScheme.BuildAction.Entry.BuildFor? {
+    public static func from(jsonValue: String) -> BuildType? {
         switch jsonValue {
         case "test", "testing": return .testing
         case "profile", "profiling": return .profiling

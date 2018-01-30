@@ -59,5 +59,15 @@ func fixtureTests() {
                 try expect(variableGroup.children.filter { $0 == refs.first?.reference }.count) == 1
             }
         }
+
+        $0.it("generates scheme execution actions") {
+            guard let project = project else { return }
+
+            let frameworkScheme = project.sharedData?.schemes.first { $0.name == "Framework" }
+            try expect(frameworkScheme?.buildAction?.preActions.first?.scriptText) == "echo Starting Framework Build"
+            try expect(frameworkScheme?.buildAction?.preActions.first?.title) == "Run Script"
+            try expect(frameworkScheme?.buildAction?.preActions.first?.environmentBuildable?.blueprintName) == "Framework"
+            try expect(frameworkScheme?.buildAction?.preActions.first?.environmentBuildable?.buildableName) == "Framework_iOS.framework"
+        }
     }
 }

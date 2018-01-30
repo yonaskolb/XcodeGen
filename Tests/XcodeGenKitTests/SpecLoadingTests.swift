@@ -163,6 +163,10 @@ func specLoadingTests() {
                     "Target4": ["testing": true],
                     "Target5": ["testing": false],
                     "Target6": ["test", "analyze"],
+                ], "preActions": [
+                    ["script": "echo Before Build",
+                     "name": "Before Build",
+                     "settingsTarget": "Target1"]
                 ]],
             ]
             let scheme = try Scheme(name: "Scheme", jsonDictionary: schemeDictionary)
@@ -176,6 +180,9 @@ func specLoadingTests() {
             ]
             try expect(scheme.name) == "Scheme"
             try expect(scheme.build.targets) == expectedTargets
+            try expect(scheme.build.preActions.first?.script) == "echo Before Build"
+            try expect(scheme.build.preActions.first?.name) == "Before Build"
+            try expect(scheme.build.preActions.first?.settingsTarget) == "Target1"
         }
 
         $0.it("parses settings") {

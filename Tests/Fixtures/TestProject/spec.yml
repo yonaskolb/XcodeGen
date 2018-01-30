@@ -82,3 +82,11 @@ targets:
       INFOPLIST_FILE: TestProjectUITests/Info.plist
     dependencies:
       - target: App_iOS
+schemes:
+  Framework:
+    build:
+      targets:
+        Framework_iOS: all
+      preActions:
+        - script: echo Starting Framework Build
+          settingsTarget: Framework_iOS

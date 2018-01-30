@@ -3,6 +3,7 @@
 ## Master
 
 #### Added
+- Added scheme pre-actions and post-actions [#231](https://github.com/yonaskolb/XcodeGen/pull/231) @kastiglione
 - Added `options.disabledValidations` including `missingConfigs` to disable project validation errors [#220](https://github.com/yonaskolb/XcodeGen/pull/220) @keith
 - Generate UI Test Target Attributes [#221](https://github.com/yonaskolb/XcodeGen/pull/221) @anreitersimon
 

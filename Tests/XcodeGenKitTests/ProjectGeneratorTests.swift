@@ -301,9 +301,10 @@ func projectGeneratorTests() {
 
             let buildTarget = Scheme.BuildTarget(target: application.name)
             $0.it("generates scheme") {
+                let preAction = Scheme.ExecutionAction(name: "Script", script: "echo Starting", settingsTarget: application.name)
                 let scheme = Scheme(
                     name: "MyScheme",
-                    build: Scheme.Build(targets: [buildTarget])
+                    build: Scheme.Build(targets: [buildTarget], preActions: [preAction])
                 )
                 let spec = ProjectSpec(
                     basePath: "",
@@ -320,6 +321,10 @@ func projectGeneratorTests() {
                     throw failure("Scheme not found")
                 }
                 try expect(scheme.name) == "MyScheme"
+                try expect(xcscheme.buildAction?.preActions.first?.title) == "Script"
+                try expect(xcscheme.buildAction?.preActions.first?.scriptText) == "echo Starting"
+                try expect(xcscheme.buildAction?.preActions.first?.environmentBuildable?.buildableName) == "MyApp.app"
+                try expect(xcscheme.buildAction?.preActions.first?.environmentBuildable?.blueprintName) == "MyScheme"
                 guard let buildActionEntry = xcscheme.buildAction?.buildActionEntries.first else {
                     throw failure("Build Action entry not found")
                 }
