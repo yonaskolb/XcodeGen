@@ -98,7 +98,8 @@ public class ProjectGenerator {
             postActions: scheme.test?.postActions.map(getExecutionAction) ?? [],
             shouldUseLaunchSchemeArgsEnv: scheme.test?.commandLineArguments.isEmpty ?? true,
             codeCoverageEnabled: scheme.test?.gatherCoverageData ?? false,
-            commandlineArguments: testCommandLineArgs
+            commandlineArguments: testCommandLineArgs,
+            language: ""
         )
 
         let launchAction = XCScheme.LaunchAction(
