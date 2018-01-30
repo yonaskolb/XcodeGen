@@ -6,7 +6,7 @@ options:
   indentWidth: 2
   tabWidth: 2
   deploymentTarget:
-    watchOS: 2.0
+    watchOS: 4.0
 fileGroups:
   - Configs
   - FileGroup
@@ -35,12 +35,12 @@ targets:
       - path: Resources/ResourceFolder
         type: folder
     settings:
-      PRODUCT_BUNDLE_IDENTIFIER: com.project$(BUNDLE_ID_SUFFIX)
       INFOPLIST_FILE: App_iOS/Info.plist
+      PRODUCT_BUNDLE_IDENTIFIER: com.project.app
     dependencies:
-      - target: Legacy
       - target: Framework_iOS
       - carthage: Alamofire
+      - target: App_watchOS
     scheme:
       testTargets:
         - App_iOS_Tests
@@ -56,6 +56,27 @@ targets:
       - name: MyScript
         script: |
           echo "You ran a script!"
+
+  App_watchOS:
+      type: application.watchapp2
+      platform: watchOS
+      sources:
+        App_watchOS
+      settings:
+        PRODUCT_BUNDLE_IDENTIFIER: com.project.app.watch
+      dependencies:
+        - target: App_watchOS Extension
+
+  App_watchOS Extension:
+      type: watchkit2-extension
+      platform: watchOS
+      sources:
+        App_watchOS Extension
+      settings:
+        PRODUCT_BUNDLE_IDENTIFIER: com.project.app.watch.extension
+      dependencies:
+        - carthage: Alamofire
+
   Framework:
     type: framework
     platform: [iOS, tvOS, watchOS, macOS]
@@ -69,17 +90,12 @@ targets:
     type: bundle.unit-test
     platform: iOS
     sources: App_iOS_Tests
-    settings:
-      TEST_HOST: $(BUILT_PRODUCTS_DIR)/TestProject.app/TestProject
-      INFOPLIST_FILE: TestProjectTests/Info.plist
     dependencies:
       - target: App_iOS
   App_iOS_UITests:
     type: bundle.ui-testing
     platform: iOS
     sources: App_iOS_UITests
-    settings:
-      INFOPLIST_FILE: TestProjectUITests/Info.plist
     dependencies:
       - target: App_iOS
 schemes:
