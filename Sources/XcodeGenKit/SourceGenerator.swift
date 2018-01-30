@@ -371,7 +371,8 @@ class SourceGenerator {
         case .folder:
             let folderPath = Path(targetSource.path)
             let fileReference = getFileReference(
-                path: folderPath, inPath: spec.basePath,
+                path: folderPath,
+                inPath: spec.basePath,
                 name: targetSource.name ?? folderPath.lastComponent,
                 sourceTree: .sourceRoot,
                 lastKnownFileType: "folder"

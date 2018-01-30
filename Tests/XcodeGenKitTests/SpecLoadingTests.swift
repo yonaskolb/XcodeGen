@@ -164,9 +164,11 @@ func specLoadingTests() {
                     "Target5": ["testing": false],
                     "Target6": ["test", "analyze"],
                 ], "preActions": [
-                    ["script": "echo Before Build",
-                     "name": "Before Build",
-                     "settingsTarget": "Target1"]
+                    [
+                        "script": "echo Before Build",
+                        "name": "Before Build",
+                        "settingsTarget": "Target1",
+                    ],
                 ]],
             ]
             let scheme = try Scheme(name: "Scheme", jsonDictionary: schemeDictionary)

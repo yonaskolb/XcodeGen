@@ -1,10 +1,3 @@
-//
-//  ExtensionDelegate.swift
-//  App_watchOS Extension
-//
-//  Created by Yonas Kolb on 30/1/18.
-//
-
 import WatchKit
 
 class ExtensionDelegate: NSObject, WKExtensionDelegate {
@@ -45,5 +38,4 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate {
             }
         }
     }
-
 }
