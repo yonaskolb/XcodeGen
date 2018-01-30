@@ -2,6 +2,8 @@
 
 ## Master
 
+## 1.6.0
+
 #### Added
 - Added scheme pre-actions and post-actions [231](https://github.com/yonaskolb/XcodeGen/pull/231) @kastiglione
 - Added `options.disabledValidations` including `missingConfigs` to disable project validation errors [220](https://github.com/yonaskolb/XcodeGen/pull/220) @keith
@@ -15,6 +17,8 @@
 #### Changed
 - Change arrays to strings in setting presets [218](https://github.com/yonaskolb/XcodeGen/pull/218) @allu22
 - Updated to xcproj 4.0 [227](https://github.com/yonaskolb/XcodeGen/pull/227)
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/1.5.0...1.6.0)
 
 ## 1.5.0
 
