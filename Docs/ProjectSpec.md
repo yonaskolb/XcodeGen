@@ -411,12 +411,18 @@ Schemes allows for more control than the convenience [Target Scheme](#target-sch
 - [ ] ***archive***: The archive action
 
 ### Build
-- [x] **targets**: **[String:String]** or **[String:[String]]** - A map of target names to build and which build types they should be enabled for. The build types can be `all`, `none`, or one or more of the following types:
-	- `run`
-	- `test`
-	- `profile`
-	- `analyze`
-	- `archive`
+- [x] **targets**: **[String:String]** or **[String:[String]]** - A map of target names to build and which build types they should be enabled for. The build types can be `all`, `none`, or an array of the following types:
+	- `run` or `running`
+	- `test` or `testing`
+	- `profile` or `profiling`
+	- `analyze` or `analyzing`
+	- `archive` or `archiving`
+
+```yaml
+targets:
+  myTarget: all
+  myTarget2: [test, run]
+```
 
 ### Common Build Action options
 The different actions share some properties:
