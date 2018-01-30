@@ -6,6 +6,10 @@ extension ProjectSpec {
     var xcodeVersion: String {
         return XCodeVersion.parse(options.xcodeVersion ?? "9.2")
     }
+
+    var schemeVersion: String {
+        return "1.3"
+    }
 }
 
 public struct XCodeVersion {

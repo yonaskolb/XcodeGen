@@ -130,7 +130,7 @@ public class ProjectGenerator {
         return XCScheme(
             name: scheme.name,
             lastUpgradeVersion: spec.xcodeVersion,
-            version: "1.3",
+            version: spec.schemeVersion,
             buildAction: buildAction,
             testAction: testAction,
             launchAction: launchAction,
