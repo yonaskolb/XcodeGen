@@ -22,7 +22,7 @@ targets:
   App_iOS:
     type: application
     platform: iOS
-    deploymentTarget: 10.0
+    deploymentTarget: 11.2
     sources:
       - StandaloneFiles/StandaloneAssets.xcassets
       - path: App_iOS
