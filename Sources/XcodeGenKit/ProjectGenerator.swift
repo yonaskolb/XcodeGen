@@ -41,12 +41,12 @@ public class ProjectGenerator {
         func getBuildEntry(_ buildTarget: Scheme.BuildTarget) -> XCScheme.BuildAction.Entry {
 
             let targetReference = pbxProject.objects.targets(named: buildTarget.target).first!
-
+            let target = spec.getTarget(buildTarget.target)!
             let buildableReference = XCScheme.BuildableReference(
                 referencedContainer: "container:\(spec.name).xcodeproj",
                 blueprintIdentifier: targetReference.reference,
-                buildableName: buildTarget.target + (targetReference.object.productType?.fileExtension.map { ".\($0)" } ?? ""),
-                blueprintName: scheme.name
+                buildableName: target.filename,
+                blueprintName: buildTarget.target
             )
 
             return XCScheme.BuildAction.Entry(buildableReference: buildableReference, buildFor: buildTarget.buildTypes)
@@ -65,7 +65,7 @@ public class ProjectGenerator {
             // ExecutionActions can require the use of build settings. Xcode allows the settings to come from a build or test target.
             let environmentBuildable = action.settingsTarget.flatMap { settingsTarget in
                 return (buildActionEntries + testBuildTargetEntries)
-                    .first { settingsTarget == ($0.buildableReference.buildableName as NSString).deletingPathExtension }?
+                    .first { settingsTarget == $0.buildableReference.blueprintName }?
                     .buildableReference
             }
             return XCScheme.ExecutionAction(scriptText: action.script, title: action.name, environmentBuildable: environmentBuildable)
@@ -98,7 +98,8 @@ public class ProjectGenerator {
             postActions: scheme.test?.postActions.map(getExecutionAction) ?? [],
             shouldUseLaunchSchemeArgsEnv: scheme.test?.commandLineArguments.isEmpty ?? true,
             codeCoverageEnabled: scheme.test?.gatherCoverageData ?? false,
-            commandlineArguments: testCommandLineArgs
+            commandlineArguments: testCommandLineArgs,
+            language: ""
         )
 
         let launchAction = XCScheme.LaunchAction(
@@ -130,7 +131,7 @@ public class ProjectGenerator {
         return XCScheme(
             name: scheme.name,
             lastUpgradeVersion: spec.xcodeVersion,
-            version: "1.3",
+            version: spec.schemeVersion,
             buildAction: buildAction,
             testAction: testAction,
             launchAction: launchAction,

@@ -66,8 +66,8 @@ func fixtureTests() {
             let frameworkScheme = project.sharedData?.schemes.first { $0.name == "Framework" }
             try expect(frameworkScheme?.buildAction?.preActions.first?.scriptText) == "echo Starting Framework Build"
             try expect(frameworkScheme?.buildAction?.preActions.first?.title) == "Run Script"
-            try expect(frameworkScheme?.buildAction?.preActions.first?.environmentBuildable?.blueprintName) == "Framework"
-            try expect(frameworkScheme?.buildAction?.preActions.first?.environmentBuildable?.buildableName) == "Framework_iOS.framework"
+            try expect(frameworkScheme?.buildAction?.preActions.first?.environmentBuildable?.blueprintName) == "Framework_iOS"
+            try expect(frameworkScheme?.buildAction?.preActions.first?.environmentBuildable?.buildableName) == "Framework.framework"
         }
     }
 }
