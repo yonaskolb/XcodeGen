@@ -411,7 +411,7 @@ Schemes allows for more control than the convenience [Target Scheme](#target-sch
 - [ ] ***archive***: The archive action
 
 ### Build
-- [x] **targets**: **String** or **[String]** - A map of target names to build and which build types they should be enabled for. The buildTypes can either be `all`, `none` or an array of the following types:
+- [x] **targets**: **[String:String]** or **[String:[String]]** - A map of target names to build and which build types they should be enabled for. The build types can be `all`, `none`, or one or more of the following types:
 	- `run`
 	- `test`
 	- `profile`
