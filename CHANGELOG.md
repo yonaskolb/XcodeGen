@@ -3,84 +3,84 @@
 ## Master
 
 #### Added
-- Added scheme pre-actions and post-actions [#231](https://github.com/yonaskolb/XcodeGen/pull/231) @kastiglione
-- Added `options.disabledValidations` including `missingConfigs` to disable project validation errors [#220](https://github.com/yonaskolb/XcodeGen/pull/220) @keith
-- Generate UI Test Target Attributes [#221](https://github.com/yonaskolb/XcodeGen/pull/221) @anreitersimon
+- Added scheme pre-actions and post-actions [231](https://github.com/yonaskolb/XcodeGen/pull/231) @kastiglione
+- Added `options.disabledValidations` including `missingConfigs` to disable project validation errors [220](https://github.com/yonaskolb/XcodeGen/pull/220) @keith
+- Generate UI Test Target Attributes [221](https://github.com/yonaskolb/XcodeGen/pull/221) @anreitersimon
 
 #### Fixed
-- Filter out duplicate source files [#217](https://github.com/yonaskolb/XcodeGen/pull/217) @allu22
+- Filter out duplicate source files [217](https://github.com/yonaskolb/XcodeGen/pull/217) @allu22
 
 #### Changed
-- Change arrays to strings in setting presets [#218](https://github.com/yonaskolb/XcodeGen/pull/218) @allu22
+- Change arrays to strings in setting presets [218](https://github.com/yonaskolb/XcodeGen/pull/218) @allu22
 
 ## 1.5.0
 
 #### Added
-- added support for `gatherCoverageData` flag in target schemes [#170](https://github.com/yonaskolb/XcodeGen/pull/170) @alexruperez
-- added support for `commandLineOptions` in target schemes [#172](https://github.com/yonaskolb/XcodeGen/pull/172) @rahul-malik
-- added Project spec as a SwiftPM library for reuse in other projects [#164](https://github.com/yonaskolb/XcodeGen/pull/164) @soffes
-- added `implicit` option for framework dependencies [#166](https://github.com/yonaskolb/XcodeGen/pull/166) @sbarow
-- added `--quite` option to CLI [#167](https://github.com/yonaskolb/XcodeGen/pull/167) @soffes
-- can now print version with `-v` in addition to `--version` [#174](https://github.com/yonaskolb/XcodeGen/pull/174) @kastiglione
-- added support for legacy targets [#175](https://github.com/yonaskolb/XcodeGen/pull/175) @bkase
-- added support for indentation options [#190](https://github.com/yonaskolb/XcodeGen/pull/190) @bkase
-- added source excludes [#135](https://github.com/yonaskolb/XcodeGen/pull/135) [#161](https://github.com/yonaskolb/XcodeGen/pull/161) [#190](https://github.com/yonaskolb/XcodeGen/pull/190) @peymankh @
-- added `options.xcodeVersion` [#197](https://github.com/yonaskolb/XcodeGen/pull/197) @yonaskolb @peymankh
-- add test targets to Scheme [#195](https://github.com/yonaskolb/XcodeGen/pull/195) @vhbit
-- add option to make a source file optional incase it will be generated later [#200](https://github.com/yonaskolb/XcodeGen/pull/200) @vhbit
-- finalize Scheme spec [#201](https://github.com/yonaskolb/XcodeGen/pull/201) @yonaskolb
-- added `buildPhase` setting to target source for overriding the guessed build phase of files [#206](https://github.com/yonaskolb/XcodeGen/pull/206) @yonaskolb
-- added `deploymentTarget` setting to project and target [#205](https://github.com/yonaskolb/XcodeGen/pull/205) @yonaskolb
+- added support for `gatherCoverageData` flag in target schemes [170](https://github.com/yonaskolb/XcodeGen/pull/170) @alexruperez
+- added support for `commandLineOptions` in target schemes [172](https://github.com/yonaskolb/XcodeGen/pull/172) @rahul-malik
+- added Project spec as a SwiftPM library for reuse in other projects [164](https://github.com/yonaskolb/XcodeGen/pull/164) @soffes
+- added `implicit` option for framework dependencies [166](https://github.com/yonaskolb/XcodeGen/pull/166) @sbarow
+- added `--quite` option to CLI [167](https://github.com/yonaskolb/XcodeGen/pull/167) @soffes
+- can now print version with `-v` in addition to `--version` [174](https://github.com/yonaskolb/XcodeGen/pull/174) @kastiglione
+- added support for legacy targets [175](https://github.com/yonaskolb/XcodeGen/pull/175) @bkase
+- added support for indentation options [190](https://github.com/yonaskolb/XcodeGen/pull/190) @bkase
+- added source excludes [135](https://github.com/yonaskolb/XcodeGen/pull/135) [161](https://github.com/yonaskolb/XcodeGen/pull/161) [190](https://github.com/yonaskolb/XcodeGen/pull/190) @peymankh @
+- added `options.xcodeVersion` [197](https://github.com/yonaskolb/XcodeGen/pull/197) @yonaskolb @peymankh
+- add test targets to Scheme [195](https://github.com/yonaskolb/XcodeGen/pull/195) @vhbit
+- add option to make a source file optional incase it will be generated later [200](https://github.com/yonaskolb/XcodeGen/pull/200) @vhbit
+- finalize Scheme spec [201](https://github.com/yonaskolb/XcodeGen/pull/201) @yonaskolb
+- added `buildPhase` setting to target source for overriding the guessed build phase of files [206](https://github.com/yonaskolb/XcodeGen/pull/206) @yonaskolb
+- added `deploymentTarget` setting to project and target [205](https://github.com/yonaskolb/XcodeGen/pull/205) @yonaskolb
 
 #### Changed
 - huge performance improvements when writing the project file due to changes in xcproj
 - updated dependencies
 - minor logging changes
 - updated Project Spec documentation
-- scan for `Info.plist` lazely [#194](https://github.com/yonaskolb/XcodeGen/pull/194) @kastiglione
-- change setting presets so that icon settings only get applied to application targets [#204](https://github.com/yonaskolb/XcodeGen/pull/204) @yonaskolb
-- changed scheme build targets format [#203](https://github.com/yonaskolb/XcodeGen/pull/203) @yonaskolb
-- when specifying a `--spec` argument, the default for the `--project` path is now the directory containing the spec [#211](https://github.com/yonaskolb/XcodeGen/pull/211) @yonaskolb
+- scan for `Info.plist` lazely [194](https://github.com/yonaskolb/XcodeGen/pull/194) @kastiglione
+- change setting presets so that icon settings only get applied to application targets [204](https://github.com/yonaskolb/XcodeGen/pull/204) @yonaskolb
+- changed scheme build targets format [203](https://github.com/yonaskolb/XcodeGen/pull/203) @yonaskolb
+- when specifying a `--spec` argument, the default for the `--project` path is now the directory containing the spec [211](https://github.com/yonaskolb/XcodeGen/pull/211) @yonaskolb
 
 #### Fixed
-- fixed shell scripts escaping quotes twice [#186](https://github.com/yonaskolb/XcodeGen/pull/186) @allu22
-- fixed `createIntermediateGroups` when using a relative spec path [#184](https://github.com/yonaskolb/XcodeGen/pull/184) @kastiglione
-- fixed command line arguments for test and profile from being overridden [#199](https://github.com/yonaskolb/XcodeGen/pull/199) @vhbit
+- fixed shell scripts escaping quotes twice [186](https://github.com/yonaskolb/XcodeGen/pull/186) @allu22
+- fixed `createIntermediateGroups` when using a relative spec path [184](https://github.com/yonaskolb/XcodeGen/pull/184) @kastiglione
+- fixed command line arguments for test and profile from being overridden [199](https://github.com/yonaskolb/XcodeGen/pull/199) @vhbit
 - fixed files deep within a hierarchy having the path for a name
-- fixed source files from being duplicated if referenced with different casing [#212](https://github.com/yonaskolb/XcodeGen/pull/212) @yonaskolb
-- fixed target product name not being written. Fixes integration with R.swift [#213](https://github.com/yonaskolb/XcodeGen/pull/213) @yonaskolb
+- fixed source files from being duplicated if referenced with different casing [212](https://github.com/yonaskolb/XcodeGen/pull/212) @yonaskolb
+- fixed target product name not being written. Fixes integration with R.swift [213](https://github.com/yonaskolb/XcodeGen/pull/213) @yonaskolb
 
 [Commits](https://github.com/yonaskolb/XcodeGen/compare/1.4.0...1.5.0)
 
 ## 1.4.0
 
 #### Added
-- added `--version` flag [#112](https://github.com/yonaskolb/XcodeGen/pull/112) @mironal
-- added support for adding individual file sources [#106](https://github.com/yonaskolb/XcodeGen/pull/106) [#133](https://github.com/yonaskolb/XcodeGen/pull/133) [#142](https://github.com/yonaskolb/XcodeGen/pull/142) [#139](https://github.com/yonaskolb/XcodeGen/pull/139) @bkase
-- added source compiler flag support [#121](https://github.com/yonaskolb/XcodeGen/pull/121) @bkase
-- added `ProjectSpec.options.createIntermediateGroups` [#108](https://github.com/yonaskolb/XcodeGen/pull/108) @bkase
-- added better json loading support [#127](https://github.com/yonaskolb/XcodeGen/pull/127) @rahul-malik
-- added source `name` for customizing names of source directories and file [#146](https://github.com/yonaskolb/XcodeGen/pull/146) @yonaskolb
-- added folder reference source support via a new `type` property [#151](https://github.com/yonaskolb/XcodeGen/pull/151) @yonaskolb
-- added `ProjectSpec.options.developmentLanguage` [#155](https://github.com/yonaskolb/XcodeGen/pull/155) @yonaskolb
+- added `--version` flag [112](https://github.com/yonaskolb/XcodeGen/pull/112) @mironal
+- added support for adding individual file sources [106](https://github.com/yonaskolb/XcodeGen/pull/106) [133](https://github.com/yonaskolb/XcodeGen/pull/133) [142](https://github.com/yonaskolb/XcodeGen/pull/142) [139](https://github.com/yonaskolb/XcodeGen/pull/139) @bkase
+- added source compiler flag support [121](https://github.com/yonaskolb/XcodeGen/pull/121) @bkase
+- added `ProjectSpec.options.createIntermediateGroups` [108](https://github.com/yonaskolb/XcodeGen/pull/108) @bkase
+- added better json loading support [127](https://github.com/yonaskolb/XcodeGen/pull/127) @rahul-malik
+- added source `name` for customizing names of source directories and file [146](https://github.com/yonaskolb/XcodeGen/pull/146) @yonaskolb
+- added folder reference source support via a new `type` property [151](https://github.com/yonaskolb/XcodeGen/pull/151) @yonaskolb
+- added `ProjectSpec.options.developmentLanguage` [155](https://github.com/yonaskolb/XcodeGen/pull/155) @yonaskolb
 
 #### Changed
-- updated to xcproj 1.2.0 [#113](https://github.com/yonaskolb/XcodeGen/pull/113) @yonaskolb
-- build settings from presets will be removed if they are provided in `xcconfig` files [#77](https://github.com/yonaskolb/XcodeGen/pull/77) @toshi0383
-- all files and groups are sorted by type and then alphabetically [#144](https://github.com/yonaskolb/XcodeGen/pull/144) @yonaskolb
-- target sources can now have an expanded form [#119](https://github.com/yonaskolb/XcodeGen/pull/119) @yonaskolb
-- empty build phases are now not generated [#149](https://github.com/yonaskolb/XcodeGen/pull/149) @yonaskolb
-- make UUIDs more deterministic [#154](https://github.com/yonaskolb/XcodeGen/pull/154) @yonaskolb
+- updated to xcproj 1.2.0 [113](https://github.com/yonaskolb/XcodeGen/pull/113) @yonaskolb
+- build settings from presets will be removed if they are provided in `xcconfig` files [77](https://github.com/yonaskolb/XcodeGen/pull/77) @toshi0383
+- all files and groups are sorted by type and then alphabetically [144](https://github.com/yonaskolb/XcodeGen/pull/144) @yonaskolb
+- target sources can now have an expanded form [119](https://github.com/yonaskolb/XcodeGen/pull/119) @yonaskolb
+- empty build phases are now not generated [149](https://github.com/yonaskolb/XcodeGen/pull/149) @yonaskolb
+- make UUIDs more deterministic [154](https://github.com/yonaskolb/XcodeGen/pull/154) @yonaskolb
 
 #### Fixed
-- only add headers to frameworks and libraries [#118](https://github.com/yonaskolb/XcodeGen/pull/118) @ryohey
-- fixed localized files with the same name [#126](https://github.com/yonaskolb/XcodeGen/pull/126) @ryohey
-- fix intermediate sources [#144](https://github.com/yonaskolb/XcodeGen/pull/144) @yonaskolb
-- fix cyclical target dependencies not working [#147](https://github.com/yonaskolb/XcodeGen/pull/147) @yonaskolb
-- fix directory bundles not being added properly when referenced directly [#148](https://github.com/yonaskolb/XcodeGen/pull/1478) @yonaskolb
-- made `mm`, `c` and `S` file be parsed as source files [#120](https://github.com/yonaskolb/XcodeGen/pull/120) [#125](https://github.com/yonaskolb/XcodeGen/pull/125) [#138](https://github.com/yonaskolb/XcodeGen/pull/138) @bkase @enmiller
-- fix the generation of localized variant groups if there is no `Base.lproj` [#157](https://github.com/yonaskolb/XcodeGen/pull/157) @ryohey
-- all localizations found are added to a projects known regions [#157](https://github.com/yonaskolb/XcodeGen/pull/157) @ryohey
+- only add headers to frameworks and libraries [118](https://github.com/yonaskolb/XcodeGen/pull/118) @ryohey
+- fixed localized files with the same name [126](https://github.com/yonaskolb/XcodeGen/pull/126) @ryohey
+- fix intermediate sources [144](https://github.com/yonaskolb/XcodeGen/pull/144) @yonaskolb
+- fix cyclical target dependencies not working [147](https://github.com/yonaskolb/XcodeGen/pull/147) @yonaskolb
+- fix directory bundles not being added properly when referenced directly [148](https://github.com/yonaskolb/XcodeGen/pull/1478) @yonaskolb
+- made `mm`, `c` and `S` file be parsed as source files [120](https://github.com/yonaskolb/XcodeGen/pull/120) [125](https://github.com/yonaskolb/XcodeGen/pull/125) [138](https://github.com/yonaskolb/XcodeGen/pull/138) @bkase @enmiller
+- fix the generation of localized variant groups if there is no `Base.lproj` [157](https://github.com/yonaskolb/XcodeGen/pull/157) @ryohey
+- all localizations found are added to a projects known regions [157](https://github.com/yonaskolb/XcodeGen/pull/157) @ryohey
 
 #### Internal
 - refactoring
@@ -92,26 +92,26 @@
 ## 1.3.0
 
 #### Added
-- generate output files for Carthage copy-frameworks script [#84](https://github.com/yonaskolb/XcodeGen/pull/84) @mironal
-- added options.settingPreset to choose which setting presets get applied [#100](https://github.com/yonaskolb/XcodeGen/pull/101) @yonaskolb
-- added `link` option for target dependencies [#109](https://github.com/yonaskolb/XcodeGen/pull/109) @keith
+- generate output files for Carthage copy-frameworks script [84](https://github.com/yonaskolb/XcodeGen/pull/84) @mironal
+- added options.settingPreset to choose which setting presets get applied [100](https://github.com/yonaskolb/XcodeGen/pull/101) @yonaskolb
+- added `link` option for target dependencies [109](https://github.com/yonaskolb/XcodeGen/pull/109) @keith
 
 #### Changed
-- updated to xcproj 0.4.1 [#85](https://github.com/yonaskolb/XcodeGen/pull/85) @enmiller
-- don't copy base settings if config type has been left out [#100](https://github.com/yonaskolb/XcodeGen/pull/100) @yonaskolb
-- generate localised files under a single variant group [#70](https://github.com/yonaskolb/XcodeGen/pull/70) @ryohey
-- don't apply common project settings to configs with no type [#100](https://github.com/yonaskolb/XcodeGen/pull/100) @yonaskolb
-- config references in settings can now be partially matched and are case insensitive [#111](https://github.com/yonaskolb/XcodeGen/pull/111) @yonaskolb
+- updated to xcproj 0.4.1 [85](https://github.com/yonaskolb/XcodeGen/pull/85) @enmiller
+- don't copy base settings if config type has been left out [100](https://github.com/yonaskolb/XcodeGen/pull/100) @yonaskolb
+- generate localised files under a single variant group [70](https://github.com/yonaskolb/XcodeGen/pull/70) @ryohey
+- don't apply common project settings to configs with no type [100](https://github.com/yonaskolb/XcodeGen/pull/100) @yonaskolb
+- config references in settings can now be partially matched and are case insensitive [111](https://github.com/yonaskolb/XcodeGen/pull/111) @yonaskolb
 - other small internal changes @yonaskolb
 
 #### Fixed
-- embed Carthage frameworks for macOS [#82](https://github.com/yonaskolb/XcodeGen/pull/82) @toshi0383
-- fixed copying of watchOS app resources [#96](https://github.com/yonaskolb/XcodeGen/pull/96) @keith
-- automatically ignore more file types for a target's sources (entitlements, gpx, apns) [#94](https://github.com/yonaskolb/XcodeGen/pull/94) @keith
-- change make build to a PHONY task [#98](https://github.com/yonaskolb/XcodeGen/pull/98) @keith
-- allow copying of resource files from dependant targets [#95](https://github.com/yonaskolb/XcodeGen/pull/95) @keith
-- fixed library linking [#93](https://github.com/yonaskolb/XcodeGen/pull/93) @keith
-- fixed duplicate carthage file references [#107](https://github.com/yonaskolb/XcodeGen/pull/107) @yonaskolb
+- embed Carthage frameworks for macOS [82](https://github.com/yonaskolb/XcodeGen/pull/82) @toshi0383
+- fixed copying of watchOS app resources [96](https://github.com/yonaskolb/XcodeGen/pull/96) @keith
+- automatically ignore more file types for a target's sources (entitlements, gpx, apns) [94](https://github.com/yonaskolb/XcodeGen/pull/94) @keith
+- change make build to a PHONY task [98](https://github.com/yonaskolb/XcodeGen/pull/98) @keith
+- allow copying of resource files from dependant targets [95](https://github.com/yonaskolb/XcodeGen/pull/95) @keith
+- fixed library linking [93](https://github.com/yonaskolb/XcodeGen/pull/93) @keith
+- fixed duplicate carthage file references [107](https://github.com/yonaskolb/XcodeGen/pull/107) @yonaskolb
 - an error is now shown if you try and generate a target scheme and don't have debug and release builds @yonaskolb
 
 [Commits](https://github.com/yonaskolb/XcodeGen/compare/1.2.4...1.3.0)
@@ -131,8 +131,8 @@
 ## 1.2.3
 
 #### Fixed
-- Fixed wrong carthage directory name reference for macOS [#74](https://github.com/yonaskolb/XcodeGen/pull/74) @toshi0383
-- Removed unnecessary `carthage copy-frameworks` for macOS app target [#76](https://github.com/yonaskolb/XcodeGen/pull/76) @toshi0383
+- Fixed wrong carthage directory name reference for macOS [74](https://github.com/yonaskolb/XcodeGen/pull/74) @toshi0383
+- Removed unnecessary `carthage copy-frameworks` for macOS app target [76](https://github.com/yonaskolb/XcodeGen/pull/76) @toshi0383
 - Added some missing default settings for framework targets. `SKIP_INSTALL: YES` fixes archiving
 - Filter out nulls from setting presets if specifying an empty string
 
