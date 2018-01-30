@@ -324,7 +324,7 @@ func projectGeneratorTests() {
                 try expect(xcscheme.buildAction?.preActions.first?.title) == "Script"
                 try expect(xcscheme.buildAction?.preActions.first?.scriptText) == "echo Starting"
                 try expect(xcscheme.buildAction?.preActions.first?.environmentBuildable?.buildableName) == "MyApp.app"
-                try expect(xcscheme.buildAction?.preActions.first?.environmentBuildable?.blueprintName) == "MyScheme"
+                try expect(xcscheme.buildAction?.preActions.first?.environmentBuildable?.blueprintName) == "MyApp"
                 guard let buildActionEntry = xcscheme.buildAction?.buildActionEntries.first else {
                     throw failure("Build Action entry not found")
                 }
@@ -339,7 +339,7 @@ func projectGeneratorTests() {
 
                 for buildableReference in buildableReferences {
                     try expect(buildableReference.blueprintIdentifier) == target.reference
-                    try expect(buildableReference.blueprintName) == scheme.name
+                    try expect(buildableReference.blueprintName) == target.object.name
                     try expect(buildableReference.buildableName) == "\(target.object.name).\(target.object.productType!.fileExtension!)"
                 }
 
