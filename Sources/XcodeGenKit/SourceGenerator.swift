@@ -95,7 +95,7 @@ class SourceGenerator {
         return fileReference
     }
 
-    func getFileReference(path: Path, inPath: Path, name: String? = nil, sourceTree: PBXSourceTree = .group) -> String {
+    func getFileReference(path: Path, inPath: Path, name: String? = nil, sourceTree: PBXSourceTree = .group, lastKnownFileType: String? = nil) -> String {
         if let fileReference = fileReferencesByPath[path.string.lowercased()] {
             return fileReference
         } else {
@@ -104,7 +104,7 @@ class SourceGenerator {
             if fileReferencePath.string == fileReferenceName {
                 fileReferenceName = nil
             }
-            let lastKnownFileType = PBXFileReference.fileType(path: path)
+            let lastKnownFileType = lastKnownFileType ?? PBXFileReference.fileType(path: path)
             let fileReference = createObject(
                 id: path.byRemovingBase(path: spec.basePath).string,
                 PBXFileReference(
@@ -370,7 +370,12 @@ class SourceGenerator {
         switch type {
         case .folder:
             let folderPath = Path(targetSource.path)
-            let fileReference = getFileReference(path: folderPath, inPath: spec.basePath, name: targetSource.name ?? folderPath.lastComponent, sourceTree: .sourceRoot)
+            let fileReference = getFileReference(
+                path: folderPath, inPath: spec.basePath,
+                name: targetSource.name ?? folderPath.lastComponent,
+                sourceTree: .sourceRoot,
+                lastKnownFileType: "folder"
+            )
 
             if !createIntermediateGroups {
                 rootGroups.insert(fileReference)
