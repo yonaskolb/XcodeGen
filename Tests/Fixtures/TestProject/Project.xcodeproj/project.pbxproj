@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		BF_130062884703 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_257516580010 /* Alamofire.framework */; };
+		BF_139272748851 /* App_iOS.app in Resources */ = {isa = PBXBuildFile; fileRef = FR_825232110500 /* App_iOS.app */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BF_164567025213 = {isa = PBXBuildFile; fileRef = FR_479264660374 /* Legacy */; };
 		BF_167705969896 /* TestProjectUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_145531354566 /* TestProjectUITests.swift */; };
 		BF_186245454304 /* LocalizedStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = VG_118219888726 /* LocalizedStoryboard.storyboard */; };
@@ -27,6 +28,7 @@
 		BF_425679397292 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = FR_183521624014 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BF_447782698339 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_752394658615 /* Alamofire.framework */; };
 		BF_456457948943 /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_172952167809 /* FrameworkFile.swift */; };
+		BF_469787870013 /* App_iOS.app in Resources */ = {isa = PBXBuildFile; fileRef = FR_825232110500 /* App_iOS.app */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BF_470396236719 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_410645050443 /* Alamofire.framework */; };
 		BF_496472559782 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = FR_183521624014 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BF_503484983186 /* MoreUnder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_196911129660 /* MoreUnder.swift */; };
@@ -411,6 +413,8 @@
 			buildConfigurationList = CL_123503999387 /* Build configuration list for PBXNativeTarget "App_iOS_UITests" */;
 			buildPhases = (
 				SBP_12350399938 /* Sources */,
+				RBP_12350399938 /* Resources */,
+				SSBP_3150067808 /* Carthage */,
 			);
 			buildRules = (
 			);
@@ -499,6 +503,8 @@
 			buildConfigurationList = CL_783122899910 /* Build configuration list for PBXNativeTarget "App_iOS_Tests" */;
 			buildPhases = (
 				SBP_78312289991 /* Sources */,
+				RBP_78312289991 /* Resources */,
+				SSBP_6451525835 /* Carthage */,
 			);
 			buildRules = (
 			);
@@ -571,6 +577,22 @@
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		RBP_12350399938 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF_139272748851 /* App_iOS.app in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		RBP_78312289991 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF_469787870013 /* App_iOS.app in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		RBP_82523211050 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -605,6 +627,22 @@
 			shellPath = /bin/sh;
 			shellScript = "echo \"You ran a script\"\n";
 			showEnvVarsInLog = 0;
+		};
+		SSBP_3150067808 /* Carthage */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/Alamofire.framework",
+			);
+			name = Carthage;
+			outputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Alamofire.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
 		};
 		SSBP_3886691194 /* MyScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -650,6 +688,22 @@
 			shellPath = /bin/sh;
 			shellScript = "echo \"You ran a script\"\n";
 			showEnvVarsInLog = 0;
+		};
+		SSBP_6451525835 /* Carthage */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/Alamofire.framework",
+			);
+			name = Carthage;
+			outputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Alamofire.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
 		};
 		SSBP_8106229290 /* Carthage */ = {
 			isa = PBXShellScriptBuildPhase;

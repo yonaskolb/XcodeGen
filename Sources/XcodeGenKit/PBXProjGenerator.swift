@@ -364,7 +364,7 @@ public class PBXProjGenerator {
 
         for dependency in target.dependencies {
 
-            let embed = dependency.embed ?? (target.type.isApp ? true : false)
+            let embed = dependency.embed ?? (target.type.shouldEmbedDynamicFrameworks ? true : false)
             switch dependency.type {
             case .target:
                 let dependencyTargetName = dependency.reference
@@ -599,7 +599,7 @@ public class PBXProjGenerator {
 
         if !carthageFrameworksToEmbed.isEmpty {
 
-            if target.type.isApp && target.platform != .macOS {
+            if target.type.shouldEmbedDynamicFrameworks && target.platform != .macOS {
                 let inputPaths = carthageFrameworksToEmbed
                     .map { "$(SRCROOT)/\(carthageBuildPath)/\(target.platform)/\($0)\($0.contains(".") ? "" : ".framework")" }
                 let outputPaths = carthageFrameworksToEmbed
