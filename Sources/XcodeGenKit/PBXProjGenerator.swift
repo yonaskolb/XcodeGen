@@ -122,7 +122,7 @@ public class PBXProjGenerator {
             var explicitFileType: String?
             var lastKnownFileType: String?
             let fileType = PBXFileReference.fileType(path: Path(target.filename))
-            if target.platform == .macOS || target.type == .framework {
+            if target.platform == .macOS || target.platform == .watchOS || target.type == .framework {
                 explicitFileType = fileType
             } else {
                 lastKnownFileType = fileType
