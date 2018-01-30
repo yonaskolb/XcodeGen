@@ -13,6 +13,7 @@
 - Filter out duplicate source files [217](https://github.com/yonaskolb/XcodeGen/pull/217) @allu22
 - Fixed how `lastKnownFileType` and `explicitFileType` were generated across platforms [115](https://github.com/yonaskolb/XcodeGen/pull/115) @toshi0383
 - Removed a few cases of project diffs when opening the project in Xcode @yonaskolb
+- Fixed Swift not being embedded by default in watch apps @yonaskolb
 
 #### Changed
 - Change arrays to strings in setting presets [218](https://github.com/yonaskolb/XcodeGen/pull/218) @allu22
