@@ -1,7 +1,0 @@
-os:
-  - osx
-language: swift
-osx_image: xcode9
-script:
-  - swift build
-  - swift test
