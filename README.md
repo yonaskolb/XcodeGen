@@ -10,8 +10,8 @@
   <a href="https://github.com/yonaskolb/XcodeGen/releases">
     <img src="https://img.shields.io/github/release/yonaskolb/xcodegen.svg"/>
   </a>
-  <a href="https://travis-ci.org/yonaskolb/XcodeGen">
-    <img src="https://img.shields.io/travis/yonaskolb/XcodeGen/master.svg?style=flat"/>
+  <a href="https://circleci.com/gh/yonaskolb/XcodeGen">
+    <img src="https://img.shields.io/circleci/project/github/yonaskolb/Beak.svg?style=flat"/>
   </a>
   <a href="https://github.com/yonaskolb/XcodeGen/blob/master/LICENSE">
     <img src="https://img.shields.io/github/license/mashape/apistatus.svg"/>
