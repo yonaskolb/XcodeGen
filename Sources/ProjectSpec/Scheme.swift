@@ -71,7 +71,7 @@ public struct Scheme: Equatable {
     }
 
     public struct Run: BuildAction {
-        public var config: String
+        public var config: String?
         public var commandLineArguments: [String: Bool]
         public var preActions: [ExecutionAction]
         public var postActions: [ExecutionAction]
@@ -96,7 +96,7 @@ public struct Scheme: Equatable {
     }
 
     public struct Test: BuildAction {
-        public var config: String
+        public var config: String?
         public var gatherCoverageData: Bool
         public var commandLineArguments: [String: Bool]
         public var targets: [String]
@@ -129,7 +129,7 @@ public struct Scheme: Equatable {
     }
 
     public struct Analyze: BuildAction {
-        public var config: String
+        public var config: String?
         public init(config: String) {
             self.config = config
         }
@@ -140,7 +140,7 @@ public struct Scheme: Equatable {
     }
 
     public struct Profile: BuildAction {
-        public var config: String
+        public var config: String?
         public var commandLineArguments: [String: Bool]
         public var preActions: [ExecutionAction]
         public var postActions: [ExecutionAction]
@@ -165,7 +165,7 @@ public struct Scheme: Equatable {
     }
 
     public struct Archive: BuildAction {
-        public var config: String
+        public var config: String?
         public var preActions: [ExecutionAction]
         public var postActions: [ExecutionAction]
         public init(
@@ -210,7 +210,7 @@ public struct Scheme: Equatable {
 }
 
 protocol BuildAction: Equatable {
-    var config: String { get }
+    var config: String? { get }
 }
 
 extension Scheme.ExecutionAction: JSONObjectConvertible {
@@ -225,7 +225,7 @@ extension Scheme.ExecutionAction: JSONObjectConvertible {
 extension Scheme.Run: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
-        config = try jsonDictionary.json(atKeyPath: "config")
+        config = jsonDictionary.json(atKeyPath: "config")
         commandLineArguments = jsonDictionary.json(atKeyPath: "commandLineArguments") ?? [:]
         preActions = try jsonDictionary.json(atKeyPath: "preActions")?.map(Scheme.ExecutionAction.init) ?? []
         postActions = try jsonDictionary.json(atKeyPath: "postActions")?.map(Scheme.ExecutionAction.init) ?? []
@@ -235,7 +235,7 @@ extension Scheme.Run: JSONObjectConvertible {
 extension Scheme.Test: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
-        config = try jsonDictionary.json(atKeyPath: "config")
+        config = jsonDictionary.json(atKeyPath: "config")
         gatherCoverageData = jsonDictionary.json(atKeyPath: "gatherCoverageData") ?? false
         commandLineArguments = jsonDictionary.json(atKeyPath: "commandLineArguments") ?? [:]
         targets = jsonDictionary.json(atKeyPath: "targets") ?? []
@@ -247,7 +247,7 @@ extension Scheme.Test: JSONObjectConvertible {
 extension Scheme.Profile: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
-        config = try jsonDictionary.json(atKeyPath: "config")
+        config = jsonDictionary.json(atKeyPath: "config")
         commandLineArguments = jsonDictionary.json(atKeyPath: "commandLineArguments") ?? [:]
         preActions = try jsonDictionary.json(atKeyPath: "preActions")?.map(Scheme.ExecutionAction.init) ?? []
         postActions = try jsonDictionary.json(atKeyPath: "postActions")?.map(Scheme.ExecutionAction.init) ?? []
@@ -257,14 +257,14 @@ extension Scheme.Profile: JSONObjectConvertible {
 extension Scheme.Analyze: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
-        config = try jsonDictionary.json(atKeyPath: "config")
+        config = jsonDictionary.json(atKeyPath: "config")
     }
 }
 
 extension Scheme.Archive: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
-        config = try jsonDictionary.json(atKeyPath: "config")
+        config = jsonDictionary.json(atKeyPath: "config")
         preActions = try jsonDictionary.json(atKeyPath: "preActions")?.map(Scheme.ExecutionAction.init) ?? []
         postActions = try jsonDictionary.json(atKeyPath: "postActions")?.map(Scheme.ExecutionAction.init) ?? []
     }
