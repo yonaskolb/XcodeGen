@@ -427,7 +427,7 @@ targets:
 ### Common Build Action options
 The different actions share some properties:
 
-- [ ] **config**: **String** - All build actions can be set to use a certain config. If this is not set the first configuration found of a certain type will be used, depending on the type:
+- [ ] **config**: **String** - All build actions can be set to use a certain config. If a config, or the build action itself, is not defined the first configuration found of a certain type will be used, depending on the type:
 	- `debug`: run, test, analyze
 	- `release`: profile, archive
 - [ ] **commandLineArguments**: **[String:Bool]** - `run`, `test` and `profile` actions have a map of command line arguments to whether they are enabled

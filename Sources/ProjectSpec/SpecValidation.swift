@@ -128,20 +128,20 @@ extension ProjectSpec {
                     errors.append(.invalidSchemeTarget(scheme: scheme.name, target: buildTarget.target))
                 }
             }
-            if let buildAction = scheme.run, getConfig(buildAction.config) == nil {
-                errors.append(.invalidSchemeConfig(scheme: scheme.name, config: buildAction.config))
+            if let action = scheme.run, let config = action.config, getConfig(config) == nil {
+                errors.append(.invalidSchemeConfig(scheme: scheme.name, config: config))
             }
-            if let buildAction = scheme.test, getConfig(buildAction.config) == nil {
-                errors.append(.invalidSchemeConfig(scheme: scheme.name, config: buildAction.config))
+            if let action = scheme.test, let config = action.config, getConfig(config) == nil {
+                errors.append(.invalidSchemeConfig(scheme: scheme.name, config: config))
             }
-            if let buildAction = scheme.profile, getConfig(buildAction.config) == nil {
-                errors.append(.invalidSchemeConfig(scheme: scheme.name, config: buildAction.config))
+            if let action = scheme.profile, let config = action.config, getConfig(config) == nil {
+                errors.append(.invalidSchemeConfig(scheme: scheme.name, config: config))
             }
-            if let buildAction = scheme.analyze, getConfig(buildAction.config) == nil {
-                errors.append(.invalidSchemeConfig(scheme: scheme.name, config: buildAction.config))
+            if let action = scheme.analyze, let config = action.config, getConfig(config) == nil {
+                errors.append(.invalidSchemeConfig(scheme: scheme.name, config: config))
             }
-            if let buildAction = scheme.archive, getConfig(buildAction.config) == nil {
-                errors.append(.invalidSchemeConfig(scheme: scheme.name, config: buildAction.config))
+            if let action = scheme.archive, let config = action.config, getConfig(config) == nil {
+                errors.append(.invalidSchemeConfig(scheme: scheme.name, config: config))
             }
         }
 
