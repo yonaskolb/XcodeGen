@@ -188,7 +188,7 @@ class SourceGenerator {
         return variantGroup
     }
 
-    func getSourceExcludes(targetSource: TargetSource) -> [Path] {
+    private func getSourceExcludes(targetSource: TargetSource) -> [Path] {
         let rootSourcePath = spec.basePath + targetSource.path
 
         return targetSource.excludes.map {
