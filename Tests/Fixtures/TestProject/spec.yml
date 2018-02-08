@@ -31,6 +31,7 @@ targets:
           - "-Werror"
         excludes:
           - "**/excluded-file"
+          - "excluded-file"
       - path: StandaloneFiles/Standalone.swift
       - FileGroup/UnderFileGroup
       - Resources/MyBundle.bundle
