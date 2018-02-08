@@ -29,6 +29,8 @@ targets:
         name: App
         compilerFlags:
           - "-Werror"
+        excludes:
+          - "**/excluded-file"
       - path: StandaloneFiles/Standalone.swift
       - FileGroup/UnderFileGroup
       - Resources/MyBundle.bundle
