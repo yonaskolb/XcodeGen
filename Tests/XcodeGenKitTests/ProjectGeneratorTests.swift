@@ -352,6 +352,41 @@ func projectGeneratorTests() {
                 try expect(xcscheme.archiveAction?.buildConfiguration) == "Release"
             }
 
+            $0.it("sets environment variables for a scheme") {
+                let runVariables: [XCScheme.EnvironmentVariable] = [
+                    XCScheme.EnvironmentVariable(variable: "RUN_ENV", value: "ENABLED", enabled: true),
+                    XCScheme.EnvironmentVariable(variable: "OTHER_RUN_ENV", value: "DISABLED", enabled: false)
+                ]
+
+                let scheme = Scheme(
+                    name: "EnvironmentVariablesScheme",
+                    build: Scheme.Build(targets: [buildTarget]),
+                    run: Scheme.Run(config: "Debug", environmentVariables: runVariables),
+                    test: Scheme.Test(config: "Debug"),
+                    profile: Scheme.Profile(config: "Debug")
+                )
+                let spec = ProjectSpec(
+                    basePath: "",
+                    name: "test",
+                    targets: [application, framework],
+                    schemes: [scheme]
+                )
+                let project = try getProject(spec)
+
+                guard let target = project.pbxproj.objects.nativeTargets.objectReferences
+                    .first(where: { $0.object.name == application.name }) else {
+                        throw failure("Target not found")
+                }
+
+                guard let xcscheme = project.sharedData?.schemes.first else {
+                    throw failure("Scheme not found")
+                }
+
+                try expect(xcscheme.launchAction?.environmentVariables) == runVariables
+                try expect(xcscheme.testAction?.environmentVariables).to.beNil()
+                try expect(xcscheme.profileAction?.environmentVariables).to.beNil()
+            }
+
             $0.it("generates target schemes from config variant") {
                 let configVariants = ["Test", "Production"]
                 var target = application
@@ -386,6 +421,25 @@ func projectGeneratorTests() {
                 try expect(xcscheme.profileAction?.buildConfiguration) == "Test Release"
                 try expect(xcscheme.analyzeAction?.buildConfiguration) == "Test Debug"
                 try expect(xcscheme.archiveAction?.buildConfiguration) == "Test Release"
+            }
+
+            $0.it("generates environment variables for target schemes") {
+                let variables: [XCScheme.EnvironmentVariable] = [XCScheme.EnvironmentVariable(variable: "env", value: "var", enabled: false)]
+                var target = application
+                target.scheme = TargetScheme(environmentVariables: variables)
+
+                let spec = ProjectSpec(basePath: "", name: "test", targets: [target, framework])
+                let project = try getProject(spec)
+
+                try expect(project.sharedData?.schemes.count) == 1
+
+                guard let xcscheme = project.sharedData?.schemes.first else {
+                    throw failure("Scheme not found")
+                }
+
+                try expect(xcscheme.launchAction?.environmentVariables) == variables
+                try expect(xcscheme.testAction?.environmentVariables) == variables
+                try expect(xcscheme.profileAction?.environmentVariables) == variables
             }
         }
 

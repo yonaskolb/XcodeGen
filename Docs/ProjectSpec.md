@@ -357,6 +357,7 @@ This is a convenience used to automatically generate schemes for a target based 
 - [ ] **testTargets**: **[String]** - a list of test targets that should be included in the scheme. These will be added to the build targets and the test entries
 - [ ] **gatherCoverageData**: **Bool** - a boolean that indicates if this scheme should gather coverage data. This defaults to false
 - [ ] **commandLineArguments**: **[String:Bool]** - a dictionary from the argument name (`String`) to if it is enabled (`Bool`). These arguments will be added to the Test, Profile and Run scheme actions
+- [ ] **environmentVariables**: **[[Environment Variable](#environment-variable)]** or **[String:String]** - environment variables for Run, Test and Profile scheme actions. When passing a dictionary, every key-value entry maps to a corresponding variable that is enabled. 
 
 For example, the spec below would create 3 schemes called:
 
@@ -388,6 +389,8 @@ targets
       commandLineArguments:
         "-MyEnabledArg": true
         "-MyDisabledArg": false
+      environmentVariables:
+        MY_ENV_VAR: VALUE
   MyUnitTests:
     sources: Tests
 ```
@@ -444,6 +447,7 @@ The different actions share some properties:
 - [ ] **commandLineArguments**: **[String:Bool]** - `run`, `test` and `profile` actions have a map of command line arguments to whether they are enabled
 - [ ] **preActions**: **[[Execution Action](#execution-action)]** - Scheme run scripts that run *before* the action is run
 - [ ] **postActions**: **[[Execution Action](#execution-action)]** - Scheme run scripts that run *after* the action is run
+- [ ] **environmentVariables**: **[[Environment Variable](#environment-variable)]** or **[String:String]** - `run`, `test` and `profile` actions can define the environment variables. When passing a dictionary, every key-value entry maps to a corresponding variable that is enabled.
 
 ### Execution Action
 Scheme run scripts added via **preActions** or **postActions**. They run before or after a build action, respectively, and in the order defined. Each execution action can contain:
@@ -458,6 +462,11 @@ A multiline script can be written using the various YAML multiline methods, for 
 - [ ] **gatherCoverageData**: **Bool** - a boolean that indicates if this scheme should gather coverage data. This defaults to false
 - [ ] **targets**: **[String]** - a list of targets to test
 
+### Environment Variable
+- [x] **key**: **String** - variable's key.
+- [x] **value**: **String** - variable's value.
+- [ ] **isEnabled**: **Bool** - indicates whether the environment variable is enabled. This defaults to true.
+
 ```yaml
 scheme:
   Production:
@@ -468,11 +477,17 @@ scheme:
     run:
       config: prod-debug
       commandLineArguments: "--option value"
+      environmentVariables:
+        RUN_ENV_VAR: VALUE
     test:
       config: prod-debug
       commandLineArguments: "--option testValue"
       gatherCoverageData: true
       targets: [Tester1, Tester2]
+      environmentVariables:
+        - key: TEST_ENV_VAR
+          value: VALUE
+          isEnabled: false
     profile:
       config: prod-release
     analyze:

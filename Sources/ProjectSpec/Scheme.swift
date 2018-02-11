@@ -81,23 +81,27 @@ public struct Scheme: Equatable {
         public var commandLineArguments: [String: Bool]
         public var preActions: [ExecutionAction]
         public var postActions: [ExecutionAction]
+        public var environmentVariables: [XCScheme.EnvironmentVariable]
         public init(
             config: String,
             commandLineArguments: [String: Bool] = [:],
             preActions: [ExecutionAction] = [],
-            postActions: [ExecutionAction] = []
+            postActions: [ExecutionAction] = [],
+            environmentVariables: [XCScheme.EnvironmentVariable] = []
         ) {
             self.config = config
             self.commandLineArguments = commandLineArguments
             self.preActions = preActions
             self.postActions = postActions
+            self.environmentVariables = environmentVariables
         }
 
         public static func == (lhs: Run, rhs: Run) -> Bool {
             return lhs.config == rhs.config &&
                 lhs.commandLineArguments == rhs.commandLineArguments &&
                 lhs.preActions == rhs.postActions &&
-                lhs.postActions == rhs.postActions
+                lhs.postActions == rhs.postActions &&
+                lhs.environmentVariables == rhs.environmentVariables
         }
     }
 
@@ -108,13 +112,15 @@ public struct Scheme: Equatable {
         public var targets: [String]
         public var preActions: [ExecutionAction]
         public var postActions: [ExecutionAction]
+        public var environmentVariables: [XCScheme.EnvironmentVariable]
         public init(
             config: String,
             gatherCoverageData: Bool = false,
             commandLineArguments: [String: Bool] = [:],
             targets: [String] = [],
             preActions: [ExecutionAction] = [],
-            postActions: [ExecutionAction] = []
+            postActions: [ExecutionAction] = [],
+            environmentVariables: [XCScheme.EnvironmentVariable] = []
         ) {
             self.config = config
             self.gatherCoverageData = gatherCoverageData
@@ -122,6 +128,7 @@ public struct Scheme: Equatable {
             self.targets = targets
             self.preActions = preActions
             self.postActions = postActions
+            self.environmentVariables = environmentVariables
         }
 
         public static func == (lhs: Test, rhs: Test) -> Bool {
@@ -130,7 +137,8 @@ public struct Scheme: Equatable {
                 lhs.gatherCoverageData == rhs.gatherCoverageData &&
                 lhs.targets == rhs.targets &&
                 lhs.preActions == rhs.postActions &&
-                lhs.postActions == rhs.postActions
+                lhs.postActions == rhs.postActions &&
+                lhs.environmentVariables == rhs.environmentVariables
         }
     }
 
@@ -150,23 +158,27 @@ public struct Scheme: Equatable {
         public var commandLineArguments: [String: Bool]
         public var preActions: [ExecutionAction]
         public var postActions: [ExecutionAction]
+        public var environmentVariables: [XCScheme.EnvironmentVariable]
         public init(
             config: String,
             commandLineArguments: [String: Bool] = [:],
             preActions: [ExecutionAction] = [],
-            postActions: [ExecutionAction] = []
+            postActions: [ExecutionAction] = [],
+            environmentVariables: [XCScheme.EnvironmentVariable] = []
         ) {
             self.config = config
             self.commandLineArguments = commandLineArguments
             self.preActions = preActions
             self.postActions = postActions
+            self.environmentVariables = environmentVariables
         }
 
         public static func == (lhs: Profile, rhs: Profile) -> Bool {
             return lhs.config == rhs.config &&
                 lhs.commandLineArguments == rhs.commandLineArguments &&
                 lhs.preActions == rhs.postActions &&
-                lhs.postActions == rhs.postActions
+                lhs.postActions == rhs.postActions &&
+                lhs.environmentVariables == rhs.environmentVariables
         }
     }
 
@@ -235,6 +247,7 @@ extension Scheme.Run: JSONObjectConvertible {
         commandLineArguments = jsonDictionary.json(atKeyPath: "commandLineArguments") ?? [:]
         preActions = try jsonDictionary.json(atKeyPath: "preActions")?.map(Scheme.ExecutionAction.init) ?? []
         postActions = try jsonDictionary.json(atKeyPath: "postActions")?.map(Scheme.ExecutionAction.init) ?? []
+        environmentVariables = try XCScheme.EnvironmentVariable.parseAll(jsonDictionary: jsonDictionary)
     }
 }
 
@@ -247,6 +260,7 @@ extension Scheme.Test: JSONObjectConvertible {
         targets = jsonDictionary.json(atKeyPath: "targets") ?? []
         preActions = try jsonDictionary.json(atKeyPath: "preActions")?.map(Scheme.ExecutionAction.init) ?? []
         postActions = try jsonDictionary.json(atKeyPath: "postActions")?.map(Scheme.ExecutionAction.init) ?? []
+        environmentVariables = try XCScheme.EnvironmentVariable.parseAll(jsonDictionary: jsonDictionary)
     }
 }
 
@@ -257,6 +271,7 @@ extension Scheme.Profile: JSONObjectConvertible {
         commandLineArguments = jsonDictionary.json(atKeyPath: "commandLineArguments") ?? [:]
         preActions = try jsonDictionary.json(atKeyPath: "preActions")?.map(Scheme.ExecutionAction.init) ?? []
         postActions = try jsonDictionary.json(atKeyPath: "postActions")?.map(Scheme.ExecutionAction.init) ?? []
+        environmentVariables = try XCScheme.EnvironmentVariable.parseAll(jsonDictionary: jsonDictionary)
     }
 }
 
@@ -339,4 +354,30 @@ extension BuildType: JSONPrimitiveConvertible {
     public static var all: [BuildType] {
         return [.running, .testing, .profiling, .analyzing, .archiving]
     }
+}
+
+extension XCScheme.EnvironmentVariable: JSONObjectConvertible, Equatable {
+
+    public init(jsonDictionary: JSONDictionary) throws {
+        variable = try jsonDictionary.json(atKeyPath: "variable")
+        value = try jsonDictionary.json(atKeyPath: "value")
+        enabled = (try? jsonDictionary.json(atKeyPath: "isEnabled")) ?? true
+    }
+
+    static func parseAll(jsonDictionary: JSONDictionary) throws -> [XCScheme.EnvironmentVariable] {
+        if let variablesDictionary: [String: String] = jsonDictionary.json(atKeyPath: "environmentVariables") {
+            return variablesDictionary.map { XCScheme.EnvironmentVariable(variable: $0.key, value: $0.value, enabled: true) }
+        } else if let variablesArray: [JSONDictionary] = jsonDictionary.json(atKeyPath: "environmentVariables") {
+            return try variablesArray.map(XCScheme.EnvironmentVariable.init)
+        } else {
+            return []
+        }
+    }
+
+    public static func == (lhs: XCScheme.EnvironmentVariable, rhs: XCScheme.EnvironmentVariable) -> Bool {
+        return lhs.variable == rhs.variable &&
+            lhs.value == rhs.value &&
+            lhs.enabled == rhs.enabled
+    }
+
 }

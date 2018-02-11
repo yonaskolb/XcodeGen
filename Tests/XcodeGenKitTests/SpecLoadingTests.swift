@@ -154,6 +154,21 @@ func specLoadingTests() {
             try expect(spec.targets) == [target_iOS, target_tvOS]
         }
 
+        $0.it("parses target schemes") {
+            var targetDictionary = validTarget
+            targetDictionary["scheme"] = [
+                "environmentVariables": [
+                    "TEST_VAR": "TEST_VAL"
+                ]
+            ]
+
+            let target = try Target(name: "test", jsonDictionary: targetDictionary)
+
+            let expectedVariables = [XCScheme.EnvironmentVariable(variable: "TEST_VAR", value: "TEST_VAL", enabled: true)]
+
+            try expect(target.scheme?.environmentVariables) == expectedVariables
+        }
+
         $0.it("parses schemes") {
             let schemeDictionary: [String: Any] = [
                 "build": [
@@ -193,6 +208,42 @@ func specLoadingTests() {
 
             try expect(scheme.build.parallelizeBuild) == false
             try expect(scheme.build.buildImplicitDependencies) == false
+        }
+
+        $0.it("parses schemes variables") {
+            let schemeDictionary: [String: Any] = [
+                "build": [
+                    "targets": ["Target1": "all"],
+                ],
+                "run": [
+                    "environmentVariables": [
+                        ["key": "ENVIRONMENT", "value": "VARIABLE"],
+                        ["key": "OTHER_ENV_VAR", "value": "VAL", "isEnabled": false],
+                    ],
+                ],
+                "test": [
+                    "environmentVariables": [
+                        "TEST": "VARIABLE"
+                    ]
+                ],
+                "profile": [
+                    "config": "Release"
+                ]
+            ]
+
+            let scheme = try Scheme(name: "Scheme", jsonDictionary: schemeDictionary)
+
+            let expectedRunVariables = [
+                XCScheme.EnvironmentVariable(variable: "ENVIRONMENT", value: "VARIABLE", enabled: true),
+                XCScheme.EnvironmentVariable(variable: "OTHER_ENV_VAR", value: "VAL", enabled: false)
+            ]
+
+            let expectedTestVariables = [XCScheme.EnvironmentVariable(variable: "TEST", value: "VARIABLE", enabled: true)]
+
+            try expect(scheme.run?.environmentVariables) == expectedRunVariables
+            try expect(scheme.test?.environmentVariables) == expectedTestVariables
+            try expect(scheme.profile?.config) == "Release"
+            try expect(scheme.profile?.environmentVariables.isEmpty) == true
         }
 
         $0.it("parses settings") {
