@@ -83,8 +83,8 @@ Note that target names can also be changed by adding a `name` property to a targ
 ```yaml
 options:
   deploymentTarget:
-    watchOS: 2.0
-    tvOS: 10.0
+    watchOS: "2.0"
+    tvOS: "10.0"
 ```
 
 ### Configs
@@ -147,7 +147,7 @@ Settings are merged in the following order: groups, base, configs.
 
 - [x] **type**: **[Product Type](#product-type)** - Product type of the target
 - [x] **platform**: **[Platform](#platform)** - Platform of the target
-- [ ] **deploymentTarget**: **String or Double** - The deployment target eg (11.0). If this is not specified the value from the project set in [Options](#options)`.deploymentTarget.PLATFORM` will be used.
+- [ ] **deploymentTarget**: **String** - The deployment target (eg `9.2`). If this is not specified the value from the project set in [Options](#options)`.deploymentTarget.PLATFORM` will be used.
 - [ ] **sources**: **[Sources](#sources)** - Source directories of the target
 - [ ] **configFiles**: **[Config Files](#config-files)** - `.xcconfig` files per config
 - [ ] **settings**: **[Settings](#settings)** - Target specific build settings. Default platform and product type settings will be applied first before any custom settings defined here. Other context dependant settings will be set automatically as well:

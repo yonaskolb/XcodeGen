@@ -48,7 +48,7 @@ targets:
   MyApp:
     type: application
     platform: iOS
-    deploymentTarget: 10.0
+    deploymentTarget: "10.0"
     sources: [MyApp]
     settings:
       CUSTOM_BUILD_SETTING: my_value
