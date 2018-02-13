@@ -31,7 +31,7 @@ public class ProjectGenerator {
     }
 
     func generateWorkspace() throws -> XCWorkspace {
-        let dataElement: XCWorkspaceDataElement = .file(XCWorkspaceDataFileRef(location: .`self`("")))
+        let dataElement: XCWorkspaceDataElement = .file(XCWorkspaceDataFileRef(location: .self("")))
         let workspaceData = XCWorkspaceData(children: [dataElement])
         return XCWorkspace(data: workspaceData)
     }
@@ -78,8 +78,8 @@ public class ProjectGenerator {
             buildActionEntries: buildActionEntries,
             preActions: scheme.build.preActions.map(getExecutionAction),
             postActions: scheme.build.postActions.map(getExecutionAction),
-            parallelizeBuild: true,
-            buildImplicitDependencies: true
+            parallelizeBuild: scheme.build.parallelizeBuildables,
+            buildImplicitDependencies: scheme.build.buildImplicitDependencies
         )
 
         let testables = testBuildTargetEntries.map {
