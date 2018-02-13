@@ -78,7 +78,7 @@ public class ProjectGenerator {
             buildActionEntries: buildActionEntries,
             preActions: scheme.build.preActions.map(getExecutionAction),
             postActions: scheme.build.postActions.map(getExecutionAction),
-            parallelizeBuild: scheme.build.parallelizeBuildables,
+            parallelizeBuild: scheme.build.parallelizeBuild,
             buildImplicitDependencies: scheme.build.buildImplicitDependencies
         )
 

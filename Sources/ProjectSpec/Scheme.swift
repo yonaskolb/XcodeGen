@@ -51,19 +51,19 @@ public struct Scheme: Equatable {
 
     public struct Build: Equatable {
         public var targets: [BuildTarget]
-        public var parallelizeBuildables: Bool
+        public var parallelizeBuild: Bool
         public var buildImplicitDependencies: Bool
         public var preActions: [ExecutionAction]
         public var postActions: [ExecutionAction]
         public init(
             targets: [BuildTarget],
-            parallelizeBuildables: Bool = true,
+            parallelizeBuild: Bool = true,
             buildImplicitDependencies: Bool = true,
             preActions: [ExecutionAction] = [],
             postActions: [ExecutionAction] = []
         ) {
             self.targets = targets
-            self.parallelizeBuildables = parallelizeBuildables
+            self.parallelizeBuild = parallelizeBuild
             self.buildImplicitDependencies = buildImplicitDependencies
             self.preActions = preActions
             self.postActions = postActions
@@ -316,7 +316,7 @@ extension Scheme.Build: JSONObjectConvertible {
         self.targets = targets.sorted { $0.target < $1.target }
         preActions = try jsonDictionary.json(atKeyPath: "preActions")?.map(Scheme.ExecutionAction.init) ?? []
         postActions = try jsonDictionary.json(atKeyPath: "postActions")?.map(Scheme.ExecutionAction.init) ?? []
-        parallelizeBuildables = jsonDictionary.json(atKeyPath: "parallelizeBuildables") ?? true
+        parallelizeBuild = jsonDictionary.json(atKeyPath: "parallelizeBuild") ?? true
         buildImplicitDependencies = jsonDictionary.json(atKeyPath: "buildImplicitDependencies") ?? true
     }
 }

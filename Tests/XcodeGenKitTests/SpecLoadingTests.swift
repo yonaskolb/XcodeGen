@@ -157,7 +157,7 @@ func specLoadingTests() {
         $0.it("parses schemes") {
             let schemeDictionary: [String: Any] = [
                 "build": [
-                    "parallelizeBuildables": false,
+                    "parallelizeBuild": false,
                     "buildImplicitDependencies": false,
                     "targets": [
                         "Target1": "all",
@@ -191,7 +191,7 @@ func specLoadingTests() {
             try expect(scheme.build.preActions.first?.name) == "Before Build"
             try expect(scheme.build.preActions.first?.settingsTarget) == "Target1"
 
-            try expect(scheme.build.parallelizeBuildables) == false
+            try expect(scheme.build.parallelizeBuild) == false
             try expect(scheme.build.buildImplicitDependencies) == false
         }
 
