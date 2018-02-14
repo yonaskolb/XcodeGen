@@ -156,20 +156,25 @@ func specLoadingTests() {
 
         $0.it("parses schemes") {
             let schemeDictionary: [String: Any] = [
-                "build": ["targets": [
-                    "Target1": "all",
-                    "Target2": "testing",
-                    "Target3": "none",
-                    "Target4": ["testing": true],
-                    "Target5": ["testing": false],
-                    "Target6": ["test", "analyze"],
-                ], "preActions": [
-                    [
-                        "script": "echo Before Build",
-                        "name": "Before Build",
-                        "settingsTarget": "Target1",
+                "build": [
+                    "parallelizeBuild": false,
+                    "buildImplicitDependencies": false,
+                    "targets": [
+                        "Target1": "all",
+                        "Target2": "testing",
+                        "Target3": "none",
+                        "Target4": ["testing": true],
+                        "Target5": ["testing": false],
+                        "Target6": ["test", "analyze"],
                     ],
-                ]],
+                    "preActions": [
+                        [
+                            "script": "echo Before Build",
+                            "name": "Before Build",
+                            "settingsTarget": "Target1",
+                        ],
+                    ]
+                ],
             ]
             let scheme = try Scheme(name: "Scheme", jsonDictionary: schemeDictionary)
             let expectedTargets: [Scheme.BuildTarget] = [
@@ -185,6 +190,9 @@ func specLoadingTests() {
             try expect(scheme.build.preActions.first?.script) == "echo Before Build"
             try expect(scheme.build.preActions.first?.name) == "Before Build"
             try expect(scheme.build.preActions.first?.settingsTarget) == "Target1"
+
+            try expect(scheme.build.parallelizeBuild) == false
+            try expect(scheme.build.buildImplicitDependencies) == false
         }
 
         $0.it("parses settings") {

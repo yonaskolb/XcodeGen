@@ -418,10 +418,20 @@ Schemes allows for more control than the convenience [Target Scheme](#target-sch
 	- `analyze` or `analyzing`
 	- `archive` or `archiving`
 
+- [ ] **parallelizeBuild**: **Bool** - Whether or not your targets should be built in parallel. By default this is `true` if not set.
+  - `true`: Build targets in parallel
+  - `false`: Build targets serially
+- [ ] **buildImplicitDependencies**: **Bool** - Flag to determine if Xcode should be implicit dependencies of this scheme. By default this is `true` if not set.
+
+  - `true`: Discover implicit dependencies of this scheme
+  - `false`: Only build explicit dependencies of this scheme
+
 ```yaml
 targets:
   myTarget: all
   myTarget2: [test, run]
+parallelizeBuild: true
+buildImplicitDependencies: true
 ```
 
 ### Common Build Action options
