@@ -321,6 +321,8 @@ func projectGeneratorTests() {
                     throw failure("Scheme not found")
                 }
                 try expect(scheme.name) == "MyScheme"
+                try expect(xcscheme.buildAction?.buildImplicitDependencies) == true
+                try expect(xcscheme.buildAction?.parallelizeBuild) == true
                 try expect(xcscheme.buildAction?.preActions.first?.title) == "Script"
                 try expect(xcscheme.buildAction?.preActions.first?.scriptText) == "echo Starting"
                 try expect(xcscheme.buildAction?.preActions.first?.environmentBuildable?.buildableName) == "MyApp.app"

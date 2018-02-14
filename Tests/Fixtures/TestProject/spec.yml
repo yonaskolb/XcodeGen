@@ -101,6 +101,8 @@ targets:
 schemes:
   Framework:
     build:
+      parallelizeBuild: false 
+      buildImplicitDependencies: false
       targets:
         Framework_iOS: all
       preActions:
