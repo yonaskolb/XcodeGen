@@ -217,8 +217,8 @@ func specLoadingTests() {
                 ],
                 "run": [
                     "environmentVariables": [
-                        ["key": "ENVIRONMENT", "value": "VARIABLE"],
-                        ["key": "OTHER_ENV_VAR", "value": "VAL", "isEnabled": false],
+                        ["variable": "ENVIRONMENT", "value": "VARIABLE"],
+                        ["variable": "OTHER_ENV_VAR", "value": "VAL", "isEnabled": false],
                     ],
                 ],
                 "test": [

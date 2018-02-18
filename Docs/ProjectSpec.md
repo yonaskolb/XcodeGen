@@ -463,7 +463,7 @@ A multiline script can be written using the various YAML multiline methods, for 
 - [ ] **targets**: **[String]** - a list of targets to test
 
 ### Environment Variable
-- [x] **key**: **String** - variable's key.
+- [x] **variable**: **String** - variable's name.
 - [x] **value**: **String** - variable's value.
 - [ ] **isEnabled**: **Bool** - indicates whether the environment variable is enabled. This defaults to true.
 
@@ -485,7 +485,7 @@ scheme:
       gatherCoverageData: true
       targets: [Tester1, Tester2]
       environmentVariables:
-        - key: TEST_ENV_VAR
+        - variable: TEST_ENV_VAR
           value: VALUE
           isEnabled: false
     profile:
