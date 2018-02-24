@@ -243,6 +243,7 @@ func specLoadingTests() {
         $0.it("parses options") {
             let options = ProjectSpec.Options(
                 carthageBuildPath: "../Carthage/Build",
+                carthageExecutablePath: "../bin/carthage",
                 createIntermediateGroups: true,
                 bundleIdPrefix: "com.test",
                 developmentLanguage: "ja",
@@ -256,6 +257,7 @@ func specLoadingTests() {
             let expected = ProjectSpec(basePath: "", name: "test", options: options)
             let dictionary: [String: Any] = ["options": [
                 "carthageBuildPath": "../Carthage/Build",
+                "carthageExecutablePath": "../bin/carthage",
                 "bundleIdPrefix": "com.test",
                 "createIntermediateGroups": true,
                 "developmentLanguage": "ja",
