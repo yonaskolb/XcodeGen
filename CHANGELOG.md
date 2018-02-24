@@ -2,6 +2,10 @@
 
 ## Master
 
+#### Added
+
+- Added `carthagecarthageExecutablePath` option [244](https://github.com/yonaskolb/XcodeGen/pull/244) @akkyie
+
 ## 1.6.0
 
 #### Added
