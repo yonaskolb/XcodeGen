@@ -604,6 +604,7 @@ public class PBXProjGenerator {
                     .map { "$(SRCROOT)/\(carthageBuildPath)/\(target.platform)/\($0)\($0.contains(".") ? "" : ".framework")" }
                 let outputPaths = carthageFrameworksToEmbed
                     .map { "$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/\($0)\($0.contains(".") ? "" : ".framework")" }
+                let carthageExecutable = spec.options.carthageExecutablePath ?? "/usr/local/bin/carthage"
                 let carthageScript = createObject(
                     id: "Carthage" + target.name,
                     PBXShellScriptBuildPhase(
@@ -612,7 +613,7 @@ public class PBXProjGenerator {
                         inputPaths: inputPaths,
                         outputPaths: outputPaths,
                         shellPath: "/bin/sh",
-                        shellScript: "/usr/local/bin/carthage copy-frameworks\n"
+                        shellScript: "\(carthageExecutable) copy-frameworks\n"
                     )
                 )
                 buildPhases.append(carthageScript.reference)
