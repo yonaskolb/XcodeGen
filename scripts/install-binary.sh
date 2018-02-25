@@ -1,5 +1,5 @@
 #!/bin/bash
-PREFIX=${1:-/usr/local}
+PREFIX=${PREFIX:-/usr/local}
 
 ### NOTE: Stripped or replaced by archive.sh from this line
 ZIPFILE=xcodegen.zip
