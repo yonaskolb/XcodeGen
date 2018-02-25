@@ -18,6 +18,8 @@ sed -e 's/^BASE_DIR=.*/BASE_DIR=$(cd `dirname $0`; pwd)/' -e '/.*[zZ][iI][pP].*/
 chmod +x $TMP/install.sh
 
 (cd $TMP/..; zip -r $ZIPFILE $TOOL_NAME)
+SHA=$(cat $ZIPFILE | shasum -a 256 | sed 's/ .*//')
+echo "SHA: $SHA"
 mv $ZIPFILE .
 
 rm -rf $TMP
