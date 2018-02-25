@@ -41,3 +41,9 @@ release: format_code
 	git add .
 	git commit -m "Update to $(VERSION)"
 	git tag $(VERSION)
+
+install-binary:
+	./scripts/install.sh
+
+archive: build
+	./scripts/archive.sh
