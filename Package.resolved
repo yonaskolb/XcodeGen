@@ -75,11 +75,11 @@
       },
       {
         "package": "xcproj",
-        "repositoryURL": "https://github.com/elpassion/xcproj",
+        "repositoryURL": "https://github.com/xcodeswift/xcproj.git",
         "state": {
-          "branch": "environment_variables",
-          "revision": "44ed558ef9f52e4e45b6820f8b60254fb63bc212",
-          "version": null
+          "branch": null,
+          "revision": "723d57707fb18d4e6377ae773f46b1a2ca58d9c0",
+          "version": "4.1.0"
         }
       }
     ]
