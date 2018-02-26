@@ -27,7 +27,6 @@
 		BF_303822704662 = {isa = PBXBuildFile; fileRef = FR_472296042419 /* Framework.framework */; };
 		BF_314868376788 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = VG_746876637628 /* Localizable.stringsdict */; };
 		BF_324363145049 /* Framework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_472296042419 /* Framework.framework */; };
-		BF_329004524843 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = VG_453922120168 /* Model.xcdatamodeld */; settings = {COMPILER_FLAGS = "-Werror"; }; };
 		BF_331192862207 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_481575785861 /* ViewController.swift */; settings = {COMPILER_FLAGS = "-Werror"; }; };
 		BF_334778067417 = {isa = PBXBuildFile; fileRef = FR_783122899910 /* App_iOS_Tests.xctest */; };
 		BF_360196406184 /* TestProjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_722239415598 /* TestProjectTests.swift */; };
@@ -45,6 +44,7 @@
 		BF_561304997165 /* Standalone.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_675266829517 /* Standalone.swift */; };
 		BF_612351978356 /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = VG_264279911176 /* Interface.storyboard */; };
 		BF_624802436672 /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_172952167809 /* FrameworkFile.swift */; };
+		BF_670499288392 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = VG_229021855709 /* Model.xcdatamodeld */; settings = {COMPILER_FLAGS = "-Werror"; }; };
 		BF_681504666330 = {isa = PBXBuildFile; fileRef = FR_825232110500 /* App_iOS.app */; };
 		BF_721498080533 /* ResourceFolder in Resources */ = {isa = PBXBuildFile; fileRef = FR_257073931060 /* ResourceFolder */; };
 		BF_729846993631 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_410645050443 /* Alamofire.framework */; };
@@ -380,7 +380,7 @@
 				VG_746876637628 /* Localizable.stringsdict */,
 				VG_118219888726 /* LocalizedStoryboard.storyboard */,
 				VG_609193904586 /* Main.storyboard */,
-				VG_453922120168 /* Model.xcdatamodeld */,
+				VG_229021855709 /* Model.xcdatamodeld */,
 				FR_481575785861 /* ViewController.swift */,
 			);
 			name = App;
@@ -931,7 +931,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BF_892119987440 /* AppDelegate.swift in Sources */,
-				BF_329004524843 /* Model.xcdatamodeld in Sources */,
+				BF_670499288392 /* Model.xcdatamodeld in Sources */,
 				BF_503484983186 /* MoreUnder.swift in Sources */,
 				BF_561304997165 /* Standalone.swift in Sources */,
 				BF_331192862207 /* ViewController.swift in Sources */,
@@ -2683,7 +2683,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		VG_453922120168 /* Model.xcdatamodeld */ = {
+		VG_229021855709 /* Model.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
 				FR_570918052822 /* Model.xcdatamodel */,

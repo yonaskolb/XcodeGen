@@ -122,7 +122,7 @@ class SourceGenerator {
                             )
                         )
                 }
-                let versionGroup = addObject(id: path.string, XCVersionGroup(
+                let versionGroup = addObject(id: fileReferencePath.string, XCVersionGroup(
                     currentVersion: modelFileReference.first?.reference,
                     path: fileReferencePath.string,
                     sourceTree: sourceTree,
