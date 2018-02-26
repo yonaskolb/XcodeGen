@@ -1,7 +1,6 @@
 name: Project
 include: [environments.yml]
 options:
-  carthageExecutablePath: ../bin/carthage
   bundleIdPrefix: com.project
   usesTabs: false
   indentWidth: 2

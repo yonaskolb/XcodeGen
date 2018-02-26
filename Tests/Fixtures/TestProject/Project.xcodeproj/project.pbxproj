@@ -797,7 +797,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "../bin/carthage copy-frameworks\n";
+			shellScript = "carthage copy-frameworks\n";
 			showEnvVarsInLog = 0;
 		};
 		SSBP_6331376344 /* MyScript */ = {
@@ -829,7 +829,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "../bin/carthage copy-frameworks\n";
+			shellScript = "carthage copy-frameworks\n";
 			showEnvVarsInLog = 0;
 		};
 		SSBP_8255377629 /* MyScript */ = {
