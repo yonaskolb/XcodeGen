@@ -81,7 +81,11 @@ targets:
   Framework:
     type: framework
     platform: [iOS, tvOS, watchOS, macOS]
-    sources: Framework
+    sources:
+      - Framework
+      - path: Headers
+        buildPhase: headers
+        type: folder
     postbuildScripts:
       - name: MyScript
         path: scripts/script.sh
@@ -102,7 +106,7 @@ targets:
 schemes:
   Framework:
     build:
-      parallelizeBuild: false 
+      parallelizeBuild: false
       buildImplicitDependencies: false
       targets:
         Framework_iOS: all

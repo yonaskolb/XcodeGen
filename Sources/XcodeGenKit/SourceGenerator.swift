@@ -382,7 +382,7 @@ class SourceGenerator {
                 rootGroups.insert(fileReference)
             }
 
-            let sourceFile = generateSourceFile(targetSource: targetSource, path: folderPath, buildPhase: .resources)
+            let sourceFile = generateSourceFile(targetSource: targetSource, path: folderPath, buildPhase: targetSource.buildPhase?.buildPhase ?? .resources)
 
             sourceFiles.append(sourceFile)
             sourceReference = fileReference
