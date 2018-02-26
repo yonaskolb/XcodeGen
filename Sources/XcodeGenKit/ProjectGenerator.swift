@@ -90,6 +90,10 @@ public class ProjectGenerator {
         let launchCommandLineArgs = scheme.run.map { XCScheme.CommandLineArguments($0.commandLineArguments) }
         let profileCommandLineArgs = scheme.profile.map { XCScheme.CommandLineArguments($0.commandLineArguments) }
 
+        let testVariables = scheme.test.flatMap { $0.environmentVariables.isEmpty ? nil : $0.environmentVariables }
+        let launchVariables = scheme.run.flatMap { $0.environmentVariables.isEmpty ? nil : $0.environmentVariables }
+        let profileVariables = scheme.profile.flatMap { $0.environmentVariables.isEmpty ? nil : $0.environmentVariables }
+
         let testAction = XCScheme.TestAction(
             buildConfiguration: scheme.test?.config ?? defaultDebugConfig.name,
             macroExpansion: buildableReference,
@@ -99,6 +103,7 @@ public class ProjectGenerator {
             shouldUseLaunchSchemeArgsEnv: scheme.test?.commandLineArguments.isEmpty ?? true,
             codeCoverageEnabled: scheme.test?.gatherCoverageData ?? false,
             commandlineArguments: testCommandLineArgs,
+            environmentVariables: testVariables,
             language: ""
         )
 
@@ -107,7 +112,8 @@ public class ProjectGenerator {
             buildConfiguration: scheme.run?.config ?? defaultDebugConfig.name,
             preActions: scheme.run?.preActions.map(getExecutionAction) ?? [],
             postActions: scheme.run?.postActions.map(getExecutionAction) ?? [],
-            commandlineArguments: launchCommandLineArgs
+            commandlineArguments: launchCommandLineArgs,
+            environmentVariables: launchVariables
         )
 
         let profileAction = XCScheme.ProfileAction(
@@ -116,7 +122,8 @@ public class ProjectGenerator {
             preActions: scheme.profile?.preActions.map(getExecutionAction) ?? [],
             postActions: scheme.profile?.postActions.map(getExecutionAction) ?? [],
             shouldUseLaunchSchemeArgsEnv: scheme.profile?.commandLineArguments.isEmpty ?? true,
-            commandlineArguments: profileCommandLineArgs
+            commandlineArguments: profileCommandLineArgs,
+            environmentVariables: profileVariables
         )
 
         let analyzeAction = XCScheme.AnalyzeAction(buildConfiguration: scheme.analyze?.config ?? defaultDebugConfig.name)
@@ -202,17 +209,20 @@ extension Scheme {
             build: .init(targets: [Scheme.BuildTarget(target: target.name)]),
             run: .init(
                 config: debugConfig,
-                commandLineArguments: targetScheme.commandLineArguments
+                commandLineArguments: targetScheme.commandLineArguments,
+                environmentVariables: targetScheme.environmentVariables
             ),
             test: .init(
                 config: debugConfig,
                 gatherCoverageData: targetScheme.gatherCoverageData,
                 commandLineArguments: targetScheme.commandLineArguments,
-                targets: targetScheme.testTargets
+                targets: targetScheme.testTargets,
+                environmentVariables: targetScheme.environmentVariables
             ),
             profile: .init(
                 config: releaseConfig,
-                commandLineArguments: targetScheme.commandLineArguments
+                commandLineArguments: targetScheme.commandLineArguments,
+                environmentVariables: targetScheme.environmentVariables
             ),
             analyze: .init(config: debugConfig),
             archive: .init(config: releaseConfig)

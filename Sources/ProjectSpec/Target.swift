@@ -172,17 +172,20 @@ public struct TargetScheme {
     public var configVariants: [String]
     public var gatherCoverageData: Bool
     public var commandLineArguments: [String: Bool]
+    public var environmentVariables: [XCScheme.EnvironmentVariable]
 
     public init(
         testTargets: [String] = [],
         configVariants: [String] = [],
         gatherCoverageData: Bool = false,
-        commandLineArguments: [String: Bool] = [:]
+        commandLineArguments: [String: Bool] = [:],
+        environmentVariables: [XCScheme.EnvironmentVariable] = []
     ) {
         self.testTargets = testTargets
         self.configVariants = configVariants
         self.gatherCoverageData = gatherCoverageData
         self.commandLineArguments = commandLineArguments
+        self.environmentVariables = environmentVariables
     }
 }
 
@@ -201,6 +204,7 @@ extension TargetScheme: JSONObjectConvertible {
         configVariants = jsonDictionary.json(atKeyPath: "configVariants") ?? []
         gatherCoverageData = jsonDictionary.json(atKeyPath: "gatherCoverageData") ?? false
         commandLineArguments = jsonDictionary.json(atKeyPath: "commandLineArguments") ?? [:]
+        environmentVariables = try XCScheme.EnvironmentVariable.parseAll(jsonDictionary: jsonDictionary)
     }
 }
 

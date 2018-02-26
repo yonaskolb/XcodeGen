@@ -6,6 +6,7 @@
 
 - Added `carthageExecutablePath` option [244](https://github.com/yonaskolb/XcodeGen/pull/244) @akkyie
 - Added `parallelizeBuild` and `buildImplicitDependencies` to Schemes [241](https://github.com/yonaskolb/XcodeGen/pull/241) @rahul-malik
+- Added scheme environment variables [239](https://github.com/yonaskolb/XcodeGen/pull/239) @turekj
 
 #### Fixed
 - Fixed Mint installation from reading setting presets [248](https://github.com/yonaskolb/XcodeGen/pull/248) @yonaskolb
