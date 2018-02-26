@@ -6,10 +6,13 @@
 
 - Added `carthageExecutablePath` option [244](https://github.com/yonaskolb/XcodeGen/pull/244) @akkyie
 - Added `parallelizeBuild` and `buildImplicitDependencies` to Schemes [241](https://github.com/yonaskolb/XcodeGen/pull/241) @rahul-malik
-- Added scheme environment variables [239](https://github.com/yonaskolb/XcodeGen/pull/239) @turekj
+- Added support for scheme environment variables [239](https://github.com/yonaskolb/XcodeGen/pull/239) @turekj
+- Added support for Core Data `xcdatamodeld` files [249](https://github.com/yonaskolb/XcodeGen/pull/249) @yonaskolb
+- Projects are now generated atomically by writing to a temporary directory first [250](https://github.com/yonaskolb/XcodeGen/pull/250) @yonaskolb
 
 #### Fixed
 - Fixed Mint installation from reading setting presets [248](https://github.com/yonaskolb/XcodeGen/pull/248) @yonaskolb
+- Fixed setting `buildPhase` on a `folder` source. This allows for a folder of header files [254](https://github.com/yonaskolb/XcodeGen/pull/254) @yonaskolb
 
 ## 1.6.0
 
