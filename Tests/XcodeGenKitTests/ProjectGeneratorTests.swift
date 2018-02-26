@@ -452,6 +452,30 @@ func projectGeneratorTests() {
                 try project.expectFile(paths: ["Sources", "A", "B", "b.swift"], buildPhase: .sources)
             }
 
+            $0.it("generates core data models") {
+                let directories = """
+                Sources:
+                    model.xcdatamodeld:
+                        - model.xcdatamodel
+                """
+                try createDirectories(directories)
+
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: ["Sources"])
+                let spec = ProjectSpec(basePath: directoryPath, name: "Test", targets: [target])
+
+                let project = try getPbxProj(spec)
+                guard let fileReference = project.objects.fileReferences.first(where: { $0.value.nameOrPath == "model.xcdatamodel" }) else {
+                    throw failure("Couldn't find model file reference")
+                }
+                guard let versionGroup = project.objects.versionGroups.values.first else {
+                    throw failure("Couldn't find version group")
+                }
+                try expect(versionGroup.currentVersion) == fileReference.key
+                try expect(versionGroup.children) == [fileReference.key]
+                try expect(versionGroup.path) == "model.xcdatamodeld"
+                try expect(fileReference.value.path) == "model.xcdatamodel"
+            }
+
             $0.it("handles duplicate names") {
                 let directories = """
                 Sources:
