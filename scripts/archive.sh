@@ -1,5 +1,6 @@
 #!/bin/bash
-TMP=$(mktemp -d)/${TOOL_NAME:?}
+PACKAGE_NAME=${TOOL_NAME:?}-${VERSION:?}
+TMP=$(mktemp -d)/$PACKAGE_NAME
 BINDIR=$TMP/bin
 SHAREDIR=$TMP/share
 ZIPFILE=$TMP/${TOOL_NAME_LOWER:?}.zip
@@ -20,7 +21,7 @@ cp $LICENSE $TMP
 
 # zip
 
-(cd $TMP/..; zip -r $ZIPFILE $TOOL_NAME)
+(cd $TMP/..; zip -r $ZIPFILE $PACKAGE_NAME)
 
 # print sha
 
