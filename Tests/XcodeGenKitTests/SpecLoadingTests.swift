@@ -173,7 +173,7 @@ func specLoadingTests() {
                             "name": "Before Build",
                             "settingsTarget": "Target1",
                         ],
-                    ]
+                    ],
                 ],
             ]
             let scheme = try Scheme(name: "Scheme", jsonDictionary: schemeDictionary)

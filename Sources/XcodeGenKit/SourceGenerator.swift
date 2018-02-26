@@ -96,7 +96,8 @@ class SourceGenerator {
     }
 
     func getFileReference(path: Path, inPath: Path, name: String? = nil, sourceTree: PBXSourceTree = .group, lastKnownFileType: String? = nil) -> String {
-        if let fileReference = fileReferencesByPath[path.string.lowercased()] {
+        let fileReferenceKey = path.string.lowercased()
+        if let fileReference = fileReferencesByPath[fileReferenceKey] {
             return fileReference
         } else {
             let fileReferencePath = path.byRemovingBase(path: inPath)
@@ -105,17 +106,44 @@ class SourceGenerator {
                 fileReferenceName = nil
             }
             let lastKnownFileType = lastKnownFileType ?? PBXFileReference.fileType(path: path)
-            let fileReference = createObject(
-                id: path.byRemovingBase(path: spec.basePath).string,
-                PBXFileReference(
+
+            if path.extension == "xcdatamodeld" {
+                let models = (try? path.children()) ?? []
+                let modelFileReference = models
+                    .filter { $0.extension == "xcdatamodel" }
+                    .sorted()
+                    .map { path in
+                        createObject(
+                            id: path.byRemovingBase(path: spec.basePath).string,
+                            PBXFileReference(
+                                sourceTree: .group,
+                                lastKnownFileType: "wrapper.xcdatamodel",
+                                path: path.lastComponent
+                            )
+                        )
+                }
+                let versionGroup = addObject(id: fileReferencePath.string, XCVersionGroup(
+                    currentVersion: modelFileReference.first?.reference,
+                    path: fileReferencePath.string,
                     sourceTree: sourceTree,
-                    name: fileReferenceName,
-                    lastKnownFileType: lastKnownFileType,
-                    path: fileReferencePath.string
+                    versionGroupType: "wrapper.xcdatamodel",
+                    children: modelFileReference.map { $0.reference }
+                ))
+                fileReferencesByPath[fileReferenceKey] = versionGroup
+                return versionGroup
+            } else {
+                let fileReference = createObject(
+                    id: path.byRemovingBase(path: spec.basePath).string,
+                    PBXFileReference(
+                        sourceTree: sourceTree,
+                        name: fileReferenceName,
+                        lastKnownFileType: lastKnownFileType,
+                        path: fileReferencePath.string
+                    )
                 )
-            )
-            fileReferencesByPath[path.string.lowercased()] = fileReference.reference
-            return fileReference.reference
+                fileReferencesByPath[fileReferenceKey] = fileReference.reference
+                return fileReference.reference
+            }
         }
     }
 
@@ -125,7 +153,7 @@ class SourceGenerator {
         }
         if let fileExtension = path.extension {
             switch fileExtension {
-            case "swift", "m", "mm", "cpp", "c", "S": return .sources
+            case "swift", "m", "mm", "cpp", "c", "S", "xcdatamodeld": return .sources
             case "h", "hh", "hpp", "ipp", "tpp", "hxx", "def": return .headers
             case "xcconfig", "entitlements", "gpx", "lproj", "apns": return nil
             default: return .resources

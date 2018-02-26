@@ -158,8 +158,8 @@ extension SettingsPresetFile {
 
         if let symlink = try? bundlePath.symlinkDestination() {
             possibleSettingsPaths = [
-                symlink + relativePath
-                ] + possibleSettingsPaths
+                symlink + relativePath,
+            ] + possibleSettingsPaths
         }
 
         guard let settingsPath = possibleSettingsPaths.first(where: { $0.exists }) else {

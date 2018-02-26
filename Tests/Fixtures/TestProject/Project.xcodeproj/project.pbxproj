@@ -44,6 +44,7 @@
 		BF_561304997165 /* Standalone.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_675266829517 /* Standalone.swift */; };
 		BF_612351978356 /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = VG_264279911176 /* Interface.storyboard */; };
 		BF_624802436672 /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_172952167809 /* FrameworkFile.swift */; };
+		BF_670499288392 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = VG_229021855709 /* Model.xcdatamodeld */; settings = {COMPILER_FLAGS = "-Werror"; }; };
 		BF_681504666330 = {isa = PBXBuildFile; fileRef = FR_825232110500 /* App_iOS.app */; };
 		BF_721498080533 /* ResourceFolder in Resources */ = {isa = PBXBuildFile; fileRef = FR_257073931060 /* ResourceFolder */; };
 		BF_729846993631 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_410645050443 /* Alamofire.framework */; };
@@ -163,6 +164,7 @@
 		FR_507023492251 /* App_watchOS Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "App_watchOS Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR_525119120469 /* Framework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Framework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR_530852296303 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FR_570918052822 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		FR_587738154368 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FR_602633703434 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		FR_609193904586 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -378,6 +380,7 @@
 				VG_746876637628 /* Localizable.stringsdict */,
 				VG_118219888726 /* LocalizedStoryboard.storyboard */,
 				VG_609193904586 /* Main.storyboard */,
+				VG_229021855709 /* Model.xcdatamodeld */,
 				FR_481575785861 /* ViewController.swift */,
 			);
 			name = App;
@@ -928,6 +931,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BF_892119987440 /* AppDelegate.swift in Sources */,
+				BF_670499288392 /* Model.xcdatamodeld in Sources */,
 				BF_503484983186 /* MoreUnder.swift in Sources */,
 				BF_561304997165 /* Standalone.swift in Sources */,
 				BF_331192862207 /* ViewController.swift in Sources */,
@@ -2677,6 +2681,19 @@
 			defaultConfigurationName = "Production Debug";
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		VG_229021855709 /* Model.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				FR_570918052822 /* Model.xcdatamodel */,
+			);
+			currentVersion = FR_570918052822 /* Model.xcdatamodel */;
+			path = Model.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = P_8448771205358 /* Project object */;
 }
