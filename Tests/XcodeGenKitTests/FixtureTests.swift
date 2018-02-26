@@ -11,11 +11,19 @@ func generate(specPath: Path, projectPath: Path) throws -> XcodeProj {
     let generator = ProjectGenerator(spec: spec)
     let project = try generator.generateProject()
     let oldProject = try XcodeProj(path: projectPath)
+    let pbxProjPath = projectPath + XcodeProj.pbxprojPath(projectPath)
+    let oldProjectString: String = try pbxProjPath.read()
     try project.write(path: projectPath, override: true)
+    let newProjectString: String = try pbxProjPath.read()
 
     let newProject = try XcodeProj(path: projectPath)
-    if newProject != oldProject {
-        throw failure("\(projectPath.string) has changed. If change is legitimate commit the change and run test again")
+    let stringDiff = newProjectString != oldProjectString
+    if newProject != oldProject || stringDiff {
+        var message = "\(projectPath.string) has changed. If change is legitimate commit the change and run test again"
+        if stringDiff {
+            message += ":\n\n\(pbxProjPath):\n\(prettyFirstDifferenceBetweenStrings(oldProjectString, newProjectString))"
+        }
+        throw failure(message)
     }
 
     return newProject
