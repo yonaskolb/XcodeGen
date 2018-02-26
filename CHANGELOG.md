@@ -4,7 +4,7 @@
 
 #### Added
 
-- Added `options.carthageExecutablePath` option [244](https://github.com/yonaskolb/XcodeGen/pull/244) @akkyie
+- Added `carthageExecutablePath` option [244](https://github.com/yonaskolb/XcodeGen/pull/244) @akkyie
 - Added `parallelizeBuild` and `buildImplicitDependencies` to Schemes [241](https://github.com/yonaskolb/XcodeGen/pull/241) @rahul-malik
 
 #### Fixed
