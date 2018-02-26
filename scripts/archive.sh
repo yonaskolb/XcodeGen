@@ -4,6 +4,7 @@ BINDIR=$TMP/bin
 SHAREDIR=$TMP/share
 ZIPFILE=$TMP/${TOOL_NAME_LOWER:?}.zip
 INSTALLSH=scripts/install.sh
+LICENSE=LICENSE
 
 # copy
 
@@ -14,6 +15,8 @@ mkdir -p $SHAREDIR
 cp -R SettingPresets $SHAREDIR/SettingPresets
 
 cp $INSTALLSH $TMP
+
+cp $LICENSE $TMP
 
 # zip
 
