@@ -147,13 +147,20 @@ extension SettingsPresetFile {
         if let group = settingPresetSettings[path] {
             return group
         }
-        let relativePath = "SettingPresets/\(path).yml"
-        let possibleSettingsPaths: [Path] = [
-            Path(relativePath),
-            Path(Bundle.main.bundlePath) + relativePath,
-            Path(Bundle.main.bundlePath) + "../share/xcodegen/\(relativePath)",
+        let bundlePath = Path(Bundle.main.bundlePath)
+        let relativePath = Path("SettingPresets/\(path).yml")
+        var possibleSettingsPaths: [Path] = [
+            relativePath,
+            bundlePath + relativePath,
+            bundlePath + "../share/xcodegen/\(relativePath)",
             Path(#file).parent().parent().parent() + relativePath,
         ]
+
+        if let symlink = try? bundlePath.symlinkDestination() {
+            possibleSettingsPaths = [
+                symlink + relativePath
+                ] + possibleSettingsPaths
+        }
 
         guard let settingsPath = possibleSettingsPaths.first(where: { $0.exists }) else {
             switch self {
