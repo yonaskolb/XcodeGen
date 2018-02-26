@@ -238,6 +238,10 @@ A source can be provided via a string (the path) or an object of the form:
 	- `file`: a file reference with a parent group will be created (Default for files or directories with extensions)
 	- `group`: a group with all it's containing files. (Default for directories without extensions)
 	- `folder`: a folder reference.
+- [ ] **headerVisibility**: **String** The visibility of any headers. This defaults to `project`, but can be either:
+	- `public`
+	- `private`
+	- `project`
 
 ```yaml
 targets:
@@ -357,7 +361,7 @@ This is a convenience used to automatically generate schemes for a target based 
 - [ ] **testTargets**: **[String]** - a list of test targets that should be included in the scheme. These will be added to the build targets and the test entries
 - [ ] **gatherCoverageData**: **Bool** - a boolean that indicates if this scheme should gather coverage data. This defaults to false
 - [ ] **commandLineArguments**: **[String:Bool]** - a dictionary from the argument name (`String`) to if it is enabled (`Bool`). These arguments will be added to the Test, Profile and Run scheme actions
-- [ ] **environmentVariables**: **[[Environment Variable](#environment-variable)]** or **[String:String]** - environment variables for Run, Test and Profile scheme actions. When passing a dictionary, every key-value entry maps to a corresponding variable that is enabled. 
+- [ ] **environmentVariables**: **[[Environment Variable](#environment-variable)]** or **[String:String]** - environment variables for Run, Test and Profile scheme actions. When passing a dictionary, every key-value entry maps to a corresponding variable that is enabled.
 
 For example, the spec below would create 3 schemes called:
 

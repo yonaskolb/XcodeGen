@@ -62,7 +62,11 @@ class SourceGenerator {
         }
 
         if chosenBuildPhase == .headers {
-            settings = ["ATTRIBUTES": ["Public"]]
+            let headerVisibility = targetSource.headerVisibility ?? .project
+            if headerVisibility != .project {
+                // Xcode doesn't write the default of project
+                settings["ATTRIBUTES"] = [headerVisibility.settingName]
+            }
         }
         if targetSource.compilerFlags.count > 0 {
             settings["COMPILER_FLAGS"] = targetSource.compilerFlags.joined(separator: " ")
