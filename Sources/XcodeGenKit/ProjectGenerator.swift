@@ -94,13 +94,14 @@ public class ProjectGenerator {
         let launchVariables = scheme.run.flatMap { $0.environmentVariables.isEmpty ? nil : $0.environmentVariables }
         let profileVariables = scheme.profile.flatMap { $0.environmentVariables.isEmpty ? nil : $0.environmentVariables }
 
+
         let testAction = XCScheme.TestAction(
             buildConfiguration: scheme.test?.config ?? defaultDebugConfig.name,
             macroExpansion: buildableReference,
             testables: testables,
             preActions: scheme.test?.preActions.map(getExecutionAction) ?? [],
             postActions: scheme.test?.postActions.map(getExecutionAction) ?? [],
-            shouldUseLaunchSchemeArgsEnv: scheme.test?.commandLineArguments.isEmpty ?? true,
+            shouldUseLaunchSchemeArgsEnv: testCommandLineArgs == nil && testVariables == nil,
             codeCoverageEnabled: scheme.test?.gatherCoverageData ?? false,
             commandlineArguments: testCommandLineArgs,
             environmentVariables: testVariables,
@@ -121,7 +122,7 @@ public class ProjectGenerator {
             buildConfiguration: scheme.profile?.config ?? defaultReleaseConfig.name,
             preActions: scheme.profile?.preActions.map(getExecutionAction) ?? [],
             postActions: scheme.profile?.postActions.map(getExecutionAction) ?? [],
-            shouldUseLaunchSchemeArgsEnv: scheme.profile?.commandLineArguments.isEmpty ?? true,
+            shouldUseLaunchSchemeArgsEnv: profileCommandLineArgs == nil && profileVariables == nil,
             commandlineArguments: profileCommandLineArgs,
             environmentVariables: profileVariables
         )
