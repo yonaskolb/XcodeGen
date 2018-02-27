@@ -1,6 +1,6 @@
-export TOOL_NAME = XcodeGen
+TOOL_NAME = XcodeGen
 export TOOL_NAME_LOWER = xcodegen
-export VERSION = 1.6.0
+VERSION = 1.6.0
 
 PREFIX = /usr/local
 INSTALL_PATH = $(PREFIX)/bin/$(TOOL_NAME_LOWER)

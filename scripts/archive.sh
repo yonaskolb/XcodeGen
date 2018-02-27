@@ -1,5 +1,5 @@
 #!/bin/bash
-PACKAGE_NAME=${TOOL_NAME:?}-${VERSION:?}
+PACKAGE_NAME=${TOOL_NAME_LOWER:?}
 TMP=$(mktemp -d)/$PACKAGE_NAME
 BINDIR=$TMP/bin
 SHAREDIR=$TMP/share
