@@ -100,7 +100,7 @@ public class ProjectGenerator {
             testables: testables,
             preActions: scheme.test?.preActions.map(getExecutionAction) ?? [],
             postActions: scheme.test?.postActions.map(getExecutionAction) ?? [],
-            shouldUseLaunchSchemeArgsEnv: scheme.test?.commandLineArguments.isEmpty ?? true,
+            shouldUseLaunchSchemeArgsEnv: scheme.test?.shouldUseLaunchSchemeArgsEnv ?? true,
             codeCoverageEnabled: scheme.test?.gatherCoverageData ?? false,
             commandlineArguments: testCommandLineArgs,
             environmentVariables: testVariables,
@@ -121,7 +121,7 @@ public class ProjectGenerator {
             buildConfiguration: scheme.profile?.config ?? defaultReleaseConfig.name,
             preActions: scheme.profile?.preActions.map(getExecutionAction) ?? [],
             postActions: scheme.profile?.postActions.map(getExecutionAction) ?? [],
-            shouldUseLaunchSchemeArgsEnv: scheme.profile?.commandLineArguments.isEmpty ?? true,
+            shouldUseLaunchSchemeArgsEnv: scheme.profile?.shouldUseLaunchSchemeArgsEnv ?? true,
             commandlineArguments: profileCommandLineArgs,
             environmentVariables: profileVariables
         )
