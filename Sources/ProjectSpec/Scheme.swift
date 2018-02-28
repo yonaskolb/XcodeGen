@@ -140,6 +140,10 @@ public struct Scheme: Equatable {
                 lhs.postActions == rhs.postActions &&
                 lhs.environmentVariables == rhs.environmentVariables
         }
+
+        public var shouldUseLaunchSchemeArgsEnv: Bool {
+            return commandLineArguments.isEmpty && environmentVariables.isEmpty
+        }
     }
 
     public struct Analyze: BuildAction {
@@ -179,6 +183,10 @@ public struct Scheme: Equatable {
                 lhs.preActions == rhs.postActions &&
                 lhs.postActions == rhs.postActions &&
                 lhs.environmentVariables == rhs.environmentVariables
+        }
+
+        public var shouldUseLaunchSchemeArgsEnv: Bool {
+            return commandLineArguments.isEmpty && environmentVariables.isEmpty
         }
     }
 
