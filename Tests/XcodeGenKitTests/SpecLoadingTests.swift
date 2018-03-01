@@ -3,6 +3,7 @@ import ProjectSpec
 import Spectre
 import XcodeGenKit
 import xcproj
+import Foundation
 
 func specLoadingTests() {
 
@@ -45,6 +46,34 @@ func specLoadingTests() {
                 Target(name: "IncludedTargetNew", type: .application, platform: .tvOS, sources: ["NewSource"]),
                 Target(name: "NewTarget", type: .application, platform: .iOS),
             ]
+        }
+
+        $0.it("parses yaml types") {
+            let path = fixturePath + "yaml.yml"
+            let dictionary = try loadYamlDictionary(path: path)
+            let expectedDictionary: [String: Any] = [
+                "true": true,
+                "false": false,
+                "yes": true,
+                "no": false,
+                "yesQuote": true,
+                "noQuote": false,
+                "int": 1,
+                "intQuote": 1,
+                "float": 3.2,
+                "string": "hello",
+                "stringQuote": "hello",
+                "space": " ",
+                "empty": "",
+                "emptyQuote": "",
+                "emptyDictionary": [String: Any](),
+                "arrayLiteral": [1,2],
+                "arrayList": [1,2],
+            ]
+
+            if !(dictionary as NSDictionary).isEqual(expectedDictionary) {
+                throw failure("parsed yaml types don't match")
+            }
         }
     }
 
