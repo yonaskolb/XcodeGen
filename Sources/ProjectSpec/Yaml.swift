@@ -7,26 +7,17 @@ public func loadYamlDictionary(path: Path) throws -> [String: Any] {
     if string == "" {
         return [:]
     }
-    guard let yaml = try Yams.load(yaml: string) else {
+
+    // just treat true and false as Bools
+    let boolRule = try! Resolver.Rule(.bool, "^(?:true|false)$")
+
+    let resolver = Resolver.default
+        .removing(.null) // remove rule so that empty quotes are treated as empty strings
+        .removing(.bool) // remove rule so that strings like YES aren't parsed as bools
+        .appending(boolRule)
+
+    guard let yaml = try Yams.load(yaml: string, resolver) else {
         return [:]
     }
-    return filterNull(yaml) as? [String: Any] ?? [:]
-}
-
-fileprivate func filterNull(_ object: Any) -> Any {
-    var returnedValue: Any = object
-    if let dict = object as? [String: Any] {
-        var mutabledic: [String: Any] = [:]
-        for (key, value) in dict {
-            mutabledic[key] = filterNull(value)
-        }
-        returnedValue = mutabledic
-    } else if let array = object as? [Any] {
-        var mutableArray: [Any] = array
-        for (index, value) in array.enumerated() {
-            mutableArray[index] = filterNull(value)
-        }
-        returnedValue = mutableArray
-    }
-    return (object is NSNull) ? "" : returnedValue
+    return yaml as? [String: Any] ?? [:]
 }

@@ -1,0 +1,19 @@
+true: true
+false: false
+yes: YES
+no: NO
+yesQuote: "YES"
+noQuote: "NO"
+int: 1
+intQuote: "1"
+float: 3.2
+string: hello
+stringQuote: "hello"
+space: " "
+empty:
+emptyQuote: ""
+emptyDictionary: {}
+arrayLiteral: [1,2]
+arrayList:
+  - 1
+  - 2
