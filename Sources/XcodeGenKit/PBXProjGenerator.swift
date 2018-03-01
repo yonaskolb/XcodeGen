@@ -364,7 +364,7 @@ public class PBXProjGenerator {
 
         for dependency in target.dependencies {
 
-            let embed = dependency.embed ?? (target.type.isApp ? true : false)
+            let embed = dependency.embed ?? target.shouldEmbedDependencies
             switch dependency.type {
             case .target:
                 let dependencyTargetName = dependency.reference
@@ -400,7 +400,7 @@ public class PBXProjGenerator {
                     targetFrameworkBuildFiles.append(buildFile.reference)
                 }
 
-                if embed && !dependencyTarget.type.isLibrary {
+                if (dependency.embed ?? target.type.isApp) && !dependencyTarget.type.isLibrary {
 
                     let embedFile = createObject(
                         id: dependencyFileReference + target.name,
@@ -592,32 +592,30 @@ public class PBXProjGenerator {
 
         let carthageFrameworksToEmbed = Array(Set(
             carthageDependencies
-                .filter { $0.embed ?? true }
+                .filter { $0.embed ?? target.shouldEmbedDependencies }
                 .map { $0.reference }
         ))
             .sorted()
 
-        if !carthageFrameworksToEmbed.isEmpty {
+        if !carthageFrameworksToEmbed.isEmpty && target.platform != .macOS {
 
-            if target.type.isApp && target.platform != .macOS {
-                let inputPaths = carthageFrameworksToEmbed
-                    .map { "$(SRCROOT)/\(carthageBuildPath)/\(target.platform)/\($0)\($0.contains(".") ? "" : ".framework")" }
-                let outputPaths = carthageFrameworksToEmbed
-                    .map { "$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/\($0)\($0.contains(".") ? "" : ".framework")" }
-                let carthageExecutable = spec.options.carthageExecutablePath ?? "carthage"
-                let carthageScript = createObject(
-                    id: "Carthage" + target.name,
-                    PBXShellScriptBuildPhase(
-                        files: [],
-                        name: "Carthage",
-                        inputPaths: inputPaths,
-                        outputPaths: outputPaths,
-                        shellPath: "/bin/sh",
-                        shellScript: "\(carthageExecutable) copy-frameworks\n"
-                    )
+            let inputPaths = carthageFrameworksToEmbed
+                .map { "$(SRCROOT)/\(carthageBuildPath)/\(target.platform)/\($0)\($0.contains(".") ? "" : ".framework")" }
+            let outputPaths = carthageFrameworksToEmbed
+                .map { "$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/\($0)\($0.contains(".") ? "" : ".framework")" }
+            let carthageExecutable = spec.options.carthageExecutablePath ?? "carthage"
+            let carthageScript = createObject(
+                id: "Carthage" + target.name,
+                PBXShellScriptBuildPhase(
+                    files: [],
+                    name: "Carthage",
+                    inputPaths: inputPaths,
+                    outputPaths: outputPaths,
+                    shellPath: "/bin/sh",
+                    shellScript: "\(carthageExecutable) copy-frameworks\n"
                 )
-                buildPhases.append(carthageScript.reference)
-            }
+            )
+            buildPhases.append(carthageScript.reference)
         }
 
         try target.postbuildScripts.forEach(generateBuildScript)
@@ -680,5 +678,12 @@ public class PBXProjGenerator {
             }
         }
         return frameworks
+    }
+}
+
+extension Target {
+
+    var shouldEmbedDependencies: Bool {
+        return type.isApp || type.isTest
     }
 }
