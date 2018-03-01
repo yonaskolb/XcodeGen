@@ -470,7 +470,7 @@ public class PBXProjGenerator {
                 carthageFrameworksByPlatform[target.platform.carthageDirectoryName, default: []].insert(fileReference)
 
                 targetFrameworkBuildFiles.append(buildFile.reference)
-                if target.platform == .macOS && target.type.isApp {
+                if target.platform == .macOS && embed {
                     let embedFile = createObject(
                         id: fileReference + target.name,
                         PBXBuildFile(fileRef: fileReference, settings: dependency.buildSettings)
