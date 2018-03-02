@@ -12,6 +12,21 @@ public struct TargetSource {
     public var type: SourceType?
     public var optional: Bool
     public var buildPhase: BuildPhase?
+    public var headerVisibility: HeaderVisibility?
+
+    public enum HeaderVisibility: String {
+        case `public`
+        case `private`
+        case project
+
+        public var settingName: String {
+            switch self {
+            case .public: return "Public"
+            case .`private`: return "Private"
+            case .project: return "Project"
+            }
+        }
+    }
 
     public enum BuildPhase: String {
         case sources
@@ -42,7 +57,8 @@ public struct TargetSource {
         excludes: [String] = [],
         type: SourceType? = nil,
         optional: Bool = false,
-        buildPhase: BuildPhase? = nil
+        buildPhase: BuildPhase? = nil,
+        headerVisibility: HeaderVisibility? = nil
     ) {
         self.path = path
         self.name = name
@@ -80,6 +96,7 @@ extension TargetSource: JSONObjectConvertible {
         compilerFlags = maybeCompilerFlagsArray ??
             maybeCompilerFlagsString.map { $0.split(separator: " ").map { String($0) } } ?? []
 
+        headerVisibility = jsonDictionary.json(atKeyPath: "headerVisibility")
         excludes = jsonDictionary.json(atKeyPath: "excludes") ?? []
         type = jsonDictionary.json(atKeyPath: "type")
         optional = jsonDictionary.json(atKeyPath: "optional") ?? false

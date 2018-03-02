@@ -85,6 +85,7 @@ targets:
       - path: Headers
         buildPhase: headers
         type: folder
+        headerVisibility: public
     postbuildScripts:
       - name: MyScript
         path: scripts/script.sh
