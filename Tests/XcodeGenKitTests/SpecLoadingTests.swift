@@ -246,13 +246,17 @@ func specLoadingTests() {
                 ],
                 "run": [
                     "environmentVariables": [
+                        ["variable": "BOOL_TRUE", "value": true],
+                        ["variable": "BOOL_YES", "value": "YES"],
                         ["variable": "ENVIRONMENT", "value": "VARIABLE"],
                         ["variable": "OTHER_ENV_VAR", "value": "VAL", "isEnabled": false],
                     ],
                 ],
                 "test": [
                     "environmentVariables": [
-                        "TEST": "VARIABLE"
+                        "BOOL_TRUE": true,
+                        "BOOL_YES": "YES",
+                        "TEST": "VARIABLE",
                     ]
                 ],
                 "profile": [
@@ -263,11 +267,17 @@ func specLoadingTests() {
             let scheme = try Scheme(name: "Scheme", jsonDictionary: schemeDictionary)
 
             let expectedRunVariables = [
+                XCScheme.EnvironmentVariable(variable: "BOOL_TRUE", value: "YES", enabled: true),
+                XCScheme.EnvironmentVariable(variable: "BOOL_YES", value: "YES", enabled: true),
                 XCScheme.EnvironmentVariable(variable: "ENVIRONMENT", value: "VARIABLE", enabled: true),
                 XCScheme.EnvironmentVariable(variable: "OTHER_ENV_VAR", value: "VAL", enabled: false)
             ]
 
-            let expectedTestVariables = [XCScheme.EnvironmentVariable(variable: "TEST", value: "VARIABLE", enabled: true)]
+            let expectedTestVariables = [
+                XCScheme.EnvironmentVariable(variable: "BOOL_TRUE", value: "YES", enabled: true),
+                XCScheme.EnvironmentVariable(variable: "BOOL_YES", value: "YES", enabled: true),
+                XCScheme.EnvironmentVariable(variable: "TEST", value: "VARIABLE", enabled: true),
+            ]
 
             try expect(scheme.run?.environmentVariables) == expectedRunVariables
             try expect(scheme.test?.environmentVariables) == expectedTestVariables

@@ -366,15 +366,31 @@ extension BuildType: JSONPrimitiveConvertible {
 
 extension XCScheme.EnvironmentVariable: JSONObjectConvertible, Equatable {
 
+    static private func parseValue(_ value: Any ) -> String {
+        if let bool = value as? Bool {
+            return bool ? "YES" : "NO"
+        } else {
+            return String(describing: value)
+        }
+    }
+
     public init(jsonDictionary: JSONDictionary) throws {
+
+        if let value = jsonDictionary["value"] {
+            self.value = XCScheme.EnvironmentVariable.parseValue(value)
+        } else {
+            // will throw error
+            value = try jsonDictionary.json(atKeyPath: "value")
+        }
         variable = try jsonDictionary.json(atKeyPath: "variable")
-        value = try jsonDictionary.json(atKeyPath: "value")
         enabled = (try? jsonDictionary.json(atKeyPath: "isEnabled")) ?? true
     }
 
     static func parseAll(jsonDictionary: JSONDictionary) throws -> [XCScheme.EnvironmentVariable] {
-        if let variablesDictionary: [String: String] = jsonDictionary.json(atKeyPath: "environmentVariables") {
-            return variablesDictionary.map { XCScheme.EnvironmentVariable(variable: $0.key, value: $0.value, enabled: true) }
+        if let variablesDictionary: [String: Any] = jsonDictionary.json(atKeyPath: "environmentVariables") {
+            return variablesDictionary.mapValues(parseValue)
+                .map { XCScheme.EnvironmentVariable(variable: $0.key, value: $0.value, enabled: true) }
+                .sorted { $0.variable < $1.variable }
         } else if let variablesArray: [JSONDictionary] = jsonDictionary.json(atKeyPath: "environmentVariables") {
             return try variablesArray.map(XCScheme.EnvironmentVariable.init)
         } else {
