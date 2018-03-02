@@ -19,6 +19,10 @@ class SourceGenerator {
 
     private let spec: ProjectSpec
     var addObjectClosure: (String, PBXObject) -> String
+    var targetSourceExcludePaths: Set<Path> = []
+    var defaultExcludedFiles = [
+        ".DS_Store"
+    ]
 
     var targetName: String = ""
 
@@ -220,10 +224,12 @@ class SourceGenerator {
         return variantGroup
     }
 
-    private func getSourceExcludes(targetSource: TargetSource) -> [Path] {
+    /// collects all the excluded paths with the targetSource
+    private func getSourceExcludes(targetSource: TargetSource) -> Set<Path> {
         let rootSourcePath = spec.basePath + targetSource.path
 
-        return targetSource.excludes.map {
+        return Set(
+            targetSource.excludes.map {
             Path.glob("\(rootSourcePath)/\($0)")
                 .map {
                     guard $0.isDirectory else {
@@ -235,34 +241,22 @@ class SourceGenerator {
                 .reduce([], +)
         }
         .reduce([], +)
+        )
+    }
+
+    func isIncludedPath(_ path: Path) -> Bool {
+        return !defaultExcludedFiles.contains(where: { path.lastComponent.contains($0)})
+            && !targetSourceExcludePaths.contains(path)
     }
 
     private func getSourceChildren(targetSource: TargetSource, dirPath: Path) throws -> [Path] {
-
-        /*
-         Exclude following if mentioned in TargetSource.excludes.
-         Any path related to source dirPath
-         + Pre-defined Excluded files
-         */
-
-        let sourceExcludeFilePaths: Set<Path> = Set(
-            getSourceExcludes(targetSource: targetSource)
-        )
-
-        func isNotExcludeFilePath(_ path: Path) -> Bool {
-            return !path.lastComponent.contains(".DS_Store")
-                && !sourceExcludeFilePaths.contains(path)
-        }
-
         return try dirPath.children()
             .filter {
                 if $0.isDirectory {
-                    let pathChildren = try $0.children()
-                        .filter(isNotExcludeFilePath(_:))
-
-                    return !pathChildren.isEmpty
+                    let children = try $0.children().filter(isIncludedPath)
+                    return !children.isEmpty
                 } else if $0.isFile {
-                    return isNotExcludeFilePath($0)
+                    return isIncludedPath($0)
                 } else {
                     return false
                 }
@@ -323,18 +317,9 @@ class SourceGenerator {
         // create variant groups of the base localisation first
         var baseLocalisationVariantGroups: [PBXVariantGroup] = []
 
-        let sourceExcludeFilePaths: Set<Path> = Set(
-            getSourceExcludes(targetSource: targetSource)
-        )
-
-        func isNotExcludeFilePath(_ path: Path) -> Bool {
-            return !path.lastComponent.contains(".DS_Store")
-                && !sourceExcludeFilePaths.contains(path)
-        }
-
         if let baseLocalisedDirectory = baseLocalisedDirectory {
             for filePath in try baseLocalisedDirectory.children()
-                .filter(isNotExcludeFilePath(_:))
+                .filter(isIncludedPath)
                 .sorted() {
                 let variantGroup = getVariantGroup(path: filePath, inPath: path)
                 groupChildren.append(variantGroup.reference)
@@ -354,7 +339,7 @@ class SourceGenerator {
         for localisedDirectory in localisedDirectories {
             let localisationName = localisedDirectory.lastComponentWithoutExtension
             for filePath in try localisedDirectory.children()
-                .filter(isNotExcludeFilePath(_:))
+                .filter(isIncludedPath)
                 .sorted { $0.lastComponent < $1.lastComponent } {
                 // find base localisation variant group
                 // ex: Foo.strings will be added to Foo.strings or Foo.storyboard variant group
@@ -405,6 +390,9 @@ class SourceGenerator {
     }
 
     private func getSourceFiles(targetSource: TargetSource, path: Path) throws -> [SourceFile] {
+
+        // generate excluded paths
+        targetSourceExcludePaths = getSourceExcludes(targetSource: targetSource)
 
         let type = targetSource.type ?? (path.isFile || path.extension != nil ? .file : .group)
         let createIntermediateGroups = spec.options.createIntermediateGroups
