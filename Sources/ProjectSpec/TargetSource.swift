@@ -22,7 +22,7 @@ public struct TargetSource {
         public var settingName: String {
             switch self {
             case .public: return "Public"
-            case .`private`: return "Private"
+            case .private: return "Private"
             case .project: return "Project"
             }
         }

@@ -1,9 +1,9 @@
+import Foundation
 import PathKit
 import ProjectSpec
 import Spectre
 import XcodeGenKit
 import xcproj
-import Foundation
 
 func specLoadingTests() {
 
@@ -67,8 +67,8 @@ func specLoadingTests() {
                 "empty": "",
                 "emptyQuote": "",
                 "emptyDictionary": [String: Any](),
-                "arrayLiteral": [1,2],
-                "arrayList": [1,2],
+                "arrayLiteral": [1, 2],
+                "arrayList": [1, 2],
             ]
 
             if !(dictionary as NSDictionary).isEqual(expectedDictionary) {
@@ -187,8 +187,8 @@ func specLoadingTests() {
             var targetDictionary = validTarget
             targetDictionary["scheme"] = [
                 "environmentVariables": [
-                    "TEST_VAR": "TEST_VAL"
-                ]
+                    "TEST_VAR": "TEST_VAL",
+                ],
             ]
 
             let target = try Target(name: "test", jsonDictionary: targetDictionary)
@@ -257,11 +257,11 @@ func specLoadingTests() {
                         "BOOL_TRUE": true,
                         "BOOL_YES": "YES",
                         "TEST": "VARIABLE",
-                    ]
+                    ],
                 ],
                 "profile": [
-                    "config": "Release"
-                ]
+                    "config": "Release",
+                ],
             ]
 
             let scheme = try Scheme(name: "Scheme", jsonDictionary: schemeDictionary)
@@ -270,7 +270,7 @@ func specLoadingTests() {
                 XCScheme.EnvironmentVariable(variable: "BOOL_TRUE", value: "YES", enabled: true),
                 XCScheme.EnvironmentVariable(variable: "BOOL_YES", value: "YES", enabled: true),
                 XCScheme.EnvironmentVariable(variable: "ENVIRONMENT", value: "VARIABLE", enabled: true),
-                XCScheme.EnvironmentVariable(variable: "OTHER_ENV_VAR", value: "VAL", enabled: false)
+                XCScheme.EnvironmentVariable(variable: "OTHER_ENV_VAR", value: "VAL", enabled: false),
             ]
 
             let expectedTestVariables = [

@@ -366,7 +366,7 @@ extension BuildType: JSONPrimitiveConvertible {
 
 extension XCScheme.EnvironmentVariable: JSONObjectConvertible, Equatable {
 
-    static private func parseValue(_ value: Any ) -> String {
+    private static func parseValue(_ value: Any) -> String {
         if let bool = value as? Bool {
             return bool ? "YES" : "NO"
         } else {
@@ -403,5 +403,4 @@ extension XCScheme.EnvironmentVariable: JSONObjectConvertible, Equatable {
             lhs.value == rhs.value &&
             lhs.enabled == rhs.enabled
     }
-
 }

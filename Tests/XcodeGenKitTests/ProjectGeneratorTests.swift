@@ -355,7 +355,7 @@ func projectGeneratorTests() {
             $0.it("sets environment variables for a scheme") {
                 let runVariables: [XCScheme.EnvironmentVariable] = [
                     XCScheme.EnvironmentVariable(variable: "RUN_ENV", value: "ENABLED", enabled: true),
-                    XCScheme.EnvironmentVariable(variable: "OTHER_RUN_ENV", value: "DISABLED", enabled: false)
+                    XCScheme.EnvironmentVariable(variable: "OTHER_RUN_ENV", value: "DISABLED", enabled: false),
                 ]
 
                 let scheme = Scheme(
@@ -375,7 +375,7 @@ func projectGeneratorTests() {
 
                 guard let target = project.pbxproj.objects.nativeTargets.objectReferences
                     .first(where: { $0.object.name == application.name }) else {
-                        throw failure("Target not found")
+                    throw failure("Target not found")
                 }
 
                 guard let xcscheme = project.sharedData?.schemes.first else {

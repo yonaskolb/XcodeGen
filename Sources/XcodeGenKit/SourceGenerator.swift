@@ -125,7 +125,7 @@ class SourceGenerator {
                                 path: path.lastComponent
                             )
                         )
-                }
+                    }
                 let versionGroup = addObject(id: fileReferencePath.string, XCVersionGroup(
                     currentVersion: modelFileReference.first?.reference,
                     path: fileReferencePath.string,
@@ -233,8 +233,8 @@ class SourceGenerator {
                     return (try? $0.recursiveChildren().filter { $0.isFile }) ?? []
                 }
                 .reduce([], +)
-            }
-            .reduce([], +)
+        }
+        .reduce([], +)
     }
 
     private func getSourceChildren(targetSource: TargetSource, dirPath: Path) throws -> [Path] {
@@ -270,8 +270,7 @@ class SourceGenerator {
     }
 
     private func getGroupSources(targetSource: TargetSource, path: Path, isBaseGroup: Bool)
-        throws -> (sourceFiles: [SourceFile], groups: [ObjectReference<PBXGroup>])
-    {
+        throws -> (sourceFiles: [SourceFile], groups: [ObjectReference<PBXGroup>]) {
 
         let children = try getSourceChildren(targetSource: targetSource, dirPath: path)
 

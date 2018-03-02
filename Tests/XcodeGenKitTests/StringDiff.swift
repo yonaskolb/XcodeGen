@@ -1,6 +1,6 @@
-//https://gist.github.com/kristopherjohnson/543687c763cd6e524c91
-
 import Foundation
+
+// https://gist.github.com/kristopherjohnson/543687c763cd6e524c91
 
 /// Find first differing character between two strings
 ///
@@ -14,7 +14,7 @@ public func firstDifferenceBetweenStrings(_ s1: String, _ s2: String) -> FirstDi
 
     let lenMin = min(len1, len2)
 
-    for i in 0..<lenMin {
+    for i in 0 ..< lenMin {
         if (s1 as NSString).character(at: i) != (s2 as NSString).character(at: i) {
             return .DifferenceAtIndex(i)
         }
@@ -31,19 +31,18 @@ public func firstDifferenceBetweenStrings(_ s1: String, _ s2: String) -> FirstDi
     return .NoDifference
 }
 
-
 /// Create a formatted String representation of difference between strings
 ///
 /// :param: s1 First string
 /// :param: s2 Second string
 ///
 /// :returns: a string, possibly containing significant whitespace and newlines
-public func prettyFirstDifferenceBetweenStrings(_ s1: String, _ s2: String, previewPrefixLength: Int = 25, previewSuffixLength:Int = 25) -> String {
+public func prettyFirstDifferenceBetweenStrings(_ s1: String, _ s2: String, previewPrefixLength: Int = 25, previewSuffixLength: Int = 25) -> String {
     let firstDifferenceResult = firstDifferenceBetweenStrings(s1, s2)
 
     func diffString(at index: Int, _ s1: String, _ s2: String) -> String {
-        let markerArrow = "\u{2b06}"  // "⬆"
-        let ellipsis    = "\u{2026}"  // "…"
+        let markerArrow = "\u{2b06}" // "⬆"
+        let ellipsis = "\u{2026}" // "…"
 
         /// Given a string and a range, return a string representing that substring.
         ///
@@ -80,11 +79,10 @@ public func prettyFirstDifferenceBetweenStrings(_ s1: String, _ s2: String, prev
     }
 
     switch firstDifferenceResult {
-    case .NoDifference:                 return "No difference"
-    case .DifferenceAtIndex(let index): return diffString(at: index, s1, s2)
+    case .NoDifference: return "No difference"
+    case let .DifferenceAtIndex(index): return diffString(at: index, s1, s2)
     }
 }
-
 
 /// Result type for firstDifferenceBetweenStrings()
 public enum FirstDifferenceResult {
