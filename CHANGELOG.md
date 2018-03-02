@@ -14,6 +14,7 @@
 - Projects are now generated atomically by writing to a temporary directory first [250](https://github.com/yonaskolb/XcodeGen/pull/250) @yonaskolb
 - Added script for adding precompiled binary to releases [246](https://github.com/yonaskolb/XcodeGen/pull/246) @toshi0383
 - Added optional `headerVisibilty` to target source. This still defaults to public [252](https://github.com/yonaskolb/XcodeGen/pull/252) @yonaskolb
+- Releases now include a pre-compiled binary and setting presets, including an install script
 
 #### Fixed
 - Fixed Mint installation from reading setting presets [248](https://github.com/yonaskolb/XcodeGen/pull/248) @yonaskolb
