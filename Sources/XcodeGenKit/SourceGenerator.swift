@@ -62,7 +62,7 @@ class SourceGenerator {
         }
 
         if chosenBuildPhase == .headers {
-            let headerVisibility = targetSource.headerVisibility ?? .project
+            let headerVisibility = targetSource.headerVisibility ?? .public
             if headerVisibility != .project {
                 // Xcode doesn't write the default of project
                 settings["ATTRIBUTES"] = [headerVisibility.settingName]
