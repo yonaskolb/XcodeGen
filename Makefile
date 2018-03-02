@@ -1,12 +1,12 @@
 TOOL_NAME = XcodeGen
-export TOOL_NAME_LOWER = xcodegen
+export EXECUTABLE_NAME = xcodegen
 VERSION = 1.6.0
 
 PREFIX = /usr/local
-INSTALL_PATH = $(PREFIX)/bin/$(TOOL_NAME_LOWER)
-SHARE_PATH = $(PREFIX)/share/$(TOOL_NAME_LOWER)
+INSTALL_PATH = $(PREFIX)/bin/$(EXECUTABLE_NAME)
+SHARE_PATH = $(PREFIX)/share/$(EXECUTABLE_NAME)
 CURRENT_PATH = $(PWD)
-REPO = https://github.com/yonaskolb/$(TOOL_NAME_LOWER)
+REPO = https://github.com/yonaskolb/$(EXECUTABLE_NAME)
 RELEASE_TAR = $(REPO)/archive/$(VERSION).tar.gz
 SHA = $(shell curl -L -s $(RELEASE_TAR) | shasum -a 256 | sed 's/ .*//')
 
@@ -14,7 +14,7 @@ SHA = $(shell curl -L -s $(RELEASE_TAR) | shasum -a 256 | sed 's/ .*//')
 
 install: build
 	mkdir -p $(PREFIX)/bin
-	cp -f .build/release/$(TOOL_NAME_LOWER) $(INSTALL_PATH)
+	cp -f .build/release/$(EXECUTABLE_NAME) $(INSTALL_PATH)
 	mkdir -p $(SHARE_PATH)
 	cp -R $(CURRENT_PATH)/SettingPresets $(SHARE_PATH)/SettingPresets
 
