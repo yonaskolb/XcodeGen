@@ -155,6 +155,7 @@ class SourceGenerator {
         }
     }
 
+    /// returns a default build phase for a given path. This is based off the filename
     private func getDefaultBuildPhase(for path: Path) -> BuildPhase? {
         if path.lastComponent == "Info.plist" {
             return nil
@@ -170,6 +171,8 @@ class SourceGenerator {
         return nil
     }
 
+    /// Create a group or return an existing one at the path.
+    /// Any merged children are added to a new group or merged into an existing one.
     private func getGroup(path: Path, name: String? = nil, mergingChildren children: [String], createIntermediateGroups: Bool, isBaseGroup: Bool) -> ObjectReference<PBXGroup> {
         let groupReference: ObjectReference<PBXGroup>
 
@@ -208,6 +211,7 @@ class SourceGenerator {
         return groupReference
     }
 
+    /// Creates a variant group or returns an existing one at the path
     private func getVariantGroup(path: Path, inPath: Path) -> ObjectReference<PBXVariantGroup> {
         let variantGroup: ObjectReference<PBXVariantGroup>
         if let cachedGroup = variantGroupsByPath[path] {
@@ -224,7 +228,7 @@ class SourceGenerator {
         return variantGroup
     }
 
-    /// collects all the excluded paths with the targetSource
+    /// Collects all the excluded paths within the targetSource
     private func getSourceExcludes(targetSource: TargetSource) -> Set<Path> {
         let rootSourcePath = spec.basePath + targetSource.path
 
@@ -244,11 +248,13 @@ class SourceGenerator {
         )
     }
 
+    /// Checks whether the path is not in any default or TargetSource excludes
     func isIncludedPath(_ path: Path) -> Bool {
         return !defaultExcludedFiles.contains(where: { path.lastComponent.contains($0)})
             && !targetSourceExcludePaths.contains(path)
     }
 
+    /// Gets all the children paths that aren't excluded
     private func getSourceChildren(targetSource: TargetSource, dirPath: Path) throws -> [Path] {
         return try dirPath.children()
             .filter {
@@ -263,6 +269,7 @@ class SourceGenerator {
             }
     }
 
+    /// creates all the source files and groups they belong to for a given targetSource
     private func getGroupSources(targetSource: TargetSource, path: Path, isBaseGroup: Bool)
         throws -> (sourceFiles: [SourceFile], groups: [ObjectReference<PBXGroup>]) {
 
@@ -389,9 +396,10 @@ class SourceGenerator {
         return (allSourceFiles, groups)
     }
 
+    /// creates source files
     private func getSourceFiles(targetSource: TargetSource, path: Path) throws -> [SourceFile] {
 
-        // generate excluded paths
+        //generate excluded paths
         targetSourceExcludePaths = getSourceExcludes(targetSource: targetSource)
 
         let type = targetSource.type ?? (path.isFile || path.extension != nil ? .file : .group)
