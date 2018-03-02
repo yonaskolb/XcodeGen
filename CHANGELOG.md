@@ -2,17 +2,28 @@
 
 ## Master
 
+## 1.7.0
+
 #### Added
 
+- Added support for scheme environment variables [239](https://github.com/yonaskolb/XcodeGen/pull/239) [254](https://github.com/yonaskolb/XcodeGen/pull/254) [259](https://github.com/yonaskolb/XcodeGen/pull/259) @turekj @toshi0383
 - Added `carthageExecutablePath` option [244](https://github.com/yonaskolb/XcodeGen/pull/244) @akkyie
 - Added `parallelizeBuild` and `buildImplicitDependencies` to Schemes [241](https://github.com/yonaskolb/XcodeGen/pull/241) @rahul-malik
-- Added support for scheme environment variables [239](https://github.com/yonaskolb/XcodeGen/pull/239) @turekj
+ @yonaskolb
 - Added support for Core Data `xcdatamodeld` files [249](https://github.com/yonaskolb/XcodeGen/pull/249) @yonaskolb
 - Projects are now generated atomically by writing to a temporary directory first [250](https://github.com/yonaskolb/XcodeGen/pull/250) @yonaskolb
+- Added script for adding precompiled binary to releases [246](https://github.com/yonaskolb/XcodeGen/pull/246) @toshi0383
+- Added optional `headerVisibilty` to target source. This still defaults to public [252](https://github.com/yonaskolb/XcodeGen/pull/252) @yonaskolb
 
 #### Fixed
 - Fixed Mint installation from reading setting presets [248](https://github.com/yonaskolb/XcodeGen/pull/248) @yonaskolb
-- Fixed setting `buildPhase` on a `folder` source. This allows for a folder of header files [254](https://github.com/yonaskolb/XcodeGen/pull/254) @yonaskolb
+- Fixed setting `buildPhase` on a `folder` source. This allows for a folder of header files [254](https://github.com/yonaskolb/XcodeGen/pull/254) @toshi0383
+- Carthage dependencies are not automatically embedded into test targets [256](https://github.com/yonaskolb/XcodeGen/pull/256) @yonaskolb
+- Carthage dependencies now respect the `embed` property [256](https://github.com/yonaskolb/XcodeGen/pull/256) @yonaskolb
+- iMessage extensions now have proper setting presets in regards to app icon and runtime search paths [255](https://github.com/yonaskolb/XcodeGen/pull/255) @yonaskolb
+- Excluded files are not added within .lproj directories [238](https://github.com/yonaskolb/XcodeGen/pull/238) @toshi0383
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/1.6.0...1.7.0)
 
 ## 1.6.0
 

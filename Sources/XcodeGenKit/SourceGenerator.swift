@@ -21,7 +21,7 @@ class SourceGenerator {
     var addObjectClosure: (String, PBXObject) -> String
     var targetSourceExcludePaths: Set<Path> = []
     var defaultExcludedFiles = [
-        ".DS_Store"
+        ".DS_Store",
     ]
 
     var targetName: String = ""
@@ -234,23 +234,23 @@ class SourceGenerator {
 
         return Set(
             targetSource.excludes.map {
-            Path.glob("\(rootSourcePath)/\($0)")
-                .map {
-                    guard $0.isDirectory else {
-                        return [$0]
-                    }
+                Path.glob("\(rootSourcePath)/\($0)")
+                    .map {
+                        guard $0.isDirectory else {
+                            return [$0]
+                        }
 
-                    return (try? $0.recursiveChildren().filter { $0.isFile }) ?? []
-                }
-                .reduce([], +)
-        }
-        .reduce([], +)
+                        return (try? $0.recursiveChildren().filter { $0.isFile }) ?? []
+                    }
+                    .reduce([], +)
+            }
+            .reduce([], +)
         )
     }
 
     /// Checks whether the path is not in any default or TargetSource excludes
     func isIncludedPath(_ path: Path) -> Bool {
-        return !defaultExcludedFiles.contains(where: { path.lastComponent.contains($0)})
+        return !defaultExcludedFiles.contains(where: { path.lastComponent.contains($0) })
             && !targetSourceExcludePaths.contains(path)
     }
 
@@ -399,7 +399,7 @@ class SourceGenerator {
     /// creates source files
     private func getSourceFiles(targetSource: TargetSource, path: Path) throws -> [SourceFile] {
 
-        //generate excluded paths
+        // generate excluded paths
         targetSourceExcludePaths = getSourceExcludes(targetSource: targetSource)
 
         let type = targetSource.type ?? (path.isFile || path.extension != nil ? .file : .group)
