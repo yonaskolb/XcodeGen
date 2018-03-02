@@ -220,26 +220,24 @@ class SourceGenerator {
         return variantGroup
     }
 
-    private func getSourceChildren(targetSource: TargetSource, dirPath: Path) throws -> [Path] {
+    private func getSourceExcludes(targetSource: TargetSource) -> [Path] {
+        let rootSourcePath = spec.basePath + targetSource.path
 
-        func getSourceExcludes(dirPath: Path) -> [Path] {
-            return targetSource.excludes.map {
-                Path.glob("\(dirPath)/\($0)")
-                    .map {
-                        guard $0.isDirectory else {
-                            return [$0]
-                        }
-
-                        return (try? $0.recursiveChildren().filter { $0.isFile }) ?? []
+        return targetSource.excludes.map {
+            Path.glob("\(rootSourcePath)/\($0)")
+                .map {
+                    guard $0.isDirectory else {
+                        return [$0]
                     }
-                    .reduce([], +)
+
+                    return (try? $0.recursiveChildren().filter { $0.isFile }) ?? []
+                }
+                .reduce([], +)
             }
             .reduce([], +)
-        }
+    }
 
-        let defaultExcludedFiles = [".DS_Store"].map { dirPath + Path($0) }
-
-        let rootSourcePath = spec.basePath + targetSource.path
+    private func getSourceChildren(targetSource: TargetSource, dirPath: Path) throws -> [Path] {
 
         /*
          Exclude following if mentioned in TargetSource.excludes.
@@ -248,21 +246,23 @@ class SourceGenerator {
          */
 
         let sourceExcludeFilePaths: Set<Path> = Set(
-            getSourceExcludes(dirPath: rootSourcePath)
-                + defaultExcludedFiles
+            getSourceExcludes(targetSource: targetSource)
         )
+
+        func isNotExcludeFilePath(_ path: Path) -> Bool {
+            return !path.lastComponent.contains(".DS_Store")
+                && !sourceExcludeFilePaths.contains(path)
+        }
 
         return try dirPath.children()
             .filter {
                 if $0.isDirectory {
                     let pathChildren = try $0.children()
-                        .filter {
-                            return !sourceExcludeFilePaths.contains($0)
-                        }
+                        .filter(isNotExcludeFilePath(_:))
 
                     return !pathChildren.isEmpty
                 } else if $0.isFile {
-                    return !sourceExcludeFilePaths.contains($0)
+                    return isNotExcludeFilePath($0)
                 } else {
                     return false
                 }
@@ -270,7 +270,8 @@ class SourceGenerator {
     }
 
     private func getGroupSources(targetSource: TargetSource, path: Path, isBaseGroup: Bool)
-        throws -> (sourceFiles: [SourceFile], groups: [ObjectReference<PBXGroup>]) {
+        throws -> (sourceFiles: [SourceFile], groups: [ObjectReference<PBXGroup>])
+    {
 
         let children = try getSourceChildren(targetSource: targetSource, dirPath: path)
 
@@ -323,8 +324,19 @@ class SourceGenerator {
         // create variant groups of the base localisation first
         var baseLocalisationVariantGroups: [PBXVariantGroup] = []
 
+        let sourceExcludeFilePaths: Set<Path> = Set(
+            getSourceExcludes(targetSource: targetSource)
+        )
+
+        func isNotExcludeFilePath(_ path: Path) -> Bool {
+            return !path.lastComponent.contains(".DS_Store")
+                && !sourceExcludeFilePaths.contains(path)
+        }
+
         if let baseLocalisedDirectory = baseLocalisedDirectory {
-            for filePath in try baseLocalisedDirectory.children().sorted() {
+            for filePath in try baseLocalisedDirectory.children()
+                .filter(isNotExcludeFilePath(_:))
+                .sorted() {
                 let variantGroup = getVariantGroup(path: filePath, inPath: path)
                 groupChildren.append(variantGroup.reference)
                 baseLocalisationVariantGroups.append(variantGroup.object)
@@ -342,7 +354,9 @@ class SourceGenerator {
         // add references to localised resources into base localisation variant groups
         for localisedDirectory in localisedDirectories {
             let localisationName = localisedDirectory.lastComponentWithoutExtension
-            for filePath in try localisedDirectory.children().sorted { $0.lastComponent < $1.lastComponent } {
+            for filePath in try localisedDirectory.children()
+                .filter(isNotExcludeFilePath(_:))
+                .sorted { $0.lastComponent < $1.lastComponent } {
                 // find base localisation variant group
                 // ex: Foo.strings will be added to Foo.strings or Foo.storyboard variant group
                 let variantGroup = baseLocalisationVariantGroups
