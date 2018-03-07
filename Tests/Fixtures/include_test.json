@@ -1,7 +1,5 @@
 {
-  "include": [
-    "included.yml"
-  ],
+  "include": ["included.yml"],
   "name": "NewName",
   "settingGroups": {
     "test": {
