@@ -8,12 +8,12 @@ import xcproj
 func specLoadingTests() {
 
     @discardableResult
-    func getProjectSpec(_ spec: [String: Any]) throws -> ProjectSpec {
+    func getProjectSpec(_ spec: [String: Any]) throws -> ProjectSpec.Project {
         var specDictionary: [String: Any] = ["name": "test"]
         for (key, value) in spec {
             specDictionary[key] = value
         }
-        return try ProjectSpec(basePath: "", jsonDictionary: specDictionary)
+        return try ProjectSpec.Project(basePath: "", jsonDictionary: specDictionary)
     }
 
     func expectProjectSpecError(_ spec: [String: Any], _ expectedError: SpecParsingError) throws {
@@ -34,7 +34,7 @@ func specLoadingTests() {
     describe("Spec Loader") {
         $0.it("merges includes") {
             let path = fixturePath + "include_test.yml"
-            let spec = try ProjectSpec(path: path)
+            let spec = try ProjectSpec.Project(path: path)
 
             try expect(spec.name) == "NewName"
             try expect(spec.settingGroups) == [
@@ -80,7 +80,7 @@ func specLoadingTests() {
     describe("Spec Loader JSON") {
         $0.it("merges includes") {
             let path = fixturePath + "include_test.json"
-            let spec = try ProjectSpec(path: path)
+            let spec = try ProjectSpec.Project(path: path)
 
             try expect(spec.name) == "NewName"
             try expect(spec.settingGroups) == [
@@ -286,7 +286,7 @@ func specLoadingTests() {
         }
 
         $0.it("parses settings") {
-            let spec = try ProjectSpec(path: fixturePath + "settings_test.yml")
+            let spec = try ProjectSpec.Project(path: fixturePath + "settings_test.yml")
             let buildSettings: BuildSettings = ["SETTING": "value"]
             let configSettings: [String: Settings] = ["config1": Settings(buildSettings: ["SETTING1": "value"])]
             let groups = ["preset1"]
@@ -331,7 +331,7 @@ func specLoadingTests() {
         }
 
         $0.it("parses options") {
-            let options = ProjectSpec.Options(
+            let options = ProjectSpec.Project.Options(
                 carthageBuildPath: "../Carthage/Build",
                 carthageExecutablePath: "../bin/carthage",
                 createIntermediateGroups: true,
@@ -344,7 +344,7 @@ func specLoadingTests() {
                     macOS: "10.12.1"
                 )
             )
-            let expected = ProjectSpec(basePath: "", name: "test", options: options)
+            let expected = ProjectSpec.Project(basePath: "", name: "test", options: options)
             let dictionary: [String: Any] = ["options": [
                 "carthageBuildPath": "../Carthage/Build",
                 "carthageExecutablePath": "../bin/carthage",

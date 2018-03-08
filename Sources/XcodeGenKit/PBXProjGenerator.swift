@@ -7,7 +7,7 @@ import Yams
 
 public class PBXProjGenerator {
 
-    let spec: ProjectSpec
+    let project: Project
 
     let proj: PBXProj
     var sourceGenerator: SourceGenerator!
@@ -22,13 +22,13 @@ public class PBXProjGenerator {
     var generated = false
 
     var carthageBuildPath: String {
-        return spec.options.carthageBuildPath ?? "Carthage/Build"
+        return project.options.carthageBuildPath ?? "Carthage/Build"
     }
 
-    public init(spec: ProjectSpec) {
-        self.spec = spec
+    public init(project: Project) {
+        self.project = project
         proj = PBXProj(rootObject: "", objectVersion: 46)
-        sourceGenerator = SourceGenerator(spec: spec) { [unowned self] id, object in
+        sourceGenerator = SourceGenerator(project: project) { [unowned self] id, object in
             self.addObject(id: id, object)
         }
     }
@@ -50,15 +50,15 @@ public class PBXProjGenerator {
         }
         generated = true
 
-        for group in spec.fileGroups {
+        for group in project.fileGroups {
             try sourceGenerator.getFileGroups(path: group)
         }
 
-        let buildConfigs: [ObjectReference<XCBuildConfiguration>] = spec.configs.map { config in
-            let buildSettings = spec.getProjectBuildSettings(config: config)
+        let buildConfigs: [ObjectReference<XCBuildConfiguration>] = project.configs.map { config in
+            let buildSettings = project.getProjectBuildSettings(config: config)
             var baseConfigurationReference: String?
-            if let configPath = spec.configFiles[config.name] {
-                baseConfigurationReference = sourceGenerator.getContainedFileReference(path: spec.basePath + configPath)
+            if let configPath = project.configFiles[config.name] {
+                baseConfigurationReference = sourceGenerator.getContainedFileReference(path: project.basePath + configPath)
             }
             return createObject(
                 id: config.name,
@@ -72,7 +72,7 @@ public class PBXProjGenerator {
 
         let configName = spec.options.defaultConfig ?? buildConfigs.first?.object.name ?? ""
         let buildConfigList = createObject(
-            id: spec.name,
+            id: project.name,
             XCConfigurationList(
                 buildConfigurations: buildConfigs.map { $0.reference },
                 defaultConfigurationName: configName
@@ -84,26 +84,26 @@ public class PBXProjGenerator {
             PBXGroup(
                 children: [],
                 sourceTree: .group,
-                usesTabs: spec.options.usesTabs,
-                indentWidth: spec.options.indentWidth,
-                tabWidth: spec.options.tabWidth
+                usesTabs: project.options.usesTabs,
+                indentWidth: project.options.indentWidth,
+                tabWidth: project.options.tabWidth
             )
         )
 
-        let project = createObject(
-            id: spec.name,
+        let projectRef = createObject(
+            id: project.name,
             PBXProject(
-                name: spec.name,
+                name: project.name,
                 buildConfigurationList: buildConfigList.reference,
                 compatibilityVersion: "Xcode 3.2",
                 mainGroup: mainGroup.reference,
-                developmentRegion: spec.options.developmentLanguage ?? "en"
+                developmentRegion: project.options.developmentLanguage ?? "en"
             )
         )
 
-        proj.rootObject = project.reference
+        proj.rootObject = projectRef.reference
 
-        for target in spec.targets {
+        for target in project.targets {
             let targetObject: PBXTarget
 
             if target.isLegacy {
@@ -147,7 +147,7 @@ public class PBXProjGenerator {
             )
         }
 
-        try spec.targets.forEach(generateTarget)
+        try project.targets.forEach(generateTarget)
 
         let productGroup = createObject(
             id: "Products",
@@ -205,13 +205,13 @@ public class PBXProjGenerator {
         mainGroup.object.children = Array(topLevelGroups)
         sortGroups(group: mainGroup)
 
-        let projectAttributes: [String: Any] = ["LastUpgradeCheck": spec.xcodeVersion]
-            .merged(spec.attributes)
+        let projectAttributes: [String: Any] = ["LastUpgradeCheck": project.xcodeVersion]
+            .merged(project.attributes)
             .merged(generateTargetAttributes() ?? [:])
 
-        project.object.knownRegions = sourceGenerator.knownRegions.sorted()
-        project.object.targets = targetObjects.values.sorted { $0.object.name < $1.object.name }.map { $0.reference }
-        project.object.attributes = projectAttributes
+        projectRef.object.knownRegions = sourceGenerator.knownRegions.sorted()
+        projectRef.object.targets = targetObjects.values.sorted { $0.object.name < $1.object.name }.map { $0.reference }
+        projectRef.object.attributes = projectAttributes
 
         return proj
     }
@@ -286,23 +286,23 @@ public class PBXProjGenerator {
         var plistPath: Path?
         var searchForPlist = true
 
-        let configs: [ObjectReference<XCBuildConfiguration>] = spec.configs.map { config in
-            var buildSettings = spec.getTargetBuildSettings(target: target, config: config)
+        let configs: [ObjectReference<XCBuildConfiguration>] = project.configs.map { config in
+            var buildSettings = project.getTargetBuildSettings(target: target, config: config)
 
             // automatically set INFOPLIST_FILE path
-            if !spec.targetHasBuildSetting("INFOPLIST_FILE", basePath: spec.basePath, target: target, config: config) {
+            if !project.targetHasBuildSetting("INFOPLIST_FILE", basePath: project.basePath, target: target, config: config) {
                 if searchForPlist {
                     plistPath = getInfoPlist(target.sources)
                     searchForPlist = false
                 }
                 if let plistPath = plistPath {
-                    buildSettings["INFOPLIST_FILE"] = plistPath.byRemovingBase(path: spec.basePath)
+                    buildSettings["INFOPLIST_FILE"] = plistPath.byRemovingBase(path: project.basePath)
                 }
             }
 
             // automatically calculate bundle id
-            if let bundleIdPrefix = spec.options.bundleIdPrefix,
-                !spec.targetHasBuildSetting("PRODUCT_BUNDLE_IDENTIFIER", basePath: spec.basePath, target: target, config: config) {
+            if let bundleIdPrefix = project.options.bundleIdPrefix,
+                !project.targetHasBuildSetting("PRODUCT_BUNDLE_IDENTIFIER", basePath: project.basePath, target: target, config: config) {
                 let characterSet = CharacterSet.alphanumerics.union(CharacterSet(charactersIn: "-.")).inverted
                 let escapedTargetName = target.name
                     .replacingOccurrences(of: "_", with: "-")
@@ -313,10 +313,10 @@ public class PBXProjGenerator {
 
             // automatically set test target name
             if target.type == .uiTestBundle,
-                !spec.targetHasBuildSetting("TEST_TARGET_NAME", basePath: spec.basePath, target: target, config: config) {
+                !project.targetHasBuildSetting("TEST_TARGET_NAME", basePath: project.basePath, target: target, config: config) {
                 for dependency in target.dependencies {
                     if dependency.type == .target,
-                        let dependencyTarget = spec.getTarget(dependency.reference),
+                        let dependencyTarget = project.getTarget(dependency.reference),
                         dependencyTarget.type == .application {
                         buildSettings["TEST_TARGET_NAME"] = dependencyTarget.name
                         break
@@ -341,7 +341,7 @@ public class PBXProjGenerator {
 
             var baseConfigurationReference: String?
             if let configPath = target.configFiles[config.name] {
-                baseConfigurationReference = sourceGenerator.getContainedFileReference(path: spec.basePath + configPath)
+                baseConfigurationReference = sourceGenerator.getContainedFileReference(path: project.basePath + configPath)
             }
             let buildConfig = XCBuildConfiguration(
                 name: config.name,
@@ -369,7 +369,7 @@ public class PBXProjGenerator {
             switch dependency.type {
             case .target:
                 let dependencyTargetName = dependency.reference
-                guard let dependencyTarget = spec.getTarget(dependencyTargetName) else { continue }
+                guard let dependencyTarget = project.getTarget(dependencyTargetName) else { continue }
                 let dependencyFileReference = targetFileReferences[dependencyTargetName]!
 
                 let targetProxy = createObject(
@@ -428,13 +428,13 @@ public class PBXProjGenerator {
                 if dependency.implicit {
                     fileReference = sourceGenerator.getFileReference(
                         path: Path(dependency.reference),
-                        inPath: spec.basePath,
+                        inPath: project.basePath,
                         sourceTree: .buildProductsDir
                     )
                 } else {
                     fileReference = sourceGenerator.getFileReference(
                         path: Path(dependency.reference),
-                        inPath: spec.basePath
+                        inPath: project.basePath
                     )
                 }
 
@@ -502,7 +502,7 @@ public class PBXProjGenerator {
             let shellScript: String
             switch buildScript.script {
             case let .path(path):
-                shellScript = try (spec.basePath + path).read()
+                shellScript = try (project.basePath + path).read()
             case let .script(script):
                 shellScript = script
             }
@@ -604,7 +604,7 @@ public class PBXProjGenerator {
                 .map { "$(SRCROOT)/\(carthageBuildPath)/\(target.platform)/\($0)\($0.contains(".") ? "" : ".framework")" }
             let outputPaths = carthageFrameworksToEmbed
                 .map { "$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/\($0)\($0.contains(".") ? "" : ".framework")" }
-            let carthageExecutable = spec.options.carthageExecutablePath ?? "carthage"
+            let carthageExecutable = project.options.carthageExecutablePath ?? "carthage"
             let carthageScript = createObject(
                 id: "Carthage" + target.name,
                 PBXShellScriptBuildPhase(
@@ -637,7 +637,7 @@ public class PBXProjGenerator {
     func getInfoPlist(_ sources: [TargetSource]) -> Path? {
         return sources
             .lazy
-            .map { self.spec.basePath + $0.path }
+            .map { self.project.basePath + $0.path }
             .flatMap { (path) -> Path? in
                 if path.isFile {
                     return path.lastComponent == "Info.plist" ? path : nil
@@ -672,7 +672,7 @@ public class PBXProjGenerator {
                 if visitedTargets[targetName] == true {
                     return []
                 }
-                if let target = spec.getTarget(targetName) {
+                if let target = project.getTarget(targetName) {
                     frameworks += getAllCarthageDependencies(target: target, visitedTargets: visitedTargets)
                 }
             default: break

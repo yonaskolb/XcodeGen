@@ -5,7 +5,7 @@ import ProjectSpec
 import xcproj
 import Yams
 
-extension ProjectSpec {
+extension Project {
 
     public func getProjectBuildSettings(config: Config) -> BuildSettings {
         var buildSettings: BuildSettings = [:]
@@ -112,7 +112,7 @@ extension ProjectSpec {
 
         if let configSettings = loadConfigFileBuildSettings(path: configPath) {
             for key in configSettings.keys {
-                // FIXME: Catch platform specifier. e.g. LD_RUNPATH_SEARCH_PATHS[sdk=iphone*]
+                // FIXME: Catch platform projectifier. e.g. LD_RUNPATH_SEARCH_PATHS[sdk=iphone*]
                 buildSettings.removeValue(forKey: key)
                 buildSettings.removeValue(forKey: key.quoted)
             }
