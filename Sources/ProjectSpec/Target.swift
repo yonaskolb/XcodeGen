@@ -7,6 +7,18 @@ public struct LegacyTarget {
     public var arguments: String?
     public var passSettings: Bool
     public var workingDirectory: String?
+
+    public init(
+        toolPath: String,
+        passSettings: Bool = false,
+        arguments: String? = nil,
+        workingDirectory: String? = nil
+    ) {
+        self.toolPath = toolPath
+        self.arguments = arguments
+        self.passSettings = passSettings
+        self.workingDirectory = workingDirectory
+    }
 }
 
 extension LegacyTarget: Equatable {
