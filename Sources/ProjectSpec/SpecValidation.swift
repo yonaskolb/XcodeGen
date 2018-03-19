@@ -47,6 +47,12 @@ extension ProjectSpec {
             }
         }
 
+        if let configName = options.defaultConfigurationName {
+            if !configs.contains(where: { $0.name == configName }) {
+                errors.append(.missingDefaultConfigurationName(configName: configName))
+            }
+        }
+
         for settings in settingGroups.values {
             errors += validateSettings(settings)
         }

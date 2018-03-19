@@ -96,6 +96,20 @@ func projectGeneratorTests() {
                     try expect(XCodeVersion.parse(version)) == expected
                 }
             }
+
+            $0.it("uses the default configuration name") {
+                let options = ProjectSpec.Options(defaultConfigurationName: "Bconfig")
+                let spec = ProjectSpec(basePath: "", name: "test", configs: [Config(name: "Aconfig"), Config(name: "Bconfig")], targets: [framework], options: options)
+                let pbxProject = try getPbxProj(spec)
+
+                guard let projectConfigListReference = pbxProject.objects.projects.values.first?.buildConfigurationList,
+                    let defaultConfigurationName = pbxProject.objects.configurationLists[projectConfigListReference]?.defaultConfigurationName
+                else {
+                    throw failure("Default configuration name not found")
+                }
+
+                try expect(defaultConfigurationName) == "Bconfig"
+            }
         }
 
         $0.describe("Config") {
