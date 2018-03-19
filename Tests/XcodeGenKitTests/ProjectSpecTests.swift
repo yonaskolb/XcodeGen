@@ -167,6 +167,12 @@ func projectSpecTests() {
                 )]
                 try spec.validate()
             }
+
+            $0.it("validates missing default configurations") {
+                var spec = baseSpec
+                spec.options = ProjectSpec.Options(defaultConfig: "foo")
+                try expectValidationError(spec, .missingDefaultConfig(configName: "foo"))
+            }
         }
     }
 }
