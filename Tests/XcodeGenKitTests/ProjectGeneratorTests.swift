@@ -98,7 +98,7 @@ func projectGeneratorTests() {
             }
 
             $0.it("uses the default configuration name") {
-                let options = ProjectSpec.Options(defaultConfigurationName: "Bconfig")
+                let options = ProjectSpec.Options(defaultConfig: "Bconfig")
                 let spec = ProjectSpec(basePath: "", name: "test", configs: [Config(name: "Aconfig"), Config(name: "Bconfig")], targets: [framework], options: options)
                 let pbxProject = try getPbxProj(spec)
 

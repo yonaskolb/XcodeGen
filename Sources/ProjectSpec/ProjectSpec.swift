@@ -32,7 +32,7 @@ public struct ProjectSpec {
         public var indentWidth: UInt?
         public var xcodeVersion: String?
         public var deploymentTarget: DeploymentTarget
-        public var defaultConfigurationName: String?
+        public var defaultConfig: String?
 
         public enum SettingPresets: String {
             case all
@@ -68,7 +68,7 @@ public struct ProjectSpec {
             xcodeVersion: String? = nil,
             deploymentTarget: DeploymentTarget = .init(),
             disabledValidations: [ValidationType] = [],
-            defaultConfigurationName: String? = nil
+            defaultConfig: String? = nil
         ) {
             self.carthageBuildPath = carthageBuildPath
             self.carthageExecutablePath = carthageExecutablePath
@@ -82,7 +82,7 @@ public struct ProjectSpec {
             self.xcodeVersion = xcodeVersion
             self.deploymentTarget = deploymentTarget
             self.disabledValidations = disabledValidations
-            self.defaultConfigurationName = defaultConfigurationName
+            self.defaultConfig = defaultConfig
         }
 
         public static func == (lhs: ProjectSpec.Options, rhs: ProjectSpec.Options) -> Bool {
@@ -220,6 +220,6 @@ extension ProjectSpec.Options: JSONObjectConvertible {
         tabWidth = (jsonDictionary.json(atKeyPath: "tabWidth") as Int?).flatMap(UInt.init)
         deploymentTarget = jsonDictionary.json(atKeyPath: "deploymentTarget") ?? DeploymentTarget()
         disabledValidations = jsonDictionary.json(atKeyPath: "disabledValidations") ?? []
-        defaultConfigurationName = jsonDictionary.json(atKeyPath: "defaultConfigurationName")
+        defaultConfig = jsonDictionary.json(atKeyPath: "defaultConfig")
     }
 }

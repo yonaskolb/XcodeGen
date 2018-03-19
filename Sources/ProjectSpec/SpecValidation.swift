@@ -47,9 +47,9 @@ extension ProjectSpec {
             }
         }
 
-        if let configName = options.defaultConfigurationName {
+        if let configName = options.defaultConfig {
             if !configs.contains(where: { $0.name == configName }) {
-                errors.append(.missingDefaultConfigurationName(configName: configName))
+                errors.append(.missingDefaultConfig(configName: configName))
             }
         }
 
