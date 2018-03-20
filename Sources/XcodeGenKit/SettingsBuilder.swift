@@ -112,7 +112,7 @@ extension Project {
 
         if let configSettings = loadConfigFileBuildSettings(path: configPath) {
             for key in configSettings.keys {
-                // FIXME: Catch platform projectifier. e.g. LD_RUNPATH_SEARCH_PATHS[sdk=iphone*]
+                // FIXME: Catch platform specifier. e.g. LD_RUNPATH_SEARCH_PATHS[sdk=iphone*]
                 buildSettings.removeValue(forKey: key)
                 buildSettings.removeValue(forKey: key.quoted)
             }
