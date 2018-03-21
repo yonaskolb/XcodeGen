@@ -7,15 +7,15 @@ import Yams
 
 func projectGeneratorTests() {
 
-    func getProject(_ spec: ProjectSpec) throws -> XcodeProj {
-        let generator = ProjectGenerator(spec: spec)
+    func getProject(_ project: Project) throws -> XcodeProj {
+        let generator = ProjectGenerator(project: project)
         return try generator.generateProject()
     }
 
-    func getPbxProj(_ spec: ProjectSpec) throws -> PBXProj {
-        let project = try getProject(spec).pbxproj
-        try project.validate()
-        return project
+    func getPbxProj(_ project: Project) throws -> PBXProj {
+        let pbxProject = try getProject(project).pbxproj
+        try pbxProject.validate()
+        return pbxProject
     }
 
     describe("Project Generator") {
@@ -48,32 +48,32 @@ func projectGeneratorTests() {
         $0.describe("Options") {
 
             $0.it("generates bundle id") {
-                let options = ProjectSpec.Options(bundleIdPrefix: "com.test")
-                let spec = ProjectSpec(basePath: "", name: "test", targets: [framework], options: options)
-                let project = try getProject(spec)
-                guard let target = project.pbxproj.objects.nativeTargets.first?.value,
+                let options = Project.Options(bundleIdPrefix: "com.test")
+                let project = Project(basePath: "", name: "test", targets: [framework], options: options)
+                let xcodeProject = try getProject(project)
+                guard let target = xcodeProject.pbxproj.objects.nativeTargets.first?.value,
                     let buildConfigList = target.buildConfigurationList,
-                    let buildConfigs = project.pbxproj.objects.configurationLists.getReference(buildConfigList),
+                    let buildConfigs = xcodeProject.pbxproj.objects.configurationLists.getReference(buildConfigList),
                     let buildConfigReference = buildConfigs.buildConfigurations.first,
-                    let buildConfig = project.pbxproj.objects.buildConfigurations.getReference(buildConfigReference) else {
+                    let buildConfig = xcodeProject.pbxproj.objects.buildConfigurations.getReference(buildConfigReference) else {
                     throw failure("Build Config not found")
                 }
                 try expect(buildConfig.buildSettings["PRODUCT_BUNDLE_IDENTIFIER"] as? String) == "com.test.MyFramework"
             }
 
             $0.it("clears setting presets") {
-                let options = ProjectSpec.Options(settingPresets: .none)
-                let spec = ProjectSpec(basePath: "", name: "test", targets: [framework], options: options)
-                let project = try getProject(spec)
-                let allSettings = project.pbxproj.objects.buildConfigurations.referenceValues.reduce([:]) { $0.merged($1.buildSettings) }.keys.sorted()
+                let options = Project.Options(settingPresets: .none)
+                let project = Project(basePath: "", name: "test", targets: [framework], options: options)
+                let xcodeProject = try getProject(project)
+                let allSettings = xcodeProject.pbxproj.objects.buildConfigurations.referenceValues.reduce([:]) { $0.merged($1.buildSettings) }.keys.sorted()
                 try expect(allSettings) == ["SETTING_2"]
             }
 
             $0.it("generates development language") {
-                let options = ProjectSpec.Options(developmentLanguage: "de")
-                let spec = ProjectSpec(basePath: "", name: "test", options: options)
-                let project = try getProject(spec)
-                guard let pbxProject = project.pbxproj.objects.projects.first?.value else {
+                let options = Project.Options(developmentLanguage: "de")
+                let project = Project(basePath: "", name: "test", options: options)
+                let xcodeProject = try getProject(project)
+                guard let pbxProject = xcodeProject.pbxproj.objects.projects.first?.value else {
                     throw failure("Could't find PBXProject")
                 }
                 try expect(pbxProject.developmentRegion) == "de"
@@ -98,12 +98,12 @@ func projectGeneratorTests() {
             }
 
             $0.it("uses the default configuration name") {
-                let options = ProjectSpec.Options(defaultConfig: "Bconfig")
-                let spec = ProjectSpec(basePath: "", name: "test", configs: [Config(name: "Aconfig"), Config(name: "Bconfig")], targets: [framework], options: options)
-                let pbxProject = try getPbxProj(spec)
+                let options = Project.Options(defaultConfig: "Bconfig")
+                let project = Project(basePath: "", name: "test", configs: [Config(name: "Aconfig"), Config(name: "Bconfig")], targets: [framework], options: options)
+                let xcodeProject = try getPbxProj(project)
 
-                guard let projectConfigListReference = pbxProject.objects.projects.values.first?.buildConfigurationList,
-                    let defaultConfigurationName = pbxProject.objects.configurationLists[projectConfigListReference]?.defaultConfigurationName
+                guard let projectConfigListReference = xcodeProject.objects.projects.values.first?.buildConfigurationList,
+                    let defaultConfigurationName = xcodeProject.objects.configurationLists[projectConfigListReference]?.defaultConfigurationName
                 else {
                     throw failure("Default configuration name not found")
                 }
@@ -115,47 +115,47 @@ func projectGeneratorTests() {
         $0.describe("Config") {
 
             $0.it("generates config defaults") {
-                let spec = ProjectSpec(basePath: "", name: "test")
-                let project = try getProject(spec)
-                let configs = project.pbxproj.objects.buildConfigurations.referenceValues
+                let project = Project(basePath: "", name: "test")
+                let xcodeProject = try getProject(project)
+                let configs = xcodeProject.pbxproj.objects.buildConfigurations.referenceValues
                 try expect(configs.count) == 2
                 try expect(configs).contains(name: "Debug")
                 try expect(configs).contains(name: "Release")
             }
 
             $0.it("generates configs") {
-                let spec = ProjectSpec(
+                let project = Project(
                     basePath: "",
                     name: "test",
                     configs: [Config(name: "config1"), Config(name: "config2")]
                 )
-                let project = try getProject(spec)
-                let configs = project.pbxproj.objects.buildConfigurations.referenceValues
+                let xcodeProject = try getProject(project)
+                let configs = xcodeProject.pbxproj.objects.buildConfigurations.referenceValues
                 try expect(configs.count) == 2
                 try expect(configs).contains(name: "config1")
                 try expect(configs).contains(name: "config2")
             }
 
             $0.it("clears config settings when missing type") {
-                let spec = ProjectSpec(
+                let project = Project(
                     basePath: "",
                     name: "test",
                     configs: [Config(name: "config")]
                 )
-                let project = try getProject(spec)
-                guard let config = project.pbxproj.objects.buildConfigurations.first?.value else {
+                let xcodeProject = try getProject(project)
+                guard let config = xcodeProject.pbxproj.objects.buildConfigurations.first?.value else {
                     throw failure("configuration not found")
                 }
                 try expect(config.buildSettings.isEmpty).to.beTrue()
             }
 
             $0.it("merges settings") {
-                let spec = try ProjectSpec(path: fixturePath + "settings_test.yml")
-                guard let config = spec.getConfig("config1") else { throw failure("Couldn't find config1") }
-                let debugProjectSettings = spec.getProjectBuildSettings(config: config)
+                let project = try Project(path: fixturePath + "settings_test.yml")
+                guard let config = project.getConfig("config1") else { throw failure("Couldn't find config1") }
+                let debugProjectSettings = project.getProjectBuildSettings(config: config)
 
-                guard let target = spec.getTarget("Target") else { throw failure("Couldn't find Target") }
-                let targetDebugSettings = spec.getTargetBuildSettings(target: target, config: config)
+                guard let target = project.getTarget("Target") else { throw failure("Couldn't find Target") }
+                let targetDebugSettings = project.getTargetBuildSettings(target: target, config: config)
 
                 var buildSettings = BuildSettings()
                 buildSettings += SettingsPresetFile.base.getBuildSettings()
@@ -178,7 +178,7 @@ func projectGeneratorTests() {
             }
 
             $0.it("applies partial config settings") {
-                let spec = ProjectSpec(
+                let project = Project(
                     basePath: "",
                     name: "test",
                     configs: [
@@ -188,7 +188,7 @@ func projectGeneratorTests() {
                     settings: Settings(configSettings: ["staging": ["SETTING1": "VALUE1"], "debug": ["SETTING2": "VALUE2"]])
                 )
 
-                var buildSettings = spec.getProjectBuildSettings(config: spec.configs.first!)
+                var buildSettings = project.getProjectBuildSettings(config: project.configs.first!)
                 try expect(buildSettings["SETTING1"] as? String) == "VALUE1"
                 try expect(buildSettings["SETTING2"] as? String) == "VALUE2"
             }
@@ -196,10 +196,10 @@ func projectGeneratorTests() {
 
         $0.describe("Targets") {
 
-            let spec = ProjectSpec(basePath: "", name: "test", targets: targets)
+            let project = Project(basePath: "", name: "test", targets: targets)
 
             $0.it("generates targets") {
-                let pbxProject = try getPbxProj(spec)
+                let pbxProject = try getPbxProj(project)
                 let nativeTargets = pbxProject.objects.nativeTargets.referenceValues
                 try expect(nativeTargets.count) == 3
                 try expect(nativeTargets.contains { $0.name == application.name }).beTrue()
@@ -209,7 +209,7 @@ func projectGeneratorTests() {
 
             $0.it("generates target attributes") {
 
-                let pbxProject = try getPbxProj(spec)
+                let pbxProject = try getPbxProj(project)
 
                 guard let targetAttributes = pbxProject.objects.projects.referenceValues.first?.attributes["TargetAttributes"] as? [String: [String: Any]] else {
                     throw failure("Couldn't find Project TargetAttributes")
@@ -228,9 +228,9 @@ func projectGeneratorTests() {
 
             $0.it("generates platform version") {
                 let target = Target(name: "Target", type: .application, platform: .watchOS, deploymentTarget: "2.0")
-                let spec = ProjectSpec(basePath: "", name: "", targets: [target], options: .init(deploymentTarget: DeploymentTarget(iOS: "10.0", watchOS: "3.0")))
+                let project = Project(basePath: "", name: "", targets: [target], options: .init(deploymentTarget: DeploymentTarget(iOS: "10.0", watchOS: "3.0")))
 
-                let pbxProject = try getPbxProj(spec)
+                let pbxProject = try getPbxProj(project)
 
                 guard let projectConfigListReference = pbxProject.objects.projects.values.first?.buildConfigurationList,
                     let projectConfigReference = pbxProject.objects.configurationLists[projectConfigListReference]?.buildConfigurations.first,
@@ -256,7 +256,7 @@ func projectGeneratorTests() {
             }
 
             $0.it("generates dependencies") {
-                let pbxProject = try getPbxProj(spec)
+                let pbxProject = try getPbxProj(project)
 
                 let nativeTargets = pbxProject.objects.nativeTargets.objectReferences
                 let dependencies = pbxProject.objects.targetDependencies.objectReferences
@@ -266,7 +266,7 @@ func projectGeneratorTests() {
             }
 
             $0.it("generates run scripts") {
-                var scriptSpec = spec
+                var scriptSpec = project
                 scriptSpec.targets[0].prebuildScripts = [BuildScript(script: .script("script1"))]
                 scriptSpec.targets[0].postbuildScripts = [BuildScript(script: .script("script2"))]
                 let pbxProject = try getPbxProj(scriptSpec)
@@ -301,13 +301,13 @@ func projectGeneratorTests() {
                     platform: .iOS,
                     dependencies: [Dependency(type: .target, reference: "target1")]
                 )
-                let spec = ProjectSpec(
+                let project = Project(
                     basePath: "",
                     name: "test",
                     targets: [target1, target2]
                 )
 
-                _ = try getPbxProj(spec)
+                _ = try getPbxProj(project)
             }
         }
 
@@ -320,18 +320,18 @@ func projectGeneratorTests() {
                     name: "MyScheme",
                     build: Scheme.Build(targets: [buildTarget], preActions: [preAction])
                 )
-                let spec = ProjectSpec(
+                let project = Project(
                     basePath: "",
                     name: "test",
                     targets: [application, framework],
                     schemes: [scheme]
                 )
-                let project = try getProject(spec)
-                guard let target = project.pbxproj.objects.nativeTargets.objectReferences
+                let xcodeProject = try getProject(project)
+                guard let target = xcodeProject.pbxproj.objects.nativeTargets.objectReferences
                     .first(where: { $0.object.name == application.name }) else {
                     throw failure("Target not found")
                 }
-                guard let xcscheme = project.sharedData?.schemes.first else {
+                guard let xcscheme = xcodeProject.sharedData?.schemes.first else {
                     throw failure("Scheme not found")
                 }
                 try expect(scheme.name) == "MyScheme"
@@ -379,20 +379,20 @@ func projectGeneratorTests() {
                     test: Scheme.Test(config: "Debug"),
                     profile: Scheme.Profile(config: "Debug")
                 )
-                let spec = ProjectSpec(
+                let project = Project(
                     basePath: "",
                     name: "test",
                     targets: [application, framework],
                     schemes: [scheme]
                 )
-                let project = try getProject(spec)
+                let pbxProject = try getProject(project)
 
-                guard let target = project.pbxproj.objects.nativeTargets.objectReferences
+                guard let target = pbxProject.pbxproj.objects.nativeTargets.objectReferences
                     .first(where: { $0.object.name == application.name }) else {
                     throw failure("Target not found")
                 }
 
-                guard let xcscheme = project.sharedData?.schemes.first else {
+                guard let xcscheme = pbxProject.sharedData?.schemes.first else {
                     throw failure("Scheme not found")
                 }
 
@@ -412,16 +412,16 @@ func projectGeneratorTests() {
                     Config(name: "Production Release", type: .release),
                 ]
 
-                let spec = ProjectSpec(basePath: "", name: "test", configs: configs, targets: [target, framework])
-                let project = try getProject(spec)
+                let project = Project(basePath: "", name: "test", configs: configs, targets: [target, framework])
+                let xcodeProject = try getProject(project)
 
-                try expect(project.sharedData?.schemes.count) == 2
+                try expect(xcodeProject.sharedData?.schemes.count) == 2
 
-                guard let nativeTarget = project.pbxproj.objects.nativeTargets.objectReferences
+                guard let nativeTarget = xcodeProject.pbxproj.objects.nativeTargets.objectReferences
                     .first(where: { $0.object.name == application.name }) else {
                     throw failure("Target not found")
                 }
-                guard let xcscheme = project.sharedData?.schemes
+                guard let xcscheme = xcodeProject.sharedData?.schemes
                     .first(where: { $0.name == "\(target.name) Test" }) else {
                     throw failure("Scheme not found")
                 }
@@ -442,12 +442,12 @@ func projectGeneratorTests() {
                 var target = application
                 target.scheme = TargetScheme(environmentVariables: variables)
 
-                let spec = ProjectSpec(basePath: "", name: "test", targets: [target, framework])
-                let project = try getProject(spec)
+                let project = Project(basePath: "", name: "test", targets: [target, framework])
+                let xcodeProject = try getProject(project)
 
-                try expect(project.sharedData?.schemes.count) == 1
+                try expect(xcodeProject.sharedData?.schemes.count) == 1
 
-                guard let xcscheme = project.sharedData?.schemes.first else {
+                guard let xcscheme = xcodeProject.sharedData?.schemes.first else {
                     throw failure("Scheme not found")
                 }
 
@@ -513,11 +513,11 @@ func projectGeneratorTests() {
                 try createDirectories(directories)
 
                 let target = Target(name: "Test", type: .application, platform: .iOS, sources: ["Sources"])
-                let spec = ProjectSpec(basePath: directoryPath, name: "Test", targets: [target])
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target])
 
-                let project = try getPbxProj(spec)
-                try project.expectFile(paths: ["Sources", "A", "a.swift"], buildPhase: .sources)
-                try project.expectFile(paths: ["Sources", "A", "B", "b.swift"], buildPhase: .sources)
+                let pbxProject = try getPbxProj(project)
+                try pbxProject.expectFile(paths: ["Sources", "A", "a.swift"], buildPhase: .sources)
+                try pbxProject.expectFile(paths: ["Sources", "A", "B", "b.swift"], buildPhase: .sources)
             }
 
             $0.it("generates core data models") {
@@ -529,13 +529,13 @@ func projectGeneratorTests() {
                 try createDirectories(directories)
 
                 let target = Target(name: "Test", type: .application, platform: .iOS, sources: ["Sources"])
-                let spec = ProjectSpec(basePath: directoryPath, name: "Test", targets: [target])
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target])
 
-                let project = try getPbxProj(spec)
-                guard let fileReference = project.objects.fileReferences.first(where: { $0.value.nameOrPath == "model.xcdatamodel" }) else {
+                let pbxProject = try getPbxProj(project)
+                guard let fileReference = pbxProject.objects.fileReferences.first(where: { $0.value.nameOrPath == "model.xcdatamodel" }) else {
                     throw failure("Couldn't find model file reference")
                 }
-                guard let versionGroup = project.objects.versionGroups.values.first else {
+                guard let versionGroup = pbxProject.objects.versionGroups.values.first else {
                     throw failure("Couldn't find version group")
                 }
                 try expect(versionGroup.currentVersion) == fileReference.key
@@ -557,17 +557,17 @@ func projectGeneratorTests() {
                 try createDirectories(directories)
 
                 let target = Target(name: "Test", type: .application, platform: .iOS, sources: ["Sources"])
-                let spec = ProjectSpec(
+                let project = Project(
                     basePath: directoryPath,
                     name: "Test",
                     targets: [target],
                     fileGroups: ["Sources"]
                 )
 
-                let project = try getPbxProj(spec)
-                try project.expectFile(paths: ["Sources", "a.swift"], buildPhase: .sources)
-                try project.expectFile(paths: ["Sources", "a", "a.swift"], buildPhase: .sources)
-                try project.expectFile(paths: ["Sources", "a", "a", "a.swift"], buildPhase: .sources)
+                let pbxProject = try getPbxProj(project)
+                try pbxProject.expectFile(paths: ["Sources", "a.swift"], buildPhase: .sources)
+                try pbxProject.expectFile(paths: ["Sources", "a", "a.swift"], buildPhase: .sources)
+                try pbxProject.expectFile(paths: ["Sources", "a", "a", "a.swift"], buildPhase: .sources)
             }
 
             $0.it("renames sources") {
@@ -583,11 +583,11 @@ func projectGeneratorTests() {
                     TargetSource(path: "Sources", name: "NewSource"),
                     TargetSource(path: "OtherSource/b.swift", name: "c.swift"),
                 ])
-                let spec = ProjectSpec(basePath: directoryPath, name: "Test", targets: [target])
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target])
 
-                let project = try getPbxProj(spec)
-                try project.expectFile(paths: ["Sources", "a.swift"], names: ["NewSource", "a.swift"], buildPhase: .sources)
-                try project.expectFile(paths: ["OtherSource", "b.swift"], names: ["OtherSource", "c.swift"], buildPhase: .sources)
+                let pbxProject = try getPbxProj(project)
+                try pbxProject.expectFile(paths: ["Sources", "a.swift"], names: ["NewSource", "a.swift"], buildPhase: .sources)
+                try pbxProject.expectFile(paths: ["OtherSource", "b.swift"], names: ["OtherSource", "c.swift"], buildPhase: .sources)
             }
 
             $0.it("excludes sources") {
@@ -646,28 +646,28 @@ func projectGeneratorTests() {
                 ]
 
                 let target = Target(name: "Test", type: .application, platform: .iOS, sources: [TargetSource(path: "Sources", excludes: excludes)])
-                let spec = ProjectSpec(basePath: directoryPath, name: "Test", targets: [target])
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target])
 
-                let project = try getPbxProj(spec)
-                try project.expectFile(paths: ["Sources", "A", "a.swift"])
-                try project.expectFile(paths: ["Sources", "D", "d.h"])
-                try project.expectFile(paths: ["Sources", "D", "d.m"])
-                try project.expectFile(paths: ["Sources", "E", "e.jpg"])
-                try project.expectFile(paths: ["Sources", "E", "e.m"])
-                try project.expectFile(paths: ["Sources", "E", "e.h"])
-                try project.expectFile(paths: ["Sources", "types", "a.swift"])
-                try project.expectFile(paths: ["Sources", "numbers", "file1.a"])
-                try project.expectFile(paths: ["Sources", "numbers", "file4.a"])
-                try project.expectFileMissing(paths: ["Sources", "B", "b.swift"])
-                try project.expectFileMissing(paths: ["Sources", "E", "F", "f.swift"])
-                try project.expectFileMissing(paths: ["Sources", "G", "H", "h.swift"])
-                try project.expectFileMissing(paths: ["Sources", "types", "a.h"])
-                try project.expectFileMissing(paths: ["Sources", "types", "a.x"])
-                try project.expectFileMissing(paths: ["Sources", "numbers", "file2.a"])
-                try project.expectFileMissing(paths: ["Sources", "numbers", "file3.a"])
-                try project.expectFileMissing(paths: ["Sources", "partial", "file_part"])
-                try project.expectFileMissing(paths: ["Sources", "a.ignored"])
-                try project.expectFileMissing(paths: ["Sources", "ignore.file"])
+                let pbxProject = try getPbxProj(project)
+                try pbxProject.expectFile(paths: ["Sources", "A", "a.swift"])
+                try pbxProject.expectFile(paths: ["Sources", "D", "d.h"])
+                try pbxProject.expectFile(paths: ["Sources", "D", "d.m"])
+                try pbxProject.expectFile(paths: ["Sources", "E", "e.jpg"])
+                try pbxProject.expectFile(paths: ["Sources", "E", "e.m"])
+                try pbxProject.expectFile(paths: ["Sources", "E", "e.h"])
+                try pbxProject.expectFile(paths: ["Sources", "types", "a.swift"])
+                try pbxProject.expectFile(paths: ["Sources", "numbers", "file1.a"])
+                try pbxProject.expectFile(paths: ["Sources", "numbers", "file4.a"])
+                try pbxProject.expectFileMissing(paths: ["Sources", "B", "b.swift"])
+                try pbxProject.expectFileMissing(paths: ["Sources", "E", "F", "f.swift"])
+                try pbxProject.expectFileMissing(paths: ["Sources", "G", "H", "h.swift"])
+                try pbxProject.expectFileMissing(paths: ["Sources", "types", "a.h"])
+                try pbxProject.expectFileMissing(paths: ["Sources", "types", "a.x"])
+                try pbxProject.expectFileMissing(paths: ["Sources", "numbers", "file2.a"])
+                try pbxProject.expectFileMissing(paths: ["Sources", "numbers", "file3.a"])
+                try pbxProject.expectFileMissing(paths: ["Sources", "partial", "file_part"])
+                try pbxProject.expectFileMissing(paths: ["Sources", "a.ignored"])
+                try pbxProject.expectFileMissing(paths: ["Sources", "ignore.file"])
             }
 
             $0.it("generates file sources") {
@@ -688,13 +688,13 @@ func projectGeneratorTests() {
                     "Sources/A/Assets.xcassets",
                     "Sources/A/B/c.jpg",
                 ])
-                let spec = ProjectSpec(basePath: directoryPath, name: "Test", targets: [target])
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target])
 
-                let project = try getPbxProj(spec)
-                try project.expectFile(paths: ["Sources/A", "a.swift"], names: ["A", "a.swift"], buildPhase: .sources)
-                try project.expectFile(paths: ["Sources/A/B", "b.swift"], names: ["B", "b.swift"], buildPhase: .sources)
-                try project.expectFile(paths: ["Sources/A/B", "c.jpg"], names: ["B", "c.jpg"], buildPhase: .resources)
-                try project.expectFile(paths: ["Sources/A", "Assets.xcassets"], names: ["A", "Assets.xcassets"], buildPhase: .resources)
+                let pbxProject = try getPbxProj(project)
+                try pbxProject.expectFile(paths: ["Sources/A", "a.swift"], names: ["A", "a.swift"], buildPhase: .sources)
+                try pbxProject.expectFile(paths: ["Sources/A/B", "b.swift"], names: ["B", "b.swift"], buildPhase: .sources)
+                try pbxProject.expectFile(paths: ["Sources/A/B", "c.jpg"], names: ["B", "c.jpg"], buildPhase: .resources)
+                try pbxProject.expectFile(paths: ["Sources/A", "Assets.xcassets"], names: ["A", "Assets.xcassets"], buildPhase: .resources)
             }
 
             $0.it("generates shared sources") {
@@ -710,9 +710,9 @@ func projectGeneratorTests() {
 
                 let target1 = Target(name: "Test1", type: .framework, platform: .iOS, sources: ["Sources"])
                 let target2 = Target(name: "Test2", type: .framework, platform: .tvOS, sources: ["Sources"])
-                let spec = ProjectSpec(basePath: directoryPath, name: "Test", targets: [target1, target2])
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target1, target2])
 
-                _ = try getPbxProj(spec)
+                _ = try getPbxProj(project)
                 // TODO: check there are build files for both targets
             }
 
@@ -736,13 +736,13 @@ func projectGeneratorTests() {
                     "Sources/F/G/h.swift",
                     "../OtherDirectory/C/D/e.swift",
                 ])
-                let options = ProjectSpec.Options(createIntermediateGroups: true)
-                let spec = ProjectSpec(basePath: directoryPath, name: "Test", targets: [target], options: options)
+                let options = Project.Options(createIntermediateGroups: true)
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target], options: options)
 
-                let project = try getPbxProj(spec)
-                try project.expectFile(paths: ["Sources", "A", "b.swift"], buildPhase: .sources)
-                try project.expectFile(paths: ["Sources", "F", "G", "h.swift"], buildPhase: .sources)
-                try project.expectFile(paths: [(outOfRootPath + "C/D").string, "e.swift"], names: ["D", "e.swift"], buildPhase: .sources)
+                let pbxProject = try getPbxProj(project)
+                try pbxProject.expectFile(paths: ["Sources", "A", "b.swift"], buildPhase: .sources)
+                try pbxProject.expectFile(paths: ["Sources", "F", "G", "h.swift"], buildPhase: .sources)
+                try pbxProject.expectFile(paths: [(outOfRootPath + "C/D").string, "e.swift"], names: ["D", "e.swift"], buildPhase: .sources)
             }
 
             $0.it("generates folder references") {
@@ -757,11 +757,11 @@ func projectGeneratorTests() {
                 let target = Target(name: "Test", type: .application, platform: .iOS, sources: [
                     TargetSource(path: "Sources/A", type: .folder),
                 ])
-                let spec = ProjectSpec(basePath: directoryPath, name: "Test", targets: [target])
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target])
 
-                let project = try getPbxProj(spec)
-                try project.expectFile(paths: ["Sources/A"], names: ["A"], buildPhase: .resources)
-                try project.expectFileMissing(paths: ["Sources", "A", "a.swift"])
+                let pbxProject = try getPbxProj(project)
+                try pbxProject.expectFile(paths: ["Sources/A"], names: ["A"], buildPhase: .resources)
+                try pbxProject.expectFileMissing(paths: ["Sources", "A", "a.swift"])
             }
 
             $0.it("adds files to correct build phase") {
@@ -807,44 +807,44 @@ func projectGeneratorTests() {
                     TargetSource(path: "B", buildPhase: .none),
                     TargetSource(path: "C", buildPhase: nil),
                 ])
-                let spec = ProjectSpec(basePath: directoryPath, name: "Test", targets: [target])
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target])
 
-                let project = try getPbxProj(spec)
-                try project.expectFile(paths: ["A", "file.swift"], buildPhase: .resources)
-                try project.expectFile(paths: ["A", "file.xcassets"], buildPhase: .resources)
-                try project.expectFile(paths: ["A", "file.h"], buildPhase: .resources)
-                try project.expectFile(paths: ["A", "Info.plist"], buildPhase: .none)
-                try project.expectFile(paths: ["A", "file.xcconfig"], buildPhase: .resources)
+                let pbxProject = try getPbxProj(project)
+                try pbxProject.expectFile(paths: ["A", "file.swift"], buildPhase: .resources)
+                try pbxProject.expectFile(paths: ["A", "file.xcassets"], buildPhase: .resources)
+                try pbxProject.expectFile(paths: ["A", "file.h"], buildPhase: .resources)
+                try pbxProject.expectFile(paths: ["A", "Info.plist"], buildPhase: .none)
+                try pbxProject.expectFile(paths: ["A", "file.xcconfig"], buildPhase: .resources)
 
-                try project.expectFile(paths: ["B", "file.swift"], buildPhase: .none)
-                try project.expectFile(paths: ["B", "file.xcassets"], buildPhase: .none)
-                try project.expectFile(paths: ["B", "file.h"], buildPhase: .none)
-                try project.expectFile(paths: ["B", "Info.plist"], buildPhase: .none)
-                try project.expectFile(paths: ["B", "file.xcconfig"], buildPhase: .none)
+                try pbxProject.expectFile(paths: ["B", "file.swift"], buildPhase: .none)
+                try pbxProject.expectFile(paths: ["B", "file.xcassets"], buildPhase: .none)
+                try pbxProject.expectFile(paths: ["B", "file.h"], buildPhase: .none)
+                try pbxProject.expectFile(paths: ["B", "Info.plist"], buildPhase: .none)
+                try pbxProject.expectFile(paths: ["B", "file.xcconfig"], buildPhase: .none)
 
-                try project.expectFile(paths: ["C", "file.swift"], buildPhase: .sources)
-                try project.expectFile(paths: ["C", "file.m"], buildPhase: .sources)
-                try project.expectFile(paths: ["C", "file.mm"], buildPhase: .sources)
-                try project.expectFile(paths: ["C", "file.cpp"], buildPhase: .sources)
-                try project.expectFile(paths: ["C", "file.c"], buildPhase: .sources)
-                try project.expectFile(paths: ["C", "file.S"], buildPhase: .sources)
-                try project.expectFile(paths: ["C", "file.h"], buildPhase: .headers)
-                try project.expectFile(paths: ["C", "file.hh"], buildPhase: .headers)
-                try project.expectFile(paths: ["C", "file.hpp"], buildPhase: .headers)
-                try project.expectFile(paths: ["C", "file.ipp"], buildPhase: .headers)
-                try project.expectFile(paths: ["C", "file.tpp"], buildPhase: .headers)
-                try project.expectFile(paths: ["C", "file.hxx"], buildPhase: .headers)
-                try project.expectFile(paths: ["C", "file.def"], buildPhase: .headers)
-                try project.expectFile(paths: ["C", "file.xcconfig"], buildPhase: .none)
-                try project.expectFile(paths: ["C", "file.entitlements"], buildPhase: .none)
-                try project.expectFile(paths: ["C", "file.gpx"], buildPhase: .none)
-                try project.expectFile(paths: ["C", "file.apns"], buildPhase: .none)
-                try project.expectFile(paths: ["C", "file.xcconfig"], buildPhase: .none)
-                try project.expectFile(paths: ["C", "file.xcconfig"], buildPhase: .none)
-                try project.expectFile(paths: ["C", "file.xcconfig"], buildPhase: .none)
-                try project.expectFile(paths: ["C", "file.xcassets"], buildPhase: .resources)
-                try project.expectFile(paths: ["C", "file.123"], buildPhase: .resources)
-                try project.expectFile(paths: ["C", "Info.plist"], buildPhase: .none)
+                try pbxProject.expectFile(paths: ["C", "file.swift"], buildPhase: .sources)
+                try pbxProject.expectFile(paths: ["C", "file.m"], buildPhase: .sources)
+                try pbxProject.expectFile(paths: ["C", "file.mm"], buildPhase: .sources)
+                try pbxProject.expectFile(paths: ["C", "file.cpp"], buildPhase: .sources)
+                try pbxProject.expectFile(paths: ["C", "file.c"], buildPhase: .sources)
+                try pbxProject.expectFile(paths: ["C", "file.S"], buildPhase: .sources)
+                try pbxProject.expectFile(paths: ["C", "file.h"], buildPhase: .headers)
+                try pbxProject.expectFile(paths: ["C", "file.hh"], buildPhase: .headers)
+                try pbxProject.expectFile(paths: ["C", "file.hpp"], buildPhase: .headers)
+                try pbxProject.expectFile(paths: ["C", "file.ipp"], buildPhase: .headers)
+                try pbxProject.expectFile(paths: ["C", "file.tpp"], buildPhase: .headers)
+                try pbxProject.expectFile(paths: ["C", "file.hxx"], buildPhase: .headers)
+                try pbxProject.expectFile(paths: ["C", "file.def"], buildPhase: .headers)
+                try pbxProject.expectFile(paths: ["C", "file.xcconfig"], buildPhase: .none)
+                try pbxProject.expectFile(paths: ["C", "file.entitlements"], buildPhase: .none)
+                try pbxProject.expectFile(paths: ["C", "file.gpx"], buildPhase: .none)
+                try pbxProject.expectFile(paths: ["C", "file.apns"], buildPhase: .none)
+                try pbxProject.expectFile(paths: ["C", "file.xcconfig"], buildPhase: .none)
+                try pbxProject.expectFile(paths: ["C", "file.xcconfig"], buildPhase: .none)
+                try pbxProject.expectFile(paths: ["C", "file.xcconfig"], buildPhase: .none)
+                try pbxProject.expectFile(paths: ["C", "file.xcassets"], buildPhase: .resources)
+                try pbxProject.expectFile(paths: ["C", "file.123"], buildPhase: .resources)
+                try pbxProject.expectFile(paths: ["C", "Info.plist"], buildPhase: .none)
             }
 
             $0.it("duplicate TargetSource is included once in sources build phase") {
@@ -859,12 +859,12 @@ func projectGeneratorTests() {
                     "Sources/A/a.swift",
                     "Sources/A/a.swift",
                 ])
-                let spec = ProjectSpec(basePath: directoryPath, name: "Test", targets: [target])
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target])
 
-                let project = try getPbxProj(spec)
-                try project.expectFile(paths: ["Sources/A", "a.swift"], names: ["A", "a.swift"], buildPhase: .sources)
+                let pbxProject = try getPbxProj(project)
+                try pbxProject.expectFile(paths: ["Sources/A", "a.swift"], names: ["A", "a.swift"], buildPhase: .sources)
 
-                let sourcesBuildPhase = project.objects.buildPhases
+                let sourcesBuildPhase = pbxProject.objects.buildPhases
                     .first(where: { $0.1.buildPhase == BuildPhase.sources })!
                     .value
 
@@ -941,17 +941,17 @@ extension PBXProj {
     }
 
     func getFileReference(paths: [String], names: [String]) -> ObjectReference<PBXFileReference>? {
-        guard let project = objects.projects.first?.value else { return nil }
-        guard let mainGroup = objects.groups.getReference(project.mainGroup) else { return nil }
+        guard let pbxProject = objects.projects.first?.value else { return nil }
+        guard let mainGroup = objects.groups.getReference(pbxProject.mainGroup) else { return nil }
 
         return getFileReference(group: mainGroup, paths: paths, names: names)
     }
 
     func getMainGroup() throws -> PBXGroup {
-        guard let project = objects.projects.first?.value else {
-            throw failure("Couldn't find project")
+        guard let pbxProject = objects.projects.first?.value else {
+            throw failure("Couldn't find pbxProject")
         }
-        guard let mainGroup = objects.groups.getReference(project.mainGroup) else {
+        guard let mainGroup = objects.groups.getReference(pbxProject.mainGroup) else {
             throw failure("Couldn't find main group")
         }
         return mainGroup

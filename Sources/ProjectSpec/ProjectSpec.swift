@@ -4,7 +4,7 @@ import PathKit
 import xcproj
 import Yams
 
-public struct ProjectSpec {
+public struct Project {
 
     public var basePath: Path
     public var name: String
@@ -85,7 +85,7 @@ public struct ProjectSpec {
             self.defaultConfig = defaultConfig
         }
 
-        public static func == (lhs: ProjectSpec.Options, rhs: ProjectSpec.Options) -> Bool {
+        public static func == (lhs: Project.Options, rhs: Project.Options) -> Bool {
             return lhs.carthageBuildPath == rhs.carthageBuildPath &&
                 lhs.carthageExecutablePath == rhs.carthageExecutablePath &&
                 lhs.bundleIdPrefix == rhs.bundleIdPrefix &&
@@ -136,7 +136,7 @@ public struct ProjectSpec {
     }
 }
 
-extension ProjectSpec: CustomDebugStringConvertible {
+extension Project: CustomDebugStringConvertible {
 
     public var debugDescription: String {
         var string = "Name: \(name)"
@@ -160,9 +160,9 @@ extension ProjectSpec: CustomDebugStringConvertible {
     }
 }
 
-extension ProjectSpec: Equatable {
+extension Project: Equatable {
 
-    public static func == (lhs: ProjectSpec, rhs: ProjectSpec) -> Bool {
+    public static func == (lhs: Project, rhs: Project) -> Bool {
         return lhs.name == rhs.name &&
             lhs.targets == rhs.targets &&
             lhs.settings == rhs.settings &&
@@ -176,11 +176,11 @@ extension ProjectSpec: Equatable {
     }
 }
 
-extension ProjectSpec {
+extension Project {
 
     public init(basePath: Path, jsonDictionary: JSONDictionary) throws {
         self.basePath = basePath
-        let jsonDictionary = try ProjectSpec.filterJSON(jsonDictionary: jsonDictionary)
+        let jsonDictionary = try Project.filterJSON(jsonDictionary: jsonDictionary)
         name = try jsonDictionary.json(atKeyPath: "name")
         settings = jsonDictionary.json(atKeyPath: "settings") ?? .empty
         settingGroups = jsonDictionary.json(atKeyPath: "settingGroups")
@@ -206,7 +206,7 @@ extension ProjectSpec {
     }
 }
 
-extension ProjectSpec.Options: JSONObjectConvertible {
+extension Project.Options: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
         carthageBuildPath = jsonDictionary.json(atKeyPath: "carthageBuildPath")

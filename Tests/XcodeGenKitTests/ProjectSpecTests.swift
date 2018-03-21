@@ -27,7 +27,7 @@ func projectSpecTests() {
             settings: Settings(buildSettings: ["SETTING_2": "VALUE"])
         )
 
-        func expectValidationError(_ spec: ProjectSpec, _ expectedError: SpecValidationError.ValidationError) throws {
+        func expectValidationError(_ spec: Project, _ expectedError: SpecValidationError.ValidationError) throws {
             do {
                 try spec.validate()
             } catch let error as SpecValidationError {
@@ -80,7 +80,7 @@ func projectSpecTests() {
 
         $0.describe("Validation") {
 
-            let baseSpec = ProjectSpec(basePath: "", name: "", configs: [Config(name: "invalid")])
+            let baseSpec = Project(basePath: "", name: "", configs: [Config(name: "invalid")])
             let invalidSettings = Settings(
                 configSettings: ["invalidConfig": [:]],
                 groups: ["invalidSettingGroup"]
@@ -106,7 +106,7 @@ func projectSpecTests() {
 
             $0.it("allows non-existent configurations") {
                 var spec = baseSpec
-                spec.options = ProjectSpec.Options(disabledValidations: [.missingConfigs])
+                spec.options = Project.Options(disabledValidations: [.missingConfigs])
                 let configPath = fixturePath + "test.xcconfig"
                 spec.configFiles = ["missingConfiguration": configPath.string]
                 try spec.validate()
@@ -170,7 +170,7 @@ func projectSpecTests() {
 
             $0.it("validates missing default configurations") {
                 var spec = baseSpec
-                spec.options = ProjectSpec.Options(defaultConfig: "foo")
+                spec.options = Project.Options(defaultConfig: "foo")
                 try expectValidationError(spec, .missingDefaultConfig(configName: "foo"))
             }
         }

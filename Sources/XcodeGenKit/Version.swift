@@ -1,7 +1,7 @@
 import Foundation
 import ProjectSpec
 
-extension ProjectSpec {
+extension Project {
 
     var xcodeVersion: String {
         return XCodeVersion.parse(options.xcodeVersion ?? "9.2")
