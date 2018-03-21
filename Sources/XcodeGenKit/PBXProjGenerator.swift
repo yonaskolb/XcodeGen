@@ -70,7 +70,7 @@ public class PBXProjGenerator {
             )
         }
 
-        let configName = spec.options.defaultConfig ?? buildConfigs.first?.object.name ?? ""
+        let configName = project.options.defaultConfig ?? buildConfigs.first?.object.name ?? ""
         let buildConfigList = createObject(
             id: project.name,
             XCConfigurationList(
