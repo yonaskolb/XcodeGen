@@ -8,7 +8,7 @@ extension PBXFileElement {
     }
 
     public var sortOrder: Int {
-        if self is PBXGroup {
+        if type(of: self).isa == "PBXGroup" {
             return 0
         } else {
             return 1

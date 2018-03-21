@@ -219,8 +219,8 @@ class SourceGenerator {
         } else {
             let group = PBXVariantGroup(
                 children: [],
-                name: path.lastComponent,
-                sourceTree: .group
+                sourceTree: .group,
+                name: path.lastComponent
             )
             variantGroup = createObject(id: path.byRemovingBase(path: spec.basePath).string, group)
             variantGroupsByPath[path] = variantGroup
