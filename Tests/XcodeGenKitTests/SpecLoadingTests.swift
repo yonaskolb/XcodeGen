@@ -61,6 +61,7 @@ func specLoadingTests() {
                 "int": 1,
                 "intQuote": 1,
                 "float": 3.2,
+                "floatQuote": "10.10",
                 "string": "hello",
                 "stringQuote": "hello",
                 "space": " ",
