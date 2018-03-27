@@ -2,9 +2,12 @@
 
 ## Master
 
+## 1.8.0
+
 #### Added
 - Added Project `defaultConfig` [269](https://github.com/yonaskolb/XcodeGen/pull/269) @keith
 - Added Target `attributes` [276](https://github.com/yonaskolb/XcodeGen/pull/276) @yonaskolb
+- Automatically set `DevelopmentTeam` and `ProvisioningStyle` within `TargetAttributes` if relevant build settings are defined [277](https://github.com/yonaskolb/XcodeGen/pull/277) @yonaskolb
 
 #### Fixed
 - Fixed default `LD_RUNPATH_SEARCH_PATHS` for app extensions [272](https://github.com/yonaskolb/XcodeGen/pull/272) @LinusU
