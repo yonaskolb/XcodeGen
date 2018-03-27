@@ -218,35 +218,37 @@ public class PBXProjGenerator {
 
     func generateTargetAttributes() -> [String: Any]? {
 
-        var targetAttributes: [String: Any] = [:]
-
-        // look up TEST_TARGET_NAME build setting
-        func testTargetName(_ target: PBXTarget) -> String? {
-            guard let configurationList = target.buildConfigurationList else { return nil }
-            guard let buildConfigurationReferences = self.proj.objects.configurationLists[configurationList]?.buildConfigurations else { return nil }
-
-            let configs = buildConfigurationReferences
-                .flatMap { ref in self.proj.objects.buildConfigurations[ref] }
-
-            return configs
-                .flatMap { $0.buildSettings["TEST_TARGET_NAME"] as? String }
-                .first
-        }
+        var targetAttributes: [String: [String: Any]] = [:]
 
         let uiTestTargets = proj.objects.nativeTargets.objectReferences.filter { $0.object.productType == .uiTestBundle }
-
         for uiTestTarget in uiTestTargets {
+            
+            // look up TEST_TARGET_NAME build setting
+            func testTargetName(_ target: PBXTarget) -> String? {
+                guard let configurationList = target.buildConfigurationList else { return nil }
+                guard let buildConfigurationReferences = self.proj.objects.configurationLists[configurationList]?.buildConfigurations else { return nil }
+                
+                let configs = buildConfigurationReferences
+                    .flatMap { ref in self.proj.objects.buildConfigurations[ref] }
+                
+                return configs
+                    .flatMap { $0.buildSettings["TEST_TARGET_NAME"] as? String }
+                    .first
+            }
+            
             guard let name = testTargetName(uiTestTarget.object) else { continue }
             guard let target = self.proj.objects.targets(named: name).first else { continue }
 
-            targetAttributes[uiTestTarget.reference] = ["TestTargetID": target.reference]
+            targetAttributes[uiTestTarget.reference, default: [:]].merge(["TestTargetID": target.reference])
+        }
+        
+        for target in spec.targets {
+            if !target.attributes.isEmpty, let targetObject = targetObjects[target.name] {
+                targetAttributes[targetObject.reference, default: [:]].merge(target.attributes)
+            }
         }
 
-        guard !targetAttributes.isEmpty else { return nil }
-
-        return [
-            "TargetAttributes": targetAttributes,
-        ]
+        return targetAttributes.isEmpty ? nil : ["TargetAttributes": targetAttributes]
     }
 
     func sortGroups(group: ObjectReference<PBXGroup>) {

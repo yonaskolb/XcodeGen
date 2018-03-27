@@ -43,6 +43,7 @@ public struct Target {
     public var scheme: TargetScheme?
     public var legacy: LegacyTarget?
     public var deploymentTarget: Version?
+    public var attributes: [String: Any]
     internal var productName: String?
 
     public var isLegacy: Bool {
@@ -69,7 +70,8 @@ public struct Target {
         prebuildScripts: [BuildScript] = [],
         postbuildScripts: [BuildScript] = [],
         scheme: TargetScheme? = nil,
-        legacy: LegacyTarget? = nil
+        legacy: LegacyTarget? = nil,
+        attributes: [String: Any] = [:]
     ) {
         self.name = name
         self.type = type
@@ -83,6 +85,7 @@ public struct Target {
         self.postbuildScripts = postbuildScripts
         self.scheme = scheme
         self.legacy = legacy
+        self.attributes = attributes
     }
 }
 
@@ -175,7 +178,8 @@ extension Target: Equatable {
             lhs.prebuildScripts == rhs.prebuildScripts &&
             lhs.postbuildScripts == rhs.postbuildScripts &&
             lhs.scheme == rhs.scheme &&
-            lhs.legacy == rhs.legacy
+            lhs.legacy == rhs.legacy &&
+            NSDictionary(dictionary: lhs.attributes).isEqual(to: rhs.attributes)
     }
 }
 
@@ -282,5 +286,6 @@ extension Target: NamedJSONDictionaryConvertible {
         postbuildScripts = jsonDictionary.json(atKeyPath: "postbuildScripts") ?? []
         scheme = jsonDictionary.json(atKeyPath: "scheme")
         legacy = jsonDictionary.json(atKeyPath: "legacy")
+        attributes = jsonDictionary.json(atKeyPath: "attributes") ?? [:]
     }
 }
