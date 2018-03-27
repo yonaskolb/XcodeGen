@@ -7,7 +7,7 @@ import Yams
 
 public class PBXProjGenerator {
 
-    let spec: ProjectSpec
+    let spec: Project
 
     let proj: PBXProj
     var sourceGenerator: SourceGenerator!
@@ -25,7 +25,7 @@ public class PBXProjGenerator {
         return spec.options.carthageBuildPath ?? "Carthage/Build"
     }
 
-    public init(spec: ProjectSpec) {
+    public init(spec: Project) {
         self.spec = spec
         proj = PBXProj(rootObject: "", objectVersion: 46)
         sourceGenerator = SourceGenerator(spec: spec) { [unowned self] id, object in

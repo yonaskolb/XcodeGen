@@ -28,9 +28,9 @@ func generate(spec: String, project: String, isQuiet: Bool, justVersion: Bool) {
         fatalError("No project spec found at \(specPath.absolute())")
     }
 
-    let spec: ProjectSpec
+    let spec: Project
     do {
-        spec = try ProjectSpec(path: specPath)
+        spec = try Project(path: specPath)
         logger.info("📋  Loaded spec:\n  \(spec.debugDescription.replacingOccurrences(of: "\n", with: "\n  "))")
     } catch let error as JSONUtilities.DecodingError {
         fatalError("Parsing spec failed: \(error.description)")

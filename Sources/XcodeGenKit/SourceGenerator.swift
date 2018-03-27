@@ -17,7 +17,7 @@ class SourceGenerator {
     private var groupsByPath: [Path: ObjectReference<PBXGroup>] = [:]
     private var variantGroupsByPath: [Path: ObjectReference<PBXVariantGroup>] = [:]
 
-    private let spec: ProjectSpec
+    private let spec: Project
     var addObjectClosure: (String, PBXObject) -> String
     var targetSourceExcludePaths: Set<Path> = []
     var defaultExcludedFiles = [
@@ -28,7 +28,7 @@ class SourceGenerator {
 
     private(set) var knownRegions: Set<String> = []
 
-    init(spec: ProjectSpec, addObjectClosure: @escaping (String, PBXObject) -> String) {
+    init(spec: Project, addObjectClosure: @escaping (String, PBXObject) -> String) {
         self.spec = spec
         self.addObjectClosure = addObjectClosure
     }

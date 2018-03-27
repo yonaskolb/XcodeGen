@@ -7,7 +7,7 @@ import xcproj
 let fixturePath = Path(#file).parent().parent() + "Fixtures"
 
 func generate(specPath: Path, projectPath: Path) throws -> XcodeProj {
-    let spec = try ProjectSpec(path: specPath)
+    let spec = try Project(path: specPath)
     let generator = ProjectGenerator(spec: spec)
     let project = try generator.generateProject()
     let oldProject = try XcodeProj(path: projectPath)

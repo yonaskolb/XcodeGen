@@ -7,9 +7,9 @@ import Yams
 
 public class ProjectGenerator {
 
-    let spec: ProjectSpec
+    let spec: Project
 
-    public init(spec: ProjectSpec) {
+    public init(spec: Project) {
         self.spec = spec
     }
 
