@@ -209,10 +209,11 @@ func projectGeneratorTests() {
 
             $0.it("generates target attributes") {
                 var appTargetWithAttributes = application
+                appTargetWithAttributes.settings.buildSettings["DEVELOPMENT_TEAM"] = "123"
                 appTargetWithAttributes.attributes = ["ProvisioningStyle": "Automatic"]
                 
                 var testTargetWithAttributes = uiTest
-                testTargetWithAttributes.attributes = ["ProvisioningStyle": "Manual"]
+                testTargetWithAttributes.settings.buildSettings["CODE_SIGN_STYLE"] = "Manual"
                 var spec = ProjectSpec(basePath: "", name: "test", targets: [appTargetWithAttributes, framework, testTargetWithAttributes])
                 let pbxProject = try getPbxProj(spec)
 
@@ -231,6 +232,7 @@ func projectGeneratorTests() {
                 try expect(targetAttributes[uiTestTarget.reference]?["TestTargetID"] as? String) == appTarget.reference
                 try expect(targetAttributes[uiTestTarget.reference]?["ProvisioningStyle"] as? String) == "Manual"
                 try expect(targetAttributes[appTarget.reference]?["ProvisioningStyle"] as? String) == "Automatic"
+                try expect(targetAttributes[appTarget.reference]?["DevelopmentTeam"] as? String) == "123"
             }
 
             $0.it("generates platform version") {

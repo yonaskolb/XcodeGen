@@ -243,9 +243,33 @@ public class PBXProjGenerator {
         }
         
         for target in spec.targets {
-            if !target.attributes.isEmpty, let targetObject = targetObjects[target.name] {
-                targetAttributes[targetObject.reference, default: [:]].merge(target.attributes)
+            guard let targetReference = targetObjects[target.name]?.reference else {
+                continue
             }
+            if !target.attributes.isEmpty {
+                targetAttributes[targetReference, default: [:]].merge(target.attributes)
+            }
+            
+            func getSingleBuildSetting(_ setting: String) -> String? {
+                let settings = spec.configs.flatMap {
+                    spec.getCombinedBuildSettings(basePath: spec.basePath, target: target, config: $0)[setting] as? String
+                }
+                guard settings.count == spec.configs.count,
+                    let firstSetting = settings.first,
+                    settings.filter({ $0 == firstSetting}).count == settings.count else {
+                        return nil
+                }
+                return firstSetting
+            }
+            
+            func setTargetAttribute(attribute: String, buildSetting: String) {
+                if let setting = getSingleBuildSetting(buildSetting) {
+                    targetAttributes[targetReference, default: [:]].merge([attribute: setting])
+                }
+            }
+            
+            setTargetAttribute(attribute: "ProvisioningStyle", buildSetting: "CODE_SIGN_STYLE")
+            setTargetAttribute(attribute: "DevelopmentTeam", buildSetting: "DEVELOPMENT_TEAM")
         }
 
         return targetAttributes.isEmpty ? nil : ["TargetAttributes": targetAttributes]

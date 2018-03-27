@@ -5,9 +5,9 @@ import xcproj
 
 public struct Settings: Equatable, JSONObjectConvertible, CustomStringConvertible {
 
-    public let buildSettings: BuildSettings
-    public let configSettings: [String: Settings]
-    public let groups: [String]
+    public var buildSettings: BuildSettings
+    public var configSettings: [String: Settings]
+    public var groups: [String]
 
     public init(buildSettings: BuildSettings = [:], configSettings: [String: Settings] = [:], groups: [String] = []) {
         self.buildSettings = buildSettings

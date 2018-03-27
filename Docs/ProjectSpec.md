@@ -165,7 +165,10 @@ Settings are merged in the following order: groups, base, configs.
 - [ ] **dependencies**: **[[Dependency](#dependency)]** - Dependencies for the target
 - [ ] **scheme**: **[Target Scheme](#target-scheme)** - Generated scheme with tests or config variants
 - [ ] **legacy**: **[Legacy Target](#legacy-target)** - When present, opt-in to make an Xcode "External Build System" legacy target instead.
-- [ ] **attributes**: **[String: Any]** - This sets values in the project `TargetAttributes`. It is merged with `attributes` from the project and anything automatically added by XcodeGen, with any duplicate values being override by values specified here. This is for advanced use only.
+- [ ] **attributes**: **[String: Any]** - This sets values in the project `TargetAttributes`. It is merged with `attributes` from the project and anything automatically added by XcodeGen, with any duplicate values being override by values specified here. This is for advanced use only. Properties that are already set include:
+	- `DevelopmentTeam`: if all configurations have the same `DEVELOPMENT_TEAM` setting
+	- `ProvisioningStyle`: if all configurations have the same `CODE_SIGN_STYLE` setting
+	- `TestTargetID`: if all configurations have the same `TEST_TARGET_NAME` setting
 
 ### Product Type
 
