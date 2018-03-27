@@ -6,7 +6,7 @@
 
 For code signing to work, you need to tell Xcode wich development team to use. This can be done in one of several way:
 
-### By setting the `DEVELOPMENT_TEAM` in the target's settings
+#### By setting the `DEVELOPMENT_TEAM` in the target's settings
 
 Simply specify your development team id in your `project.yml` file, like so:
 
@@ -19,7 +19,7 @@ targets:
       DEVELOPMENT_TEAM: XXXXXXXXX
 ```
 
-### By passing `DEVELOPMENT_TEAM` as an env variable
+#### By passing `DEVELOPMENT_TEAM` as an env variable
 
 You can also pass `DEVELOPMENT_TEAM` as an environemntal variable to `xcodebuild`, like so:
 
@@ -27,7 +27,7 @@ You can also pass `DEVELOPMENT_TEAM` as an environemntal variable to `xcodebuild
 DEVELOPMENT_TEAM=XXXXXXXXX xcodebuild ...
 ```
 
-### By using an `.xcconfig` file:
+#### By using an `.xcconfig` file:
 
 The development team can also be read from `.xcconfig` files, this allows you to specify different teams for different build configurations. Start by creating an `.xcconfig` file with the value:
 
