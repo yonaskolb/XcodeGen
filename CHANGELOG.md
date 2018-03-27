@@ -2,6 +2,17 @@
 
 ## Master
 
+#### Added
+- Added Project `defaultConfig` [269](https://github.com/yonaskolb/XcodeGen/pull/269) @keith
+- Added Target `attributes` [276](https://github.com/yonaskolb/XcodeGen/pull/276) @yonaskolb
+
+#### Fixed
+- Fixed default `LD_RUNPATH_SEARCH_PATHS` for app extensions [272](https://github.com/yonaskolb/XcodeGen/pull/272) @LinusU
+
+#### Internal
+- Make `LegacyTarget` init public [264](https://github.com/yonaskolb/XcodeGen/pull/264) @jerrymarino
+- Upgrade to *xcproj* to 4.2.0, *Yams* to 0.6.0 and *PathKit* to 0.9.1 @yonaskolb
+
 ## 1.7.0
 
 #### Added
