@@ -23,6 +23,8 @@ targets:
     type: application
     platform: iOS
     deploymentTarget: 11.2
+    attributes:
+      ProvisioningStyle: Automatic
     sources:
       - StandaloneFiles/StandaloneAssets.xcassets
       - path: App_iOS

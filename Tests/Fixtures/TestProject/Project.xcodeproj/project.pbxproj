@@ -678,6 +678,9 @@
 					NT_123503999387 = {
 						TestTargetID = NT_825232110500;
 					};
+					NT_825232110500 = {
+						ProvisioningStyle = Automatic;
+					};
 				};
 			};
 			buildConfigurationList = CL_844877120535 /* Build configuration list for PBXProject "Project" */;
