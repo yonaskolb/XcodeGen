@@ -211,7 +211,7 @@ func projectGeneratorTests() {
                 var appTargetWithAttributes = application
                 appTargetWithAttributes.settings.buildSettings["DEVELOPMENT_TEAM"] = "123"
                 appTargetWithAttributes.attributes = ["ProvisioningStyle": "Automatic"]
-                
+
                 var testTargetWithAttributes = uiTest
                 testTargetWithAttributes.settings.buildSettings["CODE_SIGN_STYLE"] = "Manual"
                 var spec = ProjectSpec(basePath: "", name: "test", targets: [appTargetWithAttributes, framework, testTargetWithAttributes])

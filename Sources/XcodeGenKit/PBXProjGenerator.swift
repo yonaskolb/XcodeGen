@@ -222,26 +222,26 @@ public class PBXProjGenerator {
 
         let uiTestTargets = proj.objects.nativeTargets.objectReferences.filter { $0.object.productType == .uiTestBundle }
         for uiTestTarget in uiTestTargets {
-            
+
             // look up TEST_TARGET_NAME build setting
             func testTargetName(_ target: PBXTarget) -> String? {
                 guard let configurationList = target.buildConfigurationList else { return nil }
                 guard let buildConfigurationReferences = self.proj.objects.configurationLists[configurationList]?.buildConfigurations else { return nil }
-                
+
                 let configs = buildConfigurationReferences
                     .flatMap { ref in self.proj.objects.buildConfigurations[ref] }
-                
+
                 return configs
                     .flatMap { $0.buildSettings["TEST_TARGET_NAME"] as? String }
                     .first
             }
-            
+
             guard let name = testTargetName(uiTestTarget.object) else { continue }
             guard let target = self.proj.objects.targets(named: name).first else { continue }
 
             targetAttributes[uiTestTarget.reference, default: [:]].merge(["TestTargetID": target.reference])
         }
-        
+
         for target in spec.targets {
             guard let targetReference = targetObjects[target.name]?.reference else {
                 continue
@@ -249,25 +249,25 @@ public class PBXProjGenerator {
             if !target.attributes.isEmpty {
                 targetAttributes[targetReference, default: [:]].merge(target.attributes)
             }
-            
+
             func getSingleBuildSetting(_ setting: String) -> String? {
                 let settings = spec.configs.flatMap {
                     spec.getCombinedBuildSettings(basePath: spec.basePath, target: target, config: $0)[setting] as? String
                 }
                 guard settings.count == spec.configs.count,
                     let firstSetting = settings.first,
-                    settings.filter({ $0 == firstSetting}).count == settings.count else {
-                        return nil
+                    settings.filter({ $0 == firstSetting }).count == settings.count else {
+                    return nil
                 }
                 return firstSetting
             }
-            
+
             func setTargetAttribute(attribute: String, buildSetting: String) {
                 if let setting = getSingleBuildSetting(buildSetting) {
                     targetAttributes[targetReference, default: [:]].merge([attribute: setting])
                 }
             }
-            
+
             setTargetAttribute(attribute: "ProvisioningStyle", buildSetting: "CODE_SIGN_STYLE")
             setTargetAttribute(attribute: "DevelopmentTeam", buildSetting: "DEVELOPMENT_TEAM")
         }

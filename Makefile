@@ -1,6 +1,6 @@
 TOOL_NAME = XcodeGen
 export EXECUTABLE_NAME = xcodegen
-VERSION = 1.7.0
+VERSION = 1.8.0
 
 PREFIX = /usr/local
 INSTALL_PATH = $(PREFIX)/bin/$(EXECUTABLE_NAME)
@@ -26,8 +26,8 @@ uninstall:
 	rm -rf $(SHARE_PATH)
 
 format_code:
-	swiftformat Tests --wraparguments beforefirst --stripunusedargs closure-only --header strip
-	swiftformat Sources --wraparguments beforefirst --stripunusedargs closure-only --header strip
+	swiftformat Tests --wraparguments beforefirst --stripunusedargs closure-only --header strip --disable blankLinesAtStartOfScope
+	swiftformat Sources --wraparguments beforefirst --stripunusedargs closure-only --header strip --disable blankLinesAtStartOfScope
 
 update_brew:
 	sed -i '' 's|\(url ".*/archive/\)\(.*\)\(.tar\)|\1$(VERSION)\3|' Formula/xcodegen.rb
