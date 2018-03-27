@@ -1,6 +1,4 @@
-# NOTE: Do not ignore .DS_Store for test fixtures.
-# .DS_Store
-./.DS_Store
+.DS_Store
 
 /.build
 /Packages
