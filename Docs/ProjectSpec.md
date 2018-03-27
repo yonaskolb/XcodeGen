@@ -1,4 +1,5 @@
 # Project Spec
+
 The project spec can be written in either YAML or JSON. All the examples below use YAML.
 
 Required properties are marked with checkbox. Some of the YAML examples don't show all the required properties. For example not all target examples will have a platform or type, even though they are required.
@@ -33,11 +34,12 @@ Required properties are marked with checkbox. Some of the YAML examples don't sh
 - [ ] **configFiles**: **[Config Files](#config-files)** - `.xcconfig` files per config
 - [ ] **settings**: **[Settings](#settings)** - Project specific settings. Default base and config type settings will be applied first before any settings defined here
 - [ ] **settingGroups**: **[Setting Groups](#setting-groups)** - Setting groups mapped by name
-- [ ] **targets**: **[Target](#target)** - The list of targets in the project mapped by name
+- [ ] **targets**: **[String: [Target](#target)]** - The list of targets in the project mapped by name
 - [ ] **fileGroups**: **[String]** - A list of paths to add to the top level groups. These are files that aren't build files but that you'd like in the project hierachy. For example a folder xcconfig files that aren't already added by any target sources.
 - [ ] **schemes**: **[Scheme](#scheme)** - A list of schemes by name. This allows more control over what is found in [Target Scheme](#target-scheme)
 
 ### Include
+
 One or more specs can be included in the project spec. This can be used to split your project spec into multiple files, for easier structuring or sharing between multiple specs. Included specs can also include other specs and so on.
 
 Include can either be a list of string paths or a single string path. They will be merged in order and then the current spec will be merged on top.
@@ -63,6 +65,7 @@ targets:
 Note that target names can also be changed by adding a `name` property to a target.
 
 ### Options
+
 - [ ] **carthageBuildPath**: **String** - The path to the carthage build directory. Defaults to `Carthage/Build`. This is used when specifying target carthage dependencies
 - [ ] **carthageExecutablePath**: **String** - The path to the carthage executable. Defaults to `carthage`. You can specify when you use custom built or locally installed Carthage using [Mint](https://github.com/yonaskolb/Mint), for example.
 - [ ] **createIntermediateGroups**: **Bool** - If this is specified and set to `true`, then intermediate groups will be created for every path component between the folder containing the source and next existing group it finds or the base path. For example, when enabled if a source path is specified as `Vendor/Foo/Hello.swift`, the group `Vendor` will created as a parent of the `Foo` group.
@@ -90,6 +93,7 @@ options:
 ```
 
 ### Configs
+
 Each config maps to a build type of either `debug` or `release` which will then apply default build settings to the project. Any value other than `debug` or `release` (for example `none`), will mean no default build settings will be applied to the project.
 
 ```yaml
@@ -99,8 +103,8 @@ configs:
 ```
 If no configs are specified, default `Debug` and `Release` configs will be created automatically.
 
-
 ### Setting Groups
+
 Setting groups are named groups of build settings that can be reused elsewhere. Each preset is a [Settings](#settings) schema, so can include other groups
 
 ```yaml
@@ -115,11 +119,12 @@ settingGroups:
   preset3:
      configs:
         debug:
-        	groups:
+          groups:
             - preset
 ```
 
 ## Settings
+
 Settings can either be a simple map of build settings `[String:String]`, or can be more advanced with the following properties:
 
 - [ ] **groups**: **[String]** - List of setting groups to include and merge
@@ -162,6 +167,7 @@ Settings are merged in the following order: groups, base, configs.
 - [ ] **legacy**: **[Legacy Target](#legacy-target)** - When present, opt-in to make an Xcode "External Build System" legacy target instead.
 
 ### Product Type
+
 This will provide default build settings for a certain product type. It can be any of the following:
 
 - `application`
@@ -186,6 +192,7 @@ This will provide default build settings for a certain product type. It can be a
 - ``""`` (used for legacy targets)
 
 ### Platform
+
 This will provide default build settings for a certain platform. It can be any of the following:
 
 - `iOS`
@@ -216,9 +223,11 @@ targets:
       groups:
         - $platform
 ```
+
 The above will generate 2 targets named `MyFramework_iOS` and `MyFramework_tvOS`, with all the relevant platform build settings. They will both have a `PRODUCT_NAME` of `MyFramework`
 
 ### Sources
+
 Specifies the source directories for a target. This can either be a single source or a list of sources. Applicable source files, resources, headers, and `.lproj` files will be parsed appropriately.
 
 A source can be provided via a string (the path) or an object of the form:
@@ -267,6 +276,7 @@ targets:
 ```
 
 ### Dependency
+
 A dependency can be one of a 3 types:
 
 - `target: name` - links to another target
@@ -310,6 +320,7 @@ targets:
 ```
 
 ### Config Files
+
 Specifies `.xcconfig` files for each configuration.
 
 ```yaml
@@ -321,6 +332,7 @@ targets:
 ```
 
 ### Build Script
+
 Run script build phases added via **prebuildScripts** or **postBuildScripts**. They run before or after any other build phases respectively and in the order defined. Each script can contain:
 
 - [x] **path**: **String** - a relative or absolute path to a shell script
@@ -356,6 +368,7 @@ targets:
 ```
 
 ###  Target Scheme
+
 This is a convenience used to automatically generate schemes for a target based on different configs or included tests. If you want more control check out the top level [Scheme](#scheme).
 
 - [x] **configVariants**: **[String]** - This generates a scheme for each entry, using configs that contain the name with debug and release variants. This is useful for having different environment schemes.
@@ -401,6 +414,7 @@ targets
 ```
 
 ###  Legacy Target
+
 By providing a legacy target, you are opting in to the "Legacy Target" mode. This is the "External Build Tool" from the Xcode GUI. This is useful for scripts that you want to run as dependencies of other targets, but you want to make sure that it only runs once even if it is specified as a dependency from multiple other targets.
 
 - [x] ***toolPath***: String - Path to the build tool used in the legacy target.
@@ -420,6 +434,7 @@ Schemes allows for more control than the convenience [Target Scheme](#target-sch
 - [ ] ***archive***: The archive action
 
 ### Build
+
 - [x] **targets**: **[String:String]** or **[String:[String]]** - A map of target names to build and which build types they should be enabled for. The build types can be `all`, `none`, or an array of the following types:
 	- `run` or `running`
 	- `test` or `testing`
@@ -444,6 +459,7 @@ buildImplicitDependencies: true
 ```
 
 ### Common Build Action options
+
 The different actions share some properties:
 
 - [ ] **config**: **String** - All build actions can be set to use a certain config. If a config, or the build action itself, is not defined the first configuration found of a certain type will be used, depending on the type:
@@ -455,6 +471,7 @@ The different actions share some properties:
 - [ ] **environmentVariables**: **[[Environment Variable](#environment-variable)]** or **[String:String]** - `run`, `test` and `profile` actions can define the environment variables. When passing a dictionary, every key-value entry maps to a corresponding variable that is enabled.
 
 ### Execution Action
+
 Scheme run scripts added via **preActions** or **postActions**. They run before or after a build action, respectively, and in the order defined. Each execution action can contain:
 
 - [x] **script**: **String** - an inline shell script
@@ -464,10 +481,12 @@ Scheme run scripts added via **preActions** or **postActions**. They run before 
 A multiline script can be written using the various YAML multiline methods, for example with `|`. See [Build Script](#build-script).
 
 ### Test Action
+
 - [ ] **gatherCoverageData**: **Bool** - a boolean that indicates if this scheme should gather coverage data. This defaults to false
 - [ ] **targets**: **[String]** - a list of targets to test
 
 ### Environment Variable
+
 - [x] **variable**: **String** - variable's name.
 - [x] **value**: **String** - variable's value.
 - [ ] **isEnabled**: **Bool** - indicates whether the environment variable is enabled. This defaults to true.
