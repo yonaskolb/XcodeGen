@@ -189,19 +189,25 @@ public struct TargetScheme {
     public var gatherCoverageData: Bool
     public var commandLineArguments: [String: Bool]
     public var environmentVariables: [XCScheme.EnvironmentVariable]
+    public var preActions: [Scheme.ExecutionAction]
+    public var postActions: [Scheme.ExecutionAction]
 
     public init(
         testTargets: [String] = [],
         configVariants: [String] = [],
         gatherCoverageData: Bool = false,
         commandLineArguments: [String: Bool] = [:],
-        environmentVariables: [XCScheme.EnvironmentVariable] = []
+        environmentVariables: [XCScheme.EnvironmentVariable] = [],
+        preActions: [Scheme.ExecutionAction] = [],
+        postActions: [Scheme.ExecutionAction] = []
     ) {
         self.testTargets = testTargets
         self.configVariants = configVariants
         self.gatherCoverageData = gatherCoverageData
         self.commandLineArguments = commandLineArguments
         self.environmentVariables = environmentVariables
+        self.preActions = preActions
+        self.postActions = postActions
     }
 }
 
@@ -209,7 +215,12 @@ extension TargetScheme: Equatable {
 
     public static func == (lhs: TargetScheme, rhs: TargetScheme) -> Bool {
         return lhs.testTargets == rhs.testTargets &&
-            lhs.configVariants == rhs.configVariants
+            lhs.configVariants == rhs.configVariants &&
+            lhs.gatherCoverageData == rhs.gatherCoverageData &&
+            lhs.commandLineArguments == rhs.commandLineArguments &&
+            lhs.environmentVariables == rhs.environmentVariables &&
+            lhs.preActions == rhs.preActions &&
+            lhs.postActions == rhs.postActions
     }
 }
 
@@ -221,6 +232,8 @@ extension TargetScheme: JSONObjectConvertible {
         gatherCoverageData = jsonDictionary.json(atKeyPath: "gatherCoverageData") ?? false
         commandLineArguments = jsonDictionary.json(atKeyPath: "commandLineArguments") ?? [:]
         environmentVariables = try XCScheme.EnvironmentVariable.parseAll(jsonDictionary: jsonDictionary)
+        preActions = jsonDictionary.json(atKeyPath: "preActions") ?? []
+        postActions = jsonDictionary.json(atKeyPath: "postActions") ?? []
     }
 }
 
