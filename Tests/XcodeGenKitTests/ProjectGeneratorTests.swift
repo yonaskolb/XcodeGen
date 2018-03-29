@@ -464,6 +464,32 @@ func projectGeneratorTests() {
                 try expect(xcscheme.testAction?.environmentVariables) == variables
                 try expect(xcscheme.profileAction?.environmentVariables) == variables
             }
+
+            $0.it("generates pre and post actions for target schemes") {
+                var target = application
+                target.scheme = TargetScheme(
+                    preActions: [.init(name: "Run", script: "do")],
+                    postActions: [.init(name: "Run2", script: "post", settingsTarget: "MyApp")]
+                )
+
+                let spec = ProjectSpec(basePath: "", name: "test", targets: [target, framework])
+                let project = try getProject(spec)
+
+                try expect(project.sharedData?.schemes.count) == 1
+
+                guard let xcscheme = project.sharedData?.schemes.first else {
+                    throw failure("Scheme not found")
+                }
+
+                try expect(xcscheme.launchAction?.preActions.count) == 1
+                try expect(xcscheme.launchAction?.preActions.first?.title) == "Run"
+                try expect(xcscheme.launchAction?.preActions.first?.scriptText) == "do"
+
+                try expect(xcscheme.testAction?.postActions.count) == 1
+                try expect(xcscheme.testAction?.postActions.first?.title) == "Run2"
+                try expect(xcscheme.testAction?.postActions.first?.scriptText) == "post"
+                try expect(xcscheme.testAction?.postActions.first?.environmentBuildable?.blueprintName) == "MyApp"
+            }
         }
 
         $0.describe("Sources") {

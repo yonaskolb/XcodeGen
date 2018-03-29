@@ -36,7 +36,7 @@ public struct Scheme: Equatable {
         public var script: String
         public var name: String
         public var settingsTarget: String?
-        public init(name: String, script: String, settingsTarget: String?) {
+        public init(name: String, script: String, settingsTarget: String? = nil) {
             self.script = script
             self.name = name
             self.settingsTarget = settingsTarget
