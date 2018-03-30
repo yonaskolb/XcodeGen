@@ -187,16 +187,42 @@ func specLoadingTests() {
         $0.it("parses target schemes") {
             var targetDictionary = validTarget
             targetDictionary["scheme"] = [
+                "testTargets": ["t1", "t2"],
+                "configVariants": ["dev", "app-store"],
+                "commandLineArguments": [
+                    "ENV1": true
+                ],
+                "gatherCoverageData": true,
                 "environmentVariables": [
                     "TEST_VAR": "TEST_VAL",
                 ],
+                "preActions": [
+                    [
+                        "script": "dothing",
+                        "name": "Do Thing",
+                        "settingsTarget": "test"
+                    ]
+                ],
+                "postActions": [
+                    [
+                        "script": "hello"
+                    ]
+                ]
             ]
 
             let target = try Target(name: "test", jsonDictionary: targetDictionary)
 
-            let expectedVariables = [XCScheme.EnvironmentVariable(variable: "TEST_VAR", value: "TEST_VAL", enabled: true)]
+            let scheme = TargetScheme(
+                testTargets: ["t1", "t2"],
+                configVariants: ["dev", "app-store"],
+                gatherCoverageData: true,
+                commandLineArguments: ["ENV1": true],
+                environmentVariables: [XCScheme.EnvironmentVariable(variable: "TEST_VAR", value: "TEST_VAL", enabled: true)],
+                preActions: [.init(name: "Do Thing", script: "dothing", settingsTarget: "test")],
+                postActions: [.init(name: "Run Script", script: "hello")]
+            )
 
-            try expect(target.scheme?.environmentVariables) == expectedVariables
+            try expect(target.scheme) == scheme
         }
 
         $0.it("parses schemes") {

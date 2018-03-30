@@ -380,6 +380,8 @@ This is a convenience used to automatically generate schemes for a target based 
 - [ ] **gatherCoverageData**: **Bool** - a boolean that indicates if this scheme should gather coverage data. This defaults to false
 - [ ] **commandLineArguments**: **[String:Bool]** - a dictionary from the argument name (`String`) to if it is enabled (`Bool`). These arguments will be added to the Test, Profile and Run scheme actions
 - [ ] **environmentVariables**: **[[Environment Variable](#environment-variable)]** or **[String:String]** - environment variables for Run, Test and Profile scheme actions. When passing a dictionary, every key-value entry maps to a corresponding variable that is enabled.
+- [ ] **preActions**: **[[Execution Action](#execution-action)]** - Scripts that are run *before* all actions
+- [ ] **postActions**: **[[Execution Action](#execution-action)]** - Scripts that are run *after* all actions
 
 For example, the spec below would create 3 schemes called:
 
@@ -470,8 +472,8 @@ The different actions share some properties:
 	- `debug`: run, test, analyze
 	- `release`: profile, archive
 - [ ] **commandLineArguments**: **[String:Bool]** - `run`, `test` and `profile` actions have a map of command line arguments to whether they are enabled
-- [ ] **preActions**: **[[Execution Action](#execution-action)]** - Scheme run scripts that run *before* the action is run
-- [ ] **postActions**: **[[Execution Action](#execution-action)]** - Scheme run scripts that run *after* the action is run
+- [ ] **preActions**: **[[Execution Action](#execution-action)]** - Scripts that are run *before* the action
+- [ ] **postActions**: **[[Execution Action](#execution-action)]** - Scripts that are run *after* the action
 - [ ] **environmentVariables**: **[[Environment Variable](#environment-variable)]** or **[String:String]** - `run`, `test` and `profile` actions can define the environment variables. When passing a dictionary, every key-value entry maps to a corresponding variable that is enabled.
 
 ### Execution Action

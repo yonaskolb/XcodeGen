@@ -36,7 +36,7 @@ public struct Scheme: Equatable {
         public var script: String
         public var name: String
         public var settingsTarget: String?
-        public init(name: String, script: String, settingsTarget: String?) {
+        public init(name: String, script: String, settingsTarget: String? = nil) {
             self.script = script
             self.name = name
             self.settingsTarget = settingsTarget
@@ -253,8 +253,8 @@ extension Scheme.Run: JSONObjectConvertible {
     public init(jsonDictionary: JSONDictionary) throws {
         config = jsonDictionary.json(atKeyPath: "config")
         commandLineArguments = jsonDictionary.json(atKeyPath: "commandLineArguments") ?? [:]
-        preActions = try jsonDictionary.json(atKeyPath: "preActions")?.map(Scheme.ExecutionAction.init) ?? []
-        postActions = try jsonDictionary.json(atKeyPath: "postActions")?.map(Scheme.ExecutionAction.init) ?? []
+        preActions = jsonDictionary.json(atKeyPath: "preActions") ?? []
+        postActions = jsonDictionary.json(atKeyPath: "postActions") ?? []
         environmentVariables = try XCScheme.EnvironmentVariable.parseAll(jsonDictionary: jsonDictionary)
     }
 }
@@ -266,8 +266,8 @@ extension Scheme.Test: JSONObjectConvertible {
         gatherCoverageData = jsonDictionary.json(atKeyPath: "gatherCoverageData") ?? false
         commandLineArguments = jsonDictionary.json(atKeyPath: "commandLineArguments") ?? [:]
         targets = jsonDictionary.json(atKeyPath: "targets") ?? []
-        preActions = try jsonDictionary.json(atKeyPath: "preActions")?.map(Scheme.ExecutionAction.init) ?? []
-        postActions = try jsonDictionary.json(atKeyPath: "postActions")?.map(Scheme.ExecutionAction.init) ?? []
+        preActions = jsonDictionary.json(atKeyPath: "preActions") ?? []
+        postActions = jsonDictionary.json(atKeyPath: "postActions") ?? []
         environmentVariables = try XCScheme.EnvironmentVariable.parseAll(jsonDictionary: jsonDictionary)
     }
 }
@@ -277,8 +277,8 @@ extension Scheme.Profile: JSONObjectConvertible {
     public init(jsonDictionary: JSONDictionary) throws {
         config = jsonDictionary.json(atKeyPath: "config")
         commandLineArguments = jsonDictionary.json(atKeyPath: "commandLineArguments") ?? [:]
-        preActions = try jsonDictionary.json(atKeyPath: "preActions")?.map(Scheme.ExecutionAction.init) ?? []
-        postActions = try jsonDictionary.json(atKeyPath: "postActions")?.map(Scheme.ExecutionAction.init) ?? []
+        preActions = jsonDictionary.json(atKeyPath: "preActions") ?? []
+        postActions = jsonDictionary.json(atKeyPath: "postActions") ?? []
         environmentVariables = try XCScheme.EnvironmentVariable.parseAll(jsonDictionary: jsonDictionary)
     }
 }
@@ -294,8 +294,8 @@ extension Scheme.Archive: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
         config = jsonDictionary.json(atKeyPath: "config")
-        preActions = try jsonDictionary.json(atKeyPath: "preActions")?.map(Scheme.ExecutionAction.init) ?? []
-        postActions = try jsonDictionary.json(atKeyPath: "postActions")?.map(Scheme.ExecutionAction.init) ?? []
+        preActions = jsonDictionary.json(atKeyPath: "preActions") ?? []
+        postActions = jsonDictionary.json(atKeyPath: "postActions") ?? []
     }
 }
 

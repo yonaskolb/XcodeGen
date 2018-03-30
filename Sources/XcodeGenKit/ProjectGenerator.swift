@@ -210,6 +210,8 @@ extension Scheme {
             run: .init(
                 config: debugConfig,
                 commandLineArguments: targetScheme.commandLineArguments,
+                preActions: targetScheme.preActions,
+                postActions: targetScheme.postActions,
                 environmentVariables: targetScheme.environmentVariables
             ),
             test: .init(
@@ -217,15 +219,25 @@ extension Scheme {
                 gatherCoverageData: targetScheme.gatherCoverageData,
                 commandLineArguments: targetScheme.commandLineArguments,
                 targets: targetScheme.testTargets,
+                preActions: targetScheme.preActions,
+                postActions: targetScheme.postActions,
                 environmentVariables: targetScheme.environmentVariables
             ),
             profile: .init(
                 config: releaseConfig,
                 commandLineArguments: targetScheme.commandLineArguments,
+                preActions: targetScheme.preActions,
+                postActions: targetScheme.postActions,
                 environmentVariables: targetScheme.environmentVariables
             ),
-            analyze: .init(config: debugConfig),
-            archive: .init(config: releaseConfig)
+            analyze: .init(
+                config: debugConfig
+            ),
+            archive: .init(
+                config: releaseConfig,
+                preActions: targetScheme.preActions,
+                postActions: targetScheme.postActions
+            )
         )
     }
 }
