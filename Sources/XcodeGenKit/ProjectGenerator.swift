@@ -103,8 +103,7 @@ public class ProjectGenerator {
             shouldUseLaunchSchemeArgsEnv: scheme.test?.shouldUseLaunchSchemeArgsEnv ?? true,
             codeCoverageEnabled: scheme.test?.gatherCoverageData ?? false,
             commandlineArguments: testCommandLineArgs,
-            environmentVariables: testVariables,
-            language: ""
+            environmentVariables: testVariables
         )
 
         let launchAction = XCScheme.LaunchAction(
