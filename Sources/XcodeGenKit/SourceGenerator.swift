@@ -422,8 +422,15 @@ class SourceGenerator {
             if !createIntermediateGroups {
                 rootGroups.insert(fileReference)
             }
+            
+            let buildPhase: BuildPhase?
+            if let targetBuildPhase = targetSource.buildPhase {
+                buildPhase = targetBuildPhase.buildPhase
+            } else {
+                buildPhase = .resources
+            }
 
-            let sourceFile = generateSourceFile(targetSource: targetSource, path: folderPath, buildPhase: targetSource.buildPhase?.buildPhase ?? .resources)
+            let sourceFile = generateSourceFile(targetSource: targetSource, path: folderPath, buildPhase: buildPhase)
 
             sourceFiles.append(sourceFile)
             sourceReference = fileReference
