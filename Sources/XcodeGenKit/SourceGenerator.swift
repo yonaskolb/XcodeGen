@@ -419,7 +419,7 @@ class SourceGenerator {
                 lastKnownFileType: "folder"
             )
 
-            if !createIntermediateGroups {
+            if !createIntermediateGroups || path.parent() == spec.basePath  {
                 rootGroups.insert(fileReference)
             }
             
