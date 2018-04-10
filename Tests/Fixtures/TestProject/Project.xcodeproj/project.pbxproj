@@ -159,6 +159,7 @@
 		FR_472296042419 /* Framework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Framework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR_473000061463 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		FR_479264660374 /* Legacy */ = {isa = PBXFileReference; includeInIndex = 0; path = Legacy; sourceTree = BUILT_PRODUCTS_DIR; };
+		FR_479281060337 /* Folder */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Folder; sourceTree = SOURCE_ROOT; };
 		FR_481575785861 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		FR_500792082643 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LocalizedStoryboard.strings; sourceTree = "<group>"; };
 		FR_507023492251 /* App_watchOS Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "App_watchOS Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -411,6 +412,7 @@
 				G_8620238527590 /* Products */,
 				G_7189434949822 /* Resources */,
 				G_6651250437419 /* StandaloneFiles */,
+				FR_479281060337 /* Folder */,
 				FR_815403394914 /* Headers */,
 				FR_257073931060 /* ResourceFolder */,
 			);

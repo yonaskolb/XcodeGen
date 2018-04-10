@@ -39,6 +39,9 @@ targets:
       - Resources/MyBundle.bundle
       - path: Resources/ResourceFolder
         type: folder
+      - path: Folder
+        type: folder
+        buildPhase: none
     settings:
       INFOPLIST_FILE: App_iOS/Info.plist
       PRODUCT_BUNDLE_IDENTIFIER: com.project.app
