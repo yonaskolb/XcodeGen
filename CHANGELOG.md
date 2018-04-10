@@ -2,6 +2,21 @@
 
 ## Master
 
+## 1.8.1
+
+#### Added
+- Scheme pre and post actions can now be added to `target.scheme` [280](https://github.com/yonaskolb/XcodeGen/pull/280) @yonaskolb
+
+#### Changed
+- Updated to `xcproj` 4.3.0 for Xcode 9.3 updates
+- Update default Xcode version to 9.3 including new settings [284](https://github.com/yonaskolb/XcodeGen/pull/284) @LinusU
+
+#### Fixed
+- Fixed manual build phase of `none` not being applied to folders [288](https://github.com/yonaskolb/XcodeGen/pull/288) @yonaskolb
+- Quoted values now correctly get parsed as strings [282](https://github.com/yonaskolb/XcodeGen/pull/282) @yonaskolb
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/1.8.0...1.8.1)
+
 ## 1.8.0
 
 #### Added
@@ -15,6 +30,8 @@
 #### Internal
 - Make `LegacyTarget` init public [264](https://github.com/yonaskolb/XcodeGen/pull/264) @jerrymarino
 - Upgrade to *xcproj* to 4.2.0, *Yams* to 0.6.0 and *PathKit* to 0.9.1 @yonaskolb
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/1.7.0...1.8.0)
 
 ## 1.7.0
 
