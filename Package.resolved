@@ -6,8 +6,8 @@
         "repositoryURL": "https://github.com/tadija/AEXML.git",
         "state": {
           "branch": null,
-          "revision": "09f27784d9e328670ef0a181c832cce497117131",
-          "version": "4.2.2"
+          "revision": "6eea665515d079c338690147082a8084a36484b0",
+          "version": "4.3.0"
         }
       },
       {
@@ -69,8 +69,8 @@
         "repositoryURL": "https://github.com/xcodeswift/xcproj.git",
         "state": {
           "branch": null,
-          "revision": "eaddb983150f2eb1d308f4949b8e31d6cae4e7e9",
-          "version": "4.2.0"
+          "revision": "e787c68092e28fe2b34205fc1b62de431922c243",
+          "version": "4.3.0"
         }
       },
       {
