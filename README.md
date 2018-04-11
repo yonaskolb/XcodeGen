@@ -37,6 +37,7 @@ The project spec is a YAML or JSON file that defines your targets, configuration
 - ✅ Generate from anywhere including on **CI**
 - ✅ Distribute your spec amongst multiple files for easy **sharing** and overriding
 - ✅ Easily create **multi-platform** frameworks
+- ✅ Integrate **Carthage** frameworks without any work
 
 Given a very simple project spec file like this:
 
