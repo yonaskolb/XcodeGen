@@ -48,8 +48,8 @@ class SourceGenerator {
 
     // get groups without build files. Use for Project.fileGroups
     func getFileGroups(path: String) throws {
-        // TODO: call a seperate function that only creates groups not source files
-        _ = try getGroupSources(targetSource: TargetSource(path: path), path: spec.basePath + path, isBaseGroup: true)
+        let fullPath = spec.basePath + path
+        _ = try getSourceFiles(targetSource: TargetSource(path: path), path: fullPath)
     }
 
     func generateSourceFile(targetSource: TargetSource, path: Path, buildPhase: BuildPhase? = nil) -> SourceFile {

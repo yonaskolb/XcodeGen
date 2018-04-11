@@ -10,6 +10,7 @@ options:
 fileGroups:
   - Configs
   - FileGroup
+  - SomeFile
 configFiles:
   Test Debug: Configs/config.xcconfig
 targets:
