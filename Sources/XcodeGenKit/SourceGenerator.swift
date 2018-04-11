@@ -440,11 +440,17 @@ class SourceGenerator {
 
             let sourceFile = generateSourceFile(targetSource: targetSource, path: path)
 
-            let parentGroup = getGroup(path: parentPath, mergingChildren: [fileReference], createIntermediateGroups: createIntermediateGroups, isBaseGroup: true)
-
-            sourcePath = parentPath
+            if parentPath == spec.basePath {
+                sourcePath = path
+                sourceReference = fileReference
+                rootGroups.insert(fileReference)
+            } else {
+                let parentGroup = getGroup(path: parentPath, mergingChildren: [fileReference], createIntermediateGroups: createIntermediateGroups, isBaseGroup: true)
+                sourcePath = parentPath
+                sourceReference = parentGroup.reference
+            }
             sourceFiles.append(sourceFile)
-            sourceReference = parentGroup.reference
+
         case .group:
             let (groupSourceFiles, groups) = try getGroupSources(targetSource: targetSource, path: path, isBaseGroup: true)
             let group = groups.first!

@@ -42,6 +42,9 @@ targets:
       - path: Folder
         type: folder
         buildPhase: none
+      - path: Mintfile
+        type: file
+        buildPhase: none
     settings:
       INFOPLIST_FILE: App_iOS/Info.plist
       PRODUCT_BUNDLE_IDENTIFIER: com.project.app
