@@ -20,7 +20,7 @@
 - Fixed Homebrew installations issues on some machines [289](https://github.com/yonaskolb/XcodeGen/pull/289) @vhbit
 - Fixed files that are added as root sources from having invalid parent groups outside the project directory [293](https://github.com/yonaskolb/XcodeGen/pull/293) @yonaskolb
 
-[Commits](https://github.com/yonaskolb/XcodeGen/compare/1.8.0...1.8.1)
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/1.8.0...1.9.0)
 
 ## 1.8.0
 
