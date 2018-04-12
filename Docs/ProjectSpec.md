@@ -35,7 +35,7 @@ Required properties are marked with checkbox. Some of the YAML examples don't sh
 - [ ] **settings**: **[Settings](#settings)** - Project specific settings. Default base and config type settings will be applied first before any settings defined here
 - [ ] **settingGroups**: **[Setting Groups](#setting-groups)** - Setting groups mapped by name
 - [ ] **targets**: **[String: [Target](#target)]** - The list of targets in the project mapped by name
-- [ ] **fileGroups**: **[String]** - A list of paths to add to the top level groups. These are files that aren't build files but that you'd like in the project hierachy. For example a folder xcconfig files that aren't already added by any target sources.
+- [ ] **fileGroups**: **[String]** - A list of paths to add to the root of the project. These aren't files that will be included in your targets, but that you'd like to include in the project hierachy anyway. For example a folder of xcconfig files that aren't already added by any target sources, or a Readme file.
 - [ ] **schemes**: **[Scheme](#scheme)** - A list of schemes by name. This allows more control over what is found in [Target Scheme](#target-scheme)
 
 ### Include

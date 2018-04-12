@@ -10,6 +10,7 @@ options:
 fileGroups:
   - Configs
   - FileGroup
+  - SomeFile
 configFiles:
   Test Debug: Configs/config.xcconfig
 targets:
@@ -41,6 +42,9 @@ targets:
         type: folder
       - path: Folder
         type: folder
+        buildPhase: none
+      - path: Mintfile
+        type: file
         buildPhase: none
     settings:
       INFOPLIST_FILE: App_iOS/Info.plist
