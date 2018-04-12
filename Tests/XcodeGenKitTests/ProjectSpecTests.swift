@@ -27,9 +27,9 @@ func projectSpecTests() {
             settings: Settings(buildSettings: ["SETTING_2": "VALUE"])
         )
 
-        func expectValidationError(_ spec: Project, _ expectedError: SpecValidationError.ValidationError) throws {
+        func expectValidationError(_ project: Project, _ expectedError: SpecValidationError.ValidationError) throws {
             do {
-                try spec.validate()
+                try project.validate()
             } catch let error as SpecValidationError {
                 if !error.errors
                     .contains(where: { $0.description == expectedError.description }) {
@@ -80,41 +80,41 @@ func projectSpecTests() {
 
         $0.describe("Validation") {
 
-            let baseSpec = Project(basePath: "", name: "", configs: [Config(name: "invalid")])
+            let baseProject = Project(basePath: "", name: "", configs: [Config(name: "invalid")])
             let invalidSettings = Settings(
                 configSettings: ["invalidConfig": [:]],
                 groups: ["invalidSettingGroup"]
             )
             $0.it("fails with invalid project") {
-                var spec = baseSpec
-                spec.settings = invalidSettings
-                spec.configFiles = ["invalidConfig": "invalidConfigFile"]
-                spec.fileGroups = ["invalidFileGroup"]
-                spec.settingGroups = ["settingGroup1": Settings(
+                var project = baseProject
+                project.settings = invalidSettings
+                project.configFiles = ["invalidConfig": "invalidConfigFile"]
+                project.fileGroups = ["invalidFileGroup"]
+                project.settingGroups = ["settingGroup1": Settings(
                     configSettings: ["invalidSettingGroupConfig": [:]],
                     groups: ["invalidSettingGroupSettingGroup"]
                 )]
 
-                try expectValidationError(spec, .invalidConfigFileConfig("invalidConfig"))
-                try expectValidationError(spec, .invalidBuildSettingConfig("invalidConfig"))
-                try expectValidationError(spec, .invalidConfigFile(configFile: "invalidConfigFile", config: "invalidConfig"))
-                try expectValidationError(spec, .invalidSettingsGroup("invalidSettingGroup"))
-                try expectValidationError(spec, .invalidFileGroup("invalidFileGroup"))
-                try expectValidationError(spec, .invalidSettingsGroup("invalidSettingGroupSettingGroup"))
-                try expectValidationError(spec, .invalidBuildSettingConfig("invalidSettingGroupConfig"))
+                try expectValidationError(project, .invalidConfigFileConfig("invalidConfig"))
+                try expectValidationError(project, .invalidBuildSettingConfig("invalidConfig"))
+                try expectValidationError(project, .invalidConfigFile(configFile: "invalidConfigFile", config: "invalidConfig"))
+                try expectValidationError(project, .invalidSettingsGroup("invalidSettingGroup"))
+                try expectValidationError(project, .invalidFileGroup("invalidFileGroup"))
+                try expectValidationError(project, .invalidSettingsGroup("invalidSettingGroupSettingGroup"))
+                try expectValidationError(project, .invalidBuildSettingConfig("invalidSettingGroupConfig"))
             }
 
             $0.it("allows non-existent configurations") {
-                var spec = baseSpec
-                spec.options = SpecOptions(disabledValidations: [.missingConfigs])
+                var project = baseProject
+                project.options = SpecOptions(disabledValidations: [.missingConfigs])
                 let configPath = fixturePath + "test.xcconfig"
-                spec.configFiles = ["missingConfiguration": configPath.string]
-                try spec.validate()
+                project.configFiles = ["missingConfiguration": configPath.string]
+                try project.validate()
             }
 
             $0.it("fails with invalid target") {
-                var spec = baseSpec
-                spec.targets = [Target(
+                var project = baseProject
+                project.targets = [Target(
                     name: "target1",
                     type: .application,
                     platform: .iOS,
@@ -127,51 +127,51 @@ func projectSpecTests() {
                     scheme: TargetScheme(testTargets: ["invalidTarget"])
                 )]
 
-                try expectValidationError(spec, .invalidTargetDependency(target: "target1", dependency: "invalidDependency"))
-                try expectValidationError(spec, .invalidTargetConfigFile(target: "target1", configFile: "invalidConfigFile", config: "invalidConfig"))
-                try expectValidationError(spec, .invalidTargetSchemeTest(target: "target1", testTarget: "invalidTarget"))
-                try expectValidationError(spec, .invalidTargetSource(target: "target1", source: "invalidSource"))
-                try expectValidationError(spec, .invalidBuildSettingConfig("invalidConfig"))
-                try expectValidationError(spec, .invalidSettingsGroup("invalidSettingGroup"))
-                try expectValidationError(spec, .invalidBuildScriptPath(target: "target1", name: "prebuildScript1", path: "invalidPrebuildScript"))
-                try expectValidationError(spec, .invalidBuildScriptPath(target: "target1", name: nil, path: "invalidPostbuildScript"))
+                try expectValidationError(project, .invalidTargetDependency(target: "target1", dependency: "invalidDependency"))
+                try expectValidationError(project, .invalidTargetConfigFile(target: "target1", configFile: "invalidConfigFile", config: "invalidConfig"))
+                try expectValidationError(project, .invalidTargetSchemeTest(target: "target1", testTarget: "invalidTarget"))
+                try expectValidationError(project, .invalidTargetSource(target: "target1", source: "invalidSource"))
+                try expectValidationError(project, .invalidBuildSettingConfig("invalidConfig"))
+                try expectValidationError(project, .invalidSettingsGroup("invalidSettingGroup"))
+                try expectValidationError(project, .invalidBuildScriptPath(target: "target1", name: "prebuildScript1", path: "invalidPrebuildScript"))
+                try expectValidationError(project, .invalidBuildScriptPath(target: "target1", name: nil, path: "invalidPostbuildScript"))
 
-                try expectValidationError(spec, .missingConfigForTargetScheme(target: "target1", configType: .debug))
-                try expectValidationError(spec, .missingConfigForTargetScheme(target: "target1", configType: .release))
+                try expectValidationError(project, .missingConfigForTargetScheme(target: "target1", configType: .debug))
+                try expectValidationError(project, .missingConfigForTargetScheme(target: "target1", configType: .release))
 
-                spec.targets[0].scheme?.configVariants = ["invalidVariant"]
-                try expectValidationError(spec, .invalidTargetSchemeConfigVariant(target: "target1", configVariant: "invalidVariant", configType: .debug))
+                project.targets[0].scheme?.configVariants = ["invalidVariant"]
+                try expectValidationError(project, .invalidTargetSchemeConfigVariant(target: "target1", configVariant: "invalidVariant", configType: .debug))
             }
 
             $0.it("fails with invalid scheme") {
-                var spec = baseSpec
-                spec.schemes = [Scheme(
+                var project = baseProject
+                project.schemes = [Scheme(
                     name: "scheme1",
                     build: .init(targets: [.init(target: "invalidTarget")]),
                     run: .init(config: "debugInvalid"),
                     archive: .init(config: "releaseInvalid")
                 )]
 
-                try expectValidationError(spec, .invalidSchemeTarget(scheme: "scheme1", target: "invalidTarget"))
-                try expectValidationError(spec, .invalidSchemeConfig(scheme: "scheme1", config: "debugInvalid"))
-                try expectValidationError(spec, .invalidSchemeConfig(scheme: "scheme1", config: "releaseInvalid"))
+                try expectValidationError(project, .invalidSchemeTarget(scheme: "scheme1", target: "invalidTarget"))
+                try expectValidationError(project, .invalidSchemeConfig(scheme: "scheme1", config: "debugInvalid"))
+                try expectValidationError(project, .invalidSchemeConfig(scheme: "scheme1", config: "releaseInvalid"))
             }
 
             $0.it("allows missing optional file") {
-                var spec = baseSpec
-                spec.targets = [Target(
+                var project = baseProject
+                project.targets = [Target(
                     name: "target1",
                     type: .application,
                     platform: .iOS,
                     sources: [.init(path: "generated.swift", optional: true)]
                 )]
-                try spec.validate()
+                try project.validate()
             }
 
             $0.it("validates missing default configurations") {
-                var spec = baseSpec
-                spec.options = SpecOptions(defaultConfig: "foo")
-                try expectValidationError(spec, .missingDefaultConfig(configName: "foo"))
+                var project = baseProject
+                project.options = SpecOptions(defaultConfig: "foo")
+                try expectValidationError(project, .missingDefaultConfig(configName: "foo"))
             }
         }
     }

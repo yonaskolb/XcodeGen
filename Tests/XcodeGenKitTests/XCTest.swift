@@ -5,7 +5,7 @@ class XCodeGenKitTests: XCTestCase {
 
     func testXcodeGenKit() {
         projectGeneratorTests()
-        specLoadingTests()
+        projectLoadingTests()
         fixtureTests()
         projectSpecTests()
     }

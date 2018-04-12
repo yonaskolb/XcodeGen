@@ -17,7 +17,7 @@ class SourceGenerator {
     private var groupsByPath: [Path: ObjectReference<PBXGroup>] = [:]
     private var variantGroupsByPath: [Path: ObjectReference<PBXVariantGroup>] = [:]
 
-    private let spec: Project
+    private let project: Project
     var addObjectClosure: (String, PBXObject) -> String
     var targetSourceExcludePaths: Set<Path> = []
     var defaultExcludedFiles = [
@@ -28,8 +28,8 @@ class SourceGenerator {
 
     private(set) var knownRegions: Set<String> = []
 
-    init(spec: Project, addObjectClosure: @escaping (String, PBXObject) -> String) {
-        self.spec = spec
+    init(project: Project, addObjectClosure: @escaping (String, PBXObject) -> String) {
+        self.project = project
         self.addObjectClosure = addObjectClosure
     }
 
@@ -43,12 +43,12 @@ class SourceGenerator {
     }
 
     func getAllSourceFiles(sources: [TargetSource]) throws -> [SourceFile] {
-        return try sources.flatMap { try getSourceFiles(targetSource: $0, path: spec.basePath + $0.path) }
+        return try sources.flatMap { try getSourceFiles(targetSource: $0, path: project.basePath + $0.path) }
     }
 
     // get groups without build files. Use for Project.fileGroups
     func getFileGroups(path: String) throws {
-        let fullPath = spec.basePath + path
+        let fullPath = project.basePath + path
         _ = try getSourceFiles(targetSource: TargetSource(path: path), path: fullPath)
     }
 
@@ -86,7 +86,7 @@ class SourceGenerator {
     }
 
     func getContainedFileReference(path: Path) -> String {
-        let createIntermediateGroups = spec.options.createIntermediateGroups
+        let createIntermediateGroups = project.options.createIntermediateGroups
 
         let parentPath = path.parent()
         let fileReference = getFileReference(path: path, inPath: parentPath)
@@ -122,7 +122,7 @@ class SourceGenerator {
                     .sorted()
                     .map { path in
                         createObject(
-                            id: path.byRemovingBase(path: spec.basePath).string,
+                            id: path.byRemovingBase(path: project.basePath).string,
                             PBXFileReference(
                                 sourceTree: .group,
                                 lastKnownFileType: "wrapper.xcdatamodel",
@@ -141,7 +141,7 @@ class SourceGenerator {
                 return versionGroup
             } else {
                 let fileReference = createObject(
-                    id: path.byRemovingBase(path: spec.basePath).string,
+                    id: path.byRemovingBase(path: project.basePath).string,
                     PBXFileReference(
                         sourceTree: sourceTree,
                         name: fileReferenceName,
@@ -182,18 +182,18 @@ class SourceGenerator {
             groupReference = cachedGroup
         } else {
 
-            // lives outside the spec base path
-            let isOutOfBasePath = !path.absolute().string.contains(spec.basePath.absolute().string)
+            // lives outside the project base path
+            let isOutOfBasePath = !path.absolute().string.contains(project.basePath.absolute().string)
 
             // has no valid parent paths
-            let isRootPath = isOutOfBasePath || path.parent() == spec.basePath
+            let isRootPath = isOutOfBasePath || path.parent() == project.basePath
 
             // is a top level group in the project
             let isTopLevelGroup = (isBaseGroup && !createIntermediateGroups) || isRootPath
 
             let groupName = name ?? path.lastComponent
             let groupPath = isTopLevelGroup ?
-                path.byRemovingBase(path: spec.basePath).string :
+                path.byRemovingBase(path: project.basePath).string :
                 path.lastComponent
             let group = PBXGroup(
                 children: children,
@@ -201,7 +201,7 @@ class SourceGenerator {
                 name: groupName != groupPath ? groupName : nil,
                 path: groupPath
             )
-            groupReference = createObject(id: path.byRemovingBase(path: spec.basePath).string, group)
+            groupReference = createObject(id: path.byRemovingBase(path: project.basePath).string, group)
             groupsByPath[path] = groupReference
 
             if isTopLevelGroup {
@@ -222,7 +222,7 @@ class SourceGenerator {
                 sourceTree: .group,
                 name: path.lastComponent
             )
-            variantGroup = createObject(id: path.byRemovingBase(path: spec.basePath).string, group)
+            variantGroup = createObject(id: path.byRemovingBase(path: project.basePath).string, group)
             variantGroupsByPath[path] = variantGroup
         }
         return variantGroup
@@ -230,7 +230,7 @@ class SourceGenerator {
 
     /// Collects all the excluded paths within the targetSource
     private func getSourceExcludes(targetSource: TargetSource) -> Set<Path> {
-        let rootSourcePath = spec.basePath + targetSource.path
+        let rootSourcePath = project.basePath + targetSource.path
 
         return Set(
             targetSource.excludes.map {
@@ -316,7 +316,7 @@ class SourceGenerator {
                 return localisedDirectories.first { $0.lastComponent == "\(languageId).lproj" }
             }
             return findLocalisedDirectory(by: "Base") ??
-                findLocalisedDirectory(by: NSLocale.canonicalLanguageIdentifier(from: spec.options.developmentLanguage ?? "en"))
+                findLocalisedDirectory(by: NSLocale.canonicalLanguageIdentifier(from: project.options.developmentLanguage ?? "en"))
         }()
 
         knownRegions.formUnion(localisedDirectories.map { $0.lastComponentWithoutExtension })
@@ -385,10 +385,10 @@ class SourceGenerator {
         let group = getGroup(
             path: path,
             mergingChildren: groupChildren,
-            createIntermediateGroups: spec.options.createIntermediateGroups,
+            createIntermediateGroups: project.options.createIntermediateGroups,
             isBaseGroup: isBaseGroup
         )
-        if spec.options.createIntermediateGroups {
+        if project.options.createIntermediateGroups {
             createIntermediaGroups(for: group.reference, at: path)
         }
 
@@ -403,7 +403,7 @@ class SourceGenerator {
         targetSourceExcludePaths = getSourceExcludes(targetSource: targetSource)
 
         let type = targetSource.type ?? (path.isFile || path.extension != nil ? .file : .group)
-        let createIntermediateGroups = spec.options.createIntermediateGroups
+        let createIntermediateGroups = project.options.createIntermediateGroups
 
         var sourceFiles: [SourceFile] = []
         let sourceReference: String
@@ -413,13 +413,13 @@ class SourceGenerator {
             let folderPath = Path(targetSource.path)
             let fileReference = getFileReference(
                 path: folderPath,
-                inPath: spec.basePath,
+                inPath: project.basePath,
                 name: targetSource.name ?? folderPath.lastComponent,
                 sourceTree: .sourceRoot,
                 lastKnownFileType: "folder"
             )
 
-            if !createIntermediateGroups || path.parent() == spec.basePath  {
+            if !createIntermediateGroups || path.parent() == project.basePath  {
                 rootGroups.insert(fileReference)
             }
             
@@ -440,7 +440,7 @@ class SourceGenerator {
 
             let sourceFile = generateSourceFile(targetSource: targetSource, path: path)
 
-            if parentPath == spec.basePath {
+            if parentPath == project.basePath {
                 sourcePath = path
                 sourceReference = fileReference
                 rootGroups.insert(fileReference)
@@ -473,7 +473,7 @@ class SourceGenerator {
     private func createIntermediaGroups(for groupReference: String, at path: Path) {
 
         let parentPath = path.parent()
-        guard parentPath != spec.basePath && path.string.contains(spec.basePath.string) else {
+        guard parentPath != project.basePath && path.string.contains(project.basePath.string) else {
             // we've reached the top or are out of the root directory
             return
         }
