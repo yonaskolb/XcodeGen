@@ -419,10 +419,10 @@ class SourceGenerator {
                 lastKnownFileType: "folder"
             )
 
-            if !createIntermediateGroups || path.parent() == project.basePath  {
+            if !createIntermediateGroups || path.parent() == project.basePath {
                 rootGroups.insert(fileReference)
             }
-            
+
             let buildPhase: BuildPhase?
             if let targetBuildPhase = targetSource.buildPhase {
                 buildPhase = targetBuildPhase.buildPhase

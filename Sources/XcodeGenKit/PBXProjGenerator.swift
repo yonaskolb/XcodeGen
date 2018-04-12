@@ -290,7 +290,7 @@ public class PBXProjGenerator {
                 } else {
                     return child1.object.sortOrder < child2.object.sortOrder
                 }
-        }
+            }
         group.object.children = children.map { $0.reference }.filter { $0 != group.reference }
 
         // sort sub groups

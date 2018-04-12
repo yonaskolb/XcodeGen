@@ -2,18 +2,26 @@
 
 ## Master
 
-## 1.8.1
+## 1.9.0
 
 #### Added
 - Scheme pre and post actions can now be added to `target.scheme` [280](https://github.com/yonaskolb/XcodeGen/pull/280) @yonaskolb
+- Individual files can now be added to `fileGroups` [293](https://github.com/yonaskolb/XcodeGen/pull/293) @yonaskolb
 
 #### Changed
 - Updated to `xcproj` 4.3.0 for Xcode 9.3 updates
 - Update default Xcode version to 9.3 including new settings [284](https://github.com/yonaskolb/XcodeGen/pull/284) @LinusU
+- **Breaking for ProjectSpec library users** Changed `ProjectSpec` to `Project` and `ProjectSpec.Options` to `SpecOptions`  [281](https://github.com/yonaskolb/XcodeGen/pull/281) @jerrymarino
 
 #### Fixed
 - Fixed manual build phase of `none` not being applied to folders [288](https://github.com/yonaskolb/XcodeGen/pull/288) @yonaskolb
 - Quoted values now correctly get parsed as strings [282](https://github.com/yonaskolb/XcodeGen/pull/282) @yonaskolb
+- Fixed adding a root source folder when `createIntermediateGroups` is on [291](https://github.com/yonaskolb/XcodeGen/pull/291) @yonaskolb
+- Fixed Homebrew installations issues on some machines [289](https://github.com/yonaskolb/XcodeGen/pull/289) @vhbit
+- Fixed files that are added as root sources from having invalid parent groups outside the project directory [293](https://github.com/yonaskolb/XcodeGen/pull/293) @yonaskolb
+
+
+
 
 [Commits](https://github.com/yonaskolb/XcodeGen/compare/1.8.0...1.8.1)
 

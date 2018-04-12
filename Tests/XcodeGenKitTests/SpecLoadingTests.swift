@@ -197,7 +197,7 @@ func projectLoadingTests() {
                 "testTargets": ["t1", "t2"],
                 "configVariants": ["dev", "app-store"],
                 "commandLineArguments": [
-                    "ENV1": true
+                    "ENV1": true,
                 ],
                 "gatherCoverageData": true,
                 "environmentVariables": [
@@ -207,14 +207,14 @@ func projectLoadingTests() {
                     [
                         "script": "dothing",
                         "name": "Do Thing",
-                        "settingsTarget": "test"
-                    ]
+                        "settingsTarget": "test",
+                    ],
                 ],
                 "postActions": [
                     [
-                        "script": "hello"
-                    ]
-                ]
+                        "script": "hello",
+                    ],
+                ],
             ]
 
             let target = try Target(name: "test", jsonDictionary: targetDictionary)

@@ -3,7 +3,7 @@ import JSONUtilities
 import xcproj
 
 public struct SpecOptions {
-    
+
     public var carthageBuildPath: String?
     public var carthageExecutablePath: String?
     public var createIntermediateGroups: Bool
@@ -17,24 +17,24 @@ public struct SpecOptions {
     public var xcodeVersion: String?
     public var deploymentTarget: DeploymentTarget
     public var defaultConfig: String?
-    
+
     public enum ValidationType: String {
         case missingConfigs
     }
-    
+
     public enum SettingPresets: String {
         case all
         case none
         case project
         case targets
-        
+
         public var applyTarget: Bool {
             switch self {
             case .all, .targets: return true
             default: return false
             }
         }
-        
+
         public var applyProject: Bool {
             switch self {
             case .all, .project: return true
@@ -42,7 +42,7 @@ public struct SpecOptions {
             }
         }
     }
-    
+
     public init(
         carthageBuildPath: String? = nil,
         carthageExecutablePath: String? = nil,
@@ -57,7 +57,7 @@ public struct SpecOptions {
         deploymentTarget: DeploymentTarget = .init(),
         disabledValidations: [ValidationType] = [],
         defaultConfig: String? = nil
-        ) {
+    ) {
         self.carthageBuildPath = carthageBuildPath
         self.carthageExecutablePath = carthageExecutablePath
         self.createIntermediateGroups = createIntermediateGroups
@@ -72,7 +72,7 @@ public struct SpecOptions {
         self.disabledValidations = disabledValidations
         self.defaultConfig = defaultConfig
     }
-    
+
     public static func == (lhs: SpecOptions, rhs: SpecOptions) -> Bool {
         return lhs.carthageBuildPath == rhs.carthageBuildPath &&
             lhs.carthageExecutablePath == rhs.carthageExecutablePath &&
@@ -90,7 +90,7 @@ public struct SpecOptions {
 }
 
 extension SpecOptions: JSONObjectConvertible {
-    
+
     public init(jsonDictionary: JSONDictionary) throws {
         carthageBuildPath = jsonDictionary.json(atKeyPath: "carthageBuildPath")
         carthageExecutablePath = jsonDictionary.json(atKeyPath: "carthageExecutablePath")
