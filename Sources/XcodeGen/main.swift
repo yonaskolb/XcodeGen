@@ -21,37 +21,37 @@ func generate(spec: String, project: String, isQuiet: Bool, justVersion: Bool) {
         exit(1)
     }
 
-    let specPath = Path(spec).absolute()
-    let projectPath = project == "" ? specPath.parent() : Path(project).absolute()
+    let projectSpecPath = Path(spec).absolute()
+    let projectPath = project == "" ? projectSpecPath.parent() : Path(project).absolute()
 
-    if !specPath.exists {
-        fatalError("No project spec found at \(specPath.absolute())")
+    if !projectSpecPath.exists {
+        fatalError("No project spec found at \(projectSpecPath.absolute())")
     }
 
-    let spec: ProjectSpec
+    let project: Project
     do {
-        spec = try ProjectSpec(path: specPath)
-        logger.info("📋  Loaded spec:\n  \(spec.debugDescription.replacingOccurrences(of: "\n", with: "\n  "))")
+        project = try Project(path: projectSpecPath)
+        logger.info("📋  Loaded project:\n  \(project.debugDescription.replacingOccurrences(of: "\n", with: "\n  "))")
     } catch let error as JSONUtilities.DecodingError {
-        fatalError("Parsing spec failed: \(error.description)")
+        fatalError("Parsing project spec failed: \(error.description)")
     } catch {
-        fatalError("Parsing spec failed: \(error.localizedDescription)")
+        fatalError("Parsing project spec failed: \(error.localizedDescription)")
     }
 
     do {
         logger.info("⚙️  Generating project...")
-        let projectGenerator = ProjectGenerator(spec: spec)
-        let project = try projectGenerator.generateProject()
+        let projectGenerator = ProjectGenerator(project: project)
+        let xcodeProject = try projectGenerator.generateXcodeProject()
 
         logger.info("⚙️  Writing project...")
 
-        let projectFile = projectPath + "\(spec.name).xcodeproj"
+        let projectFile = projectPath + "\(project.name).xcodeproj"
         let tempPath = Path.temporary + "XcodeGen_\(Int(NSTimeIntervalSince1970))"
         try? tempPath.delete()
         if projectFile.exists {
             try projectFile.copy(tempPath)
         }
-        try project.write(path: tempPath, override: true)
+        try xcodeProject.write(path: tempPath, override: true)
         try? projectFile.delete()
         try tempPath.copy(projectFile)
         try? tempPath.delete()
@@ -69,7 +69,7 @@ command(
         "spec",
         default: "project.yml",
         flag: "s",
-        description: "The path to the spec file"
+        description: "The path to the project spec file"
     ),
     Option<String>(
         "project",

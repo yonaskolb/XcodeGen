@@ -5,20 +5,20 @@ import Spectre
 import XcodeGenKit
 import xcproj
 
-func specLoadingTests() {
+func projectLoadingTests() {
 
     @discardableResult
-    func getProjectSpec(_ spec: [String: Any]) throws -> ProjectSpec {
-        var specDictionary: [String: Any] = ["name": "test"]
-        for (key, value) in spec {
-            specDictionary[key] = value
+    func getProjectSpec(_ project: [String: Any]) throws -> Project {
+        var projectDictionary: [String: Any] = ["name": "test"]
+        for (key, value) in project {
+            projectDictionary[key] = value
         }
-        return try ProjectSpec(basePath: "", jsonDictionary: specDictionary)
+        return try Project(basePath: "", jsonDictionary: projectDictionary)
     }
 
-    func expectProjectSpecError(_ spec: [String: Any], _ expectedError: SpecParsingError) throws {
+    func expectSpecError(_ project: [String: Any], _ expectedError: SpecParsingError) throws {
         try expectError(expectedError) {
-            try getProjectSpec(spec)
+            try getProjectSpec(project)
         }
     }
 
@@ -34,15 +34,15 @@ func specLoadingTests() {
     describe("Spec Loader") {
         $0.it("merges includes") {
             let path = fixturePath + "include_test.yml"
-            let spec = try ProjectSpec(path: path)
+            let project = try Project(path: path)
 
-            try expect(spec.name) == "NewName"
-            try expect(spec.settingGroups) == [
+            try expect(project.name) == "NewName"
+            try expect(project.settingGroups) == [
                 "test": Settings(dictionary: ["MY_SETTING1": "NEW VALUE", "MY_SETTING2": "VALUE2", "MY_SETTING3": "VALUE3"]),
                 "new": Settings(dictionary: ["MY_SETTING": "VALUE"]),
                 "toReplace": Settings(dictionary: ["MY_SETTING2": "VALUE2"]),
             ]
-            try expect(spec.targets) == [
+            try expect(project.targets) == [
                 Target(name: "IncludedTargetNew", type: .application, platform: .tvOS, sources: ["NewSource"]),
                 Target(name: "NewTarget", type: .application, platform: .iOS),
             ]
@@ -88,15 +88,15 @@ func specLoadingTests() {
     describe("Spec Loader JSON") {
         $0.it("merges includes") {
             let path = fixturePath + "include_test.json"
-            let spec = try ProjectSpec(path: path)
+            let project = try Project(path: path)
 
-            try expect(spec.name) == "NewName"
-            try expect(spec.settingGroups) == [
+            try expect(project.name) == "NewName"
+            try expect(project.settingGroups) == [
                 "test": Settings(dictionary: ["MY_SETTING1": "NEW VALUE", "MY_SETTING2": "VALUE2", "MY_SETTING3": "VALUE3"]),
                 "new": Settings(dictionary: ["MY_SETTING": "VALUE"]),
                 "toReplace": Settings(dictionary: ["MY_SETTING2": "VALUE2"]),
             ]
-            try expect(spec.targets) == [
+            try expect(project.targets) == [
                 Target(name: "IncludedTargetNew", type: .application, platform: .tvOS, sources: ["NewSource"]),
                 Target(name: "NewTarget", type: .application, platform: .iOS),
             ]
@@ -178,7 +178,7 @@ func specLoadingTests() {
                 "settings": ["SETTING": "value_$platform"],
             ]
 
-            let spec = try getProjectSpec(["targets": ["Framework": targetDictionary]])
+            let project = try getProjectSpec(["targets": ["Framework": targetDictionary]])
             var target_iOS = Target(name: "Framework_iOS", type: .framework, platform: .iOS)
             var target_tvOS = Target(name: "Framework_tvOS", type: .framework, platform: .tvOS)
 
@@ -187,8 +187,8 @@ func specLoadingTests() {
             target_iOS.settings = ["PRODUCT_NAME": "Framework", "SETTING": "value_iOS"]
             target_tvOS.settings = ["PRODUCT_NAME": "Framework", "SETTING": "value_tvOS"]
 
-            try expect(spec.targets.count) == 2
-            try expect(spec.targets) == [target_iOS, target_tvOS]
+            try expect(project.targets.count) == 2
+            try expect(project.targets) == [target_iOS, target_tvOS]
         }
 
         $0.it("parses target schemes") {
@@ -320,7 +320,7 @@ func specLoadingTests() {
         }
 
         $0.it("parses settings") {
-            let spec = try ProjectSpec(path: fixturePath + "settings_test.yml")
+            let project = try Project(path: fixturePath + "settings_test.yml")
             let buildSettings: BuildSettings = ["SETTING": "value"]
             let configSettings: [String: Settings] = ["config1": Settings(buildSettings: ["SETTING1": "value"])]
             let groups = ["preset1"]
@@ -334,15 +334,15 @@ func specLoadingTests() {
             let preset7 = Settings(buildSettings: buildSettings, configSettings: ["config1": Settings(buildSettings: buildSettings, groups: groups)])
             let preset8 = Settings(buildSettings: [:], configSettings: ["config1": Settings(configSettings: configSettings)])
 
-            try expect(spec.settingGroups.count) == 8
-            try expect(spec.settingGroups["preset1"]) == preset1
-            try expect(spec.settingGroups["preset2"]) == preset2
-            try expect(spec.settingGroups["preset3"]) == preset3
-            try expect(spec.settingGroups["preset4"]) == preset4
-            try expect(spec.settingGroups["preset5"]) == preset5
-            try expect(spec.settingGroups["preset6"]) == preset6
-            try expect(spec.settingGroups["preset7"]) == preset7
-            try expect(spec.settingGroups["preset8"]) == preset8
+            try expect(project.settingGroups.count) == 8
+            try expect(project.settingGroups["preset1"]) == preset1
+            try expect(project.settingGroups["preset2"]) == preset2
+            try expect(project.settingGroups["preset3"]) == preset3
+            try expect(project.settingGroups["preset4"]) == preset4
+            try expect(project.settingGroups["preset5"]) == preset5
+            try expect(project.settingGroups["preset6"]) == preset6
+            try expect(project.settingGroups["preset7"]) == preset7
+            try expect(project.settingGroups["preset8"]) == preset8
         }
 
         $0.it("parses run scripts") {
@@ -365,7 +365,7 @@ func specLoadingTests() {
         }
 
         $0.it("parses options") {
-            let options = ProjectSpec.Options(
+            let options = SpecOptions(
                 carthageBuildPath: "../Carthage/Build",
                 carthageExecutablePath: "../bin/carthage",
                 createIntermediateGroups: true,
@@ -378,7 +378,7 @@ func specLoadingTests() {
                     macOS: "10.12.1"
                 )
             )
-            let expected = ProjectSpec(basePath: "", name: "test", options: options)
+            let expected = Project(basePath: "", name: "test", options: options)
             let dictionary: [String: Any] = ["options": [
                 "carthageBuildPath": "../Carthage/Build",
                 "carthageExecutablePath": "../bin/carthage",

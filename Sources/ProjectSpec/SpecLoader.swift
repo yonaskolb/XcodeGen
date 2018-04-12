@@ -3,10 +3,10 @@ import JSONUtilities
 import PathKit
 import Yams
 
-extension ProjectSpec {
+extension Project {
 
     public init(path: Path) throws {
-        let dictionary = try ProjectSpec.loadDictionary(path: path)
+        let dictionary = try Project.loadDictionary(path: path)
         try self.init(basePath: path.parent(), jsonDictionary: dictionary)
     }
 

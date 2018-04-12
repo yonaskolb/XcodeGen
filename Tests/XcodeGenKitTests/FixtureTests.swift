@@ -6,14 +6,14 @@ import xcproj
 
 let fixturePath = Path(#file).parent().parent() + "Fixtures"
 
-func generate(specPath: Path, projectPath: Path) throws -> XcodeProj {
-    let spec = try ProjectSpec(path: specPath)
-    let generator = ProjectGenerator(spec: spec)
-    let project = try generator.generateProject()
+func generateXcodeProject(specPath: Path, projectPath: Path) throws -> XcodeProj {
+    let project = try Project(path: specPath)
+    let generator = ProjectGenerator(project: project)
+    let xcodeProject = try generator.generateXcodeProject()
     let oldProject = try XcodeProj(path: projectPath)
     let pbxProjPath = projectPath + XcodeProj.pbxprojPath(projectPath)
     let oldProjectString: String = try pbxProjPath.read()
-    try project.write(path: projectPath, override: true)
+    try xcodeProject.write(path: projectPath, override: true)
     let newProjectString: String = try pbxProjPath.read()
 
     let newProject = try XcodeProj(path: projectPath)
@@ -32,21 +32,21 @@ func generate(specPath: Path, projectPath: Path) throws -> XcodeProj {
 func fixtureTests() {
 
     describe("Test Project") {
-        var project: XcodeProj?
+        var xcodeProject: XcodeProj?
 
         $0.it("generates") {
-            project = try generate(specPath: fixturePath + "TestProject/spec.yml", projectPath: fixturePath + "TestProject/Project.xcodeproj")
+            xcodeProject = try generateXcodeProject(specPath: fixturePath + "TestProject/project.yml", projectPath: fixturePath + "TestProject/Project.xcodeproj")
         }
 
         $0.it("generates variant group") {
-            guard let project = project else { return }
+            guard let xcodeProject = xcodeProject else { return }
 
             func getFileReferences(_ path: String) -> [ObjectReference<PBXFileReference>] {
-                return project.pbxproj.objects.fileReferences.objectReferences.filter { $0.object.path == path }
+                return xcodeProject.pbxproj.objects.fileReferences.objectReferences.filter { $0.object.path == path }
             }
 
             func getVariableGroups(_ name: String?) -> [PBXVariantGroup] {
-                return project.pbxproj.objects.variantGroups.referenceValues.filter { $0.name == name }
+                return xcodeProject.pbxproj.objects.variantGroups.referenceValues.filter { $0.name == name }
             }
 
             let resourceName = "LocalizedStoryboard.storyboard"
@@ -69,9 +69,9 @@ func fixtureTests() {
         }
 
         $0.it("generates scheme execution actions") {
-            guard let project = project else { return }
+            guard let xcodeProject = xcodeProject else { return }
 
-            let frameworkScheme = project.sharedData?.schemes.first { $0.name == "Framework" }
+            let frameworkScheme = xcodeProject.sharedData?.schemes.first { $0.name == "Framework" }
             try expect(frameworkScheme?.buildAction?.preActions.first?.scriptText) == "echo Starting Framework Build"
             try expect(frameworkScheme?.buildAction?.preActions.first?.title) == "Run Script"
             try expect(frameworkScheme?.buildAction?.preActions.first?.environmentBuildable?.blueprintName) == "Framework_iOS"

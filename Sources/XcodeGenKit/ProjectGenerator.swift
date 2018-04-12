@@ -7,23 +7,23 @@ import Yams
 
 public class ProjectGenerator {
 
-    let spec: ProjectSpec
+    let project: Project
 
-    public init(spec: ProjectSpec) {
-        self.spec = spec
+    public init(project: Project) {
+        self.project = project
     }
 
     var defaultDebugConfig: Config {
-        return spec.configs.first { $0.type == .debug }!
+        return project.configs.first { $0.type == .debug }!
     }
 
     var defaultReleaseConfig: Config {
-        return spec.configs.first { $0.type == .release }!
+        return project.configs.first { $0.type == .release }!
     }
 
-    public func generateProject() throws -> XcodeProj {
-        try spec.validate()
-        let pbxProjGenerator = PBXProjGenerator(spec: spec)
+    public func generateXcodeProject() throws -> XcodeProj {
+        try project.validate()
+        let pbxProjGenerator = PBXProjGenerator(project: project)
         let pbxProject = try pbxProjGenerator.generate()
         let workspace = try generateWorkspace()
         let sharedData = try generateSharedData(pbxProject: pbxProject)
@@ -41,9 +41,9 @@ public class ProjectGenerator {
         func getBuildEntry(_ buildTarget: Scheme.BuildTarget) -> XCScheme.BuildAction.Entry {
 
             let targetReference = pbxProject.objects.targets(named: buildTarget.target).first!
-            let target = spec.getTarget(buildTarget.target)!
+            let target = project.getTarget(buildTarget.target)!
             let buildableReference = XCScheme.BuildableReference(
-                referencedContainer: "container:\(spec.name).xcodeproj",
+                referencedContainer: "container:\(project.name).xcodeproj",
                 blueprintIdentifier: targetReference.reference,
                 buildableName: target.filename,
                 blueprintName: buildTarget.target
@@ -136,8 +136,8 @@ public class ProjectGenerator {
 
         return XCScheme(
             name: scheme.name,
-            lastUpgradeVersion: spec.xcodeVersion,
-            version: spec.schemeVersion,
+            lastUpgradeVersion: project.xcodeVersion,
+            version: project.schemeVersion,
             buildAction: buildAction,
             testAction: testAction,
             launchAction: launchAction,
@@ -150,19 +150,19 @@ public class ProjectGenerator {
     func generateSharedData(pbxProject: PBXProj) throws -> XCSharedData {
         var xcschemes: [XCScheme] = []
 
-        for scheme in spec.schemes {
+        for scheme in project.schemes {
             let xcscheme = try generateScheme(scheme, pbxProject: pbxProject)
             xcschemes.append(xcscheme)
         }
 
-        for target in spec.targets {
+        for target in project.targets {
             if let targetScheme = target.scheme {
 
                 if targetScheme.configVariants.isEmpty {
                     let schemeName = target.name
 
-                    let debugConfig = spec.configs.first { $0.type == .debug }!
-                    let releaseConfig = spec.configs.first { $0.type == .release }!
+                    let debugConfig = project.configs.first { $0.type == .debug }!
+                    let releaseConfig = project.configs.first { $0.type == .release }!
 
                     let scheme = Scheme(
                         name: schemeName,
@@ -178,9 +178,9 @@ public class ProjectGenerator {
 
                         let schemeName = "\(target.name) \(configVariant)"
 
-                        let debugConfig = spec.configs
+                        let debugConfig = project.configs
                             .first { $0.type == .debug && $0.name.contains(configVariant) }!
-                        let releaseConfig = spec.configs
+                        let releaseConfig = project.configs
                             .first { $0.type == .release && $0.name.contains(configVariant) }!
 
                         let scheme = Scheme(

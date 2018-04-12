@@ -1,11 +1,7 @@
 import Foundation
 import PathKit
 
-extension ProjectSpec {
-
-    public enum ValidationType: String {
-        case missingConfigs
-    }
+extension Project {
 
     public func validate() throws {
 

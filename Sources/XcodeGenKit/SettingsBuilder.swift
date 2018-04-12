@@ -5,7 +5,7 @@ import ProjectSpec
 import xcproj
 import Yams
 
-extension ProjectSpec {
+extension Project {
 
     public func getProjectBuildSettings(config: Config) -> BuildSettings {
         var buildSettings: BuildSettings = [:]
