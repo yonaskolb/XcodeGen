@@ -11,14 +11,20 @@ class Xcodegen < Formula
     # libxml2 has to be included in ISYSTEM_PATH for building one of
     # dependencies. It didn't happen automatically before Xcode 9.3
     # so homebrew patched environment variable to get it work.
-    # But since Xcode 9.3 includes it already, the build will fail
-    # because of redefinition of libxml2 module.
+    #
+    # That works fine when you have just Xcode installed, but there
+    # is also CLT. If it is also installed, ISYSTEM_PATH has
+    # a reference to CLT libxml2 AND a reference to Xcode default
+    # toolchain libxml2. That causes build failure with "module redeclared"
+    # error. So if both Xcode and CLT are installed one reference
+    # has to be removed.
+    #
     # It's a bug of homebrew but before it's fixed, it's easier
     # to provide in-place workaround for now.
     # Please remove this once homebrew is patched.
 
     # step 1: capture old value and patch environment
-    if OS::Mac::Xcode.version >= Version.new("9.3") then
+    if OS::Mac::Xcode.version >= Version.new("9.3") && !OS::Mac::Xcode.without_clt? then
       old_isystem_paths = ENV["HOMEBREW_ISYSTEM_PATHS"]
       ENV["HOMEBREW_ISYSTEM_PATHS"] = old_isystem_paths.gsub("/usr/include/libxml2", "")
     end
