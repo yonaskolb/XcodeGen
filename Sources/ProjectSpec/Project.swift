@@ -18,6 +18,7 @@ public struct Project {
     public var fileGroups: [String]
     public var configFiles: [String: String]
     public var include: [String] = []
+    private var targetsMap: [String: Target]
 
     public init(
         basePath: Path,
@@ -35,6 +36,7 @@ public struct Project {
         self.basePath = basePath
         self.name = name
         self.targets = targets
+        self.targetsMap = Dictionary(uniqueKeysWithValues: self.targets.map { ($0.name, $0) })
         self.configs = configs
         self.settings = settings
         self.settingGroups = settingGroups
@@ -46,7 +48,7 @@ public struct Project {
     }
 
     public func getTarget(_ targetName: String) -> Target? {
-        return targets.first { $0.name == targetName }
+        return targetsMap[targetName]
     }
 
     public func getConfig(_ configName: String) -> Config? {
@@ -117,6 +119,7 @@ extension Project {
         } else {
             options = SpecOptions()
         }
+        self.targetsMap = Dictionary(uniqueKeysWithValues: self.targets.map { ($0.name, $0) })
     }
 
     static func filterJSON(jsonDictionary: JSONDictionary) throws -> JSONDictionary {
