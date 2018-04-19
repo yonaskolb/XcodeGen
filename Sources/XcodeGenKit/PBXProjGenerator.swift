@@ -681,29 +681,34 @@ public class PBXProjGenerator {
         return "\(carthagePath)/\(platformName)"
     }
 
-    func getAllCarthageDependencies(target: Target, visitedTargets: [String: Bool] = [:]) -> [Dependency] {
-
+    func getAllCarthageDependencies(target: Target) -> [Dependency] {
         // this is used to resolve cyclical target dependencies
-        var visitedTargets = visitedTargets
-        visitedTargets[target.name] = true
-
+        var visitedTargets: Set<String> = []
         var frameworks: [Dependency] = []
 
-        for dependency in target.dependencies {
-            switch dependency.type {
-            case .carthage:
-                frameworks.append(dependency)
-            case .target:
-                let targetName = dependency.reference
-                if visitedTargets[targetName] == true {
-                    return []
-                }
-                if let target = project.getTarget(targetName) {
-                    frameworks += getAllCarthageDependencies(target: target, visitedTargets: visitedTargets)
-                }
-            default: break
+        var queue: [Target] = [target]
+        while !queue.isEmpty {
+            let target = queue.removeFirst()
+            if visitedTargets.contains(target.name) {
+                continue
             }
+
+            for dependency in target.dependencies {
+                switch dependency.type {
+                case .carthage:
+                    frameworks.append(dependency)
+                case .target:
+                    if let target = project.getTarget(dependency.reference) {
+                        queue.append(target)
+                    }
+                default:
+                    break
+                }
+            }
+
+            visitedTargets.update(with: target.name)
         }
+
         return frameworks
     }
 }
