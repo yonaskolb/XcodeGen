@@ -8,7 +8,11 @@ public struct Project {
 
     public var basePath: Path
     public var name: String
-    public var targets: [Target]
+    public var targets: [Target] {
+        didSet {
+            self.targetsMap = Dictionary(uniqueKeysWithValues: self.targets.map { ($0.name, $0) })
+        }
+    }
     public var settings: Settings
     public var settingGroups: [String: Settings]
     public var configs: [Config]
