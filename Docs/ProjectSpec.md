@@ -498,7 +498,7 @@ A multiline script can be written using the various YAML multiline methods, for 
 - [ ] **isEnabled**: **Bool** - indicates whether the environment variable is enabled. This defaults to true.
 
 ```yaml
-scheme:
+schemes:
   Production:
     build:
       targets:
