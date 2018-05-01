@@ -5,19 +5,16 @@
 </p>
 <p align="center">
   <a href="https://swift.org/package-manager">
-    <img src="https://img.shields.io/badge/spm-compatible-brightgreen.svg?style=flat" alt="Swift Package Manager" />
+    <img src="https://img.shields.io/badge/spm-compatible-brightgreen.svg?style=for-the-badge" alt="Swift Package Manager" />
   </a>
   <a href="https://github.com/yonaskolb/XcodeGen/releases">
-    <img src="https://img.shields.io/github/release/yonaskolb/xcodegen.svg"/>
+    <img src="https://img.shields.io/github/release/yonaskolb/xcodegen.svg?style=for-the-badge"/>
   </a>
   <a href="https://circleci.com/gh/yonaskolb/XcodeGen">
-    <img src="https://img.shields.io/circleci/project/github/yonaskolb/Beak.svg?style=flat"/>
+    <img src="https://img.shields.io/circleci/project/github/yonaskolb/Beak.svg?style=for-the-badge"/>
   </a>
   <a href="https://github.com/yonaskolb/XcodeGen/blob/master/LICENSE">
-    <img src="https://img.shields.io/github/license/mashape/apistatus.svg"/>
-  </a>
-  <a href="http://xcodeswift.herokuapp.com/">
-    <img src="https://xcodeswift.herokuapp.com/badge.svg">
+    <img src="https://img.shields.io/github/license/yonaskolb/XcodeGen.svg?style=for-the-badge"/>
   </a>
 </p>
 
