@@ -23,7 +23,6 @@ targets:
   App_iOS:
     type: application
     platform: iOS
-    deploymentTarget: 11.2
     attributes:
       ProvisioningStyle: Automatic
     sources:
@@ -72,6 +71,7 @@ targets:
   App_watchOS:
       type: application.watchapp2
       platform: watchOS
+      deploymentTarget: 3.0
       sources:
         App_watchOS
       settings:
