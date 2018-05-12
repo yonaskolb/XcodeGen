@@ -278,7 +278,7 @@ extension Target: NamedJSONDictionaryConvertible {
         if let source: String = jsonDictionary.json(atKeyPath: "sources") {
             sources = [TargetSource(path: source)]
         } else if let array = jsonDictionary["sources"] as? [Any] {
-            sources = try array.flatMap { source in
+            sources = try array.compactMap { source in
                 if let string = source as? String {
                     return TargetSource(path: string)
                 } else if let dictionary = source as? [String: Any] {

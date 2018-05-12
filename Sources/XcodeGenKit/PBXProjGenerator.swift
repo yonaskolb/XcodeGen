@@ -229,10 +229,10 @@ public class PBXProjGenerator {
                 guard let buildConfigurationReferences = self.pbxProj.objects.configurationLists[configurationList]?.buildConfigurations else { return nil }
 
                 let configs = buildConfigurationReferences
-                    .flatMap { ref in self.pbxProj.objects.buildConfigurations[ref] }
+                    .compactMap { ref in self.pbxProj.objects.buildConfigurations[ref] }
 
                 return configs
-                    .flatMap { $0.buildSettings["TEST_TARGET_NAME"] as? String }
+                    .compactMap { $0.buildSettings["TEST_TARGET_NAME"] as? String }
                     .first
             }
 
@@ -251,7 +251,7 @@ public class PBXProjGenerator {
             }
 
             func getSingleBuildSetting(_ setting: String) -> String? {
-                let settings = project.configs.flatMap {
+                let settings = project.configs.compactMap {
                     project.getCombinedBuildSettings(basePath: project.basePath, target: target, config: $0)[setting] as? String
                 }
                 guard settings.count == project.configs.count,
@@ -278,7 +278,7 @@ public class PBXProjGenerator {
     func sortGroups(group: ObjectReference<PBXGroup>) {
         // sort children
         let children = group.object.children
-            .flatMap { reference -> ObjectReference<PBXFileElement>? in
+            .compactMap { reference -> ObjectReference<PBXFileElement>? in
                 guard let fileElement = pbxProj.objects.getFileElement(reference: reference) else {
                     return nil
                 }
@@ -294,7 +294,7 @@ public class PBXProjGenerator {
         group.object.children = children.map { $0.reference }.filter { $0 != group.reference }
 
         // sort sub groups
-        let childGroups = group.object.children.flatMap { reference -> ObjectReference<PBXGroup>? in
+        let childGroups = group.object.children.compactMap { reference -> ObjectReference<PBXGroup>? in
             guard let group = pbxProj.objects.groups[reference] else {
                 return nil
             }

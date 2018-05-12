@@ -328,9 +328,9 @@ extension Scheme.Build: JSONObjectConvertible {
                 default: buildTypes = BuildType.all
                 }
             } else if let enabledDictionary = possibleBuildTypes as? [String: Bool] {
-                buildTypes = enabledDictionary.filter { $0.value }.flatMap { BuildType.from(jsonValue: $0.key) }
+                buildTypes = enabledDictionary.filter { $0.value }.compactMap { BuildType.from(jsonValue: $0.key) }
             } else if let array = possibleBuildTypes as? [String] {
-                buildTypes = array.flatMap(BuildType.from)
+                buildTypes = array.compactMap(BuildType.from)
             } else {
                 buildTypes = BuildType.all
             }
@@ -376,14 +376,16 @@ extension XCScheme.EnvironmentVariable: JSONObjectConvertible, Equatable {
 
     public init(jsonDictionary: JSONDictionary) throws {
 
-        if let value = jsonDictionary["value"] {
-            self.value = XCScheme.EnvironmentVariable.parseValue(value)
+        let value: String
+        if let jsonValue = jsonDictionary["value"] {
+            value = XCScheme.EnvironmentVariable.parseValue(jsonValue)
         } else {
             // will throw error
             value = try jsonDictionary.json(atKeyPath: "value")
         }
-        variable = try jsonDictionary.json(atKeyPath: "variable")
-        enabled = (try? jsonDictionary.json(atKeyPath: "isEnabled")) ?? true
+        let variable: String = try jsonDictionary.json(atKeyPath: "variable")
+        let enabled: Bool = (try? jsonDictionary.json(atKeyPath: "isEnabled")) ?? true
+        self.init(variable: variable, value: value, enabled: enabled)
     }
 
     static func parseAll(jsonDictionary: JSONDictionary) throws -> [XCScheme.EnvironmentVariable] {
