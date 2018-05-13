@@ -360,7 +360,7 @@ func projectGeneratorTests() {
                     xcscheme.launchAction?.buildableProductRunnable?.buildableReference,
                     xcscheme.profileAction?.buildableProductRunnable?.buildableReference,
                     xcscheme.testAction?.macroExpansion,
-                ].flatMap { $0 }
+                ].compactMap { $0 }
 
                 for buildableReference in buildableReferences {
                     try expect(buildableReference.blueprintIdentifier) == target.reference
@@ -1000,7 +1000,7 @@ extension PBXProj {
         let restOfPath = Array(paths.dropFirst())
         let restOfName = Array(names.dropFirst())
         if restOfPath.isEmpty {
-            let fileReferences: [ObjectReference<PBXFileReference>] = group.children.flatMap { reference in
+            let fileReferences: [ObjectReference<PBXFileReference>] = group.children.compactMap { reference in
                 if let fileReference = self.objects.fileReferences.getReference(reference) {
                     return ObjectReference(reference: reference, object: fileReference)
                 } else {
@@ -1009,7 +1009,7 @@ extension PBXProj {
             }
             return fileReferences.first { $0.object.path == path && $0.object.nameOrPath == name }
         } else {
-            let groups = group.children.flatMap { self.objects.groups.getReference($0) }
+            let groups = group.children.compactMap { self.objects.groups.getReference($0) }
             guard let group = groups.first(where: { $0.path == path && $0.nameOrPath == name }) else { return nil }
             return getFileReference(group: group, paths: restOfPath, names: restOfName)
         }
