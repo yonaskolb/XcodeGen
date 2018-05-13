@@ -13,14 +13,6 @@ public struct BuildScript: Equatable {
     public enum ScriptType: Equatable {
         case path(String)
         case script(String)
-
-        public static func == (lhs: ScriptType, rhs: ScriptType) -> Bool {
-            switch (lhs, rhs) {
-            case let (.path(lhs), .path(rhs)): return lhs == rhs
-            case let (.script(lhs), .script(rhs)): return lhs == rhs
-            default: return false
-            }
-        }
     }
 
     public init(
@@ -37,16 +29,6 @@ public struct BuildScript: Equatable {
         self.outputFiles = outputFiles
         self.shell = shell
         self.runOnlyWhenInstalling = runOnlyWhenInstalling
-    }
-
-    public static func == (lhs: BuildScript, rhs: BuildScript) -> Bool {
-        return lhs.script == rhs.script &&
-            lhs.name == rhs.name &&
-            lhs.script == rhs.script &&
-            lhs.inputFiles == rhs.inputFiles &&
-            lhs.outputFiles == rhs.outputFiles &&
-            lhs.shell == rhs.shell &&
-            lhs.runOnlyWhenInstalling == rhs.runOnlyWhenInstalling
     }
 }
 

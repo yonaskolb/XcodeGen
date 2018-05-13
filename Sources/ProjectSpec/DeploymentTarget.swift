@@ -30,12 +30,6 @@ public struct DeploymentTarget: Equatable {
         }
     }
 
-    public static func == (lhs: DeploymentTarget, rhs: DeploymentTarget) -> Bool {
-        return lhs.iOS == rhs.iOS &&
-            lhs.tvOS == rhs.tvOS &&
-            lhs.watchOS == rhs.watchOS &&
-            lhs.macOS == rhs.macOS
-    }
 }
 
 extension Platform {

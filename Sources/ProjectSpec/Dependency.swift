@@ -32,15 +32,6 @@ public struct Dependency: Equatable {
         case carthage
     }
 
-    public static func == (lhs: Dependency, rhs: Dependency) -> Bool {
-        return lhs.reference == rhs.reference &&
-            lhs.type == rhs.type &&
-            lhs.codeSign == rhs.codeSign &&
-            lhs.removeHeaders == rhs.removeHeaders &&
-            lhs.embed == rhs.embed &&
-            lhs.link == rhs.link
-    }
-
     public var buildSettings: [String: Any] {
         var attributes: [String] = []
         if codeSign {

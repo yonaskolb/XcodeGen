@@ -41,12 +41,6 @@ public struct Scheme: Equatable {
             self.name = name
             self.settingsTarget = settingsTarget
         }
-
-        public static func == (lhs: ExecutionAction, rhs: ExecutionAction) -> Bool {
-            return lhs.script == rhs.script &&
-                lhs.name == rhs.name &&
-                lhs.settingsTarget == rhs.settingsTarget
-        }
     }
 
     public struct Build: Equatable {
@@ -68,12 +62,6 @@ public struct Scheme: Equatable {
             self.preActions = preActions
             self.postActions = postActions
         }
-
-        public static func == (lhs: Build, rhs: Build) -> Bool {
-            return lhs.targets == rhs.targets &&
-                lhs.preActions == rhs.postActions &&
-                lhs.postActions == rhs.postActions
-        }
     }
 
     public struct Run: BuildAction {
@@ -94,14 +82,6 @@ public struct Scheme: Equatable {
             self.preActions = preActions
             self.postActions = postActions
             self.environmentVariables = environmentVariables
-        }
-
-        public static func == (lhs: Run, rhs: Run) -> Bool {
-            return lhs.config == rhs.config &&
-                lhs.commandLineArguments == rhs.commandLineArguments &&
-                lhs.preActions == rhs.postActions &&
-                lhs.postActions == rhs.postActions &&
-                lhs.environmentVariables == rhs.environmentVariables
         }
     }
 
@@ -131,16 +111,6 @@ public struct Scheme: Equatable {
             self.environmentVariables = environmentVariables
         }
 
-        public static func == (lhs: Test, rhs: Test) -> Bool {
-            return lhs.config == rhs.config &&
-                lhs.commandLineArguments == rhs.commandLineArguments &&
-                lhs.gatherCoverageData == rhs.gatherCoverageData &&
-                lhs.targets == rhs.targets &&
-                lhs.preActions == rhs.postActions &&
-                lhs.postActions == rhs.postActions &&
-                lhs.environmentVariables == rhs.environmentVariables
-        }
-
         public var shouldUseLaunchSchemeArgsEnv: Bool {
             return commandLineArguments.isEmpty && environmentVariables.isEmpty
         }
@@ -150,10 +120,6 @@ public struct Scheme: Equatable {
         public var config: String?
         public init(config: String) {
             self.config = config
-        }
-
-        public static func == (lhs: Analyze, rhs: Analyze) -> Bool {
-            return lhs.config == rhs.config
         }
     }
 
@@ -177,14 +143,6 @@ public struct Scheme: Equatable {
             self.environmentVariables = environmentVariables
         }
 
-        public static func == (lhs: Profile, rhs: Profile) -> Bool {
-            return lhs.config == rhs.config &&
-                lhs.commandLineArguments == rhs.commandLineArguments &&
-                lhs.preActions == rhs.postActions &&
-                lhs.postActions == rhs.postActions &&
-                lhs.environmentVariables == rhs.environmentVariables
-        }
-
         public var shouldUseLaunchSchemeArgsEnv: Bool {
             return commandLineArguments.isEmpty && environmentVariables.isEmpty
         }
@@ -203,12 +161,6 @@ public struct Scheme: Equatable {
             self.preActions = preActions
             self.postActions = postActions
         }
-
-        public static func == (lhs: Archive, rhs: Archive) -> Bool {
-            return lhs.config == rhs.config &&
-                lhs.preActions == rhs.postActions &&
-                lhs.postActions == rhs.postActions
-        }
     }
 
     public struct BuildTarget: Equatable {
@@ -219,19 +171,6 @@ public struct Scheme: Equatable {
             self.target = target
             self.buildTypes = buildTypes
         }
-
-        public static func == (lhs: BuildTarget, rhs: BuildTarget) -> Bool {
-            return lhs.target == rhs.target && lhs.buildTypes == rhs.buildTypes
-        }
-    }
-
-    public static func == (lhs: Scheme, rhs: Scheme) -> Bool {
-        return lhs.build == rhs.build &&
-            lhs.run == rhs.run &&
-            lhs.test == rhs.test &&
-            lhs.analyze == rhs.analyze &&
-            lhs.profile == rhs.profile &&
-            lhs.archive == rhs.archive
     }
 }
 

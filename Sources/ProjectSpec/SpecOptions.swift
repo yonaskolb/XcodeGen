@@ -2,7 +2,7 @@ import Foundation
 import JSONUtilities
 import xcproj
 
-public struct SpecOptions {
+public struct SpecOptions: Equatable {
 
     public var carthageBuildPath: String?
     public var carthageExecutablePath: String?
@@ -71,21 +71,6 @@ public struct SpecOptions {
         self.deploymentTarget = deploymentTarget
         self.disabledValidations = disabledValidations
         self.defaultConfig = defaultConfig
-    }
-
-    public static func == (lhs: SpecOptions, rhs: SpecOptions) -> Bool {
-        return lhs.carthageBuildPath == rhs.carthageBuildPath &&
-            lhs.carthageExecutablePath == rhs.carthageExecutablePath &&
-            lhs.bundleIdPrefix == rhs.bundleIdPrefix &&
-            lhs.settingPresets == rhs.settingPresets &&
-            lhs.createIntermediateGroups == rhs.createIntermediateGroups &&
-            lhs.developmentLanguage == rhs.developmentLanguage &&
-            lhs.tabWidth == rhs.tabWidth &&
-            lhs.indentWidth == rhs.indentWidth &&
-            lhs.usesTabs == rhs.usesTabs &&
-            lhs.xcodeVersion == rhs.xcodeVersion &&
-            lhs.deploymentTarget == rhs.deploymentTarget &&
-            lhs.disabledValidations == rhs.disabledValidations
     }
 }
 

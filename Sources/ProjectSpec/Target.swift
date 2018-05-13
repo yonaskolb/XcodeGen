@@ -2,7 +2,7 @@ import Foundation
 import JSONUtilities
 import xcproj
 
-public struct LegacyTarget {
+public struct LegacyTarget: Equatable {
     public var toolPath: String
     public var arguments: String?
     public var passSettings: Bool
@@ -18,15 +18,6 @@ public struct LegacyTarget {
         self.arguments = arguments
         self.passSettings = passSettings
         self.workingDirectory = workingDirectory
-    }
-}
-
-extension LegacyTarget: Equatable {
-    public static func == (lhs: LegacyTarget, rhs: LegacyTarget) -> Bool {
-        return lhs.toolPath == rhs.toolPath &&
-            lhs.arguments == rhs.arguments &&
-            lhs.passSettings == rhs.passSettings &&
-            lhs.workingDirectory == rhs.workingDirectory
     }
 }
 
@@ -183,7 +174,7 @@ extension Target: Equatable {
     }
 }
 
-public struct TargetScheme {
+public struct TargetScheme: Equatable {
     public var testTargets: [String]
     public var configVariants: [String]
     public var gatherCoverageData: Bool
@@ -208,19 +199,6 @@ public struct TargetScheme {
         self.environmentVariables = environmentVariables
         self.preActions = preActions
         self.postActions = postActions
-    }
-}
-
-extension TargetScheme: Equatable {
-
-    public static func == (lhs: TargetScheme, rhs: TargetScheme) -> Bool {
-        return lhs.testTargets == rhs.testTargets &&
-            lhs.configVariants == rhs.configVariants &&
-            lhs.gatherCoverageData == rhs.gatherCoverageData &&
-            lhs.commandLineArguments == rhs.commandLineArguments &&
-            lhs.environmentVariables == rhs.environmentVariables &&
-            lhs.preActions == rhs.preActions &&
-            lhs.postActions == rhs.postActions
     }
 }
 

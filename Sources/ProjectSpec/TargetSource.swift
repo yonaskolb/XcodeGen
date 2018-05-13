@@ -3,7 +3,7 @@ import JSONUtilities
 import PathKit
 import xcproj
 
-public struct TargetSource {
+public struct TargetSource: Equatable {
 
     public var path: String
     public var name: String?
@@ -107,18 +107,5 @@ extension TargetSource: JSONObjectConvertible {
                 throw SpecParsingError.unknownSourceBuildPhase(string)
             }
         }
-    }
-}
-
-extension TargetSource: Equatable {
-
-    public static func == (lhs: TargetSource, rhs: TargetSource) -> Bool {
-        return lhs.path == rhs.path
-            && lhs.name == rhs.name
-            && lhs.compilerFlags == rhs.compilerFlags
-            && lhs.excludes == rhs.excludes
-            && lhs.type == rhs.type
-            && lhs.optional == rhs.optional
-            && lhs.buildPhase == rhs.buildPhase
     }
 }
