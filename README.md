@@ -60,7 +60,7 @@ targets:
 A project would be created with 2 connected targets, with all the required configurations and build settings. See the [Project Spec](Docs/ProjectSpec.md) documentation for all the options you can specify.
 
 ## Installing
-Make sure Xcode 9 is installed first.
+Make sure Xcode 9.3 is installed first.
 
 ### [Mint](https://github.com/yonaskolb/mint)
 ```sh
