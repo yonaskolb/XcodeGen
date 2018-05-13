@@ -1,7 +1,7 @@
 import Foundation
 import JSONUtilities
 
-public struct BuildRule {
+public struct BuildRule: Equatable {
 
     public static let scriptCompilerSpec = "com.apple.compilers.proxy.script"
     public static let filePatternFileType = "pattern.proxy"
@@ -23,17 +23,6 @@ public struct BuildRule {
             case .pattern(let pattern): return pattern
             }
         }
-
-        public static func == (lhs: FileType, rhs: FileType) -> Bool {
-            switch (lhs, rhs) {
-            case (.type(let lhsFileType), .type(let rhsFileType)):
-                return lhsFileType == rhsFileType
-            case (.pattern(let lhsPattern), .pattern(let rhsPattern)):
-                return lhsPattern == rhsPattern
-            default:
-                return false
-            }
-        }
     }
 
     public enum Action: Equatable {
@@ -53,17 +42,6 @@ public struct BuildRule {
             case .script(let script): return script
             }
         }
-
-        public static func == (lhs: Action, rhs: Action) -> Bool {
-            switch (lhs, rhs) {
-            case (.compilerSpec(let lhsCompilerSpec), .compilerSpec(let rhsCompilerSpec)):
-                return lhsCompilerSpec == rhsCompilerSpec
-            case (.script(let lhsScript), .script(let rhsScript)):
-                return lhsScript == rhsScript
-            default:
-                return false
-            }
-        }
     }
 
     public var fileType: FileType
@@ -78,17 +56,6 @@ public struct BuildRule {
         self.name = name
         self.outputFiles = outputFiles
         self.outputFilesCompilerFlags = outputFilesCompilerFlags
-    }
-}
-
-extension BuildRule: Equatable {
-
-    public static func == (lhs: BuildRule, rhs: BuildRule) -> Bool {
-        return lhs.outputFiles == rhs.outputFiles &&
-            lhs.outputFilesCompilerFlags == rhs.outputFilesCompilerFlags &&
-            lhs.fileType == rhs.fileType &&
-            lhs.action == rhs.action &&
-            lhs.name == rhs.name
     }
 }
 
