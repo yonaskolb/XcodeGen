@@ -364,6 +364,32 @@ func projectLoadingTests() {
             try expect(parsedTarget.postbuildScripts) == expectedScripts
         }
 
+        $0.it("parses build rules") {
+            var target = validTarget
+            let buildRules: [[String: Any]] = [
+                [
+                    "name": "My Rule",
+                    "script": "my script",
+                    "filePattern": "*.swift",
+                    "outputFiles": ["file1", "file2"],
+                    "outputFilesCompilerFlags": ["-a","-b"]
+                ],
+                [
+                    "compilerSpec": "apple.tool",
+                    "fileType": "sourcecode.swift",
+                ]
+            ]
+            target["buildRules"] = buildRules
+
+            let expectedBuildRules = [
+                BuildRule(fileType: .pattern("*.swift"), action: .script("my script"), name: "My Rule", outputFiles: ["file1", "file2"], outputFilesCompilerFlags: ["-a","-b"]),
+                BuildRule(fileType: .type("sourcecode.swift"), action: .compilerSpec("apple.tool")),
+                ]
+
+            let parsedTarget = try Target(name: "test", jsonDictionary: target)
+            try expect(parsedTarget.buildRules) == expectedBuildRules
+        }
+
         $0.it("parses options") {
             let options = SpecOptions(
                 carthageBuildPath: "../Carthage/Build",

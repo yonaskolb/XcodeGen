@@ -67,6 +67,14 @@ targets:
       - name: MyScript
         script: |
           echo "You ran a script!"
+    buildRules:
+      - name: My Rule
+        fileType: sourcecode.swift
+        script: "# comment"
+        outputFiles: [file.swift, file2.swift]
+        outputFilesCompilerFlags: [--zee, --bee]
+      - filePattern: "*.plist"
+        compilerSpec: com.apple.build-tasks.copy-plist-file
 
   App_watchOS:
       type: application.watchapp2

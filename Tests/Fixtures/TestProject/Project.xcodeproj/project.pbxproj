@@ -63,6 +63,37 @@
 		BF_940936137577 = {isa = PBXBuildFile; fileRef = FR_123503999387 /* App_iOS_UITests.xctest */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXBuildRule section */
+		BR_808703807095 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = "com.apple.build-tasks.copy-plist-file";
+			filePatterns = "*.plist";
+			fileType = pattern.proxy;
+			isEditable = 1;
+			name = "Build Rule";
+			outputFiles = (
+			);
+			outputFilesCompilerFlags = (
+			);
+		};
+		BR_855671637991 /* PBXBuildRule */ = {
+			isa = PBXBuildRule;
+			compilerSpec = com.apple.compilers.proxy.script;
+			fileType = sourcecode.swift;
+			isEditable = 1;
+			name = "My Rule";
+			outputFiles = (
+				file.swift,
+				file2.swift,
+			);
+			outputFilesCompilerFlags = (
+				"--zee",
+				"--bee",
+			);
+			script = "# comment";
+		};
+/* End PBXBuildRule section */
+
 /* Begin PBXContainerItemProxy section */
 		CIP_12350399938 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -663,6 +694,8 @@
 				SSBP_8706434794 /* MyScript */,
 			);
 			buildRules = (
+				BR_855671637991 /* PBXBuildRule */,
+				BR_808703807095 /* PBXBuildRule */,
 			);
 			dependencies = (
 				TD_354342487294 /* PBXTargetDependency */,
