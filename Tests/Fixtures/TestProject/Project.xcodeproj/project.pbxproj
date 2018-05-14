@@ -496,6 +496,7 @@
 			isa = PBXLegacyTarget;
 			buildConfigurationList = CL_479264660374 /* Build configuration list for PBXLegacyTarget "Legacy" */;
 			buildPhases = (
+				SBP_47926466037 /* Sources */,
 			);
 			buildToolPath = /usr/bin/true;
 			dependencies = (
@@ -529,6 +530,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = CL_324671077936 /* Build configuration list for PBXNativeTarget "App_watchOS" */;
 			buildPhases = (
+				SBP_32467107793 /* Sources */,
 				RBP_32467107793 /* Resources */,
 				CFBP_4684049960 /* CopyFiles */,
 				SSBP_5954948530 /* Carthage */,
@@ -911,6 +913,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		SBP_32467107793 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		SBP_43870453850 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -924,6 +933,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				BF_456457948943 /* FrameworkFile.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		SBP_47926466037 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

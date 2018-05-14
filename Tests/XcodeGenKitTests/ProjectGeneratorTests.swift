@@ -281,7 +281,7 @@ func projectGeneratorTests() {
                 let pbxProject = try getPbxProj(scriptSpec)
 
                 guard let nativeTarget = pbxProject.objects.nativeTargets.referenceValues
-                    .first(where: { !$0.buildPhases.isEmpty }) else {
+                    .first(where: { $0.buildPhases.count >= 2 }) else {
                     throw failure("Target with build phases not found")
                 }
                 let buildPhases = nativeTarget.buildPhases
