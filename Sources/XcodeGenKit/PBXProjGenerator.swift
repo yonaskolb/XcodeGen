@@ -549,10 +549,8 @@ public class PBXProjGenerator {
         try target.prebuildScripts.forEach(generateBuildScript)
 
         let sourcesBuildPhaseFiles = getBuildFilesForPhase(.sources)
-        if !sourcesBuildPhaseFiles.isEmpty {
-            let sourcesBuildPhase = createObject(id: target.name, PBXSourcesBuildPhase(files: sourcesBuildPhaseFiles))
-            buildPhases.append(sourcesBuildPhase.reference)
-        }
+        let sourcesBuildPhase = createObject(id: target.name, PBXSourcesBuildPhase(files: sourcesBuildPhaseFiles))
+        buildPhases.append(sourcesBuildPhase.reference)
 
         let resourcesBuildPhaseFiles = getBuildFilesForPhase(.resources) + copyResourcesReferences
         if !resourcesBuildPhaseFiles.isEmpty {
