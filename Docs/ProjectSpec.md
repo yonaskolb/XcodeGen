@@ -328,11 +328,14 @@ targets:
 Specifies `.xcconfig` files for each configuration.
 
 ```yaml
+configFiles:
+  Debug: debug.xcconfig
+  Release: release.xcconfig
 targets:
-  MyTarget:
+  App:
     configFiles:
-      Debug: config_files/debug.xcconfig
-      Release: config_files/release.xcconfig
+      Debug: App/debug.xcconfig
+      Release: App/release.xcconfig
 ```
 
 ### Build Script
