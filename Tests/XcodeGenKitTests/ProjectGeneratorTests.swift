@@ -555,6 +555,29 @@ func projectGeneratorTests() {
                 try pbxProj.expectFile(paths: ["Sources", "A", "B", "b.swift"], buildPhase: .sources)
             }
 
+            $0.it("supports frameworks in sources") {
+                let directories = """
+                Sources:
+                  - Foo.framework
+                  - Bar.swift
+                """
+
+                try createDirectories(directories)
+
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: ["Sources"])
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target])
+                let pbxProj = try getPbxProj(project)
+                try pbxProj.expectFile(paths: ["Sources", "Bar.swift"], buildPhase: .sources)
+                let buildPhase = pbxProj.objects.copyFilesBuildPhases.referenceValues.first
+                try expect(buildPhase?.dstSubfolderSpec) == .frameworks
+                let fileReference = pbxProj.getFileReference(paths: ["Sources", "Foo.framework"],
+                                                             names: ["Sources", "Foo.framework"])?.reference ?? ""
+                let buildFile = pbxProj.objects.buildFiles.objectReferences
+                    .first(where: { $0.object.fileRef == fileReference })?.reference ?? ""
+                try expect(buildPhase?.files.count) == 1
+                try expect(buildPhase?.files.contains(buildFile)) == true
+            }
+
             $0.it("generates core data models") {
                 let directories = """
                 Sources:
