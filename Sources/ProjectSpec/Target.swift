@@ -30,6 +30,7 @@ public struct Target {
     public var dependencies: [Dependency]
     public var prebuildScripts: [BuildScript]
     public var postbuildScripts: [BuildScript]
+    public var buildRules: [BuildRule]
     public var configFiles: [String: String]
     public var scheme: TargetScheme?
     public var legacy: LegacyTarget?
@@ -60,6 +61,7 @@ public struct Target {
         dependencies: [Dependency] = [],
         prebuildScripts: [BuildScript] = [],
         postbuildScripts: [BuildScript] = [],
+        buildRules: [BuildRule] = [],
         scheme: TargetScheme? = nil,
         legacy: LegacyTarget? = nil,
         attributes: [String: Any] = [:]
@@ -74,6 +76,7 @@ public struct Target {
         self.dependencies = dependencies
         self.prebuildScripts = prebuildScripts
         self.postbuildScripts = postbuildScripts
+        self.buildRules = buildRules
         self.scheme = scheme
         self.legacy = legacy
         self.attributes = attributes
@@ -168,6 +171,7 @@ extension Target: Equatable {
             lhs.dependencies == rhs.dependencies &&
             lhs.prebuildScripts == rhs.prebuildScripts &&
             lhs.postbuildScripts == rhs.postbuildScripts &&
+            lhs.buildRules == rhs.buildRules &&
             lhs.scheme == rhs.scheme &&
             lhs.legacy == rhs.legacy &&
             NSDictionary(dictionary: lhs.attributes).isEqual(to: rhs.attributes)
@@ -275,6 +279,7 @@ extension Target: NamedJSONDictionaryConvertible {
         }
         prebuildScripts = jsonDictionary.json(atKeyPath: "prebuildScripts") ?? []
         postbuildScripts = jsonDictionary.json(atKeyPath: "postbuildScripts") ?? []
+        buildRules = jsonDictionary.json(atKeyPath: "buildRules") ?? []
         scheme = jsonDictionary.json(atKeyPath: "scheme")
         legacy = jsonDictionary.json(atKeyPath: "legacy")
         attributes = jsonDictionary.json(atKeyPath: "attributes") ?? [:]

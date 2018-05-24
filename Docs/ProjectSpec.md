@@ -19,6 +19,7 @@ Required properties are marked with checkbox. Some of the YAML examples don't sh
 	- [Config Files](#config-files)
 	- [Settings](#settings)
 	- [Build Script](#build-script)
+	- [Build Rule](#build-rule)
 	- [Dependency](#dependency)
 	- [Target Scheme](#target-scheme)
 	- [Legacy Target](#legacy-target)
@@ -160,9 +161,10 @@ Settings are merged in the following order: groups, base, configs.
 - [ ] **settings**: **[Settings](#settings)** - Target specific build settings. Default platform and product type settings will be applied first before any custom settings defined here. Other context dependant settings will be set automatically as well:
 	- `INFOPLIST_FILE`: If it doesn't exist your sources will be searched for `Info.plist` files and the first one found will be used for this setting
 	- `FRAMEWORK_SEARCH_PATHS`: If carthage dependencies are used, the platform build path will be added to this setting
+- [ ] **dependencies**: **[[Dependency](#dependency)]** - Dependencies for the target
 - [ ] **prebuildScripts**: **[[Build Script](#build-script)]** - Build scripts that run *before* any other build phases
 - [ ] **postbuildScripts**: **[[Build Script](#build-script)]** - Build scripts that run *after* any other build phases
-- [ ] **dependencies**: **[[Dependency](#dependency)]** - Dependencies for the target
+- [ ] **buildRules**: **[[Build Rule](#build-rule)]** - Custom build rules
 - [ ] **scheme**: **[Target Scheme](#target-scheme)** - Generated scheme with tests or config variants
 - [ ] **legacy**: **[Legacy Target](#legacy-target)** - When present, opt-in to make an Xcode "External Build System" legacy target instead.
 - [ ] **attributes**: **[String: Any]** - This sets values in the project `TargetAttributes`. It is merged with `attributes` from the project and anything automatically added by XcodeGen, with any duplicate values being override by values specified here. This is for advanced use only. Properties that are already set include:
@@ -373,6 +375,17 @@ targets:
       		command do
       		othercommand
 ```
+
+### Build Rule
+
+- [ ] **filePattern**: **String** - A glob pattern for the files that will have the build rule run on them. This or `fileType` must be defined
+- [ ] **fileType**: **String** - A file type determined by Xcode. The available types can be seen by hovering your mouse of the `Process` dropdown in the Xcode interface. For example `sourcecode.swift` or `file.xib`. This or `filePattern` must be defined.
+- [ ] **script**: **String** - The script that will be run on each file. This or `compilerSpec` must be defined.
+- [ ] **compilerSpec**: **String**: A reference to a built in apple tool to run on each file. This is for advanced use and the the values for this must be checked. This or `script` must be defined.
+- [ ] **name**: **String** - The name of a build rule. Defaults to `Build Rule`
+- [ ] **outputFiles**: **[String]** - The list of output files
+- [ ] **outputFilesCompilerFlags**: **[String]** - The list of compiler flags to apply to the output files
+
 
 ###  Target Scheme
 

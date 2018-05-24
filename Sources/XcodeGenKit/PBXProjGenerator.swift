@@ -643,6 +643,20 @@ public class PBXProjGenerator {
             buildPhases.append(carthageScript.reference)
         }
 
+        let buildRules = target.buildRules.map { buildRule in
+            createObject(id: "\(target.name)-\(buildRule.action)-\(buildRule.fileType)",
+                PBXBuildRule(
+                    compilerSpec: buildRule.action.compilerSpec,
+                    fileType: buildRule.fileType.fileType,
+                    isEditable: true,
+                    filePatterns: buildRule.fileType.pattern,
+                    name: buildRule.name ?? "Build Rule",
+                    outputFiles: buildRule.outputFiles,
+                    outputFilesCompilerFlags: buildRule.outputFilesCompilerFlags,
+                    script: buildRule.action.script
+            )).reference
+        }
+
         try target.postbuildScripts.forEach(generateBuildScript)
 
         let targetObject = targetObjects[target.name]!.object
@@ -652,6 +666,7 @@ public class PBXProjGenerator {
         targetObject.buildPhases = buildPhases
         targetObject.dependencies = dependencies
         targetObject.productName = target.name
+        targetObject.buildRules = buildRules
         targetObject.productReference = fileReference
         if !target.isLegacy {
             targetObject.productType = target.type
