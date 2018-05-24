@@ -587,6 +587,7 @@ public class PBXProjGenerator {
             buildPhases.append(copyFilesPhase.reference)
         }
 
+        copyFrameworksReferences += getBuildFilesForPhase(.frameworks)
         if !copyFrameworksReferences.isEmpty {
 
             let copyFilesPhase = createObject(
