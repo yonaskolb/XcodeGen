@@ -27,7 +27,7 @@ The project spec is a YAML or JSON file that defines your targets, configuration
 - ✅ Create projects on demand and remove your `.xcodeproj` file from git, which means **no merge conflicts**!
 - ✅ Groups in Xcode are always **synced** to your directories on disk
 - ✅ Easy **configuration** of projects which is human readable and git friendly
-- ✅ Easily **copy and paste** files and directories without having to edit anything in xcode
+- ✅ Easily **copy and paste** files and directories without having to edit anything in Xcode
 - ✅ Share build settings across multiple targets with **build setting groups**
 - ✅ Automatically generate Schemes for **different environments** like test and production
 - ✅ Easily **create new projects** with complicated setups on demand without messing around with Xcode
@@ -126,7 +126,7 @@ $ swift package generate-xcodeproj
 ```
 This use Swift Project Manager to create an `xcodeproj` file that you can open, edit and run in Xcode, which makes editing any code easier.
 
-If you want to pass any required arguments when running in XCode, you can edit the scheme to include launch arguments.
+If you want to pass any required arguments when running in Xcode, you can edit the scheme to include launch arguments.
 
 ## Documentation
 - See [Project Spec](Docs/ProjectSpec.md) documentation for all the various properties and options that can be set
