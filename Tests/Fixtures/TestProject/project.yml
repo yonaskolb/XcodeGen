@@ -101,7 +101,9 @@ targets:
     type: framework
     platform: [iOS, tvOS, watchOS, macOS]
     sources:
-      - Framework
+      - path: Framework
+        excludes:
+          - "*.xcodeproj"
       - path: Headers
         buildPhase: headers
         type: folder

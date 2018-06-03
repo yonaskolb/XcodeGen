@@ -685,7 +685,8 @@ func projectGeneratorTests() {
                     - file_part
                   - ignore.file
                   - a.ignored
-
+                  - project.xcodeproj:
+                    - project.pbxproj
                 """
                 try createDirectories(directories)
 
@@ -699,6 +700,7 @@ func projectGeneratorTests() {
                     "partial/*_part",
                     "ignore.file",
                     "*.ignored",
+                    "*.xcodeproj",
                     // not supported
                     // "**/*.ignored",
                 ]
@@ -726,6 +728,7 @@ func projectGeneratorTests() {
                 try pbxProj.expectFileMissing(paths: ["Sources", "partial", "file_part"])
                 try pbxProj.expectFileMissing(paths: ["Sources", "a.ignored"])
                 try pbxProj.expectFileMissing(paths: ["Sources", "ignore.file"])
+                try pbxProj.expectFileMissing(paths: ["Sources", "project.xcodeproj"])
             }
 
             $0.it("generates file sources") {
