@@ -2,6 +2,25 @@
 
 ## Master
 
+## 1.10.0
+
+#### Added
+- Added build rule support [306](https://github.com/yonaskolb/XcodeGen/pull/306) @yonaskolb
+- Added support for frameworks in sources [308](https://github.com/yonaskolb/XcodeGen/pull/308) @keith
+
+#### Changed
+- Upgraded to Swift 4.1
+- Improved Carthage dependency lookup performance with many targets [298](https://github.com/yonaskolb/XcodeGen/pull/298) @keith
+
+#### Fixed
+- Fixed PBXBuildFile and PBXFileReference being incorrectly generated for Legacy targets [296](https://github.com/yonaskolb/XcodeGen/pull/296) @sascha
+- Fixed required sources build phase not being generated if there are no sources [307](https://github.com/yonaskolb/XcodeGen/pull/307) @yonaskolb
+- Fixed install script in binary release [303](https://github.com/yonaskolb/XcodeGen/pull/303) @alvarhansen
+- Removed `ENABLE_TESTABILITY` from framework setting presets [299](https://github.com/yonaskolb/XcodeGen/pull/299) @allu22
+- Fixed homebrew installation [297](https://github.com/yonaskolb/XcodeGen/pull/297)  @vhbit
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/1.9.0...1.10.0)
+
 ## 1.9.0
 
 #### Added
