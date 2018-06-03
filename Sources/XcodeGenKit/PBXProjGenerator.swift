@@ -129,22 +129,24 @@ public class PBXProjGenerator {
                 lastKnownFileType = fileType
             }
 
-            let fileReference = createObject(
-                id: target.name,
-                PBXFileReference(
-                    sourceTree: .buildProductsDir,
-                    explicitFileType: explicitFileType,
-                    lastKnownFileType: lastKnownFileType,
-                    path: target.filename,
-                    includeInIndex: false
+            if !target.isLegacy {
+                let fileReference = createObject(
+                    id: target.name,
+                    PBXFileReference(
+                        sourceTree: .buildProductsDir,
+                        explicitFileType: explicitFileType,
+                        lastKnownFileType: lastKnownFileType,
+                        path: target.filename,
+                        includeInIndex: false
+                    )
                 )
-            )
 
-            targetFileReferences[target.name] = fileReference.reference
-            targetBuildFiles[target.name] = createObject(
-                id: fileReference.reference,
-                PBXBuildFile(fileRef: fileReference.reference)
-            )
+                targetFileReferences[target.name] = fileReference.reference
+                targetBuildFiles[target.name] = createObject(
+                    id: fileReference.reference,
+                      PBXBuildFile(fileRef: fileReference.reference)
+                )
+            }
         }
 
         try project.targets.forEach(generateTarget)
@@ -507,7 +509,7 @@ public class PBXProjGenerator {
             }
         }
 
-        let fileReference = targetFileReferences[target.name]!
+        let fileReference = targetFileReferences[target.name]
         var buildPhases: [String] = []
 
         func getBuildFilesForPhase(_ buildPhase: BuildPhase) -> [String] {
