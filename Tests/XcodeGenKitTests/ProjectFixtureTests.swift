@@ -5,7 +5,6 @@ import XcodeGenKit
 import xcproj
 import XCTest
 
-
 class ProjectFixtureTests: XCTestCase {
 
     func testProjectFixture() {

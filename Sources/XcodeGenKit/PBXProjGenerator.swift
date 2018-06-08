@@ -144,7 +144,7 @@ public class PBXProjGenerator {
                 targetFileReferences[target.name] = fileReference.reference
                 targetBuildFiles[target.name] = createObject(
                     id: fileReference.reference,
-                      PBXBuildFile(fileRef: fileReference.reference)
+                    PBXBuildFile(fileRef: fileReference.reference)
                 )
             }
         }
@@ -647,7 +647,8 @@ public class PBXProjGenerator {
         }
 
         let buildRules = target.buildRules.map { buildRule in
-            createObject(id: "\(target.name)-\(buildRule.action)-\(buildRule.fileType)",
+            createObject(
+                id: "\(target.name)-\(buildRule.action)-\(buildRule.fileType)",
                 PBXBuildRule(
                     compilerSpec: buildRule.action.compilerSpec,
                     fileType: buildRule.fileType.fileType,
@@ -657,7 +658,8 @@ public class PBXProjGenerator {
                     outputFiles: buildRule.outputFiles,
                     outputFilesCompilerFlags: buildRule.outputFilesCompilerFlags,
                     script: buildRule.action.script
-            )).reference
+                )
+            ).reference
         }
 
         try target.postbuildScripts.forEach(generateBuildScript)

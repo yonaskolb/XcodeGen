@@ -90,7 +90,7 @@ class SourceGeneratorTests: XCTestCase {
                 let fileReference = pbxProj.getFileReference(
                     paths: ["Sources", "Foo.framework"],
                     names: ["Sources", "Foo.framework"]
-                    )?.reference ?? ""
+                )?.reference ?? ""
                 let buildFile = pbxProj.objects.buildFiles.objectReferences
                     .first(where: { $0.object.fileRef == fileReference })?.reference ?? ""
                 try expect(buildPhase?.files.count) == 1
@@ -120,7 +120,6 @@ class SourceGeneratorTests: XCTestCase {
                 try expect(versionGroup.path) == "model.xcdatamodeld"
                 try expect(fileReference.value.path) == "model.xcdatamodel"
             }
-
 
             $0.it("handles duplicate names") {
                 let directories = """
@@ -160,7 +159,7 @@ class SourceGeneratorTests: XCTestCase {
                 let target = Target(name: "Test", type: .application, platform: .iOS, sources: [
                     TargetSource(path: "Sources", name: "NewSource"),
                     TargetSource(path: "OtherSource/b.swift", name: "c.swift"),
-                    ])
+                ])
                 let project = Project(basePath: directoryPath, name: "Test", targets: [target])
 
                 let pbxProj = try project.generatePbxProj()
@@ -268,7 +267,7 @@ class SourceGeneratorTests: XCTestCase {
                     "Sources/A/B/b.swift",
                     "Sources/A/Assets.xcassets",
                     "Sources/A/B/c.jpg",
-                    ])
+                ])
                 let project = Project(basePath: directoryPath, name: "Test", targets: [target])
 
                 let pbxProj = try project.generatePbxProj()
@@ -316,7 +315,7 @@ class SourceGeneratorTests: XCTestCase {
                     "Sources/A/b.swift",
                     "Sources/F/G/h.swift",
                     "../OtherDirectory/C/D/e.swift",
-                    ])
+                ])
                 let options = SpecOptions(createIntermediateGroups: true)
                 let project = Project(basePath: directoryPath, name: "Test", targets: [target], options: options)
 
@@ -337,7 +336,7 @@ class SourceGeneratorTests: XCTestCase {
 
                 let target = Target(name: "Test", type: .application, platform: .iOS, sources: [
                     TargetSource(path: "Sources/A", type: .folder),
-                    ])
+                ])
                 let project = Project(basePath: directoryPath, name: "Test", targets: [target])
 
                 let pbxProj = try project.generatePbxProj()
@@ -387,7 +386,7 @@ class SourceGeneratorTests: XCTestCase {
                     TargetSource(path: "A", buildPhase: .resources),
                     TargetSource(path: "B", buildPhase: .none),
                     TargetSource(path: "C", buildPhase: nil),
-                    ])
+                ])
                 let project = Project(basePath: directoryPath, name: "Test", targets: [target])
 
                 let pbxProj = try project.generatePbxProj()
@@ -439,7 +438,7 @@ class SourceGeneratorTests: XCTestCase {
                 let target = Target(name: "Test", type: .application, platform: .iOS, sources: [
                     "Sources/A/a.swift",
                     "Sources/A/a.swift",
-                    ])
+                ])
                 let project = Project(basePath: directoryPath, name: "Test", targets: [target])
 
                 let pbxProj = try project.generatePbxProj()

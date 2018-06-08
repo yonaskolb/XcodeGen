@@ -10,9 +10,10 @@ public struct Project {
     public var name: String
     public var targets: [Target] {
         didSet {
-            self.targetsMap = Dictionary(uniqueKeysWithValues: self.targets.map { ($0.name, $0) })
+            targetsMap = Dictionary(uniqueKeysWithValues: targets.map { ($0.name, $0) })
         }
     }
+
     public var settings: Settings
     public var settingGroups: [String: Settings]
     public var configs: [Config]
@@ -40,7 +41,7 @@ public struct Project {
         self.basePath = basePath
         self.name = name
         self.targets = targets
-        self.targetsMap = Dictionary(uniqueKeysWithValues: self.targets.map { ($0.name, $0) })
+        targetsMap = Dictionary(uniqueKeysWithValues: self.targets.map { ($0.name, $0) })
         self.configs = configs
         self.settings = settings
         self.settingGroups = settingGroups
@@ -123,7 +124,7 @@ extension Project {
         } else {
             options = SpecOptions()
         }
-        self.targetsMap = Dictionary(uniqueKeysWithValues: self.targets.map { ($0.name, $0) })
+        targetsMap = Dictionary(uniqueKeysWithValues: targets.map { ($0.name, $0) })
     }
 
     static func filterJSON(jsonDictionary: JSONDictionary) throws -> JSONDictionary {

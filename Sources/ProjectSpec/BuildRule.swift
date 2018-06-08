@@ -12,7 +12,7 @@ public struct BuildRule: Equatable {
 
         public var fileType: String {
             switch self {
-            case .type(let fileType): return fileType
+            case let .type(fileType): return fileType
             case .pattern: return BuildRule.filePatternFileType
             }
         }
@@ -20,7 +20,7 @@ public struct BuildRule: Equatable {
         public var pattern: String? {
             switch self {
             case .type: return nil
-            case .pattern(let pattern): return pattern
+            case let .pattern(pattern): return pattern
             }
         }
     }
@@ -31,7 +31,7 @@ public struct BuildRule: Equatable {
 
         public var compilerSpec: String {
             switch self {
-            case .compilerSpec(let compilerSpec): return compilerSpec
+            case let .compilerSpec(compilerSpec): return compilerSpec
             case .script: return BuildRule.scriptCompilerSpec
             }
         }
@@ -39,7 +39,7 @@ public struct BuildRule: Equatable {
         public var script: String? {
             switch self {
             case .compilerSpec: return nil
-            case .script(let script): return script
+            case let .script(script): return script
             }
         }
     }
@@ -62,17 +62,17 @@ public struct BuildRule: Equatable {
 extension BuildRule: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
-        
+
         if let fileType: String = jsonDictionary.json(atKeyPath: "fileType") {
             self.fileType = .type(fileType)
         } else {
-            self.fileType = .pattern(try jsonDictionary.json(atKeyPath: "filePattern"))
+            fileType = .pattern(try jsonDictionary.json(atKeyPath: "filePattern"))
         }
 
         if let compilerSpec: String = jsonDictionary.json(atKeyPath: "compilerSpec") {
-            self.action = .compilerSpec(compilerSpec)
+            action = .compilerSpec(compilerSpec)
         } else {
-            self.action = .script(try jsonDictionary.json(atKeyPath: "script"))
+            action = .script(try jsonDictionary.json(atKeyPath: "script"))
         }
 
         outputFiles = jsonDictionary.json(atKeyPath: "outputFiles") ?? []

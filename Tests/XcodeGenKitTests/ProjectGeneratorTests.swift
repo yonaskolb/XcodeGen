@@ -396,8 +396,10 @@ class ProjectGeneratorTests: XCTestCase {
                     throw failure("Scheme not found")
                 }
 
-                try expect(xcodeProject.pbxproj.objects.nativeTargets.objectReferences
-                    .contains(where: { $0.object.name == app.name })).beTrue()
+                try expect(
+                    xcodeProject.pbxproj.objects.nativeTargets.objectReferences
+                        .contains(where: { $0.object.name == app.name })
+                ).beTrue()
                 try expect(xcscheme.launchAction?.environmentVariables) == runVariables
                 try expect(xcscheme.testAction?.environmentVariables).to.beNil()
                 try expect(xcscheme.profileAction?.environmentVariables).to.beNil()
@@ -485,5 +487,4 @@ class ProjectGeneratorTests: XCTestCase {
             }
         }
     }
-
 }

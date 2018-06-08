@@ -29,7 +29,6 @@ public struct DeploymentTarget: Equatable {
         case .macOS: return macOS
         }
     }
-
 }
 
 extension Platform {
