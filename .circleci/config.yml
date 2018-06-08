@@ -7,4 +7,4 @@ jobs:
       - checkout
       - run: swift build
       - run: swift test
-      - run: make
+      - run: make build
