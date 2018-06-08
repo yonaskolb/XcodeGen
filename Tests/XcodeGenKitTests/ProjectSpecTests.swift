@@ -3,46 +3,31 @@ import ProjectSpec
 import Spectre
 import XcodeGenKit
 import xcproj
+import XCTest
 
-func projectSpecTests() {
+class ProjectSpecTests: XCTestCase {
 
-    describe("ProjectSpec") {
+    func testTargetType() {
+        describe {
 
-        let framework = Target(
-            name: "MyFramework",
-            type: .framework,
-            platform: .iOS,
-            settings: Settings(buildSettings: ["SETTING_2": "VALUE"])
-        )
-        let staticLibrary = Target(
-            name: "MyStaticLibrary",
-            type: .staticLibrary,
-            platform: .iOS,
-            settings: Settings(buildSettings: ["SETTING_2": "VALUE"])
-        )
-        let dynamicLibrary = Target(
-            name: "MyDynamicLibrary",
-            type: .dynamicLibrary,
-            platform: .iOS,
-            settings: Settings(buildSettings: ["SETTING_2": "VALUE"])
-        )
-
-        func expectValidationError(_ project: Project, _ expectedError: SpecValidationError.ValidationError) throws {
-            do {
-                try project.validate()
-            } catch let error as SpecValidationError {
-                if !error.errors
-                    .contains(where: { $0.description == expectedError.description }) {
-                    throw failure("Supposed to fail with:\n\(expectedError)\nbut got:\n\(error.errors.map { $0.description }.joined(separator: "\n"))")
-                }
-                return
-            } catch {
-                throw failure("Supposed to fail with \"\(expectedError)\"")
-            }
-            throw failure("Supposed to fail with \"\(expectedError)\"")
-        }
-
-        $0.describe("Types") {
+            let framework = Target(
+                name: "MyFramework",
+                type: .framework,
+                platform: .iOS,
+                settings: Settings(buildSettings: ["SETTING_2": "VALUE"])
+            )
+            let staticLibrary = Target(
+                name: "MyStaticLibrary",
+                type: .staticLibrary,
+                platform: .iOS,
+                settings: Settings(buildSettings: ["SETTING_2": "VALUE"])
+            )
+            let dynamicLibrary = Target(
+                name: "MyDynamicLibrary",
+                type: .dynamicLibrary,
+                platform: .iOS,
+                settings: Settings(buildSettings: ["SETTING_2": "VALUE"])
+            )
             $0.it("is a framework when it has the right extension") {
                 try expect(framework.type.isFramework).to.beTrue()
             }
@@ -52,8 +37,10 @@ func projectSpecTests() {
                 try expect(dynamicLibrary.type.isLibrary).to.beTrue()
             }
         }
+    }
 
-        $0.describe("Deployment Target") {
+    func testDeploymentTarget() {
+        describe {
 
             $0.it("has correct build setting") {
                 try expect(Platform.iOS.deploymentTargetSetting) == "IPHONEOS_DEPLOYMENT_TARGET"
@@ -77,8 +64,10 @@ func projectSpecTests() {
                 try expect(Version(2.1).deploymentTarget) == "2.1"
             }
         }
+    }
 
-        $0.describe("Validation") {
+    func testValidation() {
+        describe {
 
             let baseProject = Project(basePath: "", name: "", configs: [Config(name: "invalid")])
             let invalidSettings = Settings(
@@ -175,4 +164,19 @@ func projectSpecTests() {
             }
         }
     }
+}
+
+fileprivate func expectValidationError(_ project: Project, _ expectedError: SpecValidationError.ValidationError, file: String = #file, line: Int = #line) throws {
+    do {
+        try project.validate()
+    } catch let error as SpecValidationError {
+        if !error.errors
+            .contains(where: { $0.description == expectedError.description }) {
+            throw failure("Supposed to fail with:\n\(expectedError)\nbut got:\n\(error.errors.map { $0.description }.joined(separator: "\n"))", file: file, line: line)
+        }
+        return
+    } catch {
+        throw failure("Supposed to fail with \"\(expectedError)\"", file: file, line: line)
+    }
+    throw failure("Supposed to fail with \"\(expectedError)\"", file: file, line: line)
 }

@@ -2,17 +2,28 @@ import Foundation
 import ProjectSpec
 import Spectre
 import xcproj
+import PathKit
 
-func expectError<T: Error>(_ expectedError: T, _ closure: () throws -> Void) throws where T: CustomStringConvertible {
+let fixturePath = Path(#file).parent().parent() + "Fixtures"
+
+func doThrowing<T>(file: String = #file, line: Int = #line, _ closure: () throws -> T) throws -> T {
+    do {
+        return try closure()
+    } catch {
+        throw failure(String(describing: error), file: file, line: line)
+    }
+}
+
+func expectError<T: Error>(_ expectedError: T, function: String = #function, file: String = #file, line: Int = #line, _ closure: () throws -> Void) throws where T: CustomStringConvertible {
     do {
         try closure()
     } catch let error as T {
-        try expect(error.description) == expectedError.description
+        try expect(error.description, file: file, line: line, function: function) == expectedError.description
         return
     } catch {
-        throw failure("Supposed to fail with \"\(expectedError)\"")
+        throw failure("Supposed to fail with \"\(expectedError)\"", function: function, file: file, line: line)
     }
-    throw failure("Supposed to fail with \"\(expectedError)\"")
+    throw failure("Supposed to fail with \"\(expectedError)\"", function: function, file: file, line: line)
 }
 
 struct ExpectationFailure: FailureType {
@@ -32,7 +43,7 @@ struct ExpectationFailure: FailureType {
 
 open class ArrayExpectation<T>: ExpectationType {
     public typealias ValueType = Array<T>
-    open let expression: () throws -> ValueType?
+    public let expression: () throws -> ValueType?
 
     let file: String
     let line: Int
