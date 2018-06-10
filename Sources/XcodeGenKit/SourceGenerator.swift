@@ -162,7 +162,7 @@ class SourceGenerator {
         }
         if let fileExtension = path.extension {
             switch fileExtension {
-            case "swift", "m", "mm", "cpp", "c", "S", "xcdatamodeld": return .sources
+            case "swift", "m", "mm", "cpp", "c", "cc", "S", "xcdatamodeld": return .sources
             case "h", "hh", "hpp", "ipp", "tpp", "hxx", "def": return .headers
             case "framework": return .frameworks
             case "xcconfig", "entitlements", "gpx", "lproj", "apns": return nil
