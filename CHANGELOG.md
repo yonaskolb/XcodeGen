@@ -17,7 +17,8 @@
 - Fixed required sources build phase not being generated if there are no sources [307](https://github.com/yonaskolb/XcodeGen/pull/307) @yonaskolb
 - Fixed install script in binary release [303](https://github.com/yonaskolb/XcodeGen/pull/303) @alvarhansen
 - Removed `ENABLE_TESTABILITY` from framework setting presets [299](https://github.com/yonaskolb/XcodeGen/pull/299) @allu22
-- Fixed homebrew installation [297](https://github.com/yonaskolb/XcodeGen/pull/297)  @vhbit
+- Fixed homebrew installation [297](https://github.com/yonaskolb/XcodeGen/pull/297) @vhbit
+- `cc` files are now automatically recognized as source files [317](https://github.com/yonaskolb/XcodeGen/pull/317) @maicki
 
 [Commits](https://github.com/yonaskolb/XcodeGen/compare/1.9.0...1.10.0)
 
