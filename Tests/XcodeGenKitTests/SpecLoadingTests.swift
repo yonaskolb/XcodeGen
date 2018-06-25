@@ -403,6 +403,21 @@ class SpecLoadingTests: XCTestCase {
             }
         }
     }
+
+    func testDecoding() throws {
+        describe {
+            $0.it("decodes dots in dictionary keys") {
+                let dictionary: [String: Any] = [
+                    "test": [
+                        "one.two": true
+                    ]
+                ]
+
+                let booleans: [String: Bool] = try dictionary.json(atKeyPath: "test")
+                try expect(booleans) == ["one.two": true]
+            }
+        }
+    }
 }
 
 @discardableResult

@@ -135,3 +135,7 @@ schemes:
       preActions:
         - script: echo Starting Framework Build
           settingsTarget: Framework_iOS
+    run:
+      commandLineArguments:
+        argument: YES
+        argument.with.dot: YES
