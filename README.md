@@ -60,43 +60,44 @@ targets:
 A project would be created with 2 connected targets, with all the required configurations and build settings. See the [Project Spec](Docs/ProjectSpec.md) documentation for all the options you can specify, and [Usage](Docs/Usage.md) for more general documentation.
 
 ## Installing
+
 Make sure Xcode 9.3 is installed first.
 
 ### [Mint](https://github.com/yonaskolb/mint)
 ```sh
-$ mint run yonaskolb/xcodegen
+mint install yonaskolb/xcodegen
 ```
 
 ### Make
 
-```
-$ git clone https://github.com/yonaskolb/XcodeGen.git
-$ cd XcodeGen
-$ make
+```shell
+git clone https://github.com/yonaskolb/XcodeGen.git
+cd XcodeGen
+make
 ```
 
 ### Homebrew
 
-```
-$ brew tap yonaskolb/XcodeGen https://github.com/yonaskolb/XcodeGen.git
-$ brew install XcodeGen
+```shell
+brew tap yonaskolb/XcodeGen https://github.com/yonaskolb/XcodeGen.git
+brew install XcodeGen
 ```
 
 ### Swift Package Manager
 
 **Use as CLI**
 
-```
-$ git clone https://github.com/yonaskolb/XcodeGen.git
-$ cd XcodeGen
-$ swift run xcodegen
+```shell
+git clone https://github.com/yonaskolb/XcodeGen.git
+cd XcodeGen
+swift run xcodegen
 ```
 
 **Use as dependency**
 
 Add the following to your Package.swift file's dependencies:
 
-```
+```swift
 .package(url: "https://github.com/yonaskolb/XcodeGen.git", from: "1.0.0"),
 ```
 
@@ -106,8 +107,8 @@ And then import wherever needed: `import XcodeGenKit`
 
 Simply run:
 
-```
-$ xcodegen
+```shell
+xcodegen
 ```
 
 This will look for a project spec in the current directory called `project.yml`
@@ -119,10 +120,10 @@ Use `xcodegen --help` to see the list of options:
 - **--quiet**: Suppress informational and success messages. By default this is disabled.
 
 ## Editing
-```
-$ git clone https://github.com/yonaskolb/XcodeGen.git
-$ cd XcodeGen
-$ swift package generate-xcodeproj
+```shell
+git clone https://github.com/yonaskolb/XcodeGen.git
+cd XcodeGen
+swift package generate-xcodeproj
 ```
 This use Swift Project Manager to create an `xcodeproj` file that you can open, edit and run in Xcode, which makes editing any code easier.
 
