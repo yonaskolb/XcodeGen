@@ -63,35 +63,35 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		CIP_12350399938 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = P_8448771205358 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = NT_825232110500;
-			remoteInfo = App_iOS;
-		};
-		CIP_32467107793 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = P_8448771205358 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = NT_507023492251;
-			remoteInfo = "App_watchOS Extension";
-		};
-		CIP_78312289991 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = P_8448771205358 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = NT_825232110500;
-			remoteInfo = App_iOS;
-		};
-		CIP_82523211050 /* PBXContainerItemProxy */ = {
+		CIP_10972496596 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = P_8448771205358 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = NT_472296042419;
 			remoteInfo = Framework_iOS;
 		};
-		"CIP_82523211050-1" /* PBXContainerItemProxy */ = {
+		CIP_19329118292 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = P_8448771205358 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = NT_507023492251;
+			remoteInfo = "App_watchOS Extension";
+		};
+		CIP_28856087625 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = P_8448771205358 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = NT_935153865209;
+			remoteInfo = iMessageApp;
+		};
+		CIP_67619158112 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = P_8448771205358 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = NT_825232110500;
+			remoteInfo = App_iOS;
+		};
+		CIP_82410178775 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = P_8448771205358 /* Project object */;
 			proxyType = 1;
@@ -991,27 +991,27 @@
 		TD_249869083204 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = NT_507023492251 /* App_watchOS Extension */;
-			targetProxy = CIP_32467107793 /* PBXContainerItemProxy */;
+			targetProxy = CIP_19329118292 /* PBXContainerItemProxy */;
 		};
 		TD_257389546865 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = NT_324671077936 /* App_watchOS */;
-			targetProxy = "CIP_82523211050-1" /* PBXContainerItemProxy */;
+			targetProxy = CIP_82410178775 /* PBXContainerItemProxy */;
 		};
 		TD_354342487294 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = NT_472296042419 /* Framework_iOS */;
-			targetProxy = CIP_82523211050 /* PBXContainerItemProxy */;
+			targetProxy = CIP_10972496596 /* PBXContainerItemProxy */;
 		};
 		TD_432517223942 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = NT_825232110500 /* App_iOS */;
-			targetProxy = CIP_12350399938 /* PBXContainerItemProxy */;
+			targetProxy = CIP_67619158112 /* PBXContainerItemProxy */;
 		};
 		TD_436638162860 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = NT_825232110500 /* App_iOS */;
-			targetProxy = CIP_78312289991 /* PBXContainerItemProxy */;
+			targetProxy = CIP_88714386547 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 

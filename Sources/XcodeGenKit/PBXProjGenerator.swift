@@ -401,7 +401,7 @@ public class PBXProjGenerator {
                 let dependencyFileReference = targetFileReferences[dependencyTargetName]!
 
                 let targetProxy = createObject(
-                    id: target.name,
+                    id: "\(target.name)-\(dependency.reference)",
                     PBXContainerItemProxy(
                         containerPortal: pbxProj.rootObject,
                         remoteGlobalIDString: targetObjects[dependencyTargetName]!.reference,
