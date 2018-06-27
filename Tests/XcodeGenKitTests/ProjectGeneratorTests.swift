@@ -312,6 +312,45 @@ class ProjectGeneratorTests: XCTestCase {
 
                 _ = try project.generatePbxProj()
             }
+
+            $0.it("generates run scripts") {
+                var scriptSpec = project
+                scriptSpec.targets[0].buildRules = [
+                    BuildRule(
+                        fileType: .type("sourcecode.swift"),
+                        action: .script("do thing"),
+                        name: "My Rule",
+                        outputFiles: ["file1.swift", "file2.swift"],
+                        outputFilesCompilerFlags: ["--zee", "--bee"]),
+                    BuildRule(
+                        fileType: .pattern("*.plist"),
+                        action: .compilerSpec("com.apple.build-tasks.copy-plist-file"))
+                ]
+                let pbxProject = try scriptSpec.generatePbxProj()
+
+                let buildRules = pbxProject.objects.buildRules.referenceValues
+                try expect(buildRules.count) == 2
+                let first = buildRules.first { $0.name == "My Rule" }!
+                let second = buildRules.first { $0.name != "My Rule" }!
+
+                try expect(first.name) == "My Rule"
+                try expect(first.isEditable) == true
+                try expect(first.outputFiles) == ["file1.swift", "file2.swift"]
+                try expect(first.outputFilesCompilerFlags) == ["--zee", "--bee"]
+                try expect(first.script) == "do thing"
+                try expect(first.fileType) == "sourcecode.swift"
+                try expect(first.compilerSpec) == "com.apple.compilers.proxy.script"
+                try expect(first.filePatterns).beNil()
+
+                try expect(second.name) == "Build Rule"
+                try expect(second.fileType) == "pattern.proxy"
+                try expect(second.filePatterns) == "*.plist"
+                try expect(second.compilerSpec) == "com.apple.build-tasks.copy-plist-file"
+                try expect(second.script).beNil()
+                try expect(second.outputFiles) == []
+                try expect(second.outputFilesCompilerFlags) == []
+
+            }
         }
     }
 
