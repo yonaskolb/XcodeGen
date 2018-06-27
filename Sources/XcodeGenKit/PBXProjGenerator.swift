@@ -393,7 +393,20 @@ public class PBXProjGenerator {
 
         for dependency in target.dependencies {
 
+            var embedAttributes: [String] = []
+
             let embed = dependency.embed ?? target.shouldEmbedDependencies
+            let codeSign = dependency.codeSign ?? (dependency.type != .target)
+
+            if codeSign {
+                embedAttributes.append("CodeSignOnCopy")
+            }
+            if dependency.removeHeaders {
+                embedAttributes.append("RemoveHeadersOnCopy")
+            }
+
+            let embedSettings = ["ATTRIBUTES": embedAttributes]
+
             switch dependency.type {
             case .target:
                 let dependencyTargetName = dependency.reference
@@ -431,11 +444,12 @@ public class PBXProjGenerator {
 
                 if (dependency.embed ?? target.type.isApp) && !dependencyTarget.type.isLibrary {
 
+
                     let embedFile = createObject(
                         id: dependencyFileReference + target.name,
                         PBXBuildFile(
                             fileRef: dependencyFileReference,
-                            settings: dependency.buildSettings
+                            settings: embedSettings
                         )
                     )
 
@@ -479,7 +493,7 @@ public class PBXProjGenerator {
                 if embed {
                     let embedFile = createObject(
                         id: fileReference + target.name,
-                        PBXBuildFile(fileRef: fileReference, settings: dependency.buildSettings)
+                        PBXBuildFile(fileRef: fileReference, settings: embedSettings)
                     )
                     copyFrameworksReferences.append(embedFile.reference)
                 }
@@ -502,7 +516,7 @@ public class PBXProjGenerator {
                 if target.platform == .macOS && embed {
                     let embedFile = createObject(
                         id: fileReference + target.name,
-                        PBXBuildFile(fileRef: fileReference, settings: dependency.buildSettings)
+                        PBXBuildFile(fileRef: fileReference, settings: embedSettings)
                     )
                     copyFrameworksReferences.append(embedFile.reference)
                 }

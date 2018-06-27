@@ -7,7 +7,7 @@ public struct Dependency: Equatable {
     public var type: DependencyType
     public var reference: String
     public var embed: Bool?
-    public var codeSign: Bool = true
+    public var codeSign: Bool?
     public var removeHeaders: Bool = true
     public var link: Bool = true
     public var implicit: Bool = false
@@ -16,12 +16,14 @@ public struct Dependency: Equatable {
         type: DependencyType,
         reference: String,
         embed: Bool? = nil,
+        codeSign: Bool? = nil,
         link: Bool = true,
         implicit: Bool = false
     ) {
         self.type = type
         self.reference = reference
         self.embed = embed
+        self.codeSign = codeSign
         self.link = link
         self.implicit = implicit
     }
@@ -30,17 +32,6 @@ public struct Dependency: Equatable {
         case target
         case framework
         case carthage
-    }
-
-    public var buildSettings: [String: Any] {
-        var attributes: [String] = []
-        if codeSign {
-            attributes.append("CodeSignOnCopy")
-        }
-        if removeHeaders {
-            attributes.append("RemoveHeadersOnCopy")
-        }
-        return ["ATTRIBUTES": attributes]
     }
 }
 
@@ -61,12 +52,10 @@ extension Dependency: JSONObjectConvertible {
         }
 
         embed = jsonDictionary.json(atKeyPath: "embed")
+        codeSign = jsonDictionary.json(atKeyPath: "codeSign")
 
         if let bool: Bool = jsonDictionary.json(atKeyPath: "link") {
             link = bool
-        }
-        if let bool: Bool = jsonDictionary.json(atKeyPath: "codeSign") {
-            codeSign = bool
         }
         if let bool: Bool = jsonDictionary.json(atKeyPath: "removeHeaders") {
             removeHeaders = bool
