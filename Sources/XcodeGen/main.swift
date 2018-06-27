@@ -32,8 +32,8 @@ func generate(spec: String, project: String, isQuiet: Bool, justVersion: Bool) {
     do {
         project = try Project(path: projectSpecPath)
         logger.info("📋  Loaded project:\n  \(project.debugDescription.replacingOccurrences(of: "\n", with: "\n  "))")
-    } catch let error as JSONUtilities.DecodingError {
-        fatalError("Parsing project spec failed: \(error.description)")
+    } catch let error as CustomStringConvertible {
+        fatalError("Parsing project spec failed: \(error)")
     } catch {
         fatalError("Parsing project spec failed: \(error.localizedDescription)")
     }
