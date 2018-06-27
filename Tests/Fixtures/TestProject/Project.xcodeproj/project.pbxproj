@@ -10,6 +10,8 @@
 		BF_130062884703 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_257516580010 /* Alamofire.framework */; };
 		BF_138356261076 /* InterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_363921640403 /* InterfaceController.swift */; };
 		BF_167705969896 /* TestProjectUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_145531354566 /* TestProjectUITests.swift */; };
+		BF_182635022050 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FR_830053537293 /* Assets.xcassets */; };
+		BF_184447863946 = {isa = PBXBuildFile; fileRef = FR_935153865209 /* iMessageApp.app */; };
 		BF_186245454304 /* LocalizedStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = VG_118219888726 /* LocalizedStoryboard.storyboard */; };
 		BF_206432481076 /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_340586388409 /* ExtensionDelegate.swift */; };
 		BF_211435872001 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = VG_473000061463 /* Localizable.strings */; };
@@ -27,10 +29,11 @@
 		BF_314868376788 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = VG_746876637628 /* Localizable.stringsdict */; };
 		BF_324363145049 /* Framework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_472296042419 /* Framework.framework */; };
 		BF_331192862207 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_481575785861 /* ViewController.swift */; settings = {COMPILER_FLAGS = "-Werror"; }; };
+		BF_334321520545 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FR_377082606829 /* Assets.xcassets */; };
 		BF_334778067417 = {isa = PBXBuildFile; fileRef = FR_783122899910 /* App_iOS_Tests.xctest */; };
 		BF_360196406184 /* TestProjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_722239415598 /* TestProjectTests.swift */; };
 		BF_425679397292 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = FR_183521624014 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		BF_441538117869 /* App_watchOS Extension.appex in CopyFiles */ = {isa = PBXBuildFile; fileRef = FR_507023492251 /* App_watchOS Extension.appex */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BF_441538117869 /* App_watchOS Extension.appex in CopyFiles */ = {isa = PBXBuildFile; fileRef = FR_507023492251 /* App_watchOS Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		BF_447782698339 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_752394658615 /* Alamofire.framework */; };
 		BF_456457948943 /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_172952167809 /* FrameworkFile.swift */; };
 		BF_470396236719 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_410645050443 /* Alamofire.framework */; };
@@ -41,23 +44,28 @@
 		BF_532503207298 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_752394658615 /* Alamofire.framework */; };
 		BF_538515166673 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = VG_256263906698 /* LaunchScreen.storyboard */; };
 		BF_561304997165 /* Standalone.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_675266829517 /* Standalone.swift */; };
+		BF_563614389392 = {isa = PBXBuildFile; fileRef = FR_618687462494 /* iMessageExtension.appex */; };
 		BF_612351978356 /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = VG_264279911176 /* Interface.storyboard */; };
 		BF_624802436672 /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_172952167809 /* FrameworkFile.swift */; };
+		BF_647038614509 /* iMessageApp.app in Resources */ = {isa = PBXBuildFile; fileRef = FR_935153865209 /* iMessageApp.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		BF_670499288392 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = VG_229021855709 /* Model.xcdatamodeld */; settings = {COMPILER_FLAGS = "-Werror"; }; };
 		BF_681504666330 = {isa = PBXBuildFile; fileRef = FR_825232110500 /* App_iOS.app */; };
+		BF_703054643820 /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_310979699934 /* MessagesViewController.swift */; };
 		BF_721498080533 /* ResourceFolder in Resources */ = {isa = PBXBuildFile; fileRef = FR_257073931060 /* ResourceFolder */; };
 		BF_729846993631 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_410645050443 /* Alamofire.framework */; };
 		BF_732745079658 = {isa = PBXBuildFile; fileRef = FR_324671077936 /* App_watchOS.app */; };
 		BF_734036107922 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = FR_183521624014 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		BF_747443236192 /* App_watchOS.app in CopyFiles */ = {isa = PBXBuildFile; fileRef = FR_324671077936 /* App_watchOS.app */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BF_747443236192 /* App_watchOS.app in CopyFiles */ = {isa = PBXBuildFile; fileRef = FR_324671077936 /* App_watchOS.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		BF_757906110813 = {isa = PBXBuildFile; fileRef = FR_662315837182 /* Framework.framework */; };
 		BF_813358525536 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = FR_183521624014 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BF_828878846239 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = VG_201160695646 /* MainInterface.storyboard */; };
 		BF_830383951771 /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_304712043717 /* NotificationController.swift */; };
 		BF_854463933379 = {isa = PBXBuildFile; fileRef = FR_438704538506 /* Framework.framework */; };
 		BF_860391087135 /* StandaloneAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FR_408537768279 /* StandaloneAssets.xcassets */; };
+		BF_870702193513 /* iMessageExtension.appex in CopyFiles */ = {isa = PBXBuildFile; fileRef = FR_618687462494 /* iMessageExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		BF_892119987440 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_854336462818 /* AppDelegate.swift */; settings = {COMPILER_FLAGS = "-Werror"; }; };
 		BF_901390118565 /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_172952167809 /* FrameworkFile.swift */; };
-		BF_905038616071 /* Framework.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = FR_472296042419 /* Framework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BF_905038616071 /* Framework.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = FR_472296042419 /* Framework.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		BF_905617636654 /* Headers in Headers */ = {isa = PBXBuildFile; fileRef = FR_815403394914 /* Headers */; settings = {ATTRIBUTES = (Public, ); }; };
 		BF_940936137577 = {isa = PBXBuildFile; fileRef = FR_123503999387 /* App_iOS_UITests.xctest */; };
 /* End PBXBuildFile section */
@@ -84,6 +92,13 @@
 			remoteGlobalIDString = NT_935153865209;
 			remoteInfo = iMessageApp;
 		};
+		CIP_31792113134 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = P_8448771205358 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = NT_618687462494;
+			remoteInfo = iMessageExtension;
+		};
 		CIP_67619158112 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = P_8448771205358 /* Project object */;
@@ -97,6 +112,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = NT_324671077936;
 			remoteInfo = App_watchOS;
+		};
+		CIP_88714386547 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = P_8448771205358 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = NT_825232110500;
+			remoteInfo = App_iOS;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -121,6 +143,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		CFBP_5460766702 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				BF_870702193513 /* iMessageExtension.appex in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CFBP_6493932244 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -140,6 +172,7 @@
 		FR_172952167809 /* FrameworkFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameworkFile.swift; sourceTree = "<group>"; };
 		FR_183521624014 /* MyFramework.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyFramework.h; sourceTree = "<group>"; };
 		FR_196911129660 /* MoreUnder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreUnder.swift; sourceTree = "<group>"; };
+		FR_201160695646 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		FR_232605427418 /* Mintfile */ = {isa = PBXFileReference; path = Mintfile; sourceTree = "<group>"; };
 		FR_238161558082 /* MyBundle.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = MyBundle.bundle; sourceTree = "<group>"; };
 		FR_247808626608 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -149,9 +182,11 @@
 		FR_264279911176 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
 		FR_293137352077 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FR_304712043717 /* NotificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationController.swift; sourceTree = "<group>"; };
+		FR_310979699934 /* MessagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesViewController.swift; sourceTree = "<group>"; };
 		FR_324671077936 /* App_watchOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = App_watchOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR_340586388409 /* ExtensionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDelegate.swift; sourceTree = "<group>"; };
 		FR_363921640403 /* InterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterfaceController.swift; sourceTree = "<group>"; };
+		FR_377082606829 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FR_408537768279 /* StandaloneAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = StandaloneAssets.xcassets; sourceTree = "<group>"; };
 		FR_410645050443 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Alamofire.framework; sourceTree = "<group>"; };
 		FR_438704538506 /* Framework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Framework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -161,6 +196,7 @@
 		FR_479281060337 /* Folder */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Folder; sourceTree = SOURCE_ROOT; };
 		FR_481575785861 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		FR_500792082643 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LocalizedStoryboard.strings; sourceTree = "<group>"; };
+		FR_505327409380 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FR_507023492251 /* App_watchOS Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "App_watchOS Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR_525119120469 /* Framework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Framework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR_530852296303 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -168,6 +204,7 @@
 		FR_587738154368 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FR_602633703434 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		FR_609193904586 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		FR_618687462494 /* iMessageExtension.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = iMessageExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR_635802719871 /* base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = base.xcconfig; sourceTree = "<group>"; };
 		FR_643034527839 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FR_655678458041 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -184,8 +221,11 @@
 		FR_783122899910 /* App_iOS_Tests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = App_iOS_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR_815403394914 /* Headers */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Headers; sourceTree = SOURCE_ROOT; };
 		FR_825232110500 /* App_iOS.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = App_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FR_830053537293 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FR_854336462818 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FR_868653349092 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		FR_935153865209 /* iMessageApp.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = iMessageApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FR_948931241088 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FR_987043315473 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -249,6 +289,17 @@
 				FR_145531354566 /* TestProjectUITests.swift */,
 			);
 			path = App_iOS_UITests;
+			sourceTree = "<group>";
+		};
+		G_1646573205915 /* iMessage MessagesExtension */ = {
+			isa = PBXGroup;
+			children = (
+				FR_830053537293 /* Assets.xcassets */,
+				FR_948931241088 /* Info.plist */,
+				VG_201160695646 /* MainInterface.storyboard */,
+				FR_310979699934 /* MessagesViewController.swift */,
+			);
+			path = "iMessage MessagesExtension";
 			sourceTree = "<group>";
 		};
 		G_1952740716080 /* Frameworks */ = {
@@ -388,6 +439,15 @@
 			path = App_iOS;
 			sourceTree = "<group>";
 		};
+		G_8268950006174 /* iMessage */ = {
+			isa = PBXGroup;
+			children = (
+				FR_377082606829 /* Assets.xcassets */,
+				FR_505327409380 /* Info.plist */,
+			);
+			path = iMessage;
+			sourceTree = "<group>";
+		};
 		G_8340618952527 /* Configs */ = {
 			isa = PBXGroup;
 			children = (
@@ -412,6 +472,8 @@
 				G_8620238527590 /* Products */,
 				G_7189434949822 /* Resources */,
 				G_6651250437419 /* StandaloneFiles */,
+				G_8268950006174 /* iMessage */,
+				G_1646573205915 /* iMessage MessagesExtension */,
 				FR_479281060337 /* Folder */,
 				FR_815403394914 /* Headers */,
 				FR_232605427418 /* Mintfile */,
@@ -435,6 +497,8 @@
 				FR_438704538506 /* Framework.framework */,
 				FR_525119120469 /* Framework.framework */,
 				FR_472296042419 /* Framework.framework */,
+				FR_935153865209 /* iMessageApp.app */,
+				FR_618687462494 /* iMessageExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -612,6 +676,22 @@
 			productReference = FR_525119120469 /* Framework.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		NT_618687462494 /* iMessageExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CL_618687462494 /* Build configuration list for PBXNativeTarget "iMessageExtension" */;
+			buildPhases = (
+				SBP_61868746249 /* Sources */,
+				RBP_61868746249 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = iMessageExtension;
+			productName = iMessageExtension;
+			productReference = FR_618687462494 /* iMessageExtension.appex */;
+			productType = "com.apple.product-type.app-extension.messages";
+		};
 		NT_662315837182 /* Framework_tvOS */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = CL_662315837182 /* Build configuration list for PBXNativeTarget "Framework_tvOS" */;
@@ -665,11 +745,30 @@
 			dependencies = (
 				TD_354342487294 /* PBXTargetDependency */,
 				TD_257389546865 /* PBXTargetDependency */,
+				TD_669996692733 /* PBXTargetDependency */,
 			);
 			name = App_iOS;
 			productName = App_iOS;
 			productReference = FR_825232110500 /* App_iOS.app */;
 			productType = "com.apple.product-type.application";
+		};
+		NT_935153865209 /* iMessageApp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CL_935153865209 /* Build configuration list for PBXNativeTarget "iMessageApp" */;
+			buildPhases = (
+				SBP_93515386520 /* Sources */,
+				RBP_93515386520 /* Resources */,
+				CFBP_5460766702 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				TD_762620471828 /* PBXTargetDependency */,
+			);
+			name = iMessageApp;
+			productName = iMessageApp;
+			productReference = FR_935153865209 /* iMessageApp.app */;
+			productType = "com.apple.product-type.application.messages";
 		};
 /* End PBXNativeTarget section */
 
@@ -709,6 +808,8 @@
 				NT_662315837182 /* Framework_tvOS */,
 				NT_438704538506 /* Framework_watchOS */,
 				LT_479264660374 /* Legacy */,
+				NT_935153865209 /* iMessageApp */,
+				NT_618687462494 /* iMessageExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -731,6 +832,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		RBP_61868746249 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF_182635022050 /* Assets.xcassets in Resources */,
+				BF_828878846239 /* MainInterface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		RBP_82523211050 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -744,6 +854,15 @@
 				BF_284620660317 /* MyBundle.bundle in Resources */,
 				BF_721498080533 /* ResourceFolder in Resources */,
 				BF_860391087135 /* StandaloneAssets.xcassets in Resources */,
+				BF_647038614509 /* iMessageApp.app in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		RBP_93515386520 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF_334321520545 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -957,6 +1076,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		SBP_61868746249 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF_703054643820 /* MessagesViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		SBP_66231583718 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -982,6 +1109,13 @@
 				BF_503484983186 /* MoreUnder.swift in Sources */,
 				BF_561304997165 /* Standalone.swift in Sources */,
 				BF_331192862207 /* ViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		SBP_93515386520 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1013,6 +1147,16 @@
 			target = NT_825232110500 /* App_iOS */;
 			targetProxy = CIP_88714386547 /* PBXContainerItemProxy */;
 		};
+		TD_669996692733 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = NT_935153865209 /* iMessageApp */;
+			targetProxy = CIP_28856087625 /* PBXContainerItemProxy */;
+		};
+		TD_762620471828 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = NT_618687462494 /* iMessageExtension */;
+			targetProxy = CIP_31792113134 /* PBXContainerItemProxy */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
@@ -1023,6 +1167,14 @@
 				FR_500792082643 /* en */,
 			);
 			name = LocalizedStoryboard.storyboard;
+			sourceTree = "<group>";
+		};
+		VG_201160695646 /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FR_201160695646 /* Base */,
+			);
+			name = MainInterface.storyboard;
 			sourceTree = "<group>";
 		};
 		VG_256263906698 /* LaunchScreen.storyboard */ = {
@@ -1140,6 +1292,18 @@
 			};
 			name = "Test Release";
 		};
+		BC_167564962969 /* Staging Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
+				INFOPLIST_FILE = "IMessage MessagesExtension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.iMessageApp.extension;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Staging Release";
+		};
 		BC_210307580165 /* Staging Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1248,6 +1412,17 @@
 			};
 			name = "Production Release";
 		};
+		BC_249152711841 /* Test Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = IMessage/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.iMessageApp;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Test Release";
+		};
 		BC_257261481133 /* Staging Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1325,6 +1500,17 @@
 			};
 			name = "Production Debug";
 		};
+		BC_275754663824 /* Staging Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = IMessage/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.iMessageApp;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Staging Release";
+		};
 		BC_282993554784 /* Production Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1366,6 +1552,29 @@
 				TARGETED_DEVICE_FAMILY = 4;
 			};
 			name = "Test Release";
+		};
+		BC_301490151478 /* Staging Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = IMessage/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.iMessageApp;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Staging Debug";
+		};
+		BC_309031681908 /* Test Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
+				INFOPLIST_FILE = "IMessage MessagesExtension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.iMessageApp.extension;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Test Debug";
 		};
 		BC_313103118526 /* Staging Debug */ = {
 			isa = XCBuildConfiguration;
@@ -1665,6 +1874,18 @@
 			};
 			name = "Staging Debug";
 		};
+		BC_488246438798 /* Production Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
+				INFOPLIST_FILE = "IMessage MessagesExtension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.iMessageApp.extension;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Production Debug";
+		};
 		BC_493052431451 /* Production Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1728,6 +1949,17 @@
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = 4;
+			};
+			name = "Production Debug";
+		};
+		BC_507219048168 /* Production Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = IMessage/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.iMessageApp;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = "Production Debug";
 		};
@@ -1950,6 +2182,29 @@
 			};
 			name = "Production Release";
 		};
+		BC_609023497374 /* Test Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
+				INFOPLIST_FILE = "IMessage MessagesExtension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.iMessageApp.extension;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Test Release";
+		};
+		BC_609753632568 /* Production Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = IMessage/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.iMessageApp;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Production Release";
+		};
 		BC_622471558373 /* Production Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2100,6 +2355,17 @@
 				TARGETED_DEVICE_FAMILY = 4;
 			};
 			name = "Production Release";
+		};
+		BC_704315531994 /* Test Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = IMessage/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.iMessageApp;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Test Debug";
 		};
 		BC_705279564212 /* Production Debug */ = {
 			isa = XCBuildConfiguration;
@@ -2330,6 +2596,18 @@
 			};
 			name = "Staging Release";
 		};
+		BC_766399414659 /* Staging Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
+				INFOPLIST_FILE = "IMessage MessagesExtension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.iMessageApp.extension;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Staging Debug";
+		};
 		BC_769258280401 /* Staging Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2441,6 +2719,18 @@
 				TARGETED_DEVICE_FAMILY = 4;
 			};
 			name = "Test Debug";
+		};
+		BC_831819337335 /* Production Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
+				INFOPLIST_FILE = "IMessage MessagesExtension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.iMessageApp.extension;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Production Release";
 		};
 		BC_832100796021 /* Test Debug */ = {
 			isa = XCBuildConfiguration;
@@ -2663,6 +2953,19 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "";
 		};
+		CL_618687462494 /* Build configuration list for PBXNativeTarget "iMessageExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BC_488246438798 /* Production Debug */,
+				BC_831819337335 /* Production Release */,
+				BC_766399414659 /* Staging Debug */,
+				BC_167564962969 /* Staging Release */,
+				BC_309031681908 /* Test Debug */,
+				BC_609023497374 /* Test Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "";
+		};
 		CL_662315837182 /* Build configuration list for PBXNativeTarget "Framework_tvOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -2714,6 +3017,19 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Production Debug";
+		};
+		CL_935153865209 /* Build configuration list for PBXNativeTarget "iMessageApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BC_507219048168 /* Production Debug */,
+				BC_609753632568 /* Production Release */,
+				BC_301490151478 /* Staging Debug */,
+				BC_275754663824 /* Staging Release */,
+				BC_704315531994 /* Test Debug */,
+				BC_249152711841 /* Test Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "";
 		};
 /* End XCConfigurationList section */
 

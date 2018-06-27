@@ -52,6 +52,7 @@ targets:
       - target: Framework_iOS
       - carthage: Alamofire
       - target: App_watchOS
+      - target: iMessageApp
     scheme:
       testTargets:
         - App_iOS_Tests
@@ -88,6 +89,21 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: com.project.app.watch.extension
       dependencies:
         - carthage: Alamofire
+  
+  iMessageApp:
+    type: application.messages
+    platform: iOS
+    sources: iMessage
+    scheme: {}
+    dependencies:
+      - target: iMessageExtension
+  
+  iMessageExtension:
+    type: app-extension.messages
+    platform: iOS
+    sources: iMessage MessagesExtension
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: com.project.iMessageApp.extension
 
   Framework:
     type: framework
