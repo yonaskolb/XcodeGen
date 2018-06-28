@@ -241,7 +241,7 @@ class SourceGenerator {
                             return [$0]
                         }
 
-                        return (try? $0.recursiveChildren().filter { $0.isFile }) ?? []
+                        return (try? $0.recursiveChildren()) ?? []
                     }
                     .reduce([], +)
             }
