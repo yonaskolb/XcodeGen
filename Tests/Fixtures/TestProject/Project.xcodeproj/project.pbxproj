@@ -36,6 +36,7 @@
 		BF_441538117869 /* App_watchOS Extension.appex in CopyFiles */ = {isa = PBXBuildFile; fileRef = FR_507023492251 /* App_watchOS Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		BF_447782698339 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_752394658615 /* Alamofire.framework */; };
 		BF_456457948943 /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_172952167809 /* FrameworkFile.swift */; };
+		BF_461525575903 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_752394658615 /* Alamofire.framework */; };
 		BF_470396236719 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_410645050443 /* Alamofire.framework */; };
 		BF_496472559782 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = FR_183521624014 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BF_503484983186 /* MoreUnder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_196911129660 /* MoreUnder.swift */; };
@@ -230,6 +231,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		FBP_32467107793 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF_461525575903 /* Alamofire.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		FBP_43870453850 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -274,8 +283,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF_324363145049 /* Framework.framework in Frameworks */,
 				BF_729846993631 /* Alamofire.framework in Frameworks */,
+				BF_324363145049 /* Framework.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -592,6 +601,7 @@
 			buildPhases = (
 				SBP_32467107793 /* Sources */,
 				RBP_32467107793 /* Resources */,
+				FBP_32467107793 /* Frameworks */,
 				CFBP_4684049960 /* CopyFiles */,
 				SSBP_5954948530 /* Carthage */,
 			);
@@ -743,8 +753,8 @@
 			buildRules = (
 			);
 			dependencies = (
-				TD_354342487294 /* PBXTargetDependency */,
 				TD_257389546865 /* PBXTargetDependency */,
+				TD_354342487294 /* PBXTargetDependency */,
 				TD_669996692733 /* PBXTargetDependency */,
 			);
 			name = App_iOS;
