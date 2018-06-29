@@ -314,6 +314,13 @@ class ProjectGeneratorTests: XCTestCase {
                 //     # - framework: FrameworkD.framework
                 //     #   embed: true
                 //
+                // AppTestWithoutTransient
+                //   dependencies:
+                //     # Being an app, shouldn't be embedded
+                //     - target: App
+                //     - target: iOSFrameworkB
+                //     - carthage: CarthageD
+                //
                 
                 var expectedResourceFiles: [String: Set<String>] = [:]
                 var expectedLinkedFiles: [String: Set<String>] = [:]
@@ -342,10 +349,11 @@ class ProjectGeneratorTests: XCTestCase {
                     name: "StaticLibrary",
                     type: .staticLibrary,
                     platform: .iOS,
-                    dependencies: []
+                    dependencies: [],
+                    transientlyLinkDependencies: false
                 )
                 expectedResourceFiles[staticLibrary.name] = Set()
-                expectedLinkedFiles[staticLibrary.name] = Set()
+                expectedLinkedFiles[staticLibrary.name] = Set([])
                 expectedEmbeddedFrameworks[staticLibrary.name] = Set()
                 
                 let resourceBundle = Target(
@@ -436,12 +444,25 @@ class ProjectGeneratorTests: XCTestCase {
                     "FrameworkD.framework",
                 ])
                 
-                let targets = [app, staticLibrary, resourceBundle, iosFrameworkA, iosFrameworkB, appTest]
+                var appTestWithoutTransient = appTest
+                appTestWithoutTransient.name = "AppTestWithoutTransient"
+                appTestWithoutTransient.transientlyLinkDependencies = false
+                expectedResourceFiles[appTestWithoutTransient.name] = Set([])
+                expectedLinkedFiles[appTestWithoutTransient.name] = Set([
+                    iosFrameworkB.filename,
+                    "CarthageD.framework",
+                ])
+                expectedEmbeddedFrameworks[appTestWithoutTransient.name] = Set([
+                    iosFrameworkB.filename,
+                ])
+                
+                let targets = [app, staticLibrary, resourceBundle, iosFrameworkA, iosFrameworkB, appTest, appTestWithoutTransient]
                 
                 let project = Project(
                     basePath: "",
                     name: "test",
-                    targets: targets
+                    targets: targets,
+                    options: SpecOptions(transientlyLinkDependencies: true)
                 )
                 let pbxProject = try project.generatePbxProj()
                 

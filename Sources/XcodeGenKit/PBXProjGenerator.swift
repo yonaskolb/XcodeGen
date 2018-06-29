@@ -391,9 +391,10 @@ public class PBXProjGenerator {
         var copyWatchReferences: [String] = []
         var extensions: [String] = []
         
-        let dependenciesAndTransient = getAllDependenciesPlusTransientNeedingEmbedding(target: target)
+        let targetDependencies = (target.transientlyLinkDependencies ?? project.options.transientlyLinkDependencies) ?
+            getAllDependenciesPlusTransientNeedingEmbedding(target: target) : target.dependencies
 
-        for dependency in dependenciesAndTransient {
+        for dependency in targetDependencies {
 
             var embedAttributes: [String] = []
 
