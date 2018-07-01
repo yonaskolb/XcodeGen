@@ -11,6 +11,7 @@
 #### Changed
 - Upgraded to Swift 4.1
 - Improved Carthage dependency lookup performance with many targets [298](https://github.com/yonaskolb/XcodeGen/pull/298) @keith
+- By default don't CodeSignOnCopy `target` dependencies. This can still be controlled with `Dependency.codeSign` [324](https://github.com/yonaskolb/XcodeGen/pull/324) @yonaskolb
 
 #### Fixed
 - Fixed PBXBuildFile and PBXFileReference being incorrectly generated for Legacy targets [296](https://github.com/yonaskolb/XcodeGen/pull/296) @sascha
@@ -19,6 +20,10 @@
 - Removed `ENABLE_TESTABILITY` from framework setting presets [299](https://github.com/yonaskolb/XcodeGen/pull/299) @allu22
 - Fixed homebrew installation [297](https://github.com/yonaskolb/XcodeGen/pull/297) @vhbit
 - `cc` files are now automatically recognized as source files [317](https://github.com/yonaskolb/XcodeGen/pull/317) @maicki
+- Fixed `commandLineArguments` not parsing when they had dots in them [323](https://github.com/yonaskolb/XcodeGen/pull/323) @yonaskolb
+- Fixed excluding directories that only have sub directories [326](https://github.com/yonaskolb/XcodeGen/pull/326) @brentleyjones
+- Made `PBXContainerItemProxy` ID more deterministic
+- Fixed generated framework schemes from being executable [328](https://github.com/yonaskolb/XcodeGen/pull/328) @brentleyjones
 
 [Commits](https://github.com/yonaskolb/XcodeGen/compare/1.9.0...1.10.0)
 
