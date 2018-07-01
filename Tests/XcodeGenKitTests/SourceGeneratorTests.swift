@@ -206,6 +206,10 @@ class SourceGeneratorTests: XCTestCase {
                   - a.ignored
                   - project.xcodeproj:
                     - project.pbxproj
+                  - a.playground:
+                    - Sources:
+                      - a.swift
+                    - Resources
                 """
                 try createDirectories(directories)
 
@@ -220,6 +224,7 @@ class SourceGeneratorTests: XCTestCase {
                     "ignore.file",
                     "*.ignored",
                     "*.xcodeproj",
+                    "*.playground",
                     // not supported
                     // "**/*.ignored",
                 ]
@@ -248,6 +253,10 @@ class SourceGeneratorTests: XCTestCase {
                 try pbxProj.expectFileMissing(paths: ["Sources", "a.ignored"])
                 try pbxProj.expectFileMissing(paths: ["Sources", "ignore.file"])
                 try pbxProj.expectFileMissing(paths: ["Sources", "project.xcodeproj"])
+                try pbxProj.expectFileMissing(paths: ["Sources", "a.playground"])
+                // not supported: "**/*.ignored"
+                // try pbxProj.expectFileMissing(paths: ["Sources", "A", "a.ignored"])
+                // try pbxProj.expectFileMissing(paths: ["Sources", "A", "B", "b.ignored"])
             }
 
             $0.it("generates file sources") {
