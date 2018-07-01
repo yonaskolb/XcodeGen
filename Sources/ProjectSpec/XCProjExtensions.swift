@@ -33,6 +33,10 @@ extension PBXProductType {
     public var isTest: Bool {
         return fileExtension == "xctest"
     }
+    
+    public var isExecutable: Bool {
+        return isApp || isExtension || isTest
+    }
 
     public var name: String {
         return rawValue.replacingOccurrences(of: "com.apple.product-type.", with: "")

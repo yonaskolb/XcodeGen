@@ -70,6 +70,9 @@ public class ProjectGenerator {
             }
             return XCScheme.ExecutionAction(scriptText: action.script, title: action.name, environmentBuildable: environmentBuildable)
         }
+        
+        let target = project.getTarget(scheme.build.targets.first!.target)
+        let shouldExecuteOnLaunch = target?.type.isExecutable == true
 
         let buildableReference = buildActionEntries.first!.buildableReference
         let productRunable = XCScheme.BuildableProductRunnable(buildableReference: buildableReference)
@@ -107,10 +110,11 @@ public class ProjectGenerator {
         )
 
         let launchAction = XCScheme.LaunchAction(
-            buildableProductRunnable: productRunable,
+            buildableProductRunnable: shouldExecuteOnLaunch ? productRunable : nil,
             buildConfiguration: scheme.run?.config ?? defaultDebugConfig.name,
             preActions: scheme.run?.preActions.map(getExecutionAction) ?? [],
             postActions: scheme.run?.postActions.map(getExecutionAction) ?? [],
+            macroExpansion: shouldExecuteOnLaunch ? nil : buildableReference,
             commandlineArguments: launchCommandLineArgs,
             environmentVariables: launchVariables
         )
