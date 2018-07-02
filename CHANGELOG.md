@@ -7,6 +7,7 @@
 #### Added
 - Added build rule support [306](https://github.com/yonaskolb/XcodeGen/pull/306) @yonaskolb
 - Added support for frameworks in sources [308](https://github.com/yonaskolb/XcodeGen/pull/308) @keith
+- Added ability to automatically embed transient dependencies. Controlled with `transientlyLinkDependencies` [327](https://github.com/yonaskolb/XcodeGen/pull/327) @brentleyjones
 
 #### Changed
 - Upgraded to Swift 4.1
