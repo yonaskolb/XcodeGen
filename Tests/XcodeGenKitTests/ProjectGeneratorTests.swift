@@ -267,6 +267,242 @@ class ProjectGeneratorTests: XCTestCase {
                 try expect(dependencies[0].object.target) == nativeTargets.first { $0.object.name == framework.name }!.reference
                 try expect(dependencies[1].object.target) == nativeTargets.first { $0.object.name == app.name }!.reference
             }
+            
+            $0.it("generates targets with correct transient embeds") {
+                // App # Embeds it's frameworks, so shouldn't embed in tests
+                //   dependencies:
+                //     - framework: FrameworkA.framework
+                //     - framework: FrameworkB.framework
+                //       embed: false
+                // StaticLibrary:
+                //  dependencies: []
+                // ResourceBundle
+                //  dependencies: []
+                // iOSFrameworkA
+                //   dependencies:
+                //     - target: StaticLibrary
+                //     - target: ResourceBundle
+                //     # Won't embed FrameworkC.framework, so should embed in tests
+                //     - framework: FrameworkC.framework
+                //     - carthage: CarthageA
+                //     - carthage: CarthageB
+                //       embed: false
+                // iOSFrameworkB
+                //   dependencies:
+                //     - target: iOSFrameworkA
+                //     # Won't embed FrameworkD.framework, so should embed in tests
+                //     - framework: FrameworkD.framework
+                //     - framework: FrameworkE.framework
+                //       embed: true
+                //     - framework: FrameworkF.framework
+                //       embed: false
+                //     - carthage: CarthageC
+                //       embed: true
+                // AppTest
+                //   dependencies:
+                //     # Being an app, shouldn't be embedded
+                //     - target: App
+                //     - target: iOSFrameworkB
+                //     - carthage: CarthageD
+                //     # should be implicitly added
+                //     # - framework: iOSFrameworkA.framework
+                //     #   embed: true
+                //     # - carthage: CarthageA
+                //     #   embed: true
+                //     # - framework: FrameworkC.framework
+                //     #   embed: true
+                //     # - framework: FrameworkD.framework
+                //     #   embed: true
+                //
+                // AppTestWithoutTransient
+                //   dependencies:
+                //     # Being an app, shouldn't be embedded
+                //     - target: App
+                //     - target: iOSFrameworkB
+                //     - carthage: CarthageD
+                //
+                
+                var expectedResourceFiles: [String: Set<String>] = [:]
+                var expectedLinkedFiles: [String: Set<String>] = [:]
+                var expectedEmbeddedFrameworks: [String: Set<String>] = [:]
+                
+                let app = Target(
+                    name: "App",
+                    type: .application,
+                    platform: .iOS,
+                    // Embeds it's frameworks, so they shouldn't embed in AppTest
+                    dependencies: [
+                        Dependency(type: .framework, reference: "FrameworkA.framework"),
+                        Dependency(type: .framework, reference: "FrameworkB.framework", embed: false),
+                    ]
+                )
+                expectedResourceFiles[app.name] = Set()
+                expectedLinkedFiles[app.name] = Set([
+                    "FrameworkA.framework",
+                    "FrameworkB.framework",
+                ])
+                expectedEmbeddedFrameworks[app.name] = Set([
+                    "FrameworkA.framework",
+                ])
+                
+                let staticLibrary = Target(
+                    name: "StaticLibrary",
+                    type: .staticLibrary,
+                    platform: .iOS,
+                    dependencies: [],
+                    transientlyLinkDependencies: false
+                )
+                expectedResourceFiles[staticLibrary.name] = Set()
+                expectedLinkedFiles[staticLibrary.name] = Set([])
+                expectedEmbeddedFrameworks[staticLibrary.name] = Set()
+                
+                let resourceBundle = Target(
+                    name: "ResourceBundle",
+                    type: .bundle,
+                    platform: .iOS,
+                    dependencies: []
+                )
+                expectedResourceFiles[resourceBundle.name] = Set()
+                expectedLinkedFiles[resourceBundle.name] = Set()
+                expectedEmbeddedFrameworks[resourceBundle.name] = Set()
+                
+                let iosFrameworkA = Target(
+                    name: "iOSFrameworkA",
+                    type: .framework,
+                    platform: .iOS,
+                    dependencies: [
+                        Dependency(type: .target, reference: resourceBundle.name),
+                        Dependency(type: .framework, reference: "FrameworkC.framework"),
+                        Dependency(type: .carthage, reference: "CarthageA"),
+                        // Statically linked, so don't embed into test
+                        Dependency(type: .target, reference: staticLibrary.name),
+                        Dependency(type: .carthage, reference: "CarthageB", embed: false),
+                    ]
+                )
+                expectedResourceFiles[iosFrameworkA.name] = Set()
+                expectedLinkedFiles[iosFrameworkA.name] = Set([
+                    "FrameworkC.framework",
+                    staticLibrary.filename,
+                    "CarthageA.framework",
+                    "CarthageB.framework",
+                ])
+                expectedEmbeddedFrameworks[iosFrameworkA.name] = Set()
+                
+                let iosFrameworkB = Target(
+                    name: "iOSFrameworkB",
+                    type: .framework,
+                    platform: .iOS,
+                    dependencies: [
+                        Dependency(type: .target, reference: iosFrameworkA.name),
+                        Dependency(type: .framework, reference: "FrameworkD.framework"),
+                        // Embedded into framework, so don't embed into test
+                        Dependency(type: .framework, reference: "FrameworkE.framework", embed: true),
+                        Dependency(type: .carthage, reference: "CarthageC", embed: true),
+                        // Statically linked, so don't embed into test
+                        Dependency(type: .framework, reference: "FrameworkF.framework", embed: false),
+                    ]
+                )
+                expectedResourceFiles[iosFrameworkB.name] = Set()
+                expectedLinkedFiles[iosFrameworkB.name] = Set([
+                    iosFrameworkA.filename,
+                    "FrameworkC.framework",
+                    "FrameworkD.framework",
+                    "FrameworkE.framework",
+                    "FrameworkF.framework",
+                    "CarthageA.framework",
+                    "CarthageC.framework",
+                ])
+                expectedEmbeddedFrameworks[iosFrameworkB.name] = Set([
+                    "FrameworkE.framework",
+                ])
+                
+                let appTest = Target(
+                    name: "AppTest",
+                    type: .unitTestBundle,
+                    platform: .iOS,
+                    dependencies: [
+                        Dependency(type: .target, reference: app.name),
+                        Dependency(type: .target, reference: iosFrameworkB.name),
+                        Dependency(type: .carthage, reference: "CarthageD"),
+                    ]
+                )
+                expectedResourceFiles[appTest.name] = Set([
+                    resourceBundle.filename,
+                ])
+                expectedLinkedFiles[appTest.name] = Set([
+                    iosFrameworkA.filename,
+                    "FrameworkC.framework",
+                    iosFrameworkB.filename,
+                    "FrameworkD.framework",
+                    "CarthageA.framework",
+                    "CarthageD.framework",
+                ])
+                expectedEmbeddedFrameworks[appTest.name] = Set([
+                    iosFrameworkA.filename,
+                    "FrameworkC.framework",
+                    iosFrameworkB.filename,
+                    "FrameworkD.framework",
+                ])
+                
+                var appTestWithoutTransient = appTest
+                appTestWithoutTransient.name = "AppTestWithoutTransient"
+                appTestWithoutTransient.transientlyLinkDependencies = false
+                expectedResourceFiles[appTestWithoutTransient.name] = Set([])
+                expectedLinkedFiles[appTestWithoutTransient.name] = Set([
+                    iosFrameworkB.filename,
+                    "CarthageD.framework",
+                ])
+                expectedEmbeddedFrameworks[appTestWithoutTransient.name] = Set([
+                    iosFrameworkB.filename,
+                ])
+                
+                let targets = [app, staticLibrary, resourceBundle, iosFrameworkA, iosFrameworkB, appTest, appTestWithoutTransient]
+                
+                let project = Project(
+                    basePath: "",
+                    name: "test",
+                    targets: targets,
+                    options: SpecOptions(transientlyLinkDependencies: true)
+                )
+                let pbxProject = try project.generatePbxProj()
+                
+                for target in targets {
+                    guard let nativeTarget = pbxProject.objects.nativeTargets.referenceValues.first(where: { $0.name == target.name }) else {
+                        throw failure("PBXNativeTarget for \(target) not found")
+                    }
+                    let buildPhases = nativeTarget.buildPhases
+                    let resourcesPhases = pbxProject.objects.resourcesBuildPhases.objectReferences.filter { buildPhases.contains($0.reference) }
+                    let frameworkPhases = pbxProject.objects.frameworksBuildPhases.objectReferences.filter { buildPhases.contains($0.reference) }
+                    let copyFilesPhases = pbxProject.objects.copyFilesBuildPhases.objectReferences.filter { buildPhases.contains($0.reference) }
+                    
+                    // ensure only the right resources are copies, no more, no less
+                    let expectedResourceFiles = expectedResourceFiles[target.name]!
+                    try expect(resourcesPhases.count) == (expectedResourceFiles.isEmpty ? 0 : 1)
+                    if !expectedResourceFiles.isEmpty {
+                        let resourceFiles = resourcesPhases[0].object.files
+                            .compactMap { pbxProject.objects.buildFiles[$0]?.fileRef.flatMap { pbxProject.objects.fileReferences[$0]?.nameOrPath } }
+                        try expect(Set(resourceFiles)) == expectedResourceFiles
+                    }
+                    
+                    // ensure only the right things are linked, no more, no less
+                    let expectedLinkedFiles = expectedLinkedFiles[target.name]!
+                    try expect(frameworkPhases.count) == (expectedLinkedFiles.isEmpty ? 0 : 1)
+                    if !expectedLinkedFiles.isEmpty {
+                        let linkFrameworks = frameworkPhases[0].object.files
+                            .compactMap { pbxProject.objects.buildFiles[$0]?.fileRef.flatMap { pbxProject.objects.fileReferences[$0]?.nameOrPath } }
+                        try expect(Set(linkFrameworks)) == expectedLinkedFiles
+                    }
+                    
+                    // ensure only the right things are embedded, no more, no less
+                    let expectedEmbeddedFrameworks = expectedEmbeddedFrameworks[target.name]!
+                    try expect(copyFilesPhases.count) == (expectedEmbeddedFrameworks.isEmpty ? 0 : 1)
+                    if !expectedEmbeddedFrameworks.isEmpty {
+                        let copyFiles = copyFilesPhases[0].object.files
+                            .compactMap { pbxProject.objects.buildFiles[$0]?.fileRef.flatMap { pbxProject.objects.fileReferences[$0]?.nameOrPath } }
+                        try expect(Set(copyFiles)) == expectedEmbeddedFrameworks
+                    }
+                }
+            }
 
             $0.it("generates run scripts") {
                 var scriptSpec = project

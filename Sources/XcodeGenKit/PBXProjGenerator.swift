@@ -390,8 +390,11 @@ public class PBXProjGenerator {
         var copyResourcesReferences: [String] = []
         var copyWatchReferences: [String] = []
         var extensions: [String] = []
+        
+        let targetDependencies = (target.transientlyLinkDependencies ?? project.options.transientlyLinkDependencies) ?
+            getAllDependenciesPlusTransientNeedingEmbedding(target: target) : target.dependencies
 
-        for dependency in target.dependencies {
+        for dependency in targetDependencies {
 
             var embedAttributes: [String] = []
 
@@ -441,10 +444,10 @@ public class PBXProjGenerator {
                     )
                     targetFrameworkBuildFiles.append(buildFile.reference)
                 }
-
-                if (dependency.embed ?? target.type.isApp) && !dependencyTarget.type.isLibrary {
-
-
+                
+                let shouldEmbed = target.type.isApp
+                    || (target.type.isTest && (dependencyTarget.type.isFramework || dependencyTarget.type == .bundle))
+                if (dependency.embed ?? shouldEmbed) && !dependencyTarget.type.isLibrary {
                     let embedFile = createObject(
                         id: dependencyFileReference + target.name,
                         PBXBuildFile(
@@ -497,6 +500,7 @@ public class PBXProjGenerator {
                     )
                     copyFrameworksReferences.append(embedFile.reference)
                 }
+                
             case .carthage:
                 var platformPath = Path(getCarthageBuildPath(platform: target.platform))
                 var frameworkPath = platformPath + dependency.reference
@@ -742,6 +746,51 @@ public class PBXProjGenerator {
         }
 
         return frameworks
+    }
+    
+    func getAllDependenciesPlusTransientNeedingEmbedding(target topLevelTarget: Target) -> [Dependency] {
+        // this is used to resolve cyclical target dependencies
+        var visitedTargets: Set<String> = []
+        var dependencies: [String: Dependency] = [:]
+        var queue: [Target] = [topLevelTarget]
+        while !queue.isEmpty {
+            let target = queue.removeFirst()
+            if visitedTargets.contains(target.name) {
+                continue
+            }
+            
+            let isTopLevel = target == topLevelTarget
+            
+            for dependency in target.dependencies {
+                // don't overwrite dependencies, to allow top level ones to rule
+                if dependencies.contains(reference: dependency.reference) {
+                    continue
+                }
+                
+                // don't want a dependency if it's going to be embedded or statically linked in a non-top level target
+                // in .target check we filter out targets that will embed all of their dependencies
+                switch dependency.type {
+                case .framework, .carthage:
+                    if isTopLevel || dependency.embed == nil {
+                        dependencies[dependency.reference] = dependency
+                    }
+                case .target:
+                    if let dependencyTarget = project.getTarget(dependency.reference) {
+                        if isTopLevel || (dependency.embed == nil && dependencyTarget.type != .staticLibrary) {
+                            dependencies[dependency.reference] = dependency
+                            if !dependencyTarget.shouldEmbedDependencies {
+                                // traverse target's dependencies if it doesn't embed them itself
+                                queue.append(dependencyTarget)
+                            }
+                        }
+                    }
+                }
+            }
+            
+            visitedTargets.update(with: target.name)
+        }
+        
+        return dependencies.sorted(by: { $0.key < $1.key }).map { $0.value }
     }
 }
 
