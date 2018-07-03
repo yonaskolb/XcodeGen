@@ -1,8 +1,8 @@
 class Xcodegen < Formula
   desc "Tool that generates your Xcode project from a project spec"
   homepage "https://github.com/yonaskolb/XcodeGen"
-  url "https://github.com/yonaskolb/XcodeGen/archive/1.9.0.tar.gz"
-  sha256 "51987022c8095c21ce3a7e93f93912d5fb533d909970c03eeab148897bf0e2c4"
+  url "https://github.com/yonaskolb/XcodeGen/archive/1.10.0.tar.gz"
+  sha256 "afc0a893709edb9386c67a633f5d28a1fa3d0d518cbb26a99db3e5056d09976c"
   head "https://github.com/yonaskolb/XcodeGen.git"
 
   depends_on :xcode
