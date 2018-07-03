@@ -28,7 +28,7 @@ public struct Target {
     public var settings: Settings
     public var sources: [TargetSource]
     public var dependencies: [Dependency]
-    public var transientlyLinkDependencies: Bool?
+    public var transitivelyLinkDependencies: Bool?
     public var prebuildScripts: [BuildScript]
     public var postbuildScripts: [BuildScript]
     public var buildRules: [BuildRule]
@@ -60,7 +60,7 @@ public struct Target {
         configFiles: [String: String] = [:],
         sources: [TargetSource] = [],
         dependencies: [Dependency] = [],
-        transientlyLinkDependencies: Bool? = nil,
+        transitivelyLinkDependencies: Bool? = nil,
         prebuildScripts: [BuildScript] = [],
         postbuildScripts: [BuildScript] = [],
         buildRules: [BuildRule] = [],
@@ -76,7 +76,7 @@ public struct Target {
         self.configFiles = configFiles
         self.sources = sources
         self.dependencies = dependencies
-        self.transientlyLinkDependencies = transientlyLinkDependencies
+        self.transitivelyLinkDependencies = transitivelyLinkDependencies
         self.prebuildScripts = prebuildScripts
         self.postbuildScripts = postbuildScripts
         self.buildRules = buildRules
@@ -168,7 +168,7 @@ extension Target: Equatable {
             lhs.type == rhs.type &&
             lhs.platform == rhs.platform &&
             lhs.deploymentTarget == rhs.deploymentTarget &&
-            lhs.transientlyLinkDependencies == rhs.transientlyLinkDependencies &&
+            lhs.transitivelyLinkDependencies == rhs.transitivelyLinkDependencies &&
             lhs.settings == rhs.settings &&
             lhs.configFiles == rhs.configFiles &&
             lhs.sources == rhs.sources &&
@@ -281,7 +281,7 @@ extension Target: NamedJSONDictionaryConvertible {
         } else {
             dependencies = try jsonDictionary.json(atKeyPath: "dependencies", invalidItemBehaviour: .fail)
         }
-        transientlyLinkDependencies = jsonDictionary.json(atKeyPath: "transientlyLinkDependencies")
+        transitivelyLinkDependencies = jsonDictionary.json(atKeyPath: "transitivelyLinkDependencies")
 
         prebuildScripts = jsonDictionary.json(atKeyPath: "prebuildScripts") ?? []
         postbuildScripts = jsonDictionary.json(atKeyPath: "postbuildScripts") ?? []

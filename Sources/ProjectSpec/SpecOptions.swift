@@ -17,7 +17,7 @@ public struct SpecOptions: Equatable {
     public var xcodeVersion: String?
     public var deploymentTarget: DeploymentTarget
     public var defaultConfig: String?
-    public var transientlyLinkDependencies: Bool
+    public var transitivelyLinkDependencies: Bool
 
     public enum ValidationType: String {
         case missingConfigs
@@ -58,7 +58,7 @@ public struct SpecOptions: Equatable {
         deploymentTarget: DeploymentTarget = .init(),
         disabledValidations: [ValidationType] = [],
         defaultConfig: String? = nil,
-        transientlyLinkDependencies: Bool = true
+        transitivelyLinkDependencies: Bool = true
     ) {
         self.carthageBuildPath = carthageBuildPath
         self.carthageExecutablePath = carthageExecutablePath
@@ -73,7 +73,7 @@ public struct SpecOptions: Equatable {
         self.deploymentTarget = deploymentTarget
         self.disabledValidations = disabledValidations
         self.defaultConfig = defaultConfig
-        self.transientlyLinkDependencies = transientlyLinkDependencies
+        self.transitivelyLinkDependencies = transitivelyLinkDependencies
     }
 }
 
@@ -92,6 +92,6 @@ extension SpecOptions: JSONObjectConvertible {
         deploymentTarget = jsonDictionary.json(atKeyPath: "deploymentTarget") ?? DeploymentTarget()
         disabledValidations = jsonDictionary.json(atKeyPath: "disabledValidations") ?? []
         defaultConfig = jsonDictionary.json(atKeyPath: "defaultConfig")
-        transientlyLinkDependencies = jsonDictionary.json(atKeyPath: "transientlyLinkDependencies") ?? true
+        transitivelyLinkDependencies = jsonDictionary.json(atKeyPath: "transitivelyLinkDependencies") ?? true
     }
 }

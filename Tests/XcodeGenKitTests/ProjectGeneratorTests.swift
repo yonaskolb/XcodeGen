@@ -268,7 +268,7 @@ class ProjectGeneratorTests: XCTestCase {
                 try expect(dependencies[1].object.target) == nativeTargets.first { $0.object.name == app.name }!.reference
             }
 
-            $0.it("generates targets with correct transient embeds") {
+            $0.it("generates targets with correct transitive embeds") {
                 // App # Embeds it's frameworks, so shouldn't embed in tests
                 //   dependencies:
                 //     - framework: FrameworkA.framework
@@ -314,7 +314,7 @@ class ProjectGeneratorTests: XCTestCase {
                 //     # - framework: FrameworkD.framework
                 //     #   embed: true
                 //
-                // AppTestWithoutTransient
+                // AppTestWithoutTransitive
                 //   dependencies:
                 //     # Being an app, shouldn't be embedded
                 //     - target: App
@@ -350,7 +350,7 @@ class ProjectGeneratorTests: XCTestCase {
                     type: .staticLibrary,
                     platform: .iOS,
                     dependencies: [],
-                    transientlyLinkDependencies: false
+                    transitivelyLinkDependencies: false
                 )
                 expectedResourceFiles[staticLibrary.name] = Set()
                 expectedLinkedFiles[staticLibrary.name] = Set([])
@@ -444,25 +444,25 @@ class ProjectGeneratorTests: XCTestCase {
                     "FrameworkD.framework",
                 ])
 
-                var appTestWithoutTransient = appTest
-                appTestWithoutTransient.name = "AppTestWithoutTransient"
-                appTestWithoutTransient.transientlyLinkDependencies = false
-                expectedResourceFiles[appTestWithoutTransient.name] = Set([])
-                expectedLinkedFiles[appTestWithoutTransient.name] = Set([
+                var appTestWithoutTransitive = appTest
+                appTestWithoutTransitive.name = "AppTestWithoutTransitive"
+                appTestWithoutTransitive.transitivelyLinkDependencies = false
+                expectedResourceFiles[appTestWithoutTransitive.name] = Set([])
+                expectedLinkedFiles[appTestWithoutTransitive.name] = Set([
                     iosFrameworkB.filename,
                     "CarthageD.framework",
                 ])
-                expectedEmbeddedFrameworks[appTestWithoutTransient.name] = Set([
+                expectedEmbeddedFrameworks[appTestWithoutTransitive.name] = Set([
                     iosFrameworkB.filename,
                 ])
 
-                let targets = [app, staticLibrary, resourceBundle, iosFrameworkA, iosFrameworkB, appTest, appTestWithoutTransient]
+                let targets = [app, staticLibrary, resourceBundle, iosFrameworkA, iosFrameworkB, appTest, appTestWithoutTransitive]
 
                 let project = Project(
                     basePath: "",
                     name: "test",
                     targets: targets,
-                    options: SpecOptions(transientlyLinkDependencies: true)
+                    options: SpecOptions(transitivelyLinkDependencies: true)
                 )
                 let pbxProject = try project.generatePbxProj()
 

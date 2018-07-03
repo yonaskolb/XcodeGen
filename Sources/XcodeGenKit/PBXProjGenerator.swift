@@ -391,8 +391,8 @@ public class PBXProjGenerator {
         var copyWatchReferences: [String] = []
         var extensions: [String] = []
 
-        let targetDependencies = (target.transientlyLinkDependencies ?? project.options.transientlyLinkDependencies) ?
-            getAllDependenciesPlusTransientNeedingEmbedding(target: target) : target.dependencies
+        let targetDependencies = (target.transitivelyLinkDependencies ?? project.options.transitivelyLinkDependencies) ?
+            getAllDependenciesPlusTransitiveNeedingEmbedding(target: target) : target.dependencies
 
         for dependency in targetDependencies {
 
@@ -748,7 +748,7 @@ public class PBXProjGenerator {
         return frameworks
     }
 
-    func getAllDependenciesPlusTransientNeedingEmbedding(target topLevelTarget: Target) -> [Dependency] {
+    func getAllDependenciesPlusTransitiveNeedingEmbedding(target topLevelTarget: Target) -> [Dependency] {
         // this is used to resolve cyclical target dependencies
         var visitedTargets: Set<String> = []
         var dependencies: [String: Dependency] = [:]
