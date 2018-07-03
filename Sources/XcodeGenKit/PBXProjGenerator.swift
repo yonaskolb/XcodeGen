@@ -396,19 +396,20 @@ public class PBXProjGenerator {
 
         for dependency in targetDependencies {
 
-            var embedAttributes: [String] = []
+
 
             let embed = dependency.embed ?? target.shouldEmbedDependencies
-            let codeSign = dependency.codeSign ?? (dependency.type != .target)
 
-            if codeSign {
-                embedAttributes.append("CodeSignOnCopy")
+            func getEmbedSettings(codeSign: Bool) -> [String: Any] {
+                var embedAttributes: [String] = []
+                if codeSign {
+                    embedAttributes.append("CodeSignOnCopy")
+                }
+                if dependency.removeHeaders {
+                    embedAttributes.append("RemoveHeadersOnCopy")
+                }
+                return ["ATTRIBUTES": embedAttributes]
             }
-            if dependency.removeHeaders {
-                embedAttributes.append("RemoveHeadersOnCopy")
-            }
-
-            let embedSettings = ["ATTRIBUTES": embedAttributes]
 
             switch dependency.type {
             case .target:
@@ -452,7 +453,7 @@ public class PBXProjGenerator {
                         id: dependencyFileReference + target.name,
                         PBXBuildFile(
                             fileRef: dependencyFileReference,
-                            settings: embedSettings
+                            settings: getEmbedSettings(codeSign: dependency.codeSign ?? !dependencyTarget.type.isExecutable)
                         )
                     )
 
@@ -496,7 +497,7 @@ public class PBXProjGenerator {
                 if embed {
                     let embedFile = createObject(
                         id: fileReference + target.name,
-                        PBXBuildFile(fileRef: fileReference, settings: embedSettings)
+                        PBXBuildFile(fileRef: fileReference, settings: getEmbedSettings(codeSign: dependency.codeSign ?? true))
                     )
                     copyFrameworksReferences.append(embedFile.reference)
                 }
@@ -520,7 +521,7 @@ public class PBXProjGenerator {
                 if target.platform == .macOS && embed {
                     let embedFile = createObject(
                         id: fileReference + target.name,
-                        PBXBuildFile(fileRef: fileReference, settings: embedSettings)
+                        PBXBuildFile(fileRef: fileReference, settings: getEmbedSettings(codeSign: dependency.codeSign ?? true))
                     )
                     copyFrameworksReferences.append(embedFile.reference)
                 }
