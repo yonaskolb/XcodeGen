@@ -409,8 +409,8 @@ class SpecLoadingTests: XCTestCase {
             $0.it("decodes dots in dictionary keys") {
                 let dictionary: [String: Any] = [
                     "test": [
-                        "one.two": true
-                    ]
+                        "one.two": true,
+                    ],
                 ]
 
                 let booleans: [String: Bool] = try dictionary.json(atKeyPath: "test")

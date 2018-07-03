@@ -282,7 +282,7 @@ extension Target: NamedJSONDictionaryConvertible {
             dependencies = try jsonDictionary.json(atKeyPath: "dependencies", invalidItemBehaviour: .fail)
         }
         transientlyLinkDependencies = jsonDictionary.json(atKeyPath: "transientlyLinkDependencies")
-        
+
         prebuildScripts = jsonDictionary.json(atKeyPath: "prebuildScripts") ?? []
         postbuildScripts = jsonDictionary.json(atKeyPath: "postbuildScripts") ?? []
         buildRules = jsonDictionary.json(atKeyPath: "buildRules") ?? []

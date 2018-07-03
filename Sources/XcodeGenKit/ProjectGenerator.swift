@@ -70,7 +70,7 @@ public class ProjectGenerator {
             }
             return XCScheme.ExecutionAction(scriptText: action.script, title: action.name, environmentBuildable: environmentBuildable)
         }
-        
+
         let target = project.getTarget(scheme.build.targets.first!.target)
         let shouldExecuteOnLaunch = target?.type.isExecutable == true
 

@@ -390,7 +390,7 @@ public class PBXProjGenerator {
         var copyResourcesReferences: [String] = []
         var copyWatchReferences: [String] = []
         var extensions: [String] = []
-        
+
         let targetDependencies = (target.transientlyLinkDependencies ?? project.options.transientlyLinkDependencies) ?
             getAllDependenciesPlusTransientNeedingEmbedding(target: target) : target.dependencies
 
@@ -444,7 +444,7 @@ public class PBXProjGenerator {
                     )
                     targetFrameworkBuildFiles.append(buildFile.reference)
                 }
-                
+
                 let shouldEmbed = target.type.isApp
                     || (target.type.isTest && (dependencyTarget.type.isFramework || dependencyTarget.type == .bundle))
                 if (dependency.embed ?? shouldEmbed) && !dependencyTarget.type.isLibrary {
@@ -500,7 +500,7 @@ public class PBXProjGenerator {
                     )
                     copyFrameworksReferences.append(embedFile.reference)
                 }
-                
+
             case .carthage:
                 var platformPath = Path(getCarthageBuildPath(platform: target.platform))
                 var frameworkPath = platformPath + dependency.reference
@@ -747,7 +747,7 @@ public class PBXProjGenerator {
 
         return frameworks
     }
-    
+
     func getAllDependenciesPlusTransientNeedingEmbedding(target topLevelTarget: Target) -> [Dependency] {
         // this is used to resolve cyclical target dependencies
         var visitedTargets: Set<String> = []
@@ -758,15 +758,15 @@ public class PBXProjGenerator {
             if visitedTargets.contains(target.name) {
                 continue
             }
-            
+
             let isTopLevel = target == topLevelTarget
-            
+
             for dependency in target.dependencies {
                 // don't overwrite dependencies, to allow top level ones to rule
                 if dependencies.contains(reference: dependency.reference) {
                     continue
                 }
-                
+
                 // don't want a dependency if it's going to be embedded or statically linked in a non-top level target
                 // in .target check we filter out targets that will embed all of their dependencies
                 switch dependency.type {
@@ -786,10 +786,10 @@ public class PBXProjGenerator {
                     }
                 }
             }
-            
+
             visitedTargets.update(with: target.name)
         }
-        
+
         return dependencies.sorted(by: { $0.key < $1.key }).map { $0.value }
     }
 }

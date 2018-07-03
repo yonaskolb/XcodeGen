@@ -267,7 +267,7 @@ class ProjectGeneratorTests: XCTestCase {
                 try expect(dependencies[0].object.target) == nativeTargets.first { $0.object.name == framework.name }!.reference
                 try expect(dependencies[1].object.target) == nativeTargets.first { $0.object.name == app.name }!.reference
             }
-            
+
             $0.it("generates targets with correct transient embeds") {
                 // App # Embeds it's frameworks, so shouldn't embed in tests
                 //   dependencies:
@@ -321,11 +321,11 @@ class ProjectGeneratorTests: XCTestCase {
                 //     - target: iOSFrameworkB
                 //     - carthage: CarthageD
                 //
-                
+
                 var expectedResourceFiles: [String: Set<String>] = [:]
                 var expectedLinkedFiles: [String: Set<String>] = [:]
                 var expectedEmbeddedFrameworks: [String: Set<String>] = [:]
-                
+
                 let app = Target(
                     name: "App",
                     type: .application,
@@ -344,7 +344,7 @@ class ProjectGeneratorTests: XCTestCase {
                 expectedEmbeddedFrameworks[app.name] = Set([
                     "FrameworkA.framework",
                 ])
-                
+
                 let staticLibrary = Target(
                     name: "StaticLibrary",
                     type: .staticLibrary,
@@ -355,7 +355,7 @@ class ProjectGeneratorTests: XCTestCase {
                 expectedResourceFiles[staticLibrary.name] = Set()
                 expectedLinkedFiles[staticLibrary.name] = Set([])
                 expectedEmbeddedFrameworks[staticLibrary.name] = Set()
-                
+
                 let resourceBundle = Target(
                     name: "ResourceBundle",
                     type: .bundle,
@@ -365,7 +365,7 @@ class ProjectGeneratorTests: XCTestCase {
                 expectedResourceFiles[resourceBundle.name] = Set()
                 expectedLinkedFiles[resourceBundle.name] = Set()
                 expectedEmbeddedFrameworks[resourceBundle.name] = Set()
-                
+
                 let iosFrameworkA = Target(
                     name: "iOSFrameworkA",
                     type: .framework,
@@ -387,7 +387,7 @@ class ProjectGeneratorTests: XCTestCase {
                     "CarthageB.framework",
                 ])
                 expectedEmbeddedFrameworks[iosFrameworkA.name] = Set()
-                
+
                 let iosFrameworkB = Target(
                     name: "iOSFrameworkB",
                     type: .framework,
@@ -415,7 +415,7 @@ class ProjectGeneratorTests: XCTestCase {
                 expectedEmbeddedFrameworks[iosFrameworkB.name] = Set([
                     "FrameworkE.framework",
                 ])
-                
+
                 let appTest = Target(
                     name: "AppTest",
                     type: .unitTestBundle,
@@ -443,7 +443,7 @@ class ProjectGeneratorTests: XCTestCase {
                     iosFrameworkB.filename,
                     "FrameworkD.framework",
                 ])
-                
+
                 var appTestWithoutTransient = appTest
                 appTestWithoutTransient.name = "AppTestWithoutTransient"
                 appTestWithoutTransient.transientlyLinkDependencies = false
@@ -455,9 +455,9 @@ class ProjectGeneratorTests: XCTestCase {
                 expectedEmbeddedFrameworks[appTestWithoutTransient.name] = Set([
                     iosFrameworkB.filename,
                 ])
-                
+
                 let targets = [app, staticLibrary, resourceBundle, iosFrameworkA, iosFrameworkB, appTest, appTestWithoutTransient]
-                
+
                 let project = Project(
                     basePath: "",
                     name: "test",
@@ -465,7 +465,7 @@ class ProjectGeneratorTests: XCTestCase {
                     options: SpecOptions(transientlyLinkDependencies: true)
                 )
                 let pbxProject = try project.generatePbxProj()
-                
+
                 for target in targets {
                     guard let nativeTarget = pbxProject.objects.nativeTargets.referenceValues.first(where: { $0.name == target.name }) else {
                         throw failure("PBXNativeTarget for \(target) not found")
@@ -474,7 +474,7 @@ class ProjectGeneratorTests: XCTestCase {
                     let resourcesPhases = pbxProject.objects.resourcesBuildPhases.objectReferences.filter { buildPhases.contains($0.reference) }
                     let frameworkPhases = pbxProject.objects.frameworksBuildPhases.objectReferences.filter { buildPhases.contains($0.reference) }
                     let copyFilesPhases = pbxProject.objects.copyFilesBuildPhases.objectReferences.filter { buildPhases.contains($0.reference) }
-                    
+
                     // ensure only the right resources are copies, no more, no less
                     let expectedResourceFiles = expectedResourceFiles[target.name]!
                     try expect(resourcesPhases.count) == (expectedResourceFiles.isEmpty ? 0 : 1)
@@ -483,7 +483,7 @@ class ProjectGeneratorTests: XCTestCase {
                             .compactMap { pbxProject.objects.buildFiles[$0]?.fileRef.flatMap { pbxProject.objects.fileReferences[$0]?.nameOrPath } }
                         try expect(Set(resourceFiles)) == expectedResourceFiles
                     }
-                    
+
                     // ensure only the right things are linked, no more, no less
                     let expectedLinkedFiles = expectedLinkedFiles[target.name]!
                     try expect(frameworkPhases.count) == (expectedLinkedFiles.isEmpty ? 0 : 1)
@@ -492,7 +492,7 @@ class ProjectGeneratorTests: XCTestCase {
                             .compactMap { pbxProject.objects.buildFiles[$0]?.fileRef.flatMap { pbxProject.objects.fileReferences[$0]?.nameOrPath } }
                         try expect(Set(linkFrameworks)) == expectedLinkedFiles
                     }
-                    
+
                     // ensure only the right things are embedded, no more, no less
                     let expectedEmbeddedFrameworks = expectedEmbeddedFrameworks[target.name]!
                     try expect(copyFilesPhases.count) == (expectedEmbeddedFrameworks.isEmpty ? 0 : 1)
@@ -557,10 +557,12 @@ class ProjectGeneratorTests: XCTestCase {
                         action: .script("do thing"),
                         name: "My Rule",
                         outputFiles: ["file1.swift", "file2.swift"],
-                        outputFilesCompilerFlags: ["--zee", "--bee"]),
+                        outputFilesCompilerFlags: ["--zee", "--bee"]
+                    ),
                     BuildRule(
                         fileType: .pattern("*.plist"),
-                        action: .compilerSpec("com.apple.build-tasks.copy-plist-file"))
+                        action: .compilerSpec("com.apple.build-tasks.copy-plist-file")
+                    ),
                 ]
                 let pbxProject = try scriptSpec.generatePbxProj()
 
@@ -585,7 +587,6 @@ class ProjectGeneratorTests: XCTestCase {
                 try expect(second.script).beNil()
                 try expect(second.outputFiles) == []
                 try expect(second.outputFilesCompilerFlags) == []
-
             }
         }
     }
