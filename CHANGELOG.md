@@ -8,7 +8,7 @@
 - Fixed `transitivelyLinkDependencies` typo [332](https://github.com/yonaskolb/XcodeGen/pull/332) @brentleyjones
 - Fixed framework target dependencies not being code signed by default [332](https://github.com/yonaskolb/XcodeGen/pull/332) @yonaskolb
 
-### Changed
+#### Changed
 - Code sign all dependencies by default except target executables [332](https://github.com/yonaskolb/XcodeGen/pull/332) @yonaskolb
 
 [Commits](https://github.com/yonaskolb/XcodeGen/compare/1.10.0...1.10.1)
