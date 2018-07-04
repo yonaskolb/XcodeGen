@@ -2,12 +2,23 @@
 
 ## Master
 
+## 1.10.1
+
+#### Fixed
+- Fixed `transitivelyLinkDependencies` typo [332](https://github.com/yonaskolb/XcodeGen/pull/332) @brentleyjones
+- Fixed framework target dependencies not being code signed by default [332](https://github.com/yonaskolb/XcodeGen/pull/332) @yonaskolb
+
+### Changed
+- Code sign all dependencies by default except target executables [332](https://github.com/yonaskolb/XcodeGen/pull/332) @yonaskolb
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/1.10.0...1.10.1)
+
 ## 1.10.0
 
 #### Added
 - Added build rule support [306](https://github.com/yonaskolb/XcodeGen/pull/306) @yonaskolb
 - Added support for frameworks in sources [308](https://github.com/yonaskolb/XcodeGen/pull/308) @keith
-- Added ability to automatically embed transient dependencies. Controlled with `transientlyLinkDependencies` [327](https://github.com/yonaskolb/XcodeGen/pull/327) @brentleyjones
+- Added ability to automatically embed transient dependencies. Controlled with `transitivelyLinkDependencies` [327](https://github.com/yonaskolb/XcodeGen/pull/327) @brentleyjones
 
 #### Changed
 - Upgraded to Swift 4.1

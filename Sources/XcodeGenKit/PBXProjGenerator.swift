@@ -396,8 +396,6 @@ public class PBXProjGenerator {
 
         for dependency in targetDependencies {
 
-
-
             let embed = dependency.embed ?? target.shouldEmbedDependencies
 
             func getEmbedSettings(codeSign: Bool) -> [String: Any] {
