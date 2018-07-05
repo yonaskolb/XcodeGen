@@ -5,6 +5,7 @@ options:
   usesTabs: false
   indentWidth: 2
   tabWidth: 2
+  transitivelyLinkDependencies: true
   deploymentTarget:
     watchOS: 4.0
 fileGroups:
