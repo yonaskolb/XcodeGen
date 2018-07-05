@@ -2,6 +2,13 @@
 
 ## Master
 
+## 1.10.2
+
+#### Changed
+- Set `transitivelyLinkDependencies` to false by default
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/1.10.1...1.10.2)
+
 ## 1.10.1
 
 #### Fixed
