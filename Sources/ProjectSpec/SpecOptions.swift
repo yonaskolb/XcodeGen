@@ -58,7 +58,7 @@ public struct SpecOptions: Equatable {
         deploymentTarget: DeploymentTarget = .init(),
         disabledValidations: [ValidationType] = [],
         defaultConfig: String? = nil,
-        transitivelyLinkDependencies: Bool = true
+        transitivelyLinkDependencies: Bool = false
     ) {
         self.carthageBuildPath = carthageBuildPath
         self.carthageExecutablePath = carthageExecutablePath
@@ -92,6 +92,6 @@ extension SpecOptions: JSONObjectConvertible {
         deploymentTarget = jsonDictionary.json(atKeyPath: "deploymentTarget") ?? DeploymentTarget()
         disabledValidations = jsonDictionary.json(atKeyPath: "disabledValidations") ?? []
         defaultConfig = jsonDictionary.json(atKeyPath: "defaultConfig")
-        transitivelyLinkDependencies = jsonDictionary.json(atKeyPath: "transitivelyLinkDependencies") ?? true
+        transitivelyLinkDependencies = jsonDictionary.json(atKeyPath: "transitivelyLinkDependencies") ?? false
     }
 }
