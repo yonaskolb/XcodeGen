@@ -1,6 +1,6 @@
 import Foundation
 import JSONUtilities
-import xcproj
+import xcodeproj
 
 public struct Config: Equatable {
     public var name: String
