@@ -1,6 +1,6 @@
 import Foundation
 import PathKit
-import xcproj
+import xcodeproj
 
 extension PBXProductType {
 

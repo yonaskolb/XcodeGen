@@ -4,7 +4,7 @@ import JSONUtilities
 import PathKit
 import ProjectSpec
 import XcodeGenKit
-import xcproj
+import xcodeproj
 
 let version = "1.10.2"
 

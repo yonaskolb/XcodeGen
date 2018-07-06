@@ -1,7 +1,7 @@
 import Foundation
 import PathKit
 import ProjectSpec
-import xcproj
+import xcodeproj
 
 struct SourceFile {
     let path: Path

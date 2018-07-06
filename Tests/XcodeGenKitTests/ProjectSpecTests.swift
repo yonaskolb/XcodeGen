@@ -2,7 +2,7 @@ import PathKit
 import ProjectSpec
 import Spectre
 import XcodeGenKit
-import xcproj
+import xcodeproj
 import XCTest
 
 class ProjectSpecTests: XCTestCase {

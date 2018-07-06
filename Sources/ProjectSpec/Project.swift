@@ -1,7 +1,7 @@
 import Foundation
 import JSONUtilities
 import PathKit
-import xcproj
+import xcodeproj
 import Yams
 
 public struct Project {

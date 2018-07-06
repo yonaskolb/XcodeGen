@@ -66,7 +66,7 @@
       },
       {
         "package": "xcproj",
-        "repositoryURL": "https://github.com/xcodeswift/xcproj.git",
+        "repositoryURL": "https://github.com/xcode-project-manager/xcodeproj.git",
         "state": {
           "branch": null,
           "revision": "e787c68092e28fe2b34205fc1b62de431922c243",
