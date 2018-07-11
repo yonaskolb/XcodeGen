@@ -159,7 +159,7 @@ extension SettingsPresetFile {
         if let symlink = try? (bundlePath + "xcodegen").symlinkDestination() {
             possibleSettingsPaths = [
                 symlink.parent() + relativePath,
-                ] + possibleSettingsPaths
+            ] + possibleSettingsPaths
         }
 
         guard let settingsPath = possibleSettingsPaths.first(where: { $0.exists }) else {

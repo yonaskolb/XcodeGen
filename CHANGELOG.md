@@ -2,6 +2,13 @@
 
 ## Master
 
+## 1.10.3
+
+#### Fixed
+- Fixed Mint installations finding `SettingPresets` [338](https://github.com/yonaskolb/XcodeGen/pull/338) @yonaskolb
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/1.10.2...1.10.3)
+
 ## 1.10.2
 
 #### Changed
