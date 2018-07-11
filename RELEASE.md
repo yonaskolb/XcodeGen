@@ -7,6 +7,6 @@
 1. Update the version at the top of `Makefile`
 1. Run `make release`
 1. Push commit and tag to github
-1. Create release from tag on Github
+1. Create release from tag on Github using the version number and relevant changelog contents
 1. Run `make archive` and upload `xcodegen.zip` to the github release
 1. Run `make update_brew` and push to github
