@@ -119,7 +119,7 @@ class SourceGenerator {
                 let models = (try? path.children()) ?? []
                 let modelFileReference = models
                     .filter { $0.extension == "xcdatamodel" }
-                    .sorted()
+                    .sorted { $0.string.localizedStandardCompare($1.string) == .orderedDescending }
                     .map { path in
                         createObject(
                             id: path.byRemovingBase(path: project.basePath).string,
