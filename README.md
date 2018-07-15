@@ -79,8 +79,7 @@ make
 ### Homebrew
 
 ```shell
-brew tap yonaskolb/XcodeGen https://github.com/yonaskolb/XcodeGen.git
-brew install XcodeGen
+brew install xcodegen
 ```
 
 ### Swift Package Manager

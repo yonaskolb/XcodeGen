@@ -6,7 +6,7 @@ PREFIX = /usr/local
 INSTALL_PATH = $(PREFIX)/bin/$(EXECUTABLE_NAME)
 SHARE_PATH = $(PREFIX)/share/$(EXECUTABLE_NAME)
 CURRENT_PATH = $(PWD)
-REPO = https://github.com/yonaskolb/$(EXECUTABLE_NAME)
+REPO = https://github.com/yonaskolb/$(TOOL_NAME)
 RELEASE_TAR = $(REPO)/archive/$(VERSION).tar.gz
 SHA = $(shell curl -L -s $(RELEASE_TAR) | shasum -a 256 | sed 's/ .*//')
 
@@ -42,6 +42,12 @@ release: format_code
 	git add .
 	git commit -m "Update to $(VERSION)"
 	git tag $(VERSION)
+
+publish: archive bump_brew
+	echo "published $(VERSION)"
+
+bump_brew:
+	brew bump-formula-pr --url=$(RELEASE_TAR) Mint
 
 archive: build
 	./scripts/archive.sh

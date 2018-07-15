@@ -9,4 +9,4 @@
 1. Push commit and tag to github
 1. Create release from tag on Github using the version number and relevant changelog contents
 1. Run `make archive` and upload `xcodegen.zip` to the github release
-1. Run `make update_brew` and push to github
+1. Run `make bump_brew` which will open a PR on homebrew core
