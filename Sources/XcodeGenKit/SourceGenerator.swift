@@ -42,17 +42,17 @@ class SourceGenerator {
         return ObjectReference(reference: reference, object: object)
     }
 
-    func getAllSourceFiles(sources: [TargetSource]) throws -> [SourceFile] {
-        return try sources.flatMap { try getSourceFiles(targetSource: $0, path: project.basePath + $0.path) }
+    func getAllSourceFiles(targetType: PBXProductType, sources: [TargetSource]) throws -> [SourceFile] {
+        return try sources.flatMap { try getSourceFiles(targetType: targetType, targetSource: $0, path: project.basePath + $0.path) }
     }
 
     // get groups without build files. Use for Project.fileGroups
     func getFileGroups(path: String) throws {
         let fullPath = project.basePath + path
-        _ = try getSourceFiles(targetSource: TargetSource(path: path), path: fullPath)
+        _ = try getSourceFiles(targetType: .none, targetSource: TargetSource(path: path), path: fullPath)
     }
 
-    func generateSourceFile(targetSource: TargetSource, path: Path, buildPhase: TargetSource.BuildPhase? = nil) -> SourceFile {
+    func generateSourceFile(targetType: PBXProductType, targetSource: TargetSource, path: Path, buildPhase: TargetSource.BuildPhase? = nil) -> SourceFile {
         let fileReference = fileReferencesByPath[path.string.lowercased()]!
         var settings: [String: Any] = [:]
         let chosenBuildPhase: TargetSource.BuildPhase?
@@ -62,7 +62,7 @@ class SourceGenerator {
         } else if let buildPhase = targetSource.buildPhase {
             chosenBuildPhase = buildPhase
         } else {
-            chosenBuildPhase = getDefaultBuildPhase(for: path)
+            chosenBuildPhase = getDefaultBuildPhase(for: path, targetType: targetType)
         }
 
         if chosenBuildPhase == .headers {
@@ -156,7 +156,7 @@ class SourceGenerator {
     }
 
     /// returns a default build phase for a given path. This is based off the filename
-    private func getDefaultBuildPhase(for path: Path) -> TargetSource.BuildPhase? {
+    private func getDefaultBuildPhase(for path: Path, targetType: PBXProductType) -> TargetSource.BuildPhase? {
         if path.lastComponent == "Info.plist" {
             return nil
         }
@@ -164,6 +164,12 @@ class SourceGenerator {
             switch fileExtension {
             case "swift", "m", "mm", "cpp", "c", "cc", "S", "xcdatamodeld": return .sources
             case "h", "hh", "hpp", "ipp", "tpp", "hxx", "def": return .headers
+            case "modulemap":
+                guard targetType == .staticLibrary else { return nil }
+                return .copyFiles(TargetSource.BuildPhase.CopyFilesSettings(
+                    destination: .productsDirectory,
+                    subpath: "include/$(PRODUCT_NAME)"
+                ))
             case "framework": return .frameworks
             case "xcconfig", "entitlements", "gpx", "lproj", "apns": return nil
             default: return .resources
@@ -271,7 +277,7 @@ class SourceGenerator {
     }
 
     /// creates all the source files and groups they belong to for a given targetSource
-    private func getGroupSources(targetSource: TargetSource, path: Path, isBaseGroup: Bool)
+    private func getGroupSources(targetType: PBXProductType, targetSource: TargetSource, path: Path, isBaseGroup: Bool)
         throws -> (sourceFiles: [SourceFile], groups: [ObjectReference<PBXGroup>]) {
 
         let children = try getSourceChildren(targetSource: targetSource, dirPath: path)
@@ -290,12 +296,12 @@ class SourceGenerator {
 
         var groupChildren: [String] = filePaths.map { getFileReference(path: $0, inPath: path) }
         var allSourceFiles: [SourceFile] = filePaths.map {
-            generateSourceFile(targetSource: targetSource, path: $0)
+            generateSourceFile(targetType: targetType, targetSource: targetSource, path: $0)
         }
         var groups: [ObjectReference<PBXGroup>] = []
 
         for path in directories {
-            let subGroups = try getGroupSources(targetSource: targetSource, path: path, isBaseGroup: false)
+            let subGroups = try getGroupSources(targetType: targetType, targetSource: targetSource, path: path, isBaseGroup: false)
 
             guard !subGroups.sourceFiles.isEmpty else {
                 continue
@@ -398,7 +404,7 @@ class SourceGenerator {
     }
 
     /// creates source files
-    private func getSourceFiles(targetSource: TargetSource, path: Path) throws -> [SourceFile] {
+    private func getSourceFiles(targetType: PBXProductType, targetSource: TargetSource, path: Path) throws -> [SourceFile] {
 
         // generate excluded paths
         targetSourceExcludePaths = getSourceExcludes(targetSource: targetSource)
@@ -431,7 +437,7 @@ class SourceGenerator {
                 buildPhase = .resources
             }
 
-            let sourceFile = generateSourceFile(targetSource: targetSource, path: folderPath, buildPhase: buildPhase)
+            let sourceFile = generateSourceFile(targetType: targetType, targetSource: targetSource, path: folderPath, buildPhase: buildPhase)
 
             sourceFiles.append(sourceFile)
             sourceReference = fileReference
@@ -439,7 +445,7 @@ class SourceGenerator {
             let parentPath = path.parent()
             let fileReference = getFileReference(path: path, inPath: parentPath, name: targetSource.name)
 
-            let sourceFile = generateSourceFile(targetSource: targetSource, path: path)
+            let sourceFile = generateSourceFile(targetType: targetType, targetSource: targetSource, path: path)
 
             if parentPath == project.basePath {
                 sourcePath = path
@@ -453,7 +459,7 @@ class SourceGenerator {
             sourceFiles.append(sourceFile)
 
         case .group:
-            let (groupSourceFiles, groups) = try getGroupSources(targetSource: targetSource, path: path, isBaseGroup: true)
+            let (groupSourceFiles, groups) = try getGroupSources(targetType: targetType, targetSource: targetSource, path: path, isBaseGroup: true)
             let group = groups.first!
             if let name = targetSource.name {
                 group.object.name = name

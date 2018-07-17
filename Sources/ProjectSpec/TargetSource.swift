@@ -70,6 +70,11 @@ public struct TargetSource: Equatable {
             
             public var destination: Destination
             public var subpath: String
+            
+            public init(destination: Destination, subpath: String) {
+                self.destination = destination
+                self.subpath = subpath
+            }
         }
 
         public var buildPhase: xcproj.BuildPhase? {

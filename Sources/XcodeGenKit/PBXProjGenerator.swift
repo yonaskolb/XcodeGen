@@ -420,7 +420,7 @@ public class PBXProjGenerator {
         sourceGenerator.targetName = target.name
         let carthageDependencies = getAllCarthageDependencies(target: target)
 
-        let sourceFiles = try sourceGenerator.getAllSourceFiles(sources: target.sources)
+        let sourceFiles = try sourceGenerator.getAllSourceFiles(targetType: target.type, sources: target.sources)
 
         var plistPath: Path?
         var searchForPlist = true
