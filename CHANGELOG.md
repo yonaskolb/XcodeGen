@@ -8,7 +8,7 @@
 - Added `targetTemplates` [355](https://github.com/yonaskolb/XcodeGen/pull/355) @yonaskolb
 - Added `aggregateTargets` [354](https://github.com/yonaskolb/XcodeGen/pull/354) @yonaskolb
 - Added `options.groupSortPosition` [356](https://github.com/yonaskolb/XcodeGen/pull/356) @yonaskolb
-
+- Added ability to specify `copyFiles` build phase for sources [345](https://github.com/yonaskolb/XcodeGen/pull/345) @brentleyjones
 
 #### Fixed
 - Sort files using localizedStandardCompare [341](https://github.com/yonaskolb/XcodeGen/pull/341) @rohitpal440

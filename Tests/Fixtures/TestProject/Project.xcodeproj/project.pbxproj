@@ -77,6 +77,7 @@
 		BF_734036107922 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = FR_183521624014 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BF_747443236192 /* App_watchOS.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = FR_324671077936 /* App_watchOS.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		BF_757906110813 = {isa = PBXBuildFile; fileRef = FR_662315837182 /* Framework.framework */; };
+		BF_807556340853 /* Empty.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = FR_837374194182 /* Empty.h */; };
 		BF_813358525536 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = FR_183521624014 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BF_828878846239 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = VG_201160695646 /* MainInterface.storyboard */; };
 		BF_830383951771 /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_304712043717 /* NotificationController.swift */; };
@@ -237,6 +238,16 @@
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		CFBP_7191905390 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+				BF_807556340853 /* Empty.h in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
@@ -299,6 +310,7 @@
 		FR_815403394914 /* Headers */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Headers; sourceTree = SOURCE_ROOT; };
 		FR_825232110500 /* App_iOS.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = App_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR_830053537293 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		FR_837374194182 /* Empty.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Empty.h; sourceTree = "<group>"; };
 		FR_854336462818 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FR_868653349092 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FR_935153865209 /* iMessageApp.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = iMessageApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -386,6 +398,14 @@
 				FR_310979699934 /* MessagesViewController.swift */,
 			);
 			path = "iMessage MessagesExtension";
+			sourceTree = "<group>";
+		};
+		G_1885780145626 /* CopyFiles */ = {
+			isa = PBXGroup;
+			children = (
+				FR_837374194182 /* Empty.h */,
+			);
+			path = CopyFiles;
 			sourceTree = "<group>";
 		};
 		G_1952740716080 /* Frameworks */ = {
@@ -561,6 +581,7 @@
 				G_3246710779368 /* App_watchOS */,
 				G_5070234922517 /* App_watchOS Extension */,
 				G_8340618952527 /* Configs */,
+				G_1885780145626 /* CopyFiles */,
 				G_3234630030493 /* FileGroup */,
 				G_4661500274312 /* Framework */,
 				G_8268950006174 /* iMessage */,
@@ -850,6 +871,7 @@
 			buildPhases = (
 				SBP_82523211050 /* Sources */,
 				RBP_82523211050 /* Resources */,
+				CFBP_7191905390 /* CopyFiles */,
 				FBP_82523211050 /* Frameworks */,
 				CFBP_6493932244 /* Embed Frameworks */,
 				CFBP_2836118931 /* Embed Watch Content */,

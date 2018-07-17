@@ -567,9 +567,8 @@ public class PBXProjGenerator {
         let fileReference = targetFileReferences[target.name]
         var buildPhases: [String] = []
 
-        func getBuildFilesForPhase(_ buildPhase: BuildPhase) -> [String] {
+        func getBuildFilesForSourceFiles(_ sourceFiles: [SourceFile]) -> [String] {
             let files = sourceFiles
-                .filter { $0.buildPhase == buildPhase }
                 .reduce(into: [SourceFile]()) { output, sourceFile in
                     if !output.contains(where: { $0.fileReference == sourceFile.fileReference }) {
                         output.append(sourceFile)
@@ -578,6 +577,21 @@ public class PBXProjGenerator {
                 .sorted { $0.path.lastComponent < $1.path.lastComponent }
             return files.map { createObject(id: $0.fileReference + target.name, $0.buildFile) }
                 .map { $0.reference }
+        }
+        
+        func getBuildFilesForPhase(_ buildPhase: BuildPhase) -> [String] {
+            let filteredSourceFiles = sourceFiles
+                .filter { $0.buildPhase?.buildPhase == buildPhase }
+            return getBuildFilesForSourceFiles(filteredSourceFiles)
+        }
+        
+        func getBuildFilesForCopyFilesPhases() -> [TargetSource.BuildPhase.CopyFilesSettings: [String]] {
+            var sourceFilesByCopyFiles: [TargetSource.BuildPhase.CopyFilesSettings: [SourceFile]] = [:]
+            for sourceFile in sourceFiles {
+                guard case let .copyFiles(copyFilesSettings)? = sourceFile.buildPhase else { continue }
+                sourceFilesByCopyFiles[copyFilesSettings, default: []].append(sourceFile)
+            }
+            return sourceFilesByCopyFiles.mapValues { getBuildFilesForSourceFiles($0) }
         }
 
         buildPhases += try target.prebuildScripts.map { try generateBuildScript(targetName: target.name, buildScript: $0) }
@@ -590,6 +604,22 @@ public class PBXProjGenerator {
         if !resourcesBuildPhaseFiles.isEmpty {
             let resourcesBuildPhase = createObject(id: target.name, PBXResourcesBuildPhase(files: resourcesBuildPhaseFiles))
             buildPhases.append(resourcesBuildPhase.reference)
+        }
+        
+        let copyFilesBuildPhasesFiles = getBuildFilesForCopyFilesPhases()
+        if !copyFilesBuildPhasesFiles.isEmpty {
+            for (copyFiles, buildPhaseFiles) in copyFilesBuildPhasesFiles {
+                let copyFilesBuildPhase = createObject(
+                    id: "copy files" + copyFiles.destination.rawValue + copyFiles.subpath + target.name,
+                    PBXCopyFilesBuildPhase(
+                        dstPath: copyFiles.subpath,
+                        dstSubfolderSpec: copyFiles.destination.destination,
+                        files: buildPhaseFiles
+                    )
+                )
+                
+                buildPhases.append(copyFilesBuildPhase.reference)
+            }
         }
 
         let headersBuildPhaseFiles = getBuildFilesForPhase(.headers)
