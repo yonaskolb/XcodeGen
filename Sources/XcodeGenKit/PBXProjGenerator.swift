@@ -288,7 +288,7 @@ public class PBXProjGenerator {
             }
             .sorted { child1, child2 in
                 if child1.object.sortOrder == child2.object.sortOrder {
-                    return child1.object.nameOrPath < child2.object.nameOrPath
+                    return child1.object.nameOrPath.localizedStandardCompare(child2.object.nameOrPath) == .orderedAscending
                 } else {
                     return child1.object.sortOrder < child2.object.sortOrder
                 }
