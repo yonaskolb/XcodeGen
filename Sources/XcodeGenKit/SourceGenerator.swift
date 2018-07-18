@@ -119,7 +119,7 @@ class SourceGenerator {
                 let models = (try? path.children()) ?? []
                 let modelFileReference = models
                     .filter { $0.extension == "xcdatamodel" }
-                    .sorted { $0.string.localizedStandardCompare($1.string) == .orderedDescending }
+                    .sorted { $0.string.localizedStandardCompare($1.string) == .orderedAscending }
                     .map { path in
                         createObject(
                             id: path.byRemovingBase(path: project.basePath).string,
@@ -131,7 +131,7 @@ class SourceGenerator {
                         )
                     }
                 let versionGroup = addObject(id: fileReferencePath.string, XCVersionGroup(
-                    currentVersion: modelFileReference.first?.reference,
+                    currentVersion: modelFileReference.last?.reference,
                     path: fileReferencePath.string,
                     sourceTree: sourceTree,
                     versionGroupType: "wrapper.xcdatamodel",
