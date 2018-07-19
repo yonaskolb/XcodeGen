@@ -352,6 +352,7 @@ Run script build phases added via **prebuildScripts** or **postBuildScripts**. T
 - [ ] **inputFiles**: **[String]** - list of input files
 - [ ] **outputFiles**: **[String]** - list of output files
 - [ ] **shell**: **String** - shell used for the script. Defaults to `/bin/sh`
+- [ ] **showEnvVars**: **Bool** - whether the environment variables accessible to the script show be printed to the build log. Defaults to yes
 - [ ] **runOnlyWhenInstalling**: **Bool** - whether the script is only run when installing (`runOnlyForDeploymentPostprocessing`). Defaults to no
 
 Either a **path** or **script** must be defined, the rest are optional.

@@ -338,8 +338,8 @@
 		G_2883690153011 /* Carthage */ = {
 			isa = PBXGroup;
 			children = (
-				G_2262017442691 /* Mac */,
 				G_2262017438925 /* iOS */,
+				G_2262017442691 /* Mac */,
 				G_8628897169668 /* tvOS */,
 				G_8244488572839 /* watchOS */,
 			);
@@ -478,11 +478,11 @@
 				G_3234630030493 /* FileGroup */,
 				G_4661500274312 /* Framework */,
 				G_1952740716080 /* Frameworks */,
+				G_8268950006174 /* iMessage */,
+				G_1646573205915 /* iMessage MessagesExtension */,
 				G_8620238527590 /* Products */,
 				G_7189434949822 /* Resources */,
 				G_6651250437419 /* StandaloneFiles */,
-				G_8268950006174 /* iMessage */,
-				G_1646573205915 /* iMessage MessagesExtension */,
 				FR_479281060337 /* Folder */,
 				FR_815403394914 /* Headers */,
 				FR_232605427418 /* Mintfile */,
@@ -497,9 +497,9 @@
 		G_8620238527590 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				FR_825232110500 /* App_iOS.app */,
 				FR_783122899910 /* App_iOS_Tests.xctest */,
 				FR_123503999387 /* App_iOS_UITests.xctest */,
+				FR_825232110500 /* App_iOS.app */,
 				FR_507023492251 /* App_watchOS Extension.appex */,
 				FR_324671077936 /* App_watchOS.app */,
 				FR_662315837182 /* Framework.framework */,
