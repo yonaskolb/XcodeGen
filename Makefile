@@ -37,7 +37,7 @@ update_brew:
 	git commit -m "Update brew to $(VERSION)"
 
 release: format_code
-	sed -i '' 's|\(let version = "\)\(.*\)\("\)|\1$(VERSION)\3|' Sources/XcodeGen/main.swift
+	sed -i '' 's|\(let version = try Version("\)\(.*\)\(")\)|\1$(VERSION)\3|' Sources/XcodeGen/main.swift
 
 	git add .
 	git commit -m "Update to $(VERSION)"
