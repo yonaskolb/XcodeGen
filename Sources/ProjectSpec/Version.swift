@@ -13,6 +13,11 @@ public struct Version: CustomStringConvertible, Equatable, Comparable {
             }
             return uint
         }
+        
+        guard components.count <= 3 else {
+            throw SpecParsingError.invalidVersion(string)
+        }
+        
         major = components[0]
         minor = (components.count >= 2) ? components[1] : 0
         patch = (components.count == 3) ? components[2] : 0
