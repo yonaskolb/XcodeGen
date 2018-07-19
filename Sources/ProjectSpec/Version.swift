@@ -1,7 +1,7 @@
 import Foundation
 
-public struct Version: CustomStringConvertible, Equatable {
-
+public struct Version: CustomStringConvertible, Equatable, Comparable {
+    
     public var major: UInt
     public var minor: UInt
     public var patch: UInt
@@ -46,5 +46,11 @@ public struct Version: CustomStringConvertible, Equatable {
 
     public func bumpingPatch() -> Version {
         return Version(major: major, minor: minor, patch: patch + 1)
+    }
+    
+    public static func < (lhs: Version, rhs: Version) -> Bool {
+        guard lhs.major == rhs.major else { return lhs.major < rhs.major }
+        guard lhs.minor == rhs.minor else { return lhs.minor < rhs.minor }
+        return lhs.patch < rhs.patch
     }
 }
