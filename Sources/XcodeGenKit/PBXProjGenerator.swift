@@ -435,7 +435,10 @@ public class PBXProjGenerator {
 
                 dependencies.append(targetDependency.reference)
 
-                if (dependencyTarget.type.isLibrary || dependencyTarget.type.isFramework) && dependency.link {
+                let dependecyLinkage = dependencyTarget.defaultLinkage
+                let shouldLink = dependecyLinkage == .dynamic
+                    || (dependecyLinkage == .static && target.type.isExecutable)
+                if dependency.link ?? shouldLink {
                     let dependencyBuildFile = targetBuildFiles[dependencyTargetName]!
                     let buildFile = createObject(
                         id: dependencyBuildFile.reference + target.name,

@@ -382,7 +382,6 @@ class ProjectGeneratorTests: XCTestCase {
                 expectedResourceFiles[iosFrameworkA.name] = Set()
                 expectedLinkedFiles[iosFrameworkA.name] = Set([
                     "FrameworkC.framework",
-                    staticLibrary.filename,
                     "CarthageA.framework",
                     "CarthageB.framework",
                 ])

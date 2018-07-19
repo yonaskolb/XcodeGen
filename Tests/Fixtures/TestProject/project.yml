@@ -51,6 +51,7 @@ targets:
       PRODUCT_BUNDLE_IDENTIFIER: com.project.app
     dependencies:
       - target: Framework_iOS
+      - target: StaticLibrary_ObjC
       - carthage: Alamofire
       - target: App_watchOS
       - target: iMessageApp
@@ -106,6 +107,11 @@ targets:
     settings:
       PRODUCT_BUNDLE_IDENTIFIER: com.project.iMessageApp.extension
 
+  StaticLibrary_ObjC:
+    type: library.static
+    platform: iOS
+    sources: StaticLibrary_ObjC
+
   Framework:
     type: framework
     platform: [iOS, tvOS, watchOS, macOS]
@@ -122,6 +128,7 @@ targets:
         path: scripts/script.sh
     dependencies:
       - carthage: Alamofire
+      - target: StaticLibrary_ObjC
   App_iOS_Tests:
     type: bundle.unit-test
     platform: iOS

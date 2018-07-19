@@ -31,6 +31,7 @@
 		BF_331192862207 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_481575785861 /* ViewController.swift */; settings = {COMPILER_FLAGS = "-Werror"; }; };
 		BF_334321520545 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FR_377082606829 /* Assets.xcassets */; };
 		BF_334778067417 = {isa = PBXBuildFile; fileRef = FR_783122899910 /* App_iOS_Tests.xctest */; };
+		BF_337656089700 = {isa = PBXBuildFile; fileRef = FR_399755008402 /* StaticLibrary_ObjC.a */; };
 		BF_360196406184 /* TestProjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_722239415598 /* TestProjectTests.swift */; };
 		BF_425679397292 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = FR_183521624014 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BF_441538117869 /* App_watchOS Extension.appex in CopyFiles */ = {isa = PBXBuildFile; fileRef = FR_507023492251 /* App_watchOS Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -46,8 +47,10 @@
 		BF_538515166673 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = VG_256263906698 /* LaunchScreen.storyboard */; };
 		BF_561304997165 /* Standalone.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_675266829517 /* Standalone.swift */; };
 		BF_563614389392 = {isa = PBXBuildFile; fileRef = FR_618687462494 /* iMessageExtension.appex */; };
+		BF_607543323797 = {isa = PBXBuildFile; fileRef = FR_698230898030 /* StaticLibrary_ObjC.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BF_612351978356 /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = VG_264279911176 /* Interface.storyboard */; };
 		BF_624802436672 /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_172952167809 /* FrameworkFile.swift */; };
+		BF_632297340262 /* StaticLibrary_ObjC.m in Sources */ = {isa = PBXBuildFile; fileRef = "FR_698230898030-1" /* StaticLibrary_ObjC.m */; };
 		BF_647038614509 /* iMessageApp.app in Resources */ = {isa = PBXBuildFile; fileRef = FR_935153865209 /* iMessageApp.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		BF_670499288392 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = VG_229021855709 /* Model.xcdatamodeld */; settings = {COMPILER_FLAGS = "-Werror"; }; };
 		BF_681504666330 = {isa = PBXBuildFile; fileRef = FR_825232110500 /* App_iOS.app */; };
@@ -69,6 +72,7 @@
 		BF_905038616071 /* Framework.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = FR_472296042419 /* Framework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BF_905617636654 /* Headers in Headers */ = {isa = PBXBuildFile; fileRef = FR_815403394914 /* Headers */; settings = {ATTRIBUTES = (Public, ); }; };
 		BF_940936137577 = {isa = PBXBuildFile; fileRef = FR_123503999387 /* App_iOS_UITests.xctest */; };
+		BF_943177036061 /* StaticLibrary_ObjC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_399755008402 /* StaticLibrary_ObjC.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -100,12 +104,40 @@
 			remoteGlobalIDString = NT_618687462494;
 			remoteInfo = iMessageExtension;
 		};
+		CIP_33710394010 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = P_8448771205358 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = NT_399755008402;
+			remoteInfo = StaticLibrary_ObjC;
+		};
+		CIP_66745555235 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = P_8448771205358 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = NT_399755008402;
+			remoteInfo = StaticLibrary_ObjC;
+		};
 		CIP_67619158112 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = P_8448771205358 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = NT_825232110500;
 			remoteInfo = App_iOS;
+		};
+		CIP_72152212817 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = P_8448771205358 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = NT_399755008402;
+			remoteInfo = StaticLibrary_ObjC;
+		};
+		CIP_78441234790 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = P_8448771205358 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = NT_399755008402;
+			remoteInfo = StaticLibrary_ObjC;
 		};
 		CIP_82410178775 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -120,6 +152,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = NT_825232110500;
 			remoteInfo = App_iOS;
+		};
+		CIP_95747640947 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = P_8448771205358 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = NT_399755008402;
+			remoteInfo = StaticLibrary_ObjC;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -188,6 +227,7 @@
 		FR_340586388409 /* ExtensionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDelegate.swift; sourceTree = "<group>"; };
 		FR_363921640403 /* InterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterfaceController.swift; sourceTree = "<group>"; };
 		FR_377082606829 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		FR_399755008402 /* StaticLibrary_ObjC.a */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = archive.ar; path = StaticLibrary_ObjC.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR_408537768279 /* StandaloneAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = StandaloneAssets.xcassets; sourceTree = "<group>"; };
 		FR_410645050443 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Alamofire.framework; sourceTree = "<group>"; };
 		FR_438704538506 /* Framework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Framework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -212,6 +252,8 @@
 		FR_660690926982 /* config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = config.xcconfig; sourceTree = "<group>"; };
 		FR_662315837182 /* Framework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Framework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR_675266829517 /* Standalone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Standalone.swift; sourceTree = "<group>"; };
+		FR_698230898030 /* StaticLibrary_ObjC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StaticLibrary_ObjC.h; sourceTree = "<group>"; };
+		"FR_698230898030-1" /* StaticLibrary_ObjC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StaticLibrary_ObjC.m; sourceTree = "<group>"; };
 		FR_722239415598 /* TestProjectTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestProjectTests.swift; sourceTree = "<group>"; };
 		FR_725187762757 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FR_746876637628 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
@@ -285,6 +327,7 @@
 			files = (
 				BF_729846993631 /* Alamofire.framework in Frameworks */,
 				BF_324363145049 /* Framework.framework in Frameworks */,
+				BF_943177036061 /* StaticLibrary_ObjC.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -363,6 +406,15 @@
 				VG_264279911176 /* Interface.storyboard */,
 			);
 			path = App_watchOS;
+			sourceTree = "<group>";
+		};
+		G_3997550084026 /* StaticLibrary_ObjC */ = {
+			isa = PBXGroup;
+			children = (
+				FR_698230898030 /* StaticLibrary_ObjC.h */,
+				"FR_698230898030-1" /* StaticLibrary_ObjC.m */,
+			);
+			path = StaticLibrary_ObjC;
 			sourceTree = "<group>";
 		};
 		G_4661500274312 /* Framework */ = {
@@ -483,6 +535,7 @@
 				G_8620238527590 /* Products */,
 				G_7189434949822 /* Resources */,
 				G_6651250437419 /* StandaloneFiles */,
+				G_3997550084026 /* StaticLibrary_ObjC */,
 				FR_479281060337 /* Folder */,
 				FR_815403394914 /* Headers */,
 				FR_232605427418 /* Mintfile */,
@@ -508,6 +561,7 @@
 				FR_472296042419 /* Framework.framework */,
 				FR_935153865209 /* iMessageApp.app */,
 				FR_618687462494 /* iMessageExtension.appex */,
+				FR_399755008402 /* StaticLibrary_ObjC.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -615,6 +669,21 @@
 			productReference = FR_324671077936 /* App_watchOS.app */;
 			productType = "com.apple.product-type.application.watchapp2";
 		};
+		NT_399755008402 /* StaticLibrary_ObjC */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CL_399755008402 /* Build configuration list for PBXNativeTarget "StaticLibrary_ObjC" */;
+			buildPhases = (
+				SBP_39975500840 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = StaticLibrary_ObjC;
+			productName = StaticLibrary_ObjC;
+			productReference = FR_399755008402 /* StaticLibrary_ObjC.a */;
+			productType = "com.apple.product-type.library.static";
+		};
 		NT_438704538506 /* Framework_watchOS */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = CL_438704538506 /* Build configuration list for PBXNativeTarget "Framework_watchOS" */;
@@ -627,6 +696,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				TD_562366646359 /* PBXTargetDependency */,
 			);
 			name = Framework_watchOS;
 			productName = Framework_watchOS;
@@ -645,6 +715,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				TD_202479103763 /* PBXTargetDependency */,
 			);
 			name = Framework_iOS;
 			productName = Framework_iOS;
@@ -680,6 +751,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				TD_698828390883 /* PBXTargetDependency */,
 			);
 			name = Framework_macOS;
 			productName = Framework_macOS;
@@ -714,6 +786,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				TD_883611297273 /* PBXTargetDependency */,
 			);
 			name = Framework_tvOS;
 			productName = Framework_tvOS;
@@ -755,6 +828,7 @@
 			dependencies = (
 				TD_257389546865 /* PBXTargetDependency */,
 				TD_354342487294 /* PBXTargetDependency */,
+				TD_490183489588 /* PBXTargetDependency */,
 				TD_669996692733 /* PBXTargetDependency */,
 			);
 			name = App_iOS;
@@ -818,6 +892,7 @@
 				NT_662315837182 /* Framework_tvOS */,
 				NT_438704538506 /* Framework_watchOS */,
 				LT_479264660374 /* Legacy */,
+				NT_399755008402 /* StaticLibrary_ObjC */,
 				NT_935153865209 /* iMessageApp */,
 				NT_618687462494 /* iMessageExtension */,
 			);
@@ -1045,6 +1120,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		SBP_39975500840 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF_632297340262 /* StaticLibrary_ObjC.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		SBP_43870453850 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1132,6 +1215,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		TD_202479103763 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = NT_399755008402 /* StaticLibrary_ObjC */;
+			targetProxy = CIP_66745555235 /* PBXContainerItemProxy */;
+		};
 		TD_249869083204 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = NT_507023492251 /* App_watchOS Extension */;
@@ -1157,15 +1245,35 @@
 			target = NT_825232110500 /* App_iOS */;
 			targetProxy = CIP_88714386547 /* PBXContainerItemProxy */;
 		};
+		TD_490183489588 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = NT_399755008402 /* StaticLibrary_ObjC */;
+			targetProxy = CIP_72152212817 /* PBXContainerItemProxy */;
+		};
+		TD_562366646359 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = NT_399755008402 /* StaticLibrary_ObjC */;
+			targetProxy = CIP_78441234790 /* PBXContainerItemProxy */;
+		};
 		TD_669996692733 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = NT_935153865209 /* iMessageApp */;
 			targetProxy = CIP_28856087625 /* PBXContainerItemProxy */;
 		};
+		TD_698828390883 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = NT_399755008402 /* StaticLibrary_ObjC */;
+			targetProxy = CIP_33710394010 /* PBXContainerItemProxy */;
+		};
 		TD_762620471828 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = NT_618687462494 /* iMessageExtension */;
 			targetProxy = CIP_31792113134 /* PBXContainerItemProxy */;
+		};
+		TD_883611297273 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = NT_399755008402 /* StaticLibrary_ObjC */;
+			targetProxy = CIP_95747640947 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1822,6 +1930,16 @@
 			};
 			name = "Test Debug";
 		};
+		BC_464603633927 /* Test Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.StaticLibrary-ObjC";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Test Release";
+		};
 		BC_467730755629 /* Production Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2167,6 +2285,16 @@
 			};
 			name = "Test Release";
 		};
+		BC_592419322448 /* Production Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.StaticLibrary-ObjC";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Production Release";
+		};
 		BC_594849660073 /* Production Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2237,6 +2365,16 @@
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = "Production Debug";
+		};
+		BC_629891546665 /* Production Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.StaticLibrary-ObjC";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = "Production Debug";
 		};
@@ -2461,6 +2599,16 @@
 			};
 			name = "Production Debug";
 		};
+		BC_724654958001 /* Staging Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.StaticLibrary-ObjC";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Staging Debug";
+		};
 		BC_730521266150 /* Staging Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2634,6 +2782,16 @@
 				TEST_TARGET_NAME = App_iOS;
 			};
 			name = "Staging Debug";
+		};
+		BC_776042221288 /* Staging Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.StaticLibrary-ObjC";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Staging Release";
 		};
 		BC_790711614758 /* Staging Release */ = {
 			isa = XCBuildConfiguration;
@@ -2844,6 +3002,16 @@
 			};
 			name = "Staging Debug";
 		};
+		BC_866329197584 /* Test Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.StaticLibrary-ObjC";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Test Debug";
+		};
 		BC_879000441352 /* Staging Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2894,6 +3062,19 @@
 				BC_128566007109 /* Staging Release */,
 				BC_568928282286 /* Test Debug */,
 				BC_264159662496 /* Test Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "";
+		};
+		CL_399755008402 /* Build configuration list for PBXNativeTarget "StaticLibrary_ObjC" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BC_629891546665 /* Production Debug */,
+				BC_592419322448 /* Production Release */,
+				BC_724654958001 /* Staging Debug */,
+				BC_776042221288 /* Staging Release */,
+				BC_866329197584 /* Test Debug */,
+				BC_464603633927 /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "";
