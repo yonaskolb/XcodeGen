@@ -58,10 +58,10 @@ class ProjectFixtureTests: XCTestCase {
     }
 }
 
-fileprivate func generateXcodeProject(specPath: Path, projectPath: Path, file: String = #file, line: Int = #line) throws -> XcodeProj {
+fileprivate func generateXcodeProject(xcodeGenVersion: Version = try! Version("1.11.0"), specPath: Path, projectPath: Path, file: String = #file, line: Int = #line) throws -> XcodeProj {
     let project = try Project(path: specPath)
     let generator = ProjectGenerator(project: project)
-    let xcodeProject = try generator.generateXcodeProject()
+    let xcodeProject = try generator.generateXcodeProject(xcodeGenVersion: xcodeGenVersion)
     let oldProject = try XcodeProj(path: projectPath)
     let pbxProjPath = projectPath + XcodeProj.pbxprojPath(projectPath)
     let oldProjectString: String = try pbxProjPath.read()

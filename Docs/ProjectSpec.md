@@ -69,6 +69,7 @@ Note that target names can also be changed by adding a `name` property to a targ
 
 ### Options
 
+- [ ] **minimumXcodeGenVersion**: **String** - The minimum version of XcodeGen required.
 - [ ] **carthageBuildPath**: **String** - The path to the carthage build directory. Defaults to `Carthage/Build`. This is used when specifying target carthage dependencies
 - [ ] **carthageExecutablePath**: **String** - The path to the carthage executable. Defaults to `carthage`. You can specify when you use custom built or locally installed Carthage using [Mint](https://github.com/yonaskolb/Mint), for example.
 - [ ] **createIntermediateGroups**: **Bool** - If this is specified and set to `true`, then intermediate groups will be created for every path component between the folder containing the source and next existing group it finds or the base path. For example, when enabled if a source path is specified as `Vendor/Foo/Hello.swift`, the group `Vendor` will created as a parent of the `Foo` group.

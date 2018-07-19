@@ -74,6 +74,17 @@ class ProjectSpecTests: XCTestCase {
                 configSettings: ["invalidConfig": [:]],
                 groups: ["invalidSettingGroup"]
             )
+            
+            $0.it("fails with invalid XcodeGen version") {
+                let minimumVersion = try! Version("1.11.1")
+                var project = baseProject
+                project.options = SpecOptions(minimumXcodeGenVersion: minimumVersion)
+                
+                try expectValidationError(xcodeGenVersion: try! Version("1.11.0"), project, .invalidXcodeGenVersion(version: try! Version("1.11.0"), minimumVersion: minimumVersion))
+                try expectValidationError(xcodeGenVersion: try! Version("1.10.99"), project, .invalidXcodeGenVersion(version: try! Version("1.10.99"), minimumVersion: minimumVersion))
+                try expectValidationError(xcodeGenVersion: try! Version("0.99"), project, .invalidXcodeGenVersion(version: try! Version("0.99"), minimumVersion: minimumVersion))
+            }
+            
             $0.it("fails with invalid project") {
                 var project = baseProject
                 project.settings = invalidSettings
@@ -98,7 +109,7 @@ class ProjectSpecTests: XCTestCase {
                 project.options = SpecOptions(disabledValidations: [.missingConfigs])
                 let configPath = fixturePath + "test.xcconfig"
                 project.configFiles = ["missingConfiguration": configPath.string]
-                try project.validate()
+                try project.validate(xcodeGenVersion: try Version("1.11.0"))
             }
 
             $0.it("fails with invalid target") {
@@ -179,7 +190,7 @@ class ProjectSpecTests: XCTestCase {
                     platform: .iOS,
                     sources: [.init(path: "generated.swift", optional: true)]
                 )]
-                try project.validate()
+                try project.validate(xcodeGenVersion: try Version("1.11.0"))
             }
 
             $0.it("validates missing default configurations") {
@@ -191,9 +202,9 @@ class ProjectSpecTests: XCTestCase {
     }
 }
 
-fileprivate func expectValidationError(_ project: Project, _ expectedError: SpecValidationError.ValidationError, file: String = #file, line: Int = #line) throws {
+fileprivate func expectValidationError(xcodeGenVersion: Version = try! Version("1.11.0"), _ project: Project, _ expectedError: SpecValidationError.ValidationError, file: String = #file, line: Int = #line) throws {
     do {
-        try project.validate()
+        try project.validate(xcodeGenVersion: xcodeGenVersion)
     } catch let error as SpecValidationError {
         if !error.errors
             .contains(where: { $0.description == expectedError.description }) {
