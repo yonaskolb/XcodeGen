@@ -274,10 +274,15 @@ class ProjectGeneratorTests: XCTestCase {
                 //     - framework: FrameworkA.framework
                 //     - framework: FrameworkB.framework
                 //       embed: false
+                // iOSFrameworkZ:
+                //   dependencies: []
                 // StaticLibrary:
-                //  dependencies: []
+                //   dependencies:
+                //     - target: iOSFrameworkZ
+                //     - framework: FrameworkZ.framework
+                //     - carthage: CarthageZ
                 // ResourceBundle
-                //  dependencies: []
+                //   dependencies: []
                 // iOSFrameworkA
                 //   dependencies:
                 //     - target: StaticLibrary
@@ -308,6 +313,11 @@ class ProjectGeneratorTests: XCTestCase {
                 //     # - target: iOSFrameworkA
                 //     #   embed: true
                 //     # - target: StaticLibrary
+                //     #   embed: false
+                //     # - framework: FrameworkZ.framework
+                //     # - target: iOSFrameworkZ
+                //     #   embed: true
+                //     # - carthage: CarthageZ
                 //     #   embed: false
                 //     # - carthage: CarthageA
                 //     #   embed: true
@@ -346,13 +356,26 @@ class ProjectGeneratorTests: XCTestCase {
                 expectedEmbeddedFrameworks[app.name] = Set([
                     "FrameworkA.framework",
                 ])
+                
+                let iosFrameworkZ = Target(
+                    name: "iOSFrameworkZ",
+                    type: .framework,
+                    platform: .iOS,
+                    dependencies: []
+                )
+                expectedResourceFiles[iosFrameworkZ.name] = Set()
+                expectedLinkedFiles[iosFrameworkZ.name] = Set()
+                expectedEmbeddedFrameworks[iosFrameworkZ.name] = Set()
 
                 let staticLibrary = Target(
                     name: "StaticLibrary",
                     type: .staticLibrary,
                     platform: .iOS,
-                    dependencies: [],
-                    transitivelyLinkDependencies: false
+                    dependencies: [
+                        Dependency(type: .target, reference: iosFrameworkZ.name),
+                        Dependency(type: .framework, reference: "FrameworkZ.framework"),
+                        Dependency(type: .carthage, reference: "CarthageZ"),
+                    ]
                 )
                 expectedResourceFiles[staticLibrary.name] = Set()
                 expectedLinkedFiles[staticLibrary.name] = Set([])
@@ -384,6 +407,9 @@ class ProjectGeneratorTests: XCTestCase {
                 expectedResourceFiles[iosFrameworkA.name] = Set()
                 expectedLinkedFiles[iosFrameworkA.name] = Set([
                     "FrameworkC.framework",
+                    iosFrameworkZ.filename,
+                    "FrameworkZ.framework",
+                    "CarthageZ.framework",
                     "CarthageA.framework",
                     "CarthageB.framework",
                 ])
@@ -406,6 +432,9 @@ class ProjectGeneratorTests: XCTestCase {
                 expectedResourceFiles[iosFrameworkB.name] = Set()
                 expectedLinkedFiles[iosFrameworkB.name] = Set([
                     iosFrameworkA.filename,
+                    iosFrameworkZ.filename,
+                    "FrameworkZ.framework",
+                    "CarthageZ.framework",
                     "FrameworkC.framework",
                     "FrameworkD.framework",
                     "FrameworkE.framework",
@@ -433,6 +462,9 @@ class ProjectGeneratorTests: XCTestCase {
                 expectedLinkedFiles[appTest.name] = Set([
                     iosFrameworkA.filename,
                     staticLibrary.filename,
+                    iosFrameworkZ.filename,
+                    "FrameworkZ.framework",
+                    "CarthageZ.framework",
                     "FrameworkC.framework",
                     iosFrameworkB.filename,
                     "FrameworkD.framework",
@@ -441,6 +473,8 @@ class ProjectGeneratorTests: XCTestCase {
                 ])
                 expectedEmbeddedFrameworks[appTest.name] = Set([
                     iosFrameworkA.filename,
+                    iosFrameworkZ.filename,
+                    "FrameworkZ.framework",
                     "FrameworkC.framework",
                     iosFrameworkB.filename,
                     "FrameworkD.framework",
@@ -458,7 +492,7 @@ class ProjectGeneratorTests: XCTestCase {
                     iosFrameworkB.filename,
                 ])
 
-                let targets = [app, staticLibrary, resourceBundle, iosFrameworkA, iosFrameworkB, appTest, appTestWithoutTransitive]
+                let targets = [app, iosFrameworkZ, staticLibrary, resourceBundle, iosFrameworkA, iosFrameworkB, appTest, appTestWithoutTransitive]
 
                 let project = Project(
                     basePath: "",

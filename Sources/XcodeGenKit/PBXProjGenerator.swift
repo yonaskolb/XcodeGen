@@ -436,7 +436,7 @@ public class PBXProjGenerator {
                 dependencies.append(targetDependency.reference)
 
                 let dependecyLinkage = dependencyTarget.defaultLinkage
-                let shouldLink = dependecyLinkage == .dynamic
+                let shouldLink = (dependecyLinkage == .dynamic && target.type != .staticLibrary)
                     || (dependecyLinkage == .static && target.type.isExecutable)
                 if dependency.link ?? shouldLink {
                     let dependencyBuildFile = targetBuildFiles[dependencyTargetName]!
@@ -471,6 +471,8 @@ public class PBXProjGenerator {
                 }
 
             case .framework:
+                guard target.type != .staticLibrary else { break }
+                
                 let fileReference: String
                 if dependency.implicit {
                     fileReference = sourceGenerator.getFileReference(
@@ -504,6 +506,8 @@ public class PBXProjGenerator {
                 }
 
             case .carthage:
+                guard target.type != .staticLibrary else { break }
+                
                 var platformPath = Path(getCarthageBuildPath(platform: target.platform))
                 var frameworkPath = platformPath + dependency.reference
                 if frameworkPath.extension == nil {
