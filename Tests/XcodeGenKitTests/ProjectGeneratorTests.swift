@@ -305,8 +305,10 @@ class ProjectGeneratorTests: XCTestCase {
                 //     - target: iOSFrameworkB
                 //     - carthage: CarthageD
                 //     # should be implicitly added
-                //     # - framework: iOSFrameworkA.framework
+                //     # - target: iOSFrameworkA
                 //     #   embed: true
+                //     # - target: StaticLibrary
+                //     #   embed: false
                 //     # - carthage: CarthageA
                 //     #   embed: true
                 //     # - framework: FrameworkC.framework
@@ -430,6 +432,7 @@ class ProjectGeneratorTests: XCTestCase {
                 ])
                 expectedLinkedFiles[appTest.name] = Set([
                     iosFrameworkA.filename,
+                    staticLibrary.filename,
                     "FrameworkC.framework",
                     iosFrameworkB.filename,
                     "FrameworkD.framework",

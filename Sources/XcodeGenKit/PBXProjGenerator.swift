@@ -779,7 +779,7 @@ public class PBXProjGenerator {
                     }
                 case .target:
                     if let dependencyTarget = project.getTarget(dependency.reference) {
-                        if isTopLevel || (dependency.embed == nil && dependencyTarget.type != .staticLibrary) {
+                        if isTopLevel || dependency.embed == nil {
                             dependencies[dependency.reference] = dependency
                             if !dependencyTarget.shouldEmbedDependencies {
                                 // traverse target's dependencies if it doesn't embed them itself
