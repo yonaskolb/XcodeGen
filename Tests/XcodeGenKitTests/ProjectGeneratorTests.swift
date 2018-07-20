@@ -562,6 +562,89 @@ class ProjectGeneratorTests: XCTestCase {
                     }
                 }
             }
+            
+            $0.it("sets -ObjC for targets that depend on requiresObjCLinking targets") {
+                let requiresObjCLinking = Target(
+                    name: "requiresObjCLinking",
+                    type: .staticLibrary,
+                    platform: .iOS,
+                    dependencies: [],
+                    requiresObjCLinking: true
+                )
+                let doesntRequireObjCLinking = Target(
+                    name: "doesntRequireObjCLinking",
+                    type: .staticLibrary,
+                    platform: .iOS,
+                    dependencies: [],
+                    requiresObjCLinking: false
+                )
+                let implicitlyRequiresObjCLinking = Target(
+                    name: "implicitlyRequiresObjCLinking",
+                    type: .staticLibrary,
+                    platform: .iOS,
+                    sources: [TargetSource(path: "StaticLibrary_ObjC/StaticLibrary_ObjC.m")],
+                    dependencies: []
+                )
+                
+                let framework = Target(
+                    name: "framework",
+                    type: .framework,
+                    platform: .iOS,
+                    dependencies: [Dependency(type: .target, reference: requiresObjCLinking.name, link: false)]
+                )
+                
+                let app1 = Target(
+                    name: "app1",
+                    type: .application,
+                    platform: .iOS,
+                    dependencies: [Dependency(type: .target, reference: requiresObjCLinking.name)]
+                )
+                let app2 = Target(
+                    name: "app2",
+                    type: .application,
+                    platform: .iOS,
+                    dependencies: [Dependency(type: .target, reference: doesntRequireObjCLinking.name)]
+                )
+                let app3 = Target(
+                    name: "app3",
+                    type: .application,
+                    platform: .iOS,
+                    dependencies: [Dependency(type: .target, reference: implicitlyRequiresObjCLinking.name)]
+                )
+                
+                let targets = [requiresObjCLinking, doesntRequireObjCLinking, implicitlyRequiresObjCLinking, framework, app1, app2, app3]
+                
+                let project = Project(
+                    basePath: fixturePath + "TestProject",
+                    name: "test",
+                    targets: targets,
+                    options: SpecOptions()
+                )
+                
+                let pbxProj = try project.generatePbxProj()
+                
+                func buildSettings(for target: Target) throws -> BuildSettings {
+                    guard let nativeTarget = pbxProj.objects.targets(named: target.name).first?.object,
+                        let buildConfigList = nativeTarget.buildConfigurationList,
+                        let buildConfigs = pbxProj.objects.configurationLists.getReference(buildConfigList),
+                        let buildConfigReference = buildConfigs.buildConfigurations.first,
+                        let buildConfig = pbxProj.objects.buildConfigurations.getReference(buildConfigReference) else {
+                        throw failure("XCBuildConfiguration not found for Target \(target.name.quoted)")
+                    }
+                    
+                    return buildConfig.buildSettings
+                }
+                
+                let frameworkOtherLinkerSettings = try buildSettings(for: framework)["OTHER_LDFLAGS"] as? [String] ?? []
+                let app1OtherLinkerSettings = try buildSettings(for: app1)["OTHER_LDFLAGS"] as? [String] ?? []
+                let app2OtherLinkerSettings = try buildSettings(for: app2)["OTHER_LDFLAGS"] as? [String] ?? []
+                let app3OtherLinkerSettings = try buildSettings(for: app3)["OTHER_LDFLAGS"] as? [String] ?? []
+                
+                try expect(frameworkOtherLinkerSettings.contains("-ObjC")) == false
+                try expect(app1OtherLinkerSettings.contains("-ObjC")) == true
+                try expect(app2OtherLinkerSettings.contains("-ObjC")) == false
+                try expect(app3OtherLinkerSettings.contains("-ObjC")) == true
+            }
 
             $0.it("generates run scripts") {
                 var scriptSpec = project

@@ -418,6 +418,7 @@ public class PBXProjGenerator {
 
         var plistPath: Path?
         var searchForPlist = true
+        var anyDependencyRequiresObjCLinking = false
 
         var dependencies: [String] = []
         var targetFrameworkBuildFiles: [String] = []
@@ -464,6 +465,11 @@ public class PBXProjGenerator {
                         PBXBuildFile(fileRef: dependencyBuildFile.object.fileRef!)
                     )
                     targetFrameworkBuildFiles.append(buildFile.reference)
+                    
+                    if !anyDependencyRequiresObjCLinking
+                        && dependencyTarget.requiresObjCLinking ?? (dependencyTarget.type == .staticLibrary) {
+                        anyDependencyRequiresObjCLinking = true
+                    }
                 }
 
                 let embed = dependency.embed ?? (!dependencyTarget.type.isLibrary && (target.type.isApp
@@ -719,6 +725,20 @@ public class PBXProjGenerator {
                         buildSettings["TEST_TARGET_NAME"] = dependencyTarget.name
                         break
                     }
+                }
+            }
+            
+            // objc linkage
+            if anyDependencyRequiresObjCLinking {
+                let otherLinkingFlags = "OTHER_LDFLAGS"
+                let objCLinking = "-ObjC"
+                if var array = buildSettings[otherLinkingFlags] as? [String] {
+                    array.append(objCLinking)
+                    buildSettings[otherLinkingFlags] = array
+                } else if let string = buildSettings[otherLinkingFlags] as? String {
+                    buildSettings[otherLinkingFlags] = [string, objCLinking]
+                } else {
+                    buildSettings[otherLinkingFlags] = ["$(inherited)", objCLinking]
                 }
             }
             
