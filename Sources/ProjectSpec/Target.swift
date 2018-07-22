@@ -95,9 +95,25 @@ extension Target: CustomStringConvertible {
 
 extension Target {
 
-    static func generateCrossPlaformTargets(jsonDictionary: JSONDictionary) throws -> JSONDictionary {
-        guard let targetsDictionary: [String: JSONDictionary] = jsonDictionary["targets"] as? [String: JSONDictionary] else {
+    static func resolveTargets(jsonDictionary: JSONDictionary) throws -> JSONDictionary {
+        guard var targetsDictionary: [String: JSONDictionary] = jsonDictionary["targets"] as? [String: JSONDictionary] else {
             return jsonDictionary
+        }
+
+        let targetTemplatesDictionary: [String: JSONDictionary] = jsonDictionary["targetTemplates"] as? [String: JSONDictionary] ?? [:]
+
+        for (targetName, var target) in targetsDictionary {
+
+            if let templates = target["templates"] as? [String] {
+                var mergedDictionary: JSONDictionary = [:]
+                for template in templates {
+                    if let templateDictionary = targetTemplatesDictionary[template] {
+                        mergedDictionary = merge(dictionary: templateDictionary, onto: mergedDictionary)
+                    }
+                }
+                target = merge(dictionary: mergedDictionary, onto: target)
+            }
+            targetsDictionary[targetName] = target
         }
 
         let platformReplacement = "$platform"
@@ -156,6 +172,7 @@ extension Target {
             }
         }
         var merged = jsonDictionary
+
         merged["targets"] = crossPlatformTargets
         return merged
     }

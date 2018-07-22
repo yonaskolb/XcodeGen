@@ -128,6 +128,6 @@ extension Project {
     }
 
     static func filterJSON(jsonDictionary: JSONDictionary) throws -> JSONDictionary {
-        return try Target.generateCrossPlaformTargets(jsonDictionary: jsonDictionary)
+        return try Target.resolveTargets(jsonDictionary: jsonDictionary)
     }
 }

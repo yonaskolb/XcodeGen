@@ -22,7 +22,7 @@ class SpecLoadingTests: XCTestCase {
                 ]
                 try expect(project.targets) == [
                     Target(name: "IncludedTargetNew", type: .application, platform: .tvOS, sources: ["NewSource"]),
-                    Target(name: "NewTarget", type: .application, platform: .iOS),
+                    Target(name: "NewTarget", type: .application, platform: .iOS, sources: ["folder1", "folder2"]),
                 ]
             }
 
@@ -174,6 +174,26 @@ class SpecLoadingTests: XCTestCase {
 
                 try expect(project.targets.count) == 2
                 try expect(project.targets) == [target_iOS, target_tvOS]
+            }
+
+            $0.it("parses target templates") {
+
+                let targetDictionary: [String: Any] = [
+                    "type": "framework",
+                    "templates": ["temp2", "temp"]
+                    ]
+
+                let project = try getProjectSpec([
+                    "targets": ["Framework": targetDictionary],
+                    "targetTemplates": [
+                        "temp": ["platform": "iOS"],
+                        "temp2": ["platform": "tvOS"],
+                    ]
+                    ])
+
+                let target = Target(name: "Framework", type: .framework, platform: .iOS)
+
+                try expect(project.targets.first) == target
             }
 
             $0.it("parses target schemes") {

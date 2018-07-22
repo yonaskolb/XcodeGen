@@ -38,6 +38,7 @@ Required properties are marked with checkbox. Some of the YAML examples don't sh
 - [ ] **targets**: **[String: [Target](#target)]** - The list of targets in the project mapped by name
 - [ ] **fileGroups**: **[String]** - A list of paths to add to the root of the project. These aren't files that will be included in your targets, but that you'd like to include in the project hierachy anyway. For example a folder of xcconfig files that aren't already added by any target sources, or a Readme file.
 - [ ] **schemes**: **[Scheme](#scheme)** - A list of schemes by name. This allows more control over what is found in [Target Scheme](#target-scheme)
+- [ ] **targetTemplates**: **[String: [Target](#target)]** - a list of targets that can be used as templates for actual targets which reference them via a `template` property. They can be used to extract common target settings. Works great in combination with `include`.
 
 ### Include
 
@@ -163,6 +164,7 @@ Settings are merged in the following order: groups, base, configs.
 	- `INFOPLIST_FILE`: If it doesn't exist your sources will be searched for `Info.plist` files and the first one found will be used for this setting
 	- `FRAMEWORK_SEARCH_PATHS`: If carthage dependencies are used, the platform build path will be added to this setting
 - [ ] **dependencies**: **[[Dependency](#dependency)]** - Dependencies for the target
+- [ ] **templates**: **[String]** - A list of target templates that will be merged in order
 - [ ] **transitivelyLinkDependencies**: **Bool** - If this is not specified the value from the project set in [Options](#options)`.transitivelyLinkDependencies` will be used.
 - [ ] **prebuildScripts**: **[[Build Script](#build-script)]** - Build scripts that run *before* any other build phases
 - [ ] **postbuildScripts**: **[[Build Script](#build-script)]** - Build scripts that run *after* any other build phases

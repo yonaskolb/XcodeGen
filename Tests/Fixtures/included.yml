@@ -11,3 +11,7 @@ targets:
     platform: iOS
     sources:
       - Target
+targetTemplates:
+  IncludedTemplate:
+    sources:
+      - folder2
