@@ -72,7 +72,7 @@ class SourceGenerator {
                 settings["ATTRIBUTES"] = [headerVisibility.settingName]
             }
         }
-        if targetSource.compilerFlags.count > 0 {
+        if chosenBuildPhase == .sources && targetSource.compilerFlags.count > 0 {
             settings["COMPILER_FLAGS"] = targetSource.compilerFlags.joined(separator: " ")
         }
 

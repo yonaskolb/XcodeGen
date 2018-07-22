@@ -21,7 +21,7 @@
 		BF_243071719122 /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_172952167809 /* FrameworkFile.swift */; };
 		BF_259448131292 /* Headers in Headers */ = {isa = PBXBuildFile; fileRef = FR_815403394914 /* Headers */; settings = {ATTRIBUTES = (Public, ); }; };
 		BF_268392110450 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FR_587738154368 /* Assets.xcassets */; };
-		BF_279581961655 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FR_868653349092 /* Assets.xcassets */; settings = {COMPILER_FLAGS = "-Werror"; }; };
+		BF_279581961655 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FR_868653349092 /* Assets.xcassets */; };
 		BF_280535243540 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = VG_609193904586 /* Main.storyboard */; };
 		BF_284620660317 /* MyBundle.bundle in Resources */ = {isa = PBXBuildFile; fileRef = FR_238161558082 /* MyBundle.bundle */; };
 		BF_292474606791 = {isa = PBXBuildFile; fileRef = FR_525119120469 /* Framework.framework */; };
