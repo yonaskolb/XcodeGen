@@ -19,7 +19,7 @@ public struct TargetScheme: Equatable {
         environmentVariables: [XCScheme.EnvironmentVariable] = [],
         preActions: [Scheme.ExecutionAction] = [],
         postActions: [Scheme.ExecutionAction] = []
-        ) {
+    ) {
         self.testTargets = testTargets
         self.configVariants = configVariants
         self.gatherCoverageData = gatherCoverageData

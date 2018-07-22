@@ -1,24 +1,23 @@
-//
-//  ProjectTarget.swift
-//  ProjectSpec
-//
-//  Created by Yonas Kolb on 22/7/18.
-//
-
 import Foundation
 
-protocol ProjectTarget {
+public protocol ProjectTarget: BuildSettingsContainer {
 
     var name: String { get }
-    var settings: Settings { get }
     var buildScripts: [BuildScript] { get }
-    var configFiles: [String: String] { get }
     var scheme: TargetScheme? { get }
+    var attributes: [String: Any] { get }
 }
 
 extension Target {
 
-    var buildScripts: [BuildScript] {
+    public var buildScripts: [BuildScript] {
         return prebuildScripts + postbuildScripts
+    }
+}
+
+extension Project {
+
+    public var projectTargets: [ProjectTarget] {
+        return targets.map { $0 as ProjectTarget } + aggregateTargets.map { $0 as ProjectTarget }
     }
 }

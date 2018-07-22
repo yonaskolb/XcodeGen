@@ -160,6 +160,8 @@ targetTemplates:
     scheme: {}
 aggregateTargets:
   SuperTarget:
+    attributes:
+      CUSTOM: value
     targets:
       - App_iOS
       - Framework_iOS

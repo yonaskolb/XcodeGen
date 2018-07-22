@@ -459,6 +459,7 @@ This is used to override settings or run build scripts in specific targets
 - [ ] **settings**: **[Settings](#settings)** - Target specific build settings. 
 - [ ] **buildScripts**: **[[Build Script](#build-script)]** - Build scripts to run
 - [ ] **scheme**: **[Target Scheme](#target-scheme)** - Generated scheme
+- [ ] **attributes**: **[String: Any]** - This sets values in the project `TargetAttributes`. It is merged with `attributes` from the project and anything automatically added by XcodeGen, with any duplicate values being override by values specified here
 
 ## Scheme
 

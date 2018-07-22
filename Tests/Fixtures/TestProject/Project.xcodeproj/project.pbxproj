@@ -892,6 +892,9 @@
 			attributes = {
 				LastUpgradeCheck = 0930;
 				TargetAttributes = {
+					AT_445731917037 = {
+						CUSTOM = value;
+					};
 					NT_123503999387 = {
 						TestTargetID = NT_825232110500;
 					};

@@ -190,7 +190,7 @@ class ProjectGeneratorTests: XCTestCase {
     func testAggregateTargets() {
         describe {
 
-            let aggregateTarget = AggregateTarget(name: "AggregateTarget", targets: ["MyApp", "MyFramework"] )
+            let aggregateTarget = AggregateTarget(name: "AggregateTarget", targets: ["MyApp", "MyFramework"])
             let project = Project(basePath: "", name: "test", targets: targets, aggregateTargets: [aggregateTarget])
 
             $0.it("generates aggregate targets") {

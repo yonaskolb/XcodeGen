@@ -53,8 +53,6 @@ extension Project {
             errors += validateSettings(settings)
         }
 
-        let projectTargets: [ProjectTarget] = targets.map { $0 as ProjectTarget } + aggregateTargets.map { $0 as ProjectTarget }
-
         for target in projectTargets {
 
             for (config, configFile) in target.configFiles {
@@ -74,14 +72,14 @@ extension Project {
                             target: target.name,
                             configVariant: configVariant,
                             configType: .debug
-                            ))
+                        ))
                     }
                     if !configs.contains(where: { $0.name.contains(configVariant) && $0.type == .release }) {
                         errors.append(.invalidTargetSchemeConfigVariant(
                             target: target.name,
                             configVariant: configVariant,
                             configType: .release
-                            ))
+                        ))
                     }
                 }
 

@@ -141,7 +141,7 @@ class ProjectSpecTests: XCTestCase {
                     configFiles: ["invalidConfig": "invalidConfigFile"],
                     buildScripts: [BuildScript(script: .path("invalidPrebuildScript"), name: "buildScript1")],
                     scheme: TargetScheme(testTargets: ["invalidTarget"])
-                    )]
+                )]
 
                 try expectValidationError(project, .invalidTargetDependency(target: "target1", dependency: "invalidDependency"))
                 try expectValidationError(project, .invalidTargetConfigFile(target: "target1", configFile: "invalidConfigFile", config: "invalidConfig"))

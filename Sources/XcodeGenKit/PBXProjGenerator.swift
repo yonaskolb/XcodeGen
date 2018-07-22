@@ -13,6 +13,7 @@ public class PBXProjGenerator {
     var sourceGenerator: SourceGenerator!
 
     var targetObjects: [String: ObjectReference<PBXTarget>] = [:]
+    var targetAggregateObjects: [String: ObjectReference<PBXAggregateTarget>] = [:]
     var targetBuildFiles: [String: ObjectReference<PBXBuildFile>] = [:]
     var targetFileReferences: [String: String] = [:]
     var topLevelGroups: Set<String> = []
@@ -219,7 +220,7 @@ public class PBXProjGenerator {
         return pbxProj
     }
 
-    func generateAggregateTarget(_ target: AggregateTarget) throws  {
+    func generateAggregateTarget(_ target: AggregateTarget) throws {
 
         let configs: [ObjectReference<XCBuildConfiguration>] = project.configs.map { config in
 
@@ -247,17 +248,20 @@ public class PBXProjGenerator {
         var buildPhases: [String] = []
         buildPhases += try target.buildScripts.map { try generateBuildScript(targetName: target.name, buildScript: $0) }
 
-        let aggregateTarget = PBXAggregateTarget(name: target.name,
-                                                 buildConfigurationList:
-                                                 buildConfigList.reference,
-                                                 buildPhases: buildPhases,
-                                                 buildRules: [],
-                                                 dependencies: dependencies,
-                                                 productName: target.name,
-                                                 productReference: nil,
-                                                 productType: nil
+        let aggregateTarget = createObject(
+            id: target.name,
+            PBXAggregateTarget(
+                name: target.name,
+                buildConfigurationList: buildConfigList.reference,
+                buildPhases: buildPhases,
+                buildRules: [],
+                dependencies: dependencies,
+                productName: target.name,
+                productReference: nil,
+                productType: nil
+            )
         )
-        _ = addObject(id: target.name, aggregateTarget)
+        targetAggregateObjects[target.name] = aggregateTarget
     }
 
     func generateTargetDependency(from: String, to target: String) -> ObjectReference<PBXTargetDependency> {
@@ -331,10 +335,7 @@ public class PBXProjGenerator {
             targetAttributes[uiTestTarget.reference, default: [:]].merge(["TestTargetID": target.reference])
         }
 
-        for target in project.targets {
-            guard let targetReference = targetObjects[target.name]?.reference else {
-                continue
-            }
+        func generateTargetAttributes(_ target: ProjectTarget, targetReference: String) {
             if !target.attributes.isEmpty {
                 targetAttributes[targetReference, default: [:]].merge(target.attributes)
             }
@@ -359,6 +360,20 @@ public class PBXProjGenerator {
 
             setTargetAttribute(attribute: "ProvisioningStyle", buildSetting: "CODE_SIGN_STYLE")
             setTargetAttribute(attribute: "DevelopmentTeam", buildSetting: "DEVELOPMENT_TEAM")
+        }
+
+        for target in project.aggregateTargets {
+            guard let targetReference = targetAggregateObjects[target.name]?.reference else {
+                continue
+            }
+            generateTargetAttributes(target, targetReference: targetReference)
+        }
+
+        for target in project.targets {
+            guard let targetReference = targetObjects[target.name]?.reference else {
+                continue
+            }
+            generateTargetAttributes(target, targetReference: targetReference)
         }
 
         return targetAttributes.isEmpty ? nil : ["TargetAttributes": targetAttributes]

@@ -4,7 +4,7 @@ import PathKit
 import xcproj
 import Yams
 
-public struct Project {
+public struct Project: BuildSettingsContainer {
 
     public var basePath: Path
     public var name: String
@@ -13,6 +13,7 @@ public struct Project {
             targetsMap = Dictionary(uniqueKeysWithValues: targets.map { ($0.name, $0) })
         }
     }
+
     public var aggregateTargets: [AggregateTarget]
 
     public var settings: Settings
