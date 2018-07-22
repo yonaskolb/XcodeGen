@@ -132,6 +132,31 @@ class ProjectSpecTests: XCTestCase {
                 try expectValidationError(project, .invalidTargetSchemeConfigVariant(target: "target1", configVariant: "invalidVariant", configType: .debug))
             }
 
+            $0.it("fails with invalid aggregate target") {
+                var project = baseProject
+                project.aggregateTargets = [AggregateTarget(
+                    name: "target1",
+                    targets: ["invalidDependency"],
+                    settings: invalidSettings,
+                    configFiles: ["invalidConfig": "invalidConfigFile"],
+                    buildScripts: [BuildScript(script: .path("invalidPrebuildScript"), name: "buildScript1")],
+                    scheme: TargetScheme(testTargets: ["invalidTarget"])
+                    )]
+
+                try expectValidationError(project, .invalidTargetDependency(target: "target1", dependency: "invalidDependency"))
+                try expectValidationError(project, .invalidTargetConfigFile(target: "target1", configFile: "invalidConfigFile", config: "invalidConfig"))
+                try expectValidationError(project, .invalidTargetSchemeTest(target: "target1", testTarget: "invalidTarget"))
+                try expectValidationError(project, .invalidBuildSettingConfig("invalidConfig"))
+                try expectValidationError(project, .invalidSettingsGroup("invalidSettingGroup"))
+                try expectValidationError(project, .invalidBuildScriptPath(target: "target1", name: "buildScript1", path: "invalidPrebuildScript"))
+
+                try expectValidationError(project, .missingConfigForTargetScheme(target: "target1", configType: .debug))
+                try expectValidationError(project, .missingConfigForTargetScheme(target: "target1", configType: .release))
+
+                project.aggregateTargets[0].scheme?.configVariants = ["invalidVariant"]
+                try expectValidationError(project, .invalidTargetSchemeConfigVariant(target: "target1", configVariant: "invalidVariant", configType: .debug))
+            }
+
             $0.it("fails with invalid scheme") {
                 var project = baseProject
                 project.schemes = [Scheme(

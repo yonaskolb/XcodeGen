@@ -6,6 +6,22 @@
 	objectVersion = 46;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		AT_445731917037 /* SuperTarget */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = CL_445731917037 /* Build configuration list for PBXAggregateTarget "SuperTarget" */;
+			buildPhases = (
+				SSBP_8280041834 /* MyScript */,
+			);
+			dependencies = (
+				TD_208010900457 /* PBXTargetDependency */,
+				TD_747418473860 /* PBXTargetDependency */,
+			);
+			name = SuperTarget;
+			productName = SuperTarget;
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		BF_130062884703 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_257516580010 /* Alamofire.framework */; };
 		BF_138356261076 /* InterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_363921640403 /* InterfaceController.swift */; };
@@ -90,6 +106,13 @@
 			remoteGlobalIDString = NT_507023492251;
 			remoteInfo = "App_watchOS Extension";
 		};
+		CIP_20801090045 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = P_8448771205358 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = NT_825232110500;
+			remoteInfo = App_iOS;
+		};
 		CIP_28856087625 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = P_8448771205358 /* Project object */;
@@ -131,6 +154,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = NT_399755008402;
 			remoteInfo = StaticLibrary_ObjC;
+		};
+		CIP_74741847386 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = P_8448771205358 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = NT_472296042419;
+			remoteInfo = Framework_iOS;
 		};
 		CIP_78441234790 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -642,7 +672,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				TD_432517223942 /* PBXTargetDependency */,
+				TD_676191581124 /* PBXTargetDependency */,
 			);
 			name = App_iOS_UITests;
 			productName = App_iOS_UITests;
@@ -662,7 +692,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				TD_249869083204 /* PBXTargetDependency */,
+				TD_193291182921 /* PBXTargetDependency */,
 			);
 			name = App_watchOS;
 			productName = App_watchOS;
@@ -696,7 +726,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				TD_562366646359 /* PBXTargetDependency */,
+				TD_784412347908 /* PBXTargetDependency */,
 			);
 			name = Framework_watchOS;
 			productName = Framework_watchOS;
@@ -715,7 +745,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				TD_202479103763 /* PBXTargetDependency */,
+				TD_667455552356 /* PBXTargetDependency */,
 			);
 			name = Framework_iOS;
 			productName = Framework_iOS;
@@ -751,7 +781,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				TD_698828390883 /* PBXTargetDependency */,
+				TD_337103940101 /* PBXTargetDependency */,
 			);
 			name = Framework_macOS;
 			productName = Framework_macOS;
@@ -786,7 +816,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				TD_883611297273 /* PBXTargetDependency */,
+				TD_957476409477 /* PBXTargetDependency */,
 			);
 			name = Framework_tvOS;
 			productName = Framework_tvOS;
@@ -803,7 +833,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				TD_436638162860 /* PBXTargetDependency */,
+				TD_887143865471 /* PBXTargetDependency */,
 			);
 			name = App_iOS_Tests;
 			productName = App_iOS_Tests;
@@ -826,10 +856,10 @@
 			buildRules = (
 			);
 			dependencies = (
-				TD_257389546865 /* PBXTargetDependency */,
-				TD_354342487294 /* PBXTargetDependency */,
-				TD_490183489588 /* PBXTargetDependency */,
-				TD_669996692733 /* PBXTargetDependency */,
+				TD_824101787753 /* PBXTargetDependency */,
+				TD_109724965966 /* PBXTargetDependency */,
+				TD_721522128177 /* PBXTargetDependency */,
+				TD_288560876254 /* PBXTargetDependency */,
 			);
 			name = App_iOS;
 			productName = App_iOS;
@@ -847,7 +877,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				TD_762620471828 /* PBXTargetDependency */,
+				TD_317921131342 /* PBXTargetDependency */,
 			);
 			name = iMessageApp;
 			productName = iMessageApp;
@@ -1088,6 +1118,20 @@
 			shellPath = /bin/sh;
 			shellScript = "echo \"You ran a script\"\n";
 		};
+		SSBP_8280041834 /* MyScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = MyScript;
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "echo \"do the thing\"";
+		};
 		SSBP_8706434794 /* MyScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1215,62 +1259,72 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		TD_202479103763 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = NT_399755008402 /* StaticLibrary_ObjC */;
-			targetProxy = CIP_66745555235 /* PBXContainerItemProxy */;
-		};
-		TD_249869083204 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = NT_507023492251 /* App_watchOS Extension */;
-			targetProxy = CIP_19329118292 /* PBXContainerItemProxy */;
-		};
-		TD_257389546865 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = NT_324671077936 /* App_watchOS */;
-			targetProxy = CIP_82410178775 /* PBXContainerItemProxy */;
-		};
-		TD_354342487294 /* PBXTargetDependency */ = {
+		TD_109724965966 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = NT_472296042419 /* Framework_iOS */;
 			targetProxy = CIP_10972496596 /* PBXContainerItemProxy */;
 		};
-		TD_432517223942 /* PBXTargetDependency */ = {
+		TD_193291182921 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = NT_507023492251 /* App_watchOS Extension */;
+			targetProxy = CIP_19329118292 /* PBXContainerItemProxy */;
+		};
+		TD_208010900457 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = NT_825232110500 /* App_iOS */;
-			targetProxy = CIP_67619158112 /* PBXContainerItemProxy */;
+			targetProxy = CIP_20801090045 /* PBXContainerItemProxy */;
 		};
-		TD_436638162860 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = NT_825232110500 /* App_iOS */;
-			targetProxy = CIP_88714386547 /* PBXContainerItemProxy */;
-		};
-		TD_490183489588 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = NT_399755008402 /* StaticLibrary_ObjC */;
-			targetProxy = CIP_72152212817 /* PBXContainerItemProxy */;
-		};
-		TD_562366646359 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = NT_399755008402 /* StaticLibrary_ObjC */;
-			targetProxy = CIP_78441234790 /* PBXContainerItemProxy */;
-		};
-		TD_669996692733 /* PBXTargetDependency */ = {
+		TD_288560876254 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = NT_935153865209 /* iMessageApp */;
 			targetProxy = CIP_28856087625 /* PBXContainerItemProxy */;
 		};
-		TD_698828390883 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = NT_399755008402 /* StaticLibrary_ObjC */;
-			targetProxy = CIP_33710394010 /* PBXContainerItemProxy */;
-		};
-		TD_762620471828 /* PBXTargetDependency */ = {
+		TD_317921131342 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = NT_618687462494 /* iMessageExtension */;
 			targetProxy = CIP_31792113134 /* PBXContainerItemProxy */;
 		};
-		TD_883611297273 /* PBXTargetDependency */ = {
+		TD_337103940101 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = NT_399755008402 /* StaticLibrary_ObjC */;
+			targetProxy = CIP_33710394010 /* PBXContainerItemProxy */;
+		};
+		TD_667455552356 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = NT_399755008402 /* StaticLibrary_ObjC */;
+			targetProxy = CIP_66745555235 /* PBXContainerItemProxy */;
+		};
+		TD_676191581124 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = NT_825232110500 /* App_iOS */;
+			targetProxy = CIP_67619158112 /* PBXContainerItemProxy */;
+		};
+		TD_721522128177 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = NT_399755008402 /* StaticLibrary_ObjC */;
+			targetProxy = CIP_72152212817 /* PBXContainerItemProxy */;
+		};
+		TD_747418473860 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = NT_472296042419 /* Framework_iOS */;
+			targetProxy = CIP_74741847386 /* PBXContainerItemProxy */;
+		};
+		TD_784412347908 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = NT_399755008402 /* StaticLibrary_ObjC */;
+			targetProxy = CIP_78441234790 /* PBXContainerItemProxy */;
+		};
+		TD_824101787753 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = NT_324671077936 /* App_watchOS */;
+			targetProxy = CIP_82410178775 /* PBXContainerItemProxy */;
+		};
+		TD_887143865471 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = NT_825232110500 /* App_iOS */;
+			targetProxy = CIP_88714386547 /* PBXContainerItemProxy */;
+		};
+		TD_957476409477 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = NT_399755008402 /* StaticLibrary_ObjC */;
 			targetProxy = CIP_95747640947 /* PBXContainerItemProxy */;
@@ -1364,6 +1418,13 @@
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = "Test Debug";
+		};
+		BC_122527152613 /* Test Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				MY_SETTING = hello;
+			};
+			name = "Test Release";
 		};
 		BC_128103534773 /* Production Release */ = {
 			isa = XCBuildConfiguration;
@@ -1719,6 +1780,13 @@
 			};
 			name = "Staging Debug";
 		};
+		BC_334821934458 /* Production Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				MY_SETTING = hello;
+			};
+			name = "Production Release";
+		};
 		BC_351179072988 /* Test Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1776,6 +1844,13 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = "Production Release";
+		};
+		BC_370290618113 /* Production Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				MY_SETTING = hello;
+			};
+			name = "Production Debug";
 		};
 		BC_380703106572 /* Test Release */ = {
 			isa = XCBuildConfiguration;
@@ -1903,6 +1978,13 @@
 			};
 			name = "Production Release";
 		};
+		BC_439666751882 /* Staging Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				MY_SETTING = hello;
+			};
+			name = "Staging Debug";
+		};
 		BC_444705348320 /* Staging Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1936,6 +2018,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.project.StaticLibrary-ObjC";
 				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = "Test Release";
@@ -2291,6 +2374,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.project.StaticLibrary-ObjC";
 				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = "Production Release";
@@ -2343,6 +2427,13 @@
 			};
 			name = "Production Release";
 		};
+		BC_612244244384 /* Test Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				MY_SETTING = hello;
+			};
+			name = "Test Debug";
+		};
 		BC_622471558373 /* Production Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2374,6 +2465,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.project.StaticLibrary-ObjC";
 				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = "Production Debug";
@@ -2605,6 +2697,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.project.StaticLibrary-ObjC";
 				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = "Staging Debug";
@@ -2789,6 +2882,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.project.StaticLibrary-ObjC";
 				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = "Staging Release";
@@ -2985,6 +3079,13 @@
 			};
 			name = "Test Debug";
 		};
+		BC_851086512031 /* Staging Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				MY_SETTING = hello;
+			};
+			name = "Staging Release";
+		};
 		BC_864485046941 /* Staging Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -3008,6 +3109,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.project.StaticLibrary-ObjC";
 				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = "Test Debug";
@@ -3088,6 +3190,19 @@
 				BC_790711614758 /* Staging Release */,
 				BC_835911551172 /* Test Debug */,
 				BC_685135820012 /* Test Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "";
+		};
+		CL_445731917037 /* Build configuration list for PBXAggregateTarget "SuperTarget" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BC_370290618113 /* Production Debug */,
+				BC_334821934458 /* Production Release */,
+				BC_439666751882 /* Staging Debug */,
+				BC_851086512031 /* Staging Release */,
+				BC_612244244384 /* Test Debug */,
+				BC_122527152613 /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "";
