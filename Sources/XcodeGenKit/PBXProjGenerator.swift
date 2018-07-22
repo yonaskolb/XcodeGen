@@ -561,6 +561,7 @@ public class PBXProjGenerator {
                 shellScript: shellScript
             )
             shellScriptPhase.runOnlyForDeploymentPostprocessing = buildScript.runOnlyWhenInstalling
+            shellScriptPhase.showEnvVarsInLog = buildScript.showEnvVars
             let shellScriptPhaseReference = createObject(id: String(describing: buildScript.name) + shellScript + target.name, shellScriptPhase)
             buildPhases.append(shellScriptPhaseReference.reference)
         }

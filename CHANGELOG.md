@@ -2,6 +2,9 @@
 
 ## Master
 
+#### Added
+- Added `showEnvVars` to build scripts to disable printing the environment [351](https://github.com/yonaskolb/XcodeGen/pull/351) @keith
+
 ## 1.10.3
 
 #### Fixed

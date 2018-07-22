@@ -9,6 +9,7 @@ public struct BuildScript: Equatable {
     public var inputFiles: [String]
     public var outputFiles: [String]
     public var runOnlyWhenInstalling: Bool
+    public let showEnvVars: Bool
 
     public enum ScriptType: Equatable {
         case path(String)
@@ -21,7 +22,8 @@ public struct BuildScript: Equatable {
         inputFiles: [String] = [],
         outputFiles: [String] = [],
         shell: String? = nil,
-        runOnlyWhenInstalling: Bool = false
+        runOnlyWhenInstalling: Bool = false,
+        showEnvVars: Bool = true
     ) {
         self.script = script
         self.name = name
@@ -29,6 +31,7 @@ public struct BuildScript: Equatable {
         self.outputFiles = outputFiles
         self.shell = shell
         self.runOnlyWhenInstalling = runOnlyWhenInstalling
+        self.showEnvVars = showEnvVars
     }
 }
 
@@ -47,5 +50,6 @@ extension BuildScript: JSONObjectConvertible {
         }
         shell = jsonDictionary.json(atKeyPath: "shell")
         runOnlyWhenInstalling = jsonDictionary.json(atKeyPath: "runOnlyWhenInstalling") ?? false
+        showEnvVars = jsonDictionary.json(atKeyPath: "showEnvVars") ?? true
     }
 }
