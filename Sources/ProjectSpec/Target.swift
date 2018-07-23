@@ -111,7 +111,7 @@ extension Target {
                         mergedDictionary = merge(dictionary: templateDictionary, onto: mergedDictionary)
                     }
                 }
-                target = merge(dictionary: mergedDictionary, onto: target)
+                target = merge(dictionary: target, onto: mergedDictionary)
             }
             targetsDictionary[targetName] = target
         }

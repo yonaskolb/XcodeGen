@@ -14,4 +14,4 @@ targets:
 targetTemplates:
   IncludedTemplate:
     sources:
-      - folder2
+      - template

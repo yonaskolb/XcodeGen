@@ -22,7 +22,7 @@ class SpecLoadingTests: XCTestCase {
                 ]
                 try expect(project.targets) == [
                     Target(name: "IncludedTargetNew", type: .application, platform: .tvOS, sources: ["NewSource"]),
-                    Target(name: "NewTarget", type: .application, platform: .iOS, sources: ["folder1", "folder2"]),
+                    Target(name: "NewTarget", type: .application, platform: .iOS, sources: ["template", "target"]),
                 ]
             }
 
@@ -179,21 +179,31 @@ class SpecLoadingTests: XCTestCase {
             $0.it("parses target templates") {
 
                 let targetDictionary: [String: Any] = [
-                    "type": "framework",
+                    "deploymentTarget": "1.2.0",
+                    "sources": ["targetSource"],
                     "templates": ["temp2", "temp"]
                     ]
 
                 let project = try getProjectSpec([
                     "targets": ["Framework": targetDictionary],
                     "targetTemplates": [
-                        "temp": ["platform": "iOS"],
-                        "temp2": ["platform": "tvOS"],
+                        "temp": [
+                            "platform": "iOS",
+                            "sources": ["templateSource"],
+                        ],
+                        "temp2": [
+                            "type": "framework",
+                            "platform": "tvOS",
+                            "deploymentTarget": "1.1.0",
+                        ],
                     ]
                     ])
 
-                let target = Target(name: "Framework", type: .framework, platform: .iOS)
-
-                try expect(project.targets.first) == target
+                let target = project.targets.first!
+                try expect(target.type) == .framework // uses value
+                try expect(target.platform) == .iOS // uses latest value
+                try expect(target.deploymentTarget) == Version("1.2.0") // keeps value
+                try expect(target.sources) == ["templateSource", "targetSource"] // merges array in order
             }
 
             $0.it("parses target schemes") {

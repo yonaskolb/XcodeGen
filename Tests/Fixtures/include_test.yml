@@ -14,7 +14,7 @@ targets:
     platform: iOS
     templates: [IncludedTemplate]
     sources:
-      - folder1
+      - target
   IncludedTarget:
     name: IncludedTargetNew
     platform: tvOS
