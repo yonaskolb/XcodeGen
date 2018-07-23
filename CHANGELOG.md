@@ -5,6 +5,15 @@
 #### Added
 - Added `showEnvVars` to build scripts to disable printing the environment [351](https://github.com/yonaskolb/XcodeGen/pull/351) @keith
 
+#### Fixed
+- Sort files using localizedStandardCompare [341](https://github.com/yonaskolb/XcodeGen/pull/341) @rohitpal440
+- Use the latest `xcdatamodel` when sorted by version [341](https://github.com/yonaskolb/XcodeGen/pull/341) @rohitpal440
+- Fixed compiler flags being set on non source files in mixed build phase target sources [347](https://github.com/yonaskolb/XcodeGen/pull/347) @brentleyjones
+- Fixed `options.xcodeVersion` not being parsed [348](https://github.com/yonaskolb/XcodeGen/pull/38) @brentleyjones
+
+#### Internal
+- Moved brew formula to homebrew core
+
 ## 1.10.3
 
 #### Fixed
