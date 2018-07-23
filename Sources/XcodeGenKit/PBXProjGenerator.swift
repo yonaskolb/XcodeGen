@@ -16,7 +16,7 @@ public class PBXProjGenerator {
     var targetAggregateObjects: [String: ObjectReference<PBXAggregateTarget>] = [:]
     var targetBuildFiles: [String: ObjectReference<PBXBuildFile>] = [:]
     var targetFileReferences: [String: String] = [:]
-    var topLevelGroups: Set<String> = []
+
     var carthageFrameworksByPlatform: [String: Set<String>] = [:]
     var frameworkFiles: [String] = []
 
@@ -79,6 +79,8 @@ public class PBXProjGenerator {
                 defaultConfigurationName: configName
             )
         )
+
+        var derivedGroups: [ObjectReference<PBXGroup>] = []
 
         let mainGroup = createObject(
             id: "Project",
@@ -161,7 +163,7 @@ public class PBXProjGenerator {
                 name: "Products"
             )
         )
-        topLevelGroups.insert(productGroup.reference)
+        derivedGroups.append(productGroup)
 
         if !carthageFrameworksByPlatform.isEmpty {
             var platforms: [PBXGroup] = []
@@ -199,15 +201,16 @@ public class PBXProjGenerator {
                     name: "Frameworks"
                 )
             )
-            topLevelGroups.insert(group.reference)
+            derivedGroups.append(group)
         }
 
-        for rootGroup in sourceGenerator.rootGroups {
-            topLevelGroups.insert(rootGroup)
-        }
-
-        mainGroup.object.children = Array(topLevelGroups)
+        mainGroup.object.children = Array(sourceGenerator.rootGroups)
         sortGroups(group: mainGroup)
+        // add derived groups at the end
+        derivedGroups.forEach(sortGroups)
+        mainGroup.object.children += derivedGroups
+            .sorted { $0.object.nameOrPath.localizedStandardCompare($1.object.nameOrPath) == .orderedAscending }
+            .map { $0.reference }
 
         let projectAttributes: [String: Any] = ["LastUpgradeCheck": project.xcodeVersion]
             .merged(project.attributes)

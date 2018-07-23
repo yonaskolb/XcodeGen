@@ -459,6 +459,25 @@ class SourceGeneratorTests: XCTestCase {
 
                 try expect(sourcesBuildPhase.files.count) == 1
             }
+
+            $0.it("derived directories are sorted last") {
+                let directories = """
+                    A:
+                    - file.swift
+                    P:
+                    - file.swift
+                    S:
+                    - file.swift
+                """
+                try createDirectories(directories)
+
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: ["A", "P", "S"], dependencies: [Dependency(type: .carthage, reference: "Alamofire")])
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target])
+
+                let pbxProj = try project.generatePbxProj()
+                let groups = try pbxProj.getMainGroup().children.compactMap { pbxProj.objects.getFileElement(reference: $0)?.nameOrPath }
+                try expect(groups) == ["A", "P", "S", "Frameworks", "Products"]
+            }
         }
     }
 }

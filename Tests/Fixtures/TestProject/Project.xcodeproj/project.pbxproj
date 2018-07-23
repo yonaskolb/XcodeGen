@@ -559,10 +559,8 @@
 				G_8340618952527 /* Configs */,
 				G_3234630030493 /* FileGroup */,
 				G_4661500274312 /* Framework */,
-				G_1952740716080 /* Frameworks */,
 				G_8268950006174 /* iMessage */,
 				G_1646573205915 /* iMessage MessagesExtension */,
-				G_8620238527590 /* Products */,
 				G_7189434949822 /* Resources */,
 				G_6651250437419 /* StandaloneFiles */,
 				G_3997550084026 /* StaticLibrary_ObjC */,
@@ -571,6 +569,8 @@
 				FR_232605427418 /* Mintfile */,
 				FR_257073931060 /* ResourceFolder */,
 				FR_775316160345 /* SomeFile */,
+				G_1952740716080 /* Frameworks */,
+				G_8620238527590 /* Products */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
