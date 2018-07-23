@@ -95,7 +95,7 @@ extension Target: CustomStringConvertible {
 
 extension Target {
 
-    static func resolveTargets(jsonDictionary: JSONDictionary) throws -> JSONDictionary {
+    static func resolveTargetTemplates(jsonDictionary: JSONDictionary) throws -> JSONDictionary {
         guard var targetsDictionary: [String: JSONDictionary] = jsonDictionary["targets"] as? [String: JSONDictionary] else {
             return jsonDictionary
         }
@@ -114,6 +114,16 @@ extension Target {
                 target = merge(dictionary: mergedDictionary, onto: target)
             }
             targetsDictionary[targetName] = target
+        }
+
+        var jsonDictionary = jsonDictionary
+        jsonDictionary["targets"] = targetsDictionary
+        return jsonDictionary
+    }
+
+    static func resolveMultiplatformTargets(jsonDictionary: JSONDictionary) throws -> JSONDictionary {
+        guard let targetsDictionary: [String: JSONDictionary] = jsonDictionary["targets"] as? [String: JSONDictionary] else {
+            return jsonDictionary
         }
 
         let platformReplacement = "$platform"
