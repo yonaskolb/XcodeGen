@@ -11,6 +11,9 @@
 - Fixed compiler flags being set on non source files in mixed build phase target sources [347](https://github.com/yonaskolb/XcodeGen/pull/347) @brentleyjones
 - Fixed `options.xcodeVersion` not being parsed [348](https://github.com/yonaskolb/XcodeGen/pull/38) @brentleyjones
 
+#### Changed
+- Improved linking for `static.library` targets [352](https://github.com/yonaskolb/XcodeGen/pull/352) @brentleyjones
+
 #### Internal
 - Moved brew formula to homebrew core
 
