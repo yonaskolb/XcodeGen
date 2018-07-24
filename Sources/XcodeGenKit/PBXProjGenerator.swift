@@ -13,6 +13,7 @@ public class PBXProjGenerator {
     var sourceGenerator: SourceGenerator!
 
     var targetObjects: [String: ObjectReference<PBXTarget>] = [:]
+    var targetAggregateObjects: [String: ObjectReference<PBXAggregateTarget>] = [:]
     var targetBuildFiles: [String: ObjectReference<PBXBuildFile>] = [:]
     var targetFileReferences: [String: String] = [:]
     var topLevelGroups: Set<String> = []
@@ -150,6 +151,7 @@ public class PBXProjGenerator {
         }
 
         try project.targets.forEach(generateTarget)
+        try project.aggregateTargets.forEach(generateAggregateTarget)
 
         let productGroup = createObject(
             id: "Products",
@@ -212,10 +214,102 @@ public class PBXProjGenerator {
             .merged(generateTargetAttributes() ?? [:])
 
         pbxProject.object.knownRegions = sourceGenerator.knownRegions.sorted()
-        pbxProject.object.targets = targetObjects.values.sorted { $0.object.name < $1.object.name }.map { $0.reference }
+        let allTargets: [ObjectReference<PBXTarget>] = Array(targetObjects.values) + Array(targetAggregateObjects.values.map { ObjectReference(reference: $0.reference, object: $0.object) })
+            pbxProject.object.targets = allTargets
+                .sorted { $0.object.name < $1.object.name }
+                .map { $0.reference }
         pbxProject.object.attributes = projectAttributes
 
         return pbxProj
+    }
+
+    func generateAggregateTarget(_ target: AggregateTarget) throws {
+
+        let configs: [ObjectReference<XCBuildConfiguration>] = project.configs.map { config in
+
+            let buildSettings = project.getBuildSettings(settings: target.settings, config: config)
+
+            var baseConfigurationReference: String?
+            if let configPath = target.configFiles[config.name] {
+                baseConfigurationReference = sourceGenerator.getContainedFileReference(path: project.basePath + configPath)
+            }
+            let buildConfig = XCBuildConfiguration(
+                name: config.name,
+                baseConfigurationReference: baseConfigurationReference,
+                buildSettings: buildSettings
+            )
+            return createObject(id: config.name + target.name, buildConfig)
+        }
+
+        let dependencies: [String] = target.targets.map { generateTargetDependency(from: target.name, to: $0).reference }
+
+        let buildConfigList = createObject(id: target.name, XCConfigurationList(
+            buildConfigurations: configs.map { $0.reference },
+            defaultConfigurationName: ""
+        ))
+
+        var buildPhases: [String] = []
+        buildPhases += try target.buildScripts.map { try generateBuildScript(targetName: target.name, buildScript: $0) }
+
+        let aggregateTarget = createObject(
+            id: target.name,
+            PBXAggregateTarget(
+                name: target.name,
+                buildConfigurationList: buildConfigList.reference,
+                buildPhases: buildPhases,
+                buildRules: [],
+                dependencies: dependencies,
+                productName: target.name,
+                productReference: nil,
+                productType: nil
+            )
+        )
+        targetAggregateObjects[target.name] = aggregateTarget
+    }
+
+    func generateTargetDependency(from: String, to target: String) -> ObjectReference<PBXTargetDependency> {
+
+        let targetProxy = createObject(
+            id: "\(from)-\(target)",
+            PBXContainerItemProxy(
+                containerPortal: pbxProj.rootObject,
+                remoteGlobalIDString: targetObjects[target]!.reference,
+                proxyType: .nativeTarget,
+                remoteInfo: target
+            )
+        )
+
+        let targetDependency = createObject(
+            id: "\(from)-\(target)",
+            PBXTargetDependency(
+                target: targetObjects[target]!.reference,
+                targetProxy: targetProxy.reference
+            )
+        )
+        return targetDependency
+    }
+
+    func generateBuildScript(targetName: String, buildScript: BuildScript) throws -> String {
+
+        let shellScript: String
+        switch buildScript.script {
+        case let .path(path):
+            shellScript = try (project.basePath + path).read()
+        case let .script(script):
+            shellScript = script
+        }
+
+        let shellScriptPhase = PBXShellScriptBuildPhase(
+            files: [],
+            name: buildScript.name ?? "Run Script",
+            inputPaths: buildScript.inputFiles,
+            outputPaths: buildScript.outputFiles,
+            shellPath: buildScript.shell ?? "/bin/sh",
+            shellScript: shellScript
+        )
+        shellScriptPhase.runOnlyForDeploymentPostprocessing = buildScript.runOnlyWhenInstalling
+        shellScriptPhase.showEnvVarsInLog = buildScript.showEnvVars
+        return createObject(id: String(describing: buildScript.name) + shellScript + targetName, shellScriptPhase).reference
     }
 
     func generateTargetAttributes() -> [String: Any]? {
@@ -244,10 +338,7 @@ public class PBXProjGenerator {
             targetAttributes[uiTestTarget.reference, default: [:]].merge(["TestTargetID": target.reference])
         }
 
-        for target in project.targets {
-            guard let targetReference = targetObjects[target.name]?.reference else {
-                continue
-            }
+        func generateTargetAttributes(_ target: ProjectTarget, targetReference: String) {
             if !target.attributes.isEmpty {
                 targetAttributes[targetReference, default: [:]].merge(target.attributes)
             }
@@ -272,6 +363,20 @@ public class PBXProjGenerator {
 
             setTargetAttribute(attribute: "ProvisioningStyle", buildSetting: "CODE_SIGN_STYLE")
             setTargetAttribute(attribute: "DevelopmentTeam", buildSetting: "DEVELOPMENT_TEAM")
+        }
+
+        for target in project.aggregateTargets {
+            guard let targetReference = targetAggregateObjects[target.name]?.reference else {
+                continue
+            }
+            generateTargetAttributes(target, targetReference: targetReference)
+        }
+
+        for target in project.targets {
+            guard let targetReference = targetObjects[target.name]?.reference else {
+                continue
+            }
+            generateTargetAttributes(target, targetReference: targetReference)
         }
 
         return targetAttributes.isEmpty ? nil : ["TargetAttributes": targetAttributes]
@@ -415,23 +520,7 @@ public class PBXProjGenerator {
                 guard let dependencyTarget = project.getTarget(dependencyTargetName) else { continue }
                 let dependencyFileReference = targetFileReferences[dependencyTargetName]!
 
-                let targetProxy = createObject(
-                    id: "\(target.name)-\(dependency.reference)",
-                    PBXContainerItemProxy(
-                        containerPortal: pbxProj.rootObject,
-                        remoteGlobalIDString: targetObjects[dependencyTargetName]!.reference,
-                        proxyType: .nativeTarget,
-                        remoteInfo: dependencyTargetName
-                    )
-                )
-
-                let targetDependency = createObject(
-                    id: dependencyTargetName + target.name,
-                    PBXTargetDependency(
-                        target: targetObjects[dependencyTargetName]!.reference,
-                        targetProxy: targetProxy.reference
-                    )
-                )
+                let targetDependency = generateTargetDependency(from: target.name, to: dependencyTargetName)
 
                 dependencies.append(targetDependency.reference)
 
@@ -549,31 +638,7 @@ public class PBXProjGenerator {
                 .map { $0.reference }
         }
 
-        func generateBuildScript(buildScript: BuildScript) throws {
-
-            let shellScript: String
-            switch buildScript.script {
-            case let .path(path):
-                shellScript = try (project.basePath + path).read()
-            case let .script(script):
-                shellScript = script
-            }
-
-            let shellScriptPhase = PBXShellScriptBuildPhase(
-                files: [],
-                name: buildScript.name ?? "Run Script",
-                inputPaths: buildScript.inputFiles,
-                outputPaths: buildScript.outputFiles,
-                shellPath: buildScript.shell ?? "/bin/sh",
-                shellScript: shellScript
-            )
-            shellScriptPhase.runOnlyForDeploymentPostprocessing = buildScript.runOnlyWhenInstalling
-            shellScriptPhase.showEnvVarsInLog = buildScript.showEnvVars
-            let shellScriptPhaseReference = createObject(id: String(describing: buildScript.name) + shellScript + target.name, shellScriptPhase)
-            buildPhases.append(shellScriptPhaseReference.reference)
-        }
-
-        try target.prebuildScripts.forEach(generateBuildScript)
+        buildPhases += try target.prebuildScripts.map { try generateBuildScript(targetName: target.name, buildScript: $0) }
 
         let sourcesBuildPhaseFiles = getBuildFilesForPhase(.sources)
         let sourcesBuildPhase = createObject(id: target.name, PBXSourcesBuildPhase(files: sourcesBuildPhaseFiles))
@@ -687,7 +752,7 @@ public class PBXProjGenerator {
             ).reference
         }
 
-        try target.postbuildScripts.forEach(generateBuildScript)
+        buildPhases += try target.postbuildScripts.map { try generateBuildScript(targetName: target.name, buildScript: $0) }
 
         let targetObject = targetObjects[target.name]!.object
 

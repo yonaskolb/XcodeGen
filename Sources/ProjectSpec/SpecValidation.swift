@@ -53,12 +53,7 @@ extension Project {
             errors += validateSettings(settings)
         }
 
-        for target in targets {
-            for dependency in target.dependencies {
-                if dependency.type == .target, getTarget(dependency.reference) == nil {
-                    errors.append(.invalidTargetDependency(target: target.name, dependency: dependency.reference))
-                }
-            }
+        for target in projectTargets {
 
             for (config, configFile) in target.configFiles {
                 if !(basePath + configFile).exists {
@@ -66,13 +61,6 @@ extension Project {
                 }
                 if !options.disabledValidations.contains(.missingConfigs) && getConfig(config) == nil {
                     errors.append(.invalidConfigFileConfig(config))
-                }
-            }
-
-            for source in target.sources {
-                let sourcePath = basePath + source.path
-                if !source.optional && !sourcePath.exists {
-                    errors.append(.invalidTargetSource(target: target.name, source: sourcePath.string))
                 }
             }
 
@@ -111,8 +99,7 @@ extension Project {
                 }
             }
 
-            let scripts = target.prebuildScripts + target.postbuildScripts
-            for script in scripts {
+            for script in target.buildScripts {
                 if case let .path(pathString) = script.script {
                     let scriptPath = basePath + pathString
                     if !scriptPath.exists {
@@ -122,6 +109,29 @@ extension Project {
             }
 
             errors += validateSettings(target.settings)
+        }
+
+        for target in aggregateTargets {
+            for dependency in target.targets {
+                if getTarget(dependency) == nil {
+                    errors.append(.invalidTargetDependency(target: target.name, dependency: dependency))
+                }
+            }
+        }
+
+        for target in targets {
+            for dependency in target.dependencies {
+                if dependency.type == .target, getTarget(dependency.reference) == nil {
+                    errors.append(.invalidTargetDependency(target: target.name, dependency: dependency.reference))
+                }
+            }
+
+            for source in target.sources {
+                let sourcePath = basePath + source.path
+                if !source.optional && !sourcePath.exists {
+                    errors.append(.invalidTargetSource(target: target.name, source: sourcePath.string))
+                }
+            }
         }
 
         for scheme in schemes {

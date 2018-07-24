@@ -158,3 +158,15 @@ schemes:
 targetTemplates:
   MyTemplate:
     scheme: {}
+aggregateTargets:
+  SuperTarget:
+    attributes:
+      CUSTOM: value
+    targets:
+      - App_iOS
+      - Framework_iOS
+    settings:
+      MY_SETTING: hello
+    buildScripts:
+      - name: MyScript
+        script: echo "do the thing"

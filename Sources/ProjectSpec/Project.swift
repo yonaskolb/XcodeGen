@@ -4,7 +4,7 @@ import PathKit
 import xcproj
 import Yams
 
-public struct Project {
+public struct Project: BuildSettingsContainer {
 
     public var basePath: Path
     public var name: String
@@ -13,6 +13,8 @@ public struct Project {
             targetsMap = Dictionary(uniqueKeysWithValues: targets.map { ($0.name, $0) })
         }
     }
+
+    public var aggregateTargets: [AggregateTarget]
 
     public var settings: Settings
     public var settingGroups: [String: Settings]
@@ -30,6 +32,7 @@ public struct Project {
         name: String,
         configs: [Config] = Config.defaultConfigs,
         targets: [Target] = [],
+        aggregateTargets: [AggregateTarget] = [],
         settings: Settings = .empty,
         settingGroups: [String: Settings] = [:],
         schemes: [Scheme] = [],
@@ -42,6 +45,7 @@ public struct Project {
         self.name = name
         self.targets = targets
         targetsMap = Dictionary(uniqueKeysWithValues: self.targets.map { ($0.name, $0) })
+        self.aggregateTargets = aggregateTargets
         self.configs = configs
         self.settings = settings
         self.settingGroups = settingGroups
@@ -80,6 +84,9 @@ extension Project: CustomDebugStringConvertible {
         if !targets.isEmpty {
             string += "\nTargets:\n\(indent)" + targets.map { $0.description }.joined(separator: "\n\(indent)")
         }
+        if !aggregateTargets.isEmpty {
+            string += "\nAggregate Targets:\n\(indent)" + aggregateTargets.map { $0.description }.joined(separator: "\n\(indent)")
+        }
 
         return string
     }
@@ -90,6 +97,7 @@ extension Project: Equatable {
     public static func == (lhs: Project, rhs: Project) -> Bool {
         return lhs.name == rhs.name &&
             lhs.targets == rhs.targets &&
+            lhs.aggregateTargets == rhs.aggregateTargets &&
             lhs.settings == rhs.settings &&
             lhs.settingGroups == rhs.settingGroups &&
             lhs.configs == rhs.configs &&
@@ -114,6 +122,7 @@ extension Project {
         self.configs = configs.isEmpty ? Config.defaultConfigs :
             configs.map { Config(name: $0, type: ConfigType(rawValue: $1)) }.sorted { $0.name < $1.name }
         targets = try jsonDictionary.json(atKeyPath: "targets").sorted { $0.name < $1.name }
+        aggregateTargets = try jsonDictionary.json(atKeyPath: "aggregateTargets").sorted { $0.name < $1.name }
         schemes = try jsonDictionary.json(atKeyPath: "schemes")
         fileGroups = jsonDictionary.json(atKeyPath: "fileGroups") ?? []
         configFiles = jsonDictionary.json(atKeyPath: "configFiles") ?? [:]

@@ -206,6 +206,18 @@ class SpecLoadingTests: XCTestCase {
                 try expect(target.sources) == ["templateSource", "targetSource"] // merges array in order
             }
 
+            $0.it("parses aggregate targets") {
+                let dictionary: [String: Any] = [
+                    "targets": ["target_1", "target_2"],
+                    "settings": ["SETTING": "VALUE"],
+                    "configFiles": ["debug": "file.xcconfig"],
+                ]
+
+                let project = try getProjectSpec(["aggregateTargets": ["AggregateTarget": dictionary]])
+                let expectedTarget = AggregateTarget(name: "AggregateTarget", targets: ["target_1", "target_2"], settings: ["SETTING": "VALUE"], configFiles: ["debug": "file.xcconfig"])
+                try expect(project.aggregateTargets) == [expectedTarget]
+            }
+
             $0.it("parses target schemes") {
                 var targetDictionary = validTarget
                 targetDictionary["scheme"] = [

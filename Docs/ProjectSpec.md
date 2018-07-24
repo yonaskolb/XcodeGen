@@ -23,6 +23,7 @@ Required properties are marked with checkbox. Some of the YAML examples don't sh
 	- [Dependency](#dependency)
 	- [Target Scheme](#target-scheme)
 	- [Legacy Target](#legacy-target)
+- [Aggregate Target](#aggregate-target)
 - [Scheme](#scheme)
 
 ## Project
@@ -448,6 +449,17 @@ By providing a legacy target, you are opting in to the "Legacy Target" mode. Thi
 - [ ] ***arguments***: String - Build arguments used for the build tool in the legacy target
 - [ ] ***passSettings***: Bool - Whether or not to pass build settings down to the build tool in the legacy target.
 - [ ] ***workingDirectory***: String - The working directory under which the build tool will be invoked in the legacy target.
+
+## Aggregate Target
+
+This is used to override settings or run build scripts in specific targets
+
+- [x] **targets**: **[String]** - The list of target names to include as target dependencies
+- [ ] **configFiles**: **[Config Files](#config-files)** - `.xcconfig` files per config
+- [ ] **settings**: **[Settings](#settings)** - Target specific build settings. 
+- [ ] **buildScripts**: **[[Build Script](#build-script)]** - Build scripts to run
+- [ ] **scheme**: **[Target Scheme](#target-scheme)** - Generated scheme
+- [ ] **attributes**: **[String: Any]** - This sets values in the project `TargetAttributes`. It is merged with `attributes` from the project and anything automatically added by XcodeGen, with any duplicate values being override by values specified here
 
 ## Scheme
 

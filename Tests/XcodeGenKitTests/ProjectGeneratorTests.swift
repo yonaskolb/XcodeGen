@@ -187,6 +187,29 @@ class ProjectGeneratorTests: XCTestCase {
         }
     }
 
+    func testAggregateTargets() {
+        describe {
+
+            let aggregateTarget = AggregateTarget(name: "AggregateTarget", targets: ["MyApp", "MyFramework"])
+            let project = Project(basePath: "", name: "test", targets: targets, aggregateTargets: [aggregateTarget])
+
+            $0.it("generates aggregate targets") {
+                let pbxProject = try project.generatePbxProj()
+                let aggregateTargets = pbxProject.objects.aggregateTargets.referenceValues
+                try expect(aggregateTargets.count) == 1
+                guard let pbxAggregateTarget = aggregateTargets.first else {
+                    throw failure("Couldn't find AggregateTarget")
+                }
+
+                try expect(pbxAggregateTarget.name) == "AggregateTarget"
+                try expect(pbxAggregateTarget.dependencies.count) == 2
+
+                let targetDependencies = pbxProject.objects.targetDependencies.referenceValues
+                try expect(targetDependencies.count) == 4
+            }
+        }
+    }
+
     func testTargets() {
         describe {
 

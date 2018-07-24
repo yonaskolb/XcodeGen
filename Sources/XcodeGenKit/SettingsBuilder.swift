@@ -81,7 +81,7 @@ extension Project {
     }
 
     // combines all levels of a target's settings: target, target config, project, project config
-    public func getCombinedBuildSettings(basePath: Path, target: Target, config: Config, includeProject: Bool = true) -> BuildSettings {
+    public func getCombinedBuildSettings(basePath: Path, target: ProjectTarget, config: Config, includeProject: Bool = true) -> BuildSettings {
         var buildSettings: BuildSettings = [:]
         if includeProject {
             if let configFilePath = configFiles[config.name] {
@@ -92,7 +92,9 @@ extension Project {
         if let configFilePath = target.configFiles[config.name] {
             buildSettings += loadConfigFileBuildSettings(path: configFilePath)
         }
-        buildSettings += getTargetBuildSettings(target: target, config: config)
+        if let target = target as? Target {
+            buildSettings += getTargetBuildSettings(target: target, config: config)
+        }
         return buildSettings
     }
 
