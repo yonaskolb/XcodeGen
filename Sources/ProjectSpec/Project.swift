@@ -105,7 +105,7 @@ extension Project {
 
     public init(basePath: Path, jsonDictionary: JSONDictionary) throws {
         self.basePath = basePath
-        let jsonDictionary = try Project.filterJSON(jsonDictionary: jsonDictionary)
+        let jsonDictionary = try Project.resolveProject(jsonDictionary: jsonDictionary)
         name = try jsonDictionary.json(atKeyPath: "name")
         settings = jsonDictionary.json(atKeyPath: "settings") ?? .empty
         settingGroups = jsonDictionary.json(atKeyPath: "settingGroups")
@@ -127,7 +127,10 @@ extension Project {
         targetsMap = Dictionary(uniqueKeysWithValues: targets.map { ($0.name, $0) })
     }
 
-    static func filterJSON(jsonDictionary: JSONDictionary) throws -> JSONDictionary {
-        return try Target.generateCrossPlaformTargets(jsonDictionary: jsonDictionary)
+    static func resolveProject(jsonDictionary: JSONDictionary) throws -> JSONDictionary {
+        var jsonDictionary = jsonDictionary
+        jsonDictionary = try Target.resolveTargetTemplates(jsonDictionary: jsonDictionary)
+        jsonDictionary = try Target.resolveMultiplatformTargets(jsonDictionary: jsonDictionary)
+        return jsonDictionary
     }
 }

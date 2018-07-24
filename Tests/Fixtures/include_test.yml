@@ -12,6 +12,9 @@ targets:
   NewTarget:
     type: application
     platform: iOS
+    templates: [IncludedTemplate]
+    sources:
+      - target
   IncludedTarget:
     name: IncludedTargetNew
     platform: tvOS

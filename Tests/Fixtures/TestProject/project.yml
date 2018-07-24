@@ -80,6 +80,7 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: com.project.app.watch
       dependencies:
         - target: App_watchOS Extension
+      templates: [MyTemplate]
 
   App_watchOS Extension:
       type: watchkit2-extension
@@ -154,3 +155,6 @@ schemes:
       commandLineArguments:
         argument: YES
         argument.with.dot: YES
+targetTemplates:
+  MyTemplate:
+    scheme: {}
