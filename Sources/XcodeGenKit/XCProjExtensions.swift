@@ -9,9 +9,9 @@ extension PBXFileElement {
 
     public var sortOrder: Int {
         if type(of: self).isa == "PBXGroup" {
-            return 0
-        } else {
             return 1
+        } else {
+            return 0
         }
     }
 }

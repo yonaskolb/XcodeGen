@@ -551,6 +551,11 @@
 		G_8448771205358 = {
 			isa = PBXGroup;
 			children = (
+				FR_479281060337 /* Folder */,
+				FR_815403394914 /* Headers */,
+				FR_232605427418 /* Mintfile */,
+				FR_257073931060 /* ResourceFolder */,
+				FR_775316160345 /* SomeFile */,
 				G_8252321105004 /* App */,
 				G_7831228999101 /* App_iOS_Tests */,
 				G_1235039993875 /* App_iOS_UITests */,
@@ -564,11 +569,6 @@
 				G_7189434949822 /* Resources */,
 				G_6651250437419 /* StandaloneFiles */,
 				G_3997550084026 /* StaticLibrary_ObjC */,
-				FR_479281060337 /* Folder */,
-				FR_815403394914 /* Headers */,
-				FR_232605427418 /* Mintfile */,
-				FR_257073931060 /* ResourceFolder */,
-				FR_775316160345 /* SomeFile */,
 				G_1952740716080 /* Frameworks */,
 				G_8620238527590 /* Products */,
 			);

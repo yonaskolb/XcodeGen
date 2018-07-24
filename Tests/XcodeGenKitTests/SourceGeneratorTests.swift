@@ -501,13 +501,13 @@ class SourceGeneratorTests: XCTestCase {
                 let group = pbxProj.objects.group(named: "Sources", inGroup: try pbxProj.getMainGroup())!.object
                 let names = group.children.compactMap { pbxProj.objects.getFileElement(reference: $0)?.nameOrPath }
                 try expect(names) == [
-                    "group",
-                    "group2",
                     "1file.a",
                     "10file.a",
                     "file.swift",
                     "file2.swift",
                     "file3.swift",
+                    "group",
+                    "group2",
                 ]
             }
         }
