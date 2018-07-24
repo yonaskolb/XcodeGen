@@ -32,7 +32,7 @@ public struct AggregateTarget: ProjectTarget {
 extension AggregateTarget: CustomStringConvertible {
 
     public var description: String {
-        return "\(name): \(targets.joined(separator: ", "))"
+        return "\(name)\(targets.isEmpty ? "" : ": \(targets.joined(separator: ", "))")"
     }
 }
 
