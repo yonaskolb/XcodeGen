@@ -5,15 +5,21 @@
 #### Added
 - Added `showEnvVars` to build scripts to disable printing the environment [351](https://github.com/yonaskolb/XcodeGen/pull/351) @keith
 - Added `requiresObjCLinking` to `target` [354](https://github.com/yonaskolb/XcodeGen/pull/353) @brentleyjones
+- Added `targetTemplates` [355](https://github.com/yonaskolb/XcodeGen/pull/355) @yonaskolb
+- Added `aggregateTargets` [354](https://github.com/yonaskolb/XcodeGen/pull/354) @yonaskolb
+- Added `options.groupSortPosition` [356](https://github.com/yonaskolb/XcodeGen/pull/356) @yonaskolb
+
 
 #### Fixed
 - Sort files using localizedStandardCompare [341](https://github.com/yonaskolb/XcodeGen/pull/341) @rohitpal440
 - Use the latest `xcdatamodel` when sorted by version [341](https://github.com/yonaskolb/XcodeGen/pull/341) @rohitpal440
 - Fixed compiler flags being set on non source files in mixed build phase target sources [347](https://github.com/yonaskolb/XcodeGen/pull/347) @brentleyjones
-- Fixed `options.xcodeVersion` not being parsed [348](https://github.com/yonaskolb/XcodeGen/pull/38) @brentleyjones
+- Fixed `options.xcodeVersion` not being parsed [348](https://github.com/yonaskolb/XcodeGen/pull/348) @brentleyjones
 
 #### Changed
 - Improved linking for `static.library` targets [352](https://github.com/yonaskolb/XcodeGen/pull/352) @brentleyjones
+- Changed default group sorting to be after files [356](https://github.com/yonaskolb/XcodeGen/pull/356) @yonaskolb
+- Moved `Frameworks` and `Products` top level groups to bottom [356](https://github.com/yonaskolb/XcodeGen/pull/356) @yonaskolb
 
 #### Internal
 - Moved brew formula to homebrew core
