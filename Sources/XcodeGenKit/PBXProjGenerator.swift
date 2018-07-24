@@ -653,12 +653,9 @@ public class PBXProjGenerator {
             buildPhases.append(copyFilesPhase.reference)
         }
 
-        let carthageFrameworksToEmbed = Array(Set(
-            carthageDependencies
+        let carthageFrameworksToEmbed = carthageDependencies
                 .filter { $0.embed ?? target.shouldEmbedDependencies }
                 .map { $0.reference }
-        ))
-            .sorted()
 
         if !carthageFrameworksToEmbed.isEmpty && target.platform != .macOS {
 
@@ -820,7 +817,7 @@ public class PBXProjGenerator {
     func getAllCarthageDependencies(target: Target) -> [Dependency] {
         // this is used to resolve cyclical target dependencies
         var visitedTargets: Set<String> = []
-        var frameworks: [Dependency] = []
+        var frameworks: [String: Dependency] = [:]
 
         var queue: [Target] = [target]
         while !queue.isEmpty {
@@ -830,9 +827,14 @@ public class PBXProjGenerator {
             }
 
             for dependency in target.dependencies {
+                // don't overwrite frameworks, to allow top level ones to rule
+                if frameworks.contains(reference: dependency.reference) {
+                    continue
+                }
+                
                 switch dependency.type {
                 case .carthage:
-                    frameworks.append(dependency)
+                    frameworks[dependency.reference] = dependency
                 case .target:
                     if let target = project.getTarget(dependency.reference) {
                         queue.append(target)
@@ -845,7 +847,7 @@ public class PBXProjGenerator {
             visitedTargets.update(with: target.name)
         }
 
-        return frameworks
+        return frameworks.sorted(by: { $0.key < $1.key }).map { $0.value }
     }
 
     func getAllDependenciesPlusTransitiveNeedingEmbedding(target topLevelTarget: Target) -> [Dependency] {
