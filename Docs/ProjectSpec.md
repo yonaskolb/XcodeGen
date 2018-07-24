@@ -296,7 +296,7 @@ A dependency can be one of a 3 types:
 These only applied to `target` and `framework` dependencies.
 
 - [ ] **embed**: **Bool** - Whether to embed the dependency. Defaults to true for application target and false for non application targets.
-- [ ] **link**: **Bool** - Whether to link the dependency. Defaults to true but only static library and dynamic frameworks are linked. This only applies for target dependencies.
+- [ ] **link**: **Bool** - Whether to link the dependency. Defaults to `true` depending on the type of the dependency and the type of the target (e.g. static libraries will only link to executables by default).
 - [ ] **codeSign**: **Bool** - Whether the `codeSignOnCopy` setting is applied when embedding framework. Defaults to true
 - [ ] **removeHeaders**: **Bool** - Whether the `removeHeadersOnCopy` setting is applied when embedding the framework. Defaults to true
 

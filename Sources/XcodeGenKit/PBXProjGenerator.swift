@@ -435,7 +435,10 @@ public class PBXProjGenerator {
 
                 dependencies.append(targetDependency.reference)
 
-                if (dependencyTarget.type.isLibrary || dependencyTarget.type.isFramework) && dependency.link {
+                let dependecyLinkage = dependencyTarget.defaultLinkage
+                let link = dependency.link ?? ((dependecyLinkage == .dynamic && target.type != .staticLibrary)
+                    || (dependecyLinkage == .static && target.type.isExecutable))
+                if link {
                     let dependencyBuildFile = targetBuildFiles[dependencyTargetName]!
                     let buildFile = createObject(
                         id: dependencyBuildFile.reference + target.name,
@@ -444,9 +447,9 @@ public class PBXProjGenerator {
                     targetFrameworkBuildFiles.append(buildFile.reference)
                 }
 
-                let shouldEmbed = target.type.isApp
-                    || (target.type.isTest && (dependencyTarget.type.isFramework || dependencyTarget.type == .bundle))
-                if (dependency.embed ?? shouldEmbed) && !dependencyTarget.type.isLibrary {
+                let embed = dependency.embed ?? (!dependencyTarget.type.isLibrary && (target.type.isApp
+                    || (target.type.isTest && (dependencyTarget.type.isFramework || dependencyTarget.type == .bundle))))
+                if embed {
                     let embedFile = createObject(
                         id: dependencyFileReference + target.name,
                         PBXBuildFile(
@@ -468,6 +471,8 @@ public class PBXProjGenerator {
                 }
 
             case .framework:
+                guard target.type != .staticLibrary else { break }
+                
                 let fileReference: String
                 if dependency.implicit {
                     fileReference = sourceGenerator.getFileReference(
@@ -501,6 +506,8 @@ public class PBXProjGenerator {
                 }
 
             case .carthage:
+                guard target.type != .staticLibrary else { break }
+                
                 var platformPath = Path(getCarthageBuildPath(platform: target.platform))
                 var frameworkPath = platformPath + dependency.reference
                 if frameworkPath.extension == nil {
@@ -776,7 +783,7 @@ public class PBXProjGenerator {
                     }
                 case .target:
                     if let dependencyTarget = project.getTarget(dependency.reference) {
-                        if isTopLevel || (dependency.embed == nil && dependencyTarget.type != .staticLibrary) {
+                        if isTopLevel || dependency.embed == nil {
                             dependencies[dependency.reference] = dependency
                             if !dependencyTarget.shouldEmbedDependencies {
                                 // traverse target's dependencies if it doesn't embed them itself
