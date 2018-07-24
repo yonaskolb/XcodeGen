@@ -172,7 +172,7 @@ Settings are merged in the following order: groups, base, configs.
 - [ ] **dependencies**: **[[Dependency](#dependency)]** - Dependencies for the target
 - [ ] **templates**: **[String]** - A list of target templates that will be merged in order
 - [ ] **transitivelyLinkDependencies**: **Bool** - If this is not specified the value from the project set in [Options](#options)`.transitivelyLinkDependencies` will be used.
-- [ ] **directlyEmbedCarthageDependencies**: **Bool** - If this is `true` Carthage dependencies will be embedded using an `Embed Frameworks` build phase instead of the `copy-frameworks` script. Defaults to `true` for `macOS` `platform`.
+- [ ] **directlyEmbedCarthageDependencies**: **Bool** - If this is `true` Carthage dependencies will be embedded using an `Embed Frameworks` build phase instead of the `copy-frameworks` script. Defaults to `true` for `macOS` `platform` targets and all tests.
 - [ ] **requiresObjCLinking**: **Bool** - If this is `true` any targets that link to this target will have `-ObjC` added to their `OTHER_LDFLAGS`. This is required if a static library has any catagories or extensions on Objective-C code. See [this guide](https://pewpewthespells.com/blog/objc_linker_flags.html#objc) for more details. Defaults to `true` if `type` is `library.static`. If you are 100% sure you don't have catagories or extensions on Objective-C code (pure Swift with no use of Foundation/UIKit) you can set this to `false`, otherwise it's best to leave it alone.
 - [ ] **prebuildScripts**: **[[Build Script](#build-script)]** - Build scripts that run *before* any other build phases
 - [ ] **postbuildScripts**: **[[Build Script](#build-script)]** - Build scripts that run *after* any other build phases

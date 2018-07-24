@@ -436,7 +436,7 @@ public class PBXProjGenerator {
         let targetDependencies = (target.transitivelyLinkDependencies ?? project.options.transitivelyLinkDependencies) ?
             getAllDependenciesPlusTransitiveNeedingEmbedding(target: target) : target.dependencies
         
-        let directlyEmbedCarthage = target.directlyEmbedCarthageDependencies ?? (target.platform == .macOS)
+        let directlyEmbedCarthage = target.directlyEmbedCarthageDependencies ?? (target.platform == .macOS || target.type.isTest)
 
         for dependency in targetDependencies {
 
