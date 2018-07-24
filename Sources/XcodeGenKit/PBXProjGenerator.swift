@@ -16,7 +16,7 @@ public class PBXProjGenerator {
     var targetAggregateObjects: [String: ObjectReference<PBXAggregateTarget>] = [:]
     var targetBuildFiles: [String: ObjectReference<PBXBuildFile>] = [:]
     var targetFileReferences: [String: String] = [:]
-    var topLevelGroups: Set<String> = []
+
     var carthageFrameworksByPlatform: [String: Set<String>] = [:]
     var frameworkFiles: [String] = []
 
@@ -79,6 +79,8 @@ public class PBXProjGenerator {
                 defaultConfigurationName: configName
             )
         )
+
+        var derivedGroups: [ObjectReference<PBXGroup>] = []
 
         let mainGroup = createObject(
             id: "Project",
@@ -161,7 +163,7 @@ public class PBXProjGenerator {
                 name: "Products"
             )
         )
-        topLevelGroups.insert(productGroup.reference)
+        derivedGroups.append(productGroup)
 
         if !carthageFrameworksByPlatform.isEmpty {
             var platforms: [PBXGroup] = []
@@ -199,15 +201,16 @@ public class PBXProjGenerator {
                     name: "Frameworks"
                 )
             )
-            topLevelGroups.insert(group.reference)
+            derivedGroups.append(group)
         }
 
-        for rootGroup in sourceGenerator.rootGroups {
-            topLevelGroups.insert(rootGroup)
-        }
-
-        mainGroup.object.children = Array(topLevelGroups)
+        mainGroup.object.children = Array(sourceGenerator.rootGroups)
         sortGroups(group: mainGroup)
+        // add derived groups at the end
+        derivedGroups.forEach(sortGroups)
+        mainGroup.object.children += derivedGroups
+            .sorted { $0.object.nameOrPath.localizedStandardCompare($1.object.nameOrPath) == .orderedAscending }
+            .map { $0.reference }
 
         let projectAttributes: [String: Any] = ["LastUpgradeCheck": project.xcodeVersion]
             .merged(project.attributes)
@@ -392,10 +395,13 @@ public class PBXProjGenerator {
                 return ObjectReference(reference: reference, object: fileElement)
             }
             .sorted { child1, child2 in
-                if child1.object.sortOrder == child2.object.sortOrder {
+                let sortOrder1 = child1.object.getSortOrder(groupSortPosition: project.options.groupSortPosition)
+                let sortOrder2 = child2.object.getSortOrder(groupSortPosition: project.options.groupSortPosition)
+
+                if sortOrder1 == sortOrder2 {
                     return child1.object.nameOrPath.localizedStandardCompare(child2.object.nameOrPath) == .orderedAscending
                 } else {
-                    return child1.object.sortOrder < child2.object.sortOrder
+                    return sortOrder1 < sortOrder2
                 }
             }
         group.object.children = children.map { $0.reference }.filter { $0 != group.reference }
@@ -889,5 +895,20 @@ extension Target {
 
     var shouldEmbedDependencies: Bool {
         return type.isApp || type.isTest
+    }
+}
+
+extension PBXFileElement {
+
+    public func getSortOrder(groupSortPosition: SpecOptions.GroupSortPosition) -> Int {
+        if type(of: self).isa == "PBXGroup" {
+            switch groupSortPosition {
+            case .top: return -1
+            case .bottom: return 1
+            case .none: return 0
+            }
+        } else {
+            return 0
+        }
     }
 }

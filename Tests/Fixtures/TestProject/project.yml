@@ -8,6 +8,7 @@ options:
   transitivelyLinkDependencies: true
   deploymentTarget:
     watchOS: 4.0
+  groupSortPosition: top
 fileGroups:
   - Configs
   - FileGroup

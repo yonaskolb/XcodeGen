@@ -459,6 +459,57 @@ class SourceGeneratorTests: XCTestCase {
 
                 try expect(sourcesBuildPhase.files.count) == 1
             }
+
+            $0.it("derived directories are sorted last") {
+                let directories = """
+                    A:
+                    - file.swift
+                    P:
+                    - file.swift
+                    S:
+                    - file.swift
+                """
+                try createDirectories(directories)
+
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: ["A", "P", "S"], dependencies: [Dependency(type: .carthage, reference: "Alamofire")])
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target])
+
+                let pbxProj = try project.generatePbxProj()
+                let groups = try pbxProj.getMainGroup().children.compactMap { pbxProj.objects.getFileElement(reference: $0)?.nameOrPath }
+                try expect(groups) == ["A", "P", "S", "Frameworks", "Products"]
+            }
+
+            $0.it("sorts files") {
+                let directories = """
+                    Sources:
+                    - file3.swift
+                    - file.swift
+                    - 10file.a
+                    - 1file.a
+                    - file2.swift
+                    - group2:
+                        - file.swift
+                    - group:
+                        - file.swift
+                """
+                try createDirectories(directories)
+
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: ["Sources"], dependencies: [Dependency(type: .carthage, reference: "Alamofire")])
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target])
+
+                let pbxProj = try project.generatePbxProj()
+                let group = pbxProj.objects.group(named: "Sources", inGroup: try pbxProj.getMainGroup())!.object
+                let names = group.children.compactMap { pbxProj.objects.getFileElement(reference: $0)?.nameOrPath }
+                try expect(names) == [
+                    "1file.a",
+                    "10file.a",
+                    "file.swift",
+                    "file2.swift",
+                    "file3.swift",
+                    "group",
+                    "group2",
+                ]
+            }
         }
     }
 }
