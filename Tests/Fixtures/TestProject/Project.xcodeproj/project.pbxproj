@@ -25,6 +25,7 @@
 /* Begin PBXBuildFile section */
 		BF_130062884703 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_257516580010 /* Alamofire.framework */; };
 		BF_138356261076 /* InterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_363921640403 /* InterfaceController.swift */; };
+		BF_144945303317 /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FR_410645050443 /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BF_167705969896 /* TestProjectUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_145531354566 /* TestProjectUITests.swift */; };
 		BF_182635022050 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FR_830053537293 /* Assets.xcassets */; };
 		BF_184447863946 = {isa = PBXBuildFile; fileRef = FR_935153865209 /* iMessageApp.app */; };
@@ -50,6 +51,7 @@
 		BF_337656089700 = {isa = PBXBuildFile; fileRef = FR_399755008402 /* StaticLibrary_ObjC.a */; };
 		BF_360196406184 /* TestProjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_722239415598 /* TestProjectTests.swift */; };
 		BF_425679397292 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = FR_183521624014 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BF_438950173632 /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FR_410645050443 /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BF_441538117869 /* App_watchOS Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = FR_507023492251 /* App_watchOS Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		BF_447782698339 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_752394658615 /* Alamofire.framework */; };
 		BF_456457948943 /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_172952167809 /* FrameworkFile.swift */; };
@@ -202,6 +204,28 @@
 				BF_747443236192 /* App_watchOS.app in Embed Watch Content */,
 			);
 			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CFBP_4082141876 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				BF_438950173632 /* Alamofire.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CFBP_4626438721 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				BF_144945303317 /* Alamofire.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		CFBP_4684049960 /* Embed App Extensions */ = {
@@ -671,6 +695,7 @@
 			buildConfigurationList = CL_123503999387 /* Build configuration list for PBXNativeTarget "App_iOS_UITests" */;
 			buildPhases = (
 				SBP_12350399938 /* Sources */,
+				CFBP_4082141876 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -831,6 +856,7 @@
 			buildConfigurationList = CL_783122899910 /* Build configuration list for PBXNativeTarget "App_iOS_Tests" */;
 			buildPhases = (
 				SBP_78312289991 /* Sources */,
+				CFBP_4626438721 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);

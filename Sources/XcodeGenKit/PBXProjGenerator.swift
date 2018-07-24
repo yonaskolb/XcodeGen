@@ -432,26 +432,27 @@ public class PBXProjGenerator {
         var copyResourcesReferences: [String] = []
         var copyWatchReferences: [String] = []
         var extensions: [String] = []
+        var carthageFrameworksToEmbed: [String] = []
 
         let targetDependencies = (target.transitivelyLinkDependencies ?? project.options.transitivelyLinkDependencies) ?
             getAllDependenciesPlusTransitiveNeedingEmbedding(target: target) : target.dependencies
         
         let directlyEmbedCarthage = target.directlyEmbedCarthageDependencies ?? (target.platform == .macOS || target.type.isTest)
+        
+        func getEmbedSettings(dependency: Dependency, codeSign: Bool) -> [String: Any] {
+            var embedAttributes: [String] = []
+            if codeSign {
+                embedAttributes.append("CodeSignOnCopy")
+            }
+            if dependency.removeHeaders {
+                embedAttributes.append("RemoveHeadersOnCopy")
+            }
+            return ["ATTRIBUTES": embedAttributes]
+        }
 
         for dependency in targetDependencies {
 
             let embed = dependency.embed ?? target.shouldEmbedDependencies
-
-            func getEmbedSettings(codeSign: Bool) -> [String: Any] {
-                var embedAttributes: [String] = []
-                if codeSign {
-                    embedAttributes.append("CodeSignOnCopy")
-                }
-                if dependency.removeHeaders {
-                    embedAttributes.append("RemoveHeadersOnCopy")
-                }
-                return ["ATTRIBUTES": embedAttributes]
-            }
 
             switch dependency.type {
             case .target:
@@ -487,7 +488,7 @@ public class PBXProjGenerator {
                         id: dependencyFileReference + target.name,
                         PBXBuildFile(
                             fileRef: dependencyFileReference,
-                            settings: getEmbedSettings(codeSign: dependency.codeSign ?? !dependencyTarget.type.isExecutable)
+                            settings: getEmbedSettings(dependency: dependency, codeSign: dependency.codeSign ?? !dependencyTarget.type.isExecutable)
                         )
                     )
 
@@ -533,7 +534,7 @@ public class PBXProjGenerator {
                 if embed {
                     let embedFile = createObject(
                         id: fileReference + target.name,
-                        PBXBuildFile(fileRef: fileReference, settings: getEmbedSettings(codeSign: dependency.codeSign ?? true))
+                        PBXBuildFile(fileRef: fileReference, settings: getEmbedSettings(dependency: dependency, codeSign: dependency.codeSign ?? true))
                     )
                     copyFrameworksReferences.append(embedFile.reference)
                 }
@@ -556,12 +557,32 @@ public class PBXProjGenerator {
                 carthageFrameworksByPlatform[target.platform.carthageDirectoryName, default: []].insert(fileReference)
 
                 targetFrameworkBuildFiles.append(buildFile.reference)
-                if directlyEmbedCarthage && embed {
+                
+                // Embedding handled by iterating over `carthageDependencies` below
+            }
+        }
+        
+        for dependency in carthageDependencies {
+            guard target.type != .staticLibrary else { break }
+            
+            let embed = dependency.embed ?? target.shouldEmbedDependencies
+            
+            var platformPath = Path(getCarthageBuildPath(platform: target.platform))
+            var frameworkPath = platformPath + dependency.reference
+            if frameworkPath.extension == nil {
+                frameworkPath = Path(frameworkPath.string + ".framework")
+            }
+            let fileReference = sourceGenerator.getFileReference(path: frameworkPath, inPath: platformPath)
+            
+            if embed {
+                if directlyEmbedCarthage {
                     let embedFile = createObject(
                         id: fileReference + target.name,
-                        PBXBuildFile(fileRef: fileReference, settings: getEmbedSettings(codeSign: dependency.codeSign ?? true))
+                        PBXBuildFile(fileRef: fileReference, settings: getEmbedSettings(dependency: dependency, codeSign: dependency.codeSign ?? true))
                     )
                     copyFrameworksReferences.append(embedFile.reference)
+                } else  {
+                    carthageFrameworksToEmbed.append(dependency.reference)
                 }
             }
         }
@@ -654,16 +675,7 @@ public class PBXProjGenerator {
 
             buildPhases.append(copyFilesPhase.reference)
         }
-
-        let carthageFrameworksToEmbed: [String]
-        if directlyEmbedCarthage {
-            carthageFrameworksToEmbed = []
-        } else {
-            carthageFrameworksToEmbed = carthageDependencies
-                .filter { $0.embed ?? target.shouldEmbedDependencies }
-                .map { $0.reference }
-        }
-
+        
         if !carthageFrameworksToEmbed.isEmpty {
 
             let inputPaths = carthageFrameworksToEmbed
