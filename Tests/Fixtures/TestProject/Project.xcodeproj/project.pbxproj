@@ -926,6 +926,7 @@
 				NT_438704538506 /* Framework_watchOS */,
 				LT_479264660374 /* Legacy */,
 				NT_399755008402 /* StaticLibrary_ObjC */,
+				AT_445731917037 /* SuperTarget */,
 				NT_935153865209 /* iMessageApp */,
 				NT_618687462494 /* iMessageExtension */,
 			);
