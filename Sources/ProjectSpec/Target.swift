@@ -29,6 +29,7 @@ public struct Target: ProjectTarget {
     public var sources: [TargetSource]
     public var dependencies: [Dependency]
     public var transitivelyLinkDependencies: Bool?
+    public var directlyEmbedCarthageDependencies: Bool?
     public var requiresObjCLinking: Bool?
     public var prebuildScripts: [BuildScript]
     public var postbuildScripts: [BuildScript]
@@ -62,6 +63,7 @@ public struct Target: ProjectTarget {
         sources: [TargetSource] = [],
         dependencies: [Dependency] = [],
         transitivelyLinkDependencies: Bool? = nil,
+        directlyEmbedCarthageDependencies: Bool? = nil,
         requiresObjCLinking: Bool? = nil,
         prebuildScripts: [BuildScript] = [],
         postbuildScripts: [BuildScript] = [],
@@ -79,6 +81,7 @@ public struct Target: ProjectTarget {
         self.sources = sources
         self.dependencies = dependencies
         self.transitivelyLinkDependencies = transitivelyLinkDependencies
+        self.directlyEmbedCarthageDependencies = directlyEmbedCarthageDependencies
         self.requiresObjCLinking = requiresObjCLinking
         self.prebuildScripts = prebuildScripts
         self.postbuildScripts = postbuildScripts
@@ -200,6 +203,7 @@ extension Target: Equatable {
             lhs.deploymentTarget == rhs.deploymentTarget &&
             lhs.transitivelyLinkDependencies == rhs.transitivelyLinkDependencies &&
             lhs.requiresObjCLinking == rhs.requiresObjCLinking &&
+            lhs.directlyEmbedCarthageDependencies == rhs.directlyEmbedCarthageDependencies &&
             lhs.settings == rhs.settings &&
             lhs.configFiles == rhs.configFiles &&
             lhs.sources == rhs.sources &&
@@ -272,6 +276,7 @@ extension Target: NamedJSONDictionaryConvertible {
             dependencies = try jsonDictionary.json(atKeyPath: "dependencies", invalidItemBehaviour: .fail)
         }
         transitivelyLinkDependencies = jsonDictionary.json(atKeyPath: "transitivelyLinkDependencies")
+        directlyEmbedCarthageDependencies = jsonDictionary.json(atKeyPath: "directlyEmbedCarthageDependencies")
         requiresObjCLinking = jsonDictionary.json(atKeyPath: "requiresObjCLinking")
 
         prebuildScripts = jsonDictionary.json(atKeyPath: "prebuildScripts") ?? []

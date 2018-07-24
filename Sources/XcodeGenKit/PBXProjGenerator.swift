@@ -435,6 +435,8 @@ public class PBXProjGenerator {
 
         let targetDependencies = (target.transitivelyLinkDependencies ?? project.options.transitivelyLinkDependencies) ?
             getAllDependenciesPlusTransitiveNeedingEmbedding(target: target) : target.dependencies
+        
+        let directlyEmbedCarthage = target.directlyEmbedCarthageDependencies ?? (target.platform == .macOS)
 
         for dependency in targetDependencies {
 
@@ -554,7 +556,7 @@ public class PBXProjGenerator {
                 carthageFrameworksByPlatform[target.platform.carthageDirectoryName, default: []].insert(fileReference)
 
                 targetFrameworkBuildFiles.append(buildFile.reference)
-                if target.platform == .macOS && embed {
+                if directlyEmbedCarthage && embed {
                     let embedFile = createObject(
                         id: fileReference + target.name,
                         PBXBuildFile(fileRef: fileReference, settings: getEmbedSettings(codeSign: dependency.codeSign ?? true))
@@ -653,11 +655,16 @@ public class PBXProjGenerator {
             buildPhases.append(copyFilesPhase.reference)
         }
 
-        let carthageFrameworksToEmbed = carthageDependencies
+        let carthageFrameworksToEmbed: [String]
+        if directlyEmbedCarthage {
+            carthageFrameworksToEmbed = []
+        } else {
+            carthageFrameworksToEmbed = carthageDependencies
                 .filter { $0.embed ?? target.shouldEmbedDependencies }
                 .map { $0.reference }
+        }
 
-        if !carthageFrameworksToEmbed.isEmpty && target.platform != .macOS {
+        if !carthageFrameworksToEmbed.isEmpty {
 
             let inputPaths = carthageFrameworksToEmbed
                 .map { "$(SRCROOT)/\(carthageBuildPath)/\(target.platform)/\($0)\($0.contains(".") ? "" : ".framework")" }
