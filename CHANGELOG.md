@@ -4,6 +4,7 @@
 
 #### Added
 - Added `showEnvVars` to build scripts to disable printing the environment [351](https://github.com/yonaskolb/XcodeGen/pull/351) @keith
+- Added `requiresObjCLinking` to `target` [354](https://github.com/yonaskolb/XcodeGen/pull/353) @brentleyjones
 
 #### Fixed
 - Sort files using localizedStandardCompare [341](https://github.com/yonaskolb/XcodeGen/pull/341) @rohitpal440

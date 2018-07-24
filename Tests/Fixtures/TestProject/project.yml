@@ -51,6 +51,7 @@ targets:
       PRODUCT_BUNDLE_IDENTIFIER: com.project.app
     dependencies:
       - target: Framework_iOS
+      - target: StaticLibrary_ObjC
       - carthage: Alamofire
       - target: App_watchOS
       - target: iMessageApp

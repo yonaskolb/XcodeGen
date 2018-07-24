@@ -418,76 +418,7 @@ public class PBXProjGenerator {
 
         var plistPath: Path?
         var searchForPlist = true
-
-        let configs: [ObjectReference<XCBuildConfiguration>] = project.configs.map { config in
-            var buildSettings = project.getTargetBuildSettings(target: target, config: config)
-
-            // automatically set INFOPLIST_FILE path
-            if !project.targetHasBuildSetting("INFOPLIST_FILE", basePath: project.basePath, target: target, config: config) {
-                if searchForPlist {
-                    plistPath = getInfoPlist(target.sources)
-                    searchForPlist = false
-                }
-                if let plistPath = plistPath {
-                    buildSettings["INFOPLIST_FILE"] = plistPath.byRemovingBase(path: project.basePath)
-                }
-            }
-
-            // automatically calculate bundle id
-            if let bundleIdPrefix = project.options.bundleIdPrefix,
-                !project.targetHasBuildSetting("PRODUCT_BUNDLE_IDENTIFIER", basePath: project.basePath, target: target, config: config) {
-                let characterSet = CharacterSet.alphanumerics.union(CharacterSet(charactersIn: "-.")).inverted
-                let escapedTargetName = target.name
-                    .replacingOccurrences(of: "_", with: "-")
-                    .components(separatedBy: characterSet)
-                    .joined(separator: "")
-                buildSettings["PRODUCT_BUNDLE_IDENTIFIER"] = bundleIdPrefix + "." + escapedTargetName
-            }
-
-            // automatically set test target name
-            if target.type == .uiTestBundle,
-                !project.targetHasBuildSetting("TEST_TARGET_NAME", basePath: project.basePath, target: target, config: config) {
-                for dependency in target.dependencies {
-                    if dependency.type == .target,
-                        let dependencyTarget = project.getTarget(dependency.reference),
-                        dependencyTarget.type == .application {
-                        buildSettings["TEST_TARGET_NAME"] = dependencyTarget.name
-                        break
-                    }
-                }
-            }
-
-            // set Carthage search paths
-            if !carthageDependencies.isEmpty {
-                let frameworkSearchPaths = "FRAMEWORK_SEARCH_PATHS"
-                let carthagePlatformBuildPath = "$(PROJECT_DIR)/" + getCarthageBuildPath(platform: target.platform)
-                var newSettings: [String] = []
-                if var array = buildSettings[frameworkSearchPaths] as? [String] {
-                    array.append(carthagePlatformBuildPath)
-                    buildSettings[frameworkSearchPaths] = array
-                } else if let string = buildSettings[frameworkSearchPaths] as? String {
-                    buildSettings[frameworkSearchPaths] = [string, carthagePlatformBuildPath]
-                } else {
-                    buildSettings[frameworkSearchPaths] = ["$(inherited)", carthagePlatformBuildPath]
-                }
-            }
-
-            var baseConfigurationReference: String?
-            if let configPath = target.configFiles[config.name] {
-                baseConfigurationReference = sourceGenerator.getContainedFileReference(path: project.basePath + configPath)
-            }
-            let buildConfig = XCBuildConfiguration(
-                name: config.name,
-                baseConfigurationReference: baseConfigurationReference,
-                buildSettings: buildSettings
-            )
-            return createObject(id: config.name + target.name, buildConfig)
-        }
-
-        let buildConfigList = createObject(id: target.name, XCConfigurationList(
-            buildConfigurations: configs.map { $0.reference },
-            defaultConfigurationName: ""
-        ))
+        var anyDependencyRequiresObjCLinking = false
 
         var dependencies: [String] = []
         var targetFrameworkBuildFiles: [String] = []
@@ -534,6 +465,11 @@ public class PBXProjGenerator {
                         PBXBuildFile(fileRef: dependencyBuildFile.object.fileRef!)
                     )
                     targetFrameworkBuildFiles.append(buildFile.reference)
+                    
+                    if !anyDependencyRequiresObjCLinking
+                        && dependencyTarget.requiresObjCLinking ?? (dependencyTarget.type == .staticLibrary) {
+                        anyDependencyRequiresObjCLinking = true
+                    }
                 }
 
                 let embed = dependency.embed ?? (!dependencyTarget.type.isLibrary && (target.type.isApp
@@ -753,6 +689,89 @@ public class PBXProjGenerator {
         }
 
         buildPhases += try target.postbuildScripts.map { try generateBuildScript(targetName: target.name, buildScript: $0) }
+        
+        let configs: [ObjectReference<XCBuildConfiguration>] = project.configs.map { config in
+            var buildSettings = project.getTargetBuildSettings(target: target, config: config)
+            
+            // automatically set INFOPLIST_FILE path
+            if !project.targetHasBuildSetting("INFOPLIST_FILE", basePath: project.basePath, target: target, config: config) {
+                if searchForPlist {
+                    plistPath = getInfoPlist(target.sources)
+                    searchForPlist = false
+                }
+                if let plistPath = plistPath {
+                    buildSettings["INFOPLIST_FILE"] = plistPath.byRemovingBase(path: project.basePath)
+                }
+            }
+            
+            // automatically calculate bundle id
+            if let bundleIdPrefix = project.options.bundleIdPrefix,
+                !project.targetHasBuildSetting("PRODUCT_BUNDLE_IDENTIFIER", basePath: project.basePath, target: target, config: config) {
+                let characterSet = CharacterSet.alphanumerics.union(CharacterSet(charactersIn: "-.")).inverted
+                let escapedTargetName = target.name
+                    .replacingOccurrences(of: "_", with: "-")
+                    .components(separatedBy: characterSet)
+                    .joined(separator: "")
+                buildSettings["PRODUCT_BUNDLE_IDENTIFIER"] = bundleIdPrefix + "." + escapedTargetName
+            }
+            
+            // automatically set test target name
+            if target.type == .uiTestBundle,
+                !project.targetHasBuildSetting("TEST_TARGET_NAME", basePath: project.basePath, target: target, config: config) {
+                for dependency in target.dependencies {
+                    if dependency.type == .target,
+                        let dependencyTarget = project.getTarget(dependency.reference),
+                        dependencyTarget.type == .application {
+                        buildSettings["TEST_TARGET_NAME"] = dependencyTarget.name
+                        break
+                    }
+                }
+            }
+            
+            // objc linkage
+            if anyDependencyRequiresObjCLinking {
+                let otherLinkingFlags = "OTHER_LDFLAGS"
+                let objCLinking = "-ObjC"
+                if var array = buildSettings[otherLinkingFlags] as? [String] {
+                    array.append(objCLinking)
+                    buildSettings[otherLinkingFlags] = array
+                } else if let string = buildSettings[otherLinkingFlags] as? String {
+                    buildSettings[otherLinkingFlags] = [string, objCLinking]
+                } else {
+                    buildSettings[otherLinkingFlags] = ["$(inherited)", objCLinking]
+                }
+            }
+            
+            // set Carthage search paths
+            if !carthageDependencies.isEmpty {
+                let frameworkSearchPaths = "FRAMEWORK_SEARCH_PATHS"
+                let carthagePlatformBuildPath = "$(PROJECT_DIR)/" + getCarthageBuildPath(platform: target.platform)
+                if var array = buildSettings[frameworkSearchPaths] as? [String] {
+                    array.append(carthagePlatformBuildPath)
+                    buildSettings[frameworkSearchPaths] = array
+                } else if let string = buildSettings[frameworkSearchPaths] as? String {
+                    buildSettings[frameworkSearchPaths] = [string, carthagePlatformBuildPath]
+                } else {
+                    buildSettings[frameworkSearchPaths] = ["$(inherited)", carthagePlatformBuildPath]
+                }
+            }
+            
+            var baseConfigurationReference: String?
+            if let configPath = target.configFiles[config.name] {
+                baseConfigurationReference = sourceGenerator.getContainedFileReference(path: project.basePath + configPath)
+            }
+            let buildConfig = XCBuildConfiguration(
+                name: config.name,
+                baseConfigurationReference: baseConfigurationReference,
+                buildSettings: buildSettings
+            )
+            return createObject(id: config.name + target.name, buildConfig)
+        }
+        
+        let buildConfigList = createObject(id: target.name, XCConfigurationList(
+            buildConfigurations: configs.map { $0.reference },
+            defaultConfigurationName: ""
+        ))
 
         let targetObject = targetObjects[target.name]!.object
 
