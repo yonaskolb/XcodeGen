@@ -18,6 +18,7 @@ public struct SpecOptions: Equatable {
     public var deploymentTarget: DeploymentTarget
     public var defaultConfig: String?
     public var transitivelyLinkDependencies: Bool
+    public var groupSortPosition: GroupSortPosition
 
     public enum ValidationType: String {
         case missingConfigs
@@ -44,6 +45,16 @@ public struct SpecOptions: Equatable {
         }
     }
 
+    /// Where groups are sorted in relation to other files
+    public enum GroupSortPosition: String {
+        /// groups are at the top
+        case top
+        /// groups are at the bottom
+        case bottom
+        /// groups are sorted with the rest of the files
+        case none
+    }
+
     public init(
         carthageBuildPath: String? = nil,
         carthageExecutablePath: String? = nil,
@@ -58,7 +69,8 @@ public struct SpecOptions: Equatable {
         deploymentTarget: DeploymentTarget = .init(),
         disabledValidations: [ValidationType] = [],
         defaultConfig: String? = nil,
-        transitivelyLinkDependencies: Bool = false
+        transitivelyLinkDependencies: Bool = false,
+        groupSortPosition: GroupSortPosition = .bottom
     ) {
         self.carthageBuildPath = carthageBuildPath
         self.carthageExecutablePath = carthageExecutablePath
@@ -74,6 +86,7 @@ public struct SpecOptions: Equatable {
         self.disabledValidations = disabledValidations
         self.defaultConfig = defaultConfig
         self.transitivelyLinkDependencies = transitivelyLinkDependencies
+        self.groupSortPosition = groupSortPosition
     }
 }
 
@@ -94,5 +107,6 @@ extension SpecOptions: JSONObjectConvertible {
         disabledValidations = jsonDictionary.json(atKeyPath: "disabledValidations") ?? []
         defaultConfig = jsonDictionary.json(atKeyPath: "defaultConfig")
         transitivelyLinkDependencies = jsonDictionary.json(atKeyPath: "transitivelyLinkDependencies") ?? false
+        groupSortPosition = jsonDictionary.json(atKeyPath: "groupSortPosition") ?? .bottom
     }
 }

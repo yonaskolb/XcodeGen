@@ -395,10 +395,13 @@ public class PBXProjGenerator {
                 return ObjectReference(reference: reference, object: fileElement)
             }
             .sorted { child1, child2 in
-                if child1.object.sortOrder == child2.object.sortOrder {
+                let sortOrder1 = child1.object.getSortOrder(groupSortPosition: project.options.groupSortPosition)
+                let sortOrder2 = child2.object.getSortOrder(groupSortPosition: project.options.groupSortPosition)
+
+                if sortOrder1 == sortOrder2 {
                     return child1.object.nameOrPath.localizedStandardCompare(child2.object.nameOrPath) == .orderedAscending
                 } else {
-                    return child1.object.sortOrder < child2.object.sortOrder
+                    return sortOrder1 < sortOrder2
                 }
             }
         group.object.children = children.map { $0.reference }.filter { $0 != group.reference }
@@ -873,5 +876,20 @@ extension Target {
 
     var shouldEmbedDependencies: Bool {
         return type.isApp || type.isTest
+    }
+}
+
+extension PBXFileElement {
+
+    public func getSortOrder(groupSortPosition: SpecOptions.GroupSortPosition) -> Int {
+        if type(of: self).isa == "PBXGroup" {
+            switch groupSortPosition {
+            case .top: return -1
+            case .bottom: return 1
+            case .none: return 0
+            }
+        } else {
+            return 0
+        }
     }
 }
