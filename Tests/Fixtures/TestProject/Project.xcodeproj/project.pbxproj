@@ -50,7 +50,7 @@
 		BF_337656089700 = {isa = PBXBuildFile; fileRef = FR_399755008402 /* StaticLibrary_ObjC.a */; };
 		BF_360196406184 /* TestProjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_722239415598 /* TestProjectTests.swift */; };
 		BF_425679397292 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = FR_183521624014 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		BF_441538117869 /* App_watchOS Extension.appex in CopyFiles */ = {isa = PBXBuildFile; fileRef = FR_507023492251 /* App_watchOS Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		BF_441538117869 /* App_watchOS Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = FR_507023492251 /* App_watchOS Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		BF_447782698339 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_752394658615 /* Alamofire.framework */; };
 		BF_456457948943 /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_172952167809 /* FrameworkFile.swift */; };
 		BF_461525575903 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_752394658615 /* Alamofire.framework */; };
@@ -75,17 +75,17 @@
 		BF_729846993631 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_410645050443 /* Alamofire.framework */; };
 		BF_732745079658 = {isa = PBXBuildFile; fileRef = FR_324671077936 /* App_watchOS.app */; };
 		BF_734036107922 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = FR_183521624014 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		BF_747443236192 /* App_watchOS.app in CopyFiles */ = {isa = PBXBuildFile; fileRef = FR_324671077936 /* App_watchOS.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		BF_747443236192 /* App_watchOS.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = FR_324671077936 /* App_watchOS.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		BF_757906110813 = {isa = PBXBuildFile; fileRef = FR_662315837182 /* Framework.framework */; };
 		BF_813358525536 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = FR_183521624014 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BF_828878846239 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = VG_201160695646 /* MainInterface.storyboard */; };
 		BF_830383951771 /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_304712043717 /* NotificationController.swift */; };
 		BF_854463933379 = {isa = PBXBuildFile; fileRef = FR_438704538506 /* Framework.framework */; };
 		BF_860391087135 /* StandaloneAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FR_408537768279 /* StandaloneAssets.xcassets */; };
-		BF_870702193513 /* iMessageExtension.appex in CopyFiles */ = {isa = PBXBuildFile; fileRef = FR_618687462494 /* iMessageExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		BF_870702193513 /* iMessageExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = FR_618687462494 /* iMessageExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		BF_892119987440 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_854336462818 /* AppDelegate.swift */; settings = {COMPILER_FLAGS = "-Werror"; }; };
 		BF_901390118565 /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_172952167809 /* FrameworkFile.swift */; };
-		BF_905038616071 /* Framework.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = FR_472296042419 /* Framework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BF_905038616071 /* Framework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FR_472296042419 /* Framework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BF_905617636654 /* Headers in Headers */ = {isa = PBXBuildFile; fileRef = FR_815403394914 /* Headers */; settings = {ATTRIBUTES = (Public, ); }; };
 		BF_940936137577 = {isa = PBXBuildFile; fileRef = FR_123503999387 /* App_iOS_UITests.xctest */; };
 		BF_943177036061 /* StaticLibrary_ObjC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_399755008402 /* StaticLibrary_ObjC.a */; };
@@ -193,44 +193,48 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		CFBP_2836118931 /* CopyFiles */ = {
+		CFBP_2836118931 /* Embed Watch Content */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
 			dstSubfolderSpec = 16;
 			files = (
-				BF_747443236192 /* App_watchOS.app in CopyFiles */,
+				BF_747443236192 /* App_watchOS.app in Embed Watch Content */,
 			);
+			name = "Embed Watch Content";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		CFBP_4684049960 /* CopyFiles */ = {
+		CFBP_4684049960 /* Embed App Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				BF_441538117869 /* App_watchOS Extension.appex in CopyFiles */,
+				BF_441538117869 /* App_watchOS Extension.appex in Embed App Extensions */,
 			);
+			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		CFBP_5460766702 /* CopyFiles */ = {
+		CFBP_5460766702 /* Embed App Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				BF_870702193513 /* iMessageExtension.appex in CopyFiles */,
+				BF_870702193513 /* iMessageExtension.appex in Embed App Extensions */,
 			);
+			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		CFBP_6493932244 /* CopyFiles */ = {
+		CFBP_6493932244 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				BF_905038616071 /* Framework.framework in CopyFiles */,
+				BF_905038616071 /* Framework.framework in Embed Frameworks */,
 			);
+			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -686,7 +690,7 @@
 				SBP_32467107793 /* Sources */,
 				RBP_32467107793 /* Resources */,
 				FBP_32467107793 /* Frameworks */,
-				CFBP_4684049960 /* CopyFiles */,
+				CFBP_4684049960 /* Embed App Extensions */,
 				SSBP_5954948530 /* Carthage */,
 			);
 			buildRules = (
@@ -847,8 +851,8 @@
 				SBP_82523211050 /* Sources */,
 				RBP_82523211050 /* Resources */,
 				FBP_82523211050 /* Frameworks */,
-				CFBP_6493932244 /* CopyFiles */,
-				CFBP_2836118931 /* CopyFiles */,
+				CFBP_6493932244 /* Embed Frameworks */,
+				CFBP_2836118931 /* Embed Watch Content */,
 				SSBP_8106229290 /* Carthage */,
 				SSBP_5106020372 /* Strip Unused Architectures from Frameworks */,
 				SSBP_8706434794 /* MyScript */,
@@ -872,7 +876,7 @@
 			buildPhases = (
 				SBP_93515386520 /* Sources */,
 				RBP_93515386520 /* Resources */,
-				CFBP_5460766702 /* CopyFiles */,
+				CFBP_5460766702 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
