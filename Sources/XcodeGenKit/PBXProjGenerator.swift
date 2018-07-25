@@ -614,6 +614,7 @@ public class PBXProjGenerator {
                 PBXCopyFilesBuildPhase(
                     dstPath: "",
                     dstSubfolderSpec: .plugins,
+                    name: "Embed App Extensions",
                     files: extensions
                 )
             )
@@ -629,6 +630,7 @@ public class PBXProjGenerator {
                 PBXCopyFilesBuildPhase(
                     dstPath: "",
                     dstSubfolderSpec: .frameworks,
+                    name: "Embed Frameworks",
                     files: copyFrameworksReferences
                 )
             )
@@ -643,6 +645,7 @@ public class PBXProjGenerator {
                 PBXCopyFilesBuildPhase(
                     dstPath: "$(CONTENTS_FOLDER_PATH)/Watch",
                     dstSubfolderSpec: .productsDirectory,
+                    name: "Embed Watch Content",
                     files: copyWatchReferences
                 )
             )
