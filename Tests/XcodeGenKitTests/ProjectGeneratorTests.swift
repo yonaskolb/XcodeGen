@@ -467,6 +467,7 @@ class ProjectGeneratorTests: XCTestCase {
                 ])
                 expectedEmbeddedFrameworks[iosFrameworkB.name] = Set([
                     "FrameworkE.framework",
+                    "CarthageC.framework",
                 ])
 
                 let appTest = Target(

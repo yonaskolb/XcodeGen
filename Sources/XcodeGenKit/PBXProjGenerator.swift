@@ -437,7 +437,7 @@ public class PBXProjGenerator {
         let targetDependencies = (target.transitivelyLinkDependencies ?? project.options.transitivelyLinkDependencies) ?
             getAllDependenciesPlusTransitiveNeedingEmbedding(target: target) : target.dependencies
         
-        let directlyEmbedCarthage = target.directlyEmbedCarthageDependencies ?? (target.platform == .macOS || target.type.isTest)
+        let directlyEmbedCarthage = target.directlyEmbedCarthageDependencies ?? !(target.platform.requiresSimulatorStripping && target.type.isApp)
         
         func getEmbedSettings(dependency: Dependency, codeSign: Bool) -> [String: Any] {
             var embedAttributes: [String] = []
@@ -919,6 +919,18 @@ extension Target {
 
     var shouldEmbedDependencies: Bool {
         return type.isApp || type.isTest
+    }
+}
+
+extension Platform {
+    /// - returns: `true` for platforms that the app store requires simulator slices to be stripped.
+    public var requiresSimulatorStripping: Bool {
+        switch self {
+        case .iOS, .tvOS, .watchOS:
+            return true
+        case .macOS:
+            return false
+        }
     }
 }
 
