@@ -20,14 +20,14 @@
 
 # XcodeGen
 
-XcodeGen is a command line tool that generates your Xcode project using your folder structure and a simple project spec.
+XcodeGen is a command line tool written in Swift that generates your Xcode project using your folder structure and a project spec.
 
-The project spec is a YAML or JSON file that defines your targets, configurations, schemes, custom build settings and many other options. All your source directories are automatically parsed and referenced appropriately while preserving your folder structure. Sensible defaults are used in many places, so you only need to customize what is needed. Very complex projects can also be defined as well.
+The project spec is a YAML or JSON file that defines your targets, configurations, schemes, custom build settings and many other options. All your source directories are automatically parsed and referenced appropriately while preserving your folder structure. Sensible defaults are used in many places, so you only need to customize what is needed. Very complex projects can also be defined using more advanced features.
 
-- ✅ Create projects on demand and remove your `.xcodeproj` file from git, which means **no merge conflicts**!
-- ✅ Groups in Xcode are always **synced** to your directories on disk
+- ✅ Generate projects on demand and remove your `.xcodeproj` file from git, which means **no more merge conflicts**!
+- ✅ Groups and files in Xcode are always **synced** to your directories on disk
 - ✅ Easy **configuration** of projects which is human readable and git friendly
-- ✅ Easily **copy and paste** files and directories without having to edit anything in Xcode
+- ✅ Easily copy and paste **files and directories** without having to edit anything in Xcode
 - ✅ Share build settings across multiple targets with **build setting groups**
 - ✅ Automatically generate Schemes for **different environments** like test and production
 - ✅ Easily **create new projects** with complicated setups on demand without messing around with Xcode
@@ -49,9 +49,13 @@ targets:
     deploymentTarget: "10.0"
     sources: [MyApp]
     settings:
-      CUSTOM_BUILD_SETTING: my_value
+      debug:
+        CUSTOM_BUILD_SETTING: my_debug_value
+      release:
+        CUSTOM_BUILD_SETTING: my_release_value
     dependencies:
       - target: MyFramework
+      - carthage: Alamofire
   MyFramework:
     type: framework
     platform: iOS
@@ -116,7 +120,7 @@ Use `xcodegen --help` to see the list of options:
 
 - **--spec**: An optional path to a `.yml` or `.json` project spec.
 - **--project**: An optional path to a directory where the project will be generated. By default this is the directory the spec lives in.
-- **--quiet**: Suppress informational and success messages. By default this is disabled.
+- **--quiet**: Suppress informational and success messages.
 
 ## Editing
 ```shell
