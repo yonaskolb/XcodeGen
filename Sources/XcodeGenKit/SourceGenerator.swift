@@ -55,7 +55,9 @@ class SourceGenerator {
     func generateSourceFile(targetType: PBXProductType, targetSource: TargetSource, path: Path, buildPhase: TargetSource.BuildPhase? = nil) -> SourceFile {
         let fileReference = fileReferencesByPath[path.string.lowercased()]!
         var settings: [String: Any] = [:]
-        let chosenBuildPhase: TargetSource.BuildPhase?
+        var chosenBuildPhase: TargetSource.BuildPhase?
+        
+        let headerVisibility = targetSource.headerVisibility ?? .public
 
         if let buildPhase = buildPhase {
             chosenBuildPhase = buildPhase
@@ -64,9 +66,21 @@ class SourceGenerator {
         } else {
             chosenBuildPhase = getDefaultBuildPhase(for: path, targetType: targetType)
         }
+        
+        if chosenBuildPhase == .headers && targetType == .staticLibrary {
+            // Static libraries don't support the header build phase
+            // For public headers they need to be copied
+            if headerVisibility == .public {
+                chosenBuildPhase = .copyFiles(TargetSource.BuildPhase.CopyFilesSettings(
+                        destination: .productsDirectory,
+                        subpath: "include/$(PRODUCT_NAME)"
+                    ))
+            } else {
+                chosenBuildPhase = nil
+            }
+        }
 
         if chosenBuildPhase == .headers {
-            let headerVisibility = targetSource.headerVisibility ?? .public
             if headerVisibility != .project {
                 // Xcode doesn't write the default of project
                 settings["ATTRIBUTES"] = [headerVisibility.settingName]
