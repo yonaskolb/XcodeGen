@@ -40,8 +40,11 @@ func generate(spec: String, project: String, isQuiet: Bool, justVersion: Bool) {
 
     do {
         logger.info("⚙️  Generating project...")
+        
+        try project.validateMinimumXcodeGenVersion(version)
+        
         let projectGenerator = ProjectGenerator(project: project)
-        let xcodeProject = try projectGenerator.generateXcodeProject(xcodeGenVersion: version)
+        let xcodeProject = try projectGenerator.generateXcodeProject()
 
         logger.info("⚙️  Writing project...")
 

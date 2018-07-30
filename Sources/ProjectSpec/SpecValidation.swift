@@ -3,14 +3,9 @@ import PathKit
 
 extension Project {
 
-    public func validate(xcodeGenVersion: Version) throws {
+    public func validate() throws {
 
         var errors: [SpecValidationError.ValidationError] = []
-        
-        if let minimumXcodeGenVersion = options.minimumXcodeGenVersion, xcodeGenVersion < minimumXcodeGenVersion {
-            errors.append(.invalidXcodeGenVersion(version: xcodeGenVersion, minimumVersion: minimumXcodeGenVersion))
-        }
-
         func validateSettings(_ settings: Settings) -> [SpecValidationError.ValidationError] {
             var errors: [SpecValidationError.ValidationError] = []
             for group in settings.groups {

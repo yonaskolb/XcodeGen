@@ -8,16 +8,16 @@ import Yams
 
 extension Project {
 
-    func generateXcodeProject(xcodeGenVersion: Version = try! Version("1.11.0"), file: String = #file, line: Int = #line) throws -> XcodeProj {
+    func generateXcodeProject(file: String = #file, line: Int = #line) throws -> XcodeProj {
         return try doThrowing(file: file, line: line) {
             let generator = ProjectGenerator(project: self)
-            return try generator.generateXcodeProject(xcodeGenVersion: xcodeGenVersion)
+            return try generator.generateXcodeProject()
         }
     }
 
-    func generatePbxProj(xcodeGenVersion: Version = try! Version("1.11.0"), file: String = #file, line: Int = #line) throws -> PBXProj {
+    func generatePbxProj(file: String = #file, line: Int = #line) throws -> PBXProj {
         return try doThrowing(file: file, line: line) {
-            let xcodeProject = try generateXcodeProject(xcodeGenVersion: xcodeGenVersion).pbxproj
+            let xcodeProject = try generateXcodeProject().pbxproj
             try xcodeProject.validate()
             return xcodeProject
         }

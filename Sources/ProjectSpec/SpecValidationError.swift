@@ -5,7 +5,7 @@ public struct SpecValidationError: Error, CustomStringConvertible {
     public var errors: [ValidationError]
 
     public enum ValidationError: Error, CustomStringConvertible {
-        case invalidXcodeGenVersion(version: Version, minimumVersion: Version)
+        case invalidXcodeGenVersion(minimumVersion: Version, version: Version)
         case invalidTargetDependency(target: String, dependency: String)
         case invalidTargetSource(target: String, source: String)
         case invalidTargetConfigFile(target: String, configFile: String, config: String)
@@ -24,7 +24,7 @@ public struct SpecValidationError: Error, CustomStringConvertible {
 
         public var description: String {
             switch self {
-            case let .invalidXcodeGenVersion(version, minimumVersion):
+            case let .invalidXcodeGenVersion(minimumVersion, version):
                 return "XcodeGen version is \(version), but minimum required version specified as \(minimumVersion)"
             case let .invalidTargetDependency(target, dependency):
                 return "Target \(target.quoted) has invalid dependency: \(dependency.quoted)"
