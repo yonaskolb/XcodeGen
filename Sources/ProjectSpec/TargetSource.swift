@@ -159,10 +159,10 @@ extension TargetSource.BuildPhase {
         case "headers": self = .headers
         case "resources": self = .resources
         case "copyFiles":
-            throw SpecParsingError.invalidSourceCopyFilesPhase
+            throw SpecParsingError.invalidSourceBuildPhase("copyFiles must specify directory")
         case "none": self = .none
         default:
-            throw SpecParsingError.unknownSourceBuildPhase(string)
+            throw SpecParsingError.invalidSourceBuildPhase("Unknown build phase \(string.quoted)")
         }
     }
 }
