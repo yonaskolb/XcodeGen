@@ -115,31 +115,7 @@ class SourceGenerator {
             }
             let lastKnownFileType = lastKnownFileType ?? PBXFileReference.fileType(path: path)
 
-            if path.extension == "xcdatamodeld" {
-                let models = (try? path.children()) ?? []
-                let modelFileReference = models
-                    .filter { $0.extension == "xcdatamodel" }
-                    .sorted { $0.string.localizedStandardCompare($1.string) == .orderedAscending }
-                    .map { path in
-                        createObject(
-                            id: path.byRemovingBase(path: project.basePath).string,
-                            PBXFileReference(
-                                sourceTree: .group,
-                                lastKnownFileType: "wrapper.xcdatamodel",
-                                path: path.lastComponent
-                            )
-                        )
-                    }
-                let versionGroup = addObject(id: fileReferencePath.string, XCVersionGroup(
-                    currentVersion: modelFileReference.last?.reference,
-                    path: fileReferencePath.string,
-                    sourceTree: sourceTree,
-                    versionGroupType: "wrapper.xcdatamodel",
-                    children: modelFileReference.map { $0.reference }
-                ))
-                fileReferencesByPath[fileReferenceKey] = versionGroup
-                return versionGroup
-            } else {
+            guard path.extension == "xcdatamodeld" else {
                 let fileReference = createObject(
                     id: path.byRemovingBase(path: project.basePath).string,
                     PBXFileReference(
@@ -152,6 +128,40 @@ class SourceGenerator {
                 fileReferencesByPath[fileReferenceKey] = fileReference.reference
                 return fileReference.reference
             }
+            let versionedModels = (try? path.children()) ?? []
+
+            // Sort the versions alphabetically
+            let sortedPaths = versionedModels
+                .filter { $0.extension == "xcdatamodel" }
+                .sorted { $0.string.localizedStandardCompare($1.string) == .orderedAscending }
+
+            let modelFileReference =
+                sortedPaths.map { path in
+                    createObject(
+                        id: path.byRemovingBase(path: project.basePath).string,
+                        PBXFileReference(
+                            sourceTree: .group,
+                            lastKnownFileType: "wrapper.xcdatamodel",
+                            path: path.lastComponent
+                        )
+                    )
+                }
+            // If no current version path is found we fall back to alphabetical
+            // order by taking the last item in the sortedPaths array
+            let currentVersionPath = findCurrentCoreDataModelVersionPath(using: versionedModels) ?? sortedPaths.last
+            let currentVersion: ObjectReference<PBXFileReference>? = {
+                guard let indexOf = sortedPaths.index(where: { $0 == currentVersionPath }) else { return nil }
+                return modelFileReference[indexOf]
+            }()
+            let versionGroup = addObject(id: fileReferencePath.string, XCVersionGroup(
+                currentVersion: currentVersion?.reference,
+                path: fileReferencePath.string,
+                sourceTree: sourceTree,
+                versionGroupType: "wrapper.xcdatamodel",
+                children: modelFileReference.map { $0.reference }
+            ))
+            fileReferencesByPath[fileReferenceKey] = versionGroup
+            return versionGroup
         }
     }
 
@@ -485,5 +495,17 @@ class SourceGenerator {
         if !hasParentGroup {
             createIntermediaGroups(for: parentGroup.reference, at: parentPath)
         }
+    }
+
+    private func findCurrentCoreDataModelVersionPath(using versionedModels: [Path]) -> Path? {
+        // Find and parse the current version model stored in the .xccurrentversion file
+        guard
+            let versionPath = versionedModels.first(where: { $0.lastComponent == ".xccurrentversion" }),
+            let data = try? versionPath.read(),
+            let plist = try? PropertyListSerialization.propertyList(from: data, options: [], format: nil) as? [String: Any],
+            let versionString = plist?["_XCCurrentVersionName"] as? String else {
+                return nil
+        }
+        return versionedModels.first(where: { $0.lastComponent == versionString })
     }
 }

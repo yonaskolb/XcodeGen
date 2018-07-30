@@ -101,7 +101,10 @@ class SourceGeneratorTests: XCTestCase {
                 let directories = """
                 Sources:
                     model.xcdatamodeld:
+                        - .xccurrentversion
                         - model.xcdatamodel
+                        - model1.xcdatamodel
+                        - model2.xcdatamodel
                 """
                 try createDirectories(directories)
 
@@ -109,16 +112,16 @@ class SourceGeneratorTests: XCTestCase {
                 let project = Project(basePath: directoryPath, name: "Test", targets: [target])
 
                 let pbxProj = try project.generatePbxProj()
-                guard let fileReference = pbxProj.objects.fileReferences.first(where: { $0.value.nameOrPath == "model.xcdatamodel" }) else {
+                guard let fileReference = pbxProj.objects.fileReferences.first(where: { $0.value.nameOrPath == "model2.xcdatamodel" }) else {
                     throw failure("Couldn't find model file reference")
                 }
                 guard let versionGroup = pbxProj.objects.versionGroups.values.first else {
                     throw failure("Couldn't find version group")
                 }
                 try expect(versionGroup.currentVersion) == fileReference.key
-                try expect(versionGroup.children) == [fileReference.key]
+                try expect(versionGroup.children.count) == 3
                 try expect(versionGroup.path) == "model.xcdatamodeld"
-                try expect(fileReference.value.path) == "model.xcdatamodel"
+                try expect(fileReference.value.path) == "model2.xcdatamodel"
             }
 
             $0.it("handles duplicate names") {
