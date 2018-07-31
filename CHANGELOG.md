@@ -15,6 +15,7 @@
 - Use the latest `xcdatamodel` when sorted by version [341](https://github.com/yonaskolb/XcodeGen/pull/341) @rohitpal440
 - Fixed compiler flags being set on non source files in mixed build phase target sources [347](https://github.com/yonaskolb/XcodeGen/pull/347) @brentleyjones
 - Fixed `options.xcodeVersion` not being parsed [348](https://github.com/yonaskolb/XcodeGen/pull/348) @brentleyjones
+- Fixed non-application targets using `carthage copy-frameworks` [361](https://github.com/yonaskolb/XcodeGen/pull/361) @brentleyjones
 
 #### Changed
 - Improved linking for `static.library` targets [352](https://github.com/yonaskolb/XcodeGen/pull/352) @brentleyjones
