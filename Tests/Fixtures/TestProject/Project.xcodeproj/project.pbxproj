@@ -65,7 +65,7 @@
 		BF_538515166673 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = VG_256263906698 /* LaunchScreen.storyboard */; };
 		BF_561304997165 /* Standalone.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_675266829517 /* Standalone.swift */; };
 		BF_563614389392 = {isa = PBXBuildFile; fileRef = FR_618687462494 /* iMessageExtension.appex */; };
-		BF_607543323797 = {isa = PBXBuildFile; fileRef = FR_698230898030 /* StaticLibrary_ObjC.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BF_607543323797 /* StaticLibrary_ObjC.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = FR_698230898030 /* StaticLibrary_ObjC.h */; };
 		BF_612351978356 /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = VG_264279911176 /* Interface.storyboard */; };
 		BF_624802436672 /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_172952167809 /* FrameworkFile.swift */; };
 		BF_632297340262 /* StaticLibrary_ObjC.m in Sources */ = {isa = PBXBuildFile; fileRef = "FR_698230898030-1" /* StaticLibrary_ObjC.m */; };
@@ -214,6 +214,7 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
+				BF_607543323797 /* StaticLibrary_ObjC.h in CopyFiles */,
 				BF_755064703081 /* module.modulemap in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
