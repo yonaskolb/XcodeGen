@@ -1,0 +1,4 @@
+module StaticLibrary_ObjC {
+    header "StaticLibrary_ObjC.h"
+    export *
+}

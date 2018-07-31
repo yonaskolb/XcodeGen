@@ -21,6 +21,7 @@
 - Improved linking for `static.library` targets [352](https://github.com/yonaskolb/XcodeGen/pull/352) @brentleyjones
 - Changed default group sorting to be after files [356](https://github.com/yonaskolb/XcodeGen/pull/356) @yonaskolb
 - Moved `Frameworks` and `Products` top level groups to bottom [356](https://github.com/yonaskolb/XcodeGen/pull/356) @yonaskolb
+- `modulemap` files are automatically copied to the products directory for static library targets [346](https://github.com/yonaskolb/XcodeGen/pull/346) @brentleyjones
 
 #### Internal
 - Moved brew formula to homebrew core

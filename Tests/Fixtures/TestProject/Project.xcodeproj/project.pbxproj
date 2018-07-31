@@ -78,6 +78,7 @@
 		BF_732745079658 = {isa = PBXBuildFile; fileRef = FR_324671077936 /* App_watchOS.app */; };
 		BF_734036107922 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = FR_183521624014 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BF_747443236192 /* App_watchOS.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = FR_324671077936 /* App_watchOS.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		BF_755064703081 /* module.modulemap in CopyFiles */ = {isa = PBXBuildFile; fileRef = FR_851415936432 /* module.modulemap */; };
 		BF_757906110813 = {isa = PBXBuildFile; fileRef = FR_662315837182 /* Framework.framework */; };
 		BF_807556340853 /* Empty.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = FR_837374194182 /* Empty.h */; };
 		BF_813358525536 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = FR_183521624014 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -207,6 +208,16 @@
 			name = "Embed Watch Content";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		CFBP_3265670993 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+				BF_755064703081 /* module.modulemap in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CFBP_4082141876 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -301,6 +312,7 @@
 		FR_410645050443 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Alamofire.framework; sourceTree = "<group>"; };
 		FR_438704538506 /* Framework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Framework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR_452853029807 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Alamofire.framework; sourceTree = "<group>"; };
+		FR_461737784133 /* module.modulemap */ = {isa = PBXFileReference; path = module.modulemap; sourceTree = "<group>"; };
 		FR_472296042419 /* Framework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Framework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR_473000061463 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		FR_479281060337 /* Folder */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Folder; sourceTree = SOURCE_ROOT; };
@@ -335,6 +347,7 @@
 		FR_825232110500 /* App_iOS.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = App_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR_830053537293 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FR_837374194182 /* Empty.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Empty.h; sourceTree = "<group>"; };
+		FR_851415936432 /* module.modulemap */ = {isa = PBXFileReference; path = module.modulemap; sourceTree = "<group>"; };
 		FR_854336462818 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FR_868653349092 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FR_935153865209 /* iMessageApp.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = iMessageApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -489,6 +502,7 @@
 		G_3997550084026 /* StaticLibrary_ObjC */ = {
 			isa = PBXGroup;
 			children = (
+				FR_851415936432 /* module.modulemap */,
 				FR_698230898030 /* StaticLibrary_ObjC.h */,
 				"FR_698230898030-1" /* StaticLibrary_ObjC.m */,
 			);
@@ -572,6 +586,7 @@
 				VG_118219888726 /* LocalizedStoryboard.storyboard */,
 				VG_609193904586 /* Main.storyboard */,
 				VG_229021855709 /* Model.xcdatamodeld */,
+				FR_461737784133 /* module.modulemap */,
 				FR_481575785861 /* ViewController.swift */,
 			);
 			name = App;
@@ -753,6 +768,7 @@
 			buildConfigurationList = CL_399755008402 /* Build configuration list for PBXNativeTarget "StaticLibrary_ObjC" */;
 			buildPhases = (
 				SBP_39975500840 /* Sources */,
+				CFBP_3265670993 /* CopyFiles */,
 			);
 			buildRules = (
 			);
