@@ -261,21 +261,34 @@ A source can be provided via a string (the path) or an object of the form:
 	- `sources` - Compile Sources phase
 	- `resources` - Copy Bundle Resources phase
 	- `headers` - Headers Phase
+	- `copyFiles` - Copy Files Phase. Must be specified as an object with the following fields:
+		- [x] **destination**: **String** - Destination of the Copy Files phase. This can be one of the following values:
+			- `absolutePath`
+			- `productsDirectory`
+			- `wrapper`
+			- `executables`
+			- `resources`
+			- `javaResources`
+			- `frameworks`
+			- `sharedFrameworks`
+			- `sharedSupport`
+			- `plugins`
+		- [ ] **subpath**: **String** - The path inside of the destination to copy the files.
 	- `none` - Will not be added to any build phases
 - [ ] **type**: **String**: This can be one of the following values
 	- `file`: a file reference with a parent group will be created (Default for files or directories with extensions)
 	- `group`: a group with all it's containing files. (Default for directories without extensions)
 	- `folder`: a folder reference.
-- [ ] **headerVisibility**: **String** The visibility of any headers. This defaults to `public`, but can be either:
+- [ ] **headerVisibility**: **String** - The visibility of any headers. This defaults to `public`, but can be either:
 	- `public`
 	- `private`
 	- `project`
 
 ```yaml
 targets:
-  MyTarget
+  MyTarget:
     sources: MyTargetSource
-  MyOtherTarget
+  MyOtherTarget:
     sources:
       - MyOtherTargetSource1
       - path: MyOtherTargetSource2
@@ -289,6 +302,11 @@ targets:
           - "-Wextra"
       - path: MyOtherTargetSource3
         compilerFlags: "-Werror -Wextra"
+      - path: ModuleMaps
+        buildPhase:
+          copyFiles:
+            destination: productsDirectory
+            subpath: include/$(PRODUCT_NAME)
       - path: Resources
         type: folder
 ```

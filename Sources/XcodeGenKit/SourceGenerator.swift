@@ -7,7 +7,7 @@ struct SourceFile {
     let path: Path
     let fileReference: String
     let buildFile: PBXBuildFile
-    let buildPhase: BuildPhase?
+    let buildPhase: TargetSource.BuildPhase?
 }
 
 class SourceGenerator {
@@ -52,15 +52,15 @@ class SourceGenerator {
         _ = try getSourceFiles(targetSource: TargetSource(path: path), path: fullPath)
     }
 
-    func generateSourceFile(targetSource: TargetSource, path: Path, buildPhase: BuildPhase? = nil) -> SourceFile {
+    func generateSourceFile(targetSource: TargetSource, path: Path, buildPhase: TargetSource.BuildPhase? = nil) -> SourceFile {
         let fileReference = fileReferencesByPath[path.string.lowercased()]!
         var settings: [String: Any] = [:]
-        let chosenBuildPhase: BuildPhase?
+        let chosenBuildPhase: TargetSource.BuildPhase?
 
         if let buildPhase = buildPhase {
             chosenBuildPhase = buildPhase
         } else if let buildPhase = targetSource.buildPhase {
-            chosenBuildPhase = buildPhase.buildPhase
+            chosenBuildPhase = buildPhase
         } else {
             chosenBuildPhase = getDefaultBuildPhase(for: path)
         }
@@ -156,7 +156,7 @@ class SourceGenerator {
     }
 
     /// returns a default build phase for a given path. This is based off the filename
-    private func getDefaultBuildPhase(for path: Path) -> BuildPhase? {
+    private func getDefaultBuildPhase(for path: Path) -> TargetSource.BuildPhase? {
         if path.lastComponent == "Info.plist" {
             return nil
         }
@@ -424,9 +424,9 @@ class SourceGenerator {
                 rootGroups.insert(fileReference)
             }
 
-            let buildPhase: BuildPhase?
+            let buildPhase: TargetSource.BuildPhase?
             if let targetBuildPhase = targetSource.buildPhase {
-                buildPhase = targetBuildPhase.buildPhase
+                buildPhase = targetBuildPhase
             } else {
                 buildPhase = .resources
             }
