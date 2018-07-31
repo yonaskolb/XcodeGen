@@ -432,24 +432,27 @@ public class PBXProjGenerator {
         var copyResourcesReferences: [String] = []
         var copyWatchReferences: [String] = []
         var extensions: [String] = []
+        var carthageFrameworksToEmbed: [String] = []
 
         let targetDependencies = (target.transitivelyLinkDependencies ?? project.options.transitivelyLinkDependencies) ?
             getAllDependenciesPlusTransitiveNeedingEmbedding(target: target) : target.dependencies
+        
+        let directlyEmbedCarthage = target.directlyEmbedCarthageDependencies ?? !(target.platform.requiresSimulatorStripping && target.type.isApp)
+        
+        func getEmbedSettings(dependency: Dependency, codeSign: Bool) -> [String: Any] {
+            var embedAttributes: [String] = []
+            if codeSign {
+                embedAttributes.append("CodeSignOnCopy")
+            }
+            if dependency.removeHeaders {
+                embedAttributes.append("RemoveHeadersOnCopy")
+            }
+            return ["ATTRIBUTES": embedAttributes]
+        }
 
         for dependency in targetDependencies {
 
             let embed = dependency.embed ?? target.shouldEmbedDependencies
-
-            func getEmbedSettings(codeSign: Bool) -> [String: Any] {
-                var embedAttributes: [String] = []
-                if codeSign {
-                    embedAttributes.append("CodeSignOnCopy")
-                }
-                if dependency.removeHeaders {
-                    embedAttributes.append("RemoveHeadersOnCopy")
-                }
-                return ["ATTRIBUTES": embedAttributes]
-            }
 
             switch dependency.type {
             case .target:
@@ -485,7 +488,7 @@ public class PBXProjGenerator {
                         id: dependencyFileReference + target.name,
                         PBXBuildFile(
                             fileRef: dependencyFileReference,
-                            settings: getEmbedSettings(codeSign: dependency.codeSign ?? !dependencyTarget.type.isExecutable)
+                            settings: getEmbedSettings(dependency: dependency, codeSign: dependency.codeSign ?? !dependencyTarget.type.isExecutable)
                         )
                     )
 
@@ -531,7 +534,7 @@ public class PBXProjGenerator {
                 if embed {
                     let embedFile = createObject(
                         id: fileReference + target.name,
-                        PBXBuildFile(fileRef: fileReference, settings: getEmbedSettings(codeSign: dependency.codeSign ?? true))
+                        PBXBuildFile(fileRef: fileReference, settings: getEmbedSettings(dependency: dependency, codeSign: dependency.codeSign ?? true))
                     )
                     copyFrameworksReferences.append(embedFile.reference)
                 }
@@ -554,12 +557,32 @@ public class PBXProjGenerator {
                 carthageFrameworksByPlatform[target.platform.carthageDirectoryName, default: []].insert(fileReference)
 
                 targetFrameworkBuildFiles.append(buildFile.reference)
-                if target.platform == .macOS && embed {
+                
+                // Embedding handled by iterating over `carthageDependencies` below
+            }
+        }
+        
+        for dependency in carthageDependencies {
+            guard target.type != .staticLibrary else { break }
+            
+            let embed = dependency.embed ?? target.shouldEmbedDependencies
+            
+            var platformPath = Path(getCarthageBuildPath(platform: target.platform))
+            var frameworkPath = platformPath + dependency.reference
+            if frameworkPath.extension == nil {
+                frameworkPath = Path(frameworkPath.string + ".framework")
+            }
+            let fileReference = sourceGenerator.getFileReference(path: frameworkPath, inPath: platformPath)
+            
+            if embed {
+                if directlyEmbedCarthage {
                     let embedFile = createObject(
                         id: fileReference + target.name,
-                        PBXBuildFile(fileRef: fileReference, settings: getEmbedSettings(codeSign: dependency.codeSign ?? true))
+                        PBXBuildFile(fileRef: fileReference, settings: getEmbedSettings(dependency: dependency, codeSign: dependency.codeSign ?? true))
                     )
                     copyFrameworksReferences.append(embedFile.reference)
+                } else  {
+                    carthageFrameworksToEmbed.append(dependency.reference)
                 }
             }
         }
@@ -652,15 +675,8 @@ public class PBXProjGenerator {
 
             buildPhases.append(copyFilesPhase.reference)
         }
-
-        let carthageFrameworksToEmbed = Array(Set(
-            carthageDependencies
-                .filter { $0.embed ?? target.shouldEmbedDependencies }
-                .map { $0.reference }
-        ))
-            .sorted()
-
-        if !carthageFrameworksToEmbed.isEmpty && target.platform != .macOS {
+        
+        if !carthageFrameworksToEmbed.isEmpty {
 
             let inputPaths = carthageFrameworksToEmbed
                 .map { "$(SRCROOT)/\(carthageBuildPath)/\(target.platform)/\($0)\($0.contains(".") ? "" : ".framework")" }
@@ -820,7 +836,7 @@ public class PBXProjGenerator {
     func getAllCarthageDependencies(target: Target) -> [Dependency] {
         // this is used to resolve cyclical target dependencies
         var visitedTargets: Set<String> = []
-        var frameworks: [Dependency] = []
+        var frameworks: [String: Dependency] = [:]
 
         var queue: [Target] = [target]
         while !queue.isEmpty {
@@ -830,9 +846,14 @@ public class PBXProjGenerator {
             }
 
             for dependency in target.dependencies {
+                // don't overwrite frameworks, to allow top level ones to rule
+                if frameworks.contains(reference: dependency.reference) {
+                    continue
+                }
+                
                 switch dependency.type {
                 case .carthage:
-                    frameworks.append(dependency)
+                    frameworks[dependency.reference] = dependency
                 case .target:
                     if let target = project.getTarget(dependency.reference) {
                         queue.append(target)
@@ -845,7 +866,7 @@ public class PBXProjGenerator {
             visitedTargets.update(with: target.name)
         }
 
-        return frameworks
+        return frameworks.sorted(by: { $0.key < $1.key }).map { $0.value }
     }
 
     func getAllDependenciesPlusTransitiveNeedingEmbedding(target topLevelTarget: Target) -> [Dependency] {
@@ -898,6 +919,18 @@ extension Target {
 
     var shouldEmbedDependencies: Bool {
         return type.isApp || type.isTest
+    }
+}
+
+extension Platform {
+    /// - returns: `true` for platforms that the app store requires simulator slices to be stripped.
+    public var requiresSimulatorStripping: Bool {
+        switch self {
+        case .iOS, .tvOS, .watchOS:
+            return true
+        case .macOS:
+            return false
+        }
     }
 }
 

@@ -467,6 +467,7 @@ class ProjectGeneratorTests: XCTestCase {
                 ])
                 expectedEmbeddedFrameworks[iosFrameworkB.name] = Set([
                     "FrameworkE.framework",
+                    "CarthageC.framework",
                 ])
 
                 let appTest = Target(
@@ -477,7 +478,8 @@ class ProjectGeneratorTests: XCTestCase {
                         Dependency(type: .target, reference: app.name),
                         Dependency(type: .target, reference: iosFrameworkB.name),
                         Dependency(type: .carthage, reference: "CarthageD"),
-                    ]
+                    ],
+                    directlyEmbedCarthageDependencies: false
                 )
                 expectedResourceFiles[appTest.name] = Set([
                     resourceBundle.filename,
