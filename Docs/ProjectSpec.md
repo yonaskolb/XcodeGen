@@ -273,6 +273,7 @@ A source can be provided via a string (the path) or an object of the form:
 			- `sharedSupport`
 			- `plugins`
 		- [ ] **subpath**: **String** - The path inside of the destination to copy the files.
+	- `none` - Will not be added to any build phases
 - [ ] **type**: **String**: This can be one of the following values
 	- `file`: a file reference with a parent group will be created (Default for files or directories with extensions)
 	- `group`: a group with all it's containing files. (Default for directories without extensions)
