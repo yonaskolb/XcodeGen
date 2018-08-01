@@ -647,6 +647,64 @@ class ProjectGeneratorTests: XCTestCase {
                 try expect(app2OtherLinkerSettings.contains("-ObjC")) == false
                 try expect(app3OtherLinkerSettings.contains("-ObjC")) == true
             }
+            
+            $0.it("copies Swfit Objective-C Interface Header") {
+                let swiftStaticLibraryWithHeader = Target(
+                    name: "swiftStaticLibraryWithHeader",
+                    type: .staticLibrary,
+                    platform: .iOS,
+                    sources: [TargetSource(path: "StaticLibrary_Swift/StaticLibrary.swift")],
+                    dependencies: []
+                )
+                let swiftStaticLibraryWithoutHeader = Target(
+                    name: "swiftStaticLibraryWithoutHeader",
+                    type: .staticLibrary,
+                    platform: .iOS,
+                    settings: Settings(buildSettings: ["SWIFT_OBJC_INTERFACE_HEADER_NAME": ""]),
+                    sources: [TargetSource(path: "StaticLibrary_Swift/StaticLibrary.swift")],
+                    dependencies: []
+                )
+                let objCStaticLibrary = Target(
+                    name: "objCStaticLibrary",
+                    type: .staticLibrary,
+                    platform: .iOS,
+                    sources: [TargetSource(path: "StaticLibrary_ObjC/StaticLibrary_ObjC.m")],
+                    dependencies: []
+                )
+                
+                let targets = [swiftStaticLibraryWithHeader, swiftStaticLibraryWithoutHeader, objCStaticLibrary]
+                
+                let project = Project(
+                    basePath: fixturePath + "TestProject",
+                    name: "test",
+                    targets: targets,
+                    options: SpecOptions()
+                )
+                
+                let pbxProject = try project.generatePbxProj()
+                
+                func scriptBuildPhases(target: Target) throws -> [PBXShellScriptBuildPhase] {
+                    guard let nativeTarget = pbxProject.objects.nativeTargets.referenceValues.first(where: { $0.name == target.name }) else {
+                        throw failure("PBXNativeTarget for \(target) not found")
+                    }
+                    let buildPhases = nativeTarget.buildPhases
+                    let scriptPhases = pbxProject.objects.shellScriptBuildPhases.objectReferences.filter({ buildPhases.contains($0.reference) }).map { $0.object }
+                    return scriptPhases
+                }
+                
+                let expectedScriptPhase = PBXShellScriptBuildPhase(
+                    files: [],
+                    name: "Copy Swift Objective-C Interface Header",
+                    inputPaths: ["$(DERIVED_SOURCES_DIR)/$(SWIFT_OBJC_INTERFACE_HEADER_NAME)"],
+                    outputPaths: ["$(BUILT_PRODUCTS_DIR)/include/$(PRODUCT_MODULE_NAME)/$(SWIFT_OBJC_INTERFACE_HEADER_NAME)"],
+                    shellPath: "/bin/sh",
+                    shellScript: "ditto \"${SCRIPT_INPUT_FILE_0}\" \"${SCRIPT_OUTPUT_FILE_0}\"\n"
+                )
+                
+                try expect(scriptBuildPhases(target: swiftStaticLibraryWithHeader)) == [expectedScriptPhase]
+                try expect(scriptBuildPhases(target: swiftStaticLibraryWithoutHeader)) == []
+                try expect(scriptBuildPhases(target: objCStaticLibrary)) == []
+            }
 
             $0.it("generates run scripts") {
                 var scriptSpec = project
