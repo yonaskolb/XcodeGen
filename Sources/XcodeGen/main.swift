@@ -6,7 +6,7 @@ import ProjectSpec
 import XcodeGenKit
 import xcproj
 
-let version = "1.10.3"
+let version = try Version("1.10.3")
 
 func generate(spec: String, project: String, isQuiet: Bool, justVersion: Bool) {
     if justVersion {
@@ -40,6 +40,9 @@ func generate(spec: String, project: String, isQuiet: Bool, justVersion: Bool) {
 
     do {
         logger.info("⚙️  Generating project...")
+        
+        try project.validateMinimumXcodeGenVersion(version)
+        
         let projectGenerator = ProjectGenerator(project: project)
         let xcodeProject = try projectGenerator.generateXcodeProject()
 
@@ -90,4 +93,4 @@ command(
         description: "Show XcodeGen version"
     ),
     generate
-).run(version)
+).run(version.description)

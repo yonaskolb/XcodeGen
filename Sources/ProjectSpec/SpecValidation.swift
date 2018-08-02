@@ -6,7 +6,6 @@ extension Project {
     public func validate() throws {
 
         var errors: [SpecValidationError.ValidationError] = []
-
         func validateSettings(_ settings: Settings) -> [SpecValidationError.ValidationError] {
             var errors: [SpecValidationError.ValidationError] = []
             for group in settings.groups {
