@@ -429,6 +429,7 @@ public class PBXProjGenerator {
         var dependencies: [String] = []
         var targetFrameworkBuildFiles: [String] = []
         var frameworkBuildPaths = Set<String>()
+        var copyFilesBuildPhasesFiles: [TargetSource.BuildPhase.CopyFilesSettings: [String]] = [:]
         var copyFrameworksReferences: [String] = []
         var copyResourcesReferences: [String] = []
         var copyWatchReferences: [String] = []
@@ -500,6 +501,8 @@ public class PBXProjGenerator {
                         copyFrameworksReferences.append(embedFile.reference)
                     } else if dependencyTarget.type.isApp && dependencyTarget.platform == .watchOS {
                         copyWatchReferences.append(embedFile.reference)
+                    } else if dependencyTarget.type == .xpcService {
+                        copyFilesBuildPhasesFiles[.xpcServices, default: []].append(embedFile.reference)
                     } else {
                         copyResourcesReferences.append(embedFile.reference)
                     }
@@ -657,7 +660,7 @@ public class PBXProjGenerator {
             buildPhases.append(script.reference)
         }
         
-        let copyFilesBuildPhasesFiles = getBuildFilesForCopyFilesPhases()
+        copyFilesBuildPhasesFiles.merge(getBuildFilesForCopyFilesPhases()) { $0 + $1 }
         if !copyFilesBuildPhasesFiles.isEmpty {
             for (copyFiles, buildPhaseFiles) in copyFilesBuildPhasesFiles {
                 let copyFilesBuildPhase = createObject(
