@@ -9,6 +9,7 @@
 - Added `aggregateTargets` [354](https://github.com/yonaskolb/XcodeGen/pull/354) @yonaskolb
 - Added `options.groupSortPosition` [356](https://github.com/yonaskolb/XcodeGen/pull/356) @yonaskolb
 - Added ability to specify `copyFiles` build phase for sources [345](https://github.com/yonaskolb/XcodeGen/pull/345) @brentleyjones
+- Added ability to specify a `minimumXcodeGenVersion` [349](https://github.com/yonaskolb/XcodeGen/pull/349) @brentleyjones
 - Added `customArchiveName` and `revealArchiveInOrganizer` to `archive`  [367](https://github.com/yonaskolb/XcodeGen/pull/367) @sxua
 
 #### Fixed
@@ -17,6 +18,7 @@
 - Fixed compiler flags being set on non source files in mixed build phase target sources [347](https://github.com/yonaskolb/XcodeGen/pull/347) @brentleyjones
 - Fixed `options.xcodeVersion` not being parsed [348](https://github.com/yonaskolb/XcodeGen/pull/348) @brentleyjones
 - Fixed non-application targets using `carthage copy-frameworks` [361](https://github.com/yonaskolb/XcodeGen/pull/361) @brentleyjones
+- Set `xcdatamodel` based on `xccurrentversion` if available [364](https://github.com/yonaskolb/XcodeGen/pull/364) @rpassis
 
 #### Changed
 - Improved linking for `static.library` targets [352](https://github.com/yonaskolb/XcodeGen/pull/352) @brentleyjones
