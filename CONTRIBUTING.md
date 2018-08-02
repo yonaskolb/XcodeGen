@@ -57,3 +57,8 @@ As part of the tests there is a [TestProject](/Tests/Fixtures/TestProject) fixtu
 > Note that sometimes having the `TestProject` open in Xcode will generate it's own diffs, so make sure to have it closed when running the tests.
 
 If your change contains any new features or logic changes please add a unit test of your own to cover it. If it's a new feature, see if it can be integrated into the `TestProject` by adding any required files and then editing the [project spec](/Tests/Fixtures/TestProject/project.yml).
+
+### Submitting your PR
+Please give a small summary of what has changed. Also add any github issues links (`Resolves #100`).
+
+Once your PR is created, please add a changelog entry to [CHANGELOG.md](/CHANGELOG.md) along with the PR number.
