@@ -9,6 +9,7 @@
 - Added `aggregateTargets` [354](https://github.com/yonaskolb/XcodeGen/pull/354) @yonaskolb
 - Added `options.groupSortPosition` [356](https://github.com/yonaskolb/XcodeGen/pull/356) @yonaskolb
 - Added ability to specify `copyFiles` build phase for sources [345](https://github.com/yonaskolb/XcodeGen/pull/345) @brentleyjones
+- Added `customArchiveName` and `revealArchiveInOrganizer` to `archive`  [367](https://github.com/yonaskolb/XcodeGen/pull/367) @sxua
 
 #### Fixed
 - Sort files using localizedStandardCompare [341](https://github.com/yonaskolb/XcodeGen/pull/341) @rohitpal440

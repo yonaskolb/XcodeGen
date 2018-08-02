@@ -133,7 +133,8 @@ public class ProjectGenerator {
 
         let archiveAction = XCScheme.ArchiveAction(
             buildConfiguration: scheme.archive?.config ?? defaultReleaseConfig.name,
-            revealArchiveInOrganizer: true,
+            revealArchiveInOrganizer: scheme.archive?.revealArchiveInOrganizer ?? true,
+            customArchiveName: scheme.archive?.customArchiveName,
             preActions: scheme.archive?.preActions.map(getExecutionAction) ?? [],
             postActions: scheme.archive?.postActions.map(getExecutionAction) ?? []
         )

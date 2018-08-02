@@ -550,6 +550,11 @@ A multiline script can be written using the various YAML multiline methods, for 
 - [ ] **gatherCoverageData**: **Bool** - a boolean that indicates if this scheme should gather coverage data. This defaults to false
 - [ ] **targets**: **[String]** - a list of targets to test
 
+### Archive Action
+
+- [ ] **customArchiveName**: **String** - the custom name to give to the archive
+- [ ] **revealArchiveInOrganizer**: **Bool** - flag to determine whether the archive will be revealed in Xcode's Organizer after it's done building
+
 ### Environment Variable
 
 - [x] **variable**: **String** - variable's name.
@@ -583,4 +588,6 @@ schemes:
       config: prod-debug
     archive:
       config: prod-release
+      customArchiveName: MyTarget
+      revealArchiveInOrganizer: false
 ```
