@@ -76,13 +76,19 @@ class ProjectSpecTests: XCTestCase {
             )
             
             $0.it("fails with invalid XcodeGen version") {
-                let minimumVersion = try! Version("1.11.1")
+                let minimumVersion = try Version("1.11.1")
                 var project = baseProject
                 project.options = SpecOptions(minimumXcodeGenVersion: minimumVersion)
                 
-                try expectMinimumXcodeGenVersionError(project, minimumVersion: minimumVersion, xcodeGenVersion: try! Version("1.11.0"))
-                try expectMinimumXcodeGenVersionError(project, minimumVersion: minimumVersion, xcodeGenVersion: try! Version("1.10.99"))
-                try expectMinimumXcodeGenVersionError(project, minimumVersion: minimumVersion, xcodeGenVersion: try! Version("0.99"))
+                func expectMinimumXcodeGenVersionError(_ project: Project, minimumVersion: Version, xcodeGenVersion: Version, file: String = #file, line: Int = #line) throws {
+                    try expectError(SpecValidationError.ValidationError.invalidXcodeGenVersion(minimumVersion: minimumVersion, version: xcodeGenVersion), file: file, line: line) {
+                        try project.validateMinimumXcodeGenVersion(xcodeGenVersion)
+                    }
+                }
+                
+                try expectMinimumXcodeGenVersionError(project, minimumVersion: minimumVersion, xcodeGenVersion: try Version("1.11.0"))
+                try expectMinimumXcodeGenVersionError(project, minimumVersion: minimumVersion, xcodeGenVersion: try Version("1.10.99"))
+                try expectMinimumXcodeGenVersionError(project, minimumVersion: minimumVersion, xcodeGenVersion: try Version("0.99"))
             }
             
             $0.it("fails with invalid project") {
@@ -217,8 +223,3 @@ fileprivate func expectValidationError(_ project: Project, _ expectedError: Spec
     throw failure("Supposed to fail with \"\(expectedError)\"", file: file, line: line)
 }
 
-fileprivate func expectMinimumXcodeGenVersionError(_ project: Project, minimumVersion: Version, xcodeGenVersion: Version, file: String = #file, line: Int = #line) throws {
-    try expectError(SpecValidationError.ValidationError.invalidXcodeGenVersion(minimumVersion: minimumVersion, version: xcodeGenVersion), file: file, line: line) {
-        try project.validateMinimumXcodeGenVersion(xcodeGenVersion)
-    }
-}
