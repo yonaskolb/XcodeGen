@@ -150,14 +150,20 @@ public struct Scheme: Equatable {
 
     public struct Archive: BuildAction {
         public var config: String?
+        public var customArchiveName: String?
+        public var revealArchiveInOrganizer: Bool
         public var preActions: [ExecutionAction]
         public var postActions: [ExecutionAction]
         public init(
             config: String,
+            customArchiveName: String? = nil,
+            revealArchiveInOrganizer: Bool = true,
             preActions: [ExecutionAction] = [],
             postActions: [ExecutionAction] = []
         ) {
             self.config = config
+            self.customArchiveName = customArchiveName
+            self.revealArchiveInOrganizer = revealArchiveInOrganizer
             self.preActions = preActions
             self.postActions = postActions
         }
@@ -233,6 +239,8 @@ extension Scheme.Archive: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
         config = jsonDictionary.json(atKeyPath: "config")
+        customArchiveName = jsonDictionary.json(atKeyPath: "customArchiveName")
+        revealArchiveInOrganizer = jsonDictionary.json(atKeyPath: "revealArchiveInOrganizer") ?? true
         preActions = jsonDictionary.json(atKeyPath: "preActions") ?? []
         postActions = jsonDictionary.json(atKeyPath: "postActions") ?? []
     }
