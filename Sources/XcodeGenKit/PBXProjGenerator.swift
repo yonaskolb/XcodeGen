@@ -428,6 +428,7 @@ public class PBXProjGenerator {
 
         var dependencies: [String] = []
         var targetFrameworkBuildFiles: [String] = []
+        var frameworkBuildPaths = Set<String>()
         var copyFrameworksReferences: [String] = []
         var copyResourcesReferences: [String] = []
         var copyWatchReferences: [String] = []
@@ -538,6 +539,13 @@ public class PBXProjGenerator {
                     )
                     copyFrameworksReferences.append(embedFile.reference)
                 }
+                
+                let buildPath = Path(dependency.reference)
+                    .byRemovingBase(path: project.basePath)
+                    .components
+                    .dropLast()
+                    .joined(separator: "/")
+                frameworkBuildPaths.insert(buildPath)
 
             case .carthage:
                 guard target.type != .staticLibrary else { break }
@@ -822,16 +830,24 @@ public class PBXProjGenerator {
             }
             
             // set Carthage search paths
+            let configFrameworkBuildPaths: [String]
             if !carthageDependencies.isEmpty {
-                let frameworkSearchPaths = "FRAMEWORK_SEARCH_PATHS"
                 let carthagePlatformBuildPath = "$(PROJECT_DIR)/" + getCarthageBuildPath(platform: target.platform)
+                configFrameworkBuildPaths = [carthagePlatformBuildPath] + Array(frameworkBuildPaths).sorted()
+            } else {
+                configFrameworkBuildPaths = Array(frameworkBuildPaths).sorted()
+            }
+            
+            // set framework search paths
+            if !configFrameworkBuildPaths.isEmpty {
+                let frameworkSearchPaths = "FRAMEWORK_SEARCH_PATHS"
                 if var array = buildSettings[frameworkSearchPaths] as? [String] {
-                    array.append(carthagePlatformBuildPath)
+                    array.append(contentsOf: configFrameworkBuildPaths)
                     buildSettings[frameworkSearchPaths] = array
                 } else if let string = buildSettings[frameworkSearchPaths] as? String {
-                    buildSettings[frameworkSearchPaths] = [string, carthagePlatformBuildPath]
+                    buildSettings[frameworkSearchPaths] = [string] + configFrameworkBuildPaths
                 } else {
-                    buildSettings[frameworkSearchPaths] = ["$(inherited)", carthagePlatformBuildPath]
+                    buildSettings[frameworkSearchPaths] = ["$(inherited)"] + configFrameworkBuildPaths
                 }
             }
             
