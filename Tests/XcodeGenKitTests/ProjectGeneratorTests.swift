@@ -751,7 +751,7 @@ class ProjectGeneratorTests: XCTestCase {
                 _ = try project.generatePbxProj()
             }
 
-            $0.it("generates run scripts") {
+            $0.it("generates build rules") {
                 var scriptSpec = project
                 scriptSpec.targets[0].buildRules = [
                     BuildRule(
