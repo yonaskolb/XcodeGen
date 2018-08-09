@@ -98,7 +98,7 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: com.project.app.watch.extension
       dependencies:
         - carthage: Alamofire
-  
+
   iMessageApp:
     type: application.messages
     platform: iOS
@@ -106,7 +106,7 @@ targets:
     scheme: {}
     dependencies:
       - target: iMessageExtension
-  
+
   iMessageExtension:
     type: app-extension.messages
     platform: iOS
@@ -118,6 +118,11 @@ targets:
     type: library.static
     platform: iOS
     sources: StaticLibrary_ObjC
+
+  StaticLibrary_Swift:
+    type: library.static
+    platform: iOS
+    sources: StaticLibrary_Swift
 
   Framework:
     type: framework

@@ -629,6 +629,30 @@ public class PBXProjGenerator {
             buildPhases.append(resourcesBuildPhase.reference)
         }
         
+        
+        let buildSettings = project.getCombinedBuildSettings(basePath: project.basePath, target: target, config: project.configs[0])
+        let swiftObjCInterfaceHeader = buildSettings["SWIFT_OBJC_INTERFACE_HEADER_NAME"] as? String
+        
+        if target.type == .staticLibrary
+            && swiftObjCInterfaceHeader != ""
+            && sourceFiles.contains(where: { $0.buildPhase == .sources && $0.path.extension == "swift" }) {
+            
+            let inputPaths = ["$(DERIVED_SOURCES_DIR)/$(SWIFT_OBJC_INTERFACE_HEADER_NAME)"]
+            let outputPaths = ["$(BUILT_PRODUCTS_DIR)/include/$(PRODUCT_MODULE_NAME)/$(SWIFT_OBJC_INTERFACE_HEADER_NAME)"]
+            let script = createObject(
+                id: "Swift.h" + target.name,
+                PBXShellScriptBuildPhase(
+                    files: [],
+                    name: "Copy Swift Objective-C Interface Header",
+                    inputPaths: inputPaths,
+                    outputPaths: outputPaths,
+                    shellPath: "/bin/sh",
+                    shellScript: "ditto \"${SCRIPT_INPUT_FILE_0}\" \"${SCRIPT_OUTPUT_FILE_0}\"\n"
+                )
+            )
+            buildPhases.append(script.reference)
+        }
+        
         let copyFilesBuildPhasesFiles = getBuildFilesForCopyFilesPhases()
         if !copyFilesBuildPhasesFiles.isEmpty {
             for (copyFiles, buildPhaseFiles) in copyFilesBuildPhasesFiles {

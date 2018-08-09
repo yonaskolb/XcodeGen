@@ -32,6 +32,7 @@
 		BF_186245454304 /* LocalizedStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = VG_118219888726 /* LocalizedStoryboard.storyboard */; };
 		BF_206432481076 /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_340586388409 /* ExtensionDelegate.swift */; };
 		BF_211435872001 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = VG_473000061463 /* Localizable.strings */; };
+		BF_212221512596 /* StaticLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_470929579339 /* StaticLibrary.swift */; };
 		BF_225293845818 = {isa = PBXBuildFile; fileRef = FR_507023492251 /* App_watchOS Extension.appex */; };
 		BF_237760701422 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FR_987043315473 /* Assets.xcassets */; };
 		BF_239684316986 /* Headers in Headers */ = {isa = PBXBuildFile; fileRef = FR_815403394914 /* Headers */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -61,6 +62,7 @@
 		BF_503484983186 /* MoreUnder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_196911129660 /* MoreUnder.swift */; };
 		BF_510053944904 /* Headers in Headers */ = {isa = PBXBuildFile; fileRef = FR_815403394914 /* Headers */; settings = {ATTRIBUTES = (Public, ); }; };
 		BF_511197657446 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_452853029807 /* Alamofire.framework */; };
+		BF_526105569599 = {isa = PBXBuildFile; fileRef = FR_437179166843 /* StaticLibrary_Swift.a */; };
 		BF_532503207298 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_752394658615 /* Alamofire.framework */; };
 		BF_538515166673 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = VG_256263906698 /* LaunchScreen.storyboard */; };
 		BF_561304997165 /* Standalone.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_675266829517 /* Standalone.swift */; };
@@ -312,9 +314,11 @@
 		FR_399755008402 /* StaticLibrary_ObjC.a */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = archive.ar; path = StaticLibrary_ObjC.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR_408537768279 /* StandaloneAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = StandaloneAssets.xcassets; sourceTree = "<group>"; };
 		FR_410645050443 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Alamofire.framework; sourceTree = "<group>"; };
+		FR_437179166843 /* StaticLibrary_Swift.a */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = archive.ar; path = StaticLibrary_Swift.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR_438704538506 /* Framework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Framework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR_452853029807 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Alamofire.framework; sourceTree = "<group>"; };
 		FR_461737784133 /* module.modulemap */ = {isa = PBXFileReference; path = module.modulemap; sourceTree = "<group>"; };
+		FR_470929579339 /* StaticLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaticLibrary.swift; sourceTree = "<group>"; };
 		FR_472296042419 /* Framework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Framework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR_473000061463 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		FR_479281060337 /* Folder */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Folder; sourceTree = SOURCE_ROOT; };
@@ -512,6 +516,14 @@
 			path = StaticLibrary_ObjC;
 			sourceTree = "<group>";
 		};
+		G_4371791668439 /* StaticLibrary_Swift */ = {
+			isa = PBXGroup;
+			children = (
+				FR_470929579339 /* StaticLibrary.swift */,
+			);
+			path = StaticLibrary_Swift;
+			sourceTree = "<group>";
+		};
 		G_4661500274312 /* Framework */ = {
 			isa = PBXGroup;
 			children = (
@@ -631,6 +643,7 @@
 				G_7189434949822 /* Resources */,
 				G_6651250437419 /* StandaloneFiles */,
 				G_3997550084026 /* StaticLibrary_ObjC */,
+				G_4371791668439 /* StaticLibrary_Swift */,
 				FR_479281060337 /* Folder */,
 				FR_815403394914 /* Headers */,
 				FR_232605427418 /* Mintfile */,
@@ -652,13 +665,14 @@
 				FR_825232110500 /* App_iOS.app */,
 				FR_507023492251 /* App_watchOS Extension.appex */,
 				FR_324671077936 /* App_watchOS.app */,
+				FR_525119120469 /* Framework.framework */,
 				FR_662315837182 /* Framework.framework */,
 				FR_438704538506 /* Framework.framework */,
-				FR_525119120469 /* Framework.framework */,
 				FR_472296042419 /* Framework.framework */,
 				FR_935153865209 /* iMessageApp.app */,
 				FR_618687462494 /* iMessageExtension.appex */,
 				FR_399755008402 /* StaticLibrary_ObjC.a */,
+				FR_437179166843 /* StaticLibrary_Swift.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -780,6 +794,22 @@
 			name = StaticLibrary_ObjC;
 			productName = StaticLibrary_ObjC;
 			productReference = FR_399755008402 /* StaticLibrary_ObjC.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		NT_437179166843 /* StaticLibrary_Swift */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CL_437179166843 /* Build configuration list for PBXNativeTarget "StaticLibrary_Swift" */;
+			buildPhases = (
+				SBP_43717916684 /* Sources */,
+				SSBP_5390042403 /* Copy Swift Objective-C Interface Header */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = StaticLibrary_Swift;
+			productName = StaticLibrary_Swift;
+			productReference = FR_437179166843 /* StaticLibrary_Swift.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		NT_438704538506 /* Framework_watchOS */ = {
@@ -995,6 +1025,7 @@
 				NT_438704538506 /* Framework_watchOS */,
 				LT_479264660374 /* Legacy */,
 				NT_399755008402 /* StaticLibrary_ObjC */,
+				NT_437179166843 /* StaticLibrary_Swift */,
 				AT_445731917037 /* SuperTarget */,
 				NT_935153865209 /* iMessageApp */,
 				NT_618687462494 /* iMessageExtension */,
@@ -1098,6 +1129,22 @@
 			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
 			shellScript = "################################################################################\n#\n# Copyright 2015 Realm Inc.\n#\n# Licensed under the Apache License, Version 2.0 (the \"License\");\n# you may not use this file except in compliance with the License.\n# You may obtain a copy of the License at\n#\n# http://www.apache.org/licenses/LICENSE-2.0\n#\n# Unless required by applicable law or agreed to in writing, software\n# distributed under the License is distributed on an \"AS IS\" BASIS,\n# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n# See the License for the specific language governing permissions and\n# limitations under the License.\n#\n################################################################################\n\n# This script strips all non-valid architectures from dynamic libraries in\n# the application's `Frameworks` directory.\n#\n# The following environment variables are required:\n#\n# BUILT_PRODUCTS_DIR\n# FRAMEWORKS_FOLDER_PATH\n# VALID_ARCHS\n# EXPANDED_CODE_SIGN_IDENTITY\n\n\n# Signs a framework with the provided identity\ncode_sign() {\n  # Use the current code_sign_identitiy\n  echo \"Code Signing $1 with Identity ${EXPANDED_CODE_SIGN_IDENTITY_NAME}\"\n  echo \"/usr/bin/codesign --force --sign ${EXPANDED_CODE_SIGN_IDENTITY} --preserve-metadata=identifier,entitlements $1\"\n  /usr/bin/codesign --force --sign ${EXPANDED_CODE_SIGN_IDENTITY} --preserve-metadata=identifier,entitlements \"$1\"\n}\n\n# Set working directory to product’s embedded frameworks\ncd \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\"\n\nif [ \"$ACTION\" = \"install\" ]; then\n  echo \"Copy .bcsymbolmap files to .xcarchive\"\n  find . -name '*.bcsymbolmap' -type f -exec mv {} \"${CONFIGURATION_BUILD_DIR}\" \\;\nelse\n  # Delete *.bcsymbolmap files from framework bundle unless archiving\n  find . -name '*.bcsymbolmap' -type f -exec rm -rf \"{}\" +\\;\nfi\n\necho \"Stripping frameworks\"\n\nfor file in $(find . -type f -perm +111); do\n  # Skip non-dynamic libraries\n  if ! [[ \"$(file \"$file\")\" == *\"dynamically linked shared library\"* ]]; then\n    continue\n  fi\n  # Get architectures for current file\n  archs=\"$(lipo -info \"${file}\" | rev | cut -d ':' -f1 | rev)\"\n  stripped=\"\"\n  for arch in $archs; do\n    if ! [[ \"${VALID_ARCHS}\" == *\"$arch\"* ]]; then\n      # Strip non-valid architectures in-place\n      lipo -remove \"$arch\" -output \"$file\" \"$file\" || exit 1\n      stripped=\"$stripped $arch\"\n    fi\n  done\n  if [[ \"$stripped\" != \"\" ]]; then\n    echo \"Stripped $file of architectures:$stripped\"\n    if [ \"${CODE_SIGNING_REQUIRED}\" == \"YES\" ]; then\n      code_sign \"${file}\"\n    fi\n  fi\ndone\n";
+		};
+		SSBP_5390042403 /* Copy Swift Objective-C Interface Header */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(DERIVED_SOURCES_DIR)/$(SWIFT_OBJC_INTERFACE_HEADER_NAME)",
+			);
+			name = "Copy Swift Objective-C Interface Header";
+			outputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/include/$(PRODUCT_MODULE_NAME)/$(SWIFT_OBJC_INTERFACE_HEADER_NAME)",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "ditto \"${SCRIPT_INPUT_FILE_0}\" \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 		};
 		SSBP_5954948530 /* Carthage */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1210,6 +1257,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				BF_632297340262 /* StaticLibrary_ObjC.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		SBP_43717916684 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF_212221512596 /* StaticLibrary.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1664,6 +1719,17 @@
 			};
 			name = "Staging Release";
 		};
+		BC_264139320591 /* Test Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.StaticLibrary-Swift";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Test Release";
+		};
 		BC_264159662496 /* Test Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2010,6 +2076,17 @@
 			};
 			name = "Staging Debug";
 		};
+		BC_424897564588 /* Staging Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.StaticLibrary-Swift";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Staging Debug";
+		};
 		BC_437463937945 /* Production Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2060,6 +2137,17 @@
 				TEST_TARGET_NAME = App_iOS;
 			};
 			name = "Test Debug";
+		};
+		BC_456712168038 /* Production Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.StaticLibrary-Swift";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Production Debug";
 		};
 		BC_464603633927 /* Test Release */ = {
 			isa = XCBuildConfiguration;
@@ -2291,6 +2379,17 @@
 			};
 			name = "Test Release";
 		};
+		BC_530814251927 /* Test Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.StaticLibrary-Swift";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Test Debug";
+		};
 		BC_533481109982 /* Staging Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2372,6 +2471,17 @@
 				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = "Test Debug";
+		};
+		BC_570828727916 /* Production Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.StaticLibrary-Swift";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Production Release";
 		};
 		BC_575374366235 /* Test Release */ = {
 			isa = XCBuildConfiguration;
@@ -2594,6 +2704,17 @@
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = "Test Debug";
+		};
+		BC_669628489596 /* Staging Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.StaticLibrary-Swift";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Staging Release";
 		};
 		BC_685135820012 /* Test Release */ = {
 			isa = XCBuildConfiguration;
@@ -3242,6 +3363,19 @@
 				BC_776042221288 /* Staging Release */,
 				BC_866329197584 /* Test Debug */,
 				BC_464603633927 /* Test Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "";
+		};
+		CL_437179166843 /* Build configuration list for PBXNativeTarget "StaticLibrary_Swift" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BC_456712168038 /* Production Debug */,
+				BC_570828727916 /* Production Release */,
+				BC_424897564588 /* Staging Debug */,
+				BC_669628489596 /* Staging Release */,
+				BC_530814251927 /* Test Debug */,
+				BC_264139320591 /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "";
