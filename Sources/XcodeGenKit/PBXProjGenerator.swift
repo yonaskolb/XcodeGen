@@ -523,7 +523,7 @@ public class PBXProjGenerator {
                 }
 
                 let buildFile = createObject(
-                    id: fileReference + target.name,
+                    id: "framework" + fileReference + target.name,
                     PBXBuildFile(fileRef: fileReference)
                 )
 
@@ -534,7 +534,7 @@ public class PBXProjGenerator {
 
                 if embed {
                     let embedFile = createObject(
-                        id: fileReference + target.name,
+                        id: "framework embed" + fileReference + target.name,
                         PBXBuildFile(fileRef: fileReference, settings: getEmbedSettings(dependency: dependency, codeSign: dependency.codeSign ?? true))
                     )
                     copyFrameworksReferences.append(embedFile.reference)
@@ -558,7 +558,7 @@ public class PBXProjGenerator {
                 let fileReference = sourceGenerator.getFileReference(path: frameworkPath, inPath: platformPath)
 
                 let buildFile = createObject(
-                    id: fileReference + target.name,
+                    id: "carthage" + fileReference + target.name,
                     PBXBuildFile(fileRef: fileReference)
                 )
 
@@ -585,7 +585,7 @@ public class PBXProjGenerator {
             if embed {
                 if directlyEmbedCarthage {
                     let embedFile = createObject(
-                        id: fileReference + target.name,
+                        id: "carthage embed" + fileReference + target.name,
                         PBXBuildFile(fileRef: fileReference, settings: getEmbedSettings(dependency: dependency, codeSign: dependency.codeSign ?? true))
                     )
                     copyFrameworksReferences.append(embedFile.reference)

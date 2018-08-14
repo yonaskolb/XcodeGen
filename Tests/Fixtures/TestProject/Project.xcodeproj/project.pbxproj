@@ -23,11 +23,8 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		BF_130062884703 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_257516580010 /* Alamofire.framework */; };
 		BF_138356261076 /* InterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_363921640403 /* InterfaceController.swift */; };
-		BF_144945303317 /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FR_410645050443 /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		BF_151769972761 /* SomeFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_654302359039 /* SomeFramework.framework */; };
-		"BF_151769972761-1" /* SomeFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FR_654302359039 /* SomeFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BF_139519317795 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_452853029807 /* Alamofire.framework */; };
 		BF_167705969896 /* TestProjectUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_145531354566 /* TestProjectUITests.swift */; };
 		BF_182635022050 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FR_830053537293 /* Assets.xcassets */; };
 		BF_184447863946 = {isa = PBXBuildFile; fileRef = FR_935153865209 /* iMessageApp.app */; };
@@ -35,6 +32,8 @@
 		BF_206432481076 /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_340586388409 /* ExtensionDelegate.swift */; };
 		BF_211435872001 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = VG_473000061463 /* Localizable.strings */; };
 		BF_212221512596 /* StaticLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_470929579339 /* StaticLibrary.swift */; };
+		BF_215463341392 /* SomeFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_654302359039 /* SomeFramework.framework */; };
+		BF_217053936758 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_752394658615 /* Alamofire.framework */; };
 		BF_225293845818 = {isa = PBXBuildFile; fileRef = FR_507023492251 /* App_watchOS Extension.appex */; };
 		BF_237760701422 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FR_987043315473 /* Assets.xcassets */; };
 		BF_239684316986 /* Headers in Headers */ = {isa = PBXBuildFile; fileRef = FR_815403394914 /* Headers */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -53,19 +52,17 @@
 		BF_334778067417 = {isa = PBXBuildFile; fileRef = FR_783122899910 /* App_iOS_Tests.xctest */; };
 		BF_337656089700 = {isa = PBXBuildFile; fileRef = FR_399755008402 /* StaticLibrary_ObjC.a */; };
 		BF_360196406184 /* TestProjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_722239415598 /* TestProjectTests.swift */; };
+		BF_415651546539 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_752394658615 /* Alamofire.framework */; };
 		BF_425679397292 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = FR_183521624014 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		BF_438950173632 /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FR_410645050443 /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BF_441538117869 /* App_watchOS Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = FR_507023492251 /* App_watchOS Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		BF_447782698339 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_752394658615 /* Alamofire.framework */; };
 		BF_456457948943 /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_172952167809 /* FrameworkFile.swift */; };
-		BF_461525575903 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_752394658615 /* Alamofire.framework */; };
-		BF_470396236719 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_410645050443 /* Alamofire.framework */; };
+		BF_458111705914 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_410645050443 /* Alamofire.framework */; };
+		BF_461044234706 /* SomeFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FR_654302359039 /* SomeFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BF_496472559782 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = FR_183521624014 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BF_501771188469 /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FR_410645050443 /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BF_503484983186 /* MoreUnder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_196911129660 /* MoreUnder.swift */; };
 		BF_510053944904 /* Headers in Headers */ = {isa = PBXBuildFile; fileRef = FR_815403394914 /* Headers */; settings = {ATTRIBUTES = (Public, ); }; };
-		BF_511197657446 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_452853029807 /* Alamofire.framework */; };
 		BF_526105569599 = {isa = PBXBuildFile; fileRef = FR_437179166843 /* StaticLibrary_Swift.a */; };
-		BF_532503207298 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_752394658615 /* Alamofire.framework */; };
 		BF_538515166673 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = VG_256263906698 /* LaunchScreen.storyboard */; };
 		BF_561304997165 /* Standalone.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_675266829517 /* Standalone.swift */; };
 		BF_563614389392 = {isa = PBXBuildFile; fileRef = FR_618687462494 /* iMessageExtension.appex */; };
@@ -78,9 +75,9 @@
 		BF_681504666330 = {isa = PBXBuildFile; fileRef = FR_825232110500 /* App_iOS.app */; };
 		BF_703054643820 /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_310979699934 /* MessagesViewController.swift */; };
 		BF_721498080533 /* ResourceFolder in Resources */ = {isa = PBXBuildFile; fileRef = FR_257073931060 /* ResourceFolder */; };
-		BF_729846993631 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_410645050443 /* Alamofire.framework */; };
 		BF_732745079658 = {isa = PBXBuildFile; fileRef = FR_324671077936 /* App_watchOS.app */; };
 		BF_734036107922 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = FR_183521624014 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BF_742449020987 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_410645050443 /* Alamofire.framework */; };
 		BF_747443236192 /* App_watchOS.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = FR_324671077936 /* App_watchOS.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		BF_755064703081 /* module.modulemap in CopyFiles */ = {isa = PBXBuildFile; fileRef = FR_851415936432 /* module.modulemap */; };
 		BF_757906110813 = {isa = PBXBuildFile; fileRef = FR_662315837182 /* Framework.framework */; };
@@ -89,9 +86,12 @@
 		BF_828878846239 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = VG_201160695646 /* MainInterface.storyboard */; };
 		BF_830383951771 /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_304712043717 /* NotificationController.swift */; };
 		BF_854463933379 = {isa = PBXBuildFile; fileRef = FR_438704538506 /* Framework.framework */; };
+		BF_854691035877 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_257516580010 /* Alamofire.framework */; };
 		BF_860391087135 /* StandaloneAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FR_408537768279 /* StandaloneAssets.xcassets */; };
+		BF_863842036151 /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FR_410645050443 /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BF_870702193513 /* iMessageExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = FR_618687462494 /* iMessageExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		BF_892119987440 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_854336462818 /* AppDelegate.swift */; settings = {COMPILER_FLAGS = "-Werror"; }; };
+		BF_898051828670 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_752394658615 /* Alamofire.framework */; };
 		BF_901390118565 /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_172952167809 /* FrameworkFile.swift */; };
 		BF_905038616071 /* Framework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FR_472296042419 /* Framework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BF_905617636654 /* Headers in Headers */ = {isa = PBXBuildFile; fileRef = FR_815403394914 /* Headers */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -229,7 +229,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				BF_438950173632 /* Alamofire.framework in Embed Frameworks */,
+				BF_863842036151 /* Alamofire.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -240,7 +240,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				BF_144945303317 /* Alamofire.framework in Embed Frameworks */,
+				BF_501771188469 /* Alamofire.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -274,7 +274,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				BF_905038616071 /* Framework.framework in Embed Frameworks */,
-				"BF_151769972761-1" /* SomeFramework.framework in Embed Frameworks */,
+				BF_461044234706 /* SomeFramework.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -371,7 +371,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF_461525575903 /* Alamofire.framework in Frameworks */,
+				BF_415651546539 /* Alamofire.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -379,7 +379,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF_447782698339 /* Alamofire.framework in Frameworks */,
+				BF_898051828670 /* Alamofire.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -387,7 +387,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF_470396236719 /* Alamofire.framework in Frameworks */,
+				BF_742449020987 /* Alamofire.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -395,7 +395,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF_532503207298 /* Alamofire.framework in Frameworks */,
+				BF_217053936758 /* Alamofire.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -403,7 +403,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF_130062884703 /* Alamofire.framework in Frameworks */,
+				BF_854691035877 /* Alamofire.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -411,7 +411,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF_511197657446 /* Alamofire.framework in Frameworks */,
+				BF_139519317795 /* Alamofire.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -419,10 +419,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF_729846993631 /* Alamofire.framework in Frameworks */,
+				BF_458111705914 /* Alamofire.framework in Frameworks */,
 				BF_324363145049 /* Framework.framework in Frameworks */,
 				BF_943177036061 /* StaticLibrary_ObjC.a in Frameworks */,
-				BF_151769972761 /* SomeFramework.framework in Frameworks */,
+				BF_215463341392 /* SomeFramework.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
