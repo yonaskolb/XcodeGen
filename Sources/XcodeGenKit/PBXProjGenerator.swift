@@ -540,11 +540,7 @@ public class PBXProjGenerator {
                     copyFrameworksReferences.append(embedFile.reference)
                 }
                 
-                let buildPath = Path(dependency.reference)
-                    .byRemovingBase(path: project.basePath)
-                    .components
-                    .dropLast()
-                    .joined(separator: "/")
+                let buildPath = Path(dependency.reference).parent().string
                 frameworkBuildPaths.insert(buildPath)
 
             case .carthage:
