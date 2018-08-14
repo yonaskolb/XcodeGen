@@ -3,7 +3,7 @@
 @implementation SLObjC
 
 - (NSString *)description {
-  return "Hello, World!";
+  return @"Hello, World!";
 }
 
 @end
