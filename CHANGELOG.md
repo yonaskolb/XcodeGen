@@ -27,6 +27,7 @@
 - `modulemap` files are automatically copied to the products directory for static library targets [346](https://github.com/yonaskolb/XcodeGen/pull/346) @brentleyjones
 - Public header files are automatically copied to the products directory for static library targets [365](https://github.com/yonaskolb/XcodeGen/pull/365) @brentleyjones
 - Swift Objective-C Interface Header files are automatically copied to the products directory for static library targets [366](https://github.com/yonaskolb/XcodeGen/pull/366) @brentleyjones
+- `FRAMEWORK_SEARCH_PATHS` are adjusted for `framework` dependencies  [373](https://github.com/yonaskolb/XcodeGen/pull/373) @brentley
 
 #### Internal
 - Moved brew formula to homebrew core
