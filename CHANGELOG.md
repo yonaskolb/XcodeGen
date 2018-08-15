@@ -19,6 +19,7 @@
 - Fixed `options.xcodeVersion` not being parsed [348](https://github.com/yonaskolb/XcodeGen/pull/348) @brentleyjones
 - Fixed non-application targets using `carthage copy-frameworks` [361](https://github.com/yonaskolb/XcodeGen/pull/361) @brentleyjones
 - Set `xcdatamodel` based on `xccurrentversion` if available [364](https://github.com/yonaskolb/XcodeGen/pull/364) @rpassis
+- XPC Services are now correctly copied [368](https://github.com/yonaskolb/XcodeGen/pull/368) @brentley
 
 #### Changed
 - Improved linking for `static.library` targets [352](https://github.com/yonaskolb/XcodeGen/pull/352) @brentleyjones
