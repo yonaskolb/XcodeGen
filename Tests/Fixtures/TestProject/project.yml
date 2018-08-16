@@ -22,6 +22,19 @@ targets:
     legacy:
       toolPath: /usr/bin/true
       passSettings: true
+
+  App_macOS:
+    type: application
+    platform: macOS
+    attributes:
+      ProvisioningStyle: Automatic
+    sources:
+      - path: StandaloneFiles/Standalone.swift
+      - path: Vendor/SomeXPCService.xpc
+    dependencies:
+      - target: Framework_macOS
+      - target: XPC Service
+
   App_iOS:
     type: application
     platform: iOS
@@ -154,6 +167,13 @@ targets:
     sources: App_iOS_UITests
     dependencies:
       - target: App_iOS
+
+  XPC Service:
+    type: xpc-service
+    platform: macOS
+    sources:
+      - path: XPC Service
+
 schemes:
   Framework:
     build:

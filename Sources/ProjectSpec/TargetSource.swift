@@ -40,6 +40,11 @@ public struct TargetSource: Equatable {
         case carbonResources
         
         public struct CopyFilesSettings: Equatable, Hashable {
+            public static let xpcServices = CopyFilesSettings(
+                destination: .productsDirectory,
+                subpath: "$(CONTENTS_FOLDER_PATH)/XPCServices"
+            )
+            
             public enum Destination: String {
                 case absolutePath
                 case productsDirectory

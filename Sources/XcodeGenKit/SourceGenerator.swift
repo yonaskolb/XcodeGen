@@ -197,6 +197,7 @@ class SourceGenerator {
                     subpath: "include/$(PRODUCT_NAME)"
                 ))
             case "framework": return .frameworks
+            case "xpc": return .copyFiles(.xpcServices)
             case "xcconfig", "entitlements", "gpx", "lproj", "apns": return nil
             default: return .resources
             }
