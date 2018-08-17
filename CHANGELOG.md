@@ -4,9 +4,9 @@
 
 #### Added
 - Added `showEnvVars` to build scripts to disable printing the environment [351](https://github.com/yonaskolb/XcodeGen/pull/351) @keith
-- Added `requiresObjCLinking` to `target` [354](https://github.com/yonaskolb/XcodeGen/pull/353) @brentleyjones
+- Added `requiresObjCLinking` to `target` [354](https://github.com/yonaskolb/XcodeGen/pull/354) @brentleyjones
 - Added `targetTemplates` [355](https://github.com/yonaskolb/XcodeGen/pull/355) @yonaskolb
-- Added `aggregateTargets` [354](https://github.com/yonaskolb/XcodeGen/pull/354) @yonaskolb
+- Added `aggregateTargets` [353](https://github.com/yonaskolb/XcodeGen/pull/353) @yonaskolb
 - Added `options.groupSortPosition` [356](https://github.com/yonaskolb/XcodeGen/pull/356) @yonaskolb
 - Added ability to specify `copyFiles` build phase for sources [345](https://github.com/yonaskolb/XcodeGen/pull/345) @brentleyjones
 - Added ability to specify a `minimumXcodeGenVersion` [349](https://github.com/yonaskolb/XcodeGen/pull/349) @brentleyjones
@@ -20,6 +20,7 @@
 - Fixed non-application targets using `carthage copy-frameworks` [361](https://github.com/yonaskolb/XcodeGen/pull/361) @brentleyjones
 - Set `xcdatamodel` based on `xccurrentversion` if available [364](https://github.com/yonaskolb/XcodeGen/pull/364) @rpassis
 - XPC Services are now correctly copied [368](https://github.com/yonaskolb/XcodeGen/pull/368) @brentley
+- Fixed `.metal` files being added to resources [380](https://github.com/yonaskolb/XcodeGen/pull/380) @vgorloff
 
 #### Changed
 - Improved linking for `static.library` targets [352](https://github.com/yonaskolb/XcodeGen/pull/352) @brentleyjones
@@ -28,10 +29,13 @@
 - `modulemap` files are automatically copied to the products directory for static library targets [346](https://github.com/yonaskolb/XcodeGen/pull/346) @brentleyjones
 - Public header files are automatically copied to the products directory for static library targets [365](https://github.com/yonaskolb/XcodeGen/pull/365) @brentleyjones
 - Swift Objective-C Interface Header files are automatically copied to the products directory for static library targets [366](https://github.com/yonaskolb/XcodeGen/pull/366) @brentleyjones
-- `FRAMEWORK_SEARCH_PATHS` are adjusted for `framework` dependencies  [373](https://github.com/yonaskolb/XcodeGen/pull/373) @brentley
+- `FRAMEWORK_SEARCH_PATHS` are adjusted for `framework` dependencies [373](https://github.com/yonaskolb/XcodeGen/pull/373) @brentley
+- `library.static` targets have `SKIP_INSTALL` set to `YES` [358](https://github.com/yonaskolb/XcodeGen/pull/358) @brentley
+- Copy files phases have descriptive names [360](https://github.com/yonaskolb/XcodeGen/pull/360) @brentley
 
 #### Internal
 - Moved brew formula to homebrew core
+- Added `CONTRIBUTING.md`
 
 ## 1.10.3
 
