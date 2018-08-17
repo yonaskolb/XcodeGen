@@ -390,6 +390,7 @@ class SourceGeneratorTests: XCTestCase {
                     - file.apns
                     - file.123
                     - file.xcassets
+                    - file.metal
                     - Info.plist
                 """
                 try createDirectories(directories)
@@ -437,6 +438,7 @@ class SourceGeneratorTests: XCTestCase {
                 try pbxProj.expectFile(paths: ["C", "file.xcassets"], buildPhase: .resources)
                 try pbxProj.expectFile(paths: ["C", "file.123"], buildPhase: .resources)
                 try pbxProj.expectFile(paths: ["C", "Info.plist"], buildPhase: .none)
+                try pbxProj.expectFile(paths: ["C", "file.metal"], buildPhase: .sources)
             }
 
             $0.it("duplicate TargetSource is included once in sources build phase") {

@@ -188,7 +188,7 @@ class SourceGenerator {
         }
         if let fileExtension = path.extension {
             switch fileExtension {
-            case "swift", "m", "mm", "cpp", "c", "cc", "S", "xcdatamodeld": return .sources
+            case "swift", "m", "mm", "cpp", "c", "cc", "S", "xcdatamodeld", "metal": return .sources
             case "h", "hh", "hpp", "ipp", "tpp", "hxx", "def": return .headers
             case "modulemap":
                 guard targetType == .staticLibrary else { return nil }
