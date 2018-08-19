@@ -2,6 +2,8 @@
 
 ## Master
 
+## 1.11.0
+
 #### Added
 - Added `showEnvVars` to build scripts to disable printing the environment [351](https://github.com/yonaskolb/XcodeGen/pull/351) @keith
 - Added `requiresObjCLinking` to `target` [354](https://github.com/yonaskolb/XcodeGen/pull/354) @brentleyjones
@@ -36,6 +38,8 @@
 #### Internal
 - Moved brew formula to homebrew core
 - Added `CONTRIBUTING.md`
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/1.10.3...1.11.0)
 
 ## 1.10.3
 
