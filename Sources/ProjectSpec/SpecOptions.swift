@@ -99,7 +99,7 @@ extension SpecOptions: JSONObjectConvertible {
         if let string: String = jsonDictionary.json(atKeyPath: "minimumXcodeGenVersion") {
             minimumXcodeGenVersion = try Version(string)
         }
-        
+
         carthageBuildPath = jsonDictionary.json(atKeyPath: "carthageBuildPath")
         carthageExecutablePath = jsonDictionary.json(atKeyPath: "carthageExecutablePath")
         bundleIdPrefix = jsonDictionary.json(atKeyPath: "bundleIdPrefix")

@@ -38,13 +38,13 @@ public struct TargetSource: Equatable {
         case frameworks
         case runScript
         case carbonResources
-        
+
         public struct CopyFilesSettings: Equatable, Hashable {
             public static let xpcServices = CopyFilesSettings(
                 destination: .productsDirectory,
                 subpath: "$(CONTENTS_FOLDER_PATH)/XPCServices"
             )
-            
+
             public enum Destination: String {
                 case absolutePath
                 case productsDirectory
@@ -56,7 +56,7 @@ public struct TargetSource: Equatable {
                 case sharedFrameworks
                 case sharedSupport
                 case plugins
-                
+
                 public var destination: xcproj.PBXCopyFilesBuildPhase.SubFolder? {
                     switch self {
                     case .absolutePath: return .absolutePath
@@ -72,10 +72,10 @@ public struct TargetSource: Equatable {
                     }
                 }
             }
-            
+
             public var destination: Destination
             public var subpath: String
-            
+
             public init(destination: Destination, subpath: String) {
                 self.destination = destination
                 self.subpath = subpath
@@ -152,7 +152,7 @@ extension TargetSource: JSONObjectConvertible {
         excludes = jsonDictionary.json(atKeyPath: "excludes") ?? []
         type = jsonDictionary.json(atKeyPath: "type")
         optional = jsonDictionary.json(atKeyPath: "optional") ?? false
-        
+
         if let string: String = jsonDictionary.json(atKeyPath: "buildPhase") {
             buildPhase = try BuildPhase(string: string)
         } else if let dict: JSONDictionary = jsonDictionary.json(atKeyPath: "buildPhase") {
@@ -162,7 +162,7 @@ extension TargetSource: JSONObjectConvertible {
 }
 
 extension TargetSource.BuildPhase {
-    
+
     public init(string: String) throws {
         switch string {
         case "sources": self = .sources
@@ -178,14 +178,14 @@ extension TargetSource.BuildPhase {
 }
 
 extension TargetSource.BuildPhase: JSONObjectConvertible {
-    
+
     public init(jsonDictionary: JSONDictionary) throws {
         self = .copyFiles(try jsonDictionary.json(atKeyPath: "copyFiles"))
     }
 }
 
 extension TargetSource.BuildPhase.CopyFilesSettings: JSONObjectConvertible {
-    
+
     public init(jsonDictionary: JSONDictionary) throws {
         destination = try jsonDictionary.json(atKeyPath: "destination")
         subpath = jsonDictionary.json(atKeyPath: "subpath") ?? ""

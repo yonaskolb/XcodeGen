@@ -386,7 +386,7 @@ class ProjectGeneratorTests: XCTestCase {
                 expectedEmbeddedFrameworks[app.name] = Set([
                     "FrameworkA.framework",
                 ])
-                
+
                 let iosFrameworkZ = Target(
                     name: "iOSFrameworkZ",
                     type: .framework,
@@ -571,7 +571,7 @@ class ProjectGeneratorTests: XCTestCase {
                     }
                 }
             }
-            
+
             $0.it("sets -ObjC for targets that depend on requiresObjCLinking targets") {
                 let requiresObjCLinking = Target(
                     name: "requiresObjCLinking",
@@ -594,14 +594,14 @@ class ProjectGeneratorTests: XCTestCase {
                     sources: [TargetSource(path: "StaticLibrary_ObjC/StaticLibrary_ObjC.m")],
                     dependencies: []
                 )
-                
+
                 let framework = Target(
                     name: "framework",
                     type: .framework,
                     platform: .iOS,
                     dependencies: [Dependency(type: .target, reference: requiresObjCLinking.name, link: false)]
                 )
-                
+
                 let app1 = Target(
                     name: "app1",
                     type: .application,
@@ -620,18 +620,18 @@ class ProjectGeneratorTests: XCTestCase {
                     platform: .iOS,
                     dependencies: [Dependency(type: .target, reference: implicitlyRequiresObjCLinking.name)]
                 )
-                
+
                 let targets = [requiresObjCLinking, doesntRequireObjCLinking, implicitlyRequiresObjCLinking, framework, app1, app2, app3]
-                
+
                 let project = Project(
                     basePath: fixturePath + "TestProject",
                     name: "test",
                     targets: targets,
                     options: SpecOptions()
                 )
-                
+
                 let pbxProj = try project.generatePbxProj()
-                
+
                 func buildSettings(for target: Target) throws -> BuildSettings {
                     guard let nativeTarget = pbxProj.objects.targets(named: target.name).first?.object,
                         let buildConfigList = nativeTarget.buildConfigurationList,
@@ -640,21 +640,21 @@ class ProjectGeneratorTests: XCTestCase {
                         let buildConfig = pbxProj.objects.buildConfigurations.getReference(buildConfigReference) else {
                         throw failure("XCBuildConfiguration not found for Target \(target.name.quoted)")
                     }
-                    
+
                     return buildConfig.buildSettings
                 }
-                
+
                 let frameworkOtherLinkerSettings = try buildSettings(for: framework)["OTHER_LDFLAGS"] as? [String] ?? []
                 let app1OtherLinkerSettings = try buildSettings(for: app1)["OTHER_LDFLAGS"] as? [String] ?? []
                 let app2OtherLinkerSettings = try buildSettings(for: app2)["OTHER_LDFLAGS"] as? [String] ?? []
                 let app3OtherLinkerSettings = try buildSettings(for: app3)["OTHER_LDFLAGS"] as? [String] ?? []
-                
+
                 try expect(frameworkOtherLinkerSettings.contains("-ObjC")) == false
                 try expect(app1OtherLinkerSettings.contains("-ObjC")) == true
                 try expect(app2OtherLinkerSettings.contains("-ObjC")) == false
                 try expect(app3OtherLinkerSettings.contains("-ObjC")) == true
             }
-            
+
             $0.it("copies Swfit Objective-C Interface Header") {
                 let swiftStaticLibraryWithHeader = Target(
                     name: "swiftStaticLibraryWithHeader",
@@ -678,18 +678,18 @@ class ProjectGeneratorTests: XCTestCase {
                     sources: [TargetSource(path: "StaticLibrary_ObjC/StaticLibrary_ObjC.m")],
                     dependencies: []
                 )
-                
+
                 let targets = [swiftStaticLibraryWithHeader, swiftStaticLibraryWithoutHeader, objCStaticLibrary]
-                
+
                 let project = Project(
                     basePath: fixturePath + "TestProject",
                     name: "test",
                     targets: targets,
                     options: SpecOptions()
                 )
-                
+
                 let pbxProject = try project.generatePbxProj()
-                
+
                 func scriptBuildPhases(target: Target) throws -> [PBXShellScriptBuildPhase] {
                     guard let nativeTarget = pbxProject.objects.nativeTargets.referenceValues.first(where: { $0.name == target.name }) else {
                         throw failure("PBXNativeTarget for \(target) not found")
@@ -698,7 +698,7 @@ class ProjectGeneratorTests: XCTestCase {
                     let scriptPhases = pbxProject.objects.shellScriptBuildPhases.objectReferences.filter({ buildPhases.contains($0.reference) }).map { $0.object }
                     return scriptPhases
                 }
-                
+
                 let expectedScriptPhase = PBXShellScriptBuildPhase(
                     files: [],
                     name: "Copy Swift Objective-C Interface Header",
@@ -707,7 +707,7 @@ class ProjectGeneratorTests: XCTestCase {
                     shellPath: "/bin/sh",
                     shellScript: "ditto \"${SCRIPT_INPUT_FILE_0}\" \"${SCRIPT_OUTPUT_FILE_0}\"\n"
                 )
-                
+
                 try expect(scriptBuildPhases(target: swiftStaticLibraryWithHeader)) == [expectedScriptPhase]
                 try expect(scriptBuildPhases(target: swiftStaticLibraryWithoutHeader)) == []
                 try expect(scriptBuildPhases(target: objCStaticLibrary)) == []

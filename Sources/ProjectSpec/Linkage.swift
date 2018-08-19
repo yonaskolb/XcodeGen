@@ -7,7 +7,7 @@ public enum Linkage {
 }
 
 extension Target {
-    
+
     public var defaultLinkage: Linkage {
         switch type {
         case .none,

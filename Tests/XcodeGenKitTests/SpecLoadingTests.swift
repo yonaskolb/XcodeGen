@@ -181,8 +181,8 @@ class SpecLoadingTests: XCTestCase {
                 let targetDictionary: [String: Any] = [
                     "deploymentTarget": "1.2.0",
                     "sources": ["targetSource"],
-                    "templates": ["temp2", "temp"]
-                    ]
+                    "templates": ["temp2", "temp"],
+                ]
 
                 let project = try getProjectSpec([
                     "targets": ["Framework": targetDictionary],
@@ -196,8 +196,8 @@ class SpecLoadingTests: XCTestCase {
                             "platform": "tvOS",
                             "deploymentTarget": "1.1.0",
                         ],
-                    ]
-                    ])
+                    ],
+                ])
 
                 let target = project.targets.first!
                 try expect(target.type) == .framework // uses value

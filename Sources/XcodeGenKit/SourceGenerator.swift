@@ -56,7 +56,7 @@ class SourceGenerator {
         let fileReference = fileReferencesByPath[path.string.lowercased()]!
         var settings: [String: Any] = [:]
         var chosenBuildPhase: TargetSource.BuildPhase?
-        
+
         let headerVisibility = targetSource.headerVisibility ?? .public
 
         if let buildPhase = buildPhase {
@@ -66,15 +66,15 @@ class SourceGenerator {
         } else {
             chosenBuildPhase = getDefaultBuildPhase(for: path, targetType: targetType)
         }
-        
+
         if chosenBuildPhase == .headers && targetType == .staticLibrary {
             // Static libraries don't support the header build phase
             // For public headers they need to be copied
             if headerVisibility == .public {
                 chosenBuildPhase = .copyFiles(TargetSource.BuildPhase.CopyFilesSettings(
-                        destination: .productsDirectory,
-                        subpath: "include/$(PRODUCT_NAME)"
-                    ))
+                    destination: .productsDirectory,
+                    subpath: "include/$(PRODUCT_NAME)"
+                ))
             } else {
                 chosenBuildPhase = nil
             }
@@ -527,7 +527,7 @@ class SourceGenerator {
             let data = try? versionPath.read(),
             let plist = try? PropertyListSerialization.propertyList(from: data, options: [], format: nil) as? [String: Any],
             let versionString = plist?["_XCCurrentVersionName"] as? String else {
-                return nil
+            return nil
         }
         return versionedModels.first(where: { $0.lastComponent == versionString })
     }

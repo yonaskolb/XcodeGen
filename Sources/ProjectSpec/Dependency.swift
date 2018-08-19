@@ -54,7 +54,7 @@ extension Dependency: JSONObjectConvertible {
         embed = jsonDictionary.json(atKeyPath: "embed")
         codeSign = jsonDictionary.json(atKeyPath: "codeSign")
         link = jsonDictionary.json(atKeyPath: "link")
-        
+
         if let bool: Bool = jsonDictionary.json(atKeyPath: "removeHeaders") {
             removeHeaders = bool
         }
