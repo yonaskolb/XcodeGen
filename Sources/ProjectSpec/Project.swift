@@ -60,6 +60,10 @@ public struct Project: BuildSettingsContainer {
         return targetsMap[targetName]
     }
 
+    public func getProjectTarget(_ targetName: String) -> ProjectTarget? {
+        return targetsMap[targetName] ?? aggregateTargets.first { $0.name == targetName }
+    }
+
     public func getConfig(_ configName: String) -> Config? {
         return configs.first { $0.name == configName }
     }

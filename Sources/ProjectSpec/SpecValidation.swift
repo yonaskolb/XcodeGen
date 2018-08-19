@@ -112,7 +112,7 @@ extension Project {
 
         for target in aggregateTargets {
             for dependency in target.targets {
-                if getTarget(dependency) == nil {
+                if getProjectTarget(dependency) == nil {
                     errors.append(.invalidTargetDependency(target: target.name, dependency: dependency))
                 }
             }
@@ -120,7 +120,7 @@ extension Project {
 
         for target in targets {
             for dependency in target.dependencies {
-                if dependency.type == .target, getTarget(dependency.reference) == nil {
+                if dependency.type == .target, getProjectTarget(dependency.reference) == nil {
                     errors.append(.invalidTargetDependency(target: target.name, dependency: dependency.reference))
                 }
             }
