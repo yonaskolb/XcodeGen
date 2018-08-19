@@ -41,7 +41,7 @@ publish: archive bump_brew
 
 bump_brew:
 	brew update
-	brew bump-formula-pr --url=$(RELEASE_TAR) Mint
+	brew bump-formula-pr --url=$(RELEASE_TAR) XcodeGen
 
 archive: build
 	./scripts/archive.sh
