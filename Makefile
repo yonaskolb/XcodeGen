@@ -29,13 +29,6 @@ format_code:
 	swiftformat Tests --wraparguments beforefirst --stripunusedargs closure-only --header strip --disable blankLinesAtStartOfScope
 	swiftformat Sources --wraparguments beforefirst --stripunusedargs closure-only --header strip --disable blankLinesAtStartOfScope
 
-update_brew:
-	sed -i '' 's|\(url ".*/archive/\)\(.*\)\(.tar\)|\1$(VERSION)\3|' Formula/xcodegen.rb
-	sed -i '' 's|\(sha256 "\)\(.*\)\("\)|\1$(SHA)\3|' Formula/xcodegen.rb
-
-	git add .
-	git commit -m "Update brew to $(VERSION)"
-
 release: format_code
 	sed -i '' 's|\(let version = try Version("\)\(.*\)\(")\)|\1$(VERSION)\3|' Sources/XcodeGen/main.swift
 
@@ -47,6 +40,7 @@ publish: archive bump_brew
 	echo "published $(VERSION)"
 
 bump_brew:
+	brew update
 	brew bump-formula-pr --url=$(RELEASE_TAR) Mint
 
 archive: build
