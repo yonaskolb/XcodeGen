@@ -152,6 +152,18 @@ public class PBXProjGenerator {
             }
         }
 
+        for target in project.aggregateTargets {
+
+            let aggregateTarget = createObject(
+                id: target.name,
+                PBXAggregateTarget(
+                    name: target.name,
+                    productName: target.name
+                )
+            )
+            targetAggregateObjects[target.name] = aggregateTarget
+        }
+
         try project.targets.forEach(generateTarget)
         try project.aggregateTargets.forEach(generateAggregateTarget)
 
@@ -228,6 +240,8 @@ public class PBXProjGenerator {
 
     func generateAggregateTarget(_ target: AggregateTarget) throws {
 
+        let aggregateTarget = targetAggregateObjects[target.name]!.object
+
         let configs: [ObjectReference<XCBuildConfiguration>] = project.configs.map { config in
 
             let buildSettings = project.getBuildSettings(settings: target.settings, config: config)
@@ -254,29 +268,20 @@ public class PBXProjGenerator {
         var buildPhases: [String] = []
         buildPhases += try target.buildScripts.map { try generateBuildScript(targetName: target.name, buildScript: $0) }
 
-        let aggregateTarget = createObject(
-            id: target.name,
-            PBXAggregateTarget(
-                name: target.name,
-                buildConfigurationList: buildConfigList.reference,
-                buildPhases: buildPhases,
-                buildRules: [],
-                dependencies: dependencies,
-                productName: target.name,
-                productReference: nil,
-                productType: nil
-            )
-        )
-        targetAggregateObjects[target.name] = aggregateTarget
+        aggregateTarget.buildPhases = buildPhases
+        aggregateTarget.buildConfigurationList = buildConfigList.reference
+        aggregateTarget.dependencies = dependencies
     }
 
     func generateTargetDependency(from: String, to target: String) -> ObjectReference<PBXTargetDependency> {
-
+        guard let targetReference = targetObjects[target]?.reference ?? targetAggregateObjects[target]?.reference else {
+            fatalError("target not found")
+        }
         let targetProxy = createObject(
             id: "\(from)-\(target)",
             PBXContainerItemProxy(
                 containerPortal: pbxProj.rootObject,
-                remoteGlobalIDString: targetObjects[target]!.reference,
+                remoteGlobalIDString: targetReference,
                 proxyType: .nativeTarget,
                 remoteInfo: target
             )
@@ -285,7 +290,7 @@ public class PBXProjGenerator {
         let targetDependency = createObject(
             id: "\(from)-\(target)",
             PBXTargetDependency(
-                target: targetObjects[target]!.reference,
+                target: targetReference,
                 targetProxy: targetProxy.reference
             )
         )
@@ -459,12 +464,12 @@ public class PBXProjGenerator {
             switch dependency.type {
             case .target:
                 let dependencyTargetName = dependency.reference
-                guard let dependencyTarget = project.getTarget(dependencyTargetName) else { continue }
-                let dependencyFileReference = targetFileReferences[dependencyTargetName]!
-
                 let targetDependency = generateTargetDependency(from: target.name, to: dependencyTargetName)
-
                 dependencies.append(targetDependency.reference)
+
+                guard let dependencyTarget = project.getTarget(dependencyTargetName) else { continue }
+
+                let dependencyFileReference = targetFileReferences[dependencyTargetName]!
 
                 let dependecyLinkage = dependencyTarget.defaultLinkage
                 let link = dependency.link ?? ((dependecyLinkage == .dynamic && target.type != .staticLibrary)
