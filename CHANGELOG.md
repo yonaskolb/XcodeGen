@@ -6,7 +6,7 @@
 - Added `showEnvVars` to build scripts to disable printing the environment [351](https://github.com/yonaskolb/XcodeGen/pull/351) @keith
 - Added `requiresObjCLinking` to `target` [354](https://github.com/yonaskolb/XcodeGen/pull/354) @brentleyjones
 - Added `targetTemplates` [355](https://github.com/yonaskolb/XcodeGen/pull/355) @yonaskolb
-- Added `aggregateTargets` [353](https://github.com/yonaskolb/XcodeGen/pull/353) @yonaskolb
+- Added `aggregateTargets` [353](https://github.com/yonaskolb/XcodeGen/pull/353) [381](https://github.com/yonaskolb/XcodeGen/pull/381) @yonaskolb
 - Added `options.groupSortPosition` [356](https://github.com/yonaskolb/XcodeGen/pull/356) @yonaskolb
 - Added ability to specify `copyFiles` build phase for sources [345](https://github.com/yonaskolb/XcodeGen/pull/345) @brentleyjones
 - Added ability to specify a `minimumXcodeGenVersion` [349](https://github.com/yonaskolb/XcodeGen/pull/349) @brentleyjones
