@@ -981,6 +981,9 @@ public class PBXProjGenerator {
                                 queue.append(dependencyTarget)
                             }
                         }
+                    } else {
+                        // Aggregate targets should be included
+                        dependencies[dependency.reference] = dependency
                     }
                 }
             }

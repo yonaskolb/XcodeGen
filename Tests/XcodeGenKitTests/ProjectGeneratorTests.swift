@@ -191,16 +191,17 @@ class ProjectGeneratorTests: XCTestCase {
         describe {
 
             let otherTarget = Target(name: "Other", type: .framework, platform: .iOS, dependencies: [Dependency(type: .target, reference: "AggregateTarget")])
+            let otherTarget2 = Target(name: "Other2", type: .framework, platform: .iOS, dependencies: [Dependency(type: .target, reference: "Other")], transitivelyLinkDependencies: true)
             let aggregateTarget = AggregateTarget(name: "AggregateTarget", targets: ["MyApp", "MyFramework"])
             let aggregateTarget2 = AggregateTarget(name: "AggregateTarget2", targets: ["AggregateTarget"])
-            let project = Project(basePath: "", name: "test", targets: [app, framework, otherTarget], aggregateTargets: [aggregateTarget, aggregateTarget2])
+            let project = Project(basePath: "", name: "test", targets: [app, framework, otherTarget, otherTarget2], aggregateTargets: [aggregateTarget, aggregateTarget2])
 
             $0.it("generates aggregate targets") {
                 let pbxProject = try project.generatePbxProj()
                 let nativeTargets = pbxProject.objects.nativeTargets.referenceValues
                 let aggregateTargets = pbxProject.objects.aggregateTargets.referenceValues
 
-                try expect(nativeTargets.count) == 3
+                try expect(nativeTargets.count) == 4
                 try expect(aggregateTargets.count) == 2
 
                 try expect(aggregateTargets[0].name) == "AggregateTarget"
@@ -209,10 +210,14 @@ class ProjectGeneratorTests: XCTestCase {
                 try expect(aggregateTargets[1].name) == "AggregateTarget2"
                 try expect(aggregateTargets[1].dependencies.count) == 1
 
+                try expect(nativeTargets[2].name) == "Other"
                 try expect(nativeTargets[2].dependencies.count) == 1
+                
+                try expect(nativeTargets[3].name) == "Other2"
+                try expect(nativeTargets[3].dependencies.count) == 2
 
                 let targetDependencies = pbxProject.objects.targetDependencies.referenceValues
-                try expect(targetDependencies.count) == 5
+                try expect(targetDependencies.count) == 7
             }
         }
     }
