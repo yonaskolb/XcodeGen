@@ -1,6 +1,6 @@
 TOOL_NAME = XcodeGen
 export EXECUTABLE_NAME = xcodegen
-VERSION = 1.11.0
+VERSION = 1.11.1
 
 PREFIX = /usr/local
 INSTALL_PATH = $(PREFIX)/bin/$(EXECUTABLE_NAME)
@@ -34,7 +34,7 @@ release: format_code
 
 	git add .
 	git commit -m "Update to $(VERSION)"
-	git tag $(VERSION)
+	#git tag $(VERSION)
 
 publish: archive bump_brew
 	echo "published $(VERSION)"
