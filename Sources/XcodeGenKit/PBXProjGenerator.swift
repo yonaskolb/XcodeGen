@@ -973,17 +973,17 @@ public class PBXProjGenerator {
                         dependencies[dependency.reference] = dependency
                     }
                 case .target:
-                    if let dependencyTarget = project.getTarget(dependency.reference) {
-                        if isTopLevel || dependency.embed == nil {
+                    if isTopLevel || dependency.embed == nil {
+                        if let dependencyTarget = project.getTarget(dependency.reference) {
                             dependencies[dependency.reference] = dependency
                             if !dependencyTarget.shouldEmbedDependencies {
                                 // traverse target's dependencies if it doesn't embed them itself
                                 queue.append(dependencyTarget)
                             }
+                        } else if project.getAggregateTarget(dependency.reference) != nil {
+                            // Aggregate targets should be included
+                            dependencies[dependency.reference] = dependency
                         }
-                    } else if project.getAggregateTarget(dependency.reference) != nil {
-                        // Aggregate targets should be included
-                        dependencies[dependency.reference] = dependency
                     }
                 }
             }
