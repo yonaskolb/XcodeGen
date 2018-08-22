@@ -4,6 +4,7 @@
 
 #### Fixed
 - Fixed `FRAMEWORK_SEARCH_PATHS` for `framework` dependency paths with spaces [382](https://github.com/yonaskolb/XcodeGen/pull/382) @brentleyjones
+- Fixed aggregate targets not being found with `transitivelyLinkDependencies` [383](https://github.com/yonaskolb/XcodeGen/pull/383) @brentleyjones
 
 ## 1.11.0
 
