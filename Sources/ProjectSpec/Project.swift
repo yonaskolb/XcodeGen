@@ -14,7 +14,11 @@ public struct Project: BuildSettingsContainer {
         }
     }
 
-    public var aggregateTargets: [AggregateTarget]
+    public var aggregateTargets: [AggregateTarget] {
+        didSet {
+            aggregateTargetsMap = Dictionary(uniqueKeysWithValues: aggregateTargets.map { ($0.name, $0) })
+        }
+    }
 
     public var settings: Settings
     public var settingGroups: [String: Settings]
@@ -25,7 +29,9 @@ public struct Project: BuildSettingsContainer {
     public var fileGroups: [String]
     public var configFiles: [String: String]
     public var include: [String] = []
+    
     private var targetsMap: [String: Target]
+    private var aggregateTargetsMap: [String: AggregateTarget]
 
     public init(
         basePath: Path,
@@ -46,6 +52,7 @@ public struct Project: BuildSettingsContainer {
         self.targets = targets
         targetsMap = Dictionary(uniqueKeysWithValues: self.targets.map { ($0.name, $0) })
         self.aggregateTargets = aggregateTargets
+        aggregateTargetsMap = Dictionary(uniqueKeysWithValues: self.aggregateTargets.map { ($0.name, $0) })
         self.configs = configs
         self.settings = settings
         self.settingGroups = settingGroups
@@ -59,9 +66,13 @@ public struct Project: BuildSettingsContainer {
     public func getTarget(_ targetName: String) -> Target? {
         return targetsMap[targetName]
     }
+    
+    public func getAggregateTarget(_ targetName: String) -> AggregateTarget? {
+        return aggregateTargetsMap[targetName]
+    }
 
     public func getProjectTarget(_ targetName: String) -> ProjectTarget? {
-        return targetsMap[targetName] ?? aggregateTargets.first { $0.name == targetName }
+        return targetsMap[targetName] ?? aggregateTargetsMap[targetName]
     }
 
     public func getConfig(_ configName: String) -> Config? {
@@ -138,6 +149,7 @@ extension Project {
             options = SpecOptions()
         }
         targetsMap = Dictionary(uniqueKeysWithValues: targets.map { ($0.name, $0) })
+        aggregateTargetsMap = Dictionary(uniqueKeysWithValues: aggregateTargets.map { ($0.name, $0) })
     }
 
     static func resolveProject(jsonDictionary: JSONDictionary) throws -> JSONDictionary {

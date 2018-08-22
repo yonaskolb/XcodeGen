@@ -910,37 +910,45 @@ public class PBXProjGenerator {
         return "\(carthagePath)/\(platformName)"
     }
 
-    func getAllCarthageDependencies(target: Target) -> [Dependency] {
+    func getAllCarthageDependencies(target topLevelTarget: Target) -> [Dependency] {
         // this is used to resolve cyclical target dependencies
         var visitedTargets: Set<String> = []
         var frameworks: [String: Dependency] = [:]
 
-        var queue: [Target] = [target]
+        var queue: [ProjectTarget] = [topLevelTarget]
         while !queue.isEmpty {
-            let target = queue.removeFirst()
-            if visitedTargets.contains(target.name) {
+            let projectTarget = queue.removeFirst()
+            if visitedTargets.contains(projectTarget.name) {
                 continue
             }
-
-            for dependency in target.dependencies {
-                // don't overwrite frameworks, to allow top level ones to rule
-                if frameworks.contains(reference: dependency.reference) {
-                    continue
-                }
-
-                switch dependency.type {
-                case .carthage:
-                    frameworks[dependency.reference] = dependency
-                case .target:
-                    if let target = project.getTarget(dependency.reference) {
-                        queue.append(target)
+            
+            if let target = projectTarget as? Target {
+                for dependency in target.dependencies {
+                    // don't overwrite frameworks, to allow top level ones to rule
+                    if frameworks.contains(reference: dependency.reference) {
+                        continue
                     }
-                default:
-                    break
+                    
+                    switch dependency.type {
+                    case .carthage:
+                        frameworks[dependency.reference] = dependency
+                    case .target:
+                        if let projectTarget = project.getProjectTarget(dependency.reference) {
+                            queue.append(projectTarget)
+                        }
+                    default:
+                        break
+                    }
+                }
+            } else if let aggregateTarget = projectTarget as? AggregateTarget {
+                for dependencyName in aggregateTarget.targets {
+                    if let projectTarget = project.getProjectTarget(dependencyName) {
+                        queue.append(projectTarget)
+                    }
                 }
             }
 
-            visitedTargets.update(with: target.name)
+            visitedTargets.update(with: projectTarget.name)
         }
 
         return frameworks.sorted(by: { $0.key < $1.key }).map { $0.value }
@@ -973,13 +981,16 @@ public class PBXProjGenerator {
                         dependencies[dependency.reference] = dependency
                     }
                 case .target:
-                    if let dependencyTarget = project.getTarget(dependency.reference) {
-                        if isTopLevel || dependency.embed == nil {
+                    if isTopLevel || dependency.embed == nil {
+                        if let dependencyTarget = project.getTarget(dependency.reference) {
                             dependencies[dependency.reference] = dependency
                             if !dependencyTarget.shouldEmbedDependencies {
                                 // traverse target's dependencies if it doesn't embed them itself
                                 queue.append(dependencyTarget)
                             }
+                        } else if project.getAggregateTarget(dependency.reference) != nil {
+                            // Aggregate targets should be included
+                            dependencies[dependency.reference] = dependency
                         }
                     }
                 }
