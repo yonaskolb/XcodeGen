@@ -552,7 +552,7 @@ public class PBXProjGenerator {
                     copyFrameworksReferences.append(embedFile.reference)
                 }
 
-                let buildPath = Path(dependency.reference).parent().string
+                let buildPath = Path(dependency.reference).parent().string.quoted
                 frameworkBuildPaths.insert(buildPath)
 
             case .carthage:

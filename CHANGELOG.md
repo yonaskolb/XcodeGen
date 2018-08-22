@@ -2,6 +2,9 @@
 
 ## Master
 
+#### Fixed
+- Fixed `FRAMEWORK_SEARCH_PATHS` for `framework` dependency paths with spaces [382](https://github.com/yonaskolb/XcodeGen/pull/382) @brentleyjones
+
 ## 1.11.0
 
 #### Added
