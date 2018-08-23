@@ -2,6 +2,8 @@
 
 ## Master
 
+- Fixed default settings for macOS unit-tests [387](https://github.com/yonaskolb/XcodeGen/pull/387) @frankdilo
+
 ## 1.11.1
 
 #### Fixed
