@@ -3,6 +3,7 @@
 ## Master
 
 - Fixed default settings for macOS unit-tests [387](https://github.com/yonaskolb/XcodeGen/pull/387) @frankdilo
+- Added default value for knownRegions property [390](https://github.com/yonaskolb/XcodeGen/pull/390) @Saik0s
 
 ## 1.11.1
 
