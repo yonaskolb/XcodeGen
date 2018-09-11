@@ -210,7 +210,7 @@ class ProjectSpecTests: XCTestCase {
                 let buildScript = BuildScript(script: .path(#file), name: "buildScript1")
                 let aggregatedTarget = AggregateTarget(name: "target1",
                                                        targets: [],
-                                                       settings: Settings(),
+                                                       settings: Settings(buildSettings: [:]),
                                                        configFiles: [:],
                                                        buildScripts: [buildScript],
                                                        scheme: nil,
