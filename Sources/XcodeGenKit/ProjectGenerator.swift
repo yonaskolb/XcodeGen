@@ -41,15 +41,25 @@ public class ProjectGenerator {
         func getBuildEntry(_ buildTarget: Scheme.BuildTarget) -> XCScheme.BuildAction.Entry {
 
             let targetReference = pbxProject.objects.targets(named: buildTarget.target).first!
-            let target = project.getTarget(buildTarget.target)!
-            let buildableReference = XCScheme.BuildableReference(
-                referencedContainer: "container:\(project.name).xcodeproj",
-                blueprintIdentifier: targetReference.reference,
-                buildableName: target.filename,
-                blueprintName: buildTarget.target
-            )
-
-            return XCScheme.BuildAction.Entry(buildableReference: buildableReference, buildFor: buildTarget.buildTypes)
+            if let target = project.getTarget(buildTarget.target) {
+                let buildableReference = XCScheme.BuildableReference(
+                    referencedContainer: "container:\(project.name).xcodeproj",
+                    blueprintIdentifier: targetReference.reference,
+                    buildableName: target.filename,
+                    blueprintName: buildTarget.target
+                )
+                return XCScheme.BuildAction.Entry(buildableReference: buildableReference, buildFor: buildTarget.buildTypes)
+            } else if let target = project.getAggregateTarget(buildTarget.target) {
+                let buildableReference = XCScheme.BuildableReference(
+                    referencedContainer: "container:\(project.name).xcodeproj",
+                    blueprintIdentifier: targetReference.reference,
+                    buildableName: target.name,
+                    blueprintName: buildTarget.target
+                )
+                return XCScheme.BuildAction.Entry(buildableReference: buildableReference, buildFor: buildTarget.buildTypes)
+            } else {
+                fatalError("Can't find neither `Target` nor `AggregateTarget` for build target: \(buildTarget.target)")
+            }
         }
 
         let testTargetNames = scheme.test?.targets ?? []
