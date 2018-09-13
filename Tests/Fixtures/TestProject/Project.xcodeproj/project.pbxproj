@@ -26,10 +26,8 @@
 		BF_122857248321 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FR_609193904586 /* Main.storyboard */; };
 		BF_138356261076 /* InterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_363921640403 /* InterfaceController.swift */; };
 		BF_139519317795 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_452853029807 /* Alamofire.framework */; };
-		BF_158817885862 /* Contents.json in Resources */ = {isa = PBXBuildFile; fileRef = FR_325961047396 /* Contents.json */; };
-		BF_167230369873 /* Contents.json in Resources */ = {isa = PBXBuildFile; fileRef = FR_842105381959 /* Contents.json */; };
 		BF_167705969896 /* TestProjectUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_145531354566 /* TestProjectUITests.swift */; };
-		BF_177259668937 /* Contents.json in Resources */ = {isa = PBXBuildFile; fileRef = FR_853004171064 /* Contents.json */; };
+		BF_182635022050 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FR_830053537293 /* Assets.xcassets */; };
 		BF_184447863946 = {isa = PBXBuildFile; fileRef = FR_935153865209 /* iMessageApp.app */; };
 		BF_186245454304 /* LocalizedStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = VG_118219888726 /* LocalizedStoryboard.storyboard */; };
 		BF_190684453680 = {isa = PBXBuildFile; fileRef = FR_376569054786 /* XPC Service.xpc */; };
@@ -37,15 +35,17 @@
 		BF_206432481076 /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_340586388409 /* ExtensionDelegate.swift */; };
 		BF_211435872001 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = VG_473000061463 /* Localizable.strings */; };
 		BF_212221512596 /* StaticLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_470929579339 /* StaticLibrary.swift */; };
-		BF_215284887002 /* Contents.json in Resources */ = {isa = PBXBuildFile; fileRef = FR_916794712517 /* Contents.json */; };
 		BF_215463341392 /* SomeFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_654302359039 /* SomeFramework.framework */; };
 		BF_217053936758 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_752394658615 /* Alamofire.framework */; };
 		BF_222921257582 /* LocalizedStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FR_118219888726 /* LocalizedStoryboard.storyboard */; };
 		BF_225293845818 = {isa = PBXBuildFile; fileRef = FR_507023492251 /* App_watchOS Extension.appex */; };
+		BF_237760701422 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FR_987043315473 /* Assets.xcassets */; };
 		BF_239684316986 /* Headers in Headers */ = {isa = PBXBuildFile; fileRef = FR_815403394914 /* Headers */; settings = {ATTRIBUTES = (Public, ); }; };
 		BF_243071719122 /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_172952167809 /* FrameworkFile.swift */; };
 		BF_259448131292 /* Headers in Headers */ = {isa = PBXBuildFile; fileRef = FR_815403394914 /* Headers */; settings = {ATTRIBUTES = (Public, ); }; };
+		BF_268392110450 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FR_587738154368 /* Assets.xcassets */; };
 		BF_269407036659 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = FR_746876637628 /* Localizable.stringsdict */; };
+		BF_279581961655 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FR_868653349092 /* Assets.xcassets */; };
 		BF_280535243540 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = VG_609193904586 /* Main.storyboard */; };
 		BF_284620660317 /* MyBundle.bundle in Resources */ = {isa = PBXBuildFile; fileRef = FR_238161558082 /* MyBundle.bundle */; };
 		BF_292474606791 = {isa = PBXBuildFile; fileRef = FR_525119120469 /* Framework.framework */; };
@@ -55,19 +55,17 @@
 		BF_314868376788 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = VG_746876637628 /* Localizable.stringsdict */; };
 		BF_324363145049 /* Framework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_472296042419 /* Framework.framework */; };
 		BF_331192862207 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_481575785861 /* ViewController.swift */; settings = {COMPILER_FLAGS = "-Werror"; }; };
+		BF_334321520545 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FR_377082606829 /* Assets.xcassets */; };
 		BF_334778067417 = {isa = PBXBuildFile; fileRef = FR_783122899910 /* App_iOS_Tests.xctest */; };
 		BF_337656089700 = {isa = PBXBuildFile; fileRef = FR_399755008402 /* StaticLibrary_ObjC.a */; };
 		BF_360196406184 /* TestProjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_722239415598 /* TestProjectTests.swift */; };
 		BF_398583052436 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FR_256263906698 /* LaunchScreen.storyboard */; };
 		BF_415651546539 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_752394658615 /* Alamofire.framework */; };
-		BF_420677654964 /* Contents.json in Resources */ = {isa = PBXBuildFile; fileRef = FR_809336246101 /* Contents.json */; };
-		BF_421442101246 /* Contents.json in Resources */ = {isa = PBXBuildFile; fileRef = FR_507854395807 /* Contents.json */; };
 		BF_425679397292 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = FR_183521624014 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BF_441538117869 /* App_watchOS Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = FR_507023492251 /* App_watchOS Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		BF_449167286776 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = FR_771029596306 /* Localizable.strings */; };
 		BF_456457948943 /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_172952167809 /* FrameworkFile.swift */; };
 		BF_458111705914 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_410645050443 /* Alamofire.framework */; };
-		BF_460422198717 /* Contents.json in Resources */ = {isa = PBXBuildFile; fileRef = FR_789092818946 /* Contents.json */; };
 		BF_461044234706 /* SomeFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FR_654302359039 /* SomeFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BF_496472559782 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = FR_183521624014 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BF_501771188469 /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FR_410645050443 /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -89,7 +87,6 @@
 		BF_632297340262 /* StaticLibrary_ObjC.m in Sources */ = {isa = PBXBuildFile; fileRef = "FR_698230898030-1" /* StaticLibrary_ObjC.m */; };
 		BF_647038614509 /* iMessageApp.app in Resources */ = {isa = PBXBuildFile; fileRef = FR_935153865209 /* iMessageApp.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		BF_650026899468 = {isa = PBXBuildFile; fileRef = FR_602719163962 /* XPC_Service.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		BF_656065358506 /* Contents.json in Resources */ = {isa = PBXBuildFile; fileRef = FR_187069504518 /* Contents.json */; };
 		BF_681504666330 = {isa = PBXBuildFile; fileRef = FR_825232110500 /* App_iOS.app */; };
 		BF_696504633025 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = FR_602633703434 /* Localizable.stringsdict */; };
 		BF_703054643820 /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_310979699934 /* MessagesViewController.swift */; };
@@ -105,14 +102,12 @@
 		BF_757906110813 = {isa = PBXBuildFile; fileRef = FR_662315837182 /* Framework.framework */; };
 		BF_770495922915 /* StaticLibrary_ObjC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_399755008402 /* StaticLibrary_ObjC.a */; };
 		BF_772915177606 /* LocalizedStoryboard.strings in Resources */ = {isa = PBXBuildFile; fileRef = FR_500792082643 /* LocalizedStoryboard.strings */; };
-		BF_774113489904 /* Contents.json in Resources */ = {isa = PBXBuildFile; fileRef = FR_874198190952 /* Contents.json */; };
 		BF_786041123010 /* Model 3.xcdatamodel in Resources */ = {isa = PBXBuildFile; fileRef = FR_263408310401 /* Model 3.xcdatamodel */; };
 		BF_803757127643 = {isa = PBXBuildFile; fileRef = FR_739513596122 /* XPC_ServiceProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BF_807556340853 /* Empty.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = FR_837374194182 /* Empty.h */; };
 		BF_813358525536 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = FR_183521624014 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BF_828878846239 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = VG_201160695646 /* MainInterface.storyboard */; };
 		BF_830383951771 /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_304712043717 /* NotificationController.swift */; };
-		BF_831605783642 /* Contents.json in Resources */ = {isa = PBXBuildFile; fileRef = FR_396129191550 /* Contents.json */; };
 		BF_854463933379 = {isa = PBXBuildFile; fileRef = FR_438704538506 /* Framework.framework */; };
 		BF_854691035877 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_257516580010 /* Alamofire.framework */; };
 		BF_855988705556 /* XPC_Service.m in Sources */ = {isa = PBXBuildFile; fileRef = FR_602719163945 /* XPC_Service.m */; };
@@ -121,7 +116,6 @@
 		BF_870702193513 /* iMessageExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = FR_618687462494 /* iMessageExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		BF_872891989245 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FR_201160695646 /* MainInterface.storyboard */; };
 		BF_892119987440 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_854336462818 /* AppDelegate.swift */; settings = {COMPILER_FLAGS = "-Werror"; }; };
-		BF_894447046109 /* Contents.json in Resources */ = {isa = PBXBuildFile; fileRef = FR_675057271559 /* Contents.json */; };
 		BF_897881229855 /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FR_257516580010 /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BF_898051828670 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_752394658615 /* Alamofire.framework */; };
 		BF_900577809062 /* Fox.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_269747717860 /* Fox.swift */; settings = {COMPILER_FLAGS = "-Werror"; }; };
@@ -376,7 +370,6 @@
 		FR_172952167809 /* FrameworkFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameworkFile.swift; sourceTree = "<group>"; };
 		FR_175259188857 /* .xccurrentversion */ = {isa = PBXFileReference; path = .xccurrentversion; sourceTree = "<group>"; };
 		FR_183521624014 /* MyFramework.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyFramework.h; sourceTree = "<group>"; };
-		FR_187069504518 /* Contents.json */ = {isa = PBXFileReference; path = Contents.json; sourceTree = "<group>"; };
 		FR_196911129660 /* MoreUnder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreUnder.swift; sourceTree = "<group>"; };
 		FR_201160695646 /* MainInterface.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = MainInterface.storyboard; sourceTree = "<group>"; };
 		FR_229826849033 /* SomeXPCService.xpc */ = {isa = PBXFileReference; path = SomeXPCService.xpc; sourceTree = "<group>"; };
@@ -393,11 +386,10 @@
 		FR_304712043717 /* NotificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationController.swift; sourceTree = "<group>"; };
 		FR_310979699934 /* MessagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesViewController.swift; sourceTree = "<group>"; };
 		FR_324671077936 /* App_watchOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = App_watchOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		FR_325961047396 /* Contents.json */ = {isa = PBXFileReference; path = Contents.json; sourceTree = "<group>"; };
 		FR_340586388409 /* ExtensionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDelegate.swift; sourceTree = "<group>"; };
 		FR_363921640403 /* InterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterfaceController.swift; sourceTree = "<group>"; };
 		FR_376569054786 /* XPC Service.xpc */ = {isa = PBXFileReference; includeInIndex = 0; path = "XPC Service.xpc"; sourceTree = BUILT_PRODUCTS_DIR; };
-		FR_396129191550 /* Contents.json */ = {isa = PBXFileReference; path = Contents.json; sourceTree = "<group>"; };
+		FR_377082606829 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FR_399755008402 /* StaticLibrary_ObjC.a */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = archive.ar; path = StaticLibrary_ObjC.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR_408537768279 /* StandaloneAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = StandaloneAssets.xcassets; sourceTree = "<group>"; };
 		FR_410645050443 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Alamofire.framework; sourceTree = "<group>"; };
@@ -414,10 +406,10 @@
 		FR_500792082643 /* LocalizedStoryboard.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = LocalizedStoryboard.strings; sourceTree = "<group>"; };
 		FR_505327409380 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FR_507023492251 /* App_watchOS Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "App_watchOS Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
-		FR_507854395807 /* Contents.json */ = {isa = PBXFileReference; path = Contents.json; sourceTree = "<group>"; };
 		FR_525119120469 /* Framework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Framework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR_530852296303 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FR_570918052822 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
+		FR_587738154368 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FR_602633703434 /* Localizable.stringsdict */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.stringsdict; sourceTree = "<group>"; };
 		FR_602719163945 /* XPC_Service.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XPC_Service.m; sourceTree = "<group>"; };
 		FR_602719163962 /* XPC_Service.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XPC_Service.h; sourceTree = "<group>"; };
@@ -430,7 +422,6 @@
 		FR_660690926982 /* config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = config.xcconfig; sourceTree = "<group>"; };
 		FR_662315837182 /* Framework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Framework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR_665156855283 /* module.modulemap */ = {isa = PBXFileReference; path = module.modulemap; sourceTree = "<group>"; };
-		FR_675057271559 /* Contents.json */ = {isa = PBXFileReference; path = Contents.json; sourceTree = "<group>"; };
 		FR_675266829517 /* Standalone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Standalone.swift; sourceTree = "<group>"; };
 		FR_698230898030 /* StaticLibrary_ObjC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StaticLibrary_ObjC.h; sourceTree = "<group>"; };
 		"FR_698230898030-1" /* StaticLibrary_ObjC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StaticLibrary_ObjC.m; sourceTree = "<group>"; };
@@ -443,20 +434,17 @@
 		FR_771029596306 /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
 		FR_775316160345 /* SomeFile */ = {isa = PBXFileReference; path = SomeFile; sourceTree = "<group>"; };
 		FR_783122899910 /* App_iOS_Tests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = App_iOS_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		FR_789092818946 /* Contents.json */ = {isa = PBXFileReference; path = Contents.json; sourceTree = "<group>"; };
 		FR_796781152159 /* Model 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 2.xcdatamodel"; sourceTree = "<group>"; };
 		FR_803921963291 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		FR_809336246101 /* Contents.json */ = {isa = PBXFileReference; path = Contents.json; sourceTree = "<group>"; };
 		FR_815403394914 /* Headers */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Headers; sourceTree = SOURCE_ROOT; };
 		FR_825232110500 /* App_iOS.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = App_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FR_830053537293 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FR_837374194182 /* Empty.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Empty.h; sourceTree = "<group>"; };
-		FR_842105381959 /* Contents.json */ = {isa = PBXFileReference; path = Contents.json; sourceTree = "<group>"; };
-		FR_853004171064 /* Contents.json */ = {isa = PBXFileReference; path = Contents.json; sourceTree = "<group>"; };
 		FR_854336462818 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		FR_874198190952 /* Contents.json */ = {isa = PBXFileReference; path = Contents.json; sourceTree = "<group>"; };
-		FR_916794712517 /* Contents.json */ = {isa = PBXFileReference; path = Contents.json; sourceTree = "<group>"; };
+		FR_868653349092 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FR_935153865209 /* iMessageApp.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = iMessageApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR_948931241088 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FR_987043315473 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -541,19 +529,11 @@
 			path = App_iOS_UITests;
 			sourceTree = "<group>";
 		};
-		G_1235593564073 /* Utilitarian.imageset */ = {
-			isa = PBXGroup;
-			children = (
-				FR_507854395807 /* Contents.json */,
-			);
-			path = Utilitarian.imageset;
-			sourceTree = "<group>";
-		};
 		G_1646573205915 /* iMessage MessagesExtension */ = {
 			isa = PBXGroup;
 			children = (
-				G_8300535372937 /* Assets.xcassets */,
 				G_8152936683925 /* Base.lproj */,
+				FR_830053537293 /* Assets.xcassets */,
 				FR_948931241088 /* Info.plist */,
 				VG_201160695646 /* MainInterface.storyboard */,
 				FR_310979699934 /* MessagesViewController.swift */,
@@ -606,14 +586,6 @@
 			path = Mac;
 			sourceTree = "<group>";
 		};
-		G_2647695125864 /* AppIcon.appiconset */ = {
-			isa = PBXGroup;
-			children = (
-				FR_396129191550 /* Contents.json */,
-			);
-			path = AppIcon.appiconset;
-			sourceTree = "<group>";
-		};
 		G_2883690153011 /* Carthage */ = {
 			isa = PBXGroup;
 			children = (
@@ -624,14 +596,6 @@
 			);
 			name = Carthage;
 			path = Carthage/Build;
-			sourceTree = "<group>";
-		};
-		G_2885325141956 /* Modular.imageset */ = {
-			isa = PBXGroup;
-			children = (
-				FR_325961047396 /* Contents.json */,
-			);
-			path = Modular.imageset;
 			sourceTree = "<group>";
 		};
 		G_3234630030493 /* FileGroup */ = {
@@ -645,8 +609,8 @@
 		G_3246710779368 /* App_watchOS */ = {
 			isa = PBXGroup;
 			children = (
-				G_5877381543684 /* Assets.xcassets */,
 				G_8563522647790 /* Base.lproj */,
+				FR_587738154368 /* Assets.xcassets */,
 				FR_293137352077 /* Info.plist */,
 				VG_264279911176 /* Interface.storyboard */,
 			);
@@ -665,15 +629,6 @@
 			path = "XPC Service";
 			sourceTree = "<group>";
 		};
-		G_3770826068291 /* Assets.xcassets */ = {
-			isa = PBXGroup;
-			children = (
-				G_4326989644288 /* AppIcon.appiconset */,
-				FR_853004171064 /* Contents.json */,
-			);
-			path = Assets.xcassets;
-			sourceTree = "<group>";
-		};
 		G_3997550084026 /* StaticLibrary_ObjC */ = {
 			isa = PBXGroup;
 			children = (
@@ -682,14 +637,6 @@
 				"FR_698230898030-1" /* StaticLibrary_ObjC.m */,
 			);
 			path = StaticLibrary_ObjC;
-			sourceTree = "<group>";
-		};
-		G_4326989644288 /* AppIcon.appiconset */ = {
-			isa = PBXGroup;
-			children = (
-				FR_809336246101 /* Contents.json */,
-			);
-			path = AppIcon.appiconset;
 			sourceTree = "<group>";
 		};
 		G_4371791668439 /* StaticLibrary_Swift */ = {
@@ -721,7 +668,7 @@
 		G_5070234922517 /* App_watchOS Extension */ = {
 			isa = PBXGroup;
 			children = (
-				G_9870433154735 /* Assets.xcassets */,
+				FR_987043315473 /* Assets.xcassets */,
 				FR_340586388409 /* ExtensionDelegate.swift */,
 				FR_530852296303 /* Info.plist */,
 				FR_363921640403 /* InterfaceController.swift */,
@@ -741,28 +688,12 @@
 			path = en.lproj;
 			sourceTree = "<group>";
 		};
-		G_5877381543684 /* Assets.xcassets */ = {
-			isa = PBXGroup;
-			children = (
-				G_6072059556211 /* AppIcon.appiconset */,
-			);
-			path = Assets.xcassets;
-			sourceTree = "<group>";
-		};
 		G_5938599606592 /* Module */ = {
 			isa = PBXGroup;
 			children = (
 				FR_665156855283 /* module.modulemap */,
 			);
 			path = Module;
-			sourceTree = "<group>";
-		};
-		G_6072059556211 /* AppIcon.appiconset */ = {
-			isa = PBXGroup;
-			children = (
-				FR_874198190952 /* Contents.json */,
-			);
-			path = AppIcon.appiconset;
 			sourceTree = "<group>";
 		};
 		G_6651250437419 /* StandaloneFiles */ = {
@@ -772,18 +703,6 @@
 				FR_408537768279 /* StandaloneAssets.xcassets */,
 			);
 			path = StandaloneFiles;
-			sourceTree = "<group>";
-		};
-		G_6785097119935 /* Complication.complicationset */ = {
-			isa = PBXGroup;
-			children = (
-				G_8614000632375 /* Circular.imageset */,
-				G_7687463836470 /* Extra Large.imageset */,
-				G_2885325141956 /* Modular.imageset */,
-				G_1235593564073 /* Utilitarian.imageset */,
-				FR_916794712517 /* Contents.json */,
-			);
-			path = Complication.complicationset;
 			sourceTree = "<group>";
 		};
 		G_6859988046598 /* Model.xcdatamodeld */ = {
@@ -803,14 +722,6 @@
 				FR_238161558082 /* MyBundle.bundle */,
 			);
 			path = Resources;
-			sourceTree = "<group>";
-		};
-		G_7687463836470 /* Extra Large.imageset */ = {
-			isa = PBXGroup;
-			children = (
-				FR_675057271559 /* Contents.json */,
-			);
-			path = "Extra Large.imageset";
 			sourceTree = "<group>";
 		};
 		G_7831228999101 /* App_iOS_Tests */ = {
@@ -857,12 +768,12 @@
 		G_8252321105004 /* App */ = {
 			isa = PBXGroup;
 			children = (
-				G_8686533490926 /* Assets.xcassets */,
 				G_2067668997501 /* Base.lproj */,
 				G_5369307189936 /* en.lproj */,
 				G_7841902032535 /* F.O.X */,
 				G_6859988046598 /* Model.xcdatamodeld */,
 				FR_854336462818 /* AppDelegate.swift */,
+				FR_868653349092 /* Assets.xcassets */,
 				FR_725187762757 /* Info.plist */,
 				VG_256263906698 /* LaunchScreen.storyboard */,
 				VG_473000061463 /* Localizable.strings */,
@@ -879,19 +790,10 @@
 		G_8268950006174 /* iMessage */ = {
 			isa = PBXGroup;
 			children = (
-				G_3770826068291 /* Assets.xcassets */,
+				FR_377082606829 /* Assets.xcassets */,
 				FR_505327409380 /* Info.plist */,
 			);
 			path = iMessage;
-			sourceTree = "<group>";
-		};
-		G_8300535372937 /* Assets.xcassets */ = {
-			isa = PBXGroup;
-			children = (
-				G_9285362808488 /* iMessage App Icon.stickersiconset */,
-				FR_789092818946 /* Contents.json */,
-			);
-			path = Assets.xcassets;
 			sourceTree = "<group>";
 		};
 		G_8340618952527 /* Configs */ = {
@@ -944,14 +846,6 @@
 			path = Base.lproj;
 			sourceTree = "<group>";
 		};
-		G_8614000632375 /* Circular.imageset */ = {
-			isa = PBXGroup;
-			children = (
-				FR_842105381959 /* Contents.json */,
-			);
-			path = Circular.imageset;
-			sourceTree = "<group>";
-		};
 		G_8620238527590 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -980,30 +874,6 @@
 				FR_452853029807 /* Alamofire.framework */,
 			);
 			path = tvOS;
-			sourceTree = "<group>";
-		};
-		G_8686533490926 /* Assets.xcassets */ = {
-			isa = PBXGroup;
-			children = (
-				G_2647695125864 /* AppIcon.appiconset */,
-			);
-			path = Assets.xcassets;
-			sourceTree = "<group>";
-		};
-		G_9285362808488 /* iMessage App Icon.stickersiconset */ = {
-			isa = PBXGroup;
-			children = (
-				FR_187069504518 /* Contents.json */,
-			);
-			path = "iMessage App Icon.stickersiconset";
-			sourceTree = "<group>";
-		};
-		G_9870433154735 /* Assets.xcassets */ = {
-			isa = PBXGroup;
-			children = (
-				G_6785097119935 /* Complication.complicationset */,
-			);
-			path = Assets.xcassets;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1400,7 +1270,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF_774113489904 /* Contents.json in Resources */,
+				BF_268392110450 /* Assets.xcassets in Resources */,
 				BF_613378975567 /* Interface.storyboard in Resources */,
 				BF_612351978356 /* Interface.storyboard in Resources */,
 			);
@@ -1410,11 +1280,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF_215284887002 /* Contents.json in Resources */,
-				BF_167230369873 /* Contents.json in Resources */,
-				BF_894447046109 /* Contents.json in Resources */,
-				BF_158817885862 /* Contents.json in Resources */,
-				BF_421442101246 /* Contents.json in Resources */,
+				BF_237760701422 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1422,8 +1288,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF_460422198717 /* Contents.json in Resources */,
-				BF_656065358506 /* Contents.json in Resources */,
+				BF_182635022050 /* Assets.xcassets in Resources */,
 				BF_872891989245 /* MainInterface.storyboard in Resources */,
 				BF_828878846239 /* MainInterface.storyboard in Resources */,
 			);
@@ -1433,7 +1298,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF_831605783642 /* Contents.json in Resources */,
+				BF_279581961655 /* Assets.xcassets in Resources */,
 				BF_398583052436 /* LaunchScreen.storyboard in Resources */,
 				BF_538515166673 /* LaunchScreen.storyboard in Resources */,
 				BF_201781227139 /* Localizable.strings in Resources */,
@@ -1461,8 +1326,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF_177259668937 /* Contents.json in Resources */,
-				BF_420677654964 /* Contents.json in Resources */,
+				BF_334321520545 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
