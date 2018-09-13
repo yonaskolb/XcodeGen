@@ -3,6 +3,7 @@ import PathKit
 import ProjectSpec
 import Spectre
 import xcproj
+import XCTest
 
 let fixturePath = Path(#file).parent().parent() + "Fixtures"
 
@@ -106,5 +107,21 @@ extension Version: ExpressibleByStringLiteral {
     /// Will return nil literal not Semver
     public init(stringLiteral value: String) {
         try! self.init(value)
+    }
+}
+
+extension XCTestCase {
+
+    public func describe(_ name: StaticString = #function, _ test: (ContextType) -> Void) {
+
+        var name = String(describing: name)
+        if name.hasPrefix("test") {
+            name = String(name.suffix(name.count - "test".count))
+            name = name.replacingOccurrences(of: "_", with: " ")
+        }
+        if name.hasSuffix("()") {
+            name = String(name.prefix(name.count - 2))
+        }
+        describe(name, test)
     }
 }

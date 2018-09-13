@@ -12,9 +12,9 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/kylef/PathKit.git", from: "0.9.0"),
         .package(url: "https://github.com/kylef/Commander.git", from: "0.8.0"),
-        .package(url: "https://github.com/jpsim/Yams.git", from: "0.3.6"),
+        .package(url: "https://github.com/jpsim/Yams.git", from: "1.0.0"),
         .package(url: "https://github.com/yonaskolb/JSONUtilities.git", from: "4.0.0"),
-        .package(url: "https://github.com/yonaskolb/Spectre.git", from: "0.8.2"),
+        .package(url: "https://github.com/kylef/Spectre.git", from: "0.9.0"),
         .package(url: "https://github.com/onevcat/Rainbow.git", from: "3.0.0"),
         .package(url: "https://github.com/xcodeswift/xcproj.git", from: "4.1.0"),
     ],
