@@ -61,6 +61,8 @@ class SourceGeneratorTests: XCTestCase {
                     - a.swift
                     - B:
                       - b.swift
+                    - C.D.E:
+                      - c.d.e.swift
                 """
                 try createDirectories(directories)
 
@@ -70,6 +72,7 @@ class SourceGeneratorTests: XCTestCase {
                 let pbxProj = try project.generatePbxProj()
                 try pbxProj.expectFile(paths: ["Sources", "A", "a.swift"], buildPhase: .sources)
                 try pbxProj.expectFile(paths: ["Sources", "A", "B", "b.swift"], buildPhase: .sources)
+                try pbxProj.expectFile(paths: ["Sources", "A", "C.D.E", "c.d.e.swift"], buildPhase: .sources)
             }
 
             $0.it("supports frameworks in sources") {
