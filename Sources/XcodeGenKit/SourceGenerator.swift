@@ -310,7 +310,7 @@ class SourceGenerator {
         let children = try getSourceChildren(targetSource: targetSource, dirPath: path)
 
         let directories = children
-            .filter { $0.isDirectory && !$0.isFileLikeDirectory }
+            .filter { $0.isDirectory && !$0.isFileLikeDirectory && $0.extension != "lproj" }
             .sorted { $0.lastComponent < $1.lastComponent }
 
         let filePaths = children

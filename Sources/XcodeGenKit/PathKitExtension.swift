@@ -11,7 +11,7 @@ extension Path {
                 "xcassets",
                 "complicationset",
                 "appiconset",
-                "xcdatamodel"].contains(ex)
+                "xcdatamodeld"].contains(ex)
     }
 
 }
