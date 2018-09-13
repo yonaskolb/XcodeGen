@@ -2,7 +2,7 @@ import PathKit
 
 extension Path {
 
-    /// Treat this as a resource instead of an normal directory.
+    /// Treat this as a resource instead of a normal directory.
     ///
     /// - NOTE: "lproj" is handled differently.
     var isFileLikeDirectory: Bool {
