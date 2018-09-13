@@ -895,7 +895,7 @@ public class PBXProjGenerator {
         return sources
             .lazy
             .map { self.project.basePath + $0.path }
-            .flatMap { (path) -> Path? in
+            .compactMap { (path) -> Path? in
                 if path.isFile {
                     return path.lastComponent == "Info.plist" ? path : nil
                 } else {

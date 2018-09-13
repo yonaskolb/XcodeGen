@@ -204,17 +204,17 @@ class ProjectGeneratorTests: XCTestCase {
                 try expect(nativeTargets.count) == 4
                 try expect(aggregateTargets.count) == 2
 
-                try expect(aggregateTargets[0].name) == "AggregateTarget"
-                try expect(aggregateTargets[0].dependencies.count) == 2
+                let aggregateTarget1 = aggregateTargets.first { $0.name == "AggregateTarget" }
+                try expect(aggregateTarget1?.dependencies.count) == 2
 
-                try expect(aggregateTargets[1].name) == "AggregateTarget2"
-                try expect(aggregateTargets[1].dependencies.count) == 1
+                let aggregateTarget2 = aggregateTargets.first { $0.name == "AggregateTarget2" }
+                try expect(aggregateTarget2?.dependencies.count) == 1
 
-                try expect(nativeTargets[2].name) == "Other"
-                try expect(nativeTargets[2].dependencies.count) == 1
-                
-                try expect(nativeTargets[3].name) == "Other2"
-                try expect(nativeTargets[3].dependencies.count) == 2
+                let target1 = nativeTargets.first { $0.name == "Other" }
+                try expect(target1?.dependencies.count) == 1
+
+                let target2 = nativeTargets.first { $0.name == "Other2" }
+                try expect(target2?.dependencies.count) == 2
 
                 let targetDependencies = pbxProject.objects.targetDependencies.referenceValues
                 try expect(targetDependencies.count) == 7
@@ -299,8 +299,11 @@ class ProjectGeneratorTests: XCTestCase {
                 let nativeTargets = pbxProject.objects.nativeTargets.objectReferences
                 let dependencies = pbxProject.objects.targetDependencies.objectReferences
                 try expect(dependencies.count) == 2
-                try expect(dependencies[0].object.target) == nativeTargets.first { $0.object.name == framework.name }!.reference
-                try expect(dependencies[1].object.target) == nativeTargets.first { $0.object.name == app.name }!.reference
+                let appTarget = nativeTargets.first { $0.object.name == app.name }
+                let frameworkTarget = nativeTargets.first { $0.object.name == framework.name }
+
+                try expect(dependencies).contains { $0.object.target == appTarget?.reference }
+                try expect(dependencies).contains { $0.object.target == frameworkTarget?.reference }
             }
 
             $0.it("generates targets with correct transitive embeds") {
