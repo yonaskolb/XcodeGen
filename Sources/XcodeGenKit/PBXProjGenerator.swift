@@ -698,6 +698,26 @@ public class PBXProjGenerator {
         buildPhases += copyFilesBuildPhasesFiles
             .filter { $0.key.phaseOrder == .postCompile }
             .map { generateCopyFiles(targetName: target.name, copyFiles: $0, buildPhaseFiles: $1) }
+        
+        if !carthageFrameworksToEmbed.isEmpty {
+            let inputPaths = carthageFrameworksToEmbed
+                .map { "$(SRCROOT)/\(carthageBuildPath)/\(target.platform)/\($0)\($0.contains(".") ? "" : ".framework")" }
+            let outputPaths = carthageFrameworksToEmbed
+                .map { "$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/\($0)\($0.contains(".") ? "" : ".framework")" }
+            let carthageExecutable = project.options.carthageExecutablePath ?? "carthage"
+            let carthageScript = createObject(
+                id: "Carthage" + target.name,
+                PBXShellScriptBuildPhase(
+                    files: [],
+                    name: "Carthage",
+                    inputPaths: inputPaths,
+                    outputPaths: outputPaths,
+                    shellPath: "/bin/sh",
+                    shellScript: "\(carthageExecutable) copy-frameworks\n"
+                )
+            )
+            buildPhases.append(carthageScript.reference)
+        }
 
         if !targetFrameworkBuildFiles.isEmpty {
 
@@ -752,27 +772,6 @@ public class PBXProjGenerator {
             )
 
             buildPhases.append(copyFilesPhase.reference)
-        }
-
-        if !carthageFrameworksToEmbed.isEmpty {
-
-            let inputPaths = carthageFrameworksToEmbed
-                .map { "$(SRCROOT)/\(carthageBuildPath)/\(target.platform)/\($0)\($0.contains(".") ? "" : ".framework")" }
-            let outputPaths = carthageFrameworksToEmbed
-                .map { "$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/\($0)\($0.contains(".") ? "" : ".framework")" }
-            let carthageExecutable = project.options.carthageExecutablePath ?? "carthage"
-            let carthageScript = createObject(
-                id: "Carthage" + target.name,
-                PBXShellScriptBuildPhase(
-                    files: [],
-                    name: "Carthage",
-                    inputPaths: inputPaths,
-                    outputPaths: outputPaths,
-                    shellPath: "/bin/sh",
-                    shellScript: "\(carthageExecutable) copy-frameworks\n"
-                )
-            )
-            buildPhases.append(carthageScript.reference)
         }
 
         let buildRules = target.buildRules.map { buildRule in

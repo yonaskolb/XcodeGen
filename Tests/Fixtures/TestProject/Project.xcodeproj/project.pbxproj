@@ -880,9 +880,9 @@
 			buildPhases = (
 				SBP_32467107793 /* Sources */,
 				RBP_32467107793 /* Resources */,
+				SSBP_5954948530 /* Carthage */,
 				FBP_32467107793 /* Frameworks */,
 				CFBP_4684049960 /* Embed App Extensions */,
-				SSBP_5954948530 /* Carthage */,
 			);
 			buildRules = (
 			);
@@ -1095,10 +1095,10 @@
 				SBP_82523211050 /* Sources */,
 				RBP_82523211050 /* Resources */,
 				CFBP_7191905390 /* CopyFiles */,
+				SSBP_8106229290 /* Carthage */,
 				FBP_82523211050 /* Frameworks */,
 				CFBP_6493932244 /* Embed Frameworks */,
 				CFBP_2836118931 /* Embed Watch Content */,
-				SSBP_8106229290 /* Carthage */,
 				SSBP_5106020372 /* Strip Unused Architectures from Frameworks */,
 				SSBP_8706434794 /* MyScript */,
 			);
