@@ -646,7 +646,13 @@ public class PBXProjGenerator {
             return sourceFilesByCopyFiles.mapValues { getBuildFilesForSourceFiles($0) }
         }
 
+        copyFilesBuildPhasesFiles.merge(getBuildFilesForCopyFilesPhases()) { $0 + $1 }
+        
         buildPhases += try target.prebuildScripts.map { try generateBuildScript(targetName: target.name, buildScript: $0) }
+        
+        buildPhases += copyFilesBuildPhasesFiles
+            .filter { $0.key.phaseOrder == .preCompile }
+            .map { generateCopyFiles(targetName: target.name, copyFiles: $0, buildPhaseFiles: $1) }
 
         let headersBuildPhaseFiles = getBuildFilesForPhase(.headers)
         if !headersBuildPhaseFiles.isEmpty && (target.type == .framework || target.type == .dynamicLibrary) {
@@ -689,8 +695,9 @@ public class PBXProjGenerator {
             buildPhases.append(script.reference)
         }
 
-        copyFilesBuildPhasesFiles.merge(getBuildFilesForCopyFilesPhases()) { $0 + $1 }
-        buildPhases += copyFilesBuildPhasesFiles.map { generateCopyFiles(targetName: target.name, copyFiles: $0, buildPhaseFiles: $1) }
+        buildPhases += copyFilesBuildPhasesFiles
+            .filter { $0.key.phaseOrder == .postCompile }
+            .map { generateCopyFiles(targetName: target.name, copyFiles: $0, buildPhaseFiles: $1) }
 
         if !targetFrameworkBuildFiles.isEmpty {
 

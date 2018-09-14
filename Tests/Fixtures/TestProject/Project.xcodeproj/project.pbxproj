@@ -913,8 +913,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = CL_399755008402 /* Build configuration list for PBXNativeTarget "StaticLibrary_ObjC" */;
 			buildPhases = (
-				SBP_39975500840 /* Sources */,
 				CFBP_3265670993 /* CopyFiles */,
+				SBP_39975500840 /* Sources */,
 			);
 			buildRules = (
 			);

@@ -73,7 +73,8 @@ class SourceGenerator {
             if headerVisibility == .public {
                 chosenBuildPhase = .copyFiles(TargetSource.BuildPhase.CopyFilesSettings(
                     destination: .productsDirectory,
-                    subpath: "include/$(PRODUCT_NAME)"
+                    subpath: "include/$(PRODUCT_NAME)",
+                    phaseOrder: .preCompile
                 ))
             } else {
                 chosenBuildPhase = nil
@@ -194,7 +195,8 @@ class SourceGenerator {
                 guard targetType == .staticLibrary else { return nil }
                 return .copyFiles(TargetSource.BuildPhase.CopyFilesSettings(
                     destination: .productsDirectory,
-                    subpath: "include/$(PRODUCT_NAME)"
+                    subpath: "include/$(PRODUCT_NAME)",
+                    phaseOrder: .preCompile
                 ))
             case "framework": return .frameworks
             case "xpc": return .copyFiles(.xpcServices)

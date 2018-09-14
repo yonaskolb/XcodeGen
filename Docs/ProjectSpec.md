@@ -275,6 +275,9 @@ A source can be provided via a string (the path) or an object of the form:
 			- `sharedSupport`
 			- `plugins`
 		- [ ] **subpath**: **String** - The path inside of the destination to copy the files.
+		- [ ] **phaseOrder**: **String** - When the Copy Files phase should execute in relation to other phases. This can be one of the following values:
+			- `preCompile`: Run before the Compile Sources phase
+			- `postCompile`: Run after the Compile Sources phase
 	- `none` - Will not be added to any build phases
 - [ ] **type**: **String**: This can be one of the following values
 	- `file`: a file reference with a parent group will be created (Default for files or directories with extensions)
