@@ -321,6 +321,17 @@ public class PBXProjGenerator {
         shellScriptPhase.showEnvVarsInLog = buildScript.showEnvVars
         return createObject(id: String(describing: buildScript.name) + shellScript + targetName, shellScriptPhase).reference
     }
+    
+    func generateCopyFiles(targetName: String, copyFiles: TargetSource.BuildPhase.CopyFilesSettings, buildPhaseFiles: [String]) -> String {
+        return createObject(
+            id: "copy files" + copyFiles.destination.rawValue + copyFiles.subpath + targetName,
+            PBXCopyFilesBuildPhase(
+                dstPath: copyFiles.subpath,
+                dstSubfolderSpec: copyFiles.destination.destination,
+                files: buildPhaseFiles
+            )
+        ).reference
+    }
 
     func generateTargetAttributes() -> [String: Any]? {
 
@@ -679,20 +690,7 @@ public class PBXProjGenerator {
         }
 
         copyFilesBuildPhasesFiles.merge(getBuildFilesForCopyFilesPhases()) { $0 + $1 }
-        if !copyFilesBuildPhasesFiles.isEmpty {
-            for (copyFiles, buildPhaseFiles) in copyFilesBuildPhasesFiles {
-                let copyFilesBuildPhase = createObject(
-                    id: "copy files" + copyFiles.destination.rawValue + copyFiles.subpath + target.name,
-                    PBXCopyFilesBuildPhase(
-                        dstPath: copyFiles.subpath,
-                        dstSubfolderSpec: copyFiles.destination.destination,
-                        files: buildPhaseFiles
-                    )
-                )
-
-                buildPhases.append(copyFilesBuildPhase.reference)
-            }
-        }
+        buildPhases += copyFilesBuildPhasesFiles.map { generateCopyFiles(targetName: target.name, copyFiles: $0, buildPhaseFiles: $1) }
 
         if !targetFrameworkBuildFiles.isEmpty {
 
