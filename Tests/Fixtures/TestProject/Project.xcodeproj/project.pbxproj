@@ -945,8 +945,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = CL_438704538506 /* Build configuration list for PBXNativeTarget "Framework_watchOS" */;
 			buildPhases = (
-				SBP_43870453850 /* Sources */,
 				HBP_43870453850 /* Headers */,
+				SBP_43870453850 /* Sources */,
 				FBP_43870453850 /* Frameworks */,
 				SSBP_2467869845 /* MyScript */,
 			);
@@ -964,8 +964,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = CL_472296042419 /* Build configuration list for PBXNativeTarget "Framework_iOS" */;
 			buildPhases = (
-				SBP_47229604241 /* Sources */,
 				HBP_47229604241 /* Headers */,
+				SBP_47229604241 /* Sources */,
 				FBP_47229604241 /* Frameworks */,
 				SSBP_3886691194 /* MyScript */,
 			);
@@ -1021,8 +1021,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = CL_525119120469 /* Build configuration list for PBXNativeTarget "Framework_macOS" */;
 			buildPhases = (
-				SBP_52511912046 /* Sources */,
 				HBP_52511912046 /* Headers */,
+				SBP_52511912046 /* Sources */,
 				FBP_52511912046 /* Frameworks */,
 				SSBP_8255377629 /* MyScript */,
 			);
@@ -1056,8 +1056,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = CL_662315837182 /* Build configuration list for PBXNativeTarget "Framework_tvOS" */;
 			buildPhases = (
-				SBP_66231583718 /* Sources */,
 				HBP_66231583718 /* Headers */,
+				SBP_66231583718 /* Sources */,
 				FBP_66231583718 /* Frameworks */,
 				SSBP_6331376344 /* MyScript */,
 			);
