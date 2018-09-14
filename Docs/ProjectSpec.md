@@ -373,7 +373,7 @@ targets:
 
 ### Build Script
 
-Run script build phases added via **prebuildScripts** or **postBuildScripts**. They run before or after any other build phases respectively and in the order defined. Each script can contain:
+Run script build phases added via **prebuildScripts**, **postCompileScripts**, or **postBuildScripts**. They run before any other build phases, after the Compile Sources build phase, or after any other build phases respectively and in the order defined. Each script can contain:
 
 - [x] **path**: **String** - a relative or absolute path to a shell script
 - [x] **script**: **String** - an inline shell script
@@ -400,12 +400,15 @@ targets:
         outputFiles:
           - $(DERIVED_FILE_DIR)/file1
           - $(DERIVED_FILE_DIR)/file2
-    postbuildScripts:
+    postCompileScripts:
       - script: swiftlint
         name: Swiftlint
       - script: |
       		command do
       		othercommand
+    postbuildScripts:
+      - path: myscripts/my_final_script.sh
+        name: My Final Script
 ```
 
 ### Build Rule

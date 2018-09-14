@@ -646,6 +646,8 @@ public class PBXProjGenerator {
         let sourcesBuildPhaseFiles = getBuildFilesForPhase(.sources)
         let sourcesBuildPhase = createObject(id: target.name, PBXSourcesBuildPhase(files: sourcesBuildPhaseFiles))
         buildPhases.append(sourcesBuildPhase.reference)
+        
+        buildPhases += try target.postCompileScripts.map { try generateBuildScript(targetName: target.name, buildScript: $0) }
 
         let resourcesBuildPhaseFiles = getBuildFilesForPhase(.resources) + copyResourcesReferences
         if !resourcesBuildPhaseFiles.isEmpty {

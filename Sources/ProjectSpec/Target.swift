@@ -32,6 +32,7 @@ public struct Target: ProjectTarget {
     public var directlyEmbedCarthageDependencies: Bool?
     public var requiresObjCLinking: Bool?
     public var prebuildScripts: [BuildScript]
+    public var postCompileScripts: [BuildScript]
     public var postbuildScripts: [BuildScript]
     public var buildRules: [BuildRule]
     public var configFiles: [String: String]
@@ -66,6 +67,7 @@ public struct Target: ProjectTarget {
         directlyEmbedCarthageDependencies: Bool? = nil,
         requiresObjCLinking: Bool? = nil,
         prebuildScripts: [BuildScript] = [],
+        postCompileScripts: [BuildScript] = [],
         postbuildScripts: [BuildScript] = [],
         buildRules: [BuildRule] = [],
         scheme: TargetScheme? = nil,
@@ -84,6 +86,7 @@ public struct Target: ProjectTarget {
         self.directlyEmbedCarthageDependencies = directlyEmbedCarthageDependencies
         self.requiresObjCLinking = requiresObjCLinking
         self.prebuildScripts = prebuildScripts
+        self.postCompileScripts = postCompileScripts
         self.postbuildScripts = postbuildScripts
         self.buildRules = buildRules
         self.scheme = scheme
@@ -209,6 +212,7 @@ extension Target: Equatable {
             lhs.sources == rhs.sources &&
             lhs.dependencies == rhs.dependencies &&
             lhs.prebuildScripts == rhs.prebuildScripts &&
+            lhs.postCompileScripts == rhs.postCompileScripts &&
             lhs.postbuildScripts == rhs.postbuildScripts &&
             lhs.buildRules == rhs.buildRules &&
             lhs.scheme == rhs.scheme &&
@@ -280,6 +284,7 @@ extension Target: NamedJSONDictionaryConvertible {
         requiresObjCLinking = jsonDictionary.json(atKeyPath: "requiresObjCLinking")
 
         prebuildScripts = jsonDictionary.json(atKeyPath: "prebuildScripts") ?? []
+        postCompileScripts = jsonDictionary.json(atKeyPath: "postCompileScripts") ?? []
         postbuildScripts = jsonDictionary.json(atKeyPath: "postbuildScripts") ?? []
         buildRules = jsonDictionary.json(atKeyPath: "buildRules") ?? []
         scheme = jsonDictionary.json(atKeyPath: "scheme")
