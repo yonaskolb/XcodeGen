@@ -1,5 +1,13 @@
 # Change Log
 
+## Master
+
+#### Added
+- Allow more granular phase ordering for Copy File and Run Script phases. [402](https://github.com/yonaskolb/XcodeGen/pull/402) @brentleyjones
+
+#### Fixed
+- Fixed phase ordering for modulemap and static libary header Copy File phases. [402](https://github.com/yonaskolb/XcodeGen/pull/402) @brentleyjones
+
 ## 1.11.2
 
 If XcodeGen is compiled with Swift 4.2, then UUID's in the generated project will not be deterministic. This will be fixed in an upcoming release with an update to xcodeproj 6.0
