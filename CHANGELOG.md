@@ -4,6 +4,7 @@
 
 #### Fixed
 - Fixed default settings for macOS unit-tests [387](https://github.com/yonaskolb/XcodeGen/pull/387) @frankdilo
+- Fixed Copy Headers phase ordering for Xcode 10 [401](https://github.com/yonaskolb/XcodeGen/pull/401) @brentleyjones
 
 #### Changed
 - Added default value for knownRegions property [390](https://github.com/yonaskolb/XcodeGen/pull/390) @Saik0s
