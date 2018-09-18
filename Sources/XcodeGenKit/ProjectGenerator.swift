@@ -40,26 +40,22 @@ public class ProjectGenerator {
 
         func getBuildEntry(_ buildTarget: Scheme.BuildTarget) -> XCScheme.BuildAction.Entry {
 
-            let targetReference = pbxProject.objects.targets(named: buildTarget.target).first!
-            if let target = project.getTarget(buildTarget.target) {
-                let buildableReference = XCScheme.BuildableReference(
-                    referencedContainer: "container:\(project.name).xcodeproj",
-                    blueprintIdentifier: targetReference.reference,
-                    buildableName: target.filename,
-                    blueprintName: buildTarget.target
-                )
-                return XCScheme.BuildAction.Entry(buildableReference: buildableReference, buildFor: buildTarget.buildTypes)
-            } else if let target = project.getAggregateTarget(buildTarget.target) {
-                let buildableReference = XCScheme.BuildableReference(
-                    referencedContainer: "container:\(project.name).xcodeproj",
-                    blueprintIdentifier: targetReference.reference,
-                    buildableName: target.name,
-                    blueprintName: buildTarget.target
-                )
-                return XCScheme.BuildAction.Entry(buildableReference: buildableReference, buildFor: buildTarget.buildTypes)
-            } else {
-                fatalError("Can't find neither `Target` nor `AggregateTarget` for build target: \(buildTarget.target)")
+            guard let targetReference = pbxProject.objects.targets(named: buildTarget.target).first else {
+                fatalError("Unable to find target named \"\(buildTarget.target)\" in \"PBXProj.objects.targets\"")
             }
+
+            guard let buildableName =
+                project.getTarget(buildTarget.target)?.filename ??
+                project.getAggregateTarget(buildTarget.target)?.name else {
+                    fatalError("Unable to determinate \"buildableName\" for build target: \(buildTarget.target)")
+            }
+            let buildableReference = XCScheme.BuildableReference(
+                referencedContainer: "container:\(project.name).xcodeproj",
+                blueprintIdentifier: targetReference.reference,
+                buildableName: buildableName,
+                blueprintName: buildTarget.target
+            )
+            return XCScheme.BuildAction.Entry(buildableReference: buildableReference, buildFor: buildTarget.buildTypes)
         }
 
         let testTargetNames = scheme.test?.targets ?? []
