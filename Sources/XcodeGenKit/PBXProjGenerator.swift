@@ -647,9 +647,9 @@ public class PBXProjGenerator {
         }
 
         copyFilesBuildPhasesFiles.merge(getBuildFilesForCopyFilesPhases()) { $0 + $1 }
-        
-        buildPhases += try target.prebuildScripts.map { try generateBuildScript(targetName: target.name, buildScript: $0) }
-        
+
+        buildPhases += try target.preBuildScripts.map { try generateBuildScript(targetName: target.name, buildScript: $0) }
+
         buildPhases += copyFilesBuildPhasesFiles
             .filter { $0.key.phaseOrder == .preCompile }
             .map { generateCopyFiles(targetName: target.name, copyFiles: $0, buildPhaseFiles: $1) }
@@ -663,9 +663,9 @@ public class PBXProjGenerator {
         let sourcesBuildPhaseFiles = getBuildFilesForPhase(.sources)
         let sourcesBuildPhase = createObject(id: target.name, PBXSourcesBuildPhase(files: sourcesBuildPhaseFiles))
         buildPhases.append(sourcesBuildPhase.reference)
-        
-        buildPhases += try target.postCompileScripts.map { try generateBuildScript(targetName: target.name, buildScript: $0) }
 
+        buildPhases += try target.postCompileScripts.map { try generateBuildScript(targetName: target.name, buildScript: $0) }
+        
         let resourcesBuildPhaseFiles = getBuildFilesForPhase(.resources) + copyResourcesReferences
         if !resourcesBuildPhaseFiles.isEmpty {
             let resourcesBuildPhase = createObject(id: target.name, PBXResourcesBuildPhase(files: resourcesBuildPhaseFiles))
@@ -790,7 +790,7 @@ public class PBXProjGenerator {
             ).reference
         }
 
-        buildPhases += try target.postbuildScripts.map { try generateBuildScript(targetName: target.name, buildScript: $0) }
+        buildPhases += try target.postBuildScripts.map { try generateBuildScript(targetName: target.name, buildScript: $0) }
 
         let configs: [ObjectReference<XCBuildConfiguration>] = project.configs.map { config in
             var buildSettings = project.getTargetBuildSettings(target: target, config: config)

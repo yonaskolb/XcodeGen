@@ -128,8 +128,9 @@ class ProjectSpecTests: XCTestCase {
                     configFiles: ["invalidConfig": "invalidConfigFile"],
                     sources: ["invalidSource"],
                     dependencies: [Dependency(type: .target, reference: "invalidDependency")],
-                    prebuildScripts: [BuildScript(script: .path("invalidPrebuildScript"), name: "prebuildScript1")],
-                    postbuildScripts: [BuildScript(script: .path("invalidPostbuildScript"))],
+                    preBuildScripts: [BuildScript(script: .path("invalidPreBuildScript"), name: "preBuildScript1")],
+                    postCompileScripts: [BuildScript(script: .path("invalidPostCompileScript"))],
+                    postBuildScripts: [BuildScript(script: .path("invalidPostBuildScript"))],
                     scheme: TargetScheme(testTargets: ["invalidTarget"])
                 )]
 
@@ -139,8 +140,9 @@ class ProjectSpecTests: XCTestCase {
                 try expectValidationError(project, .invalidTargetSource(target: "target1", source: "invalidSource"))
                 try expectValidationError(project, .invalidBuildSettingConfig("invalidConfig"))
                 try expectValidationError(project, .invalidSettingsGroup("invalidSettingGroup"))
-                try expectValidationError(project, .invalidBuildScriptPath(target: "target1", name: "prebuildScript1", path: "invalidPrebuildScript"))
-                try expectValidationError(project, .invalidBuildScriptPath(target: "target1", name: nil, path: "invalidPostbuildScript"))
+                try expectValidationError(project, .invalidBuildScriptPath(target: "target1", name: "preBuildScript1", path: "invalidPreBuildScript"))
+                try expectValidationError(project, .invalidBuildScriptPath(target: "target1", name: nil, path: "invalidPostCompileScript"))
+                try expectValidationError(project, .invalidBuildScriptPath(target: "target1", name: nil, path: "invalidPostBuildScript"))
 
                 try expectValidationError(project, .missingConfigForTargetScheme(target: "target1", configType: .debug))
                 try expectValidationError(project, .missingConfigForTargetScheme(target: "target1", configType: .release))

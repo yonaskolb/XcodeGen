@@ -175,8 +175,9 @@ Settings are merged in the following order: groups, base, configs.
 - [ ] **transitivelyLinkDependencies**: **Bool** - If this is not specified the value from the project set in [Options](#options)`.transitivelyLinkDependencies` will be used.
 - [ ] **directlyEmbedCarthageDependencies**: **Bool** - If this is `true` Carthage dependencies will be embedded using an `Embed Frameworks` build phase instead of the `copy-frameworks` script. Defaults to `true` for all targets except iOS/tvOS/watchOS Applications.
 - [ ] **requiresObjCLinking**: **Bool** - If this is `true` any targets that link to this target will have `-ObjC` added to their `OTHER_LDFLAGS`. This is required if a static library has any catagories or extensions on Objective-C code. See [this guide](https://pewpewthespells.com/blog/objc_linker_flags.html#objc) for more details. Defaults to `true` if `type` is `library.static`. If you are 100% sure you don't have catagories or extensions on Objective-C code (pure Swift with no use of Foundation/UIKit) you can set this to `false`, otherwise it's best to leave it alone.
-- [ ] **prebuildScripts**: **[[Build Script](#build-script)]** - Build scripts that run *before* any other build phases
-- [ ] **postbuildScripts**: **[[Build Script](#build-script)]** - Build scripts that run *after* any other build phases
+- [ ] **preBuildScripts**: **[[Build Script](#build-script)]** - Build scripts that run *before* any other build phases
+- [ ] **postCompileScripts**: **[[Build Script](#build-script)]** - Build scripts that run after the Compile Sources phase
+- [ ] **postBuildScripts**: **[[Build Script](#build-script)]** - Build scripts that run *after* any other build phases
 - [ ] **buildRules**: **[[Build Rule](#build-rule)]** - Custom build rules
 - [ ] **scheme**: **[Target Scheme](#target-scheme)** - Generated scheme with tests or config variants
 - [ ] **legacy**: **[Legacy Target](#legacy-target)** - When present, opt-in to make an Xcode "External Build System" legacy target instead.
@@ -376,7 +377,13 @@ targets:
 
 ### Build Script
 
-Run script build phases added via **prebuildScripts**, **postCompileScripts**, or **postBuildScripts**. They run before any other build phases, after the Compile Sources build phase, or after any other build phases respectively and in the order defined. Each script can contain:
+Run script build phases can be added at 3 different points in the build:
+
+- **preBuildScripts**: Before any other build phases
+- **postCompileScripts**: After the compile sources build phase
+- **postBuildScripts**: After any other build phases
+
+Each script can contain:
 
 - [x] **path**: **String** - a relative or absolute path to a shell script
 - [x] **script**: **String** - an inline shell script
@@ -394,7 +401,7 @@ A multiline script can be written using the various YAML multiline methods, for 
 ```yaml
 targets:
   MyTarget:
-    prebuildScripts:
+    preBuildScripts:
       - path: myscripts/my_script.sh
         name: My Script
         inputFiles:
@@ -409,7 +416,7 @@ targets:
       - script: |
       		command do
       		othercommand
-    postbuildScripts:
+    postBuildScripts:
       - path: myscripts/my_final_script.sh
         name: My Final Script
 ```
@@ -488,7 +495,7 @@ This is used to override settings or run build scripts in specific targets
 
 - [x] **targets**: **[String]** - The list of target names to include as target dependencies
 - [ ] **configFiles**: **[Config Files](#config-files)** - `.xcconfig` files per config
-- [ ] **settings**: **[Settings](#settings)** - Target specific build settings. 
+- [ ] **settings**: **[Settings](#settings)** - Target specific build settings.
 - [ ] **buildScripts**: **[[Build Script](#build-script)]** - Build scripts to run
 - [ ] **scheme**: **[Target Scheme](#target-scheme)** - Generated scheme
 - [ ] **attributes**: **[String: Any]** - This sets values in the project `TargetAttributes`. It is merged with `attributes` from the project and anything automatically added by XcodeGen, with any duplicate values being override by values specified here

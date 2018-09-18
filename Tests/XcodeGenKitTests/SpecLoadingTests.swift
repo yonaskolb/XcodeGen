@@ -379,8 +379,9 @@ class SpecLoadingTests: XCTestCase {
                     ["script": "shell script\ndo thing", "name": "myscript", "inputFiles": ["file", "file2"], "outputFiles": ["file", "file2"], "shell": "bin/customshell", "runOnlyWhenInstalling": true],
                     ["script": "shell script\ndo thing", "name": "myscript", "inputFiles": ["file", "file2"], "outputFiles": ["file", "file2"], "shell": "bin/customshell", "showEnvVars": false],
                 ]
-                target["prebuildScripts"] = scripts
-                target["postbuildScripts"] = scripts
+                target["preBuildScripts"] = scripts
+                target["postCompileScripts"] = scripts
+                target["postBuildScripts"] = scripts
 
                 let expectedScripts = [
                     BuildScript(script: .path("script.sh")),
@@ -389,8 +390,9 @@ class SpecLoadingTests: XCTestCase {
                 ]
 
                 let parsedTarget = try Target(name: "test", jsonDictionary: target)
-                try expect(parsedTarget.prebuildScripts) == expectedScripts
-                try expect(parsedTarget.postbuildScripts) == expectedScripts
+                try expect(parsedTarget.preBuildScripts) == expectedScripts
+                try expect(parsedTarget.postCompileScripts) == expectedScripts
+                try expect(parsedTarget.postBuildScripts) == expectedScripts
             }
 
             $0.it("parses build rules") {
