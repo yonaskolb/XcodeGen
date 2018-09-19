@@ -8,6 +8,7 @@ If XcodeGen is compiled with Swift 4.2, then UUID's in the generated project wil
 - Fixed release builds in Swift 4.2 [404](https://github.com/yonaskolb/XcodeGen/pull/404) @pepibumur
 - Fixed default settings for macOS unit-tests [387](https://github.com/yonaskolb/XcodeGen/pull/387) @frankdilo
 - Fixed Copy Headers phase ordering for Xcode 10 [401](https://github.com/yonaskolb/XcodeGen/pull/401) @brentleyjones
+- Fixed generated schemes on aggregate targets [394](https://github.com/yonaskolb/XcodeGen/pull/394) @vgorloff
 
 #### Changed
 - Added `en` as default value for knownRegions [390](https://github.com/yonaskolb/XcodeGen/pull/390) @Saik0s
