@@ -14,7 +14,6 @@ jobs:
     steps:
       - checkout
       - run: swift build
-      - run: swift test
       - run: make build
 workflows:
   version: 2
