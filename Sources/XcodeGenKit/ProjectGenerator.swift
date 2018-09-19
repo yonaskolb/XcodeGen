@@ -47,7 +47,7 @@ public class ProjectGenerator {
             guard let buildableName =
                 project.getTarget(buildTarget.target)?.filename ??
                 project.getAggregateTarget(buildTarget.target)?.name else {
-                    fatalError("Unable to determinate \"buildableName\" for build target: \(buildTarget.target)")
+                fatalError("Unable to determinate \"buildableName\" for build target: \(buildTarget.target)")
             }
             let buildableReference = XCScheme.BuildableReference(
                 referencedContainer: "container:\(project.name).xcodeproj",

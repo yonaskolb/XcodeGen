@@ -29,7 +29,7 @@ public struct Project: BuildSettingsContainer {
     public var fileGroups: [String]
     public var configFiles: [String: String]
     public var include: [String] = []
-    
+
     private var targetsMap: [String: Target]
     private var aggregateTargetsMap: [String: AggregateTarget]
 
@@ -66,7 +66,7 @@ public struct Project: BuildSettingsContainer {
     public func getTarget(_ targetName: String) -> Target? {
         return targetsMap[targetName]
     }
-    
+
     public func getAggregateTarget(_ targetName: String) -> AggregateTarget? {
         return aggregateTargetsMap[targetName]
     }
