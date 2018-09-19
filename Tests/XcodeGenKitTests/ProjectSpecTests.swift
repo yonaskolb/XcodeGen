@@ -204,6 +204,23 @@ class ProjectSpecTests: XCTestCase {
                 project.options = SpecOptions(defaultConfig: "foo")
                 try expectValidationError(project, .missingDefaultConfig(configName: "foo"))
             }
+
+            $0.it("allows custom scheme for aggregated target") {
+                var project = baseProject
+                let buildScript = BuildScript(script: .path(#file), name: "buildScript1")
+                let aggregatedTarget = AggregateTarget(name: "target1",
+                                                       targets: [],
+                                                       settings: Settings(buildSettings: [:]),
+                                                       configFiles: [:],
+                                                       buildScripts: [buildScript],
+                                                       scheme: nil,
+                                                       attributes: [:])
+                project.aggregateTargets = [aggregatedTarget]
+                let buildTarget = Scheme.BuildTarget(target: "target1")
+                let scheme = Scheme(name: "target1-Scheme", build: Scheme.Build(targets: [buildTarget]))
+                project.schemes = [scheme]
+                try project.validate()
+            }
         }
     }
 }

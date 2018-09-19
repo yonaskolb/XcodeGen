@@ -135,7 +135,7 @@ extension Project {
 
         for scheme in schemes {
             for buildTarget in scheme.build.targets {
-                if getTarget(buildTarget.target) == nil {
+                if getProjectTarget(buildTarget.target) == nil {
                     errors.append(.invalidSchemeTarget(scheme: scheme.name, target: buildTarget.target))
                 }
             }
