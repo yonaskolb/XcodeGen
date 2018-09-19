@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  build:
+  macOS_swift_4.1:
     macos:
       xcode: "9.3.0"
     steps:
@@ -8,3 +8,16 @@ jobs:
       - run: swift build
       - run: swift test
       - run: make build
+  macOS_swift_4.2:
+    macos:
+      xcode: "10.0.0"
+    steps:
+      - checkout
+      - run: swift build
+      - run: make build
+workflows:
+  version: 2
+  workflow:
+    jobs:
+      - macOS_swift_4.1
+      - macOS_swift_4.2
