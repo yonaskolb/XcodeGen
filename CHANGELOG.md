@@ -1,13 +1,19 @@
 # Change Log
 
-## Master
+## 1.11.2
+
+If XcodeGen is compiled with Swift 4.2, then UUID's in the generated project will not be deterministic. This will be fixed in an upcoming release with an update to xcodeproj 6.0
 
 #### Fixed
+- Fixed release builds in Swift 4.2 [404](https://github.com/yonaskolb/XcodeGen/pull/404) @pepibumur
 - Fixed default settings for macOS unit-tests [387](https://github.com/yonaskolb/XcodeGen/pull/387) @frankdilo
 - Fixed Copy Headers phase ordering for Xcode 10 [401](https://github.com/yonaskolb/XcodeGen/pull/401) @brentleyjones
 
 #### Changed
-- Added default value for knownRegions property [390](https://github.com/yonaskolb/XcodeGen/pull/390) @Saik0s
+- Added `en` as default value for knownRegions [390](https://github.com/yonaskolb/XcodeGen/pull/390) @Saik0s
+- Update `PathKit`, `Spectre`, `Yams` and `xcodeproj` dependencies
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/1.11.1...1.11.2)
 
 ## 1.11.1
 
