@@ -66,11 +66,11 @@
       },
       {
         "package": "xcproj",
-        "repositoryURL": "https://github.com/xcodeswift/xcproj.git",
+        "repositoryURL": "https://github.com/tuist/xcodeproj.git",
         "state": {
           "branch": null,
-          "revision": "e787c68092e28fe2b34205fc1b62de431922c243",
-          "version": "4.3.0"
+          "revision": "5253c22f208558264e3a64a3a29f11537ca1b41a",
+          "version": "4.3.1"
         }
       },
       {
