@@ -1,3 +1,5 @@
+// MARK: allSpecialFileExtensions
+
 let allSpecialFileExtensions: [String] = [
     "action",                   // com.apple.automator-action
     "agilekeychain",            // ws.agile.agilekeychain
@@ -114,6 +116,8 @@ let allSpecialFileExtensions: [String] = [
     "xcworkspace",              // com.apple.dt.document.workspace
     "xpc",                      // com.apple.xpc-service
 ]
+
+// MARK: otherFileExtensions
 
 let otherFileExtensions: [String] = [
     "3gp",                      // public.folder
