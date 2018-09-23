@@ -14,7 +14,7 @@ extension Path {
             .resourceValues(forKeys: [URLResourceKey.typeIdentifierKey])
             .typeIdentifier {
             // NOTE: lproj is public.folder
-            return uti != "public.folder"
+            return uti != "public.folder" && !uti.starts(with: "dyn")
         }
 
         return false
