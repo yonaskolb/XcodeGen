@@ -637,6 +637,12 @@ public class PBXProjGenerator {
 
         buildPhases += try target.prebuildScripts.map { try generateBuildScript(targetName: target.name, buildScript: $0) }
 
+        let headersBuildPhaseFiles = getBuildFilesForPhase(.headers)
+        if !headersBuildPhaseFiles.isEmpty && (target.type == .framework || target.type == .dynamicLibrary) {
+            let headersBuildPhase = createObject(id: target.name, PBXHeadersBuildPhase(files: headersBuildPhaseFiles))
+            buildPhases.append(headersBuildPhase.reference)
+        }
+
         let sourcesBuildPhaseFiles = getBuildFilesForPhase(.sources)
         let sourcesBuildPhase = createObject(id: target.name, PBXSourcesBuildPhase(files: sourcesBuildPhaseFiles))
         buildPhases.append(sourcesBuildPhase.reference)
@@ -684,12 +690,6 @@ public class PBXProjGenerator {
 
                 buildPhases.append(copyFilesBuildPhase.reference)
             }
-        }
-
-        let headersBuildPhaseFiles = getBuildFilesForPhase(.headers)
-        if !headersBuildPhaseFiles.isEmpty && (target.type == .framework || target.type == .dynamicLibrary) {
-            let headersBuildPhase = createObject(id: target.name, PBXHeadersBuildPhase(files: headersBuildPhaseFiles))
-            buildPhases.append(headersBuildPhase.reference)
         }
 
         if !targetFrameworkBuildFiles.isEmpty {
@@ -923,14 +923,14 @@ public class PBXProjGenerator {
             if visitedTargets.contains(projectTarget.name) {
                 continue
             }
-            
+
             if let target = projectTarget as? Target {
                 for dependency in target.dependencies {
                     // don't overwrite frameworks, to allow top level ones to rule
                     if frameworks.contains(reference: dependency.reference) {
                         continue
                     }
-                    
+
                     switch dependency.type {
                     case .carthage:
                         frameworks[dependency.reference] = dependency

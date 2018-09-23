@@ -40,15 +40,21 @@ public class ProjectGenerator {
 
         func getBuildEntry(_ buildTarget: Scheme.BuildTarget) -> XCScheme.BuildAction.Entry {
 
-            let targetReference = pbxProject.objects.targets(named: buildTarget.target).first!
-            let target = project.getTarget(buildTarget.target)!
+            guard let targetReference = pbxProject.objects.targets(named: buildTarget.target).first else {
+                fatalError("Unable to find target named \"\(buildTarget.target)\" in \"PBXProj.objects.targets\"")
+            }
+
+            guard let buildableName =
+                project.getTarget(buildTarget.target)?.filename ??
+                project.getAggregateTarget(buildTarget.target)?.name else {
+                fatalError("Unable to determinate \"buildableName\" for build target: \(buildTarget.target)")
+            }
             let buildableReference = XCScheme.BuildableReference(
                 referencedContainer: "container:\(project.name).xcodeproj",
                 blueprintIdentifier: targetReference.reference,
-                buildableName: target.filename,
+                buildableName: buildableName,
                 blueprintName: buildTarget.target
             )
-
             return XCScheme.BuildAction.Entry(buildableReference: buildableReference, buildFor: buildTarget.buildTypes)
         }
 
