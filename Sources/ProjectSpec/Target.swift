@@ -1,6 +1,6 @@
 import Foundation
 import JSONUtilities
-import xcproj
+import xcodeproj
 
 public struct LegacyTarget: Equatable {
     public var toolPath: String

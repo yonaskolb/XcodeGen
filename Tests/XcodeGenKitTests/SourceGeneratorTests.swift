@@ -2,7 +2,7 @@ import PathKit
 import ProjectSpec
 import Spectre
 import XcodeGenKit
-import xcproj
+import xcodeproj
 import XCTest
 import Yams
 
@@ -85,16 +85,18 @@ class SourceGeneratorTests: XCTestCase {
                 let project = Project(basePath: directoryPath, name: "Test", targets: [target])
                 let pbxProj = try project.generatePbxProj()
                 try pbxProj.expectFile(paths: ["Sources", "Bar.swift"], buildPhase: .sources)
-                let buildPhase = pbxProj.objects.copyFilesBuildPhases.referenceValues.first
+                let buildPhase = pbxProj.objects.copyFilesBuildPhases.values.first
                 try expect(buildPhase?.dstSubfolderSpec) == .frameworks
                 let fileReference = pbxProj.getFileReference(
                     paths: ["Sources", "Foo.framework"],
                     names: ["Sources", "Foo.framework"]
-                )?.reference ?? ""
-                let buildFile = pbxProj.objects.buildFiles.objectReferences
-                    .first(where: { $0.object.fileRef == fileReference })?.reference ?? ""
-                try expect(buildPhase?.files.count) == 1
-                try expect(buildPhase?.files.contains(buildFile)) == true
+                )?.reference
+                guard let buildFile = pbxProj.objects.buildFiles.valueArray
+                    .first(where: { $0.fileReference == fileReference })?.reference else {
+                        throw failure("Cant find build file")
+                }
+                try expect(buildPhase?.fileReferences.count) == 1
+                try expect(buildPhase?.fileReferences.contains(buildFile)) == true
             }
 
             $0.it("generates core data models") {
@@ -119,7 +121,7 @@ class SourceGeneratorTests: XCTestCase {
                     throw failure("Couldn't find version group")
                 }
                 try expect(versionGroup.currentVersion) == fileReference.key
-                try expect(versionGroup.children.count) == 3
+                try expect(versionGroup.childrenReferences.count) == 3
                 try expect(versionGroup.path) == "model.xcdatamodeld"
                 try expect(fileReference.value.path) == "model2.xcdatamodel"
             }
@@ -462,7 +464,7 @@ class SourceGeneratorTests: XCTestCase {
                     .first(where: { $0.1.buildPhase == BuildPhase.sources })!
                     .value
 
-                try expect(sourcesBuildPhase.files.count) == 1
+                try expect(sourcesBuildPhase.fileReferences.count) == 1
             }
 
             $0.it("derived directories are sorted last") {
@@ -480,7 +482,7 @@ class SourceGeneratorTests: XCTestCase {
                 let project = Project(basePath: directoryPath, name: "Test", targets: [target])
 
                 let pbxProj = try project.generatePbxProj()
-                let groups = try pbxProj.getMainGroup().children.compactMap { pbxProj.objects.getFileElement(reference: $0)?.nameOrPath }
+                let groups = try pbxProj.getMainGroup().childrenReferences.compactMap { pbxProj.objects.getFileElement(reference: $0)?.nameOrPath }
                 try expect(groups) == ["A", "P", "S", "Frameworks", "Products"]
             }
 
@@ -503,8 +505,9 @@ class SourceGeneratorTests: XCTestCase {
                 let project = Project(basePath: directoryPath, name: "Test", targets: [target])
 
                 let pbxProj = try project.generatePbxProj()
-                let group = pbxProj.objects.group(named: "Sources", inGroup: try pbxProj.getMainGroup())!.object
-                let names = group.children.compactMap { pbxProj.objects.getFileElement(reference: $0)?.nameOrPath }
+                let mainGroup = try pbxProj.getMainGroup()
+                let group = mainGroup.childrenReferences.compactMap { pbxProj.objects.groups[$0]}.first { $0.nameOrPath == "Sources" }!
+                let names = group.childrenReferences.compactMap { pbxProj.objects.getFileElement(reference: $0)?.nameOrPath }
                 try expect(names) == [
                     "1file.a",
                     "10file.a",
@@ -532,10 +535,10 @@ extension PBXProj {
         }
 
         if let buildPhase = buildPhase {
-            let buildFile = objects.buildFiles.objectReferences
-                .first(where: { $0.object.fileRef == fileReference.reference })
+            let buildFile = objects.buildFiles.values
+                .first(where: { $0.fileReference == fileReference.reference })
             let actualBuildPhase = buildFile
-                .flatMap { buildFile in objects.buildPhases.referenceValues.first { $0.files.contains(buildFile.reference) } }?.buildPhase
+                .flatMap { buildFile in objects.buildPhases.values.first { $0.fileReferences.contains(buildFile.reference) } }?.buildPhase
 
             var error: String?
             if let buildPhase = buildPhase.buildPhase {
@@ -563,9 +566,9 @@ extension PBXProj {
         }
     }
 
-    func getFileReference(paths: [String], names: [String], file: String = #file, line: Int = #line) -> ObjectReference<PBXFileReference>? {
+    func getFileReference(paths: [String], names: [String], file: String = #file, line: Int = #line) -> PBXFileReference? {
         guard let project = objects.projects.first?.value else { return nil }
-        guard let mainGroup = objects.groups.getReference(project.mainGroup) else { return nil }
+        guard let mainGroup = objects.groups.getReference(project.mainGroupReference) else { return nil }
 
         return getFileReference(group: mainGroup, paths: paths, names: names)
     }
@@ -574,13 +577,13 @@ extension PBXProj {
         guard let project = objects.projects.first?.value else {
             throw failure("Couldn't find project", file: file, line: line)
         }
-        guard let mainGroup = objects.groups.getReference(project.mainGroup) else {
+        guard let mainGroup = objects.groups.getReference(project.mainGroupReference) else {
             throw failure("Couldn't find main group", file: file, line: line)
         }
         return mainGroup
     }
 
-    private func getFileReference(group: PBXGroup, paths: [String], names: [String]) -> ObjectReference<PBXFileReference>? {
+    private func getFileReference(group: PBXGroup, paths: [String], names: [String]) -> PBXFileReference? {
 
         guard !paths.isEmpty else { return nil }
         let path = paths.first!
@@ -588,16 +591,10 @@ extension PBXProj {
         let restOfPath = Array(paths.dropFirst())
         let restOfName = Array(names.dropFirst())
         if restOfPath.isEmpty {
-            let fileReferences: [ObjectReference<PBXFileReference>] = group.children.compactMap { reference in
-                if let fileReference = self.objects.fileReferences.getReference(reference) {
-                    return ObjectReference(reference: reference, object: fileReference)
-                } else {
-                    return nil
-                }
-            }
-            return fileReferences.first { $0.object.path == path && $0.object.nameOrPath == name }
+            let fileReferences: [PBXFileReference] = group.childrenReferences.compactMap { self.objects.fileReferences.getReference($0) }
+            return fileReferences.first { $0.path == path && $0.nameOrPath == name }
         } else {
-            let groups = group.children.compactMap { self.objects.groups.getReference($0) }
+            let groups = group.childrenReferences.compactMap { self.objects.groups.getReference($0) }
             guard let group = groups.first(where: { $0.path == path && $0.nameOrPath == name }) else { return nil }
             return getFileReference(group: group, paths: restOfPath, names: restOfName)
         }

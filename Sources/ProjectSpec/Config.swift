@@ -1,6 +1,5 @@
 import Foundation
 import JSONUtilities
-import xcproj
 
 public struct Config: Equatable {
     public var name: String

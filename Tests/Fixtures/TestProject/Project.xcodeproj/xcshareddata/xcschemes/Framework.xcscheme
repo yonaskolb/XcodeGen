@@ -14,7 +14,7 @@
                <EnvironmentBuildable>
                   <BuildableReference
                      BuildableIdentifier = "primary"
-                     BlueprintIdentifier = "NT_472296042419"
+                     BlueprintIdentifier = "FE8D0077B0ADF688264AFA16A3FC213E"
                      BuildableName = "Framework.framework"
                      BlueprintName = "Framework_iOS"
                      ReferencedContainer = "container:Project.xcodeproj">
@@ -32,7 +32,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "NT_472296042419"
+               BlueprintIdentifier = "FE8D0077B0ADF688264AFA16A3FC213E"
                BuildableName = "Framework.framework"
                BlueprintName = "Framework_iOS"
                ReferencedContainer = "container:Project.xcodeproj">
@@ -50,7 +50,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "NT_472296042419"
+            BlueprintIdentifier = "FE8D0077B0ADF688264AFA16A3FC213E"
             BuildableName = "Framework.framework"
             BlueprintName = "Framework_iOS"
             ReferencedContainer = "container:Project.xcodeproj">
@@ -72,7 +72,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "NT_472296042419"
+            BlueprintIdentifier = "FE8D0077B0ADF688264AFA16A3FC213E"
             BuildableName = "Framework.framework"
             BlueprintName = "Framework_iOS"
             ReferencedContainer = "container:Project.xcodeproj">
@@ -101,7 +101,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "NT_472296042419"
+            BlueprintIdentifier = "FE8D0077B0ADF688264AFA16A3FC213E"
             BuildableName = "Framework.framework"
             BlueprintName = "Framework_iOS"
             ReferencedContainer = "container:Project.xcodeproj">

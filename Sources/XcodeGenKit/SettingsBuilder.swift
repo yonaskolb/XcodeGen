@@ -2,8 +2,9 @@ import Foundation
 import JSONUtilities
 import PathKit
 import ProjectSpec
-import xcproj
+import xcodeproj
 import Yams
+import Basic
 
 extension Project {
 
@@ -129,7 +130,7 @@ extension Project {
         if let settings = configFileSettings[configFilePath.string] {
             return settings
         } else {
-            guard let configFile = try? XCConfig(path: configFilePath) else { return nil }
+            guard let configFile = try? XCConfig(path: AbsolutePath(configFilePath.absolute().string)) else { return nil }
             let settings = configFile.flattenedBuildSettings()
             configFileSettings[configFilePath.string] = settings
             return settings

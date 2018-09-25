@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "NT_324671077936"
+               BlueprintIdentifier = "9F21B9C99E75314E51854589C0A2D40C"
                BuildableName = "App_watchOS.app"
                BlueprintName = "App_watchOS"
                ReferencedContainer = "container:Project.xcodeproj">
@@ -32,7 +32,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "NT_324671077936"
+            BlueprintIdentifier = "9F21B9C99E75314E51854589C0A2D40C"
             BuildableName = "App_watchOS.app"
             BlueprintName = "App_watchOS"
             ReferencedContainer = "container:Project.xcodeproj">
@@ -57,7 +57,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "NT_324671077936"
+            BlueprintIdentifier = "9F21B9C99E75314E51854589C0A2D40C"
             BuildableName = "App_watchOS.app"
             BlueprintName = "App_watchOS"
             ReferencedContainer = "container:Project.xcodeproj">
@@ -78,7 +78,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "NT_324671077936"
+            BlueprintIdentifier = "9F21B9C99E75314E51854589C0A2D40C"
             BuildableName = "App_watchOS.app"
             BlueprintName = "App_watchOS"
             ReferencedContainer = "container:Project.xcodeproj">

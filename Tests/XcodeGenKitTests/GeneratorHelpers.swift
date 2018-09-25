@@ -2,7 +2,7 @@ import PathKit
 import ProjectSpec
 import Spectre
 import XcodeGenKit
-import xcproj
+import xcodeproj
 import XCTest
 import Yams
 
@@ -32,11 +32,11 @@ extension PBXProj {
         let mainGroup = try getMainGroup()
 
         func validateGroup(_ group: PBXGroup) throws {
-            let hasDuplicatedChildren = group.children.count != Set(group.children).count
+            let hasDuplicatedChildren = group.childrenReferences.count != Set(group.childrenReferences).count
             if hasDuplicatedChildren {
-                throw failure("Group \"\(group.nameOrPath)\" has duplicated children:\n - \(group.children.sorted().joined(separator: "\n - "))")
+                throw failure("Group \"\(group.nameOrPath)\" has duplicated children:\n - \(group.childrenReferences.map { String(describing: $0) }.joined(separator: "\n - "))")
             }
-            for child in group.children {
+            for child in group.childrenReferences {
                 if let group = objects.groups.getReference(child) {
                     try validateGroup(group)
                 }

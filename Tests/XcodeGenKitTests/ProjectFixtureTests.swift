@@ -2,8 +2,9 @@ import PathKit
 import ProjectSpec
 import Spectre
 import XcodeGenKit
-import xcproj
+import xcodeproj
 import XCTest
+import Basic
 
 class ProjectFixtureTests: XCTestCase {
 
@@ -18,12 +19,12 @@ class ProjectFixtureTests: XCTestCase {
             $0.it("generates variant group") {
                 guard let xcodeProject = xcodeProject else { return }
 
-                func getFileReferences(_ path: String) -> [ObjectReference<PBXFileReference>] {
-                    return xcodeProject.pbxproj.objects.fileReferences.objectReferences.filter { $0.object.path == path }
+                func getFileReferences(_ path: String) -> [PBXFileReference] {
+                    return xcodeProject.pbxproj.objects.fileReferences.values.filter { $0.path == path }
                 }
 
                 func getVariableGroups(_ name: String?) -> [PBXVariantGroup] {
-                    return xcodeProject.pbxproj.objects.variantGroups.referenceValues.filter { $0.name == name }
+                    return xcodeProject.pbxproj.objects.variantGroups.values.filter { $0.name == name }
                 }
 
                 let resourceName = "LocalizedStoryboard.storyboard"
@@ -35,13 +36,13 @@ class ProjectFixtureTests: XCTestCase {
                 do {
                     let refs = getFileReferences(baseResource)
                     try expect(refs.count) == 1
-                    try expect(variableGroup.children.filter { $0 == refs.first?.reference }.count) == 1
+                    try expect(variableGroup.childrenReferences.filter { $0 == refs.first?.reference }.count) == 1
                 }
 
                 do {
                     let refs = getFileReferences(localizedResource)
                     try expect(refs.count) == 1
-                    try expect(variableGroup.children.filter { $0 == refs.first?.reference }.count) == 1
+                    try expect(variableGroup.childrenReferences.filter { $0 == refs.first?.reference }.count) == 1
                 }
             }
 
@@ -59,11 +60,12 @@ class ProjectFixtureTests: XCTestCase {
 }
 
 fileprivate func generateXcodeProject(specPath: Path, projectPath: Path, file: String = #file, line: Int = #line) throws -> XcodeProj {
+    let projectPath = AbsolutePath(projectPath.absolute().string)
     let project = try Project(path: specPath)
     let generator = ProjectGenerator(project: project)
     let xcodeProject = try generator.generateXcodeProject()
     let oldProject = try XcodeProj(path: projectPath)
-    let pbxProjPath = projectPath + XcodeProj.pbxprojPath(projectPath)
+    let pbxProjPath = Path(XcodeProj.pbxprojPath(projectPath).asString)
     let oldProjectString: String = try pbxProjPath.read()
     try xcodeProject.write(path: projectPath, override: true)
     let newProjectString: String = try pbxProjPath.read()
@@ -71,7 +73,7 @@ fileprivate func generateXcodeProject(specPath: Path, projectPath: Path, file: S
     let newProject = try XcodeProj(path: projectPath)
     let stringDiff = newProjectString != oldProjectString
     if newProject != oldProject || stringDiff {
-        var message = "\(projectPath.string) has changed. If change is legitimate commit the change and run test again"
+        var message = "\(projectPath.asString) has changed. If change is legitimate commit the change and run test again"
         if stringDiff {
             message += ":\n\n\(pbxProjPath):\n\(prettyFirstDifferenceBetweenStrings(oldProjectString, newProjectString))"
         }

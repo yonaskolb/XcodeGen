@@ -4,7 +4,8 @@ import JSONUtilities
 import PathKit
 import ProjectSpec
 import XcodeGenKit
-import xcproj
+import xcodeproj
+import Basic
 
 let version = try Version("1.11.2")
 
@@ -54,7 +55,7 @@ func generate(spec: String, project: String, isQuiet: Bool, justVersion: Bool) {
         if projectFile.exists {
             try projectFile.copy(tempPath)
         }
-        try xcodeProject.write(path: tempPath, override: true)
+        try xcodeProject.write(path: AbsolutePath(tempPath.absolute().string), override: true)
         try? projectFile.delete()
         try tempPath.copy(projectFile)
         try? tempPath.delete()

@@ -1,7 +1,6 @@
 import Foundation
 import JSONUtilities
 import PathKit
-import xcproj
 import Yams
 
 public struct Project: BuildSettingsContainer {
