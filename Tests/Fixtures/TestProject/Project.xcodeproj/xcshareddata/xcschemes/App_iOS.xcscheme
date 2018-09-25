@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "DB85CB6A2C15660854D634EF1B0C1FAD"
+               BlueprintIdentifier = ""
                BuildableName = "App_iOS.app"
                BlueprintName = "App_iOS"
                ReferencedContainer = "container:Project.xcodeproj">
@@ -33,7 +33,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "8CDD0FC5B69DB55054CAECF513716138"
+               BlueprintIdentifier = ""
                BuildableName = "App_iOS_Tests.xctest"
                BlueprintName = "App_iOS_Tests"
                ReferencedContainer = "container:Project.xcodeproj">
@@ -43,7 +43,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "B145BCFEB550C3DDF48510BB85CDE8DC"
+               BlueprintIdentifier = ""
                BuildableName = "App_iOS_UITests.xctest"
                BlueprintName = "App_iOS_UITests"
                ReferencedContainer = "container:Project.xcodeproj">
@@ -53,7 +53,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "DB85CB6A2C15660854D634EF1B0C1FAD"
+            BlueprintIdentifier = ""
             BuildableName = "App_iOS.app"
             BlueprintName = "App_iOS"
             ReferencedContainer = "container:Project.xcodeproj">
@@ -61,12 +61,12 @@
       </MacroExpansion>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "MyEnabledArgument"
-            isEnabled = "YES">
-         </CommandLineArgument>
-         <CommandLineArgument
             argument = "MyDisabledArgument"
             isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "MyEnabledArgument"
+            isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>
       <AdditionalOptions>
@@ -86,7 +86,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "DB85CB6A2C15660854D634EF1B0C1FAD"
+            BlueprintIdentifier = ""
             BuildableName = "App_iOS.app"
             BlueprintName = "App_iOS"
             ReferencedContainer = "container:Project.xcodeproj">
@@ -94,12 +94,12 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "MyEnabledArgument"
-            isEnabled = "YES">
-         </CommandLineArgument>
-         <CommandLineArgument
             argument = "MyDisabledArgument"
             isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "MyEnabledArgument"
+            isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>
       <AdditionalOptions>
@@ -115,7 +115,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "DB85CB6A2C15660854D634EF1B0C1FAD"
+            BlueprintIdentifier = ""
             BuildableName = "App_iOS.app"
             BlueprintName = "App_iOS"
             ReferencedContainer = "container:Project.xcodeproj">
@@ -123,12 +123,12 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "MyEnabledArgument"
-            isEnabled = "YES">
-         </CommandLineArgument>
-         <CommandLineArgument
             argument = "MyDisabledArgument"
             isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "MyEnabledArgument"
+            isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>
    </ProfileAction>

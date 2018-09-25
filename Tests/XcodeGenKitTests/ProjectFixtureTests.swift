@@ -20,11 +20,11 @@ class ProjectFixtureTests: XCTestCase {
                 guard let xcodeProject = xcodeProject else { return }
 
                 func getFileReferences(_ path: String) -> [PBXFileReference] {
-                    return xcodeProject.pbxproj.objects.fileReferences.values.filter { $0.path == path }
+                    return xcodeProject.pbxproj.fileReferences.filter { $0.path == path }
                 }
 
                 func getVariableGroups(_ name: String?) -> [PBXVariantGroup] {
-                    return xcodeProject.pbxproj.objects.variantGroups.values.filter { $0.name == name }
+                    return xcodeProject.pbxproj.variantGroups.filter { $0.name == name }
                 }
 
                 let resourceName = "LocalizedStoryboard.storyboard"
@@ -36,13 +36,13 @@ class ProjectFixtureTests: XCTestCase {
                 do {
                     let refs = getFileReferences(baseResource)
                     try expect(refs.count) == 1
-                    try expect(variableGroup.childrenReferences.filter { $0 == refs.first?.reference }.count) == 1
+                    try expect(variableGroup.children.filter { $0 == refs.first }.count) == 1
                 }
 
                 do {
                     let refs = getFileReferences(localizedResource)
                     try expect(refs.count) == 1
-                    try expect(variableGroup.childrenReferences.filter { $0 == refs.first?.reference }.count) == 1
+                    try expect(variableGroup.children.filter { $0 == refs.first }.count) == 1
                 }
             }
 

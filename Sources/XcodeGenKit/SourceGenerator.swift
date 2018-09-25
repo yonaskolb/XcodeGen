@@ -5,15 +5,15 @@ import xcodeproj
 
 struct SourceFile {
     let path: Path
-    let fileReference: PBXObjectReference
+    let fileReference: PBXFileElement
     let buildFile: PBXBuildFile
     let buildPhase: TargetSource.BuildPhase?
 }
 
 class SourceGenerator {
 
-    var rootGroups: Set<PBXObjectReference> = []
-    private var fileReferencesByPath: [String: PBXObjectReference] = [:]
+    var rootGroups: Set<PBXFileElement> = []
+    private var fileReferencesByPath: [String: PBXFileElement] = [:]
     private var groupsByPath: [Path: PBXGroup] = [:]
     private var variantGroupsByPath: [Path: PBXVariantGroup] = [:]
 
@@ -91,7 +91,7 @@ class SourceGenerator {
             settings["COMPILER_FLAGS"] = targetSource.compilerFlags.joined(separator: " ")
         }
 
-        let buildFile = PBXBuildFile(fileReference: fileReference, settings: settings.isEmpty ? nil : settings)
+        let buildFile = PBXBuildFile(file: fileReference, settings: settings.isEmpty ? nil : settings)
         return SourceFile(
             path: path,
             fileReference: fileReference,
@@ -100,7 +100,7 @@ class SourceGenerator {
         )
     }
 
-    func getContainedFileReference(path: Path) -> PBXObjectReference {
+    func getContainedFileReference(path: Path) -> PBXFileElement {
         let createIntermediateGroups = project.options.createIntermediateGroups
 
         let parentPath = path.parent()
@@ -113,12 +113,12 @@ class SourceGenerator {
         )
 
         if createIntermediateGroups {
-            createIntermediaGroups(for: parentGroup.reference, at: parentPath)
+            createIntermediaGroups(for: parentGroup, at: parentPath)
         }
         return fileReference
     }
 
-    func getFileReference(path: Path, inPath: Path, name: String? = nil, sourceTree: PBXSourceTree = .group, lastKnownFileType: String? = nil) -> PBXObjectReference {
+    func getFileReference(path: Path, inPath: Path, name: String? = nil, sourceTree: PBXSourceTree = .group, lastKnownFileType: String? = nil) -> PBXFileElement {
         let fileReferenceKey = path.string.lowercased()
         if let fileReference = fileReferencesByPath[fileReferenceKey] {
             return fileReference
@@ -138,7 +138,7 @@ class SourceGenerator {
                     .filter { $0.extension == "xcdatamodel" }
                     .sorted { $0.string.localizedStandardCompare($1.string) == .orderedAscending }
 
-                let modelFileReference =
+                let modelFileReferences =
                     sortedPaths.map { path in
                         createObject(
                             id: path.byRemovingBase(path: project.basePath).string,
@@ -154,17 +154,17 @@ class SourceGenerator {
                 let currentVersionPath = findCurrentCoreDataModelVersionPath(using: versionedModels) ?? sortedPaths.last
                 let currentVersion: PBXFileReference? = {
                     guard let indexOf = sortedPaths.index(where: { $0 == currentVersionPath }) else { return nil }
-                    return modelFileReference[indexOf]
+                    return modelFileReferences[indexOf]
                 }()
                 let versionGroup = addObject(id: fileReferencePath.string, XCVersionGroup(
-                    currentVersion: currentVersion?.reference,
+                    currentVersion: currentVersion,
                     path: fileReferencePath.string,
                     sourceTree: sourceTree,
                     versionGroupType: "wrapper.xcdatamodel",
-                    childrenReferences: modelFileReference.map { $0.reference }
+                    children: modelFileReferences
                 ))
-                fileReferencesByPath[fileReferenceKey] = versionGroup.reference
-                return versionGroup.reference
+                fileReferencesByPath[fileReferenceKey] = versionGroup
+                return versionGroup
             } else {
                 // For all extensions other than `xcdatamodeld`
                 let fileReference = createObject(
@@ -176,8 +176,8 @@ class SourceGenerator {
                         path: fileReferencePath.string
                     )
                 )
-                fileReferencesByPath[fileReferenceKey] = fileReference.reference
-                return fileReference.reference
+                fileReferencesByPath[fileReferenceKey] = fileReference
+                return fileReference
             }
         }
     }
@@ -208,12 +208,16 @@ class SourceGenerator {
 
     /// Create a group or return an existing one at the path.
     /// Any merged children are added to a new group or merged into an existing one.
-    private func getGroup(path: Path, name: String? = nil, mergingChildren children: [PBXObjectReference], createIntermediateGroups: Bool, isBaseGroup: Bool) -> PBXGroup {
+    private func getGroup(path: Path, name: String? = nil, mergingChildren children: [PBXFileElement], createIntermediateGroups: Bool, isBaseGroup: Bool) -> PBXGroup {
         let groupReference: PBXGroup
 
         if let cachedGroup = groupsByPath[path] {
-            // only add the children that aren't already in the cachedGroup
-            cachedGroup.childrenReferences = Array(Set(cachedGroup.childrenReferences + children))
+            for child in children {
+                // only add the children that aren't already in the cachedGroup
+                if !cachedGroup.children.contains(child) {
+                    cachedGroup.children.append(child)
+                }
+            }
             groupReference = cachedGroup
         } else {
 
@@ -231,7 +235,7 @@ class SourceGenerator {
                 path.byRemovingBase(path: project.basePath).string :
                 path.lastComponent
             let group = PBXGroup(
-                childrenReferences: children,
+                children: children,
                 sourceTree: .group,
                 name: groupName != groupPath ? groupName : nil,
                 path: groupPath
@@ -240,7 +244,7 @@ class SourceGenerator {
             groupsByPath[path] = groupReference
 
             if isTopLevelGroup {
-                rootGroups.insert(groupReference.reference)
+                rootGroups.insert(groupReference)
             }
         }
         return groupReference
@@ -321,7 +325,7 @@ class SourceGenerator {
             .filter { $0.extension == "lproj" }
             .sorted { $0.lastComponent < $1.lastComponent }
 
-        var groupChildren: [PBXObjectReference] = filePaths.map { getFileReference(path: $0, inPath: path) }
+        var groupChildren: [PBXFileElement] = filePaths.map { getFileReference(path: $0, inPath: path) }
         var allSourceFiles: [SourceFile] = filePaths.map {
             generateSourceFile(targetType: targetType, targetSource: targetSource, path: $0)
         }
@@ -336,11 +340,11 @@ class SourceGenerator {
 
             allSourceFiles += subGroups.sourceFiles
 
-            guard let first = subGroups.groups.first else {
+            guard let firstGroup = subGroups.groups.first else {
                 continue
             }
 
-            groupChildren.append(first.reference)
+            groupChildren.append(firstGroup)
             groups += subGroups.groups
         }
 
@@ -363,13 +367,13 @@ class SourceGenerator {
                 .filter(isIncludedPath)
                 .sorted() {
                 let variantGroup = getVariantGroup(path: filePath, inPath: path)
-                groupChildren.append(variantGroup.reference)
+                groupChildren.append(variantGroup)
                 baseLocalisationVariantGroups.append(variantGroup)
 
                 let sourceFile = SourceFile(
                     path: filePath,
-                    fileReference: variantGroup.reference,
-                    buildFile: PBXBuildFile(fileReference: variantGroup.reference),
+                    fileReference: variantGroup,
+                    buildFile: PBXBuildFile(file: variantGroup),
                     buildPhase: .resources
                 )
                 allSourceFiles.append(sourceFile)
@@ -399,15 +403,15 @@ class SourceGenerator {
                 )
 
                 if let variantGroup = variantGroup {
-                    if !variantGroup.childrenReferences.contains(fileReference) {
-                        variantGroup.childrenReferences.append(fileReference)
+                    if !variantGroup.children.contains(fileReference) {
+                        variantGroup.children.append(fileReference)
                     }
                 } else {
                     // add SourceFile to group if there is no Base.lproj directory
                     let sourceFile = SourceFile(
                         path: filePath,
                         fileReference: fileReference,
-                        buildFile: PBXBuildFile(fileReference: fileReference),
+                        buildFile: PBXBuildFile(file: fileReference),
                         buildPhase: .resources
                     )
                     allSourceFiles.append(sourceFile)
@@ -423,7 +427,7 @@ class SourceGenerator {
             isBaseGroup: isBaseGroup
         )
         if project.options.createIntermediateGroups {
-            createIntermediaGroups(for: group.reference, at: path)
+            createIntermediaGroups(for: group, at: path)
         }
 
         groups.insert(group, at: 0)
@@ -440,7 +444,7 @@ class SourceGenerator {
         let createIntermediateGroups = project.options.createIntermediateGroups
 
         var sourceFiles: [SourceFile] = []
-        let sourceReference: PBXObjectReference
+        let sourceReference: PBXFileElement
         var sourcePath = path
         switch type {
         case .folder:
@@ -481,7 +485,7 @@ class SourceGenerator {
             } else {
                 let parentGroup = getGroup(path: parentPath, mergingChildren: [fileReference], createIntermediateGroups: createIntermediateGroups, isBaseGroup: true)
                 sourcePath = parentPath
-                sourceReference = parentGroup.reference
+                sourceReference = parentGroup
             }
             sourceFiles.append(sourceFile)
 
@@ -493,7 +497,7 @@ class SourceGenerator {
             }
 
             sourceFiles += groupSourceFiles
-            sourceReference = group.reference
+            sourceReference = group
         }
 
         if createIntermediateGroups {
@@ -504,7 +508,7 @@ class SourceGenerator {
     }
 
     // Add groups for all parents recursively
-    private func createIntermediaGroups(for groupReference: PBXObjectReference, at path: Path) {
+    private func createIntermediaGroups(for fileElement: PBXFileElement, at path: Path) {
 
         let parentPath = path.parent()
         guard parentPath != project.basePath && path.string.contains(project.basePath.string) else {
@@ -513,10 +517,10 @@ class SourceGenerator {
         }
 
         let hasParentGroup = groupsByPath[parentPath] != nil
-        let parentGroup = getGroup(path: parentPath, mergingChildren: [groupReference], createIntermediateGroups: true, isBaseGroup: false)
+        let parentGroup = getGroup(path: parentPath, mergingChildren: [fileElement], createIntermediateGroups: true, isBaseGroup: false)
 
         if !hasParentGroup {
-            createIntermediaGroups(for: parentGroup.reference, at: parentPath)
+            createIntermediaGroups(for: parentGroup, at: parentPath)
         }
     }
 

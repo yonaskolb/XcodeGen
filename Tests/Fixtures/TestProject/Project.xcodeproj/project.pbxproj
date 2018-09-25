@@ -76,23 +76,6 @@
 		A6CCC432869EB6B8A65A89B565B57EA5 /* InterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E39751EDA257E7F7946E95A67FDBBD /* InterfaceController.swift */; };
 		AA5AF277386012CD6CC015073239E50F /* StandaloneAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 02537F8F3DAD9BF1F249FF662131F1F5 /* StandaloneAssets.xcassets */; };
 		AD00993C2491D03BD3A1B6E48D685C29 /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67BB19DDA48C227FF6E676B89FDFCAEB /* MessagesViewController.swift */; };
-		AUTO_5VZIHqJ600tEPf73suYa = {isa = PBXBuildFile; fileRef = 28C9901BE3ADBC6102849237424B03D6 /* iMessageExtension.appex */; };
-		AUTO_7MKZu584cIQuU5pdvEAL = {isa = PBXBuildFile; fileRef = EABA2B52871944E6E80A12C64E198883 /* App_iOS_UITests.xctest */; };
-		AUTO_9aaVkTyiyQWj9chRFSXC = {isa = PBXBuildFile; fileRef = C7F72C86B98DCABE16D17DDC9894C845 /* App_iOS_Tests.xctest */; };
-		AUTO_CX9m7izxITPbe6k7gIMS = {isa = PBXBuildFile; fileRef = D26369BE2A7A98A736F7A13BA924A4A2 /* iMessageApp.app */; };
-		AUTO_FHqmKTu8R9eQcDSHtBl2 = {isa = PBXBuildFile; fileRef = 77532D0489A67876EE56705C71C908C6 /* XPC_Service.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		AUTO_FI4P0L7mD3dfGGVPVNvx = {isa = PBXBuildFile; fileRef = 948EA9EE1BAE66408843BF6200620E70 /* StaticLibrary_ObjC.a */; };
-		AUTO_GN80IEuWvCvUcPwoAVnt = {isa = PBXBuildFile; fileRef = DBF5F2565C6807B74F18D4ACCE28D071 /* XPC Service.xpc */; };
-		AUTO_LFQ2NgxpvrhYJSYshySZ = {isa = PBXBuildFile; fileRef = E3C43679A1164385CDC2FCB5DD62C634 /* Framework.framework */; };
-		AUTO_Ni16m8Y84i5PMkMaGKaR = {isa = PBXBuildFile; fileRef = 42CEA852937FACF2B5D933EC8EC14418 /* App_watchOS Extension.appex */; };
-		AUTO_OkqadiIPIeuHfZsWVaT8 = {isa = PBXBuildFile; fileRef = E3C43679A1164385CDC2FCB5DD62C634 /* Framework.framework */; };
-		AUTO_cBeRILf3hWlctfWZW9JQ = {isa = PBXBuildFile; fileRef = E3C43679A1164385CDC2FCB5DD62C634 /* Framework.framework */; };
-		AUTO_eO1L3NPJcUbCdbs0LA8S = {isa = PBXBuildFile; fileRef = F8D572C96FEC4C18AE61EB3D4D84466C /* XPC_ServiceProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		AUTO_elwIMiarYGjkKHoLYkNz = {isa = PBXBuildFile; fileRef = 715B87EA4FFA97FECCBA0D1D269A19F4 /* StaticLibrary_Swift.a */; };
-		AUTO_iHu2o18WOxDYzCUar5IX = {isa = PBXBuildFile; fileRef = AE0CDFA0B5B4F5D2FBB870B59FE51154 /* App_macOS.app */; };
-		AUTO_m5qNHcIsAuTywjDdFCMx = {isa = PBXBuildFile; fileRef = 9FD5A8B54C9F429451BCCCC3F04CDB99 /* App_iOS.app */; };
-		AUTO_sv3hFquUhPl9qfllDvyL = {isa = PBXBuildFile; fileRef = CFF173E643CE5FF0AE955580CB2B6641 /* App_watchOS.app */; };
-		AUTO_vusM5sNOIMe1bxFDS6ZY = {isa = PBXBuildFile; fileRef = E3C43679A1164385CDC2FCB5DD62C634 /* Framework.framework */; };
 		BD4C8B77EF89CF7F4ED0D1C4713397E4 /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F657AA556F579E2C56BC6BC04E3CAF4 /* FrameworkFile.swift */; };
 		BD8FA9115EB29C8438DE82A4C33C249A /* SomeFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 065FC8C30C4E0AB09C1E77734E46F252 /* SomeFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BE38983978B6D70795D2924F52F3081D /* ResourceFolder in Resources */ = {isa = PBXBuildFile; fileRef = 138DC1A4CB4E585A69355474092AE0E0 /* ResourceFolder */; };
@@ -111,6 +94,8 @@
 		FA69E7367B9D2F2CB97F57AE7984D9BD /* Framework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E3C43679A1164385CDC2FCB5DD62C634 /* Framework.framework */; };
 		FF688241378D1AE956E9A9F46EEBCFAA /* Headers in Headers */ = {isa = PBXBuildFile; fileRef = 224967658A2D92DC2BD9D665A1CA1F5F /* Headers */; settings = {ATTRIBUTES = (Public, ); }; };
 		FFA6D03EB711292F77E0BB317C750F5A /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 32AE52CAD620F8B92487AA4F5924D0EC /* Model.xcdatamodeld */; settings = {COMPILER_FLAGS = "-Werror"; }; };
+		irhgJ7FX3id0PscP9V19 = {isa = PBXBuildFile; fileRef = F8D572C96FEC4C18AE61EB3D4D84466C /* XPC_ServiceProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		wRIMwRUI5z90K7MaV9ga = {isa = PBXBuildFile; fileRef = 77532D0489A67876EE56705C71C908C6 /* XPC_Service.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -876,8 +861,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0AA719054B034D653457F3861CE722A9 /* Build configuration list for PBXNativeTarget "Framework_tvOS" */;
 			buildPhases = (
-				E74DACDAB11D89D5B824405B81E48D89 /* Sources */,
 				B6AA01763EF8349E60D1FA4E652778F3 /* Headers */,
+				E74DACDAB11D89D5B824405B81E48D89 /* Sources */,
 				C79A51DBA8AF7631AEF22BA83E104A04 /* Frameworks */,
 				ADF413AF548A97CB33898BB4F6211314 /* MyScript */,
 			);
@@ -895,8 +880,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = CCF68725DCD5EF7FD03872D0B98C32F0 /* Build configuration list for PBXNativeTarget "Framework_watchOS" */;
 			buildPhases = (
-				A0301004CBF36C0004B23102202FA9FE /* Sources */,
 				9C424B9F3AFC563C6A6CE8FA124F8801 /* Headers */,
+				A0301004CBF36C0004B23102202FA9FE /* Sources */,
 				F6C2490C6497837A21966090C77C3602 /* Frameworks */,
 				DABB7DFD3C5DB4EAC8C5D24C79EA4E35 /* MyScript */,
 			);
@@ -914,8 +899,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9BA95DBD7B862EE1F43DC68338281D0E /* Build configuration list for PBXNativeTarget "Framework_macOS" */;
 			buildPhases = (
-				1411E21883A09388E140C6D123029288 /* Sources */,
 				A08871F94C4ADE4FF10D349F4ECC06C9 /* Headers */,
+				1411E21883A09388E140C6D123029288 /* Sources */,
 				266AF93F95F8ECC5F62E443DD79D4263 /* Frameworks */,
 				78EF33E6A08B3BB88D8805DC3588843C /* MyScript */,
 			);
@@ -1115,8 +1100,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = ABBCABD06AD7666C13DD9BAF0C16276E /* Build configuration list for PBXNativeTarget "Framework_iOS" */;
 			buildPhases = (
-				AFF1863F9CDDD4DD0B0EB22A6AD9850A /* Sources */,
 				440F7F1F9382CEDD92D75B89E25552D5 /* Headers */,
+				AFF1863F9CDDD4DD0B0EB22A6AD9850A /* Sources */,
 				6F3C985C6701880E8731C4AAFBDC9FEF /* Frameworks */,
 				2983C9312429A22DF5437C4020B9937E /* MyScript */,
 			);
@@ -1137,7 +1122,17 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0930;
-				TargetAttributes = "[xcodeproj.PBXObjectReference: [\"TestTargetID\": xcodeproj.PBXObjectReference], xcodeproj.PBXObjectReference: [\"CUSTOM\": \"value\"], xcodeproj.PBXObjectReference: [\"ProvisioningStyle\": \"Automatic\"], xcodeproj.PBXObjectReference: [\"ProvisioningStyle\": \"Automatic\"]]";
+				TargetAttributes = {
+					AB59C0690172FF119F045336C1F1CA0D = {
+						CUSTOM = value;
+					};
+					DB85CB6A2C15660854D634EF1B0C1FAD = {
+						ProvisioningStyle = Automatic;
+					};
+					E165F00BB866D2A7087C93650EDB1138 = {
+						ProvisioningStyle = Automatic;
+					};
+				};
 			};
 			buildConfigurationList = 0D5965C1A1D5123D687DA32AC9B957F8 /* Build configuration list for PBXProject "Project" */;
 			compatibilityVersion = "Xcode 3.2";

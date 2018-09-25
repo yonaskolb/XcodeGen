@@ -32,12 +32,12 @@ extension PBXProj {
         let mainGroup = try getMainGroup()
 
         func validateGroup(_ group: PBXGroup) throws {
-            let hasDuplicatedChildren = group.childrenReferences.count != Set(group.childrenReferences).count
+            let hasDuplicatedChildren = group.children.count != Set(group.children).count
             if hasDuplicatedChildren {
-                throw failure("Group \"\(group.nameOrPath)\" has duplicated children:\n - \(group.childrenReferences.map { String(describing: $0) }.joined(separator: "\n - "))")
+                throw failure("Group \"\(group.nameOrPath)\" has duplicated children:\n - \(group.children.map { String(describing: $0) }.joined(separator: "\n - "))")
             }
-            for child in group.childrenReferences {
-                if let group = objects.groups.getReference(child) {
+            for child in group.children {
+                if let group = child as? PBXGroup {
                     try validateGroup(group)
                 }
             }
