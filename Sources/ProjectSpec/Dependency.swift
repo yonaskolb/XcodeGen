@@ -11,6 +11,7 @@ public struct Dependency: Equatable {
     public var removeHeaders: Bool = true
     public var link: Bool?
     public var implicit: Bool = false
+    public var weakLink: Bool = false
 
     public init(
         type: DependencyType,
@@ -18,7 +19,8 @@ public struct Dependency: Equatable {
         embed: Bool? = nil,
         codeSign: Bool? = nil,
         link: Bool? = nil,
-        implicit: Bool = false
+        implicit: Bool = false,
+        weakLink: Bool = false
     ) {
         self.type = type
         self.reference = reference
@@ -26,6 +28,7 @@ public struct Dependency: Equatable {
         self.codeSign = codeSign
         self.link = link
         self.implicit = implicit
+        self.weakLink = weakLink
     }
 
     public enum DependencyType {
@@ -60,6 +63,9 @@ extension Dependency: JSONObjectConvertible {
         }
         if let bool: Bool = jsonDictionary.json(atKeyPath: "implicit") {
             implicit = bool
+        }
+        if let bool: Bool = jsonDictionary.json(atKeyPath: "weak") {
+            weakLink = bool
         }
     }
 }

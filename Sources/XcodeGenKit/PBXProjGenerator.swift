@@ -459,6 +459,14 @@ public class PBXProjGenerator {
             return ["ATTRIBUTES": embedAttributes]
         }
 
+        func getDependencyFrameworkSettings(dependency: Dependency) -> [String: Any]? {
+            var linkingAttributes: [String] = []
+            if dependency.weakLink {
+                linkingAttributes.append("Weak")
+            }
+            return !linkingAttributes.isEmpty ? ["ATTRIBUTES": linkingAttributes] : nil
+        }
+
         for dependency in targetDependencies {
 
             let embed = dependency.embed ?? target.shouldEmbedDependencies
@@ -482,7 +490,10 @@ public class PBXProjGenerator {
                     let dependencyBuildFile = targetBuildFiles[dependencyTargetName]!
                     let buildFile = createObject(
                         id: dependencyBuildFile.reference + target.name,
-                        PBXBuildFile(fileRef: dependencyBuildFile.object.fileRef!)
+                        PBXBuildFile(
+                            fileRef: dependencyBuildFile.object.fileRef!,
+                            settings: getDependencyFrameworkSettings(dependency: dependency)
+                        )
                     )
                     targetFrameworkBuildFiles.append(buildFile.reference)
 
@@ -538,7 +549,10 @@ public class PBXProjGenerator {
 
                 let buildFile = createObject(
                     id: "framework" + fileReference + target.name,
-                    PBXBuildFile(fileRef: fileReference)
+                    PBXBuildFile(
+                        fileRef: fileReference,
+                        settings: getDependencyFrameworkSettings(dependency: dependency)
+                    )
                 )
 
                 targetFrameworkBuildFiles.append(buildFile.reference)
@@ -569,7 +583,10 @@ public class PBXProjGenerator {
 
                 let buildFile = createObject(
                     id: "carthage" + fileReference + target.name,
-                    PBXBuildFile(fileRef: fileReference)
+                    PBXBuildFile(
+                        fileRef: fileReference,
+                        settings: getDependencyFrameworkSettings(dependency: dependency)
+                    )
                 )
 
                 carthageFrameworksByPlatform[target.platform.carthageDirectoryName, default: []].insert(fileReference)

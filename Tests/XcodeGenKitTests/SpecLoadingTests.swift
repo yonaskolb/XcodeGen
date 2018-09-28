@@ -146,13 +146,13 @@ class SpecLoadingTests: XCTestCase {
                 targetDictionary["dependencies"] = [
                     ["target": "name", "embed": false],
                     ["carthage": "name"],
-                    ["framework": "path"],
+                    ["framework": "path", "weak": true],
                 ]
                 let target = try Target(name: "test", jsonDictionary: targetDictionary)
                 try expect(target.dependencies.count) == 3
                 try expect(target.dependencies[0]) == Dependency(type: .target, reference: "name", embed: false)
                 try expect(target.dependencies[1]) == Dependency(type: .carthage, reference: "name")
-                try expect(target.dependencies[2]) == Dependency(type: .framework, reference: "path")
+                try expect(target.dependencies[2]) == Dependency(type: .framework, reference: "path", weakLink: true)
             }
 
             $0.it("parses cross platform targets") {

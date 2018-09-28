@@ -328,6 +328,7 @@ These only applied to `target` and `framework` dependencies.
 - [ ] **link**: **Bool** - Whether to link the dependency. Defaults to `true` depending on the type of the dependency and the type of the target (e.g. static libraries will only link to executables by default).
 - [ ] **codeSign**: **Bool** - Whether the `codeSignOnCopy` setting is applied when embedding framework. Defaults to true
 - [ ] **removeHeaders**: **Bool** - Whether the `removeHeadersOnCopy` setting is applied when embedding the framework. Defaults to true
+- [ ] **weak**: **Bool** - Whether the `Weak` setting is applied when linking the framework. Defaults to false
 
 **Implicit Framework options**:
 

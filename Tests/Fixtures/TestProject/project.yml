@@ -73,6 +73,8 @@ targets:
       - target: Framework_iOS
       - target: StaticLibrary_ObjC_iOS
       - carthage: Result
+      - target: Framework2_iOS
+        weak: true
       - target: App_watchOS
       - target: iMessageApp
       - framework: Vendor/SomeFramework.framework
@@ -160,6 +162,15 @@ targets:
     dependencies:
       - carthage: Result
       - target: StaticLibrary_ObjC_$platform
+
+  Framework2:
+    type: framework
+    platform: [iOS, tvOS, watchOS, macOS]
+    sources:
+      - path: Framework
+        excludes:
+          - "*.xcodeproj"
+
   App_iOS_Tests:
     type: bundle.unit-test
     platform: iOS
