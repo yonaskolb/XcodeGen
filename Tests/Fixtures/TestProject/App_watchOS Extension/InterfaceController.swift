@@ -6,7 +6,7 @@ class InterfaceController: WKInterfaceController {
 
     override func awake(withContext context: Any?) {
         super.awake(withContext: context)
-        let result: Result<String, NoError> = .success("value")
+        _ = Result<String, NoError>.success("value")
         // Configure interface objects here.
     }
 
