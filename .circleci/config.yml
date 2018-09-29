@@ -14,6 +14,9 @@ jobs:
       - run:
           name: Build release
           command: make build
+      - run:
+          name: Build Test Project
+          command: ./build-fixtures.sh
   macOS_swift_4.2:
     macos:
       xcode: "10.0.0"
@@ -22,12 +25,16 @@ jobs:
       - run: 
           name: Build
           command: swift build
+      # disabled till UUID's are stable
+      # - run:
+      #     name: Test
+      #     command: swift test
       - run:
-          name: Test
-          command: swift test
-      #- run:
-          #name: Build release
-          #command: make build
+          name: Build release
+          command: make build
+      - run:
+          name: Build Test Project
+          command: ./build-fixtures.sh
 workflows:
   version: 2
   workflow:
