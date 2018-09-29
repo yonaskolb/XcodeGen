@@ -80,6 +80,10 @@ targets:
         - App_iOS_Tests
         - App_iOS_UITests
       gatherCoverageData: true
+      configVariants:
+        - Test
+        - Staging
+        - Production
       commandLineArguments:
           MyEnabledArgument: true
           MyDisabledArgument: false
