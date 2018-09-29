@@ -24,7 +24,7 @@
 
 /* Begin PBXBuildFile section */
 		BF_138356261076 /* InterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_363921640403 /* InterfaceController.swift */; };
-		BF_139519317795 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_452853029807 /* Alamofire.framework */; };
+		BF_140777424236 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_584425140013 /* Result.framework */; };
 		BF_167705969896 /* TestProjectUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_145531354566 /* TestProjectUITests.swift */; };
 		BF_182635022050 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FR_830053537293 /* Assets.xcassets */; };
 		BF_184447863946 = {isa = PBXBuildFile; fileRef = FR_935153865209 /* iMessageApp.app */; };
@@ -34,7 +34,6 @@
 		BF_211435872001 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = VG_473000061463 /* Localizable.strings */; };
 		BF_212221512596 /* StaticLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_470929579339 /* StaticLibrary.swift */; };
 		BF_215463341392 /* SomeFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_654302359039 /* SomeFramework.framework */; };
-		BF_217053936758 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_752394658615 /* Alamofire.framework */; };
 		BF_225293845818 = {isa = PBXBuildFile; fileRef = FR_507023492251 /* App_watchOS Extension.appex */; };
 		BF_237760701422 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FR_987043315473 /* Assets.xcassets */; };
 		BF_239684316986 /* Headers in Headers */ = {isa = PBXBuildFile; fileRef = FR_815403394914 /* Headers */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -55,19 +54,17 @@
 		BF_334778067417 = {isa = PBXBuildFile; fileRef = FR_783122899910 /* App_iOS_Tests.xctest */; };
 		BF_337656089700 = {isa = PBXBuildFile; fileRef = FR_399755008402 /* StaticLibrary_ObjC.a */; };
 		BF_360196406184 /* TestProjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_722239415598 /* TestProjectTests.swift */; };
-		BF_415651546539 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_752394658615 /* Alamofire.framework */; };
 		BF_425679397292 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = FR_183521624014 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BF_441538117869 /* App_watchOS Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = FR_507023492251 /* App_watchOS Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		BF_455187765496 /* Result.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FR_131384036341 /* Result.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BF_456457948943 /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_172952167809 /* FrameworkFile.swift */; };
-		BF_458111705914 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_410645050443 /* Alamofire.framework */; };
 		BF_461044234706 /* SomeFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FR_654302359039 /* SomeFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BF_474063668246 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_763057275314 /* Result.framework */; };
 		BF_496472559782 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = FR_183521624014 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		BF_501771188469 /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FR_410645050443 /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BF_503484983186 /* MoreUnder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_196911129660 /* MoreUnder.swift */; };
 		BF_510053944904 /* Headers in Headers */ = {isa = PBXBuildFile; fileRef = FR_815403394914 /* Headers */; settings = {ATTRIBUTES = (Public, ); }; };
 		BF_518775144316 /* SomeXPCService.xpc in CopyFiles */ = {isa = PBXBuildFile; fileRef = FR_229826849033 /* SomeXPCService.xpc */; };
 		BF_526105569599 = {isa = PBXBuildFile; fileRef = FR_437179166843 /* StaticLibrary_Swift.a */; };
-		BF_535236390262 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_257516580010 /* Alamofire.framework */; };
 		BF_538515166673 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = VG_256263906698 /* LaunchScreen.storyboard */; };
 		BF_552913093094 /* Framework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FR_525119120469 /* Framework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BF_561304997165 /* Standalone.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_675266829517 /* Standalone.swift */; };
@@ -76,41 +73,44 @@
 		BF_607543323797 /* StaticLibrary_ObjC.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = FR_698230898030 /* StaticLibrary_ObjC.h */; };
 		BF_612351978356 /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = VG_264279911176 /* Interface.storyboard */; };
 		BF_624802436672 /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_172952167809 /* FrameworkFile.swift */; };
+		BF_629554450880 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_763057275314 /* Result.framework */; };
 		BF_632297340262 /* StaticLibrary_ObjC.m in Sources */ = {isa = PBXBuildFile; fileRef = "FR_698230898030-1" /* StaticLibrary_ObjC.m */; };
 		BF_647038614509 /* iMessageApp.app in Resources */ = {isa = PBXBuildFile; fileRef = FR_935153865209 /* iMessageApp.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		BF_650026899468 = {isa = PBXBuildFile; fileRef = FR_602719163962 /* XPC_Service.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BF_670499288392 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = VG_229021855709 /* Model.xcdatamodeld */; settings = {COMPILER_FLAGS = "-Werror"; }; };
 		BF_681504666330 = {isa = PBXBuildFile; fileRef = FR_825232110500 /* App_iOS.app */; };
+		BF_695553653993 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_584425140013 /* Result.framework */; };
 		BF_703054643820 /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_310979699934 /* MessagesViewController.swift */; };
 		BF_704149935229 /* Standalone.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_675266829517 /* Standalone.swift */; };
 		BF_721498080533 /* ResourceFolder in Resources */ = {isa = PBXBuildFile; fileRef = FR_257073931060 /* ResourceFolder */; };
 		BF_725992639588 = {isa = PBXBuildFile; fileRef = FR_480982116789 /* App_macOS.app */; };
 		BF_732745079658 = {isa = PBXBuildFile; fileRef = FR_324671077936 /* App_watchOS.app */; };
 		BF_734036107922 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = FR_183521624014 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		BF_742449020987 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_410645050443 /* Alamofire.framework */; };
 		BF_747443236192 /* App_watchOS.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = FR_324671077936 /* App_watchOS.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		BF_752022362638 /* module.modulemap in CopyFiles */ = {isa = PBXBuildFile; fileRef = FR_665156855283 /* module.modulemap */; };
+		BF_752504835660 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_669811003841 /* Result.framework */; };
 		BF_757906110813 = {isa = PBXBuildFile; fileRef = FR_662315837182 /* Framework.framework */; };
 		BF_770495922915 /* StaticLibrary_ObjC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_399755008402 /* StaticLibrary_ObjC.a */; };
+		BF_780116576846 /* Result.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FR_763057275314 /* Result.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BF_786389356145 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_584425140013 /* Result.framework */; };
 		BF_803757127643 = {isa = PBXBuildFile; fileRef = FR_739513596122 /* XPC_ServiceProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BF_807556340853 /* Empty.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = FR_837374194182 /* Empty.h */; };
 		BF_813358525536 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = FR_183521624014 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BF_826731453953 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_131384036341 /* Result.framework */; };
 		BF_828878846239 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = VG_201160695646 /* MainInterface.storyboard */; };
 		BF_830383951771 /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_304712043717 /* NotificationController.swift */; };
 		BF_854463933379 = {isa = PBXBuildFile; fileRef = FR_438704538506 /* Framework.framework */; };
-		BF_854691035877 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_257516580010 /* Alamofire.framework */; };
 		BF_855988705556 /* XPC_Service.m in Sources */ = {isa = PBXBuildFile; fileRef = FR_602719163945 /* XPC_Service.m */; };
 		BF_860391087135 /* StandaloneAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FR_408537768279 /* StandaloneAssets.xcassets */; };
-		BF_863842036151 /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FR_410645050443 /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BF_870702193513 /* iMessageExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = FR_618687462494 /* iMessageExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		BF_874851989284 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_131384036341 /* Result.framework */; };
 		BF_892119987440 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_854336462818 /* AppDelegate.swift */; settings = {COMPILER_FLAGS = "-Werror"; }; };
-		BF_897881229855 /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FR_257516580010 /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		BF_898051828670 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_752394658615 /* Alamofire.framework */; };
 		BF_901390118565 /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_172952167809 /* FrameworkFile.swift */; };
 		BF_905038616071 /* Framework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FR_472296042419 /* Framework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BF_905617636654 /* Headers in Headers */ = {isa = PBXBuildFile; fileRef = FR_815403394914 /* Headers */; settings = {ATTRIBUTES = (Public, ); }; };
 		BF_940936137577 = {isa = PBXBuildFile; fileRef = FR_123503999387 /* App_iOS_UITests.xctest */; };
 		BF_943177036061 /* StaticLibrary_ObjC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_399755008402 /* StaticLibrary_ObjC.a */; };
+		BF_997494126001 /* Result.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FR_763057275314 /* Result.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -264,7 +264,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				BF_863842036151 /* Alamofire.framework in Embed Frameworks */,
+				BF_997494126001 /* Result.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -275,7 +275,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				BF_501771188469 /* Alamofire.framework in Embed Frameworks */,
+				BF_780116576846 /* Result.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -298,7 +298,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				BF_552913093094 /* Framework.framework in Embed Frameworks */,
-				BF_897881229855 /* Alamofire.framework in Embed Frameworks */,
+				BF_455187765496 /* Result.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -352,6 +352,7 @@
 /* Begin PBXFileReference section */
 		FR_118219888726 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LocalizedStoryboard.storyboard; sourceTree = "<group>"; };
 		FR_123503999387 /* App_iOS_UITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = App_iOS_UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		FR_131384036341 /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Result.framework; sourceTree = "<group>"; };
 		FR_145531354566 /* TestProjectUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestProjectUITests.swift; sourceTree = "<group>"; };
 		FR_151462316179 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		FR_172952167809 /* FrameworkFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameworkFile.swift; sourceTree = "<group>"; };
@@ -364,7 +365,6 @@
 		FR_247808626608 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FR_256263906698 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FR_257073931060 /* ResourceFolder */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ResourceFolder; path = Resources/ResourceFolder; sourceTree = SOURCE_ROOT; };
-		FR_257516580010 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Alamofire.framework; sourceTree = "<group>"; };
 		FR_263408310401 /* Model 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 3.xcdatamodel"; sourceTree = "<group>"; };
 		FR_264279911176 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
 		FR_293137352077 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -377,10 +377,8 @@
 		FR_377082606829 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FR_399755008402 /* StaticLibrary_ObjC.a */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = archive.ar; path = StaticLibrary_ObjC.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR_408537768279 /* StandaloneAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = StandaloneAssets.xcassets; sourceTree = "<group>"; };
-		FR_410645050443 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Alamofire.framework; sourceTree = "<group>"; };
 		FR_437179166843 /* StaticLibrary_Swift.a */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = archive.ar; path = StaticLibrary_Swift.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR_438704538506 /* Framework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Framework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		FR_452853029807 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Alamofire.framework; sourceTree = "<group>"; };
 		FR_461737784133 /* module.modulemap */ = {isa = PBXFileReference; path = module.modulemap; sourceTree = "<group>"; };
 		FR_470929579339 /* StaticLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaticLibrary.swift; sourceTree = "<group>"; };
 		FR_472296042419 /* Framework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Framework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -394,6 +392,7 @@
 		FR_525119120469 /* Framework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Framework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR_530852296303 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FR_570918052822 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
+		FR_584425140013 /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Result.framework; sourceTree = "<group>"; };
 		FR_587738154368 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FR_602633703434 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		FR_602719163945 /* XPC_Service.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XPC_Service.m; sourceTree = "<group>"; };
@@ -407,6 +406,7 @@
 		FR_660690926982 /* config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = config.xcconfig; sourceTree = "<group>"; };
 		FR_662315837182 /* Framework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Framework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR_665156855283 /* module.modulemap */ = {isa = PBXFileReference; path = module.modulemap; sourceTree = "<group>"; };
+		FR_669811003841 /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Result.framework; sourceTree = "<group>"; };
 		FR_675266829517 /* Standalone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Standalone.swift; sourceTree = "<group>"; };
 		FR_698230898030 /* StaticLibrary_ObjC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StaticLibrary_ObjC.h; sourceTree = "<group>"; };
 		"FR_698230898030-1" /* StaticLibrary_ObjC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StaticLibrary_ObjC.m; sourceTree = "<group>"; };
@@ -415,7 +415,7 @@
 		FR_739513596122 /* XPC_ServiceProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XPC_ServiceProtocol.h; sourceTree = "<group>"; };
 		FR_746876637628 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		FR_748548478992 /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
-		FR_752394658615 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Alamofire.framework; sourceTree = "<group>"; };
+		FR_763057275314 /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Result.framework; sourceTree = "<group>"; };
 		FR_771029596306 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		FR_775316160345 /* SomeFile */ = {isa = PBXFileReference; path = SomeFile; sourceTree = "<group>"; };
 		FR_783122899910 /* App_iOS_Tests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = App_iOS_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -437,7 +437,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF_415651546539 /* Alamofire.framework in Frameworks */,
+				BF_786389356145 /* Result.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -445,7 +445,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF_898051828670 /* Alamofire.framework in Frameworks */,
+				BF_695553653993 /* Result.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -453,7 +453,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF_742449020987 /* Alamofire.framework in Frameworks */,
+				BF_629554450880 /* Result.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -461,8 +461,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF_535236390262 /* Alamofire.framework in Frameworks */,
 				BF_597639300414 /* Framework.framework in Frameworks */,
+				BF_874851989284 /* Result.framework in Frameworks */,
 				BF_770495922915 /* StaticLibrary_ObjC.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -471,7 +471,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF_217053936758 /* Alamofire.framework in Frameworks */,
+				BF_140777424236 /* Result.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -479,7 +479,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF_854691035877 /* Alamofire.framework in Frameworks */,
+				BF_826731453953 /* Result.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -487,7 +487,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF_139519317795 /* Alamofire.framework in Frameworks */,
+				BF_752504835660 /* Result.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -495,8 +495,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BF_458111705914 /* Alamofire.framework in Frameworks */,
 				BF_324363145049 /* Framework.framework in Frameworks */,
+				BF_474063668246 /* Result.framework in Frameworks */,
 				BF_943177036061 /* StaticLibrary_ObjC.a in Frameworks */,
 				BF_215463341392 /* SomeFramework.framework in Frameworks */,
 			);
@@ -545,7 +545,7 @@
 		G_2262017438925 /* iOS */ = {
 			isa = PBXGroup;
 			children = (
-				FR_410645050443 /* Alamofire.framework */,
+				FR_763057275314 /* Result.framework */,
 			);
 			path = iOS;
 			sourceTree = "<group>";
@@ -553,7 +553,7 @@
 		G_2262017442691 /* Mac */ = {
 			isa = PBXGroup;
 			children = (
-				FR_257516580010 /* Alamofire.framework */,
+				FR_131384036341 /* Result.framework */,
 			);
 			path = Mac;
 			sourceTree = "<group>";
@@ -694,7 +694,7 @@
 		G_8244488572839 /* watchOS */ = {
 			isa = PBXGroup;
 			children = (
-				FR_752394658615 /* Alamofire.framework */,
+				FR_584425140013 /* Result.framework */,
 			);
 			path = watchOS;
 			sourceTree = "<group>";
@@ -794,7 +794,7 @@
 		G_8628897169668 /* tvOS */ = {
 			isa = PBXGroup;
 			children = (
-				FR_452853029807 /* Alamofire.framework */,
+				FR_669811003841 /* Result.framework */,
 			);
 			path = tvOS;
 			sourceTree = "<group>";
@@ -1307,11 +1307,11 @@
 			files = (
 			);
 			inputPaths = (
-				"$(SRCROOT)/Carthage/Build/watchOS/Alamofire.framework",
+				"$(SRCROOT)/Carthage/Build/watchOS/Result.framework",
 			);
 			name = Carthage;
 			outputPaths = (
-				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Alamofire.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Result.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1337,11 +1337,11 @@
 			files = (
 			);
 			inputPaths = (
-				"$(SRCROOT)/Carthage/Build/iOS/Alamofire.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/Result.framework",
 			);
 			name = Carthage;
 			outputPaths = (
-				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Alamofire.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Result.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
