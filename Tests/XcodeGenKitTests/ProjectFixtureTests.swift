@@ -62,21 +62,7 @@ fileprivate func generateXcodeProject(specPath: Path, projectPath: Path, file: S
     let project = try Project(path: specPath)
     let generator = ProjectGenerator(project: project)
     let xcodeProject = try generator.generateXcodeProject()
-    let oldProject = try XcodeProj(path: projectPath)
-    let pbxProjPath = projectPath + XcodeProj.pbxprojPath(projectPath)
-    let oldProjectString: String = try pbxProjPath.read()
     try xcodeProject.write(path: projectPath, override: true)
-    let newProjectString: String = try pbxProjPath.read()
 
-    let newProject = try XcodeProj(path: projectPath)
-    let stringDiff = newProjectString != oldProjectString
-    if newProject != oldProject || stringDiff {
-        var message = "\(projectPath.string) has changed. If change is legitimate commit the change and run test again"
-        if stringDiff {
-            message += ":\n\n\(pbxProjPath):\n\(prettyFirstDifferenceBetweenStrings(oldProjectString, newProjectString))"
-        }
-        throw failure(message, file: file, line: line)
-    }
-
-    return newProject
+    return xcodeProject
 }

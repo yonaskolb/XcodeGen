@@ -733,15 +733,14 @@ class ProjectGeneratorTests: XCTestCase {
                 }
                 let buildPhases = nativeTarget.buildPhases
 
-                let scripts = pbxProject.objects.shellScriptBuildPhases.objectReferences
-                let script1 = scripts[0]
-                let script2 = scripts[1]
-                try expect(scripts.count) == 2
-                try expect(buildPhases.first) == script1.reference
-                try expect(buildPhases.last) == script2.reference
+                let scripts = pbxProject.objects.shellScriptBuildPhases
+                let script1 = scripts.first { $0.value.shellScript == "script1" }
+                let script2 = scripts.first { $0.value.shellScript == "script2" }
 
-                try expect(script1.object.shellScript) == "script1"
-                try expect(script2.object.shellScript) == "script2"
+                try expect(scripts.count) == 2
+
+                try expect(buildPhases.first) == script1?.key
+                try expect(buildPhases.last) == script2?.key
             }
 
             $0.it("generates targets with cylical dependencies") {
