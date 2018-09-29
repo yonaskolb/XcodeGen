@@ -62,6 +62,7 @@ fileprivate func generateXcodeProject(specPath: Path, file: String = #file, line
     let project = try Project(path: specPath)
     let generator = ProjectGenerator(project: project)
     let xcodeProject = try generator.generateXcodeProject()
+    try generator.generateFiles()
     try xcodeProject.write(path: project.projectPath, override: true)
 
     return xcodeProject

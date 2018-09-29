@@ -747,8 +747,15 @@ public class PBXProjGenerator {
         let configs: [XCBuildConfiguration] = project.configs.map { config in
             var buildSettings = project.getTargetBuildSettings(target: target, config: config)
 
-            // automatically set INFOPLIST_FILE path
-            if !project.targetHasBuildSetting("INFOPLIST_FILE", target: target, config: config) {
+            // Set CODE_SIGN_ENTITLEMENTS
+            if let entitlements = target.entitlements {
+                buildSettings["CODE_SIGN_ENTITLEMENTS"] = entitlements.path
+            }
+
+            // Set INFOPLIST_FILE
+            if let info = target.info {
+                buildSettings["INFOPLIST_FILE"] = info.path
+            } else if !project.targetHasBuildSetting("INFOPLIST_FILE", target: target, config: config) {
                 if searchForPlist {
                     plistPath = getInfoPlist(target.sources)
                     searchForPlist = false

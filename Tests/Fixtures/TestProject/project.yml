@@ -26,6 +26,14 @@ targets:
   App_macOS:
     type: application
     platform: macOS
+    info:
+      path: App_macOS/Info.plist
+      attributes:
+        LSMinimumSystemVersion: $(MACOSX_DEPLOYMENT_TARGET)
+        NSMainStoryboardFile: Main
+        NSPrincipalClass: NSApplication
+        CFBundleIconFile: ""
+        CustomSetting: $CUSTOM_SETTING
     attributes:
       ProvisioningStyle: Automatic
     sources:

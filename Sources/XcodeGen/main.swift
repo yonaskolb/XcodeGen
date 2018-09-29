@@ -48,6 +48,8 @@ func generate(spec: String, project: String, isQuiet: Bool, justVersion: Bool) {
 
         logger.info("⚙️  Writing project...")
 
+        try projectGenerator.generateFiles()
+
         let projectFile = projectPath + "\(project.name).xcodeproj"
         let tempPath = Path.temporary + "XcodeGen_\(Int(NSTimeIntervalSince1970))"
         try? tempPath.delete()

@@ -830,6 +830,37 @@ class ProjectGeneratorTests: XCTestCase {
                 try expect(buildFileSettings.compactMap({ $0?["ATTRIBUTES"] }).count) == 1
                 try expect(buildFileSettings.compactMap({ $0?["ATTRIBUTES"] as? [String] }).first) == ["Weak"]
             }
+
+            $0.it("generates info.plist") {
+                let plist = Plist(path: "Info.plist", attributes: ["UISupportedInterfaceOrientations": ["UIInterfaceOrientationPortrait", "UIInterfaceOrientationLandscapeLeft"]])
+                let tempPath = Path.temporary + "info"
+                let project = Project(basePath: tempPath, name: "", targets: [Target(name: "", type: .application, platform: .iOS, info: plist)])
+                let pbxProject = try project.generatePbxProj()
+                let generator = ProjectGenerator(project: project)
+                try generator.generateFiles()
+
+                guard let targetConfig = pbxProject.nativeTargets.first?.buildConfigurationList?.buildConfigurations.first else {
+                        throw failure("Couldn't find Target config")
+                }
+
+                try expect(targetConfig.buildSettings["INFOPLIST_FILE"] as? String) == plist.path
+
+                let infoPlistFile = tempPath + plist.path
+                let data: Data = try infoPlistFile.read()
+                let infoPlist = try PropertyListSerialization.propertyList(from: data, options: [], format: nil) as! [String: Any]
+                var expectedInfoPlist: [String: Any] = [:]
+                expectedInfoPlist["CFBundleIdentifier"] = "$(PRODUCT_BUNDLE_IDENTIFIER)"
+                expectedInfoPlist["CFBundleInfoDictionaryVersion"] = "6.0"
+                expectedInfoPlist["CFBundleExecutable"] = "$(EXECUTABLE_NAME)"
+                expectedInfoPlist["CFBundleName"] = "$(PRODUCT_NAME)"
+                expectedInfoPlist["CFBundleDevelopmentRegion"] = "$(DEVELOPMENT_LANGUAGE)"
+                expectedInfoPlist["CFBundleShortVersionString"] = "1.0"
+                expectedInfoPlist["CFBundleVersion"] = "1"
+                expectedInfoPlist["CFBundlePackageType"] = "APPL"
+                expectedInfoPlist["UISupportedInterfaceOrientations"] = ["UIInterfaceOrientationPortrait", "UIInterfaceOrientationLandscapeLeft"]
+
+                try expect(NSDictionary.init(dictionary: expectedInfoPlist).isEqual(to: infoPlist)).beTrue()
+            }
         }
     }
 
