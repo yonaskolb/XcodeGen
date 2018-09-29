@@ -23,13 +23,18 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		BF_119005558336 /* StaticLibrary_ObjC.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = FR_698230898030 /* StaticLibrary_ObjC.h */; };
 		BF_138356261076 /* InterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_363921640403 /* InterfaceController.swift */; };
 		BF_140777424236 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_584425140013 /* Result.framework */; };
+		BF_143559378694 = {isa = PBXBuildFile; fileRef = FR_919543414727 /* StaticLibrary_ObjC.a */; };
+		BF_150525852574 /* StaticLibrary_ObjC.m in Sources */ = {isa = PBXBuildFile; fileRef = "FR_698230898030-1" /* StaticLibrary_ObjC.m */; };
+		BF_159058095963 /* module.modulemap in CopyFiles */ = {isa = PBXBuildFile; fileRef = FR_665156855283 /* module.modulemap */; };
 		BF_167705969896 /* TestProjectUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_145531354566 /* TestProjectUITests.swift */; };
 		BF_182635022050 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FR_830053537293 /* Assets.xcassets */; };
 		BF_184447863946 = {isa = PBXBuildFile; fileRef = FR_935153865209 /* iMessageApp.app */; };
 		BF_186245454304 /* LocalizedStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = VG_118219888726 /* LocalizedStoryboard.storyboard */; };
 		BF_190684453680 = {isa = PBXBuildFile; fileRef = FR_376569054786 /* XPC Service.xpc */; };
+		BF_190695186098 /* StaticLibrary_ObjC.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = FR_698230898030 /* StaticLibrary_ObjC.h */; };
 		BF_206432481076 /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_340586388409 /* ExtensionDelegate.swift */; };
 		BF_211435872001 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = VG_473000061463 /* Localizable.strings */; };
 		BF_212221512596 /* StaticLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_470929579339 /* StaticLibrary.swift */; };
@@ -44,21 +49,25 @@
 		BF_280535243540 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = VG_609193904586 /* Main.storyboard */; };
 		BF_284620660317 /* MyBundle.bundle in Resources */ = {isa = PBXBuildFile; fileRef = FR_238161558082 /* MyBundle.bundle */; };
 		BF_292474606791 = {isa = PBXBuildFile; fileRef = FR_525119120469 /* Framework.framework */; };
+		BF_294676705190 = {isa = PBXBuildFile; fileRef = FR_530818555464 /* StaticLibrary_ObjC.a */; };
 		BF_303822704662 = {isa = PBXBuildFile; fileRef = FR_472296042419 /* Framework.framework */; };
 		BF_304637845091 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = FR_151462316179 /* main.m */; };
 		BF_308631758818 /* XPC Service.xpc in CopyFiles */ = {isa = PBXBuildFile; fileRef = FR_376569054786 /* XPC Service.xpc */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BF_309594709686 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FR_511515916115 /* Assets.xcassets */; };
 		BF_314868376788 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = VG_746876637628 /* Localizable.stringsdict */; };
 		BF_324363145049 /* Framework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_472296042419 /* Framework.framework */; };
 		BF_331192862207 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_481575785861 /* ViewController.swift */; settings = {COMPILER_FLAGS = "-Werror"; }; };
 		BF_334321520545 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FR_377082606829 /* Assets.xcassets */; };
 		BF_334778067417 = {isa = PBXBuildFile; fileRef = FR_783122899910 /* App_iOS_Tests.xctest */; };
-		BF_337656089700 = {isa = PBXBuildFile; fileRef = FR_399755008402 /* StaticLibrary_ObjC.a */; };
 		BF_360196406184 /* TestProjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_722239415598 /* TestProjectTests.swift */; };
+		BF_387462025786 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = VG_202279841299 /* Main.storyboard */; };
 		BF_425679397292 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = FR_183521624014 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BF_434838320682 /* StaticLibrary_ObjC.m in Sources */ = {isa = PBXBuildFile; fileRef = "FR_698230898030-1" /* StaticLibrary_ObjC.m */; };
 		BF_441538117869 /* App_watchOS Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = FR_507023492251 /* App_watchOS Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		BF_455187765496 /* Result.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FR_131384036341 /* Result.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BF_456457948943 /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_172952167809 /* FrameworkFile.swift */; };
 		BF_461044234706 /* SomeFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FR_654302359039 /* SomeFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BF_463608041925 /* StaticLibrary_ObjC.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = FR_698230898030 /* StaticLibrary_ObjC.h */; };
 		BF_474063668246 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_763057275314 /* Result.framework */; };
 		BF_496472559782 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = FR_183521624014 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BF_503484983186 /* MoreUnder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_196911129660 /* MoreUnder.swift */; };
@@ -69,17 +78,20 @@
 		BF_552913093094 /* Framework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FR_525119120469 /* Framework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BF_561304997165 /* Standalone.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_675266829517 /* Standalone.swift */; };
 		BF_563614389392 = {isa = PBXBuildFile; fileRef = FR_618687462494 /* iMessageExtension.appex */; };
+		BF_575042573791 /* module.modulemap in CopyFiles */ = {isa = PBXBuildFile; fileRef = FR_665156855283 /* module.modulemap */; };
 		BF_597639300414 /* Framework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_525119120469 /* Framework.framework */; };
-		BF_607543323797 /* StaticLibrary_ObjC.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = FR_698230898030 /* StaticLibrary_ObjC.h */; };
+		BF_606517090398 = {isa = PBXBuildFile; fileRef = FR_281269793733 /* StaticLibrary_ObjC.a */; };
 		BF_612351978356 /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = VG_264279911176 /* Interface.storyboard */; };
 		BF_624802436672 /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_172952167809 /* FrameworkFile.swift */; };
+		BF_628591712051 /* module.modulemap in CopyFiles */ = {isa = PBXBuildFile; fileRef = FR_665156855283 /* module.modulemap */; };
 		BF_629554450880 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_763057275314 /* Result.framework */; };
-		BF_632297340262 /* StaticLibrary_ObjC.m in Sources */ = {isa = PBXBuildFile; fileRef = "FR_698230898030-1" /* StaticLibrary_ObjC.m */; };
 		BF_647038614509 /* iMessageApp.app in Resources */ = {isa = PBXBuildFile; fileRef = FR_935153865209 /* iMessageApp.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		BF_650026899468 = {isa = PBXBuildFile; fileRef = FR_602719163962 /* XPC_Service.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BF_664393732795 /* StaticLibrary_ObjC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_281269793733 /* StaticLibrary_ObjC.a */; };
 		BF_670499288392 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = VG_229021855709 /* Model.xcdatamodeld */; settings = {COMPILER_FLAGS = "-Werror"; }; };
 		BF_681504666330 = {isa = PBXBuildFile; fileRef = FR_825232110500 /* App_iOS.app */; };
 		BF_695553653993 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_584425140013 /* Result.framework */; };
+		BF_698752059275 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_285483315484 /* AppDelegate.swift */; };
 		BF_703054643820 /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_310979699934 /* MessagesViewController.swift */; };
 		BF_704149935229 /* Standalone.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_675266829517 /* Standalone.swift */; };
 		BF_721498080533 /* ResourceFolder in Resources */ = {isa = PBXBuildFile; fileRef = FR_257073931060 /* ResourceFolder */; };
@@ -87,29 +99,33 @@
 		BF_732745079658 = {isa = PBXBuildFile; fileRef = FR_324671077936 /* App_watchOS.app */; };
 		BF_734036107922 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = FR_183521624014 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BF_747443236192 /* App_watchOS.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = FR_324671077936 /* App_watchOS.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		BF_752022362638 /* module.modulemap in CopyFiles */ = {isa = PBXBuildFile; fileRef = FR_665156855283 /* module.modulemap */; };
 		BF_752504835660 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_669811003841 /* Result.framework */; };
 		BF_757906110813 = {isa = PBXBuildFile; fileRef = FR_662315837182 /* Framework.framework */; };
-		BF_770495922915 /* StaticLibrary_ObjC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_399755008402 /* StaticLibrary_ObjC.a */; };
+		BF_767750315119 /* StaticLibrary_ObjC.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = FR_698230898030 /* StaticLibrary_ObjC.h */; };
 		BF_780116576846 /* Result.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FR_763057275314 /* Result.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		BF_781565567230 /* module.modulemap in CopyFiles */ = {isa = PBXBuildFile; fileRef = FR_665156855283 /* module.modulemap */; };
 		BF_786389356145 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_584425140013 /* Result.framework */; };
 		BF_803757127643 = {isa = PBXBuildFile; fileRef = FR_739513596122 /* XPC_ServiceProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BF_804650723499 /* StaticLibrary_ObjC.m in Sources */ = {isa = PBXBuildFile; fileRef = "FR_698230898030-1" /* StaticLibrary_ObjC.m */; };
 		BF_807556340853 /* Empty.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = FR_837374194182 /* Empty.h */; };
 		BF_813358525536 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = FR_183521624014 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BF_826731453953 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_131384036341 /* Result.framework */; };
 		BF_828878846239 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = VG_201160695646 /* MainInterface.storyboard */; };
 		BF_830383951771 /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_304712043717 /* NotificationController.swift */; };
+		BF_849675970921 /* StaticLibrary_ObjC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_919543414727 /* StaticLibrary_ObjC.a */; };
 		BF_854463933379 = {isa = PBXBuildFile; fileRef = FR_438704538506 /* Framework.framework */; };
 		BF_855988705556 /* XPC_Service.m in Sources */ = {isa = PBXBuildFile; fileRef = FR_602719163945 /* XPC_Service.m */; };
 		BF_860391087135 /* StandaloneAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FR_408537768279 /* StandaloneAssets.xcassets */; };
 		BF_870702193513 /* iMessageExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = FR_618687462494 /* iMessageExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		BF_874851989284 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_131384036341 /* Result.framework */; };
 		BF_892119987440 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_854336462818 /* AppDelegate.swift */; settings = {COMPILER_FLAGS = "-Werror"; }; };
+		BF_895856588273 /* StaticLibrary_ObjC.m in Sources */ = {isa = PBXBuildFile; fileRef = "FR_698230898030-1" /* StaticLibrary_ObjC.m */; };
 		BF_901390118565 /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_172952167809 /* FrameworkFile.swift */; };
+		BF_901508574566 = {isa = PBXBuildFile; fileRef = FR_704531614016 /* StaticLibrary_ObjC.a */; };
+		BF_903574875171 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_777446672298 /* ViewController.swift */; };
 		BF_905038616071 /* Framework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FR_472296042419 /* Framework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BF_905617636654 /* Headers in Headers */ = {isa = PBXBuildFile; fileRef = FR_815403394914 /* Headers */; settings = {ATTRIBUTES = (Public, ); }; };
 		BF_940936137577 = {isa = PBXBuildFile; fileRef = FR_123503999387 /* App_iOS_UITests.xctest */; };
-		BF_943177036061 /* StaticLibrary_ObjC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_399755008402 /* StaticLibrary_ObjC.a */; };
 		BF_997494126001 /* Result.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FR_763057275314 /* Result.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
@@ -120,6 +136,20 @@
 			proxyType = 1;
 			remoteGlobalIDString = NT_472296042419;
 			remoteInfo = Framework_iOS;
+		};
+		CIP_14121946807 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = P_8448771205358 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = NT_281269793733;
+			remoteInfo = StaticLibrary_ObjC_macOS;
+		};
+		CIP_15961934258 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = P_8448771205358 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = NT_281269793733;
+			remoteInfo = StaticLibrary_ObjC_macOS;
 		};
 		CIP_19329118292 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -134,6 +164,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = NT_825232110500;
 			remoteInfo = App_iOS;
+		};
+		CIP_23215045448 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = P_8448771205358 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = NT_919543414727;
+			remoteInfo = StaticLibrary_ObjC_iOS;
 		};
 		CIP_23558050412 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -156,26 +193,19 @@
 			remoteGlobalIDString = NT_618687462494;
 			remoteInfo = iMessageExtension;
 		};
-		CIP_33710394010 /* PBXContainerItemProxy */ = {
+		CIP_58718468645 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = P_8448771205358 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = NT_399755008402;
-			remoteInfo = StaticLibrary_ObjC;
+			remoteGlobalIDString = NT_704531614016;
+			remoteInfo = StaticLibrary_ObjC_tvOS;
 		};
-		CIP_62903878492 /* PBXContainerItemProxy */ = {
+		CIP_66582851615 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = P_8448771205358 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = NT_399755008402;
-			remoteInfo = StaticLibrary_ObjC;
-		};
-		CIP_66745555235 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = P_8448771205358 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = NT_399755008402;
-			remoteInfo = StaticLibrary_ObjC;
+			remoteGlobalIDString = NT_919543414727;
+			remoteInfo = StaticLibrary_ObjC_iOS;
 		};
 		CIP_67619158112 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -183,13 +213,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = NT_825232110500;
 			remoteInfo = App_iOS;
-		};
-		CIP_72152212817 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = P_8448771205358 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = NT_399755008402;
-			remoteInfo = StaticLibrary_ObjC;
 		};
 		CIP_74378499241 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -205,13 +228,6 @@
 			remoteGlobalIDString = NT_472296042419;
 			remoteInfo = Framework_iOS;
 		};
-		CIP_78441234790 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = P_8448771205358 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = NT_399755008402;
-			remoteInfo = StaticLibrary_ObjC;
-		};
 		CIP_82410178775 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = P_8448771205358 /* Project object */;
@@ -226,16 +242,27 @@
 			remoteGlobalIDString = NT_825232110500;
 			remoteInfo = App_iOS;
 		};
-		CIP_95747640947 /* PBXContainerItemProxy */ = {
+		CIP_90821786544 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = P_8448771205358 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = NT_399755008402;
-			remoteInfo = StaticLibrary_ObjC;
+			remoteGlobalIDString = NT_530818555464;
+			remoteInfo = StaticLibrary_ObjC_watchOS;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		CFBP_1101127867 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+				BF_190695186098 /* StaticLibrary_ObjC.h in CopyFiles */,
+				BF_159058095963 /* module.modulemap in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CFBP_2836118931 /* Embed Watch Content */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -247,14 +274,25 @@
 			name = "Embed Watch Content";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		CFBP_3265670993 /* CopyFiles */ = {
+		CFBP_3044397014 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
-				BF_607543323797 /* StaticLibrary_ObjC.h in CopyFiles */,
-				BF_752022362638 /* module.modulemap in CopyFiles */,
+				BF_463608041925 /* StaticLibrary_ObjC.h in CopyFiles */,
+				BF_781565567230 /* module.modulemap in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CFBP_3864293855 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+				BF_119005558336 /* StaticLibrary_ObjC.h in CopyFiles */,
+				BF_628591712051 /* module.modulemap in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -336,6 +374,17 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		CFBP_7637809077 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+				BF_767750315119 /* StaticLibrary_ObjC.h in CopyFiles */,
+				BF_575042573791 /* module.modulemap in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		CFBP_8368933518 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -355,10 +404,12 @@
 		FR_131384036341 /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Result.framework; sourceTree = "<group>"; };
 		FR_145531354566 /* TestProjectUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestProjectUITests.swift; sourceTree = "<group>"; };
 		FR_151462316179 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		FR_160440456271 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FR_172952167809 /* FrameworkFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameworkFile.swift; sourceTree = "<group>"; };
 		FR_183521624014 /* MyFramework.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyFramework.h; sourceTree = "<group>"; };
 		FR_196911129660 /* MoreUnder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreUnder.swift; sourceTree = "<group>"; };
 		FR_201160695646 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		FR_202279841299 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		FR_229826849033 /* SomeXPCService.xpc */ = {isa = PBXFileReference; path = SomeXPCService.xpc; sourceTree = "<group>"; };
 		FR_232605427418 /* Mintfile */ = {isa = PBXFileReference; path = Mintfile; sourceTree = "<group>"; };
 		FR_238161558082 /* MyBundle.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = MyBundle.bundle; sourceTree = "<group>"; };
@@ -367,6 +418,8 @@
 		FR_257073931060 /* ResourceFolder */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ResourceFolder; path = Resources/ResourceFolder; sourceTree = SOURCE_ROOT; };
 		FR_263408310401 /* Model 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 3.xcdatamodel"; sourceTree = "<group>"; };
 		FR_264279911176 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
+		FR_281269793733 /* StaticLibrary_ObjC.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = StaticLibrary_ObjC.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		FR_285483315484 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FR_293137352077 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FR_304712043717 /* NotificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationController.swift; sourceTree = "<group>"; };
 		FR_310979699934 /* MessagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesViewController.swift; sourceTree = "<group>"; };
@@ -375,7 +428,6 @@
 		FR_363921640403 /* InterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterfaceController.swift; sourceTree = "<group>"; };
 		FR_376569054786 /* XPC Service.xpc */ = {isa = PBXFileReference; includeInIndex = 0; path = "XPC Service.xpc"; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR_377082606829 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		FR_399755008402 /* StaticLibrary_ObjC.a */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = archive.ar; path = StaticLibrary_ObjC.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR_408537768279 /* StandaloneAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = StandaloneAssets.xcassets; sourceTree = "<group>"; };
 		FR_437179166843 /* StaticLibrary_Swift.a */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = archive.ar; path = StaticLibrary_Swift.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR_438704538506 /* Framework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Framework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -389,7 +441,9 @@
 		FR_500792082643 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LocalizedStoryboard.strings; sourceTree = "<group>"; };
 		FR_505327409380 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FR_507023492251 /* App_watchOS Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "App_watchOS Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FR_511515916115 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FR_525119120469 /* Framework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Framework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FR_530818555464 /* StaticLibrary_ObjC.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = StaticLibrary_ObjC.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR_530852296303 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FR_570918052822 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		FR_584425140013 /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Result.framework; sourceTree = "<group>"; };
@@ -410,6 +464,7 @@
 		FR_675266829517 /* Standalone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Standalone.swift; sourceTree = "<group>"; };
 		FR_698230898030 /* StaticLibrary_ObjC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StaticLibrary_ObjC.h; sourceTree = "<group>"; };
 		"FR_698230898030-1" /* StaticLibrary_ObjC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StaticLibrary_ObjC.m; sourceTree = "<group>"; };
+		FR_704531614016 /* StaticLibrary_ObjC.a */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = archive.ar; path = StaticLibrary_ObjC.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR_722239415598 /* TestProjectTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestProjectTests.swift; sourceTree = "<group>"; };
 		FR_725187762757 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FR_739513596122 /* XPC_ServiceProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XPC_ServiceProtocol.h; sourceTree = "<group>"; };
@@ -418,6 +473,7 @@
 		FR_763057275314 /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Result.framework; sourceTree = "<group>"; };
 		FR_771029596306 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		FR_775316160345 /* SomeFile */ = {isa = PBXFileReference; path = SomeFile; sourceTree = "<group>"; };
+		FR_777446672298 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		FR_783122899910 /* App_iOS_Tests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = App_iOS_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR_796781152159 /* Model 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 2.xcdatamodel"; sourceTree = "<group>"; };
 		FR_803921963291 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -427,6 +483,7 @@
 		FR_837374194182 /* Empty.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Empty.h; sourceTree = "<group>"; };
 		FR_854336462818 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FR_868653349092 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		FR_919543414727 /* StaticLibrary_ObjC.a */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = archive.ar; path = StaticLibrary_ObjC.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR_935153865209 /* iMessageApp.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = iMessageApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR_948931241088 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FR_987043315473 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -463,7 +520,7 @@
 			files = (
 				BF_597639300414 /* Framework.framework in Frameworks */,
 				BF_874851989284 /* Result.framework in Frameworks */,
-				BF_770495922915 /* StaticLibrary_ObjC.a in Frameworks */,
+				BF_664393732795 /* StaticLibrary_ObjC.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -497,7 +554,7 @@
 			files = (
 				BF_324363145049 /* Framework.framework in Frameworks */,
 				BF_474063668246 /* Result.framework in Frameworks */,
-				BF_943177036061 /* StaticLibrary_ObjC.a in Frameworks */,
+				BF_849675970921 /* StaticLibrary_ObjC.a in Frameworks */,
 				BF_215463341392 /* SomeFramework.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -636,6 +693,18 @@
 			path = Vendor;
 			sourceTree = "<group>";
 		};
+		G_4809821167898 /* App_macOS */ = {
+			isa = PBXGroup;
+			children = (
+				FR_285483315484 /* AppDelegate.swift */,
+				FR_511515916115 /* Assets.xcassets */,
+				FR_160440456271 /* Info.plist */,
+				VG_202279841299 /* Main.storyboard */,
+				FR_777446672298 /* ViewController.swift */,
+			);
+			path = App_macOS;
+			sourceTree = "<group>";
+		};
 		G_5070234922517 /* App_watchOS Extension */ = {
 			isa = PBXGroup;
 			children = (
@@ -742,6 +811,7 @@
 				G_8252321105004 /* App */,
 				G_7831228999101 /* App_iOS_Tests */,
 				G_1235039993875 /* App_iOS_UITests */,
+				G_4809821167898 /* App_macOS */,
 				G_3246710779368 /* App_watchOS */,
 				G_5070234922517 /* App_watchOS Extension */,
 				G_8340618952527 /* Configs */,
@@ -784,7 +854,10 @@
 				FR_472296042419 /* Framework.framework */,
 				FR_935153865209 /* iMessageApp.app */,
 				FR_618687462494 /* iMessageExtension.appex */,
-				FR_399755008402 /* StaticLibrary_ObjC.a */,
+				FR_530818555464 /* StaticLibrary_ObjC.a */,
+				FR_704531614016 /* StaticLibrary_ObjC.a */,
+				FR_919543414727 /* StaticLibrary_ObjC.a */,
+				FR_281269793733 /* StaticLibrary_ObjC.a */,
 				FR_437179166843 /* StaticLibrary_Swift.a */,
 				FR_376569054786 /* XPC Service.xpc */,
 			);
@@ -874,6 +947,22 @@
 			productReference = FR_123503999387 /* App_iOS_UITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		NT_281269793733 /* StaticLibrary_ObjC_macOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CL_281269793733 /* Build configuration list for PBXNativeTarget "StaticLibrary_ObjC_macOS" */;
+			buildPhases = (
+				SBP_28126979373 /* Sources */,
+				CFBP_3044397014 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = StaticLibrary_ObjC_macOS;
+			productName = StaticLibrary_ObjC_macOS;
+			productReference = FR_281269793733 /* StaticLibrary_ObjC.a */;
+			productType = "com.apple.product-type.library.static";
+		};
 		NT_324671077936 /* App_watchOS */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = CL_324671077936 /* Build configuration list for PBXNativeTarget "App_watchOS" */;
@@ -909,22 +998,6 @@
 			productReference = FR_376569054786 /* XPC Service.xpc */;
 			productType = "com.apple.product-type.xpc-service";
 		};
-		NT_399755008402 /* StaticLibrary_ObjC */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = CL_399755008402 /* Build configuration list for PBXNativeTarget "StaticLibrary_ObjC" */;
-			buildPhases = (
-				SBP_39975500840 /* Sources */,
-				CFBP_3265670993 /* CopyFiles */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = StaticLibrary_ObjC;
-			productName = StaticLibrary_ObjC;
-			productReference = FR_399755008402 /* StaticLibrary_ObjC.a */;
-			productType = "com.apple.product-type.library.static";
-		};
 		NT_437179166843 /* StaticLibrary_Swift */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = CL_437179166843 /* Build configuration list for PBXNativeTarget "StaticLibrary_Swift" */;
@@ -953,7 +1026,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				TD_784412347908 /* PBXTargetDependency */,
+				TD_908217865445 /* PBXTargetDependency */,
 			);
 			name = Framework_watchOS;
 			productName = Framework_watchOS;
@@ -972,7 +1045,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				TD_667455552356 /* PBXTargetDependency */,
+				TD_665828516151 /* PBXTargetDependency */,
 			);
 			name = Framework_iOS;
 			productName = Framework_iOS;
@@ -984,6 +1057,7 @@
 			buildConfigurationList = CL_480982116789 /* Build configuration list for PBXNativeTarget "App_macOS" */;
 			buildPhases = (
 				SBP_48098211678 /* Sources */,
+				RBP_48098211678 /* Resources */,
 				CFBP_8368933518 /* CopyFiles */,
 				FBP_48098211678 /* Frameworks */,
 				CFBP_4930089528 /* Embed Frameworks */,
@@ -992,7 +1066,7 @@
 			);
 			dependencies = (
 				TD_235580504123 /* PBXTargetDependency */,
-				TD_629038784927 /* PBXTargetDependency */,
+				TD_159619342582 /* PBXTargetDependency */,
 				TD_743784992411 /* PBXTargetDependency */,
 			);
 			name = App_macOS;
@@ -1029,12 +1103,28 @@
 			buildRules = (
 			);
 			dependencies = (
-				TD_337103940101 /* PBXTargetDependency */,
+				TD_141219468074 /* PBXTargetDependency */,
 			);
 			name = Framework_macOS;
 			productName = Framework_macOS;
 			productReference = FR_525119120469 /* Framework.framework */;
 			productType = "com.apple.product-type.framework";
+		};
+		NT_530818555464 /* StaticLibrary_ObjC_watchOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CL_530818555464 /* Build configuration list for PBXNativeTarget "StaticLibrary_ObjC_watchOS" */;
+			buildPhases = (
+				SBP_53081855546 /* Sources */,
+				CFBP_3864293855 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = StaticLibrary_ObjC_watchOS;
+			productName = StaticLibrary_ObjC_watchOS;
+			productReference = FR_530818555464 /* StaticLibrary_ObjC.a */;
+			productType = "com.apple.product-type.library.static";
 		};
 		NT_618687462494 /* iMessageExtension */ = {
 			isa = PBXNativeTarget;
@@ -1064,12 +1154,28 @@
 			buildRules = (
 			);
 			dependencies = (
-				TD_957476409477 /* PBXTargetDependency */,
+				TD_587184686458 /* PBXTargetDependency */,
 			);
 			name = Framework_tvOS;
 			productName = Framework_tvOS;
 			productReference = FR_662315837182 /* Framework.framework */;
 			productType = "com.apple.product-type.framework";
+		};
+		NT_704531614016 /* StaticLibrary_ObjC_tvOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CL_704531614016 /* Build configuration list for PBXNativeTarget "StaticLibrary_ObjC_tvOS" */;
+			buildPhases = (
+				SBP_70453161401 /* Sources */,
+				CFBP_7637809077 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = StaticLibrary_ObjC_tvOS;
+			productName = StaticLibrary_ObjC_tvOS;
+			productReference = FR_704531614016 /* StaticLibrary_ObjC.a */;
+			productType = "com.apple.product-type.library.static";
 		};
 		NT_783122899910 /* App_iOS_Tests */ = {
 			isa = PBXNativeTarget;
@@ -1107,13 +1213,29 @@
 			dependencies = (
 				TD_824101787753 /* PBXTargetDependency */,
 				TD_109724965966 /* PBXTargetDependency */,
-				TD_721522128177 /* PBXTargetDependency */,
+				TD_232150454486 /* PBXTargetDependency */,
 				TD_288560876254 /* PBXTargetDependency */,
 			);
 			name = App_iOS;
 			productName = App_iOS;
 			productReference = FR_825232110500 /* App_iOS.app */;
 			productType = "com.apple.product-type.application";
+		};
+		NT_919543414727 /* StaticLibrary_ObjC_iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CL_919543414727 /* Build configuration list for PBXNativeTarget "StaticLibrary_ObjC_iOS" */;
+			buildPhases = (
+				SBP_91954341472 /* Sources */,
+				CFBP_1101127867 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = StaticLibrary_ObjC_iOS;
+			productName = StaticLibrary_ObjC_iOS;
+			productReference = FR_919543414727 /* StaticLibrary_ObjC.a */;
+			productType = "com.apple.product-type.library.static";
 		};
 		NT_935153865209 /* iMessageApp */ = {
 			isa = PBXNativeTarget;
@@ -1178,7 +1300,10 @@
 				NT_662315837182 /* Framework_tvOS */,
 				NT_438704538506 /* Framework_watchOS */,
 				LT_479264660374 /* Legacy */,
-				NT_399755008402 /* StaticLibrary_ObjC */,
+				NT_919543414727 /* StaticLibrary_ObjC_iOS */,
+				NT_281269793733 /* StaticLibrary_ObjC_macOS */,
+				NT_704531614016 /* StaticLibrary_ObjC_tvOS */,
+				NT_530818555464 /* StaticLibrary_ObjC_watchOS */,
 				NT_437179166843 /* StaticLibrary_Swift */,
 				AT_445731917037 /* SuperTarget */,
 				NT_376569054786 /* XPC Service */,
@@ -1195,6 +1320,15 @@
 			files = (
 				BF_268392110450 /* Assets.xcassets in Resources */,
 				BF_612351978356 /* Interface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		RBP_48098211678 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF_309594709686 /* Assets.xcassets in Resources */,
+				BF_387462025786 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1400,6 +1534,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		SBP_28126979373 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF_804650723499 /* StaticLibrary_ObjC.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		SBP_32467107793 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1413,14 +1555,6 @@
 			files = (
 				BF_855988705556 /* XPC_Service.m in Sources */,
 				BF_304637845091 /* main.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		SBP_39975500840 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				BF_632297340262 /* StaticLibrary_ObjC.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1459,7 +1593,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BF_698752059275 /* AppDelegate.swift in Sources */,
 				BF_704149935229 /* Standalone.swift in Sources */,
+				BF_903574875171 /* ViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1481,6 +1617,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		SBP_53081855546 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF_150525852574 /* StaticLibrary_ObjC.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		SBP_61868746249 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1494,6 +1638,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				BF_243071719122 /* FrameworkFile.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		SBP_70453161401 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF_895856588273 /* StaticLibrary_ObjC.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1517,6 +1669,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		SBP_91954341472 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF_434838320682 /* StaticLibrary_ObjC.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		SBP_93515386520 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1532,6 +1692,16 @@
 			target = NT_472296042419 /* Framework_iOS */;
 			targetProxy = CIP_10972496596 /* PBXContainerItemProxy */;
 		};
+		TD_141219468074 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = NT_281269793733 /* StaticLibrary_ObjC_macOS */;
+			targetProxy = CIP_14121946807 /* PBXContainerItemProxy */;
+		};
+		TD_159619342582 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = NT_281269793733 /* StaticLibrary_ObjC_macOS */;
+			targetProxy = CIP_15961934258 /* PBXContainerItemProxy */;
+		};
 		TD_193291182921 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = NT_507023492251 /* App_watchOS Extension */;
@@ -1541,6 +1711,11 @@
 			isa = PBXTargetDependency;
 			target = NT_825232110500 /* App_iOS */;
 			targetProxy = CIP_20801090045 /* PBXContainerItemProxy */;
+		};
+		TD_232150454486 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = NT_919543414727 /* StaticLibrary_ObjC_iOS */;
+			targetProxy = CIP_23215045448 /* PBXContainerItemProxy */;
 		};
 		TD_235580504123 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1557,30 +1732,20 @@
 			target = NT_618687462494 /* iMessageExtension */;
 			targetProxy = CIP_31792113134 /* PBXContainerItemProxy */;
 		};
-		TD_337103940101 /* PBXTargetDependency */ = {
+		TD_587184686458 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = NT_399755008402 /* StaticLibrary_ObjC */;
-			targetProxy = CIP_33710394010 /* PBXContainerItemProxy */;
+			target = NT_704531614016 /* StaticLibrary_ObjC_tvOS */;
+			targetProxy = CIP_58718468645 /* PBXContainerItemProxy */;
 		};
-		TD_629038784927 /* PBXTargetDependency */ = {
+		TD_665828516151 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = NT_399755008402 /* StaticLibrary_ObjC */;
-			targetProxy = CIP_62903878492 /* PBXContainerItemProxy */;
-		};
-		TD_667455552356 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = NT_399755008402 /* StaticLibrary_ObjC */;
-			targetProxy = CIP_66745555235 /* PBXContainerItemProxy */;
+			target = NT_919543414727 /* StaticLibrary_ObjC_iOS */;
+			targetProxy = CIP_66582851615 /* PBXContainerItemProxy */;
 		};
 		TD_676191581124 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = NT_825232110500 /* App_iOS */;
 			targetProxy = CIP_67619158112 /* PBXContainerItemProxy */;
-		};
-		TD_721522128177 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = NT_399755008402 /* StaticLibrary_ObjC */;
-			targetProxy = CIP_72152212817 /* PBXContainerItemProxy */;
 		};
 		TD_743784992411 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1592,11 +1757,6 @@
 			target = NT_472296042419 /* Framework_iOS */;
 			targetProxy = CIP_74741847386 /* PBXContainerItemProxy */;
 		};
-		TD_784412347908 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = NT_399755008402 /* StaticLibrary_ObjC */;
-			targetProxy = CIP_78441234790 /* PBXContainerItemProxy */;
-		};
 		TD_824101787753 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = NT_324671077936 /* App_watchOS */;
@@ -1607,10 +1767,10 @@
 			target = NT_825232110500 /* App_iOS */;
 			targetProxy = CIP_88714386547 /* PBXContainerItemProxy */;
 		};
-		TD_957476409477 /* PBXTargetDependency */ = {
+		TD_908217865445 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = NT_399755008402 /* StaticLibrary_ObjC */;
-			targetProxy = CIP_95747640947 /* PBXContainerItemProxy */;
+			target = NT_530818555464 /* StaticLibrary_ObjC_watchOS */;
+			targetProxy = CIP_90821786544 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1630,6 +1790,14 @@
 				FR_201160695646 /* Base */,
 			);
 			name = MainInterface.storyboard;
+			sourceTree = "<group>";
+		};
+		VG_202279841299 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FR_202279841299 /* Base */,
+			);
+			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 		VG_256263906698 /* LaunchScreen.storyboard */ = {
@@ -1759,6 +1927,18 @@
 			};
 			name = "Test Release";
 		};
+		BC_142190149658 /* Production Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.StaticLibrary-ObjC-macOS";
+				PRODUCT_NAME = StaticLibrary_ObjC;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+			};
+			name = "Production Debug";
+		};
 		BC_167564962969 /* Staging Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1770,6 +1950,42 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = "Staging Release";
+		};
+		BC_192293528117 /* Production Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.StaticLibrary-ObjC-iOS";
+				PRODUCT_NAME = StaticLibrary_ObjC;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Production Release";
+		};
+		BC_192679864336 /* Test Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.StaticLibrary-ObjC-macOS";
+				PRODUCT_NAME = StaticLibrary_ObjC;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+			};
+			name = "Test Debug";
+		};
+		BC_208278321332 /* Production Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.StaticLibrary-ObjC-tvOS";
+				PRODUCT_NAME = StaticLibrary_ObjC;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+			};
+			name = "Production Debug";
 		};
 		BC_210307580165 /* Staging Release */ = {
 			isa = XCBuildConfiguration;
@@ -2015,7 +2231,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/Mac",
 				);
-				INFOPLIST_FILE = Vendor/SomeXPCService.xpc/Contents/Info.plist;
+				INFOPLIST_FILE = App_macOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -2122,6 +2338,18 @@
 				MY_SETTING = hello;
 			};
 			name = "Production Release";
+		};
+		BC_338399173120 /* Test Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.StaticLibrary-ObjC-tvOS";
+				PRODUCT_NAME = StaticLibrary_ObjC;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+			};
+			name = "Test Release";
 		};
 		BC_351179072988 /* Test Debug */ = {
 			isa = XCBuildConfiguration;
@@ -2370,16 +2598,17 @@
 			};
 			name = "Production Debug";
 		};
-		BC_464603633927 /* Test Release */ = {
+		BC_462061816889 /* Staging Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.project.StaticLibrary-ObjC";
-				SDKROOT = iphoneos;
+				COMBINE_HIDPI_IMAGES = YES;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.StaticLibrary-ObjC-macOS";
+				PRODUCT_NAME = StaticLibrary_ObjC;
+				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
 			};
-			name = "Test Release";
+			name = "Staging Release";
 		};
 		BC_467730755629 /* Production Release */ = {
 			isa = XCBuildConfiguration;
@@ -2424,6 +2653,18 @@
 				TEST_TARGET_NAME = App_iOS;
 			};
 			name = "Test Release";
+		};
+		BC_479820670317 /* Staging Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.StaticLibrary-ObjC-tvOS";
+				PRODUCT_NAME = StaticLibrary_ObjC;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+			};
+			name = "Staging Release";
 		};
 		BC_480688547948 /* Staging Debug */ = {
 			isa = XCBuildConfiguration;
@@ -2484,6 +2725,17 @@
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = "Production Release";
+		};
+		BC_495401711721 /* Staging Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.StaticLibrary-ObjC-watchOS";
+				PRODUCT_NAME = StaticLibrary_ObjC;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+			};
+			name = "Staging Debug";
 		};
 		BC_499325041919 /* Production Debug */ = {
 			isa = XCBuildConfiguration;
@@ -2579,6 +2831,17 @@
 			};
 			name = "Production Debug";
 		};
+		BC_530610845178 /* Staging Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.StaticLibrary-ObjC-watchOS";
+				PRODUCT_NAME = StaticLibrary_ObjC;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+			};
+			name = "Staging Release";
+		};
 		BC_530755208334 /* Test Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2638,6 +2901,18 @@
 			};
 			name = "Staging Debug";
 		};
+		BC_556794548954 /* Staging Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.StaticLibrary-ObjC-iOS";
+				PRODUCT_NAME = StaticLibrary_ObjC;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Staging Debug";
+		};
 		BC_563308786207 /* Staging Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2672,7 +2947,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/Mac",
 				);
-				INFOPLIST_FILE = Vendor/SomeXPCService.xpc/Contents/Info.plist;
+				INFOPLIST_FILE = App_macOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -2779,16 +3054,16 @@
 			};
 			name = "Test Release";
 		};
-		BC_592419322448 /* Production Release */ = {
+		BC_580113529988 /* Test Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.project.StaticLibrary-ObjC";
-				SDKROOT = iphoneos;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.StaticLibrary-ObjC-watchOS";
+				PRODUCT_NAME = StaticLibrary_ObjC;
+				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 4;
 			};
-			name = "Production Release";
+			name = "Test Release";
 		};
 		BC_594849660073 /* Production Release */ = {
 			isa = XCBuildConfiguration;
@@ -2812,6 +3087,30 @@
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = "Production Release";
+		};
+		BC_601792226085 /* Test Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.StaticLibrary-ObjC-iOS";
+				PRODUCT_NAME = StaticLibrary_ObjC;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Test Debug";
+		};
+		BC_602034372772 /* Production Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.StaticLibrary-ObjC-macOS";
+				PRODUCT_NAME = StaticLibrary_ObjC;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
 			};
 			name = "Production Release";
 		};
@@ -2846,6 +3145,17 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.project.iMessageApp;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Production Release";
+		};
+		BC_611527832268 /* Production Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.StaticLibrary-ObjC-watchOS";
+				PRODUCT_NAME = StaticLibrary_ObjC;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
 			};
 			name = "Production Release";
 		};
@@ -2891,7 +3201,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/Mac",
 				);
-				INFOPLIST_FILE = Vendor/SomeXPCService.xpc/Contents/Info.plist;
+				INFOPLIST_FILE = App_macOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -2901,17 +3211,6 @@
 				SDKROOT = macosx;
 			};
 			name = "Production Release";
-		};
-		BC_629891546665 /* Production Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.project.StaticLibrary-ObjC";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = "Production Debug";
 		};
 		BC_634896623305 /* Staging Debug */ = {
 			isa = XCBuildConfiguration;
@@ -3003,6 +3302,18 @@
 			};
 			name = "Staging Release";
 		};
+		BC_682637821562 /* Test Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.StaticLibrary-ObjC-macOS";
+				PRODUCT_NAME = StaticLibrary_ObjC;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+			};
+			name = "Test Release";
+		};
 		BC_685135820012 /* Test Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -3041,6 +3352,18 @@
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = 4;
+			};
+			name = "Staging Release";
+		};
+		BC_699627374397 /* Staging Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.StaticLibrary-ObjC-iOS";
+				PRODUCT_NAME = StaticLibrary_ObjC;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = "Staging Release";
 		};
@@ -3107,7 +3430,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/Mac",
 				);
-				INFOPLIST_FILE = Vendor/SomeXPCService.xpc/Contents/Info.plist;
+				INFOPLIST_FILE = App_macOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -3177,14 +3500,15 @@
 			};
 			name = "Production Debug";
 		};
-		BC_724654958001 /* Staging Debug */ = {
+		BC_716189724726 /* Staging Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.project.StaticLibrary-ObjC";
-				SDKROOT = iphoneos;
+				COMBINE_HIDPI_IMAGES = YES;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.StaticLibrary-ObjC-macOS";
+				PRODUCT_NAME = StaticLibrary_ObjC;
+				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = "Staging Debug";
 		};
@@ -3288,6 +3612,18 @@
 			};
 			name = "Test Debug";
 		};
+		BC_758688409542 /* Staging Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.StaticLibrary-ObjC-tvOS";
+				PRODUCT_NAME = StaticLibrary_ObjC;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+			};
+			name = "Staging Debug";
+		};
 		BC_760168680599 /* Staging Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -3350,6 +3686,18 @@
 			};
 			name = "Staging Debug";
 		};
+		BC_767358549642 /* Test Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.StaticLibrary-ObjC-tvOS";
+				PRODUCT_NAME = StaticLibrary_ObjC;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+			};
+			name = "Test Debug";
+		};
 		BC_769258280401 /* Staging Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -3366,17 +3714,6 @@
 				TEST_TARGET_NAME = App_iOS;
 			};
 			name = "Staging Debug";
-		};
-		BC_776042221288 /* Staging Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.project.StaticLibrary-ObjC";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = "Staging Release";
 		};
 		BC_790711614758 /* Staging Release */ = {
 			isa = XCBuildConfiguration;
@@ -3418,6 +3755,18 @@
 			};
 			name = "Test Release";
 		};
+		BC_796723710441 /* Production Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.StaticLibrary-ObjC-iOS";
+				PRODUCT_NAME = StaticLibrary_ObjC;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Production Debug";
+		};
 		BC_799591451484 /* Test Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -3458,6 +3807,29 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.project.Legacy;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Production Debug";
+		};
+		BC_806236101497 /* Test Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.StaticLibrary-ObjC-iOS";
+				PRODUCT_NAME = StaticLibrary_ObjC;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Test Release";
+		};
+		BC_806582710863 /* Production Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.StaticLibrary-ObjC-watchOS";
+				PRODUCT_NAME = StaticLibrary_ObjC;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
 			};
 			name = "Production Debug";
 		};
@@ -3621,16 +3993,17 @@
 			};
 			name = "Staging Debug";
 		};
-		BC_866329197584 /* Test Debug */ = {
+		BC_865955650456 /* Production Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.project.StaticLibrary-ObjC";
-				SDKROOT = iphoneos;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.StaticLibrary-ObjC-tvOS";
+				PRODUCT_NAME = StaticLibrary_ObjC;
+				SDKROOT = appletvos;
 				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 3;
 			};
-			name = "Test Debug";
+			name = "Production Release";
 		};
 		BC_866352849045 /* Test Debug */ = {
 			isa = XCBuildConfiguration;
@@ -3642,7 +4015,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/Mac",
 				);
-				INFOPLIST_FILE = Vendor/SomeXPCService.xpc/Contents/Info.plist;
+				INFOPLIST_FILE = App_macOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -3678,6 +4051,17 @@
 			};
 			name = "Staging Debug";
 		};
+		BC_901772102479 /* Test Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.StaticLibrary-ObjC-watchOS";
+				PRODUCT_NAME = StaticLibrary_ObjC;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+			};
+			name = "Test Debug";
+		};
 		BC_906683798476 /* Production Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -3699,7 +4083,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/Mac",
 				);
-				INFOPLIST_FILE = Vendor/SomeXPCService.xpc/Contents/Info.plist;
+				INFOPLIST_FILE = App_macOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -3726,6 +4110,19 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "";
 		};
+		CL_281269793733 /* Build configuration list for PBXNativeTarget "StaticLibrary_ObjC_macOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BC_142190149658 /* Production Debug */,
+				BC_602034372772 /* Production Release */,
+				BC_716189724726 /* Staging Debug */,
+				BC_462061816889 /* Staging Release */,
+				BC_192679864336 /* Test Debug */,
+				BC_682637821562 /* Test Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "";
+		};
 		CL_324671077936 /* Build configuration list for PBXNativeTarget "App_watchOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -3748,19 +4145,6 @@
 				BC_609604761299 /* Staging Release */,
 				BC_667304541586 /* Test Debug */,
 				BC_823301630526 /* Test Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "";
-		};
-		CL_399755008402 /* Build configuration list for PBXNativeTarget "StaticLibrary_ObjC" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				BC_629891546665 /* Production Debug */,
-				BC_592419322448 /* Production Release */,
-				BC_724654958001 /* Staging Debug */,
-				BC_776042221288 /* Staging Release */,
-				BC_866329197584 /* Test Debug */,
-				BC_464603633927 /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "";
@@ -3869,6 +4253,19 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "";
 		};
+		CL_530818555464 /* Build configuration list for PBXNativeTarget "StaticLibrary_ObjC_watchOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BC_806582710863 /* Production Debug */,
+				BC_611527832268 /* Production Release */,
+				BC_495401711721 /* Staging Debug */,
+				BC_530610845178 /* Staging Release */,
+				BC_901772102479 /* Test Debug */,
+				BC_580113529988 /* Test Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "";
+		};
 		CL_618687462494 /* Build configuration list for PBXNativeTarget "iMessageExtension" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -3891,6 +4288,19 @@
 				BC_760168680599 /* Staging Release */,
 				BC_655752097950 /* Test Debug */,
 				BC_380703106572 /* Test Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "";
+		};
+		CL_704531614016 /* Build configuration list for PBXNativeTarget "StaticLibrary_ObjC_tvOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BC_208278321332 /* Production Debug */,
+				BC_865955650456 /* Production Release */,
+				BC_758688409542 /* Staging Debug */,
+				BC_479820670317 /* Staging Release */,
+				BC_767358549642 /* Test Debug */,
+				BC_338399173120 /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "";
@@ -3933,6 +4343,19 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Production Debug";
+		};
+		CL_919543414727 /* Build configuration list for PBXNativeTarget "StaticLibrary_ObjC_iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BC_796723710441 /* Production Debug */,
+				BC_192293528117 /* Production Release */,
+				BC_556794548954 /* Staging Debug */,
+				BC_699627374397 /* Staging Release */,
+				BC_601792226085 /* Test Debug */,
+				BC_806236101497 /* Test Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "";
 		};
 		CL_935153865209 /* Build configuration list for PBXNativeTarget "iMessageApp" */ = {
 			isa = XCConfigurationList;
