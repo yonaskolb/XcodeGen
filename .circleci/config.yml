@@ -5,16 +5,29 @@ jobs:
       xcode: "9.3.0"
     steps:
       - checkout
-      - run: swift build
-      - run: swift test
-      - run: make build
+      - run: 
+          name: Build
+          command: swift build
+      - run:
+          name: Test
+          command: swift test
+      - run:
+          name: Build release
+          command: make build
   macOS_swift_4.2:
     macos:
       xcode: "10.0.0"
     steps:
       - checkout
-      - run: swift build
-      - run: make build
+      - run: 
+          name: Build
+          command: swift build
+      - run:
+          name: Test
+          command: swift test
+      #- run:
+          #name: Build release
+          #command: make build
 workflows:
   version: 2
   workflow:
