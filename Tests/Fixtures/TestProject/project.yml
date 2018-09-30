@@ -29,6 +29,7 @@ targets:
     attributes:
       ProvisioningStyle: Automatic
     sources:
+      - path: App_macOS
       - path: StandaloneFiles/Standalone.swift
       - path: Vendor/SomeXPCService.xpc
     dependencies:
@@ -70,8 +71,8 @@ targets:
       PRODUCT_BUNDLE_IDENTIFIER: com.project.app
     dependencies:
       - target: Framework_iOS
-      - target: StaticLibrary_ObjC
-      - carthage: Alamofire
+      - target: StaticLibrary_ObjC_iOS
+      - carthage: Result
       - target: App_watchOS
       - target: iMessageApp
       - framework: Vendor/SomeFramework.framework
@@ -80,6 +81,10 @@ targets:
         - App_iOS_Tests
         - App_iOS_UITests
       gatherCoverageData: true
+      configVariants:
+        - Test
+        - Staging
+        - Production
       commandLineArguments:
           MyEnabledArgument: true
           MyDisabledArgument: false
@@ -111,7 +116,7 @@ targets:
       settings:
         PRODUCT_BUNDLE_IDENTIFIER: com.project.app.watch.extension
       dependencies:
-        - carthage: Alamofire
+        - carthage: Result
 
   iMessageApp:
     type: application.messages
@@ -130,7 +135,7 @@ targets:
 
   StaticLibrary_ObjC:
     type: library.static
-    platform: iOS
+    platform: [iOS, tvOS, watchOS, macOS]
     sources: StaticLibrary_ObjC
 
   StaticLibrary_Swift:
@@ -153,8 +158,8 @@ targets:
       - name: MyScript
         path: scripts/script.sh
     dependencies:
-      - carthage: Alamofire
-      - target: StaticLibrary_ObjC
+      - carthage: Result
+      - target: StaticLibrary_ObjC_$platform
   App_iOS_Tests:
     type: bundle.unit-test
     platform: iOS
