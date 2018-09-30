@@ -325,11 +325,11 @@ class SourceGenerator {
         let children = try getSourceChildren(targetSource: targetSource, dirPath: path)
 
         let directories = children
-            .filter { $0.isDirectory && !$0.isNonFolderDirectory && $0.extension != "lproj" }
+            .filter { $0.isDirectory && !$0.isFileDirectory && $0.extension != "lproj" }
             .sorted { $0.lastComponent < $1.lastComponent }
 
         let filePaths = children
-            .filter { $0.isFile || $0.isNonFolderDirectory }
+            .filter { $0.isFile || $0.isFileDirectory }
             .sorted { $0.lastComponent < $1.lastComponent }
 
         let localisedDirectories = children

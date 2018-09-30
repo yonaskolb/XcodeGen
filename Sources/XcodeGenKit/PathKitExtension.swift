@@ -4,7 +4,7 @@ import PathKit
 extension Path {
 
     /// Treat this as a file (resource or source) instead of a normal directory.
-    var isNonFolderDirectory: Bool {
+    var isFileDirectory: Bool {
 
         if isFile || self.extension == nil {
             return false
