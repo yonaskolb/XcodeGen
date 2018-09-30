@@ -1,5 +1,13 @@
 # Change Log
 
+## master
+
+#### ⚠️Breaking Changes⚠️
+
+XcodeGen now retrieves UTI of a directory to know if it's a special directory such as `Assets.xcassets/`. That means other normal directories **with dots** will not appear in `Copy Bundle Resources` Build Phase any more.
+
+- Ignore normal directory with dots [397](https://github.com/yonaskolb/XcodeGen/pull/397)  @toshi0383
+
 ## 1.11.2
 
 If XcodeGen is compiled with Swift 4.2, then UUID's in the generated project will not be deterministic. This will be fixed in an upcoming release with an update to xcodeproj 6.0
