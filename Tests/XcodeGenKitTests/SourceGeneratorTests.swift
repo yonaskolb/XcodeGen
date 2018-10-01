@@ -6,46 +6,13 @@ import xcproj
 import XCTest
 import Yams
 
+private let directoryPath = Path("TestDirectory")
+private let outOfRootPath = Path("OtherDirectory")
+
 class SourceGeneratorTests: XCTestCase {
 
     func testSourceGenerator() {
         describe {
-
-            let directoryPath = Path("TestDirectory")
-            let outOfRootPath = Path("OtherDirectory")
-
-            func createDirectories(_ directories: String) throws {
-
-                let yaml = try Yams.load(yaml: directories)!
-
-                func getFiles(_ file: Any, path: Path) -> [Path] {
-                    if let array = file as? [Any] {
-                        return array.flatMap { getFiles($0, path: path) }
-                    } else if let string = file as? String {
-                        return [path + string]
-                    } else if let dictionary = file as? [String: Any] {
-                        var array: [Path] = []
-                        for (key, value) in dictionary {
-                            array += getFiles(value, path: path + key)
-                        }
-                        return array
-                    } else {
-                        return []
-                    }
-                }
-
-                let files = getFiles(yaml, path: directoryPath).filter { $0.extension != nil }
-                for file in files {
-                    try file.parent().mkpath()
-                    try file.write("")
-                }
-            }
-
-            func removeDirectories() {
-                try? directoryPath.delete()
-                try? outOfRootPath.delete()
-            }
-
             $0.before {
                 removeDirectories()
             }
@@ -61,6 +28,8 @@ class SourceGeneratorTests: XCTestCase {
                     - a.swift
                     - B:
                       - b.swift
+                    - C.D.E:
+                      - c.d.e.swift
                 """
                 try createDirectories(directories)
 
@@ -70,12 +39,14 @@ class SourceGeneratorTests: XCTestCase {
                 let pbxProj = try project.generatePbxProj()
                 try pbxProj.expectFile(paths: ["Sources", "A", "a.swift"], buildPhase: .sources)
                 try pbxProj.expectFile(paths: ["Sources", "A", "B", "b.swift"], buildPhase: .sources)
+                try pbxProj.expectFile(paths: ["Sources", "A", "C.D.E", "c.d.e.swift"], buildPhase: .sources)
             }
 
             $0.it("supports frameworks in sources") {
                 let directories = """
                 Sources:
-                  - Foo.framework
+                  - Foo.framework:
+                    - Foo.swift
                   - Bar.swift
                 """
 
@@ -517,6 +488,143 @@ class SourceGeneratorTests: XCTestCase {
             }
         }
     }
+
+    func testDirectoriesWithFileExtensions() {
+        describe {
+            $0.before {
+                removeDirectories()
+            }
+
+            $0.after {
+                removeDirectories()
+            }
+
+            $0.context("when they have public.folder utis") {
+
+                $0.it("treats directories as normal directories") {
+
+                    var directories = ["""
+                        Sources:
+                        """]
+
+                    var expectations: [String] = []
+
+                    for ex in otherFileExtensions {
+                        directories.append("""
+                          Hello.\(ex):
+                          - a.swift
+                        """)
+
+                        expectations.append(ex)
+                    }
+
+                    try createDirectories(directories.joined(separator: "\n"))
+
+                    let target = Target(name: "Test", type: .application, platform: .iOS, sources: ["Sources"])
+                    let project = Project(basePath: directoryPath, name: "Test", targets: [target])
+
+                    let pbxProj = try project.generatePbxProj()
+
+                    for ex in expectations {
+                        print("ex: \(ex)")
+                        do {
+                            try pbxProj.expectFile(paths: ["Sources", "Hello.\(ex)", "a.swift"], buildPhase: .sources)
+                        } catch {
+                            // e.g. Hello.sgi becomes Hello.SGI.
+                            try pbxProj.expectFile(paths: ["Sources", "Hello.\(_swapcase(ex))", "a.swift"], buildPhase: .sources)
+                        }
+
+                        try pbxProj.expectFileMissing(paths: ["Sources", "Hello.\(ex)"])
+                    }
+                }
+            }
+
+            $0.context("when they have utis other than public.folder or dyn* utis") {
+
+                $0.it("treats as resources") {
+
+                    var directories = ["""
+                        Sources:
+                        """]
+
+                    for ex in allSpecialFileExtensions {
+                        directories.append("""
+                          Hello.\(ex):
+                          - a.swift
+                        """)
+                    }
+
+                    try createDirectories(directories.joined(separator: "\n"))
+
+                    let target = Target(name: "Test", type: .application, platform: .iOS, sources: ["Sources"])
+                    let project = Project(basePath: directoryPath, name: "Test", targets: [target])
+
+                    let pbxProj = try project.generatePbxProj()
+                    var errors: [Error] = []
+
+                    // These are ignored in this test.
+                    // They are handled differently and end-up with other BulidPhases.
+                    let ignore = ["xcdatamodeld", "framework", "xpc", "lproj"]
+
+                    for ex in allSpecialFileExtensions.filter({ !ignore.contains($0) }) {
+                        do {
+                            try pbxProj.expectFile(paths: ["Sources", "Hello.\(ex)"], buildPhase: .resources)
+                        } catch {
+                            errors.append(error)
+                        }
+
+                        do {
+                            try pbxProj.expectFileMissing(paths: ["Sources", "Hello.\(ex)", "a.swift"])
+                        } catch {
+                            errors.append(error)
+                        }
+                    }
+
+                    if !errors.isEmpty {
+                        throw failure(errors.map { "\($0)" }.joined(separator: "\n"))
+                    }
+
+                    let groupPath = pbxProj.objects.versionGroups.values.first?.path
+                    try expect(groupPath) == "Hello.xcdatamodeld"
+                }
+            }
+        }
+    }
+}
+
+// MARK: Utilities
+
+private func createDirectories(_ directories: String) throws {
+
+    let yaml = try Yams.load(yaml: directories)!
+
+    func getFiles(_ file: Any, path: Path) -> [Path] {
+        if let array = file as? [Any] {
+            return array.flatMap { getFiles($0, path: path) }
+        } else if let string = file as? String {
+            return [path + string]
+        } else if let dictionary = file as? [String: Any] {
+            var array: [Path] = []
+            for (key, value) in dictionary {
+                array += getFiles(value, path: path + key)
+            }
+            return array
+        } else {
+            return []
+        }
+    }
+
+    let files = getFiles(yaml, path: directoryPath).filter { $0.extension != nil }
+    for file in files {
+        try file.parent().mkpath()
+        try file.write("")
+        print("file written: \(file.absolute().string)")
+    }
+}
+
+private func removeDirectories() {
+    try? directoryPath.delete()
+    try? outOfRootPath.delete()
 }
 
 extension PBXProj {
@@ -601,5 +709,22 @@ extension PBXProj {
             guard let group = groups.first(where: { $0.path == path && $0.nameOrPath == name }) else { return nil }
             return getFileReference(group: group, paths: restOfPath, names: restOfName)
         }
+    }
+}
+
+/// Swaps all cases of string.
+///
+/// - Note: Only the first char is used to determine to treat whole string as lowercased or uppercased.
+private func _swapcase(_ string: String) -> String {
+    if string.isEmpty {
+        return string
+    }
+
+    let c = String(string.first!)
+
+    if c.uppercased() == c {
+        return string.lowercased()
+    } else {
+        return string.uppercased()
     }
 }

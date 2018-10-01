@@ -120,6 +120,7 @@
 		BF_874851989284 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_131384036341 /* Result.framework */; };
 		BF_892119987440 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_854336462818 /* AppDelegate.swift */; settings = {COMPILER_FLAGS = "-Werror"; }; };
 		BF_895856588273 /* StaticLibrary_ObjC.m in Sources */ = {isa = PBXBuildFile; fileRef = "FR_698230898030-1" /* StaticLibrary_ObjC.m */; };
+		BF_900577809062 /* Fox.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_269747717860 /* Fox.swift */; settings = {COMPILER_FLAGS = "-Werror"; }; };
 		BF_901390118565 /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_172952167809 /* FrameworkFile.swift */; };
 		BF_901508574566 = {isa = PBXBuildFile; fileRef = FR_704531614016 /* StaticLibrary_ObjC.a */; };
 		BF_903574875171 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_777446672298 /* ViewController.swift */; };
@@ -418,6 +419,7 @@
 		FR_257073931060 /* ResourceFolder */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ResourceFolder; path = Resources/ResourceFolder; sourceTree = SOURCE_ROOT; };
 		FR_263408310401 /* Model 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 3.xcdatamodel"; sourceTree = "<group>"; };
 		FR_264279911176 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
+		FR_269747717860 /* Fox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fox.swift; sourceTree = "<group>"; };
 		FR_281269793733 /* StaticLibrary_ObjC.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = StaticLibrary_ObjC.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR_285483315484 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FR_293137352077 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -752,6 +754,14 @@
 			path = App_iOS_Tests;
 			sourceTree = "<group>";
 		};
+		G_7841902032535 /* F.O.X */ = {
+			isa = PBXGroup;
+			children = (
+				FR_269747717860 /* Fox.swift */,
+			);
+			path = F.O.X;
+			sourceTree = "<group>";
+		};
 		G_8030722683864 /* UnderFileGroup */ = {
 			isa = PBXGroup;
 			children = (
@@ -771,6 +781,7 @@
 		G_8252321105004 /* App */ = {
 			isa = PBXGroup;
 			children = (
+				G_7841902032535 /* F.O.X */,
 				FR_854336462818 /* AppDelegate.swift */,
 				FR_868653349092 /* Assets.xcassets */,
 				FR_725187762757 /* Info.plist */,
@@ -1662,6 +1673,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BF_892119987440 /* AppDelegate.swift in Sources */,
+				BF_900577809062 /* Fox.swift in Sources */,
 				BF_670499288392 /* Model.xcdatamodeld in Sources */,
 				BF_503484983186 /* MoreUnder.swift in Sources */,
 				BF_561304997165 /* Standalone.swift in Sources */,

@@ -186,23 +186,38 @@ class SourceGenerator {
         if path.lastComponent == "Info.plist" {
             return nil
         }
-        if let fileExtension = path.extension {
+
+        guard let fileExtension = path.extension else {
+            return nil
+        }
+
+        if path.isDirectory {
             switch fileExtension {
-            case "swift", "m", "mm", "cpp", "c", "cc", "S", "xcdatamodeld", "metal": return .sources
-            case "h", "hh", "hpp", "ipp", "tpp", "hxx", "def": return .headers
-            case "modulemap":
-                guard targetType == .staticLibrary else { return nil }
-                return .copyFiles(TargetSource.BuildPhase.CopyFilesSettings(
-                    destination: .productsDirectory,
-                    subpath: "include/$(PRODUCT_NAME)"
-                ))
-            case "framework": return .frameworks
-            case "xpc": return .copyFiles(.xpcServices)
-            case "xcconfig", "entitlements", "gpx", "lproj", "apns": return nil
-            default: return .resources
+            case "xcdatamodeld":
+                return .sources
+            case "framework":
+                return .frameworks
+            case "xpc":
+                return .copyFiles(.xpcServices)
+            case "lproj":
+                return nil
+            default:
+                return .resources
             }
         }
-        return nil
+
+        switch fileExtension {
+        case "swift", "m", "mm", "cpp", "c", "cc", "S", "metal": return .sources
+        case "h", "hh", "hpp", "ipp", "tpp", "hxx", "def": return .headers
+        case "modulemap":
+            guard targetType == .staticLibrary else { return nil }
+            return .copyFiles(TargetSource.BuildPhase.CopyFilesSettings(
+                destination: .productsDirectory,
+                subpath: "include/$(PRODUCT_NAME)"
+            ))
+        case "xcconfig", "entitlements", "gpx", "apns": return nil
+        default: return .resources
+        }
     }
 
     /// Create a group or return an existing one at the path.
@@ -310,11 +325,11 @@ class SourceGenerator {
         let children = try getSourceChildren(targetSource: targetSource, dirPath: path)
 
         let directories = children
-            .filter { $0.isDirectory && $0.extension == nil && $0.extension != "lproj" }
+            .filter { $0.isDirectory && !$0.isFileDirectory && $0.extension != "lproj" }
             .sorted { $0.lastComponent < $1.lastComponent }
 
         let filePaths = children
-            .filter { $0.isFile || $0.extension != nil && $0.extension != "lproj" }
+            .filter { $0.isFile || $0.isFileDirectory }
             .sorted { $0.lastComponent < $1.lastComponent }
 
         let localisedDirectories = children

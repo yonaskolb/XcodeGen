@@ -10,7 +10,7 @@ jobs:
           command: swift build
       - run:
           name: Test
-          command: swift test 2>&1 | xcpretty
+          command: swift test
       - run:
           name: Check Project Diff
           command: ./diff-fixtures.sh
@@ -30,7 +30,7 @@ jobs:
           command: swift build
       - run:
           name: Test
-          command: swift test 2>&1 | xcpretty
+          command: swift test
       # disabled till UUID's are stable
       # - run:
       #     name: Check Project Diff
