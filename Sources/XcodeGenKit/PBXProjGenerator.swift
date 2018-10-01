@@ -806,7 +806,7 @@ public class PBXProjGenerator {
 
             var baseConfiguration: PBXFileReference?
             if let configPath = target.configFiles[config.name],
-                let fileReference = sourceGenerator.getContainedFileReference(path: project.basePath + configPath) as? PBXFileReference{
+                let fileReference = sourceGenerator.getContainedFileReference(path: project.basePath + configPath) as? PBXFileReference {
                 baseConfiguration = fileReference
             }
             let buildConfig = XCBuildConfiguration(

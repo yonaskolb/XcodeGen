@@ -1,10 +1,10 @@
+import Basic
 import Foundation
 import JSONUtilities
 import PathKit
 import ProjectSpec
 import xcodeproj
 import Yams
-import Basic
 
 extension Project {
 

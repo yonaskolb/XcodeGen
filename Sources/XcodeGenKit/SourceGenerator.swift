@@ -161,7 +161,8 @@ class SourceGenerator {
                 return versionGroup
             } else {
                 // For all extensions other than `xcdatamodeld`
-                let fileReference = addObject(PBXFileReference(
+                let fileReference = addObject(
+                    PBXFileReference(
                         sourceTree: sourceTree,
                         name: fileReferenceName,
                         lastKnownFileType: lastKnownFileType,

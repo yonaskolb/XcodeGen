@@ -93,7 +93,7 @@ class SourceGeneratorTests: XCTestCase {
                 )
                 guard let buildFile = pbxProj.buildFiles
                     .first(where: { $0.file == fileReference }) else {
-                        throw failure("Cant find build file")
+                    throw failure("Cant find build file")
                 }
                 try expect(buildPhase?.files.count) == 1
                 try expect(buildPhase?.files.contains(buildFile)) == true

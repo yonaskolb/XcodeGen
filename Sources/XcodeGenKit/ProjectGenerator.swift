@@ -47,7 +47,7 @@ public class ProjectGenerator {
             }
             let buildableReference = XCScheme.BuildableReference(
                 referencedContainer: "container:\(project.name).xcodeproj",
-                blueprintIdentifier: "", //FIXME: pbxTarget.reference,
+                blueprintIdentifier: "", // FIXME: pbxTarget.reference,
                 buildableName: buildableName,
                 blueprintName: buildTarget.target
             )

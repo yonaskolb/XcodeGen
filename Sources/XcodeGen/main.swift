@@ -1,3 +1,4 @@
+import Basic
 import Commander
 import Foundation
 import JSONUtilities
@@ -5,7 +6,6 @@ import PathKit
 import ProjectSpec
 import XcodeGenKit
 import xcodeproj
-import Basic
 
 let version = try Version("1.11.2")
 

@@ -842,7 +842,7 @@ class ProjectGeneratorTests: XCTestCase {
                 ].compactMap { $0 }
 
                 for buildableReference in buildableReferences {
-                    //FIXME: try expect(buildableReference.blueprintIdentifier) == target.reference
+                    // FIXME: try expect(buildableReference.blueprintIdentifier) == target.reference
                     try expect(buildableReference.blueprintName) == target.name
                     try expect(buildableReference.buildableName) == "\(target.name).\(target.productType!.fileExtension!)"
                 }
@@ -915,8 +915,8 @@ class ProjectGeneratorTests: XCTestCase {
                 guard let buildActionEntry = xcscheme.buildAction?.buildActionEntries.first else {
                     throw failure("Build Action entry not found")
                 }
-                
-                //FIXME: try expect(buildActionEntry.buildableReference.blueprintIdentifier) == nativeTarget
+
+                // FIXME: try expect(buildActionEntry.buildableReference.blueprintIdentifier) == nativeTarget
 
                 try expect(xcscheme.launchAction?.buildConfiguration) == "Test Debug"
                 try expect(xcscheme.testAction?.buildConfiguration) == "Test Debug"
