@@ -18,7 +18,7 @@ class SourceGenerator {
     private var variantGroupsByPath: [Path: PBXVariantGroup] = [:]
 
     private let project: Project
-    var addObjectClosure: (String, PBXObject) -> Void
+    var addObjectClosure: (PBXObject) -> Void
     var targetSourceExcludePaths: Set<Path> = []
     var defaultExcludedFiles = [
         ".DS_Store",
@@ -28,18 +28,13 @@ class SourceGenerator {
 
     private(set) var knownRegions: Set<String> = []
 
-    init(project: Project, addObjectClosure: @escaping (String, PBXObject) -> Void) {
+    init(project: Project, addObjectClosure: @escaping (PBXObject) -> Void) {
         self.project = project
         self.addObjectClosure = addObjectClosure
     }
 
-    func createObject<T: PBXObject>(id: String, _ object: T) -> T {
-        addObjectClosure(id, object)
-        return object
-    }
-
-    func addObject<T: PBXObject>(id: String, _ object: T) -> T {
-        addObjectClosure(id, object)
+    func addObject<T: PBXObject>(_ object: T) -> T {
+        addObjectClosure(object)
         return object
     }
 
@@ -140,8 +135,7 @@ class SourceGenerator {
 
                 let modelFileReferences =
                     sortedPaths.map { path in
-                        createObject(
-                            id: path.byRemovingBase(path: project.basePath).string,
+                        addObject(
                             PBXFileReference(
                                 sourceTree: .group,
                                 lastKnownFileType: "wrapper.xcdatamodel",
@@ -156,7 +150,7 @@ class SourceGenerator {
                     guard let indexOf = sortedPaths.index(where: { $0 == currentVersionPath }) else { return nil }
                     return modelFileReferences[indexOf]
                 }()
-                let versionGroup = addObject(id: fileReferencePath.string, XCVersionGroup(
+                let versionGroup = addObject(XCVersionGroup(
                     currentVersion: currentVersion,
                     path: fileReferencePath.string,
                     sourceTree: sourceTree,
@@ -167,9 +161,7 @@ class SourceGenerator {
                 return versionGroup
             } else {
                 // For all extensions other than `xcdatamodeld`
-                let fileReference = createObject(
-                    id: path.byRemovingBase(path: project.basePath).string,
-                    PBXFileReference(
+                let fileReference = addObject(PBXFileReference(
                         sourceTree: sourceTree,
                         name: fileReferenceName,
                         lastKnownFileType: lastKnownFileType,
@@ -240,7 +232,7 @@ class SourceGenerator {
                 name: groupName != groupPath ? groupName : nil,
                 path: groupPath
             )
-            groupReference = createObject(id: path.byRemovingBase(path: project.basePath).string, group)
+            groupReference = addObject(group)
             groupsByPath[path] = groupReference
 
             if isTopLevelGroup {
@@ -260,7 +252,7 @@ class SourceGenerator {
                 sourceTree: .group,
                 name: path.lastComponent
             )
-            variantGroup = createObject(id: path.byRemovingBase(path: project.basePath).string, group)
+            variantGroup = addObject(group)
             variantGroupsByPath[path] = variantGroup
         }
         return variantGroup

@@ -40,10 +40,6 @@ public class ProjectGenerator {
 
         func getBuildEntry(_ buildTarget: Scheme.BuildTarget) -> XCScheme.BuildAction.Entry {
 
-            guard let pbxTarget = pbxProject.targets(named: buildTarget.target).first else {
-                fatalError("Unable to find target named \"\(buildTarget.target)\" in \"PBXProj.targets\"")
-            }
-
             guard let buildableName =
                 project.getTarget(buildTarget.target)?.filename ??
                 project.getAggregateTarget(buildTarget.target)?.name else {
