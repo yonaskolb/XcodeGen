@@ -530,7 +530,7 @@ class SourceGeneratorTests: XCTestCase {
                             try pbxProj.expectFile(paths: ["Sources", "Hello.\(ex)", "a.swift"], buildPhase: .sources)
                         } catch {
                             // e.g. Hello.sgi becomes Hello.SGI.
-                            try pbxProj.expectFile(paths: ["Sources", "Hello.\(ex.uppercased())", "a.swift"], buildPhase: .sources)
+                            try pbxProj.expectFile(paths: ["Sources", "Hello.\(_swapcase(ex))", "a.swift"], buildPhase: .sources)
                         }
 
                         try pbxProj.expectFileMissing(paths: ["Sources", "Hello.\(ex)"])
@@ -707,5 +707,22 @@ extension PBXProj {
             guard let group = groups.first(where: { $0.path == path && $0.nameOrPath == name }) else { return nil }
             return getFileReference(group: group, paths: restOfPath, names: restOfName)
         }
+    }
+}
+
+/// Swaps all cases of string.
+///
+/// - Note: Only the first char is used to determine to treat whole string as lowercased or uppercased.
+private func _swapcase(_ string: String) -> String {
+    if string.isEmpty {
+        return string
+    }
+
+    let c = String(string.first!)
+
+    if c.uppercased() == c {
+        return string.lowercased()
+    } else {
+        return string.uppercased()
     }
 }
