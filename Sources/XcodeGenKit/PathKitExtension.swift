@@ -17,6 +17,7 @@ extension Path {
             // If uti is `public.folder` or `dyn*`, it's a normal directory in most cases.
             // But for example *.lproj appears to be a `public.folder`.
             // So make sure to filter to treat it as a special directory.
+            print("Path.string: \(self.string), uti: \(uti)")
             return uti != "public.folder" && !uti.starts(with: "dyn")
 
         }

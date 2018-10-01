@@ -526,6 +526,7 @@ class SourceGeneratorTests: XCTestCase {
                     let pbxProj = try project.generatePbxProj()
 
                     for ex in expectations {
+                        print("ex: \(ex)")
                         do {
                             try pbxProj.expectFile(paths: ["Sources", "Hello.\(ex)", "a.swift"], buildPhase: .sources)
                         } catch {
@@ -617,6 +618,7 @@ private func createDirectories(_ directories: String) throws {
     for file in files {
         try file.parent().mkpath()
         try file.write("")
+        print("file written: \(file.absolute().string)")
     }
 }
 
