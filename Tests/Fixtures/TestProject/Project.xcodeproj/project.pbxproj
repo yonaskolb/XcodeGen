@@ -27,7 +27,9 @@
 		BF_138356261076 /* InterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_363921640403 /* InterfaceController.swift */; };
 		BF_140777424236 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_584425140013 /* Result.framework */; };
 		BF_143559378694 = {isa = PBXBuildFile; fileRef = FR_919543414727 /* StaticLibrary_ObjC.a */; };
+		BF_149117711530 /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_172952167809 /* FrameworkFile.swift */; };
 		BF_150525852574 /* StaticLibrary_ObjC.m in Sources */ = {isa = PBXBuildFile; fileRef = "FR_698230898030-1" /* StaticLibrary_ObjC.m */; };
+		BF_156245390034 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = FR_183521624014 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BF_159058095963 /* module.modulemap in CopyFiles */ = {isa = PBXBuildFile; fileRef = FR_665156855283 /* module.modulemap */; };
 		BF_167705969896 /* TestProjectUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_145531354566 /* TestProjectUITests.swift */; };
 		BF_182635022050 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FR_830053537293 /* Assets.xcassets */; };
@@ -39,10 +41,12 @@
 		BF_211435872001 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = VG_473000061463 /* Localizable.strings */; };
 		BF_212221512596 /* StaticLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_470929579339 /* StaticLibrary.swift */; };
 		BF_215463341392 /* SomeFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_654302359039 /* SomeFramework.framework */; };
+		BF_219605708533 = {isa = PBXBuildFile; fileRef = FR_563193937230 /* Framework2.framework */; };
 		BF_225293845818 = {isa = PBXBuildFile; fileRef = FR_507023492251 /* App_watchOS Extension.appex */; };
 		BF_237760701422 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FR_987043315473 /* Assets.xcassets */; };
 		BF_239684316986 /* Headers in Headers */ = {isa = PBXBuildFile; fileRef = FR_815403394914 /* Headers */; settings = {ATTRIBUTES = (Public, ); }; };
 		BF_243071719122 /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_172952167809 /* FrameworkFile.swift */; };
+		BF_250927007176 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = FR_183521624014 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BF_259448131292 /* Headers in Headers */ = {isa = PBXBuildFile; fileRef = FR_815403394914 /* Headers */; settings = {ATTRIBUTES = (Public, ); }; };
 		BF_268392110450 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FR_587738154368 /* Assets.xcassets */; };
 		BF_279581961655 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FR_868653349092 /* Assets.xcassets */; };
@@ -59,8 +63,10 @@
 		BF_331192862207 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_481575785861 /* ViewController.swift */; settings = {COMPILER_FLAGS = "-Werror"; }; };
 		BF_334321520545 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FR_377082606829 /* Assets.xcassets */; };
 		BF_334778067417 = {isa = PBXBuildFile; fileRef = FR_783122899910 /* App_iOS_Tests.xctest */; };
+		BF_341452282021 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = FR_183521624014 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BF_360196406184 /* TestProjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_722239415598 /* TestProjectTests.swift */; };
 		BF_387462025786 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = VG_202279841299 /* Main.storyboard */; };
+		BF_391366142497 /* Framework2.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FR_662897337290 /* Framework2.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BF_425679397292 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = FR_183521624014 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BF_434838320682 /* StaticLibrary_ObjC.m in Sources */ = {isa = PBXBuildFile; fileRef = "FR_698230898030-1" /* StaticLibrary_ObjC.m */; };
 		BF_441538117869 /* App_watchOS Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = FR_507023492251 /* App_watchOS Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -69,12 +75,18 @@
 		BF_461044234706 /* SomeFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FR_654302359039 /* SomeFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BF_463608041925 /* StaticLibrary_ObjC.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = FR_698230898030 /* StaticLibrary_ObjC.h */; };
 		BF_474063668246 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_763057275314 /* Result.framework */; };
+		BF_479713239854 = {isa = PBXBuildFile; fileRef = FR_105280345645 /* Framework2.framework */; };
 		BF_496472559782 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = FR_183521624014 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BF_503484983186 /* MoreUnder.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_196911129660 /* MoreUnder.swift */; };
 		BF_510053944904 /* Headers in Headers */ = {isa = PBXBuildFile; fileRef = FR_815403394914 /* Headers */; settings = {ATTRIBUTES = (Public, ); }; };
+		BF_515435124777 /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_172952167809 /* FrameworkFile.swift */; };
+		BF_517043434617 /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_172952167809 /* FrameworkFile.swift */; };
 		BF_518775144316 /* SomeXPCService.xpc in CopyFiles */ = {isa = PBXBuildFile; fileRef = FR_229826849033 /* SomeXPCService.xpc */; };
 		BF_526105569599 = {isa = PBXBuildFile; fileRef = FR_437179166843 /* StaticLibrary_Swift.a */; };
+		BF_529143086177 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = FR_183521624014 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BF_532861652809 /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_172952167809 /* FrameworkFile.swift */; };
 		BF_538515166673 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = VG_256263906698 /* LaunchScreen.storyboard */; };
+		BF_550502704373 = {isa = PBXBuildFile; fileRef = FR_662897337290 /* Framework2.framework */; };
 		BF_552913093094 /* Framework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FR_525119120469 /* Framework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BF_561304997165 /* Standalone.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_675266829517 /* Standalone.swift */; };
 		BF_563614389392 = {isa = PBXBuildFile; fileRef = FR_618687462494 /* iMessageExtension.appex */; };
@@ -82,6 +94,7 @@
 		BF_597639300414 /* Framework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_525119120469 /* Framework.framework */; };
 		BF_606517090398 = {isa = PBXBuildFile; fileRef = FR_281269793733 /* StaticLibrary_ObjC.a */; };
 		BF_612351978356 /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = VG_264279911176 /* Interface.storyboard */; };
+		BF_616519281451 /* Framework2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_662897337290 /* Framework2.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		BF_624802436672 /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_172952167809 /* FrameworkFile.swift */; };
 		BF_628591712051 /* module.modulemap in CopyFiles */ = {isa = PBXBuildFile; fileRef = FR_665156855283 /* module.modulemap */; };
 		BF_629554450880 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_763057275314 /* Result.framework */; };
@@ -96,6 +109,7 @@
 		BF_704149935229 /* Standalone.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_675266829517 /* Standalone.swift */; };
 		BF_721498080533 /* ResourceFolder in Resources */ = {isa = PBXBuildFile; fileRef = FR_257073931060 /* ResourceFolder */; };
 		BF_725992639588 = {isa = PBXBuildFile; fileRef = FR_480982116789 /* App_macOS.app */; };
+		BF_726199177939 = {isa = PBXBuildFile; fileRef = FR_651103371726 /* Framework2.framework */; };
 		BF_732745079658 = {isa = PBXBuildFile; fileRef = FR_324671077936 /* App_watchOS.app */; };
 		BF_734036107922 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = FR_183521624014 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BF_747443236192 /* App_watchOS.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = FR_324671077936 /* App_watchOS.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -178,6 +192,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = NT_525119120469;
 			remoteInfo = Framework_macOS;
+		};
+		CIP_23609521734 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = P_8448771205358 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = NT_662897337290;
+			remoteInfo = Framework2_iOS;
 		};
 		CIP_28856087625 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -358,6 +379,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				BF_391366142497 /* Framework2.framework in Embed Frameworks */,
 				BF_905038616071 /* Framework.framework in Embed Frameworks */,
 				BF_461044234706 /* SomeFramework.framework in Embed Frameworks */,
 			);
@@ -399,6 +421,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		FR_105280345645 /* Framework2.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Framework2.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR_118219888726 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LocalizedStoryboard.storyboard; sourceTree = "<group>"; };
 		FR_123503999387 /* App_iOS_UITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = App_iOS_UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR_131384036341 /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Result.framework; sourceTree = "<group>"; };
@@ -445,6 +468,7 @@
 		FR_525119120469 /* Framework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Framework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR_530818555464 /* StaticLibrary_ObjC.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = StaticLibrary_ObjC.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR_530852296303 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FR_563193937230 /* Framework2.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Framework2.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR_570918052822 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		FR_584425140013 /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Result.framework; sourceTree = "<group>"; };
 		FR_587738154368 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -455,10 +479,12 @@
 		FR_618687462494 /* iMessageExtension.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = iMessageExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR_635802719871 /* base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = base.xcconfig; sourceTree = "<group>"; };
 		FR_643034527839 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FR_651103371726 /* Framework2.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Framework2.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR_654302359039 /* SomeFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SomeFramework.framework; path = Vendor/SomeFramework.framework; sourceTree = "<group>"; };
 		FR_655678458041 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FR_660690926982 /* config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = config.xcconfig; sourceTree = "<group>"; };
 		FR_662315837182 /* Framework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Framework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FR_662897337290 /* Framework2.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Framework2.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FR_665156855283 /* module.modulemap */ = {isa = PBXFileReference; path = module.modulemap; sourceTree = "<group>"; };
 		FR_669811003841 /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Result.framework; sourceTree = "<group>"; };
 		FR_675266829517 /* Standalone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Standalone.swift; sourceTree = "<group>"; };
@@ -552,6 +578,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BF_616519281451 /* Framework2.framework in Frameworks */,
 				BF_324363145049 /* Framework.framework in Frameworks */,
 				BF_474063668246 /* Result.framework in Frameworks */,
 				BF_849675970921 /* StaticLibrary_ObjC.a in Frameworks */,
@@ -848,16 +875,20 @@
 				FR_480982116789 /* App_macOS.app */,
 				FR_507023492251 /* App_watchOS Extension.appex */,
 				FR_324671077936 /* App_watchOS.app */,
-				FR_525119120469 /* Framework.framework */,
-				FR_662315837182 /* Framework.framework */,
-				FR_438704538506 /* Framework.framework */,
 				FR_472296042419 /* Framework.framework */,
+				FR_525119120469 /* Framework.framework */,
+				FR_438704538506 /* Framework.framework */,
+				FR_662315837182 /* Framework.framework */,
+				FR_105280345645 /* Framework2.framework */,
+				FR_563193937230 /* Framework2.framework */,
+				FR_662897337290 /* Framework2.framework */,
+				FR_651103371726 /* Framework2.framework */,
 				FR_935153865209 /* iMessageApp.app */,
 				FR_618687462494 /* iMessageExtension.appex */,
-				FR_530818555464 /* StaticLibrary_ObjC.a */,
-				FR_704531614016 /* StaticLibrary_ObjC.a */,
 				FR_919543414727 /* StaticLibrary_ObjC.a */,
 				FR_281269793733 /* StaticLibrary_ObjC.a */,
+				FR_704531614016 /* StaticLibrary_ObjC.a */,
+				FR_530818555464 /* StaticLibrary_ObjC.a */,
 				FR_437179166843 /* StaticLibrary_Swift.a */,
 				FR_376569054786 /* XPC Service.xpc */,
 			);
@@ -875,6 +906,14 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
+		HBP_10528034564 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF_529143086177 /* MyFramework.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		HBP_43870453850 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -902,12 +941,36 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		HBP_56319393723 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF_156245390034 /* MyFramework.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		HBP_65110337172 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF_250927007176 /* MyFramework.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		HBP_66231583718 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				BF_259448131292 /* Headers in Headers */,
 				BF_734036107922 /* MyFramework.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		HBP_66289733729 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF_341452282021 /* MyFramework.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -930,6 +993,22 @@
 /* End PBXLegacyTarget section */
 
 /* Begin PBXNativeTarget section */
+		NT_105280345645 /* Framework2_watchOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CL_105280345645 /* Build configuration list for PBXNativeTarget "Framework2_watchOS" */;
+			buildPhases = (
+				HBP_10528034564 /* Headers */,
+				SBP_10528034564 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Framework2_watchOS;
+			productName = Framework2_watchOS;
+			productReference = FR_105280345645 /* Framework2.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 		NT_123503999387 /* App_iOS_UITests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = CL_123503999387 /* Build configuration list for PBXNativeTarget "App_iOS_UITests" */;
@@ -1126,6 +1205,22 @@
 			productReference = FR_530818555464 /* StaticLibrary_ObjC.a */;
 			productType = "com.apple.product-type.library.static";
 		};
+		NT_563193937230 /* Framework2_tvOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CL_563193937230 /* Build configuration list for PBXNativeTarget "Framework2_tvOS" */;
+			buildPhases = (
+				HBP_56319393723 /* Headers */,
+				SBP_56319393723 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Framework2_tvOS;
+			productName = Framework2_tvOS;
+			productReference = FR_563193937230 /* Framework2.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 		NT_618687462494 /* iMessageExtension */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = CL_618687462494 /* Build configuration list for PBXNativeTarget "iMessageExtension" */;
@@ -1141,6 +1236,22 @@
 			productName = iMessageExtension;
 			productReference = FR_618687462494 /* iMessageExtension.appex */;
 			productType = "com.apple.product-type.app-extension.messages";
+		};
+		NT_651103371726 /* Framework2_macOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CL_651103371726 /* Build configuration list for PBXNativeTarget "Framework2_macOS" */;
+			buildPhases = (
+				HBP_65110337172 /* Headers */,
+				SBP_65110337172 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Framework2_macOS;
+			productName = Framework2_macOS;
+			productReference = FR_651103371726 /* Framework2.framework */;
+			productType = "com.apple.product-type.framework";
 		};
 		NT_662315837182 /* Framework_tvOS */ = {
 			isa = PBXNativeTarget;
@@ -1159,6 +1270,22 @@
 			name = Framework_tvOS;
 			productName = Framework_tvOS;
 			productReference = FR_662315837182 /* Framework.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		NT_662897337290 /* Framework2_iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CL_662897337290 /* Build configuration list for PBXNativeTarget "Framework2_iOS" */;
+			buildPhases = (
+				HBP_66289733729 /* Headers */,
+				SBP_66289733729 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Framework2_iOS;
+			productName = Framework2_iOS;
+			productReference = FR_662897337290 /* Framework2.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		NT_704531614016 /* StaticLibrary_ObjC_tvOS */ = {
@@ -1212,6 +1339,7 @@
 			);
 			dependencies = (
 				TD_824101787753 /* PBXTargetDependency */,
+				TD_236095217340 /* PBXTargetDependency */,
 				TD_109724965966 /* PBXTargetDependency */,
 				TD_232150454486 /* PBXTargetDependency */,
 				TD_288560876254 /* PBXTargetDependency */,
@@ -1295,6 +1423,10 @@
 				NT_480982116789 /* App_macOS */,
 				NT_324671077936 /* App_watchOS */,
 				NT_507023492251 /* App_watchOS Extension */,
+				NT_662897337290 /* Framework2_iOS */,
+				NT_651103371726 /* Framework2_macOS */,
+				NT_563193937230 /* Framework2_tvOS */,
+				NT_105280345645 /* Framework2_watchOS */,
 				NT_472296042419 /* Framework_iOS */,
 				NT_525119120469 /* Framework_macOS */,
 				NT_662315837182 /* Framework_tvOS */,
@@ -1526,6 +1658,14 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		SBP_10528034564 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF_532861652809 /* FrameworkFile.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		SBP_12350399938 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1625,6 +1765,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		SBP_56319393723 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF_517043434617 /* FrameworkFile.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		SBP_61868746249 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1633,11 +1781,27 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		SBP_65110337172 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF_515435124777 /* FrameworkFile.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		SBP_66231583718 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				BF_243071719122 /* FrameworkFile.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		SBP_66289733729 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BF_149117711530 /* FrameworkFile.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1721,6 +1885,11 @@
 			isa = PBXTargetDependency;
 			target = NT_525119120469 /* Framework_macOS */;
 			targetProxy = CIP_23558050412 /* PBXContainerItemProxy */;
+		};
+		TD_236095217340 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = NT_662897337290 /* Framework2_iOS */;
+			targetProxy = CIP_23609521734 /* PBXContainerItemProxy */;
 		};
 		TD_288560876254 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1927,6 +2096,27 @@
 			};
 			name = "Test Release";
 		};
+		BC_132887277508 /* Production Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Framework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.Framework2-tvOS";
+				PRODUCT_NAME = Framework2;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = "Production Debug";
+		};
 		BC_142190149658 /* Production Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1938,6 +2128,27 @@
 				SKIP_INSTALL = YES;
 			};
 			name = "Production Debug";
+		};
+		BC_162130726969 /* Test Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Framework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.Framework2-iOS";
+				PRODUCT_NAME = Framework2;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = "Test Release";
 		};
 		BC_167564962969 /* Staging Release */ = {
 			isa = XCBuildConfiguration;
@@ -2038,6 +2249,27 @@
 				SDKROOT = macosx;
 			};
 			name = "Production Debug";
+		};
+		BC_233005332042 /* Test Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Framework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.Framework2-tvOS";
+				PRODUCT_NAME = Framework2;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = "Test Release";
 		};
 		BC_240587562436 /* Test Debug */ = {
 			isa = XCBuildConfiguration;
@@ -2242,6 +2474,27 @@
 			};
 			name = "Production Debug";
 		};
+		BC_282993316269 /* Production Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Framework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.Framework2-tvOS";
+				PRODUCT_NAME = Framework2;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = "Production Release";
+		};
 		BC_282993554784 /* Production Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2266,6 +2519,27 @@
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = "Production Release";
+		};
+		BC_283605270658 /* Staging Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Framework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.Framework2-iOS";
+				PRODUCT_NAME = Framework2;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = "Staging Debug";
 		};
 		BC_296138297674 /* Test Release */ = {
 			isa = XCBuildConfiguration;
@@ -2332,6 +2606,26 @@
 			};
 			name = "Staging Debug";
 		};
+		BC_317429236477 /* Production Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Framework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.Framework2-watchOS";
+				PRODUCT_NAME = Framework2;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = "Production Release";
+		};
 		BC_334821934458 /* Production Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2350,6 +2644,27 @@
 				TARGETED_DEVICE_FAMILY = 3;
 			};
 			name = "Test Release";
+		};
+		BC_345911583907 /* Staging Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Framework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.Framework2-iOS";
+				PRODUCT_NAME = Framework2;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = "Staging Release";
 		};
 		BC_351179072988 /* Test Debug */ = {
 			isa = XCBuildConfiguration;
@@ -2620,6 +2935,27 @@
 			};
 			name = "Production Release";
 		};
+		BC_469509245400 /* Production Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Framework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.Framework2-macOS";
+				PRODUCT_NAME = Framework2;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = "Production Debug";
+		};
 		BC_470682595853 /* Production Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2701,6 +3037,27 @@
 			};
 			name = "Production Debug";
 		};
+		BC_493052429980 /* Production Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Framework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.Framework2-iOS";
+				PRODUCT_NAME = Framework2;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = "Production Release";
+		};
 		BC_493052431451 /* Production Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2736,6 +3093,26 @@
 				TARGETED_DEVICE_FAMILY = 4;
 			};
 			name = "Staging Debug";
+		};
+		BC_496162047138 /* Test Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Framework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.Framework2-watchOS";
+				PRODUCT_NAME = Framework2;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = "Test Debug";
 		};
 		BC_499325041919 /* Production Debug */ = {
 			isa = XCBuildConfiguration;
@@ -2788,6 +3165,27 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = "Production Debug";
+		};
+		BC_516808329453 /* Test Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Framework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.Framework2-macOS";
+				PRODUCT_NAME = Framework2;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = "Test Release";
 		};
 		BC_517306343059 /* Staging Release */ = {
 			isa = XCBuildConfiguration;
@@ -2901,6 +3299,26 @@
 			};
 			name = "Staging Debug";
 		};
+		BC_536614240472 /* Test Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Framework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.Framework2-watchOS";
+				PRODUCT_NAME = Framework2;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = "Test Release";
+		};
 		BC_556794548954 /* Staging Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -3002,6 +3420,27 @@
 			};
 			name = "Production Release";
 		};
+		BC_572479882124 /* Production Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Framework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.Framework2-iOS";
+				PRODUCT_NAME = Framework2;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = "Production Debug";
+		};
 		BC_575374366235 /* Test Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -3089,6 +3528,27 @@
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = "Production Release";
+		};
+		BC_598666093104 /* Staging Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Framework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.Framework2-tvOS";
+				PRODUCT_NAME = Framework2;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = "Staging Release";
 		};
 		BC_601792226085 /* Test Debug */ = {
 			isa = XCBuildConfiguration;
@@ -3255,6 +3715,48 @@
 			};
 			name = "Staging Release";
 		};
+		BC_649616542112 /* Staging Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Framework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.Framework2-macOS";
+				PRODUCT_NAME = Framework2;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = "Staging Release";
+		};
+		BC_650615721579 /* Test Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Framework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.Framework2-iOS";
+				PRODUCT_NAME = Framework2;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = "Test Debug";
+		};
 		BC_655752097950 /* Test Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -3279,6 +3781,26 @@
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = "Test Debug";
+		};
+		BC_659994766813 /* Staging Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Framework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.Framework2-watchOS";
+				PRODUCT_NAME = Framework2;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = "Staging Release";
 		};
 		BC_667304541586 /* Test Debug */ = {
 			isa = XCBuildConfiguration;
@@ -3395,6 +3917,27 @@
 			};
 			name = "Test Debug";
 		};
+		BC_704319259740 /* Staging Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Framework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.Framework2-tvOS";
+				PRODUCT_NAME = Framework2;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = "Staging Debug";
+		};
 		BC_705279564212 /* Production Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -3419,6 +3962,27 @@
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = "Production Debug";
+		};
+		BC_706746828714 /* Test Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Framework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.Framework2-macOS";
+				PRODUCT_NAME = Framework2;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = "Test Debug";
 		};
 		BC_707904794064 /* Test Release */ = {
 			isa = XCBuildConfiguration;
@@ -3511,6 +4075,26 @@
 				SKIP_INSTALL = YES;
 			};
 			name = "Staging Debug";
+		};
+		BC_721815976999 /* Production Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Framework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.Framework2-watchOS";
+				PRODUCT_NAME = Framework2;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = "Production Debug";
 		};
 		BC_730521266150 /* Staging Release */ = {
 			isa = XCBuildConfiguration;
@@ -3800,6 +4384,27 @@
 			};
 			name = "Production Debug";
 		};
+		BC_800851631390 /* Staging Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Framework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.Framework2-macOS";
+				PRODUCT_NAME = Framework2;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = "Staging Debug";
+		};
 		BC_805283956103 /* Production Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -4026,6 +4631,48 @@
 			};
 			name = "Test Debug";
 		};
+		BC_870421557533 /* Production Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Framework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.Framework2-macOS";
+				PRODUCT_NAME = Framework2;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = "Production Release";
+		};
+		BC_878673788752 /* Test Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Framework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.Framework2-tvOS";
+				PRODUCT_NAME = Framework2;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = "Test Debug";
+		};
 		BC_879000441352 /* Staging Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -4094,9 +4741,42 @@
 			};
 			name = "Staging Release";
 		};
+		BC_990974077989 /* Staging Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Framework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.Framework2-watchOS";
+				PRODUCT_NAME = Framework2;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = "Staging Debug";
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		CL_105280345645 /* Build configuration list for PBXNativeTarget "Framework2_watchOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BC_721815976999 /* Production Debug */,
+				BC_317429236477 /* Production Release */,
+				BC_990974077989 /* Staging Debug */,
+				BC_659994766813 /* Staging Release */,
+				BC_496162047138 /* Test Debug */,
+				BC_536614240472 /* Test Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "";
+		};
 		CL_123503999387 /* Build configuration list for PBXNativeTarget "App_iOS_UITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -4266,6 +4946,19 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "";
 		};
+		CL_563193937230 /* Build configuration list for PBXNativeTarget "Framework2_tvOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BC_132887277508 /* Production Debug */,
+				BC_282993316269 /* Production Release */,
+				BC_704319259740 /* Staging Debug */,
+				BC_598666093104 /* Staging Release */,
+				BC_878673788752 /* Test Debug */,
+				BC_233005332042 /* Test Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "";
+		};
 		CL_618687462494 /* Build configuration list for PBXNativeTarget "iMessageExtension" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -4279,6 +4972,19 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "";
 		};
+		CL_651103371726 /* Build configuration list for PBXNativeTarget "Framework2_macOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BC_469509245400 /* Production Debug */,
+				BC_870421557533 /* Production Release */,
+				BC_800851631390 /* Staging Debug */,
+				BC_649616542112 /* Staging Release */,
+				BC_706746828714 /* Test Debug */,
+				BC_516808329453 /* Test Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "";
+		};
 		CL_662315837182 /* Build configuration list for PBXNativeTarget "Framework_tvOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -4288,6 +4994,19 @@
 				BC_760168680599 /* Staging Release */,
 				BC_655752097950 /* Test Debug */,
 				BC_380703106572 /* Test Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "";
+		};
+		CL_662897337290 /* Build configuration list for PBXNativeTarget "Framework2_iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				BC_572479882124 /* Production Debug */,
+				BC_493052429980 /* Production Release */,
+				BC_283605270658 /* Staging Debug */,
+				BC_345911583907 /* Staging Release */,
+				BC_650615721579 /* Test Debug */,
+				BC_162130726969 /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "";
