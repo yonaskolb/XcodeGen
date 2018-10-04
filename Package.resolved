@@ -6,8 +6,8 @@
         "repositoryURL": "https://github.com/tadija/AEXML.git",
         "state": {
           "branch": null,
-          "revision": "6eea665515d079c338690147082a8084a36484b0",
-          "version": "4.3.0"
+          "revision": "54bb8ea6fb693dd3f92a89e5fcc19e199fdeedd0",
+          "version": "4.3.3"
         }
       },
       {
@@ -60,17 +60,17 @@
         "repositoryURL": "https://github.com/apple/swift-package-manager",
         "state": {
           "branch": null,
-          "revision": "6983434787dec4e543e9d398a0a9acf63ccd4da1",
-          "version": "0.2.1"
+          "revision": "235aacc514cb81a6881364b0fedcb3dd083228f3",
+          "version": "0.3.0"
         }
       },
       {
         "package": "xcodeproj",
         "repositoryURL": "https://github.com/tuist/xcodeproj.git",
         "state": {
-          "branch": null,
-          "revision": "1314329687682864119ecc03c73a413dfc24ade0",
-          "version": "6.0.1"
+          "branch": "master",
+          "revision": "77f84235b304472546f20cd545a632f1c16dc486",
+          "version": null
         }
       },
       {
