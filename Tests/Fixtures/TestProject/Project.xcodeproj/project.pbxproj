@@ -25,7 +25,6 @@
 /* Begin PBXBuildFile section */
 		01E1BB1F24B4A80B8FC21EC54DDAFCFB /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D4316EA80F87D5B5ED86E105CE1FE35 /* Alamofire.framework */; };
 		0A774DBC62F3C7721971E0C95BB2564A /* MoreUnder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1359BCAE8548E7063115210477D5CB83 /* MoreUnder.swift */; };
-		0nazXv7ABCyCN9fKu87n = {isa = PBXBuildFile; fileRef = F8D572C96FEC4C18AE61EB3D4D84466C /* XPC_ServiceProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		11620E0E3097992FFB14B60ADB580C14 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B0B64C16BE3E860FA96760027A29C74 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		12BB537967032E2ECE176F4F6BD7FEF1 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B711E3A23DD91E764A249E83C1D84E3 /* Alamofire.framework */; };
 		1392EC1CE7BD042F68C39A2AAB6AFBF0 /* SomeXPCService.xpc in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7047649EC963EC43D7BC538E7D8607CC /* SomeXPCService.xpc */; };
@@ -95,7 +94,6 @@
 		FA69E7367B9D2F2CB97F57AE7984D9BD /* Framework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E3C43679A1164385CDC2FCB5DD62C634 /* Framework.framework */; };
 		FF688241378D1AE956E9A9F46EEBCFAA /* Headers in Headers */ = {isa = PBXBuildFile; fileRef = 224967658A2D92DC2BD9D665A1CA1F5F /* Headers */; settings = {ATTRIBUTES = (Public, ); }; };
 		FFA6D03EB711292F77E0BB317C750F5A /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 32AE52CAD620F8B92487AA4F5924D0EC /* Model.xcdatamodeld */; settings = {COMPILER_FLAGS = "-Werror"; }; };
-		ba9n4YM2NGxFEyHIyuEc = {isa = PBXBuildFile; fileRef = 77532D0489A67876EE56705C71C908C6 /* XPC_Service.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */

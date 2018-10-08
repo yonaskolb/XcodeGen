@@ -592,9 +592,13 @@ public class PBXProjGenerator {
         buildPhases += try target.prebuildScripts.map { try generateBuildScript(targetName: target.name, buildScript: $0) }
 
         let headersBuildPhaseFiles = getBuildFilesForPhase(.headers)
-        if !headersBuildPhaseFiles.isEmpty && (target.type == .framework || target.type == .dynamicLibrary) {
-            let headersBuildPhase = addObject(PBXHeadersBuildPhase(files: headersBuildPhaseFiles))
-            buildPhases.append(headersBuildPhase)
+        if !headersBuildPhaseFiles.isEmpty {
+            if (target.type == .framework || target.type == .dynamicLibrary) {
+                let headersBuildPhase = addObject(PBXHeadersBuildPhase(files: headersBuildPhaseFiles))
+                buildPhases.append(headersBuildPhase)
+            } else {
+                headersBuildPhaseFiles.forEach { pbxProj.delete(object: $0) }
+            }
         }
 
         let sourcesBuildPhaseFiles = getBuildFilesForPhase(.sources)
