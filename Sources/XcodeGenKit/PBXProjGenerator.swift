@@ -574,7 +574,7 @@ public class PBXProjGenerator {
         func getBuildFilesForSourceFiles(_ sourceFiles: [SourceFile]) -> [PBXBuildFile] {
             let files = sourceFiles
                 .reduce(into: [SourceFile]()) { output, sourceFile in
-                    if !output.contains(where: { $0.fileReference == sourceFile.fileReference }) {
+                    if !output.contains(where: { $0.fileReference === sourceFile.fileReference }) {
                         output.append(sourceFile)
                     }
                 }

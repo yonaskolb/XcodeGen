@@ -534,7 +534,7 @@ extension PBXProj {
 
         if let buildPhase = buildPhase {
             let buildFile = buildFiles
-                .first(where: { $0.file == fileReference })
+                .first(where: { $0.file === fileReference })
             let actualBuildPhase = buildFile
                 .flatMap { buildFile in buildPhases.first { $0.files.contains(buildFile) } }?.buildPhase
 
