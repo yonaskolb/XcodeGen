@@ -126,28 +126,43 @@ extension Project {
     /// Returns cached build settings from a config file
     private func loadConfigFileBuildSettings(path: String) -> BuildSettings? {
         let configFilePath = basePath + path
-        if let settings = configFileSettings[configFilePath.string] {
-            return settings
+        if let cached = configFileSettings[configFilePath.string] {
+            return cached.value
         } else {
-            guard let configFile = try? XCConfig(path: configFilePath) else { return nil }
+            guard let configFile = try? XCConfig(path: configFilePath) else {
+                configFileSettings[configFilePath.string] = .nothing
+                return nil
+            }
             let settings = configFile.flattenedBuildSettings()
-            configFileSettings[configFilePath.string] = settings
+            configFileSettings[configFilePath.string] = .cached(settings)
             return settings
         }
     }
 }
 
+private enum Cached<T> {
+    case cached(T)
+    case nothing
+
+    var value: T? {
+        switch self {
+        case let .cached(value): return value
+        case .nothing: return nil
+        }
+    }
+}
+
 // cached flattened xcconfig file settings
-private var configFileSettings: [String: BuildSettings] = [:]
+private var configFileSettings: [String: Cached<BuildSettings>] = [:]
 
 // cached setting preset settings
-private var settingPresetSettings: [String: BuildSettings] = [:]
+private var settingPresetSettings: [String: Cached<BuildSettings>] = [:]
 
 extension SettingsPresetFile {
 
     public func getBuildSettings() -> BuildSettings? {
-        if let group = settingPresetSettings[path] {
-            return group
+        if let cached = settingPresetSettings[path] {
+            return cached.value
         }
         let bundlePath = Path(Bundle.main.bundlePath)
         let relativePath = Path("SettingPresets/\(path).yml")
@@ -171,6 +186,7 @@ extension SettingsPresetFile {
             case .product, .productPlatform:
                 break
             }
+            settingPresetSettings[path] = .nothing
             return nil
         }
 
@@ -178,7 +194,7 @@ extension SettingsPresetFile {
             print("Error parsing \"\(name)\" settings")
             return nil
         }
-        settingPresetSettings[path] = buildSettings
+        settingPresetSettings[path] = .cached(buildSettings)
         return buildSettings
     }
 }
