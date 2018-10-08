@@ -21,8 +21,10 @@ public class ProjectGenerator {
         return project.configs.first { $0.type == .release }!
     }
 
-    public func generateXcodeProject() throws -> XcodeProj {
-        try project.validate()
+    public func generateXcodeProject(validate: Bool = true) throws -> XcodeProj {
+        if validate {
+            try project.validate()
+        }
         let pbxProjGenerator = PBXProjGenerator(project: project)
         let pbxProject = try pbxProjGenerator.generate()
         let workspace = try generateWorkspace()

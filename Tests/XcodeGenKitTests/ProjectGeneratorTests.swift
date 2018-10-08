@@ -21,6 +21,12 @@ fileprivate let framework = Target(
     settings: Settings(buildSettings: ["SETTING_2": "VALUE"])
 )
 
+fileprivate let optionalFramework = Target(
+	name: "MyOptionalFramework",
+	type: .framework,
+	platform: .iOS
+)
+
 fileprivate let uiTest = Target(
     name: "MyAppUITests",
     type: .uiTestBundle,
@@ -29,7 +35,7 @@ fileprivate let uiTest = Target(
     dependencies: [Dependency(type: .target, reference: "MyApp")]
 )
 
-fileprivate let targets = [app, framework, uiTest]
+fileprivate let targets = [app, framework, optionalFramework, uiTest]
 
 class ProjectGeneratorTests: XCTestCase {
 
@@ -227,10 +233,11 @@ class ProjectGeneratorTests: XCTestCase {
             $0.it("generates targets") {
                 let pbxProject = try project.generatePbxProj()
                 let nativeTargets = pbxProject.nativeTargets
-                try expect(nativeTargets.count) == 3
+                try expect(nativeTargets.count) == 4
                 try expect(nativeTargets.contains { $0.name == app.name }).beTrue()
                 try expect(nativeTargets.contains { $0.name == framework.name }).beTrue()
                 try expect(nativeTargets.contains { $0.name == uiTest.name }).beTrue()
+                try expect(nativeTargets.contains { $0.name == optionalFramework.name }).beTrue()
             }
 
             $0.it("generates target attributes") {
@@ -240,7 +247,7 @@ class ProjectGeneratorTests: XCTestCase {
 
                 var testTargetWithAttributes = uiTest
                 testTargetWithAttributes.settings.buildSettings["CODE_SIGN_STYLE"] = "Manual"
-                let project = Project(basePath: "", name: "test", targets: [appTargetWithAttributes, framework, testTargetWithAttributes])
+                let project = Project(basePath: "", name: "test", targets: [appTargetWithAttributes, framework, optionalFramework, testTargetWithAttributes])
                 let pbxProject = try project.generatePbxProj()
 
                 guard let targetAttributes = pbxProject.projects.first?.targetAttributes else {
@@ -794,6 +801,34 @@ class ProjectGeneratorTests: XCTestCase {
                 try expect(second.script).beNil()
                 try expect(second.outputFiles) == []
                 try expect(second.outputFilesCompilerFlags) == []
+            }
+
+            $0.it("generates dependency build file settings") {
+                let app = Target(
+                    name: "MyApp",
+                    type: .application,
+                    platform: .iOS,
+                    dependencies: [
+                        Dependency(type: .target, reference: "MyFramework"),
+                        Dependency(type: .target, reference: "MyOptionalFramework", weakLink: true)
+                    ]
+                )
+
+                let project = Project(basePath: "", name: "test", targets: [app, framework, optionalFramework, uiTest])
+                let pbxProject = try project.generatePbxProj()
+
+                guard let nativeTarget = pbxProject.nativeTargets.first(where: { $0.name == app.name }) else {
+                    throw failure("PBXNativeTarget for \(app.name) not found")
+                }
+                let frameworkPhases = nativeTarget.buildPhases.compactMap { $0 as? PBXFrameworksBuildPhase }
+
+                let frameworkBuildFiles = frameworkPhases[0].files
+                let buildFileSettings = frameworkBuildFiles.map { $0.settings }
+
+                try expect(frameworkBuildFiles.count) == 2
+                try expect(buildFileSettings.compactMap({ $0 }).count) == 1
+                try expect(buildFileSettings.compactMap({ $0?["ATTRIBUTES"] }).count) == 1
+                try expect(buildFileSettings.compactMap({ $0?["ATTRIBUTES"] as? [String] }).first) == ["Weak"]
             }
         }
     }

@@ -420,6 +420,14 @@ public class PBXProjGenerator {
             return ["ATTRIBUTES": embedAttributes]
         }
 
+        func getDependencyFrameworkSettings(dependency: Dependency) -> [String: Any]? {
+            var linkingAttributes: [String] = []
+            if dependency.weakLink {
+                linkingAttributes.append("Weak")
+            }
+            return !linkingAttributes.isEmpty ? ["ATTRIBUTES": linkingAttributes] : nil
+        }
+
         for dependency in targetDependencies {
 
             let embed = dependency.embed ?? target.shouldEmbedDependencies
@@ -442,7 +450,7 @@ public class PBXProjGenerator {
                 if link {
                     let dependencyFile = targetFileReferences[dependencyTargetName]!
                     let buildFile = addObject(
-                        PBXBuildFile(file: dependencyFile)
+                        PBXBuildFile(file: dependencyFile, settings: getDependencyFrameworkSettings(dependency: dependency))
                     )
                     targetFrameworkBuildFiles.append(buildFile)
 
@@ -496,7 +504,7 @@ public class PBXProjGenerator {
                 }
 
                 let buildFile = addObject(
-                    PBXBuildFile(file: fileReference)
+                    PBXBuildFile(file: fileReference, settings: getDependencyFrameworkSettings(dependency: dependency))
                 )
 
                 targetFrameworkBuildFiles.append(buildFile)
@@ -525,7 +533,7 @@ public class PBXProjGenerator {
                 let fileReference = sourceGenerator.getFileReference(path: frameworkPath, inPath: platformPath)
 
                 let buildFile = addObject(
-                    PBXBuildFile(file: fileReference)
+                    PBXBuildFile(file: fileReference, settings: getDependencyFrameworkSettings(dependency: dependency))
                 )
 
                 carthageFrameworksByPlatform[target.platform.carthageDirectoryName, default: []].insert(fileReference)

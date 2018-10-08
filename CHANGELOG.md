@@ -1,5 +1,11 @@
 # Change Log
 
+## Master
+
+#### Added
+- Added `weak` Weak linking setting for dependencies [411](https://github.com/yonaskolb/XcodeGen/pull/411) @alvarhansen
+
+
 ## 1.11.2
 
 If XcodeGen is compiled with Swift 4.2, then UUID's in the generated project will not be deterministic. This will be fixed in an upcoming release with an update to xcodeproj 6.0

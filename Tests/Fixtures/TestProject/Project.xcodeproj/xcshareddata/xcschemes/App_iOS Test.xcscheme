@@ -14,37 +14,66 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "9F21B9C99E75314E51854589C0A2D40C"
-               BuildableName = "App_watchOS.app"
-               BlueprintName = "App_watchOS"
+               BlueprintIdentifier = "DB85CB6A2C15660854D634EF1B0C1FAD"
+               BuildableName = "App_iOS.app"
+               BlueprintName = "App_iOS"
                ReferencedContainer = "container:Project.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
-      buildConfiguration = "Production Debug"
+      buildConfiguration = "Test Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      shouldUseLaunchSchemeArgsEnv = "YES">
+      codeCoverageEnabled = "YES"
+      shouldUseLaunchSchemeArgsEnv = "NO">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "8CDD0FC5B69DB55054CAECF513716138"
+               BuildableName = "App_iOS_Tests.xctest"
+               BlueprintName = "App_iOS_Tests"
+               ReferencedContainer = "container:Project.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "B145BCFEB550C3DDF48510BB85CDE8DC"
+               BuildableName = "App_iOS_UITests.xctest"
+               BlueprintName = "App_iOS_UITests"
+               ReferencedContainer = "container:Project.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "9F21B9C99E75314E51854589C0A2D40C"
-            BuildableName = "App_watchOS.app"
-            BlueprintName = "App_watchOS"
+            BlueprintIdentifier = "DB85CB6A2C15660854D634EF1B0C1FAD"
+            BuildableName = "App_iOS.app"
+            BlueprintName = "App_iOS"
             ReferencedContainer = "container:Project.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <CommandLineArguments>
+         <CommandLineArgument
+            argument = "MyEnabledArgument"
+            isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "MyDisabledArgument"
+            isEnabled = "NO">
+         </CommandLineArgument>
       </CommandLineArguments>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
    <LaunchAction
-      buildConfiguration = "Production Debug"
+      buildConfiguration = "Test Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
@@ -57,20 +86,28 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "9F21B9C99E75314E51854589C0A2D40C"
-            BuildableName = "App_watchOS.app"
-            BlueprintName = "App_watchOS"
+            BlueprintIdentifier = "DB85CB6A2C15660854D634EF1B0C1FAD"
+            BuildableName = "App_iOS.app"
+            BlueprintName = "App_iOS"
             ReferencedContainer = "container:Project.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <CommandLineArguments>
+         <CommandLineArgument
+            argument = "MyEnabledArgument"
+            isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "MyDisabledArgument"
+            isEnabled = "NO">
+         </CommandLineArgument>
       </CommandLineArguments>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
    <ProfileAction
-      buildConfiguration = "Production Release"
-      shouldUseLaunchSchemeArgsEnv = "YES"
+      buildConfiguration = "Test Release"
+      shouldUseLaunchSchemeArgsEnv = "NO"
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
@@ -78,20 +115,28 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "9F21B9C99E75314E51854589C0A2D40C"
-            BuildableName = "App_watchOS.app"
-            BlueprintName = "App_watchOS"
+            BlueprintIdentifier = "DB85CB6A2C15660854D634EF1B0C1FAD"
+            BuildableName = "App_iOS.app"
+            BlueprintName = "App_iOS"
             ReferencedContainer = "container:Project.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <CommandLineArguments>
+         <CommandLineArgument
+            argument = "MyEnabledArgument"
+            isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "MyDisabledArgument"
+            isEnabled = "NO">
+         </CommandLineArgument>
       </CommandLineArguments>
    </ProfileAction>
    <AnalyzeAction
-      buildConfiguration = "Production Debug">
+      buildConfiguration = "Test Debug">
    </AnalyzeAction>
    <ArchiveAction
       revealArchiveInOrganizer = "YES"
-      buildConfiguration = "Production Release">
+      buildConfiguration = "Test Release">
    </ArchiveAction>
 </Scheme>

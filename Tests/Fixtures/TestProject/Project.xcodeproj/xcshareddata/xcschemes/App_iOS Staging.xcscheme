@@ -3,8 +3,8 @@
    LastUpgradeVersion = "0930"
    version = "1.3">
    <BuildAction
-      buildImplicitDependencies = "YES"
-      parallelizeBuildables = "YES">
+      parallelizeBuildables = "YES"
+      buildImplicitDependencies = "YES">
       <BuildActionEntries>
          <BuildActionEntry
             buildForTesting = "YES"
@@ -23,7 +23,7 @@
       </BuildActionEntries>
    </BuildAction>
    <TestAction
-      buildConfiguration = "Production Debug"
+      buildConfiguration = "Staging Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       codeCoverageEnabled = "YES"
@@ -61,19 +61,19 @@
       </MacroExpansion>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "MyDisabledArgument"
-            isEnabled = "NO">
-         </CommandLineArgument>
-         <CommandLineArgument
             argument = "MyEnabledArgument"
             isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "MyDisabledArgument"
+            isEnabled = "NO">
          </CommandLineArgument>
       </CommandLineArguments>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
    <LaunchAction
-      buildConfiguration = "Production Debug"
+      buildConfiguration = "Staging Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
@@ -94,19 +94,19 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "MyDisabledArgument"
-            isEnabled = "NO">
-         </CommandLineArgument>
-         <CommandLineArgument
             argument = "MyEnabledArgument"
             isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "MyDisabledArgument"
+            isEnabled = "NO">
          </CommandLineArgument>
       </CommandLineArguments>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
    <ProfileAction
-      buildConfiguration = "Production Release"
+      buildConfiguration = "Staging Release"
       shouldUseLaunchSchemeArgsEnv = "NO"
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
@@ -123,20 +123,20 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "MyDisabledArgument"
-            isEnabled = "NO">
-         </CommandLineArgument>
-         <CommandLineArgument
             argument = "MyEnabledArgument"
             isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "MyDisabledArgument"
+            isEnabled = "NO">
          </CommandLineArgument>
       </CommandLineArguments>
    </ProfileAction>
    <AnalyzeAction
-      buildConfiguration = "Production Debug">
+      buildConfiguration = "Staging Debug">
    </AnalyzeAction>
    <ArchiveAction
       revealArchiveInOrganizer = "YES"
-      buildConfiguration = "Production Release">
+      buildConfiguration = "Staging Release">
    </ArchiveAction>
 </Scheme>
