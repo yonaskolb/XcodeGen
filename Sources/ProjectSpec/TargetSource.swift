@@ -119,6 +119,7 @@ public struct TargetSource: Equatable {
         self.type = type
         self.optional = optional
         self.buildPhase = buildPhase
+        self.headerVisibility = headerVisibility
     }
 }
 
