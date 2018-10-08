@@ -13,7 +13,7 @@ class ProjectFixtureTests: XCTestCase {
             var xcodeProject: XcodeProj?
 
             $0.it("generates") {
-                xcodeProject = try generateXcodeProject(specPath: fixturePath + "TestProject/project.yml", projectPath: fixturePath + "TestProject/Project.xcodeproj")
+                xcodeProject = try generateXcodeProject(specPath: fixturePath + "TestProject/project.yml")
             }
 
             $0.it("generates variant group") {
@@ -59,12 +59,11 @@ class ProjectFixtureTests: XCTestCase {
     }
 }
 
-fileprivate func generateXcodeProject(specPath: Path, projectPath: Path, file: String = #file, line: Int = #line) throws -> XcodeProj {
-    let projectPath = AbsolutePath(projectPath.absolute().string)
+fileprivate func generateXcodeProject(specPath: Path, file: String = #file, line: Int = #line) throws -> XcodeProj {
     let project = try Project(path: specPath)
     let generator = ProjectGenerator(project: project)
     let xcodeProject = try generator.generateXcodeProject()
-    try xcodeProject.write(path: projectPath, override: true)
+    try xcodeProject.write(path: AbsolutePath(project.projectPath.absolute().string), override: true)
 
     return xcodeProject
 }
