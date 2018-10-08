@@ -78,6 +78,10 @@ public struct Project: BuildSettingsContainer {
     public func getConfig(_ configName: String) -> Config? {
         return configs.first { $0.name == configName }
     }
+
+    public var projectPath: Path {
+        return basePath + "\(name).xcodeproj"
+    }
 }
 
 extension Project: CustomDebugStringConvertible {

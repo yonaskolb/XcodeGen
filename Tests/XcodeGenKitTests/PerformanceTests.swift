@@ -22,8 +22,7 @@ class GeneratedPerformanceTests: XCTestCase {
         let generator = ProjectGenerator(project: project)
         let xcodeProject = try generator.generateXcodeProject()
         self.measure {
-            let path = project.basePath + "\(project.name).xcodeproj"
-            try! xcodeProject.write(path: path)
+            try! xcodeProject.write(path: project.projectPath)
         }
     }
 }
@@ -51,8 +50,7 @@ class FixturePerformanceTests: XCTestCase {
         let generator = ProjectGenerator(project: project)
         let xcodeProject = try generator.generateXcodeProject()
         self.measure {
-            let path = project.basePath + "\(project.name).xcodeproj"
-            try! xcodeProject.write(path: path)
+            try! xcodeProject.write(path: project.projectPath)
         }
     }
 }
