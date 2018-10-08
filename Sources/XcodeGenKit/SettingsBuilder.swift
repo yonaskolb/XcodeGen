@@ -81,31 +81,27 @@ extension Project {
     }
 
     // combines all levels of a target's settings: target, target config, project, project config
-    public func getCombinedBuildSettings(basePath: Path, target: ProjectTarget, config: Config, includeProject: Bool = true) -> BuildSettings {
-        var buildSettings: BuildSettings = [:]
-        if includeProject {
-            if let configFilePath = configFiles[config.name] {
-                buildSettings += loadConfigFileBuildSettings(path: configFilePath)
-            }
-            buildSettings += getProjectBuildSettings(config: config)
+    public func getCombinedBuildSetting(_ setting: String, target: ProjectTarget, config: Config) -> Any? {
+        if let target = target as? Target,
+            let value = getTargetBuildSettings(target: target, config: config)[setting] {
+            return value
         }
-        if let configFilePath = target.configFiles[config.name] {
-            buildSettings += loadConfigFileBuildSettings(path: configFilePath)
+        if let configFilePath = target.configFiles[config.name],
+            let value = loadConfigFileBuildSettings(path: configFilePath)?[setting] {
+            return value
         }
-        if let target = target as? Target {
-            buildSettings += getTargetBuildSettings(target: target, config: config)
+        if let value = getProjectBuildSettings(config: config)[setting] {
+            return value
         }
-        return buildSettings
+        if let configFilePath = configFiles[config.name],
+            let value = loadConfigFileBuildSettings(path: configFilePath)?[setting] {
+            return value
+        }
+        return nil
     }
 
-    public func targetHasBuildSetting(_ setting: String, basePath: Path, target: Target, config: Config, includeProject: Bool = true) -> Bool {
-        let buildSettings = getCombinedBuildSettings(
-            basePath: basePath,
-            target: target,
-            config: config,
-            includeProject: includeProject
-        )
-        return buildSettings[setting] != nil
+    public func targetHasBuildSetting(_ setting: String, target: Target, config: Config) -> Bool {
+        return getCombinedBuildSetting(setting, target: target, config: config) != nil
     }
 
     /// Removes values from build settings if they are defined in an xcconfig file
