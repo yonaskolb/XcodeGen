@@ -326,7 +326,7 @@ public class PBXProjGenerator {
 
             func getSingleBuildSetting(_ setting: String) -> String? {
                 let settings = project.configs.compactMap {
-                    project.getCombinedBuildSettings(basePath: project.basePath, target: target, config: $0)[setting] as? String
+                    project.getCombinedBuildSetting(setting, target: target, config: $0) as? String
                 }
                 guard settings.count == project.configs.count,
                     let firstSetting = settings.first,
@@ -619,8 +619,7 @@ public class PBXProjGenerator {
             buildPhases.append(resourcesBuildPhase)
         }
 
-        let buildSettings = project.getCombinedBuildSettings(basePath: project.basePath, target: target, config: project.configs[0])
-        let swiftObjCInterfaceHeader = buildSettings["SWIFT_OBJC_INTERFACE_HEADER_NAME"] as? String
+        let swiftObjCInterfaceHeader = project.getCombinedBuildSetting("SWIFT_OBJC_INTERFACE_HEADER_NAME", target: target, config: project.configs[0]) as? String
 
         if target.type == .staticLibrary
             && swiftObjCInterfaceHeader != ""
@@ -746,7 +745,7 @@ public class PBXProjGenerator {
             var buildSettings = project.getTargetBuildSettings(target: target, config: config)
 
             // automatically set INFOPLIST_FILE path
-            if !project.targetHasBuildSetting("INFOPLIST_FILE", basePath: project.basePath, target: target, config: config) {
+            if !project.targetHasBuildSetting("INFOPLIST_FILE", target: target, config: config) {
                 if searchForPlist {
                     plistPath = getInfoPlist(target.sources)
                     searchForPlist = false
@@ -758,7 +757,7 @@ public class PBXProjGenerator {
 
             // automatically calculate bundle id
             if let bundleIdPrefix = project.options.bundleIdPrefix,
-                !project.targetHasBuildSetting("PRODUCT_BUNDLE_IDENTIFIER", basePath: project.basePath, target: target, config: config) {
+                !project.targetHasBuildSetting("PRODUCT_BUNDLE_IDENTIFIER", target: target, config: config) {
                 let characterSet = CharacterSet.alphanumerics.union(CharacterSet(charactersIn: "-.")).inverted
                 let escapedTargetName = target.name
                     .replacingOccurrences(of: "_", with: "-")
@@ -769,7 +768,7 @@ public class PBXProjGenerator {
 
             // automatically set test target name
             if target.type == .uiTestBundle,
-                !project.targetHasBuildSetting("TEST_TARGET_NAME", basePath: project.basePath, target: target, config: config) {
+                !project.targetHasBuildSetting("TEST_TARGET_NAME", target: target, config: config) {
                 for dependency in target.dependencies {
                     if dependency.type == .target,
                         let dependencyTarget = project.getTarget(dependency.reference),
