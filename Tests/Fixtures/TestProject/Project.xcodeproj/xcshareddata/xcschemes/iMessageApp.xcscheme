@@ -91,7 +91,7 @@
       buildConfiguration = "Production Debug">
    </AnalyzeAction>
    <ArchiveAction
-      revealArchiveInOrganizer = "YES"
-      buildConfiguration = "Production Release">
+      buildConfiguration = "Production Release"
+      revealArchiveInOrganizer = "YES">
    </ArchiveAction>
 </Scheme>
