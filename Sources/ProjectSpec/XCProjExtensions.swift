@@ -60,7 +60,7 @@ extension XCScheme.CommandLineArguments {
     public convenience init(_ dict: [String: Bool]) {
         let args = dict.map { tuple in
             XCScheme.CommandLineArguments.CommandLineArgument(name: tuple.key, enabled: tuple.value)
-        }
+        }.sorted { $0.name < $1.name }
         self.init(arguments: args)
     }
 }
