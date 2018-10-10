@@ -262,7 +262,7 @@ class ProjectGeneratorTests: XCTestCase {
                     throw failure("Couldn't find UITest Target")
                 }
 
-                try expect(targetAttributes[uiTestTarget]?["TestTargetID"] as? String) != nil
+                try expect((targetAttributes[uiTestTarget]?["TestTargetID"] as? PBXNativeTarget)?.name) == app.name
                 try expect(targetAttributes[uiTestTarget]?["ProvisioningStyle"] as? String) == "Manual"
                 try expect(targetAttributes[appTarget]?["ProvisioningStyle"] as? String) == "Automatic"
                 try expect(targetAttributes[appTarget]?["DevelopmentTeam"] as? String) == "123"
@@ -939,10 +939,6 @@ class ProjectGeneratorTests: XCTestCase {
 
                 try expect(xcodeProject.sharedData?.schemes.count) == 2
 
-                guard let nativeTarget = xcodeProject.pbxproj.nativeTargets
-                    .first(where: { $0.name == app.name }) else {
-                    throw failure("Target not found")
-                }
                 guard let xcscheme = xcodeProject.sharedData?.schemes
                     .first(where: { $0.name == "\(target.name) Test" }) else {
                     throw failure("Scheme not found")
@@ -951,7 +947,7 @@ class ProjectGeneratorTests: XCTestCase {
                     throw failure("Build Action entry not found")
                 }
 
-                // FIXME: try expect(buildActionEntry.buildableReference.blueprintIdentifier) == nativeTarget
+                try expect(buildActionEntry.buildableReference.blueprintIdentifier.count > 0) == true
 
                 try expect(xcscheme.launchAction?.buildConfiguration) == "Test Debug"
                 try expect(xcscheme.testAction?.buildConfiguration) == "Test Debug"
