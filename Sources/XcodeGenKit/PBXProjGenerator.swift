@@ -316,7 +316,7 @@ public class PBXProjGenerator {
             guard let target = self.pbxProj.targets(named: name).first else { continue }
 
             // FIX: Can't set in xcproj 5.0+
-            //targetAttributes[uiTestTarget, default: [:]].merge(["TestTargetID": target.reference])
+            targetAttributes[uiTestTarget, default: [:]].merge(["TestTargetID": target])
         }
 
         func generateTargetAttributes(_ target: ProjectTarget, pbxTarget: PBXTarget) {

@@ -262,7 +262,7 @@ class ProjectGeneratorTests: XCTestCase {
                     throw failure("Couldn't find UITest Target")
                 }
 
-                //try expect(targetAttributes[uiTestTarget.reference]?["TestTargetID"] as? String) == appTarget.reference.value
+                try expect(targetAttributes[uiTestTarget]?["TestTargetID"] as? String) != nil
                 try expect(targetAttributes[uiTestTarget]?["ProvisioningStyle"] as? String) == "Manual"
                 try expect(targetAttributes[appTarget]?["ProvisioningStyle"] as? String) == "Automatic"
                 try expect(targetAttributes[appTarget]?["DevelopmentTeam"] as? String) == "123"
