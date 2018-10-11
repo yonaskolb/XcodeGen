@@ -4,7 +4,6 @@ import Foundation
 import XCTest
 import ProjectSpec
 import PathKit
-import Basic
 
 class GeneratedPerformanceTests: XCTestCase {
 
@@ -23,7 +22,7 @@ class GeneratedPerformanceTests: XCTestCase {
         let generator = ProjectGenerator(project: project)
         let xcodeProject = try generator.generateXcodeProject()
         self.measure {
-            try! xcodeProject.write(path: AbsolutePath(project.projectPath.absolute().string))
+            try! xcodeProject.write(path: project.projectPath)
         }
     }
 }
@@ -51,7 +50,7 @@ class FixturePerformanceTests: XCTestCase {
         let generator = ProjectGenerator(project: project)
         let xcodeProject = try generator.generateXcodeProject()
         self.measure {
-            try! xcodeProject.write(path: AbsolutePath(project.projectPath.absolute().string))
+            try! xcodeProject.write(path: project.projectPath)
         }
     }
 }

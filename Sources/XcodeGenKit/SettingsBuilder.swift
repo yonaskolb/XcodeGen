@@ -1,4 +1,3 @@
-import Basic
 import Foundation
 import JSONUtilities
 import PathKit
@@ -126,7 +125,7 @@ extension Project {
         if let cached = configFileSettings[configFilePath.string] {
             return cached.value
         } else {
-            guard let configFile = try? XCConfig(path: AbsolutePath(configFilePath.absolute().string)) else {
+            guard let configFile = try? XCConfig(path: configFilePath) else {
                 configFileSettings[configFilePath.string] = .nothing
                 return nil
             }

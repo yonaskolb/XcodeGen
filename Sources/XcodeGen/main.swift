@@ -1,4 +1,3 @@
-import Basic
 import Commander
 import Foundation
 import JSONUtilities
@@ -55,7 +54,7 @@ func generate(spec: String, project: String, isQuiet: Bool, justVersion: Bool) {
         if projectFile.exists {
             try projectFile.copy(tempPath)
         }
-        try xcodeProject.write(path: AbsolutePath(tempPath.absolute().string), override: true)
+        try xcodeProject.write(path: tempPath, override: true)
         try? projectFile.delete()
         try tempPath.copy(projectFile)
         try? tempPath.delete()

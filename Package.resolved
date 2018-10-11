@@ -56,21 +56,21 @@
         }
       },
       {
-        "package": "SwiftPM",
-        "repositoryURL": "https://github.com/apple/swift-package-manager",
+        "package": "SwiftShell",
+        "repositoryURL": "https://github.com/kareman/SwiftShell",
         "state": {
           "branch": null,
-          "revision": "235aacc514cb81a6881364b0fedcb3dd083228f3",
-          "version": "0.3.0"
+          "revision": "beebe43c986d89ea5359ac3adcb42dac94e5e08a",
+          "version": "4.1.2"
         }
       },
       {
         "package": "xcodeproj",
         "repositoryURL": "https://github.com/tuist/xcodeproj.git",
         "state": {
-          "branch": null,
-          "revision": "ed33abf5f983232d5a27ada48d120ad7564a3087",
-          "version": "6.1.0"
+          "branch": "master",
+          "revision": "7a32fa0ebf0c6120ed8a7de03a632c2a10bbe243",
+          "version": null
         }
       },
       {

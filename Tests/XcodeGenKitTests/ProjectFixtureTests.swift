@@ -4,7 +4,6 @@ import Spectre
 import XcodeGenKit
 import xcodeproj
 import XCTest
-import Basic
 
 class ProjectFixtureTests: XCTestCase {
 
@@ -63,7 +62,7 @@ fileprivate func generateXcodeProject(specPath: Path, file: String = #file, line
     let project = try Project(path: specPath)
     let generator = ProjectGenerator(project: project)
     let xcodeProject = try generator.generateXcodeProject()
-    try xcodeProject.write(path: AbsolutePath(project.projectPath.absolute().string), override: true)
+    try xcodeProject.write(path: project.projectPath, override: true)
 
     return xcodeProject
 }
