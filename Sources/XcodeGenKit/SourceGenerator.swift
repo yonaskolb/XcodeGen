@@ -308,15 +308,12 @@ class SourceGenerator {
 
         let directories = children
             .filter { $0.isDirectory && $0.extension == nil && $0.extension != "lproj" }
-            .sorted { $0.lastComponent < $1.lastComponent }
 
         let filePaths = children
             .filter { $0.isFile || $0.extension != nil && $0.extension != "lproj" }
-            .sorted { $0.lastComponent < $1.lastComponent }
 
         let localisedDirectories = children
             .filter { $0.extension == "lproj" }
-            .sorted { $0.lastComponent < $1.lastComponent }
 
         var groupChildren: [PBXFileElement] = filePaths.map { getFileReference(path: $0, inPath: path) }
         var allSourceFiles: [SourceFile] = filePaths.map {

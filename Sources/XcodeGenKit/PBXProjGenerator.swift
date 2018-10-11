@@ -389,6 +389,7 @@ public class PBXProjGenerator {
         let carthageDependencies = getAllCarthageDependencies(target: target)
 
         let sourceFiles = try sourceGenerator.getAllSourceFiles(targetType: target.type, sources: target.sources)
+            .sorted { $0.path.lastComponent < $1.path.lastComponent }
 
         var plistPath: Path?
         var searchForPlist = true
@@ -572,14 +573,13 @@ public class PBXProjGenerator {
         var buildPhases: [PBXBuildPhase] = []
 
         func getBuildFilesForSourceFiles(_ sourceFiles: [SourceFile]) -> [PBXBuildFile] {
-            let files = sourceFiles
+            return sourceFiles
                 .reduce(into: [SourceFile]()) { output, sourceFile in
                     if !output.contains(where: { $0.fileReference === sourceFile.fileReference }) {
                         output.append(sourceFile)
                     }
                 }
-                .sorted { $0.path.lastComponent < $1.path.lastComponent }
-            return files.map { addObject($0.buildFile) }
+                .map { addObject($0.buildFile) }
         }
 
         func getBuildFilesForPhase(_ buildPhase: BuildPhase) -> [PBXBuildFile] {
