@@ -1,5 +1,13 @@
 version: 2
 jobs:
+  macOS_swift_4.1:
+    macos:
+      xcode: "9.4.0"
+    steps:
+      - checkout
+      - run:
+          name: Build Test Project
+          command: ./build-fixtures.sh
   macOS_swift_4.2:
     macos:
       xcode: "10.0.0"
@@ -24,4 +32,5 @@ workflows:
   version: 2
   workflow:
     jobs:
+      - macOS_swift_4.1
       - macOS_swift_4.2
