@@ -2,7 +2,7 @@ import Foundation
 import PathKit
 import ProjectSpec
 import Spectre
-import xcproj
+import xcodeproj
 import XCTest
 
 let fixturePath = Path(#file).parent().parent() + "Fixtures"

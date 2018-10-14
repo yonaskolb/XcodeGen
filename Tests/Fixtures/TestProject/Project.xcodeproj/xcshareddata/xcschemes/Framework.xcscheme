@@ -14,7 +14,7 @@
                <EnvironmentBuildable>
                   <BuildableReference
                      BuildableIdentifier = "primary"
-                     BlueprintIdentifier = "NT_472296042419"
+                     BlueprintIdentifier = "NT_7D108AE86BED8C9CCF52C2646FA4C5DE"
                      BuildableName = "Framework.framework"
                      BlueprintName = "Framework_iOS"
                      ReferencedContainer = "container:Project.xcodeproj">
@@ -32,7 +32,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "NT_472296042419"
+               BlueprintIdentifier = "NT_7D108AE86BED8C9CCF52C2646FA4C5DE"
                BuildableName = "Framework.framework"
                BlueprintName = "Framework_iOS"
                ReferencedContainer = "container:Project.xcodeproj">
@@ -50,7 +50,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "NT_472296042419"
+            BlueprintIdentifier = "NT_7D108AE86BED8C9CCF52C2646FA4C5DE"
             BuildableName = "Framework.framework"
             BlueprintName = "Framework_iOS"
             ReferencedContainer = "container:Project.xcodeproj">
@@ -72,7 +72,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "NT_472296042419"
+            BlueprintIdentifier = "NT_7D108AE86BED8C9CCF52C2646FA4C5DE"
             BuildableName = "Framework.framework"
             BlueprintName = "Framework_iOS"
             ReferencedContainer = "container:Project.xcodeproj">
@@ -101,7 +101,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "NT_472296042419"
+            BlueprintIdentifier = "NT_7D108AE86BED8C9CCF52C2646FA4C5DE"
             BuildableName = "Framework.framework"
             BlueprintName = "Framework_iOS"
             ReferencedContainer = "container:Project.xcodeproj">

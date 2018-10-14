@@ -2,7 +2,7 @@ import PathKit
 import ProjectSpec
 import Spectre
 import XcodeGenKit
-import xcproj
+import xcodeproj
 import XCTest
 import Yams
 
@@ -85,14 +85,16 @@ class SourceGeneratorTests: XCTestCase {
                 let project = Project(basePath: directoryPath, name: "Test", targets: [target])
                 let pbxProj = try project.generatePbxProj()
                 try pbxProj.expectFile(paths: ["Sources", "Bar.swift"], buildPhase: .sources)
-                let buildPhase = pbxProj.objects.copyFilesBuildPhases.referenceValues.first
+                let buildPhase = pbxProj.copyFilesBuildPhases.first
                 try expect(buildPhase?.dstSubfolderSpec) == .frameworks
                 let fileReference = pbxProj.getFileReference(
                     paths: ["Sources", "Foo.framework"],
                     names: ["Sources", "Foo.framework"]
-                )?.reference ?? ""
-                let buildFile = pbxProj.objects.buildFiles.objectReferences
-                    .first(where: { $0.object.fileRef == fileReference })?.reference ?? ""
+                )
+                guard let buildFile = pbxProj.buildFiles
+                    .first(where: { $0.file == fileReference }) else {
+                    throw failure("Cant find build file")
+                }
                 try expect(buildPhase?.files.count) == 1
                 try expect(buildPhase?.files.contains(buildFile)) == true
             }
@@ -112,16 +114,16 @@ class SourceGeneratorTests: XCTestCase {
                 let project = Project(basePath: directoryPath, name: "Test", targets: [target])
 
                 let pbxProj = try project.generatePbxProj()
-                guard let fileReference = pbxProj.objects.fileReferences.first(where: { $0.value.nameOrPath == "model2.xcdatamodel" }) else {
+                guard let fileReference = pbxProj.fileReferences.first(where: { $0.nameOrPath == "model2.xcdatamodel" }) else {
                     throw failure("Couldn't find model file reference")
                 }
-                guard let versionGroup = pbxProj.objects.versionGroups.values.first else {
+                guard let versionGroup = pbxProj.versionGroups.first else {
                     throw failure("Couldn't find version group")
                 }
-                try expect(versionGroup.currentVersion) == fileReference.key
+                try expect(versionGroup.currentVersion) == fileReference
                 try expect(versionGroup.children.count) == 3
                 try expect(versionGroup.path) == "model.xcdatamodeld"
-                try expect(fileReference.value.path) == "model2.xcdatamodel"
+                try expect(fileReference.path) == "model2.xcdatamodel"
             }
 
             $0.it("handles duplicate names") {
@@ -458,9 +460,7 @@ class SourceGeneratorTests: XCTestCase {
                 let pbxProj = try project.generatePbxProj()
                 try pbxProj.expectFile(paths: ["Sources/A", "a.swift"], names: ["A", "a.swift"], buildPhase: .sources)
 
-                let sourcesBuildPhase = pbxProj.objects.buildPhases
-                    .first(where: { $0.1.buildPhase == BuildPhase.sources })!
-                    .value
+                let sourcesBuildPhase = pbxProj.buildPhases.first(where: { $0.buildPhase == BuildPhase.sources })!
 
                 try expect(sourcesBuildPhase.files.count) == 1
             }
@@ -480,7 +480,7 @@ class SourceGeneratorTests: XCTestCase {
                 let project = Project(basePath: directoryPath, name: "Test", targets: [target])
 
                 let pbxProj = try project.generatePbxProj()
-                let groups = try pbxProj.getMainGroup().children.compactMap { pbxProj.objects.getFileElement(reference: $0)?.nameOrPath }
+                let groups = try pbxProj.getMainGroup().children.map { $0.nameOrPath }
                 try expect(groups) == ["A", "P", "S", "Frameworks", "Products"]
             }
 
@@ -503,8 +503,9 @@ class SourceGeneratorTests: XCTestCase {
                 let project = Project(basePath: directoryPath, name: "Test", targets: [target])
 
                 let pbxProj = try project.generatePbxProj()
-                let group = pbxProj.objects.group(named: "Sources", inGroup: try pbxProj.getMainGroup())!.object
-                let names = group.children.compactMap { pbxProj.objects.getFileElement(reference: $0)?.nameOrPath }
+                let mainGroup = try pbxProj.getMainGroup()
+                let group = mainGroup.children.compactMap { $0 as? PBXGroup }.first { $0.nameOrPath == "Sources" }!
+                let names = group.children.compactMap { $0.nameOrPath }
                 try expect(names) == [
                     "1file.a",
                     "10file.a",
@@ -532,10 +533,10 @@ extension PBXProj {
         }
 
         if let buildPhase = buildPhase {
-            let buildFile = objects.buildFiles.objectReferences
-                .first(where: { $0.object.fileRef == fileReference.reference })
+            let buildFile = buildFiles
+                .first(where: { $0.file === fileReference })
             let actualBuildPhase = buildFile
-                .flatMap { buildFile in objects.buildPhases.referenceValues.first { $0.files.contains(buildFile.reference) } }?.buildPhase
+                .flatMap { buildFile in buildPhases.first { $0.files.contains(buildFile) } }?.buildPhase
 
             var error: String?
             if let buildPhase = buildPhase.buildPhase {
@@ -563,24 +564,20 @@ extension PBXProj {
         }
     }
 
-    func getFileReference(paths: [String], names: [String], file: String = #file, line: Int = #line) -> ObjectReference<PBXFileReference>? {
-        guard let project = objects.projects.first?.value else { return nil }
-        guard let mainGroup = objects.groups.getReference(project.mainGroup) else { return nil }
+    func getFileReference(paths: [String], names: [String], file: String = #file, line: Int = #line) -> PBXFileReference? {
+        guard let mainGroup = projects.first?.mainGroup else { return nil }
 
         return getFileReference(group: mainGroup, paths: paths, names: names)
     }
 
     func getMainGroup(function: String = #function, file: String = #file, line: Int = #line) throws -> PBXGroup {
-        guard let project = objects.projects.first?.value else {
-            throw failure("Couldn't find project", file: file, line: line)
-        }
-        guard let mainGroup = objects.groups.getReference(project.mainGroup) else {
+        guard let mainGroup = projects.first?.mainGroup else {
             throw failure("Couldn't find main group", file: file, line: line)
         }
         return mainGroup
     }
 
-    private func getFileReference(group: PBXGroup, paths: [String], names: [String]) -> ObjectReference<PBXFileReference>? {
+    private func getFileReference(group: PBXGroup, paths: [String], names: [String]) -> PBXFileReference? {
 
         guard !paths.isEmpty else { return nil }
         let path = paths.first!
@@ -588,16 +585,10 @@ extension PBXProj {
         let restOfPath = Array(paths.dropFirst())
         let restOfName = Array(names.dropFirst())
         if restOfPath.isEmpty {
-            let fileReferences: [ObjectReference<PBXFileReference>] = group.children.compactMap { reference in
-                if let fileReference = self.objects.fileReferences.getReference(reference) {
-                    return ObjectReference(reference: reference, object: fileReference)
-                } else {
-                    return nil
-                }
-            }
-            return fileReferences.first { $0.object.path == path && $0.object.nameOrPath == name }
+            let fileReferences: [PBXFileReference] = group.children.compactMap { $0 as? PBXFileReference }
+            return fileReferences.first { $0.path == path && $0.nameOrPath == name }
         } else {
-            let groups = group.children.compactMap { self.objects.groups.getReference($0) }
+            let groups = group.children.compactMap { $0 as? PBXGroup }
             guard let group = groups.first(where: { $0.path == path && $0.nameOrPath == name }) else { return nil }
             return getFileReference(group: group, paths: restOfPath, names: restOfName)
         }

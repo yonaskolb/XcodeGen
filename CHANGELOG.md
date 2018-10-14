@@ -5,6 +5,10 @@
 #### Added
 - Added `weak` Weak linking setting for dependencies [411](https://github.com/yonaskolb/XcodeGen/pull/411) @alvarhansen
 
+#### Changed
+- Performance improvements for large projects [388](https://github.com/yonaskolb/XcodeGen/pull/388) @yonaskolb
+- Upgraded to xcodeproj 6 [388](https://github.com/yonaskolb/XcodeGen/pull/388) @yonaskolb
+- Upgraded to Swift 4.2 [388](https://github.com/yonaskolb/XcodeGen/pull/388) @yonaskolb
 
 ## 1.11.2
 

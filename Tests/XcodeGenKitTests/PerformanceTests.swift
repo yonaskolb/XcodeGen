@@ -1,5 +1,5 @@
 import XcodeGenKit
-import xcproj
+import xcodeproj
 import Foundation
 import XCTest
 import ProjectSpec
@@ -22,6 +22,7 @@ class GeneratedPerformanceTests: XCTestCase {
         let generator = ProjectGenerator(project: project)
         let xcodeProject = try generator.generateXcodeProject()
         self.measure {
+            xcodeProject.pbxproj.invalidateUUIDs()
             try! xcodeProject.write(path: project.projectPath)
         }
     }
@@ -50,6 +51,7 @@ class FixturePerformanceTests: XCTestCase {
         let generator = ProjectGenerator(project: project)
         let xcodeProject = try generator.generateXcodeProject()
         self.measure {
+            xcodeProject.pbxproj.invalidateUUIDs()
             try! xcodeProject.write(path: project.projectPath)
         }
     }

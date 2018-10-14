@@ -1,7 +1,7 @@
 import Foundation
 import ProjectSpec
 import PathKit
-import xcproj
+import xcodeproj
 
 extension Project {
 

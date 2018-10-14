@@ -1,6 +1,6 @@
 import Foundation
 import JSONUtilities
-import xcproj
+import xcodeproj
 
 public struct LegacyTarget: Equatable {
     public var toolPath: String
@@ -39,14 +39,14 @@ public struct Target: ProjectTarget {
     public var legacy: LegacyTarget?
     public var deploymentTarget: Version?
     public var attributes: [String: Any]
-    internal var productName: String?
+    public var productName: String
 
     public var isLegacy: Bool {
         return legacy != nil
     }
 
     public var filename: String {
-        var filename = productName ?? name
+        var filename = productName
         if let fileExtension = type.fileExtension {
             filename += ".\(fileExtension)"
         }
@@ -57,6 +57,7 @@ public struct Target: ProjectTarget {
         name: String,
         type: PBXProductType,
         platform: Platform,
+        productName: String? = nil,
         deploymentTarget: Version? = nil,
         settings: Settings = .empty,
         configFiles: [String: String] = [:],
@@ -76,6 +77,7 @@ public struct Target: ProjectTarget {
         self.type = type
         self.platform = platform
         self.deploymentTarget = deploymentTarget
+        self.productName = productName ?? name
         self.settings = settings
         self.configFiles = configFiles
         self.sources = sources
@@ -230,8 +232,9 @@ extension LegacyTarget: JSONObjectConvertible {
 extension Target: NamedJSONDictionaryConvertible {
 
     public init(name: String, jsonDictionary: JSONDictionary) throws {
-        self.name = jsonDictionary.json(atKeyPath: "name") ?? name
-        productName = jsonDictionary.json(atKeyPath: "productName")
+        let resolvedName: String = jsonDictionary.json(atKeyPath: "name") ?? name
+        self.name = resolvedName
+        self.productName = jsonDictionary.json(atKeyPath: "productName") ?? resolvedName
         let typeString: String = try jsonDictionary.json(atKeyPath: "type")
         if let type = PBXProductType(string: typeString) {
             self.type = type

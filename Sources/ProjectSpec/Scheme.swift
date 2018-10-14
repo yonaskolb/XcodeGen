@@ -1,6 +1,6 @@
 import Foundation
 import JSONUtilities
-import xcproj
+import xcodeproj
 
 public typealias BuildType = XCScheme.BuildAction.Entry.BuildFor
 
@@ -311,7 +311,7 @@ extension BuildType: JSONPrimitiveConvertible {
     }
 }
 
-extension XCScheme.EnvironmentVariable: JSONObjectConvertible, Equatable {
+extension XCScheme.EnvironmentVariable: JSONObjectConvertible {
 
     private static func parseValue(_ value: Any) -> String {
         if let bool = value as? Bool {
@@ -345,11 +345,5 @@ extension XCScheme.EnvironmentVariable: JSONObjectConvertible, Equatable {
         } else {
             return []
         }
-    }
-
-    public static func == (lhs: XCScheme.EnvironmentVariable, rhs: XCScheme.EnvironmentVariable) -> Bool {
-        return lhs.variable == rhs.variable &&
-            lhs.value == rhs.value &&
-            lhs.enabled == rhs.enabled
     }
 }

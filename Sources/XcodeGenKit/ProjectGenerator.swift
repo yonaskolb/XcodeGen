@@ -2,7 +2,7 @@ import Foundation
 import JSONUtilities
 import PathKit
 import ProjectSpec
-import xcproj
+import xcodeproj
 import Yams
 
 public class ProjectGenerator {
@@ -42,8 +42,8 @@ public class ProjectGenerator {
 
         func getBuildEntry(_ buildTarget: Scheme.BuildTarget) -> XCScheme.BuildAction.Entry {
 
-            guard let targetReference = pbxProject.objects.targets(named: buildTarget.target).first else {
-                fatalError("Unable to find target named \"\(buildTarget.target)\" in \"PBXProj.objects.targets\"")
+            guard let pbxTarget = pbxProject.targets(named: buildTarget.target).first else {
+                fatalError("Unable to find target named \"\(buildTarget.target)\" in \"PBXProj.targets\"")
             }
 
             guard let buildableName =
@@ -53,7 +53,7 @@ public class ProjectGenerator {
             }
             let buildableReference = XCScheme.BuildableReference(
                 referencedContainer: "container:\(project.name).xcodeproj",
-                blueprintIdentifier: targetReference.reference,
+                blueprint: pbxTarget,
                 buildableName: buildableName,
                 blueprintName: buildTarget.target
             )

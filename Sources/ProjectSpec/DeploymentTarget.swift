@@ -1,6 +1,5 @@
 import Foundation
 import JSONUtilities
-import xcproj
 
 public struct DeploymentTarget: Equatable {
 
