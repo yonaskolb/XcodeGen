@@ -123,7 +123,7 @@ public class PBXProjGenerator {
                 lastKnownFileType = fileType
             }
 
-            if !target.isLegacy {
+            if !target.isLegacy && targetFileReferences[target.productName] == nil {
                 let fileReference = addObject(
                     PBXFileReference(
                         sourceTree: .buildProductsDir,
@@ -134,7 +134,7 @@ public class PBXProjGenerator {
                     )
                 )
 
-                targetFileReferences[target.name] = fileReference
+                targetFileReferences[target.productName] = fileReference
             }
         }
 
@@ -441,7 +441,7 @@ public class PBXProjGenerator {
 
                 guard let dependencyTarget = project.getTarget(dependencyTargetName) else { continue }
 
-                let dependencyFileReference = targetFileReferences[dependencyTargetName]!
+                let dependencyFileReference = targetFileReferences[dependencyTarget.productName]!
 
                 let dependecyLinkage = dependencyTarget.defaultLinkage
                 let link = dependency.link ?? (
@@ -449,7 +449,7 @@ public class PBXProjGenerator {
                         || (dependecyLinkage == .static && target.type.isExecutable)
                 )
                 if link {
-                    let dependencyFile = targetFileReferences[dependencyTargetName]!
+                    let dependencyFile = targetFileReferences[dependencyTarget.productName]!
                     let buildFile = addObject(
                         PBXBuildFile(file: dependencyFile, settings: getDependencyFrameworkSettings(dependency: dependency))
                     )
@@ -569,7 +569,7 @@ public class PBXProjGenerator {
             }
         }
 
-        let fileReference = targetFileReferences[target.name]
+        let fileReference = targetFileReferences[target.productName]
         var buildPhases: [PBXBuildPhase] = []
 
         func getBuildFilesForSourceFiles(_ sourceFiles: [SourceFile]) -> [PBXBuildFile] {
