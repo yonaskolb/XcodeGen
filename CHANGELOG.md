@@ -6,9 +6,14 @@
 - Added `weak` Weak linking setting for dependencies [411](https://github.com/yonaskolb/XcodeGen/pull/411) @alvarhansen
 
 #### Changed
-- Performance improvements for large projects [388](https://github.com/yonaskolb/XcodeGen/pull/388) @yonaskolb
+- Performance improvements for large projects [388](https://github.com/yonaskolb/XcodeGen/pull/388) [417](https://github.com/yonaskolb/XcodeGen/pull/417) [416](https://github.com/yonaskolb/XcodeGen/pull/416) @yonaskolb @kastiglione
 - Upgraded to xcodeproj 6 [388](https://github.com/yonaskolb/XcodeGen/pull/388) @yonaskolb
 - Upgraded to Swift 4.2 [388](https://github.com/yonaskolb/XcodeGen/pull/388) @yonaskolb
+- Remove iOS codesigning sdk restriction in setting preset [414](https://github.com/yonaskolb/XcodeGen/pull/414) @yonaskolb
+
+#### Fixed
+- Fixed code signing issues [414](https://github.com/yonaskolb/XcodeGen/pull/414) @yonaskolb
+- Fixed `TargetSource.headerVisibility` not being set in initializer [419](https://github.com/yonaskolb/XcodeGen/pull/419) @jerrymarino
 
 ## 1.11.2
 
