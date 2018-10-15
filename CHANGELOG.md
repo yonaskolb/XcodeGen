@@ -3,7 +3,7 @@
 ## Master
 
 #### Added
-- Added `weak` Weak linking setting for dependencies [411](https://github.com/yonaskolb/XcodeGen/pull/411) @alvarhansen
+- Added `weak` linking setting for dependencies [411](https://github.com/yonaskolb/XcodeGen/pull/411) @alvarhansen
 
 #### Changed
 - Performance improvements for large projects [388](https://github.com/yonaskolb/XcodeGen/pull/388) [417](https://github.com/yonaskolb/XcodeGen/pull/417) [416](https://github.com/yonaskolb/XcodeGen/pull/416) @yonaskolb @kastiglione
