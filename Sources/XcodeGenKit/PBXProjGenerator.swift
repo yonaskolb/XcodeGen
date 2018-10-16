@@ -32,8 +32,9 @@ public class PBXProjGenerator {
         }
     }
 
-    func addObject<T: PBXObject>(_ object: T) -> T {
+    func addObject<T: PBXObject>(_ object: T, context: String? = nil) -> T {
         pbxProj.add(object: object)
+        object.context = context
         return object
     }
 
@@ -131,9 +132,9 @@ public class PBXProjGenerator {
                         lastKnownFileType: lastKnownFileType,
                         path: target.filename,
                         includeInIndex: false
-                    )
+                    ),
+                    context: target.name
                 )
-                fileReference.identifier = target.name
 
                 targetFileReferences[target.name] = fileReference
             }
@@ -377,7 +378,7 @@ public class PBXProjGenerator {
                     if child1.nameOrPath != child2.nameOrPath {
                         return child1.nameOrPath.localizedStandardCompare(child2.nameOrPath) == .orderedAscending
                     } else {
-                        return child1.identifier ?? "" < child2.identifier ?? ""
+                        return child1.context ?? "" < child2.context ?? ""
                     }
                 }
             }
@@ -389,8 +390,6 @@ public class PBXProjGenerator {
     }
 
     func generateTarget(_ target: Target) throws {
-
-        sourceGenerator.targetName = target.name
         let carthageDependencies = getAllCarthageDependencies(target: target)
 
         let sourceFiles = try sourceGenerator.getAllSourceFiles(targetType: target.type, sources: target.sources)

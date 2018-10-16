@@ -24,8 +24,6 @@ class SourceGenerator {
         ".DS_Store",
     ]
 
-    var targetName: String = ""
-
     private(set) var knownRegions: Set<String> = []
 
     init(project: Project, addObjectClosure: @escaping (PBXObject) -> Void) {
