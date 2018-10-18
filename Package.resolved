@@ -68,9 +68,9 @@
         "package": "xcodeproj",
         "repositoryURL": "https://github.com/tuist/xcodeproj.git",
         "state": {
-          "branch": "id_conflicts",
-          "revision": "7b71bda001e28790e82c61c65f9b2e32e632d625",
-          "version": null
+          "branch": null,
+          "revision": "23da51abd3de3bedaad59a0afbb150b48504b5b0",
+          "version": "6.3.0"
         }
       },
       {
