@@ -10,6 +10,7 @@
 - Upgraded to xcodeproj 6 [#388](https://github.com/yonaskolb/XcodeGen/pull/388) @yonaskolb
 - Upgraded to Swift 4.2 [#388](https://github.com/yonaskolb/XcodeGen/pull/388) @yonaskolb
 - Remove iOS codesigning sdk restriction in setting preset [#414](https://github.com/yonaskolb/XcodeGen/pull/414) @yonaskolb
+- Changed default project version to Xcode 10.0 and default Swift version to 4.2 [#423](https://github.com/yonaskolb/XcodeGen/pull/423) @yonaskolb
 
 #### Fixed
 - Fixed code signing issues [#414](https://github.com/yonaskolb/XcodeGen/pull/414) @yonaskolb
