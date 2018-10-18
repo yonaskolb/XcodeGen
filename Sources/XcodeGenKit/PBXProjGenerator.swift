@@ -32,8 +32,9 @@ public class PBXProjGenerator {
         }
     }
 
-    func addObject<T: PBXObject>(_ object: T) -> T {
+    func addObject<T: PBXObject>(_ object: T, context: String? = nil) -> T {
         pbxProj.add(object: object)
+        object.context = context
         return object
     }
 
@@ -123,7 +124,7 @@ public class PBXProjGenerator {
                 lastKnownFileType = fileType
             }
 
-            if !target.isLegacy && targetFileReferences[target.productName] == nil {
+            if !target.isLegacy {
                 let fileReference = addObject(
                     PBXFileReference(
                         sourceTree: .buildProductsDir,
@@ -131,10 +132,11 @@ public class PBXProjGenerator {
                         lastKnownFileType: lastKnownFileType,
                         path: target.filename,
                         includeInIndex: false
-                    )
+                    ),
+                    context: target.name
                 )
 
-                targetFileReferences[target.productName] = fileReference
+                targetFileReferences[target.name] = fileReference
             }
         }
 
@@ -370,10 +372,14 @@ public class PBXProjGenerator {
                 let sortOrder1 = child1.getSortOrder(groupSortPosition: project.options.groupSortPosition)
                 let sortOrder2 = child2.getSortOrder(groupSortPosition: project.options.groupSortPosition)
 
-                if sortOrder1 == sortOrder2 {
-                    return child1.nameOrPath.localizedStandardCompare(child2.nameOrPath) == .orderedAscending
-                } else {
+                if sortOrder1 != sortOrder2 {
                     return sortOrder1 < sortOrder2
+                } else {
+                    if child1.nameOrPath != child2.nameOrPath {
+                        return child1.nameOrPath.localizedStandardCompare(child2.nameOrPath) == .orderedAscending
+                    } else {
+                        return child1.context ?? "" < child2.context ?? ""
+                    }
                 }
             }
         group.children = children.filter { $0 != group }
@@ -384,8 +390,6 @@ public class PBXProjGenerator {
     }
 
     func generateTarget(_ target: Target) throws {
-
-        sourceGenerator.targetName = target.name
         let carthageDependencies = getAllCarthageDependencies(target: target)
 
         let sourceFiles = try sourceGenerator.getAllSourceFiles(targetType: target.type, sources: target.sources)
@@ -441,7 +445,7 @@ public class PBXProjGenerator {
 
                 guard let dependencyTarget = project.getTarget(dependencyTargetName) else { continue }
 
-                let dependencyFileReference = targetFileReferences[dependencyTarget.productName]!
+                let dependencyFileReference = targetFileReferences[dependencyTarget.name]!
 
                 let dependecyLinkage = dependencyTarget.defaultLinkage
                 let link = dependency.link ?? (
@@ -449,7 +453,7 @@ public class PBXProjGenerator {
                         || (dependecyLinkage == .static && target.type.isExecutable)
                 )
                 if link {
-                    let dependencyFile = targetFileReferences[dependencyTarget.productName]!
+                    let dependencyFile = targetFileReferences[dependencyTarget.name]!
                     let buildFile = addObject(
                         PBXBuildFile(file: dependencyFile, settings: getDependencyFrameworkSettings(dependency: dependency))
                     )
@@ -569,7 +573,6 @@ public class PBXProjGenerator {
             }
         }
 
-        let fileReference = targetFileReferences[target.productName]
         var buildPhases: [PBXBuildPhase] = []
 
         func getBuildFilesForSourceFiles(_ sourceFiles: [SourceFile]) -> [PBXBuildFile] {
@@ -835,13 +838,15 @@ public class PBXProjGenerator {
 
         let targetObject = targetObjects[target.name]!
 
+        let targetFileReference = targetFileReferences[target.name]
+
         targetObject.name = target.name
         targetObject.buildConfigurationList = buildConfigList
         targetObject.buildPhases = buildPhases
         targetObject.dependencies = dependencies
         targetObject.productName = target.name
         targetObject.buildRules = buildRules
-        targetObject.product = fileReference
+        targetObject.product = targetFileReference
         if !target.isLegacy {
             targetObject.productType = target.type
         }
