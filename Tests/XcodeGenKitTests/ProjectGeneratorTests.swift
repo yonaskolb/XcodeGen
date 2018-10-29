@@ -836,8 +836,8 @@ class ProjectGeneratorTests: XCTestCase {
                 let tempPath = Path.temporary + "info"
                 let project = Project(basePath: tempPath, name: "", targets: [Target(name: "", type: .application, platform: .iOS, info: plist)])
                 let pbxProject = try project.generatePbxProj()
-                let generator = ProjectGenerator(project: project)
-                try generator.generateFiles()
+                let writer = ProjectWriter(project: project)
+                try writer.writePlists()
 
                 guard let targetConfig = pbxProject.nativeTargets.first?.buildConfigurationList?.buildConfigurations.first else {
                         throw failure("Couldn't find Target config")

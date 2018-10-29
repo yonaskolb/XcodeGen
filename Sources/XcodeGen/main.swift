@@ -47,21 +47,11 @@ func generate(spec: String, project: String, isQuiet: Bool, justVersion: Bool) {
         let xcodeProject = try projectGenerator.generateXcodeProject()
 
         logger.info("⚙️  Writing project...")
+        let projectWriter = ProjectWriter(project: project)
+        try projectWriter.writeXcodeProject(xcodeProject)
+        try projectWriter.writePlists()
 
-        try projectGenerator.generateFiles()
-
-        let projectFile = projectPath + "\(project.name).xcodeproj"
-        let tempPath = Path.temporary + "XcodeGen_\(Int(NSTimeIntervalSince1970))"
-        try? tempPath.delete()
-        if projectFile.exists {
-            try projectFile.copy(tempPath)
-        }
-        try xcodeProject.write(path: tempPath, override: true)
-        try? projectFile.delete()
-        try tempPath.copy(projectFile)
-        try? tempPath.delete()
-
-        logger.success("💾  Saved project to \(projectFile.string)")
+        logger.success("💾  Saved project to \(project.projectPath.string)")
     } catch let error as SpecValidationError {
         fatalError(error.description)
     } catch {
