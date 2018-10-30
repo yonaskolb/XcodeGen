@@ -47,6 +47,10 @@ targets:
   App_iOS:
     type: application
     platform: iOS
+    entitlements:
+      path: App_iOS/App.entitlements
+      properties:
+        com.apple.security.application-groups: group.com.app
     attributes:
       ProvisioningStyle: Automatic
     sources:
