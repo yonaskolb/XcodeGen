@@ -4,6 +4,8 @@
 
 #### Added
 - Added `weak` linking setting for dependencies [#411](https://github.com/yonaskolb/XcodeGen/pull/411) @alvarhansen
+- Added `info` to targets for generating an `Info.plist` [#415](https://github.com/yonaskolb/XcodeGen/pull/415) @yonaskolb
+- Added `entitlements` to targets for generating an `.entitlement` file [#415](https://github.com/yonaskolb/XcodeGen/pull/415) @yonaskolb
 
 #### Changed
 - Performance improvements for large projects [#388](https://github.com/yonaskolb/XcodeGen/pull/388) [#417](https://github.com/yonaskolb/XcodeGen/pull/417) [#416](https://github.com/yonaskolb/XcodeGen/pull/416) @yonaskolb @kastiglione
