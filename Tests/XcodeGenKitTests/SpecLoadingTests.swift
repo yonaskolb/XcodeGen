@@ -159,7 +159,7 @@ class SpecLoadingTests: XCTestCase {
                 var targetDictionary = validTarget
                 targetDictionary["info"] = [
                     "path": "Info.plist",
-                    "attributes": [
+                    "properties": [
                         "CFBundleName": "MyAppName",
                         "UIBackgroundModes": ["fetch"]
                     ]
@@ -176,7 +176,7 @@ class SpecLoadingTests: XCTestCase {
                 var targetDictionary = validTarget
                 targetDictionary["entitlements"] = [
                     "path": "app.entitlements",
-                    "attributes": [
+                    "properties": [
                         "com.apple.security.application-groups": "com.group",
                     ]
                 ]

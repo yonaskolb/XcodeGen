@@ -30,22 +30,22 @@ public class ProjectWriter {
         for target in project.targets {
             // write Info.plist
             if let plist = target.info {
-                let path = project.basePath + plist.path
-                let attributes = infoPlistGenerator.generateAttributes(target: target).merged(plist.attributes)
-                let data = try PropertyListSerialization.data(fromPropertyList: attributes, format: .xml, options: 0)
-                try? path.delete()
-                try path.parent().mkpath()
-                try path.write(data)
+                let properties = infoPlistGenerator.generateProperties(target: target).merged(plist.properties)
+                try writePlist(properties, path: plist.path)
             }
 
             // write entitlements
             if let plist = target.entitlements {
-                let path = project.basePath + plist.path
-                let data = try PropertyListSerialization.data(fromPropertyList: plist.attributes, format: .xml, options: 0)
-                try? path.delete()
-                try path.parent().mkpath()
-                try path.write(data)
+                try writePlist(plist.properties, path: plist.path)
             }
         }
+    }
+
+    private func writePlist(_ plist: [String: Any], path: String) throws {
+        let path = project.basePath + path
+        let data = try PropertyListSerialization.data(fromPropertyList: plist, format: .xml, options: 0)
+        try? path.delete()
+        try path.parent().mkpath()
+        try path.write(data)
     }
 }

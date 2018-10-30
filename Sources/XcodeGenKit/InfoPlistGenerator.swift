@@ -20,7 +20,7 @@ public class InfoPlistGenerator {
         return dictionary
     }()
 
-    public func generateAttributes(target: Target) -> [String: Any] {
+    public func generateProperties(target: Target) -> [String: Any] {
         var targetInfoPlist = defaultInfoPlist
         switch target.type {
         case .uiTestBundle,

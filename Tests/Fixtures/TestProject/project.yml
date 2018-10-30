@@ -28,7 +28,7 @@ targets:
     platform: macOS
     info:
       path: App_macOS/Info.plist
-      attributes:
+      properties:
         LSMinimumSystemVersion: $(MACOSX_DEPLOYMENT_TARGET)
         NSMainStoryboardFile: Main
         NSPrincipalClass: NSApplication
