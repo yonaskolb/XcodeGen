@@ -215,6 +215,8 @@ extension Target: Equatable {
             lhs.settings == rhs.settings &&
             lhs.configFiles == rhs.configFiles &&
             lhs.sources == rhs.sources &&
+            lhs.info == rhs.info &&
+            lhs.entitlements == rhs.entitlements &&
             lhs.dependencies == rhs.dependencies &&
             lhs.prebuildScripts == rhs.prebuildScripts &&
             lhs.postbuildScripts == rhs.postbuildScripts &&
@@ -285,9 +287,13 @@ extension Target: NamedJSONDictionaryConvertible {
             dependencies = try jsonDictionary.json(atKeyPath: "dependencies", invalidItemBehaviour: .fail)
         }
 
-        info = jsonDictionary.json(atKeyPath: "info")
-        entitlements = jsonDictionary.json(atKeyPath: "entitlements")
-        
+        if jsonDictionary["info"] != nil {
+            info = try jsonDictionary.json(atKeyPath: "info") as Plist
+        }
+        if jsonDictionary["entitlements"] != nil {
+            entitlements = try jsonDictionary.json(atKeyPath: "entitlements") as Plist
+        }
+
         transitivelyLinkDependencies = jsonDictionary.json(atKeyPath: "transitivelyLinkDependencies")
         directlyEmbedCarthageDependencies = jsonDictionary.json(atKeyPath: "directlyEmbedCarthageDependencies")
         requiresObjCLinking = jsonDictionary.json(atKeyPath: "requiresObjCLinking")
