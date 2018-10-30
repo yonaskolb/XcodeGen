@@ -171,6 +171,16 @@ Settings are merged in the following order: groups, base, configs.
 	- `FRAMEWORK_SEARCH_PATHS`: If carthage dependencies are used, the platform build path will be added to this setting
 	- `OTHER_LDFLAGS`:  See `requiresObjCLinking` below
 - [ ] **dependencies**: **[[Dependency](#dependency)]** - Dependencies for the target
+- [ ] **info**: **[Plist](#plist)** - If defined, this will generate and write an `Info.plist` to the specified path and use it by setting the `INFOPLIST_FILE` build setting for every configuration. The following properties are generated automatically, the rest will have to be provided.
+  - `CFBundleIdentifier`
+  - `CFBundleInfoDictionaryVersion`
+  - `CFBundleExecutable`
+  - `CFBundleName`
+  - `CFBundleDevelopmentRegion`
+  - `CFBundleShortVersionString`
+  - `CFBundleVersion`
+  - `CFBundlePackageType`
+- [ ] **entitlements**: **[Plist](#plist)** - If defined this will generate and write a `.entitlements` file, and use it by setting `CODE_SIGN_ENTITLEMENTS` build setting for every configuration. All properties must be provided
 - [ ] **templates**: **[String]** - A list of target templates that will be merged in order
 - [ ] **transitivelyLinkDependencies**: **Bool** - If this is not specified the value from the project set in [Options](#options)`.transitivelyLinkDependencies` will be used.
 - [ ] **directlyEmbedCarthageDependencies**: **Bool** - If this is `true` Carthage dependencies will be embedded using an `Embed Frameworks` build phase instead of the `copy-frameworks` script. Defaults to `true` for all targets except iOS/tvOS/watchOS Applications.
@@ -370,6 +380,25 @@ targets:
     configFiles:
       Debug: App/debug.xcconfig
       Release: App/release.xcconfig
+```
+### Plist
+Plists are created on disk on every generation of the project. They can be used as a way to define `Info.plist` or `.entitlement` files. Some `Info.plist` properties are generated automatically.
+
+- [x] **path**: **String** - This is the path where the plist will be written to
+- [x] **properties**: **[String: Any]** - This is a map of all the plist keys and values
+
+```yml
+targets:
+  App:
+    info:
+      path: App/Info.plist
+      properties:
+        UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
+        UILaunchStoryboardName: LaunchScreen
+    entitlements:
+      path: App/App.entitlements
+      properties:
+        com.apple.security.application-groups: group.com.app
 ```
 
 ### Build Script

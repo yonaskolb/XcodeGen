@@ -26,6 +26,14 @@ targets:
   App_macOS:
     type: application
     platform: macOS
+    info:
+      path: App_macOS/Info.plist
+      properties:
+        LSMinimumSystemVersion: $(MACOSX_DEPLOYMENT_TARGET)
+        NSMainStoryboardFile: Main
+        NSPrincipalClass: NSApplication
+        CFBundleIconFile: ""
+        CustomSetting: $CUSTOM_SETTING
     attributes:
       ProvisioningStyle: Automatic
     sources:
@@ -39,6 +47,10 @@ targets:
   App_iOS:
     type: application
     platform: iOS
+    entitlements:
+      path: App_iOS/App.entitlements
+      properties:
+        com.apple.security.application-groups: group.com.app
     attributes:
       ProvisioningStyle: Automatic
     sources:

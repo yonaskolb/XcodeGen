@@ -155,6 +155,38 @@ class SpecLoadingTests: XCTestCase {
                 try expect(target.dependencies[2]) == Dependency(type: .framework, reference: "path", weakLink: true)
             }
 
+            $0.it("parses info plist") {
+                var targetDictionary = validTarget
+                targetDictionary["info"] = [
+                    "path": "Info.plist",
+                    "properties": [
+                        "CFBundleName": "MyAppName",
+                        "UIBackgroundModes": ["fetch"]
+                    ]
+                ]
+
+                let target = try Target(name: "", jsonDictionary: targetDictionary)
+                try expect(target.info) == Plist(path: "Info.plist", attributes: [
+                    "CFBundleName": "MyAppName",
+                    "UIBackgroundModes": ["fetch"]
+                    ])
+            }
+
+            $0.it("parses entitlement plist") {
+                var targetDictionary = validTarget
+                targetDictionary["entitlements"] = [
+                    "path": "app.entitlements",
+                    "properties": [
+                        "com.apple.security.application-groups": "com.group",
+                    ]
+                ]
+
+                let target = try Target(name: "", jsonDictionary: targetDictionary)
+                try expect(target.entitlements) == Plist(path: "app.entitlements", attributes: [
+                    "com.apple.security.application-groups": "com.group",
+                    ])
+            }
+
             $0.it("parses cross platform targets") {
                 let targetDictionary: [String: Any] = [
                     "platform": ["iOS", "tvOS"],

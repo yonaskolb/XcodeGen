@@ -28,6 +28,8 @@ public struct Target: ProjectTarget {
     public var settings: Settings
     public var sources: [TargetSource]
     public var dependencies: [Dependency]
+    public var info: Plist?
+    public var entitlements: Plist?
     public var transitivelyLinkDependencies: Bool?
     public var directlyEmbedCarthageDependencies: Bool?
     public var requiresObjCLinking: Bool?
@@ -63,6 +65,8 @@ public struct Target: ProjectTarget {
         configFiles: [String: String] = [:],
         sources: [TargetSource] = [],
         dependencies: [Dependency] = [],
+        info: Plist? = nil,
+        entitlements: Plist? = nil,
         transitivelyLinkDependencies: Bool? = nil,
         directlyEmbedCarthageDependencies: Bool? = nil,
         requiresObjCLinking: Bool? = nil,
@@ -82,6 +86,8 @@ public struct Target: ProjectTarget {
         self.configFiles = configFiles
         self.sources = sources
         self.dependencies = dependencies
+        self.info = info
+        self.entitlements = entitlements
         self.transitivelyLinkDependencies = transitivelyLinkDependencies
         self.directlyEmbedCarthageDependencies = directlyEmbedCarthageDependencies
         self.requiresObjCLinking = requiresObjCLinking
@@ -209,6 +215,8 @@ extension Target: Equatable {
             lhs.settings == rhs.settings &&
             lhs.configFiles == rhs.configFiles &&
             lhs.sources == rhs.sources &&
+            lhs.info == rhs.info &&
+            lhs.entitlements == rhs.entitlements &&
             lhs.dependencies == rhs.dependencies &&
             lhs.prebuildScripts == rhs.prebuildScripts &&
             lhs.postbuildScripts == rhs.postbuildScripts &&
@@ -278,6 +286,14 @@ extension Target: NamedJSONDictionaryConvertible {
         } else {
             dependencies = try jsonDictionary.json(atKeyPath: "dependencies", invalidItemBehaviour: .fail)
         }
+
+        if jsonDictionary["info"] != nil {
+            info = try jsonDictionary.json(atKeyPath: "info") as Plist
+        }
+        if jsonDictionary["entitlements"] != nil {
+            entitlements = try jsonDictionary.json(atKeyPath: "entitlements") as Plist
+        }
+
         transitivelyLinkDependencies = jsonDictionary.json(atKeyPath: "transitivelyLinkDependencies")
         directlyEmbedCarthageDependencies = jsonDictionary.json(atKeyPath: "directlyEmbedCarthageDependencies")
         requiresObjCLinking = jsonDictionary.json(atKeyPath: "requiresObjCLinking")
