@@ -445,8 +445,6 @@ public class PBXProjGenerator {
 
                 guard let dependencyTarget = project.getTarget(dependencyTargetName) else { continue }
 
-                let dependencyFileReference = targetFileReferences[dependencyTarget.name]!
-
                 let dependecyLinkage = dependencyTarget.defaultLinkage
                 let link = dependency.link ?? (
                     (dependecyLinkage == .dynamic && target.type != .staticLibrary)
@@ -472,7 +470,7 @@ public class PBXProjGenerator {
                 if embed {
                     let embedFile = addObject(
                         PBXBuildFile(
-                            file: dependencyFileReference,
+                            file: targetFileReferences[dependencyTarget.name]!,
                             settings: getEmbedSettings(dependency: dependency, codeSign: dependency.codeSign ?? !dependencyTarget.type.isExecutable)
                         )
                     )
