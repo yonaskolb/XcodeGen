@@ -34,6 +34,7 @@ public struct Dependency: Equatable {
         case target
         case framework
         case carthage
+        case sdk
     }
 }
 
@@ -49,6 +50,9 @@ extension Dependency: JSONObjectConvertible {
         } else if let carthage: String = jsonDictionary.json(atKeyPath: "carthage") {
             type = .carthage
             reference = carthage
+        } else if let sdk: String = jsonDictionary.json(atKeyPath: "sdk") {
+            type = .sdk
+            reference = sdk
         } else {
             throw SpecParsingError.invalidDependency(jsonDictionary)
         }

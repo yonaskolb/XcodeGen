@@ -6,6 +6,7 @@ public struct SpecValidationError: Error, CustomStringConvertible {
 
     public enum ValidationError: Error, CustomStringConvertible {
         case invalidXcodeGenVersion(minimumVersion: Version, version: Version)
+        case invalidSDKDependency(target: String, dependency: String)
         case invalidTargetDependency(target: String, dependency: String)
         case invalidTargetSource(target: String, source: String)
         case invalidTargetConfigFile(target: String, configFile: String, config: String)
@@ -27,6 +28,8 @@ public struct SpecValidationError: Error, CustomStringConvertible {
             switch self {
             case let .invalidXcodeGenVersion(minimumVersion, version):
                 return "XcodeGen version is \(version), but minimum required version specified as \(minimumVersion)"
+            case let .invalidSDKDependency(target, dependency):
+                return "Target \(target.quoted) has invalid sdk dependency: \(dependency.quoted). It must be a full path or have the following extensions: .framework, .dylib, .tbd"
             case let .invalidTargetDependency(target, dependency):
                 return "Target \(target.quoted) has invalid dependency: \(dependency.quoted)"
             case let .invalidTargetConfigFile(target, configFile, config):
