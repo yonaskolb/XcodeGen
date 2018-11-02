@@ -10,6 +10,15 @@ extension Project {
     public func getProjectBuildSettings(config: Config) -> BuildSettings {
         var buildSettings: BuildSettings = [:]
 
+        // set project SDKROOT is a single platform
+        if targets.count > 0 {
+            let platforms = Dictionary(grouping: targets) { $0.platform }
+            if platforms.count == 1 {
+                let platform = platforms.first!.key
+                buildSettings["SDKROOT"] = platform.sdkRoot
+            }
+        }
+
         if let type = config.type, options.settingPresets.applyProject {
             buildSettings += SettingsPresetFile.base.getBuildSettings()
             buildSettings += SettingsPresetFile.config(type).getBuildSettings()
