@@ -6,6 +6,7 @@
 - Added `weak` linking setting for dependencies [#411](https://github.com/yonaskolb/XcodeGen/pull/411) @alvarhansen
 - Added `info` to targets for generating an `Info.plist` [#415](https://github.com/yonaskolb/XcodeGen/pull/415) @yonaskolb
 - Added `entitlements` to targets for generating an `.entitlement` file [#415](https://github.com/yonaskolb/XcodeGen/pull/415) @yonaskolb
+- Validate incorrect config setting definitions [#431](https://github.com/yonaskolb/XcodeGen/pull/431) @yonaskolb
 
 #### Changed
 - Performance improvements for large projects [#388](https://github.com/yonaskolb/XcodeGen/pull/388) [#417](https://github.com/yonaskolb/XcodeGen/pull/417) [#416](https://github.com/yonaskolb/XcodeGen/pull/416) @yonaskolb @kastiglione
@@ -17,6 +18,7 @@
 #### Fixed
 - Fixed code signing issues [#414](https://github.com/yonaskolb/XcodeGen/pull/414) @yonaskolb
 - Fixed `TargetSource.headerVisibility` not being set in initializer [#419](https://github.com/yonaskolb/XcodeGen/pull/419) @jerrymarino
+- Fixed crash when using Xcode Legacy targets as dependencies [#427](https://github.com/yonaskolb/XcodeGen/pull/427) @dflems
 
 ## 1.11.2
 
