@@ -131,6 +131,7 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: com.project.app.watch.extension
       dependencies:
         - carthage: Result
+          link: false
 
   iMessageApp:
     type: application.messages

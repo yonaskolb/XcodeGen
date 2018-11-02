@@ -535,13 +535,14 @@ public class PBXProjGenerator {
                 }
                 let fileReference = sourceGenerator.getFileReference(path: frameworkPath, inPath: platformPath)
 
-                let buildFile = addObject(
-                    PBXBuildFile(file: fileReference, settings: getDependencyFrameworkSettings(dependency: dependency))
-                )
-
                 carthageFrameworksByPlatform[target.platform.carthageDirectoryName, default: []].insert(fileReference)
 
-                targetFrameworkBuildFiles.append(buildFile)
+                if dependency.link ?? true {
+                    let buildFile = addObject(
+                        PBXBuildFile(file: fileReference, settings: getDependencyFrameworkSettings(dependency: dependency))
+                    )
+                    targetFrameworkBuildFiles.append(buildFile)
+                }
 
                 // Embedding handled by iterating over `carthageDependencies` below
             }

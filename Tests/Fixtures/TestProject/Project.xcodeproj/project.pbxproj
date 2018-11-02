@@ -58,7 +58,6 @@
 		BF_67219751DE020023F9D6068EDCCDC445 /* SomeXPCService.xpc in CopyFiles */ = {isa = PBXBuildFile; fileRef = FR_4EB4AAACD714C13E5BC894C71B954299 /* SomeXPCService.xpc */; };
 		BF_6AA4D902E371C0F078917EB44F966B16 /* App_watchOS Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = FR_545DDE4AB557C8FAAD87775CD4271BDF /* App_watchOS Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		BF_6E2D4086A22C12D516A06AE66DC48D16 /* Framework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_099E2C49D4A0B799E78B39C47FBEADF7 /* Framework.framework */; };
-		BF_6FA9DA8B67663BAD9E11C1CEBD3BAC43 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_DC1C8DE46218F90A3F4FD5F8DE4F0ABB /* Result.framework */; };
 		BF_703163C1C547AD6EF09BEA5F5F5ED49C /* module.modulemap in CopyFiles */ = {isa = PBXBuildFile; fileRef = FR_96127F4D9D804B89024AB846F0961621 /* module.modulemap */; };
 		BF_729EB1C88A5E43B2342099D81B301F4D /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_261C31660333EF514356EFCBDB368EAB /* FrameworkFile.swift */; };
 		BF_76825DD9B3B10103CDAB9D235BDF6A91 /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_5FEC20FF753341FD0483E2E4C622DB05 /* MessagesViewController.swift */; };
@@ -93,7 +92,6 @@
 		BF_D0676C98017B6FDD96A733CB851645DE /* StaticLibrary_ObjC.m in Sources */ = {isa = PBXBuildFile; fileRef = FR_C2A280C4FA602E6610BCFB820602B69E /* StaticLibrary_ObjC.m */; };
 		BF_D0D1D142403C75D11757CB7092E8D035 /* XPC Service.xpc in CopyFiles */ = {isa = PBXBuildFile; fileRef = FR_1FA381C639CE4923ED6845790A5DF9D2 /* XPC Service.xpc */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BF_D3D64E2595369BBDEF03E07543AE2779 /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_261C31660333EF514356EFCBDB368EAB /* FrameworkFile.swift */; };
-		BF_D4A5544EDEE7F80A1F9DF1D0684CAFBB /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FR_DC1C8DE46218F90A3F4FD5F8DE4F0ABB /* Result.framework */; };
 		BF_D6588CD7B83034816FFD3A7DB10DAD78 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FR_16B791CFA2095097A17CC216977DF6EF /* Assets.xcassets */; };
 		BF_D7E271A6820E0A908736F44F99341DE1 /* Framework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FR_EFD283107EDF836BF0D9F4EB3F9A0016 /* Framework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BF_DA12D48C9BCEC64D55B87CE8703432BE /* StaticLibrary_ObjC.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = FR_D0BE69522DB875ADB041E9135E0767CA /* StaticLibrary_ObjC.h */; };
@@ -513,14 +511,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		FBP_3C7ADC43EF430300C2A315B0D2860080 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				BF_6FA9DA8B67663BAD9E11C1CEBD3BAC43 /* Result.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		FBP_4E773D46F6F726BBC0032C576D02FCB7 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -552,14 +542,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				BF_86F2552DA1E230901EC4CB1A40399019 /* Result.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		FBP_F6E2D2D110453E88BF9E3FB6A466B8EC /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				BF_D4A5544EDEE7F80A1F9DF1D0684CAFBB /* Result.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1057,7 +1039,6 @@
 			buildPhases = (
 				SBP_ED63FCA00BD617EFF125ECDF9D24FAD8 /* Sources */,
 				RBP_5623703FDC4F6DF4679D8BAF27518F2F /* Resources */,
-				FBP_3C7ADC43EF430300C2A315B0D2860080 /* Frameworks */,
 				CFBP_469B033759EACBB99ECBF1008677C590 /* Embed App Extensions */,
 				SSBP_7F147E7ED45BAAE2186975B7FF9EB08A /* Carthage */,
 			);
@@ -1077,7 +1058,6 @@
 			buildPhases = (
 				SBP_49F3C650EA105D1EF50817673A8DB33A /* Sources */,
 				RBP_1BFB64F249645ABF48C3CCDF8D5FA094 /* Resources */,
-				FBP_F6E2D2D110453E88BF9E3FB6A466B8EC /* Frameworks */,
 			);
 			buildRules = (
 			);
