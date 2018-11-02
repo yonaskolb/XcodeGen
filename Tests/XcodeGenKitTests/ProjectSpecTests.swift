@@ -205,6 +205,14 @@ class ProjectSpecTests: XCTestCase {
                 try expectValidationError(project, .missingDefaultConfig(configName: "foo"))
             }
 
+            $0.it("validates config settings format") {
+                var project = baseProject
+                project.configs = Config.defaultConfigs
+                project.settings.buildSettings = ["Debug": ["SETTING": "VALUE"], "Release": ["SETTING": "VALUE"]]
+
+                try expectValidationError(project, .invalidPerConfigSettings)
+            }
+
             $0.it("allows custom scheme for aggregated target") {
                 var project = baseProject
                 let buildScript = BuildScript(script: .path(#file), name: "buildScript1")

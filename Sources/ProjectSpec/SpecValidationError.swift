@@ -21,6 +21,7 @@ public struct SpecValidationError: Error, CustomStringConvertible {
         case invalidConfigFileConfig(String)
         case missingConfigForTargetScheme(target: String, configType: ConfigType)
         case missingDefaultConfig(configName: String)
+        case invalidPerConfigSettings
 
         public var description: String {
             switch self {
@@ -56,6 +57,8 @@ public struct SpecValidationError: Error, CustomStringConvertible {
                 return "Target \(target.quoted) is missing a config of type \(configType.rawValue) to generate its scheme"
             case let .missingDefaultConfig(name):
                 return "Default configuration \(name) doesn't exist"
+            case .invalidPerConfigSettings:
+                return "Settings that are for a specific config must go in \"configs\". \"base\" can be used for common settings"
             }
         }
     }

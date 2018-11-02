@@ -22,6 +22,24 @@ extension Project {
                     }
                 }
             }
+
+            if settings.buildSettings.count == configs.count {
+                var allConfigs = true
+                for buildSetting in settings.buildSettings.keys {
+                    var isConfig = false
+                    for config in configs {
+                        if config.name.lowercased().contains(buildSetting.lowercased()) {
+                            isConfig = true
+                        }
+                    }
+                    if !isConfig {
+                        allConfigs = false
+                    }
+                }
+                if allConfigs {
+                    errors.append(.invalidPerConfigSettings)
+                }
+            }
             return errors
         }
 
