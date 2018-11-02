@@ -10,6 +10,7 @@ public struct Dependency: Equatable {
     public var removeHeaders: Bool = true
     public var link: Bool?
     public var implicit: Bool = false
+    public var sdkRoot: Bool = false
     public var weakLink: Bool = false
 
     public init(
@@ -19,6 +20,7 @@ public struct Dependency: Equatable {
         codeSign: Bool? = nil,
         link: Bool? = nil,
         implicit: Bool = false,
+        sdkRoot: Bool = false,
         weakLink: Bool = false
     ) {
         self.type = type
@@ -26,6 +28,7 @@ public struct Dependency: Equatable {
         self.embed = embed
         self.codeSign = codeSign
         self.link = link
+        self.sdkRoot = sdkRoot
         self.implicit = implicit
         self.weakLink = weakLink
     }
@@ -62,6 +65,9 @@ extension Dependency: JSONObjectConvertible {
         }
         if let bool: Bool = jsonDictionary.json(atKeyPath: "implicit") {
             implicit = bool
+        }
+        if let bool: Bool = jsonDictionary.json(atKeyPath: "sdkRoot") {
+            sdkRoot = bool
         }
         if let bool: Bool = jsonDictionary.json(atKeyPath: "weak") {
             weakLink = bool

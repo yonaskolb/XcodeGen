@@ -495,7 +495,14 @@ public class PBXProjGenerator {
                 guard target.type != .staticLibrary else { break }
 
                 let fileReference: PBXFileElement
-                if dependency.implicit {
+                
+                if dependency.sdkRoot {
+                    fileReference = sourceGenerator.getFileReference(
+                        path: Path(dependency.reference),
+                        inPath: project.basePath,
+                        sourceTree: .sdkRoot
+                    )
+                } else if dependency.implicit {
                     fileReference = sourceGenerator.getFileReference(
                         path: Path(dependency.reference),
                         inPath: project.basePath,
