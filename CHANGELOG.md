@@ -2,6 +2,9 @@
 
 ## Master
 
+#### Added
+- Added `--use-cache` argument to prevent unnecessarily generating the project [#412](https://github.com/yonaskolb/XcodeGen/pull/412) @yonaskolb
+
 #### Fixed
 - Fixed XPC Service package type [#435](https://github.com/yonaskolb/XcodeGen/pull/435) @alvarhansen
 - Fixed phase ordering for modulemap and static libary header Copy File phases. [402](https://github.com/yonaskolb/XcodeGen/pull/402) @brentleyjones
