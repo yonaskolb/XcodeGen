@@ -60,7 +60,7 @@ class ProjectGeneratorTests: XCTestCase {
                 let project = Project(basePath: "", name: "test", targets: [framework], options: options)
                 let pbxProj = try project.generatePbxProj()
                 let allSettings = pbxProj.buildConfigurations.reduce([:]) { $0.merged($1.buildSettings) }.keys.sorted()
-                try expect(allSettings) == ["SETTING_2"]
+                try expect(allSettings) == ["SDKROOT", "SETTING_2"]
             }
 
             $0.it("generates development language") {
@@ -154,6 +154,7 @@ class ProjectGeneratorTests: XCTestCase {
                 let targetDebugSettings = project.getTargetBuildSettings(target: target, config: config)
 
                 var buildSettings = BuildSettings()
+                buildSettings += ["SDKROOT": "iphoneos"]
                 buildSettings += SettingsPresetFile.base.getBuildSettings()
                 buildSettings += SettingsPresetFile.config(.debug).getBuildSettings()
 
@@ -187,6 +188,23 @@ class ProjectGeneratorTests: XCTestCase {
                 var buildSettings = project.getProjectBuildSettings(config: project.configs.first!)
                 try expect(buildSettings["SETTING1"] as? String) == "VALUE1"
                 try expect(buildSettings["SETTING2"] as? String) == "VALUE2"
+            }
+
+            $0.it("sets project SDKROOT if there is only a single platform") {
+                var project = Project(
+                    basePath: "",
+                    name: "test",
+                    targets: [
+                        Target(name: "1", type: .application, platform: .iOS),
+                        Target(name: "2", type: .framework, platform: .iOS),
+                        ]
+                )
+                var buildSettings = project.getProjectBuildSettings(config: project.configs.first!)
+                try expect(buildSettings["SDKROOT"] as? String) == "iphoneos"
+
+                project.targets.append(Target(name: "3", type: .application, platform: .tvOS))
+                buildSettings = project.getProjectBuildSettings(config: project.configs.first!)
+                try expect(buildSettings["SDKROOT"]).beNil()
             }
         }
     }

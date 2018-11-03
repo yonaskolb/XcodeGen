@@ -40,6 +40,15 @@ extension Platform {
         case .macOS: return "MACOSX_DEPLOYMENT_TARGET"
         }
     }
+
+    public var sdkRoot: String {
+        switch self {
+        case .iOS: return "iphoneos"
+        case .tvOS: return "appletvos"
+        case .watchOS: return "watchos"
+        case .macOS: return "macosx"
+        }
+    }
 }
 
 extension Version {
