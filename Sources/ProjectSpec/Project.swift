@@ -78,7 +78,7 @@ public struct Project: BuildSettingsContainer {
         return configs.first { $0.name == configName }
     }
 
-    public var projectPath: Path {
+    public var defaultProjectPath: Path {
         return basePath + "\(name).xcodeproj"
     }
 }

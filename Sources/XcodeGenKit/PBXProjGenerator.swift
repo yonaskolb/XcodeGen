@@ -27,9 +27,7 @@ public class PBXProjGenerator {
     public init(project: Project) {
         self.project = project
         pbxProj = PBXProj(rootObject: nil, objectVersion: 46)
-        sourceGenerator = SourceGenerator(project: project) { [unowned self] object in
-            _ = self.addObject(object)
-        }
+        sourceGenerator = SourceGenerator(project: project, pbxProj: pbxProj)
     }
 
     func addObject<T: PBXObject>(_ object: T, context: String? = nil) -> T {

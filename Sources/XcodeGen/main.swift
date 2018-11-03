@@ -22,7 +22,7 @@ func generate(spec: String, project: String, isQuiet: Bool, justVersion: Bool) {
     }
 
     let projectSpecPath = Path(spec).absolute()
-    let projectPath = project == "" ? projectSpecPath.parent() : Path(project).absolute()
+    var projectPath = project == "" ? projectSpecPath.parent() : Path(project).absolute()
 
     if !projectSpecPath.exists {
         fatalError("No project spec found at \(projectSpecPath.absolute())")
@@ -39,19 +39,20 @@ func generate(spec: String, project: String, isQuiet: Bool, justVersion: Bool) {
     }
 
     do {
-        logger.info("⚙️  Generating project...")
-
         try project.validateMinimumXcodeGenVersion(version)
+        try project.validate()
 
+        logger.info("⚙️ Generating project...")
         let projectGenerator = ProjectGenerator(project: project)
         let xcodeProject = try projectGenerator.generateXcodeProject()
 
-        logger.info("⚙️  Writing project...")
-        let projectWriter = ProjectWriter(project: project)
-        try projectWriter.writeXcodeProject(xcodeProject)
-        try projectWriter.writePlists()
+        logger.info("⚙️ Writing project...")
+        let fileWriter = FileWriter(project: project)
+        projectPath = projectPath + "\(project.name).xcodeproj"
+        try fileWriter.writeXcodeProject(xcodeProject, to: projectPath)
+        try fileWriter.writePlists()
 
-        logger.success("💾  Saved project to \(project.projectPath.string)")
+        logger.success("💾  Saved project to \(projectPath)")
     } catch let error as SpecValidationError {
         fatalError(error.description)
     } catch {

@@ -23,10 +23,12 @@ class GeneratedPerformanceTests: XCTestCase {
         let xcodeProject = try generator.generateXcodeProject()
         self.measure {
             xcodeProject.pbxproj.invalidateUUIDs()
-            try! xcodeProject.write(path: project.projectPath)
+            try! xcodeProject.write(path: project.defaultProjectPath)
         }
     }
 }
+
+let fixturePath = Path(#file).parent().parent() + "Fixtures"
 
 class FixturePerformanceTests: XCTestCase {
 
@@ -52,7 +54,7 @@ class FixturePerformanceTests: XCTestCase {
         let xcodeProject = try generator.generateXcodeProject()
         self.measure {
             xcodeProject.pbxproj.invalidateUUIDs()
-            try! xcodeProject.write(path: project.projectPath)
+            try! xcodeProject.write(path: project.defaultProjectPath)
         }
     }
 }

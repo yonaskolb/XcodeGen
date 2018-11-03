@@ -126,6 +126,48 @@ class SourceGeneratorTests: XCTestCase {
                 try expect(fileReference.path) == "model2.xcdatamodel"
             }
 
+            $0.it("generates variant groups") {
+                let directories = """
+                Sources:
+                    Base.lproj:
+                        - LocalizedStoryboard.storyboard
+                    en.lproj:
+                        - LocalizedStoryboard.strings
+                """
+                try createDirectories(directories)
+
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: ["Sources"])
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target])
+
+                let pbxProj = try project.generatePbxProj()
+
+                func getFileReferences(_ path: String) -> [PBXFileReference] {
+                    return pbxProj.fileReferences.filter { $0.path == path }
+                }
+
+                func getVariableGroups(_ name: String?) -> [PBXVariantGroup] {
+                    return pbxProj.variantGroups.filter { $0.name == name }
+                }
+
+                let resourceName = "LocalizedStoryboard.storyboard"
+                let baseResource = "Base.lproj/LocalizedStoryboard.storyboard"
+                let localizedResource = "en.lproj/LocalizedStoryboard.strings"
+
+                guard let variableGroup = getVariableGroups(resourceName).first else { throw failure("Couldn't find the variable group") }
+
+                do {
+                    let refs = getFileReferences(baseResource)
+                    try expect(refs.count) == 1
+                    try expect(variableGroup.children.filter { $0 == refs.first }.count) == 1
+                }
+
+                do {
+                    let refs = getFileReferences(localizedResource)
+                    try expect(refs.count) == 1
+                    try expect(variableGroup.children.filter { $0 == refs.first }.count) == 1
+                }
+            }
+
             $0.it("handles duplicate names") {
                 let directories = """
                 Sources:

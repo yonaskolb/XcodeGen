@@ -3,7 +3,7 @@ import ProjectSpec
 import xcodeproj
 import PathKit
 
-public class ProjectWriter {
+public class FileWriter {
 
     let project: Project
 
@@ -11,8 +11,8 @@ public class ProjectWriter {
         self.project = project
     }
 
-    public func writeXcodeProject(_ xcodeProject: XcodeProj) throws {
-        let projectPath = project.projectPath
+    public func writeXcodeProject(_ xcodeProject: XcodeProj, to projectPath: Path? = nil) throws {
+        let projectPath = project.defaultProjectPath
         let tempPath = Path.temporary + "XcodeGen_\(Int(NSTimeIntervalSince1970))"
         try? tempPath.delete()
         if projectPath.exists {

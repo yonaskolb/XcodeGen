@@ -18,7 +18,8 @@ class SourceGenerator {
     private var variantGroupsByPath: [Path: PBXVariantGroup] = [:]
 
     private let project: Project
-    var addObjectClosure: (PBXObject) -> Void
+    let pbxProj: PBXProj
+
     var targetSourceExcludePaths: Set<Path> = []
     var defaultExcludedFiles = [
         ".DS_Store",
@@ -26,13 +27,14 @@ class SourceGenerator {
 
     private(set) var knownRegions: Set<String> = []
 
-    init(project: Project, addObjectClosure: @escaping (PBXObject) -> Void) {
+    init(project: Project, pbxProj: PBXProj) {
         self.project = project
-        self.addObjectClosure = addObjectClosure
+        self.pbxProj = pbxProj
     }
 
-    func addObject<T: PBXObject>(_ object: T) -> T {
-        addObjectClosure(object)
+    func addObject<T: PBXObject>(_ object: T, context: String? = nil) -> T {
+        pbxProj.add(object: object)
+        object.context = context
         return object
     }
 

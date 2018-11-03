@@ -13,10 +13,7 @@ public class ProjectGenerator {
         self.project = project
     }
 
-    public func generateXcodeProject(validate: Bool = true) throws -> XcodeProj {
-        if validate {
-            try project.validate()
-        }
+    public func generateXcodeProject() throws -> XcodeProj {
 
         // generate PBXProj
         let pbxProjGenerator = PBXProjGenerator(project: project)

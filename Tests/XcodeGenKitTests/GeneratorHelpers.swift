@@ -10,6 +10,7 @@ extension Project {
 
     func generateXcodeProject(file: String = #file, line: Int = #line) throws -> XcodeProj {
         return try doThrowing(file: file, line: line) {
+            try validate()
             let generator = ProjectGenerator(project: self)
             return try generator.generateXcodeProject()
         }
