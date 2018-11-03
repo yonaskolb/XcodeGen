@@ -10,7 +10,7 @@ extension Project {
         try self.init(basePath: path.parent(), jsonDictionary: dictionary)
     }
 
-    private static func loadDictionary(path: Path) throws -> JSONDictionary {
+    public static func loadDictionary(path: Path) throws -> JSONDictionary {
 
         // Depending on the extension we will either load the file as YAML or JSON
         var json: [String: Any]

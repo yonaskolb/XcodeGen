@@ -166,3 +166,40 @@ extension Project {
         return jsonDictionary
     }
 }
+
+extension Project {
+
+    public var allFiles: [Path] {
+        var files: [Path] = []
+        files.append(contentsOf: configFilePaths)
+        for fileGroup in fileGroups {
+            let fileGroupPath = basePath + fileGroup
+            let fileGroupChildren = (try? fileGroupPath.recursiveChildren()) ?? []
+            files.append(contentsOf: fileGroupChildren)
+            files.append(fileGroupPath)
+        }
+
+        for target in aggregateTargets {
+            files.append(contentsOf: target.configFilePaths)
+        }
+        
+        for target in targets {
+            files.append(contentsOf: target.configFilePaths)
+            for source in target.sources {
+                let sourcePath = basePath + source.path
+                let sourceChildren = (try? sourcePath.recursiveChildren()) ?? []
+                files.append(contentsOf: sourceChildren)
+                files.append(sourcePath)
+            }
+        }
+        return files
+    }
+}
+
+extension BuildSettingsContainer {
+
+    fileprivate var configFilePaths: [Path] {
+        return configFiles.values.map{ Path($0) }
+    }
+}
+
