@@ -9,7 +9,7 @@ import Yams
 
 let version = try Version("2.0.0")
 
-func generate(spec: String, project: String, lockfile: String, isQuiet: Bool, justVersion: Bool) {
+func generate(spec: String, project: String, useCache: Bool, isQuiet: Bool, justVersion: Bool) {
     if justVersion {
         print(version)
         exit(EXIT_SUCCESS)
@@ -29,86 +29,77 @@ func generate(spec: String, project: String, lockfile: String, isQuiet: Bool, ju
         fatalError("No project spec found at \(projectSpecPath.absolute())")
     }
 
-    let projectDictionary: JSONDictionary
+    let specLoader = SpecLoader(version: version)
     let project: Project
+
+    // load project spec
     do {
-        projectDictionary = try Project.loadDictionary(path: projectSpecPath)
-        project = try Project(basePath: projectSpecPath.parent(), jsonDictionary: projectDictionary)
-        logger.info("📋  Loaded project:\n  \(project.debugDescription.replacingOccurrences(of: "\n", with: "\n  "))")
+        project = try specLoader.loadProject(path: projectSpecPath)
     } catch let error as CustomStringConvertible {
         fatalError("Parsing project spec failed: \(error)")
     } catch {
         fatalError("Parsing project spec failed: \(error.localizedDescription)")
     }
 
-    // Lock file
-    var lockFileContent: String = ""
-    let lockFilePath = lockfile.isEmpty ? nil : Path(lockfile)
-    if #available(OSX 10.13, *), let lockFilePath = lockFilePath  {
-        // JSONSerialization.WritingOptions.sortedKeys is only available on 10.13
+    let cacheFilePath = Path("~/.xcodegen/cache/\(projectSpecPath.absolute().string.md5)").absolute()
+    var cacheFile: CacheFile?
 
-        let files = Array(Set(project.allFiles))
-            .map { $0.byRemovingBase(path: project.basePath).string }
-            .sorted { $0.localizedStandardCompare($1) == .orderedAscending }
-            .joined(separator: "\n")
-
-        let spec: String
+    // read cache
+    if useCache {
         do {
-            let data = try JSONSerialization.data(withJSONObject: projectDictionary, options: [.sortedKeys, .prettyPrinted])
-            spec = String(data: data, encoding: .utf8)!
+            cacheFile = try specLoader.generateCacheFile()
         } catch {
-            fatalError("Couldn't serialize spec for lockfile\n\(error)")
-        }
-
-        lockFileContent = """
-        # XCODEGEN VERSION
-        \(version)
-
-        # SPEC
-        \(spec)
-
-        # FILES
-        \(files)"
-
-        """
-        if lockFilePath.exists {
-            do {
-                let lockFile: String = try lockFilePath.read()
-                let oldFiles = lockFile
-
-                if oldFiles == lockFileContent {
-                    logger.info("✅  Not generating project as lockfile \(lockFilePath) has not changed")
-                    return
-                }
-            } catch {
-                fatalError("Couldn't load \(lockFilePath)")
-            }
+            fatalError("Couldn't generate cache file: \(error.localizedDescription)")
         }
     }
 
+    // check cache
+    if let cacheFile = cacheFile, cacheFilePath.exists {
+        do {
+            let existingCacheFile: String = try cacheFilePath.read()
+            if cacheFile.string == existingCacheFile {
+                logger.success("Project has not changed since cache was written")
+                return
+            }
+        } catch {
+            logger.error("Couldn't load cache at \(cacheFile)")
+        }
+    }
+
+    logger.info("Loaded project:\n  \(project.debugDescription.replacingOccurrences(of: "\n", with: "\n  "))")
+
     do {
+        // validation
         try project.validateMinimumXcodeGenVersion(version)
         try project.validate()
 
+        // generation
         logger.info("⚙️  Generating project...")
         let projectGenerator = ProjectGenerator(project: project)
         let xcodeProject = try projectGenerator.generateXcodeProject()
 
+        // file writing
         logger.info("⚙️  Writing project...")
         let fileWriter = FileWriter(project: project)
         projectPath = projectPath + "\(project.name).xcodeproj"
         try fileWriter.writeXcodeProject(xcodeProject, to: projectPath)
         try fileWriter.writePlists()
 
-        if let lockFilePath = lockFilePath {
-            try lockFilePath.write(lockFileContent)
-            logger.success("💾  Wrote lockfile to \(lockFilePath)")
-        }
         logger.success("💾  Saved project to \(projectPath)")
     } catch let error as SpecValidationError {
         fatalError(error.description)
     } catch {
         fatalError("Generation failed: \(error.localizedDescription)")
+    }
+
+    // write cache
+    if let cacheFile = cacheFile {
+        do {
+            try cacheFilePath.parent().mkpath()
+            try cacheFilePath.write(cacheFile.string)
+        } catch {
+            logger.error("Failed to write cache: \(error.localizedDescription)")
+        }
     }
 }
 
@@ -125,11 +116,11 @@ command(
         flag: "p",
         description: "The path to the folder where the project should be generated"
     ),
-    Option<String>(
-        "lockfile",
-        default: "",
-        flag: "l",
-        description: "The path to a lock file"
+    Flag(
+        "use-cache",
+        default: false,
+        flag: "c",
+        description: "Use a cache for the xcodegen spec"
     ),
     Flag(
         "quiet",
