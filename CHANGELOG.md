@@ -6,6 +6,7 @@
 - Added `weak` linking setting for dependencies [#411](https://github.com/yonaskolb/XcodeGen/pull/411) @alvarhansen
 - Added `info` to targets for generating an `Info.plist` [#415](https://github.com/yonaskolb/XcodeGen/pull/415) @yonaskolb
 - Added `entitlements` to targets for generating an `.entitlement` file [#415](https://github.com/yonaskolb/XcodeGen/pull/415) @yonaskolb
+- Added `parallelizable` and `randomExecutionOrder` to `Scheme` test targets in an expanded form [#434](https://github.com/yonaskolb/XcodeGen/pull/434) @yonaskolb
 - Validate incorrect config setting definitions [#431](https://github.com/yonaskolb/XcodeGen/pull/431) @yonaskolb
 - Automatically set project `SDKROOT` if there is only a single platform within the project [#433](https://github.com/yonaskolb/XcodeGen/pull/433) @yonaskolb
 
