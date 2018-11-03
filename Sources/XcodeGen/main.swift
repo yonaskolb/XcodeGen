@@ -44,7 +44,8 @@ func generate(spec: String, project: String, lockfile: String, isQuiet: Bool, ju
     // Lock file
     var lockFileContent: String = ""
     let lockFilePath = lockfile.isEmpty ? nil : Path(lockfile)
-    if let lockFilePath = lockFilePath {
+    if #available(OSX 10.13, *), let lockFilePath = lockFilePath  {
+        // JSONSerialization.WritingOptions.sortedKeys is only available on 10.13
 
         let files = Array(Set(project.allFiles))
             .map { $0.byRemovingBase(path: project.basePath).string }
@@ -53,10 +54,10 @@ func generate(spec: String, project: String, lockfile: String, isQuiet: Bool, ju
 
         let spec: String
         do {
-            let node = try Node(projectDictionary)
-            spec = try Yams.serialize(node: node)
+            let data = try JSONSerialization.data(withJSONObject: projectDictionary, options: [.sortedKeys, .prettyPrinted])
+            spec = String(data: data, encoding: .utf8)!
         } catch {
-            fatalError("Couldn't serialize spec for lockfile")
+            fatalError("Couldn't serialize spec for lockfile\n\(error)")
         }
 
         lockFileContent = """
