@@ -217,6 +217,19 @@ schemes:
       commandLineArguments:
         argument: YES
         argument.with.dot: YES
+    test:
+      gatherCoverageData: true
+  App_Scheme:
+    build:
+      targets:
+        App_iOS: all
+    test:
+      gatherCoverageData: true
+      targets:
+        - App_iOS_UITests
+        - name: App_iOS_Tests
+          parallelizable: true
+          randomExecutionOrder: true
 targetTemplates:
   MyTemplate:
     scheme: {}
