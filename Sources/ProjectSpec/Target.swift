@@ -103,7 +103,7 @@ public struct Target: ProjectTarget {
 extension Target: CustomStringConvertible {
 
     public var description: String {
-        return "\(platform.emoji)  \(name): \(type)"
+        return "\(name): \(platform.rawValue) \(type)"
     }
 }
 
