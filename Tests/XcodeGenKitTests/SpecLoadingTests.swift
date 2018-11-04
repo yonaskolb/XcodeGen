@@ -253,7 +253,7 @@ class SpecLoadingTests: XCTestCase {
             $0.it("parses target schemes") {
                 var targetDictionary = validTarget
                 targetDictionary["scheme"] = [
-                    "testTargets": ["t1", "t2"],
+                    "testTargets": ["t1", ["name": "t2"]],
                     "configVariants": ["dev", "app-store"],
                     "commandLineArguments": [
                         "ENV1": true,
@@ -312,6 +312,18 @@ class SpecLoadingTests: XCTestCase {
                             ],
                         ],
                     ],
+                    "test": [
+                        "config": "debug",
+                        "targets": [
+                            "Target1",
+                            [
+                                "name": "Target2",
+                                "parallelizable": true,
+                                "randomExecutionOrder": true,
+                            ],
+                        ],
+                        "gatherCoverageData": true,
+                    ]
                 ]
                 let scheme = try Scheme(name: "Scheme", jsonDictionary: schemeDictionary)
                 let expectedTargets: [Scheme.BuildTarget] = [
@@ -330,6 +342,16 @@ class SpecLoadingTests: XCTestCase {
 
                 try expect(scheme.build.parallelizeBuild) == false
                 try expect(scheme.build.buildImplicitDependencies) == false
+
+                let expectedTest = Scheme.Test(config: "debug",
+                                               gatherCoverageData: true,
+                                               targets: [
+                                                "Target1",
+                                                Scheme.Test.TestTarget(name: "Target2",
+                                                                              randomExecutionOrder: true,
+                                                                              parallelizable: true)
+                    ])
+                try expect(scheme.test) == expectedTest
             }
 
             $0.it("parses schemes variables") {

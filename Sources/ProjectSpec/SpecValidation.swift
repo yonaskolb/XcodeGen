@@ -110,8 +110,8 @@ extension Project {
                 }
 
                 for testTarget in scheme.testTargets {
-                    if getTarget(testTarget) == nil {
-                        errors.append(.invalidTargetSchemeTest(target: target.name, testTarget: testTarget))
+                    if getTarget(testTarget.name) == nil {
+                        errors.append(.invalidTargetSchemeTest(target: target.name, testTarget: testTarget.name))
                     }
                 }
             }
