@@ -2,6 +2,8 @@
 
 ## Master
 
+## 2.0.0
+
 #### Added
 - Added `weak` linking setting for dependencies [#411](https://github.com/yonaskolb/XcodeGen/pull/411) @alvarhansen
 - Added `info` to targets for generating an `Info.plist` [#415](https://github.com/yonaskolb/XcodeGen/pull/415) @yonaskolb
@@ -23,6 +25,8 @@
 - Fixed code signing issues [#414](https://github.com/yonaskolb/XcodeGen/pull/414) @yonaskolb
 - Fixed `TargetSource.headerVisibility` not being set in initializer [#419](https://github.com/yonaskolb/XcodeGen/pull/419) @jerrymarino
 - Fixed crash when using Xcode Legacy targets as dependencies [#427](https://github.com/yonaskolb/XcodeGen/pull/427) @dflems
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/1.11.2...2.0.0)
 
 ## 1.11.2
 
