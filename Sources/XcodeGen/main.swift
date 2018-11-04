@@ -42,11 +42,11 @@ func generate(spec: String, project: String, isQuiet: Bool, justVersion: Bool) {
         try project.validateMinimumXcodeGenVersion(version)
         try project.validate()
 
-        logger.info("⚙️ Generating project...")
+        logger.info("⚙️  Generating project...")
         let projectGenerator = ProjectGenerator(project: project)
         let xcodeProject = try projectGenerator.generateXcodeProject()
 
-        logger.info("⚙️ Writing project...")
+        logger.info("⚙️  Writing project...")
         let fileWriter = FileWriter(project: project)
         projectPath = projectPath + "\(project.name).xcodeproj"
         try fileWriter.writeXcodeProject(xcodeProject, to: projectPath)
