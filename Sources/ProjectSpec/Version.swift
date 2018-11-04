@@ -1,10 +1,14 @@
 import Foundation
 
-public struct Version: CustomStringConvertible, Equatable, Comparable {
+public struct Version: CustomStringConvertible, Equatable, Comparable, ExpressibleByStringLiteral {
 
     public var major: UInt
     public var minor: UInt
     public var patch: UInt
+
+    public init(stringLiteral value: String) {
+        try! self.init(value)
+    }
 
     public init(_ string: String) throws {
         let components = try string.split(separator: ".").map { (componentString) -> UInt in

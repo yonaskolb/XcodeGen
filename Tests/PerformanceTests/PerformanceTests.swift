@@ -40,6 +40,15 @@ class FixturePerformanceTests: XCTestCase {
         }
     }
 
+    func testCacheFileGeneration() throws {
+        let specLoader = SpecLoader(version: "1.2")
+        _ = try specLoader.loadProject(path: specPath)
+
+        self.measure {
+            _ = try! specLoader.generateCacheFile()
+        }
+    }
+
     func testFixtureGeneration() throws {
         let project = try Project(path: specPath)
         measure {

@@ -10,11 +10,9 @@ public class SpecLoader {
     var project: Project!
     private var projectDictionary: [String: Any]?
     let version: Version
-    let cacheFilePath: Path?
 
-    public init(version: Version, cacheFilePath: Path? = nil) {
+    public init(version: Version) {
         self.version = version
-        self.cacheFilePath = cacheFilePath
     }
 
     public func loadProject(path: Path) throws -> Project {
