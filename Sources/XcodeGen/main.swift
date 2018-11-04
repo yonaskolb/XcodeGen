@@ -35,6 +35,7 @@ func generate(spec: String, project: String, useCache: Bool, isQuiet: Bool, just
     // load project spec
     do {
         project = try specLoader.loadProject(path: projectSpecPath)
+        projectPath = projectPath + "\(project.name).xcodeproj"
     } catch let error as CustomStringConvertible {
         fatalError("Parsing project spec failed: \(error)")
     } catch {
@@ -54,7 +55,9 @@ func generate(spec: String, project: String, useCache: Bool, isQuiet: Bool, just
     }
 
     // check cache
-    if let cacheFile = cacheFile, cacheFilePath.exists {
+    if let cacheFile = cacheFile,
+        projectPath.exists,
+        cacheFilePath.exists {
         do {
             let existingCacheFile: String = try cacheFilePath.read()
             if cacheFile.string == existingCacheFile {
@@ -81,7 +84,6 @@ func generate(spec: String, project: String, useCache: Bool, isQuiet: Bool, just
         // file writing
         logger.info("⚙️  Writing project...")
         let fileWriter = FileWriter(project: project)
-        projectPath = projectPath + "\(project.name).xcodeproj"
         try fileWriter.writeXcodeProject(xcodeProject, to: projectPath)
         try fileWriter.writePlists()
 
