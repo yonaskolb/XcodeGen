@@ -50,7 +50,7 @@ func generate(spec: String, project: String, useCache: Bool, isQuiet: Bool, just
         do {
             cacheFile = try specLoader.generateCacheFile()
         } catch {
-            fatalError("Couldn't generate cache file: \(error.localizedDescription)")
+            logger.error("Couldn't generate cache file: \(error.localizedDescription)")
         }
     }
 
