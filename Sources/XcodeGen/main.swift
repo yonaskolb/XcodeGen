@@ -6,7 +6,7 @@ import ProjectSpec
 import XcodeGenKit
 import xcodeproj
 
-let version = try Version("1.11.2")
+let version = try Version("2.0.0")
 
 func generate(spec: String, project: String, isQuiet: Bool, justVersion: Bool) {
     if justVersion {
