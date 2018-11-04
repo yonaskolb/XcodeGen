@@ -138,9 +138,25 @@ extension Project {
 
         for target in targets {
             for dependency in target.dependencies {
-                if dependency.type == .target, getProjectTarget(dependency.reference) == nil {
-                    errors.append(.invalidTargetDependency(target: target.name, dependency: dependency.reference))
+                switch dependency.type {
+                case .target:
+                    if getProjectTarget(dependency.reference) == nil {
+                        errors.append(.invalidTargetDependency(target: target.name, dependency: dependency.reference))
+                    }
+                case .sdk:
+                    let path = Path(dependency.reference)
+                    if !dependency.reference.contains("/") {
+                        switch path.extension {
+                            case "framework"?,
+                                 "tbd"?:
+                            break
+                            default:
+                              errors.append(.invalidSDKDependency(target: target.name, dependency: dependency.reference))
+                        }
+                    }
+                default: break
                 }
+
             }
 
             for source in target.sources {

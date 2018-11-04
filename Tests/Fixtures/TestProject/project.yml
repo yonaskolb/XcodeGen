@@ -43,6 +43,8 @@ targets:
     dependencies:
       - target: Framework_macOS
       - target: XPC Service
+      - sdk: Contacts.framework
+      - sdk: libc++.tbd
 
   App_iOS:
     type: application
@@ -90,6 +92,7 @@ targets:
       - target: App_watchOS
       - target: iMessageApp
       - framework: Vendor/SomeFramework.framework
+      - sdk: Contacts.framework
     scheme:
       testTargets:
         - App_iOS_Tests

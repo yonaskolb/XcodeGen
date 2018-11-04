@@ -57,6 +57,9 @@ targets:
     dependencies:
       - target: MyFramework
       - carthage: Alamofire
+      - framework: Vendor/MyFramework.framework
+      - sdk: Contacts.framework
+      - sdk: libc++.tbd
   MyFramework:
     type: framework
     platform: iOS
