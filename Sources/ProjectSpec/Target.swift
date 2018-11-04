@@ -242,7 +242,7 @@ extension Target: NamedJSONDictionaryConvertible {
     public init(name: String, jsonDictionary: JSONDictionary) throws {
         let resolvedName: String = jsonDictionary.json(atKeyPath: "name") ?? name
         self.name = resolvedName
-        self.productName = jsonDictionary.json(atKeyPath: "productName") ?? resolvedName
+        productName = jsonDictionary.json(atKeyPath: "productName") ?? resolvedName
         let typeString: String = try jsonDictionary.json(atKeyPath: "type")
         if let type = PBXProductType(string: typeString) {
             self.type = type

@@ -1,6 +1,6 @@
 import Foundation
-import ProjectSpec
 import PathKit
+import ProjectSpec
 import xcodeproj
 
 extension Project {
@@ -20,11 +20,11 @@ extension Project {
             gatherCoverageData: true,
             commandLineArguments: [
                 "--command": true,
-                "--command2": false
+                "--command2": false,
             ],
             environmentVariables: [
                 XCScheme.EnvironmentVariable(variable: "ENV", value: "HELLO", enabled: true),
-                XCScheme.EnvironmentVariable(variable: "ENV2", value: "HELLO", enabled: false)
+                XCScheme.EnvironmentVariable(variable: "ENV2", value: "HELLO", enabled: false),
             ],
             preActions: [Scheme.ExecutionAction(name: "run", script: "script")],
             postActions: [Scheme.ExecutionAction(name: "run", script: "script")]
@@ -40,7 +40,7 @@ extension Project {
                     Dependency(type: .target, reference: "Framework2_\(platform)"),
                     Dependency(type: .carthage, reference: "Alamofire"),
                     Dependency(type: .carthage, reference: "BrightFutures"),
-                    ],
+                ],
                 scheme: scheme
             )
             targets.append(appTarget)
@@ -57,7 +57,7 @@ extension Project {
                     Dependency(type: .target, reference: "App_\(platform)"),
                     Dependency(type: .target, reference: "Framework_\(platform)"),
                     Dependency(type: .target, reference: "Framework2_\(platform)"),
-                    ],
+                ],
                 scheme: scheme
             )
             targets.append(testTarget)
@@ -71,10 +71,10 @@ extension Project {
                 platform: platform,
                 sources: [
                     TargetSource(path: "Framework_\(platform)"),
-                    ],
+                ],
                 dependencies: [
                     Dependency(type: .carthage, reference: "Alamofire"),
-                    ],
+                ],
                 scheme: scheme
             )
             targets.append(frameworkTarget)
@@ -91,7 +91,7 @@ extension Project {
                     Dependency(type: .target, reference: "Framework_\(platform)"),
                     Dependency(type: .carthage, reference: "Alamofire"),
                     Dependency(type: .carthage, reference: "BrightFutures"),
-                    ],
+                ],
                 scheme: scheme
             )
             targets.append(frameworkTarget2)
@@ -115,7 +115,7 @@ extension Project {
                 Config(name: "Release Staging", type: .release),
                 Config(name: "Debug Production", type: .debug),
                 Config(name: "Release Production", type: .release),
-                ],
+            ],
             targets: targets,
             aggregateTargets: [],
             settings: [:],
@@ -140,19 +140,19 @@ extension Project {
             try path.mkpath()
             paths.append(path)
 
-            for swiftFile in 1...swiftFilesPerDirectory {
+            for swiftFile in 1 ... swiftFilesPerDirectory {
                 let file = path + "file_\(swiftFile).swift"
                 try file.write("")
                 paths.append(file)
             }
 
-            for resourceFile in 1...resourcesPerDirectory {
+            for resourceFile in 1 ... resourcesPerDirectory {
                 let file = path + "file_\(resourceFile).png"
                 try file.write("")
                 paths.append(file)
             }
 
-            for objFile in 1...objFilesPerDirectory {
+            for objFile in 1 ... objFilesPerDirectory {
                 let header = path + "file_\(objFile).h"
                 try header.write("")
                 paths.append(header)
@@ -163,7 +163,7 @@ extension Project {
             }
 
             if depth < levels - 1 {
-                for directory in 1...directoriesPerLevel {
+                for directory in 1 ... directoriesPerLevel {
                     try createDirectory(path + "directory_\(directory)", depth: depth + 1)
                 }
             }

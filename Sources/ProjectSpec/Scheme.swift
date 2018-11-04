@@ -103,7 +103,7 @@ public struct Scheme: Equatable {
                 name: String,
                 randomExecutionOrder: Bool = false,
                 parallelizable: Bool = false
-                ) {
+            ) {
                 self.name = name
                 self.randomExecutionOrder = randomExecutionOrder
                 self.parallelizable = parallelizable

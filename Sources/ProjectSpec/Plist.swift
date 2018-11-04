@@ -8,12 +8,12 @@ public struct Plist: Equatable {
 
     public init(path: String, attributes: [String: Any] = [:]) {
         self.path = path
-        self.properties = attributes
+        properties = attributes
     }
 
     public static func == (lhs: Plist, rhs: Plist) -> Bool {
         return lhs.path == rhs.path &&
-        NSDictionary(dictionary: lhs.properties).isEqual(to: rhs.properties)
+            NSDictionary(dictionary: lhs.properties).isEqual(to: rhs.properties)
     }
 }
 

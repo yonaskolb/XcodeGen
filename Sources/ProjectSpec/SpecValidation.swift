@@ -147,16 +147,15 @@ extension Project {
                     let path = Path(dependency.reference)
                     if !dependency.reference.contains("/") {
                         switch path.extension {
-                            case "framework"?,
-                                 "tbd"?:
+                        case "framework"?,
+                             "tbd"?:
                             break
-                            default:
-                              errors.append(.invalidSDKDependency(target: target.name, dependency: dependency.reference))
+                        default:
+                            errors.append(.invalidSDKDependency(target: target.name, dependency: dependency.reference))
                         }
                     }
                 default: break
                 }
-
             }
 
             for source in target.sources {

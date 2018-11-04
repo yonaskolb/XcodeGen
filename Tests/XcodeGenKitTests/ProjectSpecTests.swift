@@ -176,17 +176,17 @@ class ProjectSpecTests: XCTestCase {
 
             $0.it("fails with invalid sdk dependency") {
                 var project = baseProject
-                project.targets = [Target(
-                    name: "target1",
-                    type: .application,
-                    platform: .iOS,
-                    dependencies: [Dependency(type: .sdk, reference: "invalidDependency")]
-                    )
-                    ]
+                project.targets = [
+                    Target(
+                        name: "target1",
+                        type: .application,
+                        platform: .iOS,
+                        dependencies: [Dependency(type: .sdk, reference: "invalidDependency")]
+                    ),
+                ]
 
-                 try expectValidationError(project, .invalidSDKDependency(target: "target1", dependency: "invalidDependency"))
+                try expectValidationError(project, .invalidSDKDependency(target: "target1", dependency: "invalidDependency"))
             }
-
 
             $0.it("fails with invalid scheme") {
                 var project = baseProject

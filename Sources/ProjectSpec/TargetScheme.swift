@@ -34,7 +34,7 @@ extension TargetScheme: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
         if let targets = jsonDictionary["testTargets"] as? [Any] {
-            self.testTargets = try targets.compactMap { target in
+            testTargets = try targets.compactMap { target in
                 if let string = target as? String {
                     return .init(name: string)
                 } else if let dictionary = target as? JSONDictionary {

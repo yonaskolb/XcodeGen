@@ -22,9 +22,9 @@ fileprivate let framework = Target(
 )
 
 fileprivate let optionalFramework = Target(
-	name: "MyOptionalFramework",
-	type: .framework,
-	platform: .iOS
+    name: "MyOptionalFramework",
+    type: .framework,
+    platform: .iOS
 )
 
 fileprivate let uiTest = Target(
@@ -197,7 +197,7 @@ class ProjectGeneratorTests: XCTestCase {
                     targets: [
                         Target(name: "1", type: .application, platform: .iOS),
                         Target(name: "2", type: .framework, platform: .iOS),
-                        ]
+                    ]
                 )
                 var buildSettings = project.getProjectBuildSettings(config: project.configs.first!)
                 try expect(buildSettings["SDKROOT"] as? String) == "iphoneos"
@@ -828,7 +828,7 @@ class ProjectGeneratorTests: XCTestCase {
                     platform: .iOS,
                     dependencies: [
                         Dependency(type: .target, reference: "MyFramework"),
-                        Dependency(type: .target, reference: "MyOptionalFramework", weakLink: true)
+                        Dependency(type: .target, reference: "MyOptionalFramework", weakLink: true),
                     ]
                 )
 
@@ -858,7 +858,7 @@ class ProjectGeneratorTests: XCTestCase {
                 try writer.writePlists()
 
                 guard let targetConfig = pbxProject.nativeTargets.first?.buildConfigurationList?.buildConfigurations.first else {
-                        throw failure("Couldn't find Target config")
+                    throw failure("Couldn't find Target config")
                 }
 
                 try expect(targetConfig.buildSettings["INFOPLIST_FILE"] as? String) == plist.path
@@ -877,7 +877,7 @@ class ProjectGeneratorTests: XCTestCase {
                 expectedInfoPlist["CFBundlePackageType"] = "APPL"
                 expectedInfoPlist["UISupportedInterfaceOrientations"] = ["UIInterfaceOrientationPortrait", "UIInterfaceOrientationLandscapeLeft"]
 
-                try expect(NSDictionary.init(dictionary: expectedInfoPlist).isEqual(to: infoPlist)).beTrue()
+                try expect(NSDictionary(dictionary: expectedInfoPlist).isEqual(to: infoPlist)).beTrue()
             }
         }
     }

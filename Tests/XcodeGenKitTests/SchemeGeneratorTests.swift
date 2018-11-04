@@ -34,8 +34,6 @@ fileprivate let uiTest = Target(
 
 class SchemeGeneratorTests: XCTestCase {
 
-
-
     func testSchemes() {
         describe {
 
@@ -55,7 +53,7 @@ class SchemeGeneratorTests: XCTestCase {
                 let xcodeProject = try project.generateXcodeProject()
                 guard let target = xcodeProject.pbxproj.nativeTargets
                     .first(where: { $0.name == app.name }) else {
-                        throw failure("Target not found")
+                    throw failure("Target not found")
                 }
                 guard let xcscheme = xcodeProject.sharedData?.schemes.first else {
                     throw failure("Scheme not found")
@@ -77,7 +75,7 @@ class SchemeGeneratorTests: XCTestCase {
                     xcscheme.launchAction?.buildableProductRunnable?.buildableReference,
                     xcscheme.profileAction?.buildableProductRunnable?.buildableReference,
                     xcscheme.testAction?.macroExpansion,
-                    ].compactMap { $0 }
+                ].compactMap { $0 }
 
                 for buildableReference in buildableReferences {
                     // FIXME: try expect(buildableReference.blueprintIdentifier) == target.reference
@@ -96,7 +94,7 @@ class SchemeGeneratorTests: XCTestCase {
                 let runVariables: [XCScheme.EnvironmentVariable] = [
                     XCScheme.EnvironmentVariable(variable: "RUN_ENV", value: "ENABLED", enabled: true),
                     XCScheme.EnvironmentVariable(variable: "OTHER_RUN_ENV", value: "DISABLED", enabled: false),
-                    ]
+                ]
 
                 let scheme = Scheme(
                     name: "EnvironmentVariablesScheme",
@@ -120,7 +118,7 @@ class SchemeGeneratorTests: XCTestCase {
                 try expect(
                     xcodeProject.pbxproj.nativeTargets
                         .contains(where: { $0.name == app.name })
-                    ).beTrue()
+                ).beTrue()
                 try expect(xcscheme.launchAction?.environmentVariables) == runVariables
                 try expect(xcscheme.testAction?.environmentVariables).to.beNil()
                 try expect(xcscheme.profileAction?.environmentVariables).to.beNil()
@@ -135,7 +133,7 @@ class SchemeGeneratorTests: XCTestCase {
                     Config(name: "Production Debug", type: .debug),
                     Config(name: "Test Release", type: .release),
                     Config(name: "Production Release", type: .release),
-                    ]
+                ]
 
                 let project = Project(basePath: "", name: "test", configs: configs, targets: [target, framework])
                 let xcodeProject = try project.generateXcodeProject()
@@ -144,7 +142,7 @@ class SchemeGeneratorTests: XCTestCase {
 
                 guard let xcscheme = xcodeProject.sharedData?.schemes
                     .first(where: { $0.name == "\(target.name) Test" }) else {
-                        throw failure("Scheme not found")
+                    throw failure("Scheme not found")
                 }
                 guard let buildActionEntry = xcscheme.buildAction?.buildActionEntries.first else {
                     throw failure("Build Action entry not found")

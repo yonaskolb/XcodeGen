@@ -541,18 +541,22 @@ public class PBXProjGenerator {
                     fileReference = existingFileReferences
                 } else {
                     fileReference = addObject(
-                        PBXFileReference(sourceTree: .sdkRoot,
-                                         name: dependencyPath.lastComponent,
-                                         lastKnownFileType: Xcode.fileType(path: dependencyPath),
-                                         path: dependencyPath.string)
+                        PBXFileReference(
+                            sourceTree: .sdkRoot,
+                            name: dependencyPath.lastComponent,
+                            lastKnownFileType: Xcode.fileType(path: dependencyPath),
+                            path: dependencyPath.string
+                        )
                     )
                     sdkFileReferences[dependency.reference] = fileReference
                     frameworkFiles.append(fileReference)
                 }
 
                 let buildFile = addObject(
-                    PBXBuildFile(file: fileReference,
-                                 settings: getDependencyFrameworkSettings(dependency: dependency))
+                    PBXBuildFile(
+                        file: fileReference,
+                        settings: getDependencyFrameworkSettings(dependency: dependency)
+                    )
                 )
                 targetFrameworkBuildFiles.append(buildFile)
 
@@ -634,7 +638,7 @@ public class PBXProjGenerator {
 
         let headersBuildPhaseFiles = getBuildFilesForPhase(.headers)
         if !headersBuildPhaseFiles.isEmpty {
-            if (target.type == .framework || target.type == .dynamicLibrary) {
+            if target.type == .framework || target.type == .dynamicLibrary {
                 let headersBuildPhase = addObject(PBXHeadersBuildPhase(files: headersBuildPhaseFiles))
                 buildPhases.append(headersBuildPhase)
             } else {

@@ -1,5 +1,5 @@
-import UIKit
 import Contacts
+import UIKit
 
 class ViewController: UIViewController {
 

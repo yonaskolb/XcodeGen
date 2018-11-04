@@ -163,15 +163,15 @@ class SpecLoadingTests: XCTestCase {
                     "path": "Info.plist",
                     "properties": [
                         "CFBundleName": "MyAppName",
-                        "UIBackgroundModes": ["fetch"]
-                    ]
+                        "UIBackgroundModes": ["fetch"],
+                    ],
                 ]
 
                 let target = try Target(name: "", jsonDictionary: targetDictionary)
                 try expect(target.info) == Plist(path: "Info.plist", attributes: [
                     "CFBundleName": "MyAppName",
-                    "UIBackgroundModes": ["fetch"]
-                    ])
+                    "UIBackgroundModes": ["fetch"],
+                ])
             }
 
             $0.it("parses entitlement plist") {
@@ -180,13 +180,13 @@ class SpecLoadingTests: XCTestCase {
                     "path": "app.entitlements",
                     "properties": [
                         "com.apple.security.application-groups": "com.group",
-                    ]
+                    ],
                 ]
 
                 let target = try Target(name: "", jsonDictionary: targetDictionary)
                 try expect(target.entitlements) == Plist(path: "app.entitlements", attributes: [
                     "com.apple.security.application-groups": "com.group",
-                    ])
+                ])
             }
 
             $0.it("parses cross platform targets") {
@@ -325,7 +325,7 @@ class SpecLoadingTests: XCTestCase {
                             ],
                         ],
                         "gatherCoverageData": true,
-                    ]
+                    ],
                 ]
                 let scheme = try Scheme(name: "Scheme", jsonDictionary: schemeDictionary)
                 let expectedTargets: [Scheme.BuildTarget] = [
@@ -345,14 +345,18 @@ class SpecLoadingTests: XCTestCase {
                 try expect(scheme.build.parallelizeBuild) == false
                 try expect(scheme.build.buildImplicitDependencies) == false
 
-                let expectedTest = Scheme.Test(config: "debug",
-                                               gatherCoverageData: true,
-                                               targets: [
-                                                "Target1",
-                                                Scheme.Test.TestTarget(name: "Target2",
-                                                                              randomExecutionOrder: true,
-                                                                              parallelizable: true)
-                    ])
+                let expectedTest = Scheme.Test(
+                    config: "debug",
+                    gatherCoverageData: true,
+                    targets: [
+                        "Target1",
+                        Scheme.Test.TestTarget(
+                            name: "Target2",
+                            randomExecutionOrder: true,
+                            parallelizable: true
+                        ),
+                    ]
+                )
                 try expect(scheme.test) == expectedTest
             }
 

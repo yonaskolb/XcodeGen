@@ -1,5 +1,5 @@
-import Result
 import Foundation
+import Result
 import WatchKit
 
 class InterfaceController: WKInterfaceController {

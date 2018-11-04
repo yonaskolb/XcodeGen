@@ -1,6 +1,6 @@
 import Foundation
-import ProjectSpec
 import PathKit
+import ProjectSpec
 
 public class InfoPlistGenerator {
 
@@ -8,7 +8,7 @@ public class InfoPlistGenerator {
      Default info plist attributes taken from:
      /Applications/Xcode.app/Contents/Developer/Library/Xcode/Templates/Project Templates/Base/Base_DefinitionsInfoPlist.xctemplate/TemplateInfo.plist
      */
-    var defaultInfoPlist: [String: Any] =  {
+    var defaultInfoPlist: [String: Any] = {
         var dictionary: [String: Any] = [:]
         dictionary["CFBundleIdentifier"] = "$(PRODUCT_BUNDLE_IDENTIFIER)"
         dictionary["CFBundleInfoDictionaryVersion"] = "6.0"

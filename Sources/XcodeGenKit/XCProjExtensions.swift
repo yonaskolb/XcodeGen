@@ -1,6 +1,6 @@
 import Foundation
-import xcodeproj
 import PathKit
+import xcodeproj
 
 extension PBXFileElement {
 
