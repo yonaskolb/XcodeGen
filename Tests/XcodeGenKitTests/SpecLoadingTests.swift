@@ -3,7 +3,7 @@ import PathKit
 import ProjectSpec
 import Spectre
 import XcodeGenKit
-import xcproj
+import xcodeproj
 import XCTest
 
 class SpecLoadingTests: XCTestCase {
@@ -146,13 +146,47 @@ class SpecLoadingTests: XCTestCase {
                 targetDictionary["dependencies"] = [
                     ["target": "name", "embed": false],
                     ["carthage": "name"],
-                    ["framework": "path"],
+                    ["framework": "path", "weak": true],
+                    ["sdk": "Contacts.framework"],
                 ]
                 let target = try Target(name: "test", jsonDictionary: targetDictionary)
-                try expect(target.dependencies.count) == 3
+                try expect(target.dependencies.count) == 4
                 try expect(target.dependencies[0]) == Dependency(type: .target, reference: "name", embed: false)
                 try expect(target.dependencies[1]) == Dependency(type: .carthage, reference: "name")
-                try expect(target.dependencies[2]) == Dependency(type: .framework, reference: "path")
+                try expect(target.dependencies[2]) == Dependency(type: .framework, reference: "path", weakLink: true)
+                try expect(target.dependencies[3]) == Dependency(type: .sdk, reference: "Contacts.framework")
+            }
+
+            $0.it("parses info plist") {
+                var targetDictionary = validTarget
+                targetDictionary["info"] = [
+                    "path": "Info.plist",
+                    "properties": [
+                        "CFBundleName": "MyAppName",
+                        "UIBackgroundModes": ["fetch"],
+                    ],
+                ]
+
+                let target = try Target(name: "", jsonDictionary: targetDictionary)
+                try expect(target.info) == Plist(path: "Info.plist", attributes: [
+                    "CFBundleName": "MyAppName",
+                    "UIBackgroundModes": ["fetch"],
+                ])
+            }
+
+            $0.it("parses entitlement plist") {
+                var targetDictionary = validTarget
+                targetDictionary["entitlements"] = [
+                    "path": "app.entitlements",
+                    "properties": [
+                        "com.apple.security.application-groups": "com.group",
+                    ],
+                ]
+
+                let target = try Target(name: "", jsonDictionary: targetDictionary)
+                try expect(target.entitlements) == Plist(path: "app.entitlements", attributes: [
+                    "com.apple.security.application-groups": "com.group",
+                ])
             }
 
             $0.it("parses cross platform targets") {
@@ -221,7 +255,7 @@ class SpecLoadingTests: XCTestCase {
             $0.it("parses target schemes") {
                 var targetDictionary = validTarget
                 targetDictionary["scheme"] = [
-                    "testTargets": ["t1", "t2"],
+                    "testTargets": ["t1", ["name": "t2"]],
                     "configVariants": ["dev", "app-store"],
                     "commandLineArguments": [
                         "ENV1": true,
@@ -280,6 +314,18 @@ class SpecLoadingTests: XCTestCase {
                             ],
                         ],
                     ],
+                    "test": [
+                        "config": "debug",
+                        "targets": [
+                            "Target1",
+                            [
+                                "name": "Target2",
+                                "parallelizable": true,
+                                "randomExecutionOrder": true,
+                            ],
+                        ],
+                        "gatherCoverageData": true,
+                    ],
                 ]
                 let scheme = try Scheme(name: "Scheme", jsonDictionary: schemeDictionary)
                 let expectedTargets: [Scheme.BuildTarget] = [
@@ -298,6 +344,20 @@ class SpecLoadingTests: XCTestCase {
 
                 try expect(scheme.build.parallelizeBuild) == false
                 try expect(scheme.build.buildImplicitDependencies) == false
+
+                let expectedTest = Scheme.Test(
+                    config: "debug",
+                    gatherCoverageData: true,
+                    targets: [
+                        "Target1",
+                        Scheme.Test.TestTarget(
+                            name: "Target2",
+                            randomExecutionOrder: true,
+                            parallelizable: true
+                        ),
+                    ]
+                )
+                try expect(scheme.test) == expectedTest
             }
 
             $0.it("parses schemes variables") {

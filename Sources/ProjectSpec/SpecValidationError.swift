@@ -6,6 +6,7 @@ public struct SpecValidationError: Error, CustomStringConvertible {
 
     public enum ValidationError: Error, CustomStringConvertible {
         case invalidXcodeGenVersion(minimumVersion: Version, version: Version)
+        case invalidSDKDependency(target: String, dependency: String)
         case invalidTargetDependency(target: String, dependency: String)
         case invalidTargetSource(target: String, source: String)
         case invalidTargetConfigFile(target: String, configFile: String, config: String)
@@ -21,11 +22,14 @@ public struct SpecValidationError: Error, CustomStringConvertible {
         case invalidConfigFileConfig(String)
         case missingConfigForTargetScheme(target: String, configType: ConfigType)
         case missingDefaultConfig(configName: String)
+        case invalidPerConfigSettings
 
         public var description: String {
             switch self {
             case let .invalidXcodeGenVersion(minimumVersion, version):
                 return "XcodeGen version is \(version), but minimum required version specified as \(minimumVersion)"
+            case let .invalidSDKDependency(target, dependency):
+                return "Target \(target.quoted) has invalid sdk dependency: \(dependency.quoted). It must be a full path or have the following extensions: .framework, .dylib, .tbd"
             case let .invalidTargetDependency(target, dependency):
                 return "Target \(target.quoted) has invalid dependency: \(dependency.quoted)"
             case let .invalidTargetConfigFile(target, configFile, config):
@@ -56,6 +60,8 @@ public struct SpecValidationError: Error, CustomStringConvertible {
                 return "Target \(target.quoted) is missing a config of type \(configType.rawValue) to generate its scheme"
             case let .missingDefaultConfig(name):
                 return "Default configuration \(name) doesn't exist"
+            case .invalidPerConfigSettings:
+                return "Settings that are for a specific config must go in \"configs\". \"base\" can be used for common settings"
             }
         }
     }

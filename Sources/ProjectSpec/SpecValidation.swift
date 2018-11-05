@@ -22,6 +22,24 @@ extension Project {
                     }
                 }
             }
+
+            if settings.buildSettings.count == configs.count {
+                var allConfigs = true
+                for buildSetting in settings.buildSettings.keys {
+                    var isConfig = false
+                    for config in configs {
+                        if config.name.lowercased().contains(buildSetting.lowercased()) {
+                            isConfig = true
+                        }
+                    }
+                    if !isConfig {
+                        allConfigs = false
+                    }
+                }
+                if allConfigs {
+                    errors.append(.invalidPerConfigSettings)
+                }
+            }
             return errors
         }
 
@@ -92,8 +110,8 @@ extension Project {
                 }
 
                 for testTarget in scheme.testTargets {
-                    if getTarget(testTarget) == nil {
-                        errors.append(.invalidTargetSchemeTest(target: target.name, testTarget: testTarget))
+                    if getTarget(testTarget.name) == nil {
+                        errors.append(.invalidTargetSchemeTest(target: target.name, testTarget: testTarget.name))
                     }
                 }
             }
@@ -120,8 +138,23 @@ extension Project {
 
         for target in targets {
             for dependency in target.dependencies {
-                if dependency.type == .target, getProjectTarget(dependency.reference) == nil {
-                    errors.append(.invalidTargetDependency(target: target.name, dependency: dependency.reference))
+                switch dependency.type {
+                case .target:
+                    if getProjectTarget(dependency.reference) == nil {
+                        errors.append(.invalidTargetDependency(target: target.name, dependency: dependency.reference))
+                    }
+                case .sdk:
+                    let path = Path(dependency.reference)
+                    if !dependency.reference.contains("/") {
+                        switch path.extension {
+                        case "framework"?,
+                             "tbd"?:
+                            break
+                        default:
+                            errors.append(.invalidSDKDependency(target: target.name, dependency: dependency.reference))
+                        }
+                    }
+                default: break
                 }
             }
 

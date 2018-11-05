@@ -7,6 +7,7 @@
 - [Use dependencies](#use-dependencies)
     - [Cocoapods](#cocoapods)
     - [Carthage](#carthage)
+    - [SDK](#sdk)
 
 # Configuring build settings
 There are various ways of configuring build settings
@@ -92,7 +93,7 @@ DEVELOPMENT_TEAM=XXXXXXXXX xcodebuild ...
 
 # Use dependencies
 
-Each target can declare one or more dependencies. See [Dependency](#dependency) for more info
+Each target can declare one or more dependencies. See [Dependency](ProjectSpec.md#dependency) in the ProjectSpec for more info about all the properties
 
 ### Cocoapods
 Use your `podfile` as normal. The pods themselves don't need to be referenced in the project spec. After you generate your project simply run `pod install` which will integrate with your project and create a workspace.
@@ -100,7 +101,7 @@ Use your `podfile` as normal. The pods themselves don't need to be referenced in
 ### Carthage
 XcodeGen makes integrating Carthage dependencies super easy!
 
-You simply reference them in each target that requires them and XcodeGen does the rest by automatically linking and embedding the carthage frameworks where neccessary.
+You simply reference them in each target that requires them and XcodeGen does the rest by automatically linking and embedding the carthage frameworks where necessary.
 
 ```yaml
 targets:
@@ -111,4 +112,29 @@ targets:
   Framework:
     dependencies:
       - carthage: Alamofire
+```
+
+XcodeGen automatically creates the build phase that Carthage requires which lists all the files and runs `carthage copy-frameworks`. You can change the invocation of carthage to something different, for example if you are running it with [Mint](https://github.com/yonaskolb/mint). This is then prepended to ` copy frameworks`
+
+```yaml
+options:
+	carthageExecutablePath: mint run Carthage/Carthage carthage
+```
+
+By default XcodeGen looks for carthage frameworks in `Carthage/Build`. You can change this with the `carthageBuildPath` option
+
+```yaml
+options:
+	carthageBuildPath: ../../Carthage/Build
+```
+
+### SDK
+System frameworks and libs can be linked by using the `sdk` dependency type. You can either specify frameworks or libs by using a `.framework` or `.tbd` filename, respectively
+
+```yaml
+targets:
+  App:
+    dependencies:
+      - sdk: Contacts.framework
+      - sdk: libc++.tbd
 ```

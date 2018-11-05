@@ -171,6 +171,16 @@ Settings are merged in the following order: groups, base, configs.
 	- `FRAMEWORK_SEARCH_PATHS`: If carthage dependencies are used, the platform build path will be added to this setting
 	- `OTHER_LDFLAGS`:  See `requiresObjCLinking` below
 - [ ] **dependencies**: **[[Dependency](#dependency)]** - Dependencies for the target
+- [ ] **info**: **[Plist](#plist)** - If defined, this will generate and write an `Info.plist` to the specified path and use it by setting the `INFOPLIST_FILE` build setting for every configuration. The following properties are generated automatically, the rest will have to be provided.
+  - `CFBundleIdentifier`
+  - `CFBundleInfoDictionaryVersion`
+  - `CFBundleExecutable`
+  - `CFBundleName`
+  - `CFBundleDevelopmentRegion`
+  - `CFBundleShortVersionString`
+  - `CFBundleVersion`
+  - `CFBundlePackageType`
+- [ ] **entitlements**: **[Plist](#plist)** - If defined this will generate and write a `.entitlements` file, and use it by setting `CODE_SIGN_ENTITLEMENTS` build setting for every configuration. All properties must be provided
 - [ ] **templates**: **[String]** - A list of target templates that will be merged in order
 - [ ] **transitivelyLinkDependencies**: **Bool** - If this is not specified the value from the project set in [Options](#options)`.transitivelyLinkDependencies` will be used.
 - [ ] **directlyEmbedCarthageDependencies**: **Bool** - If this is `true` Carthage dependencies will be embedded using an `Embed Frameworks` build phase instead of the `copy-frameworks` script. Defaults to `true` for all targets except iOS/tvOS/watchOS Applications.
@@ -323,15 +333,15 @@ A dependency can be one of a 3 types:
 - `target: name` - links to another target
 - `framework: path` - links to a framework
 - `carthage: name` - helper for linking to a Carthage framework
+- `sdk: name` - links to a dependency with the SDK. This can either be a relative path within the sdk root or a single filename that references a framework (.framework) or lib (.tbd)
 
-**Embed options**:
-
-These only applied to `target` and `framework` dependencies.
+**Linking options**:
 
 - [ ] **embed**: **Bool** - Whether to embed the dependency. Defaults to true for application target and false for non application targets.
 - [ ] **link**: **Bool** - Whether to link the dependency. Defaults to `true` depending on the type of the dependency and the type of the target (e.g. static libraries will only link to executables by default).
 - [ ] **codeSign**: **Bool** - Whether the `codeSignOnCopy` setting is applied when embedding framework. Defaults to true
 - [ ] **removeHeaders**: **Bool** - Whether the `removeHeadersOnCopy` setting is applied when embedding the framework. Defaults to true
+- [ ] **weak**: **Bool** - Whether the `Weak` setting is applied when linking the framework. Defaults to false
 
 **Implicit Framework options**:
 
@@ -356,6 +366,8 @@ targets:
       - target: MyFramework
       - framework: path/to/framework.framework
       - carthage: Result
+      - sdk: Contacts.framework
+      - sdk: libc++.tbd
   MyFramework:
     type: framework
 ```
@@ -373,6 +385,25 @@ targets:
     configFiles:
       Debug: App/debug.xcconfig
       Release: App/release.xcconfig
+```
+### Plist
+Plists are created on disk on every generation of the project. They can be used as a way to define `Info.plist` or `.entitlement` files. Some `Info.plist` properties are generated automatically.
+
+- [x] **path**: **String** - This is the path where the plist will be written to
+- [x] **properties**: **[String: Any]** - This is a map of all the plist keys and values
+
+```yml
+targets:
+  App:
+    info:
+      path: App/Info.plist
+      properties:
+        UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
+        UILaunchStoryboardName: LaunchScreen
+    entitlements:
+      path: App/App.entitlements
+      properties:
+        com.apple.security.application-groups: group.com.app
 ```
 
 ### Build Script
@@ -437,7 +468,7 @@ targets:
 This is a convenience used to automatically generate schemes for a target based on different configs or included tests. If you want more control check out the top level [Scheme](#scheme).
 
 - [x] **configVariants**: **[String]** - This generates a scheme for each entry, using configs that contain the name with debug and release variants. This is useful for having different environment schemes.
-- [ ] **testTargets**: **[String]** - a list of test targets that should be included in the scheme. These will be added to the build targets and the test entries
+- [ ] **testTargets**: **[[Test Target](#test-target)]** - a list of test targets that should be included in the scheme. These will be added to the build targets and the test entries. Each entry can either be a simple string, or a [Test Target](#test-target)
 - [ ] **gatherCoverageData**: **Bool** - a boolean that indicates if this scheme should gather coverage data. This defaults to false
 - [ ] **commandLineArguments**: **[String:Bool]** - a dictionary from the argument name (`String`) to if it is enabled (`Bool`). These arguments will be added to the Test, Profile and Run scheme actions
 - [ ] **environmentVariables**: **[[Environment Variable](#environment-variable)]** or **[String:String]** - environment variables for Run, Test and Profile scheme actions. When passing a dictionary, every key-value entry maps to a corresponding variable that is enabled.
@@ -561,7 +592,12 @@ A multiline script can be written using the various YAML multiline methods, for 
 ### Test Action
 
 - [ ] **gatherCoverageData**: **Bool** - a boolean that indicates if this scheme should gather coverage data. This defaults to false
-- [ ] **targets**: **[String]** - a list of targets to test
+- [ ] **targets**: **[[Test Target](#test-target)]** - a list of targets to test. Each entry can either be a simple string, or a [Test Target](#test-target)
+
+#### Test Target
+- [x] **name**: **String** - The name of the target
+- [ ] **parallelizable**: **Bool** - Whether to run tests in parallel. Defaults to false
+- [ ] **randomExecutionOrder**: **Bool** - Whether to run tests in a random order. Defaults to false
 
 ### Archive Action
 

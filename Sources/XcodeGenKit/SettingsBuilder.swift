@@ -2,13 +2,22 @@ import Foundation
 import JSONUtilities
 import PathKit
 import ProjectSpec
-import xcproj
+import xcodeproj
 import Yams
 
 extension Project {
 
     public func getProjectBuildSettings(config: Config) -> BuildSettings {
         var buildSettings: BuildSettings = [:]
+
+        // set project SDKROOT is a single platform
+        if targets.count > 0 {
+            let platforms = Dictionary(grouping: targets) { $0.platform }
+            if platforms.count == 1 {
+                let platform = platforms.first!.key
+                buildSettings["SDKROOT"] = platform.sdkRoot
+            }
+        }
 
         if let type = config.type, options.settingPresets.applyProject {
             buildSettings += SettingsPresetFile.base.getBuildSettings()
@@ -81,31 +90,27 @@ extension Project {
     }
 
     // combines all levels of a target's settings: target, target config, project, project config
-    public func getCombinedBuildSettings(basePath: Path, target: ProjectTarget, config: Config, includeProject: Bool = true) -> BuildSettings {
-        var buildSettings: BuildSettings = [:]
-        if includeProject {
-            if let configFilePath = configFiles[config.name] {
-                buildSettings += loadConfigFileBuildSettings(path: configFilePath)
-            }
-            buildSettings += getProjectBuildSettings(config: config)
+    public func getCombinedBuildSetting(_ setting: String, target: ProjectTarget, config: Config) -> Any? {
+        if let target = target as? Target,
+            let value = getTargetBuildSettings(target: target, config: config)[setting] {
+            return value
         }
-        if let configFilePath = target.configFiles[config.name] {
-            buildSettings += loadConfigFileBuildSettings(path: configFilePath)
+        if let configFilePath = target.configFiles[config.name],
+            let value = loadConfigFileBuildSettings(path: configFilePath)?[setting] {
+            return value
         }
-        if let target = target as? Target {
-            buildSettings += getTargetBuildSettings(target: target, config: config)
+        if let value = getProjectBuildSettings(config: config)[setting] {
+            return value
         }
-        return buildSettings
+        if let configFilePath = configFiles[config.name],
+            let value = loadConfigFileBuildSettings(path: configFilePath)?[setting] {
+            return value
+        }
+        return nil
     }
 
-    public func targetHasBuildSetting(_ setting: String, basePath: Path, target: Target, config: Config, includeProject: Bool = true) -> Bool {
-        let buildSettings = getCombinedBuildSettings(
-            basePath: basePath,
-            target: target,
-            config: config,
-            includeProject: includeProject
-        )
-        return buildSettings[setting] != nil
+    public func targetHasBuildSetting(_ setting: String, target: Target, config: Config) -> Bool {
+        return getCombinedBuildSetting(setting, target: target, config: config) != nil
     }
 
     /// Removes values from build settings if they are defined in an xcconfig file
@@ -126,28 +131,43 @@ extension Project {
     /// Returns cached build settings from a config file
     private func loadConfigFileBuildSettings(path: String) -> BuildSettings? {
         let configFilePath = basePath + path
-        if let settings = configFileSettings[configFilePath.string] {
-            return settings
+        if let cached = configFileSettings[configFilePath.string] {
+            return cached.value
         } else {
-            guard let configFile = try? XCConfig(path: configFilePath) else { return nil }
+            guard let configFile = try? XCConfig(path: configFilePath) else {
+                configFileSettings[configFilePath.string] = .nothing
+                return nil
+            }
             let settings = configFile.flattenedBuildSettings()
-            configFileSettings[configFilePath.string] = settings
+            configFileSettings[configFilePath.string] = .cached(settings)
             return settings
         }
     }
 }
 
+private enum Cached<T> {
+    case cached(T)
+    case nothing
+
+    var value: T? {
+        switch self {
+        case let .cached(value): return value
+        case .nothing: return nil
+        }
+    }
+}
+
 // cached flattened xcconfig file settings
-private var configFileSettings: [String: BuildSettings] = [:]
+private var configFileSettings: [String: Cached<BuildSettings>] = [:]
 
 // cached setting preset settings
-private var settingPresetSettings: [String: BuildSettings] = [:]
+private var settingPresetSettings: [String: Cached<BuildSettings>] = [:]
 
 extension SettingsPresetFile {
 
     public func getBuildSettings() -> BuildSettings? {
-        if let group = settingPresetSettings[path] {
-            return group
+        if let cached = settingPresetSettings[path] {
+            return cached.value
         }
         let bundlePath = Path(Bundle.main.bundlePath)
         let relativePath = Path("SettingPresets/\(path).yml")
@@ -171,6 +191,7 @@ extension SettingsPresetFile {
             case .product, .productPlatform:
                 break
             }
+            settingPresetSettings[path] = .nothing
             return nil
         }
 
@@ -178,7 +199,7 @@ extension SettingsPresetFile {
             print("Error parsing \"\(name)\" settings")
             return nil
         }
-        settingPresetSettings[path] = buildSettings
+        settingPresetSettings[path] = .cached(buildSettings)
         return buildSettings
     }
 }

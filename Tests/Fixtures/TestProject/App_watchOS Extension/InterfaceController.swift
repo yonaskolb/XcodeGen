@@ -1,12 +1,12 @@
-import Alamofire
 import Foundation
+import Result
 import WatchKit
 
 class InterfaceController: WKInterfaceController {
 
     override func awake(withContext context: Any?) {
         super.awake(withContext: context)
-        let method = HTTPMethod.get
+        _ = Result<String, NoError>.success("value")
         // Configure interface objects here.
     }
 

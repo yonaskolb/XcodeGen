@@ -1,6 +1,5 @@
 import Foundation
 import JSONUtilities
-import xcproj
 
 public struct DeploymentTarget: Equatable {
 
@@ -39,6 +38,15 @@ extension Platform {
         case .tvOS: return "TVOS_DEPLOYMENT_TARGET"
         case .watchOS: return "WATCHOS_DEPLOYMENT_TARGET"
         case .macOS: return "MACOSX_DEPLOYMENT_TARGET"
+        }
+    }
+
+    public var sdkRoot: String {
+        switch self {
+        case .iOS: return "iphoneos"
+        case .tvOS: return "appletvos"
+        case .watchOS: return "watchos"
+        case .macOS: return "macosx"
         }
     }
 }

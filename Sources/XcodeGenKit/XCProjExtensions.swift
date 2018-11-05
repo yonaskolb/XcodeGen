@@ -1,5 +1,6 @@
 import Foundation
-import xcproj
+import PathKit
+import xcodeproj
 
 extension PBXFileElement {
 
@@ -11,8 +12,8 @@ extension PBXFileElement {
 extension PBXProj {
 
     public func printGroups() -> String {
-        guard let project = objects.projects.first?.value,
-            let mainGroup = objects.groups.getReference(project.mainGroup) else {
+        guard let project = projects.first,
+            let mainGroup = project.mainGroup else {
             return ""
         }
         return printGroup(group: mainGroup)
@@ -20,17 +21,31 @@ extension PBXProj {
 
     public func printGroup(group: PBXGroup) -> String {
         var string = group.nameOrPath
-        for reference in group.children {
-            if let group = objects.groups.getReference(reference) {
+        for child in group.children {
+            if let group = child as? PBXGroup {
                 string += "\n 📁  " + printGroup(group: group).replacingOccurrences(of: "\n ", with: "\n    ")
-            } else if let fileReference = objects.fileReferences.getReference(reference) {
+            } else if let fileReference = child as? PBXFileReference {
                 string += "\n 📄  " + fileReference.nameOrPath
-            } else if let variantGroup = objects.variantGroups.getReference(reference) {
+            } else if let variantGroup = child as? PBXVariantGroup {
                 string += "\n 🌎  " + variantGroup.nameOrPath
-            } else if let versionGroup = objects.versionGroups.getReference(reference) {
+            } else if let versionGroup = child as? XCVersionGroup {
                 string += "\n 🔢  " + versionGroup.nameOrPath
             }
         }
         return string
+    }
+}
+
+extension Dictionary {
+
+    public var valueArray: Array<Value> {
+        return Array(values)
+    }
+}
+
+extension Xcode {
+
+    public static func fileType(path: Path) -> String? {
+        return path.extension.flatMap { Xcode.filetype(extension: $0) }
     }
 }

@@ -2,7 +2,7 @@ import PathKit
 import ProjectSpec
 import Spectre
 import XcodeGenKit
-import xcproj
+import xcodeproj
 import XCTest
 import Yams
 
@@ -21,6 +21,12 @@ fileprivate let framework = Target(
     settings: Settings(buildSettings: ["SETTING_2": "VALUE"])
 )
 
+fileprivate let optionalFramework = Target(
+    name: "MyOptionalFramework",
+    type: .framework,
+    platform: .iOS
+)
+
 fileprivate let uiTest = Target(
     name: "MyAppUITests",
     type: .uiTestBundle,
@@ -29,7 +35,7 @@ fileprivate let uiTest = Target(
     dependencies: [Dependency(type: .target, reference: "MyApp")]
 )
 
-fileprivate let targets = [app, framework, uiTest]
+fileprivate let targets = [app, framework, optionalFramework, uiTest]
 
 class ProjectGeneratorTests: XCTestCase {
 
@@ -41,11 +47,9 @@ class ProjectGeneratorTests: XCTestCase {
                 let options = SpecOptions(bundleIdPrefix: "com.test")
                 let project = Project(basePath: "", name: "test", targets: [framework], options: options)
                 let pbxProj = try project.generatePbxProj()
-                guard let target = pbxProj.objects.nativeTargets.first?.value,
+                guard let target = pbxProj.nativeTargets.first,
                     let buildConfigList = target.buildConfigurationList,
-                    let buildConfigs = pbxProj.objects.configurationLists.getReference(buildConfigList),
-                    let buildConfigReference = buildConfigs.buildConfigurations.first,
-                    let buildConfig = pbxProj.objects.buildConfigurations.getReference(buildConfigReference) else {
+                    let buildConfig = buildConfigList.buildConfigurations.first else {
                     throw failure("Build Config not found")
                 }
                 try expect(buildConfig.buildSettings["PRODUCT_BUNDLE_IDENTIFIER"] as? String) == "com.test.MyFramework"
@@ -55,15 +59,15 @@ class ProjectGeneratorTests: XCTestCase {
                 let options = SpecOptions(settingPresets: .none)
                 let project = Project(basePath: "", name: "test", targets: [framework], options: options)
                 let pbxProj = try project.generatePbxProj()
-                let allSettings = pbxProj.objects.buildConfigurations.referenceValues.reduce([:]) { $0.merged($1.buildSettings) }.keys.sorted()
-                try expect(allSettings) == ["SETTING_2"]
+                let allSettings = pbxProj.buildConfigurations.reduce([:]) { $0.merged($1.buildSettings) }.keys.sorted()
+                try expect(allSettings) == ["SDKROOT", "SETTING_2"]
             }
 
             $0.it("generates development language") {
                 let options = SpecOptions(developmentLanguage: "de")
                 let project = Project(basePath: "", name: "test", options: options)
                 let pbxProj = try project.generatePbxProj()
-                guard let pbxProject = pbxProj.objects.projects.first?.value else {
+                guard let pbxProject = pbxProj.projects.first else {
                     throw failure("Could't find PBXProject")
                 }
                 try expect(pbxProject.developmentRegion) == "de"
@@ -92,8 +96,8 @@ class ProjectGeneratorTests: XCTestCase {
                 let project = Project(basePath: "", name: "test", configs: [Config(name: "Aconfig"), Config(name: "Bconfig")], targets: [framework], options: options)
                 let pbxProject = try project.generatePbxProj()
 
-                guard let projectConfigListReference = pbxProject.objects.projects.values.first?.buildConfigurationList,
-                    let defaultConfigurationName = pbxProject.objects.configurationLists[projectConfigListReference]?.defaultConfigurationName
+                guard let projectConfigList = pbxProject.projects.first?.buildConfigurationList,
+                    let defaultConfigurationName = projectConfigList.defaultConfigurationName
                 else {
                     throw failure("Default configuration name not found")
                 }
@@ -109,7 +113,7 @@ class ProjectGeneratorTests: XCTestCase {
             $0.it("generates config defaults") {
                 let project = Project(basePath: "", name: "test")
                 let pbxProj = try project.generatePbxProj()
-                let configs = pbxProj.objects.buildConfigurations.referenceValues
+                let configs = pbxProj.buildConfigurations
                 try expect(configs.count) == 2
                 try expect(configs).contains(name: "Debug")
                 try expect(configs).contains(name: "Release")
@@ -122,7 +126,7 @@ class ProjectGeneratorTests: XCTestCase {
                     configs: [Config(name: "config1"), Config(name: "config2")]
                 )
                 let pbxProj = try project.generatePbxProj()
-                let configs = pbxProj.objects.buildConfigurations.referenceValues
+                let configs = pbxProj.buildConfigurations
                 try expect(configs.count) == 2
                 try expect(configs).contains(name: "config1")
                 try expect(configs).contains(name: "config2")
@@ -135,7 +139,7 @@ class ProjectGeneratorTests: XCTestCase {
                     configs: [Config(name: "config")]
                 )
                 let pbxProj = try project.generatePbxProj()
-                guard let config = pbxProj.objects.buildConfigurations.first?.value else {
+                guard let config = pbxProj.buildConfigurations.first else {
                     throw failure("configuration not found")
                 }
                 try expect(config.buildSettings.isEmpty).to.beTrue()
@@ -150,6 +154,7 @@ class ProjectGeneratorTests: XCTestCase {
                 let targetDebugSettings = project.getTargetBuildSettings(target: target, config: config)
 
                 var buildSettings = BuildSettings()
+                buildSettings += ["SDKROOT": "iphoneos"]
                 buildSettings += SettingsPresetFile.base.getBuildSettings()
                 buildSettings += SettingsPresetFile.config(.debug).getBuildSettings()
 
@@ -184,6 +189,23 @@ class ProjectGeneratorTests: XCTestCase {
                 try expect(buildSettings["SETTING1"] as? String) == "VALUE1"
                 try expect(buildSettings["SETTING2"] as? String) == "VALUE2"
             }
+
+            $0.it("sets project SDKROOT if there is only a single platform") {
+                var project = Project(
+                    basePath: "",
+                    name: "test",
+                    targets: [
+                        Target(name: "1", type: .application, platform: .iOS),
+                        Target(name: "2", type: .framework, platform: .iOS),
+                    ]
+                )
+                var buildSettings = project.getProjectBuildSettings(config: project.configs.first!)
+                try expect(buildSettings["SDKROOT"] as? String) == "iphoneos"
+
+                project.targets.append(Target(name: "3", type: .application, platform: .tvOS))
+                buildSettings = project.getProjectBuildSettings(config: project.configs.first!)
+                try expect(buildSettings["SDKROOT"]).beNil()
+            }
         }
     }
 
@@ -198,8 +220,8 @@ class ProjectGeneratorTests: XCTestCase {
 
             $0.it("generates aggregate targets") {
                 let pbxProject = try project.generatePbxProj()
-                let nativeTargets = pbxProject.objects.nativeTargets.referenceValues
-                let aggregateTargets = pbxProject.objects.aggregateTargets.referenceValues
+                let nativeTargets = pbxProject.nativeTargets.sorted { $0.name < $1.name }
+                let aggregateTargets = pbxProject.aggregateTargets.sorted { $0.name < $1.name }
 
                 try expect(nativeTargets.count) == 4
                 try expect(aggregateTargets.count) == 2
@@ -216,8 +238,7 @@ class ProjectGeneratorTests: XCTestCase {
                 let target2 = nativeTargets.first { $0.name == "Other2" }
                 try expect(target2?.dependencies.count) == 2
 
-                let targetDependencies = pbxProject.objects.targetDependencies.referenceValues
-                try expect(targetDependencies.count) == 7
+                try expect(pbxProject.targetDependencies.count) == 7
             }
         }
     }
@@ -229,11 +250,12 @@ class ProjectGeneratorTests: XCTestCase {
 
             $0.it("generates targets") {
                 let pbxProject = try project.generatePbxProj()
-                let nativeTargets = pbxProject.objects.nativeTargets.referenceValues
-                try expect(nativeTargets.count) == 3
+                let nativeTargets = pbxProject.nativeTargets
+                try expect(nativeTargets.count) == 4
                 try expect(nativeTargets.contains { $0.name == app.name }).beTrue()
                 try expect(nativeTargets.contains { $0.name == framework.name }).beTrue()
                 try expect(nativeTargets.contains { $0.name == uiTest.name }).beTrue()
+                try expect(nativeTargets.contains { $0.name == optionalFramework.name }).beTrue()
             }
 
             $0.it("generates target attributes") {
@@ -243,25 +265,25 @@ class ProjectGeneratorTests: XCTestCase {
 
                 var testTargetWithAttributes = uiTest
                 testTargetWithAttributes.settings.buildSettings["CODE_SIGN_STYLE"] = "Manual"
-                let project = Project(basePath: "", name: "test", targets: [appTargetWithAttributes, framework, testTargetWithAttributes])
+                let project = Project(basePath: "", name: "test", targets: [appTargetWithAttributes, framework, optionalFramework, testTargetWithAttributes])
                 let pbxProject = try project.generatePbxProj()
 
-                guard let targetAttributes = pbxProject.objects.projects.referenceValues.first?.attributes["TargetAttributes"] as? [String: [String: Any]] else {
+                guard let targetAttributes = pbxProject.projects.first?.targetAttributes else {
                     throw failure("Couldn't find Project TargetAttributes")
                 }
 
-                guard let appTarget = pbxProject.objects.targets(named: app.name).first else {
+                guard let appTarget = pbxProject.targets(named: app.name).first else {
                     throw failure("Couldn't find App Target")
                 }
 
-                guard let uiTestTarget = pbxProject.objects.targets(named: uiTest.name).first else {
+                guard let uiTestTarget = pbxProject.targets(named: uiTest.name).first else {
                     throw failure("Couldn't find UITest Target")
                 }
 
-                try expect(targetAttributes[uiTestTarget.reference]?["TestTargetID"] as? String) == appTarget.reference
-                try expect(targetAttributes[uiTestTarget.reference]?["ProvisioningStyle"] as? String) == "Manual"
-                try expect(targetAttributes[appTarget.reference]?["ProvisioningStyle"] as? String) == "Automatic"
-                try expect(targetAttributes[appTarget.reference]?["DevelopmentTeam"] as? String) == "123"
+                try expect((targetAttributes[uiTestTarget]?["TestTargetID"] as? PBXNativeTarget)?.name) == app.name
+                try expect(targetAttributes[uiTestTarget]?["ProvisioningStyle"] as? String) == "Manual"
+                try expect(targetAttributes[appTarget]?["ProvisioningStyle"] as? String) == "Automatic"
+                try expect(targetAttributes[appTarget]?["DevelopmentTeam"] as? String) == "123"
             }
 
             $0.it("generates platform version") {
@@ -270,16 +292,14 @@ class ProjectGeneratorTests: XCTestCase {
 
                 let pbxProject = try project.generatePbxProj()
 
-                guard let projectConfigListReference = pbxProject.objects.projects.values.first?.buildConfigurationList,
-                    let projectConfigReference = pbxProject.objects.configurationLists[projectConfigListReference]?.buildConfigurations.first,
-                    let projectConfig = pbxProject.objects.buildConfigurations[projectConfigReference]
+                guard let projectConfigList = pbxProject.projects.first?.buildConfigurationList,
+                    let projectConfig = projectConfigList.buildConfigurations.first
                 else {
                     throw failure("Couldn't find Project config")
                 }
 
-                guard let targetConfigListReference = pbxProject.objects.nativeTargets.referenceValues.first?.buildConfigurationList,
-                    let targetConfigReference = pbxProject.objects.configurationLists[targetConfigListReference]?.buildConfigurations.first,
-                    let targetConfig = pbxProject.objects.buildConfigurations[targetConfigReference]
+                guard let targetConfigList = pbxProject.nativeTargets.first?.buildConfigurationList,
+                    let targetConfig = targetConfigList.buildConfigurations.first
                 else {
                     throw failure("Couldn't find Target config")
                 }
@@ -296,14 +316,14 @@ class ProjectGeneratorTests: XCTestCase {
             $0.it("generates dependencies") {
                 let pbxProject = try project.generatePbxProj()
 
-                let nativeTargets = pbxProject.objects.nativeTargets.objectReferences
-                let dependencies = pbxProject.objects.targetDependencies.objectReferences
+                let nativeTargets = pbxProject.nativeTargets
+                let dependencies = pbxProject.targetDependencies.sorted { $0.target?.name ?? "" < $1.target?.name ?? "" }
                 try expect(dependencies.count) == 2
-                let appTarget = nativeTargets.first { $0.object.name == app.name }
-                let frameworkTarget = nativeTargets.first { $0.object.name == framework.name }
+                let appTarget = nativeTargets.first { $0.name == app.name }
+                let frameworkTarget = nativeTargets.first { $0.name == framework.name }
 
-                try expect(dependencies).contains { $0.object.target == appTarget?.reference }
-                try expect(dependencies).contains { $0.object.target == frameworkTarget?.reference }
+                try expect(dependencies).contains { $0.target == appTarget }
+                try expect(dependencies).contains { $0.target == frameworkTarget }
             }
 
             $0.it("generates targets with correct transitive embeds") {
@@ -543,20 +563,21 @@ class ProjectGeneratorTests: XCTestCase {
                 let pbxProject = try project.generatePbxProj()
 
                 for target in targets {
-                    guard let nativeTarget = pbxProject.objects.nativeTargets.referenceValues.first(where: { $0.name == target.name }) else {
+                    guard let nativeTarget = pbxProject.nativeTargets.first(where: { $0.name == target.name }) else {
                         throw failure("PBXNativeTarget for \(target) not found")
                     }
                     let buildPhases = nativeTarget.buildPhases
-                    let resourcesPhases = pbxProject.objects.resourcesBuildPhases.objectReferences.filter { buildPhases.contains($0.reference) }
-                    let frameworkPhases = pbxProject.objects.frameworksBuildPhases.objectReferences.filter { buildPhases.contains($0.reference) }
-                    let copyFilesPhases = pbxProject.objects.copyFilesBuildPhases.objectReferences.filter { buildPhases.contains($0.reference) }
+                    let resourcesPhases = pbxProject.resourcesBuildPhases.filter { buildPhases.contains($0) }
+                    let frameworkPhases = pbxProject.frameworksBuildPhases.filter { buildPhases.contains($0) }
+                    let copyFilesPhases = pbxProject.copyFilesBuildPhases.filter { buildPhases.contains($0) }
 
                     // ensure only the right resources are copies, no more, no less
                     let expectedResourceFiles = expectedResourceFiles[target.name]!
                     try expect(resourcesPhases.count) == (expectedResourceFiles.isEmpty ? 0 : 1)
                     if !expectedResourceFiles.isEmpty {
-                        let resourceFiles = resourcesPhases[0].object.files
-                            .compactMap { pbxProject.objects.buildFiles[$0]?.fileRef.flatMap { pbxProject.objects.fileReferences[$0]?.nameOrPath } }
+                        let resourceFiles = resourcesPhases[0].files
+                            .compactMap { $0.file }
+                            .map { $0.nameOrPath }
                         try expect(Set(resourceFiles)) == expectedResourceFiles
                     }
 
@@ -564,8 +585,8 @@ class ProjectGeneratorTests: XCTestCase {
                     let expectedLinkedFiles = expectedLinkedFiles[target.name]!
                     try expect(frameworkPhases.count) == (expectedLinkedFiles.isEmpty ? 0 : 1)
                     if !expectedLinkedFiles.isEmpty {
-                        let linkFrameworks = frameworkPhases[0].object.files
-                            .compactMap { pbxProject.objects.buildFiles[$0]?.fileRef.flatMap { pbxProject.objects.fileReferences[$0]?.nameOrPath } }
+                        let linkFrameworks = frameworkPhases[0].files
+                            .compactMap { $0.file?.nameOrPath }
                         try expect(Set(linkFrameworks)) == expectedLinkedFiles
                     }
 
@@ -573,8 +594,8 @@ class ProjectGeneratorTests: XCTestCase {
                     let expectedEmbeddedFrameworks = expectedEmbeddedFrameworks[target.name]!
                     try expect(copyFilesPhases.count) == (expectedEmbeddedFrameworks.isEmpty ? 0 : 1)
                     if !expectedEmbeddedFrameworks.isEmpty {
-                        let copyFiles = copyFilesPhases[0].object.files
-                            .compactMap { pbxProject.objects.buildFiles[$0]?.fileRef.flatMap { pbxProject.objects.fileReferences[$0]?.nameOrPath } }
+                        let copyFiles = copyFilesPhases[0].files
+                            .compactMap { $0.file?.nameOrPath }
                         try expect(Set(copyFiles)) == expectedEmbeddedFrameworks
                     }
                 }
@@ -641,11 +662,9 @@ class ProjectGeneratorTests: XCTestCase {
                 let pbxProj = try project.generatePbxProj()
 
                 func buildSettings(for target: Target) throws -> BuildSettings {
-                    guard let nativeTarget = pbxProj.objects.targets(named: target.name).first?.object,
+                    guard let nativeTarget = pbxProj.targets(named: target.name).first,
                         let buildConfigList = nativeTarget.buildConfigurationList,
-                        let buildConfigs = pbxProj.objects.configurationLists.getReference(buildConfigList),
-                        let buildConfigReference = buildConfigs.buildConfigurations.first,
-                        let buildConfig = pbxProj.objects.buildConfigurations.getReference(buildConfigReference) else {
+                        let buildConfig = buildConfigList.buildConfigurations.first else {
                         throw failure("XCBuildConfiguration not found for Target \(target.name.quoted)")
                     }
 
@@ -699,16 +718,15 @@ class ProjectGeneratorTests: XCTestCase {
                 let pbxProject = try project.generatePbxProj()
 
                 func scriptBuildPhases(target: Target) throws -> [PBXShellScriptBuildPhase] {
-                    guard let nativeTarget = pbxProject.objects.nativeTargets.referenceValues.first(where: { $0.name == target.name }) else {
+                    guard let nativeTarget = pbxProject.nativeTargets.first(where: { $0.name == target.name }) else {
                         throw failure("PBXNativeTarget for \(target) not found")
                     }
                     let buildPhases = nativeTarget.buildPhases
-                    let scriptPhases = pbxProject.objects.shellScriptBuildPhases.objectReferences.filter({ buildPhases.contains($0.reference) }).map { $0.object }
+                    let scriptPhases = buildPhases.compactMap { $0 as? PBXShellScriptBuildPhase }
                     return scriptPhases
                 }
 
                 let expectedScriptPhase = PBXShellScriptBuildPhase(
-                    files: [],
                     name: "Copy Swift Objective-C Interface Header",
                     inputPaths: ["$(DERIVED_SOURCES_DIR)/$(SWIFT_OBJC_INTERFACE_HEADER_NAME)"],
                     outputPaths: ["$(BUILT_PRODUCTS_DIR)/include/$(PRODUCT_MODULE_NAME)/$(SWIFT_OBJC_INTERFACE_HEADER_NAME)"],
@@ -728,25 +746,20 @@ class ProjectGeneratorTests: XCTestCase {
                 scriptSpec.targets[0].postBuildScripts = [BuildScript(script: .script("script3"))]
                 let pbxProject = try scriptSpec.generatePbxProj()
 
-                guard let nativeTarget = pbxProject.objects.nativeTargets.referenceValues
+                guard let nativeTarget = pbxProject.nativeTargets
                     .first(where: { $0.buildPhases.count >= 3 }) else {
                     throw failure("Target with build phases not found")
                 }
                 let buildPhases = nativeTarget.buildPhases
 
-                let scripts = pbxProject.objects.shellScriptBuildPhases.objectReferences
-                let script1 = scripts[0]
-                let script2 = scripts[1]
-                let script3 = scripts[2]
+                let scripts = pbxProject.shellScriptBuildPhases
                 try expect(scripts.count) == 3
-                try expect(buildPhases.contains(script1.reference)) == true
-                try expect(buildPhases.contains(script2.reference)) == true
-                try expect(buildPhases.contains(script3.reference)) == true
-
-                let scriptTexts = Set<String>(["script1", "script2", "script3"])
-                try expect(scriptTexts.contains(script1.object.shellScript!)) == true
-                try expect(scriptTexts.contains(script2.object.shellScript!)) == true
-                try expect(scriptTexts.contains(script3.object.shellScript!)) == true
+                let script1 = scripts.first { $0.shellScript == "script1" }!
+                let script2 = scripts.first { $0.shellScript == "script2" }!
+                let script3 = scripts.first { $0.shellScript == "script3" }!
+                try expect(buildPhases.contains(script1)) == true
+                try expect(buildPhases.contains(script2)) == true
+                try expect(buildPhases.contains(script3)) == true
             }
 
             $0.it("generates targets with cylical dependencies") {
@@ -788,7 +801,7 @@ class ProjectGeneratorTests: XCTestCase {
                 ]
                 let pbxProject = try scriptSpec.generatePbxProj()
 
-                let buildRules = pbxProject.objects.buildRules.referenceValues
+                let buildRules = pbxProject.buildRules
                 try expect(buildRules.count) == 2
                 let first = buildRules.first { $0.name == "My Rule" }!
                 let second = buildRules.first { $0.name != "My Rule" }!
@@ -810,178 +823,64 @@ class ProjectGeneratorTests: XCTestCase {
                 try expect(second.outputFiles) == []
                 try expect(second.outputFilesCompilerFlags) == []
             }
-        }
-    }
 
-    func testSchemes() {
-        describe {
-
-            let buildTarget = Scheme.BuildTarget(target: app.name)
-            $0.it("generates scheme") {
-                let preAction = Scheme.ExecutionAction(name: "Script", script: "echo Starting", settingsTarget: app.name)
-                let scheme = Scheme(
-                    name: "MyScheme",
-                    build: Scheme.Build(targets: [buildTarget], preActions: [preAction])
+            $0.it("generates dependency build file settings") {
+                let app = Target(
+                    name: "MyApp",
+                    type: .application,
+                    platform: .iOS,
+                    dependencies: [
+                        Dependency(type: .target, reference: "MyFramework"),
+                        Dependency(type: .target, reference: "MyOptionalFramework", weakLink: true),
+                    ]
                 )
-                let project = Project(
-                    basePath: "",
-                    name: "test",
-                    targets: [app, framework],
-                    schemes: [scheme]
-                )
-                let xcodeProject = try project.generateXcodeProject()
-                guard let target = xcodeProject.pbxproj.objects.nativeTargets.objectReferences
-                    .first(where: { $0.object.name == app.name }) else {
-                    throw failure("Target not found")
-                }
-                guard let xcscheme = xcodeProject.sharedData?.schemes.first else {
-                    throw failure("Scheme not found")
-                }
-                try expect(scheme.name) == "MyScheme"
-                try expect(xcscheme.buildAction?.buildImplicitDependencies) == true
-                try expect(xcscheme.buildAction?.parallelizeBuild) == true
-                try expect(xcscheme.buildAction?.preActions.first?.title) == "Script"
-                try expect(xcscheme.buildAction?.preActions.first?.scriptText) == "echo Starting"
-                try expect(xcscheme.buildAction?.preActions.first?.environmentBuildable?.buildableName) == "MyApp.app"
-                try expect(xcscheme.buildAction?.preActions.first?.environmentBuildable?.blueprintName) == "MyApp"
-                guard let buildActionEntry = xcscheme.buildAction?.buildActionEntries.first else {
-                    throw failure("Build Action entry not found")
-                }
-                try expect(buildActionEntry.buildFor) == BuildType.all
 
-                let buildableReferences: [XCScheme.BuildableReference] = [
-                    buildActionEntry.buildableReference,
-                    xcscheme.launchAction?.buildableProductRunnable?.buildableReference,
-                    xcscheme.profileAction?.buildableProductRunnable?.buildableReference,
-                    xcscheme.testAction?.macroExpansion,
-                ].compactMap { $0 }
+                let project = Project(basePath: "", name: "test", targets: [app, framework, optionalFramework, uiTest])
+                let pbxProject = try project.generatePbxProj()
 
-                for buildableReference in buildableReferences {
-                    try expect(buildableReference.blueprintIdentifier) == target.reference
-                    try expect(buildableReference.blueprintName) == target.object.name
-                    try expect(buildableReference.buildableName) == "\(target.object.name).\(target.object.productType!.fileExtension!)"
+                guard let nativeTarget = pbxProject.nativeTargets.first(where: { $0.name == app.name }) else {
+                    throw failure("PBXNativeTarget for \(app.name) not found")
                 }
+                let frameworkPhases = nativeTarget.buildPhases.compactMap { $0 as? PBXFrameworksBuildPhase }
 
-                try expect(xcscheme.launchAction?.buildConfiguration) == "Debug"
-                try expect(xcscheme.testAction?.buildConfiguration) == "Debug"
-                try expect(xcscheme.profileAction?.buildConfiguration) == "Release"
-                try expect(xcscheme.analyzeAction?.buildConfiguration) == "Debug"
-                try expect(xcscheme.archiveAction?.buildConfiguration) == "Release"
+                let frameworkBuildFiles = frameworkPhases[0].files
+                let buildFileSettings = frameworkBuildFiles.map { $0.settings }
+
+                try expect(frameworkBuildFiles.count) == 2
+                try expect(buildFileSettings.compactMap({ $0 }).count) == 1
+                try expect(buildFileSettings.compactMap({ $0?["ATTRIBUTES"] }).count) == 1
+                try expect(buildFileSettings.compactMap({ $0?["ATTRIBUTES"] as? [String] }).first) == ["Weak"]
             }
 
-            $0.it("sets environment variables for a scheme") {
-                let runVariables: [XCScheme.EnvironmentVariable] = [
-                    XCScheme.EnvironmentVariable(variable: "RUN_ENV", value: "ENABLED", enabled: true),
-                    XCScheme.EnvironmentVariable(variable: "OTHER_RUN_ENV", value: "DISABLED", enabled: false),
-                ]
+            $0.it("generates info.plist") {
+                let plist = Plist(path: "Info.plist", attributes: ["UISupportedInterfaceOrientations": ["UIInterfaceOrientationPortrait", "UIInterfaceOrientationLandscapeLeft"]])
+                let tempPath = Path.temporary + "info"
+                let project = Project(basePath: tempPath, name: "", targets: [Target(name: "", type: .application, platform: .iOS, info: plist)])
+                let pbxProject = try project.generatePbxProj()
+                let writer = FileWriter(project: project)
+                try writer.writePlists()
 
-                let scheme = Scheme(
-                    name: "EnvironmentVariablesScheme",
-                    build: Scheme.Build(targets: [buildTarget]),
-                    run: Scheme.Run(config: "Debug", environmentVariables: runVariables),
-                    test: Scheme.Test(config: "Debug"),
-                    profile: Scheme.Profile(config: "Debug")
-                )
-                let project = Project(
-                    basePath: "",
-                    name: "test",
-                    targets: [app, framework],
-                    schemes: [scheme]
-                )
-                let xcodeProject = try project.generateXcodeProject()
-
-                guard let xcscheme = xcodeProject.sharedData?.schemes.first else {
-                    throw failure("Scheme not found")
+                guard let targetConfig = pbxProject.nativeTargets.first?.buildConfigurationList?.buildConfigurations.first else {
+                    throw failure("Couldn't find Target config")
                 }
 
-                try expect(
-                    xcodeProject.pbxproj.objects.nativeTargets.objectReferences
-                        .contains(where: { $0.object.name == app.name })
-                ).beTrue()
-                try expect(xcscheme.launchAction?.environmentVariables) == runVariables
-                try expect(xcscheme.testAction?.environmentVariables).to.beNil()
-                try expect(xcscheme.profileAction?.environmentVariables).to.beNil()
-            }
+                try expect(targetConfig.buildSettings["INFOPLIST_FILE"] as? String) == plist.path
 
-            $0.it("generates target schemes from config variant") {
-                let configVariants = ["Test", "Production"]
-                var target = app
-                target.scheme = TargetScheme(configVariants: configVariants)
-                let configs: [Config] = [
-                    Config(name: "Test Debug", type: .debug),
-                    Config(name: "Production Debug", type: .debug),
-                    Config(name: "Test Release", type: .release),
-                    Config(name: "Production Release", type: .release),
-                ]
+                let infoPlistFile = tempPath + plist.path
+                let data: Data = try infoPlistFile.read()
+                let infoPlist = try PropertyListSerialization.propertyList(from: data, options: [], format: nil) as! [String: Any]
+                var expectedInfoPlist: [String: Any] = [:]
+                expectedInfoPlist["CFBundleIdentifier"] = "$(PRODUCT_BUNDLE_IDENTIFIER)"
+                expectedInfoPlist["CFBundleInfoDictionaryVersion"] = "6.0"
+                expectedInfoPlist["CFBundleExecutable"] = "$(EXECUTABLE_NAME)"
+                expectedInfoPlist["CFBundleName"] = "$(PRODUCT_NAME)"
+                expectedInfoPlist["CFBundleDevelopmentRegion"] = "$(DEVELOPMENT_LANGUAGE)"
+                expectedInfoPlist["CFBundleShortVersionString"] = "1.0"
+                expectedInfoPlist["CFBundleVersion"] = "1"
+                expectedInfoPlist["CFBundlePackageType"] = "APPL"
+                expectedInfoPlist["UISupportedInterfaceOrientations"] = ["UIInterfaceOrientationPortrait", "UIInterfaceOrientationLandscapeLeft"]
 
-                let project = Project(basePath: "", name: "test", configs: configs, targets: [target, framework])
-                let xcodeProject = try project.generateXcodeProject()
-
-                try expect(xcodeProject.sharedData?.schemes.count) == 2
-
-                guard let nativeTarget = xcodeProject.pbxproj.objects.nativeTargets.objectReferences
-                    .first(where: { $0.object.name == app.name }) else {
-                    throw failure("Target not found")
-                }
-                guard let xcscheme = xcodeProject.sharedData?.schemes
-                    .first(where: { $0.name == "\(target.name) Test" }) else {
-                    throw failure("Scheme not found")
-                }
-                guard let buildActionEntry = xcscheme.buildAction?.buildActionEntries.first else {
-                    throw failure("Build Action entry not found")
-                }
-                try expect(buildActionEntry.buildableReference.blueprintIdentifier) == nativeTarget.reference
-
-                try expect(xcscheme.launchAction?.buildConfiguration) == "Test Debug"
-                try expect(xcscheme.testAction?.buildConfiguration) == "Test Debug"
-                try expect(xcscheme.profileAction?.buildConfiguration) == "Test Release"
-                try expect(xcscheme.analyzeAction?.buildConfiguration) == "Test Debug"
-                try expect(xcscheme.archiveAction?.buildConfiguration) == "Test Release"
-            }
-
-            $0.it("generates environment variables for target schemes") {
-                let variables: [XCScheme.EnvironmentVariable] = [XCScheme.EnvironmentVariable(variable: "env", value: "var", enabled: false)]
-                var target = app
-                target.scheme = TargetScheme(environmentVariables: variables)
-
-                let project = Project(basePath: "", name: "test", targets: [target, framework])
-                let xcodeProject = try project.generateXcodeProject()
-
-                try expect(xcodeProject.sharedData?.schemes.count) == 1
-
-                guard let xcscheme = xcodeProject.sharedData?.schemes.first else {
-                    throw failure("Scheme not found")
-                }
-
-                try expect(xcscheme.launchAction?.environmentVariables) == variables
-                try expect(xcscheme.testAction?.environmentVariables) == variables
-                try expect(xcscheme.profileAction?.environmentVariables) == variables
-            }
-
-            $0.it("generates pre and post actions for target schemes") {
-                var target = app
-                target.scheme = TargetScheme(
-                    preActions: [.init(name: "Run", script: "do")],
-                    postActions: [.init(name: "Run2", script: "post", settingsTarget: "MyApp")]
-                )
-
-                let project = Project(basePath: "", name: "test", targets: [target, framework])
-                let xcodeProject = try project.generateXcodeProject()
-
-                try expect(xcodeProject.sharedData?.schemes.count) == 1
-
-                guard let xcscheme = xcodeProject.sharedData?.schemes.first else {
-                    throw failure("Scheme not found")
-                }
-
-                try expect(xcscheme.launchAction?.preActions.count) == 1
-                try expect(xcscheme.launchAction?.preActions.first?.title) == "Run"
-                try expect(xcscheme.launchAction?.preActions.first?.scriptText) == "do"
-
-                try expect(xcscheme.testAction?.postActions.count) == 1
-                try expect(xcscheme.testAction?.postActions.first?.title) == "Run2"
-                try expect(xcscheme.testAction?.postActions.first?.scriptText) == "post"
-                try expect(xcscheme.testAction?.postActions.first?.environmentBuildable?.blueprintName) == "MyApp"
+                try expect(NSDictionary(dictionary: expectedInfoPlist).isEqual(to: infoPlist)).beTrue()
             }
         }
     }

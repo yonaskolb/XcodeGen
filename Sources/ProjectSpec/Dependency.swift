@@ -1,6 +1,5 @@
 import Foundation
 import JSONUtilities
-import xcproj
 
 public struct Dependency: Equatable {
 
@@ -11,6 +10,7 @@ public struct Dependency: Equatable {
     public var removeHeaders: Bool = true
     public var link: Bool?
     public var implicit: Bool = false
+    public var weakLink: Bool = false
 
     public init(
         type: DependencyType,
@@ -18,7 +18,8 @@ public struct Dependency: Equatable {
         embed: Bool? = nil,
         codeSign: Bool? = nil,
         link: Bool? = nil,
-        implicit: Bool = false
+        implicit: Bool = false,
+        weakLink: Bool = false
     ) {
         self.type = type
         self.reference = reference
@@ -26,12 +27,14 @@ public struct Dependency: Equatable {
         self.codeSign = codeSign
         self.link = link
         self.implicit = implicit
+        self.weakLink = weakLink
     }
 
     public enum DependencyType {
         case target
         case framework
         case carthage
+        case sdk
     }
 }
 
@@ -47,6 +50,9 @@ extension Dependency: JSONObjectConvertible {
         } else if let carthage: String = jsonDictionary.json(atKeyPath: "carthage") {
             type = .carthage
             reference = carthage
+        } else if let sdk: String = jsonDictionary.json(atKeyPath: "sdk") {
+            type = .sdk
+            reference = sdk
         } else {
             throw SpecParsingError.invalidDependency(jsonDictionary)
         }
@@ -60,6 +66,9 @@ extension Dependency: JSONObjectConvertible {
         }
         if let bool: Bool = jsonDictionary.json(atKeyPath: "implicit") {
             implicit = bool
+        }
+        if let bool: Bool = jsonDictionary.json(atKeyPath: "weak") {
+            weakLink = bool
         }
     }
 }

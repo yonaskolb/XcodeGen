@@ -49,13 +49,17 @@ targets:
     deploymentTarget: "10.0"
     sources: [MyApp]
     settings:
-      debug:
-        CUSTOM_BUILD_SETTING: my_debug_value
-      release:
-        CUSTOM_BUILD_SETTING: my_release_value
+      configs:
+        debug:
+          CUSTOM_BUILD_SETTING: my_debug_value
+        release:
+          CUSTOM_BUILD_SETTING: my_release_value
     dependencies:
       - target: MyFramework
       - carthage: Alamofire
+      - framework: Vendor/MyFramework.framework
+      - sdk: Contacts.framework
+      - sdk: libc++.tbd
   MyFramework:
     type: framework
     platform: iOS

@@ -4,9 +4,9 @@ import JSONUtilities
 import PathKit
 import ProjectSpec
 import XcodeGenKit
-import xcproj
+import xcodeproj
 
-let version = try Version("1.11.2")
+let version = try Version("2.0.0")
 
 func generate(spec: String, project: String, isQuiet: Bool, justVersion: Bool) {
     if justVersion {
@@ -22,7 +22,7 @@ func generate(spec: String, project: String, isQuiet: Bool, justVersion: Bool) {
     }
 
     let projectSpecPath = Path(spec).absolute()
-    let projectPath = project == "" ? projectSpecPath.parent() : Path(project).absolute()
+    var projectPath = project == "" ? projectSpecPath.parent() : Path(project).absolute()
 
     if !projectSpecPath.exists {
         fatalError("No project spec found at \(projectSpecPath.absolute())")
@@ -39,27 +39,20 @@ func generate(spec: String, project: String, isQuiet: Bool, justVersion: Bool) {
     }
 
     do {
-        logger.info("⚙️  Generating project...")
-
         try project.validateMinimumXcodeGenVersion(version)
+        try project.validate()
 
+        logger.info("⚙️  Generating project...")
         let projectGenerator = ProjectGenerator(project: project)
         let xcodeProject = try projectGenerator.generateXcodeProject()
 
         logger.info("⚙️  Writing project...")
+        let fileWriter = FileWriter(project: project)
+        projectPath = projectPath + "\(project.name).xcodeproj"
+        try fileWriter.writeXcodeProject(xcodeProject, to: projectPath)
+        try fileWriter.writePlists()
 
-        let projectFile = projectPath + "\(project.name).xcodeproj"
-        let tempPath = Path.temporary + "XcodeGen_\(Int(NSTimeIntervalSince1970))"
-        try? tempPath.delete()
-        if projectFile.exists {
-            try projectFile.copy(tempPath)
-        }
-        try xcodeProject.write(path: tempPath, override: true)
-        try? projectFile.delete()
-        try tempPath.copy(projectFile)
-        try? tempPath.delete()
-
-        logger.success("💾  Saved project to \(projectFile.string)")
+        logger.success("💾  Saved project to \(projectPath)")
     } catch let error as SpecValidationError {
         fatalError(error.description)
     } catch {

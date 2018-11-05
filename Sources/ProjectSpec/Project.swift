@@ -1,7 +1,6 @@
 import Foundation
 import JSONUtilities
 import PathKit
-import xcproj
 import Yams
 
 public struct Project: BuildSettingsContainer {
@@ -78,6 +77,10 @@ public struct Project: BuildSettingsContainer {
     public func getConfig(_ configName: String) -> Config? {
         return configs.first { $0.name == configName }
     }
+
+    public var defaultProjectPath: Path {
+        return basePath + "\(name).xcodeproj"
+    }
 }
 
 extension Project: CustomDebugStringConvertible {
@@ -86,7 +89,7 @@ extension Project: CustomDebugStringConvertible {
         var string = "Name: \(name)"
         let indent = "  "
         if !include.isEmpty {
-            string += "\nInclude:\n\(indent)" + include.map { "📄  \($0)" }.joined(separator: "\n\(indent)")
+            string += "\nInclude:\n\(indent)" + include.map { $0.description }.joined(separator: "\n\(indent)")
         }
 
         if !settingGroups.isEmpty {
@@ -101,6 +104,10 @@ extension Project: CustomDebugStringConvertible {
         }
         if !aggregateTargets.isEmpty {
             string += "\nAggregate Targets:\n\(indent)" + aggregateTargets.map { $0.description }.joined(separator: "\n\(indent)")
+        }
+        if !schemes.isEmpty {
+            let allSchemes = targets.filter { $0.scheme != nil }.map { $0.name } + schemes.map { $0.name }
+            string += "\nSchemes:\n\(indent)" + allSchemes.joined(separator: "\n\(indent)")
         }
 
         return string

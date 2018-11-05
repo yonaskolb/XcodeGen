@@ -26,18 +26,33 @@ targets:
   App_macOS:
     type: application
     platform: macOS
+    info:
+      path: App_macOS/Info.plist
+      properties:
+        LSMinimumSystemVersion: $(MACOSX_DEPLOYMENT_TARGET)
+        NSMainStoryboardFile: Main
+        NSPrincipalClass: NSApplication
+        CFBundleIconFile: ""
+        CustomSetting: $CUSTOM_SETTING
     attributes:
       ProvisioningStyle: Automatic
     sources:
+      - path: App_macOS
       - path: StandaloneFiles/Standalone.swift
       - path: Vendor/SomeXPCService.xpc
     dependencies:
       - target: Framework_macOS
       - target: XPC Service
+      - sdk: Contacts.framework
+      - sdk: libc++.tbd
 
   App_iOS:
     type: application
     platform: iOS
+    entitlements:
+      path: App_iOS/App.entitlements
+      properties:
+        com.apple.security.application-groups: group.com.app
     attributes:
       ProvisioningStyle: Automatic
     sources:
@@ -70,16 +85,23 @@ targets:
       PRODUCT_BUNDLE_IDENTIFIER: com.project.app
     dependencies:
       - target: Framework_iOS
-      - target: StaticLibrary_ObjC
-      - carthage: Alamofire
+      - target: StaticLibrary_ObjC_iOS
+      - carthage: Result
+      - target: Framework2_iOS
+        weak: true
       - target: App_watchOS
       - target: iMessageApp
       - framework: Vendor/SomeFramework.framework
+      - sdk: Contacts.framework
     scheme:
       testTargets:
         - App_iOS_Tests
         - App_iOS_UITests
       gatherCoverageData: true
+      configVariants:
+        - Test
+        - Staging
+        - Production
       commandLineArguments:
           MyEnabledArgument: true
           MyDisabledArgument: false
@@ -111,7 +133,8 @@ targets:
       settings:
         PRODUCT_BUNDLE_IDENTIFIER: com.project.app.watch.extension
       dependencies:
-        - carthage: Alamofire
+        - carthage: Result
+          link: false
 
   iMessageApp:
     type: application.messages
@@ -130,7 +153,7 @@ targets:
 
   StaticLibrary_ObjC:
     type: library.static
-    platform: iOS
+    platform: [iOS, tvOS, watchOS, macOS]
     sources: StaticLibrary_ObjC
 
   StaticLibrary_Swift:
@@ -153,8 +176,17 @@ targets:
       - name: MyScript
         path: scripts/script.sh
     dependencies:
-      - carthage: Alamofire
-      - target: StaticLibrary_ObjC
+      - carthage: Result
+      - target: StaticLibrary_ObjC_$platform
+
+  Framework2:
+    type: framework
+    platform: [iOS, tvOS, watchOS, macOS]
+    sources:
+      - path: Framework
+        excludes:
+          - "*.xcodeproj"
+
   App_iOS_Tests:
     type: bundle.unit-test
     platform: iOS
@@ -188,6 +220,19 @@ schemes:
       commandLineArguments:
         argument: YES
         argument.with.dot: YES
+    test:
+      gatherCoverageData: true
+  App_Scheme:
+    build:
+      targets:
+        App_iOS: all
+    test:
+      gatherCoverageData: true
+      targets:
+        - App_iOS_UITests
+        - name: App_iOS_Tests
+          parallelizable: true
+          randomExecutionOrder: true
 targetTemplates:
   MyTemplate:
     scheme: {}

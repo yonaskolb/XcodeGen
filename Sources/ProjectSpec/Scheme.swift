@@ -1,6 +1,6 @@
 import Foundation
 import JSONUtilities
-import xcproj
+import xcodeproj
 
 public typealias BuildType = XCScheme.BuildAction.Entry.BuildFor
 
@@ -89,15 +89,40 @@ public struct Scheme: Equatable {
         public var config: String?
         public var gatherCoverageData: Bool
         public var commandLineArguments: [String: Bool]
-        public var targets: [String]
+        public var targets: [TestTarget]
         public var preActions: [ExecutionAction]
         public var postActions: [ExecutionAction]
         public var environmentVariables: [XCScheme.EnvironmentVariable]
+
+        public struct TestTarget: Equatable, ExpressibleByStringLiteral {
+            public let name: String
+            public var randomExecutionOrder: Bool
+            public var parallelizable: Bool
+
+            public init(
+                name: String,
+                randomExecutionOrder: Bool = false,
+                parallelizable: Bool = false
+            ) {
+                self.name = name
+                self.randomExecutionOrder = randomExecutionOrder
+                self.parallelizable = parallelizable
+            }
+
+            public init(stringLiteral value: String) {
+                name = value
+                randomExecutionOrder = false
+                parallelizable = false
+            }
+        }
+
         public init(
             config: String,
             gatherCoverageData: Bool = false,
+            randomExecutionOrder: Bool = false,
+            parallelizable: Bool = false,
             commandLineArguments: [String: Bool] = [:],
-            targets: [String] = [],
+            targets: [TestTarget] = [],
             preActions: [ExecutionAction] = [],
             postActions: [ExecutionAction] = [],
             environmentVariables: [XCScheme.EnvironmentVariable] = []
@@ -210,10 +235,31 @@ extension Scheme.Test: JSONObjectConvertible {
         config = jsonDictionary.json(atKeyPath: "config")
         gatherCoverageData = jsonDictionary.json(atKeyPath: "gatherCoverageData") ?? false
         commandLineArguments = jsonDictionary.json(atKeyPath: "commandLineArguments") ?? [:]
-        targets = jsonDictionary.json(atKeyPath: "targets") ?? []
+        if let targets = jsonDictionary["targets"] as? [Any] {
+            self.targets = try targets.compactMap { target in
+                if let string = target as? String {
+                    return TestTarget(name: string)
+                } else if let dictionary = target as? JSONDictionary {
+                    return try TestTarget(jsonDictionary: dictionary)
+                } else {
+                    return nil
+                }
+            }
+        } else {
+            targets = []
+        }
         preActions = jsonDictionary.json(atKeyPath: "preActions") ?? []
         postActions = jsonDictionary.json(atKeyPath: "postActions") ?? []
         environmentVariables = try XCScheme.EnvironmentVariable.parseAll(jsonDictionary: jsonDictionary)
+    }
+}
+
+extension Scheme.Test.TestTarget: JSONObjectConvertible {
+
+    public init(jsonDictionary: JSONDictionary) throws {
+        name = try jsonDictionary.json(atKeyPath: "name")
+        randomExecutionOrder = jsonDictionary.json(atKeyPath: "randomExecutionOrder") ?? false
+        parallelizable = jsonDictionary.json(atKeyPath: "parallelizable") ?? false
     }
 }
 
@@ -311,7 +357,7 @@ extension BuildType: JSONPrimitiveConvertible {
     }
 }
 
-extension XCScheme.EnvironmentVariable: JSONObjectConvertible, Equatable {
+extension XCScheme.EnvironmentVariable: JSONObjectConvertible {
 
     private static func parseValue(_ value: Any) -> String {
         if let bool = value as? Bool {
@@ -345,11 +391,5 @@ extension XCScheme.EnvironmentVariable: JSONObjectConvertible, Equatable {
         } else {
             return []
         }
-    }
-
-    public static func == (lhs: XCScheme.EnvironmentVariable, rhs: XCScheme.EnvironmentVariable) -> Bool {
-        return lhs.variable == rhs.variable &&
-            lhs.value == rhs.value &&
-            lhs.enabled == rhs.enabled
     }
 }
