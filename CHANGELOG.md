@@ -2,6 +2,9 @@
 
 ## Master
 
+#### Fixed
+- Fixed XPC Service package type [#435](https://github.com/yonaskolb/XcodeGen/pull/435) @alvarhansen
+
 ## 2.0.0
 
 #### Added
