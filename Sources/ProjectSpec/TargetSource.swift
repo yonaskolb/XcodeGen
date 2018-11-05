@@ -204,6 +204,6 @@ extension TargetSource.BuildPhase.CopyFilesSettings: JSONObjectConvertible {
     public init(jsonDictionary: JSONDictionary) throws {
         destination = try jsonDictionary.json(atKeyPath: "destination")
         subpath = jsonDictionary.json(atKeyPath: "subpath") ?? ""
-        phaseOrder = jsonDictionary.json(atKeyPath: "phaseOrder") ?? .postCompile
+        phaseOrder = .postCompile
     }
 }
