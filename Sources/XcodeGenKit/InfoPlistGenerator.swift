@@ -33,8 +33,9 @@ public class InfoPlistGenerator {
             targetInfoPlist["CFBundlePackageType"] = "FMWK"
         case .bundle:
             targetInfoPlist["CFBundlePackageType"] = "BNDL"
-        case .xpcService:
-            targetInfoPlist["CFBundlePackageType"] = "XPC"
+        case .xpcService,
+             .appExtension:
+            targetInfoPlist["CFBundlePackageType"] = "XPC!"
         default: break
         }
         return targetInfoPlist
