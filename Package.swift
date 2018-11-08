@@ -38,10 +38,12 @@ let package = Package(
         .testTarget(name: "XcodeGenKitTests", dependencies: [
           "XcodeGenKit",
           "Spectre",
+          "PathKit",
         ]),
         .testTarget(name: "PerformanceTests", dependencies: [
           "XcodeGenKit",
           "Spectre",
+          "PathKit",
         ])
     ]
 )
