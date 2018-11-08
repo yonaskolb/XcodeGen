@@ -33,8 +33,9 @@ public struct Target: ProjectTarget {
     public var transitivelyLinkDependencies: Bool?
     public var directlyEmbedCarthageDependencies: Bool?
     public var requiresObjCLinking: Bool?
-    public var prebuildScripts: [BuildScript]
-    public var postbuildScripts: [BuildScript]
+    public var preBuildScripts: [BuildScript]
+    public var postCompileScripts: [BuildScript]
+    public var postBuildScripts: [BuildScript]
     public var buildRules: [BuildRule]
     public var configFiles: [String: String]
     public var scheme: TargetScheme?
@@ -70,8 +71,9 @@ public struct Target: ProjectTarget {
         transitivelyLinkDependencies: Bool? = nil,
         directlyEmbedCarthageDependencies: Bool? = nil,
         requiresObjCLinking: Bool? = nil,
-        prebuildScripts: [BuildScript] = [],
-        postbuildScripts: [BuildScript] = [],
+        preBuildScripts: [BuildScript] = [],
+        postCompileScripts: [BuildScript] = [],
+        postBuildScripts: [BuildScript] = [],
         buildRules: [BuildRule] = [],
         scheme: TargetScheme? = nil,
         legacy: LegacyTarget? = nil,
@@ -91,8 +93,9 @@ public struct Target: ProjectTarget {
         self.transitivelyLinkDependencies = transitivelyLinkDependencies
         self.directlyEmbedCarthageDependencies = directlyEmbedCarthageDependencies
         self.requiresObjCLinking = requiresObjCLinking
-        self.prebuildScripts = prebuildScripts
-        self.postbuildScripts = postbuildScripts
+        self.preBuildScripts = preBuildScripts
+        self.postCompileScripts = postCompileScripts
+        self.postBuildScripts = postBuildScripts
         self.buildRules = buildRules
         self.scheme = scheme
         self.legacy = legacy
@@ -218,8 +221,9 @@ extension Target: Equatable {
             lhs.info == rhs.info &&
             lhs.entitlements == rhs.entitlements &&
             lhs.dependencies == rhs.dependencies &&
-            lhs.prebuildScripts == rhs.prebuildScripts &&
-            lhs.postbuildScripts == rhs.postbuildScripts &&
+            lhs.preBuildScripts == rhs.preBuildScripts &&
+            lhs.postCompileScripts == rhs.postCompileScripts &&
+            lhs.postBuildScripts == rhs.postBuildScripts &&
             lhs.buildRules == rhs.buildRules &&
             lhs.scheme == rhs.scheme &&
             lhs.legacy == rhs.legacy &&
@@ -298,8 +302,9 @@ extension Target: NamedJSONDictionaryConvertible {
         directlyEmbedCarthageDependencies = jsonDictionary.json(atKeyPath: "directlyEmbedCarthageDependencies")
         requiresObjCLinking = jsonDictionary.json(atKeyPath: "requiresObjCLinking")
 
-        prebuildScripts = jsonDictionary.json(atKeyPath: "prebuildScripts") ?? []
-        postbuildScripts = jsonDictionary.json(atKeyPath: "postbuildScripts") ?? []
+        preBuildScripts = jsonDictionary.json(atKeyPath: "preBuildScripts") ?? jsonDictionary.json(atKeyPath: "prebuildScripts") ?? []
+        postCompileScripts = jsonDictionary.json(atKeyPath: "postCompileScripts") ?? []
+        postBuildScripts = jsonDictionary.json(atKeyPath: "postBuildScripts") ?? jsonDictionary.json(atKeyPath: "postbuildScripts") ?? []
         buildRules = jsonDictionary.json(atKeyPath: "buildRules") ?? []
         scheme = jsonDictionary.json(atKeyPath: "scheme")
         legacy = jsonDictionary.json(atKeyPath: "legacy")

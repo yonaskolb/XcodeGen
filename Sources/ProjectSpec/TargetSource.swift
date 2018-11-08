@@ -42,7 +42,8 @@ public struct TargetSource: Equatable {
         public struct CopyFilesSettings: Equatable, Hashable {
             public static let xpcServices = CopyFilesSettings(
                 destination: .productsDirectory,
-                subpath: "$(CONTENTS_FOLDER_PATH)/XPCServices"
+                subpath: "$(CONTENTS_FOLDER_PATH)/XPCServices",
+                phaseOrder: .postCompile
             )
 
             public enum Destination: String {
@@ -72,13 +73,26 @@ public struct TargetSource: Equatable {
                     }
                 }
             }
+            
+            public enum PhaseOrder: String {
+                /// Run before the Compile Sources phase
+                case preCompile
+                /// Run after the Compile Sources and post-compile Run Script phases
+                case postCompile
+            }
 
             public var destination: Destination
             public var subpath: String
+            public var phaseOrder: PhaseOrder
 
-            public init(destination: Destination, subpath: String) {
+            public init(
+                destination: Destination,
+                subpath: String,
+                phaseOrder: PhaseOrder
+            ) {
                 self.destination = destination
                 self.subpath = subpath
+                self.phaseOrder = phaseOrder
             }
         }
 
@@ -190,5 +204,6 @@ extension TargetSource.BuildPhase.CopyFilesSettings: JSONObjectConvertible {
     public init(jsonDictionary: JSONDictionary) throws {
         destination = try jsonDictionary.json(atKeyPath: "destination")
         subpath = jsonDictionary.json(atKeyPath: "subpath") ?? ""
+        phaseOrder = .postCompile
     }
 }

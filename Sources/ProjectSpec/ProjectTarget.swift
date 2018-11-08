@@ -11,7 +11,7 @@ public protocol ProjectTarget: BuildSettingsContainer {
 extension Target {
 
     public var buildScripts: [BuildScript] {
-        return prebuildScripts + postbuildScripts
+        return preBuildScripts + postCompileScripts + postBuildScripts
     }
 }
 

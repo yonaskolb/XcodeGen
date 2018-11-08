@@ -967,8 +967,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = CL_3BB54CFB2F2EFE7302C0B0709BD0AE04 /* Build configuration list for PBXNativeTarget "StaticLibrary_ObjC_macOS" */;
 			buildPhases = (
-				SBP_52AE5DCFB4487297D6889C7F014AD281 /* Sources */,
 				CFBP_712E86A86BBF89DB5B5F3874B24B8996 /* CopyFiles */,
+				SBP_52AE5DCFB4487297D6889C7F014AD281 /* Sources */,
 			);
 			buildRules = (
 			);
@@ -1031,8 +1031,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = CL_2E30D27084B352548CCAA3500158519B /* Build configuration list for PBXNativeTarget "StaticLibrary_ObjC_watchOS" */;
 			buildPhases = (
-				SBP_924258C7A9F27B13508604CAF625E0D3 /* Sources */,
 				CFBP_4DFB7882C9F8BAB250BB0A6B9457B4CC /* CopyFiles */,
+				SBP_924258C7A9F27B13508604CAF625E0D3 /* Sources */,
 			);
 			buildRules = (
 			);
@@ -1049,8 +1049,8 @@
 			buildPhases = (
 				SBP_ED63FCA00BD617EFF125ECDF9D24FAD8 /* Sources */,
 				RBP_5623703FDC4F6DF4679D8BAF27518F2F /* Resources */,
-				CFBP_469B033759EACBB99ECBF1008677C590 /* Embed App Extensions */,
 				SSBP_7F147E7ED45BAAE2186975B7FF9EB08A /* Carthage */,
+				CFBP_469B033759EACBB99ECBF1008677C590 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
@@ -1133,8 +1133,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = CL_F6ECF2D45799DBBB48DE9AE80AC280AA /* Build configuration list for PBXNativeTarget "StaticLibrary_ObjC_iOS" */;
 			buildPhases = (
-				SBP_D6209A702C851D0CFD1CC2B225986D45 /* Sources */,
 				CFBP_0B6C520DAC94DDCE678BE15C53528F25 /* CopyFiles */,
+				SBP_D6209A702C851D0CFD1CC2B225986D45 /* Sources */,
 			);
 			buildRules = (
 			);
@@ -1278,10 +1278,10 @@
 				SBP_77EF8BC7FC3D693C9C0C1CB51984F3E2 /* Sources */,
 				RBP_85DF5DDC76E0E2A78CAFC9A3EC508232 /* Resources */,
 				CFBP_D7E07645BC437C4DFBB212DFC4F3B09E /* CopyFiles */,
+				SSBP_7F8DED07519BA4B70C40A9A755844874 /* Carthage */,
 				FBP_18D4325BBE506E88E1C742F57AECB0CD /* Frameworks */,
 				CFBP_1C40B0777F31334440F91C2DB34EF404 /* Embed Frameworks */,
 				CFBP_961F46C30E720E886AEFD11D45DDA199 /* Embed Watch Content */,
-				SSBP_7F8DED07519BA4B70C40A9A755844874 /* Carthage */,
 				SSBP_062CBBF024005F57EECA660F9C7B0C7D /* Strip Unused Architectures from Frameworks */,
 				SSBP_376C0662E4E8416C049A50660864798B /* MyScript */,
 			);
@@ -1320,8 +1320,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = CL_91682ADED17A2C81A700A67F5D70BA1F /* Build configuration list for PBXNativeTarget "StaticLibrary_ObjC_tvOS" */;
 			buildPhases = (
-				SBP_645418A0FA6E3F5727685DE191C6B793 /* Sources */,
 				CFBP_CC1EF1963551F7E08925519982C248B9 /* CopyFiles */,
+				SBP_645418A0FA6E3F5727685DE191C6B793 /* Sources */,
 			);
 			buildRules = (
 			);

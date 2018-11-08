@@ -741,22 +741,25 @@ class ProjectGeneratorTests: XCTestCase {
 
             $0.it("generates run scripts") {
                 var scriptSpec = project
-                scriptSpec.targets[0].prebuildScripts = [BuildScript(script: .script("script1"))]
-                scriptSpec.targets[0].postbuildScripts = [BuildScript(script: .script("script2"))]
+                scriptSpec.targets[0].preBuildScripts = [BuildScript(script: .script("script1"))]
+                scriptSpec.targets[0].postCompileScripts = [BuildScript(script: .script("script2"))]
+                scriptSpec.targets[0].postBuildScripts = [BuildScript(script: .script("script3"))]
                 let pbxProject = try scriptSpec.generatePbxProj()
 
                 guard let nativeTarget = pbxProject.nativeTargets
-                    .first(where: { $0.buildPhases.count >= 2 }) else {
+                    .first(where: { $0.buildPhases.count >= 3 }) else {
                     throw failure("Target with build phases not found")
                 }
                 let buildPhases = nativeTarget.buildPhases
 
                 let scripts = pbxProject.shellScriptBuildPhases
-                let script1 = scripts.first { $0.shellScript == "script1" }
-                let script2 = scripts.first { $0.shellScript == "script2" }
-                try expect(scripts.count) == 2
-                try expect(buildPhases.first) == script1
-                try expect(buildPhases.last) == script2
+                try expect(scripts.count) == 3
+                let script1 = scripts.first { $0.shellScript == "script1" }!
+                let script2 = scripts.first { $0.shellScript == "script2" }!
+                let script3 = scripts.first { $0.shellScript == "script3" }!
+                try expect(buildPhases.contains(script1)) == true
+                try expect(buildPhases.contains(script2)) == true
+                try expect(buildPhases.contains(script3)) == true
             }
 
             $0.it("generates targets with cylical dependencies") {

@@ -296,6 +296,15 @@ public class PBXProjGenerator {
         )
         return addObject(shellScriptPhase)
     }
+    
+    func generateCopyFiles(targetName: String, copyFiles: TargetSource.BuildPhase.CopyFilesSettings, buildPhaseFiles: [PBXBuildFile]) -> PBXCopyFilesBuildPhase {
+        let copyFilesBuildPhase = PBXCopyFilesBuildPhase(
+            dstPath: copyFiles.subpath,
+            dstSubfolderSpec: copyFiles.destination.destination,
+            files: buildPhaseFiles
+        )
+        return addObject(copyFilesBuildPhase)
+    }
 
     func generateTargetAttributes() -> [PBXTarget: [String: Any]] {
 
@@ -634,7 +643,13 @@ public class PBXProjGenerator {
             return sourceFilesByCopyFiles.mapValues { getBuildFilesForSourceFiles($0) }
         }
 
-        buildPhases += try target.prebuildScripts.map { try generateBuildScript(targetName: target.name, buildScript: $0) }
+        copyFilesBuildPhasesFiles.merge(getBuildFilesForCopyFilesPhases()) { $0 + $1 }
+
+        buildPhases += try target.preBuildScripts.map { try generateBuildScript(targetName: target.name, buildScript: $0) }
+
+        buildPhases += copyFilesBuildPhasesFiles
+            .filter { $0.key.phaseOrder == .preCompile }
+            .map { generateCopyFiles(targetName: target.name, copyFiles: $0, buildPhaseFiles: $1) }
 
         let headersBuildPhaseFiles = getBuildFilesForPhase(.headers)
         if !headersBuildPhaseFiles.isEmpty {
@@ -650,6 +665,8 @@ public class PBXProjGenerator {
         let sourcesBuildPhase = addObject(PBXSourcesBuildPhase(files: sourcesBuildPhaseFiles))
         buildPhases.append(sourcesBuildPhase)
 
+        buildPhases += try target.postCompileScripts.map { try generateBuildScript(targetName: target.name, buildScript: $0) }
+        
         let resourcesBuildPhaseFiles = getBuildFilesForPhase(.resources) + copyResourcesReferences
         if !resourcesBuildPhaseFiles.isEmpty {
             let resourcesBuildPhase = addObject(PBXResourcesBuildPhase(files: resourcesBuildPhaseFiles))
@@ -676,19 +693,27 @@ public class PBXProjGenerator {
             buildPhases.append(script)
         }
 
-        copyFilesBuildPhasesFiles.merge(getBuildFilesForCopyFilesPhases()) { $0 + $1 }
-        if !copyFilesBuildPhasesFiles.isEmpty {
-            for (copyFiles, buildPhaseFiles) in copyFilesBuildPhasesFiles {
-                let copyFilesBuildPhase = addObject(
-                    PBXCopyFilesBuildPhase(
-                        dstPath: copyFiles.subpath,
-                        dstSubfolderSpec: copyFiles.destination.destination,
-                        files: buildPhaseFiles
-                    )
-                )
+        buildPhases += copyFilesBuildPhasesFiles
+            .filter { $0.key.phaseOrder == .postCompile }
+            .map { generateCopyFiles(targetName: target.name, copyFiles: $0, buildPhaseFiles: $1) }
+        
+        if !carthageFrameworksToEmbed.isEmpty {
 
-                buildPhases.append(copyFilesBuildPhase)
-            }
+            let inputPaths = carthageFrameworksToEmbed
+                .map { "$(SRCROOT)/\(carthageBuildPath)/\(target.platform)/\($0)\($0.contains(".") ? "" : ".framework")" }
+            let outputPaths = carthageFrameworksToEmbed
+                .map { "$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/\($0)\($0.contains(".") ? "" : ".framework")" }
+            let carthageExecutable = project.options.carthageExecutablePath ?? "carthage"
+            let carthageScript = addObject(
+                PBXShellScriptBuildPhase(
+                    name: "Carthage",
+                    inputPaths: inputPaths,
+                    outputPaths: outputPaths,
+                    shellPath: "/bin/sh",
+                    shellScript: "\(carthageExecutable) copy-frameworks\n"
+                )
+            )
+            buildPhases.append(carthageScript)
         }
 
         if !targetFrameworkBuildFiles.isEmpty {
@@ -742,25 +767,6 @@ public class PBXProjGenerator {
             buildPhases.append(copyFilesPhase)
         }
 
-        if !carthageFrameworksToEmbed.isEmpty {
-
-            let inputPaths = carthageFrameworksToEmbed
-                .map { "$(SRCROOT)/\(carthageBuildPath)/\(target.platform)/\($0)\($0.contains(".") ? "" : ".framework")" }
-            let outputPaths = carthageFrameworksToEmbed
-                .map { "$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/\($0)\($0.contains(".") ? "" : ".framework")" }
-            let carthageExecutable = project.options.carthageExecutablePath ?? "carthage"
-            let carthageScript = addObject(
-                PBXShellScriptBuildPhase(
-                    name: "Carthage",
-                    inputPaths: inputPaths,
-                    outputPaths: outputPaths,
-                    shellPath: "/bin/sh",
-                    shellScript: "\(carthageExecutable) copy-frameworks\n"
-                )
-            )
-            buildPhases.append(carthageScript)
-        }
-
         let buildRules = target.buildRules.map { buildRule in
             addObject(
                 PBXBuildRule(
@@ -776,7 +782,7 @@ public class PBXProjGenerator {
             )
         }
 
-        buildPhases += try target.postbuildScripts.map { try generateBuildScript(targetName: target.name, buildScript: $0) }
+        buildPhases += try target.postBuildScripts.map { try generateBuildScript(targetName: target.name, buildScript: $0) }
 
         let configs: [XCBuildConfiguration] = project.configs.map { config in
             var buildSettings = project.getTargetBuildSettings(target: target, config: config)
