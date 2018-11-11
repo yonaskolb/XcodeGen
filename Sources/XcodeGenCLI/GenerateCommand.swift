@@ -39,7 +39,7 @@ class GenerateCommand: Command {
             throw GenerationError.projectSpecParsingError(error)
         }
 
-        info("📋  Loaded project:\n  \(project.debugDescription.replacingOccurrences(of: "\n", with: "\n  "))")
+        info("Loaded project:\n  \(project.debugDescription.replacingOccurrences(of: "\n", with: "\n  "))")
 
         do {
             try project.validateMinimumXcodeGenVersion(version)
@@ -68,7 +68,7 @@ class GenerateCommand: Command {
             throw GenerationError.writingError(error)
         }
 
-        success("💾  Saved project to \(projectPath)")
+        success("Created project at \(projectPath)")
     }
 
     func info(_ string: String) {
