@@ -118,13 +118,15 @@ Simply run:
 xcodegen
 ```
 
-This will look for a project spec in the current directory called `project.yml`
+This will look for a project spec in the current directory called `project.yml` and generate an Xcode project with the name defined in the spec.
 
-Use `xcodegen --help` to see the list of options:
+To specify any options use the full `xcodegen generate` command and add the following:
 
-- **--spec**: An optional path to a `.yml` or `.json` project spec.
+- **--spec**: An optional path to a `.yml` or `.json` project spec. Defaults to `project.yml`
 - **--project**: An optional path to a directory where the project will be generated. By default this is the directory the spec lives in.
 - **--quiet**: Suppress informational and success messages.
+
+Use `xcodegen help` to see more detailed usage information.
 
 ## Editing
 ```shell
