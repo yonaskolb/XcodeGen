@@ -95,7 +95,6 @@ extension Project: CustomDebugStringConvertible {
         if !settingGroups.isEmpty {
             string += "\nSetting Groups:\n\(indent)" + settingGroups.keys
                 .sorted()
-                .map { "⚙️  \($0)" }
                 .joined(separator: "\n\(indent)")
         }
 
