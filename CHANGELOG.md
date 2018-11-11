@@ -8,6 +8,7 @@
 
 #### Changed
 - Changed spelling of build phases to **preBuildPhase** and **postBuildPhase**. [402](https://github.com/yonaskolb/XcodeGen/pull/402) @brentleyjones
+- **BREAKING** Moved generation to a specific subcommand `xcodegen generate`. If not specifying any arguments `xcodegen` will still work [#437](https://github.com/yonaskolb/XcodeGen/pull/437) @yonaskolb
 
 ## 2.0.0
 
