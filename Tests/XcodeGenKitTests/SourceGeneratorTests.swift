@@ -436,6 +436,7 @@ class SourceGeneratorTests: XCTestCase {
                     - file.xcassets
                     - file.metal
                     - Info.plist
+                    - Intent.intentdefinition
                 """
                 try createDirectories(directories)
 
@@ -483,6 +484,7 @@ class SourceGeneratorTests: XCTestCase {
                 try pbxProj.expectFile(paths: ["C", "file.123"], buildPhase: .resources)
                 try pbxProj.expectFile(paths: ["C", "Info.plist"], buildPhase: .none)
                 try pbxProj.expectFile(paths: ["C", "file.metal"], buildPhase: .sources)
+                try pbxProj.expectFile(paths: ["C", "Intent.intentdefinition"], buildPhase: .sources)
             }
 
             $0.it("duplicate TargetSource is included once in sources build phase") {

@@ -191,6 +191,7 @@ class SourceGenerator {
                  "cc",
                  "S",
                  "xcdatamodeld",
+                 "intentdefinition",
                  "metal":
                 return .sources
             case "h",
