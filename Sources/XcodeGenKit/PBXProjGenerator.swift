@@ -793,7 +793,9 @@ public class PBXProjGenerator {
             }
 
             // Set INFOPLIST_FILE
-            if let info = target.info {
+            if project.targetHasBuildSetting("INFOPLIST_FILE", target: target, config: config) {
+                // do not overwrite Info.plist path when already defined
+            } else if let info = target.info {
                 buildSettings["INFOPLIST_FILE"] = info.path
             } else if !project.targetHasBuildSetting("INFOPLIST_FILE", target: target, config: config) {
                 if searchForPlist {
