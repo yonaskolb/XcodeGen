@@ -792,13 +792,11 @@ public class PBXProjGenerator {
                 buildSettings["CODE_SIGN_ENTITLEMENTS"] = entitlements.path
             }
 
-            // Set INFOPLIST_FILE
-            if project.targetHasBuildSetting("INFOPLIST_FILE", target: target, config: config) {
-                // do not overwrite Info.plist path when already defined
-            } else if let info = target.info {
-                buildSettings["INFOPLIST_FILE"] = info.path
-            } else if !project.targetHasBuildSetting("INFOPLIST_FILE", target: target, config: config) {
-                if searchForPlist {
+            // Set INFOPLIST_FILE if not defined in settings
+            if !project.targetHasBuildSetting("INFOPLIST_FILE", target: target, config: config) {
+                if let info = target.info {
+                    buildSettings["INFOPLIST_FILE"] = info.path
+                } else if searchForPlist {
                     plistPath = getInfoPlist(target.sources)
                     searchForPlist = false
                 }
