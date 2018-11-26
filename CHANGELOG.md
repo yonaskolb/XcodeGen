@@ -5,6 +5,7 @@
 #### Fixed
 - Fixed XPC Service package type [#435](https://github.com/yonaskolb/XcodeGen/pull/435) @alvarhansen
 - Fixed phase ordering for modulemap and static libary header Copy File phases. [402](https://github.com/yonaskolb/XcodeGen/pull/402) @brentleyjones
+- Fixed overwriting INFOPLIST_FILE setting with info path [#443](https://github.com/yonaskolb/XcodeGen/pull/443) @feischl97
 
 #### Changed
 - Changed spelling of build phases to **preBuildPhase** and **postBuildPhase**. [402](https://github.com/yonaskolb/XcodeGen/pull/402) @brentleyjones
