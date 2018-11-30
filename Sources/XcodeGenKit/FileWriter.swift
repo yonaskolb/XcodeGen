@@ -13,7 +13,7 @@ public class FileWriter {
 
     public func writeXcodeProject(_ xcodeProject: XcodeProj, to projectPath: Path? = nil) throws {
         let projectPath = project.defaultProjectPath
-        let tempPath = Path.temporary + "XcodeGen_\(Int(NSTimeIntervalSince1970))"
+        let tempPath = try Path.processUniqueTemporary() + "XcodeGen"
         try? tempPath.delete()
         if projectPath.exists {
             try projectPath.copy(tempPath)
