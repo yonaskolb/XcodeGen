@@ -6,6 +6,7 @@
 - Fixed XPC Service package type [#435](https://github.com/yonaskolb/XcodeGen/pull/435) @alvarhansen
 - Fixed phase ordering for modulemap and static libary header Copy File phases. [402](https://github.com/yonaskolb/XcodeGen/pull/402) @brentleyjones
 - Add `.intentdefinition` files to sources build phase instead of resources [#442](https://github.com/yonaskolb/XcodeGen/pull/442) @yonaskolb
+- Fixed intermittent errors when running multiple `xcodegen`s concurrently [#450](https://github.com/yonaskolb/XcodeGen/pull/450) @bryansum
 
 #### Changed
 - Changed spelling of build phases to **preBuildPhase** and **postBuildPhase**. [402](https://github.com/yonaskolb/XcodeGen/pull/402) @brentleyjones
