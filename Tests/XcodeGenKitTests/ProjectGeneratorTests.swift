@@ -882,6 +882,24 @@ class ProjectGeneratorTests: XCTestCase {
 
                 try expect(NSDictionary(dictionary: expectedInfoPlist).isEqual(to: infoPlist)).beTrue()
             }
+          
+            $0.it("info doesn't override info.plist setting") {
+                let predefinedPlistPath = "Predefined.plist"
+                // generate plist
+                let plist = Plist(path: "Info.plist", attributes: ["UISupportedInterfaceOrientations": ["UIInterfaceOrientationPortrait", "UIInterfaceOrientationLandscapeLeft"]])
+                let tempPath = Path.temporary + "info"
+                // create project with a predefined plist
+                let project = Project(basePath: tempPath, name: "", targets: [Target(name: "", type: .application, platform: .iOS, settings: Settings(buildSettings: ["INFOPLIST_FILE": predefinedPlistPath]), info: plist)])
+                let pbxProject = try project.generatePbxProj()
+                let writer = FileWriter(project: project)
+                try writer.writePlists()
+              
+                guard let targetConfig = pbxProject.nativeTargets.first?.buildConfigurationList?.buildConfigurations.first else {
+                    throw failure("Couldn't find Target config")
+                }
+                // generated plist should not be in buildsettings
+                try expect(targetConfig.buildSettings["INFOPLIST_FILE"] as? String) == predefinedPlistPath
+            }
         }
     }
 }

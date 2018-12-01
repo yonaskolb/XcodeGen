@@ -11,6 +11,7 @@
 #### Changed
 - Changed spelling of build phases to **preBuildPhase** and **postBuildPhase**. [402](https://github.com/yonaskolb/XcodeGen/pull/402) @brentleyjones
 - **BREAKING** Moved generation to a specific subcommand `xcodegen generate`. If not specifying any arguments `xcodegen` will still work [#437](https://github.com/yonaskolb/XcodeGen/pull/437) @yonaskolb
+- If `INFOPLIST_FILE` has been set on a target, then an `info` path won't ovewrite it [#443](https://github.com/yonaskolb/XcodeGen/pull/443) @feischl97
 
 ## 2.0.0
 
