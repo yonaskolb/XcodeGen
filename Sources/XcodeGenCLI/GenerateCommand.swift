@@ -15,8 +15,11 @@ class GenerateCommand: Command {
                      defaultValue: false)
 
     let useCache = Flag("-c", "--use-cache",
-                        description: "Use a cache for the xcodegen spe",
+                        description: "Use a cache for the xcodegen spec",
                         defaultValue: false)
+
+    let cacheFilePath = Key<Path>("--cache-path",
+                              description: "Where the cache file will be loaded from and save to. Defaults to ~/.xcodegen/cache/PATH_HASH")
 
     let spec = Key<Path>("-s", "--spec",
                          description: "The path to the project spec file. Defaults to project.yml")
@@ -52,7 +55,8 @@ class GenerateCommand: Command {
 
         let projectPath = projectDirectory + "\(project.name).xcodeproj"
 
-        let cacheFilePath = Path("~/.xcodegen/cache/\(projectSpecPath.absolute().string.md5)").absolute()
+        let cacheFilePath = self.cacheFilePath.value ??
+            Path("~/.xcodegen/cache/\(projectSpecPath.absolute().string.md5)").absolute()
         var cacheFile: CacheFile?
 
         // read cache
