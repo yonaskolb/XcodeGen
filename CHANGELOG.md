@@ -6,11 +6,12 @@
 - Fixed XPC Service package type [#435](https://github.com/yonaskolb/XcodeGen/pull/435) @alvarhansen
 - Fixed phase ordering for modulemap and static libary header Copy File phases. [402](https://github.com/yonaskolb/XcodeGen/pull/402) @brentleyjones
 - Add `.intentdefinition` files to sources build phase instead of resources [#442](https://github.com/yonaskolb/XcodeGen/pull/442) @yonaskolb
-- Fixed overwriting INFOPLIST_FILE setting with info path [#443](https://github.com/yonaskolb/XcodeGen/pull/443) @feischl97
+- Fixed intermittent errors when running multiple `xcodegen`s concurrently [#450](https://github.com/yonaskolb/XcodeGen/pull/450) @bryansum
 
 #### Changed
 - Changed spelling of build phases to **preBuildPhase** and **postBuildPhase**. [402](https://github.com/yonaskolb/XcodeGen/pull/402) @brentleyjones
 - **BREAKING** Moved generation to a specific subcommand `xcodegen generate`. If not specifying any arguments `xcodegen` will still work [#437](https://github.com/yonaskolb/XcodeGen/pull/437) @yonaskolb
+- If `INFOPLIST_FILE` has been set on a target, then an `info` path won't ovewrite it [#443](https://github.com/yonaskolb/XcodeGen/pull/443) @feischl97
 
 ## 2.0.0
 
