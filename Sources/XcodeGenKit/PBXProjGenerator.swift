@@ -310,8 +310,8 @@ public class PBXProjGenerator {
 
         var targetAttributes: [PBXTarget: [String: Any]] = [:]
 
-        let uiTestTargets = pbxProj.nativeTargets.filter { $0.productType == .uiTestBundle }
-        for uiTestTarget in uiTestTargets {
+        let testTargets = pbxProj.nativeTargets.filter { $0.productType == .uiTestBundle || $0.productType == .unitTestBundle }
+        for testTarget in testTargets {
 
             // look up TEST_TARGET_NAME build setting
             func testTargetName(_ target: PBXTarget) -> String? {
@@ -322,11 +322,10 @@ public class PBXProjGenerator {
                     .first
             }
 
-            guard let name = testTargetName(uiTestTarget) else { continue }
+            guard let name = testTargetName(testTarget) else { continue }
             guard let target = self.pbxProj.targets(named: name).first else { continue }
 
-            // FIX: Can't set in xcproj 5.0+
-            targetAttributes[uiTestTarget, default: [:]].merge(["TestTargetID": target])
+            targetAttributes[testTarget, default: [:]].merge(["TestTargetID": target])
         }
 
         func generateTargetAttributes(_ target: ProjectTarget, pbxTarget: PBXTarget) {
@@ -817,12 +816,12 @@ public class PBXProjGenerator {
             }
 
             // automatically set test target name
-            if target.type == .uiTestBundle,
+            if target.type == .uiTestBundle || target.type == .unitTestBundle,
                 !project.targetHasBuildSetting("TEST_TARGET_NAME", target: target, config: config) {
                 for dependency in target.dependencies {
                     if dependency.type == .target,
                         let dependencyTarget = project.getTarget(dependency.reference),
-                        dependencyTarget.type == .application {
+                        dependencyTarget.type.isApp {
                         buildSettings["TEST_TARGET_NAME"] = dependencyTarget.name
                         break
                     }
