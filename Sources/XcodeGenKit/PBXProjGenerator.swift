@@ -828,6 +828,19 @@ public class PBXProjGenerator {
                 }
             }
 
+            // automatically set TEST_HOST
+            if target.type == .unitTestBundle,
+                !project.targetHasBuildSetting("TEST_HOST", target: target, config: config) {
+                for dependency in target.dependencies {
+                    if dependency.type == .target,
+                        let dependencyTarget = project.getTarget(dependency.reference),
+                        dependencyTarget.type.isApp {
+                        buildSettings["TEST_HOST"] = "$(BUILT_PRODUCTS_DIR)/\(dependencyTarget.productName).app/\(dependencyTarget.productName)"
+                        break
+                    }
+                }
+            }
+
             // objc linkage
             if anyDependencyRequiresObjCLinking {
                 let otherLinkingFlags = "OTHER_LDFLAGS"
