@@ -7,8 +7,9 @@
 - Fixed phase ordering for modulemap and static libary header Copy File phases. [402](https://github.com/yonaskolb/XcodeGen/pull/402) @brentleyjones
 - Add `.intentdefinition` files to sources build phase instead of resources [#442](https://github.com/yonaskolb/XcodeGen/pull/442) @yonaskolb
 - Fixed intermittent errors when running multiple `xcodegen`s concurrently [#450](https://github.com/yonaskolb/XcodeGen/pull/450) @bryansum
-- Fixed `--project` argument not working [#437](https://github.com/yonaskolb/XcodeGen/pull/437) @yonaskolb 
-- Fixed unit tests not hooking up to host applications properly by default. They now generate a `TEST_HOST` and a `TestTargetID` [#452](https://github.com/yonaskolb/XcodeGen/pull/452) @yonaskolb 
+- Fixed `--project` argument not working [#437](https://github.com/yonaskolb/XcodeGen/pull/437) @yonaskolb
+- Fixed unit tests not hooking up to host applications properly by default. They now generate a `TEST_HOST` and a `TestTargetID` [#452](https://github.com/yonaskolb/XcodeGen/pull/452) @yonaskolb
+- Static libraries not including external frameworks in their search paths [#454](https://github.com/yonaskolb/XcodeGen/pull/454) @brentleyjones
 
 #### Changed
 - Changed spelling of build phases to **preBuildPhase** and **postBuildPhase**. [402](https://github.com/yonaskolb/XcodeGen/pull/402) @brentleyjones
