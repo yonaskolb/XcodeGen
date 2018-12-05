@@ -68,9 +68,11 @@ class GenerateCommand: Command {
             }
         }
 
+        let projectExists = XcodeProj.pbxprojPath(projectPath).exists
+
         // check cache
         if let cacheFile = cacheFile,
-            projectPath.exists,
+            projectExists,
             cacheFilePath.exists {
             do {
                 let existingCacheFile: String = try cacheFilePath.read()
