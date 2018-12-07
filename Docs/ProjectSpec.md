@@ -108,7 +108,8 @@ Each config maps to a build type of either `debug` or `release` which will then 
 ```yaml
 configs:
   Debug: debug
-  Release: release
+  Beta: release
+  AppStore: release
 ```
 If no configs are specified, default `Debug` and `Release` configs will be created automatically.
 
