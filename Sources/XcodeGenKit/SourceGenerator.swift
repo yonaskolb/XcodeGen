@@ -193,7 +193,7 @@ class SourceGenerator {
                  "xcdatamodeld",
                  "intentdefinition",
                  "metal",
-		 "mlmodel":
+                 "mlmodel":
                 return .sources
             case "h",
                  "hh",
