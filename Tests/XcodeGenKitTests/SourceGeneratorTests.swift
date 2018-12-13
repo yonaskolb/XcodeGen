@@ -435,6 +435,7 @@ class SourceGeneratorTests: XCTestCase {
                     - file.123
                     - file.xcassets
                     - file.metal
+                    - file.mlmodel
                     - Info.plist
                     - Intent.intentdefinition
                 """
@@ -484,6 +485,7 @@ class SourceGeneratorTests: XCTestCase {
                 try pbxProj.expectFile(paths: ["C", "file.123"], buildPhase: .resources)
                 try pbxProj.expectFile(paths: ["C", "Info.plist"], buildPhase: .none)
                 try pbxProj.expectFile(paths: ["C", "file.metal"], buildPhase: .sources)
+                try pbxProj.expectFile(paths: ["C", "file.mlmodel"], buildPhase: .sources)
                 try pbxProj.expectFile(paths: ["C", "Intent.intentdefinition"], buildPhase: .sources)
             }
 
