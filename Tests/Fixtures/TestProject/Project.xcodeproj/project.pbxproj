@@ -1362,6 +1362,9 @@
 					AT_D40C01B2BAD29EDEA392714DFB69FE8F = {
 						CUSTOM = value;
 					};
+					NT_193BAF154270D1C21E269EDF2A1BD3F6 = {
+						TestTargetID = NT_BEB0891E36797FE2214A0A9D516D408D;
+					};
 					NT_B91A6EACD6F5192FECA2E95FD531D0CA = {
 						ProvisioningStyle = Automatic;
 					};
@@ -2829,6 +2832,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-iOS-Tests";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/App_iOS.app/App_iOS";
+				TEST_TARGET_NAME = App_iOS;
 			};
 			name = "Production Debug";
 		};
@@ -3119,6 +3124,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-iOS-Tests";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/App_iOS.app/App_iOS";
+				TEST_TARGET_NAME = App_iOS;
 			};
 			name = "Staging Release";
 		};
@@ -3359,6 +3366,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-iOS-Tests";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/App_iOS.app/App_iOS";
+				TEST_TARGET_NAME = App_iOS;
 			};
 			name = "Test Release";
 		};
@@ -3843,6 +3852,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-iOS-Tests";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/App_iOS.app/App_iOS";
+				TEST_TARGET_NAME = App_iOS;
 			};
 			name = "Test Debug";
 		};
@@ -4472,6 +4483,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-iOS-Tests";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/App_iOS.app/App_iOS";
+				TEST_TARGET_NAME = App_iOS;
 			};
 			name = "Production Release";
 		};
@@ -4488,6 +4501,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-iOS-Tests";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/App_iOS.app/App_iOS";
+				TEST_TARGET_NAME = App_iOS;
 			};
 			name = "Staging Debug";
 		};
