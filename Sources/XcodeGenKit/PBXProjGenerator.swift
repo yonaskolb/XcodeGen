@@ -807,7 +807,9 @@ public class PBXProjGenerator {
                     buildSettings["INFOPLIST_FILE"] = plistPath.byRemovingBase(path: project.basePath)
                 }
             }
-
+            
+            // Set OBJC_SWIFT_OBJC_BRIDGING_HEADER if not defined in settings.
+            
             // automatically calculate bundle id
             if let bundleIdPrefix = project.options.bundleIdPrefix,
                 !project.targetHasBuildSetting("PRODUCT_BUNDLE_IDENTIFIER", target: target, config: config) {
