@@ -497,6 +497,10 @@ public class PBXProjGenerator {
                 }
 
             case .framework:
+                let buildPath = Path(dependency.reference).parent().string.quoted
+                frameworkBuildPaths.insert(buildPath)
+                
+                // Static libraries can't link or embed dynamic frameworks
                 guard target.type != .staticLibrary else { break }
 
                 let fileReference: PBXFileElement
@@ -528,10 +532,9 @@ public class PBXProjGenerator {
                     )
                     copyFrameworksReferences.append(embedFile)
                 }
-
-                let buildPath = Path(dependency.reference).parent().string.quoted
-                frameworkBuildPaths.insert(buildPath)
             case .sdk:
+                // Static libraries can't link or embed dynamic frameworks
+                guard target.type != .staticLibrary else { break }
 
                 var dependencyPath = Path(dependency.reference)
                 if !dependency.reference.contains("/") {
@@ -569,6 +572,7 @@ public class PBXProjGenerator {
                 targetFrameworkBuildFiles.append(buildFile)
 
             case .carthage:
+                // Static libraries can't link or embed dynamic frameworks
                 guard target.type != .staticLibrary else { break }
 
                 var platformPath = Path(getCarthageBuildPath(platform: target.platform))
