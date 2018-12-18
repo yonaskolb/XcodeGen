@@ -2,6 +2,8 @@
 
 ## Master
 
+## 2.1.0
+
 #### Added
 - Added an experiment new caching feature. Pass `--use-cache` to opt in. This will read and write from a cache file to prevent unnecessarily generating the project. Give it a try as it may become the default in a future release [#412](https://github.com/yonaskolb/XcodeGen/pull/412) @yonaskolb
 
@@ -19,6 +21,8 @@
 - Fixed static libraries not including external frameworks in their search paths [#454](https://github.com/yonaskolb/XcodeGen/pull/454) @brentleyjones
 - Add `.intentdefinition` files to sources build phase instead of resources [#442](https://github.com/yonaskolb/XcodeGen/pull/442) @yonaskolb
 - Add `mlmodel` files to sources build phase instead of resources [#457](https://github.com/yonaskolb/XcodeGen/pull/457) @dwb357
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.0.0...2.1.0)
 
 ## 2.0.0
 
