@@ -115,13 +115,12 @@ And then import wherever needed: `import XcodeGenKit`
 Simply run:
 
 ```shell
-xcodegen
+xcodegen generate
 ```
 
 This will look for a project spec in the current directory called `project.yml` and generate an Xcode project with the name defined in the spec.
 
-To specify any options use the full `xcodegen generate` command and add the following:
-
+Options:
 - **--spec**: An optional path to a `.yml` or `.json` project spec. Defaults to `project.yml`
 - **--project**: An optional path to a directory where the project will be generated. By default this is the directory the spec lives in.
 - **--quiet**: Suppress informational and success messages.
