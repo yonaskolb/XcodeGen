@@ -3,7 +3,7 @@
 ## Master
 
 #### Added
-- Added `--use-cache` argument to prevent unnecessarily generating the project [#412](https://github.com/yonaskolb/XcodeGen/pull/412) @yonaskolb
+- Added an experiment new caching feature. Pass `--use-cache` to opt in. This will read and write from a cache file to prevent unnecessarily generating the project. Give it a try as it may become the default in a future release [#412](https://github.com/yonaskolb/XcodeGen/pull/412) @yonaskolb
 
 #### Changed
 - Changed spelling of build phases to **preBuildPhase** and **postBuildPhase**. The older names are deprecated but still work [402](https://github.com/yonaskolb/XcodeGen/pull/402) @brentleyjones
