@@ -310,8 +310,8 @@ public class PBXProjGenerator {
 
         var targetAttributes: [PBXTarget: [String: Any]] = [:]
 
-        let uiTestTargets = pbxProj.nativeTargets.filter { $0.productType == .uiTestBundle }
-        for uiTestTarget in uiTestTargets {
+        let testTargets = pbxProj.nativeTargets.filter { $0.productType == .uiTestBundle || $0.productType == .unitTestBundle }
+        for testTarget in testTargets {
 
             // look up TEST_TARGET_NAME build setting
             func testTargetName(_ target: PBXTarget) -> String? {
@@ -322,11 +322,10 @@ public class PBXProjGenerator {
                     .first
             }
 
-            guard let name = testTargetName(uiTestTarget) else { continue }
+            guard let name = testTargetName(testTarget) else { continue }
             guard let target = self.pbxProj.targets(named: name).first else { continue }
 
-            // FIX: Can't set in xcproj 5.0+
-            targetAttributes[uiTestTarget, default: [:]].merge(["TestTargetID": target])
+            targetAttributes[testTarget, default: [:]].merge(["TestTargetID": target])
         }
 
         func generateTargetAttributes(_ target: ProjectTarget, pbxTarget: PBXTarget) {
@@ -498,6 +497,10 @@ public class PBXProjGenerator {
                 }
 
             case .framework:
+                let buildPath = Path(dependency.reference).parent().string.quoted
+                frameworkBuildPaths.insert(buildPath)
+                
+                // Static libraries can't link or embed dynamic frameworks
                 guard target.type != .staticLibrary else { break }
 
                 let fileReference: PBXFileElement
@@ -529,10 +532,9 @@ public class PBXProjGenerator {
                     )
                     copyFrameworksReferences.append(embedFile)
                 }
-
-                let buildPath = Path(dependency.reference).parent().string.quoted
-                frameworkBuildPaths.insert(buildPath)
             case .sdk:
+                // Static libraries can't link or embed dynamic frameworks
+                guard target.type != .staticLibrary else { break }
 
                 var dependencyPath = Path(dependency.reference)
                 if !dependency.reference.contains("/") {
@@ -570,6 +572,7 @@ public class PBXProjGenerator {
                 targetFrameworkBuildFiles.append(buildFile)
 
             case .carthage:
+                // Static libraries can't link or embed dynamic frameworks
                 guard target.type != .staticLibrary else { break }
 
                 var platformPath = Path(getCarthageBuildPath(platform: target.platform))
@@ -792,11 +795,11 @@ public class PBXProjGenerator {
                 buildSettings["CODE_SIGN_ENTITLEMENTS"] = entitlements.path
             }
 
-            // Set INFOPLIST_FILE
-            if let info = target.info {
-                buildSettings["INFOPLIST_FILE"] = info.path
-            } else if !project.targetHasBuildSetting("INFOPLIST_FILE", target: target, config: config) {
-                if searchForPlist {
+            // Set INFOPLIST_FILE if not defined in settings
+            if !project.targetHasBuildSetting("INFOPLIST_FILE", target: target, config: config) {
+                if let info = target.info {
+                    buildSettings["INFOPLIST_FILE"] = info.path
+                } else if searchForPlist {
                     plistPath = getInfoPlist(target.sources)
                     searchForPlist = false
                 }
@@ -817,13 +820,26 @@ public class PBXProjGenerator {
             }
 
             // automatically set test target name
-            if target.type == .uiTestBundle,
+            if target.type == .uiTestBundle || target.type == .unitTestBundle,
                 !project.targetHasBuildSetting("TEST_TARGET_NAME", target: target, config: config) {
                 for dependency in target.dependencies {
                     if dependency.type == .target,
                         let dependencyTarget = project.getTarget(dependency.reference),
-                        dependencyTarget.type == .application {
+                        dependencyTarget.type.isApp {
                         buildSettings["TEST_TARGET_NAME"] = dependencyTarget.name
+                        break
+                    }
+                }
+            }
+
+            // automatically set TEST_HOST
+            if target.type == .unitTestBundle,
+                !project.targetHasBuildSetting("TEST_HOST", target: target, config: config) {
+                for dependency in target.dependencies {
+                    if dependency.type == .target,
+                        let dependencyTarget = project.getTarget(dependency.reference),
+                        dependencyTarget.type.isApp {
+                        buildSettings["TEST_HOST"] = "$(BUILT_PRODUCTS_DIR)/\(dependencyTarget.productName).app/\(dependencyTarget.productName)"
                         break
                     }
                 }

@@ -10,9 +10,9 @@ class CommandRouter: Router {
     }
 
     func parse(commandGroup: CommandGroup, arguments: ArgumentList) throws -> (CommandPath, OptionRegistry) {
-        if !arguments.hasNext() {
-            arguments.manipulate { _ in
-                [defaultCommand.name]
+        if !arguments.hasNext() || arguments.nextIsOption() {
+            arguments.manipulate { existing in
+                [defaultCommand.name] + existing
             }
         }
         return try DefaultRouter().parse(commandGroup: commandGroup, arguments: arguments)

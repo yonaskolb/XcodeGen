@@ -108,7 +108,8 @@ Each config maps to a build type of either `debug` or `release` which will then 
 ```yaml
 configs:
   Debug: debug
-  Release: release
+  Beta: release
+  AppStore: release
 ```
 If no configs are specified, default `Debug` and `Release` configs will be created automatically.
 
@@ -170,8 +171,10 @@ Settings are merged in the following order: groups, base, configs.
 	- `INFOPLIST_FILE`: If it doesn't exist your sources will be searched for `Info.plist` files and the first one found will be used for this setting
 	- `FRAMEWORK_SEARCH_PATHS`: If carthage dependencies are used, the platform build path will be added to this setting
 	- `OTHER_LDFLAGS`:  See `requiresObjCLinking` below
+  - `TEST_TARGET_NAME`: for ui tests that target an application
+  - `TEST_HOST`: for unit tests that target an application
 - [ ] **dependencies**: **[[Dependency](#dependency)]** - Dependencies for the target
-- [ ] **info**: **[Plist](#plist)** - If defined, this will generate and write an `Info.plist` to the specified path and use it by setting the `INFOPLIST_FILE` build setting for every configuration. The following properties are generated automatically, the rest will have to be provided.
+- [ ] **info**: **[Plist](#plist)** - If defined, this will generate and write an `Info.plist` to the specified path and use it by setting the `INFOPLIST_FILE` build setting for every configuration, unless `INFOPLIST_FILE` is already defined in  **settings** for this configuration. The following properties are generated automatically, the rest will have to be provided.
   - `CFBundleIdentifier`
   - `CFBundleInfoDictionaryVersion`
   - `CFBundleExecutable`

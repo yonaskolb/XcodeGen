@@ -183,8 +183,26 @@ class SourceGenerator {
         }
         if let fileExtension = path.extension {
             switch fileExtension {
-            case "swift", "m", "mm", "cpp", "c", "cc", "S", "xcdatamodeld", "metal": return .sources
-            case "h", "hh", "hpp", "ipp", "tpp", "hxx", "def": return .headers
+            case "swift",
+                 "m",
+                 "mm",
+                 "cpp",
+                 "c",
+                 "cc",
+                 "S",
+                 "xcdatamodeld",
+                 "intentdefinition",
+                 "metal",
+                 "mlmodel":
+                return .sources
+            case "h",
+                 "hh",
+                 "hpp",
+                 "ipp",
+                 "tpp",
+                 "hxx",
+                 "def":
+                return .headers
             case "modulemap":
                 guard targetType == .staticLibrary else { return nil }
                 return .copyFiles(TargetSource.BuildPhase.CopyFilesSettings(
@@ -192,10 +210,18 @@ class SourceGenerator {
                     subpath: "include/$(PRODUCT_NAME)",
                     phaseOrder: .preCompile
                 ))
-            case "framework": return .frameworks
-            case "xpc": return .copyFiles(.xpcServices)
-            case "xcconfig", "entitlements", "gpx", "lproj", "apns": return nil
-            default: return .resources
+            case "framework":
+                return .frameworks
+            case "xpc":
+                return .copyFiles(.xpcServices)
+            case "xcconfig",
+                 "entitlements",
+                 "gpx",
+                 "lproj",
+                 "apns":
+                return nil
+            default:
+                return .resources
             }
         }
         return nil
