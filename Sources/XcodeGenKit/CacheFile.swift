@@ -1,7 +1,6 @@
 import Foundation
 import ProjectSpec
 
-
 public class CacheFile {
 
     public let string: String

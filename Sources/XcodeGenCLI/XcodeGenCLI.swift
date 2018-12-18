@@ -1,6 +1,6 @@
 import Foundation
-import SwiftCLI
 import ProjectSpec
+import SwiftCLI
 
 public class XcodeGenCLI {
 
@@ -8,11 +8,13 @@ public class XcodeGenCLI {
 
     public init(version: Version) {
         let generateCommand = GenerateCommand(version: version)
-        
-        cli = CLI(name: "xcodegen",
-                  version: version.string,
-                  description: "Generates Xcode projects",
-                  commands: [generateCommand])
+
+        cli = CLI(
+            name: "xcodegen",
+            version: version.string,
+            description: "Generates Xcode projects",
+            commands: [generateCommand]
+        )
         cli.parser = Parser(router: CommandRouter(defaultCommand: generateCommand))
     }
 

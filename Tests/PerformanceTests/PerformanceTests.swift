@@ -44,7 +44,7 @@ class FixturePerformanceTests: XCTestCase {
         let specLoader = SpecLoader(version: "1.2")
         _ = try specLoader.loadProject(path: specPath)
 
-        self.measure {
+        measure {
             _ = try! specLoader.generateCacheFile()
         }
     }

@@ -1,7 +1,7 @@
 import Foundation
-import SwiftCLI
 import PathKit
 import ProjectSpec
+import SwiftCLI
 import XcodeGenKit
 import xcodeproj
 
@@ -10,19 +10,30 @@ class GenerateCommand: Command {
     let name: String = "generate"
     let shortDescription: String = "Generate an Xcode project from a spec"
 
-    let quiet = Flag("-q", "--quiet",
-                     description: "Suppress all informational and success output",
-                     defaultValue: false)
+    let quiet = Flag(
+        "-q",
+        "--quiet",
+        description: "Suppress all informational and success output",
+        defaultValue: false
+    )
 
-    let useCache = Flag("-c", "--use-cache",
-                        description: "Use a cache for the xcodegen spec. This will prevent unnecessarily generating the project if nothing has changed",
-                        defaultValue: false)
+    let useCache = Flag(
+        "-c",
+        "--use-cache",
+        description: "Use a cache for the xcodegen spec. This will prevent unnecessarily generating the project if nothing has changed",
+        defaultValue: false
+    )
 
-    let cacheFilePath = Key<Path>("--cache-path",
-                                  description: "Where the cache file will be loaded from and save to. Defaults to ~/.xcodegen/cache/{SPEC_PATH_HASH}")
+    let cacheFilePath = Key<Path>(
+        "--cache-path",
+        description: "Where the cache file will be loaded from and save to. Defaults to ~/.xcodegen/cache/{SPEC_PATH_HASH}"
+    )
 
-    let spec = Key<Path>("-s", "--spec",
-                         description: "The path to the project spec file. Defaults to project.yml")
+    let spec = Key<Path>(
+        "-s",
+        "--spec",
+        description: "The path to the project spec file. Defaults to project.yml"
+    )
 
     let projectDirectory = Key<Path>("-p", "--project", description: "The path to the directory where the project should be generated. Defaults to the directory the spec is in. The filename is defined in the project spec")
 

@@ -55,11 +55,11 @@ func arrayOfBytes<T>(_ value: T, length: Int? = nil) -> [UInt8] {
     }
 
     #if swift(>=4.1)
-    valuePointer.deinitialize(count: 1)
-    valuePointer.deallocate()
+        valuePointer.deinitialize(count: 1)
+        valuePointer.deallocate()
     #else
-    valuePointer.deinitialize()
-    valuePointer.deallocate(capacity: 1)
+        valuePointer.deinitialize()
+        valuePointer.deallocate(capacity: 1)
     #endif
 
     return bytes
@@ -169,7 +169,7 @@ class MD5: HashProtocol {
         5, 9, 14, 20, 5, 9, 14, 20, 5, 9, 14, 20, 5, 9, 14, 20,
         4, 11, 16, 23, 4, 11, 16, 23, 4, 11, 16, 23, 4, 11, 16, 23,
         6, 10, 15, 21, 6, 10, 15, 21, 6, 10, 15, 21, 6, 10, 15, 21,
-        ]
+    ]
 
     /** binary integer part of the sines of integers (Radians) */
     private let sines: [UInt32] = [
@@ -189,7 +189,7 @@ class MD5: HashProtocol {
         0x655B_59C3, 0x8F0C_CC92, 0xFFEF_F47D, 0x8584_5DD1,
         0x6FA8_7E4F, 0xFE2C_E6E0, 0xA301_4314, 0x4E08_11A1,
         0xF753_7E82, 0xBD3A_F235, 0x2AD7_D2BB, 0xEB86_D391,
-        ]
+    ]
 
     private let hashes: [UInt32] = [0x6745_2301, 0xEFCD_AB89, 0x98BA_DCFE, 0x1032_5476]
 

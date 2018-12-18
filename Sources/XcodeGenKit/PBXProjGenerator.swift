@@ -296,7 +296,7 @@ public class PBXProjGenerator {
         )
         return addObject(shellScriptPhase)
     }
-    
+
     func generateCopyFiles(targetName: String, copyFiles: TargetSource.BuildPhase.CopyFilesSettings, buildPhaseFiles: [PBXBuildFile]) -> PBXCopyFilesBuildPhase {
         let copyFilesBuildPhase = PBXCopyFilesBuildPhase(
             dstPath: copyFiles.subpath,
@@ -499,7 +499,7 @@ public class PBXProjGenerator {
             case .framework:
                 let buildPath = Path(dependency.reference).parent().string.quoted
                 frameworkBuildPaths.insert(buildPath)
-                
+
                 // Static libraries can't link or embed dynamic frameworks
                 guard target.type != .staticLibrary else { break }
 
@@ -669,7 +669,7 @@ public class PBXProjGenerator {
         buildPhases.append(sourcesBuildPhase)
 
         buildPhases += try target.postCompileScripts.map { try generateBuildScript(targetName: target.name, buildScript: $0) }
-        
+
         let resourcesBuildPhaseFiles = getBuildFilesForPhase(.resources) + copyResourcesReferences
         if !resourcesBuildPhaseFiles.isEmpty {
             let resourcesBuildPhase = addObject(PBXResourcesBuildPhase(files: resourcesBuildPhaseFiles))
@@ -699,7 +699,7 @@ public class PBXProjGenerator {
         buildPhases += copyFilesBuildPhasesFiles
             .filter { $0.key.phaseOrder == .postCompile }
             .map { generateCopyFiles(targetName: target.name, copyFiles: $0, buildPhaseFiles: $1) }
-        
+
         if !carthageFrameworksToEmbed.isEmpty {
 
             let inputPaths = carthageFrameworksToEmbed

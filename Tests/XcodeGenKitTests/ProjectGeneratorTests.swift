@@ -882,7 +882,7 @@ class ProjectGeneratorTests: XCTestCase {
 
                 try expect(NSDictionary(dictionary: expectedInfoPlist).isEqual(to: infoPlist)).beTrue()
             }
-          
+
             $0.it("info doesn't override info.plist setting") {
                 let predefinedPlistPath = "Predefined.plist"
                 // generate plist
@@ -893,7 +893,7 @@ class ProjectGeneratorTests: XCTestCase {
                 let pbxProject = try project.generatePbxProj()
                 let writer = FileWriter(project: project)
                 try writer.writePlists()
-              
+
                 guard let targetConfig = pbxProject.nativeTargets.first?.buildConfigurationList?.buildConfigurations.first else {
                     throw failure("Couldn't find Target config")
                 }

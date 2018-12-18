@@ -181,7 +181,7 @@ extension Project {
         for target in aggregateTargets {
             files.append(contentsOf: target.configFilePaths)
         }
-        
+
         for target in targets {
             files.append(contentsOf: target.configFilePaths)
             for source in target.sources {
@@ -198,7 +198,6 @@ extension Project {
 extension BuildSettingsContainer {
 
     fileprivate var configFilePaths: [Path] {
-        return configFiles.values.map{ Path($0) }
+        return configFiles.values.map { Path($0) }
     }
 }
-

@@ -73,7 +73,7 @@ public struct TargetSource: Equatable {
                     }
                 }
             }
-            
+
             public enum PhaseOrder: String {
                 /// Run before the Compile Sources phase
                 case preCompile

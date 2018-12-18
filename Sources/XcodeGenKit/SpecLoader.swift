@@ -20,7 +20,7 @@ public class SpecLoader {
         let project = try Project(basePath: path.parent(), jsonDictionary: dictionary)
 
         self.project = project
-        self.projectDictionary = dictionary
+        projectDictionary = dictionary
 
         return project
     }
@@ -28,11 +28,12 @@ public class SpecLoader {
     public func generateCacheFile() throws -> CacheFile? {
         guard let projectDictionary = projectDictionary,
             let project = project else {
-                return nil
+            return nil
         }
-        return try CacheFile(version: version,
-                              projectDictionary: projectDictionary,
-                              project: project)
+        return try CacheFile(
+            version: version,
+            projectDictionary: projectDictionary,
+            project: project
+        )
     }
-
 }

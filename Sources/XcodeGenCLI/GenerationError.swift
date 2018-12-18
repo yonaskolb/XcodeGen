@@ -1,8 +1,8 @@
-import PathKit
 import Foundation
+import PathKit
 import ProjectSpec
-import SwiftCLI
 import Rainbow
+import SwiftCLI
 
 enum GenerationError: Error, CustomStringConvertible, ProcessError {
     case missingProjectSpec(Path)
@@ -14,17 +14,17 @@ enum GenerationError: Error, CustomStringConvertible, ProcessError {
 
     var description: String {
         switch self {
-        case .missingProjectSpec(let path):
+        case let .missingProjectSpec(path):
             return "No project spec found at \(path.absolute())"
-        case .projectSpecParsingError(let error):
+        case let .projectSpecParsingError(error):
             return "Parsing project spec failed: \(error)"
-        case .cacheGenerationError(let error):
+        case let .cacheGenerationError(error):
             return "Couldn't generate cache file: \(error)"
-        case .validationError(let error):
+        case let .validationError(error):
             return error.description
-        case .generationError(let error):
+        case let .generationError(error):
             return String(describing: error)
-        case .writingError(let error):
+        case let .writingError(error):
             return String(describing: error)
         }
     }
