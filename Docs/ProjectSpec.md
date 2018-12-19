@@ -198,7 +198,7 @@ Settings are merged in the following order: groups, base, configs.
 	- `DevelopmentTeam`: if all configurations have the same `DEVELOPMENT_TEAM` setting
 	- `ProvisioningStyle`: if all configurations have the same `CODE_SIGN_STYLE` setting
 	- `TestTargetID`: if all configurations have the same `TEST_TARGET_NAME` setting
-- [ ] **includeBridgingHeader**: **Bool** - If this is `true` `OBJC_SWIFT_OBJC_BRIDGING_HEADER` is automatically set as `\(targetName)-Bridging-Header.h`.
+- [ ] **includeBridgingHeader**: **Bool** - If this is `true` `SWIFT_OBJC_BRIDGING_HEADER` is automatically set as `\(targetName)-Bridging-Header.h`.
 
 ### Product Type
 

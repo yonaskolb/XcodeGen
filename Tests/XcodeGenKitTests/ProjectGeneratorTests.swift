@@ -912,13 +912,13 @@ class ProjectGeneratorTests: XCTestCase {
                     throw failure("Couldn't find Target config")
                 }
                 
-                try expect(targetConfig.buildSettings["OBJC_SWIFT_OBJC_BRIDGING_HEADER"] as? String) == "$(SRCROOT)/MyApp/MyApp-Bridging-Header.h"
+                try expect(targetConfig.buildSettings["SWIFT_OBJC_BRIDGING_HEADER"] as? String) == "$(SRCROOT)/MyApp/MyApp-Bridging-Header.h"
             }
             
             $0.it("includeBridgingHeader doesn't override existing setting") {
                 let predefinedBridgingHeader = "MyAwesomeApp-Bridging-Header.h"
                 let tempPath = Path.temporary + "header"
-                let project = Project(basePath: tempPath, name: "", targets: [Target(name: "MyApp", type: .application, platform: .iOS, settings: Settings(buildSettings: ["OBJC_SWIFT_OBJC_BRIDGING_HEADER": predefinedBridgingHeader]), includeBridgingHeader: true)])
+                let project = Project(basePath: tempPath, name: "", targets: [Target(name: "MyApp", type: .application, platform: .iOS, settings: Settings(buildSettings: ["SWIFT_OBJC_BRIDGING_HEADER": predefinedBridgingHeader]), includeBridgingHeader: true)])
                 let pbxProject = try project.generatePbxProj()
                 let writer = FileWriter(project: project)
                 try writer.writePlists()
@@ -927,7 +927,7 @@ class ProjectGeneratorTests: XCTestCase {
                     throw failure("Couldn't find Target config")
                 }
                 
-                try expect(targetConfig.buildSettings["OBJC_SWIFT_OBJC_BRIDGING_HEADER"] as? String) == predefinedBridgingHeader
+                try expect(targetConfig.buildSettings["SWIFT_OBJC_BRIDGING_HEADER"] as? String) == predefinedBridgingHeader
             }
         }
     }
