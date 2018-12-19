@@ -810,7 +810,7 @@ public class PBXProjGenerator {
             
             // Set OBJC_SWIFT_OBJC_BRIDGING_HEADER if not defined in settings.
             if target.includeBridgingHeader && !project.targetHasBuildSetting("OBJC_SWIFT_OBJC_BRIDGING_HEADER", target: target, config: config) {
-                let bridgingHeaderValue = "\(target.name)-Bridging-Header.h"
+                let bridgingHeaderValue = "$(SRCROOT)/\(target.name)/\(target.name)-Bridging-Header.h"
                 buildSettings["OBJC_SWIFT_OBJC_BRIDGING_HEADER"] = bridgingHeaderValue
             }
             

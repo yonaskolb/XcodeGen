@@ -900,6 +900,35 @@ class ProjectGeneratorTests: XCTestCase {
                 // generated plist should not be in buildsettings
                 try expect(targetConfig.buildSettings["INFOPLIST_FILE"] as? String) == predefinedPlistPath
             }
+            
+            $0.it("includeBridgingHeader generates bridging header") {
+                let tempPath = Path.temporary + "header"
+                let project = Project(basePath: tempPath, name: "", targets: [Target(name: "MyApp", type: .application, platform: .iOS, includeBridgingHeader: true)])
+                let pbxProject = try project.generatePbxProj()
+                let writer = FileWriter(project: project)
+                try writer.writePlists()
+                
+                guard let targetConfig = pbxProject.nativeTargets.first?.buildConfigurationList?.buildConfigurations.first else {
+                    throw failure("Couldn't find Target config")
+                }
+                
+                try expect(targetConfig.buildSettings["OBJC_SWIFT_OBJC_BRIDGING_HEADER"] as? String) == "$(SRCROOT)/MyApp/MyApp-Bridging-Header.h"
+            }
+            
+            $0.it("includeBridgingHeader doesn't override existing setting") {
+                let predefinedBridgingHeader = "MyAwesomeApp-Bridging-Header.h"
+                let tempPath = Path.temporary + "header"
+                let project = Project(basePath: tempPath, name: "", targets: [Target(name: "MyApp", type: .application, platform: .iOS, settings: Settings(buildSettings: ["OBJC_SWIFT_OBJC_BRIDGING_HEADER": predefinedBridgingHeader]), includeBridgingHeader: true)])
+                let pbxProject = try project.generatePbxProj()
+                let writer = FileWriter(project: project)
+                try writer.writePlists()
+                
+                guard let targetConfig = pbxProject.nativeTargets.first?.buildConfigurationList?.buildConfigurations.first else {
+                    throw failure("Couldn't find Target config")
+                }
+                
+                try expect(targetConfig.buildSettings["OBJC_SWIFT_OBJC_BRIDGING_HEADER"] as? String) == predefinedBridgingHeader
+            }
         }
     }
 }
