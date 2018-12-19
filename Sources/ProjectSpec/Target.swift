@@ -43,7 +43,7 @@ public struct Target: ProjectTarget {
     public var deploymentTarget: Version?
     public var attributes: [String: Any]
     public var productName: String
-    public var bridgingHeader: BridgingHeader
+    public var includeBridgingHeader: Bool
 
     public var isLegacy: Bool {
         return legacy != nil
@@ -79,7 +79,7 @@ public struct Target: ProjectTarget {
         scheme: TargetScheme? = nil,
         legacy: LegacyTarget? = nil,
         attributes: [String: Any] = [:],
-        bridgingHeader: BridgingHeader = .none
+        includeBridgingHeader: Bool = false
     ) {
         self.name = name
         self.type = type
@@ -102,7 +102,7 @@ public struct Target: ProjectTarget {
         self.scheme = scheme
         self.legacy = legacy
         self.attributes = attributes
-        self.bridgingHeader = bridgingHeader
+        self.includeBridgingHeader = includeBridgingHeader
     }
 }
 
@@ -312,6 +312,6 @@ extension Target: NamedJSONDictionaryConvertible {
         scheme = jsonDictionary.json(atKeyPath: "scheme")
         legacy = jsonDictionary.json(atKeyPath: "legacy")
         attributes = jsonDictionary.json(atKeyPath: "attributes") ?? [:]
-        bridgingHeader = jsonDictionary.json(atKeyPath: "bridgingHeader") ?? .none
+        includeBridgingHeader = jsonDictionary.json(atKeyPath: "includeBridgingHeader") ?? false
     }
 }

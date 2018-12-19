@@ -809,6 +809,10 @@ public class PBXProjGenerator {
             }
             
             // Set OBJC_SWIFT_OBJC_BRIDGING_HEADER if not defined in settings.
+            if target.includeBridgingHeader && !project.targetHasBuildSetting("OBJC_SWIFT_OBJC_BRIDGING_HEADER", target: target, config: config) {
+                let bridgingHeaderValue = "\(target.name)-Bridging-Header.h"
+                buildSettings["OBJC_SWIFT_OBJC_BRIDGING_HEADER"] = bridgingHeaderValue
+            }
             
             // automatically calculate bundle id
             if let bundleIdPrefix = project.options.bundleIdPrefix,
