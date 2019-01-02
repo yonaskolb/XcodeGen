@@ -11,6 +11,7 @@
 - Fixed `--project` argument not taking effect [#487](https://github.com/yonaskolb/XcodeGen/pull/487) @monowerker
 - Fixed Sticker Packs from generating an empty Source file phase which caused in error in the new build system [#492](https://github.com/yonaskolb/XcodeGen/pull/492) @rpassis
 - Fixed generated schemes for tool targets not setting the executable [#496](https://github.com/yonaskolb/XcodeGen/pull/496) @yonaskolb
+- Fixed resolving Carthage dependencies for iOS app with watchOS target. [465](https://github.com/yonaskolb/XcodeGen/pull/465) @raptorxcz
 
 ## 2.1.0
 
