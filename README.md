@@ -37,11 +37,15 @@ The project spec is a YAML or JSON file that defines your targets, configuration
 - ✅ Integrate **Carthage** frameworks without any work
 
 Given a very simple project spec file like this:
-
+**project.yml**    
 ```yaml
 name: MyProject
 options:
   bundleIdPrefix: com.myapp
+configFiles:
+  Debug: settings.xcconfig
+  Release: settings.xcconfig
+  
 targets:
   MyApp:
     type: application
@@ -65,6 +69,14 @@ targets:
     platform: iOS
     sources: [MyFramework]
 ```
+
+**settings.xcconfig**    
+```xml
+SWIFT_OPTIMIZATION_LEVEL = -O
+OTHER_LDFLAGS =  -lobjc
+```
+
+
 A project would be created with 2 connected targets, with all the required configurations and build settings. See the [Project Spec](Docs/ProjectSpec.md) documentation for all the options you can specify, and [Usage](Docs/Usage.md) for more general documentation.
 
 ## Installing
