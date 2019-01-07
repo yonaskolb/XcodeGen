@@ -73,7 +73,7 @@ public struct SpecOptions: Equatable {
         defaultConfig: String? = nil,
         transitivelyLinkDependencies: Bool = false,
         groupSortPosition: GroupSortPosition = .bottom,
-        generateEmptyDirectories: Bool = true
+        generateEmptyDirectories: Bool = false
     ) {
         self.minimumXcodeGenVersion = minimumXcodeGenVersion
         self.carthageBuildPath = carthageBuildPath
@@ -117,6 +117,6 @@ extension SpecOptions: JSONObjectConvertible {
         defaultConfig = jsonDictionary.json(atKeyPath: "defaultConfig")
         transitivelyLinkDependencies = jsonDictionary.json(atKeyPath: "transitivelyLinkDependencies") ?? false
         groupSortPosition = jsonDictionary.json(atKeyPath: "groupSortPosition") ?? .bottom
-        generateEmptyDirectories = jsonDictionary.json(atKeyPath: "generateEmptyDirectories") ?? true
+        generateEmptyDirectories = jsonDictionary.json(atKeyPath: "generateEmptyDirectories") ?? false
     }
 }
