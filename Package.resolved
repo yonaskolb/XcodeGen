@@ -51,8 +51,8 @@
         "repositoryURL": "https://github.com/jakeheis/SwiftCLI.git",
         "state": {
           "branch": null,
-          "revision": "37f4a7f863f6fe76ce44fc0023f331eea0089beb",
-          "version": "5.2.0"
+          "revision": "5318c37d3cacc8780f50b87a8840a6774320ebdf",
+          "version": "5.2.2"
         }
       },
       {
@@ -69,8 +69,8 @@
         "repositoryURL": "https://github.com/tuist/xcodeproj.git",
         "state": {
           "branch": null,
-          "revision": "23da51abd3de3bedaad59a0afbb150b48504b5b0",
-          "version": "6.3.0"
+          "revision": "8e15cc74149ee946b7ae125685177915b4ff7317",
+          "version": "6.4.0"
         }
       },
       {

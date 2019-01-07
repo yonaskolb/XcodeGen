@@ -15,6 +15,7 @@ extension Target {
              .application,
              .bundle,
              .commandLineTool,
+             .instrumentsPackage,
              .messagesApplication,
              .messagesExtension,
              .ocUnitTestBundle,
