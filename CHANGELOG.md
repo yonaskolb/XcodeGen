@@ -2,6 +2,9 @@
 
 ## Master
 
+#### Added
+- Added support for the `instrumentsPackage` product type
+
 ## 2.1.0
 
 #### Added
