@@ -89,9 +89,9 @@ Note that target names can also be changed by adding a `name` property to a targ
   - `missingConfigs`: Disable errors for configurations in yaml files that don't exist in the project itself. This can be useful if you include the same yaml file in different projects
 - [ ] **defaultConfig**: **String** - The default configuration for command line builds from Xcode. If the configuration provided here doesn't match one in your [configs](#configs) key, XcodeGen will fail. If you don't set this, the first configuration alphabetically will be chosen.
 - [ ] **groupSortPosition**: **String** - Where groups are sorted in relation to other files. Either:
-  - `top` - at the top, before files
-  - `bottom` - at the bottom, after other files
   - `none` - sorted alphabetically with all the other files
+  - `top` - at the top, before files
+  - `bottom` (default) - at the bottom, after other files
 - [ ] **transitivelyLinkDependencies**: **Bool** - If this is `true` then targets will link to the dependencies of their target dependencies. If a target should embed its dependencies, such as application and test bundles, it will embed these transitive dependencies as well. Some complex setups might want to set this to `false` and explicitly specify dependencies at every level. Targets can override this with [Target](#target).transitivelyLinkDependencies. Defaults to `false`.
 - [ ] **generateEmptyDirectories**: **Bool** - If this is `true` then empty directories will be added to project too else will be missed. Defaults to `false`.
 
