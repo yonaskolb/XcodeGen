@@ -19,6 +19,7 @@ public struct SpecOptions: Equatable {
     public var defaultConfig: String?
     public var transitivelyLinkDependencies: Bool
     public var groupSortPosition: GroupSortPosition
+    public var generateEmptyDirectories: Bool
 
     public enum ValidationType: String {
         case missingConfigs
@@ -71,7 +72,8 @@ public struct SpecOptions: Equatable {
         disabledValidations: [ValidationType] = [],
         defaultConfig: String? = nil,
         transitivelyLinkDependencies: Bool = false,
-        groupSortPosition: GroupSortPosition = .bottom
+        groupSortPosition: GroupSortPosition = .bottom,
+        generateEmptyDirectories: Bool = false
     ) {
         self.minimumXcodeGenVersion = minimumXcodeGenVersion
         self.carthageBuildPath = carthageBuildPath
@@ -89,6 +91,7 @@ public struct SpecOptions: Equatable {
         self.defaultConfig = defaultConfig
         self.transitivelyLinkDependencies = transitivelyLinkDependencies
         self.groupSortPosition = groupSortPosition
+        self.generateEmptyDirectories = generateEmptyDirectories
     }
 }
 
@@ -114,5 +117,6 @@ extension SpecOptions: JSONObjectConvertible {
         defaultConfig = jsonDictionary.json(atKeyPath: "defaultConfig")
         transitivelyLinkDependencies = jsonDictionary.json(atKeyPath: "transitivelyLinkDependencies") ?? false
         groupSortPosition = jsonDictionary.json(atKeyPath: "groupSortPosition") ?? .bottom
+        generateEmptyDirectories = jsonDictionary.json(atKeyPath: "generateEmptyDirectories") ?? false
     }
 }

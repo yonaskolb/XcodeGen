@@ -3,7 +3,9 @@
 ## Master
 
 #### Added
-- Added support for the `instrumentsPackage` product type
+- Added new ability to generate empty directories via `options.generateEmptyDirectories` [#480](https://github.com/yonaskolb/XcodeGen/pull/480) @Beniamiiin
+- Added support for the `instrumentsPackage` product type [#482](https://github.com/yonaskolb/XcodeGen/pull/482) @ksulliva
+
 
 ## 2.1.0
 

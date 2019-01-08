@@ -318,8 +318,12 @@ class SourceGenerator {
         return try dirPath.children()
             .filter {
                 if $0.isDirectory {
-                    let children = try $0.children().filter(isIncludedPath)
-                    return !children.isEmpty
+                    if project.options.generateEmptyDirectories {
+                        return true    
+                    } else {
+                        let children = try $0.children().filter(isIncludedPath)
+                        return !children.isEmpty
+                    }
                 } else if $0.isFile {
                     return isIncludedPath($0)
                 } else {
@@ -352,18 +356,18 @@ class SourceGenerator {
         for path in directories {
             let subGroups = try getGroupSources(targetType: targetType, targetSource: targetSource, path: path, isBaseGroup: false)
 
-            guard !subGroups.sourceFiles.isEmpty else {
+            guard !subGroups.sourceFiles.isEmpty || project.options.generateEmptyDirectories else {
                 continue
             }
 
             allSourceFiles += subGroups.sourceFiles
 
-            guard let firstGroup = subGroups.groups.first else {
-                continue
+            if let firstGroup = subGroups.groups.first {
+                groupChildren.append(firstGroup)
+                groups += subGroups.groups
+            } else if project.options.generateEmptyDirectories {
+                groups += subGroups.groups
             }
-
-            groupChildren.append(firstGroup)
-            groups += subGroups.groups
         }
 
         // find the base localised directory
