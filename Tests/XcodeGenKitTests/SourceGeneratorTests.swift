@@ -277,33 +277,39 @@ class SourceGeneratorTests: XCTestCase {
                 ]
 
                 let target = Target(name: "Test", type: .application, platform: .iOS, sources: [TargetSource(path: "Sources", excludes: excludes)])
-                let project = Project(basePath: directoryPath, name: "Test", targets: [target])
-
-                let pbxProj = try project.generatePbxProj()
-                try pbxProj.expectFile(paths: ["Sources", "A", "a.swift"])
-                try pbxProj.expectFile(paths: ["Sources", "D", "d.h"])
-                try pbxProj.expectFile(paths: ["Sources", "D", "d.m"])
-                try pbxProj.expectFile(paths: ["Sources", "E", "e.jpg"])
-                try pbxProj.expectFile(paths: ["Sources", "E", "e.m"])
-                try pbxProj.expectFile(paths: ["Sources", "E", "e.h"])
-                try pbxProj.expectFile(paths: ["Sources", "types", "a.swift"])
-                try pbxProj.expectFile(paths: ["Sources", "numbers", "file1.a"])
-                try pbxProj.expectFile(paths: ["Sources", "numbers", "file4.a"])
-                try pbxProj.expectFileMissing(paths: ["Sources", "B", "b.swift"])
-                try pbxProj.expectFileMissing(paths: ["Sources", "E", "F", "f.swift"])
-                try pbxProj.expectFileMissing(paths: ["Sources", "G", "H", "h.swift"])
-                try pbxProj.expectFileMissing(paths: ["Sources", "types", "a.h"])
-                try pbxProj.expectFileMissing(paths: ["Sources", "types", "a.x"])
-                try pbxProj.expectFileMissing(paths: ["Sources", "numbers", "file2.a"])
-                try pbxProj.expectFileMissing(paths: ["Sources", "numbers", "file3.a"])
-                try pbxProj.expectFileMissing(paths: ["Sources", "partial", "file_part"])
-                try pbxProj.expectFileMissing(paths: ["Sources", "a.ignored"])
-                try pbxProj.expectFileMissing(paths: ["Sources", "ignore.file"])
-                try pbxProj.expectFileMissing(paths: ["Sources", "project.xcodeproj"])
-                try pbxProj.expectFileMissing(paths: ["Sources", "a.playground"])
-                // not supported: "**/*.ignored"
-                // try pbxProj.expectFileMissing(paths: ["Sources", "A", "a.ignored"])
-                // try pbxProj.expectFileMissing(paths: ["Sources", "A", "B", "b.ignored"])
+                
+                func test(generateEmptyDirectories: Bool) throws {
+                    let options = SpecOptions(generateEmptyDirectories: true)
+                    let project = Project(basePath: directoryPath, name: "Test", targets: [target], options: options)
+                    let pbxProj = try project.generatePbxProj()
+                    try pbxProj.expectFile(paths: ["Sources", "A", "a.swift"])
+                    try pbxProj.expectFile(paths: ["Sources", "D", "d.h"])
+                    try pbxProj.expectFile(paths: ["Sources", "D", "d.m"])
+                    try pbxProj.expectFile(paths: ["Sources", "E", "e.jpg"])
+                    try pbxProj.expectFile(paths: ["Sources", "E", "e.m"])
+                    try pbxProj.expectFile(paths: ["Sources", "E", "e.h"])
+                    try pbxProj.expectFile(paths: ["Sources", "types", "a.swift"])
+                    try pbxProj.expectFile(paths: ["Sources", "numbers", "file1.a"])
+                    try pbxProj.expectFile(paths: ["Sources", "numbers", "file4.a"])
+                    try pbxProj.expectFileMissing(paths: ["Sources", "B", "b.swift"])
+                    try pbxProj.expectFileMissing(paths: ["Sources", "E", "F", "f.swift"])
+                    try pbxProj.expectFileMissing(paths: ["Sources", "G", "H", "h.swift"])
+                    try pbxProj.expectFileMissing(paths: ["Sources", "types", "a.h"])
+                    try pbxProj.expectFileMissing(paths: ["Sources", "types", "a.x"])
+                    try pbxProj.expectFileMissing(paths: ["Sources", "numbers", "file2.a"])
+                    try pbxProj.expectFileMissing(paths: ["Sources", "numbers", "file3.a"])
+                    try pbxProj.expectFileMissing(paths: ["Sources", "partial", "file_part"])
+                    try pbxProj.expectFileMissing(paths: ["Sources", "a.ignored"])
+                    try pbxProj.expectFileMissing(paths: ["Sources", "ignore.file"])
+                    try pbxProj.expectFileMissing(paths: ["Sources", "project.xcodeproj"])
+                    try pbxProj.expectFileMissing(paths: ["Sources", "a.playground"])
+                    // not supported: "**/*.ignored"
+                    // try pbxProj.expectFileMissing(paths: ["Sources", "A", "a.ignored"])
+                    // try pbxProj.expectFileMissing(paths: ["Sources", "A", "B", "b.ignored"])
+                }
+                
+                try test(generateEmptyDirectories: false)
+                try test(generateEmptyDirectories: true)
             }
 
             $0.it("generates file sources") {
