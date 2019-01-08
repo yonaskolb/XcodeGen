@@ -279,7 +279,7 @@ class SourceGeneratorTests: XCTestCase {
                 let target = Target(name: "Test", type: .application, platform: .iOS, sources: [TargetSource(path: "Sources", excludes: excludes)])
                 
                 func test(generateEmptyDirectories: Bool) throws {
-                    let options = SpecOptions(generateEmptyDirectories: true)
+                    let options = SpecOptions(generateEmptyDirectories: generateEmptyDirectories)
                     let project = Project(basePath: directoryPath, name: "Test", targets: [target], options: options)
                     let pbxProj = try project.generatePbxProj()
                     try pbxProj.expectFile(paths: ["Sources", "A", "a.swift"])
