@@ -12,7 +12,7 @@ public class FileWriter {
     }
 
     public func writeXcodeProject(_ xcodeProject: XcodeProj, to projectPath: Path? = nil) throws {
-        let projectPath = project.defaultProjectPath
+        let projectPath = projectPath ?? project.defaultProjectPath
         let tempPath = try Path.processUniqueTemporary() + "XcodeGen"
         try? tempPath.delete()
         if projectPath.exists {

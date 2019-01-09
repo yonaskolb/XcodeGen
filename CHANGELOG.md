@@ -5,6 +5,9 @@
 #### Added
 - Added new ability to generate empty directories via `options.generateEmptyDirectories` [#480](https://github.com/yonaskolb/XcodeGen/pull/480) @Beniamiiin
 
+#### Fixed
+- Fixed `--project` argument not taking effect [#487](https://github.com/yonaskolb/XcodeGen/pull/487) @monowerker
+
 ## 2.1.0
 
 #### Added
