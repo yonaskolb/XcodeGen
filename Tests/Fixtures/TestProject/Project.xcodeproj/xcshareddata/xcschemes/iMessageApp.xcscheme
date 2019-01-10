@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "NT_6BD068FAAC6AA35C090C48147B94EC6E"
+               BlueprintIdentifier = "834F55973F05AC8A18144DB04FF6F2C7"
                BuildableName = "iMessageApp.app"
                BlueprintName = "iMessageApp"
                ReferencedContainer = "container:Project.xcodeproj">
@@ -32,7 +32,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "NT_6BD068FAAC6AA35C090C48147B94EC6E"
+            BlueprintIdentifier = "834F55973F05AC8A18144DB04FF6F2C7"
             BuildableName = "iMessageApp.app"
             BlueprintName = "iMessageApp"
             ReferencedContainer = "container:Project.xcodeproj">
@@ -57,7 +57,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "NT_6BD068FAAC6AA35C090C48147B94EC6E"
+            BlueprintIdentifier = "834F55973F05AC8A18144DB04FF6F2C7"
             BuildableName = "iMessageApp.app"
             BlueprintName = "iMessageApp"
             ReferencedContainer = "container:Project.xcodeproj">
@@ -78,7 +78,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "NT_6BD068FAAC6AA35C090C48147B94EC6E"
+            BlueprintIdentifier = "834F55973F05AC8A18144DB04FF6F2C7"
             BuildableName = "iMessageApp.app"
             BlueprintName = "iMessageApp"
             ReferencedContainer = "container:Project.xcodeproj">

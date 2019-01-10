@@ -216,6 +216,7 @@ This will provide default build settings for a certain product type. It can be a
 - `bundle.ui-testing`
 - `bundle.ocunit-test`
 - `framework`
+- `instruments-package`
 - `library.dynamic`
 - `library.static`
 - `tool`
