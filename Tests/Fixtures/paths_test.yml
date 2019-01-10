@@ -1,0 +1,8 @@
+include: paths_test/included_paths_test.yml
+name: NewName
+targets:
+  NewTarget:
+    type: application
+    platform: iOS
+    sources:
+      - $(CURDIR)/source

@@ -1,0 +1,6 @@
+targets:
+  IncludedTarget:
+    type: application
+    platform: iOS
+    sources:
+      - $(CURDIR)/source

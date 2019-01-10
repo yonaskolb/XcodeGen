@@ -10,6 +10,14 @@ class SpecLoadingTests: XCTestCase {
 
     func testSpecLoader() {
         describe {
+            $0.it("expands directories") {
+                let path = fixturePath + "paths_test.yml"
+                let project = try Project(path: path)
+
+                try expect(project.targets.first!.sources.first!.path) == (fixturePath + "paths_test" + "source").string
+                try expect(project.targets.last!.sources.first!.path) == (fixturePath + "source").string
+            }
+
             $0.it("merges includes") {
                 let path = fixturePath + "include_test.yml"
                 let project = try Project(path: path)
