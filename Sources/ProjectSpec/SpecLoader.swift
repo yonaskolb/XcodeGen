@@ -4,7 +4,7 @@ import PathKit
 import Yams
 
 extension Project {
-
+    
     public init(path: Path) throws {
         let dictionary = try Project.loadDictionary(path: path)
         try self.init(basePath: path.parent(), jsonDictionary: dictionary)
@@ -44,41 +44,8 @@ extension Project {
             json = merge(dictionary: json, onto: includeDictionary)
         }
 
-        let basePath = path.parent()
-        json = expandPaths(in: json, basePath: basePath)
-
         return json
     }
 
-    private static func expandPaths(in source: Dictionary<String, Any>, basePath: Path) -> Dictionary<String, Any> {
-        var result = source
-
-        for (key, value) in source {
-            if let value = value as? String {
-                result[key] = value.replacingOccurrences(of: "$(CURDIR)", with: basePath.string)
-            } else if let value = value as? Array<Any> {
-                result[key] = expandPaths(in: value, basePath: basePath)
-            } else if let value = value as? Dictionary<String, Any> {
-                result[key] = expandPaths(in: value, basePath: basePath)
-            }
-        }
-
-        return result
-    }
-
-    private static func expandPaths(in source: Array<Any>, basePath: Path) -> Array<Any> {
-        var result = source
-
-        for (index, value) in source.enumerated() {
-            if let value = value as? String {
-                result[index] = value.replacingOccurrences(of: "$(CURDIR)", with: basePath.string)
-            } else if let value = value as? Array<Any> {
-                result[index] = expandPaths(in: value, basePath: basePath)
-            } else if let value = value as? Dictionary<String, Any> {
-                result[index] = expandPaths(in: value, basePath: basePath)
-            }
-        }
-
-        return result
     }
 }
