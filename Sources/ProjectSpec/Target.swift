@@ -125,10 +125,10 @@ extension Target {
                 var mergedDictionary: JSONDictionary = [:]
                 for template in templates {
                     if let templateDictionary = targetTemplatesDictionary[template] {
-                        mergedDictionary = merge(dictionary: templateDictionary, onto: mergedDictionary)
+                        mergedDictionary = templateDictionary.merged(onto: mergedDictionary)
                     }
                 }
-                target = merge(dictionary: target, onto: mergedDictionary)
+                target = target.merged(onto: mergedDictionary)
             }
             targetsDictionary[targetName] = target
         }

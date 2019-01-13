@@ -101,24 +101,6 @@ extension Dictionary where Key == String, Value: Any {
     }
 }
 
-func merge(dictionary: JSONDictionary, onto base: JSONDictionary) -> JSONDictionary {
-    var merged = base
-
-    for (key, value) in dictionary {
-        if key.hasSuffix(":REPLACE") {
-            let newKey = key.replacingOccurrences(of: ":REPLACE", with: "")
-            merged[newKey] = value
-        } else if let dictionary = value as? JSONDictionary, let base = merged[key] as? JSONDictionary {
-            merged[key] = merge(dictionary: dictionary, onto: base)
-        } else if let array = value as? [Any], let base = merged[key] as? [Any] {
-            merged[key] = base + array
-        } else {
-            merged[key] = value
-        }
-    }
-    return merged
-}
-
 public func += (lhs: inout BuildSettings, rhs: BuildSettings?) {
     guard let rhs = rhs else { return }
     lhs.merge(rhs)
