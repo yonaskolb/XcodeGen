@@ -132,9 +132,11 @@ extension Project: Equatable {
 
 extension Project {
 
-    public init(basePath: Path, jsonDictionary: JSONDictionary) throws {
+    public init(spec: Spec, basePath: Path) throws {
         self.basePath = basePath
-        let jsonDictionary = try Project.resolveProject(jsonDictionary: jsonDictionary)
+
+        let jsonDictionary = try Project.resolveProject(jsonDictionary: spec.resolvedDictionary())
+
         name = try jsonDictionary.json(atKeyPath: "name")
         settings = jsonDictionary.json(atKeyPath: "settings") ?? .empty
         settingGroups = jsonDictionary.json(atKeyPath: "settingGroups")
