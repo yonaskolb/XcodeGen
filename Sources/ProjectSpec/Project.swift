@@ -135,6 +135,7 @@ extension Project {
     public init(spec: Spec, basePath: Path) throws {
         self.basePath = basePath
 
+        let spec = Project.expandPaths(for: spec)
         let jsonDictionary = try Project.resolveProject(jsonDictionary: spec.resolvedDictionary())
 
         name = try jsonDictionary.json(atKeyPath: "name")
