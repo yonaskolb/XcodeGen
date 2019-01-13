@@ -1,6 +1,31 @@
+include: recursive_test/recursive_test.yml
+configFiles:
+  IncludedConfig: config
 targets:
   IncludedTarget:
     type: application
-    platform: iOS
+    platform: tvOS
+    configFiles:
+      Config: config
     sources:
-      - $(CURDIR)/source
+      - source
+    dependencies:
+      - framework: Framework
+    info:
+      path: info
+    entitlements:
+      path: entitlements
+    preBuildScripts:
+    - path: preBuildScript
+    postCompileScripts:
+    - path: postCompileScript
+    postBuildScripts:
+    - path: postBuildScript
+aggregateTargets:
+  IncludedAggregateTarget:
+    targets:
+      - IncludedTarget
+    configFiles:
+      Config: config
+    buildScripts:
+    - path: buildScript

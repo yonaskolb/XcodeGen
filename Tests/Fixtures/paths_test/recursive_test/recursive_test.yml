@@ -1,11 +1,12 @@
-include: paths_test/included_paths_test.yml
-name: NewName
+options:
+  carthageBuildPath: carthage_build
+  carthageExecutablePath: carthage_executable
 configFiles:
-  NewConfig: config
+  RecursiveConfig: config
 targets:
-  NewTarget:
+  RecursiveTarget:
     type: application
-    platform: iOS
+    platform: macOS
     configFiles:
       Config: config
     sources:
@@ -16,16 +17,16 @@ targets:
       path: info
     entitlements:
       path: entitlements
-    preBuildScripts:
-    - path: preBuildScript
+    prebuildScripts:
+    - path: prebuildScript
     postCompileScripts:
     - path: postCompileScript
     postBuildScripts:
     - path: postBuildScript
 aggregateTargets:
-  NewAggregateTarget:
+  RecursiveAggregateTarget:
     targets:
-      - NewTarget
+      - RecursiveTarget
     configFiles:
       Config: config
     buildScripts:
