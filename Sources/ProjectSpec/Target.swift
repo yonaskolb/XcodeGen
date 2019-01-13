@@ -1,5 +1,6 @@
 import Foundation
 import JSONUtilities
+import struct PathKit.Path
 import xcodeproj
 
 public struct LegacyTarget: Equatable {
@@ -107,6 +108,30 @@ extension Target: CustomStringConvertible {
 
     public var description: String {
         return "\(name): \(platform.rawValue) \(type)"
+    }
+}
+
+extension Target: PathContaining {
+
+    static func expandPaths(for source: [String: JSONDictionary], relativeTo path: Path) -> [String: JSONDictionary] {
+        var result = source
+        for (targetName, var target) in result {
+
+            // sources can either be an array of strings or an array of objects, so attempt to expand both
+            target = expandStringPaths(from: target, forKey: "sources", relativeTo: path)
+            target = expandChildPaths(from: target, forKey: "sources", relativeTo: path, type: TargetSource.self)
+
+            target = expandStringPaths(from: target, forKey: "configFiles", relativeTo: path)
+            target = expandChildPaths(from: target, forKey: "dependencies", relativeTo: path, type: Dependency.self)
+            target = expandChildPaths(from: target, forKey: "info", relativeTo: path, type: Plist.self)
+            target = expandChildPaths(from: target, forKey: "entitlements", relativeTo: path, type: Plist.self)
+            target = expandChildPaths(from: target, forPotentialKeys: ["preBuildScripts", "prebuildScripts"], relativeTo: path, type: BuildScript.self)
+            target = expandChildPaths(from: target, forKey: "postCompileScripts", relativeTo: path, type: BuildScript.self)
+            target = expandChildPaths(from: target, forKey: "postBuildScripts", relativeTo: path, type: BuildScript.self)
+
+            result[targetName] = target
+        }
+        return result
     }
 }
 

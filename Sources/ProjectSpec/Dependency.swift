@@ -1,5 +1,6 @@
 import Foundation
 import JSONUtilities
+import struct PathKit.Path
 
 public struct Dependency: Equatable {
 
@@ -70,5 +71,12 @@ extension Dependency: JSONObjectConvertible {
         if let bool: Bool = jsonDictionary.json(atKeyPath: "weak") {
             weakLink = bool
         }
+    }
+}
+
+extension Dependency: PathContaining {
+    
+    static func expandPaths(for source: JSONDictionary, relativeTo path: Path) -> JSONDictionary {
+        return expandStringPaths(from: source, forKey: "framework", relativeTo: path)
     }
 }

@@ -1,5 +1,6 @@
 import Foundation
 import JSONUtilities
+import struct PathKit.Path
 
 public struct AggregateTarget: ProjectTarget {
     public var name: String
@@ -59,5 +60,19 @@ extension AggregateTarget: NamedJSONDictionaryConvertible {
         buildScripts = jsonDictionary.json(atKeyPath: "buildScripts") ?? []
         scheme = jsonDictionary.json(atKeyPath: "scheme")
         attributes = jsonDictionary.json(atKeyPath: "attributes") ?? [:]
+    }
+}
+
+extension AggregateTarget: PathContaining {
+
+    static func expandPaths(for source: [String: JSONDictionary], relativeTo path: Path) -> [String: JSONDictionary] {
+        var result = source
+
+        for (targetName, var target) in result {
+            target = expandStringPaths(from: target, forKey: "configFiles", relativeTo: path)
+            target = expandChildPaths(from: target, forKey: "buildScripts", relativeTo: path, type: BuildScript.self)
+            result[targetName] = target
+        }
+        return result
     }
 }

@@ -1,6 +1,6 @@
 import Foundation
 import JSONUtilities
-import PathKit
+import struct PathKit.Path
 import xcodeproj
 
 public struct TargetSource: Equatable {
@@ -205,5 +205,16 @@ extension TargetSource.BuildPhase.CopyFilesSettings: JSONObjectConvertible {
         destination = try jsonDictionary.json(atKeyPath: "destination")
         subpath = jsonDictionary.json(atKeyPath: "subpath") ?? ""
         phaseOrder = .postCompile
+    }
+}
+
+extension TargetSource: PathContaining {
+
+    static func expandPaths(for source: JSONDictionary, relativeTo path: Path) -> JSONDictionary {
+        var result = source
+
+        result = expandStringPaths(from: result, forKey: "path", relativeTo: path)
+        result = expandStringPaths(from: result, forKey: "excludes", relativeTo: path)
+        return result
     }
 }

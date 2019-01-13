@@ -1,5 +1,6 @@
 import Foundation
 import JSONUtilities
+import struct PathKit.Path
 
 public struct SpecOptions: Equatable {
 
@@ -118,5 +119,17 @@ extension SpecOptions: JSONObjectConvertible {
         transitivelyLinkDependencies = jsonDictionary.json(atKeyPath: "transitivelyLinkDependencies") ?? false
         groupSortPosition = jsonDictionary.json(atKeyPath: "groupSortPosition") ?? .bottom
         generateEmptyDirectories = jsonDictionary.json(atKeyPath: "generateEmptyDirectories") ?? false
+    }
+}
+
+extension SpecOptions: PathContaining {
+    
+    static func expandPaths(for source: JSONDictionary, relativeTo path: Path) -> JSONDictionary {
+        var result = source
+
+        result = expandStringPaths(from: result, forKey: "carthageBuildPath", relativeTo: path)
+        result = expandStringPaths(from: result, forKey: "carthageExecutablePath", relativeTo: path)
+        result = expandStringPaths(from: result, forKey: "defaultConfig", relativeTo: path)
+        return result
     }
 }

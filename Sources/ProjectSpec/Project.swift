@@ -168,6 +168,30 @@ extension Project {
     }
 }
 
+extension Project: PathContaining {
+
+    static func expandPaths(for spec: Spec, relativeTo basePath: Path = "") -> Spec {
+        let relativePath = (basePath + spec.relativePath).normalize()
+        guard relativePath != Path() else {
+            return spec
+        }
+        
+        var jsonDictionary = spec.jsonDictionary
+
+        jsonDictionary = expandStringPaths(from: jsonDictionary, forKey: "configFiles", relativeTo: relativePath)
+        jsonDictionary = expandChildPaths(from: jsonDictionary, forKey: "options", relativeTo: relativePath, type: SpecOptions.self)
+        jsonDictionary = expandChildPaths(from: jsonDictionary, forKey: "targets", relativeTo: relativePath, type: Target.self)
+        jsonDictionary = expandChildPaths(from: jsonDictionary, forKey: "aggregateTargets", relativeTo: relativePath, type: AggregateTarget.self)
+        return Spec(
+            relativePath: spec.relativePath,
+            jsonDictionary: jsonDictionary,
+            subSpecs: spec.subSpecs.map { template in
+                return Project.expandPaths(for: template, relativeTo: relativePath)
+            }
+        )
+    }
+}
+
 extension Project {
 
     public var allFiles: [Path] {

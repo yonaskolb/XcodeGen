@@ -1,5 +1,6 @@
 import Foundation
 import JSONUtilities
+import struct PathKit.Path
 
 public struct Plist: Equatable {
 
@@ -22,5 +23,11 @@ extension Plist: JSONObjectConvertible {
     public init(jsonDictionary: JSONDictionary) throws {
         path = try jsonDictionary.json(atKeyPath: "path")
         properties = jsonDictionary.json(atKeyPath: "properties") ?? [:]
+    }
+}
+
+extension Plist: PathContaining {
+    static func expandPaths(for source: JSONDictionary, relativeTo path: Path) -> JSONDictionary {
+        return expandStringPaths(from: source, forKey: "path", relativeTo: path)
     }
 }

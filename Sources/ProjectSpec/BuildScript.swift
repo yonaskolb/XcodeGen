@@ -1,5 +1,6 @@
 import Foundation
 import JSONUtilities
+import struct PathKit.Path
 
 public struct BuildScript: Equatable {
 
@@ -51,5 +52,12 @@ extension BuildScript: JSONObjectConvertible {
         shell = jsonDictionary.json(atKeyPath: "shell")
         runOnlyWhenInstalling = jsonDictionary.json(atKeyPath: "runOnlyWhenInstalling") ?? false
         showEnvVars = jsonDictionary.json(atKeyPath: "showEnvVars") ?? true
+    }
+}
+
+extension BuildScript: PathContaining {
+
+    static func expandPaths(for source: JSONDictionary, relativeTo path: Path) -> JSONDictionary {
+        return expandStringPaths(from: source, forKey: "path", relativeTo: path)
     }
 }
