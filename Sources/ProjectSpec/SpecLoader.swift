@@ -10,6 +10,11 @@ extension Project {
         let template = try Spec(filename: path.lastComponent, basePath: basePath)
         try self.init(spec: template, basePath: basePath)
     }
+
+    @available(*, deprecated, message: "Use `Project.Spec` for loading files from disk.")
+    public static func loadDictionary(path: Path) throws -> JSONDictionary {
+        return try Project.Spec(filename: path.lastComponent, basePath: path.parent()).jsonDictionary
+    }
 }
 
 protocol PathContaining {
