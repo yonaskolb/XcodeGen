@@ -151,6 +151,12 @@ targets:
     settings:
       PRODUCT_BUNDLE_IDENTIFIER: com.project.iMessageApp.extension
 
+  iMessageStickersExtension:
+    type: app-extension.messages-sticker-pack
+    platform: iOS
+    sources:       
+      - path: iMessage Stickers
+
   StaticLibrary_ObjC:
     type: library.static
     platform: [iOS, tvOS, watchOS, macOS]
