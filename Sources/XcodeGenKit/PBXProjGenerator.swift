@@ -665,8 +665,13 @@ public class PBXProjGenerator {
         }
 
         let sourcesBuildPhaseFiles = getBuildFilesForPhase(.sources)
-        let sourcesBuildPhase = addObject(PBXSourcesBuildPhase(files: sourcesBuildPhaseFiles))
-        buildPhases.append(sourcesBuildPhase)
+        // Sticker packs should not include a compile sources build phase as they
+        // are purely based on a set of image files, and nothing else.
+        let shouldSkipSourcesBuildPhase = sourcesBuildPhaseFiles.isEmpty && target.type == .stickerPack
+        if !shouldSkipSourcesBuildPhase {
+            let sourcesBuildPhase = addObject(PBXSourcesBuildPhase(files: sourcesBuildPhaseFiles))
+            buildPhases.append(sourcesBuildPhase)
+        }
 
         buildPhases += try target.postCompileScripts.map { try generateBuildScript(targetName: target.name, buildScript: $0) }
 

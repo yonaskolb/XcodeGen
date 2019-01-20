@@ -552,7 +552,20 @@ class ProjectGeneratorTests: XCTestCase {
                     iosFrameworkB.filename,
                 ])
 
-                let targets = [app, iosFrameworkZ, staticLibrary, resourceBundle, iosFrameworkA, iosFrameworkB, appTest, appTestWithoutTransitive]
+                let stickerPack = Target(
+                    name: "MyStickerApp",
+                    type: .stickerPack,
+                    platform: .iOS,
+                    dependencies: [
+                        Dependency(type: .sdk, reference: "NotificationCenter.framework")
+                    ]
+                )
+                expectedResourceFiles[stickerPack.name] = nil
+                expectedLinkedFiles[stickerPack.name] = Set([
+                    "NotificationCenter.framework"
+                ])
+
+                let targets = [app, iosFrameworkZ, staticLibrary, resourceBundle, iosFrameworkA, iosFrameworkB, appTest, appTestWithoutTransitive, stickerPack]
 
                 let project = Project(
                     basePath: "",
@@ -566,19 +579,28 @@ class ProjectGeneratorTests: XCTestCase {
                     guard let nativeTarget = pbxProject.nativeTargets.first(where: { $0.name == target.name }) else {
                         throw failure("PBXNativeTarget for \(target) not found")
                     }
+
                     let buildPhases = nativeTarget.buildPhases
                     let resourcesPhases = pbxProject.resourcesBuildPhases.filter { buildPhases.contains($0) }
                     let frameworkPhases = pbxProject.frameworksBuildPhases.filter { buildPhases.contains($0) }
                     let copyFilesPhases = pbxProject.copyFilesBuildPhases.filter { buildPhases.contains($0) }
 
-                    // ensure only the right resources are copies, no more, no less
-                    let expectedResourceFiles = expectedResourceFiles[target.name]!
-                    try expect(resourcesPhases.count) == (expectedResourceFiles.isEmpty ? 0 : 1)
-                    if !expectedResourceFiles.isEmpty {
-                        let resourceFiles = resourcesPhases[0].files
-                            .compactMap { $0.file }
-                            .map { $0.nameOrPath }
-                        try expect(Set(resourceFiles)) == expectedResourceFiles
+                    // All targets should have a compile sources phase,
+                    // except for the sticker pack one
+                    let sourcesPhases = pbxProject.sourcesBuildPhases
+                    try expect(sourcesPhases.count) == targets.count - 1
+
+                    // ensure only the right resources are copied, no more, no less
+                    if let expectedResourceFiles = expectedResourceFiles[target.name] {
+                        try expect(resourcesPhases.count) == (expectedResourceFiles.isEmpty ? 0 : 1)
+                        if !expectedResourceFiles.isEmpty {
+                            let resourceFiles = resourcesPhases[0].files
+                                .compactMap { $0.file }
+                                .map { $0.nameOrPath }
+                            try expect(Set(resourceFiles)) == expectedResourceFiles
+                        }
+                    } else {
+                        try expect(resourcesPhases.count) == 0
                     }
 
                     // ensure only the right things are linked, no more, no less
@@ -591,12 +613,15 @@ class ProjectGeneratorTests: XCTestCase {
                     }
 
                     // ensure only the right things are embedded, no more, no less
-                    let expectedEmbeddedFrameworks = expectedEmbeddedFrameworks[target.name]!
-                    try expect(copyFilesPhases.count) == (expectedEmbeddedFrameworks.isEmpty ? 0 : 1)
-                    if !expectedEmbeddedFrameworks.isEmpty {
-                        let copyFiles = copyFilesPhases[0].files
-                            .compactMap { $0.file?.nameOrPath }
-                        try expect(Set(copyFiles)) == expectedEmbeddedFrameworks
+                    if let expectedEmbeddedFrameworks = expectedEmbeddedFrameworks[target.name] {
+                        try expect(copyFilesPhases.count) == (expectedEmbeddedFrameworks.isEmpty ? 0 : 1)
+                        if !expectedEmbeddedFrameworks.isEmpty {
+                            let copyFiles = copyFilesPhases[0].files
+                                .compactMap { $0.file?.nameOrPath }
+                            try expect(Set(copyFiles)) == expectedEmbeddedFrameworks
+                        }
+                    } else {
+                        try expect(copyFilesPhases.count) == 0
                     }
                 }
             }
