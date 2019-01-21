@@ -26,7 +26,7 @@ extension Plist: JSONObjectConvertible {
     }
 }
 
-extension Plist: PathContaining {
+extension Plist: PathContainer {
     static func expandPaths(for source: JSONDictionary, relativeTo path: Path) -> JSONDictionary {
         return expandStringPaths(from: source, forKey: "path", relativeTo: path)
     }

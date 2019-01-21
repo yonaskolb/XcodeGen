@@ -17,13 +17,13 @@ extension Project {
     }
 }
 
-protocol PathContaining {
+protocol PathContainer {
 
     associatedtype JSONSourceType
     static func expandPaths(for source: JSONSourceType, relativeTo path: Path) -> JSONSourceType
 }
 
-extension PathContaining {
+extension PathContainer {
 
     static func expandStringPaths(from source: JSONDictionary, forKey key: String, relativeTo path: Path) -> JSONDictionary {
         var result = source
@@ -38,7 +38,7 @@ extension PathContaining {
         return result
     }
     
-    static func expandChildPaths<T: PathContaining>(from source: JSONDictionary, forKey key: String, relativeTo path: Path, type: T.Type) -> JSONDictionary {
+    static func expandChildPaths<T: PathContainer>(from source: JSONDictionary, forKey key: String, relativeTo path: Path, type: T.Type) -> JSONDictionary {
         var result = source
 
         if let source = result[key] as? T.JSONSourceType {
@@ -51,7 +51,7 @@ extension PathContaining {
         return result
     }
 
-    static func expandChildPaths<T: PathContaining>(from source: JSONDictionary, forPotentialKeys keys: [String], relativeTo path: Path, type: T.Type) -> JSONDictionary {
+    static func expandChildPaths<T: PathContainer>(from source: JSONDictionary, forPotentialKeys keys: [String], relativeTo path: Path, type: T.Type) -> JSONDictionary {
         var result = source
 
         for key in keys {

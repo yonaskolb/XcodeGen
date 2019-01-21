@@ -122,7 +122,7 @@ extension SpecOptions: JSONObjectConvertible {
     }
 }
 
-extension SpecOptions: PathContaining {
+extension SpecOptions: PathContainer {
     
     static func expandPaths(for source: JSONDictionary, relativeTo path: Path) -> JSONDictionary {
         var result = source

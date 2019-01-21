@@ -74,7 +74,7 @@ extension Dependency: JSONObjectConvertible {
     }
 }
 
-extension Dependency: PathContaining {
+extension Dependency: PathContainer {
     
     static func expandPaths(for source: JSONDictionary, relativeTo path: Path) -> JSONDictionary {
         return expandStringPaths(from: source, forKey: "framework", relativeTo: path)

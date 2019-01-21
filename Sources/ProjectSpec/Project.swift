@@ -175,7 +175,7 @@ extension Project {
     }
 }
 
-extension Project: PathContaining {
+extension Project: PathContainer {
 
     static func expandPaths(for spec: Spec, relativeTo basePath: Path = Path()) -> Spec {
         let relativePath = (basePath + spec.relativePath).normalize()

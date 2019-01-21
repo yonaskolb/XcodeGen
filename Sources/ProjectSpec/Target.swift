@@ -111,7 +111,7 @@ extension Target: CustomStringConvertible {
     }
 }
 
-extension Target: PathContaining {
+extension Target: PathContainer {
 
     static func expandPaths(for source: [String: JSONDictionary], relativeTo path: Path) -> [String: JSONDictionary] {
         var result = source

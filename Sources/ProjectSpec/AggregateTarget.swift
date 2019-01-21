@@ -63,7 +63,7 @@ extension AggregateTarget: NamedJSONDictionaryConvertible {
     }
 }
 
-extension AggregateTarget: PathContaining {
+extension AggregateTarget: PathContainer {
 
     static func expandPaths(for source: [String: JSONDictionary], relativeTo path: Path) -> [String: JSONDictionary] {
         var result = source

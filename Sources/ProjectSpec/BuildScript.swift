@@ -55,7 +55,7 @@ extension BuildScript: JSONObjectConvertible {
     }
 }
 
-extension BuildScript: PathContaining {
+extension BuildScript: PathContainer {
 
     static func expandPaths(for source: JSONDictionary, relativeTo path: Path) -> JSONDictionary {
         return expandStringPaths(from: source, forKey: "path", relativeTo: path)
