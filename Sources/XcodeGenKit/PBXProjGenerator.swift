@@ -88,7 +88,7 @@ public class PBXProjGenerator {
             PBXProject(
                 name: project.name,
                 buildConfigurationList: buildConfigList,
-                compatibilityVersion: "Xcode 3.2",
+                compatibilityVersion: project.compatabilityVersion,
                 mainGroup: mainGroup,
                 developmentRegion: project.options.developmentLanguage ?? "en"
             )
