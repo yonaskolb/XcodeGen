@@ -118,14 +118,14 @@ XcodeGen automatically creates the build phase that Carthage requires which list
 
 ```yaml
 options:
-	carthageExecutablePath: mint run Carthage/Carthage carthage
+  carthageExecutablePath: mint run Carthage/Carthage carthage
 ```
 
 By default XcodeGen looks for carthage frameworks in `Carthage/Build`. You can change this with the `carthageBuildPath` option
 
 ```yaml
 options:
-	carthageBuildPath: ../../Carthage/Build
+  carthageBuildPath: ../../Carthage/Build
 ```
 
 ### SDK
