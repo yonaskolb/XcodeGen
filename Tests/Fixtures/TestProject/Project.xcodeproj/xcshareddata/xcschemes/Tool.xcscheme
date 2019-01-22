@@ -53,7 +53,8 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <MacroExpansion>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "090315A24AC8E8B8F318A709B9288671"
@@ -61,7 +62,7 @@
             BlueprintName = "Tool"
             ReferencedContainer = "container:Project.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
       <CommandLineArguments>
       </CommandLineArguments>
       <AdditionalOptions>
