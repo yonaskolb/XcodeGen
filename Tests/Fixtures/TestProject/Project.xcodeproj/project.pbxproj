@@ -115,6 +115,7 @@
 		F04CBE9A3D61F78E4FEE6A09AED606C0 /* StaticLibrary_ObjC.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5A2B916A11DCC2565241359FD0114B0C /* StaticLibrary_ObjC.h */; };
 		F08C4D2A18A75CC292F45F1FB8E06CDE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 108BB29172D27BE3BD1E7F3536D14EAD /* Assets.xcassets */; };
 		F7ECF245988DABA0164DFF08607F6C31 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D296BB7355994040E197A1EE5B41F583 /* Result.framework */; };
+		F96940D55B77163B7A5B04FB2B8AF458 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C033648A37D95027845BD34562053B /* main.swift */; };
 		FBDBC020EE959F32F0FF0E6252028356 /* Contacts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FDB2B6A77D39CD5602F2125F01DEF025 /* Contacts.framework */; };
 		FE01CB2392794EC5CD44533920AA051B /* StaticLibrary_ObjC.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5A2B916A11DCC2565241359FD0114B0C /* StaticLibrary_ObjC.h */; };
 		FE4C8407830C0189E1F61AFBEF16398B /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B76E17CE3574081D5BF45B449F3F46DB /* Result.framework */; };
@@ -459,6 +460,7 @@
 		8A9274BE42A03DC5DA1FAD04992ED6E3 /* Framework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Framework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8CAF6C55B555E3E1352645B630CCB23E /* ExtensionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDelegate.swift; sourceTree = "<group>"; };
 		9390121B4ECBB1B796C7CBBDD32C4DD4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		93C033648A37D95027845BD34562053B /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		9A87A926D563773658FB87FEEE4DD132 /* iMessageApp.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = iMessageApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9F27382DD66E26C059E26EFE8D6BEF4D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A0DC40025AB59B688E758829FB7EDB95 /* Framework2.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Framework2.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -472,6 +474,7 @@
 		B76E17CE3574081D5BF45B449F3F46DB /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Result.framework; sourceTree = "<group>"; };
 		BA040F1F7D6CA08878323A551349F18D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BB178D03E75929F3F5B10C56838882EC /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Result.framework; sourceTree = "<group>"; };
+		BECEA4A483ADEB8158F640B356D10090 /* Tool */ = {isa = PBXFileReference; includeInIndex = 0; path = Tool; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2F3574CCEF023755DDB1A06C6FE315C /* Mintfile */ = {isa = PBXFileReference; path = Mintfile; sourceTree = "<group>"; };
 		C53ACB2962FED621389C36A2E1AE6E28 /* iMessageStickersExtension.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = iMessageStickersExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5ABEA2284F13483EFDF7C0E050F0450 /* MessagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesViewController.swift; sourceTree = "<group>"; };
@@ -650,6 +653,7 @@
 				9DB22CB08CFAA455518700DBA5CAD7DE /* StandaloneFiles */,
 				BDA839814AF73F01F771051894A708E8 /* StaticLibrary_ObjC */,
 				CBDAC144248EE9D3838C6AAA35F55CB5 /* StaticLibrary_Swift */,
+				8CFD8AD4820FAB9265663F9203506239 /* Tool */,
 				3FEA12CF227D41EF50E5C2DB21B84FBB /* Vendor */,
 				80C3A0E524EC1ABCB9149EA22136F282 /* XPC Service */,
 				FC60FF5527FEDF545816FFCF26619677 /* Folder */,
@@ -739,6 +743,14 @@
 			path = "XPC Service";
 			sourceTree = "<group>";
 		};
+		8CFD8AD4820FAB9265663F9203506239 /* Tool */ = {
+			isa = PBXGroup;
+			children = (
+				93C033648A37D95027845BD34562053B /* main.swift */,
+			);
+			path = Tool;
+			sourceTree = "<group>";
+		};
 		912A7321F662FE41BAAEED67F628711F /* Mac */ = {
 			isa = PBXGroup;
 			children = (
@@ -789,6 +801,7 @@
 				1313F043F19B484A5046E0748579814C /* StaticLibrary_ObjC.a */,
 				EF92E90B6F1D583382BD85BEE4CD1896 /* StaticLibrary_ObjC.a */,
 				D8D8907E2CDA1295D0D94F53FCD6939F /* StaticLibrary_Swift.a */,
+				BECEA4A483ADEB8158F640B356D10090 /* Tool */,
 				22237B8EBD9E6BE8EBC8735F5AA17192 /* XPC Service.xpc */,
 			);
 			name = Products;
@@ -1027,6 +1040,21 @@
 			productName = App_iOS;
 			productReference = B1C33BB070583BE3B0EC0E68083FE89C /* App_iOS.app */;
 			productType = "com.apple.product-type.application";
+		};
+		090315A24AC8E8B8F318A709B9288671 /* Tool */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7881E73F05F096623E59204004CF8E23 /* Build configuration list for PBXNativeTarget "Tool" */;
+			buildPhases = (
+				2235AD7DEFC8FE534AB91B38BDF26FA4 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Tool;
+			productName = Tool;
+			productReference = BECEA4A483ADEB8158F640B356D10090 /* Tool */;
+			productType = "com.apple.product-type.tool";
 		};
 		13E8C5AB873CEE21E18E552F5E94B768 /* StaticLibrary_ObjC_iOS */ = {
 			isa = PBXNativeTarget;
@@ -1439,6 +1467,7 @@
 				7D3D92034F4F203C140574F08DF5F38F /* StaticLibrary_ObjC_watchOS */,
 				19BFB84599B0AA1275A9662DCB5C0E50 /* StaticLibrary_Swift */,
 				BF3693DCA6182D7AEC410AFC08078F33 /* SuperTarget */,
+				090315A24AC8E8B8F318A709B9288671 /* Tool */,
 				E7815F2F0D9CDECF9185AAF3A6B474C1 /* XPC Service */,
 				834F55973F05AC8A18144DB04FF6F2C7 /* iMessageApp */,
 				1C26A6A0BC446191F311D470FDFF54F8 /* iMessageExtension */,
@@ -1690,6 +1719,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				4E1D7AEB1B385E219995CB9C703F4DAC /* FrameworkFile.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2235AD7DEFC8FE534AB91B38BDF26FA4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F96940D55B77163B7A5B04FB2B8AF458 /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2375,6 +2412,16 @@
 			};
 			name = "Production Release";
 		};
+		18B5349AE18B7183BE4B43630876517C /* Staging Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.Tool;
+				SDKROOT = macosx;
+			};
+			name = "Staging Release";
+		};
 		196FEEE6C4B0DDE53AD16BD6E5645F0E /* Test Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2676,6 +2723,16 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				MY_SETTING = hello;
+			};
+			name = "Production Debug";
+		};
+		436FB4981A66822DAF6F22ACC8B60E23 /* Production Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.Tool;
+				SDKROOT = macosx;
 			};
 			name = "Production Debug";
 		};
@@ -3461,6 +3518,16 @@
 			};
 			name = "Test Debug";
 		};
+		921EC740167F616C38809275FD6C52C9 /* Production Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.Tool;
+				SDKROOT = macosx;
+			};
+			name = "Production Release";
+		};
 		92602C025633FBA848F91812F4CD6D45 /* Production Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -3575,6 +3642,16 @@
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = "Production Debug";
+		};
+		98A87959E6B746416846959429725DCB /* Staging Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.Tool;
+				SDKROOT = macosx;
+			};
+			name = "Staging Debug";
 		};
 		9A891313A139893990989BDDFA989F3A /* Test Debug */ = {
 			isa = XCBuildConfiguration;
@@ -4056,6 +4133,16 @@
 			};
 			name = "Production Debug";
 		};
+		C00DBF60DC8C1A570738241F19D127F9 /* Test Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.Tool;
+				SDKROOT = macosx;
+			};
+			name = "Test Release";
+		};
 		C0D5765142C68AF68B954B3F748538C2 /* Production Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -4229,6 +4316,16 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = "Test Release";
+		};
+		CA45EC48C1EDE1A41141A103C7CE467A /* Test Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.Tool;
+				SDKROOT = macosx;
+			};
+			name = "Test Debug";
 		};
 		CBE9D80AD0719511A13A889E867077CC /* Staging Release */ = {
 			isa = XCBuildConfiguration;
@@ -5036,6 +5133,19 @@
 				CBE9D80AD0719511A13A889E867077CC /* Staging Release */,
 				196FEEE6C4B0DDE53AD16BD6E5645F0E /* Test Debug */,
 				3FFEE1ED324166B88F5F9A451E59A29C /* Test Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "";
+		};
+		7881E73F05F096623E59204004CF8E23 /* Build configuration list for PBXNativeTarget "Tool" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				436FB4981A66822DAF6F22ACC8B60E23 /* Production Debug */,
+				921EC740167F616C38809275FD6C52C9 /* Production Release */,
+				98A87959E6B746416846959429725DCB /* Staging Debug */,
+				18B5349AE18B7183BE4B43630876517C /* Staging Release */,
+				CA45EC48C1EDE1A41141A103C7CE467A /* Test Debug */,
+				C00DBF60DC8C1A570738241F19D127F9 /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "";

@@ -212,6 +212,12 @@ targets:
     sources:
       - path: XPC Service
 
+  Tool:
+    type: tool
+    platform: macOS
+    sources: [Tool]
+    scheme: {}
+
 schemes:
   Framework:
     build:
