@@ -45,7 +45,22 @@ Required properties are marked with checkbox. Some of the YAML examples don't sh
 
 One or more specs can be included in the project spec. This can be used to split your project spec into multiple files, for easier structuring or sharing between multiple specs. Included specs can also include other specs and so on.
 
-Include can either be a list of string paths or a single string path. They will be merged in order and then the current spec will be merged on top.
+Include can either be a list of includes or a single include. They will be merged in order and then the current spec will be merged on top.
+
+An include can be provided via a string (the path) or an object of the form:
+
+**Include Object**
+
+- [x] **path**: **String** - The path to the included file.
+- [ ] **useRelativePaths**: **Bool** - Dictates whether the included spec specifies paths relative to itself (the default) or the root spec file.
+
+```yaml
+include:
+  - includedFile.yml
+  - path: path/to/includedFile.yml
+    useRelativePaths: false
+```
+
 By default specs are merged additively. That is for every value:
 
 - if existing value and new value are both dictionaries merge them and continue down the hierachy
