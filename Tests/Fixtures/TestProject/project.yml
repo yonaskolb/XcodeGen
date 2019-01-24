@@ -112,6 +112,10 @@ targets:
       - name: MyScript
         script: |
           echo "You ran a script!"
+        inputFileLists:
+          - inputList.xcfilelist
+        outputFileLists:
+          - outputList.xcfilelist
 
   App_watchOS:
       type: application.watchapp2

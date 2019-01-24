@@ -1663,11 +1663,13 @@
 			files = (
 			);
 			inputFileListPaths = (
+				inputList.xcfilelist,
 			);
 			inputPaths = (
 			);
 			name = MyScript;
 			outputFileListPaths = (
+				outputList.xcfilelist,
 			);
 			outputPaths = (
 			);
