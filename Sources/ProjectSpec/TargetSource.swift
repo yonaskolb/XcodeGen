@@ -210,11 +210,10 @@ extension TargetSource.BuildPhase.CopyFilesSettings: JSONObjectConvertible {
 
 extension TargetSource: PathContainer {
 
-    static func expandPaths(for source: JSONDictionary, relativeTo path: Path) -> JSONDictionary {
-        var result = source
-
-        result = expandStringPaths(from: result, forKey: "path", relativeTo: path)
-        result = expandStringPaths(from: result, forKey: "excludes", relativeTo: path)
-        return result
+    static var pathProperties: [PathProperty] {
+        return [
+            .string("path"),
+            .string("excludes"),
+        ]
     }
 }

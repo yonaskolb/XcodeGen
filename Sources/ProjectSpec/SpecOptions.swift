@@ -123,13 +123,12 @@ extension SpecOptions: JSONObjectConvertible {
 }
 
 extension SpecOptions: PathContainer {
-    
-    static func expandPaths(for source: JSONDictionary, relativeTo path: Path) -> JSONDictionary {
-        var result = source
 
-        result = expandStringPaths(from: result, forKey: "carthageBuildPath", relativeTo: path)
-        result = expandStringPaths(from: result, forKey: "carthageExecutablePath", relativeTo: path)
-        result = expandStringPaths(from: result, forKey: "defaultConfig", relativeTo: path)
-        return result
+    static var pathProperties: [PathProperty] {
+        return [
+            .string("carthageBuildPath"),
+            .string("carthageExecutablePath"),
+            .string("defaultConfig"),
+        ]
     }
 }

@@ -113,25 +113,21 @@ extension Target: CustomStringConvertible {
 
 extension Target: PathContainer {
 
-    static func expandPaths(for source: [String: JSONDictionary], relativeTo path: Path) -> [String: JSONDictionary] {
-        var result = source
-        for (targetName, var target) in result {
-
-            // sources can either be an array of strings or an array of objects, so attempt to expand both
-            target = expandStringPaths(from: target, forKey: "sources", relativeTo: path)
-            target = expandChildPaths(from: target, forKey: "sources", relativeTo: path, type: TargetSource.self)
-
-            target = expandStringPaths(from: target, forKey: "configFiles", relativeTo: path)
-            target = expandChildPaths(from: target, forKey: "dependencies", relativeTo: path, type: Dependency.self)
-            target = expandChildPaths(from: target, forKey: "info", relativeTo: path, type: Plist.self)
-            target = expandChildPaths(from: target, forKey: "entitlements", relativeTo: path, type: Plist.self)
-            target = expandChildPaths(from: target, forPotentialKeys: ["preBuildScripts", "prebuildScripts"], relativeTo: path, type: BuildScript.self)
-            target = expandChildPaths(from: target, forKey: "postCompileScripts", relativeTo: path, type: BuildScript.self)
-            target = expandChildPaths(from: target, forKey: "postBuildScripts", relativeTo: path, type: BuildScript.self)
-
-            result[targetName] = target
-        }
-        return result
+    static var pathProperties: [PathProperty] {
+        return [
+            .dictionary([
+                .string("sources"),
+                .object("sources", TargetSource.pathProperties),
+                .string("configFiles"),
+                .object("dependencies", Dependency.pathProperties),
+                .object("info", Plist.pathProperties),
+                .object("entitlements", Plist.pathProperties),
+                .object("preBuildScripts", BuildScript.pathProperties),
+                .object("prebuildScripts", BuildScript.pathProperties),
+                .object("postCompileScripts", BuildScript.pathProperties),
+                .object("postBuildScripts", BuildScript.pathProperties),
+            ]),
+        ]
     }
 }
 

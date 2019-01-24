@@ -65,14 +65,12 @@ extension AggregateTarget: NamedJSONDictionaryConvertible {
 
 extension AggregateTarget: PathContainer {
 
-    static func expandPaths(for source: [String: JSONDictionary], relativeTo path: Path) -> [String: JSONDictionary] {
-        var result = source
-
-        for (targetName, var target) in result {
-            target = expandStringPaths(from: target, forKey: "configFiles", relativeTo: path)
-            target = expandChildPaths(from: target, forKey: "buildScripts", relativeTo: path, type: BuildScript.self)
-            result[targetName] = target
-        }
-        return result
+    static var pathProperties: [PathProperty] {
+        return [
+            .dictionary([
+                .string("configFiles"),
+                .object("buildScripts", BuildScript.pathProperties),
+            ]),
+        ]
     }
 }

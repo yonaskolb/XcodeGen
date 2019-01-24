@@ -177,18 +177,26 @@ extension Project {
 
 extension Project: PathContainer {
 
+    static var pathProperties: [PathProperty] {
+        return [
+            .string("configFiles"),
+            .object("options", SpecOptions.pathProperties),
+            .object("targets", Target.pathProperties),
+            .object("aggregateTargets", AggregateTarget.pathProperties),
+        ]
+    }
+}
+
+extension Project {
+
     static func expandPaths(for spec: Spec, relativeTo basePath: Path = Path()) -> Spec {
         let relativePath = (basePath + spec.relativePath).normalize()
         guard relativePath != Path() else {
             return spec
         }
-        
-        var jsonDictionary = spec.jsonDictionary
 
-        jsonDictionary = expandStringPaths(from: jsonDictionary, forKey: "configFiles", relativeTo: relativePath)
-        jsonDictionary = expandChildPaths(from: jsonDictionary, forKey: "options", relativeTo: relativePath, type: SpecOptions.self)
-        jsonDictionary = expandChildPaths(from: jsonDictionary, forKey: "targets", relativeTo: relativePath, type: Target.self)
-        jsonDictionary = expandChildPaths(from: jsonDictionary, forKey: "aggregateTargets", relativeTo: relativePath, type: AggregateTarget.self)
+        let jsonDictionary = expandPaths(Project.pathProperties, in: spec.jsonDictionary, relativeTo: relativePath)
+
         return Spec(
             relativePath: spec.relativePath,
             jsonDictionary: jsonDictionary,
@@ -196,6 +204,39 @@ extension Project: PathContainer {
                 return Project.expandPaths(for: template, relativeTo: relativePath)
             }
         )
+    }
+
+    private static func expandPaths(_ pathProperties: [PathProperty], in jsonDictionary: JSONDictionary, relativeTo path: Path) -> JSONDictionary {
+        var result = jsonDictionary
+
+        for pathProperty in pathProperties {
+            switch pathProperty {
+            case .string(let key):
+                if let source = result[key] as? String {
+                    result[key] = (path + source).string
+                } else if let source = result[key] as? [String] {
+                    result[key] = source.map { (path + $0).string }
+                } else if let source = result[key] as? [String: String] {
+                    result[key] = source.mapValues { (path + $0).string }
+                }
+            case .dictionary(let pathProperties):
+                for (key, dictionary) in result {
+                    if let source = dictionary as? JSONDictionary {
+                        result[key] = expandPaths(pathProperties, in: source, relativeTo: path)
+                    }
+                }
+            case .object(let key, let pathProperties):
+                if let source = result[key] as? JSONDictionary {
+                    result[key] = expandPaths(pathProperties, in: source, relativeTo: path)
+                } else if let source = result[key] as? [JSONDictionary] {
+                    result[key] = source.map { expandPaths(pathProperties, in: $0, relativeTo: path) }
+                } else if let source = result[key] as? [String: JSONDictionary] {
+                    result[key] = source.mapValues { expandPaths(pathProperties, in: $0, relativeTo: path) }
+                }
+            }
+        }
+
+        return result
     }
 }
 
