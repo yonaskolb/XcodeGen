@@ -105,6 +105,45 @@ class SpecLoadingTests: XCTestCase {
                 ]
             }
 
+            $0.it("respects directory expansion preference") {
+                let path = fixturePath + "legacy_paths_test.yml"
+                let project = try Project(path: path)
+
+                try expect(project.configFiles) == [
+                    "IncludedConfig": "config",
+                ]
+
+                try expect(project.options) == SpecOptions(
+                    carthageBuildPath: "carthage_build",
+                    carthageExecutablePath: "carthage_executable"
+                )
+
+                try expect(project.aggregateTargets) == [
+                    AggregateTarget(
+                        name: "IncludedAggregateTarget",
+                        targets: ["IncludedTarget"],
+                        configFiles: ["Config": "config"],
+                        buildScripts: [BuildScript(script: .path("buildScript"))]
+                    ),
+                ]
+
+                try expect(project.targets) == [
+                    Target(
+                        name: "IncludedTarget",
+                        type: .application,
+                        platform: .tvOS,
+                        configFiles: ["Config": "config"],
+                        sources: ["source"],
+                        dependencies: [Dependency(type: .framework, reference: "Framework")],
+                        info: Plist(path: "info"),
+                        entitlements: Plist(path: "entitlements"),
+                        preBuildScripts: [BuildScript(script: .path("preBuildScript"))],
+                        postCompileScripts: [BuildScript(script: .path("postCompileScript"))],
+                        postBuildScripts: [BuildScript(script: .path("postBuildScript"))]
+                    ),
+                ]
+            }
+
             $0.it("parses yaml types") {
                 let path = fixturePath + "yaml.yml"
                 let dictionary = try loadYamlDictionary(path: path)

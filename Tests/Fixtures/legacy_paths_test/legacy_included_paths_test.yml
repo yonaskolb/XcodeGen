@@ -1,0 +1,33 @@
+configFiles:
+  IncludedConfig: config
+options:
+  carthageBuildPath: carthage_build
+  carthageExecutablePath: carthage_executable
+targets:
+  IncludedTarget:
+    type: application
+    platform: tvOS
+    configFiles:
+      Config: config
+    sources:
+      - source
+    dependencies:
+      - framework: Framework
+    info:
+      path: info
+    entitlements:
+      path: entitlements
+    preBuildScripts:
+    - path: preBuildScript
+    postCompileScripts:
+    - path: postCompileScript
+    postBuildScripts:
+    - path: postBuildScript
+aggregateTargets:
+  IncludedAggregateTarget:
+    targets:
+      - IncludedTarget
+    configFiles:
+      Config: config
+    buildScripts:
+    - path: buildScript
