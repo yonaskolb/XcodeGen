@@ -423,6 +423,8 @@ Each script can contain:
 - [ ] **name**: **String** - name of a script. Defaults to `Run Script`
 - [ ] **inputFiles**: **[String]** - list of input files
 - [ ] **outputFiles**: **[String]** - list of output files
+- [ ] **inputFileLists**: **[String]** - list of input .xcfilelist
+- [ ] **outputFileLists**: **[String]** - list of output .xcfilelist
 - [ ] **shell**: **String** - shell used for the script. Defaults to `/bin/sh`
 - [ ] **showEnvVars**: **Bool** - whether the environment variables accessible to the script show be printed to the build log. Defaults to yes
 - [ ] **runOnlyWhenInstalling**: **Bool** - whether the script is only run when installing (`runOnlyForDeploymentPostprocessing`). Defaults to no
@@ -440,9 +442,13 @@ targets:
         inputFiles:
           - $(SRCROOT)/file1
           - $(SRCROOT)/file2
+        inputFileLists:
+          - $(SRCROOT)/inputFiles.xcfilelist
         outputFiles:
           - $(DERIVED_FILE_DIR)/file1
           - $(DERIVED_FILE_DIR)/file2
+        outputFileLists:
+          - $(SRCROOT)/outputFiles.xcfilelist
     postCompileScripts:
       - script: swiftlint
         name: Swiftlint

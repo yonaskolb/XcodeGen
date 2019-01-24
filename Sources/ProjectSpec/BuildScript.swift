@@ -8,6 +8,8 @@ public struct BuildScript: Equatable {
     public var shell: String?
     public var inputFiles: [String]
     public var outputFiles: [String]
+    public var inputFileLists: [String]
+    public var outputFileLists: [String]
     public var runOnlyWhenInstalling: Bool
     public let showEnvVars: Bool
 
@@ -21,6 +23,8 @@ public struct BuildScript: Equatable {
         name: String? = nil,
         inputFiles: [String] = [],
         outputFiles: [String] = [],
+        inputFileLists: [String] = [],
+        outputFileLists: [String] = [],
         shell: String? = nil,
         runOnlyWhenInstalling: Bool = false,
         showEnvVars: Bool = true
@@ -29,6 +33,8 @@ public struct BuildScript: Equatable {
         self.name = name
         self.inputFiles = inputFiles
         self.outputFiles = outputFiles
+        self.inputFileLists = inputFileLists
+        self.outputFileLists = outputFileLists
         self.shell = shell
         self.runOnlyWhenInstalling = runOnlyWhenInstalling
         self.showEnvVars = showEnvVars
@@ -41,7 +47,9 @@ extension BuildScript: JSONObjectConvertible {
         name = jsonDictionary.json(atKeyPath: "name")
         inputFiles = jsonDictionary.json(atKeyPath: "inputFiles") ?? []
         outputFiles = jsonDictionary.json(atKeyPath: "outputFiles") ?? []
-
+        inputFileLists = jsonDictionary.json(atKeyPath: "inputFileLists") ?? []
+        outputFileLists = jsonDictionary.json(atKeyPath: "outputFileLists") ?? []
+        
         if let string: String = jsonDictionary.json(atKeyPath: "script") {
             script = .script(string)
         } else {

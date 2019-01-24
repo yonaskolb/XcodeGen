@@ -289,6 +289,8 @@ public class PBXProjGenerator {
             name: buildScript.name ?? "Run Script",
             inputPaths: buildScript.inputFiles,
             outputPaths: buildScript.outputFiles,
+            inputFileListPaths: buildScript.inputFileLists,
+            outputFileListPaths: buildScript.outputFileLists,
             shellPath: buildScript.shell ?? "/bin/sh",
             shellScript: shellScript,
             runOnlyForDeploymentPostprocessing: buildScript.runOnlyWhenInstalling,
