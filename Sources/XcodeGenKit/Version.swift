@@ -15,6 +15,10 @@ extension Project {
         return "Xcode 9.3"
     }
 
+    var objectVersion: UInt {
+        return 50
+    }
+
     public func validateMinimumXcodeGenVersion(_ xcodeGenVersion: Version) throws {
         if let minimumXcodeGenVersion = options.minimumXcodeGenVersion, xcodeGenVersion < minimumXcodeGenVersion {
             throw SpecValidationError.ValidationError.invalidXcodeGenVersion(minimumVersion: minimumXcodeGenVersion, version: xcodeGenVersion)

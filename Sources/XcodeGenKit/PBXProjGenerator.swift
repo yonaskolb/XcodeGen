@@ -27,7 +27,7 @@ public class PBXProjGenerator {
 
     public init(project: Project) {
         self.project = project
-        pbxProj = PBXProj(rootObject: nil, objectVersion: 46)
+        pbxProj = PBXProj(rootObject: nil, objectVersion: project.objectVersion)
         sourceGenerator = SourceGenerator(project: project, pbxProj: pbxProj)
     }
 
