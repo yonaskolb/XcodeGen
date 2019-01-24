@@ -15,7 +15,7 @@ extension Project {
             self.subSpecs = subSpecs
         }
 
-        public init(filename: String, basePath: Path, relativePath: Path = "") throws {
+        public init(filename: String, basePath: Path, relativePath: Path = Path()) throws {
             let path = basePath + relativePath + filename
 
             // Depending on the extension we will either load the file as YAML or JSON
@@ -31,18 +31,30 @@ extension Project {
                 json = try loadYamlDictionary(path: path)
             }
 
-            var includeStrings: [String]
-            if let includeString = json["include"] as? String {
-                includeStrings = [includeString]
-            } else if let includeArray = json["include"] as? [String] {
-                includeStrings = includeArray
-            } else {
-                includeStrings = []
+            let processIncludeOption = { (option: Any) -> (String, Bool)? in
+                if let option = option as? String {
+                    return (option, true)
+                } else if let option = option as? JSONDictionary, let path = option["path"] as? String {
+                    return (path, (option["useRelativePaths"] as? Bool) ?? true)
+                }
+                return nil
             }
 
-            let includes = try includeStrings.map { include -> Spec in
-                let path = Path(include)
-                return try Spec(filename: path.lastComponent, basePath: basePath + relativePath, relativePath: path.parent())
+            let includeSources: [(String, Bool)]
+            if let sources = json["include"] as? [Any] {
+                includeSources = sources.compactMap { processIncludeOption($0) }
+            } else if let source = json["include"] {
+                includeSources = [processIncludeOption(source)].compactMap { $0 }
+            } else {
+                includeSources = []
+            }
+
+            let includes = try includeSources.map { include -> Spec in
+                let path = Path(include.0)
+                let basePath = include.1 ? basePath + relativePath : basePath + relativePath + path.parent()
+                let relativePath = include.1 ? path.parent() : Path()
+
+                return try Spec(filename: path.lastComponent, basePath: basePath, relativePath: relativePath)
             }
 
             self.relativePath = relativePath
