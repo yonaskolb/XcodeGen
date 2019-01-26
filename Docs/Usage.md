@@ -37,7 +37,7 @@ Debug and Release settings will be applied to your project. Targets will also ge
 >You can change or disable how these setting presets are applied via the `options.settingPresets` which you can find more about in [Options](#options)
 
 ### Settings
-The `project` and each `target` have a `settings` object that you can define. This can be a simple map of build settings or can provide build settings per `config` via `configs` or `base`. See [Settings](ProjectSpec#settings) for more details.
+The `project` and each `target` have a `settings` object that you can define. This can be a simple map of build settings or can provide build settings per `config` via `configs` or `base`. See [Settings](ProjectSpec.md#settings) for more details.
 
 ```yaml
 settings:
@@ -56,7 +56,7 @@ targets:
 ```
 
 ### Setting Groups
-Each `settings` can also reference one or more setting groups which let you reuse groups of build settings across targets or configurations. See [Setting Groups](ProjectSpec#setting-groups) for more details. Note that each setting group is also a full [Settings](ProjectSpec#settings) object, so you can reference other groups or define settings by config.
+Each `settings` can also reference one or more setting groups which let you reuse groups of build settings across targets or configurations. See [Setting Groups](ProjectSpec.md#setting-groups) for more details. Note that each setting group is also a full [Settings](ProjectSpec.md#settings) object, so you can reference other groups or define settings by config.
 
 ```yaml
 settingGroups:
