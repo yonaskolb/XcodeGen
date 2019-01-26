@@ -967,7 +967,13 @@ public class PBXProjGenerator {
                         frameworks[dependency.reference] = dependency
                     case .target:
                         if let projectTarget = project.getProjectTarget(dependency.reference) {
-                            queue.append(projectTarget)
+                            if let dependencyTarget = projectTarget as? Target {
+                                if topLevelTarget.platform == dependencyTarget.platform {
+                                    queue.append(projectTarget)
+                                }
+                            } else {
+                                queue.append(projectTarget)
+                            }
                         }
                     default:
                         break
