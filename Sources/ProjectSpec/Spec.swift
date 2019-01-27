@@ -70,6 +70,7 @@ public struct Spec {
 }
 
 extension Spec {
+    
     func resolvingPaths(relativeTo basePath: Path = Path()) -> Spec {
         let relativePath = (basePath + self.relativePath).normalize()
         guard relativePath != Path() else {

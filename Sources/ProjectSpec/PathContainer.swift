@@ -14,6 +14,7 @@ enum PathProperty {
 }
 
 extension Array where Element == PathProperty {
+    
     func resolvingPaths(in jsonDictionary: JSONDictionary, relativeTo path: Path) -> JSONDictionary {
         var result = jsonDictionary
 
