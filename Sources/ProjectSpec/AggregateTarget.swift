@@ -1,6 +1,5 @@
 import Foundation
 import JSONUtilities
-import PathKit
 
 public struct AggregateTarget: ProjectTarget {
     public var name: String

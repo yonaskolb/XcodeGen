@@ -1,6 +1,5 @@
 import Foundation
 import JSONUtilities
-import PathKit
 import xcodeproj
 
 public struct LegacyTarget: Equatable {

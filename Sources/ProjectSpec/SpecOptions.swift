@@ -1,6 +1,5 @@
 import Foundation
 import JSONUtilities
-import PathKit
 
 public struct SpecOptions: Equatable {
 
