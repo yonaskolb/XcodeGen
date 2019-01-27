@@ -438,6 +438,8 @@ Each script can contain:
 - [ ] **name**: **String** - name of a script. Defaults to `Run Script`
 - [ ] **inputFiles**: **[String]** - list of input files
 - [ ] **outputFiles**: **[String]** - list of output files
+- [ ] **inputFileLists**: **[String]** - list of input .xcfilelist
+- [ ] **outputFileLists**: **[String]** - list of output .xcfilelist
 - [ ] **shell**: **String** - shell used for the script. Defaults to `/bin/sh`
 - [ ] **showEnvVars**: **Bool** - whether the environment variables accessible to the script show be printed to the build log. Defaults to yes
 - [ ] **runOnlyWhenInstalling**: **Bool** - whether the script is only run when installing (`runOnlyForDeploymentPostprocessing`). Defaults to no
@@ -455,9 +457,13 @@ targets:
         inputFiles:
           - $(SRCROOT)/file1
           - $(SRCROOT)/file2
+        inputFileLists:
+          - $(SRCROOT)/inputFiles.xcfilelist
         outputFiles:
           - $(DERIVED_FILE_DIR)/file1
           - $(DERIVED_FILE_DIR)/file2
+        outputFileLists:
+          - $(SRCROOT)/outputFiles.xcfilelist
     postCompileScripts:
       - script: swiftlint
         name: Swiftlint
@@ -571,7 +577,7 @@ Schemes allows for more control than the convenience [Target Scheme](#target-sch
 - [ ] **parallelizeBuild**: **Bool** - Whether or not your targets should be built in parallel. By default this is `true` if not set.
   - `true`: Build targets in parallel
   - `false`: Build targets serially
-- [ ] **buildImplicitDependencies**: **Bool** - Flag to determine if Xcode should be implicit dependencies of this scheme. By default this is `true` if not set.
+- [ ] **buildImplicitDependencies**: **Bool** - Flag to determine if Xcode should build implicit dependencies of this scheme. By default this is `true` if not set.
 
   - `true`: Discover implicit dependencies of this scheme
   - `false`: Only build explicit dependencies of this scheme

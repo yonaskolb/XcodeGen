@@ -35,7 +35,7 @@ extension PBXProductType {
     }
 
     public var isExecutable: Bool {
-        return isApp || isExtension || isTest
+        return isApp || isExtension || isTest || self == .commandLineTool
     }
 
     public var name: String {

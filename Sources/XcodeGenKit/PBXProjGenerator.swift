@@ -27,7 +27,7 @@ public class PBXProjGenerator {
 
     public init(project: Project) {
         self.project = project
-        pbxProj = PBXProj(rootObject: nil, objectVersion: 46)
+        pbxProj = PBXProj(rootObject: nil, objectVersion: project.objectVersion)
         sourceGenerator = SourceGenerator(project: project, pbxProj: pbxProj)
     }
 
@@ -88,7 +88,7 @@ public class PBXProjGenerator {
             PBXProject(
                 name: project.name,
                 buildConfigurationList: buildConfigList,
-                compatibilityVersion: "Xcode 3.2",
+                compatibilityVersion: project.compatabilityVersion,
                 mainGroup: mainGroup,
                 developmentRegion: project.options.developmentLanguage ?? "en"
             )
@@ -289,6 +289,8 @@ public class PBXProjGenerator {
             name: buildScript.name ?? "Run Script",
             inputPaths: buildScript.inputFiles,
             outputPaths: buildScript.outputFiles,
+            inputFileListPaths: buildScript.inputFileLists,
+            outputFileListPaths: buildScript.outputFileLists,
             shellPath: buildScript.shell ?? "/bin/sh",
             shellScript: shellScript,
             runOnlyForDeploymentPostprocessing: buildScript.runOnlyWhenInstalling,
@@ -665,8 +667,13 @@ public class PBXProjGenerator {
         }
 
         let sourcesBuildPhaseFiles = getBuildFilesForPhase(.sources)
-        let sourcesBuildPhase = addObject(PBXSourcesBuildPhase(files: sourcesBuildPhaseFiles))
-        buildPhases.append(sourcesBuildPhase)
+        // Sticker packs should not include a compile sources build phase as they
+        // are purely based on a set of image files, and nothing else.
+        let shouldSkipSourcesBuildPhase = sourcesBuildPhaseFiles.isEmpty && target.type == .stickerPack
+        if !shouldSkipSourcesBuildPhase {
+            let sourcesBuildPhase = addObject(PBXSourcesBuildPhase(files: sourcesBuildPhaseFiles))
+            buildPhases.append(sourcesBuildPhase)
+        }
 
         buildPhases += try target.postCompileScripts.map { try generateBuildScript(targetName: target.name, buildScript: $0) }
 
@@ -960,7 +967,13 @@ public class PBXProjGenerator {
                         frameworks[dependency.reference] = dependency
                     case .target:
                         if let projectTarget = project.getProjectTarget(dependency.reference) {
-                            queue.append(projectTarget)
+                            if let dependencyTarget = projectTarget as? Target {
+                                if topLevelTarget.platform == dependencyTarget.platform {
+                                    queue.append(projectTarget)
+                                }
+                            } else {
+                                queue.append(projectTarget)
+                            }
                         }
                     default:
                         break

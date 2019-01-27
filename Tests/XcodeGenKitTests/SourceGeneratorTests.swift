@@ -517,6 +517,23 @@ class SourceGeneratorTests: XCTestCase {
                 try expect(sourcesBuildPhase.files.count) == 1
             }
 
+            $0.it("add only carthage dependencies with same platform") {
+                let directories = """
+                    A:
+                    - file.swift
+                """
+                try createDirectories(directories)
+
+                let watchTarget = Target(name: "Watch", type: .watch2App, platform: .watchOS, sources: ["A"], dependencies: [Dependency(type: .carthage, reference: "Alamofire_watch")])
+                let watchDependency = Dependency(type: .target, reference: "Watch")
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: ["A"], dependencies: [Dependency(type: .carthage, reference: "Alamofire"), watchDependency])
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target, watchTarget])
+
+                let pbxProj = try project.generatePbxProj()
+                let carthagePhase = pbxProj.nativeTargets.first(where: { $0.name == "Test" })?.buildPhases.first(where: { $0 is PBXShellScriptBuildPhase }) as? PBXShellScriptBuildPhase
+                try expect(carthagePhase?.inputPaths) == ["$(SRCROOT)/Carthage/Build/iOS/Alamofire.framework"]
+            }
+
             $0.it("derived directories are sorted last") {
                 let directories = """
                     A:

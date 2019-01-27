@@ -112,6 +112,10 @@ targets:
       - name: MyScript
         script: |
           echo "You ran a script!"
+        inputFileLists:
+          - inputList.xcfilelist
+        outputFileLists:
+          - outputList.xcfilelist
 
   App_watchOS:
       type: application.watchapp2
@@ -150,6 +154,12 @@ targets:
     sources: iMessage MessagesExtension
     settings:
       PRODUCT_BUNDLE_IDENTIFIER: com.project.iMessageApp.extension
+
+  iMessageStickersExtension:
+    type: app-extension.messages-sticker-pack
+    platform: iOS
+    sources:       
+      - path: iMessage Stickers
 
   StaticLibrary_ObjC:
     type: library.static
@@ -205,6 +215,12 @@ targets:
     platform: macOS
     sources:
       - path: XPC Service
+
+  Tool:
+    type: tool
+    platform: macOS
+    sources: [Tool]
+    scheme: {}
 
 schemes:
   Framework:
