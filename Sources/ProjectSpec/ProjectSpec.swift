@@ -72,15 +72,7 @@ extension Project {
     }
 }
 
-internal protocol SubSequenceConvertible: Sequence {
-
-    init(_ subsequence: SubSequence)
-}
-
-extension String: SubSequenceConvertible { }
-extension Substring: SubSequenceConvertible { }
-
-extension Dictionary where Key: StringProtocol, Key: SubSequenceConvertible, Value: Any {
+extension Dictionary where Key == String, Value: Any {
 
     func merged(onto other: Dictionary<Key, Value>) -> Dictionary<Key, Value> {
         var merged = other
