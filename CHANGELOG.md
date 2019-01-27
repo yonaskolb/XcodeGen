@@ -13,6 +13,9 @@
 - Fixed generated schemes for tool targets not setting the executable [#496](https://github.com/yonaskolb/XcodeGen/pull/496) @yonaskolb
 - Fixed resolving Carthage dependencies for iOS app with watchOS target. [465](https://github.com/yonaskolb/XcodeGen/pull/465) @raptorxcz
 
+#### Changed
+- Updated the Xcode compatability version from 3.2 to 9.3 [#497](https://github.com/yonaskolb/XcodeGen/pull/497) @yonaskolb
+
 ## 2.1.0
 
 #### Added
