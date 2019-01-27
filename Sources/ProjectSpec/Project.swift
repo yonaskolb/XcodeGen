@@ -132,7 +132,6 @@ extension Project: Equatable {
 
 extension Project {
 
-    @available(*, deprecated, message: "Use `Project.Spec` and `init(spec:basePath:)`.")
     public init(basePath: Path, jsonDictionary: JSONDictionary) throws {
         let spec = Project.Spec(relativePath: Path(), jsonDictionary: jsonDictionary)
         try self.init(spec: spec, basePath: basePath)
