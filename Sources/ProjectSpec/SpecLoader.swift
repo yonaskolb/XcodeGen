@@ -12,7 +12,7 @@ extension Project {
     }
 
     public static func loadDictionary(path: Path) throws -> JSONDictionary {
-        return try Project.Spec(filename: path.lastComponent, basePath: path.parent()).jsonDictionary
+        return try Spec(filename: path.lastComponent, basePath: path.parent()).jsonDictionary
     }
 }
 

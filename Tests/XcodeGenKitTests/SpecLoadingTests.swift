@@ -655,7 +655,7 @@ fileprivate func getProjectSpec(_ project: [String: Any], file: String = #file, 
         projectDictionary[key] = value
     }
     do {
-        let template = Project.Spec(relativePath: "", jsonDictionary: projectDictionary)
+        let template = Spec(relativePath: "", jsonDictionary: projectDictionary)
         return try Project(spec: template, basePath: "")
     } catch {
         throw failure("\(error)", file: file, line: line)

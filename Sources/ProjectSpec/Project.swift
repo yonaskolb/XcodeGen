@@ -133,7 +133,7 @@ extension Project: Equatable {
 extension Project {
 
     public init(basePath: Path, jsonDictionary: JSONDictionary) throws {
-        let spec = Project.Spec(relativePath: Path(), jsonDictionary: jsonDictionary)
+        let spec = Spec(relativePath: Path(), jsonDictionary: jsonDictionary)
         try self.init(spec: spec, basePath: basePath)
     }
 

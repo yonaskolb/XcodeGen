@@ -2,78 +2,75 @@ import Foundation
 import JSONUtilities
 import PathKit
 
-extension Project {
+public struct Spec {
+    public let relativePath: Path
+    public let jsonDictionary: JSONDictionary
+    public let subSpecs: [Spec]
 
-    public struct Spec {
-        public let relativePath: Path
-        public let jsonDictionary: JSONDictionary
-        public let subSpecs: [Spec]
+    public init(relativePath: Path, jsonDictionary: JSONDictionary, subSpecs: [Spec] = []) {
+        self.relativePath = relativePath
+        self.jsonDictionary = jsonDictionary
+        self.subSpecs = subSpecs
+    }
 
-        public init(relativePath: Path, jsonDictionary: JSONDictionary, subSpecs: [Spec] = []) {
-            self.relativePath = relativePath
-            self.jsonDictionary = jsonDictionary
-            self.subSpecs = subSpecs
+    public init(filename: String, basePath: Path, relativePath: Path = Path()) throws {
+        let path = basePath + relativePath + filename
+
+        // Depending on the extension we will either load the file as YAML or JSON
+        var json: [String: Any]
+        if path.extension?.lowercased() == "json" {
+            let data: Data = try path.read()
+            let jsonData = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
+            guard let jsonDictionary = jsonData as? [String: Any] else {
+                fatalError("Invalid JSON at path \(path)")
+            }
+            json = jsonDictionary
+        } else {
+            json = try loadYamlDictionary(path: path)
         }
 
-        public init(filename: String, basePath: Path, relativePath: Path = Path()) throws {
-            let path = basePath + relativePath + filename
-
-            // Depending on the extension we will either load the file as YAML or JSON
-            var json: [String: Any]
-            if path.extension?.lowercased() == "json" {
-                let data: Data = try path.read()
-                let jsonData = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
-                guard let jsonDictionary = jsonData as? [String: Any] else {
-                    fatalError("Invalid JSON at path \(path)")
-                }
-                json = jsonDictionary
-            } else {
-                json = try loadYamlDictionary(path: path)
+        let processIncludeOption = { (option: Any) -> (String, Bool)? in
+            if let option = option as? String {
+                return (option, true)
+            } else if let option = option as? JSONDictionary, let path = option["path"] as? String {
+                return (path, (option["relativePaths"] as? Bool) ?? true)
             }
-
-            let processIncludeOption = { (option: Any) -> (String, Bool)? in
-                if let option = option as? String {
-                    return (option, true)
-                } else if let option = option as? JSONDictionary, let path = option["path"] as? String {
-                    return (path, (option["relativePaths"] as? Bool) ?? true)
-                }
-                return nil
-            }
-
-            let includeSources: [(String, Bool)]
-            if let sources = json["include"] as? [Any] {
-                includeSources = sources.compactMap { processIncludeOption($0) }
-            } else if let source = json["include"] {
-                includeSources = [processIncludeOption(source)].compactMap { $0 }
-            } else {
-                includeSources = []
-            }
-
-            let includes = try includeSources.map { include -> Spec in
-                let path = Path(include.0)
-                let basePath = include.1 ? basePath + relativePath : basePath + relativePath + path.parent()
-                let relativePath = include.1 ? path.parent() : Path()
-
-                return try Spec(filename: path.lastComponent, basePath: basePath, relativePath: relativePath)
-            }
-
-            self.relativePath = relativePath
-            self.jsonDictionary = json
-            self.subSpecs = includes
+            return nil
         }
 
-        public func resolvedDictionary() -> JSONDictionary {
-            return jsonDictionary.merged(onto:
-                subSpecs
-                    .map { $0.resolvedDictionary() }
-                    .reduce([:]) { $1.merged(onto: $0) }
-            )
+        let includeSources: [(String, Bool)]
+        if let sources = json["include"] as? [Any] {
+            includeSources = sources.compactMap { processIncludeOption($0) }
+        } else if let source = json["include"] {
+            includeSources = [processIncludeOption(source)].compactMap { $0 }
+        } else {
+            includeSources = []
         }
+
+        let includes = try includeSources.map { include -> Spec in
+            let path = Path(include.0)
+            let basePath = include.1 ? basePath + relativePath : basePath + relativePath + path.parent()
+            let relativePath = include.1 ? path.parent() : Path()
+
+            return try Spec(filename: path.lastComponent, basePath: basePath, relativePath: relativePath)
+        }
+
+        self.relativePath = relativePath
+        self.jsonDictionary = json
+        self.subSpecs = includes
+    }
+
+    public func resolvedDictionary() -> JSONDictionary {
+        return jsonDictionary.merged(onto:
+            subSpecs
+                .map { $0.resolvedDictionary() }
+                .reduce([:]) { $1.merged(onto: $0) }
+        )
     }
 }
 
-extension Project.Spec {
-    func resolvingPaths(relativeTo basePath: Path = Path()) -> Project.Spec {
+extension Spec {
+    func resolvingPaths(relativeTo basePath: Path = Path()) -> Spec {
         let relativePath = (basePath + self.relativePath).normalize()
         guard relativePath != Path() else {
             return self
@@ -81,7 +78,7 @@ extension Project.Spec {
 
         let jsonDictionary = Project.pathProperties.resolvingPaths(in: self.jsonDictionary, relativeTo: relativePath)
 
-        return Project.Spec(
+        return Spec(
             relativePath: self.relativePath,
             jsonDictionary: jsonDictionary,
             subSpecs: self.subSpecs.map { template in

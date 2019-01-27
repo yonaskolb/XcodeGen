@@ -16,7 +16,7 @@ public class SpecLoader {
     }
 
     public func loadProject(path: Path) throws -> Project {
-        let template = try Project.Spec(filename: path.lastComponent, basePath: path.parent())
+        let template = try Spec(filename: path.lastComponent, basePath: path.parent())
         let project = try Project(spec: template, basePath: path.parent())
 
         self.project = project
