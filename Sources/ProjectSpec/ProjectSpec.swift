@@ -35,7 +35,7 @@ extension Project {
                 if let option = option as? String {
                     return (option, true)
                 } else if let option = option as? JSONDictionary, let path = option["path"] as? String {
-                    return (path, (option["useRelativePaths"] as? Bool) ?? true)
+                    return (path, (option["relativePaths"] as? Bool) ?? true)
                 }
                 return nil
             }
