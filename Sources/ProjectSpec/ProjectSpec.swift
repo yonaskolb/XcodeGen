@@ -1,5 +1,5 @@
 import Foundation
-import typealias JSONUtilities.JSONDictionary
+import JSONUtilities
 import PathKit
 
 extension Project {
@@ -69,6 +69,60 @@ extension Project {
                     .reduce([:]) { $1.merged(onto: $0) }
             )
         }
+    }
+}
+
+extension Project.Spec {
+    func resolvingPaths(relativeTo basePath: Path = Path()) -> Project.Spec {
+        let relativePath = (basePath + self.relativePath).normalize()
+        guard relativePath != Path() else {
+            return self
+        }
+
+        let jsonDictionary = Project.pathProperties.resolvingPaths(in: self.jsonDictionary, relativeTo: relativePath)
+
+        return Project.Spec(
+            relativePath: self.relativePath,
+            jsonDictionary: jsonDictionary,
+            subSpecs: self.subSpecs.map { template in
+                return template.resolvingPaths(relativeTo: relativePath)
+            }
+        )
+    }
+}
+
+extension Array where Element == PathProperty {
+    func resolvingPaths(in jsonDictionary: JSONDictionary, relativeTo path: Path) -> JSONDictionary {
+        var result = jsonDictionary
+
+        for pathProperty in self {
+            switch pathProperty {
+            case .string(let key):
+                if let source = result[key] as? String {
+                    result[key] = (path + source).string
+                } else if let source = result[key] as? [String] {
+                    result[key] = source.map { (path + $0).string }
+                } else if let source = result[key] as? [String: String] {
+                    result[key] = source.mapValues { (path + $0).string }
+                }
+            case .dictionary(let pathProperties):
+                for (key, dictionary) in result {
+                    if let source = dictionary as? JSONDictionary {
+                        result[key] = pathProperties.resolvingPaths(in: source, relativeTo: path)
+                    }
+                }
+            case .object(let key, let pathProperties):
+                if let source = result[key] as? JSONDictionary {
+                    result[key] = pathProperties.resolvingPaths(in: source, relativeTo: path)
+                } else if let source = result[key] as? [JSONDictionary] {
+                    result[key] = source.map { pathProperties.resolvingPaths(in: $0, relativeTo: path) }
+                } else if let source = result[key] as? [String: JSONDictionary] {
+                    result[key] = source.mapValues { pathProperties.resolvingPaths(in: $0, relativeTo: path) }
+                }
+            }
+        }
+
+        return result
     }
 }
 
