@@ -1,4 +1,4 @@
 include:
   path: legacy_paths_test/legacy_included_paths_test.yml
-  useRelativePaths: false
+  relativePaths: false
 name: NewName
