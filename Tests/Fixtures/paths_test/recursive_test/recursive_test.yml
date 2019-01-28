@@ -1,0 +1,33 @@
+options:
+  carthageBuildPath: carthage_build
+  carthageExecutablePath: carthage_executable
+configFiles:
+  RecursiveConfig: config
+targets:
+  RecursiveTarget:
+    type: application
+    platform: macOS
+    configFiles:
+      Config: config
+    sources:
+      - source
+    dependencies:
+      - framework: Framework
+    info:
+      path: info
+    entitlements:
+      path: entitlements
+    prebuildScripts:
+    - path: prebuildScript
+    postCompileScripts:
+    - path: postCompileScript
+    postBuildScripts:
+    - path: postBuildScript
+aggregateTargets:
+  RecursiveAggregateTarget:
+    targets:
+      - RecursiveTarget
+    configFiles:
+      Config: config
+    buildScripts:
+    - path: buildScript

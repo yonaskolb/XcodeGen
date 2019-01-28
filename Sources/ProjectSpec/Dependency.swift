@@ -72,3 +72,12 @@ extension Dependency: JSONObjectConvertible {
         }
     }
 }
+
+extension Dependency: PathContainer {
+
+    static var pathProperties: [PathProperty] {
+        return [
+            .string("framework"),
+        ]
+    }
+}

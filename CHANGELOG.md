@@ -7,6 +7,9 @@
 - Added support for the `instrumentsPackage` product type [#482](https://github.com/yonaskolb/XcodeGen/pull/482) @ksulliva
 - Added support for `inputFileLists` and `outputFileLists` within project build scripts [#500](https://github.com/yonaskolb/XcodeGen/pull/500) @lukewakeford
 
+#### Changed
+- **BREAKING** All the paths within included files are now relative to that file and not the root spec. This can be disabled with a `relativePaths: false` on the include. See [docs](https://github.com/yonaskolb/XcodeGen/blob/master/Docs/ProjectSpec.md#include) for more details [#489](https://github.com/yonaskolb/XcodeGen/pull/489) @ellneal
+
 #### Fixed
 - Fixed `--project` argument not taking effect [#487](https://github.com/yonaskolb/XcodeGen/pull/487) @monowerker
 - Fixed Sticker Packs from generating an empty Source file phase which caused in error in the new build system [#492](https://github.com/yonaskolb/XcodeGen/pull/492) @rpassis

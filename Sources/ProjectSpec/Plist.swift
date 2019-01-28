@@ -24,3 +24,12 @@ extension Plist: JSONObjectConvertible {
         properties = jsonDictionary.json(atKeyPath: "properties") ?? [:]
     }
 }
+
+extension Plist: PathContainer {
+
+    static var pathProperties: [PathProperty] {
+        return [
+            .string("path"),
+        ]
+    }
+}

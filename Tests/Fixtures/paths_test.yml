@@ -1,0 +1,32 @@
+include: paths_test/included_paths_test.yml
+name: NewName
+configFiles:
+  NewConfig: config
+targets:
+  NewTarget:
+    type: application
+    platform: iOS
+    configFiles:
+      Config: config
+    sources:
+      - source
+    dependencies:
+      - framework: Framework
+    info:
+      path: info
+    entitlements:
+      path: entitlements
+    preBuildScripts:
+    - path: preBuildScript
+    postCompileScripts:
+    - path: postCompileScript
+    postBuildScripts:
+    - path: postBuildScript
+aggregateTargets:
+  NewAggregateTarget:
+    targets:
+      - NewTarget
+    configFiles:
+      Config: config
+    buildScripts:
+    - path: buildScript

@@ -207,3 +207,13 @@ extension TargetSource.BuildPhase.CopyFilesSettings: JSONObjectConvertible {
         phaseOrder = .postCompile
     }
 }
+
+extension TargetSource: PathContainer {
+
+    static var pathProperties: [PathProperty] {
+        return [
+            .string("path"),
+            .string("excludes"),
+        ]
+    }
+}

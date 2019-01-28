@@ -61,3 +61,15 @@ extension AggregateTarget: NamedJSONDictionaryConvertible {
         attributes = jsonDictionary.json(atKeyPath: "attributes") ?? [:]
     }
 }
+
+extension AggregateTarget: PathContainer {
+
+    static var pathProperties: [PathProperty] {
+        return [
+            .dictionary([
+                .string("configFiles"),
+                .object("buildScripts", BuildScript.pathProperties),
+            ]),
+        ]
+    }
+}

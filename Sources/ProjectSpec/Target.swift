@@ -110,6 +110,26 @@ extension Target: CustomStringConvertible {
     }
 }
 
+extension Target: PathContainer {
+
+    static var pathProperties: [PathProperty] {
+        return [
+            .dictionary([
+                .string("sources"),
+                .object("sources", TargetSource.pathProperties),
+                .string("configFiles"),
+                .object("dependencies", Dependency.pathProperties),
+                .object("info", Plist.pathProperties),
+                .object("entitlements", Plist.pathProperties),
+                .object("preBuildScripts", BuildScript.pathProperties),
+                .object("prebuildScripts", BuildScript.pathProperties),
+                .object("postCompileScripts", BuildScript.pathProperties),
+                .object("postBuildScripts", BuildScript.pathProperties),
+            ]),
+        ]
+    }
+}
+
 extension Target {
 
     static func resolveTargetTemplates(jsonDictionary: JSONDictionary) throws -> JSONDictionary {
@@ -125,10 +145,10 @@ extension Target {
                 var mergedDictionary: JSONDictionary = [:]
                 for template in templates {
                     if let templateDictionary = targetTemplatesDictionary[template] {
-                        mergedDictionary = merge(dictionary: templateDictionary, onto: mergedDictionary)
+                        mergedDictionary = templateDictionary.merged(onto: mergedDictionary)
                     }
                 }
-                target = merge(dictionary: target, onto: mergedDictionary)
+                target = target.merged(onto: mergedDictionary)
             }
             targetsDictionary[targetName] = target
         }

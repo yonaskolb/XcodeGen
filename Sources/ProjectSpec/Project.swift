@@ -133,8 +133,16 @@ extension Project: Equatable {
 extension Project {
 
     public init(basePath: Path, jsonDictionary: JSONDictionary) throws {
+        let spec = Spec(relativePath: Path(), jsonDictionary: jsonDictionary)
+        try self.init(spec: spec, basePath: basePath)
+    }
+
+    public init(spec: Spec, basePath: Path) throws {
         self.basePath = basePath
-        let jsonDictionary = try Project.resolveProject(jsonDictionary: jsonDictionary)
+
+        let spec = spec.resolvingPaths()
+        let jsonDictionary = try Project.resolveProject(jsonDictionary: spec.resolvedDictionary())
+
         name = try jsonDictionary.json(atKeyPath: "name")
         settings = jsonDictionary.json(atKeyPath: "settings") ?? .empty
         settingGroups = jsonDictionary.json(atKeyPath: "settingGroups")
@@ -163,6 +171,18 @@ extension Project {
         jsonDictionary = try Target.resolveTargetTemplates(jsonDictionary: jsonDictionary)
         jsonDictionary = try Target.resolveMultiplatformTargets(jsonDictionary: jsonDictionary)
         return jsonDictionary
+    }
+}
+
+extension Project: PathContainer {
+
+    static var pathProperties: [PathProperty] {
+        return [
+            .string("configFiles"),
+            .object("options", SpecOptions.pathProperties),
+            .object("targets", Target.pathProperties),
+            .object("aggregateTargets", AggregateTarget.pathProperties),
+        ]
     }
 }
 

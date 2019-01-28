@@ -26,6 +26,124 @@ class SpecLoadingTests: XCTestCase {
                 ]
             }
 
+            $0.it("expands directories") {
+                let path = fixturePath + "paths_test.yml"
+                let project = try Project(path: path)
+
+                try expect(project.configFiles) == [
+                    "IncludedConfig": "paths_test/config",
+                    "NewConfig": "config",
+                    "RecursiveConfig": "paths_test/recursive_test/config",
+                ]
+
+                try expect(project.options) == SpecOptions(
+                    carthageBuildPath: "paths_test/recursive_test/carthage_build",
+                    carthageExecutablePath: "paths_test/recursive_test/carthage_executable"
+                )
+
+                try expect(project.aggregateTargets) == [
+                    AggregateTarget(
+                        name: "IncludedAggregateTarget",
+                        targets: ["IncludedTarget"],
+                        configFiles: ["Config": "paths_test/config"],
+                        buildScripts: [BuildScript(script: .path("paths_test/buildScript"))]
+                    ),
+                    AggregateTarget(
+                        name: "NewAggregateTarget",
+                        targets: ["NewTarget"],
+                        configFiles: ["Config": "config"],
+                        buildScripts: [BuildScript(script: .path("buildScript"))]
+                    ),
+                    AggregateTarget(
+                        name: "RecursiveAggregateTarget",
+                        targets: ["RecursiveTarget"],
+                        configFiles: ["Config": "paths_test/recursive_test/config"],
+                        buildScripts: [BuildScript(script: .path("paths_test/recursive_test/buildScript"))]
+                    ),
+                ]
+
+                try expect(project.targets) == [
+                    Target(
+                        name: "IncludedTarget",
+                        type: .application,
+                        platform: .tvOS,
+                        configFiles: ["Config": "paths_test/config"],
+                        sources: ["paths_test/source"],
+                        dependencies: [Dependency(type: .framework, reference: "paths_test/Framework")],
+                        info: Plist(path: "paths_test/info"),
+                        entitlements: Plist(path: "paths_test/entitlements"),
+                        preBuildScripts: [BuildScript(script: .path("paths_test/preBuildScript"))],
+                        postCompileScripts: [BuildScript(script: .path("paths_test/postCompileScript"))],
+                        postBuildScripts: [BuildScript(script: .path("paths_test/postBuildScript"))]
+                    ),
+                    Target(
+                        name: "NewTarget",
+                        type: .application,
+                        platform: .iOS,
+                        configFiles: ["Config": "config"],
+                        sources: ["source"],
+                        dependencies: [Dependency(type: .framework, reference: "Framework")],
+                        info: Plist(path: "info"),
+                        entitlements: Plist(path: "entitlements"),
+                        preBuildScripts: [BuildScript(script: .path("preBuildScript"))],
+                        postCompileScripts: [BuildScript(script: .path("postCompileScript"))],
+                        postBuildScripts: [BuildScript(script: .path("postBuildScript"))]
+                    ),
+                    Target(
+                        name: "RecursiveTarget",
+                        type: .application,
+                        platform: .macOS,
+                        configFiles: ["Config": "paths_test/recursive_test/config"],
+                        sources: ["paths_test/recursive_test/source"],
+                        dependencies: [Dependency(type: .framework, reference: "paths_test/recursive_test/Framework")],
+                        info: Plist(path: "paths_test/recursive_test/info"),
+                        entitlements: Plist(path: "paths_test/recursive_test/entitlements"),
+                        preBuildScripts: [BuildScript(script: .path("paths_test/recursive_test/prebuildScript"))],
+                        postCompileScripts: [BuildScript(script: .path("paths_test/recursive_test/postCompileScript"))],
+                        postBuildScripts: [BuildScript(script: .path("paths_test/recursive_test/postBuildScript"))]
+                    ),
+                ]
+            }
+
+            $0.it("respects directory expansion preference") {
+                let path = fixturePath + "legacy_paths_test.yml"
+                let project = try Project(path: path)
+
+                try expect(project.configFiles) == [
+                    "IncludedConfig": "config",
+                ]
+
+                try expect(project.options) == SpecOptions(
+                    carthageBuildPath: "carthage_build",
+                    carthageExecutablePath: "carthage_executable"
+                )
+
+                try expect(project.aggregateTargets) == [
+                    AggregateTarget(
+                        name: "IncludedAggregateTarget",
+                        targets: ["IncludedTarget"],
+                        configFiles: ["Config": "config"],
+                        buildScripts: [BuildScript(script: .path("buildScript"))]
+                    ),
+                ]
+
+                try expect(project.targets) == [
+                    Target(
+                        name: "IncludedTarget",
+                        type: .application,
+                        platform: .tvOS,
+                        configFiles: ["Config": "config"],
+                        sources: ["source"],
+                        dependencies: [Dependency(type: .framework, reference: "Framework")],
+                        info: Plist(path: "info"),
+                        entitlements: Plist(path: "entitlements"),
+                        preBuildScripts: [BuildScript(script: .path("preBuildScript"))],
+                        postCompileScripts: [BuildScript(script: .path("postCompileScript"))],
+                        postBuildScripts: [BuildScript(script: .path("postBuildScript"))]
+                    ),
+                ]
+            }
+
             $0.it("parses yaml types") {
                 let path = fixturePath + "yaml.yml"
                 let dictionary = try loadYamlDictionary(path: path)
@@ -537,7 +655,8 @@ fileprivate func getProjectSpec(_ project: [String: Any], file: String = #file, 
         projectDictionary[key] = value
     }
     do {
-        return try Project(basePath: "", jsonDictionary: projectDictionary)
+        let template = Spec(relativePath: "", jsonDictionary: projectDictionary)
+        return try Project(spec: template, basePath: "")
     } catch {
         throw failure("\(error)", file: file, line: line)
     }

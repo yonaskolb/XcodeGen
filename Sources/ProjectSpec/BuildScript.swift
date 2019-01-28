@@ -61,3 +61,12 @@ extension BuildScript: JSONObjectConvertible {
         showEnvVars = jsonDictionary.json(atKeyPath: "showEnvVars") ?? true
     }
 }
+
+extension BuildScript: PathContainer {
+
+    static var pathProperties: [PathProperty] {
+        return [
+            .string("path"),
+        ]
+    }
+}

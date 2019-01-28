@@ -120,3 +120,14 @@ extension SpecOptions: JSONObjectConvertible {
         generateEmptyDirectories = jsonDictionary.json(atKeyPath: "generateEmptyDirectories") ?? false
     }
 }
+
+extension SpecOptions: PathContainer {
+
+    static var pathProperties: [PathProperty] {
+        return [
+            .string("carthageBuildPath"),
+            .string("carthageExecutablePath"),
+            .string("defaultConfig"),
+        ]
+    }
+}
