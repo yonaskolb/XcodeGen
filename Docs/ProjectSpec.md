@@ -24,6 +24,7 @@ Required properties are marked with checkbox. Some of the YAML examples don't sh
 	- [Target Scheme](#target-scheme)
 	- [Legacy Target](#legacy-target)
 - [Aggregate Target](#aggregate-target)
+- [Target Template](#target-template)
 - [Scheme](#scheme)
 
 ## Project
@@ -39,7 +40,7 @@ Required properties are marked with checkbox. Some of the YAML examples don't sh
 - [ ] **targets**: **[String: [Target](#target)]** - The list of targets in the project mapped by name
 - [ ] **fileGroups**: **[String]** - A list of paths to add to the root of the project. These aren't files that will be included in your targets, but that you'd like to include in the project hierachy anyway. For example a folder of xcconfig files that aren't already added by any target sources, or a Readme file.
 - [ ] **schemes**: **[Scheme](#scheme)** - A list of schemes by name. This allows more control over what is found in [Target Scheme](#target-scheme)
-- [ ] **targetTemplates**: **[String: [Target](#target)]** - a list of targets that can be used as templates for actual targets which reference them via a `template` property. They can be used to extract common target settings. Works great in combination with `include`.
+- [ ] **targetTemplates**: **[String: [Target Template](#target-template)]** - a list of targets that can be used as templates for actual targets which reference them via a `template` property. They can be used to extract common target settings. Works great in combination with `include`.
 
 ### Include
 
@@ -200,7 +201,7 @@ Settings are merged in the following order: groups, base, configs.
   - `CFBundleVersion`
   - `CFBundlePackageType`
 - [ ] **entitlements**: **[Plist](#plist)** - If defined this will generate and write a `.entitlements` file, and use it by setting `CODE_SIGN_ENTITLEMENTS` build setting for every configuration. All properties must be provided
-- [ ] **templates**: **[String]** - A list of target templates that will be merged in order
+- [ ] **templates**: **[String]** - A list of [Target Templates](#target-template) referenced by name that will be merged with the target in order. Any instances of `$target_name` within these templates will be replaced with the target name.
 - [ ] **transitivelyLinkDependencies**: **Bool** - If this is not specified the value from the project set in [Options](#options)`.transitivelyLinkDependencies` will be used.
 - [ ] **directlyEmbedCarthageDependencies**: **Bool** - If this is `true` Carthage dependencies will be embedded using an `Embed Frameworks` build phase instead of the `copy-frameworks` script. Defaults to `true` for all targets except iOS/tvOS/watchOS Applications.
 - [ ] **requiresObjCLinking**: **Bool** - If this is `true` any targets that link to this target will have `-ObjC` added to their `OTHER_LDFLAGS`. This is required if a static library has any catagories or extensions on Objective-C code. See [this guide](https://pewpewthespells.com/blog/objc_linker_flags.html#objc) for more details. Defaults to `true` if `type` is `library.static`. If you are 100% sure you don't have catagories or extensions on Objective-C code (pure Swift with no use of Foundation/UIKit) you can set this to `false`, otherwise it's best to leave it alone.
@@ -553,6 +554,27 @@ This is used to override settings or run build scripts in specific targets
 - [ ] **buildScripts**: **[[Build Script](#build-script)]** - Build scripts to run
 - [ ] **scheme**: **[Target Scheme](#target-scheme)** - Generated scheme
 - [ ] **attributes**: **[String: Any]** - This sets values in the project `TargetAttributes`. It is merged with `attributes` from the project and anything automatically added by XcodeGen, with any duplicate values being override by values specified here
+
+## Target Template
+
+This is a template that can be referenced from a normal target using the `templates` property. The properties of this template are the same as a [Target](#target)].
+Any instances of `$target_name` within each template will be replaced by the final target name which references the template.
+
+
+```yaml
+targets:
+  MyFramework:
+    templates: 
+      - Framework
+    sources:
+      - SomeSources
+targetTemplates:
+  Framework:
+    platform: iOS
+    type: framework
+    sources:
+      - $target_name/Sources
+```
 
 ## Scheme
 
