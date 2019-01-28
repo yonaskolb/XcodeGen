@@ -12,7 +12,7 @@ class SpecLoadingTests: XCTestCase {
         describe {
             $0.it("merges includes") {
                 let path = fixturePath + "include_test.yml"
-                let project = try Project(path: path)
+                let project = try loadSpec(path: path)
 
                 try expect(project.name) == "NewName"
                 try expect(project.settingGroups) == [
@@ -28,7 +28,7 @@ class SpecLoadingTests: XCTestCase {
 
             $0.it("expands directories") {
                 let path = fixturePath + "paths_test.yml"
-                let project = try Project(path: path)
+                let project = try loadSpec(path: path)
 
                 try expect(project.configFiles) == [
                     "IncludedConfig": "paths_test/config",
@@ -107,7 +107,7 @@ class SpecLoadingTests: XCTestCase {
 
             $0.it("respects directory expansion preference") {
                 let path = fixturePath + "legacy_paths_test.yml"
-                let project = try Project(path: path)
+                let project = try loadSpec(path: path)
 
                 try expect(project.configFiles) == [
                     "IncludedConfig": "config",
@@ -186,7 +186,7 @@ class SpecLoadingTests: XCTestCase {
         describe {
             $0.it("merges includes") {
                 let path = fixturePath + "include_test.json"
-                let project = try Project(path: path)
+                let project = try loadSpec(path: path)
 
                 try expect(project.name) == "NewName"
                 try expect(project.settingGroups) == [
@@ -658,6 +658,15 @@ fileprivate func getProjectSpec(_ project: [String: Any], file: String = #file, 
     }
     do {
         return try Project(jsonDictionary: projectDictionary)
+    } catch {
+        throw failure("\(error)", file: file, line: line)
+    }
+}
+
+fileprivate func loadSpec(path: Path, file: String = #file, line: Int = #line) throws -> Project {
+    do {
+        let specLoader = SpecLoader(version: "1.1.0")
+        return try specLoader.loadProject(path: path)
     } catch {
         throw failure("\(error)", file: file, line: line)
     }
