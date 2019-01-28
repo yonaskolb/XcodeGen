@@ -443,13 +443,15 @@ class SourceGenerator {
             }
         }
 
+        let createIntermediateGroups = targetSource.createIntermediateGroups ?? project.options.createIntermediateGroups
+
         let group = getGroup(
             path: path,
             mergingChildren: groupChildren,
-            createIntermediateGroups: project.options.createIntermediateGroups,
+            createIntermediateGroups: createIntermediateGroups,
             isBaseGroup: isBaseGroup
         )
-        if project.options.createIntermediateGroups {
+        if createIntermediateGroups {
             createIntermediaGroups(for: group, at: path)
         }
 
@@ -464,7 +466,7 @@ class SourceGenerator {
         targetSourceExcludePaths = getSourceExcludes(targetSource: targetSource)
 
         let type = targetSource.type ?? (path.isFile || path.extension != nil ? .file : .group)
-        let createIntermediateGroups = project.options.createIntermediateGroups
+        let createIntermediateGroups = targetSource.createIntermediateGroups ?? project.options.createIntermediateGroups
 
         var sourceFiles: [SourceFile] = []
         let sourceReference: PBXFileElement
