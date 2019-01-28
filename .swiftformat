@@ -1,0 +1,4 @@
+--exclude .build
+--disable sortedImports,blankLinesAtStartOfScope,blankLinesAtEndOfScope,unusedArguments,hoistPatternLet,numberFormatting,redundantRawValues,andOperator
+--ifdef noindent
+--ranges nospace

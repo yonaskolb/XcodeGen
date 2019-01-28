@@ -26,8 +26,7 @@ uninstall:
 	rm -rf $(SHARE_PATH)
 
 format_code:
-	swiftformat Tests --wraparguments beforefirst --stripunusedargs closure-only --header strip --disable blankLinesAtStartOfScope
-	swiftformat Sources --wraparguments beforefirst --stripunusedargs closure-only --header strip --disable blankLinesAtStartOfScope
+	swiftformat .
 
 release: format_code
 	sed -i '' 's|\(let version = try Version("\)\(.*\)\(")\)|\1$(VERSION)\3|' Sources/XcodeGen/main.swift
