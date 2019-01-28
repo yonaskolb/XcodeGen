@@ -2,6 +2,8 @@
 
 ## Master
 
+## 2.2.0
+
 #### Added
 - Added ability to generate empty directories via `options.generateEmptyDirectories` [#480](https://github.com/yonaskolb/XcodeGen/pull/480) @Beniamiiin
 - Added support for the `instrumentsPackage` product type [#482](https://github.com/yonaskolb/XcodeGen/pull/482) @ksulliva
@@ -20,6 +22,8 @@
 - Fixed Sticker Packs from generating an empty Source file phase which caused in error in the new build system [#492](https://github.com/yonaskolb/XcodeGen/pull/492) @rpassis
 - Fixed generated schemes for tool targets not setting the executable [#496](https://github.com/yonaskolb/XcodeGen/pull/496) @yonaskolb
 - Fixed resolving Carthage dependencies for iOS app with watchOS target. [465](https://github.com/yonaskolb/XcodeGen/pull/465) @raptorxcz
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.1.0...2.2.0)
 
 ## 2.1.0
 
