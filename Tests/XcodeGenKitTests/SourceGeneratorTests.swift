@@ -367,6 +367,8 @@ class SourceGeneratorTests: XCTestCase {
                   F:
                     - G:
                       - h.swift
+                  B:
+                    - b.swift
                 """
                 try createDirectories(directories)
                 let outOfSourceFile = outOfRootPath + "C/D/e.swift"
@@ -377,6 +379,7 @@ class SourceGeneratorTests: XCTestCase {
                     "Sources/A/b.swift",
                     "Sources/F/G/h.swift",
                     "../OtherDirectory/C/D/e.swift",
+                    TargetSource(path: "Sources/B", createIntermediateGroups: false)
                 ])
                 let options = SpecOptions(createIntermediateGroups: true)
                 let project = Project(basePath: directoryPath, name: "Test", targets: [target], options: options)
@@ -385,6 +388,7 @@ class SourceGeneratorTests: XCTestCase {
                 try pbxProj.expectFile(paths: ["Sources", "A", "b.swift"], buildPhase: .sources)
                 try pbxProj.expectFile(paths: ["Sources", "F", "G", "h.swift"], buildPhase: .sources)
                 try pbxProj.expectFile(paths: [(outOfRootPath + "C/D").string, "e.swift"], names: ["D", "e.swift"], buildPhase: .sources)
+                try pbxProj.expectFile(paths: ["Sources/B", "b.swift"], names: ["B", "b.swift"], buildPhase: .sources)
             }
 
             $0.it("generates folder references") {
