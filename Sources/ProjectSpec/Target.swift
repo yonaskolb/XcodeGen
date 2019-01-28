@@ -149,6 +149,7 @@ extension Target {
                     }
                 }
                 target = target.merged(onto: mergedDictionary)
+                target = target.replaceString("$target_name", with: targetName)
             }
             targetsDictionary[targetName] = target
         }
@@ -163,7 +164,6 @@ extension Target {
             return jsonDictionary
         }
 
-        let platformReplacement = "$platform"
         var crossPlatformTargets: [String: JSONDictionary] = [:]
 
         for (targetName, target) in targetsDictionary {
@@ -173,25 +173,7 @@ extension Target {
                 for platform in platforms {
                     var platformTarget = target
 
-                    func replacePlatform(_ dictionary: JSONDictionary) -> JSONDictionary {
-                        var replaced = dictionary
-                        for (key, value) in dictionary {
-                            switch value {
-                            case let dictionary as JSONDictionary:
-                                replaced[key] = replacePlatform(dictionary)
-                            case let string as String:
-                                replaced[key] = string.replacingOccurrences(of: platformReplacement, with: platform)
-                            case let array as [JSONDictionary]:
-                                replaced[key] = array.map(replacePlatform)
-                            case let array as [String]:
-                                replaced[key] = array.map { $0.replacingOccurrences(of: platformReplacement, with: platform) }
-                            default: break
-                            }
-                        }
-                        return replaced
-                    }
-
-                    platformTarget = replacePlatform(platformTarget)
+                    platformTarget = platformTarget.replaceString("$platform", with: platform)
 
                     platformTarget["platform"] = platform
                     let platformSuffix = platformTarget["platformSuffix"] as? String ?? "_\(platform)"

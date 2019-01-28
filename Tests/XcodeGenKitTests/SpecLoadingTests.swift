@@ -347,6 +347,7 @@ class SpecLoadingTests: XCTestCase {
                             "type": "framework",
                             "platform": "tvOS",
                             "deploymentTarget": "1.1.0",
+                            "configFiles": ["debug": "Configs/$target_name/debug.xcconfig"]
                         ],
                     ],
                 ])
@@ -356,6 +357,7 @@ class SpecLoadingTests: XCTestCase {
                 try expect(target.platform) == .iOS // uses latest value
                 try expect(target.deploymentTarget) == Version("1.2.0") // keeps value
                 try expect(target.sources) == ["templateSource", "targetSource"] // merges array in order
+                try expect(target.configFiles["debug"]) == "Configs/Framework/debug.xcconfig" // replaces $target_name
             }
 
             $0.it("parses aggregate targets") {
