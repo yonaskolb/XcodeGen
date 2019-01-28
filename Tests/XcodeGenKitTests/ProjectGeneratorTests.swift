@@ -176,15 +176,25 @@ class ProjectGeneratorTests: XCTestCase {
                 let project = Project(
                     name: "test",
                     configs: [
+                        Config(name: "Release", type: .release),
                         Config(name: "Staging Debug", type: .debug),
                         Config(name: "Staging Release", type: .release),
                     ],
-                    settings: Settings(configSettings: ["staging": ["SETTING1": "VALUE1"], "debug": ["SETTING2": "VALUE2"]])
+                    settings: Settings(configSettings: [
+                        "staging": ["SETTING1": "VALUE1"],
+                        "debug": ["SETTING2": "VALUE2"],
+                        "Release": ["SETTING3": "VALUE3"],
+                        ]
+                    )
                 )
 
-                var buildSettings = project.getProjectBuildSettings(config: project.configs.first!)
+                var buildSettings = project.getProjectBuildSettings(config: project.configs[1])
                 try expect(buildSettings["SETTING1"] as? String) == "VALUE1"
                 try expect(buildSettings["SETTING2"] as? String) == "VALUE2"
+
+                // don't apply partial when exact match
+                buildSettings = project.getProjectBuildSettings(config: project.configs[2])
+                try expect(buildSettings["SETTING3"]).beNil()
             }
 
             $0.it("sets project SDKROOT if there is only a single platform") {
