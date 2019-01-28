@@ -38,7 +38,7 @@ class SpecLoadingTests: XCTestCase {
 
                 try expect(project.options) == SpecOptions(
                     carthageBuildPath: "paths_test/recursive_test/carthage_build",
-                    carthageExecutablePath: "paths_test/recursive_test/carthage_executable"
+                    carthageExecutablePath: "carthage_executable"
                 )
 
                 try expect(project.aggregateTargets) == [
