@@ -14,7 +14,7 @@ public func firstDifferenceBetweenStrings(_ s1: String, _ s2: String) -> FirstDi
 
     let lenMin = min(len1, len2)
 
-    for i in 0 ..< lenMin {
+    for i in 0..<lenMin {
         if (s1 as NSString).character(at: i) != (s2 as NSString).character(at: i) {
             return .DifferenceAtIndex(i)
         }

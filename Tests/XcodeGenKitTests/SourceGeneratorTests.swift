@@ -277,7 +277,7 @@ class SourceGeneratorTests: XCTestCase {
                 ]
 
                 let target = Target(name: "Test", type: .application, platform: .iOS, sources: [TargetSource(path: "Sources", excludes: excludes)])
-                
+
                 func test(generateEmptyDirectories: Bool) throws {
                     let options = SpecOptions(generateEmptyDirectories: generateEmptyDirectories)
                     let project = Project(basePath: directoryPath, name: "Test", targets: [target], options: options)
@@ -307,7 +307,7 @@ class SourceGeneratorTests: XCTestCase {
                     // try pbxProj.expectFileMissing(paths: ["Sources", "A", "a.ignored"])
                     // try pbxProj.expectFileMissing(paths: ["Sources", "A", "B", "b.ignored"])
                 }
-                
+
                 try test(generateEmptyDirectories: false)
                 try test(generateEmptyDirectories: true)
             }
@@ -379,7 +379,7 @@ class SourceGeneratorTests: XCTestCase {
                     "Sources/A/b.swift",
                     "Sources/F/G/h.swift",
                     "../OtherDirectory/C/D/e.swift",
-                    TargetSource(path: "Sources/B", createIntermediateGroups: false)
+                    TargetSource(path: "Sources/B", createIntermediateGroups: false),
                 ])
                 let options = SpecOptions(createIntermediateGroups: true)
                 let project = Project(basePath: directoryPath, name: "Test", targets: [target], options: options)

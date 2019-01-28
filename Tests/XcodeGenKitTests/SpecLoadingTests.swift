@@ -347,7 +347,7 @@ class SpecLoadingTests: XCTestCase {
                             "type": "framework",
                             "platform": "tvOS",
                             "deploymentTarget": "1.1.0",
-                            "configFiles": ["debug": "Configs/$target_name/debug.xcconfig"]
+                            "configFiles": ["debug": "Configs/$target_name/debug.xcconfig"],
                         ],
                     ],
                 ])
@@ -559,7 +559,7 @@ class SpecLoadingTests: XCTestCase {
                     ["script": "shell script\ndo thing", "name": "myscript", "inputFiles": ["file", "file2"], "outputFiles": ["file", "file2"], "shell": "bin/customshell", "runOnlyWhenInstalling": true],
                     ["script": "shell script\ndo thing", "name": "myscript", "inputFiles": ["file", "file2"], "outputFiles": ["file", "file2"], "shell": "bin/customshell", "showEnvVars": false],
                     ["script": "shell script\nwith file lists", "name": "myscript", "inputFileLists": ["inputList.xcfilelist"], "outputFileLists": ["outputList.xcfilelist"], "shell": "bin/customshell", "runOnlyWhenInstalling": true],
-                    ["script": "shell script\nwith file lists", "name": "myscript", "inputFileLists": ["inputList.xcfilelist"], "outputFileLists": ["outputList.xcfilelist"], "shell": "bin/customshell", "showEnvVars": false]
+                    ["script": "shell script\nwith file lists", "name": "myscript", "inputFileLists": ["inputList.xcfilelist"], "outputFileLists": ["outputList.xcfilelist"], "shell": "bin/customshell", "showEnvVars": false],
                 ]
                 target["preBuildScripts"] = scripts
                 target["postCompileScripts"] = scripts

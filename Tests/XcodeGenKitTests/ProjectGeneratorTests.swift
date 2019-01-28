@@ -184,8 +184,7 @@ class ProjectGeneratorTests: XCTestCase {
                         "staging": ["SETTING1": "VALUE1"],
                         "debug": ["SETTING2": "VALUE2"],
                         "Release": ["SETTING3": "VALUE3"],
-                        ]
-                    )
+                    ])
                 )
 
                 var buildSettings = project.getProjectBuildSettings(config: project.configs[1])
@@ -563,12 +562,12 @@ class ProjectGeneratorTests: XCTestCase {
                     type: .stickerPack,
                     platform: .iOS,
                     dependencies: [
-                        Dependency(type: .sdk, reference: "NotificationCenter.framework")
+                        Dependency(type: .sdk, reference: "NotificationCenter.framework"),
                     ]
                 )
                 expectedResourceFiles[stickerPack.name] = nil
                 expectedLinkedFiles[stickerPack.name] = Set([
-                    "NotificationCenter.framework"
+                    "NotificationCenter.framework",
                 ])
 
                 let targets = [app, iosFrameworkZ, staticLibrary, resourceBundle, iosFrameworkA, iosFrameworkB, appTest, appTestWithoutTransitive, stickerPack]

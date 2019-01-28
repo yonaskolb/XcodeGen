@@ -21,7 +21,7 @@ public struct SpecFile {
             } else if let dictionary = any as? JSONDictionary,
                 let path = dictionary["path"] as? String {
                 self.path = Path(path)
-                self.relativePaths = dictionary["relativePaths"] as? Bool ?? Include.defaultRelativePaths
+                relativePaths = dictionary["relativePaths"] as? Bool ?? Include.defaultRelativePaths
             } else {
                 return nil
             }
@@ -91,8 +91,7 @@ public struct SpecFile {
         return jsonDictionary.merged(onto:
             subSpecs
                 .map { $0.mergedDictionary() }
-                .reduce([:]) { $1.merged(onto: $0) }
-        )
+                .reduce([:]) { $1.merged(onto: $0) })
     }
 
     func resolvingPaths(relativeTo basePath: Path = Path()) -> SpecFile {
@@ -105,7 +104,7 @@ public struct SpecFile {
         return SpecFile(
             jsonDictionary: jsonDictionary,
             relativePath: self.relativePath,
-            subSpecs: self.subSpecs.map { $0.resolvingPaths(relativeTo: relativePath) }
+            subSpecs: subSpecs.map { $0.resolvingPaths(relativeTo: relativePath) }
         )
     }
 }
@@ -117,7 +116,7 @@ extension Dictionary where Key == String, Value: Any {
 
         for (key, value) in self {
             if key.hasSuffix(":REPLACE") {
-                let newKey = key[key.startIndex ..< key.index(key.endIndex, offsetBy: -8)]
+                let newKey = key[key.startIndex..<key.index(key.endIndex, offsetBy: -8)]
                 merged[Key(newKey)] = value
             } else if let dictionary = value as? Dictionary<Key, Value>, let base = merged[key] as? Dictionary<Key, Value> {
                 merged[key] = dictionary.merged(onto: base) as? Value

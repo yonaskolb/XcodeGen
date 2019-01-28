@@ -319,11 +319,11 @@ class SourceGenerator {
             .filter {
                 if $0.isDirectory {
                     let children = try $0.children()
-                    
+
                     if children.isEmpty {
                         return project.options.generateEmptyDirectories
                     }
-                    
+
                     return !children.filter(isIncludedPath).isEmpty
                 } else if $0.isFile {
                     return isIncludedPath($0)

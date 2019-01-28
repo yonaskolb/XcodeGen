@@ -48,18 +48,18 @@ func arrayOfBytes<T>(_ value: T, length: Int? = nil) -> [UInt8] {
 
     let bytes = valuePointer.withMemoryRebound(to: UInt8.self, capacity: totalBytes) { (bytesPointer) -> [UInt8] in
         var bytes = [UInt8](repeating: 0, count: totalBytes)
-        for j in 0 ..< min(MemoryLayout<T>.size, totalBytes) {
+        for j in 0..<min(MemoryLayout<T>.size, totalBytes) {
             bytes[totalBytes - 1 - j] = (bytesPointer + j).pointee
         }
         return bytes
     }
 
     #if swift(>=4.1)
-        valuePointer.deinitialize(count: 1)
-        valuePointer.deallocate()
+    valuePointer.deinitialize(count: 1)
+    valuePointer.deallocate()
     #else
-        valuePointer.deinitialize()
-        valuePointer.deallocate(capacity: 1)
+    valuePointer.deinitialize()
+    valuePointer.deallocate(capacity: 1)
     #endif
 
     return bytes
@@ -136,7 +136,7 @@ struct BytesIterator: IteratorProtocol {
 
     mutating func next() -> ArraySlice<UInt8>? {
         let end = min(chunkSize, data.count - offset)
-        let result = data[offset ..< offset + end]
+        let result = data[offset..<offset + end]
         offset += result.count
         return result.count > 0 ? result : nil
     }
@@ -222,24 +222,24 @@ class MD5: HashProtocol {
             var dTemp: UInt32 = 0
 
             // Main loop
-            for j in 0 ..< sines.count {
+            for j in 0..<sines.count {
                 var g = 0
                 var F: UInt32 = 0
 
                 switch j {
-                case 0 ... 15:
+                case 0...15:
                     F = (B & C) | ((~B) & D)
                     g = j
                     break
-                case 16 ... 31:
+                case 16...31:
                     F = (D & B) | (~D & C)
                     g = (5 * j + 1) % 16
                     break
-                case 32 ... 47:
+                case 32...47:
                     F = B ^ C ^ D
                     g = (3 * j + 5) % 16
                     break
-                case 48 ... 63:
+                case 48...63:
                     F = C ^ (B | (~D))
                     g = (7 * j) % 16
                     break

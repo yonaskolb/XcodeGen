@@ -20,35 +20,35 @@ let package = Package(
     ],
     targets: [
         .target(name: "XcodeGen", dependencies: [
-          "XcodeGenCLI",
+            "XcodeGenCLI",
         ]),
         .target(name: "XcodeGenCLI", dependencies: [
-          "XcodeGenKit",
-          "ProjectSpec",
-          "SwiftCLI",
-          "Rainbow",
-          "PathKit",
+            "XcodeGenKit",
+            "ProjectSpec",
+            "SwiftCLI",
+            "Rainbow",
+            "PathKit",
         ]),
         .target(name: "XcodeGenKit", dependencies: [
-          "ProjectSpec",
-          "JSONUtilities",
-          "xcodeproj",
-          "PathKit",
+            "ProjectSpec",
+            "JSONUtilities",
+            "xcodeproj",
+            "PathKit",
         ]),
         .target(name: "ProjectSpec", dependencies: [
-          "JSONUtilities",
-          "xcodeproj",
-          "Yams",
+            "JSONUtilities",
+            "xcodeproj",
+            "Yams",
         ]),
         .testTarget(name: "XcodeGenKitTests", dependencies: [
-          "XcodeGenKit",
-          "Spectre",
-          "PathKit",
+            "XcodeGenKit",
+            "Spectre",
+            "PathKit",
         ]),
         .testTarget(name: "PerformanceTests", dependencies: [
-          "XcodeGenKit",
-          "Spectre",
-          "PathKit",
-        ])
+            "XcodeGenKit",
+            "Spectre",
+            "PathKit",
+        ]),
     ]
 )

@@ -140,19 +140,19 @@ extension Project {
             try path.mkpath()
             paths.append(path)
 
-            for swiftFile in 1 ... swiftFilesPerDirectory {
+            for swiftFile in 1...swiftFilesPerDirectory {
                 let file = path + "file_\(swiftFile).swift"
                 try file.write("")
                 paths.append(file)
             }
 
-            for resourceFile in 1 ... resourcesPerDirectory {
+            for resourceFile in 1...resourcesPerDirectory {
                 let file = path + "file_\(resourceFile).png"
                 try file.write("")
                 paths.append(file)
             }
 
-            for objFile in 1 ... objFilesPerDirectory {
+            for objFile in 1...objFilesPerDirectory {
                 let header = path + "file_\(objFile).h"
                 try header.write("")
                 paths.append(header)
@@ -163,7 +163,7 @@ extension Project {
             }
 
             if depth < levels - 1 {
-                for directory in 1 ... directoriesPerLevel {
+                for directory in 1...directoriesPerLevel {
                     try createDirectory(path + "directory_\(directory)", depth: depth + 1)
                 }
             }

@@ -49,7 +49,7 @@ extension BuildScript: JSONObjectConvertible {
         outputFiles = jsonDictionary.json(atKeyPath: "outputFiles") ?? []
         inputFileLists = jsonDictionary.json(atKeyPath: "inputFileLists") ?? []
         outputFileLists = jsonDictionary.json(atKeyPath: "outputFileLists") ?? []
-        
+
         if let string: String = jsonDictionary.json(atKeyPath: "script") {
             script = .script(string)
         } else {
