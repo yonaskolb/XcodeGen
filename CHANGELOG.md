@@ -6,6 +6,7 @@
 - Added ability to generate empty directories via `options.generateEmptyDirectories` [#480](https://github.com/yonaskolb/XcodeGen/pull/480) @Beniamiiin
 - Added support for the `instrumentsPackage` product type [#482](https://github.com/yonaskolb/XcodeGen/pull/482) @ksulliva
 - Added support for `inputFileLists` and `outputFileLists` within project build scripts [#500](https://github.com/yonaskolb/XcodeGen/pull/500) @lukewakeford
+- Added support for a `$target_name` replacement string within target templates [#504](https://github.com/yonaskolb/XcodeGen/pull/504) @yonaskolb
 
 #### Changed
 - **BREAKING**: All the paths within `include` files are now relative to that file and not the root spec. This can be disabled with a `relativePaths: false` on the include. See the [documentation](https://github.com/yonaskolb/XcodeGen/blob/master/Docs/ProjectSpec.md#include) for more details [#489](https://github.com/yonaskolb/XcodeGen/pull/489) @ellneal
