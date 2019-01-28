@@ -16,11 +16,12 @@ public class SpecLoader {
     }
 
     public func loadProject(path: Path) throws -> Project {
-        let template = try Spec(filename: path.lastComponent, basePath: path.parent())
-        let project = try Project(spec: template, basePath: path.parent())
+        let spec = try SpecFile(path: path)
+        let resolvedDictionary = spec.resolvedDictionary()
+        let project = try Project(basePath: spec.basePath, jsonDictionary: resolvedDictionary)
 
         self.project = project
-        projectDictionary = template.jsonDictionary
+        projectDictionary = resolvedDictionary
 
         return project
     }

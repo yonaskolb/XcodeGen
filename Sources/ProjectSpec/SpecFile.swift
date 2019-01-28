@@ -2,89 +2,110 @@ import Foundation
 import JSONUtilities
 import PathKit
 
-public struct Spec {
+public struct SpecFile {
+    public let basePath: Path
     public let relativePath: Path
     public let jsonDictionary: JSONDictionary
-    public let subSpecs: [Spec]
+    public let subSpecs: [SpecFile]
 
-    public init(relativePath: Path, jsonDictionary: JSONDictionary, subSpecs: [Spec] = []) {
+    fileprivate struct Include {
+        let path: Path
+        let relativePaths: Bool
+
+        static let defaultRelativePaths = true
+
+        init?(any: Any) {
+            if let string = any as? String {
+                path = Path(string)
+                relativePaths = Include.defaultRelativePaths
+            } else if let dictionary = any as? JSONDictionary,
+                let path = dictionary["path"] as? String {
+                self.path = Path(path)
+                self.relativePaths = dictionary["relativePaths"] as? Bool ?? Include.defaultRelativePaths
+            } else {
+                return nil
+            }
+        }
+
+        static func parse(json: Any?) -> [Include] {
+            if let array = json as? [Any] {
+                return array.compactMap(Include.init)
+            } else if let object = json, let include = Include(any: object) {
+                return [include]
+            } else {
+                return []
+            }
+        }
+    }
+
+    public init(path: Path) throws {
+        try self.init(filename: path.lastComponent, basePath: path.parent())
+    }
+
+    public init(jsonDictionary: JSONDictionary, basePath: Path = "", relativePath: Path = "", subSpecs: [SpecFile] = []) {
+        self.basePath = basePath
         self.relativePath = relativePath
         self.jsonDictionary = jsonDictionary
         self.subSpecs = subSpecs
     }
 
-    public init(filename: String, basePath: Path, relativePath: Path = Path()) throws {
-        let path = basePath + relativePath + filename
+    fileprivate init(include: Include, basePath: Path, relativePath: Path) throws {
+        let basePath = include.relativePaths ? (basePath + relativePath) : (basePath + relativePath + include.path.parent())
+        let relativePath = include.relativePaths ? include.path.parent() : Path()
 
+        try self.init(filename: include.path.lastComponent, basePath: basePath, relativePath: relativePath)
+    }
+
+    fileprivate init(filename: String, basePath: Path, relativePath: Path = "") throws {
+        let path = basePath + relativePath + filename
+        let jsonDictionary = try SpecFile.loadDictionary(path: path)
+
+        let includes = Include.parse(json: jsonDictionary["include"])
+        let subSpecs: [SpecFile] = try includes.map { include in
+            try SpecFile(include: include, basePath: basePath, relativePath: relativePath)
+        }
+
+        self.init(jsonDictionary: jsonDictionary, basePath: basePath, relativePath: relativePath, subSpecs: subSpecs)
+    }
+
+    static func loadDictionary(path: Path) throws -> JSONDictionary {
         // Depending on the extension we will either load the file as YAML or JSON
-        var json: [String: Any]
         if path.extension?.lowercased() == "json" {
             let data: Data = try path.read()
             let jsonData = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
             guard let jsonDictionary = jsonData as? [String: Any] else {
                 fatalError("Invalid JSON at path \(path)")
             }
-            json = jsonDictionary
+            return jsonDictionary
         } else {
-            json = try loadYamlDictionary(path: path)
+            return try loadYamlDictionary(path: path)
         }
-
-        let processIncludeOption = { (option: Any) -> (String, Bool)? in
-            if let option = option as? String {
-                return (option, true)
-            } else if let option = option as? JSONDictionary, let path = option["path"] as? String {
-                return (path, (option["relativePaths"] as? Bool) ?? true)
-            }
-            return nil
-        }
-
-        let includeSources: [(String, Bool)]
-        if let sources = json["include"] as? [Any] {
-            includeSources = sources.compactMap { processIncludeOption($0) }
-        } else if let source = json["include"] {
-            includeSources = [processIncludeOption(source)].compactMap { $0 }
-        } else {
-            includeSources = []
-        }
-
-        let includes = try includeSources.map { include -> Spec in
-            let path = Path(include.0)
-            let basePath = include.1 ? basePath + relativePath : basePath + relativePath + path.parent()
-            let relativePath = include.1 ? path.parent() : Path()
-
-            return try Spec(filename: path.lastComponent, basePath: basePath, relativePath: relativePath)
-        }
-
-        self.relativePath = relativePath
-        self.jsonDictionary = json
-        self.subSpecs = includes
     }
 
     public func resolvedDictionary() -> JSONDictionary {
+        let resolvedSpec = resolvingPaths()
+        return resolvedSpec.mergedDictionary()
+    }
+
+    func mergedDictionary() -> JSONDictionary {
         return jsonDictionary.merged(onto:
             subSpecs
-                .map { $0.resolvedDictionary() }
+                .map { $0.mergedDictionary() }
                 .reduce([:]) { $1.merged(onto: $0) }
         )
     }
-}
 
-extension Spec {
-    
-    func resolvingPaths(relativeTo basePath: Path = Path()) -> Spec {
+    func resolvingPaths(relativeTo basePath: Path = Path()) -> SpecFile {
         let relativePath = (basePath + self.relativePath).normalize()
         guard relativePath != Path() else {
             return self
         }
 
         let jsonDictionary = Project.pathProperties.resolvingPaths(in: self.jsonDictionary, relativeTo: relativePath)
-
-        return Spec(
-            relativePath: self.relativePath,
+        return SpecFile(
             jsonDictionary: jsonDictionary,
-            subSpecs: self.subSpecs.map { template in
-                return template.resolvingPaths(relativeTo: relativePath)
-            }
+            relativePath: self.relativePath,
+            subSpecs: self.subSpecs.map { $0.resolvingPaths(relativeTo: relativePath) }
         )
     }
 }

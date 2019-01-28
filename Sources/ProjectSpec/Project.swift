@@ -33,7 +33,7 @@ public struct Project: BuildSettingsContainer {
     private var aggregateTargetsMap: [String: AggregateTarget]
 
     public init(
-        basePath: Path,
+        basePath: Path = "",
         name: String,
         configs: [Config] = Config.defaultConfigs,
         targets: [Target] = [],
@@ -132,16 +132,19 @@ extension Project: Equatable {
 
 extension Project {
 
-    public init(basePath: Path, jsonDictionary: JSONDictionary) throws {
-        let spec = Spec(relativePath: Path(), jsonDictionary: jsonDictionary)
-        try self.init(spec: spec, basePath: basePath)
+    public init(path: Path) throws {
+        let spec = try SpecFile(path: path)
+        try self.init(spec: spec)
     }
 
-    public init(spec: Spec, basePath: Path) throws {
+    public init(spec: SpecFile) throws {
+        try self.init(basePath: spec.basePath, jsonDictionary: spec.resolvedDictionary())
+    }
+
+    public init(basePath: Path = "", jsonDictionary: JSONDictionary) throws {
         self.basePath = basePath
 
-        let spec = spec.resolvingPaths()
-        let jsonDictionary = try Project.resolveProject(jsonDictionary: spec.resolvedDictionary())
+        let jsonDictionary = try Project.resolveProject(jsonDictionary: jsonDictionary)
 
         name = try jsonDictionary.json(atKeyPath: "name")
         settings = jsonDictionary.json(atKeyPath: "settings") ?? .empty

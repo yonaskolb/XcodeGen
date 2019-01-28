@@ -45,7 +45,6 @@ class SchemeGeneratorTests: XCTestCase {
                     build: Scheme.Build(targets: [buildTarget], preActions: [preAction])
                 )
                 let project = Project(
-                    basePath: "",
                     name: "test",
                     targets: [app, framework],
                     schemes: [scheme]
@@ -104,7 +103,6 @@ class SchemeGeneratorTests: XCTestCase {
                     profile: Scheme.Profile(config: "Debug")
                 )
                 let project = Project(
-                    basePath: "",
                     name: "test",
                     targets: [app, framework],
                     schemes: [scheme]
@@ -135,7 +133,7 @@ class SchemeGeneratorTests: XCTestCase {
                     Config(name: "Production Release", type: .release),
                 ]
 
-                let project = Project(basePath: "", name: "test", configs: configs, targets: [target, framework])
+                let project = Project(name: "test", configs: configs, targets: [target, framework])
                 let xcodeProject = try project.generateXcodeProject()
 
                 try expect(xcodeProject.sharedData?.schemes.count) == 2
@@ -162,7 +160,7 @@ class SchemeGeneratorTests: XCTestCase {
                 var target = app
                 target.scheme = TargetScheme(environmentVariables: variables)
 
-                let project = Project(basePath: "", name: "test", targets: [target, framework])
+                let project = Project(name: "test", targets: [target, framework])
                 let xcodeProject = try project.generateXcodeProject()
 
                 try expect(xcodeProject.sharedData?.schemes.count) == 1
@@ -183,7 +181,7 @@ class SchemeGeneratorTests: XCTestCase {
                     postActions: [.init(name: "Run2", script: "post", settingsTarget: "MyApp")]
                 )
 
-                let project = Project(basePath: "", name: "test", targets: [target, framework])
+                let project = Project(name: "test", targets: [target, framework])
                 let xcodeProject = try project.generateXcodeProject()
 
                 try expect(xcodeProject.sharedData?.schemes.count) == 1
