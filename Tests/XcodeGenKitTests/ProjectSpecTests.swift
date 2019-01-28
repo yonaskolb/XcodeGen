@@ -69,7 +69,7 @@ class ProjectSpecTests: XCTestCase {
     func testValidation() {
         describe {
 
-            let baseProject = Project(basePath: "", name: "", configs: [Config(name: "invalid")])
+            let baseProject = Project(name: "", configs: [Config(name: "invalid")])
             let invalidSettings = Settings(
                 configSettings: ["invalidConfig": [:]],
                 groups: ["invalidSettingGroup"]

@@ -619,7 +619,7 @@ class SpecLoadingTests: XCTestCase {
                         macOS: "10.12.1"
                     )
                 )
-                let expected = Project(basePath: "", name: "test", options: options)
+                let expected = Project(name: "test", options: options)
                 let dictionary: [String: Any] = ["options": [
                     "carthageBuildPath": "../Carthage/Build",
                     "carthageExecutablePath": "../bin/carthage",

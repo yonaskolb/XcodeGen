@@ -45,7 +45,7 @@ class ProjectGeneratorTests: XCTestCase {
 
             $0.it("generates bundle id") {
                 let options = SpecOptions(bundleIdPrefix: "com.test")
-                let project = Project(basePath: "", name: "test", targets: [framework], options: options)
+                let project = Project(name: "test", targets: [framework], options: options)
                 let pbxProj = try project.generatePbxProj()
                 guard let target = pbxProj.nativeTargets.first,
                     let buildConfigList = target.buildConfigurationList,
@@ -57,7 +57,7 @@ class ProjectGeneratorTests: XCTestCase {
 
             $0.it("clears setting presets") {
                 let options = SpecOptions(settingPresets: .none)
-                let project = Project(basePath: "", name: "test", targets: [framework], options: options)
+                let project = Project(name: "test", targets: [framework], options: options)
                 let pbxProj = try project.generatePbxProj()
                 let allSettings = pbxProj.buildConfigurations.reduce([:]) { $0.merged($1.buildSettings) }.keys.sorted()
                 try expect(allSettings) == ["SDKROOT", "SETTING_2"]
@@ -65,7 +65,7 @@ class ProjectGeneratorTests: XCTestCase {
 
             $0.it("generates development language") {
                 let options = SpecOptions(developmentLanguage: "de")
-                let project = Project(basePath: "", name: "test", options: options)
+                let project = Project(name: "test", options: options)
                 let pbxProj = try project.generatePbxProj()
                 guard let pbxProject = pbxProj.projects.first else {
                     throw failure("Could't find PBXProject")
@@ -93,7 +93,7 @@ class ProjectGeneratorTests: XCTestCase {
 
             $0.it("uses the default configuration name") {
                 let options = SpecOptions(defaultConfig: "Bconfig")
-                let project = Project(basePath: "", name: "test", configs: [Config(name: "Aconfig"), Config(name: "Bconfig")], targets: [framework], options: options)
+                let project = Project(name: "test", configs: [Config(name: "Aconfig"), Config(name: "Bconfig")], targets: [framework], options: options)
                 let pbxProject = try project.generatePbxProj()
 
                 guard let projectConfigList = pbxProject.projects.first?.buildConfigurationList,
@@ -111,7 +111,7 @@ class ProjectGeneratorTests: XCTestCase {
         describe {
 
             $0.it("generates config defaults") {
-                let project = Project(basePath: "", name: "test")
+                let project = Project(name: "test")
                 let pbxProj = try project.generatePbxProj()
                 let configs = pbxProj.buildConfigurations
                 try expect(configs.count) == 2
@@ -121,7 +121,6 @@ class ProjectGeneratorTests: XCTestCase {
 
             $0.it("generates configs") {
                 let project = Project(
-                    basePath: "",
                     name: "test",
                     configs: [Config(name: "config1"), Config(name: "config2")]
                 )
@@ -134,7 +133,6 @@ class ProjectGeneratorTests: XCTestCase {
 
             $0.it("clears config settings when missing type") {
                 let project = Project(
-                    basePath: "",
                     name: "test",
                     configs: [Config(name: "config")]
                 )
@@ -176,7 +174,6 @@ class ProjectGeneratorTests: XCTestCase {
 
             $0.it("applies partial config settings") {
                 let project = Project(
-                    basePath: "",
                     name: "test",
                     configs: [
                         Config(name: "Staging Debug", type: .debug),
@@ -192,7 +189,6 @@ class ProjectGeneratorTests: XCTestCase {
 
             $0.it("sets project SDKROOT if there is only a single platform") {
                 var project = Project(
-                    basePath: "",
                     name: "test",
                     targets: [
                         Target(name: "1", type: .application, platform: .iOS),
@@ -216,7 +212,7 @@ class ProjectGeneratorTests: XCTestCase {
             let otherTarget2 = Target(name: "Other2", type: .framework, platform: .iOS, dependencies: [Dependency(type: .target, reference: "Other")], transitivelyLinkDependencies: true)
             let aggregateTarget = AggregateTarget(name: "AggregateTarget", targets: ["MyApp", "MyFramework"])
             let aggregateTarget2 = AggregateTarget(name: "AggregateTarget2", targets: ["AggregateTarget"])
-            let project = Project(basePath: "", name: "test", targets: [app, framework, otherTarget, otherTarget2], aggregateTargets: [aggregateTarget, aggregateTarget2])
+            let project = Project(name: "test", targets: [app, framework, otherTarget, otherTarget2], aggregateTargets: [aggregateTarget, aggregateTarget2])
 
             $0.it("generates aggregate targets") {
                 let pbxProject = try project.generatePbxProj()
@@ -246,7 +242,7 @@ class ProjectGeneratorTests: XCTestCase {
     func testTargets() {
         describe {
 
-            let project = Project(basePath: "", name: "test", targets: targets)
+            let project = Project(name: "test", targets: targets)
 
             $0.it("generates targets") {
                 let pbxProject = try project.generatePbxProj()
@@ -265,7 +261,7 @@ class ProjectGeneratorTests: XCTestCase {
 
                 var testTargetWithAttributes = uiTest
                 testTargetWithAttributes.settings.buildSettings["CODE_SIGN_STYLE"] = "Manual"
-                let project = Project(basePath: "", name: "test", targets: [appTargetWithAttributes, framework, optionalFramework, testTargetWithAttributes])
+                let project = Project(name: "test", targets: [appTargetWithAttributes, framework, optionalFramework, testTargetWithAttributes])
                 let pbxProject = try project.generatePbxProj()
 
                 guard let targetAttributes = pbxProject.projects.first?.targetAttributes else {
@@ -288,7 +284,7 @@ class ProjectGeneratorTests: XCTestCase {
 
             $0.it("generates platform version") {
                 let target = Target(name: "Target", type: .application, platform: .watchOS, deploymentTarget: "2.0")
-                let project = Project(basePath: "", name: "", targets: [target], options: .init(deploymentTarget: DeploymentTarget(iOS: "10.0", watchOS: "3.0")))
+                let project = Project(name: "", targets: [target], options: .init(deploymentTarget: DeploymentTarget(iOS: "10.0", watchOS: "3.0")))
 
                 let pbxProject = try project.generatePbxProj()
 
@@ -568,7 +564,6 @@ class ProjectGeneratorTests: XCTestCase {
                 let targets = [app, iosFrameworkZ, staticLibrary, resourceBundle, iosFrameworkA, iosFrameworkB, appTest, appTestWithoutTransitive, stickerPack]
 
                 let project = Project(
-                    basePath: "",
                     name: "test",
                     targets: targets,
                     options: SpecOptions(transitivelyLinkDependencies: true)
@@ -801,7 +796,6 @@ class ProjectGeneratorTests: XCTestCase {
                     dependencies: [Dependency(type: .target, reference: "target1")]
                 )
                 let project = Project(
-                    basePath: "",
                     name: "test",
                     targets: [target1, target2]
                 )
@@ -860,7 +854,7 @@ class ProjectGeneratorTests: XCTestCase {
                     ]
                 )
 
-                let project = Project(basePath: "", name: "test", targets: [app, framework, optionalFramework, uiTest])
+                let project = Project(name: "test", targets: [app, framework, optionalFramework, uiTest])
                 let pbxProject = try project.generatePbxProj()
 
                 guard let nativeTarget = pbxProject.nativeTargets.first(where: { $0.name == app.name }) else {

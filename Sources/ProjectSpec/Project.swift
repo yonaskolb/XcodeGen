@@ -33,7 +33,7 @@ public struct Project: BuildSettingsContainer {
     private var aggregateTargetsMap: [String: AggregateTarget]
 
     public init(
-        basePath: Path,
+        basePath: Path = "",
         name: String,
         configs: [Config] = Config.defaultConfigs,
         targets: [Target] = [],
