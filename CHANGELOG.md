@@ -8,16 +8,14 @@
 - Added support for `inputFileLists` and `outputFileLists` within project build scripts [#500](https://github.com/yonaskolb/XcodeGen/pull/500) @lukewakeford
 
 #### Changed
-- **BREAKING** All the paths within included files are now relative to that file and not the root spec. This can be disabled with a `relativePaths: false` on the include. See [docs](https://github.com/yonaskolb/XcodeGen/blob/master/Docs/ProjectSpec.md#include) for more details [#489](https://github.com/yonaskolb/XcodeGen/pull/489) @ellneal
+- **BREAKING**: All the paths within `include` files are now relative to that file and not the root spec. This can be disabled with a `relativePaths: false` on the include. See the [documentation](https://github.com/yonaskolb/XcodeGen/blob/master/Docs/ProjectSpec.md#include) for more details [#489](https://github.com/yonaskolb/XcodeGen/pull/489) @ellneal
+- Updated the Xcode compatibility version from 3.2 to 9.3 [#497](https://github.com/yonaskolb/XcodeGen/pull/497) @yonaskolb
 
 #### Fixed
 - Fixed `--project` argument not taking effect [#487](https://github.com/yonaskolb/XcodeGen/pull/487) @monowerker
 - Fixed Sticker Packs from generating an empty Source file phase which caused in error in the new build system [#492](https://github.com/yonaskolb/XcodeGen/pull/492) @rpassis
 - Fixed generated schemes for tool targets not setting the executable [#496](https://github.com/yonaskolb/XcodeGen/pull/496) @yonaskolb
 - Fixed resolving Carthage dependencies for iOS app with watchOS target. [465](https://github.com/yonaskolb/XcodeGen/pull/465) @raptorxcz
-
-#### Changed
-- Updated the Xcode compatability version from 3.2 to 9.3 [#497](https://github.com/yonaskolb/XcodeGen/pull/497) @yonaskolb
 
 ## 2.1.0
 
