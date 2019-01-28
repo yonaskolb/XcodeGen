@@ -10,6 +10,7 @@
 #### Changed
 - **BREAKING**: All the paths within `include` files are now relative to that file and not the root spec. This can be disabled with a `relativePaths: false` on the include. See the [documentation](https://github.com/yonaskolb/XcodeGen/blob/master/Docs/ProjectSpec.md#include) for more details [#489](https://github.com/yonaskolb/XcodeGen/pull/489) @ellneal
 - Updated the Xcode compatibility version from 3.2 to 9.3 [#497](https://github.com/yonaskolb/XcodeGen/pull/497) @yonaskolb
+- UUIDs in the project are standard and don't contain any type prefixes anymore
 
 #### Fixed
 - Fixed `--project` argument not taking effect [#487](https://github.com/yonaskolb/XcodeGen/pull/487) @monowerker
