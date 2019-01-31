@@ -495,6 +495,11 @@ targets:
         script: generate_assets.py
       - fileType: sourcecode.swift
         script: pre_process_swift.py
+      - filePattern: "*.txt"
+        name: My Build Rule
+        compilerSpec: com.apple.xcode.tools.swift.compiler
+	outputFiles:
+	  - $(SRCROOT)/Generated.swift
 ```
 
 ###  Target Scheme
