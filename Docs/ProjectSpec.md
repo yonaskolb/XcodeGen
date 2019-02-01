@@ -498,8 +498,8 @@ targets:
       - filePattern: "*.txt"
         name: My Build Rule
         compilerSpec: com.apple.xcode.tools.swift.compiler
-	outputFiles:
-	  - $(SRCROOT)/Generated.swift
+        outputFiles:
+          - $(SRCROOT)/Generated.swift
 ```
 
 ###  Target Scheme
