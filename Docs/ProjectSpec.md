@@ -487,6 +487,20 @@ targets:
 - [ ] **outputFiles**: **[String]** - The list of output files
 - [ ] **outputFilesCompilerFlags**: **[String]** - The list of compiler flags to apply to the output files
 
+```yaml
+targets:
+  MyTarget:
+    buildRules:
+      - filePattern: "*.xcassets"
+        script: generate_assets.py
+      - fileType: sourcecode.swift
+        script: pre_process_swift.py
+      - filePattern: "*.txt"
+        name: My Build Rule
+        compilerSpec: com.apple.xcode.tools.swift.compiler
+        outputFiles:
+          - $(SRCROOT)/Generated.swift
+```
 
 ###  Target Scheme
 
