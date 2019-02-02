@@ -23,7 +23,6 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
-		0220391495C1E822D952DDE68B11AEB8 /* outputList.xcfilelist in Resources */ = {isa = PBXBuildFile; fileRef = 553D289724905857912C7A1D65ADD26F /* outputList.xcfilelist */; };
 		03F389DFD30F3CE5A441925C10CAED46 /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5ABEA2284F13483EFDF7C0E050F0450 /* MessagesViewController.swift */; };
 		03FC73E479EBD3CFF4E55BBC6CC82311 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = 6A58A16491CDDF968B0D56DE7EB96D92 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		097B0B6C198B9A52D4312F11000496FD /* App_watchOS.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = A680BE9F68A255B0FB291AE6F0A2B045 /* App_watchOS.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -75,7 +74,6 @@
 		7A3C2B80CE0F5D42B7684BF5928B1694 /* Headers in Headers */ = {isa = PBXBuildFile; fileRef = 2E1E747C7BC434ADB80CC269B7B595DC /* Headers */; settings = {ATTRIBUTES = (Public, ); }; };
 		7C9152ACD50B4F96C205B0DDEFD7D6D3 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B47B80AF9EAE0ADB4FA469CFDB7ABB8F /* MainInterface.storyboard */; };
 		7E84045B3F49256D14A8E8C1FF19490A /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C934C1F7A68CCD0AB6B384782470EE7B /* NotificationController.swift */; };
-		7EB82D5622290C763B5283B9689AB9F8 /* inputList.xcfilelist in Resources */ = {isa = PBXBuildFile; fileRef = AAA49985DFFE797EE8416887CE54DD39 /* inputList.xcfilelist */; };
 		7EC05429C10D0A00A8AE38CADF3F5DCA /* XPC_Service.m in Sources */ = {isa = PBXBuildFile; fileRef = 148B7C933698BCC4F1DBA979CF051F81 /* XPC_Service.m */; };
 		824FECDE01A22CDE6C288C1969A645E9 /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A5F527F2590C149565181748C7DBECD /* FrameworkFile.swift */; };
 		82D432D23D2ACC56338BE911465E6F89 /* Framework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41FC82ED1C4C3B7B3D7B2FB721574442 /* Framework.framework */; };
@@ -1530,8 +1528,6 @@
 				CBAC0459E3DCD72B512329E604C46B2E /* MyBundle.bundle in Resources */,
 				8493DEA48BF40EFFAC6FBD459C0E9EE4 /* ResourceFolder in Resources */,
 				36F2B8CC97BD885A59E4FBA6EBC8EB22 /* StandaloneAssets.xcassets in Resources */,
-				7EB82D5622290C763B5283B9689AB9F8 /* inputList.xcfilelist in Resources */,
-				0220391495C1E822D952DDE68B11AEB8 /* outputList.xcfilelist in Resources */,
 				EF285B90A968453FA1CB0CDE8C0AD440 /* iMessageApp.app in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
