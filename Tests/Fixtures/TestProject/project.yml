@@ -113,9 +113,9 @@ targets:
         script: |
           echo "You ran a script!"
         inputFileLists:
-          - inputList.xcfilelist
+          - App_iOS/inputList.xcfilelist
         outputFileLists:
-          - outputList.xcfilelist
+          - App_iOS/outputList.xcfilelist
 
   App_watchOS:
       type: application.watchapp2

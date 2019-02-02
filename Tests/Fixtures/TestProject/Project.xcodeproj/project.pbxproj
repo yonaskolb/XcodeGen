@@ -23,6 +23,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		0220391495C1E822D952DDE68B11AEB8 /* outputList.xcfilelist in Resources */ = {isa = PBXBuildFile; fileRef = 553D289724905857912C7A1D65ADD26F /* outputList.xcfilelist */; };
 		03F389DFD30F3CE5A441925C10CAED46 /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5ABEA2284F13483EFDF7C0E050F0450 /* MessagesViewController.swift */; };
 		03FC73E479EBD3CFF4E55BBC6CC82311 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = 6A58A16491CDDF968B0D56DE7EB96D92 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		097B0B6C198B9A52D4312F11000496FD /* App_watchOS.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = A680BE9F68A255B0FB291AE6F0A2B045 /* App_watchOS.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -74,6 +75,7 @@
 		7A3C2B80CE0F5D42B7684BF5928B1694 /* Headers in Headers */ = {isa = PBXBuildFile; fileRef = 2E1E747C7BC434ADB80CC269B7B595DC /* Headers */; settings = {ATTRIBUTES = (Public, ); }; };
 		7C9152ACD50B4F96C205B0DDEFD7D6D3 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B47B80AF9EAE0ADB4FA469CFDB7ABB8F /* MainInterface.storyboard */; };
 		7E84045B3F49256D14A8E8C1FF19490A /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C934C1F7A68CCD0AB6B384782470EE7B /* NotificationController.swift */; };
+		7EB82D5622290C763B5283B9689AB9F8 /* inputList.xcfilelist in Resources */ = {isa = PBXBuildFile; fileRef = AAA49985DFFE797EE8416887CE54DD39 /* inputList.xcfilelist */; };
 		7EC05429C10D0A00A8AE38CADF3F5DCA /* XPC_Service.m in Sources */ = {isa = PBXBuildFile; fileRef = 148B7C933698BCC4F1DBA979CF051F81 /* XPC_Service.m */; };
 		824FECDE01A22CDE6C288C1969A645E9 /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A5F527F2590C149565181748C7DBECD /* FrameworkFile.swift */; };
 		82D432D23D2ACC56338BE911465E6F89 /* Framework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41FC82ED1C4C3B7B3D7B2FB721574442 /* Framework.framework */; };
@@ -436,6 +438,7 @@
 		4BF4D16042A80576D259160C97AD2C2E /* Model 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 3.xcdatamodel"; sourceTree = "<group>"; };
 		4D0BF47DF71A6DBA33ED23FD22D023EF /* StaticLibrary_ObjC.a */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = archive.ar; path = StaticLibrary_ObjC.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		5116B3B58070BCD09F1487BAFC210EE0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		553D289724905857912C7A1D65ADD26F /* outputList.xcfilelist */ = {isa = PBXFileReference; path = outputList.xcfilelist; sourceTree = "<group>"; };
 		564E35E83C95F5591345B7722A59AA4E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		57FF8864B8EBAB5777DC12E62D66732F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		587B9E9A3533E965CA602B763210583F /* TestProjectUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestProjectUITests.swift; sourceTree = "<group>"; };
@@ -467,6 +470,7 @@
 		A3F6BCB5FEFB16F1BA368059F4B1505A /* InterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterfaceController.swift; sourceTree = "<group>"; };
 		A4C3FE6B986506724DAB5D0FC4361D53 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		A680BE9F68A255B0FB291AE6F0A2B045 /* App_watchOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = App_watchOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AAA49985DFFE797EE8416887CE54DD39 /* inputList.xcfilelist */ = {isa = PBXFileReference; path = inputList.xcfilelist; sourceTree = "<group>"; };
 		AB055761199DF36DB0C629A608A4EF3A /* Framework2.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Framework2.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B17B8D9C9B391332CD176A355AD24669 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LocalizedStoryboard.storyboard; sourceTree = "<group>"; };
 		B1C33BB070583BE3B0EC0E68083FE89C /* App_iOS.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = App_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -612,6 +616,7 @@
 				7F1A2F579A6F79C62DDA05712E2AB1F7 /* AppDelegate.swift */,
 				3797E591F302ECC0AA2FC607B190E2C8 /* Assets.xcassets */,
 				C9DDE1B06BCC1CDE0ECF15895A14CD45 /* Info.plist */,
+				AAA49985DFFE797EE8416887CE54DD39 /* inputList.xcfilelist */,
 				CE1F06D99242F4223D081F0DF78367F3 /* LaunchScreen.storyboard */,
 				9E17D598D98065767A04740F5E729CCA /* Localizable.strings */,
 				65C8D6D1DDC1512D396C07B712F31188 /* Localizable.stringsdict */,
@@ -619,6 +624,7 @@
 				814D72C2B921F60B759C2D4BB2604550 /* Main.storyboard */,
 				306796628DD52FA55E833B65DD4F2A22 /* Model.xcdatamodeld */,
 				C7809CE9FE9852C2AA87ACE57B5DEF9E /* module.modulemap */,
+				553D289724905857912C7A1D65ADD26F /* outputList.xcfilelist */,
 				0704B6CAFBB53E0EBB08F6B385901D43 /* ViewController.swift */,
 			);
 			name = App;
@@ -1524,6 +1530,8 @@
 				CBAC0459E3DCD72B512329E604C46B2E /* MyBundle.bundle in Resources */,
 				8493DEA48BF40EFFAC6FBD459C0E9EE4 /* ResourceFolder in Resources */,
 				36F2B8CC97BD885A59E4FBA6EBC8EB22 /* StandaloneAssets.xcassets in Resources */,
+				7EB82D5622290C763B5283B9689AB9F8 /* inputList.xcfilelist in Resources */,
+				0220391495C1E822D952DDE68B11AEB8 /* outputList.xcfilelist in Resources */,
 				EF285B90A968453FA1CB0CDE8C0AD440 /* iMessageApp.app in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1692,13 +1700,13 @@
 			files = (
 			);
 			inputFileListPaths = (
-				inputList.xcfilelist,
+				App_iOS/inputList.xcfilelist,
 			);
 			inputPaths = (
 			);
 			name = MyScript;
 			outputFileListPaths = (
-				outputList.xcfilelist,
+				App_iOS/outputList.xcfilelist,
 			);
 			outputPaths = (
 			);
