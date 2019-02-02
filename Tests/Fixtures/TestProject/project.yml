@@ -26,6 +26,7 @@ targets:
   App_macOS:
     type: application
     platform: macOS
+    scheme: {}
     info:
       path: App_macOS/Info.plist
       properties:
