@@ -12,11 +12,14 @@ jobs:
           name: Test
           command: swift test 2>&1 | xcpretty
       - run:
-          name: Check Project Diff
-          command: ./diff-fixtures.sh
+          name: Generate Fixtures
+          command: scripts/gen-fixtures.sh
       - run:
-          name: Build Test Project
-          command: ./build-fixtures.sh
+          name: Check Fixture Diffs
+          command: scripts/diff-fixtures.sh
+      - run:
+          name: Build Fixtures
+          command: scripts/build-fixtures.sh
       - run:
           name: Build release
           command: make build
