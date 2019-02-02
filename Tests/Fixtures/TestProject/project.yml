@@ -49,10 +49,6 @@ targets:
   App_iOS:
     type: application
     platform: iOS
-    entitlements:
-      path: App_iOS/App.entitlements
-      properties:
-        com.apple.security.application-groups: group.com.app
     attributes:
       ProvisioningStyle: Automatic
     sources:
@@ -116,6 +112,14 @@ targets:
           - App_iOS/inputList.xcfilelist
         outputFileLists:
           - App_iOS/outputList.xcfilelist
+
+  EntitledApp:
+    type: application
+    platform: iOS
+    entitlements:
+      path: App_iOS/App.entitlements
+      properties:
+        com.apple.security.application-groups: group.com.app
 
   App_watchOS:
       type: application.watchapp2
