@@ -194,6 +194,9 @@ extension Target {
                     }
                     platformTarget["productName"] = targetName
                     platformTarget["settings"] = settings
+                    if let deploymentTargets = target["deploymentTarget"] as? [String: Any] {
+                        platformTarget["deploymentTarget"] = deploymentTargets[platform]
+                    }
                     crossPlatformTargets[newTargetName] = platformTarget
                 }
             } else {
