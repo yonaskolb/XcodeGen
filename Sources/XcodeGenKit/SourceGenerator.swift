@@ -218,6 +218,7 @@ class SourceGenerator {
                  "entitlements",
                  "gpx",
                  "lproj",
+                 "xcfilelist",
                  "apns":
                 return nil
             default:

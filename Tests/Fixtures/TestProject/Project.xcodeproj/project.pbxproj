@@ -436,6 +436,7 @@
 		4BF4D16042A80576D259160C97AD2C2E /* Model 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 3.xcdatamodel"; sourceTree = "<group>"; };
 		4D0BF47DF71A6DBA33ED23FD22D023EF /* StaticLibrary_ObjC.a */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = archive.ar; path = StaticLibrary_ObjC.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		5116B3B58070BCD09F1487BAFC210EE0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		553D289724905857912C7A1D65ADD26F /* outputList.xcfilelist */ = {isa = PBXFileReference; path = outputList.xcfilelist; sourceTree = "<group>"; };
 		564E35E83C95F5591345B7722A59AA4E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		57FF8864B8EBAB5777DC12E62D66732F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		587B9E9A3533E965CA602B763210583F /* TestProjectUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestProjectUITests.swift; sourceTree = "<group>"; };
@@ -453,6 +454,7 @@
 		7B5068D64404C61A67A184584E13804D /* MyBundle.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = MyBundle.bundle; sourceTree = "<group>"; };
 		7C176A8297AC2F5207352BA80F60ADB0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		7D67F1C1BFBACE101DE7DB5179F2DCEA /* Framework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Framework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7D700FA699849D2F95216883E585B959 /* EntitledApp.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = EntitledApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7DE38C10AB71A47B786D5BF205BA002F /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		7F1A2F579A6F79C62DDA05712E2AB1F7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7FDC16E1938AA114B67D87A9822E86D7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
@@ -467,6 +469,7 @@
 		A3F6BCB5FEFB16F1BA368059F4B1505A /* InterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterfaceController.swift; sourceTree = "<group>"; };
 		A4C3FE6B986506724DAB5D0FC4361D53 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		A680BE9F68A255B0FB291AE6F0A2B045 /* App_watchOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = App_watchOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AAA49985DFFE797EE8416887CE54DD39 /* inputList.xcfilelist */ = {isa = PBXFileReference; path = inputList.xcfilelist; sourceTree = "<group>"; };
 		AB055761199DF36DB0C629A608A4EF3A /* Framework2.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Framework2.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B17B8D9C9B391332CD176A355AD24669 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LocalizedStoryboard.storyboard; sourceTree = "<group>"; };
 		B1C33BB070583BE3B0EC0E68083FE89C /* App_iOS.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = App_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -612,6 +615,7 @@
 				7F1A2F579A6F79C62DDA05712E2AB1F7 /* AppDelegate.swift */,
 				3797E591F302ECC0AA2FC607B190E2C8 /* Assets.xcassets */,
 				C9DDE1B06BCC1CDE0ECF15895A14CD45 /* Info.plist */,
+				AAA49985DFFE797EE8416887CE54DD39 /* inputList.xcfilelist */,
 				CE1F06D99242F4223D081F0DF78367F3 /* LaunchScreen.storyboard */,
 				9E17D598D98065767A04740F5E729CCA /* Localizable.strings */,
 				65C8D6D1DDC1512D396C07B712F31188 /* Localizable.stringsdict */,
@@ -619,6 +623,7 @@
 				814D72C2B921F60B759C2D4BB2604550 /* Main.storyboard */,
 				306796628DD52FA55E833B65DD4F2A22 /* Model.xcdatamodeld */,
 				C7809CE9FE9852C2AA87ACE57B5DEF9E /* module.modulemap */,
+				553D289724905857912C7A1D65ADD26F /* outputList.xcfilelist */,
 				0704B6CAFBB53E0EBB08F6B385901D43 /* ViewController.swift */,
 			);
 			name = App;
@@ -785,6 +790,7 @@
 				33F6DCDC37D2E66543D4965D829900E1 /* App_macOS.app */,
 				0D09D243DBCF9D32E239F1E8A64D75AB /* App_watchOS Extension.appex */,
 				A680BE9F68A255B0FB291AE6F0A2B045 /* App_watchOS.app */,
+				7D700FA699849D2F95216883E585B959 /* EntitledApp.app */,
 				8A9274BE42A03DC5DA1FAD04992ED6E3 /* Framework.framework */,
 				41FC82ED1C4C3B7B3D7B2FB721574442 /* Framework.framework */,
 				7D67F1C1BFBACE101DE7DB5179F2DCEA /* Framework.framework */,
@@ -1328,6 +1334,21 @@
 			productReference = 8A9274BE42A03DC5DA1FAD04992ED6E3 /* Framework.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		B61ED4688789B071275E2B7AC003F20B /* EntitledApp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 91E8D6B95F23669734D43FDCD5DCC2C7 /* Build configuration list for PBXNativeTarget "EntitledApp" */;
+			buildPhases = (
+				A0FE01FFC2B5A9FD21A898740AF5EA1D /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = EntitledApp;
+			productName = EntitledApp;
+			productReference = 7D700FA699849D2F95216883E585B959 /* EntitledApp.app */;
+			productType = "com.apple.product-type.application";
+		};
 		CE7D183D3752B5B35D2D8E6DC832BED5 /* Framework2_iOS */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9A0EF0B71AD44055E8749C42210FBBE8 /* Build configuration list for PBXNativeTarget "Framework2_iOS" */;
@@ -1452,6 +1473,7 @@
 				020A320BB3736FCDE6CC4E703EE69AC0 /* App_macOS */,
 				208179651927D1138D19B5AD54E29D2B /* App_watchOS */,
 				307AE3FA155FFD09B74AE351B15321B6 /* App_watchOS Extension */,
+				B61ED4688789B071275E2B7AC003F20B /* EntitledApp */,
 				CE7D183D3752B5B35D2D8E6DC832BED5 /* Framework2_iOS */,
 				FC26AF2506D3B2B40DE8A5F887952CE1 /* Framework2_macOS */,
 				8B9A14DC280CCE013CC8644093599CB1 /* Framework2_tvOS */,
@@ -1692,13 +1714,13 @@
 			files = (
 			);
 			inputFileListPaths = (
-				inputList.xcfilelist,
+				App_iOS/inputList.xcfilelist,
 			);
 			inputPaths = (
 			);
 			name = MyScript;
 			outputFileListPaths = (
-				outputList.xcfilelist,
+				App_iOS/outputList.xcfilelist,
 			);
 			outputPaths = (
 			);
@@ -1882,6 +1904,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				4A06CFF585E242ADFB8CDDBA43E73115 /* FrameworkFile.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A0FE01FFC2B5A9FD21A898740AF5EA1D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2210,7 +2239,6 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = App_iOS/App.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2500,6 +2528,20 @@
 				WATCHOS_DEPLOYMENT_TARGET = 3.0;
 			};
 			name = "Production Debug";
+		};
+		234640A811EF6EB9CC9081CA803A4C19 /* Staging Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = App_iOS/App.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.EntitledApp;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Staging Debug";
 		};
 		236247F0F85C9D342FAEE803854E5159 /* Staging Debug */ = {
 			isa = XCBuildConfiguration;
@@ -2968,7 +3010,6 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = App_iOS/App.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3333,7 +3374,6 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = App_iOS/App.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3570,6 +3610,20 @@
 			};
 			name = "Production Debug";
 		};
+		94295771D06A8E3DC6DCC8ADE73874F7 /* Staging Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = App_iOS/App.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.EntitledApp;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Staging Release";
+		};
 		943D402E936EC5BD391F9FD0C7D926EA /* Production Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -3672,6 +3726,20 @@
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = "Production Debug";
+		};
+		983ACA9F991B0B18D9760B122B42614C /* Test Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = App_iOS/App.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.EntitledApp;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Test Release";
 		};
 		98A87959E6B746416846959429725DCB /* Staging Debug */ = {
 			isa = XCBuildConfiguration;
@@ -3909,7 +3977,6 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = App_iOS/App.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3973,7 +4040,6 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = App_iOS/App.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -4132,6 +4198,20 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/App_iOS.app/App_iOS";
 				TEST_TARGET_NAME = App_iOS;
+			};
+			name = "Production Release";
+		};
+		BA5AD3137CD90C50E5E1BDA06645F11E /* Production Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = App_iOS/App.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.EntitledApp;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = "Production Release";
 		};
@@ -4357,6 +4437,20 @@
 			};
 			name = "Test Debug";
 		};
+		CB4F81A519CA89CAF5703DAB428CCE0A /* Test Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = App_iOS/App.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.EntitledApp;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Test Debug";
+		};
 		CBE9D80AD0719511A13A889E867077CC /* Staging Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -4451,7 +4545,6 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = App_iOS/App.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -4469,6 +4562,20 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = "Test Release";
+		};
+		DDECE7D81A63C1C46A08F1F47ACCE4DF /* Production Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = App_iOS/App.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.EntitledApp;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Production Debug";
 		};
 		E24703CFCCBD727B3FE08F51C14A0CC8 /* Test Release */ = {
 			isa = XCBuildConfiguration;
@@ -5215,6 +5322,19 @@
 				E4257B4F823EE947AADAD19594355998 /* Staging Release */,
 				817AFA080A41D783F5801C5A63BFEF87 /* Test Debug */,
 				36C4B3A6EACCB88098CE13D7E597918E /* Test Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "";
+		};
+		91E8D6B95F23669734D43FDCD5DCC2C7 /* Build configuration list for PBXNativeTarget "EntitledApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DDECE7D81A63C1C46A08F1F47ACCE4DF /* Production Debug */,
+				BA5AD3137CD90C50E5E1BDA06645F11E /* Production Release */,
+				234640A811EF6EB9CC9081CA803A4C19 /* Staging Debug */,
+				94295771D06A8E3DC6DCC8ADE73874F7 /* Staging Release */,
+				CB4F81A519CA89CAF5703DAB428CCE0A /* Test Debug */,
+				983ACA9F991B0B18D9760B122B42614C /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "";
