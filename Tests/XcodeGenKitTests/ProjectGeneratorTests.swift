@@ -437,7 +437,7 @@ class ProjectGeneratorTests: XCTestCase {
                     dependencies: [
                         Dependency(type: .target, reference: iosFrameworkZ.name),
                         Dependency(type: .framework, reference: "FrameworkZ.framework"),
-                        Dependency(type: .carthage, reference: "CarthageZ"),
+                        Dependency(type: .carthage(includeRelated: false), reference: "CarthageZ"),
                     ]
                 )
                 expectedResourceFiles[staticLibrary.name] = Set()
@@ -461,10 +461,10 @@ class ProjectGeneratorTests: XCTestCase {
                     dependencies: [
                         Dependency(type: .target, reference: resourceBundle.name),
                         Dependency(type: .framework, reference: "FrameworkC.framework"),
-                        Dependency(type: .carthage, reference: "CarthageA"),
+                        Dependency(type: .carthage(includeRelated: false), reference: "CarthageA"),
                         // Statically linked, so don't embed into test
                         Dependency(type: .target, reference: staticLibrary.name),
-                        Dependency(type: .carthage, reference: "CarthageB", embed: false),
+                        Dependency(type: .carthage(includeRelated: false), reference: "CarthageB", embed: false),
                     ]
                 )
                 expectedResourceFiles[iosFrameworkA.name] = Set()
@@ -487,7 +487,7 @@ class ProjectGeneratorTests: XCTestCase {
                         Dependency(type: .framework, reference: "FrameworkD.framework"),
                         // Embedded into framework, so don't embed into test
                         Dependency(type: .framework, reference: "FrameworkE.framework", embed: true),
-                        Dependency(type: .carthage, reference: "CarthageC", embed: true),
+                        Dependency(type: .carthage(includeRelated: false), reference: "CarthageC", embed: true),
                         // Statically linked, so don't embed into test
                         Dependency(type: .framework, reference: "FrameworkF.framework", embed: false),
                     ]
@@ -517,7 +517,7 @@ class ProjectGeneratorTests: XCTestCase {
                     dependencies: [
                         Dependency(type: .target, reference: app.name),
                         Dependency(type: .target, reference: iosFrameworkB.name),
-                        Dependency(type: .carthage, reference: "CarthageD"),
+                        Dependency(type: .carthage(includeRelated: false), reference: "CarthageD"),
                     ],
                     directlyEmbedCarthageDependencies: false
                 )

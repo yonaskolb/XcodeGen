@@ -263,14 +263,14 @@ class SpecLoadingTests: XCTestCase {
                 var targetDictionary = validTarget
                 targetDictionary["dependencies"] = [
                     ["target": "name", "embed": false],
-                    ["carthage": "name"],
+                    ["carthage": "name", "includeRelated": true],
                     ["framework": "path", "weak": true],
                     ["sdk": "Contacts.framework"],
                 ]
                 let target = try Target(name: "test", jsonDictionary: targetDictionary)
                 try expect(target.dependencies.count) == 4
                 try expect(target.dependencies[0]) == Dependency(type: .target, reference: "name", embed: false)
-                try expect(target.dependencies[1]) == Dependency(type: .carthage, reference: "name")
+                try expect(target.dependencies[1]) == Dependency(type: .carthage(includeRelated: true), reference: "name")
                 try expect(target.dependencies[2]) == Dependency(type: .framework, reference: "path", weakLink: true)
                 try expect(target.dependencies[3]) == Dependency(type: .sdk, reference: "Contacts.framework")
             }

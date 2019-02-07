@@ -9,6 +9,8 @@ public class PBXProjGenerator {
     let project: Project
 
     let pbxProj: PBXProj
+    let carthageResolver: CarthageDependencyResolver
+
     var sourceGenerator: SourceGenerator!
 
     var targetObjects: [String: PBXTarget] = [:]
@@ -21,12 +23,9 @@ public class PBXProjGenerator {
 
     var generated = false
 
-    var carthageBuildPath: String {
-        return project.options.carthageBuildPath ?? "Carthage/Build"
-    }
-
     public init(project: Project) {
         self.project = project
+        carthageResolver = CarthageDependencyResolver(project: project)
         pbxProj = PBXProj(rootObject: nil, objectVersion: project.objectVersion)
         sourceGenerator = SourceGenerator(project: project, pbxProj: pbxProj)
     }
@@ -179,7 +178,7 @@ public class PBXProjGenerator {
                     children: platforms,
                     sourceTree: .group,
                     name: "Carthage",
-                    path: carthageBuildPath
+                    path: carthageResolver.baseBuildPath
                 )
             )
             frameworkFiles.append(carthageGroup)
@@ -399,7 +398,7 @@ public class PBXProjGenerator {
     }
 
     func generateTarget(_ target: Target) throws {
-        let carthageDependencies = getAllCarthageDependencies(target: target)
+        let carthageDependencies = carthageResolver.dependencies(for: target)
 
         let sourceFiles = try sourceGenerator.getAllSourceFiles(targetType: target.type, sources: target.sources)
             .sorted { $0.path.lastComponent < $1.path.lastComponent }
@@ -573,26 +572,29 @@ public class PBXProjGenerator {
                 )
                 targetFrameworkBuildFiles.append(buildFile)
 
-            case .carthage:
-                // Static libraries can't link or embed dynamic frameworks
-                guard target.type != .staticLibrary else { break }
+            case .carthage(let includeRelated):
+                let allDependencies = includeRelated
+                    ? carthageResolver.relatedDependencies(for: dependency, in: target.platform) : [dependency]
+                allDependencies.forEach { dependency in
+                    // Static libraries can't link or embed dynamic frameworks
+                    guard target.type != .staticLibrary else { return }
 
-                var platformPath = Path(getCarthageBuildPath(platform: target.platform))
-                var frameworkPath = platformPath + dependency.reference
-                if frameworkPath.extension == nil {
-                    frameworkPath = Path(frameworkPath.string + ".framework")
+                    var platformPath = Path(carthageResolver.buildPath(for: target.platform))
+                    var frameworkPath = platformPath + dependency.reference
+                    if frameworkPath.extension == nil {
+                        frameworkPath = Path(frameworkPath.string + ".framework")
+                    }
+                    let fileReference = self.sourceGenerator.getFileReference(path: frameworkPath, inPath: platformPath)
+
+                    self.carthageFrameworksByPlatform[target.platform.carthageDirectoryName, default: []].insert(fileReference)
+
+                    if dependency.link ?? true {
+                        let buildFile = self.addObject(
+                            PBXBuildFile(file: fileReference, settings: getDependencyFrameworkSettings(dependency: dependency))
+                        )
+                        targetFrameworkBuildFiles.append(buildFile)
+                    }
                 }
-                let fileReference = sourceGenerator.getFileReference(path: frameworkPath, inPath: platformPath)
-
-                carthageFrameworksByPlatform[target.platform.carthageDirectoryName, default: []].insert(fileReference)
-
-                if dependency.link ?? true {
-                    let buildFile = addObject(
-                        PBXBuildFile(file: fileReference, settings: getDependencyFrameworkSettings(dependency: dependency))
-                    )
-                    targetFrameworkBuildFiles.append(buildFile)
-                }
-
                 // Embedding handled by iterating over `carthageDependencies` below
             }
         }
@@ -602,7 +604,7 @@ public class PBXProjGenerator {
 
             let embed = dependency.embed ?? target.shouldEmbedDependencies
 
-            var platformPath = Path(getCarthageBuildPath(platform: target.platform))
+            var platformPath = Path(carthageResolver.buildPath(for: target.platform))
             var frameworkPath = platformPath + dependency.reference
             if frameworkPath.extension == nil {
                 frameworkPath = Path(frameworkPath.string + ".framework")
@@ -710,10 +712,10 @@ public class PBXProjGenerator {
         if !carthageFrameworksToEmbed.isEmpty {
 
             let inputPaths = carthageFrameworksToEmbed
-                .map { "$(SRCROOT)/\(carthageBuildPath)/\(target.platform)/\($0)\($0.contains(".") ? "" : ".framework")" }
+                .map { "$(SRCROOT)/\(carthageResolver.baseBuildPath)/\(target.platform)/\($0)\($0.contains(".") ? "" : ".framework")" }
             let outputPaths = carthageFrameworksToEmbed
                 .map { "$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/\($0)\($0.contains(".") ? "" : ".framework")" }
-            let carthageExecutable = project.options.carthageExecutablePath ?? "carthage"
+            let carthageExecutable = carthageResolver.executablePath
             let carthageScript = addObject(
                 PBXShellScriptBuildPhase(
                     name: "Carthage",
@@ -869,7 +871,7 @@ public class PBXProjGenerator {
             // set Carthage search paths
             let configFrameworkBuildPaths: [String]
             if !carthageDependencies.isEmpty {
-                let carthagePlatformBuildPath = "$(PROJECT_DIR)/" + getCarthageBuildPath(platform: target.platform)
+                let carthagePlatformBuildPath = "$(PROJECT_DIR)/" + carthageResolver.buildPath(for: target.platform)
                 configFrameworkBuildPaths = [carthagePlatformBuildPath] + Array(frameworkBuildPaths).sorted()
             } else {
                 configFrameworkBuildPaths = Array(frameworkBuildPaths).sorted()
@@ -934,63 +936,6 @@ public class PBXProjGenerator {
                 }
             }
             .first
-    }
-
-    func getCarthageBuildPath(platform: Platform) -> String {
-
-        let carthagePath = Path(carthageBuildPath)
-        let platformName = platform.carthageDirectoryName
-        return "\(carthagePath)/\(platformName)"
-    }
-
-    func getAllCarthageDependencies(target topLevelTarget: Target) -> [Dependency] {
-        // this is used to resolve cyclical target dependencies
-        var visitedTargets: Set<String> = []
-        var frameworks: [String: Dependency] = [:]
-
-        var queue: [ProjectTarget] = [topLevelTarget]
-        while !queue.isEmpty {
-            let projectTarget = queue.removeFirst()
-            if visitedTargets.contains(projectTarget.name) {
-                continue
-            }
-
-            if let target = projectTarget as? Target {
-                for dependency in target.dependencies {
-                    // don't overwrite frameworks, to allow top level ones to rule
-                    if frameworks[dependency.reference] != nil {
-                        continue
-                    }
-
-                    switch dependency.type {
-                    case .carthage:
-                        frameworks[dependency.reference] = dependency
-                    case .target:
-                        if let projectTarget = project.getProjectTarget(dependency.reference) {
-                            if let dependencyTarget = projectTarget as? Target {
-                                if topLevelTarget.platform == dependencyTarget.platform {
-                                    queue.append(projectTarget)
-                                }
-                            } else {
-                                queue.append(projectTarget)
-                            }
-                        }
-                    default:
-                        break
-                    }
-                }
-            } else if let aggregateTarget = projectTarget as? AggregateTarget {
-                for dependencyName in aggregateTarget.targets {
-                    if let projectTarget = project.getProjectTarget(dependencyName) {
-                        queue.append(projectTarget)
-                    }
-                }
-            }
-
-            visitedTargets.update(with: projectTarget.name)
-        }
-
-        return frameworks.sorted(by: { $0.key < $1.key }).map { $0.value }
     }
 
     func getAllDependenciesPlusTransitiveNeedingEmbedding(target topLevelTarget: Target) -> [Dependency] {

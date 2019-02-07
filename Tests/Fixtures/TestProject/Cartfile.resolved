@@ -1,1 +1,2 @@
-github "antitypical/Result" "4.0.0"
+github "antitypical/Result" "4.1.0"
+github "rpassis/CarthageTestFixture" "1.0"

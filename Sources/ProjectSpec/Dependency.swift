@@ -30,10 +30,10 @@ public struct Dependency: Equatable {
         self.weakLink = weakLink
     }
 
-    public enum DependencyType {
+    public enum DependencyType: Equatable {
         case target
         case framework
-        case carthage
+        case carthage(includeRelated: Bool)
         case sdk
     }
 }
@@ -48,7 +48,8 @@ extension Dependency: JSONObjectConvertible {
             type = .framework
             reference = framework
         } else if let carthage: String = jsonDictionary.json(atKeyPath: "carthage") {
-            type = .carthage
+            let includeRelated = jsonDictionary.json(atKeyPath: "includeRelated") ?? false
+            type = .carthage(includeRelated: includeRelated)
             reference = carthage
         } else if let sdk: String = jsonDictionary.json(atKeyPath: "sdk") {
             type = .sdk
