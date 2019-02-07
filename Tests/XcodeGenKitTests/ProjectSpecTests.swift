@@ -158,6 +158,44 @@ class ProjectSpecTests: XCTestCase {
                 try expectValidationError(project, .invalidTargetSchemeConfigVariant(target: "target1", configVariant: "invalidVariant", configType: .debug))
             }
 
+            $0.it("fails with invalid test target") {
+                var project = baseProject
+                project.targets = [
+                    Target(
+                        name: "target1",
+                        type: .application,
+                        platform: .iOS,
+                        scheme: TargetScheme(testTargets: [
+                            Scheme.Test.TestTarget(name: "invalidTarget", container: "invalidContainer"),
+                        ])
+                    ),
+                ]
+
+                try expectValidationError(project, .invalidTestTargetContainer(target: "target1", testTarget: "invalidTarget", container: "invalidContainer"))
+            }
+
+            $0.it("allows custom test targets container") {
+                var project = Project(
+                    name: "test",
+                    configs: [
+                        Config(name: "Release", type: .release),
+                        Config(name: "Staging Debug", type: .debug),
+                    ]
+                )
+                let container = fixturePath + "TestProject/Project.xcodeproj"
+                project.targets = [
+                    Target(
+                        name: "target1",
+                        type: .application,
+                        platform: .iOS,
+                        scheme: TargetScheme(testTargets: [
+                            Scheme.Test.TestTarget(name: "Framework", container: container.string),
+                        ])
+                    ),
+                ]
+                try project.validate()
+            }
+
             $0.it("fails with invalid aggregate target") {
                 var project = baseProject
                 project.aggregateTargets = [AggregateTarget(

@@ -23,6 +23,7 @@ public struct SpecValidationError: Error, CustomStringConvertible {
         case missingConfigForTargetScheme(target: String, configType: ConfigType)
         case missingDefaultConfig(configName: String)
         case invalidPerConfigSettings
+        case invalidTestTargetContainer(target: String, testTarget: String, container: String)
 
         public var description: String {
             switch self {
@@ -62,6 +63,8 @@ public struct SpecValidationError: Error, CustomStringConvertible {
                 return "Default configuration \(name) doesn't exist"
             case .invalidPerConfigSettings:
                 return "Settings that are for a specific config must go in \"configs\". \"base\" can be used for common settings"
+            case let .invalidTestTargetContainer(target, testTarget, container):
+                return "Target \(target.quoted) has invalid container \(container.quoted) for test target \(testTarget.quoted)"
             }
         }
     }

@@ -75,7 +75,34 @@ public class SchemeGenerator {
 
     public func generateScheme(_ scheme: Scheme) throws -> XCScheme {
 
-        func getBuildEntry(_ buildTarget: Scheme.BuildTarget) -> XCScheme.BuildAction.Entry {
+        func getBuildEntryForProject(_ buildTarget: Scheme.BuildTarget, container: String) -> XCScheme.BuildAction.Entry {
+            guard let project = try? XcodeProj(pathString: container) else {
+                return getBuildEntry(buildTarget, container: nil)
+            }
+
+            let pbxproj = project.pbxproj
+
+            guard let pbxTarget = pbxproj.nativeTargets.first(where: { $0.name == buildTarget.target }) else {
+                return getBuildEntry(buildTarget, container: nil)
+            }
+
+            guard let buildableName = pbxTarget.productNameWithExtension() else {
+                return getBuildEntry(buildTarget, container: nil)
+            }
+
+            let buildableReference = XCScheme.BuildableReference(
+                referencedContainer: "container:\(container)",
+                blueprint: pbxTarget,
+                buildableName: buildableName,
+                blueprintName: pbxTarget.name
+            )
+            return XCScheme.BuildAction.Entry(buildableReference: buildableReference, buildFor: buildTarget.buildTypes)
+        }
+
+        func getBuildEntry(_ buildTarget: Scheme.BuildTarget, container: String?) -> XCScheme.BuildAction.Entry {
+            if let container = container {
+                return getBuildEntryForProject(buildTarget, container: container)
+            }
 
             guard let pbxTarget = pbxProj.targets(named: buildTarget.target).first else {
                 fatalError("Unable to find target named \"\(buildTarget.target)\" in \"PBXProj.targets\"")
@@ -95,14 +122,16 @@ public class SchemeGenerator {
             return XCScheme.BuildAction.Entry(buildableReference: buildableReference, buildFor: buildTarget.buildTypes)
         }
 
-        let testTargets = scheme.test?.targets ?? []
-        let testBuildTargets = testTargets.map {
-            Scheme.BuildTarget(target: $0.name, buildTypes: BuildType.testOnly)
+        func makeTestTarget(for target: Scheme.Test.TestTarget) -> XCScheme.BuildAction.Entry {
+            let buildTarget = Scheme.BuildTarget(target: target.name, buildTypes: BuildType.testOnly)
+            return getBuildEntry(buildTarget, container: target.container)
         }
 
-        let testBuildTargetEntries = testBuildTargets.map(getBuildEntry)
+        let testTargets = scheme.test?.targets ?? []
 
-        let buildActionEntries: [XCScheme.BuildAction.Entry] = scheme.build.targets.map(getBuildEntry)
+        let testBuildTargetEntries = testTargets.map(makeTestTarget)
+
+        let buildActionEntries: [XCScheme.BuildAction.Entry] = scheme.build.targets.map({ getBuildEntry($0, container: nil) })
 
         func getExecutionAction(_ action: Scheme.ExecutionAction) -> XCScheme.ExecutionAction {
             // ExecutionActions can require the use of build settings. Xcode allows the settings to come from a build or test target.

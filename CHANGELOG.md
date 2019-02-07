@@ -6,6 +6,7 @@
 
 - Added `missingConfigFiles` to `options.disabledValidations` to optionally skip checking for the existence of config files.
 - Added ability to automatically include Carthage related dependencies via `includeRelated: true` [#506](https://github.com/yonaskolb/XcodeGen/pull/506) @rpassis
+- Added option to run other projects tests [#466](https://github.com/yonaskolb/XcodeGen/pull/466) @raptorxcz
 
 ## 2.2.0
 

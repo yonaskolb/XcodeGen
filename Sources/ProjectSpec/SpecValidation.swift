@@ -110,8 +110,11 @@ extension Project {
                 }
 
                 for testTarget in scheme.testTargets {
-                    if getTarget(testTarget.name) == nil {
+                    if getTarget(testTarget.name) == nil && testTarget.container == nil {
                         errors.append(.invalidTargetSchemeTest(target: target.name, testTarget: testTarget.name))
+                    }
+                    if let container = testTarget.container, !(basePath + container).exists {
+                        errors.append(.invalidTestTargetContainer(target: target.name, testTarget: testTarget.name, container: container))
                     }
                 }
             }

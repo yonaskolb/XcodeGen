@@ -98,21 +98,25 @@ public struct Scheme: Equatable {
             public let name: String
             public var randomExecutionOrder: Bool
             public var parallelizable: Bool
+            public let container: String?
 
             public init(
                 name: String,
                 randomExecutionOrder: Bool = false,
-                parallelizable: Bool = false
+                parallelizable: Bool = false,
+                container: String? = nil
             ) {
                 self.name = name
                 self.randomExecutionOrder = randomExecutionOrder
                 self.parallelizable = parallelizable
+                self.container = container
             }
 
             public init(stringLiteral value: String) {
                 name = value
                 randomExecutionOrder = false
                 parallelizable = false
+                container = nil
             }
         }
 
@@ -260,6 +264,7 @@ extension Scheme.Test.TestTarget: JSONObjectConvertible {
         name = try jsonDictionary.json(atKeyPath: "name")
         randomExecutionOrder = jsonDictionary.json(atKeyPath: "randomExecutionOrder") ?? false
         parallelizable = jsonDictionary.json(atKeyPath: "parallelizable") ?? false
+        container = jsonDictionary.json(atKeyPath: "container")
     }
 }
 

@@ -443,6 +443,11 @@ class SpecLoadingTests: XCTestCase {
                                 "parallelizable": true,
                                 "randomExecutionOrder": true,
                             ],
+                            "Target2",
+                            [
+                                "name": "Target3",
+                                "container": "Container"
+                            ]
                         ],
                         "gatherCoverageData": true,
                     ],
@@ -474,6 +479,11 @@ class SpecLoadingTests: XCTestCase {
                             name: "Target2",
                             randomExecutionOrder: true,
                             parallelizable: true
+                        ),
+                        "Target2",
+                        Scheme.Test.TestTarget(
+                            name: "Target3",
+                            container: "Container"
                         ),
                     ]
                 )
