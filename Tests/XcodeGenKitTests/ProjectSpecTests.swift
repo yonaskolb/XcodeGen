@@ -117,6 +117,13 @@ class ProjectSpecTests: XCTestCase {
                 project.configFiles = ["missingConfiguration": configPath.string]
                 try project.validate()
             }
+            
+            $0.it("allows non-existent config files") {
+                var project = baseProject
+                project.options = SpecOptions(disabledValidations: [.missingFiles, .missingConfigs])
+                project.configFiles = ["invalidConfig": "invalidConfigFile"]
+                try project.validate()
+            }
 
             $0.it("fails with invalid target") {
                 var project = baseProject
