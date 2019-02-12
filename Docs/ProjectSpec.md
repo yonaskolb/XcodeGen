@@ -103,7 +103,7 @@ Note that target names can also be changed by adding a `name` property to a targ
 - [ ] **deploymentTarget**: **[[Platform](#platform): String]** - A project wide deployment target can be specified for each platform otherwise the default SDK version in Xcode will be used. This will be overridden by any custom build settings that set the deployment target eg `IPHONEOS_DEPLOYMENT_TARGET`. Target specific deployment targets can also be set with [Target](#target).deploymentTarget.
 - [ ] **disabledValidations**: **[String]** - A list of validations that can be disabled if they're too strict for your use case. By default this is set to an empty array. Currently these are the available options:
   - `missingConfigs`: Disable errors for configurations in yaml files that don't exist in the project itself. This can be useful if you include the same yaml file in different projects
-  - `missingFiles`: Disable validation checks for the existence of files. This can be useful for generating a project in a context where config files are not available.
+  - `missingConfigFiles`: Disable checking for the existence of configuration files. This can be useful for generating a project in a context where config files are not available.
 - [ ] **defaultConfig**: **String** - The default configuration for command line builds from Xcode. If the configuration provided here doesn't match one in your [configs](#configs) key, XcodeGen will fail. If you don't set this, the first configuration alphabetically will be chosen.
 - [ ] **groupSortPosition**: **String** - Where groups are sorted in relation to other files. Either:
   - `none` - sorted alphabetically with all the other files

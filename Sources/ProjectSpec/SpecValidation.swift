@@ -52,7 +52,7 @@ extension Project {
         }
 
         for (config, configFile) in configFiles {
-            if !options.disabledValidations.contains(.missingFiles) && !(basePath + configFile).exists {
+            if !options.disabledValidations.contains(.missingConfigFiles) && !(basePath + configFile).exists {
                 errors.append(.invalidConfigFile(configFile: configFile, config: config))
             }
             if !options.disabledValidations.contains(.missingConfigs) && getConfig(config) == nil {
@@ -73,7 +73,7 @@ extension Project {
         for target in projectTargets {
 
             for (config, configFile) in target.configFiles {
-                if !options.disabledValidations.contains(.missingFiles) && !(basePath + configFile).exists {
+                if !options.disabledValidations.contains(.missingConfigFiles) && !(basePath + configFile).exists {
                     errors.append(.invalidTargetConfigFile(target: target.name, configFile: configFile, config: config))
                 }
                 if !options.disabledValidations.contains(.missingConfigs) && getConfig(config) == nil {

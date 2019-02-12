@@ -23,7 +23,7 @@ public struct SpecOptions: Equatable {
 
     public enum ValidationType: String {
         case missingConfigs
-        case missingFiles
+        case missingConfigFiles
     }
 
     public enum SettingPresets: String {
