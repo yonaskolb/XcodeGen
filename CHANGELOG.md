@@ -2,6 +2,9 @@
 
 ## Master
 
+#### Added
+- Added `missingConfigFiles` to `options.disabledValidations` to optionally skip checking for the existence of config files.
+
 ## 2.2.0
 
 #### Added
