@@ -254,7 +254,7 @@ class SourceGenerator {
 
             let groupName = name ?? path.lastComponent
             let groupPath = isTopLevelGroup ?
-                path.byRemovingBase(path: project.basePath).string :
+                ((try? path.relativePath(from: project.basePath)) ?? path).string :
                 path.lastComponent
             let group = PBXGroup(
                 children: children,
