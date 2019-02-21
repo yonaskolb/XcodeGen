@@ -20,7 +20,8 @@ class PathExtensionsTests: XCTestCase {
                 try expect(relativePath(to: "/a", from: "/b")) == "../a"
                 try expect(relativePath(to: "/a", from: "/b/")) == "../a"
                 try expect(relativePath(to: "/a/", from: "/b")) == "../a"
-                try expect(relativePath(to: "/a/", from: "/b/")) == "../a"            }
+                try expect(relativePath(to: "/a/", from: "/b/")) == "../a"
+            }
             
             $0.it("resolves paths with a common parent") {
                 try expect(relativePath(to: "a/b", from: "a/c")) == "../b"
