@@ -7,6 +7,11 @@ extension Path {
         return Path(normalize().string.replacingOccurrences(of: "\(path.normalize().string)/", with: ""))
     }
     
+    /// Returns the relative path necessary to go from `base` to `self`.
+    ///
+    /// Both paths must be absolute or relative paths.
+    /// - throws: Throws an error when the path types do not match, or when `base` has so many parent path components
+    ///           that it refers to an unknown parent directory.
     public func relativePath(from base: Path) throws -> Path {
         enum PathArgumentError: Error {
             /// Can't back out of an unknown parent directory
@@ -17,11 +22,11 @@ extension Path {
         
         func pathComponents(for path: ArraySlice<String>, relativeTo base: ArraySlice<String>, memo: [String]) throws -> [String] {
             switch (base.first, path.first) {
-            // 1. Paths are equivalent
+            // Base case: Paths are equivalent
             case (.none, .none):
                 return memo
                 
-            // 2. No path to backtrack from
+            // No path to backtrack from
             case (.none, .some(let rhs)):
                 guard rhs != "." else {
                     // Skip . instead of appending it
@@ -29,11 +34,11 @@ extension Path {
                 }
                 return try pathComponents(for: path.dropFirst(), relativeTo: base, memo: memo + [rhs])
                 
-            // 3. Both sides have a common parent
+            // Both sides have a common parent
             case (.some(let lhs), .some(let rhs)) where lhs == rhs:
                 return try pathComponents(for: path.dropFirst(), relativeTo: base.dropFirst(), memo: memo)
                 
-            // 4. `base` has a path to back out of
+            // `base` has a path to back out of
             case (.some(let lhs), _):
                 guard lhs != ".." else {
                     throw PathArgumentError.unknownParentDirectory
@@ -57,20 +62,23 @@ extension Path {
 }
 
 private extension Array where Element == String {
+    /// Removes inner `..`s from an array of path components.
+    ///
+    /// Foundation does this in `NSString.standardizingPath`, but only for absolute paths.
     func strippingParentDirectoryReferences() -> [Element] {
-        var backtracks = 0
+        var parents = 0
         let components = reversed().filter { pathComponent in
             if pathComponent == ".." {
-                backtracks += 1
+                parents += 1
                 return false
-            } else if backtracks > 0 {
-                backtracks -= 1
+            } else if parents > 0 {
+                parents -= 1
                 return false
             } else {
                 return true
             }
         }
         
-        return Array(repeating: "..", count: backtracks) + components.reversed()
+        return Array(repeating: "..", count: parents) + components.reversed()
     }
 }
