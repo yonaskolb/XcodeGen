@@ -104,10 +104,9 @@ public struct CarthageDependencyResolver {
                 return [dependency]
         }
         return versionFile.references(for: platform)
-            .map { $0.name }
             .map { Dependency(
                 type: dependency.type,
-                reference: $0,
+                reference: $0.name,
                 embed: dependency.embed,
                 codeSign: dependency.codeSign,
                 link: dependency.link,
