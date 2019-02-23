@@ -57,7 +57,8 @@ public struct CarthageDependencyResolver {
                 for dependency in nonExistentDependencies {
                     switch dependency.type {
                     case .carthage(let includeRelated):
-                        if includeRelated == true {
+                        let includeRelated = includeRelated ?? project.options.includeCarthageRelatedDependencies
+                        if includeRelated {
                             relatedDependencies(for: dependency, in: target.platform)
                                 .filter { !frameworks.contains($0) }
                                 .forEach { frameworks.insert($0) }

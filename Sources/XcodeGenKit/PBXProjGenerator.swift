@@ -573,6 +573,7 @@ public class PBXProjGenerator {
                 targetFrameworkBuildFiles.append(buildFile)
 
             case .carthage(let includeRelated):
+                let includeRelated = includeRelated ?? project.options.includeCarthageRelatedDependencies
                 let allDependencies = includeRelated
                     ? carthageResolver.relatedDependencies(for: dependency, in: target.platform) : [dependency]
                 allDependencies.forEach { dependency in

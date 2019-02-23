@@ -98,7 +98,23 @@ class CarthageDependencyResolverTests: XCTestCase {
     }
 
     func testDependenciesForTopLevelTarget() {
+
+        let dependencyFixtureName = "CarthageTestFixture"
+        let carthageBuildPath = fixturePath + "TestProject/Carthage/Build"
+
         describe {
+
+            $0.it("overrides the includeRelated dependency global flag when specified") {
+                let options = SpecOptions(carthageBuildPath: carthageBuildPath.string, includeCarthageRelatedDependencies: true)
+                let dependency = Dependency(type: .carthage(includeRelated: false), reference: dependencyFixtureName)
+
+                let resolver = CarthageDependencyResolver(project: makeTestProject(options: options))
+                let target = Target(name: "1", type: .application, platform: .iOS, dependencies: [dependency])
+                let dependencies = resolver.dependencies(for: target)
+                
+                try expect(dependencies) == [dependency]
+            }
+
             $0.it("fetches all carthage dependencies for a given target, sorted alphabetically") {
                 let unsortedDependencyReferences = ["RxSwift", "RxCocoa", "RxBlocking", "RxTest", "RxAtomic"]
                 let dependencies = unsortedDependencyReferences.map {

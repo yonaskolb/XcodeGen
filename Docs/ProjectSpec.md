@@ -111,6 +111,7 @@ Note that target names can also be changed by adding a `name` property to a targ
   - `bottom` (default) - at the bottom, after other files
 - [ ] **transitivelyLinkDependencies**: **Bool** - If this is `true` then targets will link to the dependencies of their target dependencies. If a target should embed its dependencies, such as application and test bundles, it will embed these transitive dependencies as well. Some complex setups might want to set this to `false` and explicitly specify dependencies at every level. Targets can override this with [Target](#target).transitivelyLinkDependencies. Defaults to `false`.
 - [ ] **generateEmptyDirectories**: **Bool** - If this is `true` then empty directories will be added to project too else will be missed. Defaults to `false`.
+- [ ] **includeCarthageRelatedDependencies**: **Bool** - When this is set to `true`, any carthage dependency with related dependencies will be included automatically. This flag can be overriden individually for each carthage dependency - for more details see See **includeRelated** in the [Dependency](#dependency) section. Defaults to `false`.
 
 ```yaml
 options:
