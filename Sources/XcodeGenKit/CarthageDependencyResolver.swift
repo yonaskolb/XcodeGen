@@ -42,7 +42,7 @@ public struct CarthageDependencyResolver {
     func dependencies(for topLevelTarget: Target) -> [Dependency] {
         // this is used to resolve cyclical target dependencies
         var visitedTargets: Set<String> = []
-        var frameworks: [String: Dependency] = [:]
+        var frameworks: Set<Dependency> = []
 
         var queue: [ProjectTarget] = [topLevelTarget]
         while !queue.isEmpty {
@@ -53,17 +53,16 @@ public struct CarthageDependencyResolver {
 
             if let target = projectTarget as? Target {
                 // don't overwrite frameworks, to allow top level ones to rule
-                let nonExistingDepsPredicate: (Dependency) -> Bool = { return frameworks[$0.reference] == nil }
-                let nonExistentDependencies = target.dependencies.filter(nonExistingDepsPredicate)
+                let nonExistentDependencies = target.dependencies.filter { !frameworks.contains($0) }
                 for dependency in nonExistentDependencies {
                     switch dependency.type {
                     case .carthage(let includeRelated):
                         if includeRelated == true {
                             relatedDependencies(for: dependency, in: target.platform)
-                                .filter(nonExistingDepsPredicate)
-                                .forEach { frameworks[$0.reference] = $0 }
+                                .filter { !frameworks.contains($0) }
+                                .forEach { frameworks.insert($0) }
                         } else {
-                            frameworks[dependency.reference] = dependency
+                            frameworks.insert(dependency)
                         }
                     case .target:
                         if let projectTarget = project.getProjectTarget(dependency.reference) {
@@ -90,7 +89,7 @@ public struct CarthageDependencyResolver {
             visitedTargets.update(with: projectTarget.name)
         }
 
-        return frameworks.sorted(by: { $0.key < $1.key }).map { $0.value }
+        return frameworks.sorted(by: { $0.reference < $1.reference })
     }
     
     /// Reads the .version file generated for a given Carthage dependency

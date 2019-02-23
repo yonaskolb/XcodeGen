@@ -38,6 +38,12 @@ public struct Dependency: Equatable {
     }
 }
 
+extension Dependency: Hashable {
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(reference)
+    }
+}
+
 extension Dependency: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
