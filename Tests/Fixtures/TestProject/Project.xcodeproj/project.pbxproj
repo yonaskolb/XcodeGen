@@ -28,25 +28,37 @@
 		097B0B6C198B9A52D4312F11000496FD /* App_watchOS.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = A680BE9F68A255B0FB291AE6F0A2B045 /* App_watchOS.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		0C8ADA24D201C830751FBE37DFB5FAA2 /* iMessageExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = D629E142AB87C681D4EC90F7106F7299 /* iMessageExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		0D281787B630CE62E91F9F7219EFF40D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8A016580A3B8F72B820BFBF93749CD7 /* Assets.xcassets */; };
+		0DB8E1DA22F48A2A2466B0B8CCF99BEC /* DependencyFixtureA.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9175CD404DD510116BEC02347027B13A /* DependencyFixtureA.framework */; };
 		0F7F220834A3E2B344322B64DB5140DF /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0BB1B49A91B892152D68ED76D9D4E759 /* libc++.tbd */; };
 		13C624ABA05AC67129468002144005A9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0704B6CAFBB53E0EBB08F6B385901D43 /* ViewController.swift */; settings = {COMPILER_FLAGS = "-Werror"; }; };
+		182376FB8F63EF1A2634C420B0D2709A /* DependencyFixtureA.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9175CD404DD510116BEC02347027B13A /* DependencyFixtureA.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1985E98D7107DFCBB2F2AC7DC6A155B5 /* SomeFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 73E7D4B860A5B6B80540E64703192744 /* SomeFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		1B3F19D52946470A5D235DF307E4C10C /* CarthageTestFixture.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2AA735E34BB5D2B7DA7212BF5EC5971 /* CarthageTestFixture.framework */; };
 		1E105E72C258FF9843B21D8A3F520CFB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE1F06D99242F4223D081F0DF78367F3 /* LaunchScreen.storyboard */; };
+		1FF485BF4B0845F504280D7FD1AD7DF6 /* DependencyFixtureA.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B9CBE843396A0F73A18F4B1138A386B3 /* DependencyFixtureA.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		205719BEDEFFC911468631925C617988 /* module.modulemap in CopyFiles */ = {isa = PBXBuildFile; fileRef = F2950763C4C568CC85021D185A35C1FB /* module.modulemap */; };
 		21B9D91DC3573A47C3298339795D0D2A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B419F22EB75EDD4AB9B92F32F7D39755 /* Assets.xcassets */; };
+		223789306EC8813067A7C8C37740466F /* DependencyFixtureB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80192E4B3F765386B9E8CCC5F8993C9C /* DependencyFixtureB.framework */; };
+		260126FF16180EC41A12EA5C75DAF0B8 /* DependencyFixtureB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 80192E4B3F765386B9E8CCC5F8993C9C /* DependencyFixtureB.framework */; };
 		262B4F15CB0780B21C37D89F5EA9FE80 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = 6A58A16491CDDF968B0D56DE7EB96D92 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		29A79F030DD325754FD2C82C4A6E0AE6 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C5AC2545AE4D4F7F44E2E9B53F03FF0 /* Result.framework */; };
+		2D2427F64DD9C91EEA8B9B78E5374B3C /* CarthageTestFixture.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8172E4733F98AD213CB42FA94AEBBA98 /* CarthageTestFixture.framework */; };
 		2DE309130A6F5A7E2E7E13169357C316 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = 6A58A16491CDDF968B0D56DE7EB96D92 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2DFBC735559B5AC7702C7DD1F54FBFFE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9390121B4ECBB1B796C7CBBDD32C4DD4 /* Assets.xcassets */; };
 		319B977623307E83E948E9E4CEBB432E /* StaticLibrary_ObjC.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5A2B916A11DCC2565241359FD0114B0C /* StaticLibrary_ObjC.h */; };
 		3474A5D469F41494C4CB871D75C77106 /* module.modulemap in CopyFiles */ = {isa = PBXBuildFile; fileRef = F2950763C4C568CC85021D185A35C1FB /* module.modulemap */; };
+		360A9448CE399E95CEC759CD0FEF7918 /* DependencyFixtureB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 685E6928BB8552F257AF32A1C35CD9F8 /* DependencyFixtureB.framework */; };
 		36152E299B36BCA0F25AD1FC9B002835 /* MoreUnder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8718C7CD3BE86D9B1F51203A548A51 /* MoreUnder.swift */; };
 		36F2B8CC97BD885A59E4FBA6EBC8EB22 /* StandaloneAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3571E41E19A5AB8AAAB04109D524DB4F /* StandaloneAssets.xcassets */; };
 		3799FF03E75F5D3C925CBB18B8BB7BF6 /* Framework2.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3EF21DF245F66BEF5446AAEF769A4194 /* Framework2.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		380BEFC87DBDB18C152712BE148616EF /* DependencyFixtureA.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9CBE843396A0F73A18F4B1138A386B3 /* DependencyFixtureA.framework */; };
 		3A9B6CE17CFDF8537B52B1AFC4668973 /* StaticLibrary_ObjC.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D0C79A8C750EC0DE748C463D6992773 /* StaticLibrary_ObjC.m */; };
+		3C0F9F92D09B92BA43115824CC08C12B /* DependencyFixtureB.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 685E6928BB8552F257AF32A1C35CD9F8 /* DependencyFixtureB.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		3C5A4AC7604AE8106630F578F7FFE642 /* CarthageTestFixture.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50B5CD1B9C7CDDBA1A9B530EE1560368 /* CarthageTestFixture.framework */; };
 		3C96F8384CC8C6401A0EE14727C5D323 /* StaticLibrary_ObjC.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D0C79A8C750EC0DE748C463D6992773 /* StaticLibrary_ObjC.m */; };
 		3E7ABFF8EC0A3EC912899F469BF5A126 /* InterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3F6BCB5FEFB16F1BA368059F4B1505A /* InterfaceController.swift */; };
 		41B0909025B983E66FCC4AA8A1FE3634 /* module.modulemap in CopyFiles */ = {isa = PBXBuildFile; fileRef = F2950763C4C568CC85021D185A35C1FB /* module.modulemap */; };
+		439FAA5FF3FFFCEC79612B22DA1C654C /* DependencyFixtureA.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D57001AD1EEEB31B0EEEBE27151A8D3 /* DependencyFixtureA.framework */; };
 		446723391DA2F5E9AD4CE064EF80F99A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C3FE6B986506724DAB5D0FC4361D53 /* ViewController.swift */; };
 		44D5928E07962D68D84D775AF3F59D81 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 74FBDFA5CB063F6001AD8ACD1776F055 /* Main.storyboard */; };
 		46DA8D104900945921DF4E7DDF584C25 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = 6A58A16491CDDF968B0D56DE7EB96D92 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -62,6 +74,7 @@
 		5CAADD8469B81616A79CECD7DC2F58B5 /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CAF6C55B555E3E1352645B630CCB23E /* ExtensionDelegate.swift */; };
 		5CB4C10148DD10D82B5ADBBDAD52BCD1 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C5AC2545AE4D4F7F44E2E9B53F03FF0 /* Result.framework */; };
 		5F49DEBEDCC54D28AD3571B88753A356 /* App_watchOS Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 0D09D243DBCF9D32E239F1E8A64D75AB /* App_watchOS Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		5F8EBB604076B9E5BD1FFEE701BFE22F /* DependencyFixtureA.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9CBE843396A0F73A18F4B1138A386B3 /* DependencyFixtureA.framework */; };
 		6544AAAD64A06DA3D891642A337C1730 /* StaticLibrary_ObjC.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D0C79A8C750EC0DE748C463D6992773 /* StaticLibrary_ObjC.m */; };
 		6CD98D352BB52EB22E352454E74CA42C /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 65C8D6D1DDC1512D396C07B712F31188 /* Localizable.stringsdict */; };
 		6CE2C63470E541C3A04F3E9ED6B3F10B /* Framework2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EF21DF245F66BEF5446AAEF769A4194 /* Framework2.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -71,26 +84,36 @@
 		74D29BA5C4116670E4585FA413AF8460 /* Standalone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F5BD97AF0F94A15A5B7DDB75C0C7CDF /* Standalone.swift */; };
 		74E74F67565A0084FFA3E17C735B09EF /* StaticLibrary_ObjC.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D0C79A8C750EC0DE748C463D6992773 /* StaticLibrary_ObjC.m */; };
 		7856158603A68D4FF152F8E96305B3E7 /* Framework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8A9274BE42A03DC5DA1FAD04992ED6E3 /* Framework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		79722BAD144B4A707B989F34A7008B16 /* DependencyFixtureB.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 685E6928BB8552F257AF32A1C35CD9F8 /* DependencyFixtureB.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		7A3C2B80CE0F5D42B7684BF5928B1694 /* Headers in Headers */ = {isa = PBXBuildFile; fileRef = 2E1E747C7BC434ADB80CC269B7B595DC /* Headers */; settings = {ATTRIBUTES = (Public, ); }; };
 		7C9152ACD50B4F96C205B0DDEFD7D6D3 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B47B80AF9EAE0ADB4FA469CFDB7ABB8F /* MainInterface.storyboard */; };
 		7E84045B3F49256D14A8E8C1FF19490A /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C934C1F7A68CCD0AB6B384782470EE7B /* NotificationController.swift */; };
 		7EC05429C10D0A00A8AE38CADF3F5DCA /* XPC_Service.m in Sources */ = {isa = PBXBuildFile; fileRef = 148B7C933698BCC4F1DBA979CF051F81 /* XPC_Service.m */; };
+		7F6364F98A0701EA7F5194BEA6E4B02A /* CarthageTestFixture.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50B5CD1B9C7CDDBA1A9B530EE1560368 /* CarthageTestFixture.framework */; };
 		824FECDE01A22CDE6C288C1969A645E9 /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A5F527F2590C149565181748C7DBECD /* FrameworkFile.swift */; };
 		82D432D23D2ACC56338BE911465E6F89 /* Framework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41FC82ED1C4C3B7B3D7B2FB721574442 /* Framework.framework */; };
 		8493DEA48BF40EFFAC6FBD459C0E9EE4 /* ResourceFolder in Resources */ = {isa = PBXBuildFile; fileRef = 6B1603BA83AA0C7B94E45168D7E684C4 /* ResourceFolder */; };
 		862C296BFE176C091397763A66610C41 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3797E591F302ECC0AA2FC607B190E2C8 /* Assets.xcassets */; };
 		8670A20B54D6E96461DD53EBCB0644EC /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A5F527F2590C149565181748C7DBECD /* FrameworkFile.swift */; };
+		86EF8D61ABD8CEB1E2B82D47F00AABA3 /* DependencyFixtureA.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9175CD404DD510116BEC02347027B13A /* DependencyFixtureA.framework */; };
 		87C8C972BF12378AD6D85C79760FB151 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 814D72C2B921F60B759C2D4BB2604550 /* Main.storyboard */; };
+		899A16B3BC09973811196FE1B4378CED /* CarthageTestFixture.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B2AA735E34BB5D2B7DA7212BF5EC5971 /* CarthageTestFixture.framework */; };
 		8BCF9B1A396126583737A6687CF20696 /* Headers in Headers */ = {isa = PBXBuildFile; fileRef = 2E1E747C7BC434ADB80CC269B7B595DC /* Headers */; settings = {ATTRIBUTES = (Public, ); }; };
 		8BD6E6E86A37882FB7C802E33DD03105 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB178D03E75929F3F5B10C56838882EC /* Result.framework */; };
 		9CB4F00B54E46A4F9E477ABBD94C4C25 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F1A2F579A6F79C62DDA05712E2AB1F7 /* AppDelegate.swift */; settings = {COMPILER_FLAGS = "-Werror"; }; };
 		A1144E47C6EFE30830087F384717526E /* Contacts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FDB2B6A77D39CD5602F2125F01DEF025 /* Contacts.framework */; };
+		A17A468A0FF633D25898030261832C20 /* DependencyFixtureA.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9BFA0DB3F2851A12A91DABFBFD3A9A07 /* DependencyFixtureA.framework */; };
 		A3A3D2042DF93D8FBF171C1B0C8DA244 /* TestProjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D132EA69984F32DA9DC727B6360D9F12 /* TestProjectTests.swift */; };
+		A4015A6071C86C0F99D9F59E1F30821B /* DependencyFixtureB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BACF4A03F73DCFC3D95C21AB6C1EF7B /* DependencyFixtureB.framework */; };
 		A4A2DCF0818C891E44C2BA675B91B5CF /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C872631362DDBAFCE71E5C66EDD61432 /* Interface.storyboard */; };
+		A8D986B6AE700855C2E42510345EC88F /* DependencyFixtureA.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9175CD404DD510116BEC02347027B13A /* DependencyFixtureA.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		AF083D3FCE667FF0E55C291CB9B99328 /* TestProjectUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E9A3533E965CA602B763210583F /* TestProjectUITests.swift */; };
+		B0AAC60E0C045CDCA880C0CEB5ACC787 /* CarthageTestFixture.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B2AA735E34BB5D2B7DA7212BF5EC5971 /* CarthageTestFixture.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		B6D551AB3AC3FA4D4D1511ADCCF4EFBD /* CarthageTestFixture.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4778BFC65091F5B2B07A7F865CB6B68E /* CarthageTestFixture.framework */; };
 		BA3997DDBE08311586C3B9DA73F8DC49 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = 6A58A16491CDDF968B0D56DE7EB96D92 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		BAC0E24AC446937ADEE256F08C17D0EC /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A5F527F2590C149565181748C7DBECD /* FrameworkFile.swift */; };
 		BBB8CB2B1E70458EF477A9084959FEF5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 42B95EB66A17FBA091F50601196CAA83 /* Assets.xcassets */; };
+		BC057E5E76A42A2FD2E3E87AEAD82656 /* DependencyFixtureB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 685E6928BB8552F257AF32A1C35CD9F8 /* DependencyFixtureB.framework */; };
 		BC45B351474BD07D6C4BCD66327FFBFE /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = 6A58A16491CDDF968B0D56DE7EB96D92 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C3B73C7A69119513C543ED75DAB1C492 /* StaticLibrary_ObjC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 056A43A09CE7E88D578696D83330E45F /* StaticLibrary_ObjC.a */; };
 		C511BD950B937DB0F2FC5DDD0ED96D20 /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A5F527F2590C149565181748C7DBECD /* FrameworkFile.swift */; };
@@ -100,6 +123,7 @@
 		CF187FEB832DA1662FCB636FCC9C7926 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 187E665975BB5611AF0F27E15659D85C /* main.m */; };
 		D5221D8AE288C1875C03AD3AE9DB6411 /* Standalone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F5BD97AF0F94A15A5B7DDB75C0C7CDF /* Standalone.swift */; };
 		D7BFCCEFB53658505D03C6A9A5F0A0FA /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 306796628DD52FA55E833B65DD4F2A22 /* Model.xcdatamodeld */; settings = {COMPILER_FLAGS = "-Werror"; }; };
+		D84C788DC0E9671470E5F0DB924EC5B0 /* DependencyFixtureB.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 80192E4B3F765386B9E8CCC5F8993C9C /* DependencyFixtureB.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D8859E56A17FCD26C7ED6548C81B1324 /* Headers in Headers */ = {isa = PBXBuildFile; fileRef = 2E1E747C7BC434ADB80CC269B7B595DC /* Headers */; settings = {ATTRIBUTES = (Public, ); }; };
 		D8C50B10DC463A32C288C1A88FDCECC2 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9E17D598D98065767A04740F5E729CCA /* Localizable.strings */; };
 		DAFD488BAFDFD93F6B540648BC4CAF3A /* Result.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D296BB7355994040E197A1EE5B41F583 /* Result.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -114,8 +138,11 @@
 		EFBDE105D3397BE7AAC207B8AD3CC8BB /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D296BB7355994040E197A1EE5B41F583 /* Result.framework */; };
 		F04CBE9A3D61F78E4FEE6A09AED606C0 /* StaticLibrary_ObjC.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5A2B916A11DCC2565241359FD0114B0C /* StaticLibrary_ObjC.h */; };
 		F08C4D2A18A75CC292F45F1FB8E06CDE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 108BB29172D27BE3BD1E7F3536D14EAD /* Assets.xcassets */; };
+		F621159CB7FE95F1FDC180B0C71E984D /* DependencyFixtureB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B7FE5849A5B2AAD3E62D3A7971CBC19 /* DependencyFixtureB.framework */; };
+		F77099662D6EAF1CF810165178A5442E /* CarthageTestFixture.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 50B5CD1B9C7CDDBA1A9B530EE1560368 /* CarthageTestFixture.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F7ECF245988DABA0164DFF08607F6C31 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D296BB7355994040E197A1EE5B41F583 /* Result.framework */; };
 		F96940D55B77163B7A5B04FB2B8AF458 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C033648A37D95027845BD34562053B /* main.swift */; };
+		FBA80842047D110FE10243F18D1AAB6F /* CarthageTestFixture.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 50B5CD1B9C7CDDBA1A9B530EE1560368 /* CarthageTestFixture.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		FBDBC020EE959F32F0FF0E6252028356 /* Contacts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FDB2B6A77D39CD5602F2125F01DEF025 /* Contacts.framework */; };
 		FE01CB2392794EC5CD44533920AA051B /* StaticLibrary_ObjC.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5A2B916A11DCC2565241359FD0114B0C /* StaticLibrary_ObjC.h */; };
 		FE4C8407830C0189E1F61AFBEF16398B /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B76E17CE3574081D5BF45B449F3F46DB /* Result.framework */; };
@@ -269,6 +296,9 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				FBA80842047D110FE10243F18D1AAB6F /* CarthageTestFixture.framework in Embed Frameworks */,
+				182376FB8F63EF1A2634C420B0D2709A /* DependencyFixtureA.framework in Embed Frameworks */,
+				3C0F9F92D09B92BA43115824CC08C12B /* DependencyFixtureB.framework in Embed Frameworks */,
 				4C29EFBFCC52C847A4B6A268433D0B45 /* Result.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -345,6 +375,9 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				F77099662D6EAF1CF810165178A5442E /* CarthageTestFixture.framework in Embed Frameworks */,
+				A8D986B6AE700855C2E42510345EC88F /* DependencyFixtureA.framework in Embed Frameworks */,
+				79722BAD144B4A707B989F34A7008B16 /* DependencyFixtureB.framework in Embed Frameworks */,
 				74BC0F70B2D3EC06E623CB0FD6630D0F /* Result.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -368,6 +401,9 @@
 			dstSubfolderSpec = 10;
 			files = (
 				E32A04EF64C8989C8349A476E3DC1F19 /* Framework.framework in Embed Frameworks */,
+				B0AAC60E0C045CDCA880C0CEB5ACC787 /* CarthageTestFixture.framework in Embed Frameworks */,
+				1FF485BF4B0845F504280D7FD1AD7DF6 /* DependencyFixtureA.framework in Embed Frameworks */,
+				D84C788DC0E9671470E5F0DB924EC5B0 /* DependencyFixtureB.framework in Embed Frameworks */,
 				DAFD488BAFDFD93F6B540648BC4CAF3A /* Result.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -410,6 +446,7 @@
 		0BB1B49A91B892152D68ED76D9D4E759 /* libc++.tbd */ = {isa = PBXFileReference; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		0C5AC2545AE4D4F7F44E2E9B53F03FF0 /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Result.framework; sourceTree = "<group>"; };
 		0D09D243DBCF9D32E239F1E8A64D75AB /* App_watchOS Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "App_watchOS Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		0D57001AD1EEEB31B0EEEBE27151A8D3 /* DependencyFixtureA.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = DependencyFixtureA.framework; sourceTree = "<group>"; };
 		0F32AD342EF6A4C7F6324B36AB349105 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0F5BD97AF0F94A15A5B7DDB75C0C7CDF /* Standalone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Standalone.swift; sourceTree = "<group>"; };
 		102A08142A31E44F4ED52649F22BB71E /* base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = base.xcconfig; sourceTree = "<group>"; };
@@ -419,6 +456,7 @@
 		148B7C933698BCC4F1DBA979CF051F81 /* XPC_Service.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XPC_Service.m; sourceTree = "<group>"; };
 		16D662EE577E4CD6AFF39D66C382B13F /* config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = config.xcconfig; sourceTree = "<group>"; };
 		187E665975BB5611AF0F27E15659D85C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		1B7FE5849A5B2AAD3E62D3A7971CBC19 /* DependencyFixtureB.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = DependencyFixtureB.framework; sourceTree = "<group>"; };
 		1D0C79A8C750EC0DE748C463D6992773 /* StaticLibrary_ObjC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StaticLibrary_ObjC.m; sourceTree = "<group>"; };
 		22237B8EBD9E6BE8EBC8735F5AA17192 /* XPC Service.xpc */ = {isa = PBXFileReference; includeInIndex = 0; path = "XPC Service.xpc"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2233774B86539B1574D206B07A805A8F /* Framework2.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Framework2.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -433,8 +471,11 @@
 		3EF21DF245F66BEF5446AAEF769A4194 /* Framework2.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Framework2.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		41FC82ED1C4C3B7B3D7B2FB721574442 /* Framework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Framework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		42B95EB66A17FBA091F50601196CAA83 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		4778BFC65091F5B2B07A7F865CB6B68E /* CarthageTestFixture.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CarthageTestFixture.framework; sourceTree = "<group>"; };
+		4BACF4A03F73DCFC3D95C21AB6C1EF7B /* DependencyFixtureB.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = DependencyFixtureB.framework; sourceTree = "<group>"; };
 		4BF4D16042A80576D259160C97AD2C2E /* Model 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 3.xcdatamodel"; sourceTree = "<group>"; };
 		4D0BF47DF71A6DBA33ED23FD22D023EF /* StaticLibrary_ObjC.a */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = archive.ar; path = StaticLibrary_ObjC.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		50B5CD1B9C7CDDBA1A9B530EE1560368 /* CarthageTestFixture.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CarthageTestFixture.framework; sourceTree = "<group>"; };
 		5116B3B58070BCD09F1487BAFC210EE0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		553D289724905857912C7A1D65ADD26F /* outputList.xcfilelist */ = {isa = PBXFileReference; path = outputList.xcfilelist; sourceTree = "<group>"; };
 		564E35E83C95F5591345B7722A59AA4E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -442,6 +483,7 @@
 		587B9E9A3533E965CA602B763210583F /* TestProjectUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestProjectUITests.swift; sourceTree = "<group>"; };
 		5A2B916A11DCC2565241359FD0114B0C /* StaticLibrary_ObjC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StaticLibrary_ObjC.h; sourceTree = "<group>"; };
 		6177CC6263783487E93F7F4D07620345 /* Framework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Framework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		685E6928BB8552F257AF32A1C35CD9F8 /* DependencyFixtureB.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = DependencyFixtureB.framework; sourceTree = "<group>"; };
 		6A58A16491CDDF968B0D56DE7EB96D92 /* MyFramework.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyFramework.h; sourceTree = "<group>"; };
 		6AC91042453E18DF74BA1C0F957D87DC /* StaticLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaticLibrary.swift; sourceTree = "<group>"; };
 		6B1603BA83AA0C7B94E45168D7E684C4 /* ResourceFolder */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ResourceFolder; path = Resources/ResourceFolder; sourceTree = SOURCE_ROOT; };
@@ -458,12 +500,16 @@
 		7DE38C10AB71A47B786D5BF205BA002F /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		7F1A2F579A6F79C62DDA05712E2AB1F7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7FDC16E1938AA114B67D87A9822E86D7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
+		80192E4B3F765386B9E8CCC5F8993C9C /* DependencyFixtureB.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = DependencyFixtureB.framework; sourceTree = "<group>"; };
 		814822136AF3C64428D69DD62246E8A2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		8172E4733F98AD213CB42FA94AEBBA98 /* CarthageTestFixture.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CarthageTestFixture.framework; sourceTree = "<group>"; };
 		8A9274BE42A03DC5DA1FAD04992ED6E3 /* Framework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Framework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8CAF6C55B555E3E1352645B630CCB23E /* ExtensionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDelegate.swift; sourceTree = "<group>"; };
+		9175CD404DD510116BEC02347027B13A /* DependencyFixtureA.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = DependencyFixtureA.framework; sourceTree = "<group>"; };
 		9390121B4ECBB1B796C7CBBDD32C4DD4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		93C033648A37D95027845BD34562053B /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		9A87A926D563773658FB87FEEE4DD132 /* iMessageApp.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = iMessageApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9BFA0DB3F2851A12A91DABFBFD3A9A07 /* DependencyFixtureA.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = DependencyFixtureA.framework; sourceTree = "<group>"; };
 		9F27382DD66E26C059E26EFE8D6BEF4D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A0DC40025AB59B688E758829FB7EDB95 /* Framework2.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Framework2.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A3F6BCB5FEFB16F1BA368059F4B1505A /* InterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterfaceController.swift; sourceTree = "<group>"; };
@@ -473,8 +519,10 @@
 		AB055761199DF36DB0C629A608A4EF3A /* Framework2.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Framework2.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B17B8D9C9B391332CD176A355AD24669 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LocalizedStoryboard.storyboard; sourceTree = "<group>"; };
 		B1C33BB070583BE3B0EC0E68083FE89C /* App_iOS.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = App_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B2AA735E34BB5D2B7DA7212BF5EC5971 /* CarthageTestFixture.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CarthageTestFixture.framework; sourceTree = "<group>"; };
 		B419F22EB75EDD4AB9B92F32F7D39755 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B76E17CE3574081D5BF45B449F3F46DB /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Result.framework; sourceTree = "<group>"; };
+		B9CBE843396A0F73A18F4B1138A386B3 /* DependencyFixtureA.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = DependencyFixtureA.framework; sourceTree = "<group>"; };
 		BA040F1F7D6CA08878323A551349F18D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BB178D03E75929F3F5B10C56838882EC /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Result.framework; sourceTree = "<group>"; };
 		BECEA4A483ADEB8158F640B356D10090 /* Tool */ = {isa = PBXFileReference; includeInIndex = 0; path = Tool; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -510,6 +558,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3C5A4AC7604AE8106630F578F7FFE642 /* CarthageTestFixture.framework in Frameworks */,
+				0DB8E1DA22F48A2A2466B0B8CCF99BEC /* DependencyFixtureA.framework in Frameworks */,
+				BC057E5E76A42A2FD2E3E87AEAD82656 /* DependencyFixtureB.framework in Frameworks */,
 				FBDBC020EE959F32F0FF0E6252028356 /* Contacts.framework in Frameworks */,
 				6CE2C63470E541C3A04F3E9ED6B3F10B /* Framework2.framework in Frameworks */,
 				DE50B077EE4BFABAF128321B2A13886F /* Framework.framework in Frameworks */,
@@ -523,6 +574,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2D2427F64DD9C91EEA8B9B78E5374B3C /* CarthageTestFixture.framework in Frameworks */,
+				A17A468A0FF633D25898030261832C20 /* DependencyFixtureA.framework in Frameworks */,
+				F621159CB7FE95F1FDC180B0C71E984D /* DependencyFixtureB.framework in Frameworks */,
 				8BD6E6E86A37882FB7C802E33DD03105 /* Result.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -531,6 +585,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B6D551AB3AC3FA4D4D1511ADCCF4EFBD /* CarthageTestFixture.framework in Frameworks */,
+				439FAA5FF3FFFCEC79612B22DA1C654C /* DependencyFixtureA.framework in Frameworks */,
+				A4015A6071C86C0F99D9F59E1F30821B /* DependencyFixtureB.framework in Frameworks */,
 				FE4C8407830C0189E1F61AFBEF16398B /* Result.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -539,6 +596,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7F6364F98A0701EA7F5194BEA6E4B02A /* CarthageTestFixture.framework in Frameworks */,
+				86EF8D61ABD8CEB1E2B82D47F00AABA3 /* DependencyFixtureA.framework in Frameworks */,
+				360A9448CE399E95CEC759CD0FEF7918 /* DependencyFixtureB.framework in Frameworks */,
 				5CB4C10148DD10D82B5ADBBDAD52BCD1 /* Result.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -547,6 +607,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				899A16B3BC09973811196FE1B4378CED /* CarthageTestFixture.framework in Frameworks */,
+				5F8EBB604076B9E5BD1FFEE701BFE22F /* DependencyFixtureA.framework in Frameworks */,
+				260126FF16180EC41A12EA5C75DAF0B8 /* DependencyFixtureB.framework in Frameworks */,
 				A1144E47C6EFE30830087F384717526E /* Contacts.framework in Frameworks */,
 				82D432D23D2ACC56338BE911465E6F89 /* Framework.framework in Frameworks */,
 				F7ECF245988DABA0164DFF08607F6C31 /* Result.framework in Frameworks */,
@@ -559,6 +622,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1B3F19D52946470A5D235DF307E4C10C /* CarthageTestFixture.framework in Frameworks */,
+				380BEFC87DBDB18C152712BE148616EF /* DependencyFixtureA.framework in Frameworks */,
+				223789306EC8813067A7C8C37740466F /* DependencyFixtureB.framework in Frameworks */,
 				EFBDE105D3397BE7AAC207B8AD3CC8BB /* Result.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -633,6 +699,9 @@
 		2935454D05445817952E145D261767D4 /* watchOS */ = {
 			isa = PBXGroup;
 			children = (
+				8172E4733F98AD213CB42FA94AEBBA98 /* CarthageTestFixture.framework */,
+				9BFA0DB3F2851A12A91DABFBFD3A9A07 /* DependencyFixtureA.framework */,
+				1B7FE5849A5B2AAD3E62D3A7971CBC19 /* DependencyFixtureB.framework */,
 				BB178D03E75929F3F5B10C56838882EC /* Result.framework */,
 			);
 			path = watchOS;
@@ -759,6 +828,9 @@
 		912A7321F662FE41BAAEED67F628711F /* Mac */ = {
 			isa = PBXGroup;
 			children = (
+				B2AA735E34BB5D2B7DA7212BF5EC5971 /* CarthageTestFixture.framework */,
+				B9CBE843396A0F73A18F4B1138A386B3 /* DependencyFixtureA.framework */,
+				80192E4B3F765386B9E8CCC5F8993C9C /* DependencyFixtureB.framework */,
 				D296BB7355994040E197A1EE5B41F583 /* Result.framework */,
 			);
 			path = Mac;
@@ -862,6 +934,9 @@
 		D557819B1EE5B42A0A3DD4D1F3D982C4 /* tvOS */ = {
 			isa = PBXGroup;
 			children = (
+				4778BFC65091F5B2B07A7F865CB6B68E /* CarthageTestFixture.framework */,
+				0D57001AD1EEEB31B0EEEBE27151A8D3 /* DependencyFixtureA.framework */,
+				4BACF4A03F73DCFC3D95C21AB6C1EF7B /* DependencyFixtureB.framework */,
 				B76E17CE3574081D5BF45B449F3F46DB /* Result.framework */,
 			);
 			path = tvOS;
@@ -870,6 +945,9 @@
 		DBF93518FC96D95A5455271356EB57FF /* iOS */ = {
 			isa = PBXGroup;
 			children = (
+				50B5CD1B9C7CDDBA1A9B530EE1560368 /* CarthageTestFixture.framework */,
+				9175CD404DD510116BEC02347027B13A /* DependencyFixtureA.framework */,
+				685E6928BB8552F257AF32A1C35CD9F8 /* DependencyFixtureB.framework */,
 				0C5AC2545AE4D4F7F44E2E9B53F03FF0 /* Result.framework */,
 			);
 			path = iOS;
@@ -1608,10 +1686,16 @@
 			files = (
 			);
 			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/CarthageTestFixture.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/DependencyFixtureA.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/DependencyFixtureB.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Result.framework",
 			);
 			name = Carthage;
 			outputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/CarthageTestFixture.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/DependencyFixtureA.framework",
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/DependencyFixtureB.framework",
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Result.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;

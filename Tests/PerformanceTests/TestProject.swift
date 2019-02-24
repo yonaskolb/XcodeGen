@@ -38,8 +38,8 @@ extension Project {
                 dependencies: [
                     Dependency(type: .target, reference: "Framework_\(platform)"),
                     Dependency(type: .target, reference: "Framework2_\(platform)"),
-                    Dependency(type: .carthage, reference: "Alamofire"),
-                    Dependency(type: .carthage, reference: "BrightFutures"),
+                    Dependency(type: .carthage(includeRelated: false), reference: "Alamofire"),
+                    Dependency(type: .carthage(includeRelated: false), reference: "BrightFutures"),
                 ],
                 scheme: scheme
             )
@@ -73,7 +73,7 @@ extension Project {
                     TargetSource(path: "Framework_\(platform)"),
                 ],
                 dependencies: [
-                    Dependency(type: .carthage, reference: "Alamofire"),
+                    Dependency(type: .carthage(includeRelated: false), reference: "Alamofire"),
                 ],
                 scheme: scheme
             )
@@ -89,8 +89,8 @@ extension Project {
                 sources: [TargetSource(path: "Framework2_\(platform)")],
                 dependencies: [
                     Dependency(type: .target, reference: "Framework_\(platform)"),
-                    Dependency(type: .carthage, reference: "Alamofire"),
-                    Dependency(type: .carthage, reference: "BrightFutures"),
+                    Dependency(type: .carthage(includeRelated: false), reference: "Alamofire"),
+                    Dependency(type: .carthage(includeRelated: false), reference: "BrightFutures"),
                 ],
                 scheme: scheme
             )
