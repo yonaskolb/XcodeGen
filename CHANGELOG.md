@@ -5,6 +5,9 @@
 #### Added
 - Added `missingConfigFiles` to `options.disabledValidations` to optionally skip checking for the existence of config files.
 
+#### Fixed
+- Sources outside a project spec's directory will be correctly referenced as relative paths in the project file. [#524](https://github.com/yonaskolb/XcodeGen/pull/524)
+
 ## 2.2.0
 
 #### Added
