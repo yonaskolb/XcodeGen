@@ -6,6 +6,18 @@ extension Path {
     public func byRemovingBase(path: Path) -> Path {
         return Path(normalize().string.replacingOccurrences(of: "\(path.normalize().string)/", with: ""))
     }
+
+    /// Returns a Path without any inner parent directory references.
+    ///
+    /// Similar to `NSString.standardizingPath`, but works with relative paths.
+    ///
+    /// ### Examples
+    /// - `a/b/../c` simplifies to `a/c`
+    /// - `../a/b` simplifies to `../a/b`
+    /// - `a/../../c` simplifies to `../c`
+    public func simplifyingParentDirectoryReferences() -> Path {
+        return normalize().components.reduce(Path(), +)
+    }
     
     /// Returns the relative path necessary to go from `base` to `self`.
     ///
@@ -55,30 +67,8 @@ extension Path {
             throw PathArgumentError.unmatchedAbsolutePath
         }
         
-        return Path(components: try pathComponents(for: ArraySlice(normalize().components.strippingParentDirectoryReferences()),
-                                                   relativeTo: ArraySlice(base.normalize().components.strippingParentDirectoryReferences()),
+        return Path(components: try pathComponents(for: ArraySlice(simplifyingParentDirectoryReferences().components),
+                                                   relativeTo: ArraySlice(base.simplifyingParentDirectoryReferences().components),
                                                    memo: []))
-    }
-}
-
-private extension Array where Element == String {
-    /// Removes inner `..`s from an array of path components.
-    ///
-    /// Foundation does this in `NSString.standardizingPath`, but only for absolute paths.
-    func strippingParentDirectoryReferences() -> [Element] {
-        var parents = 0
-        let components = reversed().filter { pathComponent in
-            if pathComponent == ".." {
-                parents += 1
-                return false
-            } else if parents > 0 {
-                parents -= 1
-                return false
-            } else {
-                return true
-            }
-        }
-        
-        return Array(repeating: "..", count: parents) + components.reversed()
     }
 }

@@ -119,7 +119,7 @@ class SourceGenerator {
         if let fileReference = fileReferencesByPath[fileReferenceKey] {
             return fileReference
         } else {
-            let fileReferencePath = path.byRemovingBase(path: inPath)
+            let fileReferencePath = (try? path.relativePath(from: inPath)) ?? path
             var fileReferenceName: String? = name ?? fileReferencePath.lastComponent
             if fileReferencePath.string == fileReferenceName {
                 fileReferenceName = nil
@@ -474,7 +474,7 @@ class SourceGenerator {
         var sourcePath = path
         switch type {
         case .folder:
-            let folderPath = Path(targetSource.path)
+            let folderPath = project.basePath + Path(targetSource.path)
             let fileReference = getFileReference(
                 path: folderPath,
                 inPath: project.basePath,

@@ -811,7 +811,7 @@ public class PBXProjGenerator {
                     searchForPlist = false
                 }
                 if let plistPath = plistPath {
-                    buildSettings["INFOPLIST_FILE"] = plistPath.byRemovingBase(path: project.basePath)
+                    buildSettings["INFOPLIST_FILE"] = (try? plistPath.relativePath(from: project.basePath)) ?? plistPath
                 }
             }
 

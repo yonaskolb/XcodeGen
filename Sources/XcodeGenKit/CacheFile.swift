@@ -10,7 +10,7 @@ public class CacheFile {
         guard #available(OSX 10.13, *) else { return nil }
 
         let files = Array(Set(project.allFiles))
-            .map { $0.byRemovingBase(path: project.basePath).string }
+            .map { ((try? $0.relativePath(from: project.basePath)) ?? $0).string }
             .sorted { $0.localizedStandardCompare($1) == .orderedAscending }
             .joined(separator: "\n")
 
