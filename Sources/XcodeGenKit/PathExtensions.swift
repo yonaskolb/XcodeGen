@@ -2,11 +2,6 @@ import Foundation
 import PathKit
 
 extension Path {
-
-    public func byRemovingBase(path: Path) -> Path {
-        return Path(normalize().string.replacingOccurrences(of: "\(path.normalize().string)/", with: ""))
-    }
-
     /// Returns a Path without any inner parent directory references.
     ///
     /// Similar to `NSString.standardizingPath`, but works with relative paths.
