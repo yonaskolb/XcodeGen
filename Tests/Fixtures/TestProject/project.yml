@@ -41,6 +41,8 @@ targets:
       - path: App_macOS
       - path: StandaloneFiles/Standalone.swift
       - path: Vendor/SomeXPCService.xpc
+      - path: NonExisting
+        optional: true
     dependencies:
       - target: Framework_macOS
       - target: XPC Service
