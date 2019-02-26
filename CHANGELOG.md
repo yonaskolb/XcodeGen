@@ -7,6 +7,9 @@
 - Added `missingConfigFiles` to `options.disabledValidations` to optionally skip checking for the existence of config files.
 - Added ability to automatically include Carthage related dependencies via `includeRelated: true` [#506](https://github.com/yonaskolb/XcodeGen/pull/506) @rpassis
 
+#### Fixed
+- Sources outside a project spec's directory will be correctly referenced as relative paths in the project file. [#524](https://github.com/yonaskolb/XcodeGen/pull/524)
+
 ## 2.2.0
 
 #### Added
