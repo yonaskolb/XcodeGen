@@ -1,6 +1,7 @@
 import Foundation
 import JSONUtilities
 import xcodeproj
+import PathKit
 
 public struct LegacyTarget: Equatable {
     public var toolPath: String
@@ -111,21 +112,24 @@ extension Target: CustomStringConvertible {
 }
 
 extension Target: PathContainer {
-
+    static var singleTargetPathProperties: [PathProperty] {
+        return [
+            .string("sources"),
+            .object("sources", TargetSource.pathProperties),
+            .string("configFiles"),
+            .object("dependencies", Dependency.pathProperties),
+            .object("info", Plist.pathProperties),
+            .object("entitlements", Plist.pathProperties),
+            .object("preBuildScripts", BuildScript.pathProperties),
+            .object("prebuildScripts", BuildScript.pathProperties),
+            .object("postCompileScripts", BuildScript.pathProperties),
+            .object("postBuildScripts", BuildScript.pathProperties),
+        ]
+    }
+    
     static var pathProperties: [PathProperty] {
         return [
-            .dictionary([
-                .string("sources"),
-                .object("sources", TargetSource.pathProperties),
-                .string("configFiles"),
-                .object("dependencies", Dependency.pathProperties),
-                .object("info", Plist.pathProperties),
-                .object("entitlements", Plist.pathProperties),
-                .object("preBuildScripts", BuildScript.pathProperties),
-                .object("prebuildScripts", BuildScript.pathProperties),
-                .object("postCompileScripts", BuildScript.pathProperties),
-                .object("postBuildScripts", BuildScript.pathProperties),
-            ]),
+            .dictionary(singleTargetPathProperties),
         ]
     }
 }
@@ -148,6 +152,11 @@ extension Target {
                         mergedDictionary = templateDictionary.merged(onto: mergedDictionary)
                     }
                 }
+
+                if let relativePath = target["relative_path"] as? String {
+                    mergedDictionary = Target.singleTargetPathProperties.resolvingPaths(in: mergedDictionary, relativeTo: Path(relativePath))
+                }
+                
                 target = target.merged(onto: mergedDictionary)
                 target = target.replaceString("$target_name", with: targetName)
             }
