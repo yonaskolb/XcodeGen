@@ -463,6 +463,11 @@ class SourceGenerator {
     /// creates source files
     private func getSourceFiles(targetType: PBXProductType, targetSource: TargetSource, path: Path) throws -> [SourceFile] {
 
+        if targetSource.optional && !Path(targetSource.path).exists {
+            // Is optional so if it doesn't exist just return an empty array
+            return []
+        }
+
         // generate excluded paths
         targetSourceExcludePaths = getSourceExcludes(targetSource: targetSource)
 
