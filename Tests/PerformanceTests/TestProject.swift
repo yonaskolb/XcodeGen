@@ -26,8 +26,8 @@ extension Project {
                 XCScheme.EnvironmentVariable(variable: "ENV", value: "HELLO", enabled: true),
                 XCScheme.EnvironmentVariable(variable: "ENV2", value: "HELLO", enabled: false),
             ],
-            preActions: [Scheme.ExecutionAction(name: "run", script: "script")],
-            postActions: [Scheme.ExecutionAction(name: "run", script: "script")]
+            preActions: [Scheme.ExecutionAction(name: "run", script: .script("script"))],
+            postActions: [Scheme.ExecutionAction(name: "run", script: .script("script"))]
         )
         for platform in Platform.all {
             let appTarget = Target(

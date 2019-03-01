@@ -33,10 +33,10 @@ public struct Scheme: Equatable {
     }
 
     public struct ExecutionAction: Equatable {
-        public var script: String
+        public var script: ScriptType
         public var name: String
         public var settingsTarget: String?
-        public init(name: String, script: String, settingsTarget: String? = nil) {
+        public init(name: String, script: ScriptType, settingsTarget: String? = nil) {
             self.script = script
             self.name = name
             self.settingsTarget = settingsTarget
@@ -212,9 +212,17 @@ protocol BuildAction: Equatable {
 extension Scheme.ExecutionAction: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
-        script = try jsonDictionary.json(atKeyPath: "script")
+        script = try ScriptType(jsonDictionary: jsonDictionary)
         name = jsonDictionary.json(atKeyPath: "name") ?? "Run Script"
         settingsTarget = jsonDictionary.json(atKeyPath: "settingsTarget")
+    }
+}
+
+extension Scheme.ExecutionAction: PathContainer {
+    static var pathProperties: [PathProperty] {
+        return [
+            .string("path"),
+        ]
     }
 }
 

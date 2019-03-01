@@ -39,7 +39,7 @@ class SchemeGeneratorTests: XCTestCase {
 
             let buildTarget = Scheme.BuildTarget(target: app.name)
             $0.it("generates scheme") {
-                let preAction = Scheme.ExecutionAction(name: "Script", script: "echo Starting", settingsTarget: app.name)
+                let preAction = Scheme.ExecutionAction(name: "Script", script: .script("echo Starting"), settingsTarget: app.name)
                 let scheme = Scheme(
                     name: "MyScheme",
                     build: Scheme.Build(targets: [buildTarget], preActions: [preAction])
@@ -177,8 +177,8 @@ class SchemeGeneratorTests: XCTestCase {
             $0.it("generates pre and post actions for target schemes") {
                 var target = app
                 target.scheme = TargetScheme(
-                    preActions: [.init(name: "Run", script: "do")],
-                    postActions: [.init(name: "Run2", script: "post", settingsTarget: "MyApp")]
+                    preActions: [.init(name: "Run", script: .script("do"))],
+                    postActions: [.init(name: "Run2", script: .script("post"), settingsTarget: "MyApp")]
                 )
 
                 let project = Project(name: "test", targets: [target, framework])

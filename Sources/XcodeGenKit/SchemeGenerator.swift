@@ -1,4 +1,5 @@
 import Foundation
+import PathKit
 import ProjectSpec
 import xcodeproj
 
@@ -104,14 +105,23 @@ public class SchemeGenerator {
 
         let buildActionEntries: [XCScheme.BuildAction.Entry] = scheme.build.targets.map(getBuildEntry)
 
-        func getExecutionAction(_ action: Scheme.ExecutionAction) -> XCScheme.ExecutionAction {
+        func getExecutionAction(_ action: Scheme.ExecutionAction) throws -> XCScheme.ExecutionAction {
             // ExecutionActions can require the use of build settings. Xcode allows the settings to come from a build or test target.
             let environmentBuildable = action.settingsTarget.flatMap { settingsTarget in
-                return (buildActionEntries + testBuildTargetEntries)
+                (buildActionEntries + testBuildTargetEntries)
                     .first { settingsTarget == $0.buildableReference.blueprintName }?
                     .buildableReference
             }
-            return XCScheme.ExecutionAction(scriptText: action.script, title: action.name, environmentBuildable: environmentBuildable)
+
+            let shellScript: String
+            switch action.script {
+            case let .path(path):
+                shellScript = try (project.basePath + path).read()
+            case let .script(script):
+                shellScript = script
+            }
+
+            return XCScheme.ExecutionAction(scriptText: shellScript, title: action.name, environmentBuildable: environmentBuildable)
         }
 
         let target = project.getTarget(scheme.build.targets.first!.target)
@@ -122,8 +132,8 @@ public class SchemeGenerator {
 
         let buildAction = XCScheme.BuildAction(
             buildActionEntries: buildActionEntries,
-            preActions: scheme.build.preActions.map(getExecutionAction),
-            postActions: scheme.build.postActions.map(getExecutionAction),
+            preActions: try scheme.build.preActions.map(getExecutionAction),
+            postActions: try scheme.build.postActions.map(getExecutionAction),
             parallelizeBuild: scheme.build.parallelizeBuild,
             buildImplicitDependencies: scheme.build.buildImplicitDependencies
         )
@@ -149,8 +159,8 @@ public class SchemeGenerator {
             buildConfiguration: scheme.test?.config ?? defaultDebugConfig.name,
             macroExpansion: buildableReference,
             testables: testables,
-            preActions: scheme.test?.preActions.map(getExecutionAction) ?? [],
-            postActions: scheme.test?.postActions.map(getExecutionAction) ?? [],
+            preActions: try scheme.test?.preActions.map(getExecutionAction) ?? [],
+            postActions: try scheme.test?.postActions.map(getExecutionAction) ?? [],
             shouldUseLaunchSchemeArgsEnv: scheme.test?.shouldUseLaunchSchemeArgsEnv ?? true,
             codeCoverageEnabled: scheme.test?.gatherCoverageData ?? false,
             commandlineArguments: testCommandLineArgs,
@@ -160,8 +170,8 @@ public class SchemeGenerator {
         let launchAction = XCScheme.LaunchAction(
             buildableProductRunnable: shouldExecuteOnLaunch ? productRunable : nil,
             buildConfiguration: scheme.run?.config ?? defaultDebugConfig.name,
-            preActions: scheme.run?.preActions.map(getExecutionAction) ?? [],
-            postActions: scheme.run?.postActions.map(getExecutionAction) ?? [],
+            preActions: try scheme.run?.preActions.map(getExecutionAction) ?? [],
+            postActions: try scheme.run?.postActions.map(getExecutionAction) ?? [],
             macroExpansion: shouldExecuteOnLaunch ? nil : buildableReference,
             commandlineArguments: launchCommandLineArgs,
             environmentVariables: launchVariables
@@ -170,8 +180,8 @@ public class SchemeGenerator {
         let profileAction = XCScheme.ProfileAction(
             buildableProductRunnable: productRunable,
             buildConfiguration: scheme.profile?.config ?? defaultReleaseConfig.name,
-            preActions: scheme.profile?.preActions.map(getExecutionAction) ?? [],
-            postActions: scheme.profile?.postActions.map(getExecutionAction) ?? [],
+            preActions: try scheme.profile?.preActions.map(getExecutionAction) ?? [],
+            postActions: try scheme.profile?.postActions.map(getExecutionAction) ?? [],
             shouldUseLaunchSchemeArgsEnv: scheme.profile?.shouldUseLaunchSchemeArgsEnv ?? true,
             commandlineArguments: profileCommandLineArgs,
             environmentVariables: profileVariables
@@ -183,8 +193,8 @@ public class SchemeGenerator {
             buildConfiguration: scheme.archive?.config ?? defaultReleaseConfig.name,
             revealArchiveInOrganizer: scheme.archive?.revealArchiveInOrganizer ?? true,
             customArchiveName: scheme.archive?.customArchiveName,
-            preActions: scheme.archive?.preActions.map(getExecutionAction) ?? [],
-            postActions: scheme.archive?.postActions.map(getExecutionAction) ?? []
+            preActions: try scheme.archive?.preActions.map(getExecutionAction) ?? [],
+            postActions: try scheme.archive?.postActions.map(getExecutionAction) ?? []
         )
 
         return XCScheme(

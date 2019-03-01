@@ -406,8 +406,8 @@ class SpecLoadingTests: XCTestCase {
                     gatherCoverageData: true,
                     commandLineArguments: ["ENV1": true],
                     environmentVariables: [XCScheme.EnvironmentVariable(variable: "TEST_VAR", value: "TEST_VAL", enabled: true)],
-                    preActions: [.init(name: "Do Thing", script: "dothing", settingsTarget: "test")],
-                    postActions: [.init(name: "Run Script", script: "hello")]
+                    preActions: [.init(name: "Do Thing", script: .script("dothing"), settingsTarget: "test")],
+                    postActions: [.init(name: "Run Script", script: .script("hello"))]
                 )
 
                 try expect(target.scheme) == scheme
@@ -458,7 +458,7 @@ class SpecLoadingTests: XCTestCase {
                 ]
                 try expect(scheme.name) == "Scheme"
                 try expect(scheme.build.targets) == expectedTargets
-                try expect(scheme.build.preActions.first?.script) == "echo Before Build"
+                try expect(scheme.build.preActions.first?.script) == .script("echo Before Build")
                 try expect(scheme.build.preActions.first?.name) == "Before Build"
                 try expect(scheme.build.preActions.first?.settingsTarget) == "Target1"
 
