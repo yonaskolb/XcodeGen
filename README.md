@@ -1,4 +1,4 @@
-<p align="center">
+g<p align="center">
 <a href="https://github.com/yonaskolb/XcodeGen">
 <img src="Assets/Logo_animated.gif" alt="XcodeGen" />
 </a>
@@ -136,7 +136,7 @@ git clone https://github.com/yonaskolb/XcodeGen.git
 cd XcodeGen
 swift package generate-xcodeproj
 ```
-This use Swift Project Manager to create an `xcodeproj` file that you can open, edit and run in Xcode, which makes editing any code easier.
+This uses Swift Project Manager to create an `xcodeproj` file that you can open, edit and run in Xcode, which makes editing any code easier.
 
 If you want to pass any required arguments when running in Xcode, you can edit the scheme to include launch arguments.
 
