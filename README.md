@@ -1,4 +1,4 @@
-g<p align="center">
+<p align="center">
 <a href="https://github.com/yonaskolb/XcodeGen">
 <img src="Assets/Logo_animated.gif" alt="XcodeGen" />
 </a>
