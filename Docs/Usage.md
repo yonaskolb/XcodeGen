@@ -5,7 +5,7 @@
     - [Setting Groups](#setting-groups)
     - [xcconfig files](#xcconfig-files)
 - [Use dependencies](#use-dependencies)
-    - [Cocoapods](#cocoapods)
+    - [CocoaPods](#cocoapods)
     - [Carthage](#carthage)
     - [SDK](#sdk)
 
@@ -95,8 +95,8 @@ DEVELOPMENT_TEAM=XXXXXXXXX xcodebuild ...
 
 Each target can declare one or more dependencies. See [Dependency](ProjectSpec.md#dependency) in the ProjectSpec for more info about all the properties
 
-### Cocoapods
-Use your `podfile` as normal. The pods themselves don't need to be referenced in the project spec. After you generate your project simply run `pod install` which will integrate with your project and create a workspace.
+### CocoaPods
+Use your `Podfile` as normal. The pods themselves don't need to be referenced in the project spec. After you generate your project simply run `pod install` which will integrate with your project and create a workspace.
 
 ### Carthage
 XcodeGen makes integrating Carthage dependencies super easy!
