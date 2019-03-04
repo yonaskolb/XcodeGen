@@ -1,6 +1,6 @@
 # Frequently asked questions
 - [Can I still check in my project](#can-i-still-check-in-my-project)
-- [Can I use Cocoapods](#can-i-use-cocoapods)
+- [Can I use CocoaPods](#can-i-use-cocoapods)
 - [How do I setup code signing](#how-do-i-setup-code-signing)
 
 ## Can I still check in my project
@@ -12,7 +12,7 @@ If files were added or removed in the new checkout you will most likely need to 
 
 For now you can always add xcodegen as a git `post-checkout` hook.
  
-## Can I use Cocoapods
+## Can I use CocoaPods
 Yes, simply generate your project and then run `pod install` which will integrate with your project and create a workspace.
 
 ## How do I setup code signing
