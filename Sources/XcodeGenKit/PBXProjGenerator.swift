@@ -518,11 +518,15 @@ public class PBXProjGenerator {
                     )
                 }
 
-                let buildFile = addObject(
-                    PBXBuildFile(file: fileReference, settings: getDependencyFrameworkSettings(dependency: dependency))
-                )
-
-                targetFrameworkBuildFiles.append(buildFile)
+                
+                if dependency.link ?? true {
+                    let buildFile = addObject(
+                        PBXBuildFile(file: fileReference, settings: getDependencyFrameworkSettings(dependency: dependency))
+                    )
+                    
+                    targetFrameworkBuildFiles.append(buildFile)
+                }
+                
                 if !frameworkFiles.contains(fileReference) {
                     frameworkFiles.append(fileReference)
                 }
