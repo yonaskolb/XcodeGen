@@ -256,7 +256,7 @@ This will provide default build settings for a certain platform. It can be any o
 **Multi Platform targets**
 
 You can also specify an array of platforms. This will generate a target for each platform.
-If deployment target is specified, it will be used for these targets. Or else deplyment target specified in [Options](#options) will be used.
+If `deploymenTarget` is specified for a multi platform target, it can have different values per platform similar to how it's defined in [Options](#options). See below for an example.
 If you reference the string `$platform` anywhere within the target spec, that will be replaced with the platform.
 
 The generated targets by default will have a suffix of `_$platform` applied, you can change this by specifying a `platformSuffix` or `platformPrefix`.
