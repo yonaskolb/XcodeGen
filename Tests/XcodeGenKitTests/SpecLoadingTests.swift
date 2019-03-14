@@ -363,6 +363,127 @@ class SpecLoadingTests: XCTestCase {
                 try expect(target.configFiles["debug"]) == "Configs/Framework/debug.xcconfig" // replaces $target_name
             }
 
+            $0.it("parses nested target templates") {
+
+                let targetDictionary: [String: Any] = [
+                    "deploymentTarget": "1.2.0",
+                    "sources": ["targetSource"],
+                    "templates": ["temp2"],
+                ]
+
+                let project = try getProjectSpec([
+                    "targets": ["Framework": targetDictionary],
+                    "targetTemplates": [
+                        "temp": [
+                            "type": "framework",
+                            "platform": "iOS",
+                            "sources": ["nestedTemplateSource1"],
+                        ],
+                        "temp1": [
+                            "type": "application",
+                            "sources": ["nestedTemplateSource2"],
+                        ],
+                        "temp2": [
+                            "platform": "tvOS",
+                            "deploymentTarget": "1.1.0",
+                            "configFiles": ["debug": "Configs/$target_name/debug.xcconfig"],
+                            "templates": ["temp", "temp1"],
+                            "sources": ["templateSource"],
+                        ]
+                    ],
+                ])
+
+                let target = project.targets.first!
+                try expect(target.type) == .application // uses value of last nested template
+                try expect(target.platform) == .tvOS // uses latest value
+                try expect(target.deploymentTarget) == Version("1.2.0") // keeps value
+                try expect(target.sources) == ["nestedTemplateSource1", "nestedTemplateSource2", "templateSource", "targetSource"] // merges array in order
+                try expect(target.configFiles["debug"]) == "Configs/Framework/debug.xcconfig" // replaces $target_name
+            }
+
+            $0.it("parses complex nested target templates") {
+
+                let targetDictionary: [String: Any] = [
+                    "type": "framework",
+                    "platform": "iOS",
+                    "templates": ["temp"],
+                    "sources": ["target"],
+                ]
+
+                let project = try getProjectSpec([
+                    "targets": ["Framework": targetDictionary],
+                    "targetTemplates": [
+                        "temp": [
+                            "templates": ["a", "d"],
+                            "sources": ["temp"],
+                        ],
+                        "a": [
+                            "templates": ["b", "c"],
+                            "sources": ["a"],
+                        ],
+                        "b": [
+                            "sources": ["b"],
+                        ],
+                        "c": [
+                            "sources": ["c"],
+                        ],
+                        "d": [
+                            "sources": ["d"],
+                            "templates": ["e"],
+                        ],
+                        "e": [
+                            "sources": ["e"],
+                        ],
+
+                    ],
+                    ])
+
+                let target = project.targets.first!
+                try expect(target.type) == .framework // uses value of last nested template
+                try expect(target.platform) == .iOS // uses latest value
+                try expect(target.sources) == ["b", "c", "a", "e", "d", "temp", "target"] // merges array in order
+            }
+
+            $0.it("parses nested target templates with cycle") {
+
+                let targetDictionary: [String: Any] = [
+                    "deploymentTarget": "1.2.0",
+                    "sources": ["targetSource"],
+                    "templates": ["temp2"],
+                ]
+
+                let project = try getProjectSpec([
+                    "targets": ["Framework": targetDictionary],
+                    "targetTemplates": [
+                        "temp": [
+                            "type": "framework",
+                            "platform": "iOS",
+                            "templates": ["temp1"],
+                            "sources": ["nestedTemplateSource1"],
+                        ],
+                        "temp1": [
+                            "platform": "macOS",
+                            "templates": ["temp2"],
+                            "sources": ["nestedTemplateSource2"],
+                        ],
+                        "temp2": [
+                            "platform": "tvOS",
+                            "deploymentTarget": "1.1.0",
+                            "configFiles": ["debug": "Configs/$target_name/debug.xcconfig"],
+                            "templates": ["temp", "temp1"],
+                            "sources": ["templateSource"],
+                        ]
+                    ],
+                ])
+
+                let target = project.targets.first!
+                try expect(target.type) == .framework // uses value
+                try expect(target.platform) == .tvOS // uses latest value
+                try expect(target.deploymentTarget) == Version("1.2.0") // keeps value
+                try expect(target.sources) == ["nestedTemplateSource2", "nestedTemplateSource1", "templateSource", "targetSource"] // merges array in order
+                try expect(target.configFiles["debug"]) == "Configs/Framework/debug.xcconfig" // replaces $target_name
+            }
+
             $0.it("parses aggregate targets") {
                 let dictionary: [String: Any] = [
                     "targets": ["target_1", "target_2"],
