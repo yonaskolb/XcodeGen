@@ -310,6 +310,7 @@ class SpecLoadingTests: XCTestCase {
             $0.it("parses cross platform targets") {
                 let targetDictionary: [String: Any] = [
                     "platform": ["iOS", "tvOS"],
+                    "deploymentTarget": ["iOS": 9.0, "tvOS": "10.0"],
                     "type": "framework",
                     "sources": ["Framework", "Framework $platform"],
                     "settings": ["SETTING": "value_$platform"],
@@ -323,6 +324,8 @@ class SpecLoadingTests: XCTestCase {
                 target_tvOS.sources = ["Framework", "Framework tvOS"]
                 target_iOS.settings = ["PRODUCT_NAME": "Framework", "SETTING": "value_iOS"]
                 target_tvOS.settings = ["PRODUCT_NAME": "Framework", "SETTING": "value_tvOS"]
+                target_iOS.deploymentTarget = Version(major: 9, minor: 0, patch: 0)
+                target_tvOS.deploymentTarget = Version(major: 10, minor: 0, patch: 0)
 
                 try expect(project.targets.count) == 2
                 try expect(project.targets) == [target_iOS, target_tvOS]
