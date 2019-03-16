@@ -68,7 +68,7 @@ class SpecLoadingTests: XCTestCase {
                         type: .application,
                         platform: .tvOS,
                         configFiles: ["Config": "paths_test/config"],
-                        sources: ["paths_test/source"],
+                        sources: [TargetSource(path: "paths_test/source", excludes: ["file"])],
                         dependencies: [Dependency(type: .framework, reference: "paths_test/Framework")],
                         info: Plist(path: "paths_test/info"),
                         entitlements: Plist(path: "paths_test/entitlements"),

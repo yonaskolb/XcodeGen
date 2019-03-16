@@ -8,7 +8,8 @@ targets:
     configFiles:
       Config: config
     sources:
-      - source
+      - path: source
+        excludes: [file]
     dependencies:
       - framework: Framework
     info:
