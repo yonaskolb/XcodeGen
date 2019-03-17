@@ -218,7 +218,6 @@ extension TargetSource: PathContainer {
     static var pathProperties: [PathProperty] {
         return [
             .string("path"),
-            .string("excludes"),
         ]
     }
 }
