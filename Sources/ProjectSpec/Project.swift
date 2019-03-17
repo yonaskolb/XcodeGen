@@ -184,6 +184,7 @@ extension Project: PathContainer {
             .string("configFiles"),
             .object("options", SpecOptions.pathProperties),
             .object("targets", Target.pathProperties),
+            .object("targetTemplates", Target.pathProperties),
             .object("aggregateTargets", AggregateTarget.pathProperties),
         ]
     }
