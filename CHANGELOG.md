@@ -11,6 +11,7 @@
 - Sources outside a project spec's directory will be correctly referenced as relative paths in the project file. [#524](https://github.com/yonaskolb/XcodeGen/pull/524)
 - Fixed error when `optional` path is missing [#527](https://github.com/yonaskolb/XcodeGen/pull/527) @yonaskolb
 - Fixed excludes within included spec [#535](https://github.com/yonaskolb/XcodeGen/pull/535) @yonaskolb
+- Fixed paths in target templates within included files not being relative [#537](https://github.com/yonaskolb/XcodeGen/pull/537) @yonaskolb
 
 ## 2.2.0
 

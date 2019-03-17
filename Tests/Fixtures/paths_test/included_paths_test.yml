@@ -30,3 +30,7 @@ aggregateTargets:
       Config: config
     buildScripts:
     - path: buildScript
+targetTemplates:
+  Template1:
+    sources:
+      - template_source

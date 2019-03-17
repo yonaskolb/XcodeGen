@@ -6,6 +6,7 @@ targets:
   NewTarget:
     type: application
     platform: iOS
+    templates: [Template1]
     configFiles:
       Config: config
     sources:

@@ -81,7 +81,10 @@ class SpecLoadingTests: XCTestCase {
                         type: .application,
                         platform: .iOS,
                         configFiles: ["Config": "config"],
-                        sources: ["source"],
+                        sources: [
+                            "paths_test/template_source",
+                            "source",
+                            ],
                         dependencies: [Dependency(type: .framework, reference: "Framework")],
                         info: Plist(path: "info"),
                         entitlements: Plist(path: "entitlements"),
