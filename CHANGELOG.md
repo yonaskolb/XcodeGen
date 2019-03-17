@@ -21,6 +21,7 @@
 - Added ability to set `link` to false in framework dependencies [#532](https://github.com/yonaskolb/XcodeGen/pull/532) @dimatosaurus
 - Added `missingConfigFiles` to `options.disabledValidations` to optionally skip checking for the existence of config files.
 - Added ability to define a per-platform `deploymentTarget` for Multi-Platform targets. [#510](https://github.com/yonaskolb/XcodeGen/pull/510) @ainopara
+- Added support for `app-extension.intents-service` target type [#536](https://github.com/yonaskolb/XcodeGen/pull/536) @yonaskolb
 
 #### Changed
 - **DEPRECATION**: Placeholders `$target_name` and `$platform` have been deprecated in favour of `${target_name}` and `${platform}`. Support for the old placeholders will be removed in a future version [#533](https://github.com/yonaskolb/XcodeGen/pull/533) @tomquist
@@ -34,6 +35,9 @@
 - Fixed sources in an included target not being relative when the sources are mix of string and dictionaries [#542](https://github.com/yonaskolb/XcodeGen/pull/542) @yonaskolb
 
 [Commits](https://github.com/yonaskolb/XcodeGen/compare/2.2.0...2.3.0)
+
+#### Changed
+- Updated to xcodeproj 6.6 which includes project writing performance improvements [#536](https://github.com/yonaskolb/XcodeGen/pull/536) @yonaskolb
 
 ## 2.2.0
 
