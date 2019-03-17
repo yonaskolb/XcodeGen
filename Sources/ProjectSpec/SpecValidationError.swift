@@ -4,6 +4,10 @@ public struct SpecValidationError: Error, CustomStringConvertible {
 
     public var errors: [ValidationError]
 
+    public init(errors: [ValidationError]) {
+        self.errors = errors
+    }
+
     public enum ValidationError: Error, CustomStringConvertible {
         case invalidXcodeGenVersion(minimumVersion: Version, version: Version)
         case invalidSDKDependency(target: String, dependency: String)
@@ -23,6 +27,7 @@ public struct SpecValidationError: Error, CustomStringConvertible {
         case missingConfigForTargetScheme(target: String, configType: ConfigType)
         case missingDefaultConfig(configName: String)
         case invalidPerConfigSettings
+        case deprecatedUsageOfPlaceholder(placeholderName: String)
 
         public var description: String {
             switch self {
@@ -62,6 +67,8 @@ public struct SpecValidationError: Error, CustomStringConvertible {
                 return "Default configuration \(name) doesn't exist"
             case .invalidPerConfigSettings:
                 return "Settings that are for a specific config must go in \"configs\". \"base\" can be used for common settings"
+            case let .deprecatedUsageOfPlaceholder(placeholderName: placeholderName):
+                return "Usage of $\(placeholderName) is deprecated and will stop working in an upcoming version. Use ${\(placeholderName)} instead."
             }
         }
     }

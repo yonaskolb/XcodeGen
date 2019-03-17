@@ -64,6 +64,13 @@ class GenerateCommand: Command {
             throw GenerationError.projectSpecParsingError(error)
         }
 
+        // validate project dictionary
+        do {
+            try specLoader.validateProjectDictionaryWarnings()
+        } catch {
+            warning("\(error)")
+        }
+
         let projectPath = projectDirectory + "\(project.name).xcodeproj"
 
         let cacheFilePath = self.cacheFilePath.value ??
@@ -140,6 +147,12 @@ class GenerateCommand: Command {
     func info(_ string: String) {
         if !quiet.value {
             stdout.print(string)
+        }
+    }
+
+    func warning(_ string: String) {
+        if !quiet.value {
+            stdout.print(string.yellow)
         }
     }
 

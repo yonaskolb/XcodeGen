@@ -5,6 +5,7 @@ import Spectre
 import XcodeGenKit
 import xcodeproj
 import XCTest
+import Yams
 
 class SpecLoadingTests: XCTestCase {
 
@@ -205,6 +206,79 @@ class SpecLoadingTests: XCTestCase {
         }
     }
 
+    func testSpecWarningValidation() {
+        describe {
+            var path: Path!
+            $0.before {
+                path = Path(components: [NSTemporaryDirectory(), "\(NSUUID().uuidString).yaml"])
+
+            }
+            $0.after {
+                try? FileManager.default.removeItem(atPath: path.string)
+            }
+            $0.it("fails validating warnings for deprecated placeholder usage") {
+                let dictionary: [String: Any] = [
+                    "name": "TestSpecWarningValidation",
+                    "templates": [
+                        "Framework": [
+                            "type": "framework",
+                            "sources": ["$target_name/$platform/Sources"],
+                        ],
+                    ],
+                    "targets": [
+                        "Framework": [
+                            "type": "framework",
+                            "platform": "iOS",
+                            "templates": ["Framework"],
+                        ],
+                    ],
+                ]
+                try? Yams.dump(object: dictionary).write(toFile: path.string, atomically: true, encoding: .utf8)
+                let specLoader = SpecLoader(version: "1.1.0")
+                do {
+                    _ = try specLoader.loadProject(path: path)
+                } catch {
+                    throw failure("\(error)")
+                }
+                try expectError(SpecValidationError(errors: [
+                    .deprecatedUsageOfPlaceholder(placeholderName: "target_name"),
+                    .deprecatedUsageOfPlaceholder(placeholderName: "platform"),
+                ]), { try specLoader.validateProjectDictionaryWarnings() })
+            }
+
+            $0.it("successfully validates warnings for new placeholder usage") {
+                let dictionary: [String: Any] = [
+                    "name": "TestSpecWarningValidation",
+                    "templates": [
+                        "Framework": [
+                            "type": "framework",
+                            "sources": ["${target_name}/${platform}/Sources"],
+                        ],
+                    ],
+                    "targets": [
+                        "Framework": [
+                            "type": "framework",
+                            "platform": "iOS",
+                            "templates": ["Framework"],
+                        ],
+                    ],
+                ]
+                try? Yams.dump(object: dictionary).write(toFile: path.string, atomically: true, encoding: .utf8)
+                let specLoader = SpecLoader(version: "1.1.0")
+                do {
+                    _ = try specLoader.loadProject(path: path)
+                } catch {
+                    throw failure("\(error)")
+                }
+                do {
+                    try specLoader.validateProjectDictionaryWarnings()
+                } catch {
+                    throw failure("Expected to not throw a validation error. Got: \(error)")
+                }
+            }
+        }
+    }
+
     func testProjectSpecParser() {
         let validTarget: [String: Any] = ["type": "application", "platform": "iOS"]
         let invalid = "invalid"
@@ -315,7 +389,7 @@ class SpecLoadingTests: XCTestCase {
                     "platform": ["iOS", "tvOS"],
                     "deploymentTarget": ["iOS": 9.0, "tvOS": "10.0"],
                     "type": "framework",
-                    "sources": ["Framework", "Framework $platform"],
+                    "sources": ["Framework", "Framework ${platform}"],
                     "settings": ["SETTING": "value_$platform"],
                 ]
 
@@ -340,6 +414,9 @@ class SpecLoadingTests: XCTestCase {
                     "deploymentTarget": "1.2.0",
                     "sources": ["targetSource"],
                     "templates": ["temp2", "temp"],
+                    "templateAttributes": [
+                        "source": "replacedSource"
+                    ]
                 ]
 
                 let project = try getProjectSpec([
@@ -353,7 +430,11 @@ class SpecLoadingTests: XCTestCase {
                             "type": "framework",
                             "platform": "tvOS",
                             "deploymentTarget": "1.1.0",
-                            "configFiles": ["debug": "Configs/$target_name/debug.xcconfig"],
+                            "configFiles": [
+                                "debug": "Configs/$target_name/debug.xcconfig",
+                                "release": "Configs/${target_name}/release.xcconfig"
+                            ],
+                            "sources": ["${source}"]
                         ],
                     ],
                 ])
@@ -362,8 +443,9 @@ class SpecLoadingTests: XCTestCase {
                 try expect(target.type) == .framework // uses value
                 try expect(target.platform) == .iOS // uses latest value
                 try expect(target.deploymentTarget) == Version("1.2.0") // keeps value
-                try expect(target.sources) == ["templateSource", "targetSource"] // merges array in order
+                try expect(target.sources) == ["replacedSource", "templateSource", "targetSource"] // merges array in order
                 try expect(target.configFiles["debug"]) == "Configs/Framework/debug.xcconfig" // replaces $target_name
+                try expect(target.configFiles["release"]) == "Configs/Framework/release.xcconfig" // replaces ${target_name}
             }
 
             $0.it("parses nested target templates") {
@@ -411,6 +493,11 @@ class SpecLoadingTests: XCTestCase {
                     "platform": "iOS",
                     "templates": ["temp"],
                     "sources": ["target"],
+                    "templateAttributes": [
+                        "temp": "temp-by-target",
+                        "a": "a-by-target",
+                        "b": "b-by-target" // This should win over attributes defined in template "temp"
+                    ]
                 ]
 
                 let project = try getProjectSpec([
@@ -418,33 +505,50 @@ class SpecLoadingTests: XCTestCase {
                     "targetTemplates": [
                         "temp": [
                             "templates": ["a", "d"],
-                            "sources": ["temp"],
+                            "sources": ["temp", "${temp}"],
+                            "templateAttributes": [
+                                "b": "b-by-temp",
+                                "c": "c-by-temp",
+                                "d": "d-by-temp"
+                            ]
                         ],
                         "a": [
                             "templates": ["b", "c"],
-                            "sources": ["a"],
+                            "sources": ["a", "${a}"],
+                            "templateAttributes": [
+                                "c": "c-by-a"
+                            ]
                         ],
                         "b": [
-                            "sources": ["b"],
+                            "sources": ["b", "${b}"],
                         ],
                         "c": [
-                            "sources": ["c"],
+                            "sources": ["c", "${c}"],
                         ],
                         "d": [
-                            "sources": ["d"],
+                            "sources": ["d", "${d}"],
                             "templates": ["e"],
+                            "templateAttributes": [
+                                "e": "e-by-d"
+                            ]
                         ],
                         "e": [
-                            "sources": ["e"],
+                            "sources": ["e", "${e}"],
                         ],
 
                     ],
-                    ])
+                ])
 
                 let target = project.targets.first!
                 try expect(target.type) == .framework // uses value of last nested template
                 try expect(target.platform) == .iOS // uses latest value
-                try expect(target.sources) == ["b", "c", "a", "e", "d", "temp", "target"] // merges array in order
+                try expect(target.sources) == ["b", "b-by-target",
+                                               "c", "c-by-temp",
+                                               "a", "a-by-target",
+                                               "e", "e-by-d",
+                                               "d", "d-by-temp",
+                                               "temp", "temp-by-target",
+                                               "target"] // merges array in order
             }
 
             $0.it("parses nested target templates with cycle") {

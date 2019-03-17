@@ -168,7 +168,13 @@ extension Target {
                     }
                 }
                 target = target.merged(onto: mergedDictionary)
-                target = target.replaceString("$target_name", with: targetName)
+                target = target.replaceString("$target_name", with: targetName) // Will be removed in upcoming version
+                target = target.replaceString("${target_name}", with: targetName)
+                if let templateAttributes = target["templateAttributes"] as? [String: String] {
+                    for (templateAttribute, value) in templateAttributes {
+                        target = target.replaceString("${\(templateAttribute)}", with: value)
+                    }
+                }
             }
             targetsDictionary[targetName] = target
         }
@@ -192,7 +198,8 @@ extension Target {
                 for platform in platforms {
                     var platformTarget = target
 
-                    platformTarget = platformTarget.replaceString("$platform", with: platform)
+                    platformTarget = platformTarget.replaceString("$platform", with: platform) // Will be removed in upcoming version
+                    platformTarget = platformTarget.replaceString("${platform}", with: platform)
 
                     platformTarget["platform"] = platform
                     let platformSuffix = platformTarget["platformSuffix"] as? String ?? "_\(platform)"
