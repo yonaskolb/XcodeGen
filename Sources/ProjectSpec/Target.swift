@@ -139,9 +139,28 @@ extension Target {
 
         let targetTemplatesDictionary: [String: JSONDictionary] = jsonDictionary["targetTemplates"] as? [String: JSONDictionary] ?? [:]
 
-        for (targetName, var target) in targetsDictionary {
+        // Recursively collects all nested template names of a given dictionary.
+        func collectTemplates(of jsonDictionary: JSONDictionary,
+                              into allTemplates: inout [String],
+                              insertAt insertionIndex: inout Int) {
+            guard let templates = jsonDictionary["templates"] as? [String] else {
+                return
+            }
+            for template in templates where !allTemplates.contains(template) {
+                guard let templateDictionary = targetTemplatesDictionary[template] else {
+                    continue
+                }
+                allTemplates.insert(template, at: insertionIndex)
+                collectTemplates(of: templateDictionary, into: &allTemplates, insertAt: &insertionIndex)
+                insertionIndex += 1
+            }
+        }
 
-            if let templates = target["templates"] as? [String] {
+        for (targetName, var target) in targetsDictionary {
+            var templates: [String] = []
+            var index: Int = 0
+            collectTemplates(of: target, into: &templates, insertAt: &index)
+            if !templates.isEmpty {
                 var mergedDictionary: JSONDictionary = [:]
                 for template in templates {
                     if let templateDictionary = targetTemplatesDictionary[template] {
