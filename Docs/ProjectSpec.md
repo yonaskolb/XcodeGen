@@ -203,7 +203,8 @@ Settings are merged in the following order: groups, base, configs.
   - `CFBundleVersion`
   - `CFBundlePackageType`
 - [ ] **entitlements**: **[Plist](#plist)** - If defined this will generate and write a `.entitlements` file, and use it by setting `CODE_SIGN_ENTITLEMENTS` build setting for every configuration. All properties must be provided
-- [ ] **templates**: **[String]** - A list of [Target Templates](#target-template) referenced by name that will be merged with the target in order. Any instances of `$target_name` within these templates will be replaced with the target name.
+- [ ] **templates**: **[String]** - A list of [Target Templates](#target-template) referenced by name that will be merged with the target in order. Any instances of `${target_name}` within these templates will be replaced with the target name.
+- [ ] **templateAttributes**: **[String: String]** - A list of attributes where each instance of `${attributeName}` within the templates listed in `templates` will be replaced with the value specified.
 - [ ] **transitivelyLinkDependencies**: **Bool** - If this is not specified the value from the project set in [Options](#options)`.transitivelyLinkDependencies` will be used.
 - [ ] **directlyEmbedCarthageDependencies**: **Bool** - If this is `true` Carthage dependencies will be embedded using an `Embed Frameworks` build phase instead of the `copy-frameworks` script. Defaults to `true` for all targets except iOS/tvOS/watchOS Applications.
 - [ ] **requiresObjCLinking**: **Bool** - If this is `true` any targets that link to this target will have `-ObjC` added to their `OTHER_LDFLAGS`. This is required if a static library has any catagories or extensions on Objective-C code. See [this guide](https://pewpewthespells.com/blog/objc_linker_flags.html#objc) for more details. Defaults to `true` if `type` is `library.static`. If you are 100% sure you don't have catagories or extensions on Objective-C code (pure Swift with no use of Foundation/UIKit) you can set this to `false`, otherwise it's best to leave it alone.
@@ -257,9 +258,9 @@ This will provide default build settings for a certain platform. It can be any o
 
 You can also specify an array of platforms. This will generate a target for each platform.
 If `deploymenTarget` is specified for a multi platform target, it can have different values per platform similar to how it's defined in [Options](#options). See below for an example.
-If you reference the string `$platform` anywhere within the target spec, that will be replaced with the platform.
+If you reference the string `${platform}` anywhere within the target spec, that will be replaced with the platform.
 
-The generated targets by default will have a suffix of `_$platform` applied, you can change this by specifying a `platformSuffix` or `platformPrefix`.
+The generated targets by default will have a suffix of `_${platform}` applied, you can change this by specifying a `platformSuffix` or `platformPrefix`.
 
 If no `PRODUCT_NAME` build setting is specified for a target, this will be set to the target name, so that this target can be imported under a single name.
 
@@ -276,9 +277,9 @@ targets:
       base:
         INFOPLIST_FILE: MyApp/Info.plist
         PRODUCT_BUNDLE_IDENTIFIER: com.myapp
-        MY_SETTING: platform $platform
+        MY_SETTING: platform ${platform}
       groups:
-        - $platform
+        - ${platform}
 ```
 
 The above will generate 2 targets named `MyFramework_iOS` and `MyFramework_tvOS`, with all the relevant platform build settings. They will both have a `PRODUCT_NAME` of `MyFramework`
@@ -583,7 +584,8 @@ This is used to override settings or run build scripts in specific targets
 ## Target Template
 
 This is a template that can be referenced from a normal target using the `templates` property. The properties of this template are the same as a [Target](#target)].
-Any instances of `$target_name` within each template will be replaced by the final target name which references the template.
+Any instances of `${target_name}` within each template will be replaced by the final target name which references the template.
+Any attributes defined within a targets `templateAttributes` will be used to replace any attribute references in the template using the syntax `${attribute_name}`.
 
 
 ```yaml
@@ -591,6 +593,8 @@ targets:
   MyFramework:
     templates: 
       - Framework
+    templateAttributes:
+      frameworkName: AwesomeFramework
     sources:
       - SomeSources
 targetTemplates:
@@ -598,7 +602,7 @@ targetTemplates:
     platform: iOS
     type: framework
     sources:
-      - $target_name/Sources
+      - ${frameworkName}/${target_name}
 ```
 
 ## Scheme
