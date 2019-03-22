@@ -8,6 +8,7 @@
 - Added ability to define a per-platform `deploymentTarget` for Multi-Platform targets. [#510](https://github.com/yonaskolb/XcodeGen/pull/510) @ainopara
 - Added support for nested target templates [#534](https://github.com/yonaskolb/XcodeGen/pull/534) @tomquist
 - Added ability to define `templateAttributes` within a target to be able to parameterize templates. [#533](https://github.com/yonaskolb/XcodeGen/pull/533) @tomquist
+- Added ability to set `link` to false in framework dependencies [#532](https://github.com/yonaskolb/XcodeGen/pull/532) @dimatosaurus
 
 #### Changed
 - **DEPRECATION**: Placeholders `$target_name` and `$platform` have been deprecated in favour of `${target_name}` and `${platform}`. Support for the old placeholders will be removed in a future version [#533](https://github.com/yonaskolb/XcodeGen/pull/533) @tomquist
