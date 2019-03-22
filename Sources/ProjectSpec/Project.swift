@@ -171,8 +171,8 @@ extension Project {
 
     static func resolveProject(jsonDictionary: JSONDictionary) throws -> JSONDictionary {
         var jsonDictionary = jsonDictionary
-        jsonDictionary = try Target.resolveMultiplatformTargets(jsonDictionary: jsonDictionary)
         jsonDictionary = try Target.resolveTargetTemplates(jsonDictionary: jsonDictionary)
+        jsonDictionary = try Target.resolveMultiplatformTargets(jsonDictionary: jsonDictionary)
         return jsonDictionary
     }
 }

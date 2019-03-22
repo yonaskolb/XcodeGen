@@ -590,6 +590,28 @@ class SpecLoadingTests: XCTestCase {
                 try expect(target.sources) == ["nestedTemplateSource2", "nestedTemplateSource1", "templateSource", "targetSource"] // merges array in order
                 try expect(target.configFiles["debug"]) == "Configs/Framework/debug.xcconfig" // replaces $target_name
             }
+            
+            $0.it("parses cross platform target templates") {
+  
+                let project = try getProjectSpec([
+                    "targets": [
+                        "Framework": [
+                            "type": "framework",
+                            "templates": ["temp"],
+                        ]
+                    ],
+                    "targetTemplates": [
+                        "temp": [
+                            "platform": ["iOS", "tvOS"],
+                        ]
+                    ],
+                    ])
+                
+                let iOSTarget = project.targets.first { $0.platform == .iOS }
+                let tvOSTarget = project.targets.first { $0.platform == .tvOS }
+                try expect(iOSTarget?.type) == .framework
+                try expect(tvOSTarget?.type) == .framework
+            }
 
             $0.it("parses aggregate targets") {
                 let dictionary: [String: Any] = [

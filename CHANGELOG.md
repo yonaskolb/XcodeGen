@@ -18,6 +18,7 @@
 - Fixed error when `optional` path is missing [#527](https://github.com/yonaskolb/XcodeGen/pull/527) @yonaskolb
 - Fixed excludes within included spec [#535](https://github.com/yonaskolb/XcodeGen/pull/535) @yonaskolb
 - Fixed paths in target templates within included files not being relative [#537](https://github.com/yonaskolb/XcodeGen/pull/537) @yonaskolb
+- Fix multi-platform target templates [#541](https://github.com/yonaskolb/XcodeGen/pull/541) @yonaskolb
 
 ## 2.2.0
 
