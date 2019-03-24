@@ -613,6 +613,32 @@ class SpecLoadingTests: XCTestCase {
                 try expect(tvOSTarget?.type) == .framework
             }
 
+            $0.it("parses platform specific templates") {
+
+                let project = try getProjectSpec([
+                    "targets": [
+                        "Framework": [
+                            "type": "framework",
+                            "platform": ["iOS", "tvOS"],
+                            "templates": ["$platform"],
+                        ]
+                    ],
+                    "targetTemplates": [
+                        "iOS": [
+                            "sources": "A",
+                        ],
+                        "tvOS": [
+                            "sources": "B",
+                        ]
+                    ],
+                    ])
+
+                let iOSTarget = project.targets.first { $0.platform == .iOS }
+                let tvOSTarget = project.targets.first { $0.platform == .tvOS }
+                try expect(iOSTarget?.sources) == ["A"]
+                try expect(tvOSTarget?.sources) == ["B"]
+            }
+
             $0.it("parses aggregate targets") {
                 let dictionary: [String: Any] = [
                     "targets": ["target_1", "target_2"],
