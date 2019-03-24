@@ -8,6 +8,7 @@
     - [CocoaPods](#cocoapods)
     - [Carthage](#carthage)
     - [SDK](#sdk)
+    - [Framework](#framework)
 
 # Configuring build settings
 There are various ways of configuring build settings
@@ -114,11 +115,35 @@ targets:
       - carthage: Alamofire
 ```
 
+Some Carthage dependencies actually vend multiple frameworks. For example `github "ReactiveCocoa/ReactiveCocoa" ~> 8.0` vends 2 frameworks `ReactiveCocoa` and `ReactiveMapKit`.
+By default these all have to be listed if you want to link and use them:
+
+```yml
+targets:
+  App:
+    frameworks:
+      - carthage: ReactiveCocoa
+      - carthage: ReactiveMapKit 
+```
+
+XcodeGen can look these up for you automatically! This can be enabled with a global `options.findCarthageFrameworks` or can be overriden for each Carthage dependency. Note that if this is enabled, the Carthage dependencies need to have already been built before XcodeGen is run. This is because XcodeGen loads `.version` files that Carthage writes in the `Carthage/Build` directory which lists the all the frameworks. The name you use must also be the name of the `.version` file Carthage writes to `Carthage/Build`. Be aware that in some cases this name can differ from the name of the repo in the Cartfile and even the framework name. If the `.version` file is not found or fails parsing, XcodeGen will fallback to the regular Framework lookup in the relevant Carthage directory.
+
+```yml
+options:
+  findCarthageFrameworks: true
+targets:
+  App:
+    frameworks:
+      - carthage: ReactiveCocoa # will find ReactiveMapKit as well
+      - carthage: OtherCarthageDependency
+        findFrameworks: false # disables the global option
+```
+
 XcodeGen automatically creates the build phase that Carthage requires which lists all the files and runs `carthage copy-frameworks`. You can change the invocation of carthage to something different, for example if you are running it with [Mint](https://github.com/yonaskolb/mint). This is then prepended to ` copy frameworks`
 
 ```yaml
 options:
-  carthageExecutablePath: mint run Carthage/Carthage carthage
+  carthageExecutablePath: mint run Carthage/Carthage
 ```
 
 By default XcodeGen looks for carthage frameworks in `Carthage/Build`. You can change this with the `carthageBuildPath` option
@@ -137,4 +162,14 @@ targets:
     dependencies:
       - sdk: Contacts.framework
       - sdk: libc++.tbd
+```
+
+### Framework
+Individual frameworks can also be linked by specifying a path to them
+
+```yamlå
+targets:
+  App:
+    dependencies:
+      - framework: Vendor/MyFramework.framework
 ```
