@@ -70,7 +70,7 @@ class CarthageDependencyResolverTests: XCTestCase {
 
                 let options = SpecOptions(carthageBuildPath: carthageBuildPath.string)
                 let resolver = CarthageDependencyResolver(project: makeTestProject(options: options))
-                let dependency = Dependency(type: .carthage(includeRelated: true), reference: "CarthageTestFixture")
+                let dependency = Dependency(type: .carthage(findFrameworks: true), reference: "CarthageTestFixture")
                 let expectedDependencies: [Platform: [String]] = [
                     .macOS: ["DependencyFixtureB", "DependencyFixtureA", "CarthageTestFixture"],
                     .watchOS: ["DependencyFixtureA", "DependencyFixtureB", "CarthageTestFixture"],
@@ -87,7 +87,7 @@ class CarthageDependencyResolverTests: XCTestCase {
 
             $0.it("returns the main dependency when no related dependencies are found") {
                 let resolver = CarthageDependencyResolver(project: makeTestProject())
-                let dependency = Dependency(type: .carthage(includeRelated: true), reference: "RandomDependency")
+                let dependency = Dependency(type: .carthage(findFrameworks: true), reference: "RandomDependency")
 
                 let related = resolver.relatedDependencies(for: dependency, in: .iOS)
 
@@ -96,7 +96,7 @@ class CarthageDependencyResolverTests: XCTestCase {
 
             $0.it("de-duplicates dependencies") {
                 let resolver = CarthageDependencyResolver(project: makeTestProject())
-                let dependency = Dependency(type: .carthage(includeRelated: true), reference: "ReactiveSwift")
+                let dependency = Dependency(type: .carthage(findFrameworks: true), reference: "ReactiveSwift")
 
                 let related = resolver.relatedDependencies(for: dependency, in: .iOS)
 
@@ -112,9 +112,9 @@ class CarthageDependencyResolverTests: XCTestCase {
 
         describe {
 
-            $0.it("overrides the includeRelated dependency global flag when specified") {
-                let options = SpecOptions(carthageBuildPath: carthageBuildPath.string, includeCarthageRelatedDependencies: true)
-                let dependency = Dependency(type: .carthage(includeRelated: false), reference: dependencyFixtureName)
+            $0.it("overrides the findFrameworks dependency global flag when specified") {
+                let options = SpecOptions(carthageBuildPath: carthageBuildPath.string, findCarthageFrameworks: true)
+                let dependency = Dependency(type: .carthage(findFrameworks: false), reference: dependencyFixtureName)
 
                 let resolver = CarthageDependencyResolver(project: makeTestProject(options: options))
                 let target = Target(name: "1", type: .application, platform: .iOS, dependencies: [dependency])
@@ -126,7 +126,7 @@ class CarthageDependencyResolverTests: XCTestCase {
             $0.it("fetches all carthage dependencies for a given target, sorted alphabetically") {
                 let unsortedDependencyReferences = ["RxSwift", "RxCocoa", "RxBlocking", "RxTest", "RxAtomic"]
                 let dependencies = unsortedDependencyReferences.map {
-                    Dependency(type: .carthage(includeRelated: false), reference: $0)
+                    Dependency(type: .carthage(findFrameworks: false), reference: $0)
                 }
                 let nonCarthageDependencies = unsortedDependencyReferences.map { Dependency(type: .target, reference: $0) }
                 let target = Target(name: "1", type: .application, platform: .iOS, dependencies: dependencies + nonCarthageDependencies)

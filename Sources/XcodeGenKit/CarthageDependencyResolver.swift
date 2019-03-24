@@ -53,9 +53,9 @@ public class CarthageDependencyResolver {
                 let nonExistentDependencies = target.dependencies.filter { !frameworks.contains($0) }
                 for dependency in nonExistentDependencies {
                     switch dependency.type {
-                    case .carthage(let includeRelated):
-                        let includeRelated = includeRelated ?? project.options.includeCarthageRelatedDependencies
-                        if includeRelated {
+                    case .carthage(let findFrameworks):
+                        let findFrameworks = findFrameworks ?? project.options.findCarthageFrameworks
+                        if findFrameworks {
                             relatedDependencies(for: dependency, in: target.platform)
                                 .filter { !frameworks.contains($0) }
                                 .forEach { frameworks.insert($0) }

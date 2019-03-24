@@ -576,9 +576,9 @@ public class PBXProjGenerator {
                 )
                 targetFrameworkBuildFiles.append(buildFile)
 
-            case .carthage(let includeRelated):
-                let includeRelated = includeRelated ?? project.options.includeCarthageRelatedDependencies
-                let allDependencies = includeRelated
+            case .carthage(let findFrameworks):
+                let findFrameworks = findFrameworks ?? project.options.findCarthageFrameworks
+                let allDependencies = findFrameworks
                     ? carthageResolver.relatedDependencies(for: dependency, in: target.platform) : [dependency]
                 allDependencies.forEach { dependency in
                     // Static libraries can't link or embed dynamic frameworks

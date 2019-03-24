@@ -1,6 +1,6 @@
 name: Project
 options:
-  includeCarthageRelatedDependencies: true
+  findCarthageFrameworks: true
 targets:
   Framework:
     type: framework
