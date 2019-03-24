@@ -19,6 +19,7 @@
 - Fixed excludes within included spec [#535](https://github.com/yonaskolb/XcodeGen/pull/535) @yonaskolb
 - Fixed paths in target templates within included files not being relative [#537](https://github.com/yonaskolb/XcodeGen/pull/537) @yonaskolb
 - Fix multi-platform target templates [#541](https://github.com/yonaskolb/XcodeGen/pull/541) @yonaskolb
+- Fixed sources in an included target not being relative when the sources are mix of string and dictionaries [#542](https://github.com/yonaskolb/XcodeGen/pull/542) @yonaskolb
 
 ## 2.2.0
 

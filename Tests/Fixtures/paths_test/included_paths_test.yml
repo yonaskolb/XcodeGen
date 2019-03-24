@@ -8,6 +8,7 @@ targets:
     configFiles:
       Config: config
     sources:
+      - simplesource
       - path: source
         excludes: [file]
     dependencies:
