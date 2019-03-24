@@ -171,8 +171,13 @@ extension Project {
 
     static func resolveProject(jsonDictionary: JSONDictionary) throws -> JSONDictionary {
         var jsonDictionary = jsonDictionary
+
+        // resolve multiple times so that we support both multi-platform templates,
+        // as well as platform specific templates in multi-platform targets
         jsonDictionary = try Target.resolveMultiplatformTargets(jsonDictionary: jsonDictionary)
         jsonDictionary = try Target.resolveTargetTemplates(jsonDictionary: jsonDictionary)
+        jsonDictionary = try Target.resolveMultiplatformTargets(jsonDictionary: jsonDictionary)
+
         return jsonDictionary
     }
 }
