@@ -94,6 +94,15 @@ class CarthageDependencyResolverTests: XCTestCase {
 
                 try expect(related.map { $0.reference }) == [dependencyFixtureName]
             }
+
+            $0.it("de-duplicates dependencies") {
+                let resolver = CarthageDependencyResolver(project: makeTestProject())
+                let dependency = Dependency(type: .carthage(includeRelated: true), reference: "ReactiveSwift")
+
+                let related = resolver.relatedDependencies(for: dependency, in: .iOS)
+
+                try expect(related.map { $0.reference }) == ["ReactiveSwift"]
+            }
         }
     }
 
