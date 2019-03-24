@@ -23,8 +23,14 @@ extension Array where Element == PathProperty {
             case .string(let key):
                 if let source = result[key] as? String {
                     result[key] = (path + source).string
-                } else if let source = result[key] as? [String] {
-                    result[key] = source.map { (path + $0).string }
+                } else if let source = result[key] as? [Any] {
+                    result[key] = source.map { any -> Any in
+                        if let string = any as? String {
+                            return (path + string).string
+                        } else {
+                            return any
+                        }
+                    }
                 } else if let source = result[key] as? [String: String] {
                     result[key] = source.mapValues { (path + $0).string }
                 }
@@ -37,8 +43,14 @@ extension Array where Element == PathProperty {
             case .object(let key, let pathProperties):
                 if let source = result[key] as? JSONDictionary {
                     result[key] = pathProperties.resolvingPaths(in: source, relativeTo: path)
-                } else if let source = result[key] as? [JSONDictionary] {
-                    result[key] = source.map { pathProperties.resolvingPaths(in: $0, relativeTo: path) }
+                } else if let source = result[key] as? [Any] {
+                    result[key] = source.map { any -> Any in
+                        if let dictionary = any as? JSONDictionary {
+                            return pathProperties.resolvingPaths(in: dictionary, relativeTo: path)
+                        } else {
+                            return any
+                        }
+                    }
                 } else if let source = result[key] as? [String: JSONDictionary] {
                     result[key] = source.mapValues { pathProperties.resolvingPaths(in: $0, relativeTo: path) }
                 }
