@@ -32,25 +32,19 @@ class CarthageVersionLoader {
 
 struct CarthageVersionFile: Decodable {
 
-    struct Reference: Decodable, Equatable {
+    private struct Reference: Decodable, Equatable {
         public let name: String
         public let hash: String
     }
 
-    private let data: [Platform: [Reference]]
+    private let data: [Platform: [String]]
     
     internal init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: Platform.self)
         data = try Platform.allCases.reduce(into: [:]) { (data, platform) in
             let references = try container.decodeIfPresent([Reference].self, forKey: platform) ?? []
-            let deduplicatedReferences: [Reference] = references.reduce([]) { references, reference in
-                if references.contains(where: { $0.name == reference.name && $0.hash == reference.hash }) {
-                    return references
-                } else {
-                    return references + [reference]
-                }
-            }
-            data[platform] = deduplicatedReferences
+            let frameworks = Array(Set(references.map { $0.name })).sorted()
+            data[platform] = frameworks
         }
     }
 }
@@ -63,7 +57,7 @@ extension Platform: CodingKey {
 }
 
 extension CarthageVersionFile {
-    func references(for platform: Platform) -> [Reference] {
+    func frameworks(for platform: Platform) -> [String] {
         return data[platform] ?? []
     }
 }

@@ -63,7 +63,6 @@ class CarthageDependencyResolverTests: XCTestCase {
 
     func testRelatedDependenciesForPlatform() {
 
-        let dependencyFixtureName = "CarthageTestFixture"
         let carthageBuildPath = fixturePath + "CarthageProject/Carthage/Build"
 
         describe {
@@ -71,7 +70,7 @@ class CarthageDependencyResolverTests: XCTestCase {
 
                 let options = SpecOptions(carthageBuildPath: carthageBuildPath.string)
                 let resolver = CarthageDependencyResolver(project: makeTestProject(options: options))
-                let dependency = Dependency(type: .carthage(includeRelated: true), reference: dependencyFixtureName)
+                let dependency = Dependency(type: .carthage(includeRelated: true), reference: "CarthageTestFixture")
                 let expectedDependencies: [Platform: [String]] = [
                     .macOS: ["DependencyFixtureB", "DependencyFixtureA", "CarthageTestFixture"],
                     .watchOS: ["DependencyFixtureA", "DependencyFixtureB", "CarthageTestFixture"],
@@ -88,11 +87,11 @@ class CarthageDependencyResolverTests: XCTestCase {
 
             $0.it("returns the main dependency when no related dependencies are found") {
                 let resolver = CarthageDependencyResolver(project: makeTestProject())
-                let dependency = Dependency(type: .carthage(includeRelated: true), reference: dependencyFixtureName)
+                let dependency = Dependency(type: .carthage(includeRelated: true), reference: "RandomDependency")
 
                 let related = resolver.relatedDependencies(for: dependency, in: .iOS)
 
-                try expect(related.map { $0.reference }) == [dependencyFixtureName]
+                try expect(related.map { $0.reference }) == ["RandomDependency"]
             }
 
             $0.it("de-duplicates dependencies") {

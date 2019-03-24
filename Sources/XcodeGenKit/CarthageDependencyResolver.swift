@@ -100,10 +100,10 @@ public class CarthageDependencyResolver {
                 // so fail gracefully by returning the main dependency
                 return [dependency]
         }
-        return versionFile.references(for: platform)
+        return versionFile.frameworks(for: platform)
             .map { Dependency(
                 type: dependency.type,
-                reference: $0.name,
+                reference: $0,
                 embed: dependency.embed,
                 codeSign: dependency.codeSign,
                 link: dependency.link,
