@@ -1,0 +1,4 @@
+github "antitypical/Result"
+github "rpassis/CarthageTestFixture"
+github "ReactiveCocoa/ReactiveSwift" ~> 4.0
+github "ReactiveCocoa/ReactiveCocoa" ~> 8.0

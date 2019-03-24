@@ -64,7 +64,7 @@ class CarthageDependencyResolverTests: XCTestCase {
     func testRelatedDependenciesForPlatform() {
 
         let dependencyFixtureName = "CarthageTestFixture"
-        let carthageBuildPath = fixturePath + "TestProject/Carthage/Build"
+        let carthageBuildPath = fixturePath + "CarthageProject/Carthage/Build"
 
         describe {
             $0.it("fetches related dependencies for a given platform, sorted alphabetically") {

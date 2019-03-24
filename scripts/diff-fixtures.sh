@@ -1,13 +1,13 @@
 #!/bin/bash
 set -e
 
-if [[ `git status --porcelain Tests/Fixtures/TestProject` ]]; then
+if [[ `git status --porcelain Tests/Fixtures` ]]; then
   echo ""
-  echo "⚠️  Generated TestProject has changed."
-  echo "⚠️  If this is a valid change please run the tests and commit the updated TestProject."
+  echo "⚠️  Generated fixturess have changed."
+  echo "⚠️  If this is a valid change please run the tests and commit the updates."
   echo ""
-  git --no-pager diff --color=always Tests/Fixtures/TestProject
+  git --no-pager diff --color=always Tests/Fixtures
   exit 1
 else
-  echo "✅  Generated TestProject has not changed."
+  echo "✅  Generated fixtures have not changed."
 fi
