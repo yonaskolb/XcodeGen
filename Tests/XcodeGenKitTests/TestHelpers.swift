@@ -102,14 +102,6 @@ extension XCBuildConfiguration: Named {}
 extension PBXNativeTarget: Named {}
 extension XCScheme: Named {}
 
-extension Version: ExpressibleByStringLiteral {
-
-    /// Will return nil literal not Semver
-    public init(stringLiteral value: String) {
-        try! self.init(value)
-    }
-}
-
 extension XCTestCase {
 
     public func describe(_ name: StaticString = #function, _ test: (ContextType) -> Void) {

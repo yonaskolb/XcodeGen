@@ -178,7 +178,7 @@ public class PBXProjGenerator {
                     children: platforms,
                     sourceTree: .group,
                     name: "Carthage",
-                    path: carthageResolver.baseBuildPath
+                    path: carthageResolver.buildPath
                 )
             )
             frameworkFiles.append(carthageGroup)
@@ -591,7 +591,7 @@ public class PBXProjGenerator {
                     }
                     let fileReference = self.sourceGenerator.getFileReference(path: frameworkPath, inPath: platformPath)
 
-                    self.carthageFrameworksByPlatform[target.platform.carthageDirectoryName, default: []].insert(fileReference)
+                    self.carthageFrameworksByPlatform[target.platform.carthageName, default: []].insert(fileReference)
 
                     if dependency.link ?? true {
                         let buildFile = self.addObject(
@@ -717,10 +717,10 @@ public class PBXProjGenerator {
         if !carthageFrameworksToEmbed.isEmpty {
 
             let inputPaths = carthageFrameworksToEmbed
-                .map { "$(SRCROOT)/\(carthageResolver.baseBuildPath)/\(target.platform)/\($0)\($0.contains(".") ? "" : ".framework")" }
+                .map { "$(SRCROOT)/\(carthageResolver.buildPath(for: target.platform))/\($0)\($0.contains(".") ? "" : ".framework")" }
             let outputPaths = carthageFrameworksToEmbed
                 .map { "$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/\($0)\($0.contains(".") ? "" : ".framework")" }
-            let carthageExecutable = carthageResolver.executablePath
+            let carthageExecutable = carthageResolver.executable
             let carthageScript = addObject(
                 PBXShellScriptBuildPhase(
                     name: "Carthage",

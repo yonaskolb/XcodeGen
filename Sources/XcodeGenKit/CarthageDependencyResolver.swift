@@ -9,33 +9,30 @@ import Foundation
 import ProjectSpec
 import PathKit
 
-public struct CarthageDependencyResolver {
+public class CarthageDependencyResolver {
 
     /// Carthage's base build path as specified by the
     /// project's `SpecOptions`, or `Carthage/Build` by default
-    var baseBuildPath: String {
+    var buildPath: String {
         return project.options.carthageBuildPath ?? "Carthage/Build"
     }
 
     /// Carthage's executable path as specified by the
     /// project's `SpecOptions`, or `carthage` by default
-    var executablePath: String {
+    var executable: String {
         return project.options.carthageExecutablePath ?? "carthage"
+    }
+    
+    private let project: Project
+    lazy var versionLoader = CarthageVersionLoader(buildPath: project.basePath + buildPath)
+    
+    init(project: Project) {
+        self.project = project
     }
 
     /// Carthage's build path for the given platform
     func buildPath(for platform: Platform) -> String {
-        let carthagePath = Path(baseBuildPath)
-        let platformName = platform.carthageDirectoryName
-        return "\(carthagePath)/\(platformName)"
-    }
-
-    // Keeps a cache of previously parsed related dependencies
-    private var carthageCachedRelatedDependencies: [String: CarthageVersionFile] = [:]
-    private let project: Project
-    
-    init(project: Project) {
-        self.project = project
+        return "\(buildPath)/\(platform.carthageName)"
     }
 
     /// Fetches all carthage dependencies for a given target
@@ -98,7 +95,7 @@ public struct CarthageDependencyResolver {
     func relatedDependencies(for dependency: Dependency, in platform: Platform) -> [Dependency] {
         guard
             case .carthage = dependency.type,
-            let versionFile = try? fetchCarthageVersionFile(for: dependency) else {
+            let versionFile = try? versionLoader.getVersionFile(for: dependency.reference) else {
                 // No .version file or we've been unable to parse
                 // so fail gracefully by returning the main dependency
                 return [dependency]
@@ -115,52 +112,20 @@ public struct CarthageDependencyResolver {
             )}
             .sorted(by: { $0.reference < $1.reference })
     }
-
-    private func fetchCarthageVersionFile(for dependency: Dependency) throws -> CarthageVersionFile {
-        if let cachedVersionFile = carthageCachedRelatedDependencies[dependency.reference] {
-            return cachedVersionFile
-        }
-        let buildPath = project.basePath + "\(self.baseBuildPath)/.\(dependency.reference).version"
-        let data = try buildPath.read()
-        let carthageVersionFile = try JSONDecoder().decode(CarthageVersionFile.self, from: data)
-        return carthageVersionFile
-    }
 }
 
-/// Decodable struct for type safe parsing of the .version file
-fileprivate struct CarthageVersionFile: Decodable {
+extension Platform {
 
-    struct Reference: Decodable, Equatable {
-        public let name: String
-        public let hash: String
-    }
-
-    enum Key: String, CodingKey, CaseIterable {
-        case iOS
-        case Mac
-        case tvOS
-        case watchOS
-    }
-
-    private let data: [Key: [Reference]]
-    fileprivate init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: Key.self)
-        data = try Key.allCases.reduce(into: [:]) { (current, nextKey) in
-            let refs = try container.decodeIfPresent([Reference].self, forKey: nextKey)
-            current[nextKey] = refs
+    public var carthageName: String {
+        switch self {
+        case .iOS:
+            return "iOS"
+        case .tvOS:
+            return "tvOS"
+        case .watchOS:
+            return "watchOS"
+        case .macOS:
+            return "Mac"
         }
     }
 }
-
-fileprivate extension CarthageVersionFile {
-    fileprivate func references(for platform: Platform) -> [Reference] {
-        switch platform {
-        case .iOS: return data[.iOS] ?? []
-        case .watchOS: return data[.watchOS] ?? []
-        case .tvOS: return data[.tvOS] ?? []
-        case .macOS: return data[.Mac] ?? []
-        }
-    }
-}
-
-    

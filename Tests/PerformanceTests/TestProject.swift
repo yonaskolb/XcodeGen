@@ -29,7 +29,7 @@ extension Project {
             preActions: [Scheme.ExecutionAction(name: "run", script: "script")],
             postActions: [Scheme.ExecutionAction(name: "run", script: "script")]
         )
-        for platform in Platform.all {
+        for platform in Platform.allCases {
             let appTarget = Target(
                 name: "App_\(platform)",
                 type: .application,

@@ -15,7 +15,7 @@ class CarthageDependencyResolverTests: XCTestCase {
             $0.it("provides the default base build path") {
                 let resolver = CarthageDependencyResolver(project: makeTestProject())
 
-                try expect(resolver.baseBuildPath) == "Carthage/Build"
+                try expect(resolver.buildPath) == "Carthage/Build"
             }
 
             $0.it("provides the base build path specified by the project specs") {
@@ -23,7 +23,7 @@ class CarthageDependencyResolverTests: XCTestCase {
                 let options = SpecOptions(carthageBuildPath: customPath)
                 let resolver = CarthageDependencyResolver(project: makeTestProject(options: options))
 
-                try expect(resolver.baseBuildPath) == customPath
+                try expect(resolver.buildPath) == customPath
             }
         }
     }
@@ -33,7 +33,7 @@ class CarthageDependencyResolverTests: XCTestCase {
             $0.it("provides the default executable path for carthage") {
                 let resolver = CarthageDependencyResolver(project: makeTestProject())
 
-                try expect(resolver.executablePath) == "carthage"
+                try expect(resolver.executable) == "carthage"
             }
 
             $0.it("provides the executable path for carthage as specified by the project specs") {
@@ -41,7 +41,7 @@ class CarthageDependencyResolverTests: XCTestCase {
                 let options = SpecOptions(carthageExecutablePath: customPath)
                 let resolver = CarthageDependencyResolver(project: makeTestProject(options: options))
 
-                try expect(resolver.executablePath) == customPath
+                try expect(resolver.executable) == customPath
             }
         }
     }
@@ -49,10 +49,10 @@ class CarthageDependencyResolverTests: XCTestCase {
         describe {
             $0.it("generates the build path for a given platform") {
                 let resolver = CarthageDependencyResolver(project: makeTestProject())
-                let allPlatforms = Platform.all
-                let expectedByPlatform: [Platform: String] = allPlatforms.reduce(into: [:], { result, next in
-                    result[next] = "\(resolver.baseBuildPath)/\(next.carthageDirectoryName)"
-                })
+                let allPlatforms = Platform.allCases
+                let expectedByPlatform: [Platform: String] = allPlatforms.reduce(into: [:]) { result, next in
+                    result[next] = "\(resolver.buildPath)/\(next.carthageName)"
+                }
 
                 try allPlatforms.forEach { platform in
                     try expect(expectedByPlatform[platform]) == resolver.buildPath(for: platform)
@@ -79,7 +79,7 @@ class CarthageDependencyResolverTests: XCTestCase {
                     .iOS: ["CarthageTestFixture", "DependencyFixtureA", "DependencyFixtureB"]
                 ]
 
-                try Platform.all.forEach { platform in
+                try Platform.allCases.forEach { platform in
                     let expected = expectedDependencies[platform] ?? []
                     let related = resolver.relatedDependencies(for: dependency, in: platform)
                     try expect(related.map { $0.reference }) == expected.sorted(by: { $0 < $1 })
