@@ -1,0 +1,13 @@
+name: Project
+options:
+  findCarthageFrameworks: true
+targets:
+  Framework:
+    type: framework
+    platform: [iOS, tvOS, watchOS, macOS]
+    dependencies:
+      - carthage: Result
+      - carthage: Alamofire
+      - carthage: CarthageTestFixture
+      - carthage: ReactiveSwift
+      - carthage: ReactiveCocoa

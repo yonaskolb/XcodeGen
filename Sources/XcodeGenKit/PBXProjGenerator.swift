@@ -178,7 +178,7 @@ public class PBXProjGenerator {
                     children: platforms,
                     sourceTree: .group,
                     name: "Carthage",
-                    path: carthageResolver.baseBuildPath
+                    path: carthageResolver.buildPath
                 )
             )
             frameworkFiles.append(carthageGroup)
@@ -576,9 +576,9 @@ public class PBXProjGenerator {
                 )
                 targetFrameworkBuildFiles.append(buildFile)
 
-            case .carthage(let includeRelated):
-                let includeRelated = includeRelated ?? project.options.includeCarthageRelatedDependencies
-                let allDependencies = includeRelated
+            case .carthage(let findFrameworks):
+                let findFrameworks = findFrameworks ?? project.options.findCarthageFrameworks
+                let allDependencies = findFrameworks
                     ? carthageResolver.relatedDependencies(for: dependency, in: target.platform) : [dependency]
                 allDependencies.forEach { dependency in
                     // Static libraries can't link or embed dynamic frameworks
@@ -591,7 +591,7 @@ public class PBXProjGenerator {
                     }
                     let fileReference = self.sourceGenerator.getFileReference(path: frameworkPath, inPath: platformPath)
 
-                    self.carthageFrameworksByPlatform[target.platform.carthageDirectoryName, default: []].insert(fileReference)
+                    self.carthageFrameworksByPlatform[target.platform.carthageName, default: []].insert(fileReference)
 
                     if dependency.link ?? true {
                         let buildFile = self.addObject(
@@ -717,10 +717,10 @@ public class PBXProjGenerator {
         if !carthageFrameworksToEmbed.isEmpty {
 
             let inputPaths = carthageFrameworksToEmbed
-                .map { "$(SRCROOT)/\(carthageResolver.baseBuildPath)/\(target.platform)/\($0)\($0.contains(".") ? "" : ".framework")" }
+                .map { "$(SRCROOT)/\(carthageResolver.buildPath(for: target.platform))/\($0)\($0.contains(".") ? "" : ".framework")" }
             let outputPaths = carthageFrameworksToEmbed
                 .map { "$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/\($0)\($0.contains(".") ? "" : ".framework")" }
-            let carthageExecutable = carthageResolver.executablePath
+            let carthageExecutable = carthageResolver.executable
             let carthageScript = addObject(
                 PBXShellScriptBuildPhase(
                     name: "Carthage",

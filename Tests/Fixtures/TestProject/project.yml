@@ -86,8 +86,6 @@ targets:
       - target: Framework_iOS
       - target: StaticLibrary_ObjC_iOS
       - carthage: Result
-      - carthage: CarthageTestFixture
-        includeRelated: true
       - target: Framework2_iOS
         weak: true
       - target: App_watchOS
@@ -196,9 +194,7 @@ targets:
         path: scripts/script.sh
     dependencies:
       - carthage: Result
-      - carthage: CarthageTestFixture
-        includeRelated: true
-      - target: StaticLibrary_ObjC_$platform
+      - target: StaticLibrary_ObjC_${platform}
 
   Framework2:
     type: framework

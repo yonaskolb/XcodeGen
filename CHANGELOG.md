@@ -3,12 +3,12 @@
 ## Master
 
 #### Added
-- Added `missingConfigFiles` to `options.disabledValidations` to optionally skip checking for the existence of config files.
-- Added ability to automatically include Carthage related dependencies via `includeRelated: true` [#506](https://github.com/yonaskolb/XcodeGen/pull/506) @rpassis
-- Added ability to define a per-platform `deploymentTarget` for Multi-Platform targets. [#510](https://github.com/yonaskolb/XcodeGen/pull/510) @ainopara
+- Added ability to automatically find all the frameworks for Carthage dependencies via `options.findCarthageFrameworks` or `dependency.findFrameworks`. See the [Carthage](Docs/Usage.md#carthage) usage docs for more info [#506](https://github.com/yonaskolb/XcodeGen/pull/506) [#543](https://github.com/yonaskolb/XcodeGen/pull/543) @rpassis @yonaskolb
 - Added support for nested target templates [#534](https://github.com/yonaskolb/XcodeGen/pull/534) @tomquist
 - Added ability to define `templateAttributes` within a target to be able to parameterize templates. [#533](https://github.com/yonaskolb/XcodeGen/pull/533) @tomquist
 - Added ability to set `link` to false in framework dependencies [#532](https://github.com/yonaskolb/XcodeGen/pull/532) @dimatosaurus
+- Added `missingConfigFiles` to `options.disabledValidations` to optionally skip checking for the existence of config files.
+- Added ability to define a per-platform `deploymentTarget` for Multi-Platform targets. [#510](https://github.com/yonaskolb/XcodeGen/pull/510) @ainopara
 
 #### Changed
 - **DEPRECATION**: Placeholders `$target_name` and `$platform` have been deprecated in favour of `${target_name}` and `${platform}`. Support for the old placeholders will be removed in a future version [#533](https://github.com/yonaskolb/XcodeGen/pull/533) @tomquist

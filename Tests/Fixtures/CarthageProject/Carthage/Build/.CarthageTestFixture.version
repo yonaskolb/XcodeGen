@@ -1,0 +1,59 @@
+{
+  "Mac" : [
+    {
+      "name" : "CarthageTestFixture",
+      "hash" : "071b5d10a76f763129c32223af9f0e34674f2d6766e1b8dd0658c634c750d88f"
+    },
+    {
+      "name" : "DependencyFixtureB",
+      "hash" : "65d7482cfefd8952762f57de885e9929aae8e6fe6a1c556e6bad75811f8d096f"
+    },
+    {
+      "name" : "DependencyFixtureA",
+      "hash" : "ada254978598a68cce0e7cc919549e4888793ad2e9082fca38a533b9731710d5"
+    }
+  ],
+  "watchOS" : [
+    {
+      "name" : "CarthageTestFixture",
+      "hash" : "6f5aeb82a53091a5573be1b16b58156a2444f8a568e4a4b4914a5658a11ce91c"
+    },
+    {
+      "name" : "DependencyFixtureB",
+      "hash" : "a252cd58636f621f39daa48f89e881665d4d1da1debaf46d7ba926f59720e928"
+    },
+    {
+      "name" : "DependencyFixtureA",
+      "hash" : "1f2df2a6f33953eb61d56c195dcf2b102d458dcec4ad93b70d1f802cf1d01081"
+    }
+  ],
+  "tvOS" : [
+    {
+      "name" : "CarthageTestFixture",
+      "hash" : "4d0c084ea320ef9d2e216f60956bdb50e4975887f19f4817b26657a3796ab411"
+    },
+    {
+      "name" : "DependencyFixtureA",
+      "hash" : "f257e4d0348770f210196dedaf16b51d54b255ec3e9e7b1cce50ea74e57d61b3"
+    },
+    {
+      "name" : "DependencyFixtureB",
+      "hash" : "47377bbe103c06a25150aece9f48ac4b42065bc0c4543a7249395482676a3c38"
+    }
+  ],
+  "commitish" : "1.0",
+  "iOS" : [
+    {
+      "name" : "CarthageTestFixture",
+      "hash" : "7c2a74fc024a50478bec9ca8833302b2850d1971aadc6c9d890266ea29af6966"
+    },
+    {
+      "name" : "DependencyFixtureA",
+      "hash" : "d9979f6f61ad275ae8d4fdf575df66fde694f584cc7f58f2dcb86e9fe81b9a3a"
+    },
+    {
+      "name" : "DependencyFixtureB",
+      "hash" : "1c418bb70678e1f47cffc0ad8d8e6e014372ad9936fff6302abb86511980ac01"
+    }
+  ]
+}

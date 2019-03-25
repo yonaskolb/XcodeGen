@@ -25,7 +25,7 @@ extension Project {
         }
 
         // apply custom platform version
-        for platform in Platform.all {
+        for platform in Platform.allCases {
             if let version = options.deploymentTarget.version(for: platform) {
                 buildSettings[platform.deploymentTargetSetting] = version.deploymentTarget
             }
