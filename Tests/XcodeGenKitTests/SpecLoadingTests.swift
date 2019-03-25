@@ -72,7 +72,7 @@ class SpecLoadingTests: XCTestCase {
                         sources: [
                             "paths_test/simplesource",
                             TargetSource(path: "paths_test/source", excludes: ["file"]),
-                            ],
+                        ],
                         dependencies: [Dependency(type: .framework, reference: "paths_test/Framework")],
                         info: Plist(path: "paths_test/info"),
                         entitlements: Plist(path: "paths_test/entitlements"),
@@ -88,7 +88,7 @@ class SpecLoadingTests: XCTestCase {
                         sources: [
                             "paths_test/template_source",
                             "source",
-                            ],
+                        ],
                         dependencies: [Dependency(type: .framework, reference: "Framework")],
                         info: Plist(path: "info"),
                         entitlements: Plist(path: "entitlements"),
@@ -418,8 +418,8 @@ class SpecLoadingTests: XCTestCase {
                     "sources": ["targetSource"],
                     "templates": ["temp2", "temp"],
                     "templateAttributes": [
-                        "source": "replacedSource"
-                    ]
+                        "source": "replacedSource",
+                    ],
                 ]
 
                 let project = try getProjectSpec([
@@ -435,9 +435,9 @@ class SpecLoadingTests: XCTestCase {
                             "deploymentTarget": "1.1.0",
                             "configFiles": [
                                 "debug": "Configs/$target_name/debug.xcconfig",
-                                "release": "Configs/${target_name}/release.xcconfig"
+                                "release": "Configs/${target_name}/release.xcconfig",
                             ],
-                            "sources": ["${source}"]
+                            "sources": ["${source}"],
                         ],
                     ],
                 ])
@@ -477,7 +477,7 @@ class SpecLoadingTests: XCTestCase {
                             "configFiles": ["debug": "Configs/$target_name/debug.xcconfig"],
                             "templates": ["temp", "temp1"],
                             "sources": ["templateSource"],
-                        ]
+                        ],
                     ],
                 ])
 
@@ -499,8 +499,8 @@ class SpecLoadingTests: XCTestCase {
                     "templateAttributes": [
                         "temp": "temp-by-target",
                         "a": "a-by-target",
-                        "b": "b-by-target" // This should win over attributes defined in template "temp"
-                    ]
+                        "b": "b-by-target", // This should win over attributes defined in template "temp"
+                    ],
                 ]
 
                 let project = try getProjectSpec([
@@ -512,15 +512,15 @@ class SpecLoadingTests: XCTestCase {
                             "templateAttributes": [
                                 "b": "b-by-temp",
                                 "c": "c-by-temp",
-                                "d": "d-by-temp"
-                            ]
+                                "d": "d-by-temp",
+                            ],
                         ],
                         "a": [
                             "templates": ["b", "c"],
                             "sources": ["a", "${a}"],
                             "templateAttributes": [
-                                "c": "c-by-a"
-                            ]
+                                "c": "c-by-a",
+                            ],
                         ],
                         "b": [
                             "sources": ["b", "${b}"],
@@ -532,8 +532,8 @@ class SpecLoadingTests: XCTestCase {
                             "sources": ["d", "${d}"],
                             "templates": ["e"],
                             "templateAttributes": [
-                                "e": "e-by-d"
-                            ]
+                                "e": "e-by-d",
+                            ],
                         ],
                         "e": [
                             "sources": ["e", "${e}"],
@@ -582,7 +582,7 @@ class SpecLoadingTests: XCTestCase {
                             "configFiles": ["debug": "Configs/$target_name/debug.xcconfig"],
                             "templates": ["temp", "temp1"],
                             "sources": ["templateSource"],
-                        ]
+                        ],
                     ],
                 ])
 
@@ -593,23 +593,23 @@ class SpecLoadingTests: XCTestCase {
                 try expect(target.sources) == ["nestedTemplateSource2", "nestedTemplateSource1", "templateSource", "targetSource"] // merges array in order
                 try expect(target.configFiles["debug"]) == "Configs/Framework/debug.xcconfig" // replaces $target_name
             }
-            
+
             $0.it("parses cross platform target templates") {
-  
+
                 let project = try getProjectSpec([
                     "targets": [
                         "Framework": [
                             "type": "framework",
                             "templates": ["temp"],
-                        ]
+                        ],
                     ],
                     "targetTemplates": [
                         "temp": [
                             "platform": ["iOS", "tvOS"],
-                        ]
+                        ],
                     ],
-                    ])
-                
+                ])
+
                 let iOSTarget = project.targets.first { $0.platform == .iOS }
                 let tvOSTarget = project.targets.first { $0.platform == .tvOS }
                 try expect(iOSTarget?.type) == .framework
@@ -624,7 +624,7 @@ class SpecLoadingTests: XCTestCase {
                             "type": "framework",
                             "platform": ["iOS", "tvOS"],
                             "templates": ["$platform"],
-                        ]
+                        ],
                     ],
                     "targetTemplates": [
                         "iOS": [
@@ -632,9 +632,9 @@ class SpecLoadingTests: XCTestCase {
                         ],
                         "tvOS": [
                             "sources": "B",
-                        ]
+                        ],
                     ],
-                    ])
+                ])
 
                 let iOSTarget = project.targets.first { $0.platform == .iOS }
                 let tvOSTarget = project.targets.first { $0.platform == .tvOS }
@@ -910,7 +910,7 @@ class SpecLoadingTests: XCTestCase {
                     "createIntermediateGroups": true,
                     "developmentLanguage": "ja",
                     "deploymentTarget": ["iOS": 11.1, "tvOS": 10.0, "watchOS": "3", "macOS": "10.12.1"],
-                    "findCarthageFrameworks": true
+                    "findCarthageFrameworks": true,
                 ]]
                 let parsedSpec = try getProjectSpec(dictionary)
                 try expect(parsedSpec) == expected

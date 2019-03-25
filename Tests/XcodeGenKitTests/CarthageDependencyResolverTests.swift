@@ -6,9 +6,7 @@ import PathKit
 
 class CarthageDependencyResolverTests: XCTestCase {
 
-    override func setUp() {
-
-    }
+    override func setUp() {}
 
     func testBaseBuildPath() {
         describe {
@@ -45,6 +43,7 @@ class CarthageDependencyResolverTests: XCTestCase {
             }
         }
     }
+
     func testBuildPathForPlatform() {
         describe {
             $0.it("generates the build path for a given platform") {
@@ -75,7 +74,7 @@ class CarthageDependencyResolverTests: XCTestCase {
                     .macOS: ["DependencyFixtureB", "DependencyFixtureA", "CarthageTestFixture"],
                     .watchOS: ["DependencyFixtureA", "DependencyFixtureB", "CarthageTestFixture"],
                     .tvOS: ["CarthageTestFixture", "DependencyFixtureA", "DependencyFixtureB"],
-                    .iOS: ["CarthageTestFixture", "DependencyFixtureA", "DependencyFixtureB"]
+                    .iOS: ["CarthageTestFixture", "DependencyFixtureA", "DependencyFixtureB"],
                 ]
 
                 try Platform.allCases.forEach { platform in
@@ -119,7 +118,7 @@ class CarthageDependencyResolverTests: XCTestCase {
                 let resolver = CarthageDependencyResolver(project: makeTestProject(options: options))
                 let target = Target(name: "1", type: .application, platform: .iOS, dependencies: [dependency])
                 let dependencies = resolver.dependencies(for: target)
-                
+
                 try expect(dependencies) == [dependency]
             }
 
@@ -138,7 +137,7 @@ class CarthageDependencyResolverTests: XCTestCase {
             }
         }
     }
-    
+
 }
 
 private func makeTestProject(with targets: [Target] = [], options: SpecOptions = SpecOptions()) -> Project {

@@ -22,10 +22,10 @@ public class CarthageDependencyResolver {
     var executable: String {
         return project.options.carthageExecutablePath ?? "carthage"
     }
-    
+
     private let project: Project
     lazy var versionLoader = CarthageVersionLoader(buildPath: project.basePath + buildPath)
-    
+
     init(project: Project) {
         self.project = project
     }
@@ -89,16 +89,16 @@ public class CarthageDependencyResolver {
 
         return frameworks.sorted(by: { $0.reference < $1.reference })
     }
-    
+
     /// Reads the .version file generated for a given Carthage dependency
     /// and returns a list of its related dependencies including self
     func relatedDependencies(for dependency: Dependency, in platform: Platform) -> [Dependency] {
         guard
             case .carthage = dependency.type,
             let versionFile = try? versionLoader.getVersionFile(for: dependency.reference) else {
-                // No .version file or we've been unable to parse
-                // so fail gracefully by returning the main dependency
-                return [dependency]
+            // No .version file or we've been unable to parse
+            // so fail gracefully by returning the main dependency
+            return [dependency]
         }
         return versionFile.frameworks(for: platform)
             .map { Dependency(
@@ -109,7 +109,7 @@ public class CarthageDependencyResolver {
                 link: dependency.link,
                 implicit: dependency.implicit,
                 weakLink: dependency.weakLink
-            )}
+            ) }
             .sorted(by: { $0.reference < $1.reference })
     }
 }

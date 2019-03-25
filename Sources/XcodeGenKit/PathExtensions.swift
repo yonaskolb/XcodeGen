@@ -13,7 +13,7 @@ extension Path {
     public func simplifyingParentDirectoryReferences() -> Path {
         return normalize().components.reduce(Path(), +)
     }
-    
+
     /// Returns the relative path necessary to go from `base` to `self`.
     ///
     /// Both paths must be absolute or relative paths.
@@ -26,13 +26,13 @@ extension Path {
             /// It's impossible to determine the path between an absolute and a relative path
             case unmatchedAbsolutePath
         }
-        
+
         func pathComponents(for path: ArraySlice<String>, relativeTo base: ArraySlice<String>, memo: [String]) throws -> [String] {
             switch (base.first, path.first) {
             // Base case: Paths are equivalent
             case (.none, .none):
                 return memo
-                
+
             // No path to backtrack from
             case (.none, .some(let rhs)):
                 guard rhs != "." else {
@@ -40,11 +40,11 @@ extension Path {
                     return try pathComponents(for: path.dropFirst(), relativeTo: base, memo: memo)
                 }
                 return try pathComponents(for: path.dropFirst(), relativeTo: base, memo: memo + [rhs])
-                
+
             // Both sides have a common parent
             case (.some(let lhs), .some(let rhs)) where lhs == rhs:
                 return try pathComponents(for: path.dropFirst(), relativeTo: base.dropFirst(), memo: memo)
-                
+
             // `base` has a path to back out of
             case (.some(let lhs), _):
                 guard lhs != ".." else {
@@ -57,11 +57,11 @@ extension Path {
                 return try pathComponents(for: path, relativeTo: base.dropFirst(), memo: memo + [".."])
             }
         }
-        
+
         guard isAbsolute && base.isAbsolute || !isAbsolute && !base.isAbsolute else {
             throw PathArgumentError.unmatchedAbsolutePath
         }
-        
+
         return Path(components: try pathComponents(for: ArraySlice(simplifyingParentDirectoryReferences().components),
                                                    relativeTo: ArraySlice(base.simplifyingParentDirectoryReferences().components),
                                                    memo: []))
