@@ -1,9 +1,11 @@
 # Change Log
 
-## Master
+## Next Version
+
+## 2.3.0
 
 #### Added
-- Added ability to automatically find all the frameworks for Carthage dependencies via `options.findCarthageFrameworks` or `dependency.findFrameworks`. See the [Carthage](Docs/Usage.md#carthage) usage docs for more info [#506](https://github.com/yonaskolb/XcodeGen/pull/506) [#543](https://github.com/yonaskolb/XcodeGen/pull/543) @rpassis @yonaskolb
+- Added ability to automatically find all the frameworks for Carthage dependencies via the global `options.findCarthageFrameworks` or dependency specfic `dependency.findFrameworks`. See the [Carthage](Docs/Usage.md#carthage) usage docs for more info [#506](https://github.com/yonaskolb/XcodeGen/pull/506) [#543](https://github.com/yonaskolb/XcodeGen/pull/543) @rpassis @yonaskolb
 - Added support for nested target templates [#534](https://github.com/yonaskolb/XcodeGen/pull/534) @tomquist
 - Added ability to define `templateAttributes` within a target to be able to parameterize templates. [#533](https://github.com/yonaskolb/XcodeGen/pull/533) @tomquist
 - Added ability to set `link` to false in framework dependencies [#532](https://github.com/yonaskolb/XcodeGen/pull/532) @dimatosaurus
@@ -20,6 +22,8 @@
 - Fixed paths in target templates within included files not being relative [#537](https://github.com/yonaskolb/XcodeGen/pull/537) @yonaskolb
 - Fix multi-platform target templates [#541](https://github.com/yonaskolb/XcodeGen/pull/541) @yonaskolb
 - Fixed sources in an included target not being relative when the sources are mix of string and dictionaries [#542](https://github.com/yonaskolb/XcodeGen/pull/542) @yonaskolb
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.2.0...2.3.0)
 
 ## 2.2.0
 
