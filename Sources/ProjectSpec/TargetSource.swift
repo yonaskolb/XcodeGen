@@ -181,6 +181,45 @@ extension TargetSource: JSONObjectConvertible {
     }
 }
 
+extension TargetSource: JSONDynamicEncodable {
+    public func toJSONValue() -> Any {
+        var dict: JSONDictionary = [:]
+
+        if compilerFlags.count > 0 {
+            dict["compilerFlags"] = compilerFlags
+        }
+        if excludes.count > 0 {
+            dict["excludes"] = excludes
+        }
+        if let name = name {
+            dict["name"] = name
+        }
+        if let headerVisibility = headerVisibility {
+            dict["headerVisibility"] = headerVisibility.rawValue
+        }
+        if let type = type {
+            dict["type"] = type.rawValue
+        }
+        if let buildPhase = buildPhase {
+            dict["buildPhase"] = buildPhase.toJSONValue()
+        }
+        if let createIntermediateGroups = createIntermediateGroups {
+            dict["createIntermediateGroups"] = createIntermediateGroups
+        }
+        if optional {
+            dict["optional"] = true
+        }
+
+        if dict.count == 0 {
+            return path
+        }
+
+        dict["path"] = path
+
+        return dict
+    }
+}
+
 extension TargetSource.BuildPhase {
 
     public init(string: String) throws {
@@ -204,12 +243,36 @@ extension TargetSource.BuildPhase: JSONObjectConvertible {
     }
 }
 
+extension TargetSource.BuildPhase: JSONDynamicEncodable {
+    public func toJSONValue() -> Any {
+        switch self {
+        case .sources: return "sources"
+        case .headers: return "headers"
+        case .resources: return "resources"
+        case .copyFiles(let files): return ["copyFiles": files.toJSONDictionary()]
+        case .none: return "none"
+        case .frameworks: fatalError("invalid build phase")
+        case .runScript: fatalError("invalid build phase")
+        case .carbonResources: fatalError("invalid build phase")
+        }
+    }
+}
+
 extension TargetSource.BuildPhase.CopyFilesSettings: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
         destination = try jsonDictionary.json(atKeyPath: "destination")
         subpath = jsonDictionary.json(atKeyPath: "subpath") ?? ""
         phaseOrder = .postCompile
+    }
+}
+
+extension TargetSource.BuildPhase.CopyFilesSettings: JSONDictionaryEncodable {
+    public func toJSONDictionary() -> JSONDictionary {
+        return [
+            "destination": destination.rawValue,
+            "subpath": subpath
+        ]
     }
 }
 

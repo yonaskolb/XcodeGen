@@ -230,3 +230,56 @@ extension BuildSettingsContainer {
         return configFiles.values.map { Path($0) }
     }
 }
+
+extension Project: JSONDictionaryEncodable {
+    public func toJSONDictionary() -> JSONDictionary {
+        var dict: JSONDictionary = [
+            "name": name,
+            "options": options.toJSONDictionary(),
+        ]
+
+        let settingsDict = settings.toJSONDictionary()
+        if settingsDict.count > 0 {
+            dict["settings"] = settingsDict
+        }
+
+        if fileGroups.count > 0 {
+            dict["fileGroups"] = fileGroups
+        }
+        if configFiles.count > 0 {
+            dict["configFiles"] = configFiles
+        }
+        if include.count > 0 {
+            dict["include"] = include
+        }
+        if attributes.count > 0 {
+            dict["attributes"] = attributes
+        }
+
+        let targetPairs = targets.map { ($0.name, $0.toJSONDictionary()) }
+        if targetPairs.count > 0 {
+            dict["targets"] = Dictionary(uniqueKeysWithValues: targetPairs)
+        }
+
+        let configsPairs = configs.map { ($0.name, $0.type?.rawValue) }
+        if configsPairs.count > 0 {
+            dict["configs"] = Dictionary(uniqueKeysWithValues: configsPairs)
+        }
+
+        let aggregateTargetsPairs = aggregateTargets.map { ($0.name, $0.toJSONDictionary()) }
+        if aggregateTargetsPairs.count > 0 {
+            dict["aggregateTargets"] = Dictionary(uniqueKeysWithValues: aggregateTargetsPairs)
+        }
+
+        let schemesPairs = schemes.map { ($0.name, $0.toJSONDictionary()) }
+        if schemesPairs.count > 0 {
+            dict["schemes"] = Dictionary(uniqueKeysWithValues: schemesPairs)
+        }
+
+        if settingGroups.count > 0 {
+            dict["settingGroups"] = settingGroups.mapValues { $0.toJSONDictionary() }
+        }
+
+        return dict
+    }
+}

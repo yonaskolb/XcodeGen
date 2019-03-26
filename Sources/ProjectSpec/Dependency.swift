@@ -81,6 +81,47 @@ extension Dependency: JSONObjectConvertible {
     }
 }
 
+extension Dependency: JSONDictionaryEncodable {
+    public func toJSONDictionary() -> JSONDictionary {
+        var dict: JSONDictionary = [:]
+
+        if !removeHeaders {
+            dict["removeHeaders"] = removeHeaders
+        }
+        if implicit {
+            dict["implicit"] = implicit
+        }
+        if weakLink {
+            dict["weak"] = weakLink
+        }
+        if let embed = embed {
+            dict["embed"] = embed
+        }
+        if let codeSign = codeSign {
+            dict["codeSign"] = codeSign
+        }
+        if let link = link {
+            dict["link"] = link
+        }
+
+        switch type {
+        case .target:
+            dict["target"] = reference
+        case .framework:
+            dict["framework"] = reference
+        case .carthage(let findFrameworks):
+            dict["carthage"] = reference
+            if let findFrameworks = findFrameworks {
+                dict["findFrameworks"] = findFrameworks
+            }
+        case .sdk:
+            dict["sdk"] = reference
+        }
+
+        return dict
+    }
+}
+
 extension Dependency: PathContainer {
 
     static var pathProperties: [PathProperty] {

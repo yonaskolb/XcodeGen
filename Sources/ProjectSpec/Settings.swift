@@ -105,3 +105,24 @@ public func += (lhs: inout BuildSettings, rhs: BuildSettings?) {
     guard let rhs = rhs else { return }
     lhs.merge(rhs)
 }
+
+extension Settings: JSONDictionaryEncodable {
+    public func toJSONDictionary() -> JSONDictionary {
+        if groups.count > 0 || configSettings.count > 0 {
+            var dict: JSONDictionary = [:]
+
+            if buildSettings.count > 0 {
+                dict["base"] = buildSettings
+            }
+            if groups.count > 0 {
+                dict["groups"] = groups
+            }
+            if configSettings.count > 0 {
+                dict["configs"] = configSettings.mapValues { $0.toJSONDictionary() }
+            }
+
+            return dict
+        }
+        return buildSettings
+    }
+}

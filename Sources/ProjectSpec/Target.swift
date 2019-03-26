@@ -272,6 +272,24 @@ extension LegacyTarget: JSONObjectConvertible {
     }
 }
 
+extension LegacyTarget: JSONDictionaryEncodable {
+    public func toJSONDictionary() -> JSONDictionary {
+        var dict: JSONDictionary = [
+            "toolPath": toolPath,
+            "passSettings": passSettings,
+        ]
+
+        if let arguments = arguments {
+            dict["arguments"] = arguments
+        }
+        if let workingDirectory = workingDirectory {
+            dict["workingDirectory"] = workingDirectory
+        }
+
+        return dict
+    }
+}
+
 extension Target: NamedJSONDictionaryConvertible {
 
     public init(name: String, jsonDictionary: JSONDictionary) throws {
@@ -340,5 +358,74 @@ extension Target: NamedJSONDictionaryConvertible {
         scheme = jsonDictionary.json(atKeyPath: "scheme")
         legacy = jsonDictionary.json(atKeyPath: "legacy")
         attributes = jsonDictionary.json(atKeyPath: "attributes") ?? [:]
+    }
+}
+
+
+extension Target: JSONDictionaryEncodable {
+    public func toJSONDictionary() -> JSONDictionary {
+        var dict: JSONDictionary = [
+            "type": type.name,
+            "platform": platform.rawValue,
+        ]
+
+        let settingsDict = settings.toJSONDictionary()
+        if settingsDict.count > 0 {
+            dict["settings"] = settingsDict
+        }
+
+        if productName != name {
+            dict["productName"] = productName
+        }
+        if configFiles.count > 0 {
+            dict["configFiles"] = configFiles
+        }
+        if attributes.count > 0 {
+            dict["attributes"] = attributes
+        }
+        if sources.count > 0 {
+            dict["sources"] = sources.map { $0.toJSONValue() }
+        }
+        if dependencies.count > 0 {
+            dict["dependencies"] = dependencies.map { $0.toJSONDictionary() }
+        }
+        if postCompileScripts.count > 0 {
+            dict["postCompileScripts"] = postCompileScripts.map{ $0.toJSONDictionary() }
+        }
+        if preBuildScripts.count > 0 {
+            dict["prebuildScripts"] = preBuildScripts.map{ $0.toJSONDictionary() }
+        }
+        if postBuildScripts.count > 0 {
+            dict["postbuildScripts"] = postBuildScripts.map{ $0.toJSONDictionary() }
+        }
+        if buildRules.count > 0 {
+            dict["buildRules"] = buildRules.map{ $0.toJSONDictionary() }
+        }
+        if let deploymentTarget = deploymentTarget {
+            dict["deploymentTarget"] = deploymentTarget.deploymentTarget
+        }
+        if let info = info {
+            dict["info"] = info.toJSONDictionary()
+        }
+        if let entitlements = entitlements {
+            dict["entitlements"] = entitlements.toJSONDictionary()
+        }
+        if let transitivelyLinkDependencies = transitivelyLinkDependencies {
+            dict["transitivelyLinkDependencies"] = transitivelyLinkDependencies
+        }
+        if let directlyEmbedCarthageDependencies = directlyEmbedCarthageDependencies {
+            dict["directlyEmbedCarthageDependencies"] = directlyEmbedCarthageDependencies
+        }
+        if let requiresObjCLinking = requiresObjCLinking {
+            dict["requiresObjCLinking"] = requiresObjCLinking
+        }
+        if let scheme = scheme {
+            dict["scheme"] = scheme.toJSONDictionary()
+        }
+        if let legacy = legacy {
+            dict["legacy"] = legacy.toJSONDictionary()
+        }
+
+        return dict
     }
 }

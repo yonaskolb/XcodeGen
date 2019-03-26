@@ -62,6 +62,35 @@ extension AggregateTarget: NamedJSONDictionaryConvertible {
     }
 }
 
+extension AggregateTarget: JSONDictionaryEncodable {
+    public func toJSONDictionary() -> JSONDictionary {
+        var dict: JSONDictionary = [:]
+
+        let settingsDict = settings.toJSONDictionary()
+        if settingsDict.count > 0 {
+            dict["settings"] = settingsDict
+        }
+        
+        if targets.count > 0 {
+            dict["targets"] = targets
+        }
+        if configFiles.count > 0 {
+            dict["configFiles"] = configFiles
+        }
+        if attributes.count > 0 {
+            dict["attributes"] = attributes
+        }
+        if buildScripts.count > 0 {
+            dict["buildScripts"] = buildScripts.map { $0.toJSONDictionary() }
+        }
+        if let scheme = scheme {
+            dict["scheme"] = scheme.toJSONDictionary()
+        }
+
+        return dict
+    }
+}
+
 extension AggregateTarget: PathContainer {
 
     static var pathProperties: [PathProperty] {

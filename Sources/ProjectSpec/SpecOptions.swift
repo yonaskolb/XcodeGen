@@ -126,6 +126,64 @@ extension SpecOptions: JSONObjectConvertible {
     }
 }
 
+extension SpecOptions: JSONDictionaryEncodable {
+    public func toJSONDictionary() -> JSONDictionary {
+        var dict: JSONDictionary = [
+            "deploymentTarget": deploymentTarget.toJSONDictionary(),
+            "transitivelyLinkDependencies": transitivelyLinkDependencies,
+            "groupSortPosition": groupSortPosition.rawValue,
+        ]
+
+        if settingPresets != .all {
+            dict["settingPresets"] = settingPresets.rawValue
+        }
+        if createIntermediateGroups {
+            dict["createIntermediateGroups"] = createIntermediateGroups
+        }
+        if generateEmptyDirectories {
+            dict["generateEmptyDirectories"] = generateEmptyDirectories
+        }
+        if findCarthageFrameworks {
+            dict["findCarthageFrameworks"] = findCarthageFrameworks
+        }
+        if disabledValidations.count > 0 {
+            dict["disabledValidations"] = disabledValidations.map { $0.rawValue }
+        }
+        if let minimumXcodeGenVersion = minimumXcodeGenVersion {
+            dict["minimumXcodeGenVersion"] = minimumXcodeGenVersion.string
+        }
+        if let carthageBuildPath = carthageBuildPath {
+            dict["carthageBuildPath"] = carthageBuildPath
+        }
+        if let carthageExecutablePath = carthageExecutablePath {
+            dict["carthageExecutablePath"] = carthageExecutablePath
+        }
+        if let bundleIdPrefix = bundleIdPrefix {
+            dict["bundleIdPrefix"] = bundleIdPrefix
+        }
+        if let developmentLanguage = developmentLanguage {
+            dict["developmentLanguage"] = developmentLanguage
+        }
+        if let usesTabs = usesTabs {
+            dict["usesTabs"] = usesTabs
+        }
+        if let xcodeVersion = xcodeVersion {
+            dict["xcodeVersion"] = xcodeVersion
+        }
+        if let indentWidth = indentWidth {
+            dict["indentWidth"] = Int(indentWidth)
+        }
+        if let tabWidth = tabWidth {
+            dict["tabWidth"] = Int(tabWidth)
+        }
+        if let defaultConfig = defaultConfig {
+            dict["defaultConfig"] = defaultConfig
+        }
+
+        return dict
+    }
+}
+
 extension SpecOptions: PathContainer {
 
     static var pathProperties: [PathProperty] {

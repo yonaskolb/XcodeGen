@@ -61,6 +61,45 @@ extension BuildScript: JSONObjectConvertible {
         showEnvVars = jsonDictionary.json(atKeyPath: "showEnvVars") ?? true
     }
 }
+extension BuildScript: JSONDictionaryEncodable {
+    public func toJSONDictionary() -> JSONDictionary {
+        var dict: JSONDictionary = [:]
+
+        if runOnlyWhenInstalling {
+            dict["runOnlyWhenInstalling"] = runOnlyWhenInstalling
+        }
+        if !showEnvVars {
+            dict["showEnvVars"] = showEnvVars
+        }
+        if inputFiles.count > 0 {
+            dict["inputFiles"] = inputFiles
+        }
+        if inputFileLists.count > 0 {
+            dict["inputFileLists"] = inputFileLists
+        }
+        if outputFiles.count > 0 {
+            dict["outputFiles"] = outputFiles
+        }
+        if outputFileLists.count > 0 {
+            dict["outputFileLists"] = outputFileLists
+        }
+        if let name = name {
+            dict["name"] = name
+        }
+        if let shell = shell {
+            dict["shell"] = shell
+        }
+
+        switch script {
+        case .path(let string):
+            dict["path"] = string
+        case .script(let string):
+            dict["script"] = string
+        }
+
+        return dict
+    }
+}
 
 extension BuildScript: PathContainer {
 

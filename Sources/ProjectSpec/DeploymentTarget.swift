@@ -78,3 +78,24 @@ extension DeploymentTarget: JSONObjectConvertible {
         macOS = try parseVersion("macOS")
     }
 }
+
+extension DeploymentTarget: JSONDictionaryEncodable {
+    public func toJSONDictionary() -> JSONDictionary {
+        var dict: JSONDictionary = [:]
+
+        if let iOS = iOS {
+            dict["iOS"] = iOS.string
+        }
+        if let tvOS = tvOS {
+            dict["tvOS"] = tvOS.string
+        }
+        if let watchOS = watchOS {
+            dict["watchOS"] = watchOS.string
+        }
+        if let macOS = macOS {
+            dict["macOS"] = macOS.string
+        }
+
+        return dict
+    }
+}
