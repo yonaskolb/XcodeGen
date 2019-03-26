@@ -2,6 +2,13 @@
 
 ## Next Version
 
+#### Added
+
+#### Changed
+
+#### Fixed
+- Fixed order of file generation. Plists are now generated before the project is generated so that the project includes the generated plists [#544](https://github.com/yonaskolb/XcodeGen/issues/544) @tomquist
+
 ## 2.3.0
 
 #### Added
