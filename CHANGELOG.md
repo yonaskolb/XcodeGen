@@ -2,6 +2,9 @@
 
 ## Next Version
 
+#### Changed
+- Updated to Swift 5 and drop Swift 4.2 [#549](https://github.com/yonaskolb/XcodeGen/pull/549) @yonaskolb
+
 ## 2.3.0
 
 #### Added
