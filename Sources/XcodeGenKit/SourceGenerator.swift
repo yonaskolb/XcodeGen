@@ -247,7 +247,7 @@ class SourceGenerator {
             let isOutOfBasePath = !path.absolute().string.contains(project.basePath.absolute().string)
 
             // has no valid parent paths
-            let isRootPath = isOutOfBasePath || path.parent() == project.basePath
+            let isRootPath = (isBaseGroup && isOutOfBasePath) || path.parent() == project.basePath
 
             // is a top level group in the project
             let isTopLevelGroup = (isBaseGroup && !createIntermediateGroups) || isRootPath
