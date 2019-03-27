@@ -90,7 +90,6 @@ targets:
         weak: true
       - target: App_watchOS
       - target: iMessageApp
-      - framework: Vendor/SomeFramework.framework
       - sdk: Contacts.framework
     scheme:
       testTargets:
