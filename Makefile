@@ -1,6 +1,6 @@
 TOOL_NAME = XcodeGen
 export EXECUTABLE_NAME = xcodegen
-VERSION = 2.3.0
+VERSION = 2.4.0
 
 PREFIX = /usr/local
 INSTALL_PATH = $(PREFIX)/bin/$(EXECUTABLE_NAME)
@@ -28,8 +28,8 @@ uninstall:
 format_code:
 	swiftformat .
 
-release: format_code
-	sed -i '' 's|\(let version = try Version("\)\(.*\)\(")\)|\1$(VERSION)\3|' Sources/XcodeGen/main.swift
+release:
+	sed -i '' 's|\(let version = Version("\)\(.*\)\(")\)|\1$(VERSION)\3|' Sources/XcodeGen/main.swift
 
 	git add .
 	git commit -m "Update to $(VERSION)"
