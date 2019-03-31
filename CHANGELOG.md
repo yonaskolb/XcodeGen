@@ -4,7 +4,7 @@
 
 ## 2.4.0
 
-###$ Fixed:
+#### Fixed:
 - Fixed installation when building in Swift 5 [#549](https://github.com/yonaskolb/XcodeGen/pull/549) @yonaskolb
 
 #### Changed
