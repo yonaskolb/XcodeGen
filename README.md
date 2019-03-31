@@ -69,7 +69,7 @@ A project would be created with 2 connected targets, with all the required confi
 
 ## Installing
 
-Make sure Xcode 9.3 is installed first.
+Make sure Xcode 10.2 is installed first.
 
 ### [Mint](https://github.com/yonaskolb/mint)
 ```sh
@@ -105,7 +105,7 @@ swift run xcodegen
 Add the following to your Package.swift file's dependencies:
 
 ```swift
-.package(url: "https://github.com/yonaskolb/XcodeGen.git", from: "1.0.0"),
+.package(url: "https://github.com/yonaskolb/XcodeGen.git", from: "2.3.0"),
 ```
 
 And then import wherever needed: `import XcodeGenKit`

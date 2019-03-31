@@ -148,7 +148,7 @@ class SourceGenerator {
                 // order by taking the last item in the sortedPaths array
                 let currentVersionPath = findCurrentCoreDataModelVersionPath(using: versionedModels) ?? sortedPaths.last
                 let currentVersion: PBXFileReference? = {
-                    guard let indexOf = sortedPaths.index(where: { $0 == currentVersionPath }) else { return nil }
+                    guard let indexOf = sortedPaths.firstIndex(where: { $0 == currentVersionPath }) else { return nil }
                     return modelFileReferences[indexOf]
                 }()
                 let versionGroup = addObject(XCVersionGroup(
@@ -561,7 +561,7 @@ class SourceGenerator {
             let versionPath = versionedModels.first(where: { $0.lastComponent == ".xccurrentversion" }),
             let data = try? versionPath.read(),
             let plist = try? PropertyListSerialization.propertyList(from: data, options: [], format: nil) as? [String: Any],
-            let versionString = plist?["_XCCurrentVersionName"] as? String else {
+            let versionString = plist["_XCCurrentVersionName"] as? String else {
             return nil
         }
         return versionedModels.first(where: { $0.lastComponent == versionString })

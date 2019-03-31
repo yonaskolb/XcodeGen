@@ -30,7 +30,6 @@
 		0D281787B630CE62E91F9F7219EFF40D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8A016580A3B8F72B820BFBF93749CD7 /* Assets.xcassets */; };
 		0F7F220834A3E2B344322B64DB5140DF /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0BB1B49A91B892152D68ED76D9D4E759 /* libc++.tbd */; };
 		13C624ABA05AC67129468002144005A9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0704B6CAFBB53E0EBB08F6B385901D43 /* ViewController.swift */; settings = {COMPILER_FLAGS = "-Werror"; }; };
-		1985E98D7107DFCBB2F2AC7DC6A155B5 /* SomeFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 73E7D4B860A5B6B80540E64703192744 /* SomeFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1E105E72C258FF9843B21D8A3F520CFB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE1F06D99242F4223D081F0DF78367F3 /* LaunchScreen.storyboard */; };
 		205719BEDEFFC911468631925C617988 /* module.modulemap in CopyFiles */ = {isa = PBXBuildFile; fileRef = F2950763C4C568CC85021D185A35C1FB /* module.modulemap */; };
 		21B9D91DC3573A47C3298339795D0D2A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B419F22EB75EDD4AB9B92F32F7D39755 /* Assets.xcassets */; };
@@ -108,7 +107,6 @@
 		E32A04EF64C8989C8349A476E3DC1F19 /* Framework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 41FC82ED1C4C3B7B3D7B2FB721574442 /* Framework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		E48B36322124BDE8EE3AF22EB3B2B47C /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = 6A58A16491CDDF968B0D56DE7EB96D92 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E7555C1BCBCF88204907587DBD341663 /* Headers in Headers */ = {isa = PBXBuildFile; fileRef = 2E1E747C7BC434ADB80CC269B7B595DC /* Headers */; settings = {ATTRIBUTES = (Public, ); }; };
-		EA0D7CDB58D81E7D92E731535E41FB5E /* SomeFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73E7D4B860A5B6B80540E64703192744 /* SomeFramework.framework */; };
 		EEDCCB9427FA46F272DFC190FCCBE77A /* StaticLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AC91042453E18DF74BA1C0F957D87DC /* StaticLibrary.swift */; };
 		EF285B90A968453FA1CB0CDE8C0AD440 /* iMessageApp.app in Resources */ = {isa = PBXBuildFile; fileRef = 9A87A926D563773658FB87FEEE4DD132 /* iMessageApp.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		EFBDE105D3397BE7AAC207B8AD3CC8BB /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D296BB7355994040E197A1EE5B41F583 /* Result.framework */; };
@@ -392,7 +390,6 @@
 			files = (
 				3799FF03E75F5D3C925CBB18B8BB7BF6 /* Framework2.framework in Embed Frameworks */,
 				7856158603A68D4FF152F8E96305B3E7 /* Framework.framework in Embed Frameworks */,
-				1985E98D7107DFCBB2F2AC7DC6A155B5 /* SomeFramework.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -448,7 +445,6 @@
 		6BBE762F36D94AB6FFBFE834A99277EA /* SomeFile */ = {isa = PBXFileReference; path = SomeFile; sourceTree = "<group>"; };
 		70A8E15C81E454DC950C59F092CC1049 /* SomeXPCService.xpc */ = {isa = PBXFileReference; path = SomeXPCService.xpc; sourceTree = "<group>"; };
 		72A14C887EF7E9C8CBE914ACC4DDF4D4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		73E7D4B860A5B6B80540E64703192744 /* SomeFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SomeFramework.framework; path = Vendor/SomeFramework.framework; sourceTree = "<group>"; };
 		77C0C341F1865224E059608627CC2D82 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7ACBAD7D485AA4E2542B9E0F9908D5B2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7B5068D64404C61A67A184584E13804D /* MyBundle.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = MyBundle.bundle; sourceTree = "<group>"; };
@@ -515,7 +511,6 @@
 				DE50B077EE4BFABAF128321B2A13886F /* Framework.framework in Frameworks */,
 				29A79F030DD325754FD2C82C4A6E0AE6 /* Result.framework in Frameworks */,
 				53B2D7C4FD56D5D1D8AF16B23110235D /* StaticLibrary_ObjC.a in Frameworks */,
-				EA0D7CDB58D81E7D92E731535E41FB5E /* SomeFramework.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -893,7 +888,6 @@
 				12809A79ACE69F501A5FE815B43985BD /* Carthage */,
 				FDB2B6A77D39CD5602F2125F01DEF025 /* Contacts.framework */,
 				0BB1B49A91B892152D68ED76D9D4E759 /* libc++.tbd */,
-				73E7D4B860A5B6B80540E64703192744 /* SomeFramework.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -2243,7 +2237,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
-					"\"Vendor\"",
 				);
 				INFOPLIST_FILE = App_iOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -3014,7 +3007,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
-					"\"Vendor\"",
 				);
 				INFOPLIST_FILE = App_iOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -3378,7 +3370,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
-					"\"Vendor\"",
 				);
 				INFOPLIST_FILE = App_iOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -3981,7 +3972,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
-					"\"Vendor\"",
 				);
 				INFOPLIST_FILE = App_iOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -4044,7 +4034,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
-					"\"Vendor\"",
 				);
 				INFOPLIST_FILE = App_iOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -4549,7 +4538,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
-					"\"Vendor\"",
 				);
 				INFOPLIST_FILE = App_iOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

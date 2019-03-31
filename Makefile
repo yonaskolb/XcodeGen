@@ -19,7 +19,7 @@ install: build
 	cp -R $(CURRENT_PATH)/SettingPresets $(SHARE_PATH)/SettingPresets
 
 build:
-	swift build --disable-sandbox -c release -Xswiftc -static-stdlib
+	swift build --disable-sandbox -c release
 
 uninstall:
 	rm -f $(INSTALL_PATH)
