@@ -2,8 +2,15 @@
 
 ## Next Version
 
+## 2.4.0
+
+###$ Fixed:
+- Fixed installation when building in Swift 5 [#549](https://github.com/yonaskolb/XcodeGen/pull/549) @yonaskolb
+
 #### Changed
-- Updated to Swift 5 and drop Swift 4.2 [#549](https://github.com/yonaskolb/XcodeGen/pull/549) @yonaskolb
+- Updated to Swift 5 and dropped Swift 4.2 [#549](https://github.com/yonaskolb/XcodeGen/pull/549) @yonaskolb
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.3.0...2.4.0)
 
 ## 2.3.0
 
