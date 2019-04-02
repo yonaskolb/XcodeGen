@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXAggregateTarget section */
@@ -1430,7 +1430,7 @@
 		0FBAE303E3CFC2ABAC876A7719B30922 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1000;
+				LastUpgradeCheck = 1020;
 				TargetAttributes = {
 					020A320BB3736FCDE6CC4E703EE69AC0 = {
 						ProvisioningStyle = Automatic;
