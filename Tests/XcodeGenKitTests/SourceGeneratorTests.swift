@@ -95,8 +95,8 @@ class SourceGeneratorTests: XCTestCase {
                     .first(where: { $0.file == fileReference }) else {
                     throw failure("Cant find build file")
                 }
-                try expect(buildPhase?.files.count) == 1
-                try expect(buildPhase?.files.contains(buildFile)) == true
+                try expect(buildPhase?.files?.count) == 1
+                try expect(buildPhase?.files?.contains(buildFile)) == true
             }
 
             $0.it("generates core data models") {
@@ -518,7 +518,7 @@ class SourceGeneratorTests: XCTestCase {
 
                 let sourcesBuildPhase = pbxProj.buildPhases.first(where: { $0.buildPhase == BuildPhase.sources })!
 
-                try expect(sourcesBuildPhase.files.count) == 1
+                try expect(sourcesBuildPhase.files?.count) == 1
             }
 
             $0.it("add only carthage dependencies with same platform") {
@@ -609,7 +609,7 @@ extension PBXProj {
             let buildFile = buildFiles
                 .first(where: { $0.file === fileReference })
             let actualBuildPhase = buildFile
-                .flatMap { buildFile in buildPhases.first { $0.files.contains(buildFile) } }?.buildPhase
+                .flatMap { buildFile in buildPhases.first { $0.files?.contains(buildFile) ?? false } }?.buildPhase
 
             var error: String?
             if let buildPhase = buildPhase.buildPhase {

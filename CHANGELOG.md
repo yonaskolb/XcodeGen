@@ -2,6 +2,12 @@
 
 ## Next Version
 
+#### Added
+- Added support for `app-extension.intents-service` target type [#536](https://github.com/yonaskolb/XcodeGen/pull/536) @yonaskolb
+
+#### Changed
+- Updated to xcodeproj 6.7.0 including its performance improvements [#536](https://github.com/yonaskolb/XcodeGen/pull/536) @yonaskolb
+
 ## 2.4.0
 
 #### Fixed:
