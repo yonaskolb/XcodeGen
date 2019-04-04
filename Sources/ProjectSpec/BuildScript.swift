@@ -63,25 +63,18 @@ extension BuildScript: JSONObjectConvertible {
 }
 extension BuildScript: JSONEncodable {
     public func toJSONValue() -> Any {
-        var dict: JSONDictionary = [:]
+        var dict: JSONDictionary = [
+            "inputFiles": inputFiles,
+            "inputFileLists": inputFileLists,
+            "outputFiles": outputFiles,
+            "outputFileLists": outputFileLists
+        ]
 
         if runOnlyWhenInstalling {
             dict["runOnlyWhenInstalling"] = runOnlyWhenInstalling
         }
         if !showEnvVars {
             dict["showEnvVars"] = showEnvVars
-        }
-        if inputFiles.count > 0 {
-            dict["inputFiles"] = inputFiles
-        }
-        if inputFileLists.count > 0 {
-            dict["inputFileLists"] = inputFileLists
-        }
-        if outputFiles.count > 0 {
-            dict["outputFiles"] = outputFiles
-        }
-        if outputFileLists.count > 0 {
-            dict["outputFileLists"] = outputFileLists
         }
         if let name = name {
             dict["name"] = name

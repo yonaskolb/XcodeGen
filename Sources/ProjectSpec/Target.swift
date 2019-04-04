@@ -367,40 +367,21 @@ extension Target: JSONEncodable {
         var dict: JSONDictionary = [
             "type": type.name,
             "platform": platform.rawValue,
+            "settings": settings.toJSONValue(),
+            "configFiles": configFiles,
+            "attributes": attributes,
+            "sources": sources.map { $0.toJSONValue() },
+            "dependencies": dependencies.map { $0.toJSONValue() },
+            "postCompileScripts": postCompileScripts.map{ $0.toJSONValue() },
+            "prebuildScripts": preBuildScripts.map{ $0.toJSONValue() },
+            "postbuildScripts": postBuildScripts.map{ $0.toJSONValue() },
+            "buildRules": buildRules.map{ $0.toJSONValue() }
         ]
-
-        let settingsDict = settings.toJSONValue()
-        if settingsDict.count > 0 {
-            dict["settings"] = settingsDict
-        }
 
         if productName != name {
             dict["productName"] = productName
         }
-        if configFiles.count > 0 {
-            dict["configFiles"] = configFiles
-        }
-        if attributes.count > 0 {
-            dict["attributes"] = attributes
-        }
-        if sources.count > 0 {
-            dict["sources"] = sources.map { $0.toJSONValue() }
-        }
-        if dependencies.count > 0 {
-            dict["dependencies"] = dependencies.map { $0.toJSONValue() }
-        }
-        if postCompileScripts.count > 0 {
-            dict["postCompileScripts"] = postCompileScripts.map{ $0.toJSONValue() }
-        }
-        if preBuildScripts.count > 0 {
-            dict["prebuildScripts"] = preBuildScripts.map{ $0.toJSONValue() }
-        }
-        if postBuildScripts.count > 0 {
-            dict["postbuildScripts"] = postBuildScripts.map{ $0.toJSONValue() }
-        }
-        if buildRules.count > 0 {
-            dict["buildRules"] = buildRules.map{ $0.toJSONValue() }
-        }
+
         if let deploymentTarget = deploymentTarget {
             dict["deploymentTarget"] = deploymentTarget.deploymentTarget
         }

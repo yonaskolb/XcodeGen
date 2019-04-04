@@ -248,17 +248,11 @@ extension Scheme.Run: JSONEncodable {
     public func toJSONValue() -> Any {
         var dict: JSONDictionary = [
             "commandLineArguments": commandLineArguments,
+            "preActions": preActions.map { $0.toJSONValue() },
+            "postActions": postActions.map { $0.toJSONValue() },
+            "environmentVariables": environmentVariables.map { $0.toJSONValue() },
         ]
 
-        if preActions.count > 0 {
-            dict["preActions"] = preActions.map { $0.toJSONValue() }
-        }
-        if postActions.count > 0 {
-            dict["postActions"] = postActions.map { $0.toJSONValue() }
-        }
-        if environmentVariables.count > 0 {
-            dict["environmentVariables"] = environmentVariables.map { $0.toJSONValue() }
-        }
         if let config = config {
             dict["config"] = config
         }
@@ -296,23 +290,13 @@ extension Scheme.Test: JSONEncodable {
     public func toJSONValue() -> Any {
         var dict: JSONDictionary = [
             "gatherCoverageData": gatherCoverageData,
+            "commandLineArguments": commandLineArguments,
+            "targets": targets.map { $0.toJSONValue() },
+            "preActions": preActions.map { $0.toJSONValue() },
+            "postActions": postActions.map { $0.toJSONValue() },
+            "environmentVariables": environmentVariables.map { $0.toJSONValue() },
         ]
-
-        if commandLineArguments.count > 0 {
-            dict["commandLineArguments"] = commandLineArguments
-        }
-        if targets.count > 0 {
-            dict["targets"] = targets.map { $0.toJSONValue() }
-        }
-        if preActions.count > 0 {
-            dict["preActions"] = preActions.map { $0.toJSONValue() }
-        }
-        if postActions.count > 0 {
-            dict["postActions"] = postActions.map { $0.toJSONValue() }
-        }
-        if environmentVariables.count > 0 {
-            dict["environmentVariables"] = environmentVariables.map { $0.toJSONValue() }
-        }
+    
         if let config = config {
             dict["config"] = config
         }
@@ -366,17 +350,11 @@ extension Scheme.Profile: JSONEncodable {
     public func toJSONValue() -> Any {
         var dict: JSONDictionary = [
             "commandLineArguments": commandLineArguments,
+            "preActions": preActions.map { $0.toJSONValue() },
+            "postActions": postActions.map { $0.toJSONValue() },
+            "environmentVariables": environmentVariables.map { $0.toJSONValue() },
         ]
 
-        if preActions.count > 0 {
-            dict["preActions"] = preActions.map { $0.toJSONValue() }
-        }
-        if postActions.count > 0 {
-            dict["postActions"] = postActions.map { $0.toJSONValue() }
-        }
-        if environmentVariables.count > 0 {
-            dict["environmentVariables"] = environmentVariables.map { $0.toJSONValue() }
-        }
         if let config = config {
             dict["config"] = config
         }
@@ -417,16 +395,13 @@ extension Scheme.Archive: JSONObjectConvertible {
 
 extension Scheme.Archive: JSONEncodable {
     public func toJSONValue() -> Any {
-        var dict: JSONDictionary = [:]
+        var dict: JSONDictionary = [
+            "preActions": preActions.map { $0.toJSONValue() },
+            "postActions": postActions.map { $0.toJSONValue() }
+        ]
 
         if !revealArchiveInOrganizer {
             dict["revealArchiveInOrganizer"] = revealArchiveInOrganizer
-        }
-        if preActions.count > 0 {
-            dict["preActions"] = preActions.map { $0.toJSONValue() }
-        }
-        if postActions.count > 0 {
-            dict["postActions"] = postActions.map { $0.toJSONValue() }
         }
         if let config = config {
             dict["config"] = config
@@ -516,6 +491,8 @@ extension Scheme.Build: JSONEncodable {
 
         var dict: JSONDictionary = [
             "targets": Dictionary(uniqueKeysWithValues: targetPairs),
+            "preActions": preActions.map { $0.toJSONValue() },
+            "postActions": postActions.map { $0.toJSONValue() },
         ]
 
         if !parallelizeBuild {
@@ -523,12 +500,6 @@ extension Scheme.Build: JSONEncodable {
         }
         if !buildImplicitDependencies {
             dict["buildImplicitDependencies"] = buildImplicitDependencies
-        }
-        if preActions.count > 0 {
-            dict["preActions"] = preActions.map { $0.toJSONValue() }
-        }
-        if postActions.count > 0 {
-            dict["postActions"] = postActions.map { $0.toJSONValue() }
         }
 
         return dict

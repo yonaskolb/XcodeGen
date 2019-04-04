@@ -132,6 +132,7 @@ extension SpecOptions: JSONEncodable {
             "deploymentTarget": deploymentTarget.toJSONValue(),
             "transitivelyLinkDependencies": transitivelyLinkDependencies,
             "groupSortPosition": groupSortPosition.rawValue,
+            "disabledValidations": disabledValidations.map { $0.rawValue },
         ]
 
         if settingPresets != .all {
@@ -145,9 +146,6 @@ extension SpecOptions: JSONEncodable {
         }
         if findCarthageFrameworks {
             dict["findCarthageFrameworks"] = findCarthageFrameworks
-        }
-        if disabledValidations.count > 0 {
-            dict["disabledValidations"] = disabledValidations.map { $0.rawValue }
         }
         if let minimumXcodeGenVersion = minimumXcodeGenVersion {
             dict["minimumXcodeGenVersion"] = minimumXcodeGenVersion.string

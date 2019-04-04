@@ -57,29 +57,14 @@ extension TargetScheme: JSONObjectConvertible {
 
 extension TargetScheme: JSONEncodable {
     public func toJSONValue() -> Any {
-        var dict: JSONDictionary = [
+        return [
             "gatherCoverageData": gatherCoverageData,
+            "configVariants": configVariants,
+            "commandLineArguments": commandLineArguments,
+            "testTargets": testTargets.map { $0.toJSONValue() },
+            "environmentVariables": environmentVariables.map { $0.toJSONValue() },
+            "preActions": preActions.map { $0.toJSONValue() },
+            "postActions": postActions.map { $0.toJSONValue() },
         ]
-
-        if configVariants.count > 0 {
-            dict["configVariants"] = configVariants
-        }
-        if commandLineArguments.count > 0 {
-            dict["commandLineArguments"] = commandLineArguments
-        }
-        if testTargets.count > 0 {
-            dict["testTargets"] = testTargets.map { $0.toJSONValue() }
-        }
-        if environmentVariables.count > 0 {
-            dict["environmentVariables"] = environmentVariables.map { $0.toJSONValue() }
-        }
-        if preActions.count > 0 {
-            dict["preActions"] = preActions.map { $0.toJSONValue() }
-        }
-        if postActions.count > 0 {
-            dict["postActions"] = postActions.map { $0.toJSONValue() }
-        }
-
-        return dict
     }
 }

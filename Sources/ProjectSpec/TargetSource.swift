@@ -183,14 +183,11 @@ extension TargetSource: JSONObjectConvertible {
 
 extension TargetSource: JSONEncodable {
     public func toJSONValue() -> Any {
-        var dict: JSONDictionary = [:]
+        var dict: JSONDictionary = [
+            "compilerFlags": compilerFlags,
+            "excludes": excludes,
+        ]
 
-        if compilerFlags.count > 0 {
-            dict["compilerFlags"] = compilerFlags
-        }
-        if excludes.count > 0 {
-            dict["excludes"] = excludes
-        }
         if let name = name {
             dict["name"] = name
         }

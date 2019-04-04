@@ -109,19 +109,11 @@ public func += (lhs: inout BuildSettings, rhs: BuildSettings?) {
 extension Settings: JSONEncodable {
     public func toJSONValue() -> Any {
         if groups.count > 0 || configSettings.count > 0 {
-            var dict: JSONDictionary = [:]
-
-            if buildSettings.count > 0 {
-                dict["base"] = buildSettings
-            }
-            if groups.count > 0 {
-                dict["groups"] = groups
-            }
-            if configSettings.count > 0 {
-                dict["configs"] = configSettings.mapValues { $0.toJSONValue() }
-            }
-
-            return dict
+            return [
+                "base": buildSettings,
+                "groups": groups,
+                "configs": configSettings.mapValues { $0.toJSONValue() }
+            ]
         }
         return buildSettings
     }

@@ -237,53 +237,24 @@ extension Project: JSONEncodable {
     }
 
     public func toJSONDictionary() -> JSONDictionary {
-        var dict: JSONDictionary = [
+        let targetPairs = targets.map { ($0.name, $0.toJSONValue()) }
+        let configsPairs = configs.map { ($0.name, $0.type?.rawValue) }
+        let aggregateTargetsPairs = aggregateTargets.map { ($0.name, $0.toJSONValue()) }
+        let schemesPairs = schemes.map { ($0.name, $0.toJSONValue()) }
+
+        return [
             "name": name,
             "options": options.toJSONValue(),
+            "settings": settings.toJSONValue(),
+            "fileGroups": fileGroups,
+            "configFiles": configFiles,
+            "include": include,
+            "attributes": attributes,
+            "targets": Dictionary(uniqueKeysWithValues: targetPairs),
+            "configs": Dictionary(uniqueKeysWithValues: configsPairs),
+            "aggregateTargets": Dictionary(uniqueKeysWithValues: aggregateTargetsPairs),
+            "schemes": Dictionary(uniqueKeysWithValues: schemesPairs),
+            "settingGroups": settingGroups.mapValues { $0.toJSONValue() }
         ]
-
-        let settingsDict = settings.toJSONValue()
-        if settingsDict.count > 0 {
-            dict["settings"] = settingsDict
-        }
-
-        if fileGroups.count > 0 {
-            dict["fileGroups"] = fileGroups
-        }
-        if configFiles.count > 0 {
-            dict["configFiles"] = configFiles
-        }
-        if include.count > 0 {
-            dict["include"] = include
-        }
-        if attributes.count > 0 {
-            dict["attributes"] = attributes
-        }
-
-        let targetPairs = targets.map { ($0.name, $0.toJSONValue()) }
-        if targetPairs.count > 0 {
-            dict["targets"] = Dictionary(uniqueKeysWithValues: targetPairs)
-        }
-
-        let configsPairs = configs.map { ($0.name, $0.type?.rawValue) }
-        if configsPairs.count > 0 {
-            dict["configs"] = Dictionary(uniqueKeysWithValues: configsPairs)
-        }
-
-        let aggregateTargetsPairs = aggregateTargets.map { ($0.name, $0.toJSONValue()) }
-        if aggregateTargetsPairs.count > 0 {
-            dict["aggregateTargets"] = Dictionary(uniqueKeysWithValues: aggregateTargetsPairs)
-        }
-
-        let schemesPairs = schemes.map { ($0.name, $0.toJSONValue()) }
-        if schemesPairs.count > 0 {
-            dict["schemes"] = Dictionary(uniqueKeysWithValues: schemesPairs)
-        }
-
-        if settingGroups.count > 0 {
-            dict["settingGroups"] = settingGroups.mapValues { $0.toJSONValue() }
-        }
-
-        return dict
     }
 }
