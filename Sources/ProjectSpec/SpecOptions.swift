@@ -128,11 +128,21 @@ extension SpecOptions: JSONObjectConvertible {
 
 extension SpecOptions: JSONEncodable {
     public func toJSONValue() -> Any {
-        var dict: JSONDictionary = [
+        var dict: [String: Any?] = [
             "deploymentTarget": deploymentTarget.toJSONValue(),
             "transitivelyLinkDependencies": transitivelyLinkDependencies,
             "groupSortPosition": groupSortPosition.rawValue,
             "disabledValidations": disabledValidations.map { $0.rawValue },
+            "minimumXcodeGenVersion": minimumXcodeGenVersion?.string,
+            "carthageBuildPath": carthageBuildPath,
+            "carthageExecutablePath": carthageExecutablePath,
+            "bundleIdPrefix": bundleIdPrefix,
+            "developmentLanguage": developmentLanguage,
+            "usesTabs": usesTabs,
+            "xcodeVersion": xcodeVersion,
+            "indentWidth": indentWidth.flatMap { Int($0) },
+            "tabWidth": tabWidth.flatMap { Int($0) },
+            "defaultConfig": defaultConfig,
         ]
 
         if settingPresets != .all {
@@ -146,36 +156,6 @@ extension SpecOptions: JSONEncodable {
         }
         if findCarthageFrameworks {
             dict["findCarthageFrameworks"] = findCarthageFrameworks
-        }
-        if let minimumXcodeGenVersion = minimumXcodeGenVersion {
-            dict["minimumXcodeGenVersion"] = minimumXcodeGenVersion.string
-        }
-        if let carthageBuildPath = carthageBuildPath {
-            dict["carthageBuildPath"] = carthageBuildPath
-        }
-        if let carthageExecutablePath = carthageExecutablePath {
-            dict["carthageExecutablePath"] = carthageExecutablePath
-        }
-        if let bundleIdPrefix = bundleIdPrefix {
-            dict["bundleIdPrefix"] = bundleIdPrefix
-        }
-        if let developmentLanguage = developmentLanguage {
-            dict["developmentLanguage"] = developmentLanguage
-        }
-        if let usesTabs = usesTabs {
-            dict["usesTabs"] = usesTabs
-        }
-        if let xcodeVersion = xcodeVersion {
-            dict["xcodeVersion"] = xcodeVersion
-        }
-        if let indentWidth = indentWidth {
-            dict["indentWidth"] = Int(indentWidth)
-        }
-        if let tabWidth = tabWidth {
-            dict["tabWidth"] = Int(tabWidth)
-        }
-        if let defaultConfig = defaultConfig {
-            dict["defaultConfig"] = defaultConfig
         }
 
         return dict

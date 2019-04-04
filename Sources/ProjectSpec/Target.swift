@@ -274,19 +274,12 @@ extension LegacyTarget: JSONObjectConvertible {
 
 extension LegacyTarget: JSONEncodable {
     public func toJSONValue() -> Any {
-        var dict: JSONDictionary = [
+        return [
             "toolPath": toolPath,
             "passSettings": passSettings,
-        ]
-
-        if let arguments = arguments {
-            dict["arguments"] = arguments
-        }
-        if let workingDirectory = workingDirectory {
-            dict["workingDirectory"] = workingDirectory
-        }
-
-        return dict
+            "arguments": arguments,
+            "workingDirectory": workingDirectory,
+        ] as [String: Any?]
     }
 }
 
@@ -364,7 +357,7 @@ extension Target: NamedJSONDictionaryConvertible {
 
 extension Target: JSONEncodable {
     public func toJSONValue() -> Any {
-        var dict: JSONDictionary = [
+        var dict: [String: Any?] = [
             "type": type.name,
             "platform": platform.rawValue,
             "settings": settings.toJSONValue(),
@@ -375,36 +368,19 @@ extension Target: JSONEncodable {
             "postCompileScripts": postCompileScripts.map{ $0.toJSONValue() },
             "prebuildScripts": preBuildScripts.map{ $0.toJSONValue() },
             "postbuildScripts": postBuildScripts.map{ $0.toJSONValue() },
-            "buildRules": buildRules.map{ $0.toJSONValue() }
+            "buildRules": buildRules.map{ $0.toJSONValue() },
+            "deploymentTarget": deploymentTarget?.deploymentTarget,
+            "info": info?.toJSONValue(),
+            "entitlements": entitlements?.toJSONValue(),
+            "transitivelyLinkDependencies": transitivelyLinkDependencies,
+            "directlyEmbedCarthageDependencies": directlyEmbedCarthageDependencies,
+            "requiresObjCLinking": requiresObjCLinking,
+            "scheme": scheme?.toJSONValue(),
+            "legacy": legacy?.toJSONValue(),
         ]
 
         if productName != name {
             dict["productName"] = productName
-        }
-
-        if let deploymentTarget = deploymentTarget {
-            dict["deploymentTarget"] = deploymentTarget.deploymentTarget
-        }
-        if let info = info {
-            dict["info"] = info.toJSONValue()
-        }
-        if let entitlements = entitlements {
-            dict["entitlements"] = entitlements.toJSONValue()
-        }
-        if let transitivelyLinkDependencies = transitivelyLinkDependencies {
-            dict["transitivelyLinkDependencies"] = transitivelyLinkDependencies
-        }
-        if let directlyEmbedCarthageDependencies = directlyEmbedCarthageDependencies {
-            dict["directlyEmbedCarthageDependencies"] = directlyEmbedCarthageDependencies
-        }
-        if let requiresObjCLinking = requiresObjCLinking {
-            dict["requiresObjCLinking"] = requiresObjCLinking
-        }
-        if let scheme = scheme {
-            dict["scheme"] = scheme.toJSONValue()
-        }
-        if let legacy = legacy {
-            dict["legacy"] = legacy.toJSONValue()
         }
 
         return dict

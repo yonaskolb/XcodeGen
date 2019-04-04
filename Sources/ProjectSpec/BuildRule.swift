@@ -83,14 +83,11 @@ extension BuildRule: JSONObjectConvertible {
 
 extension BuildRule: JSONEncodable {
     public func toJSONValue() -> Any {
-        var dict: [String: Any] = [
+        var dict: [String: Any?] = [
             "outputFiles": outputFiles,
             "outputFilesCompilerFlags": outputFilesCompilerFlags,
+            "name": name
         ]
-
-        if let name = name {
-            dict["name"] = name
-        }
 
         switch fileType {
         case .pattern(let string):

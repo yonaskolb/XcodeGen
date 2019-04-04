@@ -81,21 +81,11 @@ extension DeploymentTarget: JSONObjectConvertible {
 
 extension DeploymentTarget: JSONEncodable {
     public func toJSONValue() -> Any {
-        var dict: JSONDictionary = [:]
-
-        if let iOS = iOS {
-            dict["iOS"] = iOS.string
-        }
-        if let tvOS = tvOS {
-            dict["tvOS"] = tvOS.string
-        }
-        if let watchOS = watchOS {
-            dict["watchOS"] = watchOS.string
-        }
-        if let macOS = macOS {
-            dict["macOS"] = macOS.string
-        }
-
-        return dict
+        return [
+            "iOS": iOS?.string,
+            "tvOS": tvOS?.string,
+            "watchOS": watchOS?.string,
+            "macOS": macOS?.string,
+        ]
     }
 }

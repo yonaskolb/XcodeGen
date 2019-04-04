@@ -83,7 +83,11 @@ extension Dependency: JSONObjectConvertible {
 
 extension Dependency: JSONEncodable {
     public func toJSONValue() -> Any {
-        var dict: JSONDictionary = [:]
+        var dict: [String: Any?] = [
+            "embed": embed,
+            "codeSign": codeSign,
+            "link": link
+        ]
 
         if !removeHeaders {
             dict["removeHeaders"] = removeHeaders
@@ -93,15 +97,6 @@ extension Dependency: JSONEncodable {
         }
         if weakLink {
             dict["weak"] = weakLink
-        }
-        if let embed = embed {
-            dict["embed"] = embed
-        }
-        if let codeSign = codeSign {
-            dict["codeSign"] = codeSign
-        }
-        if let link = link {
-            dict["link"] = link
         }
 
         switch type {

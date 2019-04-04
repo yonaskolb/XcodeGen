@@ -183,26 +183,16 @@ extension TargetSource: JSONObjectConvertible {
 
 extension TargetSource: JSONEncodable {
     public func toJSONValue() -> Any {
-        var dict: JSONDictionary = [
+        var dict: [String: Any?] = [
             "compilerFlags": compilerFlags,
             "excludes": excludes,
+            "name": name,
+            "headerVisibility": headerVisibility?.rawValue,
+            "type": type?.rawValue,
+            "buildPhase": buildPhase?.toJSONValue(),
+            "createIntermediateGroups": createIntermediateGroups,
         ]
 
-        if let name = name {
-            dict["name"] = name
-        }
-        if let headerVisibility = headerVisibility {
-            dict["headerVisibility"] = headerVisibility.rawValue
-        }
-        if let type = type {
-            dict["type"] = type.rawValue
-        }
-        if let buildPhase = buildPhase {
-            dict["buildPhase"] = buildPhase.toJSONValue()
-        }
-        if let createIntermediateGroups = createIntermediateGroups {
-            dict["createIntermediateGroups"] = createIntermediateGroups
-        }
         if optional {
             dict["optional"] = true
         }

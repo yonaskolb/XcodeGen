@@ -220,16 +220,11 @@ extension Scheme.ExecutionAction: JSONObjectConvertible {
 
 extension Scheme.ExecutionAction: JSONEncodable {
     public func toJSONValue() -> Any {
-        var dict = [
+        return [
             "script": script,
             "name": name,
+            "settingsTarget": settingsTarget
         ]
-
-        if let settingsTarget = settingsTarget {
-            dict["settingsTarget"] = settingsTarget
-        }
-
-        return dict
     }
 }
 
@@ -246,18 +241,13 @@ extension Scheme.Run: JSONObjectConvertible {
 
 extension Scheme.Run: JSONEncodable {
     public func toJSONValue() -> Any {
-        var dict: JSONDictionary = [
+        return [
             "commandLineArguments": commandLineArguments,
             "preActions": preActions.map { $0.toJSONValue() },
             "postActions": postActions.map { $0.toJSONValue() },
             "environmentVariables": environmentVariables.map { $0.toJSONValue() },
-        ]
-
-        if let config = config {
-            dict["config"] = config
-        }
-
-        return dict
+            "config": config
+        ] as [String: Any?]
     }
 }
 
@@ -288,20 +278,15 @@ extension Scheme.Test: JSONObjectConvertible {
 
 extension Scheme.Test: JSONEncodable {
     public func toJSONValue() -> Any {
-        var dict: JSONDictionary = [
+        return [
             "gatherCoverageData": gatherCoverageData,
             "commandLineArguments": commandLineArguments,
             "targets": targets.map { $0.toJSONValue() },
             "preActions": preActions.map { $0.toJSONValue() },
             "postActions": postActions.map { $0.toJSONValue() },
             "environmentVariables": environmentVariables.map { $0.toJSONValue() },
-        ]
-    
-        if let config = config {
-            dict["config"] = config
-        }
-
-        return dict
+            "config": config
+        ] as [String: Any?]
     }
 }
 
@@ -348,18 +333,13 @@ extension Scheme.Profile: JSONObjectConvertible {
 
 extension Scheme.Profile: JSONEncodable {
     public func toJSONValue() -> Any {
-        var dict: JSONDictionary = [
+        return [
             "commandLineArguments": commandLineArguments,
             "preActions": preActions.map { $0.toJSONValue() },
             "postActions": postActions.map { $0.toJSONValue() },
             "environmentVariables": environmentVariables.map { $0.toJSONValue() },
-        ]
-
-        if let config = config {
-            dict["config"] = config
-        }
-
-        return dict
+            "config": config
+        ] as [String: Any?]
     }
 }
 
@@ -372,13 +352,9 @@ extension Scheme.Analyze: JSONObjectConvertible {
 
 extension Scheme.Analyze: JSONEncodable {
     public func toJSONValue() -> Any {
-        var dict: JSONDictionary = [:]
-
-        if let config = config {
-            dict["config"] = config
-        }
-
-        return dict
+        return [
+            "config": config
+        ]
     }
 }
 
@@ -395,19 +371,15 @@ extension Scheme.Archive: JSONObjectConvertible {
 
 extension Scheme.Archive: JSONEncodable {
     public func toJSONValue() -> Any {
-        var dict: JSONDictionary = [
+        var dict: [String: Any?] = [
             "preActions": preActions.map { $0.toJSONValue() },
-            "postActions": postActions.map { $0.toJSONValue() }
+            "postActions": postActions.map { $0.toJSONValue() },
+            "config": config,
+            "customArchiveName": customArchiveName,
         ]
 
         if !revealArchiveInOrganizer {
             dict["revealArchiveInOrganizer"] = revealArchiveInOrganizer
-        }
-        if let config = config {
-            dict["config"] = config
-        }
-        if let customArchiveName = customArchiveName {
-            dict["customArchiveName"] = customArchiveName
         }
 
         return dict
@@ -429,27 +401,14 @@ extension Scheme: NamedJSONDictionaryConvertible {
 
 extension Scheme: JSONEncodable {
     public func toJSONValue() -> Any {
-        var dict = [
-            "build": build.toJSONValue()
-        ]
-
-        if let run = run {
-            dict["run"] = run.toJSONValue()
-        }
-        if let test = test {
-            dict["test"] = test.toJSONValue()
-        }
-        if let analyze = analyze {
-            dict["analyze"] = analyze.toJSONValue()
-        }
-        if let profile = profile {
-            dict["profile"] = profile.toJSONValue()
-        }
-        if let archive = archive {
-            dict["archive"] = archive.toJSONValue()
-        }
-
-        return dict
+        return [
+            "build": build.toJSONValue(),
+            "run": run?.toJSONValue(),
+            "test": test?.toJSONValue(),
+            "analyze": analyze?.toJSONValue(),
+            "profile": profile?.toJSONValue(),
+            "archive": archive?.toJSONValue(),
+        ] as [String: Any?]
     }
 }
 
