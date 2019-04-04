@@ -126,10 +126,10 @@ extension SpecOptions: JSONObjectConvertible {
     }
 }
 
-extension SpecOptions: JSONDictionaryEncodable {
-    public func toJSONDictionary() -> JSONDictionary {
+extension SpecOptions: JSONEncodable {
+    public func toJSONValue() -> Any {
         var dict: JSONDictionary = [
-            "deploymentTarget": deploymentTarget.toJSONDictionary(),
+            "deploymentTarget": deploymentTarget.toJSONValue(),
             "transitivelyLinkDependencies": transitivelyLinkDependencies,
             "groupSortPosition": groupSortPosition.rawValue,
         ]

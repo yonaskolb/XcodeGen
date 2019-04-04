@@ -218,8 +218,8 @@ extension Scheme.ExecutionAction: JSONObjectConvertible {
     }
 }
 
-extension Scheme.ExecutionAction: JSONDictionaryEncodable {
-    public func toJSONDictionary() -> JSONDictionary {
+extension Scheme.ExecutionAction: JSONEncodable {
+    public func toJSONValue() -> Any {
         var dict = [
             "script": script,
             "name": name,
@@ -244,20 +244,20 @@ extension Scheme.Run: JSONObjectConvertible {
     }
 }
 
-extension Scheme.Run: JSONDictionaryEncodable {
-    public func toJSONDictionary() -> JSONDictionary {
+extension Scheme.Run: JSONEncodable {
+    public func toJSONValue() -> Any {
         var dict: JSONDictionary = [
             "commandLineArguments": commandLineArguments,
         ]
 
         if preActions.count > 0 {
-            dict["preActions"] = preActions.map { $0.toJSONDictionary() }
+            dict["preActions"] = preActions.map { $0.toJSONValue() }
         }
         if postActions.count > 0 {
-            dict["postActions"] = postActions.map { $0.toJSONDictionary() }
+            dict["postActions"] = postActions.map { $0.toJSONValue() }
         }
         if environmentVariables.count > 0 {
-            dict["environmentVariables"] = environmentVariables.map { $0.toJSONDictionary() }
+            dict["environmentVariables"] = environmentVariables.map { $0.toJSONValue() }
         }
         if let config = config {
             dict["config"] = config
@@ -292,8 +292,8 @@ extension Scheme.Test: JSONObjectConvertible {
     }
 }
 
-extension Scheme.Test: JSONDictionaryEncodable {
-    public func toJSONDictionary() -> JSONDictionary {
+extension Scheme.Test: JSONEncodable {
+    public func toJSONValue() -> Any {
         var dict: JSONDictionary = [
             "gatherCoverageData": gatherCoverageData,
         ]
@@ -305,13 +305,13 @@ extension Scheme.Test: JSONDictionaryEncodable {
             dict["targets"] = targets.map { $0.toJSONValue() }
         }
         if preActions.count > 0 {
-            dict["preActions"] = preActions.map { $0.toJSONDictionary() }
+            dict["preActions"] = preActions.map { $0.toJSONValue() }
         }
         if postActions.count > 0 {
-            dict["postActions"] = postActions.map { $0.toJSONDictionary() }
+            dict["postActions"] = postActions.map { $0.toJSONValue() }
         }
         if environmentVariables.count > 0 {
-            dict["environmentVariables"] = environmentVariables.map { $0.toJSONDictionary() }
+            dict["environmentVariables"] = environmentVariables.map { $0.toJSONValue() }
         }
         if let config = config {
             dict["config"] = config
@@ -330,7 +330,7 @@ extension Scheme.Test.TestTarget: JSONObjectConvertible {
     }
 }
 
-extension Scheme.Test.TestTarget: JSONDynamicEncodable {
+extension Scheme.Test.TestTarget: JSONEncodable {
     public func toJSONValue() -> Any {
         if !randomExecutionOrder && !parallelizable {
             return name
@@ -362,20 +362,20 @@ extension Scheme.Profile: JSONObjectConvertible {
     }
 }
 
-extension Scheme.Profile: JSONDictionaryEncodable {
-    public func toJSONDictionary() -> JSONDictionary {
+extension Scheme.Profile: JSONEncodable {
+    public func toJSONValue() -> Any {
         var dict: JSONDictionary = [
             "commandLineArguments": commandLineArguments,
         ]
 
         if preActions.count > 0 {
-            dict["preActions"] = preActions.map { $0.toJSONDictionary() }
+            dict["preActions"] = preActions.map { $0.toJSONValue() }
         }
         if postActions.count > 0 {
-            dict["postActions"] = postActions.map { $0.toJSONDictionary() }
+            dict["postActions"] = postActions.map { $0.toJSONValue() }
         }
         if environmentVariables.count > 0 {
-            dict["environmentVariables"] = environmentVariables.map { $0.toJSONDictionary() }
+            dict["environmentVariables"] = environmentVariables.map { $0.toJSONValue() }
         }
         if let config = config {
             dict["config"] = config
@@ -392,8 +392,8 @@ extension Scheme.Analyze: JSONObjectConvertible {
     }
 }
 
-extension Scheme.Analyze: JSONDictionaryEncodable {
-    public func toJSONDictionary() -> JSONDictionary {
+extension Scheme.Analyze: JSONEncodable {
+    public func toJSONValue() -> Any {
         var dict: JSONDictionary = [:]
 
         if let config = config {
@@ -415,18 +415,18 @@ extension Scheme.Archive: JSONObjectConvertible {
     }
 }
 
-extension Scheme.Archive: JSONDictionaryEncodable {
-    public func toJSONDictionary() -> JSONDictionary {
+extension Scheme.Archive: JSONEncodable {
+    public func toJSONValue() -> Any {
         var dict: JSONDictionary = [:]
 
         if !revealArchiveInOrganizer {
             dict["revealArchiveInOrganizer"] = revealArchiveInOrganizer
         }
         if preActions.count > 0 {
-            dict["preActions"] = preActions.map { $0.toJSONDictionary() }
+            dict["preActions"] = preActions.map { $0.toJSONValue() }
         }
         if postActions.count > 0 {
-            dict["postActions"] = postActions.map { $0.toJSONDictionary() }
+            dict["postActions"] = postActions.map { $0.toJSONValue() }
         }
         if let config = config {
             dict["config"] = config
@@ -452,26 +452,26 @@ extension Scheme: NamedJSONDictionaryConvertible {
     }
 }
 
-extension Scheme: JSONDictionaryEncodable {
-    public func toJSONDictionary() -> JSONDictionary {
+extension Scheme: JSONEncodable {
+    public func toJSONValue() -> Any {
         var dict = [
-            "build": build.toJSONDictionary()
+            "build": build.toJSONValue()
         ]
 
         if let run = run {
-            dict["run"] = run.toJSONDictionary()
+            dict["run"] = run.toJSONValue()
         }
         if let test = test {
-            dict["test"] = test.toJSONDictionary()
+            dict["test"] = test.toJSONValue()
         }
         if let analyze = analyze {
-            dict["analyze"] = analyze.toJSONDictionary()
+            dict["analyze"] = analyze.toJSONValue()
         }
         if let profile = profile {
-            dict["profile"] = profile.toJSONDictionary()
+            dict["profile"] = profile.toJSONValue()
         }
         if let archive = archive {
-            dict["archive"] = archive.toJSONDictionary()
+            dict["archive"] = archive.toJSONValue()
         }
 
         return dict
@@ -510,8 +510,8 @@ extension Scheme.Build: JSONObjectConvertible {
     }
 }
 
-extension Scheme.Build: JSONDictionaryEncodable {
-    public func toJSONDictionary() -> JSONDictionary {
+extension Scheme.Build: JSONEncodable {
+    public func toJSONValue() -> Any {
         let targetPairs = targets.map { ($0.target, $0.buildTypes.map { $0.toJSONValue() }) }
 
         var dict: JSONDictionary = [
@@ -525,10 +525,10 @@ extension Scheme.Build: JSONDictionaryEncodable {
             dict["buildImplicitDependencies"] = buildImplicitDependencies
         }
         if preActions.count > 0 {
-            dict["preActions"] = preActions.map { $0.toJSONDictionary() }
+            dict["preActions"] = preActions.map { $0.toJSONValue() }
         }
         if postActions.count > 0 {
-            dict["postActions"] = postActions.map { $0.toJSONDictionary() }
+            dict["postActions"] = postActions.map { $0.toJSONValue() }
         }
 
         return dict
@@ -555,8 +555,8 @@ extension BuildType: JSONPrimitiveConvertible {
     }
 }
 
-extension BuildType: JSONPrimitiveEncodable {
-    public func toJSONValue() -> JSONRawType {
+extension BuildType: JSONEncodable {
+    public func toJSONValue() -> Any {
         switch self {
         case .testing: return "testing"
         case .profiling: return "profiling"
@@ -604,8 +604,8 @@ extension XCScheme.EnvironmentVariable: JSONObjectConvertible {
     }
 }
 
-extension XCScheme.EnvironmentVariable: JSONDictionaryEncodable {
-    public func toJSONDictionary() -> JSONDictionary {
+extension XCScheme.EnvironmentVariable: JSONEncodable {
+    public func toJSONValue() -> Any {
         return [
             "variable": variable,
             "value": value,

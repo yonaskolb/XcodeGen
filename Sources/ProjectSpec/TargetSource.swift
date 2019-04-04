@@ -181,7 +181,7 @@ extension TargetSource: JSONObjectConvertible {
     }
 }
 
-extension TargetSource: JSONDynamicEncodable {
+extension TargetSource: JSONEncodable {
     public func toJSONValue() -> Any {
         var dict: JSONDictionary = [:]
 
@@ -243,13 +243,13 @@ extension TargetSource.BuildPhase: JSONObjectConvertible {
     }
 }
 
-extension TargetSource.BuildPhase: JSONDynamicEncodable {
+extension TargetSource.BuildPhase: JSONEncodable {
     public func toJSONValue() -> Any {
         switch self {
         case .sources: return "sources"
         case .headers: return "headers"
         case .resources: return "resources"
-        case .copyFiles(let files): return ["copyFiles": files.toJSONDictionary()]
+        case .copyFiles(let files): return ["copyFiles": files.toJSONValue()]
         case .none: return "none"
         case .frameworks: fatalError("invalid build phase")
         case .runScript: fatalError("invalid build phase")
@@ -267,8 +267,8 @@ extension TargetSource.BuildPhase.CopyFilesSettings: JSONObjectConvertible {
     }
 }
 
-extension TargetSource.BuildPhase.CopyFilesSettings: JSONDictionaryEncodable {
-    public func toJSONDictionary() -> JSONDictionary {
+extension TargetSource.BuildPhase.CopyFilesSettings: JSONEncodable {
+    public func toJSONValue() -> Any {
         return [
             "destination": destination.rawValue,
             "subpath": subpath

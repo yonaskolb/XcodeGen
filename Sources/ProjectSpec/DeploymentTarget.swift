@@ -79,8 +79,8 @@ extension DeploymentTarget: JSONObjectConvertible {
     }
 }
 
-extension DeploymentTarget: JSONDictionaryEncodable {
-    public func toJSONDictionary() -> JSONDictionary {
+extension DeploymentTarget: JSONEncodable {
+    public func toJSONValue() -> Any {
         var dict: JSONDictionary = [:]
 
         if let iOS = iOS {

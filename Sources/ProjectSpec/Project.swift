@@ -231,14 +231,18 @@ extension BuildSettingsContainer {
     }
 }
 
-extension Project: JSONDictionaryEncodable {
+extension Project: JSONEncodable {
+    public func toJSONValue() -> Any {
+        return toJSONDictionary()
+    }
+
     public func toJSONDictionary() -> JSONDictionary {
         var dict: JSONDictionary = [
             "name": name,
-            "options": options.toJSONDictionary(),
+            "options": options.toJSONValue(),
         ]
 
-        let settingsDict = settings.toJSONDictionary()
+        let settingsDict = settings.toJSONValue()
         if settingsDict.count > 0 {
             dict["settings"] = settingsDict
         }
@@ -256,7 +260,7 @@ extension Project: JSONDictionaryEncodable {
             dict["attributes"] = attributes
         }
 
-        let targetPairs = targets.map { ($0.name, $0.toJSONDictionary()) }
+        let targetPairs = targets.map { ($0.name, $0.toJSONValue()) }
         if targetPairs.count > 0 {
             dict["targets"] = Dictionary(uniqueKeysWithValues: targetPairs)
         }
@@ -266,18 +270,18 @@ extension Project: JSONDictionaryEncodable {
             dict["configs"] = Dictionary(uniqueKeysWithValues: configsPairs)
         }
 
-        let aggregateTargetsPairs = aggregateTargets.map { ($0.name, $0.toJSONDictionary()) }
+        let aggregateTargetsPairs = aggregateTargets.map { ($0.name, $0.toJSONValue()) }
         if aggregateTargetsPairs.count > 0 {
             dict["aggregateTargets"] = Dictionary(uniqueKeysWithValues: aggregateTargetsPairs)
         }
 
-        let schemesPairs = schemes.map { ($0.name, $0.toJSONDictionary()) }
+        let schemesPairs = schemes.map { ($0.name, $0.toJSONValue()) }
         if schemesPairs.count > 0 {
             dict["schemes"] = Dictionary(uniqueKeysWithValues: schemesPairs)
         }
 
         if settingGroups.count > 0 {
-            dict["settingGroups"] = settingGroups.mapValues { $0.toJSONDictionary() }
+            dict["settingGroups"] = settingGroups.mapValues { $0.toJSONValue() }
         }
 
         return dict

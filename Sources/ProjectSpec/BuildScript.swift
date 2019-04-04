@@ -61,8 +61,8 @@ extension BuildScript: JSONObjectConvertible {
         showEnvVars = jsonDictionary.json(atKeyPath: "showEnvVars") ?? true
     }
 }
-extension BuildScript: JSONDictionaryEncodable {
-    public func toJSONDictionary() -> JSONDictionary {
+extension BuildScript: JSONEncodable {
+    public func toJSONValue() -> Any {
         var dict: JSONDictionary = [:]
 
         if runOnlyWhenInstalling {

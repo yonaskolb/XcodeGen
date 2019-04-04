@@ -55,8 +55,8 @@ extension TargetScheme: JSONObjectConvertible {
     }
 }
 
-extension TargetScheme: JSONDictionaryEncodable {
-    public func toJSONDictionary() -> JSONDictionary {
+extension TargetScheme: JSONEncodable {
+    public func toJSONValue() -> Any {
         var dict: JSONDictionary = [
             "gatherCoverageData": gatherCoverageData,
         ]
@@ -71,13 +71,13 @@ extension TargetScheme: JSONDictionaryEncodable {
             dict["testTargets"] = testTargets.map { $0.toJSONValue() }
         }
         if environmentVariables.count > 0 {
-            dict["environmentVariables"] = environmentVariables.map { $0.toJSONDictionary() }
+            dict["environmentVariables"] = environmentVariables.map { $0.toJSONValue() }
         }
         if preActions.count > 0 {
-            dict["preActions"] = preActions.map { $0.toJSONDictionary() }
+            dict["preActions"] = preActions.map { $0.toJSONValue() }
         }
         if postActions.count > 0 {
-            dict["postActions"] = postActions.map { $0.toJSONDictionary() }
+            dict["postActions"] = postActions.map { $0.toJSONValue() }
         }
 
         return dict

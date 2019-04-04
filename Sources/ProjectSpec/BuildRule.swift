@@ -81,8 +81,8 @@ extension BuildRule: JSONObjectConvertible {
     }
 }
 
-extension BuildRule: JSONDictionaryEncodable {
-    public func toJSONDictionary() -> JSONDictionary {
+extension BuildRule: JSONEncodable {
+    public func toJSONValue() -> Any {
         var dict: [String: Any] = [
             "outputFiles": outputFiles,
             "outputFilesCompilerFlags": outputFilesCompilerFlags,

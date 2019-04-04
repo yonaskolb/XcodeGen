@@ -81,8 +81,8 @@ extension Dependency: JSONObjectConvertible {
     }
 }
 
-extension Dependency: JSONDictionaryEncodable {
-    public func toJSONDictionary() -> JSONDictionary {
+extension Dependency: JSONEncodable {
+    public func toJSONValue() -> Any {
         var dict: JSONDictionary = [:]
 
         if !removeHeaders {

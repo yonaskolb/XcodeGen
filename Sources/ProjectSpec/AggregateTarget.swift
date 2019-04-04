@@ -62,11 +62,11 @@ extension AggregateTarget: NamedJSONDictionaryConvertible {
     }
 }
 
-extension AggregateTarget: JSONDictionaryEncodable {
-    public func toJSONDictionary() -> JSONDictionary {
+extension AggregateTarget: JSONEncodable {
+    public func toJSONValue() -> Any {
         var dict: JSONDictionary = [:]
 
-        let settingsDict = settings.toJSONDictionary()
+        let settingsDict = settings.toJSONValue()
         if settingsDict.count > 0 {
             dict["settings"] = settingsDict
         }
@@ -81,10 +81,10 @@ extension AggregateTarget: JSONDictionaryEncodable {
             dict["attributes"] = attributes
         }
         if buildScripts.count > 0 {
-            dict["buildScripts"] = buildScripts.map { $0.toJSONDictionary() }
+            dict["buildScripts"] = buildScripts.map { $0.toJSONValue() }
         }
         if let scheme = scheme {
-            dict["scheme"] = scheme.toJSONDictionary()
+            dict["scheme"] = scheme.toJSONValue()
         }
 
         return dict

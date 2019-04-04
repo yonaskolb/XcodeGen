@@ -272,8 +272,8 @@ extension LegacyTarget: JSONObjectConvertible {
     }
 }
 
-extension LegacyTarget: JSONDictionaryEncodable {
-    public func toJSONDictionary() -> JSONDictionary {
+extension LegacyTarget: JSONEncodable {
+    public func toJSONValue() -> Any {
         var dict: JSONDictionary = [
             "toolPath": toolPath,
             "passSettings": passSettings,
@@ -362,14 +362,14 @@ extension Target: NamedJSONDictionaryConvertible {
 }
 
 
-extension Target: JSONDictionaryEncodable {
-    public func toJSONDictionary() -> JSONDictionary {
+extension Target: JSONEncodable {
+    public func toJSONValue() -> Any {
         var dict: JSONDictionary = [
             "type": type.name,
             "platform": platform.rawValue,
         ]
 
-        let settingsDict = settings.toJSONDictionary()
+        let settingsDict = settings.toJSONValue()
         if settingsDict.count > 0 {
             dict["settings"] = settingsDict
         }
@@ -387,28 +387,28 @@ extension Target: JSONDictionaryEncodable {
             dict["sources"] = sources.map { $0.toJSONValue() }
         }
         if dependencies.count > 0 {
-            dict["dependencies"] = dependencies.map { $0.toJSONDictionary() }
+            dict["dependencies"] = dependencies.map { $0.toJSONValue() }
         }
         if postCompileScripts.count > 0 {
-            dict["postCompileScripts"] = postCompileScripts.map{ $0.toJSONDictionary() }
+            dict["postCompileScripts"] = postCompileScripts.map{ $0.toJSONValue() }
         }
         if preBuildScripts.count > 0 {
-            dict["prebuildScripts"] = preBuildScripts.map{ $0.toJSONDictionary() }
+            dict["prebuildScripts"] = preBuildScripts.map{ $0.toJSONValue() }
         }
         if postBuildScripts.count > 0 {
-            dict["postbuildScripts"] = postBuildScripts.map{ $0.toJSONDictionary() }
+            dict["postbuildScripts"] = postBuildScripts.map{ $0.toJSONValue() }
         }
         if buildRules.count > 0 {
-            dict["buildRules"] = buildRules.map{ $0.toJSONDictionary() }
+            dict["buildRules"] = buildRules.map{ $0.toJSONValue() }
         }
         if let deploymentTarget = deploymentTarget {
             dict["deploymentTarget"] = deploymentTarget.deploymentTarget
         }
         if let info = info {
-            dict["info"] = info.toJSONDictionary()
+            dict["info"] = info.toJSONValue()
         }
         if let entitlements = entitlements {
-            dict["entitlements"] = entitlements.toJSONDictionary()
+            dict["entitlements"] = entitlements.toJSONValue()
         }
         if let transitivelyLinkDependencies = transitivelyLinkDependencies {
             dict["transitivelyLinkDependencies"] = transitivelyLinkDependencies
@@ -420,10 +420,10 @@ extension Target: JSONDictionaryEncodable {
             dict["requiresObjCLinking"] = requiresObjCLinking
         }
         if let scheme = scheme {
-            dict["scheme"] = scheme.toJSONDictionary()
+            dict["scheme"] = scheme.toJSONValue()
         }
         if let legacy = legacy {
-            dict["legacy"] = legacy.toJSONDictionary()
+            dict["legacy"] = legacy.toJSONValue()
         }
 
         return dict
