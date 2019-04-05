@@ -8,6 +8,9 @@
 #### Changed
 - Updated to xcodeproj 6.7.0 including its performance improvements [#536](https://github.com/yonaskolb/XcodeGen/pull/536) @yonaskolb
 
+#### Fixed
+- Fixed `optional` file sources not being added to the project [#557](https://github.com/yonaskolb/XcodeGen/pull/557) @yonaskolb
+
 ## 2.4.0
 
 #### Fixed:
@@ -33,7 +36,7 @@
 
 #### Fixed
 - Sources outside a project spec's directory will be correctly referenced as relative paths in the project file. [#524](https://github.com/yonaskolb/XcodeGen/pull/524)
-- Fixed error when `optional` path is missing [#527](https://github.com/yonaskolb/XcodeGen/pull/527) @yonaskolb
+- Fixed error when `optional` directory source is missing [#527](https://github.com/yonaskolb/XcodeGen/pull/527) @yonaskolb
 - Fixed excludes within included spec [#535](https://github.com/yonaskolb/XcodeGen/pull/535) @yonaskolb
 - Fixed paths in target templates within included files not being relative [#537](https://github.com/yonaskolb/XcodeGen/pull/537) @yonaskolb
 - Fix multi-platform target templates [#541](https://github.com/yonaskolb/XcodeGen/pull/541) @yonaskolb

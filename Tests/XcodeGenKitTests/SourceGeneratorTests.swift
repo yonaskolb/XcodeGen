@@ -589,6 +589,30 @@ class SourceGeneratorTests: XCTestCase {
                     "group2",
                 ]
             }
+
+            $0.it("adds missing optional files and folders") {
+
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: [
+                    TargetSource(path: "File1.swift", optional: true),
+                    TargetSource(path: "File2.swift", type: .file, optional: true),
+                    TargetSource(path: "Group", type: .folder, optional: true),
+                    ])
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target])
+                let pbxProj = try project.generatePbxProj()
+                try pbxProj.expectFile(paths: ["File1.swift"])
+                try pbxProj.expectFile(paths: ["File2.swift"])
+            }
+
+            $0.it("allows missing optional groups") {
+
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: [
+                    TargetSource(path: "Group1", optional: true),
+                    TargetSource(path: "Group2", type: .group, optional: true),
+                    TargetSource(path: "Group3", type: .group, optional: true),
+                    ])
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target])
+                _ = try project.generatePbxProj()
+            }
         }
     }
 }
