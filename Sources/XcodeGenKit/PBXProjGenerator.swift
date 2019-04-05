@@ -421,7 +421,7 @@ public class PBXProjGenerator {
             getAllDependenciesPlusTransitiveNeedingEmbedding(target: target) : target.dependencies
 
         let targetSupportsDirectEmbed = !(target.platform.requiresSimulatorStripping &&
-            ((target.type.isApp && target.platform != .watchOS) || target.type == .watch2Extension ))
+            (target.type.isApp || target.type == .watch2Extension))
         let directlyEmbedCarthage = target.directlyEmbedCarthageDependencies ?? targetSupportsDirectEmbed
 
         func getEmbedSettings(dependency: Dependency, codeSign: Bool) -> [String: Any] {
