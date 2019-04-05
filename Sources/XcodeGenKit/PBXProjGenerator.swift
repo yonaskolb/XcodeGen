@@ -420,7 +420,9 @@ public class PBXProjGenerator {
         let targetDependencies = (target.transitivelyLinkDependencies ?? project.options.transitivelyLinkDependencies) ?
             getAllDependenciesPlusTransitiveNeedingEmbedding(target: target) : target.dependencies
 
-        let directlyEmbedCarthage = target.directlyEmbedCarthageDependencies ?? !(target.platform.requiresSimulatorStripping && target.type.isApp)
+        let targetSupportsDirectEmbed = !(target.platform.requiresSimulatorStripping &&
+            ((target.type.isApp && target.platform != .watchOS) || target.type == .watch2Extension ))
+        let directlyEmbedCarthage = target.directlyEmbedCarthageDependencies ?? targetSupportsDirectEmbed
 
         func getEmbedSettings(dependency: Dependency, codeSign: Bool) -> [String: Any] {
             var embedAttributes: [String] = []
@@ -606,7 +608,7 @@ public class PBXProjGenerator {
         for dependency in carthageDependencies {
             guard target.type != .staticLibrary else { break }
 
-            let embed = dependency.embed ?? target.shouldEmbedDependencies
+            let embed = dependency.embed ?? target.shouldEmbedCarthageDependencies
 
             var platformPath = Path(carthageResolver.buildPath(for: target.platform))
             var frameworkPath = platformPath + dependency.reference
@@ -997,6 +999,12 @@ extension Target {
 
     var shouldEmbedDependencies: Bool {
         return type.isApp || type.isTest
+    }
+    
+    var shouldEmbedCarthageDependencies: Bool {
+        return (type.isApp && platform != .watchOS)
+            || type == .watch2Extension
+            || type.isTest
     }
 }
 

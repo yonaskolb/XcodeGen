@@ -1125,7 +1125,6 @@
 			buildPhases = (
 				91C895DE8170C96A75D29426BA2BC597 /* Sources */,
 				B7B71FA7D279029BF7A7FC7C08E41BB0 /* Resources */,
-				261B4BE58AA60B68A81874E3318793F3 /* Carthage */,
 				C765431E5FF4B02F59DE79B068D2CB68 /* Embed App Extensions */,
 			);
 			buildRules = (
@@ -1144,6 +1143,7 @@
 			buildPhases = (
 				AE7971E1CA54D23C264E6541EA9BAE1B /* Sources */,
 				4A6E8F3A477AA5F67A8EB733DFAD8387 /* Resources */,
+				8F8EE32AFABD8FEF976253259FA39ABC /* Carthage */,
 			);
 			buildRules = (
 			);
@@ -1580,22 +1580,6 @@
 			shellPath = /bin/sh;
 			shellScript = "ditto \"${SCRIPT_INPUT_FILE_0}\" \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 		};
-		261B4BE58AA60B68A81874E3318793F3 /* Carthage */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"$(SRCROOT)/Carthage/Build/watchOS/Result.framework",
-			);
-			name = Carthage;
-			outputPaths = (
-				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Result.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "carthage copy-frameworks\n";
-		};
 		37182EC208DBF03DB1BAF452E1D2C836 /* Carthage */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1683,6 +1667,22 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "echo \"You ran a script\"\n";
+		};
+		8F8EE32AFABD8FEF976253259FA39ABC /* Carthage */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/watchOS/Result.framework",
+			);
+			name = Carthage;
+			outputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Result.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "carthage copy-frameworks\n";
 		};
 		BA454AAC926EDFCDA9226CBCACCBEDB1 /* MyScript */ = {
 			isa = PBXShellScriptBuildPhase;
