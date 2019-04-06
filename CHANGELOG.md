@@ -7,6 +7,7 @@
 
 #### Changed
 - Updated to xcodeproj 6.7.0 including its performance improvements [#536](https://github.com/yonaskolb/XcodeGen/pull/536) @yonaskolb
+- Updated default generated settings for Xcode 10.2 [#555](https://github.com/yonaskolb/XcodeGen/pull/555) @yonaskolb
 
 ## 2.4.0
 
