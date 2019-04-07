@@ -10,6 +10,7 @@
 - Updated default generated settings for Xcode 10.2 [#555](https://github.com/yonaskolb/XcodeGen/pull/555) @yonaskolb
 
 #### Fixed
+- Groups from sources outside a project spec's directory will not be flattened. [#550](https://github.com/yonaskolb/XcodeGen/pull/550) @sroebert
 - Fixed `optional` file sources not being added to the project [#557](https://github.com/yonaskolb/XcodeGen/pull/557) @yonaskolb
 
 ## 2.4.0
