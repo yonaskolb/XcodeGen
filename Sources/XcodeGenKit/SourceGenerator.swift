@@ -148,7 +148,7 @@ class SourceGenerator {
                 // order by taking the last item in the sortedPaths array
                 let currentVersionPath = findCurrentCoreDataModelVersionPath(using: versionedModels) ?? sortedPaths.last
                 let currentVersion: PBXFileReference? = {
-                    guard let indexOf = sortedPaths.index(where: { $0 == currentVersionPath }) else { return nil }
+                    guard let indexOf = sortedPaths.firstIndex(where: { $0 == currentVersionPath }) else { return nil }
                     return modelFileReferences[indexOf]
                 }()
                 let versionGroup = addObject(XCVersionGroup(
@@ -463,11 +463,6 @@ class SourceGenerator {
     /// creates source files
     private func getSourceFiles(targetType: PBXProductType, targetSource: TargetSource, path: Path) throws -> [SourceFile] {
 
-        if targetSource.optional && !Path(targetSource.path).exists {
-            // Is optional so if it doesn't exist just return an empty array
-            return []
-        }
-
         // generate excluded paths
         targetSourceExcludePaths = getSourceExcludes(targetSource: targetSource)
 
@@ -521,6 +516,10 @@ class SourceGenerator {
             sourceFiles.append(sourceFile)
 
         case .group:
+            if targetSource.optional && !Path(targetSource.path).exists {
+                // This group is missing, so if's optional just return an empty array
+                return []
+            }
             let (groupSourceFiles, groups) = try getGroupSources(targetType: targetType, targetSource: targetSource, path: path, isBaseGroup: true)
             let group = groups.first!
             if let name = targetSource.name {
@@ -561,7 +560,7 @@ class SourceGenerator {
             let versionPath = versionedModels.first(where: { $0.lastComponent == ".xccurrentversion" }),
             let data = try? versionPath.read(),
             let plist = try? PropertyListSerialization.propertyList(from: data, options: [], format: nil) as? [String: Any],
-            let versionString = plist?["_XCCurrentVersionName"] as? String else {
+            let versionString = plist["_XCCurrentVersionName"] as? String else {
             return nil
         }
         return versionedModels.first(where: { $0.lastComponent == versionString })

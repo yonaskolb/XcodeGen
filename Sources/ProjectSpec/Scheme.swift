@@ -377,7 +377,7 @@ extension XCScheme.EnvironmentVariable: JSONObjectConvertible {
             value = try jsonDictionary.json(atKeyPath: "value")
         }
         let variable: String = try jsonDictionary.json(atKeyPath: "variable")
-        let enabled: Bool = (try? jsonDictionary.json(atKeyPath: "isEnabled")) ?? true
+        let enabled: Bool = jsonDictionary.json(atKeyPath: "isEnabled") ?? true
         self.init(variable: variable, value: value, enabled: enabled)
     }
 

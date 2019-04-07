@@ -3,11 +3,25 @@
 ## Next Version
 
 #### Added
+- Added support for `app-extension.intents-service` target type [#536](https://github.com/yonaskolb/XcodeGen/pull/536) @yonaskolb
 
 #### Changed
+- Updated to xcodeproj 6.7.0 including its performance improvements [#536](https://github.com/yonaskolb/XcodeGen/pull/536) @yonaskolb
+- Updated default generated settings for Xcode 10.2 [#555](https://github.com/yonaskolb/XcodeGen/pull/555) @yonaskolb
 
 #### Fixed
+- Fixed `optional` file sources not being added to the project [#557](https://github.com/yonaskolb/XcodeGen/pull/557) @yonaskolb
 - Fixed order of file generation. Plists are now generated before the project is generated so that the project includes the generated plists [#544](https://github.com/yonaskolb/XcodeGen/issues/544) @tomquist
+
+## 2.4.0
+
+#### Fixed:
+- Fixed installation when building in Swift 5 [#549](https://github.com/yonaskolb/XcodeGen/pull/549) @yonaskolb
+
+#### Changed
+- Updated to Swift 5 and dropped Swift 4.2 [#549](https://github.com/yonaskolb/XcodeGen/pull/549) @yonaskolb
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.3.0...2.4.0)
 
 ## 2.3.0
 
@@ -24,7 +38,7 @@
 
 #### Fixed
 - Sources outside a project spec's directory will be correctly referenced as relative paths in the project file. [#524](https://github.com/yonaskolb/XcodeGen/pull/524)
-- Fixed error when `optional` path is missing [#527](https://github.com/yonaskolb/XcodeGen/pull/527) @yonaskolb
+- Fixed error when `optional` directory source is missing [#527](https://github.com/yonaskolb/XcodeGen/pull/527) @yonaskolb
 - Fixed excludes within included spec [#535](https://github.com/yonaskolb/XcodeGen/pull/535) @yonaskolb
 - Fixed paths in target templates within included files not being relative [#537](https://github.com/yonaskolb/XcodeGen/pull/537) @yonaskolb
 - Fix multi-platform target templates [#541](https://github.com/yonaskolb/XcodeGen/pull/541) @yonaskolb

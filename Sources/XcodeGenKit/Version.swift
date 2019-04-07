@@ -4,7 +4,7 @@ import ProjectSpec
 extension Project {
 
     var xcodeVersion: String {
-        return XCodeVersion.parse(options.xcodeVersion ?? "10.0")
+        return XCodeVersion.parse(options.xcodeVersion ?? "10.2")
     }
 
     var schemeVersion: String {
@@ -16,7 +16,7 @@ extension Project {
     }
 
     var objectVersion: UInt {
-        return 50
+        return 51
     }
 
     public func validateMinimumXcodeGenVersion(_ xcodeGenVersion: Version) throws {

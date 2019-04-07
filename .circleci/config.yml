@@ -1,8 +1,8 @@
 version: 2
 jobs:
-  macOS_swift_4.2:
+  macOS_swift_5.0:
     macos:
-      xcode: "10.0.0"
+      xcode: "10.2.0"
     steps:
       - checkout
       - run: 
@@ -27,4 +27,4 @@ workflows:
   version: 2
   workflow:
     jobs:
-      - macOS_swift_4.2
+      - macOS_swift_5.0
