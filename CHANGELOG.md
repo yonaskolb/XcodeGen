@@ -11,6 +11,7 @@
 
 #### Fixed
 - Fixed `optional` file sources not being added to the project [#557](https://github.com/yonaskolb/XcodeGen/pull/557) @yonaskolb
+- Fixed order of file generation. Plists are now generated before the project is generated so that the project includes the generated plists [#544](https://github.com/yonaskolb/XcodeGen/issues/544) @tomquist
 
 ## 2.4.0
 

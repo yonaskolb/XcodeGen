@@ -111,6 +111,15 @@ class GenerateCommand: Command {
             throw GenerationError.validationError(error)
         }
 
+        // generate plists
+        info("⚙️  Generating plists...")
+        let fileWriter = FileWriter(project: project)
+        do {
+            try fileWriter.writePlists()
+        } catch {
+            throw GenerationError.writingError(error)
+        }
+
         // generate project
         info("⚙️  Generating project...")
         let xcodeProject: XcodeProj
@@ -124,10 +133,7 @@ class GenerateCommand: Command {
         // write project
         info("⚙️  Writing project...")
         do {
-
-            let fileWriter = FileWriter(project: project)
             try fileWriter.writeXcodeProject(xcodeProject, to: projectPath)
-            try fileWriter.writePlists()
             success("Created project at \(projectPath)")
         } catch {
             throw GenerationError.writingError(error)
