@@ -4,6 +4,7 @@
 
 #### Added
 - Added support for `app-extension.intents-service` target type [#536](https://github.com/yonaskolb/XcodeGen/pull/536) @yonaskolb
+- Added support for custom `root` in `sdk` dependency [#562](https://github.com/yonaskolb/XcodeGen/pull/562) @raptorxcz
 
 #### Changed
 - Updated to xcodeproj 6.7.0 including its performance improvements [#536](https://github.com/yonaskolb/XcodeGen/pull/536) @yonaskolb
