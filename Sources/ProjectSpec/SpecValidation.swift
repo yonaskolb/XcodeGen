@@ -149,6 +149,7 @@ extension Project {
                     if !dependency.reference.contains("/") {
                         switch path.extension {
                         case "framework"?,
+                            "dylib"?,
                              "tbd"?:
                             break
                         default:
