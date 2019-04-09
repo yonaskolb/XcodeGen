@@ -613,6 +613,37 @@ class SourceGeneratorTests: XCTestCase {
                 let project = Project(basePath: directoryPath, name: "Test", targets: [target])
                 _ = try project.generatePbxProj()
             }
+            
+            $0.it("relative path items outside base path are grouped together") {
+                let directories = """
+                Sources:
+                  - Inside:
+                    - a.swift
+                    - Inside2:
+                        - b.swift
+                """
+                try createDirectories(directories)
+                
+                let outOfSourceFile1 = outOfRootPath + "Outside/a.swift"
+                try outOfSourceFile1.parent().mkpath()
+                try outOfSourceFile1.write("")
+                
+                let outOfSourceFile2 = outOfRootPath + "Outside/Outside2/b.swift"
+                try outOfSourceFile2.parent().mkpath()
+                try outOfSourceFile2.write("")
+                
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: [
+                    "Sources",
+                    "../OtherDirectory",
+                ])
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target])
+                
+                let pbxProj = try project.generatePbxProj()
+                try pbxProj.expectFile(paths: ["Sources", "Inside", "a.swift"], buildPhase: .sources)
+                try pbxProj.expectFile(paths: ["Sources", "Inside", "Inside2", "b.swift"], buildPhase: .sources)
+                try pbxProj.expectFile(paths: ["../OtherDirectory", "Outside", "a.swift"], names: ["OtherDirectory", "Outside", "a.swift"], buildPhase: .sources)
+                try pbxProj.expectFile(paths: ["../OtherDirectory", "Outside", "Outside2", "b.swift"], names: ["OtherDirectory", "Outside", "Outside2", "b.swift"], buildPhase: .sources)
+            }
         }
     }
 }
