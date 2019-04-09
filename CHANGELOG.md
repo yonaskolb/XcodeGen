@@ -10,6 +10,7 @@
 - Updated to xcodeproj 6.7.0 including its performance improvements [#536](https://github.com/yonaskolb/XcodeGen/pull/536) @yonaskolb
 - Updated default generated settings for Xcode 10.2 [#555](https://github.com/yonaskolb/XcodeGen/pull/555) @yonaskolb
 - Changed order of file generation so that plists are now generated before the project, so they will be included in the projects files [#544](https://github.com/yonaskolb/XcodeGen/issues/544) @tomquist
+- Updated Yams to 2.0.0 @yonaskolb
 
 #### Fixed
 - Fixed groups from sources outside a project spec's directory from being flattened. [#550](https://github.com/yonaskolb/XcodeGen/pull/550) @sroebert
