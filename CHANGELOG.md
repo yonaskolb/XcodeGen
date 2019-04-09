@@ -2,6 +2,8 @@
 
 ## Next Version
 
+## 2.5.0
+
 #### Added
 - Added support for `app-extension.intents-service` target type [#536](https://github.com/yonaskolb/XcodeGen/pull/536) @yonaskolb
 - Added support for custom `root` in `sdk` dependency [#562](https://github.com/yonaskolb/XcodeGen/pull/562) @raptorxcz
@@ -16,6 +18,8 @@
 - Fixed groups from sources outside a project spec's directory from being flattened. [#550](https://github.com/yonaskolb/XcodeGen/pull/550) @sroebert
 - Fixed `optional` file sources not being added to the project [#557](https://github.com/yonaskolb/XcodeGen/pull/557) @yonaskolb
 - Fixed Carthage dependencies being incorrectly embedded in WatchKit app bundles instead of a WatchKit app extension [#558](https://github.com/yonaskolb/XcodeGen/pull/558) @KhaosT
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.4.0...2.5.0)
 
 ## 2.4.0
 
