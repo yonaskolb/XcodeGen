@@ -9,12 +9,12 @@
 #### Changed
 - Updated to xcodeproj 6.7.0 including its performance improvements [#536](https://github.com/yonaskolb/XcodeGen/pull/536) @yonaskolb
 - Updated default generated settings for Xcode 10.2 [#555](https://github.com/yonaskolb/XcodeGen/pull/555) @yonaskolb
+- Changed order of file generation so that plists are now generated before the project, so they will be included in the projects files [#544](https://github.com/yonaskolb/XcodeGen/issues/544) @tomquist
 
 #### Fixed
-- Groups from sources outside a project spec's directory will not be flattened. [#550](https://github.com/yonaskolb/XcodeGen/pull/550) @sroebert
+- Fixed groups from sources outside a project spec's directory from being flattened. [#550](https://github.com/yonaskolb/XcodeGen/pull/550) @sroebert
 - Fixed `optional` file sources not being added to the project [#557](https://github.com/yonaskolb/XcodeGen/pull/557) @yonaskolb
-- Fixed order of file generation. Plists are now generated before the project is generated so that the project includes the generated plists [#544](https://github.com/yonaskolb/XcodeGen/issues/544) @tomquist
-- Addressed an issue that causes Carthage depencencies incorrectly embedded in WatchKit app bundle instead of WatchKit app extension [#558](https://github.com/yonaskolb/XcodeGen/pull/558) @KhaosT
+- Fixed Carthage dependencies being incorrectly embedded in WatchKit app bundles instead of a WatchKit app extension [#558](https://github.com/yonaskolb/XcodeGen/pull/558) @KhaosT
 
 ## 2.4.0
 
