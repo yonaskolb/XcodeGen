@@ -346,13 +346,18 @@ class SpecLoadingTests: XCTestCase {
                     ["carthage": "name", "findFrameworks": true],
                     ["framework": "path", "weak": true],
                     ["sdk": "Contacts.framework"],
+                    [
+                        "sdk": "Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework",
+                        "root": "DEVELOPER_DIR",
+                    ],
                 ]
                 let target = try Target(name: "test", jsonDictionary: targetDictionary)
-                try expect(target.dependencies.count) == 4
+                try expect(target.dependencies.count) == 5
                 try expect(target.dependencies[0]) == Dependency(type: .target, reference: "name", embed: false)
                 try expect(target.dependencies[1]) == Dependency(type: .carthage(findFrameworks: true), reference: "name")
                 try expect(target.dependencies[2]) == Dependency(type: .framework, reference: "path", weakLink: true)
-                try expect(target.dependencies[3]) == Dependency(type: .sdk, reference: "Contacts.framework")
+                try expect(target.dependencies[3]) == Dependency(type: .sdk(root: nil), reference: "Contacts.framework")
+                try expect(target.dependencies[4]) == Dependency(type: .sdk(root: "DEVELOPER_DIR"), reference: "Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework")
             }
 
             $0.it("parses info plist") {

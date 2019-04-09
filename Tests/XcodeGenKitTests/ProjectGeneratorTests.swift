@@ -562,11 +562,13 @@ class ProjectGeneratorTests: XCTestCase {
                     type: .stickerPack,
                     platform: .iOS,
                     dependencies: [
-                        Dependency(type: .sdk, reference: "NotificationCenter.framework"),
+                        Dependency(type: .sdk(root: nil), reference: "NotificationCenter.framework"),
+                        Dependency(type: .sdk(root: "DEVELOPER_DIR"), reference: "Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework"),
                     ]
                 )
                 expectedResourceFiles[stickerPack.name] = nil
                 expectedLinkedFiles[stickerPack.name] = Set([
+                    "XCTest.framework",
                     "NotificationCenter.framework",
                 ])
 

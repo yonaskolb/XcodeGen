@@ -190,7 +190,7 @@ class ProjectSpecTests: XCTestCase {
                         name: "target1",
                         type: .application,
                         platform: .iOS,
-                        dependencies: [Dependency(type: .sdk, reference: "invalidDependency")]
+                        dependencies: [Dependency(type: .sdk(root: nil), reference: "invalidDependency")]
                     ),
                 ]
 

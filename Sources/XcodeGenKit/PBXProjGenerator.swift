@@ -536,7 +536,7 @@ public class PBXProjGenerator {
                     )
                     copyFrameworksReferences.append(embedFile)
                 }
-            case .sdk:
+            case .sdk(let root):
                 // Static libraries can't link or embed dynamic frameworks
                 guard target.type != .staticLibrary else { break }
 
@@ -555,9 +555,15 @@ public class PBXProjGenerator {
                 if let existingFileReferences = sdkFileReferences[dependency.reference] {
                     fileReference = existingFileReferences
                 } else {
+                    let sourceTree: PBXSourceTree
+                    if let root = root {
+                        sourceTree = .custom(root)
+                    } else {
+                        sourceTree = .sdkRoot
+                    }
                     fileReference = addObject(
                         PBXFileReference(
-                            sourceTree: .sdkRoot,
+                            sourceTree: sourceTree,
                             name: dependencyPath.lastComponent,
                             lastKnownFileType: Xcode.fileType(path: dependencyPath),
                             path: dependencyPath.string
