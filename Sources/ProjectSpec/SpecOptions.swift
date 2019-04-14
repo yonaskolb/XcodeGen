@@ -2,6 +2,12 @@ import Foundation
 import JSONUtilities
 
 public struct SpecOptions: Equatable {
+    public static let settingPresetsDefault = SettingPresets.all
+    public static let createIntermediateGroupsDefault = false
+    public static let transitivelyLinkDependenciesDefault = false
+    public static let groupSortPositionDefault = GroupSortPosition.bottom
+    public static let generateEmptyDirectoriesDefault = false
+    public static let findCarthageFrameworksDefault = false
 
     public var minimumXcodeGenVersion: Version?
     public var carthageBuildPath: String?
@@ -62,9 +68,9 @@ public struct SpecOptions: Equatable {
         minimumXcodeGenVersion: Version? = nil,
         carthageBuildPath: String? = nil,
         carthageExecutablePath: String? = nil,
-        createIntermediateGroups: Bool = false,
+        createIntermediateGroups: Bool = createIntermediateGroupsDefault,
         bundleIdPrefix: String? = nil,
-        settingPresets: SettingPresets = .all,
+        settingPresets: SettingPresets = settingPresetsDefault,
         developmentLanguage: String? = nil,
         indentWidth: UInt? = nil,
         tabWidth: UInt? = nil,
@@ -73,10 +79,10 @@ public struct SpecOptions: Equatable {
         deploymentTarget: DeploymentTarget = .init(),
         disabledValidations: [ValidationType] = [],
         defaultConfig: String? = nil,
-        transitivelyLinkDependencies: Bool = false,
-        groupSortPosition: GroupSortPosition = .bottom,
-        generateEmptyDirectories: Bool = false,
-        findCarthageFrameworks: Bool = false
+        transitivelyLinkDependencies: Bool = transitivelyLinkDependenciesDefault,
+        groupSortPosition: GroupSortPosition = groupSortPositionDefault,
+        generateEmptyDirectories: Bool = generateEmptyDirectoriesDefault,
+        findCarthageFrameworks: Bool = findCarthageFrameworksDefault
     ) {
         self.minimumXcodeGenVersion = minimumXcodeGenVersion
         self.carthageBuildPath = carthageBuildPath
@@ -109,8 +115,8 @@ extension SpecOptions: JSONObjectConvertible {
         carthageBuildPath = jsonDictionary.json(atKeyPath: "carthageBuildPath")
         carthageExecutablePath = jsonDictionary.json(atKeyPath: "carthageExecutablePath")
         bundleIdPrefix = jsonDictionary.json(atKeyPath: "bundleIdPrefix")
-        settingPresets = jsonDictionary.json(atKeyPath: "settingPresets") ?? .all
-        createIntermediateGroups = jsonDictionary.json(atKeyPath: "createIntermediateGroups") ?? false
+        settingPresets = jsonDictionary.json(atKeyPath: "settingPresets") ?? SpecOptions.settingPresetsDefault
+        createIntermediateGroups = jsonDictionary.json(atKeyPath: "createIntermediateGroups") ?? SpecOptions.createIntermediateGroupsDefault
         developmentLanguage = jsonDictionary.json(atKeyPath: "developmentLanguage")
         usesTabs = jsonDictionary.json(atKeyPath: "usesTabs")
         xcodeVersion = jsonDictionary.json(atKeyPath: "xcodeVersion")
@@ -119,10 +125,10 @@ extension SpecOptions: JSONObjectConvertible {
         deploymentTarget = jsonDictionary.json(atKeyPath: "deploymentTarget") ?? DeploymentTarget()
         disabledValidations = jsonDictionary.json(atKeyPath: "disabledValidations") ?? []
         defaultConfig = jsonDictionary.json(atKeyPath: "defaultConfig")
-        transitivelyLinkDependencies = jsonDictionary.json(atKeyPath: "transitivelyLinkDependencies") ?? false
-        groupSortPosition = jsonDictionary.json(atKeyPath: "groupSortPosition") ?? .bottom
-        generateEmptyDirectories = jsonDictionary.json(atKeyPath: "generateEmptyDirectories") ?? false
-        findCarthageFrameworks = jsonDictionary.json(atKeyPath: "findCarthageFrameworks") ?? false
+        transitivelyLinkDependencies = jsonDictionary.json(atKeyPath: "transitivelyLinkDependencies") ?? SpecOptions.transitivelyLinkDependenciesDefault
+        groupSortPosition = jsonDictionary.json(atKeyPath: "groupSortPosition") ?? SpecOptions.groupSortPositionDefault
+        generateEmptyDirectories = jsonDictionary.json(atKeyPath: "generateEmptyDirectories") ?? SpecOptions.generateEmptyDirectoriesDefault
+        findCarthageFrameworks = jsonDictionary.json(atKeyPath: "findCarthageFrameworks") ?? SpecOptions.findCarthageFrameworksDefault
     }
 }
 
@@ -145,16 +151,16 @@ extension SpecOptions: JSONEncodable {
             "defaultConfig": defaultConfig,
         ]
 
-        if settingPresets != .all {
+        if settingPresets != SpecOptions.settingPresetsDefault {
             dict["settingPresets"] = settingPresets.rawValue
         }
-        if createIntermediateGroups {
+        if createIntermediateGroups != SpecOptions.createIntermediateGroupsDefault {
             dict["createIntermediateGroups"] = createIntermediateGroups
         }
-        if generateEmptyDirectories {
+        if generateEmptyDirectories != SpecOptions.generateEmptyDirectoriesDefault {
             dict["generateEmptyDirectories"] = generateEmptyDirectories
         }
-        if findCarthageFrameworks {
+        if findCarthageFrameworks != SpecOptions.findCarthageFrameworksDefault {
             dict["findCarthageFrameworks"] = findCarthageFrameworks
         }
 

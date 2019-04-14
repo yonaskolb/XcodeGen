@@ -3,6 +3,8 @@ import JSONUtilities
 import xcodeproj
 
 public struct TargetScheme: Equatable {
+    public static let gatherCoverageDataDefault = false
+
     public var testTargets: [Scheme.Test.TestTarget]
     public var configVariants: [String]
     public var gatherCoverageData: Bool
@@ -14,7 +16,7 @@ public struct TargetScheme: Equatable {
     public init(
         testTargets: [Scheme.Test.TestTarget] = [],
         configVariants: [String] = [],
-        gatherCoverageData: Bool = false,
+        gatherCoverageData: Bool = gatherCoverageDataDefault,
         commandLineArguments: [String: Bool] = [:],
         environmentVariables: [XCScheme.EnvironmentVariable] = [],
         preActions: [Scheme.ExecutionAction] = [],
@@ -47,7 +49,7 @@ extension TargetScheme: JSONObjectConvertible {
             testTargets = []
         }
         configVariants = jsonDictionary.json(atKeyPath: "configVariants") ?? []
-        gatherCoverageData = jsonDictionary.json(atKeyPath: "gatherCoverageData") ?? false
+        gatherCoverageData = jsonDictionary.json(atKeyPath: "gatherCoverageData") ?? TargetScheme.gatherCoverageDataDefault
         commandLineArguments = jsonDictionary.json(atKeyPath: "commandLineArguments") ?? [:]
         environmentVariables = try XCScheme.EnvironmentVariable.parseAll(jsonDictionary: jsonDictionary)
         preActions = jsonDictionary.json(atKeyPath: "preActions") ?? []
@@ -57,8 +59,7 @@ extension TargetScheme: JSONObjectConvertible {
 
 extension TargetScheme: JSONEncodable {
     public func toJSONValue() -> Any {
-        return [
-            "gatherCoverageData": gatherCoverageData,
+        var dict: [String: Any] = [
             "configVariants": configVariants,
             "commandLineArguments": commandLineArguments,
             "testTargets": testTargets.map { $0.toJSONValue() },
@@ -66,5 +67,11 @@ extension TargetScheme: JSONEncodable {
             "preActions": preActions.map { $0.toJSONValue() },
             "postActions": postActions.map { $0.toJSONValue() },
         ]
+        
+        if gatherCoverageData != TargetScheme.gatherCoverageDataDefault {
+            dict["gatherCoverageData"] = gatherCoverageData
+        }
+
+        return dict
     }
 }

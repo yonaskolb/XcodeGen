@@ -2,6 +2,8 @@ import Foundation
 import JSONUtilities
 
 public struct BuildScript: Equatable {
+    public static let runOnlyWhenInstallingDefault = false
+    public static let showEnvVarsDefault = true
 
     public var script: ScriptType
     public var name: String?
@@ -26,8 +28,8 @@ public struct BuildScript: Equatable {
         inputFileLists: [String] = [],
         outputFileLists: [String] = [],
         shell: String? = nil,
-        runOnlyWhenInstalling: Bool = false,
-        showEnvVars: Bool = true
+        runOnlyWhenInstalling: Bool = runOnlyWhenInstallingDefault,
+        showEnvVars: Bool = showEnvVarsDefault
     ) {
         self.script = script
         self.name = name
@@ -57,8 +59,8 @@ extension BuildScript: JSONObjectConvertible {
             script = .path(path)
         }
         shell = jsonDictionary.json(atKeyPath: "shell")
-        runOnlyWhenInstalling = jsonDictionary.json(atKeyPath: "runOnlyWhenInstalling") ?? false
-        showEnvVars = jsonDictionary.json(atKeyPath: "showEnvVars") ?? true
+        runOnlyWhenInstalling = jsonDictionary.json(atKeyPath: "runOnlyWhenInstalling") ?? BuildScript.runOnlyWhenInstallingDefault
+        showEnvVars = jsonDictionary.json(atKeyPath: "showEnvVars") ?? BuildScript.showEnvVarsDefault
     }
 }
 extension BuildScript: JSONEncodable {
@@ -73,7 +75,7 @@ extension BuildScript: JSONEncodable {
             "shell": shell
         ]
 
-        if !showEnvVars {
+        if showEnvVars != BuildScript.showEnvVarsDefault {
             dict["showEnvVars"] = showEnvVars
         }
 

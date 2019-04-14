@@ -2,15 +2,18 @@ import Foundation
 import JSONUtilities
 
 public struct Dependency: Equatable {
+    public static let removeHeadersDefault = true
+    public static let implicitDefault = false
+    public static let weakLinkDefault = false
 
     public var type: DependencyType
     public var reference: String
     public var embed: Bool?
     public var codeSign: Bool?
-    public var removeHeaders: Bool = true
+    public var removeHeaders: Bool = removeHeadersDefault
     public var link: Bool?
-    public var implicit: Bool = false
-    public var weakLink: Bool = false
+    public var implicit: Bool = implicitDefault
+    public var weakLink: Bool = weakLinkDefault
 
     public init(
         type: DependencyType,
@@ -18,8 +21,8 @@ public struct Dependency: Equatable {
         embed: Bool? = nil,
         codeSign: Bool? = nil,
         link: Bool? = nil,
-        implicit: Bool = false,
-        weakLink: Bool = false
+        implicit: Bool = implicitDefault,
+        weakLink: Bool = weakLinkDefault
     ) {
         self.type = type
         self.reference = reference
@@ -89,13 +92,13 @@ extension Dependency: JSONEncodable {
             "link": link
         ]
 
-        if !removeHeaders {
+        if removeHeaders != Dependency.removeHeadersDefault {
             dict["removeHeaders"] = removeHeaders
         }
-        if implicit {
+        if implicit != Dependency.implicitDefault {
             dict["implicit"] = implicit
         }
-        if weakLink {
+        if weakLink != Dependency.weakLinkDefault {
             dict["weak"] = weakLink
         }
 

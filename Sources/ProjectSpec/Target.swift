@@ -3,6 +3,8 @@ import JSONUtilities
 import xcodeproj
 
 public struct LegacyTarget: Equatable {
+    public static let passSettingsDefault = false
+
     public var toolPath: String
     public var arguments: String?
     public var passSettings: Bool
@@ -10,7 +12,7 @@ public struct LegacyTarget: Equatable {
 
     public init(
         toolPath: String,
-        passSettings: Bool = false,
+        passSettings: Bool = passSettingsDefault,
         arguments: String? = nil,
         workingDirectory: String? = nil
     ) {
@@ -267,19 +269,24 @@ extension LegacyTarget: JSONObjectConvertible {
     public init(jsonDictionary: JSONDictionary) throws {
         toolPath = try jsonDictionary.json(atKeyPath: "toolPath")
         arguments = jsonDictionary.json(atKeyPath: "arguments")
-        passSettings = jsonDictionary.json(atKeyPath: "passSettings") ?? false
+        passSettings = jsonDictionary.json(atKeyPath: "passSettings") ?? LegacyTarget.passSettingsDefault
         workingDirectory = jsonDictionary.json(atKeyPath: "workingDirectory")
     }
 }
 
 extension LegacyTarget: JSONEncodable {
     public func toJSONValue() -> Any {
-        return [
+        var dict: [String: Any?] = [
             "toolPath": toolPath,
-            "passSettings": passSettings,
             "arguments": arguments,
             "workingDirectory": workingDirectory,
-        ] as [String: Any?]
+        ]
+
+        if passSettings != LegacyTarget.passSettingsDefault {
+            dict["passSettings"] = passSettings
+        }
+
+        return dict
     }
 }
 

@@ -4,6 +4,7 @@ import PathKit
 import xcodeproj
 
 public struct TargetSource: Equatable {
+    public static let optionalDefault = false
 
     public var path: String
     public var name: String?
@@ -123,7 +124,7 @@ public struct TargetSource: Equatable {
         compilerFlags: [String] = [],
         excludes: [String] = [],
         type: SourceType? = nil,
-        optional: Bool = false,
+        optional: Bool = optionalDefault,
         buildPhase: BuildPhase? = nil,
         headerVisibility: HeaderVisibility? = nil,
         createIntermediateGroups: Bool? = nil
@@ -169,7 +170,7 @@ extension TargetSource: JSONObjectConvertible {
         headerVisibility = jsonDictionary.json(atKeyPath: "headerVisibility")
         excludes = jsonDictionary.json(atKeyPath: "excludes") ?? []
         type = jsonDictionary.json(atKeyPath: "type")
-        optional = jsonDictionary.json(atKeyPath: "optional") ?? false
+        optional = jsonDictionary.json(atKeyPath: "optional") ?? TargetSource.optionalDefault
 
         if let string: String = jsonDictionary.json(atKeyPath: "buildPhase") {
             buildPhase = try BuildPhase(string: string)
@@ -193,8 +194,8 @@ extension TargetSource: JSONEncodable {
             "createIntermediateGroups": createIntermediateGroups,
         ]
 
-        if optional {
-            dict["optional"] = true
+        if optional != TargetSource.optionalDefault {
+            dict["optional"] = optional
         }
 
         if dict.count == 0 {
