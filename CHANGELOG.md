@@ -2,6 +2,10 @@
 
 ## Next Version
 
+#### Added
+
+- Added ability to encode ProjectSpec to JSON [#545](https://github.com/yonaskolb/XcodeGen/pull/545) @ryohey
+
 ## 2.5.0
 
 #### Added
