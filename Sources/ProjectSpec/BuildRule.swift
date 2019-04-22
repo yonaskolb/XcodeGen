@@ -80,3 +80,29 @@ extension BuildRule: JSONObjectConvertible {
         name = jsonDictionary.json(atKeyPath: "name")
     }
 }
+
+extension BuildRule: JSONEncodable {
+    public func toJSONValue() -> Any {
+        var dict: [String: Any?] = [
+            "outputFiles": outputFiles,
+            "outputFilesCompilerFlags": outputFilesCompilerFlags,
+            "name": name
+        ]
+
+        switch fileType {
+        case .pattern(let string):
+            dict["filePattern"] = string
+        case .type(let string):
+            dict["fileType"] = string
+        }
+
+        switch action {
+        case .compilerSpec(let string):
+            dict["compilerSpec"] = string
+        case .script(let string):
+            dict["script"] = string
+        }
+
+        return dict
+    }
+}

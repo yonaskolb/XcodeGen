@@ -25,6 +25,15 @@ extension Plist: JSONObjectConvertible {
     }
 }
 
+extension Plist: JSONEncodable {
+    public func toJSONValue() -> Any {
+        return [
+            "path": path,
+            "properties": properties
+        ]
+    }
+}
+
 extension Plist: PathContainer {
 
     static var pathProperties: [PathProperty] {

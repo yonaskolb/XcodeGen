@@ -3,6 +3,8 @@ import JSONUtilities
 import xcodeproj
 
 public struct LegacyTarget: Equatable {
+    public static let passSettingsDefault = false
+
     public var toolPath: String
     public var arguments: String?
     public var passSettings: Bool
@@ -10,7 +12,7 @@ public struct LegacyTarget: Equatable {
 
     public init(
         toolPath: String,
-        passSettings: Bool = false,
+        passSettings: Bool = passSettingsDefault,
         arguments: String? = nil,
         workingDirectory: String? = nil
     ) {
@@ -267,8 +269,24 @@ extension LegacyTarget: JSONObjectConvertible {
     public init(jsonDictionary: JSONDictionary) throws {
         toolPath = try jsonDictionary.json(atKeyPath: "toolPath")
         arguments = jsonDictionary.json(atKeyPath: "arguments")
-        passSettings = jsonDictionary.json(atKeyPath: "passSettings") ?? false
+        passSettings = jsonDictionary.json(atKeyPath: "passSettings") ?? LegacyTarget.passSettingsDefault
         workingDirectory = jsonDictionary.json(atKeyPath: "workingDirectory")
+    }
+}
+
+extension LegacyTarget: JSONEncodable {
+    public func toJSONValue() -> Any {
+        var dict: [String: Any?] = [
+            "toolPath": toolPath,
+            "arguments": arguments,
+            "workingDirectory": workingDirectory,
+        ]
+
+        if passSettings != LegacyTarget.passSettingsDefault {
+            dict["passSettings"] = passSettings
+        }
+
+        return dict
     }
 }
 
@@ -340,5 +358,38 @@ extension Target: NamedJSONDictionaryConvertible {
         scheme = jsonDictionary.json(atKeyPath: "scheme")
         legacy = jsonDictionary.json(atKeyPath: "legacy")
         attributes = jsonDictionary.json(atKeyPath: "attributes") ?? [:]
+    }
+}
+
+
+extension Target: JSONEncodable {
+    public func toJSONValue() -> Any {
+        var dict: [String: Any?] = [
+            "type": type.name,
+            "platform": platform.rawValue,
+            "settings": settings.toJSONValue(),
+            "configFiles": configFiles,
+            "attributes": attributes,
+            "sources": sources.map { $0.toJSONValue() },
+            "dependencies": dependencies.map { $0.toJSONValue() },
+            "postCompileScripts": postCompileScripts.map{ $0.toJSONValue() },
+            "prebuildScripts": preBuildScripts.map{ $0.toJSONValue() },
+            "postbuildScripts": postBuildScripts.map{ $0.toJSONValue() },
+            "buildRules": buildRules.map{ $0.toJSONValue() },
+            "deploymentTarget": deploymentTarget?.deploymentTarget,
+            "info": info?.toJSONValue(),
+            "entitlements": entitlements?.toJSONValue(),
+            "transitivelyLinkDependencies": transitivelyLinkDependencies,
+            "directlyEmbedCarthageDependencies": directlyEmbedCarthageDependencies,
+            "requiresObjCLinking": requiresObjCLinking,
+            "scheme": scheme?.toJSONValue(),
+            "legacy": legacy?.toJSONValue(),
+        ]
+
+        if productName != name {
+            dict["productName"] = productName
+        }
+
+        return dict
     }
 }
