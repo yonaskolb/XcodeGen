@@ -6,6 +6,9 @@
 
 - Added ability to encode ProjectSpec to JSON [#545](https://github.com/yonaskolb/XcodeGen/pull/545) @ryohey
 
+#### Fixed
+- Fixed an issue that prevents watchOS Intents Extension from running correctly. [#TBD](https://github.com/yonaskolb/XcodeGen/pull/TDB) @KhaosT
+
 ## 2.5.0
 
 #### Added
