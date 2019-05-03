@@ -273,6 +273,14 @@ public class PBXProjGenerator {
         )
         return targetDependency
     }
+    
+    func generateUniqueBuildScripts(targetName: String, from buildScripts: [BuildScript]) throws -> [PBXShellScriptBuildPhase]  {
+        let uniqueBuildScripts = buildScripts.reduce([BuildScript](), { acc, script in
+            acc.contains(script) ? acc : (acc + [script])
+        })
+        
+        return try uniqueBuildScripts.map { try generateBuildScript(targetName: targetName, buildScript: $0) }
+    }
 
     func generateBuildScript(targetName: String, buildScript: BuildScript) throws -> PBXShellScriptBuildPhase {
 
@@ -664,7 +672,7 @@ public class PBXProjGenerator {
 
         copyFilesBuildPhasesFiles.merge(getBuildFilesForCopyFilesPhases()) { $0 + $1 }
 
-        buildPhases += try target.preBuildScripts.map { try generateBuildScript(targetName: target.name, buildScript: $0) }
+        buildPhases += try generateUniqueBuildScripts(targetName: target.name, from: target.preBuildScripts)
 
         buildPhases += copyFilesBuildPhasesFiles
             .filter { $0.key.phaseOrder == .preCompile }
@@ -689,7 +697,7 @@ public class PBXProjGenerator {
             buildPhases.append(sourcesBuildPhase)
         }
 
-        buildPhases += try target.postCompileScripts.map { try generateBuildScript(targetName: target.name, buildScript: $0) }
+        buildPhases += try generateUniqueBuildScripts(targetName: target.name, from: target.postCompileScripts)
 
         let resourcesBuildPhaseFiles = getBuildFilesForPhase(.resources) + copyResourcesReferences
         if !resourcesBuildPhaseFiles.isEmpty {
@@ -806,7 +814,7 @@ public class PBXProjGenerator {
             )
         }
 
-        buildPhases += try target.postBuildScripts.map { try generateBuildScript(targetName: target.name, buildScript: $0) }
+        buildPhases += try generateUniqueBuildScripts(targetName: target.name, from: target.postBuildScripts)
 
         let configs: [XCBuildConfiguration] = project.configs.map { config in
             var buildSettings = project.getTargetBuildSettings(target: target, config: config)
