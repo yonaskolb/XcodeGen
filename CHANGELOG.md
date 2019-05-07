@@ -7,7 +7,7 @@
 - Added ability to encode ProjectSpec to JSON [#545](https://github.com/yonaskolb/XcodeGen/pull/545) @ryohey
 
 #### Changed
-- Follow up on the Xcode 10.2 updates done in [#555](https://github.com/yonaskolb/XcodeGen/pull/555): updated the `compatibilityVersion` project setting to `Xcode 10.0`. With the `compatibilityVersion` set to `Xcode 9.3`, Xcode automatically sets the `ObjectVersion` from `51` to `50` [#578](https://github.com/yonaskolb/XcodeGen/pull/578) @acecilia
+- Follow up on the Xcode 10.2 updates done in [#555](https://github.com/yonaskolb/XcodeGen/pull/555): updated the `compatibilityVersion` project setting to `Xcode 10.0`. With the `compatibilityVersion` set to `Xcode 9.3`, Xcode automatically sets the `ObjectVersion` from `51` to `50` [#581](https://github.com/yonaskolb/XcodeGen/pull/581) @acecilia
 
 ## 2.5.0
 
