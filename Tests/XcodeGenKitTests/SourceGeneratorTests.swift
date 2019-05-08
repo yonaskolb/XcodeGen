@@ -644,6 +644,39 @@ class SourceGeneratorTests: XCTestCase {
                 try pbxProj.expectFile(paths: ["../OtherDirectory", "Outside", "a.swift"], names: ["OtherDirectory", "Outside", "a.swift"], buildPhase: .sources)
                 try pbxProj.expectFile(paths: ["../OtherDirectory", "Outside", "Outside2", "b.swift"], names: ["OtherDirectory", "Outside", "Outside2", "b.swift"], buildPhase: .sources)
             }
+
+            $0.it("correctly adds no_codegen attribute") {
+                let directories = """
+                A:
+                  - Intent.intentdefinition
+                """
+                try createDirectories(directories)
+
+                let definition: String = "Intent.intentdefinition"
+
+                let target = Target(name: "Test", type: .framework, platform: .iOS, sources: [
+                    TargetSource(path: "A/\(definition)", buildPhase: .sources, noCodegen: true)
+                ])
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target])
+
+                let pbxProj = try project.generatePbxProj()
+
+                let fileReference = pbxProj.getFileReference(
+                    paths: ["A", definition],
+                    names: ["A", definition]
+                )
+                guard let buildFile = pbxProj.buildFiles
+                    .first(where: { $0.file == fileReference }) else {
+                    throw failure("Cant find build file")
+                }
+
+
+                try pbxProj.expectFile(paths: ["A", definition], buildPhase: .sources)
+
+                if (buildFile.settings! as NSDictionary) != (["ATTRIBUTES": ["no_codegen"]] as NSDictionary) {
+                    throw failure("File does not contain no_codegen attribute")
+                }
+            }
         }
     }
 }

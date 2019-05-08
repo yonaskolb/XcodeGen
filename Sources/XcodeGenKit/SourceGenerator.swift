@@ -51,6 +51,7 @@ class SourceGenerator {
     func generateSourceFile(targetType: PBXProductType, targetSource: TargetSource, path: Path, buildPhase: TargetSource.BuildPhase? = nil) -> SourceFile {
         let fileReference = fileReferencesByPath[path.string.lowercased()]!
         var settings: [String: Any] = [:]
+        var attributes: [String] = []
         var chosenBuildPhase: TargetSource.BuildPhase?
 
         let headerVisibility = targetSource.headerVisibility ?? .public
@@ -77,14 +78,22 @@ class SourceGenerator {
             }
         }
 
+        if targetSource.noCodegen {
+            attributes.append("no_codegen")
+        }
+
         if chosenBuildPhase == .headers {
             if headerVisibility != .project {
                 // Xcode doesn't write the default of project
-                settings["ATTRIBUTES"] = [headerVisibility.settingName]
+                attributes.append(headerVisibility.settingName)
             }
         }
         if chosenBuildPhase == .sources && targetSource.compilerFlags.count > 0 {
             settings["COMPILER_FLAGS"] = targetSource.compilerFlags.joined(separator: " ")
+        }
+
+        if !attributes.isEmpty {
+            settings["ATTRIBUTES"] = attributes
         }
 
         let buildFile = PBXBuildFile(file: fileReference, settings: settings.isEmpty ? nil : settings)
