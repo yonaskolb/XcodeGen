@@ -102,25 +102,30 @@ public struct Scheme: Equatable {
         public struct TestTarget: Equatable, ExpressibleByStringLiteral {
             public static let randomExecutionOrderDefault = false
             public static let parallelizableDefault = false
+            public static let skippedTestsDefault: [String] = []
 
             public let name: String
             public var randomExecutionOrder: Bool
             public var parallelizable: Bool
+            public var skippedTests: [String]
 
             public init(
                 name: String,
                 randomExecutionOrder: Bool = randomExecutionOrderDefault,
-                parallelizable: Bool = parallelizableDefault
+                parallelizable: Bool = parallelizableDefault,
+                skippedTests: [String] = skippedTestsDefault
             ) {
                 self.name = name
                 self.randomExecutionOrder = randomExecutionOrder
                 self.parallelizable = parallelizable
+                self.skippedTests = skippedTests
             }
 
             public init(stringLiteral value: String) {
                 name = value
                 randomExecutionOrder = false
                 parallelizable = false
+                skippedTests = []
             }
         }
 
@@ -306,6 +311,7 @@ extension Scheme.Test.TestTarget: JSONObjectConvertible {
         name = try jsonDictionary.json(atKeyPath: "name")
         randomExecutionOrder = jsonDictionary.json(atKeyPath: "randomExecutionOrder") ?? Scheme.Test.TestTarget.randomExecutionOrderDefault
         parallelizable = jsonDictionary.json(atKeyPath: "parallelizable") ?? Scheme.Test.TestTarget.parallelizableDefault
+        skippedTests = jsonDictionary.json(atKeyPath: "skippedTests") ?? Scheme.Test.TestTarget.skippedTestsDefault
     }
 }
 
