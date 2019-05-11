@@ -51,7 +51,7 @@ class SourceGenerator {
     func generateSourceFile(targetType: PBXProductType, targetSource: TargetSource, path: Path, buildPhase: TargetSource.BuildPhase? = nil) -> SourceFile {
         let fileReference = fileReferencesByPath[path.string.lowercased()]!
         var settings: [String: Any] = [:]
-        var attributes: [String] = []
+        var attributes: [String] = targetSource.attributes
         var chosenBuildPhase: TargetSource.BuildPhase?
 
         let headerVisibility = targetSource.headerVisibility ?? .public
@@ -76,10 +76,6 @@ class SourceGenerator {
             } else {
                 chosenBuildPhase = nil
             }
-        }
-
-        if targetSource.noCodegen {
-            attributes.append("no_codegen")
         }
 
         if chosenBuildPhase == .headers {

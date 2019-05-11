@@ -645,7 +645,7 @@ class SourceGeneratorTests: XCTestCase {
                 try pbxProj.expectFile(paths: ["../OtherDirectory", "Outside", "Outside2", "b.swift"], names: ["OtherDirectory", "Outside", "Outside2", "b.swift"], buildPhase: .sources)
             }
 
-            $0.it("correctly adds no_codegen attribute") {
+            $0.it("correctly adds target source attributes") {
                 let directories = """
                 A:
                   - Intent.intentdefinition
@@ -655,7 +655,7 @@ class SourceGeneratorTests: XCTestCase {
                 let definition: String = "Intent.intentdefinition"
 
                 let target = Target(name: "Test", type: .framework, platform: .iOS, sources: [
-                    TargetSource(path: "A/\(definition)", buildPhase: .sources, noCodegen: true)
+                    TargetSource(path: "A/\(definition)", buildPhase: .sources, attributes: ["no_codegen"])
                 ])
                 let project = Project(basePath: directoryPath, name: "Test", targets: [target])
 
@@ -669,7 +669,6 @@ class SourceGeneratorTests: XCTestCase {
                     .first(where: { $0.file == fileReference }) else {
                     throw failure("Cant find build file")
                 }
-
 
                 try pbxProj.expectFile(paths: ["A", definition], buildPhase: .sources)
 
