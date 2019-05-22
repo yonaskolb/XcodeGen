@@ -5,6 +5,7 @@
 #### Added
 
 - Added ability to encode ProjectSpec to JSON [#545](https://github.com/yonaskolb/XcodeGen/pull/545) @ryohey
+- Added ability to skip tests [#582](https://github.com/yonaskolb/XcodeGen/pull/582) @kadarandras
 
 ## 2.5.0
 

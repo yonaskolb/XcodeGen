@@ -729,6 +729,7 @@ class SpecLoadingTests: XCTestCase {
                                 "name": "Target2",
                                 "parallelizable": true,
                                 "randomExecutionOrder": true,
+                                "skippedTests": ["Test/testExample()"]
                             ],
                         ],
                         "gatherCoverageData": true,
@@ -760,7 +761,8 @@ class SpecLoadingTests: XCTestCase {
                         Scheme.Test.TestTarget(
                             name: "Target2",
                             randomExecutionOrder: true,
-                            parallelizable: true
+                            parallelizable: true,
+                            skippedTests: ["Test/testExample()"]
                         ),
                     ]
                 )
