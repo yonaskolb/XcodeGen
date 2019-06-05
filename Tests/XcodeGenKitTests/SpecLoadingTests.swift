@@ -17,7 +17,7 @@ class SpecLoadingTests: XCTestCase {
 
                 try expect(project.name) == "NewName"
                 try expect(project.settingGroups) == [
-                    "test": Settings(dictionary: ["MY_SETTING1": "NEW VALUE", "MY_SETTING2": "VALUE2", "MY_SETTING3": "VALUE3"]),
+                    "test": Settings(dictionary: ["MY_SETTING1": "NEW VALUE", "MY_SETTING2": "VALUE2", "MY_SETTING3": "VALUE3", "MY_SETTING4": "${SETTING4}"]),
                     "new": Settings(dictionary: ["MY_SETTING": "VALUE"]),
                     "toReplace": Settings(dictionary: ["MY_SETTING2": "VALUE2"]),
                 ]
@@ -186,6 +186,17 @@ class SpecLoadingTests: XCTestCase {
                     throw failure("parsed yaml types don't match:\n\nParsed:\n\t\(dictionary.map { "\($0.key): \($0.value)" }.joined(separator: "\n\t"))\nExpected:\n\t\(expectedDictionary.map { "\($0.key): \($0.value)" }.joined(separator: "\n\t"))")
                 }
             }
+
+            $0.it("expands environment variables") {
+                let path = fixturePath + "env_test.yml"
+                let project = try loadSpec(path: path, environmentVariables: ["SETTING1": "ENV VALUE1", "SETTING4": "ENV VALUE4"])
+
+                try expect(project.name) == "NewName"
+                try expect(project.settingGroups) == [
+                    "test": Settings(dictionary: ["MY_SETTING1": "ENV VALUE1", "MY_SETTING2": "VALUE2", "MY_SETTING4": "ENV VALUE4"]),
+                    "toReplace": Settings(dictionary: ["MY_SETTING1": "VALUE1"]),
+                ]
+            }
         }
     }
 
@@ -197,7 +208,7 @@ class SpecLoadingTests: XCTestCase {
 
                 try expect(project.name) == "NewName"
                 try expect(project.settingGroups) == [
-                    "test": Settings(dictionary: ["MY_SETTING1": "NEW VALUE", "MY_SETTING2": "VALUE2", "MY_SETTING3": "VALUE3"]),
+                    "test": Settings(dictionary: ["MY_SETTING1": "NEW VALUE", "MY_SETTING2": "VALUE2", "MY_SETTING3": "VALUE3", "MY_SETTING4": "${SETTING4}"]),
                     "new": Settings(dictionary: ["MY_SETTING": "VALUE"]),
                     "toReplace": Settings(dictionary: ["MY_SETTING2": "VALUE2"]),
                 ]
@@ -239,7 +250,7 @@ class SpecLoadingTests: XCTestCase {
                 try? Yams.dump(object: dictionary).write(toFile: path.string, atomically: true, encoding: .utf8)
                 let specLoader = SpecLoader(version: "1.1.0")
                 do {
-                    _ = try specLoader.loadProject(path: path)
+                    _ = try specLoader.loadProject(path: path, environmentVariables: [:])
                 } catch {
                     throw failure("\(error)")
                 }
@@ -269,7 +280,7 @@ class SpecLoadingTests: XCTestCase {
                 try? Yams.dump(object: dictionary).write(toFile: path.string, atomically: true, encoding: .utf8)
                 let specLoader = SpecLoader(version: "1.1.0")
                 do {
-                    _ = try specLoader.loadProject(path: path)
+                    _ = try specLoader.loadProject(path: path, environmentVariables: [:])
                 } catch {
                     throw failure("\(error)")
                 }
@@ -954,10 +965,10 @@ fileprivate func getProjectSpec(_ project: [String: Any], file: String = #file, 
     }
 }
 
-fileprivate func loadSpec(path: Path, file: String = #file, line: Int = #line) throws -> Project {
+fileprivate func loadSpec(path: Path, environmentVariables: [String: String] = [:], file: String = #file, line: Int = #line) throws -> Project {
     do {
         let specLoader = SpecLoader(version: "1.1.0")
-        return try specLoader.loadProject(path: path)
+        return try specLoader.loadProject(path: path, environmentVariables: environmentVariables)
     } catch {
         throw failure("\(error)", file: file, line: line)
     }

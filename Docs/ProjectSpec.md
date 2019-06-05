@@ -1,11 +1,8 @@
 # Project Spec
 
-The project spec can be written in either YAML or JSON. All the examples below use YAML.
-
-Required properties are marked with checkbox. Some of the YAML examples don't show all the required properties. For example not all target examples will have a platform or type, even though they are required.
-
 ### Index
 
+- [General](#general)
 - [Project](#project)
 	- [Include](#include)
 	- [Options](#options)
@@ -26,6 +23,14 @@ Required properties are marked with checkbox. Some of the YAML examples don't sh
 - [Aggregate Target](#aggregate-target)
 - [Target Template](#target-template)
 - [Scheme](#scheme)
+
+## General
+
+The project spec can be written in either YAML or JSON. All the examples below use YAML.
+
+Required properties are marked with checkbox. Some of the YAML examples don't show all the required properties. For example not all target examples will have a platform or type, even though they are required.
+
+You can also use environment variables in your configuration file, by using `${SOME_VARIABLE}` in a string.
 
 ## Project
 
