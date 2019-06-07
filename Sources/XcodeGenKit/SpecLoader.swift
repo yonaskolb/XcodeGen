@@ -2,7 +2,7 @@ import Foundation
 import JSONUtilities
 import PathKit
 import ProjectSpec
-import xcodeproj
+import XcodeProj
 import Yams
 
 public class SpecLoader {

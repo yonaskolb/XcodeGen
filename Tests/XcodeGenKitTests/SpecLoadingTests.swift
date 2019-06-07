@@ -3,7 +3,7 @@ import PathKit
 import ProjectSpec
 import Spectre
 import XcodeGenKit
-import xcodeproj
+import XcodeProj
 import XCTest
 import Yams
 

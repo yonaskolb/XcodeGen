@@ -1,7 +1,7 @@
 import Foundation
 import PathKit
 import ProjectSpec
-import xcodeproj
+import XcodeProj
 import Yams
 
 public class PBXProjGenerator {

@@ -1,6 +1,6 @@
 import Foundation
 import JSONUtilities
-import xcodeproj
+import XcodeProj
 
 public struct LegacyTarget: Equatable {
     public static let passSettingsDefault = false

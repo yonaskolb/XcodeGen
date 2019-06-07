@@ -1,6 +1,6 @@
 import Foundation
 import JSONUtilities
-import xcodeproj
+import XcodeProj
 
 public struct TargetScheme: Equatable {
     public static let gatherCoverageDataDefault = false

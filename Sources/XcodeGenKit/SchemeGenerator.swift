@@ -1,6 +1,6 @@
 import Foundation
 import ProjectSpec
-import xcodeproj
+import XcodeProj
 
 public class SchemeGenerator {
 
