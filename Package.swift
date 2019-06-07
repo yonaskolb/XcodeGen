@@ -10,13 +10,13 @@ let package = Package(
         .library(name: "ProjectSpec", targets: ["ProjectSpec"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/kylef/PathKit.git", from: "0.9.0"),
+        .package(url: "https://github.com/kylef/PathKit.git", from: "1.0.0"),
         .package(url: "https://github.com/jpsim/Yams.git", from: "2.0.0"),
         .package(url: "https://github.com/yonaskolb/JSONUtilities.git", from: "4.2.0"),
         .package(url: "https://github.com/kylef/Spectre.git", from: "0.9.0"),
         .package(url: "https://github.com/onevcat/Rainbow.git", from: "3.0.0"),
-        .package(url: "https://github.com/tuist/xcodeproj.git", .exact("6.7.0")),
-        .package(url: "https://github.com/jakeheis/SwiftCLI.git", from: "5.2.0"),
+        .package(url: "https://github.com/tuist/xcodeproj.git", .exact("7.0.0")),
+        .package(url: "https://github.com/jakeheis/SwiftCLI.git", .exact("5.2.2")),
     ],
     targets: [
         .target(name: "XcodeGen", dependencies: [
@@ -32,12 +32,12 @@ let package = Package(
         .target(name: "XcodeGenKit", dependencies: [
             "ProjectSpec",
             "JSONUtilities",
-            "xcodeproj",
+            "XcodeProj",
             "PathKit",
         ]),
         .target(name: "ProjectSpec", dependencies: [
             "JSONUtilities",
-            "xcodeproj",
+            "XcodeProj",
             "Yams",
         ]),
         .testTarget(name: "XcodeGenKitTests", dependencies: [
