@@ -1,7 +1,8 @@
 import Foundation
 import JSONUtilities
 import PathKit
-import xcodeproj
+import enum XcodeProj.BuildPhase
+import class XcodeProj.PBXCopyFilesBuildPhase
 
 public struct TargetSource: Equatable {
     public static let optionalDefault = false
@@ -61,7 +62,7 @@ public struct TargetSource: Equatable {
                 case sharedSupport
                 case plugins
 
-                public var destination: xcodeproj.PBXCopyFilesBuildPhase.SubFolder? {
+                public var destination: PBXCopyFilesBuildPhase.SubFolder? {
                     switch self {
                     case .absolutePath: return .absolutePath
                     case .productsDirectory: return .productsDirectory
@@ -99,7 +100,7 @@ public struct TargetSource: Equatable {
             }
         }
 
-        public var buildPhase: xcodeproj.BuildPhase? {
+        public var buildPhase: XcodeProj.BuildPhase? {
             switch self {
             case .sources: return .sources
             case .headers: return .headers

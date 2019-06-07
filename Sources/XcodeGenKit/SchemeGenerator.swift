@@ -159,7 +159,7 @@ public class SchemeGenerator {
         )
 
         let launchAction = XCScheme.LaunchAction(
-            buildableProductRunnable: shouldExecuteOnLaunch ? productRunable : nil,
+            runnable: shouldExecuteOnLaunch ? productRunable : nil,
             buildConfiguration: scheme.run?.config ?? defaultDebugConfig.name,
             preActions: scheme.run?.preActions.map(getExecutionAction) ?? [],
             postActions: scheme.run?.postActions.map(getExecutionAction) ?? [],

@@ -71,7 +71,7 @@ class SchemeGeneratorTests: XCTestCase {
 
                 let buildableReferences: [XCScheme.BuildableReference] = [
                     buildActionEntry.buildableReference,
-                    xcscheme.launchAction?.buildableProductRunnable?.buildableReference,
+                    xcscheme.launchAction?.runnable?.buildableReference,
                     xcscheme.profileAction?.buildableProductRunnable?.buildableReference,
                     xcscheme.testAction?.macroExpansion,
                 ].compactMap { $0 }

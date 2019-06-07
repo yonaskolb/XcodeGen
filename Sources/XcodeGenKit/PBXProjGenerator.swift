@@ -256,10 +256,11 @@ public class PBXProjGenerator {
         guard let targetObject = targetObjects[target] ?? targetAggregateObjects[target] else {
             fatalError("target not found")
         }
+
         let targetProxy = addObject(
             PBXContainerItemProxy(
-                containerPortal: pbxProj.rootObject!,
-                remoteGlobalID: targetObject,
+                containerPortal: .project(pbxProj.rootObject!),
+                remoteGlobalID: .object(targetObject),
                 proxyType: .nativeTarget,
                 remoteInfo: target
             )
