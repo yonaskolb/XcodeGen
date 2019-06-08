@@ -7,12 +7,13 @@ public class XcodeGenCLI {
 
     public init(version: Version) {
         let generateCommand = GenerateCommand(version: version)
+        let specGenerationCommand = GenerateSpecCommand()
 
         cli = CLI(
             name: "xcodegen",
             version: version.string,
             description: "Generates Xcode projects",
-            commands: [generateCommand]
+            commands: [generateCommand, specGenerationCommand]
         )
         cli.parser.routeBehavior = .searchWithFallback(generateCommand)
     }
