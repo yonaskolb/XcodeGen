@@ -208,7 +208,7 @@ extension TargetSource: JSONEncodable {
             dict["optional"] = optional
         }
 
-        if dict.count == 0 {
+        if dict.removeEmpty().isEmpty {
             return path
         }
 

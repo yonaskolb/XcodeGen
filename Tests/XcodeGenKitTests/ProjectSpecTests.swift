@@ -496,6 +496,9 @@ class ProjectSpecTests: XCTestCase {
                                    attributes: ["attributes": "bar"])
 
                 let json = proj.toJSONDictionary()
+
+                try expect(JSONSerialization.isValidJSONObject(json)).beTrue()
+
                 let restoredProj = try Project(basePath: Path.current, jsonDictionary: json)
 
                 // Examin some properties to make debugging easier
