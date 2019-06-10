@@ -7,6 +7,10 @@
 - Added ability to encode ProjectSpec to JSON [#545](https://github.com/yonaskolb/XcodeGen/pull/545) @ryohey
 - Added ability to skip tests [#582](https://github.com/yonaskolb/XcodeGen/pull/582) @kadarandras
 
+#### Fixed
+
+- Fixed `.pch` files being bundled as resources [#597](https://github.com/yonaskolb/XcodeGen/pull/597) @thii
+
 ## 2.5.0
 
 #### Added
