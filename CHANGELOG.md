@@ -2,10 +2,16 @@
 
 ## Next Version
 
-## 2.6.0
-
-#### Added
+- Added ability to encode ProjectSpec to JSON [#545](https://github.com/yonaskolb/XcodeGen/pull/545) @ryohey
+- Added ability to skip tests [#582](https://github.com/yonaskolb/XcodeGen/pull/582) @kadarandras
 - Added ability to set `attributes` on build files [#583](https://github.com/yonaskolb/XcodeGen/pull/583) @min
+
+#### Fixed
+- Fixed `.pch` files being bundled as resources [#597](https://github.com/yonaskolb/XcodeGen/pull/597) @thii
+- Fixed an issue that prevents watchOS Intents Extension from running correctly. [#571](https://github.com/yonaskolb/XcodeGen/pull/571) @KhaosT
+
+#### Changed
+- Updated the default `compatibilityVersion` project setting from `Xcode 9.3` to `Xcode 10.0` [#581](https://github.com/yonaskolb/XcodeGen/pull/581) @acecilia
 
 ## 2.5.0
 

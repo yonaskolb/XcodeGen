@@ -44,6 +44,9 @@ public struct Scheme: Equatable {
     }
 
     public struct Build: Equatable {
+        public static let parallelizeBuildDefault = true
+        public static let buildImplicitDependenciesDefault = true
+
         public var targets: [BuildTarget]
         public var parallelizeBuild: Bool
         public var buildImplicitDependencies: Bool
@@ -51,8 +54,8 @@ public struct Scheme: Equatable {
         public var postActions: [ExecutionAction]
         public init(
             targets: [BuildTarget],
-            parallelizeBuild: Bool = true,
-            buildImplicitDependencies: Bool = true,
+            parallelizeBuild: Bool = parallelizeBuildDefault,
+            buildImplicitDependencies: Bool = buildImplicitDependenciesDefault,
             preActions: [ExecutionAction] = [],
             postActions: [ExecutionAction] = []
         ) {
@@ -86,6 +89,8 @@ public struct Scheme: Equatable {
     }
 
     public struct Test: BuildAction {
+        public static let gatherCoverageDataDefault = false
+
         public var config: String?
         public var gatherCoverageData: Bool
         public var commandLineArguments: [String: Bool]
@@ -95,30 +100,37 @@ public struct Scheme: Equatable {
         public var environmentVariables: [XCScheme.EnvironmentVariable]
 
         public struct TestTarget: Equatable, ExpressibleByStringLiteral {
+            public static let randomExecutionOrderDefault = false
+            public static let parallelizableDefault = false
+
             public let name: String
             public var randomExecutionOrder: Bool
             public var parallelizable: Bool
+            public var skippedTests: [String]
 
             public init(
                 name: String,
-                randomExecutionOrder: Bool = false,
-                parallelizable: Bool = false
+                randomExecutionOrder: Bool = randomExecutionOrderDefault,
+                parallelizable: Bool = parallelizableDefault,
+                skippedTests: [String] = []
             ) {
                 self.name = name
                 self.randomExecutionOrder = randomExecutionOrder
                 self.parallelizable = parallelizable
+                self.skippedTests = skippedTests
             }
 
             public init(stringLiteral value: String) {
                 name = value
                 randomExecutionOrder = false
                 parallelizable = false
+                skippedTests = []
             }
         }
 
         public init(
             config: String,
-            gatherCoverageData: Bool = false,
+            gatherCoverageData: Bool = gatherCoverageDataDefault,
             randomExecutionOrder: Bool = false,
             parallelizable: Bool = false,
             commandLineArguments: [String: Bool] = [:],
@@ -174,6 +186,8 @@ public struct Scheme: Equatable {
     }
 
     public struct Archive: BuildAction {
+        public static let revealArchiveInOrganizerDefault = true
+        
         public var config: String?
         public var customArchiveName: String?
         public var revealArchiveInOrganizer: Bool
@@ -182,7 +196,7 @@ public struct Scheme: Equatable {
         public init(
             config: String,
             customArchiveName: String? = nil,
-            revealArchiveInOrganizer: Bool = true,
+            revealArchiveInOrganizer: Bool = revealArchiveInOrganizerDefault,
             preActions: [ExecutionAction] = [],
             postActions: [ExecutionAction] = []
         ) {
@@ -218,6 +232,16 @@ extension Scheme.ExecutionAction: JSONObjectConvertible {
     }
 }
 
+extension Scheme.ExecutionAction: JSONEncodable {
+    public func toJSONValue() -> Any {
+        return [
+            "script": script,
+            "name": name,
+            "settingsTarget": settingsTarget
+        ]
+    }
+}
+
 extension Scheme.Run: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
@@ -229,11 +253,23 @@ extension Scheme.Run: JSONObjectConvertible {
     }
 }
 
+extension Scheme.Run: JSONEncodable {
+    public func toJSONValue() -> Any {
+        return [
+            "commandLineArguments": commandLineArguments,
+            "preActions": preActions.map { $0.toJSONValue() },
+            "postActions": postActions.map { $0.toJSONValue() },
+            "environmentVariables": environmentVariables.map { $0.toJSONValue() },
+            "config": config
+        ] as [String: Any?]
+    }
+}
+
 extension Scheme.Test: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
         config = jsonDictionary.json(atKeyPath: "config")
-        gatherCoverageData = jsonDictionary.json(atKeyPath: "gatherCoverageData") ?? false
+        gatherCoverageData = jsonDictionary.json(atKeyPath: "gatherCoverageData") ?? Scheme.Test.gatherCoverageDataDefault
         commandLineArguments = jsonDictionary.json(atKeyPath: "commandLineArguments") ?? [:]
         if let targets = jsonDictionary["targets"] as? [Any] {
             self.targets = try targets.compactMap { target in
@@ -254,12 +290,48 @@ extension Scheme.Test: JSONObjectConvertible {
     }
 }
 
+extension Scheme.Test: JSONEncodable {
+    public func toJSONValue() -> Any {
+        return [
+            "gatherCoverageData": gatherCoverageData,
+            "commandLineArguments": commandLineArguments,
+            "targets": targets.map { $0.toJSONValue() },
+            "preActions": preActions.map { $0.toJSONValue() },
+            "postActions": postActions.map { $0.toJSONValue() },
+            "environmentVariables": environmentVariables.map { $0.toJSONValue() },
+            "config": config
+        ] as [String: Any?]
+    }
+}
+
 extension Scheme.Test.TestTarget: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
         name = try jsonDictionary.json(atKeyPath: "name")
-        randomExecutionOrder = jsonDictionary.json(atKeyPath: "randomExecutionOrder") ?? false
-        parallelizable = jsonDictionary.json(atKeyPath: "parallelizable") ?? false
+        randomExecutionOrder = jsonDictionary.json(atKeyPath: "randomExecutionOrder") ?? Scheme.Test.TestTarget.randomExecutionOrderDefault
+        parallelizable = jsonDictionary.json(atKeyPath: "parallelizable") ?? Scheme.Test.TestTarget.parallelizableDefault
+        skippedTests = jsonDictionary.json(atKeyPath: "skippedTests") ?? []
+    }
+}
+
+extension Scheme.Test.TestTarget: JSONEncodable {
+    public func toJSONValue() -> Any {
+        if !randomExecutionOrder && !parallelizable {
+            return name
+        }
+
+        var dict: JSONDictionary = [
+            "name": name
+        ]
+
+        if randomExecutionOrder != Scheme.Test.TestTarget.randomExecutionOrderDefault {
+            dict["randomExecutionOrder"] = randomExecutionOrder
+        }
+        if parallelizable != Scheme.Test.TestTarget.parallelizableDefault {
+            dict["parallelizable"] = parallelizable
+        }
+
+        return dict
     }
 }
 
@@ -274,10 +346,30 @@ extension Scheme.Profile: JSONObjectConvertible {
     }
 }
 
+extension Scheme.Profile: JSONEncodable {
+    public func toJSONValue() -> Any {
+        return [
+            "commandLineArguments": commandLineArguments,
+            "preActions": preActions.map { $0.toJSONValue() },
+            "postActions": postActions.map { $0.toJSONValue() },
+            "environmentVariables": environmentVariables.map { $0.toJSONValue() },
+            "config": config
+        ] as [String: Any?]
+    }
+}
+
 extension Scheme.Analyze: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
         config = jsonDictionary.json(atKeyPath: "config")
+    }
+}
+
+extension Scheme.Analyze: JSONEncodable {
+    public func toJSONValue() -> Any {
+        return [
+            "config": config
+        ]
     }
 }
 
@@ -286,9 +378,26 @@ extension Scheme.Archive: JSONObjectConvertible {
     public init(jsonDictionary: JSONDictionary) throws {
         config = jsonDictionary.json(atKeyPath: "config")
         customArchiveName = jsonDictionary.json(atKeyPath: "customArchiveName")
-        revealArchiveInOrganizer = jsonDictionary.json(atKeyPath: "revealArchiveInOrganizer") ?? true
+        revealArchiveInOrganizer = jsonDictionary.json(atKeyPath: "revealArchiveInOrganizer") ?? Scheme.Archive.revealArchiveInOrganizerDefault
         preActions = jsonDictionary.json(atKeyPath: "preActions") ?? []
         postActions = jsonDictionary.json(atKeyPath: "postActions") ?? []
+    }
+}
+
+extension Scheme.Archive: JSONEncodable {
+    public func toJSONValue() -> Any {
+        var dict: [String: Any?] = [
+            "preActions": preActions.map { $0.toJSONValue() },
+            "postActions": postActions.map { $0.toJSONValue() },
+            "config": config,
+            "customArchiveName": customArchiveName,
+        ]
+
+        if revealArchiveInOrganizer != Scheme.Archive.revealArchiveInOrganizerDefault {
+            dict["revealArchiveInOrganizer"] = revealArchiveInOrganizer
+        }
+
+        return dict
     }
 }
 
@@ -302,6 +411,19 @@ extension Scheme: NamedJSONDictionaryConvertible {
         analyze = jsonDictionary.json(atKeyPath: "analyze")
         profile = jsonDictionary.json(atKeyPath: "profile")
         archive = jsonDictionary.json(atKeyPath: "archive")
+    }
+}
+
+extension Scheme: JSONEncodable {
+    public func toJSONValue() -> Any {
+        return [
+            "build": build.toJSONValue(),
+            "run": run?.toJSONValue(),
+            "test": test?.toJSONValue(),
+            "analyze": analyze?.toJSONValue(),
+            "profile": profile?.toJSONValue(),
+            "archive": archive?.toJSONValue(),
+        ] as [String: Any?]
     }
 }
 
@@ -332,8 +454,29 @@ extension Scheme.Build: JSONObjectConvertible {
         self.targets = targets.sorted { $0.target < $1.target }
         preActions = try jsonDictionary.json(atKeyPath: "preActions")?.map(Scheme.ExecutionAction.init) ?? []
         postActions = try jsonDictionary.json(atKeyPath: "postActions")?.map(Scheme.ExecutionAction.init) ?? []
-        parallelizeBuild = jsonDictionary.json(atKeyPath: "parallelizeBuild") ?? true
-        buildImplicitDependencies = jsonDictionary.json(atKeyPath: "buildImplicitDependencies") ?? true
+        parallelizeBuild = jsonDictionary.json(atKeyPath: "parallelizeBuild") ?? Scheme.Build.parallelizeBuildDefault
+        buildImplicitDependencies = jsonDictionary.json(atKeyPath: "buildImplicitDependencies") ?? Scheme.Build.buildImplicitDependenciesDefault
+    }
+}
+
+extension Scheme.Build: JSONEncodable {
+    public func toJSONValue() -> Any {
+        let targetPairs = targets.map { ($0.target, $0.buildTypes.map { $0.toJSONValue() }) }
+
+        var dict: JSONDictionary = [
+            "targets": Dictionary(uniqueKeysWithValues: targetPairs),
+            "preActions": preActions.map { $0.toJSONValue() },
+            "postActions": postActions.map { $0.toJSONValue() },
+        ]
+
+        if parallelizeBuild != Scheme.Build.parallelizeBuildDefault {
+            dict["parallelizeBuild"] = parallelizeBuild
+        }
+        if buildImplicitDependencies != Scheme.Build.buildImplicitDependenciesDefault {
+            dict["buildImplicitDependencies"] = buildImplicitDependencies
+        }
+
+        return dict
     }
 }
 
@@ -357,7 +500,20 @@ extension BuildType: JSONPrimitiveConvertible {
     }
 }
 
+extension BuildType: JSONEncodable {
+    public func toJSONValue() -> Any {
+        switch self {
+        case .testing: return "testing"
+        case .profiling: return "profiling"
+        case .running: return "running"
+        case .archiving: return "archiving"
+        case .analyzing: return "analyzing"
+        }
+    }
+}
+
 extension XCScheme.EnvironmentVariable: JSONObjectConvertible {
+    public static let enabledDefault = true
 
     private static func parseValue(_ value: Any) -> String {
         if let bool = value as? Bool {
@@ -377,7 +533,7 @@ extension XCScheme.EnvironmentVariable: JSONObjectConvertible {
             value = try jsonDictionary.json(atKeyPath: "value")
         }
         let variable: String = try jsonDictionary.json(atKeyPath: "variable")
-        let enabled: Bool = jsonDictionary.json(atKeyPath: "isEnabled") ?? true
+        let enabled: Bool = jsonDictionary.json(atKeyPath: "isEnabled") ?? XCScheme.EnvironmentVariable.enabledDefault
         self.init(variable: variable, value: value, enabled: enabled)
     }
 
@@ -391,5 +547,20 @@ extension XCScheme.EnvironmentVariable: JSONObjectConvertible {
         } else {
             return []
         }
+    }
+}
+
+extension XCScheme.EnvironmentVariable: JSONEncodable {
+    public func toJSONValue() -> Any {
+        var dict: [String: Any] = [
+            "variable": variable,
+            "value": value
+        ]
+
+        if enabled != XCScheme.EnvironmentVariable.enabledDefault {
+            dict["isEnabled"] = enabled
+        }
+
+        return dict
     }
 }

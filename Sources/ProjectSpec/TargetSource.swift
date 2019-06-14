@@ -4,6 +4,7 @@ import PathKit
 import xcodeproj
 
 public struct TargetSource: Equatable {
+    public static let optionalDefault = false
 
     public var path: String
     public var name: String?
@@ -124,7 +125,7 @@ public struct TargetSource: Equatable {
         compilerFlags: [String] = [],
         excludes: [String] = [],
         type: SourceType? = nil,
-        optional: Bool = false,
+        optional: Bool = optionalDefault,
         buildPhase: BuildPhase? = nil,
         headerVisibility: HeaderVisibility? = nil,
         createIntermediateGroups: Bool? = nil,
@@ -172,7 +173,7 @@ extension TargetSource: JSONObjectConvertible {
         headerVisibility = jsonDictionary.json(atKeyPath: "headerVisibility")
         excludes = jsonDictionary.json(atKeyPath: "excludes") ?? []
         type = jsonDictionary.json(atKeyPath: "type")
-        optional = jsonDictionary.json(atKeyPath: "optional") ?? false
+        optional = jsonDictionary.json(atKeyPath: "optional") ?? TargetSource.optionalDefault
 
         if let string: String = jsonDictionary.json(atKeyPath: "buildPhase") {
             buildPhase = try BuildPhase(string: string)
@@ -182,6 +183,32 @@ extension TargetSource: JSONObjectConvertible {
 
         createIntermediateGroups = jsonDictionary.json(atKeyPath: "createIntermediateGroups")
         attributes = jsonDictionary.json(atKeyPath: "attributes") ?? []
+    }
+}
+
+extension TargetSource: JSONEncodable {
+    public func toJSONValue() -> Any {
+        var dict: [String: Any?] = [
+            "compilerFlags": compilerFlags,
+            "excludes": excludes,
+            "name": name,
+            "headerVisibility": headerVisibility?.rawValue,
+            "type": type?.rawValue,
+            "buildPhase": buildPhase?.toJSONValue(),
+            "createIntermediateGroups": createIntermediateGroups,
+        ]
+
+        if optional != TargetSource.optionalDefault {
+            dict["optional"] = optional
+        }
+
+        if dict.count == 0 {
+            return path
+        }
+
+        dict["path"] = path
+
+        return dict
     }
 }
 
@@ -208,12 +235,36 @@ extension TargetSource.BuildPhase: JSONObjectConvertible {
     }
 }
 
+extension TargetSource.BuildPhase: JSONEncodable {
+    public func toJSONValue() -> Any {
+        switch self {
+        case .sources: return "sources"
+        case .headers: return "headers"
+        case .resources: return "resources"
+        case .copyFiles(let files): return ["copyFiles": files.toJSONValue()]
+        case .none: return "none"
+        case .frameworks: fatalError("invalid build phase")
+        case .runScript: fatalError("invalid build phase")
+        case .carbonResources: fatalError("invalid build phase")
+        }
+    }
+}
+
 extension TargetSource.BuildPhase.CopyFilesSettings: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
         destination = try jsonDictionary.json(atKeyPath: "destination")
         subpath = jsonDictionary.json(atKeyPath: "subpath") ?? ""
         phaseOrder = .postCompile
+    }
+}
+
+extension TargetSource.BuildPhase.CopyFilesSettings: JSONEncodable {
+    public func toJSONValue() -> Any {
+        return [
+            "destination": destination.rawValue,
+            "subpath": subpath
+        ]
     }
 }
 

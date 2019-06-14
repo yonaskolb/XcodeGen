@@ -230,3 +230,31 @@ extension BuildSettingsContainer {
         return configFiles.values.map { Path($0) }
     }
 }
+
+extension Project: JSONEncodable {
+    public func toJSONValue() -> Any {
+        return toJSONDictionary()
+    }
+
+    public func toJSONDictionary() -> JSONDictionary {
+        let targetPairs = targets.map { ($0.name, $0.toJSONValue()) }
+        let configsPairs = configs.map { ($0.name, $0.type?.rawValue) }
+        let aggregateTargetsPairs = aggregateTargets.map { ($0.name, $0.toJSONValue()) }
+        let schemesPairs = schemes.map { ($0.name, $0.toJSONValue()) }
+
+        return [
+            "name": name,
+            "options": options.toJSONValue(),
+            "settings": settings.toJSONValue(),
+            "fileGroups": fileGroups,
+            "configFiles": configFiles,
+            "include": include,
+            "attributes": attributes,
+            "targets": Dictionary(uniqueKeysWithValues: targetPairs),
+            "configs": Dictionary(uniqueKeysWithValues: configsPairs),
+            "aggregateTargets": Dictionary(uniqueKeysWithValues: aggregateTargetsPairs),
+            "schemes": Dictionary(uniqueKeysWithValues: schemesPairs),
+            "settingGroups": settingGroups.mapValues { $0.toJSONValue() }
+        ]
+    }
+}

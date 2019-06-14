@@ -24,7 +24,7 @@ XcodeGen is a command line tool written in Swift that generates your Xcode proje
 
 The project spec is a YAML or JSON file that defines your targets, configurations, schemes, custom build settings and many other options. All your source directories are automatically parsed and referenced appropriately while preserving your folder structure. Sensible defaults are used in many places, so you only need to customize what is needed. Very complex projects can also be defined using more advanced features.
 
-- ✅ Generate projects on demand and remove your `.xcodeproj` file from git, which means **no more merge conflicts**!
+- ✅ Generate projects on demand and remove your `.xcodeproj` from git, which means **no more merge conflicts**!
 - ✅ Groups and files in Xcode are always **synced** to your directories on disk
 - ✅ Easy **configuration** of projects which is human readable and git friendly
 - ✅ Easily copy and paste **files and directories** without having to edit anything in Xcode

@@ -62,6 +62,19 @@ extension AggregateTarget: NamedJSONDictionaryConvertible {
     }
 }
 
+extension AggregateTarget: JSONEncodable {
+    public func toJSONValue() -> Any {
+        return [
+            "settings": settings.toJSONValue(),
+            "targets": targets,
+            "configFiles": configFiles,
+            "attributes": attributes,
+            "buildScripts": buildScripts.map { $0.toJSONValue() },
+            "scheme": scheme?.toJSONValue()
+        ] as [String: Any?]
+    }
+}
+
 extension AggregateTarget: PathContainer {
 
     static var pathProperties: [PathProperty] {

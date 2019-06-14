@@ -692,6 +692,7 @@ A multiline script can be written using the various YAML multiline methods, for 
 - [x] **name**: **String** - The name of the target
 - [ ] **parallelizable**: **Bool** - Whether to run tests in parallel. Defaults to false
 - [ ] **randomExecutionOrder**: **Bool** - Whether to run tests in a random order. Defaults to false
+- [ ] **skippedTests**: **[String]** - List of tests in the test target to skip. Defaults to empty.
 
 ### Archive Action
 
@@ -720,7 +721,12 @@ schemes:
       config: prod-debug
       commandLineArguments: "--option testValue"
       gatherCoverageData: true
-      targets: [Tester1, Tester2]
+      targets: 
+        - Tester1 
+        - name: Tester2
+          parallelizable: true
+          randomExecutionOrder: true
+          skippedTests: [Test/testExample()]
       environmentVariables:
         - variable: TEST_ENV_VAR
           value: VALUE

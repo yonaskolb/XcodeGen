@@ -87,7 +87,7 @@ public class PBXProjGenerator {
             PBXProject(
                 name: project.name,
                 buildConfigurationList: buildConfigList,
-                compatibilityVersion: project.compatabilityVersion,
+                compatibilityVersion: project.compatibilityVersion,
                 mainGroup: mainGroup,
                 developmentRegion: project.options.developmentLanguage ?? "en"
             )

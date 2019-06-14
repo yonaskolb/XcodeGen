@@ -133,7 +133,8 @@ public class SchemeGenerator {
                 skipped: false,
                 parallelizable: testTarget.parallelizable,
                 randomExecutionOrdering: testTarget.randomExecutionOrder,
-                buildableReference: testBuilEntries.buildableReference
+                buildableReference: testBuilEntries.buildableReference,
+                skippedTests: testTarget.skippedTests.map(XCScheme.SkippedTest.init)
             )
         }
 

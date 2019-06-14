@@ -2,15 +2,18 @@ import Foundation
 import JSONUtilities
 
 public struct Dependency: Equatable {
+    public static let removeHeadersDefault = true
+    public static let implicitDefault = false
+    public static let weakLinkDefault = false
 
     public var type: DependencyType
     public var reference: String
     public var embed: Bool?
     public var codeSign: Bool?
-    public var removeHeaders: Bool = true
+    public var removeHeaders: Bool = removeHeadersDefault
     public var link: Bool?
-    public var implicit: Bool = false
-    public var weakLink: Bool = false
+    public var implicit: Bool = implicitDefault
+    public var weakLink: Bool = weakLinkDefault
 
     public init(
         type: DependencyType,
@@ -18,8 +21,8 @@ public struct Dependency: Equatable {
         embed: Bool? = nil,
         codeSign: Bool? = nil,
         link: Bool? = nil,
-        implicit: Bool = false,
-        weakLink: Bool = false
+        implicit: Bool = implicitDefault,
+        weakLink: Bool = weakLinkDefault
     ) {
         self.type = type
         self.reference = reference
@@ -78,6 +81,42 @@ extension Dependency: JSONObjectConvertible {
         if let bool: Bool = jsonDictionary.json(atKeyPath: "weak") {
             weakLink = bool
         }
+    }
+}
+
+extension Dependency: JSONEncodable {
+    public func toJSONValue() -> Any {
+        var dict: [String: Any?] = [
+            "embed": embed,
+            "codeSign": codeSign,
+            "link": link
+        ]
+
+        if removeHeaders != Dependency.removeHeadersDefault {
+            dict["removeHeaders"] = removeHeaders
+        }
+        if implicit != Dependency.implicitDefault {
+            dict["implicit"] = implicit
+        }
+        if weakLink != Dependency.weakLinkDefault {
+            dict["weak"] = weakLink
+        }
+
+        switch type {
+        case .target:
+            dict["target"] = reference
+        case .framework:
+            dict["framework"] = reference
+        case .carthage(let findFrameworks):
+            dict["carthage"] = reference
+            if let findFrameworks = findFrameworks {
+                dict["findFrameworks"] = findFrameworks
+            }
+        case .sdk:
+            dict["sdk"] = reference
+        }
+
+        return dict
     }
 }
 

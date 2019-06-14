@@ -11,8 +11,8 @@ extension Project {
         return "1.3"
     }
 
-    var compatabilityVersion: String {
-        return "Xcode 9.3"
+    var compatibilityVersion: String {
+        return "Xcode 10.0"
     }
 
     var objectVersion: UInt {
