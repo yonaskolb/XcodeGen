@@ -326,7 +326,7 @@ A source can be provided via a string (the path) or an object of the form:
 	- `public`
 	- `private`
 	- `project`
-- [ ] **attributes**: **[String]** - Additional settings attributes for the file reference.
+- [ ] **attributes**: **[String]** - Additional settings attributes that will be applied to any build files.
 
 ```yaml
 targets:
