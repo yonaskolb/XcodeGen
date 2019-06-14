@@ -15,6 +15,7 @@ public struct TargetSource: Equatable {
     public var buildPhase: BuildPhase?
     public var headerVisibility: HeaderVisibility?
     public var createIntermediateGroups: Bool?
+    public var attributes: [String]
 
     public enum HeaderVisibility: String {
         case `public`
@@ -127,7 +128,8 @@ public struct TargetSource: Equatable {
         optional: Bool = optionalDefault,
         buildPhase: BuildPhase? = nil,
         headerVisibility: HeaderVisibility? = nil,
-        createIntermediateGroups: Bool? = nil
+        createIntermediateGroups: Bool? = nil,
+        attributes: [String] = []
     ) {
         self.path = path
         self.name = name
@@ -138,6 +140,7 @@ public struct TargetSource: Equatable {
         self.buildPhase = buildPhase
         self.headerVisibility = headerVisibility
         self.createIntermediateGroups = createIntermediateGroups
+        self.attributes = attributes
     }
 }
 
@@ -179,6 +182,7 @@ extension TargetSource: JSONObjectConvertible {
         }
 
         createIntermediateGroups = jsonDictionary.json(atKeyPath: "createIntermediateGroups")
+        attributes = jsonDictionary.json(atKeyPath: "attributes") ?? []
     }
 }
 
