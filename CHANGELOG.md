@@ -2,6 +2,11 @@
 
 ## Next Version
 
+## 2.6.0
+
+#### Added
+- Added ability to set `attributes` on build files [#583](https://github.com/yonaskolb/XcodeGen/pull/583) @min
+
 ## 2.5.0
 
 #### Added
