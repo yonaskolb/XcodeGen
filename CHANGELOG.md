@@ -14,6 +14,9 @@
 #### Changed
 - Follow up on the Xcode 10.2 updates done in [#555](https://github.com/yonaskolb/XcodeGen/pull/555): updated the `compatibilityVersion` project setting to `Xcode 10.0`. With the `compatibilityVersion` set to `Xcode 9.3`, Xcode automatically sets the `ObjectVersion` from `51` to `50` [#581](https://github.com/yonaskolb/XcodeGen/pull/581) @acecilia
 
+#### Fixed
+- Fixed an issue that prevents watchOS Intents Extension from running correctly. [#571](https://github.com/yonaskolb/XcodeGen/pull/571) @KhaosT
+
 ## 2.5.0
 
 #### Added
