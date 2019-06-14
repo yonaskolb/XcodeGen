@@ -94,6 +94,18 @@ public struct SpecFile {
                 .reduce([:]) { $1.merged(onto: $0) })
     }
 
+    private func setTargetsRelativePath(projectJSON: JSONDictionary, relativePath: Path) -> JSONDictionary {
+        guard var targets = projectJSON["targets"] as? [String: JSONDictionary] else {
+            return projectJSON
+        }
+
+        var result = projectJSON
+        targets.keys.forEach { targets[$0]?.updateValue(relativePath.string, forKey: "relative_path") }
+        result["targets"] = targets
+        
+        return result
+    }
+    
     func resolvingPaths(relativeTo basePath: Path = Path()) -> SpecFile {
         let relativePath = (basePath + self.relativePath).normalize()
         guard relativePath != Path() else {
@@ -101,8 +113,9 @@ public struct SpecFile {
         }
 
         let jsonDictionary = Project.pathProperties.resolvingPaths(in: self.jsonDictionary, relativeTo: relativePath)
+        
         return SpecFile(
-            jsonDictionary: jsonDictionary,
+            jsonDictionary: setTargetsRelativePath(projectJSON: jsonDictionary, relativePath: relativePath),
             relativePath: self.relativePath,
             subSpecs: subSpecs.map { $0.resolvingPaths(relativeTo: relativePath) }
         )
