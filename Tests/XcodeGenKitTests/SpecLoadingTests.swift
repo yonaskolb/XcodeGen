@@ -9,6 +9,21 @@ import Yams
 
 class SpecLoadingTests: XCTestCase {
 
+    func testSpecLoaderDuplicateImports() {
+        describe {
+            $0.it("merges each file only once") {
+                let path = fixturePath + "duplicated_include/duplicated_import_sut.yml"
+                let project = try loadSpec(path: path)
+                
+                try expect(project.fileGroups) == ["First", "Second"]
+                
+                let sutTarget = project.targets.first
+                try expect(sutTarget?.sources) == [TargetSource(path: "template")]
+                try expect(sutTarget?.preBuildScripts) == [BuildScript(script: .script("swiftlint"), name: "Swiftlint")]
+            }
+        }
+    }
+    
     func testSpecLoader() {
         describe {
             $0.it("merges includes") {
