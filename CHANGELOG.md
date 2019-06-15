@@ -2,6 +2,9 @@
 
 ## Next Version
 
+#### Fixed
+- Fixed spec array properties (scripts, sources, dependencies, test suites, etc.) duplication [#599](https://github.com/yonaskolb/XcodeGen/pull/599) @haritowa
+
 ## 2.6.0
 
 #### Added

@@ -8,6 +8,8 @@ public struct SpecFile {
     public let jsonDictionary: JSONDictionary
     public let subSpecs: [SpecFile]
 
+    private let filename: String
+    
     fileprivate struct Include {
         let path: Path
         let relativePaths: Bool
@@ -42,11 +44,12 @@ public struct SpecFile {
         try self.init(filename: path.lastComponent, basePath: path.parent())
     }
 
-    public init(jsonDictionary: JSONDictionary, basePath: Path = "", relativePath: Path = "", subSpecs: [SpecFile] = []) {
+    public init(filename: String, jsonDictionary: JSONDictionary, basePath: Path = "", relativePath: Path = "", subSpecs: [SpecFile] = []) {
         self.basePath = basePath
         self.relativePath = relativePath
         self.jsonDictionary = jsonDictionary
         self.subSpecs = subSpecs
+        self.filename = filename
     }
 
     fileprivate init(include: Include, basePath: Path, relativePath: Path) throws {
@@ -65,7 +68,7 @@ public struct SpecFile {
             try SpecFile(include: include, basePath: basePath, relativePath: relativePath)
         }
 
-        self.init(jsonDictionary: jsonDictionary, basePath: basePath, relativePath: relativePath, subSpecs: subSpecs)
+        self.init(filename: filename, jsonDictionary: jsonDictionary, basePath: basePath, relativePath: relativePath, subSpecs: subSpecs)
     }
 
     static func loadDictionary(path: Path) throws -> JSONDictionary {
@@ -83,17 +86,36 @@ public struct SpecFile {
     }
 
     public func resolvedDictionary(variables: [String: String] = [:]) -> JSONDictionary {
-        var resolvedSpec = resolvingPaths().mergedDictionary()
+        let resolvedDictionary = resolvedDictionaryWithUniqueTargets()
+        return substitute(variables: variables, in: resolvedDictionary)
+    }
+
+    private func resolvedDictionaryWithUniqueTargets() -> JSONDictionary {
+        let resolvedSpec = resolvingPaths()
+        
+        var value = Set<String>()
+        return resolvedSpec.mergedDictionary(set: &value)
+    }
+    
+    private func substitute(variables: [String: String], in mergedDictionary: JSONDictionary) -> JSONDictionary {
+        var resolvedSpec = mergedDictionary
+        
         for (key, value) in variables {
             resolvedSpec = resolvedSpec.replaceString("${\(key)}", with: value)
         }
+        
         return resolvedSpec
     }
-
-    func mergedDictionary() -> JSONDictionary {
+    
+    func mergedDictionary(set mergedTargets: inout Set<String>) -> JSONDictionary {
+        let name = (basePath + relativePath + Path(filename)).description
+        
+        guard !mergedTargets.contains(name) else { return [:] }
+        mergedTargets.insert(name)
+        
         return jsonDictionary.merged(onto:
             subSpecs
-                .map { $0.mergedDictionary() }
+                .map { $0.mergedDictionary(set: &mergedTargets) }
                 .reduce([:]) { $1.merged(onto: $0) })
     }
 
@@ -105,6 +127,7 @@ public struct SpecFile {
 
         let jsonDictionary = Project.pathProperties.resolvingPaths(in: self.jsonDictionary, relativeTo: relativePath)
         return SpecFile(
+            filename: filename,
             jsonDictionary: jsonDictionary,
             relativePath: self.relativePath,
             subSpecs: subSpecs.map { $0.resolvingPaths(relativeTo: relativePath) }
