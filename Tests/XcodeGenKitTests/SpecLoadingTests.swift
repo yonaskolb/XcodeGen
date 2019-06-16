@@ -189,7 +189,7 @@ class SpecLoadingTests: XCTestCase {
 
             $0.it("expands environment variables") {
                 let path = fixturePath + "env_test.yml"
-                let project = try loadSpec(path: path, environmentVariables: ["SETTING1": "ENV VALUE1", "SETTING4": "ENV VALUE4"])
+                let project = try loadSpec(path: path, variables: ["SETTING1": "ENV VALUE1", "SETTING4": "ENV VALUE4"])
 
                 try expect(project.name) == "NewName"
                 try expect(project.settingGroups) == [
@@ -250,7 +250,7 @@ class SpecLoadingTests: XCTestCase {
                 try? Yams.dump(object: dictionary).write(toFile: path.string, atomically: true, encoding: .utf8)
                 let specLoader = SpecLoader(version: "1.1.0")
                 do {
-                    _ = try specLoader.loadProject(path: path, environmentVariables: [:])
+                    _ = try specLoader.loadProject(path: path)
                 } catch {
                     throw failure("\(error)")
                 }
@@ -280,7 +280,7 @@ class SpecLoadingTests: XCTestCase {
                 try? Yams.dump(object: dictionary).write(toFile: path.string, atomically: true, encoding: .utf8)
                 let specLoader = SpecLoader(version: "1.1.0")
                 do {
-                    _ = try specLoader.loadProject(path: path, environmentVariables: [:])
+                    _ = try specLoader.loadProject(path: path)
                 } catch {
                     throw failure("\(error)")
                 }
@@ -965,10 +965,10 @@ fileprivate func getProjectSpec(_ project: [String: Any], file: String = #file, 
     }
 }
 
-fileprivate func loadSpec(path: Path, environmentVariables: [String: String] = [:], file: String = #file, line: Int = #line) throws -> Project {
+fileprivate func loadSpec(path: Path, variables: [String: String] = [:], file: String = #file, line: Int = #line) throws -> Project {
     do {
         let specLoader = SpecLoader(version: "1.1.0")
-        return try specLoader.loadProject(path: path, environmentVariables: environmentVariables)
+        return try specLoader.loadProject(path: path, variables: variables)
     } catch {
         throw failure("\(error)", file: file, line: line)
     }

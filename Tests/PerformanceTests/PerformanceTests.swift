@@ -42,7 +42,7 @@ class FixturePerformanceTests: XCTestCase {
 
     func testCacheFileGeneration() throws {
         let specLoader = SpecLoader(version: "1.2")
-        _ = try specLoader.loadProject(path: specPath, environmentVariables: [:])
+        _ = try specLoader.loadProject(path: specPath)
 
         measure {
             _ = try! specLoader.generateCacheFile()
