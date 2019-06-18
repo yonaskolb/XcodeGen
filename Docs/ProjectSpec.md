@@ -302,7 +302,8 @@ A source can be provided via a string (the path) or an object of the form:
 #### Target Source
 
 - [x] **path**: **String** - The path to the source file or directory.
-- [ ] **name**: **String** - Can be used to override the name of the source file or directory. By default the last component of the path is used for the name
+- [ ] **name**: **String** - Can be used to override the name of the source file or directory. By default the last component of the path is used for the name.
+- [ ] **group**: **String** - A path-like string representing the project group hierarchy in which the source file or directory should appear.
 - [ ] **compilerFlags**: **[String]** or **String** - A list of compilerFlags to add to files under this specific path provided as a list or a space delimitted string. Defaults to empty.
 - [ ] **excludes**: **[String]** - A list of [global patterns](https://en.wikipedia.org/wiki/Glob_(programming)) representing the files to exclude. These rules are relative to `path` and _not the directory where `project.yml` resides_.
 - [ ] **createIntermediateGroups**: **Bool** - This overrides the value in [Options](#options)
@@ -618,7 +619,7 @@ Any attributes defined within a targets `templateAttributes` will be used to rep
 ```yaml
 targets:
   MyFramework:
-    templates: 
+    templates:
       - Framework
     templateAttributes:
       frameworkName: AwesomeFramework
@@ -728,8 +729,8 @@ schemes:
       config: prod-debug
       commandLineArguments: "--option testValue"
       gatherCoverageData: true
-      targets: 
-        - Tester1 
+      targets:
+        - Tester1
         - name: Tester2
           parallelizable: true
           randomExecutionOrder: true
