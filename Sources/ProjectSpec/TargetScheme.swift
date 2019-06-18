@@ -4,10 +4,12 @@ import XcodeProj
 
 public struct TargetScheme: Equatable {
     public static let gatherCoverageDataDefault = false
+    public static let disableMainThreadCheckerDefault = false
 
     public var testTargets: [Scheme.Test.TestTarget]
     public var configVariants: [String]
     public var gatherCoverageData: Bool
+    public var disableMainThreadChecker: Bool
     public var commandLineArguments: [String: Bool]
     public var environmentVariables: [XCScheme.EnvironmentVariable]
     public var preActions: [Scheme.ExecutionAction]
@@ -17,6 +19,7 @@ public struct TargetScheme: Equatable {
         testTargets: [Scheme.Test.TestTarget] = [],
         configVariants: [String] = [],
         gatherCoverageData: Bool = gatherCoverageDataDefault,
+        disableMainThreadChecker: Bool = disableMainThreadCheckerDefault,
         commandLineArguments: [String: Bool] = [:],
         environmentVariables: [XCScheme.EnvironmentVariable] = [],
         preActions: [Scheme.ExecutionAction] = [],
@@ -25,6 +28,7 @@ public struct TargetScheme: Equatable {
         self.testTargets = testTargets
         self.configVariants = configVariants
         self.gatherCoverageData = gatherCoverageData
+        self.disableMainThreadChecker = disableMainThreadChecker
         self.commandLineArguments = commandLineArguments
         self.environmentVariables = environmentVariables
         self.preActions = preActions
@@ -50,6 +54,7 @@ extension TargetScheme: JSONObjectConvertible {
         }
         configVariants = jsonDictionary.json(atKeyPath: "configVariants") ?? []
         gatherCoverageData = jsonDictionary.json(atKeyPath: "gatherCoverageData") ?? TargetScheme.gatherCoverageDataDefault
+        disableMainThreadChecker = jsonDictionary.json(atKeyPath: "disableMainThreadChecker") ?? TargetScheme.disableMainThreadCheckerDefault
         commandLineArguments = jsonDictionary.json(atKeyPath: "commandLineArguments") ?? [:]
         environmentVariables = try XCScheme.EnvironmentVariable.parseAll(jsonDictionary: jsonDictionary)
         preActions = jsonDictionary.json(atKeyPath: "preActions") ?? []
@@ -70,6 +75,10 @@ extension TargetScheme: JSONEncodable {
         
         if gatherCoverageData != TargetScheme.gatherCoverageDataDefault {
             dict["gatherCoverageData"] = gatherCoverageData
+        }
+
+        if disableMainThreadChecker != TargetScheme.disableMainThreadCheckerDefault {
+            dict["disableMainThreadChecker"] = disableMainThreadChecker
         }
 
         return dict
