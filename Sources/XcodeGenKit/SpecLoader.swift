@@ -15,9 +15,9 @@ public class SpecLoader {
         self.version = version
     }
 
-    public func loadProject(path: Path) throws -> Project {
+    public func loadProject(path: Path, variables: [String: String] = [:]) throws -> Project {
         let spec = try SpecFile(path: path)
-        let resolvedDictionary = spec.resolvedDictionary()
+        let resolvedDictionary = spec.resolvedDictionary(variables: variables)
         let project = try Project(basePath: spec.basePath, jsonDictionary: resolvedDictionary)
 
         self.project = project

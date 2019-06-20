@@ -3,6 +3,7 @@ settingGroups:
   test:
     MY_SETTING1: VALUE1
     MY_SETTING2: VALUE2
+    MY_SETTING4: ${SETTING4}
   toReplace:
     MY_SETTING1: VALUE1
 targets:

@@ -82,9 +82,12 @@ public struct SpecFile {
         }
     }
 
-    public func resolvedDictionary() -> JSONDictionary {
-        let resolvedSpec = resolvingPaths()
-        return resolvedSpec.mergedDictionary()
+    public func resolvedDictionary(variables: [String: String] = [:]) -> JSONDictionary {
+        var resolvedSpec = resolvingPaths().mergedDictionary()
+        for (key, value) in variables {
+            resolvedSpec = resolvedSpec.replaceString("${\(key)}", with: value)
+        }
+        return resolvedSpec
     }
 
     func mergedDictionary() -> JSONDictionary {
