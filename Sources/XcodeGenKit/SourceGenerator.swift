@@ -236,7 +236,13 @@ class SourceGenerator {
 
     /// Create a group or return an existing one at the path.
     /// Any merged children are added to a new group or merged into an existing one.
-    private func getGroup(path: Path, name: String? = nil, mergingChildren children: [PBXFileElement], createIntermediateGroups: Bool, isBaseGroup: Bool) -> PBXGroup {
+    private func getGroup(
+        path: Path,
+        name: String? = nil,
+        mergingChildren children: [PBXFileElement],
+        createIntermediateGroups: Bool,
+        isBaseGroup: Bool,
+        isCustomGroup: Bool = false) -> PBXGroup {
         let groupReference: PBXGroup
 
         if let cachedGroup = groupsByPath[path] {
@@ -249,19 +255,28 @@ class SourceGenerator {
             groupReference = cachedGroup
         } else {
 
+            let isSubGroup = path.lastComponent != path.string
+
             // lives outside the project base path
-            let isOutOfBasePath = !path.absolute().string.contains(project.basePath.absolute().string)
+            let isOutOfBasePath = !isCustomGroup && !path.absolute().string.contains(project.basePath.absolute().string)
 
             // has no valid parent paths
-            let isRootPath = (isBaseGroup && isOutOfBasePath) || path.parent() == project.basePath
+            let isRootPath = (isCustomGroup && !isSubGroup) || (isBaseGroup && isOutOfBasePath) || path.parent() == project.basePath
 
             // is a top level group in the project
             let isTopLevelGroup = (isBaseGroup && !createIntermediateGroups) || isRootPath
 
             let groupName = name ?? path.lastComponent
-            let groupPath = isTopLevelGroup ?
-                ((try? path.relativePath(from: project.basePath)) ?? path).string :
-                path.lastComponent
+            let groupPath: String?
+
+            if isCustomGroup {
+                groupPath = nil
+            } else if isTopLevelGroup {
+                groupPath = ((try? path.relativePath(from: project.basePath)) ?? path).string
+            } else {
+                groupPath = path.lastComponent
+            }
+
             let group = PBXGroup(
                 children: children,
                 sourceTree: .group,
@@ -344,6 +359,8 @@ class SourceGenerator {
     private func getGroupSources(targetType: PBXProductType, targetSource: TargetSource, path: Path, isBaseGroup: Bool)
         throws -> (sourceFiles: [SourceFile], groups: [PBXGroup]) {
 
+        let hasCustomGroup = targetSource.group != nil
+
         let children = try getSourceChildren(targetSource: targetSource, dirPath: path)
 
         let directories = children
@@ -355,7 +372,8 @@ class SourceGenerator {
         let localisedDirectories = children
             .filter { $0.extension == "lproj" }
 
-        var groupChildren: [PBXFileElement] = filePaths.map { getFileReference(path: $0, inPath: path) }
+        var rootPath = hasCustomGroup ? project.basePath : path
+        var groupChildren: [PBXFileElement] = filePaths.map { getFileReference(path: $0, inPath: rootPath) }
         var allSourceFiles: [SourceFile] = filePaths.map {
             generateSourceFile(targetType: targetType, targetSource: targetSource, path: $0)
         }
@@ -452,6 +470,12 @@ class SourceGenerator {
 
         let createIntermediateGroups = targetSource.createIntermediateGroups ?? project.options.createIntermediateGroups
 
+        let customGroups = parseCustomGroup(group: targetSource.group, mergingChildren: groupChildren)
+
+        if !customGroups.isEmpty {
+            return (allSourceFiles, customGroups)
+        }
+
         let group = getGroup(
             path: path,
             mergingChildren: groupChildren,
@@ -463,6 +487,7 @@ class SourceGenerator {
         }
 
         groups.insert(group, at: 0)
+
         return (allSourceFiles, groups)
     }
 
@@ -504,13 +529,19 @@ class SourceGenerator {
 
             sourceFiles.append(sourceFile)
             sourceReference = fileReference
+
         case .file:
-            let parentPath = path.parent()
+            let hasCustomGroup = !((targetSource.group?.isEmpty) ?? true)
+            let parentPath = hasCustomGroup ? project.basePath : path.parent()
             let fileReference = getFileReference(path: path, inPath: parentPath, name: targetSource.name)
 
             let sourceFile = generateSourceFile(targetType: targetType, targetSource: targetSource, path: path)
 
-            if parentPath == project.basePath {
+            if hasCustomGroup {
+                let parentGroup = parseCustomGroup(group: targetSource.group, mergingChildren: [fileReference])
+                sourcePath = parentPath
+                sourceReference = parentGroup.first!
+            } else if parentPath == project.basePath {
                 sourcePath = path
                 sourceReference = fileReference
                 rootGroups.insert(fileReference)
@@ -570,5 +601,51 @@ class SourceGenerator {
             return nil
         }
         return versionedModels.first(where: { $0.lastComponent == versionString })
+    }
+
+    private func parseCustomGroup(group: String?, mergingChildren: [PBXFileElement]?) -> [PBXGroup] {
+
+        var result: [PBXGroup] = []
+
+        guard let groupPath = group else { return result }
+
+        let groupPaths = Path(groupPath).parentPaths()
+
+        var children = mergingChildren ?? []
+
+        for path in groupPaths {
+
+            let group = getGroup(
+                path: path,
+                mergingChildren: children,
+                createIntermediateGroups: false,
+                isBaseGroup: false,
+                isCustomGroup: true
+            )
+
+            result.insert(group, at: 0)
+
+            children = [group]
+        }
+
+        return result
+    }
+}
+
+fileprivate extension Path {
+    func parentPaths() -> [Path] {
+
+        var result: [Path] = []
+
+        let components = self.string.split(separator: Character("/"))
+
+        var path = Path()
+
+        for subPath in components {
+            path = path + String(subPath)
+            result.insert(path, at: 0)
+        }
+
+        return result
     }
 }
