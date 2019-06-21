@@ -187,15 +187,20 @@ class SpecLoadingTests: XCTestCase {
                 }
             }
 
-            $0.it("expands environment variables") {
-                let path = fixturePath + "env_test.yml"
-                let project = try loadSpec(path: path, variables: ["SETTING1": "ENV VALUE1", "SETTING4": "ENV VALUE4"])
+            $0.it("expands variables") {
+                let path = fixturePath + "variables_test.yml"
+                let project = try loadSpec(path: path, variables: [
+                    "SETTING1": "ENV VALUE1",
+                    "SETTING4": "ENV VALUE4",
+                    "variable": "doesWin"
+                ])
 
                 try expect(project.name) == "NewName"
                 try expect(project.settingGroups) == [
-                    "test": Settings(dictionary: ["MY_SETTING1": "ENV VALUE1", "MY_SETTING2": "VALUE2", "MY_SETTING4": "ENV VALUE4"]),
+                     "test": Settings(dictionary: ["MY_SETTING1": "ENV VALUE1", "MY_SETTING2": "VALUE2", "MY_SETTING4": "ENV VALUE4"]),
                     "toReplace": Settings(dictionary: ["MY_SETTING1": "VALUE1"]),
                 ]
+                try expect(project.targets.last?.sources) == ["SomeTarget", "doesWin", "templateVariable"]
             }
         }
     }

@@ -1,0 +1,20 @@
+include: [included.yml]
+name: NewName
+settingGroups:
+  test:
+    MY_SETTING1: ${SETTING1}
+targets:
+  SomeTarget:
+    type: framework
+    platform: iOS
+    templates:
+      - Variables
+    templateAttributes:
+      templateVariable: templateVariable
+      variable: doesNotWin
+targetTemplates:
+  Variables:
+    sources:
+      - ${target_name}
+      - ${variable}
+      - ${templateVariable}

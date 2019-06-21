@@ -1,5 +1,0 @@
-include: [included.yml]
-name: NewName
-settingGroups:
-  test:
-    MY_SETTING1: ${SETTING1}
