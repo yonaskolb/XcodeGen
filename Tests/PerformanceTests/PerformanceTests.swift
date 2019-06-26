@@ -2,7 +2,7 @@ import Foundation
 import PathKit
 import ProjectSpec
 import XcodeGenKit
-import xcodeproj
+import XcodeProj
 import XCTest
 
 class GeneratedPerformanceTests: XCTestCase {

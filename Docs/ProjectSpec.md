@@ -244,10 +244,12 @@ This will provide default build settings for a certain product type. It can be a
 - `instruments-package`
 - `library.dynamic`
 - `library.static`
+- `framework.static`
 - `tool`
 - `tv-app-extension`
 - `watchkit-extension`
 - `watchkit2-extension`
+- `watchapp2-container`
 - `xcode-extension`
 - `xpc-service`
 - ``""`` (used for legacy targets)

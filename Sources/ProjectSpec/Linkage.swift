@@ -27,6 +27,7 @@ extension Target {
              .watchApp,
              .watchExtension,
              .watch2App,
+             .watch2AppContainer,
              .watch2Extension,
              .xcodeExtension,
              .xpcService:
@@ -36,7 +37,7 @@ extension Target {
             return .dynamic
         case .dynamicLibrary:
             return .dynamic
-        case .staticLibrary:
+        case .staticLibrary, .staticFramework:
             return .static
         }
     }

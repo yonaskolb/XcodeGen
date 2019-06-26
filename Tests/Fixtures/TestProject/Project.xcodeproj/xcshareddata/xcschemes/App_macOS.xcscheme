@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "020A320BB3736FCDE6CC4E703EE69AC0"
+               BlueprintIdentifier = "020A320BB3736FCDE6CC4E70"
                BuildableName = "App_macOS.app"
                BlueprintName = "App_macOS"
                ReferencedContainer = "container:Project.xcodeproj">
@@ -32,7 +32,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "020A320BB3736FCDE6CC4E703EE69AC0"
+            BlueprintIdentifier = "020A320BB3736FCDE6CC4E70"
             BuildableName = "App_macOS.app"
             BlueprintName = "App_macOS"
             ReferencedContainer = "container:Project.xcodeproj">
@@ -42,6 +42,8 @@
       </CommandLineArguments>
       <AdditionalOptions>
       </AdditionalOptions>
+      <CodeCoverageTargets>
+      </CodeCoverageTargets>
    </TestAction>
    <LaunchAction
       buildConfiguration = "Production Debug"
@@ -57,7 +59,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "020A320BB3736FCDE6CC4E703EE69AC0"
+            BlueprintIdentifier = "020A320BB3736FCDE6CC4E70"
             BuildableName = "App_macOS.app"
             BlueprintName = "App_macOS"
             ReferencedContainer = "container:Project.xcodeproj">
@@ -78,7 +80,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "020A320BB3736FCDE6CC4E703EE69AC0"
+            BlueprintIdentifier = "020A320BB3736FCDE6CC4E70"
             BuildableName = "App_macOS.app"
             BlueprintName = "App_macOS"
             ReferencedContainer = "container:Project.xcodeproj">

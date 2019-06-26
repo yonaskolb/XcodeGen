@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "090315A24AC8E8B8F318A709B9288671"
+               BlueprintIdentifier = "090315A24AC8E8B8F318A709"
                BuildableName = "Tool"
                BlueprintName = "Tool"
                ReferencedContainer = "container:Project.xcodeproj">
@@ -32,7 +32,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "090315A24AC8E8B8F318A709B9288671"
+            BlueprintIdentifier = "090315A24AC8E8B8F318A709"
             BuildableName = "Tool"
             BlueprintName = "Tool"
             ReferencedContainer = "container:Project.xcodeproj">
@@ -42,6 +42,8 @@
       </CommandLineArguments>
       <AdditionalOptions>
       </AdditionalOptions>
+      <CodeCoverageTargets>
+      </CodeCoverageTargets>
    </TestAction>
    <LaunchAction
       buildConfiguration = "Production Debug"
@@ -57,7 +59,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "090315A24AC8E8B8F318A709B9288671"
+            BlueprintIdentifier = "090315A24AC8E8B8F318A709"
             BuildableName = "Tool"
             BlueprintName = "Tool"
             ReferencedContainer = "container:Project.xcodeproj">
@@ -78,7 +80,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "090315A24AC8E8B8F318A709B9288671"
+            BlueprintIdentifier = "090315A24AC8E8B8F318A709"
             BuildableName = "Tool"
             BlueprintName = "Tool"
             ReferencedContainer = "container:Project.xcodeproj">

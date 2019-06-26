@@ -1,7 +1,7 @@
 import Foundation
 import JSONUtilities
 import PathKit
-import xcodeproj
+import XcodeProj
 
 public struct Settings: Equatable, JSONObjectConvertible, CustomStringConvertible {
 

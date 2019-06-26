@@ -1,7 +1,7 @@
 import Foundation
 import PathKit
 import ProjectSpec
-import xcodeproj
+import XcodeProj
 
 public class FileWriter {
 
