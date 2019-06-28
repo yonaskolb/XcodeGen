@@ -2,8 +2,9 @@
 
 ## Next Version
 
+## 2.6.0
+
 #### Added
-- Added ability to encode ProjectSpec to JSON [#545](https://github.com/yonaskolb/XcodeGen/pull/545) @ryohey
 - Added ability to skip tests [#582](https://github.com/yonaskolb/XcodeGen/pull/582) @kadarandras
 - Added ability to set `attributes` on build files [#583](https://github.com/yonaskolb/XcodeGen/pull/583) @min
 - Allow using environment variables in the form of `${SOME_VARIABLE}`. This might be a **breaking** change when a target template attribute is also defined as an environment variable [#594](https://github.com/yonaskolb/XcodeGen/pull/594) @tomquist
@@ -15,7 +16,12 @@
 
 #### Changed
 - Updated the default `compatibilityVersion` project setting from `Xcode 9.3` to `Xcode 10.0` [#581](https://github.com/yonaskolb/XcodeGen/pull/581) @acecilia
-- Updated to XcodeProj 7.0.0 [#604](https://github.com/yonaskolb/XcodeGen/pull/604) @yonaskolb
+- Updated to XcodeProj 7.0.0. Note that the length of generated UUIDs has changed [#604](https://github.com/yonaskolb/XcodeGen/pull/604) @yonaskolb
+
+#### Internal
+- Added ability to encode ProjectSpec [#545](https://github.com/yonaskolb/XcodeGen/pull/545) @ryohey
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.5.0...2.6.0)
 
 ## 2.5.0
 
