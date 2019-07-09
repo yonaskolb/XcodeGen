@@ -676,6 +676,30 @@ class SourceGeneratorTests: XCTestCase {
                     throw failure("File does not contain no_codegen attribute")
                 }
             }
+
+            $0.it("supports custom groups") {
+                let directories = """
+                Sources:
+                  - main.m
+                  - other.m
+                  - Views:
+                    - view.m
+                """
+                try createDirectories(directories)
+
+                let target = Target(name: "Test", type: .staticLibrary, platform: .iOS, sources:[
+                    TargetSource(path: "Sources/main.m", group: "Sources/Default", buildPhase: .sources),
+                    TargetSource(path: "Sources/other.m", group: "Sources/Other", buildPhase: .sources),
+                    TargetSource(path: "Sources/Views/view.m", group: "Sources/UI/Views", buildPhase: .sources),
+                ])
+
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target])
+
+                let pbxProj = try project.generatePbxProj()
+                try pbxProj.expectFileInGroups(groups: ["Sources", "Default"], path: "Sources/main.m")
+                try pbxProj.expectFileInGroups(groups: ["Sources", "Other"], path: "Sources/other.m")
+                try pbxProj.expectFileInGroups(groups: ["Sources", "UI", "Views"], path: "Sources/Views/view.m")
+            }
         }
     }
 }
@@ -735,6 +759,40 @@ extension PBXProj {
             throw failure("Couldn't find main group", file: file, line: line)
         }
         return mainGroup
+    }
+
+    func expectFileInGroups(
+        groups: [String],
+        path: String,
+        file: String = #file,
+        line: Int = #line) throws
+    {
+        let mainGroup = try getMainGroup(file: file, line: line)
+
+        guard let group = getSubGroupAtPath(group: mainGroup, path: groups) else {
+            throw failure("Could not find groups: \(groups)", file: file, line: line)
+        }
+
+        let name = Path(path).lastComponent
+
+        guard let _ = getFileReference(group: group, paths: [path], names: [name]) else {
+            throw failure("Could not find file: \(name) with path: \(path) in groups: \(groups)", file: file, line: line)
+        }
+    }
+
+    private func getSubGroupAtPath(group: PBXGroup, path: [String]) -> PBXGroup? {
+
+        guard !path.isEmpty else { return nil }
+
+        let subGroups = group.children.compactMap { $0 as? PBXGroup }
+
+        guard let subGroup = subGroups.first(where: { $0.nameOrPath == path.first! }) else { return nil }
+
+        if path.count == 1 {
+            return subGroup
+        }
+
+        return getSubGroupAtPath(group: subGroup, path: Array(path.dropFirst()))
     }
 
     private func getFileReference(group: PBXGroup, paths: [String], names: [String]) -> PBXFileReference? {
