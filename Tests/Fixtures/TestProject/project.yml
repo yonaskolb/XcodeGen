@@ -164,7 +164,7 @@ targets:
   iMessageStickersExtension:
     type: app-extension.messages-sticker-pack
     platform: iOS
-    sources:       
+    sources:
       - path: iMessage Stickers
 
   StaticLibrary_ObjC:
@@ -238,6 +238,13 @@ targets:
     platform: macOS
     sources: [Tool]
     scheme: {}
+
+  CustomGroup:
+    type: library.static
+    platform: iOS
+    sources:
+      - path: CustomGroup/utility.swift
+        group: CustomGroup/Sources/Utilities
 
 schemes:
   Framework:
