@@ -504,9 +504,6 @@ public class PBXProjGenerator {
                 let buildPath = Path(dependency.reference).parent().string.quoted
                 frameworkBuildPaths.insert(buildPath)
 
-                // Static libraries can't link or embed dynamic frameworks
-                guard target.type != .staticLibrary else { break }
-
                 let fileReference: PBXFileElement
                 if dependency.implicit {
                     fileReference = sourceGenerator.getFileReference(
@@ -609,6 +606,19 @@ public class PBXProjGenerator {
                     }
                 }
                 // Embedding handled by iterating over `carthageDependencies` below
+            case .bundle:
+                // Static and dynamic libraries can't copy resources
+                guard target.type != .staticLibrary && target.type != .dynamicLibrary else { break }
+                
+                let fileReference = sourceGenerator.getFileReference(
+                    path: Path(dependency.reference),
+                    inPath: project.basePath,
+                    sourceTree: .buildProductsDir
+                )
+                
+                let pbxBuildFile = PBXBuildFile(file: fileReference, settings: nil)
+                let buildFile = addObject(pbxBuildFile)
+                copyResourcesReferences.append(buildFile)
             }
         }
 
@@ -991,6 +1001,10 @@ public class PBXProjGenerator {
                             // Aggregate targets should be included
                             dependencies[dependency.reference] = dependency
                         }
+                    }
+                case .bundle:
+                    if isTopLevel {
+                        dependencies[dependency.reference] = dependency
                     }
                 }
             }

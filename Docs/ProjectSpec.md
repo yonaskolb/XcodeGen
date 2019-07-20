@@ -364,24 +364,25 @@ targets:
 
 ### Dependency
 
-A dependency can be one of a 3 types:
+A dependency can be one of a 5 types:
 
 - `target: name` - links to another target
 - `framework: path` - links to a framework
 - `carthage: name` - helper for linking to a Carthage framework
 - `sdk: name` - links to a dependency with the SDK. This can either be a relative path within the sdk root or a single filename that references a framework (.framework) or lib (.tbd)
+- `bundle: name` - adds the supplied bundle to the copy resources build phase. This is useful when a dependency exists on a static library target that has an associated bundle target, both existing in a separate project. Only usable in targets types which can copy resources. Always use `implicit: true`.
 
 **Linking options**:
 
 - [ ] **embed**: **Bool** - Whether to embed the dependency. Defaults to true for application target and false for non application targets.
-- [ ] **link**: **Bool** - Whether to link the dependency. Defaults to `true` depending on the type of the dependency and the type of the target (e.g. static libraries will only link to executables by default).
+- [ ] **link**: **Bool** - Whether to link the dependency. Defaults to `true` depending on the type of the dependency and the type of the target.
 - [ ] **codeSign**: **Bool** - Whether the `codeSignOnCopy` setting is applied when embedding framework. Defaults to true
 - [ ] **removeHeaders**: **Bool** - Whether the `removeHeadersOnCopy` setting is applied when embedding the framework. Defaults to true
 - [ ] **weak**: **Bool** - Whether the `Weak` setting is applied when linking the framework. Defaults to false
 
 **Implicit Framework options**:
 
-This only applies to `framework` dependencies. Implicit framework dependencies are useful in Xcode Workspaces which have multiple `.xcodeproj` that are not embedded within each other yet have a dependency on a framework built in an adjacent `.xcodeproj`.  By having `Find Implicit Dependencies` checked within your scheme `Build Options` Xcode can link built frameworks in `BUILT_PRODUCTS_DIR`.
+This only applies to `framework` and `bundle` dependencies. Implicit framework dependencies are useful in Xcode Workspaces which have multiple `.xcodeproj` that are not embedded within each other yet have a dependency on a framework built in an adjacent `.xcodeproj`.  By having `Find Implicit Dependencies` checked within your scheme `Build Options` Xcode can link built frameworks in `BUILT_PRODUCTS_DIR`.
 
 - [ ] **implicit**: **Bool** - Whether the framework is an implicit dependency. Defaults to `false` .
 
