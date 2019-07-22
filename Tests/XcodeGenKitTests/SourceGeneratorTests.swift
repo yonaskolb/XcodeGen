@@ -390,6 +390,38 @@ class SourceGeneratorTests: XCTestCase {
                 try pbxProj.expectFile(paths: ["../OtherDirectory/C/D", "e.swift"], names: ["D", "e.swift"], buildPhase: .sources)
                 try pbxProj.expectFile(paths: ["Sources/B", "b.swift"], names: ["B", "b.swift"], buildPhase: .sources)
             }
+            
+            $0.it("generates custom groups") {
+                
+                let directories = """
+                Sources:
+                  A:
+                    - b.swift
+                  F:
+                    - G:
+                      - h.swift
+                  B:
+                    - b.swift
+                    - C:
+                      - c.swift
+                """
+                try createDirectories(directories)
+                
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: [
+                    TargetSource(path: "Sources/A/b.swift", group: "CustomGroup1"),
+                    TargetSource(path: "Sources/F/G/h.swift", group: "CustomGroup1"),
+                    TargetSource(path: "Sources/B", group: "CustomGroup2", createIntermediateGroups: false),
+                ])
+                
+                let options = SpecOptions(createIntermediateGroups: true)
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target], options: options)
+                
+                let pbxProj = try project.generatePbxProj()
+                try pbxProj.expectFile(paths: ["CustomGroup1", "Sources/A", "b.swift"], names: ["CustomGroup1", "A", "b.swift"], buildPhase: .sources)
+                try pbxProj.expectFile(paths: ["CustomGroup1", "Sources/F/G", "h.swift"], names: ["CustomGroup1", "G", "h.swift"], buildPhase: .sources)
+                try pbxProj.expectFile(paths: ["CustomGroup2", "Sources/B", "b.swift"], names: ["CustomGroup2", "B", "b.swift"], buildPhase: .sources)
+                try pbxProj.expectFile(paths: ["CustomGroup2", "Sources/B", "C", "c.swift"], names: ["CustomGroup2", "B", "C", "c.swift"], buildPhase: .sources)
+            }
 
             $0.it("generates folder references") {
                 let directories = """
@@ -613,7 +645,7 @@ class SourceGeneratorTests: XCTestCase {
                 let project = Project(basePath: directoryPath, name: "Test", targets: [target])
                 _ = try project.generatePbxProj()
             }
-            
+
             $0.it("relative path items outside base path are grouped together") {
                 let directories = """
                 Sources:
@@ -623,21 +655,21 @@ class SourceGeneratorTests: XCTestCase {
                         - b.swift
                 """
                 try createDirectories(directories)
-                
+
                 let outOfSourceFile1 = outOfRootPath + "Outside/a.swift"
                 try outOfSourceFile1.parent().mkpath()
                 try outOfSourceFile1.write("")
-                
+
                 let outOfSourceFile2 = outOfRootPath + "Outside/Outside2/b.swift"
                 try outOfSourceFile2.parent().mkpath()
                 try outOfSourceFile2.write("")
-                
+
                 let target = Target(name: "Test", type: .application, platform: .iOS, sources: [
                     "Sources",
                     "../OtherDirectory",
                 ])
                 let project = Project(basePath: directoryPath, name: "Test", targets: [target])
-                
+
                 let pbxProj = try project.generatePbxProj()
                 try pbxProj.expectFile(paths: ["Sources", "Inside", "a.swift"], buildPhase: .sources)
                 try pbxProj.expectFile(paths: ["Sources", "Inside", "Inside2", "b.swift"], buildPhase: .sources)
@@ -738,18 +770,24 @@ extension PBXProj {
     }
 
     private func getFileReference(group: PBXGroup, paths: [String], names: [String]) -> PBXFileReference? {
-
-        guard !paths.isEmpty else { return nil }
+        guard !paths.isEmpty else {
+            return nil
+        }
+        
         let path = paths.first!
         let name = names.first!
         let restOfPath = Array(paths.dropFirst())
         let restOfName = Array(names.dropFirst())
         if restOfPath.isEmpty {
             let fileReferences: [PBXFileReference] = group.children.compactMap { $0 as? PBXFileReference }
-            return fileReferences.first { $0.path == path && $0.nameOrPath == name }
+            fileReferences.forEach { print("path: \($0.path ?? "nil"), name: \($0.name ?? "nil")") }
+            return fileReferences.first { ($0.path == nil || $0.path == path) && $0.nameOrPath == name }
         } else {
             let groups = group.children.compactMap { $0 as? PBXGroup }
-            guard let group = groups.first(where: { $0.path == path && $0.nameOrPath == name }) else { return nil }
+            groups.forEach { print("path: \($0.path ?? "nil"), name: \($0.name ?? "nil")") }
+            guard let group = groups.first(where: { ($0.path == nil || $0.path == path) && $0.nameOrPath == name }) else {
+                return nil
+            }
             return getFileReference(group: group, paths: restOfPath, names: restOfName)
         }
     }

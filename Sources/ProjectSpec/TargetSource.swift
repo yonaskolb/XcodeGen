@@ -9,6 +9,7 @@ public struct TargetSource: Equatable {
 
     public var path: String
     public var name: String?
+    public var group: String?
     public var compilerFlags: [String]
     public var excludes: [String]
     public var type: SourceType?
@@ -123,6 +124,7 @@ public struct TargetSource: Equatable {
     public init(
         path: String,
         name: String? = nil,
+        group: String? = nil,
         compilerFlags: [String] = [],
         excludes: [String] = [],
         type: SourceType? = nil,
@@ -134,6 +136,7 @@ public struct TargetSource: Equatable {
     ) {
         self.path = path
         self.name = name
+        self.group = group
         self.compilerFlags = compilerFlags
         self.excludes = excludes
         self.type = type
@@ -165,6 +168,7 @@ extension TargetSource: JSONObjectConvertible {
     public init(jsonDictionary: JSONDictionary) throws {
         path = try jsonDictionary.json(atKeyPath: "path")
         name = jsonDictionary.json(atKeyPath: "name")
+        group = jsonDictionary.json(atKeyPath: "group")
 
         let maybeCompilerFlagsString: String? = jsonDictionary.json(atKeyPath: "compilerFlags")
         let maybeCompilerFlagsArray: [String]? = jsonDictionary.json(atKeyPath: "compilerFlags")
@@ -193,6 +197,7 @@ extension TargetSource: JSONEncodable {
             "compilerFlags": compilerFlags,
             "excludes": excludes,
             "name": name,
+            "group": group,
             "headerVisibility": headerVisibility?.rawValue,
             "type": type?.rawValue,
             "buildPhase": buildPhase?.toJSONValue(),

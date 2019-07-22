@@ -303,6 +303,7 @@ A source can be provided via a string (the path) or an object of the form:
 
 - [x] **path**: **String** - The path to the source file or directory.
 - [ ] **name**: **String** - Can be used to override the name of the source file or directory. By default the last component of the path is used for the name
+- [ ] **group**: **String** - Can be used to override the parent group of the source file or directory. By default a group is created at the root with the name of this source file or directory or intermediate groups are created if `createIntermediateGroups` is set to `true`. Multiple groups can be created by separating each one using a `/`. If multiple target sources share the same `group`, they will be put together in the same parent group.
 - [ ] **compilerFlags**: **[String]** or **String** - A list of compilerFlags to add to files under this specific path provided as a list or a space delimitted string. Defaults to empty.
 - [ ] **excludes**: **[String]** - A list of [global patterns](https://en.wikipedia.org/wiki/Glob_(programming)) representing the files to exclude. These rules are relative to `path` and _not the directory where `project.yml` resides_.
 - [ ] **createIntermediateGroups**: **Bool** - This overrides the value in [Options](#options)
