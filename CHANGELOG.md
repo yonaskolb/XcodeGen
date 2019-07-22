@@ -6,6 +6,7 @@
 - Add Carthage static framework dependencies support. [#688](https://github.com/yonaskolb/XcodeGen/pull/688) @giginet
 - Added `xcodegen dump` command [#710](https://github.com/yonaskolb/XcodeGen/pull/710) @yonaskolb
 - Added `--no-env` option to disable environment variables expansion [#704](https://github.com/yonaskolb/XcodeGen/pull/704) @rcari
+- Added custom group support for target sources [#621](https://github.com/yonaskolb/XcodeGen/pull/621) @sroebert @rcari
 
 #### Fixed
 - Improved variable expansion runtime [#704](https://github.com/yonaskolb/XcodeGen/pull/704) @rcari
