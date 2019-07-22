@@ -2,6 +2,9 @@
 
 ## Next Version
 
+#### Added
+- Added custom group support for target sources [#611](https://github.com/yonaskolb/XcodeGen/pull/611) @sroebert
+
 ## 2.6.0
 
 #### Added
