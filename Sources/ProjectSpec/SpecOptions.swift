@@ -25,6 +25,7 @@ public struct SpecOptions: Equatable {
     public var defaultConfig: String?
     public var transitivelyLinkDependencies: Bool
     public var groupSortPosition: GroupSortPosition
+    public var groupsOrder: [GroupOrder]
     public var generateEmptyDirectories: Bool
     public var findCarthageFrameworks: Bool
 
@@ -81,6 +82,7 @@ public struct SpecOptions: Equatable {
         defaultConfig: String? = nil,
         transitivelyLinkDependencies: Bool = transitivelyLinkDependenciesDefault,
         groupSortPosition: GroupSortPosition = groupSortPositionDefault,
+        groupsOrder: [GroupOrder] = [],
         generateEmptyDirectories: Bool = generateEmptyDirectoriesDefault,
         findCarthageFrameworks: Bool = findCarthageFrameworksDefault
     ) {
@@ -100,6 +102,7 @@ public struct SpecOptions: Equatable {
         self.defaultConfig = defaultConfig
         self.transitivelyLinkDependencies = transitivelyLinkDependencies
         self.groupSortPosition = groupSortPosition
+        self.groupsOrder = groupsOrder
         self.generateEmptyDirectories = generateEmptyDirectories
         self.findCarthageFrameworks = findCarthageFrameworks
     }
@@ -127,6 +130,7 @@ extension SpecOptions: JSONObjectConvertible {
         defaultConfig = jsonDictionary.json(atKeyPath: "defaultConfig")
         transitivelyLinkDependencies = jsonDictionary.json(atKeyPath: "transitivelyLinkDependencies") ?? SpecOptions.transitivelyLinkDependenciesDefault
         groupSortPosition = jsonDictionary.json(atKeyPath: "groupSortPosition") ?? SpecOptions.groupSortPositionDefault
+        groupsOrder = jsonDictionary.json(atKeyPath: "groupsOrder") ?? []
         generateEmptyDirectories = jsonDictionary.json(atKeyPath: "generateEmptyDirectories") ?? SpecOptions.generateEmptyDirectoriesDefault
         findCarthageFrameworks = jsonDictionary.json(atKeyPath: "findCarthageFrameworks") ?? SpecOptions.findCarthageFrameworksDefault
     }
