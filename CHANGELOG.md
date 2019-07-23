@@ -2,6 +2,9 @@
 
 ## Next Version
 
+#### Added
+- Added an ability to set an order of groups via `options.groupOrder` [#480](https://github.com/yonaskolb/XcodeGen/pull/613) @Beniamiiin
+
 ## 2.6.0
 
 #### Added
