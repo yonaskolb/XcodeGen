@@ -584,6 +584,26 @@ public class PBXProjGenerator {
                 )
                 targetFrameworkBuildFiles.append(buildFile)
 
+            case .swiftpm(let config):
+                if let config: XCRemoteSwiftPackageReference = config {
+                    let remotePackageReference = addObject(config)
+                    let packageProductDependency = addObject(
+                        XCSwiftPackageProductDependency(
+                            productName: remotePackageReference.name!,
+                            package: remotePackageReference
+                        )
+                    )
+
+                    pbxProj.rootObject!.packages.append(remotePackageReference)
+                    targetObjects[target.name]!.packageProductDependencies.append(packageProductDependency)
+
+                    let buildFile = addObject(
+                        PBXBuildFile(product: packageProductDependency)
+                    )
+
+                    targetFrameworkBuildFiles.append(buildFile)
+                }
+
             case .carthage(let findFrameworks):
                 let findFrameworks = findFrameworks ?? project.options.findCarthageFrameworks
                 let allDependencies = findFrameworks
@@ -992,6 +1012,8 @@ public class PBXProjGenerator {
                             dependencies[dependency.reference] = dependency
                         }
                     }
+                case .swiftpm(let config):
+                    break
                 }
             }
 

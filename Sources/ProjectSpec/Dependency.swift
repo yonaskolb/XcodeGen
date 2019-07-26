@@ -1,5 +1,6 @@
 import Foundation
 import JSONUtilities
+import XcodeProj
 
 public struct Dependency: Equatable {
     public static let removeHeadersDefault = true
@@ -37,6 +38,7 @@ public struct Dependency: Equatable {
         case target
         case framework
         case carthage(findFrameworks: Bool?)
+        case swiftpm(config: XCRemoteSwiftPackageReference?)
         case sdk(root: String?)
     }
 }
@@ -64,6 +66,26 @@ extension Dependency: JSONObjectConvertible {
             let sdkRoot: String? = jsonDictionary.json(atKeyPath: "root")
             type = .sdk(root: sdkRoot)
             reference = sdk
+        } else if let swiftpm: String = jsonDictionary.json(atKeyPath: "swiftpm") {
+
+            let versionRequirement: XCRemoteSwiftPackageReference.VersionRequirement? = {
+                let versionRequirement: [String: Any]? = jsonDictionary.json(atKeyPath: "versionRequirement")
+                if let versionRequirement = versionRequirement {
+                    let jsonData = try! JSONSerialization.data(withJSONObject: versionRequirement, options: [])
+                    return try! JSONDecoder().decode(XCRemoteSwiftPackageReference.VersionRequirement.self, from: jsonData)
+                } else {
+                    return nil
+                }
+            }()
+
+            let repositoryURL: String? = jsonDictionary.json(atKeyPath: "repositoryURL")
+            let config: XCRemoteSwiftPackageReference? = XCRemoteSwiftPackageReference(
+                repositoryURL: repositoryURL ?? "",
+                versionRequirement: versionRequirement
+            )
+
+            type = .swiftpm(config: config)
+            reference = swiftpm
         } else {
             throw SpecParsingError.invalidDependency(jsonDictionary)
         }
@@ -112,11 +134,58 @@ extension Dependency: JSONEncodable {
             if let findFrameworks = findFrameworks {
                 dict["findFrameworks"] = findFrameworks
             }
+        case .swiftpm(let config):
+            if let config = config {
+                let swiftPMDict: [String: Any] = [
+                    "repositoryURL": config.repositoryURL,
+                    "requirements": config.versionRequirement?.json ?? [:]
+                ]
+
+                dict["swiftpm"] = swiftPMDict
+            }
         case .sdk:
             dict["sdk"] = reference
         }
 
         return dict
+    }
+}
+
+extension XCRemoteSwiftPackageReference.VersionRequirement {
+    var json: [String: Any] {
+        switch self {
+        case let .revision(revision):
+            return [
+                "kind": "revision",
+                "revision": revision,
+            ]
+        case let .branch(branch):
+            return [
+                "kind": "branch",
+                "branch": branch,
+            ]
+        case let .exact(version):
+            return [
+                "kind": "exactVersion",
+                "version": version,
+            ]
+        case let .range(from, to):
+            return [
+                "kind": "versionRange",
+                "minimumVersion": from,
+                "maximumVersion": to,
+            ]
+        case let .upToNextMinorVersion(version):
+            return [
+                "kind": "upToNextMinorVersion",
+                "minimumVersion": version,
+            ]
+        case let .upToNextMajorVersion(version):
+            return [
+                "kind": "upToNextMajorVersion",
+                "minimumVersion": version,
+            ]
+        }
     }
 }
 
