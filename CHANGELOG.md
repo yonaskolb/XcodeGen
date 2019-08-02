@@ -2,6 +2,10 @@
 
 ## Next Version
 
+#### Added
+
+- Added ability to disable main thread checker on Run and Test schemes and TargetSchemes [#601](https://github.com/yonaskolb/XcodeGen/pull/601) @wag-miles
+
 ## 2.6.0
 
 #### Added

@@ -266,13 +266,19 @@ extension Scheme.Run: JSONObjectConvertible {
 
 extension Scheme.Run: JSONEncodable {
     public func toJSONValue() -> Any {
-        return [
+        var dict: [String: Any?] = [
             "commandLineArguments": commandLineArguments,
             "preActions": preActions.map { $0.toJSONValue() },
             "postActions": postActions.map { $0.toJSONValue() },
             "environmentVariables": environmentVariables.map { $0.toJSONValue() },
             "config": config
-        ] as [String: Any?]
+        ]
+
+        if disableMainThreadChecker != Scheme.Run.disableMainThreadCheckerDefault {
+            dict["disableMainThreadChecker"] = disableMainThreadChecker
+        }
+
+        return dict
     }
 }
 
@@ -304,16 +310,24 @@ extension Scheme.Test: JSONObjectConvertible {
 
 extension Scheme.Test: JSONEncodable {
     public func toJSONValue() -> Any {
-        return [
-            "gatherCoverageData": gatherCoverageData,
-            "disableMainThreadChecker": disableMainThreadChecker,
+        var dict: [String: Any?] = [
             "commandLineArguments": commandLineArguments,
             "targets": targets.map { $0.toJSONValue() },
             "preActions": preActions.map { $0.toJSONValue() },
             "postActions": postActions.map { $0.toJSONValue() },
             "environmentVariables": environmentVariables.map { $0.toJSONValue() },
             "config": config
-        ] as [String: Any?]
+        ]
+
+        if gatherCoverageData != Scheme.Test.gatherCoverageDataDefault {
+            dict["gatherCoverageData"] = gatherCoverageData
+        }
+
+        if disableMainThreadChecker != Scheme.Test.disableMainThreadCheckerDefault {
+            dict["disableMainThreadChecker"] = disableMainThreadChecker
+        }
+
+        return dict
     }
 }
 

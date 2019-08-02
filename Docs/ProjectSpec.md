@@ -680,6 +680,7 @@ The different actions share some properties:
 - [ ] **preActions**: **[[Execution Action](#execution-action)]** - Scripts that are run *before* the action
 - [ ] **postActions**: **[[Execution Action](#execution-action)]** - Scripts that are run *after* the action
 - [ ] **environmentVariables**: **[[Environment Variable](#environment-variable)]** or **[String:String]** - `run`, `test` and `profile` actions can define the environment variables. When passing a dictionary, every key-value entry maps to a corresponding variable that is enabled.
+- [ ] **disableMainThreadChecker**: **Bool** - `run` and `test` actions can define a boolean that indicates that this scheme should disable the Main Thread Checker. This defaults to false
 
 ### Execution Action
 
@@ -694,7 +695,6 @@ A multiline script can be written using the various YAML multiline methods, for 
 ### Test Action
 
 - [ ] **gatherCoverageData**: **Bool** - a boolean that indicates if this scheme should gather coverage data. This defaults to false
-- [ ] **disableMainThreadChecker**: **Bool** - a boolean that indicates if this scheme should disable disable the Main Thread Checker. This defaults to false
 - [ ] **targets**: **[[Test Target](#test-target)]** - a list of targets to test. Each entry can either be a simple string, or a [Test Target](#test-target)
 
 #### Test Target
