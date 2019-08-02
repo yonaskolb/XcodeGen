@@ -180,7 +180,6 @@ targets:
     sources: StaticLibrary_Swift
     dependencies:
       - framework: Framework_iOS.framework
-        implicit: true
 
   ResourceBundle:
     type: bundle

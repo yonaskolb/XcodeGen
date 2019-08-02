@@ -20,6 +20,7 @@ public class PBXProjGenerator {
 
     var carthageFrameworksByPlatform: [String: Set<PBXFileElement>] = [:]
     var frameworkFiles: [PBXFileElement] = []
+    var bundleFiles: [PBXFileElement] = []
 
     var generated = false
 
@@ -190,6 +191,17 @@ public class PBXProjGenerator {
                     children: frameworkFiles,
                     sourceTree: .group,
                     name: "Frameworks"
+                )
+            )
+            derivedGroups.append(group)
+        }
+        
+        if !bundleFiles.isEmpty {
+            let group = addObject(
+                PBXGroup(
+                    children: bundleFiles,
+                    sourceTree: .group,
+                    name: "Bundles"
                 )
             )
             derivedGroups.append(group)
@@ -619,6 +631,10 @@ public class PBXProjGenerator {
                 let pbxBuildFile = PBXBuildFile(file: fileReference, settings: nil)
                 let buildFile = addObject(pbxBuildFile)
                 copyResourcesReferences.append(buildFile)
+                
+                if !bundleFiles.contains(fileReference) {
+                    bundleFiles.append(fileReference)
+                }
             }
         }
 
