@@ -1,4 +1,6 @@
 name: Project2
+include: 
+  - ../TestProject/environments.yml
 options:
   bundleIdPrefix: com.project2
 targets:
