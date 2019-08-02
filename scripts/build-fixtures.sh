@@ -1,5 +1,5 @@
 #!/bin/bash
 set -e
 
-cd Tests/Fixtures/TestProject
+cd Tests/Fixtures
 ./build.sh
