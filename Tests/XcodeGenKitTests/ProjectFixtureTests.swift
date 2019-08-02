@@ -10,6 +10,7 @@ class ProjectFixtureTests: XCTestCase {
     func testProjectFixture() {
         describe {
             $0.it("generates") {
+                try generateXcodeProject(specPath: fixturePath + "TestProject2/project.yml")
                 try generateXcodeProject(specPath: fixturePath + "TestProject/project.yml")
             }
         }

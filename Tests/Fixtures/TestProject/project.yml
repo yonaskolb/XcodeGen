@@ -91,7 +91,10 @@ targets:
       - target: App_watchOS
       - target: iMessageApp
       - sdk: Contacts.framework
-      - bundle: ResourceBundle.bundle
+      - framework: libProject2StaticLibrary.a
+        implicit: true
+        embed: false
+      - bundle: Project2ResourceBundle.bundle
         implicit: true
     scheme:
       testTargets:
@@ -180,11 +183,6 @@ targets:
     sources: StaticLibrary_Swift
     dependencies:
       - framework: Framework_iOS.framework
-
-  ResourceBundle:
-    type: bundle
-    platform: iOS
-    sources: BundleResources
 
   Framework:
     type: framework

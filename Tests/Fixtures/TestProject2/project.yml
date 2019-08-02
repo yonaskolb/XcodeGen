@@ -1,0 +1,15 @@
+name: Project2
+options:
+  bundleIdPrefix: com.project2
+targets:
+  Project2StaticLibrary:
+    type: library.static
+    platform: iOS
+    sources: Sources
+    dependencies:
+      - target: Project2ResourceBundle
+
+  Project2ResourceBundle:
+    type: bundle
+    platform: iOS
+    sources: Resources
