@@ -2,6 +2,12 @@
 
 ## Next Version
 
+#### Added
+- Added new dependency type, `bundle`. This allows targets to copy bundles from other projects [#616](https://github.com/yonaskolb/XcodeGen/pull/616) @bsmith11
+
+#### Changed
+- Updated static library targets to be able to link against dynamic frameworks to support dependencies in other projects [#616](https://github.com/yonaskolb/XcodeGen/pull/616) @bsmith11
+
 ## 2.6.0
 
 #### Added
