@@ -197,6 +197,7 @@ public class PBXProjGenerator {
 
         mainGroup.children = Array(sourceGenerator.rootGroups)
         sortGroups(group: mainGroup)
+        setupGroupsOrder(group: mainGroup)
         // add derived groups at the end
         derivedGroups.forEach(sortGroups)
         mainGroup.children += derivedGroups
@@ -376,36 +377,65 @@ public class PBXProjGenerator {
 
     func sortGroups(group: PBXGroup) {
         // sort children
-        if let groupOrder = project.options.groupsOrder.first(where: { group.nameOrPath == $0.pattern || group.nameOrPath.isMatch(to: $0.pattern) }) {
-            let files = group.children.filter { $0 is PBXFileReference }
-            let groups = groupOrder.order
-                .compactMap { groupName in
-                    group.children.first(where: { $0 is PBXGroup && $0.nameOrPath == groupName })
-                }
-            
-            group.children = groupOrder.fileSortPosition == .top ? files + groups : groups + files
-        } else {
-            let children = group.children
-                .sorted { child1, child2 in
-                    let sortOrder1 = child1.getSortOrder(groupSortPosition: project.options.groupSortPosition)
-                    let sortOrder2 = child2.getSortOrder(groupSortPosition: project.options.groupSortPosition)
-                    
-                    if sortOrder1 != sortOrder2 {
-                        return sortOrder1 < sortOrder2
+        let children = group.children
+            .sorted { child1, child2 in
+                let sortOrder1 = child1.getSortOrder(groupSortPosition: project.options.groupSortPosition)
+                let sortOrder2 = child2.getSortOrder(groupSortPosition: project.options.groupSortPosition)
+
+                if sortOrder1 != sortOrder2 {
+                    return sortOrder1 < sortOrder2
+                } else {
+                    if child1.nameOrPath != child2.nameOrPath {
+                        return child1.nameOrPath.localizedStandardCompare(child2.nameOrPath) == .orderedAscending
                     } else {
-                        if child1.nameOrPath != child2.nameOrPath {
-                            return child1.nameOrPath.localizedStandardCompare(child2.nameOrPath) == .orderedAscending
-                        } else {
-                            return child1.context ?? "" < child2.context ?? ""
-                        }
+                        return child1.context ?? "" < child2.context ?? ""
                     }
+                }
             }
-            group.children = children.filter { $0 != group }
-        }
-    
+        group.children = children.filter { $0 != group }
+
         // sort sub groups
         let childGroups = group.children.compactMap { $0 as? PBXGroup }
         childGroups.forEach(sortGroups)
+    }
+    
+    func setupGroupsOrder(group: PBXGroup) {
+        let groupOrder = project.options.groupsOrder.first { groupOrder in
+            let groupName = group.nameOrPath
+            
+            if groupName == groupOrder.pattern {
+                return true
+            }
+            
+            if let regex = groupOrder.regex {
+                return regex.isMatch(to: groupName)
+            }
+            
+            return false
+        }
+        
+        if let order = groupOrder?.order, let fileSortPosition = groupOrder?.fileSortPosition {
+            let files = group.children.filter { $0 is PBXFileReference }
+            var groups = group.children.filter { $0 is PBXGroup }
+            
+            var filteredGroups = [PBXFileElement]()
+            
+            for groupName in order {
+                guard let group = groups.first(where: { $0.nameOrPath == groupName }) else {
+                    continue
+                }
+                
+                filteredGroups.append(group)
+                groups.removeAll { $0 == group }
+            }
+            
+            filteredGroups += groups
+            group.children = fileSortPosition == .top ? files + filteredGroups : filteredGroups + files
+        }
+        
+        // sort sub groups
+        let childGroups = group.children.compactMap { $0 as? PBXGroup }
+        childGroups.forEach(setupGroupsOrder)
     }
 
     func generateTarget(_ target: Target) throws {

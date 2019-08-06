@@ -14,6 +14,9 @@ public struct GroupOrder: Equatable {
     /// A group name pattern.
     public var pattern: String
     
+    /// A group name regex.
+    public var regex: NSRegularExpression?
+    
     /// Subgroups orders.
     public var order: [String]
     
@@ -26,6 +29,7 @@ extension GroupOrder: JSONObjectConvertible {
     
     public init(jsonDictionary: JSONDictionary) throws {
         pattern = jsonDictionary.json(atKeyPath: "pattern") ?? ""
+        regex = try? NSRegularExpression(pattern: pattern)
         order = jsonDictionary.json(atKeyPath: "order") ?? []
         fileSortPosition = jsonDictionary.json(atKeyPath: "fileSortPosition") ?? .top
     }
