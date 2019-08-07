@@ -469,35 +469,41 @@ class SourceGeneratorTests: XCTestCase {
                 try pbxProj.expectFile(paths: ["../OtherDirectory/C/D", "e.swift"], names: ["D", "e.swift"], buildPhase: .sources)
                 try pbxProj.expectFile(paths: ["Sources/B", "b.swift"], names: ["B", "b.swift"], buildPhase: .sources)
             }
-            
+
             $0.it("generates custom groups") {
-                
+
                 let directories = """
-                Sources:
-                  A:
+                - Sources:
+                  - a.swift
+                  - A:
                     - b.swift
-                  F:
+                  - F:
                     - G:
                       - h.swift
-                  B:
+                      - i.swift
+                  - B:
                     - b.swift
                     - C:
                       - c.swift
                 """
                 try createDirectories(directories)
-                
+
                 let target = Target(name: "Test", type: .application, platform: .iOS, sources: [
+                    TargetSource(path: "Sources/a.swift", group: "CustomGroup1"),
                     TargetSource(path: "Sources/A/b.swift", group: "CustomGroup1"),
                     TargetSource(path: "Sources/F/G/h.swift", group: "CustomGroup1"),
                     TargetSource(path: "Sources/B", group: "CustomGroup2", createIntermediateGroups: false),
+                    TargetSource(path: "Sources/F/G/i.swift", group: "Sources/F/G/CustomGroup3"),
                 ])
-                
+
                 let options = SpecOptions(createIntermediateGroups: true)
                 let project = Project(basePath: directoryPath, name: "Test", targets: [target], options: options)
-                
+
                 let pbxProj = try project.generatePbxProj()
-                try pbxProj.expectFile(paths: ["CustomGroup1", "Sources/A", "b.swift"], names: ["CustomGroup1", "A", "b.swift"], buildPhase: .sources)
-                try pbxProj.expectFile(paths: ["CustomGroup1", "Sources/F/G", "h.swift"], names: ["CustomGroup1", "G", "h.swift"], buildPhase: .sources)
+                try pbxProj.expectFile(paths: ["CustomGroup1", "Sources/a.swift"], names: ["CustomGroup1", "a.swift"], buildPhase: .sources)
+                try pbxProj.expectFile(paths: ["CustomGroup1", "Sources/A/b.swift"], names: ["CustomGroup1", "b.swift"], buildPhase: .sources)
+                try pbxProj.expectFile(paths: ["CustomGroup1", "Sources/F/G/h.swift"], names: ["CustomGroup1", "h.swift"], buildPhase: .sources)
+                try pbxProj.expectFile(paths: ["Sources", "F", "G", "CustomGroup3", "i.swift"], names: ["Sources", "F", "G", "CustomGroup3", "i.swift"], buildPhase: .sources)
                 try pbxProj.expectFile(paths: ["CustomGroup2", "Sources/B", "b.swift"], names: ["CustomGroup2", "B", "b.swift"], buildPhase: .sources)
                 try pbxProj.expectFile(paths: ["CustomGroup2", "Sources/B", "C", "c.swift"], names: ["CustomGroup2", "B", "C", "c.swift"], buildPhase: .sources)
             }
@@ -988,7 +994,7 @@ extension PBXProj {
         guard !paths.isEmpty else {
             return nil
         }
-        
+
         let path = paths.first!
         let name = names.first!
         let restOfPath = Array(paths.dropFirst())

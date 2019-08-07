@@ -281,6 +281,7 @@ class SourceGenerator {
                 // Check equality by path and sourceTree because XcodeProj.PBXObject.== is very slow.
                 if !cachedGroupChildren.contains(where: { $0.name == child.name && $0.path == child.path && $0.sourceTree == child.sourceTree }) {
                     cachedGroupChildren.append(child)
+                    child.parent = cachedGroup
                 }
             }
             cachedGroup.children = cachedGroupChildren
@@ -394,7 +395,6 @@ class SourceGenerator {
         targetSource: TargetSource,
         path: Path,
         isBaseGroup: Bool,
-        createIntermediateGroups: Bool,
         hasCustomParent: Bool,
         excludePaths: Set<Path>,
         includePaths: Set<Path>
@@ -426,7 +426,6 @@ class SourceGenerator {
                 targetSource: targetSource,
                 path: path,
                 isBaseGroup: false,
-                createIntermediateGroups: createIntermediateGroups,
                 hasCustomParent: false,
                 excludePaths: excludePaths,
                 includePaths: includePaths
@@ -581,7 +580,10 @@ class SourceGenerator {
 
             let sourceFile = generateSourceFile(targetType: targetType, targetSource: targetSource, path: path)
 
-            if parentPath == project.basePath {
+            if hasCustomParent {
+                sourcePath = path
+                sourceReference = fileReference
+            } else if parentPath == project.basePath {
                 sourcePath = path
                 sourceReference = fileReference
                 rootGroups.insert(fileReference)
@@ -609,7 +611,6 @@ class SourceGenerator {
                 targetSource: targetSource,
                 path: path,
                 isBaseGroup: true,
-                createIntermediateGroups: createIntermediateGroups,
                 hasCustomParent: hasCustomParent,
                 excludePaths: excludePaths,
                 includePaths: includePaths
@@ -626,6 +627,7 @@ class SourceGenerator {
 
         if hasCustomParent {
             createParentGroups(customParentGroups, for: sourceReference)
+            try makePathRelative(for: sourceReference, at: path)
         } else if createIntermediateGroups {
             createIntermediaGroups(for: sourceReference, at: sourcePath)
         }
@@ -639,21 +641,24 @@ class SourceGenerator {
         }
 
         let parentPath = project.basePath + Path(parentGroups.joined(separator: "/"))
+        let parentPathExists = parentPath.exists
+        let parentGroupAlreadyExists = groupsByPath[parentPath] != nil
 
-        let hasParentGroup = groupsByPath[parentPath] != nil
         let parentGroup = getGroup(
             path: parentPath,
             mergingChildren: [fileElement],
             createIntermediateGroups: false,
             hasCustomParent: false,
-            isBaseGroup: false
+            isBaseGroup: parentGroups.count == 1
         )
 
         // As this path is a custom group, remove the path reference
-        parentGroup.name = String(parentName)
-        parentGroup.path = nil
+        if !parentPathExists {
+            parentGroup.name = String(parentName)
+            parentGroup.path = nil
+        }
 
-        if !hasParentGroup {
+        if !parentGroupAlreadyExists {
             createParentGroups(parentGroups.dropLast(), for: parentGroup)
         }
     }
@@ -678,6 +683,32 @@ class SourceGenerator {
 
         if !hasParentGroup {
             createIntermediaGroups(for: parentGroup, at: parentPath)
+        }
+    }
+
+    // Make the fileElement path and name relative to its parents aggregated paths
+    private func makePathRelative(for fileElement: PBXFileElement, at path: Path) throws {
+        // This makes the fileElement path relative to its parent and not to the project. Xcode then rebuilds the actual
+        // path for the file based on the hierarchy this fileElement lives in.
+        var paths: [String] = []
+        var element: PBXFileElement = fileElement
+        while true {
+            guard let parent = element.parent else { break }
+
+            if let path = parent.path {
+                paths.insert(path, at: 0)
+            }
+
+            element = parent
+        }
+
+        let completePath = project.basePath + Path(paths.joined(separator: "/"))
+        let relativePath = try path.relativePath(from: completePath)
+        let relativePathString = relativePath.string
+
+        if relativePathString != fileElement.path {
+            fileElement.path = relativePathString
+            fileElement.name = relativePath.lastComponent
         }
     }
 
