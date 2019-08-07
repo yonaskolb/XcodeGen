@@ -995,11 +995,9 @@ extension PBXProj {
         let restOfName = Array(names.dropFirst())
         if restOfPath.isEmpty {
             let fileReferences: [PBXFileReference] = group.children.compactMap { $0 as? PBXFileReference }
-            fileReferences.forEach { print("path: \($0.path ?? "nil"), name: \($0.name ?? "nil")") }
             return fileReferences.first { ($0.path == nil || $0.path == path) && $0.nameOrPath == name }
         } else {
             let groups = group.children.compactMap { $0 as? PBXGroup }
-            groups.forEach { print("path: \($0.path ?? "nil"), name: \($0.name ?? "nil")") }
             guard let group = groups.first(where: { ($0.path == nil || $0.path == path) && $0.nameOrPath == name }) else {
                 return nil
             }

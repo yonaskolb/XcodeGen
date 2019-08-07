@@ -402,6 +402,8 @@ class SourceGenerator {
 
         let children = try getSourceChildren(targetSource: targetSource, dirPath: path, excludePaths: excludePaths, includePaths: includePaths)
 
+        let createIntermediateGroups = targetSource.createIntermediateGroups ?? project.options.createIntermediateGroups
+
         let directories = children
             .filter { $0.isDirectory && $0.extension == nil && $0.extension != "lproj" }
 
@@ -539,7 +541,7 @@ class SourceGenerator {
 
         let type = targetSource.type ?? (path.isFile || path.extension != nil ? .file : .group)
 
-        let customParentGroups = (targetSource.group ?? "").split(separator: "/")
+        let customParentGroups = (targetSource.group ?? "").split(separator: "/").map{ String($0) }
         let hasCustomParent = !customParentGroups.isEmpty
 
         let createIntermediateGroups = targetSource.createIntermediateGroups ?? project.options.createIntermediateGroups
@@ -631,7 +633,7 @@ class SourceGenerator {
         return sourceFiles
     }
 
-    private func createParentGroups(_ parentGroups: [String.SubSequence], for fileElement: PBXFileElement) {
+    private func createParentGroups(_ parentGroups: [String], for fileElement: PBXFileElement) {
         guard let parentName = parentGroups.last else {
             return
         }
