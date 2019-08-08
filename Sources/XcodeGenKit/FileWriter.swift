@@ -41,6 +41,33 @@ public class FileWriter {
         }
     }
 
+    public func writeHook(at path: Path) throws {
+        var content = ""
+        if path.exists, let existingHook: String = try? path.read() {
+            content = existingHook
+        }
+
+        // Add XcodeGen in the git hook if not exist
+        // Checking command existence fixes command not found issue when using SourceTree
+        let comment = "# XcodeGen auto generated"
+        if !content.contains(comment) {
+            content += """
+            \(comment)
+            if ! [ -x "$(command -v xcodegen)" ]; then
+                PATH="$PATH:/usr/local/bin"
+            fi
+            xcodegen generate
+            """
+            try path.write(content)
+
+            // Change file mode to executable
+            let fileManager = FileManager.default
+            var attributes = try fileManager.attributesOfItem(atPath: path.string)
+            attributes[.posixPermissions] = 493
+            try fileManager.setAttributes(attributes, ofItemAtPath: path.string)
+        }
+    }
+
     private func writePlist(_ plist: [String: Any], path: String) throws {
         let path = project.basePath + path
         if path.exists, let data: Data = try? path.read(),

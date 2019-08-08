@@ -5,17 +5,12 @@ import SwiftCLI
 import XcodeGenKit
 import XcodeProj
 
-class GenerateCommand: Command {
+class GenerateCommand: CommandBase {
 
-    let name: String = "generate"
+    override var name: String {
+        return "generate"
+    }
     let shortDescription: String = "Generate an Xcode project from a spec"
-
-    let quiet = Flag(
-        "-q",
-        "--quiet",
-        description: "Suppress all informational and success output",
-        defaultValue: false
-    )
 
     let useCache = Flag(
         "-c",
@@ -29,40 +24,14 @@ class GenerateCommand: Command {
         description: "Where the cache file will be loaded from and save to. Defaults to ~/.xcodegen/cache/{SPEC_PATH_HASH}"
     )
 
-    let spec = Key<Path>(
-        "-s",
-        "--spec",
-        description: "The path to the project spec file. Defaults to project.yml"
-    )
+    override func execute() throws {
 
-    let projectDirectory = Key<Path>("-p", "--project", description: "The path to the directory where the project should be generated. Defaults to the directory the spec is in. The filename is defined in the project spec")
+        let projectSpecPath = try getProjectPath()
+        let projectDirectory = getProjectDir(from: projectSpecPath)
 
-    let version: Version
+        let project: Project = try getProject(from: projectSpecPath)
 
-    init(version: Version) {
-        self.version = version
-    }
-
-    func execute() throws {
-
-        let projectSpecPath = (spec.value ?? "project.yml").absolute()
-
-        let projectDirectory = self.projectDirectory.value?.absolute() ?? projectSpecPath.parent()
-
-        if !projectSpecPath.exists {
-            throw GenerationError.missingProjectSpec(projectSpecPath)
-        }
-
-        let specLoader = SpecLoader(version: version)
-        let project: Project
-
-        // load project spec
-        do {
-            project = try specLoader.loadProject(path: projectSpecPath, variables: ProcessInfo.processInfo.environment)
-            info("Loaded project:\n  \(project.debugDescription.replacingOccurrences(of: "\n", with: "\n  "))")
-        } catch {
-            throw GenerationError.projectSpecParsingError(error)
-        }
+        info("Loaded project:\n  \(project.debugDescription.replacingOccurrences(of: "\n", with: "\n  "))")
 
         // validate project dictionary
         do {
@@ -147,24 +116,6 @@ class GenerateCommand: Command {
             } catch {
                 info("Failed to write cache: \(error.localizedDescription)")
             }
-        }
-    }
-
-    func info(_ string: String) {
-        if !quiet.value {
-            stdout.print(string)
-        }
-    }
-
-    func warning(_ string: String) {
-        if !quiet.value {
-            stdout.print(string.yellow)
-        }
-    }
-
-    func success(_ string: String) {
-        if !quiet.value {
-            stdout.print(string.green)
         }
     }
 }

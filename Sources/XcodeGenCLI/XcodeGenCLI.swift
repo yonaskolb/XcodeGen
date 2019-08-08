@@ -8,12 +8,13 @@ public class XcodeGenCLI {
 
     public init(version: Version) {
         let generateCommand = GenerateCommand(version: version)
+        let hookCommand = HookCommand(version: version)
 
         cli = CLI(
             name: "xcodegen",
             version: version.string,
             description: "Generates Xcode projects",
-            commands: [generateCommand]
+            commands: [generateCommand, hookCommand]
         )
         cli.parser = Parser(router: CommandRouter(defaultCommand: generateCommand))
     }
