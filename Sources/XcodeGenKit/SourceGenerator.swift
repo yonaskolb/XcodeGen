@@ -34,6 +34,7 @@ class SourceGenerator {
         self.pbxProj = pbxProj
     }
 
+    @discardableResult
     func addObject<T: PBXObject>(_ object: T, context: String? = nil) -> T {
         pbxProj.add(object: object)
         object.context = context
