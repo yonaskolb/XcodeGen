@@ -96,6 +96,7 @@ targets:
         - App_iOS_Tests
         - App_iOS_UITests
       gatherCoverageData: true
+      disableMainThreadChecker: true
       configVariants:
         - Test
         - Staging
