@@ -1,0 +1,12 @@
+name: SPM
+packages:
+  Yams:
+    url: https://github.com/jpsim/Yams
+    majorVersion: 2.0.0
+targets:
+  App:
+    type: application
+    platform: iOS
+    sources: [SPM]
+    dependencies:
+      - package: Yams
