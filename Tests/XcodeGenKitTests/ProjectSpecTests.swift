@@ -134,7 +134,10 @@ class ProjectSpecTests: XCTestCase {
                     settings: invalidSettings,
                     configFiles: ["invalidConfig": "invalidConfigFile"],
                     sources: ["invalidSource"],
-                    dependencies: [Dependency(type: .target, reference: "invalidDependency")],
+                    dependencies: [
+                        Dependency(type: .target, reference: "invalidDependency"),
+                        Dependency(type: .package(product: nil), reference: "invalidPackage")
+                    ],
                     preBuildScripts: [BuildScript(script: .path("invalidPreBuildScript"), name: "preBuildScript1")],
                     postCompileScripts: [BuildScript(script: .path("invalidPostCompileScript"))],
                     postBuildScripts: [BuildScript(script: .path("invalidPostBuildScript"))],
@@ -142,6 +145,7 @@ class ProjectSpecTests: XCTestCase {
                 )]
 
                 try expectValidationError(project, .invalidTargetDependency(target: "target1", dependency: "invalidDependency"))
+                try expectValidationError(project, .invalidSwiftPackage(name: "invalidPackage", target: "target1"))
                 try expectValidationError(project, .invalidTargetConfigFile(target: "target1", configFile: "invalidConfigFile", config: "invalidConfig"))
                 try expectValidationError(project, .invalidTargetSchemeTest(target: "target1", testTarget: "invalidTarget"))
                 try expectValidationError(project, .invalidTargetSource(target: "target1", source: "invalidSource"))

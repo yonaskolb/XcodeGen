@@ -156,6 +156,10 @@ extension Project {
                             errors.append(.invalidSDKDependency(target: target.name, dependency: dependency.reference))
                         }
                     }
+                case .package:
+                    if packages[dependency.reference] == nil {
+                        errors.append(.invalidSwiftPackage(name: dependency.reference, target: target.name))
+                    }
                 default: break
                 }
             }
