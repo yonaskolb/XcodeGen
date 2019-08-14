@@ -375,7 +375,7 @@ A dependency can be one of a 3 types:
 - `framework: path` - links to a framework
 - `carthage: name` - helper for linking to a Carthage framework
 - `sdk: name` - links to a dependency with the SDK. This can either be a relative path within the sdk root or a single filename that references a framework (.framework) or lib (.tbd)
-- `package: name` - links to a Swift Package. The name must match the name of a package defined in the top level`packages`
+- `package: name` - links to a Swift Package. The name must match the name of a package defined in the top level `packages`
 
 **Linking options**:
 
@@ -782,7 +782,7 @@ schemes:
 ## Swift Package
 Swift packages are defined at a project level, and then linked to individual targets via a [Dependency](#dependency).
 
-> Note that Swift Packages don't work in projects with configurations other than Debug and Release
+> Note that Swift Packages don't work in projects with configurations other than `Debug` and `Release`. That limitation is tracked here bugs.swift.org/browse/SR-10927
 
 - [x] **url**: **URL** - the url to the package
 - [x] **version**: **String** - the version of the package to use. It can take a few forms:
