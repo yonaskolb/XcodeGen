@@ -6,6 +6,7 @@ jobs:
     steps:
     - uses: actions/checkout@master
     - name: Resolve
+      run: swift package resolve
     - name: Build
       run: swift build
     - name: Test
