@@ -5,6 +5,12 @@ jobs:
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@master
+    - name: Info
+      run: |
+        swift --version
+        swift package --version
+        xcode-select -p
+        ls /Applications
     - name: Resolve
       run: swift package resolve
     - name: Build
@@ -19,3 +25,4 @@ jobs:
       run: scripts/build-fixtures.sh
     - name: Build release
       run: make build
+  
