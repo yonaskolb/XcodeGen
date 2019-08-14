@@ -1,13 +1,13 @@
 name: CI
 on: [push, pull_request]
 jobs:
-  test:
+  test_swift_5:
     runs-on: macos-latest
-    name: Test Swift 5
+    #name: Test Swift 5
     steps:
     - uses: actions/checkout@master
-    - name: Xcode version
-      run: sudo xcode-select -s /Applications/Xcode_11_beta.app
+    #- name: Xcode version
+    #  run: sudo xcode-select -s /Applications/Xcode_11_beta.app
     - name: Info
       run: |
         swift --version
