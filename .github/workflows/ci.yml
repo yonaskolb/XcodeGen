@@ -1,0 +1,20 @@
+name: CI
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: Resolve
+    - name: Build
+      run: swift build
+    - name: Test
+      run: swift test
+    - name: Gen fixtures
+      run: scripts/gen-fixtures.sh
+    - name: Check fixtures
+      run: scripts/diff-fixtures.sh
+    - name: Build fixtures
+      run: scripts/build-fixtures.sh
+    - name: Build release
+      run: make build
