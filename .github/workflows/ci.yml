@@ -3,10 +3,10 @@ on: [push, pull_request]
 jobs:
   test:
     runs-on: macos-latest
-    name: Test ${{ matrix.xcode }}
+    name: Test ${{ matrix.xcode_version }}
     strategy:
       matrix:
-        xcode: [Xcode_10.3, Xcode_11_beta]
+        xcode_version: ['10.3', '11_beta']
     steps:
     - uses: actions/checkout@master
     - name: Info
