@@ -4,6 +4,7 @@
 
 #### Fixed
 - Fixed included specs that were referenced multiple times from duplicating content [#599](https://github.com/yonaskolb/XcodeGen/pull/599) @haritowa
+- Fixed `.orig` files being added to the project [#627](https://github.com/yonaskolb/XcodeGen/pull/627) @keith
 
 ## 2.6.0
 
