@@ -81,7 +81,7 @@ mint install yonaskolb/xcodegen
 ```shell
 git clone https://github.com/yonaskolb/XcodeGen.git
 cd XcodeGen
-make
+make install
 ```
 
 ### Homebrew
