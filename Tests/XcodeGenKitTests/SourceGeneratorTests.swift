@@ -312,6 +312,24 @@ class SourceGeneratorTests: XCTestCase {
                 try test(generateEmptyDirectories: true)
             }
 
+            $0.it("excludes certain ignored files") {
+                let directories = """
+                Sources:
+                  A:
+                    - a.swift
+                    - .DS_Store
+                    - a.swift.orig
+                """
+                try createDirectories(directories)
+
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: [TargetSource(path: "Sources")])
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target])
+                let pbxProj = try project.generatePbxProj()
+                try pbxProj.expectFile(paths: ["Sources", "A", "a.swift"])
+                try pbxProj.expectFileMissing(paths: ["Sources", "A", ".DS_Store"])
+                try pbxProj.expectFileMissing(paths: ["Sources", "A", "a.swift.orig"])
+            }
+
             $0.it("generates file sources") {
                 let directories = """
                 Sources:

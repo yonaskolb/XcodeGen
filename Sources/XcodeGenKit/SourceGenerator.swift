@@ -24,6 +24,9 @@ class SourceGenerator {
     var defaultExcludedFiles = [
         ".DS_Store",
     ]
+    private let defaultExcludedExtensions = [
+        "orig",
+    ]
 
     private(set) var knownRegions: Set<String> = []
 
@@ -317,6 +320,7 @@ class SourceGenerator {
     /// Checks whether the path is not in any default or TargetSource excludes
     func isIncludedPath(_ path: Path) -> Bool {
         return !defaultExcludedFiles.contains(where: { path.lastComponent.contains($0) })
+            && !(path.extension.map(defaultExcludedExtensions.contains) ?? false)
             && !targetSourceExcludePaths.contains(path)
     }
 
