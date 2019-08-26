@@ -1,6 +1,7 @@
 # Frequently asked questions
 - [Can I still check in my project](#can-i-still-check-in-my-project)
 - [Can I use CocoaPods](#can-i-use-cocoapods)
+- [Can I use Crashlytics](#can-i-use-crashlytics)
 - [How do I setup code signing](#how-do-i-setup-code-signing)
 
 ## Can I still check in my project
@@ -14,6 +15,22 @@ For now you can always add xcodegen as a git `post-checkout` hook.
  
 ## Can I use CocoaPods
 Yes, simply generate your project and then run `pod install` which will integrate with your project and create a workspace.
+
+## Can I use Crashlytics
+Yes, but you need a little bit trick to CocoaPods. Add this script in your `Podfile` as follows
+
+```ruby:Podfile
+// Your dependencies
+pod 'Fabric'
+pod 'Crashlytics'
+
+script_phase :name => 'Run Fabric',
+             :script => '"${PODS_ROOT}/Fabric/run"'
+             :input_files => ['$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)']
+
+```
+
+This script will be added after [CP] Embed Pods Frameworks.
 
 ## How do I setup code signing
 
