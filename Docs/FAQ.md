@@ -17,7 +17,7 @@ For now you can always add xcodegen as a git `post-checkout` hook.
 Yes, simply generate your project and then run `pod install` which will integrate with your project and create a workspace.
 
 ## Can I use Crashlytics
-Yes, but you need a little bit trick to CocoaPods. Add this script in your `Podfile` as follows
+Yes, but you need to use a little trick when using CocoaPods. Add this script in your `Podfile`:
 
 ```ruby:Podfile
 // Your dependencies
@@ -30,7 +30,7 @@ script_phase :name => 'Run Fabric',
 
 ```
 
-This script will be added after [CP] Embed Pods Frameworks.
+This script will be added after `[CP] Embed Pods Frameworks.`
 
 ## How do I setup code signing
 
