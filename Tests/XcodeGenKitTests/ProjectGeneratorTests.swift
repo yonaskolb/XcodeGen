@@ -435,13 +435,16 @@ class ProjectGeneratorTests: XCTestCase {
                     type: .staticLibrary,
                     platform: .iOS,
                     dependencies: [
-                        Dependency(type: .target, reference: iosFrameworkZ.name),
-                        Dependency(type: .framework, reference: "FrameworkZ.framework"),
+                        Dependency(type: .target, reference: iosFrameworkZ.name, link: true),
+                        Dependency(type: .framework, reference: "FrameworkZ.framework", link: true),
                         Dependency(type: .carthage(findFrameworks: false), reference: "CarthageZ"),
                     ]
                 )
                 expectedResourceFiles[staticLibrary.name] = Set()
-                expectedLinkedFiles[staticLibrary.name] = Set([])
+                expectedLinkedFiles[staticLibrary.name] = Set([
+                    iosFrameworkZ.filename,
+                    "FrameworkZ.framework",
+                ])
                 expectedEmbeddedFrameworks[staticLibrary.name] = Set()
 
                 let resourceBundle = Target(
