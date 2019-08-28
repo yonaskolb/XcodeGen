@@ -339,6 +339,8 @@ class ProjectGeneratorTests: XCTestCase {
                 //       embed: false
                 // iOSFrameworkZ:
                 //   dependencies: []
+                // iOSFrameworkX:
+                //   dependencies: []
                 // StaticLibrary:
                 //   dependencies:
                 //     - target: iOSFrameworkZ
@@ -430,18 +432,33 @@ class ProjectGeneratorTests: XCTestCase {
                 expectedLinkedFiles[iosFrameworkZ.name] = Set()
                 expectedEmbeddedFrameworks[iosFrameworkZ.name] = Set()
 
+                let iosFrameworkX = Target(
+                    name: "iOSFrameworkX",
+                    type: .framework,
+                    platform: .iOS,
+                    dependencies: []
+                )
+                expectedResourceFiles[iosFrameworkX.name] = Set()
+                expectedLinkedFiles[iosFrameworkX.name] = Set()
+                expectedEmbeddedFrameworks[iosFrameworkX.name] = Set()
+
                 let staticLibrary = Target(
                     name: "StaticLibrary",
                     type: .staticLibrary,
                     platform: .iOS,
                     dependencies: [
-                        Dependency(type: .target, reference: iosFrameworkZ.name),
-                        Dependency(type: .framework, reference: "FrameworkZ.framework"),
+                        Dependency(type: .target, reference: iosFrameworkZ.name, link: true),
+                        Dependency(type: .framework, reference: "FrameworkZ.framework", link: true),
+                        Dependency(type: .target, reference: iosFrameworkX.name/*, link: false */),
+                        Dependency(type: .framework, reference: "FrameworkX.framework"/*, link: false */),
                         Dependency(type: .carthage(findFrameworks: false), reference: "CarthageZ"),
                     ]
                 )
                 expectedResourceFiles[staticLibrary.name] = Set()
-                expectedLinkedFiles[staticLibrary.name] = Set([])
+                expectedLinkedFiles[staticLibrary.name] = Set([
+                    iosFrameworkZ.filename,
+                    "FrameworkZ.framework",
+                ])
                 expectedEmbeddedFrameworks[staticLibrary.name] = Set()
 
                 let resourceBundle = Target(
@@ -471,7 +488,9 @@ class ProjectGeneratorTests: XCTestCase {
                 expectedLinkedFiles[iosFrameworkA.name] = Set([
                     "FrameworkC.framework",
                     iosFrameworkZ.filename,
+                    iosFrameworkX.filename,
                     "FrameworkZ.framework",
+                    "FrameworkX.framework",
                     "CarthageZ.framework",
                     "CarthageA.framework",
                     "CarthageB.framework",
@@ -496,7 +515,9 @@ class ProjectGeneratorTests: XCTestCase {
                 expectedLinkedFiles[iosFrameworkB.name] = Set([
                     iosFrameworkA.filename,
                     iosFrameworkZ.filename,
+                    iosFrameworkX.filename,
                     "FrameworkZ.framework",
+                    "FrameworkX.framework",
                     "CarthageZ.framework",
                     "FrameworkC.framework",
                     "FrameworkD.framework",
@@ -528,7 +549,9 @@ class ProjectGeneratorTests: XCTestCase {
                     iosFrameworkA.filename,
                     staticLibrary.filename,
                     iosFrameworkZ.filename,
+                    iosFrameworkX.filename,
                     "FrameworkZ.framework",
+                    "FrameworkX.framework",
                     "CarthageZ.framework",
                     "FrameworkC.framework",
                     iosFrameworkB.filename,
@@ -539,7 +562,9 @@ class ProjectGeneratorTests: XCTestCase {
                 expectedEmbeddedFrameworks[appTest.name] = Set([
                     iosFrameworkA.filename,
                     iosFrameworkZ.filename,
+                    iosFrameworkX.filename,
                     "FrameworkZ.framework",
+                    "FrameworkX.framework",
                     "FrameworkC.framework",
                     iosFrameworkB.filename,
                     "FrameworkD.framework",
@@ -572,7 +597,7 @@ class ProjectGeneratorTests: XCTestCase {
                     "NotificationCenter.framework",
                 ])
 
-                let targets = [app, iosFrameworkZ, staticLibrary, resourceBundle, iosFrameworkA, iosFrameworkB, appTest, appTestWithoutTransitive, stickerPack]
+                let targets = [app, iosFrameworkZ, iosFrameworkX, staticLibrary, resourceBundle, iosFrameworkA, iosFrameworkB, appTest, appTestWithoutTransitive, stickerPack]
 
                 let project = Project(
                     name: "test",
