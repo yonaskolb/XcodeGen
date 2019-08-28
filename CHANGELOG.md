@@ -7,7 +7,7 @@
 - Fixed `.orig` files being added to the project [#627](https://github.com/yonaskolb/XcodeGen/pull/627) @keith
 
 #### Changed
-- Changed to link dylib into static library only when `link` is true [#635](https://github.com/yonaskolb/XcodeGen/pull/635) @kateinoigakukun
+- Allow linking of dependencies into static libraries when `link` is set to true [#635](https://github.com/yonaskolb/XcodeGen/pull/635) @kateinoigakukun
 
 ## 2.6.0
 
