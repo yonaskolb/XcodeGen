@@ -336,7 +336,12 @@ class SourceGenerator {
         return !defaultExcludedFiles.contains(where: { path.lastComponent.contains($0) })
             && !(path.extension.map(defaultExcludedExtensions.contains) ?? false)
             && !targetSourceExcludePaths.contains(path)
-            && (targetSourceIncludePaths.isEmpty || targetSourceIncludePaths.contains(path))
+            // If includes is empty, it's included. If it's not empty, the path either needs to match exactly, or it needs to be a direct parent of an included path.
+            && (targetSourceIncludePaths.isEmpty || targetSourceIncludePaths.contains(where: {
+                if path == $0 { return true }
+                guard let relativePath = try? $0.relativePath(from: path) else { return false }
+                return !relativePath.description.contains("..")
+            }))
     }
 
     /// Gets all the children paths that aren't excluded

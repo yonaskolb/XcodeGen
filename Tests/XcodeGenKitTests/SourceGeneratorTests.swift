@@ -634,7 +634,7 @@ class SourceGeneratorTests: XCTestCase {
                 let project = Project(basePath: directoryPath, name: "Test", targets: [target])
                 _ = try project.generatePbxProj()
             }
-            
+
             $0.it("relative path items outside base path are grouped together") {
                 let directories = """
                 Sources:
@@ -644,21 +644,21 @@ class SourceGeneratorTests: XCTestCase {
                         - b.swift
                 """
                 try createDirectories(directories)
-                
+
                 let outOfSourceFile1 = outOfRootPath + "Outside/a.swift"
                 try outOfSourceFile1.parent().mkpath()
                 try outOfSourceFile1.write("")
-                
+
                 let outOfSourceFile2 = outOfRootPath + "Outside/Outside2/b.swift"
                 try outOfSourceFile2.parent().mkpath()
                 try outOfSourceFile2.write("")
-                
+
                 let target = Target(name: "Test", type: .application, platform: .iOS, sources: [
                     "Sources",
                     "../OtherDirectory",
                 ])
                 let project = Project(basePath: directoryPath, name: "Test", targets: [target])
-                
+
                 let pbxProj = try project.generatePbxProj()
                 try pbxProj.expectFile(paths: ["Sources", "Inside", "a.swift"], buildPhase: .sources)
                 try pbxProj.expectFile(paths: ["Sources", "Inside", "Inside2", "b.swift"], buildPhase: .sources)
@@ -710,6 +710,11 @@ class SourceGeneratorTests: XCTestCase {
                     - fileTests.swift
                   - group:
                     - file.swift
+                  - group3:
+                    - group4:
+                      - group5:
+                        - file.swift
+                        - file5Tests.swift
                 """
                 try createDirectories(directories)
 
@@ -719,12 +724,14 @@ class SourceGeneratorTests: XCTestCase {
 
                 let target = Target(name: "Test", type: .application, platform: .iOS, sources: [TargetSource(path: "Sources", includes: includes)])
 
-                let project = Project(basePath: directoryPath, name: "Test", targets: [target])
+                let options = SpecOptions(createIntermediateGroups: true, generateEmptyDirectories: true)
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target], options: options)
                 let pbxProj = try project.generatePbxProj()
 
                 try pbxProj.expectFile(paths: ["Sources", "file2Tests.swift"])
                 try pbxProj.expectFile(paths: ["Sources", "file3Tests.swift"])
                 try pbxProj.expectFile(paths: ["Sources", "group2", "fileTests.swift"])
+                try pbxProj.expectFile(paths: ["Sources", "group3", "group4", "group5", "file5Tests.swift"])
                 try pbxProj.expectFileMissing(paths: ["Sources", "file2.swift"])
                 try pbxProj.expectFileMissing(paths: ["Sources", "file3.swift"])
                 try pbxProj.expectFileMissing(paths: ["Sources", "group2", "file.swift"])
