@@ -348,6 +348,7 @@ targets:
           - "ios/*.[mh]"
           - "configs/server[0-2].json"
           - "*-Private.h"
+          - "**/*.md"
         compilerFlags:
           - "-Werror"
           - "-Wextra"
