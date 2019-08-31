@@ -699,6 +699,7 @@ class SpecLoadingTests: XCTestCase {
                         "ENV1": true,
                     ],
                     "gatherCoverageData": true,
+                    "disableMainThreadChecker": true,
                     "environmentVariables": [
                         "TEST_VAR": "TEST_VAL",
                     ],
@@ -722,6 +723,7 @@ class SpecLoadingTests: XCTestCase {
                     testTargets: ["t1", "t2"],
                     configVariants: ["dev", "app-store"],
                     gatherCoverageData: true,
+                    disableMainThreadChecker: true,
                     commandLineArguments: ["ENV1": true],
                     environmentVariables: [XCScheme.EnvironmentVariable(variable: "TEST_VAR", value: "TEST_VAL", enabled: true)],
                     preActions: [.init(name: "Do Thing", script: "dothing", settingsTarget: "test")],
@@ -764,6 +766,7 @@ class SpecLoadingTests: XCTestCase {
                             ],
                         ],
                         "gatherCoverageData": true,
+                        "disableMainThreadChecker": true
                     ],
                 ]
                 let scheme = try Scheme(name: "Scheme", jsonDictionary: schemeDictionary)
@@ -787,6 +790,7 @@ class SpecLoadingTests: XCTestCase {
                 let expectedTest = Scheme.Test(
                     config: "debug",
                     gatherCoverageData: true,
+                    disableMainThreadChecker: true,
                     targets: [
                         "Target1",
                         Scheme.Test.TestTarget(
