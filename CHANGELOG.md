@@ -2,6 +2,9 @@
 
 ## Next Version
 
+#### Added
+- Added ability to disable main thread checker on Run and Test schemes and TargetSchemes [#601](https://github.com/yonaskolb/XcodeGen/pull/601) @wag-miles
+
 #### Fixed
 - Fixed included specs that were referenced multiple times from duplicating content [#599](https://github.com/yonaskolb/XcodeGen/pull/599) @haritowa
 - Fixed `.orig` files being added to the project [#627](https://github.com/yonaskolb/XcodeGen/pull/627) @keith
