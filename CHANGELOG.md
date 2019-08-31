@@ -2,6 +2,10 @@
 
 ## Next Version
 
+#### Added
+
+- Added Bash 4 style recursive globbing (`**/*`) when excluding files from target sources. [#636](https://github.com/yonaskolb/XcodeGen/pull/636) @bclymer
+
 #### Fixed
 - Fixed included specs that were referenced multiple times from duplicating content [#599](https://github.com/yonaskolb/XcodeGen/pull/599) @haritowa
 - Fixed `.orig` files being added to the project [#627](https://github.com/yonaskolb/XcodeGen/pull/627) @keith

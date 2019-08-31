@@ -117,7 +117,7 @@ public class Glob: Collection {
 
     // MARK: Protocol of IndexableBase
 
-    public func index(after i: Glob.Index) -> Glob.Index {
+    public func index(after i: Int) -> Int {
         return i + 1
     }
 

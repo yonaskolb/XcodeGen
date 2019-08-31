@@ -302,8 +302,10 @@ class SourceGenerator {
         let rootSourcePath = project.basePath + targetSource.path
 
         return Set(
-            targetSource.excludes.map {
-                return expandPattern("\(rootSourcePath)/\($0)")
+            targetSource.excludes.map { pattern in
+                guard !pattern.isEmpty else { return [] }
+                return Glob(pattern: "\(rootSourcePath)/\(pattern)")
+                    .map { Path($0) }
                     .map {
                         guard $0.isDirectory else {
                             return [$0]
@@ -315,21 +317,6 @@ class SourceGenerator {
             }
             .reduce([], +)
         )
-    }
-
-    private func expandPattern(_ pattern: String) -> [Path] {
-        let filePaths = listFilePaths(pattern: pattern)
-        let urls = filePaths.map { Path($0) }
-
-        return urls
-    }
-
-    private func listFilePaths(pattern: String) -> [String] {
-        guard !pattern.isEmpty else {
-            return []
-        }
-
-        return Glob(pattern: pattern).paths
     }
 
     /// Checks whether the path is not in any default or TargetSource excludes
