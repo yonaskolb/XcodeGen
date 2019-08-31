@@ -1,0 +1,3 @@
+include: 
+  - duplicated_import_root.yml
+name: DuplicatedImportTransitive

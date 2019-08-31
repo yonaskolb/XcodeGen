@@ -1,0 +1,9 @@
+include: 
+  - duplicated_import_transitive.yml
+  - duplicated_import_root.yml
+  - duplicated_import_root.yml
+name: DuplicatedImportDependent
+targets:
+  IncludedTarget:
+    templates:
+      - IncludedTemplate
