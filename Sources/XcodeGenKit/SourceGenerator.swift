@@ -302,8 +302,10 @@ class SourceGenerator {
         let rootSourcePath = project.basePath + targetSource.path
 
         return Set(
-            targetSource.excludes.map {
-                Path.glob("\(rootSourcePath)/\($0)")
+            targetSource.excludes.map { pattern in
+                guard !pattern.isEmpty else { return [] }
+                return Glob(pattern: "\(rootSourcePath)/\(pattern)")
+                    .map { Path($0) }
                     .map {
                         guard $0.isDirectory else {
                             return [$0]

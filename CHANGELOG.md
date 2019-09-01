@@ -3,6 +3,8 @@
 ## Next Version
 
 #### Added
+
+- Added Bash 4 style recursive globbing (`**/*`) when excluding files from target sources. [#636](https://github.com/yonaskolb/XcodeGen/pull/636) @bclymer
 - Added ability to disable main thread checker on Run and Test schemes and TargetSchemes [#601](https://github.com/yonaskolb/XcodeGen/pull/601) @wag-miles
 
 #### Fixed
