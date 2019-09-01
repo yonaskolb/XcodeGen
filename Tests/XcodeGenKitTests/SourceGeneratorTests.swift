@@ -715,6 +715,8 @@ class SourceGeneratorTests: XCTestCase {
                       - group5:
                         - file.swift
                         - file5Tests.swift
+                        - file6Tests.m
+                        - file6Tests.h
                 """
                 try createDirectories(directories)
 
@@ -732,6 +734,8 @@ class SourceGeneratorTests: XCTestCase {
                 try pbxProj.expectFile(paths: ["Sources", "file3Tests.swift"])
                 try pbxProj.expectFile(paths: ["Sources", "group2", "fileTests.swift"])
                 try pbxProj.expectFile(paths: ["Sources", "group3", "group4", "group5", "file5Tests.swift"])
+                try pbxProj.expectFile(paths: ["Sources", "group3", "group4", "group5", "file6Tests.h"])
+                try pbxProj.expectFile(paths: ["Sources", "group3", "group4", "group5", "file6Tests.m"])
                 try pbxProj.expectFileMissing(paths: ["Sources", "file2.swift"])
                 try pbxProj.expectFileMissing(paths: ["Sources", "file3.swift"])
                 try pbxProj.expectFileMissing(paths: ["Sources", "group2", "file.swift"])
