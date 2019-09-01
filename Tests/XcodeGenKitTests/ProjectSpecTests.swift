@@ -269,9 +269,9 @@ class ProjectSpecTests: XCTestCase {
                                                     productName: "App",
                                                     deploymentTarget: Version(major: 0, minor: 1, patch: 2),
                                                     settings: Settings(buildSettings: ["foo": "bar"],
-                                                                       configSettings: ["foo" : Settings(buildSettings: ["nested": "config"],
-                                                                                                         configSettings: [:],
-                                                                                                         groups: ["config-setting-group"])],
+                                                                       configSettings: ["foo": Settings(buildSettings: ["nested": "config"],
+                                                                                                        configSettings: [:],
+                                                                                                        groups: ["config-setting-group"])],
                                                                        groups: ["setting-group"]),
                                                     configFiles: ["foo": "bar"],
                                                     sources: [TargetSource(path: "Source",
@@ -331,7 +331,7 @@ class ProjectSpecTests: XCTestCase {
                                                                            action: .compilerSpec("com.apple.xcode.tools.swift.compiler"),
                                                                            name: nil,
                                                                            outputFiles: ["bar"],
-                                                                           outputFilesCompilerFlags: ["foo"]),],
+                                                                           outputFilesCompilerFlags: ["foo"])],
                                                     scheme: TargetScheme(testTargets: [Scheme.Test.TestTarget(name: "test target",
                                                                                                               randomExecutionOrder: false,
                                                                                                               parallelizable: false)],
@@ -388,14 +388,14 @@ class ProjectSpecTests: XCTestCase {
                                                                                                                                 settingsTarget: "foo")]),
                                                                       attributes: ["foo": "bar"])],
                                    settings: Settings(buildSettings: ["foo": "bar"],
-                                                      configSettings: ["foo" : Settings(buildSettings: ["nested": "config"],
-                                                                                        configSettings: [:],
-                                                                                        groups: ["config-setting-group"])],
+                                                      configSettings: ["foo": Settings(buildSettings: ["nested": "config"],
+                                                                                       configSettings: [:],
+                                                                                       groups: ["config-setting-group"])],
                                                       groups: ["setting-group"]),
                                    settingGroups: ["foo": Settings(buildSettings: ["foo": "bar"],
-                                                                   configSettings: ["foo" : Settings(buildSettings: ["nested": "config"],
-                                                                                                     configSettings: [:],
-                                                                                                     groups: ["config-setting-group"])],
+                                                                   configSettings: ["foo": Settings(buildSettings: ["nested": "config"],
+                                                                                                    configSettings: [:],
+                                                                                                    groups: ["config-setting-group"])],
                                                                    groups: ["setting-group"])],
                                    schemes: [Scheme(name: "scheme",
                                                     build: Scheme.Build(targets: [Scheme.BuildTarget(target: "foo",
@@ -503,7 +503,7 @@ class ProjectSpecTests: XCTestCase {
     }
 }
 
-fileprivate func expectValidationError(_ project: Project, _ expectedError: SpecValidationError.ValidationError, file: String = #file, line: Int = #line) throws {
+private func expectValidationError(_ project: Project, _ expectedError: SpecValidationError.ValidationError, file: String = #file, line: Int = #line) throws {
     do {
         try project.validate()
     } catch let error as SpecValidationError {

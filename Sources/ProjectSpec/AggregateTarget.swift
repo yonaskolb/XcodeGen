@@ -70,7 +70,7 @@ extension AggregateTarget: JSONEncodable {
             "configFiles": configFiles,
             "attributes": attributes,
             "buildScripts": buildScripts.map { $0.toJSONValue() },
-            "scheme": scheme?.toJSONValue()
+            "scheme": scheme?.toJSONValue(),
         ] as [String: Any?]
     }
 }

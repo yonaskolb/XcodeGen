@@ -6,9 +6,7 @@
 //  Adapted from https://gist.github.com/blakemerryman/76312e1cbf8aec248167
 //  Adapted from https://gist.github.com/efirestone/ce01ae109e08772647eb061b3bb387c3
 
-
 import Foundation
-
 
 public let GlobBehaviorBashV3 = Glob.Behavior(
     supportsGlobstar: false,
@@ -28,7 +26,6 @@ public let GlobBehaviorGradle = Glob.Behavior(
     includesDirectoriesInResults: false,
     includesFilesInResultsIfTrailingSlash: true
 )
-
 
 /**
  Finds files on the file system using pattern matching.
@@ -66,7 +63,7 @@ public class Glob: Collection {
     public let blacklistedDirectories: [String]
     var paths = [String]()
     public var startIndex: Int { return paths.startIndex }
-    public var endIndex: Int   { return paths.endIndex   }
+    public var endIndex: Int { return paths.endIndex }
 
     /// Initialize a glob
     ///
@@ -126,7 +123,7 @@ public class Glob: Collection {
     private var globalFlags = GLOB_TILDE | GLOB_BRACE | GLOB_MARK
 
     private func executeGlob(pattern: UnsafePointer<CChar>, gt: UnsafeMutablePointer<glob_t>) -> Bool {
-        return 0 == glob(pattern, globalFlags, nil, gt)
+        return glob(pattern, globalFlags, nil, gt) == 0
     }
 
     private func expandGlobstar(pattern: String) -> [String] {
@@ -234,4 +231,3 @@ private extension Sequence {
         return Array(self)
     }
 }
-

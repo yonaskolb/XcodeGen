@@ -107,7 +107,7 @@ public class SchemeGenerator {
         func getExecutionAction(_ action: Scheme.ExecutionAction) -> XCScheme.ExecutionAction {
             // ExecutionActions can require the use of build settings. Xcode allows the settings to come from a build or test target.
             let environmentBuildable = action.settingsTarget.flatMap { settingsTarget in
-                return (buildActionEntries + testBuildTargetEntries)
+                (buildActionEntries + testBuildTargetEntries)
                     .first { settingsTarget == $0.buildableReference.blueprintName }?
                     .buildableReference
             }

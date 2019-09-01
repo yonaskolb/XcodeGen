@@ -264,7 +264,7 @@ extension TargetSource.BuildPhase.CopyFilesSettings: JSONEncodable {
     public func toJSONValue() -> Any {
         return [
             "destination": destination.rawValue,
-            "subpath": subpath
+            "subpath": subpath,
         ]
     }
 }
