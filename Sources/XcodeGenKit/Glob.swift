@@ -117,7 +117,7 @@ public class Glob: Collection {
 
     // MARK: Protocol of IndexableBase
 
-    public func index(after i: Glob.Index) -> Glob.Index {
+    public func index(after i: Int) -> Int {
         return i + 1
     }
 
@@ -139,30 +139,17 @@ public class Glob: Collection {
         let firstPart = parts.removeFirst()
         var lastPart = parts.joined(separator: "**")
 
-        let fileManager = FileManager.default
-
         var directories: [String]
 
-        do {
-            directories = try fileManager.contentsOfDirectory(atPath: firstPart).compactMap { subpath -> [String]? in
-                if blacklistedDirectories.contains(subpath) {
-                    return nil
-                }
-                let firstLevelPath = NSString(string: firstPart).appendingPathComponent(subpath)
-                if isDirectory(path: firstLevelPath) {
-                    var subDirs: [String] = try fileManager.subpathsOfDirectory(atPath: firstLevelPath).compactMap { subpath -> String? in
-                        let fullPath = NSString(string: firstLevelPath).appendingPathComponent(subpath)
-                        return isDirectory(path: fullPath) ? fullPath : nil
-                    }
-                    subDirs.append(firstLevelPath)
-                    return subDirs
-                } else {
-                    return nil
-                }
-            }.joined().array()
-        } catch {
+        if FileManager.default.fileExists(atPath: firstPart) {
+            do {
+                directories = try exploreDirectories(path: firstPart)
+            } catch {
+                directories = []
+                print("Error parsing file system item: \(error)")
+            }
+        } else {
             directories = []
-            print("Error parsing file system item: \(error)")
         }
 
         if behavior.includesFilesFromRootOfGlobstar {
@@ -184,6 +171,28 @@ public class Glob: Collection {
         }
 
         return results
+    }
+
+    private func exploreDirectories(path: String) throws -> [String] {
+        return try FileManager.default.contentsOfDirectory(atPath: path)
+            .compactMap { subpath -> [String]? in
+                if blacklistedDirectories.contains(subpath) {
+                    return nil
+                }
+                let firstLevelPath = NSString(string: path).appendingPathComponent(subpath)
+                guard isDirectory(path: firstLevelPath) else {
+                    return nil
+                }
+                var subDirs: [String] = try FileManager.default.subpathsOfDirectory(atPath: firstLevelPath)
+                    .compactMap { subpath -> String? in
+                        let fullPath = NSString(string: firstLevelPath).appendingPathComponent(subpath)
+                        return isDirectory(path: fullPath) ? fullPath : nil
+                    }
+                subDirs.append(firstLevelPath)
+                return subDirs
+            }
+            .joined()
+            .array()
     }
 
     private func isDirectory(path: String) -> Bool {
@@ -225,3 +234,4 @@ private extension Sequence {
         return Array(self)
     }
 }
+

@@ -2,9 +2,17 @@
 
 ## Next Version
 
+#### Added
+
+- Added Bash 4 style recursive globbing (`**/*`) when excluding files from target sources. [#636](https://github.com/yonaskolb/XcodeGen/pull/636) @bclymer
+- Added ability to disable main thread checker on Run and Test schemes and TargetSchemes [#601](https://github.com/yonaskolb/XcodeGen/pull/601) @wag-miles
+
 #### Fixed
 - Fixed included specs that were referenced multiple times from duplicating content [#599](https://github.com/yonaskolb/XcodeGen/pull/599) @haritowa
 - Fixed `.orig` files being added to the project [#627](https://github.com/yonaskolb/XcodeGen/pull/627) @keith
+
+#### Changed
+- Allow linking of dependencies into static libraries when `link` is set to true [#635](https://github.com/yonaskolb/XcodeGen/pull/635) @kateinoigakukun
 
 ## 2.6.0
 
