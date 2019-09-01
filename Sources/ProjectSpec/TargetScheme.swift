@@ -72,7 +72,7 @@ extension TargetScheme: JSONEncodable {
             "preActions": preActions.map { $0.toJSONValue() },
             "postActions": postActions.map { $0.toJSONValue() },
         ]
-        
+
         if gatherCoverageData != TargetScheme.gatherCoverageDataDefault {
             dict["gatherCoverageData"] = gatherCoverageData
         }

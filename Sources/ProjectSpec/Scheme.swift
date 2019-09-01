@@ -197,7 +197,7 @@ public struct Scheme: Equatable {
 
     public struct Archive: BuildAction {
         public static let revealArchiveInOrganizerDefault = true
-        
+
         public var config: String?
         public var customArchiveName: String?
         public var revealArchiveInOrganizer: Bool
@@ -247,7 +247,7 @@ extension Scheme.ExecutionAction: JSONEncodable {
         return [
             "script": script,
             "name": name,
-            "settingsTarget": settingsTarget
+            "settingsTarget": settingsTarget,
         ]
     }
 }
@@ -271,7 +271,7 @@ extension Scheme.Run: JSONEncodable {
             "preActions": preActions.map { $0.toJSONValue() },
             "postActions": postActions.map { $0.toJSONValue() },
             "environmentVariables": environmentVariables.map { $0.toJSONValue() },
-            "config": config
+            "config": config,
         ]
 
         if disableMainThreadChecker != Scheme.Run.disableMainThreadCheckerDefault {
@@ -316,7 +316,7 @@ extension Scheme.Test: JSONEncodable {
             "preActions": preActions.map { $0.toJSONValue() },
             "postActions": postActions.map { $0.toJSONValue() },
             "environmentVariables": environmentVariables.map { $0.toJSONValue() },
-            "config": config
+            "config": config,
         ]
 
         if gatherCoverageData != Scheme.Test.gatherCoverageDataDefault {
@@ -348,7 +348,7 @@ extension Scheme.Test.TestTarget: JSONEncodable {
         }
 
         var dict: JSONDictionary = [
-            "name": name
+            "name": name,
         ]
 
         if randomExecutionOrder != Scheme.Test.TestTarget.randomExecutionOrderDefault {
@@ -380,7 +380,7 @@ extension Scheme.Profile: JSONEncodable {
             "preActions": preActions.map { $0.toJSONValue() },
             "postActions": postActions.map { $0.toJSONValue() },
             "environmentVariables": environmentVariables.map { $0.toJSONValue() },
-            "config": config
+            "config": config,
         ] as [String: Any?]
     }
 }
@@ -395,7 +395,7 @@ extension Scheme.Analyze: JSONObjectConvertible {
 extension Scheme.Analyze: JSONEncodable {
     public func toJSONValue() -> Any {
         return [
-            "config": config
+            "config": config,
         ]
     }
 }
@@ -581,7 +581,7 @@ extension XCScheme.EnvironmentVariable: JSONEncodable {
     public func toJSONValue() -> Any {
         var dict: [String: Any] = [
             "variable": variable,
-            "value": value
+            "value": value,
         ]
 
         if enabled != XCScheme.EnvironmentVariable.enabledDefault {

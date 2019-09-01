@@ -112,7 +112,7 @@ extension Settings: JSONEncodable {
             return [
                 "base": buildSettings,
                 "groups": groups,
-                "configs": configSettings.mapValues { $0.toJSONValue() }
+                "configs": configSettings.mapValues { $0.toJSONValue() },
             ]
         }
         return buildSettings

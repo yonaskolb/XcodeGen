@@ -361,7 +361,6 @@ extension Target: NamedJSONDictionaryConvertible {
     }
 }
 
-
 extension Target: JSONEncodable {
     public func toJSONValue() -> Any {
         var dict: [String: Any?] = [
@@ -372,10 +371,10 @@ extension Target: JSONEncodable {
             "attributes": attributes,
             "sources": sources.map { $0.toJSONValue() },
             "dependencies": dependencies.map { $0.toJSONValue() },
-            "postCompileScripts": postCompileScripts.map{ $0.toJSONValue() },
-            "prebuildScripts": preBuildScripts.map{ $0.toJSONValue() },
-            "postbuildScripts": postBuildScripts.map{ $0.toJSONValue() },
-            "buildRules": buildRules.map{ $0.toJSONValue() },
+            "postCompileScripts": postCompileScripts.map { $0.toJSONValue() },
+            "prebuildScripts": preBuildScripts.map { $0.toJSONValue() },
+            "postbuildScripts": postBuildScripts.map { $0.toJSONValue() },
+            "buildRules": buildRules.map { $0.toJSONValue() },
             "deploymentTarget": deploymentTarget?.deploymentTarget,
             "info": info?.toJSONValue(),
             "entitlements": entitlements?.toJSONValue(),

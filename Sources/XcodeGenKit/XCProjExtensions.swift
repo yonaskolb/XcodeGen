@@ -38,7 +38,7 @@ extension PBXProj {
 
 extension Dictionary {
 
-    public var valueArray: Array<Value> {
+    public var valueArray: [Value] {
         return Array(values)
     }
 }
