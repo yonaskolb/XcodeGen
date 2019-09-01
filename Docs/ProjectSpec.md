@@ -305,6 +305,7 @@ A source can be provided via a string (the path) or an object of the form:
 - [ ] **name**: **String** - Can be used to override the name of the source file or directory. By default the last component of the path is used for the name
 - [ ] **compilerFlags**: **[String]** or **String** - A list of compilerFlags to add to files under this specific path provided as a list or a space delimitted string. Defaults to empty.
 - [ ] **excludes**: **[String]** - A list of [global patterns](https://en.wikipedia.org/wiki/Glob_(programming)) representing the files to exclude. These rules are relative to `path` and _not the directory where `project.yml` resides_. XcodeGen uses Bash 4's Glob behaviors where globstar (**) is enabled.
+- [ ] **includes**: **[String]** - A list of [global patterns](https://en.wikipedia.org/wiki/Glob_(programming)) representing the files to include. These rules are relative to `path` and _not the directory where `project.yml` resides_. If **excludes** is present and file conflicts with **includes**, **excludes** will override the **includes** behavior.
 - [ ] **createIntermediateGroups**: **Bool** - This overrides the value in [Options](#options)
 - [ ] **optional**: **Bool** - Disable missing path check. Defaults to false.
 - [ ] **buildPhase**: **String** - This manually sets the build phase this file or files in this directory will be added to, otherwise XcodeGen will guess based on the file extension. Note that `Info.plist` files will never be added to any build phases, no matter what this setting is. Possible values are:
