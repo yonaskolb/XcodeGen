@@ -10,9 +10,6 @@
   <a href="https://github.com/yonaskolb/XcodeGen/releases">
     <img src="https://img.shields.io/github/release/yonaskolb/xcodegen.svg?style=for-the-badge"/>
   </a>
-  <a href="https://circleci.com/gh/yonaskolb/XcodeGen">
-    <img src="https://img.shields.io/circleci/project/github/yonaskolb/Beak.svg?style=for-the-badge"/>
-  </a>
   <a href="https://github.com/yonaskolb/XcodeGen/blob/master/LICENSE">
     <img src="https://img.shields.io/github/license/yonaskolb/XcodeGen.svg?style=for-the-badge"/>
   </a>
@@ -105,7 +102,7 @@ swift run xcodegen
 Add the following to your Package.swift file's dependencies:
 
 ```swift
-.package(url: "https://github.com/yonaskolb/XcodeGen.git", from: "2.6.0"),
+.package(url: "https://github.com/yonaskolb/XcodeGen.git", from: "2.7.0"),
 ```
 
 And then import wherever needed: `import XcodeGenKit`

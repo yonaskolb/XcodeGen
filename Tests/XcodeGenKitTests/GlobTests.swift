@@ -9,7 +9,7 @@
 import XCTest
 @testable import XcodeGenKit
 
-class GlobTests : XCTestCase {
+class GlobTests: XCTestCase {
 
     let tmpFiles = ["foo", "bar", "baz", "dir1/file1.ext", "dir1/dir2/dir3/file2.ext", "dir1/file1.extfoo"]
     var tmpDir = ""
@@ -17,7 +17,7 @@ class GlobTests : XCTestCase {
     override func setUp() {
         super.setUp()
 
-        self.tmpDir = newTmpDir()
+        tmpDir = newTmpDir()
 
         let flags = S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH
         mkdir("\(tmpDir)/dir1/", flags)
@@ -36,7 +36,7 @@ class GlobTests : XCTestCase {
         rmdir("\(tmpDir)/dir1/dir2/dir3")
         rmdir("\(tmpDir)/dir1/dir2")
         rmdir("\(tmpDir)/dir1")
-        rmdir(self.tmpDir)
+        rmdir(tmpDir)
 
         super.tearDown()
     }
@@ -139,7 +139,7 @@ class GlobTests : XCTestCase {
             "\(tmpDir)/dir1/dir2/dir3/file2.ext",
             "\(tmpDir)/dir1/file1.ext",
             "\(tmpDir)/dir1/file1.extfoo",
-            "\(tmpDir)/foo"
+            "\(tmpDir)/foo",
         ])
     }
 
@@ -188,7 +188,7 @@ class GlobTests : XCTestCase {
         let glob = Glob(pattern: pattern, behavior: GlobBehaviorBashV4)
         XCTAssertEqual(glob.paths, [
             "\(tmpDir)/dir1/dir2/dir3/file2.ext",
-            "\(tmpDir)/dir1/file1.ext"
+            "\(tmpDir)/dir1/file1.ext",
         ])
     }
 

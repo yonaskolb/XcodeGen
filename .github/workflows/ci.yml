@@ -13,15 +13,13 @@ jobs:
     - name: Build
       run: swift build
     - name: Test
-      run: swift test
+      run: swift test 2>&1 | xcpretty
     - name: Gen fixtures
       run: scripts/gen-fixtures.sh
     - name: Check fixtures
       run: scripts/diff-fixtures.sh
     - name: Build fixtures
       run: scripts/build-fixtures.sh
-    - name: Build release
-      run: make build
   # swift_5.1:
   #   runs-on: macos-latest
   #   name: Swift 5.1
@@ -43,6 +41,4 @@ jobs:
   #     run: scripts/diff-fixtures.sh
   #   - name: Build fixtures
   #     run: scripts/build-fixtures.sh
-  #   - name: Build release
-  #     run: make build
   

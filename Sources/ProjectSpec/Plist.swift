@@ -29,7 +29,7 @@ extension Plist: JSONEncodable {
     public func toJSONValue() -> Any {
         return [
             "path": path,
-            "properties": properties
+            "properties": properties,
         ]
     }
 }

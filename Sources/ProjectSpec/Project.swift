@@ -254,7 +254,7 @@ extension Project: JSONEncodable {
             "configs": Dictionary(uniqueKeysWithValues: configsPairs),
             "aggregateTargets": Dictionary(uniqueKeysWithValues: aggregateTargetsPairs),
             "schemes": Dictionary(uniqueKeysWithValues: schemesPairs),
-            "settingGroups": settingGroups.mapValues { $0.toJSONValue() }
+            "settingGroups": settingGroups.mapValues { $0.toJSONValue() },
         ]
     }
 }

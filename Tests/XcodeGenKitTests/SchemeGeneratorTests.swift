@@ -6,26 +6,26 @@ import XcodeProj
 import XCTest
 import Yams
 
-fileprivate let app = Target(
+private let app = Target(
     name: "MyApp",
     type: .application,
     platform: .iOS,
     dependencies: [Dependency(type: .target, reference: "MyFramework")]
 )
 
-fileprivate let framework = Target(
+private let framework = Target(
     name: "MyFramework",
     type: .framework,
     platform: .iOS
 )
 
-fileprivate let optionalFramework = Target(
+private let optionalFramework = Target(
     name: "MyOptionalFramework",
     type: .framework,
     platform: .iOS
 )
 
-fileprivate let uiTest = Target(
+private let uiTest = Target(
     name: "MyAppUITests",
     type: .uiTestBundle,
     platform: .iOS,

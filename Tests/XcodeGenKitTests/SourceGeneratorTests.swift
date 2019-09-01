@@ -617,7 +617,7 @@ class SourceGeneratorTests: XCTestCase {
                     TargetSource(path: "File1.swift", optional: true),
                     TargetSource(path: "File2.swift", type: .file, optional: true),
                     TargetSource(path: "Group", type: .folder, optional: true),
-                    ])
+                ])
                 let project = Project(basePath: directoryPath, name: "Test", targets: [target])
                 let pbxProj = try project.generatePbxProj()
                 try pbxProj.expectFile(paths: ["File1.swift"])
@@ -630,7 +630,7 @@ class SourceGeneratorTests: XCTestCase {
                     TargetSource(path: "Group1", optional: true),
                     TargetSource(path: "Group2", type: .group, optional: true),
                     TargetSource(path: "Group3", type: .group, optional: true),
-                    ])
+                ])
                 let project = Project(basePath: directoryPath, name: "Test", targets: [target])
                 _ = try project.generatePbxProj()
             }
@@ -676,7 +676,7 @@ class SourceGeneratorTests: XCTestCase {
                 let definition: String = "Intent.intentdefinition"
 
                 let target = Target(name: "Test", type: .framework, platform: .iOS, sources: [
-                    TargetSource(path: "A/\(definition)", buildPhase: .sources, attributes: ["no_codegen"])
+                    TargetSource(path: "A/\(definition)", buildPhase: .sources, attributes: ["no_codegen"]),
                 ])
                 let project = Project(basePath: directoryPath, name: "Test", targets: [target])
 

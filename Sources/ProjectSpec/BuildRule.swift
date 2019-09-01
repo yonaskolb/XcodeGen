@@ -86,7 +86,7 @@ extension BuildRule: JSONEncodable {
         var dict: [String: Any?] = [
             "outputFiles": outputFiles,
             "outputFilesCompilerFlags": outputFilesCompilerFlags,
-            "name": name
+            "name": name,
         ]
 
         switch fileType {

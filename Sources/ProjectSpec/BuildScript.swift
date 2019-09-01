@@ -63,6 +63,7 @@ extension BuildScript: JSONObjectConvertible {
         showEnvVars = jsonDictionary.json(atKeyPath: "showEnvVars") ?? BuildScript.showEnvVarsDefault
     }
 }
+
 extension BuildScript: JSONEncodable {
     public func toJSONValue() -> Any {
         var dict: [String: Any?] = [
@@ -72,7 +73,7 @@ extension BuildScript: JSONEncodable {
             "outputFileLists": outputFileLists,
             "runOnlyWhenInstalling": runOnlyWhenInstalling,
             "name": name,
-            "shell": shell
+            "shell": shell,
         ]
 
         if showEnvVars != BuildScript.showEnvVarsDefault {
