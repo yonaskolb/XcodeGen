@@ -530,7 +530,7 @@ public class PBXProjGenerator {
                     )
                 }
 
-                if dependency.link ?? true {
+                if dependency.link ?? (target.type != .staticLibrary) {
                     let buildFile = addObject(
                         PBXBuildFile(file: fileReference, settings: getDependencyFrameworkSettings(dependency: dependency))
                     )
@@ -549,8 +549,6 @@ public class PBXProjGenerator {
                     copyFrameworksReferences.append(embedFile)
                 }
             case .sdk(let root):
-                // Static libraries can't link or embed dynamic frameworks
-                guard target.type != .staticLibrary else { break }
 
                 var dependencyPath = Path(dependency.reference)
                 if !dependency.reference.contains("/") {
@@ -598,8 +596,6 @@ public class PBXProjGenerator {
                 let allDependencies = findFrameworks
                     ? carthageResolver.relatedDependencies(for: dependency, in: target.platform) : [dependency]
                 allDependencies.forEach { dependency in
-                    // Static libraries can't link or embed dynamic frameworks
-                    guard target.type != .staticLibrary else { return }
 
                     var platformPath = Path(carthageResolver.buildPath(for: target.platform))
                     var frameworkPath = platformPath + dependency.reference
@@ -610,7 +606,7 @@ public class PBXProjGenerator {
 
                     self.carthageFrameworksByPlatform[target.platform.carthageName, default: []].insert(fileReference)
 
-                    if dependency.link ?? true {
+                    if dependency.link ?? (target.type != .staticLibrary) {
                         let buildFile = self.addObject(
                             PBXBuildFile(file: fileReference, settings: getDependencyFrameworkSettings(dependency: dependency))
                         )
@@ -639,7 +635,6 @@ public class PBXProjGenerator {
         }
 
         for dependency in carthageDependencies {
-            guard target.type != .staticLibrary else { break }
 
             let embed = dependency.embed ?? target.shouldEmbedCarthageDependencies
 
@@ -1037,7 +1032,7 @@ extension Target {
     var shouldEmbedDependencies: Bool {
         return type.isApp || type.isTest
     }
-    
+
     var shouldEmbedCarthageDependencies: Bool {
         return (type.isApp && platform != .watchOS)
             || type == .watch2Extension

@@ -11,6 +11,7 @@ public struct TargetSource: Equatable {
     public var name: String?
     public var compilerFlags: [String]
     public var excludes: [String]
+    public var includes: [String]
     public var type: SourceType?
     public var optional: Bool
     public var buildPhase: BuildPhase?
@@ -125,6 +126,7 @@ public struct TargetSource: Equatable {
         name: String? = nil,
         compilerFlags: [String] = [],
         excludes: [String] = [],
+        includes: [String] = [],
         type: SourceType? = nil,
         optional: Bool = optionalDefault,
         buildPhase: BuildPhase? = nil,
@@ -136,6 +138,7 @@ public struct TargetSource: Equatable {
         self.name = name
         self.compilerFlags = compilerFlags
         self.excludes = excludes
+        self.includes = includes
         self.type = type
         self.optional = optional
         self.buildPhase = buildPhase
@@ -173,6 +176,7 @@ extension TargetSource: JSONObjectConvertible {
 
         headerVisibility = jsonDictionary.json(atKeyPath: "headerVisibility")
         excludes = jsonDictionary.json(atKeyPath: "excludes") ?? []
+        includes = jsonDictionary.json(atKeyPath: "includes") ?? []
         type = jsonDictionary.json(atKeyPath: "type")
         optional = jsonDictionary.json(atKeyPath: "optional") ?? TargetSource.optionalDefault
 
@@ -192,6 +196,7 @@ extension TargetSource: JSONEncodable {
         var dict: [String: Any?] = [
             "compilerFlags": compilerFlags,
             "excludes": excludes,
+            "includes": includes,
             "name": name,
             "headerVisibility": headerVisibility?.rawValue,
             "type": type?.rawValue,
@@ -264,7 +269,7 @@ extension TargetSource.BuildPhase.CopyFilesSettings: JSONEncodable {
     public func toJSONValue() -> Any {
         return [
             "destination": destination.rawValue,
-            "subpath": subpath
+            "subpath": subpath,
         ]
     }
 }

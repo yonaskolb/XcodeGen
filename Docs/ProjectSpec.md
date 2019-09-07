@@ -304,7 +304,8 @@ A source can be provided via a string (the path) or an object of the form:
 - [x] **path**: **String** - The path to the source file or directory.
 - [ ] **name**: **String** - Can be used to override the name of the source file or directory. By default the last component of the path is used for the name
 - [ ] **compilerFlags**: **[String]** or **String** - A list of compilerFlags to add to files under this specific path provided as a list or a space delimitted string. Defaults to empty.
-- [ ] **excludes**: **[String]** - A list of [global patterns](https://en.wikipedia.org/wiki/Glob_(programming)) representing the files to exclude. These rules are relative to `path` and _not the directory where `project.yml` resides_.
+- [ ] **excludes**: **[String]** - A list of [global patterns](https://en.wikipedia.org/wiki/Glob_(programming)) representing the files to exclude. These rules are relative to `path` and _not the directory where `project.yml` resides_. XcodeGen uses Bash 4's Glob behaviors where globstar (**) is enabled.
+- [ ] **includes**: **[String]** - A list of global patterns in the same format as `excludes` representing the files to include. These rules are relative to `path` and _not the directory where `project.yml` resides_. If **excludes** is present and file conflicts with **includes**, **excludes** will override the **includes** behavior.
 - [ ] **createIntermediateGroups**: **Bool** - This overrides the value in [Options](#options)
 - [ ] **optional**: **Bool** - Disable missing path check. Defaults to false.
 - [ ] **buildPhase**: **String** - This manually sets the build phase this file or files in this directory will be added to, otherwise XcodeGen will guess based on the file extension. Note that `Info.plist` files will never be added to any build phases, no matter what this setting is. Possible values are:
@@ -348,6 +349,8 @@ targets:
           - "ios/*.[mh]"
           - "configs/server[0-2].json"
           - "*-Private.h"
+          - "**/*.md" # excludes all files with the .md extension
+          - "ios/**/*Tests.[hm] # excludes all files with an h or m extension within the ios directory.
         compilerFlags:
           - "-Werror"
           - "-Wextra"
@@ -548,6 +551,7 @@ This is a convenience used to automatically generate schemes for a target based 
 - [x] **configVariants**: **[String]** - This generates a scheme for each entry, using configs that contain the name with debug and release variants. This is useful for having different environment schemes.
 - [ ] **testTargets**: **[[Test Target](#test-target)]** - a list of test targets that should be included in the scheme. These will be added to the build targets and the test entries. Each entry can either be a simple string, or a [Test Target](#test-target)
 - [ ] **gatherCoverageData**: **Bool** - a boolean that indicates if this scheme should gather coverage data. This defaults to false
+- [ ] **disableMainThreadChecker**: **Bool** - a boolean that indicates if this scheme should disable disable the Main Thread Checker. This defaults to false
 - [ ] **commandLineArguments**: **[String:Bool]** - a dictionary from the argument name (`String`) to if it is enabled (`Bool`). These arguments will be added to the Test, Profile and Run scheme actions
 - [ ] **environmentVariables**: **[[Environment Variable](#environment-variable)]** or **[String:String]** - environment variables for Run, Test and Profile scheme actions. When passing a dictionary, every key-value entry maps to a corresponding variable that is enabled.
 - [ ] **preActions**: **[[Execution Action](#execution-action)]** - Scripts that are run *before* all actions
@@ -680,6 +684,7 @@ The different actions share some properties:
 - [ ] **preActions**: **[[Execution Action](#execution-action)]** - Scripts that are run *before* the action
 - [ ] **postActions**: **[[Execution Action](#execution-action)]** - Scripts that are run *after* the action
 - [ ] **environmentVariables**: **[[Environment Variable](#environment-variable)]** or **[String:String]** - `run`, `test` and `profile` actions can define the environment variables. When passing a dictionary, every key-value entry maps to a corresponding variable that is enabled.
+- [ ] **disableMainThreadChecker**: **Bool** - `run` and `test` actions can define a boolean that indicates that this scheme should disable the Main Thread Checker. This defaults to false
 
 ### Execution Action
 

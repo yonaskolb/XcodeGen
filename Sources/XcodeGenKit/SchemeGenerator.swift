@@ -107,7 +107,7 @@ public class SchemeGenerator {
         func getExecutionAction(_ action: Scheme.ExecutionAction) -> XCScheme.ExecutionAction {
             // ExecutionActions can require the use of build settings. Xcode allows the settings to come from a build or test target.
             let environmentBuildable = action.settingsTarget.flatMap { settingsTarget in
-                return (buildActionEntries + testBuildTargetEntries)
+                (buildActionEntries + testBuildTargetEntries)
                     .first { settingsTarget == $0.buildableReference.blueprintName }?
                     .buildableReference
             }
@@ -153,7 +153,8 @@ public class SchemeGenerator {
             preActions: scheme.test?.preActions.map(getExecutionAction) ?? [],
             postActions: scheme.test?.postActions.map(getExecutionAction) ?? [],
             shouldUseLaunchSchemeArgsEnv: scheme.test?.shouldUseLaunchSchemeArgsEnv ?? true,
-            codeCoverageEnabled: scheme.test?.gatherCoverageData ?? false,
+            codeCoverageEnabled: scheme.test?.gatherCoverageData ?? Scheme.Test.gatherCoverageDataDefault,
+            disableMainThreadChecker: scheme.test?.disableMainThreadChecker ?? Scheme.Test.disableMainThreadCheckerDefault,
             commandlineArguments: testCommandLineArgs,
             environmentVariables: testVariables
         )
@@ -164,6 +165,7 @@ public class SchemeGenerator {
             preActions: scheme.run?.preActions.map(getExecutionAction) ?? [],
             postActions: scheme.run?.postActions.map(getExecutionAction) ?? [],
             macroExpansion: shouldExecuteOnLaunch ? nil : buildableReference,
+            disableMainThreadChecker: scheme.run?.disableMainThreadChecker ?? Scheme.Run.disableMainThreadCheckerDefault,
             commandlineArguments: launchCommandLineArgs,
             environmentVariables: launchVariables
         )
@@ -212,11 +214,13 @@ extension Scheme {
                 commandLineArguments: targetScheme.commandLineArguments,
                 preActions: targetScheme.preActions,
                 postActions: targetScheme.postActions,
-                environmentVariables: targetScheme.environmentVariables
+                environmentVariables: targetScheme.environmentVariables,
+                disableMainThreadChecker: targetScheme.disableMainThreadChecker
             ),
             test: .init(
                 config: debugConfig,
                 gatherCoverageData: targetScheme.gatherCoverageData,
+                disableMainThreadChecker: targetScheme.disableMainThreadChecker,
                 commandLineArguments: targetScheme.commandLineArguments,
                 targets: targetScheme.testTargets,
                 preActions: targetScheme.preActions,

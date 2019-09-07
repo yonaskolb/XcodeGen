@@ -43,7 +43,7 @@ struct ExpectationFailure: FailureType {
 }
 
 open class ArrayExpectation<T>: ExpectationType {
-    public typealias ValueType = Array<T>
+    public typealias ValueType = [T]
     public let expression: () throws -> ValueType?
 
     let file: String

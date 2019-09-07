@@ -1,0 +1,13 @@
+name: DuplicatedImportRoot
+fileGroups:
+  - First
+  - Second
+targetTemplates:
+  IncludedTemplate:
+    type: application
+    platform: iOS
+    sources:
+      - template
+    preBuildScripts:
+      - script: swiftlint
+        name: Swiftlint

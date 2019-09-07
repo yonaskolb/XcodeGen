@@ -6,7 +6,7 @@ import XcodeProj
 import XCTest
 import Yams
 
-fileprivate let app = Target(
+private let app = Target(
     name: "MyApp",
     type: .application,
     platform: .iOS,
@@ -14,20 +14,20 @@ fileprivate let app = Target(
     dependencies: [Dependency(type: .target, reference: "MyFramework")]
 )
 
-fileprivate let framework = Target(
+private let framework = Target(
     name: "MyFramework",
     type: .framework,
     platform: .iOS,
     settings: Settings(buildSettings: ["SETTING_2": "VALUE"])
 )
 
-fileprivate let optionalFramework = Target(
+private let optionalFramework = Target(
     name: "MyOptionalFramework",
     type: .framework,
     platform: .iOS
 )
 
-fileprivate let uiTest = Target(
+private let uiTest = Target(
     name: "MyAppUITests",
     type: .uiTestBundle,
     platform: .iOS,
@@ -35,7 +35,7 @@ fileprivate let uiTest = Target(
     dependencies: [Dependency(type: .target, reference: "MyApp")]
 )
 
-fileprivate let targets = [app, framework, optionalFramework, uiTest]
+private let targets = [app, framework, optionalFramework, uiTest]
 
 class ProjectGeneratorTests: XCTestCase {
 
@@ -339,6 +339,8 @@ class ProjectGeneratorTests: XCTestCase {
                 //       embed: false
                 // iOSFrameworkZ:
                 //   dependencies: []
+                // iOSFrameworkX:
+                //   dependencies: []
                 // StaticLibrary:
                 //   dependencies:
                 //     - target: iOSFrameworkZ
@@ -430,20 +432,33 @@ class ProjectGeneratorTests: XCTestCase {
                 expectedLinkedFiles[iosFrameworkZ.name] = Set()
                 expectedEmbeddedFrameworks[iosFrameworkZ.name] = Set()
 
+                let iosFrameworkX = Target(
+                    name: "iOSFrameworkX",
+                    type: .framework,
+                    platform: .iOS,
+                    dependencies: []
+                )
+                expectedResourceFiles[iosFrameworkX.name] = Set()
+                expectedLinkedFiles[iosFrameworkX.name] = Set()
+                expectedEmbeddedFrameworks[iosFrameworkX.name] = Set()
+
                 let staticLibrary = Target(
                     name: "StaticLibrary",
                     type: .staticLibrary,
                     platform: .iOS,
                     dependencies: [
-                        Dependency(type: .target, reference: iosFrameworkZ.name),
-                        Dependency(type: .framework, reference: "FrameworkZ.framework"),
+                        Dependency(type: .target, reference: iosFrameworkZ.name, link: true),
+                        Dependency(type: .framework, reference: "FrameworkZ.framework", link: true),
+                        Dependency(type: .target, reference: iosFrameworkX.name /* , link: false */ ),
+                        Dependency(type: .framework, reference: "FrameworkX.framework" /* , link: false */ ),
                         Dependency(type: .carthage(findFrameworks: false), reference: "CarthageZ"),
                         Dependency(type: .bundle, reference: "BundleA.bundle")
                     ]
                 )
                 expectedResourceFiles[staticLibrary.name] = Set()
                 expectedLinkedFiles[staticLibrary.name] = Set([
-                    "FrameworkZ.framework"
+                    iosFrameworkZ.filename,
+                    "FrameworkZ.framework",
                 ])
                 expectedEmbeddedFrameworks[staticLibrary.name] = Set()
 
@@ -477,7 +492,9 @@ class ProjectGeneratorTests: XCTestCase {
                 expectedLinkedFiles[iosFrameworkA.name] = Set([
                     "FrameworkC.framework",
                     iosFrameworkZ.filename,
+                    iosFrameworkX.filename,
                     "FrameworkZ.framework",
+                    "FrameworkX.framework",
                     "CarthageZ.framework",
                     "CarthageA.framework",
                     "CarthageB.framework",
@@ -502,7 +519,9 @@ class ProjectGeneratorTests: XCTestCase {
                 expectedLinkedFiles[iosFrameworkB.name] = Set([
                     iosFrameworkA.filename,
                     iosFrameworkZ.filename,
+                    iosFrameworkX.filename,
                     "FrameworkZ.framework",
+                    "FrameworkX.framework",
                     "CarthageZ.framework",
                     "FrameworkC.framework",
                     "FrameworkD.framework",
@@ -534,7 +553,9 @@ class ProjectGeneratorTests: XCTestCase {
                     iosFrameworkA.filename,
                     staticLibrary.filename,
                     iosFrameworkZ.filename,
+                    iosFrameworkX.filename,
                     "FrameworkZ.framework",
+                    "FrameworkX.framework",
                     "CarthageZ.framework",
                     "FrameworkC.framework",
                     iosFrameworkB.filename,
@@ -545,7 +566,9 @@ class ProjectGeneratorTests: XCTestCase {
                 expectedEmbeddedFrameworks[appTest.name] = Set([
                     iosFrameworkA.filename,
                     iosFrameworkZ.filename,
+                    iosFrameworkX.filename,
                     "FrameworkZ.framework",
+                    "FrameworkX.framework",
                     "FrameworkC.framework",
                     iosFrameworkB.filename,
                     "FrameworkD.framework",
@@ -578,7 +601,7 @@ class ProjectGeneratorTests: XCTestCase {
                     "NotificationCenter.framework",
                 ])
 
-                let targets = [app, iosFrameworkZ, staticLibrary, resourceBundle, iosFrameworkA, iosFrameworkB, appTest, appTestWithoutTransitive, stickerPack]
+                let targets = [app, iosFrameworkZ, iosFrameworkX, staticLibrary, resourceBundle, iosFrameworkA, iosFrameworkB, appTest, appTestWithoutTransitive, stickerPack]
 
                 let project = Project(
                     name: "test",
@@ -883,9 +906,9 @@ class ProjectGeneratorTests: XCTestCase {
                 let buildFileSettings = frameworkBuildFiles.map { $0.settings }
 
                 try expect(frameworkBuildFiles.count) == 2
-                try expect(buildFileSettings.compactMap({ $0 }).count) == 1
-                try expect(buildFileSettings.compactMap({ $0?["ATTRIBUTES"] }).count) == 1
-                try expect(buildFileSettings.compactMap({ $0?["ATTRIBUTES"] as? [String] }).first) == ["Weak"]
+                try expect(buildFileSettings.compactMap { $0 }.count) == 1
+                try expect(buildFileSettings.compactMap { $0?["ATTRIBUTES"] }.count) == 1
+                try expect(buildFileSettings.compactMap { $0?["ATTRIBUTES"] as? [String] }.first) == ["Weak"]
             }
 
             $0.it("generates info.plist") {

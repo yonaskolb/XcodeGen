@@ -3,10 +3,28 @@
 ## Next Version
 
 #### Added
+- Added `includes` to `sources` for a Target. This follows the same glob-style as `excludes` but functions as a way to only include files that match a specified pattern. Useful if you only want a certain file type, for example specifying `**/*.swift`. [#637](https://github.com/yonaskolb/XcodeGen/pull/637) @bclymer
 - Added new dependency type, `bundle`. This allows targets to copy bundles from other projects [#616](https://github.com/yonaskolb/XcodeGen/pull/616) @bsmith11
 
 #### Changed
 - Updated static library targets to be able to link against dynamic frameworks to support dependencies in other projects [#616](https://github.com/yonaskolb/XcodeGen/pull/616) @bsmith11
+
+## 2.7.0
+
+#### Added
+- Added Bash 4 style recursive globbing (`**/*`) in target sources `excludes` [#636](https://github.com/yonaskolb/XcodeGen/pull/636) @bclymer
+- Added ability to disable main thread checker in Schemes [#601](https://github.com/yonaskolb/XcodeGen/pull/601) @wag-miles
+- Added new dependency type, `bundle`. This allows targets to copy bundles from other projects [#616](https://github.com/yonaskolb/XcodeGen/pull/616) @bsmith11
+
+#### Fixed
+- Fixed included specs that were referenced multiple times from duplicating content [#599](https://github.com/yonaskolb/XcodeGen/pull/599) @haritowa
+- Fixed `.orig` files being added to the project [#627](https://github.com/yonaskolb/XcodeGen/pull/627) @keith
+
+#### Changed
+- Allow linking of dependencies into static libraries when `link` is set to true [#635](https://github.com/yonaskolb/XcodeGen/pull/635) @kateinoigakukun
+- Updated static library targets to be able to link against dynamic frameworks to support dependencies in other projects [#616](https://github.com/yonaskolb/XcodeGen/pull/616) @bsmith11
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.6.0...2.7.0)
 
 ## 2.6.0
 

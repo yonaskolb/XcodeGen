@@ -93,7 +93,7 @@ extension Dependency: JSONEncodable {
         var dict: [String: Any?] = [
             "embed": embed,
             "codeSign": codeSign,
-            "link": link
+            "link": link,
         ]
 
         if removeHeaders != Dependency.removeHeadersDefault {

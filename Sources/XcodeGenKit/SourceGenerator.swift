@@ -20,9 +20,11 @@ class SourceGenerator {
     private let project: Project
     let pbxProj: PBXProj
 
-    var targetSourceExcludePaths: Set<Path> = []
-    var defaultExcludedFiles = [
+    private var defaultExcludedFiles = [
         ".DS_Store",
+    ]
+    private let defaultExcludedExtensions = [
+        "orig",
     ]
 
     private(set) var knownRegions: Set<String> = []
@@ -295,12 +297,14 @@ class SourceGenerator {
     }
 
     /// Collects all the excluded paths within the targetSource
-    private func getSourceExcludes(targetSource: TargetSource) -> Set<Path> {
+    private func getSourceMatches(targetSource: TargetSource, patterns: [String]) -> Set<Path> {
         let rootSourcePath = project.basePath + targetSource.path
 
         return Set(
-            targetSource.excludes.map {
-                Path.glob("\(rootSourcePath)/\($0)")
+            patterns.map { pattern in
+                guard !pattern.isEmpty else { return [] }
+                return Glob(pattern: "\(rootSourcePath)/\(pattern)")
+                    .map { Path($0) }
                     .map {
                         guard $0.isDirectory else {
                             return [$0]
@@ -315,13 +319,19 @@ class SourceGenerator {
     }
 
     /// Checks whether the path is not in any default or TargetSource excludes
-    func isIncludedPath(_ path: Path) -> Bool {
+    func isIncludedPath(_ path: Path, excludePaths: Set<Path>, includePaths: Set<Path>) -> Bool {
         return !defaultExcludedFiles.contains(where: { path.lastComponent.contains($0) })
-            && !targetSourceExcludePaths.contains(path)
+            && !(path.extension.map(defaultExcludedExtensions.contains) ?? false)
+            && !excludePaths.contains(path)
+            // If includes is empty, it's included. If it's not empty, the path either needs to match exactly, or it needs to be a direct parent of an included path.
+            && (includePaths.isEmpty || includePaths.contains(where: { includedFile in
+                if path == includedFile { return true }
+                return includedFile.description.contains(path.description)
+            }))
     }
 
     /// Gets all the children paths that aren't excluded
-    private func getSourceChildren(targetSource: TargetSource, dirPath: Path) throws -> [Path] {
+    private func getSourceChildren(targetSource: TargetSource, dirPath: Path, excludePaths: Set<Path>, includePaths: Set<Path>) throws -> [Path] {
         return try dirPath.children()
             .filter {
                 if $0.isDirectory {
@@ -331,9 +341,11 @@ class SourceGenerator {
                         return project.options.generateEmptyDirectories
                     }
 
-                    return !children.filter(isIncludedPath).isEmpty
+                    return !children
+                        .filter { self.isIncludedPath($0, excludePaths: excludePaths, includePaths: includePaths) }
+                        .isEmpty
                 } else if $0.isFile {
-                    return isIncludedPath($0)
+                    return self.isIncludedPath($0, excludePaths: excludePaths, includePaths: includePaths)
                 } else {
                     return false
                 }
@@ -341,10 +353,10 @@ class SourceGenerator {
     }
 
     /// creates all the source files and groups they belong to for a given targetSource
-    private func getGroupSources(targetType: PBXProductType, targetSource: TargetSource, path: Path, isBaseGroup: Bool)
+    private func getGroupSources(targetType: PBXProductType, targetSource: TargetSource, path: Path, isBaseGroup: Bool, excludePaths: Set<Path>, includePaths: Set<Path>)
         throws -> (sourceFiles: [SourceFile], groups: [PBXGroup]) {
 
-        let children = try getSourceChildren(targetSource: targetSource, dirPath: path)
+        let children = try getSourceChildren(targetSource: targetSource, dirPath: path, excludePaths: excludePaths, includePaths: includePaths)
 
         let directories = children
             .filter { $0.isDirectory && $0.extension == nil && $0.extension != "lproj" }
@@ -362,7 +374,12 @@ class SourceGenerator {
         var groups: [PBXGroup] = []
 
         for path in directories {
-            let subGroups = try getGroupSources(targetType: targetType, targetSource: targetSource, path: path, isBaseGroup: false)
+            let subGroups = try getGroupSources(targetType: targetType,
+                                                targetSource: targetSource,
+                                                path: path,
+                                                isBaseGroup: false,
+                                                excludePaths: excludePaths,
+                                                includePaths: includePaths)
 
             guard !subGroups.sourceFiles.isEmpty || project.options.generateEmptyDirectories else {
                 continue
@@ -393,9 +410,10 @@ class SourceGenerator {
         var baseLocalisationVariantGroups: [PBXVariantGroup] = []
 
         if let baseLocalisedDirectory = baseLocalisedDirectory {
-            for filePath in try baseLocalisedDirectory.children()
-                .filter(isIncludedPath)
-                .sorted() {
+            let filePaths = try baseLocalisedDirectory.children()
+                .filter { self.isIncludedPath($0, excludePaths: excludePaths, includePaths: includePaths) }
+                .sorted()
+            for filePath in filePaths {
                 let variantGroup = getVariantGroup(path: filePath, inPath: path)
                 groupChildren.append(variantGroup)
                 baseLocalisationVariantGroups.append(variantGroup)
@@ -413,9 +431,10 @@ class SourceGenerator {
         // add references to localised resources into base localisation variant groups
         for localisedDirectory in localisedDirectories {
             let localisationName = localisedDirectory.lastComponentWithoutExtension
-            for filePath in try localisedDirectory.children()
-                .filter(isIncludedPath)
-                .sorted { $0.lastComponent < $1.lastComponent } {
+            let filePaths = try localisedDirectory.children()
+                .filter { self.isIncludedPath($0, excludePaths: excludePaths, includePaths: includePaths) }
+                .sorted { $0.lastComponent < $1.lastComponent }
+            for filePath in filePaths {
                 // find base localisation variant group
                 // ex: Foo.strings will be added to Foo.strings or Foo.storyboard variant group
                 let variantGroup = baseLocalisationVariantGroups
@@ -470,7 +489,9 @@ class SourceGenerator {
     private func getSourceFiles(targetType: PBXProductType, targetSource: TargetSource, path: Path) throws -> [SourceFile] {
 
         // generate excluded paths
-        targetSourceExcludePaths = getSourceExcludes(targetSource: targetSource)
+        let excludePaths = getSourceMatches(targetSource: targetSource, patterns: targetSource.excludes)
+        // generate included paths. Excluded paths will override this.
+        let includePaths = getSourceMatches(targetSource: targetSource, patterns: targetSource.includes)
 
         let type = targetSource.type ?? (path.isFile || path.extension != nil ? .file : .group)
         let createIntermediateGroups = targetSource.createIntermediateGroups ?? project.options.createIntermediateGroups
@@ -526,7 +547,12 @@ class SourceGenerator {
                 // This group is missing, so if's optional just return an empty array
                 return []
             }
-            let (groupSourceFiles, groups) = try getGroupSources(targetType: targetType, targetSource: targetSource, path: path, isBaseGroup: true)
+            let (groupSourceFiles, groups) = try getGroupSources(targetType: targetType,
+                                                                 targetSource: targetSource,
+                                                                 path: path,
+                                                                 isBaseGroup: true,
+                                                                 excludePaths: excludePaths,
+                                                                 includePaths: includePaths)
             let group = groups.first!
             if let name = targetSource.name {
                 group.name = name

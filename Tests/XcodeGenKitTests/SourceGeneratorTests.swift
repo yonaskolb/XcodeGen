@@ -222,7 +222,9 @@ class SourceGeneratorTests: XCTestCase {
                     - B:
                       - b.swift
                       - b.ignored
+                      - b.alsoIgnored
                     - a.ignored
+                    - a.alsoIgnored
                   - B:
                     - b.swift
                   - D:
@@ -272,8 +274,8 @@ class SourceGeneratorTests: XCTestCase {
                     "*.ignored",
                     "*.xcodeproj",
                     "*.playground",
-                    // not supported
-                    // "**/*.ignored",
+                    "**/*.ignored",
+                    "A/B/**/*.alsoIgnored",
                 ]
 
                 let target = Target(name: "Test", type: .application, platform: .iOS, sources: [TargetSource(path: "Sources", excludes: excludes)])
@@ -283,6 +285,7 @@ class SourceGeneratorTests: XCTestCase {
                     let project = Project(basePath: directoryPath, name: "Test", targets: [target], options: options)
                     let pbxProj = try project.generatePbxProj()
                     try pbxProj.expectFile(paths: ["Sources", "A", "a.swift"])
+                    try pbxProj.expectFile(paths: ["Sources", "A", "a.alsoIgnored"])
                     try pbxProj.expectFile(paths: ["Sources", "D", "d.h"])
                     try pbxProj.expectFile(paths: ["Sources", "D", "d.m"])
                     try pbxProj.expectFile(paths: ["Sources", "E", "e.jpg"])
@@ -303,13 +306,31 @@ class SourceGeneratorTests: XCTestCase {
                     try pbxProj.expectFileMissing(paths: ["Sources", "ignore.file"])
                     try pbxProj.expectFileMissing(paths: ["Sources", "project.xcodeproj"])
                     try pbxProj.expectFileMissing(paths: ["Sources", "a.playground"])
-                    // not supported: "**/*.ignored"
-                    // try pbxProj.expectFileMissing(paths: ["Sources", "A", "a.ignored"])
-                    // try pbxProj.expectFileMissing(paths: ["Sources", "A", "B", "b.ignored"])
+                    try pbxProj.expectFileMissing(paths: ["Sources", "A", "a.ignored"])
+                    try pbxProj.expectFileMissing(paths: ["Sources", "A", "B", "b.ignored"])
+                    try pbxProj.expectFileMissing(paths: ["Sources", "A", "B", "b.alsoIgnored"])
                 }
 
                 try test(generateEmptyDirectories: false)
                 try test(generateEmptyDirectories: true)
+            }
+
+            $0.it("excludes certain ignored files") {
+                let directories = """
+                Sources:
+                  A:
+                    - a.swift
+                    - .DS_Store
+                    - a.swift.orig
+                """
+                try createDirectories(directories)
+
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: [TargetSource(path: "Sources")])
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target])
+                let pbxProj = try project.generatePbxProj()
+                try pbxProj.expectFile(paths: ["Sources", "A", "a.swift"])
+                try pbxProj.expectFileMissing(paths: ["Sources", "A", ".DS_Store"])
+                try pbxProj.expectFileMissing(paths: ["Sources", "A", "a.swift.orig"])
             }
 
             $0.it("generates file sources") {
@@ -596,7 +617,7 @@ class SourceGeneratorTests: XCTestCase {
                     TargetSource(path: "File1.swift", optional: true),
                     TargetSource(path: "File2.swift", type: .file, optional: true),
                     TargetSource(path: "Group", type: .folder, optional: true),
-                    ])
+                ])
                 let project = Project(basePath: directoryPath, name: "Test", targets: [target])
                 let pbxProj = try project.generatePbxProj()
                 try pbxProj.expectFile(paths: ["File1.swift"])
@@ -609,11 +630,11 @@ class SourceGeneratorTests: XCTestCase {
                     TargetSource(path: "Group1", optional: true),
                     TargetSource(path: "Group2", type: .group, optional: true),
                     TargetSource(path: "Group3", type: .group, optional: true),
-                    ])
+                ])
                 let project = Project(basePath: directoryPath, name: "Test", targets: [target])
                 _ = try project.generatePbxProj()
             }
-            
+
             $0.it("relative path items outside base path are grouped together") {
                 let directories = """
                 Sources:
@@ -623,21 +644,21 @@ class SourceGeneratorTests: XCTestCase {
                         - b.swift
                 """
                 try createDirectories(directories)
-                
+
                 let outOfSourceFile1 = outOfRootPath + "Outside/a.swift"
                 try outOfSourceFile1.parent().mkpath()
                 try outOfSourceFile1.write("")
-                
+
                 let outOfSourceFile2 = outOfRootPath + "Outside/Outside2/b.swift"
                 try outOfSourceFile2.parent().mkpath()
                 try outOfSourceFile2.write("")
-                
+
                 let target = Target(name: "Test", type: .application, platform: .iOS, sources: [
                     "Sources",
                     "../OtherDirectory",
                 ])
                 let project = Project(basePath: directoryPath, name: "Test", targets: [target])
-                
+
                 let pbxProj = try project.generatePbxProj()
                 try pbxProj.expectFile(paths: ["Sources", "Inside", "a.swift"], buildPhase: .sources)
                 try pbxProj.expectFile(paths: ["Sources", "Inside", "Inside2", "b.swift"], buildPhase: .sources)
@@ -655,7 +676,7 @@ class SourceGeneratorTests: XCTestCase {
                 let definition: String = "Intent.intentdefinition"
 
                 let target = Target(name: "Test", type: .framework, platform: .iOS, sources: [
-                    TargetSource(path: "A/\(definition)", buildPhase: .sources, attributes: ["no_codegen"])
+                    TargetSource(path: "A/\(definition)", buildPhase: .sources, attributes: ["no_codegen"]),
                 ])
                 let project = Project(basePath: directoryPath, name: "Test", targets: [target])
 
@@ -675,6 +696,87 @@ class SourceGeneratorTests: XCTestCase {
                 if (buildFile.settings! as NSDictionary) != (["ATTRIBUTES": ["no_codegen"]] as NSDictionary) {
                     throw failure("File does not contain no_codegen attribute")
                 }
+            }
+
+            $0.it("includes only the specified files when includes is present") {
+                let directories = """
+                Sources:
+                  - file3.swift
+                  - file3Tests.swift
+                  - file2.swift
+                  - file2Tests.swift
+                  - group2:
+                    - file.swift
+                    - fileTests.swift
+                  - group:
+                    - file.swift
+                  - group3:
+                    - group4:
+                      - group5:
+                        - file.swift
+                        - file5Tests.swift
+                        - file6Tests.m
+                        - file6Tests.h
+                """
+                try createDirectories(directories)
+
+                let includes = [
+                    "**/*Tests.*"
+                ]
+
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: [TargetSource(path: "Sources", includes: includes)])
+
+                let options = SpecOptions(createIntermediateGroups: true, generateEmptyDirectories: true)
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target], options: options)
+                let pbxProj = try project.generatePbxProj()
+
+                try pbxProj.expectFile(paths: ["Sources", "file2Tests.swift"])
+                try pbxProj.expectFile(paths: ["Sources", "file3Tests.swift"])
+                try pbxProj.expectFile(paths: ["Sources", "group2", "fileTests.swift"])
+                try pbxProj.expectFile(paths: ["Sources", "group3", "group4", "group5", "file5Tests.swift"])
+                try pbxProj.expectFile(paths: ["Sources", "group3", "group4", "group5", "file6Tests.h"])
+                try pbxProj.expectFile(paths: ["Sources", "group3", "group4", "group5", "file6Tests.m"])
+                try pbxProj.expectFileMissing(paths: ["Sources", "file2.swift"])
+                try pbxProj.expectFileMissing(paths: ["Sources", "file3.swift"])
+                try pbxProj.expectFileMissing(paths: ["Sources", "group2", "file.swift"])
+                try pbxProj.expectFileMissing(paths: ["Sources", "group", "file.swift"])
+            }
+
+            $0.it("prioritizes excludes over includes when both are present") {
+                let directories = """
+                Sources:
+                  - file3.swift
+                  - file3Tests.swift
+                  - file2.swift
+                  - file2Tests.swift
+                  - group2:
+                    - file.swift
+                    - fileTests.swift
+                  - group:
+                    - file.swift
+                """
+                try createDirectories(directories)
+
+                let includes = [
+                    "**/*Tests.*"
+                ]
+
+                let excludes = [
+                    "group2"
+                ]
+
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: [TargetSource(path: "Sources", excludes: excludes, includes: includes)])
+
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target])
+                let pbxProj = try project.generatePbxProj()
+
+                try pbxProj.expectFile(paths: ["Sources", "file2Tests.swift"])
+                try pbxProj.expectFile(paths: ["Sources", "file3Tests.swift"])
+                try pbxProj.expectFileMissing(paths: ["Sources", "group2", "fileTests.swift"])
+                try pbxProj.expectFileMissing(paths: ["Sources", "file2.swift"])
+                try pbxProj.expectFileMissing(paths: ["Sources", "file3.swift"])
+                try pbxProj.expectFileMissing(paths: ["Sources", "group2", "file.swift"])
+                try pbxProj.expectFileMissing(paths: ["Sources", "group", "file.swift"])
             }
         }
     }

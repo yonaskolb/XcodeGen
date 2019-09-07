@@ -18,6 +18,7 @@ extension Project {
             testTargets: [],
             configVariants: ["Test", "Staging", "Prod"],
             gatherCoverageData: true,
+            disableMainThreadChecker: true,
             commandLineArguments: [
                 "--command": true,
                 "--command2": false,
