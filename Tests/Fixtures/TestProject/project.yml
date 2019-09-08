@@ -184,6 +184,7 @@ targets:
     sources: StaticLibrary_Swift
     dependencies:
       - framework: Framework_iOS.framework
+        link: true
 
   Framework:
     type: framework
