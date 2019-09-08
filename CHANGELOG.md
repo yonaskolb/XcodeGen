@@ -21,7 +21,6 @@
 
 #### Changed
 - Allow linking of dependencies into static libraries when `link` is set to true [#635](https://github.com/yonaskolb/XcodeGen/pull/635) @kateinoigakukun
-- Updated static library targets to be able to link against dynamic frameworks to support dependencies in other projects [#616](https://github.com/yonaskolb/XcodeGen/pull/616) @bsmith11
 
 [Commits](https://github.com/yonaskolb/XcodeGen/compare/2.6.0...2.7.0)
 
