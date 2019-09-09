@@ -158,18 +158,25 @@ extension Dictionary where Key == String, Value: Any {
     func replaceString(_ template: String, with replacement: String) -> JSONDictionary {
         var replaced: JSONDictionary = self
         for (key, value) in self {
-            switch value {
-            case let dictionary as JSONDictionary:
-                replaced[key] = dictionary.replaceString(template, with: replacement)
-            case let string as String:
-                replaced[key] = string.replacingOccurrences(of: template, with: replacement)
-            case let array as [JSONDictionary]:
-                replaced[key] = array.map { $0.replaceString(template, with: replacement) }
-            case let array as [String]:
-                replaced[key] = array.map { $0.replacingOccurrences(of: template, with: replacement) }
-            default: break
-            }
+            replaced[key] = replace(value: value, template, with: replacement)
         }
         return replaced
+    }
+
+    func replace(value: Any, _ template: String, with replacement: String) -> Any {
+        switch value {
+        case let dictionary as JSONDictionary:
+            return dictionary.replaceString(template, with: replacement)
+        case let string as String:
+            return string.replacingOccurrences(of: template, with: replacement)
+        case let array as [JSONDictionary]:
+            return array.map { $0.replaceString(template, with: replacement) }
+        case let array as [String]:
+            return array.map { $0.replacingOccurrences(of: template, with: replacement) }
+        case let anyArray as [Any]:
+            return anyArray.map { self.replace(value: $0, template, with: replacement) }
+        default:
+            return value
+        }
     }
 }
