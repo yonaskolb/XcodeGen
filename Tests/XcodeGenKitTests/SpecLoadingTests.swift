@@ -463,7 +463,10 @@ class SpecLoadingTests: XCTestCase {
                     "targetTemplates": [
                         "temp": [
                             "platform": "iOS",
-                            "sources": ["templateSource"],
+                            "sources": [
+                                "templateSource",
+                                ["path": "Sources/${target_name}"]
+                            ],
                         ],
                         "temp2": [
                             "type": "framework",
@@ -482,7 +485,7 @@ class SpecLoadingTests: XCTestCase {
                 try expect(target.type) == .framework // uses value
                 try expect(target.platform) == .iOS // uses latest value
                 try expect(target.deploymentTarget) == Version("1.2.0") // keeps value
-                try expect(target.sources) == ["replacedSource", "templateSource", "targetSource"] // merges array in order
+                try expect(target.sources) == ["replacedSource", "templateSource", "Sources/Framework", "targetSource"] // merges array in order and replace ${target_name}
                 try expect(target.configFiles["debug"]) == "Configs/Framework/debug.xcconfig" // replaces $target_name
                 try expect(target.configFiles["release"]) == "Configs/Framework/release.xcconfig" // replaces ${target_name}
             }
