@@ -57,6 +57,7 @@ targets:
       - framework: Vendor/MyFramework.framework
       - sdk: Contacts.framework
       - sdk: libc++.tbd
+      - sdk: libz.dylib
   MyFramework:
     type: framework
     platform: iOS
