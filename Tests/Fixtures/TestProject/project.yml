@@ -48,6 +48,7 @@ targets:
       - target: XPC Service
       - sdk: Contacts.framework
       - sdk: libc++.tbd
+      - sdk: libz.dylib
 
   App_iOS:
     type: application

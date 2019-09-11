@@ -411,6 +411,7 @@ targets:
         findFrameworks: true
       - sdk: Contacts.framework
       - sdk: libc++.tbd
+      - sdk: libz.dylib
   MyFramework:
     type: framework
 ```

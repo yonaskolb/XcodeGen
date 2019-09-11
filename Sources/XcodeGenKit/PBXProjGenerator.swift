@@ -545,6 +545,8 @@ public class PBXProjGenerator {
                         dependencyPath = Path("System/Library/Frameworks") + dependencyPath
                     case "tbd":
                         dependencyPath = Path("usr/lib") + dependencyPath
+                    case "dylib":
+                        dependencyPath = Path("usr/lib") + dependencyPath
                     default: break
                     }
                 }
