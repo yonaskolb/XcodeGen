@@ -156,7 +156,9 @@ public class SchemeGenerator {
             codeCoverageEnabled: scheme.test?.gatherCoverageData ?? Scheme.Test.gatherCoverageDataDefault,
             disableMainThreadChecker: scheme.test?.disableMainThreadChecker ?? Scheme.Test.disableMainThreadCheckerDefault,
             commandlineArguments: testCommandLineArgs,
-            environmentVariables: testVariables
+            environmentVariables: testVariables,
+            language: scheme.test?.language,
+            region: scheme.test?.region
         )
 
         let launchAction = XCScheme.LaunchAction(
@@ -167,7 +169,9 @@ public class SchemeGenerator {
             macroExpansion: shouldExecuteOnLaunch ? nil : buildableReference,
             disableMainThreadChecker: scheme.run?.disableMainThreadChecker ?? Scheme.Run.disableMainThreadCheckerDefault,
             commandlineArguments: launchCommandLineArgs,
-            environmentVariables: launchVariables
+            environmentVariables: launchVariables,
+            language: scheme.run?.language,
+            region: scheme.run?.region
         )
 
         let profileAction = XCScheme.ProfileAction(
