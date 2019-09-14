@@ -199,6 +199,37 @@ class SchemeGeneratorTests: XCTestCase {
                 try expect(xcscheme.testAction?.postActions.first?.scriptText) == "post"
                 try expect(xcscheme.testAction?.postActions.first?.environmentBuildable?.blueprintName) == "MyApp"
             }
+
+            $0.it("generates scheme using external project file") {
+                prepareXcodeProj: do {
+                    let project = try! Project(path: fixturePath + "scheme_test/test_project.yml")
+                    let generator = ProjectGenerator(project: project)
+                    let writer = FileWriter(project: project)
+                    let xcodeProject = try! generator.generateXcodeProject()
+                    try! writer.writeXcodeProject(xcodeProject)
+                    try! writer.writePlists()
+                }
+                let externalProject = fixturePath + "scheme_test/TestProject.xcodeproj"
+                let target = Scheme.BuildTarget(target: "ExternalTarget", externalProject: externalProject.string)
+                let scheme = Scheme(
+                    name: "ExternalProjectScheme",
+                    build: Scheme.Build(targets: [target])
+                )
+                let project = Project(
+                    name: "test",
+                    targets: [],
+                    schemes: [scheme]
+                )
+                let xcodeProject = try project.generateXcodeProject()
+                guard let xcscheme = xcodeProject.sharedData?.schemes.first else {
+                    throw failure("Scheme not found")
+                }
+                try expect(xcscheme.buildAction?.buildActionEntries.count) == 1
+                let buildableReference = xcscheme.buildAction?.buildActionEntries.first?.buildableReference
+                try expect(buildableReference?.blueprintName) == "ExternalTarget"
+                try expect(buildableReference?.referencedContainer) == "container:\(externalProject.string)"
+
+            }
         }
     }
 }
