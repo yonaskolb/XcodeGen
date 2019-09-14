@@ -76,6 +76,8 @@ public struct Scheme: Equatable {
         public var postActions: [ExecutionAction]
         public var environmentVariables: [XCScheme.EnvironmentVariable]
         public var disableMainThreadChecker: Bool
+        public var language: String?
+        public var region: String?
 
         public init(
             config: String,
@@ -83,7 +85,9 @@ public struct Scheme: Equatable {
             preActions: [ExecutionAction] = [],
             postActions: [ExecutionAction] = [],
             environmentVariables: [XCScheme.EnvironmentVariable] = [],
-            disableMainThreadChecker: Bool = disableMainThreadCheckerDefault
+            disableMainThreadChecker: Bool = disableMainThreadCheckerDefault,
+            language: String? = nil,
+            region: String? = nil
         ) {
             self.config = config
             self.commandLineArguments = commandLineArguments
@@ -91,6 +95,8 @@ public struct Scheme: Equatable {
             self.postActions = postActions
             self.environmentVariables = environmentVariables
             self.disableMainThreadChecker = disableMainThreadChecker
+            self.language = language
+            self.region = region
         }
     }
 
@@ -106,6 +112,8 @@ public struct Scheme: Equatable {
         public var preActions: [ExecutionAction]
         public var postActions: [ExecutionAction]
         public var environmentVariables: [XCScheme.EnvironmentVariable]
+        public var language: String?
+        public var region: String?
 
         public struct TestTarget: Equatable, ExpressibleByStringLiteral {
             public static let randomExecutionOrderDefault = false
@@ -146,7 +154,9 @@ public struct Scheme: Equatable {
             targets: [TestTarget] = [],
             preActions: [ExecutionAction] = [],
             postActions: [ExecutionAction] = [],
-            environmentVariables: [XCScheme.EnvironmentVariable] = []
+            environmentVariables: [XCScheme.EnvironmentVariable] = [],
+            language: String? = nil,
+            region: String? = nil
         ) {
             self.config = config
             self.gatherCoverageData = gatherCoverageData
@@ -156,6 +166,8 @@ public struct Scheme: Equatable {
             self.preActions = preActions
             self.postActions = postActions
             self.environmentVariables = environmentVariables
+            self.language = language
+            self.region = region
         }
 
         public var shouldUseLaunchSchemeArgsEnv: Bool {
@@ -261,6 +273,8 @@ extension Scheme.Run: JSONObjectConvertible {
         postActions = jsonDictionary.json(atKeyPath: "postActions") ?? []
         environmentVariables = try XCScheme.EnvironmentVariable.parseAll(jsonDictionary: jsonDictionary)
         disableMainThreadChecker = jsonDictionary.json(atKeyPath: "disableMainThreadChecker") ?? Scheme.Run.disableMainThreadCheckerDefault
+        language = jsonDictionary.json(atKeyPath: "language")
+        region = jsonDictionary.json(atKeyPath: "region")
     }
 }
 
@@ -272,6 +286,8 @@ extension Scheme.Run: JSONEncodable {
             "postActions": postActions.map { $0.toJSONValue() },
             "environmentVariables": environmentVariables.map { $0.toJSONValue() },
             "config": config,
+            "language": language,
+            "region": region,
         ]
 
         if disableMainThreadChecker != Scheme.Run.disableMainThreadCheckerDefault {
@@ -305,6 +321,8 @@ extension Scheme.Test: JSONObjectConvertible {
         preActions = jsonDictionary.json(atKeyPath: "preActions") ?? []
         postActions = jsonDictionary.json(atKeyPath: "postActions") ?? []
         environmentVariables = try XCScheme.EnvironmentVariable.parseAll(jsonDictionary: jsonDictionary)
+        language = jsonDictionary.json(atKeyPath: "language")
+        region = jsonDictionary.json(atKeyPath: "region")
     }
 }
 
@@ -317,6 +335,8 @@ extension Scheme.Test: JSONEncodable {
             "postActions": postActions.map { $0.toJSONValue() },
             "environmentVariables": environmentVariables.map { $0.toJSONValue() },
             "config": config,
+            "language": language,
+            "region": region,
         ]
 
         if gatherCoverageData != Scheme.Test.gatherCoverageDataDefault {

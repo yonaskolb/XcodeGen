@@ -257,6 +257,8 @@ schemes:
         argument.with.dot: YES
     test:
       gatherCoverageData: true
+      language: ja
+      region: en
   App_Scheme:
     build:
       targets:
