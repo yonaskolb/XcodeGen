@@ -466,9 +466,10 @@ extension Scheme.Build: JSONObjectConvertible {
     public init(jsonDictionary: JSONDictionary) throws {
         let targetDictionary: JSONDictionary = try jsonDictionary.json(atKeyPath: "targets")
         var targets: [Scheme.BuildTarget] = []
-        for (target, possibleBuildTypes) in targetDictionary {
+        for (target, possibleBuildTypesOrDict) in targetDictionary {
             let buildTypes: [BuildType]
-            if let string = possibleBuildTypes as? String {
+            var externalProject: String? = nil
+            if let string = possibleBuildTypesOrDict as? String {
                 switch string {
                 case "all": buildTypes = BuildType.all
                 case "none": buildTypes = []
@@ -476,14 +477,21 @@ extension Scheme.Build: JSONObjectConvertible {
                 case "indexing": buildTypes = [.testing, .analyzing, .archiving]
                 default: buildTypes = BuildType.all
                 }
-            } else if let enabledDictionary = possibleBuildTypes as? [String: Bool] {
+            } else if let enabledDictionary = possibleBuildTypesOrDict as? [String: Bool] {
                 buildTypes = enabledDictionary.filter { $0.value }.compactMap { BuildType.from(jsonValue: $0.key) }
-            } else if let array = possibleBuildTypes as? [String] {
+            } else if let array = possibleBuildTypesOrDict as? [String] {
                 buildTypes = array.compactMap(BuildType.from)
+            } else if let dict = possibleBuildTypesOrDict as? [String: Any] {
+                if let array = dict["types"] as? [String] {
+                    buildTypes = array.compactMap(BuildType.from)
+                } else {
+                    buildTypes = BuildType.all
+                }
+                externalProject = dict["externalProject"] as? String
             } else {
                 buildTypes = BuildType.all
             }
-            targets.append(Scheme.BuildTarget(target: target, buildTypes: buildTypes))
+            targets.append(Scheme.BuildTarget(target: target, externalProject: externalProject, buildTypes: buildTypes))
         }
         self.targets = targets.sorted { $0.target < $1.target }
         preActions = try jsonDictionary.json(atKeyPath: "preActions")?.map(Scheme.ExecutionAction.init) ?? []
