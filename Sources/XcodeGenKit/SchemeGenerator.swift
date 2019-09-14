@@ -81,11 +81,7 @@ public class SchemeGenerator {
                 fatalError("Unable to find target named \"\(buildTarget.target)\" in \"PBXProj.targets\"")
             }
 
-            guard let buildableName =
-                project.getTarget(buildTarget.target)?.filename ??
-                project.getAggregateTarget(buildTarget.target)?.name else {
-                fatalError("Unable to determinate \"buildableName\" for build target: \(buildTarget.target)")
-            }
+            let buildableName = pbxTarget.productNameWithExtension() ?? pbxTarget.name
             let buildableReference = XCScheme.BuildableReference(
                 referencedContainer: "container:\(project.name).xcodeproj",
                 blueprint: pbxTarget,
