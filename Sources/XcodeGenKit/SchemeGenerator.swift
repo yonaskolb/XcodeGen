@@ -75,9 +75,12 @@ public class SchemeGenerator {
 
     public func generateScheme(_ scheme: Scheme) throws -> XCScheme {
 
-        func getBuildEntry(_ buildTarget: Scheme.BuildTarget) -> XCScheme.BuildAction.Entry {
+        func getBuildEntry(
+            _ buildTarget: Scheme.BuildTarget,
+            from project: (pbxProj: PBXProj, name: String)
+            ) -> XCScheme.BuildAction.Entry {
 
-            guard let pbxTarget = pbxProj.targets(named: buildTarget.target).first else {
+            guard let pbxTarget = project.pbxProj.targets(named: buildTarget.target).first else {
                 fatalError("Unable to find target named \"\(buildTarget.target)\" in \"PBXProj.targets\"")
             }
 
@@ -96,9 +99,10 @@ public class SchemeGenerator {
             Scheme.BuildTarget(target: $0.name, buildTypes: BuildType.testOnly)
         }
 
-        let testBuildTargetEntries = testBuildTargets.map(getBuildEntry)
+        let testBuildTargetEntries = testBuildTargets.map { getBuildEntry($0, from: (pbxProj, project.name)) }
 
-        let buildActionEntries: [XCScheme.BuildAction.Entry] = scheme.build.targets.map(getBuildEntry)
+        let buildActionEntries: [XCScheme.BuildAction.Entry] = scheme.build.targets
+            .map { getBuildEntry($0, from: (pbxProj, project.name)) }
 
         func getExecutionAction(_ action: Scheme.ExecutionAction) -> XCScheme.ExecutionAction {
             // ExecutionActions can require the use of build settings. Xcode allows the settings to come from a build or test target.
