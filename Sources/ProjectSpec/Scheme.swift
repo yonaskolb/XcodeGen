@@ -112,6 +112,7 @@ public struct Scheme: Equatable {
             public static let parallelizableDefault = false
 
             public let name: String
+            public var externalProject: String?
             public var randomExecutionOrder: Bool
             public var parallelizable: Bool
             public var skippedTests: [String]
@@ -220,11 +221,13 @@ public struct Scheme: Equatable {
 
     public struct BuildTarget: Equatable {
         public var target: String
+        public var externalProject: String?
         public var buildTypes: [BuildType]
 
-        public init(target: String, buildTypes: [BuildType] = BuildType.all) {
+        public init(target: String, externalProject: String? = nil, buildTypes: [BuildType] = BuildType.all) {
             self.target = target
             self.buildTypes = buildTypes
+            self.externalProject = externalProject
         }
     }
 }
@@ -335,6 +338,7 @@ extension Scheme.Test.TestTarget: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
         name = try jsonDictionary.json(atKeyPath: "name")
+        externalProject = jsonDictionary.json(atKeyPath: "externalProject")
         randomExecutionOrder = jsonDictionary.json(atKeyPath: "randomExecutionOrder") ?? Scheme.Test.TestTarget.randomExecutionOrderDefault
         parallelizable = jsonDictionary.json(atKeyPath: "parallelizable") ?? Scheme.Test.TestTarget.parallelizableDefault
         skippedTests = jsonDictionary.json(atKeyPath: "skippedTests") ?? []
@@ -356,6 +360,9 @@ extension Scheme.Test.TestTarget: JSONEncodable {
         }
         if parallelizable != Scheme.Test.TestTarget.parallelizableDefault {
             dict["parallelizable"] = parallelizable
+        }
+        if let externalProject = externalProject {
+            dict["externalProject"] = externalProject
         }
 
         return dict
