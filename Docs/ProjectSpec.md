@@ -650,7 +650,7 @@ Schemes allows for more control than the convenience [Target Scheme](#target-sch
 
 ### Build
 
-- [x] **targets**: **[String:String]** or **[String:[String]]** - A map of target names to build and which build types they should be enabled for. The build types can be `all`, `none`, or an array of the following types:
+- [x] **targets**: **[String:String]**, **[String:[String]]** or **[String: [String: [Build Target](#build-target)]]** - A map of target names to build and which build types they should be enabled for. The build types can be `all`, `none`, or an array of the following types:
 	- `run` or `running`
 	- `test` or `testing`
 	- `profile` or `profiling`
@@ -672,6 +672,10 @@ targets:
 parallelizeBuild: true
 buildImplicitDependencies: true
 ```
+
+### Build Target
+- [ ] **types** Build types they should be enabled for.
+- [ ] **externalProject**: **String** - `xcodeproj` file to reference target.
 
 ### Common Build Action options
 
@@ -706,6 +710,7 @@ A multiline script can be written using the various YAML multiline methods, for 
 - [ ] **parallelizable**: **Bool** - Whether to run tests in parallel. Defaults to false
 - [ ] **randomExecutionOrder**: **Bool** - Whether to run tests in a random order. Defaults to false
 - [ ] **skippedTests**: **[String]** - List of tests in the test target to skip. Defaults to empty.
+- [ ] **externalProject**: **String** - `xcodeproj` file to reference target.
 
 ### Archive Action
 
@@ -725,6 +730,9 @@ schemes:
       targets:
         MyTarget1: all
         MyTarget2: [run, archive]
+        MyTarget3:
+          types: [run, test]
+          externalProject: ./Submodules/OtherProject.xcodeproj
     run:
       config: prod-debug
       commandLineArguments: "--option value"
@@ -737,6 +745,7 @@ schemes:
       targets: 
         - Tester1 
         - name: Tester2
+          externalProject: ./Submodules/OtherProject.xcodeproj
           parallelizable: true
           randomExecutionOrder: true
           skippedTests: [Test/testExample()]
