@@ -748,6 +748,10 @@ class SpecLoadingTests: XCTestCase {
                             "Target4": ["testing": true],
                             "Target5": ["testing": false],
                             "Target6": ["test", "analyze"],
+                            "Target7": [
+                                "externalProject": "ExternalProject.xcodeproj",
+                                "types": ["run"],
+                            ],
                         ],
                         "preActions": [
                             [
@@ -763,6 +767,7 @@ class SpecLoadingTests: XCTestCase {
                             "Target1",
                             [
                                 "name": "Target2",
+                                "externalProject": "ExternalProject.xcodeproj",
                                 "parallelizable": true,
                                 "randomExecutionOrder": true,
                                 "skippedTests": ["Test/testExample()"],
@@ -780,6 +785,7 @@ class SpecLoadingTests: XCTestCase {
                     Scheme.BuildTarget(target: "Target4", buildTypes: [.testing]),
                     Scheme.BuildTarget(target: "Target5", buildTypes: []),
                     Scheme.BuildTarget(target: "Target6", buildTypes: [.testing, .analyzing]),
+                    Scheme.BuildTarget(target: "Target7", externalProject: "ExternalProject.xcodeproj", buildTypes: [.running]),
                 ]
                 try expect(scheme.name) == "Scheme"
                 try expect(scheme.build.targets) == expectedTargets
@@ -798,6 +804,7 @@ class SpecLoadingTests: XCTestCase {
                         "Target1",
                         Scheme.Test.TestTarget(
                             name: "Target2",
+                            externalProject: "ExternalProject.xcodeproj",
                             randomExecutionOrder: true,
                             parallelizable: true,
                             skippedTests: ["Test/testExample()"]

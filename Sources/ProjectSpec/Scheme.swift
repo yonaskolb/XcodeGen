@@ -119,11 +119,13 @@ public struct Scheme: Equatable {
 
             public init(
                 name: String,
+                externalProject: String? = nil,
                 randomExecutionOrder: Bool = randomExecutionOrderDefault,
                 parallelizable: Bool = parallelizableDefault,
                 skippedTests: [String] = []
             ) {
                 self.name = name
+                self.externalProject = externalProject
                 self.randomExecutionOrder = randomExecutionOrder
                 self.parallelizable = parallelizable
                 self.skippedTests = skippedTests
@@ -131,6 +133,7 @@ public struct Scheme: Equatable {
 
             public init(stringLiteral value: String) {
                 name = value
+                externalProject = nil
                 randomExecutionOrder = false
                 parallelizable = false
                 skippedTests = []
