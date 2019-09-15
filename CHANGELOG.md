@@ -8,6 +8,7 @@
 - Support `dylib` SDK. [#650](https://github.com/yonaskolb/XcodeGen/pull/650) @kateinoigakukun
 - Added `language` and `region` options for `run` and `test` scheme [#654](https://github.com/yonaskolb/XcodeGen/pull/654) @kateinoigakukun
 - Support External Target Reference. [#655](https://github.com/yonaskolb/XcodeGen/pull/655) @kateinoigakukun
+- Added `enableCoverage` for each test target. This enables to gather code coverage for specific targets. [#656](https://github.com/yonaskolb/XcodeGen/pull/656) @kateinoigakukun
 
 #### Fixed
 
