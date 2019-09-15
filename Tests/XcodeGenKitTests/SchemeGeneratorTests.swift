@@ -230,6 +230,48 @@ class SchemeGeneratorTests: XCTestCase {
                 try expect(buildableReference?.referencedContainer) == "container:\(externalProject.string)"
 
             }
+
+            $0.it("generate scheme with code coverage options") {
+                prepareXcodeProj: do {
+                    let project = try! Project(path: fixturePath + "scheme_test/test_project.yml")
+                    let generator = ProjectGenerator(project: project)
+                    let writer = FileWriter(project: project)
+                    let xcodeProject = try! generator.generateXcodeProject()
+                    try! writer.writeXcodeProject(xcodeProject)
+                    try! writer.writePlists()
+                }
+                let externalProject = fixturePath + "scheme_test/TestProject.xcodeproj"
+                let externalTarget = Scheme.BuildTarget(target: "ExternalTarget", externalProject: externalProject.string)
+                let scheme = Scheme(
+                    name: "CodeCoverageScheme",
+                    build: Scheme.Build(targets: [externalTarget]),
+                    test: Scheme.Test(
+                        config: "Debug",
+                        gatherCoverageData: true,
+                        coverageTargets: [
+                            Scheme.Test.CoverageTarget(
+                                target: externalTarget.target,
+                                externalProject: externalTarget.externalProject
+                            ),
+                            Scheme.Test.CoverageTarget(target: framework.name)
+                        ]
+                    )
+                )
+                let project = Project(
+                    name: "test",
+                    targets: [framework],
+                    schemes: [scheme]
+                )
+                let xcodeProject = try project.generateXcodeProject()
+                guard let xcscheme = xcodeProject.sharedData?.schemes.first else {
+                    throw failure("Scheme not found")
+                }
+                try expect(xcscheme.testAction?.codeCoverageEnabled) == true
+                try expect(xcscheme.testAction?.codeCoverageTargets.count) == 2
+                let buildableReference = xcscheme.testAction?.codeCoverageTargets.first
+                try expect(buildableReference?.blueprintName) == "ExternalTarget"
+                try expect(buildableReference?.referencedContainer) == "container:\(externalProject.string)"
+            }
         }
     }
 }
