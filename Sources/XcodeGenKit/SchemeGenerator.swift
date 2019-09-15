@@ -75,10 +75,10 @@ public class SchemeGenerator {
 
     public func generateScheme(_ scheme: Scheme) throws -> XCScheme {
 
-        func getBuildEntry(_ buildTarget: Scheme.BuildTarget) throws -> XCScheme.BuildAction.Entry {
+        func getBuildableReference(_ target: String, externalProject: String?) throws -> XCScheme.BuildableReference {
             let pbxProj: PBXProj
             let projectFilename: String
-            if let externalProject = buildTarget.externalProject {
+            if let externalProject = externalProject {
                 pbxProj = try XcodeProj(pathString: externalProject).pbxproj
                 projectFilename = externalProject
             } else {
@@ -86,16 +86,22 @@ public class SchemeGenerator {
                 projectFilename = "\(self.project.name).xcodeproj"
             }
 
-            guard let pbxTarget = pbxProj.targets(named: buildTarget.target).first else {
-                fatalError("Unable to find target named \"\(buildTarget.target)\" in \"PBXProj.targets\"")
+            guard let pbxTarget = pbxProj.targets(named: target).first else {
+                fatalError("Unable to find target named \"\(target)\" in \"PBXProj.targets\"")
             }
 
             let buildableName = pbxTarget.productNameWithExtension() ?? pbxTarget.name
-            let buildableReference = XCScheme.BuildableReference(
+            return XCScheme.BuildableReference(
                 referencedContainer: "container:\(projectFilename)",
                 blueprint: pbxTarget,
                 buildableName: buildableName,
-                blueprintName: buildTarget.target
+                blueprintName: target
+            )
+        }
+
+        func getBuildEntry(_ buildTarget: Scheme.BuildTarget) throws -> XCScheme.BuildAction.Entry {
+            let buildableReference = try getBuildableReference(
+                buildTarget.target, externalProject: buildTarget.externalProject
             )
             return XCScheme.BuildAction.Entry(buildableReference: buildableReference, buildFor: buildTarget.buildTypes)
         }
@@ -143,6 +149,10 @@ public class SchemeGenerator {
             )
         }
 
+        let coverageBuildableTargets = try scheme.test?.coverageTargets.map {
+            try getBuildableReference($0.target, externalProject: $0.externalProject)
+        } ?? []
+
         let testCommandLineArgs = scheme.test.map { XCScheme.CommandLineArguments($0.commandLineArguments) }
         let launchCommandLineArgs = scheme.run.map { XCScheme.CommandLineArguments($0.commandLineArguments) }
         let profileCommandLineArgs = scheme.profile.map { XCScheme.CommandLineArguments($0.commandLineArguments) }
@@ -159,6 +169,7 @@ public class SchemeGenerator {
             postActions: scheme.test?.postActions.map(getExecutionAction) ?? [],
             shouldUseLaunchSchemeArgsEnv: scheme.test?.shouldUseLaunchSchemeArgsEnv ?? true,
             codeCoverageEnabled: scheme.test?.gatherCoverageData ?? Scheme.Test.gatherCoverageDataDefault,
+            codeCoverageTargets: coverageBuildableTargets,
             disableMainThreadChecker: scheme.test?.disableMainThreadChecker ?? Scheme.Test.disableMainThreadCheckerDefault,
             commandlineArguments: testCommandLineArgs,
             environmentVariables: testVariables,
