@@ -370,7 +370,9 @@ extension Scheme.Test.TestTarget: JSONObjectConvertible {
 
 extension Scheme.Test.TestTarget: JSONEncodable {
     public func toJSONValue() -> Any {
-        if !randomExecutionOrder && !parallelizable {
+        if randomExecutionOrder == Scheme.Test.TestTarget.randomExecutionOrderDefault,
+            parallelizable == Scheme.Test.TestTarget.parallelizableDefault,
+            externalProject == nil {
             return name
         }
 
