@@ -106,6 +106,7 @@ public struct Scheme: Equatable {
 
         public var config: String?
         public var gatherCoverageData: Bool
+        public var coverageTargets: [CoverageTarget]
         public var disableMainThreadChecker: Bool
         public var commandLineArguments: [String: Bool]
         public var targets: [TestTarget]
@@ -114,6 +115,24 @@ public struct Scheme: Equatable {
         public var environmentVariables: [XCScheme.EnvironmentVariable]
         public var language: String?
         public var region: String?
+
+        public struct CoverageTarget: Equatable, ExpressibleByStringLiteral {
+            public let target: String
+            public var externalProject: String?
+
+            public init(
+                target: String,
+                externalProject: String? = nil
+                ) {
+                self.target = target
+                self.externalProject = externalProject
+            }
+
+            public init(stringLiteral value: String) {
+                target = value
+                externalProject = nil
+            }
+        }
 
         public struct TestTarget: Equatable, ExpressibleByStringLiteral {
             public static let randomExecutionOrderDefault = false
@@ -151,6 +170,7 @@ public struct Scheme: Equatable {
         public init(
             config: String,
             gatherCoverageData: Bool = gatherCoverageDataDefault,
+            coverageTargets: [CoverageTarget] = [],
             disableMainThreadChecker: Bool = disableMainThreadCheckerDefault,
             randomExecutionOrder: Bool = false,
             parallelizable: Bool = false,
@@ -164,6 +184,7 @@ public struct Scheme: Equatable {
         ) {
             self.config = config
             self.gatherCoverageData = gatherCoverageData
+            self.coverageTargets = coverageTargets
             self.disableMainThreadChecker = disableMainThreadChecker
             self.commandLineArguments = commandLineArguments
             self.targets = targets
@@ -309,6 +330,7 @@ extension Scheme.Test: JSONObjectConvertible {
     public init(jsonDictionary: JSONDictionary) throws {
         config = jsonDictionary.json(atKeyPath: "config")
         gatherCoverageData = jsonDictionary.json(atKeyPath: "gatherCoverageData") ?? Scheme.Test.gatherCoverageDataDefault
+        coverageTargets = jsonDictionary.json(atKeyPath: "coverageTargets") ?? []
         disableMainThreadChecker = jsonDictionary.json(atKeyPath: "disableMainThreadChecker") ?? Scheme.Test.disableMainThreadCheckerDefault
         commandLineArguments = jsonDictionary.json(atKeyPath: "commandLineArguments") ?? [:]
         if let targets = jsonDictionary["targets"] as? [Any] {
@@ -343,6 +365,7 @@ extension Scheme.Test: JSONEncodable {
             "config": config,
             "language": language,
             "region": region,
+            "coverageTargets": coverageTargets.map { $0.toJSONValue() },
         ]
 
         if gatherCoverageData != Scheme.Test.gatherCoverageDataDefault {
@@ -354,6 +377,24 @@ extension Scheme.Test: JSONEncodable {
         }
 
         return dict
+    }
+}
+
+extension Scheme.Test.CoverageTarget: JSONObjectConvertible {
+
+    public init(jsonDictionary: JSONDictionary) throws {
+        target = try jsonDictionary.json(atKeyPath: "target")
+        externalProject = jsonDictionary.json(atKeyPath: "externalProject")
+    }
+}
+
+extension Scheme.Test.CoverageTarget: JSONEncodable {
+    public func toJSONValue() -> Any {
+        guard let externalProject = externalProject else { return target }
+        return [
+            "target": target,
+            "externalProject": externalProject
+        ]
     }
 }
 
