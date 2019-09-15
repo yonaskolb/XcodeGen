@@ -705,6 +705,7 @@ A multiline script can be written using the various YAML multiline methods, for 
 ### Test Action
 
 - [ ] **gatherCoverageData**: **Bool** - a boolean that indicates if this scheme should gather coverage data. This defaults to false
+- [ ] **coverageTargets**: **[[Coverage Target](#coverage-target)]** - a list of targets to gather code coverage. Each entry can either be a simple string, or a [Coverage Target](#coverage-target)
 - [ ] **targets**: **[[Test Target](#test-target)]** - a list of targets to test. Each entry can either be a simple string, or a [Test Target](#test-target)
 
 #### Test Target
@@ -712,6 +713,10 @@ A multiline script can be written using the various YAML multiline methods, for 
 - [ ] **parallelizable**: **Bool** - Whether to run tests in parallel. Defaults to false
 - [ ] **randomExecutionOrder**: **Bool** - Whether to run tests in a random order. Defaults to false
 - [ ] **skippedTests**: **[String]** - List of tests in the test target to skip. Defaults to empty.
+- [ ] **externalProject**: **String** - `xcodeproj` file to reference target.
+
+#### Coverage Target
+- [x] **name**: **String** - The name of the target
 - [ ] **externalProject**: **String** - `xcodeproj` file to reference target.
 
 ### Archive Action
@@ -744,6 +749,10 @@ schemes:
       config: prod-debug
       commandLineArguments: "--option testValue"
       gatherCoverageData: true
+      coverageTargets:
+        - MyTarget1
+        - name: ExternalTarget
+          externalProject: ./Submodules/OtherProject.xcodeproj
       targets: 
         - Tester1 
         - name: Tester2
