@@ -250,10 +250,10 @@ class SchemeGeneratorTests: XCTestCase {
                         gatherCoverageData: true,
                         coverageTargets: [
                             Scheme.Test.CoverageTarget(
-                                target: externalTarget.target,
+                                name: externalTarget.target,
                                 externalProject: externalTarget.externalProject
                             ),
-                            Scheme.Test.CoverageTarget(target: framework.name)
+                            Scheme.Test.CoverageTarget(name: framework.name)
                         ]
                     )
                 )

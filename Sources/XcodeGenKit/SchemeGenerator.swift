@@ -150,7 +150,7 @@ public class SchemeGenerator {
         }
 
         let coverageBuildableTargets = try scheme.test?.coverageTargets.map {
-            try getBuildableReference($0.target, externalProject: $0.externalProject)
+            try getBuildableReference($0.name, externalProject: $0.externalProject)
         } ?? []
 
         let testCommandLineArgs = scheme.test.map { XCScheme.CommandLineArguments($0.commandLineArguments) }

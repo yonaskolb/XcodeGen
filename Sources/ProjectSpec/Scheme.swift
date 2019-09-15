@@ -117,19 +117,19 @@ public struct Scheme: Equatable {
         public var region: String?
 
         public struct CoverageTarget: Equatable, ExpressibleByStringLiteral {
-            public let target: String
+            public let name: String
             public var externalProject: String?
 
             public init(
-                target: String,
+                name: String,
                 externalProject: String? = nil
                 ) {
-                self.target = target
+                self.name = name
                 self.externalProject = externalProject
             }
 
             public init(stringLiteral value: String) {
-                target = value
+                name = value
                 externalProject = nil
             }
         }
@@ -383,16 +383,16 @@ extension Scheme.Test: JSONEncodable {
 extension Scheme.Test.CoverageTarget: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
-        target = try jsonDictionary.json(atKeyPath: "target")
+        name = try jsonDictionary.json(atKeyPath: "name")
         externalProject = jsonDictionary.json(atKeyPath: "externalProject")
     }
 }
 
 extension Scheme.Test.CoverageTarget: JSONEncodable {
     public func toJSONValue() -> Any {
-        guard let externalProject = externalProject else { return target }
+        guard let externalProject = externalProject else { return name }
         return [
-            "target": target,
+            "name": name,
             "externalProject": externalProject
         ]
     }
