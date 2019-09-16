@@ -244,7 +244,7 @@ class SourceGenerator {
         if let cachedGroup = groupsByPath[path] {
             for child in children {
                 // only add the children that aren't already in the cachedGroup
-                if !cachedGroup.children.contains(child) {
+                if !cachedGroup.children.contains(where: { $0.path == child.path }) {
                     cachedGroup.children.append(child)
                 }
             }
