@@ -242,12 +242,14 @@ class SourceGenerator {
         let groupReference: PBXGroup
 
         if let cachedGroup = groupsByPath[path] {
+            var cachedGroupChildren = cachedGroup.children
             for child in children {
                 // only add the children that aren't already in the cachedGroup
-                if !cachedGroup.children.contains(where: { $0.path == child.path }) {
-                    cachedGroup.children.append(child)
+                if !cachedGroupChildren.contains(where: { $0.path == child.path }) {
+                    cachedGroupChildren.append(child)
                 }
             }
+            cachedGroup.children = cachedGroupChildren
             groupReference = cachedGroup
         } else {
 
