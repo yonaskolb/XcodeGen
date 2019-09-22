@@ -111,7 +111,7 @@ public struct Scheme: Equatable {
 
         public var config: String?
         public var gatherCoverageData: Bool
-        public var coverageTargets: [CoverageTarget]
+        public var coverageTargets: [TargetReference]
         public var disableMainThreadChecker: Bool
         public var commandLineArguments: [String: Bool]
         public var targets: [TestTarget]
@@ -121,24 +121,6 @@ public struct Scheme: Equatable {
         public var language: String?
         public var region: String?
         public var debugEnabled: Bool
-
-        public struct CoverageTarget: Equatable, ExpressibleByStringLiteral {
-            public let name: String
-            public var externalProject: String?
-
-            public init(
-                name: String,
-                externalProject: String? = nil
-                ) {
-                self.name = name
-                self.externalProject = externalProject
-            }
-
-            public init(stringLiteral value: String) {
-                name = value
-                externalProject = nil
-            }
-        }
 
         public struct TestTarget: Equatable, ExpressibleByStringLiteral {
             public static let randomExecutionOrderDefault = false
@@ -177,7 +159,7 @@ public struct Scheme: Equatable {
         public init(
             config: String,
             gatherCoverageData: Bool = gatherCoverageDataDefault,
-            coverageTargets: [CoverageTarget] = [],
+            coverageTargets: [TargetReference] = [],
             disableMainThreadChecker: Bool = disableMainThreadCheckerDefault,
             randomExecutionOrder: Bool = false,
             parallelizable: Bool = false,
@@ -385,7 +367,7 @@ extension Scheme.Test: JSONObjectConvertible {
     public init(jsonDictionary: JSONDictionary) throws {
         config = jsonDictionary.json(atKeyPath: "config")
         gatherCoverageData = jsonDictionary.json(atKeyPath: "gatherCoverageData") ?? Scheme.Test.gatherCoverageDataDefault
-        coverageTargets = jsonDictionary.json(atKeyPath: "coverageTargets") ?? []
+        coverageTargets = try (jsonDictionary.json(atKeyPath: "coverageTargets") ?? []).map { try TargetReference(string: $0) }
         disableMainThreadChecker = jsonDictionary.json(atKeyPath: "disableMainThreadChecker") ?? Scheme.Test.disableMainThreadCheckerDefault
         commandLineArguments = jsonDictionary.json(atKeyPath: "commandLineArguments") ?? [:]
         if let targets = jsonDictionary["targets"] as? [Any] {
@@ -421,7 +403,7 @@ extension Scheme.Test: JSONEncodable {
             "config": config,
             "language": language,
             "region": region,
-            "coverageTargets": coverageTargets.map { $0.toJSONValue() },
+            "coverageTargets": coverageTargets.map { $0.toString() },
         ]
 
         if gatherCoverageData != Scheme.Test.gatherCoverageDataDefault {
@@ -437,24 +419,6 @@ extension Scheme.Test: JSONEncodable {
         }
 
         return dict
-    }
-}
-
-extension Scheme.Test.CoverageTarget: JSONObjectConvertible {
-
-    public init(jsonDictionary: JSONDictionary) throws {
-        name = try jsonDictionary.json(atKeyPath: "name")
-        externalProject = jsonDictionary.json(atKeyPath: "externalProject")
-    }
-}
-
-extension Scheme.Test.CoverageTarget: JSONEncodable {
-    public func toJSONValue() -> Any {
-        guard let externalProject = externalProject else { return name }
-        return [
-            "name": name,
-            "externalProject": externalProject
-        ]
     }
 }
 

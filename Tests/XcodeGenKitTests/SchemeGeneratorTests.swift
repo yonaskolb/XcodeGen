@@ -267,26 +267,26 @@ class SchemeGeneratorTests: XCTestCase {
                     try! writer.writePlists()
                 }
                 let externalProject = fixturePath + "scheme_test/TestProject.xcodeproj"
-                let externalTarget = Scheme.BuildTarget(target: "ExternalTarget", externalProject: externalProject.string)
-                let scheme = Scheme(
+                let externalTarget = Scheme.BuildTarget(target: .init(name: "ExternalTarget", location: .project("TestProject")))
+                let scheme = try Scheme(
                     name: "CodeCoverageScheme",
                     build: Scheme.Build(targets: [externalTarget]),
                     test: Scheme.Test(
                         config: "Debug",
                         gatherCoverageData: true,
                         coverageTargets: [
-                            Scheme.Test.CoverageTarget(
-                                name: externalTarget.target,
-                                externalProject: externalTarget.externalProject
-                            ),
-                            Scheme.Test.CoverageTarget(name: framework.name)
+                            TargetReference(string: "TestProject/ExternalTarget"),
+                            TargetReference(string: framework.name),
                         ]
                     )
                 )
                 let project = Project(
                     name: "test",
                     targets: [framework],
-                    schemes: [scheme]
+                    schemes: [scheme],
+                    externalProjects: [
+                        ExternalProject(name: "TestProject", path: externalProject.string),
+                    ]
                 )
                 let xcodeProject = try project.generateXcodeProject()
                 guard let xcscheme = xcodeProject.sharedData?.schemes.first else {

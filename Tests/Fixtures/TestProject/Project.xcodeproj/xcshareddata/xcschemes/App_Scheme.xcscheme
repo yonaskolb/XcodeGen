@@ -26,31 +26,8 @@
       buildConfiguration = "Production Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      codeCoverageEnabled = "YES"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "F674B2CFC4738EEC49BAD0DA"
-               BuildableName = "App_iOS_UITests.xctest"
-               BlueprintName = "App_iOS_UITests"
-               ReferencedContainer = "container:Project.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO"
-            parallelizable = "YES"
-            testExecutionOrdering = "random">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "DC2F16BAA6E13B44AB62F888"
-               BuildableName = "App_iOS_Tests.xctest"
-               BlueprintName = "App_iOS_Tests"
-               ReferencedContainer = "container:Project.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
@@ -61,8 +38,6 @@
             ReferencedContainer = "container:Project.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
-      <CommandLineArguments>
-      </CommandLineArguments>
       <AdditionalOptions>
       </AdditionalOptions>
       <CodeCoverageTargets>

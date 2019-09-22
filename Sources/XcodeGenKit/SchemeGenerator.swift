@@ -75,17 +75,10 @@ public class SchemeGenerator {
 
     public func generateScheme(_ scheme: Scheme) throws -> XCScheme {
 
-        func getBuildableReference(_ target: String, externalProject: String?) throws -> XCScheme.BuildableReference {
+        func getBuildableReference(_ target: TargetReference) throws -> XCScheme.BuildableReference {
             let pbxProj: PBXProj
-<<<<<<< HEAD
-            let projectFilename: String
-            if let externalProject = externalProject {
-                pbxProj = try XcodeProj(pathString: externalProject).pbxproj
-                projectFilename = externalProject
-            } else {
-=======
             let projectFilePath: String
-            switch buildTarget.target.location {
+            switch target.location {
             case .project(let project):
                 guard let externalProject = self.project.getExternalProject(project) else {
                     fatalError("Unable to find external project named \"\(project)\" in project.yml")
@@ -93,41 +86,25 @@ public class SchemeGenerator {
                 pbxProj = try XcodeProj(pathString: externalProject.path).pbxproj
                 projectFilePath = externalProject.path
             case .local:
->>>>>>> external-target-ref
                 pbxProj = self.pbxProj
                 projectFilePath = "\(self.project.name).xcodeproj"
             }
 
-<<<<<<< HEAD
-            guard let pbxTarget = pbxProj.targets(named: target).first else {
-                fatalError("Unable to find target named \"\(target)\" in \"PBXProj.targets\"")
+            guard let pbxTarget = pbxProj.targets(named: target.name).first else {
+                fatalError("Unable to find target named \"\(target.name)\" in \"PBXProj.targets\"")
             }
 
             let buildableName = pbxTarget.productNameWithExtension() ?? pbxTarget.name
             return XCScheme.BuildableReference(
-                referencedContainer: "container:\(projectFilename)",
+                referencedContainer: "container:\(projectFilePath)",
                 blueprint: pbxTarget,
                 buildableName: buildableName,
-                blueprintName: target
+                blueprintName: target.name
             )
         }
 
         func getBuildEntry(_ buildTarget: Scheme.BuildTarget) throws -> XCScheme.BuildAction.Entry {
-            let buildableReference = try getBuildableReference(
-                buildTarget.target, externalProject: buildTarget.externalProject
-=======
-            guard let pbxTarget = pbxProj.targets(named: buildTarget.target.name).first else {
-                fatalError("Unable to find target named \"\(buildTarget.target)\" in \"PBXProj.targets\"")
-            }
-
-            let buildableName = pbxTarget.productNameWithExtension() ?? pbxTarget.name
-            let buildableReference = XCScheme.BuildableReference(
-                referencedContainer: "container:\(projectFilePath)",
-                blueprint: pbxTarget,
-                buildableName: buildableName,
-                blueprintName: buildTarget.target.name
->>>>>>> external-target-ref
-            )
+            let buildableReference = try getBuildableReference(buildTarget.target)
             return XCScheme.BuildAction.Entry(buildableReference: buildableReference, buildFor: buildTarget.buildTypes)
         }
 
@@ -175,7 +152,7 @@ public class SchemeGenerator {
         }
 
         let coverageBuildableTargets = try scheme.test?.coverageTargets.map {
-            try getBuildableReference($0.name, externalProject: $0.externalProject)
+            try getBuildableReference($0)
         } ?? []
 
         let testCommandLineArgs = scheme.test.map { XCScheme.CommandLineArguments($0.commandLineArguments) }
