@@ -195,6 +195,7 @@ class SchemeGeneratorTests: XCTestCase {
                 }
 
                 try expect(xcscheme.launchAction?.selectedDebuggerIdentifier) == ""
+                try expect(xcscheme.launchAction?.selectedLauncherIdentifier) == "Xcode.IDEFoundation.Launcher.PosixSpawn"
             }
 
             $0.it("generates pre and post actions for target schemes") {

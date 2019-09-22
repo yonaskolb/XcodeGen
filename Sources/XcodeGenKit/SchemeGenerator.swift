@@ -169,6 +169,7 @@ public class SchemeGenerator {
             postActions: scheme.run?.postActions.map(getExecutionAction) ?? [],
             macroExpansion: shouldExecuteOnLaunch ? nil : buildableReference,
             selectedDebuggerIdentifier: (scheme.run?.debugEnabled ?? Scheme.Run.debugEnabledDefault) ? XCScheme.defaultDebugger : "",
+            selectedLauncherIdentifier: (scheme.run?.debugEnabled ?? Scheme.Run.debugEnabledDefault) ? XCScheme.defaultLauncher : "Xcode.IDEFoundation.Launcher.PosixSpawn",
             disableMainThreadChecker: scheme.run?.disableMainThreadChecker ?? Scheme.Run.disableMainThreadCheckerDefault,
             commandlineArguments: launchCommandLineArgs,
             environmentVariables: launchVariables,
