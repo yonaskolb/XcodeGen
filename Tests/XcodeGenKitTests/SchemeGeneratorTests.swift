@@ -87,6 +87,9 @@ class SchemeGeneratorTests: XCTestCase {
                 try expect(xcscheme.profileAction?.buildConfiguration) == "Release"
                 try expect(xcscheme.analyzeAction?.buildConfiguration) == "Debug"
                 try expect(xcscheme.archiveAction?.buildConfiguration) == "Release"
+
+                try expect(xcscheme.launchAction?.selectedDebuggerIdentifier) == XCScheme.defaultDebugger
+                try expect(xcscheme.testAction?.selectedDebuggerIdentifier) == XCScheme.defaultDebugger
             }
 
             $0.it("sets environment variables for a scheme") {
@@ -172,6 +175,27 @@ class SchemeGeneratorTests: XCTestCase {
                 try expect(xcscheme.launchAction?.environmentVariables) == variables
                 try expect(xcscheme.testAction?.environmentVariables) == variables
                 try expect(xcscheme.profileAction?.environmentVariables) == variables
+            }
+
+            $0.it("generate scheme without debugger") {
+                let scheme = Scheme(
+                    name: "TestScheme",
+                    build: Scheme.Build(targets: [buildTarget]),
+                    run: Scheme.Run(config: "Debug", debugEnabled: false)
+                )
+                let project = Project(
+                    name: "test",
+                    targets: [app, framework],
+                    schemes: [scheme]
+                )
+                let xcodeProject = try project.generateXcodeProject()
+
+                guard let xcscheme = xcodeProject.sharedData?.schemes.first else {
+                    throw failure("Scheme not found")
+                }
+
+                try expect(xcscheme.launchAction?.selectedDebuggerIdentifier) == ""
+                try expect(xcscheme.launchAction?.selectedLauncherIdentifier) == "Xcode.IDEFoundation.Launcher.PosixSpawn"
             }
 
             $0.it("generates pre and post actions for target schemes") {
