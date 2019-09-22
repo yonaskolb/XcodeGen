@@ -37,7 +37,7 @@ class SchemeGeneratorTests: XCTestCase {
     func testSchemes() {
         describe {
 
-            let buildTarget = Scheme.BuildTarget(target: app.name)
+            let buildTarget = Scheme.BuildTarget(target: .init(name: app.name, location: .local))
             $0.it("generates scheme") {
                 let preAction = Scheme.ExecutionAction(name: "Script", script: "echo Starting", settingsTarget: app.name)
                 let scheme = Scheme(
@@ -209,8 +209,9 @@ class SchemeGeneratorTests: XCTestCase {
                     try! writer.writeXcodeProject(xcodeProject)
                     try! writer.writePlists()
                 }
-                let externalProject = fixturePath + "scheme_test/TestProject.xcodeproj"
-                let target = Scheme.BuildTarget(target: "ExternalTarget", externalProject: externalProject.string)
+                let externalProjectPath = fixturePath + "scheme_test/TestProject.xcodeproj"
+                let externalProject = ExternalProject(name: "ExternalProject", path: externalProjectPath.string)
+                let target = Scheme.BuildTarget(target: .init(name: "ExternalTarget", location: .project("ExternalProject")))
                 let scheme = Scheme(
                     name: "ExternalProjectScheme",
                     build: Scheme.Build(targets: [target])
@@ -218,7 +219,8 @@ class SchemeGeneratorTests: XCTestCase {
                 let project = Project(
                     name: "test",
                     targets: [],
-                    schemes: [scheme]
+                    schemes: [scheme],
+                    externalProjects: [externalProject]
                 )
                 let xcodeProject = try project.generateXcodeProject()
                 guard let xcscheme = xcodeProject.sharedData?.schemes.first else {
@@ -227,7 +229,7 @@ class SchemeGeneratorTests: XCTestCase {
                 try expect(xcscheme.buildAction?.buildActionEntries.count) == 1
                 let buildableReference = xcscheme.buildAction?.buildActionEntries.first?.buildableReference
                 try expect(buildableReference?.blueprintName) == "ExternalTarget"
-                try expect(buildableReference?.referencedContainer) == "container:\(externalProject.string)"
+                try expect(buildableReference?.referencedContainer) == "container:\(externalProjectPath.string)"
 
             }
         }
