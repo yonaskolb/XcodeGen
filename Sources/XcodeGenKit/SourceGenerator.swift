@@ -242,12 +242,15 @@ class SourceGenerator {
         let groupReference: PBXGroup
 
         if let cachedGroup = groupsByPath[path] {
+            var cachedGroupChildren = cachedGroup.children
             for child in children {
                 // only add the children that aren't already in the cachedGroup
-                if !cachedGroup.children.contains(child) {
-                    cachedGroup.children.append(child)
+                // Check equality by path and sourceTree because XcodeProj.PBXObject.== is very slow.
+                if !cachedGroupChildren.contains(where: { $0.path == child.path && $0.sourceTree == child.sourceTree }) {
+                    cachedGroupChildren.append(child)
                 }
             }
+            cachedGroup.children = cachedGroupChildren
             groupReference = cachedGroup
         } else {
 
