@@ -69,6 +69,7 @@ public struct Scheme: Equatable {
 
     public struct Run: BuildAction {
         public static let disableMainThreadCheckerDefault = false
+        public static let debugEnabledDefault = true
 
         public var config: String?
         public var commandLineArguments: [String: Bool]
@@ -78,6 +79,7 @@ public struct Scheme: Equatable {
         public var disableMainThreadChecker: Bool
         public var language: String?
         public var region: String?
+        public var debugEnabled: Bool
 
         public init(
             config: String,
@@ -87,7 +89,8 @@ public struct Scheme: Equatable {
             environmentVariables: [XCScheme.EnvironmentVariable] = [],
             disableMainThreadChecker: Bool = disableMainThreadCheckerDefault,
             language: String? = nil,
-            region: String? = nil
+            region: String? = nil,
+            debugEnabled: Bool = debugEnabledDefault
         ) {
             self.config = config
             self.commandLineArguments = commandLineArguments
@@ -97,12 +100,14 @@ public struct Scheme: Equatable {
             self.disableMainThreadChecker = disableMainThreadChecker
             self.language = language
             self.region = region
+            self.debugEnabled = debugEnabled
         }
     }
 
     public struct Test: BuildAction {
         public static let gatherCoverageDataDefault = false
         public static let disableMainThreadCheckerDefault = false
+        public static let debugEnabledDefault = true
 
         public var config: String?
         public var gatherCoverageData: Bool
@@ -114,6 +119,7 @@ public struct Scheme: Equatable {
         public var environmentVariables: [XCScheme.EnvironmentVariable]
         public var language: String?
         public var region: String?
+        public var debugEnabled: Bool
 
         public struct TestTarget: Equatable, ExpressibleByStringLiteral {
             public static let randomExecutionOrderDefault = false
@@ -161,7 +167,8 @@ public struct Scheme: Equatable {
             postActions: [ExecutionAction] = [],
             environmentVariables: [XCScheme.EnvironmentVariable] = [],
             language: String? = nil,
-            region: String? = nil
+            region: String? = nil,
+            debugEnabled: Bool = debugEnabledDefault
         ) {
             self.config = config
             self.gatherCoverageData = gatherCoverageData
@@ -173,6 +180,7 @@ public struct Scheme: Equatable {
             self.environmentVariables = environmentVariables
             self.language = language
             self.region = region
+            self.debugEnabled = debugEnabled
         }
 
         public var shouldUseLaunchSchemeArgsEnv: Bool {
@@ -324,6 +332,7 @@ extension Scheme.Run: JSONObjectConvertible {
         disableMainThreadChecker = jsonDictionary.json(atKeyPath: "disableMainThreadChecker") ?? Scheme.Run.disableMainThreadCheckerDefault
         language = jsonDictionary.json(atKeyPath: "language")
         region = jsonDictionary.json(atKeyPath: "region")
+        debugEnabled = jsonDictionary.json(atKeyPath: "debugEnabled") ?? Scheme.Run.debugEnabledDefault
     }
 }
 
@@ -343,6 +352,9 @@ extension Scheme.Run: JSONEncodable {
             dict["disableMainThreadChecker"] = disableMainThreadChecker
         }
 
+        if debugEnabled != Scheme.Run.debugEnabledDefault {
+            dict["debugEnabled"] = debugEnabled
+        }
         return dict
     }
 }
@@ -372,6 +384,7 @@ extension Scheme.Test: JSONObjectConvertible {
         environmentVariables = try XCScheme.EnvironmentVariable.parseAll(jsonDictionary: jsonDictionary)
         language = jsonDictionary.json(atKeyPath: "language")
         region = jsonDictionary.json(atKeyPath: "region")
+        debugEnabled = jsonDictionary.json(atKeyPath: "debugEnabled") ?? Scheme.Test.debugEnabledDefault
     }
 }
 
@@ -394,6 +407,10 @@ extension Scheme.Test: JSONEncodable {
 
         if disableMainThreadChecker != Scheme.Test.disableMainThreadCheckerDefault {
             dict["disableMainThreadChecker"] = disableMainThreadChecker
+        }
+
+        if debugEnabled != Scheme.Run.debugEnabledDefault {
+            dict["debugEnabled"] = debugEnabled
         }
 
         return dict
