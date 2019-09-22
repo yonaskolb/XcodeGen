@@ -7,12 +7,14 @@
 - Added `includes` to `sources` for a Target. This follows the same glob-style as `excludes` but functions as a way to only include files that match a specified pattern. Useful if you only want a certain file type, for example specifying `**/*.swift`. [#637](https://github.com/yonaskolb/XcodeGen/pull/637) @bclymer
 - Support `dylib` SDK. [#650](https://github.com/yonaskolb/XcodeGen/pull/650) @kateinoigakukun
 - Added `language` and `region` options for `run` and `test` scheme [#654](https://github.com/yonaskolb/XcodeGen/pull/654) @kateinoigakukun
+- Added `debugEnabled` option for `run` and `test` scheme [#657](https://github.com/yonaskolb/XcodeGen/pull/657) @kateinoigakukun
 - Support External Target Reference. [#655](https://github.com/yonaskolb/XcodeGen/pull/655) @kateinoigakukun
 - Added `enableCoverage` for each test target. This enables to gather code coverage for specific targets. [#656](https://github.com/yonaskolb/XcodeGen/pull/656) @kateinoigakukun
 
 #### Fixed
 
 - Expand template variable in Array of Any [#651](https://github.com/yonaskolb/XcodeGen/pull/651) @kateinoigakukun
+- Significantly improve performance when running with a large number files. [#658](https://github.com/yonaskolb/XcodeGen/pull/658) @kateinoigakukun
 
 ## 2.7.0
 

@@ -748,10 +748,7 @@ class SpecLoadingTests: XCTestCase {
                             "Target4": ["testing": true],
                             "Target5": ["testing": false],
                             "Target6": ["test", "analyze"],
-                            "Target7": [
-                                "externalProject": "ExternalProject.xcodeproj",
-                                "types": ["run"],
-                            ],
+                            "ExternalProject/Target7": ["run"],
                         ],
                         "preActions": [
                             [
@@ -766,8 +763,7 @@ class SpecLoadingTests: XCTestCase {
                         "targets": [
                             "Target1",
                             [
-                                "name": "Target2",
-                                "externalProject": "ExternalProject.xcodeproj",
+                                "name": "ExternalProject/Target2",
                                 "parallelizable": true,
                                 "randomExecutionOrder": true,
                                 "skippedTests": ["Test/testExample()"],
@@ -779,13 +775,13 @@ class SpecLoadingTests: XCTestCase {
                 ]
                 let scheme = try Scheme(name: "Scheme", jsonDictionary: schemeDictionary)
                 let expectedTargets: [Scheme.BuildTarget] = [
-                    Scheme.BuildTarget(target: "Target1", buildTypes: BuildType.all),
-                    Scheme.BuildTarget(target: "Target2", buildTypes: [.testing, .analyzing]),
-                    Scheme.BuildTarget(target: "Target3", buildTypes: []),
-                    Scheme.BuildTarget(target: "Target4", buildTypes: [.testing]),
-                    Scheme.BuildTarget(target: "Target5", buildTypes: []),
-                    Scheme.BuildTarget(target: "Target6", buildTypes: [.testing, .analyzing]),
-                    Scheme.BuildTarget(target: "Target7", externalProject: "ExternalProject.xcodeproj", buildTypes: [.running]),
+                    Scheme.BuildTarget(target: .init(name: "Target1"), buildTypes: BuildType.all),
+                    Scheme.BuildTarget(target: .init(name: "Target2"), buildTypes: [.testing, .analyzing]),
+                    Scheme.BuildTarget(target: .init(name: "Target3"), buildTypes: []),
+                    Scheme.BuildTarget(target: .init(name: "Target4"), buildTypes: [.testing]),
+                    Scheme.BuildTarget(target: .init(name: "Target5"), buildTypes: []),
+                    Scheme.BuildTarget(target: .init(name: "Target6"), buildTypes: [.testing, .analyzing]),
+                    Scheme.BuildTarget(target: .init(name: "Target7", location: .project("ExternalProject")), buildTypes: [.running]),
                 ]
                 try expect(scheme.name) == "Scheme"
                 try expect(scheme.build.targets) == expectedTargets
@@ -803,8 +799,7 @@ class SpecLoadingTests: XCTestCase {
                     targets: [
                         "Target1",
                         Scheme.Test.TestTarget(
-                            name: "Target2",
-                            externalProject: "ExternalProject.xcodeproj",
+                            targetReference: .init(name: "Target2", location: .project("ExternalProject")),
                             randomExecutionOrder: true,
                             parallelizable: true,
                             skippedTests: ["Test/testExample()"]

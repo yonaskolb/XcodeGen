@@ -69,6 +69,7 @@ public struct Scheme: Equatable {
 
     public struct Run: BuildAction {
         public static let disableMainThreadCheckerDefault = false
+        public static let debugEnabledDefault = true
 
         public var config: String?
         public var commandLineArguments: [String: Bool]
@@ -78,6 +79,7 @@ public struct Scheme: Equatable {
         public var disableMainThreadChecker: Bool
         public var language: String?
         public var region: String?
+        public var debugEnabled: Bool
 
         public init(
             config: String,
@@ -87,7 +89,8 @@ public struct Scheme: Equatable {
             environmentVariables: [XCScheme.EnvironmentVariable] = [],
             disableMainThreadChecker: Bool = disableMainThreadCheckerDefault,
             language: String? = nil,
-            region: String? = nil
+            region: String? = nil,
+            debugEnabled: Bool = debugEnabledDefault
         ) {
             self.config = config
             self.commandLineArguments = commandLineArguments
@@ -97,12 +100,14 @@ public struct Scheme: Equatable {
             self.disableMainThreadChecker = disableMainThreadChecker
             self.language = language
             self.region = region
+            self.debugEnabled = debugEnabled
         }
     }
 
     public struct Test: BuildAction {
         public static let gatherCoverageDataDefault = false
         public static let disableMainThreadCheckerDefault = false
+        public static let debugEnabledDefault = true
 
         public var config: String?
         public var gatherCoverageData: Bool
@@ -115,6 +120,7 @@ public struct Scheme: Equatable {
         public var environmentVariables: [XCScheme.EnvironmentVariable]
         public var language: String?
         public var region: String?
+        public var debugEnabled: Bool
 
         public struct CoverageTarget: Equatable, ExpressibleByStringLiteral {
             public let name: String
@@ -138,32 +144,33 @@ public struct Scheme: Equatable {
             public static let randomExecutionOrderDefault = false
             public static let parallelizableDefault = false
 
-            public let name: String
-            public var externalProject: String?
+            public var name: String { return targetReference.name }
+            public let targetReference: TargetReference
             public var randomExecutionOrder: Bool
             public var parallelizable: Bool
             public var skippedTests: [String]
 
             public init(
-                name: String,
-                externalProject: String? = nil,
+                targetReference: TargetReference,
                 randomExecutionOrder: Bool = randomExecutionOrderDefault,
                 parallelizable: Bool = parallelizableDefault,
                 skippedTests: [String] = []
             ) {
-                self.name = name
-                self.externalProject = externalProject
+                self.targetReference = targetReference
                 self.randomExecutionOrder = randomExecutionOrder
                 self.parallelizable = parallelizable
                 self.skippedTests = skippedTests
             }
 
             public init(stringLiteral value: String) {
-                name = value
-                externalProject = nil
-                randomExecutionOrder = false
-                parallelizable = false
-                skippedTests = []
+                do {
+                    targetReference = try TargetReference(string: value)
+                    randomExecutionOrder = false
+                    parallelizable = false
+                    skippedTests = []
+                } catch {
+                    fatalError(SpecParsingError.invalidTargetReference(value).description)
+                }
             }
         }
 
@@ -180,7 +187,8 @@ public struct Scheme: Equatable {
             postActions: [ExecutionAction] = [],
             environmentVariables: [XCScheme.EnvironmentVariable] = [],
             language: String? = nil,
-            region: String? = nil
+            region: String? = nil,
+            debugEnabled: Bool = debugEnabledDefault
         ) {
             self.config = config
             self.gatherCoverageData = gatherCoverageData
@@ -193,6 +201,7 @@ public struct Scheme: Equatable {
             self.environmentVariables = environmentVariables
             self.language = language
             self.region = region
+            self.debugEnabled = debugEnabled
         }
 
         public var shouldUseLaunchSchemeArgsEnv: Bool {
@@ -256,14 +265,56 @@ public struct Scheme: Equatable {
     }
 
     public struct BuildTarget: Equatable {
-        public var target: String
-        public var externalProject: String?
+        public var target: TargetReference
         public var buildTypes: [BuildType]
 
-        public init(target: String, externalProject: String? = nil, buildTypes: [BuildType] = BuildType.all) {
+        public init(target: TargetReference, buildTypes: [BuildType] = BuildType.all) {
             self.target = target
             self.buildTypes = buildTypes
-            self.externalProject = externalProject
+        }
+    }
+}
+
+
+public struct TargetReference: Equatable {
+    public let name: String
+    public let location: Location
+
+    public enum Location: Equatable {
+        case local
+        case project(String)
+    }
+
+    public init(name: String, location: Location = .local) {
+        self.name = name
+        self.location = location
+    }
+}
+
+extension TargetReference {
+    public init(string: String) throws {
+        let paths = string.split(separator: "/")
+        guard paths.count <= 2 && !paths.isEmpty else {
+            throw SpecParsingError.invalidTargetReference(string)
+        }
+        switch paths.count {
+        case 2:
+            location = .project(String(paths[0]))
+            name = String(paths[1])
+        case 1:
+            location = .local
+            name = String(paths[0])
+        default: fatalError("unreachable")
+        }
+    }
+}
+
+extension TargetReference {
+    public func toString() -> String {
+        switch location {
+        case .local: return name
+        case .project(let projectPath):
+            return "\(projectPath)/\(name)"
         }
     }
 }
@@ -302,6 +353,7 @@ extension Scheme.Run: JSONObjectConvertible {
         disableMainThreadChecker = jsonDictionary.json(atKeyPath: "disableMainThreadChecker") ?? Scheme.Run.disableMainThreadCheckerDefault
         language = jsonDictionary.json(atKeyPath: "language")
         region = jsonDictionary.json(atKeyPath: "region")
+        debugEnabled = jsonDictionary.json(atKeyPath: "debugEnabled") ?? Scheme.Run.debugEnabledDefault
     }
 }
 
@@ -321,6 +373,9 @@ extension Scheme.Run: JSONEncodable {
             dict["disableMainThreadChecker"] = disableMainThreadChecker
         }
 
+        if debugEnabled != Scheme.Run.debugEnabledDefault {
+            dict["debugEnabled"] = debugEnabled
+        }
         return dict
     }
 }
@@ -336,7 +391,7 @@ extension Scheme.Test: JSONObjectConvertible {
         if let targets = jsonDictionary["targets"] as? [Any] {
             self.targets = try targets.compactMap { target in
                 if let string = target as? String {
-                    return TestTarget(name: string)
+                    return TestTarget(stringLiteral: string)
                 } else if let dictionary = target as? JSONDictionary {
                     return try TestTarget(jsonDictionary: dictionary)
                 } else {
@@ -351,6 +406,7 @@ extension Scheme.Test: JSONObjectConvertible {
         environmentVariables = try XCScheme.EnvironmentVariable.parseAll(jsonDictionary: jsonDictionary)
         language = jsonDictionary.json(atKeyPath: "language")
         region = jsonDictionary.json(atKeyPath: "region")
+        debugEnabled = jsonDictionary.json(atKeyPath: "debugEnabled") ?? Scheme.Test.debugEnabledDefault
     }
 }
 
@@ -374,6 +430,10 @@ extension Scheme.Test: JSONEncodable {
 
         if disableMainThreadChecker != Scheme.Test.disableMainThreadCheckerDefault {
             dict["disableMainThreadChecker"] = disableMainThreadChecker
+        }
+
+        if debugEnabled != Scheme.Run.debugEnabledDefault {
+            dict["debugEnabled"] = debugEnabled
         }
 
         return dict
@@ -401,8 +461,7 @@ extension Scheme.Test.CoverageTarget: JSONEncodable {
 extension Scheme.Test.TestTarget: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
-        name = try jsonDictionary.json(atKeyPath: "name")
-        externalProject = jsonDictionary.json(atKeyPath: "externalProject")
+        targetReference = try TargetReference(string: jsonDictionary.json(atKeyPath: "name"))
         randomExecutionOrder = jsonDictionary.json(atKeyPath: "randomExecutionOrder") ?? Scheme.Test.TestTarget.randomExecutionOrderDefault
         parallelizable = jsonDictionary.json(atKeyPath: "parallelizable") ?? Scheme.Test.TestTarget.parallelizableDefault
         skippedTests = jsonDictionary.json(atKeyPath: "skippedTests") ?? []
@@ -411,12 +470,13 @@ extension Scheme.Test.TestTarget: JSONObjectConvertible {
 
 extension Scheme.Test.TestTarget: JSONEncodable {
     public func toJSONValue() -> Any {
-        if !randomExecutionOrder && !parallelizable {
-            return name
+        if randomExecutionOrder == Scheme.Test.TestTarget.randomExecutionOrderDefault,
+            parallelizable == Scheme.Test.TestTarget.parallelizableDefault {
+            return targetReference.toString()
         }
 
         var dict: JSONDictionary = [
-            "name": name,
+            "name": targetReference.toString(),
         ]
 
         if randomExecutionOrder != Scheme.Test.TestTarget.randomExecutionOrderDefault {
@@ -424,9 +484,6 @@ extension Scheme.Test.TestTarget: JSONEncodable {
         }
         if parallelizable != Scheme.Test.TestTarget.parallelizableDefault {
             dict["parallelizable"] = parallelizable
-        }
-        if let externalProject = externalProject {
-            dict["externalProject"] = externalProject
         }
 
         return dict
@@ -530,10 +587,9 @@ extension Scheme.Build: JSONObjectConvertible {
     public init(jsonDictionary: JSONDictionary) throws {
         let targetDictionary: JSONDictionary = try jsonDictionary.json(atKeyPath: "targets")
         var targets: [Scheme.BuildTarget] = []
-        for (target, possibleBuildTypesOrDict) in targetDictionary {
+        for (targetRepr, possibleBuildTypes) in targetDictionary {
             let buildTypes: [BuildType]
-            var externalProject: String? = nil
-            if let string = possibleBuildTypesOrDict as? String {
+            if let string = possibleBuildTypes as? String {
                 switch string {
                 case "all": buildTypes = BuildType.all
                 case "none": buildTypes = []
@@ -541,23 +597,17 @@ extension Scheme.Build: JSONObjectConvertible {
                 case "indexing": buildTypes = [.testing, .analyzing, .archiving]
                 default: buildTypes = BuildType.all
                 }
-            } else if let enabledDictionary = possibleBuildTypesOrDict as? [String: Bool] {
+            } else if let enabledDictionary = possibleBuildTypes as? [String: Bool] {
                 buildTypes = enabledDictionary.filter { $0.value }.compactMap { BuildType.from(jsonValue: $0.key) }
-            } else if let array = possibleBuildTypesOrDict as? [String] {
+            } else if let array = possibleBuildTypes as? [String] {
                 buildTypes = array.compactMap(BuildType.from)
-            } else if let dict = possibleBuildTypesOrDict as? [String: Any] {
-                if let array = dict["types"] as? [String] {
-                    buildTypes = array.compactMap(BuildType.from)
-                } else {
-                    buildTypes = BuildType.all
-                }
-                externalProject = dict["externalProject"] as? String
             } else {
                 buildTypes = BuildType.all
             }
-            targets.append(Scheme.BuildTarget(target: target, externalProject: externalProject, buildTypes: buildTypes))
+            let target = try TargetReference(string: targetRepr)
+            targets.append(Scheme.BuildTarget(target: target, buildTypes: buildTypes))
         }
-        self.targets = targets.sorted { $0.target < $1.target }
+        self.targets = targets.sorted { $0.target.name < $1.target.name }
         preActions = try jsonDictionary.json(atKeyPath: "preActions")?.map(Scheme.ExecutionAction.init) ?? []
         postActions = try jsonDictionary.json(atKeyPath: "postActions")?.map(Scheme.ExecutionAction.init) ?? []
         parallelizeBuild = jsonDictionary.json(atKeyPath: "parallelizeBuild") ?? Scheme.Build.parallelizeBuildDefault
@@ -567,7 +617,7 @@ extension Scheme.Build: JSONObjectConvertible {
 
 extension Scheme.Build: JSONEncodable {
     public func toJSONValue() -> Any {
-        let targetPairs = targets.map { ($0.target, $0.buildTypes.map { $0.toJSONValue() }) }
+        let targetPairs = targets.map { ($0.target.toString(), $0.buildTypes.map { $0.toJSONValue() }) }
 
         var dict: JSONDictionary = [
             "targets": Dictionary(uniqueKeysWithValues: targetPairs),

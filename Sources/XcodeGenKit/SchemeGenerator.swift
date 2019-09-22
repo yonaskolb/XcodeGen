@@ -77,15 +77,28 @@ public class SchemeGenerator {
 
         func getBuildableReference(_ target: String, externalProject: String?) throws -> XCScheme.BuildableReference {
             let pbxProj: PBXProj
+<<<<<<< HEAD
             let projectFilename: String
             if let externalProject = externalProject {
                 pbxProj = try XcodeProj(pathString: externalProject).pbxproj
                 projectFilename = externalProject
             } else {
+=======
+            let projectFilePath: String
+            switch buildTarget.target.location {
+            case .project(let project):
+                guard let externalProject = self.project.getExternalProject(project) else {
+                    fatalError("Unable to find external project named \"\(project)\" in project.yml")
+                }
+                pbxProj = try XcodeProj(pathString: externalProject.path).pbxproj
+                projectFilePath = externalProject.path
+            case .local:
+>>>>>>> external-target-ref
                 pbxProj = self.pbxProj
-                projectFilename = "\(self.project.name).xcodeproj"
+                projectFilePath = "\(self.project.name).xcodeproj"
             }
 
+<<<<<<< HEAD
             guard let pbxTarget = pbxProj.targets(named: target).first else {
                 fatalError("Unable to find target named \"\(target)\" in \"PBXProj.targets\"")
             }
@@ -102,13 +115,25 @@ public class SchemeGenerator {
         func getBuildEntry(_ buildTarget: Scheme.BuildTarget) throws -> XCScheme.BuildAction.Entry {
             let buildableReference = try getBuildableReference(
                 buildTarget.target, externalProject: buildTarget.externalProject
+=======
+            guard let pbxTarget = pbxProj.targets(named: buildTarget.target.name).first else {
+                fatalError("Unable to find target named \"\(buildTarget.target)\" in \"PBXProj.targets\"")
+            }
+
+            let buildableName = pbxTarget.productNameWithExtension() ?? pbxTarget.name
+            let buildableReference = XCScheme.BuildableReference(
+                referencedContainer: "container:\(projectFilePath)",
+                blueprint: pbxTarget,
+                buildableName: buildableName,
+                blueprintName: buildTarget.target.name
+>>>>>>> external-target-ref
             )
             return XCScheme.BuildAction.Entry(buildableReference: buildableReference, buildFor: buildTarget.buildTypes)
         }
 
         let testTargets = scheme.test?.targets ?? []
         let testBuildTargets = testTargets.map {
-            Scheme.BuildTarget(target: $0.name, externalProject: $0.externalProject, buildTypes: BuildType.testOnly)
+            Scheme.BuildTarget(target: TargetReference(name: $0.name, location: .local), buildTypes: BuildType.testOnly)
         }
 
         let testBuildTargetEntries = try testBuildTargets.map(getBuildEntry)
@@ -125,7 +150,7 @@ public class SchemeGenerator {
             return XCScheme.ExecutionAction(scriptText: action.script, title: action.name, environmentBuildable: environmentBuildable)
         }
 
-        let target = project.getTarget(scheme.build.targets.first!.target)
+        let target = project.getTarget(scheme.build.targets.first!.target.name)
         let shouldExecuteOnLaunch = target?.type.isExecutable == true
 
         let buildableReference = buildActionEntries.first!.buildableReference
@@ -167,6 +192,7 @@ public class SchemeGenerator {
             testables: testables,
             preActions: scheme.test?.preActions.map(getExecutionAction) ?? [],
             postActions: scheme.test?.postActions.map(getExecutionAction) ?? [],
+            selectedDebuggerIdentifier: (scheme.test?.debugEnabled ?? Scheme.Test.debugEnabledDefault) ? XCScheme.defaultDebugger : "",
             shouldUseLaunchSchemeArgsEnv: scheme.test?.shouldUseLaunchSchemeArgsEnv ?? true,
             codeCoverageEnabled: scheme.test?.gatherCoverageData ?? Scheme.Test.gatherCoverageDataDefault,
             codeCoverageTargets: coverageBuildableTargets,
@@ -183,6 +209,8 @@ public class SchemeGenerator {
             preActions: scheme.run?.preActions.map(getExecutionAction) ?? [],
             postActions: scheme.run?.postActions.map(getExecutionAction) ?? [],
             macroExpansion: shouldExecuteOnLaunch ? nil : buildableReference,
+            selectedDebuggerIdentifier: (scheme.run?.debugEnabled ?? Scheme.Run.debugEnabledDefault) ? XCScheme.defaultDebugger : "",
+            selectedLauncherIdentifier: (scheme.run?.debugEnabled ?? Scheme.Run.debugEnabledDefault) ? XCScheme.defaultLauncher : "Xcode.IDEFoundation.Launcher.PosixSpawn",
             disableMainThreadChecker: scheme.run?.disableMainThreadChecker ?? Scheme.Run.disableMainThreadCheckerDefault,
             commandlineArguments: launchCommandLineArgs,
             environmentVariables: launchVariables,
@@ -228,7 +256,7 @@ extension Scheme {
     public init(name: String, target: Target, targetScheme: TargetScheme, debugConfig: String, releaseConfig: String) {
         self.init(
             name: name,
-            build: .init(targets: [Scheme.BuildTarget(target: target.name)]),
+            build: .init(targets: [Scheme.BuildTarget(target: TargetReference(name: target.name, location: .local))]),
             run: .init(
                 config: debugConfig,
                 commandLineArguments: targetScheme.commandLineArguments,

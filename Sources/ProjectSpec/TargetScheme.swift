@@ -42,7 +42,7 @@ extension TargetScheme: JSONObjectConvertible {
         if let targets = jsonDictionary["testTargets"] as? [Any] {
             testTargets = try targets.compactMap { target in
                 if let string = target as? String {
-                    return .init(name: string)
+                    return .init(stringLiteral: string)
                 } else if let dictionary = target as? JSONDictionary {
                     return try .init(jsonDictionary: dictionary)
                 } else {

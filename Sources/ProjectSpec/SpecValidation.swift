@@ -170,8 +170,9 @@ extension Project {
 
         for scheme in schemes {
             for buildTarget in scheme.build.targets {
-                if getProjectTarget(buildTarget.target) == nil && buildTarget.externalProject == nil {
-                    errors.append(.invalidSchemeTarget(scheme: scheme.name, target: buildTarget.target))
+                guard buildTarget.target.location == .local else { continue }
+                if getProjectTarget(buildTarget.target.name) == nil {
+                    errors.append(.invalidSchemeTarget(scheme: scheme.name, target: buildTarget.target.name))
                 }
             }
             if let action = scheme.run, let config = action.config, getConfig(config) == nil {
