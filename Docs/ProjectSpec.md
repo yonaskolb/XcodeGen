@@ -687,7 +687,7 @@ The different actions share some properties:
 - [ ] **disableMainThreadChecker**: **Bool** - `run` and `test` actions can define a boolean that indicates that this scheme should disable the Main Thread Checker. This defaults to false
 - [ ] **language**: **String** - `run` and `test` actions can define a language that is used for Application Language
 - [ ] **region**: **String** - `run` and `test` actions can define a language that is used for Application Region
-- [ ] **debugEnabled**: **Bool** - `run` and `test` actions can define a whether debugger should be used.
+- [ ] **debugEnabled**: **Bool** - `run` and `test` actions can define a whether debugger should be used. This defaults to true.
 
 ### Execution Action
 
