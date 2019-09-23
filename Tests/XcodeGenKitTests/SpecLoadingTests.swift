@@ -14,16 +14,16 @@ class SpecLoadingTests: XCTestCase {
             $0.it("merges each file only once") {
                 let path = fixturePath + "duplicated_include/duplicated_import_sut.yml"
                 let project = try loadSpec(path: path)
-                
+
                 try expect(project.fileGroups) == ["First", "Second"]
-                
+
                 let sutTarget = project.targets.first
                 try expect(sutTarget?.sources) == [TargetSource(path: "template")]
                 try expect(sutTarget?.preBuildScripts) == [BuildScript(script: .script("swiftlint"), name: "Swiftlint")]
             }
         }
     }
-    
+
     func testSpecLoader() {
         describe {
             $0.it("merges includes") {
@@ -207,12 +207,12 @@ class SpecLoadingTests: XCTestCase {
                 let project = try loadSpec(path: path, variables: [
                     "SETTING1": "ENV VALUE1",
                     "SETTING4": "ENV VALUE4",
-                    "variable": "doesWin"
+                    "variable": "doesWin",
                 ])
 
                 try expect(project.name) == "NewName"
                 try expect(project.settingGroups) == [
-                     "test": Settings(dictionary: ["MY_SETTING1": "ENV VALUE1", "MY_SETTING2": "VALUE2", "MY_SETTING4": "ENV VALUE4"]),
+                    "test": Settings(dictionary: ["MY_SETTING1": "ENV VALUE1", "MY_SETTING2": "VALUE2", "MY_SETTING4": "ENV VALUE4"]),
                     "toReplace": Settings(dictionary: ["MY_SETTING1": "VALUE1"]),
                 ]
                 try expect(project.targets.last?.sources) == ["SomeTarget", "doesWin", "templateVariable"]
@@ -277,7 +277,7 @@ class SpecLoadingTests: XCTestCase {
                 try expectError(SpecValidationError(errors: [
                     .deprecatedUsageOfPlaceholder(placeholderName: "target_name"),
                     .deprecatedUsageOfPlaceholder(placeholderName: "platform"),
-                ]), { try specLoader.validateProjectDictionaryWarnings() })
+                ])) { try specLoader.validateProjectDictionaryWarnings() }
             }
 
             $0.it("successfully validates warnings for new placeholder usage") {
@@ -463,7 +463,10 @@ class SpecLoadingTests: XCTestCase {
                     "targetTemplates": [
                         "temp": [
                             "platform": "iOS",
-                            "sources": ["templateSource"],
+                            "sources": [
+                                "templateSource",
+                                ["path": "Sources/${target_name}"]
+                            ],
                         ],
                         "temp2": [
                             "type": "framework",
@@ -482,7 +485,7 @@ class SpecLoadingTests: XCTestCase {
                 try expect(target.type) == .framework // uses value
                 try expect(target.platform) == .iOS // uses latest value
                 try expect(target.deploymentTarget) == Version("1.2.0") // keeps value
-                try expect(target.sources) == ["replacedSource", "templateSource", "targetSource"] // merges array in order
+                try expect(target.sources) == ["replacedSource", "templateSource", "Sources/Framework", "targetSource"] // merges array in order and replace ${target_name}
                 try expect(target.configFiles["debug"]) == "Configs/Framework/debug.xcconfig" // replaces $target_name
                 try expect(target.configFiles["release"]) == "Configs/Framework/release.xcconfig" // replaces ${target_name}
             }
@@ -699,6 +702,7 @@ class SpecLoadingTests: XCTestCase {
                         "ENV1": true,
                     ],
                     "gatherCoverageData": true,
+                    "disableMainThreadChecker": true,
                     "environmentVariables": [
                         "TEST_VAR": "TEST_VAL",
                     ],
@@ -722,6 +726,7 @@ class SpecLoadingTests: XCTestCase {
                     testTargets: ["t1", "t2"],
                     configVariants: ["dev", "app-store"],
                     gatherCoverageData: true,
+                    disableMainThreadChecker: true,
                     commandLineArguments: ["ENV1": true],
                     environmentVariables: [XCScheme.EnvironmentVariable(variable: "TEST_VAR", value: "TEST_VAL", enabled: true)],
                     preActions: [.init(name: "Do Thing", script: "dothing", settingsTarget: "test")],
@@ -760,10 +765,11 @@ class SpecLoadingTests: XCTestCase {
                                 "name": "Target2",
                                 "parallelizable": true,
                                 "randomExecutionOrder": true,
-                                "skippedTests": ["Test/testExample()"]
+                                "skippedTests": ["Test/testExample()"],
                             ],
                         ],
                         "gatherCoverageData": true,
+                        "disableMainThreadChecker": true,
                     ],
                 ]
                 let scheme = try Scheme(name: "Scheme", jsonDictionary: schemeDictionary)
@@ -787,6 +793,7 @@ class SpecLoadingTests: XCTestCase {
                 let expectedTest = Scheme.Test(
                     config: "debug",
                     gatherCoverageData: true,
+                    disableMainThreadChecker: true,
                     targets: [
                         "Target1",
                         Scheme.Test.TestTarget(
@@ -973,7 +980,7 @@ class SpecLoadingTests: XCTestCase {
 }
 
 @discardableResult
-fileprivate func getProjectSpec(_ project: [String: Any], file: String = #file, line: Int = #line) throws -> Project {
+private func getProjectSpec(_ project: [String: Any], file: String = #file, line: Int = #line) throws -> Project {
     var projectDictionary: [String: Any] = ["name": "test"]
     for (key, value) in project {
         projectDictionary[key] = value
@@ -985,7 +992,7 @@ fileprivate func getProjectSpec(_ project: [String: Any], file: String = #file, 
     }
 }
 
-fileprivate func loadSpec(path: Path, variables: [String: String] = [:], file: String = #file, line: Int = #line) throws -> Project {
+private func loadSpec(path: Path, variables: [String: String] = [:], file: String = #file, line: Int = #line) throws -> Project {
     do {
         let specLoader = SpecLoader(version: "1.1.0")
         return try specLoader.loadProject(path: path, variables: variables)
@@ -994,13 +1001,13 @@ fileprivate func loadSpec(path: Path, variables: [String: String] = [:], file: S
     }
 }
 
-fileprivate func expectSpecError(_ project: [String: Any], _ expectedError: SpecParsingError, file: String = #file, line: Int = #line) throws {
+private func expectSpecError(_ project: [String: Any], _ expectedError: SpecParsingError, file: String = #file, line: Int = #line) throws {
     try expectError(expectedError, file: file, line: line) {
         try getProjectSpec(project)
     }
 }
 
-fileprivate func expectTargetError(_ target: [String: Any], _ expectedError: SpecParsingError, file: String = #file, line: Int = #line) throws {
+private func expectTargetError(_ target: [String: Any], _ expectedError: SpecParsingError, file: String = #file, line: Int = #line) throws {
     try expectError(expectedError, file: file, line: line) {
         _ = try Target(name: "test", jsonDictionary: target)
     }

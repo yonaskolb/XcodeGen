@@ -48,6 +48,7 @@ targets:
       - target: XPC Service
       - sdk: Contacts.framework
       - sdk: libc++.tbd
+      - sdk: libz.dylib
 
   App_iOS:
     type: application
@@ -96,6 +97,7 @@ targets:
         - App_iOS_Tests
         - App_iOS_UITests
       gatherCoverageData: true
+      disableMainThreadChecker: true
       configVariants:
         - Test
         - Staging
@@ -255,6 +257,8 @@ schemes:
         argument.with.dot: YES
     test:
       gatherCoverageData: true
+      language: ja
+      region: en
   App_Scheme:
     build:
       targets:

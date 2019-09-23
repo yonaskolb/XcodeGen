@@ -504,9 +504,6 @@ public class PBXProjGenerator {
                 let buildPath = Path(dependency.reference).parent().string.quoted
                 frameworkBuildPaths.insert(buildPath)
 
-                // Static libraries can't link or embed dynamic frameworks
-                guard target.type != .staticLibrary else { break }
-
                 let fileReference: PBXFileElement
                 if dependency.implicit {
                     fileReference = sourceGenerator.getFileReference(
@@ -521,7 +518,7 @@ public class PBXProjGenerator {
                     )
                 }
 
-                if dependency.link ?? true {
+                if dependency.link ?? (target.type != .staticLibrary) {
                     let buildFile = addObject(
                         PBXBuildFile(file: fileReference, settings: getDependencyFrameworkSettings(dependency: dependency))
                     )
@@ -540,8 +537,6 @@ public class PBXProjGenerator {
                     copyFrameworksReferences.append(embedFile)
                 }
             case .sdk(let root):
-                // Static libraries can't link or embed dynamic frameworks
-                guard target.type != .staticLibrary else { break }
 
                 var dependencyPath = Path(dependency.reference)
                 if !dependency.reference.contains("/") {
@@ -549,6 +544,8 @@ public class PBXProjGenerator {
                     case "framework":
                         dependencyPath = Path("System/Library/Frameworks") + dependencyPath
                     case "tbd":
+                        dependencyPath = Path("usr/lib") + dependencyPath
+                    case "dylib":
                         dependencyPath = Path("usr/lib") + dependencyPath
                     default: break
                     }
@@ -589,8 +586,6 @@ public class PBXProjGenerator {
                 let allDependencies = findFrameworks
                     ? carthageResolver.relatedDependencies(for: dependency, in: target.platform) : [dependency]
                 allDependencies.forEach { dependency in
-                    // Static libraries can't link or embed dynamic frameworks
-                    guard target.type != .staticLibrary else { return }
 
                     var platformPath = Path(carthageResolver.buildPath(for: target.platform))
                     var frameworkPath = platformPath + dependency.reference
@@ -601,7 +596,7 @@ public class PBXProjGenerator {
 
                     self.carthageFrameworksByPlatform[target.platform.carthageName, default: []].insert(fileReference)
 
-                    if dependency.link ?? true {
+                    if dependency.link ?? (target.type != .staticLibrary) {
                         let buildFile = self.addObject(
                             PBXBuildFile(file: fileReference, settings: getDependencyFrameworkSettings(dependency: dependency))
                         )
@@ -613,7 +608,6 @@ public class PBXProjGenerator {
         }
 
         for dependency in carthageDependencies {
-            guard target.type != .staticLibrary else { break }
 
             let embed = dependency.embed ?? target.shouldEmbedCarthageDependencies
 

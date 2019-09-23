@@ -16,7 +16,7 @@ class ProjectFixtureTests: XCTestCase {
     }
 }
 
-fileprivate func generateXcodeProject(specPath: Path, file: String = #file, line: Int = #line) throws {
+private func generateXcodeProject(specPath: Path, file: String = #file, line: Int = #line) throws {
     let project = try Project(path: specPath)
     let generator = ProjectGenerator(project: project)
     let writer = FileWriter(project: project)

@@ -149,7 +149,8 @@ extension Project {
                     if !dependency.reference.contains("/") {
                         switch path.extension {
                         case "framework"?,
-                             "tbd"?:
+                             "tbd"?,
+                             "dylib"?:
                             break
                         default:
                             errors.append(.invalidSDKDependency(target: target.name, dependency: dependency.reference))

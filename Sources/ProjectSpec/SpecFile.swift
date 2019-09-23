@@ -9,7 +9,7 @@ public struct SpecFile {
     public let subSpecs: [SpecFile]
 
     private let filename: String
-    
+
     fileprivate struct Include {
         let path: Path
         let relativePaths: Bool
@@ -92,27 +92,27 @@ public struct SpecFile {
 
     private func resolvedDictionaryWithUniqueTargets() -> JSONDictionary {
         let resolvedSpec = resolvingPaths()
-        
+
         var value = Set<String>()
         return resolvedSpec.mergedDictionary(set: &value)
     }
-    
+
     private func substitute(variables: [String: String], in mergedDictionary: JSONDictionary) -> JSONDictionary {
         var resolvedSpec = mergedDictionary
-        
+
         for (key, value) in variables {
             resolvedSpec = resolvedSpec.replaceString("${\(key)}", with: value)
         }
-        
+
         return resolvedSpec
     }
-    
+
     func mergedDictionary(set mergedTargets: inout Set<String>) -> JSONDictionary {
         let name = (basePath + relativePath + Path(filename)).description
-        
+
         guard !mergedTargets.contains(name) else { return [:] }
         mergedTargets.insert(name)
-        
+
         return jsonDictionary.merged(onto:
             subSpecs
                 .map { $0.mergedDictionary(set: &mergedTargets) }
@@ -137,14 +137,14 @@ public struct SpecFile {
 
 extension Dictionary where Key == String, Value: Any {
 
-    func merged(onto other: Dictionary<Key, Value>) -> Dictionary<Key, Value> {
+    func merged(onto other: [Key: Value]) -> [Key: Value] {
         var merged = other
 
         for (key, value) in self {
             if key.hasSuffix(":REPLACE") {
                 let newKey = key[key.startIndex..<key.index(key.endIndex, offsetBy: -8)]
                 merged[Key(newKey)] = value
-            } else if let dictionary = value as? Dictionary<Key, Value>, let base = merged[key] as? Dictionary<Key, Value> {
+            } else if let dictionary = value as? [Key: Value], let base = merged[key] as? [Key: Value] {
                 merged[key] = dictionary.merged(onto: base) as? Value
             } else if let array = value as? [Any], let base = merged[key] as? [Any] {
                 merged[key] = (base + array) as? Value
@@ -158,18 +158,25 @@ extension Dictionary where Key == String, Value: Any {
     func replaceString(_ template: String, with replacement: String) -> JSONDictionary {
         var replaced: JSONDictionary = self
         for (key, value) in self {
-            switch value {
-            case let dictionary as JSONDictionary:
-                replaced[key] = dictionary.replaceString(template, with: replacement)
-            case let string as String:
-                replaced[key] = string.replacingOccurrences(of: template, with: replacement)
-            case let array as [JSONDictionary]:
-                replaced[key] = array.map { $0.replaceString(template, with: replacement) }
-            case let array as [String]:
-                replaced[key] = array.map { $0.replacingOccurrences(of: template, with: replacement) }
-            default: break
-            }
+            replaced[key] = replace(value: value, template, with: replacement)
         }
         return replaced
+    }
+
+    func replace(value: Any, _ template: String, with replacement: String) -> Any {
+        switch value {
+        case let dictionary as JSONDictionary:
+            return dictionary.replaceString(template, with: replacement)
+        case let string as String:
+            return string.replacingOccurrences(of: template, with: replacement)
+        case let array as [JSONDictionary]:
+            return array.map { $0.replaceString(template, with: replacement) }
+        case let array as [String]:
+            return array.map { $0.replacingOccurrences(of: template, with: replacement) }
+        case let anyArray as [Any]:
+            return anyArray.map { self.replace(value: $0, template, with: replacement) }
+        default:
+            return value
+        }
     }
 }
