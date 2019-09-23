@@ -1007,7 +1007,7 @@ extension Target {
     var shouldEmbedDependencies: Bool {
         return type.isApp || type.isTest
     }
-    
+
     var shouldEmbedCarthageDependencies: Bool {
         return (type.isApp && platform != .watchOS)
             || type == .watch2Extension
