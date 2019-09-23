@@ -43,7 +43,7 @@ struct CarthageVersionFile: Decodable {
         let container = try decoder.container(keyedBy: Platform.self)
         data = try Platform.allCases.reduce(into: [:]) { data, platform in
             let references = try container.decodeIfPresent([Reference].self, forKey: platform) ?? []
-            let frameworks = Array(Set(references.map { $0.name })).sorted()
+            let frameworks = Set(references.map { $0.name }).sorted()
             data[platform] = frameworks
         }
     }
