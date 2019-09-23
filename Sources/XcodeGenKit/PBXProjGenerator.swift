@@ -209,7 +209,7 @@ public class PBXProjGenerator {
         let knownRegions = sourceGenerator.knownRegions.sorted()
         pbxProject.knownRegions = knownRegions.isEmpty ? ["en"] : knownRegions
 
-        let allTargets: [PBXTarget] = Array(targetObjects.values) + Array(targetAggregateObjects.values)
+        let allTargets: [PBXTarget] = targetObjects.valueArray + targetAggregateObjects.valueArray
         pbxProject.targets = allTargets
             .sorted { $0.name < $1.name }
         pbxProject.attributes = projectAttributes
@@ -885,9 +885,9 @@ public class PBXProjGenerator {
             let configFrameworkBuildPaths: [String]
             if !carthageDependencies.isEmpty {
                 let carthagePlatformBuildPath = "$(PROJECT_DIR)/" + carthageResolver.buildPath(for: target.platform)
-                configFrameworkBuildPaths = [carthagePlatformBuildPath] + Array(frameworkBuildPaths).sorted()
+                configFrameworkBuildPaths = [carthagePlatformBuildPath] + frameworkBuildPaths.sorted()
             } else {
-                configFrameworkBuildPaths = Array(frameworkBuildPaths).sorted()
+                configFrameworkBuildPaths = frameworkBuildPaths.sorted()
             }
 
             // set framework search paths
