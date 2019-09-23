@@ -13,6 +13,7 @@
 
 - Expand template variable in Array of Any [#651](https://github.com/yonaskolb/XcodeGen/pull/651) @kateinoigakukun
 - Significantly improve performance when running with a large number files. [#658](https://github.com/yonaskolb/XcodeGen/pull/658) @kateinoigakukun
+- Reduced `Array()` usage. [#661](https://github.com/yonaskolb/XcodeGen/pull/661) @RomanPodymov
 
 ## 2.7.0
 
