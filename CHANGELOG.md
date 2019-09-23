@@ -13,7 +13,6 @@
 
 - Expand template variable in Array of Any [#651](https://github.com/yonaskolb/XcodeGen/pull/651) @kateinoigakukun
 - Significantly improve performance when running with a large number files. [#658](https://github.com/yonaskolb/XcodeGen/pull/658) @kateinoigakukun
-- Less `Array()`. [#661](https://github.com/yonaskolb/XcodeGen/pull/661) @RomanPodymov
 
 ## 2.7.0
 
@@ -30,6 +29,9 @@
 - Allow linking of dependencies into static libraries when `link` is set to true [#635](https://github.com/yonaskolb/XcodeGen/pull/635) @kateinoigakukun
 
 [Commits](https://github.com/yonaskolb/XcodeGen/compare/2.6.0...2.7.0)
+
+#### Internal
+- Removed needless `Array` initialization. [#661](https://github.com/yonaskolb/XcodeGen/pull/661) @RomanPodymov
 
 ## 2.6.0
 
