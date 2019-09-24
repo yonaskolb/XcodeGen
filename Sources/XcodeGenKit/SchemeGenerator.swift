@@ -110,7 +110,7 @@ public class SchemeGenerator {
 
         let testTargets = scheme.test?.targets ?? []
         let testBuildTargets = testTargets.map {
-            Scheme.BuildTarget(target: TargetReference(name: $0.name, location: .local), buildTypes: BuildType.testOnly)
+            Scheme.BuildTarget(target: $0.targetReference, buildTypes: BuildType.testOnly)
         }
 
         let testBuildTargetEntries = try testBuildTargets.map(getBuildEntry)
