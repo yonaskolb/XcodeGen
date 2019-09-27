@@ -41,13 +41,13 @@ class SourceGenerator {
         return object
     }
 
-    func createLocalPackage(path: Path) {
+    func createLocalPackage(path: Path) throws {
         let fileReference = addObject(
             PBXFileReference(
-                sourceTree: .absolute,
+                sourceTree: .group,
                 name: path.lastComponent,
                 lastKnownFileType: "folder",
-                path: path.string
+                path: try path.relativePath(from: project.basePath).string
             )
         )
         rootGroups.insert(fileReference)

@@ -51,7 +51,7 @@ public class PBXProjGenerator {
         let localPackages = Set(project.localPackages)
         for package in localPackages {
             let path = project.basePath + Path(package).normalize()
-            sourceGenerator.createLocalPackage(path: path)
+            try sourceGenerator.createLocalPackage(path: path)
         }
 
         let buildConfigs: [XCBuildConfiguration] = project.configs.map { config in
