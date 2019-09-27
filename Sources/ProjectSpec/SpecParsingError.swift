@@ -4,6 +4,7 @@ public enum SpecParsingError: Error, CustomStringConvertible {
     case unknownTargetType(String)
     case unknownTargetPlatform(String)
     case invalidDependency([String: Any])
+    case unknownPackageRequirement([String: Any])
     case invalidSourceBuildPhase(String)
     case invalidVersion(String)
 
@@ -19,6 +20,8 @@ public enum SpecParsingError: Error, CustomStringConvertible {
             return "Invalid Source Build Phase: \(error)"
         case let .invalidVersion(version):
             return "Invalid version: \(version)"
+        case let .unknownPackageRequirement(package):
+            return "Unknown package requirement: \(package)"
         }
     }
 }

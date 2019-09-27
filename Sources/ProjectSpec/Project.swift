@@ -19,6 +19,8 @@ public struct Project: BuildSettingsContainer {
         }
     }
 
+    public var packages: [String: SwiftPackage]
+
     public var settings: Settings
     public var settingGroups: [String: Settings]
     public var configs: [Config]
@@ -41,6 +43,7 @@ public struct Project: BuildSettingsContainer {
         settings: Settings = .empty,
         settingGroups: [String: Settings] = [:],
         schemes: [Scheme] = [],
+        packages: [String: SwiftPackage] = [:],
         options: SpecOptions = SpecOptions(),
         fileGroups: [String] = [],
         configFiles: [String: String] = [:],
@@ -56,6 +59,7 @@ public struct Project: BuildSettingsContainer {
         self.settings = settings
         self.settingGroups = settingGroups
         self.schemes = schemes
+        self.packages = packages
         self.options = options
         self.fileGroups = fileGroups
         self.configFiles = configFiles
@@ -126,6 +130,7 @@ extension Project: Equatable {
             lhs.fileGroups == rhs.fileGroups &&
             lhs.configFiles == rhs.configFiles &&
             lhs.options == rhs.options &&
+            lhs.packages == rhs.packages &&
             NSDictionary(dictionary: lhs.attributes).isEqual(to: rhs.attributes)
     }
 }
@@ -160,6 +165,11 @@ extension Project {
         configFiles = jsonDictionary.json(atKeyPath: "configFiles") ?? [:]
         attributes = jsonDictionary.json(atKeyPath: "attributes") ?? [:]
         include = jsonDictionary.json(atKeyPath: "include") ?? []
+        if jsonDictionary["packages"] != nil {
+            packages = try jsonDictionary.json(atKeyPath: "packages", invalidItemBehaviour: .fail)
+        } else {
+            packages = [:]
+        }
         if jsonDictionary["options"] != nil {
             options = try jsonDictionary.json(atKeyPath: "options")
         } else {
@@ -242,19 +252,21 @@ extension Project: JSONEncodable {
         let aggregateTargetsPairs = aggregateTargets.map { ($0.name, $0.toJSONValue()) }
         let schemesPairs = schemes.map { ($0.name, $0.toJSONValue()) }
 
-        return [
-            "name": name,
-            "options": options.toJSONValue(),
-            "settings": settings.toJSONValue(),
-            "fileGroups": fileGroups,
-            "configFiles": configFiles,
-            "include": include,
-            "attributes": attributes,
-            "targets": Dictionary(uniqueKeysWithValues: targetPairs),
-            "configs": Dictionary(uniqueKeysWithValues: configsPairs),
-            "aggregateTargets": Dictionary(uniqueKeysWithValues: aggregateTargetsPairs),
-            "schemes": Dictionary(uniqueKeysWithValues: schemesPairs),
-            "settingGroups": settingGroups.mapValues { $0.toJSONValue() },
-        ]
+        var dictionary: JSONDictionary = [:]
+        dictionary["name"] = name
+        dictionary["options"] = options.toJSONValue()
+        dictionary["settings"] = settings.toJSONValue()
+        dictionary["fileGroups"] = fileGroups
+        dictionary["configFiles"] = configFiles
+        dictionary["include"] = include
+        dictionary["attributes"] = attributes
+        dictionary["packages"] = packages.mapValues { $0.toJSONValue() }
+        dictionary["targets"] = Dictionary(uniqueKeysWithValues: targetPairs)
+        dictionary["configs"] = Dictionary(uniqueKeysWithValues: configsPairs)
+        dictionary["aggregateTargets"] = Dictionary(uniqueKeysWithValues: aggregateTargetsPairs)
+        dictionary["schemes"] = Dictionary(uniqueKeysWithValues: schemesPairs)
+        dictionary["settingGroups"] = settingGroups.mapValues { $0.toJSONValue() }
+
+        return dictionary
     }
 }
