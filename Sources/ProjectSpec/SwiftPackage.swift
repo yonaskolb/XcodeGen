@@ -54,6 +54,8 @@ extension SwiftPackage.VersionRequirement: JSONObjectConvertible {
     public init(jsonDictionary: JSONDictionary) throws {
         if jsonDictionary["exactVersion"] != nil {
             self = try .exact(jsonDictionary.json(atKeyPath: "exactVersion"))
+        } else if jsonDictionary["version"] != nil {
+            self = try .exact(jsonDictionary.json(atKeyPath: "version"))
         } else if jsonDictionary["revision"] != nil {
             self = try .revision(jsonDictionary.json(atKeyPath: "revision"))
         } else if jsonDictionary["branch"] != nil {

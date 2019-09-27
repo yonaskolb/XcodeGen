@@ -969,6 +969,7 @@ class SpecLoadingTests: XCTestCase {
                     "package4": SwiftPackage(url: "package.git", versionRequirement: .branch("master")),
                     "package5": SwiftPackage(url: "package.git", versionRequirement: .revision("x")),
                     "package6": SwiftPackage(url: "package.git", versionRequirement: .range(from: "1.2.0", to: "1.2.5")),
+                    "package7": SwiftPackage(url: "package.git", versionRequirement: .exact("1.2.2")),
                     ],
                     localPackages: ["../../Package"],
                     options: .init(localPackagesGroup: "MyPackages"))
@@ -985,6 +986,7 @@ class SpecLoadingTests: XCTestCase {
                         "package4": ["url": "package.git", "branch": "master"],
                         "package5": ["url": "package.git", "revision": "x"],
                         "package6": ["url": "package.git", "minVersion": "1.2.0", "maxVersion": "1.2.5"],
+                        "package7": ["url": "package.git", "version": "1.2.2"],
                     ],
                     "localPackages": ["../../Package"]
                 ]

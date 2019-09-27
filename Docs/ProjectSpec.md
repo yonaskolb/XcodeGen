@@ -788,9 +788,9 @@ Swift packages are defined at a project level, and then linked to individual tar
 
 - [x] **url**: **URL** - the url to the package
 - [x] **version**: **String** - the version of the package to use. It can take a few forms:
-  - `majorVersion: 1.2.0`
+  - `majorVersion: 1.2.0` or `from: 1.2.0`
   - `minorVersion: 1.2.1`
-  - `exactVersion: 1.2.1`
+  - `exactVersion: 1.2.1` or `version: 1.2.1`
   - `minVersion: 1.0.0, maxVersion: 1.2.9`
   - `branch: master`
   - `revision: xxxxxx`
@@ -799,7 +799,7 @@ Swift packages are defined at a project level, and then linked to individual tar
 packages:
   Yams:
     url: https://github.com/jpsim/Yams
-    majorVersion: 2.0.0
+    from: 2.0.0
 targets:
   App:
     dependencies:
