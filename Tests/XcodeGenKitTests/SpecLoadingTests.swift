@@ -970,10 +970,14 @@ class SpecLoadingTests: XCTestCase {
                     "package5": SwiftPackage(url: "package.git", versionRequirement: .revision("x")),
                     "package6": SwiftPackage(url: "package.git", versionRequirement: .range(from: "1.2.0", to: "1.2.5")),
                     ],
-                    localPackages: ["../../Package"])
+                    localPackages: ["../../Package"],
+                    options: .init(localPackagesGroup: "MyPackages"))
 
                 let dictionary: [String: Any] = [
                     "name": "spm",
+                    "options": [
+                        "localPackagesGroup": "MyPackages"
+                    ],
                     "packages": [
                         "package1": ["url": "package.git", "exactVersion": "1.2.2"],
                         "package2": ["url": "package.git", "majorVersion": "1.2.2"],

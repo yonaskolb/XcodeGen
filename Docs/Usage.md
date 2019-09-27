@@ -185,6 +185,8 @@ localPackages:
  - ../../Yams
  - ~/Developer/MyPackage
 ```
+These local packages get put into a `Packages` group in the root of the project by default. This can be changed with `options.localPackagesGroup`
+
 > For now local packages that don't mirror remote packages aren't able to be linked to
 
 ### SDK

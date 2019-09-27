@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2DA7998902987953B119E4CE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26F7EFEE613987D1E1258A60 /* AppDelegate.swift */; };
+		578E78BC3627CF48FB2CE129 /* App.xctestplan in Resources */ = {isa = PBXBuildFile; fileRef = A9601593D0AD02931266A4E5 /* App.xctestplan */; };
 		78E2E1F9F271C0C4CDA04BD9 /* StaticLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F7AFEF8ECCC678519EA643C /* StaticLibrary.a */; };
 		9C4AD0711D706FD3ED0E436D /* StaticLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C17B77601A9D1B7895AB42 /* StaticLibrary.swift */; };
 		CE46CBA5671B951B546C8673 /* Codability in Frameworks */ = {isa = PBXBuildFile; productRef = 16E6FE01D5BD99F78D4A17E2 /* Codability */; };
@@ -31,7 +32,8 @@
 		464ACF8D8F2D9F219BCFD3E7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4E22B8BCC18A29EFE1DE3BE4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		61C17B77601A9D1B7895AB42 /* StaticLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaticLibrary.swift; sourceTree = "<group>"; };
-		EA6A9C2D515205854C4FC36F /* XcodeGen */ = {isa = PBXFileReference; lastKnownFileType = folder; name = XcodeGen; path = ../../..; sourceTree = "<group>"; };
+		A9601593D0AD02931266A4E5 /* App.xctestplan */ = {isa = PBXFileReference; path = App.xctestplan; sourceTree = "<group>"; };
+		C1DE9A872F470EAA65B9B0B0 /* XcodeGen */ = {isa = PBXFileReference; lastKnownFileType = folder; name = XcodeGen; path = ../../..; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -50,6 +52,7 @@
 		17DD374CC81D710476AFF41C /* SPM */ = {
 			isa = PBXGroup;
 			children = (
+				A9601593D0AD02931266A4E5 /* App.xctestplan */,
 				26F7EFEE613987D1E1258A60 /* AppDelegate.swift */,
 				4E22B8BCC18A29EFE1DE3BE4 /* Assets.xcassets */,
 				464ACF8D8F2D9F219BCFD3E7 /* Info.plist */,
@@ -68,7 +71,7 @@
 		218F6C96DF9E182F526258CF = {
 			isa = PBXGroup;
 			children = (
-				EA6A9C2D515205854C4FC36F /* XcodeGen */,
+				AD0F3623091EEA8D1EA3DFF8 /* Packages */,
 				17DD374CC81D710476AFF41C /* SPM */,
 				1FA59BFD192FB5A68D5F587C /* StaticLibrary */,
 				5D68FDDE55EE935627A1B376 /* Products */,
@@ -83,6 +86,14 @@
 			);
 			name = Products;
 			sourceTree = "<group>";
+		};
+		AD0F3623091EEA8D1EA3DFF8 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				C1DE9A872F470EAA65B9B0B0 /* XcodeGen */,
+			);
+			name = Packages;
+			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXGroup section */
 
@@ -162,6 +173,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				578E78BC3627CF48FB2CE129 /* App.xctestplan in Resources */,
 				E368431019ABC696E4FFC0CF /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -921,7 +921,7 @@ class ProjectGeneratorTests: XCTestCase {
                 let project = Project(name: "test", targets: [app], packages: [
                     "XcodeGen": SwiftPackage(url: "http://github.com/yonaskolb/XcodeGen", versionRequirement: .branch("master")),
                     "Codability": SwiftPackage(url: "http://github.com/yonaskolb/Codability", versionRequirement: .exact("1.0.0")),
-                ], localPackages: ["../XcodeGen"])
+                ], localPackages: ["../XcodeGen"], options: .init(localPackagesGroup: "MyPackages"))
 
                 let pbxProject = try project.generatePbxProj(specValidate: false)
                 guard let nativeTarget = pbxProject.nativeTargets.first(where: { $0.name == app.name }) else {
@@ -942,10 +942,15 @@ class ProjectGeneratorTests: XCTestCase {
                 try expect(codabilityDependency.package?.name) == "Codability"
                 try expect(codabilityDependency.package?.versionRequirement) == .exact("1.0.0")
 
+                guard let localPackagesGroup = try pbxProject.getMainGroup().children.first(where: { $0.name == "MyPackages" }) as? PBXGroup else {
+                    throw failure("Group not found")
+                }
+
                 guard let localPackageFile = pbxProject.fileReferences.first(where: { $0.path == "../XcodeGen" }) else {
                     throw failure("FileReference not found")
                 }
 
+                try expect(localPackagesGroup.children.contains(localPackageFile)) == true
                 try expect(localPackageFile.lastKnownFileType) == "folder"
             }
 
