@@ -52,6 +52,12 @@ extension Project {
             }
         }
 
+        for package in localPackages {
+            if !(basePath + Path(package).normalize()).exists {
+                errors.append(.invalidLocalPackage(package))
+            }
+        }
+
         for (config, configFile) in configFiles {
             if !options.disabledValidations.contains(.missingConfigFiles) && !(basePath + configFile).exists {
                 errors.append(.invalidConfigFile(configFile: configFile, config: config))
@@ -155,6 +161,10 @@ extension Project {
                         default:
                             errors.append(.invalidSDKDependency(target: target.name, dependency: dependency.reference))
                         }
+                    }
+                case .package:
+                    if packages[dependency.reference] == nil {
+                        errors.append(.invalidSwiftPackage(name: dependency.reference, target: target.name))
                     }
                 default: break
                 }

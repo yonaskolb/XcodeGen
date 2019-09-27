@@ -17,6 +17,7 @@ public class PBXProjGenerator {
     var targetAggregateObjects: [String: PBXAggregateTarget] = [:]
     var targetFileReferences: [String: PBXFileReference] = [:]
     var sdkFileReferences: [String: PBXFileReference] = [:]
+    var packageReferences: [String: XCRemoteSwiftPackageReference] = [:]
 
     var carthageFrameworksByPlatform: [String: Set<PBXFileElement>] = [:]
     var frameworkFiles: [PBXFileElement] = []
@@ -30,6 +31,7 @@ public class PBXProjGenerator {
         sourceGenerator = SourceGenerator(project: project, pbxProj: pbxProj)
     }
 
+    @discardableResult
     func addObject<T: PBXObject>(_ object: T, context: String? = nil) -> T {
         pbxProj.add(object: object)
         object.context = context
@@ -44,6 +46,12 @@ public class PBXProjGenerator {
 
         for group in project.fileGroups {
             try sourceGenerator.getFileGroups(path: group)
+        }
+
+        let localPackages = Set(project.localPackages)
+        for package in localPackages {
+            let path = project.basePath + Path(package).normalize()
+            try sourceGenerator.createLocalPackage(path: path)
         }
 
         let buildConfigs: [XCBuildConfiguration] = project.configs.map { config in
@@ -149,6 +157,12 @@ public class PBXProjGenerator {
             targetAggregateObjects[target.name] = aggregateTarget
         }
 
+        for (name, package) in project.packages {
+            let packageReference = XCRemoteSwiftPackageReference(repositoryURL: package.url, versionRequirement: package.versionRequirement)
+            packageReferences[name] = packageReference
+            addObject(packageReference)
+        }
+
         try project.targets.forEach(generateTarget)
         try project.aggregateTargets.forEach(generateAggregateTarget)
 
@@ -208,6 +222,7 @@ public class PBXProjGenerator {
 
         let knownRegions = sourceGenerator.knownRegions.sorted()
         pbxProject.knownRegions = knownRegions.isEmpty ? ["en"] : knownRegions
+        pbxProject.packages = packageReferences.sorted { $0.key < $1.key }.map { $1 }
 
         let allTargets: [PBXTarget] = targetObjects.valueArray + targetAggregateObjects.valueArray
         pbxProject.targets = allTargets
@@ -415,6 +430,7 @@ public class PBXProjGenerator {
         var copyFrameworksReferences: [PBXBuildFile] = []
         var copyResourcesReferences: [PBXBuildFile] = []
         var copyWatchReferences: [PBXBuildFile] = []
+        var packageDependencies: [XCSwiftPackageProductDependency] = []
         var extensions: [PBXBuildFile] = []
         var carthageFrameworksToEmbed: [String] = []
 
@@ -457,10 +473,10 @@ public class PBXProjGenerator {
                 guard let dependencyTarget = project.getTarget(dependencyTargetName) else { continue }
 
                 let dependecyLinkage = dependencyTarget.defaultLinkage
-                let link = dependency.link ?? (
-                    (dependecyLinkage == .dynamic && target.type != .staticLibrary)
-                        || (dependecyLinkage == .static && target.type.isExecutable)
-                )
+                let link = dependency.link ??
+                    (dependecyLinkage == .dynamic && target.type != .staticLibrary) ||
+                    (dependecyLinkage == .static && target.type.isExecutable)
+
                 if link {
                     let dependencyFile = targetFileReferences[dependencyTarget.name]!
                     let buildFile = addObject(
@@ -604,6 +620,29 @@ public class PBXProjGenerator {
                     }
                 }
                 // Embedding handled by iterating over `carthageDependencies` below
+            case .package(let product):
+                guard let packageReference = packageReferences[dependency.reference] else {
+                    return
+                }
+
+                let productName = product ?? dependency.reference
+                let packageDependency = addObject(
+                    XCSwiftPackageProductDependency(productName: productName, package: packageReference)
+                )
+                packageDependencies.append(packageDependency)
+
+                let link = dependency.link ?? (target.type != .staticLibrary)
+                if link {
+                    let buildFile = addObject(
+                        PBXBuildFile(product: packageDependency)
+                    )
+                    targetFrameworkBuildFiles.append(buildFile)
+                }
+
+                let targetDependency = addObject(
+                    PBXTargetDependency(product: packageDependency)
+                )
+                dependencies.append(targetDependency)
             }
         }
 
@@ -925,6 +964,7 @@ public class PBXProjGenerator {
         targetObject.dependencies = dependencies
         targetObject.productName = target.name
         targetObject.buildRules = buildRules
+        targetObject.packageProductDependencies = packageDependencies
         targetObject.product = targetFileReference
         if !target.isLegacy {
             targetObject.productType = target.type
@@ -969,7 +1009,7 @@ public class PBXProjGenerator {
                 switch dependency.type {
                 case .sdk:
                     dependencies[dependency.reference] = dependency
-                case .framework, .carthage:
+                case .framework, .carthage, .package:
                     if isTopLevel || dependency.embed == nil {
                         dependencies[dependency.reference] = dependency
                     }

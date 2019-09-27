@@ -11,6 +11,15 @@
         }
       },
       {
+        "package": "Codability",
+        "repositoryURL": "https://github.com/yonaskolb/Codability",
+        "state": {
+          "branch": null,
+          "revision": "eb5bac78e0679f521c3f058c1eb9be0dd657dadd",
+          "version": "0.2.1"
+        }
+      },
+      {
         "package": "JSONUtilities",
         "repositoryURL": "https://github.com/yonaskolb/JSONUtilities.git",
         "state": {
@@ -69,7 +78,7 @@
         "repositoryURL": "https://github.com/tuist/xcodeproj.git",
         "state": {
           "branch": null,
-          "revision": "0f563e2d7d604499e7b57a28c78ff23d5c545acd",
+          "revision": "aefcbf59cea5b0831837ed2f385e6dfd80d82cc9",
           "version": "7.1.0"
         }
       },
