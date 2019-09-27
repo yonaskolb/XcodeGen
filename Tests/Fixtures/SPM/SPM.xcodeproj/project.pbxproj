@@ -8,15 +8,29 @@
 
 /* Begin PBXBuildFile section */
 		2DA7998902987953B119E4CE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26F7EFEE613987D1E1258A60 /* AppDelegate.swift */; };
-		CE46CBA5671B951B546C8673 /* Yams in Frameworks */ = {isa = PBXBuildFile; productRef = 21FF5E2BA4D9824D3A2C033A /* Yams */; };
+		78E2E1F9F271C0C4CDA04BD9 /* StaticLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F7AFEF8ECCC678519EA643C /* StaticLibrary.a */; };
+		9C4AD0711D706FD3ED0E436D /* StaticLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C17B77601A9D1B7895AB42 /* StaticLibrary.swift */; };
+		CE46CBA5671B951B546C8673 /* Codability in Frameworks */ = {isa = PBXBuildFile; productRef = 16E6FE01D5BD99F78D4A17E2 /* Codability */; };
 		E368431019ABC696E4FFC0CF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4E22B8BCC18A29EFE1DE3BE4 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		29147E1DDAEB1AAC20CB0CF9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F7B09D77DB7447B17DCDA3C4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3F8D94C4EFC431F646AAFB28;
+			remoteInfo = StaticLibrary;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		097F2DB5622B591E21BC3C73 /* App.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = App.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		26F7EFEE613987D1E1258A60 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		3F7AFEF8ECCC678519EA643C /* StaticLibrary.a */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = archive.ar; path = StaticLibrary.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		464ACF8D8F2D9F219BCFD3E7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4E22B8BCC18A29EFE1DE3BE4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		61C17B77601A9D1B7895AB42 /* StaticLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaticLibrary.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -24,7 +38,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CE46CBA5671B951B546C8673 /* Yams in Frameworks */,
+				CE46CBA5671B951B546C8673 /* Codability in Frameworks */,
+				78E2E1F9F271C0C4CDA04BD9 /* StaticLibrary.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -41,10 +56,19 @@
 			path = SPM;
 			sourceTree = "<group>";
 		};
+		1FA59BFD192FB5A68D5F587C /* StaticLibrary */ = {
+			isa = PBXGroup;
+			children = (
+				61C17B77601A9D1B7895AB42 /* StaticLibrary.swift */,
+			);
+			path = StaticLibrary;
+			sourceTree = "<group>";
+		};
 		218F6C96DF9E182F526258CF = {
 			isa = PBXGroup;
 			children = (
 				17DD374CC81D710476AFF41C /* SPM */,
+				1FA59BFD192FB5A68D5F587C /* StaticLibrary */,
 				5D68FDDE55EE935627A1B376 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -53,6 +77,7 @@
 			isa = PBXGroup;
 			children = (
 				097F2DB5622B591E21BC3C73 /* App.app */,
+				3F7AFEF8ECCC678519EA643C /* StaticLibrary.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -60,6 +85,25 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		3F8D94C4EFC431F646AAFB28 /* StaticLibrary */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3B861439E878E4B7EE6EE131 /* Build configuration list for PBXNativeTarget "StaticLibrary" */;
+			buildPhases = (
+				B070E114B1D62BD5A07B61DF /* Sources */,
+				723C19B61A1AD980BD7C9DF0 /* Copy Swift Objective-C Interface Header */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = StaticLibrary;
+			packageProductDependencies = (
+				AF233B61592982A7F6431FC6 /* Codability */,
+			);
+			productName = StaticLibrary;
+			productReference = 3F7AFEF8ECCC678519EA643C /* StaticLibrary.a */;
+			productType = "com.apple.product-type.library.static";
+		};
 		C99E3C420D63D5219CE57E33 /* App */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 091BBC493EA2F0A446682C48 /* Build configuration list for PBXNativeTarget "App" */;
@@ -71,10 +115,11 @@
 			buildRules = (
 			);
 			dependencies = (
+				078202CF7B08B66ACF7FEC23 /* PBXTargetDependency */,
 			);
 			name = App;
 			packageProductDependencies = (
-				21FF5E2BA4D9824D3A2C033A /* Yams */,
+				16E6FE01D5BD99F78D4A17E2 /* Codability */,
 			);
 			productName = App;
 			productReference = 097F2DB5622B591E21BC3C73 /* App.app */;
@@ -97,12 +142,13 @@
 			);
 			mainGroup = 218F6C96DF9E182F526258CF;
 			packageReferences = (
-				06F4000A2BED694F54AC2BCA /* XCRemoteSwiftPackageReference "Yams" */,
+				5BA91390AE78D2EE15C60091 /* XCRemoteSwiftPackageReference "Codability" */,
 			);
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
 				C99E3C420D63D5219CE57E33 /* App */,
+				3F8D94C4EFC431F646AAFB28 /* StaticLibrary */,
 			);
 		};
 /* End PBXProject section */
@@ -118,6 +164,25 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		723C19B61A1AD980BD7C9DF0 /* Copy Swift Objective-C Interface Header */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(DERIVED_SOURCES_DIR)/$(SWIFT_OBJC_INTERFACE_HEADER_NAME)",
+			);
+			name = "Copy Swift Objective-C Interface Header";
+			outputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/include/$(PRODUCT_MODULE_NAME)/$(SWIFT_OBJC_INTERFACE_HEADER_NAME)",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "ditto \"${SCRIPT_INPUT_FILE_0}\" \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		460F52476B5219D2CDA494C2 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -127,9 +192,45 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B070E114B1D62BD5A07B61DF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9C4AD0711D706FD3ED0E436D /* StaticLibrary.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		078202CF7B08B66ACF7FEC23 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3F8D94C4EFC431F646AAFB28 /* StaticLibrary */;
+			targetProxy = 29147E1DDAEB1AAC20CB0CF9 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		0CCC06807E5CD8361D899B7F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		1640ABF22E84A6AB9FFFB0D9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		41B31B6C4A1D9194EC6FFF6B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -137,6 +238,10 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = SPM/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -149,6 +254,10 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = SPM/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -276,6 +385,15 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "";
 		};
+		3B861439E878E4B7EE6EE131 /* Build configuration list for PBXNativeTarget "StaticLibrary" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0CCC06807E5CD8361D899B7F /* Debug */,
+				1640ABF22E84A6AB9FFFB0D9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "";
+		};
 		425866ADA259DB93FC4AF1E3 /* Build configuration list for PBXProject "SPM" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -288,21 +406,26 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		06F4000A2BED694F54AC2BCA /* XCRemoteSwiftPackageReference "Yams" */ = {
+		5BA91390AE78D2EE15C60091 /* XCRemoteSwiftPackageReference "Codability" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/jpsim/Yams";
+			repositoryURL = "https://github.com/yonaskolb/Codability";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 2.0.0;
+				minimumVersion = 0.2.1;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		21FF5E2BA4D9824D3A2C033A /* Yams */ = {
+		16E6FE01D5BD99F78D4A17E2 /* Codability */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 06F4000A2BED694F54AC2BCA /* XCRemoteSwiftPackageReference "Yams" */;
-			productName = Yams;
+			package = 5BA91390AE78D2EE15C60091 /* XCRemoteSwiftPackageReference "Codability" */;
+			productName = Codability;
+		};
+		AF233B61592982A7F6431FC6 /* Codability */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5BA91390AE78D2EE15C60091 /* XCRemoteSwiftPackageReference "Codability" */;
+			productName = Codability;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

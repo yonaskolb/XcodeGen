@@ -1,12 +1,20 @@
 name: SPM
 packages:
-  Yams:
-    url: https://github.com/jpsim/Yams
-    majorVersion: 2.0.0
+  Codability:
+    url: https://github.com/yonaskolb/Codability
+    majorVersion: 0.2.1
 targets:
   App:
     type: application
     platform: iOS
     sources: [SPM]
+    scheme: {}
     dependencies:
-      - package: Yams
+      - package: Codability
+      - target: StaticLibrary
+  StaticLibrary:
+    type: library.static
+    platform: iOS
+    sources: StaticLibrary
+    dependencies:
+      - package: Codability

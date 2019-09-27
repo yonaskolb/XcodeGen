@@ -467,10 +467,10 @@ public class PBXProjGenerator {
                 guard let dependencyTarget = project.getTarget(dependencyTargetName) else { continue }
 
                 let dependecyLinkage = dependencyTarget.defaultLinkage
-                let link = dependency.link ?? (
-                    (dependecyLinkage == .dynamic && target.type != .staticLibrary)
-                        || (dependecyLinkage == .static && target.type.isExecutable)
-                )
+                let link = dependency.link ??
+                    (dependecyLinkage == .dynamic && target.type != .staticLibrary) ||
+                    (dependecyLinkage == .static && target.type.isExecutable)
+
                 if link {
                     let dependencyFile = targetFileReferences[dependencyTarget.name]!
                     let buildFile = addObject(
@@ -625,10 +625,13 @@ public class PBXProjGenerator {
                 )
                 packageDependencies.append(packageDependency)
 
-                let buildFile = addObject(
-                    PBXBuildFile(product: packageDependency)
-                )
-                targetFrameworkBuildFiles.append(buildFile)
+                let link = dependency.link ?? (target.type != .staticLibrary)
+                if link {
+                    let buildFile = addObject(
+                        PBXBuildFile(product: packageDependency)
+                    )
+                    targetFrameworkBuildFiles.append(buildFile)
+                }
 
                 // adding a swift package target dependency requires a change in XcodeProj
                 // https://github.com/tuist/XcodeProj/pull/481
