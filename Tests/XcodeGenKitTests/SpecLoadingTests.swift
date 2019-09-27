@@ -969,7 +969,8 @@ class SpecLoadingTests: XCTestCase {
                     "package4": SwiftPackage(url: "package.git", versionRequirement: .branch("master")),
                     "package5": SwiftPackage(url: "package.git", versionRequirement: .revision("x")),
                     "package6": SwiftPackage(url: "package.git", versionRequirement: .range(from: "1.2.0", to: "1.2.5")),
-                    ])
+                    ],
+                    localPackages: ["../../Package"])
 
                 let dictionary: [String: Any] = [
                     "name": "spm",
@@ -980,7 +981,9 @@ class SpecLoadingTests: XCTestCase {
                         "package4": ["url": "package.git", "branch": "master"],
                         "package5": ["url": "package.git", "revision": "x"],
                         "package6": ["url": "package.git", "minVersion": "1.2.0", "maxVersion": "1.2.5"],
-                    ]]
+                    ],
+                    "localPackages": ["../../Package"]
+                ]
                 let parsedSpec = try getProjectSpec(dictionary)
                 try expect(parsedSpec) == project
             }

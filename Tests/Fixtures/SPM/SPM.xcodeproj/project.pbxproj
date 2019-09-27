@@ -31,6 +31,7 @@
 		464ACF8D8F2D9F219BCFD3E7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4E22B8BCC18A29EFE1DE3BE4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		61C17B77601A9D1B7895AB42 /* StaticLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaticLibrary.swift; sourceTree = "<group>"; };
+		EA6A9C2D515205854C4FC36F /* XcodeGen */ = {isa = PBXFileReference; lastKnownFileType = folder; name = XcodeGen; path = /Users/Yonas/Developer/XcodeGen; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +68,7 @@
 		218F6C96DF9E182F526258CF = {
 			isa = PBXGroup;
 			children = (
+				EA6A9C2D515205854C4FC36F /* XcodeGen */,
 				17DD374CC81D710476AFF41C /* SPM */,
 				1FA59BFD192FB5A68D5F587C /* StaticLibrary */,
 				5D68FDDE55EE935627A1B376 /* Products */,

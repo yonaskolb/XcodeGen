@@ -41,6 +41,18 @@ class SourceGenerator {
         return object
     }
 
+    func createLocalPackage(path: Path) {
+        let fileReference = addObject(
+            PBXFileReference(
+                sourceTree: .absolute,
+                name: path.lastComponent,
+                lastKnownFileType: "folder",
+                path: path.string
+            )
+        )
+        rootGroups.insert(fileReference)
+    }
+
     func getAllSourceFiles(targetType: PBXProductType, sources: [TargetSource]) throws -> [SourceFile] {
         return try sources.flatMap { try getSourceFiles(targetType: targetType, targetSource: $0, path: project.basePath + $0.path) }
     }

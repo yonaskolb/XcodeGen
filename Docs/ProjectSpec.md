@@ -47,7 +47,8 @@ You can also use environment variables in your configuration file, by using `${S
 - [ ] **fileGroups**: **[String]** - A list of paths to add to the root of the project. These aren't files that will be included in your targets, but that you'd like to include in the project hierachy anyway. For example a folder of xcconfig files that aren't already added by any target sources, or a Readme file.
 - [ ] **schemes**: **[Scheme](#scheme)** - A list of schemes by name. This allows more control over what is found in [Target Scheme](#target-scheme)
 - [ ] **targetTemplates**: **[String: [Target Template](#target-template)]** - a list of targets that can be used as templates for actual targets which reference them via a `template` property. They can be used to extract common target settings. Works great in combination with `include`.
-- [ ] **packages**: **[String: [Swift Package](#swift-package)]** -
+- [ ] **packages**: **[String: [Swift Package](#swift-package)]** - a map of Swift packages by name
+- [ ] **localPackages**: **[String]** - A list of paths to local Swift Packages. The paths must be directories with a `Package.swift` file in them. This is used to override `packages` with a local version for development purposes.
 
 ### Include
 

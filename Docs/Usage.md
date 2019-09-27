@@ -178,6 +178,15 @@ If you want to check in the `Package.resolved` file so that everyone is on the s
 
 > Note that Swift Packages don't work in projects with configurations other than `Debug` and `Release`. That limitation is tracked here bugs.swift.org/browse/SR-10927
 
+You can also include local Swift Packages by referencing them by paths in `localPackages`. When these have the same name as `packages` they will be used instead of the remote repos. This is useful for local development.
+
+```yml
+localPackages:
+ - ../../Yams
+ - ~/Developer/MyPackage
+```
+> For now local packages that don't mirror remote packages aren't able to be linked to
+
 ### SDK
 System frameworks and libs can be linked by using the `sdk` dependency type. You can either specify frameworks or libs by using a `.framework`, `.tbd` or `dylib` filename, respectively
 

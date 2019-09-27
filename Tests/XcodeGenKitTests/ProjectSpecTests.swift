@@ -96,6 +96,7 @@ class ProjectSpecTests: XCTestCase {
                 project.settings = invalidSettings
                 project.configFiles = ["invalidConfig": "invalidConfigFile"]
                 project.fileGroups = ["invalidFileGroup"]
+                project.localPackages = ["invalidLocalPackage"]
                 project.settingGroups = ["settingGroup1": Settings(
                     configSettings: ["invalidSettingGroupConfig": [:]],
                     groups: ["invalidSettingGroupSettingGroup"]
@@ -106,6 +107,7 @@ class ProjectSpecTests: XCTestCase {
                 try expectValidationError(project, .invalidConfigFile(configFile: "invalidConfigFile", config: "invalidConfig"))
                 try expectValidationError(project, .invalidSettingsGroup("invalidSettingGroup"))
                 try expectValidationError(project, .invalidFileGroup("invalidFileGroup"))
+                try expectValidationError(project, .invalidLocalPackage("invalidLocalPackage"))
                 try expectValidationError(project, .invalidSettingsGroup("invalidSettingGroupSettingGroup"))
                 try expectValidationError(project, .invalidBuildSettingConfig("invalidSettingGroupConfig"))
             }
@@ -467,6 +469,7 @@ class ProjectSpecTests: XCTestCase {
                                         url: "https://github.com/jpsim/Yams",
                                         versionRequirement: .upToNextMajorVersion("2.0.0"))
                                     ],
+                                   localPackages: ["../../Package"],
                                    options: SpecOptions(minimumXcodeGenVersion: Version(major: 3, minor: 4, patch: 5),
                                                         carthageBuildPath: "carthageBuildPath",
                                                         carthageExecutablePath: "carthageExecutablePath",

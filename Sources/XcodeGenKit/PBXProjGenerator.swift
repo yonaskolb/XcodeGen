@@ -48,6 +48,12 @@ public class PBXProjGenerator {
             try sourceGenerator.getFileGroups(path: group)
         }
 
+        let localPackages = Set(project.localPackages)
+        for package in localPackages {
+            let path = project.basePath + Path(package).normalize()
+            sourceGenerator.createLocalPackage(path: path)
+        }
+
         let buildConfigs: [XCBuildConfiguration] = project.configs.map { config in
             let buildSettings = project.getProjectBuildSettings(config: config)
             var baseConfiguration: PBXFileReference?

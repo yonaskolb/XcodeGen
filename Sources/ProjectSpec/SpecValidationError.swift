@@ -19,6 +19,7 @@ public struct SpecValidationError: Error, CustomStringConvertible {
         case invalidSchemeTarget(scheme: String, target: String)
         case invalidSchemeConfig(scheme: String, config: String)
         case invalidSwiftPackage(name: String, target: String)
+        case invalidLocalPackage(String)
         case invalidConfigFile(configFile: String, config: String)
         case invalidBuildSettingConfig(String)
         case invalidSettingsGroup(String)
@@ -64,6 +65,8 @@ public struct SpecValidationError: Error, CustomStringConvertible {
                 return "Config file has invalid config \(config.quoted)"
             case let .invalidSwiftPackage(name, target):
                 return "Target \(target.quoted) has an invalid package dependency \(name.quoted)"
+            case let .invalidLocalPackage(path):
+                return "Invalid local package \(path.quoted)"
             case let .missingConfigForTargetScheme(target, configType):
                 return "Target \(target.quoted) is missing a config of type \(configType.rawValue) to generate its scheme"
             case let .missingDefaultConfig(name):

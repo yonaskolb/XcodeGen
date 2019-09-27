@@ -20,6 +20,7 @@ public struct Project: BuildSettingsContainer {
     }
 
     public var packages: [String: SwiftPackage]
+    public var localPackages: [String]
 
     public var settings: Settings
     public var settingGroups: [String: Settings]
@@ -44,6 +45,7 @@ public struct Project: BuildSettingsContainer {
         settingGroups: [String: Settings] = [:],
         schemes: [Scheme] = [],
         packages: [String: SwiftPackage] = [:],
+        localPackages: [String] = [],
         options: SpecOptions = SpecOptions(),
         fileGroups: [String] = [],
         configFiles: [String: String] = [:],
@@ -60,6 +62,7 @@ public struct Project: BuildSettingsContainer {
         self.settingGroups = settingGroups
         self.schemes = schemes
         self.packages = packages
+        self.localPackages = localPackages
         self.options = options
         self.fileGroups = fileGroups
         self.configFiles = configFiles
@@ -131,6 +134,7 @@ extension Project: Equatable {
             lhs.configFiles == rhs.configFiles &&
             lhs.options == rhs.options &&
             lhs.packages == rhs.packages &&
+            lhs.localPackages == rhs.localPackages &&
             NSDictionary(dictionary: lhs.attributes).isEqual(to: rhs.attributes)
     }
 }
@@ -170,6 +174,7 @@ extension Project {
         } else {
             packages = [:]
         }
+        localPackages = jsonDictionary.json(atKeyPath: "localPackages") ?? []
         if jsonDictionary["options"] != nil {
             options = try jsonDictionary.json(atKeyPath: "options")
         } else {
@@ -197,6 +202,7 @@ extension Project: PathContainer {
     static var pathProperties: [PathProperty] {
         return [
             .string("configFiles"),
+            .string("localPackages"),
             .object("options", SpecOptions.pathProperties),
             .object("targets", Target.pathProperties),
             .object("targetTemplates", Target.pathProperties),
@@ -261,6 +267,7 @@ extension Project: JSONEncodable {
         dictionary["include"] = include
         dictionary["attributes"] = attributes
         dictionary["packages"] = packages.mapValues { $0.toJSONValue() }
+        dictionary["localPackages"] = localPackages
         dictionary["targets"] = Dictionary(uniqueKeysWithValues: targetPairs)
         dictionary["configs"] = Dictionary(uniqueKeysWithValues: configsPairs)
         dictionary["aggregateTargets"] = Dictionary(uniqueKeysWithValues: aggregateTargetsPairs)
