@@ -95,6 +95,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				D85FFB99444DD260A72DDDA7 /* PBXTargetDependency */,
 			);
 			name = StaticLibrary;
 			packageProductDependencies = (
@@ -115,6 +116,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				E157C6348B8AD6A28C706801 /* PBXTargetDependency */,
 				078202CF7B08B66ACF7FEC23 /* PBXTargetDependency */,
 			);
 			name = App;
@@ -207,6 +209,14 @@
 			isa = PBXTargetDependency;
 			target = 3F8D94C4EFC431F646AAFB28 /* StaticLibrary */;
 			targetProxy = 29147E1DDAEB1AAC20CB0CF9 /* PBXContainerItemProxy */;
+		};
+		D85FFB99444DD260A72DDDA7 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = AF233B61592982A7F6431FC6 /* Codability */;
+		};
+		E157C6348B8AD6A28C706801 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 16E6FE01D5BD99F78D4A17E2 /* Codability */;
 		};
 /* End PBXTargetDependency section */
 

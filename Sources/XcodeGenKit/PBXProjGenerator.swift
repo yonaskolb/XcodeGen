@@ -633,10 +633,10 @@ public class PBXProjGenerator {
                     targetFrameworkBuildFiles.append(buildFile)
                 }
 
-                // adding a swift package target dependency requires a change in XcodeProj
-                // https://github.com/tuist/XcodeProj/pull/481
-                // let targetDependency = addObjectPBXTargetDependency(product: packageDependency))
-                // dependencies.append(targetDependency)
+                let targetDependency = addObject(
+                    PBXTargetDependency(product: packageDependency)
+                )
+                dependencies.append(targetDependency)
             }
         }
 
