@@ -2,6 +2,8 @@
 
 ## Next Version
 
+## 2.8.0
+
 #### Added
 
 - Added support for Swift Package dependencies [#624](https://github.com/yonaskolb/XcodeGen/pull/624) @yonaskolb
@@ -19,6 +21,8 @@
 #### Internal
 - Removed needless `Array` initialization. [#661](https://github.com/yonaskolb/XcodeGen/pull/661) @RomanPodymov
 - Updated to XcodeProj 7.1.0 [#624](https://github.com/yonaskolb/XcodeGen/pull/624) @yonaskolb
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.7.0...2.8.0)
 
 ## 2.7.0
 
