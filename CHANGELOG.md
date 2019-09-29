@@ -2,6 +2,9 @@
 
 ## Next Version
 
+#### Fixed
+- Fixed macOS unit test setting preset [#665](https://github.com/yonaskolb/XcodeGen/pull/665) @yonaskolb
+
 ## 2.8.0
 
 #### Added
