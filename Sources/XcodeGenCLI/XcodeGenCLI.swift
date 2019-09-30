@@ -3,6 +3,21 @@ import ProjectSpec
 import SwiftCLI
 
 public class XcodeGenCLI {
+    private class Manipulator: ArgumentListManipulator {
+        let commandName: String
+
+        init(commandName: String) {
+            self.commandName = commandName
+        }
+
+        func manipulate(arguments: ArgumentList) {
+            if !arguments.hasNext() || arguments.nextIsOption() {
+                arguments.manipulate { existing in
+                    return [commandName] + existing
+                }
+            }
+        }
+    }
 
     let cli: CLI
 
@@ -15,7 +30,9 @@ public class XcodeGenCLI {
             description: "Generates Xcode projects",
             commands: [generateCommand]
         )
-        cli.parser = Parser(router: CommandRouter(defaultCommand: generateCommand))
+        let manipulator = Manipulator(commandName: generateCommand.name)
+        cli.argumentListManipulators.insert(manipulator, at: 0)
+        cli.parser.routeBehavior = .searchWithFallback(generateCommand)
     }
 
     public func execute(arguments: [String]? = nil) {
