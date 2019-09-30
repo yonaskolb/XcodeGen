@@ -907,6 +907,53 @@ class ProjectGeneratorTests: XCTestCase {
                 try expect(buildFileSettings.compactMap { $0?["ATTRIBUTES"] as? [String] }.first) == ["Weak"]
             }
 
+            $0.it("generates swift packages") {
+                let app = Target(
+                    name: "MyApp",
+                    type: .application,
+                    platform: .iOS,
+                    dependencies: [
+                        Dependency(type: .package(product: "ProjectSpec"), reference: "XcodeGen"),
+                        Dependency(type: .package(product: nil), reference: "Codability"),
+                    ]
+                )
+
+                let project = Project(name: "test", targets: [app], packages: [
+                    "XcodeGen": SwiftPackage(url: "http://github.com/yonaskolb/XcodeGen", versionRequirement: .branch("master")),
+                    "Codability": SwiftPackage(url: "http://github.com/yonaskolb/Codability", versionRequirement: .exact("1.0.0")),
+                ], localPackages: ["../XcodeGen"], options: .init(localPackagesGroup: "MyPackages"))
+
+                let pbxProject = try project.generatePbxProj(specValidate: false)
+                guard let nativeTarget = pbxProject.nativeTargets.first(where: { $0.name == app.name }) else {
+                    throw failure("PBXNativeTarget for \(app.name) not found")
+                }
+
+                guard let projectSpecDependency = nativeTarget.packageProductDependencies.first(where: { $0.productName == "ProjectSpec" }) else {
+                                   throw failure("XCSwiftPackageProductDependency for \(app.name) not found")
+                }
+
+                try expect(projectSpecDependency.package?.name) == "XcodeGen"
+                try expect(projectSpecDependency.package?.versionRequirement) == .branch("master")
+
+                guard let codabilityDependency = nativeTarget.packageProductDependencies.first(where: { $0.productName == "Codability" }) else {
+                                   throw failure("XCSwiftPackageProductDependency for \(app.name) not found")
+                }
+
+                try expect(codabilityDependency.package?.name) == "Codability"
+                try expect(codabilityDependency.package?.versionRequirement) == .exact("1.0.0")
+
+                guard let localPackagesGroup = try pbxProject.getMainGroup().children.first(where: { $0.name == "MyPackages" }) as? PBXGroup else {
+                    throw failure("Group not found")
+                }
+
+                guard let localPackageFile = pbxProject.fileReferences.first(where: { $0.path == "../XcodeGen" }) else {
+                    throw failure("FileReference not found")
+                }
+
+                try expect(localPackagesGroup.children.contains(localPackageFile)) == true
+                try expect(localPackageFile.lastKnownFileType) == "folder"
+            }
+
             $0.it("generates info.plist") {
                 let plist = Plist(path: "Info.plist", attributes: ["UISupportedInterfaceOrientations": ["UIInterfaceOrientationPortrait", "UIInterfaceOrientationLandscapeLeft"]])
                 let tempPath = Path.temporary + "info"

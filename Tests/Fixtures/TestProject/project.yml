@@ -128,7 +128,7 @@ targets:
   App_watchOS:
       type: application.watchapp2
       platform: watchOS
-      deploymentTarget: 3.0
+      deploymentTarget: 4.0
       sources:
         App_watchOS
       settings:

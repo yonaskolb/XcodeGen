@@ -16,6 +16,7 @@ class SourceGenerator {
     private var fileReferencesByPath: [String: PBXFileElement] = [:]
     private var groupsByPath: [Path: PBXGroup] = [:]
     private var variantGroupsByPath: [Path: PBXVariantGroup] = [:]
+    private var localPackageGroup: PBXGroup?
 
     private let project: Project
     let pbxProj: PBXProj
@@ -34,10 +35,30 @@ class SourceGenerator {
         self.pbxProj = pbxProj
     }
 
+    @discardableResult
     func addObject<T: PBXObject>(_ object: T, context: String? = nil) -> T {
         pbxProj.add(object: object)
         object.context = context
         return object
+    }
+
+    func createLocalPackage(path: Path) throws {
+
+
+        if localPackageGroup == nil {
+            let groupName = project.options.localPackagesGroup ?? "Packages"
+            localPackageGroup = addObject(PBXGroup(sourceTree: .sourceRoot, name: groupName))
+            rootGroups.insert(localPackageGroup!)
+        }
+        let fileReference = addObject(
+            PBXFileReference(
+                sourceTree: .sourceRoot,
+                name: path.lastComponent,
+                lastKnownFileType: "folder",
+                path: try path.relativePath(from: project.basePath).string
+            )
+        )
+        localPackageGroup!.children.append(fileReference)
     }
 
     func getAllSourceFiles(targetType: PBXProductType, sources: [TargetSource]) throws -> [SourceFile] {

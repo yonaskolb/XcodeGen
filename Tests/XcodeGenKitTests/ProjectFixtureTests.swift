@@ -9,8 +9,10 @@ class ProjectFixtureTests: XCTestCase {
 
     func testProjectFixture() {
         describe {
-            $0.it("generates") {
+            $0.it("generates fixtures") {
                 try generateXcodeProject(specPath: fixturePath + "TestProject/project.yml")
+                try generateXcodeProject(specPath: fixturePath + "CarthageProject/project.yml")
+                try generateXcodeProject(specPath: fixturePath + "SPM/project.yml")
             }
         }
     }

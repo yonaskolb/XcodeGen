@@ -962,6 +962,39 @@ class SpecLoadingTests: XCTestCase {
                 let parsedSpec = try getProjectSpec(dictionary)
                 try expect(parsedSpec) == expected
             }
+
+            $0.it("parses packages") {
+                let project = Project(name: "spm", packages: [
+                    "package1": SwiftPackage(url: "package.git", versionRequirement: .exact("1.2.2")),
+                    "package2": SwiftPackage(url: "package.git", versionRequirement: .upToNextMajorVersion("1.2.2")),
+                    "package3": SwiftPackage(url: "package.git", versionRequirement: .upToNextMinorVersion("1.2.2")),
+                    "package4": SwiftPackage(url: "package.git", versionRequirement: .branch("master")),
+                    "package5": SwiftPackage(url: "package.git", versionRequirement: .revision("x")),
+                    "package6": SwiftPackage(url: "package.git", versionRequirement: .range(from: "1.2.0", to: "1.2.5")),
+                    "package7": SwiftPackage(url: "package.git", versionRequirement: .exact("1.2.2")),
+                    ],
+                    localPackages: ["../../Package"],
+                    options: .init(localPackagesGroup: "MyPackages"))
+
+                let dictionary: [String: Any] = [
+                    "name": "spm",
+                    "options": [
+                        "localPackagesGroup": "MyPackages"
+                    ],
+                    "packages": [
+                        "package1": ["url": "package.git", "exactVersion": "1.2.2"],
+                        "package2": ["url": "package.git", "majorVersion": "1.2.2"],
+                        "package3": ["url": "package.git", "minorVersion": "1.2.2"],
+                        "package4": ["url": "package.git", "branch": "master"],
+                        "package5": ["url": "package.git", "revision": "x"],
+                        "package6": ["url": "package.git", "minVersion": "1.2.0", "maxVersion": "1.2.5"],
+                        "package7": ["url": "package.git", "version": "1.2.2"],
+                    ],
+                    "localPackages": ["../../Package"]
+                ]
+                let parsedSpec = try getProjectSpec(dictionary)
+                try expect(parsedSpec) == project
+            }
         }
     }
 

@@ -19,6 +19,9 @@ public struct Project: BuildSettingsContainer {
         }
     }
 
+    public var packages: [String: SwiftPackage]
+    public var localPackages: [String]
+
     public var settings: Settings
     public var settingGroups: [String: Settings]
     public var configs: [Config]
@@ -47,6 +50,8 @@ public struct Project: BuildSettingsContainer {
         settings: Settings = .empty,
         settingGroups: [String: Settings] = [:],
         schemes: [Scheme] = [],
+        packages: [String: SwiftPackage] = [:],
+        localPackages: [String] = [],
         options: SpecOptions = SpecOptions(),
         fileGroups: [String] = [],
         configFiles: [String: String] = [:],
@@ -63,6 +68,8 @@ public struct Project: BuildSettingsContainer {
         self.settings = settings
         self.settingGroups = settingGroups
         self.schemes = schemes
+        self.packages = packages
+        self.localPackages = localPackages
         self.options = options
         self.fileGroups = fileGroups
         self.configFiles = configFiles
@@ -139,6 +146,8 @@ extension Project: Equatable {
             lhs.fileGroups == rhs.fileGroups &&
             lhs.configFiles == rhs.configFiles &&
             lhs.options == rhs.options &&
+            lhs.packages == rhs.packages &&
+            lhs.localPackages == rhs.localPackages &&
             NSDictionary(dictionary: lhs.attributes).isEqual(to: rhs.attributes)
     }
 }
@@ -174,6 +183,12 @@ extension Project {
         configFiles = jsonDictionary.json(atKeyPath: "configFiles") ?? [:]
         attributes = jsonDictionary.json(atKeyPath: "attributes") ?? [:]
         include = jsonDictionary.json(atKeyPath: "include") ?? []
+        if jsonDictionary["packages"] != nil {
+            packages = try jsonDictionary.json(atKeyPath: "packages", invalidItemBehaviour: .fail)
+        } else {
+            packages = [:]
+        }
+        localPackages = jsonDictionary.json(atKeyPath: "localPackages") ?? []
         if jsonDictionary["options"] != nil {
             options = try jsonDictionary.json(atKeyPath: "options")
         } else {
@@ -202,6 +217,7 @@ extension Project: PathContainer {
     static var pathProperties: [PathProperty] {
         return [
             .string("configFiles"),
+            .string("localPackages"),
             .object("options", SpecOptions.pathProperties),
             .object("targets", Target.pathProperties),
             .object("targetTemplates", Target.pathProperties),
@@ -258,21 +274,24 @@ extension Project: JSONEncodable {
         let schemesPairs = schemes.map { ($0.name, $0.toJSONValue()) }
         let externalProjectsPairs = externalProjects.map { ($0.name, $0.toJSONValue()) }
 
-        return [
-            "name": name,
-            "options": options.toJSONValue(),
-            "settings": settings.toJSONValue(),
-            "fileGroups": fileGroups,
-            "configFiles": configFiles,
-            "include": include,
-            "attributes": attributes,
-            "targets": Dictionary(uniqueKeysWithValues: targetPairs),
-            "configs": Dictionary(uniqueKeysWithValues: configsPairs),
-            "aggregateTargets": Dictionary(uniqueKeysWithValues: aggregateTargetsPairs),
-            "schemes": Dictionary(uniqueKeysWithValues: schemesPairs),
-            "settingGroups": settingGroups.mapValues { $0.toJSONValue() },
-            "externalProjects": externalProjectsPairs,
-        ]
+        var dictionary: JSONDictionary = [:]
+        dictionary["name"] = name
+        dictionary["options"] = options.toJSONValue()
+        dictionary["settings"] = settings.toJSONValue()
+        dictionary["fileGroups"] = fileGroups
+        dictionary["configFiles"] = configFiles
+        dictionary["include"] = include
+        dictionary["attributes"] = attributes
+        dictionary["packages"] = packages.mapValues { $0.toJSONValue() }
+        dictionary["localPackages"] = localPackages
+        dictionary["targets"] = Dictionary(uniqueKeysWithValues: targetPairs)
+        dictionary["configs"] = Dictionary(uniqueKeysWithValues: configsPairs)
+        dictionary["aggregateTargets"] = Dictionary(uniqueKeysWithValues: aggregateTargetsPairs)
+        dictionary["schemes"] = Dictionary(uniqueKeysWithValues: schemesPairs)
+        dictionary["settingGroups"] = settingGroups.mapValues { $0.toJSONValue() }
+        dictionary["externalProjects"] = externalProjectsPairs
+
+        return dictionary
     }
 }
 

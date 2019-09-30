@@ -39,6 +39,10 @@ Given a very simple project spec file like this:
 name: MyProject
 options:
   bundleIdPrefix: com.myapp
+packages:
+  Yams:
+    url: https://github.com/jpsim/Yams
+    from: 2.0.0
 targets:
   MyApp:
     type: application
@@ -57,7 +61,7 @@ targets:
       - framework: Vendor/MyFramework.framework
       - sdk: Contacts.framework
       - sdk: libc++.tbd
-      - sdk: libz.dylib
+      - package: Yams
   MyFramework:
     type: framework
     platform: iOS
@@ -103,7 +107,7 @@ swift run xcodegen
 Add the following to your Package.swift file's dependencies:
 
 ```swift
-.package(url: "https://github.com/yonaskolb/XcodeGen.git", from: "2.7.0"),
+.package(url: "https://github.com/yonaskolb/XcodeGen.git", from: "2.8.0"),
 ```
 
 And then import wherever needed: `import XcodeGenKit`

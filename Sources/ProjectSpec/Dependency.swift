@@ -38,6 +38,7 @@ public struct Dependency: Equatable {
         case framework
         case carthage(findFrameworks: Bool?)
         case sdk(root: String?)
+        case package(product: String?)
     }
 }
 
@@ -64,6 +65,10 @@ extension Dependency: JSONObjectConvertible {
             let sdkRoot: String? = jsonDictionary.json(atKeyPath: "root")
             type = .sdk(root: sdkRoot)
             reference = sdk
+        } else if let package: String = jsonDictionary.json(atKeyPath: "package") {
+            let product: String? = jsonDictionary.json(atKeyPath: "product")
+            type = .package(product: product)
+            reference = package
         } else {
             throw SpecParsingError.invalidDependency(jsonDictionary)
         }
@@ -114,6 +119,8 @@ extension Dependency: JSONEncodable {
             }
         case .sdk:
             dict["sdk"] = reference
+        case .package:
+            dict["package"] = reference
         }
 
         return dict

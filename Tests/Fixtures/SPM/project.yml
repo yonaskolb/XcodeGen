@@ -1,0 +1,22 @@
+name: SPM
+packages:
+  Codability:
+    url: https://github.com/yonaskolb/Codability
+    majorVersion: 0.2.1
+localPackages:
+ - ../../.. #XcodeGen itself
+targets:
+  App:
+    type: application
+    platform: iOS
+    sources: [SPM]
+    scheme: {}
+    dependencies:
+      - package: Codability
+      - target: StaticLibrary
+  StaticLibrary:
+    type: library.static
+    platform: iOS
+    sources: StaticLibrary
+    dependencies:
+      - package: Codability
