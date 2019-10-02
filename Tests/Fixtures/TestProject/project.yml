@@ -151,7 +151,7 @@ targets:
   iMessageApp:
     type: application.messages
     platform: iOS
-    sources: iMessage
+    sources: iMessageApp
     scheme: {}
     dependencies:
       - target: iMessageExtension
@@ -159,7 +159,7 @@ targets:
   iMessageExtension:
     type: app-extension.messages
     platform: iOS
-    sources: iMessage MessagesExtension
+    sources: iMessageExtension
     settings:
       PRODUCT_BUNDLE_IDENTIFIER: com.project.iMessageApp.extension
 
@@ -167,7 +167,7 @@ targets:
     type: app-extension.messages-sticker-pack
     platform: iOS
     sources:       
-      - path: iMessage Stickers
+      - path: iMessageStickers
 
   StaticLibrary_ObjC:
     type: library.static
