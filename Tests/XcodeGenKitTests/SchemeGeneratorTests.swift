@@ -19,6 +19,12 @@ private let framework = Target(
     platform: .iOS
 )
 
+private let frameworkTest = Target(
+    name: "MyFrameworkTests",
+    type: .unitTestBundle,
+    platform: .iOS
+)
+
 private let optionalFramework = Target(
     name: "MyOptionalFramework",
     type: .framework,
@@ -93,29 +99,26 @@ class SchemeGeneratorTests: XCTestCase {
             }
 
             $0.it("generates scheme with multiple configs") {
-                let configs = [
-                    ("Beta", .debug),
-                    ("Production", .release),
-                    ("Debug", .debug),
-                    ("Release", .release)
-                    ].map { (args: (String, ConfigType)) -> Config in
-                        let (name, type) = args
-                        return .init(name: name, type: type)
-                }
-
-                let scheme = Scheme(
-                    name: "MyScheme",
-                    build: Scheme.Build(targets: [buildTarget])
+                let configs: [Config] = [
+                    Config(name: "Beta", type: .debug),
+                    Config(name: "Debug", type: .debug),
+                    Config(name: "Production", type: .release),
+                    Config(name: "Release", type: .release),
+                ]
+                let framework = Target(
+                    name: "MyFramework",
+                    type: .application,
+                    platform: .iOS,
+                    scheme: TargetScheme(testTargets: [.init(name: "MyFrameworkTests")])
                 )
                 let project = Project(
                     name: "test",
                     configs: configs,
-                    targets: [app, framework],
-                    schemes: [scheme]
+                    targets: [framework, frameworkTest]
                 )
                 let xcodeProject = try project.generateXcodeProject()
                 guard let target = xcodeProject.pbxproj.nativeTargets
-                    .first(where: { $0.name == app.name }) else {
+                    .first(where: { $0.name == framework.name }) else {
                     throw failure("Target not found")
                 }
                 guard let xcscheme = xcodeProject.sharedData?.schemes.first else {
