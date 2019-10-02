@@ -105,6 +105,12 @@ public struct Target: ProjectTarget {
     }
 }
 
+struct TemplateStructure {
+    let baseKey: String
+    let templatesKey: String
+    let nameToReplace: String
+}
+
 extension Target: CustomStringConvertible {
 
     public var description: String {
@@ -133,58 +139,6 @@ extension Target: PathContainer {
 }
 
 extension Target {
-
-    static func resolveTargetTemplates(jsonDictionary: JSONDictionary) -> JSONDictionary {
-        guard var targetsDictionary: [String: JSONDictionary] = jsonDictionary["targets"] as? [String: JSONDictionary] else {
-            return jsonDictionary
-        }
-
-        let targetTemplatesDictionary: [String: JSONDictionary] = jsonDictionary["targetTemplates"] as? [String: JSONDictionary] ?? [:]
-
-        // Recursively collects all nested template names of a given dictionary.
-        func collectTemplates(of jsonDictionary: JSONDictionary,
-                              into allTemplates: inout [String],
-                              insertAt insertionIndex: inout Int) {
-            guard let templates = jsonDictionary["templates"] as? [String] else {
-                return
-            }
-            for template in templates where !allTemplates.contains(template) {
-                guard let templateDictionary = targetTemplatesDictionary[template] else {
-                    continue
-                }
-                allTemplates.insert(template, at: insertionIndex)
-                collectTemplates(of: templateDictionary, into: &allTemplates, insertAt: &insertionIndex)
-                insertionIndex += 1
-            }
-        }
-
-        for (targetName, var target) in targetsDictionary {
-            var templates: [String] = []
-            var index: Int = 0
-            collectTemplates(of: target, into: &templates, insertAt: &index)
-            if !templates.isEmpty {
-                var mergedDictionary: JSONDictionary = [:]
-                for template in templates {
-                    if let templateDictionary = targetTemplatesDictionary[template] {
-                        mergedDictionary = templateDictionary.merged(onto: mergedDictionary)
-                    }
-                }
-                target = target.merged(onto: mergedDictionary)
-                target = target.replaceString("$target_name", with: targetName) // Will be removed in upcoming version
-                target = target.replaceString("${target_name}", with: targetName)
-                if let templateAttributes = target["templateAttributes"] as? [String: String] {
-                    for (templateAttribute, value) in templateAttributes {
-                        target = target.replaceString("${\(templateAttribute)}", with: value)
-                    }
-                }
-            }
-            targetsDictionary[targetName] = target
-        }
-
-        var jsonDictionary = jsonDictionary
-        jsonDictionary["targets"] = targetsDictionary
-        return jsonDictionary
-    }
 
     static func resolveMultiplatformTargets(jsonDictionary: JSONDictionary) -> JSONDictionary {
         guard let targetsDictionary: [String: JSONDictionary] = jsonDictionary["targets"] as? [String: JSONDictionary] else {
@@ -237,12 +191,26 @@ extension Target {
         return merged
     }
 
+    static func resolveTargetTemplates(jsonDictionary: JSONDictionary) -> JSONDictionary {
+        return resolveTemplates(jsonDictionary: jsonDictionary,
+                                templateStructure: TemplateStructure(baseKey: "targets",
+                                                                     templatesKey: "targetTemplates",
+                                                                     nameToReplace: "target_name"))
+    }
+
     static func resolveSchemeTemplates(jsonDictionary: JSONDictionary) -> JSONDictionary {
-        guard var schemesDictionary: [String: JSONDictionary] = jsonDictionary["schemes"] as? [String: JSONDictionary] else {
+        return resolveTemplates(jsonDictionary: jsonDictionary,
+                                templateStructure: TemplateStructure(baseKey: "schemes",
+                                                                     templatesKey: "schemeTemplates",
+                                                                     nameToReplace: "scheme_name"))
+    }
+
+    private static func resolveTemplates(jsonDictionary: JSONDictionary, templateStructure: TemplateStructure) -> JSONDictionary {
+        guard var baseDictionary: [String: JSONDictionary] = jsonDictionary[templateStructure.baseKey] as? [String: JSONDictionary] else {
             return jsonDictionary
         }
 
-        let schemeTemplatesDictionary: [String: JSONDictionary] = jsonDictionary["schemeTemplates"] as? [String: JSONDictionary] ?? [:]
+        let templatesDictionary: [String: JSONDictionary] = jsonDictionary[templateStructure.templatesKey] as? [String: JSONDictionary] ?? [:]
 
         // Recursively collects all nested template names of a given dictionary.
         func collectTemplates(of jsonDictionary: JSONDictionary,
@@ -252,7 +220,7 @@ extension Target {
                 return
             }
             for template in templates where !allTemplates.contains(template) {
-                guard let templateDictionary = schemeTemplatesDictionary[template] else {
+                guard let templateDictionary = templatesDictionary[template] else {
                     continue
                 }
                 allTemplates.insert(template, at: insertionIndex)
@@ -261,30 +229,31 @@ extension Target {
             }
         }
 
-        for (schemeName, var scheme) in schemesDictionary {
+        for (referenceName, var reference) in baseDictionary {
             var templates: [String] = []
             var index: Int = 0
-            collectTemplates(of: scheme, into: &templates, insertAt: &index)
+            collectTemplates(of: reference, into: &templates, insertAt: &index)
             if !templates.isEmpty {
                 var mergedDictionary: JSONDictionary = [:]
                 for template in templates {
-                    if let templateDictionary = schemeTemplatesDictionary[template] {
+                    if let templateDictionary = templatesDictionary[template] {
                         mergedDictionary = templateDictionary.merged(onto: mergedDictionary)
                     }
                 }
-                scheme = scheme.merged(onto: mergedDictionary)
-                scheme = scheme.replaceString("${scheme_name}", with: schemeName)
-                if let templateAttributes = scheme["templateAttributes"] as? [String: String] {
+                reference = reference.merged(onto: mergedDictionary)
+                reference = reference.replaceString("$\(templateStructure.nameToReplace)", with: referenceName) // Will be removed in upcoming version
+                reference = reference.replaceString("${\(templateStructure.nameToReplace)}", with: referenceName)
+                if let templateAttributes = reference["templateAttributes"] as? [String: String] {
                     for (templateAttribute, value) in templateAttributes {
-                        scheme = scheme.replaceString("${\(templateAttribute)}", with: value)
+                        reference = reference.replaceString("${\(templateAttribute)}", with: value)
                     }
                 }
             }
-            schemesDictionary[schemeName] = scheme
+            baseDictionary[referenceName] = reference
         }
 
         var jsonDictionary = jsonDictionary
-        jsonDictionary["schemes"] = schemesDictionary
+        jsonDictionary[templateStructure.baseKey] = baseDictionary
         return jsonDictionary
     }
 }
