@@ -153,7 +153,7 @@ extension Project {
     public init(basePath: Path = "", jsonDictionary: JSONDictionary) throws {
         self.basePath = basePath
 
-        let jsonDictionary = try Project.resolveProject(jsonDictionary: jsonDictionary)
+        let jsonDictionary = Project.resolveProject(jsonDictionary: jsonDictionary)
 
         name = try jsonDictionary.json(atKeyPath: "name")
         settings = jsonDictionary.json(atKeyPath: "settings") ?? .empty
@@ -184,14 +184,15 @@ extension Project {
         aggregateTargetsMap = Dictionary(uniqueKeysWithValues: aggregateTargets.map { ($0.name, $0) })
     }
 
-    static func resolveProject(jsonDictionary: JSONDictionary) throws -> JSONDictionary {
+    static func resolveProject(jsonDictionary: JSONDictionary) -> JSONDictionary {
         var jsonDictionary = jsonDictionary
 
         // resolve multiple times so that we support both multi-platform templates,
         // as well as platform specific templates in multi-platform targets
-        jsonDictionary = try Target.resolveMultiplatformTargets(jsonDictionary: jsonDictionary)
-        jsonDictionary = try Target.resolveTargetTemplates(jsonDictionary: jsonDictionary)
-        jsonDictionary = try Target.resolveMultiplatformTargets(jsonDictionary: jsonDictionary)
+        jsonDictionary = Target.resolveMultiplatformTargets(jsonDictionary: jsonDictionary)
+        jsonDictionary = Target.resolveTargetTemplates(jsonDictionary: jsonDictionary)
+        jsonDictionary = Target.resolveSchemeTemplates(jsonDictionary: jsonDictionary)
+        jsonDictionary = Target.resolveMultiplatformTargets(jsonDictionary: jsonDictionary)
 
         return jsonDictionary
     }

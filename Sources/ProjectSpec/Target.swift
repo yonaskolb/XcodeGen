@@ -134,7 +134,7 @@ extension Target: PathContainer {
 
 extension Target {
 
-    static func resolveTargetTemplates(jsonDictionary: JSONDictionary) throws -> JSONDictionary {
+    static func resolveTargetTemplates(jsonDictionary: JSONDictionary) -> JSONDictionary {
         guard var targetsDictionary: [String: JSONDictionary] = jsonDictionary["targets"] as? [String: JSONDictionary] else {
             return jsonDictionary
         }
@@ -186,7 +186,7 @@ extension Target {
         return jsonDictionary
     }
 
-    static func resolveMultiplatformTargets(jsonDictionary: JSONDictionary) throws -> JSONDictionary {
+    static func resolveMultiplatformTargets(jsonDictionary: JSONDictionary) -> JSONDictionary {
         guard let targetsDictionary: [String: JSONDictionary] = jsonDictionary["targets"] as? [String: JSONDictionary] else {
             return jsonDictionary
         }
@@ -235,6 +235,57 @@ extension Target {
 
         merged["targets"] = crossPlatformTargets
         return merged
+    }
+
+    static func resolveSchemeTemplates(jsonDictionary: JSONDictionary) -> JSONDictionary {
+        guard var schemesDictionary: [String: JSONDictionary] = jsonDictionary["schemes"] as? [String: JSONDictionary] else {
+            return jsonDictionary
+        }
+
+        let schemeTemplatesDictionary: [String: JSONDictionary] = jsonDictionary["schemeTemplates"] as? [String: JSONDictionary] ?? [:]
+
+        // Recursively collects all nested template names of a given dictionary.
+        func collectTemplates(of jsonDictionary: JSONDictionary,
+                              into allTemplates: inout [String],
+                              insertAt insertionIndex: inout Int) {
+            guard let templates = jsonDictionary["templates"] as? [String] else {
+                return
+            }
+            for template in templates where !allTemplates.contains(template) {
+                guard let templateDictionary = schemeTemplatesDictionary[template] else {
+                    continue
+                }
+                allTemplates.insert(template, at: insertionIndex)
+                collectTemplates(of: templateDictionary, into: &allTemplates, insertAt: &insertionIndex)
+                insertionIndex += 1
+            }
+        }
+
+        for (schemeName, var scheme) in schemesDictionary {
+            var templates: [String] = []
+            var index: Int = 0
+            collectTemplates(of: scheme, into: &templates, insertAt: &index)
+            if !templates.isEmpty {
+                var mergedDictionary: JSONDictionary = [:]
+                for template in templates {
+                    if let templateDictionary = schemeTemplatesDictionary[template] {
+                        mergedDictionary = templateDictionary.merged(onto: mergedDictionary)
+                    }
+                }
+                scheme = scheme.merged(onto: mergedDictionary)
+                scheme = scheme.replaceString("${scheme_name}", with: schemeName)
+                if let templateAttributes = scheme["templateAttributes"] as? [String: String] {
+                    for (templateAttribute, value) in templateAttributes {
+                        scheme = scheme.replaceString("${\(templateAttribute)}", with: value)
+                    }
+                }
+            }
+            schemesDictionary[schemeName] = scheme
+        }
+
+        var jsonDictionary = jsonDictionary
+        jsonDictionary["schemes"] = schemesDictionary
+        return jsonDictionary
     }
 }
 
