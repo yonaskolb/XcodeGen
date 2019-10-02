@@ -3,12 +3,8 @@ import ProjectSpec
 import SwiftCLI
 
 public class XcodeGenCLI {
-    private class Manipulator: ArgumentListManipulator {
+    private struct Manipulator: ArgumentListManipulator {
         let commandName: String
-
-        init(commandName: String) {
-            self.commandName = commandName
-        }
 
         func manipulate(arguments: ArgumentList) {
             if !arguments.hasNext() || arguments.nextIsOption() {
