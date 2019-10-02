@@ -8,10 +8,18 @@ public class SchemeGenerator {
     let pbxProj: PBXProj
 
     var defaultDebugConfig: Config {
+        if let defaultConfig = Config.defaultConfigs.first(where: { $0.type == .debug }),
+            project.configs.contains(defaultConfig) {
+            return defaultConfig
+        }
         return project.configs.first { $0.type == .debug }!
     }
 
     var defaultReleaseConfig: Config {
+        if let defaultConfig = Config.defaultConfigs.first(where: { $0.type == .release }),
+            project.configs.contains(defaultConfig) {
+            return defaultConfig
+        }
         return project.configs.first { $0.type == .release }!
     }
 
