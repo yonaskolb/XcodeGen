@@ -515,7 +515,7 @@ class ProjectSpecTests: XCTestCase {
                 let json = proj.toJSONDictionary()
                 let restoredProj = try Project(basePath: Path.current, jsonDictionary: json)
 
-                // Examin some properties to make debugging easier
+                // Examine some properties to make debugging easier
                 try expect(proj.aggregateTargets) == restoredProj.aggregateTargets
                 try expect(proj.configFiles) == restoredProj.configFiles
                 try expect(proj.settings) == restoredProj.settings
