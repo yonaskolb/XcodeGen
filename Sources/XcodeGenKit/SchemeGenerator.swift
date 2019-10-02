@@ -2,7 +2,7 @@ import Foundation
 import ProjectSpec
 import XcodeProj
 
-private func defaultConfig(of type: ConfigType, in project: Project) -> Config {
+private func suitableConfig(for type: ConfigType, in project: Project) -> Config {
     if let defaultConfig = Config.defaultConfigs.first(where: { $0.type == type }),
         project.configs.contains(defaultConfig) {
         return defaultConfig
@@ -14,7 +14,15 @@ public class SchemeGenerator {
 
     let project: Project
     let pbxProj: PBXProj
+    
+    var defaultDebugConfig: Config {
+        return project.configs.first { $0.type == .debug }!
+    }
 
+    var defaultReleaseConfig: Config {
+        return project.configs.first { $0.type == .release }!
+    }
+    
     public init(project: Project, pbxProj: PBXProj) {
         self.project = project
         self.pbxProj = pbxProj
@@ -34,8 +42,8 @@ public class SchemeGenerator {
                 if targetScheme.configVariants.isEmpty {
                     let schemeName = target.name
 
-                    let debugConfig = defaultConfig(of: .debug, in: project)
-                    let releaseConfig = defaultConfig(of: .release, in: project)
+                    let debugConfig = suitableConfig(for: .debug, in: project)
+                    let releaseConfig = suitableConfig(for: .release, in: project)
 
                     let scheme = Scheme(
                         name: schemeName,
@@ -147,7 +155,7 @@ public class SchemeGenerator {
         let profileVariables = scheme.profile.flatMap { $0.environmentVariables.isEmpty ? nil : $0.environmentVariables }
 
         let testAction = XCScheme.TestAction(
-            buildConfiguration: scheme.test?.config ?? defaultConfig(of: .debug, in: project).name,
+            buildConfiguration: scheme.test?.config ?? defaultDebugConfig.name,
             macroExpansion: buildableReference,
             testables: testables,
             preActions: scheme.test?.preActions.map(getExecutionAction) ?? [],
@@ -164,7 +172,7 @@ public class SchemeGenerator {
 
         let launchAction = XCScheme.LaunchAction(
             runnable: shouldExecuteOnLaunch ? productRunable : nil,
-            buildConfiguration: scheme.run?.config ?? defaultConfig(of: .debug, in: project).name,
+            buildConfiguration: scheme.run?.config ?? defaultDebugConfig.name,
             preActions: scheme.run?.preActions.map(getExecutionAction) ?? [],
             postActions: scheme.run?.postActions.map(getExecutionAction) ?? [],
             macroExpansion: shouldExecuteOnLaunch ? nil : buildableReference,
@@ -179,7 +187,7 @@ public class SchemeGenerator {
 
         let profileAction = XCScheme.ProfileAction(
             buildableProductRunnable: productRunable,
-            buildConfiguration: scheme.profile?.config ?? defaultConfig(of: .release, in: project).name,
+            buildConfiguration: scheme.profile?.config ?? defaultReleaseConfig.name,
             preActions: scheme.profile?.preActions.map(getExecutionAction) ?? [],
             postActions: scheme.profile?.postActions.map(getExecutionAction) ?? [],
             shouldUseLaunchSchemeArgsEnv: scheme.profile?.shouldUseLaunchSchemeArgsEnv ?? true,
@@ -187,10 +195,10 @@ public class SchemeGenerator {
             environmentVariables: profileVariables
         )
 
-        let analyzeAction = XCScheme.AnalyzeAction(buildConfiguration: scheme.analyze?.config ?? defaultConfig(of: .debug, in: project).name)
+        let analyzeAction = XCScheme.AnalyzeAction(buildConfiguration: scheme.analyze?.config ?? defaultDebugConfig.name)
 
         let archiveAction = XCScheme.ArchiveAction(
-            buildConfiguration: scheme.archive?.config ?? defaultConfig(of: .release, in: project).name,
+            buildConfiguration: scheme.archive?.config ?? defaultReleaseConfig.name,
             revealArchiveInOrganizer: scheme.archive?.revealArchiveInOrganizer ?? true,
             customArchiveName: scheme.archive?.customArchiveName,
             preActions: scheme.archive?.preActions.map(getExecutionAction) ?? [],
