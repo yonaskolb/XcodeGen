@@ -14,7 +14,7 @@ public class SchemeGenerator {
 
     let project: Project
     let pbxProj: PBXProj
-    
+
     var defaultDebugConfig: Config {
         return project.configs.first { $0.type == .debug }!
     }
@@ -22,7 +22,7 @@ public class SchemeGenerator {
     var defaultReleaseConfig: Config {
         return project.configs.first { $0.type == .release }!
     }
-    
+
     public init(project: Project, pbxProj: PBXProj) {
         self.project = project
         self.pbxProj = pbxProj
