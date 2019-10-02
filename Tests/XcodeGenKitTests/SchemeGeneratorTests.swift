@@ -92,6 +92,61 @@ class SchemeGeneratorTests: XCTestCase {
                 try expect(xcscheme.testAction?.selectedDebuggerIdentifier) == XCScheme.defaultDebugger
             }
 
+            $0.it("generates scheme with multiple configs") {
+                let configs = [
+                    ("Beta", .debug),
+                    ("Production", .release),
+                    ("Debug", .debug),
+                    ("Release", .release)
+                    ].map { (args: (String, ConfigType)) -> Config in
+                        let (name, type) = args
+                        return .init(name: name, type: type)
+                }
+
+                let scheme = Scheme(
+                    name: "MyScheme",
+                    build: Scheme.Build(targets: [buildTarget])
+                )
+                let project = Project(
+                    name: "test",
+                    configs: configs,
+                    targets: [app, framework],
+                    schemes: [scheme]
+                )
+                let xcodeProject = try project.generateXcodeProject()
+                guard let target = xcodeProject.pbxproj.nativeTargets
+                    .first(where: { $0.name == app.name }) else {
+                    throw failure("Target not found")
+                }
+                guard let xcscheme = xcodeProject.sharedData?.schemes.first else {
+                    throw failure("Scheme not found")
+                }
+
+                guard let buildActionEntry = xcscheme.buildAction?.buildActionEntries.first else {
+                    throw failure("Build Action entry not found")
+                }
+                try expect(buildActionEntry.buildFor) == BuildType.all
+
+                let buildableReferences: [XCScheme.BuildableReference] = [
+                    buildActionEntry.buildableReference,
+                    xcscheme.launchAction?.runnable?.buildableReference,
+                    xcscheme.profileAction?.buildableProductRunnable?.buildableReference,
+                    xcscheme.testAction?.macroExpansion
+                ].compactMap { $0 }
+
+                for buildableReference in buildableReferences {
+                    // FIXME: try expect(buildableReference.blueprintIdentifier) == target.reference
+                    try expect(buildableReference.blueprintName) == target.name
+                    try expect(buildableReference.buildableName) == "\(target.name).\(target.productType!.fileExtension!)"
+                }
+
+                try expect(xcscheme.launchAction?.buildConfiguration) == "Debug"
+                try expect(xcscheme.testAction?.buildConfiguration) == "Debug"
+                try expect(xcscheme.profileAction?.buildConfiguration) == "Release"
+                try expect(xcscheme.analyzeAction?.buildConfiguration) == "Debug"
+                try expect(xcscheme.archiveAction?.buildConfiguration) == "Release"
+            }
+
             $0.it("sets environment variables for a scheme") {
                 let runVariables: [XCScheme.EnvironmentVariable] = [
                     XCScheme.EnvironmentVariable(variable: "RUN_ENV", value: "ENABLED", enabled: true),
