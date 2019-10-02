@@ -890,9 +890,9 @@ class SpecLoadingTests: XCTestCase {
                                 "parallelizeBuild": false,
                                 "buildImplicitDependencies": false,
                                 "targets": [
-                                    "Target1": "all",
+                                    "Target${name_1}": "all",
                                     "Target2": "testing",
-                                    "Target3": "none",
+                                    "Target${name_3}": "none",
                                     "Target4": ["testing": true],
                                     "Target5": ["testing": false],
                                     "Target6": ["test", "analyze"],
@@ -901,14 +901,14 @@ class SpecLoadingTests: XCTestCase {
                                     [
                                         "script": "${pre-action-name}",
                                         "name": "Before Build ${scheme_name}",
-                                        "settingsTarget": "Target1",
+                                        "settingsTarget": "Target${name_1}",
                                     ],
                                 ],
                             ],
                             "test": [
                                 "config": "debug",
                                 "targets": [
-                                    "Target1",
+                                    "Target${name_1}",
                                     [
                                         "name": "Target2",
                                         "parallelizable": true,
@@ -926,6 +926,8 @@ class SpecLoadingTests: XCTestCase {
                             "templates": ["base_scheme"],
                             "templateAttributes": [
                                 "pre-action-name": "modified-name",
+                                "name_1": "FirstTarget",
+                                "name_3": "ThirdTarget",
                             ],
                         ],
                     ],
@@ -933,18 +935,18 @@ class SpecLoadingTests: XCTestCase {
 
                 let scheme = project.schemes.first!
                 let expectedTargets: [Scheme.BuildTarget] = [
-                    Scheme.BuildTarget(target: "Target1", buildTypes: BuildType.all),
+                    Scheme.BuildTarget(target: "TargetFirstTarget", buildTypes: BuildType.all),
                     Scheme.BuildTarget(target: "Target2", buildTypes: [.testing, .analyzing]),
-                    Scheme.BuildTarget(target: "Target3", buildTypes: []),
+                    Scheme.BuildTarget(target: "TargetThirdTarget", buildTypes: []),
                     Scheme.BuildTarget(target: "Target4", buildTypes: [.testing]),
                     Scheme.BuildTarget(target: "Target5", buildTypes: []),
                     Scheme.BuildTarget(target: "Target6", buildTypes: [.testing, .analyzing]),
                 ]
                 try expect(scheme.name) == "temp2"
-                try expect(scheme.build.targets) == expectedTargets
+                try expect(Set(scheme.build.targets)) == Set(expectedTargets)
                 try expect(scheme.build.preActions.first?.script) == "modified-name"
                 try expect(scheme.build.preActions.first?.name) == "Before Build temp2"
-                try expect(scheme.build.preActions.first?.settingsTarget) == "Target1"
+                try expect(scheme.build.preActions.first?.settingsTarget) == "TargetFirstTarget"
 
                 try expect(scheme.build.parallelizeBuild) == false
                 try expect(scheme.build.buildImplicitDependencies) == false
@@ -954,7 +956,7 @@ class SpecLoadingTests: XCTestCase {
                     gatherCoverageData: true,
                     disableMainThreadChecker: true,
                     targets: [
-                        "Target1",
+                        "TargetFirstTarget",
                         Scheme.Test.TestTarget(
                             name: "Target2",
                             randomExecutionOrder: true,
