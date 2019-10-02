@@ -117,30 +117,8 @@ class SchemeGeneratorTests: XCTestCase {
                     targets: [framework, frameworkTest]
                 )
                 let xcodeProject = try project.generateXcodeProject()
-                guard let target = xcodeProject.pbxproj.nativeTargets
-                    .first(where: { $0.name == framework.name }) else {
-                    throw failure("Target not found")
-                }
                 guard let xcscheme = xcodeProject.sharedData?.schemes.first else {
                     throw failure("Scheme not found")
-                }
-
-                guard let buildActionEntry = xcscheme.buildAction?.buildActionEntries.first else {
-                    throw failure("Build Action entry not found")
-                }
-                try expect(buildActionEntry.buildFor) == BuildType.all
-
-                let buildableReferences: [XCScheme.BuildableReference] = [
-                    buildActionEntry.buildableReference,
-                    xcscheme.launchAction?.runnable?.buildableReference,
-                    xcscheme.profileAction?.buildableProductRunnable?.buildableReference,
-                    xcscheme.testAction?.macroExpansion
-                ].compactMap { $0 }
-
-                for buildableReference in buildableReferences {
-                    // FIXME: try expect(buildableReference.blueprintIdentifier) == target.reference
-                    try expect(buildableReference.blueprintName) == target.name
-                    try expect(buildableReference.buildableName) == "\(target.name).\(target.productType!.fileExtension!)"
                 }
 
                 try expect(xcscheme.launchAction?.buildConfiguration) == "Debug"
