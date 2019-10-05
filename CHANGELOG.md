@@ -5,6 +5,7 @@
 #### Fixed
 - Fixed macOS unit test setting preset [#665](https://github.com/yonaskolb/XcodeGen/pull/665) @yonaskolb
 - Add `rcproject` files to sources build phase instead of resources [#669](https://github.com/yonaskolb/XcodeGen/pull/669) @Qusic
+- Fixed configuration selection behaviors for auto-generated schemes [#673](https://github.com/yonaskolb/XcodeGen/pull/673) @giginet
 
 ## 2.8.0
 
