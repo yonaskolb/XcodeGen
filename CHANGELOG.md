@@ -5,6 +5,10 @@
 #### Fixed
 - Fixed macOS unit test setting preset [#665](https://github.com/yonaskolb/XcodeGen/pull/665) @yonaskolb
 
+#### Internal
+
+- Updated to SwiftCLI 5.3.2 [#667](https://github.com/yonaskolb/XcodeGen/pull/667) @giginet
+
 ## 2.8.0
 
 #### Added
