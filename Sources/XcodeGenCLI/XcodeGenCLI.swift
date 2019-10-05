@@ -4,12 +4,12 @@ import SwiftCLI
 
 public class XcodeGenCLI {
     private struct Manipulator: ArgumentListManipulator {
-        let commandName: String
+        let defaultCommand: String
 
         func manipulate(arguments: ArgumentList) {
             if !arguments.hasNext() || arguments.nextIsOption() {
                 arguments.manipulate { existing in
-                    return [commandName] + existing
+                    return [defaultCommand] + existing
                 }
             }
         }
@@ -26,7 +26,7 @@ public class XcodeGenCLI {
             description: "Generates Xcode projects",
             commands: [generateCommand]
         )
-        let manipulator = Manipulator(commandName: generateCommand.name)
+        let manipulator = Manipulator(defaultCommand: generateCommand.name)
         cli.argumentListManipulators.insert(manipulator, at: 0)
         cli.parser.routeBehavior = .searchWithFallback(generateCommand)
     }
