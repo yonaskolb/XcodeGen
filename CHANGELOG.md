@@ -10,6 +10,7 @@
 #### Internal
 
 - Updated to SwiftCLI 5.3.2 [#667](https://github.com/yonaskolb/XcodeGen/pull/667) @giginet
+- Fixed tests in case-sensitive file system [#670](https://github.com/yonaskolb/XcodeGen/pull/670) @Qusic
 
 ## 2.8.0
 
