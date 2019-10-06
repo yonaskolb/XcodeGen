@@ -2,6 +2,14 @@ import Foundation
 import ProjectSpec
 import XcodeProj
 
+private func suitableConfig(for type: ConfigType, in project: Project) -> Config {
+    if let defaultConfig = Config.defaultConfigs.first(where: { $0.type == type }),
+        project.configs.contains(defaultConfig) {
+        return defaultConfig
+    }
+    return project.configs.first { $0.type == type }!
+}
+
 public class SchemeGenerator {
 
     let project: Project
@@ -34,8 +42,8 @@ public class SchemeGenerator {
                 if targetScheme.configVariants.isEmpty {
                     let schemeName = target.name
 
-                    let debugConfig = project.configs.first { $0.type == .debug }!
-                    let releaseConfig = project.configs.first { $0.type == .release }!
+                    let debugConfig = suitableConfig(for: .debug, in: project)
+                    let releaseConfig = suitableConfig(for: .release, in: project)
 
                     let scheme = Scheme(
                         name: schemeName,
