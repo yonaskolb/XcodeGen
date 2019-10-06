@@ -159,7 +159,9 @@ extension Dictionary where Key == String, Value: Any {
         var replaced: JSONDictionary = self
         for (key, value) in self {
             let newKey = key.replacingOccurrences(of: template, with: replacement)
-            replaced.removeValue(forKey: key)
+            if newKey != key {
+                replaced.removeValue(forKey: key)
+            }
             replaced[newKey] = replace(value: value, template, with: replacement)
         }
         return replaced

@@ -191,7 +191,7 @@ extension Project {
         // as well as platform specific templates in multi-platform targets
         jsonDictionary = Target.resolveMultiplatformTargets(jsonDictionary: jsonDictionary)
         jsonDictionary = Target.resolveTargetTemplates(jsonDictionary: jsonDictionary)
-        jsonDictionary = Target.resolveSchemeTemplates(jsonDictionary: jsonDictionary)
+        jsonDictionary = Scheme.resolveSchemeTemplates(jsonDictionary: jsonDictionary)
         jsonDictionary = Target.resolveMultiplatformTargets(jsonDictionary: jsonDictionary)
 
         return jsonDictionary
