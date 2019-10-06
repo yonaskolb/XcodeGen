@@ -4,17 +4,14 @@ on:
   pull_request: {}
 jobs:
   run:
-    runs-on: macos-latest
+    runs-on: macOS-latest
     name: Xcode ${{ matrix.xcode }}
     strategy:
       matrix:
-        xcode: [
-          "10.3",
-          "11",
-        ]
+        xcode: ["10.3", "11"]
     steps:
     - uses: actions/checkout@master
-    - name: Xcode version
+    - name: Set Xcode
       run: |
         echo "Available Xcode versions:"
         ls /Applications | grep Xcode
@@ -35,4 +32,3 @@ jobs:
       run: scripts/diff-fixtures.sh
     - name: Build fixtures
       run: scripts/build-fixtures.sh
-  
