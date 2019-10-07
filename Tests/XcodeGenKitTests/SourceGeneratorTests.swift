@@ -167,6 +167,69 @@ class SourceGeneratorTests: XCTestCase {
                     try expect(variableGroup.children.filter { $0 == refs.first }.count) == 1
                 }
             }
+            
+            $0.it("handles localized resources") {
+                let directories = """
+                App:
+                    Resources:
+                        en-CA.lproj:
+                            - empty.json
+                            - Localizable.strings
+                        en-US.lproj:
+                            - empty.json
+                            - Localizable.strings
+                        en.lproj:
+                            - empty.json
+                            - Localizable.strings
+                        fonts:
+                            SFUI:
+                                - SFUILight.ttf
+                """
+                try createDirectories(directories)
+                
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: [TargetSource(path: "App/Resources")])
+
+                let options = SpecOptions(createIntermediateGroups: true)
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target], options: options)
+                
+                let outputXcodeProj = try project.generateXcodeProject()
+                try outputXcodeProj.write(path: directoryPath)
+                
+                let inputXcodeProj = try XcodeProj(path: directoryPath)
+                let pbxProj = inputXcodeProj.pbxproj
+
+                func getFileReferences(_ path: String) -> [PBXFileReference] {
+                    return pbxProj.fileReferences.filter { $0.path == path }
+                }
+
+                func getVariableGroups(_ name: String?) -> [PBXVariantGroup] {
+                    return pbxProj.variantGroups.filter { $0.name == name }
+                }
+                
+                let stringsResourceName = "Localizable.strings"
+                let jsonResourceName = "empty.json"
+                
+                guard let stringsVariableGroup = getVariableGroups(stringsResourceName).first else { throw failure("Couldn't find the variable group") }
+                
+                guard let jsonVariableGroup = getVariableGroups(jsonResourceName).first else { throw failure("Couldn't find the variable group") }
+                
+                let stringsResource = "en.lproj/Localizable.strings"
+                let jsonResource = "en-CA.lproj/empty.json"
+                
+                do {
+                    let refs = getFileReferences(stringsResource)
+                    try expect(refs.count) == 1
+                    try expect(refs.first!.uuid.hasPrefix("TEMP")) == false
+                    try expect(stringsVariableGroup.children.filter { $0 == refs.first }.count) == 1
+                }
+                
+                do {
+                    let refs = getFileReferences(jsonResource)
+                    try expect(refs.count) == 1
+                    try expect(refs.first!.uuid.hasPrefix("TEMP")) == false
+                    try expect(jsonVariableGroup.children.filter { $0 == refs.first }.count) == 1
+                }
+            }
 
             $0.it("handles duplicate names") {
                 let directories = """
