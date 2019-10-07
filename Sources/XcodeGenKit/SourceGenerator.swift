@@ -289,11 +289,14 @@ class SourceGenerator {
             let groupPath = isTopLevelGroup ?
                 ((try? path.relativePath(from: project.basePath)) ?? path).string :
                 path.lastComponent
+            let projectPath = Path("/Users/giginet/.ghq/github.com/yonaskolb/XcodeGen")
+            let relativePath = try? path.relativePath(from: projectPath)
+            let shouldSetGroupName = (groupName != groupPath) || (relativePath?.string != groupPath)
             let group = PBXGroup(
                 children: children,
                 sourceTree: .group,
-                name: groupName != groupPath ? groupName : nil,
-                path: groupPath
+                name: shouldSetGroupName ? groupName : nil,
+                path: relativePath?.string ?? path.string
             )
             groupReference = addObject(group)
             groupsByPath[path] = groupReference
