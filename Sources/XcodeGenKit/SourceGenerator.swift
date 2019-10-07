@@ -268,7 +268,7 @@ class SourceGenerator {
             for child in children {
                 // only add the children that aren't already in the cachedGroup
                 // Check equality by path and sourceTree because XcodeProj.PBXObject.== is very slow.
-                if !cachedGroupChildren.contains(where: { $0.path == child.path && $0.sourceTree == child.sourceTree }) {
+                if !cachedGroupChildren.contains(where: { $0.name == child.name && $0.path == child.path && $0.sourceTree == child.sourceTree }) {
                     cachedGroupChildren.append(child)
                 }
             }
