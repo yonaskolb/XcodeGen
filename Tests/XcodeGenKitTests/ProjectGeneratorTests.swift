@@ -1004,4 +1004,38 @@ class ProjectGeneratorTests: XCTestCase {
             }
         }
     }
+    
+    func testWithDifferentDestination() throws {
+        let groupName = "App_iOS"
+        let sourceDirectory = fixturePath + "TestProject" + groupName
+        let frameworkWithSources = Target(
+            name: "MyFramework",
+            type: .framework,
+            platform: .iOS,
+            sources: [TargetSource(path: sourceDirectory.string)]
+        )
+        
+        describe("generateXcodeProject") {
+            $0.context("without projectDestinationDirectory") {
+                $0.it("generate groups") {
+                    let project = Project(name: "test", targets: [frameworkWithSources])
+                    let generator = ProjectGenerator(project: project)
+                    let generatedProject = try generator.generateXcodeProject()
+                    let group = try XCTUnwrap( generatedProject.pbxproj.groups.first(where: { $0.name == groupName }))
+                    try expect(group.path) == "App_iOS"
+                }
+            }
+            
+            $0.context("with projectDestinationDirectory") {
+                $0.it("generate groups") {
+                    let destinationPath = fixturePath
+                    let project = Project(name: "test", targets: [frameworkWithSources])
+                    let generator = ProjectGenerator(project: project)
+                    let generatedProject = try generator.generateXcodeProject(to: destinationPath)
+                    let group = try XCTUnwrap( generatedProject.pbxproj.groups.first(where: { $0.name == groupName }))
+                    try expect(group.path) == "TestProject/App_iOS"
+                }
+            }
+        }
+    }
 }
