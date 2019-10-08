@@ -296,7 +296,7 @@ class SourceGenerator {
             if let projectDestinationDirectory = projectDestinationDirectory {
                 relativePath = try? path.relativePath(from: projectDestinationDirectory)
             } else {
-                relativePath = Path(groupPath)
+                relativePath = Path(groupName)
             }
             
             let shouldSetGroupName = (groupName != groupPath) || (relativePath?.string != groupPath)
@@ -304,7 +304,7 @@ class SourceGenerator {
                 children: children,
                 sourceTree: .group,
                 name: shouldSetGroupName ? groupName : nil,
-                path: relativePath?.string ?? path.string
+                path: relativePath?.string
             )
             groupReference = addObject(group)
             groupsByPath[path] = groupReference
