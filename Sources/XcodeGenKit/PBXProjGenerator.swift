@@ -24,11 +24,13 @@ public class PBXProjGenerator {
 
     var generated = false
 
-    public init(project: Project) {
+    public init(project: Project, projectDestinationDirectory: Path?) {
         self.project = project
         carthageResolver = CarthageDependencyResolver(project: project)
         pbxProj = PBXProj(rootObject: nil, objectVersion: project.objectVersion)
-        sourceGenerator = SourceGenerator(project: project, pbxProj: pbxProj)
+        sourceGenerator = SourceGenerator(project: project,
+                                          pbxProj: pbxProj,
+                                          projectDestinationDirectory: projectDestinationDirectory)
     }
 
     @discardableResult

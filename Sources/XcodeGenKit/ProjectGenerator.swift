@@ -13,10 +13,11 @@ public class ProjectGenerator {
         self.project = project
     }
 
-    public func generateXcodeProject() throws -> XcodeProj {
+    public func generateXcodeProject(to projectDestinationDirectory: Path? = nil) throws -> XcodeProj {
 
         // generate PBXProj
-        let pbxProjGenerator = PBXProjGenerator(project: project)
+        let pbxProjGenerator = PBXProjGenerator(project: project,
+                                                projectDestinationDirectory: projectDestinationDirectory)
         let pbxProj = try pbxProjGenerator.generate()
 
         // generate Schemes

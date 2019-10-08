@@ -13,6 +13,7 @@ struct SourceFile {
 class SourceGenerator {
 
     var rootGroups: Set<PBXFileElement> = []
+    private let projectDestinationDirectory: Path?
     private var fileReferencesByPath: [String: PBXFileElement] = [:]
     private var groupsByPath: [Path: PBXGroup] = [:]
     private var variantGroupsByPath: [Path: PBXVariantGroup] = [:]
@@ -30,9 +31,10 @@ class SourceGenerator {
 
     private(set) var knownRegions: Set<String> = []
 
-    init(project: Project, pbxProj: PBXProj) {
+    init(project: Project, pbxProj: PBXProj, projectDestinationDirectory: Path?) {
         self.project = project
         self.pbxProj = pbxProj
+        self.projectDestinationDirectory = projectDestinationDirectory
     }
 
     @discardableResult
@@ -289,8 +291,14 @@ class SourceGenerator {
             let groupPath = isTopLevelGroup ?
                 ((try? path.relativePath(from: project.basePath)) ?? path).string :
                 path.lastComponent
-            let projectPath = Path("/Users/giginet/.ghq/github.com/yonaskolb/XcodeGen")
-            let relativePath = try? path.relativePath(from: projectPath)
+            
+            let relativePath: Path?
+            if let projectDestinationDirectory = projectDestinationDirectory {
+                relativePath = try? path.relativePath(from: projectDestinationDirectory)
+            } else {
+                relativePath = Path(groupPath)
+            }
+            
             let shouldSetGroupName = (groupName != groupPath) || (relativePath?.string != groupPath)
             let group = PBXGroup(
                 children: children,
