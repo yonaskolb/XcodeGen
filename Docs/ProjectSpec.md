@@ -786,7 +786,7 @@ schemes:
 
 This is a template that can be referenced from a normal scheme using the `templates` property. The properties of this template are the same as a [Scheme](#scheme). This functions identically in practice to [Target Template](#target-template).
 Any instances of `${scheme_name}` within each template will be replaced by the final scheme name which references the template.
-Any attributes defined within a targets `templateAttributes` will be used to replace any attribute references in the template using the syntax `${attribute_name}`.
+Any attributes defined within a scheme's `templateAttributes` will be used to replace any attribute references in the template using the syntax `${attribute_name}`.
 
 ```yaml
 schemes:
