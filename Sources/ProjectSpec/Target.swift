@@ -134,59 +134,7 @@ extension Target: PathContainer {
 
 extension Target {
 
-    static func resolveTargetTemplates(jsonDictionary: JSONDictionary) throws -> JSONDictionary {
-        guard var targetsDictionary: [String: JSONDictionary] = jsonDictionary["targets"] as? [String: JSONDictionary] else {
-            return jsonDictionary
-        }
-
-        let targetTemplatesDictionary: [String: JSONDictionary] = jsonDictionary["targetTemplates"] as? [String: JSONDictionary] ?? [:]
-
-        // Recursively collects all nested template names of a given dictionary.
-        func collectTemplates(of jsonDictionary: JSONDictionary,
-                              into allTemplates: inout [String],
-                              insertAt insertionIndex: inout Int) {
-            guard let templates = jsonDictionary["templates"] as? [String] else {
-                return
-            }
-            for template in templates where !allTemplates.contains(template) {
-                guard let templateDictionary = targetTemplatesDictionary[template] else {
-                    continue
-                }
-                allTemplates.insert(template, at: insertionIndex)
-                collectTemplates(of: templateDictionary, into: &allTemplates, insertAt: &insertionIndex)
-                insertionIndex += 1
-            }
-        }
-
-        for (targetName, var target) in targetsDictionary {
-            var templates: [String] = []
-            var index: Int = 0
-            collectTemplates(of: target, into: &templates, insertAt: &index)
-            if !templates.isEmpty {
-                var mergedDictionary: JSONDictionary = [:]
-                for template in templates {
-                    if let templateDictionary = targetTemplatesDictionary[template] {
-                        mergedDictionary = templateDictionary.merged(onto: mergedDictionary)
-                    }
-                }
-                target = target.merged(onto: mergedDictionary)
-                target = target.replaceString("$target_name", with: targetName) // Will be removed in upcoming version
-                target = target.replaceString("${target_name}", with: targetName)
-                if let templateAttributes = target["templateAttributes"] as? [String: String] {
-                    for (templateAttribute, value) in templateAttributes {
-                        target = target.replaceString("${\(templateAttribute)}", with: value)
-                    }
-                }
-            }
-            targetsDictionary[targetName] = target
-        }
-
-        var jsonDictionary = jsonDictionary
-        jsonDictionary["targets"] = targetsDictionary
-        return jsonDictionary
-    }
-
-    static func resolveMultiplatformTargets(jsonDictionary: JSONDictionary) throws -> JSONDictionary {
+    static func resolveMultiplatformTargets(jsonDictionary: JSONDictionary) -> JSONDictionary {
         guard let targetsDictionary: [String: JSONDictionary] = jsonDictionary["targets"] as? [String: JSONDictionary] else {
             return jsonDictionary
         }

@@ -238,7 +238,7 @@ public struct Scheme: Equatable {
         }
     }
 
-    public struct BuildTarget: Equatable {
+    public struct BuildTarget: Equatable, Hashable {
         public var target: String
         public var buildTypes: [BuildType]
 
