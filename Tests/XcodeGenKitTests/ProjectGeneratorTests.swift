@@ -1016,7 +1016,7 @@ class ProjectGeneratorTests: XCTestCase {
         )
         
         describe("generateXcodeProject") {
-            $0.context("without projectDestinationDirectory") {
+            $0.context("without projectDirectory") {
                 $0.it("generate groups") {
                     let project = Project(name: "test", targets: [frameworkWithSources])
                     let generator = ProjectGenerator(project: project)
@@ -1026,7 +1026,7 @@ class ProjectGeneratorTests: XCTestCase {
                 }
             }
             
-            $0.context("with projectDestinationDirectory") {
+            $0.context("with projectDirectory") {
                 $0.it("generate groups") {
                     let destinationPath = fixturePath
                     let project = Project(name: "test", targets: [frameworkWithSources])

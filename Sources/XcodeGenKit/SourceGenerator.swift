@@ -13,7 +13,7 @@ struct SourceFile {
 class SourceGenerator {
 
     var rootGroups: Set<PBXFileElement> = []
-    private let projectDestinationDirectory: Path?
+    private let projectDirectory: Path?
     private var fileReferencesByPath: [String: PBXFileElement] = [:]
     private var groupsByPath: [Path: PBXGroup] = [:]
     private var variantGroupsByPath: [Path: PBXVariantGroup] = [:]
@@ -31,10 +31,10 @@ class SourceGenerator {
 
     private(set) var knownRegions: Set<String> = []
 
-    init(project: Project, pbxProj: PBXProj, projectDestinationDirectory: Path?) {
+    init(project: Project, pbxProj: PBXProj, projectDirectory: Path?) {
         self.project = project
         self.pbxProj = pbxProj
-        self.projectDestinationDirectory = projectDestinationDirectory
+        self.projectDirectory = projectDirectory
     }
 
     @discardableResult
@@ -289,7 +289,7 @@ class SourceGenerator {
 
             let groupName = name ?? path.lastComponent
             let groupPath: String
-            switch try? path.relativePath(from: projectDestinationDirectory ?? project.basePath).string {
+            switch try? path.relativePath(from: projectDirectory ?? project.basePath).string {
             case .some(let relativePath) where isTopLevelGroup:
                 groupPath = relativePath
             default:
