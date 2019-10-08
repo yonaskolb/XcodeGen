@@ -1021,7 +1021,7 @@ class ProjectGeneratorTests: XCTestCase {
                     let project = Project(name: "test", targets: [frameworkWithSources])
                     let generator = ProjectGenerator(project: project)
                     let generatedProject = try generator.generateXcodeProject()
-                    let group = generatedProject.pbxproj.groups.first(where: { $0.name == groupName })
+                    let group = generatedProject.pbxproj.groups.first(where: { $0.nameOrPath == groupName })
                     try expect(group?.path) == "App_iOS"
                 }
             }
@@ -1032,7 +1032,7 @@ class ProjectGeneratorTests: XCTestCase {
                     let project = Project(name: "test", targets: [frameworkWithSources])
                     let generator = ProjectGenerator(project: project)
                     let generatedProject = try generator.generateXcodeProject(to: destinationPath)
-                    let group = generatedProject.pbxproj.groups.first(where: { $0.name == groupName })
+                    let group = generatedProject.pbxproj.groups.first(where: { $0.nameOrPath == groupName })
                     try expect(group?.path) == "TestProject/App_iOS"
                 }
             }

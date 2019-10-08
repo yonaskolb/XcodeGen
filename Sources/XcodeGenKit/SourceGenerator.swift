@@ -288,23 +288,21 @@ class SourceGenerator {
             let isTopLevelGroup = (isBaseGroup && !createIntermediateGroups) || isRootPath
 
             let groupName = name ?? path.lastComponent
-            let groupPath = isTopLevelGroup ?
-                ((try? path.relativePath(from: project.basePath)) ?? path).string :
-                path.lastComponent
-            
-            let relativePath: Path?
-            if let projectDestinationDirectory = projectDestinationDirectory {
-                relativePath = try? path.relativePath(from: projectDestinationDirectory)
+            let groupPath: String
+            if isTopLevelGroup {
+                if let relativePath = try? path.relativePath(from: projectDestinationDirectory ?? project.basePath).string {
+                    groupPath = relativePath
+                } else {
+                    groupPath = path.lastComponent
+                }
             } else {
-                relativePath = Path(groupName)
+                groupPath = path.lastComponent
             }
-            
-            let shouldSetGroupName = (groupName != groupPath) || (relativePath?.string != groupPath)
             let group = PBXGroup(
                 children: children,
                 sourceTree: .group,
-                name: shouldSetGroupName ? groupName : nil,
-                path: relativePath?.string
+                name: groupName != groupPath ? groupName : nil,
+                path: groupPath
             )
             groupReference = addObject(group)
             groupsByPath[path] = groupReference
