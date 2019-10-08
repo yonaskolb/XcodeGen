@@ -289,13 +289,10 @@ class SourceGenerator {
 
             let groupName = name ?? path.lastComponent
             let groupPath: String
-            if isTopLevelGroup {
-                if let relativePath = try? path.relativePath(from: projectDestinationDirectory ?? project.basePath).string {
-                    groupPath = relativePath
-                } else {
-                    groupPath = path.lastComponent
-                }
-            } else {
+            switch try? path.relativePath(from: projectDestinationDirectory ?? project.basePath).string {
+            case .some(let relativePath) where isTopLevelGroup:
+                groupPath = relativePath
+            default:
                 groupPath = path.lastComponent
             }
             let group = PBXGroup(
