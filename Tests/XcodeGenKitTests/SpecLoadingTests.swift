@@ -937,12 +937,12 @@ class SpecLoadingTests: XCTestCase {
 
                 let scheme = project.schemes.first!
                 let expectedTargets: [Scheme.BuildTarget] = [
-                    Scheme.BuildTarget(target: "TargetFirstTarget", buildTypes: BuildType.all),
-                    Scheme.BuildTarget(target: "Target2", buildTypes: [.testing, .analyzing]),
-                    Scheme.BuildTarget(target: "TargetThirdTarget", buildTypes: []),
-                    Scheme.BuildTarget(target: "Target4", buildTypes: [.testing]),
-                    Scheme.BuildTarget(target: "Target5", buildTypes: []),
-                    Scheme.BuildTarget(target: "Target6", buildTypes: [.testing, .analyzing]),
+                    Scheme.BuildTarget(target: .init(name: "TargetFirstTarget"), buildTypes: BuildType.all),
+                    Scheme.BuildTarget(target: .init(name: "Target2"), buildTypes: [.testing, .analyzing]),
+                    Scheme.BuildTarget(target: .init(name: "TargetThirdTarget"), buildTypes: []),
+                    Scheme.BuildTarget(target: .init(name: "Target4"), buildTypes: [.testing]),
+                    Scheme.BuildTarget(target: .init(name: "Target5"), buildTypes: []),
+                    Scheme.BuildTarget(target: .init(name: "Target6"), buildTypes: [.testing, .analyzing]),
                 ]
                 try expect(scheme.name) == "temp2"
                 try expect(Set(scheme.build.targets)) == Set(expectedTargets)
@@ -960,7 +960,7 @@ class SpecLoadingTests: XCTestCase {
                     targets: [
                         "TargetFirstTarget",
                         Scheme.Test.TestTarget(
-                            name: "Target2",
+                            targetReference: .init(name: "Target2"),
                             randomExecutionOrder: true,
                             parallelizable: true,
                             skippedTests: ["Test/testExample()"]

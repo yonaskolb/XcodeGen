@@ -109,7 +109,7 @@ class SchemeGeneratorTests: XCTestCase {
                     name: "MyFramework",
                     type: .application,
                     platform: .iOS,
-                    scheme: TargetScheme(testTargets: [.init(name: "MyFrameworkTests")])
+                    scheme: TargetScheme(testTargets: ["MyFrameworkTests"])
                 )
                 let project = Project(
                     name: "test",
