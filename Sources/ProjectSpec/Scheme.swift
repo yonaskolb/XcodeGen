@@ -255,11 +255,11 @@ public struct Scheme: Equatable {
 }
 
 
-public struct TargetReference: Equatable {
+public struct TargetReference: Equatable, Hashable {
     public let name: String
     public let location: Location
 
-    public enum Location: Equatable {
+    public enum Location: Equatable, Hashable {
         case local
         case project(String)
     }
