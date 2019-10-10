@@ -23,6 +23,7 @@
 - [Aggregate Target](#aggregate-target)
 - [Target Template](#target-template)
 - [Scheme](#scheme)
+  - [Scheme Template](#scheme-template)
 - [Swift Package](#swift-package)
 
 ## General
@@ -782,6 +783,39 @@ schemes:
       revealArchiveInOrganizer: false
 ```
 
+### Scheme Template
+
+This is a template that can be referenced from a normal scheme using the `templates` property. The properties of this template are the same as a [Scheme](#scheme). This functions identically in practice to [Target Template](#target-template).
+Any instances of `${scheme_name}` within each template will be replaced by the final scheme name which references the template.
+Any attributes defined within a scheme's `templateAttributes` will be used to replace any attribute references in the template using the syntax `${attribute_name}`.
+
+```yaml
+schemes:
+  MyModule:
+    templates:
+      - FeatureModuleScheme
+    templateAttributes:
+      testTargetName: MyModuleTests
+
+schemeTemplates:
+  FeatureModuleScheme:
+    templates:
+      - TestScheme
+    build:
+      targets:
+       ${scheme_name}: build
+
+  TestScheme:
+    test:
+      gatherCoverageData: true
+      targets:
+        - name: ${testTargetName}
+          parallelizable: true
+          randomExecutionOrder: true
+```
+
+The result will be a scheme that builds `MyModule` when you request a build, and will test against `MyModuleTests` when you request to run tests. This is particularly useful when you work in a very modular application and each module has a similar structure.
+
 ## Swift Package
 Swift packages are defined at a project level, and then linked to individual targets via a [Dependency](#dependency).
 
@@ -806,6 +840,7 @@ targets:
     dependencies:
       - package: Yams
 ```
+
 
 ## External Project
 

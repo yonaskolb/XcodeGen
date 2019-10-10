@@ -855,6 +855,121 @@ class SpecLoadingTests: XCTestCase {
                 try expect(scheme.profile?.environmentVariables.isEmpty) == true
             }
 
+            $0.it("parses scheme templates") {
+                let targetDictionary: [String: Any] = [
+                    "deploymentTarget": "1.2.0",
+                    "sources": ["targetSource"],
+                    "templates": ["temp2", "temp"],
+                    "templateAttributes": [
+                        "source": "replacedSource",
+                    ],
+                ]
+
+                let project = try getProjectSpec([
+                    "targets": ["Framework": targetDictionary],
+                    "targetTemplates": [
+                        "temp": [
+                            "platform": "iOS",
+                            "sources": [
+                                "templateSource",
+                                ["path": "Sources/${target_name}"]
+                            ],
+                        ],
+                        "temp2": [
+                            "type": "framework",
+                            "platform": "tvOS",
+                            "deploymentTarget": "1.1.0",
+                            "configFiles": [
+                                "debug": "Configs/$target_name/debug.xcconfig",
+                                "release": "Configs/${target_name}/release.xcconfig",
+                            ],
+                            "sources": ["${source}"],
+                        ],
+                    ],
+                    "schemeTemplates": [
+                        "base_scheme": [
+                            "build": [
+                                "parallelizeBuild": false,
+                                "buildImplicitDependencies": false,
+                                "targets": [
+                                    "Target${name_1}": "all",
+                                    "Target2": "testing",
+                                    "Target${name_3}": "none",
+                                    "Target4": ["testing": true],
+                                    "Target5": ["testing": false],
+                                    "Target6": ["test", "analyze"],
+                                ],
+                                "preActions": [
+                                    [
+                                        "script": "${pre-action-name}",
+                                        "name": "Before Build ${scheme_name}",
+                                        "settingsTarget": "Target${name_1}",
+                                    ],
+                                ],
+                            ],
+                            "test": [
+                                "config": "debug",
+                                "targets": [
+                                    "Target${name_1}",
+                                    [
+                                        "name": "Target2",
+                                        "parallelizable": true,
+                                        "randomExecutionOrder": true,
+                                        "skippedTests": ["Test/testExample()"],
+                                    ],
+                                ],
+                                "gatherCoverageData": true,
+                                "disableMainThreadChecker": true,
+                            ],
+                        ],
+                    ],
+                    "schemes": [
+                        "temp2": [
+                            "templates": ["base_scheme"],
+                            "templateAttributes": [
+                                "pre-action-name": "modified-name",
+                                "name_1": "FirstTarget",
+                                "name_3": "ThirdTarget",
+                            ],
+                        ],
+                    ],
+                ])
+
+                let scheme = project.schemes.first!
+                let expectedTargets: [Scheme.BuildTarget] = [
+                    Scheme.BuildTarget(target: "TargetFirstTarget", buildTypes: BuildType.all),
+                    Scheme.BuildTarget(target: "Target2", buildTypes: [.testing, .analyzing]),
+                    Scheme.BuildTarget(target: "TargetThirdTarget", buildTypes: []),
+                    Scheme.BuildTarget(target: "Target4", buildTypes: [.testing]),
+                    Scheme.BuildTarget(target: "Target5", buildTypes: []),
+                    Scheme.BuildTarget(target: "Target6", buildTypes: [.testing, .analyzing]),
+                ]
+                try expect(scheme.name) == "temp2"
+                try expect(Set(scheme.build.targets)) == Set(expectedTargets)
+                try expect(scheme.build.preActions.first?.script) == "modified-name"
+                try expect(scheme.build.preActions.first?.name) == "Before Build temp2"
+                try expect(scheme.build.preActions.first?.settingsTarget) == "TargetFirstTarget"
+
+                try expect(scheme.build.parallelizeBuild) == false
+                try expect(scheme.build.buildImplicitDependencies) == false
+
+                let expectedTest = Scheme.Test(
+                    config: "debug",
+                    gatherCoverageData: true,
+                    disableMainThreadChecker: true,
+                    targets: [
+                        "TargetFirstTarget",
+                        Scheme.Test.TestTarget(
+                            name: "Target2",
+                            randomExecutionOrder: true,
+                            parallelizable: true,
+                            skippedTests: ["Test/testExample()"]
+                        ),
+                    ]
+                )
+                try expect(scheme.test) == expectedTest
+            }
+
             $0.it("parses settings") {
                 let project = try Project(path: fixturePath + "settings_test.yml")
                 let buildSettings: BuildSettings = ["SETTING": "value"]
