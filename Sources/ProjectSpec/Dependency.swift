@@ -14,6 +14,7 @@ public struct Dependency: Equatable {
     public var link: Bool?
     public var implicit: Bool = implicitDefault
     public var weakLink: Bool = weakLinkDefault
+    public var isStatic: Bool?
 
     public init(
         type: DependencyType,
@@ -31,6 +32,11 @@ public struct Dependency: Equatable {
         self.link = link
         self.implicit = implicit
         self.weakLink = weakLink
+        if case .carthage(_, let isStatic) = type {
+            self.isStatic = isStatic ?? false
+        } else {
+            self.isStatic = nil
+        }
     }
 
     public enum DependencyType: Equatable {

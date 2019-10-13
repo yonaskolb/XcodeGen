@@ -31,8 +31,12 @@ public class CarthageDependencyResolver {
     }
 
     /// Carthage's build path for the given platform
-    func buildPath(for platform: Platform) -> String {
-        return "\(buildPath)/\(platform.carthageName)"
+    func buildPath(for platform: Platform, isStatic: Bool) -> String {
+        if isStatic {
+            return "\(buildPath)/\(platform.carthageName)/Static"
+        } else {
+            return "\(buildPath)/\(platform.carthageName)"
+        }
     }
 
     /// Fetches all carthage dependencies for a given target

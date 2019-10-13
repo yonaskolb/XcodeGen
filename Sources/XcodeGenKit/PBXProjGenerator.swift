@@ -604,7 +604,7 @@ public class PBXProjGenerator {
                     ? carthageResolver.relatedDependencies(for: dependency, in: target.platform) : [dependency]
                 allDependencies.forEach { dependency in
 
-                    var platformPath = Path(carthageResolver.buildPath(for: target.platform))
+                    var platformPath = Path(carthageResolver.buildPath(for: target.platform, isStatic: isStatic))
                     var frameworkPath = platformPath + dependency.reference
                     if frameworkPath.extension == nil {
                         frameworkPath = Path(frameworkPath.string + ".framework")
@@ -612,8 +612,9 @@ public class PBXProjGenerator {
                     let fileReference = self.sourceGenerator.getFileReference(path: frameworkPath, inPath: platformPath)
 
                     self.carthageFrameworksByPlatform[target.platform.carthageName, default: []].insert(fileReference)
-
-                    if dependency.link ?? (target.type != .staticLibrary) {
+                    
+                    let shouldLink = !isStatic && (dependency.link ?? (target.type != .staticLibrary))
+                    if shouldLink {
                         let buildFile = self.addObject(
                             PBXBuildFile(file: fileReference, settings: getDependencyFrameworkSettings(dependency: dependency))
                         )
@@ -648,17 +649,17 @@ public class PBXProjGenerator {
         }
 
         for dependency in carthageDependencies {
-
+            
             let embed = dependency.embed ?? target.shouldEmbedCarthageDependencies
 
-            var platformPath = Path(carthageResolver.buildPath(for: target.platform))
+            var platformPath = Path(carthageResolver.buildPath(for: target.platform, isStatic: dependency.isStatic ?? false))
             var frameworkPath = platformPath + dependency.reference
             if frameworkPath.extension == nil {
                 frameworkPath = Path(frameworkPath.string + ".framework")
             }
             let fileReference = sourceGenerator.getFileReference(path: frameworkPath, inPath: platformPath)
 
-            if embed {
+            if embed && dependency.isStatic == false {
                 if directlyEmbedCarthage {
                     let embedFile = addObject(
                         PBXBuildFile(file: fileReference, settings: getEmbedSettings(dependency: dependency, codeSign: dependency.codeSign ?? true))
@@ -759,7 +760,7 @@ public class PBXProjGenerator {
         if !carthageFrameworksToEmbed.isEmpty {
 
             let inputPaths = carthageFrameworksToEmbed
-                .map { "$(SRCROOT)/\(carthageResolver.buildPath(for: target.platform))/\($0)\($0.contains(".") ? "" : ".framework")" }
+                .map { "$(SRCROOT)/\(carthageResolver.buildPath(for: target.platform, isStatic: false))/\($0)\($0.contains(".") ? "" : ".framework")" }
             let outputPaths = carthageFrameworksToEmbed
                 .map { "$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/\($0)\($0.contains(".") ? "" : ".framework")" }
             let carthageExecutable = carthageResolver.executable
@@ -918,8 +919,16 @@ public class PBXProjGenerator {
             // set Carthage search paths
             let configFrameworkBuildPaths: [String]
             if !carthageDependencies.isEmpty {
-                let carthagePlatformBuildPath = "$(PROJECT_DIR)/" + carthageResolver.buildPath(for: target.platform)
-                configFrameworkBuildPaths = [carthagePlatformBuildPath] + frameworkBuildPaths.sorted()
+                var carthagePlatformBuildPaths: [String] = []
+                if carthageDependencies.contains(where: { $0.isStatic == false }) {
+                    let carthagePlatformBuildPath = "$(PROJECT_DIR)/" + carthageResolver.buildPath(for: target.platform, isStatic: false)
+                    carthagePlatformBuildPaths.append(carthagePlatformBuildPath)
+                }
+                    if carthageDependencies.contains(where: { $0.isStatic == true }) {
+                    let carthagePlatformBuildPath = "$(PROJECT_DIR)/" + carthageResolver.buildPath(for: target.platform, isStatic: true)
+                    carthagePlatformBuildPaths.append(carthagePlatformBuildPath)
+                }
+                configFrameworkBuildPaths = carthagePlatformBuildPaths + frameworkBuildPaths.sorted()
             } else {
                 configFrameworkBuildPaths = frameworkBuildPaths.sorted()
             }
