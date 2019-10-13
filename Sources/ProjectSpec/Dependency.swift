@@ -36,7 +36,7 @@ public struct Dependency: Equatable {
     public enum DependencyType: Equatable {
         case target
         case framework
-        case carthage(findFrameworks: Bool?)
+        case carthage(findFrameworks: Bool?, static: Bool?)
         case sdk(root: String?)
         case package(product: String?)
     }
@@ -59,7 +59,8 @@ extension Dependency: JSONObjectConvertible {
             reference = framework
         } else if let carthage: String = jsonDictionary.json(atKeyPath: "carthage") {
             let findFrameworks: Bool? = jsonDictionary.json(atKeyPath: "findFrameworks")
-            type = .carthage(findFrameworks: findFrameworks)
+            let isStatic: Bool? = jsonDictionary.json(atKeyPath: "static")
+            type = .carthage(findFrameworks: findFrameworks, static: isStatic)
             reference = carthage
         } else if let sdk: String = jsonDictionary.json(atKeyPath: "sdk") {
             let sdkRoot: String? = jsonDictionary.json(atKeyPath: "root")
@@ -112,10 +113,13 @@ extension Dependency: JSONEncodable {
             dict["target"] = reference
         case .framework:
             dict["framework"] = reference
-        case .carthage(let findFrameworks):
+        case .carthage(let findFrameworks, let isStatic):
             dict["carthage"] = reference
             if let findFrameworks = findFrameworks {
                 dict["findFrameworks"] = findFrameworks
+            }
+            if let staticFramework = isStatic {
+                dict["static"] = staticFramework
             }
         case .sdk:
             dict["sdk"] = reference

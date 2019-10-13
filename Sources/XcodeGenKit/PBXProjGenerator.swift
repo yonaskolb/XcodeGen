@@ -597,8 +597,9 @@ public class PBXProjGenerator {
                 )
                 targetFrameworkBuildFiles.append(buildFile)
 
-            case .carthage(let findFrameworks):
+            case .carthage(let findFrameworks, let isStatic):
                 let findFrameworks = findFrameworks ?? project.options.findCarthageFrameworks
+                let isStatic = isStatic ?? false
                 let allDependencies = findFrameworks
                     ? carthageResolver.relatedDependencies(for: dependency, in: target.platform) : [dependency]
                 allDependencies.forEach { dependency in
