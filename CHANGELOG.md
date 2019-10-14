@@ -2,9 +2,10 @@
 
 ## Next Version
 
-#### Added
+## 2.9.0
 
-- Scheme Templates [#672](https://github.com/yonaskolb/XcodeGen/pull/672) @bclymer
+#### Added
+- Added Scheme Templates [#672](https://github.com/yonaskolb/XcodeGen/pull/672) @bclymer
 
 #### Fixed
 - Fixed macOS unit test setting preset [#665](https://github.com/yonaskolb/XcodeGen/pull/665) @yonaskolb
@@ -13,14 +14,14 @@
 - Fixed some resource files being placed to "Recovered References" group [#679](https://github.com/yonaskolb/XcodeGen/pull/679) @nivanchikov
 
 #### Internal
-
 - Updated to SwiftCLI 5.3.2 [#667](https://github.com/yonaskolb/XcodeGen/pull/667) @giginet
 - Fixed tests in case-sensitive file system [#670](https://github.com/yonaskolb/XcodeGen/pull/670) @Qusic
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.8.0...2.9.0)
 
 ## 2.8.0
 
 #### Added
-
 - Added support for Swift Package dependencies [#624](https://github.com/yonaskolb/XcodeGen/pull/624) @yonaskolb
 - Added `includes` to `sources` for a Target. This follows the same glob-style as `excludes` but functions as a way to only include files that match a specified pattern. Useful if you only want a certain file type, for example specifying `**/*.swift`. [#637](https://github.com/yonaskolb/XcodeGen/pull/637) @bclymer
 - Support `dylib` SDK. [#650](https://github.com/yonaskolb/XcodeGen/pull/650) @kateinoigakukun 
@@ -28,7 +29,6 @@
 - Added `debugEnabled` option for `run` and `test` scheme [#657](https://github.com/yonaskolb/XcodeGen/pull/657) @kateinoigakukun 
 
 #### Fixed
-
 - Expand template variable in Array of Any [#651](https://github.com/yonaskolb/XcodeGen/pull/651) @kateinoigakukun
 - Significantly improve performance when running with a large number files. [#658](https://github.com/yonaskolb/XcodeGen/pull/658) @kateinoigakukun
 - Removed some more diffs between the generated .pbxproj and when Xcode resaves it [#663](https://github.com/yonaskolb/XcodeGen/pull/663) @yonaskolb
@@ -42,7 +42,6 @@
 ## 2.7.0
 
 #### Added
-
 - Added Bash 4 style recursive globbing (`**/*`) in target sources `excludes` [#636](https://github.com/yonaskolb/XcodeGen/pull/636) @bclymer
 - Added ability to disable main thread checker in Schemes [#601](https://github.com/yonaskolb/XcodeGen/pull/601) @wag-miles
 
