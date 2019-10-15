@@ -36,6 +36,14 @@ class SourceGenerator {
         self.pbxProj = pbxProj
         self.projectDirectory = projectDirectory
     }
+    
+    private func resolveGroupPath(_ path: Path, isTopLevelGroup: Bool) -> String {
+        if isTopLevelGroup, let relativePath = try? path.relativePath(from: projectDirectory ?? project.basePath).string {
+            return relativePath
+        } else {
+            return path.lastComponent
+        }
+    }
 
     @discardableResult
     func addObject<T: PBXObject>(_ object: T, context: String? = nil) -> T {
@@ -288,13 +296,8 @@ class SourceGenerator {
             let isTopLevelGroup = (isBaseGroup && !createIntermediateGroups) || isRootPath
 
             let groupName = name ?? path.lastComponent
-            let groupPath: String
-            switch try? path.relativePath(from: projectDirectory ?? project.basePath).string {
-            case .some(let relativePath) where isTopLevelGroup:
-                groupPath = relativePath
-            default:
-                groupPath = path.lastComponent
-            }
+            let groupPath = resolveGroupPath(path, isTopLevelGroup: isTopLevelGroup)
+            
             let group = PBXGroup(
                 children: children,
                 sourceTree: .group,
