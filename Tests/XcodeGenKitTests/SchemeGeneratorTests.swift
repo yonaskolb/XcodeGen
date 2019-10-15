@@ -43,7 +43,7 @@ class SchemeGeneratorTests: XCTestCase {
     func testSchemes() {
         describe {
 
-            let buildTarget = Scheme.BuildTarget(target: .init(name: app.name, location: .local))
+            let buildTarget = Scheme.BuildTarget(target: .local(app.name))
             $0.it("generates scheme") {
                 let preAction = Scheme.ExecutionAction(name: "Script", script: "echo Starting", settingsTarget: app.name)
                 let scheme = Scheme(

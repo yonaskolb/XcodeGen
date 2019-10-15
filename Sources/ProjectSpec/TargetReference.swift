@@ -17,7 +17,7 @@ public struct TargetReference: Equatable, Hashable {
         case project(String)
     }
 
-    public init(name: String, location: Location = .local) {
+    public init(name: String, location: Location) {
         self.name = name
         self.location = location
     }
@@ -38,6 +38,16 @@ extension TargetReference {
             name = String(paths[0])
         default: fatalError("unreachable")
         }
+    }
+
+    public static func local(_ name: String) -> TargetReference {
+        return TargetReference(name: name, location: .local)
+    }
+}
+
+extension TargetReference: ExpressibleByStringLiteral {
+    public init(stringLiteral value: String) {
+        try! self.init(string: value)
     }
 }
 

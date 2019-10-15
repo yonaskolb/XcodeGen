@@ -775,13 +775,13 @@ class SpecLoadingTests: XCTestCase {
                 ]
                 let scheme = try Scheme(name: "Scheme", jsonDictionary: schemeDictionary)
                 let expectedTargets: [Scheme.BuildTarget] = [
-                    Scheme.BuildTarget(target: .init(name: "Target1"), buildTypes: BuildType.all),
-                    Scheme.BuildTarget(target: .init(name: "Target2"), buildTypes: [.testing, .analyzing]),
-                    Scheme.BuildTarget(target: .init(name: "Target3"), buildTypes: []),
-                    Scheme.BuildTarget(target: .init(name: "Target4"), buildTypes: [.testing]),
-                    Scheme.BuildTarget(target: .init(name: "Target5"), buildTypes: []),
-                    Scheme.BuildTarget(target: .init(name: "Target6"), buildTypes: [.testing, .analyzing]),
-                    Scheme.BuildTarget(target: .init(name: "Target7", location: .project("ExternalProject")), buildTypes: [.running]),
+                    Scheme.BuildTarget(target: "Target1", buildTypes: BuildType.all),
+                    Scheme.BuildTarget(target: "Target2", buildTypes: [.testing, .analyzing]),
+                    Scheme.BuildTarget(target: "Target3", buildTypes: []),
+                    Scheme.BuildTarget(target: "Target4", buildTypes: [.testing]),
+                    Scheme.BuildTarget(target: "Target5", buildTypes: []),
+                    Scheme.BuildTarget(target: "Target6", buildTypes: [.testing, .analyzing]),
+                    Scheme.BuildTarget(target: "ExternalProject/Target7", buildTypes: [.running]),
                 ]
                 try expect(scheme.name) == "Scheme"
                 try expect(scheme.build.targets) == expectedTargets
@@ -799,7 +799,7 @@ class SpecLoadingTests: XCTestCase {
                     targets: [
                         "Target1",
                         Scheme.Test.TestTarget(
-                            targetReference: .init(name: "Target2", location: .project("ExternalProject")),
+                            targetReference: "ExternalProject/Target2",
                             randomExecutionOrder: true,
                             parallelizable: true,
                             skippedTests: ["Test/testExample()"]
@@ -937,12 +937,12 @@ class SpecLoadingTests: XCTestCase {
 
                 let scheme = project.schemes.first!
                 let expectedTargets: [Scheme.BuildTarget] = [
-                    Scheme.BuildTarget(target: .init(name: "TargetFirstTarget"), buildTypes: BuildType.all),
-                    Scheme.BuildTarget(target: .init(name: "Target2"), buildTypes: [.testing, .analyzing]),
-                    Scheme.BuildTarget(target: .init(name: "TargetThirdTarget"), buildTypes: []),
-                    Scheme.BuildTarget(target: .init(name: "Target4"), buildTypes: [.testing]),
-                    Scheme.BuildTarget(target: .init(name: "Target5"), buildTypes: []),
-                    Scheme.BuildTarget(target: .init(name: "Target6"), buildTypes: [.testing, .analyzing]),
+                    Scheme.BuildTarget(target: "TargetFirstTarget", buildTypes: BuildType.all),
+                    Scheme.BuildTarget(target: "Target2", buildTypes: [.testing, .analyzing]),
+                    Scheme.BuildTarget(target: "TargetThirdTarget", buildTypes: []),
+                    Scheme.BuildTarget(target: "Target4", buildTypes: [.testing]),
+                    Scheme.BuildTarget(target: "Target5", buildTypes: []),
+                    Scheme.BuildTarget(target: "Target6", buildTypes: [.testing, .analyzing]),
                 ]
                 try expect(scheme.name) == "temp2"
                 try expect(Set(scheme.build.targets)) == Set(expectedTargets)
@@ -960,7 +960,7 @@ class SpecLoadingTests: XCTestCase {
                     targets: [
                         "TargetFirstTarget",
                         Scheme.Test.TestTarget(
-                            targetReference: .init(name: "Target2"),
+                            targetReference: "Target2",
                             randomExecutionOrder: true,
                             parallelizable: true,
                             skippedTests: ["Test/testExample()"]

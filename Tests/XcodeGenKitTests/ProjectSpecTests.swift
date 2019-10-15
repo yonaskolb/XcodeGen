@@ -207,7 +207,7 @@ class ProjectSpecTests: XCTestCase {
                 var project = baseProject
                 project.schemes = [Scheme(
                     name: "scheme1",
-                    build: .init(targets: [.init(target: .init(name: "invalidTarget", location: .local))]),
+                    build: .init(targets: [.init(target: "invalidTarget")]),
                     run: .init(config: "debugInvalid"),
                     archive: .init(config: "releaseInvalid")
                 )]
@@ -255,7 +255,7 @@ class ProjectSpecTests: XCTestCase {
                     attributes: [:]
                 )
                 project.aggregateTargets = [aggregatedTarget]
-                let buildTarget = Scheme.BuildTarget(target: .init(name: "target1"))
+                let buildTarget = Scheme.BuildTarget(target: "target1")
                 let scheme = Scheme(name: "target1-Scheme", build: Scheme.Build(targets: [buildTarget]))
                 project.schemes = [scheme]
                 try project.validate()
@@ -338,7 +338,7 @@ class ProjectSpecTests: XCTestCase {
                                                                            name: nil,
                                                                            outputFiles: ["bar"],
                                                                            outputFilesCompilerFlags: ["foo"])],
-                                                    scheme: TargetScheme(testTargets: [Scheme.Test.TestTarget(targetReference: .init(name: "test target"),
+                                                    scheme: TargetScheme(testTargets: [Scheme.Test.TestTarget(targetReference: "test target",
                                                                                                               randomExecutionOrder: false,
                                                                                                               parallelizable: false)],
                                                                          configVariants: ["foo"],
@@ -376,7 +376,7 @@ class ProjectSpecTests: XCTestCase {
                                                                                                  shell: "/bin/bash",
                                                                                                  runOnlyWhenInstalling: true,
                                                                                                  showEnvVars: false)],
-                                                                      scheme: TargetScheme(testTargets: [Scheme.Test.TestTarget(targetReference: .init(name: "test target"),
+                                                                      scheme: TargetScheme(testTargets: [Scheme.Test.TestTarget(targetReference: "test target",
                                                                                                                                 randomExecutionOrder: false,
                                                                                                                                 parallelizable: false)],
                                                                                            configVariants: ["foo"],
@@ -404,7 +404,7 @@ class ProjectSpecTests: XCTestCase {
                                                                                                     groups: ["config-setting-group"])],
                                                                    groups: ["setting-group"])],
                                    schemes: [Scheme(name: "scheme",
-                                                    build: Scheme.Build(targets: [Scheme.BuildTarget(target: .init(name: "foo"),
+                                                    build: Scheme.Build(targets: [Scheme.BuildTarget(target: "foo",
                                                                                                      buildTypes: [.archiving, .analyzing])],
                                                                         parallelizeBuild: false,
                                                                         buildImplicitDependencies: false,
@@ -431,7 +431,7 @@ class ProjectSpecTests: XCTestCase {
                                                                       randomExecutionOrder: false,
                                                                       parallelizable: false,
                                                                       commandLineArguments: ["foo": true],
-                                                                      targets: [Scheme.Test.TestTarget(targetReference: .init(name: "foo"),
+                                                                      targets: [Scheme.Test.TestTarget(targetReference: "foo",
                                                                                                        randomExecutionOrder: false,
                                                                                                        parallelizable: false)],
                                                                       preActions: [Scheme.ExecutionAction(name: "preAction",
