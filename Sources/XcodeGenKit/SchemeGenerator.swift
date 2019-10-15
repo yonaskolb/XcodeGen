@@ -88,11 +88,11 @@ public class SchemeGenerator {
             let projectFilePath: String
             switch buildTarget.target.location {
             case .project(let project):
-                guard let externalProject = self.project.getExternalProject(project) else {
-                    fatalError("Unable to find external project named \"\(project)\" in project.yml")
+                guard let projectReference = self.project.getProjectReference(project) else {
+                    fatalError("Unable to find project reference named \"\(project)\" in project.yml")
                 }
-                pbxProj = try XcodeProj(pathString: externalProject.path).pbxproj
-                projectFilePath = externalProject.path
+                pbxProj = try XcodeProj(pathString: projectReference.path).pbxproj
+                projectFilePath = projectReference.path
             case .local:
                 pbxProj = self.pbxProj
                 projectFilePath = "\(self.project.name).xcodeproj"

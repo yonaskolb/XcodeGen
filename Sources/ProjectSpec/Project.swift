@@ -31,15 +31,15 @@ public struct Project: BuildSettingsContainer {
     public var fileGroups: [String]
     public var configFiles: [String: String]
     public var include: [String] = []
-    public var externalProjects: [ExternalProject] = [] {
+    public var projectReferences: [ProjectReference] = [] {
         didSet {
-            externalProjectsMap = Dictionary(uniqueKeysWithValues: externalProjects.map { ($0.name, $0) })
+            projectReferencesMap = Dictionary(uniqueKeysWithValues: projectReferences.map { ($0.name, $0) })
         }
     }
 
     private var targetsMap: [String: Target]
     private var aggregateTargetsMap: [String: AggregateTarget]
-    private var externalProjectsMap: [String: ExternalProject]
+    private var projectReferencesMap: [String: ProjectReference]
 
     public init(
         basePath: Path = "",
@@ -56,7 +56,7 @@ public struct Project: BuildSettingsContainer {
         fileGroups: [String] = [],
         configFiles: [String: String] = [:],
         attributes: [String: Any] = [:],
-        externalProjects: [ExternalProject] = []
+        projectReferences: [ProjectReference] = []
     ) {
         self.basePath = basePath
         self.name = name
@@ -74,12 +74,12 @@ public struct Project: BuildSettingsContainer {
         self.fileGroups = fileGroups
         self.configFiles = configFiles
         self.attributes = attributes
-        self.externalProjects = externalProjects
-        externalProjectsMap = Dictionary(uniqueKeysWithValues: self.externalProjects.map { ($0.name, $0) })
+        self.projectReferences = projectReferences
+        projectReferencesMap = Dictionary(uniqueKeysWithValues: self.projectReferences.map { ($0.name, $0) })
     }
 
-    public func getExternalProject(_ projectName: String) -> ExternalProject? {
-        return externalProjectsMap[projectName]
+    public func getProjectReference(_ projectName: String) -> ProjectReference? {
+        return projectReferencesMap[projectName]
     }
 
     public func getTarget(_ targetName: String) -> Target? {
@@ -177,7 +177,7 @@ extension Project {
             configs.map { Config(name: $0, type: ConfigType(rawValue: $1)) }.sorted { $0.name < $1.name }
         targets = try jsonDictionary.json(atKeyPath: "targets").sorted { $0.name < $1.name }
         aggregateTargets = try jsonDictionary.json(atKeyPath: "aggregateTargets").sorted { $0.name < $1.name }
-        externalProjects = try jsonDictionary.json(atKeyPath: "externalProjects").sorted { $0.name < $1.name }
+        projectReferences = try jsonDictionary.json(atKeyPath: "projectReferences").sorted { $0.name < $1.name }
         schemes = try jsonDictionary.json(atKeyPath: "schemes")
         fileGroups = jsonDictionary.json(atKeyPath: "fileGroups") ?? []
         configFiles = jsonDictionary.json(atKeyPath: "configFiles") ?? [:]
@@ -196,7 +196,7 @@ extension Project {
         }
         targetsMap = Dictionary(uniqueKeysWithValues: targets.map { ($0.name, $0) })
         aggregateTargetsMap = Dictionary(uniqueKeysWithValues: aggregateTargets.map { ($0.name, $0) })
-        externalProjectsMap = Dictionary(uniqueKeysWithValues: externalProjects.map { ($0.name, $0) })
+        projectReferencesMap = Dictionary(uniqueKeysWithValues: projectReferences.map { ($0.name, $0) })
     }
 
     static func resolveProject(jsonDictionary: JSONDictionary) -> JSONDictionary {
@@ -273,7 +273,7 @@ extension Project: JSONEncodable {
         let configsPairs = configs.map { ($0.name, $0.type?.rawValue) }
         let aggregateTargetsPairs = aggregateTargets.map { ($0.name, $0.toJSONValue()) }
         let schemesPairs = schemes.map { ($0.name, $0.toJSONValue()) }
-        let externalProjectsPairs = externalProjects.map { ($0.name, $0.toJSONValue()) }
+        let projectReferencesPairs = projectReferences.map { ($0.name, $0.toJSONValue()) }
 
         var dictionary: JSONDictionary = [:]
         dictionary["name"] = name
@@ -290,34 +290,8 @@ extension Project: JSONEncodable {
         dictionary["aggregateTargets"] = Dictionary(uniqueKeysWithValues: aggregateTargetsPairs)
         dictionary["schemes"] = Dictionary(uniqueKeysWithValues: schemesPairs)
         dictionary["settingGroups"] = settingGroups.mapValues { $0.toJSONValue() }
-        dictionary["externalProjects"] = externalProjectsPairs
+        dictionary["projectReferences"] = projectReferencesPairs
 
         return dictionary
-    }
-}
-
-
-public struct ExternalProject {
-    public let name: String
-    public let path: String
-
-    public init(name: String, path: String) {
-        self.name = name
-        self.path = path
-    }
-}
-
-extension ExternalProject: NamedJSONDictionaryConvertible {
-    public init(name: String, jsonDictionary: JSONDictionary) throws {
-        self.name = name
-        self.path = try jsonDictionary.json(atKeyPath: "path")
-    }
-}
-
-extension ExternalProject: JSONEncodable {
-    public func toJSONValue() -> Any {
-        return [
-            "path": path,
-        ]
     }
 }
