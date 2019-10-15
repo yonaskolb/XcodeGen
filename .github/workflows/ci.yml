@@ -20,6 +20,10 @@ jobs:
         xcodebuild -version
         swift --version
         swift package --version
+    - name: Install SwiftFormat
+      run: brew install swiftformat
+    - name: Format
+      run: swiftformat . --lint 
     - name: Resolve
       run: swift package resolve
     - name: Build
