@@ -41,12 +41,16 @@ extension TargetReference {
     }
 }
 
-extension TargetReference {
-    public func toString() -> String {
+extension TargetReference: CustomStringConvertible {
+    public var reference: String {
         switch location {
         case .local: return name
         case .project(let projectPath):
             return "\(projectPath)/\(name)"
         }
+    }
+
+    public var description: String {
+        return reference
     }
 }

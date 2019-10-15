@@ -387,11 +387,11 @@ extension Scheme.Test.TestTarget: JSONEncodable {
     public func toJSONValue() -> Any {
         if randomExecutionOrder == Scheme.Test.TestTarget.randomExecutionOrderDefault,
             parallelizable == Scheme.Test.TestTarget.parallelizableDefault {
-            return targetReference.toString()
+            return targetReference.reference
         }
 
         var dict: JSONDictionary = [
-            "name": targetReference.toString(),
+            "name": targetReference.reference,
         ]
 
         if randomExecutionOrder != Scheme.Test.TestTarget.randomExecutionOrderDefault {
@@ -532,7 +532,7 @@ extension Scheme.Build: JSONObjectConvertible {
 
 extension Scheme.Build: JSONEncodable {
     public func toJSONValue() -> Any {
-        let targetPairs = targets.map { ($0.target.toString(), $0.buildTypes.map { $0.toJSONValue() }) }
+        let targetPairs = targets.map { ($0.target.reference, $0.buildTypes.map { $0.toJSONValue() }) }
 
         var dict: JSONDictionary = [
             "targets": Dictionary(uniqueKeysWithValues: targetPairs),
