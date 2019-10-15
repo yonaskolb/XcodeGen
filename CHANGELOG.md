@@ -3,7 +3,7 @@
 ## Next Version
 
 #### Added
-- Support External Target Reference. [#655](https://github.com/yonaskolb/XcodeGen/pull/655) @kateinoigakukun
+- Support Target Reference to another project. [#655](https://github.com/yonaskolb/XcodeGen/pull/655) @kateinoigakukun
 
 ## 2.9.0
 
