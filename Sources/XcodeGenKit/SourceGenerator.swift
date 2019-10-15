@@ -44,7 +44,6 @@ class SourceGenerator {
 
     func createLocalPackage(path: Path) throws {
 
-
         if localPackageGroup == nil {
             let groupName = project.options.localPackagesGroup ?? "Packages"
             localPackageGroup = addObject(PBXGroup(sourceTree: .sourceRoot, name: groupName))
