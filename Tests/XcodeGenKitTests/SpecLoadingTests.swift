@@ -385,7 +385,7 @@ class SpecLoadingTests: XCTestCase {
                 let target = try Target(name: "test", jsonDictionary: targetDictionary)
                 try expect(target.dependencies.count) == 5
                 try expect(target.dependencies[0]) == Dependency(type: .target, reference: "name", embed: false)
-                try expect(target.dependencies[1]) == Dependency(type: .carthage(findFrameworks: true), reference: "name")
+                try expect(target.dependencies[1]) == Dependency(type: .carthage(findFrameworks: true, static: false), reference: "name")
                 try expect(target.dependencies[2]) == Dependency(type: .framework, reference: "path", weakLink: true)
                 try expect(target.dependencies[3]) == Dependency(type: .sdk(root: nil), reference: "Contacts.framework")
                 try expect(target.dependencies[4]) == Dependency(type: .sdk(root: "DEVELOPER_DIR"), reference: "Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework")

@@ -65,7 +65,7 @@ extension Dependency: JSONObjectConvertible {
             reference = framework
         } else if let carthage: String = jsonDictionary.json(atKeyPath: "carthage") {
             let findFrameworks: Bool? = jsonDictionary.json(atKeyPath: "findFrameworks")
-            let isStatic: Bool? = jsonDictionary.json(atKeyPath: "static")
+            isStatic = jsonDictionary.json(atKeyPath: "static")
             type = .carthage(findFrameworks: findFrameworks, static: isStatic)
             reference = carthage
         } else if let sdk: String = jsonDictionary.json(atKeyPath: "sdk") {

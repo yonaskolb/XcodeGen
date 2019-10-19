@@ -613,12 +613,11 @@ public class PBXProjGenerator {
 
                     self.carthageFrameworksByPlatform[target.platform.carthageName, default: []].insert(fileReference)
                     
-                    let shouldLink = !isStatic && (dependency.link ?? (target.type != .staticLibrary))
+                    let shouldLink = dependency.link ?? (target.type != .staticLibrary)
                     if shouldLink {
                         let buildFile = self.addObject(
                             PBXBuildFile(file: fileReference, settings: getDependencyFrameworkSettings(dependency: dependency))
                         )
-                        targetFrameworkBuildFiles.append(buildFile)
                     }
                 }
                 // Embedding handled by iterating over `carthageDependencies` below
@@ -668,6 +667,11 @@ public class PBXProjGenerator {
                 } else {
                     carthageFrameworksToEmbed.append(dependency.reference)
                 }
+            } else if dependency.isStatic == true {
+                let embedFile = addObject(
+                    PBXBuildFile(file: fileReference, settings: getDependencyFrameworkSettings(dependency: dependency))
+                )
+                targetFrameworkBuildFiles.append(embedFile)
             }
         }
 
@@ -924,7 +928,7 @@ public class PBXProjGenerator {
                     let carthagePlatformBuildPath = "$(PROJECT_DIR)/" + carthageResolver.buildPath(for: target.platform, isStatic: false)
                     carthagePlatformBuildPaths.append(carthagePlatformBuildPath)
                 }
-                    if carthageDependencies.contains(where: { $0.isStatic == true }) {
+                if carthageDependencies.contains(where: { $0.isStatic == true }) {
                     let carthagePlatformBuildPath = "$(PROJECT_DIR)/" + carthageResolver.buildPath(for: target.platform, isStatic: true)
                     carthagePlatformBuildPaths.append(carthagePlatformBuildPath)
                 }
