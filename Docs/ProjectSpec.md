@@ -396,8 +396,8 @@ This only applies to `framework` dependencies. Implicit framework dependencies a
 
 **Carthage Dependency**
 
-- [ ] **findFrameworks**: **Bool** - Whether XcodeGen attempt to find Carthage dependency automatically. Defaults to `true` .
-- [ ] **static**: **Bool** - Whether the framework is a static Framework. Defaults to `false` .
+- [ ] **findFrameworks**: **Bool** - Whether to attempt to find Carthage frameworks automatically. Defaults to `true` .
+- [ ] **static**: **Bool** - Whether the dependency is a static framework. Defaults to `false` .
 
 Carthage frameworks are expected to be in `CARTHAGE_BUILD_PATH/PLATFORM/FRAMEWORK.framework` where:
 
