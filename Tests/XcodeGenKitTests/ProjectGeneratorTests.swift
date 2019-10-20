@@ -1002,6 +1002,35 @@ class ProjectGeneratorTests: XCTestCase {
                 // generated plist should not be in buildsettings
                 try expect(targetConfig.buildSettings["INFOPLIST_FILE"] as? String) == predefinedPlistPath
             }
+            
+            describe("Carthage dependencies") {
+                $0.context("with static dependencies") {
+                    $0.it("should set dependencies") {
+                        let app = Target(
+                            name: "MyApp",
+                            type: .application,
+                            platform: .iOS,
+                            dependencies: [
+                                Dependency(type: .carthage(findFrameworks: false, static: true), reference: "MyStaticFramework"),
+                            ]
+                        )
+                        let project = Project(name: "test", targets: [app])
+                        let pbxProject = try project.generatePbxProj()
+                        
+                        let target = pbxProject.nativeTargets.first!
+                        let configuration = target.buildConfigurationList!.buildConfigurations.first!
+                        try expect(configuration.buildSettings["FRAMEWORK_SEARCH_PATHS"] as? [String]) == ["$(inherited)", "$(PROJECT_DIR)/Carthage/Build/iOS/Static"]
+                        let frameworkBuildPhase = try target.frameworksBuildPhase()
+                        guard let files = frameworkBuildPhase?.files, let file = files.first else {
+                            return XCTFail("frameworkBuildPhase should have files")
+                        }
+                        try expect(file.file?.nameOrPath) == "MyStaticFramework.framework"
+                        
+                        let copyCarthagePhase = target.embedFrameworksBuildPhases()
+                        try expect(copyCarthagePhase.isEmpty) == true
+                    }
+                }
+            }
         }
     }
 }
