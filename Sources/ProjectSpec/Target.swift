@@ -340,3 +340,9 @@ extension Target: JSONEncodable {
         return dict
     }
 }
+
+extension PBXTarget {
+    public func carthageCopyFrameworkBuildPhase() -> PBXShellScriptBuildPhase? {
+        return buildPhases.first(where: { $0.name() == "Carthage" }) as? PBXShellScriptBuildPhase
+    }
+}

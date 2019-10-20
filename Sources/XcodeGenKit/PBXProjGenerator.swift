@@ -934,12 +934,12 @@ public class PBXProjGenerator {
             let configFrameworkBuildPaths: [String]
             if !carthageDependencies.isEmpty {
                 var carthagePlatformBuildPaths: [String] = []
-                if carthageDependencies.contains(where: { !isStaticDependency(for: $0) }) {
-                    let carthagePlatformBuildPath = "$(PROJECT_DIR)/" + carthageResolver.buildPath(for: target.platform, isStatic: false)
-                    carthagePlatformBuildPaths.append(carthagePlatformBuildPath)
-                }
                 if carthageDependencies.contains(where: { isStaticDependency(for: $0) }) {
                     let carthagePlatformBuildPath = "$(PROJECT_DIR)/" + carthageResolver.buildPath(for: target.platform, isStatic: true)
+                    carthagePlatformBuildPaths.append(carthagePlatformBuildPath)
+                }
+                if carthageDependencies.contains(where: { !isStaticDependency(for: $0) }) {
+                    let carthagePlatformBuildPath = "$(PROJECT_DIR)/" + carthageResolver.buildPath(for: target.platform, isStatic: false)
                     carthagePlatformBuildPaths.append(carthagePlatformBuildPath)
                 }
                 configFrameworkBuildPaths = carthagePlatformBuildPaths + frameworkBuildPaths.sorted()
