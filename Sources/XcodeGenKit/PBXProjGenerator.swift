@@ -459,6 +459,15 @@ public class PBXProjGenerator {
             }
             return !linkingAttributes.isEmpty ? ["ATTRIBUTES": linkingAttributes] : nil
         }
+        
+        func isStaticDependency(for carthageDependency: Dependency) -> Bool {
+            switch carthageDependency.type {
+            case .carthage(_, let isStatic):
+                return isStatic ?? false
+            default:
+                fatalError("Passed dependency should be Carthage dependency")
+            }
+        }
 
         for dependency in targetDependencies {
 
@@ -652,14 +661,14 @@ public class PBXProjGenerator {
             
             let embed = dependency.embed ?? target.shouldEmbedCarthageDependencies
 
-            var platformPath = Path(carthageResolver.buildPath(for: target.platform, isStatic: dependency.isStatic ?? false))
+            var platformPath = Path(carthageResolver.buildPath(for: target.platform, isStatic: isStaticDependency(for: dependency)))
             var frameworkPath = platformPath + dependency.reference
             if frameworkPath.extension == nil {
                 frameworkPath = Path(frameworkPath.string + ".framework")
             }
             let fileReference = sourceGenerator.getFileReference(path: frameworkPath, inPath: platformPath)
 
-            if embed && dependency.isStatic != true {
+            if embed && !isStaticDependency(for: dependency) {
                 if directlyEmbedCarthage {
                     let embedFile = addObject(
                         PBXBuildFile(file: fileReference, settings: getEmbedSettings(dependency: dependency, codeSign: dependency.codeSign ?? true))
@@ -668,7 +677,7 @@ public class PBXProjGenerator {
                 } else {
                     carthageFrameworksToEmbed.append(dependency.reference)
                 }
-            } else if dependency.isStatic == true {
+            } else if isStaticDependency(for: dependency) {
                 let embedFile = addObject(
                     PBXBuildFile(file: fileReference, settings: getDependencyFrameworkSettings(dependency: dependency))
                 )
@@ -925,11 +934,11 @@ public class PBXProjGenerator {
             let configFrameworkBuildPaths: [String]
             if !carthageDependencies.isEmpty {
                 var carthagePlatformBuildPaths: [String] = []
-                if carthageDependencies.contains(where: { $0.isStatic == false }) {
+                if carthageDependencies.contains(where: { !isStaticDependency(for: $0) }) {
                     let carthagePlatformBuildPath = "$(PROJECT_DIR)/" + carthageResolver.buildPath(for: target.platform, isStatic: false)
                     carthagePlatformBuildPaths.append(carthagePlatformBuildPath)
                 }
-                if carthageDependencies.contains(where: { $0.isStatic == true }) {
+                if carthageDependencies.contains(where: { isStaticDependency(for: $0) }) {
                     let carthagePlatformBuildPath = "$(PROJECT_DIR)/" + carthageResolver.buildPath(for: target.platform, isStatic: true)
                     carthagePlatformBuildPaths.append(carthagePlatformBuildPath)
                 }

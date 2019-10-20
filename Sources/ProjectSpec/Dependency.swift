@@ -14,7 +14,6 @@ public struct Dependency: Equatable {
     public var link: Bool?
     public var implicit: Bool = implicitDefault
     public var weakLink: Bool = weakLinkDefault
-    public var isStatic: Bool?
 
     public init(
         type: DependencyType,
@@ -32,11 +31,6 @@ public struct Dependency: Equatable {
         self.link = link
         self.implicit = implicit
         self.weakLink = weakLink
-        if case .carthage(_, let isStatic) = type {
-            self.isStatic = isStatic ?? false
-        } else {
-            self.isStatic = nil
-        }
     }
 
     public enum DependencyType: Equatable {
@@ -65,7 +59,7 @@ extension Dependency: JSONObjectConvertible {
             reference = framework
         } else if let carthage: String = jsonDictionary.json(atKeyPath: "carthage") {
             let findFrameworks: Bool? = jsonDictionary.json(atKeyPath: "findFrameworks")
-            isStatic = jsonDictionary.json(atKeyPath: "static") ?? false
+            let isStatic = jsonDictionary.json(atKeyPath: "static") ?? false
             type = .carthage(findFrameworks: findFrameworks, static: isStatic)
             reference = carthage
         } else if let sdk: String = jsonDictionary.json(atKeyPath: "sdk") {
@@ -124,7 +118,9 @@ extension Dependency: JSONEncodable {
             if let findFrameworks = findFrameworks {
                 dict["findFrameworks"] = findFrameworks
             }
-            dict["static"] = isStatic ?? false
+            if let isStatic = isStatic {
+                dict["static"] = isStatic
+            }
         case .sdk:
             dict["sdk"] = reference
         case .package:
