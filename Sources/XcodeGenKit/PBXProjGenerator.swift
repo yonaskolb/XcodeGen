@@ -618,6 +618,7 @@ public class PBXProjGenerator {
                         let buildFile = self.addObject(
                             PBXBuildFile(file: fileReference, settings: getDependencyFrameworkSettings(dependency: dependency))
                         )
+                        targetFrameworkBuildFiles.append(buildFile)
                     }
                 }
                 // Embedding handled by iterating over `carthageDependencies` below
@@ -658,7 +659,7 @@ public class PBXProjGenerator {
             }
             let fileReference = sourceGenerator.getFileReference(path: frameworkPath, inPath: platformPath)
 
-            if embed && dependency.isStatic == false {
+            if embed && dependency.isStatic != true {
                 if directlyEmbedCarthage {
                     let embedFile = addObject(
                         PBXBuildFile(file: fileReference, settings: getEmbedSettings(dependency: dependency, codeSign: dependency.codeSign ?? true))
