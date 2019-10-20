@@ -36,7 +36,7 @@ public struct Dependency: Equatable {
     public enum DependencyType: Equatable {
         case target
         case framework
-        case carthage(findFrameworks: Bool?, static: Bool?)
+        case carthage(findFrameworks: Bool?, static: Bool)
         case sdk(root: String?)
         case package(product: String?)
     }
@@ -118,9 +118,7 @@ extension Dependency: JSONEncodable {
             if let findFrameworks = findFrameworks {
                 dict["findFrameworks"] = findFrameworks
             }
-            if let isStatic = isStatic {
-                dict["static"] = isStatic
-            }
+            dict["static"] = isStatic
         case .sdk:
             dict["sdk"] = reference
         case .package:

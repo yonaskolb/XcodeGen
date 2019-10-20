@@ -463,7 +463,7 @@ public class PBXProjGenerator {
         func isStaticDependency(for carthageDependency: Dependency) -> Bool {
             switch carthageDependency.type {
             case .carthage(_, let isStatic):
-                return isStatic ?? false
+                return isStatic
             default:
                 fatalError("Passed dependency should be Carthage dependency")
             }
@@ -608,7 +608,7 @@ public class PBXProjGenerator {
 
             case .carthage(let findFrameworks, let isStatic):
                 let findFrameworks = findFrameworks ?? project.options.findCarthageFrameworks
-                let isStatic = isStatic ?? false
+                let isStatic = isStatic
                 let allDependencies = findFrameworks
                     ? carthageResolver.relatedDependencies(for: dependency, in: target.platform) : [dependency]
                 allDependencies.forEach { dependency in
