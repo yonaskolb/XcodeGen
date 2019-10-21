@@ -1,11 +1,11 @@
 import Foundation
 import JSONUtilities
 
-public struct TargetReference: Equatable, Hashable {
+public struct TargetReference: Hashable {
     public var name: String
     public var location: Location
 
-    public enum Location: Equatable, Hashable {
+    public enum Location: Hashable {
         case local
         case project(String)
     }
