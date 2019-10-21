@@ -1,10 +1,3 @@
-//
-//  ProjectReference.swift
-//  ProjectSpec
-//
-//  Created by Yuta Saito on 2019/10/15.
-//
-
 import Foundation
 import JSONUtilities
 
