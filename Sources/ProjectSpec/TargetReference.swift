@@ -19,9 +19,6 @@ public struct TargetReference: Hashable {
 extension TargetReference {
     public init(string: String) throws {
         let paths = string.split(separator: "/")
-        guard paths.count <= 2 && !paths.isEmpty else {
-            throw SpecParsingError.invalidTargetReference(string)
-        }
         switch paths.count {
         case 2:
             location = .project(String(paths[0]))
@@ -29,7 +26,8 @@ extension TargetReference {
         case 1:
             location = .local
             name = String(paths[0])
-        default: fatalError("unreachable")
+        default:
+            throw SpecParsingError.invalidTargetReference(string)
         }
     }
 

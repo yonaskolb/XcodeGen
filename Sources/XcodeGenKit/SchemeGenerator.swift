@@ -89,7 +89,7 @@ public class SchemeGenerator {
             switch buildTarget.target.location {
             case .project(let project):
                 guard let projectReference = self.project.getProjectReference(project) else {
-                    fatalError("Unable to find project reference named \"\(project)\" in project.yml")
+                    throw SchemeGenerationError.missingProject(project)
                 }
                 pbxProj = try XcodeProj(pathString: projectReference.path).pbxproj
                 projectFilePath = projectReference.path
@@ -99,7 +99,7 @@ public class SchemeGenerator {
             }
 
             guard let pbxTarget = pbxProj.targets(named: buildTarget.target.name).first else {
-                fatalError("Unable to find target named \"\(buildTarget.target)\" in \"PBXProj.targets\"")
+                throw SchemeGenerationError.missingTarget(buildTarget, projectPath: projectFilePath)
             }
 
             let buildableName: String
@@ -111,7 +111,7 @@ public class SchemeGenerator {
                 guard let _buildableName =
                         project.getTarget(buildTarget.target.name)?.filename ??
                         project.getAggregateTarget(buildTarget.target.name)?.name else {
-                    fatalError("Unable to determinate \"buildableName\" for build target: \(buildTarget.target)")
+                    throw SchemeGenerationError.unresolvableBuildableName(buildTarget)
                 }
                 buildableName = _buildableName
             }
@@ -238,6 +238,24 @@ public class SchemeGenerator {
             analyzeAction: analyzeAction,
             archiveAction: archiveAction
         )
+    }
+}
+
+enum SchemeGenerationError: Error, CustomStringConvertible {
+
+    case unresolvableBuildableName(Scheme.BuildTarget)
+    case missingTarget(Scheme.BuildTarget, projectPath: String)
+    case missingProject(String)
+
+    var description: String {
+        switch self {
+        case .unresolvableBuildableName(let buildTarget):
+            return "Unable to determinate \"buildableName\" for build target: \(buildTarget.target)"
+        case .missingTarget(let buildTarget, let projectPath):
+            return "Unable to find target named \"\(buildTarget.target)\" in \"\(projectPath)\""
+        case .missingProject(let project):
+            return "Unable to find project reference named \"\(project)\" in project.yml"
+        }
     }
 }
 
