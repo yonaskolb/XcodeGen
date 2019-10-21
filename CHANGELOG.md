@@ -5,6 +5,11 @@
 #### Added
 - Support Target Reference to another project. [#655](https://github.com/yonaskolb/XcodeGen/pull/655) @kateinoigakukun
 
+
+#### Fixed
+- Add base localisation by default even if no base localised files were found. Fixes warning in Xcode 11 [#685](https://github.com/yonaskolb/XcodeGen/pull/685) @yonaskolb
+
+
 ## 2.9.0
 
 #### Added
