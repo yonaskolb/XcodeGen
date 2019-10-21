@@ -24,7 +24,7 @@ public class PBXProjGenerator {
 
     var generated = false
 
-    public init(project: Project, projectDirectory: Path?) {
+    public init(project: Project, projectDirectory: Path? = nil) {
         self.project = project
         carthageResolver = CarthageDependencyResolver(project: project)
         pbxProj = PBXProj(rootObject: nil, objectVersion: project.objectVersion)
