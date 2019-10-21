@@ -2,8 +2,8 @@ import Foundation
 import JSONUtilities
 
 public struct TargetReference: Equatable, Hashable {
-    public let name: String
-    public let location: Location
+    public var name: String
+    public var location: Location
 
     public enum Location: Equatable, Hashable {
         case local

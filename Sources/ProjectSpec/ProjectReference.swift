@@ -2,8 +2,8 @@ import Foundation
 import JSONUtilities
 
 public struct ProjectReference {
-    public let name: String
-    public let path: String
+    public var name: String
+    public var path: String
 
     public init(name: String, path: String) {
         self.name = name
