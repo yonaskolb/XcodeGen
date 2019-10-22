@@ -125,7 +125,7 @@ class GenerateCommand: Command {
         let xcodeProject: XcodeProj
         do {
             let projectGenerator = ProjectGenerator(project: project)
-            xcodeProject = try projectGenerator.generateXcodeProject()
+            xcodeProject = try projectGenerator.generateXcodeProject(in: projectDirectory)
         } catch {
             throw GenerationError.generationError(error)
         }
