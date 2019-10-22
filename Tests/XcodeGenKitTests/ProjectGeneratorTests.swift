@@ -1031,7 +1031,7 @@ class ProjectGeneratorTests: XCTestCase {
                     let destinationPath = fixturePath
                     let project = Project(name: "test", targets: [frameworkWithSources])
                     let generator = ProjectGenerator(project: project)
-                    let generatedProject = try generator.generateXcodeProject(to: destinationPath)
+                    let generatedProject = try generator.generateXcodeProject(in: destinationPath)
                     let group = generatedProject.pbxproj.groups.first(where: { $0.nameOrPath == groupName })
                     try expect(group?.path) == "TestProject/App_iOS"
                 }

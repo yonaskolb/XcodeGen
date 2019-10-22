@@ -13,7 +13,7 @@ public class ProjectGenerator {
         self.project = project
     }
 
-    public func generateXcodeProject(to projectDirectory: Path? = nil) throws -> XcodeProj {
+    public func generateXcodeProject(in projectDirectory: Path? = nil) throws -> XcodeProj {
 
         // generate PBXProj
         let pbxProjGenerator = PBXProjGenerator(project: project,
