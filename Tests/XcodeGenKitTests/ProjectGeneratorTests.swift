@@ -971,16 +971,17 @@ class ProjectGeneratorTests: XCTestCase {
                 let infoPlistFile = tempPath + plist.path
                 let data: Data = try infoPlistFile.read()
                 let infoPlist = try PropertyListSerialization.propertyList(from: data, options: [], format: nil) as! [String: Any]
-                var expectedInfoPlist: [String: Any] = [:]
-                expectedInfoPlist["CFBundleIdentifier"] = "$(PRODUCT_BUNDLE_IDENTIFIER)"
-                expectedInfoPlist["CFBundleInfoDictionaryVersion"] = "6.0"
-                expectedInfoPlist["CFBundleExecutable"] = "$(EXECUTABLE_NAME)"
-                expectedInfoPlist["CFBundleName"] = "$(PRODUCT_NAME)"
-                expectedInfoPlist["CFBundleDevelopmentRegion"] = "$(DEVELOPMENT_LANGUAGE)"
-                expectedInfoPlist["CFBundleShortVersionString"] = "1.0"
-                expectedInfoPlist["CFBundleVersion"] = "1"
-                expectedInfoPlist["CFBundlePackageType"] = "APPL"
-                expectedInfoPlist["UISupportedInterfaceOrientations"] = ["UIInterfaceOrientationPortrait", "UIInterfaceOrientationLandscapeLeft"]
+                let expectedInfoPlist: [String: Any] = [
+                    "CFBundleIdentifier": "$(PRODUCT_BUNDLE_IDENTIFIER)",
+                    "CFBundleInfoDictionaryVersion": "6.0",
+                    "CFBundleName": "$(PRODUCT_NAME)",
+                    "CFBundleExecutable": "$(EXECUTABLE_NAME)",
+                    "CFBundleDevelopmentRegion": "$(DEVELOPMENT_LANGUAGE)",
+                    "CFBundleShortVersionString": "1.0",
+                    "CFBundleVersion": "1",
+                    "CFBundlePackageType": "APPL",
+                    "UISupportedInterfaceOrientations": ["UIInterfaceOrientationPortrait", "UIInterfaceOrientationLandscapeLeft"]
+                ]
 
                 try expect(NSDictionary(dictionary: expectedInfoPlist).isEqual(to: infoPlist)).beTrue()
             }
@@ -1001,6 +1002,36 @@ class ProjectGeneratorTests: XCTestCase {
                 }
                 // generated plist should not be in buildsettings
                 try expect(targetConfig.buildSettings["INFOPLIST_FILE"] as? String) == predefinedPlistPath
+            }
+
+            $0.it("generate info.plist doesn't generate CFBundleExecutable for targets with type bundle") {
+                let plist = Plist(path: "Info.plist", attributes: [:])
+                let tempPath = Path.temporary + "info"
+                let project = Project(basePath: tempPath, name: "", targets: [Target(name: "", type: .bundle, platform: .iOS, info: plist)])
+                let pbxProject = try project.generatePbxProj()
+                let writer = FileWriter(project: project)
+                try writer.writePlists()
+
+                guard let targetConfig = pbxProject.nativeTargets.first?.buildConfigurationList?.buildConfigurations.first else {
+                    throw failure("Couldn't find Target config")
+                }
+
+                try expect(targetConfig.buildSettings["INFOPLIST_FILE"] as? String) == plist.path
+
+                let infoPlistFile = tempPath + plist.path
+                let data: Data = try infoPlistFile.read()
+                let infoPlist = try PropertyListSerialization.propertyList(from: data, options: [], format: nil) as! [String: Any]
+                let expectedInfoPlist: [String: Any] = [
+                    "CFBundleIdentifier": "$(PRODUCT_BUNDLE_IDENTIFIER)",
+                    "CFBundleInfoDictionaryVersion": "6.0",
+                    "CFBundleName": "$(PRODUCT_NAME)",
+                    "CFBundleDevelopmentRegion": "$(DEVELOPMENT_LANGUAGE)",
+                    "CFBundleShortVersionString": "1.0",
+                    "CFBundleVersion": "1",
+                    "CFBundlePackageType": "BNDL"
+                ]
+
+                try expect(NSDictionary(dictionary: expectedInfoPlist).isEqual(to: infoPlist)).beTrue()
             }
         }
     }

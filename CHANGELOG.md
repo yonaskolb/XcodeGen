@@ -4,6 +4,7 @@
 
 #### Fixed
 - Add base localisation by default even if no base localised files were found. Fixes warning in Xcode 11 [#685](https://github.com/yonaskolb/XcodeGen/pull/685) @yonaskolb
+- Don't generate CFBundleExecutable for target of type `bundle` @FranzBusch
 
 ## 2.9.0
 

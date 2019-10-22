@@ -203,10 +203,10 @@ Settings are merged in the following order: groups, base, configs.
   - `TEST_TARGET_NAME`: for ui tests that target an application
   - `TEST_HOST`: for unit tests that target an application
 - [ ] **dependencies**: **[[Dependency](#dependency)]** - Dependencies for the target
-- [ ] **info**: **[Plist](#plist)** - If defined, this will generate and write an `Info.plist` to the specified path and use it by setting the `INFOPLIST_FILE` build setting for every configuration, unless `INFOPLIST_FILE` is already defined in  **settings** for this configuration. The following properties are generated automatically, the rest will have to be provided.
+- [ ] **info**: **[Plist](#plist)** - If defined, this will generate and write an `Info.plist` to the specified path and use it by setting the `INFOPLIST_FILE` build setting for every configuration, unless `INFOPLIST_FILE` is already defined in  **settings** for this configuration. The following properties are generated automatically if appropriate, the rest will have to be provided.
   - `CFBundleIdentifier`
   - `CFBundleInfoDictionaryVersion`
-  - `CFBundleExecutable`
+  - `CFBundleExecutable` **Not generated for targets of type bundle**
   - `CFBundleName`
   - `CFBundleDevelopmentRegion`
   - `CFBundleShortVersionString`

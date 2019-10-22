@@ -30,7 +30,7 @@ public class FileWriter {
         for target in project.targets {
             // write Info.plist
             if let plist = target.info {
-                let properties = infoPlistGenerator.generateProperties(target: target).merged(plist.properties)
+                let properties = infoPlistGenerator.generateProperties(for: target).merged(plist.properties)
                 try writePlist(properties, path: plist.path)
             }
 
