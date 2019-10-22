@@ -106,3 +106,30 @@ extension XCScheme.CommandLineArguments {
         self.init(arguments: args)
     }
 }
+
+extension XCBreakpointList.BreakpointProxy.BreakpointExtensionID {
+
+    init?(string: String) {
+        if let type = XCBreakpointList.BreakpointProxy.BreakpointExtensionID(rawValue: "Xcode.Breakpoint.\(string)") {
+            self = type
+        } else if let type = XCBreakpointList.BreakpointProxy.BreakpointExtensionID(rawValue: string) {
+            self = type
+        } else {
+            return nil
+        }
+    }
+}
+
+extension XCBreakpointList.BreakpointProxy.BreakpointContent.BreakpointActionProxy.ActionExtensionID {
+
+    init?(string: String) {
+        if let type = XCBreakpointList.BreakpointProxy.BreakpointContent.BreakpointActionProxy.ActionExtensionID(rawValue: "Xcode.BreakpointAction.\(string)") {
+            self = type
+        } else if let type = XCBreakpointList.BreakpointProxy.BreakpointContent.BreakpointActionProxy.ActionExtensionID(rawValue: string) {
+            self = type
+        } else {
+            return nil
+        }
+    }
+}
+

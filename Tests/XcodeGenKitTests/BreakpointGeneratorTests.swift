@@ -8,7 +8,7 @@ class BreakpointGeneratorTests: XCTestCase {
         describe {
 
             $0.it("generates breakpoint") {
-                let breakpoint = Breakpoint(extensionID: "exception")
+                let breakpoint = Breakpoint(type: .exception)
                 let project = Project(basePath: "", name: "test", targets: [], breakpoints: [breakpoint])
                 let xcodeProject = try project.generateXcodeProject()
                 guard let xcbreakpoint = xcodeProject.sharedData?.breakpoints?.breakpoints.first else { throw failure("Breakpoint not found") }

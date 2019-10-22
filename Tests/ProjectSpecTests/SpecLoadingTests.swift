@@ -357,6 +357,7 @@ class SpecLoadingTests: XCTestCase {
 
     func testProjectSpecParser() {
         let validTarget: [String: Any] = ["type": "application", "platform": "iOS"]
+        let validBreakpoint: [String: Any] = ["type": "ExceptionBreakpoint"]
         let invalid = "invalid"
 
         describe {
@@ -377,6 +378,18 @@ class SpecLoadingTests: XCTestCase {
                 var target = validTarget
                 target["dependencies"] = [[invalid: "name"]]
                 try expectTargetError(target, .invalidDependency([invalid: "name"]))
+            }
+
+            $0.it("fails with incorrect breakpoint type") {
+                var target = validBreakpoint
+                target["type"] = invalid
+                try expectBreakpointError(target, .unknownBreakpointType(invalid))
+            }
+
+            $0.it("fails with incorrect breakpoint action type") {
+                var target = validBreakpoint
+                target["actions"] = [["type": invalid]]
+                try expectBreakpointError(target, .unknownBreakpointActionType(invalid))
             }
 
             $0.it("parses sources") {
@@ -1432,5 +1445,11 @@ private func expectSpecError(_ project: [String: Any], _ expectedError: SpecPars
 private func expectTargetError(_ target: [String: Any], _ expectedError: SpecParsingError, file: String = #file, line: Int = #line) throws {
     try expectError(expectedError, file: file, line: line) {
         _ = try Target(name: "test", jsonDictionary: target)
+    }
+}
+
+private func expectBreakpointError(_ target: [String: Any], _ expectedError: SpecParsingError, file: String = #file, line: Int = #line) throws {
+    try expectError(expectedError, file: file, line: line) {
+        _ = try Breakpoint(jsonDictionary: target)
     }
 }

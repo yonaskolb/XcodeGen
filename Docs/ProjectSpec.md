@@ -170,14 +170,14 @@ Default settings for file extensions. See [Sources](#sources) for more documenta
 
 ### Breakpoints
 
-- [x] **extensionID**: **String** - Breakpoint type
-    - `file`: file brakpoint
-    - `exception`: exception breakpoint
-    - `swiftError`: swift error breakpoint
-    - `openGLError`: OpenGL breakpoint
-    - `symbolic`: symbolic breakpoint
-    - `ideConstraintError`: IDE constraint breakpoint
-    - `ideTestFailure`: IDE test failure breakpoint
+- [x] **type**: **String** - Breakpoint type
+    - `FileBreakpoint`: file brakpoint
+    - `ExceptionBreakpoint`: exception breakpoint
+    - `SwiftErrorBreakpoint`: swift error breakpoint
+    - `OpenGLErrorBreakpoint`: OpenGL breakpoint
+    - `SymbolicBreakpoint`: symbolic breakpoint
+    - `IDEConstraintErrorBreakpoint`: IDE constraint breakpoint
+    - `IDETestFailureBreakpoint`: IDE test failure breakpoint
 - [ ] **enabled**: **Bool** - indicates whether it should be active
 - [ ] **ignoreCount**: **String** - indicates how many times it should be ignored before stopping
 - [ ] **continueAfterRunningActions**: **Bool** - indicates if should automatically continue after evaluating actions
@@ -198,7 +198,7 @@ Default settings for file extensions. See [Sources](#sources) for more documenta
 
 ```yaml
 breakpoints:
-  - extensionID: exception
+  - type: ExceptionBreakpoint
     enabled: true
     ignoreCount: 0
     continueAfterRunningActions: false
@@ -207,14 +207,14 @@ breakpoints:
 
 #### Breakpoint Action
 
-- [x] **extensionID**: **String** - Breakpoint action type
-    - `debuggerCommand`: execute debugger command
-    - `log`: log message
-    - `shellCommand`: execute shell command
-    - `graphicsTrace`: capture GPU frame
-    - `appleScript`: execute AppleScript
-    - `sound`: play sound
-    - `openGLError`: throw OpenGL error
+- [x] **type**: **String** - Breakpoint action type
+    - `DebuggerCommand`: execute debugger command
+    - `Log`: log message
+    - `ShellCommand`: execute shell command
+    - `GraphicsTrace`: capture GPU frame
+    - `AppleScript`: execute AppleScript
+    - `Sound`: play sound
+    - `OpenGLError`: throw OpenGL error
 - [ ] **consoleCommand**: **String** - debugger command (only used by debugger command breakpoint action)
 - [ ] **message**: **String** - log message (only used log message breakpoint action)
 - [ ] **conveyanceType**: **String** - conveyance type (only used by log message breakpoint action)
@@ -240,7 +240,7 @@ breakpoints:
 
 ```yaml
 actions:
-  - extensionID: sound
+  - type: Sound
     soundName: Blow
 ```
 

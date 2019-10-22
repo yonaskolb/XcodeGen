@@ -32,7 +32,10 @@ packages:
     url: https://github.com/Swinject/Swinject
     version: 2.8.0
 breakpoints:
-  - extensionID: exception
+  - type: ExceptionBreakpoint
+    actions:
+      - type: Sound
+        soundName: Blow
 targets:
   Legacy:
     type: ""

@@ -6,7 +6,7 @@ public struct Breakpoint: Equatable {
 
     public struct Action: Equatable {
 
-        public var extensionID: String
+        public var type: XCBreakpointList.BreakpointProxy.BreakpointContent.BreakpointActionProxy.ActionExtensionID
         public var consoleCommand: String?
         public var message: String?
         public var conveyanceType: String?
@@ -16,7 +16,7 @@ public struct Breakpoint: Equatable {
         public var script: String?
         public var soundName: String?
 
-        public init(extensionID: String,
+        public init(type: XCBreakpointList.BreakpointProxy.BreakpointContent.BreakpointActionProxy.ActionExtensionID,
                     consoleCommand: String? = nil,
                     message: String? = nil,
                     conveyanceType: String? = nil,
@@ -25,7 +25,7 @@ public struct Breakpoint: Equatable {
                     waitUntilDone: Bool? = nil,
                     script: String? = nil,
                     soundName: String? = nil) {
-            self.extensionID = extensionID
+            self.type = type
             self.consoleCommand = consoleCommand
             self.message = message
             self.conveyanceType = conveyanceType
@@ -37,7 +37,7 @@ public struct Breakpoint: Equatable {
         }
 
         public static func ==(lhs: Breakpoint.Action, rhs: Breakpoint.Action) -> Bool {
-            return lhs.extensionID == rhs.extensionID
+            return lhs.type == rhs.type
         }
     }
 
@@ -50,7 +50,7 @@ public struct Breakpoint: Equatable {
         }
     }
 
-    public var extensionID: String
+    public var type: XCBreakpointList.BreakpointProxy.BreakpointExtensionID
     public var enabled: Bool
     public var ignoreCount: String
     public var continueAfterRunningActions: Bool
@@ -69,7 +69,7 @@ public struct Breakpoint: Equatable {
     public var actions: [Breakpoint.Action]
     public var locations: [Breakpoint.Location]
 
-    public init(extensionID: String,
+    public init(type: XCBreakpointList.BreakpointProxy.BreakpointExtensionID,
                 enabled: Bool = true,
                 ignoreCount: String = "0",
                 continueAfterRunningActions: Bool = false,
@@ -87,7 +87,7 @@ public struct Breakpoint: Equatable {
                 condition: String? = nil,
                 actions: [Breakpoint.Action] = [],
                 locations: [Breakpoint.Location] = []) {
-        self.extensionID = extensionID
+        self.type = type
         self.enabled = enabled
         self.ignoreCount = ignoreCount
         self.continueAfterRunningActions = continueAfterRunningActions
@@ -108,7 +108,7 @@ public struct Breakpoint: Equatable {
     }
 
     public static func == (lhs: Breakpoint, rhs: Breakpoint) -> Bool {
-        return lhs.extensionID == rhs.extensionID &&
+        return lhs.type == rhs.type &&
             lhs.enabled == rhs.enabled &&
             lhs.ignoreCount == rhs.ignoreCount &&
             lhs.continueAfterRunningActions == rhs.continueAfterRunningActions
@@ -117,7 +117,12 @@ public struct Breakpoint: Equatable {
 
 extension Breakpoint.Action: JSONObjectConvertible {
     public init(jsonDictionary: JSONDictionary) throws {
-        extensionID = try jsonDictionary.json(atKeyPath: "extensionID")
+        let typeString: String = try jsonDictionary.json(atKeyPath: "type")
+        if let type = XCBreakpointList.BreakpointProxy.BreakpointContent.BreakpointActionProxy.ActionExtensionID(string: typeString) {
+            self.type = type
+        } else {
+            throw SpecParsingError.unknownBreakpointActionType(typeString)
+        }
         consoleCommand = jsonDictionary.json(atKeyPath: "consoleCommand")
         message = jsonDictionary.json(atKeyPath: "message")
         conveyanceType = jsonDictionary.json(atKeyPath: "conveyanceType")
@@ -136,7 +141,12 @@ extension Breakpoint.Location: JSONObjectConvertible {
 extension Breakpoint: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
-        extensionID = try jsonDictionary.json(atKeyPath: "extensionID")
+        let typeString: String = try jsonDictionary.json(atKeyPath: "type")
+        if let type = XCBreakpointList.BreakpointProxy.BreakpointExtensionID(string: typeString) {
+            self.type = type
+        } else {
+            throw SpecParsingError.unknownBreakpointType(typeString)
+        }
         enabled = jsonDictionary.json(atKeyPath: "enabled") ?? true
         ignoreCount = jsonDictionary.json(atKeyPath: "ignoreCount") ?? "0"
         continueAfterRunningActions = jsonDictionary.json(atKeyPath: "continueAfterRunningActions") ?? false
@@ -152,7 +162,11 @@ extension Breakpoint: JSONObjectConvertible {
         scope = jsonDictionary.json(atKeyPath: "scope")
         stopOnStyle = jsonDictionary.json(atKeyPath: "stopOnStyle")
         condition = jsonDictionary.json(atKeyPath: "condition")
-        actions = jsonDictionary.json(atKeyPath: "actions") ?? []
+        if jsonDictionary["actions"] != nil {
+            actions = try jsonDictionary.json(atKeyPath: "actions", invalidItemBehaviour: .fail)
+        } else {
+            actions = []
+        }
         locations = jsonDictionary.json(atKeyPath: "locations") ?? []
     }
 }
