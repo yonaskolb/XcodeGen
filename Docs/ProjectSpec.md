@@ -202,7 +202,6 @@ breakpoints:
     enabled: true
     ignoreCount: 0
     continueAfterRunningActions: false
-        
 ```
 
 #### Breakpoint Action
