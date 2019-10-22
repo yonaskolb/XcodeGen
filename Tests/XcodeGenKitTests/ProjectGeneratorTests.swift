@@ -971,16 +971,17 @@ class ProjectGeneratorTests: XCTestCase {
                 let infoPlistFile = tempPath + plist.path
                 let data: Data = try infoPlistFile.read()
                 let infoPlist = try PropertyListSerialization.propertyList(from: data, options: [], format: nil) as! [String: Any]
-                var expectedInfoPlist: [String: Any] = [:]
-                expectedInfoPlist["CFBundleIdentifier"] = "$(PRODUCT_BUNDLE_IDENTIFIER)"
-                expectedInfoPlist["CFBundleInfoDictionaryVersion"] = "6.0"
-                expectedInfoPlist["CFBundleExecutable"] = "$(EXECUTABLE_NAME)"
-                expectedInfoPlist["CFBundleName"] = "$(PRODUCT_NAME)"
-                expectedInfoPlist["CFBundleDevelopmentRegion"] = "$(DEVELOPMENT_LANGUAGE)"
-                expectedInfoPlist["CFBundleShortVersionString"] = "1.0"
-                expectedInfoPlist["CFBundleVersion"] = "1"
-                expectedInfoPlist["CFBundlePackageType"] = "APPL"
-                expectedInfoPlist["UISupportedInterfaceOrientations"] = ["UIInterfaceOrientationPortrait", "UIInterfaceOrientationLandscapeLeft"]
+                let expectedInfoPlist: [String: Any] = [
+                    "CFBundleIdentifier": "$(PRODUCT_BUNDLE_IDENTIFIER)",
+                    "CFBundleInfoDictionaryVersion": "6.0",
+                    "CFBundleName": "$(PRODUCT_NAME)",
+                    "CFBundleExecutable": "$(EXECUTABLE_NAME)",
+                    "CFBundleDevelopmentRegion": "$(DEVELOPMENT_LANGUAGE)",
+                    "CFBundleShortVersionString": "1.0",
+                    "CFBundleVersion": "1",
+                    "CFBundlePackageType": "APPL",
+                    "UISupportedInterfaceOrientations": ["UIInterfaceOrientationPortrait", "UIInterfaceOrientationLandscapeLeft"]
+                ]
 
                 try expect(NSDictionary(dictionary: expectedInfoPlist).isEqual(to: infoPlist)).beTrue()
             }
@@ -1020,14 +1021,15 @@ class ProjectGeneratorTests: XCTestCase {
                 let infoPlistFile = tempPath + plist.path
                 let data: Data = try infoPlistFile.read()
                 let infoPlist = try PropertyListSerialization.propertyList(from: data, options: [], format: nil) as! [String: Any]
-                var expectedInfoPlist: [String: Any] = [:]
-                expectedInfoPlist["CFBundleIdentifier"] = "$(PRODUCT_BUNDLE_IDENTIFIER)"
-                expectedInfoPlist["CFBundleInfoDictionaryVersion"] = "6.0"
-                expectedInfoPlist["CFBundleName"] = "$(PRODUCT_NAME)"
-                expectedInfoPlist["CFBundleDevelopmentRegion"] = "$(DEVELOPMENT_LANGUAGE)"
-                expectedInfoPlist["CFBundleShortVersionString"] = "1.0"
-                expectedInfoPlist["CFBundleVersion"] = "1"
-                expectedInfoPlist["CFBundlePackageType"] = "BNDL"
+                let expectedInfoPlist: [String: Any] = [
+                    "CFBundleIdentifier": "$(PRODUCT_BUNDLE_IDENTIFIER)",
+                    "CFBundleInfoDictionaryVersion": "6.0",
+                    "CFBundleName": "$(PRODUCT_NAME)",
+                    "CFBundleDevelopmentRegion": "$(DEVELOPMENT_LANGUAGE)",
+                    "CFBundleShortVersionString": "1.0",
+                    "CFBundleVersion": "1",
+                    "CFBundlePackageType": "BNDL"
+                ]
 
                 try expect(NSDictionary(dictionary: expectedInfoPlist).isEqual(to: infoPlist)).beTrue()
             }

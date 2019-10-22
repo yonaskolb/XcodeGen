@@ -8,7 +8,7 @@ public class InfoPlistGenerator {
      Default info plist attributes taken from:
      /Applications/Xcode.app/Contents/Developer/Library/Xcode/Templates/Project Templates/Base/Base_DefinitionsInfoPlist.xctemplate/TemplateInfo.plist
      */
-    private func generateDefaultInfoPlist(target: Target) -> [String: Any] {
+    private func generateDefaultInfoPlist(for target: Target) -> [String: Any] {
         var dictionary: [String: Any] = [:]
         dictionary["CFBundleIdentifier"] = "$(PRODUCT_BUNDLE_IDENTIFIER)"
         dictionary["CFBundleInfoDictionaryVersion"] = "6.0"
@@ -26,8 +26,8 @@ public class InfoPlistGenerator {
         return dictionary
     }
 
-    public func generateProperties(target: Target) -> [String: Any] {
-        var targetInfoPlist = generateDefaultInfoPlist(target: target)
+    public func generateProperties(for target: Target) -> [String: Any] {
+        var targetInfoPlist = generateDefaultInfoPlist(for: target)
         switch target.type {
         case .uiTestBundle,
              .unitTestBundle:
