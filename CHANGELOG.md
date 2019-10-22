@@ -7,7 +7,7 @@
 - Added support for `enableGPUFrameCaptureMode` #1251 @bsudekum
 - Config setting presets can now also be loaded from the main bundle when bundling XcodeGenKit #1135 @SofteqDG
 - Added ability to generate multiple projects in one XcodeGen launch #1270 @skofgar
-- Added support for shared breakpoints #177 @alexruperez
+- Added support for shared breakpoints #177 @alexruperez @myihsan
 
 ### Fixed
 
