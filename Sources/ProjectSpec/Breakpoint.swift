@@ -35,19 +35,11 @@ public struct Breakpoint: Equatable {
             self.script = script
             self.soundName = soundName
         }
-
-        public static func ==(lhs: Breakpoint.Action, rhs: Breakpoint.Action) -> Bool {
-            return lhs.type == rhs.type
-        }
     }
 
     public struct Location: Equatable {
 
         public init() {}
-
-        public static func ==(lhs: Breakpoint.Location, rhs: Breakpoint.Location) -> Bool {
-            return true
-        }
     }
 
     public var type: XCBreakpointList.BreakpointProxy.BreakpointExtensionID
@@ -105,13 +97,6 @@ public struct Breakpoint: Equatable {
         self.condition = condition
         self.actions = actions
         self.locations = locations
-    }
-
-    public static func == (lhs: Breakpoint, rhs: Breakpoint) -> Bool {
-        return lhs.type == rhs.type &&
-            lhs.enabled == rhs.enabled &&
-            lhs.ignoreCount == rhs.ignoreCount &&
-            lhs.continueAfterRunningActions == rhs.continueAfterRunningActions
     }
 }
 
