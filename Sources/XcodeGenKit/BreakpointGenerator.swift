@@ -10,8 +10,11 @@ public class BreakpointGenerator {
         self.project = project
     }
 
-    func generateBreakpointList() throws -> XCBreakpointList {
+    func generateBreakpointList() throws -> XCBreakpointList? {
         let breakpoints = project.breakpoints
+        guard !breakpoints.isEmpty else {
+            return nil
+        }
         return XCBreakpointList(type: "4", version: "2.0", breakpoints: try breakpoints.map({ try generateBreakpointProxy($0) }))
     }
 
