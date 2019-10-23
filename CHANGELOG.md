@@ -5,6 +5,9 @@
 #### Fixed
 - Add base localisation by default even if no base localised files were found. Fixes warning in Xcode 11 [#685](https://github.com/yonaskolb/XcodeGen/pull/685) @yonaskolb
 - Don't generate CFBundleExecutable in default generated Info.plist for `bundle` target types [#689](https://github.com/yonaskolb/XcodeGen/pull/689) @FranzBusch
+- Fixed resolving relative paths with custom project destination [#681](https://github.com/yonaskolb/XcodeGen/pull/681) @giginet
+- Fixed resolving relative paths for Info.plist [#683](https://github.com/yonaskolb/XcodeGen/pull/683)
+
 
 ## 2.9.0
 
@@ -16,7 +19,6 @@
 - Add `rcproject` files to sources build phase instead of resources [#669](https://github.com/yonaskolb/XcodeGen/pull/669) @Qusic
 - Prefer default configuration names for generated schemes [#673](https://github.com/yonaskolb/XcodeGen/pull/673) @giginet
 - Fixed some resource files being placed to "Recovered References" group [#679](https://github.com/yonaskolb/XcodeGen/pull/679) @nivanchikov
-- Fixed resolving relative paths with custom project destination [#681](https://github.com/yonaskolb/XcodeGen/pull/681) @giginet
 
 #### Internal
 - Updated to SwiftCLI 5.3.2 [#667](https://github.com/yonaskolb/XcodeGen/pull/667) @giginet

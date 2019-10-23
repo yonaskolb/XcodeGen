@@ -1066,6 +1066,18 @@ class ProjectGeneratorTests: XCTestCase {
                     let group = generatedProject.pbxproj.groups.first(where: { $0.nameOrPath == groupName })
                     try expect(group?.path) == "TestProject/App_iOS"
                 }
+                
+                $0.it("generate Info.plist") {
+                    let destinationPath = fixturePath
+                    let project = Project(name: "test", targets: [frameworkWithSources])
+                    let generator = ProjectGenerator(project: project)
+                    let generatedProject = try generator.generateXcodeProject(to: destinationPath)
+                    let plists = generatedProject.pbxproj.buildConfigurations.compactMap { $0.buildSettings["INFOPLIST_FILE"] as? Path }
+                    try expect(plists.count) == 2
+                    for plist in plists {
+                        try expect(plist) == "TestProject/App_iOS/Info.plist"
+                    }
+                }
             }
         }
     }

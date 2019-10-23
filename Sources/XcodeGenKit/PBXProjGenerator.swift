@@ -9,6 +9,7 @@ public class PBXProjGenerator {
     let project: Project
 
     let pbxProj: PBXProj
+    let projectDirectory: Path?
     let carthageResolver: CarthageDependencyResolver
 
     var sourceGenerator: SourceGenerator!
@@ -28,6 +29,7 @@ public class PBXProjGenerator {
         self.project = project
         carthageResolver = CarthageDependencyResolver(project: project)
         pbxProj = PBXProj(rootObject: nil, objectVersion: project.objectVersion)
+        self.projectDirectory = projectDirectory
         sourceGenerator = SourceGenerator(project: project,
                                           pbxProj: pbxProj,
                                           projectDirectory: projectDirectory)
@@ -861,7 +863,7 @@ public class PBXProjGenerator {
                     searchForPlist = false
                 }
                 if let plistPath = plistPath {
-                    buildSettings["INFOPLIST_FILE"] = (try? plistPath.relativePath(from: project.basePath)) ?? plistPath
+                    buildSettings["INFOPLIST_FILE"] = (try? plistPath.relativePath(from: projectDirectory ?? project.basePath)) ?? plistPath
                 }
             }
 
