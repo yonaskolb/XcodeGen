@@ -81,6 +81,7 @@
 		768648ED7E93B6D888574144 /* module.modulemap in CopyFiles */ = {isa = PBXBuildFile; fileRef = F2950763C4C568CC85021D18 /* module.modulemap */; };
 		7A0DABBEA55B06E148C665A8 /* StaticLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AC91042453E18DF74BA1C0F /* StaticLibrary.swift */; };
 		7A8C78212CEAC6452DFAB00E /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A5F527F2590C14956518174 /* FrameworkFile.swift */; };
+		7C8FF0B857E390417134C10F /* Result.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D296BB7355994040E197A1EE /* Result.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		7F658343A505B824321E086B /* Headers in Headers */ = {isa = PBXBuildFile; fileRef = 2E1E747C7BC434ADB80CC269 /* Headers */; settings = {ATTRIBUTES = (Public, ); }; };
 		803B7CE086CFBA409F9D1ED7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 108BB29172D27BE3BD1E7F35 /* Assets.xcassets */; };
 		900CFAD929CAEE3861127627 /* MyBundle.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7B5068D64404C61A67A18458 /* MyBundle.bundle */; };
@@ -99,6 +100,7 @@
 		B2D43A31C184E34EF9CB743C /* Framework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8A9274BE42A03DC5DA1FAD04 /* Framework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B47F2629BFE5853767C8BB5E /* Contacts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FDB2B6A77D39CD5602F2125F /* Contacts.framework */; };
 		B49D3A51787E362DE4D0E78A /* SomeXPCService.xpc in CopyFiles */ = {isa = PBXBuildFile; fileRef = 70A8E15C81E454DC950C59F0 /* SomeXPCService.xpc */; };
+		B9F3C9E77019EC3423A7F5D8 /* TestProjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87DF9DCA8399E3214A7E27CF /* TestProjectTests.swift */; };
 		BAA1C1E3828F5D43546AF997 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0BB1B49A91B892152D68ED76 /* libc++.tbd */; };
 		BD1419893577E6CEDF8CBA83 /* Result.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0C5AC2545AE4D4F7F44E2E9B /* Result.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		BD95416F2005199F6B3572CF /* Framework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 41FC82ED1C4C3B7B3D7B2FB7 /* Framework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -174,6 +176,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 13E8C5AB873CEE21E18E552F;
 			remoteInfo = StaticLibrary_ObjC_iOS;
+		};
+		610412261F48A0A36C32FC5C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0FBAE303E3CFC2ABAC876A77 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 020A320BB3736FCDE6CC4E70;
+			remoteInfo = App_macOS;
 		};
 		7F4EAACE4AD6CF285B7D3308 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -306,6 +315,17 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		6CB76DFA8662672C4245AF41 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				7C8FF0B857E390417134C10F /* Result.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		7FAF0BBB3DE701EBE5DBE810 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -411,11 +431,13 @@
 
 /* Begin PBXFileReference section */
 		020E4DA91C9132845CAFDC5D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
+		039F208D1138598CE060F140 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		056A43A09CE7E88D578696D8 /* StaticLibrary_ObjC.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = StaticLibrary_ObjC.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		068EDF47F0B087F6A4052AC0 /* Empty.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Empty.h; sourceTree = "<group>"; };
 		0704B6CAFBB53E0EBB08F6B3 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		09B82F603D981398F38D762E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0B193CC6D2B3003418A550B6 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LocalizedStoryboard.strings; sourceTree = "<group>"; };
+		0B9D98D935F2C69A1F5BA539 /* App_macOS_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = App_macOS_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0BB1B49A91B892152D68ED76 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		0C5AC2545AE4D4F7F44E2E9B /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Result.framework; sourceTree = "<group>"; };
 		0D09D243DBCF9D32E239F1E8 /* App_watchOS Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "App_watchOS Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -466,6 +488,7 @@
 		7F1A2F579A6F79C62DDA0571 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7FDC16E1938AA114B67D87A9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
 		814822136AF3C64428D69DD6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		87DF9DCA8399E3214A7E27CF /* TestProjectTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestProjectTests.swift; sourceTree = "<group>"; };
 		8A9274BE42A03DC5DA1FAD04 /* Framework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Framework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8CAF6C55B555E3E1352645B6 /* ExtensionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDelegate.swift; sourceTree = "<group>"; };
 		93C033648A37D95027845BD3 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
@@ -662,6 +685,7 @@
 				FC81A3ED177CE9DA68D09941 /* App_iOS_Tests */,
 				0D039F2E62354C7C8E283BE6 /* App_iOS_UITests */,
 				EE78B4FBD0137D1975C47D76 /* App_macOS */,
+				6DE1C805DC13547F27FD86C6 /* App_macOS_Tests */,
 				BAE6C12745737019DC9E98BF /* App_watchOS */,
 				795B8D70B674C850B57DD39D /* App_watchOS Extension */,
 				6DBE0EE90642BB3F6E58AD43 /* Configs */,
@@ -740,6 +764,15 @@
 			path = Configs;
 			sourceTree = "<group>";
 		};
+		6DE1C805DC13547F27FD86C6 /* App_macOS_Tests */ = {
+			isa = PBXGroup;
+			children = (
+				039F208D1138598CE060F140 /* Info.plist */,
+				87DF9DCA8399E3214A7E27CF /* TestProjectTests.swift */,
+			);
+			path = App_macOS_Tests;
+			sourceTree = "<group>";
+		};
 		795B8D70B674C850B57DD39D /* App_watchOS Extension */ = {
 			isa = PBXGroup;
 			children = (
@@ -813,6 +846,7 @@
 				CB77A637470A3CDA2BDDBE99 /* App_iOS_Tests.xctest */,
 				13EEAB58665D79C15184D9D0 /* App_iOS_UITests.xctest */,
 				B1C33BB070583BE3B0EC0E68 /* App_iOS.app */,
+				0B9D98D935F2C69A1F5BA539 /* App_macOS_Tests.xctest */,
 				33F6DCDC37D2E66543D4965D /* App_macOS.app */,
 				0D09D243DBCF9D32E239F1E8 /* App_watchOS Extension.appex */,
 				A680BE9F68A255B0FB291AE6 /* App_watchOS.app */,
@@ -1293,6 +1327,23 @@
 			productReference = 6177CC6263783487E93F7F4D /* Framework.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		71E2BDAC4B8E8FC2BBF75C55 /* App_macOS_Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 62C52A55CB8D3BD9A055FD14 /* Build configuration list for PBXNativeTarget "App_macOS_Tests" */;
+			buildPhases = (
+				8A616537E6E1BEAB59E069C7 /* Sources */,
+				6CB76DFA8662672C4245AF41 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				8B1B6143B8996B3CF0FE61C5 /* PBXTargetDependency */,
+			);
+			name = App_macOS_Tests;
+			productName = App_macOS_Tests;
+			productReference = 0B9D98D935F2C69A1F5BA539 /* App_macOS_Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		7D3D92034F4F203C140574F0 /* StaticLibrary_ObjC_watchOS */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0129D8A8DCD54069136D90F7 /* Build configuration list for PBXNativeTarget "StaticLibrary_ObjC_watchOS" */;
@@ -1490,6 +1541,9 @@
 					0867B0DACEF28C11442DE8F7 = {
 						ProvisioningStyle = Automatic;
 					};
+					71E2BDAC4B8E8FC2BBF75C55 = {
+						TestTargetID = 020A320BB3736FCDE6CC4E70;
+					};
 					BF3693DCA6182D7AEC410AFC = {
 						CUSTOM = value;
 					};
@@ -1517,6 +1571,7 @@
 				DC2F16BAA6E13B44AB62F888 /* App_iOS_Tests */,
 				F674B2CFC4738EEC49BAD0DA /* App_iOS_UITests */,
 				020A320BB3736FCDE6CC4E70 /* App_macOS */,
+				71E2BDAC4B8E8FC2BBF75C55 /* App_macOS_Tests */,
 				208179651927D1138D19B5AD /* App_watchOS */,
 				307AE3FA155FFD09B74AE351 /* App_watchOS Extension */,
 				B61ED4688789B071275E2B7A /* EntitledApp */,
@@ -1889,6 +1944,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		8A616537E6E1BEAB59E069C7 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B9F3C9E77019EC3423A7F5D8 /* TestProjectTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8FD76C583F8C166F974F4BE2 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2061,6 +2124,11 @@
 			isa = PBXTargetDependency;
 			target = 578C80E461E675508CED5DC3 /* StaticLibrary_ObjC_macOS */;
 			targetProxy = DECF0B88B325A158E4E1D9AE /* PBXContainerItemProxy */;
+		};
+		8B1B6143B8996B3CF0FE61C5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 020A320BB3736FCDE6CC4E70 /* App_macOS */;
+			targetProxy = 610412261F48A0A36C32FC5C /* PBXContainerItemProxy */;
 		};
 		981D116D40DBA0407D0E0E94 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -2473,6 +2541,28 @@
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = "Test Debug";
+		};
+		12BCDE0EFCEE621B881E424C /* Test Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
+				INFOPLIST_FILE = App_macOS_Tests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-macOS-Tests";
+				SDKROOT = macosx;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/App_macOS.app/App_macOS";
+				TEST_TARGET_NAME = App_macOS;
+			};
+			name = "Test Release";
 		};
 		1341099486D8FE68A99CB5FE /* Test Debug */ = {
 			isa = XCBuildConfiguration;
@@ -3000,6 +3090,28 @@
 			};
 			name = "Production Debug";
 		};
+		44C2FD12D7D26D71D8150C76 /* Test Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
+				INFOPLIST_FILE = App_macOS_Tests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-macOS-Tests";
+				SDKROOT = macosx;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/App_macOS.app/App_macOS";
+				TEST_TARGET_NAME = App_macOS;
+			};
+			name = "Test Debug";
+		};
 		4621C6C8A78FBB1CF4078178 /* Production Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -3153,6 +3265,50 @@
 				TARGETED_DEVICE_FAMILY = 4;
 			};
 			name = "Production Debug";
+		};
+		4F029A78B7BAB85B1E284798 /* Production Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
+				INFOPLIST_FILE = App_macOS_Tests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-macOS-Tests";
+				SDKROOT = macosx;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/App_macOS.app/App_macOS";
+				TEST_TARGET_NAME = App_macOS;
+			};
+			name = "Production Debug";
+		};
+		4FA4DE89FDED9F49FAABED58 /* Production Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
+				INFOPLIST_FILE = App_macOS_Tests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-macOS-Tests";
+				SDKROOT = macosx;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/App_macOS.app/App_macOS";
+				TEST_TARGET_NAME = App_macOS;
+			};
+			name = "Production Release";
 		};
 		511E983641E821858100107B /* Production Debug */ = {
 			isa = XCBuildConfiguration;
@@ -5413,6 +5569,28 @@
 			};
 			name = "Production Release";
 		};
+		EBD2F70285E21FFAB1C23D01 /* Staging Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
+				INFOPLIST_FILE = App_macOS_Tests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-macOS-Tests";
+				SDKROOT = macosx;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/App_macOS.app/App_macOS";
+				TEST_TARGET_NAME = App_macOS;
+			};
+			name = "Staging Release";
+		};
 		EC3A16C2887B72837F84904A /* Production Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -5572,6 +5750,28 @@
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = "Test Release";
+		};
+		FB472DFA702C8A3B55153F97 /* Staging Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
+				INFOPLIST_FILE = App_macOS_Tests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-macOS-Tests";
+				SDKROOT = macosx;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/App_macOS.app/App_macOS";
+				TEST_TARGET_NAME = App_macOS;
+			};
+			name = "Staging Debug";
 		};
 		FBC34FE61DA25D0516C15B60 /* Staging Release */ = {
 			isa = XCBuildConfiguration;
@@ -5780,6 +5980,19 @@
 				AA4F4236D960D3ACE683A815 /* Staging Release */,
 				EC9867399E6694681F8903B1 /* Test Debug */,
 				CA08CB7E7DBBC99CDC7F2C2E /* Test Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "";
+		};
+		62C52A55CB8D3BD9A055FD14 /* Build configuration list for PBXNativeTarget "App_macOS_Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4F029A78B7BAB85B1E284798 /* Production Debug */,
+				4FA4DE89FDED9F49FAABED58 /* Production Release */,
+				FB472DFA702C8A3B55153F97 /* Staging Debug */,
+				EBD2F70285E21FFAB1C23D01 /* Staging Release */,
+				44C2FD12D7D26D71D8150C76 /* Test Debug */,
+				12BCDE0EFCEE621B881E424C /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "";
