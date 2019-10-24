@@ -2559,7 +2559,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-macOS-Tests";
 				SDKROOT = macosx;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/App_macOS.app/App_macOS";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/App_macOS.app/Contents/MacOS/App_macOS";
 				TEST_TARGET_NAME = App_macOS;
 			};
 			name = "Test Release";
@@ -3107,7 +3107,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-macOS-Tests";
 				SDKROOT = macosx;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/App_macOS.app/App_macOS";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/App_macOS.app/Contents/MacOS/App_macOS";
 				TEST_TARGET_NAME = App_macOS;
 			};
 			name = "Test Debug";
@@ -3283,7 +3283,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-macOS-Tests";
 				SDKROOT = macosx;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/App_macOS.app/App_macOS";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/App_macOS.app/Contents/MacOS/App_macOS";
 				TEST_TARGET_NAME = App_macOS;
 			};
 			name = "Production Debug";
@@ -3305,7 +3305,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-macOS-Tests";
 				SDKROOT = macosx;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/App_macOS.app/App_macOS";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/App_macOS.app/Contents/MacOS/App_macOS";
 				TEST_TARGET_NAME = App_macOS;
 			};
 			name = "Production Release";
@@ -5586,7 +5586,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-macOS-Tests";
 				SDKROOT = macosx;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/App_macOS.app/App_macOS";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/App_macOS.app/Contents/MacOS/App_macOS";
 				TEST_TARGET_NAME = App_macOS;
 			};
 			name = "Staging Release";
@@ -5768,7 +5768,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-macOS-Tests";
 				SDKROOT = macosx;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/App_macOS.app/App_macOS";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/App_macOS.app/Contents/MacOS/App_macOS";
 				TEST_TARGET_NAME = App_macOS;
 			};
 			name = "Staging Debug";

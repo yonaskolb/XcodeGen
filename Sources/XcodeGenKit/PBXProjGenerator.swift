@@ -898,7 +898,11 @@ public class PBXProjGenerator {
                     if dependency.type == .target,
                         let dependencyTarget = project.getTarget(dependency.reference),
                         dependencyTarget.type.isApp {
-                        buildSettings["TEST_HOST"] = "$(BUILT_PRODUCTS_DIR)/\(dependencyTarget.productName).app/\(dependencyTarget.productName)"
+                        if dependencyTarget.platform == .macOS {
+                            buildSettings["TEST_HOST"] = "$(BUILT_PRODUCTS_DIR)/\(dependencyTarget.productName).app/Contents/MacOS/\(dependencyTarget.productName)"
+                        } else {
+                            buildSettings["TEST_HOST"] = "$(BUILT_PRODUCTS_DIR)/\(dependencyTarget.productName).app/\(dependencyTarget.productName)"
+                        }
                         break
                     }
                 }
