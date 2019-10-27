@@ -50,6 +50,7 @@ You can also use environment variables in your configuration file, by using `${S
 - [ ] **targetTemplates**: **[String: [Target Template](#target-template)]** - a list of targets that can be used as templates for actual targets which reference them via a `template` property. They can be used to extract common target settings. Works great in combination with `include`.
 - [ ] **packages**: **[String: [Swift Package](#swift-package)]** - a map of Swift packages by name
 - [ ] **localPackages**: **[String]** - A list of paths to local Swift Packages. The paths must be directories with a `Package.swift` file in them. This is used to override `packages` with a local version for development purposes.
+- [ ] **projectReferences**: **[String: [Project Reference](#project-reference)]** - a map of project references by name
 
 ### Include
 
@@ -838,4 +839,22 @@ targets:
   App:
     dependencies:
       - package: Yams
+```
+
+
+## Project Reference
+
+Project References are defined at a project level, and then you can use the project name to refer its target via a [Scheme](#scheme)
+
+- [x] **path**: **String** - The path to the `xcodeproj` file to reference.
+
+```yml
+projectReferences:
+  YamsProject:
+    path: ./Carthage/Checkouts/Yams/Yams.xcodeproj
+schemes:
+  TestTarget:
+    build:
+      targets:
+        YamsProject/Yams: ["run"]
 ```

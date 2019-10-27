@@ -217,6 +217,15 @@ class ProjectSpecTests: XCTestCase {
                 try expectValidationError(project, .invalidSchemeConfig(scheme: "scheme1", config: "releaseInvalid"))
             }
 
+            $0.it("fails with invalid project reference") {
+                var project = baseProject
+                project.schemes = [Scheme(
+                    name: "scheme1",
+                    build: .init(targets: [.init(target: "invalidProjectRef/target1")])
+                )]
+                try expectValidationError(project, .invalidProjectReference(scheme: "scheme1", reference: "invalidProjectRef"))
+            }
+
             $0.it("allows missing optional file") {
                 var project = baseProject
                 project.targets = [Target(
@@ -338,7 +347,7 @@ class ProjectSpecTests: XCTestCase {
                                                                            name: nil,
                                                                            outputFiles: ["bar"],
                                                                            outputFilesCompilerFlags: ["foo"])],
-                                                    scheme: TargetScheme(testTargets: [Scheme.Test.TestTarget(name: "test target",
+                                                    scheme: TargetScheme(testTargets: [Scheme.Test.TestTarget(targetReference: "test target",
                                                                                                               randomExecutionOrder: false,
                                                                                                               parallelizable: false)],
                                                                          configVariants: ["foo"],
@@ -376,7 +385,7 @@ class ProjectSpecTests: XCTestCase {
                                                                                                  shell: "/bin/bash",
                                                                                                  runOnlyWhenInstalling: true,
                                                                                                  showEnvVars: false)],
-                                                                      scheme: TargetScheme(testTargets: [Scheme.Test.TestTarget(name: "test target",
+                                                                      scheme: TargetScheme(testTargets: [Scheme.Test.TestTarget(targetReference: "test target",
                                                                                                                                 randomExecutionOrder: false,
                                                                                                                                 parallelizable: false)],
                                                                                            configVariants: ["foo"],
@@ -431,7 +440,7 @@ class ProjectSpecTests: XCTestCase {
                                                                       randomExecutionOrder: false,
                                                                       parallelizable: false,
                                                                       commandLineArguments: ["foo": true],
-                                                                      targets: [Scheme.Test.TestTarget(name: "foo",
+                                                                      targets: [Scheme.Test.TestTarget(targetReference: "foo",
                                                                                                        randomExecutionOrder: false,
                                                                                                        parallelizable: false)],
                                                                       preActions: [Scheme.ExecutionAction(name: "preAction",

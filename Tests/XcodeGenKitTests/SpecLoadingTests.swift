@@ -748,6 +748,7 @@ class SpecLoadingTests: XCTestCase {
                             "Target4": ["testing": true],
                             "Target5": ["testing": false],
                             "Target6": ["test", "analyze"],
+                            "ExternalProject/Target7": ["run"],
                         ],
                         "preActions": [
                             [
@@ -762,7 +763,7 @@ class SpecLoadingTests: XCTestCase {
                         "targets": [
                             "Target1",
                             [
-                                "name": "Target2",
+                                "name": "ExternalProject/Target2",
                                 "parallelizable": true,
                                 "randomExecutionOrder": true,
                                 "skippedTests": ["Test/testExample()"],
@@ -780,6 +781,7 @@ class SpecLoadingTests: XCTestCase {
                     Scheme.BuildTarget(target: "Target4", buildTypes: [.testing]),
                     Scheme.BuildTarget(target: "Target5", buildTypes: []),
                     Scheme.BuildTarget(target: "Target6", buildTypes: [.testing, .analyzing]),
+                    Scheme.BuildTarget(target: "ExternalProject/Target7", buildTypes: [.running]),
                 ]
                 try expect(scheme.name) == "Scheme"
                 try expect(scheme.build.targets) == expectedTargets
@@ -797,7 +799,7 @@ class SpecLoadingTests: XCTestCase {
                     targets: [
                         "Target1",
                         Scheme.Test.TestTarget(
-                            name: "Target2",
+                            targetReference: "ExternalProject/Target2",
                             randomExecutionOrder: true,
                             parallelizable: true,
                             skippedTests: ["Test/testExample()"]
@@ -958,7 +960,7 @@ class SpecLoadingTests: XCTestCase {
                     targets: [
                         "TargetFirstTarget",
                         Scheme.Test.TestTarget(
-                            name: "Target2",
+                            targetReference: "Target2",
                             randomExecutionOrder: true,
                             parallelizable: true,
                             skippedTests: ["Test/testExample()"]
