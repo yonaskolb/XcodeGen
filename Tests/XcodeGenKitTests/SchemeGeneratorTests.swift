@@ -311,8 +311,8 @@ class SchemeGeneratorTests: XCTestCase {
                         config: "Debug",
                         gatherCoverageData: true,
                         coverageTargets: [
-                            TargetReference(string: "TestProject/ExternalTarget"),
-                            TargetReference(string: framework.name),
+                            "TestProject/ExternalTarget",
+                            TargetReference(framework.name),
                         ]
                     )
                 )
@@ -320,8 +320,8 @@ class SchemeGeneratorTests: XCTestCase {
                     name: "test",
                     targets: [framework],
                     schemes: [scheme],
-                    externalProjects: [
-                        ExternalProject(name: "TestProject", path: externalProject.string),
+                    projectReferences: [
+                        ProjectReference(name: "TestProject", path: externalProject.string),
                     ]
                 )
                 let xcodeProject = try project.generateXcodeProject()
