@@ -13,6 +13,7 @@ struct SourceFile {
 class SourceGenerator {
 
     var rootGroups: Set<PBXFileElement> = []
+    private let projectDirectory: Path?
     private var fileReferencesByPath: [String: PBXFileElement] = [:]
     private var groupsByPath: [Path: PBXGroup] = [:]
     private var variantGroupsByPath: [Path: PBXVariantGroup] = [:]
@@ -30,9 +31,18 @@ class SourceGenerator {
 
     private(set) var knownRegions: Set<String> = []
 
-    init(project: Project, pbxProj: PBXProj) {
+    init(project: Project, pbxProj: PBXProj, projectDirectory: Path?) {
         self.project = project
         self.pbxProj = pbxProj
+        self.projectDirectory = projectDirectory
+    }
+    
+    private func resolveGroupPath(_ path: Path, isTopLevelGroup: Bool) -> String {
+        if isTopLevelGroup, let relativePath = try? path.relativePath(from: projectDirectory ?? project.basePath).string {
+            return relativePath
+        } else {
+            return path.lastComponent
+        }
     }
 
     @discardableResult
@@ -286,9 +296,8 @@ class SourceGenerator {
             let isTopLevelGroup = (isBaseGroup && !createIntermediateGroups) || isRootPath
 
             let groupName = name ?? path.lastComponent
-            let groupPath = isTopLevelGroup ?
-                ((try? path.relativePath(from: project.basePath)) ?? path).string :
-                path.lastComponent
+            let groupPath = resolveGroupPath(path, isTopLevelGroup: isTopLevelGroup)
+            
             let group = PBXGroup(
                 children: children,
                 sourceTree: .group,

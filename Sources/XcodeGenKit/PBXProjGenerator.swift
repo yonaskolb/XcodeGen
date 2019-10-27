@@ -9,6 +9,7 @@ public class PBXProjGenerator {
     let project: Project
 
     let pbxProj: PBXProj
+    let projectDirectory: Path?
     let carthageResolver: CarthageDependencyResolver
 
     var sourceGenerator: SourceGenerator!
@@ -24,11 +25,14 @@ public class PBXProjGenerator {
 
     var generated = false
 
-    public init(project: Project) {
+    public init(project: Project, projectDirectory: Path? = nil) {
         self.project = project
         carthageResolver = CarthageDependencyResolver(project: project)
         pbxProj = PBXProj(rootObject: nil, objectVersion: project.objectVersion)
-        sourceGenerator = SourceGenerator(project: project, pbxProj: pbxProj)
+        self.projectDirectory = projectDirectory
+        sourceGenerator = SourceGenerator(project: project,
+                                          pbxProj: pbxProj,
+                                          projectDirectory: projectDirectory)
     }
 
     @discardableResult
@@ -859,7 +863,7 @@ public class PBXProjGenerator {
                     searchForPlist = false
                 }
                 if let plistPath = plistPath {
-                    buildSettings["INFOPLIST_FILE"] = (try? plistPath.relativePath(from: project.basePath)) ?? plistPath
+                    buildSettings["INFOPLIST_FILE"] = (try? plistPath.relativePath(from: projectDirectory ?? project.basePath)) ?? plistPath
                 }
             }
 
@@ -894,7 +898,11 @@ public class PBXProjGenerator {
                     if dependency.type == .target,
                         let dependencyTarget = project.getTarget(dependency.reference),
                         dependencyTarget.type.isApp {
-                        buildSettings["TEST_HOST"] = "$(BUILT_PRODUCTS_DIR)/\(dependencyTarget.productName).app/\(dependencyTarget.productName)"
+                        if dependencyTarget.platform == .macOS {
+                            buildSettings["TEST_HOST"] = "$(BUILT_PRODUCTS_DIR)/\(dependencyTarget.productName).app/Contents/MacOS/\(dependencyTarget.productName)"
+                        } else {
+                            buildSettings["TEST_HOST"] = "$(BUILT_PRODUCTS_DIR)/\(dependencyTarget.productName).app/\(dependencyTarget.productName)"
+                        }
                         break
                     }
                 }
