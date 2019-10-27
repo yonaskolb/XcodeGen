@@ -325,7 +325,7 @@ extension Scheme.Test: JSONObjectConvertible {
         if let targets = jsonDictionary["targets"] as? [Any] {
             self.targets = try targets.compactMap { target in
                 if let string = target as? String {
-                    return TestTarget(stringLiteral: string)
+                    return try TestTarget(targetReference: TargetReference(string))
                 } else if let dictionary = target as? JSONDictionary {
                     return try TestTarget(jsonDictionary: dictionary)
                 } else {
