@@ -94,10 +94,10 @@ public class SchemeGenerator {
 
     public func generateScheme(_ scheme: Scheme) throws -> XCScheme {
 
-        func getBuildEntry(_ buildTarget: Scheme.BuildTarget) throws -> XCScheme.BuildAction.Entry {
+        func getBuildableReference(_ target: TargetReference) throws -> XCScheme.BuildableReference {
             let pbxProj: PBXProj
             let projectFilePath: String
-            switch buildTarget.target.location {
+            switch target.location {
             case .project(let project):
                 guard let projectReference = self.project.getProjectReference(project) else {
                     throw SchemeGenerationError.missingProject(project)
@@ -109,36 +109,39 @@ public class SchemeGenerator {
                 projectFilePath = "\(self.project.name).xcodeproj"
             }
 
-            guard let pbxTarget = pbxProj.targets(named: buildTarget.target.name).first else {
-                throw SchemeGenerationError.missingTarget(buildTarget, projectPath: projectFilePath)
+            guard let pbxTarget = pbxProj.targets(named: target.name).first else {
+                throw SchemeGenerationError.missingTarget(target, projectPath: projectFilePath)
             }
-
             let buildableName: String
 
-            switch buildTarget.target.location {
+            switch target.location {
             case .project:
                 buildableName = pbxTarget.productNameWithExtension() ?? pbxTarget.name
             case .local:
                 guard let _buildableName =
-                        project.getTarget(buildTarget.target.name)?.filename ??
-                        project.getAggregateTarget(buildTarget.target.name)?.name else {
-                    fatalError("Unable to determinate \"buildableName\" for build target: \(buildTarget.target)")
+                        project.getTarget(target.name)?.filename ??
+                        project.getAggregateTarget(target.name)?.name else {
+                    fatalError("Unable to determinate \"buildableName\" for build target: \(target)")
                 }
                 buildableName = _buildableName
             }
 
-            let buildableReference = XCScheme.BuildableReference(
-                referencedContainer: "container:\(projectFilePath)",
-                blueprint: pbxTarget,
-                buildableName: buildableName,
-                blueprintName: buildTarget.target.name
-            )
+            return XCScheme.BuildableReference(
+                    referencedContainer: "container:\(projectFilePath)",
+                    blueprint: pbxTarget,
+                    buildableName: buildableName,
+                    blueprintName: target.name
+                )
+        }
+
+        func getBuildEntry(_ buildTarget: Scheme.BuildTarget) throws -> XCScheme.BuildAction.Entry {
+            let buildableReference = try getBuildableReference(buildTarget.target)
             return XCScheme.BuildAction.Entry(buildableReference: buildableReference, buildFor: buildTarget.buildTypes)
         }
 
         let testTargets = scheme.test?.targets ?? []
         let testBuildTargets = testTargets.map {
-            Scheme.BuildTarget(target: .local($0.name), buildTypes: BuildType.testOnly)
+            Scheme.BuildTarget(target: $0.targetReference, buildTypes: BuildType.testOnly)
         }
 
         let testBuildTargetEntries = try testBuildTargets.map(getBuildEntry)
@@ -179,6 +182,10 @@ public class SchemeGenerator {
             )
         }
 
+        let coverageBuildableTargets = try scheme.test?.coverageTargets.map {
+            try getBuildableReference($0)
+        } ?? []
+
         let testCommandLineArgs = scheme.test.map { XCScheme.CommandLineArguments($0.commandLineArguments) }
         let launchCommandLineArgs = scheme.run.map { XCScheme.CommandLineArguments($0.commandLineArguments) }
         let profileCommandLineArgs = scheme.profile.map { XCScheme.CommandLineArguments($0.commandLineArguments) }
@@ -196,6 +203,7 @@ public class SchemeGenerator {
             selectedDebuggerIdentifier: (scheme.test?.debugEnabled ?? Scheme.Test.debugEnabledDefault) ? XCScheme.defaultDebugger : "",
             shouldUseLaunchSchemeArgsEnv: scheme.test?.shouldUseLaunchSchemeArgsEnv ?? true,
             codeCoverageEnabled: scheme.test?.gatherCoverageData ?? Scheme.Test.gatherCoverageDataDefault,
+            codeCoverageTargets: coverageBuildableTargets,
             disableMainThreadChecker: scheme.test?.disableMainThreadChecker ?? Scheme.Test.disableMainThreadCheckerDefault,
             commandlineArguments: testCommandLineArgs,
             environmentVariables: testVariables,
@@ -254,13 +262,13 @@ public class SchemeGenerator {
 
 enum SchemeGenerationError: Error, CustomStringConvertible {
 
-    case missingTarget(Scheme.BuildTarget, projectPath: String)
+    case missingTarget(TargetReference, projectPath: String)
     case missingProject(String)
 
     var description: String {
         switch self {
-        case .missingTarget(let buildTarget, let projectPath):
-            return "Unable to find target named \"\(buildTarget.target)\" in \"\(projectPath)\""
+        case .missingTarget(let target, let projectPath):
+            return "Unable to find target named \"\(target)\" in \"\(projectPath)\""
         case .missingProject(let project):
             return "Unable to find project reference named \"\(project)\" in project.yml"
         }

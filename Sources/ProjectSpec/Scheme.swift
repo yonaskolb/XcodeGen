@@ -111,6 +111,7 @@ public struct Scheme: Equatable {
 
         public var config: String?
         public var gatherCoverageData: Bool
+        public var coverageTargets: [TargetReference]
         public var disableMainThreadChecker: Bool
         public var commandLineArguments: [String: Bool]
         public var targets: [TestTarget]
@@ -158,6 +159,7 @@ public struct Scheme: Equatable {
         public init(
             config: String,
             gatherCoverageData: Bool = gatherCoverageDataDefault,
+            coverageTargets: [TargetReference] = [],
             disableMainThreadChecker: Bool = disableMainThreadCheckerDefault,
             randomExecutionOrder: Bool = false,
             parallelizable: Bool = false,
@@ -172,6 +174,7 @@ public struct Scheme: Equatable {
         ) {
             self.config = config
             self.gatherCoverageData = gatherCoverageData
+            self.coverageTargets = coverageTargets
             self.disableMainThreadChecker = disableMainThreadChecker
             self.commandLineArguments = commandLineArguments
             self.targets = targets
@@ -320,6 +323,7 @@ extension Scheme.Test: JSONObjectConvertible {
     public init(jsonDictionary: JSONDictionary) throws {
         config = jsonDictionary.json(atKeyPath: "config")
         gatherCoverageData = jsonDictionary.json(atKeyPath: "gatherCoverageData") ?? Scheme.Test.gatherCoverageDataDefault
+        coverageTargets = try (jsonDictionary.json(atKeyPath: "coverageTargets") ?? []).map { try TargetReference($0) }
         disableMainThreadChecker = jsonDictionary.json(atKeyPath: "disableMainThreadChecker") ?? Scheme.Test.disableMainThreadCheckerDefault
         commandLineArguments = jsonDictionary.json(atKeyPath: "commandLineArguments") ?? [:]
         if let targets = jsonDictionary["targets"] as? [Any] {
@@ -355,6 +359,7 @@ extension Scheme.Test: JSONEncodable {
             "config": config,
             "language": language,
             "region": region,
+            "coverageTargets": coverageTargets.map { $0.reference },
         ]
 
         if gatherCoverageData != Scheme.Test.gatherCoverageDataDefault {

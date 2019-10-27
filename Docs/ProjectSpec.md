@@ -728,6 +728,7 @@ A multiline script can be written using the various YAML multiline methods, for 
 ### Test Action
 
 - [ ] **gatherCoverageData**: **Bool** - a boolean that indicates if this scheme should gather coverage data. This defaults to false
+- [ ] **coverageTargets**: **[String]** - a list of targets to gather code coverage. Each entry can either be a simple string, or a string using [Project Reference](#project-reference)
 - [ ] **targets**: **[[Test Target](#test-target)]** - a list of targets to test. Each entry can either be a simple string, or a [Test Target](#test-target)
 
 #### Test Target
@@ -763,6 +764,9 @@ schemes:
       config: prod-debug
       commandLineArguments: "--option testValue"
       gatherCoverageData: true
+      coverageTargets:
+        - MyTarget1
+        - ExternalTarget/OtherTarget1
       targets: 
         - Tester1 
         - name: Tester2
