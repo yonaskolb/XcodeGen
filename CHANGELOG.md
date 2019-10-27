@@ -2,6 +2,8 @@
 
 ## Next Version
 
+## 2.10.0
+
 #### Added
 - Support Target Reference to another project. [#655](https://github.com/yonaskolb/XcodeGen/pull/655) @kateinoigakukun
 - Added `coverageTargets` for test target. This enables to gather code coverage for specific targets. [#656](https://github.com/yonaskolb/XcodeGen/pull/656) @kateinoigakukun
@@ -15,6 +17,8 @@
 
 #### Internal
 - Restructure targets [#698](https://github.com/yonaskolb/XcodeGen/pull/698) @yonaskolb
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.9.0...2.10.0)
 
 ## 2.9.0
 
