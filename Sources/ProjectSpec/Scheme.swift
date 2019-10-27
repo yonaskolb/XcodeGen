@@ -145,7 +145,7 @@ public struct Scheme: Equatable {
 
             public init(stringLiteral value: String) {
                 do {
-                    targetReference = try TargetReference(string: value)
+                    targetReference = try TargetReference(value)
                     randomExecutionOrder = false
                     parallelizable = false
                     skippedTests = []
@@ -376,7 +376,7 @@ extension Scheme.Test: JSONEncodable {
 extension Scheme.Test.TestTarget: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
-        targetReference = try TargetReference(string: jsonDictionary.json(atKeyPath: "name"))
+        targetReference = try TargetReference(jsonDictionary.json(atKeyPath: "name"))
         randomExecutionOrder = jsonDictionary.json(atKeyPath: "randomExecutionOrder") ?? Scheme.Test.TestTarget.randomExecutionOrderDefault
         parallelizable = jsonDictionary.json(atKeyPath: "parallelizable") ?? Scheme.Test.TestTarget.parallelizableDefault
         skippedTests = jsonDictionary.json(atKeyPath: "skippedTests") ?? []
@@ -519,7 +519,7 @@ extension Scheme.Build: JSONObjectConvertible {
             } else {
                 buildTypes = BuildType.all
             }
-            let target = try TargetReference(string: targetRepr)
+            let target = try TargetReference(targetRepr)
             targets.append(Scheme.BuildTarget(target: target, buildTypes: buildTypes))
         }
         self.targets = targets.sorted { $0.target.name < $1.target.name }

@@ -17,7 +17,7 @@ public struct TargetReference: Hashable {
 }
 
 extension TargetReference {
-    public init(string: String) throws {
+    public init(_ string: String) throws {
         let paths = string.split(separator: "/")
         switch paths.count {
         case 2:
@@ -38,7 +38,7 @@ extension TargetReference {
 
 extension TargetReference: ExpressibleByStringLiteral {
     public init(stringLiteral value: String) {
-        try! self.init(string: value)
+        try! self.init(value)
     }
 }
 
