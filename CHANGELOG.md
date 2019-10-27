@@ -13,7 +13,8 @@
 - Fixed resolving relative paths for Info.plist [#683](https://github.com/yonaskolb/XcodeGen/pull/683)
 - Fixed macOS unit test target TEST_HOST [#696](https://github.com/yonaskolb/XcodeGen/pull/696) @mjarvis
 
-
+#### Internal
+- Restructure targets [#698](https://github.com/yonaskolb/XcodeGen/pull/698) @yonaskolb
 
 ## 2.9.0
 
