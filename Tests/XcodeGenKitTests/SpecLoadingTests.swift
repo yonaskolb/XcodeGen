@@ -465,7 +465,7 @@ class SpecLoadingTests: XCTestCase {
                             "platform": "iOS",
                             "sources": [
                                 "templateSource",
-                                ["path": "Sources/${target_name}"]
+                                ["path": "Sources/${target_name}"],
                             ],
                         ],
                         "temp2": [
@@ -872,7 +872,7 @@ class SpecLoadingTests: XCTestCase {
                             "platform": "iOS",
                             "sources": [
                                 "templateSource",
-                                ["path": "Sources/${target_name}"]
+                                ["path": "Sources/${target_name}"],
                             ],
                         ],
                         "temp2": [
@@ -1087,14 +1087,14 @@ class SpecLoadingTests: XCTestCase {
                     "package5": SwiftPackage(url: "package.git", versionRequirement: .revision("x")),
                     "package6": SwiftPackage(url: "package.git", versionRequirement: .range(from: "1.2.0", to: "1.2.5")),
                     "package7": SwiftPackage(url: "package.git", versionRequirement: .exact("1.2.2")),
-                    ],
-                    localPackages: ["../../Package"],
-                    options: .init(localPackagesGroup: "MyPackages"))
+                ],
+                                      localPackages: ["../../Package"],
+                                      options: .init(localPackagesGroup: "MyPackages"))
 
                 let dictionary: [String: Any] = [
                     "name": "spm",
                     "options": [
-                        "localPackagesGroup": "MyPackages"
+                        "localPackagesGroup": "MyPackages",
                     ],
                     "packages": [
                         "package1": ["url": "package.git", "exactVersion": "1.2.2"],
@@ -1105,7 +1105,7 @@ class SpecLoadingTests: XCTestCase {
                         "package6": ["url": "package.git", "minVersion": "1.2.0", "maxVersion": "1.2.5"],
                         "package7": ["url": "package.git", "version": "1.2.2"],
                     ],
-                    "localPackages": ["../../Package"]
+                    "localPackages": ["../../Package"],
                 ]
                 let parsedSpec = try getProjectSpec(dictionary)
                 try expect(parsedSpec) == project

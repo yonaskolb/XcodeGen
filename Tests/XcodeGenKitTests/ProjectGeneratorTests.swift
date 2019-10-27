@@ -929,14 +929,14 @@ class ProjectGeneratorTests: XCTestCase {
                 }
 
                 guard let projectSpecDependency = nativeTarget.packageProductDependencies.first(where: { $0.productName == "ProjectSpec" }) else {
-                                   throw failure("XCSwiftPackageProductDependency for \(app.name) not found")
+                    throw failure("XCSwiftPackageProductDependency for \(app.name) not found")
                 }
 
                 try expect(projectSpecDependency.package?.name) == "XcodeGen"
                 try expect(projectSpecDependency.package?.versionRequirement) == .branch("master")
 
                 guard let codabilityDependency = nativeTarget.packageProductDependencies.first(where: { $0.productName == "Codability" }) else {
-                                   throw failure("XCSwiftPackageProductDependency for \(app.name) not found")
+                    throw failure("XCSwiftPackageProductDependency for \(app.name) not found")
                 }
 
                 try expect(codabilityDependency.package?.name) == "Codability"
@@ -980,7 +980,7 @@ class ProjectGeneratorTests: XCTestCase {
                     "CFBundleShortVersionString": "1.0",
                     "CFBundleVersion": "1",
                     "CFBundlePackageType": "APPL",
-                    "UISupportedInterfaceOrientations": ["UIInterfaceOrientationPortrait", "UIInterfaceOrientationLandscapeLeft"]
+                    "UISupportedInterfaceOrientations": ["UIInterfaceOrientationPortrait", "UIInterfaceOrientationLandscapeLeft"],
                 ]
 
                 try expect(NSDictionary(dictionary: expectedInfoPlist).isEqual(to: infoPlist)).beTrue()
@@ -1028,14 +1028,14 @@ class ProjectGeneratorTests: XCTestCase {
                     "CFBundleDevelopmentRegion": "$(DEVELOPMENT_LANGUAGE)",
                     "CFBundleShortVersionString": "1.0",
                     "CFBundleVersion": "1",
-                    "CFBundlePackageType": "BNDL"
+                    "CFBundlePackageType": "BNDL",
                 ]
 
                 try expect(NSDictionary(dictionary: expectedInfoPlist).isEqual(to: infoPlist)).beTrue()
             }
         }
     }
-    
+
     func testGenerateXcodeProjectWithDestination() throws {
         let groupName = "App_iOS"
         let sourceDirectory = fixturePath + "TestProject" + groupName
@@ -1045,7 +1045,7 @@ class ProjectGeneratorTests: XCTestCase {
             platform: .iOS,
             sources: [TargetSource(path: sourceDirectory.string)]
         )
-        
+
         describe("generateXcodeProject") {
             $0.context("without projectDirectory") {
                 $0.it("generate groups") {
@@ -1056,7 +1056,7 @@ class ProjectGeneratorTests: XCTestCase {
                     try expect(group?.path) == "App_iOS"
                 }
             }
-            
+
             $0.context("with projectDirectory") {
                 $0.it("generate groups") {
                     let destinationPath = fixturePath
@@ -1066,7 +1066,7 @@ class ProjectGeneratorTests: XCTestCase {
                     let group = generatedProject.pbxproj.groups.first(where: { $0.nameOrPath == groupName })
                     try expect(group?.path) == "TestProject/App_iOS"
                 }
-                
+
                 $0.it("generate Info.plist") {
                     let destinationPath = fixturePath
                     let project = Project(name: "test", targets: [frameworkWithSources])

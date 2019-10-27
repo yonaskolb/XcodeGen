@@ -36,7 +36,7 @@ class SourceGenerator {
         self.pbxProj = pbxProj
         self.projectDirectory = projectDirectory
     }
-    
+
     private func resolveGroupPath(_ path: Path, isTopLevelGroup: Bool) -> String {
         if isTopLevelGroup, let relativePath = try? path.relativePath(from: projectDirectory ?? project.basePath).string {
             return relativePath
@@ -53,7 +53,6 @@ class SourceGenerator {
     }
 
     func createLocalPackage(path: Path) throws {
-
 
         if localPackageGroup == nil {
             let groupName = project.options.localPackagesGroup ?? "Packages"
@@ -297,7 +296,7 @@ class SourceGenerator {
 
             let groupName = name ?? path.lastComponent
             let groupPath = resolveGroupPath(path, isTopLevelGroup: isTopLevelGroup)
-            
+
             let group = PBXGroup(
                 children: children,
                 sourceTree: .group,

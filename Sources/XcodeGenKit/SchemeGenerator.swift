@@ -119,19 +119,19 @@ public class SchemeGenerator {
                 buildableName = pbxTarget.productNameWithExtension() ?? pbxTarget.name
             case .local:
                 guard let _buildableName =
-                        project.getTarget(target.name)?.filename ??
-                        project.getAggregateTarget(target.name)?.name else {
+                    project.getTarget(target.name)?.filename ??
+                    project.getAggregateTarget(target.name)?.name else {
                     fatalError("Unable to determinate \"buildableName\" for build target: \(target)")
                 }
                 buildableName = _buildableName
             }
 
             return XCScheme.BuildableReference(
-                    referencedContainer: "container:\(projectFilePath)",
-                    blueprint: pbxTarget,
-                    buildableName: buildableName,
-                    blueprintName: target.name
-                )
+                referencedContainer: "container:\(projectFilePath)",
+                blueprint: pbxTarget,
+                buildableName: buildableName,
+                blueprintName: target.name
+            )
         }
 
         func getBuildEntry(_ buildTarget: Scheme.BuildTarget) throws -> XCScheme.BuildAction.Entry {

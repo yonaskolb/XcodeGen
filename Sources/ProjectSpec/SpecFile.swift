@@ -52,14 +52,14 @@ public struct SpecFile {
         self.filename = filename
     }
 
-    fileprivate init(include: Include, basePath: Path, relativePath: Path) throws {
+    private init(include: Include, basePath: Path, relativePath: Path) throws {
         let basePath = include.relativePaths ? (basePath + relativePath) : (basePath + relativePath + include.path.parent())
         let relativePath = include.relativePaths ? include.path.parent() : Path()
 
         try self.init(filename: include.path.lastComponent, basePath: basePath, relativePath: relativePath)
     }
 
-    fileprivate init(filename: String, basePath: Path, relativePath: Path = "") throws {
+    private init(filename: String, basePath: Path, relativePath: Path = "") throws {
         let path = basePath + relativePath + filename
         let jsonDictionary = try SpecFile.loadDictionary(path: path)
 
