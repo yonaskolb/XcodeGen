@@ -775,13 +775,13 @@ class SpecLoadingTests: XCTestCase {
                 ]
                 let scheme = try Scheme(name: "Scheme", jsonDictionary: schemeDictionary)
                 let expectedTargets: [Scheme.BuildTarget] = [
-                    Scheme.BuildTarget(target: .init(name: "Target1"), buildTypes: BuildType.all),
-                    Scheme.BuildTarget(target: .init(name: "Target2"), buildTypes: [.testing, .analyzing]),
-                    Scheme.BuildTarget(target: .init(name: "Target3"), buildTypes: []),
-                    Scheme.BuildTarget(target: .init(name: "Target4"), buildTypes: [.testing]),
-                    Scheme.BuildTarget(target: .init(name: "Target5"), buildTypes: []),
-                    Scheme.BuildTarget(target: .init(name: "Target6"), buildTypes: [.testing, .analyzing]),
-                    Scheme.BuildTarget(target: .init(name: "Target7", location: .project("ExternalProject")), buildTypes: [.running]),
+                    Scheme.BuildTarget(target: "Target1", buildTypes: BuildType.all),
+                    Scheme.BuildTarget(target: "Target2", buildTypes: [.testing, .analyzing]),
+                    Scheme.BuildTarget(target: "Target3", buildTypes: []),
+                    Scheme.BuildTarget(target: "Target4", buildTypes: [.testing]),
+                    Scheme.BuildTarget(target: "Target5", buildTypes: []),
+                    Scheme.BuildTarget(target: "Target6", buildTypes: [.testing, .analyzing]),
+                    Scheme.BuildTarget(target: "ExternalProject/Target7", buildTypes: [.running]),
                 ]
                 try expect(scheme.name) == "Scheme"
                 try expect(scheme.build.targets) == expectedTargets
@@ -799,7 +799,7 @@ class SpecLoadingTests: XCTestCase {
                     targets: [
                         "Target1",
                         Scheme.Test.TestTarget(
-                            targetReference: .init(name: "Target2", location: .project("ExternalProject")),
+                            targetReference: "ExternalProject/Target2",
                             randomExecutionOrder: true,
                             parallelizable: true,
                             skippedTests: ["Test/testExample()"]
@@ -853,6 +853,121 @@ class SpecLoadingTests: XCTestCase {
                 try expect(scheme.test?.environmentVariables) == expectedTestVariables
                 try expect(scheme.profile?.config) == "Release"
                 try expect(scheme.profile?.environmentVariables.isEmpty) == true
+            }
+
+            $0.it("parses scheme templates") {
+                let targetDictionary: [String: Any] = [
+                    "deploymentTarget": "1.2.0",
+                    "sources": ["targetSource"],
+                    "templates": ["temp2", "temp"],
+                    "templateAttributes": [
+                        "source": "replacedSource",
+                    ],
+                ]
+
+                let project = try getProjectSpec([
+                    "targets": ["Framework": targetDictionary],
+                    "targetTemplates": [
+                        "temp": [
+                            "platform": "iOS",
+                            "sources": [
+                                "templateSource",
+                                ["path": "Sources/${target_name}"]
+                            ],
+                        ],
+                        "temp2": [
+                            "type": "framework",
+                            "platform": "tvOS",
+                            "deploymentTarget": "1.1.0",
+                            "configFiles": [
+                                "debug": "Configs/$target_name/debug.xcconfig",
+                                "release": "Configs/${target_name}/release.xcconfig",
+                            ],
+                            "sources": ["${source}"],
+                        ],
+                    ],
+                    "schemeTemplates": [
+                        "base_scheme": [
+                            "build": [
+                                "parallelizeBuild": false,
+                                "buildImplicitDependencies": false,
+                                "targets": [
+                                    "Target${name_1}": "all",
+                                    "Target2": "testing",
+                                    "Target${name_3}": "none",
+                                    "Target4": ["testing": true],
+                                    "Target5": ["testing": false],
+                                    "Target6": ["test", "analyze"],
+                                ],
+                                "preActions": [
+                                    [
+                                        "script": "${pre-action-name}",
+                                        "name": "Before Build ${scheme_name}",
+                                        "settingsTarget": "Target${name_1}",
+                                    ],
+                                ],
+                            ],
+                            "test": [
+                                "config": "debug",
+                                "targets": [
+                                    "Target${name_1}",
+                                    [
+                                        "name": "Target2",
+                                        "parallelizable": true,
+                                        "randomExecutionOrder": true,
+                                        "skippedTests": ["Test/testExample()"],
+                                    ],
+                                ],
+                                "gatherCoverageData": true,
+                                "disableMainThreadChecker": true,
+                            ],
+                        ],
+                    ],
+                    "schemes": [
+                        "temp2": [
+                            "templates": ["base_scheme"],
+                            "templateAttributes": [
+                                "pre-action-name": "modified-name",
+                                "name_1": "FirstTarget",
+                                "name_3": "ThirdTarget",
+                            ],
+                        ],
+                    ],
+                ])
+
+                let scheme = project.schemes.first!
+                let expectedTargets: [Scheme.BuildTarget] = [
+                    Scheme.BuildTarget(target: "TargetFirstTarget", buildTypes: BuildType.all),
+                    Scheme.BuildTarget(target: "Target2", buildTypes: [.testing, .analyzing]),
+                    Scheme.BuildTarget(target: "TargetThirdTarget", buildTypes: []),
+                    Scheme.BuildTarget(target: "Target4", buildTypes: [.testing]),
+                    Scheme.BuildTarget(target: "Target5", buildTypes: []),
+                    Scheme.BuildTarget(target: "Target6", buildTypes: [.testing, .analyzing]),
+                ]
+                try expect(scheme.name) == "temp2"
+                try expect(Set(scheme.build.targets)) == Set(expectedTargets)
+                try expect(scheme.build.preActions.first?.script) == "modified-name"
+                try expect(scheme.build.preActions.first?.name) == "Before Build temp2"
+                try expect(scheme.build.preActions.first?.settingsTarget) == "TargetFirstTarget"
+
+                try expect(scheme.build.parallelizeBuild) == false
+                try expect(scheme.build.buildImplicitDependencies) == false
+
+                let expectedTest = Scheme.Test(
+                    config: "debug",
+                    gatherCoverageData: true,
+                    disableMainThreadChecker: true,
+                    targets: [
+                        "TargetFirstTarget",
+                        Scheme.Test.TestTarget(
+                            targetReference: "Target2",
+                            randomExecutionOrder: true,
+                            parallelizable: true,
+                            skippedTests: ["Test/testExample()"]
+                        ),
+                    ]
+                )
+                try expect(scheme.test) == expectedTest
             }
 
             $0.it("parses settings") {
@@ -961,6 +1076,39 @@ class SpecLoadingTests: XCTestCase {
                 ]]
                 let parsedSpec = try getProjectSpec(dictionary)
                 try expect(parsedSpec) == expected
+            }
+
+            $0.it("parses packages") {
+                let project = Project(name: "spm", packages: [
+                    "package1": SwiftPackage(url: "package.git", versionRequirement: .exact("1.2.2")),
+                    "package2": SwiftPackage(url: "package.git", versionRequirement: .upToNextMajorVersion("1.2.2")),
+                    "package3": SwiftPackage(url: "package.git", versionRequirement: .upToNextMinorVersion("1.2.2")),
+                    "package4": SwiftPackage(url: "package.git", versionRequirement: .branch("master")),
+                    "package5": SwiftPackage(url: "package.git", versionRequirement: .revision("x")),
+                    "package6": SwiftPackage(url: "package.git", versionRequirement: .range(from: "1.2.0", to: "1.2.5")),
+                    "package7": SwiftPackage(url: "package.git", versionRequirement: .exact("1.2.2")),
+                    ],
+                    localPackages: ["../../Package"],
+                    options: .init(localPackagesGroup: "MyPackages"))
+
+                let dictionary: [String: Any] = [
+                    "name": "spm",
+                    "options": [
+                        "localPackagesGroup": "MyPackages"
+                    ],
+                    "packages": [
+                        "package1": ["url": "package.git", "exactVersion": "1.2.2"],
+                        "package2": ["url": "package.git", "majorVersion": "1.2.2"],
+                        "package3": ["url": "package.git", "minorVersion": "1.2.2"],
+                        "package4": ["url": "package.git", "branch": "master"],
+                        "package5": ["url": "package.git", "revision": "x"],
+                        "package6": ["url": "package.git", "minVersion": "1.2.0", "maxVersion": "1.2.5"],
+                        "package7": ["url": "package.git", "version": "1.2.2"],
+                    ],
+                    "localPackages": ["../../Package"]
+                ]
+                let parsedSpec = try getProjectSpec(dictionary)
+                try expect(parsedSpec) == project
             }
         }
     }

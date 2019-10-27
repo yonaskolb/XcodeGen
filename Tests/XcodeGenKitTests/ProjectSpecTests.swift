@@ -96,6 +96,7 @@ class ProjectSpecTests: XCTestCase {
                 project.settings = invalidSettings
                 project.configFiles = ["invalidConfig": "invalidConfigFile"]
                 project.fileGroups = ["invalidFileGroup"]
+                project.localPackages = ["invalidLocalPackage"]
                 project.settingGroups = ["settingGroup1": Settings(
                     configSettings: ["invalidSettingGroupConfig": [:]],
                     groups: ["invalidSettingGroupSettingGroup"]
@@ -106,6 +107,7 @@ class ProjectSpecTests: XCTestCase {
                 try expectValidationError(project, .invalidConfigFile(configFile: "invalidConfigFile", config: "invalidConfig"))
                 try expectValidationError(project, .invalidSettingsGroup("invalidSettingGroup"))
                 try expectValidationError(project, .invalidFileGroup("invalidFileGroup"))
+                try expectValidationError(project, .invalidLocalPackage("invalidLocalPackage"))
                 try expectValidationError(project, .invalidSettingsGroup("invalidSettingGroupSettingGroup"))
                 try expectValidationError(project, .invalidBuildSettingConfig("invalidSettingGroupConfig"))
             }
@@ -134,7 +136,10 @@ class ProjectSpecTests: XCTestCase {
                     settings: invalidSettings,
                     configFiles: ["invalidConfig": "invalidConfigFile"],
                     sources: ["invalidSource"],
-                    dependencies: [Dependency(type: .target, reference: "invalidDependency")],
+                    dependencies: [
+                        Dependency(type: .target, reference: "invalidDependency"),
+                        Dependency(type: .package(product: nil), reference: "invalidPackage")
+                    ],
                     preBuildScripts: [BuildScript(script: .path("invalidPreBuildScript"), name: "preBuildScript1")],
                     postCompileScripts: [BuildScript(script: .path("invalidPostCompileScript"))],
                     postBuildScripts: [BuildScript(script: .path("invalidPostBuildScript"))],
@@ -142,6 +147,7 @@ class ProjectSpecTests: XCTestCase {
                 )]
 
                 try expectValidationError(project, .invalidTargetDependency(target: "target1", dependency: "invalidDependency"))
+                try expectValidationError(project, .invalidSwiftPackage(name: "invalidPackage", target: "target1"))
                 try expectValidationError(project, .invalidTargetConfigFile(target: "target1", configFile: "invalidConfigFile", config: "invalidConfig"))
                 try expectValidationError(project, .invalidTargetSchemeTest(target: "target1", testTarget: "invalidTarget"))
                 try expectValidationError(project, .invalidTargetSource(target: "target1", source: "invalidSource"))
@@ -201,7 +207,7 @@ class ProjectSpecTests: XCTestCase {
                 var project = baseProject
                 project.schemes = [Scheme(
                     name: "scheme1",
-                    build: .init(targets: [.init(target: .init(name: "invalidTarget", location: .local))]),
+                    build: .init(targets: [.init(target: "invalidTarget")]),
                     run: .init(config: "debugInvalid"),
                     archive: .init(config: "releaseInvalid")
                 )]
@@ -209,6 +215,15 @@ class ProjectSpecTests: XCTestCase {
                 try expectValidationError(project, .invalidSchemeTarget(scheme: "scheme1", target: "invalidTarget"))
                 try expectValidationError(project, .invalidSchemeConfig(scheme: "scheme1", config: "debugInvalid"))
                 try expectValidationError(project, .invalidSchemeConfig(scheme: "scheme1", config: "releaseInvalid"))
+            }
+
+            $0.it("fails with invalid project reference") {
+                var project = baseProject
+                project.schemes = [Scheme(
+                    name: "scheme1",
+                    build: .init(targets: [.init(target: "invalidProjectRef/target1")])
+                )]
+                try expectValidationError(project, .invalidProjectReference(scheme: "scheme1", reference: "invalidProjectRef"))
             }
 
             $0.it("allows missing optional file") {
@@ -249,7 +264,7 @@ class ProjectSpecTests: XCTestCase {
                     attributes: [:]
                 )
                 project.aggregateTargets = [aggregatedTarget]
-                let buildTarget = Scheme.BuildTarget(target: .init(name: "target1"))
+                let buildTarget = Scheme.BuildTarget(target: "target1")
                 let scheme = Scheme(name: "target1-Scheme", build: Scheme.Build(targets: [buildTarget]))
                 project.schemes = [scheme]
                 try project.validate()
@@ -332,7 +347,7 @@ class ProjectSpecTests: XCTestCase {
                                                                            name: nil,
                                                                            outputFiles: ["bar"],
                                                                            outputFilesCompilerFlags: ["foo"])],
-                                                    scheme: TargetScheme(testTargets: [Scheme.Test.TestTarget(targetReference: .init(name: "test target"),
+                                                    scheme: TargetScheme(testTargets: [Scheme.Test.TestTarget(targetReference: "test target",
                                                                                                               randomExecutionOrder: false,
                                                                                                               parallelizable: false)],
                                                                          configVariants: ["foo"],
@@ -370,7 +385,7 @@ class ProjectSpecTests: XCTestCase {
                                                                                                  shell: "/bin/bash",
                                                                                                  runOnlyWhenInstalling: true,
                                                                                                  showEnvVars: false)],
-                                                                      scheme: TargetScheme(testTargets: [Scheme.Test.TestTarget(targetReference: .init(name: "test target"),
+                                                                      scheme: TargetScheme(testTargets: [Scheme.Test.TestTarget(targetReference: "test target",
                                                                                                                                 randomExecutionOrder: false,
                                                                                                                                 parallelizable: false)],
                                                                                            configVariants: ["foo"],
@@ -398,7 +413,7 @@ class ProjectSpecTests: XCTestCase {
                                                                                                     groups: ["config-setting-group"])],
                                                                    groups: ["setting-group"])],
                                    schemes: [Scheme(name: "scheme",
-                                                    build: Scheme.Build(targets: [Scheme.BuildTarget(target: .init(name: "foo"),
+                                                    build: Scheme.Build(targets: [Scheme.BuildTarget(target: "foo",
                                                                                                      buildTypes: [.archiving, .analyzing])],
                                                                         parallelizeBuild: false,
                                                                         buildImplicitDependencies: false,
@@ -425,7 +440,7 @@ class ProjectSpecTests: XCTestCase {
                                                                       randomExecutionOrder: false,
                                                                       parallelizable: false,
                                                                       commandLineArguments: ["foo": true],
-                                                                      targets: [Scheme.Test.TestTarget(targetReference: .init(name: "foo"),
+                                                                      targets: [Scheme.Test.TestTarget(targetReference: "foo",
                                                                                                        randomExecutionOrder: false,
                                                                                                        parallelizable: false)],
                                                                       preActions: [Scheme.ExecutionAction(name: "preAction",
@@ -458,6 +473,12 @@ class ProjectSpecTests: XCTestCase {
                                                                             postActions: [Scheme.ExecutionAction(name: "postAction",
                                                                                                                  script: "bar",
                                                                                                                  settingsTarget: "foo")]))],
+                                   packages: [
+                                    "Yams": SwiftPackage(
+                                        url: "https://github.com/jpsim/Yams",
+                                        versionRequirement: .upToNextMajorVersion("2.0.0"))
+                                    ],
+                                   localPackages: ["../../Package"],
                                    options: SpecOptions(minimumXcodeGenVersion: Version(major: 3, minor: 4, patch: 5),
                                                         carthageBuildPath: "carthageBuildPath",
                                                         carthageExecutablePath: "carthageExecutablePath",
@@ -496,6 +517,7 @@ class ProjectSpecTests: XCTestCase {
                 try expect(proj.options) == restoredProj.options
                 try expect(proj.settingGroups) == restoredProj.settingGroups
                 try expect(proj.targets) == restoredProj.targets
+                try expect(proj.packages) == restoredProj.packages
 
                 try expect(proj) == restoredProj
             }

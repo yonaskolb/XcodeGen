@@ -52,6 +52,12 @@ extension Project {
             }
         }
 
+        for package in localPackages {
+            if !(basePath + Path(package).normalize()).exists {
+                errors.append(.invalidLocalPackage(package))
+            }
+        }
+
         for (config, configFile) in configFiles {
             if !options.disabledValidations.contains(.missingConfigFiles) && !(basePath + configFile).exists {
                 errors.append(.invalidConfigFile(configFile: configFile, config: config))
@@ -156,6 +162,10 @@ extension Project {
                             errors.append(.invalidSDKDependency(target: target.name, dependency: dependency.reference))
                         }
                     }
+                case .package:
+                    if packages[dependency.reference] == nil {
+                        errors.append(.invalidSwiftPackage(name: dependency.reference, target: target.name))
+                    }
                 default: break
                 }
             }
@@ -170,9 +180,15 @@ extension Project {
 
         for scheme in schemes {
             for buildTarget in scheme.build.targets {
-                guard buildTarget.target.location == .local else { continue }
-                if getProjectTarget(buildTarget.target.name) == nil {
-                    errors.append(.invalidSchemeTarget(scheme: scheme.name, target: buildTarget.target.name))
+                switch buildTarget.target.location {
+                case .local:
+                    if getProjectTarget(buildTarget.target.name) == nil {
+                        errors.append(.invalidSchemeTarget(scheme: scheme.name, target: buildTarget.target.name))
+                    }
+                case .project(let project):
+                    if getProjectReference(project) == nil {
+                        errors.append(.invalidProjectReference(scheme: scheme.name, reference: project))
+                    }
                 }
             }
             if let action = scheme.run, let config = action.config, getConfig(config) == nil {

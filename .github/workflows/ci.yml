@@ -1,13 +1,25 @@
 name: CI
-on: [push, pull_request]
+on:
+  push: {}
+  pull_request: {}
 jobs:
-  swift_5:
-    runs-on: macos-latest
-    name: Swift 5.0
+  run:
+    runs-on: macOS-latest
+    name: Xcode ${{ matrix.xcode }}
+    strategy:
+      matrix:
+        xcode: ["10.3", "11"]
     steps:
     - uses: actions/checkout@master
-    - name: Info
-      run: swift --version; swift package --version 
+    - name: Set Xcode
+      run: |
+        echo "Available Xcode versions:"
+        ls /Applications | grep Xcode
+        echo "Choosing Xcode_${{ matrix.xcode }}.app"
+        sudo xcode-select -s /Applications/Xcode_${{ matrix.xcode }}.app
+        xcodebuild -version
+        swift --version
+        swift package --version
     - name: Resolve
       run: swift package resolve
     - name: Build
@@ -20,25 +32,3 @@ jobs:
       run: scripts/diff-fixtures.sh
     - name: Build fixtures
       run: scripts/build-fixtures.sh
-  # swift_5.1:
-  #   runs-on: macos-latest
-  #   name: Swift 5.1
-  #   steps:
-  #   - uses: actions/checkout@master
-  #   - name: Xcode version
-  #     run: sudo xcode-select -s /Applications/Xcode_11_beta.app
-  #   - name: Info
-  #     run: swift --version; swift package --version 
-  #   - name: Resolve
-  #     run: swift package resolve
-  #   - name: Build
-  #     run: swift build
-  #   - name: Test
-  #     run: swift test
-  #   - name: Gen fixtures
-  #     run: scripts/gen-fixtures.sh
-  #   - name: Check fixtures
-  #     run: scripts/diff-fixtures.sh
-  #   - name: Build fixtures
-  #     run: scripts/build-fixtures.sh
-  

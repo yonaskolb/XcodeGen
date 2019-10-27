@@ -2,6 +2,14 @@ import Foundation
 import ProjectSpec
 import XcodeProj
 
+private func suitableConfig(for type: ConfigType, in project: Project) -> Config {
+    if let defaultConfig = Config.defaultConfigs.first(where: { $0.type == type }),
+        project.configs.contains(defaultConfig) {
+        return defaultConfig
+    }
+    return project.configs.first { $0.type == type }!
+}
+
 public class SchemeGenerator {
 
     let project: Project
@@ -20,6 +28,17 @@ public class SchemeGenerator {
         self.pbxProj = pbxProj
     }
 
+    private var projects: [ProjectReference: PBXProj] = [:]
+
+    func getPBXProj(from reference: ProjectReference) throws -> PBXProj {
+        if let cachedProject = projects[reference] {
+            return cachedProject
+        }
+        let pbxproj = try XcodeProj(pathString: reference.path).pbxproj
+        projects[reference] = pbxproj
+        return pbxproj
+    }
+
     public func generateSchemes() throws -> [XCScheme] {
         var xcschemes: [XCScheme] = []
 
@@ -34,8 +53,8 @@ public class SchemeGenerator {
                 if targetScheme.configVariants.isEmpty {
                     let schemeName = target.name
 
-                    let debugConfig = project.configs.first { $0.type == .debug }!
-                    let releaseConfig = project.configs.first { $0.type == .release }!
+                    let debugConfig = suitableConfig(for: .debug, in: project)
+                    let releaseConfig = suitableConfig(for: .release, in: project)
 
                     let scheme = Scheme(
                         name: schemeName,
@@ -80,27 +99,39 @@ public class SchemeGenerator {
             let projectFilePath: String
             switch target.location {
             case .project(let project):
-                guard let externalProject = self.project.getExternalProject(project) else {
-                    fatalError("Unable to find external project named \"\(project)\" in project.yml")
+                guard let projectReference = self.project.getProjectReference(project) else {
+                    throw SchemeGenerationError.missingProject(project)
                 }
-                pbxProj = try XcodeProj(pathString: externalProject.path).pbxproj
-                projectFilePath = externalProject.path
+                pbxProj = try getPBXProj(from: projectReference)
+                projectFilePath = projectReference.path
             case .local:
                 pbxProj = self.pbxProj
                 projectFilePath = "\(self.project.name).xcodeproj"
             }
 
             guard let pbxTarget = pbxProj.targets(named: target.name).first else {
-                fatalError("Unable to find target named \"\(target.name)\" in \"PBXProj.targets\"")
+                throw SchemeGenerationError.missingTarget(target, projectPath: projectFilePath)
+            }
+            let buildableName: String
+
+            switch target.location {
+            case .project:
+                buildableName = pbxTarget.productNameWithExtension() ?? pbxTarget.name
+            case .local:
+                guard let _buildableName =
+                        project.getTarget(target.name)?.filename ??
+                        project.getAggregateTarget(target.name)?.name else {
+                    fatalError("Unable to determinate \"buildableName\" for build target: \(target)")
+                }
+                buildableName = _buildableName
             }
 
-            let buildableName = pbxTarget.productNameWithExtension() ?? pbxTarget.name
             return XCScheme.BuildableReference(
-                referencedContainer: "container:\(projectFilePath)",
-                blueprint: pbxTarget,
-                buildableName: buildableName,
-                blueprintName: target.name
-            )
+                    referencedContainer: "container:\(projectFilePath)",
+                    blueprint: pbxTarget,
+                    buildableName: buildableName,
+                    blueprintName: target.name
+                )
         }
 
         func getBuildEntry(_ buildTarget: Scheme.BuildTarget) throws -> XCScheme.BuildAction.Entry {
@@ -229,11 +260,26 @@ public class SchemeGenerator {
     }
 }
 
+enum SchemeGenerationError: Error, CustomStringConvertible {
+
+    case missingTarget(TargetReference, projectPath: String)
+    case missingProject(String)
+
+    var description: String {
+        switch self {
+        case .missingTarget(let target, let projectPath):
+            return "Unable to find target named \"\(target)\" in \"\(projectPath)\""
+        case .missingProject(let project):
+            return "Unable to find project reference named \"\(project)\" in project.yml"
+        }
+    }
+}
+
 extension Scheme {
     public init(name: String, target: Target, targetScheme: TargetScheme, debugConfig: String, releaseConfig: String) {
         self.init(
             name: name,
-            build: .init(targets: [Scheme.BuildTarget(target: TargetReference(name: target.name, location: .local))]),
+            build: .init(targets: [Scheme.BuildTarget(target: TargetReference.local(target.name))]),
             run: .init(
                 config: debugConfig,
                 commandLineArguments: targetScheme.commandLineArguments,

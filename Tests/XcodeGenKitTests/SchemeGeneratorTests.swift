@@ -19,6 +19,12 @@ private let framework = Target(
     platform: .iOS
 )
 
+private let frameworkTest = Target(
+    name: "MyFrameworkTests",
+    type: .unitTestBundle,
+    platform: .iOS
+)
+
 private let optionalFramework = Target(
     name: "MyOptionalFramework",
     type: .framework,
@@ -37,7 +43,7 @@ class SchemeGeneratorTests: XCTestCase {
     func testSchemes() {
         describe {
 
-            let buildTarget = Scheme.BuildTarget(target: .init(name: app.name, location: .local))
+            let buildTarget = Scheme.BuildTarget(target: .local(app.name))
             $0.it("generates scheme") {
                 let preAction = Scheme.ExecutionAction(name: "Script", script: "echo Starting", settingsTarget: app.name)
                 let scheme = Scheme(
@@ -90,6 +96,36 @@ class SchemeGeneratorTests: XCTestCase {
 
                 try expect(xcscheme.launchAction?.selectedDebuggerIdentifier) == XCScheme.defaultDebugger
                 try expect(xcscheme.testAction?.selectedDebuggerIdentifier) == XCScheme.defaultDebugger
+            }
+
+            $0.it("generates scheme with multiple configs") {
+                let configs: [Config] = [
+                    Config(name: "Beta", type: .debug),
+                    Config(name: "Debug", type: .debug),
+                    Config(name: "Production", type: .release),
+                    Config(name: "Release", type: .release),
+                ]
+                let framework = Target(
+                    name: "MyFramework",
+                    type: .application,
+                    platform: .iOS,
+                    scheme: TargetScheme(testTargets: ["MyFrameworkTests"])
+                )
+                let project = Project(
+                    name: "test",
+                    configs: configs,
+                    targets: [framework, frameworkTest]
+                )
+                let xcodeProject = try project.generateXcodeProject()
+                guard let xcscheme = xcodeProject.sharedData?.schemes.first else {
+                    throw failure("Scheme not found")
+                }
+
+                try expect(xcscheme.launchAction?.buildConfiguration) == "Debug"
+                try expect(xcscheme.testAction?.buildConfiguration) == "Debug"
+                try expect(xcscheme.profileAction?.buildConfiguration) == "Release"
+                try expect(xcscheme.analyzeAction?.buildConfiguration) == "Debug"
+                try expect(xcscheme.archiveAction?.buildConfiguration) == "Release"
             }
 
             $0.it("sets environment variables for a scheme") {
@@ -234,7 +270,7 @@ class SchemeGeneratorTests: XCTestCase {
                     try! writer.writePlists()
                 }
                 let externalProjectPath = fixturePath + "scheme_test/TestProject.xcodeproj"
-                let externalProject = ExternalProject(name: "ExternalProject", path: externalProjectPath.string)
+                let projectReference = ProjectReference(name: "ExternalProject", path: externalProjectPath.string)
                 let target = Scheme.BuildTarget(target: .init(name: "ExternalTarget", location: .project("ExternalProject")))
                 let scheme = Scheme(
                     name: "ExternalProjectScheme",
@@ -244,7 +280,7 @@ class SchemeGeneratorTests: XCTestCase {
                     name: "test",
                     targets: [],
                     schemes: [scheme],
-                    externalProjects: [externalProject]
+                    projectReferences: [projectReference]
                 )
                 let xcodeProject = try project.generateXcodeProject()
                 guard let xcscheme = xcodeProject.sharedData?.schemes.first else {

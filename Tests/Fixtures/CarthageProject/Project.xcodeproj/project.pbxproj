@@ -429,7 +429,10 @@
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_NAME = Framework;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -474,7 +477,10 @@
 					"$(PROJECT_DIR)/Carthage/Build/tvOS",
 				);
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_NAME = Framework;
 				SDKROOT = appletvos;
 				SKIP_INSTALL = YES;
@@ -519,7 +525,10 @@
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_NAME = Framework;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -601,7 +610,10 @@
 					"$(PROJECT_DIR)/Carthage/Build/Mac",
 				);
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
 				PRODUCT_NAME = Framework;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
@@ -624,7 +636,10 @@
 					"$(PROJECT_DIR)/Carthage/Build/Mac",
 				);
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
 				PRODUCT_NAME = Framework;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
@@ -646,7 +661,10 @@
 					"$(PROJECT_DIR)/Carthage/Build/tvOS",
 				);
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_NAME = Framework;
 				SDKROOT = appletvos;
 				SKIP_INSTALL = YES;

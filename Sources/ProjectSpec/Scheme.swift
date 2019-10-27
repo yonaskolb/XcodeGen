@@ -146,7 +146,7 @@ public struct Scheme: Equatable {
 
             public init(stringLiteral value: String) {
                 do {
-                    targetReference = try TargetReference(string: value)
+                    targetReference = try TargetReference(value)
                     randomExecutionOrder = false
                     parallelizable = false
                     skippedTests = []
@@ -246,57 +246,13 @@ public struct Scheme: Equatable {
         }
     }
 
-    public struct BuildTarget: Equatable {
+    public struct BuildTarget: Equatable, Hashable {
         public var target: TargetReference
         public var buildTypes: [BuildType]
 
         public init(target: TargetReference, buildTypes: [BuildType] = BuildType.all) {
             self.target = target
             self.buildTypes = buildTypes
-        }
-    }
-}
-
-
-public struct TargetReference: Equatable {
-    public let name: String
-    public let location: Location
-
-    public enum Location: Equatable {
-        case local
-        case project(String)
-    }
-
-    public init(name: String, location: Location = .local) {
-        self.name = name
-        self.location = location
-    }
-}
-
-extension TargetReference {
-    public init(string: String) throws {
-        let paths = string.split(separator: "/")
-        guard paths.count <= 2 && !paths.isEmpty else {
-            throw SpecParsingError.invalidTargetReference(string)
-        }
-        switch paths.count {
-        case 2:
-            location = .project(String(paths[0]))
-            name = String(paths[1])
-        case 1:
-            location = .local
-            name = String(paths[0])
-        default: fatalError("unreachable")
-        }
-    }
-}
-
-extension TargetReference {
-    public func toString() -> String {
-        switch location {
-        case .local: return name
-        case .project(let projectPath):
-            return "\(projectPath)/\(name)"
         }
     }
 }
@@ -367,13 +323,13 @@ extension Scheme.Test: JSONObjectConvertible {
     public init(jsonDictionary: JSONDictionary) throws {
         config = jsonDictionary.json(atKeyPath: "config")
         gatherCoverageData = jsonDictionary.json(atKeyPath: "gatherCoverageData") ?? Scheme.Test.gatherCoverageDataDefault
-        coverageTargets = try (jsonDictionary.json(atKeyPath: "coverageTargets") ?? []).map { try TargetReference(string: $0) }
+        coverageTargets = try (jsonDictionary.json(atKeyPath: "coverageTargets") ?? []).map { try TargetReference($0) }
         disableMainThreadChecker = jsonDictionary.json(atKeyPath: "disableMainThreadChecker") ?? Scheme.Test.disableMainThreadCheckerDefault
         commandLineArguments = jsonDictionary.json(atKeyPath: "commandLineArguments") ?? [:]
         if let targets = jsonDictionary["targets"] as? [Any] {
             self.targets = try targets.compactMap { target in
                 if let string = target as? String {
-                    return TestTarget(stringLiteral: string)
+                    return try TestTarget(targetReference: TargetReference(string))
                 } else if let dictionary = target as? JSONDictionary {
                     return try TestTarget(jsonDictionary: dictionary)
                 } else {
@@ -403,7 +359,7 @@ extension Scheme.Test: JSONEncodable {
             "config": config,
             "language": language,
             "region": region,
-            "coverageTargets": coverageTargets.map { $0.toString() },
+            "coverageTargets": coverageTargets.map { $0.reference },
         ]
 
         if gatherCoverageData != Scheme.Test.gatherCoverageDataDefault {
@@ -425,7 +381,7 @@ extension Scheme.Test: JSONEncodable {
 extension Scheme.Test.TestTarget: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
-        targetReference = try TargetReference(string: jsonDictionary.json(atKeyPath: "name"))
+        targetReference = try TargetReference(jsonDictionary.json(atKeyPath: "name"))
         randomExecutionOrder = jsonDictionary.json(atKeyPath: "randomExecutionOrder") ?? Scheme.Test.TestTarget.randomExecutionOrderDefault
         parallelizable = jsonDictionary.json(atKeyPath: "parallelizable") ?? Scheme.Test.TestTarget.parallelizableDefault
         skippedTests = jsonDictionary.json(atKeyPath: "skippedTests") ?? []
@@ -436,11 +392,11 @@ extension Scheme.Test.TestTarget: JSONEncodable {
     public func toJSONValue() -> Any {
         if randomExecutionOrder == Scheme.Test.TestTarget.randomExecutionOrderDefault,
             parallelizable == Scheme.Test.TestTarget.parallelizableDefault {
-            return targetReference.toString()
+            return targetReference.reference
         }
 
         var dict: JSONDictionary = [
-            "name": targetReference.toString(),
+            "name": targetReference.reference,
         ]
 
         if randomExecutionOrder != Scheme.Test.TestTarget.randomExecutionOrderDefault {
@@ -568,7 +524,7 @@ extension Scheme.Build: JSONObjectConvertible {
             } else {
                 buildTypes = BuildType.all
             }
-            let target = try TargetReference(string: targetRepr)
+            let target = try TargetReference(targetRepr)
             targets.append(Scheme.BuildTarget(target: target, buildTypes: buildTypes))
         }
         self.targets = targets.sorted { $0.target.name < $1.target.name }
@@ -581,7 +537,7 @@ extension Scheme.Build: JSONObjectConvertible {
 
 extension Scheme.Build: JSONEncodable {
     public func toJSONValue() -> Any {
-        let targetPairs = targets.map { ($0.target.toString(), $0.buildTypes.map { $0.toJSONValue() }) }
+        let targetPairs = targets.map { ($0.target.reference, $0.buildTypes.map { $0.toJSONValue() }) }
 
         var dict: JSONDictionary = [
             "targets": Dictionary(uniqueKeysWithValues: targetPairs),

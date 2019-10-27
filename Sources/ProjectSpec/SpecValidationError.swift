@@ -18,6 +18,8 @@ public struct SpecValidationError: Error, CustomStringConvertible {
         case invalidTargetSchemeTest(target: String, testTarget: String)
         case invalidSchemeTarget(scheme: String, target: String)
         case invalidSchemeConfig(scheme: String, config: String)
+        case invalidSwiftPackage(name: String, target: String)
+        case invalidLocalPackage(String)
         case invalidConfigFile(configFile: String, config: String)
         case invalidBuildSettingConfig(String)
         case invalidSettingsGroup(String)
@@ -27,6 +29,7 @@ public struct SpecValidationError: Error, CustomStringConvertible {
         case missingConfigForTargetScheme(target: String, configType: ConfigType)
         case missingDefaultConfig(configName: String)
         case invalidPerConfigSettings
+        case invalidProjectReference(scheme: String, reference: String)
         case deprecatedUsageOfPlaceholder(placeholderName: String)
 
         public var description: String {
@@ -61,12 +64,18 @@ public struct SpecValidationError: Error, CustomStringConvertible {
                 return "Invalid file group \(group.quoted)"
             case let .invalidConfigFileConfig(config):
                 return "Config file has invalid config \(config.quoted)"
+            case let .invalidSwiftPackage(name, target):
+                return "Target \(target.quoted) has an invalid package dependency \(name.quoted)"
+            case let .invalidLocalPackage(path):
+                return "Invalid local package \(path.quoted)"
             case let .missingConfigForTargetScheme(target, configType):
                 return "Target \(target.quoted) is missing a config of type \(configType.rawValue) to generate its scheme"
             case let .missingDefaultConfig(name):
                 return "Default configuration \(name) doesn't exist"
             case .invalidPerConfigSettings:
                 return "Settings that are for a specific config must go in \"configs\". \"base\" can be used for common settings"
+            case let .invalidProjectReference(scheme, project):
+                return "Scheme \(scheme.quoted) has invalid project reference \(project.quoted)"
             case let .deprecatedUsageOfPlaceholder(placeholderName: placeholderName):
                 return "Usage of $\(placeholderName) is deprecated and will stop working in an upcoming version. Use ${\(placeholderName)} instead."
             }

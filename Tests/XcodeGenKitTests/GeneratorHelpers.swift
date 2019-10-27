@@ -8,18 +8,22 @@ import Yams
 
 extension Project {
 
-    func generateXcodeProject(file: String = #file, line: Int = #line) throws -> XcodeProj {
+    func generateXcodeProject(validate: Bool = true, file: String = #file, line: Int = #line) throws -> XcodeProj {
         return try doThrowing(file: file, line: line) {
-            try validate()
+            if validate {
+                try self.validate()
+            }
             let generator = ProjectGenerator(project: self)
             return try generator.generateXcodeProject()
         }
     }
 
-    func generatePbxProj(file: String = #file, line: Int = #line) throws -> PBXProj {
+    func generatePbxProj(specValidate: Bool = true, projectValidate: Bool = true, file: String = #file, line: Int = #line) throws -> PBXProj {
         return try doThrowing(file: file, line: line) {
-            let xcodeProject = try generateXcodeProject().pbxproj
-            try xcodeProject.validate()
+            let xcodeProject = try generateXcodeProject(validate: specValidate).pbxproj
+            if projectValidate {
+                try xcodeProject.validate()
+            }
             return xcodeProject
         }
     }

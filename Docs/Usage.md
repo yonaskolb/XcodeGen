@@ -4,9 +4,10 @@
     - [Settings](#settings)
     - [Setting Groups](#setting-groups)
     - [xcconfig files](#xcconfig-files)
-- [Use dependencies](#use-dependencies)
+- [Dependencies](#dependencies)
     - [CocoaPods](#cocoapods)
     - [Carthage](#carthage)
+    - [Swift Package](#swift-package)
     - [SDK](#sdk)
     - [Framework](#framework)
 
@@ -92,7 +93,7 @@ You can also always overide any build settings on CI when building by passing sp
 DEVELOPMENT_TEAM=XXXXXXXXX xcodebuild ...
 ```
 
-# Use dependencies
+# Dependencies
 
 Each target can declare one or more dependencies. See [Dependency](ProjectSpec.md#dependency) in the ProjectSpec for more info about all the properties
 
@@ -152,6 +153,41 @@ By default XcodeGen looks for carthage frameworks in `Carthage/Build`. You can c
 options:
   carthageBuildPath: ../../Carthage/Build
 ```
+
+### Swift Package
+Swift Packages can be integrated by defining them at the project level and then referencing them in targets
+
+```yaml
+packages:
+  Yams:
+    url: https://github.com/jpsim/Yams
+    from: 2.0.0
+  SwiftPM:
+    url: https://github.com/apple/swift-package-manager
+    branch: swift-5.0-branch
+targets:
+  App:
+    dependencies:
+      # by default the package product that is linked to is the same as the package name
+      - package: Yams
+      - package: SwiftPM
+      - package: SwiftPM
+        product: SPMUtility # specify a specific product
+```
+If you want to check in the `Package.resolved` file so that everyone is on the same versions, you need to check in `ProjectName.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved`
+
+> Note that Swift Packages don't work in projects with configurations other than `Debug` and `Release`. That limitation is tracked here bugs.swift.org/browse/SR-10927
+
+You can also include local Swift Packages by referencing them by paths in `localPackages`. When these have the same name as `packages` they will be used instead of the remote repos. This is useful for local development.
+
+```yml
+localPackages:
+ - ../../Yams
+ - ~/Developer/MyPackage
+```
+These local packages get put into a `Packages` group in the root of the project by default. This can be changed with `options.localPackagesGroup`
+
+> For now local packages that don't mirror remote packages aren't able to be linked to
 
 ### SDK
 System frameworks and libs can be linked by using the `sdk` dependency type. You can either specify frameworks or libs by using a `.framework`, `.tbd` or `dylib` filename, respectively
