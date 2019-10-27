@@ -1,7 +1,7 @@
 import Foundation
 import JSONUtilities
 
-public struct ProjectReference {
+public struct ProjectReference: Hashable {
     public var name: String
     public var path: String
 

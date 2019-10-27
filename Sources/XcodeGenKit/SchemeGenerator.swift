@@ -28,6 +28,17 @@ public class SchemeGenerator {
         self.pbxProj = pbxProj
     }
 
+    private var projects: [ProjectReference: PBXProj] = [:]
+
+    func getPBXProj(from reference: ProjectReference) throws -> PBXProj {
+        if let cachedProject = projects[reference] {
+            return cachedProject
+        }
+        let pbxproj = try XcodeProj(pathString: reference.path).pbxproj
+        projects[reference] = pbxproj
+        return pbxproj
+    }
+
     public func generateSchemes() throws -> [XCScheme] {
         var xcschemes: [XCScheme] = []
 
@@ -91,7 +102,7 @@ public class SchemeGenerator {
                 guard let projectReference = self.project.getProjectReference(project) else {
                     throw SchemeGenerationError.missingProject(project)
                 }
-                pbxProj = try XcodeProj(pathString: projectReference.path).pbxproj
+                pbxProj = try getPBXProj(from: projectReference)
                 projectFilePath = projectReference.path
             case .local:
                 pbxProj = self.pbxProj
