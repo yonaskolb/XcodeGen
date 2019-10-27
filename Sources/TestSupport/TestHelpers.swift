@@ -1,13 +1,12 @@
 import Foundation
 import PathKit
-import ProjectSpec
 import Spectre
 import XcodeProj
 import XCTest
 
-let fixturePath = Path(#file).parent().parent() + "Fixtures"
+public let fixturePath = Path(#file).parent().parent().parent() + "Tests/Fixtures"
 
-func doThrowing<T>(file: String = #file, line: Int = #line, _ closure: () throws -> T) throws -> T {
+public func doThrowing<T>(file: String = #file, line: Int = #line, _ closure: () throws -> T) throws -> T {
     do {
         return try closure()
     } catch {
@@ -15,7 +14,7 @@ func doThrowing<T>(file: String = #file, line: Int = #line, _ closure: () throws
     }
 }
 
-func expectError<T: Error>(_ expectedError: T, function: String = #function, file: String = #file, line: Int = #line, _ closure: () throws -> Void) throws where T: CustomStringConvertible {
+public func expectError<T: Error>(_ expectedError: T, function: String = #function, file: String = #file, line: Int = #line, _ closure: () throws -> Void) throws where T: CustomStringConvertible {
     do {
         try closure()
     } catch let error as T {

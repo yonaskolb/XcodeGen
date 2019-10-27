@@ -2,10 +2,10 @@ import Foundation
 import PathKit
 import ProjectSpec
 import Spectre
-import XcodeGenKit
 import XcodeProj
 import XCTest
 import Yams
+import TestSupport
 
 class SpecLoadingTests: XCTestCase {
 

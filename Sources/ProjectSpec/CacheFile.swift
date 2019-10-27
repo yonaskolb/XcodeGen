@@ -1,5 +1,5 @@
 import Foundation
-import ProjectSpec
+import Core
 
 public class CacheFile {
 

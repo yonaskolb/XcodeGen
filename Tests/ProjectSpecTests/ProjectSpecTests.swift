@@ -4,6 +4,7 @@ import Spectre
 import XcodeGenKit
 import XcodeProj
 import XCTest
+import TestSupport
 
 class ProjectSpecTests: XCTestCase {
 
