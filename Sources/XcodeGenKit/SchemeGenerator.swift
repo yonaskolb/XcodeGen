@@ -127,7 +127,7 @@ public class SchemeGenerator {
 
         let testTargets = scheme.test?.targets ?? []
         let testBuildTargets = testTargets.map {
-            Scheme.BuildTarget(target: TargetReference(name: $0.name, location: .local), buildTypes: BuildType.testOnly)
+            Scheme.BuildTarget(target: .local($0.name), buildTypes: BuildType.testOnly)
         }
 
         let testBuildTargetEntries = try testBuildTargets.map(getBuildEntry)
@@ -260,7 +260,7 @@ extension Scheme {
     public init(name: String, target: Target, targetScheme: TargetScheme, debugConfig: String, releaseConfig: String) {
         self.init(
             name: name,
-            build: .init(targets: [Scheme.BuildTarget(target: TargetReference(name: target.name, location: .local))]),
+            build: .init(targets: [Scheme.BuildTarget(target: TargetReference.local(target.name))]),
             run: .init(
                 config: debugConfig,
                 commandLineArguments: targetScheme.commandLineArguments,
