@@ -1,7 +1,6 @@
 import Foundation
 import JSONUtilities
 import PathKit
-import ProjectSpec
 import XcodeProj
 import Yams
 
