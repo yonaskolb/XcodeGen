@@ -671,7 +671,12 @@ public class PBXProjGenerator {
             }
             let fileReference = sourceGenerator.getFileReference(path: frameworkPath, inPath: platformPath)
 
-            if embed && !isStaticDependency(for: dependency) {
+            if isStaticDependency(for: dependency) {
+                let embedFile = addObject(
+                    PBXBuildFile(file: fileReference, settings: getDependencyFrameworkSettings(dependency: dependency))
+                )
+                targetFrameworkBuildFiles.append(embedFile)
+            } else if embed {
                 if directlyEmbedCarthage {
                     let embedFile = addObject(
                         PBXBuildFile(file: fileReference, settings: getEmbedSettings(dependency: dependency, codeSign: dependency.codeSign ?? true))
@@ -680,11 +685,6 @@ public class PBXProjGenerator {
                 } else {
                     carthageFrameworksToEmbed.append(dependency.reference)
                 }
-            } else if isStaticDependency(for: dependency) {
-                let embedFile = addObject(
-                    PBXBuildFile(file: fileReference, settings: getDependencyFrameworkSettings(dependency: dependency))
-                )
-                targetFrameworkBuildFiles.append(embedFile)
             }
         }
 
