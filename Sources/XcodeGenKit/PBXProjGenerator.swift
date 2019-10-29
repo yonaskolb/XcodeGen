@@ -224,8 +224,8 @@ public class PBXProjGenerator {
         let projectAttributes: [String: Any] = ["LastUpgradeCheck": project.xcodeVersion]
             .merged(project.attributes)
 
-        let knownRegions = sourceGenerator.knownRegions.sorted()
-        pbxProject.knownRegions = knownRegions.isEmpty ? ["en"] : knownRegions
+        let knownRegions = sourceGenerator.knownRegions
+        pbxProject.knownRegions = (knownRegions.isEmpty ? ["en"] : knownRegions).union(["Base"]).sorted()
         pbxProject.packages = packageReferences.sorted { $0.key < $1.key }.map { $1 }
 
         let allTargets: [PBXTarget] = targetObjects.valueArray + targetAggregateObjects.valueArray

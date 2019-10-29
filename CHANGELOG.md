@@ -2,6 +2,9 @@
 
 ## Next Version
 
+#### Fixed
+- Add Base to knownRegions even if one doesn't exist [#694](https://github.com/yonaskolb/XcodeGen/pull/694) @bryansum
+
 ## 2.10.0
 
 #### Added
