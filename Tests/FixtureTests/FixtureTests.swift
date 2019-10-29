@@ -4,14 +4,19 @@ import Spectre
 import XcodeGenKit
 import XcodeProj
 import XCTest
+import TestSupport
 
-class ProjectFixtureTests: XCTestCase {
+class FixtureTests: XCTestCase {
 
     func testProjectFixture() {
         describe {
-            $0.it("generates fixtures") {
+            $0.it("generates Test Project") {
                 try generateXcodeProject(specPath: fixturePath + "TestProject/project.yml")
+            }
+            $0.it("generates Carthage Project") {
                 try generateXcodeProject(specPath: fixturePath + "CarthageProject/project.yml")
+            }
+            $0.it("generates SPM Project") {
                 try generateXcodeProject(specPath: fixturePath + "SPM/project.yml")
             }
         }

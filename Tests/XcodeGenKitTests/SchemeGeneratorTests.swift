@@ -5,6 +5,7 @@ import XcodeGenKit
 import XcodeProj
 import XCTest
 import Yams
+import TestSupport
 
 private let app = Target(
     name: "MyApp",
@@ -43,7 +44,7 @@ class SchemeGeneratorTests: XCTestCase {
     func testSchemes() {
         describe {
 
-            let buildTarget = Scheme.BuildTarget(target: app.name)
+            let buildTarget = Scheme.BuildTarget(target: .local(app.name))
             $0.it("generates scheme") {
                 let preAction = Scheme.ExecutionAction(name: "Script", script: "echo Starting", settingsTarget: app.name)
                 let scheme = Scheme(
@@ -109,7 +110,7 @@ class SchemeGeneratorTests: XCTestCase {
                     name: "MyFramework",
                     type: .application,
                     platform: .iOS,
-                    scheme: TargetScheme(testTargets: [.init(name: "MyFrameworkTests")])
+                    scheme: TargetScheme(testTargets: ["MyFrameworkTests"])
                 )
                 let project = Project(
                     name: "test",
@@ -258,6 +259,81 @@ class SchemeGeneratorTests: XCTestCase {
                 try expect(xcscheme.testAction?.postActions.first?.title) == "Run2"
                 try expect(xcscheme.testAction?.postActions.first?.scriptText) == "post"
                 try expect(xcscheme.testAction?.postActions.first?.environmentBuildable?.blueprintName) == "MyApp"
+            }
+
+            $0.it("generates scheme using external project file") {
+                prepareXcodeProj: do {
+                    let project = try! Project(path: fixturePath + "scheme_test/test_project.yml")
+                    let generator = ProjectGenerator(project: project)
+                    let writer = FileWriter(project: project)
+                    let xcodeProject = try! generator.generateXcodeProject()
+                    try! writer.writeXcodeProject(xcodeProject)
+                    try! writer.writePlists()
+                }
+                let externalProjectPath = fixturePath + "scheme_test/TestProject.xcodeproj"
+                let projectReference = ProjectReference(name: "ExternalProject", path: externalProjectPath.string)
+                let target = Scheme.BuildTarget(target: .init(name: "ExternalTarget", location: .project("ExternalProject")))
+                let scheme = Scheme(
+                    name: "ExternalProjectScheme",
+                    build: Scheme.Build(targets: [target])
+                )
+                let project = Project(
+                    name: "test",
+                    targets: [],
+                    schemes: [scheme],
+                    projectReferences: [projectReference]
+                )
+                let xcodeProject = try project.generateXcodeProject()
+                guard let xcscheme = xcodeProject.sharedData?.schemes.first else {
+                    throw failure("Scheme not found")
+                }
+                try expect(xcscheme.buildAction?.buildActionEntries.count) == 1
+                let buildableReference = xcscheme.buildAction?.buildActionEntries.first?.buildableReference
+                try expect(buildableReference?.blueprintName) == "ExternalTarget"
+                try expect(buildableReference?.referencedContainer) == "container:\(externalProjectPath.string)"
+
+            }
+
+            $0.it("generate scheme with code coverage options") {
+                prepareXcodeProj: do {
+                    let project = try! Project(path: fixturePath + "scheme_test/test_project.yml")
+                    let generator = ProjectGenerator(project: project)
+                    let writer = FileWriter(project: project)
+                    let xcodeProject = try! generator.generateXcodeProject()
+                    try! writer.writeXcodeProject(xcodeProject)
+                    try! writer.writePlists()
+                }
+                let externalProject = fixturePath + "scheme_test/TestProject.xcodeproj"
+                let externalTarget = Scheme.BuildTarget(target: .init(name: "ExternalTarget", location: .project("TestProject")))
+                let scheme = try Scheme(
+                    name: "CodeCoverageScheme",
+                    build: Scheme.Build(targets: [externalTarget]),
+                    test: Scheme.Test(
+                        config: "Debug",
+                        gatherCoverageData: true,
+                        coverageTargets: [
+                            "TestProject/ExternalTarget",
+                            TargetReference(framework.name),
+                        ]
+                    )
+                )
+                let project = Project(
+                    name: "test",
+                    targets: [framework],
+                    schemes: [scheme],
+                    projectReferences: [
+                        ProjectReference(name: "TestProject", path: externalProject.string),
+                    ]
+                )
+                let xcodeProject = try project.generateXcodeProject()
+                guard let xcscheme = xcodeProject.sharedData?.schemes.first else {
+                    throw failure("Scheme not found")
+                }
+                try expect(xcscheme.testAction?.codeCoverageEnabled) == true
+                try expect(xcscheme.testAction?.codeCoverageTargets.count) == 2
+                let buildableReference = xcscheme.testAction?.codeCoverageTargets.first
+                try expect(buildableReference?.blueprintName) == "ExternalTarget"
+                try expect(buildableReference?.referencedContainer) == "container:\(externalProject.string)"
             }
         }
     }

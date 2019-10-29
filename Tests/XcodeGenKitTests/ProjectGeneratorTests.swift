@@ -5,6 +5,7 @@ import XcodeGenKit
 import XcodeProj
 import XCTest
 import Yams
+import TestSupport
 
 private let app = Target(
     name: "MyApp",
@@ -929,14 +930,14 @@ class ProjectGeneratorTests: XCTestCase {
                 }
 
                 guard let projectSpecDependency = nativeTarget.packageProductDependencies.first(where: { $0.productName == "ProjectSpec" }) else {
-                                   throw failure("XCSwiftPackageProductDependency for \(app.name) not found")
+                    throw failure("XCSwiftPackageProductDependency for \(app.name) not found")
                 }
 
                 try expect(projectSpecDependency.package?.name) == "XcodeGen"
                 try expect(projectSpecDependency.package?.versionRequirement) == .branch("master")
 
                 guard let codabilityDependency = nativeTarget.packageProductDependencies.first(where: { $0.productName == "Codability" }) else {
-                                   throw failure("XCSwiftPackageProductDependency for \(app.name) not found")
+                    throw failure("XCSwiftPackageProductDependency for \(app.name) not found")
                 }
 
                 try expect(codabilityDependency.package?.name) == "Codability"
@@ -971,16 +972,17 @@ class ProjectGeneratorTests: XCTestCase {
                 let infoPlistFile = tempPath + plist.path
                 let data: Data = try infoPlistFile.read()
                 let infoPlist = try PropertyListSerialization.propertyList(from: data, options: [], format: nil) as! [String: Any]
-                var expectedInfoPlist: [String: Any] = [:]
-                expectedInfoPlist["CFBundleIdentifier"] = "$(PRODUCT_BUNDLE_IDENTIFIER)"
-                expectedInfoPlist["CFBundleInfoDictionaryVersion"] = "6.0"
-                expectedInfoPlist["CFBundleExecutable"] = "$(EXECUTABLE_NAME)"
-                expectedInfoPlist["CFBundleName"] = "$(PRODUCT_NAME)"
-                expectedInfoPlist["CFBundleDevelopmentRegion"] = "$(DEVELOPMENT_LANGUAGE)"
-                expectedInfoPlist["CFBundleShortVersionString"] = "1.0"
-                expectedInfoPlist["CFBundleVersion"] = "1"
-                expectedInfoPlist["CFBundlePackageType"] = "APPL"
-                expectedInfoPlist["UISupportedInterfaceOrientations"] = ["UIInterfaceOrientationPortrait", "UIInterfaceOrientationLandscapeLeft"]
+                let expectedInfoPlist: [String: Any] = [
+                    "CFBundleIdentifier": "$(PRODUCT_BUNDLE_IDENTIFIER)",
+                    "CFBundleInfoDictionaryVersion": "6.0",
+                    "CFBundleName": "$(PRODUCT_NAME)",
+                    "CFBundleExecutable": "$(EXECUTABLE_NAME)",
+                    "CFBundleDevelopmentRegion": "$(DEVELOPMENT_LANGUAGE)",
+                    "CFBundleShortVersionString": "1.0",
+                    "CFBundleVersion": "1",
+                    "CFBundlePackageType": "APPL",
+                    "UISupportedInterfaceOrientations": ["UIInterfaceOrientationPortrait", "UIInterfaceOrientationLandscapeLeft"],
+                ]
 
                 try expect(NSDictionary(dictionary: expectedInfoPlist).isEqual(to: infoPlist)).beTrue()
             }
@@ -1063,6 +1065,82 @@ class ProjectGeneratorTests: XCTestCase {
                         }
                         try expect(copyCarthagePhase.inputPaths) == [dynamicFramework.file?.fullPath(sourceRoot: Path("$(SRCROOT)"))?.string]
                         try expect(copyCarthagePhase.outputPaths) == ["$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/\(dynamicFramework.file!.path!)"]
+                    }
+                }
+            }
+
+            $0.it("generate info.plist doesn't generate CFBundleExecutable for targets with type bundle") {
+                let plist = Plist(path: "Info.plist", attributes: [:])
+                let tempPath = Path.temporary + "info"
+                let project = Project(basePath: tempPath, name: "", targets: [Target(name: "", type: .bundle, platform: .iOS, info: plist)])
+                let pbxProject = try project.generatePbxProj()
+                let writer = FileWriter(project: project)
+                try writer.writePlists()
+
+                guard let targetConfig = pbxProject.nativeTargets.first?.buildConfigurationList?.buildConfigurations.first else {
+                    throw failure("Couldn't find Target config")
+                }
+
+                try expect(targetConfig.buildSettings["INFOPLIST_FILE"] as? String) == plist.path
+
+                let infoPlistFile = tempPath + plist.path
+                let data: Data = try infoPlistFile.read()
+                let infoPlist = try PropertyListSerialization.propertyList(from: data, options: [], format: nil) as! [String: Any]
+                let expectedInfoPlist: [String: Any] = [
+                    "CFBundleIdentifier": "$(PRODUCT_BUNDLE_IDENTIFIER)",
+                    "CFBundleInfoDictionaryVersion": "6.0",
+                    "CFBundleName": "$(PRODUCT_NAME)",
+                    "CFBundleDevelopmentRegion": "$(DEVELOPMENT_LANGUAGE)",
+                    "CFBundleShortVersionString": "1.0",
+                    "CFBundleVersion": "1",
+                    "CFBundlePackageType": "BNDL",
+                ]
+
+                try expect(NSDictionary(dictionary: expectedInfoPlist).isEqual(to: infoPlist)).beTrue()
+            }
+        }
+    }
+
+    func testGenerateXcodeProjectWithDestination() throws {
+        let groupName = "App_iOS"
+        let sourceDirectory = fixturePath + "TestProject" + groupName
+        let frameworkWithSources = Target(
+            name: "MyFramework",
+            type: .framework,
+            platform: .iOS,
+            sources: [TargetSource(path: sourceDirectory.string)]
+        )
+
+        describe("generateXcodeProject") {
+            $0.context("without projectDirectory") {
+                $0.it("generate groups") {
+                    let project = Project(name: "test", targets: [frameworkWithSources])
+                    let generator = ProjectGenerator(project: project)
+                    let generatedProject = try generator.generateXcodeProject()
+                    let group = generatedProject.pbxproj.groups.first(where: { $0.nameOrPath == groupName })
+                    try expect(group?.path) == "App_iOS"
+                }
+            }
+
+            $0.context("with projectDirectory") {
+                $0.it("generate groups") {
+                    let destinationPath = fixturePath
+                    let project = Project(name: "test", targets: [frameworkWithSources])
+                    let generator = ProjectGenerator(project: project)
+                    let generatedProject = try generator.generateXcodeProject(in: destinationPath)
+                    let group = generatedProject.pbxproj.groups.first(where: { $0.nameOrPath == groupName })
+                    try expect(group?.path) == "TestProject/App_iOS"
+                }
+
+                $0.it("generate Info.plist") {
+                    let destinationPath = fixturePath
+                    let project = Project(name: "test", targets: [frameworkWithSources])
+                    let generator = ProjectGenerator(project: project)
+                    let generatedProject = try generator.generateXcodeProject(in: destinationPath)
+                    let plists = generatedProject.pbxproj.buildConfigurations.compactMap { $0.buildSettings["INFOPLIST_FILE"] as? Path }
+                    try expect(plists.count) == 2
+                    for plist in plists {
+                        try expect(plist) == "TestProject/App_iOS/Info.plist"
                     }
                 }
             }

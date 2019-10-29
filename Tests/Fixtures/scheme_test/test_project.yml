@@ -1,0 +1,5 @@
+name: TestProject
+targets:
+  ExternalTarget:
+    type: framework
+    platform: iOS

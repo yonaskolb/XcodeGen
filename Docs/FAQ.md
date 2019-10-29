@@ -25,7 +25,7 @@ pod 'Fabric'
 pod 'Crashlytics'
 
 script_phase :name => 'Run Fabric',
-             :script => '"${PODS_ROOT}/Fabric/run"'
+             :script => '"${PODS_ROOT}/Fabric/run"',
              :input_files => ['$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)']
 
 ```
