@@ -421,8 +421,8 @@ targets:
       - target: MyFramework
       - framework: path/to/framework.framework
       - carthage: Result
-        findFrameworks: true
-        static: false
+        findFrameworks: false
+        static: true
       - sdk: Contacts.framework
       - sdk: libc++.tbd
       - sdk: libz.dylib
