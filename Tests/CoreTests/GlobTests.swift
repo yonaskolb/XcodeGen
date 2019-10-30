@@ -8,7 +8,6 @@
 
 import XCTest
 @testable import Core
-@testable import XcodeGenKit
 
 class GlobTests: XCTestCase {
 
