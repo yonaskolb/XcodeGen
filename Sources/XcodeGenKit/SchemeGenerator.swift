@@ -204,6 +204,7 @@ public class SchemeGenerator {
             shouldUseLaunchSchemeArgsEnv: scheme.test?.shouldUseLaunchSchemeArgsEnv ?? true,
             codeCoverageEnabled: scheme.test?.gatherCoverageData ?? Scheme.Test.gatherCoverageDataDefault,
             codeCoverageTargets: coverageBuildableTargets,
+            onlyGenerateCoverageForSpecifiedTargets: !coverageBuildableTargets.isEmpty,
             disableMainThreadChecker: scheme.test?.disableMainThreadChecker ?? Scheme.Test.disableMainThreadCheckerDefault,
             commandlineArguments: testCommandLineArgs,
             environmentVariables: testVariables,
