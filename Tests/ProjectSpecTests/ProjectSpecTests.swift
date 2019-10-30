@@ -1,7 +1,6 @@
 import PathKit
 import ProjectSpec
 import Spectre
-import XcodeGenKit
 import XcodeProj
 import XCTest
 import TestSupport

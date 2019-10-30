@@ -18,12 +18,6 @@ extension Project {
     var objectVersion: UInt {
         return 51
     }
-
-    public func validateMinimumXcodeGenVersion(_ xcodeGenVersion: Version) throws {
-        if let minimumXcodeGenVersion = options.minimumXcodeGenVersion, xcodeGenVersion < minimumXcodeGenVersion {
-            throw SpecValidationError.ValidationError.invalidXcodeGenVersion(minimumVersion: minimumXcodeGenVersion, version: xcodeGenVersion)
-        }
-    }
 }
 
 public struct XCodeVersion {
