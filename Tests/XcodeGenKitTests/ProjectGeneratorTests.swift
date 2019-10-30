@@ -312,6 +312,51 @@ class ProjectGeneratorTests: XCTestCase {
                 try expect(dependencies).contains { $0.target == frameworkTarget }
             }
 
+            $0.it("generates dependency from external project file") {
+                let subproject: PBXProj
+                prepareXcodeProj: do {
+                    let project = try! Project(path: fixturePath + "external_target_test/test_project.yml")
+                    let generator = ProjectGenerator(project: project)
+                    let writer = FileWriter(project: project)
+                    let xcodeProject = try! generator.generateXcodeProject()
+                    try! writer.writeXcodeProject(xcodeProject)
+                    try! writer.writePlists()
+                    subproject = xcodeProject.pbxproj
+                }
+                let externalProjectPath = fixturePath + "external_target_test/TestProject.xcodeproj"
+                let projectReference = ProjectReference(name: "ExternalProject", path: externalProjectPath.string)
+                var target = app
+                target.dependencies = [
+                    Dependency(type: .target, reference: "ExternalProject/ExternalTarget")
+                ]
+                let project = Project(
+                    name: "test",
+                    targets: [target],
+                    schemes: [],
+                    projectReferences: [projectReference]
+                )
+                let pbxProject = try project.generatePbxProj()
+
+                let projectReferences = pbxProject.rootObject?.projects ?? []
+                try expect(projectReferences.count) == 1
+                try expect((projectReferences.first?["ProjectRef"])?.name) == "ExternalProject"
+
+                let dependencies = pbxProject.targetDependencies
+                let targetUuid = subproject.targets(named: "ExternalTarget").first?.uuid
+                try expect(dependencies.count) == 1
+                try expect(dependencies).contains { dependency in
+                    guard let id = dependency.targetProxy?.remoteGlobalID else { return false }
+
+                    switch id {
+                    case .object(let object):
+                        return object.uuid == targetUuid
+                    case .string(let value):
+                        return value == targetUuid
+                    }
+                }
+
+            }
+
             $0.it("generates targets with correct transitive embeds") {
                 // App # Embeds it's frameworks, so shouldn't embed in tests
                 //   dependencies:

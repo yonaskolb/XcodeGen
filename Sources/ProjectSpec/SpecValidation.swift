@@ -147,8 +147,17 @@ extension Project {
             for dependency in target.dependencies {
                 switch dependency.type {
                 case .target:
-                    if getProjectTarget(dependency.reference) == nil {
-                        errors.append(.invalidTargetDependency(target: target.name, dependency: dependency.reference))
+                    let dependencyTargetReference = try TargetReference(dependency.reference)
+
+                    switch dependencyTargetReference.location {
+                    case .local:
+                        if getProjectTarget(dependency.reference) == nil {
+                            errors.append(.invalidTargetDependency(target: target.name, dependency: dependency.reference))
+                        }
+                    case .project(let dependencyProjectName):
+                        if getProjectReference(dependencyProjectName) == nil {
+                            errors.append(.invalidTargetDependency(target: target.name, dependency: dependency.reference))
+                        }
                     }
                 case .sdk:
                     let path = Path(dependency.reference)

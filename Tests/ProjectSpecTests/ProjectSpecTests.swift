@@ -217,7 +217,7 @@ class ProjectSpecTests: XCTestCase {
                 try expectValidationError(project, .invalidSchemeConfig(scheme: "scheme1", config: "releaseInvalid"))
             }
 
-            $0.it("fails with invalid project reference") {
+            $0.it("fails with invalid project reference in scheme") {
                 var project = baseProject
                 project.schemes = [Scheme(
                     name: "scheme1",
@@ -231,6 +231,35 @@ class ProjectSpecTests: XCTestCase {
                 let reference = ProjectReference(name: "InvalidProj", path: "invalid_path")
                 project.projectReferences = [reference]
                 try expectValidationError(project, .invalidProjectReferencePath(reference))
+            }
+
+            $0.it("fails with invalid project reference in dependency") {
+                var project = baseProject
+                project.targets = [
+                    Target(
+                        name: "target1",
+                        type: .application,
+                        platform: .iOS,
+                        dependencies: [Dependency(type: .target, reference: "invalidProjectRef/target2")]
+                    ),
+                ]
+                try expectValidationError(project, .invalidTargetDependency(target: "target1", dependency: "invalidProjectRef/target2"))
+            }
+
+            $0.it("allows project reference in target dependency") {
+                var project = baseProject
+                project.projectReferences = [
+                    ProjectReference(name: "validProjectRef", path: "validProjectRef.xcodeproj")
+                ]
+                project.targets = [
+                    Target(
+                        name: "target1",
+                        type: .application,
+                        platform: .iOS,
+                        dependencies: [Dependency(type: .target, reference: "validProjectRef/target2")]
+                    ),
+                ]
+                try project.validate()
             }
 
             $0.it("allows missing optional file") {
