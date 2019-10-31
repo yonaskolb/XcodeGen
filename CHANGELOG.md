@@ -2,10 +2,14 @@
 
 ## Next Version
 
+## 2.10.1
+
 #### Fixed
 - Add Base to knownRegions even if one doesn't exist [#694](https://github.com/yonaskolb/XcodeGen/pull/694) @bryansum
 - Fixed missing `onlyGenerateCoverageForSpecifiedTargets` issue [#700](https://github.com/yonaskolb/XcodeGen/pull/700) @kateinoigakukun
 - Fixed regression on dependencies `link` flag [#703](https://github.com/yonaskolb/XcodeGen/pull/703) @rcari
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.10.0...2.10.1)
 
 ## 2.10.0
 
