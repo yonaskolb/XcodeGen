@@ -423,10 +423,14 @@ Carthage officially supports static frameworks. In this case, frameworks are exp
 You can specify `linkType` to `static` to integrate static ones.
 
 ```yaml
+projectReferences:
+  FooLib:
+    path: path/to/FooLib.xcodeproj
 targets:
   MyTarget:
     dependencies:
       - target: MyFramework
+      - target: FooLib/FooTarget
       - framework: path/to/framework.framework
       - carthage: Result
         findFrameworks: false
