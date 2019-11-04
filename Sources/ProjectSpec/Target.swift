@@ -148,8 +148,7 @@ extension Target {
                 for platform in platforms {
                     var platformTarget = target
 
-                    platformTarget = platformTarget.replaceString("$platform", with: platform) // Will be removed in upcoming version
-                    platformTarget = platformTarget.replaceString("${platform}", with: platform)
+                    platformTarget = platformTarget.expand(variables: ["platform": platform])
 
                     platformTarget["platform"] = platform
                     let platformSuffix = platformTarget["platformSuffix"] as? String ?? "_\(platform)"

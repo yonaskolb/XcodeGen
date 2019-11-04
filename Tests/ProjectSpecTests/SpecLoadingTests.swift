@@ -256,7 +256,7 @@ class SpecLoadingTests: XCTestCase {
                     "templates": [
                         "Framework": [
                             "type": "framework",
-                            "sources": ["$target_name/$platform/Sources"],
+                            "sources": ["${target_name}/${platform}/Sources"],
                         ],
                     ],
                     "targets": [
@@ -274,10 +274,6 @@ class SpecLoadingTests: XCTestCase {
                 } catch {
                     throw failure("\(error)")
                 }
-                try expectError(SpecValidationError(errors: [
-                    .deprecatedUsageOfPlaceholder(placeholderName: "target_name"),
-                    .deprecatedUsageOfPlaceholder(placeholderName: "platform"),
-                ])) { try specLoader.validateProjectDictionaryWarnings() }
             }
 
             $0.it("successfully validates warnings for new placeholder usage") {
@@ -429,7 +425,7 @@ class SpecLoadingTests: XCTestCase {
                     "deploymentTarget": ["iOS": 9.0, "tvOS": "10.0"],
                     "type": "framework",
                     "sources": ["Framework", "Framework ${platform}"],
-                    "settings": ["SETTING": "value_$platform"],
+                    "settings": ["SETTING": "value_${platform}"],
                 ]
 
                 let project = try getProjectSpec(["targets": ["Framework": targetDictionary]])
@@ -473,7 +469,7 @@ class SpecLoadingTests: XCTestCase {
                             "platform": "tvOS",
                             "deploymentTarget": "1.1.0",
                             "configFiles": [
-                                "debug": "Configs/$target_name/debug.xcconfig",
+                                "debug": "Configs/${target_name}/debug.xcconfig",
                                 "release": "Configs/${target_name}/release.xcconfig",
                             ],
                             "sources": ["${source}"],
@@ -513,7 +509,7 @@ class SpecLoadingTests: XCTestCase {
                         "temp2": [
                             "platform": "tvOS",
                             "deploymentTarget": "1.1.0",
-                            "configFiles": ["debug": "Configs/$target_name/debug.xcconfig"],
+                            "configFiles": ["debug": "Configs/${target_name}/debug.xcconfig"],
                             "templates": ["temp", "temp1"],
                             "sources": ["templateSource"],
                         ],
@@ -618,7 +614,7 @@ class SpecLoadingTests: XCTestCase {
                         "temp2": [
                             "platform": "tvOS",
                             "deploymentTarget": "1.1.0",
-                            "configFiles": ["debug": "Configs/$target_name/debug.xcconfig"],
+                            "configFiles": ["debug": "Configs/${target_name}/debug.xcconfig"],
                             "templates": ["temp", "temp1"],
                             "sources": ["templateSource"],
                         ],
@@ -662,7 +658,7 @@ class SpecLoadingTests: XCTestCase {
                         "Framework": [
                             "type": "framework",
                             "platform": ["iOS", "tvOS"],
-                            "templates": ["$platform"],
+                            "templates": ["${platform}"],
                         ],
                     ],
                     "targetTemplates": [
@@ -880,7 +876,7 @@ class SpecLoadingTests: XCTestCase {
                             "platform": "tvOS",
                             "deploymentTarget": "1.1.0",
                             "configFiles": [
-                                "debug": "Configs/$target_name/debug.xcconfig",
+                                "debug": "Configs/${target_name}/debug.xcconfig",
                                 "release": "Configs/${target_name}/release.xcconfig",
                             ],
                             "sources": ["${source}"],

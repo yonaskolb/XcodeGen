@@ -86,8 +86,7 @@ public struct SpecFile {
     }
 
     public func resolvedDictionary(variables: [String: String] = [:]) -> JSONDictionary {
-        let resolvedDictionary = resolvedDictionaryWithUniqueTargets()
-        return substitute(variables: variables, in: resolvedDictionary)
+        return resolvedDictionaryWithUniqueTargets().expand(variables: variables)
     }
 
     private func resolvedDictionaryWithUniqueTargets() -> JSONDictionary {
@@ -95,16 +94,6 @@ public struct SpecFile {
 
         var value = Set<String>()
         return resolvedSpec.mergedDictionary(set: &value)
-    }
-
-    private func substitute(variables: [String: String], in mergedDictionary: JSONDictionary) -> JSONDictionary {
-        var resolvedSpec = mergedDictionary
-
-        for (key, value) in variables {
-            resolvedSpec = resolvedSpec.replaceString("${\(key)}", with: value)
-        }
-
-        return resolvedSpec
     }
 
     func mergedDictionary(set mergedTargets: inout Set<String>) -> JSONDictionary {
@@ -155,32 +144,77 @@ extension Dictionary where Key == String, Value: Any {
         return merged
     }
 
-    func replaceString(_ template: String, with replacement: String) -> JSONDictionary {
-        var replaced: JSONDictionary = self
+    func expand(variables: [String:String]) -> JSONDictionary {
+        var expanded: JSONDictionary = self
+
         for (key, value) in self {
-            let newKey = key.replacingOccurrences(of: template, with: replacement)
+            let newKey = expand(variables: variables, in: key)
             if newKey != key {
-                replaced.removeValue(forKey: key)
+                expanded.removeValue(forKey: key)
             }
-            replaced[newKey] = replace(value: value, template, with: replacement)
+            expanded[newKey] = expand(variables: variables, in: value)
         }
-        return replaced
+
+        return expanded
     }
 
-    func replace(value: Any, _ template: String, with replacement: String) -> Any {
+    private func expand(variables: [String: String], in value: Any) -> Any {
         switch value {
         case let dictionary as JSONDictionary:
-            return dictionary.replaceString(template, with: replacement)
+            return dictionary.expand(variables: variables)
         case let string as String:
-            return string.replacingOccurrences(of: template, with: replacement)
+            return expand(variables: variables, in: string)
         case let array as [JSONDictionary]:
-            return array.map { $0.replaceString(template, with: replacement) }
+            return array.map { $0.expand(variables: variables) }
         case let array as [String]:
-            return array.map { $0.replacingOccurrences(of: template, with: replacement) }
+            return array.map { self.expand(variables: variables, in: $0) }
         case let anyArray as [Any]:
-            return anyArray.map { self.replace(value: $0, template, with: replacement) }
+            return anyArray.map { self.expand(variables: variables, in: $0) }
         default:
             return value
         }
+    }
+
+    private func expand(variables: [String: String], in string: String) -> String {
+        var result = string
+        var index = result.startIndex
+
+        while index < result.endIndex {
+            let substring = result[index...]
+
+            if substring.count < 4 {
+                // We need at least 4 characters: ${x}
+                index = result.endIndex
+            } else if substring[index] == "$"
+                && substring[substring.index(after: index)] == "{"
+                && substring[substring.index(after: index)] != "}"
+            {
+                // This is the start of a variable expansion...
+                let variableStart = index
+                if let variableEnd = substring.firstIndex(of: "}") {
+                    // ...with an end
+                    let nameStart = result.index(variableStart, offsetBy: 2) // Skipping ${
+                    let nameEnd = result.index(variableEnd, offsetBy: -1) // Removing trailing }
+
+                    let name = result[nameStart...nameEnd]
+
+                    if let value = variables[String(name)] {
+                        result.replaceSubrange(variableStart...variableEnd, with: value)
+                        index = result.index(index, offsetBy: value.count)
+                    } else {
+                        // Skip this whole variable for which we don't have a value
+                        index = result.index(after: variableEnd)
+                    }
+                } else {
+                    // Malformed variable, skip the whole string
+                    index = result.endIndex
+                }
+            } else {
+                // Move on to the next $ and start again or finish early
+                index = result[result.index(after: index)...].firstIndex(of: "$") ?? result.endIndex
+            }
+        }
+
+        return result
     }
 }
