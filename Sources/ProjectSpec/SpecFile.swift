@@ -147,12 +147,14 @@ extension Dictionary where Key == String, Value: Any {
     func expand(variables: [String:String]) -> JSONDictionary {
         var expanded: JSONDictionary = self
 
-        for (key, value) in self {
-            let newKey = expand(variables: variables, in: key)
-            if newKey != key {
-                expanded.removeValue(forKey: key)
+        if !variables.isEmpty {
+            for (key, value) in self {
+                let newKey = expand(variables: variables, in: key)
+                if newKey != key {
+                    expanded.removeValue(forKey: key)
+                }
+                expanded[newKey] = expand(variables: variables, in: value)
             }
-            expanded[newKey] = expand(variables: variables, in: value)
         }
 
         return expanded
