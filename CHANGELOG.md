@@ -7,6 +7,7 @@
 
 #### Fixed
 - Improved variable expansion runtime [#704](https://github.com/yonaskolb/XcodeGen/pull/704) @rcari
+- Updated default CODE_SIGN_IDENTITY in `application_iOS.yml` [#692](https://github.com/yonaskolb/XcodeGen/pull/692) @dpfannenstiel
 
 #### Changed
 - Deprecated `$old_form` variables in favor of `${new_form}` variables [#704](https://github.com/yonaskolb/XcodeGen/pull/704) @rcari
