@@ -61,12 +61,10 @@ private func resolveTemplates(jsonDictionary: JSONDictionary, templateStructure:
                 }
             }
             reference = reference.merged(onto: mergedDictionary)
-            reference = reference.replaceString("$\(templateStructure.nameToReplace)", with: referenceName) // Will be removed in upcoming version
-            reference = reference.replaceString("${\(templateStructure.nameToReplace)}", with: referenceName)
+            reference = reference.expand(variables: [templateStructure.nameToReplace: referenceName])
+
             if let templateAttributes = reference["templateAttributes"] as? [String: String] {
-                for (templateAttribute, value) in templateAttributes {
-                    reference = reference.replaceString("${\(templateAttribute)}", with: value)
-                }
+                reference = reference.expand(variables: templateAttributes)
             }
         }
         baseDictionary[referenceName] = reference

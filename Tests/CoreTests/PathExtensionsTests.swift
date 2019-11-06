@@ -1,6 +1,8 @@
 import Spectre
 import PathKit
 import XCTest
+import Core
+import TestSupport
 
 class PathExtensionsTests: XCTestCase {
 

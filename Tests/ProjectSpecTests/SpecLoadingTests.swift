@@ -2,10 +2,10 @@ import Foundation
 import PathKit
 import ProjectSpec
 import Spectre
-import XcodeGenKit
 import XcodeProj
 import XCTest
 import Yams
+import TestSupport
 
 class SpecLoadingTests: XCTestCase {
 
@@ -256,7 +256,7 @@ class SpecLoadingTests: XCTestCase {
                     "templates": [
                         "Framework": [
                             "type": "framework",
-                            "sources": ["$target_name/$platform/Sources"],
+                            "sources": ["${target_name}/${platform}/Sources"],
                         ],
                     ],
                     "targets": [
@@ -274,10 +274,6 @@ class SpecLoadingTests: XCTestCase {
                 } catch {
                     throw failure("\(error)")
                 }
-                try expectError(SpecValidationError(errors: [
-                    .deprecatedUsageOfPlaceholder(placeholderName: "target_name"),
-                    .deprecatedUsageOfPlaceholder(placeholderName: "platform"),
-                ])) { try specLoader.validateProjectDictionaryWarnings() }
             }
 
             $0.it("successfully validates warnings for new placeholder usage") {
@@ -429,7 +425,7 @@ class SpecLoadingTests: XCTestCase {
                     "deploymentTarget": ["iOS": 9.0, "tvOS": "10.0"],
                     "type": "framework",
                     "sources": ["Framework", "Framework ${platform}"],
-                    "settings": ["SETTING": "value_$platform"],
+                    "settings": ["SETTING": "value_${platform}"],
                 ]
 
                 let project = try getProjectSpec(["targets": ["Framework": targetDictionary]])
@@ -465,7 +461,7 @@ class SpecLoadingTests: XCTestCase {
                             "platform": "iOS",
                             "sources": [
                                 "templateSource",
-                                ["path": "Sources/${target_name}"]
+                                ["path": "Sources/${target_name}"],
                             ],
                         ],
                         "temp2": [
@@ -473,7 +469,7 @@ class SpecLoadingTests: XCTestCase {
                             "platform": "tvOS",
                             "deploymentTarget": "1.1.0",
                             "configFiles": [
-                                "debug": "Configs/$target_name/debug.xcconfig",
+                                "debug": "Configs/${target_name}/debug.xcconfig",
                                 "release": "Configs/${target_name}/release.xcconfig",
                             ],
                             "sources": ["${source}"],
@@ -513,7 +509,7 @@ class SpecLoadingTests: XCTestCase {
                         "temp2": [
                             "platform": "tvOS",
                             "deploymentTarget": "1.1.0",
-                            "configFiles": ["debug": "Configs/$target_name/debug.xcconfig"],
+                            "configFiles": ["debug": "Configs/${target_name}/debug.xcconfig"],
                             "templates": ["temp", "temp1"],
                             "sources": ["templateSource"],
                         ],
@@ -618,7 +614,7 @@ class SpecLoadingTests: XCTestCase {
                         "temp2": [
                             "platform": "tvOS",
                             "deploymentTarget": "1.1.0",
-                            "configFiles": ["debug": "Configs/$target_name/debug.xcconfig"],
+                            "configFiles": ["debug": "Configs/${target_name}/debug.xcconfig"],
                             "templates": ["temp", "temp1"],
                             "sources": ["templateSource"],
                         ],
@@ -662,7 +658,7 @@ class SpecLoadingTests: XCTestCase {
                         "Framework": [
                             "type": "framework",
                             "platform": ["iOS", "tvOS"],
-                            "templates": ["$platform"],
+                            "templates": ["${platform}"],
                         ],
                     ],
                     "targetTemplates": [
@@ -748,6 +744,7 @@ class SpecLoadingTests: XCTestCase {
                             "Target4": ["testing": true],
                             "Target5": ["testing": false],
                             "Target6": ["test", "analyze"],
+                            "ExternalProject/Target7": ["run"],
                         ],
                         "preActions": [
                             [
@@ -762,7 +759,7 @@ class SpecLoadingTests: XCTestCase {
                         "targets": [
                             "Target1",
                             [
-                                "name": "Target2",
+                                "name": "ExternalProject/Target2",
                                 "parallelizable": true,
                                 "randomExecutionOrder": true,
                                 "skippedTests": ["Test/testExample()"],
@@ -780,6 +777,7 @@ class SpecLoadingTests: XCTestCase {
                     Scheme.BuildTarget(target: "Target4", buildTypes: [.testing]),
                     Scheme.BuildTarget(target: "Target5", buildTypes: []),
                     Scheme.BuildTarget(target: "Target6", buildTypes: [.testing, .analyzing]),
+                    Scheme.BuildTarget(target: "ExternalProject/Target7", buildTypes: [.running]),
                 ]
                 try expect(scheme.name) == "Scheme"
                 try expect(scheme.build.targets) == expectedTargets
@@ -797,7 +795,7 @@ class SpecLoadingTests: XCTestCase {
                     targets: [
                         "Target1",
                         Scheme.Test.TestTarget(
-                            name: "Target2",
+                            targetReference: "ExternalProject/Target2",
                             randomExecutionOrder: true,
                             parallelizable: true,
                             skippedTests: ["Test/testExample()"]
@@ -870,7 +868,7 @@ class SpecLoadingTests: XCTestCase {
                             "platform": "iOS",
                             "sources": [
                                 "templateSource",
-                                ["path": "Sources/${target_name}"]
+                                ["path": "Sources/${target_name}"],
                             ],
                         ],
                         "temp2": [
@@ -878,7 +876,7 @@ class SpecLoadingTests: XCTestCase {
                             "platform": "tvOS",
                             "deploymentTarget": "1.1.0",
                             "configFiles": [
-                                "debug": "Configs/$target_name/debug.xcconfig",
+                                "debug": "Configs/${target_name}/debug.xcconfig",
                                 "release": "Configs/${target_name}/release.xcconfig",
                             ],
                             "sources": ["${source}"],
@@ -958,7 +956,7 @@ class SpecLoadingTests: XCTestCase {
                     targets: [
                         "TargetFirstTarget",
                         Scheme.Test.TestTarget(
-                            name: "Target2",
+                            targetReference: "Target2",
                             randomExecutionOrder: true,
                             parallelizable: true,
                             skippedTests: ["Test/testExample()"]
@@ -1085,14 +1083,14 @@ class SpecLoadingTests: XCTestCase {
                     "package5": SwiftPackage(url: "package.git", versionRequirement: .revision("x")),
                     "package6": SwiftPackage(url: "package.git", versionRequirement: .range(from: "1.2.0", to: "1.2.5")),
                     "package7": SwiftPackage(url: "package.git", versionRequirement: .exact("1.2.2")),
-                    ],
-                    localPackages: ["../../Package"],
-                    options: .init(localPackagesGroup: "MyPackages"))
+                ],
+                                      localPackages: ["../../Package"],
+                                      options: .init(localPackagesGroup: "MyPackages"))
 
                 let dictionary: [String: Any] = [
                     "name": "spm",
                     "options": [
-                        "localPackagesGroup": "MyPackages"
+                        "localPackagesGroup": "MyPackages",
                     ],
                     "packages": [
                         "package1": ["url": "package.git", "exactVersion": "1.2.2"],
@@ -1103,7 +1101,7 @@ class SpecLoadingTests: XCTestCase {
                         "package6": ["url": "package.git", "minVersion": "1.2.0", "maxVersion": "1.2.5"],
                         "package7": ["url": "package.git", "version": "1.2.2"],
                     ],
-                    "localPackages": ["../../Package"]
+                    "localPackages": ["../../Package"],
                 ]
                 let parsedSpec = try getProjectSpec(dictionary)
                 try expect(parsedSpec) == project

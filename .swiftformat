@@ -1,4 +1,14 @@
 --exclude .build
---disable sortedImports,blankLinesAtStartOfScope,blankLinesAtEndOfScope,unusedArguments,hoistPatternLet,numberFormatting,redundantRawValues,andOperator
+--exclude .swiftpm
+--swiftversion 5.0
+--disable redundantSelf
+--disable sortedImports
+--disable blankLinesAtStartOfScope
+--disable blankLinesAtEndOfScope
+--disable unusedArguments
+--disable hoistPatternLet
+--disable numberFormatting
+--disable redundantRawValues
+--disable andOperator
 --ifdef noindent
 --ranges nospace

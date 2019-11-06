@@ -35,21 +35,52 @@ let package = Package(
             "JSONUtilities",
             "XcodeProj",
             "PathKit",
+            "Core",
         ]),
         .target(name: "ProjectSpec", dependencies: [
             "JSONUtilities",
             "XcodeProj",
             "Yams",
+            "Core",
+        ]),
+        .target(name: "Core", dependencies: [
+            "PathKit",
+            "Yams",
+        ]),
+        .target(name: "TestSupport", dependencies: [
+            "XcodeProj",
+            "Spectre",
+            "PathKit",
         ]),
         .testTarget(name: "XcodeGenKitTests", dependencies: [
             "XcodeGenKit",
             "Spectre",
             "PathKit",
+            "TestSupport",
+        ]),
+        .testTarget(name: "FixtureTests", dependencies: [
+            "XcodeGenKit",
+            "Spectre",
+            "PathKit",
+            "TestSupport",
+        ]),
+        .testTarget(name: "CoreTests", dependencies: [
+            "Core",
+            "Spectre",
+            "PathKit",
+            "TestSupport",
+        ]),
+        .testTarget(name: "ProjectSpecTests", dependencies: [
+            "ProjectSpec",
+            "Spectre",
+            "PathKit",
+            "TestSupport",
         ]),
         .testTarget(name: "PerformanceTests", dependencies: [
             "XcodeGenKit",
             "Spectre",
             "PathKit",
+            "TestSupport",
         ]),
     ]
 )

@@ -17,6 +17,13 @@ class GenerateCommand: Command {
         defaultValue: false
     )
 
+    let disableEnvExpansion = Flag(
+        "-n",
+        "--no-env",
+        description: "Disable environment variables expansions",
+        defaultValue: false
+    )
+
     let useCache = Flag(
         "-c",
         "--use-cache",
@@ -56,9 +63,11 @@ class GenerateCommand: Command {
         let specLoader = SpecLoader(version: version)
         let project: Project
 
+        let variables: [String: String] = disableEnvExpansion.value ? [:] : ProcessInfo.processInfo.environment
+
         // load project spec
         do {
-            project = try specLoader.loadProject(path: projectSpecPath, variables: ProcessInfo.processInfo.environment)
+            project = try specLoader.loadProject(path: projectSpecPath, variables: variables)
             info("Loaded project:\n  \(project.debugDescription.replacingOccurrences(of: "\n", with: "\n  "))")
         } catch {
             throw GenerationError.projectSpecParsingError(error)
@@ -125,7 +134,7 @@ class GenerateCommand: Command {
         let xcodeProject: XcodeProj
         do {
             let projectGenerator = ProjectGenerator(project: project)
-            xcodeProject = try projectGenerator.generateXcodeProject()
+            xcodeProject = try projectGenerator.generateXcodeProject(in: projectDirectory)
         } catch {
             throw GenerationError.generationError(error)
         }
