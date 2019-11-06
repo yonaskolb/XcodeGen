@@ -188,8 +188,8 @@ extension Dictionary where Key == String, Value: Any {
                 // We need at least 4 characters: ${x}
                 index = result.endIndex
             } else if substring[index] == "$"
-                && substring[substring.index(after: index)] == "{"
-                && substring[substring.index(after: index)] != "}"
+                && substring[substring.index(index, offsetBy: 1)] == "{"
+                && substring[substring.index(index, offsetBy: 2)] != "}"
             {
                 // This is the start of a variable expansion...
                 let variableStart = index
