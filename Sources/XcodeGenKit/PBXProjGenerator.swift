@@ -710,7 +710,7 @@ public class PBXProjGenerator {
 
         let headersBuildPhaseFiles = getBuildFilesForPhase(.headers)
         if !headersBuildPhaseFiles.isEmpty {
-            if target.type == .framework || target.type == .dynamicLibrary {
+            if target.type.isFramework || target.type == .dynamicLibrary {
                 let headersBuildPhase = addObject(PBXHeadersBuildPhase(files: headersBuildPhaseFiles))
                 buildPhases.append(headersBuildPhase)
             } else {

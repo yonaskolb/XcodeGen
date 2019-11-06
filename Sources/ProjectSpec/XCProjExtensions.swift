@@ -15,7 +15,7 @@ extension PBXProductType {
     }
 
     public var isFramework: Bool {
-        return self == .framework
+        return self == .framework || self == .staticFramework
     }
 
     public var isLibrary: Bool {

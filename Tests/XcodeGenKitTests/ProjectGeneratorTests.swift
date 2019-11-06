@@ -739,7 +739,7 @@ class ProjectGeneratorTests: XCTestCase {
                 try expect(app3OtherLinkerSettings.contains("-ObjC")) == true
             }
 
-            $0.it("copies Swfit Objective-C Interface Header") {
+            $0.it("copies Swift Objective-C Interface Header") {
                 let swiftStaticLibraryWithHeader = Target(
                     name: "swiftStaticLibraryWithHeader",
                     type: .staticLibrary,
