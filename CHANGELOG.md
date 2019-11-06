@@ -2,6 +2,15 @@
 
 ## Next Version
 
+#### Added
+- Added `--no-env` option to disable environment variables expansion [#704](https://github.com/yonaskolb/XcodeGen/pull/704) @rcari
+
+#### Fixed
+- Improved variable expansion runtime [#704](https://github.com/yonaskolb/XcodeGen/pull/704) @rcari
+
+#### Changed
+- Deprecated `$old_form` variables in favor of `${new_form}` variables [#704](https://github.com/yonaskolb/XcodeGen/pull/704) @rcari
+
 ## 2.10.1
 
 #### Fixed

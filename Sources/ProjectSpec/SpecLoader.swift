@@ -45,13 +45,8 @@ public class SpecLoader {
 private extension Dictionary where Key == String, Value: Any {
 
     func validateWarnings() throws {
-        var errors: [SpecValidationError.ValidationError] = []
-        if hasValueContaining("$target_name") {
-            errors.append(.deprecatedUsageOfPlaceholder(placeholderName: "target_name"))
-        }
-        if hasValueContaining("$platform") {
-            errors.append(.deprecatedUsageOfPlaceholder(placeholderName: "platform"))
-        }
+        let errors: [SpecValidationError.ValidationError] = []
+
         if !errors.isEmpty {
             throw SpecValidationError(errors: errors)
         }
