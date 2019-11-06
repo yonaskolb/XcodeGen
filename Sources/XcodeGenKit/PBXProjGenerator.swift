@@ -487,8 +487,8 @@ public class PBXProjGenerator {
 
                 let dependecyLinkage = dependencyTarget.defaultLinkage
                 let link = dependency.link ??
-                    (dependecyLinkage == .dynamic && target.type != .staticLibrary) ||
-                    (dependecyLinkage == .static && target.type.isExecutable)
+                    ((dependecyLinkage == .dynamic && target.type != .staticLibrary) ||
+                    (dependecyLinkage == .static && target.type.isExecutable))
 
                 if link {
                     let dependencyFile = targetFileReferences[dependencyTarget.name]!
