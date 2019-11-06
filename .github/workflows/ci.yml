@@ -10,25 +10,25 @@ jobs:
       matrix:
         xcode: ["11"]
     steps:
-      - uses: actions/checkout@master
-      - name: Set Xcode
-        run: |
-          echo "Available Xcode versions:"
-          ls /Applications | grep Xcode
-          echo "Choosing Xcode_${{ matrix.xcode }}.app"
-          sudo xcode-select -s /Applications/Xcode_${{ matrix.xcode }}.app
-          xcodebuild -version
-          swift --version
-          swift package --version
-      - name: Resolve
-        run: swift package resolve
-      - name: Build
-        run: swift build
-      - name: Test
-        run: swift test 2>&1 | xcpretty
-      - name: Gen fixtures
-        run: scripts/gen-fixtures.sh
-      - name: Check fixtures
-        run: scripts/diff-fixtures.sh
-      - name: Build fixtures
-        run: scripts/build-fixtures.sh
+    - uses: actions/checkout@master
+    - name: Set Xcode
+      run: |
+        echo "Available Xcode versions:"
+        ls /Applications | grep Xcode
+        echo "Choosing Xcode_${{ matrix.xcode }}.app"
+        sudo xcode-select -s /Applications/Xcode_${{ matrix.xcode }}.app
+        xcodebuild -version
+        swift --version
+        swift package --version
+    - name: Resolve
+      run: swift package resolve
+    - name: Build
+      run: swift build
+    - name: Test
+      run: swift test 2>&1 | xcpretty
+    - name: Gen fixtures
+      run: scripts/gen-fixtures.sh
+    - name: Check fixtures
+      run: scripts/diff-fixtures.sh
+    - name: Build fixtures
+      run: scripts/build-fixtures.sh
