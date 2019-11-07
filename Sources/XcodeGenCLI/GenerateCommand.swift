@@ -68,7 +68,6 @@ class GenerateCommand: Command {
         // load project spec
         do {
             project = try specLoader.loadProject(path: projectSpecPath, variables: variables)
-            info("Loaded project:\n  \(project.debugDescription.replacingOccurrences(of: "\n", with: "\n  "))")
         } catch {
             throw GenerationError.projectSpecParsingError(error)
         }
