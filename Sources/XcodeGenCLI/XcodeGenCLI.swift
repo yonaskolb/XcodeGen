@@ -12,7 +12,10 @@ public class XcodeGenCLI {
             name: "xcodegen",
             version: version.string,
             description: "Generates Xcode projects",
-            commands: [generateCommand]
+            commands: [
+                generateCommand,
+                DumpCommand(version: version)
+            ]
         )
         cli.parser.routeBehavior = .searchWithFallback(generateCommand)
     }

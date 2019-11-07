@@ -7,7 +7,7 @@ import Yams
 public class SpecLoader {
 
     var project: Project!
-    private var projectDictionary: [String: Any]?
+    public private(set) var projectDictionary: [String: Any]?
     let version: Version
 
     public init(version: Version) {
