@@ -32,11 +32,18 @@ public struct Dependency: Equatable {
         self.implicit = implicit
         self.weakLink = weakLink
     }
+    
+    public enum CarthageLinkType: String {
+        case dynamic
+        case `static`
+        
+        public static let `default` = dynamic
+    }
 
     public enum DependencyType: Equatable {
         case target
         case framework
-        case carthage(findFrameworks: Bool?, static: Bool)
+        case carthage(findFrameworks: Bool?, linkType: CarthageLinkType)
         case sdk(root: String?)
         case package(product: String?)
     }
@@ -59,8 +66,8 @@ extension Dependency: JSONObjectConvertible {
             reference = framework
         } else if let carthage: String = jsonDictionary.json(atKeyPath: "carthage") {
             let findFrameworks: Bool? = jsonDictionary.json(atKeyPath: "findFrameworks")
-            let isStatic = jsonDictionary.json(atKeyPath: "static") ?? false
-            type = .carthage(findFrameworks: findFrameworks, static: isStatic)
+            let carthageLinkType: CarthageLinkType = (jsonDictionary.json(atKeyPath: "linkType") as String?).flatMap(CarthageLinkType.init(rawValue:)) ?? .default
+            type = .carthage(findFrameworks: findFrameworks, linkType: carthageLinkType)
             reference = carthage
         } else if let sdk: String = jsonDictionary.json(atKeyPath: "sdk") {
             let sdkRoot: String? = jsonDictionary.json(atKeyPath: "root")
@@ -113,12 +120,12 @@ extension Dependency: JSONEncodable {
             dict["target"] = reference
         case .framework:
             dict["framework"] = reference
-        case .carthage(let findFrameworks, let isStatic):
+        case .carthage(let findFrameworks, let linkType):
             dict["carthage"] = reference
             if let findFrameworks = findFrameworks {
                 dict["findFrameworks"] = findFrameworks
             }
-            dict["static"] = isStatic
+            dict["linkType"] = linkType.rawValue
         case .sdk:
             dict["sdk"] = reference
         case .package:

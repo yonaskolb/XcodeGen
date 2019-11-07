@@ -371,7 +371,7 @@ class SpecLoadingTests: XCTestCase {
                 targetDictionary["dependencies"] = [
                     ["target": "name", "embed": false],
                     ["carthage": "name", "findFrameworks": true],
-                    ["carthage": "name", "findFrameworks": true, "static": true],
+                    ["carthage": "name", "findFrameworks": true, "linkType": "static"],
                     ["framework": "path", "weak": true],
                     ["sdk": "Contacts.framework"],
                     [
@@ -382,8 +382,8 @@ class SpecLoadingTests: XCTestCase {
                 let target = try Target(name: "test", jsonDictionary: targetDictionary)
                 try expect(target.dependencies.count) == 6
                 try expect(target.dependencies[0]) == Dependency(type: .target, reference: "name", embed: false)
-                try expect(target.dependencies[1]) == Dependency(type: .carthage(findFrameworks: true, static: false), reference: "name")
-                try expect(target.dependencies[2]) == Dependency(type: .carthage(findFrameworks: true, static: true), reference: "name")
+                try expect(target.dependencies[1]) == Dependency(type: .carthage(findFrameworks: true, linkType: .dynamic), reference: "name")
+                try expect(target.dependencies[2]) == Dependency(type: .carthage(findFrameworks: true, linkType: .static), reference: "name")
                 try expect(target.dependencies[3]) == Dependency(type: .framework, reference: "path", weakLink: true)
                 try expect(target.dependencies[4]) == Dependency(type: .sdk(root: nil), reference: "Contacts.framework")
                 try expect(target.dependencies[5]) == Dependency(type: .sdk(root: "DEVELOPER_DIR"), reference: "Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework")

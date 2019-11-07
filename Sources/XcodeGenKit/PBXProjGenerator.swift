@@ -463,15 +463,6 @@ public class PBXProjGenerator {
             }
             return !linkingAttributes.isEmpty ? ["ATTRIBUTES": linkingAttributes] : nil
         }
-        
-        func isStaticDependency(for carthageDependency: Dependency) -> Bool {
-            switch carthageDependency.type {
-            case .carthage(_, let isStatic):
-                return isStatic
-            default:
-                fatalError("Passed dependency should be Carthage dependency")
-            }
-        }
 
         for dependency in targetDependencies {
 
@@ -610,14 +601,13 @@ public class PBXProjGenerator {
                 )
                 targetFrameworkBuildFiles.append(buildFile)
 
-            case .carthage(let findFrameworks, let isStatic):
+            case .carthage(let findFrameworks, let linkType):
                 let findFrameworks = findFrameworks ?? project.options.findCarthageFrameworks
-                let isStatic = isStatic
                 let allDependencies = findFrameworks
                     ? carthageResolver.relatedDependencies(for: dependency, in: target.platform) : [dependency]
                 allDependencies.forEach { dependency in
 
-                    var platformPath = Path(carthageResolver.buildPath(for: target.platform, isStatic: isStatic))
+                    var platformPath = Path(carthageResolver.buildPath(for: target.platform, linkType: linkType))
                     var frameworkPath = platformPath + dependency.reference
                     if frameworkPath.extension == nil {
                         frameworkPath = Path(frameworkPath.string + ".framework")
@@ -664,14 +654,14 @@ public class PBXProjGenerator {
             
             let embed = dependency.embed ?? target.shouldEmbedCarthageDependencies
 
-            var platformPath = Path(carthageResolver.buildPath(for: target.platform, isStatic: isStaticDependency(for: dependency)))
+            var platformPath = Path(carthageResolver.buildPath(for: target.platform, linkType: dependency.carthageLinkType ?? .default))
             var frameworkPath = platformPath + dependency.reference
             if frameworkPath.extension == nil {
                 frameworkPath = Path(frameworkPath.string + ".framework")
             }
             let fileReference = sourceGenerator.getFileReference(path: frameworkPath, inPath: platformPath)
 
-            if isStaticDependency(for: dependency) {
+            if dependency.carthageLinkType == .static {
                 let embedFile = addObject(
                     PBXBuildFile(file: fileReference, settings: getDependencyFrameworkSettings(dependency: dependency))
                 )
@@ -777,7 +767,7 @@ public class PBXProjGenerator {
         if !carthageFrameworksToEmbed.isEmpty {
 
             let inputPaths = carthageFrameworksToEmbed
-                .map { "$(SRCROOT)/\(carthageResolver.buildPath(for: target.platform, isStatic: false))/\($0)\($0.contains(".") ? "" : ".framework")" }
+                .map { "$(SRCROOT)/\(carthageResolver.buildPath(for: target.platform, linkType: .dynamic))/\($0)\($0.contains(".") ? "" : ".framework")" }
             let outputPaths = carthageFrameworksToEmbed
                 .map { "$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/\($0)\($0.contains(".") ? "" : ".framework")" }
             let carthageExecutable = carthageResolver.executable
@@ -941,12 +931,12 @@ public class PBXProjGenerator {
             let configFrameworkBuildPaths: [String]
             if !carthageDependencies.isEmpty {
                 var carthagePlatformBuildPaths: [String] = []
-                if carthageDependencies.contains(where: { isStaticDependency(for: $0) }) {
-                    let carthagePlatformBuildPath = "$(PROJECT_DIR)/" + carthageResolver.buildPath(for: target.platform, isStatic: true)
+                if carthageDependencies.contains(where: { $0.carthageLinkType == .static }) {
+                    let carthagePlatformBuildPath = "$(PROJECT_DIR)/" + carthageResolver.buildPath(for: target.platform, linkType: .static)
                     carthagePlatformBuildPaths.append(carthagePlatformBuildPath)
                 }
-                if carthageDependencies.contains(where: { !isStaticDependency(for: $0) }) {
-                    let carthagePlatformBuildPath = "$(PROJECT_DIR)/" + carthageResolver.buildPath(for: target.platform, isStatic: false)
+                if carthageDependencies.contains(where: { $0.carthageLinkType == .dynamic }) {
+                    let carthagePlatformBuildPath = "$(PROJECT_DIR)/" + carthageResolver.buildPath(for: target.platform, linkType: .dynamic)
                     carthagePlatformBuildPaths.append(carthagePlatformBuildPath)
                 }
                 configFrameworkBuildPaths = carthagePlatformBuildPaths + frameworkBuildPaths.sorted()
@@ -1103,6 +1093,17 @@ extension PBXFileElement {
             }
         } else {
             return 0
+        }
+    }
+}
+
+private extension Dependency {
+    var carthageLinkType: Dependency.CarthageLinkType? {
+        switch type {
+        case .carthage(_, let linkType):
+            return linkType
+        default:
+            return nil
         }
     }
 }

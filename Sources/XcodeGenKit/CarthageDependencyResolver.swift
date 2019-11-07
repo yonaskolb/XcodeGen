@@ -31,10 +31,11 @@ public class CarthageDependencyResolver {
     }
 
     /// Carthage's build path for the given platform
-    func buildPath(for platform: Platform, isStatic: Bool) -> String {
-        if isStatic {
+    func buildPath(for platform: Platform, linkType: Dependency.CarthageLinkType) -> String {
+        switch linkType {
+        case .static:
             return "\(buildPath)/\(platform.carthageName)/Static"
-        } else {
+        case .dynamic:
             return "\(buildPath)/\(platform.carthageName)"
         }
     }
