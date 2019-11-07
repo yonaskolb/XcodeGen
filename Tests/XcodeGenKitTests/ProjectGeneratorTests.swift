@@ -1028,7 +1028,7 @@ class ProjectGeneratorTests: XCTestCase {
                         }
                         try expect(file.file?.nameOrPath) == "MyStaticFramework.framework"
                         
-                        try expect(target.carthageCopyFrameworkBuildPhase()).beNil()
+                        try expect(target.carthageCopyFrameworkBuildPhase).beNil()
                     }
                 }
                 
@@ -1060,7 +1060,7 @@ class ProjectGeneratorTests: XCTestCase {
                             return XCTFail("Framework Build Phase should have Static Framework")
                         }
                         
-                        guard let copyCarthagePhase = target.carthageCopyFrameworkBuildPhase() else {
+                        guard let copyCarthagePhase = target.carthageCopyFrameworkBuildPhase else {
                             return XCTFail("Carthage Build Phase should be exist")
                         }
                         try expect(copyCarthagePhase.inputPaths) == [dynamicFramework.file?.fullPath(sourceRoot: Path("$(SRCROOT)"))?.string]
@@ -1168,7 +1168,7 @@ class ProjectGeneratorTests: XCTestCase {
                         }
                         try expect(file.file?.nameOrPath) == "MyStaticFramework.framework"
                         
-                        try expect(target.carthageCopyFrameworkBuildPhase()).beNil()
+                        try expect(target.carthageCopyFrameworkBuildPhase).beNil()
                     }
                 }
                 
@@ -1200,7 +1200,7 @@ class ProjectGeneratorTests: XCTestCase {
                             return XCTFail("Framework Build Phase should have Static Framework")
                         }
                         
-                        guard let copyCarthagePhase = target.carthageCopyFrameworkBuildPhase() else {
+                        guard let copyCarthagePhase = target.carthageCopyFrameworkBuildPhase else {
                             return XCTFail("Carthage Build Phase should be exist")
                         }
                         try expect(copyCarthagePhase.inputPaths) == [dynamicFramework.file?.fullPath(sourceRoot: Path("$(SRCROOT)"))?.string]
@@ -1209,5 +1209,11 @@ class ProjectGeneratorTests: XCTestCase {
                 }
             }
         }
+    }
+}
+
+private extension PBXTarget {
+    var carthageCopyFrameworkBuildPhase: PBXShellScriptBuildPhase? {
+        return buildPhases.first(where: { $0.name() == "Carthage" }) as? PBXShellScriptBuildPhase
     }
 }
