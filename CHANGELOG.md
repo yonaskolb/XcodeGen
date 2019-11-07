@@ -3,6 +3,7 @@
 ## Next Version
 
 #### Added
+- Add Carthage static framework dependencies support. [#688](https://github.com/yonaskolb/XcodeGen/pull/688) @giginet
 - Added `--no-env` option to disable environment variables expansion [#704](https://github.com/yonaskolb/XcodeGen/pull/704) @rcari
 
 #### Fixed

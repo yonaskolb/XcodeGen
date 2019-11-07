@@ -612,9 +612,9 @@ class SourceGeneratorTests: XCTestCase {
                 """
                 try createDirectories(directories)
 
-                let watchTarget = Target(name: "Watch", type: .watch2App, platform: .watchOS, sources: ["A"], dependencies: [Dependency(type: .carthage(findFrameworks: false), reference: "Alamofire_watch")])
+                let watchTarget = Target(name: "Watch", type: .watch2App, platform: .watchOS, sources: ["A"], dependencies: [Dependency(type: .carthage(findFrameworks: false, linkType: .dynamic), reference: "Alamofire_watch")])
                 let watchDependency = Dependency(type: .target, reference: "Watch")
-                let target = Target(name: "Test", type: .application, platform: .iOS, sources: ["A"], dependencies: [Dependency(type: .carthage(findFrameworks: false), reference: "Alamofire"), watchDependency])
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: ["A"], dependencies: [Dependency(type: .carthage(findFrameworks: false, linkType: .dynamic), reference: "Alamofire"), watchDependency])
                 let project = Project(basePath: directoryPath, name: "Test", targets: [target, watchTarget])
 
                 let pbxProj = try project.generatePbxProj()
@@ -633,7 +633,7 @@ class SourceGeneratorTests: XCTestCase {
                 """
                 try createDirectories(directories)
 
-                let target = Target(name: "Test", type: .application, platform: .iOS, sources: ["A", "P", "S"], dependencies: [Dependency(type: .carthage(findFrameworks: false), reference: "Alamofire")])
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: ["A", "P", "S"], dependencies: [Dependency(type: .carthage(findFrameworks: false, linkType: .dynamic), reference: "Alamofire")])
                 let project = Project(basePath: directoryPath, name: "Test", targets: [target])
 
                 let pbxProj = try project.generatePbxProj()
@@ -656,7 +656,7 @@ class SourceGeneratorTests: XCTestCase {
                 """
                 try createDirectories(directories)
 
-                let target = Target(name: "Test", type: .application, platform: .iOS, sources: ["Sources"], dependencies: [Dependency(type: .carthage(findFrameworks: false), reference: "Alamofire")])
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: ["Sources"], dependencies: [Dependency(type: .carthage(findFrameworks: false, linkType: .dynamic), reference: "Alamofire")])
                 let project = Project(basePath: directoryPath, name: "Test", targets: [target])
 
                 let pbxProj = try project.generatePbxProj()
