@@ -491,12 +491,9 @@ class SourceGenerator {
                     }
                 } else {
                     // add SourceFile to group if there is no Base.lproj directory
-                    let sourceFile = SourceFile(
-                        path: filePath,
-                        fileReference: fileReference,
-                        buildFile: PBXBuildFile(file: fileReference),
-                        buildPhase: .resources
-                    )
+                    let sourceFile = generateSourceFile(targetType: targetType,
+                                                        targetSource: targetSource,
+                                                        path: filePath)
                     allSourceFiles.append(sourceFile)
                     groupChildren.append(fileReference)
                 }
