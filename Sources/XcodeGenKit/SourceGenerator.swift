@@ -81,8 +81,8 @@ class SourceGenerator {
         _ = try getSourceFiles(targetType: .none, targetSource: TargetSource(path: path), path: fullPath)
     }
 
-    func generateSourceFile(targetType: PBXProductType, targetSource: TargetSource, path: Path, buildPhase: TargetSource.BuildPhase? = nil) -> SourceFile {
-        let fileReference = fileReferencesByPath[path.string.lowercased()]!
+    func generateSourceFile(targetType: PBXProductType, targetSource: TargetSource, path: Path, buildPhase: TargetSource.BuildPhase? = nil, fileRefenrece: PBXFileElement? = nil) -> SourceFile {
+        let fileReference = fileRefenrece ?? fileReferencesByPath[path.string.lowercased()]!
         var settings: [String: Any] = [:]
         var attributes: [String] = targetSource.attributes
         var chosenBuildPhase: TargetSource.BuildPhase?
@@ -451,17 +451,12 @@ class SourceGenerator {
                 let variantGroup = getVariantGroup(path: filePath, inPath: path)
                 groupChildren.append(variantGroup)
                 baseLocalisationVariantGroups.append(variantGroup)
-
-                let fileReference = getFileReference(
-                    path: filePath,
-                    inPath: baseLocalisedDirectory,
-                    name: variantGroup.name ?? filePath.lastComponent
-                )
+                
                 let sourceFile = generateSourceFile(targetType: targetType,
                                                     targetSource: targetSource,
-                                                    path: filePath)
+                                                    path: filePath,
+                                                    fileRefenrece: variantGroup)
                 allSourceFiles.append(sourceFile)
-                groupChildren.append(fileReference)
             }
         }
 
@@ -496,7 +491,8 @@ class SourceGenerator {
                     // add SourceFile to group if there is no Base.lproj directory
                     let sourceFile = generateSourceFile(targetType: targetType,
                                                         targetSource: targetSource,
-                                                        path: filePath)
+                                                        path: filePath,
+                                                        fileRefenrece: fileReference)
                     allSourceFiles.append(sourceFile)
                     groupChildren.append(fileReference)
                 }
