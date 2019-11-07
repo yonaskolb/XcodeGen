@@ -11,6 +11,7 @@
 
 #### Changed
 - Deprecated `$old_form` variables in favor of `${new_form}` variables [#704](https://github.com/yonaskolb/XcodeGen/pull/704) @rcari
+- Updated XcodeProj to 7.3.0 [#709](https://github.com/yonaskolb/XcodeGen/pull/709) @yonaskolb
 
 ## 2.10.1
 
