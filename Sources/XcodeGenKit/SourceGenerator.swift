@@ -452,13 +452,16 @@ class SourceGenerator {
                 groupChildren.append(variantGroup)
                 baseLocalisationVariantGroups.append(variantGroup)
 
-                let sourceFile = SourceFile(
+                let fileReference = getFileReference(
                     path: filePath,
-                    fileReference: variantGroup,
-                    buildFile: PBXBuildFile(file: variantGroup),
-                    buildPhase: .resources
+                    inPath: baseLocalisedDirectory,
+                    name: variantGroup.name ?? filePath.lastComponent
                 )
+                let sourceFile = generateSourceFile(targetType: targetType,
+                                                    targetSource: targetSource,
+                                                    path: filePath)
                 allSourceFiles.append(sourceFile)
+                groupChildren.append(fileReference)
             }
         }
 
