@@ -10,11 +10,13 @@ class DumpCommand: ProjectCommand {
     override var shortDescription: String { "Dumps the project spec to stdout" }
 
     private let dumpType = Key<DumpType>("--type", "-t", description: """
-    The type of dump to output. Either "json", "yaml", "summary", "swift-dump", "parsed-json", or "parsed-yaml". Defaults to summary. The "parsed" types parse the project into swift and then back again and can be used for testing.
+    The type of dump to output. Either "json", "yaml", "summary", "swift-dump", "parsed-json", or "parsed-yaml". Defaults to yaml. The "parsed" types parse the project into swift and then back again and can be used for testing.
     """)
 
+    private let file = Key<Path>("--file", "-f", description: "The path of a file to write to. If not supplied will output to stdout")
+
     override func execute(specLoader: SpecLoader, projectSpecPath: Path, project: Project) throws {
-        let type = dumpType.value ?? .summary
+        let type = dumpType.value ?? .yaml
 
         let output: String
         switch type {
@@ -36,7 +38,12 @@ class DumpCommand: ProjectCommand {
             output = project.debugDescription
         }
 
-        stdout.print(output)
+        if let file = file.value {
+            try file.parent().mkpath()
+            try file.write(output)
+        } else {
+            stdout.print(output)
+        }
     }
 }
 
