@@ -9,11 +9,19 @@ class DumpCommand: ProjectCommand {
     override var name: String { "dump" }
     override var shortDescription: String { "Dumps the project spec to stdout" }
 
-    private let dumpType = Key<DumpType>("--type", "-t", description: """
-    The type of dump to output. Either "json", "yaml", "summary", "swift-dump", "parsed-json", or "parsed-yaml". Defaults to yaml. The "parsed" types parse the project into swift and then back again and can be used for testing.
-    """)
+    private let dumpType = Key<DumpType>(
+        "--type",
+        "-t",
+        description: """
+        The type of dump to output. Either "json", "yaml", "summary", "swift-dump", "parsed-json", or "parsed-yaml". Defaults to yaml. The "parsed" types parse the project into swift and then back again and can be used for testing.
+        """
+    )
 
-    private let file = Key<Path>("--file", "-f", description: "The path of a file to write to. If not supplied will output to stdout")
+    private let file = Key<Path>(
+        "--file",
+        "-f",
+        description: "The path of a file to write to. If not supplied will output to stdout"
+    )
 
     override func execute(specLoader: SpecLoader, projectSpecPath: Path, project: Project) throws {
         let type = dumpType.value ?? .yaml
@@ -47,7 +55,7 @@ class DumpCommand: ProjectCommand {
     }
 }
 
-fileprivate enum DumpType: String, ConvertibleFromString {
+private enum DumpType: String, ConvertibleFromString {
     case swiftDump = "swift-dump"
     case json
     case yaml

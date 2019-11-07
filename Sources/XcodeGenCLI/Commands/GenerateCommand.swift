@@ -29,7 +29,11 @@ class GenerateCommand: ProjectCommand {
         description: "Where the cache file will be loaded from and save to. Defaults to ~/.xcodegen/cache/{SPEC_PATH_HASH}"
     )
 
-    let projectDirectory = Key<Path>("-p", "--project", description: "The path to the directory where the project should be generated. Defaults to the directory the spec is in. The filename is defined in the project spec")
+    let projectDirectory = Key<Path>(
+        "-p",
+        "--project",
+        description: "The path to the directory where the project should be generated. Defaults to the directory the spec is in. The filename is defined in the project spec"
+    )
 
     override func execute(specLoader: SpecLoader, projectSpecPath: Path, project: Project) throws {
 

@@ -14,7 +14,7 @@ public class XcodeGenCLI {
             description: "Generates Xcode projects",
             commands: [
                 generateCommand,
-                DumpCommand(version: version)
+                DumpCommand(version: version),
             ]
         )
         cli.parser.routeBehavior = .searchWithFallback(generateCommand)

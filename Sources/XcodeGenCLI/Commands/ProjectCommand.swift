@@ -50,7 +50,5 @@ class ProjectCommand: Command {
         try execute(specLoader: specLoader, projectSpecPath: projectSpecPath, project: project)
     }
 
-    func execute(specLoader: SpecLoader, projectSpecPath: Path, project: Project) throws {
-
-    }
+    func execute(specLoader: SpecLoader, projectSpecPath: Path, project: Project) throws {}
 }
