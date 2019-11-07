@@ -43,7 +43,7 @@ public struct Dependency: Equatable {
     public enum DependencyType: Equatable {
         case target
         case framework
-        case carthage(findFrameworks: Bool?, linkType: CarthageLinkType)
+        case carthage(findFrameworks: Bool?, linkType: CarthageLinkType = .default)
         case sdk(root: String?)
         case package(product: String?)
     }
