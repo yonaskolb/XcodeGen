@@ -64,12 +64,14 @@ An include can be provided via a string (the path) or an object of the form:
 
 - [x] **path**: **String** - The path to the included file.
 - [ ] **relativePaths**: **Bool** - Dictates whether the included spec specifies paths relative to itself (the default) or the root spec file.
+- [ ] **optional**: **Bool** - Dictates whether ignoring failure loading (e.g. the path is not exist). Defaults to false.
 
 ```yaml
 include:
   - includedFile.yml
   - path: path/to/includedFile.yml
     relativePaths: false
+    optional: true
 ```
 
 By default specs are merged additively. That is for every value:
