@@ -57,7 +57,10 @@ class SpecLoadingTests: XCTestCase {
             $0.context("with non optional include for non exist subspecs") {
                 $0.it("failed to load specs") {
                     let path = fixturePath + "optional_include/non_optional_include.yml"
-                    XCTAssertThrowsError(try loadSpec(path: path), "failed to load specs")
+                    XCTAssertThrowsError(try loadSpec(path: path), "failed to load specs") { error in
+                        let failure = error as! FailureType
+                        XCTAssertTrue(failure.reason.contains("No such file or directory"))
+                    }
                 }
             }
 
