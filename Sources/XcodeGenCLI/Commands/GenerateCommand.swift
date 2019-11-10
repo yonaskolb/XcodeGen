@@ -5,22 +5,12 @@ import SwiftCLI
 import XcodeGenKit
 import XcodeProj
 
-class GenerateCommand: Command {
-
-    let name: String = "generate"
-    let shortDescription: String = "Generate an Xcode project from a spec"
+class GenerateCommand: ProjectCommand {
 
     let quiet = Flag(
         "-q",
         "--quiet",
         description: "Suppress all informational and success output",
-        defaultValue: false
-    )
-
-    let disableEnvExpansion = Flag(
-        "-n",
-        "--no-env",
-        description: "Disable environment variables expansions",
         defaultValue: false
     )
 
@@ -36,42 +26,22 @@ class GenerateCommand: Command {
         description: "Where the cache file will be loaded from and save to. Defaults to ~/.xcodegen/cache/{SPEC_PATH_HASH}"
     )
 
-    let spec = Key<Path>(
-        "-s",
-        "--spec",
-        description: "The path to the project spec file. Defaults to project.yml"
+    let projectDirectory = Key<Path>(
+        "-p",
+        "--project",
+        description: "The path to the directory where the project should be generated. Defaults to the directory the spec is in. The filename is defined in the project spec"
     )
 
-    let projectDirectory = Key<Path>("-p", "--project", description: "The path to the directory where the project should be generated. Defaults to the directory the spec is in. The filename is defined in the project spec")
-
-    let version: Version
-
     init(version: Version) {
-        self.version = version
+        super.init(version: version,
+                   name: "generate",
+                   shortDescription: "Generate an Xcode project from a spec"
+        )
     }
 
-    func execute() throws {
-
-        let projectSpecPath = (spec.value ?? "project.yml").absolute()
+    override func execute(specLoader: SpecLoader, projectSpecPath: Path, project: Project) throws {
 
         let projectDirectory = self.projectDirectory.value?.absolute() ?? projectSpecPath.parent()
-
-        if !projectSpecPath.exists {
-            throw GenerationError.missingProjectSpec(projectSpecPath)
-        }
-
-        let specLoader = SpecLoader(version: version)
-        let project: Project
-
-        let variables: [String: String] = disableEnvExpansion.value ? [:] : ProcessInfo.processInfo.environment
-
-        // load project spec
-        do {
-            project = try specLoader.loadProject(path: projectSpecPath, variables: variables)
-            info("Loaded project:\n  \(project.debugDescription.replacingOccurrences(of: "\n", with: "\n  "))")
-        } catch {
-            throw GenerationError.projectSpecParsingError(error)
-        }
 
         // validate project dictionary
         do {
