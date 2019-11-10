@@ -6,14 +6,11 @@ import Yams
 
 class DumpCommand: ProjectCommand {
 
-    override var name: String { "dump" }
-    override var shortDescription: String { "Dumps the project spec to stdout" }
-
     private let dumpType = Key<DumpType>(
         "--type",
         "-t",
         description: """
-        The type of dump to output. Either "json", "yaml", "summary", "swift-dump", "parsed-json", or "parsed-yaml". Defaults to yaml. The "parsed" types parse the project into swift and then back again and can be used for testing.
+        The type of dump to output. Either \(DumpType.allCases.map { "\"\($0.rawValue)\"" }.joined(separator: ", ")). Defaults to \(DumpType.defaultValue.rawValue). The "parsed" types parse the project into swift and then back again.
         """
     )
 
@@ -23,8 +20,15 @@ class DumpCommand: ProjectCommand {
         description: "The path of a file to write to. If not supplied will output to stdout"
     )
 
+    init(version: Version) {
+        super.init(version: version,
+                   name: "dump",
+                   shortDescription: "Dumps the resolved project spec to stdout or a file"
+        )
+    }
+
     override func execute(specLoader: SpecLoader, projectSpecPath: Path, project: Project) throws {
-        let type = dumpType.value ?? .yaml
+        let type = dumpType.value ?? .defaultValue
 
         let output: String
         switch type {
@@ -55,11 +59,13 @@ class DumpCommand: ProjectCommand {
     }
 }
 
-private enum DumpType: String, ConvertibleFromString {
+private enum DumpType: String, ConvertibleFromString, CaseIterable {
     case swiftDump = "swift-dump"
     case json
     case yaml
     case parsedJSON = "parsed-json"
     case parsedYaml = "parsed-yaml"
     case summary
+
+    static var defaultValue: DumpType { .yaml }
 }

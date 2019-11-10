@@ -8,8 +8,8 @@ import Core
 class ProjectCommand: Command {
 
     let version: Version
-    var name: String { "ProjectCommand" }
-    var shortDescription: String { "" }
+    let name: String
+    let shortDescription: String
 
     let spec = Key<Path>(
         "-s",
@@ -24,8 +24,10 @@ class ProjectCommand: Command {
         defaultValue: false
     )
 
-    init(version: Version) {
+    init(version: Version, name: String, shortDescription: String) {
         self.version = version
+        self.name = name
+        self.shortDescription = shortDescription
     }
 
     func execute() throws {
