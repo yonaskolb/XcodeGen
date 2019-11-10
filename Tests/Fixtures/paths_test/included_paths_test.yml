@@ -35,3 +35,11 @@ targetTemplates:
   Template1:
     sources:
       - template_source
+schemes:
+  Scheme:
+    build:
+      targets:
+        NewTarget: all
+    test:
+      testPlans: 
+        - TestPlan.xctestplan
