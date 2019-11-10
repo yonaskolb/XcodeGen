@@ -129,6 +129,14 @@ class SpecLoadingTests: XCTestCase {
                         postBuildScripts: [BuildScript(script: .path("paths_test/recursive_test/postBuildScript"))]
                     ),
                 ]
+
+                try expect(project.schemes) == [
+                    Scheme(
+                        name: "Scheme",
+                        build: .init(targets: [.init(target: "NewTarget")]),
+                        test: .init(testPlans: ["paths_test/TestPlan.xctestplan"])
+                    )
+                ]
             }
 
             $0.it("respects directory expansion preference") {
@@ -777,6 +785,7 @@ class SpecLoadingTests: XCTestCase {
                         ],
                         "gatherCoverageData": true,
                         "disableMainThreadChecker": true,
+                        "testPlans": ["Path/Plan.xctestplan", "Path/Plan2.xctestplan"]
                     ],
                 ]
                 let scheme = try Scheme(name: "Scheme", jsonDictionary: schemeDictionary)
@@ -810,7 +819,8 @@ class SpecLoadingTests: XCTestCase {
                             parallelizable: true,
                             skippedTests: ["Test/testExample()"]
                         ),
-                    ]
+                    ],
+                    testPlans: ["Path/Plan.xctestplan", "Path/Plan2.xctestplan"]
                 )
                 try expect(scheme.test) == expectedTest
             }
