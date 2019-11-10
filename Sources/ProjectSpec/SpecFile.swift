@@ -98,7 +98,7 @@ public struct SpecFile {
     }
 
     public func resolvedDictionary(variables: [String: String] = [:]) -> JSONDictionary {
-        return resolvedDictionaryWithUniqueTargets().expand(variables: variables)
+        resolvedDictionaryWithUniqueTargets().expand(variables: variables)
     }
 
     private func resolvedDictionaryWithUniqueTargets() -> JSONDictionary {
@@ -156,7 +156,7 @@ extension Dictionary where Key == String, Value: Any {
         return merged
     }
 
-    func expand(variables: [String:String]) -> JSONDictionary {
+    func expand(variables: [String: String]) -> JSONDictionary {
         var expanded: JSONDictionary = self
 
         if !variables.isEmpty {
@@ -201,8 +201,7 @@ extension Dictionary where Key == String, Value: Any {
                 index = result.endIndex
             } else if substring[index] == "$"
                 && substring[substring.index(index, offsetBy: 1)] == "{"
-                && substring[substring.index(index, offsetBy: 2)] != "}"
-            {
+                && substring[substring.index(index, offsetBy: 2)] != "}" {
                 // This is the start of a variable expansion...
                 let variableStart = index
                 if let variableEnd = substring.firstIndex(of: "}") {

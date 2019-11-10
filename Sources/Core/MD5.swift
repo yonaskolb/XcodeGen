@@ -68,7 +68,7 @@ func arrayOfBytes<T>(_ value: T, length: Int? = nil) -> [UInt8] {
 extension Int {
     /** Array of bytes with optional padding (little-endian) */
     func bytes(_ totalBytes: Int = MemoryLayout<Int>.size) -> [UInt8] {
-        return arrayOfBytes(self, length: totalBytes)
+        arrayOfBytes(self, length: totalBytes)
     }
 }
 
@@ -147,12 +147,12 @@ struct BytesSequence: Sequence {
     let data: [UInt8]
 
     func makeIterator() -> BytesIterator {
-        return BytesIterator(chunkSize: chunkSize, data: data)
+        BytesIterator(chunkSize: chunkSize, data: data)
     }
 }
 
 func rotateLeft(_ value: UInt32, bits: UInt32) -> UInt32 {
-    return ((value << bits) & 0xFFFF_FFFF) | (value >> (32 - bits))
+    ((value << bits) & 0xFFFF_FFFF) | (value >> (32 - bits))
 }
 
 class MD5: HashProtocol {

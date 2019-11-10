@@ -142,6 +142,6 @@ class CarthageDependencyResolverTests: XCTestCase {
 }
 
 private func makeTestProject(with targets: [Target] = [], options: SpecOptions = SpecOptions()) -> Project {
-    return Project(name: "Test Project", targets: targets, options: options)
+    Project(name: "Test Project", targets: targets, options: options)
 
 }

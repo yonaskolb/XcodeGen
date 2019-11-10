@@ -30,10 +30,10 @@ enum GenerationError: Error, CustomStringConvertible, ProcessError {
     }
 
     var message: String? {
-        return description.red
+        description.red
     }
 
     var exitStatus: Int32 {
-        return 1
+        1
     }
 }

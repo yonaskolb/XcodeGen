@@ -126,7 +126,7 @@ public struct Scheme: Equatable {
             public static let randomExecutionOrderDefault = false
             public static let parallelizableDefault = false
 
-            public var name: String { return targetReference.name }
+            public var name: String { targetReference.name }
             public let targetReference: TargetReference
             public var randomExecutionOrder: Bool
             public var parallelizable: Bool
@@ -187,7 +187,7 @@ public struct Scheme: Equatable {
         }
 
         public var shouldUseLaunchSchemeArgsEnv: Bool {
-            return commandLineArguments.isEmpty && environmentVariables.isEmpty
+            commandLineArguments.isEmpty && environmentVariables.isEmpty
         }
     }
 
@@ -219,7 +219,7 @@ public struct Scheme: Equatable {
         }
 
         public var shouldUseLaunchSchemeArgsEnv: Bool {
-            return commandLineArguments.isEmpty && environmentVariables.isEmpty
+            commandLineArguments.isEmpty && environmentVariables.isEmpty
         }
     }
 
@@ -272,7 +272,7 @@ extension Scheme.ExecutionAction: JSONObjectConvertible {
 
 extension Scheme.ExecutionAction: JSONEncodable {
     public func toJSONValue() -> Any {
-        return [
+        [
             "script": script,
             "name": name,
             "settingsTarget": settingsTarget,
@@ -423,7 +423,7 @@ extension Scheme.Profile: JSONObjectConvertible {
 
 extension Scheme.Profile: JSONEncodable {
     public func toJSONValue() -> Any {
-        return [
+        [
             "commandLineArguments": commandLineArguments,
             "preActions": preActions.map { $0.toJSONValue() },
             "postActions": postActions.map { $0.toJSONValue() },
@@ -442,7 +442,7 @@ extension Scheme.Analyze: JSONObjectConvertible {
 
 extension Scheme.Analyze: JSONEncodable {
     public func toJSONValue() -> Any {
-        return [
+        [
             "config": config,
         ]
     }
@@ -491,7 +491,7 @@ extension Scheme: NamedJSONDictionaryConvertible {
 
 extension Scheme: JSONEncodable {
     public func toJSONValue() -> Any {
-        return [
+        [
             "build": build.toJSONValue(),
             "run": run?.toJSONValue(),
             "test": test?.toJSONValue(),
@@ -572,7 +572,7 @@ extension BuildType: JSONPrimitiveConvertible {
     }
 
     public static var all: [BuildType] {
-        return [.running, .testing, .profiling, .analyzing, .archiving]
+        [.running, .testing, .profiling, .analyzing, .archiving]
     }
 }
 

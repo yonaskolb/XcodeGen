@@ -47,7 +47,7 @@ public struct Target: ProjectTarget {
     public var productName: String
 
     public var isLegacy: Bool {
-        return legacy != nil
+        legacy != nil
     }
 
     public var filename: String {
@@ -108,14 +108,14 @@ public struct Target: ProjectTarget {
 extension Target: CustomStringConvertible {
 
     public var description: String {
-        return "\(name): \(platform.rawValue) \(type)"
+        "\(name): \(platform.rawValue) \(type)"
     }
 }
 
 extension Target: PathContainer {
 
     static var pathProperties: [PathProperty] {
-        return [
+        [
             .dictionary([
                 .string("sources"),
                 .object("sources", TargetSource.pathProperties),
@@ -188,7 +188,7 @@ extension Target {
 extension Target: Equatable {
 
     public static func == (lhs: Target, rhs: Target) -> Bool {
-        return lhs.name == rhs.name &&
+        lhs.name == rhs.name &&
             lhs.type == rhs.type &&
             lhs.platform == rhs.platform &&
             lhs.deploymentTarget == rhs.deploymentTarget &&

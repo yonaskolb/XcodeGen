@@ -38,23 +38,23 @@ public struct Version: CustomStringConvertible, Equatable, Comparable, Expressib
     }
 
     public var string: String {
-        return "\(major).\(minor).\(patch)"
+        "\(major).\(minor).\(patch)"
     }
 
     public var description: String {
-        return string
+        string
     }
 
     public func bumpingMajor() -> Version {
-        return Version(major: major + 1, minor: 0, patch: 0)
+        Version(major: major + 1, minor: 0, patch: 0)
     }
 
     public func bumpingMinor() -> Version {
-        return Version(major: major, minor: minor + 1, patch: 0)
+        Version(major: major, minor: minor + 1, patch: 0)
     }
 
     public func bumpingPatch() -> Version {
-        return Version(major: major, minor: minor, patch: patch + 1)
+        Version(major: major, minor: minor, patch: patch + 1)
     }
 
     public static func < (lhs: Version, rhs: Version) -> Bool {

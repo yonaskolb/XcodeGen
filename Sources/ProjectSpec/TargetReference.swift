@@ -32,7 +32,7 @@ extension TargetReference {
     }
 
     public static func local(_ name: String) -> TargetReference {
-        return TargetReference(name: name, location: .local)
+        TargetReference(name: name, location: .local)
     }
 }
 
@@ -52,6 +52,6 @@ extension TargetReference: CustomStringConvertible {
     }
 
     public var description: String {
-        return reference
+        reference
     }
 }

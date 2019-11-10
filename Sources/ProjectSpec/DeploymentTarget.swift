@@ -55,7 +55,7 @@ extension Version {
 
     /// doesn't print patch if 0
     public var deploymentTarget: String {
-        return "\(major).\(minor)\(patch > 0 ? ".\(patch)" : "")"
+        "\(major).\(minor)\(patch > 0 ? ".\(patch)" : "")"
     }
 }
 
@@ -81,7 +81,7 @@ extension DeploymentTarget: JSONObjectConvertible {
 
 extension DeploymentTarget: JSONEncodable {
     public func toJSONValue() -> Any {
-        return [
+        [
             "iOS": iOS?.string,
             "tvOS": tvOS?.string,
             "watchOS": watchOS?.string,

@@ -14,13 +14,13 @@ public class CarthageDependencyResolver {
     /// Carthage's base build path as specified by the
     /// project's `SpecOptions`, or `Carthage/Build` by default
     var buildPath: String {
-        return project.options.carthageBuildPath ?? "Carthage/Build"
+        project.options.carthageBuildPath ?? "Carthage/Build"
     }
 
     /// Carthage's executable path as specified by the
     /// project's `SpecOptions`, or `carthage` by default
     var executable: String {
-        return project.options.carthageExecutablePath ?? "carthage"
+        project.options.carthageExecutablePath ?? "carthage"
     }
 
     private let project: Project
