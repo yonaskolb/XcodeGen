@@ -45,7 +45,7 @@ class SpecLoadingTests: XCTestCase {
             $0.context("with optional include for non exist subspecs") {
                 $0.it("ignore subspecs") {
                     let path = fixturePath + "optional_include/optional_include.yml"
-                    let project = try XCTUnwrap(loadSpec(path: path))
+                    let project = try unwrap(loadSpec(path: path))
                     
                     try expect(project.name) == "OptionalInclude"
                     try expect(project.targets) == [
