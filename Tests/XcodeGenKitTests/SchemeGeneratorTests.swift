@@ -57,13 +57,9 @@ class SchemeGeneratorTests: XCTestCase {
                     schemes: [scheme]
                 )
                 let xcodeProject = try project.generateXcodeProject()
-                guard let target = xcodeProject.pbxproj.nativeTargets
-                    .first(where: { $0.name == app.name }) else {
-                    throw failure("Target not found")
-                }
-                guard let xcscheme = xcodeProject.sharedData?.schemes.first else {
-                    throw failure("Scheme not found")
-                }
+                let target = try XCTUnwrap(xcodeProject.pbxproj.nativeTargets
+                    .first(where: { $0.name == app.name }))
+                let xcscheme = try XCTUnwrap(xcodeProject.sharedData?.schemes.first)
                 try expect(scheme.name) == "MyScheme"
                 try expect(xcscheme.buildAction?.buildImplicitDependencies) == true
                 try expect(xcscheme.buildAction?.parallelizeBuild) == true
@@ -71,9 +67,7 @@ class SchemeGeneratorTests: XCTestCase {
                 try expect(xcscheme.buildAction?.preActions.first?.scriptText) == "echo Starting"
                 try expect(xcscheme.buildAction?.preActions.first?.environmentBuildable?.buildableName) == "MyApp.app"
                 try expect(xcscheme.buildAction?.preActions.first?.environmentBuildable?.blueprintName) == "MyApp"
-                guard let buildActionEntry = xcscheme.buildAction?.buildActionEntries.first else {
-                    throw failure("Build Action entry not found")
-                }
+                let buildActionEntry = try XCTUnwrap(xcscheme.buildAction?.buildActionEntries.first)
                 try expect(buildActionEntry.buildFor) == BuildType.all
 
                 let buildableReferences: [XCScheme.BuildableReference] = [
@@ -118,9 +112,7 @@ class SchemeGeneratorTests: XCTestCase {
                     targets: [framework, frameworkTest]
                 )
                 let xcodeProject = try project.generateXcodeProject()
-                guard let xcscheme = xcodeProject.sharedData?.schemes.first else {
-                    throw failure("Scheme not found")
-                }
+                let xcscheme = try XCTUnwrap(xcodeProject.sharedData?.schemes.first)
 
                 try expect(xcscheme.launchAction?.buildConfiguration) == "Debug"
                 try expect(xcscheme.testAction?.buildConfiguration) == "Debug"
@@ -149,9 +141,7 @@ class SchemeGeneratorTests: XCTestCase {
                 )
                 let xcodeProject = try project.generateXcodeProject()
 
-                guard let xcscheme = xcodeProject.sharedData?.schemes.first else {
-                    throw failure("Scheme not found")
-                }
+                let xcscheme = try XCTUnwrap(xcodeProject.sharedData?.schemes.first)
 
                 try expect(
                     xcodeProject.pbxproj.nativeTargets
@@ -178,13 +168,9 @@ class SchemeGeneratorTests: XCTestCase {
 
                 try expect(xcodeProject.sharedData?.schemes.count) == 2
 
-                guard let xcscheme = xcodeProject.sharedData?.schemes
-                    .first(where: { $0.name == "\(target.name) Test" }) else {
-                    throw failure("Scheme not found")
-                }
-                guard let buildActionEntry = xcscheme.buildAction?.buildActionEntries.first else {
-                    throw failure("Build Action entry not found")
-                }
+                let xcscheme = try XCTUnwrap(xcodeProject.sharedData?.schemes
+                    .first(where: { $0.name == "\(target.name) Test" }))
+                let buildActionEntry = try XCTUnwrap(xcscheme.buildAction?.buildActionEntries.first)
 
                 try expect(buildActionEntry.buildableReference.blueprintIdentifier.count > 0) == true
 
@@ -205,9 +191,7 @@ class SchemeGeneratorTests: XCTestCase {
 
                 try expect(xcodeProject.sharedData?.schemes.count) == 1
 
-                guard let xcscheme = xcodeProject.sharedData?.schemes.first else {
-                    throw failure("Scheme not found")
-                }
+                let xcscheme = try XCTUnwrap(xcodeProject.sharedData?.schemes.first)
 
                 try expect(xcscheme.launchAction?.environmentVariables) == variables
                 try expect(xcscheme.testAction?.environmentVariables) == variables
@@ -227,9 +211,7 @@ class SchemeGeneratorTests: XCTestCase {
                 )
                 let xcodeProject = try project.generateXcodeProject()
 
-                guard let xcscheme = xcodeProject.sharedData?.schemes.first else {
-                    throw failure("Scheme not found")
-                }
+                let xcscheme = try XCTUnwrap(xcodeProject.sharedData?.schemes.first)
 
                 try expect(xcscheme.launchAction?.selectedDebuggerIdentifier) == ""
                 try expect(xcscheme.launchAction?.selectedLauncherIdentifier) == "Xcode.IDEFoundation.Launcher.PosixSpawn"
@@ -247,9 +229,7 @@ class SchemeGeneratorTests: XCTestCase {
 
                 try expect(xcodeProject.sharedData?.schemes.count) == 1
 
-                guard let xcscheme = xcodeProject.sharedData?.schemes.first else {
-                    throw failure("Scheme not found")
-                }
+                let xcscheme = try XCTUnwrap(xcodeProject.sharedData?.schemes.first)
 
                 try expect(xcscheme.launchAction?.preActions.count) == 1
                 try expect(xcscheme.launchAction?.preActions.first?.title) == "Run"
@@ -284,9 +264,7 @@ class SchemeGeneratorTests: XCTestCase {
                     projectReferences: [projectReference]
                 )
                 let xcodeProject = try project.generateXcodeProject()
-                guard let xcscheme = xcodeProject.sharedData?.schemes.first else {
-                    throw failure("Scheme not found")
-                }
+                let xcscheme = try XCTUnwrap(xcodeProject.sharedData?.schemes.first)
                 try expect(xcscheme.buildAction?.buildActionEntries.count) == 1
                 let buildableReference = xcscheme.buildAction?.buildActionEntries.first?.buildableReference
                 try expect(buildableReference?.blueprintName) == "ExternalTarget"
@@ -326,9 +304,7 @@ class SchemeGeneratorTests: XCTestCase {
                     ]
                 )
                 let xcodeProject = try project.generateXcodeProject()
-                guard let xcscheme = xcodeProject.sharedData?.schemes.first else {
-                    throw failure("Scheme not found")
-                }
+                let xcscheme = try XCTUnwrap(xcodeProject.sharedData?.schemes.first)
                 try expect(xcscheme.testAction?.codeCoverageEnabled) == true
                 try expect(xcscheme.testAction?.codeCoverageTargets.count) == 2
                 let buildableReference = xcscheme.testAction?.codeCoverageTargets.first
