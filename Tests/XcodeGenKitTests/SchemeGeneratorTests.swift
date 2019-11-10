@@ -362,6 +362,30 @@ class SchemeGeneratorTests: XCTestCase {
                 try expect(buildEntries.first?.buildableReference.blueprintName) == "WatchApp"
                 try expect(buildEntries.last?.buildableReference.blueprintName) == "HostApp"
             }
+
+            $0.it("generate test plans ") {
+                let scheme = Scheme(
+                    name: "TestScheme",
+                    build: Scheme.Build(targets: [buildTarget]),
+                    test: Scheme.Test(config: "Debug", testPlans: [
+                        "Path/TestPlan.xctestplan",
+                        "Path/TestPlan2.xctestplan",
+                    ])
+                )
+                let project = Project(
+                    name: "test",
+                    targets: [app, framework],
+                    schemes: [scheme]
+                )
+                let xcodeProject = try project.generateXcodeProject()
+
+                let xcscheme = try unwrap(xcodeProject.sharedData?.schemes.first)
+
+                try expect(xcscheme.testAction?.testPlans) == [
+                    XCScheme.TestPlanReference(reference: "container:Path/TestPlan.xctestplan", default: true),
+                    XCScheme.TestPlanReference(reference: "container:Path/TestPlan2.xctestplan", default: false),
+                ]
+            }
         }
     }
 
