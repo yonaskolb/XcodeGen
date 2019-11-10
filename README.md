@@ -71,7 +71,7 @@ A project would be created with 2 connected targets, with all the required confi
 
 ## Installing
 
-Make sure Xcode 10.2 is installed first.
+Make sure Xcode 11 is installed first.
 
 ### [Mint](https://github.com/yonaskolb/mint)
 ```sh
