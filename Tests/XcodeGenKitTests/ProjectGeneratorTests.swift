@@ -929,14 +929,14 @@ class ProjectGeneratorTests: XCTestCase {
                 }
 
                 guard let projectSpecDependency = nativeTarget.packageProductDependencies.first(where: { $0.productName == "ProjectSpec" }) else {
-                    throw failure("XCSwiftPackageProductDependency for \(app.name) not found")
+                                   throw failure("XCSwiftPackageProductDependency for \(app.name) not found")
                 }
 
                 try expect(projectSpecDependency.package?.name) == "XcodeGen"
                 try expect(projectSpecDependency.package?.versionRequirement) == .branch("master")
 
                 guard let codabilityDependency = nativeTarget.packageProductDependencies.first(where: { $0.productName == "Codability" }) else {
-                    throw failure("XCSwiftPackageProductDependency for \(app.name) not found")
+                                   throw failure("XCSwiftPackageProductDependency for \(app.name) not found")
                 }
 
                 try expect(codabilityDependency.package?.name) == "Codability"

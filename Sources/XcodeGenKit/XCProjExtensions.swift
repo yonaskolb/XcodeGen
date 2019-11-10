@@ -46,7 +46,7 @@ extension Dictionary {
 extension Xcode {
 
     public static func fileType(path: Path) -> String? {
-        guard let fileExtension = path.extension else { return nil }
+        guard let fileExtension = path.extension else { return nil}
         switch fileExtension {
         // cases that aren't handled (yet) in XcodeProj.
         // they can be removed once XcodeProj supports them

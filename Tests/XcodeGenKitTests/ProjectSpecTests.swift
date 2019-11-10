@@ -138,7 +138,7 @@ class ProjectSpecTests: XCTestCase {
                     sources: ["invalidSource"],
                     dependencies: [
                         Dependency(type: .target, reference: "invalidDependency"),
-                        Dependency(type: .package(product: nil), reference: "invalidPackage"),
+                        Dependency(type: .package(product: nil), reference: "invalidPackage")
                     ],
                     preBuildScripts: [BuildScript(script: .path("invalidPreBuildScript"), name: "preBuildScript1")],
                     postCompileScripts: [BuildScript(script: .path("invalidPostCompileScript"))],
@@ -465,11 +465,10 @@ class ProjectSpecTests: XCTestCase {
                                                                                                                  script: "bar",
                                                                                                                  settingsTarget: "foo")]))],
                                    packages: [
-                                       "Yams": SwiftPackage(
-                                           url: "https://github.com/jpsim/Yams",
-                                           versionRequirement: .upToNextMajorVersion("2.0.0")
-                                       ),
-                                   ],
+                                    "Yams": SwiftPackage(
+                                        url: "https://github.com/jpsim/Yams",
+                                        versionRequirement: .upToNextMajorVersion("2.0.0"))
+                                    ],
                                    localPackages: ["../../Package"],
                                    options: SpecOptions(minimumXcodeGenVersion: Version(major: 3, minor: 4, patch: 5),
                                                         carthageBuildPath: "carthageBuildPath",
