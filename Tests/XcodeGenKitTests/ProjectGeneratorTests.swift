@@ -48,7 +48,7 @@ class ProjectGeneratorTests: XCTestCase {
                 let options = SpecOptions(bundleIdPrefix: "com.test")
                 let project = Project(name: "test", targets: [framework], options: options)
                 let pbxProj = try project.generatePbxProj()
-                
+
                 guard let target = pbxProj.nativeTargets.first,
                     let buildConfigList = target.buildConfigurationList,
                     let buildConfig = buildConfigList.buildConfigurations.first else {
