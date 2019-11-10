@@ -14,13 +14,13 @@ public class CarthageDependencyResolver {
     /// Carthage's base build path as specified by the
     /// project's `SpecOptions`, or `Carthage/Build` by default
     var buildPath: String {
-        return project.options.carthageBuildPath ?? "Carthage/Build"
+        project.options.carthageBuildPath ?? "Carthage/Build"
     }
 
     /// Carthage's executable path as specified by the
     /// project's `SpecOptions`, or `carthage` by default
     var executable: String {
-        return project.options.carthageExecutablePath ?? "carthage"
+        project.options.carthageExecutablePath ?? "carthage"
     }
 
     private let project: Project
@@ -31,8 +31,13 @@ public class CarthageDependencyResolver {
     }
 
     /// Carthage's build path for the given platform
-    func buildPath(for platform: Platform) -> String {
-        return "\(buildPath)/\(platform.carthageName)"
+    func buildPath(for platform: Platform, linkType: Dependency.CarthageLinkType) -> String {
+        switch linkType {
+        case .static:
+            return "\(buildPath)/\(platform.carthageName)/Static"
+        case .dynamic:
+            return "\(buildPath)/\(platform.carthageName)"
+        }
     }
 
     /// Fetches all carthage dependencies for a given target
@@ -53,7 +58,7 @@ public class CarthageDependencyResolver {
                 let nonExistentDependencies = target.dependencies.filter { !frameworks.contains($0) }
                 for dependency in nonExistentDependencies {
                     switch dependency.type {
-                    case .carthage(let findFrameworks):
+                    case .carthage(let findFrameworks, _):
                         let findFrameworks = findFrameworks ?? project.options.findCarthageFrameworks
                         if findFrameworks {
                             relatedDependencies(for: dependency, in: target.platform)

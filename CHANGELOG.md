@@ -2,8 +2,47 @@
 
 ## Next Version
 
+#### Added
+- Add Carthage static framework dependencies support. [#688](https://github.com/yonaskolb/XcodeGen/pull/688) @giginet
+- Added `xcodegen dump` command [#710](https://github.com/yonaskolb/XcodeGen/pull/710) @yonaskolb
+- Added `--no-env` option to disable environment variables expansion [#704](https://github.com/yonaskolb/XcodeGen/pull/704) @rcari
+
+#### Fixed
+- Improved variable expansion runtime [#704](https://github.com/yonaskolb/XcodeGen/pull/704) @rcari
+- Fixed missing headers for static framework targets [#705](https://github.com/yonaskolb/XcodeGen/pull/705) @wag-miles
+- Using more file types from XcodeProj for PBXFileReferences resulting in less project diffs [#715](https://github.com/yonaskolb/XcodeGen/pull/715) @yonaskolb
+
+#### Changed
+- Deprecated `$old_form` variables in favor of `${new_form}` variables [#704](https://github.com/yonaskolb/XcodeGen/pull/704) @rcari
+- Updated XcodeProj to 7.4.0 [#709](https://github.com/yonaskolb/XcodeGen/pull/709) [#715](https://github.com/yonaskolb/XcodeGen/pull/715) @yonaskolb
+- Updated to Swift 5.1 [#714](https://github.com/yonaskolb/XcodeGen/pull/714) @yonaskolb
+
+## 2.10.1
+
+#### Fixed
+- Add Base to knownRegions even if one doesn't exist [#694](https://github.com/yonaskolb/XcodeGen/pull/694) @bryansum
+- Fixed missing `onlyGenerateCoverageForSpecifiedTargets` issue [#700](https://github.com/yonaskolb/XcodeGen/pull/700) @kateinoigakukun
+- Fixed regression on dependencies `link` flag [#703](https://github.com/yonaskolb/XcodeGen/pull/703) @rcari
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.10.0...2.10.1)
+
+## 2.10.0
+
+#### Added
+- Support Target Reference to another project. [#655](https://github.com/yonaskolb/XcodeGen/pull/655) @kateinoigakukun
+- Added `coverageTargets` for test target. This enables to gather code coverage for specific targets. [#656](https://github.com/yonaskolb/XcodeGen/pull/656) @kateinoigakukun
+
 #### Fixed
 - Add base localisation by default even if no base localised files were found. Fixes warning in Xcode 11 [#685](https://github.com/yonaskolb/XcodeGen/pull/685) @yonaskolb
+- Don't generate CFBundleExecutable in default generated Info.plist for `bundle` target types [#689](https://github.com/yonaskolb/XcodeGen/pull/689) @FranzBusch
+- Fixed resolving relative paths with custom project destination [#681](https://github.com/yonaskolb/XcodeGen/pull/681) @giginet
+- Fixed resolving relative paths for Info.plist [#683](https://github.com/yonaskolb/XcodeGen/pull/683)
+- Fixed macOS unit test target TEST_HOST [#696](https://github.com/yonaskolb/XcodeGen/pull/696) @mjarvis
+
+#### Internal
+- Restructure targets [#698](https://github.com/yonaskolb/XcodeGen/pull/698) @yonaskolb
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.9.0...2.10.0)
 
 ## 2.9.0
 
@@ -27,9 +66,9 @@
 #### Added
 - Added support for Swift Package dependencies [#624](https://github.com/yonaskolb/XcodeGen/pull/624) @yonaskolb
 - Added `includes` to `sources` for a Target. This follows the same glob-style as `excludes` but functions as a way to only include files that match a specified pattern. Useful if you only want a certain file type, for example specifying `**/*.swift`. [#637](https://github.com/yonaskolb/XcodeGen/pull/637) @bclymer
-- Support `dylib` SDK. [#650](https://github.com/yonaskolb/XcodeGen/pull/650) @kateinoigakukun 
-- Added `language` and `region` options for `run` and `test` scheme [#654](https://github.com/yonaskolb/XcodeGen/pull/654) @kateinoigakukun 
-- Added `debugEnabled` option for `run` and `test` scheme [#657](https://github.com/yonaskolb/XcodeGen/pull/657) @kateinoigakukun 
+- Support `dylib` SDK. [#650](https://github.com/yonaskolb/XcodeGen/pull/650) @kateinoigakukun
+- Added `language` and `region` options for `run` and `test` scheme [#654](https://github.com/yonaskolb/XcodeGen/pull/654) @kateinoigakukun
+- Added `debugEnabled` option for `run` and `test` scheme [#657](https://github.com/yonaskolb/XcodeGen/pull/657) @kateinoigakukun
 
 #### Fixed
 - Expand template variable in Array of Any [#651](https://github.com/yonaskolb/XcodeGen/pull/651) @kateinoigakukun

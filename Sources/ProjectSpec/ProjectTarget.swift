@@ -11,13 +11,13 @@ public protocol ProjectTarget: BuildSettingsContainer {
 extension Target {
 
     public var buildScripts: [BuildScript] {
-        return preBuildScripts + postCompileScripts + postBuildScripts
+        preBuildScripts + postCompileScripts + postBuildScripts
     }
 }
 
 extension Project {
 
     public var projectTargets: [ProjectTarget] {
-        return targets.map { $0 as ProjectTarget } + aggregateTargets.map { $0 as ProjectTarget }
+        targets.map { $0 as ProjectTarget } + aggregateTargets.map { $0 as ProjectTarget }
     }
 }

@@ -9,6 +9,7 @@ public class PBXProjGenerator {
     let project: Project
 
     let pbxProj: PBXProj
+    let projectDirectory: Path?
     let carthageResolver: CarthageDependencyResolver
 
     var sourceGenerator: SourceGenerator!
@@ -24,11 +25,14 @@ public class PBXProjGenerator {
 
     var generated = false
 
-    public init(project: Project) {
+    public init(project: Project, projectDirectory: Path? = nil) {
         self.project = project
         carthageResolver = CarthageDependencyResolver(project: project)
         pbxProj = PBXProj(rootObject: nil, objectVersion: project.objectVersion)
-        sourceGenerator = SourceGenerator(project: project, pbxProj: pbxProj)
+        self.projectDirectory = projectDirectory
+        sourceGenerator = SourceGenerator(project: project,
+                                          pbxProj: pbxProj,
+                                          projectDirectory: projectDirectory)
     }
 
     @discardableResult
@@ -220,8 +224,8 @@ public class PBXProjGenerator {
         let projectAttributes: [String: Any] = ["LastUpgradeCheck": project.xcodeVersion]
             .merged(project.attributes)
 
-        let knownRegions = sourceGenerator.knownRegions.sorted()
-        pbxProject.knownRegions = knownRegions.isEmpty ? ["en"] : knownRegions
+        let knownRegions = sourceGenerator.knownRegions
+        pbxProject.knownRegions = (knownRegions.isEmpty ? ["en"] : knownRegions).union(["Base"]).sorted()
         pbxProject.packages = packageReferences.sorted { $0.key < $1.key }.map { $1 }
 
         let allTargets: [PBXTarget] = targetObjects.valueArray + targetAggregateObjects.valueArray
@@ -474,8 +478,8 @@ public class PBXProjGenerator {
 
                 let dependecyLinkage = dependencyTarget.defaultLinkage
                 let link = dependency.link ??
-                    (dependecyLinkage == .dynamic && target.type != .staticLibrary) ||
-                    (dependecyLinkage == .static && target.type.isExecutable)
+                    ((dependecyLinkage == .dynamic && target.type != .staticLibrary) ||
+                        (dependecyLinkage == .static && target.type.isExecutable))
 
                 if link {
                     let dependencyFile = targetFileReferences[dependencyTarget.name]!
@@ -597,13 +601,13 @@ public class PBXProjGenerator {
                 )
                 targetFrameworkBuildFiles.append(buildFile)
 
-            case .carthage(let findFrameworks):
+            case .carthage(let findFrameworks, let linkType):
                 let findFrameworks = findFrameworks ?? project.options.findCarthageFrameworks
                 let allDependencies = findFrameworks
                     ? carthageResolver.relatedDependencies(for: dependency, in: target.platform) : [dependency]
                 allDependencies.forEach { dependency in
 
-                    var platformPath = Path(carthageResolver.buildPath(for: target.platform))
+                    var platformPath = Path(carthageResolver.buildPath(for: target.platform, linkType: linkType))
                     var frameworkPath = platformPath + dependency.reference
                     if frameworkPath.extension == nil {
                         frameworkPath = Path(frameworkPath.string + ".framework")
@@ -619,7 +623,7 @@ public class PBXProjGenerator {
                         targetFrameworkBuildFiles.append(buildFile)
                     }
                 }
-                // Embedding handled by iterating over `carthageDependencies` below
+            // Embedding handled by iterating over `carthageDependencies` below
             case .package(let product):
                 guard let packageReference = packageReferences[dependency.reference] else {
                     return
@@ -650,14 +654,19 @@ public class PBXProjGenerator {
 
             let embed = dependency.embed ?? target.shouldEmbedCarthageDependencies
 
-            var platformPath = Path(carthageResolver.buildPath(for: target.platform))
+            var platformPath = Path(carthageResolver.buildPath(for: target.platform, linkType: dependency.carthageLinkType ?? .default))
             var frameworkPath = platformPath + dependency.reference
             if frameworkPath.extension == nil {
                 frameworkPath = Path(frameworkPath.string + ".framework")
             }
             let fileReference = sourceGenerator.getFileReference(path: frameworkPath, inPath: platformPath)
 
-            if embed {
+            if dependency.carthageLinkType == .static {
+                let embedFile = addObject(
+                    PBXBuildFile(file: fileReference, settings: getDependencyFrameworkSettings(dependency: dependency))
+                )
+                targetFrameworkBuildFiles.append(embedFile)
+            } else if embed {
                 if directlyEmbedCarthage {
                     let embedFile = addObject(
                         PBXBuildFile(file: fileReference, settings: getEmbedSettings(dependency: dependency, codeSign: dependency.codeSign ?? true))
@@ -672,7 +681,7 @@ public class PBXProjGenerator {
         var buildPhases: [PBXBuildPhase] = []
 
         func getBuildFilesForSourceFiles(_ sourceFiles: [SourceFile]) -> [PBXBuildFile] {
-            return sourceFiles
+            sourceFiles
                 .reduce(into: [SourceFile]()) { output, sourceFile in
                     if !output.contains(where: { $0.fileReference === sourceFile.fileReference }) {
                         output.append(sourceFile)
@@ -706,7 +715,7 @@ public class PBXProjGenerator {
 
         let headersBuildPhaseFiles = getBuildFilesForPhase(.headers)
         if !headersBuildPhaseFiles.isEmpty {
-            if target.type == .framework || target.type == .dynamicLibrary {
+            if target.type.isFramework || target.type == .dynamicLibrary {
                 let headersBuildPhase = addObject(PBXHeadersBuildPhase(files: headersBuildPhaseFiles))
                 buildPhases.append(headersBuildPhase)
             } else {
@@ -758,7 +767,7 @@ public class PBXProjGenerator {
         if !carthageFrameworksToEmbed.isEmpty {
 
             let inputPaths = carthageFrameworksToEmbed
-                .map { "$(SRCROOT)/\(carthageResolver.buildPath(for: target.platform))/\($0)\($0.contains(".") ? "" : ".framework")" }
+                .map { "$(SRCROOT)/\(carthageResolver.buildPath(for: target.platform, linkType: .dynamic))/\($0)\($0.contains(".") ? "" : ".framework")" }
             let outputPaths = carthageFrameworksToEmbed
                 .map { "$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/\($0)\($0.contains(".") ? "" : ".framework")" }
             let carthageExecutable = carthageResolver.executable
@@ -859,7 +868,7 @@ public class PBXProjGenerator {
                     searchForPlist = false
                 }
                 if let plistPath = plistPath {
-                    buildSettings["INFOPLIST_FILE"] = (try? plistPath.relativePath(from: project.basePath)) ?? plistPath
+                    buildSettings["INFOPLIST_FILE"] = (try? plistPath.relativePath(from: projectDirectory ?? project.basePath)) ?? plistPath
                 }
             }
 
@@ -894,7 +903,11 @@ public class PBXProjGenerator {
                     if dependency.type == .target,
                         let dependencyTarget = project.getTarget(dependency.reference),
                         dependencyTarget.type.isApp {
-                        buildSettings["TEST_HOST"] = "$(BUILT_PRODUCTS_DIR)/\(dependencyTarget.productName).app/\(dependencyTarget.productName)"
+                        if dependencyTarget.platform == .macOS {
+                            buildSettings["TEST_HOST"] = "$(BUILT_PRODUCTS_DIR)/\(dependencyTarget.productName).app/Contents/MacOS/\(dependencyTarget.productName)"
+                        } else {
+                            buildSettings["TEST_HOST"] = "$(BUILT_PRODUCTS_DIR)/\(dependencyTarget.productName).app/\(dependencyTarget.productName)"
+                        }
                         break
                     }
                 }
@@ -917,8 +930,16 @@ public class PBXProjGenerator {
             // set Carthage search paths
             let configFrameworkBuildPaths: [String]
             if !carthageDependencies.isEmpty {
-                let carthagePlatformBuildPath = "$(PROJECT_DIR)/" + carthageResolver.buildPath(for: target.platform)
-                configFrameworkBuildPaths = [carthagePlatformBuildPath] + frameworkBuildPaths.sorted()
+                var carthagePlatformBuildPaths: [String] = []
+                if carthageDependencies.contains(where: { $0.carthageLinkType == .static }) {
+                    let carthagePlatformBuildPath = "$(PROJECT_DIR)/" + carthageResolver.buildPath(for: target.platform, linkType: .static)
+                    carthagePlatformBuildPaths.append(carthagePlatformBuildPath)
+                }
+                if carthageDependencies.contains(where: { $0.carthageLinkType == .dynamic }) {
+                    let carthagePlatformBuildPath = "$(PROJECT_DIR)/" + carthageResolver.buildPath(for: target.platform, linkType: .dynamic)
+                    carthagePlatformBuildPaths.append(carthagePlatformBuildPath)
+                }
+                configFrameworkBuildPaths = carthagePlatformBuildPaths + frameworkBuildPaths.sorted()
             } else {
                 configFrameworkBuildPaths = frameworkBuildPaths.sorted()
             }
@@ -972,7 +993,7 @@ public class PBXProjGenerator {
     }
 
     func getInfoPlist(_ sources: [TargetSource]) -> Path? {
-        return sources
+        sources
             .lazy
             .map { self.project.basePath + $0.path }
             .compactMap { (path) -> Path? in
@@ -1039,11 +1060,11 @@ public class PBXProjGenerator {
 extension Target {
 
     var shouldEmbedDependencies: Bool {
-        return type.isApp || type.isTest
+        type.isApp || type.isTest
     }
 
     var shouldEmbedCarthageDependencies: Bool {
-        return (type.isApp && platform != .watchOS)
+        (type.isApp && platform != .watchOS)
             || type == .watch2Extension
             || type.isTest
     }
@@ -1072,6 +1093,17 @@ extension PBXFileElement {
             }
         } else {
             return 0
+        }
+    }
+}
+
+private extension Dependency {
+    var carthageLinkType: Dependency.CarthageLinkType? {
+        switch type {
+        case .carthage(_, let linkType):
+            return linkType
+        default:
+            return nil
         }
     }
 }

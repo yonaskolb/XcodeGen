@@ -5,6 +5,7 @@ import XcodeGenKit
 import XcodeProj
 import XCTest
 import Yams
+import TestSupport
 
 class SourceGeneratorTests: XCTestCase {
 
@@ -91,10 +92,8 @@ class SourceGeneratorTests: XCTestCase {
                     paths: ["Sources", "Foo.framework"],
                     names: ["Sources", "Foo.framework"]
                 )
-                guard let buildFile = pbxProj.buildFiles
-                    .first(where: { $0.file == fileReference }) else {
-                    throw failure("Cant find build file")
-                }
+                let buildFile = try unwrap(pbxProj.buildFiles
+                    .first(where: { $0.file == fileReference }))
                 try expect(buildPhase?.files?.count) == 1
                 try expect(buildPhase?.files?.contains(buildFile)) == true
             }
@@ -114,12 +113,8 @@ class SourceGeneratorTests: XCTestCase {
                 let project = Project(basePath: directoryPath, name: "Test", targets: [target])
 
                 let pbxProj = try project.generatePbxProj()
-                guard let fileReference = pbxProj.fileReferences.first(where: { $0.nameOrPath == "model2.xcdatamodel" }) else {
-                    throw failure("Couldn't find model file reference")
-                }
-                guard let versionGroup = pbxProj.versionGroups.first else {
-                    throw failure("Couldn't find version group")
-                }
+                let fileReference = try unwrap(pbxProj.fileReferences.first(where: { $0.nameOrPath == "model2.xcdatamodel" }))
+                let versionGroup = try unwrap(pbxProj.versionGroups.first)
                 try expect(versionGroup.currentVersion) == fileReference
                 try expect(versionGroup.children.count) == 3
                 try expect(versionGroup.path) == "model.xcdatamodeld"
@@ -142,18 +137,18 @@ class SourceGeneratorTests: XCTestCase {
                 let pbxProj = try project.generatePbxProj()
 
                 func getFileReferences(_ path: String) -> [PBXFileReference] {
-                    return pbxProj.fileReferences.filter { $0.path == path }
+                    pbxProj.fileReferences.filter { $0.path == path }
                 }
 
                 func getVariableGroups(_ name: String?) -> [PBXVariantGroup] {
-                    return pbxProj.variantGroups.filter { $0.name == name }
+                    pbxProj.variantGroups.filter { $0.name == name }
                 }
 
                 let resourceName = "LocalizedStoryboard.storyboard"
                 let baseResource = "Base.lproj/LocalizedStoryboard.storyboard"
                 let localizedResource = "en.lproj/LocalizedStoryboard.strings"
 
-                guard let variableGroup = getVariableGroups(resourceName).first else { throw failure("Couldn't find the variable group") }
+                let variableGroup = try unwrap(getVariableGroups(resourceName).first)
 
                 do {
                     let refs = getFileReferences(baseResource)
@@ -167,7 +162,7 @@ class SourceGeneratorTests: XCTestCase {
                     try expect(variableGroup.children.filter { $0 == refs.first }.count) == 1
                 }
             }
-            
+
             $0.it("handles localized resources") {
                 let directories = """
                 App:
@@ -186,43 +181,43 @@ class SourceGeneratorTests: XCTestCase {
                                 - SFUILight.ttf
                 """
                 try createDirectories(directories)
-                
+
                 let target = Target(name: "Test", type: .application, platform: .iOS, sources: [TargetSource(path: "App/Resources")])
 
                 let options = SpecOptions(createIntermediateGroups: true)
                 let project = Project(basePath: directoryPath, name: "Test", targets: [target], options: options)
-                
+
                 let outputXcodeProj = try project.generateXcodeProject()
                 try outputXcodeProj.write(path: directoryPath)
-                
+
                 let inputXcodeProj = try XcodeProj(path: directoryPath)
                 let pbxProj = inputXcodeProj.pbxproj
 
                 func getFileReferences(_ path: String) -> [PBXFileReference] {
-                    return pbxProj.fileReferences.filter { $0.path == path }
+                    pbxProj.fileReferences.filter { $0.path == path }
                 }
 
                 func getVariableGroups(_ name: String?) -> [PBXVariantGroup] {
-                    return pbxProj.variantGroups.filter { $0.name == name }
+                    pbxProj.variantGroups.filter { $0.name == name }
                 }
-                
+
                 let stringsResourceName = "Localizable.strings"
                 let jsonResourceName = "empty.json"
-                
-                guard let stringsVariableGroup = getVariableGroups(stringsResourceName).first else { throw failure("Couldn't find the variable group") }
-                
-                guard let jsonVariableGroup = getVariableGroups(jsonResourceName).first else { throw failure("Couldn't find the variable group") }
-                
+
+                let stringsVariableGroup = try unwrap(getVariableGroups(stringsResourceName).first)
+
+                let jsonVariableGroup = try unwrap(getVariableGroups(jsonResourceName).first)
+
                 let stringsResource = "en.lproj/Localizable.strings"
                 let jsonResource = "en-CA.lproj/empty.json"
-                
+
                 do {
                     let refs = getFileReferences(stringsResource)
                     try expect(refs.count) == 1
                     try expect(refs.first!.uuid.hasPrefix("TEMP")) == false
                     try expect(stringsVariableGroup.children.filter { $0 == refs.first }.count) == 1
                 }
-                
+
                 do {
                     let refs = getFileReferences(jsonResource)
                     try expect(refs.count) == 1
@@ -612,9 +607,9 @@ class SourceGeneratorTests: XCTestCase {
                 """
                 try createDirectories(directories)
 
-                let watchTarget = Target(name: "Watch", type: .watch2App, platform: .watchOS, sources: ["A"], dependencies: [Dependency(type: .carthage(findFrameworks: false), reference: "Alamofire_watch")])
+                let watchTarget = Target(name: "Watch", type: .watch2App, platform: .watchOS, sources: ["A"], dependencies: [Dependency(type: .carthage(findFrameworks: false, linkType: .dynamic), reference: "Alamofire_watch")])
                 let watchDependency = Dependency(type: .target, reference: "Watch")
-                let target = Target(name: "Test", type: .application, platform: .iOS, sources: ["A"], dependencies: [Dependency(type: .carthage(findFrameworks: false), reference: "Alamofire"), watchDependency])
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: ["A"], dependencies: [Dependency(type: .carthage(findFrameworks: false, linkType: .dynamic), reference: "Alamofire"), watchDependency])
                 let project = Project(basePath: directoryPath, name: "Test", targets: [target, watchTarget])
 
                 let pbxProj = try project.generatePbxProj()
@@ -633,7 +628,7 @@ class SourceGeneratorTests: XCTestCase {
                 """
                 try createDirectories(directories)
 
-                let target = Target(name: "Test", type: .application, platform: .iOS, sources: ["A", "P", "S"], dependencies: [Dependency(type: .carthage(findFrameworks: false), reference: "Alamofire")])
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: ["A", "P", "S"], dependencies: [Dependency(type: .carthage(findFrameworks: false, linkType: .dynamic), reference: "Alamofire")])
                 let project = Project(basePath: directoryPath, name: "Test", targets: [target])
 
                 let pbxProj = try project.generatePbxProj()
@@ -656,7 +651,7 @@ class SourceGeneratorTests: XCTestCase {
                 """
                 try createDirectories(directories)
 
-                let target = Target(name: "Test", type: .application, platform: .iOS, sources: ["Sources"], dependencies: [Dependency(type: .carthage(findFrameworks: false), reference: "Alamofire")])
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: ["Sources"], dependencies: [Dependency(type: .carthage(findFrameworks: false, linkType: .dynamic), reference: "Alamofire")])
                 let project = Project(basePath: directoryPath, name: "Test", targets: [target])
 
                 let pbxProj = try project.generatePbxProj()
@@ -749,10 +744,7 @@ class SourceGeneratorTests: XCTestCase {
                     paths: ["A", definition],
                     names: ["A", definition]
                 )
-                guard let buildFile = pbxProj.buildFiles
-                    .first(where: { $0.file == fileReference }) else {
-                    throw failure("Cant find build file")
-                }
+                let buildFile = try unwrap(pbxProj.buildFiles.first(where: { $0.file == fileReference }))
 
                 try pbxProj.expectFile(paths: ["A", definition], buildPhase: .sources)
 
@@ -784,7 +776,7 @@ class SourceGeneratorTests: XCTestCase {
                 try createDirectories(directories)
 
                 let includes = [
-                    "**/*Tests.*"
+                    "**/*Tests.*",
                 ]
 
                 let target = Target(name: "Test", type: .application, platform: .iOS, sources: [TargetSource(path: "Sources", includes: includes)])
@@ -821,11 +813,11 @@ class SourceGeneratorTests: XCTestCase {
                 try createDirectories(directories)
 
                 let includes = [
-                    "**/*Tests.*"
+                    "**/*Tests.*",
                 ]
 
                 let excludes = [
-                    "group2"
+                    "group2",
                 ]
 
                 let target = Target(name: "Test", type: .application, platform: .iOS, sources: [TargetSource(path: "Sources", excludes: excludes, includes: includes)])

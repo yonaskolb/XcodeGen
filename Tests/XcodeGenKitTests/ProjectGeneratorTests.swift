@@ -5,6 +5,7 @@ import XcodeGenKit
 import XcodeProj
 import XCTest
 import Yams
+import TestSupport
 
 private let app = Target(
     name: "MyApp",
@@ -47,6 +48,7 @@ class ProjectGeneratorTests: XCTestCase {
                 let options = SpecOptions(bundleIdPrefix: "com.test")
                 let project = Project(name: "test", targets: [framework], options: options)
                 let pbxProj = try project.generatePbxProj()
+                
                 guard let target = pbxProj.nativeTargets.first,
                     let buildConfigList = target.buildConfigurationList,
                     let buildConfig = buildConfigList.buildConfigurations.first else {
@@ -67,9 +69,7 @@ class ProjectGeneratorTests: XCTestCase {
                 let options = SpecOptions(developmentLanguage: "de")
                 let project = Project(name: "test", options: options)
                 let pbxProj = try project.generatePbxProj()
-                guard let pbxProject = pbxProj.projects.first else {
-                    throw failure("Could't find PBXProject")
-                }
+                let pbxProject = try unwrap(pbxProj.projects.first)
                 try expect(pbxProject.developmentRegion) == "de"
             }
 
@@ -137,18 +137,17 @@ class ProjectGeneratorTests: XCTestCase {
                     configs: [Config(name: "config")]
                 )
                 let pbxProj = try project.generatePbxProj()
-                guard let config = pbxProj.buildConfigurations.first else {
-                    throw failure("configuration not found")
-                }
+                let config = try unwrap(pbxProj.buildConfigurations.first)
+
                 try expect(config.buildSettings.isEmpty).to.beTrue()
             }
 
             $0.it("merges settings") {
                 let project = try Project(path: fixturePath + "settings_test.yml")
-                guard let config = project.getConfig("config1") else { throw failure("Couldn't find config1") }
+                let config = try unwrap(project.getConfig("config1"))
                 let debugProjectSettings = project.getProjectBuildSettings(config: config)
 
-                guard let target = project.getTarget("Target") else { throw failure("Couldn't find Target") }
+                let target = try unwrap(project.getTarget("Target"))
                 let targetDebugSettings = project.getTargetBuildSettings(target: target, config: config)
 
                 var buildSettings = BuildSettings()
@@ -273,17 +272,9 @@ class ProjectGeneratorTests: XCTestCase {
                 let project = Project(name: "test", targets: [appTargetWithAttributes, framework, optionalFramework, testTargetWithAttributes])
                 let pbxProject = try project.generatePbxProj()
 
-                guard let targetAttributes = pbxProject.projects.first?.targetAttributes else {
-                    throw failure("Couldn't find Project TargetAttributes")
-                }
-
-                guard let appTarget = pbxProject.targets(named: app.name).first else {
-                    throw failure("Couldn't find App Target")
-                }
-
-                guard let uiTestTarget = pbxProject.targets(named: uiTest.name).first else {
-                    throw failure("Couldn't find UITest Target")
-                }
+                let targetAttributes = try unwrap(pbxProject.projects.first?.targetAttributes)
+                let appTarget = try unwrap(pbxProject.targets(named: app.name).first)
+                let uiTestTarget = try unwrap(pbxProject.targets(named: uiTest.name).first)
 
                 try expect((targetAttributes[uiTestTarget]?["TestTargetID"] as? PBXNativeTarget)?.name) == app.name
                 try expect(targetAttributes[uiTestTarget]?["ProvisioningStyle"] as? String) == "Manual"
@@ -296,18 +287,8 @@ class ProjectGeneratorTests: XCTestCase {
                 let project = Project(name: "", targets: [target], options: .init(deploymentTarget: DeploymentTarget(iOS: "10.0", watchOS: "3.0")))
 
                 let pbxProject = try project.generatePbxProj()
-
-                guard let projectConfigList = pbxProject.projects.first?.buildConfigurationList,
-                    let projectConfig = projectConfigList.buildConfigurations.first
-                else {
-                    throw failure("Couldn't find Project config")
-                }
-
-                guard let targetConfigList = pbxProject.nativeTargets.first?.buildConfigurationList,
-                    let targetConfig = targetConfigList.buildConfigurations.first
-                else {
-                    throw failure("Couldn't find Target config")
-                }
+                let projectConfig = try unwrap(pbxProject.projects.first?.buildConfigurationList?.buildConfigurations.first)
+                let targetConfig = try unwrap(pbxProject.nativeTargets.first?.buildConfigurationList?.buildConfigurations.first)
 
                 try expect(projectConfig.buildSettings["IPHONEOS_DEPLOYMENT_TARGET"] as? String) == "10.0"
                 try expect(projectConfig.buildSettings["WATCHOS_DEPLOYMENT_TARGET"] as? String) == "3.0"
@@ -451,7 +432,7 @@ class ProjectGeneratorTests: XCTestCase {
                         Dependency(type: .framework, reference: "FrameworkZ.framework", link: true),
                         Dependency(type: .target, reference: iosFrameworkX.name /* , link: false */ ),
                         Dependency(type: .framework, reference: "FrameworkX.framework" /* , link: false */ ),
-                        Dependency(type: .carthage(findFrameworks: false), reference: "CarthageZ"),
+                        Dependency(type: .carthage(findFrameworks: false, linkType: .dynamic), reference: "CarthageZ"),
                     ]
                 )
                 expectedResourceFiles[staticLibrary.name] = Set()
@@ -478,10 +459,10 @@ class ProjectGeneratorTests: XCTestCase {
                     dependencies: [
                         Dependency(type: .target, reference: resourceBundle.name),
                         Dependency(type: .framework, reference: "FrameworkC.framework"),
-                        Dependency(type: .carthage(findFrameworks: false), reference: "CarthageA"),
+                        Dependency(type: .carthage(findFrameworks: false, linkType: .dynamic), reference: "CarthageA"),
                         // Statically linked, so don't embed into test
                         Dependency(type: .target, reference: staticLibrary.name),
-                        Dependency(type: .carthage(findFrameworks: false), reference: "CarthageB", embed: false),
+                        Dependency(type: .carthage(findFrameworks: false, linkType: .dynamic), reference: "CarthageB", embed: false),
                     ]
                 )
                 expectedResourceFiles[iosFrameworkA.name] = Set()
@@ -506,7 +487,7 @@ class ProjectGeneratorTests: XCTestCase {
                         Dependency(type: .framework, reference: "FrameworkD.framework"),
                         // Embedded into framework, so don't embed into test
                         Dependency(type: .framework, reference: "FrameworkE.framework", embed: true),
-                        Dependency(type: .carthage(findFrameworks: false), reference: "CarthageC", embed: true),
+                        Dependency(type: .carthage(findFrameworks: false, linkType: .dynamic), reference: "CarthageC", embed: true),
                         // Statically linked, so don't embed into test
                         Dependency(type: .framework, reference: "FrameworkF.framework", embed: false),
                     ]
@@ -538,7 +519,7 @@ class ProjectGeneratorTests: XCTestCase {
                     dependencies: [
                         Dependency(type: .target, reference: app.name),
                         Dependency(type: .target, reference: iosFrameworkB.name),
-                        Dependency(type: .carthage(findFrameworks: false), reference: "CarthageD"),
+                        Dependency(type: .carthage(findFrameworks: false, linkType: .dynamic), reference: "CarthageD"),
                     ],
                     directlyEmbedCarthageDependencies: false
                 )
@@ -607,9 +588,7 @@ class ProjectGeneratorTests: XCTestCase {
                 let pbxProject = try project.generatePbxProj()
 
                 for target in targets {
-                    guard let nativeTarget = pbxProject.nativeTargets.first(where: { $0.name == target.name }) else {
-                        throw failure("PBXNativeTarget for \(target) not found")
-                    }
+                    let nativeTarget = try unwrap(pbxProject.nativeTargets.first(where: { $0.name == target.name }))
 
                     let buildPhases = nativeTarget.buildPhases
                     let resourcesPhases = pbxProject.resourcesBuildPhases.filter { buildPhases.contains($0) }
@@ -738,7 +717,7 @@ class ProjectGeneratorTests: XCTestCase {
                 try expect(app3OtherLinkerSettings.contains("-ObjC")) == true
             }
 
-            $0.it("copies Swfit Objective-C Interface Header") {
+            $0.it("copies Swift Objective-C Interface Header") {
                 let swiftStaticLibraryWithHeader = Target(
                     name: "swiftStaticLibraryWithHeader",
                     type: .staticLibrary,
@@ -774,9 +753,8 @@ class ProjectGeneratorTests: XCTestCase {
                 let pbxProject = try project.generatePbxProj()
 
                 func scriptBuildPhases(target: Target) throws -> [PBXShellScriptBuildPhase] {
-                    guard let nativeTarget = pbxProject.nativeTargets.first(where: { $0.name == target.name }) else {
-                        throw failure("PBXNativeTarget for \(target) not found")
-                    }
+
+                    let nativeTarget = try unwrap(pbxProject.nativeTargets.first(where: { $0.name == target.name }))
                     let buildPhases = nativeTarget.buildPhases
                     let scriptPhases = buildPhases.compactMap { $0 as? PBXShellScriptBuildPhase }
                     return scriptPhases
@@ -802,10 +780,7 @@ class ProjectGeneratorTests: XCTestCase {
                 scriptSpec.targets[0].postBuildScripts = [BuildScript(script: .script("script3"))]
                 let pbxProject = try scriptSpec.generatePbxProj()
 
-                guard let nativeTarget = pbxProject.nativeTargets
-                    .first(where: { $0.buildPhases.count >= 3 }) else {
-                    throw failure("Target with build phases not found")
-                }
+                let nativeTarget = try unwrap(pbxProject.nativeTargets.first(where: { $0.buildPhases.count >= 3 }))
                 let buildPhases = nativeTarget.buildPhases
 
                 let scripts = pbxProject.shellScriptBuildPhases
@@ -893,9 +868,7 @@ class ProjectGeneratorTests: XCTestCase {
                 let project = Project(name: "test", targets: [app, framework, optionalFramework, uiTest])
                 let pbxProject = try project.generatePbxProj()
 
-                guard let nativeTarget = pbxProject.nativeTargets.first(where: { $0.name == app.name }) else {
-                    throw failure("PBXNativeTarget for \(app.name) not found")
-                }
+                let nativeTarget = try unwrap(pbxProject.nativeTargets.first(where: { $0.name == app.name }))
                 let frameworkPhases = nativeTarget.buildPhases.compactMap { $0 as? PBXFrameworksBuildPhase }
 
                 let frameworkBuildFiles = frameworkPhases[0].files ?? []
@@ -924,31 +897,21 @@ class ProjectGeneratorTests: XCTestCase {
                 ], localPackages: ["../XcodeGen"], options: .init(localPackagesGroup: "MyPackages"))
 
                 let pbxProject = try project.generatePbxProj(specValidate: false)
-                guard let nativeTarget = pbxProject.nativeTargets.first(where: { $0.name == app.name }) else {
-                    throw failure("PBXNativeTarget for \(app.name) not found")
-                }
+                let nativeTarget = try unwrap(pbxProject.nativeTargets.first(where: { $0.name == "dfg" }))
 
-                guard let projectSpecDependency = nativeTarget.packageProductDependencies.first(where: { $0.productName == "ProjectSpec" }) else {
-                                   throw failure("XCSwiftPackageProductDependency for \(app.name) not found")
-                }
+                let projectSpecDependency = try unwrap(nativeTarget.packageProductDependencies.first(where: { $0.productName == "ProjectSpec" }))
 
                 try expect(projectSpecDependency.package?.name) == "XcodeGen"
                 try expect(projectSpecDependency.package?.versionRequirement) == .branch("master")
 
-                guard let codabilityDependency = nativeTarget.packageProductDependencies.first(where: { $0.productName == "Codability" }) else {
-                                   throw failure("XCSwiftPackageProductDependency for \(app.name) not found")
-                }
+                let codabilityDependency = try unwrap(nativeTarget.packageProductDependencies.first(where: { $0.productName == "Codability" }))
 
                 try expect(codabilityDependency.package?.name) == "Codability"
                 try expect(codabilityDependency.package?.versionRequirement) == .exact("1.0.0")
 
-                guard let localPackagesGroup = try pbxProject.getMainGroup().children.first(where: { $0.name == "MyPackages" }) as? PBXGroup else {
-                    throw failure("Group not found")
-                }
+                let localPackagesGroup = try unwrap(try pbxProject.getMainGroup().children.first(where: { $0.name == "MyPackages" }) as? PBXGroup)
 
-                guard let localPackageFile = pbxProject.fileReferences.first(where: { $0.path == "../XcodeGen" }) else {
-                    throw failure("FileReference not found")
-                }
+                let localPackageFile = try unwrap(pbxProject.fileReferences.first(where: { $0.path == "../XcodeGen" }))
 
                 try expect(localPackagesGroup.children.contains(localPackageFile)) == true
                 try expect(localPackageFile.lastKnownFileType) == "folder"
@@ -962,25 +925,24 @@ class ProjectGeneratorTests: XCTestCase {
                 let writer = FileWriter(project: project)
                 try writer.writePlists()
 
-                guard let targetConfig = pbxProject.nativeTargets.first?.buildConfigurationList?.buildConfigurations.first else {
-                    throw failure("Couldn't find Target config")
-                }
+                let targetConfig = try unwrap(pbxProject.nativeTargets.first?.buildConfigurationList?.buildConfigurations.first)
 
                 try expect(targetConfig.buildSettings["INFOPLIST_FILE"] as? String) == plist.path
 
                 let infoPlistFile = tempPath + plist.path
                 let data: Data = try infoPlistFile.read()
                 let infoPlist = try PropertyListSerialization.propertyList(from: data, options: [], format: nil) as! [String: Any]
-                var expectedInfoPlist: [String: Any] = [:]
-                expectedInfoPlist["CFBundleIdentifier"] = "$(PRODUCT_BUNDLE_IDENTIFIER)"
-                expectedInfoPlist["CFBundleInfoDictionaryVersion"] = "6.0"
-                expectedInfoPlist["CFBundleExecutable"] = "$(EXECUTABLE_NAME)"
-                expectedInfoPlist["CFBundleName"] = "$(PRODUCT_NAME)"
-                expectedInfoPlist["CFBundleDevelopmentRegion"] = "$(DEVELOPMENT_LANGUAGE)"
-                expectedInfoPlist["CFBundleShortVersionString"] = "1.0"
-                expectedInfoPlist["CFBundleVersion"] = "1"
-                expectedInfoPlist["CFBundlePackageType"] = "APPL"
-                expectedInfoPlist["UISupportedInterfaceOrientations"] = ["UIInterfaceOrientationPortrait", "UIInterfaceOrientationLandscapeLeft"]
+                let expectedInfoPlist: [String: Any] = [
+                    "CFBundleIdentifier": "$(PRODUCT_BUNDLE_IDENTIFIER)",
+                    "CFBundleInfoDictionaryVersion": "6.0",
+                    "CFBundleName": "$(PRODUCT_NAME)",
+                    "CFBundleExecutable": "$(EXECUTABLE_NAME)",
+                    "CFBundleDevelopmentRegion": "$(DEVELOPMENT_LANGUAGE)",
+                    "CFBundleShortVersionString": "1.0",
+                    "CFBundleVersion": "1",
+                    "CFBundlePackageType": "APPL",
+                    "UISupportedInterfaceOrientations": ["UIInterfaceOrientationPortrait", "UIInterfaceOrientationLandscapeLeft"],
+                ]
 
                 try expect(NSDictionary(dictionary: expectedInfoPlist).isEqual(to: infoPlist)).beTrue()
             }
@@ -996,12 +958,218 @@ class ProjectGeneratorTests: XCTestCase {
                 let writer = FileWriter(project: project)
                 try writer.writePlists()
 
-                guard let targetConfig = pbxProject.nativeTargets.first?.buildConfigurationList?.buildConfigurations.first else {
-                    throw failure("Couldn't find Target config")
-                }
+                let targetConfig = try unwrap(pbxProject.nativeTargets.first?.buildConfigurationList?.buildConfigurations.first)
                 // generated plist should not be in buildsettings
                 try expect(targetConfig.buildSettings["INFOPLIST_FILE"] as? String) == predefinedPlistPath
             }
+
+            describe("Carthage dependencies") {
+                $0.context("with static dependency") {
+                    $0.it("should set dependencies") {
+                        let app = Target(
+                            name: "MyApp",
+                            type: .application,
+                            platform: .iOS,
+                            dependencies: [
+                                Dependency(type: .carthage(findFrameworks: true, linkType: .static), reference: "MyStaticFramework"),
+                            ]
+                        )
+                        let project = Project(name: "test", targets: [app])
+                        let pbxProject = try project.generatePbxProj()
+
+                        let target = pbxProject.nativeTargets.first!
+                        let configuration = target.buildConfigurationList!.buildConfigurations.first!
+                        try expect(configuration.buildSettings["FRAMEWORK_SEARCH_PATHS"] as? [String]) == ["$(inherited)", "$(PROJECT_DIR)/Carthage/Build/iOS/Static"]
+                        let frameworkBuildPhase = try target.frameworksBuildPhase()
+                        guard let files = frameworkBuildPhase?.files, let file = files.first else {
+                            return XCTFail("frameworkBuildPhase should have files")
+                        }
+                        try expect(file.file?.nameOrPath) == "MyStaticFramework.framework"
+
+                        try expect(target.carthageCopyFrameworkBuildPhase).beNil()
+                    }
+                }
+
+                $0.context("with mixed dependencies") {
+                    $0.it("should set dependencies") {
+                        let app = Target(
+                            name: "MyApp",
+                            type: .application,
+                            platform: .iOS,
+                            dependencies: [
+                                Dependency(type: .carthage(findFrameworks: true, linkType: .dynamic), reference: "MyDynamicFramework"),
+                                Dependency(type: .carthage(findFrameworks: true, linkType: .static), reference: "MyStaticFramework"),
+                            ]
+                        )
+                        let project = Project(name: "test", targets: [app])
+                        let pbxProject = try project.generatePbxProj()
+
+                        let target = pbxProject.nativeTargets.first!
+                        let configuration = target.buildConfigurationList!.buildConfigurations.first!
+                        try expect(configuration.buildSettings["FRAMEWORK_SEARCH_PATHS"] as? [String]) == ["$(inherited)", "$(PROJECT_DIR)/Carthage/Build/iOS/Static", "$(PROJECT_DIR)/Carthage/Build/iOS"]
+                        let frameworkBuildPhase = try target.frameworksBuildPhase()
+                        guard let files = frameworkBuildPhase?.files else {
+                            return XCTFail("frameworkBuildPhase should have files")
+                        }
+                        guard let dynamicFramework = files.first(where: { $0.file?.nameOrPath == "MyDynamicFramework.framework" }) else {
+                            return XCTFail("Framework Build Phase should have Dynamic Framework")
+                        }
+                        guard let _ = files.first(where: { $0.file?.nameOrPath == "MyStaticFramework.framework" }) else {
+                            return XCTFail("Framework Build Phase should have Static Framework")
+                        }
+
+                        guard let copyCarthagePhase = target.carthageCopyFrameworkBuildPhase else {
+                            return XCTFail("Carthage Build Phase should be exist")
+                        }
+                        try expect(copyCarthagePhase.inputPaths) == [dynamicFramework.file?.fullPath(sourceRoot: Path("$(SRCROOT)"))?.string]
+                        try expect(copyCarthagePhase.outputPaths) == ["$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/\(dynamicFramework.file!.path!)"]
+                    }
+                }
+            }
+
+            $0.it("generate info.plist doesn't generate CFBundleExecutable for targets with type bundle") {
+                let plist = Plist(path: "Info.plist", attributes: [:])
+                let tempPath = Path.temporary + "info"
+                let project = Project(basePath: tempPath, name: "", targets: [Target(name: "", type: .bundle, platform: .iOS, info: plist)])
+                let pbxProject = try project.generatePbxProj()
+                let writer = FileWriter(project: project)
+                try writer.writePlists()
+
+                let targetConfig = try unwrap(pbxProject.nativeTargets.first?.buildConfigurationList?.buildConfigurations.first)
+
+                try expect(targetConfig.buildSettings["INFOPLIST_FILE"] as? String) == plist.path
+
+                let infoPlistFile = tempPath + plist.path
+                let data: Data = try infoPlistFile.read()
+                let infoPlist = try PropertyListSerialization.propertyList(from: data, options: [], format: nil) as! [String: Any]
+                let expectedInfoPlist: [String: Any] = [
+                    "CFBundleIdentifier": "$(PRODUCT_BUNDLE_IDENTIFIER)",
+                    "CFBundleInfoDictionaryVersion": "6.0",
+                    "CFBundleName": "$(PRODUCT_NAME)",
+                    "CFBundleDevelopmentRegion": "$(DEVELOPMENT_LANGUAGE)",
+                    "CFBundleShortVersionString": "1.0",
+                    "CFBundleVersion": "1",
+                    "CFBundlePackageType": "BNDL",
+                ]
+
+                try expect(NSDictionary(dictionary: expectedInfoPlist).isEqual(to: infoPlist)).beTrue()
+            }
         }
+    }
+
+    func testGenerateXcodeProjectWithDestination() throws {
+        let groupName = "App_iOS"
+        let sourceDirectory = fixturePath + "TestProject" + groupName
+        let frameworkWithSources = Target(
+            name: "MyFramework",
+            type: .framework,
+            platform: .iOS,
+            sources: [TargetSource(path: sourceDirectory.string)]
+        )
+
+        describe("generateXcodeProject") {
+            $0.context("without projectDirectory") {
+                $0.it("generate groups") {
+                    let project = Project(name: "test", targets: [frameworkWithSources])
+                    let generator = ProjectGenerator(project: project)
+                    let generatedProject = try generator.generateXcodeProject()
+                    let group = generatedProject.pbxproj.groups.first(where: { $0.nameOrPath == groupName })
+                    try expect(group?.path) == "App_iOS"
+                }
+            }
+
+            $0.context("with projectDirectory") {
+                $0.it("generate groups") {
+                    let destinationPath = fixturePath
+                    let project = Project(name: "test", targets: [frameworkWithSources])
+                    let generator = ProjectGenerator(project: project)
+                    let generatedProject = try generator.generateXcodeProject(in: destinationPath)
+                    let group = generatedProject.pbxproj.groups.first(where: { $0.nameOrPath == groupName })
+                    try expect(group?.path) == "TestProject/App_iOS"
+                }
+
+                $0.it("generate Info.plist") {
+                    let destinationPath = fixturePath
+                    let project = Project(name: "test", targets: [frameworkWithSources])
+                    let generator = ProjectGenerator(project: project)
+                    let generatedProject = try generator.generateXcodeProject(in: destinationPath)
+                    let plists = generatedProject.pbxproj.buildConfigurations.compactMap { $0.buildSettings["INFOPLIST_FILE"] as? Path }
+                    try expect(plists.count) == 2
+                    for plist in plists {
+                        try expect(plist) == "TestProject/App_iOS/Info.plist"
+                    }
+                }
+            }
+
+            describe("Carthage dependencies") {
+                $0.context("with static dependency") {
+                    $0.it("should set dependencies") {
+                        let app = Target(
+                            name: "MyApp",
+                            type: .application,
+                            platform: .iOS,
+                            dependencies: [
+                                Dependency(type: .carthage(findFrameworks: true, linkType: .static), reference: "MyStaticFramework"),
+                            ]
+                        )
+                        let project = Project(name: "test", targets: [app])
+                        let pbxProject = try project.generatePbxProj()
+
+                        let target = pbxProject.nativeTargets.first!
+                        let configuration = target.buildConfigurationList!.buildConfigurations.first!
+                        try expect(configuration.buildSettings["FRAMEWORK_SEARCH_PATHS"] as? [String]) == ["$(inherited)", "$(PROJECT_DIR)/Carthage/Build/iOS/Static"]
+                        let frameworkBuildPhase = try target.frameworksBuildPhase()
+                        guard let files = frameworkBuildPhase?.files, let file = files.first else {
+                            return XCTFail("frameworkBuildPhase should have files")
+                        }
+                        try expect(file.file?.nameOrPath) == "MyStaticFramework.framework"
+
+                        try expect(target.carthageCopyFrameworkBuildPhase).beNil()
+                    }
+                }
+
+                $0.context("with mixed dependencies") {
+                    $0.it("should set dependencies") {
+                        let app = Target(
+                            name: "MyApp",
+                            type: .application,
+                            platform: .iOS,
+                            dependencies: [
+                                Dependency(type: .carthage(findFrameworks: true, linkType: .dynamic), reference: "MyDynamicFramework"),
+                                Dependency(type: .carthage(findFrameworks: true, linkType: .static), reference: "MyStaticFramework"),
+                            ]
+                        )
+                        let project = Project(name: "test", targets: [app])
+                        let pbxProject = try project.generatePbxProj()
+
+                        let target = pbxProject.nativeTargets.first!
+                        let configuration = target.buildConfigurationList!.buildConfigurations.first!
+                        try expect(configuration.buildSettings["FRAMEWORK_SEARCH_PATHS"] as? [String]) == ["$(inherited)", "$(PROJECT_DIR)/Carthage/Build/iOS/Static", "$(PROJECT_DIR)/Carthage/Build/iOS"]
+                        let frameworkBuildPhase = try target.frameworksBuildPhase()
+                        guard let files = frameworkBuildPhase?.files else {
+                            return XCTFail("frameworkBuildPhase should have files")
+                        }
+                        guard let dynamicFramework = files.first(where: { $0.file?.nameOrPath == "MyDynamicFramework.framework" }) else {
+                            return XCTFail("Framework Build Phase should have Dynamic Framework")
+                        }
+                        guard let _ = files.first(where: { $0.file?.nameOrPath == "MyStaticFramework.framework" }) else {
+                            return XCTFail("Framework Build Phase should have Static Framework")
+                        }
+
+                        guard let copyCarthagePhase = target.carthageCopyFrameworkBuildPhase else {
+                            return XCTFail("Carthage Build Phase should be exist")
+                        }
+                        try expect(copyCarthagePhase.inputPaths) == [dynamicFramework.file?.fullPath(sourceRoot: Path("$(SRCROOT)"))?.string]
+                        try expect(copyCarthagePhase.outputPaths) == ["$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/\(dynamicFramework.file!.path!)"]
+                    }
+                }
+            }
+        }
+    }
+}
+
+private extension PBXTarget {
+    var carthageCopyFrameworkBuildPhase: PBXShellScriptBuildPhase? {
+        buildPhases.first(where: { $0.name() == "Carthage" }) as? PBXShellScriptBuildPhase
     }
 }

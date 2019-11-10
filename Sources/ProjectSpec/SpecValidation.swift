@@ -180,8 +180,15 @@ extension Project {
 
         for scheme in schemes {
             for buildTarget in scheme.build.targets {
-                if getProjectTarget(buildTarget.target) == nil {
-                    errors.append(.invalidSchemeTarget(scheme: scheme.name, target: buildTarget.target))
+                switch buildTarget.target.location {
+                case .local:
+                    if getProjectTarget(buildTarget.target.name) == nil {
+                        errors.append(.invalidSchemeTarget(scheme: scheme.name, target: buildTarget.target.name))
+                    }
+                case .project(let project):
+                    if getProjectReference(project) == nil {
+                        errors.append(.invalidProjectReference(scheme: scheme.name, reference: project))
+                    }
                 }
             }
             if let action = scheme.run, let config = action.config, getConfig(config) == nil {
@@ -203,6 +210,12 @@ extension Project {
 
         if !errors.isEmpty {
             throw SpecValidationError(errors: errors)
+        }
+    }
+
+    public func validateMinimumXcodeGenVersion(_ xcodeGenVersion: Version) throws {
+        if let minimumXcodeGenVersion = options.minimumXcodeGenVersion, xcodeGenVersion < minimumXcodeGenVersion {
+            throw SpecValidationError.ValidationError.invalidXcodeGenVersion(minimumVersion: minimumXcodeGenVersion, version: xcodeGenVersion)
         }
     }
 }

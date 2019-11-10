@@ -1,6 +1,6 @@
 TOOL_NAME = XcodeGen
 export EXECUTABLE_NAME = xcodegen
-VERSION = 2.9.0
+VERSION = 2.10.1
 
 PREFIX = /usr/local
 INSTALL_PATH = $(PREFIX)/bin/$(EXECUTABLE_NAME)
@@ -10,7 +10,7 @@ REPO = https://github.com/yonaskolb/$(TOOL_NAME)
 RELEASE_TAR = $(REPO)/archive/$(VERSION).tar.gz
 SHA = $(shell curl -L -s $(RELEASE_TAR) | shasum -a 256 | sed 's/ .*//')
 
-.PHONY: install build uninstall format_code update_brew release
+.PHONY: install build uninstall format_code brew release
 
 install: build
 	mkdir -p $(PREFIX)/bin
@@ -36,10 +36,10 @@ release:
 	git commit -m "Update to $(VERSION)"
 	#git tag $(VERSION)
 
-publish: archive bump_brew
+publish: archive brew
 	echo "published $(VERSION)"
 
-bump_brew:
+brew:
 	brew update
 	brew bump-formula-pr --url=$(RELEASE_TAR) XcodeGen
 

@@ -1,9 +1,9 @@
 import PathKit
 import ProjectSpec
 import Spectre
-import XcodeGenKit
 import XcodeProj
 import XCTest
+import TestSupport
 
 class ProjectSpecTests: XCTestCase {
 
@@ -138,7 +138,7 @@ class ProjectSpecTests: XCTestCase {
                     sources: ["invalidSource"],
                     dependencies: [
                         Dependency(type: .target, reference: "invalidDependency"),
-                        Dependency(type: .package(product: nil), reference: "invalidPackage")
+                        Dependency(type: .package(product: nil), reference: "invalidPackage"),
                     ],
                     preBuildScripts: [BuildScript(script: .path("invalidPreBuildScript"), name: "preBuildScript1")],
                     postCompileScripts: [BuildScript(script: .path("invalidPostCompileScript"))],
@@ -217,6 +217,15 @@ class ProjectSpecTests: XCTestCase {
                 try expectValidationError(project, .invalidSchemeConfig(scheme: "scheme1", config: "releaseInvalid"))
             }
 
+            $0.it("fails with invalid project reference") {
+                var project = baseProject
+                project.schemes = [Scheme(
+                    name: "scheme1",
+                    build: .init(targets: [.init(target: "invalidProjectRef/target1")])
+                )]
+                try expectValidationError(project, .invalidProjectReference(scheme: "scheme1", reference: "invalidProjectRef"))
+            }
+
             $0.it("allows missing optional file") {
                 var project = baseProject
                 project.targets = [Target(
@@ -289,7 +298,7 @@ class ProjectSpecTests: XCTestCase {
                                                                            buildPhase: .resources,
                                                                            headerVisibility: .private,
                                                                            createIntermediateGroups: true)],
-                                                    dependencies: [Dependency(type: .carthage(findFrameworks: true),
+                                                    dependencies: [Dependency(type: .carthage(findFrameworks: true, linkType: .dynamic),
                                                                               reference: "reference",
                                                                               embed: true,
                                                                               codeSign: true,
@@ -338,7 +347,7 @@ class ProjectSpecTests: XCTestCase {
                                                                            name: nil,
                                                                            outputFiles: ["bar"],
                                                                            outputFilesCompilerFlags: ["foo"])],
-                                                    scheme: TargetScheme(testTargets: [Scheme.Test.TestTarget(name: "test target",
+                                                    scheme: TargetScheme(testTargets: [Scheme.Test.TestTarget(targetReference: "test target",
                                                                                                               randomExecutionOrder: false,
                                                                                                               parallelizable: false)],
                                                                          configVariants: ["foo"],
@@ -376,7 +385,7 @@ class ProjectSpecTests: XCTestCase {
                                                                                                  shell: "/bin/bash",
                                                                                                  runOnlyWhenInstalling: true,
                                                                                                  showEnvVars: false)],
-                                                                      scheme: TargetScheme(testTargets: [Scheme.Test.TestTarget(name: "test target",
+                                                                      scheme: TargetScheme(testTargets: [Scheme.Test.TestTarget(targetReference: "test target",
                                                                                                                                 randomExecutionOrder: false,
                                                                                                                                 parallelizable: false)],
                                                                                            configVariants: ["foo"],
@@ -431,7 +440,7 @@ class ProjectSpecTests: XCTestCase {
                                                                       randomExecutionOrder: false,
                                                                       parallelizable: false,
                                                                       commandLineArguments: ["foo": true],
-                                                                      targets: [Scheme.Test.TestTarget(name: "foo",
+                                                                      targets: [Scheme.Test.TestTarget(targetReference: "foo",
                                                                                                        randomExecutionOrder: false,
                                                                                                        parallelizable: false)],
                                                                       preActions: [Scheme.ExecutionAction(name: "preAction",
@@ -465,10 +474,11 @@ class ProjectSpecTests: XCTestCase {
                                                                                                                  script: "bar",
                                                                                                                  settingsTarget: "foo")]))],
                                    packages: [
-                                    "Yams": SwiftPackage(
-                                        url: "https://github.com/jpsim/Yams",
-                                        versionRequirement: .upToNextMajorVersion("2.0.0"))
-                                    ],
+                                       "Yams": SwiftPackage(
+                                           url: "https://github.com/jpsim/Yams",
+                                           versionRequirement: .upToNextMajorVersion("2.0.0")
+                                       ),
+                                   ],
                                    localPackages: ["../../Package"],
                                    options: SpecOptions(minimumXcodeGenVersion: Version(major: 3, minor: 4, patch: 5),
                                                         carthageBuildPath: "carthageBuildPath",

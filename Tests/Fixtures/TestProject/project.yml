@@ -228,6 +228,13 @@ targets:
     sources: App_iOS_UITests
     dependencies:
       - target: App_iOS
+      
+  App_macOS_Tests:
+    type: bundle.unit-test
+    platform: macOS
+    sources: App_macOS_Tests
+    dependencies:
+      - target: App_macOS
 
   XPC Service:
     type: xpc-service

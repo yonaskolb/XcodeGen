@@ -2,6 +2,7 @@ import Foundation
 import PathKit
 import ProjectSpec
 import XcodeProj
+import Core
 
 struct SourceFile {
     let path: Path
@@ -13,6 +14,7 @@ struct SourceFile {
 class SourceGenerator {
 
     var rootGroups: Set<PBXFileElement> = []
+    private let projectDirectory: Path?
     private var fileReferencesByPath: [String: PBXFileElement] = [:]
     private var groupsByPath: [Path: PBXGroup] = [:]
     private var variantGroupsByPath: [Path: PBXVariantGroup] = [:]
@@ -30,9 +32,18 @@ class SourceGenerator {
 
     private(set) var knownRegions: Set<String> = []
 
-    init(project: Project, pbxProj: PBXProj) {
+    init(project: Project, pbxProj: PBXProj, projectDirectory: Path?) {
         self.project = project
         self.pbxProj = pbxProj
+        self.projectDirectory = projectDirectory
+    }
+
+    private func resolveGroupPath(_ path: Path, isTopLevelGroup: Bool) -> String {
+        if isTopLevelGroup, let relativePath = try? path.relativePath(from: projectDirectory ?? project.basePath).string {
+            return relativePath
+        } else {
+            return path.lastComponent
+        }
     }
 
     @discardableResult
@@ -43,7 +54,6 @@ class SourceGenerator {
     }
 
     func createLocalPackage(path: Path) throws {
-
 
         if localPackageGroup == nil {
             let groupName = project.options.localPackagesGroup ?? "Packages"
@@ -62,7 +72,7 @@ class SourceGenerator {
     }
 
     func getAllSourceFiles(targetType: PBXProductType, sources: [TargetSource]) throws -> [SourceFile] {
-        return try sources.flatMap { try getSourceFiles(targetType: targetType, targetSource: $0, path: project.basePath + $0.path) }
+        try sources.flatMap { try getSourceFiles(targetType: targetType, targetSource: $0, path: project.basePath + $0.path) }
     }
 
     // get groups without build files. Use for Project.fileGroups
@@ -286,9 +296,8 @@ class SourceGenerator {
             let isTopLevelGroup = (isBaseGroup && !createIntermediateGroups) || isRootPath
 
             let groupName = name ?? path.lastComponent
-            let groupPath = isTopLevelGroup ?
-                ((try? path.relativePath(from: project.basePath)) ?? path).string :
-                path.lastComponent
+            let groupPath = resolveGroupPath(path, isTopLevelGroup: isTopLevelGroup)
+
             let group = PBXGroup(
                 children: children,
                 sourceTree: .group,
@@ -345,7 +354,7 @@ class SourceGenerator {
 
     /// Checks whether the path is not in any default or TargetSource excludes
     func isIncludedPath(_ path: Path, excludePaths: Set<Path>, includePaths: Set<Path>) -> Bool {
-        return !defaultExcludedFiles.contains(where: { path.lastComponent.contains($0) })
+        !defaultExcludedFiles.contains(where: { path.lastComponent.contains($0) })
             && !(path.extension.map(defaultExcludedExtensions.contains) ?? false)
             && !excludePaths.contains(path)
             // If includes is empty, it's included. If it's not empty, the path either needs to match exactly, or it needs to be a direct parent of an included path.
@@ -357,7 +366,7 @@ class SourceGenerator {
 
     /// Gets all the children paths that aren't excluded
     private func getSourceChildren(targetSource: TargetSource, dirPath: Path, excludePaths: Set<Path>, includePaths: Set<Path>) throws -> [Path] {
-        return try dirPath.children()
+        try dirPath.children()
             .filter {
                 if $0.isDirectory {
                     let children = try $0.children()
@@ -423,7 +432,7 @@ class SourceGenerator {
         // find the base localised directory
         let baseLocalisedDirectory: Path? = {
             func findLocalisedDirectory(by languageId: String) -> Path? {
-                return localisedDirectories.first { $0.lastComponent == "\(languageId).lproj" }
+                localisedDirectories.first { $0.lastComponent == "\(languageId).lproj" }
             }
             return findLocalisedDirectory(by: "Base") ??
                 findLocalisedDirectory(by: NSLocale.canonicalLanguageIdentifier(from: project.options.developmentLanguage ?? "en"))

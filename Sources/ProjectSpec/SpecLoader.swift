@@ -1,14 +1,13 @@
 import Foundation
 import JSONUtilities
 import PathKit
-import ProjectSpec
 import XcodeProj
 import Yams
 
 public class SpecLoader {
 
     var project: Project!
-    private var projectDictionary: [String: Any]?
+    public private(set) var projectDictionary: [String: Any]?
     let version: Version
 
     public init(version: Version) {
@@ -46,20 +45,15 @@ public class SpecLoader {
 private extension Dictionary where Key == String, Value: Any {
 
     func validateWarnings() throws {
-        var errors: [SpecValidationError.ValidationError] = []
-        if hasValueContaining("$target_name") {
-            errors.append(.deprecatedUsageOfPlaceholder(placeholderName: "target_name"))
-        }
-        if hasValueContaining("$platform") {
-            errors.append(.deprecatedUsageOfPlaceholder(placeholderName: "platform"))
-        }
+        let errors: [SpecValidationError.ValidationError] = []
+
         if !errors.isEmpty {
             throw SpecValidationError(errors: errors)
         }
     }
 
     func hasValueContaining(_ needle: String) -> Bool {
-        return values.contains { value in
+        values.contains { value in
             switch value {
             case let dictionary as JSONDictionary:
                 return dictionary.hasValueContaining(needle)
