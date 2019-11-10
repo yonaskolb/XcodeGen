@@ -1004,7 +1004,7 @@ class ProjectGeneratorTests: XCTestCase {
                 // generated plist should not be in buildsettings
                 try expect(targetConfig.buildSettings["INFOPLIST_FILE"] as? String) == predefinedPlistPath
             }
-            
+
             describe("Carthage dependencies") {
                 $0.context("with static dependency") {
                     $0.it("should set dependencies") {
@@ -1018,7 +1018,7 @@ class ProjectGeneratorTests: XCTestCase {
                         )
                         let project = Project(name: "test", targets: [app])
                         let pbxProject = try project.generatePbxProj()
-                        
+
                         let target = pbxProject.nativeTargets.first!
                         let configuration = target.buildConfigurationList!.buildConfigurations.first!
                         try expect(configuration.buildSettings["FRAMEWORK_SEARCH_PATHS"] as? [String]) == ["$(inherited)", "$(PROJECT_DIR)/Carthage/Build/iOS/Static"]
@@ -1027,11 +1027,11 @@ class ProjectGeneratorTests: XCTestCase {
                             return XCTFail("frameworkBuildPhase should have files")
                         }
                         try expect(file.file?.nameOrPath) == "MyStaticFramework.framework"
-                        
+
                         try expect(target.carthageCopyFrameworkBuildPhase).beNil()
                     }
                 }
-                
+
                 $0.context("with mixed dependencies") {
                     $0.it("should set dependencies") {
                         let app = Target(
@@ -1045,7 +1045,7 @@ class ProjectGeneratorTests: XCTestCase {
                         )
                         let project = Project(name: "test", targets: [app])
                         let pbxProject = try project.generatePbxProj()
-                        
+
                         let target = pbxProject.nativeTargets.first!
                         let configuration = target.buildConfigurationList!.buildConfigurations.first!
                         try expect(configuration.buildSettings["FRAMEWORK_SEARCH_PATHS"] as? [String]) == ["$(inherited)", "$(PROJECT_DIR)/Carthage/Build/iOS/Static", "$(PROJECT_DIR)/Carthage/Build/iOS"]
@@ -1059,7 +1059,7 @@ class ProjectGeneratorTests: XCTestCase {
                         guard let _ = files.first(where: { $0.file?.nameOrPath == "MyStaticFramework.framework" }) else {
                             return XCTFail("Framework Build Phase should have Static Framework")
                         }
-                        
+
                         guard let copyCarthagePhase = target.carthageCopyFrameworkBuildPhase else {
                             return XCTFail("Carthage Build Phase should be exist")
                         }
@@ -1144,7 +1144,7 @@ class ProjectGeneratorTests: XCTestCase {
                     }
                 }
             }
-            
+
             describe("Carthage dependencies") {
                 $0.context("with static dependency") {
                     $0.it("should set dependencies") {
@@ -1158,7 +1158,7 @@ class ProjectGeneratorTests: XCTestCase {
                         )
                         let project = Project(name: "test", targets: [app])
                         let pbxProject = try project.generatePbxProj()
-                        
+
                         let target = pbxProject.nativeTargets.first!
                         let configuration = target.buildConfigurationList!.buildConfigurations.first!
                         try expect(configuration.buildSettings["FRAMEWORK_SEARCH_PATHS"] as? [String]) == ["$(inherited)", "$(PROJECT_DIR)/Carthage/Build/iOS/Static"]
@@ -1167,11 +1167,11 @@ class ProjectGeneratorTests: XCTestCase {
                             return XCTFail("frameworkBuildPhase should have files")
                         }
                         try expect(file.file?.nameOrPath) == "MyStaticFramework.framework"
-                        
+
                         try expect(target.carthageCopyFrameworkBuildPhase).beNil()
                     }
                 }
-                
+
                 $0.context("with mixed dependencies") {
                     $0.it("should set dependencies") {
                         let app = Target(
@@ -1185,7 +1185,7 @@ class ProjectGeneratorTests: XCTestCase {
                         )
                         let project = Project(name: "test", targets: [app])
                         let pbxProject = try project.generatePbxProj()
-                        
+
                         let target = pbxProject.nativeTargets.first!
                         let configuration = target.buildConfigurationList!.buildConfigurations.first!
                         try expect(configuration.buildSettings["FRAMEWORK_SEARCH_PATHS"] as? [String]) == ["$(inherited)", "$(PROJECT_DIR)/Carthage/Build/iOS/Static", "$(PROJECT_DIR)/Carthage/Build/iOS"]
@@ -1199,7 +1199,7 @@ class ProjectGeneratorTests: XCTestCase {
                         guard let _ = files.first(where: { $0.file?.nameOrPath == "MyStaticFramework.framework" }) else {
                             return XCTFail("Framework Build Phase should have Static Framework")
                         }
-                        
+
                         guard let copyCarthagePhase = target.carthageCopyFrameworkBuildPhase else {
                             return XCTFail("Carthage Build Phase should be exist")
                         }
@@ -1214,6 +1214,6 @@ class ProjectGeneratorTests: XCTestCase {
 
 private extension PBXTarget {
     var carthageCopyFrameworkBuildPhase: PBXShellScriptBuildPhase? {
-        return buildPhases.first(where: { $0.name() == "Carthage" }) as? PBXShellScriptBuildPhase
+        buildPhases.first(where: { $0.name() == "Carthage" }) as? PBXShellScriptBuildPhase
     }
 }

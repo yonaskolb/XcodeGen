@@ -52,12 +52,12 @@ struct CarthageVersionFile: Decodable {
 extension Platform: CodingKey {
 
     public var stringValue: String {
-        return carthageName
+        carthageName
     }
 }
 
 extension CarthageVersionFile {
     func frameworks(for platform: Platform) -> [String] {
-        return data[platform] ?? []
+        data[platform] ?? []
     }
 }

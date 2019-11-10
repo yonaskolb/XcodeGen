@@ -35,8 +35,7 @@ class GenerateCommand: ProjectCommand {
     init(version: Version) {
         super.init(version: version,
                    name: "generate",
-                   shortDescription: "Generate an Xcode project from a spec"
-        )
+                   shortDescription: "Generate an Xcode project from a spec")
     }
 
     override func execute(specLoader: SpecLoader, projectSpecPath: Path, project: Project) throws {

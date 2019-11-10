@@ -86,7 +86,7 @@ public struct SpecFile {
     }
 
     public func resolvedDictionary(variables: [String: String] = [:]) -> JSONDictionary {
-        return resolvedDictionaryWithUniqueTargets().expand(variables: variables)
+        resolvedDictionaryWithUniqueTargets().expand(variables: variables)
     }
 
     private func resolvedDictionaryWithUniqueTargets() -> JSONDictionary {

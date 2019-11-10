@@ -142,11 +142,11 @@ class SourceGeneratorTests: XCTestCase {
                 let pbxProj = try project.generatePbxProj()
 
                 func getFileReferences(_ path: String) -> [PBXFileReference] {
-                    return pbxProj.fileReferences.filter { $0.path == path }
+                    pbxProj.fileReferences.filter { $0.path == path }
                 }
 
                 func getVariableGroups(_ name: String?) -> [PBXVariantGroup] {
-                    return pbxProj.variantGroups.filter { $0.name == name }
+                    pbxProj.variantGroups.filter { $0.name == name }
                 }
 
                 let resourceName = "LocalizedStoryboard.storyboard"
@@ -199,11 +199,11 @@ class SourceGeneratorTests: XCTestCase {
                 let pbxProj = inputXcodeProj.pbxproj
 
                 func getFileReferences(_ path: String) -> [PBXFileReference] {
-                    return pbxProj.fileReferences.filter { $0.path == path }
+                    pbxProj.fileReferences.filter { $0.path == path }
                 }
 
                 func getVariableGroups(_ name: String?) -> [PBXVariantGroup] {
-                    return pbxProj.variantGroups.filter { $0.name == name }
+                    pbxProj.variantGroups.filter { $0.name == name }
                 }
 
                 let stringsResourceName = "Localizable.strings"

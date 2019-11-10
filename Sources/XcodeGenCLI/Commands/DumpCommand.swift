@@ -23,8 +23,7 @@ class DumpCommand: ProjectCommand {
     init(version: Version) {
         super.init(version: version,
                    name: "dump",
-                   shortDescription: "Dumps the resolved project spec to stdout or a file"
-        )
+                   shortDescription: "Dumps the resolved project spec to stdout or a file")
     }
 
     override func execute(specLoader: SpecLoader, projectSpecPath: Path, project: Project) throws {

@@ -267,7 +267,7 @@ extension TargetSource.BuildPhase.CopyFilesSettings: JSONObjectConvertible {
 
 extension TargetSource.BuildPhase.CopyFilesSettings: JSONEncodable {
     public func toJSONValue() -> Any {
-        return [
+        [
             "destination": destination.rawValue,
             "subpath": subpath,
         ]
@@ -277,7 +277,7 @@ extension TargetSource.BuildPhase.CopyFilesSettings: JSONEncodable {
 extension TargetSource: PathContainer {
 
     static var pathProperties: [PathProperty] {
-        return [
+        [
             .string("path"),
         ]
     }

@@ -176,7 +176,7 @@ extension SpecOptions: JSONEncodable {
 extension SpecOptions: PathContainer {
 
     static var pathProperties: [PathProperty] {
-        return [
+        [
             .string("carthageBuildPath"),
         ]
     }

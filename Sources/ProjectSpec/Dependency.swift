@@ -32,11 +32,11 @@ public struct Dependency: Equatable {
         self.implicit = implicit
         self.weakLink = weakLink
     }
-    
+
     public enum CarthageLinkType: String {
         case dynamic
         case `static`
-        
+
         public static let `default` = dynamic
     }
 
@@ -139,7 +139,7 @@ extension Dependency: JSONEncodable {
 extension Dependency: PathContainer {
 
     static var pathProperties: [PathProperty] {
-        return [
+        [
             .string("framework"),
         ]
     }

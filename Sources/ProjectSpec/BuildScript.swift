@@ -94,7 +94,7 @@ extension BuildScript: JSONEncodable {
 extension BuildScript: PathContainer {
 
     static var pathProperties: [PathProperty] {
-        return [
+        [
             .string("path"),
         ]
     }
