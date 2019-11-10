@@ -130,6 +130,14 @@ class SpecLoadingTests: XCTestCase {
                         postBuildScripts: [BuildScript(script: .path("paths_test/recursive_test/postBuildScript"))]
                     ),
                 ]
+
+                try expect(project.schemes) == [
+                    Scheme(
+                        name: "Scheme",
+                        build: .init(targets: [.init(target: "NewTarget")]),
+                        test: .init(testPlans: ["paths_test/TestPlan.xctestplan"])
+                    )
+                ]
             }
 
             $0.it("respects directory expansion preference") {
@@ -791,6 +799,7 @@ class SpecLoadingTests: XCTestCase {
                         "gatherCoverageData": true,
                         "disableMainThreadChecker": true,
                         "stopOnEveryMainThreadCheckerIssue": true,
+                        "testPlans": ["Path/Plan.xctestplan", "Path/Plan2.xctestplan"]
                     ],
                 ]
                 let scheme = try Scheme(name: "Scheme", jsonDictionary: schemeDictionary)
@@ -830,7 +839,8 @@ class SpecLoadingTests: XCTestCase {
                             parallelizable: true,
                             skippedTests: ["Test/testExample()"]
                         ),
-                    ]
+                    ],
+                    testPlans: ["Path/Plan.xctestplan", "Path/Plan2.xctestplan"]
                 )
                 try expect(scheme.test) == expectedTest
             }
@@ -1160,7 +1170,7 @@ class SpecLoadingTests: XCTestCase {
                 let parsedSpec = try getProjectSpec(dictionary)
                 try expect(parsedSpec) == project
             }
-            
+
             $0.it("parses old local package format") {
                 let project = Project(name: "spm", packages: [
                     "XcodeGen": .local(path: "../XcodeGen"),
@@ -1190,7 +1200,7 @@ class SpecLoadingTests: XCTestCase {
                 [ "url": "package.git", "exactVersion": "1.2.3.1" ],
                 [ "url": "package.git", "version": "foo-bar" ]
             ]
-            
+
             $0.it("is an invalid package version") {
                 for dictionary in invalidPackages {
                     try expect { _ = try SwiftPackage(jsonDictionary: dictionary) }.toThrow()
