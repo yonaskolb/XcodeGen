@@ -8,11 +8,11 @@ extension Project {
     }
 
     var schemeVersion: String {
-        "1.3"
+        "1.7"
     }
 
     var compatibilityVersion: String {
-        "Xcode 10.0"
+        "Xcode 11.0"
     }
 
     var objectVersion: UInt {

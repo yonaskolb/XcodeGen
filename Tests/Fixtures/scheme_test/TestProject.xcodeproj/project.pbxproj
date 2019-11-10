@@ -53,7 +53,7 @@
 				LastUpgradeCheck = 1020;
 			};
 			buildConfigurationList = E903F6E8184E2A86CEC31778 /* Build configuration list for PBXProject "TestProject" */;
-			compatibilityVersion = "Xcode 10.0";
+			compatibilityVersion = "Xcode 11.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
