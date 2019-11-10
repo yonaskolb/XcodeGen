@@ -14,6 +14,14 @@ public func doThrowing<T>(file: String = #file, line: Int = #line, _ closure: ()
     }
 }
 
+public func unwrap<T>(_ value: T?, file: String = #file, line: Int = #line) throws -> T {
+    if let value = value {
+        return value
+    } else {
+        throw failure("Expected non-nil value of \(T.self)", file: file, line: line)
+    }
+}
+
 public func expectError<T: Error>(_ expectedError: T, function: String = #function, file: String = #file, line: Int = #line, _ closure: () throws -> Void) throws where T: CustomStringConvertible {
     do {
         try closure()
@@ -50,7 +58,7 @@ open class ArrayExpectation<T>: ExpectationType {
     let function: String
 
     open var to: ArrayExpectation<T> {
-        return self
+        self
     }
 
     init(file: String, line: Int, function: String, expression: @escaping () throws -> ValueType?) {
@@ -61,12 +69,12 @@ open class ArrayExpectation<T>: ExpectationType {
     }
 
     open func failure(_ reason: String) -> FailureType {
-        return ExpectationFailure(reason: reason, file: file, line: line, function: function)
+        ExpectationFailure(reason: reason, file: file, line: line, function: function)
     }
 }
 
 public func expect<T>(_ expression: @autoclosure @escaping () throws -> [T]?, file: String = #file, line: Int = #line, function: String = #function) -> ArrayExpectation<T> {
-    return ArrayExpectation(file: file, line: line, function: function, expression: expression)
+    ArrayExpectation(file: file, line: line, function: function, expression: expression)
 }
 
 extension ArrayExpectation {

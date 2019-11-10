@@ -8,7 +8,7 @@ class PathExtensionsTests: XCTestCase {
 
     func testPathRelativeToPath() {
         func relativePath(to path: String, from base: String) throws -> String {
-            return try Path(path).relativePath(from: Path(base)).string
+            try Path(path).relativePath(from: Path(base)).string
         }
 
         // These are based on ruby's tests for Pathname#relative_path_from:

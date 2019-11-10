@@ -62,8 +62,8 @@ public class Glob: Collection {
     public let behavior: Behavior
     public let blacklistedDirectories: [String]
     var paths = [String]()
-    public var startIndex: Int { return paths.startIndex }
-    public var endIndex: Int { return paths.endIndex }
+    public var startIndex: Int { paths.startIndex }
+    public var endIndex: Int { paths.endIndex }
 
     /// Initialize a glob
     ///
@@ -109,13 +109,13 @@ public class Glob: Collection {
     // MARK: Subscript Support
 
     public subscript(i: Int) -> String {
-        return paths[i]
+        paths[i]
     }
 
     // MARK: Protocol of IndexableBase
 
     public func index(after i: Int) -> Int {
-        return i + 1
+        i + 1
     }
 
     // MARK: Private
@@ -123,7 +123,7 @@ public class Glob: Collection {
     private var globalFlags = GLOB_TILDE | GLOB_BRACE | GLOB_MARK
 
     private func executeGlob(pattern: UnsafePointer<CChar>, gt: UnsafeMutablePointer<glob_t>) -> Bool {
-        return glob(pattern, globalFlags, nil, gt) == 0
+        glob(pattern, globalFlags, nil, gt) == 0
     }
 
     private func expandGlobstar(pattern: String) -> [String] {
@@ -171,7 +171,7 @@ public class Glob: Collection {
     }
 
     private func exploreDirectories(path: String) throws -> [String] {
-        return try FileManager.default.contentsOfDirectory(atPath: path)
+        try FileManager.default.contentsOfDirectory(atPath: path)
             .compactMap { subpath -> [String]? in
                 if blacklistedDirectories.contains(subpath) {
                     return nil
@@ -228,6 +228,6 @@ public class Glob: Collection {
 
 private extension Sequence {
     func array() -> [Element] {
-        return Array(self)
+        Array(self)
     }
 }

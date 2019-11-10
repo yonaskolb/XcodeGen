@@ -1,3 +1,3 @@
 func standaloneHello() -> String {
-    return "Hello"
+    "Hello"
 }

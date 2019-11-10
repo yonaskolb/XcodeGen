@@ -10,7 +10,7 @@ import TestSupport
 extension Project {
 
     func generateXcodeProject(validate: Bool = true, file: String = #file, line: Int = #line) throws -> XcodeProj {
-        return try doThrowing(file: file, line: line) {
+        try doThrowing(file: file, line: line) {
             if validate {
                 try self.validate()
             }
@@ -20,7 +20,7 @@ extension Project {
     }
 
     func generatePbxProj(specValidate: Bool = true, projectValidate: Bool = true, file: String = #file, line: Int = #line) throws -> PBXProj {
-        return try doThrowing(file: file, line: line) {
+        try doThrowing(file: file, line: line) {
             let xcodeProject = try generateXcodeProject(validate: specValidate).pbxproj
             if projectValidate {
                 try xcodeProject.validate()

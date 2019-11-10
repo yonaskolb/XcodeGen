@@ -16,11 +16,11 @@ public class SchemeGenerator {
     let pbxProj: PBXProj
 
     var defaultDebugConfig: Config {
-        return project.configs.first { $0.type == .debug }!
+        project.configs.first { $0.type == .debug }!
     }
 
     var defaultReleaseConfig: Config {
-        return project.configs.first { $0.type == .release }!
+        project.configs.first { $0.type == .release }!
     }
 
     public init(project: Project, pbxProj: PBXProj) {

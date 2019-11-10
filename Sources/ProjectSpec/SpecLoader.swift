@@ -53,7 +53,7 @@ private extension Dictionary where Key == String, Value: Any {
     }
 
     func hasValueContaining(_ needle: String) -> Bool {
-        return values.contains { value in
+        values.contains { value in
             switch value {
             case let dictionary as JSONDictionary:
                 return dictionary.hasValueContaining(needle)

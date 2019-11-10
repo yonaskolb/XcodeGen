@@ -32,14 +32,14 @@ public struct AggregateTarget: ProjectTarget {
 extension AggregateTarget: CustomStringConvertible {
 
     public var description: String {
-        return "\(name)\(targets.isEmpty ? "" : ": \(targets.joined(separator: ", "))")"
+        "\(name)\(targets.isEmpty ? "" : ": \(targets.joined(separator: ", "))")"
     }
 }
 
 extension AggregateTarget: Equatable {
 
     public static func == (lhs: AggregateTarget, rhs: AggregateTarget) -> Bool {
-        return lhs.name == rhs.name &&
+        lhs.name == rhs.name &&
             lhs.targets == rhs.targets &&
             lhs.settings == rhs.settings &&
             lhs.configFiles == rhs.configFiles &&
@@ -64,7 +64,7 @@ extension AggregateTarget: NamedJSONDictionaryConvertible {
 
 extension AggregateTarget: JSONEncodable {
     public func toJSONValue() -> Any {
-        return [
+        [
             "settings": settings.toJSONValue(),
             "targets": targets,
             "configFiles": configFiles,
@@ -78,7 +78,7 @@ extension AggregateTarget: JSONEncodable {
 extension AggregateTarget: PathContainer {
 
     static var pathProperties: [PathProperty] {
-        return [
+        [
             .dictionary([
                 .string("configFiles"),
                 .object("buildScripts", BuildScript.pathProperties),

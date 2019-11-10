@@ -615,7 +615,7 @@ public class PBXProjGenerator {
                     let fileReference = self.sourceGenerator.getFileReference(path: frameworkPath, inPath: platformPath)
 
                     self.carthageFrameworksByPlatform[target.platform.carthageName, default: []].insert(fileReference)
-                    
+
                     if dependency.link ?? (target.type != .staticLibrary) {
                         let buildFile = self.addObject(
                             PBXBuildFile(file: fileReference, settings: getDependencyFrameworkSettings(dependency: dependency))
@@ -651,7 +651,7 @@ public class PBXProjGenerator {
         }
 
         for dependency in carthageDependencies {
-            
+
             let embed = dependency.embed ?? target.shouldEmbedCarthageDependencies
 
             var platformPath = Path(carthageResolver.buildPath(for: target.platform, linkType: dependency.carthageLinkType ?? .default))
@@ -681,7 +681,7 @@ public class PBXProjGenerator {
         var buildPhases: [PBXBuildPhase] = []
 
         func getBuildFilesForSourceFiles(_ sourceFiles: [SourceFile]) -> [PBXBuildFile] {
-            return sourceFiles
+            sourceFiles
                 .reduce(into: [SourceFile]()) { output, sourceFile in
                     if !output.contains(where: { $0.fileReference === sourceFile.fileReference }) {
                         output.append(sourceFile)
@@ -993,7 +993,7 @@ public class PBXProjGenerator {
     }
 
     func getInfoPlist(_ sources: [TargetSource]) -> Path? {
-        return sources
+        sources
             .lazy
             .map { self.project.basePath + $0.path }
             .compactMap { (path) -> Path? in
@@ -1060,11 +1060,11 @@ public class PBXProjGenerator {
 extension Target {
 
     var shouldEmbedDependencies: Bool {
-        return type.isApp || type.isTest
+        type.isApp || type.isTest
     }
 
     var shouldEmbedCarthageDependencies: Bool {
-        return (type.isApp && platform != .watchOS)
+        (type.isApp && platform != .watchOS)
             || type == .watch2Extension
             || type.isTest
     }

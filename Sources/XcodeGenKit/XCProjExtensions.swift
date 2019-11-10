@@ -5,7 +5,7 @@ import XcodeProj
 extension PBXFileElement {
 
     public var nameOrPath: String {
-        return name ?? path ?? ""
+        name ?? path ?? ""
     }
 }
 
@@ -39,7 +39,7 @@ extension PBXProj {
 extension Dictionary {
 
     public var valueArray: [Value] {
-        return Array(values)
+        Array(values)
     }
 }
 
