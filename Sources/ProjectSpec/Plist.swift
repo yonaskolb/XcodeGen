@@ -1,12 +1,13 @@
 import Foundation
 import JSONUtilities
+import PathKit
 
 public struct Plist: Equatable {
 
-    public let path: String
+    public let path: Path
     public let properties: [String: Any]
 
-    public init(path: String, attributes: [String: Any] = [:]) {
+    public init(path: Path, attributes: [String: Any] = [:]) {
         self.path = path
         properties = attributes
     }
@@ -20,7 +21,8 @@ public struct Plist: Equatable {
 extension Plist: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
-        path = try jsonDictionary.json(atKeyPath: "path")
+        let pathString: String = try jsonDictionary.json(atKeyPath: "path")
+        path = Path(pathString)
         properties = jsonDictionary.json(atKeyPath: "properties") ?? [:]
     }
 }
@@ -28,7 +30,7 @@ extension Plist: JSONObjectConvertible {
 extension Plist: JSONEncodable {
     public func toJSONValue() -> Any {
         [
-            "path": path,
+            "path": path.string,
             "properties": properties,
         ]
     }
