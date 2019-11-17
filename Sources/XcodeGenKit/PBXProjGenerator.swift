@@ -856,13 +856,13 @@ public class PBXProjGenerator {
 
             // Set CODE_SIGN_ENTITLEMENTS
             if let entitlements = target.entitlements {
-                buildSettings["CODE_SIGN_ENTITLEMENTS"] = entitlements.path
+                buildSettings["CODE_SIGN_ENTITLEMENTS"] = entitlements.path.string
             }
 
             // Set INFOPLIST_FILE if not defined in settings
             if !project.targetHasBuildSetting("INFOPLIST_FILE", target: target, config: config) {
                 if let info = target.info {
-                    buildSettings["INFOPLIST_FILE"] = info.path
+                    buildSettings["INFOPLIST_FILE"] = info.path.string
                 } else if searchForPlist {
                     plistPath = getInfoPlist(target.sources)
                     searchForPlist = false
