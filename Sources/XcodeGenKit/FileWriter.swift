@@ -31,12 +31,12 @@ public class FileWriter {
             // write Info.plist
             if let plist = target.info {
                 let properties = infoPlistGenerator.generateProperties(for: target).merged(plist.properties)
-                try writePlist(properties, path: plist.path)
+                try writePlist(properties, path: plist.path.string)
             }
 
             // write entitlements
             if let plist = target.entitlements {
-                try writePlist(plist.properties, path: plist.path)
+                try writePlist(plist.properties, path: plist.path.string)
             }
         }
     }
