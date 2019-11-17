@@ -927,7 +927,7 @@ class ProjectGeneratorTests: XCTestCase {
 
                 let targetConfig = try unwrap(pbxProject.nativeTargets.first?.buildConfigurationList?.buildConfigurations.first)
 
-                try expect(targetConfig.buildSettings["INFOPLIST_FILE"] as? String) == plist.path
+                try expect(targetConfig.buildSettings["INFOPLIST_FILE"] as? String) == plist.path.string
 
                 let infoPlistFile = tempPath + plist.path
                 let data: Data = try infoPlistFile.read()
@@ -1037,7 +1037,7 @@ class ProjectGeneratorTests: XCTestCase {
 
                 let targetConfig = try unwrap(pbxProject.nativeTargets.first?.buildConfigurationList?.buildConfigurations.first)
 
-                try expect(targetConfig.buildSettings["INFOPLIST_FILE"] as? String) == plist.path
+                try expect(targetConfig.buildSettings["INFOPLIST_FILE"] as? String) == plist.path.string
 
                 let infoPlistFile = tempPath + plist.path
                 let data: Data = try infoPlistFile.read()
