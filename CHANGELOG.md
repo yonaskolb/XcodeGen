@@ -16,7 +16,7 @@
 - Deprecated `$old_form` variables in favor of `${new_form}` variables [#704](https://github.com/yonaskolb/XcodeGen/pull/704) @rcari
 - Updated XcodeProj to 7.4.0 [#709](https://github.com/yonaskolb/XcodeGen/pull/709) [#715](https://github.com/yonaskolb/XcodeGen/pull/715) @yonaskolb
 - Updated to Swift 5.1 [#714](https://github.com/yonaskolb/XcodeGen/pull/714) @yonaskolb
-- Plist.path is Path, not String [#719](https://github.com/yonaskolb/XcodeGen/pull/719) @RomanPodymov
+- Changed `Plist.path` type from `String` to `Path` [#719](https://github.com/yonaskolb/XcodeGen/pull/719) @RomanPodymov
 
 ## 2.10.1
 
