@@ -863,7 +863,7 @@ class SourceGeneratorTests: XCTestCase {
                 }
 
                 $0.context("With localized sources with buildPhase") {
-                    $0.it("*.intentdefinition should be added to source phase") {
+                    $0.it("*.intentdefinition with buildPhase should be added to resource phase") {
                         let directories = """
                         Sources:
                             Base.lproj:
