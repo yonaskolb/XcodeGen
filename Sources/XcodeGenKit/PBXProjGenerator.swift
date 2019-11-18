@@ -763,10 +763,19 @@ public class PBXProjGenerator {
 
         buildPhases += try target.postCompileScripts.map { try generateBuildScript(targetName: target.name, buildScript: $0) }
 
-        let resourcesBuildPhaseFiles = getBuildFilesForPhase(.resources) + copyResourcesReferences
+        let resourcesBuildPhaseFiles = getBuildFilesForPhase(.resources)
         if !resourcesBuildPhaseFiles.isEmpty {
             let resourcesBuildPhase = addObject(PBXResourcesBuildPhase(files: resourcesBuildPhaseFiles))
             buildPhases.append(resourcesBuildPhase)
+        }
+
+        if !copyResourcesReferences.isEmpty {
+            let copyBundlesPhase = addObject(PBXCopyFilesBuildPhase(
+                dstSubfolderSpec: .resources,
+                name: "Copy Bundles to Resources directory",
+                files: copyResourcesReferences
+            ))
+            buildPhases.append(copyBundlesPhase)
         }
 
         let swiftObjCInterfaceHeader = project.getCombinedBuildSetting("SWIFT_OBJC_INTERFACE_HEADER_NAME", target: target, config: project.configs[0]) as? String
