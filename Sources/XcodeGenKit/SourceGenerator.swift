@@ -451,7 +451,7 @@ class SourceGenerator {
                 let variantGroup = getVariantGroup(path: filePath, inPath: path)
                 groupChildren.append(variantGroup)
                 baseLocalisationVariantGroups.append(variantGroup)
-                
+
                 let sourceFile = generateSourceFile(targetType: targetType,
                                                     targetSource: targetSource,
                                                     path: filePath,
