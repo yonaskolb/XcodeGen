@@ -856,7 +856,7 @@ class SourceGeneratorTests: XCTestCase {
                                           name: "IntendDefinitions",
                                           targets: [target])
                     let pbxProj = try project.generatePbxProj()
-                    let sourceBuildPhase = try unwrap(pbxProj.buildPhases.first { $0 as? PBXSourcesBuildPhase != nil }) as! PBXSourcesBuildPhase
+                    let sourceBuildPhase = try unwrap(pbxProj.buildPhases.first { $0 as? PBXSourcesBuildPhase != nil } as? PBXSourcesBuildPhase)
                     let files = sourceBuildPhase.files?.compactMap { $0.file?.nameOrPath }
                     try expect(files) == ["Intents.intentdefinition"]
                 }
