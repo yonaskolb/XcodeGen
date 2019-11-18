@@ -1,6 +1,6 @@
 --exclude .build
 --exclude .swiftpm
---swiftversion 5.0
+--swiftversion 5.1
 --disable redundantSelf
 --disable sortedImports
 --disable blankLinesAtStartOfScope

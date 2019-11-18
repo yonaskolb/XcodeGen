@@ -79,27 +79,27 @@ public struct Project: BuildSettingsContainer {
     }
 
     public func getProjectReference(_ projectName: String) -> ProjectReference? {
-        return projectReferencesMap[projectName]
+        projectReferencesMap[projectName]
     }
 
     public func getTarget(_ targetName: String) -> Target? {
-        return targetsMap[targetName]
+        targetsMap[targetName]
     }
 
     public func getAggregateTarget(_ targetName: String) -> AggregateTarget? {
-        return aggregateTargetsMap[targetName]
+        aggregateTargetsMap[targetName]
     }
 
     public func getProjectTarget(_ targetName: String) -> ProjectTarget? {
-        return targetsMap[targetName] ?? aggregateTargetsMap[targetName]
+        targetsMap[targetName] ?? aggregateTargetsMap[targetName]
     }
 
     public func getConfig(_ configName: String) -> Config? {
-        return configs.first { $0.name == configName }
+        configs.first { $0.name == configName }
     }
 
     public var defaultProjectPath: Path {
-        return basePath + "\(name).xcodeproj"
+        basePath + "\(name).xcodeproj"
     }
 }
 
@@ -136,7 +136,7 @@ extension Project: CustomDebugStringConvertible {
 extension Project: Equatable {
 
     public static func == (lhs: Project, rhs: Project) -> Bool {
-        return lhs.name == rhs.name &&
+        lhs.name == rhs.name &&
             lhs.targets == rhs.targets &&
             lhs.aggregateTargets == rhs.aggregateTargets &&
             lhs.settings == rhs.settings &&
@@ -216,7 +216,7 @@ extension Project {
 extension Project: PathContainer {
 
     static var pathProperties: [PathProperty] {
-        return [
+        [
             .string("configFiles"),
             .string("localPackages"),
             .object("options", SpecOptions.pathProperties),
@@ -259,13 +259,13 @@ extension Project {
 extension BuildSettingsContainer {
 
     fileprivate var configFilePaths: [Path] {
-        return configFiles.values.map { Path($0) }
+        configFiles.values.map { Path($0) }
     }
 }
 
 extension Project: JSONEncodable {
     public func toJSONValue() -> Any {
-        return toJSONDictionary()
+        toJSONDictionary()
     }
 
     public func toJSONDictionary() -> JSONDictionary {

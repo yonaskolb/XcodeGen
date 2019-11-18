@@ -20,7 +20,7 @@ extension ProjectReference: NamedJSONDictionaryConvertible {
 
 extension ProjectReference: JSONEncodable {
     public func toJSONValue() -> Any {
-        return [
+        [
             "path": path,
         ]
     }

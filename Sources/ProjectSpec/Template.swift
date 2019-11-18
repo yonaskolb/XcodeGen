@@ -9,19 +9,19 @@ struct TemplateStructure {
 
 extension Target {
     static func resolveTargetTemplates(jsonDictionary: JSONDictionary) -> JSONDictionary {
-        return resolveTemplates(jsonDictionary: jsonDictionary,
-                                templateStructure: TemplateStructure(baseKey: "targets",
-                                                                     templatesKey: "targetTemplates",
-                                                                     nameToReplace: "target_name"))
+        resolveTemplates(jsonDictionary: jsonDictionary,
+                         templateStructure: TemplateStructure(baseKey: "targets",
+                                                              templatesKey: "targetTemplates",
+                                                              nameToReplace: "target_name"))
     }
 }
 
 extension Scheme {
     static func resolveSchemeTemplates(jsonDictionary: JSONDictionary) -> JSONDictionary {
-        return resolveTemplates(jsonDictionary: jsonDictionary,
-                                templateStructure: TemplateStructure(baseKey: "schemes",
-                                                                     templatesKey: "schemeTemplates",
-                                                                     nameToReplace: "scheme_name"))
+        resolveTemplates(jsonDictionary: jsonDictionary,
+                         templateStructure: TemplateStructure(baseKey: "schemes",
+                                                              templatesKey: "schemeTemplates",
+                                                              nameToReplace: "scheme_name"))
     }
 }
 

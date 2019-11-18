@@ -72,7 +72,7 @@ class SourceGenerator {
     }
 
     func getAllSourceFiles(targetType: PBXProductType, sources: [TargetSource]) throws -> [SourceFile] {
-        return try sources.flatMap { try getSourceFiles(targetType: targetType, targetSource: $0, path: project.basePath + $0.path) }
+        try sources.flatMap { try getSourceFiles(targetType: targetType, targetSource: $0, path: project.basePath + $0.path) }
     }
 
     // get groups without build files. Use for Project.fileGroups
@@ -354,7 +354,7 @@ class SourceGenerator {
 
     /// Checks whether the path is not in any default or TargetSource excludes
     func isIncludedPath(_ path: Path, excludePaths: Set<Path>, includePaths: Set<Path>) -> Bool {
-        return !defaultExcludedFiles.contains(where: { path.lastComponent.contains($0) })
+        !defaultExcludedFiles.contains(where: { path.lastComponent.contains($0) })
             && !(path.extension.map(defaultExcludedExtensions.contains) ?? false)
             && !excludePaths.contains(path)
             // If includes is empty, it's included. If it's not empty, the path either needs to match exactly, or it needs to be a direct parent of an included path.
@@ -366,7 +366,7 @@ class SourceGenerator {
 
     /// Gets all the children paths that aren't excluded
     private func getSourceChildren(targetSource: TargetSource, dirPath: Path, excludePaths: Set<Path>, includePaths: Set<Path>) throws -> [Path] {
-        return try dirPath.children()
+        try dirPath.children()
             .filter {
                 if $0.isDirectory {
                     let children = try $0.children()
@@ -432,7 +432,7 @@ class SourceGenerator {
         // find the base localised directory
         let baseLocalisedDirectory: Path? = {
             func findLocalisedDirectory(by languageId: String) -> Path? {
-                return localisedDirectories.first { $0.lastComponent == "\(languageId).lproj" }
+                localisedDirectories.first { $0.lastComponent == "\(languageId).lproj" }
             }
             return findLocalisedDirectory(by: "Base") ??
                 findLocalisedDirectory(by: NSLocale.canonicalLanguageIdentifier(from: project.options.developmentLanguage ?? "en"))

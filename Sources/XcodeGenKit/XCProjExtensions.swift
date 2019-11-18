@@ -5,7 +5,7 @@ import XcodeProj
 extension PBXFileElement {
 
     public var nameOrPath: String {
-        return name ?? path ?? ""
+        name ?? path ?? ""
     }
 }
 
@@ -39,7 +39,7 @@ extension PBXProj {
 extension Dictionary {
 
     public var valueArray: [Value] {
-        return Array(values)
+        Array(values)
     }
 }
 
@@ -49,11 +49,6 @@ extension Xcode {
         guard let fileExtension = path.extension else { return nil }
         switch fileExtension {
         // cases that aren't handled (yet) in XcodeProj.
-        // they can be removed once XcodeProj supports them
-        case "stringsdict": return "text.plist.stringsdict"
-        case "tbd": return "sourcecode.text-based-dylib-definition"
-        case "xpc": return "wrapper.xpc-service"
-        case "xcfilelist": return "text.xcfilelist"
         default:
             // fallback to XcodeProj defaults
             return Xcode.filetype(extension: fileExtension)

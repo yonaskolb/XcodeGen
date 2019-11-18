@@ -71,7 +71,7 @@ A project would be created with 2 connected targets, with all the required confi
 
 ## Installing
 
-Make sure Xcode 10.2 is installed first.
+Make sure Xcode 11 is installed first.
 
 ### [Mint](https://github.com/yonaskolb/mint)
 ```sh
@@ -130,7 +130,7 @@ Options:
 - **--use-cache**: Used to prevent unnecessarily generating the project. If this is set, then a cache file will be written to when a project is generated. If `xcodegen` is later run but the spec and all the files it contains are the same, the project won't be generated.
 - **--cache-path**: A custom path to use for your cache file. This defaults to `~/.xcodegen/cache/{PROJECT_SPEC_PATH_HASH}`
 
-Use `xcodegen help` to see more detailed usage information.
+There are other commands as well. Use `xcodegen help` to see more detailed usage information.
 
 ## Editing
 ```shell

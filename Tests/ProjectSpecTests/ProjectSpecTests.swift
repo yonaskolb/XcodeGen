@@ -298,7 +298,7 @@ class ProjectSpecTests: XCTestCase {
                                                                            buildPhase: .resources,
                                                                            headerVisibility: .private,
                                                                            createIntermediateGroups: true)],
-                                                    dependencies: [Dependency(type: .carthage(findFrameworks: true),
+                                                    dependencies: [Dependency(type: .carthage(findFrameworks: true, linkType: .dynamic),
                                                                               reference: "reference",
                                                                               embed: true,
                                                                               codeSign: true,
