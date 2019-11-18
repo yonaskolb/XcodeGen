@@ -22,6 +22,7 @@ public class PBXProjGenerator {
 
     var carthageFrameworksByPlatform: [String: Set<PBXFileElement>] = [:]
     var frameworkFiles: [PBXFileElement] = []
+    var bundleFiles: [PBXFileElement] = []
 
     var generated = false
 
@@ -208,6 +209,17 @@ public class PBXProjGenerator {
                     children: frameworkFiles,
                     sourceTree: .group,
                     name: "Frameworks"
+                )
+            )
+            derivedGroups.append(group)
+        }
+
+        if !bundleFiles.isEmpty {
+            let group = addObject(
+                PBXGroup(
+                    children: bundleFiles,
+                    sourceTree: .group,
+                    name: "Bundles"
                 )
             )
             derivedGroups.append(group)
@@ -647,6 +659,23 @@ public class PBXProjGenerator {
                     PBXTargetDependency(product: packageDependency)
                 )
                 dependencies.append(targetDependency)
+            case .bundle:
+                // Static and dynamic libraries can't copy resources
+                guard target.type != .staticLibrary && target.type != .dynamicLibrary else { break }
+
+                let fileReference = sourceGenerator.getFileReference(
+                    path: Path(dependency.reference),
+                    inPath: project.basePath,
+                    sourceTree: .buildProductsDir
+                )
+
+                let pbxBuildFile = PBXBuildFile(file: fileReference, settings: nil)
+                let buildFile = addObject(pbxBuildFile)
+                copyResourcesReferences.append(buildFile)
+
+                if !bundleFiles.contains(fileReference) {
+                    bundleFiles.append(fileReference)
+                }
             }
         }
 
@@ -1046,6 +1075,10 @@ public class PBXProjGenerator {
                             // Aggregate targets should be included
                             dependencies[dependency.reference] = dependency
                         }
+                    }
+                case .bundle:
+                    if isTopLevel {
+                        dependencies[dependency.reference] = dependency
                     }
                 }
             }
