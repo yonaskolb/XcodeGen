@@ -81,8 +81,8 @@ class SourceGenerator {
         _ = try getSourceFiles(targetType: .none, targetSource: TargetSource(path: path), path: fullPath)
     }
 
-    func generateSourceFile(targetType: PBXProductType, targetSource: TargetSource, path: Path, buildPhase: TargetSource.BuildPhase? = nil) -> SourceFile {
-        let fileReference = fileReferencesByPath[path.string.lowercased()]!
+    func generateSourceFile(targetType: PBXProductType, targetSource: TargetSource, path: Path, buildPhase: TargetSource.BuildPhase? = nil, fileRefenrece: PBXFileElement? = nil) -> SourceFile {
+        let fileReference = fileRefenrece ?? fileReferencesByPath[path.string.lowercased()]!
         var settings: [String: Any] = [:]
         var attributes: [String] = targetSource.attributes
         var chosenBuildPhase: TargetSource.BuildPhase?
@@ -452,12 +452,10 @@ class SourceGenerator {
                 groupChildren.append(variantGroup)
                 baseLocalisationVariantGroups.append(variantGroup)
 
-                let sourceFile = SourceFile(
-                    path: filePath,
-                    fileReference: variantGroup,
-                    buildFile: PBXBuildFile(file: variantGroup),
-                    buildPhase: .resources
-                )
+                let sourceFile = generateSourceFile(targetType: targetType,
+                                                    targetSource: targetSource,
+                                                    path: filePath,
+                                                    fileRefenrece: variantGroup)
                 allSourceFiles.append(sourceFile)
             }
         }
@@ -491,12 +489,10 @@ class SourceGenerator {
                     }
                 } else {
                     // add SourceFile to group if there is no Base.lproj directory
-                    let sourceFile = SourceFile(
-                        path: filePath,
-                        fileReference: fileReference,
-                        buildFile: PBXBuildFile(file: fileReference),
-                        buildPhase: .resources
-                    )
+                    let sourceFile = generateSourceFile(targetType: targetType,
+                                                        targetSource: targetSource,
+                                                        path: filePath,
+                                                        fileRefenrece: fileReference)
                     allSourceFiles.append(sourceFile)
                     groupChildren.append(fileReference)
                 }
