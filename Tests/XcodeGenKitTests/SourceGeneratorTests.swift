@@ -833,6 +833,64 @@ class SourceGeneratorTests: XCTestCase {
                 try pbxProj.expectFileMissing(paths: ["Sources", "group2", "file.swift"])
                 try pbxProj.expectFileMissing(paths: ["Sources", "group", "file.swift"])
             }
+
+            $0.describe("Localized sources") {
+                $0.context("With localized sources") {
+                    $0.it("*.intentdefinition should be added to source phase") {
+                        let directories = """
+                        Sources:
+                            Base.lproj:
+                                - Intents.intentdefinition
+                            en.lproj:
+                                - Intents.strings
+                            ja.lproj:
+                                - Intents.strings
+                        """
+                        try createDirectories(directories)
+                        let directoryPath = Path("TestDirectory")
+
+                        let target = Target(name: "IntentDefinitions",
+                                            type: .application,
+                                            platform: .iOS,
+                                            sources: [TargetSource(path: "Sources")])
+                        let project = Project(basePath: directoryPath,
+                                              name: "IntendDefinitions",
+                                              targets: [target])
+                        let pbxProj = try project.generatePbxProj()
+                        let sourceBuildPhase = try unwrap(pbxProj.buildPhases.first { $0.buildPhase == .sources })
+                        try expect(sourceBuildPhase.files?.compactMap { $0.file?.nameOrPath }) == ["Intents.intentdefinition"]
+                    }
+                }
+
+                $0.context("With localized sources with buildPhase") {
+                    $0.it("*.intentdefinition with buildPhase should be added to resource phase") {
+                        let directories = """
+                        Sources:
+                            Base.lproj:
+                                - Intents.intentdefinition
+                            en.lproj:
+                                - Intents.strings
+                            ja.lproj:
+                                - Intents.strings
+                        """
+                        try createDirectories(directories)
+                        let directoryPath = Path("TestDirectory")
+
+                        let target = Target(name: "IntentDefinitions",
+                                            type: .application,
+                                            platform: .iOS,
+                                            sources: [TargetSource(path: "Sources", buildPhase: .resources)])
+                        let project = Project(basePath: directoryPath,
+                                              name: "IntendDefinitions",
+                                              targets: [target])
+                        let pbxProj = try project.generatePbxProj()
+                        let sourceBuildPhase = try unwrap(pbxProj.buildPhases.first { $0.buildPhase == .sources })
+                        let resourcesBuildPhase = try unwrap(pbxProj.buildPhases.first { $0.buildPhase == .resources })
+                        try expect(sourceBuildPhase.files) == []
+                        try expect(resourcesBuildPhase.files?.compactMap { $0.file?.nameOrPath }) == ["Intents.intentdefinition"]
+                    }
+                }
+            }
         }
     }
 }
