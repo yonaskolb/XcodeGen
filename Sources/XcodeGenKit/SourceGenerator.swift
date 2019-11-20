@@ -143,6 +143,7 @@ class SourceGenerator {
             path: parentPath,
             mergingChildren: [fileReference],
             createIntermediateGroups: createIntermediateGroups,
+            hasCustomParent: false,
             isBaseGroup: true
         )
 
@@ -270,7 +271,7 @@ class SourceGenerator {
 
     /// Create a group or return an existing one at the path.
     /// Any merged children are added to a new group or merged into an existing one.
-    private func getGroup(path: Path, name: String? = nil, mergingChildren children: [PBXFileElement], createIntermediateGroups: Bool, isBaseGroup: Bool) -> PBXGroup {
+    private func getGroup(path: Path, name: String? = nil, mergingChildren children: [PBXFileElement], createIntermediateGroups: Bool, hasCustomParent: Bool, isBaseGroup: Bool) -> PBXGroup {
         let groupReference: PBXGroup
 
         if let cachedGroup = groupsByPath[path] {
@@ -280,6 +281,7 @@ class SourceGenerator {
                 // Check equality by path and sourceTree because XcodeProj.PBXObject.== is very slow.
                 if !cachedGroupChildren.contains(where: { $0.name == child.name && $0.path == child.path && $0.sourceTree == child.sourceTree }) {
                     cachedGroupChildren.append(child)
+                    child.parent = cachedGroup
                 }
             }
             cachedGroup.children = cachedGroupChildren
@@ -293,10 +295,11 @@ class SourceGenerator {
             let isRootPath = (isBaseGroup && isOutOfBasePath) || path.parent() == project.basePath
 
             // is a top level group in the project
-            let isTopLevelGroup = (isBaseGroup && !createIntermediateGroups) || isRootPath
+            let isTopLevelGroup = !hasCustomParent && ((isBaseGroup && !createIntermediateGroups) || isRootPath)
 
             let groupName = name ?? path.lastComponent
-            let groupPath = resolveGroupPath(path, isTopLevelGroup: isTopLevelGroup)
+
+            let groupPath = resolveGroupPath(path, isTopLevelGroup: hasCustomParent || isTopLevelGroup)
 
             let group = PBXGroup(
                 children: children,
@@ -387,10 +390,19 @@ class SourceGenerator {
     }
 
     /// creates all the source files and groups they belong to for a given targetSource
-    private func getGroupSources(targetType: PBXProductType, targetSource: TargetSource, path: Path, isBaseGroup: Bool, excludePaths: Set<Path>, includePaths: Set<Path>)
-        throws -> (sourceFiles: [SourceFile], groups: [PBXGroup]) {
+    private func getGroupSources(
+        targetType: PBXProductType,
+        targetSource: TargetSource,
+        path: Path,
+        isBaseGroup: Bool,
+        hasCustomParent: Bool,
+        excludePaths: Set<Path>,
+        includePaths: Set<Path>
+    ) throws -> (sourceFiles: [SourceFile], groups: [PBXGroup]) {
 
         let children = try getSourceChildren(targetSource: targetSource, dirPath: path, excludePaths: excludePaths, includePaths: includePaths)
+
+        let createIntermediateGroups = targetSource.createIntermediateGroups ?? project.options.createIntermediateGroups
 
         let directories = children
             .filter { $0.isDirectory && $0.extension == nil && $0.extension != "lproj" }
@@ -408,12 +420,16 @@ class SourceGenerator {
         var groups: [PBXGroup] = []
 
         for path in directories {
-            let subGroups = try getGroupSources(targetType: targetType,
-                                                targetSource: targetSource,
-                                                path: path,
-                                                isBaseGroup: false,
-                                                excludePaths: excludePaths,
-                                                includePaths: includePaths)
+
+            let subGroups = try getGroupSources(
+                targetType: targetType,
+                targetSource: targetSource,
+                path: path,
+                isBaseGroup: false,
+                hasCustomParent: false,
+                excludePaths: excludePaths,
+                includePaths: includePaths
+            )
 
             guard !subGroups.sourceFiles.isEmpty || project.options.generateEmptyDirectories else {
                 continue
@@ -499,12 +515,11 @@ class SourceGenerator {
             }
         }
 
-        let createIntermediateGroups = targetSource.createIntermediateGroups ?? project.options.createIntermediateGroups
-
         let group = getGroup(
             path: path,
             mergingChildren: groupChildren,
             createIntermediateGroups: createIntermediateGroups,
+            hasCustomParent: hasCustomParent,
             isBaseGroup: isBaseGroup
         )
         if createIntermediateGroups {
@@ -524,6 +539,10 @@ class SourceGenerator {
         let includePaths = getSourceMatches(targetSource: targetSource, patterns: targetSource.includes)
 
         let type = targetSource.type ?? (path.isFile || path.extension != nil ? .file : .group)
+
+        let customParentGroups = (targetSource.group ?? "").split(separator: "/").map{ String($0) }
+        let hasCustomParent = !customParentGroups.isEmpty
+
         let createIntermediateGroups = targetSource.createIntermediateGroups ?? project.options.createIntermediateGroups
 
         var sourceFiles: [SourceFile] = []
@@ -540,7 +559,7 @@ class SourceGenerator {
                 lastKnownFileType: "folder"
             )
 
-            if !createIntermediateGroups || path.parent() == project.basePath {
+            if !(createIntermediateGroups || hasCustomParent) || path.parent() == project.basePath {
                 rootGroups.insert(fileReference)
             }
 
@@ -561,12 +580,21 @@ class SourceGenerator {
 
             let sourceFile = generateSourceFile(targetType: targetType, targetSource: targetSource, path: path)
 
-            if parentPath == project.basePath {
+            if hasCustomParent {
+                sourcePath = path
+                sourceReference = fileReference
+            } else if parentPath == project.basePath {
                 sourcePath = path
                 sourceReference = fileReference
                 rootGroups.insert(fileReference)
             } else {
-                let parentGroup = getGroup(path: parentPath, mergingChildren: [fileReference], createIntermediateGroups: createIntermediateGroups, isBaseGroup: true)
+                let parentGroup = getGroup(
+                    path: parentPath,
+                    mergingChildren: [fileReference],
+                    createIntermediateGroups: createIntermediateGroups,
+                    hasCustomParent: hasCustomParent,
+                    isBaseGroup: true
+                )
                 sourcePath = parentPath
                 sourceReference = parentGroup
             }
@@ -577,12 +605,17 @@ class SourceGenerator {
                 // This group is missing, so if's optional just return an empty array
                 return []
             }
-            let (groupSourceFiles, groups) = try getGroupSources(targetType: targetType,
-                                                                 targetSource: targetSource,
-                                                                 path: path,
-                                                                 isBaseGroup: true,
-                                                                 excludePaths: excludePaths,
-                                                                 includePaths: includePaths)
+
+            let (groupSourceFiles, groups) = try getGroupSources(
+                targetType: targetType,
+                targetSource: targetSource,
+                path: path,
+                isBaseGroup: true,
+                hasCustomParent: hasCustomParent,
+                excludePaths: excludePaths,
+                includePaths: includePaths
+            )
+
             let group = groups.first!
             if let name = targetSource.name {
                 group.name = name
@@ -592,11 +625,42 @@ class SourceGenerator {
             sourceReference = group
         }
 
-        if createIntermediateGroups {
+        if hasCustomParent {
+            createParentGroups(customParentGroups, for: sourceReference)
+            try makePathRelative(for: sourceReference, at: path)
+        } else if createIntermediateGroups {
             createIntermediaGroups(for: sourceReference, at: sourcePath)
         }
 
         return sourceFiles
+    }
+
+    private func createParentGroups(_ parentGroups: [String], for fileElement: PBXFileElement) {
+        guard let parentName = parentGroups.last else {
+            return
+        }
+
+        let parentPath = project.basePath + Path(parentGroups.joined(separator: "/"))
+        let parentPathExists = parentPath.exists
+        let parentGroupAlreadyExists = groupsByPath[parentPath] != nil
+
+        let parentGroup = getGroup(
+            path: parentPath,
+            mergingChildren: [fileElement],
+            createIntermediateGroups: false,
+            hasCustomParent: false,
+            isBaseGroup: parentGroups.count == 1
+        )
+
+        // As this path is a custom group, remove the path reference
+        if !parentPathExists {
+            parentGroup.name = String(parentName)
+            parentGroup.path = nil
+        }
+
+        if !parentGroupAlreadyExists {
+            createParentGroups(parentGroups.dropLast(), for: parentGroup)
+        }
     }
 
     // Add groups for all parents recursively
@@ -609,10 +673,42 @@ class SourceGenerator {
         }
 
         let hasParentGroup = groupsByPath[parentPath] != nil
-        let parentGroup = getGroup(path: parentPath, mergingChildren: [fileElement], createIntermediateGroups: true, isBaseGroup: false)
+        let parentGroup = getGroup(
+            path: parentPath,
+            mergingChildren: [fileElement],
+            createIntermediateGroups: true,
+            hasCustomParent: false,
+            isBaseGroup: false
+        )
 
         if !hasParentGroup {
             createIntermediaGroups(for: parentGroup, at: parentPath)
+        }
+    }
+
+    // Make the fileElement path and name relative to its parents aggregated paths
+    private func makePathRelative(for fileElement: PBXFileElement, at path: Path) throws {
+        // This makes the fileElement path relative to its parent and not to the project. Xcode then rebuilds the actual
+        // path for the file based on the hierarchy this fileElement lives in.
+        var paths: [String] = []
+        var element: PBXFileElement = fileElement
+        while true {
+            guard let parent = element.parent else { break }
+
+            if let path = parent.path {
+                paths.insert(path, at: 0)
+            }
+
+            element = parent
+        }
+
+        let completePath = project.basePath + Path(paths.joined(separator: "/"))
+        let relativePath = try path.relativePath(from: completePath)
+        let relativePathString = relativePath.string
+
+        if relativePathString != fileElement.path {
+            fileElement.path = relativePathString
+            fileElement.name = relativePath.lastComponent
         }
     }
 
