@@ -381,6 +381,7 @@ class ProjectGeneratorTests: XCTestCase {
                 //
 
                 var expectedResourceFiles: [String: Set<String>] = [:]
+                var expectedBundlesFiles: [String: Set<String>] = [:]
                 var expectedLinkedFiles: [String: Set<String>] = [:]
                 var expectedEmbeddedFrameworks: [String: Set<String>] = [:]
 
@@ -433,9 +434,11 @@ class ProjectGeneratorTests: XCTestCase {
                         Dependency(type: .target, reference: iosFrameworkX.name /* , link: false */ ),
                         Dependency(type: .framework, reference: "FrameworkX.framework" /* , link: false */ ),
                         Dependency(type: .carthage(findFrameworks: false, linkType: .dynamic), reference: "CarthageZ"),
+                        Dependency(type: .bundle, reference: "BundleA.bundle"),
                     ]
                 )
                 expectedResourceFiles[staticLibrary.name] = Set()
+                expectedBundlesFiles[staticLibrary.name] = Set()
                 expectedLinkedFiles[staticLibrary.name] = Set([
                     iosFrameworkZ.filename,
                     "FrameworkZ.framework",
@@ -463,9 +466,13 @@ class ProjectGeneratorTests: XCTestCase {
                         // Statically linked, so don't embed into test
                         Dependency(type: .target, reference: staticLibrary.name),
                         Dependency(type: .carthage(findFrameworks: false, linkType: .dynamic), reference: "CarthageB", embed: false),
+                        Dependency(type: .bundle, reference: "BundleA.bundle"),
                     ]
                 )
                 expectedResourceFiles[iosFrameworkA.name] = Set()
+                expectedBundlesFiles[iosFrameworkA.name] = Set([
+                    "BundleA.bundle"
+                ])
                 expectedLinkedFiles[iosFrameworkA.name] = Set([
                     "FrameworkC.framework",
                     iosFrameworkZ.filename,
@@ -594,6 +601,8 @@ class ProjectGeneratorTests: XCTestCase {
                     let resourcesPhases = pbxProject.resourcesBuildPhases.filter { buildPhases.contains($0) }
                     let frameworkPhases = pbxProject.frameworksBuildPhases.filter { buildPhases.contains($0) }
                     let copyFilesPhases = pbxProject.copyFilesBuildPhases.filter { buildPhases.contains($0) }
+                    let embedFrameworkPhase = copyFilesPhases.first { $0.dstSubfolderSpec == .frameworks }
+                    let copyBundlesPhase = copyFilesPhases.first { $0.dstSubfolderSpec == .resources }
 
                     // All targets should have a compile sources phase,
                     // except for the sticker pack one
@@ -622,17 +631,24 @@ class ProjectGeneratorTests: XCTestCase {
                         try expect(Set(linkFrameworks)) == expectedLinkedFiles
                     }
 
+                    var expectedCopyFilesPhasesCount = 0
                     // ensure only the right things are embedded, no more, no less
-                    if let expectedEmbeddedFrameworks = expectedEmbeddedFrameworks[target.name] {
-                        try expect(copyFilesPhases.count) == (expectedEmbeddedFrameworks.isEmpty ? 0 : 1)
-                        if !expectedEmbeddedFrameworks.isEmpty {
-                            let copyFiles = (copyFilesPhases[0].files ?? [])
-                                .compactMap { $0.file?.nameOrPath }
-                            try expect(Set(copyFiles)) == expectedEmbeddedFrameworks
-                        }
-                    } else {
-                        try expect(copyFilesPhases.count) == 0
+                    if let expectedEmbeddedFrameworks = expectedEmbeddedFrameworks[target.name], !expectedEmbeddedFrameworks.isEmpty {
+                        expectedCopyFilesPhasesCount += 1
+                        let copyFiles = (embedFrameworkPhase?.files ?? [])
+                            .compactMap { $0.file?.nameOrPath }
+                        try expect(Set(copyFiles)) == expectedEmbeddedFrameworks
                     }
+
+                    if let expectedBundlesFiles = expectedBundlesFiles[target.name],
+                        target.type != .staticLibrary && target.type != .dynamicLibrary {
+                        expectedCopyFilesPhasesCount += 1
+                        let copyBundles = (copyBundlesPhase?.files ?? [])
+                            .compactMap { $0.file?.nameOrPath }
+                        try expect(Set(copyBundles)) == expectedBundlesFiles
+                    }
+                    print(target.name)
+                    try expect(copyFilesPhases.count) == expectedCopyFilesPhasesCount
                 }
             }
 
