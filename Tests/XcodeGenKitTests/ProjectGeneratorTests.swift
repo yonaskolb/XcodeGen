@@ -647,7 +647,6 @@ class ProjectGeneratorTests: XCTestCase {
                             .compactMap { $0.file?.nameOrPath }
                         try expect(Set(copyBundles)) == expectedBundlesFiles
                     }
-                    print(target.name)
                     try expect(copyFilesPhases.count) == expectedCopyFilesPhasesCount
                 }
             }
