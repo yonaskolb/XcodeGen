@@ -72,9 +72,15 @@ targets:
       - path: Folder
         type: folder
         buildPhase: none
+        group: CustomGroup
       - path: Mintfile
         type: file
         buildPhase: none
+        group: CustomGroup
+      - path: Group/File1.swift
+        group: CustomGroup
+      - path: Group2/File2.swift
+        group: CustomGroup
       - path: CopyFiles
         buildPhase:
           copyFiles:
