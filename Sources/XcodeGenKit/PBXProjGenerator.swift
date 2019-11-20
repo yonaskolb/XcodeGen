@@ -445,6 +445,7 @@ public class PBXProjGenerator {
         var copyFilesBuildPhasesFiles: [TargetSource.BuildPhase.CopyFilesSettings: [PBXBuildFile]] = [:]
         var copyFrameworksReferences: [PBXBuildFile] = []
         var copyResourcesReferences: [PBXBuildFile] = []
+        var copyBundlesReferences: [PBXBuildFile] = []
         var copyWatchReferences: [PBXBuildFile] = []
         var packageDependencies: [XCSwiftPackageProductDependency] = []
         var extensions: [PBXBuildFile] = []
@@ -671,7 +672,7 @@ public class PBXProjGenerator {
 
                 let pbxBuildFile = PBXBuildFile(file: fileReference, settings: nil)
                 let buildFile = addObject(pbxBuildFile)
-                copyResourcesReferences.append(buildFile)
+                copyBundlesReferences.append(buildFile)
 
                 if !bundleFiles.contains(fileReference) {
                     bundleFiles.append(fileReference)
@@ -763,17 +764,17 @@ public class PBXProjGenerator {
 
         buildPhases += try target.postCompileScripts.map { try generateBuildScript(targetName: target.name, buildScript: $0) }
 
-        let resourcesBuildPhaseFiles = getBuildFilesForPhase(.resources)
+        let resourcesBuildPhaseFiles = getBuildFilesForPhase(.resources) + copyResourcesReferences
         if !resourcesBuildPhaseFiles.isEmpty {
             let resourcesBuildPhase = addObject(PBXResourcesBuildPhase(files: resourcesBuildPhaseFiles))
             buildPhases.append(resourcesBuildPhase)
         }
 
-        if !copyResourcesReferences.isEmpty {
+        if !copyBundlesReferences.isEmpty {
             let copyBundlesPhase = addObject(PBXCopyFilesBuildPhase(
                 dstSubfolderSpec: .resources,
                 name: "Copy Bundles to Resources directory",
-                files: copyResourcesReferences
+                files: copyBundlesReferences
             ))
             buildPhases.append(copyBundlesPhase)
         }
