@@ -942,6 +942,7 @@ extension PBXProj {
             if let names = names, names != paths {
                 error += " and name \(names.joined(separator: "/").quoted)"
             }
+            error += "\n\(self.printGroups())"
             throw failure(error, file: file, line: line)
         }
 
