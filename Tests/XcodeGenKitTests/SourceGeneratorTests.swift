@@ -470,6 +470,44 @@ class SourceGeneratorTests: XCTestCase {
                 try pbxProj.expectFile(paths: ["Sources/B", "b.swift"], names: ["B", "b.swift"], buildPhase: .sources)
             }
 
+            $0.it("generates custom groups") {
+
+                let directories = """
+                - Sources:
+                  - a.swift
+                  - A:
+                    - b.swift
+                  - F:
+                    - G:
+                      - h.swift
+                      - i.swift
+                  - B:
+                    - b.swift
+                    - C:
+                      - c.swift
+                """
+                try createDirectories(directories)
+
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: [
+                    TargetSource(path: "Sources/a.swift", group: "CustomGroup1"),
+                    TargetSource(path: "Sources/A/b.swift", group: "CustomGroup1"),
+                    TargetSource(path: "Sources/F/G/h.swift", group: "CustomGroup1"),
+                    TargetSource(path: "Sources/B", group: "CustomGroup2", createIntermediateGroups: false),
+                    TargetSource(path: "Sources/F/G/i.swift", group: "Sources/F/G/CustomGroup3"),
+                ])
+
+                let options = SpecOptions(createIntermediateGroups: true)
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target], options: options)
+
+                let pbxProj = try project.generatePbxProj()
+                try pbxProj.expectFile(paths: ["CustomGroup1", "Sources/a.swift"], names: ["CustomGroup1", "a.swift"], buildPhase: .sources)
+                try pbxProj.expectFile(paths: ["CustomGroup1", "Sources/A/b.swift"], names: ["CustomGroup1", "b.swift"], buildPhase: .sources)
+                try pbxProj.expectFile(paths: ["CustomGroup1", "Sources/F/G/h.swift"], names: ["CustomGroup1", "h.swift"], buildPhase: .sources)
+                try pbxProj.expectFile(paths: ["Sources", "F", "G", "CustomGroup3", "i.swift"], names: ["Sources", "F", "G", "CustomGroup3", "i.swift"], buildPhase: .sources)
+                try pbxProj.expectFile(paths: ["CustomGroup2", "Sources/B", "b.swift"], names: ["CustomGroup2", "B", "b.swift"], buildPhase: .sources)
+                try pbxProj.expectFile(paths: ["CustomGroup2", "Sources/B", "C", "c.swift"], names: ["CustomGroup2", "B", "C", "c.swift"], buildPhase: .sources)
+            }
+
             $0.it("generates folder references") {
                 let directories = """
                 Sources:
@@ -833,6 +871,64 @@ class SourceGeneratorTests: XCTestCase {
                 try pbxProj.expectFileMissing(paths: ["Sources", "group2", "file.swift"])
                 try pbxProj.expectFileMissing(paths: ["Sources", "group", "file.swift"])
             }
+
+            $0.describe("Localized sources") {
+                $0.context("With localized sources") {
+                    $0.it("*.intentdefinition should be added to source phase") {
+                        let directories = """
+                        Sources:
+                            Base.lproj:
+                                - Intents.intentdefinition
+                            en.lproj:
+                                - Intents.strings
+                            ja.lproj:
+                                - Intents.strings
+                        """
+                        try createDirectories(directories)
+                        let directoryPath = Path("TestDirectory")
+
+                        let target = Target(name: "IntentDefinitions",
+                                            type: .application,
+                                            platform: .iOS,
+                                            sources: [TargetSource(path: "Sources")])
+                        let project = Project(basePath: directoryPath,
+                                              name: "IntendDefinitions",
+                                              targets: [target])
+                        let pbxProj = try project.generatePbxProj()
+                        let sourceBuildPhase = try unwrap(pbxProj.buildPhases.first { $0.buildPhase == .sources })
+                        try expect(sourceBuildPhase.files?.compactMap { $0.file?.nameOrPath }) == ["Intents.intentdefinition"]
+                    }
+                }
+
+                $0.context("With localized sources with buildPhase") {
+                    $0.it("*.intentdefinition with buildPhase should be added to resource phase") {
+                        let directories = """
+                        Sources:
+                            Base.lproj:
+                                - Intents.intentdefinition
+                            en.lproj:
+                                - Intents.strings
+                            ja.lproj:
+                                - Intents.strings
+                        """
+                        try createDirectories(directories)
+                        let directoryPath = Path("TestDirectory")
+
+                        let target = Target(name: "IntentDefinitions",
+                                            type: .application,
+                                            platform: .iOS,
+                                            sources: [TargetSource(path: "Sources", buildPhase: .resources)])
+                        let project = Project(basePath: directoryPath,
+                                              name: "IntendDefinitions",
+                                              targets: [target])
+                        let pbxProj = try project.generatePbxProj()
+                        let sourceBuildPhase = try unwrap(pbxProj.buildPhases.first { $0.buildPhase == .sources })
+                        let resourcesBuildPhase = try unwrap(pbxProj.buildPhases.first { $0.buildPhase == .resources })
+                        try expect(sourceBuildPhase.files) == []
+                        try expect(resourcesBuildPhase.files?.compactMap { $0.file?.nameOrPath }) == ["Intents.intentdefinition"]
+                    }
+                }
+            }
         }
     }
 }
@@ -846,6 +942,7 @@ extension PBXProj {
             if let names = names, names != paths {
                 error += " and name \(names.joined(separator: "/").quoted)"
             }
+            error += "\n\(self.printGroups())"
             throw failure(error, file: file, line: line)
         }
 
@@ -895,18 +992,22 @@ extension PBXProj {
     }
 
     private func getFileReference(group: PBXGroup, paths: [String], names: [String]) -> PBXFileReference? {
+        guard !paths.isEmpty else {
+            return nil
+        }
 
-        guard !paths.isEmpty else { return nil }
         let path = paths.first!
         let name = names.first!
         let restOfPath = Array(paths.dropFirst())
         let restOfName = Array(names.dropFirst())
         if restOfPath.isEmpty {
             let fileReferences: [PBXFileReference] = group.children.compactMap { $0 as? PBXFileReference }
-            return fileReferences.first { $0.path == path && $0.nameOrPath == name }
+            return fileReferences.first { ($0.path == nil || $0.path == path) && $0.nameOrPath == name }
         } else {
             let groups = group.children.compactMap { $0 as? PBXGroup }
-            guard let group = groups.first(where: { $0.path == path && $0.nameOrPath == name }) else { return nil }
+            guard let group = groups.first(where: { ($0.path == nil || $0.path == path) && $0.nameOrPath == name }) else {
+                return nil
+            }
             return getFileReference(group: group, paths: restOfPath, names: restOfName)
         }
     }

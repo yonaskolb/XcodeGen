@@ -23,13 +23,13 @@ extension PBXProj {
         var string = group.nameOrPath
         for child in group.children {
             if let group = child as? PBXGroup {
-                string += "\n 📁  " + printGroup(group: group).replacingOccurrences(of: "\n ", with: "\n    ")
+                string += "\n 📁 " + printGroup(group: group).replacingOccurrences(of: "\n ", with: "\n    ")
             } else if let fileReference = child as? PBXFileReference {
-                string += "\n 📄  " + fileReference.nameOrPath
+                string += "\n 📄 " + fileReference.nameOrPath
             } else if let variantGroup = child as? PBXVariantGroup {
-                string += "\n 🌎  " + variantGroup.nameOrPath
+                string += "\n 🌎 " + variantGroup.nameOrPath
             } else if let versionGroup = child as? XCVersionGroup {
-                string += "\n 🔢  " + versionGroup.nameOrPath
+                string += "\n 🔢 " + versionGroup.nameOrPath
             }
         }
         return string
