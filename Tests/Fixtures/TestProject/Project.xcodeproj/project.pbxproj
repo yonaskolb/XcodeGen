@@ -40,6 +40,7 @@
 		21425F6DE3D493B6F1E33D21 /* Framework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 41FC82ED1C4C3B7B3D7B2FB7 /* Framework.framework */; };
 		216B220EC7961DF7CA9188B7 /* StaticLibrary_ObjC.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5A2B916A11DCC2565241359F /* StaticLibrary_ObjC.h */; };
 		21CA04F29CD0DEB0DD27B808 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C5AC2545AE4D4F7F44E2E9B /* Result.framework */; };
+		240AB77B7BB08DC529B5C974 /* BundleA.bundle in Copy Bundles to Resources directory */ = {isa = PBXBuildFile; fileRef = E2AF3B572B3B2E815DA1844D /* BundleA.bundle */; };
 		262891CCD5F74316610437FA /* Framework2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EF21DF245F66BEF5446AAEF /* Framework2.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		265B6A05C0198FD2EB485173 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C033648A37D95027845BD3 /* main.swift */; };
 		2730C6D0A35AED4ADD6EDF17 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0704B6CAFBB53E0EBB08F6B3 /* ViewController.swift */; settings = {COMPILER_FLAGS = "-Werror"; }; };
@@ -315,6 +316,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		32C3437B0218811108366142 /* Copy Bundles to Resources directory */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstSubfolderSpec = 7;
+			files = (
+				240AB77B7BB08DC529B5C974 /* BundleA.bundle in Copy Bundles to Resources directory */,
+			);
+			name = "Copy Bundles to Resources directory";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6CB76DFA8662672C4245AF41 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -523,6 +534,7 @@
 		D70BE0C05E5779A077793BE6 /* Model 2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 2.xcdatamodel"; sourceTree = "<group>"; };
 		D8A016580A3B8F72B820BFBF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D8D8907E2CDA1295D0D94F53 /* StaticLibrary_Swift.a */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = archive.ar; path = StaticLibrary_Swift.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		E2AF3B572B3B2E815DA1844D /* BundleA.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = BundleA.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		E42335D1200CB7B8B91E962F /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = Base; path = Base.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		E43116070AFEF5D8C3A5A957 /* TestFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TestFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E55F45EACB0F382722D61C8D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -707,6 +719,7 @@
 				C2F3574CCEF023755DDB1A06 /* Mintfile */,
 				6B1603BA83AA0C7B94E45168 /* ResourceFolder */,
 				6BBE762F36D94AB6FFBFE834 /* SomeFile */,
+				79DC4A1E4D2E0D3A215179BC /* Bundles */,
 				FC1515684236259C50A7747F /* Frameworks */,
 				AC523591AC7BE9275003D2DB /* Products */,
 			);
@@ -784,6 +797,14 @@
 				E9672EF8FE1DDC8DE0705129 /* PushNotificationPayload.apns */,
 			);
 			path = "App_watchOS Extension";
+			sourceTree = "<group>";
+		};
+		79DC4A1E4D2E0D3A215179BC /* Bundles */ = {
+			isa = PBXGroup;
+			children = (
+				E2AF3B572B3B2E815DA1844D /* BundleA.bundle */,
+			);
+			name = Bundles;
 			sourceTree = "<group>";
 		};
 		80C3A0E524EC1ABCB9149EA2 /* XPC Service */ = {
@@ -1103,6 +1124,7 @@
 			buildPhases = (
 				6F573D15DE1F149EF128C492 /* Sources */,
 				8508BA1B733839E314AF2853 /* Resources */,
+				32C3437B0218811108366142 /* Copy Bundles to Resources directory */,
 				865AAD9909027AC34D1374EA /* CopyFiles */,
 				37182EC208DBF03DB1BAF452 /* Carthage */,
 				117840B4DBC04099F6779D00 /* Frameworks */,
