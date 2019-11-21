@@ -49,7 +49,7 @@ You can also use environment variables in your configuration file, by using `${S
 - [ ] **schemes**: **[Scheme](#scheme)** - A list of schemes by name. This allows more control over what is found in [Target Scheme](#target-scheme)
 - [ ] **targetTemplates**: **[String: [Target Template](#target-template)]** - a list of targets that can be used as templates for actual targets which reference them via a `template` property. They can be used to extract common target settings. Works great in combination with `include`.
 - [ ] **packages**: **[String: [Swift Package](#swift-package)]** - a map of Swift packages by name
-- [ ] **localPackages**: **[String]** - A list of paths to local Swift Packages. The paths must be directories with a `Package.swift` file in them. This is used to override `packages` with a local version for development purposes.
+- [ ] **localPackages**: **[String]** - A list of paths to local Swift Packages. The paths must be directories with a `Package.swift` file in them. This is used to override `packages` with a local version for development purposes. For now local packages that don't mirror remote packages aren't able to be linked to
 - [ ] **projectReferences**: **[String: [Project Reference](#project-reference)]** - a map of project references by name
 
 ### Include
