@@ -92,6 +92,7 @@ targets:
       - target: App_watchOS
       - target: iMessageApp
       - sdk: Contacts.framework
+      - bundle: BundleA.bundle
     scheme:
       testTargets:
         - App_iOS_Tests
