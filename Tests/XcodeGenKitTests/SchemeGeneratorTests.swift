@@ -198,7 +198,7 @@ class SchemeGeneratorTests: XCTestCase {
                 try expect(xcscheme.profileAction?.environmentVariables) == variables
             }
 
-            $0.it("generate scheme without debugger") {
+            $0.it("generate scheme without debugger - run") {
                 let scheme = Scheme(
                     name: "TestScheme",
                     build: Scheme.Build(targets: [buildTarget]),
@@ -215,6 +215,25 @@ class SchemeGeneratorTests: XCTestCase {
 
                 try expect(xcscheme.launchAction?.selectedDebuggerIdentifier) == ""
                 try expect(xcscheme.launchAction?.selectedLauncherIdentifier) == "Xcode.IDEFoundation.Launcher.PosixSpawn"
+            }
+
+            $0.it("generate scheme without debugger - test") {
+                let scheme = Scheme(
+                    name: "TestScheme",
+                    build: Scheme.Build(targets: [buildTarget]),
+                    test: Scheme.Test(config: "Debug", debugEnabled: false)
+                )
+                let project = Project(
+                    name: "test",
+                    targets: [app, framework],
+                    schemes: [scheme]
+                )
+                let xcodeProject = try project.generateXcodeProject()
+
+                let xcscheme = try unwrap(xcodeProject.sharedData?.schemes.first)
+
+                try expect(xcscheme.testAction?.selectedDebuggerIdentifier) == ""
+                try expect(xcscheme.testAction?.selectedLauncherIdentifier) == "Xcode.IDEFoundation.Launcher.PosixSpawn"
             }
 
             $0.it("generates pre and post actions for target schemes") {
