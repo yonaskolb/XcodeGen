@@ -49,7 +49,7 @@ You can also use environment variables in your configuration file, by using `${S
 - [ ] **schemes**: **[Scheme](#scheme)** - A list of schemes by name. This allows more control over what is found in [Target Scheme](#target-scheme)
 - [ ] **targetTemplates**: **[String: [Target Template](#target-template)]** - a list of targets that can be used as templates for actual targets which reference them via a `template` property. They can be used to extract common target settings. Works great in combination with `include`.
 - [ ] **packages**: **[String: [Swift Package](#swift-package)]** - a map of Swift packages by name
-- [ ] **localPackages**: **[String]** - A list of paths to local Swift Packages. The paths must be directories with a `Package.swift` file in them. This is used to override `packages` with a local version for development purposes.
+- [ ] **localPackages**: **[String]** - A list of paths to local Swift Packages. The paths must be directories with a `Package.swift` file in them. This is used to override `packages` with a local version for development purposes. For now local packages that don't mirror remote packages aren't able to be linked to
 - [ ] **projectReferences**: **[String: [Project Reference](#project-reference)]** - a map of project references by name
 
 ### Include
@@ -309,6 +309,7 @@ A source can be provided via a string (the path) or an object of the form:
 
 - [x] **path**: **String** - The path to the source file or directory.
 - [ ] **name**: **String** - Can be used to override the name of the source file or directory. By default the last component of the path is used for the name
+- [ ] **group**: **String** - Can be used to override the parent group of the source file or directory. By default a group is created at the root with the name of this source file or directory or intermediate groups are created if `createIntermediateGroups` is set to `true`. Multiple groups can be created by separating each one using a `/`. If multiple target sources share the same `group`, they will be put together in the same parent group.
 - [ ] **compilerFlags**: **[String]** or **String** - A list of compilerFlags to add to files under this specific path provided as a list or a space delimitted string. Defaults to empty.
 - [ ] **excludes**: **[String]** - A list of [global patterns](https://en.wikipedia.org/wiki/Glob_(programming)) representing the files to exclude. These rules are relative to `path` and _not the directory where `project.yml` resides_. XcodeGen uses Bash 4's Glob behaviors where globstar (**) is enabled.
 - [ ] **includes**: **[String]** - A list of global patterns in the same format as `excludes` representing the files to include. These rules are relative to `path` and _not the directory where `project.yml` resides_. If **excludes** is present and file conflicts with **includes**, **excludes** will override the **includes** behavior.
