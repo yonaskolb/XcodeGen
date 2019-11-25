@@ -700,6 +700,8 @@ class SpecLoadingTests: XCTestCase {
                         "ENV1": true,
                     ],
                     "gatherCoverageData": true,
+                    "language": "en",
+                    "region": "US",
                     "disableMainThreadChecker": true,
                     "environmentVariables": [
                         "TEST_VAR": "TEST_VAL",
@@ -724,6 +726,8 @@ class SpecLoadingTests: XCTestCase {
                     testTargets: ["t1", "t2"],
                     configVariants: ["dev", "app-store"],
                     gatherCoverageData: true,
+                    language: "en",
+                    region: "US",
                     disableMainThreadChecker: true,
                     commandLineArguments: ["ENV1": true],
                     environmentVariables: [XCScheme.EnvironmentVariable(variable: "TEST_VAR", value: "TEST_VAL", enabled: true)],

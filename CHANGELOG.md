@@ -2,6 +2,9 @@
 
 ## Next Version
 
+#### Added
+- Support for language and region settings on a target basis [#728](https://github.com/yonaskolb/XcodeGen/pull/728) @FranzBusch
+
 ## 2.11.0
 
 #### Added
