@@ -13,6 +13,7 @@
 - Fixed missing headers for static framework targets [#705](https://github.com/yonaskolb/XcodeGen/pull/705) @wag-miles
 - Using more file types from XcodeProj for PBXFileReferences resulting in less project diffs [#715](https://github.com/yonaskolb/XcodeGen/pull/715) @yonaskolb
 - Fixed localized `*.intentdefinition` not being added to build source phases [#720](https://github.com/yonaskolb/XcodeGen/pull/720) @giginet
+- Fixed unnecessary dependencies related to SwiftPM [#726](https://github.com/yonaskolb/XcodeGen/pull/726) @tid-kijyun
 
 #### Changed
 - Deprecated `$old_form` variables in favor of `${new_form}` variables [#704](https://github.com/yonaskolb/XcodeGen/pull/704) @rcari
