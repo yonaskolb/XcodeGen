@@ -642,6 +642,11 @@ public class PBXProjGenerator {
                     )
                     targetFrameworkBuildFiles.append(buildFile)
                 }
+
+                let targetDependency = addObject(
+                    PBXTargetDependency(product: packageDependency)
+                )
+                dependencies.append(targetDependency)
             }
         }
 
