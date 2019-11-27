@@ -129,7 +129,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				E157C6348B8AD6A28C706801 /* PBXTargetDependency */,
 				078202CF7B08B66ACF7FEC23 /* PBXTargetDependency */,
 			);
 			name = App;
@@ -228,10 +227,6 @@
 		D85FFB99444DD260A72DDDA7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			productRef = AF233B61592982A7F6431FC6 /* Codability */;
-		};
-		E157C6348B8AD6A28C706801 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			productRef = 16E6FE01D5BD99F78D4A17E2 /* Codability */;
 		};
 /* End PBXTargetDependency section */
 
