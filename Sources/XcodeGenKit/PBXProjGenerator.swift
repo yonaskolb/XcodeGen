@@ -654,12 +654,12 @@ public class PBXProjGenerator {
                         PBXBuildFile(product: packageDependency)
                     )
                     targetFrameworkBuildFiles.append(buildFile)
+                } else {
+                    let targetDependency = addObject(
+                        PBXTargetDependency(product: packageDependency)
+                    )
+                    dependencies.append(targetDependency)
                 }
-
-                let targetDependency = addObject(
-                    PBXTargetDependency(product: packageDependency)
-                )
-                dependencies.append(targetDependency)
             case .bundle:
                 // Static and dynamic libraries can't copy resources
                 guard target.type != .staticLibrary && target.type != .dynamicLibrary else { break }
