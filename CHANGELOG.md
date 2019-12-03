@@ -2,6 +2,8 @@
 
 ## Next Version
 
+## 2.11.0
+
 #### Added
 - Add Carthage static framework dependencies support. [#688](https://github.com/yonaskolb/XcodeGen/pull/688) @giginet
 - Added `xcodegen dump` command [#710](https://github.com/yonaskolb/XcodeGen/pull/710) @yonaskolb
@@ -20,6 +22,8 @@
 - Deprecated `$old_form` variables in favor of `${new_form}` variables [#704](https://github.com/yonaskolb/XcodeGen/pull/704) @rcari
 - Updated XcodeProj to 7.4.0 [#709](https://github.com/yonaskolb/XcodeGen/pull/709) [#715](https://github.com/yonaskolb/XcodeGen/pull/715) @yonaskolb
 - Updated to Swift 5.1 [#714](https://github.com/yonaskolb/XcodeGen/pull/714) @yonaskolb
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.10.1...2.11.0)
 
 ## 2.10.1
 
