@@ -56,7 +56,7 @@ public class SchemeGenerator {
                     let debugConfig = suitableConfig(for: .debug, in: project)
                     let releaseConfig = suitableConfig(for: .release, in: project)
 
-                    let scheme = Scheme(
+                    let scheme = Scheme.init(
                         name: schemeName,
                         target: target,
                         targetScheme: targetScheme,
@@ -288,7 +288,9 @@ extension Scheme {
                 preActions: targetScheme.preActions,
                 postActions: targetScheme.postActions,
                 environmentVariables: targetScheme.environmentVariables,
-                disableMainThreadChecker: targetScheme.disableMainThreadChecker
+                disableMainThreadChecker: targetScheme.disableMainThreadChecker,
+                language: targetScheme.language,
+                region: targetScheme.region
             ),
             test: .init(
                 config: debugConfig,
@@ -298,7 +300,9 @@ extension Scheme {
                 targets: targetScheme.testTargets,
                 preActions: targetScheme.preActions,
                 postActions: targetScheme.postActions,
-                environmentVariables: targetScheme.environmentVariables
+                environmentVariables: targetScheme.environmentVariables,
+                language: targetScheme.language,
+                region: targetScheme.region
             ),
             profile: .init(
                 config: releaseConfig,

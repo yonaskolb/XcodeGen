@@ -9,6 +9,8 @@ public struct TargetScheme: Equatable {
     public var testTargets: [Scheme.Test.TestTarget]
     public var configVariants: [String]
     public var gatherCoverageData: Bool
+    public var language: String?
+    public var region: String?
     public var disableMainThreadChecker: Bool
     public var commandLineArguments: [String: Bool]
     public var environmentVariables: [XCScheme.EnvironmentVariable]
@@ -19,6 +21,8 @@ public struct TargetScheme: Equatable {
         testTargets: [Scheme.Test.TestTarget] = [],
         configVariants: [String] = [],
         gatherCoverageData: Bool = gatherCoverageDataDefault,
+        language: String? = nil,
+        region: String? = nil,
         disableMainThreadChecker: Bool = disableMainThreadCheckerDefault,
         commandLineArguments: [String: Bool] = [:],
         environmentVariables: [XCScheme.EnvironmentVariable] = [],
@@ -28,6 +32,8 @@ public struct TargetScheme: Equatable {
         self.testTargets = testTargets
         self.configVariants = configVariants
         self.gatherCoverageData = gatherCoverageData
+        self.language = language
+        self.region = region
         self.disableMainThreadChecker = disableMainThreadChecker
         self.commandLineArguments = commandLineArguments
         self.environmentVariables = environmentVariables
@@ -54,6 +60,8 @@ extension TargetScheme: JSONObjectConvertible {
         }
         configVariants = jsonDictionary.json(atKeyPath: "configVariants") ?? []
         gatherCoverageData = jsonDictionary.json(atKeyPath: "gatherCoverageData") ?? TargetScheme.gatherCoverageDataDefault
+        language = jsonDictionary.json(atKeyPath: "language")
+        region = jsonDictionary.json(atKeyPath: "region")
         disableMainThreadChecker = jsonDictionary.json(atKeyPath: "disableMainThreadChecker") ?? TargetScheme.disableMainThreadCheckerDefault
         commandLineArguments = jsonDictionary.json(atKeyPath: "commandLineArguments") ?? [:]
         environmentVariables = try XCScheme.EnvironmentVariable.parseAll(jsonDictionary: jsonDictionary)
@@ -79,6 +87,14 @@ extension TargetScheme: JSONEncodable {
 
         if disableMainThreadChecker != TargetScheme.disableMainThreadCheckerDefault {
             dict["disableMainThreadChecker"] = disableMainThreadChecker
+        }
+
+        if let language = language {
+            dict["language"] = language
+        }
+
+        if let region = region {
+            dict["region"] = region
         }
 
         return dict
