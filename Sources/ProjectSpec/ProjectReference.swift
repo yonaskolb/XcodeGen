@@ -11,6 +11,17 @@ public struct ProjectReference: Hashable {
     }
 }
 
+extension ProjectReference: PathContainer {
+
+    static var pathProperties: [PathProperty] {
+        [
+            .dictionary([
+                .string("path"),
+            ]),
+        ]
+    }
+}
+
 extension ProjectReference: NamedJSONDictionaryConvertible {
     public init(name: String, jsonDictionary: JSONDictionary) throws {
         self.name = name
