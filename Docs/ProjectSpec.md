@@ -374,13 +374,14 @@ targets:
 
 ### Dependency
 
-A dependency can be one of a 3 types:
+A dependency can be one of a 6 types:
 
 - `target: name` - links to another target
 - `framework: path` - links to a framework
 - `carthage: name` - helper for linking to a Carthage framework
 - `sdk: name` - links to a dependency with the SDK. This can either be a relative path within the sdk root or a single filename that references a framework (.framework) or lib (.tbd)
 - `package: name` - links to a Swift Package. The name must match the name of a package defined in the top level `packages`
+- `bundle: name` - adds the pre-built bundle for the supplied name to the copy resources build phase. This is useful when a dependency exists on a static library target that has an associated bundle target, both existing in a separate project. Only usable in target types which can copy resources.
 
 **Linking options**:
 

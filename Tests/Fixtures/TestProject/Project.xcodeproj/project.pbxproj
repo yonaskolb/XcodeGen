@@ -122,6 +122,7 @@
 		E4D0F435405DABCB51C5B684 /* TestFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E43116070AFEF5D8C3A5A957 /* TestFramework.framework */; };
 		E5DD0AD6F7AE1DD4AF98B83E /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 65C8D6D1DDC1512D396C07B7 /* Localizable.stringsdict */; };
 		E8A135F768448632F8D77C8F /* StandaloneAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3571E41E19A5AB8AAAB04109 /* StandaloneAssets.xcassets */; };
+		F07FC32458F3193917261C15 /* BundleX.bundle in Copy Bundles to Resources directory */ = {isa = PBXBuildFile; fileRef = 45C12576F5AA694DD0CE2132 /* BundleX.bundle */; };
 		F5D71267BB5A326BDD69D532 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E55F45EACB0F382722D61C8D /* Assets.xcassets */; };
 		F6537CE373C94809E6653758 /* Headers in Headers */ = {isa = PBXBuildFile; fileRef = 2E1E747C7BC434ADB80CC269 /* Headers */; settings = {ATTRIBUTES = (Public, ); }; };
 		F7423E8738EECF04795C7601 /* InterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3F6BCB5FEFB16F1BA368059 /* InterfaceController.swift */; };
@@ -317,6 +318,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		32C3437B0218811108366142 /* Copy Bundles to Resources directory */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstSubfolderSpec = 7;
+			files = (
+				F07FC32458F3193917261C15 /* BundleX.bundle in Copy Bundles to Resources directory */,
+			);
+			name = "Copy Bundles to Resources directory";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6CB76DFA8662672C4245AF41 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -468,6 +479,7 @@
 		3EF21DF245F66BEF5446AAEF /* Framework2.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Framework2.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		40863AE6202CFCD0529D8438 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		41FC82ED1C4C3B7B3D7B2FB7 /* Framework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Framework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		45C12576F5AA694DD0CE2132 /* BundleX.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = BundleX.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		4BF4D16042A80576D259160C /* Model 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 3.xcdatamodel"; sourceTree = "<group>"; };
 		4D0BF47DF71A6DBA33ED23FD /* StaticLibrary_ObjC.a */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = archive.ar; path = StaticLibrary_ObjC.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		5116B3B58070BCD09F1487BA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -711,6 +723,7 @@
 				2E1E747C7BC434ADB80CC269 /* Headers */,
 				6B1603BA83AA0C7B94E45168 /* ResourceFolder */,
 				6BBE762F36D94AB6FFBFE834 /* SomeFile */,
+				79DC4A1E4D2E0D3A215179BC /* Bundles */,
 				FC1515684236259C50A7747F /* Frameworks */,
 				AC523591AC7BE9275003D2DB /* Products */,
 			);
@@ -788,6 +801,14 @@
 				E9672EF8FE1DDC8DE0705129 /* PushNotificationPayload.apns */,
 			);
 			path = "App_watchOS Extension";
+			sourceTree = "<group>";
+		};
+		79DC4A1E4D2E0D3A215179BC /* Bundles */ = {
+			isa = PBXGroup;
+			children = (
+				45C12576F5AA694DD0CE2132 /* BundleX.bundle */,
+			);
+			name = Bundles;
 			sourceTree = "<group>";
 		};
 		80C3A0E524EC1ABCB9149EA2 /* XPC Service */ = {
@@ -1118,6 +1139,7 @@
 			buildPhases = (
 				6F573D15DE1F149EF128C492 /* Sources */,
 				8508BA1B733839E314AF2853 /* Resources */,
+				32C3437B0218811108366142 /* Copy Bundles to Resources directory */,
 				865AAD9909027AC34D1374EA /* CopyFiles */,
 				37182EC208DBF03DB1BAF452 /* Carthage */,
 				117840B4DBC04099F6779D00 /* Frameworks */,
