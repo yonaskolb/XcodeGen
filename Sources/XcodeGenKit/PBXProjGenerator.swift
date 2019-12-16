@@ -415,7 +415,9 @@ public class PBXProjGenerator {
                 if sortOrder1 != sortOrder2 {
                     return sortOrder1 < sortOrder2
                 } else {
-                    if child1.nameOrPath != child2.nameOrPath {
+                    if child1.extension != child2.extension {
+                        return child1.extension.localizedStandardCompare(child2.extension) == .orderedAscending
+                    } else if child1.nameOrPath != child2.nameOrPath {
                         return child1.nameOrPath.localizedStandardCompare(child2.nameOrPath) == .orderedAscending
                     } else {
                         return child1.context ?? "" < child2.context ?? ""
