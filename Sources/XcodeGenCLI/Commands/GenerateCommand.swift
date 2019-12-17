@@ -19,6 +19,9 @@ class GenerateCommand: ProjectCommand {
     @Key("-p", "--project", description: "The path to the directory where the project should be generated. Defaults to the directory the spec is in. The filename is defined in the project spec")
     var projectDirectory: Path?
 
+    @Flag("--only-plists", description: "Generate only plist files")
+    var onlyPlists: Bool
+
     init(version: Version) {
         super.init(version: version,
                    name: "generate",
@@ -81,6 +84,9 @@ class GenerateCommand: ProjectCommand {
         let fileWriter = FileWriter(project: project)
         do {
             try fileWriter.writePlists()
+            if onlyPlists {
+                return
+            }
         } catch {
             throw GenerationError.writingError(error)
         }

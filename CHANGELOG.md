@@ -4,6 +4,7 @@
 
 #### Added
 - Support for language and region settings on a target basis [#728](https://github.com/yonaskolb/XcodeGen/pull/728) @FranzBusch
+- Added option to generate only Info.plist files with `--only-plists` [#739](https://github.com/yonaskolb/XcodeGen/pull/739) @namolnad
 
 #### Fixed
 - Fixed resolving a relative path for `projectReference.path` [#740](https://github.com/yonaskolb/XcodeGen/pull/740) @kateinoigakukun
