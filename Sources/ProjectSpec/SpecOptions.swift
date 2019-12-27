@@ -28,6 +28,7 @@ public struct SpecOptions: Equatable {
     public var generateEmptyDirectories: Bool
     public var findCarthageFrameworks: Bool
     public var localPackagesGroup: String?
+    public var organization: String?
 
     public enum ValidationType: String {
         case missingConfigs
@@ -84,7 +85,8 @@ public struct SpecOptions: Equatable {
         groupSortPosition: GroupSortPosition = groupSortPositionDefault,
         generateEmptyDirectories: Bool = generateEmptyDirectoriesDefault,
         findCarthageFrameworks: Bool = findCarthageFrameworksDefault,
-        localPackagesGroup: String? = nil
+        localPackagesGroup: String? = nil,
+        organization: String? = nil
     ) {
         self.minimumXcodeGenVersion = minimumXcodeGenVersion
         self.carthageBuildPath = carthageBuildPath
@@ -105,6 +107,7 @@ public struct SpecOptions: Equatable {
         self.generateEmptyDirectories = generateEmptyDirectories
         self.findCarthageFrameworks = findCarthageFrameworks
         self.localPackagesGroup = localPackagesGroup
+        self.organization = organization
     }
 }
 
@@ -133,6 +136,7 @@ extension SpecOptions: JSONObjectConvertible {
         generateEmptyDirectories = jsonDictionary.json(atKeyPath: "generateEmptyDirectories") ?? SpecOptions.generateEmptyDirectoriesDefault
         findCarthageFrameworks = jsonDictionary.json(atKeyPath: "findCarthageFrameworks") ?? SpecOptions.findCarthageFrameworksDefault
         localPackagesGroup = jsonDictionary.json(atKeyPath: "localPackagesGroup")
+        organization = jsonDictionary.json(atKeyPath: "organization")
     }
 }
 
@@ -154,6 +158,7 @@ extension SpecOptions: JSONEncodable {
             "tabWidth": tabWidth.flatMap { Int($0) },
             "defaultConfig": defaultConfig,
             "localPackagesGroup": localPackagesGroup,
+            "organization": organization,
         ]
 
         if settingPresets != SpecOptions.settingPresetsDefault {
