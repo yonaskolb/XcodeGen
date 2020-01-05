@@ -7,30 +7,17 @@ import XcodeProj
 
 class GenerateCommand: ProjectCommand {
 
-    let quiet = Flag(
-        "-q",
-        "--quiet",
-        description: "Suppress all informational and success output",
-        defaultValue: false
-    )
+    @Flag("-q", "--quiet", description: "Suppress all informational and success output")
+    var quiet: Bool
 
-    let useCache = Flag(
-        "-c",
-        "--use-cache",
-        description: "Use a cache for the xcodegen spec. This will prevent unnecessarily generating the project if nothing has changed",
-        defaultValue: false
-    )
+    @Flag("-c", "--use-cache", description: "Use a cache for the xcodegen spec. This will prevent unnecessarily generating the project if nothing has changed")
+    var useCache: Bool
 
-    let cacheFilePath = Key<Path>(
-        "--cache-path",
-        description: "Where the cache file will be loaded from and save to. Defaults to ~/.xcodegen/cache/{SPEC_PATH_HASH}"
-    )
+    @Key("--cache-path", description: "Where the cache file will be loaded from and save to. Defaults to ~/.xcodegen/cache/{SPEC_PATH_HASH}")
+    var cacheFilePath: Path?
 
-    let projectDirectory = Key<Path>(
-        "-p",
-        "--project",
-        description: "The path to the directory where the project should be generated. Defaults to the directory the spec is in. The filename is defined in the project spec"
-    )
+    @Key("-p", "--project", description: "The path to the directory where the project should be generated. Defaults to the directory the spec is in. The filename is defined in the project spec")
+    var projectDirectory: Path?
 
     init(version: Version) {
         super.init(version: version,
@@ -40,7 +27,7 @@ class GenerateCommand: ProjectCommand {
 
     override func execute(specLoader: SpecLoader, projectSpecPath: Path, project: Project) throws {
 
-        let projectDirectory = self.projectDirectory.value?.absolute() ?? projectSpecPath.parent()
+        let projectDirectory = self.projectDirectory?.absolute() ?? projectSpecPath.parent()
 
         // validate project dictionary
         do {
@@ -51,12 +38,12 @@ class GenerateCommand: ProjectCommand {
 
         let projectPath = projectDirectory + "\(project.name).xcodeproj"
 
-        let cacheFilePath = self.cacheFilePath.value ??
+        let cacheFilePath = self.cacheFilePath ??
             Path("~/.xcodegen/cache/\(projectSpecPath.absolute().string.md5)").absolute()
         var cacheFile: CacheFile?
 
         // read cache
-        if useCache.value || self.cacheFilePath.value != nil {
+        if useCache || self.cacheFilePath != nil {
             do {
                 cacheFile = try specLoader.generateCacheFile()
             } catch {
@@ -129,19 +116,19 @@ class GenerateCommand: ProjectCommand {
     }
 
     func info(_ string: String) {
-        if !quiet.value {
+        if !quiet {
             stdout.print(string)
         }
     }
 
     func warning(_ string: String) {
-        if !quiet.value {
+        if !quiet {
             stdout.print(string.yellow)
         }
     }
 
     func success(_ string: String) {
-        if !quiet.value {
+        if !quiet {
             stdout.print(string.green)
         }
     }
