@@ -5,6 +5,9 @@
 #### Added
 - Support for language and region settings on a target basis [#728](https://github.com/yonaskolb/XcodeGen/pull/728) @FranzBusch
 
+#### Internal
+- Update to SwiftCLI 6.0 and use the new property wrappers [#749](https://github.com/yonaskolb/XcodeGen/pull/749) @yonaskolb
+
 ## 2.11.0
 
 #### Added
