@@ -6,19 +6,11 @@ import Yams
 
 class DumpCommand: ProjectCommand {
 
-    private let dumpType = Key<DumpType>(
-        "--type",
-        "-t",
-        description: """
-        The type of dump to output. Either \(DumpType.allCases.map { "\"\($0.rawValue)\"" }.joined(separator: ", ")). Defaults to \(DumpType.defaultValue.rawValue). The "parsed" types parse the project into swift and then back again.
-        """
-    )
+    @Key("--type", "-t", description: "The type of dump to output. Either \(DumpType.allCases.map { "\"\($0.rawValue)\"" }.joined(separator: ", ")). Defaults to \(DumpType.defaultValue.rawValue). The \"parsed\" types parse the project into swift and then back again.")
+    private var dumpType: DumpType?
 
-    private let file = Key<Path>(
-        "--file",
-        "-f",
-        description: "The path of a file to write to. If not supplied will output to stdout"
-    )
+    @Key("--file", "-f", description: "The path of a file to write to. If not supplied will output to stdout")
+    private var file: Path?
 
     init(version: Version) {
         super.init(version: version,
@@ -27,7 +19,7 @@ class DumpCommand: ProjectCommand {
     }
 
     override func execute(specLoader: SpecLoader, projectSpecPath: Path, project: Project) throws {
-        let type = dumpType.value ?? .defaultValue
+        let type = dumpType ?? .defaultValue
 
         let output: String
         switch type {
@@ -49,7 +41,7 @@ class DumpCommand: ProjectCommand {
             output = project.debugDescription
         }
 
-        if let file = file.value {
+        if let file = file {
             try file.parent().mkpath()
             try file.write(output)
         } else {

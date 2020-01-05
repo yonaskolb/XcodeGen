@@ -11,18 +11,11 @@ class ProjectCommand: Command {
     let name: String
     let shortDescription: String
 
-    let spec = Key<Path>(
-        "-s",
-        "--spec",
-        description: "The path to the project spec file. Defaults to project.yml"
-    )
+    @Key("-s", "--spec", description: "The path to the project spec file. Defaults to project.yml")
+    var spec: Path?
 
-    let disableEnvExpansion = Flag(
-        "-n",
-        "--no-env",
-        description: "Disable environment variable expansions",
-        defaultValue: false
-    )
+    @Flag("-n", "--no-env", description: "Disable environment variable expansions")
+    var disableEnvExpansion: Bool
 
     init(version: Version, name: String, shortDescription: String) {
         self.version = version
@@ -32,7 +25,7 @@ class ProjectCommand: Command {
 
     func execute() throws {
 
-        let projectSpecPath = (spec.value ?? "project.yml").absolute()
+        let projectSpecPath = (spec ?? "project.yml").absolute()
 
         if !projectSpecPath.exists {
             throw GenerationError.missingProjectSpec(projectSpecPath)
@@ -41,7 +34,7 @@ class ProjectCommand: Command {
         let specLoader = SpecLoader(version: version)
         let project: Project
 
-        let variables: [String: String] = disableEnvExpansion.value ? [:] : ProcessInfo.processInfo.environment
+        let variables: [String: String] = disableEnvExpansion ? [:] : ProcessInfo.processInfo.environment
 
         do {
             project = try specLoader.loadProject(path: projectSpecPath, variables: variables)
