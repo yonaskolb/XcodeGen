@@ -5,6 +5,9 @@
 #### Added
 - Support for language and region settings on a target basis [#728](https://github.com/yonaskolb/XcodeGen/pull/728) @FranzBusch
 
+#### Fixed
+- Fixed resolving a relative path for `projectReference.path` [#740](https://github.com/yonaskolb/XcodeGen/pull/740) @kateinoigakukun
+
 #### Internal
 - Update to SwiftCLI 6.0 and use the new property wrappers [#749](https://github.com/yonaskolb/XcodeGen/pull/749) @yonaskolb
 
