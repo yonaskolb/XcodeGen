@@ -178,6 +178,12 @@ extension Project {
             }
         }
 
+        for projectReference in projectReferences {
+            if !(basePath + projectReference.path).exists {
+                errors.append(.invalidProjectReferencePath(projectReference))
+            }
+        }
+
         for scheme in schemes {
             for buildTarget in scheme.build.targets {
                 switch buildTarget.target.location {
