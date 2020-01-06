@@ -57,6 +57,10 @@ class SpecLoadingTests: XCTestCase {
                     carthageExecutablePath: "carthage_executable"
                 )
 
+                try expect(project.projectReferences) == [
+                    ProjectReference(name: "ProjX", path: "TestProject/Project.xcodeproj"),
+                ]
+
                 try expect(project.aggregateTargets) == [
                     AggregateTarget(
                         name: "IncludedAggregateTarget",
