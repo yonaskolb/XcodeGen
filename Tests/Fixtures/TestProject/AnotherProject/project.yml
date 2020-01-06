@@ -1,0 +1,8 @@
+name: AnotherProject
+include: [../environments.yml]
+configFiles:
+  Test Debug: ../Configs/config.xcconfig
+targets:
+  BundleX:
+    type: bundle
+    platform: iOS

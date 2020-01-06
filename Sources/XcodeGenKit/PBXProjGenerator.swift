@@ -22,6 +22,7 @@ public class PBXProjGenerator {
 
     var carthageFrameworksByPlatform: [String: Set<PBXFileElement>] = [:]
     var frameworkFiles: [PBXFileElement] = []
+    var bundleFiles: [PBXFileElement] = []
 
     var generated = false
 
@@ -208,6 +209,17 @@ public class PBXProjGenerator {
                     children: frameworkFiles,
                     sourceTree: .group,
                     name: "Frameworks"
+                )
+            )
+            derivedGroups.append(group)
+        }
+
+        if !bundleFiles.isEmpty {
+            let group = addObject(
+                PBXGroup(
+                    children: bundleFiles,
+                    sourceTree: .group,
+                    name: "Bundles"
                 )
             )
             derivedGroups.append(group)
@@ -433,6 +445,7 @@ public class PBXProjGenerator {
         var copyFilesBuildPhasesFiles: [TargetSource.BuildPhase.CopyFilesSettings: [PBXBuildFile]] = [:]
         var copyFrameworksReferences: [PBXBuildFile] = []
         var copyResourcesReferences: [PBXBuildFile] = []
+        var copyBundlesReferences: [PBXBuildFile] = []
         var copyWatchReferences: [PBXBuildFile] = []
         var packageDependencies: [XCSwiftPackageProductDependency] = []
         var extensions: [PBXBuildFile] = []
@@ -647,6 +660,23 @@ public class PBXProjGenerator {
                     )
                     dependencies.append(targetDependency)
                 }
+            case .bundle:
+                // Static and dynamic libraries can't copy resources
+                guard target.type != .staticLibrary && target.type != .dynamicLibrary else { break }
+
+                let fileReference = sourceGenerator.getFileReference(
+                    path: Path(dependency.reference),
+                    inPath: project.basePath,
+                    sourceTree: .buildProductsDir
+                )
+
+                let pbxBuildFile = PBXBuildFile(file: fileReference, settings: nil)
+                let buildFile = addObject(pbxBuildFile)
+                copyBundlesReferences.append(buildFile)
+
+                if !bundleFiles.contains(fileReference) {
+                    bundleFiles.append(fileReference)
+                }
             }
         }
 
@@ -738,6 +768,15 @@ public class PBXProjGenerator {
         if !resourcesBuildPhaseFiles.isEmpty {
             let resourcesBuildPhase = addObject(PBXResourcesBuildPhase(files: resourcesBuildPhaseFiles))
             buildPhases.append(resourcesBuildPhase)
+        }
+
+        if !copyBundlesReferences.isEmpty {
+            let copyBundlesPhase = addObject(PBXCopyFilesBuildPhase(
+                dstSubfolderSpec: .resources,
+                name: "Copy Bundles to Resources directory",
+                files: copyBundlesReferences
+            ))
+            buildPhases.append(copyBundlesPhase)
         }
 
         let swiftObjCInterfaceHeader = project.getCombinedBuildSetting("SWIFT_OBJC_INTERFACE_HEADER_NAME", target: target, config: project.configs[0]) as? String
@@ -1046,6 +1085,10 @@ public class PBXProjGenerator {
                             // Aggregate targets should be included
                             dependencies[dependency.reference] = dependency
                         }
+                    }
+                case .bundle:
+                    if isTopLevel {
+                        dependencies[dependency.reference] = dependency
                     }
                 }
             }
