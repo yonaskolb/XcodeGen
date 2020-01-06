@@ -226,6 +226,13 @@ class ProjectSpecTests: XCTestCase {
                 try expectValidationError(project, .invalidProjectReference(scheme: "scheme1", reference: "invalidProjectRef"))
             }
 
+            $0.it("fails with invalid project reference path") {
+                var project = baseProject
+                let reference = ProjectReference(name: "InvalidProj", path: "invalid_path")
+                project.projectReferences = [reference]
+                try expectValidationError(project, .invalidProjectReferencePath(reference))
+            }
+
             $0.it("allows missing optional file") {
                 var project = baseProject
                 project.targets = [Target(
