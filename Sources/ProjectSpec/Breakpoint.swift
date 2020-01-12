@@ -40,11 +40,6 @@ public struct Breakpoint: Equatable {
         }
     }
 
-    public struct Location: Equatable {
-
-        public init() {}
-    }
-
     public var type: BreakpointType
     public var enabled: Bool
     public var ignoreCount: Int
@@ -62,7 +57,6 @@ public struct Breakpoint: Equatable {
     public var stopOnStyle: String?
     public var condition: String?
     public var actions: [Breakpoint.Action]
-    public var locations: [Breakpoint.Location]
 
     public init(type: BreakpointType,
                 enabled: Bool = true,
@@ -80,8 +74,7 @@ public struct Breakpoint: Equatable {
                 scope: String? = nil,
                 stopOnStyle: String? = nil,
                 condition: String? = nil,
-                actions: [Breakpoint.Action] = [],
-                locations: [Breakpoint.Location] = []) {
+                actions: [Breakpoint.Action] = []) {
         self.type = type
         self.enabled = enabled
         self.ignoreCount = ignoreCount
@@ -99,7 +92,6 @@ public struct Breakpoint: Equatable {
         self.stopOnStyle = stopOnStyle
         self.condition = condition
         self.actions = actions
-        self.locations = locations
     }
 }
 
@@ -120,10 +112,6 @@ extension Breakpoint.Action: JSONObjectConvertible {
         script = jsonDictionary.json(atKeyPath: "script")
         soundName = jsonDictionary.json(atKeyPath: "soundName")
     }
-}
-
-extension Breakpoint.Location: JSONObjectConvertible {
-    public init(jsonDictionary: JSONDictionary) throws {}
 }
 
 extension Breakpoint: JSONObjectConvertible {
@@ -155,6 +143,5 @@ extension Breakpoint: JSONObjectConvertible {
         } else {
             actions = []
         }
-        locations = jsonDictionary.json(atKeyPath: "locations") ?? []
     }
 }

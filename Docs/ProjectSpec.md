@@ -193,7 +193,6 @@ Default settings for file extensions. See [Sources](#sources) for more documenta
 - [ ] **scope**: **String** - breakpoint scope (only used by exception breakpoints)
 - [ ] **stopOnStyle**: **String** - indicates if should stop on style (only used by exception breakpoints)
 - [ ] **condition**: **String** - breakpoint condition
-- [ ] **locations**: **[Location]** - breakpoint locations (currently not used by Apple)
 - [ ] **actions**: **[[Breakpoint Action](#breakpoint-action)]** - breakpoint actions
 
 ```yaml

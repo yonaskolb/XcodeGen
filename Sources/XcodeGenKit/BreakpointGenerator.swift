@@ -33,8 +33,7 @@ public class BreakpointGenerator {
                                                                               module: breakpoint.module,
                                                                               scope: breakpoint.scope,
                                                                               stopOnStyle: breakpoint.stopOnStyle,
-                                                                              actions: try breakpoint.actions.map({ try generateBreakpointActionProxy($0) }),
-                                                                              locations: breakpoint.locations.map({ generateBreakpointLocationProxy($0) }))
+                                                                              actions: try breakpoint.actions.map({ try generateBreakpointActionProxy($0) }))
 
         return XCBreakpointList.BreakpointProxy(breakpointExtensionID: breakpoint.type,
                                                 breakpointContent: xcbreakpoint)
@@ -52,9 +51,5 @@ public class BreakpointGenerator {
 
         return XCBreakpointList.BreakpointProxy.BreakpointContent.BreakpointActionProxy(actionExtensionID:  breakpointAction.type,
                                                                                         actionContent: xcaction)
-    }
-
-    private func generateBreakpointLocationProxy(_ breakpointLocation: Breakpoint.Location) -> XCBreakpointList.BreakpointProxy.BreakpointContent.BreakpointLocationProxy {
-        return XCBreakpointList.BreakpointProxy.BreakpointContent.BreakpointLocationProxy()
     }
 }
