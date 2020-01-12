@@ -27,10 +27,10 @@ public enum SpecParsingError: Error, CustomStringConvertible {
             return "Invalid version: \(version)"
         case let .unknownPackageRequirement(package):
             return "Unknown package requirement: \(package)"
-        case let .unknownBreakpointType(breakpoint):
-            return "Unknown Breakpoint type: \(breakpoint)"
-        case let .unknownBreakpointActionType(breakpoint):
-            return "Unknown Breakpoint Action type: \(breakpoint)"
+        case let .unknownBreakpointType(type):
+            return "Unknown Breakpoint type: \(type)"
+        case let .unknownBreakpointActionType(type):
+            return "Unknown Breakpoint Action type: \(type)"
         }
     }
 }
