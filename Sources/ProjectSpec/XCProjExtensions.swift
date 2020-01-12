@@ -120,12 +120,12 @@ extension XCBreakpointList.BreakpointProxy.BreakpointExtensionID {
     }
 }
 
-extension XCBreakpointList.BreakpointProxy.BreakpointContent.BreakpointActionProxy.ActionExtensionID {
+extension BreakpointActionType {
 
     init?(string: String) {
-        if let type = XCBreakpointList.BreakpointProxy.BreakpointContent.BreakpointActionProxy.ActionExtensionID(rawValue: "Xcode.BreakpointAction.\(string)") {
+        if let type = BreakpointActionType(rawValue: "Xcode.BreakpointAction.\(string)") {
             self = type
-        } else if let type = XCBreakpointList.BreakpointProxy.BreakpointContent.BreakpointActionProxy.ActionExtensionID(rawValue: string) {
+        } else if let type = BreakpointActionType(rawValue: string) {
             self = type
         } else {
             return nil

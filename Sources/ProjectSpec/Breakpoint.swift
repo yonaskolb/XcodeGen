@@ -2,11 +2,14 @@ import Foundation
 import XcodeProj
 import JSONUtilities
 
+public typealias BreakpointActionType = XCBreakpointList.BreakpointProxy.BreakpointContent.BreakpointActionProxy.ActionExtensionID
+public typealias BreakpointType = XCBreakpointList.BreakpointProxy.BreakpointExtensionID
+
 public struct Breakpoint: Equatable {
 
     public struct Action: Equatable {
 
-        public var type: XCBreakpointList.BreakpointProxy.BreakpointContent.BreakpointActionProxy.ActionExtensionID
+        public var type: BreakpointActionType
         public var consoleCommand: String?
         public var message: String?
         public var conveyanceType: String?
@@ -16,7 +19,7 @@ public struct Breakpoint: Equatable {
         public var script: String?
         public var soundName: String?
 
-        public init(type: XCBreakpointList.BreakpointProxy.BreakpointContent.BreakpointActionProxy.ActionExtensionID,
+        public init(type: BreakpointActionType,
                     consoleCommand: String? = nil,
                     message: String? = nil,
                     conveyanceType: String? = nil,
@@ -42,7 +45,7 @@ public struct Breakpoint: Equatable {
         public init() {}
     }
 
-    public var type: XCBreakpointList.BreakpointProxy.BreakpointExtensionID
+    public var type: BreakpointType
     public var enabled: Bool
     public var ignoreCount: Int
     public var continueAfterRunningActions: Bool
@@ -61,7 +64,7 @@ public struct Breakpoint: Equatable {
     public var actions: [Breakpoint.Action]
     public var locations: [Breakpoint.Location]
 
-    public init(type: XCBreakpointList.BreakpointProxy.BreakpointExtensionID,
+    public init(type: BreakpointType,
                 enabled: Bool = true,
                 ignoreCount: Int = 0,
                 continueAfterRunningActions: Bool = false,
@@ -103,7 +106,7 @@ public struct Breakpoint: Equatable {
 extension Breakpoint.Action: JSONObjectConvertible {
     public init(jsonDictionary: JSONDictionary) throws {
         let typeString: String = try jsonDictionary.json(atKeyPath: "type")
-        if let type = XCBreakpointList.BreakpointProxy.BreakpointContent.BreakpointActionProxy.ActionExtensionID(string: typeString) {
+        if let type = BreakpointActionType(string: typeString) {
             self.type = type
         } else {
             throw SpecParsingError.unknownBreakpointActionType(typeString)
