@@ -171,7 +171,7 @@ Default settings for file extensions. See [Sources](#sources) for more documenta
 ### Breakpoints
 
 - [x] **type**: **String** - Breakpoint type
-    - `FileBreakpoint`: file brakpoint
+    - `FileBreakpoint`: file breakpoint
     - `ExceptionBreakpoint`: exception breakpoint
     - `SwiftErrorBreakpoint`: swift error breakpoint
     - `OpenGLErrorBreakpoint`: OpenGL breakpoint
