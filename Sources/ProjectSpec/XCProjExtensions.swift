@@ -107,12 +107,12 @@ extension XCScheme.CommandLineArguments {
     }
 }
 
-extension XCBreakpointList.BreakpointProxy.BreakpointExtensionID {
+extension BreakpointType {
 
     init?(string: String) {
-        if let type = XCBreakpointList.BreakpointProxy.BreakpointExtensionID(rawValue: "Xcode.Breakpoint.\(string)") {
+        if let type = BreakpointType(rawValue: "Xcode.Breakpoint.\(string)") {
             self = type
-        } else if let type = XCBreakpointList.BreakpointProxy.BreakpointExtensionID(rawValue: string) {
+        } else if let type = BreakpointType(rawValue: string) {
             self = type
         } else {
             return nil

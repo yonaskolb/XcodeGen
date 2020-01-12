@@ -130,7 +130,7 @@ extension Breakpoint: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
         let typeString: String = try jsonDictionary.json(atKeyPath: "type")
-        if let type = XCBreakpointList.BreakpointProxy.BreakpointExtensionID(string: typeString) {
+        if let type = BreakpointType(string: typeString) {
             self.type = type
         } else {
             throw SpecParsingError.unknownBreakpointType(typeString)
