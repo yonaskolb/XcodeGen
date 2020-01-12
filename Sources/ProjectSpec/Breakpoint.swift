@@ -7,6 +7,26 @@ public typealias BreakpointType = XCBreakpointList.BreakpointProxy.BreakpointExt
 
 public struct Breakpoint: Equatable {
 
+    public enum Scope: Int, Equatable {
+        case all
+        case objectiveC
+        case cpp
+
+        init?(_ text: String) {
+            let text = text.lowercased()
+            switch text {
+            case "all":
+                self = .all
+            case "objective-c":
+                self = .objectiveC
+            case "c++":
+                self = .cpp
+            default:
+                return nil
+            }
+        }
+    }
+
     public struct Action: Equatable {
 
         public var type: BreakpointActionType
@@ -53,7 +73,7 @@ public struct Breakpoint: Equatable {
     public var breakpointStackSelectionBehavior: String?
     public var symbol: String?
     public var module: String?
-    public var scope: String?
+    public var scope: Scope?
     public var stopOnStyle: String?
     public var condition: String?
     public var actions: [Breakpoint.Action]
@@ -71,7 +91,7 @@ public struct Breakpoint: Equatable {
                 breakpointStackSelectionBehavior: String? = nil,
                 symbol: String? = nil,
                 module: String? = nil,
-                scope: String? = nil,
+                scope: Scope? = nil,
                 stopOnStyle: String? = nil,
                 condition: String? = nil,
                 actions: [Breakpoint.Action] = []) {
@@ -135,7 +155,18 @@ extension Breakpoint: JSONObjectConvertible {
         breakpointStackSelectionBehavior = jsonDictionary.json(atKeyPath: "breakpointStackSelectionBehavior")
         symbol = jsonDictionary.json(atKeyPath: "symbol")
         module = jsonDictionary.json(atKeyPath: "module")
-        scope = jsonDictionary.json(atKeyPath: "scope")
+        if type == .exception {
+            if jsonDictionary["scope"] != nil {
+                let scopeString: String = try jsonDictionary.json(atKeyPath: "scope")
+                if let scope = Scope(scopeString) {
+                    self.scope = scope
+                } else {
+                    throw SpecParsingError.unknownBreakpointScope(scopeString)
+                }
+            } else {
+                scope = .objectiveC
+            }
+        }
         stopOnStyle = jsonDictionary.json(atKeyPath: "stopOnStyle")
         condition = jsonDictionary.json(atKeyPath: "condition")
         if jsonDictionary["actions"] != nil {

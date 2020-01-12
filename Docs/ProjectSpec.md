@@ -191,6 +191,9 @@ Default settings for file extensions. See [Sources](#sources) for more documenta
 - [ ] **symbol**: **String** - breakpoint symbol (only used by symbolic breakpoints)
 - [ ] **module**: **String** - breakpoint module (only used by symbolic breakpoints)
 - [ ] **scope**: **String** - breakpoint scope (only used by exception breakpoints)
+    - `All`
+    - `Objective-C` (default)
+    - `C++`
 - [ ] **stopOnStyle**: **String** - indicates if should stop on style (only used by exception breakpoints)
 - [ ] **condition**: **String** - breakpoint condition
 - [ ] **actions**: **[[Breakpoint Action](#breakpoint-action)]** - breakpoint actions

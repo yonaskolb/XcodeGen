@@ -386,6 +386,12 @@ class SpecLoadingTests: XCTestCase {
                 try expectBreakpointError(breakpoint, .unknownBreakpointType(invalid))
             }
 
+            $0.it("fails with incorrect breakpoint scope") {
+                var target = validBreakpoint
+                target["scope"] = invalid
+                try expectBreakpointError(target, .unknownBreakpointScope(invalid))
+            }
+
             $0.it("fails with incorrect breakpoint action type") {
                 var breakpoint = validBreakpoint
                 breakpoint["actions"] = [["type": invalid]]
