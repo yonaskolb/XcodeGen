@@ -27,6 +27,23 @@ public struct Breakpoint: Equatable {
         }
     }
 
+    public enum StopOnStyle: Int, Equatable {
+        case `throw`
+        case `catch`
+
+        init?(_ text: String) {
+            let text = text.lowercased()
+            switch text {
+            case "throw":
+                self = .throw
+            case "catch":
+                self = .catch
+            default:
+                return nil
+            }
+        }
+    }
+
     public struct Action: Equatable {
 
         public var type: BreakpointActionType
@@ -74,7 +91,7 @@ public struct Breakpoint: Equatable {
     public var symbol: String?
     public var module: String?
     public var scope: Scope?
-    public var stopOnStyle: String?
+    public var stopOnStyle: StopOnStyle?
     public var condition: String?
     public var actions: [Breakpoint.Action]
 
@@ -92,7 +109,7 @@ public struct Breakpoint: Equatable {
                 symbol: String? = nil,
                 module: String? = nil,
                 scope: Scope? = nil,
-                stopOnStyle: String? = nil,
+                stopOnStyle: StopOnStyle? = nil,
                 condition: String? = nil,
                 actions: [Breakpoint.Action] = []) {
         self.type = type
@@ -166,8 +183,17 @@ extension Breakpoint: JSONObjectConvertible {
             } else {
                 scope = .objectiveC
             }
+            if jsonDictionary["stopOnStyle"] != nil {
+                let stopOnStyleString: String = try jsonDictionary.json(atKeyPath: "stopOnStyle")
+                if let stopOnStyle = StopOnStyle(stopOnStyleString) {
+                    self.stopOnStyle = stopOnStyle
+                } else {
+                    throw SpecParsingError.unknownBreakpointStopOnStyle(stopOnStyleString)
+                }
+            } else {
+                stopOnStyle = .throw
+            }
         }
-        stopOnStyle = jsonDictionary.json(atKeyPath: "stopOnStyle")
         condition = jsonDictionary.json(atKeyPath: "condition")
         if jsonDictionary["actions"] != nil {
             actions = try jsonDictionary.json(atKeyPath: "actions", invalidItemBehaviour: .fail)

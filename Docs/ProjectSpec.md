@@ -195,6 +195,8 @@ Default settings for file extensions. See [Sources](#sources) for more documenta
     - `Objective-C` (default)
     - `C++`
 - [ ] **stopOnStyle**: **String** - indicates if should stop on style (only used by exception breakpoints)
+    -`throw` (default)
+    -`catch`
 - [ ] **condition**: **String** - breakpoint condition
 - [ ] **actions**: **[[Breakpoint Action](#breakpoint-action)]** - breakpoint actions
 
