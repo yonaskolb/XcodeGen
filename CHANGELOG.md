@@ -7,6 +7,7 @@
 
 #### Fixed
 - Fixed resolving a relative path for `projectReference.path` [#740](https://github.com/yonaskolb/XcodeGen/pull/740) @kateinoigakukun
+- Fixed resolving relative path passed to `XcodeProj` [#751](https://github.com/yonaskolb/XcodeGen/pull/751) @PycKamil
 
 #### Internal
 - Update to SwiftCLI 6.0 and use the new property wrappers [#749](https://github.com/yonaskolb/XcodeGen/pull/749) @yonaskolb
