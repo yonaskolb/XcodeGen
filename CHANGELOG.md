@@ -8,6 +8,7 @@
 
 #### Fixed
 - Fixed resolving a relative path for `projectReference.path` [#740](https://github.com/yonaskolb/XcodeGen/pull/740) @kateinoigakukun
+- Don't add framework dependency's directory to `FRAMEWORK_SEARCH_PATHS` if it is implicit [#744](https://github.com/yonaskolb/XcodeGen/pull/744) @ikesyo @yutailang0119
 
 #### Internal
 - Update to SwiftCLI 6.0 and use the new property wrappers [#749](https://github.com/yonaskolb/XcodeGen/pull/749) @yonaskolb
