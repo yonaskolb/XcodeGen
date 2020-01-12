@@ -534,8 +534,10 @@ public class PBXProjGenerator {
                 }
 
             case .framework:
-                let buildPath = Path(dependency.reference).parent().string.quoted
-                frameworkBuildPaths.insert(buildPath)
+                if !dependency.implicit {
+                    let buildPath = Path(dependency.reference).parent().string.quoted
+                    frameworkBuildPaths.insert(buildPath)
+                }
 
                 let fileReference: PBXFileElement
                 if dependency.implicit {
