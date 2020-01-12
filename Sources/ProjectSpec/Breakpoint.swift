@@ -44,14 +44,14 @@ public struct Breakpoint: Equatable {
 
     public var type: XCBreakpointList.BreakpointProxy.BreakpointExtensionID
     public var enabled: Bool
-    public var ignoreCount: String
+    public var ignoreCount: Int
     public var continueAfterRunningActions: Bool
     public var filePath: String?
     public var timestamp: String?
-    public var startingColumn: String?
-    public var endingColumn: String?
-    public var startingLine: String?
-    public var endingLine: String?
+    public var startingColumn: Int?
+    public var endingColumn: Int?
+    public var startingLine: Int?
+    public var endingLine: Int?
     public var breakpointStackSelectionBehavior: String?
     public var symbol: String?
     public var module: String?
@@ -63,14 +63,14 @@ public struct Breakpoint: Equatable {
 
     public init(type: XCBreakpointList.BreakpointProxy.BreakpointExtensionID,
                 enabled: Bool = true,
-                ignoreCount: String = "0",
+                ignoreCount: Int = 0,
                 continueAfterRunningActions: Bool = false,
                 filePath: String? = nil,
                 timestamp: String? = nil,
-                startingColumn: String? = nil,
-                endingColumn: String? = nil,
-                startingLine: String? = nil,
-                endingLine: String? = nil,
+                startingColumn: Int? = nil,
+                endingColumn: Int? = nil,
+                startingLine: Int? = nil,
+                endingLine: Int? = nil,
                 breakpointStackSelectionBehavior: String? = nil,
                 symbol: String? = nil,
                 module: String? = nil,
@@ -133,7 +133,7 @@ extension Breakpoint: JSONObjectConvertible {
             throw SpecParsingError.unknownBreakpointType(typeString)
         }
         enabled = jsonDictionary.json(atKeyPath: "enabled") ?? true
-        ignoreCount = jsonDictionary.json(atKeyPath: "ignoreCount") ?? "0"
+        ignoreCount = jsonDictionary.json(atKeyPath: "ignoreCount") ?? 0
         continueAfterRunningActions = jsonDictionary.json(atKeyPath: "continueAfterRunningActions") ?? false
         filePath = jsonDictionary.json(atKeyPath: "filePath")
         timestamp = jsonDictionary.json(atKeyPath: "timestamp")

@@ -179,14 +179,14 @@ Default settings for file extensions. See [Sources](#sources) for more documenta
     - `IDEConstraintErrorBreakpoint`: IDE constraint breakpoint
     - `IDETestFailureBreakpoint`: IDE test failure breakpoint
 - [ ] **enabled**: **Bool** - indicates whether it should be active
-- [ ] **ignoreCount**: **String** - indicates how many times it should be ignored before stopping
+- [ ] **ignoreCount**: **Int** - indicates how many times it should be ignored before stopping
 - [ ] **continueAfterRunningActions**: **Bool** - indicates if should automatically continue after evaluating actions
 - [ ] **timestamp**: **String** - breakpoint timestamp
 - [ ] **filePath**: **String** - breakpoint file path (only used by file breakpoints)
-- [ ] **startingColumn**: **String** - breakpoint starting column (only used by file breakpoints)
-- [ ] **endingColumn**: **String** - breakpoint ending column (only used by file breakpoints)
-- [ ] **startingLine**: **String** - breakpoint starting line (only used by file breakpoints)
-- [ ] **endingLine**: **String** - breakpoint ending line (only used by file breakpoints)
+- [ ] **startingColumn**: **Int** - breakpoint starting column (only used by file breakpoints)
+- [ ] **endingColumn**: **Int** - breakpoint ending column (only used by file breakpoints)
+- [ ] **startingLine**: **Int** - breakpoint starting line (only used by file breakpoints)
+- [ ] **endingLine**: **Int** - breakpoint ending line (only used by file breakpoints)
 - [ ] **breakpointStackSelectionBehavior**: **String** - breakpoint stack selection behavior
 - [ ] **symbol**: **String** - breakpoint symbol (only used by symbolic breakpoints)
 - [ ] **module**: **String** - breakpoint module (only used by symbolic breakpoints)
