@@ -1,6 +1,7 @@
 import Foundation
 import ProjectSpec
 import XcodeProj
+import PathKit
 
 private func suitableConfig(for type: ConfigType, in project: Project) -> Config {
     if let defaultConfig = Config.defaultConfigs.first(where: { $0.type == type }),
@@ -34,7 +35,7 @@ public class SchemeGenerator {
         if let cachedProject = projects[reference] {
             return cachedProject
         }
-        let pbxproj = try XcodeProj(pathString: reference.path).pbxproj
+        let pbxproj = try XcodeProj(path: project.basePath + Path(reference.path)).pbxproj
         projects[reference] = pbxproj
         return pbxproj
     }
