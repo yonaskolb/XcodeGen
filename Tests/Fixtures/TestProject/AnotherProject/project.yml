@@ -6,3 +6,6 @@ targets:
   BundleX:
     type: bundle
     platform: iOS
+  ExternalTarget:
+    type: framework
+    platform: iOS

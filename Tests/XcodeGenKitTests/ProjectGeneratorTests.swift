@@ -315,7 +315,7 @@ class ProjectGeneratorTests: XCTestCase {
             $0.it("generates dependency from external project file") {
                 let subproject: PBXProj
                 prepareXcodeProj: do {
-                    let project = try! Project(path: fixturePath + "external_target_test/test_project.yml")
+                    let project = try! Project(path: fixturePath + "TestProject/AnotherProject/project.yml")
                     let generator = ProjectGenerator(project: project)
                     let writer = FileWriter(project: project)
                     let xcodeProject = try! generator.generateXcodeProject()
@@ -323,11 +323,11 @@ class ProjectGeneratorTests: XCTestCase {
                     try! writer.writePlists()
                     subproject = xcodeProject.pbxproj
                 }
-                let externalProjectPath = fixturePath + "external_target_test/TestProject.xcodeproj"
-                let projectReference = ProjectReference(name: "ExternalProject", path: externalProjectPath.string)
+                let externalProjectPath = fixturePath + "TestProject/AnotherProject/AnotherProject.xcodeproj"
+                let projectReference = ProjectReference(name: "AnotherProject", path: externalProjectPath.string)
                 var target = app
                 target.dependencies = [
-                    Dependency(type: .target, reference: "ExternalProject/ExternalTarget")
+                    Dependency(type: .target, reference: "AnotherProject/ExternalTarget")
                 ]
                 let project = Project(
                     name: "test",
@@ -339,7 +339,7 @@ class ProjectGeneratorTests: XCTestCase {
 
                 let projectReferences = pbxProject.rootObject?.projects ?? []
                 try expect(projectReferences.count) == 1
-                try expect((projectReferences.first?["ProjectRef"])?.name) == "ExternalProject"
+                try expect((projectReferences.first?["ProjectRef"])?.name) == "AnotherProject"
 
                 let dependencies = pbxProject.targetDependencies
                 let targetUuid = subproject.targets(named: "ExternalTarget").first?.uuid

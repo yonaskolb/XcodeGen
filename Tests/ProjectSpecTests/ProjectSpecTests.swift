@@ -248,15 +248,16 @@ class ProjectSpecTests: XCTestCase {
 
             $0.it("allows project reference in target dependency") {
                 var project = baseProject
+                let externalProjectPath = fixturePath + "TestProject/AnotherProject/AnotherProject.xcodeproj"
                 project.projectReferences = [
-                    ProjectReference(name: "validProjectRef", path: "validProjectRef.xcodeproj")
+                    ProjectReference(name: "validProjectRef", path: externalProjectPath.string)
                 ]
                 project.targets = [
                     Target(
                         name: "target1",
                         type: .application,
                         platform: .iOS,
-                        dependencies: [Dependency(type: .target, reference: "validProjectRef/target2")]
+                        dependencies: [Dependency(type: .target, reference: "validProjectRef/ExternalTarget")]
                     ),
                 ]
                 try project.validate()

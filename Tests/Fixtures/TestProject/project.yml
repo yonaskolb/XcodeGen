@@ -15,6 +15,9 @@ fileGroups:
   - Configs
   - FileGroup
   - SomeFile
+projectReferences:
+  AnotherProject:
+    path: ./AnotherProject/AnotherProject.xcodeproj
 configFiles:
   Test Debug: Configs/config.xcconfig
 targets:
@@ -106,6 +109,7 @@ targets:
       - target: iMessageApp
       - sdk: Contacts.framework
       - bundle: BundleX.bundle
+      - target: AnotherProject/ExternalTarget
     scheme:
       testTargets:
         - App_iOS_Tests
