@@ -61,6 +61,7 @@
 		47D1F439B8E6D287B3F3E8D1 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = 6A58A16491CDDF968B0D56DE /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		47FC57B04A3AD83359F433EA /* StaticLibrary_ObjC.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5A2B916A11DCC2565241359F /* StaticLibrary_ObjC.h */; };
 		49A4B8937BB5520B36EA33F0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 814D72C2B921F60B759C2D4B /* Main.storyboard */; };
+		4AF7376CC51FE7C9B16A15AA /* ExternalTarget.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DCDCD083AABD1D30EA34576 /* ExternalTarget.framework */; };
 		4CB673A7C0C11E04F8544BDB /* Contacts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FDB2B6A77D39CD5602F2125F /* Contacts.framework */; };
 		4F6481557E2BEF8D749C37E3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 187E665975BB5611AF0F27E1 /* main.m */; };
 		52AD3276E068EB3396A292BB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8A016580A3B8F72B820BFBF /* Assets.xcassets */; };
@@ -73,12 +74,12 @@
 		5D10822B0E7C33DD6979F656 /* Standalone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F5BD97AF0F94A15A5B7DDB7 /* Standalone.swift */; };
 		632774E7F21CCB386A76B2A8 /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B198242976C3395E31FE000A /* MessagesViewController.swift */; };
 		63D8E7F00276736EDA62D227 /* Framework2.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3EF21DF245F66BEF5446AAEF /* Framework2.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		65D0801B9B6F4660C18B85E8 /* ExternalTarget.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DCDCD083AABD1D30EA34576 /* ExternalTarget.framework */; };
 		666AA5F3F63C8FD7C68A6CC5 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = 6A58A16491CDDF968B0D56DE /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		666DEC173BC78C7641AB22EC /* File1.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE1343F2238429D4DA9D830B /* File1.swift */; };
 		66C3C5E3C13325F351A3008F /* module.modulemap in CopyFiles */ = {isa = PBXBuildFile; fileRef = F2950763C4C568CC85021D18 /* module.modulemap */; };
 		6E8F8303759824631C8D9DA3 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9E17D598D98065767A04740F /* Localizable.strings */; };
 		7148A4172BFA1CC22E6ED5DB /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 753001CDCEAA4C4E1AFF8E87 /* MainInterface.storyboard */; };
+		715DD7C4C194A04A5C4049EF /* ExternalTarget.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3DCDCD083AABD1D30EA34576 /* ExternalTarget.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		747CAE14D196F5652E93353C /* Headers in Headers */ = {isa = PBXBuildFile; fileRef = 2E1E747C7BC434ADB80CC269 /* Headers */; settings = {ATTRIBUTES = (Public, ); }; };
 		75F2774F183838AF34CA9B8A /* StaticLibrary_ObjC.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D0C79A8C750EC0DE748C463 /* StaticLibrary_ObjC.m */; };
 		768648ED7E93B6D888574144 /* module.modulemap in CopyFiles */ = {isa = PBXBuildFile; fileRef = F2950763C4C568CC85021D18 /* module.modulemap */; };
@@ -451,7 +452,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				8A6B28514AA2DDB8C7B8014C /* ExternalTarget.framework in Embed Frameworks */,
+				715DD7C4C194A04A5C4049EF /* ExternalTarget.framework in Embed Frameworks */,
 				63D8E7F00276736EDA62D227 /* Framework2.framework in Embed Frameworks */,
 				B2D43A31C184E34EF9CB743C /* Framework.framework in Embed Frameworks */,
 			);
@@ -580,7 +581,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				65D0801B9B6F4660C18B85E8 /* ExternalTarget.framework in Frameworks */,
+				4AF7376CC51FE7C9B16A15AA /* ExternalTarget.framework in Frameworks */,
 				4CB673A7C0C11E04F8544BDB /* Contacts.framework in Frameworks */,
 				262891CCD5F74316610437FA /* Framework2.framework in Frameworks */,
 				2FAE950E8FF2E7C0F7FF1FE9 /* Framework.framework in Frameworks */,
