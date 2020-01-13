@@ -179,7 +179,8 @@ public class PBXProjGenerator {
         )
         derivedGroups.append(productGroup)
 
-        let subprojectFileReferences: [PBXFileReference] = project.projectReferences.map { projectReference in
+        let sortedProjectReferences = project.projectReferences.sorted { $0.name < $1.name }
+        let subprojectFileReferences: [PBXFileReference] = sortedProjectReferences.map { projectReference in
             let projectPath = Path(projectReference.path)
 
             return addObject(
