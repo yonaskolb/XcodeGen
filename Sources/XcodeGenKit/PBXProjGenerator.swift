@@ -358,12 +358,12 @@ public class PBXProjGenerator {
         return targetDependency
     }
 
-    func generateExternalTargetDependency(from: String, to target: String, in project: String) -> (PBXTargetDependency, PBXTarget, PBXReferenceProxy) {
+    func generateExternalTargetDependency(from: String, to target: String, in project: String) throws -> (PBXTargetDependency, PBXTarget, PBXReferenceProxy) {
         guard let projectReference = self.project.getProjectReference(project) else {
             fatalError("project not found")
         }
 
-        let pbxProj = try! getPBXProj(from: projectReference)
+        let pbxProj = try getPBXProj(from: projectReference)
 
         guard let targetObject = pbxProj.targets(named: target).first else {
             fatalError("target not found")
@@ -659,7 +659,7 @@ public class PBXProjGenerator {
                     }
                 case .project(let dependencyProjectName):
                     let dependencyTargetName = dependencyTargetReference.name
-                    let (targetDependency, dependencyTarget, dependencyProductProxy) = generateExternalTargetDependency(from: target.name, to: dependencyTargetName, in: dependencyProjectName)
+                    let (targetDependency, dependencyTarget, dependencyProductProxy) = try generateExternalTargetDependency(from: target.name, to: dependencyTargetName, in: dependencyProjectName)
                     dependencies.append(targetDependency)
 
                     guard let productType = dependencyTarget.productType else { continue }
