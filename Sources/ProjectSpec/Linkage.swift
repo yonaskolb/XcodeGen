@@ -7,10 +7,10 @@ public enum Linkage {
     case none
 }
 
-extension Target {
+extension PBXProductType {
 
     public var defaultLinkage: Linkage {
-        switch type {
+        switch self {
         case .none,
              .appExtension,
              .application,
@@ -40,25 +40,6 @@ extension Target {
             return .dynamic
         case .staticLibrary, .staticFramework:
             return .static
-        }
-    }
-}
-
-extension PBXTarget {
-
-    public var defaultLinkage: Linkage {
-        guard let type = productType else { return .none }
-
-        switch type {
-        case .framework:
-            // TODO: This should check `MACH_O_TYPE` in case this is a "Static Framework"
-            return .dynamic
-        case .dynamicLibrary:
-            return .dynamic
-        case .staticLibrary, .staticFramework:
-            return .static
-        default:
-            return .none
         }
     }
 }
