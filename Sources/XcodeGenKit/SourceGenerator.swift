@@ -125,7 +125,7 @@ class SourceGenerator {
             settings["ATTRIBUTES"] = attributes
         }
         
-        if !targetSource.resourceTags.isEmpty {
+        if chosenBuildPhase == .resources && !targetSource.resourceTags.isEmpty {
             settings["ASSET_TAGS"] = targetSource.resourceTags
         }
 
