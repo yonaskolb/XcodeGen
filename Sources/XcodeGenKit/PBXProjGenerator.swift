@@ -233,11 +233,11 @@ public class PBXProjGenerator {
             .sorted { $0.nameOrPath.localizedStandardCompare($1.nameOrPath) == .orderedAscending }
             .map { $0 }
 
-        let assetTags = Array(Set(project.targets
+        let assetTags = Set(project.targets
             .map { target in
                 target.sources.map { $0.resourceTags }.flatMap { $0 }
             }.flatMap { $0 }
-        ))
+        ).sorted()
         
         let projectAttributes: [String: Any] = ["LastUpgradeCheck": project.xcodeVersion]
             .merged(project.attributes)
