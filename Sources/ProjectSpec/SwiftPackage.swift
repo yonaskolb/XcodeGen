@@ -20,6 +20,28 @@ extension SwiftPackage: JSONObjectConvertible {
     public init(jsonDictionary: JSONDictionary) throws {
         url = try jsonDictionary.json(atKeyPath: "url")
         versionRequirement = try VersionRequirement(jsonDictionary: jsonDictionary)
+        try validateVersion()
+    }
+
+    private func validateVersion() throws {
+        switch versionRequirement {
+
+        case .upToNextMajorVersion(let version):
+            try _ = Version(version)
+
+        case .upToNextMinorVersion(let version):
+            try _ = Version(version)
+
+        case .range(let from, let to):
+            try _ = Version(from)
+            try _ = Version(to)
+
+        case .exact(let version):
+            try _ = Version(version)
+
+        default:
+            break
+        }
     }
 }
 
