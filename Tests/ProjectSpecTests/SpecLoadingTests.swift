@@ -1121,23 +1121,19 @@ class SpecLoadingTests: XCTestCase {
 
     func testPackagesVersion() {
         describe {
-           let invalidDictionary = [
-                "url": "package.git",
-                "majorVersion": "master"
-            ]
-
-            let invalidRangeDictionary = [
-                "url": "package.git",
-                "minVersion": "feature/swift5.2",
-                "maxVersion": "9.1.0"
+            let invalidPackages = [
+                [ "url": "package.git", "majorVersion": "master" ],
+                [ "url": "package.git", "from": "develop" ],
+                [ "url": "package.git", "minVersion": "feature/swift5.2", "maxVersion": "9.1.0" ],
+                [ "url": "package.git", "minorVersion": "x.1.2" ],
+                [ "url": "package.git", "exactVersion": "1.2.3.1" ],
+                [ "url": "package.git", "version": "foo-bar" ]
             ]
             
-            $0.it("is an invalid major package version") {
-                try expect { _ = try SwiftPackage(jsonDictionary: invalidDictionary) }.toThrow()
-            }
-
-            $0.it("is an invalid range package version") {
-                try expect { _ = try SwiftPackage(jsonDictionary: invalidRangeDictionary) }.toThrow()
+            $0.it("is an invalid package version") {
+                for dictionary in invalidPackages {
+                    try expect { _ = try SwiftPackage(jsonDictionary: dictionary) }.toThrow()
+                }
             }
         }
     }
