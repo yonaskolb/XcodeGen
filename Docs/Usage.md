@@ -93,6 +93,8 @@ You can also always overide any build settings on CI when building by passing sp
 DEVELOPMENT_TEAM=XXXXXXXXX xcodebuild ...
 ```
 
+---
+
 # Dependencies
 
 Each target can declare one or more dependencies. See [Dependency](ProjectSpec.md#dependency) in the ProjectSpec for more info about all the properties
@@ -210,3 +212,22 @@ targets:
     dependencies:
       - framework: Vendor/MyFramework.framework
 ```
+
+---
+
+# Modularisation and reuse
+There are various ways in XcodeGen to modularise various parts of the spec which can reduce duplication, and allow for re-use in other projects
+
+### Includes
+A spec can be split up into multiple files and then merged together using `include`. By default paths within the included file are relative to that file. This can be controlled with `relativePaths`. See the [Project Spec](ProjectSpec.MD#include) for a full definition.
+
+```yaml
+include:
+  - includedFile.yml
+  - path: path/to/includedFile.yml
+    relativePaths: false
+```
+
+### Templates
+Both `targetTemplates` and `schemeTemplates` can be used to
+### Environment variables
