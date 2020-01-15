@@ -85,6 +85,7 @@ class SourceGenerator {
         let fileReference = fileReference ?? fileReferencesByPath[path.string.lowercased()]!
         var settings: [String: Any] = [:]
         var attributes: [String] = targetSource.attributes
+        let resourceTags: [String] = targetSource.resourceTags
         var chosenBuildPhase: TargetSource.BuildPhase?
 
         let headerVisibility = targetSource.headerVisibility ?? .public
@@ -123,6 +124,10 @@ class SourceGenerator {
 
         if !attributes.isEmpty {
             settings["ATTRIBUTES"] = attributes
+        }
+        
+        if !resourceTags.isEmpty {
+            settings["ASSET_TAGS"] = resourceTags
         }
 
         let buildFile = PBXBuildFile(file: fileReference, settings: settings.isEmpty ? nil : settings)
