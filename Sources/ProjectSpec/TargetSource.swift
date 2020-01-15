@@ -211,6 +211,7 @@ extension TargetSource: JSONEncodable {
             "type": type?.rawValue,
             "buildPhase": buildPhase?.toJSONValue(),
             "createIntermediateGroups": createIntermediateGroups,
+            "resourceTags": resourceTags,
         ]
 
         if optional != TargetSource.optionalDefault {
