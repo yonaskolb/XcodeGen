@@ -239,10 +239,13 @@ public class PBXProjGenerator {
             }.flatMap { $0 }
         ).sorted()
         
-        let projectAttributes: [String: Any] = ["LastUpgradeCheck": project.xcodeVersion]
+        var projectAttributes: [String: Any] = ["LastUpgradeCheck": project.xcodeVersion]
             .merged(project.attributes)
-            .merged(["knownAssetTags" : assetTags])
-
+        
+        if !assetTags.isEmpty {
+            projectAttributes["knownAssetTags"] = assetTags
+        }
+        
         let knownRegions = sourceGenerator.knownRegions
         pbxProject.knownRegions = (knownRegions.isEmpty ? ["en"] : knownRegions).union(["Base"]).sorted()
         pbxProject.packages = packageReferences.sorted { $0.key < $1.key }.map { $1 }
