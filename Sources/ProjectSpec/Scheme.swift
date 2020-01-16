@@ -32,6 +32,32 @@ public struct Scheme: Equatable {
         self.archive = archive
     }
 
+    public struct SimulateLocation: Equatable {
+        public enum ReferenceType: String {
+            case predefined = "1"
+            case gpx = "0"
+        }
+        
+        public var allow: Bool
+        public var defaultLocation: String?
+
+        public var referenceType: ReferenceType? {
+            guard let defaultLocation = self.defaultLocation else {
+                return nil
+            }
+
+            if defaultLocation.contains(".gpx") {
+                return .gpx
+            }
+            return .predefined
+        }
+
+        public init(allow: Bool, defaultLocation: String) {
+            self.allow = allow
+            self.defaultLocation = defaultLocation
+        }
+    }
+
     public struct ExecutionAction: Equatable {
         public var script: String
         public var name: String
@@ -80,6 +106,7 @@ public struct Scheme: Equatable {
         public var language: String?
         public var region: String?
         public var debugEnabled: Bool
+        public var simulateLocation: SimulateLocation?
 
         public init(
             config: String,
@@ -90,7 +117,8 @@ public struct Scheme: Equatable {
             disableMainThreadChecker: Bool = disableMainThreadCheckerDefault,
             language: String? = nil,
             region: String? = nil,
-            debugEnabled: Bool = debugEnabledDefault
+            debugEnabled: Bool = debugEnabledDefault,
+            simulateLocation: SimulateLocation? = nil
         ) {
             self.config = config
             self.commandLineArguments = commandLineArguments
@@ -101,6 +129,7 @@ public struct Scheme: Equatable {
             self.language = language
             self.region = region
             self.debugEnabled = debugEnabled
+            self.simulateLocation = simulateLocation
         }
     }
 
@@ -280,6 +309,28 @@ extension Scheme.ExecutionAction: JSONEncodable {
     }
 }
 
+extension Scheme.SimulateLocation: JSONObjectConvertible {
+
+    public init(jsonDictionary: JSONDictionary) throws {
+        allow = try jsonDictionary.json(atKeyPath: "allow")
+        defaultLocation = jsonDictionary.json(atKeyPath: "defaultLocation")
+    }
+}
+
+extension Scheme.SimulateLocation: JSONEncodable {
+    public func toJSONValue() -> Any {
+        var dict: [String: Any] = [
+            "allow": allow
+        ]
+
+        if let defaultLocation = defaultLocation {
+            dict["defaultLocation"] = defaultLocation
+        }
+
+        return dict
+    }
+}
+
 extension Scheme.Run: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
@@ -292,6 +343,7 @@ extension Scheme.Run: JSONObjectConvertible {
         language = jsonDictionary.json(atKeyPath: "language")
         region = jsonDictionary.json(atKeyPath: "region")
         debugEnabled = jsonDictionary.json(atKeyPath: "debugEnabled") ?? Scheme.Run.debugEnabledDefault
+        simulateLocation = jsonDictionary.json(atKeyPath: "simulateLocation")
     }
 }
 
@@ -313,6 +365,10 @@ extension Scheme.Run: JSONEncodable {
 
         if debugEnabled != Scheme.Run.debugEnabledDefault {
             dict["debugEnabled"] = debugEnabled
+        }
+
+        if let simulateLocation = simulateLocation {
+            dict["simulateLocation"] = simulateLocation.toJSONValue()
         }
         return dict
     }

@@ -214,6 +214,16 @@ public class SchemeGenerator {
             region: scheme.test?.region
         )
 
+        let allowLocationSimulation = scheme.run?.simulateLocation?.allow ?? true
+        var locationScenarioReference: XCScheme.LocationScenarioReference?
+        if let simulateLocation = scheme.run?.simulateLocation, var identifier = simulateLocation.defaultLocation, let referenceType = simulateLocation.referenceType {
+            if referenceType == .gpx {
+                var path = Path("../\(identifier)")
+                path = path.simplifyingParentDirectoryReferences()
+                identifier = path.string
+            }
+            locationScenarioReference = XCScheme.LocationScenarioReference(identifier: identifier, referenceType: referenceType.rawValue)
+        }
         let launchAction = XCScheme.LaunchAction(
             runnable: shouldExecuteOnLaunch ? productRunable : nil,
             buildConfiguration: scheme.run?.config ?? defaultDebugConfig.name,
@@ -222,6 +232,8 @@ public class SchemeGenerator {
             macroExpansion: shouldExecuteOnLaunch ? nil : buildableReference,
             selectedDebuggerIdentifier: (scheme.run?.debugEnabled ?? Scheme.Run.debugEnabledDefault) ? XCScheme.defaultDebugger : "",
             selectedLauncherIdentifier: (scheme.run?.debugEnabled ?? Scheme.Run.debugEnabledDefault) ? XCScheme.defaultLauncher : "Xcode.IDEFoundation.Launcher.PosixSpawn",
+            allowLocationSimulation: allowLocationSimulation,
+            locationScenarioReference: locationScenarioReference,
             disableMainThreadChecker: scheme.run?.disableMainThreadChecker ?? Scheme.Run.disableMainThreadCheckerDefault,
             commandlineArguments: launchCommandLineArgs,
             environmentVariables: launchVariables,
