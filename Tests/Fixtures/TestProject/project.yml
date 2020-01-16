@@ -276,7 +276,11 @@ schemes:
   App_Scheme:
     build:
       targets:
-        App_iOS: all
+        App_iOS: all    
+    run:
+      simulateLocation:
+        allow: true
+        defaultLocation: Honolulu, HI, USA
     test:
       gatherCoverageData: true
       targets:
