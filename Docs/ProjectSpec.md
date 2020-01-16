@@ -771,14 +771,13 @@ A multiline script can be written using the various YAML multiline methods, for 
 	- `New York, NY, USA`
 	- `Rio de Janeiro, Brazil`
 	- `<relative-path-to-gpx-file>` (e.g. ./location.gpx)   
-	 Setting the **defaultLocation** to a custom gpx file, you also need to add that file as a target source:
+	 Setting the **defaultLocation** to a custom gpx file, you also need to add that file to `fileGroups` for Xcode be able to use it:
 	 
 ```yaml
 targets:
   MyTarget:
-    sources:
-      - path: location.gpx
-        buildPhase: none
+    fileGroups:
+      - location.gpx
 ```
 
 
