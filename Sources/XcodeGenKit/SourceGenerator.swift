@@ -124,6 +124,10 @@ class SourceGenerator {
         if !attributes.isEmpty {
             settings["ATTRIBUTES"] = attributes
         }
+        
+        if chosenBuildPhase == .resources && !targetSource.resourceTags.isEmpty {
+            settings["ASSET_TAGS"] = targetSource.resourceTags
+        }
 
         let buildFile = PBXBuildFile(file: fileReference, settings: settings.isEmpty ? nil : settings)
         return SourceFile(

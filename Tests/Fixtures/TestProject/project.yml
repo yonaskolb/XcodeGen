@@ -86,6 +86,11 @@ targets:
           copyFiles:
             destination: productsDirectory
             subpath: include/$(PRODUCT_NAME)
+      - path: Resources/example.mp4
+        buildPhase: resources
+        resourceTags:
+          - tag1
+          - tag2
     settings:
       INFOPLIST_FILE: App_iOS/Info.plist
       PRODUCT_BUNDLE_IDENTIFIER: com.project.app

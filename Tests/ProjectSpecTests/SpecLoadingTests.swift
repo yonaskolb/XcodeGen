@@ -348,6 +348,7 @@ class SpecLoadingTests: XCTestCase {
                     ["path": "sourceWithFileType", "type": "file"],
                     ["path": "sourceWithGroupType", "type": "group"],
                     ["path": "sourceWithFolderType", "type": "folder"],
+                    ["path": "sourceWithResourceTags", "resourceTags": ["tag1", "tag2"]],
                 ]
                 var targetDictionary2 = validTarget
                 targetDictionary2["sources"] = "source3"
@@ -364,6 +365,7 @@ class SpecLoadingTests: XCTestCase {
                     TargetSource(path: "sourceWithFileType", type: .file),
                     TargetSource(path: "sourceWithGroupType", type: .group),
                     TargetSource(path: "sourceWithFolderType", type: .folder),
+                    TargetSource(path: "sourceWithResourceTags", resourceTags: ["tag1", "tag2"]),
                 ]
 
                 try expect(target1.sources) == target1SourcesExpect
