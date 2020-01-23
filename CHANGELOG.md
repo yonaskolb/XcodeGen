@@ -3,6 +3,7 @@
 ## Next Version
 
 #### Added
+- Added pre and post command options. Useful for running `pod install` in combination with `--use-cache` [#759](https://github.com/yonaskolb/XcodeGen/pull/759) @yonaskolb
 - Support for language and region settings on a target basis [#728](https://github.com/yonaskolb/XcodeGen/pull/728) @FranzBusch
 - Added option to generate only Info.plist files with `--only-plists` [#739](https://github.com/yonaskolb/XcodeGen/pull/739) @namolnad
 - Support for On Demand Resources tags [#753](https://github.com/yonaskolb/XcodeGen/pull/753) @sipao
