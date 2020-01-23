@@ -79,6 +79,11 @@ class GenerateCommand: ProjectCommand {
             throw GenerationError.validationError(error)
         }
 
+        // run pre gen command
+        if let command = project.options.preGenCommand {
+            try Task.run(bash: command)
+        }
+
         // generate plists
         info("⚙️  Generating plists...")
         let fileWriter = FileWriter(project: project)
@@ -118,6 +123,11 @@ class GenerateCommand: ProjectCommand {
             } catch {
                 info("Failed to write cache: \(error.localizedDescription)")
             }
+        }
+
+        // run post gen command
+        if let command = project.options.postGenCommand {
+            try Task.run(bash: command)
         }
     }
 

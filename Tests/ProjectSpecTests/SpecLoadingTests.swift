@@ -1070,7 +1070,9 @@ class SpecLoadingTests: XCTestCase {
                         watchOS: "3.0",
                         macOS: "10.12.1"
                     ),
-                    findCarthageFrameworks: true
+                    findCarthageFrameworks: true,
+                    preGenCommand: "swiftgen",
+                    postGenCommand: "pod install"
                 )
                 let expected = Project(name: "test", options: options)
                 let dictionary: [String: Any] = ["options": [
@@ -1081,6 +1083,8 @@ class SpecLoadingTests: XCTestCase {
                     "developmentLanguage": "ja",
                     "deploymentTarget": ["iOS": 11.1, "tvOS": 10.0, "watchOS": "3", "macOS": "10.12.1"],
                     "findCarthageFrameworks": true,
+                    "preGenCommand": "swiftgen",
+                    "postGenCommand": "pod install",
                 ]]
                 let parsedSpec = try getProjectSpec(dictionary)
                 try expect(parsedSpec) == expected

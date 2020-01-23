@@ -9,6 +9,8 @@ options:
   deploymentTarget:
     watchOS: 4.0
   groupSortPosition: top
+  preGenCommand: echo "This is a pre-gen command"
+  postGenCommand: echo "This is a post-gen command"
 fileGroups:
   - Configs
   - FileGroup

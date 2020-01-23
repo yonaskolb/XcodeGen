@@ -28,6 +28,8 @@ public struct SpecOptions: Equatable {
     public var generateEmptyDirectories: Bool
     public var findCarthageFrameworks: Bool
     public var localPackagesGroup: String?
+    public var preGenCommand: String?
+    public var postGenCommand: String?
 
     public enum ValidationType: String {
         case missingConfigs
@@ -84,7 +86,9 @@ public struct SpecOptions: Equatable {
         groupSortPosition: GroupSortPosition = groupSortPositionDefault,
         generateEmptyDirectories: Bool = generateEmptyDirectoriesDefault,
         findCarthageFrameworks: Bool = findCarthageFrameworksDefault,
-        localPackagesGroup: String? = nil
+        localPackagesGroup: String? = nil,
+        preGenCommand: String? = nil,
+        postGenCommand: String? = nil
     ) {
         self.minimumXcodeGenVersion = minimumXcodeGenVersion
         self.carthageBuildPath = carthageBuildPath
@@ -105,6 +109,8 @@ public struct SpecOptions: Equatable {
         self.generateEmptyDirectories = generateEmptyDirectories
         self.findCarthageFrameworks = findCarthageFrameworks
         self.localPackagesGroup = localPackagesGroup
+        self.preGenCommand = preGenCommand
+        self.postGenCommand = postGenCommand
     }
 }
 
@@ -133,6 +139,8 @@ extension SpecOptions: JSONObjectConvertible {
         generateEmptyDirectories = jsonDictionary.json(atKeyPath: "generateEmptyDirectories") ?? SpecOptions.generateEmptyDirectoriesDefault
         findCarthageFrameworks = jsonDictionary.json(atKeyPath: "findCarthageFrameworks") ?? SpecOptions.findCarthageFrameworksDefault
         localPackagesGroup = jsonDictionary.json(atKeyPath: "localPackagesGroup")
+        preGenCommand = jsonDictionary.json(atKeyPath: "preGenCommand")
+        postGenCommand = jsonDictionary.json(atKeyPath: "postGenCommand")
     }
 }
 
@@ -154,6 +162,8 @@ extension SpecOptions: JSONEncodable {
             "tabWidth": tabWidth.flatMap { Int($0) },
             "defaultConfig": defaultConfig,
             "localPackagesGroup": localPackagesGroup,
+            "preGenCommand": preGenCommand,
+            "postGenCommand": postGenCommand,
         ]
 
         if settingPresets != SpecOptions.settingPresetsDefault {
