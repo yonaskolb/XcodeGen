@@ -7,13 +7,11 @@ extension PBXFileElement {
         return name ?? path ?? ""
     }
 
-    func localizedStandardCompare(_ rhs: PBXFileElement) -> ComparisonResult {
+    func namePathLocalizedStandardCompare(_ rhs: PBXFileElement) -> ComparisonResult {
         return sortString.localizedStandardCompare(rhs.sortString)
     }
-}
 
-extension PBXFileElement: Comparable {
-    public static func < (lhs: PBXFileElement, rhs: PBXFileElement) -> Bool {
+    static func areNamePathInIncreasingOrder(_ lhs: PBXFileElement, _ rhs: PBXFileElement) -> Bool {
         return lhs.sortString < rhs.sortString
     }
 
