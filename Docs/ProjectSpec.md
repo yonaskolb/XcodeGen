@@ -728,6 +728,7 @@ The different actions share some properties:
 - [ ] **language**: **String** - `run` and `test` actions can define a language that is used for Application Language
 - [ ] **region**: **String** - `run` and `test` actions can define a language that is used for Application Region
 - [ ] **debugEnabled**: **Bool** - `run` and `test` actions can define a whether debugger should be used. This defaults to true.
+- [ ] **simulateLocation**: **[Simulate Location](#simulate-location)** - `run` action can define a simulated location
 
 ### Execution Action
 
@@ -755,6 +756,33 @@ A multiline script can be written using the various YAML multiline methods, for 
 
 - [ ] **customArchiveName**: **String** - the custom name to give to the archive
 - [ ] **revealArchiveInOrganizer**: **Bool** - flag to determine whether the archive will be revealed in Xcode's Organizer after it's done building
+
+
+### Simulate Location
+- [x] **allow**: **Bool** - enable location simulation 
+- [ ] **defaultLocation**: **String** - set the default location, possible values:
+	- `London, England`
+	- `Johannesburg, South Africa`
+	- `Moscow, Russia`
+	- `Mumbai, India`
+	- `Tokyo, Japan`
+	- `Sydney, Australia`
+	- `Hong Kong, China`
+	- `Honolulu, HI, USA`
+	- `San Francisco, CA, USA`
+	- `Mexico City, Mexico`
+	- `New York, NY, USA`
+	- `Rio de Janeiro, Brazil`
+	- `<relative-path-to-gpx-file>` (e.g. ./location.gpx)   
+	 Setting the **defaultLocation** to a custom gpx file, you also need to add that file to `fileGroups` for Xcode be able to use it:
+	 
+```yaml
+targets:
+  MyTarget:
+    fileGroups:
+      - location.gpx
+```
+
 
 ### Environment Variable
 

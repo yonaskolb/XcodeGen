@@ -47,9 +47,11 @@ class SchemeGeneratorTests: XCTestCase {
             let buildTarget = Scheme.BuildTarget(target: .local(app.name))
             $0.it("generates scheme") {
                 let preAction = Scheme.ExecutionAction(name: "Script", script: "echo Starting", settingsTarget: app.name)
+                let simulateLocation = Scheme.SimulateLocation(allow: true, defaultLocation: "New York, NY, USA")
                 let scheme = Scheme(
                     name: "MyScheme",
-                    build: Scheme.Build(targets: [buildTarget], preActions: [preAction])
+                    build: Scheme.Build(targets: [buildTarget], preActions: [preAction]),
+                    run: Scheme.Run(config: "Debug", simulateLocation: simulateLocation)
                 )
                 let project = Project(
                     name: "test",
@@ -91,6 +93,10 @@ class SchemeGeneratorTests: XCTestCase {
 
                 try expect(xcscheme.launchAction?.selectedDebuggerIdentifier) == XCScheme.defaultDebugger
                 try expect(xcscheme.testAction?.selectedDebuggerIdentifier) == XCScheme.defaultDebugger
+                
+                try expect(xcscheme.launchAction?.allowLocationSimulation) == true
+                try expect(xcscheme.launchAction?.locationScenarioReference?.referenceType) == Scheme.SimulateLocation.ReferenceType.predefined.rawValue
+                try expect(xcscheme.launchAction?.locationScenarioReference?.identifier) == "New York, NY, USA"
             }
 
             $0.it("generates scheme with multiple configs") {
