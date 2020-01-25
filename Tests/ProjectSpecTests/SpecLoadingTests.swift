@@ -410,6 +410,12 @@ class SpecLoadingTests: XCTestCase {
                 try expectBreakpointError(breakpoint, .unknownBreakpointActionConveyanceType(invalid))
             }
 
+            $0.it("fails with incorrect breakpoint action sound name") {
+                var breakpoint = validBreakpoint
+                breakpoint["actions"] = [["type": "Sound", "soundName": invalid]]
+                try expectBreakpointError(breakpoint, .unknownBreakpointActionSoundName(invalid))
+            }
+
             $0.it("parses breakpoints") {
                 let breakpointDictionaries = [
                     ["type": "FileBreakpoint", "filePath": "Foo.swift", "line": 7, "condition": "bar == nil", "timestamp": "600577513.4932801"],

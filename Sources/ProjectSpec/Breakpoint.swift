@@ -63,6 +63,23 @@ public struct Breakpoint: Equatable {
             }
         }
 
+        public enum SoundName: String, Equatable {
+            case basso = "Basso"
+            case blow = "Blow"
+            case bottle = "Bottle"
+            case frog = "Frog"
+            case funk = "Funk"
+            case glass = "Glass"
+            case hero = "Hero"
+            case morse = "Morse"
+            case ping = "Ping"
+            case pop = "Pop"
+            case purr = "Purr"
+            case sosumi = "Sosumi"
+            case submarine = "Submarine"
+            case tink = "Tink"
+        }
+
         public var type: BreakpointActionType
         public var consoleCommand: String?
         public var message: String?
@@ -71,7 +88,7 @@ public struct Breakpoint: Equatable {
         public var arguments: String?
         public var waitUntilDone: Bool?
         public var script: String?
-        public var soundName: String?
+        public var soundName: SoundName?
 
         public init(type: BreakpointActionType,
                     consoleCommand: String? = nil,
@@ -81,7 +98,7 @@ public struct Breakpoint: Equatable {
                     arguments: String? = nil,
                     waitUntilDone: Bool? = nil,
                     script: String? = nil,
-                    soundName: String? = nil) {
+                    soundName: SoundName? = nil) {
             self.type = type
             self.consoleCommand = consoleCommand
             self.message = message
@@ -168,7 +185,18 @@ extension Breakpoint.Action: JSONObjectConvertible {
             waitUntilDone = jsonDictionary.json(atKeyPath: "waitUntilDone") ?? false
         }
         script = jsonDictionary.json(atKeyPath: "script")
-        soundName = jsonDictionary.json(atKeyPath: "soundName")
+        if type == .sound {
+            if jsonDictionary["soundName"] != nil {
+                let soundNameString: String = try jsonDictionary.json(atKeyPath: "soundName")
+                if let soundName = SoundName(rawValue: soundNameString) {
+                    self.soundName = soundName
+                } else {
+                    throw SpecParsingError.unknownBreakpointActionSoundName(soundNameString)
+                }
+            } else {
+                soundName = .basso
+            }
+        }
     }
 }
 

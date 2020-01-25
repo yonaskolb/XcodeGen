@@ -46,7 +46,7 @@ public class BreakpointGenerator {
                                                                                                                         arguments: breakpointAction.arguments,
                                                                                                                         waitUntilDone: breakpointAction.waitUntilDone,
                                                                                                                         script: breakpointAction.script,
-                                                                                                                        soundName: breakpointAction.soundName)
+                                                                                                                        soundName: breakpointAction.soundName?.rawValue)
 
         return XCBreakpointList.BreakpointProxy.BreakpointContent.BreakpointActionProxy(actionExtensionID:  breakpointAction.type,
                                                                                         actionContent: xcaction)
