@@ -442,6 +442,33 @@ class SpecLoadingTests: XCTestCase {
                 try expect(project.breakpoints) == expectedBreakpoints
             }
 
+            $0.it("parses breakpoint actions") {
+                var breakpointDicationary = validBreakpoint
+                breakpointDicationary["actions"] = [
+                    ["type": "DebuggerCommand", "consoleCommand": "po $arg1"],
+                    ["type": "Log", "message": "message", "conveyanceType": "speak"],
+                    ["type": "ShellCommand", "command": "script.sh", "arguments": "argument1, argument2", "waitUntilDone": true],
+                    ["type": "GraphicsTrace"],
+                    ["type": "AppleScript", "script": #"display alert "Hello!""#],
+                    ["type": "Sound", "soundName": "Hero"],
+                    ["type": "OpenGLError"]
+                ]
+
+                let breakpoint = try Breakpoint(jsonDictionary: breakpointDicationary)
+
+                let expectedActions = [
+                    Breakpoint.Action(type: .debuggerCommand, consoleCommand: "po $arg1"),
+                    Breakpoint.Action(type: .log, message: "message", conveyanceType: .speak),
+                    Breakpoint.Action(type: .shellCommand, command: "script.sh", arguments: "argument1, argument2", waitUntilDone: true),
+                    Breakpoint.Action(type: .graphicsTrace),
+                    Breakpoint.Action(type: .appleScript, script: #"display alert "Hello!""#),
+                    Breakpoint.Action(type: .sound, soundName: .hero),
+                    Breakpoint.Action(type: .openGLError)
+                ]
+
+                try expect(breakpoint.actions) == expectedActions
+            }
+
             $0.it("parses sources") {
                 var targetDictionary1 = validTarget
                 targetDictionary1["sources"] = [
