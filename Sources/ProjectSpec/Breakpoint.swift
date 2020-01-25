@@ -7,10 +7,10 @@ public typealias BreakpointType = XCBreakpointList.BreakpointProxy.BreakpointExt
 
 public struct Breakpoint: Equatable {
 
-    public enum Scope: Int, Equatable {
-        case all
-        case objectiveC
-        case cpp
+    public enum Scope: String, Equatable {
+        case all = "0"
+        case objectiveC = "1"
+        case cpp = "2"
 
         init?(_ text: String) {
             let text = text.lowercased()
@@ -27,9 +27,9 @@ public struct Breakpoint: Equatable {
         }
     }
 
-    public enum StopOnStyle: Int, Equatable {
-        case `throw`
-        case `catch`
+    public enum StopOnStyle: String, Equatable {
+        case `throw` = "0"
+        case `catch` = "1"
 
         init?(_ text: String) {
             let text = text.lowercased()

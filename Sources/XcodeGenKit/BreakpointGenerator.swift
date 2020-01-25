@@ -31,8 +31,8 @@ public class BreakpointGenerator {
                                                                               breakpointStackSelectionBehavior: breakpoint.breakpointStackSelectionBehavior,
                                                                               symbol: breakpoint.symbol,
                                                                               module: breakpoint.module,
-                                                                              scope: breakpoint.scope.flatMap { String($0.rawValue) },
-                                                                              stopOnStyle: breakpoint.stopOnStyle.flatMap { String($0.rawValue) },
+                                                                              scope: breakpoint.scope?.rawValue,
+                                                                              stopOnStyle: breakpoint.stopOnStyle?.rawValue,
                                                                               actions: try breakpoint.actions.map({ try generateBreakpointActionProxy($0) }))
 
         return XCBreakpointList.BreakpointProxy(breakpointExtensionID: breakpoint.type,
