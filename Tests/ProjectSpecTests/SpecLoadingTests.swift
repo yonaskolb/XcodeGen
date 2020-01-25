@@ -357,7 +357,7 @@ class SpecLoadingTests: XCTestCase {
 
     func testProjectSpecParser() {
         let validTarget: [String: Any] = ["type": "application", "platform": "iOS"]
-        let validBreakpoint: [String: Any] = ["type": "ExceptionBreakpoint"]
+        let validBreakpoint: [String: Any] = ["type": "ExceptionBreakpoint", "scope": "All", "stopOnStyle": "Catch"]
         let invalid = "invalid"
 
         describe {
@@ -402,6 +402,32 @@ class SpecLoadingTests: XCTestCase {
                 var breakpoint = validBreakpoint
                 breakpoint["actions"] = [["type": invalid]]
                 try expectBreakpointError(breakpoint, .unknownBreakpointActionType(invalid))
+            }
+
+            $0.it("parses breakpoints") {
+                let breakpointDictionaries = [
+                    ["type": "FileBreakpoint", "filePath": "Foo.swift", "line": 7, "condition": "bar == nil", "timestamp": "600577513.4932801"],
+                    ["type": "ExceptionBreakpoint", "scope": "All", "stopOnStyle": "Catch"],
+                    ["type": "SwiftErrorBreakpoint", "enabled": false],
+                    ["type": "OpenGLErrorBreakpoint", "ignoreCount": 2],
+                    ["type": "SymbolicBreakpoint", "symbol": "UIViewAlertForUnsatisfiableConstraints", "module": "UIKitCore"],
+                    ["type": "IDEConstraintErrorBreakpoint", "continueAfterRunningActions": true],
+                    ["type": "IDETestFailureBreakpoint", "breakpointStackSelectionBehavior": "1"]
+                ]
+
+                let project = try getProjectSpec(["breakpoints": breakpointDictionaries])
+
+                let expectedBreakpoints = [
+                    Breakpoint(type: .file, filePath: "Foo.swift",  timestamp: "600577513.4932801",  line: 7, condition: "bar == nil"),
+                    Breakpoint(type: .exception, scope: .all, stopOnStyle: .catch),
+                    Breakpoint(type: .swiftError, enabled: false),
+                    Breakpoint(type: .openGLError, ignoreCount: 2),
+                    Breakpoint(type: .symbolic, symbol: "UIViewAlertForUnsatisfiableConstraints", module: "UIKitCore"),
+                    Breakpoint(type: .ideConstraintError, continueAfterRunningActions: true),
+                    Breakpoint(type: .ideTestFailure, breakpointStackSelectionBehavior: "1")
+                ]
+
+                try expect(project.breakpoints) == expectedBreakpoints
             }
 
             $0.it("parses sources") {
