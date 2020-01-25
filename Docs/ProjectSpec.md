@@ -178,23 +178,23 @@ Default settings for file extensions. See [Sources](#sources) for more documenta
     - `SymbolicBreakpoint`: symbolic breakpoint
     - `IDEConstraintErrorBreakpoint`: IDE constraint breakpoint
     - `IDETestFailureBreakpoint`: IDE test failure breakpoint
-- [ ] **enabled**: **Bool** - indicates whether it should be active
-- [ ] **ignoreCount**: **Int** - indicates how many times it should be ignored before stopping
-- [ ] **continueAfterRunningActions**: **Bool** - indicates if should automatically continue after evaluating actions
-- [ ] **timestamp**: **String** - breakpoint timestamp
-- [ ] **filePath**: **String** - breakpoint file path (only required by file breakpoints)
-- [ ] **line**: **Int** - breakpoint line (only required by file breakpoints)
-- [ ] **breakpointStackSelectionBehavior**: **String** - breakpoint stack selection behavior
-- [ ] **symbol**: **String** - breakpoint symbol (only used by symbolic breakpoints)
-- [ ] **module**: **String** - breakpoint module (only used by symbolic breakpoints)
-- [ ] **scope**: **String** - breakpoint scope (only used by exception breakpoints)
+- [ ] **enabled**: **Bool** - Indicates whether it should be active. Default to `true`
+- [ ] **ignoreCount**: **Int** - Indicates how many times it should be ignored before stopping, Default to `0`
+- [ ] **continueAfterRunningActions**: **Bool** - Indicates if should automatically continue after evaluating actions, Default to `false`
+- [ ] **timestamp**: **String** - Breakpoint timestamp
+- [ ] **filePath**: **String** - Breakpoint file path (only required by file breakpoints)
+- [ ] **line**: **Int** - Breakpoint line (only required by file breakpoints)
+- [ ] **breakpointStackSelectionBehavior**: **String** - Breakpoint stack selection behavior
+- [ ] **symbol**: **String** - Breakpoint symbol (only used by symbolic breakpoints)
+- [ ] **module**: **String** - Breakpoint module (only used by symbolic breakpoints)
+- [ ] **scope**: **String** - Breakpoint scope (only used by exception breakpoints)
     - `All`
     - `Objective-C` (default)
     - `C++`
-- [ ] **stopOnStyle**: **String** - indicates if should stop on style (only used by exception breakpoints)
+- [ ] **stopOnStyle**: **String** - Indicates if should stop on style (only used by exception breakpoints)
     -`throw` (default)
     -`catch`
-- [ ] **condition**: **String** - breakpoint condition
+- [ ] **condition**: **String** - Breakpoint condition
 - [ ] **actions**: **[[Breakpoint Action](#breakpoint-action)]** - breakpoint actions
 
 ```yaml
@@ -215,17 +215,17 @@ breakpoints:
     - `AppleScript`: execute AppleScript
     - `Sound`: play sound
     - `OpenGLError`: throw OpenGL error
-- [ ] **consoleCommand**: **String** - debugger command (only used by debugger command breakpoint action)
-- [ ] **message**: **String** - log message (only used log message breakpoint action)
-- [ ] **conveyanceType**: **String** - conveyance type (only used by log message breakpoint action)
-    - `console`: log message to console
+- [ ] **consoleCommand**: **String** - Debugger command (only used by debugger command breakpoint action)
+- [ ] **message**: **String** - Log message (only used log message breakpoint action)
+- [ ] **conveyanceType**: **String** - Conveyance type (only used by log message breakpoint action)
+    - `console`: log message to console (default)
     - `speak`: speak message
-- [ ] **command**: **String** - shell command (only used by shell command breakpoint action)
-- [ ] **arguments**: **String** - shell command arguments (only used by shell command breakpoint action)
-- [ ] **waitUntilDone**: **Bool** - indicates whether it should wait until done (only used by shell command breakpoint action)
+- [ ] **command**: **String** - Shell command file path (only used by shell command breakpoint action)
+- [ ] **arguments**: **String** - Shell command arguments (only used by shell command breakpoint action)
+- [ ] **waitUntilDone**: **Bool** - Indicates whether it should wait until done (only used by shell command breakpoint action). Default to `false`
 - [ ] **script**: **String** - AppleScript (only used by AppleScript breakpoint action)
-- [ ] **soundName**: **String** - sound name (only used by sound breakpoint action)
-    - `Basso`
+- [ ] **soundName**: **String** - Sound name (only used by sound breakpoint action)
+    - `Basso` (default)
     - `Blow`
     - `Bottle`
     - `Frog`
