@@ -218,6 +218,8 @@ breakpoints:
 - [ ] **consoleCommand**: **String** - debugger command (only used by debugger command breakpoint action)
 - [ ] **message**: **String** - log message (only used log message breakpoint action)
 - [ ] **conveyanceType**: **String** - conveyance type (only used by log message breakpoint action)
+    - `console`: log message to console
+    - `speak`: speak message
 - [ ] **command**: **String** - shell command (only used by shell command breakpoint action)
 - [ ] **arguments**: **String** - shell command arguments (only used by shell command breakpoint action)
 - [ ] **waitUntilDone**: **String** - indicates whether it should wait until done (only used by shell command breakpoint action)

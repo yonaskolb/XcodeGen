@@ -46,10 +46,27 @@ public struct Breakpoint: Equatable {
 
     public struct Action: Equatable {
 
+        public enum ConveyanceType: String, Equatable {
+            case console = "0"
+            case speak = "1"
+
+            init?(_ text: String) {
+                let text = text.lowercased()
+                switch text {
+                case "console":
+                    self = .console
+                case "speak":
+                    self = .speak
+                default:
+                    return nil
+                }
+            }
+        }
+
         public var type: BreakpointActionType
         public var consoleCommand: String?
         public var message: String?
-        public var conveyanceType: String?
+        public var conveyanceType: ConveyanceType?
         public var command: String?
         public var arguments: String?
         public var waitUntilDone: Bool?
@@ -59,7 +76,7 @@ public struct Breakpoint: Equatable {
         public init(type: BreakpointActionType,
                     consoleCommand: String? = nil,
                     message: String? = nil,
-                    conveyanceType: String? = nil,
+                    conveyanceType: ConveyanceType? = nil,
                     command: String? = nil,
                     arguments: String? = nil,
                     waitUntilDone: Bool? = nil,
@@ -133,7 +150,18 @@ extension Breakpoint.Action: JSONObjectConvertible {
         }
         consoleCommand = jsonDictionary.json(atKeyPath: "consoleCommand")
         message = jsonDictionary.json(atKeyPath: "message")
-        conveyanceType = jsonDictionary.json(atKeyPath: "conveyanceType")
+        if type == .log {
+            if jsonDictionary["conveyanceType"] != nil {
+                let conveyanceTypeString: String = try jsonDictionary.json(atKeyPath: "conveyanceType")
+                if let conveyanceType = ConveyanceType(conveyanceTypeString) {
+                    self.conveyanceType = conveyanceType
+                } else {
+                    throw SpecParsingError.unknownBreakpointActionConveyanceType(conveyanceTypeString)
+                }
+            } else {
+                conveyanceType = .console
+            }
+        }
         command = jsonDictionary.json(atKeyPath: "command")
         arguments = jsonDictionary.json(atKeyPath: "arguments")
         waitUntilDone = jsonDictionary.json(atKeyPath: "waitUntilDone")

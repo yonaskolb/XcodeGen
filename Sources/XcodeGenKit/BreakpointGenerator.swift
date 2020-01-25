@@ -41,7 +41,7 @@ public class BreakpointGenerator {
     private func generateBreakpointActionProxy(_ breakpointAction: Breakpoint.Action) throws -> XCBreakpointList.BreakpointProxy.BreakpointContent.BreakpointActionProxy {
         let xcaction = XCBreakpointList.BreakpointProxy.BreakpointContent.BreakpointActionProxy.ActionContent(consoleCommand: breakpointAction.consoleCommand,
                                                                                                                         message: breakpointAction.message,
-                                                                                                                        conveyanceType: breakpointAction.conveyanceType,
+                                                                                                                        conveyanceType: breakpointAction.conveyanceType?.rawValue,
                                                                                                                         command: breakpointAction.command,
                                                                                                                         arguments: breakpointAction.arguments,
                                                                                                                         waitUntilDone: breakpointAction.waitUntilDone,

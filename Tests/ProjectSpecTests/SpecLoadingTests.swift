@@ -404,6 +404,12 @@ class SpecLoadingTests: XCTestCase {
                 try expectBreakpointError(breakpoint, .unknownBreakpointActionType(invalid))
             }
 
+            $0.it("fails with incorrect breakpoint action conveyance type") {
+                var breakpoint = validBreakpoint
+                breakpoint["actions"] = [["type": "Log", "conveyanceType": invalid]]
+                try expectBreakpointError(breakpoint, .unknownBreakpointActionConveyanceType(invalid))
+            }
+
             $0.it("parses breakpoints") {
                 let breakpointDictionaries = [
                     ["type": "FileBreakpoint", "filePath": "Foo.swift", "line": 7, "condition": "bar == nil", "timestamp": "600577513.4932801"],
