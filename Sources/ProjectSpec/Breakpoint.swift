@@ -162,9 +162,11 @@ extension Breakpoint.Action: JSONObjectConvertible {
                 conveyanceType = .console
             }
         }
-        command = jsonDictionary.json(atKeyPath: "command")
-        arguments = jsonDictionary.json(atKeyPath: "arguments")
-        waitUntilDone = jsonDictionary.json(atKeyPath: "waitUntilDone")
+        if type == .shellCommand {
+            command = jsonDictionary.json(atKeyPath: "command")
+            arguments = jsonDictionary.json(atKeyPath: "arguments")
+            waitUntilDone = jsonDictionary.json(atKeyPath: "waitUntilDone") ?? false
+        }
         script = jsonDictionary.json(atKeyPath: "script")
         soundName = jsonDictionary.json(atKeyPath: "soundName")
     }
