@@ -32,6 +32,7 @@ public class BreakpointGenerator {
                                                                               module: breakpoint.module,
                                                                               scope: breakpoint.scope?.rawValue,
                                                                               stopOnStyle: breakpoint.stopOnStyle?.rawValue,
+                                                                              condition: breakpoint.condition,
                                                                               actions: try breakpoint.actions.map({ try generateBreakpointActionProxy($0) }))
 
         return XCBreakpointList.BreakpointProxy(breakpointExtensionID: breakpoint.type,
