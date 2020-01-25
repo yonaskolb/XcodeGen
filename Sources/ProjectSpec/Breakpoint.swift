@@ -154,9 +154,13 @@ extension Breakpoint: JSONObjectConvertible {
         enabled = jsonDictionary.json(atKeyPath: "enabled") ?? true
         ignoreCount = jsonDictionary.json(atKeyPath: "ignoreCount") ?? 0
         continueAfterRunningActions = jsonDictionary.json(atKeyPath: "continueAfterRunningActions") ?? false
-        filePath = jsonDictionary.json(atKeyPath: "filePath")
         timestamp = jsonDictionary.json(atKeyPath: "timestamp")
-        line = jsonDictionary.json(atKeyPath: "line")
+        if type == .file {
+            let filePath: String = try jsonDictionary.json(atKeyPath: "filePath")
+            let line: Int = try jsonDictionary.json(atKeyPath: "line")
+            self.filePath = filePath
+            self.line = line
+        }
         breakpointStackSelectionBehavior = jsonDictionary.json(atKeyPath: "breakpointStackSelectionBehavior")
         symbol = jsonDictionary.json(atKeyPath: "symbol")
         module = jsonDictionary.json(atKeyPath: "module")
