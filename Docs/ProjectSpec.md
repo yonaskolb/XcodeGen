@@ -182,8 +182,8 @@ Default settings for file extensions. See [Sources](#sources) for more documenta
 - [ ] **ignoreCount**: **Int** - indicates how many times it should be ignored before stopping
 - [ ] **continueAfterRunningActions**: **Bool** - indicates if should automatically continue after evaluating actions
 - [ ] **timestamp**: **String** - breakpoint timestamp
-- [ ] **filePath**: **String** - breakpoint file path (only used by file breakpoints)
-- [ ] **line**: **Int** - breakpoint line (only used by file breakpoints)
+- [ ] **filePath**: **String** - breakpoint file path (only required by file breakpoints)
+- [ ] **line**: **Int** - breakpoint line (only required by file breakpoints)
 - [ ] **breakpointStackSelectionBehavior**: **String** - breakpoint stack selection behavior
 - [ ] **symbol**: **String** - breakpoint symbol (only used by symbolic breakpoints)
 - [ ] **module**: **String** - breakpoint module (only used by symbolic breakpoints)
@@ -222,7 +222,7 @@ breakpoints:
     - `speak`: speak message
 - [ ] **command**: **String** - shell command (only used by shell command breakpoint action)
 - [ ] **arguments**: **String** - shell command arguments (only used by shell command breakpoint action)
-- [ ] **waitUntilDone**: **String** - indicates whether it should wait until done (only used by shell command breakpoint action)
+- [ ] **waitUntilDone**: **Bool** - indicates whether it should wait until done (only used by shell command breakpoint action)
 - [ ] **script**: **String** - AppleScript (only used by AppleScript breakpoint action)
 - [ ] **soundName**: **String** - sound name (only used by sound breakpoint action)
     - `Basso`
