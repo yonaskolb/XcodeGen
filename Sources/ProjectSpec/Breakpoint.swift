@@ -83,10 +83,7 @@ public struct Breakpoint: Equatable {
     public var continueAfterRunningActions: Bool
     public var filePath: String?
     public var timestamp: String?
-    public var startingColumn: Int?
-    public var endingColumn: Int?
-    public var startingLine: Int?
-    public var endingLine: Int?
+    public var line: Int?
     public var breakpointStackSelectionBehavior: String?
     public var symbol: String?
     public var module: String?
@@ -101,10 +98,7 @@ public struct Breakpoint: Equatable {
                 continueAfterRunningActions: Bool = false,
                 filePath: String? = nil,
                 timestamp: String? = nil,
-                startingColumn: Int? = nil,
-                endingColumn: Int? = nil,
-                startingLine: Int? = nil,
-                endingLine: Int? = nil,
+                line: Int? = nil,
                 breakpointStackSelectionBehavior: String? = nil,
                 symbol: String? = nil,
                 module: String? = nil,
@@ -118,10 +112,7 @@ public struct Breakpoint: Equatable {
         self.continueAfterRunningActions = continueAfterRunningActions
         self.filePath = filePath
         self.timestamp = timestamp
-        self.startingColumn = startingColumn
-        self.endingColumn = endingColumn
-        self.startingLine = startingLine
-        self.endingLine = endingLine
+        self.line = line
         self.breakpointStackSelectionBehavior = breakpointStackSelectionBehavior
         self.symbol = symbol
         self.module = module
@@ -165,10 +156,7 @@ extension Breakpoint: JSONObjectConvertible {
         continueAfterRunningActions = jsonDictionary.json(atKeyPath: "continueAfterRunningActions") ?? false
         filePath = jsonDictionary.json(atKeyPath: "filePath")
         timestamp = jsonDictionary.json(atKeyPath: "timestamp")
-        startingColumn = jsonDictionary.json(atKeyPath: "startingColumn")
-        endingColumn = jsonDictionary.json(atKeyPath: "endingColumn")
-        startingLine = jsonDictionary.json(atKeyPath: "startingLine")
-        endingLine = jsonDictionary.json(atKeyPath: "endingLine")
+        line = jsonDictionary.json(atKeyPath: "line")
         breakpointStackSelectionBehavior = jsonDictionary.json(atKeyPath: "breakpointStackSelectionBehavior")
         symbol = jsonDictionary.json(atKeyPath: "symbol")
         module = jsonDictionary.json(atKeyPath: "module")

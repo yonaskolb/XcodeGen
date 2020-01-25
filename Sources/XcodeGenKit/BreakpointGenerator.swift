@@ -19,15 +19,14 @@ public class BreakpointGenerator {
     }
 
     private func generateBreakpointProxy(_ breakpoint: Breakpoint) throws -> XCBreakpointList.BreakpointProxy {
+        let lineString = breakpoint.line.flatMap(String.init)
         let xcbreakpoint = XCBreakpointList.BreakpointProxy.BreakpointContent(enabled: breakpoint.enabled,
                                                                               ignoreCount: String(breakpoint.ignoreCount),
                                                                               continueAfterRunningActions: breakpoint.continueAfterRunningActions,
                                                                               filePath: breakpoint.filePath,
                                                                               timestamp: breakpoint.timestamp,
-                                                                              startingColumn: breakpoint.startingColumn.flatMap(String.init),
-                                                                              endingColumn: breakpoint.endingColumn.flatMap(String.init),
-                                                                              startingLine: breakpoint.startingLine.flatMap(String.init),
-                                                                              endingLine: breakpoint.endingLine.flatMap(String.init),
+                                                                              startingLine: lineString,
+                                                                              endingLine: lineString,
                                                                               breakpointStackSelectionBehavior: breakpoint.breakpointStackSelectionBehavior,
                                                                               symbol: breakpoint.symbol,
                                                                               module: breakpoint.module,

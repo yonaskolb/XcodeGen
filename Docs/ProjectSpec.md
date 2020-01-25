@@ -183,10 +183,7 @@ Default settings for file extensions. See [Sources](#sources) for more documenta
 - [ ] **continueAfterRunningActions**: **Bool** - indicates if should automatically continue after evaluating actions
 - [ ] **timestamp**: **String** - breakpoint timestamp
 - [ ] **filePath**: **String** - breakpoint file path (only used by file breakpoints)
-- [ ] **startingColumn**: **Int** - breakpoint starting column (only used by file breakpoints)
-- [ ] **endingColumn**: **Int** - breakpoint ending column (only used by file breakpoints)
-- [ ] **startingLine**: **Int** - breakpoint starting line (only used by file breakpoints)
-- [ ] **endingLine**: **Int** - breakpoint ending line (only used by file breakpoints)
+- [ ] **line**: **Int** - breakpoint line (only used by file breakpoints)
 - [ ] **breakpointStackSelectionBehavior**: **String** - breakpoint stack selection behavior
 - [ ] **symbol**: **String** - breakpoint symbol (only used by symbolic breakpoints)
 - [ ] **module**: **String** - breakpoint module (only used by symbolic breakpoints)
