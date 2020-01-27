@@ -10,7 +10,7 @@ options:
     watchOS: 4.0
   groupSortPosition: top
   preGenCommand: echo "This is a pre-gen command"
-  postGenCommand: echo "This is a post-gen command"
+  postGenCommand: scripts/script.sh
 fileGroups:
   - Configs
   - FileGroup

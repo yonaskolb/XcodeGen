@@ -81,7 +81,7 @@ class GenerateCommand: ProjectCommand {
 
         // run pre gen command
         if let command = project.options.preGenCommand {
-            try Task.run(bash: command)
+            try Task.run(bash: command, directory: projectDirectory.absolute().string)
         }
 
         // generate plists
@@ -127,7 +127,7 @@ class GenerateCommand: ProjectCommand {
 
         // run post gen command
         if let command = project.options.postGenCommand {
-            try Task.run(bash: command)
+            try Task.run(bash: command, directory: projectDirectory.absolute().string)
         }
     }
 
