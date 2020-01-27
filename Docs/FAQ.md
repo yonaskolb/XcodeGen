@@ -12,9 +12,12 @@ Absolutely. You will get the most out of XcodeGen by adding your project to your
 If files were added or removed in the new checkout you will most likely need to run `xcodegen` again so that your project will reference all your files. Unfortunately this is a manual step at the moment, but in the future this could be automated.
 
 For now you can always add xcodegen as a git `post-checkout` hook.
+It's recommended to use `--use-cache` so that the project is not needlessly generated.
  
 ## Can I use CocoaPods
-Yes, simply generate your project and then run `pod install` which will integrate with your project and create a workspace.
+Yes, you will just need to run `pod install` after the project is generated to integrate Cocoapods changes.
+
+It's recommended to use a combination of `--use-cache` and the `postGenCommand` option which will only generate the project if required, and then only run `pod install` if the project has been regenerated.
 
 ## Can I use Crashlytics
 Yes, but you need to use a little trick when using CocoaPods. Add this script in your `Podfile`:

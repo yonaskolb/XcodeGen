@@ -123,12 +123,15 @@ Note that target names can also be changed by adding a `name` property to a targ
 - [ ] **generateEmptyDirectories**: **Bool** - If this is `true` then empty directories will be added to project too else will be missed. Defaults to `false`.
 - [ ] **findCarthageFrameworks**: **Bool** - When this is set to `true`, all the invididual frameworks for Carthage dependencies will automatically be found. This property can be overriden individually for each carthage dependency - for more details see See **findFrameworks** in the [Dependency](#dependency) section. Defaults to `false`.
 - [ ] **localPackagesGroup**: **String** - The group name that local packages are put into. This defaults to `Packages`
+- [ ] **preGenCommand**: **String** - A bash command to run before the project has been generated. If the project isn't generated due to no changes when using the cache then this won't run. This is useful for running things like generating resources files before the project is regenerated.
+- [ ] **postGenCommand**: **String** - A bash command to run after the project has been generated. If the project isn't generated due to no changes when using the cache then this won't run. This is useful for running things like `pod install` only if the project is actually regenerated.
 
 ```yaml
 options:
   deploymentTarget:
     watchOS: "2.0"
     tvOS: "10.0"
+  postGenCommand: pod install
 ```
 
 ### Configs

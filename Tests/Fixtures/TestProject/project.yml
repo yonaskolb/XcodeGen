@@ -9,6 +9,8 @@ options:
   deploymentTarget:
     watchOS: 4.0
   groupSortPosition: top
+  preGenCommand: echo "This is a pre-gen command"
+  postGenCommand: scripts/script.sh
 fileGroups:
   - Configs
   - FileGroup
