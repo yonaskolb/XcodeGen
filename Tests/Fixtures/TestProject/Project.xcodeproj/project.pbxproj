@@ -61,7 +61,6 @@
 		47D1F439B8E6D287B3F3E8D1 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = 6A58A16491CDDF968B0D56DE /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		47FC57B04A3AD83359F433EA /* StaticLibrary_ObjC.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5A2B916A11DCC2565241359F /* StaticLibrary_ObjC.h */; };
 		49A4B8937BB5520B36EA33F0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 814D72C2B921F60B759C2D4B /* Main.storyboard */; };
-		4AF7376CC51FE7C9B16A15AA /* ExternalTarget.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DCDCD083AABD1D30EA34576 /* ExternalTarget.framework */; };
 		4CB673A7C0C11E04F8544BDB /* Contacts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FDB2B6A77D39CD5602F2125F /* Contacts.framework */; };
 		4F6481557E2BEF8D749C37E3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 187E665975BB5611AF0F27E1 /* main.m */; };
 		52AD3276E068EB3396A292BB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8A016580A3B8F72B820BFBF /* Assets.xcassets */; };
@@ -79,7 +78,6 @@
 		66C3C5E3C13325F351A3008F /* module.modulemap in CopyFiles */ = {isa = PBXBuildFile; fileRef = F2950763C4C568CC85021D18 /* module.modulemap */; };
 		6E8F8303759824631C8D9DA3 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9E17D598D98065767A04740F /* Localizable.strings */; };
 		7148A4172BFA1CC22E6ED5DB /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 753001CDCEAA4C4E1AFF8E87 /* MainInterface.storyboard */; };
-		715DD7C4C194A04A5C4049EF /* ExternalTarget.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3DCDCD083AABD1D30EA34576 /* ExternalTarget.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		747CAE14D196F5652E93353C /* Headers in Headers */ = {isa = PBXBuildFile; fileRef = 2E1E747C7BC434ADB80CC269 /* Headers */; settings = {ATTRIBUTES = (Public, ); }; };
 		75F2774F183838AF34CA9B8A /* StaticLibrary_ObjC.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D0C79A8C750EC0DE748C463 /* StaticLibrary_ObjC.m */; };
 		768648ED7E93B6D888574144 /* module.modulemap in CopyFiles */ = {isa = PBXBuildFile; fileRef = F2950763C4C568CC85021D18 /* module.modulemap */; };
@@ -89,7 +87,6 @@
 		7F658343A505B824321E086B /* Headers in Headers */ = {isa = PBXBuildFile; fileRef = 2E1E747C7BC434ADB80CC269 /* Headers */; settings = {ATTRIBUTES = (Public, ); }; };
 		803B7CE086CFBA409F9D1ED7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 108BB29172D27BE3BD1E7F35 /* Assets.xcassets */; };
 		818D448D4DDD6649B5B26098 /* example.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 28360ECA4D727FAA58557A81 /* example.mp4 */; settings = {ASSET_TAGS = (tag1, tag2, ); }; };
-		8A6B28514AA2DDB8C7B8014C /* ExternalTarget.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3DCDCD083AABD1D30EA34576 /* ExternalTarget.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		900CFAD929CAEE3861127627 /* MyBundle.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7B5068D64404C61A67A18458 /* MyBundle.bundle */; };
 		95DD9941E1529FD2AE1A191D /* StaticLibrary_ObjC.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5A2B916A11DCC2565241359F /* StaticLibrary_ObjC.h */; };
 		96B55C0F660235FE6BDD8869 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = 6A58A16491CDDF968B0D56DE /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -113,6 +110,7 @@
 		BFCCC56337A5D9D513C1C791 /* module.modulemap in CopyFiles */ = {isa = PBXBuildFile; fileRef = F2950763C4C568CC85021D18 /* module.modulemap */; };
 		C3672B561F456794151C047C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C3FE6B986506724DAB5D0F /* ViewController.swift */; };
 		C400EBD25886ACB5CD9035EB /* module.modulemap in CopyFiles */ = {isa = PBXBuildFile; fileRef = F2950763C4C568CC85021D18 /* module.modulemap */; };
+		C7B9C14C4AE497A9A9556603 /* ExternalTarget.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3DCDCD083AABD1D30EA34576 /* ExternalTarget.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		C836F09B677937EFF69B1FCE /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C934C1F7A68CCD0AB6B38478 /* NotificationController.swift */; };
 		C88598A49087A212990F4E8B /* ResourceFolder in Resources */ = {isa = PBXBuildFile; fileRef = 6B1603BA83AA0C7B94E45168 /* ResourceFolder */; };
 		CCA17097382757012B58C17C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1BC32A813B80A53962A1F365 /* Assets.xcassets */; };
@@ -126,6 +124,7 @@
 		E4D0F435405DABCB51C5B684 /* TestFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E43116070AFEF5D8C3A5A957 /* TestFramework.framework */; };
 		E5DD0AD6F7AE1DD4AF98B83E /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 65C8D6D1DDC1512D396C07B7 /* Localizable.stringsdict */; };
 		E8A135F768448632F8D77C8F /* StandaloneAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3571E41E19A5AB8AAAB04109 /* StandaloneAssets.xcassets */; };
+		EB29B16FF4DE8A7F3EDD0A0F /* ExternalTarget.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DCDCD083AABD1D30EA34576 /* ExternalTarget.framework */; };
 		F07FC32458F3193917261C15 /* BundleX.bundle in Copy Bundles to Resources directory */ = {isa = PBXBuildFile; fileRef = 45C12576F5AA694DD0CE2132 /* BundleX.bundle */; };
 		F5D71267BB5A326BDD69D532 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E55F45EACB0F382722D61C8D /* Assets.xcassets */; };
 		F6537CE373C94809E6653758 /* Headers in Headers */ = {isa = PBXBuildFile; fileRef = 2E1E747C7BC434ADB80CC269 /* Headers */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -452,7 +451,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				715DD7C4C194A04A5C4049EF /* ExternalTarget.framework in Embed Frameworks */,
+				C7B9C14C4AE497A9A9556603 /* ExternalTarget.framework in Embed Frameworks */,
 				63D8E7F00276736EDA62D227 /* Framework2.framework in Embed Frameworks */,
 				B2D43A31C184E34EF9CB743C /* Framework.framework in Embed Frameworks */,
 			);
@@ -581,7 +580,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4AF7376CC51FE7C9B16A15AA /* ExternalTarget.framework in Frameworks */,
+				EB29B16FF4DE8A7F3EDD0A0F /* ExternalTarget.framework in Frameworks */,
 				4CB673A7C0C11E04F8544BDB /* Contacts.framework in Frameworks */,
 				262891CCD5F74316610437FA /* Framework2.framework in Frameworks */,
 				2FAE950E8FF2E7C0F7FF1FE9 /* Framework.framework in Frameworks */,
