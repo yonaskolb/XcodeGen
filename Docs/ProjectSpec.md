@@ -617,7 +617,7 @@ configs:
   Test Release: release
   Staging Release: release
   Production Release: release
-targets
+targets:
   MyApp:
     scheme:
       testTargets:
