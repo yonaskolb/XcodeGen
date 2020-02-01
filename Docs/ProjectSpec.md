@@ -382,7 +382,7 @@ targets:
 
 A dependency can be one of a 6 types:
 
-- `target: name` - links to another target
+- `target: name` - links to another target. If you are using project references you can specify a target within another project by using `ProjectName/TargetName` for the name
 - `framework: path` - links to a framework
 - `carthage: name` - helper for linking to a Carthage framework
 - `sdk: name` - links to a dependency with the SDK. This can either be a relative path within the sdk root or a single filename that references a framework (.framework) or lib (.tbd)
