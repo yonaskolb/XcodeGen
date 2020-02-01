@@ -2,6 +2,9 @@
 
 ## Next Version
 
+#### Added
+- Support External Target References via subprojects. [#701](https://github.com/yonaskolb/XcodeGen/pull/701) @evandcoleman
+
 #### Fixed
 - Fixed compilation as library by locking down XcodeProj version [#767](https://github.com/yonaskolb/XcodeGen/pull/767) @yonaskolb
 
@@ -16,7 +19,6 @@
 - Added option to generate only Info.plist files with `--only-plists` [#739](https://github.com/yonaskolb/XcodeGen/pull/739) @namolnad
 - Added the option to specify a `simulateLocation` in a scheme [#722](https://github.com/yonaskolb/XcodeGen/issues/722) @basvankuijck
 - Support for On Demand Resources tags [#753](https://github.com/yonaskolb/XcodeGen/pull/753) @sipao
-- Support External Target References via subprojects. [#701](https://github.com/yonaskolb/XcodeGen/pull/701) @evandcoleman
 
 #### Fixed
 - Fixed resolving a relative path for `projectReference.path` [#740](https://github.com/yonaskolb/XcodeGen/pull/740) @kateinoigakukun
