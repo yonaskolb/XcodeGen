@@ -227,7 +227,7 @@ public class PBXProjGenerator {
             for (platform, files) in carthageFrameworksByPlatform {
                 let platformGroup: PBXGroup = addObject(
                     PBXGroup(
-                        children: files.sorted(by: PBXFileElement.areNamePathInIncreasingOrder(_:_:)),
+                        children: Array(files),
                         sourceTree: .group,
                         path: platform
                     )
@@ -272,7 +272,7 @@ public class PBXProjGenerator {
         // add derived groups at the end
         derivedGroups.forEach(sortGroups)
         mainGroup.children += derivedGroups
-            .sorted { $0.namePathLocalizedStandardCompare($1) == .orderedAscending }
+            .sorted(by: PBXFileElement.sortByNamePath)
             .map { $0 }
 
         let assetTags = Set(project.targets
@@ -552,7 +552,7 @@ public class PBXProjGenerator {
                     return sortOrder1 < sortOrder2
                 } else {
                     if (child1.name, child1.path) != (child2.name, child2.path) {
-                        return child1.namePathLocalizedStandardCompare(child2) == .orderedAscending
+                        return PBXFileElement.sortByNamePath(child1, child2)
                     } else {
                         return child1.context ?? "" < child2.context ?? ""
                     }
