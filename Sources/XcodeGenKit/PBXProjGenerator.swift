@@ -929,15 +929,6 @@ public class PBXProjGenerator {
             buildPhases.append(resourcesBuildPhase)
         }
 
-        if !copyBundlesReferences.isEmpty {
-            let copyBundlesPhase = addObject(PBXCopyFilesBuildPhase(
-                dstSubfolderSpec: .resources,
-                name: "Copy Bundles to Resources directory",
-                files: copyBundlesReferences
-            ))
-            buildPhases.append(copyBundlesPhase)
-        }
-
         let swiftObjCInterfaceHeader = project.getCombinedBuildSetting("SWIFT_OBJC_INTERFACE_HEADER_NAME", target: target, config: project.configs[0]) as? String
 
         if target.type == .staticLibrary
@@ -987,6 +978,15 @@ public class PBXProjGenerator {
                 PBXFrameworksBuildPhase(files: targetFrameworkBuildFiles)
             )
             buildPhases.append(frameworkBuildPhase)
+        }
+
+        if !copyBundlesReferences.isEmpty {
+            let copyBundlesPhase = addObject(PBXCopyFilesBuildPhase(
+                dstSubfolderSpec: .resources,
+                name: "Copy Bundle Resources",
+                files: copyBundlesReferences
+            ))
+            buildPhases.append(copyBundlesPhase)
         }
 
         if !extensions.isEmpty {

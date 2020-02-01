@@ -8,6 +8,7 @@
 #### Fixed
 - Fixed compilation as library by locking down XcodeProj version [#767](https://github.com/yonaskolb/XcodeGen/pull/767) @yonaskolb
 - Stabilized sorting of groups with duplicate names/paths. [#671](https://github.com/yonaskolb/XcodeGen/pull/671) @ChristopherRogers
+- Moved `Copy Bundle Resources` to after `Link with Libraries` build phase [#768](https://github.com/yonaskolb/XcodeGen/pull/768) @yonaskolb
 
 #### Internal
 - Updated to XcodeProj 7.7.0 [#767](https://github.com/yonaskolb/XcodeGen/pull/767) @yonaskolb
