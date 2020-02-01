@@ -26,6 +26,8 @@ public class PBXProjGenerator {
 
     var generated = false
 
+    private var projects: [ProjectReference: PBXProj] = [:]
+
     public init(project: Project, projectDirectory: Path? = nil) {
         self.project = project
         carthageResolver = CarthageDependencyResolver(project: project)
@@ -168,9 +170,6 @@ public class PBXProjGenerator {
             addObject(packageReference)
         }
 
-        try project.targets.forEach(generateTarget)
-        try project.aggregateTargets.forEach(generateAggregateTarget)
-
         let productGroup = addObject(
             PBXGroup(
                 children: targetFileReferences.valueArray,
@@ -179,6 +178,49 @@ public class PBXProjGenerator {
             )
         )
         derivedGroups.append(productGroup)
+
+        let sortedProjectReferences = project.projectReferences.sorted { $0.name < $1.name }
+        let subprojectFileReferences: [PBXFileReference] = sortedProjectReferences.map { projectReference in
+            let projectPath = Path(projectReference.path)
+
+            return addObject(
+                PBXFileReference(
+                    sourceTree: .group,
+                    name: projectReference.name,
+                    lastKnownFileType: Xcode.fileType(path: projectPath),
+                    path: projectPath.normalize().string
+                )
+            )
+        }
+        if subprojectFileReferences.count > 0 {
+            let subprojectsGroups = addObject(
+                PBXGroup(
+                    children: subprojectFileReferences,
+                    sourceTree: .group,
+                    name: "Projects"
+                )
+            )
+            derivedGroups.append(subprojectsGroups)
+
+            let subprojects: [[String: PBXFileElement]] = subprojectFileReferences.map { projectReference in
+                let group = addObject(
+                    PBXGroup(
+                        children: [],
+                        sourceTree: .group,
+                        name: "Products"
+                    )
+                )
+                return [
+                    "ProductGroup": group,
+                    "ProjectRef": projectReference
+                ]
+            }
+
+            pbxProject.projects = subprojects
+        }
+
+        try project.targets.forEach(generateTarget)
+        try project.aggregateTargets.forEach(generateAggregateTarget)
 
         if !carthageFrameworksByPlatform.isEmpty {
             var platforms: [PBXGroup] = []
@@ -316,6 +358,90 @@ public class PBXProjGenerator {
         return targetDependency
     }
 
+    func generateExternalTargetDependency(from: String, to target: String, in project: String, platform: Platform) throws -> (PBXTargetDependency, Target, PBXReferenceProxy) {
+        guard let projectReference = self.project.getProjectReference(project) else {
+            fatalError("project not found")
+        }
+
+        let pbxProj = try getPBXProj(from: projectReference)
+
+        guard let targetObject = pbxProj.targets(named: target).first else {
+            fatalError("target not found")
+        }
+
+        let projectFileReferenceIndex = self.pbxProj.rootObject!
+            .projects
+            .map { $0["ProjectRef"] as? PBXFileReference }
+            .firstIndex { $0?.path == Path(projectReference.path).normalize().string }
+
+        guard let index = projectFileReferenceIndex,
+            let projectFileReference = self.pbxProj.rootObject?.projects[index]["ProjectRef"] as? PBXFileReference,
+            let productsGroup = self.pbxProj.rootObject?.projects[index]["ProductGroup"] as? PBXGroup else {
+            fatalError("Missing subproject file reference")
+        }
+
+        let targetProxy = addObject(
+            PBXContainerItemProxy(
+                containerPortal: .fileReference(projectFileReference),
+                remoteGlobalID: .object(targetObject),
+                proxyType: .nativeTarget,
+                remoteInfo: target
+            )
+        )
+
+        let productProxy = addObject(
+            PBXContainerItemProxy(
+                containerPortal: .fileReference(projectFileReference),
+                remoteGlobalID: .object(targetObject.product!),
+                proxyType: .reference,
+                remoteInfo: target
+            )
+        )
+
+        let productReferenceProxy = addObject(
+            PBXReferenceProxy(
+                fileType: Xcode.fileType(path: Path(targetObject.productNameWithExtension()!)),
+                path: targetObject.productNameWithExtension(),
+                remote: productProxy,
+                sourceTree: .buildProductsDir
+            )
+        )
+
+        productsGroup.children.append(productReferenceProxy)
+
+        let targetDependency = addObject(
+            PBXTargetDependency(
+                target: targetObject,
+                targetProxy: targetProxy
+            )
+        )
+
+        guard let productType = targetObject.productType,
+            let buildConfigurations = targetObject.buildConfigurationList?.buildConfigurations,
+            let defaultConfigurationName = targetObject.buildConfigurationList?.defaultConfigurationName,
+            let defaultConfiguration = buildConfigurations.first(where: { $0.name == defaultConfigurationName }) ?? buildConfigurations.first else {
+
+                fatalError("Missing target info")
+        }
+
+        let buildSettings = defaultConfiguration.buildSettings
+        let settings = Settings(buildSettings: buildSettings, configSettings: [:], groups: [])
+        let deploymentTargetString = buildSettings[platform.deploymentTargetSetting] as? String
+        let deploymentTarget = deploymentTargetString == nil ? nil : try Version(deploymentTargetString!)
+        let requiresObjCLinking = (buildSettings["OTHER_LDFLAGS"] as? String)?.contains("-ObjC") ?? (productType == .staticLibrary)
+        let dependencyTarget = Target(
+            name: targetObject.name,
+            type: productType,
+            platform: platform,
+            productName: targetObject.productName,
+            deploymentTarget: deploymentTarget,
+            settings: settings,
+            requiresObjCLinking: requiresObjCLinking
+        )
+
+        return (targetDependency, dependencyTarget, productReferenceProxy)
+    }
+
     func generateBuildScript(targetName: String, buildScript: BuildScript) throws -> PBXShellScriptBuildPhase {
 
         let shellScript: String
@@ -439,6 +565,15 @@ public class PBXProjGenerator {
         childGroups.forEach(sortGroups)
     }
 
+    func getPBXProj(from reference: ProjectReference) throws -> PBXProj {
+        if let cachedProject = projects[reference] {
+            return cachedProject
+        }
+        let pbxproj = try XcodeProj(pathString: (project.basePath + Path(reference.path).normalize()).string).pbxproj
+        projects[reference] = pbxproj
+        return pbxproj
+    }
+
     func generateTarget(_ target: Target) throws {
         let carthageDependencies = carthageResolver.dependencies(for: target)
 
@@ -487,60 +622,72 @@ public class PBXProjGenerator {
             return !linkingAttributes.isEmpty ? ["ATTRIBUTES": linkingAttributes] : nil
         }
 
+        func processTargetDependency(_ dependency: Dependency, dependencyTarget: Target, embedFileReference: PBXFileElement) {
+            let dependencyLinkage = dependencyTarget.type.defaultLinkage
+            let link = dependency.link ??
+                ((dependencyLinkage == .dynamic && target.type != .staticLibrary) ||
+                (dependencyLinkage == .static && target.type.isExecutable))
+
+            if link {
+                let dependencyFile = embedFileReference
+                let buildFile = addObject(
+                    PBXBuildFile(file: dependencyFile, settings: getDependencyFrameworkSettings(dependency: dependency))
+                )
+                targetFrameworkBuildFiles.append(buildFile)
+
+                if !anyDependencyRequiresObjCLinking
+                    && dependencyTarget.requiresObjCLinking ?? (dependencyTarget.type == .staticLibrary) {
+                    anyDependencyRequiresObjCLinking = true
+                }
+            }
+
+            let embed = dependency.embed ?? (!dependencyTarget.type.isLibrary && (
+                target.type.isApp
+                    || (target.type.isTest && (dependencyTarget.type.isFramework || dependencyTarget.type == .bundle))
+            ))
+            if embed {
+                let embedFile = addObject(
+                    PBXBuildFile(
+                        file: embedFileReference,
+                        settings: getEmbedSettings(dependency: dependency, codeSign: dependency.codeSign ?? !dependencyTarget.type.isExecutable)
+                    )
+                )
+
+                if dependencyTarget.type.isExtension {
+                    // embed app extension
+                    extensions.append(embedFile)
+                } else if dependencyTarget.type.isFramework {
+                    copyFrameworksReferences.append(embedFile)
+                } else if dependencyTarget.type.isApp && dependencyTarget.platform == .watchOS {
+                    copyWatchReferences.append(embedFile)
+                } else if dependencyTarget.type == .xpcService {
+                    copyFilesBuildPhasesFiles[.xpcServices, default: []].append(embedFile)
+                } else {
+                    copyResourcesReferences.append(embedFile)
+                }
+            }
+        }
+
         for dependency in targetDependencies {
 
             let embed = dependency.embed ?? target.shouldEmbedDependencies
 
             switch dependency.type {
             case .target:
-                let dependencyTargetName = dependency.reference
-                let targetDependency = generateTargetDependency(from: target.name, to: dependencyTargetName)
-                dependencies.append(targetDependency)
+                let dependencyTargetReference = try TargetReference(dependency.reference)
 
-                guard let dependencyTarget = project.getTarget(dependencyTargetName) else { continue }
-
-                let dependecyLinkage = dependencyTarget.defaultLinkage
-                let link = dependency.link ??
-                    ((dependecyLinkage == .dynamic && target.type != .staticLibrary) ||
-                        (dependecyLinkage == .static && target.type.isExecutable))
-
-                if link {
-                    let dependencyFile = targetFileReferences[dependencyTarget.name]!
-                    let buildFile = addObject(
-                        PBXBuildFile(file: dependencyFile, settings: getDependencyFrameworkSettings(dependency: dependency))
-                    )
-                    targetFrameworkBuildFiles.append(buildFile)
-
-                    if !anyDependencyRequiresObjCLinking
-                        && dependencyTarget.requiresObjCLinking ?? (dependencyTarget.type == .staticLibrary) {
-                        anyDependencyRequiresObjCLinking = true
-                    }
-                }
-
-                let embed = dependency.embed ?? (!dependencyTarget.type.isLibrary && (
-                    target.type.isApp
-                        || (target.type.isTest && (dependencyTarget.type.isFramework || dependencyTarget.type == .bundle))
-                ))
-                if embed {
-                    let embedFile = addObject(
-                        PBXBuildFile(
-                            file: targetFileReferences[dependencyTarget.name]!,
-                            settings: getEmbedSettings(dependency: dependency, codeSign: dependency.codeSign ?? !dependencyTarget.type.isExecutable)
-                        )
-                    )
-
-                    if dependencyTarget.type.isExtension {
-                        // embed app extension
-                        extensions.append(embedFile)
-                    } else if dependencyTarget.type.isFramework {
-                        copyFrameworksReferences.append(embedFile)
-                    } else if dependencyTarget.type.isApp && dependencyTarget.platform == .watchOS {
-                        copyWatchReferences.append(embedFile)
-                    } else if dependencyTarget.type == .xpcService {
-                        copyFilesBuildPhasesFiles[.xpcServices, default: []].append(embedFile)
-                    } else {
-                        copyResourcesReferences.append(embedFile)
-                    }
+                switch dependencyTargetReference.location {
+                case .local:
+                    let dependencyTargetName = dependency.reference
+                    let targetDependency = generateTargetDependency(from: target.name, to: dependencyTargetName)
+                    dependencies.append(targetDependency)
+                    guard let dependencyTarget = project.getTarget(dependencyTargetName) else { continue }
+                    processTargetDependency(dependency, dependencyTarget: dependencyTarget, embedFileReference: targetFileReferences[dependencyTarget.name]!)
+                case .project(let dependencyProjectName):
+                    let dependencyTargetName = dependencyTargetReference.name
+                    let (targetDependency, dependencyTarget, dependencyProductProxy) = try generateExternalTargetDependency(from: target.name, to: dependencyTargetName, in: dependencyProjectName, platform: target.platform)
+                    dependencies.append(targetDependency)
+                    processTargetDependency(dependency, dependencyTarget: dependencyTarget, embedFileReference: dependencyProductProxy)
                 }
 
             case .framework:
@@ -1086,15 +1233,24 @@ public class PBXProjGenerator {
                         dependencies[dependency.reference] = dependency
                     }
                 case .target:
-                    if isTopLevel || dependency.embed == nil {
-                        if let dependencyTarget = project.getTarget(dependency.reference) {
-                            dependencies[dependency.reference] = dependency
-                            if !dependencyTarget.shouldEmbedDependencies {
-                                // traverse target's dependencies if it doesn't embed them itself
-                                queue.append(dependencyTarget)
+                    let dependencyTargetReference = try! TargetReference(dependency.reference)
+
+                    switch dependencyTargetReference.location {
+                    case .local:
+                        if isTopLevel || dependency.embed == nil {
+                            if let dependencyTarget = project.getTarget(dependency.reference) {
+                                dependencies[dependency.reference] = dependency
+                                if !dependencyTarget.shouldEmbedDependencies {
+                                    // traverse target's dependencies if it doesn't embed them itself
+                                    queue.append(dependencyTarget)
+                                }
+                            } else if project.getAggregateTarget(dependency.reference) != nil {
+                                // Aggregate targets should be included
+                                dependencies[dependency.reference] = dependency
                             }
-                        } else if project.getAggregateTarget(dependency.reference) != nil {
-                            // Aggregate targets should be included
+                        }
+                    case .project:
+                        if isTopLevel || dependency.embed == nil {
                             dependencies[dependency.reference] = dependency
                         }
                     }

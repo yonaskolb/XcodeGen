@@ -2,6 +2,9 @@
 
 ## Next Version
 
+#### Added
+- Support External Target References via subprojects. [#701](https://github.com/yonaskolb/XcodeGen/pull/701) @evandcoleman
+
 #### Fixed
 - Fixed compilation as library by locking down XcodeProj version [#767](https://github.com/yonaskolb/XcodeGen/pull/767) @yonaskolb
 
