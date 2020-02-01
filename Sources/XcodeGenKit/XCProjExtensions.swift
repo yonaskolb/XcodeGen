@@ -7,6 +7,10 @@ extension PBXFileElement {
     public var nameOrPath: String {
         name ?? path ?? ""
     }
+
+    public var `extension`: String {
+        nameOrPath.components(separatedBy: ".").last ?? ""
+    }
 }
 
 extension PBXProj {

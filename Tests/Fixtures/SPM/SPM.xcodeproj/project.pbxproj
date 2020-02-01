@@ -52,10 +52,10 @@
 		17DD374CC81D710476AFF41C /* SPM */ = {
 			isa = PBXGroup;
 			children = (
-				A9601593D0AD02931266A4E5 /* App.xctestplan */,
+				464ACF8D8F2D9F219BCFD3E7 /* Info.plist */,
 				26F7EFEE613987D1E1258A60 /* AppDelegate.swift */,
 				4E22B8BCC18A29EFE1DE3BE4 /* Assets.xcassets */,
-				464ACF8D8F2D9F219BCFD3E7 /* Info.plist */,
+				A9601593D0AD02931266A4E5 /* App.xctestplan */,
 			);
 			path = SPM;
 			sourceTree = "<group>";
@@ -81,8 +81,8 @@
 		5D68FDDE55EE935627A1B376 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				097F2DB5622B591E21BC3C73 /* App.app */,
 				3F7AFEF8ECCC678519EA643C /* StaticLibrary.a */,
+				097F2DB5622B591E21BC3C73 /* App.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";

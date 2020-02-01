@@ -629,8 +629,8 @@
 		018CC36B301BFA9965780BD9 /* iMessageStickers */ = {
 			isa = PBXGroup;
 			children = (
-				3ED831531AA349CCC19B258B /* Assets.xcassets */,
 				F2FA55A558627ED576A4AFD6 /* Info.plist */,
+				3ED831531AA349CCC19B258B /* Assets.xcassets */,
 			);
 			path = iMessageStickers;
 			sourceTree = "<group>";
@@ -659,9 +659,9 @@
 		1A57D1EE1FBC13598F6B5CB0 /* Framework */ = {
 			isa = PBXGroup;
 			children = (
-				2A5F527F2590C14956518174 /* FrameworkFile.swift */,
-				34F13B632328979093CE6056 /* Info.plist */,
 				6A58A16491CDDF968B0D56DE /* MyFramework.h */,
+				34F13B632328979093CE6056 /* Info.plist */,
+				2A5F527F2590C14956518174 /* FrameworkFile.swift */,
 			);
 			path = Framework;
 			sourceTree = "<group>";
@@ -670,19 +670,19 @@
 			isa = PBXGroup;
 			children = (
 				F0D48A913C087D049C8EDDD7 /* App.entitlements */,
-				7F1A2F579A6F79C62DDA0571 /* AppDelegate.swift */,
-				3797E591F302ECC0AA2FC607 /* Assets.xcassets */,
+				C7809CE9FE9852C2AA87ACE5 /* module.modulemap */,
 				C9DDE1B06BCC1CDE0ECF1589 /* Info.plist */,
-				AAA49985DFFE797EE8416887 /* inputList.xcfilelist */,
 				CE1F06D99242F4223D081F0D /* LaunchScreen.storyboard */,
-				9E17D598D98065767A04740F /* Localizable.strings */,
-				65C8D6D1DDC1512D396C07B7 /* Localizable.stringsdict */,
 				0C6BA0D12467A13EC012C728 /* LocalizedStoryboard.storyboard */,
 				814D72C2B921F60B759C2D4B /* Main.storyboard */,
-				306796628DD52FA55E833B65 /* Model.xcdatamodeld */,
-				C7809CE9FE9852C2AA87ACE5 /* module.modulemap */,
-				553D289724905857912C7A1D /* outputList.xcfilelist */,
+				9E17D598D98065767A04740F /* Localizable.strings */,
+				65C8D6D1DDC1512D396C07B7 /* Localizable.stringsdict */,
+				7F1A2F579A6F79C62DDA0571 /* AppDelegate.swift */,
 				0704B6CAFBB53E0EBB08F6B3 /* ViewController.swift */,
+				3797E591F302ECC0AA2FC607 /* Assets.xcassets */,
+				306796628DD52FA55E833B65 /* Model.xcdatamodeld */,
+				AAA49985DFFE797EE8416887 /* inputList.xcfilelist */,
+				553D289724905857912C7A1D /* outputList.xcfilelist */,
 			);
 			name = App;
 			path = App_iOS;
@@ -795,12 +795,12 @@
 		795B8D70B674C850B57DD39D /* App_watchOS Extension */ = {
 			isa = PBXGroup;
 			children = (
-				108BB29172D27BE3BD1E7F35 /* Assets.xcassets */,
-				8CAF6C55B555E3E1352645B6 /* ExtensionDelegate.swift */,
+				E9672EF8FE1DDC8DE0705129 /* PushNotificationPayload.apns */,
 				9F27382DD66E26C059E26EFE /* Info.plist */,
+				8CAF6C55B555E3E1352645B6 /* ExtensionDelegate.swift */,
 				A3F6BCB5FEFB16F1BA368059 /* InterfaceController.swift */,
 				C934C1F7A68CCD0AB6B38478 /* NotificationController.swift */,
-				E9672EF8FE1DDC8DE0705129 /* PushNotificationPayload.apns */,
+				108BB29172D27BE3BD1E7F35 /* Assets.xcassets */,
 			);
 			path = "App_watchOS Extension";
 			sourceTree = "<group>";
@@ -816,11 +816,11 @@
 		80C3A0E524EC1ABCB9149EA2 /* XPC Service */ = {
 			isa = PBXGroup;
 			children = (
-				BA040F1F7D6CA08878323A55 /* Info.plist */,
-				187E665975BB5611AF0F27E1 /* main.m */,
 				FD05F36F95D6F098A76F220B /* XPC_Service.h */,
-				148B7C933698BCC4F1DBA979 /* XPC_Service.m */,
 				3D8A2D4363866877B9140156 /* XPC_ServiceProtocol.h */,
+				187E665975BB5611AF0F27E1 /* main.m */,
+				148B7C933698BCC4F1DBA979 /* XPC_Service.m */,
+				BA040F1F7D6CA08878323A55 /* Info.plist */,
 			);
 			path = "XPC Service";
 			sourceTree = "<group>";
@@ -862,8 +862,8 @@
 		A3DCF90D9B1EF4E27CF54B19 /* iMessageApp */ = {
 			isa = PBXGroup;
 			children = (
-				D51CC8BCCBD68A90E90A3207 /* Assets.xcassets */,
 				A220DE4EB3CB2E598D034D9D /* Info.plist */,
+				D51CC8BCCBD68A90E90A3207 /* Assets.xcassets */,
 			);
 			path = iMessageApp;
 			sourceTree = "<group>";
@@ -871,14 +871,19 @@
 		AC523591AC7BE9275003D2DB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				CB77A637470A3CDA2BDDBE99 /* App_iOS_Tests.xctest */,
-				13EEAB58665D79C15184D9D0 /* App_iOS_UITests.xctest */,
+				4D0BF47DF71A6DBA33ED23FD /* StaticLibrary_ObjC.a */,
+				056A43A09CE7E88D578696D8 /* StaticLibrary_ObjC.a */,
+				1313F043F19B484A5046E074 /* StaticLibrary_ObjC.a */,
+				EF92E90B6F1D583382BD85BE /* StaticLibrary_ObjC.a */,
+				D8D8907E2CDA1295D0D94F53 /* StaticLibrary_Swift.a */,
 				B1C33BB070583BE3B0EC0E68 /* App_iOS.app */,
-				0B9D98D935F2C69A1F5BA539 /* App_macOS_Tests.xctest */,
 				33F6DCDC37D2E66543D4965D /* App_macOS.app */,
-				0D09D243DBCF9D32E239F1E8 /* App_watchOS Extension.appex */,
 				A680BE9F68A255B0FB291AE6 /* App_watchOS.app */,
 				7D700FA699849D2F95216883 /* EntitledApp.app */,
+				9A87A926D563773658FB87FE /* iMessageApp.app */,
+				0D09D243DBCF9D32E239F1E8 /* App_watchOS Extension.appex */,
+				D629E142AB87C681D4EC90F7 /* iMessageExtension.appex */,
+				C53ACB2962FED621389C36A2 /* iMessageStickersExtension.appex */,
 				8A9274BE42A03DC5DA1FAD04 /* Framework.framework */,
 				41FC82ED1C4C3B7B3D7B2FB7 /* Framework.framework */,
 				7D67F1C1BFBACE101DE7DB51 /* Framework.framework */,
@@ -887,16 +892,11 @@
 				2233774B86539B1574D206B0 /* Framework2.framework */,
 				A0DC40025AB59B688E758829 /* Framework2.framework */,
 				AB055761199DF36DB0C629A6 /* Framework2.framework */,
-				9A87A926D563773658FB87FE /* iMessageApp.app */,
-				D629E142AB87C681D4EC90F7 /* iMessageExtension.appex */,
-				C53ACB2962FED621389C36A2 /* iMessageStickersExtension.appex */,
-				4D0BF47DF71A6DBA33ED23FD /* StaticLibrary_ObjC.a */,
-				056A43A09CE7E88D578696D8 /* StaticLibrary_ObjC.a */,
-				1313F043F19B484A5046E074 /* StaticLibrary_ObjC.a */,
-				EF92E90B6F1D583382BD85BE /* StaticLibrary_ObjC.a */,
-				D8D8907E2CDA1295D0D94F53 /* StaticLibrary_Swift.a */,
 				E43116070AFEF5D8C3A5A957 /* TestFramework.framework */,
 				BECEA4A483ADEB8158F640B3 /* Tool */,
+				CB77A637470A3CDA2BDDBE99 /* App_iOS_Tests.xctest */,
+				13EEAB58665D79C15184D9D0 /* App_iOS_UITests.xctest */,
+				0B9D98D935F2C69A1F5BA539 /* App_macOS_Tests.xctest */,
 				22237B8EBD9E6BE8EBC8735F /* XPC Service.xpc */,
 			);
 			name = Products;
@@ -905,9 +905,9 @@
 		BAE6C12745737019DC9E98BF /* App_watchOS */ = {
 			isa = PBXGroup;
 			children = (
-				D8A016580A3B8F72B820BFBF /* Assets.xcassets */,
 				FED40A89162E446494DDE7C7 /* Info.plist */,
 				C872631362DDBAFCE71E5C66 /* Interface.storyboard */,
+				D8A016580A3B8F72B820BFBF /* Assets.xcassets */,
 			);
 			path = App_watchOS;
 			sourceTree = "<group>";
@@ -925,10 +925,10 @@
 		BF58996786F85CB77BEE72EF /* iMessageExtension */ = {
 			isa = PBXGroup;
 			children = (
-				1BC32A813B80A53962A1F365 /* Assets.xcassets */,
 				40863AE6202CFCD0529D8438 /* Info.plist */,
 				753001CDCEAA4C4E1AFF8E87 /* MainInterface.storyboard */,
 				B198242976C3395E31FE000A /* MessagesViewController.swift */,
+				1BC32A813B80A53962A1F365 /* Assets.xcassets */,
 			);
 			path = iMessageExtension;
 			sourceTree = "<group>";
@@ -960,11 +960,11 @@
 		EE78B4FBD0137D1975C47D76 /* App_macOS */ = {
 			isa = PBXGroup;
 			children = (
-				09B82F603D981398F38D762E /* AppDelegate.swift */,
-				E55F45EACB0F382722D61C8D /* Assets.xcassets */,
 				38F1191E5B85DC882B8ABE85 /* Info.plist */,
 				74FBDFA5CB063F6001AD8ACD /* Main.storyboard */,
+				09B82F603D981398F38D762E /* AppDelegate.swift */,
 				A4C3FE6B986506724DAB5D0F /* ViewController.swift */,
+				E55F45EACB0F382722D61C8D /* Assets.xcassets */,
 			);
 			path = App_macOS;
 			sourceTree = "<group>";
@@ -973,9 +973,9 @@
 			isa = PBXGroup;
 			children = (
 				12809A79ACE69F501A5FE815 /* Carthage */,
+				FD4A16C7B8FEB7F97F3CBE3F /* libz.dylib */,
 				FDB2B6A77D39CD5602F2125F /* Contacts.framework */,
 				0BB1B49A91B892152D68ED76 /* libc++.tbd */,
-				FD4A16C7B8FEB7F97F3CBE3F /* libz.dylib */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -992,10 +992,10 @@
 		FCC084D4F8992BBC49983A38 /* CustomGroup */ = {
 			isa = PBXGroup;
 			children = (
-				EE1343F2238429D4DA9D830B /* File1.swift */,
-				BC56891DA7446EAC8C2F27EB /* File2.swift */,
 				DAA7880242A9DE61E68026CC /* Folder */,
 				03D6D1E34022DA9524E5B38D /* Mintfile */,
+				EE1343F2238429D4DA9D830B /* File1.swift */,
+				BC56891DA7446EAC8C2F27EB /* File2.swift */,
 			);
 			name = CustomGroup;
 			sourceTree = "<group>";

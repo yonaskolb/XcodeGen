@@ -677,10 +677,12 @@ class SourceGeneratorTests: XCTestCase {
             $0.it("sorts files") {
                 let directories = """
                     Sources:
-                    - file3.swift
-                    - file.swift
-                    - 10file.a
-                    - 1file.a
+                    - file5.swift
+                    - file.xib
+                    - file4.swift
+                    - file6.a
+                    - file3.a
+                    - file1.xib
                     - file2.swift
                     - group2:
                         - file.swift
@@ -697,11 +699,13 @@ class SourceGeneratorTests: XCTestCase {
                 let group = mainGroup.children.compactMap { $0 as? PBXGroup }.first { $0.nameOrPath == "Sources" }!
                 let names = group.children.compactMap { $0.nameOrPath }
                 try expect(names) == [
-                    "1file.a",
-                    "10file.a",
-                    "file.swift",
+                    "file3.a",
+                    "file6.a",
                     "file2.swift",
-                    "file3.swift",
+                    "file4.swift",
+                    "file5.swift",
+                    "file.xib",
+                    "file1.xib",
                     "group",
                     "group2",
                 ]
