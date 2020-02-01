@@ -2,6 +2,8 @@
 
 ## Next Version
 
+## 2.13.0
+
 #### Added
 - Support External Target References via subprojects. [#701](https://github.com/yonaskolb/XcodeGen/pull/701) @evandcoleman
 
@@ -13,6 +15,8 @@
 
 #### Internal
 - Updated to XcodeProj 7.7.0 [#767](https://github.com/yonaskolb/XcodeGen/pull/767) @yonaskolb
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.12.0...2.13.0)
 
 ## 2.12.0
 
