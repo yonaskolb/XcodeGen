@@ -10,8 +10,8 @@ class GenerateCommand: ProjectCommand {
     @Flag("-q", "--quiet", description: "Suppress all informational and success output")
     var quiet: Bool
 
-    @Flag("-c", "--use-cache", description: "Use a cache for the xcodegen spec. This will prevent unnecessarily generating the project if nothing has changed")
-    var useCache: Bool
+    @Flag("-n", "--no-cache", description: "Don't use a cache for the spec")
+    var noCache: Bool
 
     @Key("--cache-path", description: "Where the cache file will be loaded from and save to. Defaults to ~/.xcodegen/cache/{SPEC_PATH_HASH}")
     var cacheFilePath: Path?
@@ -46,7 +46,7 @@ class GenerateCommand: ProjectCommand {
         var cacheFile: CacheFile?
 
         // read cache
-        if useCache || self.cacheFilePath != nil {
+        if !noCache || self.cacheFilePath != nil {
             do {
                 cacheFile = try specLoader.generateCacheFile()
             } catch {
