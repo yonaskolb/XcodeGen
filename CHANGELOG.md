@@ -2,6 +2,8 @@
 
 ## Next Version
 
+## 2.12.0
+
 #### Added
 - Added pre and post command options. Useful for running `pod install` in combination with `--use-cache` [#759](https://github.com/yonaskolb/XcodeGen/pull/759) @yonaskolb
 - Support for language and region settings on a target basis [#728](https://github.com/yonaskolb/XcodeGen/pull/728) @FranzBusch
@@ -18,6 +20,8 @@
 
 #### Internal
 - Update to SwiftCLI 6.0 and use the new property wrappers [#749](https://github.com/yonaskolb/XcodeGen/pull/749) @yonaskolb
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.11.0...2.12.0)
 
 ## 2.11.0
 
