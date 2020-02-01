@@ -676,6 +676,10 @@ class SourceGeneratorTests: XCTestCase {
 
             $0.it("sorts files") {
                 let directories = """
+                    A:
+                    - A.swift
+                    Source:
+                        - file.swift
                     Sources:
                     - file3.swift
                     - file.swift
@@ -686,17 +690,55 @@ class SourceGeneratorTests: XCTestCase {
                         - file.swift
                     - group:
                         - file.swift
+                    Z:
+                    - A:
+                        - file.swift
+                    B:
+                    - file.swift
                 """
                 try createDirectories(directories)
 
-                let target = Target(name: "Test", type: .application, platform: .iOS, sources: ["Sources"], dependencies: [Dependency(type: .carthage(findFrameworks: false, linkType: .dynamic), reference: "Alamofire")])
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: [
+                        "Sources",
+                        TargetSource(path: "Source", name: "S"),
+                        "A",
+                        TargetSource(path: "Z/A", name: "B"),
+                        "B",
+                ], dependencies: [Dependency(type: .carthage(findFrameworks: false, linkType: .dynamic), reference: "Alamofire")])
                 let project = Project(basePath: directoryPath, name: "Test", targets: [target])
 
                 let pbxProj = try project.generatePbxProj()
                 let mainGroup = try pbxProj.getMainGroup()
-                let group = mainGroup.children.compactMap { $0 as? PBXGroup }.first { $0.nameOrPath == "Sources" }!
-                let names = group.children.compactMap { $0.nameOrPath }
+                let mainGroupNames = mainGroup.children.prefix(5).map { $0.name }
+                try expect(mainGroupNames) == [
+                    nil,
+                    nil,
+                    "B",
+                    "S",
+                    nil,
+                ]
+                let mainGroupPaths = mainGroup.children.prefix(5).map { $0.path }
+                try expect(mainGroupPaths) == [
+                    "A",
+                    "B",
+                    "Z/A",
+                    "Source",
+                    "Sources",
+                ]
+
+                let group = mainGroup.children.compactMap { $0 as? PBXGroup }.first { $0.path == "Sources" }!
+                let names = group.children.map { $0.name }
                 try expect(names) == [
+                    nil,
+                    nil,
+                    nil,
+                    nil,
+                    nil,
+                    nil,
+                    nil,
+                ]
+                let paths = group.children.map { $0.path }
+                try expect(paths) == [
                     "1file.a",
                     "10file.a",
                     "file.swift",

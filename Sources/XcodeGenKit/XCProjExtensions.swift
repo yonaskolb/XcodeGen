@@ -3,9 +3,21 @@ import PathKit
 import XcodeProj
 
 extension PBXFileElement {
-
     public var nameOrPath: String {
-        name ?? path ?? ""
+        return name ?? path ?? ""
+    }
+
+    func namePathLocalizedStandardCompare(_ rhs: PBXFileElement) -> ComparisonResult {
+        return sortString.localizedStandardCompare(rhs.sortString)
+    }
+
+    static func areNamePathInIncreasingOrder(_ lhs: PBXFileElement, _ rhs: PBXFileElement) -> Bool {
+        return lhs.sortString < rhs.sortString
+    }
+
+    private var sortString: String {
+        // This string needs to be unique for all combinations of name & path or the order won't be stable.
+        return "\(name ?? path ?? "")\t\(name ?? "")\t\(path ?? "")"
     }
 }
 

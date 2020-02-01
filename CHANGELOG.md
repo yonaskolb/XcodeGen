@@ -26,6 +26,7 @@
 - Fixed resolving relative path passed to `XcodeProj` [#751](https://github.com/yonaskolb/XcodeGen/pull/751) @PycKamil
 - Prefer configurations named "Debug" or "Release" for default scheme build configurations [#752](https://github.com/yonaskolb/XcodeGen/pull/752) @john-flanagan
 - Added an extra check for package versions. [#755](https://github.com/yonaskolb/XcodeGen/pull/755) @basvankuijck
+- Stabilized sorting of groups with duplicate names/paths. [#671](https://github.com/yonaskolb/XcodeGen/pull/671) @ChristopherRogers
 
 #### Internal
 - Update to SwiftCLI 6.0 and use the new property wrappers [#749](https://github.com/yonaskolb/XcodeGen/pull/749) @yonaskolb
