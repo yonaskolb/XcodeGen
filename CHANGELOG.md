@@ -2,6 +2,12 @@
 
 ## Next Version
 
+#### Fixed
+- Fixed compilation as library by locking down XcodeProj version [#767](https://github.com/yonaskolb/XcodeGen/pull/767) @yonaskolb
+
+#### Internal
+- Updated to XcodeProj 7.7.0 [#767](https://github.com/yonaskolb/XcodeGen/pull/767) @yonaskolb
+
 ## 2.12.0
 
 #### Added

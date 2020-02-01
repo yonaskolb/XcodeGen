@@ -32,7 +32,7 @@ extension Target {
              .xcodeExtension,
              .xpcService:
             return .none
-        case .framework:
+        case .framework, .xcFramework:
             // TODO: This should check `MACH_O_TYPE` in case this is a "Static Framework"
             return .dynamic
         case .dynamicLibrary:
