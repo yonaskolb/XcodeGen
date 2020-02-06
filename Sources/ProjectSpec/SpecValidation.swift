@@ -194,24 +194,21 @@ extension Project {
         }
 
         for scheme in schemes {
-            for buildTarget in scheme.build.targets {
-                switch buildTarget.target.location {
-                case .local:
-                    if getProjectTarget(buildTarget.target.name) == nil {
-                        errors.append(.invalidSchemeTarget(scheme: scheme.name, target: buildTarget.target.name))
-                    }
-                case .project(let project):
-                    if getProjectReference(project) == nil {
-                        errors.append(.invalidProjectReference(scheme: scheme.name, reference: project))
-                    }
-                }
-            }
+            errors.append(
+                contentsOf: scheme.build.targets.compactMap({ validationError(for: $0.target, in: scheme, action: "build") })
+            )
             if let action = scheme.run, let config = action.config, getConfig(config) == nil {
                 errors.append(.invalidSchemeConfig(scheme: scheme.name, config: config))
             }
             if let action = scheme.test, let config = action.config, getConfig(config) == nil {
                 errors.append(.invalidSchemeConfig(scheme: scheme.name, config: config))
             }
+            errors.append(
+                contentsOf: scheme.test?.targets.compactMap({ validationError(for: $0.targetReference, in: scheme, action: "test") }) ?? []
+            )
+            errors.append(
+                contentsOf: scheme.test?.coverageTargets.compactMap({ validationError(for: $0, in: scheme, action: "test") }) ?? []
+            )
             if let action = scheme.profile, let config = action.config, getConfig(config) == nil {
                 errors.append(.invalidSchemeConfig(scheme: scheme.name, config: config))
             }
@@ -231,6 +228,18 @@ extension Project {
     public func validateMinimumXcodeGenVersion(_ xcodeGenVersion: Version) throws {
         if let minimumXcodeGenVersion = options.minimumXcodeGenVersion, xcodeGenVersion < minimumXcodeGenVersion {
             throw SpecValidationError.ValidationError.invalidXcodeGenVersion(minimumVersion: minimumXcodeGenVersion, version: xcodeGenVersion)
+        }
+    }
+
+    /// Returns a descriptive error if the given target reference was invalid otherwise `nil`.
+    private func validationError(for targetReference: TargetReference, in scheme: Scheme, action: String) -> SpecValidationError.ValidationError? {
+        switch targetReference.location {
+        case .local where getProjectTarget(targetReference.name) == nil:
+            return .invalidSchemeTarget(scheme: scheme.name, target: targetReference.name, action: action)
+        case .project(let project) where getProjectReference(project) == nil:
+            return .invalidProjectReference(scheme: scheme.name, reference: project)
+        case .local, .project:
+            return nil
         }
     }
 }

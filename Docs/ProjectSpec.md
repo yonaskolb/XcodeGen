@@ -714,8 +714,8 @@ Schemes allows for more control than the convenience [Target Scheme](#target-sch
 
 ```yaml
 targets:
-  myTarget: all
-  myTarget2: [test, run]
+  MyTarget: all
+  FooLib/FooTarget: [test, run]
 parallelizeBuild: true
 buildImplicitDependencies: true
 ```

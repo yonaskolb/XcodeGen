@@ -209,12 +209,15 @@ class ProjectSpecTests: XCTestCase {
                     name: "scheme1",
                     build: .init(targets: [.init(target: "invalidTarget")]),
                     run: .init(config: "debugInvalid"),
+                    test: .init(config: "testInvalid", coverageTargets: ["SubProject/Yams"], targets: [.init(targetReference: "invalidTarget")]),
                     archive: .init(config: "releaseInvalid")
                 )]
 
-                try expectValidationError(project, .invalidSchemeTarget(scheme: "scheme1", target: "invalidTarget"))
+                try expectValidationError(project, .invalidSchemeTarget(scheme: "scheme1", target: "invalidTarget", action: "build"))
                 try expectValidationError(project, .invalidSchemeConfig(scheme: "scheme1", config: "debugInvalid"))
                 try expectValidationError(project, .invalidSchemeConfig(scheme: "scheme1", config: "releaseInvalid"))
+                try expectValidationError(project, .invalidSchemeTarget(scheme: "scheme1", target: "invalidTarget", action: "test"))
+                try expectValidationError(project, .invalidProjectReference(scheme: "scheme1", reference: "SubProject"))
             }
 
             $0.it("fails with invalid project reference in scheme") {

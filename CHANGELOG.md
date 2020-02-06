@@ -2,6 +2,9 @@
 
 ## Next Version
 
+#### Fixed
+- Validate scheme test action and test coverage target references before generating. [#775](https://github.com/yonaskolb/XcodeGen/pull/775) @liamnichols
+
 ## 2.13.0
 
 #### Added
