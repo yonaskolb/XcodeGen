@@ -2,6 +2,8 @@
 
 ## Next Version
 
+## 2.13.1
+
 #### Fixed
 - Validate scheme test action and test coverage target references before generating. [#775](https://github.com/yonaskolb/XcodeGen/pull/775) @liamnichols
 - Fixed parsing prerelease identifiers in Swift package versions [#779](https://github.com/yonaskolb/XcodeGen/pull/779) @yonaskolb
@@ -10,6 +12,8 @@
 #### Internal
 - Updated to XcodeProj 7.8.0 [#777](https://github.com/yonaskolb/XcodeGen/pull/777) @yonaskolb
 - Use https://github.com/mxcl/Version [#779](https://github.com/yonaskolb/XcodeGen/pull/779) @yonaskolb
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.13.0...2.13.1)
 
 ## 2.13.0
 
