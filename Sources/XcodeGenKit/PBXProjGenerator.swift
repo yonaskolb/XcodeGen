@@ -622,14 +622,13 @@ public class PBXProjGenerator {
             return !linkingAttributes.isEmpty ? ["ATTRIBUTES": linkingAttributes] : nil
         }
 
-        func processTargetDependency(_ dependency: Dependency, dependencyTarget: Target, embedFileReference: PBXFileElement) {
+        func processTargetDependency(_ dependency: Dependency, dependencyTarget: Target, embedFileReference: PBXFileElement?) {
             let dependencyLinkage = dependencyTarget.type.defaultLinkage
             let link = dependency.link ??
                 ((dependencyLinkage == .dynamic && target.type != .staticLibrary) ||
                 (dependencyLinkage == .static && target.type.isExecutable))
 
-            if link {
-                let dependencyFile = embedFileReference
+            if link, let dependencyFile = embedFileReference {
                 let buildFile = addObject(
                     PBXBuildFile(file: dependencyFile, settings: getDependencyFrameworkSettings(dependency: dependency))
                 )
@@ -682,7 +681,7 @@ public class PBXProjGenerator {
                     let targetDependency = generateTargetDependency(from: target.name, to: dependencyTargetName)
                     dependencies.append(targetDependency)
                     guard let dependencyTarget = project.getTarget(dependencyTargetName) else { continue }
-                    processTargetDependency(dependency, dependencyTarget: dependencyTarget, embedFileReference: targetFileReferences[dependencyTarget.name]!)
+                    processTargetDependency(dependency, dependencyTarget: dependencyTarget, embedFileReference: targetFileReferences[dependencyTarget.name])
                 case .project(let dependencyProjectName):
                     let dependencyTargetName = dependencyTargetReference.name
                     let (targetDependency, dependencyTarget, dependencyProductProxy) = try generateExternalTargetDependency(from: target.name, to: dependencyTargetName, in: dependencyProjectName, platform: target.platform)
