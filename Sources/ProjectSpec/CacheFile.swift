@@ -1,5 +1,6 @@
 import Foundation
 import Core
+import Version
 
 public class CacheFile {
 

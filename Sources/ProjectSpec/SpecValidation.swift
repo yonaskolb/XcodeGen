@@ -1,6 +1,7 @@
 import Foundation
 import JSONUtilities
 import PathKit
+import Version
 
 extension Project {
 

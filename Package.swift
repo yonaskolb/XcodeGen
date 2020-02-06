@@ -18,10 +18,12 @@ let package = Package(
         .package(url: "https://github.com/onevcat/Rainbow.git", from: "3.0.0"),
         .package(url: "https://github.com/tuist/XcodeProj.git", .exact("7.8.0")),
         .package(url: "https://github.com/jakeheis/SwiftCLI.git", from: "6.0.0"),
+        .package(url: "https://github.com/mxcl/Version", from: "2.0.0"),
     ],
     targets: [
         .target(name: "XcodeGen", dependencies: [
             "XcodeGenCLI",
+            "Version",
         ]),
         .target(name: "XcodeGenCLI", dependencies: [
             "XcodeGenKit",
@@ -29,6 +31,7 @@ let package = Package(
             "SwiftCLI",
             "Rainbow",
             "PathKit",
+            "Version",
         ]),
         .target(name: "XcodeGenKit", dependencies: [
             "ProjectSpec",
@@ -42,6 +45,7 @@ let package = Package(
             "XcodeProj",
             "Yams",
             "Core",
+            "Version",
         ]),
         .target(name: "Core", dependencies: [
             "PathKit",

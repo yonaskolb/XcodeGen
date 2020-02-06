@@ -1,5 +1,6 @@
 import Foundation
 import JSONUtilities
+import Version
 
 public struct SpecOptions: Equatable {
     public static let settingPresetsDefault = SettingPresets.all
@@ -118,7 +119,7 @@ extension SpecOptions: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
         if let string: String = jsonDictionary.json(atKeyPath: "minimumXcodeGenVersion") {
-            minimumXcodeGenVersion = try Version(string)
+            minimumXcodeGenVersion = try Version.parse(string)
         }
 
         carthageBuildPath = jsonDictionary.json(atKeyPath: "carthageBuildPath")
@@ -151,7 +152,7 @@ extension SpecOptions: JSONEncodable {
             "transitivelyLinkDependencies": transitivelyLinkDependencies,
             "groupSortPosition": groupSortPosition.rawValue,
             "disabledValidations": disabledValidations.map { $0.rawValue },
-            "minimumXcodeGenVersion": minimumXcodeGenVersion?.string,
+            "minimumXcodeGenVersion": minimumXcodeGenVersion?.description,
             "carthageBuildPath": carthageBuildPath,
             "carthageExecutablePath": carthageExecutablePath,
             "bundleIdPrefix": bundleIdPrefix,

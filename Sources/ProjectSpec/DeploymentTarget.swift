@@ -1,5 +1,6 @@
 import Foundation
 import JSONUtilities
+import Version
 
 public struct DeploymentTarget: Equatable {
 
@@ -65,9 +66,9 @@ extension DeploymentTarget: JSONObjectConvertible {
 
         func parseVersion(_ platform: String) throws -> Version? {
             if let string: String = jsonDictionary.json(atKeyPath: .key(platform)) {
-                return try Version(string)
+                return try Version.parse(string)
             } else if let double: Double = jsonDictionary.json(atKeyPath: .key(platform)) {
-                return try Version(double)
+                return try Version.parse(double)
             } else {
                 return nil
             }
@@ -82,10 +83,10 @@ extension DeploymentTarget: JSONObjectConvertible {
 extension DeploymentTarget: JSONEncodable {
     public func toJSONValue() -> Any {
         [
-            "iOS": iOS?.string,
-            "tvOS": tvOS?.string,
-            "watchOS": watchOS?.string,
-            "macOS": macOS?.string,
+            "iOS": iOS?.description,
+            "tvOS": tvOS?.description,
+            "watchOS": watchOS?.description,
+            "macOS": macOS?.description,
         ]
     }
 }

@@ -1,6 +1,7 @@
 import Foundation
 import XcodeProj
 import JSONUtilities
+import Version
 
 public struct SwiftPackage: Equatable {
 
@@ -27,17 +28,17 @@ extension SwiftPackage: JSONObjectConvertible {
         switch versionRequirement {
 
         case .upToNextMajorVersion(let version):
-            try _ = Version(version)
+            try _ = Version.parse(version)
 
         case .upToNextMinorVersion(let version):
-            try _ = Version(version)
+            try _ = Version.parse(version)
 
         case .range(let from, let to):
-            try _ = Version(from)
-            try _ = Version(to)
+            try _ = Version.parse(from)
+            try _ = Version.parse(to)
 
         case .exact(let version):
-            try _ = Version(version)
+            try _ = Version.parse(version)
 
         default:
             break
