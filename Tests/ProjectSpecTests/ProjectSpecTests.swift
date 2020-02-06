@@ -4,6 +4,7 @@ import Spectre
 import XcodeProj
 import XCTest
 import TestSupport
+import Version
 
 class ProjectSpecTests: XCTestCase {
 
@@ -50,18 +51,18 @@ class ProjectSpecTests: XCTestCase {
             }
 
             $0.it("parses version correctly") {
-                try expect(Version("2").deploymentTarget) == "2.0"
-                try expect(Version("2.0").deploymentTarget) == "2.0"
-                try expect(Version("2.1").deploymentTarget) == "2.1"
-                try expect(Version("2.10").deploymentTarget) == "2.10"
-                try expect(Version("2.1.0").deploymentTarget) == "2.1"
-                try expect(Version("2.12.0").deploymentTarget) == "2.12"
-                try expect(Version("2.1.2").deploymentTarget) == "2.1.2"
-                try expect(Version("2.10.2").deploymentTarget) == "2.10.2"
-                try expect(Version("2.0.2").deploymentTarget) == "2.0.2"
-                try expect(Version(2).deploymentTarget) == "2.0"
-                try expect(Version(2.0).deploymentTarget) == "2.0"
-                try expect(Version(2.1).deploymentTarget) == "2.1"
+                try expect(Version.parse("2").deploymentTarget) == "2.0"
+                try expect(Version.parse("2.0").deploymentTarget) == "2.0"
+                try expect(Version.parse("2.1").deploymentTarget) == "2.1"
+                try expect(Version.parse("2.10").deploymentTarget) == "2.10"
+                try expect(Version.parse("2.1.0").deploymentTarget) == "2.1"
+                try expect(Version.parse("2.12.0").deploymentTarget) == "2.12"
+                try expect(Version.parse("2.1.2").deploymentTarget) == "2.1.2"
+                try expect(Version.parse("2.10.2").deploymentTarget) == "2.10.2"
+                try expect(Version.parse("2.0.2").deploymentTarget) == "2.0.2"
+                try expect(Version.parse(2).deploymentTarget) == "2.0"
+                try expect(Version.parse(2.0).deploymentTarget) == "2.0"
+                try expect(Version.parse(2.1).deploymentTarget) == "2.1"
             }
         }
     }
@@ -76,7 +77,7 @@ class ProjectSpecTests: XCTestCase {
             )
 
             $0.it("fails with invalid XcodeGen version") {
-                let minimumVersion = Version("1.11.1")
+                let minimumVersion = try Version.parse("1.11.1")
                 var project = baseProject
                 project.options = SpecOptions(minimumXcodeGenVersion: minimumVersion)
 
@@ -86,9 +87,9 @@ class ProjectSpecTests: XCTestCase {
                     }
                 }
 
-                try expectMinimumXcodeGenVersionError(project, minimumVersion: minimumVersion, xcodeGenVersion: Version("1.11.0"))
-                try expectMinimumXcodeGenVersionError(project, minimumVersion: minimumVersion, xcodeGenVersion: Version("1.10.99"))
-                try expectMinimumXcodeGenVersionError(project, minimumVersion: minimumVersion, xcodeGenVersion: Version("0.99"))
+                try expectMinimumXcodeGenVersionError(project, minimumVersion: minimumVersion, xcodeGenVersion: Version.parse("1.11.0"))
+                try expectMinimumXcodeGenVersionError(project, minimumVersion: minimumVersion, xcodeGenVersion: Version.parse("1.10.99"))
+                try expectMinimumXcodeGenVersionError(project, minimumVersion: minimumVersion, xcodeGenVersion: Version.parse("0.99"))
             }
 
             $0.it("fails with invalid project") {

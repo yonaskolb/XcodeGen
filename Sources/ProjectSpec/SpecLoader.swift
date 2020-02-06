@@ -3,6 +3,7 @@ import JSONUtilities
 import PathKit
 import XcodeProj
 import Yams
+import Version
 
 public class SpecLoader {
 

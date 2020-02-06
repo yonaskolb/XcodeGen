@@ -3,6 +3,7 @@ import SwiftCLI
 import PathKit
 import ProjectSpec
 import Yams
+import Version
 
 class DumpCommand: ProjectCommand {
 

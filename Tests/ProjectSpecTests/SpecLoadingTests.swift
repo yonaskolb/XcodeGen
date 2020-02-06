@@ -6,6 +6,7 @@ import XcodeProj
 import XCTest
 import Yams
 import TestSupport
+import Version
 
 class SpecLoadingTests: XCTestCase {
 
@@ -1101,6 +1102,7 @@ class SpecLoadingTests: XCTestCase {
                     "package5": SwiftPackage(url: "package.git", versionRequirement: .revision("x")),
                     "package6": SwiftPackage(url: "package.git", versionRequirement: .range(from: "1.2.0", to: "1.2.5")),
                     "package7": SwiftPackage(url: "package.git", versionRequirement: .exact("1.2.2")),
+                    "package8": SwiftPackage(url: "package.git", versionRequirement: .upToNextMajorVersion("4.0.0-beta.5")),
                 ],
                                       localPackages: ["../../Package"],
                                       options: .init(localPackagesGroup: "MyPackages"))
@@ -1118,6 +1120,7 @@ class SpecLoadingTests: XCTestCase {
                         "package5": ["url": "package.git", "revision": "x"],
                         "package6": ["url": "package.git", "minVersion": "1.2.0", "maxVersion": "1.2.5"],
                         "package7": ["url": "package.git", "version": "1.2.2"],
+                        "package8": ["url": "package.git", "majorVersion": "4.0.0-beta.5"],
                     ],
                     "localPackages": ["../../Package"],
                 ]

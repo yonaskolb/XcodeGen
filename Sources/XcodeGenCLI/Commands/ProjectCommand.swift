@@ -4,6 +4,7 @@ import ProjectSpec
 import XcodeGenKit
 import PathKit
 import Core
+import Version
 
 class ProjectCommand: Command {
 

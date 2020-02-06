@@ -3,6 +3,7 @@ import PathKit
 import ProjectSpec
 import XcodeProj
 import Yams
+import Version
 
 public class PBXProjGenerator {
 
@@ -427,7 +428,7 @@ public class PBXProjGenerator {
         let buildSettings = defaultConfiguration.buildSettings
         let settings = Settings(buildSettings: buildSettings, configSettings: [:], groups: [])
         let deploymentTargetString = buildSettings[platform.deploymentTargetSetting] as? String
-        let deploymentTarget = deploymentTargetString == nil ? nil : try Version(deploymentTargetString!)
+        let deploymentTarget = deploymentTargetString == nil ? nil : try Version.parse(deploymentTargetString!)
         let requiresObjCLinking = (buildSettings["OTHER_LDFLAGS"] as? String)?.contains("-ObjC") ?? (productType == .staticLibrary)
         let dependencyTarget = Target(
             name: targetObject.name,
@@ -778,7 +779,7 @@ public class PBXProjGenerator {
                     ? carthageResolver.relatedDependencies(for: dependency, in: target.platform) : [dependency]
                 allDependencies.forEach { dependency in
 
-                    var platformPath = Path(carthageResolver.buildPath(for: target.platform, linkType: linkType))
+                    let platformPath = Path(carthageResolver.buildPath(for: target.platform, linkType: linkType))
                     var frameworkPath = platformPath + dependency.reference
                     if frameworkPath.extension == nil {
                         frameworkPath = Path(frameworkPath.string + ".framework")

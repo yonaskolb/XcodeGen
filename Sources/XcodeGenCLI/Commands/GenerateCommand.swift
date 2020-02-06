@@ -4,6 +4,7 @@ import ProjectSpec
 import SwiftCLI
 import XcodeGenKit
 import XcodeProj
+import Version
 
 class GenerateCommand: ProjectCommand {
 
