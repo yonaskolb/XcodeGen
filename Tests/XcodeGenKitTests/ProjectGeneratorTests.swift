@@ -262,6 +262,15 @@ class ProjectGeneratorTests: XCTestCase {
                 try expect(nativeTargets.contains { $0.name == optionalFramework.name }).beTrue()
             }
 
+            $0.it("generates legacy target") {
+                let target = Target(name: "target", type: .application, platform: .iOS, dependencies: [.init(type: .target, reference: "legacy")])
+                let legacyTarget = Target(name: "legacy", type: .none, platform: .iOS, legacy: .init(toolPath: "path"))
+                let project = Project(name: "test", targets: [target, legacyTarget])
+
+                let pbxProject = try project.generatePbxProj()
+                try expect(pbxProject.legacyTargets.count) == 1
+            }
+
             $0.it("generates target attributes") {
                 var appTargetWithAttributes = app
                 appTargetWithAttributes.settings.buildSettings["DEVELOPMENT_TEAM"] = "123"
