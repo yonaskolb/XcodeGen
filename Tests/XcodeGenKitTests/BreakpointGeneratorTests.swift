@@ -9,7 +9,7 @@ class BreakpointGeneratorTests: XCTestCase {
         describe {
 
             $0.it("generates breakpoint") {
-                let breakpoint = Breakpoint(type: .exception)
+                let breakpoint = Breakpoint(type: .exception(.init()))
                 let project = Project(basePath: "", name: "test", targets: [], breakpoints: [breakpoint])
                 let xcodeProject = try project.generateXcodeProject()
                 let xcbreakpoint = try unwrap(xcodeProject.sharedData?.breakpoints?.breakpoints.first)

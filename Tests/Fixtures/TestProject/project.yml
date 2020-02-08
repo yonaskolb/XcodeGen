@@ -33,7 +33,7 @@ packages:
     version: 2.8.0
 breakpoints:
   - type: File
-    filePath: App_iOS/AppDelegate.swift
+    path: App_iOS/AppDelegate.swift
     line: 7
     condition: launchOptions == nil
     actions:

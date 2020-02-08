@@ -19,23 +19,51 @@ public class BreakpointGenerator {
     }
 
     private func generateBreakpointProxy(_ breakpoint: Breakpoint) throws -> XCBreakpointList.BreakpointProxy {
-        let lineString = breakpoint.line.flatMap(String.init)
+        let breakpointExtensionID: BreakpointExtensionID
+        var filePath: String?
+        var line: String?
+        var scope: String?
+        var stopOnStyle: String?
+        var symbol: String?
+        var module: String?
+        switch breakpoint.type {
+        case let .file(path, lineNumber):
+            breakpointExtensionID = .file
+            filePath = path
+            line = String(lineNumber)
+        case let .exception(exception):
+            breakpointExtensionID = .exception
+            scope = exception.scope.rawValue
+            stopOnStyle = exception.stopOnStyle.rawValue
+        case .swiftError:
+            breakpointExtensionID = .swiftError
+        case .openGLError:
+            breakpointExtensionID = .openGLError
+        case let .symbolic(symbolName, moduleName):
+            breakpointExtensionID = .symbolic
+            symbol = symbolName
+            module = moduleName
+        case .ideConstraintError:
+            breakpointExtensionID = .ideConstraintError
+        case .ideTestFailure:
+            breakpointExtensionID = .ideTestFailure
+        }
         let xcbreakpoint = XCBreakpointList.BreakpointProxy.BreakpointContent(enabled: breakpoint.enabled,
                                                                               ignoreCount: String(breakpoint.ignoreCount),
                                                                               continueAfterRunningActions: breakpoint.continueAfterRunningActions,
-                                                                              filePath: breakpoint.filePath,
+                                                                              filePath: filePath,
                                                                               timestamp: breakpoint.timestamp,
-                                                                              startingLine: lineString,
-                                                                              endingLine: lineString,
+                                                                              startingLine: line,
+                                                                              endingLine: line,
                                                                               breakpointStackSelectionBehavior: breakpoint.breakpointStackSelectionBehavior,
-                                                                              symbol: breakpoint.symbol,
-                                                                              module: breakpoint.module,
-                                                                              scope: breakpoint.scope?.rawValue,
-                                                                              stopOnStyle: breakpoint.stopOnStyle?.rawValue,
+                                                                              symbol: symbol,
+                                                                              module: module,
+                                                                              scope: scope,
+                                                                              stopOnStyle: stopOnStyle,
                                                                               condition: breakpoint.condition,
                                                                               actions: try breakpoint.actions.map({ try generateBreakpointActionProxy($0) }))
 
-        return XCBreakpointList.BreakpointProxy(breakpointExtensionID: breakpoint.type,
+        return XCBreakpointList.BreakpointProxy(breakpointExtensionID: breakpointExtensionID,
                                                 breakpointContent: xcbreakpoint)
     }
 

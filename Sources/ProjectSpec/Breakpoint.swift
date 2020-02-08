@@ -3,45 +3,41 @@ import XcodeProj
 import JSONUtilities
 
 public typealias BreakpointActionType = XCBreakpointList.BreakpointProxy.BreakpointContent.BreakpointActionProxy.ActionExtensionID
-public typealias BreakpointType = XCBreakpointList.BreakpointProxy.BreakpointExtensionID
+public typealias BreakpointExtensionID = XCBreakpointList.BreakpointProxy.BreakpointExtensionID
 
 public struct Breakpoint: Equatable {
 
-    public enum Scope: String, Equatable {
-        case all = "0"
-        case objectiveC = "1"
-        case cpp = "2"
+    public enum BreakpointType: Equatable {
 
-        init?(_ text: String) {
-            let text = text.lowercased()
-            switch text {
-            case "all":
-                self = .all
-            case "objective-c":
-                self = .objectiveC
-            case "c++":
-                self = .cpp
-            default:
-                return nil
+        public struct Exception: Equatable {
+
+            public enum Scope: String, Equatable {
+                case all = "0"
+                case objectiveC = "1"
+                case cpp = "2"
+            }
+
+            public enum StopOnStyle: String, Equatable {
+                case `throw` = "0"
+                case `catch` = "1"
+            }
+
+            public var scope: Scope
+            public var stopOnStyle: StopOnStyle
+
+            public init(scope: Breakpoint.BreakpointType.Exception.Scope = .objectiveC,
+                        stopOnStyle: Breakpoint.BreakpointType.Exception.StopOnStyle = .throw) {
+                self.scope = scope
+                self.stopOnStyle = stopOnStyle
             }
         }
-    }
-
-    public enum StopOnStyle: String, Equatable {
-        case `throw` = "0"
-        case `catch` = "1"
-
-        init?(_ text: String) {
-            let text = text.lowercased()
-            switch text {
-            case "throw":
-                self = .throw
-            case "catch":
-                self = .catch
-            default:
-                return nil
-            }
-        }
+        case file(path: String, line: Int)
+        case exception(Exception)
+        case swiftError
+        case openGLError
+        case symbolic(symbol: String?, module: String?)
+        case ideConstraintError
+        case ideTestFailure
     }
 
     public struct Action: Equatable {
@@ -115,14 +111,8 @@ public struct Breakpoint: Equatable {
     public var enabled: Bool
     public var ignoreCount: Int
     public var continueAfterRunningActions: Bool
-    public var filePath: String?
     public var timestamp: String?
-    public var line: Int?
     public var breakpointStackSelectionBehavior: String?
-    public var symbol: String?
-    public var module: String?
-    public var scope: Scope?
-    public var stopOnStyle: StopOnStyle?
     public var condition: String?
     public var actions: [Breakpoint.Action]
 
@@ -134,26 +124,48 @@ public struct Breakpoint: Equatable {
                 timestamp: String? = nil,
                 line: Int? = nil,
                 breakpointStackSelectionBehavior: String? = nil,
-                symbol: String? = nil,
-                module: String? = nil,
-                scope: Scope? = nil,
-                stopOnStyle: StopOnStyle? = nil,
                 condition: String? = nil,
                 actions: [Breakpoint.Action] = []) {
         self.type = type
         self.enabled = enabled
         self.ignoreCount = ignoreCount
         self.continueAfterRunningActions = continueAfterRunningActions
-        self.filePath = filePath
         self.timestamp = timestamp
-        self.line = line
         self.breakpointStackSelectionBehavior = breakpointStackSelectionBehavior
-        self.symbol = symbol
-        self.module = module
-        self.scope = scope
-        self.stopOnStyle = stopOnStyle
         self.condition = condition
         self.actions = actions
+    }
+}
+
+extension Breakpoint.BreakpointType.Exception.Scope {
+
+    public init(string: String) throws {
+        let string = string.lowercased()
+        switch string {
+        case "all":
+            self = .all
+        case "objective-c":
+            self = .objectiveC
+        case "c++":
+            self = .cpp
+        default:
+            throw SpecParsingError.unknownBreakpointScope(string)
+        }
+    }
+}
+
+extension Breakpoint.BreakpointType.Exception.StopOnStyle {
+
+    public init(string: String) throws {
+        let string = string.lowercased()
+        switch string {
+        case "throw":
+            self = .throw
+        case "catch":
+            self = .catch
+        default:
+            throw SpecParsingError.unknownBreakpointStopOnStyle(string)
+        }
     }
 }
 
@@ -203,47 +215,47 @@ extension Breakpoint.Action: JSONObjectConvertible {
 extension Breakpoint: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
-        let typeString: String = try jsonDictionary.json(atKeyPath: "type")
-        if let type = BreakpointType(string: typeString) {
-            self.type = type
-        } else {
-            throw SpecParsingError.unknownBreakpointType(typeString)
+        let idString: String = try jsonDictionary.json(atKeyPath: "type")
+        let id = try BreakpointExtensionID(string: idString)
+        switch id {
+        case .file:
+            let path: String = try jsonDictionary.json(atKeyPath: "path")
+            let line: Int = try jsonDictionary.json(atKeyPath: "line")
+            type = .file(path: path, line: line)
+        case .exception:
+            let scope: BreakpointType.Exception.Scope
+            if jsonDictionary["scope"] != nil {
+                let scopeString: String = try jsonDictionary.json(atKeyPath: "scope")
+                scope = try .init(string: scopeString)
+            } else {
+                scope = .objectiveC
+            }
+            let stopOnStyle: BreakpointType.Exception.StopOnStyle
+            if jsonDictionary["stopOnStyle"] != nil {
+                let stopOnStyleString: String = try jsonDictionary.json(atKeyPath: "stopOnStyle")
+                stopOnStyle = try .init(string: stopOnStyleString)
+            } else {
+                stopOnStyle = .throw
+            }
+            type = .exception(.init(scope: scope, stopOnStyle: stopOnStyle))
+        case .swiftError:
+            type = .swiftError
+        case .openGLError:
+            type = .openGLError
+        case .symbolic:
+            let symbol: String? = jsonDictionary.json(atKeyPath: "symbol")
+            let module: String? = jsonDictionary.json(atKeyPath: "module")
+            type = .symbolic(symbol: symbol, module: module)
+        case .ideConstraintError:
+            type = .ideConstraintError
+        case .ideTestFailure:
+            type = .ideTestFailure
         }
         enabled = jsonDictionary.json(atKeyPath: "enabled") ?? true
         ignoreCount = jsonDictionary.json(atKeyPath: "ignoreCount") ?? 0
         continueAfterRunningActions = jsonDictionary.json(atKeyPath: "continueAfterRunningActions") ?? false
         timestamp = jsonDictionary.json(atKeyPath: "timestamp")
-        if type == .file {
-            let filePath: String = try jsonDictionary.json(atKeyPath: "filePath")
-            let line: Int = try jsonDictionary.json(atKeyPath: "line")
-            self.filePath = filePath
-            self.line = line
-        }
         breakpointStackSelectionBehavior = jsonDictionary.json(atKeyPath: "breakpointStackSelectionBehavior")
-        symbol = jsonDictionary.json(atKeyPath: "symbol")
-        module = jsonDictionary.json(atKeyPath: "module")
-        if type == .exception {
-            if jsonDictionary["scope"] != nil {
-                let scopeString: String = try jsonDictionary.json(atKeyPath: "scope")
-                if let scope = Scope(scopeString) {
-                    self.scope = scope
-                } else {
-                    throw SpecParsingError.unknownBreakpointScope(scopeString)
-                }
-            } else {
-                scope = .objectiveC
-            }
-            if jsonDictionary["stopOnStyle"] != nil {
-                let stopOnStyleString: String = try jsonDictionary.json(atKeyPath: "stopOnStyle")
-                if let stopOnStyle = StopOnStyle(stopOnStyleString) {
-                    self.stopOnStyle = stopOnStyle
-                } else {
-                    throw SpecParsingError.unknownBreakpointStopOnStyle(stopOnStyleString)
-                }
-            } else {
-                stopOnStyle = .throw
-            }
-        }
         condition = jsonDictionary.json(atKeyPath: "condition")
         if jsonDictionary["actions"] != nil {
             actions = try jsonDictionary.json(atKeyPath: "actions", invalidItemBehaviour: .fail)

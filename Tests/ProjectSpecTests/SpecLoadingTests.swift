@@ -418,7 +418,7 @@ class SpecLoadingTests: XCTestCase {
 
             $0.it("parses breakpoints") {
                 let breakpointDictionaries = [
-                    ["type": "File", "filePath": "Foo.swift", "line": 7, "condition": "bar == nil", "timestamp": "600577513.4932801"],
+                    ["type": "File", "path": "Foo.swift", "line": 7, "condition": "bar == nil", "timestamp": "600577513.4932801"],
                     ["type": "Exception", "scope": "All", "stopOnStyle": "Catch"],
                     ["type": "SwiftError", "enabled": false],
                     ["type": "OpenGLError", "ignoreCount": 2],
@@ -430,11 +430,11 @@ class SpecLoadingTests: XCTestCase {
                 let project = try getProjectSpec(["breakpoints": breakpointDictionaries])
 
                 let expectedBreakpoints = [
-                    Breakpoint(type: .file, filePath: "Foo.swift",  timestamp: "600577513.4932801",  line: 7, condition: "bar == nil"),
-                    Breakpoint(type: .exception, scope: .all, stopOnStyle: .catch),
+                    Breakpoint(type: .file(path: "Foo.swift", line: 7), timestamp: "600577513.4932801", condition: "bar == nil"),
+                    Breakpoint(type: .exception(.init(scope: .all, stopOnStyle: .catch))),
                     Breakpoint(type: .swiftError, enabled: false),
                     Breakpoint(type: .openGLError, ignoreCount: 2),
-                    Breakpoint(type: .symbolic, symbol: "UIViewAlertForUnsatisfiableConstraints", module: "UIKitCore"),
+                    Breakpoint(type: .symbolic(symbol: "UIViewAlertForUnsatisfiableConstraints", module: "UIKitCore")),
                     Breakpoint(type: .ideConstraintError, continueAfterRunningActions: true),
                     Breakpoint(type: .ideTestFailure, breakpointStackSelectionBehavior: "1")
                 ]

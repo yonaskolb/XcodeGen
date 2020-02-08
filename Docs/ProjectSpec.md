@@ -182,7 +182,7 @@ Default settings for file extensions. See [Sources](#sources) for more documenta
 - [ ] **ignoreCount**: **Int** - Indicates how many times it should be ignored before stopping, Default to `0`
 - [ ] **continueAfterRunningActions**: **Bool** - Indicates if should automatically continue after evaluating actions, Default to `false`
 - [ ] **timestamp**: **String** - Breakpoint timestamp
-- [ ] **filePath**: **String** - Breakpoint file path (only required by file breakpoints)
+- [ ] **path**: **String** - Breakpoint file path (only required by file breakpoints)
 - [ ] **line**: **Int** - Breakpoint line (only required by file breakpoints)
 - [ ] **breakpointStackSelectionBehavior**: **String** - Breakpoint stack selection behavior
 - [ ] **symbol**: **String** - Breakpoint symbol (only used by symbolic breakpoints)
