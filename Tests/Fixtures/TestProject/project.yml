@@ -44,17 +44,19 @@ breakpoints:
     scope: All
     stopOnStype: Catch
     actions:
+      - type: DebuggerCommand
+        command: po $arg1
       - type: AppleScript
         script: display alert "Exception happened!"
       - type: Sound
-        soundName: Blow
+        sound: Blow
   - type: SwiftError
     enabled: false
   - type: OpenGLError
     ignoreCount: 2
     actions:
       - type: ShellCommand
-        command: script.sh
+        path: script.sh
         arguments: argument1, argument2
         waitUntilDone: true
   - type: Symbolic

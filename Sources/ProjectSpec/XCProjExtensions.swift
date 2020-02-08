@@ -120,15 +120,15 @@ extension BreakpointExtensionID {
     }
 }
 
-extension BreakpointActionType {
+extension BreakpointActionExtensionID {
 
-    init?(string: String) {
-        if let type = BreakpointActionType(rawValue: "Xcode.BreakpointAction.\(string)") {
+    init(string: String) throws {
+        if let type = BreakpointActionExtensionID(rawValue: "Xcode.BreakpointAction.\(string)") {
             self = type
-        } else if let type = BreakpointActionType(rawValue: string) {
+        } else if let type = BreakpointActionExtensionID(rawValue: string) {
             self = type
         } else {
-            return nil
+            throw SpecParsingError.unknownBreakpointActionType(string)
         }
     }
 }

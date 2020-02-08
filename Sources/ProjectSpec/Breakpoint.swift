@@ -2,7 +2,7 @@ import Foundation
 import XcodeProj
 import JSONUtilities
 
-public typealias BreakpointActionType = XCBreakpointList.BreakpointProxy.BreakpointContent.BreakpointActionProxy.ActionExtensionID
+public typealias BreakpointActionExtensionID = XCBreakpointList.BreakpointProxy.BreakpointContent.BreakpointActionProxy.ActionExtensionID
 public typealias BreakpointExtensionID = XCBreakpointList.BreakpointProxy.BreakpointExtensionID
 
 public struct Breakpoint: Equatable {
@@ -40,26 +40,25 @@ public struct Breakpoint: Equatable {
         case ideTestFailure
     }
 
-    public struct Action: Equatable {
+    public enum Action: Equatable {
 
-        public enum ConveyanceType: String, Equatable {
-            case console = "0"
-            case speak = "1"
+        public struct Log: Equatable {
 
-            init?(_ text: String) {
-                let text = text.lowercased()
-                switch text {
-                case "console":
-                    self = .console
-                case "speak":
-                    self = .speak
-                default:
-                    return nil
-                }
+            public enum ConveyanceType: String, Equatable {
+                case console = "0"
+                case speak = "1"
+            }
+
+            public var message: String?
+            public var conveyanceType: ConveyanceType
+
+            public init(message: String? = nil, conveyanceType: Breakpoint.Action.Log.ConveyanceType = .console) {
+                self.message = message
+                self.conveyanceType = conveyanceType
             }
         }
 
-        public enum SoundName: String, Equatable {
+        public enum Sound: String, Equatable {
             case basso = "Basso"
             case blow = "Blow"
             case bottle = "Bottle"
@@ -76,35 +75,13 @@ public struct Breakpoint: Equatable {
             case tink = "Tink"
         }
 
-        public var type: BreakpointActionType
-        public var consoleCommand: String?
-        public var message: String?
-        public var conveyanceType: ConveyanceType?
-        public var command: String?
-        public var arguments: String?
-        public var waitUntilDone: Bool?
-        public var script: String?
-        public var soundName: SoundName?
-
-        public init(type: BreakpointActionType,
-                    consoleCommand: String? = nil,
-                    message: String? = nil,
-                    conveyanceType: ConveyanceType? = nil,
-                    command: String? = nil,
-                    arguments: String? = nil,
-                    waitUntilDone: Bool? = nil,
-                    script: String? = nil,
-                    soundName: SoundName? = nil) {
-            self.type = type
-            self.consoleCommand = consoleCommand
-            self.message = message
-            self.conveyanceType = conveyanceType
-            self.command = command
-            self.arguments = arguments
-            self.waitUntilDone = waitUntilDone
-            self.script = script
-            self.soundName = soundName
-        }
+        case debuggerCommand(String?)
+        case log(Log)
+        case shellCommand(path: String?, arguments: String?, waitUntilDone: Bool = false)
+        case graphicsTrace
+        case appleScript(String?)
+        case sound(Sound)
+        case openGLError
     }
 
     public var type: BreakpointType
@@ -169,45 +146,71 @@ extension Breakpoint.BreakpointType.Exception.StopOnStyle {
     }
 }
 
-extension Breakpoint.Action: JSONObjectConvertible {
-    public init(jsonDictionary: JSONDictionary) throws {
-        let typeString: String = try jsonDictionary.json(atKeyPath: "type")
-        if let type = BreakpointActionType(string: typeString) {
-            self.type = type
-        } else {
-            throw SpecParsingError.unknownBreakpointActionType(typeString)
+extension Breakpoint.Action.Log.ConveyanceType {
+
+    init(string: String) throws {
+        let string = string.lowercased()
+        switch string {
+        case "console":
+            self = .console
+        case "speak":
+            self = .speak
+        default:
+            throw SpecParsingError.unknownBreakpointActionConveyanceType(string)
         }
-        consoleCommand = jsonDictionary.json(atKeyPath: "consoleCommand")
-        message = jsonDictionary.json(atKeyPath: "message")
-        if type == .log {
+    }
+}
+
+extension Breakpoint.Action.Sound {
+
+    init(name: String) throws {
+        guard let sound = Self.init(rawValue: name) else {
+            throw SpecParsingError.unknownBreakpointActionSoundName(name)
+        }
+        self = sound
+    }
+}
+
+extension Breakpoint.Action: JSONObjectConvertible {
+
+    public init(jsonDictionary: JSONDictionary) throws {
+        let idString: String = try jsonDictionary.json(atKeyPath: "type")
+        let id = try BreakpointActionExtensionID(string: idString)
+        switch id {
+        case .debuggerCommand:
+            let command: String? = jsonDictionary.json(atKeyPath: "command")
+            self = .debuggerCommand(command)
+        case .log:
+            let message: String? = jsonDictionary.json(atKeyPath: "message")
+            let conveyanceType: Log.ConveyanceType
             if jsonDictionary["conveyanceType"] != nil {
                 let conveyanceTypeString: String = try jsonDictionary.json(atKeyPath: "conveyanceType")
-                if let conveyanceType = ConveyanceType(conveyanceTypeString) {
-                    self.conveyanceType = conveyanceType
-                } else {
-                    throw SpecParsingError.unknownBreakpointActionConveyanceType(conveyanceTypeString)
-                }
+                conveyanceType = try .init(string: conveyanceTypeString)
             } else {
                 conveyanceType = .console
             }
-        }
-        if type == .shellCommand {
-            command = jsonDictionary.json(atKeyPath: "command")
-            arguments = jsonDictionary.json(atKeyPath: "arguments")
-            waitUntilDone = jsonDictionary.json(atKeyPath: "waitUntilDone") ?? false
-        }
-        script = jsonDictionary.json(atKeyPath: "script")
-        if type == .sound {
-            if jsonDictionary["soundName"] != nil {
-                let soundNameString: String = try jsonDictionary.json(atKeyPath: "soundName")
-                if let soundName = SoundName(rawValue: soundNameString) {
-                    self.soundName = soundName
-                } else {
-                    throw SpecParsingError.unknownBreakpointActionSoundName(soundNameString)
-                }
+            self = .log(.init(message: message, conveyanceType: conveyanceType))
+        case .shellCommand:
+            let path: String? = jsonDictionary.json(atKeyPath: "path")
+            let arguments: String? = jsonDictionary.json(atKeyPath: "arguments")
+            let waitUntilDone = jsonDictionary.json(atKeyPath: "waitUntilDone") ?? false
+            self = .shellCommand(path: path, arguments: arguments, waitUntilDone: waitUntilDone)
+        case .graphicsTrace:
+            self = .graphicsTrace
+        case .appleScript:
+            let script: String? = jsonDictionary.json(atKeyPath: "script")
+            self = .appleScript(script)
+        case .sound:
+            let sound: Sound
+            if jsonDictionary["sound"] != nil {
+                let name: String = try jsonDictionary.json(atKeyPath: "sound")
+                sound = try .init(name: name)
             } else {
-                soundName = .basso
+                sound = .basso
             }
+            self = .sound(sound)
+        case .openGLError:
+            self = .openGLError
         }
     }
 }

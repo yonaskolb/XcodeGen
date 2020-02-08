@@ -412,7 +412,7 @@ class SpecLoadingTests: XCTestCase {
 
             $0.it("fails with incorrect breakpoint action sound name") {
                 var breakpoint = validBreakpoint
-                breakpoint["actions"] = [["type": "Sound", "soundName": invalid]]
+                breakpoint["actions"] = [["type": "Sound", "sound": invalid]]
                 try expectBreakpointError(breakpoint, .unknownBreakpointActionSoundName(invalid))
             }
 
@@ -445,25 +445,25 @@ class SpecLoadingTests: XCTestCase {
             $0.it("parses breakpoint actions") {
                 var breakpointDicationary = validBreakpoint
                 breakpointDicationary["actions"] = [
-                    ["type": "DebuggerCommand", "consoleCommand": "po $arg1"],
+                    ["type": "DebuggerCommand", "command": "po $arg1"],
                     ["type": "Log", "message": "message", "conveyanceType": "speak"],
-                    ["type": "ShellCommand", "command": "script.sh", "arguments": "argument1, argument2", "waitUntilDone": true],
+                    ["type": "ShellCommand", "path": "script.sh", "arguments": "argument1, argument2", "waitUntilDone": true],
                     ["type": "GraphicsTrace"],
                     ["type": "AppleScript", "script": #"display alert "Hello!""#],
-                    ["type": "Sound", "soundName": "Hero"],
+                    ["type": "Sound", "sound": "Hero"],
                     ["type": "OpenGLError"]
                 ]
 
                 let breakpoint = try Breakpoint(jsonDictionary: breakpointDicationary)
 
-                let expectedActions = [
-                    Breakpoint.Action(type: .debuggerCommand, consoleCommand: "po $arg1"),
-                    Breakpoint.Action(type: .log, message: "message", conveyanceType: .speak),
-                    Breakpoint.Action(type: .shellCommand, command: "script.sh", arguments: "argument1, argument2", waitUntilDone: true),
-                    Breakpoint.Action(type: .graphicsTrace),
-                    Breakpoint.Action(type: .appleScript, script: #"display alert "Hello!""#),
-                    Breakpoint.Action(type: .sound, soundName: .hero),
-                    Breakpoint.Action(type: .openGLError)
+                let expectedActions: [Breakpoint.Action] = [
+                    .debuggerCommand("po $arg1"),
+                    .log(.init(message: "message", conveyanceType: .speak)),
+                    .shellCommand(path: "script.sh", arguments: "argument1, argument2", waitUntilDone: true),
+                    .graphicsTrace,
+                    .appleScript(#"display alert "Hello!""#),
+                    .sound(.hero),
+                    .openGLError
                 ]
 
                 try expect(breakpoint.actions) == expectedActions

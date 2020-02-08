@@ -215,16 +215,16 @@ breakpoints:
     - `AppleScript`: execute AppleScript
     - `Sound`: play sound
     - `OpenGLError`: throw OpenGL error
-- [ ] **consoleCommand**: **String** - Debugger command (only used by debugger command breakpoint action)
+- [ ] **command**: **String** - Debugger command (only used by debugger command breakpoint action)
 - [ ] **message**: **String** - Log message (only used log message breakpoint action)
 - [ ] **conveyanceType**: **String** - Conveyance type (only used by log message breakpoint action)
     - `console`: log message to console (default)
     - `speak`: speak message
-- [ ] **command**: **String** - Shell command file path (only used by shell command breakpoint action)
+- [ ] **path**: **String** - Shell command file path (only used by shell command breakpoint action)
 - [ ] **arguments**: **String** - Shell command arguments (only used by shell command breakpoint action)
 - [ ] **waitUntilDone**: **Bool** - Indicates whether it should wait until done (only used by shell command breakpoint action). Default to `false`
 - [ ] **script**: **String** - AppleScript (only used by AppleScript breakpoint action)
-- [ ] **soundName**: **String** - Sound name (only used by sound breakpoint action)
+- [ ] **sound**: **String** - Sound name (only used by sound breakpoint action)
     - `Basso` (default)
     - `Blow`
     - `Bottle`
@@ -243,7 +243,7 @@ breakpoints:
 ```yaml
 actions:
   - type: Sound
-    soundName: Blow
+    sound: Blow
 ```
 
 ### Configs

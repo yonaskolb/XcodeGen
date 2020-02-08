@@ -36,6 +36,12 @@
             stopOnStyle = "0">
             <Actions>
                <BreakpointActionProxy
+                  ActionExtensionID = "Xcode.BreakpointAction.DebuggerCommand">
+                  <ActionContent
+                     consoleCommand = "po $arg1">
+                  </ActionContent>
+               </BreakpointActionProxy>
+               <BreakpointActionProxy
                   ActionExtensionID = "Xcode.BreakpointAction.AppleScript">
                   <ActionContent
                      script = "display alert &quot;Exception happened!&quot;">
