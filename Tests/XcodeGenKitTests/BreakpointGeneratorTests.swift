@@ -1,5 +1,6 @@
 import ProjectSpec
 import Spectre
+import TestSupport
 import XCTest
 
 class BreakpointGeneratorTests: XCTestCase {
@@ -11,7 +12,7 @@ class BreakpointGeneratorTests: XCTestCase {
                 let breakpoint = Breakpoint(type: .exception)
                 let project = Project(basePath: "", name: "test", targets: [], breakpoints: [breakpoint])
                 let xcodeProject = try project.generateXcodeProject()
-                guard let xcbreakpoint = xcodeProject.sharedData?.breakpoints?.breakpoints.first else { throw failure("Breakpoint not found") }
+                let xcbreakpoint = try unwrap(xcodeProject.sharedData?.breakpoints?.breakpoints.first)
                 try expect(xcbreakpoint.breakpointExtensionID.rawValue) == "Xcode.Breakpoint.ExceptionBreakpoint"
             }
         }
