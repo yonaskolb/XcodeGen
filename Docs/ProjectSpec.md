@@ -181,10 +181,8 @@ Default settings for file extensions. See [Sources](#sources) for more documenta
 - [ ] **enabled**: **Bool** - Indicates whether it should be active. Default to `true`
 - [ ] **ignoreCount**: **Int** - Indicates how many times it should be ignored before stopping, Default to `0`
 - [ ] **continueAfterRunningActions**: **Bool** - Indicates if should automatically continue after evaluating actions, Default to `false`
-- [ ] **timestamp**: **String** - Breakpoint timestamp
 - [ ] **path**: **String** - Breakpoint file path (only required by file breakpoints)
 - [ ] **line**: **Int** - Breakpoint line (only required by file breakpoints)
-- [ ] **breakpointStackSelectionBehavior**: **String** - Breakpoint stack selection behavior
 - [ ] **symbol**: **String** - Breakpoint symbol (only used by symbolic breakpoints)
 - [ ] **module**: **String** - Breakpoint module (only used by symbolic breakpoints)
 - [ ] **scope**: **String** - Breakpoint scope (only used by exception breakpoints)
@@ -214,7 +212,6 @@ breakpoints:
     - `GraphicsTrace`: capture GPU frame
     - `AppleScript`: execute AppleScript
     - `Sound`: play sound
-    - `OpenGLError`: throw OpenGL error
 - [ ] **command**: **String** - Debugger command (only used by debugger command breakpoint action)
 - [ ] **message**: **String** - Log message (only used log message breakpoint action)
 - [ ] **conveyanceType**: **String** - Conveyance type (only used by log message breakpoint action)

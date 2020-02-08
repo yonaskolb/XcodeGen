@@ -52,10 +52,8 @@ public class BreakpointGenerator {
                                                                               ignoreCount: String(breakpoint.ignoreCount),
                                                                               continueAfterRunningActions: breakpoint.continueAfterRunningActions,
                                                                               filePath: filePath,
-                                                                              timestamp: breakpoint.timestamp,
                                                                               startingLine: line,
                                                                               endingLine: line,
-                                                                              breakpointStackSelectionBehavior: breakpoint.breakpointStackSelectionBehavior,
                                                                               symbol: symbol,
                                                                               module: module,
                                                                               scope: scope,
@@ -98,8 +96,6 @@ public class BreakpointGenerator {
         case let .sound(sound):
             actionExtensionID = .sound
             soundName = sound.rawValue
-        case .openGLError:
-            actionExtensionID = .openGLError
         }
         let xcaction = XCBreakpointList.BreakpointProxy.BreakpointContent.BreakpointActionProxy.ActionContent(consoleCommand: consoleCommand,
                                                                                                               message: message,
