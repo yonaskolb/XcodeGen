@@ -171,13 +171,13 @@ Default settings for file extensions. See [Sources](#sources) for more documenta
 ### Breakpoints
 
 - [x] **type**: **String** - Breakpoint type
-    - `FileBreakpoint`: file breakpoint
-    - `ExceptionBreakpoint`: exception breakpoint
-    - `SwiftErrorBreakpoint`: swift error breakpoint
-    - `OpenGLErrorBreakpoint`: OpenGL breakpoint
-    - `SymbolicBreakpoint`: symbolic breakpoint
-    - `IDEConstraintErrorBreakpoint`: IDE constraint breakpoint
-    - `IDETestFailureBreakpoint`: IDE test failure breakpoint
+    - `File`: file breakpoint
+    - `Exception`: exception breakpoint
+    - `SwiftError`: swift error breakpoint
+    - `OpenGLError`: OpenGL breakpoint
+    - `Symbolic`: symbolic breakpoint
+    - `IDEConstraintError`: IDE constraint breakpoint
+    - `IDETestFailure`: IDE test failure breakpoint
 - [ ] **enabled**: **Bool** - Indicates whether it should be active. Default to `true`
 - [ ] **ignoreCount**: **Int** - Indicates how many times it should be ignored before stopping, Default to `0`
 - [ ] **continueAfterRunningActions**: **Bool** - Indicates if should automatically continue after evaluating actions, Default to `false`

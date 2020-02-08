@@ -357,7 +357,7 @@ class SpecLoadingTests: XCTestCase {
 
     func testProjectSpecParser() {
         let validTarget: [String: Any] = ["type": "application", "platform": "iOS"]
-        let validBreakpoint: [String: Any] = ["type": "ExceptionBreakpoint", "scope": "All", "stopOnStyle": "Catch"]
+        let validBreakpoint: [String: Any] = ["type": "Exception", "scope": "All", "stopOnStyle": "Catch"]
         let invalid = "invalid"
 
         describe {
@@ -418,13 +418,13 @@ class SpecLoadingTests: XCTestCase {
 
             $0.it("parses breakpoints") {
                 let breakpointDictionaries = [
-                    ["type": "FileBreakpoint", "filePath": "Foo.swift", "line": 7, "condition": "bar == nil", "timestamp": "600577513.4932801"],
-                    ["type": "ExceptionBreakpoint", "scope": "All", "stopOnStyle": "Catch"],
-                    ["type": "SwiftErrorBreakpoint", "enabled": false],
-                    ["type": "OpenGLErrorBreakpoint", "ignoreCount": 2],
-                    ["type": "SymbolicBreakpoint", "symbol": "UIViewAlertForUnsatisfiableConstraints", "module": "UIKitCore"],
-                    ["type": "IDEConstraintErrorBreakpoint", "continueAfterRunningActions": true],
-                    ["type": "IDETestFailureBreakpoint", "breakpointStackSelectionBehavior": "1"]
+                    ["type": "File", "filePath": "Foo.swift", "line": 7, "condition": "bar == nil", "timestamp": "600577513.4932801"],
+                    ["type": "Exception", "scope": "All", "stopOnStyle": "Catch"],
+                    ["type": "SwiftError", "enabled": false],
+                    ["type": "OpenGLError", "ignoreCount": 2],
+                    ["type": "Symbolic", "symbol": "UIViewAlertForUnsatisfiableConstraints", "module": "UIKitCore"],
+                    ["type": "IDEConstraintError", "continueAfterRunningActions": true],
+                    ["type": "IDETestFailure", "breakpointStackSelectionBehavior": "1"]
                 ]
 
                 let project = try getProjectSpec(["breakpoints": breakpointDictionaries])
