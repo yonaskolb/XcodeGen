@@ -2,6 +2,9 @@
 
 ## Next Version
 
+#### Fixed
+- Set `defaultConfigurationName` for every target which is defined in a project. [#787](https://github.com/yonaskolb/XcodeGen/pull/787)
+
 ## 2.13.1
 
 #### Fixed

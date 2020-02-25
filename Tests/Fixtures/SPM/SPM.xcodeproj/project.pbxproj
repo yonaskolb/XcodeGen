@@ -417,7 +417,7 @@
 				7A384B9B9CF42FCF9EF02057 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "";
+			defaultConfigurationName = Debug;
 		};
 		3B861439E878E4B7EE6EE131 /* Build configuration list for PBXNativeTarget "StaticLibrary" */ = {
 			isa = XCConfigurationList;
@@ -426,7 +426,7 @@
 				1640ABF22E84A6AB9FFFB0D9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "";
+			defaultConfigurationName = Debug;
 		};
 		425866ADA259DB93FC4AF1E3 /* Build configuration list for PBXProject "SPM" */ = {
 			isa = XCConfigurationList;

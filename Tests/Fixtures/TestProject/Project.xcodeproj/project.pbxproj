@@ -5996,7 +5996,7 @@
 				058734C3B593A26E24211133 /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "";
+			defaultConfigurationName = "Production Debug";
 		};
 		02E5A42C8065AF7CCB48FACE /* Build configuration list for PBXNativeTarget "Framework2_macOS" */ = {
 			isa = XCConfigurationList;
@@ -6009,7 +6009,7 @@
 				5675C7C51DC1B8D63CBAE30A /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "";
+			defaultConfigurationName = "Production Debug";
 		};
 		1FC6945BE13C2202A2BCA3BC /* Build configuration list for PBXNativeTarget "iMessageApp" */ = {
 			isa = XCConfigurationList;
@@ -6022,7 +6022,7 @@
 				F961247BCE59D147388CA721 /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "";
+			defaultConfigurationName = "Production Debug";
 		};
 		3F3C272D2EA61F6B88B80D44 /* Build configuration list for PBXNativeTarget "App_watchOS Extension" */ = {
 			isa = XCConfigurationList;
@@ -6035,7 +6035,7 @@
 				0C66F8A2D0CB0D802A327EB4 /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "";
+			defaultConfigurationName = "Production Debug";
 		};
 		4A036BD16A0E9D22AE065AC9 /* Build configuration list for PBXNativeTarget "StaticLibrary_Swift" */ = {
 			isa = XCConfigurationList;
@@ -6048,7 +6048,7 @@
 				1D61DC7F5309F4C8B7692D85 /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "";
+			defaultConfigurationName = "Production Debug";
 		};
 		4A8774E3B4F5C9B98E0D0CF9 /* Build configuration list for PBXNativeTarget "Framework_watchOS" */ = {
 			isa = XCConfigurationList;
@@ -6061,7 +6061,7 @@
 				D9A0609EE6F341CD4E8758C1 /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "";
+			defaultConfigurationName = "Production Debug";
 		};
 		50DA67E9A951C40D9536609D /* Build configuration list for PBXNativeTarget "Framework_iOS" */ = {
 			isa = XCConfigurationList;
@@ -6074,7 +6074,7 @@
 				A861DE7670417FA256F4E459 /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "";
+			defaultConfigurationName = "Production Debug";
 		};
 		56BF985F253DD84AD7C37538 /* Build configuration list for PBXNativeTarget "StaticLibrary_ObjC_iOS" */ = {
 			isa = XCConfigurationList;
@@ -6087,7 +6087,7 @@
 				CA08CB7E7DBBC99CDC7F2C2E /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "";
+			defaultConfigurationName = "Production Debug";
 		};
 		62C52A55CB8D3BD9A055FD14 /* Build configuration list for PBXNativeTarget "App_macOS_Tests" */ = {
 			isa = XCConfigurationList;
@@ -6100,7 +6100,7 @@
 				12BCDE0EFCEE621B881E424C /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "";
+			defaultConfigurationName = "Production Debug";
 		};
 		62D7BB889799B73F7E8B798F /* Build configuration list for PBXNativeTarget "App_iOS" */ = {
 			isa = XCConfigurationList;
@@ -6113,7 +6113,7 @@
 				DC80DC0AF0B4F2B51DAB0A52 /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "";
+			defaultConfigurationName = "Production Debug";
 		};
 		658628E35283172E17BFC6A3 /* Build configuration list for PBXNativeTarget "Framework_tvOS" */ = {
 			isa = XCConfigurationList;
@@ -6126,7 +6126,7 @@
 				E24703CFCCBD727B3FE08F51 /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "";
+			defaultConfigurationName = "Production Debug";
 		};
 		68CC35789B0DB020E2CFC517 /* Build configuration list for PBXNativeTarget "App_iOS_UITests" */ = {
 			isa = XCConfigurationList;
@@ -6139,7 +6139,7 @@
 				BBA736CF3FB466E323EA8462 /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "";
+			defaultConfigurationName = "Production Debug";
 		};
 		6B5C5F08C0EF06457756E379 /* Build configuration list for PBXNativeTarget "App_watchOS" */ = {
 			isa = XCConfigurationList;
@@ -6152,7 +6152,7 @@
 				F3AC6A112F81D0958A316D82 /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "";
+			defaultConfigurationName = "Production Debug";
 		};
 		752BB3C1A601770BDD9AC01E /* Build configuration list for PBXNativeTarget "StaticLibrary_ObjC_macOS" */ = {
 			isa = XCConfigurationList;
@@ -6165,7 +6165,7 @@
 				0CE2F7B8A955BE108A66FF68 /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "";
+			defaultConfigurationName = "Production Debug";
 		};
 		77CE5B5E5DEAC820254D484C /* Build configuration list for PBXNativeTarget "App_macOS" */ = {
 			isa = XCConfigurationList;
@@ -6178,7 +6178,7 @@
 				3FFEE1ED324166B88F5F9A45 /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "";
+			defaultConfigurationName = "Production Debug";
 		};
 		7881E73F05F096623E592040 /* Build configuration list for PBXNativeTarget "Tool" */ = {
 			isa = XCConfigurationList;
@@ -6191,7 +6191,7 @@
 				C00DBF60DC8C1A570738241F /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "";
+			defaultConfigurationName = "Production Debug";
 		};
 		7CBF487CACC0BBFB530D7963 /* Build configuration list for PBXAggregateTarget "SuperTarget" */ = {
 			isa = XCConfigurationList;
@@ -6204,7 +6204,7 @@
 				D37EB6FE8C8C4040A394F1E9 /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "";
+			defaultConfigurationName = "Production Debug";
 		};
 		7E4887637B4FA5B8E2F349CA /* Build configuration list for PBXNativeTarget "Framework2_watchOS" */ = {
 			isa = XCConfigurationList;
@@ -6217,7 +6217,7 @@
 				AE8DA78BA7A7194BD625DD45 /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "";
+			defaultConfigurationName = "Production Debug";
 		};
 		906B8E5233EE4169E84ABAF3 /* Build configuration list for PBXNativeTarget "StaticLibrary_ObjC_tvOS" */ = {
 			isa = XCConfigurationList;
@@ -6230,7 +6230,7 @@
 				36C4B3A6EACCB88098CE13D7 /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "";
+			defaultConfigurationName = "Production Debug";
 		};
 		91E8D6B95F23669734D43FDC /* Build configuration list for PBXNativeTarget "EntitledApp" */ = {
 			isa = XCConfigurationList;
@@ -6243,7 +6243,7 @@
 				983ACA9F991B0B18D9760B12 /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "";
+			defaultConfigurationName = "Production Debug";
 		};
 		9A0EF0B71AD44055E8749C42 /* Build configuration list for PBXNativeTarget "Framework2_iOS" */ = {
 			isa = XCConfigurationList;
@@ -6256,7 +6256,7 @@
 				5A9C67C1F423247AE1541F63 /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "";
+			defaultConfigurationName = "Production Debug";
 		};
 		9F4CBE5D909D2757B3D334B3 /* Build configuration list for PBXNativeTarget "TestFramework" */ = {
 			isa = XCConfigurationList;
@@ -6269,7 +6269,7 @@
 				B9AF2E89FE3E9E03E0029607 /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "";
+			defaultConfigurationName = "Production Debug";
 		};
 		B40D2F785317445D9A9C8C12 /* Build configuration list for PBXNativeTarget "iMessageStickersExtension" */ = {
 			isa = XCConfigurationList;
@@ -6282,7 +6282,7 @@
 				A0C50DBBF4AC5D30C92B19F7 /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "";
+			defaultConfigurationName = "Production Debug";
 		};
 		BE0FF81B67730F081F45BC78 /* Build configuration list for PBXLegacyTarget "Legacy" */ = {
 			isa = XCConfigurationList;
@@ -6295,7 +6295,7 @@
 				3DEEA480EDDC83405CFB9BBA /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "";
+			defaultConfigurationName = "Production Debug";
 		};
 		D379D1BBEF24ED05EB6ADEB3 /* Build configuration list for PBXNativeTarget "XPC Service" */ = {
 			isa = XCConfigurationList;
@@ -6308,7 +6308,7 @@
 				AC8E8FEA35961580D23185B2 /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "";
+			defaultConfigurationName = "Production Debug";
 		};
 		D60A551D881B4B91F4535B78 /* Build configuration list for PBXNativeTarget "Framework_macOS" */ = {
 			isa = XCConfigurationList;
@@ -6321,7 +6321,7 @@
 				E3E69C722D5BBAF4C8EF4D29 /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "";
+			defaultConfigurationName = "Production Debug";
 		};
 		D91E14E36EC0B415578456F2 /* Build configuration list for PBXProject "Project" */ = {
 			isa = XCConfigurationList;
@@ -6347,7 +6347,7 @@
 				6645E6A343F71C3E91656BE9 /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "";
+			defaultConfigurationName = "Production Debug";
 		};
 		EF0A56586AB1ED900B70D5BC /* Build configuration list for PBXNativeTarget "Framework2_tvOS" */ = {
 			isa = XCConfigurationList;
@@ -6360,7 +6360,7 @@
 				F9F2DA45FBEAF1528EC026FB /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "";
+			defaultConfigurationName = "Production Debug";
 		};
 		F888428CB91ACDDAAE8C8F21 /* Build configuration list for PBXNativeTarget "App_iOS_Tests" */ = {
 			isa = XCConfigurationList;
@@ -6373,7 +6373,7 @@
 				7B4F942EA48FC1FED21AA2EE /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "";
+			defaultConfigurationName = "Production Debug";
 		};
 /* End XCConfigurationList section */
 

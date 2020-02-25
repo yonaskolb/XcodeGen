@@ -323,9 +323,10 @@ public class PBXProjGenerator {
 
         let dependencies = target.targets.map { generateTargetDependency(from: target.name, to: $0) }
 
+        let defaultConfigurationName = project.options.defaultConfig ?? project.configs.first?.name ?? ""
         let buildConfigList = addObject(XCConfigurationList(
             buildConfigurations: configs,
-            defaultConfigurationName: ""
+            defaultConfigurationName: defaultConfigurationName
         ))
 
         var buildPhases: [PBXBuildPhase] = []
@@ -1168,9 +1169,10 @@ public class PBXProjGenerator {
             return addObject(buildConfig)
         }
 
+        let defaultConfigurationName = project.options.defaultConfig ?? project.configs.first?.name ?? ""
         let buildConfigList = addObject(XCConfigurationList(
             buildConfigurations: configs,
-            defaultConfigurationName: ""
+            defaultConfigurationName: defaultConfigurationName
         ))
 
         let targetObject = targetObjects[target.name]!

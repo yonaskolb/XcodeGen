@@ -104,6 +104,34 @@ class ProjectGeneratorTests: XCTestCase {
 
                 try expect(defaultConfigurationName) == "Bconfig"
             }
+
+            $0.it("uses the default configuration name for every target in a project") {
+                let options = SpecOptions(defaultConfig: "Bconfig")
+                let project = Project(
+                    name: "test",
+                    configs: [
+                        Config(name: "Aconfig"),
+                        Config(name: "Bconfig")
+                    ],
+                    targets: [
+                        Target(name: "1", type: .framework, platform: .iOS),
+                        Target(name: "2", type: .framework, platform: .iOS)
+                    ],
+                    options: options
+                )
+                let pbxProject = try project.generatePbxProj()
+
+                try pbxProject.projects.first?.targets.forEach { target in
+
+                    guard
+                        let buildConfigurationList = target.buildConfigurationList,
+                        let defaultConfigurationName = buildConfigurationList.defaultConfigurationName else {
+                            throw failure("Default configuration name not found")
+                    }
+
+                    try expect(defaultConfigurationName) == "Bconfig"
+                }
+            }
         }
     }
 
