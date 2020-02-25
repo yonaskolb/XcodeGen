@@ -109,7 +109,7 @@ public struct Scheme: Equatable {
         public var simulateLocation: SimulateLocation?
 
         public init(
-            config: String,
+            config: String? = nil,
             commandLineArguments: [String: Bool] = [:],
             preActions: [ExecutionAction] = [],
             postActions: [ExecutionAction] = [],
@@ -150,6 +150,7 @@ public struct Scheme: Equatable {
         public var language: String?
         public var region: String?
         public var debugEnabled: Bool
+        public var testPlans: [String]
 
         public struct TestTarget: Equatable, ExpressibleByStringLiteral {
             public static let randomExecutionOrderDefault = false
@@ -186,7 +187,7 @@ public struct Scheme: Equatable {
         }
 
         public init(
-            config: String,
+            config: String? = nil,
             gatherCoverageData: Bool = gatherCoverageDataDefault,
             coverageTargets: [TargetReference] = [],
             disableMainThreadChecker: Bool = disableMainThreadCheckerDefault,
@@ -197,6 +198,7 @@ public struct Scheme: Equatable {
             preActions: [ExecutionAction] = [],
             postActions: [ExecutionAction] = [],
             environmentVariables: [XCScheme.EnvironmentVariable] = [],
+            testPlans: [String] = [],
             language: String? = nil,
             region: String? = nil,
             debugEnabled: Bool = debugEnabledDefault
@@ -210,6 +212,7 @@ public struct Scheme: Equatable {
             self.preActions = preActions
             self.postActions = postActions
             self.environmentVariables = environmentVariables
+            self.testPlans = testPlans
             self.language = language
             self.region = region
             self.debugEnabled = debugEnabled
@@ -234,7 +237,7 @@ public struct Scheme: Equatable {
         public var postActions: [ExecutionAction]
         public var environmentVariables: [XCScheme.EnvironmentVariable]
         public init(
-            config: String,
+            config: String? = nil,
             commandLineArguments: [String: Bool] = [:],
             preActions: [ExecutionAction] = [],
             postActions: [ExecutionAction] = [],
@@ -261,7 +264,7 @@ public struct Scheme: Equatable {
         public var preActions: [ExecutionAction]
         public var postActions: [ExecutionAction]
         public init(
-            config: String,
+            config: String? = nil,
             customArchiveName: String? = nil,
             revealArchiveInOrganizer: Bool = revealArchiveInOrganizerDefault,
             preActions: [ExecutionAction] = [],
@@ -283,6 +286,17 @@ public struct Scheme: Equatable {
             self.target = target
             self.buildTypes = buildTypes
         }
+    }
+}
+
+extension Scheme: PathContainer {
+
+    static var pathProperties: [PathProperty] {
+        [
+            .dictionary([
+                .object("test", Test.pathProperties),
+            ]),
+        ]
     }
 }
 
@@ -374,6 +388,15 @@ extension Scheme.Run: JSONEncodable {
     }
 }
 
+extension Scheme.Test: PathContainer {
+
+    static var pathProperties: [PathProperty] {
+        [
+            .string("testPlans")
+        ]
+    }
+}
+
 extension Scheme.Test: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
@@ -398,6 +421,7 @@ extension Scheme.Test: JSONObjectConvertible {
         preActions = jsonDictionary.json(atKeyPath: "preActions") ?? []
         postActions = jsonDictionary.json(atKeyPath: "postActions") ?? []
         environmentVariables = try XCScheme.EnvironmentVariable.parseAll(jsonDictionary: jsonDictionary)
+        testPlans = jsonDictionary.json(atKeyPath: "testPlans") ?? []
         language = jsonDictionary.json(atKeyPath: "language")
         region = jsonDictionary.json(atKeyPath: "region")
         debugEnabled = jsonDictionary.json(atKeyPath: "debugEnabled") ?? Scheme.Test.debugEnabledDefault
@@ -412,6 +436,7 @@ extension Scheme.Test: JSONEncodable {
             "preActions": preActions.map { $0.toJSONValue() },
             "postActions": postActions.map { $0.toJSONValue() },
             "environmentVariables": environmentVariables.map { $0.toJSONValue() },
+            "testPlans": testPlans,
             "config": config,
             "language": language,
             "region": region,
