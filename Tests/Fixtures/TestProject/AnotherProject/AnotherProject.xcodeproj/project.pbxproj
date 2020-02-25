@@ -665,7 +665,7 @@
 				C7A4FCD4E277AD34B36E5185 /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "";
+			defaultConfigurationName = "Production Debug";
 		};
 		3DFC1105373EDB6483D4BC5D /* Build configuration list for PBXProject "AnotherProject" */ = {
 			isa = XCConfigurationList;
@@ -691,7 +691,7 @@
 				7919FDD28F9A535EA26FB151 /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "";
+			defaultConfigurationName = "Production Debug";
 		};
 /* End XCConfigurationList section */
 	};

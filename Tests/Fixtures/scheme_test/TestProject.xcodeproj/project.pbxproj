@@ -244,7 +244,7 @@
 				7A68130BD0BC3B52C0C49426 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "";
+			defaultConfigurationName = Debug;
 		};
 		E903F6E8184E2A86CEC31778 /* Build configuration list for PBXProject "TestProject" */ = {
 			isa = XCConfigurationList;
