@@ -17,6 +17,8 @@ targets:
     dependencies:
       - package: Codability
       - package: SwiftRoaring
+        product: SwiftRoaringDynamic
+        embed: true
       - target: StaticLibrary
   StaticLibrary:
     type: library.static
@@ -25,3 +27,4 @@ targets:
     dependencies:
       - package: Codability
       - package: SwiftRoaring
+        product: SwiftRoaringDynamic

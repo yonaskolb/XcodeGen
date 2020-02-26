@@ -821,7 +821,7 @@ public class PBXProjGenerator {
                     dependencies.append(targetDependency)
                 }
                 
-                if embed {
+                if dependency.embed == true {
                     let embedFile = addObject(
                         PBXBuildFile(product: packageDependency,
                                      settings: getEmbedSettings(dependency: dependency, codeSign: dependency.codeSign ?? true))
