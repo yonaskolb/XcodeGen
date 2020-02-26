@@ -1618,14 +1618,8 @@
 					0867B0DACEF28C11442DE8F7 = {
 						ProvisioningStyle = Automatic;
 					};
-					71E2BDAC4B8E8FC2BBF75C55 = {
-						TestTargetID = 020A320BB3736FCDE6CC4E70;
-					};
 					BF3693DCA6182D7AEC410AFC = {
 						CUSTOM = value;
-					};
-					DC2F16BAA6E13B44AB62F888 = {
-						TestTargetID = 0867B0DACEF28C11442DE8F7;
 					};
 					F674B2CFC4738EEC49BAD0DA = {
 						TestTargetID = 0867B0DACEF28C11442DE8F7;
@@ -2619,7 +2613,6 @@
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/App_iOS.app/App_iOS";
-				TEST_TARGET_NAME = App_iOS;
 			};
 			name = "Staging Release";
 		};
@@ -2665,7 +2658,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-macOS-Tests";
 				SDKROOT = macosx;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/App_macOS.app/Contents/MacOS/App_macOS";
-				TEST_TARGET_NAME = App_macOS;
 			};
 			name = "Test Release";
 		};
@@ -2993,7 +2985,6 @@
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/App_iOS.app/App_iOS";
-				TEST_TARGET_NAME = App_iOS;
 			};
 			name = "Staging Debug";
 		};
@@ -3015,7 +3006,6 @@
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/App_iOS.app/App_iOS";
-				TEST_TARGET_NAME = App_iOS;
 			};
 			name = "Test Debug";
 		};
@@ -3213,7 +3203,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-macOS-Tests";
 				SDKROOT = macosx;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/App_macOS.app/Contents/MacOS/App_macOS";
-				TEST_TARGET_NAME = App_macOS;
 			};
 			name = "Test Debug";
 		};
@@ -3389,7 +3378,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-macOS-Tests";
 				SDKROOT = macosx;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/App_macOS.app/Contents/MacOS/App_macOS";
-				TEST_TARGET_NAME = App_macOS;
 			};
 			name = "Production Debug";
 		};
@@ -3411,7 +3399,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-macOS-Tests";
 				SDKROOT = macosx;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/App_macOS.app/Contents/MacOS/App_macOS";
-				TEST_TARGET_NAME = App_macOS;
 			};
 			name = "Production Release";
 		};
@@ -4011,7 +3998,6 @@
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/App_iOS.app/App_iOS";
-				TEST_TARGET_NAME = App_iOS;
 			};
 			name = "Test Release";
 		};
@@ -4888,7 +4874,6 @@
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/App_iOS.app/App_iOS";
-				TEST_TARGET_NAME = App_iOS;
 			};
 			name = "Production Release";
 		};
@@ -5116,7 +5101,6 @@
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/App_iOS.app/App_iOS";
-				TEST_TARGET_NAME = App_iOS;
 			};
 			name = "Production Debug";
 		};
@@ -5692,7 +5676,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-macOS-Tests";
 				SDKROOT = macosx;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/App_macOS.app/Contents/MacOS/App_macOS";
-				TEST_TARGET_NAME = App_macOS;
 			};
 			name = "Staging Release";
 		};
@@ -5874,7 +5857,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-macOS-Tests";
 				SDKROOT = macosx;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/App_macOS.app/Contents/MacOS/App_macOS";
-				TEST_TARGET_NAME = App_macOS;
 			};
 			name = "Staging Debug";
 		};

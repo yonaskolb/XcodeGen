@@ -4,6 +4,7 @@
 
 #### Fixed
 - Set `defaultConfigurationName` for every target which is defined in a project. [#787](https://github.com/yonaskolb/XcodeGen/pull/787)
+- Set `TEST_TARGET_NAME` only when a project has UITest bundle. [#792](https://github.com/yonaskolb/XcodeGen/pull/792) @ken0nek
 
 ## 2.13.1
 
