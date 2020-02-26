@@ -2,6 +2,9 @@
 
 ## Next Version
 
+#### Added
+- Support Swift Package Manager (Embed & Sign/Embed Without Signing) for dynamic packages. [#788](https://github.com/yonaskolb/XcodeGen/pull/788)
+
 #### Fixed
 - Set `defaultConfigurationName` for every target which is defined in a project. [#787](https://github.com/yonaskolb/XcodeGen/pull/787)
 

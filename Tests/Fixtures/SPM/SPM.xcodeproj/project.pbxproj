@@ -8,9 +8,12 @@
 
 /* Begin PBXBuildFile section */
 		2DA7998902987953B119E4CE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26F7EFEE613987D1E1258A60 /* AppDelegate.swift */; };
+		3986ED6965842721C46C0452 /* SwiftRoaring in Frameworks */ = {isa = PBXBuildFile; productRef = 836BDD793C9003A2E7BD17F0 /* SwiftRoaring */; };
+		3F5D08B766861EB128ED491C /* SwiftRoaring in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 836BDD793C9003A2E7BD17F0 /* SwiftRoaring */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		578E78BC3627CF48FB2CE129 /* App.xctestplan in Resources */ = {isa = PBXBuildFile; fileRef = A9601593D0AD02931266A4E5 /* App.xctestplan */; };
 		78E2E1F9F271C0C4CDA04BD9 /* StaticLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F7AFEF8ECCC678519EA643C /* StaticLibrary.a */; };
 		9C4AD0711D706FD3ED0E436D /* StaticLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C17B77601A9D1B7895AB42 /* StaticLibrary.swift */; };
+		B89EA0F3859878A1DCF7BAFD /* Codability in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 16E6FE01D5BD99F78D4A17E2 /* Codability */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CE46CBA5671B951B546C8673 /* Codability in Frameworks */ = {isa = PBXBuildFile; productRef = 16E6FE01D5BD99F78D4A17E2 /* Codability */; };
 		E368431019ABC696E4FFC0CF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4E22B8BCC18A29EFE1DE3BE4 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
@@ -24,6 +27,21 @@
 			remoteInfo = StaticLibrary;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		528B26CADD32E3F39B813BEE /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				B89EA0F3859878A1DCF7BAFD /* Codability in Embed Frameworks */,
+				3F5D08B766861EB128ED491C /* SwiftRoaring in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		097F2DB5622B591E21BC3C73 /* App.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = App.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -42,6 +60,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE46CBA5671B951B546C8673 /* Codability in Frameworks */,
+				3986ED6965842721C46C0452 /* SwiftRoaring in Frameworks */,
 				78E2E1F9F271C0C4CDA04BD9 /* StaticLibrary.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -109,10 +128,12 @@
 			);
 			dependencies = (
 				D85FFB99444DD260A72DDDA7 /* PBXTargetDependency */,
+				DDD17C561AD5065DF4FA4072 /* PBXTargetDependency */,
 			);
 			name = StaticLibrary;
 			packageProductDependencies = (
 				AF233B61592982A7F6431FC6 /* Codability */,
+				CBF8EB1FEC788CBD14D88FB4 /* SwiftRoaring */,
 			);
 			productName = StaticLibrary;
 			productReference = 3F7AFEF8ECCC678519EA643C /* StaticLibrary.a */;
@@ -125,6 +146,7 @@
 				460F52476B5219D2CDA494C2 /* Sources */,
 				F77D37B94534F63D9B461F30 /* Resources */,
 				796E7DE873F16699BD82FFEA /* Frameworks */,
+				528B26CADD32E3F39B813BEE /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -134,6 +156,7 @@
 			name = App;
 			packageProductDependencies = (
 				16E6FE01D5BD99F78D4A17E2 /* Codability */,
+				836BDD793C9003A2E7BD17F0 /* SwiftRoaring */,
 			);
 			productName = App;
 			productReference = 097F2DB5622B591E21BC3C73 /* App.app */;
@@ -160,6 +183,7 @@
 			mainGroup = 218F6C96DF9E182F526258CF;
 			packageReferences = (
 				5BA91390AE78D2EE15C60091 /* XCRemoteSwiftPackageReference "Codability" */,
+				E3887F3CB2C069E70D98092F /* XCRemoteSwiftPackageReference "SwiftRoaring" */,
 			);
 			projectDirPath = "";
 			projectRoot = "";
@@ -229,6 +253,10 @@
 		D85FFB99444DD260A72DDDA7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			productRef = AF233B61592982A7F6431FC6 /* Codability */;
+		};
+		DDD17C561AD5065DF4FA4072 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = CBF8EB1FEC788CBD14D88FB4 /* SwiftRoaring */;
 		};
 /* End PBXTargetDependency section */
 
@@ -448,6 +476,14 @@
 				minimumVersion = 0.2.1;
 			};
 		};
+		E3887F3CB2C069E70D98092F /* XCRemoteSwiftPackageReference "SwiftRoaring" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/piotte13/SwiftRoaring";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.4;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -456,10 +492,20 @@
 			package = 5BA91390AE78D2EE15C60091 /* XCRemoteSwiftPackageReference "Codability" */;
 			productName = Codability;
 		};
+		836BDD793C9003A2E7BD17F0 /* SwiftRoaring */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E3887F3CB2C069E70D98092F /* XCRemoteSwiftPackageReference "SwiftRoaring" */;
+			productName = SwiftRoaring;
+		};
 		AF233B61592982A7F6431FC6 /* Codability */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 5BA91390AE78D2EE15C60091 /* XCRemoteSwiftPackageReference "Codability" */;
 			productName = Codability;
+		};
+		CBF8EB1FEC788CBD14D88FB4 /* SwiftRoaring */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E3887F3CB2C069E70D98092F /* XCRemoteSwiftPackageReference "SwiftRoaring" */;
+			productName = SwiftRoaring;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

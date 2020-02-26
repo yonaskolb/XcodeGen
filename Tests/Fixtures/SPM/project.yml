@@ -3,6 +3,9 @@ packages:
   Codability:
     url: https://github.com/yonaskolb/Codability
     majorVersion: 0.2.1
+  SwiftRoaring:
+    url: https://github.com/piotte13/SwiftRoaring
+    majorVersion: 1.0.4
 localPackages:
  - ../../.. #XcodeGen itself
 targets:
@@ -13,6 +16,7 @@ targets:
     scheme: {}
     dependencies:
       - package: Codability
+      - package: SwiftRoaring
       - target: StaticLibrary
   StaticLibrary:
     type: library.static
@@ -20,3 +24,4 @@ targets:
     sources: StaticLibrary
     dependencies:
       - package: Codability
+      - package: SwiftRoaring
