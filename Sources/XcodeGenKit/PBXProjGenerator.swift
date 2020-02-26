@@ -1083,7 +1083,7 @@ public class PBXProjGenerator {
             }
 
             // automatically set test target name
-            if target.type == .uiTestBundle || target.type == .unitTestBundle,
+            if target.type == .uiTestBundle,
                 !project.targetHasBuildSetting("TEST_TARGET_NAME", target: target, config: config) {
                 for dependency in target.dependencies {
                     if dependency.type == .target,
