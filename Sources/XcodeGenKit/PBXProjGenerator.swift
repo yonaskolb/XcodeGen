@@ -693,8 +693,10 @@ public class PBXProjGenerator {
 
             case .framework:
                 if !dependency.implicit {
-                    let buildPath = Path(dependency.reference).parent().string.quoted
-                    frameworkBuildPaths.insert(buildPath)
+                    if Path(dependency.reference).parent().absolute() != Path.current {
+                        let buildPath = Path(dependency.reference).parent().string.quoted
+                        frameworkBuildPaths.insert(buildPath)
+                    }
                 }
 
                 let fileReference: PBXFileElement
