@@ -32,7 +32,7 @@ public class ProjectGenerator {
     }
 
     func generateWorkspace() throws -> XCWorkspace {
-        let dataElement: XCWorkspaceDataElement = .file(XCWorkspaceDataFileRef(location: .self("")))
+        let dataElement: XCWorkspaceDataElement = .file(XCWorkspaceDataFileRef(location: .self(project.defaultProjectPath.lastComponent)))
         let workspaceData = XCWorkspaceData(children: [dataElement])
         return XCWorkspace(data: workspaceData)
     }
