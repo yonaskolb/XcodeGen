@@ -59,7 +59,6 @@
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				Base,
 				en,
 			);
 			mainGroup = 2D08B11F4EE060D112B7BCA1;

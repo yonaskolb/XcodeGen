@@ -288,9 +288,10 @@ public class PBXProjGenerator {
         if !assetTags.isEmpty {
             projectAttributes["knownAssetTags"] = assetTags
         }
-        
-        let knownRegions = sourceGenerator.knownRegions
-        pbxProject.knownRegions = (knownRegions.isEmpty ? ["en"] : knownRegions).union(["Base"]).sorted()
+
+        let knownRegions = sourceGenerator.knownRegions.sorted()
+        pbxProject.knownRegions = knownRegions.isEmpty ? ["en"] : knownRegions
+
         pbxProject.packages = packageReferences.sorted { $0.key < $1.key }.map { $1 }
 
         let allTargets: [PBXTarget] = targetObjects.valueArray + targetAggregateObjects.valueArray
