@@ -4,8 +4,9 @@
 
 #### Fixed
 - Revert "Add Base to known regions even if one doesn't exist" [#791](https://github.com/yonaskolb/XcodeGen/pull/792) @bryansum
-- Set `defaultConfigurationName` for every target which is defined in a project. [#787](https://github.com/yonaskolb/XcodeGen/pull/787)
+- Set `defaultConfigurationName` for every target which is defined in a project. [#787](https://github.com/yonaskolb/XcodeGen/pull/787) @ken0nek
 - Set `TEST_TARGET_NAME` only when a project has UITest bundle. [#792](https://github.com/yonaskolb/XcodeGen/pull/792) @ken0nek
+- Set xcodeproj path in project.xcworkspace/contents.xcworkspacedata [#793](https://github.com/yonaskolb/XcodeGen/pull/793) @ken0nek
 
 ## 2.13.1
 
