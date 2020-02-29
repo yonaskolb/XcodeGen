@@ -2,6 +2,9 @@
 
 ## Next Version
 
+#### Added
+- Support Swift Package Manager (Embed & Sign/Embed Without Signing) for dynamic packages. [#788](https://github.com/yonaskolb/XcodeGen/pull/788)
+
 #### Fixed
 - Revert "Add Base to known regions even if one doesn't exist" [#791](https://github.com/yonaskolb/XcodeGen/pull/792) @bryansum
 - Set `defaultConfigurationName` for every target which is defined in a project. [#787](https://github.com/yonaskolb/XcodeGen/pull/787) @ken0nek

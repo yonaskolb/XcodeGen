@@ -821,6 +821,14 @@ public class PBXProjGenerator {
                     )
                     dependencies.append(targetDependency)
                 }
+                
+                if dependency.embed == true {
+                    let embedFile = addObject(
+                        PBXBuildFile(product: packageDependency,
+                                     settings: getEmbedSettings(dependency: dependency, codeSign: dependency.codeSign ?? true))
+                    )
+                    copyFrameworksReferences.append(embedFile)
+                }
             case .bundle:
                 // Static and dynamic libraries can't copy resources
                 guard target.type != .staticLibrary && target.type != .dynamicLibrary else { break }
