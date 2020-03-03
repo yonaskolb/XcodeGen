@@ -1013,6 +1013,37 @@ class ProjectGeneratorTests: XCTestCase {
                 try expect(localPackagesGroup.children.contains(localPackageFile)) == true
                 try expect(localPackageFile.lastKnownFileType) == "folder"
             }
+            
+            $0.it("generates local swift packages") {
+                let app = Target(
+                    name: "MyApp",
+                    type: .application,
+                    platform: .iOS,
+                    dependencies: [
+                        Dependency(type: .package(product: nil), reference: "XcodeGen"),
+                    ]
+                )
+
+                let project = Project(name: "test", targets: [app], localPackages: ["XcodeGen" : LocalSwiftPackage(path: "../XcodeGen")])
+
+                let pbxProject = try project.generatePbxProj(specValidate: false)
+                let nativeTarget = try unwrap(pbxProject.nativeTargets.first(where: { $0.name == app.name }))
+                let localPackageFile = try unwrap(pbxProject.fileReferences.first(where: { $0.path == "../XcodeGen" }))
+                try expect(localPackageFile.lastKnownFileType) == "folder"
+                
+                let frameworkPhases = nativeTarget.buildPhases.compactMap { $0 as? PBXFrameworksBuildPhase }
+                try expect(frameworkPhases.count) == 1
+                
+                guard let frameworkPhase = frameworkPhases.first else {
+                    return XCTFail("frameworkPhases should have frameworkPhase")
+                }
+                
+                guard let file = frameworkPhase.files?.first else {
+                    return XCTFail("frameworkPhase should have file")
+                }
+
+                try expect(file.product?.productName) == "XcodeGen"
+            }
 
             $0.it("generates info.plist") {
                 let plist = Plist(path: "Info.plist", attributes: ["UISupportedInterfaceOrientations": ["UIInterfaceOrientationPortrait", "UIInterfaceOrientationLandscapeLeft"]])
