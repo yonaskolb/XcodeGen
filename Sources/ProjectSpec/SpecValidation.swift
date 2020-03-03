@@ -138,9 +138,19 @@ extension Project {
 
         for target in aggregateTargets {
             for dependency in target.targets {
-                if getProjectTarget(dependency) == nil {
-                    errors.append(.invalidTargetDependency(target: target.name, dependency: dependency))
+                let dependencyTargetReference = try TargetReference(dependency)
+
+                switch dependencyTargetReference.location {
+                case .local:
+                    if getProjectTarget(dependency) == nil {
+                        errors.append(.invalidTargetDependency(target: target.name, dependency: dependency))
+                    }
+                case .project(let dependencyProjectName):
+                    if getProjectReference(dependencyProjectName) == nil {
+                        errors.append(.invalidTargetDependency(target: target.name, dependency: dependency))
+                    }
                 }
+
             }
         }
 

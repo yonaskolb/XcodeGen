@@ -322,7 +322,17 @@ public class PBXProjGenerator {
             return addObject(buildConfig)
         }
 
-        let dependencies = target.targets.map { generateTargetDependency(from: target.name, to: $0) }
+        let dependencies = try target.targets.map { dependencyReference -> PBXTargetDependency in
+            let reference = try TargetReference(dependencyReference)
+
+            switch reference.location {
+            case .local:
+                return generateTargetDependency(from: target.name, to: dependencyReference)
+            case .project(let projectName):
+                let (targetDependency, _, _) = try generateExternalTargetDependency(from: target.name, to: reference.name, in: projectName)
+                return targetDependency
+            }
+        }
 
         let defaultConfigurationName = project.options.defaultConfig ?? project.configs.first?.name ?? ""
         let buildConfigList = addObject(XCConfigurationList(
@@ -361,7 +371,7 @@ public class PBXProjGenerator {
         return targetDependency
     }
 
-    func generateExternalTargetDependency(from: String, to target: String, in project: String, platform: Platform) throws -> (PBXTargetDependency, Target, PBXReferenceProxy) {
+    func generateExternalTargetDependency(from: String, to target: String, in project: String, platform: Platform? = nil) throws -> (PBXTargetDependency, Target?, PBXReferenceProxy) {
         guard let projectReference = self.project.getProjectReference(project) else {
             fatalError("project not found")
         }
@@ -419,30 +429,34 @@ public class PBXProjGenerator {
             )
         )
 
-        guard let productType = targetObject.productType,
-            let buildConfigurations = targetObject.buildConfigurationList?.buildConfigurations,
-            let defaultConfigurationName = targetObject.buildConfigurationList?.defaultConfigurationName,
-            let defaultConfiguration = buildConfigurations.first(where: { $0.name == defaultConfigurationName }) ?? buildConfigurations.first else {
+        if let platform = platform {
+            guard let productType = targetObject.productType,
+                let buildConfigurations = targetObject.buildConfigurationList?.buildConfigurations,
+                let defaultConfigurationName = targetObject.buildConfigurationList?.defaultConfigurationName,
+                let defaultConfiguration = buildConfigurations.first(where: { $0.name == defaultConfigurationName }) ?? buildConfigurations.first else {
 
-                fatalError("Missing target info")
+                    fatalError("Missing target info")
+            }
+
+            let buildSettings = defaultConfiguration.buildSettings
+            let settings = Settings(buildSettings: buildSettings, configSettings: [:], groups: [])
+            let deploymentTargetString = buildSettings[platform.deploymentTargetSetting] as? String
+            let deploymentTarget = deploymentTargetString == nil ? nil : try Version.parse(deploymentTargetString!)
+            let requiresObjCLinking = (buildSettings["OTHER_LDFLAGS"] as? String)?.contains("-ObjC") ?? (productType == .staticLibrary)
+            let dependencyTarget = Target(
+                name: targetObject.name,
+                type: productType,
+                platform: platform,
+                productName: targetObject.productName,
+                deploymentTarget: deploymentTarget,
+                settings: settings,
+                requiresObjCLinking: requiresObjCLinking
+            )
+
+            return (targetDependency, dependencyTarget, productReferenceProxy)
+        } else {
+            return (targetDependency, nil, productReferenceProxy)
         }
-
-        let buildSettings = defaultConfiguration.buildSettings
-        let settings = Settings(buildSettings: buildSettings, configSettings: [:], groups: [])
-        let deploymentTargetString = buildSettings[platform.deploymentTargetSetting] as? String
-        let deploymentTarget = deploymentTargetString == nil ? nil : try Version.parse(deploymentTargetString!)
-        let requiresObjCLinking = (buildSettings["OTHER_LDFLAGS"] as? String)?.contains("-ObjC") ?? (productType == .staticLibrary)
-        let dependencyTarget = Target(
-            name: targetObject.name,
-            type: productType,
-            platform: platform,
-            productName: targetObject.productName,
-            deploymentTarget: deploymentTarget,
-            settings: settings,
-            requiresObjCLinking: requiresObjCLinking
-        )
-
-        return (targetDependency, dependencyTarget, productReferenceProxy)
     }
 
     func generateBuildScript(targetName: String, buildScript: BuildScript) throws -> PBXShellScriptBuildPhase {
@@ -689,7 +703,7 @@ public class PBXProjGenerator {
                     let dependencyTargetName = dependencyTargetReference.name
                     let (targetDependency, dependencyTarget, dependencyProductProxy) = try generateExternalTargetDependency(from: target.name, to: dependencyTargetName, in: dependencyProjectName, platform: target.platform)
                     dependencies.append(targetDependency)
-                    processTargetDependency(dependency, dependencyTarget: dependencyTarget, embedFileReference: dependencyProductProxy)
+                    processTargetDependency(dependency, dependencyTarget: dependencyTarget!, embedFileReference: dependencyProductProxy)
                 }
 
             case .framework:
