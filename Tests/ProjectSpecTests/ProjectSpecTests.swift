@@ -97,7 +97,7 @@ class ProjectSpecTests: XCTestCase {
                 project.settings = invalidSettings
                 project.configFiles = ["invalidConfig": "invalidConfigFile"]
                 project.fileGroups = ["invalidFileGroup"]
-                project.localPackages = ["invalidLocalPackage"]
+                project.localPackages = ["invalidLocalPackage" : try LocalSwiftPackage(path: "invalidLocalPackage")]
                 project.settingGroups = ["settingGroup1": Settings(
                     configSettings: ["invalidSettingGroupConfig": [:]],
                     groups: ["invalidSettingGroupSettingGroup"]
@@ -520,7 +520,7 @@ class ProjectSpecTests: XCTestCase {
                                            versionRequirement: .upToNextMajorVersion("2.0.0")
                                        ),
                                    ],
-                                   localPackages: ["../../Package"],
+                                   localPackages: ["../../Package" : try LocalSwiftPackage(path: "../../Package")],
                                    options: SpecOptions(minimumXcodeGenVersion: Version(major: 3, minor: 4, patch: 5),
                                                         carthageBuildPath: "carthageBuildPath",
                                                         carthageExecutablePath: "carthageExecutablePath",

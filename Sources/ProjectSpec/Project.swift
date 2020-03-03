@@ -20,7 +20,7 @@ public struct Project: BuildSettingsContainer {
     }
 
     public var packages: [String: SwiftPackage]
-    public var localPackages: [String]
+    public var localPackages: [String: LocalSwiftPackage]
 
     public var settings: Settings
     public var settingGroups: [String: Settings]
@@ -51,7 +51,7 @@ public struct Project: BuildSettingsContainer {
         settingGroups: [String: Settings] = [:],
         schemes: [Scheme] = [],
         packages: [String: SwiftPackage] = [:],
-        localPackages: [String] = [],
+        localPackages: [String: LocalSwiftPackage] = [:],
         options: SpecOptions = SpecOptions(),
         fileGroups: [String] = [],
         configFiles: [String: String] = [:],
@@ -188,7 +188,17 @@ extension Project {
         } else {
             packages = [:]
         }
-        localPackages = jsonDictionary.json(atKeyPath: "localPackages") ?? []
+        if let localPackages: [String: LocalSwiftPackage] = jsonDictionary.json(atKeyPath: "localPackages") {
+            self.localPackages = localPackages
+        } else if let localPackages: [String] = jsonDictionary.json(atKeyPath: "localPackages") {
+            self.localPackages = localPackages.reduce([String: LocalSwiftPackage]()) { result, path in
+                var result = result
+                result[path] = LocalSwiftPackage(path: path)
+                return result
+            }
+        } else {
+            self.localPackages = [:]
+        }
         if jsonDictionary["options"] != nil {
             options = try jsonDictionary.json(atKeyPath: "options")
         } else {

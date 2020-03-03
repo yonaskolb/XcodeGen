@@ -1104,7 +1104,7 @@ class SpecLoadingTests: XCTestCase {
                     "package7": SwiftPackage(url: "package.git", versionRequirement: .exact("1.2.2")),
                     "package8": SwiftPackage(url: "package.git", versionRequirement: .upToNextMajorVersion("4.0.0-beta.5")),
                 ],
-                                      localPackages: ["../../Package"],
+                                      localPackages: ["../../Package" : try LocalSwiftPackage(path: "../../Package")],
                                       options: .init(localPackagesGroup: "MyPackages"))
 
                 let dictionary: [String: Any] = [

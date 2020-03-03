@@ -56,9 +56,8 @@ public class PBXProjGenerator {
             try sourceGenerator.getFileGroups(path: group)
         }
 
-        let localPackages = Set(project.localPackages)
-        for package in localPackages {
-            let path = project.basePath + Path(package).normalize()
+        for (_, package) in project.localPackages {
+            let path = project.basePath + Path(package.path).normalize()
             try sourceGenerator.createLocalPackage(path: path)
         }
 
@@ -799,7 +798,11 @@ public class PBXProjGenerator {
                 }
             // Embedding handled by iterating over `carthageDependencies` below
             case .package(let product):
-                guard let packageReference = packageReferences[dependency.reference] else {
+                let packageReference = packageReferences[dependency.reference]
+                
+                // If package's reference is none and there is no specified package in localPackages,
+                // then ignore the package specified as dependency.
+                if packageReference == nil, !project.localPackages.keys.contains(dependency.reference) {
                     return
                 }
 
