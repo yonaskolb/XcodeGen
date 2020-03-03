@@ -2,6 +2,9 @@
 
 ## Next Version
 
+#### Added
+- Support local Swift pacakge by `localPackages`. [#712](https://github.com/yonaskolb/XcodeGen/pull/796) @freddi-kit
+
 ## 2.14.0
 
 #### Added
