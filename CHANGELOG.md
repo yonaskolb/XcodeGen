@@ -2,6 +2,9 @@
 
 ## Next Version
 
+#### Fixed
+- Allow aggregate targets to reference external targets. [#797](https://github.com/yonaskolb/XcodeGen/pull/797) @evandcoleman
+
 ## 2.14.0
 
 #### Added
