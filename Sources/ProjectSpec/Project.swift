@@ -295,7 +295,7 @@ extension Project: JSONEncodable {
         dictionary["include"] = include
         dictionary["attributes"] = attributes
         dictionary["packages"] = packages.mapValues { $0.toJSONValue() }
-        dictionary["localPackages"] = localPackages
+        dictionary["localPackages"] = localPackages.mapValues { $0.toJSONValue() }
         dictionary["targets"] = Dictionary(uniqueKeysWithValues: targetPairs)
         dictionary["configs"] = Dictionary(uniqueKeysWithValues: configsPairs)
         dictionary["aggregateTargets"] = Dictionary(uniqueKeysWithValues: aggregateTargetsPairs)
