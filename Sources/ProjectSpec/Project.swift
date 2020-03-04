@@ -191,11 +191,7 @@ extension Project {
         if let localPackages: [String: LocalSwiftPackage] = jsonDictionary.json(atKeyPath: "localPackages") {
             self.localPackages = localPackages
         } else if let localPackages: [String] = jsonDictionary.json(atKeyPath: "localPackages") {
-            self.localPackages = localPackages.reduce([String: LocalSwiftPackage]()) { result, path in
-                var result = result
-                result[path] = LocalSwiftPackage(path: path)
-                return result
-            }
+            self.localPackages = localPackages.reduce(into: [String: LocalSwiftPackage](), { $0[$1] = LocalSwiftPackage(path: $1) })
         } else {
             self.localPackages = [:]
         }
