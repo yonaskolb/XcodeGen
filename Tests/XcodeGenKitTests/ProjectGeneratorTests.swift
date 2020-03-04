@@ -1032,10 +1032,9 @@ class ProjectGeneratorTests: XCTestCase {
                 try expect(localPackageFile.lastKnownFileType) == "folder"
                 
                 let frameworkPhases = nativeTarget.buildPhases.compactMap { $0 as? PBXFrameworksBuildPhase }
-                try expect(frameworkPhases.count) == 1
                 
                 guard let frameworkPhase = frameworkPhases.first else {
-                    return XCTFail("frameworkPhases should have frameworkPhase")
+                    return XCTFail("frameworkPhases should have more than one")
                 }
                 
                 guard let file = frameworkPhase.files?.first else {
