@@ -20,6 +20,20 @@
                ReferencedContainer = "container:Project.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "0867B0DACEF28C11442DE8F7"
+               BuildableName = "App_iOS.app"
+               BlueprintName = "App_iOS"
+               ReferencedContainer = "container:Project.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -56,8 +70,9 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <RemoteRunnable
+         BundleIdentifier = "com.apple.Carousel"
+         runnableDebuggingMode = "2">
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "208179651927D1138D19B5AD"
@@ -65,7 +80,7 @@
             BlueprintName = "App_watchOS"
             ReferencedContainer = "container:Project.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </RemoteRunnable>
       <CommandLineArguments>
       </CommandLineArguments>
       <AdditionalOptions>
