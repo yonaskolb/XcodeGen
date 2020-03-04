@@ -394,6 +394,7 @@ class ProjectSpecTests: XCTestCase {
                                                                          configVariants: ["foo"],
                                                                          gatherCoverageData: true,
                                                                          disableMainThreadChecker: true,
+                                                                         stopOnEveryMainThreadCheckerIssue: false,
                                                                          commandLineArguments: ["foo": true],
                                                                          environmentVariables: [XCScheme.EnvironmentVariable(variable: "environmentVariable",
                                                                                                                              value: "bar",
