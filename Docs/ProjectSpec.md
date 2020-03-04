@@ -50,7 +50,7 @@ You can also use environment variables in your configuration file, by using `${S
 - [ ] **schemes**: **[Scheme](#scheme)** - A list of schemes by name. This allows more control over what is found in [Target Scheme](#target-scheme)
 - [ ] **targetTemplates**: **[String: [Target Template](#target-template)]** - a list of targets that can be used as templates for actual targets which reference them via a `template` property. They can be used to extract common target settings. Works great in combination with `include`.
 - [ ] **packages**: **[String: [Swift Package](#swift-package)]** - a map of Swift packages by name
-- [ ] **localPackages**: **[String: [Local Swift Package](#local-swift-package)]** -  a map of local Swift packages by name. The paths must be directories with a `Package.swift` file in them. If same name Swift package is listed in `packages`, this override the same name package in  `packages` with a local version for development purposes. We can also use by path list ( `[String]` ). However, local packages that don't mirror remote packages aren't able to be linked to, by `[String]` format.
+- [ ] **localPackages**: **[String: [Local Swift Package](#local-swift-package)]** -  a map of local Swift packages by name. The paths must be directories with a `Package.swift` file in them. If same name remote repo is listed in `packages`, remote repo will be overridden to a local version in `localPackages` for development purposes. We can also use by path list ( `[String]` ). However, local packages that don't mirror remote packages aren't able to be linked to, by `[String]` format.
 - [ ] **projectReferences**: **[String: [Project Reference](#project-reference)]** - a map of project references by name
 
 ### Include

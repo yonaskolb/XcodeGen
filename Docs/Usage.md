@@ -178,7 +178,7 @@ If you want to check in the `Package.resolved` file so that everyone is on the s
 
 > Note that Swift Packages don't work in projects with configurations other than `Debug` and `Release`. That limitation is tracked here bugs.swift.org/browse/SR-10927
 
-You can also include local Swift Packages by referencing them by paths in `localPackages` and you can use them as `dependencies` same with `packages`. When these have the same name as `packages` they will be used instead of the remote repos. This is useful for local development.
+You can also include local Swift Packages by referencing them by paths in `localPackages` and you can use them as `dependencies` same with `packages`. When these local packages in `localPackages` have the same name as remote repos in `packages`, they will be used instead of the remote repos. This is useful for local development.
 
 ```yml
 packages:
