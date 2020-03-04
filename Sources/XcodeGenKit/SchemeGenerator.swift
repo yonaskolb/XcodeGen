@@ -235,6 +235,7 @@ public class SchemeGenerator {
             allowLocationSimulation: allowLocationSimulation,
             locationScenarioReference: locationScenarioReference,
             disableMainThreadChecker: scheme.run?.disableMainThreadChecker ?? Scheme.Run.disableMainThreadCheckerDefault,
+            stopOnEveryMainThreadCheckerIssue: scheme.run?.stopOnEveryMainThreadCheckerIssue ?? Scheme.Run.stopOnEveryMainThreadCheckerIssueDefault,
             commandlineArguments: launchCommandLineArgs,
             environmentVariables: launchVariables,
             language: scheme.run?.language,
@@ -302,6 +303,7 @@ extension Scheme {
                 postActions: targetScheme.postActions,
                 environmentVariables: targetScheme.environmentVariables,
                 disableMainThreadChecker: targetScheme.disableMainThreadChecker,
+                stopOnEveryMainThreadCheckerIssue: targetScheme.stopOnEveryMainThreadCheckerIssue,
                 language: targetScheme.language,
                 region: targetScheme.region
             ),
