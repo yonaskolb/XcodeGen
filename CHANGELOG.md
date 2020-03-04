@@ -2,6 +2,9 @@
 
 ## Next Version
 
+#### Fixed
+- Fixed issue which caused watch app schemes to be generated incorrectly, preventing these apps from launching. [#798](https://github.com/yonaskolb/XcodeGen/pull/798) @daltonclaybrook
+
 ## 2.15.0
 
 #### Added
