@@ -24,14 +24,14 @@ extension SwiftPackage: JSONObjectConvertible {
     public init(jsonDictionary: JSONDictionary) throws {
         if let url: String = jsonDictionary.json(atKeyPath: "url") {
             let versionRequirement: VersionRequirement = try VersionRequirement(jsonDictionary: jsonDictionary)
+            try Self.validateVersion(versionRequirement: versionRequirement)
             kind = .remote(url: url, versionRequirement: versionRequirement)
-            try validateVersion(versionRequirement: versionRequirement)
         } else {
             kind = .local(path: try jsonDictionary.json(atKeyPath: "path"))
         }
     }
 
-    private func validateVersion(versionRequirement: VersionRequirement) throws {
+    private static func validateVersion(versionRequirement: VersionRequirement) throws {
         switch versionRequirement {
 
         case .upToNextMajorVersion(let version):
