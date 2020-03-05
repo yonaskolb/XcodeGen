@@ -803,7 +803,7 @@ public class PBXProjGenerator {
                 // If package's reference is none and there is no specified package in localPackages,
                 // then ignore the package specified as dependency.
                 if packageReference == nil, !project.localPackages.keys.contains(dependency.reference) {
-                    return
+                    continue
                 }
 
                 let productName = product ?? dependency.reference
