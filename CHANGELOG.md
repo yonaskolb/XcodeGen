@@ -6,7 +6,7 @@
 - Add support non-mirrored local Swift Packages in `localPackages`. [#796](https://github.com/yonaskolb/XcodeGen/pull/796) @freddi-kit
 
 #### Fixed
-- Fixed resolving path to local Swift pacakge by `localPackages`. [#796](https://github.com/yonaskolb/XcodeGen/pull/796) @freddi-kit
+- Fixed resolving path to local Swift Packages [#796](https://github.com/yonaskolb/XcodeGen/pull/796) @freddi-kit
 
 ## 2.14.0
 
