@@ -10,6 +10,13 @@ public struct SwiftPackage: Equatable {
     public enum Kind: Equatable {
         case remote(url: String, versionRequirement: VersionRequirement)
         case local(path: String)
+        
+        public var isLocal: Bool {
+            if case .local = self {
+                return true
+            }
+            return false
+        }
     }
 
     public let kind: SwiftPackage.Kind

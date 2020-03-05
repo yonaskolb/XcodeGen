@@ -602,6 +602,7 @@ public class PBXProjGenerator {
         var packageDependencies: [XCSwiftPackageProductDependency] = []
         var extensions: [PBXBuildFile] = []
         var carthageFrameworksToEmbed: [String] = []
+        var localPackageReferences: [String] = project.localPackages.keys + project.packages.compactMap { $0.value.kind.isLocal ? $0.key : nil }
 
         let targetDependencies = (target.transitivelyLinkDependencies ?? project.options.transitivelyLinkDependencies) ?
             getAllDependenciesPlusTransitiveNeedingEmbedding(target: target) : target.dependencies
@@ -807,7 +808,7 @@ public class PBXProjGenerator {
                 
                 // If package's reference is none and there is no specified package in localPackages,
                 // then ignore the package specified as dependency.
-                if packageReference == nil, !project.localPackages.keys.contains(dependency.reference) {
+                if packageReference == nil, !localPackageReferences.contains(dependency.reference) {
                     continue
                 }
 
