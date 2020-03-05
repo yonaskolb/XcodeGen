@@ -875,6 +875,8 @@ Swift packages are defined at a project level, and then linked to individual tar
 
 > Note that Swift Packages don't work in projects with configurations other than `Debug` and `Release`. That limitation is tracked here bugs.swift.org/browse/SR-10927
 
+### Remote Package
+
 - [x] **url**: **URL** - the url to the package
 - [x] **version**: **String** - the version of the package to use. It can take a few forms:
   - `majorVersion: 1.2.0` or `from: 1.2.0`
@@ -883,16 +885,23 @@ Swift packages are defined at a project level, and then linked to individual tar
   - `minVersion: 1.0.0, maxVersion: 1.2.9`
   - `branch: master`
   - `revision: xxxxxx`
+  
+### Local Package
+
+- [x] **path**: **String** - the url to the package in local
 
 ```yml
 packages:
   Yams:
     url: https://github.com/jpsim/Yams
     from: 2.0.0
+  RxClient:
+    path: ../RxClient
 targets:
   App:
     dependencies:
       - package: Yams
+      - package: RxClient
 ```
 
 ## Local Swift Package
