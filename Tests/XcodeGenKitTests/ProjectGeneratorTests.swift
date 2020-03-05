@@ -991,6 +991,7 @@ class ProjectGeneratorTests: XCTestCase {
                 let project = Project(name: "test", targets: [app], packages: [
                     "XcodeGen": SwiftPackage(kind: .remote(url: "http://github.com/yonaskolb/XcodeGen", versionRequirement: .branch("master"))),
                     "Codability": SwiftPackage(kind: .remote(url: "http://github.com/yonaskolb/Codability", versionRequirement: .exact("1.0.0"))),
+                    "Yams": SwiftPackage(kind: .local(path: "../Yams"))
                 ], localPackages: ["../XcodeGen" : LocalSwiftPackage(path: "../XcodeGen")], options: .init(localPackagesGroup: "MyPackages"))
 
                 let pbxProject = try project.generatePbxProj(specValidate: false)
@@ -1006,12 +1007,17 @@ class ProjectGeneratorTests: XCTestCase {
                 try expect(codabilityDependency.package?.name) == "Codability"
                 try expect(codabilityDependency.package?.versionRequirement) == .exact("1.0.0")
 
+
                 let localPackagesGroup = try unwrap(try pbxProject.getMainGroup().children.first(where: { $0.name == "MyPackages" }) as? PBXGroup)
 
-                let localPackageFile = try unwrap(pbxProject.fileReferences.first(where: { $0.path == "../XcodeGen" }))
+                let xcodeLocalPackageFile = try unwrap(pbxProject.fileReferences.first(where: { $0.path == "../XcodeGen" }))
+                try expect(localPackagesGroup.children.contains(xcodeLocalPackageFile)) == true
+                try expect(xcodeLocalPackageFile.lastKnownFileType) == "folder"
 
-                try expect(localPackagesGroup.children.contains(localPackageFile)) == true
-                try expect(localPackageFile.lastKnownFileType) == "folder"
+                
+                let yamsLocalPackageFile = try unwrap(pbxProject.fileReferences.first(where: { $0.path == "../Yams" }))
+                try expect(localPackagesGroup.children.contains(yamsLocalPackageFile)) == true
+                try expect(yamsLocalPackageFile.lastKnownFileType) == "folder"
             }
             
             $0.it("generates local swift packages") {

@@ -1103,6 +1103,7 @@ class SpecLoadingTests: XCTestCase {
                     "package6": SwiftPackage(kind: .remote(url: "package.git", versionRequirement: .range(from: "1.2.0", to: "1.2.5"))),
                     "package7": SwiftPackage(kind: .remote(url: "package.git", versionRequirement: .exact("1.2.2"))),
                     "package8": SwiftPackage(kind: .remote(url: "package.git", versionRequirement: .upToNextMajorVersion("4.0.0-beta.5"))),
+                    "package9": SwiftPackage(kind: .local(path: "package/package"))
                 ],
                                       localPackages: ["../../Package" : LocalSwiftPackage(path: "../../Package")],
                                       options: .init(localPackagesGroup: "MyPackages"))
@@ -1121,6 +1122,7 @@ class SpecLoadingTests: XCTestCase {
                         "package6": ["url": "package.git", "minVersion": "1.2.0", "maxVersion": "1.2.5"],
                         "package7": ["url": "package.git", "version": "1.2.2"],
                         "package8": ["url": "package.git", "majorVersion": "4.0.0-beta.5"],
+                        "package9": ["path": "package/package"]
                     ],
                     "localPackages": ["../../Package"],
                 ]
