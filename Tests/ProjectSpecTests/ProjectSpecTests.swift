@@ -516,8 +516,10 @@ class ProjectSpecTests: XCTestCase {
                                                                                                                  settingsTarget: "foo")]))],
                                    packages: [
                                        "Yams": SwiftPackage(
-                                           url: "https://github.com/jpsim/Yams",
-                                           versionRequirement: .upToNextMajorVersion("2.0.0")
+                                            kind: .remote(
+                                                url: "https://github.com/jpsim/Yams",
+                                                versionRequirement: .upToNextMajorVersion("2.0.0")
+                                            )
                                        ),
                                    ],
                                    localPackages: ["../../Package" : LocalSwiftPackage(path: "../../Package")],

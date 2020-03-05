@@ -165,9 +165,14 @@ public class PBXProjGenerator {
         }
 
         for (name, package) in project.packages {
-            let packageReference = XCRemoteSwiftPackageReference(repositoryURL: package.url, versionRequirement: package.versionRequirement)
-            packageReferences[name] = packageReference
-            addObject(packageReference)
+            switch package.kind {
+            case let .remote(url, versionRequirement):
+                let packageReference = XCRemoteSwiftPackageReference(repositoryURL: url, versionRequirement: versionRequirement)
+                packageReferences[name] = packageReference
+                addObject(packageReference)
+            case let .local(path):
+                try sourceGenerator.createLocalPackage(path: Path(path))
+            }
         }
 
         let productGroup = addObject(

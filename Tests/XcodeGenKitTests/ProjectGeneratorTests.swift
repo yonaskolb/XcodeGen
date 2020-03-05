@@ -989,8 +989,8 @@ class ProjectGeneratorTests: XCTestCase {
                 )
 
                 let project = Project(name: "test", targets: [app], packages: [
-                    "XcodeGen": SwiftPackage(url: "http://github.com/yonaskolb/XcodeGen", versionRequirement: .branch("master")),
-                    "Codability": SwiftPackage(url: "http://github.com/yonaskolb/Codability", versionRequirement: .exact("1.0.0")),
+                    "XcodeGen": SwiftPackage(kind: .remote(url: "http://github.com/yonaskolb/XcodeGen", versionRequirement: .branch("master"))),
+                    "Codability": SwiftPackage(kind: .remote(url: "http://github.com/yonaskolb/Codability", versionRequirement: .exact("1.0.0"))),
                 ], localPackages: ["../XcodeGen" : LocalSwiftPackage(path: "../XcodeGen")], options: .init(localPackagesGroup: "MyPackages"))
 
                 let pbxProject = try project.generatePbxProj(specValidate: false)

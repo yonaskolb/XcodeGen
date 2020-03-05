@@ -1095,14 +1095,14 @@ class SpecLoadingTests: XCTestCase {
 
             $0.it("parses packages") {
                 let project = Project(name: "spm", packages: [
-                    "package1": SwiftPackage(url: "package.git", versionRequirement: .exact("1.2.2")),
-                    "package2": SwiftPackage(url: "package.git", versionRequirement: .upToNextMajorVersion("1.2.2")),
-                    "package3": SwiftPackage(url: "package.git", versionRequirement: .upToNextMinorVersion("1.2.2")),
-                    "package4": SwiftPackage(url: "package.git", versionRequirement: .branch("master")),
-                    "package5": SwiftPackage(url: "package.git", versionRequirement: .revision("x")),
-                    "package6": SwiftPackage(url: "package.git", versionRequirement: .range(from: "1.2.0", to: "1.2.5")),
-                    "package7": SwiftPackage(url: "package.git", versionRequirement: .exact("1.2.2")),
-                    "package8": SwiftPackage(url: "package.git", versionRequirement: .upToNextMajorVersion("4.0.0-beta.5")),
+                    "package1": SwiftPackage(kind: .remote(url: "package.git", versionRequirement: .exact("1.2.2"))),
+                    "package2": SwiftPackage(kind: .remote(url: "package.git", versionRequirement: .upToNextMajorVersion("1.2.2"))),
+                    "package3": SwiftPackage(kind: .remote(url: "package.git", versionRequirement: .upToNextMinorVersion("1.2.2"))),
+                    "package4": SwiftPackage(kind: .remote(url: "package.git", versionRequirement: .branch("master"))),
+                    "package5": SwiftPackage(kind: .remote(url: "package.git", versionRequirement: .revision("x"))),
+                    "package6": SwiftPackage(kind: .remote(url: "package.git", versionRequirement: .range(from: "1.2.0", to: "1.2.5"))),
+                    "package7": SwiftPackage(kind: .remote(url: "package.git", versionRequirement: .exact("1.2.2"))),
+                    "package8": SwiftPackage(kind: .remote(url: "package.git", versionRequirement: .upToNextMajorVersion("4.0.0-beta.5"))),
                 ],
                                       localPackages: ["../../Package" : LocalSwiftPackage(path: "../../Package")],
                                       options: .init(localPackagesGroup: "MyPackages"))
