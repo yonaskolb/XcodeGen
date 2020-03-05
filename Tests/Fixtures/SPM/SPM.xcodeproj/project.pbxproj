@@ -49,7 +49,7 @@
 		4E22B8BCC18A29EFE1DE3BE4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		61C17B77601A9D1B7895AB42 /* StaticLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaticLibrary.swift; sourceTree = "<group>"; };
 		A9601593D0AD02931266A4E5 /* App.xctestplan */ = {isa = PBXFileReference; path = App.xctestplan; sourceTree = "<group>"; };
-		B71D3227C09EFC935723F45B /* .. */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ..; path = ../../..; sourceTree = "<group>"; };
+		C1DE9A872F470EAA65B9B0B0 /* XcodeGen */ = {isa = PBXFileReference; lastKnownFileType = folder; name = XcodeGen; path = ../../..; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,7 +107,7 @@
 		AD0F3623091EEA8D1EA3DFF8 /* Packages */ = {
 			isa = PBXGroup;
 			children = (
-				B71D3227C09EFC935723F45B /* .. */,
+				C1DE9A872F470EAA65B9B0B0 /* XcodeGen */,
 			);
 			name = Packages;
 			sourceTree = SOURCE_ROOT;

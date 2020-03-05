@@ -69,7 +69,7 @@ class SourceGenerator {
         let fileReference = addObject(
             PBXFileReference(
                 sourceTree: .group,
-                name: path.lastComponent,
+                name: absolutePath.lastComponent,
                 lastKnownFileType: "folder",
                 path: fileReferencePath
             )
