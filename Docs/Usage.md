@@ -165,12 +165,15 @@ packages:
   SwiftPM:
     url: https://github.com/apple/swift-package-manager
     branch: swift-5.0-branch
+  RxClient:
+    path: ../RxClient
 targets:
   App:
     dependencies:
       # by default the package product that is linked to is the same as the package name
       - package: Yams
       - package: SwiftPM
+      - package: RxClient
       - package: SwiftPM
         product: SPMUtility # specify a specific product
 ```
