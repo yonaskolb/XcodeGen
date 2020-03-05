@@ -61,7 +61,7 @@ class SourceGenerator {
             rootGroups.insert(localPackageGroup!)
         }
         
-        let absolutePath = path.isAbsolute ? path : project.basePath + path.normalize()
+        let absolutePath = project.basePath + path.normalize()
 
         // Get local pakcage's relative path from generating project's root
         let fileReferencePath = try? absolutePath.relativePath(from: projectDirectory ?? project.basePath).string
