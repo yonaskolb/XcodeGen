@@ -56,7 +56,8 @@ public class PBXProjGenerator {
             try sourceGenerator.getFileGroups(path: group)
         }
 
-        for (_, package) in project.localPackages {
+        let sortedlocalPackages = project.localPackages.sorted { $0.key < $1.key }
+        for (_, package) in sortedlocalPackages {
             try sourceGenerator.createLocalPackage(path: Path(package.path))
         }
 
