@@ -58,6 +58,12 @@ extension Project {
                 errors.append(.invalidLocalPackage(name))
             }
         }
+        
+        for (name, package) in packages {
+            if case let .local(path) = package.kind, !(basePath + Path(path).normalize()).exists {
+                errors.append(.invalidLocalPackage(name))
+            }
+        }
 
         for (config, configFile) in configFiles {
             if !options.disabledValidations.contains(.missingConfigFiles) && !(basePath + configFile).exists {
