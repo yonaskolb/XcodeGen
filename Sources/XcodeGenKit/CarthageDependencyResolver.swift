@@ -10,11 +10,14 @@ import ProjectSpec
 import PathKit
 
 public class CarthageDependencyResolver {
+    static func getBuildPath(_ project: Project) -> String {
+        return project.options.carthageBuildPath ?? "Carthage/Build"
+    }
 
     /// Carthage's base build path as specified by the
     /// project's `SpecOptions`, or `Carthage/Build` by default
     var buildPath: String {
-        project.options.carthageBuildPath ?? "Carthage/Build"
+        return CarthageDependencyResolver.getBuildPath(project)
     }
 
     /// Carthage's executable path as specified by the
@@ -24,10 +27,11 @@ public class CarthageDependencyResolver {
     }
 
     private let project: Project
-    lazy var versionLoader = CarthageVersionLoader(buildPath: project.basePath + buildPath)
+    let versionLoader: CarthageVersionLoader
 
     init(project: Project) {
         self.project = project
+        versionLoader = CarthageVersionLoader(buildPath: project.basePath + CarthageDependencyResolver.getBuildPath(project))
     }
 
     /// Carthage's build path for the given platform

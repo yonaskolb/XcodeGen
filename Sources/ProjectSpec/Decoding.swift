@@ -4,18 +4,36 @@ import PathKit
 import Yams
 
 extension Dictionary where Key: JSONKey {
-
-    public func json<T: NamedJSONDictionaryConvertible>(atKeyPath keyPath: JSONUtilities.KeyPath, invalidItemBehaviour: InvalidItemBehaviour<T> = .remove) throws -> [T] {
+    public func json<T: NamedJSONDictionaryConvertible>(atKeyPath keyPath: JSONUtilities.KeyPath, invalidItemBehaviour: InvalidItemBehaviour<T> = .remove, parallel: Bool = false) throws -> [T] {
         guard let dictionary = json(atKeyPath: keyPath) as JSONDictionary? else {
             return []
         }
-        var items: [T] = []
-        for (key, _) in dictionary {
-            let jsonDictionary: JSONDictionary = try dictionary.json(atKeyPath: .key(key))
-            let item = try T(name: key, jsonDictionary: jsonDictionary)
-            items.append(item)
+        if parallel {
+            var itemOptionals: [T?] = Array(repeating: nil, count: dictionary.count)
+            var ops: [BlockOperation] = []
+            var idx: Int = 0
+            for (key, _) in dictionary {
+                ops.append(BlockOperation {[idx] in
+                    let jsonDictionary: JSONDictionary = try! dictionary.json(atKeyPath: .key(key))
+                    let item = try! T(name: key, jsonDictionary: jsonDictionary)
+                    itemOptionals[idx] = item
+                })
+                idx += 1
+            }
+            let queue = OperationQueue()
+            queue.qualityOfService = .userInteractive
+            queue.maxConcurrentOperationCount = 8
+            queue.addOperations(ops, waitUntilFinished: true)
+            return itemOptionals.compactMap { $0 }
+        } else {
+            var items: [T] = []
+            for (key, _) in dictionary {
+                let jsonDictionary: JSONDictionary = try dictionary.json(atKeyPath: .key(key))
+                let item = try T(name: key, jsonDictionary: jsonDictionary)
+                items.append(item)
+            }
+            return items
         }
-        return items
     }
 
     public func json<T: NamedJSONConvertible>(atKeyPath keyPath: JSONUtilities.KeyPath, invalidItemBehaviour: InvalidItemBehaviour<T> = .remove) throws -> [T] {

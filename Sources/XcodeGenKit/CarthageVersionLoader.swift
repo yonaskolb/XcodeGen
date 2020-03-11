@@ -9,24 +9,52 @@ import Foundation
 import PathKit
 import ProjectSpec
 
+class Mutex<T> {
+    var value: T
+    //var mutex: pthread_mutex_t = pthread_mutex_t()
+    var semaphore: DispatchSemaphore = DispatchSemaphore(value: 1)
+    init(_ value: T) {
+        self.value = value
+        //pthread_mutex_init(&mutex, nil)
+    }
+
+    func get<U>(closure: (inout T) throws -> (U)) rethrows -> U {
+        semaphore.wait()
+        defer { semaphore.signal() }
+        //pthread_mutex_lock(&mutex)
+        //defer { pthread_mutex_unlock(&mutex) }
+        let newValue = try closure(&value)
+        //value = newValue
+        return newValue
+    }
+
+    func get(closure: (inout T) -> ()) {
+        semaphore.wait()
+        closure(&value)
+        semaphore.signal()
+    }
+}
+
 class CarthageVersionLoader {
 
     private let buildPath: Path
-    private var cachedFiles: [String: CarthageVersionFile] = [:]
+    private var cachedFilesMutex: Mutex<[String: CarthageVersionFile]> = Mutex([:])
 
     init(buildPath: Path) {
         self.buildPath = buildPath
     }
 
     func getVersionFile(for dependency: String) throws -> CarthageVersionFile {
-        if let versionFile = cachedFiles[dependency] {
-            return versionFile
+        return try cachedFilesMutex.get { cachedFiles in
+            if let versionFile = cachedFiles[dependency] {
+                return versionFile
+            }
+            let filePath = buildPath + ".\(dependency).version"
+            let data = try filePath.read()
+            let carthageVersionFile = try JSONDecoder().decode(CarthageVersionFile.self, from: data)
+            cachedFiles[dependency] = carthageVersionFile
+            return carthageVersionFile
         }
-        let filePath = buildPath + ".\(dependency).version"
-        let data = try filePath.read()
-        let carthageVersionFile = try JSONDecoder().decode(CarthageVersionFile.self, from: data)
-        cachedFiles[dependency] = carthageVersionFile
-        return carthageVersionFile
     }
 }
 
