@@ -122,7 +122,7 @@ By default these all have to be listed if you want to link and use them:
 ```yml
 targets:
   App:
-    frameworks:
+    dependencies:
       - carthage: ReactiveCocoa
       - carthage: ReactiveMapKit 
 ```
@@ -134,7 +134,7 @@ options:
   findCarthageFrameworks: true
 targets:
   App:
-    frameworks:
+    dependencies:
       - carthage: ReactiveCocoa # will find ReactiveMapKit as well
       - carthage: OtherCarthageDependency
         findFrameworks: false # disables the global option
