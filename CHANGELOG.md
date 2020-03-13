@@ -2,6 +2,9 @@
 
 ## Next Version
 
+#### Fixed
+- Avoid copying ObjC interface header when SWIFT_INSTALL_OBJC_HEADER=false. [#805](https://github.com/yonaskolb/XcodeGen/pull/805) @kateinoigakukun
+
 ## 2.14.0
 
 #### Added
