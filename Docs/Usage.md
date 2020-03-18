@@ -197,7 +197,7 @@ targets:
       - package: Yams # Yams in local will be used instead of Yams from remote repos
 
 ```
-These local packages get put into a `Packages` group in the root of the project by default. This can be changed with `options.localPackagesGroup`. However you can not set it as `dependencies`, and they are only used for overriding `packages`.
+These local packages get put into a `Packages` group in the root of the project by default. This can be changed with `options.localPackagesGroup`.
 
 ### SDK
 System frameworks and libs can be linked by using the `sdk` dependency type. You can either specify frameworks or libs by using a `.framework`, `.tbd` or `dylib` filename, respectively
