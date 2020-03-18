@@ -712,6 +712,7 @@ class SpecLoadingTests: XCTestCase {
                     "language": "en",
                     "region": "US",
                     "disableMainThreadChecker": true,
+                    "stopOnEveryMainThreadCheckerIssue": true,
                     "environmentVariables": [
                         "TEST_VAR": "TEST_VAL",
                     ],
@@ -738,6 +739,7 @@ class SpecLoadingTests: XCTestCase {
                     language: "en",
                     region: "US",
                     disableMainThreadChecker: true,
+                    stopOnEveryMainThreadCheckerIssue: true,
                     commandLineArguments: ["ENV1": true],
                     environmentVariables: [XCScheme.EnvironmentVariable(variable: "TEST_VAR", value: "TEST_VAL", enabled: true)],
                     preActions: [.init(name: "Do Thing", script: "dothing", settingsTarget: "test")],
@@ -782,6 +784,7 @@ class SpecLoadingTests: XCTestCase {
                         ],
                         "gatherCoverageData": true,
                         "disableMainThreadChecker": true,
+                        "stopOnEveryMainThreadCheckerIssue": true,
                     ],
                 ]
                 let scheme = try Scheme(name: "Scheme", jsonDictionary: schemeDictionary)
@@ -931,6 +934,7 @@ class SpecLoadingTests: XCTestCase {
                                 ],
                                 "gatherCoverageData": true,
                                 "disableMainThreadChecker": true,
+                                "stopOnEveryMainThreadCheckerIssue": false,
                             ],
                         ],
                     ],
