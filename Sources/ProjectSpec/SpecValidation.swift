@@ -52,12 +52,6 @@ extension Project {
                 errors.append(.invalidFileGroup(fileGroup))
             }
         }
-
-        for (name, package) in localPackages {
-            if !(basePath + Path(package.path).normalize()).exists {
-                errors.append(.invalidLocalPackage(name))
-            }
-        }
         
         for (name, package) in packages {
             if case let .local(path) = package.kind, !(basePath + Path(path).normalize()).exists {
@@ -179,7 +173,7 @@ extension Project {
                         }
                     }
                 case .package:
-                    if packages[dependency.reference] == nil, localPackages[dependency.reference] == nil {
+                    if packages[dependency.reference] == nil {
                         errors.append(.invalidSwiftPackage(name: dependency.reference, target: target.name))
                     }
                 default: break

@@ -55,12 +55,7 @@ public class PBXProjGenerator {
         for group in project.fileGroups {
             try sourceGenerator.getFileGroups(path: group)
         }
-
-        let sortedlocalPackages = project.localPackages.sorted { $0.key < $1.key }
-        for (_, package) in sortedlocalPackages {
-            try sourceGenerator.createLocalPackage(path: Path(package.path))
-        }
-
+        
         let buildConfigs: [XCBuildConfiguration] = project.configs.map { config in
             let buildSettings = project.getProjectBuildSettings(config: config)
             var baseConfiguration: PBXFileReference?
@@ -602,7 +597,7 @@ public class PBXProjGenerator {
         var packageDependencies: [XCSwiftPackageProductDependency] = []
         var extensions: [PBXBuildFile] = []
         var carthageFrameworksToEmbed: [String] = []
-        var localPackageReferences: [String] = project.localPackages.keys + project.packages.compactMap { $0.value.kind.isLocal ? $0.key : nil }
+        var localPackageReferences: [String] = project.packages.compactMap { $0.value.kind.isLocal ? $0.key : nil }
 
         let targetDependencies = (target.transitivelyLinkDependencies ?? project.options.transitivelyLinkDependencies) ?
             getAllDependenciesPlusTransitiveNeedingEmbedding(target: target) : target.dependencies
