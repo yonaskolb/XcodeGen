@@ -60,12 +60,18 @@ class SourceGenerator {
             localPackageGroup = addObject(PBXGroup(sourceTree: .sourceRoot, name: groupName))
             rootGroups.insert(localPackageGroup!)
         }
+        
+        let absolutePath = project.basePath + path.normalize()
+
+        // Get the local package's relative path from the project root
+        let fileReferencePath = try? absolutePath.relativePath(from: projectDirectory ?? project.basePath).string
+        
         let fileReference = addObject(
             PBXFileReference(
                 sourceTree: .sourceRoot,
-                name: path.lastComponent,
+                name: absolutePath.lastComponent,
                 lastKnownFileType: "folder",
-                path: try path.relativePath(from: project.basePath).string
+                path: fileReferencePath
             )
         )
         localPackageGroup!.children.append(fileReference)

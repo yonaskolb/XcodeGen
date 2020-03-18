@@ -7,7 +7,8 @@ packages:
     url: https://github.com/piotte13/SwiftRoaring
     majorVersion: 1.0.4
 localPackages:
- - ../../.. #XcodeGen itself
+  XcodeGen: 
+    path: ../../.. #XcodeGen itself
 targets:
   App:
     type: application
@@ -28,3 +29,4 @@ targets:
       - package: Codability
       - package: SwiftRoaring
         product: SwiftRoaringDynamic
+      - package: XcodeGen

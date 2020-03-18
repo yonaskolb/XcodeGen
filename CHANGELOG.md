@@ -3,6 +3,10 @@
 ## Next Version
 
 #### Added
+- Add support non-mirrored local Swift Packages in `localPackages`. [#796](https://github.com/yonaskolb/XcodeGen/pull/796) @freddi-kit
+
+#### Fixed
+- Fixed resolving path to local Swift Packages [#796](https://github.com/yonaskolb/XcodeGen/pull/796) @freddi-kit
 - Added ability to stop on every main thread checker issue on Run schemes and TargetSchemes [#799](https://github.com/yonaskolb/XcodeGen/pull/799) @ionutivan
 
 ## 2.14.0

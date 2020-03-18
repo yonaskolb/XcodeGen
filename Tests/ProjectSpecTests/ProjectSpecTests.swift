@@ -97,7 +97,7 @@ class ProjectSpecTests: XCTestCase {
                 project.settings = invalidSettings
                 project.configFiles = ["invalidConfig": "invalidConfigFile"]
                 project.fileGroups = ["invalidFileGroup"]
-                project.localPackages = ["invalidLocalPackage"]
+                project.localPackages = ["invalidLocalPackage" : LocalSwiftPackage(path: "invalidLocalPackage")]
                 project.settingGroups = ["settingGroup1": Settings(
                     configSettings: ["invalidSettingGroupConfig": [:]],
                     groups: ["invalidSettingGroupSettingGroup"]
@@ -521,7 +521,7 @@ class ProjectSpecTests: XCTestCase {
                                            versionRequirement: .upToNextMajorVersion("2.0.0")
                                        ),
                                    ],
-                                   localPackages: ["../../Package"],
+                                   localPackages: ["../../Package" : LocalSwiftPackage(path: "../../Package")],
                                    options: SpecOptions(minimumXcodeGenVersion: Version(major: 3, minor: 4, patch: 5),
                                                         carthageBuildPath: "carthageBuildPath",
                                                         carthageExecutablePath: "carthageExecutablePath",
@@ -561,6 +561,7 @@ class ProjectSpecTests: XCTestCase {
                 try expect(proj.settingGroups) == restoredProj.settingGroups
                 try expect(proj.targets) == restoredProj.targets
                 try expect(proj.packages) == restoredProj.packages
+                try expect(proj.localPackages) == restoredProj.localPackages
 
                 try expect(proj) == restoredProj
             }

@@ -56,10 +56,9 @@ public class PBXProjGenerator {
             try sourceGenerator.getFileGroups(path: group)
         }
 
-        let localPackages = Set(project.localPackages)
-        for package in localPackages {
-            let path = project.basePath + Path(package).normalize()
-            try sourceGenerator.createLocalPackage(path: path)
+        let sortedlocalPackages = project.localPackages.sorted { $0.key < $1.key }
+        for (_, package) in sortedlocalPackages {
+            try sourceGenerator.createLocalPackage(path: Path(package.path))
         }
 
         let buildConfigs: [XCBuildConfiguration] = project.configs.map { config in
@@ -799,8 +798,12 @@ public class PBXProjGenerator {
                 }
             // Embedding handled by iterating over `carthageDependencies` below
             case .package(let product):
-                guard let packageReference = packageReferences[dependency.reference] else {
-                    return
+                let packageReference = packageReferences[dependency.reference]
+                
+                // If package's reference is none and there is no specified package in localPackages,
+                // then ignore the package specified as dependency.
+                if packageReference == nil, !project.localPackages.keys.contains(dependency.reference) {
+                    continue
                 }
 
                 let productName = product ?? dependency.reference
