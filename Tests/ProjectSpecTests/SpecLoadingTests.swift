@@ -1134,6 +1134,23 @@ class SpecLoadingTests: XCTestCase {
                 let parsedSpec = try getProjectSpec(dictionary)
                 try expect(parsedSpec) == project
             }
+            
+            $0.it("parses old local package format") {
+                let project = Project(name: "spm", packages: [
+                    "../XcodeGen": SwiftPackage(kind: .local(path: "../XcodeGen")),
+                    "Yams": SwiftPackage(kind: .local(path: "Yams"))
+                ], options: .init(localPackagesGroup: "MyPackages"))
+
+                let dictionary: [String: Any] = [
+                    "name": "spm",
+                    "options": [
+                        "localPackagesGroup": "MyPackages",
+                    ],
+                    "localPackages": ["../XcodeGen", "Yams"]
+                ]
+                let parsedSpec = try getProjectSpec(dictionary)
+                try expect(parsedSpec) == project
+            }
         }
     }
 
