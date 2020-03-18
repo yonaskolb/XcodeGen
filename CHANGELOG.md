@@ -3,6 +3,7 @@
 ## Next Version
 
 #### Added
+- Add support non-mirrored local Swift Packages in `packages`. [#808](https://github.com/yonaskolb/XcodeGen/pull/808) @freddi-kit
 - Add support non-mirrored local Swift Packages in `localPackages`. [#796](https://github.com/yonaskolb/XcodeGen/pull/796) @freddi-kit
 
 #### Fixed
