@@ -52,7 +52,7 @@ extension Project {
                 errors.append(.invalidFileGroup(fileGroup))
             }
         }
-        
+
         for (name, package) in packages {
             if case let .local(path) = package.kind, !(basePath + Path(path).normalize()).exists {
                 errors.append(.invalidLocalPackage(name))
