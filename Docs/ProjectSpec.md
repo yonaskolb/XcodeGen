@@ -907,7 +907,7 @@ targets:
 ```
 
 ## Local Swift Package
-Swift packages in local are also defined at a project level as `localPackages` instead of `packages` , and then linked to individual targets via a [Dependency](#dependency).
+Swift packages in local are also defined at a project level as `localPackages` like `packages` , and then linked to individual targets via a [Dependency](#dependency).
 
 > Note that Swift Packages don't work in projects with configurations other than `Debug` and `Release`. That limitation is tracked here bugs.swift.org/browse/SR-10927
 
