@@ -49,8 +49,8 @@ You can also use environment variables in your configuration file, by using `${S
 - [ ] **fileGroups**: **[String]** - A list of paths to add to the root of the project. These aren't files that will be included in your targets, but that you'd like to include in the project hierachy anyway. For example a folder of xcconfig files that aren't already added by any target sources, or a Readme file.
 - [ ] **schemes**: **[Scheme](#scheme)** - A list of schemes by name. This allows more control over what is found in [Target Scheme](#target-scheme)
 - [ ] **targetTemplates**: **[String: [Target Template](#target-template)]** - a list of targets that can be used as templates for actual targets which reference them via a `template` property. They can be used to extract common target settings. Works great in combination with `include`.
-- [ ] **packages**: **[String: [Swift Package](#swift-package)]** - a map of Swift packages by name
-- [ ] **localPackages**: **[String: [Local Swift Package](#local-swift-package)]** -  a map of local Swift packages by name. The paths must be directories with a `Package.swift` file in them. If same name remote repo is listed in `packages`, remote repo will be overridden to a local version in `localPackages` for development purposes. 
+- [ ] **packages**: **[String: [Swift Package](#swift-package)]** - a map of Swift packages by name. The paths must be directories with a `Package.swift` file if specified as local package by `path`.
+- [ ] **localPackages**: **[String: [Local Swift Package](#local-swift-package)]** -  a map of local Swift packages by name. This is same with local package at **packages** by `path`.  The paths must be directories with a `Package.swift` file in them. If same name remote repo is listed in `packages`, the repo will be overridden to a package in `localPackages` for development purposes. 
 - [ ] **projectReferences**: **[String: [Project Reference](#project-reference)]** - a map of project references by name
 
 ### Include
@@ -890,7 +890,7 @@ Swift packages are defined at a project level, and then linked to individual tar
   
 ### Local Package
 
-- [x] **path**: **String** - the url to the package in local
+- [x] **path**: **String** - the path to the package in local
 
 ```yml
 packages:
@@ -907,11 +907,11 @@ targets:
 ```
 
 ## Local Swift Package
-Swift packages in local are defined at a project level, and then linked to individual targets via a [Dependency](#dependency).
+Swift packages in local are also defined at a project level as `localPackages` instead of `packages` , and then linked to individual targets via a [Dependency](#dependency).
 
 > Note that Swift Packages don't work in projects with configurations other than `Debug` and `Release`. That limitation is tracked here bugs.swift.org/browse/SR-10927
 
-- [x] **path**: **String** - the url to the package in local
+- [x] **path**: **String** - the path to the package in local
 
 ```yml
 localPackages:
