@@ -63,7 +63,7 @@ class SourceGenerator {
         
         let absolutePath = project.basePath + path.normalize()
 
-        // Get local pakcage's relative path from generating project's root
+        // Get the local package's relative path from the project root
         let fileReferencePath = try? absolutePath.relativePath(from: projectDirectory ?? project.basePath).string
         
         let fileReference = addObject(

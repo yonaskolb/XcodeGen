@@ -992,7 +992,7 @@ class ProjectGeneratorTests: XCTestCase {
                     "XcodeGen": SwiftPackage(kind: .remote(url: "http://github.com/yonaskolb/XcodeGen", versionRequirement: .branch("master"))),
                     "Codability": SwiftPackage(kind: .remote(url: "http://github.com/yonaskolb/Codability", versionRequirement: .exact("1.0.0"))),
                     "Yams": SwiftPackage(kind: .local(path: "../Yams"))
-                ], localPackages: ["../XcodeGen" : LocalSwiftPackage(path: "../XcodeGen")], options: .init(localPackagesGroup: "MyPackages"))
+                ], localPackages: ["XcodeGen" : LocalSwiftPackage(path: "../XcodeGen")], options: .init(localPackagesGroup: "MyPackages"))
 
                 let pbxProject = try project.generatePbxProj(specValidate: false)
                 let nativeTarget = try unwrap(pbxProject.nativeTargets.first(where: { $0.name == app.name }))
