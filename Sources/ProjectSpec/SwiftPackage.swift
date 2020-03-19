@@ -21,12 +21,12 @@ public enum SwiftPackage: Equatable {
 extension SwiftPackage: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
-        if let url: String = jsonDictionary.json(atKeyPath: "url") {
+        if let path: String = jsonDictionary.json(atKeyPath: "path") {
+            self = .local(path: path)
+        } else {
             let versionRequirement: VersionRequirement = try VersionRequirement(jsonDictionary: jsonDictionary)
             try Self.validateVersion(versionRequirement: versionRequirement)
-            self = .remote(url: url, versionRequirement: versionRequirement)
-        } else {
-            self = .local(path: try jsonDictionary.json(atKeyPath: "path"))
+            self = .remote(url: try jsonDictionary.json(atKeyPath: "url"), versionRequirement: versionRequirement)
         }
     }
 
