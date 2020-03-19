@@ -160,7 +160,7 @@ public class PBXProjGenerator {
         }
 
         for (name, package) in project.packages {
-            switch package.kind {
+            switch package {
             case let .remote(url, versionRequirement):
                 let packageReference = XCRemoteSwiftPackageReference(repositoryURL: url, versionRequirement: versionRequirement)
                 packageReferences[name] = packageReference
@@ -597,7 +597,7 @@ public class PBXProjGenerator {
         var packageDependencies: [XCSwiftPackageProductDependency] = []
         var extensions: [PBXBuildFile] = []
         var carthageFrameworksToEmbed: [String] = []
-        var localPackageReferences: [String] = project.packages.compactMap { $0.value.kind.isLocal ? $0.key : nil }
+        var localPackageReferences: [String] = project.packages.compactMap { $0.value.isLocal ? $0.key : nil }
 
         let targetDependencies = (target.transitivelyLinkDependencies ?? project.options.transitivelyLinkDependencies) ?
             getAllDependenciesPlusTransitiveNeedingEmbedding(target: target) : target.dependencies

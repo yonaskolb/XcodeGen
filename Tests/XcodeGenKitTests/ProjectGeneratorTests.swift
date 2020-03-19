@@ -989,9 +989,9 @@ class ProjectGeneratorTests: XCTestCase {
                 )
 
                 let project = Project(name: "test", targets: [app], packages: [
-                    "XcodeGen": SwiftPackage(kind: .remote(url: "http://github.com/yonaskolb/XcodeGen", versionRequirement: .branch("master"))),
-                    "Codability": SwiftPackage(kind: .remote(url: "http://github.com/yonaskolb/Codability", versionRequirement: .exact("1.0.0"))),
-                    "Yams": SwiftPackage(kind: .local(path: "../Yams"))
+                    "XcodeGen": .remote(url: "http://github.com/yonaskolb/XcodeGen", versionRequirement: .branch("master")),
+                    "Codability": .remote(url: "http://github.com/yonaskolb/Codability", versionRequirement: .exact("1.0.0")),
+                    "Yams": .local(path: "../Yams")
                 ], options: .init(localPackagesGroup: "MyPackages"))
 
                 let pbxProject = try project.generatePbxProj(specValidate: false)
@@ -1025,7 +1025,7 @@ class ProjectGeneratorTests: XCTestCase {
                     ]
                 )
 
-                let project = Project(name: "test", targets: [app], packages: ["XcodeGen" : SwiftPackage(kind: .local(path: "../XcodeGen"))])
+                let project = Project(name: "test", targets: [app], packages: ["XcodeGen" : .local(path: "../XcodeGen")])
 
                 let pbxProject = try project.generatePbxProj(specValidate: false)
                 let nativeTarget = try unwrap(pbxProject.nativeTargets.first(where: { $0.name == app.name }))

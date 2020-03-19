@@ -97,7 +97,7 @@ class ProjectSpecTests: XCTestCase {
                 project.settings = invalidSettings
                 project.configFiles = ["invalidConfig": "invalidConfigFile"]
                 project.fileGroups = ["invalidFileGroup"]
-                project.packages = ["invalidLocalPackage" : SwiftPackage(kind: .local(path: "invalidLocalPackage"))]
+                project.packages = ["invalidLocalPackage" : .local(path: "invalidLocalPackage")]
                 project.settingGroups = ["settingGroup1": Settings(
                     configSettings: ["invalidSettingGroupConfig": [:]],
                     groups: ["invalidSettingGroupSettingGroup"]
@@ -516,11 +516,9 @@ class ProjectSpecTests: XCTestCase {
                                                                                                                  script: "bar",
                                                                                                                  settingsTarget: "foo")]))],
                                    packages: [
-                                       "Yams": SwiftPackage(
-                                            kind: .remote(
+                                       "Yams": .remote(
                                                 url: "https://github.com/jpsim/Yams",
                                                 versionRequirement: .upToNextMajorVersion("2.0.0")
-                                            )
                                        ),
                                    ],
                                    options: SpecOptions(minimumXcodeGenVersion: Version(major: 3, minor: 4, patch: 5),

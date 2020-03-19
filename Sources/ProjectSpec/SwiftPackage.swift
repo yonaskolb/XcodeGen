@@ -3,26 +3,18 @@ import XcodeProj
 import JSONUtilities
 import Version
 
-public struct SwiftPackage: Equatable {
+public enum SwiftPackage: Equatable {
 
     public typealias VersionRequirement = XCRemoteSwiftPackageReference.VersionRequirement
 
-    public enum Kind: Equatable {
-        case remote(url: String, versionRequirement: VersionRequirement)
-        case local(path: String)
-        
-        public var isLocal: Bool {
-            if case .local = self {
-                return true
-            }
-            return false
+    case remote(url: String, versionRequirement: VersionRequirement)
+    case local(path: String)
+    
+    public var isLocal: Bool {
+        if case .local = self {
+            return true
         }
-    }
-
-    public let kind: SwiftPackage.Kind
-
-    public init(kind: SwiftPackage.Kind) {
-        self.kind = kind
+        return false
     }
 }
 
@@ -32,9 +24,9 @@ extension SwiftPackage: JSONObjectConvertible {
         if let url: String = jsonDictionary.json(atKeyPath: "url") {
             let versionRequirement: VersionRequirement = try VersionRequirement(jsonDictionary: jsonDictionary)
             try Self.validateVersion(versionRequirement: versionRequirement)
-            kind = .remote(url: url, versionRequirement: versionRequirement)
+            self = .remote(url: url, versionRequirement: versionRequirement)
         } else {
-            kind = .local(path: try jsonDictionary.json(atKeyPath: "path"))
+            self = .local(path: try jsonDictionary.json(atKeyPath: "path"))
         }
     }
 
@@ -64,7 +56,7 @@ extension SwiftPackage: JSONEncodable {
 
     public func toJSONValue() -> Any {
         var dictionary: JSONDictionary = [:]
-        switch kind {
+        switch self {
         case .remote(let url, let versionRequirement):
             dictionary["url"] = url
 
