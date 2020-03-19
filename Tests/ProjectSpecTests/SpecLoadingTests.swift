@@ -1108,7 +1108,7 @@ class SpecLoadingTests: XCTestCase {
                     "package7": .remote(url: "package.git", versionRequirement: .exact("1.2.2")),
                     "package8": .remote(url: "package.git", versionRequirement: .upToNextMajorVersion("4.0.0-beta.5")),
                     "package9": .local(path: "package/package"),
-                    "package10": .local(path: "../XcodeGen")
+                    "../XcodeGen": .local(path: "../XcodeGen")
                 ], options: .init(localPackagesGroup: "MyPackages"))
 
                 let dictionary: [String: Any] = [
@@ -1127,9 +1127,7 @@ class SpecLoadingTests: XCTestCase {
                         "package8": ["url": "package.git", "majorVersion": "4.0.0-beta.5"],
                         "package9": ["path": "package/package"]
                     ],
-                    "localPackages": [
-                        "package10": ["path": "../XcodeGen"]
-                    ]
+                    "localPackages": ["../XcodeGen"]
                 ]
                 let parsedSpec = try getProjectSpec(dictionary)
                 try expect(parsedSpec) == project

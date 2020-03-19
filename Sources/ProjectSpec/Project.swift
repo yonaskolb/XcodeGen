@@ -184,9 +184,7 @@ extension Project {
         } else {
             packages = [:]
         }
-        if let localPackages: [String: SwiftPackage] = jsonDictionary.json(atKeyPath: "localPackages") {
-            packages.merge(localPackages)
-        } else if let localPackages: [String] = jsonDictionary.json(atKeyPath: "localPackages") {
+        if let localPackages: [String] = jsonDictionary.json(atKeyPath: "localPackages") {
             packages.merge(localPackages.reduce(into: [String: SwiftPackage](), { $0[$1] = .local(path: $1) }))
         }
         if jsonDictionary["options"] != nil {
