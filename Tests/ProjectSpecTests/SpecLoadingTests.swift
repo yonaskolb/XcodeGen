@@ -1108,7 +1108,7 @@ class SpecLoadingTests: XCTestCase {
                     "package7": .remote(url: "package.git", versionRequirement: .exact("1.2.2")),
                     "package8": .remote(url: "package.git", versionRequirement: .upToNextMajorVersion("4.0.0-beta.5")),
                     "package9": .local(path: "package/package"),
-                    "../XcodeGen": .local(path: "../XcodeGen")
+                    "XcodeGen": .local(path: "../XcodeGen")
                 ], options: .init(localPackagesGroup: "MyPackages"))
 
                 let dictionary: [String: Any] = [
@@ -1135,7 +1135,7 @@ class SpecLoadingTests: XCTestCase {
             
             $0.it("parses old local package format") {
                 let project = Project(name: "spm", packages: [
-                    "../XcodeGen": .local(path: "../XcodeGen"),
+                    "XcodeGen": .local(path: "../XcodeGen"),
                     "Yams": .local(path: "Yams")
                 ], options: .init(localPackagesGroup: "MyPackages"))
 
