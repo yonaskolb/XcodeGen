@@ -295,7 +295,10 @@ extension Scheme {
     public init(name: String, target: Target, targetScheme: TargetScheme, debugConfig: String, releaseConfig: String) {
         self.init(
             name: name,
-            build: .init(targets: [Scheme.BuildTarget(target: TargetReference.local(target.name))]),
+            build: .init(
+                targets: [Scheme.BuildTarget(target: TargetReference.local(target.name))],
+                buildImplicitDependencies: targetScheme.buildImplicitDependencies
+            ),
             run: .init(
                 config: debugConfig,
                 commandLineArguments: targetScheme.commandLineArguments,
