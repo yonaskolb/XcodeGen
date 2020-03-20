@@ -19,6 +19,7 @@ extension Project {
             configVariants: ["Test", "Staging", "Prod"],
             gatherCoverageData: true,
             disableMainThreadChecker: true,
+            stopOnEveryMainThreadCheckerIssue: false,
             commandLineArguments: [
                 "--command": true,
                 "--command2": false,

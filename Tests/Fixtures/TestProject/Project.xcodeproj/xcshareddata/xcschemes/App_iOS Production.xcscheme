@@ -86,7 +86,8 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES"
-      disableMainThreadChecker = "YES">
+      disableMainThreadChecker = "YES"
+      stopOnEveryMainThreadCheckerIssue = "YES">
       <BuildableProductRunnable
          runnableDebuggingMode = "0">
          <BuildableReference

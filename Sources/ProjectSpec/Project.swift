@@ -20,7 +20,7 @@ public struct Project: BuildSettingsContainer {
     }
 
     public var packages: [String: SwiftPackage]
-    public var localPackages: [String]
+    public var localPackages: [String: LocalSwiftPackage]
 
     public var settings: Settings
     public var settingGroups: [String: Settings]
@@ -51,7 +51,7 @@ public struct Project: BuildSettingsContainer {
         settingGroups: [String: Settings] = [:],
         schemes: [Scheme] = [],
         packages: [String: SwiftPackage] = [:],
-        localPackages: [String] = [],
+        localPackages: [String: LocalSwiftPackage] = [:],
         options: SpecOptions = SpecOptions(),
         fileGroups: [String] = [],
         configFiles: [String: String] = [:],
@@ -188,7 +188,13 @@ extension Project {
         } else {
             packages = [:]
         }
-        localPackages = jsonDictionary.json(atKeyPath: "localPackages") ?? []
+        if let localPackages: [String: LocalSwiftPackage] = jsonDictionary.json(atKeyPath: "localPackages") {
+            self.localPackages = localPackages
+        } else if let localPackages: [String] = jsonDictionary.json(atKeyPath: "localPackages") {
+            self.localPackages = localPackages.reduce(into: [String: LocalSwiftPackage](), { $0[$1] = LocalSwiftPackage(path: $1) })
+        } else {
+            self.localPackages = [:]
+        }
         if jsonDictionary["options"] != nil {
             options = try jsonDictionary.json(atKeyPath: "options")
         } else {
@@ -285,7 +291,7 @@ extension Project: JSONEncodable {
         dictionary["include"] = include
         dictionary["attributes"] = attributes
         dictionary["packages"] = packages.mapValues { $0.toJSONValue() }
-        dictionary["localPackages"] = localPackages
+        dictionary["localPackages"] = localPackages.mapValues { $0.toJSONValue() }
         dictionary["targets"] = Dictionary(uniqueKeysWithValues: targetPairs)
         dictionary["configs"] = Dictionary(uniqueKeysWithValues: configsPairs)
         dictionary["aggregateTargets"] = Dictionary(uniqueKeysWithValues: aggregateTargetsPairs)

@@ -127,11 +127,13 @@
 			dependencies = (
 				D85FFB99444DD260A72DDDA7 /* PBXTargetDependency */,
 				DDD17C561AD5065DF4FA4072 /* PBXTargetDependency */,
+				C6360997FFC102F6725099D4 /* PBXTargetDependency */,
 			);
 			name = StaticLibrary;
 			packageProductDependencies = (
 				AF233B61592982A7F6431FC6 /* Codability */,
 				C816AEB28ED71C3C47F31B98 /* SwiftRoaringDynamic */,
+				5A36E2FE69703FCAC0BE8064 /* XcodeGen */,
 			);
 			productName = StaticLibrary;
 			productReference = 3F7AFEF8ECCC678519EA643C /* StaticLibrary.a */;
@@ -246,6 +248,10 @@
 			isa = PBXTargetDependency;
 			target = 3F8D94C4EFC431F646AAFB28 /* StaticLibrary */;
 			targetProxy = 29147E1DDAEB1AAC20CB0CF9 /* PBXContainerItemProxy */;
+		};
+		C6360997FFC102F6725099D4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 5A36E2FE69703FCAC0BE8064 /* XcodeGen */;
 		};
 		D85FFB99444DD260A72DDDA7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -488,6 +494,10 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 5BA91390AE78D2EE15C60091 /* XCRemoteSwiftPackageReference "Codability" */;
 			productName = Codability;
+		};
+		5A36E2FE69703FCAC0BE8064 /* XcodeGen */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = XcodeGen;
 		};
 		AF233B61592982A7F6431FC6 /* Codability */ = {
 			isa = XCSwiftPackageProductDependency;
