@@ -8,6 +8,7 @@
 #### Fixed
 - Fixed resolving path to local Swift Packages [#796](https://github.com/yonaskolb/XcodeGen/pull/796) @freddi-kit
 - Added ability to stop on every main thread checker issue on Run schemes and TargetSchemes [#799](https://github.com/yonaskolb/XcodeGen/pull/799) @ionutivan
+- Fixed occasional build settings override for configs with partially matching names [#812](https://github.com/yonaskolb/XcodeGen/pull/812) @tralf
 
 ## 2.14.0
 
