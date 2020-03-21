@@ -81,7 +81,7 @@ extension Project {
         buildSettings += settings.buildSettings
 
         for (configVariant, settings) in settings.configSettings {
-            let isPartialMatch = config.name.lowercased().contains(configVariant.lowercased())
+            let isPartialMatch = config.name.lowercased().split(separator: " ").contains(Substring(configVariant.lowercased()))
             if isPartialMatch {
                 let exactConfig = getConfig(configVariant)
                 let matchesExactlyToOtherConfig = exactConfig != nil && exactConfig?.name != config.name

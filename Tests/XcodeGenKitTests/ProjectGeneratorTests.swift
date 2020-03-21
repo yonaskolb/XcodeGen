@@ -223,6 +223,33 @@ class ProjectGeneratorTests: XCTestCase {
                 try expect(buildSettings["SETTING3"]).beNil()
             }
 
+            $0.it("doesn't mix up config settings for partially matching names") {
+                let project = Project(
+                    name: "test",
+                    configs: [
+                        Config(name: "Rod Release", type: .release),
+                        Config(name: "Prod Release", type: .release),
+                        Config(name: "Preprod Release", type: .release),
+                    ],
+                    settings: Settings(configSettings: [
+                        "Prod": ["SETTING1": "VALUE2"],
+                        "Rod": ["SETTING1": "VALUE1"],
+                        "Preprod": ["SETTING1": "VALUE3"],
+                    ])
+                )
+
+                var buildSettings = project.getProjectBuildSettings(config: project.configs[0])
+                try expect(buildSettings["SETTING1"] as? String) == "VALUE1"
+
+                // Rod settings shouldn't override Prod
+                buildSettings = project.getProjectBuildSettings(config: project.configs[1])
+                try expect(buildSettings["SETTING1"] as? String) == "VALUE2"
+
+                // Prod or Rod settings shouldn't override Preprod
+                buildSettings = project.getProjectBuildSettings(config: project.configs[2])
+                try expect(buildSettings["SETTING1"] as? String) == "VALUE3"
+            }
+
             $0.it("sets project SDKROOT if there is only a single platform") {
                 var project = Project(
                     name: "test",
