@@ -4,6 +4,7 @@
 
 #### Added
 - Add support for local Swift Packages in `packages`. [#808](https://github.com/yonaskolb/XcodeGen/pull/808) @freddi-kit
+- Add buildImplicitDependencies as an option on TargetScheme. [#810](https://github.com/yonaskolb/XcodeGen/pull/810) @evandcoleman
 
 #### Fixed
 - Fixed resolving path to local Swift Packages [#796](https://github.com/yonaskolb/XcodeGen/pull/796) @freddi-kit
