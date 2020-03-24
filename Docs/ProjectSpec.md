@@ -889,7 +889,7 @@ Swift packages are defined at a project level, and then linked to individual tar
   
 ### Local Package
 
-- [x] **path**: **String** - the path to the package in local. The path must be directory with a `Package.swift` file if specified as local package by `path`.
+- [x] **path**: **String** - the path to the package in local. The path must be directory with a `Package.swift`.
 
 ```yml
 packages:
