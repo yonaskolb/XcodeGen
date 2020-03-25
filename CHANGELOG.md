@@ -2,14 +2,18 @@
 
 ## Next Version
 
+## 2.15.0
+
 #### Added
-- Add support for local Swift Packages in `packages`. [#808](https://github.com/yonaskolb/XcodeGen/pull/808) @freddi-kit
-- Add buildImplicitDependencies as an option on TargetScheme. [#810](https://github.com/yonaskolb/XcodeGen/pull/810) @evandcoleman
+- Add support for local Swift Packages in `packages` using `path`. [#808](https://github.com/yonaskolb/XcodeGen/pull/808) @freddi-kit
+- Add `buildImplicitDependencies` as an option on `TargetScheme`. [#810](https://github.com/yonaskolb/XcodeGen/pull/810) @evandcoleman
 
 #### Fixed
 - Fixed resolving path to local Swift Packages [#796](https://github.com/yonaskolb/XcodeGen/pull/796) @freddi-kit
 - Added ability to stop on every main thread checker issue on Run schemes and TargetSchemes [#799](https://github.com/yonaskolb/XcodeGen/pull/799) @ionutivan
 - Avoid copying ObjC interface header when SWIFT_INSTALL_OBJC_HEADER=false. [#805](https://github.com/yonaskolb/XcodeGen/pull/805) @kateinoigakukun
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.14.0...2.15.0)
 
 ## 2.14.0
 
