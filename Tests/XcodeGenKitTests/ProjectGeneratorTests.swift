@@ -822,11 +822,19 @@ class ProjectGeneratorTests: XCTestCase {
                     sources: [TargetSource(path: "StaticLibrary_Swift/StaticLibrary.swift")],
                     dependencies: []
                 )
-                let swiftStaticLibraryWithoutHeader = Target(
-                    name: "swiftStaticLibraryWithoutHeader",
+                let swiftStaticLibraryWithoutHeader1 = Target(
+                    name: "swiftStaticLibraryWithoutHeader1",
                     type: .staticLibrary,
                     platform: .iOS,
                     settings: Settings(buildSettings: ["SWIFT_OBJC_INTERFACE_HEADER_NAME": ""]),
+                    sources: [TargetSource(path: "StaticLibrary_Swift/StaticLibrary.swift")],
+                    dependencies: []
+                )
+                let swiftStaticLibraryWithoutHeader2 = Target(
+                    name: "swiftStaticLibraryWithoutHeader2",
+                    type: .staticLibrary,
+                    platform: .iOS,
+                    settings: Settings(buildSettings: ["SWIFT_INSTALL_OBJC_HEADER": false]),
                     sources: [TargetSource(path: "StaticLibrary_Swift/StaticLibrary.swift")],
                     dependencies: []
                 )
@@ -838,7 +846,7 @@ class ProjectGeneratorTests: XCTestCase {
                     dependencies: []
                 )
 
-                let targets = [swiftStaticLibraryWithHeader, swiftStaticLibraryWithoutHeader, objCStaticLibrary]
+                let targets = [swiftStaticLibraryWithHeader, swiftStaticLibraryWithoutHeader1, swiftStaticLibraryWithoutHeader2, objCStaticLibrary]
 
                 let project = Project(
                     basePath: fixturePath + "TestProject",
@@ -866,7 +874,8 @@ class ProjectGeneratorTests: XCTestCase {
                 )
 
                 try expect(scriptBuildPhases(target: swiftStaticLibraryWithHeader)) == [expectedScriptPhase]
-                try expect(scriptBuildPhases(target: swiftStaticLibraryWithoutHeader)) == []
+                try expect(scriptBuildPhases(target: swiftStaticLibraryWithoutHeader1)) == []
+                try expect(scriptBuildPhases(target: swiftStaticLibraryWithoutHeader2)) == []
                 try expect(scriptBuildPhases(target: objCStaticLibrary)) == []
             }
 

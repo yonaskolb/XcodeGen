@@ -944,9 +944,11 @@ public class PBXProjGenerator {
         }
 
         let swiftObjCInterfaceHeader = project.getCombinedBuildSetting("SWIFT_OBJC_INTERFACE_HEADER_NAME", target: target, config: project.configs[0]) as? String
+        let swiftInstallObjCHeader = project.getCombinedBuildSetting("SWIFT_INSTALL_OBJC_HEADER", target: target, config: project.configs[0]) as? Bool
 
         if target.type == .staticLibrary
             && swiftObjCInterfaceHeader != ""
+            && swiftInstallObjCHeader != false
             && sourceFiles.contains(where: { $0.buildPhase == .sources && $0.path.extension == "swift" }) {
 
             let inputPaths = ["$(DERIVED_SOURCES_DIR)/$(SWIFT_OBJC_INTERFACE_HEADER_NAME)"]

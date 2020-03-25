@@ -9,6 +9,7 @@
 #### Fixed
 - Fixed resolving path to local Swift Packages [#796](https://github.com/yonaskolb/XcodeGen/pull/796) @freddi-kit
 - Added ability to stop on every main thread checker issue on Run schemes and TargetSchemes [#799](https://github.com/yonaskolb/XcodeGen/pull/799) @ionutivan
+- Avoid copying ObjC interface header when SWIFT_INSTALL_OBJC_HEADER=false. [#805](https://github.com/yonaskolb/XcodeGen/pull/805) @kateinoigakukun
 
 ## 2.14.0
 
