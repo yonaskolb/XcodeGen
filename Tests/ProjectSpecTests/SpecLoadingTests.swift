@@ -1099,17 +1099,17 @@ class SpecLoadingTests: XCTestCase {
 
             $0.it("parses packages") {
                 let project = Project(name: "spm", packages: [
-                    "package1": SwiftPackage(url: "package.git", versionRequirement: .exact("1.2.2")),
-                    "package2": SwiftPackage(url: "package.git", versionRequirement: .upToNextMajorVersion("1.2.2")),
-                    "package3": SwiftPackage(url: "package.git", versionRequirement: .upToNextMinorVersion("1.2.2")),
-                    "package4": SwiftPackage(url: "package.git", versionRequirement: .branch("master")),
-                    "package5": SwiftPackage(url: "package.git", versionRequirement: .revision("x")),
-                    "package6": SwiftPackage(url: "package.git", versionRequirement: .range(from: "1.2.0", to: "1.2.5")),
-                    "package7": SwiftPackage(url: "package.git", versionRequirement: .exact("1.2.2")),
-                    "package8": SwiftPackage(url: "package.git", versionRequirement: .upToNextMajorVersion("4.0.0-beta.5")),
-                ],
-                                      localPackages: ["../../Package" : LocalSwiftPackage(path: "../../Package")],
-                                      options: .init(localPackagesGroup: "MyPackages"))
+                    "package1": .remote(url: "package.git", versionRequirement: .exact("1.2.2")),
+                    "package2": .remote(url: "package.git", versionRequirement: .upToNextMajorVersion("1.2.2")),
+                    "package3": .remote(url: "package.git", versionRequirement: .upToNextMinorVersion("1.2.2")),
+                    "package4": .remote(url: "package.git", versionRequirement: .branch("master")),
+                    "package5": .remote(url: "package.git", versionRequirement: .revision("x")),
+                    "package6": .remote(url: "package.git", versionRequirement: .range(from: "1.2.0", to: "1.2.5")),
+                    "package7": .remote(url: "package.git", versionRequirement: .exact("1.2.2")),
+                    "package8": .remote(url: "package.git", versionRequirement: .upToNextMajorVersion("4.0.0-beta.5")),
+                    "package9": .local(path: "package/package"),
+                    "XcodeGen": .local(path: "../XcodeGen")
+                ], options: .init(localPackagesGroup: "MyPackages"))
 
                 let dictionary: [String: Any] = [
                     "name": "spm",
@@ -1125,8 +1125,26 @@ class SpecLoadingTests: XCTestCase {
                         "package6": ["url": "package.git", "minVersion": "1.2.0", "maxVersion": "1.2.5"],
                         "package7": ["url": "package.git", "version": "1.2.2"],
                         "package8": ["url": "package.git", "majorVersion": "4.0.0-beta.5"],
+                        "package9": ["path": "package/package"]
                     ],
-                    "localPackages": ["../../Package"],
+                    "localPackages": ["../XcodeGen"]
+                ]
+                let parsedSpec = try getProjectSpec(dictionary)
+                try expect(parsedSpec) == project
+            }
+            
+            $0.it("parses old local package format") {
+                let project = Project(name: "spm", packages: [
+                    "XcodeGen": .local(path: "../XcodeGen"),
+                    "Yams": .local(path: "Yams")
+                ], options: .init(localPackagesGroup: "MyPackages"))
+
+                let dictionary: [String: Any] = [
+                    "name": "spm",
+                    "options": [
+                        "localPackagesGroup": "MyPackages",
+                    ],
+                    "localPackages": ["../XcodeGen", "Yams"]
                 ]
                 let parsedSpec = try getProjectSpec(dictionary)
                 try expect(parsedSpec) == project

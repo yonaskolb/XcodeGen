@@ -25,7 +25,6 @@
 - [Scheme](#scheme)
   - [Scheme Template](#scheme-template)
 - [Swift Package](#swift-package)
-- [Local Swift Package](#local-swift-package)
 
 ## General
 
@@ -49,8 +48,7 @@ You can also use environment variables in your configuration file, by using `${S
 - [ ] **fileGroups**: **[String]** - A list of paths to add to the root of the project. These aren't files that will be included in your targets, but that you'd like to include in the project hierachy anyway. For example a folder of xcconfig files that aren't already added by any target sources, or a Readme file.
 - [ ] **schemes**: **[Scheme](#scheme)** - A list of schemes by name. This allows more control over what is found in [Target Scheme](#target-scheme)
 - [ ] **targetTemplates**: **[String: [Target Template](#target-template)]** - a list of targets that can be used as templates for actual targets which reference them via a `template` property. They can be used to extract common target settings. Works great in combination with `include`.
-- [ ] **packages**: **[String: [Swift Package](#swift-package)]** - a map of Swift packages by name
-- [ ] **localPackages**: **[String: [Local Swift Package](#local-swift-package)]** -  a map of local Swift packages by name. The paths must be directories with a `Package.swift` file in them. If same name remote repo is listed in `packages`, remote repo will be overridden to a local version in `localPackages` for development purposes. 
+- [ ] **packages**: **[String: [Swift Package](#swift-package)]** - a map of Swift packages by name.
 - [ ] **projectReferences**: **[String: [Project Reference](#project-reference)]** - a map of project references by name
 
 ### Include
@@ -878,6 +876,8 @@ Swift packages are defined at a project level, and then linked to individual tar
 
 > Note that Swift Packages don't work in projects with configurations other than `Debug` and `Release`. That limitation is tracked here bugs.swift.org/browse/SR-10927
 
+### Remote Package
+
 - [x] **url**: **URL** - the url to the package
 - [x] **version**: **String** - the version of the package to use. It can take a few forms:
   - `majorVersion: 1.2.0` or `from: 1.2.0`
@@ -886,35 +886,24 @@ Swift packages are defined at a project level, and then linked to individual tar
   - `minVersion: 1.0.0, maxVersion: 1.2.9`
   - `branch: master`
   - `revision: xxxxxx`
+  
+### Local Package
+
+- [x] **path**: **String** - the path to the package in local. The path must be directory with a `Package.swift`.
 
 ```yml
 packages:
   Yams:
     url: https://github.com/jpsim/Yams
     from: 2.0.0
+  RxClient:
+    path: ../RxClient
 targets:
   App:
     dependencies:
       - package: Yams
-```
-
-## Local Swift Package
-Swift packages in local are defined at a project level, and then linked to individual targets via a [Dependency](#dependency).
-
-> Note that Swift Packages don't work in projects with configurations other than `Debug` and `Release`. That limitation is tracked here bugs.swift.org/browse/SR-10927
-
-- [x] **path**: **String** - the url to the package in local
-
-```yml
-localPackages:
-  RxClient:
-    path: Packages/RxClient
-targets:
-  App:
-    dependencies:
       - package: RxClient
 ```
-
 
 ## Project Reference
 

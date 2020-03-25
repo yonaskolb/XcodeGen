@@ -6,7 +6,6 @@ packages:
   SwiftRoaring:
     url: https://github.com/piotte13/SwiftRoaring
     majorVersion: 1.0.4
-localPackages:
   XcodeGen: 
     path: ../../.. #XcodeGen itself
 targets:

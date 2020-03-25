@@ -55,12 +55,7 @@ public class PBXProjGenerator {
         for group in project.fileGroups {
             try sourceGenerator.getFileGroups(path: group)
         }
-
-        let sortedlocalPackages = project.localPackages.sorted { $0.key < $1.key }
-        for (_, package) in sortedlocalPackages {
-            try sourceGenerator.createLocalPackage(path: Path(package.path))
-        }
-
+        
         let buildConfigs: [XCBuildConfiguration] = project.configs.map { config in
             let buildSettings = project.getProjectBuildSettings(config: config)
             var baseConfiguration: PBXFileReference?
@@ -165,9 +160,14 @@ public class PBXProjGenerator {
         }
 
         for (name, package) in project.packages {
-            let packageReference = XCRemoteSwiftPackageReference(repositoryURL: package.url, versionRequirement: package.versionRequirement)
-            packageReferences[name] = packageReference
-            addObject(packageReference)
+            switch package {
+            case let .remote(url, versionRequirement):
+                let packageReference = XCRemoteSwiftPackageReference(repositoryURL: url, versionRequirement: versionRequirement)
+                packageReferences[name] = packageReference
+                addObject(packageReference)
+            case let .local(path):
+                try sourceGenerator.createLocalPackage(path: Path(path))
+            }
         }
 
         let productGroup = addObject(
@@ -597,6 +597,7 @@ public class PBXProjGenerator {
         var packageDependencies: [XCSwiftPackageProductDependency] = []
         var extensions: [PBXBuildFile] = []
         var carthageFrameworksToEmbed: [String] = []
+        var localPackageReferences: [String] = project.packages.compactMap { $0.value.isLocal ? $0.key : nil }
 
         let targetDependencies = (target.transitivelyLinkDependencies ?? project.options.transitivelyLinkDependencies) ?
             getAllDependenciesPlusTransitiveNeedingEmbedding(target: target) : target.dependencies
@@ -802,7 +803,7 @@ public class PBXProjGenerator {
                 
                 // If package's reference is none and there is no specified package in localPackages,
                 // then ignore the package specified as dependency.
-                if packageReference == nil, !project.localPackages.keys.contains(dependency.reference) {
+                if packageReference == nil, !localPackageReferences.contains(dependency.reference) {
                     continue
                 }
 

@@ -3,28 +3,34 @@ import XcodeProj
 import JSONUtilities
 import Version
 
-public struct SwiftPackage: Equatable {
+public enum SwiftPackage: Equatable {
 
     public typealias VersionRequirement = XCRemoteSwiftPackageReference.VersionRequirement
 
-    public let url: String
-    public let versionRequirement: VersionRequirement
-
-    public init(url: String, versionRequirement: VersionRequirement) {
-        self.url = url
-        self.versionRequirement = versionRequirement
+    case remote(url: String, versionRequirement: VersionRequirement)
+    case local(path: String)
+    
+    public var isLocal: Bool {
+        if case .local = self {
+            return true
+        }
+        return false
     }
 }
 
 extension SwiftPackage: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
-        url = try jsonDictionary.json(atKeyPath: "url")
-        versionRequirement = try VersionRequirement(jsonDictionary: jsonDictionary)
-        try validateVersion()
+        if let path: String = jsonDictionary.json(atKeyPath: "path") {
+            self = .local(path: path)
+        } else {
+            let versionRequirement: VersionRequirement = try VersionRequirement(jsonDictionary: jsonDictionary)
+            try Self.validateVersion(versionRequirement: versionRequirement)
+            self = .remote(url: try jsonDictionary.json(atKeyPath: "url"), versionRequirement: versionRequirement)
+        }
     }
 
-    private func validateVersion() throws {
+    private static func validateVersion(versionRequirement: VersionRequirement) throws {
         switch versionRequirement {
 
         case .upToNextMajorVersion(let version):
@@ -50,24 +56,31 @@ extension SwiftPackage: JSONEncodable {
 
     public func toJSONValue() -> Any {
         var dictionary: JSONDictionary = [:]
-        dictionary["url"] = url
+        switch self {
+        case .remote(let url, let versionRequirement):
+            dictionary["url"] = url
 
-        switch versionRequirement {
+            switch versionRequirement {
 
-        case .upToNextMajorVersion(let version):
-            dictionary["majorVersion"] = version
-        case .upToNextMinorVersion(let version):
-            dictionary["minorVersion"] = version
-        case .range(let from, let to):
-            dictionary["minVersion"] = from
-            dictionary["maxVersion"] = to
-        case .exact(let version):
-            dictionary["exactVersion"] = version
-        case .branch(let branch):
-            dictionary["branch"] = branch
-        case .revision(let revision):
-            dictionary["revision"] = revision
+            case .upToNextMajorVersion(let version):
+                dictionary["majorVersion"] = version
+            case .upToNextMinorVersion(let version):
+                dictionary["minorVersion"] = version
+            case .range(let from, let to):
+                dictionary["minVersion"] = from
+                dictionary["maxVersion"] = to
+            case .exact(let version):
+                dictionary["exactVersion"] = version
+            case .branch(let branch):
+                dictionary["branch"] = branch
+            case .revision(let revision):
+                dictionary["revision"] = revision
+            }
+            return dictionary
+        case .local(let path):
+            dictionary["path"] = path
         }
+        
         return dictionary
     }
 }
