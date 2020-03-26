@@ -57,14 +57,15 @@ public class SchemeGenerator {
                     let debugConfig = suitableConfig(for: .debug, in: project)
                     let releaseConfig = suitableConfig(for: .release, in: project)
 
-                    let scheme = Scheme.init(
+                    let scheme = Scheme(
                         name: schemeName,
                         target: target,
                         targetScheme: targetScheme,
+                        project: project,
                         debugConfig: debugConfig.name,
                         releaseConfig: releaseConfig.name
                     )
-                    let xcscheme = try generateScheme(scheme)
+                    let xcscheme = try generateScheme(scheme, for: target)
                     xcschemes.append(xcscheme)
                 } else {
                     for configVariant in targetScheme.configVariants {
@@ -80,10 +81,11 @@ public class SchemeGenerator {
                             name: schemeName,
                             target: target,
                             targetScheme: targetScheme,
+                            project: project,
                             debugConfig: debugConfig.name,
                             releaseConfig: releaseConfig.name
                         )
-                        let xcscheme = try generateScheme(scheme)
+                        let xcscheme = try generateScheme(scheme, for: target)
                         xcschemes.append(xcscheme)
                     }
                 }
@@ -93,7 +95,7 @@ public class SchemeGenerator {
         return xcschemes
     }
 
-    public func generateScheme(_ scheme: Scheme) throws -> XCScheme {
+    public func generateScheme(_ scheme: Scheme, for target: Target? = nil) throws -> XCScheme {
 
         func getBuildableReference(_ target: TargetReference) throws -> XCScheme.BuildableReference {
             let pbxProj: PBXProj
@@ -159,11 +161,11 @@ public class SchemeGenerator {
             return XCScheme.ExecutionAction(scriptText: action.script, title: action.name, environmentBuildable: environmentBuildable)
         }
 
-        let target = project.getTarget(scheme.build.targets.first!.target.name)
-        let shouldExecuteOnLaunch = target?.type.isExecutable == true
+        let schemeTarget = target ?? project.getTarget(scheme.build.targets.first!.target.name)
+        let shouldExecuteOnLaunch = schemeTarget?.type.isExecutable == true
 
         let buildableReference = buildActionEntries.first!.buildableReference
-        let productRunable = XCScheme.BuildableProductRunnable(buildableReference: buildableReference)
+        let runnables = makeProductRunnables(for: schemeTarget, buildableReference: buildableReference)
 
         let buildAction = XCScheme.BuildAction(
             buildActionEntries: buildActionEntries,
@@ -225,7 +227,7 @@ public class SchemeGenerator {
             locationScenarioReference = XCScheme.LocationScenarioReference(identifier: identifier, referenceType: referenceType.rawValue)
         }
         let launchAction = XCScheme.LaunchAction(
-            runnable: shouldExecuteOnLaunch ? productRunable : nil,
+            runnable: shouldExecuteOnLaunch ? runnables.launch : nil,
             buildConfiguration: scheme.run?.config ?? defaultDebugConfig.name,
             preActions: scheme.run?.preActions.map(getExecutionAction) ?? [],
             postActions: scheme.run?.postActions.map(getExecutionAction) ?? [],
@@ -243,7 +245,7 @@ public class SchemeGenerator {
         )
 
         let profileAction = XCScheme.ProfileAction(
-            buildableProductRunnable: productRunable,
+            buildableProductRunnable: runnables.profile,
             buildConfiguration: scheme.profile?.config ?? defaultReleaseConfig.name,
             preActions: scheme.profile?.preActions.map(getExecutionAction) ?? [],
             postActions: scheme.profile?.postActions.map(getExecutionAction) ?? [],
@@ -274,6 +276,20 @@ public class SchemeGenerator {
             archiveAction: archiveAction
         )
     }
+
+    private func makeProductRunnables(for target: Target?, buildableReference: XCScheme.BuildableReference) -> (launch: XCScheme.Runnable, profile: XCScheme.BuildableProductRunnable) {
+        let buildable = XCScheme.BuildableProductRunnable(buildableReference: buildableReference)
+        if target?.type.isWatchApp == true {
+            let remote = XCScheme.RemoteRunnable(
+                buildableReference: buildableReference,
+                bundleIdentifier: "com.apple.Carousel",
+                runnableDebuggingMode: "2"
+            )
+            return (remote, buildable)
+        } else {
+            return (buildable, buildable)
+        }
+    }
 }
 
 enum SchemeGenerationError: Error, CustomStringConvertible {
@@ -292,11 +308,11 @@ enum SchemeGenerationError: Error, CustomStringConvertible {
 }
 
 extension Scheme {
-    public init(name: String, target: Target, targetScheme: TargetScheme, debugConfig: String, releaseConfig: String) {
+    public init(name: String, target: Target, targetScheme: TargetScheme, project: Project, debugConfig: String, releaseConfig: String) {
         self.init(
             name: name,
             build: .init(
-                targets: [Scheme.BuildTarget(target: TargetReference.local(target.name))],
+                targets: Scheme.buildTargets(for: target, project: project),
                 buildImplicitDependencies: targetScheme.buildImplicitDependencies
             ),
             run: .init(
@@ -338,5 +354,31 @@ extension Scheme {
                 postActions: targetScheme.postActions
             )
         )
+    }
+
+    private static func buildTargets(for target: Target, project: Project) -> [BuildTarget] {
+        let buildTarget = Scheme.BuildTarget(target: TargetReference.local(target.name))
+        switch target.type {
+        case .watchApp, .watch2App:
+            let hostTarget = project.targets
+                .first { projectTarget in
+                    projectTarget.dependencies.contains { $0.reference == target.name }
+                }
+                .map { BuildTarget(target: TargetReference.local($0.name)) }
+            return hostTarget.map { [buildTarget, $0] } ?? [buildTarget]
+        default:
+            return [buildTarget]
+        }
+    }
+}
+
+extension PBXProductType {
+    var isWatchApp: Bool {
+        switch self {
+        case .watchApp, .watch2App:
+            return true
+        default:
+            return false
+        }
     }
 }

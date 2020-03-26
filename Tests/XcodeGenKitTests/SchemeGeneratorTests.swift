@@ -336,6 +336,61 @@ class SchemeGeneratorTests: XCTestCase {
                 try expect(buildableReference?.blueprintName) == "ExternalTarget"
                 try expect(buildableReference?.referencedContainer) == "container:\(externalProject.string)"
             }
+
+            $0.it("generates scheme with buildable product runnable for ios app target") {
+                let app = Target(
+                    name: "MyApp",
+                    type: .application,
+                    platform: .iOS,
+                    scheme: TargetScheme()
+                )
+                let project = Project(name: "ios_test", targets: [app])
+                let xcodeProject = try project.generateXcodeProject()
+                let xcscheme = try unwrap(xcodeProject.sharedData?.schemes.first)
+                try expect(xcscheme.launchAction?.runnable).beOfType(XCScheme.BuildableProductRunnable.self)
+            }
+
+            $0.it("generates scheme with remote runnable for watch app target") {
+                let xcscheme = try self.makeWatchScheme(appType: .watch2App, extensionType: .watch2Extension)
+                try expect(xcscheme.launchAction?.runnable).beOfType(XCScheme.RemoteRunnable.self)
+            }
+
+            $0.it("generates scheme with host target build action for watch") {
+                let xcscheme = try self.makeWatchScheme(appType: .watch2App, extensionType: .watch2Extension)
+                let buildEntries = xcscheme.buildAction?.buildActionEntries ?? []
+                try expect(buildEntries.count) == 2
+                try expect(buildEntries.first?.buildableReference.blueprintName) == "WatchApp"
+                try expect(buildEntries.last?.buildableReference.blueprintName) == "HostApp"
+            }
         }
+    }
+
+    // MARK: - Helpers
+
+    private func makeWatchScheme(appType: PBXProductType, extensionType: PBXProductType) throws -> XCScheme {
+        let watchExtension = Target(
+            name: "WatchExtension",
+            type: extensionType,
+            platform: .watchOS
+        )
+        let watchApp = Target(
+            name: "WatchApp",
+            type: appType,
+            platform: .watchOS,
+            dependencies: [Dependency(type: .target, reference: watchExtension.name)],
+            scheme: TargetScheme()
+        )
+        let hostApp = Target(
+            name: "HostApp",
+            type: .application,
+            platform: .iOS,
+            dependencies: [Dependency(type: .target, reference: watchApp.name)]
+        )
+        let project = Project(
+            name: "watch_test",
+            targets: [hostApp, watchApp, watchExtension]
+        )
+        let xcodeProject = try project.generateXcodeProject()
+        return try unwrap(xcodeProject.sharedData?.schemes.first)
     }
 }
