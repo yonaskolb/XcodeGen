@@ -337,7 +337,20 @@ class SchemeGeneratorTests: XCTestCase {
                 try expect(buildableReference?.referencedContainer) == "container:\(externalProject.string)"
             }
 
-            $0.it("generates scheme with remote runnable for watch") {
+            $0.it("generates scheme with buildable product runnable for ios app target") {
+                let app = Target(
+                    name: "MyApp",
+                    type: .application,
+                    platform: .iOS,
+                    scheme: TargetScheme()
+                )
+                let project = Project(name: "ios_test", targets: [app])
+                let xcodeProject = try project.generateXcodeProject()
+                let xcscheme = try unwrap(xcodeProject.sharedData?.schemes.first)
+                try expect(xcscheme.launchAction?.runnable).beOfType(XCScheme.BuildableProductRunnable.self)
+            }
+
+            $0.it("generates scheme with remote runnable for watch app target") {
                 let xcscheme = try self.makeWatchScheme(appType: .watch2App, extensionType: .watch2Extension)
                 try expect(xcscheme.launchAction?.runnable).beOfType(XCScheme.RemoteRunnable.self)
             }
