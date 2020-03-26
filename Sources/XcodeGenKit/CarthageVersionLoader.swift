@@ -11,21 +11,16 @@ import ProjectSpec
 
 class Mutex<T> {
     var value: T
-    //var mutex: pthread_mutex_t = pthread_mutex_t()
     var semaphore: DispatchSemaphore = DispatchSemaphore(value: 1)
+
     init(_ value: T) {
         self.value = value
-        //pthread_mutex_init(&mutex, nil)
     }
 
     func get<U>(closure: (inout T) throws -> (U)) rethrows -> U {
         semaphore.wait()
         defer { semaphore.signal() }
-        //pthread_mutex_lock(&mutex)
-        //defer { pthread_mutex_unlock(&mutex) }
-        let newValue = try closure(&value)
-        //value = newValue
-        return newValue
+        return try closure(&value)
     }
 
     func get(closure: (inout T) -> ()) {

@@ -9,14 +9,19 @@ extension Dictionary where Key: JSONKey {
             return []
         }
         if parallel {
-            var itemOptionals: [T?] = Array(repeating: nil, count: dictionary.count)
+            let defaultError = NSError(domain: "Unspecified error", code: 0, userInfo: nil)
+            var itemResults: [Result<T, Error>] = Array(repeating: .failure(defaultError), count: dictionary.count)
             var ops: [BlockOperation] = []
             var idx: Int = 0
             for (key, _) in dictionary {
-                ops.append(BlockOperation {[idx] in
-                    let jsonDictionary: JSONDictionary = try! dictionary.json(atKeyPath: .key(key))
-                    let item = try! T(name: key, jsonDictionary: jsonDictionary)
-                    itemOptionals[idx] = item
+                ops.append(BlockOperation { [idx] in
+                    do {
+                        let jsonDictionary: JSONDictionary = try dictionary.json(atKeyPath: .key(key))
+                        let item = try T(name: key, jsonDictionary: jsonDictionary)
+                        itemResults[idx] = .success(item)
+                    } catch {
+                        itemResults[idx] = .failure(error)
+                    }
                 })
                 idx += 1
             }
@@ -24,7 +29,17 @@ extension Dictionary where Key: JSONKey {
             queue.qualityOfService = .userInteractive
             queue.maxConcurrentOperationCount = 8
             queue.addOperations(ops, waitUntilFinished: true)
-            return itemOptionals.compactMap { $0 }
+            var items = ContiguousArray<T>()
+            items.reserveCapacity(itemResults.count)
+            for result in itemResults {
+                switch result {
+                case .failure(let error):
+                    throw error
+                case .success(let item):
+                    items.append(item)
+                }
+            }
+            return Array(items)
         } else {
             var items: [T] = []
             for (key, _) in dictionary {
