@@ -312,7 +312,7 @@ extension Scheme {
         self.init(
             name: name,
             build: .init(
-                targets: [Scheme.BuildTarget(target: TargetReference.local(target.name))],
+                targets: Scheme.buildTargets(for: target, project: project),
                 buildImplicitDependencies: targetScheme.buildImplicitDependencies
             ),
             run: .init(
