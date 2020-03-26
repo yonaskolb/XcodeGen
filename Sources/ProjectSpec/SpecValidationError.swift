@@ -32,6 +32,7 @@ public struct SpecValidationError: Error, CustomStringConvertible {
         case invalidPerConfigSettings
         case invalidProjectReference(scheme: String, reference: String)
         case invalidProjectReferencePath(ProjectReference)
+        case invalidResourceTagBuildPhase(target: String, source: String)
 
         public var description: String {
             switch self {
@@ -79,6 +80,8 @@ public struct SpecValidationError: Error, CustomStringConvertible {
                 return "Scheme \(scheme.quoted) has invalid project reference \(project.quoted)"
             case let .invalidProjectReferencePath(reference):
                 return "Project reference \(reference.name) has a project file path that doesn't exist \"\(reference.path)\""
+            case let .invalidResourceTagBuildPhase(target, source):
+                return "Target \(target.quoted) has a resourceTags \(source.quoted) which must have \"resources\" build pahse."
             }
         }
     }

@@ -185,6 +185,9 @@ extension Project {
                 if !source.optional && !sourcePath.exists {
                     errors.append(.invalidTargetSource(target: target.name, source: sourcePath.string))
                 }
+                if !source.resourceTags.isEmpty && source.buildPhase != .resources {
+                    errors.append(.invalidResourceTagBuildPhase(target: target.name, source: sourcePath.string))
+                }
             }
         }
 

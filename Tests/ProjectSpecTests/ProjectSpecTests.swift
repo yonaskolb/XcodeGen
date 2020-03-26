@@ -136,7 +136,12 @@ class ProjectSpecTests: XCTestCase {
                     platform: .iOS,
                     settings: invalidSettings,
                     configFiles: ["invalidConfig": "invalidConfigFile"],
-                    sources: ["invalidSource"],
+                    sources: [
+                        "invalidSource",
+                        .init(path: "invalidSourceResourceTags",
+                              buildPhase: .headers,
+                              resourceTags: ["Tag1"])
+                    ],
                     dependencies: [
                         Dependency(type: .target, reference: "invalidDependency"),
                         Dependency(type: .package(product: nil), reference: "invalidPackage"),
@@ -160,6 +165,8 @@ class ProjectSpecTests: XCTestCase {
 
                 try expectValidationError(project, .missingConfigForTargetScheme(target: "target1", configType: .debug))
                 try expectValidationError(project, .missingConfigForTargetScheme(target: "target1", configType: .release))
+                
+                try expectValidationError(project, .invalidResourceTagBuildPhase(target: "target1", source: "invalidSourceResourceTags"))
 
                 project.targets[0].scheme?.configVariants = ["invalidVariant"]
                 try expectValidationError(project, .invalidTargetSchemeConfigVariant(target: "target1", configVariant: "invalidVariant", configType: .debug))

@@ -987,7 +987,6 @@ class SourceGeneratorTests: XCTestCase {
                         sources: [
                             TargetSource(path: "A/resourceFile.mp4", buildPhase: .resources, resourceTags: ["tag1", "tag2"]),
                             TargetSource(path: "A/resourceFile2.mp4", buildPhase: .resources, resourceTags: ["tag2", "tag3"]),
-                            TargetSource(path: "A/sourceFile.swift", buildPhase: .sources, resourceTags: ["tag1", "tag2"]),
                         ]
                     )
                     
@@ -1007,18 +1006,11 @@ class SourceGeneratorTests: XCTestCase {
                         names: ["A", "resourceFile2.mp4"]
                     ))
                     
-                    let sourceFileReference = try unwrap(pbxProj.getFileReference(
-                        paths: ["A", "sourceFile.swift"],
-                        names: ["A", "sourceFile.swift"]
-                    ))
-                    
                     try pbxProj.expectFile(paths: ["A", "resourceFile.mp4"],  buildPhase: .resources)
                     try pbxProj.expectFile(paths: ["A", "resourceFile2.mp4"], buildPhase: .resources)
-                    try pbxProj.expectFile(paths: ["A", "sourceFile.swift"], buildPhase: .sources)
                     
                     let resourceBuildFile  = try unwrap(pbxProj.buildFiles.first(where: { $0.file == resourceFileReference }))
                     let resourceBuildFile2 = try unwrap(pbxProj.buildFiles.first(where: { $0.file == resourceFileReference2 }))
-                    let sourceBuildFile = try unwrap(pbxProj.buildFiles.first(where: { $0.file == sourceFileReference }))
                     
                     if (resourceBuildFile.settings! as NSDictionary) != (["ASSET_TAGS": ["tag1", "tag2"]] as NSDictionary) {
                         throw failure("File does not contain tag1 and tag2 ASSET_TAGS")
@@ -1026,10 +1018,6 @@ class SourceGeneratorTests: XCTestCase {
                     
                     if (resourceBuildFile2.settings! as NSDictionary) != (["ASSET_TAGS": ["tag2", "tag3"]] as NSDictionary) {
                         throw failure("File does not contain tag2 and tag3 ASSET_TAGS")
-                    }
-                    
-                    if sourceBuildFile.settings != nil {
-                        throw failure("File that buildPhase is source contain settings")
                     }
                     
                     if !pbxProj.rootObject!.attributes.keys.contains("knownAssetTags") {
