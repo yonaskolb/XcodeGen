@@ -1,6 +1,7 @@
 import Foundation
 import JSONUtilities
 import PathKit
+import Version
 
 extension Project {
 
@@ -49,6 +50,12 @@ extension Project {
         for fileGroup in fileGroups {
             if !(basePath + fileGroup).exists {
                 errors.append(.invalidFileGroup(fileGroup))
+            }
+        }
+
+        for (name, package) in packages {
+            if case let .local(path) = package, !(basePath + Path(path).normalize()).exists {
+                errors.append(.invalidLocalPackage(name))
             }
         }
 
@@ -141,19 +148,33 @@ extension Project {
             for dependency in target.dependencies {
                 switch dependency.type {
                 case .target:
-                    if getProjectTarget(dependency.reference) == nil {
-                        errors.append(.invalidTargetDependency(target: target.name, dependency: dependency.reference))
+                    let dependencyTargetReference = try TargetReference(dependency.reference)
+
+                    switch dependencyTargetReference.location {
+                    case .local:
+                        if getProjectTarget(dependency.reference) == nil {
+                            errors.append(.invalidTargetDependency(target: target.name, dependency: dependency.reference))
+                        }
+                    case .project(let dependencyProjectName):
+                        if getProjectReference(dependencyProjectName) == nil {
+                            errors.append(.invalidTargetDependency(target: target.name, dependency: dependency.reference))
+                        }
                     }
                 case .sdk:
                     let path = Path(dependency.reference)
                     if !dependency.reference.contains("/") {
                         switch path.extension {
                         case "framework"?,
-                             "tbd"?:
+                             "tbd"?,
+                             "dylib"?:
                             break
                         default:
                             errors.append(.invalidSDKDependency(target: target.name, dependency: dependency.reference))
                         }
+                    }
+                case .package:
+                    if packages[dependency.reference] == nil {
+                        errors.append(.invalidSwiftPackage(name: dependency.reference, target: target.name))
                     }
                 default: break
                 }
@@ -167,18 +188,28 @@ extension Project {
             }
         }
 
-        for scheme in schemes {
-            for buildTarget in scheme.build.targets {
-                if getProjectTarget(buildTarget.target) == nil {
-                    errors.append(.invalidSchemeTarget(scheme: scheme.name, target: buildTarget.target))
-                }
+        for projectReference in projectReferences {
+            if !(basePath + projectReference.path).exists {
+                errors.append(.invalidProjectReferencePath(projectReference))
             }
+        }
+
+        for scheme in schemes {
+            errors.append(
+                contentsOf: scheme.build.targets.compactMap({ validationError(for: $0.target, in: scheme, action: "build") })
+            )
             if let action = scheme.run, let config = action.config, getConfig(config) == nil {
                 errors.append(.invalidSchemeConfig(scheme: scheme.name, config: config))
             }
             if let action = scheme.test, let config = action.config, getConfig(config) == nil {
                 errors.append(.invalidSchemeConfig(scheme: scheme.name, config: config))
             }
+            errors.append(
+                contentsOf: scheme.test?.targets.compactMap({ validationError(for: $0.targetReference, in: scheme, action: "test") }) ?? []
+            )
+            errors.append(
+                contentsOf: scheme.test?.coverageTargets.compactMap({ validationError(for: $0, in: scheme, action: "test") }) ?? []
+            )
             if let action = scheme.profile, let config = action.config, getConfig(config) == nil {
                 errors.append(.invalidSchemeConfig(scheme: scheme.name, config: config))
             }
@@ -192,6 +223,24 @@ extension Project {
 
         if !errors.isEmpty {
             throw SpecValidationError(errors: errors)
+        }
+    }
+
+    public func validateMinimumXcodeGenVersion(_ xcodeGenVersion: Version) throws {
+        if let minimumXcodeGenVersion = options.minimumXcodeGenVersion, xcodeGenVersion < minimumXcodeGenVersion {
+            throw SpecValidationError.ValidationError.invalidXcodeGenVersion(minimumVersion: minimumXcodeGenVersion, version: xcodeGenVersion)
+        }
+    }
+
+    /// Returns a descriptive error if the given target reference was invalid otherwise `nil`.
+    private func validationError(for targetReference: TargetReference, in scheme: Scheme, action: String) -> SpecValidationError.ValidationError? {
+        switch targetReference.location {
+        case .local where getProjectTarget(targetReference.name) == nil:
+            return .invalidSchemeTarget(scheme: scheme.name, target: targetReference.name, action: action)
+        case .project(let project) where getProjectReference(project) == nil:
+            return .invalidProjectReference(scheme: scheme.name, reference: project)
+        case .local, .project:
+            return nil
         }
     }
 }

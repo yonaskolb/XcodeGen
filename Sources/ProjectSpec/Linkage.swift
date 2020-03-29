@@ -1,4 +1,5 @@
 import Foundation
+import XcodeProj
 
 public enum Linkage {
     case dynamic
@@ -6,10 +7,10 @@ public enum Linkage {
     case none
 }
 
-extension Target {
+extension PBXProductType {
 
     public var defaultLinkage: Linkage {
-        switch type {
+        switch self {
         case .none,
              .appExtension,
              .application,
@@ -32,7 +33,7 @@ extension Target {
              .xcodeExtension,
              .xpcService:
             return .none
-        case .framework:
+        case .framework, .xcFramework:
             // TODO: This should check `MACH_O_TYPE` in case this is a "Static Framework"
             return .dynamic
         case .dynamicLibrary:

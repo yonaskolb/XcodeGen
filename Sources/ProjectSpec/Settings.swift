@@ -37,7 +37,7 @@ public struct Settings: Equatable, JSONObjectConvertible, CustomStringConvertibl
     }
 
     public static func == (lhs: Settings, rhs: Settings) -> Bool {
-        return NSDictionary(dictionary: lhs.buildSettings).isEqual(to: rhs.buildSettings) &&
+        NSDictionary(dictionary: lhs.buildSettings).isEqual(to: rhs.buildSettings) &&
             lhs.configSettings == rhs.configSettings &&
             lhs.groups == rhs.groups
     }
@@ -97,7 +97,7 @@ extension Dictionary where Key == String, Value: Any {
     }
 
     public func equals(_ dictionary: BuildSettings) -> Bool {
-        return NSDictionary(dictionary: self).isEqual(to: dictionary)
+        NSDictionary(dictionary: self).isEqual(to: dictionary)
     }
 }
 
@@ -112,7 +112,7 @@ extension Settings: JSONEncodable {
             return [
                 "base": buildSettings,
                 "groups": groups,
-                "configs": configSettings.mapValues { $0.toJSONValue() }
+                "configs": configSettings.mapValues { $0.toJSONValue() },
             ]
         }
         return buildSettings

@@ -1,0 +1,106 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "AEXML",
+        "repositoryURL": "https://github.com/tadija/AEXML",
+        "state": {
+          "branch": null,
+          "revision": "e4d517844dd03dac557e35d77a8e9ab438de91a6",
+          "version": "4.4.0"
+        }
+      },
+      {
+        "package": "Codability",
+        "repositoryURL": "https://github.com/yonaskolb/Codability",
+        "state": {
+          "branch": null,
+          "revision": "eb5bac78e0679f521c3f058c1eb9be0dd657dadd",
+          "version": "0.2.1"
+        }
+      },
+      {
+        "package": "JSONUtilities",
+        "repositoryURL": "https://github.com/yonaskolb/JSONUtilities.git",
+        "state": {
+          "branch": null,
+          "revision": "128d2ffc22467f69569ef8ff971683e2393191a0",
+          "version": "4.2.0"
+        }
+      },
+      {
+        "package": "PathKit",
+        "repositoryURL": "https://github.com/kylef/PathKit.git",
+        "state": {
+          "branch": null,
+          "revision": "73f8e9dca9b7a3078cb79128217dc8f2e585a511",
+          "version": "1.0.0"
+        }
+      },
+      {
+        "package": "Rainbow",
+        "repositoryURL": "https://github.com/onevcat/Rainbow.git",
+        "state": {
+          "branch": null,
+          "revision": "9c52c1952e9b2305d4507cf473392ac2d7c9b155",
+          "version": "3.1.5"
+        }
+      },
+      {
+        "package": "Spectre",
+        "repositoryURL": "https://github.com/kylef/Spectre.git",
+        "state": {
+          "branch": null,
+          "revision": "f14ff47f45642aa5703900980b014c2e9394b6e5",
+          "version": "0.9.0"
+        }
+      },
+      {
+        "package": "SwiftCLI",
+        "repositoryURL": "https://github.com/jakeheis/SwiftCLI.git",
+        "state": {
+          "branch": null,
+          "revision": "c72c4564f8c0a24700a59824880536aca45a4cae",
+          "version": "6.0.1"
+        }
+      },
+      {
+        "package": "SwiftRoaring",
+        "repositoryURL": "https://github.com/piotte13/SwiftRoaring",
+        "state": {
+          "branch": null,
+          "revision": "9104cf3f35e7a38c9fb633084c7adb63a9f27f8b",
+          "version": "1.0.4"
+        }
+      },
+      {
+        "package": "Version",
+        "repositoryURL": "https://github.com/mxcl/Version",
+        "state": {
+          "branch": null,
+          "revision": "a94b48f36763c05629fc102837398505032dead9",
+          "version": "2.0.0"
+        }
+      },
+      {
+        "package": "XcodeProj",
+        "repositoryURL": "https://github.com/tuist/XcodeProj.git",
+        "state": {
+          "branch": null,
+          "revision": "f32704e01d2752bdc17cde3963bee4256c1f4df4",
+          "version": "7.8.0"
+        }
+      },
+      {
+        "package": "Yams",
+        "repositoryURL": "https://github.com/jpsim/Yams.git",
+        "state": {
+          "branch": null,
+          "revision": "c947a306d2e80ecb2c0859047b35c73b8e1ca27f",
+          "version": "2.0.0"
+        }
+      }
+    ]
+  },
+  "version": 1
+}

@@ -1,5 +1,6 @@
 import Foundation
 import JSONUtilities
+import Version
 
 public struct SpecOptions: Equatable {
     public static let settingPresetsDefault = SettingPresets.all
@@ -28,6 +29,9 @@ public struct SpecOptions: Equatable {
     public var groupsOrder: [GroupOrder]
     public var generateEmptyDirectories: Bool
     public var findCarthageFrameworks: Bool
+    public var localPackagesGroup: String?
+    public var preGenCommand: String?
+    public var postGenCommand: String?
 
     public enum ValidationType: String {
         case missingConfigs
@@ -84,7 +88,10 @@ public struct SpecOptions: Equatable {
         groupSortPosition: GroupSortPosition = groupSortPositionDefault,
         groupsOrder: [GroupOrder] = [],
         generateEmptyDirectories: Bool = generateEmptyDirectoriesDefault,
-        findCarthageFrameworks: Bool = findCarthageFrameworksDefault
+        findCarthageFrameworks: Bool = findCarthageFrameworksDefault,
+        localPackagesGroup: String? = nil,
+        preGenCommand: String? = nil,
+        postGenCommand: String? = nil
     ) {
         self.minimumXcodeGenVersion = minimumXcodeGenVersion
         self.carthageBuildPath = carthageBuildPath
@@ -105,6 +112,9 @@ public struct SpecOptions: Equatable {
         self.groupsOrder = groupsOrder
         self.generateEmptyDirectories = generateEmptyDirectories
         self.findCarthageFrameworks = findCarthageFrameworks
+        self.localPackagesGroup = localPackagesGroup
+        self.preGenCommand = preGenCommand
+        self.postGenCommand = postGenCommand
     }
 }
 
@@ -112,7 +122,7 @@ extension SpecOptions: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
         if let string: String = jsonDictionary.json(atKeyPath: "minimumXcodeGenVersion") {
-            minimumXcodeGenVersion = try Version(string)
+            minimumXcodeGenVersion = try Version.parse(string)
         }
 
         carthageBuildPath = jsonDictionary.json(atKeyPath: "carthageBuildPath")
@@ -133,6 +143,9 @@ extension SpecOptions: JSONObjectConvertible {
         groupsOrder = jsonDictionary.json(atKeyPath: "groupsOrder") ?? []
         generateEmptyDirectories = jsonDictionary.json(atKeyPath: "generateEmptyDirectories") ?? SpecOptions.generateEmptyDirectoriesDefault
         findCarthageFrameworks = jsonDictionary.json(atKeyPath: "findCarthageFrameworks") ?? SpecOptions.findCarthageFrameworksDefault
+        localPackagesGroup = jsonDictionary.json(atKeyPath: "localPackagesGroup")
+        preGenCommand = jsonDictionary.json(atKeyPath: "preGenCommand")
+        postGenCommand = jsonDictionary.json(atKeyPath: "postGenCommand")
     }
 }
 
@@ -143,7 +156,7 @@ extension SpecOptions: JSONEncodable {
             "transitivelyLinkDependencies": transitivelyLinkDependencies,
             "groupSortPosition": groupSortPosition.rawValue,
             "disabledValidations": disabledValidations.map { $0.rawValue },
-            "minimumXcodeGenVersion": minimumXcodeGenVersion?.string,
+            "minimumXcodeGenVersion": minimumXcodeGenVersion?.description,
             "carthageBuildPath": carthageBuildPath,
             "carthageExecutablePath": carthageExecutablePath,
             "bundleIdPrefix": bundleIdPrefix,
@@ -153,6 +166,9 @@ extension SpecOptions: JSONEncodable {
             "indentWidth": indentWidth.flatMap { Int($0) },
             "tabWidth": tabWidth.flatMap { Int($0) },
             "defaultConfig": defaultConfig,
+            "localPackagesGroup": localPackagesGroup,
+            "preGenCommand": preGenCommand,
+            "postGenCommand": postGenCommand,
         ]
 
         if settingPresets != SpecOptions.settingPresetsDefault {
@@ -175,7 +191,7 @@ extension SpecOptions: JSONEncodable {
 extension SpecOptions: PathContainer {
 
     static var pathProperties: [PathProperty] {
-        return [
+        [
             .string("carthageBuildPath"),
         ]
     }

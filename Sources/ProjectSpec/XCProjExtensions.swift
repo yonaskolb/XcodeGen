@@ -15,31 +15,31 @@ extension PBXProductType {
     }
 
     public var isFramework: Bool {
-        return self == .framework
+        self == .framework || self == .staticFramework
     }
 
     public var isLibrary: Bool {
-        return self == .staticLibrary || self == .dynamicLibrary
+        self == .staticLibrary || self == .dynamicLibrary
     }
 
     public var isExtension: Bool {
-        return fileExtension == "appex"
+        fileExtension == "appex"
     }
 
     public var isApp: Bool {
-        return fileExtension == "app"
+        fileExtension == "app"
     }
 
     public var isTest: Bool {
-        return fileExtension == "xctest"
+        fileExtension == "xctest"
     }
 
     public var isExecutable: Bool {
-        return isApp || isExtension || isTest || self == .commandLineTool
+        isApp || isExtension || isTest || self == .commandLineTool
     }
 
     public var name: String {
-        return rawValue.replacingOccurrences(of: "com.apple.product-type.", with: "")
+        rawValue.replacingOccurrences(of: "com.apple.product-type.", with: "")
     }
 }
 

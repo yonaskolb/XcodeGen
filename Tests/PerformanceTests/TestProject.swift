@@ -18,6 +18,8 @@ extension Project {
             testTargets: [],
             configVariants: ["Test", "Staging", "Prod"],
             gatherCoverageData: true,
+            disableMainThreadChecker: true,
+            stopOnEveryMainThreadCheckerIssue: false,
             commandLineArguments: [
                 "--command": true,
                 "--command2": false,
@@ -38,8 +40,8 @@ extension Project {
                 dependencies: [
                     Dependency(type: .target, reference: "Framework_\(platform)"),
                     Dependency(type: .target, reference: "Framework2_\(platform)"),
-                    Dependency(type: .carthage(findFrameworks: false), reference: "Alamofire"),
-                    Dependency(type: .carthage(findFrameworks: false), reference: "BrightFutures"),
+                    Dependency(type: .carthage(findFrameworks: false, linkType: .dynamic), reference: "Alamofire"),
+                    Dependency(type: .carthage(findFrameworks: false, linkType: .dynamic), reference: "BrightFutures"),
                 ],
                 scheme: scheme
             )
@@ -73,7 +75,7 @@ extension Project {
                     TargetSource(path: "Framework_\(platform)"),
                 ],
                 dependencies: [
-                    Dependency(type: .carthage(findFrameworks: false), reference: "Alamofire"),
+                    Dependency(type: .carthage(findFrameworks: false, linkType: .dynamic), reference: "Alamofire"),
                 ],
                 scheme: scheme
             )
@@ -89,8 +91,8 @@ extension Project {
                 sources: [TargetSource(path: "Framework2_\(platform)")],
                 dependencies: [
                     Dependency(type: .target, reference: "Framework_\(platform)"),
-                    Dependency(type: .carthage(findFrameworks: false), reference: "Alamofire"),
-                    Dependency(type: .carthage(findFrameworks: false), reference: "BrightFutures"),
+                    Dependency(type: .carthage(findFrameworks: false, linkType: .dynamic), reference: "Alamofire"),
+                    Dependency(type: .carthage(findFrameworks: false, linkType: .dynamic), reference: "BrightFutures"),
                 ],
                 scheme: scheme
             )

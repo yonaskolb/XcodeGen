@@ -4,6 +4,7 @@ import PackageDescription
 
 let package = Package(
     name: "XcodeGen",
+    platforms: [.macOS(.v10_13)],
     products: [
         .executable(name: "xcodegen", targets: ["XcodeGen"]),
         .library(name: "XcodeGenKit", targets: ["XcodeGenKit"]),
@@ -15,12 +16,14 @@ let package = Package(
         .package(url: "https://github.com/yonaskolb/JSONUtilities.git", from: "4.2.0"),
         .package(url: "https://github.com/kylef/Spectre.git", from: "0.9.0"),
         .package(url: "https://github.com/onevcat/Rainbow.git", from: "3.0.0"),
-        .package(url: "https://github.com/tuist/xcodeproj.git", .exact("7.0.0")),
-        .package(url: "https://github.com/jakeheis/SwiftCLI.git", .exact("5.2.2")),
+        .package(url: "https://github.com/tuist/XcodeProj.git", .exact("7.8.0")),
+        .package(url: "https://github.com/jakeheis/SwiftCLI.git", from: "6.0.0"),
+        .package(url: "https://github.com/mxcl/Version", from: "2.0.0"),
     ],
     targets: [
         .target(name: "XcodeGen", dependencies: [
             "XcodeGenCLI",
+            "Version",
         ]),
         .target(name: "XcodeGenCLI", dependencies: [
             "XcodeGenKit",
@@ -28,27 +31,60 @@ let package = Package(
             "SwiftCLI",
             "Rainbow",
             "PathKit",
+            "Version",
         ]),
         .target(name: "XcodeGenKit", dependencies: [
             "ProjectSpec",
             "JSONUtilities",
             "XcodeProj",
             "PathKit",
+            "Core",
         ]),
         .target(name: "ProjectSpec", dependencies: [
             "JSONUtilities",
             "XcodeProj",
             "Yams",
+            "Core",
+            "Version",
+        ]),
+        .target(name: "Core", dependencies: [
+            "PathKit",
+            "Yams",
+        ]),
+        .target(name: "TestSupport", dependencies: [
+            "XcodeProj",
+            "Spectre",
+            "PathKit",
         ]),
         .testTarget(name: "XcodeGenKitTests", dependencies: [
             "XcodeGenKit",
             "Spectre",
             "PathKit",
+            "TestSupport",
+        ]),
+        .testTarget(name: "FixtureTests", dependencies: [
+            "XcodeGenKit",
+            "Spectre",
+            "PathKit",
+            "TestSupport",
+        ]),
+        .testTarget(name: "CoreTests", dependencies: [
+            "Core",
+            "Spectre",
+            "PathKit",
+            "TestSupport",
+        ]),
+        .testTarget(name: "ProjectSpecTests", dependencies: [
+            "ProjectSpec",
+            "Spectre",
+            "PathKit",
+            "TestSupport",
         ]),
         .testTarget(name: "PerformanceTests", dependencies: [
             "XcodeGenKit",
             "Spectre",
             "PathKit",
+            "TestSupport",
         ]),
     ]
 )

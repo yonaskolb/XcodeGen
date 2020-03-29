@@ -1,0 +1,31 @@
+name: SPM
+packages:
+  Codability:
+    url: https://github.com/yonaskolb/Codability
+    majorVersion: 0.2.1
+  SwiftRoaring:
+    url: https://github.com/piotte13/SwiftRoaring
+    majorVersion: 1.0.4
+  XcodeGen: 
+    path: ../../.. #XcodeGen itself
+targets:
+  App:
+    type: application
+    platform: iOS
+    sources: [SPM]
+    scheme: {}
+    dependencies:
+      - package: Codability
+      - package: SwiftRoaring
+        product: SwiftRoaringDynamic
+        embed: true
+      - target: StaticLibrary
+  StaticLibrary:
+    type: library.static
+    platform: iOS
+    sources: StaticLibrary
+    dependencies:
+      - package: Codability
+      - package: SwiftRoaring
+        product: SwiftRoaringDynamic
+      - package: XcodeGen

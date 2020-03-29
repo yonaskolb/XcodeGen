@@ -23,6 +23,8 @@
 - [Aggregate Target](#aggregate-target)
 - [Target Template](#target-template)
 - [Scheme](#scheme)
+  - [Scheme Template](#scheme-template)
+- [Swift Package](#swift-package)
 
 ## General
 
@@ -46,6 +48,8 @@ You can also use environment variables in your configuration file, by using `${S
 - [ ] **fileGroups**: **[String]** - A list of paths to add to the root of the project. These aren't files that will be included in your targets, but that you'd like to include in the project hierachy anyway. For example a folder of xcconfig files that aren't already added by any target sources, or a Readme file.
 - [ ] **schemes**: **[Scheme](#scheme)** - A list of schemes by name. This allows more control over what is found in [Target Scheme](#target-scheme)
 - [ ] **targetTemplates**: **[String: [Target Template](#target-template)]** - a list of targets that can be used as templates for actual targets which reference them via a `template` property. They can be used to extract common target settings. Works great in combination with `include`.
+- [ ] **packages**: **[String: [Swift Package](#swift-package)]** - a map of Swift packages by name.
+- [ ] **projectReferences**: **[String: [Project Reference](#project-reference)]** - a map of project references by name
 
 ### Include
 
@@ -118,12 +122,16 @@ Note that target names can also be changed by adding a `name` property to a targ
 - [ ] **transitivelyLinkDependencies**: **Bool** - If this is `true` then targets will link to the dependencies of their target dependencies. If a target should embed its dependencies, such as application and test bundles, it will embed these transitive dependencies as well. Some complex setups might want to set this to `false` and explicitly specify dependencies at every level. Targets can override this with [Target](#target).transitivelyLinkDependencies. Defaults to `false`.
 - [ ] **generateEmptyDirectories**: **Bool** - If this is `true` then empty directories will be added to project too else will be missed. Defaults to `false`.
 - [ ] **findCarthageFrameworks**: **Bool** - When this is set to `true`, all the invididual frameworks for Carthage dependencies will automatically be found. This property can be overriden individually for each carthage dependency - for more details see See **findFrameworks** in the [Dependency](#dependency) section. Defaults to `false`.
+- [ ] **localPackagesGroup**: **String** - The group name that local packages are put into. This defaults to `Packages`
+- [ ] **preGenCommand**: **String** - A bash command to run before the project has been generated. If the project isn't generated due to no changes when using the cache then this won't run. This is useful for running things like generating resources files before the project is regenerated.
+- [ ] **postGenCommand**: **String** - A bash command to run after the project has been generated. If the project isn't generated due to no changes when using the cache then this won't run. This is useful for running things like `pod install` only if the project is actually regenerated.
 
 ```yaml
 options:
   deploymentTarget:
     watchOS: "2.0"
     tvOS: "10.0"
+  postGenCommand: pod install
 ```
 
 ### GroupOrder
@@ -220,10 +228,10 @@ Settings are merged in the following order: groups, base, configs.
   - `TEST_TARGET_NAME`: for ui tests that target an application
   - `TEST_HOST`: for unit tests that target an application
 - [ ] **dependencies**: **[[Dependency](#dependency)]** - Dependencies for the target
-- [ ] **info**: **[Plist](#plist)** - If defined, this will generate and write an `Info.plist` to the specified path and use it by setting the `INFOPLIST_FILE` build setting for every configuration, unless `INFOPLIST_FILE` is already defined in  **settings** for this configuration. The following properties are generated automatically, the rest will have to be provided.
+- [ ] **info**: **[Plist](#plist)** - If defined, this will generate and write an `Info.plist` to the specified path and use it by setting the `INFOPLIST_FILE` build setting for every configuration, unless `INFOPLIST_FILE` is already defined in  **settings** for this configuration. The following properties are generated automatically if appropriate, the rest will have to be provided.
   - `CFBundleIdentifier`
   - `CFBundleInfoDictionaryVersion`
-  - `CFBundleExecutable`
+  - `CFBundleExecutable` **Not generated for targets of type bundle**
   - `CFBundleName`
   - `CFBundleDevelopmentRegion`
   - `CFBundleShortVersionString`
@@ -325,8 +333,10 @@ A source can be provided via a string (the path) or an object of the form:
 
 - [x] **path**: **String** - The path to the source file or directory.
 - [ ] **name**: **String** - Can be used to override the name of the source file or directory. By default the last component of the path is used for the name
+- [ ] **group**: **String** - Can be used to override the parent group of the source file or directory. By default a group is created at the root with the name of this source file or directory or intermediate groups are created if `createIntermediateGroups` is set to `true`. Multiple groups can be created by separating each one using a `/`. If multiple target sources share the same `group`, they will be put together in the same parent group.
 - [ ] **compilerFlags**: **[String]** or **String** - A list of compilerFlags to add to files under this specific path provided as a list or a space delimitted string. Defaults to empty.
-- [ ] **excludes**: **[String]** - A list of [global patterns](https://en.wikipedia.org/wiki/Glob_(programming)) representing the files to exclude. These rules are relative to `path` and _not the directory where `project.yml` resides_.
+- [ ] **excludes**: **[String]** - A list of [global patterns](https://en.wikipedia.org/wiki/Glob_(programming)) representing the files to exclude. These rules are relative to `path` and _not the directory where `project.yml` resides_. XcodeGen uses Bash 4's Glob behaviors where globstar (**) is enabled.
+- [ ] **includes**: **[String]** - A list of global patterns in the same format as `excludes` representing the files to include. These rules are relative to `path` and _not the directory where `project.yml` resides_. If **excludes** is present and file conflicts with **includes**, **excludes** will override the **includes** behavior.
 - [ ] **createIntermediateGroups**: **Bool** - This overrides the value in [Options](#options)
 - [ ] **optional**: **Bool** - Disable missing path check. Defaults to false.
 - [ ] **buildPhase**: **String** - This manually sets the build phase this file or files in this directory will be added to, otherwise XcodeGen will guess based on the file extension. Note that `Info.plist` files will never be added to any build phases, no matter what this setting is. Possible values are:
@@ -356,6 +366,7 @@ A source can be provided via a string (the path) or an object of the form:
 	- `private`
 	- `project`
 - [ ] **attributes**: **[String]** - Additional settings attributes that will be applied to any build files.
+- [ ] **resourceTags**: **[String]** - On Demand Resource Tags that will be applied to any resources. This also adds to the project attribute's knownAssetTags
 
 ```yaml
 targets:
@@ -370,6 +381,8 @@ targets:
           - "ios/*.[mh]"
           - "configs/server[0-2].json"
           - "*-Private.h"
+          - "**/*.md" # excludes all files with the .md extension
+          - "ios/**/*Tests.[hm] # excludes all files with an h or m extension within the ios directory.
         compilerFlags:
           - "-Werror"
           - "-Wextra"
@@ -382,16 +395,20 @@ targets:
             subpath: include/$(PRODUCT_NAME)
       - path: Resources
         type: folder
+      - path: Path/To/File.asset
+        resourceTags: [tag1, tag2]
 ```
 
 ### Dependency
 
-A dependency can be one of a 3 types:
+A dependency can be one of a 6 types:
 
-- `target: name` - links to another target
+- `target: name` - links to another target. If you are using project references you can specify a target within another project by using `ProjectName/TargetName` for the name
 - `framework: path` - links to a framework
 - `carthage: name` - helper for linking to a Carthage framework
 - `sdk: name` - links to a dependency with the SDK. This can either be a relative path within the sdk root or a single filename that references a framework (.framework) or lib (.tbd)
+- `package: name` - links to a Swift Package. The name must match the name of a package defined in the top level `packages`
+- `bundle: name` - adds the pre-built bundle for the supplied name to the copy resources build phase. This is useful when a dependency exists on a static library target that has an associated bundle target, both existing in a separate project. Only usable in target types which can copy resources.
 
 **Linking options**:
 
@@ -409,27 +426,39 @@ This only applies to `framework` dependencies. Implicit framework dependencies a
 
 **Carthage Dependency**
 
+- [ ] **findFrameworks**: **Bool** - Whether to find Carthage frameworks automatically. Defaults to `true` .
+- [ ] **linkType**: **String** - Dependency link type. This value should be `dynamic` or `static`. Default value is `dynamic` .
+
 Carthage frameworks are expected to be in `CARTHAGE_BUILD_PATH/PLATFORM/FRAMEWORK.framework` where:
 
  - `CARTHAGE_BUILD_PATH` = `options.carthageBuildPath` or `Carthage/Build` by default
  - `PLATFORM` = the target's platform
  - `FRAMEWORK` = the specified name.
 
-All the invididual frameworks of a Carthage dependency can be automatically found via `findFrameworks: true`. This overrides the value of [Options](#options).findCarthageFrameworks. Otherwise each one will have to be listed invididually.
+All the individual frameworks of a Carthage dependency can be automatically found via `findFrameworks: true`. This overrides the value of [Options](#options).findCarthageFrameworks. Otherwise each one will have to be listed individually.
 Xcodegen uses `.version` files generated by Carthage in order for this framework lookup to work, so the Carthage dependencies will need to have already been built at the time XcodeGen is run.
 
 If any applications contain carthage dependencies within itself or any dependent targets, a carthage copy files script is automatically added to the application containing all the relevant frameworks. A `FRAMEWORK_SEARCH_PATHS` setting is also automatically added
 
+Carthage officially supports static frameworks. In this case, frameworks are expected to be in `CARTHAGE_BUILD_PATH/PLATFORM/Static/FRAMEWORK.framework`.
+You can specify `linkType` to `static` to integrate static ones.
+
 ```yaml
+projectReferences:
+  FooLib:
+    path: path/to/FooLib.xcodeproj
 targets:
   MyTarget:
     dependencies:
       - target: MyFramework
+      - target: FooLib/FooTarget
       - framework: path/to/framework.framework
       - carthage: Result
-        findFrameworks: true
+        findFrameworks: false
+        linkType: static
       - sdk: Contacts.framework
       - sdk: libc++.tbd
+      - sdk: libz.dylib
   MyFramework:
     type: framework
 ```
@@ -449,6 +478,25 @@ targets:
         root: DEVELOPER_DIR
   MyFramework:
     type: framework
+```
+
+**Package dependency**
+- [ ] **product**: **String** - The product to use from the package. This defaults to the package name, so is only required if a Package has multiple libraries or a library with a differing name
+
+```yaml
+packages:
+  Yams:
+    url: https://github.com/jpsim/Yams
+    majorVersion: 2.0.0
+  SwiftPM:
+    url: https://github.com/apple/swift-package-manager
+    branch: swift-5.0-branch
+targets:
+  App:
+    dependencies:
+      - package: Yams 
+      - package: SwiftPM
+        product: SPMUtility
 ```
 
 ### Config Files
@@ -569,6 +617,11 @@ This is a convenience used to automatically generate schemes for a target based 
 - [x] **configVariants**: **[String]** - This generates a scheme for each entry, using configs that contain the name with debug and release variants. This is useful for having different environment schemes.
 - [ ] **testTargets**: **[[Test Target](#test-target)]** - a list of test targets that should be included in the scheme. These will be added to the build targets and the test entries. Each entry can either be a simple string, or a [Test Target](#test-target)
 - [ ] **gatherCoverageData**: **Bool** - a boolean that indicates if this scheme should gather coverage data. This defaults to false
+- [ ] **disableMainThreadChecker**: **Bool** - a boolean that indicates if this scheme should disable disable the Main Thread Checker. This defaults to false
+- [ ] **stopOnEveryMainThreadCheckerIssue**: **Bool** - a boolean that indicates if this scheme should stop at every Main Thread Checker issue. This defaults to false
+- [ ] **buildImplicitDependencies**: **Bool** - Flag to determine if Xcode should build implicit dependencies of this scheme. By default this is `true` if not set.
+- [ ] **language**: **String** - a String that indicates the language used for running and testing. This defaults to nil
+- [ ] **region**: **String** - a String that indicates the region used for running and testing. This defaults to nil
 - [ ] **commandLineArguments**: **[String:Bool]** - a dictionary from the argument name (`String`) to if it is enabled (`Bool`). These arguments will be added to the Test, Profile and Run scheme actions
 - [ ] **environmentVariables**: **[[Environment Variable](#environment-variable)]** or **[String:String]** - environment variables for Run, Test and Profile scheme actions. When passing a dictionary, every key-value entry maps to a corresponding variable that is enabled.
 - [ ] **preActions**: **[[Execution Action](#execution-action)]** - Scripts that are run *before* all actions
@@ -591,7 +644,7 @@ configs:
   Test Release: release
   Staging Release: release
   Production Release: release
-targets
+targets:
   MyApp:
     scheme:
       testTargets:
@@ -684,8 +737,8 @@ Schemes allows for more control than the convenience [Target Scheme](#target-sch
 
 ```yaml
 targets:
-  myTarget: all
-  myTarget2: [test, run]
+  MyTarget: all
+  FooLib/FooTarget: [test, run]
 parallelizeBuild: true
 buildImplicitDependencies: true
 ```
@@ -701,6 +754,12 @@ The different actions share some properties:
 - [ ] **preActions**: **[[Execution Action](#execution-action)]** - Scripts that are run *before* the action
 - [ ] **postActions**: **[[Execution Action](#execution-action)]** - Scripts that are run *after* the action
 - [ ] **environmentVariables**: **[[Environment Variable](#environment-variable)]** or **[String:String]** - `run`, `test` and `profile` actions can define the environment variables. When passing a dictionary, every key-value entry maps to a corresponding variable that is enabled.
+- [ ] **disableMainThreadChecker**: **Bool** - `run` and `test` actions can define a boolean that indicates that this scheme should disable the Main Thread Checker. This defaults to false
+- [ ] **stopOnEveryMainThreadCheckerIssue**: **Bool** - a boolean that indicates if this scheme should stop at every Main Thread Checker issue. This defaults to false
+- [ ] **language**: **String** - `run` and `test` actions can define a language that is used for Application Language
+- [ ] **region**: **String** - `run` and `test` actions can define a language that is used for Application Region
+- [ ] **debugEnabled**: **Bool** - `run` and `test` actions can define a whether debugger should be used. This defaults to true.
+- [ ] **simulateLocation**: **[Simulate Location](#simulate-location)** - `run` action can define a simulated location
 
 ### Execution Action
 
@@ -715,6 +774,7 @@ A multiline script can be written using the various YAML multiline methods, for 
 ### Test Action
 
 - [ ] **gatherCoverageData**: **Bool** - a boolean that indicates if this scheme should gather coverage data. This defaults to false
+- [ ] **coverageTargets**: **[String]** - a list of targets to gather code coverage. Each entry can either be a simple string, or a string using [Project Reference](#project-reference)
 - [ ] **targets**: **[[Test Target](#test-target)]** - a list of targets to test. Each entry can either be a simple string, or a [Test Target](#test-target)
 
 #### Test Target
@@ -727,6 +787,33 @@ A multiline script can be written using the various YAML multiline methods, for 
 
 - [ ] **customArchiveName**: **String** - the custom name to give to the archive
 - [ ] **revealArchiveInOrganizer**: **Bool** - flag to determine whether the archive will be revealed in Xcode's Organizer after it's done building
+
+
+### Simulate Location
+- [x] **allow**: **Bool** - enable location simulation 
+- [ ] **defaultLocation**: **String** - set the default location, possible values:
+	- `London, England`
+	- `Johannesburg, South Africa`
+	- `Moscow, Russia`
+	- `Mumbai, India`
+	- `Tokyo, Japan`
+	- `Sydney, Australia`
+	- `Hong Kong, China`
+	- `Honolulu, HI, USA`
+	- `San Francisco, CA, USA`
+	- `Mexico City, Mexico`
+	- `New York, NY, USA`
+	- `Rio de Janeiro, Brazil`
+	- `<relative-path-to-gpx-file>` (e.g. ./location.gpx)   
+	 Setting the **defaultLocation** to a custom gpx file, you also need to add that file to `fileGroups` for Xcode be able to use it:
+	 
+```yaml
+targets:
+  MyTarget:
+    fileGroups:
+      - location.gpx
+```
+
 
 ### Environment Variable
 
@@ -750,6 +837,9 @@ schemes:
       config: prod-debug
       commandLineArguments: "--option testValue"
       gatherCoverageData: true
+      coverageTargets:
+        - MyTarget1
+        - ExternalTarget/OtherTarget1
       targets: 
         - Tester1 
         - name: Tester2
@@ -768,4 +858,88 @@ schemes:
       config: prod-release
       customArchiveName: MyTarget
       revealArchiveInOrganizer: false
+```
+
+### Scheme Template
+
+This is a template that can be referenced from a normal scheme using the `templates` property. The properties of this template are the same as a [Scheme](#scheme). This functions identically in practice to [Target Template](#target-template).
+Any instances of `${scheme_name}` within each template will be replaced by the final scheme name which references the template.
+Any attributes defined within a scheme's `templateAttributes` will be used to replace any attribute references in the template using the syntax `${attribute_name}`.
+
+```yaml
+schemes:
+  MyModule:
+    templates:
+      - FeatureModuleScheme
+    templateAttributes:
+      testTargetName: MyModuleTests
+
+schemeTemplates:
+  FeatureModuleScheme:
+    templates:
+      - TestScheme
+    build:
+      targets:
+       ${scheme_name}: build
+
+  TestScheme:
+    test:
+      gatherCoverageData: true
+      targets:
+        - name: ${testTargetName}
+          parallelizable: true
+          randomExecutionOrder: true
+```
+
+The result will be a scheme that builds `MyModule` when you request a build, and will test against `MyModuleTests` when you request to run tests. This is particularly useful when you work in a very modular application and each module has a similar structure.
+
+## Swift Package
+Swift packages are defined at a project level, and then linked to individual targets via a [Dependency](#dependency).
+
+> Note that Swift Packages don't work in projects with configurations other than `Debug` and `Release`. That limitation is tracked here bugs.swift.org/browse/SR-10927
+
+### Remote Package
+
+- [x] **url**: **URL** - the url to the package
+- [x] **version**: **String** - the version of the package to use. It can take a few forms:
+  - `majorVersion: 1.2.0` or `from: 1.2.0`
+  - `minorVersion: 1.2.1`
+  - `exactVersion: 1.2.1` or `version: 1.2.1`
+  - `minVersion: 1.0.0, maxVersion: 1.2.9`
+  - `branch: master`
+  - `revision: xxxxxx`
+  
+### Local Package
+
+- [x] **path**: **String** - the path to the package in local. The path must be directory with a `Package.swift`.
+
+```yml
+packages:
+  Yams:
+    url: https://github.com/jpsim/Yams
+    from: 2.0.0
+  RxClient:
+    path: ../RxClient
+targets:
+  App:
+    dependencies:
+      - package: Yams
+      - package: RxClient
+```
+
+## Project Reference
+
+Project References are defined at a project level, and then you can use the project name to refer its target via a [Scheme](#scheme)
+
+- [x] **path**: **String** - The path to the `xcodeproj` file to reference.
+
+```yml
+projectReferences:
+  YamsProject:
+    path: ./Carthage/Checkouts/Yams/Yams.xcodeproj
+schemes:
+  TestTarget:
+    build:
+      targets:
+        YamsProject/Yams: ["run"]
 ```
