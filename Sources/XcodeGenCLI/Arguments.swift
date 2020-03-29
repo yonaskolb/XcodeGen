@@ -4,7 +4,7 @@ import SwiftCLI
 
 extension Path: ConvertibleFromString {
 
-    public static func convert(from: String) -> Path? {
-        return Path(from)
+    public init?(input: String) {
+        self.init(input)
     }
 }

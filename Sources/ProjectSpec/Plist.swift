@@ -12,7 +12,7 @@ public struct Plist: Equatable {
     }
 
     public static func == (lhs: Plist, rhs: Plist) -> Bool {
-        return lhs.path == rhs.path &&
+        lhs.path == rhs.path &&
             NSDictionary(dictionary: lhs.properties).isEqual(to: rhs.properties)
     }
 }
@@ -27,9 +27,9 @@ extension Plist: JSONObjectConvertible {
 
 extension Plist: JSONEncodable {
     public func toJSONValue() -> Any {
-        return [
+        [
             "path": path,
-            "properties": properties
+            "properties": properties,
         ]
     }
 }
@@ -37,7 +37,7 @@ extension Plist: JSONEncodable {
 extension Plist: PathContainer {
 
     static var pathProperties: [PathProperty] {
-        return [
+        [
             .string("path"),
         ]
     }

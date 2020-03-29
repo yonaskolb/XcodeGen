@@ -5,21 +5,26 @@ import XcodeGenKit
 import XcodeProj
 import XCTest
 import Yams
+import TestSupport
 
 extension Project {
 
-    func generateXcodeProject(file: String = #file, line: Int = #line) throws -> XcodeProj {
-        return try doThrowing(file: file, line: line) {
-            try validate()
+    func generateXcodeProject(validate: Bool = true, file: String = #file, line: Int = #line) throws -> XcodeProj {
+        try doThrowing(file: file, line: line) {
+            if validate {
+                try self.validate()
+            }
             let generator = ProjectGenerator(project: self)
             return try generator.generateXcodeProject()
         }
     }
 
-    func generatePbxProj(file: String = #file, line: Int = #line) throws -> PBXProj {
-        return try doThrowing(file: file, line: line) {
-            let xcodeProject = try generateXcodeProject().pbxproj
-            try xcodeProject.validate()
+    func generatePbxProj(specValidate: Bool = true, projectValidate: Bool = true, file: String = #file, line: Int = #line) throws -> PBXProj {
+        try doThrowing(file: file, line: line) {
+            let xcodeProject = try generateXcodeProject(validate: specValidate).pbxproj
+            if projectValidate {
+                try xcodeProject.validate()
+            }
             return xcodeProject
         }
     }

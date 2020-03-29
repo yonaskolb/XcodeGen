@@ -5,6 +5,187 @@
 #### Added
 - Added an ability to set an order of groups via `options.groupOrder` [#480](https://github.com/yonaskolb/XcodeGen/pull/613) @Beniamiiin
 
+#### Fixed
+- Fixed issue which caused watch app schemes to be generated incorrectly, preventing these apps from launching. [#798](https://github.com/yonaskolb/XcodeGen/pull/798) @daltonclaybrook
+
+## 2.15.0
+
+#### Added
+- Add support for local Swift Packages in `packages` using `path`. [#808](https://github.com/yonaskolb/XcodeGen/pull/808) @freddi-kit
+- Add `buildImplicitDependencies` as an option on `TargetScheme`. [#810](https://github.com/yonaskolb/XcodeGen/pull/810) @evandcoleman
+
+#### Fixed
+- Fixed resolving path to local Swift Packages [#796](https://github.com/yonaskolb/XcodeGen/pull/796) @freddi-kit
+- Added ability to stop on every main thread checker issue on Run schemes and TargetSchemes [#799](https://github.com/yonaskolb/XcodeGen/pull/799) @ionutivan
+- Avoid copying ObjC interface header when SWIFT_INSTALL_OBJC_HEADER=false. [#805](https://github.com/yonaskolb/XcodeGen/pull/805) @kateinoigakukun
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.14.0...2.15.0)
+
+## 2.14.0
+
+#### Added
+- Add ability to embed and code sign Swift package dependencies with dynamic products. [#788](https://github.com/yonaskolb/XcodeGen/pull/788) @alexruperez
+
+#### Fixed
+- Revert "Add Base to known regions even if one doesn't exist" [#791](https://github.com/yonaskolb/XcodeGen/pull/792) @bryansum
+- Set `defaultConfigurationName` for every target which is defined in a project. [#787](https://github.com/yonaskolb/XcodeGen/pull/787) @ken0nek
+- Set `TEST_TARGET_NAME` only when a project has UITest bundle. [#792](https://github.com/yonaskolb/XcodeGen/pull/792) @ken0nek
+- Set xcodeproj path in project.xcworkspace/contents.xcworkspacedata [#793](https://github.com/yonaskolb/XcodeGen/pull/793) @ken0nek
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.13.1...2.14.0)
+
+## 2.13.1
+
+#### Fixed
+- Validate scheme test action and test coverage target references before generating. [#775](https://github.com/yonaskolb/XcodeGen/pull/775) @liamnichols
+- Fixed parsing prerelease identifiers in Swift package versions [#779](https://github.com/yonaskolb/XcodeGen/pull/779) @yonaskolb
+- Fixed using legacy targets as dependencies [#778](https://github.com/yonaskolb/XcodeGen/pull/778) @yonaskolb
+
+#### Internal
+- Updated to XcodeProj 7.8.0 [#777](https://github.com/yonaskolb/XcodeGen/pull/777) @yonaskolb
+- Use https://github.com/mxcl/Version [#779](https://github.com/yonaskolb/XcodeGen/pull/779) @yonaskolb
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.13.0...2.13.1)
+
+## 2.13.0
+
+#### Added
+- Support External Target References via subprojects. [#701](https://github.com/yonaskolb/XcodeGen/pull/701) @evandcoleman
+
+#### Fixed
+- Fixed compilation as library by locking down XcodeProj version [#767](https://github.com/yonaskolb/XcodeGen/pull/767) @yonaskolb
+- Stabilized sorting of groups with duplicate names/paths. [#671](https://github.com/yonaskolb/XcodeGen/pull/671) @ChristopherRogers
+- Moved `Copy Bundle Resources` to after `Link with Libraries` build phase [#768](https://github.com/yonaskolb/XcodeGen/pull/768) @yonaskolb
+
+#### Internal
+- Updated to XcodeProj 7.7.0 [#767](https://github.com/yonaskolb/XcodeGen/pull/767) @yonaskolb
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.12.0...2.13.0)
+
+## 2.12.0
+
+#### Added
+- Added pre and post command options. Useful for running `pod install` in combination with `--use-cache` [#759](https://github.com/yonaskolb/XcodeGen/pull/759) @yonaskolb
+- Support for language and region settings on a target basis [#728](https://github.com/yonaskolb/XcodeGen/pull/728) @FranzBusch
+- Added option to generate only Info.plist files with `--only-plists` [#739](https://github.com/yonaskolb/XcodeGen/pull/739) @namolnad
+- Added the option to specify a `simulateLocation` in a scheme [#722](https://github.com/yonaskolb/XcodeGen/issues/722) @basvankuijck
+- Support for On Demand Resources tags [#753](https://github.com/yonaskolb/XcodeGen/pull/753) @sipao
+
+#### Fixed
+- Fixed resolving a relative path for `projectReference.path` [#740](https://github.com/yonaskolb/XcodeGen/pull/740) @kateinoigakukun
+- Don't add framework dependency's directory to `FRAMEWORK_SEARCH_PATHS` if it is implicit [#744](https://github.com/yonaskolb/XcodeGen/pull/744) @ikesyo @yutailang0119
+- Fixed resolving relative path passed to `XcodeProj` [#751](https://github.com/yonaskolb/XcodeGen/pull/751) @PycKamil
+- Prefer configurations named "Debug" or "Release" for default scheme build configurations [#752](https://github.com/yonaskolb/XcodeGen/pull/752) @john-flanagan
+- Added an extra check for package versions. [#755](https://github.com/yonaskolb/XcodeGen/pull/755) @basvankuijck
+
+#### Internal
+- Update to SwiftCLI 6.0 and use the new property wrappers [#749](https://github.com/yonaskolb/XcodeGen/pull/749) @yonaskolb
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.11.0...2.12.0)
+
+## 2.11.0
+
+#### Added
+- Add Carthage static framework dependencies support. [#688](https://github.com/yonaskolb/XcodeGen/pull/688) @giginet
+- Added `xcodegen dump` command [#710](https://github.com/yonaskolb/XcodeGen/pull/710) @yonaskolb
+- Added `--no-env` option to disable environment variables expansion [#704](https://github.com/yonaskolb/XcodeGen/pull/704) @rcari
+- Added custom group support for target sources [#621](https://github.com/yonaskolb/XcodeGen/pull/621) @sroebert @rcari
+- Added new dependency type, `bundle`. This allows targets to copy bundles from other projects [#616](https://github.com/yonaskolb/XcodeGen/pull/616) @bsmith11
+
+#### Fixed
+- Improved variable expansion runtime [#704](https://github.com/yonaskolb/XcodeGen/pull/704) @rcari
+- Fixed missing headers for static framework targets [#705](https://github.com/yonaskolb/XcodeGen/pull/705) @wag-miles
+- Using more file types from XcodeProj for PBXFileReferences resulting in less project diffs [#715](https://github.com/yonaskolb/XcodeGen/pull/715) @yonaskolb
+- Fixed localized `*.intentdefinition` not being added to build source phases [#720](https://github.com/yonaskolb/XcodeGen/pull/720) @giginet
+- Fixed `selectedLauncherIdentifier` not being set `Xcode.IDEFoundation.Launcher.PosixSpawn` when `debugEnabled: false` is defined in test action [#725](https://github.com/yonaskolb/XcodeGen/pull/725) @ken0nek
+- Fixed unnecessary dependencies related to SwiftPM [#726](https://github.com/yonaskolb/XcodeGen/pull/726) @tid-kijyun
+
+#### Changed
+- Deprecated `$old_form` variables in favor of `${new_form}` variables [#704](https://github.com/yonaskolb/XcodeGen/pull/704) @rcari
+- Updated XcodeProj to 7.4.0 [#709](https://github.com/yonaskolb/XcodeGen/pull/709) [#715](https://github.com/yonaskolb/XcodeGen/pull/715) @yonaskolb
+- Updated to Swift 5.1 [#714](https://github.com/yonaskolb/XcodeGen/pull/714) @yonaskolb
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.10.1...2.11.0)
+
+## 2.10.1
+
+#### Fixed
+- Add Base to knownRegions even if one doesn't exist [#694](https://github.com/yonaskolb/XcodeGen/pull/694) @bryansum
+- Fixed missing `onlyGenerateCoverageForSpecifiedTargets` issue [#700](https://github.com/yonaskolb/XcodeGen/pull/700) @kateinoigakukun
+- Fixed regression on dependencies `link` flag [#703](https://github.com/yonaskolb/XcodeGen/pull/703) @rcari
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.10.0...2.10.1)
+
+## 2.10.0
+
+#### Added
+- Support Target Reference to another project. [#655](https://github.com/yonaskolb/XcodeGen/pull/655) @kateinoigakukun
+- Added `coverageTargets` for test target. This enables to gather code coverage for specific targets. [#656](https://github.com/yonaskolb/XcodeGen/pull/656) @kateinoigakukun
+
+#### Fixed
+- Add base localisation by default even if no base localised files were found. Fixes warning in Xcode 11 [#685](https://github.com/yonaskolb/XcodeGen/pull/685) @yonaskolb
+- Don't generate CFBundleExecutable in default generated Info.plist for `bundle` target types [#689](https://github.com/yonaskolb/XcodeGen/pull/689) @FranzBusch
+- Fixed resolving relative paths with custom project destination [#681](https://github.com/yonaskolb/XcodeGen/pull/681) @giginet
+- Fixed resolving relative paths for Info.plist [#683](https://github.com/yonaskolb/XcodeGen/pull/683) @giginet
+- Fixed macOS unit test target TEST_HOST [#696](https://github.com/yonaskolb/XcodeGen/pull/696) @mjarvis
+
+#### Internal
+- Restructure targets [#698](https://github.com/yonaskolb/XcodeGen/pull/698) @yonaskolb
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.9.0...2.10.0)
+
+## 2.9.0
+
+#### Added
+- Added Scheme Templates [#672](https://github.com/yonaskolb/XcodeGen/pull/672) @bclymer
+
+#### Fixed
+- Fixed macOS unit test setting preset [#665](https://github.com/yonaskolb/XcodeGen/pull/665) @yonaskolb
+- Add `rcproject` files to sources build phase instead of resources [#669](https://github.com/yonaskolb/XcodeGen/pull/669) @Qusic
+- Prefer default configuration names for generated schemes [#673](https://github.com/yonaskolb/XcodeGen/pull/673) @giginet
+- Fixed some resource files being placed to "Recovered References" group [#679](https://github.com/yonaskolb/XcodeGen/pull/679) @nivanchikov
+
+#### Internal
+- Updated to SwiftCLI 5.3.2 [#667](https://github.com/yonaskolb/XcodeGen/pull/667) @giginet
+- Fixed tests in case-sensitive file system [#670](https://github.com/yonaskolb/XcodeGen/pull/670) @Qusic
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.8.0...2.9.0)
+
+## 2.8.0
+
+#### Added
+- Added support for Swift Package dependencies [#624](https://github.com/yonaskolb/XcodeGen/pull/624) @yonaskolb
+- Added `includes` to `sources` for a Target. This follows the same glob-style as `excludes` but functions as a way to only include files that match a specified pattern. Useful if you only want a certain file type, for example specifying `**/*.swift`. [#637](https://github.com/yonaskolb/XcodeGen/pull/637) @bclymer
+- Support `dylib` SDK. [#650](https://github.com/yonaskolb/XcodeGen/pull/650) @kateinoigakukun
+- Added `language` and `region` options for `run` and `test` scheme [#654](https://github.com/yonaskolb/XcodeGen/pull/654) @kateinoigakukun
+- Added `debugEnabled` option for `run` and `test` scheme [#657](https://github.com/yonaskolb/XcodeGen/pull/657) @kateinoigakukun
+
+#### Fixed
+- Expand template variable in Array of Any [#651](https://github.com/yonaskolb/XcodeGen/pull/651) @kateinoigakukun
+- Significantly improve performance when running with a large number files. [#658](https://github.com/yonaskolb/XcodeGen/pull/658) @kateinoigakukun
+- Removed some more diffs between the generated .pbxproj and when Xcode resaves it [#663](https://github.com/yonaskolb/XcodeGen/pull/663) @yonaskolb
+
+#### Internal
+- Removed needless `Array` initialization. [#661](https://github.com/yonaskolb/XcodeGen/pull/661) @RomanPodymov
+- Updated to XcodeProj 7.1.0 [#624](https://github.com/yonaskolb/XcodeGen/pull/624) @yonaskolb
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.7.0...2.8.0)
+
+## 2.7.0
+
+#### Added
+- Added Bash 4 style recursive globbing (`**/*`) in target sources `excludes` [#636](https://github.com/yonaskolb/XcodeGen/pull/636) @bclymer
+- Added ability to disable main thread checker in Schemes [#601](https://github.com/yonaskolb/XcodeGen/pull/601) @wag-miles
+
+#### Fixed
+- Fixed included specs that were referenced multiple times from duplicating content [#599](https://github.com/yonaskolb/XcodeGen/pull/599) @haritowa
+- Fixed `.orig` files being added to the project [#627](https://github.com/yonaskolb/XcodeGen/pull/627) @keith
+
+#### Changed
+- Allow linking of dependencies into static libraries when `link` is set to true [#635](https://github.com/yonaskolb/XcodeGen/pull/635) @kateinoigakukun
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.6.0...2.7.0)
+
 ## 2.6.0
 
 #### Added

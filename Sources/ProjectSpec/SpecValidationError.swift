@@ -1,4 +1,5 @@
 import Foundation
+import Version
 
 public struct SpecValidationError: Error, CustomStringConvertible {
 
@@ -16,8 +17,10 @@ public struct SpecValidationError: Error, CustomStringConvertible {
         case invalidTargetConfigFile(target: String, configFile: String, config: String)
         case invalidTargetSchemeConfigVariant(target: String, configVariant: String, configType: ConfigType)
         case invalidTargetSchemeTest(target: String, testTarget: String)
-        case invalidSchemeTarget(scheme: String, target: String)
+        case invalidSchemeTarget(scheme: String, target: String, action: String)
         case invalidSchemeConfig(scheme: String, config: String)
+        case invalidSwiftPackage(name: String, target: String)
+        case invalidLocalPackage(String)
         case invalidConfigFile(configFile: String, config: String)
         case invalidBuildSettingConfig(String)
         case invalidSettingsGroup(String)
@@ -27,7 +30,8 @@ public struct SpecValidationError: Error, CustomStringConvertible {
         case missingConfigForTargetScheme(target: String, configType: ConfigType)
         case missingDefaultConfig(configName: String)
         case invalidPerConfigSettings
-        case deprecatedUsageOfPlaceholder(placeholderName: String)
+        case invalidProjectReference(scheme: String, reference: String)
+        case invalidProjectReferencePath(ProjectReference)
 
         public var description: String {
             switch self {
@@ -47,8 +51,8 @@ public struct SpecValidationError: Error, CustomStringConvertible {
                 return "Target \(target.quoted) scheme has invalid test \(test.quoted)"
             case let .invalidConfigFile(configFile, config):
                 return "Invalid config file \(configFile.quoted) for config \(config.quoted)"
-            case let .invalidSchemeTarget(scheme, target):
-                return "Scheme \(scheme.quoted) has invalid build target \(target.quoted)"
+            case let .invalidSchemeTarget(scheme, target, action):
+                return "Scheme \(scheme.quoted) has invalid \(action) target \(target.quoted)"
             case let .invalidSchemeConfig(scheme, config):
                 return "Scheme \(scheme.quoted) has invalid build configuration \(config.quoted)"
             case let .invalidBuildSettingConfig(config):
@@ -61,14 +65,20 @@ public struct SpecValidationError: Error, CustomStringConvertible {
                 return "Invalid file group \(group.quoted)"
             case let .invalidConfigFileConfig(config):
                 return "Config file has invalid config \(config.quoted)"
+            case let .invalidSwiftPackage(name, target):
+                return "Target \(target.quoted) has an invalid package dependency \(name.quoted)"
+            case let .invalidLocalPackage(path):
+                return "Invalid local package \(path.quoted)"
             case let .missingConfigForTargetScheme(target, configType):
                 return "Target \(target.quoted) is missing a config of type \(configType.rawValue) to generate its scheme"
             case let .missingDefaultConfig(name):
                 return "Default configuration \(name) doesn't exist"
             case .invalidPerConfigSettings:
                 return "Settings that are for a specific config must go in \"configs\". \"base\" can be used for common settings"
-            case let .deprecatedUsageOfPlaceholder(placeholderName: placeholderName):
-                return "Usage of $\(placeholderName) is deprecated and will stop working in an upcoming version. Use ${\(placeholderName)} instead."
+            case let .invalidProjectReference(scheme, project):
+                return "Scheme \(scheme.quoted) has invalid project reference \(project.quoted)"
+            case let .invalidProjectReferencePath(reference):
+                return "Project reference \(reference.name) has a project file path that doesn't exist \"\(reference.path)\""
             }
         }
     }

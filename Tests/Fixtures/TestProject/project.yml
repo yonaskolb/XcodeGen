@@ -9,10 +9,15 @@ options:
   deploymentTarget:
     watchOS: 4.0
   groupSortPosition: top
+  preGenCommand: echo "This is a pre-gen command"
+  postGenCommand: scripts/script.sh
 fileGroups:
   - Configs
   - FileGroup
   - SomeFile
+projectReferences:
+  AnotherProject:
+    path: ./AnotherProject/AnotherProject.xcodeproj
 configFiles:
   Test Debug: Configs/config.xcconfig
 targets:
@@ -48,6 +53,7 @@ targets:
       - target: XPC Service
       - sdk: Contacts.framework
       - sdk: libc++.tbd
+      - sdk: libz.dylib
 
   App_iOS:
     type: application
@@ -71,14 +77,25 @@ targets:
       - path: Folder
         type: folder
         buildPhase: none
+        group: CustomGroup
       - path: Mintfile
         type: file
         buildPhase: none
+        group: CustomGroup
+      - path: Group/File1.swift
+        group: CustomGroup
+      - path: Group2/File2.swift
+        group: CustomGroup
       - path: CopyFiles
         buildPhase:
           copyFiles:
             destination: productsDirectory
             subpath: include/$(PRODUCT_NAME)
+      - path: Resources/example.mp4
+        buildPhase: resources
+        resourceTags:
+          - tag1
+          - tag2
     settings:
       INFOPLIST_FILE: App_iOS/Info.plist
       PRODUCT_BUNDLE_IDENTIFIER: com.project.app
@@ -91,11 +108,15 @@ targets:
       - target: App_watchOS
       - target: iMessageApp
       - sdk: Contacts.framework
+      - bundle: BundleX.bundle
+      - target: AnotherProject/ExternalTarget
     scheme:
       testTargets:
         - App_iOS_Tests
         - App_iOS_UITests
       gatherCoverageData: true
+      disableMainThreadChecker: true
+      stopOnEveryMainThreadCheckerIssue: true
       configVariants:
         - Test
         - Staging
@@ -126,7 +147,7 @@ targets:
   App_watchOS:
       type: application.watchapp2
       platform: watchOS
-      deploymentTarget: 3.0
+      deploymentTarget: 4.0
       sources:
         App_watchOS
       settings:
@@ -149,7 +170,7 @@ targets:
   iMessageApp:
     type: application.messages
     platform: iOS
-    sources: iMessage
+    sources: iMessageApp
     scheme: {}
     dependencies:
       - target: iMessageExtension
@@ -157,7 +178,7 @@ targets:
   iMessageExtension:
     type: app-extension.messages
     platform: iOS
-    sources: iMessage MessagesExtension
+    sources: iMessageExtension
     settings:
       PRODUCT_BUNDLE_IDENTIFIER: com.project.iMessageApp.extension
 
@@ -165,7 +186,7 @@ targets:
     type: app-extension.messages-sticker-pack
     platform: iOS
     sources:       
-      - path: iMessage Stickers
+      - path: iMessageStickers
 
   StaticLibrary_ObjC:
     type: library.static
@@ -226,6 +247,13 @@ targets:
     sources: App_iOS_UITests
     dependencies:
       - target: App_iOS
+      
+  App_macOS_Tests:
+    type: bundle.unit-test
+    platform: macOS
+    sources: App_macOS_Tests
+    dependencies:
+      - target: App_macOS
 
   XPC Service:
     type: xpc-service
@@ -255,10 +283,16 @@ schemes:
         argument.with.dot: YES
     test:
       gatherCoverageData: true
+      language: ja
+      region: en
   App_Scheme:
     build:
       targets:
-        App_iOS: all
+        App_iOS: all    
+    run:
+      simulateLocation:
+        allow: true
+        defaultLocation: Honolulu, HI, USA
     test:
       gatherCoverageData: true
       targets:

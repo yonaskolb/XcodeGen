@@ -13,10 +13,11 @@ public class ProjectGenerator {
         self.project = project
     }
 
-    public func generateXcodeProject() throws -> XcodeProj {
+    public func generateXcodeProject(in projectDirectory: Path? = nil) throws -> XcodeProj {
 
         // generate PBXProj
-        let pbxProjGenerator = PBXProjGenerator(project: project)
+        let pbxProjGenerator = PBXProjGenerator(project: project,
+                                                projectDirectory: projectDirectory)
         let pbxProj = try pbxProjGenerator.generate()
 
         // generate Schemes
@@ -31,7 +32,7 @@ public class ProjectGenerator {
     }
 
     func generateWorkspace() throws -> XCWorkspace {
-        let dataElement: XCWorkspaceDataElement = .file(XCWorkspaceDataFileRef(location: .self("")))
+        let dataElement: XCWorkspaceDataElement = .file(XCWorkspaceDataFileRef(location: .self(project.defaultProjectPath.lastComponent)))
         let workspaceData = XCWorkspaceData(children: [dataElement])
         return XCWorkspace(data: workspaceData)
     }

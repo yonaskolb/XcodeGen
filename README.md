@@ -10,9 +10,6 @@
   <a href="https://github.com/yonaskolb/XcodeGen/releases">
     <img src="https://img.shields.io/github/release/yonaskolb/xcodegen.svg?style=for-the-badge"/>
   </a>
-  <a href="https://circleci.com/gh/yonaskolb/XcodeGen">
-    <img src="https://img.shields.io/circleci/project/github/yonaskolb/Beak.svg?style=for-the-badge"/>
-  </a>
   <a href="https://github.com/yonaskolb/XcodeGen/blob/master/LICENSE">
     <img src="https://img.shields.io/github/license/yonaskolb/XcodeGen.svg?style=for-the-badge"/>
   </a>
@@ -42,6 +39,10 @@ Given a very simple project spec file like this:
 name: MyProject
 options:
   bundleIdPrefix: com.myapp
+packages:
+  Yams:
+    url: https://github.com/jpsim/Yams
+    from: 2.0.0
 targets:
   MyApp:
     type: application
@@ -60,6 +61,7 @@ targets:
       - framework: Vendor/MyFramework.framework
       - sdk: Contacts.framework
       - sdk: libc++.tbd
+      - package: Yams
   MyFramework:
     type: framework
     platform: iOS
@@ -69,7 +71,7 @@ A project would be created with 2 connected targets, with all the required confi
 
 ## Installing
 
-Make sure Xcode 10.2 is installed first.
+Make sure Xcode 11 is installed first.
 
 ### [Mint](https://github.com/yonaskolb/mint)
 ```sh
@@ -81,7 +83,7 @@ mint install yonaskolb/xcodegen
 ```shell
 git clone https://github.com/yonaskolb/XcodeGen.git
 cd XcodeGen
-make
+make install
 ```
 
 ### Homebrew
@@ -105,7 +107,7 @@ swift run xcodegen
 Add the following to your Package.swift file's dependencies:
 
 ```swift
-.package(url: "https://github.com/yonaskolb/XcodeGen.git", from: "2.6.0"),
+.package(url: "https://github.com/yonaskolb/XcodeGen.git", from: "2.15.0"),
 ```
 
 And then import wherever needed: `import XcodeGenKit`
@@ -128,7 +130,7 @@ Options:
 - **--use-cache**: Used to prevent unnecessarily generating the project. If this is set, then a cache file will be written to when a project is generated. If `xcodegen` is later run but the spec and all the files it contains are the same, the project won't be generated.
 - **--cache-path**: A custom path to use for your cache file. This defaults to `~/.xcodegen/cache/{PROJECT_SPEC_PATH_HASH}`
 
-Use `xcodegen help` to see more detailed usage information.
+There are other commands as well such as `xcodegen dump` which lets out output the resolved spec in many different formats, or write it to a file. Use `xcodegen help` to see more detailed usage information.
 
 ## Editing
 ```shell

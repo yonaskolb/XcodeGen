@@ -4,25 +4,19 @@ import ProjectSpec
 extension Project {
 
     var xcodeVersion: String {
-        return XCodeVersion.parse(options.xcodeVersion ?? "10.2")
+        XCodeVersion.parse(options.xcodeVersion ?? "10.2")
     }
 
     var schemeVersion: String {
-        return "1.3"
+        "1.3"
     }
 
     var compatibilityVersion: String {
-        return "Xcode 10.0"
+        "Xcode 10.0"
     }
 
     var objectVersion: UInt {
-        return 51
-    }
-
-    public func validateMinimumXcodeGenVersion(_ xcodeGenVersion: Version) throws {
-        if let minimumXcodeGenVersion = options.minimumXcodeGenVersion, xcodeGenVersion < minimumXcodeGenVersion {
-            throw SpecValidationError.ValidationError.invalidXcodeGenVersion(minimumVersion: minimumXcodeGenVersion, version: xcodeGenVersion)
-        }
+        51
     }
 }
 

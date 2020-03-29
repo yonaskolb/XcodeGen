@@ -16,3 +16,8 @@ public func loadYamlDictionary(path: Path) throws -> [String: Any] {
     }
     return yaml as? [String: Any] ?? [:]
 }
+
+public func dumpYamlDictionary(_ dictionary: [String: Any], path: Path) throws {
+    let string: String = try Yams.dump(object: dictionary)
+    try path.write(string)
+}

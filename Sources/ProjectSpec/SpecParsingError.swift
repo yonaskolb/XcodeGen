@@ -4,7 +4,9 @@ public enum SpecParsingError: Error, CustomStringConvertible {
     case unknownTargetType(String)
     case unknownTargetPlatform(String)
     case invalidDependency([String: Any])
+    case unknownPackageRequirement([String: Any])
     case invalidSourceBuildPhase(String)
+    case invalidTargetReference(String)
     case invalidVersion(String)
 
     public var description: String {
@@ -17,8 +19,12 @@ public enum SpecParsingError: Error, CustomStringConvertible {
             return "Unknown Target dependency: \(dependency)"
         case let .invalidSourceBuildPhase(error):
             return "Invalid Source Build Phase: \(error)"
+        case let .invalidTargetReference(targetReference):
+            return "Invalid Target Reference Syntax: \(targetReference)"
         case let .invalidVersion(version):
             return "Invalid version: \(version)"
+        case let .unknownPackageRequirement(package):
+            return "Unknown package requirement: \(package)"
         }
     }
 }

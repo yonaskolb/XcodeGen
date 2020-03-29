@@ -9,14 +9,17 @@ public struct TargetSource: Equatable {
 
     public var path: String
     public var name: String?
+    public var group: String?
     public var compilerFlags: [String]
     public var excludes: [String]
+    public var includes: [String]
     public var type: SourceType?
     public var optional: Bool
     public var buildPhase: BuildPhase?
     public var headerVisibility: HeaderVisibility?
     public var createIntermediateGroups: Bool?
     public var attributes: [String]
+    public var resourceTags: [String]
 
     public enum HeaderVisibility: String {
         case `public`
@@ -123,25 +126,31 @@ public struct TargetSource: Equatable {
     public init(
         path: String,
         name: String? = nil,
+        group: String? = nil,
         compilerFlags: [String] = [],
         excludes: [String] = [],
+        includes: [String] = [],
         type: SourceType? = nil,
         optional: Bool = optionalDefault,
         buildPhase: BuildPhase? = nil,
         headerVisibility: HeaderVisibility? = nil,
         createIntermediateGroups: Bool? = nil,
-        attributes: [String] = []
+        attributes: [String] = [],
+        resourceTags: [String] = []
     ) {
         self.path = path
         self.name = name
+        self.group = group
         self.compilerFlags = compilerFlags
         self.excludes = excludes
+        self.includes = includes
         self.type = type
         self.optional = optional
         self.buildPhase = buildPhase
         self.headerVisibility = headerVisibility
         self.createIntermediateGroups = createIntermediateGroups
         self.attributes = attributes
+        self.resourceTags = resourceTags
     }
 }
 
@@ -165,6 +174,7 @@ extension TargetSource: JSONObjectConvertible {
     public init(jsonDictionary: JSONDictionary) throws {
         path = try jsonDictionary.json(atKeyPath: "path")
         name = jsonDictionary.json(atKeyPath: "name")
+        group = jsonDictionary.json(atKeyPath: "group")
 
         let maybeCompilerFlagsString: String? = jsonDictionary.json(atKeyPath: "compilerFlags")
         let maybeCompilerFlagsArray: [String]? = jsonDictionary.json(atKeyPath: "compilerFlags")
@@ -173,6 +183,7 @@ extension TargetSource: JSONObjectConvertible {
 
         headerVisibility = jsonDictionary.json(atKeyPath: "headerVisibility")
         excludes = jsonDictionary.json(atKeyPath: "excludes") ?? []
+        includes = jsonDictionary.json(atKeyPath: "includes") ?? []
         type = jsonDictionary.json(atKeyPath: "type")
         optional = jsonDictionary.json(atKeyPath: "optional") ?? TargetSource.optionalDefault
 
@@ -184,6 +195,7 @@ extension TargetSource: JSONObjectConvertible {
 
         createIntermediateGroups = jsonDictionary.json(atKeyPath: "createIntermediateGroups")
         attributes = jsonDictionary.json(atKeyPath: "attributes") ?? []
+        resourceTags = jsonDictionary.json(atKeyPath: "resourceTags") ?? []
     }
 }
 
@@ -192,11 +204,14 @@ extension TargetSource: JSONEncodable {
         var dict: [String: Any?] = [
             "compilerFlags": compilerFlags,
             "excludes": excludes,
+            "includes": includes,
             "name": name,
+            "group": group,
             "headerVisibility": headerVisibility?.rawValue,
             "type": type?.rawValue,
             "buildPhase": buildPhase?.toJSONValue(),
             "createIntermediateGroups": createIntermediateGroups,
+            "resourceTags": resourceTags,
         ]
 
         if optional != TargetSource.optionalDefault {
@@ -262,9 +277,9 @@ extension TargetSource.BuildPhase.CopyFilesSettings: JSONObjectConvertible {
 
 extension TargetSource.BuildPhase.CopyFilesSettings: JSONEncodable {
     public func toJSONValue() -> Any {
-        return [
+        [
             "destination": destination.rawValue,
-            "subpath": subpath
+            "subpath": subpath,
         ]
     }
 }
@@ -272,7 +287,7 @@ extension TargetSource.BuildPhase.CopyFilesSettings: JSONEncodable {
 extension TargetSource: PathContainer {
 
     static var pathProperties: [PathProperty] {
-        return [
+        [
             .string("path"),
         ]
     }
