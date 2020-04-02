@@ -4,6 +4,7 @@
 
 #### Fixed
 - Fixed issue which caused watch app schemes to be generated incorrectly, preventing these apps from launching. [#798](https://github.com/yonaskolb/XcodeGen/pull/798) @daltonclaybrook
+- Added build presets for the target type `framework.static`. [#819](https://github.com/yonaskolb/XcodeGen/pull/819) @acecilia
 
 ## 2.15.0
 
