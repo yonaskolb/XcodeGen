@@ -30,6 +30,7 @@ class Mutex<T> {
     }
 }
 
+// Note: this class can be accessed on multiple threads. It must therefore stay thread-safe.
 class CarthageVersionLoader {
 
     private let buildPath: Path
