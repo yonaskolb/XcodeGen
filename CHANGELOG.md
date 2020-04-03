@@ -2,7 +2,7 @@
 
 ## Next Version
 #### Added
-- Improve speed of metadata parsing and dependency resolution. [#803](https://github.com/yonaskolb/XcodeGen/pull/803/files) @michaeleisel
+- Improve speed of metadata parsing and dependency resolution. [#803](https://github.com/yonaskolb/XcodeGen/pull/803) @michaeleisel
 
 #### Fixed
 - Fixed issue which caused watch app schemes to be generated incorrectly, preventing these apps from launching. [#798](https://github.com/yonaskolb/XcodeGen/pull/798) @daltonclaybrook
