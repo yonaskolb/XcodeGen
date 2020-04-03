@@ -257,14 +257,13 @@ class SchemeGeneratorTests: XCTestCase {
 
                 let xcscheme = try unwrap(xcodeProject.sharedData?.schemes.first)
 
-                try expect(xcscheme.launchAction?.preActions.count) == 1
-                try expect(xcscheme.launchAction?.preActions.first?.title) == "Run"
-                try expect(xcscheme.launchAction?.preActions.first?.scriptText) == "do"
+                try expect(xcscheme.buildAction?.preActions.count) == 1
+                try expect(xcscheme.buildAction?.preActions.first?.title) == "Run"
+                try expect(xcscheme.buildAction?.preActions.first?.scriptText) == "do"
+                try expect(xcscheme.buildAction?.postActions.first?.environmentBuildable?.blueprintName) == "MyApp"
 
-                try expect(xcscheme.testAction?.postActions.count) == 1
-                try expect(xcscheme.testAction?.postActions.first?.title) == "Run2"
-                try expect(xcscheme.testAction?.postActions.first?.scriptText) == "post"
-                try expect(xcscheme.testAction?.postActions.first?.environmentBuildable?.blueprintName) == "MyApp"
+                try expect(xcscheme.launchAction?.preActions.count) == 0
+                try expect(xcscheme.testAction?.postActions.count) == 0
             }
 
             $0.it("generates scheme using external project file") {
