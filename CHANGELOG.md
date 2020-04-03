@@ -1,6 +1,8 @@
 # Change Log
 
 ## Next Version
+#### Added
+- Improve speed of metadata parsing and dependency resolution. [#803](https://github.com/yonaskolb/XcodeGen/pull/803) @michaeleisel
 
 ## 2.15.1
 
