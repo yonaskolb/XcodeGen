@@ -927,9 +927,7 @@ public class PBXProjGenerator {
         }
 
         let sourcesBuildPhaseFiles = getBuildFilesForPhase(.sources)
-        // Sticker packs should not include a compile sources build phase as they
-        // are purely based on a set of image files, and nothing else.
-        let shouldSkipSourcesBuildPhase = sourcesBuildPhaseFiles.isEmpty && target.type == .stickerPack
+        let shouldSkipSourcesBuildPhase = sourcesBuildPhaseFiles.isEmpty && target.type.canSkipCompileSourcesBuildPhase
         if !shouldSkipSourcesBuildPhase {
             let sourcesBuildPhase = addObject(PBXSourcesBuildPhase(files: sourcesBuildPhaseFiles))
             buildPhases.append(sourcesBuildPhase)
