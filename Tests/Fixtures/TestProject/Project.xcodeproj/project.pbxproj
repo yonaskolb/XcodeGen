@@ -1441,7 +1441,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1FC6945BE13C2202A2BCA3BC /* Build configuration list for PBXNativeTarget "iMessageApp" */;
 			buildPhases = (
-				D067D70CFD13DFBED478C228 /* Sources */,
 				61001E265009194959C2CF36 /* Resources */,
 				2F0735A423E554B267BBA0A5 /* Embed App Extensions */,
 			);
@@ -2137,13 +2136,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		AF7B22EF5863A5280B535896 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		D067D70CFD13DFBED478C228 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
