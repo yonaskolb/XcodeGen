@@ -594,6 +594,7 @@ class ProjectGeneratorTests: XCTestCase {
                     "FrameworkE.framework",
                     "FrameworkF.framework",
                     "CarthageA.framework",
+                    "CarthageB.framework",
                     "CarthageC.framework",
                 ])
                 expectedEmbeddedFrameworks[iosFrameworkB.name] = Set([
@@ -623,10 +624,12 @@ class ProjectGeneratorTests: XCTestCase {
                     "FrameworkZ.framework",
                     "FrameworkX.framework",
                     "CarthageZ.framework",
+                    "FrameworkF.framework",
                     "FrameworkC.framework",
                     iosFrameworkB.filename,
                     "FrameworkD.framework",
                     "CarthageA.framework",
+                    "CarthageB.framework",
                     "CarthageD.framework",
                 ])
                 expectedEmbeddedFrameworks[appTest.name] = Set([
@@ -710,7 +713,7 @@ class ProjectGeneratorTests: XCTestCase {
                     if !expectedLinkedFiles.isEmpty {
                         let linkFrameworks = (frameworkPhases[0].files ?? [])
                             .compactMap { $0.file?.nameOrPath }
-                        try expect(Set(linkFrameworks)) == expectedLinkedFiles
+                        try expect(Array(Set(linkFrameworks)).sorted()) == Array(expectedLinkedFiles).sorted()
                     }
 
                     var expectedCopyFilesPhasesCount = 0
