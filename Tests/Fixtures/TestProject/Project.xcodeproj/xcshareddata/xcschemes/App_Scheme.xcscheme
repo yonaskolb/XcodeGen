@@ -64,10 +64,6 @@
       </MacroExpansion>
       <CommandLineArguments>
       </CommandLineArguments>
-      <AdditionalOptions>
-      </AdditionalOptions>
-      <CodeCoverageTargets>
-      </CodeCoverageTargets>
    </TestAction>
    <LaunchAction
       buildConfiguration = "Production Debug"
@@ -95,8 +91,6 @@
       </LocationScenarioReference>
       <CommandLineArguments>
       </CommandLineArguments>
-      <AdditionalOptions>
-      </AdditionalOptions>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Production Release"

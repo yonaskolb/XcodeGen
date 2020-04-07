@@ -7,3 +7,4 @@ These are a bunch of real world examples of XcodeGen project specs. Feel free to
 - [johndpope/swift-models](https://github.com/johndpope/swift-models/tree/stable/Inference)
 - [atelier-socle/AppRepositoryTemplate](https://github.com/atelier-socle/AppRepositoryTemplate/blob/master/project.yml)
 - [atelier-socle/FrameworkRepositoryTemplate](https://github.com/atelier-socle/FrameworkRepositoryTemplate/blob/master/project.yml)
+- [scelis/XcodeGen-TestStickers](https://github.com/scelis/XcodeGen-TestStickers/blob/master/project.yml)

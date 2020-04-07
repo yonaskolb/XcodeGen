@@ -296,7 +296,7 @@ This will provide default build settings for a certain platform. It can be any o
 **Multi Platform targets**
 
 You can also specify an array of platforms. This will generate a target for each platform.
-If `deploymenTarget` is specified for a multi platform target, it can have different values per platform similar to how it's defined in [Options](#options). See below for an example.
+If `deploymentTarget` is specified for a multi platform target, it can have different values per platform similar to how it's defined in [Options](#options). See below for an example.
 If you reference the string `${platform}` anywhere within the target spec, that will be replaced with the platform.
 
 The generated targets by default will have a suffix of `_${platform}` applied, you can change this by specifying a `platformSuffix` or `platformPrefix`.
@@ -760,6 +760,7 @@ The different actions share some properties:
 - [ ] **region**: **String** - `run` and `test` actions can define a language that is used for Application Region
 - [ ] **debugEnabled**: **Bool** - `run` and `test` actions can define a whether debugger should be used. This defaults to true.
 - [ ] **simulateLocation**: **[Simulate Location](#simulate-location)** - `run` action can define a simulated location
+- [ ] **launchAutomaticallySubstyle**: **String** - `run` action can define the launch automatically substyle ('2' for extensions).
 
 ### Execution Action
 

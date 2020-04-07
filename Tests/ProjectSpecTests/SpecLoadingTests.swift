@@ -771,6 +771,10 @@ class SpecLoadingTests: XCTestCase {
                             ],
                         ],
                     ],
+                    "run": [
+                        "config": "debug",
+                        "launchAutomaticallySubstyle": 2,
+                    ],
                     "test": [
                         "config": "debug",
                         "targets": [
@@ -806,6 +810,12 @@ class SpecLoadingTests: XCTestCase {
                 try expect(scheme.build.parallelizeBuild) == false
                 try expect(scheme.build.buildImplicitDependencies) == false
 
+                let expectedRun = Scheme.Run(
+                    config: "debug",
+                    launchAutomaticallySubstyle: "2"
+                )
+                try expect(scheme.run) == expectedRun
+
                 let expectedTest = Scheme.Test(
                     config: "debug",
                     gatherCoverageData: true,
@@ -835,6 +845,7 @@ class SpecLoadingTests: XCTestCase {
                             ["variable": "ENVIRONMENT", "value": "VARIABLE"],
                             ["variable": "OTHER_ENV_VAR", "value": "VAL", "isEnabled": false],
                         ],
+                        "launchAutomaticallySubstyle": "2"
                     ],
                     "test": [
                         "environmentVariables": [
@@ -864,9 +875,24 @@ class SpecLoadingTests: XCTestCase {
                 ]
 
                 try expect(scheme.run?.environmentVariables) == expectedRunVariables
+                try expect(scheme.run?.launchAutomaticallySubstyle) == "2"
                 try expect(scheme.test?.environmentVariables) == expectedTestVariables
                 try expect(scheme.profile?.config) == "Release"
                 try expect(scheme.profile?.environmentVariables.isEmpty) == true
+            }
+
+            $0.it("parses alternate schemes variables") {
+                let schemeDictionary: [String: Any] = [
+                    "build": [
+                        "targets": ["Target1": "all"],
+                    ],
+                    "run": [
+                        "launchAutomaticallySubstyle": 2, // Both integer and string supported
+                    ],
+                ]
+
+                let scheme = try Scheme(name: "Scheme", jsonDictionary: schemeDictionary)
+                try expect(scheme.run?.launchAutomaticallySubstyle) == "2"
             }
 
             $0.it("parses scheme templates") {

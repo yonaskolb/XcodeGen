@@ -241,7 +241,8 @@ public class SchemeGenerator {
             commandlineArguments: launchCommandLineArgs,
             environmentVariables: launchVariables,
             language: scheme.run?.language,
-            region: scheme.run?.region
+            region: scheme.run?.region,
+            launchAutomaticallySubstyle: scheme.run?.launchAutomaticallySubstyle
         )
 
         let profileAction = XCScheme.ProfileAction(

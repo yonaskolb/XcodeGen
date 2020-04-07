@@ -107,6 +107,7 @@ public struct Scheme: Equatable {
         public var stopOnEveryMainThreadCheckerIssue: Bool
         public var language: String?
         public var region: String?
+        public var launchAutomaticallySubstyle: String?
         public var debugEnabled: Bool
         public var simulateLocation: SimulateLocation?
 
@@ -120,6 +121,7 @@ public struct Scheme: Equatable {
             stopOnEveryMainThreadCheckerIssue: Bool = stopOnEveryMainThreadCheckerIssueDefault,
             language: String? = nil,
             region: String? = nil,
+            launchAutomaticallySubstyle: String? = nil,
             debugEnabled: Bool = debugEnabledDefault,
             simulateLocation: SimulateLocation? = nil
         ) {
@@ -132,6 +134,7 @@ public struct Scheme: Equatable {
             self.stopOnEveryMainThreadCheckerIssue = stopOnEveryMainThreadCheckerIssue
             self.language = language
             self.region = region
+            self.launchAutomaticallySubstyle = launchAutomaticallySubstyle
             self.debugEnabled = debugEnabled
             self.simulateLocation = simulateLocation
         }
@@ -349,6 +352,14 @@ extension Scheme.Run: JSONObjectConvertible {
         region = jsonDictionary.json(atKeyPath: "region")
         debugEnabled = jsonDictionary.json(atKeyPath: "debugEnabled") ?? Scheme.Run.debugEnabledDefault
         simulateLocation = jsonDictionary.json(atKeyPath: "simulateLocation")
+
+        // launchAutomaticallySubstyle is defined as a String in XcodeProj but its value is often
+        // an integer. Parse both to be nice.
+        if let int: Int = jsonDictionary.json(atKeyPath: "launchAutomaticallySubstyle") {
+            launchAutomaticallySubstyle = String(int)
+        } else if let string: String = jsonDictionary.json(atKeyPath: "launchAutomaticallySubstyle") {
+            launchAutomaticallySubstyle = string
+        }
     }
 }
 
@@ -362,6 +373,7 @@ extension Scheme.Run: JSONEncodable {
             "config": config,
             "language": language,
             "region": region,
+            "launchAutomaticallySubstyle": launchAutomaticallySubstyle,
         ]
 
         if disableMainThreadChecker != Scheme.Run.disableMainThreadCheckerDefault {
