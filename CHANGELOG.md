@@ -4,11 +4,9 @@
 #### Added
 - Improve speed of metadata parsing and dependency resolution. [#803](https://github.com/yonaskolb/XcodeGen/pull/803) @michaeleisel
 - Improve support for iOS sticker packs and add support for `launchAutomaticallySubstyle` to run schemes. [#824](https://github.com/yonaskolb/XcodeGen/pull/824) @scelis
+- Added an ability to set an order of groups with `options.groupOrdering` [#480](https://github.com/yonaskolb/XcodeGen/pull/613) @Beniamiiin
 
 ## 2.15.1
-
-#### Added
-- Added an ability to set an order of groups via `options.groupOrder` [#480](https://github.com/yonaskolb/XcodeGen/pull/613) @Beniamiiin
 
 #### Fixed
 - Fixed issue which caused watch app schemes to be generated incorrectly, preventing these apps from launching. [#798](https://github.com/yonaskolb/XcodeGen/pull/798) @daltonclaybrook

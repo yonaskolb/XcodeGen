@@ -2,7 +2,7 @@ import Foundation
 import JSONUtilities
 
 /// Describes an order of groups.
-public struct GroupOrder: Equatable {
+public struct GroupOrdering: Equatable {
     
     public enum FileSortPosition: String {
         /// groups are at the top
@@ -25,7 +25,7 @@ public struct GroupOrder: Equatable {
     
 }
 
-extension GroupOrder: JSONObjectConvertible {
+extension GroupOrdering: JSONObjectConvertible {
     
     public init(jsonDictionary: JSONDictionary) throws {
         pattern = jsonDictionary.json(atKeyPath: "pattern") ?? ""
