@@ -18,6 +18,9 @@ class ProjectCommand: Command {
     @Flag("-n", "--no-env", description: "Disable environment variable expansions")
     var disableEnvExpansion: Bool
 
+    @Key("-r", "--project-root", description: "The path to the project root directory. Defaults to the directory containing the project spec.")
+    var projectRoot: Path?
+
     init(version: Version, name: String, shortDescription: String) {
         self.version = version
         self.name = name
@@ -38,7 +41,7 @@ class ProjectCommand: Command {
         let variables: [String: String] = disableEnvExpansion ? [:] : ProcessInfo.processInfo.environment
 
         do {
-            project = try specLoader.loadProject(path: projectSpecPath, variables: variables)
+            project = try specLoader.loadProject(path: projectSpecPath, projectRoot: projectRoot, variables: variables)
         } catch {
             throw GenerationError.projectSpecParsingError(error)
         }
