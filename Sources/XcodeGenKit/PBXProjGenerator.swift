@@ -941,7 +941,15 @@ public class PBXProjGenerator {
         }
 
         let swiftObjCInterfaceHeader = project.getCombinedBuildSetting("SWIFT_OBJC_INTERFACE_HEADER_NAME", target: target, config: project.configs[0]) as? String
-        let swiftInstallObjCHeader = project.getCombinedBuildSetting("SWIFT_INSTALL_OBJC_HEADER", target: target, config: project.configs[0]) as? Bool
+        let swiftInstallObjCHeaderValue = project.getCombinedBuildSetting("SWIFT_INSTALL_OBJC_HEADER", target: target, config: project.configs[0])
+
+        var swiftInstallObjCHeader = true // Xcode default
+
+        if let boolValue = swiftInstallObjCHeaderValue as? Bool {
+            swiftInstallObjCHeader = boolValue
+        } else if let stringValue = swiftInstallObjCHeaderValue as? String {
+            swiftInstallObjCHeader = stringValue == "YES"
+        }
 
         if target.type == .staticLibrary
             && swiftObjCInterfaceHeader != ""
