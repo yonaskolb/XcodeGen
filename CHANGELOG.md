@@ -11,8 +11,7 @@
 - Fixed issue when generating projects for paths with a dot in the folder for swift sources. [#826](https://github.com/yonaskolb/XcodeGen/pull/826) @asifmohd
 - Prefix static library target filenames with 'lib' to match Xcode. [#831](https://github.com/yonaskolb/XcodeGen/pull/831) @ileitch
 - Fixed duplicate addition of carthage static frameworks. [#829](https://github.com/yonaskolb/XcodeGen/pull/829) @funzin
-
-#### Fixed
+- Fix handling of SWIFT_INSTALL_OBJC_HEADER when its value is YES/NO. [#827](https://github.com/yonaskolb/XcodeGen/pull/827) @ileitch
 - Set `preActions` and `postActions` on the `build` action of a TargetScheme instead of the other actions. [#823](https://github.com/yonaskolb/XcodeGen/pull/823) @brentleyjones
 
 ## 2.15.1
