@@ -413,12 +413,14 @@ class SourceGenerator {
         let children = try getSourceChildren(targetSource: targetSource, dirPath: path, excludePaths: excludePaths, includePaths: includePaths)
 
         let createIntermediateGroups = targetSource.createIntermediateGroups ?? project.options.createIntermediateGroups
+        let directoryExtensionsToSkip = ["lproj", "bundle", "xcassets", "xcdatamodeld"]
 
         let directories = children
-            .filter { $0.isDirectory && $0.extension != "lproj" && $0.extension != "xcassets" && $0.extension != "bundle" && $0.extension != "xcdatamodeld" }
+            .filter { $0.isDirectory && !directoryExtensionsToSkip.contains($0.extension ?? "") }
 
+        let whitelistedDirectoryExtensionsForFilePath = ["xcdatamodeld", "xcdatamodel" , "xcassets" , "intentdefinition"]
         let filePaths = children
-            .filter { $0.isFile || $0.extension != nil && $0.extension != "lproj" && ($0.extension == "xcdatamodeld" || $0.extension == "xcdatamodel" || $0.extension == "xcassets" || $0.extension == "intentdefinition" || !$0.isDirectory) }
+            .filter { $0.isFile || $0.extension != nil && $0.extension != "lproj" && (whitelistedDirectoryExtensionsForFilePath.contains($0.extension ?? "") || !$0.isDirectory) }
 
         let localisedDirectories = children
             .filter { $0.extension == "lproj" }
