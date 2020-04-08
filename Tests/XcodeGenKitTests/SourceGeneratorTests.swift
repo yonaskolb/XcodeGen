@@ -62,6 +62,8 @@ class SourceGeneratorTests: XCTestCase {
                     - a.swift
                     - B:
                       - b.swift
+                    - C2.0:
+                      - c.swift
                 """
                 try createDirectories(directories)
 
@@ -71,6 +73,7 @@ class SourceGeneratorTests: XCTestCase {
                 let pbxProj = try project.generatePbxProj()
                 try pbxProj.expectFile(paths: ["Sources", "A", "a.swift"], buildPhase: .sources)
                 try pbxProj.expectFile(paths: ["Sources", "A", "B", "b.swift"], buildPhase: .sources)
+                try pbxProj.expectFile(paths: ["Sources", "A", "C2.0", "c.swift"], buildPhase: .sources)
             }
 
             $0.it("supports frameworks in sources") {
@@ -400,12 +403,15 @@ class SourceGeneratorTests: XCTestCase {
                     - B:
                       - b.swift
                       - c.jpg
+                    - D2.0:
+                      - d.swift
                 """
                 try createDirectories(directories)
 
                 let target = Target(name: "Test", type: .application, platform: .iOS, sources: [
                     "Sources/A/a.swift",
                     "Sources/A/B/b.swift",
+                    "Sources/A/D2.0/d.swift",
                     "Sources/A/Assets.xcassets",
                     "Sources/A/B/c.jpg",
                 ])
@@ -414,6 +420,7 @@ class SourceGeneratorTests: XCTestCase {
                 let pbxProj = try project.generatePbxProj()
                 try pbxProj.expectFile(paths: ["Sources/A", "a.swift"], names: ["A", "a.swift"], buildPhase: .sources)
                 try pbxProj.expectFile(paths: ["Sources/A/B", "b.swift"], names: ["B", "b.swift"], buildPhase: .sources)
+                try pbxProj.expectFile(paths: ["Sources/A/D2.0", "d.swift"], names: ["D2.0", "d.swift"], buildPhase: .sources)
                 try pbxProj.expectFile(paths: ["Sources/A/B", "c.jpg"], names: ["B", "c.jpg"], buildPhase: .resources)
                 try pbxProj.expectFile(paths: ["Sources/A", "Assets.xcassets"], names: ["A", "Assets.xcassets"], buildPhase: .resources)
             }
