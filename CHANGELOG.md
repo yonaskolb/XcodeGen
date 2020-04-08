@@ -7,6 +7,7 @@
 
 #### Fixed
 - Fixed issue when linking and embeding static frameworks: they should be linked and NOT embed. [#820](https://github.com/yonaskolb/XcodeGen/pull/820) @acecilia
+- Fixed issue when generating projects for paths with a dot in the folder for swift sources. [#826](https://github.com/yonaskolb/XcodeGen/pull/826)
 
 ## 2.15.1
 
