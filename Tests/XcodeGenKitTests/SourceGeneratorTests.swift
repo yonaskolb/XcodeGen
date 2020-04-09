@@ -405,6 +405,8 @@ class SourceGeneratorTests: XCTestCase {
                       - c.jpg
                     - D2.0:
                       - d.swift
+                    - E.bundle:
+                      - e.json
                 """
                 try createDirectories(directories)
 
@@ -413,6 +415,7 @@ class SourceGeneratorTests: XCTestCase {
                     "Sources/A/B/b.swift",
                     "Sources/A/D2.0/d.swift",
                     "Sources/A/Assets.xcassets",
+                    "Sources/A/E.bundle/e.json",
                     "Sources/A/B/c.jpg",
                 ])
                 let project = Project(basePath: directoryPath, name: "Test", targets: [target])
@@ -423,6 +426,7 @@ class SourceGeneratorTests: XCTestCase {
                 try pbxProj.expectFile(paths: ["Sources/A/D2.0", "d.swift"], names: ["D2.0", "d.swift"], buildPhase: .sources)
                 try pbxProj.expectFile(paths: ["Sources/A/B", "c.jpg"], names: ["B", "c.jpg"], buildPhase: .resources)
                 try pbxProj.expectFile(paths: ["Sources/A", "Assets.xcassets"], names: ["A", "Assets.xcassets"], buildPhase: .resources)
+                try pbxProj.expectFile(paths: ["Sources/A/E.bundle", "e.json"], names: ["E.bundle", "e.json"], buildPhase: .resources)
             }
 
             $0.it("generates shared sources") {
