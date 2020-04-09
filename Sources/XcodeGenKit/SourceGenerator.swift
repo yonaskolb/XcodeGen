@@ -418,7 +418,7 @@ class SourceGenerator {
         let directories = children
             .filter { $0.isDirectory && !directoryExtensionsToSkip.contains($0.extension ?? "") }
 
-        let whitelistedDirectoryExtensionsForFilePath = ["xcdatamodeld", "xcdatamodel" , "xcassets" , "intentdefinition"]
+        let whitelistedDirectoryExtensionsForFilePath = ["xcdatamodeld", "xcdatamodel" , "xcassets"]
         let filePaths = children
             .filter { $0.isFile || $0.extension != nil && $0.extension != "lproj" && (whitelistedDirectoryExtensionsForFilePath.contains($0.extension ?? "") || !$0.isDirectory) }
 
