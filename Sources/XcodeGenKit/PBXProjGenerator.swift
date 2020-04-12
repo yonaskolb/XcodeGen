@@ -787,7 +787,9 @@ public class PBXProjGenerator {
 
                     self.carthageFrameworksByPlatform[target.platform.carthageName, default: []].insert(fileReference)
 
-                    if dependency.link ?? (target.type != .staticLibrary) {
+                    let isStaticLibrary = target.type == .staticLibrary
+                    let isCarthageStaticLink = dependency.carthageLinkType == .static
+                    if dependency.link ?? (!isStaticLibrary && !isCarthageStaticLink) {
                         let buildFile = self.addObject(
                             PBXBuildFile(file: fileReference, settings: getDependencyFrameworkSettings(dependency: dependency))
                         )

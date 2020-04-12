@@ -1124,6 +1124,7 @@ class ProjectGeneratorTests: XCTestCase {
                         guard let files = frameworkBuildPhase?.files, let file = files.first else {
                             return XCTFail("frameworkBuildPhase should have files")
                         }
+                        try expect(files.count) == 1
                         try expect(file.file?.nameOrPath) == "MyStaticFramework.framework"
 
                         try expect(target.carthageCopyFrameworkBuildPhase).beNil()
@@ -1151,6 +1152,8 @@ class ProjectGeneratorTests: XCTestCase {
                         guard let files = frameworkBuildPhase?.files else {
                             return XCTFail("frameworkBuildPhase should have files")
                         }
+                        try expect(files.count) == 2
+
                         guard let dynamicFramework = files.first(where: { $0.file?.nameOrPath == "MyDynamicFramework.framework" }) else {
                             return XCTFail("Framework Build Phase should have Dynamic Framework")
                         }
@@ -1262,6 +1265,7 @@ class ProjectGeneratorTests: XCTestCase {
                         guard let files = frameworkBuildPhase?.files, let file = files.first else {
                             return XCTFail("frameworkBuildPhase should have files")
                         }
+                        try expect(files.count) == 1
                         try expect(file.file?.nameOrPath) == "MyStaticFramework.framework"
 
                         try expect(target.carthageCopyFrameworkBuildPhase).beNil()
@@ -1289,6 +1293,8 @@ class ProjectGeneratorTests: XCTestCase {
                         guard let files = frameworkBuildPhase?.files else {
                             return XCTFail("frameworkBuildPhase should have files")
                         }
+                        try expect(files.count) == 2
+
                         guard let dynamicFramework = files.first(where: { $0.file?.nameOrPath == "MyDynamicFramework.framework" }) else {
                             return XCTFail("Framework Build Phase should have Dynamic Framework")
                         }
