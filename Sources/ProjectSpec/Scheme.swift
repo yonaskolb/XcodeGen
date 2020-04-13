@@ -9,10 +9,10 @@ public struct Scheme: Equatable {
     public var name: String
     public var build: Build
     public var run: Run?
-    public var archive: Archive?
-    public var analyze: Analyze?
     public var test: Test?
     public var profile: Profile?
+    public var analyze: Analyze?
+    public var archive: Archive?
 
     public init(
         name: String,
