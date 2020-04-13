@@ -198,7 +198,6 @@ public struct Scheme: Equatable {
             coverageTargets: [TargetReference] = [],
             disableMainThreadChecker: Bool = disableMainThreadCheckerDefault,
             randomExecutionOrder: Bool = false,
-            parallelizable: Bool = false,
             commandLineArguments: [String: Bool] = [:],
             targets: [TestTarget] = [],
             preActions: [ExecutionAction] = [],

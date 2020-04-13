@@ -510,7 +510,6 @@ class ProjectSpecTests: XCTestCase {
                                                                       gatherCoverageData: true,
                                                                       disableMainThreadChecker: true,
                                                                       randomExecutionOrder: false,
-                                                                      parallelizable: false,
                                                                       commandLineArguments: ["foo": true],
                                                                       targets: [Scheme.Test.TestTarget(targetReference: "foo",
                                                                                                        randomExecutionOrder: false,
