@@ -62,6 +62,7 @@ public struct Scheme: Equatable {
         public var script: String
         public var name: String
         public var settingsTarget: String?
+        
         public init(name: String, script: String, settingsTarget: String? = nil) {
             self.script = script
             self.name = name
@@ -78,6 +79,7 @@ public struct Scheme: Equatable {
         public var buildImplicitDependencies: Bool
         public var preActions: [ExecutionAction]
         public var postActions: [ExecutionAction]
+        
         public init(
             targets: [BuildTarget],
             parallelizeBuild: Bool = parallelizeBuildDefault,
@@ -228,6 +230,7 @@ public struct Scheme: Equatable {
 
     public struct Analyze: BuildAction {
         public var config: String?
+        
         public init(config: String) {
             self.config = config
         }
@@ -239,6 +242,7 @@ public struct Scheme: Equatable {
         public var preActions: [ExecutionAction]
         public var postActions: [ExecutionAction]
         public var environmentVariables: [XCScheme.EnvironmentVariable]
+        
         public init(
             config: String,
             commandLineArguments: [String: Bool] = [:],
@@ -266,6 +270,7 @@ public struct Scheme: Equatable {
         public var revealArchiveInOrganizer: Bool
         public var preActions: [ExecutionAction]
         public var postActions: [ExecutionAction]
+        
         public init(
             config: String,
             customArchiveName: String? = nil,
