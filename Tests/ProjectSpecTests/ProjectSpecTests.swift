@@ -40,6 +40,35 @@ class ProjectSpecTests: XCTestCase {
         }
     }
 
+    func testTargetFilename() {
+        describe {
+
+            let framework = Target(
+                name: "MyFramework",
+                type: .framework,
+                platform: .iOS,
+                settings: Settings(buildSettings: [:])
+            )
+            let staticLibrary = Target(
+                name: "MyStaticLibrary",
+                type: .staticLibrary,
+                platform: .iOS,
+                settings: Settings(buildSettings: [:])
+            )
+            let dynamicLibrary = Target(
+                name: "MyDynamicLibrary",
+                type: .dynamicLibrary,
+                platform: .iOS,
+                settings: Settings(buildSettings: [:])
+            )
+            $0.it("has correct filename") {
+                try expect(framework.filename) == "MyFramework.framework"
+                try expect(staticLibrary.filename) == "libMyStaticLibrary.a"
+                try expect(dynamicLibrary.filename) == "MyDynamicLibrary.dylib"
+            }
+        }
+    }
+
     func testDeploymentTarget() {
         describe {
 
