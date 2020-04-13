@@ -10,6 +10,7 @@ public struct TargetScheme: Equatable {
     public var region: String?
     public var disableMainThreadChecker: Bool?
     public var stopOnEveryMainThreadCheckerIssue: Bool?
+    public var parallelizeBuild: Bool?
     public var buildImplicitDependencies: Bool?
     public var commandLineArguments: [String: Bool]
     public var environmentVariables: [XCScheme.EnvironmentVariable]
@@ -24,6 +25,7 @@ public struct TargetScheme: Equatable {
         region: String? = nil,
         disableMainThreadChecker: Bool? = nil,
         stopOnEveryMainThreadCheckerIssue: Bool? = nil,
+        parallelizeBuild: Bool? = nil,
         buildImplicitDependencies: Bool? = nil,
         commandLineArguments: [String: Bool] = [:],
         environmentVariables: [XCScheme.EnvironmentVariable] = [],
@@ -37,6 +39,7 @@ public struct TargetScheme: Equatable {
         self.region = region
         self.disableMainThreadChecker = disableMainThreadChecker
         self.stopOnEveryMainThreadCheckerIssue = stopOnEveryMainThreadCheckerIssue
+        self.parallelizeBuild = parallelizeBuild
         self.buildImplicitDependencies = buildImplicitDependencies
         self.commandLineArguments = commandLineArguments
         self.environmentVariables = environmentVariables
@@ -67,6 +70,7 @@ extension TargetScheme: JSONObjectConvertible {
         region = jsonDictionary.json(atKeyPath: "region")
         disableMainThreadChecker = jsonDictionary.json(atKeyPath: "disableMainThreadChecker")
         stopOnEveryMainThreadCheckerIssue = jsonDictionary.json(atKeyPath: "stopOnEveryMainThreadCheckerIssue")
+        parallelizeBuild = jsonDictionary.json(atKeyPath: "parallelizeBuild")
         buildImplicitDependencies = jsonDictionary.json(atKeyPath: "buildImplicitDependencies")
         commandLineArguments = jsonDictionary.json(atKeyPath: "commandLineArguments") ?? [:]
         environmentVariables = try XCScheme.EnvironmentVariable.parseAll(jsonDictionary: jsonDictionary)
@@ -96,6 +100,10 @@ extension TargetScheme: JSONEncodable {
       
         if let stopOnEveryMainThreadCheckerIssue = stopOnEveryMainThreadCheckerIssue {
             dict["stopOnEveryMainThreadCheckerIssue"] = stopOnEveryMainThreadCheckerIssue
+        }
+        
+        if let parallelizeBuild = parallelizeBuild {
+            dict["parallelizeBuild"] = parallelizeBuild
         }
 
         if let buildImplicitDependencies = buildImplicitDependencies {

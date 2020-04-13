@@ -314,6 +314,7 @@ extension Scheme {
             name: name,
             build: .init(
                 targets: Scheme.buildTargets(for: target, project: project),
+                parallelizeBuild: targetScheme.parallelizeBuild ?? Build.parallelizeBuildDefault,
                 buildImplicitDependencies: targetScheme.buildImplicitDependencies ?? Build.buildImplicitDependenciesDefault,
                 preActions: targetScheme.preActions,
                 postActions: targetScheme.postActions
