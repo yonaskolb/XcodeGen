@@ -12,6 +12,9 @@
 - Prefix static library target filenames with 'lib' to match Xcode. [#831](https://github.com/yonaskolb/XcodeGen/pull/831) @ileitch
 - Fixed duplicate addition of carthage static frameworks. [#829](https://github.com/yonaskolb/XcodeGen/pull/829) @funzin
 
+#### Fixed
+- Set `preActions` and `postActions` on the `build` action of a TargetScheme instead of the other actions. [#823](https://github.com/yonaskolb/XcodeGen/pull/823) @brentleyjones
+
 ## 2.15.1
 
 #### Fixed
