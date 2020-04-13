@@ -10,6 +10,7 @@
 - Fixed issue when linking and embeding static frameworks: they should be linked and NOT embed. [#820](https://github.com/yonaskolb/XcodeGen/pull/820) @acecilia
 - Fixed issue when generating projects for paths with a dot in the folder for swift sources. [#826](https://github.com/yonaskolb/XcodeGen/pull/826) @asifmohd
 - Prefix static library target filenames with 'lib' to match Xcode. [#831](https://github.com/yonaskolb/XcodeGen/pull/831) @ileitch
+- Fixed duplicate addition of carthage static frameworks. [#829](https://github.com/yonaskolb/XcodeGen/pull/829) @funzin
 
 ## 2.15.1
 
