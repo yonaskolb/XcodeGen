@@ -482,6 +482,7 @@
 		187E665975BB5611AF0F27E1 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		1BC32A813B80A53962A1F365 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1D0C79A8C750EC0DE748C463 /* StaticLibrary_ObjC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StaticLibrary_ObjC.m; sourceTree = "<group>"; };
+		216E85EF1AF0711CCC53C84F /* FullSchemeApp.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = FullSchemeApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		22237B8EBD9E6BE8EBC8735F /* XPC Service.xpc */ = {isa = PBXFileReference; explicitFileType = "wrapper.xpc-service"; includeInIndex = 0; path = "XPC Service.xpc"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2233774B86539B1574D206B0 /* Framework2.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Framework2.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		28360ECA4D727FAA58557A81 /* example.mp4 */ = {isa = PBXFileReference; path = example.mp4; sourceTree = "<group>"; };
@@ -926,6 +927,7 @@
 				2233774B86539B1574D206B0 /* Framework2.framework */,
 				A0DC40025AB59B688E758829 /* Framework2.framework */,
 				AB055761199DF36DB0C629A6 /* Framework2.framework */,
+				216E85EF1AF0711CCC53C84F /* FullSchemeApp.app */,
 				9A87A926D563773658FB87FE /* iMessageApp.app */,
 				D629E142AB87C681D4EC90F7 /* iMessageExtension.appex */,
 				C53ACB2962FED621389C36A2 /* iMessageStickersExtension.appex */,
@@ -1581,6 +1583,21 @@
 			productReference = 22237B8EBD9E6BE8EBC8735F /* XPC Service.xpc */;
 			productType = "com.apple.product-type.xpc-service";
 		};
+		E8B6606CD473C6A434CE5207 /* FullSchemeApp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6D086C56F0E1E7EE76F0F568 /* Build configuration list for PBXNativeTarget "FullSchemeApp" */;
+			buildPhases = (
+				2E52EE7B48FF024E3B119530 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = FullSchemeApp;
+			productName = FullSchemeApp;
+			productReference = 216E85EF1AF0711CCC53C84F /* FullSchemeApp.app */;
+			productType = "com.apple.product-type.application";
+		};
 		F674B2CFC4738EEC49BAD0DA /* App_iOS_UITests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 68CC35789B0DB020E2CFC517 /* Build configuration list for PBXNativeTarget "App_iOS_UITests" */;
@@ -1674,6 +1691,7 @@
 				53A3B531E3947D8A8722745E /* Framework_macOS */,
 				536ACF18E4603B59207D43CE /* Framework_tvOS */,
 				71B5187E710718C1A205D4DC /* Framework_watchOS */,
+				E8B6606CD473C6A434CE5207 /* FullSchemeApp */,
 				72C923899DE05F1281872160 /* Legacy */,
 				13E8C5AB873CEE21E18E552F /* StaticLibrary_ObjC_iOS */,
 				578C80E461E675508CED5DC3 /* StaticLibrary_ObjC_macOS */,
@@ -1991,6 +2009,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				75F2774F183838AF34CA9B8A /* StaticLibrary_ObjC.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2E52EE7B48FF024E3B119530 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2620,6 +2645,21 @@
 			};
 			name = "Staging Release";
 		};
+		0F571B1039588A8592DABB27 /* Test Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.FullSchemeApp;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Test Debug";
+		};
 		10E250D1DC79E11058B933F9 /* Test Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2789,6 +2829,21 @@
 				SDKROOT = macosx;
 			};
 			name = "Staging Release";
+		};
+		19527791129C46494575D2B0 /* Staging Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.FullSchemeApp;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Staging Debug";
 		};
 		196FEEE6C4B0DDE53AD16BD6 /* Test Debug */ = {
 			isa = XCBuildConfiguration;
@@ -3118,6 +3173,21 @@
 			};
 			name = "Test Debug";
 		};
+		4052803333EAF29ABE344F12 /* Production Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.FullSchemeApp;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Production Debug";
+		};
 		4089B74CA10172B8ED2D004B /* Staging Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -3209,6 +3279,21 @@
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/App_macOS.app/Contents/MacOS/App_macOS";
 			};
 			name = "Test Debug";
+		};
+		45BFFB3154AF1DE1E6CBDD86 /* Test Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.FullSchemeApp;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Test Release";
 		};
 		4621C6C8A78FBB1CF4078178 /* Production Release */ = {
 			isa = XCBuildConfiguration;
@@ -4176,6 +4261,21 @@
 			};
 			name = "Test Debug";
 		};
+		8F195EBE8CF35C79D1A35CE8 /* Staging Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.FullSchemeApp;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Staging Release";
+		};
 		921EC740167F616C38809275 /* Production Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -4620,6 +4720,21 @@
 				SDKROOT = macosx;
 			};
 			name = "Test Release";
+		};
+		AE24525357169AC93A243002 /* Production Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.FullSchemeApp;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Production Release";
 		};
 		AE37A01B34B4B956E784082C /* Production Debug */ = {
 			isa = XCBuildConfiguration;
@@ -6136,6 +6251,19 @@
 				7B2A1BE6CA654E9903A4C680 /* Staging Release */,
 				00FD318C7418F3351FC00744 /* Test Debug */,
 				F3AC6A112F81D0958A316D82 /* Test Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "Production Debug";
+		};
+		6D086C56F0E1E7EE76F0F568 /* Build configuration list for PBXNativeTarget "FullSchemeApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4052803333EAF29ABE344F12 /* Production Debug */,
+				AE24525357169AC93A243002 /* Production Release */,
+				19527791129C46494575D2B0 /* Staging Debug */,
+				8F195EBE8CF35C79D1A35CE8 /* Staging Release */,
+				0F571B1039588A8592DABB27 /* Test Debug */,
+				45BFFB3154AF1DE1E6CBDD86 /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Production Debug";

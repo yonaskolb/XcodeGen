@@ -145,6 +145,33 @@ targets:
       path: App_iOS/App.entitlements
       properties:
         com.apple.security.application-groups: group.com.app
+        
+  FullSchemeApp:
+    type: application
+    platform: iOS
+    templates: [FullSchemeTemplate]
+    scheme:
+      build:
+        parallelizeBuild: false
+        buildImplicitDependencies: false
+        targets:
+          FullSchemeApp: all
+        preActions:
+          - script: echo Starting Build
+            settingsTarget: FullSchemeApp
+      run:
+        commandLineArguments:
+          argument: YES
+          argument.with.dot: YES
+      test:
+        gatherCoverageData: true
+        language: ja
+        region: en
+      profile:
+        environmentVariables:
+          VAR: NO
+      archive:
+        customArchiveName: Custom
 
   App_watchOS:
       type: application.watchapp2
@@ -306,6 +333,11 @@ schemes:
 targetTemplates:
   MyTemplate:
     scheme: {}
+  FullSchemeTemplate:
+    scheme:
+      profile:
+        environmentVariables:
+          OTHER_VAR: YES
     
 schemeTemplates:
   TestScheme:

@@ -312,14 +312,14 @@ extension Scheme {
     public init(name: String, target: Target, targetScheme: TargetScheme, project: Project, debugConfig: String, releaseConfig: String) {
         self.init(
             name: name,
-            build: .init(
+            build: targetScheme.build ?? .init(
                 targets: Scheme.buildTargets(for: target, project: project),
                 parallelizeBuild: targetScheme.parallelizeBuild ?? Build.parallelizeBuildDefault,
                 buildImplicitDependencies: targetScheme.buildImplicitDependencies ?? Build.buildImplicitDependenciesDefault,
                 preActions: targetScheme.preActions,
                 postActions: targetScheme.postActions
             ),
-            run: .init(
+            run: targetScheme.run ?? .init(
                 config: debugConfig,
                 commandLineArguments: targetScheme.commandLineArguments,
                 environmentVariables: targetScheme.environmentVariables,
@@ -328,7 +328,7 @@ extension Scheme {
                 language: targetScheme.language,
                 region: targetScheme.region
             ),
-            test: .init(
+            test: targetScheme.test ?? .init(
                 config: debugConfig,
                 gatherCoverageData: targetScheme.gatherCoverageData ?? Test.gatherCoverageDataDefault,
                 disableMainThreadChecker: targetScheme.disableMainThreadChecker ?? Test.disableMainThreadCheckerDefault,
@@ -338,15 +338,15 @@ extension Scheme {
                 language: targetScheme.language,
                 region: targetScheme.region
             ),
-            profile: .init(
+            profile: targetScheme.profile ?? .init(
                 config: releaseConfig,
                 commandLineArguments: targetScheme.commandLineArguments,
                 environmentVariables: targetScheme.environmentVariables
             ),
-            analyze: .init(
+            analyze: targetScheme.analyze ?? .init(
                 config: debugConfig
             ),
-            archive: .init(
+            archive: targetScheme.archive ?? .init(
                 config: releaseConfig
             )
         )
