@@ -314,7 +314,7 @@ extension Scheme {
             name: name,
             build: .init(
                 targets: Scheme.buildTargets(for: target, project: project),
-                buildImplicitDependencies: targetScheme.buildImplicitDependencies,
+                buildImplicitDependencies: targetScheme.buildImplicitDependencies ?? Build.buildImplicitDependenciesDefault,
                 preActions: targetScheme.preActions,
                 postActions: targetScheme.postActions
             ),
@@ -322,15 +322,15 @@ extension Scheme {
                 config: debugConfig,
                 commandLineArguments: targetScheme.commandLineArguments,
                 environmentVariables: targetScheme.environmentVariables,
-                disableMainThreadChecker: targetScheme.disableMainThreadChecker,
-                stopOnEveryMainThreadCheckerIssue: targetScheme.stopOnEveryMainThreadCheckerIssue,
+                disableMainThreadChecker: targetScheme.disableMainThreadChecker ?? Run.disableMainThreadCheckerDefault,
+                stopOnEveryMainThreadCheckerIssue: targetScheme.stopOnEveryMainThreadCheckerIssue ?? Run.stopOnEveryMainThreadCheckerIssueDefault,
                 language: targetScheme.language,
                 region: targetScheme.region
             ),
             test: .init(
                 config: debugConfig,
-                gatherCoverageData: targetScheme.gatherCoverageData,
-                disableMainThreadChecker: targetScheme.disableMainThreadChecker,
+                gatherCoverageData: targetScheme.gatherCoverageData ?? Test.gatherCoverageDataDefault,
+                disableMainThreadChecker: targetScheme.disableMainThreadChecker ?? Test.disableMainThreadCheckerDefault,
                 commandLineArguments: targetScheme.commandLineArguments,
                 targets: targetScheme.testTargets,
                 environmentVariables: targetScheme.environmentVariables,

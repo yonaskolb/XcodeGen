@@ -3,19 +3,14 @@ import JSONUtilities
 import XcodeProj
 
 public struct TargetScheme: Equatable {
-    public static let gatherCoverageDataDefault = false
-    public static let disableMainThreadCheckerDefault = false
-    public static let stopOnEveryMainThreadCheckerIssueDefault = false
-    public static let buildImplicitDependenciesDefault = true
-
     public var testTargets: [Scheme.Test.TestTarget]
     public var configVariants: [String]
-    public var gatherCoverageData: Bool
+    public var gatherCoverageData: Bool?
     public var language: String?
     public var region: String?
-    public var disableMainThreadChecker: Bool
-    public var stopOnEveryMainThreadCheckerIssue: Bool
-    public var buildImplicitDependencies: Bool
+    public var disableMainThreadChecker: Bool?
+    public var stopOnEveryMainThreadCheckerIssue: Bool?
+    public var buildImplicitDependencies: Bool?
     public var commandLineArguments: [String: Bool]
     public var environmentVariables: [XCScheme.EnvironmentVariable]
     public var preActions: [Scheme.ExecutionAction]
@@ -24,12 +19,12 @@ public struct TargetScheme: Equatable {
     public init(
         testTargets: [Scheme.Test.TestTarget] = [],
         configVariants: [String] = [],
-        gatherCoverageData: Bool = gatherCoverageDataDefault,
+        gatherCoverageData: Bool? = nil,
         language: String? = nil,
         region: String? = nil,
-        disableMainThreadChecker: Bool = disableMainThreadCheckerDefault,
-        stopOnEveryMainThreadCheckerIssue: Bool = stopOnEveryMainThreadCheckerIssueDefault,
-        buildImplicitDependencies: Bool = buildImplicitDependenciesDefault,
+        disableMainThreadChecker: Bool? = nil,
+        stopOnEveryMainThreadCheckerIssue: Bool? = nil,
+        buildImplicitDependencies: Bool? = nil,
         commandLineArguments: [String: Bool] = [:],
         environmentVariables: [XCScheme.EnvironmentVariable] = [],
         preActions: [Scheme.ExecutionAction] = [],
@@ -67,12 +62,12 @@ extension TargetScheme: JSONObjectConvertible {
             testTargets = []
         }
         configVariants = jsonDictionary.json(atKeyPath: "configVariants") ?? []
-        gatherCoverageData = jsonDictionary.json(atKeyPath: "gatherCoverageData") ?? TargetScheme.gatherCoverageDataDefault
+        gatherCoverageData = jsonDictionary.json(atKeyPath: "gatherCoverageData")
         language = jsonDictionary.json(atKeyPath: "language")
         region = jsonDictionary.json(atKeyPath: "region")
-        disableMainThreadChecker = jsonDictionary.json(atKeyPath: "disableMainThreadChecker") ?? TargetScheme.disableMainThreadCheckerDefault
-        stopOnEveryMainThreadCheckerIssue = jsonDictionary.json(atKeyPath: "stopOnEveryMainThreadCheckerIssue") ?? TargetScheme.stopOnEveryMainThreadCheckerIssueDefault
-        buildImplicitDependencies = jsonDictionary.json(atKeyPath: "buildImplicitDependencies") ?? TargetScheme.buildImplicitDependenciesDefault
+        disableMainThreadChecker = jsonDictionary.json(atKeyPath: "disableMainThreadChecker")
+        stopOnEveryMainThreadCheckerIssue = jsonDictionary.json(atKeyPath: "stopOnEveryMainThreadCheckerIssue")
+        buildImplicitDependencies = jsonDictionary.json(atKeyPath: "buildImplicitDependencies")
         commandLineArguments = jsonDictionary.json(atKeyPath: "commandLineArguments") ?? [:]
         environmentVariables = try XCScheme.EnvironmentVariable.parseAll(jsonDictionary: jsonDictionary)
         preActions = jsonDictionary.json(atKeyPath: "preActions") ?? []
@@ -91,19 +86,19 @@ extension TargetScheme: JSONEncodable {
             "postActions": postActions.map { $0.toJSONValue() },
         ]
 
-        if gatherCoverageData != TargetScheme.gatherCoverageDataDefault {
+        if let gatherCoverageData = gatherCoverageData {
             dict["gatherCoverageData"] = gatherCoverageData
         }
 
-        if disableMainThreadChecker != TargetScheme.disableMainThreadCheckerDefault {
+        if let disableMainThreadChecker = disableMainThreadChecker  {
             dict["disableMainThreadChecker"] = disableMainThreadChecker
         }
       
-        if stopOnEveryMainThreadCheckerIssue != TargetScheme.stopOnEveryMainThreadCheckerIssueDefault {
+        if let stopOnEveryMainThreadCheckerIssue = stopOnEveryMainThreadCheckerIssue {
             dict["stopOnEveryMainThreadCheckerIssue"] = stopOnEveryMainThreadCheckerIssue
         }
 
-        if buildImplicitDependencies != TargetScheme.buildImplicitDependenciesDefault {
+        if let buildImplicitDependencies = buildImplicitDependencies {
             dict["buildImplicitDependencies"] = buildImplicitDependencies
         }
 
