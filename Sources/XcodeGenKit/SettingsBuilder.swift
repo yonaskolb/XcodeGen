@@ -114,6 +114,18 @@ extension Project {
         return nil
     }
 
+    public func getBoolBuildSetting(_ setting: String, target: ProjectTarget, config: Config) -> Bool? {
+        guard let value = getCombinedBuildSetting(setting, target: target, config: config) else { return nil }
+
+        if let boolValue = value as? Bool {
+            return boolValue
+        } else if let stringValue = value as? String {
+            return stringValue == "YES"
+        }
+
+        return nil
+    }
+
     public func targetHasBuildSetting(_ setting: String, target: Target, config: Config) -> Bool {
         getCombinedBuildSetting(setting, target: target, config: config) != nil
     }
