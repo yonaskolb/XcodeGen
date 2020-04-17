@@ -87,6 +87,13 @@ extension Platform {
     }
 }
 
+extension Target {
+    public var shouldExecuteOnLaunch: Bool {
+        // This is different from `type.isExecutable`, because we don't want to "run" a test
+        type.isApp || type.isExtension || type == .commandLineTool
+    }
+}
+
 extension XCScheme.CommandLineArguments {
     // Dictionary is a mapping from argument name and if it is enabled by default
     public convenience init(_ dict: [String: Bool]) {
