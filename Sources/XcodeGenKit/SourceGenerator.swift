@@ -613,7 +613,7 @@ class SourceGenerator {
             sourceFiles.append(sourceFile)
 
         case .group:
-            if targetSource.optional && !Path(targetSource.path).exists {
+            if targetSource.optional && !path.exists {
                 // This group is missing, so if's optional just return an empty array
                 return []
             }
