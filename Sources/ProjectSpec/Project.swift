@@ -292,7 +292,7 @@ extension Project: JSONEncodable {
         dictionary["aggregateTargets"] = Dictionary(uniqueKeysWithValues: aggregateTargetsPairs)
         dictionary["schemes"] = Dictionary(uniqueKeysWithValues: schemesPairs)
         dictionary["settingGroups"] = settingGroups.mapValues { $0.toJSONValue() }
-        dictionary["projectReferences"] = projectReferencesPairs
+        dictionary["projectReferences"] = Dictionary(uniqueKeysWithValues: projectReferencesPairs)
 
         return dictionary
     }
