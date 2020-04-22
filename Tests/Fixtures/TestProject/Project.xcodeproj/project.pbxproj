@@ -43,6 +43,7 @@
 		262891CCD5F74316610437FA /* Framework2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EF21DF245F66BEF5446AAEF /* Framework2.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		265B6A05C0198FD2EB485173 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C033648A37D95027845BD3 /* main.swift */; };
 		2730C6D0A35AED4ADD6EDF17 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0704B6CAFBB53E0EBB08F6B3 /* ViewController.swift */; settings = {COMPILER_FLAGS = "-Werror"; }; };
+		28A96EBC76D53817AABDA91C /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 8AF20308873AEEEC4D8C45D1 /* Settings.bundle */; };
 		2A5356FCC03EE312F1738C61 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B82F603D981398F38D762E /* AppDelegate.swift */; };
 		2A7EB1A9A365A7EC5D49AFCF /* LocalizedStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0C6BA0D12467A13EC012C728 /* LocalizedStoryboard.storyboard */; };
 		2B940E57041A72E6A39B6BF0 /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C872631362DDBAFCE71E5C66 /* Interface.storyboard */; };
@@ -526,6 +527,7 @@
 		86169DEEDEAF09AB89C8A31D /* libStaticLibrary_ObjC.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libStaticLibrary_ObjC.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		87DF9DCA8399E3214A7E27CF /* TestProjectTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestProjectTests.swift; sourceTree = "<group>"; };
 		8A9274BE42A03DC5DA1FAD04 /* Framework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Framework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8AF20308873AEEEC4D8C45D1 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		8CAF6C55B555E3E1352645B6 /* ExtensionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDelegate.swift; sourceTree = "<group>"; };
 		8CB86294FB939FE6E90932E1 /* libStaticLibrary_Swift.a */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = archive.ar; path = libStaticLibrary_Swift.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		93C033648A37D95027845BD3 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
@@ -704,6 +706,7 @@
 				306796628DD52FA55E833B65 /* Model.xcdatamodeld */,
 				C7809CE9FE9852C2AA87ACE5 /* module.modulemap */,
 				553D289724905857912C7A1D /* outputList.xcfilelist */,
+				8AF20308873AEEEC4D8C45D1 /* Settings.bundle */,
 				0704B6CAFBB53E0EBB08F6B3 /* ViewController.swift */,
 			);
 			name = App;
@@ -1748,6 +1751,7 @@
 				49A4B8937BB5520B36EA33F0 /* Main.storyboard in Resources */,
 				900CFAD929CAEE3861127627 /* MyBundle.bundle in Resources */,
 				C88598A49087A212990F4E8B /* ResourceFolder in Resources */,
+				28A96EBC76D53817AABDA91C /* Settings.bundle in Resources */,
 				E8A135F768448632F8D77C8F /* StandaloneAssets.xcassets in Resources */,
 				818D448D4DDD6649B5B26098 /* example.mp4 in Resources */,
 				2C7C03B45571A13D472D6B23 /* iMessageApp.app in Resources */,
