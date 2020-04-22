@@ -13,6 +13,7 @@
 - Fixed duplicate addition of carthage static frameworks. [#829](https://github.com/yonaskolb/XcodeGen/pull/829) @funzin
 - Fix handling of SWIFT_INSTALL_OBJC_HEADER when its value is YES/NO. [#827](https://github.com/yonaskolb/XcodeGen/pull/827) @ileitch
 - Set `preActions` and `postActions` on the `build` action of a TargetScheme instead of the other actions. [#823](https://github.com/yonaskolb/XcodeGen/pull/823) @brentleyjones
+- Implicitly include bundles in the Copy Bundle Resources build phase. [#838](https://github.com/yonaskolb/XcodeGen/pull/838) @skirchmeier
 
 ## 2.15.1
 

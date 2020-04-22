@@ -576,6 +576,12 @@ class SourceGeneratorTests: XCTestCase {
                     - file.mlmodel
                     - Info.plist
                     - Intent.intentdefinition
+                    - Settings.bundle:
+                      - en.lproj:
+                        - Root.strings
+                      - Root.plist
+                    - WithPeriod2.0:
+                      - file.swift
                 """
                 try createDirectories(directories)
 
@@ -625,6 +631,12 @@ class SourceGeneratorTests: XCTestCase {
                 try pbxProj.expectFile(paths: ["C", "file.metal"], buildPhase: .sources)
                 try pbxProj.expectFile(paths: ["C", "file.mlmodel"], buildPhase: .sources)
                 try pbxProj.expectFile(paths: ["C", "Intent.intentdefinition"], buildPhase: .sources)
+                try pbxProj.expectFile(paths: ["C", "Settings.bundle"], buildPhase: .resources)
+                try pbxProj.expectFileMissing(paths: ["C", "Settings.bundle", "en.lproj"])
+                try pbxProj.expectFileMissing(paths: ["C", "Settings.bundle", "en.lproj", "Root.strings"])
+                try pbxProj.expectFileMissing(paths: ["C", "Settings.bundle", "Root.plist"])
+                try pbxProj.expectFileMissing(paths: ["C", "WithPeriod2.0"])
+                try pbxProj.expectFile(paths: ["C", "WithPeriod2.0", "file.swift"], buildPhase: .sources)
             }
 
             $0.it("duplicate TargetSource is included once in sources build phase") {
