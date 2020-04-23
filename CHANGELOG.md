@@ -14,6 +14,8 @@
 - Fix handling of SWIFT_INSTALL_OBJC_HEADER when its value is YES/NO. [#827](https://github.com/yonaskolb/XcodeGen/pull/827) @ileitch
 - Set `preActions` and `postActions` on the `build` action of a TargetScheme instead of the other actions. [#823](https://github.com/yonaskolb/XcodeGen/pull/823) @brentleyjones
 - Prevent test targets from being set as a scheme's launch action [#835](https://github.com/yonaskolb/XcodeGen/pull/835) @brentleyjones
+- Implicitly include bundles in the Copy Bundle Resources build phase. [#838](https://github.com/yonaskolb/XcodeGen/pull/838) @skirchmeier
+- Fixed dumping a project manifest which contains an array of project references @paciej00
 
 ## 2.15.1
 
