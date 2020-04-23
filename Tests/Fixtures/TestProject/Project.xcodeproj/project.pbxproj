@@ -1204,7 +1204,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				7C4CC3918BD0DA1E04A5E2B0 /* PBXTargetDependency */,
+				4FA29DA80DA668224AED741F /* PBXTargetDependency */,
 				0D33D01C71E8002A07F02122 /* PBXTargetDependency */,
 				A94F38390A74E215EC107BB5 /* PBXTargetDependency */,
 				E84285243DE0BB361A708079 /* PBXTargetDependency */,
@@ -2212,6 +2212,11 @@
 			target = 0867B0DACEF28C11442DE8F7 /* App_iOS */;
 			targetProxy = 469D922BE967C6D52ED84552 /* PBXContainerItemProxy */;
 		};
+		4FA29DA80DA668224AED741F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = ExternalTarget;
+			targetProxy = FF75DC967D1097BC31DCF5E6 /* PBXContainerItemProxy */;
+		};
 		62DA64F61B337719A2CF993D /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 307AE3FA155FFD09B74AE351 /* App_watchOS Extension */;
@@ -2221,11 +2226,6 @@
 			isa = PBXTargetDependency;
 			target = 0636AAF06498C336E1CEEDE4 /* TestFramework */;
 			targetProxy = C42BA4EA0239AF536F0F0993 /* PBXContainerItemProxy */;
-		};
-		7C4CC3918BD0DA1E04A5E2B0 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = E76A5F5E363E470416D3B487;
-			targetProxy = FF75DC967D1097BC31DCF5E6 /* PBXContainerItemProxy */;
 		};
 		7EFC0278E67CD35F8981993C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
