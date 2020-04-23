@@ -16,6 +16,7 @@
 - Prevent test targets from being set as a scheme's launch action [#835](https://github.com/yonaskolb/XcodeGen/pull/835) @brentleyjones
 - Implicitly include bundles in the Copy Bundle Resources build phase. [#838](https://github.com/yonaskolb/XcodeGen/pull/838) @skirchmeier
 - Fixed dumping a project manifest which contains an array of project references @paciej00
+- Generate correct PBXTargetDependency for external targets. [#843](https://github.com/yonaskolb/XcodeGen/pull/843) @ileitch
 
 ## 2.15.1
 

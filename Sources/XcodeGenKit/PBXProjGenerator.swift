@@ -420,7 +420,7 @@ public class PBXProjGenerator {
 
         let targetDependency = addObject(
             PBXTargetDependency(
-                target: targetObject,
+                name: targetObject.name,
                 targetProxy: targetProxy
             )
         )
