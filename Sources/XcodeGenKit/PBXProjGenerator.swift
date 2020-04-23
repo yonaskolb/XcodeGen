@@ -400,10 +400,17 @@ public class PBXProjGenerator {
             )
         )
 
+        var path = targetObject.productNameWithExtension()
+
+        if targetObject.productType == .staticLibrary,
+            let tmpPath = path, !tmpPath.hasPrefix("lib") {
+            path = "lib\(tmpPath)"
+        }
+
         let productReferenceProxy = addObject(
             PBXReferenceProxy(
                 fileType: Xcode.fileType(path: Path(targetObject.productNameWithExtension()!)),
-                path: targetObject.productNameWithExtension(),
+                path: path,
                 remote: productProxy,
                 sourceTree: .buildProductsDir
             )
