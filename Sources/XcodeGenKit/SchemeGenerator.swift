@@ -162,7 +162,7 @@ public class SchemeGenerator {
         }
 
         let schemeTarget = target ?? project.getTarget(scheme.build.targets.first!.target.name)
-        let shouldExecuteOnLaunch = schemeTarget?.type.isExecutable == true
+        let shouldExecuteOnLaunch = schemeTarget?.shouldExecuteOnLaunch == true
 
         let buildableReference = buildActionEntries.first!.buildableReference
         let runnables = makeProductRunnables(for: schemeTarget, buildableReference: buildableReference)
