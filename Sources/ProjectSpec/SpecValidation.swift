@@ -205,6 +205,10 @@ extension Project {
             if let action = scheme.run, let config = action.config, getConfig(config) == nil {
                 errors.append(.invalidSchemeConfig(scheme: scheme.name, config: config))
             }
+
+            let invalidTestPlans: [TestPlan] = scheme.test?.testPlans.filter { !(basePath + $0.path).exists } ?? []
+            errors.append(contentsOf: invalidTestPlans.map{ .invalidTestPlan($0) })
+
             if let action = scheme.test, let config = action.config, getConfig(config) == nil {
                 errors.append(.invalidSchemeConfig(scheme: scheme.name, config: config))
             }

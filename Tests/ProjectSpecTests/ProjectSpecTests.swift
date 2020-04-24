@@ -363,6 +363,34 @@ class ProjectSpecTests: XCTestCase {
                 try expectVariant("Staging", for: Config(name: "Debug (Staging)", type: .debug), matches: true)
                 try expectVariant("Production", for: Config(name: "Debug (Production)", type: .debug), matches: true)
             }
+
+            $0.it("fails on missing test plan file") {
+                var project = baseProject
+
+                project.configs = Config.defaultConfigs
+
+                project.targets = [Target(
+                    name: "target1",
+                    type: .application,
+                    platform: .iOS
+                )]
+
+                let testPlan = try TestPlan(path: "does-not-exist.xctestplan")
+
+                let scheme = Scheme(
+                    name: "xctestplan-scheme",
+                    build: Scheme.Build(targets: [
+                        Scheme.BuildTarget(target: "target1")
+                    ]),
+                    test: Scheme.Test(config: "Debug",
+                        testPlans: [testPlan]
+                    )
+                )
+
+                project.schemes = [scheme]
+
+                try expectValidationError(project, .invalidTestPlan(testPlan))
+            }
         }
     }
 
