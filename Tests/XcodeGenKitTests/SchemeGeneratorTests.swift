@@ -546,8 +546,8 @@ class SchemeGeneratorTests: XCTestCase {
                     name: "TestScheme",
                     build: Scheme.Build(targets: [buildTarget]),
                     test: Scheme.Test(config: "Debug", testPlans: [
-                        "Path/TestPlan.xctestplan",
-                        "Path/TestPlan2.xctestplan",
+                        .init(path: "Path/TestPlan.xctestplan"),
+                        .init(path: "Path/TestPlan2.xctestplan", defaultPlan: true),
                     ])
                 )
                 let project = Project(
@@ -558,10 +558,9 @@ class SchemeGeneratorTests: XCTestCase {
                 let xcodeProject = try project.generateXcodeProject()
 
                 let xcscheme = try unwrap(xcodeProject.sharedData?.schemes.first)
-
                 try expect(xcscheme.testAction?.testPlans) == [
-                    XCScheme.TestPlanReference(reference: "container:Path/TestPlan.xctestplan", default: true),
-                    XCScheme.TestPlanReference(reference: "container:Path/TestPlan2.xctestplan", default: false),
+                    .init(reference: "container:Path/TestPlan.xctestplan", default: false),
+                    .init(reference: "container:Path/TestPlan2.xctestplan", default: true),
                 ]
             }
         }

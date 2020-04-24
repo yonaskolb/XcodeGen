@@ -661,7 +661,7 @@ This is a convenience used to automatically generate schemes for a target based 
 - [ ] **region**: **String** - a String that indicates the region used for running and testing. This defaults to nil
 - [ ] **commandLineArguments**: **[String:Bool]** - a dictionary from the argument name (`String`) to if it is enabled (`Bool`). These arguments will be added to the Test, Profile and Run scheme actions
 - [ ] **environmentVariables**: **[[Environment Variable](#environment-variable)]** or **[String:String]** - environment variables for Run, Test and Profile scheme actions. When passing a dictionary, every key-value entry maps to a corresponding variable that is enabled.
-- [ ] **testPlans**: **[String]** - List of test plan locations that will be referenced in the scheme.
+- [ ] **testPlans**:  **[[Test Plan](#test-plan)]** - List of test plan locations that will be referenced in the scheme.
 - [ ] **preActions**: **[[Execution Action](#execution-action)]** - Scripts that are run *before* the build action
 - [ ] **postActions**: **[[Execution Action](#execution-action)]** - Scripts that are run *after* the build action
 - [ ] **storeKitConfiguration**: **String** - specify storekit configuration to use during run. See [Options](#options).
@@ -939,6 +939,19 @@ schemes:
       config: prod-release
       customArchiveName: MyTarget
       revealArchiveInOrganizer: false
+```
+### Test Plan
+
+- [x] **path**: **String** - path that provides the `xctestplan` location.
+- [ ] **defaultPlan**: **Bool** - a bool that defines if given plan is the default one. Defaults to false.
+
+```yaml
+schemes:
+  TestTarget:
+    test:
+      testPlans:
+        - path: app.xctestplan
+          default: true
 ```
 
 ## Scheme Template

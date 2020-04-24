@@ -182,7 +182,7 @@ public struct Scheme: Equatable {
         public var customLLDBInit: String?
         public var captureScreenshotsAutomatically: Bool
         public var deleteScreenshotsWhenEachTestSucceeds: Bool
-        public var testPlans: [String]
+        public var testPlans: [TestPlan]
 
         public struct TestTarget: Equatable, ExpressibleByStringLiteral {
             
@@ -243,7 +243,7 @@ public struct Scheme: Equatable {
             preActions: [ExecutionAction] = [],
             postActions: [ExecutionAction] = [],
             environmentVariables: [XCScheme.EnvironmentVariable] = [],
-            testPlans: [String] = [],
+            testPlans: [TestPlan] = [],
             language: String? = nil,
             region: String? = nil,
             debugEnabled: Bool = debugEnabledDefault,
@@ -522,7 +522,7 @@ extension Scheme.Test: JSONObjectConvertible {
         preActions = jsonDictionary.json(atKeyPath: "preActions") ?? []
         postActions = jsonDictionary.json(atKeyPath: "postActions") ?? []
         environmentVariables = try XCScheme.EnvironmentVariable.parseAll(jsonDictionary: jsonDictionary)
-        testPlans = jsonDictionary.json(atKeyPath: "testPlans") ?? []
+        testPlans = try (jsonDictionary.json(atKeyPath: "testPlans") ?? []).map { try TestPlan(jsonDictionary: $0) }
         language = jsonDictionary.json(atKeyPath: "language")
         region = jsonDictionary.json(atKeyPath: "region")
         debugEnabled = jsonDictionary.json(atKeyPath: "debugEnabled") ?? Scheme.Test.debugEnabledDefault

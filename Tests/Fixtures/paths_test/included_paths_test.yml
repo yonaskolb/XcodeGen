@@ -43,5 +43,5 @@ schemes:
       targets:
         NewTarget: all
     test:
-      testPlans: 
-        - TestPlan.xctestplan
+      testPlans:
+        - path: paths_test/TestPlan.xctestplan
