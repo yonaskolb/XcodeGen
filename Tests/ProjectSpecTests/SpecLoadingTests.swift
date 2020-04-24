@@ -135,7 +135,7 @@ class SpecLoadingTests: XCTestCase {
                     Scheme(
                         name: "Scheme",
                         build: .init(targets: [.init(target: "NewTarget")]),
-                        test: .init(testPlans: ["paths_test/TestPlan.xctestplan"])
+                        test: .init(testPlans: [.init(path: "paths_test/TestPlan.xctestplan")])
                     )
                 ]
             }
@@ -799,7 +799,14 @@ class SpecLoadingTests: XCTestCase {
                         "gatherCoverageData": true,
                         "disableMainThreadChecker": true,
                         "stopOnEveryMainThreadCheckerIssue": true,
-                        "testPlans": ["Path/Plan.xctestplan", "Path/Plan2.xctestplan"]
+                        "testPlans": [
+                            [
+                                "path": "Path/Plan.xctestplan"
+                            ],
+                            [
+                                "path": "Path/Plan2.xctestplan"
+                            ]
+                        ]
                     ],
                 ]
                 let scheme = try Scheme(name: "Scheme", jsonDictionary: schemeDictionary)
@@ -840,7 +847,10 @@ class SpecLoadingTests: XCTestCase {
                             skippedTests: ["Test/testExample()"]
                         ),
                     ],
-                    testPlans: ["Path/Plan.xctestplan", "Path/Plan2.xctestplan"]
+                    testPlans: [
+                        .init(path: "Path/Plan.xctestplan"),
+                        .init(path: "Path/Plan2.xctestplan")
+                    ]
                 )
                 try expect(scheme.test) == expectedTest
             }
