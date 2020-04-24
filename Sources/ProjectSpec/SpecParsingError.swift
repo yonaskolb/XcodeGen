@@ -8,6 +8,12 @@ public enum SpecParsingError: Error, CustomStringConvertible {
     case invalidSourceBuildPhase(String)
     case invalidTargetReference(String)
     case invalidVersion(String)
+    case unknownBreakpointType(String)
+    case unknownBreakpointScope(String)
+    case unknownBreakpointStopOnStyle(String)
+    case unknownBreakpointActionType(String)
+    case unknownBreakpointActionConveyanceType(String)
+    case unknownBreakpointActionSoundName(String)
 
     public var description: String {
         switch self {
@@ -25,6 +31,18 @@ public enum SpecParsingError: Error, CustomStringConvertible {
             return "Invalid version: \(version)"
         case let .unknownPackageRequirement(package):
             return "Unknown package requirement: \(package)"
+        case let .unknownBreakpointType(type):
+            return "Unknown Breakpoint type: \(type)"
+        case let .unknownBreakpointScope(scope):
+            return "Unknown Breakpoint scope: \(scope)"
+        case let .unknownBreakpointStopOnStyle(stopOnStyle):
+            return "Unknown Breakpoint stopOnStyle: \(stopOnStyle)"
+        case let .unknownBreakpointActionType(type):
+            return "Unknown Breakpoint Action type: \(type)"
+        case let .unknownBreakpointActionConveyanceType(type):
+            return "Unknown Breakpoint Action conveyance type: \(type)"
+        case let .unknownBreakpointActionSoundName(name):
+            return "Unknown Breakpoint Action sound name: \(name)"
         }
     }
 }

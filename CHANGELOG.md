@@ -53,6 +53,9 @@
 
 [Commits](https://github.com/yonaskolb/XcodeGen/compare/2.13.1...2.14.0)
 
+#### Added
+- Add shared breakpoints support [#693](https://github.com/yonaskolb/XcodeGen/pull/693) @alexruperez @myihsan
+
 ## 2.13.1
 
 #### Fixed
