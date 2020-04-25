@@ -568,7 +568,7 @@ public class PBXProjGenerator {
         childGroups.forEach(sortGroups)
     }
     
-    func setupGroupOrdering(group: PBXGroup) {
+    public func setupGroupOrdering(group: PBXGroup) {
         let groupOrdering = project.options.groupOrdering.first { groupOrdering in
             let groupName = group.nameOrPath
             
@@ -583,7 +583,7 @@ public class PBXProjGenerator {
             return false
         }
         
-        if let order = groupOrdering?.order, let fileSortPosition = groupOrdering?.fileSortPosition {
+        if let order = groupOrdering?.order {
             let files = group.children.filter { $0 is PBXFileReference }
             var groups = group.children.filter { $0 is PBXGroup }
             
@@ -593,13 +593,21 @@ public class PBXProjGenerator {
                 guard let group = groups.first(where: { $0.nameOrPath == groupName }) else {
                     continue
                 }
-                
+
                 filteredGroups.append(group)
                 groups.removeAll { $0 == group }
             }
-            
+
             filteredGroups += groups
-            group.children = fileSortPosition == .top ? files + filteredGroups : filteredGroups + files
+            print("project.options.groupSortPosition -> \(project.options.groupSortPosition)")
+            switch project.options.groupSortPosition {
+            case .top:
+                group.children = filteredGroups + files
+            case .bottom:
+                group.children = files + filteredGroups
+            default:
+                break
+            }
         }
         
         // sort sub groups

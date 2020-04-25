@@ -4,13 +4,6 @@ import JSONUtilities
 /// Describes an order of groups.
 public struct GroupOrdering: Equatable {
     
-    public enum FileSortPosition: String {
-        /// groups are at the top
-        case top
-        /// groups are at the bottom
-        case bottom
-    }
-    
     /// A group name pattern.
     public var pattern: String
     
@@ -20,8 +13,11 @@ public struct GroupOrdering: Equatable {
     /// Subgroups orders.
     public var order: [String]
     
-    /// File sort position in a group.
-    public var fileSortPosition: FileSortPosition = .top
+    public init(pattern: String = "", order: [String] = []) {
+        self.pattern = pattern
+        self.regex = try? NSRegularExpression(pattern: pattern)
+        self.order = order
+    }
     
 }
 
@@ -31,7 +27,6 @@ extension GroupOrdering: JSONObjectConvertible {
         pattern = jsonDictionary.json(atKeyPath: "pattern") ?? ""
         regex = try? NSRegularExpression(pattern: pattern)
         order = jsonDictionary.json(atKeyPath: "order") ?? []
-        fileSortPosition = jsonDictionary.json(atKeyPath: "fileSortPosition") ?? .top
     }
     
 }
