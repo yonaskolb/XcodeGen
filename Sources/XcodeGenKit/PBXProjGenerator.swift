@@ -401,10 +401,17 @@ public class PBXProjGenerator {
             )
         )
 
+        var path = targetObject.productNameWithExtension()
+
+        if targetObject.productType == .staticLibrary,
+            let tmpPath = path, !tmpPath.hasPrefix("lib") {
+            path = "lib\(tmpPath)"
+        }
+
         let productReferenceProxy = addObject(
             PBXReferenceProxy(
                 fileType: Xcode.fileType(path: Path(targetObject.productNameWithExtension()!)),
-                path: targetObject.productNameWithExtension(),
+                path: path,
                 remote: productProxy,
                 sourceTree: .buildProductsDir
             )
@@ -414,7 +421,7 @@ public class PBXProjGenerator {
 
         let targetDependency = addObject(
             PBXTargetDependency(
-                target: targetObject,
+                name: targetObject.name,
                 targetProxy: targetProxy
             )
         )
@@ -691,10 +698,7 @@ public class PBXProjGenerator {
                 }
             }
 
-            let embed = dependency.embed ?? (!dependencyTarget.type.isLibrary && (
-                target.type.isApp
-                    || (target.type.isTest && (dependencyTarget.type.isFramework || dependencyTarget.type == .bundle))
-            ))
+            let embed = dependency.embed ?? target.type.shouldEmbed(dependencyTarget.type)
             if embed {
                 let embedFile = addObject(
                     PBXBuildFile(
@@ -838,7 +842,9 @@ public class PBXProjGenerator {
 
                     self.carthageFrameworksByPlatform[target.platform.carthageName, default: []].insert(fileReference)
 
-                    if dependency.link ?? (target.type != .staticLibrary) {
+                    let isStaticLibrary = target.type == .staticLibrary
+                    let isCarthageStaticLink = dependency.carthageLinkType == .static
+                    if dependency.link ?? (!isStaticLibrary && !isCarthageStaticLink) {
                         let buildFile = self.addObject(
                             PBXBuildFile(file: fileReference, settings: getDependencyFrameworkSettings(dependency: dependency))
                         )
@@ -990,11 +996,11 @@ public class PBXProjGenerator {
         }
 
         let swiftObjCInterfaceHeader = project.getCombinedBuildSetting("SWIFT_OBJC_INTERFACE_HEADER_NAME", target: target, config: project.configs[0]) as? String
-        let swiftInstallObjCHeader = project.getCombinedBuildSetting("SWIFT_INSTALL_OBJC_HEADER", target: target, config: project.configs[0]) as? Bool
+        let swiftInstallObjCHeader = project.getBoolBuildSetting("SWIFT_INSTALL_OBJC_HEADER", target: target, config: project.configs[0]) ?? true // Xcode default
 
         if target.type == .staticLibrary
             && swiftObjCInterfaceHeader != ""
-            && swiftInstallObjCHeader != false
+            && swiftInstallObjCHeader
             && sourceFiles.contains(where: { $0.buildPhase == .sources && $0.path.extension == "swift" }) {
 
             let inputPaths = ["$(DERIVED_SOURCES_DIR)/$(SWIFT_OBJC_INTERFACE_HEADER_NAME)"]
@@ -1288,11 +1294,12 @@ public class PBXProjGenerator {
 
                 // don't want a dependency if it's going to be embedded or statically linked in a non-top level target
                 // in .target check we filter out targets that will embed all of their dependencies
+                // For some more context about the `dependency.embed != true` lines, refer to https://github.com/yonaskolb/XcodeGen/pull/820
                 switch dependency.type {
                 case .sdk:
                     dependencies[dependency.reference] = dependency
                 case .framework, .carthage, .package:
-                    if isTopLevel || dependency.embed == nil {
+                    if isTopLevel || dependency.embed != true {
                         dependencies[dependency.reference] = dependency
                     }
                 case .target:
@@ -1300,7 +1307,7 @@ public class PBXProjGenerator {
 
                     switch dependencyTargetReference.location {
                     case .local:
-                        if isTopLevel || dependency.embed == nil {
+                        if isTopLevel || dependency.embed != true {
                             if let dependencyTarget = project.getTarget(dependency.reference) {
                                 dependencies[dependency.reference] = dependency
                                 if !dependencyTarget.shouldEmbedDependencies {
@@ -1313,7 +1320,7 @@ public class PBXProjGenerator {
                             }
                         }
                     case .project:
-                        if isTopLevel || dependency.embed == nil {
+                        if isTopLevel || dependency.embed != true {
                             dependencies[dependency.reference] = dependency
                         }
                     }

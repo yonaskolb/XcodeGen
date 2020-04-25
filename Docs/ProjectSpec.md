@@ -620,8 +620,8 @@ This is a convenience used to automatically generate schemes for a target based 
 - [ ] **region**: **String** - a String that indicates the region used for running and testing. This defaults to nil
 - [ ] **commandLineArguments**: **[String:Bool]** - a dictionary from the argument name (`String`) to if it is enabled (`Bool`). These arguments will be added to the Test, Profile and Run scheme actions
 - [ ] **environmentVariables**: **[[Environment Variable](#environment-variable)]** or **[String:String]** - environment variables for Run, Test and Profile scheme actions. When passing a dictionary, every key-value entry maps to a corresponding variable that is enabled.
-- [ ] **preActions**: **[[Execution Action](#execution-action)]** - Scripts that are run *before* all actions
-- [ ] **postActions**: **[[Execution Action](#execution-action)]** - Scripts that are run *after* all actions
+- [ ] **preActions**: **[[Execution Action](#execution-action)]** - Scripts that are run *before* the build action
+- [ ] **postActions**: **[[Execution Action](#execution-action)]** - Scripts that are run *after* the build action
 
 For example, the spec below would create 3 schemes called:
 

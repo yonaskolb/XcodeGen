@@ -148,16 +148,21 @@ If you want to pass any required arguments when running in Xcode, you can edit t
 - See [FAQ](Docs/FAQ.md) for a list of some frequently asked questions
 - See [Examples](Docs/Examples.md) for some real world XcodeGen project specs out in the wild
 
-## Attributions
+## Alternatives
+If XcodeGen doesn't meet your needs try these great alternatives:
+- [Tuist](https://github.com/tuist/tuist)
+- [xcake](https://github.com/igor-makarov/xcake)
+- [struct](https://github.com/workshop/struct)
 
+## Attributions
 This tool is powered by:
 
-- [xcodeproj](https://github.com/carambalabs/xcodeproj)
+- [XcodeProj](https://github.com/tuist/XcodeProj)
 - [JSONUtilities](https://github.com/yonaskolb/JSONUtilities)
 - [Spectre](https://github.com/kylef/Spectre)
 - [PathKit](https://github.com/kylef/PathKit)
-- [Commander](https://github.com/kylef/Commander)
 - [Yams](https://github.com/jpsim/Yams)
+- [SwiftCLI](https://github.com/jakeheis/SwiftCLI)
 
 Inspiration for this tool came from:
 

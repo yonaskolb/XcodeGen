@@ -52,6 +52,27 @@ extension PBXProductType {
             return false
         }
     }
+
+    /// Function to determine when a dependendency should be embedded into the target
+    public func shouldEmbed(_ dependencyType: PBXProductType) -> Bool {
+        switch dependencyType {
+        case .staticLibrary, .staticFramework:
+            // Some dependendencies should not be embed, independently of the target type
+            return false
+
+        default:
+            if isApp {
+                // If target is an app, all dependencies should be embed (except for the ones mentioned above)
+                return true
+            } else if isTest, [.framework, .bundle].contains(dependencyType) {
+                // If target is test, some dependencies should be embed (depending on their type)
+                return true
+            } else {
+                // If none of the above, do not embed the dependency
+                return false
+            }
+        }
+    }
 }
 
 extension Platform {
@@ -63,6 +84,13 @@ extension Platform {
         case .tvOS: return "📺"
         case .macOS: return "🖥"
         }
+    }
+}
+
+extension Target {
+    public var shouldExecuteOnLaunch: Bool {
+        // This is different from `type.isExecutable`, because we don't want to "run" a test
+        type.isApp || type.isExtension || type == .commandLineTool
     }
 }
 

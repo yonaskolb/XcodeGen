@@ -4,7 +4,20 @@
 #### Added
 - Improve speed of metadata parsing and dependency resolution. [#803](https://github.com/yonaskolb/XcodeGen/pull/803) @michaeleisel
 - Improve support for iOS sticker packs and add support for `launchAutomaticallySubstyle` to run schemes. [#824](https://github.com/yonaskolb/XcodeGen/pull/824) @scelis
-- Added an ability to set an order of groups with `options.groupOrdering` [#480](https://github.com/yonaskolb/XcodeGen/pull/613) @Beniamiiin
+- Add --project-root option to generate command. [#828](https://github.com/yonaskolb/XcodeGen/pull/828) @ileitch
+- Add an ability to set an order of groups with `options.groupOrdering` [#480](https://github.com/yonaskolb/XcodeGen/pull/613) @Beniamiiin
+
+#### Fixed
+- Fixed issue when linking and embeding static frameworks: they should be linked and NOT embed. [#820](https://github.com/yonaskolb/XcodeGen/pull/820) @acecilia
+- Fixed issue when generating projects for paths with a dot in the folder for swift sources. [#826](https://github.com/yonaskolb/XcodeGen/pull/826) @asifmohd
+- Prefix static library target filenames with 'lib' to match Xcode. [#831](https://github.com/yonaskolb/XcodeGen/pull/831), [#842](https://github.com/yonaskolb/XcodeGen/pull/842) @ileitch
+- Fixed duplicate addition of carthage static frameworks. [#829](https://github.com/yonaskolb/XcodeGen/pull/829) @funzin
+- Fix handling of SWIFT_INSTALL_OBJC_HEADER when its value is YES/NO. [#827](https://github.com/yonaskolb/XcodeGen/pull/827) @ileitch
+- Set `preActions` and `postActions` on the `build` action of a TargetScheme instead of the other actions. [#823](https://github.com/yonaskolb/XcodeGen/pull/823) @brentleyjones
+- Prevent test targets from being set as a scheme's launch action [#835](https://github.com/yonaskolb/XcodeGen/pull/835) @brentleyjones
+- Implicitly include bundles in the Copy Bundle Resources build phase. [#838](https://github.com/yonaskolb/XcodeGen/pull/838) @skirchmeier
+- Fixed dumping a project manifest which contains an array of project references @paciej00
+- Generate correct PBXTargetDependency for external targets. [#843](https://github.com/yonaskolb/XcodeGen/pull/843) @ileitch
 
 ## 2.15.1
 

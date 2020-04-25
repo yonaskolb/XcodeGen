@@ -62,6 +62,8 @@ class SourceGeneratorTests: XCTestCase {
                     - a.swift
                     - B:
                       - b.swift
+                    - C2.0:
+                      - c.swift
                 """
                 try createDirectories(directories)
 
@@ -71,6 +73,7 @@ class SourceGeneratorTests: XCTestCase {
                 let pbxProj = try project.generatePbxProj()
                 try pbxProj.expectFile(paths: ["Sources", "A", "a.swift"], buildPhase: .sources)
                 try pbxProj.expectFile(paths: ["Sources", "A", "B", "b.swift"], buildPhase: .sources)
+                try pbxProj.expectFile(paths: ["Sources", "A", "C2.0", "c.swift"], buildPhase: .sources)
             }
 
             $0.it("supports frameworks in sources") {
@@ -400,13 +403,19 @@ class SourceGeneratorTests: XCTestCase {
                     - B:
                       - b.swift
                       - c.jpg
+                    - D2.0:
+                      - d.swift
+                    - E.bundle:
+                      - e.json
                 """
                 try createDirectories(directories)
 
                 let target = Target(name: "Test", type: .application, platform: .iOS, sources: [
                     "Sources/A/a.swift",
                     "Sources/A/B/b.swift",
+                    "Sources/A/D2.0/d.swift",
                     "Sources/A/Assets.xcassets",
+                    "Sources/A/E.bundle/e.json",
                     "Sources/A/B/c.jpg",
                 ])
                 let project = Project(basePath: directoryPath, name: "Test", targets: [target])
@@ -414,8 +423,10 @@ class SourceGeneratorTests: XCTestCase {
                 let pbxProj = try project.generatePbxProj()
                 try pbxProj.expectFile(paths: ["Sources/A", "a.swift"], names: ["A", "a.swift"], buildPhase: .sources)
                 try pbxProj.expectFile(paths: ["Sources/A/B", "b.swift"], names: ["B", "b.swift"], buildPhase: .sources)
+                try pbxProj.expectFile(paths: ["Sources/A/D2.0", "d.swift"], names: ["D2.0", "d.swift"], buildPhase: .sources)
                 try pbxProj.expectFile(paths: ["Sources/A/B", "c.jpg"], names: ["B", "c.jpg"], buildPhase: .resources)
                 try pbxProj.expectFile(paths: ["Sources/A", "Assets.xcassets"], names: ["A", "Assets.xcassets"], buildPhase: .resources)
+                try pbxProj.expectFile(paths: ["Sources/A/E.bundle", "e.json"], names: ["E.bundle", "e.json"], buildPhase: .resources)
             }
 
             $0.it("generates shared sources") {
@@ -565,6 +576,12 @@ class SourceGeneratorTests: XCTestCase {
                     - file.mlmodel
                     - Info.plist
                     - Intent.intentdefinition
+                    - Settings.bundle:
+                      - en.lproj:
+                        - Root.strings
+                      - Root.plist
+                    - WithPeriod2.0:
+                      - file.swift
                 """
                 try createDirectories(directories)
 
@@ -614,6 +631,12 @@ class SourceGeneratorTests: XCTestCase {
                 try pbxProj.expectFile(paths: ["C", "file.metal"], buildPhase: .sources)
                 try pbxProj.expectFile(paths: ["C", "file.mlmodel"], buildPhase: .sources)
                 try pbxProj.expectFile(paths: ["C", "Intent.intentdefinition"], buildPhase: .sources)
+                try pbxProj.expectFile(paths: ["C", "Settings.bundle"], buildPhase: .resources)
+                try pbxProj.expectFileMissing(paths: ["C", "Settings.bundle", "en.lproj"])
+                try pbxProj.expectFileMissing(paths: ["C", "Settings.bundle", "en.lproj", "Root.strings"])
+                try pbxProj.expectFileMissing(paths: ["C", "Settings.bundle", "Root.plist"])
+                try pbxProj.expectFileMissing(paths: ["C", "WithPeriod2.0"])
+                try pbxProj.expectFile(paths: ["C", "WithPeriod2.0", "file.swift"], buildPhase: .sources)
             }
 
             $0.it("duplicate TargetSource is included once in sources build phase") {

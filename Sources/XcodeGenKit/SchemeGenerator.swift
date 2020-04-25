@@ -162,7 +162,7 @@ public class SchemeGenerator {
         }
 
         let schemeTarget = target ?? project.getTarget(scheme.build.targets.first!.target.name)
-        let shouldExecuteOnLaunch = schemeTarget?.type.isExecutable == true
+        let shouldExecuteOnLaunch = schemeTarget?.shouldExecuteOnLaunch == true
 
         let buildableReference = buildActionEntries.first!.buildableReference
         let runnables = makeProductRunnables(for: schemeTarget, buildableReference: buildableReference)
@@ -314,13 +314,13 @@ extension Scheme {
             name: name,
             build: .init(
                 targets: Scheme.buildTargets(for: target, project: project),
-                buildImplicitDependencies: targetScheme.buildImplicitDependencies
+                buildImplicitDependencies: targetScheme.buildImplicitDependencies,
+                preActions: targetScheme.preActions,
+                postActions: targetScheme.postActions
             ),
             run: .init(
                 config: debugConfig,
                 commandLineArguments: targetScheme.commandLineArguments,
-                preActions: targetScheme.preActions,
-                postActions: targetScheme.postActions,
                 environmentVariables: targetScheme.environmentVariables,
                 disableMainThreadChecker: targetScheme.disableMainThreadChecker,
                 stopOnEveryMainThreadCheckerIssue: targetScheme.stopOnEveryMainThreadCheckerIssue,
@@ -333,8 +333,6 @@ extension Scheme {
                 disableMainThreadChecker: targetScheme.disableMainThreadChecker,
                 commandLineArguments: targetScheme.commandLineArguments,
                 targets: targetScheme.testTargets,
-                preActions: targetScheme.preActions,
-                postActions: targetScheme.postActions,
                 environmentVariables: targetScheme.environmentVariables,
                 language: targetScheme.language,
                 region: targetScheme.region
@@ -342,17 +340,13 @@ extension Scheme {
             profile: .init(
                 config: releaseConfig,
                 commandLineArguments: targetScheme.commandLineArguments,
-                preActions: targetScheme.preActions,
-                postActions: targetScheme.postActions,
                 environmentVariables: targetScheme.environmentVariables
             ),
             analyze: .init(
                 config: debugConfig
             ),
             archive: .init(
-                config: releaseConfig,
-                preActions: targetScheme.preActions,
-                postActions: targetScheme.postActions
+                config: releaseConfig
             )
         )
     }

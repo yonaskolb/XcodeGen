@@ -56,6 +56,9 @@ public struct Target: ProjectTarget {
         if let fileExtension = type.fileExtension {
             filename += ".\(fileExtension)"
         }
+        if type == .staticLibrary {
+            filename = "lib\(filename)"
+        }
         return filename
     }
 

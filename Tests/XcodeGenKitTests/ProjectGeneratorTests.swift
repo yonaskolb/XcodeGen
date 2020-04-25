@@ -594,6 +594,7 @@ class ProjectGeneratorTests: XCTestCase {
                     "FrameworkE.framework",
                     "FrameworkF.framework",
                     "CarthageA.framework",
+                    "CarthageB.framework",
                     "CarthageC.framework",
                 ])
                 expectedEmbeddedFrameworks[iosFrameworkB.name] = Set([
@@ -623,10 +624,12 @@ class ProjectGeneratorTests: XCTestCase {
                     "FrameworkZ.framework",
                     "FrameworkX.framework",
                     "CarthageZ.framework",
+                    "FrameworkF.framework",
                     "FrameworkC.framework",
                     iosFrameworkB.filename,
                     "FrameworkD.framework",
                     "CarthageA.framework",
+                    "CarthageB.framework",
                     "CarthageD.framework",
                 ])
                 expectedEmbeddedFrameworks[appTest.name] = Set([
@@ -710,7 +713,7 @@ class ProjectGeneratorTests: XCTestCase {
                     if !expectedLinkedFiles.isEmpty {
                         let linkFrameworks = (frameworkPhases[0].files ?? [])
                             .compactMap { $0.file?.nameOrPath }
-                        try expect(Set(linkFrameworks)) == expectedLinkedFiles
+                        try expect(Array(Set(linkFrameworks)).sorted()) == Array(expectedLinkedFiles).sorted()
                     }
 
                     var expectedCopyFilesPhasesCount = 0
@@ -838,6 +841,14 @@ class ProjectGeneratorTests: XCTestCase {
                     sources: [TargetSource(path: "StaticLibrary_Swift/StaticLibrary.swift")],
                     dependencies: []
                 )
+                let swiftStaticLibraryWithoutHeader3 = Target(
+                    name: "swiftStaticLibraryWithoutHeader3",
+                    type: .staticLibrary,
+                    platform: .iOS,
+                    settings: Settings(buildSettings: ["SWIFT_INSTALL_OBJC_HEADER": "NO"]),
+                    sources: [TargetSource(path: "StaticLibrary_Swift/StaticLibrary.swift")],
+                    dependencies: []
+                )
                 let objCStaticLibrary = Target(
                     name: "objCStaticLibrary",
                     type: .staticLibrary,
@@ -846,7 +857,7 @@ class ProjectGeneratorTests: XCTestCase {
                     dependencies: []
                 )
 
-                let targets = [swiftStaticLibraryWithHeader, swiftStaticLibraryWithoutHeader1, swiftStaticLibraryWithoutHeader2, objCStaticLibrary]
+                let targets = [swiftStaticLibraryWithHeader, swiftStaticLibraryWithoutHeader1, swiftStaticLibraryWithoutHeader2, swiftStaticLibraryWithoutHeader3, objCStaticLibrary]
 
                 let project = Project(
                     basePath: fixturePath + "TestProject",
@@ -876,6 +887,7 @@ class ProjectGeneratorTests: XCTestCase {
                 try expect(scriptBuildPhases(target: swiftStaticLibraryWithHeader)) == [expectedScriptPhase]
                 try expect(scriptBuildPhases(target: swiftStaticLibraryWithoutHeader1)) == []
                 try expect(scriptBuildPhases(target: swiftStaticLibraryWithoutHeader2)) == []
+                try expect(scriptBuildPhases(target: swiftStaticLibraryWithoutHeader3)) == []
                 try expect(scriptBuildPhases(target: objCStaticLibrary)) == []
             }
 
@@ -1121,6 +1133,7 @@ class ProjectGeneratorTests: XCTestCase {
                         guard let files = frameworkBuildPhase?.files, let file = files.first else {
                             return XCTFail("frameworkBuildPhase should have files")
                         }
+                        try expect(files.count) == 1
                         try expect(file.file?.nameOrPath) == "MyStaticFramework.framework"
 
                         try expect(target.carthageCopyFrameworkBuildPhase).beNil()
@@ -1148,6 +1161,8 @@ class ProjectGeneratorTests: XCTestCase {
                         guard let files = frameworkBuildPhase?.files else {
                             return XCTFail("frameworkBuildPhase should have files")
                         }
+                        try expect(files.count) == 2
+
                         guard let dynamicFramework = files.first(where: { $0.file?.nameOrPath == "MyDynamicFramework.framework" }) else {
                             return XCTFail("Framework Build Phase should have Dynamic Framework")
                         }
@@ -1259,6 +1274,7 @@ class ProjectGeneratorTests: XCTestCase {
                         guard let files = frameworkBuildPhase?.files, let file = files.first else {
                             return XCTFail("frameworkBuildPhase should have files")
                         }
+                        try expect(files.count) == 1
                         try expect(file.file?.nameOrPath) == "MyStaticFramework.framework"
 
                         try expect(target.carthageCopyFrameworkBuildPhase).beNil()
@@ -1286,6 +1302,8 @@ class ProjectGeneratorTests: XCTestCase {
                         guard let files = frameworkBuildPhase?.files else {
                             return XCTFail("frameworkBuildPhase should have files")
                         }
+                        try expect(files.count) == 2
+
                         guard let dynamicFramework = files.first(where: { $0.file?.nameOrPath == "MyDynamicFramework.framework" }) else {
                             return XCTFail("Framework Build Phase should have Dynamic Framework")
                         }
