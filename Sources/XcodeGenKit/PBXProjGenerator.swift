@@ -606,7 +606,7 @@ public class PBXProjGenerator {
             }
 
             filteredGroups += groups
-            print("project.options.groupSortPosition -> \(project.options.groupSortPosition)")
+            
             switch project.options.groupSortPosition {
             case .top:
                 group.children = filteredGroups + files
