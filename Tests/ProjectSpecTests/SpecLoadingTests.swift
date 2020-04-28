@@ -42,6 +42,28 @@ class SpecLoadingTests: XCTestCase {
                     Target(name: "NewTarget", type: .application, platform: .iOS, sources: ["template", "target"]),
                 ]
             }
+            
+            $0.context("with optional include for non exist subspecs") {
+                $0.it("ignore subspecs") {
+                    let path = fixturePath + "optional_include/optional_include.yml"
+                    let project = try unwrap(loadSpec(path: path))
+                    
+                    try expect(project.name) == "OptionalInclude"
+                    try expect(project.targets) == [
+                        Target(name: "IncludedTarget", type: .application, platform: .iOS, sources: ["template"]),
+                    ]
+                }
+            }
+            
+            $0.context("with non optional include for non exist subspecs") {
+                $0.it("failed to load specs") {
+                    let path = fixturePath + "optional_include/non_optional_include.yml"
+                    XCTAssertThrowsError(try loadSpec(path: path), "failed to load specs") { error in
+                        let failure = error as! FailureType
+                        XCTAssertTrue(failure.reason.contains("No such file or directory"))
+                    }
+                }
+            }
 
             $0.it("expands directories") {
                 let path = fixturePath + "paths_test.yml"

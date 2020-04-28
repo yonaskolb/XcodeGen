@@ -13,17 +13,21 @@ public struct SpecFile {
     fileprivate struct Include {
         let path: Path
         let relativePaths: Bool
+        let optional: Bool
 
         static let defaultRelativePaths = true
+        static let defaultOptional = false
 
         init?(any: Any) {
             if let string = any as? String {
                 path = Path(string)
                 relativePaths = Include.defaultRelativePaths
+                optional = Self.defaultOptional
             } else if let dictionary = any as? JSONDictionary,
                 let path = dictionary["path"] as? String {
                 self.path = Path(path)
                 relativePaths = dictionary["relativePaths"] as? Bool ?? Include.defaultRelativePaths
+                optional = dictionary["optional"] as? Bool ?? Self.defaultOptional
             } else {
                 return nil
             }
@@ -41,7 +45,7 @@ public struct SpecFile {
     }
 
     public init(path: Path) throws {
-        try self.init(filename: path.lastComponent, basePath: path.parent())
+        try self.init(filename: path.lastComponent, basePath: path.parent(), shouldIgnoreNotFound: false)
     }
 
     public init(filename: String, jsonDictionary: JSONDictionary, basePath: Path = "", relativePath: Path = "", subSpecs: [SpecFile] = []) {
@@ -56,12 +60,12 @@ public struct SpecFile {
         let basePath = include.relativePaths ? (basePath + relativePath) : (basePath + relativePath + include.path.parent())
         let relativePath = include.relativePaths ? include.path.parent() : Path()
 
-        try self.init(filename: include.path.lastComponent, basePath: basePath, relativePath: relativePath)
+        try self.init(filename: include.path.lastComponent, basePath: basePath, relativePath: relativePath, shouldIgnoreNotFound: include.optional)
     }
 
-    private init(filename: String, basePath: Path, relativePath: Path = "") throws {
+    private init(filename: String, basePath: Path, relativePath: Path = "", shouldIgnoreNotFound: Bool = false) throws {
         let path = basePath + relativePath + filename
-        let jsonDictionary = try SpecFile.loadDictionary(path: path)
+        let jsonDictionary = try SpecFile.loadDictionary(path: path, shouldIgnoreNotFound: shouldIgnoreNotFound)
 
         let includes = Include.parse(json: jsonDictionary["include"])
         let subSpecs: [SpecFile] = try includes.map { include in
@@ -71,17 +75,26 @@ public struct SpecFile {
         self.init(filename: filename, jsonDictionary: jsonDictionary, basePath: basePath, relativePath: relativePath, subSpecs: subSpecs)
     }
 
-    static func loadDictionary(path: Path) throws -> JSONDictionary {
+    static func loadDictionary(path: Path, shouldIgnoreNotFound: Bool) throws -> JSONDictionary {
+        let data: Data
+        do {
+            data = try path.read()
+        } catch {
+            if shouldIgnoreNotFound {
+                return [:]
+            } else {
+                throw error
+            }
+        }
         // Depending on the extension we will either load the file as YAML or JSON
         if path.extension?.lowercased() == "json" {
-            let data: Data = try path.read()
             let jsonData = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
             guard let jsonDictionary = jsonData as? [String: Any] else {
                 fatalError("Invalid JSON at path \(path)")
             }
             return jsonDictionary
         } else {
-            return try loadYamlDictionary(path: path)
+            return try loadYamlDictionary(from: data)
         }
     }
 

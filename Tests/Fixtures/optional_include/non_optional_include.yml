@@ -1,0 +1,10 @@
+include:
+  - path: not_exist.yml
+    optional: false
+name: NonOptionalInclude
+targets:
+  IncludedTarget:
+    type: application
+    platform: iOS
+    sources:
+      - template
