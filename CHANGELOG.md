@@ -17,6 +17,7 @@
 - Implicitly include bundles in the Copy Bundle Resources build phase. [#838](https://github.com/yonaskolb/XcodeGen/pull/838) @skirchmeier
 - Fixed dumping a project manifest which contains an array of project references @paciej00
 - Generate correct PBXTargetDependency for external targets. [#843](https://github.com/yonaskolb/XcodeGen/pull/843) @ileitch
+- Don't deduplicate files in `include` with different path but same name. [#849](https://github.com/yonaskolb/XcodeGen/pull/849) @akkyie
 
 ## 2.15.1
 
