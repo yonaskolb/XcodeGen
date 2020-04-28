@@ -269,6 +269,7 @@ public class PBXProjGenerator {
 
         mainGroup.children = Array(sourceGenerator.rootGroups)
         sortGroups(group: mainGroup)
+        setupGroupOrdering(group: mainGroup)
         // add derived groups at the end
         derivedGroups.forEach(sortGroups)
         mainGroup.children += derivedGroups
@@ -572,6 +573,53 @@ public class PBXProjGenerator {
         // sort sub groups
         let childGroups = group.children.compactMap { $0 as? PBXGroup }
         childGroups.forEach(sortGroups)
+    }
+    
+    public func setupGroupOrdering(group: PBXGroup) {
+        let groupOrdering = project.options.groupOrdering.first { groupOrdering in
+            let groupName = group.nameOrPath
+            
+            if groupName == groupOrdering.pattern {
+                return true
+            }
+            
+            if let regex = groupOrdering.regex {
+                return regex.isMatch(to: groupName)
+            }
+            
+            return false
+        }
+        
+        if let order = groupOrdering?.order {
+            let files = group.children.filter { $0 is PBXFileReference }
+            var groups = group.children.filter { $0 is PBXGroup }
+            
+            var filteredGroups = [PBXFileElement]()
+            
+            for groupName in order {
+                guard let group = groups.first(where: { $0.nameOrPath == groupName }) else {
+                    continue
+                }
+
+                filteredGroups.append(group)
+                groups.removeAll { $0 == group }
+            }
+
+            filteredGroups += groups
+            
+            switch project.options.groupSortPosition {
+            case .top:
+                group.children = filteredGroups + files
+            case .bottom:
+                group.children = files + filteredGroups
+            default:
+                break
+            }
+        }
+        
+        // sort sub groups
+        let childGroups = group.children.compactMap { $0 as? PBXGroup }
+        childGroups.forEach(setupGroupOrdering)
     }
 
     func getPBXProj(from reference: ProjectReference) throws -> PBXProj {
