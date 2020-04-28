@@ -16,7 +16,7 @@ class SpecLoadingTests: XCTestCase {
                 let path = fixturePath + "duplicated_include/duplicated_import_sut.yml"
                 let project = try loadSpec(path: path)
 
-                try expect(project.fileGroups) == ["First", "Second"]
+                try expect(project.fileGroups) == ["First", "Second", "Third"]
 
                 let sutTarget = project.targets.first
                 try expect(sutTarget?.sources) == [TargetSource(path: "template")]
