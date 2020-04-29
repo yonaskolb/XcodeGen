@@ -1117,13 +1117,6 @@ extension PBXProj {
         return getFileReference(group: mainGroup, paths: paths, names: names)
     }
 
-    func getMainGroup(function: String = #function, file: String = #file, line: Int = #line) throws -> PBXGroup {
-        guard let mainGroup = projects.first?.mainGroup else {
-            throw failure("Couldn't find main group", file: file, line: line)
-        }
-        return mainGroup
-    }
-
     private func getFileReference(group: PBXGroup, paths: [String], names: [String]) -> PBXFileReference? {
         guard !paths.isEmpty else {
             return nil
