@@ -25,7 +25,7 @@ jobs:
     - name: Build
       run: swift build
     - name: Test
-      run: swift test 2>&1 | xcpretty
+      run: set -o pipefail && swift test 2>&1 | xcpretty
     - name: Gen fixtures
       run: scripts/gen-fixtures.sh
     - name: Check fixtures
