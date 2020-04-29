@@ -11,6 +11,15 @@
         }
       },
       {
+        "package": "GraphViz",
+        "repositoryURL": "https://github.com/SwiftDocOrg/GraphViz.git",
+        "state": {
+          "branch": null,
+          "revision": "08e0cddd013fa2272379d27ec3e0093db51f34fb",
+          "version": "0.1.0"
+        }
+      },
+      {
         "package": "JSONUtilities",
         "repositoryURL": "https://github.com/yonaskolb/JSONUtilities.git",
         "state": {
