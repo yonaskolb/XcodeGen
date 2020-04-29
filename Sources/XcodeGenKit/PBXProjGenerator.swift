@@ -907,8 +907,9 @@ public class PBXProjGenerator {
             }
         }
 
-        for dependency in carthageDependencies {
-
+        for carthageDependency in carthageDependencies {
+            let dependency = carthageDependency.dependency
+            let isFromTopLevelTarget = carthageDependency.isFromTopLevelTarget
             let embed = dependency.embed ?? target.shouldEmbedCarthageDependencies
 
             var platformPath = Path(carthageResolver.buildPath(for: target.platform, linkType: dependency.carthageLinkType ?? .default))
@@ -919,10 +920,11 @@ public class PBXProjGenerator {
             let fileReference = sourceGenerator.getFileReference(path: frameworkPath, inPath: platformPath)
 
             if dependency.carthageLinkType == .static {
-                let embedFile = addObject(
+                guard isFromTopLevelTarget else { continue } // ignore transitive dependencies if static
+                let linkFile = addObject(
                     PBXBuildFile(file: fileReference, settings: getDependencyFrameworkSettings(dependency: dependency))
                 )
-                targetFrameworkBuildFiles.append(embedFile)
+                targetFrameworkBuildFiles.append(linkFile)
             } else if embed {
                 if directlyEmbedCarthage {
                     let embedFile = addObject(
@@ -1197,11 +1199,11 @@ public class PBXProjGenerator {
             let configFrameworkBuildPaths: [String]
             if !carthageDependencies.isEmpty {
                 var carthagePlatformBuildPaths: [String] = []
-                if carthageDependencies.contains(where: { $0.carthageLinkType == .static }) {
+                if carthageDependencies.contains(where: { $0.dependency.carthageLinkType == .static }) {
                     let carthagePlatformBuildPath = "$(PROJECT_DIR)/" + carthageResolver.buildPath(for: target.platform, linkType: .static)
                     carthagePlatformBuildPaths.append(carthagePlatformBuildPath)
                 }
-                if carthageDependencies.contains(where: { $0.carthageLinkType == .dynamic }) {
+                if carthageDependencies.contains(where: { $0.dependency.carthageLinkType == .dynamic }) {
                     let carthagePlatformBuildPath = "$(PROJECT_DIR)/" + carthageResolver.buildPath(for: target.platform, linkType: .dynamic)
                     carthagePlatformBuildPaths.append(carthagePlatformBuildPath)
                 }

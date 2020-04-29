@@ -9,6 +9,11 @@ import Foundation
 import ProjectSpec
 import PathKit
 
+public struct ResolvedCarthageDependency: Equatable, Hashable {
+    let dependency: Dependency
+    let isFromTopLevelTarget: Bool
+}
+
 public class CarthageDependencyResolver {
     static func getBuildPath(_ project: Project) -> String {
         return project.options.carthageBuildPath ?? "Carthage/Build"
@@ -45,31 +50,47 @@ public class CarthageDependencyResolver {
     }
 
     /// Fetches all carthage dependencies for a given target
-    func dependencies(for topLevelTarget: Target) -> [Dependency] {
+    func dependencies(for topLevelTarget: Target) -> [ResolvedCarthageDependency] {
         // this is used to resolve cyclical target dependencies
         var visitedTargets: Set<String> = []
-        var frameworks: Set<Dependency> = []
+        var frameworks: Set<ResolvedCarthageDependency> = []
 
+        var isTopLevelTarget = true
         var queue: [ProjectTarget] = [topLevelTarget]
         while !queue.isEmpty {
+            // projectTarget is not the top level target after the first loop ends
+            defer { isTopLevelTarget = false }
+
             let projectTarget = queue.removeFirst()
             if visitedTargets.contains(projectTarget.name) {
                 continue
             }
 
             if let target = projectTarget as? Target {
-                // don't overwrite frameworks, to allow top level ones to rule
-                let nonExistentDependencies = target.dependencies.filter { !frameworks.contains($0) }
-                for dependency in nonExistentDependencies {
+                for dependency in target.dependencies {
+                    guard !frameworks.contains(where: { $0.dependency == dependency }) else {
+                        continue
+                    }
+
                     switch dependency.type {
                     case .carthage(let findFrameworks, _):
                         let findFrameworks = findFrameworks ?? project.options.findCarthageFrameworks
                         if findFrameworks {
                             relatedDependencies(for: dependency, in: target.platform)
-                                .filter { !frameworks.contains($0) }
-                                .forEach { frameworks.insert($0) }
+                                .filter { dependency in
+                                    !frameworks.contains(where: { $0.dependency == dependency })
+                                }
+                                .forEach {
+                                    frameworks.insert(.init(
+                                        dependency: $0,
+                                        isFromTopLevelTarget: isTopLevelTarget
+                                    ))
+                                }
                         } else {
-                            frameworks.insert(dependency)
+                            frameworks.insert(.init(
+                                dependency: dependency,
+                                isFromTopLevelTarget: isTopLevelTarget
+                            ))
                         }
                     case .target:
                         if let projectTarget = project.getProjectTarget(dependency.reference) {
@@ -96,7 +117,7 @@ public class CarthageDependencyResolver {
             visitedTargets.update(with: projectTarget.name)
         }
 
-        return frameworks.sorted(by: { $0.reference < $1.reference })
+        return frameworks.sorted(by: { $0.dependency.reference < $1.dependency.reference })
     }
 
     /// Reads the .version file generated for a given Carthage dependency
