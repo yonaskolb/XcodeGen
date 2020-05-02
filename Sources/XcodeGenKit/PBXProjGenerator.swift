@@ -1211,7 +1211,7 @@ public class PBXProjGenerator {
                     let carthagePlatformBuildPath = "$(PROJECT_DIR)/" + carthageResolver.buildPath(for: target.platform, linkType: .staticBinary)
                     carthagePlatformBuildPaths.insert(carthagePlatformBuildPath)
                 }
-                configFrameworkBuildPaths = Array(carthagePlatformBuildPaths) + frameworkBuildPaths.sorted()
+                configFrameworkBuildPaths = Array(carthagePlatformBuildPaths).sorted() + frameworkBuildPaths.sorted()
             } else {
                 configFrameworkBuildPaths = frameworkBuildPaths.sorted()
             }
