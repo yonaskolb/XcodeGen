@@ -20,6 +20,12 @@ targets:
         product: SwiftRoaringDynamic
         embed: true
       - target: StaticLibrary
+  Tests:
+    type: bundle.unit-test
+    platform: iOS
+    sources: [SPMTests]
+    dependencies:
+      - target: App
   StaticLibrary:
     type: library.static
     platform: iOS
