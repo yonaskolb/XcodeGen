@@ -8,7 +8,7 @@ struct SourceFile {
     let path: Path
     let fileReference: PBXFileElement
     let buildFile: PBXBuildFile
-    let buildPhase: TargetSource.BuildPhase?
+    let buildPhase: BuildPhaseSpec?
 }
 
 class SourceGenerator {
@@ -87,11 +87,11 @@ class SourceGenerator {
         _ = try getSourceFiles(targetType: .none, targetSource: TargetSource(path: path), path: fullPath)
     }
 
-    func generateSourceFile(targetType: PBXProductType, targetSource: TargetSource, path: Path, buildPhase: TargetSource.BuildPhase? = nil, fileReference: PBXFileElement? = nil) -> SourceFile {
+    func generateSourceFile(targetType: PBXProductType, targetSource: TargetSource, path: Path, buildPhase: BuildPhaseSpec? = nil, fileReference: PBXFileElement? = nil) -> SourceFile {
         let fileReference = fileReference ?? fileReferencesByPath[path.string.lowercased()]!
         var settings: [String: Any] = [:]
         var attributes: [String] = targetSource.attributes
-        var chosenBuildPhase: TargetSource.BuildPhase?
+        var chosenBuildPhase: BuildPhaseSpec?
 
         let headerVisibility = targetSource.headerVisibility ?? .public
 
@@ -107,7 +107,7 @@ class SourceGenerator {
             // Static libraries don't support the header build phase
             // For public headers they need to be copied
             if headerVisibility == .public {
-                chosenBuildPhase = .copyFiles(TargetSource.BuildPhase.CopyFilesSettings(
+                chosenBuildPhase = .copyFiles(BuildPhaseSpec.CopyFilesSettings(
                     destination: .productsDirectory,
                     subpath: "include/$(PRODUCT_NAME)",
                     phaseOrder: .preCompile
@@ -226,7 +226,7 @@ class SourceGenerator {
     }
 
     /// returns a default build phase for a given path. This is based off the filename
-    private func getDefaultBuildPhase(for path: Path, targetType: PBXProductType) -> TargetSource.BuildPhase? {
+    private func getDefaultBuildPhase(for path: Path, targetType: PBXProductType) -> BuildPhaseSpec? {
         if path.lastComponent == "Info.plist" {
             return nil
         }
@@ -256,7 +256,7 @@ class SourceGenerator {
                 return .headers
             case "modulemap":
                 guard targetType == .staticLibrary else { return nil }
-                return .copyFiles(TargetSource.BuildPhase.CopyFilesSettings(
+                return .copyFiles(BuildPhaseSpec.CopyFilesSettings(
                     destination: .productsDirectory,
                     subpath: "include/$(PRODUCT_NAME)",
                     phaseOrder: .preCompile
@@ -576,7 +576,7 @@ class SourceGenerator {
                 rootGroups.insert(fileReference)
             }
 
-            let buildPhase: TargetSource.BuildPhase?
+            let buildPhase: BuildPhaseSpec?
             if let targetBuildPhase = targetSource.buildPhase {
                 buildPhase = targetBuildPhase
             } else {

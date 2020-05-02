@@ -476,7 +476,7 @@ public class PBXProjGenerator {
         return addObject(shellScriptPhase)
     }
 
-    func generateCopyFiles(targetName: String, copyFiles: TargetSource.BuildPhase.CopyFilesSettings, buildPhaseFiles: [PBXBuildFile]) -> PBXCopyFilesBuildPhase {
+    func generateCopyFiles(targetName: String, copyFiles: BuildPhaseSpec.CopyFilesSettings, buildPhaseFiles: [PBXBuildFile]) -> PBXCopyFilesBuildPhase {
         let copyFilesBuildPhase = PBXCopyFilesBuildPhase(
             dstPath: copyFiles.subpath,
             dstSubfolderSpec: copyFiles.destination.destination,
@@ -644,7 +644,7 @@ public class PBXProjGenerator {
         var dependencies: [PBXTargetDependency] = []
         var targetFrameworkBuildFiles: [PBXBuildFile] = []
         var frameworkBuildPaths = Set<String>()
-        var copyFilesBuildPhasesFiles: [TargetSource.BuildPhase.CopyFilesSettings: [PBXBuildFile]] = [:]
+        var copyFilesBuildPhasesFiles: [BuildPhaseSpec.CopyFilesSettings: [PBXBuildFile]] = [:]
         var copyFrameworksReferences: [PBXBuildFile] = []
         var copyResourcesReferences: [PBXBuildFile] = []
         var copyBundlesReferences: [PBXBuildFile] = []
@@ -955,8 +955,8 @@ public class PBXProjGenerator {
             return getBuildFilesForSourceFiles(filteredSourceFiles)
         }
 
-        func getBuildFilesForCopyFilesPhases() -> [TargetSource.BuildPhase.CopyFilesSettings: [PBXBuildFile]] {
-            var sourceFilesByCopyFiles: [TargetSource.BuildPhase.CopyFilesSettings: [SourceFile]] = [:]
+        func getBuildFilesForCopyFilesPhases() -> [BuildPhaseSpec.CopyFilesSettings: [PBXBuildFile]] {
+            var sourceFilesByCopyFiles: [BuildPhaseSpec.CopyFilesSettings: [SourceFile]] = [:]
             for sourceFile in sourceFiles {
                 guard case let .copyFiles(copyFilesSettings)? = sourceFile.buildPhase else { continue }
                 sourceFilesByCopyFiles[copyFilesSettings, default: []].append(sourceFile)
