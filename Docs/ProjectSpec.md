@@ -423,7 +423,7 @@ This only applies to `framework` dependencies. Implicit framework dependencies a
 **Carthage Dependency**
 
 - [ ] **findFrameworks**: **Bool** - Whether to find Carthage frameworks automatically. Defaults to `true` .
-- [ ] **linkType**: **String** - Dependency link type. This value should be `dynamic` or `static`. Default value is `dynamic` .
+- [ ] **linkType**: **String** - Dependency link type. This value should be `dynamic`,  `static` or `staticBinary`. Default value is `dynamic` . When you use Carthage with binary only framework with `binary` keyword, use `staticBinary`.
 
 Carthage frameworks are expected to be in `CARTHAGE_BUILD_PATH/PLATFORM/FRAMEWORK.framework` where:
 

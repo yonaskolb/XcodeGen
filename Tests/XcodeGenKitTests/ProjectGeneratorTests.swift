@@ -1128,7 +1128,7 @@ class ProjectGeneratorTests: XCTestCase {
 
                         let target = pbxProject.nativeTargets.first!
                         let configuration = target.buildConfigurationList!.buildConfigurations.first!
-                        try expect(configuration.buildSettings["FRAMEWORK_SEARCH_PATHS"] as? [String]) == ["$(inherited)", "$(PROJECT_DIR)/Carthage/Build/iOS/Static"]
+                        try expect(Set<String>(configuration.buildSettings["FRAMEWORK_SEARCH_PATHS"] as! [String])) == Set<String>(arrayLiteral: "$(inherited)", "$(PROJECT_DIR)/Carthage/Build/iOS/Static")
                         let frameworkBuildPhase = try target.frameworksBuildPhase()
                         guard let files = frameworkBuildPhase?.files, let file = files.first else {
                             return XCTFail("frameworkBuildPhase should have files")
@@ -1156,7 +1156,7 @@ class ProjectGeneratorTests: XCTestCase {
 
                         let target = pbxProject.nativeTargets.first!
                         let configuration = target.buildConfigurationList!.buildConfigurations.first!
-                        try expect(configuration.buildSettings["FRAMEWORK_SEARCH_PATHS"] as? [String]) == ["$(inherited)", "$(PROJECT_DIR)/Carthage/Build/iOS/Static", "$(PROJECT_DIR)/Carthage/Build/iOS"]
+                        try expect(Set<String>(configuration.buildSettings["FRAMEWORK_SEARCH_PATHS"] as! [String])) == Set<String>(arrayLiteral: "$(inherited)", "$(PROJECT_DIR)/Carthage/Build/iOS/Static", "$(PROJECT_DIR)/Carthage/Build/iOS")
                         let frameworkBuildPhase = try target.frameworksBuildPhase()
                         guard let files = frameworkBuildPhase?.files else {
                             return XCTFail("frameworkBuildPhase should have files")
@@ -1269,13 +1269,116 @@ class ProjectGeneratorTests: XCTestCase {
 
                         let target = pbxProject.nativeTargets.first!
                         let configuration = target.buildConfigurationList!.buildConfigurations.first!
-                        try expect(configuration.buildSettings["FRAMEWORK_SEARCH_PATHS"] as? [String]) == ["$(inherited)", "$(PROJECT_DIR)/Carthage/Build/iOS/Static"]
+                        try expect(Set<String>(configuration.buildSettings["FRAMEWORK_SEARCH_PATHS"] as! [String])) == Set<String>(arrayLiteral: "$(inherited)", "$(PROJECT_DIR)/Carthage/Build/iOS/Static")
                         let frameworkBuildPhase = try target.frameworksBuildPhase()
                         guard let files = frameworkBuildPhase?.files, let file = files.first else {
                             return XCTFail("frameworkBuildPhase should have files")
                         }
                         try expect(files.count) == 1
                         try expect(file.file?.nameOrPath) == "MyStaticFramework.framework"
+
+                        try expect(target.carthageCopyFrameworkBuildPhase).beNil()
+                    }
+                }
+
+                $0.context("with static binary dependency") {
+                    $0.it("should set dependencies") {
+                        let app = Target(
+                            name: "MyApp",
+                            type: .application,
+                            platform: .iOS,
+                            dependencies: [
+                                Dependency(type: .carthage(findFrameworks: true, linkType: .staticBinary), reference: "MyStaticBinaryFramework")
+                            ]
+                        )
+                        let project = Project(name: "test", targets: [app])
+                        let pbxProject = try project.generatePbxProj()
+
+                        let target = pbxProject.nativeTargets.first!
+                        let configuration = target.buildConfigurationList!.buildConfigurations.first!
+                        try expect(Set<String>(configuration.buildSettings["FRAMEWORK_SEARCH_PATHS"] as! [String])) == Set<String>(arrayLiteral: "$(inherited)", "$(PROJECT_DIR)/Carthage/Build/iOS")
+                        let frameworkBuildPhase = try target.frameworksBuildPhase()
+                        guard let files = frameworkBuildPhase?.files, let file = files.first else {
+                            return XCTFail("frameworkBuildPhase should have files")
+                        }
+                        try expect(files.count) == 1
+                        try expect(file.file?.nameOrPath) == "MyStaticBinaryFramework.framework"
+
+                        try expect(target.carthageCopyFrameworkBuildPhase).beNil()
+                    }
+                }
+
+                $0.context("with dynamic and static binary dependency") {
+                    $0.it("should set dependencies") {
+                        let app = Target(
+                            name: "MyApp",
+                            type: .application,
+                            platform: .iOS,
+                            dependencies: [
+                                Dependency(type: .carthage(findFrameworks: true, linkType: .dynamic), reference: "MyDynamicFramework"),
+                                Dependency(type: .carthage(findFrameworks: true, linkType: .staticBinary), reference: "MyStaticBinaryFramework")
+                            ]
+                        )
+                        let project = Project(name: "test", targets: [app])
+                        let pbxProject = try project.generatePbxProj()
+
+                        let target = pbxProject.nativeTargets.first!
+                        let configuration = target.buildConfigurationList!.buildConfigurations.first!
+                        try expect(Set<String>(configuration.buildSettings["FRAMEWORK_SEARCH_PATHS"] as! [String])) == Set<String>(arrayLiteral: "$(inherited)",  "$(PROJECT_DIR)/Carthage/Build/iOS")
+                        let frameworkBuildPhase = try target.frameworksBuildPhase()
+                        guard let files = frameworkBuildPhase?.files else {
+                            return XCTFail("frameworkBuildPhase should have files")
+                        }
+                        try expect(files.count) == 2
+
+                        guard let dynamicFramework = files.first(where: { $0.file?.nameOrPath == "MyDynamicFramework.framework" }) else {
+                            return XCTFail("Framework Build Phase should have Dynamic Framework")
+                        }
+
+                        guard let _ = files.first(where: { $0.file?.nameOrPath == "MyStaticBinaryFramework.framework" }) else {
+                            return XCTFail("Framework Build Phase should have StaticBinary Framework")
+                        }
+
+                        guard let copyCarthagePhase = target.carthageCopyFrameworkBuildPhase else {
+                            return XCTFail("Carthage Build Phase should be exist")
+                        }
+                        try expect(copyCarthagePhase.inputPaths) == [dynamicFramework.file?.fullPath(sourceRoot: Path("$(SRCROOT)"))?.string]
+                        try expect(copyCarthagePhase.outputPaths) == ["$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/\(dynamicFramework.file!.path!)"]
+                    }
+                }
+
+                $0.context("with static and static binary dependency") {
+                    $0.it("should set dependencies") {
+                        let app = Target(
+                            name: "MyApp",
+                            type: .application,
+                            platform: .iOS,
+                            dependencies: [
+                                Dependency(type: .carthage(findFrameworks: true, linkType: .static), reference: "MyStaticFramework"),
+                                Dependency(type: .carthage(findFrameworks: true, linkType: .staticBinary), reference: "MyStaticBinaryFramework")
+                            ]
+                        )
+                        let project = Project(name: "test", targets: [app])
+                        let pbxProject = try project.generatePbxProj()
+
+                        let target = pbxProject.nativeTargets.first!
+                        let configuration = target.buildConfigurationList!.buildConfigurations.first!
+
+                        try expect(Set<String>(configuration.buildSettings["FRAMEWORK_SEARCH_PATHS"] as! [String])) == Set<String>(arrayLiteral: "$(inherited)", "$(PROJECT_DIR)/Carthage/Build/iOS/Static", "$(PROJECT_DIR)/Carthage/Build/iOS")
+
+                        let frameworkBuildPhase = try target.frameworksBuildPhase()
+                        guard let files = frameworkBuildPhase?.files else {
+                            return XCTFail("frameworkBuildPhase should have files")
+                        }
+                        try expect(files.count) == 2
+
+                        guard let _ = files.first(where: { $0.file?.nameOrPath == "MyStaticFramework.framework" }) else {
+                            return XCTFail("Framework Build Phase should have Static Framework")
+                        }
+
+                        guard let _ = files.first(where: { $0.file?.nameOrPath == "MyStaticBinaryFramework.framework" }) else {
+                            return XCTFail("Framework Build Phase should have StaticBinary Framework")
+                        }
 
                         try expect(target.carthageCopyFrameworkBuildPhase).beNil()
                     }
@@ -1290,6 +1393,7 @@ class ProjectGeneratorTests: XCTestCase {
                             dependencies: [
                                 Dependency(type: .carthage(findFrameworks: true, linkType: .dynamic), reference: "MyDynamicFramework"),
                                 Dependency(type: .carthage(findFrameworks: true, linkType: .static), reference: "MyStaticFramework"),
+                                Dependency(type: .carthage(findFrameworks: true, linkType: .staticBinary), reference: "MyStaticBinaryFramework"),
                             ]
                         )
                         let project = Project(name: "test", targets: [app])
@@ -1297,18 +1401,24 @@ class ProjectGeneratorTests: XCTestCase {
 
                         let target = pbxProject.nativeTargets.first!
                         let configuration = target.buildConfigurationList!.buildConfigurations.first!
-                        try expect(configuration.buildSettings["FRAMEWORK_SEARCH_PATHS"] as? [String]) == ["$(inherited)", "$(PROJECT_DIR)/Carthage/Build/iOS/Static", "$(PROJECT_DIR)/Carthage/Build/iOS"]
+
+                        try expect(Set<String>(configuration.buildSettings["FRAMEWORK_SEARCH_PATHS"] as! [String])) == Set<String>(arrayLiteral: "$(inherited)", "$(PROJECT_DIR)/Carthage/Build/iOS/Static", "$(PROJECT_DIR)/Carthage/Build/iOS")
+
                         let frameworkBuildPhase = try target.frameworksBuildPhase()
                         guard let files = frameworkBuildPhase?.files else {
                             return XCTFail("frameworkBuildPhase should have files")
                         }
-                        try expect(files.count) == 2
+                        try expect(files.count) == 3
 
                         guard let dynamicFramework = files.first(where: { $0.file?.nameOrPath == "MyDynamicFramework.framework" }) else {
                             return XCTFail("Framework Build Phase should have Dynamic Framework")
                         }
                         guard let _ = files.first(where: { $0.file?.nameOrPath == "MyStaticFramework.framework" }) else {
                             return XCTFail("Framework Build Phase should have Static Framework")
+                        }
+
+                        guard let _ = files.first(where: { $0.file?.nameOrPath == "MyStaticBinaryFramework.framework" }) else {
+                            return XCTFail("Framework Build Phase should have StaticBinary Framework")
                         }
 
                         guard let copyCarthagePhase = target.carthageCopyFrameworkBuildPhase else {
