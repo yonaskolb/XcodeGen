@@ -5,6 +5,8 @@
 - Improve speed of metadata parsing and dependency resolution. [#803](https://github.com/yonaskolb/XcodeGen/pull/803) @michaeleisel
 - Improve support for iOS sticker packs and add support for `launchAutomaticallySubstyle` to run schemes. [#824](https://github.com/yonaskolb/XcodeGen/pull/824) @scelis
 - Add --project-root option to generate command. [#828](https://github.com/yonaskolb/XcodeGen/pull/828) @ileitch
+- Add an ability to set an order of groups with `options.groupOrdering` [#613](https://github.com/yonaskolb/XcodeGen/pull/613) @Beniamiiin
+- Add `staticBinary` linkType for Carthage dependency [#847](https://github.com/yonaskolb/XcodeGen/pull/847) @d-date
 
 #### Fixed
 - Fixed issue when linking and embeding static frameworks: they should be linked and NOT embed. [#820](https://github.com/yonaskolb/XcodeGen/pull/820) @acecilia
@@ -17,7 +19,8 @@
 - Implicitly include bundles in the Copy Bundle Resources build phase. [#838](https://github.com/yonaskolb/XcodeGen/pull/838) @skirchmeier
 - Fixed dumping a project manifest which contains an array of project references @paciej00
 - Generate correct PBXTargetDependency for external targets. [#843](https://github.com/yonaskolb/XcodeGen/pull/843) @ileitch
-- Transitively link Swift Package's products [#830](https://github.com/yonaskolb/XcodeGen/pull/830) @toshi0383
+- Fix linking of multiple products from the same Swift Package [#830](https://github.com/yonaskolb/XcodeGen/pull/830) @toshi0383
+- Don't deduplicate files in `include` with different path but same name. [#849](https://github.com/yonaskolb/XcodeGen/pull/849) @akkyie
 
 ## 2.15.1
 

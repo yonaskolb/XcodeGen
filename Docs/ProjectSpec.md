@@ -118,6 +118,7 @@ Note that target names can also be changed by adding a `name` property to a targ
   - `none` - sorted alphabetically with all the other files
   - `top` - at the top, before files
   - `bottom` (default) - at the bottom, after other files
+- [ ] **groupOrdering**: **[[GroupOrdering]](#groupOrdering)** - An order of groups.
 - [ ] **transitivelyLinkDependencies**: **Bool** - If this is `true` then targets will link to the dependencies of their target dependencies. If a target should embed its dependencies, such as application and test bundles, it will embed these transitive dependencies as well. Some complex setups might want to set this to `false` and explicitly specify dependencies at every level. Targets can override this with [Target](#target).transitivelyLinkDependencies. Defaults to `false`.
 - [ ] **generateEmptyDirectories**: **Bool** - If this is `true` then empty directories will be added to project too else will be missed. Defaults to `false`.
 - [ ] **findCarthageFrameworks**: **Bool** - When this is set to `true`, all the invididual frameworks for Carthage dependencies will automatically be found. This property can be overriden individually for each carthage dependency - for more details see See **findFrameworks** in the [Dependency](#dependency) section. Defaults to `false`.
@@ -132,6 +133,23 @@ options:
     tvOS: "10.0"
   postGenCommand: pod install
 ```
+
+### GroupOrdering
+
+Describe an order of groups. Available parameters:
+
+- [ ] **pattern**: **String** - A group name pattern. Can be just a single string and also can be a regex pattern. Optional option, if you don't set it, it will pattern for the main group, i.e. the project.
+- [ ] **order**: **[String]** - An order of groups.
+
+```yaml
+options:
+  groupOrdering: 
+    - order: [Sources, Resources, Tests, Support files, Configurations]
+    - pattern: '^.*Screen$'
+      order: [View, Presenter, Interactor, Entities, Assembly]
+```
+
+In this example, we set up the order of two groups. First one is the main group, i.e. the project, note that in this case, we shouldn't set `pattern` option and the second group order is for groups whose names ends with `Screen`.
 
 ### Configs
 
@@ -405,7 +423,7 @@ This only applies to `framework` dependencies. Implicit framework dependencies a
 **Carthage Dependency**
 
 - [ ] **findFrameworks**: **Bool** - Whether to find Carthage frameworks automatically. Defaults to `true` .
-- [ ] **linkType**: **String** - Dependency link type. This value should be `dynamic` or `static`. Default value is `dynamic` .
+- [ ] **linkType**: **String** - Dependency link type. This value should be `dynamic`,  `static` or `staticBinary`. Default value is `dynamic` . When you use Carthage with binary only framework with `binary` keyword, use `staticBinary`.
 
 Carthage frameworks are expected to be in `CARTHAGE_BUILD_PATH/PLATFORM/FRAMEWORK.framework` where:
 

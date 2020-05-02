@@ -26,6 +26,7 @@ public struct SpecOptions: Equatable {
     public var defaultConfig: String?
     public var transitivelyLinkDependencies: Bool
     public var groupSortPosition: GroupSortPosition
+    public var groupOrdering: [GroupOrdering]
     public var generateEmptyDirectories: Bool
     public var findCarthageFrameworks: Bool
     public var localPackagesGroup: String?
@@ -85,6 +86,7 @@ public struct SpecOptions: Equatable {
         defaultConfig: String? = nil,
         transitivelyLinkDependencies: Bool = transitivelyLinkDependenciesDefault,
         groupSortPosition: GroupSortPosition = groupSortPositionDefault,
+        groupOrdering: [GroupOrdering] = [],
         generateEmptyDirectories: Bool = generateEmptyDirectoriesDefault,
         findCarthageFrameworks: Bool = findCarthageFrameworksDefault,
         localPackagesGroup: String? = nil,
@@ -107,6 +109,7 @@ public struct SpecOptions: Equatable {
         self.defaultConfig = defaultConfig
         self.transitivelyLinkDependencies = transitivelyLinkDependencies
         self.groupSortPosition = groupSortPosition
+        self.groupOrdering = groupOrdering
         self.generateEmptyDirectories = generateEmptyDirectories
         self.findCarthageFrameworks = findCarthageFrameworks
         self.localPackagesGroup = localPackagesGroup
@@ -137,6 +140,7 @@ extension SpecOptions: JSONObjectConvertible {
         defaultConfig = jsonDictionary.json(atKeyPath: "defaultConfig")
         transitivelyLinkDependencies = jsonDictionary.json(atKeyPath: "transitivelyLinkDependencies") ?? SpecOptions.transitivelyLinkDependenciesDefault
         groupSortPosition = jsonDictionary.json(atKeyPath: "groupSortPosition") ?? SpecOptions.groupSortPositionDefault
+        groupOrdering = jsonDictionary.json(atKeyPath: "groupOrdering") ?? []
         generateEmptyDirectories = jsonDictionary.json(atKeyPath: "generateEmptyDirectories") ?? SpecOptions.generateEmptyDirectoriesDefault
         findCarthageFrameworks = jsonDictionary.json(atKeyPath: "findCarthageFrameworks") ?? SpecOptions.findCarthageFrameworksDefault
         localPackagesGroup = jsonDictionary.json(atKeyPath: "localPackagesGroup")

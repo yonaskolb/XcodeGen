@@ -8,7 +8,7 @@ public struct SpecFile {
     public let jsonDictionary: JSONDictionary
     public let subSpecs: [SpecFile]
 
-    private let filename: String
+    private let filePath: Path
 
     fileprivate struct Include {
         let path: Path
@@ -41,26 +41,26 @@ public struct SpecFile {
     }
 
     public init(path: Path) throws {
-        try self.init(filename: path.lastComponent, basePath: path.parent())
+        try self.init(filePath: path, basePath: path.parent())
     }
 
-    public init(filename: String, jsonDictionary: JSONDictionary, basePath: Path = "", relativePath: Path = "", subSpecs: [SpecFile] = []) {
+    public init(filePath: Path, jsonDictionary: JSONDictionary, basePath: Path = "", relativePath: Path = "", subSpecs: [SpecFile] = []) {
         self.basePath = basePath
         self.relativePath = relativePath
         self.jsonDictionary = jsonDictionary
         self.subSpecs = subSpecs
-        self.filename = filename
+        self.filePath = filePath
     }
 
     private init(include: Include, basePath: Path, relativePath: Path) throws {
         let basePath = include.relativePaths ? (basePath + relativePath) : (basePath + relativePath + include.path.parent())
         let relativePath = include.relativePaths ? include.path.parent() : Path()
 
-        try self.init(filename: include.path.lastComponent, basePath: basePath, relativePath: relativePath)
+        try self.init(filePath: include.path, basePath: basePath, relativePath: relativePath)
     }
 
-    private init(filename: String, basePath: Path, relativePath: Path = "") throws {
-        let path = basePath + relativePath + filename
+    private init(filePath: Path, basePath: Path, relativePath: Path = "") throws {
+        let path = basePath + relativePath + filePath.lastComponent
         let jsonDictionary = try SpecFile.loadDictionary(path: path)
 
         let includes = Include.parse(json: jsonDictionary["include"])
@@ -68,7 +68,7 @@ public struct SpecFile {
             try SpecFile(include: include, basePath: basePath, relativePath: relativePath)
         }
 
-        self.init(filename: filename, jsonDictionary: jsonDictionary, basePath: basePath, relativePath: relativePath, subSpecs: subSpecs)
+        self.init(filePath: filePath, jsonDictionary: jsonDictionary, basePath: basePath, relativePath: relativePath, subSpecs: subSpecs)
     }
 
     static func loadDictionary(path: Path) throws -> JSONDictionary {
@@ -97,7 +97,7 @@ public struct SpecFile {
     }
 
     func mergedDictionary(set mergedTargets: inout Set<String>) -> JSONDictionary {
-        let name = (basePath + relativePath + Path(filename)).description
+        let name = filePath.description
 
         guard !mergedTargets.contains(name) else { return [:] }
         mergedTargets.insert(name)
@@ -116,7 +116,7 @@ public struct SpecFile {
 
         let jsonDictionary = Project.pathProperties.resolvingPaths(in: self.jsonDictionary, relativeTo: relativePath)
         return SpecFile(
-            filename: filename,
+            filePath: filePath,
             jsonDictionary: jsonDictionary,
             relativePath: self.relativePath,
             subSpecs: subSpecs.map { $0.resolvingPaths(relativeTo: relativePath) }

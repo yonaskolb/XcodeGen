@@ -269,6 +269,7 @@ public class PBXProjGenerator {
 
         mainGroup.children = Array(sourceGenerator.rootGroups)
         sortGroups(group: mainGroup)
+        setupGroupOrdering(group: mainGroup)
         // add derived groups at the end
         derivedGroups.forEach(sortGroups)
         mainGroup.children += derivedGroups
@@ -573,6 +574,53 @@ public class PBXProjGenerator {
         let childGroups = group.children.compactMap { $0 as? PBXGroup }
         childGroups.forEach(sortGroups)
     }
+    
+    public func setupGroupOrdering(group: PBXGroup) {
+        let groupOrdering = project.options.groupOrdering.first { groupOrdering in
+            let groupName = group.nameOrPath
+            
+            if groupName == groupOrdering.pattern {
+                return true
+            }
+            
+            if let regex = groupOrdering.regex {
+                return regex.isMatch(to: groupName)
+            }
+            
+            return false
+        }
+        
+        if let order = groupOrdering?.order {
+            let files = group.children.filter { $0 is PBXFileReference }
+            var groups = group.children.filter { $0 is PBXGroup }
+            
+            var filteredGroups = [PBXFileElement]()
+            
+            for groupName in order {
+                guard let group = groups.first(where: { $0.nameOrPath == groupName }) else {
+                    continue
+                }
+
+                filteredGroups.append(group)
+                groups.removeAll { $0 == group }
+            }
+
+            filteredGroups += groups
+            
+            switch project.options.groupSortPosition {
+            case .top:
+                group.children = filteredGroups + files
+            case .bottom:
+                group.children = files + filteredGroups
+            default:
+                break
+            }
+        }
+        
+        // sort sub groups
+        let childGroups = group.children.compactMap { $0 as? PBXGroup }
+        childGroups.forEach(setupGroupOrdering)
+    }
 
     func getPBXProj(from reference: ProjectReference) throws -> PBXProj {
         if let cachedProject = projects[reference] {
@@ -795,7 +843,7 @@ public class PBXProjGenerator {
                     self.carthageFrameworksByPlatform[target.platform.carthageName, default: []].insert(fileReference)
 
                     let isStaticLibrary = target.type == .staticLibrary
-                    let isCarthageStaticLink = dependency.carthageLinkType == .static
+                    let isCarthageStaticLink = (dependency.carthageLinkType == .static || dependency.carthageLinkType == .staticBinary)
                     if dependency.link ?? (!isStaticLibrary && !isCarthageStaticLink) {
                         let buildFile = self.addObject(
                             PBXBuildFile(file: fileReference, settings: getDependencyFrameworkSettings(dependency: dependency))
@@ -863,14 +911,14 @@ public class PBXProjGenerator {
 
             let embed = dependency.embed ?? target.shouldEmbedCarthageDependencies
 
-            var platformPath = Path(carthageResolver.buildPath(for: target.platform, linkType: dependency.carthageLinkType ?? .default))
+            let platformPath = Path(carthageResolver.buildPath(for: target.platform, linkType: dependency.carthageLinkType ?? .default))
             var frameworkPath = platformPath + dependency.reference
             if frameworkPath.extension == nil {
                 frameworkPath = Path(frameworkPath.string + ".framework")
             }
             let fileReference = sourceGenerator.getFileReference(path: frameworkPath, inPath: platformPath)
 
-            if dependency.carthageLinkType == .static {
+            if (dependency.carthageLinkType == .static || dependency.carthageLinkType == .staticBinary) {
                 let embedFile = addObject(
                     PBXBuildFile(file: fileReference, settings: getDependencyFrameworkSettings(dependency: dependency))
                 )
@@ -1148,16 +1196,20 @@ public class PBXProjGenerator {
             // set Carthage search paths
             let configFrameworkBuildPaths: [String]
             if !carthageDependencies.isEmpty {
-                var carthagePlatformBuildPaths: [String] = []
+                var carthagePlatformBuildPaths: Set<String> = []
                 if carthageDependencies.contains(where: { $0.carthageLinkType == .static }) {
                     let carthagePlatformBuildPath = "$(PROJECT_DIR)/" + carthageResolver.buildPath(for: target.platform, linkType: .static)
-                    carthagePlatformBuildPaths.append(carthagePlatformBuildPath)
+                    carthagePlatformBuildPaths.insert(carthagePlatformBuildPath)
                 }
                 if carthageDependencies.contains(where: { $0.carthageLinkType == .dynamic }) {
                     let carthagePlatformBuildPath = "$(PROJECT_DIR)/" + carthageResolver.buildPath(for: target.platform, linkType: .dynamic)
-                    carthagePlatformBuildPaths.append(carthagePlatformBuildPath)
+                    carthagePlatformBuildPaths.insert(carthagePlatformBuildPath)
                 }
-                configFrameworkBuildPaths = carthagePlatformBuildPaths + frameworkBuildPaths.sorted()
+                if carthageDependencies.contains(where: { $0.carthageLinkType == .staticBinary }) {
+                    let carthagePlatformBuildPath = "$(PROJECT_DIR)/" + carthageResolver.buildPath(for: target.platform, linkType: .staticBinary)
+                    carthagePlatformBuildPaths.insert(carthagePlatformBuildPath)
+                }
+                configFrameworkBuildPaths = Array(carthagePlatformBuildPaths) + frameworkBuildPaths.sorted()
             } else {
                 configFrameworkBuildPaths = frameworkBuildPaths.sorted()
             }
