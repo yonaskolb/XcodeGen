@@ -7,6 +7,7 @@
 - Add --project-root option to generate command. [#828](https://github.com/yonaskolb/XcodeGen/pull/828) @ileitch
 - Add an ability to set an order of groups with `options.groupOrdering` [#613](https://github.com/yonaskolb/XcodeGen/pull/613) @Beniamiiin
 - Add `staticBinary` linkType for Carthage dependency [#847](https://github.com/yonaskolb/XcodeGen/pull/847) @d-date
+- Add the ability to output a dependency graph in graphviz format [#852](https://github.com/yonaskolb/XcodeGen/pull/852) @jeffctown
 
 #### Fixed
 - Fixed issue when linking and embeding static frameworks: they should be linked and NOT embed. [#820](https://github.com/yonaskolb/XcodeGen/pull/820) @acecilia

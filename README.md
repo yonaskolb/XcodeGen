@@ -32,6 +32,7 @@ The project spec is a YAML or JSON file that defines your targets, configuration
 - ✅ Distribute your spec amongst multiple files for easy **sharing** and overriding
 - ✅ Easily create **multi-platform** frameworks
 - ✅ Integrate **Carthage** frameworks without any work
+- ✅ Export **Dependency Diagrams** to view in [Graphviz](https://www.graphviz.org)
 
 Given a very simple project spec file like this:
 
@@ -131,6 +132,27 @@ Options:
 - **--cache-path**: A custom path to use for your cache file. This defaults to `~/.xcodegen/cache/{PROJECT_SPEC_PATH_HASH}`
 
 There are other commands as well such as `xcodegen dump` which lets out output the resolved spec in many different formats, or write it to a file. Use `xcodegen help` to see more detailed usage information.
+
+## Dependency Diagrams
+<details>
+  <summary>Click to expand!</summary>
+
+#### How to export dependency diagrams:
+
+To stdout:
+
+```
+xcodegen dump --type graphviz
+```
+
+To a file:
+
+```
+xcodegen dump --type graphviz --file Graph.viz
+```
+
+During implementation, `graphviz` formatting was validated using [GraphvizOnline](https://dreampuf.github.io/GraphvizOnline/), [WebGraphviz](http://www.webgraphviz.com), and [Graphviz on MacOS](graphviz.org).
+</details>
 
 ## Editing
 ```shell

@@ -8,7 +8,15 @@ private let app = Target(
     type: .application,
     platform: .iOS,
     settings: Settings(buildSettings: ["SETTING_1": "VALUE"]),
-    dependencies: [Dependency(type: .target, reference: "MyFramework")]
+    dependencies: [
+        Dependency(type: .target, reference: "MyInternalFramework"),
+        Dependency(type: .bundle, reference: "Resources"),
+        Dependency(type: .carthage(findFrameworks: true, linkType: .static), reference: "MyStaticFramework"),
+        Dependency(type: .carthage(findFrameworks: true, linkType: .dynamic), reference: "MyDynamicFramework"),
+        Dependency(type: .framework, reference: "MyExternalFramework"),
+        Dependency(type: .package(product: "MyPackage"), reference:"MyPackage"),
+        Dependency(type: .sdk(root: "MySDK"), reference: "MySDK")
+    ]
 )
 
 private let framework = Target(
@@ -26,22 +34,57 @@ private let uiTest = Target(
     dependencies: [Dependency(type: .target, reference: "MyApp")]
 )
 
+
 private let targets = [app, framework, uiTest]
 
 class GraphVizGeneratorTests: XCTestCase {
 
     func testGraphOutput() throws {
         describe {
+            let graph = GraphVizGenerator().generateGraph(targets: targets)
+            $0.it("generates the expected number of nodes") {
+                try expect(graph.nodes.count) == 16
+            }
+            $0.it("generates box nodes") {
+                try expect(graph.nodes.filter({ $0.shape == .box }).count) == 16
+            }
+            $0.it("generates the expected external nodes") {
+                try expect(graph.nodes.filter({ $0.label?.contains("<<external>>") ?? false }).count) == 6
+            }
             $0.it("generates the expected edges") {
-                let graph = GraphVizGenerator().generateGraph(targets: targets)
-                try expect(graph.edges.count) == 2
+                try expect(graph.edges.count) == 8
+            }
+            $0.it("generates dashed edges") {
+                try expect(graph.edges.filter({ $0.style == .dashed }).count) == 8
             }
             $0.it("generates the expected output") {
                 let output = GraphVizGenerator().generateModuleGraphViz(targets: targets)
                 try expect(output) == """
                 digraph {
-                  MyApp -> MyFramework
-                  MyAppUITests -> MyApp
+                  MyApp [shape=box]
+                  MyInternalFramework [label=MyInternalFramework shape=box]
+                  MyApp [shape=box]
+                  Resources [label="<<external>>\\nResources" shape=box]
+                  MyApp [shape=box]
+                  MyStaticFramework [label="<<external>>\\nMyStaticFramework" shape=box]
+                  MyApp [shape=box]
+                  MyDynamicFramework [label="<<external>>\\nMyDynamicFramework" shape=box]
+                  MyApp [shape=box]
+                  MyExternalFramework [label="<<external>>\\nMyExternalFramework" shape=box]
+                  MyApp [shape=box]
+                  MyPackage [label="<<external>>\\nMyPackage" shape=box]
+                  MyApp [shape=box]
+                  MySDK [label="<<external>>\\nMySDK" shape=box]
+                  MyAppUITests [shape=box]
+                  MyApp [label=MyApp shape=box]
+                  MyApp -> MyInternalFramework [style=dashed]
+                  MyApp -> Resources [style=dashed]
+                  MyApp -> MyStaticFramework [style=dashed]
+                  MyApp -> MyDynamicFramework [style=dashed]
+                  MyApp -> MyExternalFramework [style=dashed]
+                  MyApp -> MyPackage [style=dashed]
+                  MyApp -> MySDK [style=dashed]
+                  MyAppUITests -> MyApp [style=dashed]
                 }
                 """
             }
