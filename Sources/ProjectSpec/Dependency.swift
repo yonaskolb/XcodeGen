@@ -51,6 +51,20 @@ public struct Dependency: Equatable {
     }
 }
 
+extension Dependency {
+    public var uniqueID: String {
+        switch type {
+        case .package(let product):
+            if let product = product {
+                return "\(reference)/\(product)"
+            } else {
+                return reference
+            }
+        default: return reference
+        }
+    }
+}
+
 extension Dependency: Hashable {
     public func hash(into hasher: inout Hasher) {
         hasher.combine(reference)

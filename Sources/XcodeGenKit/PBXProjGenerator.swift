@@ -1292,7 +1292,7 @@ public class PBXProjGenerator {
 
             for dependency in target.dependencies {
                 // don't overwrite dependencies, to allow top level ones to rule
-                if dependencies[dependency.reference] != nil {
+                if dependencies[dependency.uniqueID] != nil {
                     continue
                 }
 
@@ -1301,10 +1301,10 @@ public class PBXProjGenerator {
                 // For some more context about the `dependency.embed != true` lines, refer to https://github.com/yonaskolb/XcodeGen/pull/820
                 switch dependency.type {
                 case .sdk:
-                    dependencies[dependency.reference] = dependency
+                    dependencies[dependency.uniqueID] = dependency
                 case .framework, .carthage, .package:
                     if isTopLevel || dependency.embed != true {
-                        dependencies[dependency.reference] = dependency
+                        dependencies[dependency.uniqueID] = dependency
                     }
                 case .target:
                     let dependencyTargetReference = try! TargetReference(dependency.reference)
@@ -1313,24 +1313,24 @@ public class PBXProjGenerator {
                     case .local:
                         if isTopLevel || dependency.embed != true {
                             if let dependencyTarget = project.getTarget(dependency.reference) {
-                                dependencies[dependency.reference] = dependency
+                                dependencies[dependency.uniqueID] = dependency
                                 if !dependencyTarget.shouldEmbedDependencies {
                                     // traverse target's dependencies if it doesn't embed them itself
                                     queue.append(dependencyTarget)
                                 }
                             } else if project.getAggregateTarget(dependency.reference) != nil {
                                 // Aggregate targets should be included
-                                dependencies[dependency.reference] = dependency
+                                dependencies[dependency.uniqueID] = dependency
                             }
                         }
                     case .project:
                         if isTopLevel || dependency.embed != true {
-                            dependencies[dependency.reference] = dependency
+                            dependencies[dependency.uniqueID] = dependency
                         }
                     }
                 case .bundle:
                     if isTopLevel {
-                        dependencies[dependency.reference] = dependency
+                        dependencies[dependency.uniqueID] = dependency
                     }
                 }
             }
