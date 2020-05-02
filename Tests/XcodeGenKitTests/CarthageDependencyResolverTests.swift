@@ -120,7 +120,11 @@ class CarthageDependencyResolverTests: XCTestCase {
                 let target = Target(name: "1", type: .application, platform: .iOS, dependencies: [dependency])
                 let dependencies = resolver.dependencies(for: target)
 
-                try expect(dependencies) == [dependency]
+                let expectedDependencies = [dependency].map {
+                    ResolvedCarthageDependency(dependency: $0, isFromTopLevelTarget: true)
+                }
+
+                try expect(dependencies) == expectedDependencies
             }
 
             $0.it("fetches all carthage dependencies for a given target, sorted alphabetically") {
@@ -134,7 +138,13 @@ class CarthageDependencyResolverTests: XCTestCase {
 
                 let related = resolver.dependencies(for: target)
 
-                try expect(related) == dependencies.sorted(by: { $0.reference < $1.reference })
+                let expectedDependencies = dependencies
+                    .sorted(by: { $0.reference < $1.reference })
+                    .map {
+                        ResolvedCarthageDependency(dependency: $0, isFromTopLevelTarget: true)
+                    }
+
+                try expect(related) == expectedDependencies
             }
         }
     }

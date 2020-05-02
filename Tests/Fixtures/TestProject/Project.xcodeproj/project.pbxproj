@@ -31,6 +31,7 @@
 		09617AB755651FFEB2564CBC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F1A2F579A6F79C62DDA0571 /* AppDelegate.swift */; settings = {COMPILER_FLAGS = "-Werror"; }; };
 		0AB541AE3163B063E7012877 /* StaticLibrary_ObjC.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5A2B916A11DCC2565241359F /* StaticLibrary_ObjC.h */; };
 		0BDA156BEBFCB9E65910F838 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = 6A58A16491CDDF968B0D56DE /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1551370B0ACAC632E15C853B /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF47010E7368583405AA50CB /* SwiftyJSON.framework */; };
 		1BC891D89980D82738D963F3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 74FBDFA5CB063F6001AD8ACD /* Main.storyboard */; };
 		1E03FC7312293997599C6435 /* Empty.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 068EDF47F0B087F6A4052AC0 /* Empty.h */; };
 		1E2A4D61E96521FF7123D7B0 /* XPC Service.xpc in CopyFiles */ = {isa = PBXBuildFile; fileRef = 22237B8EBD9E6BE8EBC8735F /* XPC Service.xpc */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -51,6 +52,7 @@
 		2FAE950E8FF2E7C0F7FF1FE9 /* Framework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A9274BE42A03DC5DA1FAD04 /* Framework.framework */; };
 		307B5322FC5A220652BA6FE0 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D296BB7355994040E197A1EE /* Result.framework */; };
 		3133B36F3898A27A2B1C56FC /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A5F527F2590C14956518174 /* FrameworkFile.swift */; };
+		32956CD11BD6B02E64F5D8D1 /* swift-tagged.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E4841131C451A658AC8596C /* swift-tagged.framework */; };
 		3318F40C855184C18197ED30 /* StaticLibrary_ObjC.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D0C79A8C750EC0DE748C463 /* StaticLibrary_ObjC.m */; };
 		339578307B9266AB3D7722D9 /* File2.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC56891DA7446EAC8C2F27EB /* File2.swift */; };
 		3535891EC86283BB5064E7E1 /* Headers in Headers */ = {isa = PBXBuildFile; fileRef = 2E1E747C7BC434ADB80CC269 /* Headers */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -474,6 +476,7 @@
 		0BB1B49A91B892152D68ED76 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		0C5AC2545AE4D4F7F44E2E9B /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Result.framework; sourceTree = "<group>"; };
 		0D09D243DBCF9D32E239F1E8 /* App_watchOS Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "App_watchOS Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		0E4841131C451A658AC8596C /* swift-tagged.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = "swift-tagged.framework"; sourceTree = "<group>"; };
 		0F5BD97AF0F94A15A5B7DDB7 /* Standalone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Standalone.swift; sourceTree = "<group>"; };
 		102A08142A31E44F4ED52649 /* base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = base.xcconfig; sourceTree = "<group>"; };
 		108BB29172D27BE3BD1E7F35 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -577,6 +580,7 @@
 		FD4A16C7B8FEB7F97F3CBE3F /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		FDB2B6A77D39CD5602F2125F /* Contacts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Contacts.framework; path = System/Library/Frameworks/Contacts.framework; sourceTree = SDKROOT; };
 		FED40A89162E446494DDE7C7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		FF47010E7368583405AA50CB /* SwiftyJSON.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SwiftyJSON.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -590,6 +594,7 @@
 				2FAE950E8FF2E7C0F7FF1FE9 /* Framework.framework in Frameworks */,
 				B142965C5AE9C6200BF65802 /* Result.framework in Frameworks */,
 				B20617116B230DED1F7AF5E5 /* libStaticLibrary_ObjC.a in Frameworks */,
+				1551370B0ACAC632E15C853B /* SwiftyJSON.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -622,6 +627,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E4D0F435405DABCB51C5B684 /* TestFramework.framework in Frameworks */,
+				32956CD11BD6B02E64F5D8D1 /* swift-tagged.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1003,6 +1009,8 @@
 			isa = PBXGroup;
 			children = (
 				0C5AC2545AE4D4F7F44E2E9B /* Result.framework */,
+				0E4841131C451A658AC8596C /* swift-tagged.framework */,
+				FF47010E7368583405AA50CB /* SwiftyJSON.framework */,
 			);
 			path = iOS;
 			sourceTree = "<group>";
@@ -2456,6 +2464,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)/Carthage/Build/iOS/Static",
 				);
 				INFOPLIST_FILE = App_iOS_UITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2489,6 +2498,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)/Carthage/Build/iOS/Static",
 				);
 				INFOPLIST_FILE = App_iOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2532,6 +2542,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)/Carthage/Build/iOS/Static",
 				);
 				INFOPLIST_FILE = App_iOS_UITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2553,6 +2564,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)/Carthage/Build/iOS/Static",
 				);
 				INFOPLIST_FILE = App_iOS_UITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2610,6 +2622,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)/Carthage/Build/iOS/Static",
 				);
 				INFOPLIST_FILE = App_iOS_Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2767,6 +2780,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)/Carthage/Build/iOS/Static",
 				);
 				INFOPLIST_FILE = App_iOS_UITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2982,6 +2996,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)/Carthage/Build/iOS/Static",
 				);
 				INFOPLIST_FILE = App_iOS_Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -3003,6 +3018,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)/Carthage/Build/iOS/Static",
 				);
 				INFOPLIST_FILE = App_iOS_Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -3493,6 +3509,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)/Carthage/Build/iOS/Static",
 				);
 				INFOPLIST_FILE = App_iOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -3940,6 +3957,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)/Carthage/Build/iOS/Static",
 				);
 				INFOPLIST_FILE = App_iOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -3995,6 +4013,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)/Carthage/Build/iOS/Static",
 				);
 				INFOPLIST_FILE = App_iOS_Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -4633,6 +4652,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)/Carthage/Build/iOS/Static",
 				);
 				INFOPLIST_FILE = App_iOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -4697,6 +4717,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)/Carthage/Build/iOS/Static",
 				);
 				INFOPLIST_FILE = App_iOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -4871,6 +4892,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)/Carthage/Build/iOS/Static",
 				);
 				INFOPLIST_FILE = App_iOS_Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -4908,6 +4930,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)/Carthage/Build/iOS/Static",
 				);
 				INFOPLIST_FILE = App_iOS_UITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -5098,6 +5121,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)/Carthage/Build/iOS/Static",
 				);
 				INFOPLIST_FILE = App_iOS_Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -5285,6 +5309,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)/Carthage/Build/iOS/Static",
 				);
 				INFOPLIST_FILE = App_iOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -5486,6 +5511,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)/Carthage/Build/iOS/Static",
 				);
 				INFOPLIST_FILE = App_iOS_UITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (

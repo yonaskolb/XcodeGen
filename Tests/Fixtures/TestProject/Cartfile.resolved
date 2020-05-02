@@ -1,1 +1,3 @@
-github "antitypical/Result" "4.1.0"
+github "SwiftyJSON/SwiftyJSON" "5.0.0"
+github "antitypical/Result" "5.0.0"
+github "pointfreeco/swift-nonempty" "0.2.2"

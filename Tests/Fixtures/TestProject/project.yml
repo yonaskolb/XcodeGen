@@ -103,6 +103,8 @@ targets:
       - target: Framework_iOS
       - target: StaticLibrary_ObjC_iOS
       - carthage: Result
+      - carthage: SwiftyJSON
+        linkType: static
       - target: Framework2_iOS
         weak: true
       - target: App_watchOS
@@ -241,6 +243,8 @@ targets:
     dependencies:
       - target: App_iOS
       - target: TestFramework
+      - carthage: swift-tagged
+        linkType: static
   App_iOS_UITests:
     type: bundle.ui-testing
     platform: iOS

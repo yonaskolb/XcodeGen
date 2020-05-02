@@ -907,8 +907,9 @@ public class PBXProjGenerator {
             }
         }
 
-        for dependency in carthageDependencies {
-
+        for carthageDependency in carthageDependencies {
+            let dependency = carthageDependency.dependency
+            let isFromTopLevelTarget = carthageDependency.isFromTopLevelTarget
             let embed = dependency.embed ?? target.shouldEmbedCarthageDependencies
 
             let platformPath = Path(carthageResolver.buildPath(for: target.platform, linkType: dependency.carthageLinkType ?? .default))
@@ -919,10 +920,11 @@ public class PBXProjGenerator {
             let fileReference = sourceGenerator.getFileReference(path: frameworkPath, inPath: platformPath)
 
             if (dependency.carthageLinkType == .static || dependency.carthageLinkType == .staticBinary) {
-                let embedFile = addObject(
+                guard isFromTopLevelTarget else { continue } // ignore transitive dependencies if static
+                let linkFile = addObject(
                     PBXBuildFile(file: fileReference, settings: getDependencyFrameworkSettings(dependency: dependency))
                 )
-                targetFrameworkBuildFiles.append(embedFile)
+                targetFrameworkBuildFiles.append(linkFile)
             } else if embed {
                 if directlyEmbedCarthage {
                     let embedFile = addObject(
@@ -1197,19 +1199,19 @@ public class PBXProjGenerator {
             let configFrameworkBuildPaths: [String]
             if !carthageDependencies.isEmpty {
                 var carthagePlatformBuildPaths: Set<String> = []
-                if carthageDependencies.contains(where: { $0.carthageLinkType == .static }) {
+                if carthageDependencies.contains(where: { $0.dependency.carthageLinkType == .static }) {
                     let carthagePlatformBuildPath = "$(PROJECT_DIR)/" + carthageResolver.buildPath(for: target.platform, linkType: .static)
                     carthagePlatformBuildPaths.insert(carthagePlatformBuildPath)
                 }
-                if carthageDependencies.contains(where: { $0.carthageLinkType == .dynamic }) {
+                if carthageDependencies.contains(where: { $0.dependency.carthageLinkType == .dynamic }) {
                     let carthagePlatformBuildPath = "$(PROJECT_DIR)/" + carthageResolver.buildPath(for: target.platform, linkType: .dynamic)
                     carthagePlatformBuildPaths.insert(carthagePlatformBuildPath)
                 }
-                if carthageDependencies.contains(where: { $0.carthageLinkType == .staticBinary }) {
+                if carthageDependencies.contains(where: { $0.dependency.carthageLinkType == .staticBinary }) {
                     let carthagePlatformBuildPath = "$(PROJECT_DIR)/" + carthageResolver.buildPath(for: target.platform, linkType: .staticBinary)
                     carthagePlatformBuildPaths.insert(carthagePlatformBuildPath)
                 }
-                configFrameworkBuildPaths = Array(carthagePlatformBuildPaths) + frameworkBuildPaths.sorted()
+                configFrameworkBuildPaths = Array(carthagePlatformBuildPaths).sorted() + frameworkBuildPaths.sorted()
             } else {
                 configFrameworkBuildPaths = frameworkBuildPaths.sorted()
             }

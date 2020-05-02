@@ -1162,7 +1162,7 @@ class ProjectGeneratorTests: XCTestCase {
 
                         let target = pbxProject.nativeTargets.first!
                         let configuration = target.buildConfigurationList!.buildConfigurations.first!
-                        try expect(Set<String>(configuration.buildSettings["FRAMEWORK_SEARCH_PATHS"] as! [String])) == Set<String>(arrayLiteral: "$(inherited)", "$(PROJECT_DIR)/Carthage/Build/iOS/Static")
+                        try expect(configuration.buildSettings["FRAMEWORK_SEARCH_PATHS"] as? [String]) == ["$(inherited)", "$(PROJECT_DIR)/Carthage/Build/iOS/Static"]
                         let frameworkBuildPhase = try target.frameworksBuildPhase()
                         guard let files = frameworkBuildPhase?.files, let file = files.first else {
                             return XCTFail("frameworkBuildPhase should have files")
@@ -1190,7 +1190,7 @@ class ProjectGeneratorTests: XCTestCase {
 
                         let target = pbxProject.nativeTargets.first!
                         let configuration = target.buildConfigurationList!.buildConfigurations.first!
-                        try expect(Set<String>(configuration.buildSettings["FRAMEWORK_SEARCH_PATHS"] as! [String])) == Set<String>(arrayLiteral: "$(inherited)", "$(PROJECT_DIR)/Carthage/Build/iOS/Static", "$(PROJECT_DIR)/Carthage/Build/iOS")
+                        try expect(configuration.buildSettings["FRAMEWORK_SEARCH_PATHS"] as? [String]) == ["$(inherited)", "$(PROJECT_DIR)/Carthage/Build/iOS", "$(PROJECT_DIR)/Carthage/Build/iOS/Static"]
                         let frameworkBuildPhase = try target.frameworksBuildPhase()
                         guard let files = frameworkBuildPhase?.files else {
                             return XCTFail("frameworkBuildPhase should have files")
@@ -1303,7 +1303,7 @@ class ProjectGeneratorTests: XCTestCase {
 
                         let target = pbxProject.nativeTargets.first!
                         let configuration = target.buildConfigurationList!.buildConfigurations.first!
-                        try expect(Set<String>(configuration.buildSettings["FRAMEWORK_SEARCH_PATHS"] as! [String])) == Set<String>(arrayLiteral: "$(inherited)", "$(PROJECT_DIR)/Carthage/Build/iOS/Static")
+                        try expect(configuration.buildSettings["FRAMEWORK_SEARCH_PATHS"] as? [String]) == ["$(inherited)", "$(PROJECT_DIR)/Carthage/Build/iOS/Static"]
                         let frameworkBuildPhase = try target.frameworksBuildPhase()
                         guard let files = frameworkBuildPhase?.files, let file = files.first else {
                             return XCTFail("frameworkBuildPhase should have files")
@@ -1330,7 +1330,7 @@ class ProjectGeneratorTests: XCTestCase {
 
                         let target = pbxProject.nativeTargets.first!
                         let configuration = target.buildConfigurationList!.buildConfigurations.first!
-                        try expect(Set<String>(configuration.buildSettings["FRAMEWORK_SEARCH_PATHS"] as! [String])) == Set<String>(arrayLiteral: "$(inherited)", "$(PROJECT_DIR)/Carthage/Build/iOS")
+                        try expect(configuration.buildSettings["FRAMEWORK_SEARCH_PATHS"] as? [String]) == ["$(inherited)", "$(PROJECT_DIR)/Carthage/Build/iOS"]
                         let frameworkBuildPhase = try target.frameworksBuildPhase()
                         guard let files = frameworkBuildPhase?.files, let file = files.first else {
                             return XCTFail("frameworkBuildPhase should have files")
@@ -1358,7 +1358,7 @@ class ProjectGeneratorTests: XCTestCase {
 
                         let target = pbxProject.nativeTargets.first!
                         let configuration = target.buildConfigurationList!.buildConfigurations.first!
-                        try expect(Set<String>(configuration.buildSettings["FRAMEWORK_SEARCH_PATHS"] as! [String])) == Set<String>(arrayLiteral: "$(inherited)",  "$(PROJECT_DIR)/Carthage/Build/iOS")
+                        try expect(configuration.buildSettings["FRAMEWORK_SEARCH_PATHS"] as? [String]) == ["$(inherited)",  "$(PROJECT_DIR)/Carthage/Build/iOS"]
                         let frameworkBuildPhase = try target.frameworksBuildPhase()
                         guard let files = frameworkBuildPhase?.files else {
                             return XCTFail("frameworkBuildPhase should have files")
@@ -1398,7 +1398,7 @@ class ProjectGeneratorTests: XCTestCase {
                         let target = pbxProject.nativeTargets.first!
                         let configuration = target.buildConfigurationList!.buildConfigurations.first!
 
-                        try expect(Set<String>(configuration.buildSettings["FRAMEWORK_SEARCH_PATHS"] as! [String])) == Set<String>(arrayLiteral: "$(inherited)", "$(PROJECT_DIR)/Carthage/Build/iOS/Static", "$(PROJECT_DIR)/Carthage/Build/iOS")
+                        try expect(configuration.buildSettings["FRAMEWORK_SEARCH_PATHS"] as? [String]) == ["$(inherited)", "$(PROJECT_DIR)/Carthage/Build/iOS", "$(PROJECT_DIR)/Carthage/Build/iOS/Static"]
 
                         let frameworkBuildPhase = try target.frameworksBuildPhase()
                         guard let files = frameworkBuildPhase?.files else {
@@ -1436,7 +1436,7 @@ class ProjectGeneratorTests: XCTestCase {
                         let target = pbxProject.nativeTargets.first!
                         let configuration = target.buildConfigurationList!.buildConfigurations.first!
 
-                        try expect(Set<String>(configuration.buildSettings["FRAMEWORK_SEARCH_PATHS"] as! [String])) == Set<String>(arrayLiteral: "$(inherited)", "$(PROJECT_DIR)/Carthage/Build/iOS/Static", "$(PROJECT_DIR)/Carthage/Build/iOS")
+                        try expect(configuration.buildSettings["FRAMEWORK_SEARCH_PATHS"] as? [String]) == ["$(inherited)", "$(PROJECT_DIR)/Carthage/Build/iOS", "$(PROJECT_DIR)/Carthage/Build/iOS/Static"]
 
                         let frameworkBuildPhase = try target.frameworksBuildPhase()
                         guard let files = frameworkBuildPhase?.files else {
