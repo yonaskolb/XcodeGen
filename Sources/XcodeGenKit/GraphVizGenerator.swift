@@ -7,9 +7,22 @@ extension Dependency {
     var graphVizName: String {
         switch self.type {
         case .bundle, .package, .sdk, .framework, .carthage:
-            return "<<external>>\\n\(reference)"
+            return "[\(self.type)]\\n\(reference)"
         case .target:
             return reference
+        }
+    }
+}
+
+extension Dependency.DependencyType: CustomStringConvertible {
+    public var description: String {
+        switch self {
+        case .bundle: return "bundle"
+        case .package: return "package"
+        case .framework: return "framework"
+        case .carthage: return "carthage"
+        case .sdk: return "sdk"
+        case .target: return "target"
         }
     }
 }

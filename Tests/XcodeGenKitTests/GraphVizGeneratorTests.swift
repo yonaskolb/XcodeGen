@@ -48,8 +48,20 @@ class GraphVizGeneratorTests: XCTestCase {
             $0.it("generates box nodes") {
                 try expect(graph.nodes.filter({ $0.shape == .box }).count) == 16
             }
-            $0.it("generates the expected external nodes") {
-                try expect(graph.nodes.filter({ $0.label?.contains("<<external>>") ?? false }).count) == 6
+            $0.it("generates the expected carthage nodes") {
+                try expect(graph.nodes.filter({ $0.label?.contains("[carthage]") ?? false }).count) == 2
+            }
+            $0.it("generates the expected sdk nodes") {
+                try expect(graph.nodes.filter({ $0.label?.contains("[sdk]") ?? false }).count) == 1
+            }
+            $0.it("generates the expected Framework nodes") {
+                try expect(graph.nodes.filter({ $0.label?.contains("[framework]") ?? false }).count) == 1
+            }
+            $0.it("generates the expected package nodes") {
+                try expect(graph.nodes.filter({ $0.label?.contains("[package]") ?? false }).count) == 1
+            }
+            $0.it("generates the expected bundle nodes") {
+                try expect(graph.nodes.filter({ $0.label?.contains("[bundle]") ?? false }).count) == 1
             }
             $0.it("generates the expected edges") {
                 try expect(graph.edges.count) == 8
@@ -64,17 +76,17 @@ class GraphVizGeneratorTests: XCTestCase {
                   MyApp [shape=box]
                   MyInternalFramework [label=MyInternalFramework shape=box]
                   MyApp [shape=box]
-                  Resources [label="<<external>>\\nResources" shape=box]
+                  Resources [label="[bundle]\\nResources" shape=box]
                   MyApp [shape=box]
-                  MyStaticFramework [label="<<external>>\\nMyStaticFramework" shape=box]
+                  MyStaticFramework [label="[carthage]\\nMyStaticFramework" shape=box]
                   MyApp [shape=box]
-                  MyDynamicFramework [label="<<external>>\\nMyDynamicFramework" shape=box]
+                  MyDynamicFramework [label="[carthage]\\nMyDynamicFramework" shape=box]
                   MyApp [shape=box]
-                  MyExternalFramework [label="<<external>>\\nMyExternalFramework" shape=box]
+                  MyExternalFramework [label="[framework]\\nMyExternalFramework" shape=box]
                   MyApp [shape=box]
-                  MyPackage [label="<<external>>\\nMyPackage" shape=box]
+                  MyPackage [label="[package]\\nMyPackage" shape=box]
                   MyApp [shape=box]
-                  MySDK [label="<<external>>\\nMySDK" shape=box]
+                  MySDK [label="[sdk]\\nMySDK" shape=box]
                   MyAppUITests [shape=box]
                   MyApp [label=MyApp shape=box]
                   MyApp -> MyInternalFramework [style=dashed]
