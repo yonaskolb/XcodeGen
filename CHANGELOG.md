@@ -28,6 +28,7 @@
 - Don't link transitive static carthage libraries. [#853](https://github.com/yonaskolb/XcodeGen/pull/853) @akkyie
 - Optimize simplifying paths for faster project generation. [#857](https://github.com/yonaskolb/XcodeGen/pull/857) @akkyie
 - Fixed issue where wrapper folders may not include correctly in the generated project. [#862](https://github.com/yonaskolb/XcodeGen/pull/862) @KhaosT
+- Compile `xcmappingmodel` files instead of copying bundle resources. [#834](https://github.com/yonaskolb/XcodeGen/pull/834) @jcolicchio
 
 ## 2.15.1
 
