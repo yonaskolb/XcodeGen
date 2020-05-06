@@ -11,7 +11,14 @@ extension Path {
     /// - `../a/b` simplifies to `../a/b`
     /// - `a/../../c` simplifies to `../c`
     public func simplifyingParentDirectoryReferences() -> Path {
-        normalize().components.reduce(Path(), +)
+        if !string.contains("..") { // Skip simplifying if its already simple
+            var string = self.string
+            while string.hasSuffix(Path.separator) { // Remove all trailing path separators
+                string.removeLast()
+            }
+            return Path(String(string))
+        }
+        return normalize().components.reduce(Path(), +)
     }
 
     /// Returns the relative path necessary to go from `base` to `self`.
