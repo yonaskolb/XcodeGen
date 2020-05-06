@@ -124,6 +124,20 @@ class SourceGeneratorTests: XCTestCase {
                 try expect(fileReference.path) == "model2.xcdatamodel"
             }
 
+            $0.it("generates core data mapping models") {
+                let directories = """
+                Sources:
+                    model.xcmappingmodel
+                """
+                try createDirectories(directories)
+
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: ["Sources"])
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target])
+
+                let pbxProj = try project.generatePbxProj()
+                try pbxProj.expectFile(paths: ["Sources", "model.xcmappingmodel"], buildPhase: .sources)
+            }
+
             $0.it("generates variant groups") {
                 let directories = """
                 Sources:
