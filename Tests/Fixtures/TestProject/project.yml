@@ -69,6 +69,11 @@ targets:
         excludes:
           - "**/excluded-file"
           - "excluded-file"
+          - "Model.xcmappingmodel"
+      - path: App_iOS
+        name: App
+        includes:
+          - "Model.xcmappingmodel"
       - path: StandaloneFiles/Standalone.swift
       - FileGroup/UnderFileGroup
       - Resources/MyBundle.bundle
