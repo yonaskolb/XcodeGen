@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<!DOCTYPE database SYSTEM "file:///System/Library/DTDs/CoreData.dtd">
+
+<database>
+    <databaseInfo>
+        <version>134481920</version>
+        <UUID>AE6EEF51-3615-4588-A937-FEF530D118F4</UUID>
+        <nextObjectID>102</nextObjectID>
+        <metadata>
+            <plist version="1.0">
+                <dict>
+                    <key>NSPersistenceFrameworkVersion</key>
+                    <integer>977</integer>
+                    <key>NSStoreModelVersionHashes</key>
+                    <dict>
+                        <key>XDDevAttributeMapping</key>
+                        <data>
+		0plcXXRN7XHKl5CcF+fwriFmUpON3ZtcI/AfK748aWc=
+		</data>
+                        <key>XDDevEntityMapping</key>
+                        <data>
+		qeN1Ym3TkWN1G6dU9RfX6Kd2ccEvcDVWHpd3LpLgboI=
+		</data>
+                        <key>XDDevMappingModel</key>
+                        <data>
+		EqtMzvRnVZWkXwBHu4VeVGy8UyoOe+bi67KC79kphlQ=
+		</data>
+                        <key>XDDevPropertyMapping</key>
+                        <data>
+		XN33V44TTGY4JETlMoOB5yyTKxB+u4slvDIinv0rtGA=
+		</data>
+                        <key>XDDevRelationshipMapping</key>
+                        <data>
+		akYY9LhehVA/mCb4ATLWuI9XGLcjpm14wWL1oEBtIcs=
+		</data>
+                    </dict>
+                    <key>NSStoreModelVersionHashesDigest</key>
+                    <string>+Hmc2uYZK6og+Pvx5GUJ7oW75UG4V/ksQanTjfTKUnxyGWJRMtB5tIRgVwGsrd7lz/QR57++wbvWsr6nxwyS0A==</string>
+                    <key>NSStoreModelVersionHashesVersion</key>
+                    <integer>3</integer>
+                    <key>NSStoreModelVersionIdentifiers</key>
+                    <array>
+                        <string></string>
+                    </array>
+                </dict>
+            </plist>
+        </metadata>
+    </databaseInfo>
+    <object type="XDDEVMAPPINGMODEL" id="z102">
+        <attribute name="sourcemodelpath" type="string">coredata-thing2/coredata_thing2.xcdatamodeld/coredata_thing2.xcdatamodel</attribute>
+        <attribute name="sourcemodeldata" type="binary">YnBsaXN0MDDUAQIDBAUGBwpYJHZlcnNpb25ZJGFyY2hpdmVyVCR0b3BYJG9iamVjdHMSAAGGoF8Q
+D05TS2V5ZWRBcmNoaXZlctEICVRyb290gAGvEBALDBs3ODk/RkpOUlpdYWVmVSRudWxs1w0ODxAREhMUFRYXGBcaXxAPX3hkX3Jvb3RQYWNrYWdlViRjbGFzc1xfeGRfY29tbWVudHNfEBBfeGRfbW9kZWxNYW5hZ2VyXxAVX2NvbmZpZ3VyYXRpb25zQnlOYW1lXV94ZF9tb2RlbE5hbWVfEBdfbW9kZWxWZXJzaW9uSWRlbnRpZmllcoACgA+AC4AAgA2AAIAO3hwdHh8gISIOIyQlJicoKSorCSkXLzAxMjMpKRdfEBxYREJ1Y2tldEZvckNsYXNzZXN3YXNFbmNvZGVkXxAaWERCdWNrZXRGb3JQYWNrYWdlc3N0b3JhZ2VfEBxYREJ1Y2tldEZvckludGVyZmFjZXNzdG9yYWdlXxAPX3hkX293bmluZ01vZGVsXxAdWERCdWNrZXRGb3JQYWNrYWdlc3dhc0VuY29kZWRWX293bmVyXxAbWERCdWNrZXRGb3JEYXRhVHlwZXNzdG9yYWdlW192aXNpYmlsaXR5XxAZWERCdWNrZXRGb3JDbGFzc2Vzc3RvcmFnZVVfbmFtZV8QH1hEQnVja2V0Rm9ySW50ZXJmYWNlc3dhc0VuY29kZWRfEB5YREJ1Y2tldEZvckRhdGFUeXBlc3dhc0VuY29kZWRfEBBfdW5pcXVlRWxlbWVudElEgASACYAHgAGABIAAgAiAChAAgAWAA4AEgASAAFBTWUVT0zo7Djw9PldOUy5rZXlzWk5TLm9iamVjdHOgoIAG0kBBQkNaJGNsYXNzbmFtZVgkY2xhc3Nlc18QE05TTXV0YWJsZURpY3Rpb25hcnmjQkRFXE5TRGljdGlvbmFyeVhOU09iamVjdNM6Ow5HSD6goIAG0zo7DktMPqCggAbTOjsOT1A+oKCABtJAQVNUXlhETW9kZWxQYWNrYWdlplVWV1hZRV5YRE1vZGVsUGFja2FnZV8QD1hEVU1MUGFja2FnZUltcF8QEVhEVU1MTmFtZXNwYWNlSW1wXxAUWERVTUxOYW1lZEVsZW1lbnRJbXBfEA9YRFVNTEVsZW1lbnRJbXDSOw5bXKCADNJAQV5fXk5TTXV0YWJsZUFycmF5o15gRVdOU0FycmF50zo7DmJjPqCggAZQ0kBBZ2hZWERQTU1vZGVso2dpRVdYRE1vZGVsAAgAEQAaACQAKQAyADcASQBMAFEAUwBmAGwAewCNAJQAoQC0AMwA2gD0APYA+AD6APwA/gEAAQIBHwE+AVsBegGMAawBswHRAd0B+QH/AiECQgJVAlcCWQJbAl0CXwJhAmMCZQJnAmkCawJtAm8CcQJyAnYCfQKFApACkQKSApQCmQKkAq0CwwLHAtQC3QLkAuUC5gLoAu8C8ALxAvMC+gL7AvwC/gMDAxIDGQMoAzoDTgNlA3cDfAN9A38DhAOTA5cDnwOmA6cDqAOqA6sDsAO6A74AAAAAAAACAQAAAAAAAABqAAAAAAAAAAAAAAAAAAADxg==
+</attribute>
+        <attribute name="destinationmodelpath" type="string">coredata-thing2/coredata_thing2.xcdatamodeld/coredata_thing2.xcdatamodel</attribute>
+        <attribute name="destinationmodeldata" type="binary">YnBsaXN0MDDUAQIDBAUGBwpYJHZlcnNpb25ZJGFyY2hpdmVyVCR0b3BYJG9iamVjdHMSAAGGoF8Q
+D05TS2V5ZWRBcmNoaXZlctEICVRyb290gAGvEBALDBs3ODk/RkpOUlpdYWVmVSRudWxs1w0ODxAREhMUFRYXGBcaXxAPX3hkX3Jvb3RQYWNrYWdlViRjbGFzc1xfeGRfY29tbWVudHNfEBBfeGRfbW9kZWxNYW5hZ2VyXxAVX2NvbmZpZ3VyYXRpb25zQnlOYW1lXV94ZF9tb2RlbE5hbWVfEBdfbW9kZWxWZXJzaW9uSWRlbnRpZmllcoACgA+AC4AAgA2AAIAO3hwdHh8gISIOIyQlJicoKSorCSkXLzAxMjMpKRdfEBxYREJ1Y2tldEZvckNsYXNzZXN3YXNFbmNvZGVkXxAaWERCdWNrZXRGb3JQYWNrYWdlc3N0b3JhZ2VfEBxYREJ1Y2tldEZvckludGVyZmFjZXNzdG9yYWdlXxAPX3hkX293bmluZ01vZGVsXxAdWERCdWNrZXRGb3JQYWNrYWdlc3dhc0VuY29kZWRWX293bmVyXxAbWERCdWNrZXRGb3JEYXRhVHlwZXNzdG9yYWdlW192aXNpYmlsaXR5XxAZWERCdWNrZXRGb3JDbGFzc2Vzc3RvcmFnZVVfbmFtZV8QH1hEQnVja2V0Rm9ySW50ZXJmYWNlc3dhc0VuY29kZWRfEB5YREJ1Y2tldEZvckRhdGFUeXBlc3dhc0VuY29kZWRfEBBfdW5pcXVlRWxlbWVudElEgASACYAHgAGABIAAgAiAChAAgAWAA4AEgASAAFBTWUVT0zo7Djw9PldOUy5rZXlzWk5TLm9iamVjdHOgoIAG0kBBQkNaJGNsYXNzbmFtZVgkY2xhc3Nlc18QE05TTXV0YWJsZURpY3Rpb25hcnmjQkRFXE5TRGljdGlvbmFyeVhOU09iamVjdNM6Ow5HSD6goIAG0zo7DktMPqCggAbTOjsOT1A+oKCABtJAQVNUXlhETW9kZWxQYWNrYWdlplVWV1hZRV5YRE1vZGVsUGFja2FnZV8QD1hEVU1MUGFja2FnZUltcF8QEVhEVU1MTmFtZXNwYWNlSW1wXxAUWERVTUxOYW1lZEVsZW1lbnRJbXBfEA9YRFVNTEVsZW1lbnRJbXDSOw5bXKCADNJAQV5fXk5TTXV0YWJsZUFycmF5o15gRVdOU0FycmF50zo7DmJjPqCggAZQ0kBBZ2hZWERQTU1vZGVso2dpRVdYRE1vZGVsAAgAEQAaACQAKQAyADcASQBMAFEAUwBmAGwAewCNAJQAoQC0AMwA2gD0APYA+AD6APwA/gEAAQIBHwE+AVsBegGMAawBswHRAd0B+QH/AiECQgJVAlcCWQJbAl0CXwJhAmMCZQJnAmkCawJtAm8CcQJyAnYCfQKFApACkQKSApQCmQKkAq0CwwLHAtQC3QLkAuUC5gLoAu8C8ALxAvMC+gL7AvwC/gMDAxIDGQMoAzoDTgNlA3cDfAN9A38DhAOTA5cDnwOmA6cDqAOqA6sDsAO6A74AAAAAAAACAQAAAAAAAABqAAAAAAAAAAAAAAAAAAADxg==
+</attribute>
+        <relationship name="entitymappings" type="0/0" destination="XDDEVENTITYMAPPING"></relationship>
+    </object>
+</database>

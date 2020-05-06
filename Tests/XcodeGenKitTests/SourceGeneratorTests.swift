@@ -127,7 +127,8 @@ class SourceGeneratorTests: XCTestCase {
             $0.it("generates core data mapping models") {
                 let directories = """
                 Sources:
-                    model.xcmappingmodel
+                    model.xcmappingmodel:
+                        - xcmapping.xml
                 """
                 try createDirectories(directories)
 
