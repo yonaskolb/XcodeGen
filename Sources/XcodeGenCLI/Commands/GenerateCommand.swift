@@ -99,37 +99,64 @@ class GenerateCommand: ProjectCommand {
 
         // generate project
         info("⚙️  Generating project...")
-        let xcodeProject: XcodeProj
-        do {
-            let projectGenerator = ProjectGenerator(project: project)
-            xcodeProject = try projectGenerator.generateXcodeProject(in: projectDirectory)
-        } catch {
-            throw GenerationError.generationError(error)
-        }
-
-        // write project
-        info("⚙️  Writing project...")
-        do {
-            try fileWriter.writeXcodeProject(xcodeProject, to: projectPath)
-            success("Created project at \(projectPath)")
-        } catch {
-            throw GenerationError.writingError(error)
-        }
-
-        // write cache
-        if let cacheFile = cacheFile {
+        var errors: [Error] = []
+        let overallDispatchGroup = DispatchGroup()
+        overallDispatchGroup.enter()
+        let generateAndWriteProject = DispatchWorkItem { [weak self] in
+            var xcodeProject: XcodeProj!
+            let xcodeProjDispatchGroup = DispatchGroup()
             do {
-                try cacheFilePath.parent().mkpath()
-                try cacheFilePath.write(cacheFile.string)
+                xcodeProjDispatchGroup.enter()
+                let projectGenerator = ProjectGenerator(project: project)
+                try projectGenerator.generateXcodeProject(in: projectDirectory) { (generatedXcodeProj) in
+                    xcodeProject = generatedXcodeProj
+                    xcodeProjDispatchGroup.leave()
+                }
             } catch {
-                info("Failed to write cache: \(error.localizedDescription)")
+                xcodeProjDispatchGroup.leave()
+                errors.append(GenerationError.generationError(error))
+            }
+            xcodeProjDispatchGroup.wait()
+
+            guard errors.isEmpty else {
+                return
+            }
+            // write project
+            self?.info("⚙️  Writing project...")
+            do {
+                try fileWriter.writeXcodeProject(xcodeProject, to: projectPath)
+                self?.success("Created project at \(projectPath)")
+            } catch {
+                errors.append(GenerationError.writingError(error))
+            }
+
+            // write cache
+            if let cacheFile = cacheFile {
+                do {
+                    try cacheFilePath.parent().mkpath()
+                    try cacheFilePath.write(cacheFile.string)
+                } catch {
+                    self?.info("Failed to write cache: \(error.localizedDescription)")
+                }
+            }
+
+            // run post gen command
+            if let command = project.options.postGenCommand {
+                do {
+                    try Task.run(bash: command, directory: projectDirectory.absolute().string)
+                } catch let error {
+                    errors.append(error)
+                }
             }
         }
-
-        // run post gen command
-        if let command = project.options.postGenCommand {
-            try Task.run(bash: command, directory: projectDirectory.absolute().string)
+        generateAndWriteProject.notify(queue: .global(qos: .userInitiated)) { [weak self] in
+            if let error = errors.first {
+                self?.stderr.print(error.localizedDescription)
+            }
+            overallDispatchGroup.leave()
         }
+        DispatchQueue.global(qos: .userInitiated).async(execute: generateAndWriteProject)
+        overallDispatchGroup.wait()
     }
 
     func info(_ string: String) {

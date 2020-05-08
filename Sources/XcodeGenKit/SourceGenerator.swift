@@ -87,19 +87,25 @@ class SourceGenerator {
         }
     }
 
-    /// Collects an array complete of all `SourceFile` objects that make up the target based on the provided `TargetSource` definitions.
-    ///
-    /// - Parameters:
-    ///   - targetType: The type of target that the source files should belong to.
-    ///   - sources: The array of sources defined as part of the targets spec.
-    ///   - buildPhases: A dictionary containing any build phases that should be applied to source files at specific paths in the event that the associated `TargetSource` didn't already define a `buildPhase`. Values from this dictionary are used in cases where the project generator knows more about a file than the spec/filesystem does (i.e if the file should be treated as the targets Info.plist and so on).
-    func getAllSourceFiles(targetType: PBXProductType, sources: [TargetSource], buildPhases: [Path : BuildPhaseSpec]) throws -> [SourceFile] {
-        try sources.flatMap { try getSourceFiles(targetType: targetType, targetSource: $0, buildPhases: buildPhases) }
+    func getAllSourceFiles(targetType: PBXProductType, sources: [TargetSource], completion: @escaping (([SourceFile]) -> Void), buildPhases: [Path : BuildPhaseSpec]) throws {
+        var flattenedSources: [SourceFile] = []
+        let group = DispatchGroup()
+        try sources.forEach { (source) in
+            group.enter()
+            try getSourceFiles(targetType: targetType, targetSource: source, buildPhases: buildPhases) {
+                flattenedSources.append(contentsOf: $0)
+                group.leave()
+            }
+        }
+        group.wait()
+        completion(flattenedSources)
     }
 
     // get groups without build files. Use for Project.fileGroups
-    func getFileGroups(path: String) throws {
-        _ = try getSourceFiles(targetType: .none, targetSource: TargetSource(path: path), buildPhases: [:])
+    func getFileGroups(path: String, completion: @escaping (() -> ()), buildPhases: [Path : BuildPhaseSpec]) throws {
+        _ = try getSourceFiles(targetType: .none, targetSource: TargetSource(path: path), buildPhases: [:]) { _ in
+            completion()
+        }
     }
 
     func getFileType(path: Path) -> FileType? {
@@ -355,25 +361,24 @@ class SourceGenerator {
     }
 
     /// Collects all the excluded paths within the targetSource
-    private func getSourceMatches(targetSource: TargetSource, patterns: [String]) -> Set<Path> {
+    private func getSourceMatches(targetSource: TargetSource, patterns: [String], completion: @escaping ((Set<Path>) -> Void)) {
         let rootSourcePath = project.basePath + targetSource.path
 
-        return Set(
-            patterns.parallelMap { pattern in
-                guard !pattern.isEmpty else { return [] }
-                return Glob(pattern: "\(rootSourcePath)/\(pattern)")
-                    .map { Path($0) }
-                    .map {
-                        guard $0.isDirectory else {
-                            return [$0]
-                        }
-
-                        return (try? $0.recursiveChildren()) ?? []
+        let nonEmptyPatterns = patterns.filter({ !$0.isEmpty })
+        let listOfPaths: [Path] = nonEmptyPatterns.parallelMap { pattern in
+            Glob(pattern: "\(rootSourcePath)/\(pattern)")
+                .map { Path($0) }
+                .map {
+                    guard $0.isDirectory else {
+                        return [$0]
                     }
-                    .reduce([], +)
-            }
-            .reduce([], +)
-        )
+                    return (try? $0.recursiveChildren()) ?? []
+                }
+                .reduce([], +)
+        }
+        .reduce([], +)
+        let resultSet = Set(listOfPaths)
+        completion(resultSet)
     }
 
     /// Checks whether the path is not in any default or TargetSource excludes
@@ -573,13 +578,27 @@ class SourceGenerator {
     }
 
     /// creates source files
-    private func getSourceFiles(targetType: PBXProductType, targetSource: TargetSource, buildPhases: [Path: BuildPhaseSpec]) throws -> [SourceFile] {
+    private func getSourceFiles(targetType: PBXProductType, targetSource: TargetSource, buildPhases: [Path : BuildPhaseSpec], completion: ((([SourceFile]) -> ()))) throws {
+
+        var excludePaths: Set<Path> = Set()
+        var includePaths: Set<Path> = Set()
+        let group = DispatchGroup()
 
         // generate excluded paths
         let path = project.basePath + targetSource.path
-        let excludePaths = getSourceMatches(targetSource: targetSource, patterns: targetSource.excludes)
+        group.enter()
+        getSourceMatches(targetSource: targetSource, patterns: targetSource.excludes) {
+            excludePaths = $0
+            group.leave()
+        }
         // generate included paths. Excluded paths will override this.
-        let includePaths = getSourceMatches(targetSource: targetSource, patterns: targetSource.includes)
+        group.enter()
+        getSourceMatches(targetSource: targetSource, patterns: targetSource.includes) {
+            includePaths = $0
+            group.leave()
+        }
+
+        group.wait()
 
         let type = resolvedTargetSourceType(for: targetSource, at: path)
 
@@ -638,7 +657,8 @@ class SourceGenerator {
         case .group:
             if targetSource.optional && !Path(targetSource.path).exists {
                 // This group is missing, so if's optional just return an empty array
-                return []
+                completion([])
+                return
             }
 
             let (groupSourceFiles, groups) = try getGroupSources(
@@ -668,7 +688,7 @@ class SourceGenerator {
             createIntermediaGroups(for: sourceReference, at: sourcePath)
         }
 
-        return sourceFiles
+        completion(sourceFiles)
     }
 
     /// Returns the resolved `SourceType` for a given `TargetSource`.

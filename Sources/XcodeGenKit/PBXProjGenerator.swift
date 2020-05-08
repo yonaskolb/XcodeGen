@@ -48,14 +48,35 @@ public class PBXProjGenerator {
         return object
     }
 
-    public func generate() throws -> PBXProj {
+    public func generate(completion: ((PBXProj) -> Void)) throws {
         if generated {
             fatalError("Cannot use PBXProjGenerator to generate more than once")
         }
         generated = true
 
-        for group in project.fileGroups {
-            try sourceGenerator.getFileGroups(path: group)
+        var getFileGroupsError: [Error] = []
+        let getFileGroupsDispatchGroup = DispatchGroup()
+        getFileGroupsDispatchGroup.enter()
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+            defer {
+                getFileGroupsDispatchGroup.leave()
+            }
+            guard let strongSelf = self else {
+                return
+            }
+            for group in strongSelf.project.fileGroups {
+                do {
+                    try strongSelf.sourceGenerator.getFileGroups(path: group) {
+                    }
+                } catch let error {
+                    getFileGroupsError.append(error)
+                }
+            }
+        }
+        getFileGroupsDispatchGroup.wait()
+
+        guard getFileGroupsError.isEmpty else {
+            throw getFileGroupsError.first!
         }
 
         let buildConfigs: [XCBuildConfiguration] = project.configs.map { config in
@@ -222,8 +243,61 @@ public class PBXProjGenerator {
             pbxProject.projects = subprojects
         }
 
-        try project.targets.forEach(generateTarget)
-        try project.aggregateTargets.forEach(generateAggregateTarget)
+        let generateTargetsGroup = DispatchGroup()
+        var targetErrors: [Error] = []
+        var aggregateTargetsErrors: [Error] = []
+        generateTargetsGroup.enter()
+        let targetsWithNoDependencies = project.targets.filter({ $0.dependencies.count == 0 })
+        let targetsWithDependencies = project.targets.filter({ $0.dependencies.count != 0 })
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+            targetsWithNoDependencies.forEach { target in
+                generateTargetsGroup.enter()
+                DispatchQueue.global(qos: .userInitiated).async {
+                    do {
+                        try self?.generateTarget(target)
+                    } catch let error {
+                        targetErrors.append(error)
+                    }
+                    generateTargetsGroup.leave()
+                }
+            }
+            generateTargetsGroup.leave()
+        }
+        generateTargetsGroup.wait()
+
+        generateTargetsGroup.enter()
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+            targetsWithDependencies.forEach { target in
+                generateTargetsGroup.enter()
+                do {
+                    try self?.generateTarget(target)
+                } catch let error {
+                    targetErrors.append(error)
+                }
+                generateTargetsGroup.leave()
+            }
+
+            self?.project.aggregateTargets.forEach { target in
+                generateTargetsGroup.enter()
+                    do {
+                        try self?.generateAggregateTarget(target)
+                    } catch let error {
+                        aggregateTargetsErrors.append(error)
+                    }
+                generateTargetsGroup.leave()
+            }
+            generateTargetsGroup.leave()
+        }
+
+        generateTargetsGroup.wait()
+
+        guard targetErrors.isEmpty else {
+            throw targetErrors.first!
+        }
+
+        guard aggregateTargetsErrors.isEmpty else {
+            throw aggregateTargetsErrors.first!
+        }
 
         if !carthageFrameworksByPlatform.isEmpty {
             var platforms: [PBXGroup] = []
@@ -313,7 +387,7 @@ public class PBXProjGenerator {
             .sorted { $0.name < $1.name }
         pbxProject.attributes = projectAttributes
         pbxProject.targetAttributes = generateTargetAttributes()
-        return pbxProj
+        completion(pbxProj)
     }
 
     func generateAggregateTarget(_ target: AggregateTarget) throws {
@@ -651,11 +725,13 @@ public class PBXProjGenerator {
     func generateTarget(_ target: Target) throws {
         let carthageDependencies = carthageResolver.dependencies(for: target)
 
+        var sourceFiles: [SourceFile] = []
         let infoPlistFiles: [Config: String] = getInfoPlists(for: target)
         let sourceFileBuildPhaseOverrideSequence: [(Path, BuildPhaseSpec)] = Set(infoPlistFiles.values).map({ (project.basePath + $0, .none) })
         let sourceFileBuildPhaseOverrides = Dictionary(uniqueKeysWithValues: sourceFileBuildPhaseOverrideSequence)
-        let sourceFiles = try sourceGenerator.getAllSourceFiles(targetType: target.type, sources: target.sources, buildPhases: sourceFileBuildPhaseOverrides)
-            .sorted { $0.path.lastComponent < $1.path.lastComponent }
+        try sourceGenerator.getAllSourceFiles(targetType: target.type, sources: target.sources, buildPhases: sourceFileBuildPhaseOverrides) { sources in
+            sourceFiles = sources.sorted { $0.path.lastComponent < $1.path.lastComponent }
+        }
 
         var anyDependencyRequiresObjCLinking = false
 
