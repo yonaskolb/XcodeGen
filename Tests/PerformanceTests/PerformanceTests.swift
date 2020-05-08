@@ -23,15 +23,25 @@ class GeneratedPerformanceTests: XCTestCase {
     func testGeneration() throws {
         let project = try Project.testProject(basePath: basePath)
         measure {
+            let expectation = XCTestExpectation(description: "Project generation expectation")
             let generator = ProjectGenerator(project: project)
-            _ = try! generator.generateXcodeProject()
+            try! generator.generateXcodeProject { _ in
+                expectation.fulfill()
+            }
+            wait(for: [expectation], timeout: 10)
         }
     }
 
     func testWriting() throws {
         let project = try Project.testProject(basePath: basePath)
         let generator = ProjectGenerator(project: project)
-        let xcodeProject = try generator.generateXcodeProject()
+        let expectation = XCTestExpectation(description: "Project generation expectation")
+        var xcodeProject: XcodeProj!
+        try generator.generateXcodeProject() { (generatedXcodeProj) in
+            xcodeProject = generatedXcodeProj
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 10)
         measure {
             xcodeProject.pbxproj.invalidateUUIDs()
             try! xcodeProject.write(path: project.defaultProjectPath)
@@ -64,14 +74,24 @@ class FixturePerformanceTests: XCTestCase {
         let project = try Project(path: specPath)
         measure {
             let generator = ProjectGenerator(project: project)
-            _ = try! generator.generateXcodeProject()
+            let expectation = XCTestExpectation(description: "Project generation expectation")
+            _ = try! generator.generateXcodeProject() { _ in
+                expectation.fulfill()
+            }
+            wait(for: [expectation], timeout: 30)
         }
     }
 
     func testFixtureWriting() throws {
         let project = try Project(path: specPath)
         let generator = ProjectGenerator(project: project)
-        let xcodeProject = try generator.generateXcodeProject()
+        let expectation = XCTestExpectation(description: "Project generation expectation")
+        var xcodeProject: XcodeProj!
+        try! generator.generateXcodeProject() { (generatedXcodeProj) in
+            xcodeProject = generatedXcodeProj
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 30)
         measure {
             xcodeProject.pbxproj.invalidateUUIDs()
             try! xcodeProject.write(path: project.defaultProjectPath)
