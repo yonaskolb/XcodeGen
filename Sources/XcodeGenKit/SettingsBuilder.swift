@@ -146,15 +146,19 @@ extension Project {
     /// Returns cached build settings from a config file
     private func loadConfigFileBuildSettings(path: String) -> BuildSettings? {
         let configFilePath = basePath + path
-        if let cached = configFileSettings[configFilePath.string] {
+        if let cached = configFileSettings.wrappedValue[configFilePath.string] {
             return cached.value
         } else {
             guard let configFile = try? XCConfig(path: configFilePath) else {
-                configFileSettings[configFilePath.string] = .nothing
+                configFileSettings.mutate {
+                    $0[configFilePath.string] = .nothing
+                }
                 return nil
             }
             let settings = configFile.flattenedBuildSettings()
-            configFileSettings[configFilePath.string] = .cached(settings)
+            configFileSettings.mutate {
+                $0[configFilePath.string] = .cached(settings)
+            }
             return settings
         }
     }
@@ -173,15 +177,15 @@ private enum Cached<T> {
 }
 
 // cached flattened xcconfig file settings
-private var configFileSettings: [String: Cached<BuildSettings>] = [:]
+private var configFileSettings: Atomic<[String: Cached<BuildSettings>]> = Atomic<[String: Cached<BuildSettings>]>(wrappedValue: [:])
 
 // cached setting preset settings
-private var settingPresetSettings: [String: Cached<BuildSettings>] = [:]
+private var settingPresetSettings: Atomic<[String: Cached<BuildSettings>]> = Atomic<[String: Cached<BuildSettings>]>(wrappedValue: [:])
 
 extension SettingsPresetFile {
 
     public func getBuildSettings() -> BuildSettings? {
-        if let cached = settingPresetSettings[path] {
+        if let cached = settingPresetSettings.wrappedValue[path] {
             return cached.value
         }
         let bundlePath = Path(Bundle.main.bundlePath)
@@ -206,7 +210,9 @@ extension SettingsPresetFile {
             case .product, .productPlatform:
                 break
             }
-            settingPresetSettings[path] = .nothing
+            settingPresetSettings.mutate({
+                $0[path] = .nothing
+            })
             return nil
         }
 
@@ -214,7 +220,9 @@ extension SettingsPresetFile {
             print("Error parsing \"\(name)\" settings")
             return nil
         }
-        settingPresetSettings[path] = .cached(buildSettings)
+        settingPresetSettings.mutate({
+            $0[path] = .cached(buildSettings)
+        })
         return buildSettings
     }
 }
