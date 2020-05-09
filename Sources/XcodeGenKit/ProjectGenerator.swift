@@ -21,12 +21,26 @@ public class ProjectGenerator {
         let pbxProjGroup = DispatchGroup()
         var pbxProj: PBXProj!
         pbxProjGroup.enter()
-        try pbxProjGenerator.generate { (generatedPbxProj) in
-            pbxProj = generatedPbxProj
+        var pbxProjError: Error?
+        DispatchQueue.global(qos: .userInitiated).async {
+            do {
+                pbxProjGroup.enter()
+                try pbxProjGenerator.generate { (generatedPbxProj) in
+                    pbxProj = generatedPbxProj
+                    pbxProjGroup.leave()
+                }
+            } catch {
+                pbxProjError = error
+                pbxProjGroup.leave()
+            }
             pbxProjGroup.leave()
         }
 
         pbxProjGroup.wait()
+
+        guard pbxProjError == nil else {
+            throw pbxProjError!
+        }
         // generate Schemes
         let schemeGenerator = SchemeGenerator(project: project, pbxProj: pbxProj)
         let schemes = try schemeGenerator.generateSchemes()
