@@ -350,7 +350,14 @@ class SchemeGeneratorTests: XCTestCase {
                     let project = try! Project(path: fixturePath + "scheme_test/test_project.yml")
                     let generator = ProjectGenerator(project: project)
                     let writer = FileWriter(project: project)
-                    let xcodeProject = try! generator.generateXcodeProject()
+                    let dispatchGroup = DispatchGroup()
+                    dispatchGroup.enter()
+                    var xcodeProject: XcodeProj!
+                    try! generator.generateXcodeProject() {
+                        xcodeProject = $0
+                        dispatchGroup.leave()
+                    }
+                    dispatchGroup.wait()
                     try! writer.writeXcodeProject(xcodeProject)
                     try! writer.writePlists()
                 }
@@ -381,7 +388,14 @@ class SchemeGeneratorTests: XCTestCase {
                     let project = try! Project(path: fixturePath + "scheme_test/test_project.yml")
                     let generator = ProjectGenerator(project: project)
                     let writer = FileWriter(project: project)
-                    let xcodeProject = try! generator.generateXcodeProject()
+                    let dispatchGroup = DispatchGroup()
+                    dispatchGroup.enter()
+                    var xcodeProject: XcodeProj!
+                    try! generator.generateXcodeProject() {
+                        xcodeProject = $0
+                        dispatchGroup.leave()
+                    }
+                    dispatchGroup.wait()
                     try! writer.writeXcodeProject(xcodeProject)
                     try! writer.writePlists()
                 }

@@ -75,8 +75,10 @@ class FixturePerformanceTests: XCTestCase {
         measure {
             let generator = ProjectGenerator(project: project)
             let expectation = XCTestExpectation(description: "Project generation expectation")
-            _ = try! generator.generateXcodeProject() { _ in
-                expectation.fulfill()
+            DispatchQueue.global(qos: .userInitiated).async {
+                _ = try! generator.generateXcodeProject() { _ in
+                    expectation.fulfill()
+                }
             }
             wait(for: [expectation], timeout: 30)
         }
