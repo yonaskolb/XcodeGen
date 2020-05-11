@@ -18,6 +18,7 @@ public func loadYamlDictionary(path: Path) throws -> [String: Any] {
 }
 
 public func dumpYamlDictionary(_ dictionary: [String: Any], path: Path) throws {
-    let string: String = try Yams.dump(object: dictionary)
+    let uncluttered = (dictionary as [String: Any?]).removingEmptyArraysDictionariesAndNils()
+    let string: String = try Yams.dump(object: uncluttered)
     try path.write(string)
 }

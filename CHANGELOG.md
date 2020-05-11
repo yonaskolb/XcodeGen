@@ -8,6 +8,9 @@
 - Add an ability to set an order of groups with `options.groupOrdering` [#613](https://github.com/yonaskolb/XcodeGen/pull/613) @Beniamiiin
 - Add `staticBinary` linkType for Carthage dependency [#847](https://github.com/yonaskolb/XcodeGen/pull/847) @d-date
 - Add the ability to output a dependency graph in graphviz format [#852](https://github.com/yonaskolb/XcodeGen/pull/852) @jeffctown
+- Adds uncluttering the project manifest dumped to YAML from empty values [#858](https://github.com/yonaskolb/XcodeGen/pull/858) @paciej00 
+
+
 
 #### Fixed
 - Fixed issue when linking and embeding static frameworks: they should be linked and NOT embed. [#820](https://github.com/yonaskolb/XcodeGen/pull/820) @acecilia
@@ -18,7 +21,7 @@
 - Set `preActions` and `postActions` on the `build` action of a TargetScheme instead of the other actions. [#823](https://github.com/yonaskolb/XcodeGen/pull/823) @brentleyjones
 - Prevent test targets from being set as a scheme's launch action [#835](https://github.com/yonaskolb/XcodeGen/pull/835) @brentleyjones
 - Implicitly include bundles in the Copy Bundle Resources build phase. [#838](https://github.com/yonaskolb/XcodeGen/pull/838) @skirchmeier
-- Fixed dumping a project manifest which contains an array of project references @paciej00
+- Fixed dumping a project manifest which contains an array of project references [#840](https://github.com/yonaskolb/XcodeGen/pull/840) @paciej00
 - Generate correct PBXTargetDependency for external targets. [#843](https://github.com/yonaskolb/XcodeGen/pull/843) @ileitch
 - Fix linking of multiple products from the same Swift Package [#830](https://github.com/yonaskolb/XcodeGen/pull/830) @toshi0383
 - Don't deduplicate files in `include` with different path but same name. [#849](https://github.com/yonaskolb/XcodeGen/pull/849) @akkyie
