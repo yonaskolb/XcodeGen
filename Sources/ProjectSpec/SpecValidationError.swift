@@ -33,6 +33,7 @@ public struct SpecValidationError: Error, CustomStringConvertible {
         case invalidProjectReference(scheme: String, reference: String)
         case invalidProjectReferencePath(ProjectReference)
         case invalidTestPlan(TestPlan)
+        case multipleDefaultTestPlans
 
         public var description: String {
             switch self {
@@ -82,6 +83,8 @@ public struct SpecValidationError: Error, CustomStringConvertible {
                 return "Project reference \(reference.name) has a project file path that doesn't exist \"\(reference.path)\""
             case let .invalidTestPlan(testPlan):
                 return "Test path \(testPlan.path) doesn't exist"
+            case let .multipleDefaultTestPlans:
+                return "Your test plan definition contains more than one default test plan"
             }
         }
     }

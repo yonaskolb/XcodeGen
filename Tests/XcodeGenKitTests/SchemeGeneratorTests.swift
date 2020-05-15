@@ -365,7 +365,7 @@ class SchemeGeneratorTests: XCTestCase {
 
             $0.it("generate test plans ") {
 
-                let testPlanPath = fixturePath.string + "/TestProject/App_iOS/App_iOS.xctestplan"
+                let testPlanPath = "\(fixturePath.string)/TestProject/App_iOS/App_iOS.xctestplan"
 
                 let scheme = Scheme(
                     name: "TestScheme",
