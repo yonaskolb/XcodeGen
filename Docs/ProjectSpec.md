@@ -951,7 +951,7 @@ schemes:
     test:
       testPlans:
         - path: app.xctestplan
-          default: true
+          defaultPlan: true
 ```
 
 ## Scheme Template

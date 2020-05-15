@@ -209,6 +209,11 @@ extension Project {
             let invalidTestPlans: [TestPlan] = scheme.test?.testPlans.filter { !(basePath + $0.path).exists } ?? []
             errors.append(contentsOf: invalidTestPlans.map{ .invalidTestPlan($0) })
 
+            let defaultPlanCount = scheme.test?.testPlans.filter { $0.defaultPlan }.count ?? 0
+            if (defaultPlanCount > 1) {
+                errors.append(.multipleDefaultTestPlans)
+            }
+
             if let action = scheme.test, let config = action.config, getConfig(config) == nil {
                 errors.append(.invalidSchemeConfig(scheme: scheme.name, config: config))
             }

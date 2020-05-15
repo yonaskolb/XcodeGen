@@ -391,6 +391,37 @@ class ProjectSpecTests: XCTestCase {
 
                 try expectValidationError(project, .invalidTestPlan(testPlan))
             }
+
+
+
+            $0.it("fails on multiple default test plans") {
+                var project = baseProject
+
+                project.configs = Config.defaultConfigs
+
+                project.targets = [Target(
+                    name: "target1",
+                    type: .application,
+                    platform: .iOS
+                )]
+
+                let testPlan1 = try TestPlan(path: "\(fixturePath.string)/TestProject/App_iOS/App_iOS.xctestplan", defaultPlan: true)
+                let testPlan2 = try TestPlan(path: "\(fixturePath.string)/TestProject/App_iOS/App_iOS.xctestplan", defaultPlan: true)
+
+                let scheme = Scheme(
+                    name: "xctestplan-scheme",
+                    build: Scheme.Build(targets: [
+                        Scheme.BuildTarget(target: "target1")
+                    ]),
+                    test: Scheme.Test(config: "Debug",
+                        testPlans: [testPlan1, testPlan2]
+                    )
+                )
+
+                project.schemes = [scheme]
+
+                try expectValidationError(project, .multipleDefaultTestPlans)
+            }
         }
     }
 
