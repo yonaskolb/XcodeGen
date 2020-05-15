@@ -604,7 +604,7 @@ extension Scheme.Build: JSONObjectConvertible {
             let target = try TargetReference(targetRepr)
             targets.append(Scheme.BuildTarget(target: target, buildTypes: buildTypes))
         }
-        self.targets = targets.sorted { $0.target.name < $1.target.name }
+        self.targets = targets
         preActions = try jsonDictionary.json(atKeyPath: "preActions")?.map(Scheme.ExecutionAction.init) ?? []
         postActions = try jsonDictionary.json(atKeyPath: "postActions")?.map(Scheme.ExecutionAction.init) ?? []
         parallelizeBuild = jsonDictionary.json(atKeyPath: "parallelizeBuild") ?? Scheme.Build.parallelizeBuildDefault
