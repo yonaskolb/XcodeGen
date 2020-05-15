@@ -164,7 +164,19 @@ public class SchemeGenerator {
         let schemeTarget = target ?? project.getTarget(scheme.build.targets.first!.target.name)
         let shouldExecuteOnLaunch = schemeTarget?.shouldExecuteOnLaunch == true
 
-        let buildableReference = buildActionEntries.first!.buildableReference
+        let buildableReference: XCScheme.BuildableReference = {
+            if let executableName = scheme.build.executableName {
+                guard let entry = buildActionEntries.first(where: {
+                    $0.buildableReference.blueprintName == executableName
+                }) else {
+                    fatalError("No such executable \"\(executableName)\" for scheme \"\(scheme.name)\"")
+                }
+                return entry.buildableReference
+            } else {
+                return buildActionEntries.first!.buildableReference
+            }
+        }()
+        
         let runnables = makeProductRunnables(for: schemeTarget, buildableReference: buildableReference)
 
         let buildAction = XCScheme.BuildAction(

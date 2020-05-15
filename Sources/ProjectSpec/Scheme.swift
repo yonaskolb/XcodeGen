@@ -74,18 +74,21 @@ public struct Scheme: Equatable {
         public static let buildImplicitDependenciesDefault = true
 
         public var targets: [BuildTarget]
+        public var executableName: String?
         public var parallelizeBuild: Bool
         public var buildImplicitDependencies: Bool
         public var preActions: [ExecutionAction]
         public var postActions: [ExecutionAction]
         public init(
             targets: [BuildTarget],
+            executableName: String? = nil,
             parallelizeBuild: Bool = parallelizeBuildDefault,
             buildImplicitDependencies: Bool = buildImplicitDependenciesDefault,
             preActions: [ExecutionAction] = [],
             postActions: [ExecutionAction] = []
         ) {
             self.targets = targets
+            self.executableName = executableName
             self.parallelizeBuild = parallelizeBuild
             self.buildImplicitDependencies = buildImplicitDependencies
             self.preActions = preActions
@@ -605,6 +608,7 @@ extension Scheme.Build: JSONObjectConvertible {
             targets.append(Scheme.BuildTarget(target: target, buildTypes: buildTypes))
         }
         self.targets = targets.sorted { $0.target.name < $1.target.name }
+        executableName = jsonDictionary.json(atKeyPath: "executable")
         preActions = try jsonDictionary.json(atKeyPath: "preActions")?.map(Scheme.ExecutionAction.init) ?? []
         postActions = try jsonDictionary.json(atKeyPath: "postActions")?.map(Scheme.ExecutionAction.init) ?? []
         parallelizeBuild = jsonDictionary.json(atKeyPath: "parallelizeBuild") ?? Scheme.Build.parallelizeBuildDefault
