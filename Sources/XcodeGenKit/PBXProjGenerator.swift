@@ -248,9 +248,20 @@ public class PBXProjGenerator {
         let generateTargetsGroup = DispatchGroup()
         var targetErrors: [Error] = []
         var aggregateTargetsErrors: [Error] = []
+        var targetsWithNoDependencies: [Target] = []
+        var targetsWithDependencies: [Target] = []
+        project.targets.forEach({ [weak self] (target) in
+            guard let strongSelf = self else {
+                return
+            }
+            let dependencies = target.getAllDependencies(usingProject: strongSelf.project)
+            if dependencies.count == 0 {
+                targetsWithNoDependencies.append(target)
+            } else {
+                targetsWithDependencies.append(target)
+            }
+        })
         generateTargetsGroup.enter()
-        let targetsWithNoDependencies = project.targets.filter({ $0.dependencies.count == 0 })
-        let targetsWithDependencies = project.targets.filter({ $0.dependencies.count != 0 })
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             targetsWithNoDependencies.forEach { target in
                 generateTargetsGroup.enter()
@@ -756,8 +767,7 @@ public class PBXProjGenerator {
         var carthageFrameworksToEmbed: [String] = []
         let localPackageReferences: [String] = project.packages.compactMap { $0.value.isLocal ? $0.key : nil }
 
-        let targetDependencies = (target.transitivelyLinkDependencies ?? project.options.transitivelyLinkDependencies) ?
-            getAllDependenciesPlusTransitiveNeedingEmbedding(target: target) : target.dependencies
+        let targetDependencies = target.getAllDependencies(usingProject: self.project)
 
         let targetSupportsDirectEmbed = !(target.platform.requiresSimulatorStripping &&
             (target.type.isApp || target.type == .watch2Extension))
