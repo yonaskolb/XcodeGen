@@ -11,23 +11,205 @@ public func generateSpec(xcodeProj: XcodeProj, projectDirectory: Path) throws ->
 }
 
 private func generateProjectSpec(pbxproj: PBXProject, projectDirectory: Path) throws -> Project {
+    let sourceRoot = projectDirectory + pbxproj.projectDirPath
+
     let targets = try pbxproj.targets
         .compactMap { $0 as? PBXNativeTarget }
         .map { try generateTargetSpec(target: $0,
                                       mainGroup: pbxproj.mainGroup,
-                                      sourceRoot: projectDirectory + pbxproj.projectDirPath) }
+                                      sourceRoot: sourceRoot) }
 
     let aggregateTargets = pbxproj.targets
         .compactMap { $0 as? PBXAggregateTarget }
         .map(AggregateTarget.init)
 
-    return Project(basePath: Path(pbxproj.projectDirPath),
-                   name: pbxproj.name,
-                   targets: targets,
-                   aggregateTargets: aggregateTargets,
-                   settingGroups: pbxproj.settingGroups,
-                   options: .init(),
-                   attributes: pbxproj.attributes)
+    let configSettings = Dictionary(uniqueKeysWithValues: pbxproj.buildConfigurationList.buildConfigurations.map {
+        ($0.name, Settings(buildSettings: $0.buildSettings))
+    })
+
+    let settings = Settings(buildSettings: [:], configSettings: configSettings, groups: [])
+
+    let options = SpecOptions(defaultConfig: pbxproj.buildConfigurationList.defaultConfigurationName)
+
+    let proj = Project(basePath: Path(pbxproj.projectDirPath),
+                       name: pbxproj.name,
+                       targets: targets,
+                       aggregateTargets: aggregateTargets,
+                       settings: settings,
+                       options: options,
+                       attributes: pbxproj.attributes)
+
+    return try removeDefault(project: proj, sourceRoot: sourceRoot)
+}
+
+private extension BuildSettingsProvider.Variant {
+    init(_ configType: ConfigType) {
+        switch configType {
+        case .debug: self = .debug
+        case .release: self = .release
+        }
+    }
+}
+
+private func removeDefault(project: Project, sourceRoot: Path) throws -> Project {
+    func removeDefaultsFromProjectSettings(_ settings: Settings) -> Settings {
+        var newSettings = settings
+
+        for case (let key, var settings) in newSettings.configSettings {
+            let variant = BuildSettingsProvider.Variant(key) ?? .debug
+            let defaultSettings = BuildSettingsProvider.projectDefault(variant: .all)
+                .merged(BuildSettingsProvider.projectDefault(variant: variant))
+            settings.buildSettings = settings.buildSettings.subtracting(defaultSettings)
+            newSettings.configSettings[key] = settings
+        }
+
+        return newSettings
+    }
+
+    func removeDefaultsFromTargetSettings(_ settings: Settings, in target: Target) -> Settings {
+        var newSettings = settings
+
+        for case (let key, var settings) in newSettings.configSettings {
+            let variant = BuildSettingsProvider.Variant(key) ?? .debug
+
+            let projectBuildSettings = project.settings.configSettings[key]?.buildSettings
+            let sdkRoot = projectBuildSettings?["SDKROOT"] as? String
+            let platform = BuildSettingsProvider.Platform(sdkRoot: sdkRoot)
+            let product = BuildSettingsProvider.Product(product: target.type)
+            let swift = projectBuildSettings?["SWIFT_OPTIMIZATION_LEVEL"] as? String != nil
+
+            let defaultSettings = BuildSettingsProvider.projectDefault(variant: .all)
+                .merged(BuildSettingsProvider.targetDefault(
+                    variant: variant,
+                    platform: platform,
+                    product: product,
+                    swift: swift))
+
+            settings.buildSettings = settings.buildSettings.subtracting(defaultSettings)
+            newSettings.configSettings[key] = settings
+        }
+
+        return newSettings
+    }
+
+    func optimizeSources(_ sources: [TargetSource], sourceRoot: Path) throws -> [TargetSource] {
+        let allSourcePaths = sources.map { sourceRoot + Path($0.path) }
+        var merged = [TargetSource]()
+
+        let completed = try sources
+            .sorted { Path($0.path).components.count > Path($1.path).components.count }
+            .compactMap { targetSource -> TargetSource? in
+                let parent = (sourceRoot + Path(targetSource.path)).parent()
+
+                // skip when parent directory is already added
+                if merged.contains(where: { (sourceRoot + Path($0.path)) == parent }) {
+                    return nil
+                }
+
+                let sameLevelFiles = try parent.children().filter {
+                    // ingore files that will specified in build configs
+                    $0.lastComponent != "Info.plist" &&
+                        $0.lastComponent != ".DS_Store" &&
+                        $0.extension != "modulemap" &&
+                        $0.extension != "entitlements"
+                }
+
+                // merge files into a directory if all its contents are in the target
+                if sameLevelFiles.allSatisfy({ allSourcePaths.contains($0) }) {
+                    merged.append(TargetSource(path: try parent.relativePath(from: sourceRoot).string,
+                                               name: parent.lastComponent))
+                    return nil
+                }
+                return targetSource
+        }
+
+        let result = merged.count > 0 ? try optimizeSources(completed + merged, sourceRoot: sourceRoot) : completed
+        return result.sorted { $0.path < $1.path }
+    }
+
+    var project = project
+    project.settings = removeDefaultsFromProjectSettings(project.settings)
+    project.targets = try project.targets.map { target in
+        var target = target
+        target.settings = removeDefaultsFromTargetSettings(target.settings, in: target)
+        target.sources = try optimizeSources(target.sources, sourceRoot: sourceRoot)
+        return target
+    }
+
+    return project
+}
+
+private extension BuildSettingsProvider.Product {
+    init?(product: PBXProductType) {
+        switch product {
+        case .bundle:
+            self = .bundle
+        case .application, .messagesApplication, .watch2App, .watchApp:
+            self = .application
+        case .framework, .staticFramework:
+            self = .framework
+        case .uiTestBundle:
+            self = .uiTests
+        case .unitTestBundle:
+            self = .unitTests
+        default:
+            return nil
+        }
+    }
+}
+
+private extension BuildSettingsProvider.Platform {
+    init?(sdkRoot: String?) {
+        guard let sdkRoot = sdkRoot else {
+            return nil
+        }
+        switch sdkRoot {
+        case "iphoneos": self = .iOS
+        case "appletvos": self = .tvOS
+        case "watchos": self = .watchOS
+        case "macosx": self = .macOS
+        default: return nil
+        }
+    }
+}
+
+private extension BuildSettingsProvider.Variant {
+    init?(_ string: String) {
+        switch string {
+        case "Debug":
+            self = .debug
+        case "Release":
+            self = .release
+        default:
+            return nil
+        }
+    }
+}
+
+private extension BuildSettings {
+    func subtracting(_ other: BuildSettings) -> BuildSettings {
+        func isEqualValue(_ a: Any, _ b: Any) -> Bool {
+            switch (a, b) {
+            case let (a, b) as (String, String):
+                return a != b
+            case let (a, b) as (Bool, Bool):
+                return a != b
+            case let (a, b) as (Double, Double):
+                return a != b
+            case let (a, b) as ([Any], [Any]):
+                return zip(a, b).allSatisfy(isEqualValue)
+            default:
+                return false
+            }
+        }
+
+        return filter {
+            guard let otherValue = other[$0.key] else {
+                return true
+            }
+            return isEqualValue($0.value, otherValue)
+        }
+    }
 }
 
 private func generateTargetSpec(target: PBXNativeTarget, mainGroup: PBXGroup, sourceRoot: Path) throws -> Target {
@@ -120,50 +302,18 @@ private func generateTargetSpec(target: PBXNativeTarget, mainGroup: PBXGroup, so
 
     let buildRules = target.buildRules.map(BuildRule.init)
 
+    let sdkRoot = target.settings.buildSettings["SDKROOT"] as? String
+    let platform = Platform.allCases.first { $0.sdkRoot == sdkRoot } ?? .iOS
+
     return Target(name: target.name,
                   type: target.productType ?? .application,
-                  platform: .iOS,
+                  platform: platform,
                   productName: target.productName,
                   settings: target.settings,
-                  sources: try optimizeSources(targetSources, sourceRoot: sourceRoot),
+                  sources: targetSources,
                   dependencies: dependencies,
                   postBuildScripts: buildScripts,
                   buildRules: buildRules)
-}
-
-private func optimizeSources(_ sources: [TargetSource], sourceRoot: Path) throws -> [TargetSource] {
-    let allSourcePaths = sources.map { sourceRoot + Path($0.path) }
-    var merged = [TargetSource]()
-
-    let completed = try sources
-        .sorted { Path($0.path).components.count > Path($1.path).components.count }
-        .compactMap { targetSource -> TargetSource? in
-            let parent = (sourceRoot + Path(targetSource.path)).parent()
-
-            // skip when parent directory is already added
-            if merged.contains(where: { (sourceRoot + Path($0.path)) == parent }) {
-                return nil
-            }
-
-            let sameLevelFiles = try parent.children().filter {
-                // ingore files that will specified in build configs
-                $0.lastComponent != "Info.plist" &&
-                    $0.lastComponent != ".DS_Store" &&
-                    $0.extension != "modulemap" &&
-                    $0.extension != "entitlements"
-            }
-
-            // merge files into a directory if all its contents are in the target
-            if sameLevelFiles.allSatisfy({ allSourcePaths.contains($0) }) {
-                merged.append(TargetSource(path: try parent.relativePath(from: sourceRoot).string,
-                                           name: parent.lastComponent))
-                return nil
-            }
-            return targetSource
-    }
-
-    let result = merged.count > 0 ? try optimizeSources(completed + merged, sourceRoot: sourceRoot) : completed
-    return result.sorted { $0.path < $1.path }
 }
 
 private extension BuildScript {
@@ -177,14 +327,6 @@ private extension BuildScript {
                   shell: buildPhase.shellPath,
                   runOnlyWhenInstalling: buildPhase.runOnlyForDeploymentPostprocessing,
                   showEnvVars: buildPhase.showEnvVarsInLog)
-    }
-}
-
-private extension PBXProject {
-    var settingGroups: [String: Settings] {
-        return Dictionary(uniqueKeysWithValues: buildConfigurationList.buildConfigurations.map {
-            ($0.name, Settings(buildSettings: $0.buildSettings))
-        })
     }
 }
 
