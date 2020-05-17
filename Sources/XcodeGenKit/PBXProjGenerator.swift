@@ -1537,77 +1537,11 @@ public class PBXProjGenerator {
             }
             .first
     }
-
-    func getAllDependenciesPlusTransitiveNeedingEmbedding(target topLevelTarget: Target) -> [Dependency] {
-        // this is used to resolve cyclical target dependencies
-        var visitedTargets: Set<String> = []
-        var dependencies: [String: Dependency] = [:]
-        var queue: [Target] = [topLevelTarget]
-        while !queue.isEmpty {
-            let target = queue.removeFirst()
-            if visitedTargets.contains(target.name) {
-                continue
-            }
-
-            let isTopLevel = target == topLevelTarget
-
-            for dependency in target.dependencies {
-                // don't overwrite dependencies, to allow top level ones to rule
-                if dependencies[dependency.uniqueID] != nil {
-                    continue
-                }
-
-                // don't want a dependency if it's going to be embedded or statically linked in a non-top level target
-                // in .target check we filter out targets that will embed all of their dependencies
-                // For some more context about the `dependency.embed != true` lines, refer to https://github.com/yonaskolb/XcodeGen/pull/820
-                switch dependency.type {
-                case .sdk:
-                    dependencies[dependency.uniqueID] = dependency
-                case .framework, .carthage, .package:
-                    if isTopLevel || dependency.embed != true {
-                        dependencies[dependency.uniqueID] = dependency
-                    }
-                case .target:
-                    let dependencyTargetReference = try! TargetReference(dependency.reference)
-
-                    switch dependencyTargetReference.location {
-                    case .local:
-                        if isTopLevel || dependency.embed != true {
-                            if let dependencyTarget = project.getTarget(dependency.reference) {
-                                dependencies[dependency.uniqueID] = dependency
-                                if !dependencyTarget.shouldEmbedDependencies {
-                                    // traverse target's dependencies if it doesn't embed them itself
-                                    queue.append(dependencyTarget)
-                                }
-                            } else if project.getAggregateTarget(dependency.reference) != nil {
-                                // Aggregate targets should be included
-                                dependencies[dependency.uniqueID] = dependency
-                            }
-                        }
-                    case .project:
-                        if isTopLevel || dependency.embed != true {
-                            dependencies[dependency.uniqueID] = dependency
-                        }
-                    }
-                case .bundle:
-                    if isTopLevel {
-                        dependencies[dependency.uniqueID] = dependency
-                    }
-                }
-            }
-
-            visitedTargets.update(with: target.name)
-        }
-
-        return dependencies.sorted(by: { $0.key < $1.key }).map { $0.value }
-    }
 }
 
 extension Target {
 
-    var shouldEmbedDependencies: Bool {
-        type.isApp || type.isTest
-    }
+
 
     var shouldEmbedCarthageDependencies: Bool {
         (type.isApp && platform != .watchOS)
