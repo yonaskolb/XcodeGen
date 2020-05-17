@@ -248,48 +248,52 @@ public class PBXProjGenerator {
         let generateTargetsGroup = DispatchGroup()
         var targetErrors: [Error] = []
         var aggregateTargetsErrors: [Error] = []
-        var targetsWithNoDependencies: [Target] = []
-        var targetsWithDependencies: [Target] = []
-        project.targets.forEach({ [weak self] (target) in
-            guard let strongSelf = self else {
-                return
-            }
-            let dependencies = target.getAllDependencies(usingProject: strongSelf.project)
-            if dependencies.count == 0 {
-                targetsWithNoDependencies.append(target)
-            } else {
-                targetsWithDependencies.append(target)
-            }
-        })
-        generateTargetsGroup.enter()
-        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
-            targetsWithNoDependencies.forEach { target in
-                generateTargetsGroup.enter()
-                DispatchQueue.global(qos: .userInitiated).async {
-                    do {
-                        try self?.generateTarget(target)
-                    } catch let error {
-                        targetErrors.append(error)
-                    }
-                    generateTargetsGroup.leave()
-                }
-            }
-            generateTargetsGroup.leave()
-        }
-        generateTargetsGroup.wait()
 
-        generateTargetsGroup.enter()
-        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
-            targetsWithDependencies.forEach { target in
-                generateTargetsGroup.enter()
-                do {
-                    try self?.generateTarget(target)
-                } catch let error {
-                    targetErrors.append(error)
+        var generatedTargetNames: [String] = []
+        var targetsPendingDependencyGeneration: [Target] = project.targets
+        while generatedTargetNames.count != project.targets.count {
+            var targetsReadyToGenerate = targetsPendingDependencyGeneration.filter({ [project] target in
+                let dependencies = target.getAllDependencies(usingProject: project)
+                return dependencies.reduce(into: true) { (result: inout Bool, dependency) in
+                    if dependency.reference.contains("/") {
+                        return // skip such dependencies because they are Project references most likely
+                    }
+                    result = result && generatedTargetNames.contains(dependency.reference)
+                }
+            })
+            // this means, that all pending targets probably depend on each other
+            if targetsReadyToGenerate.count == 0 {
+                // Sort pending targets by dependency when falling back to sequential target
+                // generation, thereby picking the targets with least dependencies first,
+                // so that further targets to be generated can be parallelized if possible
+                targetsPendingDependencyGeneration.sort(by: { $0.dependencies.count < $1.dependencies.count })
+                // pick atleast one target and proceed, to prevent an infinite loop
+                targetsReadyToGenerate = [targetsPendingDependencyGeneration.removeFirst()]
+            }
+            generateTargetsGroup.enter()
+            DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+                targetsReadyToGenerate.forEach { target in
+                    generateTargetsGroup.enter()
+                    DispatchQueue.global(qos: .userInitiated).async {
+                        do {
+                            try self?.generateTarget(target)
+                        } catch let error {
+                            targetErrors.append(error)
+                        }
+                        generatedTargetNames.append(target.name)
+                        generateTargetsGroup.leave()
+                    }
                 }
                 generateTargetsGroup.leave()
             }
+            generateTargetsGroup.wait()
+            targetsPendingDependencyGeneration = targetsPendingDependencyGeneration.filter({ target in
+                !generatedTargetNames.contains(target.name)
+            })
+        }
 
+        generateTargetsGroup.enter()
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             self?.project.aggregateTargets.forEach { target in
                 generateTargetsGroup.enter()
                     do {
