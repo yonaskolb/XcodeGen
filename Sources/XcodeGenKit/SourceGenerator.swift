@@ -19,6 +19,8 @@ class SourceGenerator {
     private var groupsByPath: Atomic<[Path: PBXGroup]> = Atomic<[Path: PBXGroup]>(wrappedValue: [:])
     private var variantGroupsByPath: Atomic<[Path: PBXVariantGroup]> = Atomic<[Path: PBXVariantGroup]>(wrappedValue: [:])
     private var localPackageGroup: PBXGroup?
+    private let serialQueueForGroupGeneration: DispatchQueue = DispatchQueue(label: "com.yonaskolb.xcodegen.group_generation.serial")
+    private let serialQueueForFileGeneration: DispatchQueue = DispatchQueue(label: "com.yonaskolb.xcodegen.file_generation.serial")
 
     private let project: Project
     let pbxProj: PBXProj
@@ -213,68 +215,72 @@ class SourceGenerator {
 
     func getFileReference(path: Path, inPath: Path, name: String? = nil, sourceTree: PBXSourceTree = .group, lastKnownFileType: String? = nil) -> PBXFileElement {
         let fileReferenceKey = path.string.lowercased()
-        if let fileReference = fileReferencesByPath.wrappedValue[fileReferenceKey] {
-            return fileReference
-        } else {
-            let fileReferencePath = (try? path.relativePath(from: inPath)) ?? path
-            var fileReferenceName: String? = name ?? fileReferencePath.lastComponent
-            if fileReferencePath.string == fileReferenceName {
-                fileReferenceName = nil
-            }
-            let lastKnownFileType = lastKnownFileType ?? Xcode.fileType(path: path)
-
-            if path.extension == "xcdatamodeld" {
-                let versionedModels = (try? path.children()) ?? []
-
-                // Sort the versions alphabetically
-                let sortedPaths = versionedModels
-                    .filter { $0.extension == "xcdatamodel" }
-                    .sorted { $0.string.localizedStandardCompare($1.string) == .orderedAscending }
-
-                let modelFileReferences =
-                    sortedPaths.map { path in
-                        addObject(
-                            PBXFileReference(
-                                sourceTree: .group,
-                                lastKnownFileType: "wrapper.xcdatamodel",
-                                path: path.lastComponent
-                            )
-                        )
-                    }
-                // If no current version path is found we fall back to alphabetical
-                // order by taking the last item in the sortedPaths array
-                let currentVersionPath = findCurrentCoreDataModelVersionPath(using: versionedModels) ?? sortedPaths.last
-                let currentVersion: PBXFileReference? = {
-                    guard let indexOf = sortedPaths.firstIndex(where: { $0 == currentVersionPath }) else { return nil }
-                    return modelFileReferences[indexOf]
-                }()
-                let versionGroup = addObject(XCVersionGroup(
-                    currentVersion: currentVersion,
-                    path: fileReferencePath.string,
-                    sourceTree: sourceTree,
-                    versionGroupType: "wrapper.xcdatamodel",
-                    children: modelFileReferences
-                ))
-                fileReferencesByPath.mutate {
-                    $0[fileReferenceKey] = versionGroup
-                }
-                return versionGroup
+        var fileReference: PBXFileElement!
+        serialQueueForFileGeneration.sync {
+            if let cachedFileReference = fileReferencesByPath.wrappedValue[fileReferenceKey] {
+                fileReference = cachedFileReference
             } else {
-                // For all extensions other than `xcdatamodeld`
-                let fileReference = addObject(
-                    PBXFileReference(
-                        sourceTree: sourceTree,
-                        name: fileReferenceName,
-                        lastKnownFileType: lastKnownFileType,
-                        path: fileReferencePath.string
-                    )
-                )
-                fileReferencesByPath.mutate {
-                    $0[fileReferenceKey] = fileReference
+                let fileReferencePath = (try? path.relativePath(from: inPath)) ?? path
+                var fileReferenceName: String? = name ?? fileReferencePath.lastComponent
+                if fileReferencePath.string == fileReferenceName {
+                    fileReferenceName = nil
                 }
-                return fileReference
+                let lastKnownFileType = lastKnownFileType ?? Xcode.fileType(path: path)
+
+                if path.extension == "xcdatamodeld" {
+                    let versionedModels = (try? path.children()) ?? []
+
+                    // Sort the versions alphabetically
+                    let sortedPaths = versionedModels
+                        .filter { $0.extension == "xcdatamodel" }
+                        .sorted { $0.string.localizedStandardCompare($1.string) == .orderedAscending }
+
+                    let modelFileReferences =
+                        sortedPaths.map { path in
+                            addObject(
+                                PBXFileReference(
+                                    sourceTree: .group,
+                                    lastKnownFileType: "wrapper.xcdatamodel",
+                                    path: path.lastComponent
+                                )
+                            )
+                    }
+                    // If no current version path is found we fall back to alphabetical
+                    // order by taking the last item in the sortedPaths array
+                    let currentVersionPath = findCurrentCoreDataModelVersionPath(using: versionedModels) ?? sortedPaths.last
+                    let currentVersion: PBXFileReference? = {
+                        guard let indexOf = sortedPaths.firstIndex(where: { $0 == currentVersionPath }) else { return nil }
+                        return modelFileReferences[indexOf]
+                    }()
+                    let versionGroup = addObject(XCVersionGroup(
+                        currentVersion: currentVersion,
+                        path: fileReferencePath.string,
+                        sourceTree: sourceTree,
+                        versionGroupType: "wrapper.xcdatamodel",
+                        children: modelFileReferences
+                    ))
+                    fileReferencesByPath.mutate {
+                        $0[fileReferenceKey] = versionGroup
+                    }
+                    fileReference = versionGroup
+                } else {
+                    // For all extensions other than `xcdatamodeld`
+                    let newFileReference = addObject(
+                        PBXFileReference(
+                            sourceTree: sourceTree,
+                            name: fileReferenceName,
+                            lastKnownFileType: lastKnownFileType,
+                            path: fileReferencePath.string
+                        )
+                    )
+                    fileReferencesByPath.mutate {
+                        $0[fileReferenceKey] = newFileReference
+                    }
+                    fileReference = newFileReference
+                }
             }
         }
+        return fileReference
     }
 
     /// returns a default build phase for a given path. This is based off the filename
@@ -301,50 +307,54 @@ class SourceGenerator {
     /// Create a group or return an existing one at the path.
     /// Any merged children are added to a new group or merged into an existing one.
     private func getGroup(path: Path, name: String? = nil, mergingChildren children: [PBXFileElement], createIntermediateGroups: Bool, hasCustomParent: Bool, isBaseGroup: Bool) -> PBXGroup {
-        let groupReference: PBXGroup
+        var groupReference: PBXGroup!
 
-        if let cachedGroup = groupsByPath.wrappedValue[path] {
-            var cachedGroupChildren = cachedGroup.children
-            for child in children {
-                // only add the children that aren't already in the cachedGroup
-                // Check equality by path and sourceTree because XcodeProj.PBXObject.== is very slow.
-                if !cachedGroupChildren.contains(where: { $0.name == child.name && $0.path == child.path && $0.sourceTree == child.sourceTree }) {
-                    cachedGroupChildren.append(child)
-                    child.parent = cachedGroup
+        serialQueueForGroupGeneration.sync {
+            if let cachedGroup = groupsByPath.wrappedValue[path] {
+                var cachedGroupChildren = cachedGroup.children
+                for child in children {
+                    // only add the children that aren't already in the cachedGroup
+                    // Check equality by path and sourceTree because XcodeProj.PBXObject.== is very slow.
+                    if !cachedGroupChildren.contains(where: { $0.name == child.name && $0.path == child.path && $0.sourceTree == child.sourceTree }) {
+                        cachedGroupChildren.append(child)
+                        child.parent = cachedGroup
+                    }
                 }
-            }
-            cachedGroup.children = cachedGroupChildren
-            groupReference = cachedGroup
-        } else {
+                cachedGroup.children = cachedGroupChildren
+                groupReference = cachedGroup
+            } else {
 
-            // lives outside the project base path
-            let isOutOfBasePath = !path.absolute().string.contains(project.basePath.absolute().string)
+                // lives outside the project base path
+                let isOutOfBasePath = !path.absolute().string.contains(project.basePath.absolute().string)
 
-            // whether the given path is a strict parent of the project base path
-            // e.g. foo/bar is a parent of foo/bar/baz, but not foo/baz
-            let isParentOfBasePath = isOutOfBasePath && ((try? path.isParent(of: project.basePath)) == true)
+                // whether the given path is a strict parent of the project base path
+                // e.g. foo/bar is a parent of foo/bar/baz, but not foo/baz
+                let isParentOfBasePath = isOutOfBasePath && ((try? path.isParent(of: project.basePath)) == true)
 
-            // has no valid parent paths
-            let isRootPath = (isBaseGroup && isOutOfBasePath && isParentOfBasePath) || path.parent() == project.basePath
+                // has no valid parent paths
+                let isRootPath = (isBaseGroup && isOutOfBasePath && isParentOfBasePath) || path.parent() == project.basePath
 
-            // is a top level group in the project
-            let isTopLevelGroup = !hasCustomParent && ((isBaseGroup && !createIntermediateGroups) || isRootPath || isParentOfBasePath)
+                // is a top level group in the project
+                let isTopLevelGroup = !hasCustomParent && ((isBaseGroup && !createIntermediateGroups) || isRootPath || isParentOfBasePath)
 
-            let groupName = name ?? path.lastComponent
+                let groupName = name ?? path.lastComponent
 
-            let groupPath = resolveGroupPath(path, isTopLevelGroup: hasCustomParent || isTopLevelGroup)
+                let groupPath = resolveGroupPath(path, isTopLevelGroup: hasCustomParent || isTopLevelGroup)
 
-            let group = PBXGroup(
-                children: children,
-                sourceTree: .group,
-                name: groupName != groupPath ? groupName : nil,
-                path: groupPath
-            )
-            groupReference = addObject(group)
-            groupsByPath.wrappedValue[path] = groupReference
+                let group = PBXGroup(
+                    children: children,
+                    sourceTree: .group,
+                    name: groupName != groupPath ? groupName : nil,
+                    path: groupPath
+                )
+                groupReference = addObject(group)
+                groupsByPath.wrappedValue[path] = groupReference
 
-            if isTopLevelGroup {
-                rootGroups.wrappedValue.insert(groupReference)
+                if isTopLevelGroup {
+                    rootGroups.mutate {
+                        $0.insert(groupReference)
+                    }
+                }
             }
         }
         return groupReference
