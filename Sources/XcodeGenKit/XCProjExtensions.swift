@@ -62,4 +62,18 @@ extension Xcode {
             return Xcode.filetype(extension: fileExtension)
         }
     }
+
+    public static func isDirectoryFileWrapper(path: Path) -> Bool {
+        guard path.isDirectory, let fileType = fileType(path: path) else { return false }
+
+        let wrapperUTIPrefixs = ["folder.", "wrapper."]
+
+        for wrapperUTIPrefix in wrapperUTIPrefixs {
+            if fileType.hasPrefix(wrapperUTIPrefix) {
+                return true
+            }
+        }
+
+        return false
+    }
 }

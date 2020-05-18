@@ -74,6 +74,7 @@
 		5748F702ADFB9D85D0F97862 /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A5F527F2590C14956518174 /* FrameworkFile.swift */; };
 		58C18019E71E372F635A3FB4 /* MoreUnder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8718C7CD3BE86D9B1F5120 /* MoreUnder.swift */; };
 		5D10822B0E7C33DD6979F656 /* Standalone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F5BD97AF0F94A15A5B7DDB7 /* Standalone.swift */; };
+		61601545B6BE00CA74A4E38F /* SceneKitCatalog.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = C9E358FBE2B54D2B5C7FD609 /* SceneKitCatalog.scnassets */; };
 		632774E7F21CCB386A76B2A8 /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B198242976C3395E31FE000A /* MessagesViewController.swift */; };
 		63D8E7F00276736EDA62D227 /* Framework2.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3EF21DF245F66BEF5446AAEF /* Framework2.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		666AA5F3F63C8FD7C68A6CC5 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = 6A58A16491CDDF968B0D56DE /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -556,6 +557,7 @@
 		C7809CE9FE9852C2AA87ACE5 /* module.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
 		C934C1F7A68CCD0AB6B38478 /* NotificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationController.swift; sourceTree = "<group>"; };
 		C9DDE1B06BCC1CDE0ECF1589 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		C9E358FBE2B54D2B5C7FD609 /* SceneKitCatalog.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = SceneKitCatalog.scnassets; sourceTree = "<group>"; };
 		CA8718C7CD3BE86D9B1F5120 /* MoreUnder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreUnder.swift; sourceTree = "<group>"; };
 		CB77A637470A3CDA2BDDBE99 /* App_iOS_Tests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = App_iOS_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D132EA69984F32DA9DC727B6 /* TestProjectTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestProjectTests.swift; sourceTree = "<group>"; };
@@ -903,6 +905,7 @@
 			children = (
 				28360ECA4D727FAA58557A81 /* example.mp4 */,
 				7B5068D64404C61A67A18458 /* MyBundle.bundle */,
+				C9E358FBE2B54D2B5C7FD609 /* SceneKitCatalog.scnassets */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -1759,6 +1762,7 @@
 				49A4B8937BB5520B36EA33F0 /* Main.storyboard in Resources */,
 				900CFAD929CAEE3861127627 /* MyBundle.bundle in Resources */,
 				C88598A49087A212990F4E8B /* ResourceFolder in Resources */,
+				61601545B6BE00CA74A4E38F /* SceneKitCatalog.scnassets in Resources */,
 				28A96EBC76D53817AABDA91C /* Settings.bundle in Resources */,
 				E8A135F768448632F8D77C8F /* StandaloneAssets.xcassets in Resources */,
 				818D448D4DDD6649B5B26098 /* example.mp4 in Resources */,
