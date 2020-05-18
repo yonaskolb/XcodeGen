@@ -8,7 +8,7 @@ public class XcodeGenCLI {
 
     public init(version: Version) {
         let generateCommand = GenerateCommand(version: version)
-        let specGenerationCommand = GenerateSpecCommand()
+        let migrateCommand = MigrateCommand()
 
         cli = CLI(
             name: "xcodegen",
@@ -17,7 +17,7 @@ public class XcodeGenCLI {
             commands: [
                 generateCommand,
                 DumpCommand(version: version),
-                specGenerationCommand
+                migrateCommand
             ]
         )
         cli.parser.routeBehavior = .searchWithFallback(generateCommand)

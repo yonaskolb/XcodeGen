@@ -6,8 +6,8 @@ import XcodeGenKit
 import XcodeProj
 import Yams
 
-class GenerateSpecCommand: Command {
-    let name: String = "generate-spec"
+class MigrateCommand: Command {
+    let name: String = "migrate"
 
     let projectFile = Key<Path>("-p", "--project", description: "The path to the project file")
 
