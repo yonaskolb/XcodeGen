@@ -652,7 +652,7 @@ public class PBXProjGenerator {
         var packageDependencies: [XCSwiftPackageProductDependency] = []
         var extensions: [PBXBuildFile] = []
         var carthageFrameworksToEmbed: [String] = []
-        var localPackageReferences: [String] = project.packages.compactMap { $0.value.isLocal ? $0.key : nil }
+        let localPackageReferences: [String] = project.packages.compactMap { $0.value.isLocal ? $0.key : nil }
 
         let targetDependencies = (target.transitivelyLinkDependencies ?? project.options.transitivelyLinkDependencies) ?
             getAllDependenciesPlusTransitiveNeedingEmbedding(target: target) : target.dependencies

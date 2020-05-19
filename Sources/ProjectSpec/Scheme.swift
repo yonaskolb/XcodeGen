@@ -73,19 +73,23 @@ public struct Scheme: Equatable {
         public static let parallelizeBuildDefault = true
         public static let buildImplicitDependenciesDefault = true
 
+        public var executableName: String?
         public var targets: [BuildTarget]
         public var parallelizeBuild: Bool
         public var buildImplicitDependencies: Bool
         public var preActions: [ExecutionAction]
         public var postActions: [ExecutionAction]
+
         public init(
             targets: [BuildTarget],
+            executableName: String?,
             parallelizeBuild: Bool = parallelizeBuildDefault,
             buildImplicitDependencies: Bool = buildImplicitDependenciesDefault,
             preActions: [ExecutionAction] = [],
             postActions: [ExecutionAction] = []
         ) {
             self.targets = targets
+            self.executableName = executableName
             self.parallelizeBuild = parallelizeBuild
             self.buildImplicitDependencies = buildImplicitDependencies
             self.preActions = preActions
@@ -98,6 +102,7 @@ public struct Scheme: Equatable {
         public static let stopOnEveryMainThreadCheckerIssueDefault = false
         public static let debugEnabledDefault = true
 
+        public var executableName: String?
         public var config: String?
         public var commandLineArguments: [String: Bool]
         public var preActions: [ExecutionAction]
@@ -113,6 +118,7 @@ public struct Scheme: Equatable {
 
         public init(
             config: String,
+            executableName: String?,
             commandLineArguments: [String: Bool] = [:],
             preActions: [ExecutionAction] = [],
             postActions: [ExecutionAction] = [],
@@ -126,6 +132,7 @@ public struct Scheme: Equatable {
             simulateLocation: SimulateLocation? = nil
         ) {
             self.config = config
+            self.executableName = executableName
             self.commandLineArguments = commandLineArguments
             self.preActions = preActions
             self.postActions = postActions
@@ -352,6 +359,7 @@ extension Scheme.Run: JSONObjectConvertible {
         region = jsonDictionary.json(atKeyPath: "region")
         debugEnabled = jsonDictionary.json(atKeyPath: "debugEnabled") ?? Scheme.Run.debugEnabledDefault
         simulateLocation = jsonDictionary.json(atKeyPath: "simulateLocation")
+        executableName = jsonDictionary.json(atKeyPath: "executable")
 
         // launchAutomaticallySubstyle is defined as a String in XcodeProj but its value is often
         // an integer. Parse both to be nice.
@@ -605,6 +613,7 @@ extension Scheme.Build: JSONObjectConvertible {
             targets.append(Scheme.BuildTarget(target: target, buildTypes: buildTypes))
         }
         self.targets = targets.sorted { $0.target.name < $1.target.name }
+        self.executableName = jsonDictionary.json(atKeyPath: "executable")
         preActions = try jsonDictionary.json(atKeyPath: "preActions")?.map(Scheme.ExecutionAction.init) ?? []
         postActions = try jsonDictionary.json(atKeyPath: "postActions")?.map(Scheme.ExecutionAction.init) ?? []
         parallelizeBuild = jsonDictionary.json(atKeyPath: "parallelizeBuild") ?? Scheme.Build.parallelizeBuildDefault
