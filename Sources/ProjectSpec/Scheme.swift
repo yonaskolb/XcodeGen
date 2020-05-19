@@ -82,7 +82,7 @@ public struct Scheme: Equatable {
 
         public init(
             targets: [BuildTarget],
-            executableName: String?,
+            executableName: String? = nil,
             parallelizeBuild: Bool = parallelizeBuildDefault,
             buildImplicitDependencies: Bool = buildImplicitDependenciesDefault,
             preActions: [ExecutionAction] = [],
@@ -102,7 +102,6 @@ public struct Scheme: Equatable {
         public static let stopOnEveryMainThreadCheckerIssueDefault = false
         public static let debugEnabledDefault = true
 
-        public var executableName: String?
         public var config: String?
         public var commandLineArguments: [String: Bool]
         public var preActions: [ExecutionAction]
@@ -118,7 +117,6 @@ public struct Scheme: Equatable {
 
         public init(
             config: String,
-            executableName: String?,
             commandLineArguments: [String: Bool] = [:],
             preActions: [ExecutionAction] = [],
             postActions: [ExecutionAction] = [],
@@ -132,7 +130,6 @@ public struct Scheme: Equatable {
             simulateLocation: SimulateLocation? = nil
         ) {
             self.config = config
-            self.executableName = executableName
             self.commandLineArguments = commandLineArguments
             self.preActions = preActions
             self.postActions = postActions
@@ -359,7 +356,6 @@ extension Scheme.Run: JSONObjectConvertible {
         region = jsonDictionary.json(atKeyPath: "region")
         debugEnabled = jsonDictionary.json(atKeyPath: "debugEnabled") ?? Scheme.Run.debugEnabledDefault
         simulateLocation = jsonDictionary.json(atKeyPath: "simulateLocation")
-        executableName = jsonDictionary.json(atKeyPath: "executable")
 
         // launchAutomaticallySubstyle is defined as a String in XcodeProj but its value is often
         // an integer. Parse both to be nice.

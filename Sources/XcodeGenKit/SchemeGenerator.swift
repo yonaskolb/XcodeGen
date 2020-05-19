@@ -321,14 +321,12 @@ extension Scheme {
             name: name,
             build: .init(
                 targets: Scheme.buildTargets(for: target, project: project),
-                executableName: nil,
                 buildImplicitDependencies: targetScheme.buildImplicitDependencies,
                 preActions: targetScheme.preActions,
                 postActions: targetScheme.postActions
             ),
             run: .init(
                 config: debugConfig,
-                executableName: nil,
                 commandLineArguments: targetScheme.commandLineArguments,
                 environmentVariables: targetScheme.environmentVariables,
                 disableMainThreadChecker: targetScheme.disableMainThreadChecker,
