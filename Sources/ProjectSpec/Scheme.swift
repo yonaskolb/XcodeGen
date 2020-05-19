@@ -9,10 +9,10 @@ public struct Scheme: Equatable {
     public var name: String
     public var build: Build
     public var run: Run?
-    public var archive: Archive?
-    public var analyze: Analyze?
     public var test: Test?
     public var profile: Profile?
+    public var analyze: Analyze?
+    public var archive: Archive?
 
     public init(
         name: String,
@@ -62,6 +62,7 @@ public struct Scheme: Equatable {
         public var script: String
         public var name: String
         public var settingsTarget: String?
+        
         public init(name: String, script: String, settingsTarget: String? = nil) {
             self.script = script
             self.name = name
@@ -78,6 +79,7 @@ public struct Scheme: Equatable {
         public var buildImplicitDependencies: Bool
         public var preActions: [ExecutionAction]
         public var postActions: [ExecutionAction]
+        
         public init(
             targets: [BuildTarget],
             parallelizeBuild: Bool = parallelizeBuildDefault,
@@ -198,7 +200,6 @@ public struct Scheme: Equatable {
             coverageTargets: [TargetReference] = [],
             disableMainThreadChecker: Bool = disableMainThreadCheckerDefault,
             randomExecutionOrder: Bool = false,
-            parallelizable: Bool = false,
             commandLineArguments: [String: Bool] = [:],
             targets: [TestTarget] = [],
             preActions: [ExecutionAction] = [],
@@ -229,6 +230,7 @@ public struct Scheme: Equatable {
 
     public struct Analyze: BuildAction {
         public var config: String?
+        
         public init(config: String) {
             self.config = config
         }
@@ -240,6 +242,7 @@ public struct Scheme: Equatable {
         public var preActions: [ExecutionAction]
         public var postActions: [ExecutionAction]
         public var environmentVariables: [XCScheme.EnvironmentVariable]
+        
         public init(
             config: String,
             commandLineArguments: [String: Bool] = [:],
@@ -267,6 +270,7 @@ public struct Scheme: Equatable {
         public var revealArchiveInOrganizer: Bool
         public var preActions: [ExecutionAction]
         public var postActions: [ExecutionAction]
+        
         public init(
             config: String,
             customArchiveName: String? = nil,
