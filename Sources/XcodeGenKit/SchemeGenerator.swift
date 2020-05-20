@@ -161,10 +161,17 @@ public class SchemeGenerator {
             return XCScheme.ExecutionAction(scriptText: action.script, title: action.name, environmentBuildable: environmentBuildable)
         }
 
-        let schemeTarget = target ?? project.getTarget(scheme.build.targets.first!.target.name)
+        let schemeTarget: Target?
+
+        if let targetName = scheme.build.executableName {
+            schemeTarget = project.getTarget(targetName)
+        } else {
+            schemeTarget = target ?? project.getTarget(scheme.build.targets.first!.target.name)
+        }
+
         let shouldExecuteOnLaunch = schemeTarget?.shouldExecuteOnLaunch == true
 
-        let buildableReference = buildActionEntries.first!.buildableReference
+        let buildableReference = buildActionEntries.first(where: { $0.buildableReference.blueprintName == schemeTarget?.name })?.buildableReference ?? buildActionEntries.first!.buildableReference
         let runnables = makeProductRunnables(for: schemeTarget, buildableReference: buildableReference)
 
         let buildAction = XCScheme.BuildAction(
