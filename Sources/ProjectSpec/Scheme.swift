@@ -114,9 +114,11 @@ public struct Scheme: Equatable {
         public var launchAutomaticallySubstyle: String?
         public var debugEnabled: Bool
         public var simulateLocation: SimulateLocation?
+        public var executableName: String?
 
         public init(
             config: String,
+            executableName: String? = nil,
             commandLineArguments: [String: Bool] = [:],
             preActions: [ExecutionAction] = [],
             postActions: [ExecutionAction] = [],
