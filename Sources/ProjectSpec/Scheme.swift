@@ -111,6 +111,7 @@ public struct Scheme: Equatable {
         public var stopOnEveryMainThreadCheckerIssue: Bool
         public var language: String?
         public var region: String?
+        public var askForAppToLaunch: Bool?
         public var launchAutomaticallySubstyle: String?
         public var debugEnabled: Bool
         public var simulateLocation: SimulateLocation?
@@ -125,6 +126,7 @@ public struct Scheme: Equatable {
             stopOnEveryMainThreadCheckerIssue: Bool = stopOnEveryMainThreadCheckerIssueDefault,
             language: String? = nil,
             region: String? = nil,
+            askForAppToLaunch: Bool? = nil,
             launchAutomaticallySubstyle: String? = nil,
             debugEnabled: Bool = debugEnabledDefault,
             simulateLocation: SimulateLocation? = nil
@@ -138,6 +140,7 @@ public struct Scheme: Equatable {
             self.stopOnEveryMainThreadCheckerIssue = stopOnEveryMainThreadCheckerIssue
             self.language = language
             self.region = region
+            self.askForAppToLaunch = askForAppToLaunch
             self.launchAutomaticallySubstyle = launchAutomaticallySubstyle
             self.debugEnabled = debugEnabled
             self.simulateLocation = simulateLocation
@@ -364,6 +367,10 @@ extension Scheme.Run: JSONObjectConvertible {
         } else if let string: String = jsonDictionary.json(atKeyPath: "launchAutomaticallySubstyle") {
             launchAutomaticallySubstyle = string
         }
+        
+        if let askLaunch: Bool = jsonDictionary.json(atKeyPath: "askForAppToLaunch") {
+            askForAppToLaunch = askLaunch
+        }
     }
 }
 
@@ -377,6 +384,7 @@ extension Scheme.Run: JSONEncodable {
             "config": config,
             "language": language,
             "region": region,
+            "askForAppToLaunch": askForAppToLaunch,
             "launchAutomaticallySubstyle": launchAutomaticallySubstyle,
         ]
 
