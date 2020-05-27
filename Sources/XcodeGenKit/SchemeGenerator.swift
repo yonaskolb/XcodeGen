@@ -233,6 +233,14 @@ public class SchemeGenerator {
             }
             locationScenarioReference = XCScheme.LocationScenarioReference(identifier: identifier, referenceType: referenceType.rawValue)
         }
+        
+        let appExtensionTarget = scheme.build.targets.compactMap { bt -> Target? in
+            return project.getTarget(bt.target.name)
+        }.first { $0.type == .appExtension }
+        
+        let askAppForLaunch = scheme.run?.askForAppToLaunch ?? ((appExtensionTarget != nil) ? true : nil)
+        let launchAutomaticallySubstyle = scheme.run?.launchAutomaticallySubstyle ?? ((appExtensionTarget != nil) ? "2" : nil)
+
         let launchAction = XCScheme.LaunchAction(
             runnable: shouldExecuteOnLaunch ? runnables.launch : nil,
             buildConfiguration: scheme.run?.config ?? defaultDebugConfig.name,
@@ -241,7 +249,7 @@ public class SchemeGenerator {
             macroExpansion: shouldExecuteOnLaunch ? nil : buildableReference,
             selectedDebuggerIdentifier: (scheme.run?.debugEnabled ?? Scheme.Run.debugEnabledDefault) ? XCScheme.defaultDebugger : "",
             selectedLauncherIdentifier: (scheme.run?.debugEnabled ?? Scheme.Run.debugEnabledDefault) ? XCScheme.defaultLauncher : "Xcode.IDEFoundation.Launcher.PosixSpawn",
-            askForAppToLaunch: scheme.run?.askForAppToLaunch,
+            askForAppToLaunch: askAppForLaunch,
             allowLocationSimulation: allowLocationSimulation,
             locationScenarioReference: locationScenarioReference,
             disableMainThreadChecker: scheme.run?.disableMainThreadChecker ?? Scheme.Run.disableMainThreadCheckerDefault,
@@ -250,7 +258,7 @@ public class SchemeGenerator {
             environmentVariables: launchVariables,
             language: scheme.run?.language,
             region: scheme.run?.region,
-            launchAutomaticallySubstyle: scheme.run?.launchAutomaticallySubstyle
+            launchAutomaticallySubstyle: launchAutomaticallySubstyle
         )
 
         let profileAction = XCScheme.ProfileAction(
