@@ -204,10 +204,18 @@ public class SchemeGenerator {
         let launchVariables = scheme.run.flatMap { $0.environmentVariables.isEmpty ? nil : $0.environmentVariables }
         let profileVariables = scheme.profile.flatMap { $0.environmentVariables.isEmpty ? nil : $0.environmentVariables }
 
+        let testPlans = scheme.test?.testPlans.map {
+            testPlan in XCScheme.TestPlanReference(
+                reference: "container:\(testPlan.path)",
+                default: testPlan.defaultPlan
+            )
+        } ?? []
+
         let testAction = XCScheme.TestAction(
             buildConfiguration: scheme.test?.config ?? defaultDebugConfig.name,
             macroExpansion: buildableReference,
             testables: testables,
+            testPlans: testPlans.isEmpty ? nil : testPlans,
             preActions: scheme.test?.preActions.map(getExecutionAction) ?? [],
             postActions: scheme.test?.postActions.map(getExecutionAction) ?? [],
             selectedDebuggerIdentifier: (scheme.test?.debugEnabled ?? Scheme.Test.debugEnabledDefault) ? XCScheme.defaultDebugger : "",

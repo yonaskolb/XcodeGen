@@ -225,6 +225,7 @@ extension Project: PathContainer {
             .object("targets", Target.pathProperties),
             .object("targetTemplates", Target.pathProperties),
             .object("aggregateTargets", AggregateTarget.pathProperties),
+            .object("schemes", Scheme.pathProperties),
             .object("projectReferences", ProjectReference.pathProperties),
         ]
     }
