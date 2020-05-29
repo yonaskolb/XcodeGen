@@ -51,7 +51,7 @@ class SchemeGeneratorTests: XCTestCase {
                 let scheme = Scheme(
                     name: "MyScheme",
                     build: Scheme.Build(targets: [buildTarget], preActions: [preAction]),
-                    run: Scheme.Run(config: "Debug", launchAutomaticallySubstyle: "2", simulateLocation: simulateLocation)
+                    run: Scheme.Run(config: "Debug", askForAppToLaunch: true, launchAutomaticallySubstyle: "2", simulateLocation: simulateLocation)
                 )
                 let project = Project(
                     name: "test",
@@ -94,6 +94,7 @@ class SchemeGeneratorTests: XCTestCase {
                 try expect(xcscheme.launchAction?.selectedDebuggerIdentifier) == XCScheme.defaultDebugger
                 try expect(xcscheme.testAction?.selectedDebuggerIdentifier) == XCScheme.defaultDebugger
                 
+                try expect(xcscheme.launchAction?.askForAppToLaunch) == true
                 try expect(xcscheme.launchAction?.launchAutomaticallySubstyle) == "2"
                 try expect(xcscheme.launchAction?.allowLocationSimulation) == true
                 try expect(xcscheme.launchAction?.locationScenarioReference?.referenceType) == Scheme.SimulateLocation.ReferenceType.predefined.rawValue

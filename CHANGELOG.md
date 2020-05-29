@@ -10,7 +10,7 @@
 - Add the ability to output a dependency graph in graphviz format [#852](https://github.com/yonaskolb/XcodeGen/pull/852) @jeffctown
 - Adds uncluttering the project manifest dumped to YAML from empty values [#858](https://github.com/yonaskolb/XcodeGen/pull/858) @paciej00
 - Added ability to name the executable target when declaring schemes. [#869](https://github.com/yonaskolb/XcodeGen/pull/869) @elland
-
+- Added ability to set executable to Ask to Launch. [#871](https://github.com/yonaskolb/XcodeGen/pull/871) @pinda
 
 #### Fixed
 - Fixed issue when linking and embeding static frameworks: they should be linked and NOT embed. [#820](https://github.com/yonaskolb/XcodeGen/pull/820) @acecilia

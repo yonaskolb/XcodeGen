@@ -233,6 +233,7 @@ public class SchemeGenerator {
             }
             locationScenarioReference = XCScheme.LocationScenarioReference(identifier: identifier, referenceType: referenceType.rawValue)
         }
+        
         let launchAction = XCScheme.LaunchAction(
             runnable: shouldExecuteOnLaunch ? runnables.launch : nil,
             buildConfiguration: scheme.run?.config ?? defaultDebugConfig.name,
@@ -241,6 +242,7 @@ public class SchemeGenerator {
             macroExpansion: shouldExecuteOnLaunch ? nil : buildableReference,
             selectedDebuggerIdentifier: (scheme.run?.debugEnabled ?? Scheme.Run.debugEnabledDefault) ? XCScheme.defaultDebugger : "",
             selectedLauncherIdentifier: (scheme.run?.debugEnabled ?? Scheme.Run.debugEnabledDefault) ? XCScheme.defaultLauncher : "Xcode.IDEFoundation.Launcher.PosixSpawn",
+            askForAppToLaunch: scheme.run?.askForAppToLaunch,
             allowLocationSimulation: allowLocationSimulation,
             locationScenarioReference: locationScenarioReference,
             disableMainThreadChecker: scheme.run?.disableMainThreadChecker ?? Scheme.Run.disableMainThreadCheckerDefault,
