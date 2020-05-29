@@ -51,6 +51,9 @@
 
 [Commits](https://github.com/yonaskolb/XcodeGen/compare/2.14.0...2.15.0)
 
+#### Fixed
+- Allow aggregate targets to reference external targets. [#797](https://github.com/yonaskolb/XcodeGen/pull/797) @evandcoleman
+
 ## 2.14.0
 
 #### Added

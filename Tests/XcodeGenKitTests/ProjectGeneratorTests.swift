@@ -246,9 +246,11 @@ class ProjectGeneratorTests: XCTestCase {
 
             let otherTarget = Target(name: "Other", type: .framework, platform: .iOS, dependencies: [Dependency(type: .target, reference: "AggregateTarget")])
             let otherTarget2 = Target(name: "Other2", type: .framework, platform: .iOS, dependencies: [Dependency(type: .target, reference: "Other")], transitivelyLinkDependencies: true)
-            let aggregateTarget = AggregateTarget(name: "AggregateTarget", targets: ["MyApp", "MyFramework"])
+            let aggregateTarget = AggregateTarget(name: "AggregateTarget", targets: ["MyApp", "MyFramework", "AnotherProject/ExternalTarget"])
             let aggregateTarget2 = AggregateTarget(name: "AggregateTarget2", targets: ["AggregateTarget"])
-            let project = Project(name: "test", targets: [app, framework, otherTarget, otherTarget2], aggregateTargets: [aggregateTarget, aggregateTarget2])
+            let externalProjectPath = fixturePath + "TestProject/AnotherProject/AnotherProject.xcodeproj"
+            let projectReference = ProjectReference(name: "AnotherProject", path: externalProjectPath.string)
+            let project = Project(name: "test", targets: [app, framework, otherTarget, otherTarget2], aggregateTargets: [aggregateTarget, aggregateTarget2], projectReferences: [projectReference])
 
             $0.it("generates aggregate targets") {
                 let pbxProject = try project.generatePbxProj()
@@ -259,7 +261,7 @@ class ProjectGeneratorTests: XCTestCase {
                 try expect(aggregateTargets.count) == 2
 
                 let aggregateTarget1 = aggregateTargets.first { $0.name == "AggregateTarget" }
-                try expect(aggregateTarget1?.dependencies.count) == 2
+                try expect(aggregateTarget1?.dependencies.count) == 3
 
                 let aggregateTarget2 = aggregateTargets.first { $0.name == "AggregateTarget2" }
                 try expect(aggregateTarget2?.dependencies.count) == 1
@@ -270,7 +272,7 @@ class ProjectGeneratorTests: XCTestCase {
                 let target2 = nativeTargets.first { $0.name == "Other2" }
                 try expect(target2?.dependencies.count) == 2
 
-                try expect(pbxProject.targetDependencies.count) == 7
+                try expect(pbxProject.targetDependencies.count) == 8
             }
         }
     }
