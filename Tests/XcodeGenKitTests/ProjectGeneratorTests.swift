@@ -719,9 +719,11 @@ class ProjectGeneratorTests: XCTestCase {
                     let copyBundlesPhase = copyFilesPhases.first { $0.dstSubfolderSpec == .resources }
 
                     // All targets should have a compile sources phase,
-                    // except for the sticker pack one
+                    // except for the resourceBundle and sticker pack one
+                    let targetsGeneratingSourcePhases = targets
+                        .filter { ![.bundle, .stickerPack].contains($0.type) }
                     let sourcesPhases = pbxProject.sourcesBuildPhases
-                    try expect(sourcesPhases.count) == targets.count - 1
+                    try expect(sourcesPhases.count) == targetsGeneratingSourcePhases.count
 
                     // ensure only the right resources are copied, no more, no less
                     if let expectedResourceFiles = expectedResourceFiles[target.name] {
