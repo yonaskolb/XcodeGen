@@ -240,6 +240,7 @@ class SourceGenerator {
                  "cc",
                  "S",
                  "xcdatamodeld",
+                 "xcmappingmodel",
                  "intentdefinition",
                  "metal",
                  "mlmodel",
