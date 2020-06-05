@@ -44,8 +44,8 @@ extension PBXProductType {
 
     public var canSkipCompileSourcesBuildPhase: Bool {
         switch self {
-        case .stickerPack, .messagesApplication:
-            // Sticker packs and simple messages applications without sources should not include a
+        case .bundle, .stickerPack, .messagesApplication:
+            // Bundles, sticker packs and simple messages applications without sources should not include a
             // compile sources build phase. Doing so can cause Xcode to produce an error on build.
             return true
         default:

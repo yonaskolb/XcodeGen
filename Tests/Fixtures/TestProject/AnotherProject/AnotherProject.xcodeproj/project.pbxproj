@@ -46,7 +46,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 32C09717E388BCD9DB9E513C /* Build configuration list for PBXNativeTarget "BundleX" */;
 			buildPhases = (
-				B3BCC260A0A2F2F00458816F /* Sources */,
 			);
 			buildRules = (
 			);
@@ -100,13 +99,6 @@
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		B3BCC260A0A2F2F00458816F /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		F08051CAC5E72EEEB8FB447B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
