@@ -29,6 +29,7 @@
 - Optimize simplifying paths for faster project generation. [#857](https://github.com/yonaskolb/XcodeGen/pull/857) @akkyie
 - Fixed issue where wrapper folders may not include correctly in the generated project. [#862](https://github.com/yonaskolb/XcodeGen/pull/862) @KhaosT
 - Compile `xcmappingmodel` files instead of copying bundle resources. [#834](https://github.com/yonaskolb/XcodeGen/pull/834) @jcolicchio
+- Fixed issue where `Complie Sources` build phase is generated for resource bundles even when they have no files to compile [#878](https://github.com/yonaskolb/XcodeGen/pull/878) @nkukushkin
 
 ## 2.15.1
 
