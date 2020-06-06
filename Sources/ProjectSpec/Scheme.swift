@@ -111,6 +111,7 @@ public struct Scheme: Equatable {
         public var environmentVariables: [XCScheme.EnvironmentVariable]
         public var disableMainThreadChecker: Bool
         public var stopOnEveryMainThreadCheckerIssue: Bool
+        public var additionalOptions: AdditionalOptions?
         public var language: String?
         public var region: String?
         public var askForAppToLaunch: Bool?
@@ -131,6 +132,7 @@ public struct Scheme: Equatable {
             environmentVariables: [XCScheme.EnvironmentVariable] = [],
             disableMainThreadChecker: Bool = disableMainThreadCheckerDefault,
             stopOnEveryMainThreadCheckerIssue: Bool = stopOnEveryMainThreadCheckerIssueDefault,
+            additionalOptions: AdditionalOptions? = nil,
             language: String? = nil,
             region: String? = nil,
             askForAppToLaunch: Bool? = nil,
@@ -148,6 +150,7 @@ public struct Scheme: Equatable {
             self.environmentVariables = environmentVariables
             self.disableMainThreadChecker = disableMainThreadChecker
             self.stopOnEveryMainThreadCheckerIssue = stopOnEveryMainThreadCheckerIssue
+            self.additionalOptions = additionalOptions
             self.language = language
             self.region = region
             self.askForAppToLaunch = askForAppToLaunch
@@ -171,6 +174,8 @@ public struct Scheme: Equatable {
         public var gatherCoverageData: Bool
         public var coverageTargets: [TestableTargetReference]
         public var disableMainThreadChecker: Bool
+        public var additionalOptions: AdditionalOptions?
+        
         public var commandLineArguments: [String: Bool]
         public var targets: [TestTarget]
         public var preActions: [ExecutionAction]
@@ -236,6 +241,7 @@ public struct Scheme: Equatable {
             gatherCoverageData: Bool = gatherCoverageDataDefault,
             coverageTargets: [TestableTargetReference] = [],
             disableMainThreadChecker: Bool = disableMainThreadCheckerDefault,
+            additionalOptions: AdditionalOptions? = nil,
             randomExecutionOrder: Bool = false,
             parallelizable: Bool = false,
             commandLineArguments: [String: Bool] = [:],
@@ -255,6 +261,7 @@ public struct Scheme: Equatable {
             self.gatherCoverageData = gatherCoverageData
             self.coverageTargets = coverageTargets
             self.disableMainThreadChecker = disableMainThreadChecker
+            self.additionalOptions = additionalOptions
             self.commandLineArguments = commandLineArguments
             self.targets = targets
             self.preActions = preActions
@@ -410,6 +417,7 @@ extension Scheme.Run: JSONObjectConvertible {
         environmentVariables = try XCScheme.EnvironmentVariable.parseAll(jsonDictionary: jsonDictionary)
         disableMainThreadChecker = jsonDictionary.json(atKeyPath: "disableMainThreadChecker") ?? Scheme.Run.disableMainThreadCheckerDefault
         stopOnEveryMainThreadCheckerIssue = jsonDictionary.json(atKeyPath: "stopOnEveryMainThreadCheckerIssue") ?? Scheme.Run.stopOnEveryMainThreadCheckerIssueDefault
+        additionalOptions = jsonDictionary.json(atKeyPath: "additionalOptions")
         language = jsonDictionary.json(atKeyPath: "language")
         region = jsonDictionary.json(atKeyPath: "region")
         debugEnabled = jsonDictionary.json(atKeyPath: "debugEnabled") ?? Scheme.Run.debugEnabledDefault
@@ -505,6 +513,7 @@ extension Scheme.Test: JSONObjectConvertible {
         }
         
         disableMainThreadChecker = jsonDictionary.json(atKeyPath: "disableMainThreadChecker") ?? Scheme.Test.disableMainThreadCheckerDefault
+        additionalOptions = jsonDictionary.json(atKeyPath: "additionalOptions")
         commandLineArguments = jsonDictionary.json(atKeyPath: "commandLineArguments") ?? [:]
         if let targets = jsonDictionary["targets"] as? [Any] {
             self.targets = try targets.compactMap { target in

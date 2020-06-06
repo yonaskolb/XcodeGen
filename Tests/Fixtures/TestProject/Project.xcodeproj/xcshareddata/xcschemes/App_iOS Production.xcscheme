@@ -81,6 +81,28 @@
             ReferencedContainer = "container:Project.xcodeproj">
          </BuildableReference>
       </CodeCoverageTargets>
+      <AdditionalOptions>
+         <AdditionalOption
+            isEnabled = "YES"
+            key = "MallocScribble"
+            value = "">
+         </AdditionalOption>
+         <AdditionalOption
+            isEnabled = "YES"
+            key = "MallocGuardEdges"
+            value = "">
+         </AdditionalOption>
+         <AdditionalOption
+            isEnabled = "YES"
+            key = "DYLD_INSERT_LIBRARIES"
+            value = "/usr/lib/libgmalloc.dylib">
+         </AdditionalOption>
+         <AdditionalOption
+            isEnabled = "YES"
+            key = "NSZombieEnabled"
+            value = "YES">
+         </AdditionalOption>
+      </AdditionalOptions>
    </TestAction>
    <LaunchAction
       buildConfiguration = "Production Debug"
@@ -117,6 +139,28 @@
       <StoreKitConfigurationFileReference
          identifier = "../../App_iOS/Configuration.storekit">
       </StoreKitConfigurationFileReference>
+      <AdditionalOptions>
+         <AdditionalOption
+            isEnabled = "YES"
+            key = "MallocScribble"
+            value = "">
+         </AdditionalOption>
+         <AdditionalOption
+            isEnabled = "YES"
+            key = "MallocGuardEdges"
+            value = "">
+         </AdditionalOption>
+         <AdditionalOption
+            isEnabled = "YES"
+            key = "DYLD_INSERT_LIBRARIES"
+            value = "/usr/lib/libgmalloc.dylib">
+         </AdditionalOption>
+         <AdditionalOption
+            isEnabled = "YES"
+            key = "NSZombieEnabled"
+            value = "YES">
+         </AdditionalOption>
+      </AdditionalOptions>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Production Release"

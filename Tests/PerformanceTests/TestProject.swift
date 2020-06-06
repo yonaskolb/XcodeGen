@@ -21,6 +21,12 @@ extension Project {
             storeKitConfiguration: "Configuration.storekit",
             disableMainThreadChecker: true,
             stopOnEveryMainThreadCheckerIssue: false,
+            additionalOptions: AdditionalOptions(
+                mallocScribble: true,
+                mallocGuardEdges: true,
+                guardMalloc: true,
+                zombieObjects: true
+            ),
             commandLineArguments: [
                 "--command": true,
                 "--command2": false,
