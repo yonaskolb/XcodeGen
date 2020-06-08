@@ -340,7 +340,7 @@ public class PBXProjGenerator {
 
     func generateTargetDependency(from: String, to target: String) -> PBXTargetDependency {
         guard let targetObject = targetObjects[target] ?? targetAggregateObjects[target] else {
-            fatalError("target not found")
+            fatalError("Target dependency not found: from ( \(from) ) to ( \(target) )")
         }
 
         let targetProxy = addObject(
