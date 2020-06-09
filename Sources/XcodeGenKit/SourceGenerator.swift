@@ -419,7 +419,7 @@ class SourceGenerator {
             .filter { $0.isDirectory && !Xcode.isDirectoryFileWrapper(path: $0) && $0.extension != "lproj" }
 
         let filePaths = children
-            .filter { $0.isFile || $0.isDirectory && $0.extension != "lproj"
+            .filter { $0.isFile && $0.extension != "swp" || $0.isDirectory && $0.extension != "lproj"
                 && Xcode.isDirectoryFileWrapper(path: $0) }
 
         let localisedDirectories = children
