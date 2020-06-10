@@ -770,7 +770,7 @@ Scheme run scripts added via **preActions** or **postActions**. They run before 
 A multiline script can be written using the various YAML multiline methods, for example with `|`. See [Build Script](#build-script).
 
 ### Run Action
-- [ ] **executableName**: **String** - the name of the target to launch as an executable. Defaults to the first build target in the scheme
+- [ ] **executable**: **String** - the name of the target to launch as an executable. Defaults to the first build target in the scheme
 
 ### Test Action
 
