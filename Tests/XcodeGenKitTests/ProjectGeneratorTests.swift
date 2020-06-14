@@ -361,7 +361,7 @@ class ProjectGeneratorTests: XCTestCase {
                     subproject = xcodeProject.pbxproj
                 }
                 let externalProjectPath = fixturePath + "TestProject/AnotherProject/AnotherProject.xcodeproj"
-                let projectReference = ProjectReference(name: "AnotherProject", path: externalProjectPath.string)
+                let projectReference = ProjectReference(name: "AnotherProject", path: externalProjectPath.string, spec: nil)
                 var target = app
                 target.dependencies = [
                     Dependency(type: .target, reference: "AnotherProject/ExternalTarget")

@@ -277,7 +277,7 @@ class SchemeGeneratorTests: XCTestCase {
                     try! writer.writePlists()
                 }
                 let externalProjectPath = fixturePath + "scheme_test/TestProject.xcodeproj"
-                let projectReference = ProjectReference(name: "ExternalProject", path: externalProjectPath.string)
+                let projectReference = ProjectReference(name: "ExternalProject", path: externalProjectPath.string, spec: nil)
                 let target = Scheme.BuildTarget(target: .init(name: "ExternalTarget", location: .project("ExternalProject")))
                 let scheme = Scheme(
                     name: "ExternalProjectScheme",
@@ -326,7 +326,7 @@ class SchemeGeneratorTests: XCTestCase {
                     targets: [framework],
                     schemes: [scheme],
                     projectReferences: [
-                        ProjectReference(name: "TestProject", path: externalProject.string),
+                        ProjectReference(name: "TestProject", path: externalProject.string, spec: nil),
                     ]
                 )
                 let xcodeProject = try project.generateXcodeProject()

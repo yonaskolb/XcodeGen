@@ -261,7 +261,7 @@ class ProjectSpecTests: XCTestCase {
 
             $0.it("fails with invalid project reference path") {
                 var project = baseProject
-                let reference = ProjectReference(name: "InvalidProj", path: "invalid_path")
+                let reference = ProjectReference(name: "InvalidProj", path: "invalid_path", spec: nil)
                 project.projectReferences = [reference]
                 try expectValidationError(project, .invalidProjectReferencePath(reference))
             }
@@ -283,7 +283,7 @@ class ProjectSpecTests: XCTestCase {
                 var project = baseProject
                 let externalProjectPath = fixturePath + "TestProject/AnotherProject/AnotherProject.xcodeproj"
                 project.projectReferences = [
-                    ProjectReference(name: "validProjectRef", path: externalProjectPath.string)
+                    ProjectReference(name: "validProjectRef", path: externalProjectPath.string, spec: nil)
                 ]
                 project.targets = [
                     Target(

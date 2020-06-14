@@ -59,7 +59,7 @@ class SpecLoadingTests: XCTestCase {
                 )
 
                 try expect(project.projectReferences) == [
-                    ProjectReference(name: "ProjX", path: "TestProject/Project.xcodeproj"),
+                    ProjectReference(name: "ProjX", path: "TestProject/Project.xcodeproj", spec: nil),
                 ]
 
                 try expect(project.aggregateTargets) == [
