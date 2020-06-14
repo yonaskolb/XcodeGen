@@ -31,7 +31,9 @@ class GenerateCommand: ProjectCommand {
 
     override func execute(specLoader: SpecLoader, projectSpecPath: Path, project: Project) throws {
 
-        let projectDirectory = self.projectDirectory?.absolute() ?? projectSpecPath.parent()
+        // TODO: Is it this easy?
+        let projectDirectory = project.basePath
+        let projectPath = project.defaultProjectPath
 
         // validate project dictionary
         do {
@@ -39,8 +41,6 @@ class GenerateCommand: ProjectCommand {
         } catch {
             warning("\(error)")
         }
-
-        let projectPath = projectDirectory + "\(project.name).xcodeproj"
 
         let cacheFilePath = self.cacheFilePath ??
             Path("~/.xcodegen/cache/\(projectSpecPath.absolute().string.md5)").absolute()
