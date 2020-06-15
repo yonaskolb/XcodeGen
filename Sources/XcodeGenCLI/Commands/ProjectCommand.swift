@@ -36,17 +36,19 @@ class ProjectCommand: Command {
         }
 
         let specLoader = SpecLoader(version: version)
-        let project: Project
+        let projects: [Project]
 
         let variables: [String: String] = disableEnvExpansion ? [:] : ProcessInfo.processInfo.environment
 
         do {
-            project = try specLoader.loadProject(path: projectSpecPath, projectRoot: projectRoot, variables: variables)
+            projects = try specLoader.loadProjects(path: projectSpecPath, projectRoot: projectRoot, variables: variables)
         } catch {
             throw GenerationError.projectSpecParsingError(error)
         }
 
-        try execute(specLoader: specLoader, projectSpecPath: projectSpecPath, project: project)
+        for project in projects {
+            try execute(specLoader: specLoader, projectSpecPath: projectSpecPath, project: project)
+        }
     }
 
     func execute(specLoader: SpecLoader, projectSpecPath: Path, project: Project) throws {}
