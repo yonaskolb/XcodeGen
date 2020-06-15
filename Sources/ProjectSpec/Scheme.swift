@@ -113,6 +113,7 @@ public struct Scheme: Equatable {
         public var debugEnabled: Bool
         public var simulateLocation: SimulateLocation?
         public var executableName: String?
+        public var customLLDBInit: String?
 
         public init(
             config: String,
@@ -128,7 +129,8 @@ public struct Scheme: Equatable {
             askForAppToLaunch: Bool? = nil,
             launchAutomaticallySubstyle: String? = nil,
             debugEnabled: Bool = debugEnabledDefault,
-            simulateLocation: SimulateLocation? = nil
+            simulateLocation: SimulateLocation? = nil,
+            customLLDBInit: String? = nil
         ) {
             self.config = config
             self.commandLineArguments = commandLineArguments
@@ -143,6 +145,7 @@ public struct Scheme: Equatable {
             self.launchAutomaticallySubstyle = launchAutomaticallySubstyle
             self.debugEnabled = debugEnabled
             self.simulateLocation = simulateLocation
+            self.customLLDBInit = customLLDBInit
         }
     }
 
@@ -163,6 +166,7 @@ public struct Scheme: Equatable {
         public var language: String?
         public var region: String?
         public var debugEnabled: Bool
+        public var customLLDBInit: String?
 
         public struct TestTarget: Equatable, ExpressibleByStringLiteral {
             public static let randomExecutionOrderDefault = false
@@ -212,7 +216,8 @@ public struct Scheme: Equatable {
             environmentVariables: [XCScheme.EnvironmentVariable] = [],
             language: String? = nil,
             region: String? = nil,
-            debugEnabled: Bool = debugEnabledDefault
+            debugEnabled: Bool = debugEnabledDefault,
+            customLLDBInit: String? = nil
         ) {
             self.config = config
             self.gatherCoverageData = gatherCoverageData
@@ -226,6 +231,7 @@ public struct Scheme: Equatable {
             self.language = language
             self.region = region
             self.debugEnabled = debugEnabled
+            self.customLLDBInit = customLLDBInit
         }
 
         public var shouldUseLaunchSchemeArgsEnv: Bool {
@@ -371,6 +377,7 @@ extension Scheme.Run: JSONObjectConvertible {
         if let askLaunch: Bool = jsonDictionary.json(atKeyPath: "askForAppToLaunch") {
             askForAppToLaunch = askLaunch
         }
+        customLLDBInit = jsonDictionary.json(atKeyPath: "customLLDBInit")
     }
 }
 
@@ -403,6 +410,9 @@ extension Scheme.Run: JSONEncodable {
         if let simulateLocation = simulateLocation {
             dict["simulateLocation"] = simulateLocation.toJSONValue()
         }
+        if let customLLDBInit = customLLDBInit {
+            dict["customLLDBInit"] = customLLDBInit
+        }
         return dict
     }
 }
@@ -434,6 +444,7 @@ extension Scheme.Test: JSONObjectConvertible {
         language = jsonDictionary.json(atKeyPath: "language")
         region = jsonDictionary.json(atKeyPath: "region")
         debugEnabled = jsonDictionary.json(atKeyPath: "debugEnabled") ?? Scheme.Test.debugEnabledDefault
+        customLLDBInit = jsonDictionary.json(atKeyPath: "customLLDBInit")
     }
 }
 
@@ -461,6 +472,10 @@ extension Scheme.Test: JSONEncodable {
 
         if debugEnabled != Scheme.Run.debugEnabledDefault {
             dict["debugEnabled"] = debugEnabled
+        }
+
+        if let customLLDBInit = customLLDBInit {
+            dict["customLLDBInit"] = customLLDBInit
         }
 
         return dict
