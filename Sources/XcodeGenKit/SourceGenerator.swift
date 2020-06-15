@@ -294,11 +294,15 @@ class SourceGenerator {
             // lives outside the project base path
             let isOutOfBasePath = !path.absolute().string.contains(project.basePath.absolute().string)
 
+            // whether the given path is a strict parent of the project base path
+            // e.g. foo/bar is a parent of foo/bar/baz, but not foo/baz
+            let isParentOfBasePath = isOutOfBasePath && ((try? path.isParent(of: project.basePath)) == true)
+
             // has no valid parent paths
-            let isRootPath = (isBaseGroup && isOutOfBasePath) || path.parent() == project.basePath
+            let isRootPath = (isBaseGroup && isOutOfBasePath && isParentOfBasePath) || path.parent() == project.basePath
 
             // is a top level group in the project
-            let isTopLevelGroup = !hasCustomParent && ((isBaseGroup && !createIntermediateGroups) || isRootPath)
+            let isTopLevelGroup = !hasCustomParent && ((isBaseGroup && !createIntermediateGroups) || isRootPath || isParentOfBasePath)
 
             let groupName = name ?? path.lastComponent
 
@@ -683,12 +687,26 @@ class SourceGenerator {
     private func createIntermediaGroups(for fileElement: PBXFileElement, at path: Path) {
 
         let parentPath = path.parent()
-        guard parentPath != project.basePath && path.string.contains(project.basePath.string) else {
-            // we've reached the top or are out of the root directory
+        guard parentPath != project.basePath else {
+            // we've reached the top
             return
         }
 
         let hasParentGroup = groupsByPath[parentPath] != nil
+        if !hasParentGroup {
+            do {
+                // if the path is a parent of the project base path (or if calculating that fails)
+                // do not create a parent group
+                // e.g. for project path foo/bar/baz
+                //  - create foo/baz
+                //  - create baz/
+                //  - do not create foo
+                let pathIsParentOfProject = try path.isParent(of: project.basePath)
+                if pathIsParentOfProject { return }
+            } catch {
+                return
+            }
+        }
         let parentGroup = getGroup(
             path: parentPath,
             mergingChildren: [fileElement],
