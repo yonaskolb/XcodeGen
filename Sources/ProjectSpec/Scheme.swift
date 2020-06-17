@@ -112,11 +112,11 @@ public struct Scheme: Equatable {
         public var launchAutomaticallySubstyle: String?
         public var debugEnabled: Bool
         public var simulateLocation: SimulateLocation?
-        public var executableName: String?
+        public var executable: String?
 
         public init(
             config: String,
-            executableName: String? = nil,
+            executable: String? = nil,
             commandLineArguments: [String: Bool] = [:],
             preActions: [ExecutionAction] = [],
             postActions: [ExecutionAction] = [],
@@ -358,7 +358,7 @@ extension Scheme.Run: JSONObjectConvertible {
         region = jsonDictionary.json(atKeyPath: "region")
         debugEnabled = jsonDictionary.json(atKeyPath: "debugEnabled") ?? Scheme.Run.debugEnabledDefault
         simulateLocation = jsonDictionary.json(atKeyPath: "simulateLocation")
-        executableName = jsonDictionary.json(atKeyPath: "executable")
+        executable = jsonDictionary.json(atKeyPath: "executable")
 
         // launchAutomaticallySubstyle is defined as a String in XcodeProj but its value is often
         // an integer. Parse both to be nice.
@@ -386,7 +386,7 @@ extension Scheme.Run: JSONEncodable {
             "region": region,
             "askForAppToLaunch": askForAppToLaunch,
             "launchAutomaticallySubstyle": launchAutomaticallySubstyle,
-            "executable": executableName,
+            "executable": executable,
         ]
 
         if disableMainThreadChecker != Scheme.Run.disableMainThreadCheckerDefault {

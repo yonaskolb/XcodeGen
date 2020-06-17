@@ -163,7 +163,7 @@ public class SchemeGenerator {
 
         let schemeTarget: Target?
 
-        if let targetName = scheme.run?.executableName {
+        if let targetName = scheme.run?.executable {
             schemeTarget = project.getTarget(targetName)
         } else {
             schemeTarget = target ?? project.getTarget(scheme.build.targets.first!.target.name)
