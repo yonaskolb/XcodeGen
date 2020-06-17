@@ -386,6 +386,7 @@ extension Scheme.Run: JSONEncodable {
             "region": region,
             "askForAppToLaunch": askForAppToLaunch,
             "launchAutomaticallySubstyle": launchAutomaticallySubstyle,
+            "executable": executableName,
         ]
 
         if disableMainThreadChecker != Scheme.Run.disableMainThreadCheckerDefault {
