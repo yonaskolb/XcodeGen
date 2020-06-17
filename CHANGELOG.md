@@ -1,6 +1,9 @@
 # Change Log
 
 ## Next Version
+
+## 2.16.0
+
 #### Added
 - Improve speed of metadata parsing and dependency resolution. [#803](https://github.com/yonaskolb/XcodeGen/pull/803) @michaeleisel
 - Improve support for iOS sticker packs and add support for `launchAutomaticallySubstyle` to run schemes. [#824](https://github.com/yonaskolb/XcodeGen/pull/824) @scelis
@@ -29,6 +32,8 @@
 - Fixed issue where wrapper folders may not include correctly in the generated project. [#862](https://github.com/yonaskolb/XcodeGen/pull/862) @KhaosT
 - Compile `xcmappingmodel` files instead of copying bundle resources. [#834](https://github.com/yonaskolb/XcodeGen/pull/834) @jcolicchio
 - Fixed issue where `Complie Sources` build phase is generated for resource bundles even when they have no files to compile [#878](https://github.com/yonaskolb/XcodeGen/pull/878) @nkukushkin
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.15.1...2.16.0)
 
 ## 2.15.1
 
