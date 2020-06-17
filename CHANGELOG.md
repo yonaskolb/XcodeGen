@@ -6,7 +6,6 @@
 - Improve support for iOS sticker packs and add support for `launchAutomaticallySubstyle` to run schemes. [#824](https://github.com/yonaskolb/XcodeGen/pull/824) @scelis
 - Add --project-root option to generate command. [#828](https://github.com/yonaskolb/XcodeGen/pull/828) @ileitch
 - Add an ability to set an order of groups with `options.groupOrdering` [#613](https://github.com/yonaskolb/XcodeGen/pull/613) @Beniamiiin
-- Add `staticBinary` linkType for Carthage dependency [#847](https://github.com/yonaskolb/XcodeGen/pull/847) @d-date
 - Add the ability to output a dependency graph in graphviz format [#852](https://github.com/yonaskolb/XcodeGen/pull/852) @jeffctown
 - Adds uncluttering the project manifest dumped to YAML from empty values [#858](https://github.com/yonaskolb/XcodeGen/pull/858) @paciej00
 - Added ability to name the executable target when declaring schemes. [#869](https://github.com/yonaskolb/XcodeGen/pull/869) @elland

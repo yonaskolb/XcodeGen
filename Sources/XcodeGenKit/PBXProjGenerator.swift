@@ -843,7 +843,7 @@ public class PBXProjGenerator {
                     self.carthageFrameworksByPlatform[target.platform.carthageName, default: []].insert(fileReference)
 
                     let isStaticLibrary = target.type == .staticLibrary
-                    let isCarthageStaticLink = (dependency.carthageLinkType == .static || dependency.carthageLinkType == .staticBinary)
+                    let isCarthageStaticLink = dependency.carthageLinkType == .static
                     if dependency.link ?? (!isStaticLibrary && !isCarthageStaticLink) {
                         let buildFile = self.addObject(
                             PBXBuildFile(file: fileReference, settings: getDependencyFrameworkSettings(dependency: dependency))
@@ -919,7 +919,7 @@ public class PBXProjGenerator {
             }
             let fileReference = sourceGenerator.getFileReference(path: frameworkPath, inPath: platformPath)
 
-            if (dependency.carthageLinkType == .static || dependency.carthageLinkType == .staticBinary) {
+            if dependency.carthageLinkType == .static {
                 guard isFromTopLevelTarget else { continue } // ignore transitive dependencies if static
                 let linkFile = addObject(
                     PBXBuildFile(file: fileReference, settings: getDependencyFrameworkSettings(dependency: dependency))
@@ -1207,11 +1207,7 @@ public class PBXProjGenerator {
                     let carthagePlatformBuildPath = "$(PROJECT_DIR)/" + carthageResolver.buildPath(for: target.platform, linkType: .dynamic)
                     carthagePlatformBuildPaths.insert(carthagePlatformBuildPath)
                 }
-                if carthageDependencies.contains(where: { $0.dependency.carthageLinkType == .staticBinary }) {
-                    let carthagePlatformBuildPath = "$(PROJECT_DIR)/" + carthageResolver.buildPath(for: target.platform, linkType: .staticBinary)
-                    carthagePlatformBuildPaths.insert(carthagePlatformBuildPath)
-                }
-                configFrameworkBuildPaths = Array(carthagePlatformBuildPaths).sorted() + frameworkBuildPaths.sorted()
+                configFrameworkBuildPaths = carthagePlatformBuildPaths.sorted() + frameworkBuildPaths.sorted()
             } else {
                 configFrameworkBuildPaths = frameworkBuildPaths.sorted()
             }
