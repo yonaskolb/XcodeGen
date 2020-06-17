@@ -22,33 +22,33 @@ extension DictionaryExtensionTests {
             "inner1": "value1",
             "inner2": Optional("value2"),
             "inner3": nil,
-            "inner4": Optional([1, 2, 3])
+            "inner4": Optional([1, 2, 3]),
         ]
         let inner2: [String: Any?] = [
             "inner1": "value1",
             "inner2": Optional("value2"),
             "inner3": inner1,
-            "inner4": [1, 2, 3]
+            "inner4": [1, 2, 3],
         ]
         let inner3: [String: Any?] = [
             "inner1": "value1",
             "inner2": Optional("value2"),
             "inner3": Optional(inner1),
             "inner4": [1, 2, 3],
-            "inner5": inner2
+            "inner5": inner2,
         ]
         let inner4: [String: Any?] = [
             "inner1": inner1,
             "inner2": inner2,
             "inner3": inner3,
             "inner4": Optional("value4"),
-            "inner5": nil
+            "inner5": nil,
         ]
 
         let inner6: [String: Any?] = [
             "inner1": "value1",
             "inner2": "value2",
-            "inner3": [inner1, inner1, inner1]
+            "inner3": [inner1, inner1, inner1],
         ]
 
         let input: [String: Any?] = [
@@ -58,7 +58,7 @@ extension DictionaryExtensionTests {
             "inner4": inner4,
             "inner5": [],
             "inner6": inner6,
-            "inner7": [:]
+            "inner7": [:],
         ]
 
         return input
@@ -72,7 +72,7 @@ extension DictionaryExtensionTests {
                 "inner1": [
                     "inner1": "value1",
                     "inner2": "value2",
-                    "inner4": [1, 2, 3]
+                    "inner4": [1, 2, 3],
                 ],
                 "inner2": [
                     "inner1": "value1",
@@ -80,9 +80,9 @@ extension DictionaryExtensionTests {
                     "inner3": [
                         "inner1": "value1",
                         "inner2": "value2",
-                        "inner4": [1, 2, 3]
+                        "inner4": [1, 2, 3],
                     ],
-                    "inner4": [1, 2, 3]
+                    "inner4": [1, 2, 3],
                 ],
                 "inner3": [
                     "inner1": "value1",
@@ -90,7 +90,7 @@ extension DictionaryExtensionTests {
                     "inner3": [
                         "inner1": "value1",
                         "inner2": "value2",
-                        "inner4": [1, 2, 3]
+                        "inner4": [1, 2, 3],
                     ],
                     "inner4": [1, 2, 3],
                     "inner5": [
@@ -99,12 +99,12 @@ extension DictionaryExtensionTests {
                         "inner3": [
                             "inner1": "value1",
                             "inner2": "value2",
-                            "inner4": [1, 2, 3]
+                            "inner4": [1, 2, 3],
                         ],
-                        "inner4": [1, 2, 3]
-                    ]
+                        "inner4": [1, 2, 3],
+                    ],
                 ],
-                "inner4": "value4"
+                "inner4": "value4",
             ],
             "inner6": [
                 "inner1": "value1",
@@ -112,17 +112,17 @@ extension DictionaryExtensionTests {
                 "inner3": [[
                     "inner1": "value1",
                     "inner2": "value2",
-                    "inner4": [1, 2, 3]
-                    ], [
-                        "inner1": "value1",
-                        "inner2": "value2",
-                        "inner4": [1, 2, 3]
-                    ], [
-                        "inner1": "value1",
-                        "inner2": "value2",
-                        "inner4": [1, 2, 3]
-                    ]]
-            ]
+                    "inner4": [1, 2, 3],
+                ], [
+                    "inner1": "value1",
+                    "inner2": "value2",
+                    "inner4": [1, 2, 3],
+                ], [
+                    "inner1": "value1",
+                    "inner2": "value2",
+                    "inner4": [1, 2, 3],
+                ]],
+            ],
         ]
 
         return expected

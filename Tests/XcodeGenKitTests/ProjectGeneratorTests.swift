@@ -48,7 +48,7 @@ class ProjectGeneratorTests: XCTestCase {
                 let options = SpecOptions(bundleIdPrefix: "com.test")
                 let project = Project(name: "test", targets: [framework], options: options)
                 let pbxProj = try project.generatePbxProj()
-                
+
                 guard let target = pbxProj.nativeTargets.first,
                     let buildConfigList = target.buildConfigurationList,
                     let buildConfig = buildConfigList.buildConfigurations.first else {
@@ -111,11 +111,11 @@ class ProjectGeneratorTests: XCTestCase {
                     name: "test",
                     configs: [
                         Config(name: "Aconfig"),
-                        Config(name: "Bconfig")
+                        Config(name: "Bconfig"),
                     ],
                     targets: [
                         Target(name: "1", type: .framework, platform: .iOS),
-                        Target(name: "2", type: .framework, platform: .iOS)
+                        Target(name: "2", type: .framework, platform: .iOS),
                     ],
                     options: options
                 )
@@ -126,7 +126,7 @@ class ProjectGeneratorTests: XCTestCase {
                     guard
                         let buildConfigurationList = target.buildConfigurationList,
                         let defaultConfigurationName = buildConfigurationList.defaultConfigurationName else {
-                            throw failure("Default configuration name not found")
+                        throw failure("Default configuration name not found")
                     }
 
                     try expect(defaultConfigurationName) == "Bconfig"
@@ -364,7 +364,7 @@ class ProjectGeneratorTests: XCTestCase {
                 let projectReference = ProjectReference(name: "AnotherProject", path: externalProjectPath.string)
                 var target = app
                 target.dependencies = [
-                    Dependency(type: .target, reference: "AnotherProject/ExternalTarget")
+                    Dependency(type: .target, reference: "AnotherProject/ExternalTarget"),
                 ]
                 let project = Project(
                     name: "test",
@@ -568,7 +568,7 @@ class ProjectGeneratorTests: XCTestCase {
                 )
                 expectedResourceFiles[iosFrameworkA.name] = Set()
                 expectedBundlesFiles[iosFrameworkA.name] = Set([
-                    "BundleA.bundle"
+                    "BundleA.bundle",
                 ])
                 expectedLinkedFiles[iosFrameworkA.name] = Set([
                     "FrameworkC.framework",
@@ -1048,7 +1048,7 @@ class ProjectGeneratorTests: XCTestCase {
                 let project = Project(name: "test", targets: [app], packages: [
                     "XcodeGen": .remote(url: "http://github.com/yonaskolb/XcodeGen", versionRequirement: .branch("master")),
                     "Codability": .remote(url: "http://github.com/yonaskolb/Codability", versionRequirement: .exact("1.0.0")),
-                    "Yams": .local(path: "../Yams")
+                    "Yams": .local(path: "../Yams"),
                 ], options: .init(localPackagesGroup: "MyPackages"))
 
                 let pbxProject = try project.generatePbxProj(specValidate: false)
@@ -1064,14 +1064,13 @@ class ProjectGeneratorTests: XCTestCase {
                 try expect(codabilityDependency.package?.name) == "Codability"
                 try expect(codabilityDependency.package?.versionRequirement) == .exact("1.0.0")
 
-
                 let localPackagesGroup = try unwrap(try pbxProject.getMainGroup().children.first(where: { $0.name == "MyPackages" }) as? PBXGroup)
 
                 let yamsLocalPackageFile = try unwrap(pbxProject.fileReferences.first(where: { $0.path == "../Yams" }))
                 try expect(localPackagesGroup.children.contains(yamsLocalPackageFile)) == true
                 try expect(yamsLocalPackageFile.lastKnownFileType) == "folder"
             }
-            
+
             $0.it("generates local swift packages") {
                 let app = Target(
                     name: "MyApp",
@@ -1082,19 +1081,19 @@ class ProjectGeneratorTests: XCTestCase {
                     ]
                 )
 
-                let project = Project(name: "test", targets: [app], packages: ["XcodeGen" : .local(path: "../XcodeGen")])
+                let project = Project(name: "test", targets: [app], packages: ["XcodeGen": .local(path: "../XcodeGen")])
 
                 let pbxProject = try project.generatePbxProj(specValidate: false)
                 let nativeTarget = try unwrap(pbxProject.nativeTargets.first(where: { $0.name == app.name }))
                 let localPackageFile = try unwrap(pbxProject.fileReferences.first(where: { $0.path == "../XcodeGen" }))
                 try expect(localPackageFile.lastKnownFileType) == "folder"
-                
+
                 let frameworkPhases = nativeTarget.buildPhases.compactMap { $0 as? PBXFrameworksBuildPhase }
-                
+
                 guard let frameworkPhase = frameworkPhases.first else {
                     return XCTFail("frameworkPhases should have more than one")
                 }
-                
+
                 guard let file = frameworkPhase.files?.first else {
                     return XCTFail("frameworkPhase should have file")
                 }

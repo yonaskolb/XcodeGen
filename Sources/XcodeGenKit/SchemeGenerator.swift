@@ -233,7 +233,7 @@ public class SchemeGenerator {
             }
             locationScenarioReference = XCScheme.LocationScenarioReference(identifier: identifier, referenceType: referenceType.rawValue)
         }
-        
+
         let launchAction = XCScheme.LaunchAction(
             runnable: shouldExecuteOnLaunch ? runnables.launch : nil,
             buildConfiguration: scheme.run?.config ?? defaultDebugConfig.name,

@@ -37,7 +37,7 @@ public struct Scheme: Equatable {
             case predefined = "1"
             case gpx = "0"
         }
-        
+
         public var allow: Bool
         public var defaultLocation: String?
 
@@ -333,7 +333,7 @@ extension Scheme.SimulateLocation: JSONObjectConvertible {
 extension Scheme.SimulateLocation: JSONEncodable {
     public func toJSONValue() -> Any {
         var dict: [String: Any] = [
-            "allow": allow
+            "allow": allow,
         ]
 
         if let defaultLocation = defaultLocation {
@@ -367,7 +367,7 @@ extension Scheme.Run: JSONObjectConvertible {
         } else if let string: String = jsonDictionary.json(atKeyPath: "launchAutomaticallySubstyle") {
             launchAutomaticallySubstyle = string
         }
-        
+
         if let askLaunch: Bool = jsonDictionary.json(atKeyPath: "askForAppToLaunch") {
             askForAppToLaunch = askLaunch
         }
@@ -392,7 +392,7 @@ extension Scheme.Run: JSONEncodable {
         if disableMainThreadChecker != Scheme.Run.disableMainThreadCheckerDefault {
             dict["disableMainThreadChecker"] = disableMainThreadChecker
         }
-      
+
         if stopOnEveryMainThreadCheckerIssue != Scheme.Run.stopOnEveryMainThreadCheckerIssueDefault {
             dict["stopOnEveryMainThreadCheckerIssue"] = stopOnEveryMainThreadCheckerIssue
         }

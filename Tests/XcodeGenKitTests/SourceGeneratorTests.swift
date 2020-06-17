@@ -737,11 +737,11 @@ class SourceGeneratorTests: XCTestCase {
                 try createDirectories(directories)
 
                 let target = Target(name: "Test", type: .application, platform: .iOS, sources: [
-                        "Sources",
-                        TargetSource(path: "Source", name: "S"),
-                        "A",
-                        TargetSource(path: "Z/A", name: "B"),
-                        "B",
+                    "Sources",
+                    TargetSource(path: "Source", name: "S"),
+                    "A",
+                    TargetSource(path: "Z/A", name: "B"),
+                    "B",
                 ], dependencies: [Dependency(type: .carthage(findFrameworks: false, linkType: .dynamic), reference: "Alamofire")])
                 let project = Project(basePath: directoryPath, name: "Test", targets: [target])
 
@@ -1008,7 +1008,7 @@ class SourceGeneratorTests: XCTestCase {
                         try expect(resourcesBuildPhase.files?.compactMap { $0.file?.nameOrPath }) == ["Intents.intentdefinition"]
                     }
                 }
-                
+
                 $0.it("generates resource tags") {
                     let directories = """
                     A:
@@ -1017,7 +1017,7 @@ class SourceGeneratorTests: XCTestCase {
                         - sourceFile.swift
                     """
                     try createDirectories(directories)
-                    
+
                     let target = Target(
                         name: "Test",
                         type: .application,
@@ -1028,53 +1028,53 @@ class SourceGeneratorTests: XCTestCase {
                             TargetSource(path: "A/sourceFile.swift", buildPhase: .sources, resourceTags: ["tag1", "tag2"]),
                         ]
                     )
-                    
+
                     let project = Project(basePath: directoryPath,
                                           name: "Test",
                                           targets: [target])
-                    
+
                     let pbxProj = try project.generatePbxProj()
-                    
+
                     let resourceFileReference = try unwrap(pbxProj.getFileReference(
                         paths: ["A", "resourceFile.mp4"],
                         names: ["A", "resourceFile.mp4"]
                     ))
-                    
+
                     let resourceFileReference2 = try unwrap(pbxProj.getFileReference(
                         paths: ["A", "resourceFile2.mp4"],
                         names: ["A", "resourceFile2.mp4"]
                     ))
-                    
+
                     let sourceFileReference = try unwrap(pbxProj.getFileReference(
                         paths: ["A", "sourceFile.swift"],
                         names: ["A", "sourceFile.swift"]
                     ))
-                    
-                    try pbxProj.expectFile(paths: ["A", "resourceFile.mp4"],  buildPhase: .resources)
+
+                    try pbxProj.expectFile(paths: ["A", "resourceFile.mp4"], buildPhase: .resources)
                     try pbxProj.expectFile(paths: ["A", "resourceFile2.mp4"], buildPhase: .resources)
                     try pbxProj.expectFile(paths: ["A", "sourceFile.swift"], buildPhase: .sources)
-                    
-                    let resourceBuildFile  = try unwrap(pbxProj.buildFiles.first(where: { $0.file == resourceFileReference }))
+
+                    let resourceBuildFile = try unwrap(pbxProj.buildFiles.first(where: { $0.file == resourceFileReference }))
                     let resourceBuildFile2 = try unwrap(pbxProj.buildFiles.first(where: { $0.file == resourceFileReference2 }))
                     let sourceBuildFile = try unwrap(pbxProj.buildFiles.first(where: { $0.file == sourceFileReference }))
-                    
+
                     if (resourceBuildFile.settings! as NSDictionary) != (["ASSET_TAGS": ["tag1", "tag2"]] as NSDictionary) {
                         throw failure("File does not contain tag1 and tag2 ASSET_TAGS")
                     }
-                    
+
                     if (resourceBuildFile2.settings! as NSDictionary) != (["ASSET_TAGS": ["tag2", "tag3"]] as NSDictionary) {
                         throw failure("File does not contain tag2 and tag3 ASSET_TAGS")
                     }
-                    
+
                     if sourceBuildFile.settings != nil {
                         throw failure("File that buildPhase is source contain settings")
                     }
-                    
+
                     if !pbxProj.rootObject!.attributes.keys.contains("knownAssetTags") {
                         throw failure("PBXProject does not contain knownAssetTags")
                     }
-                    
-                    try expect((pbxProj.rootObject!.attributes["knownAssetTags"] as! [String])) == ["tag1", "tag2", "tag3"]
+
+                    try expect(pbxProj.rootObject!.attributes["knownAssetTags"] as? [String]) == ["tag1", "tag2", "tag3"]
                 }
             }
         }

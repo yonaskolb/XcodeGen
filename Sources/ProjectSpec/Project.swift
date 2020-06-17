@@ -186,10 +186,11 @@ extension Project {
         }
         // For backward compatibility of old `localPackages:` format
         if let localPackages: [String] = jsonDictionary.json(atKeyPath: "localPackages") {
-            packages.merge(localPackages.reduce(into: [String: SwiftPackage](), {
+            packages.merge(localPackages.reduce(into: [String: SwiftPackage]()) {
                 // Project name will be obtained by resolved abstractpath's lastComponent for dealing with some path case, like "../"
                 let packageName = (basePath + Path($1).normalize()).lastComponent
-                $0[packageName] = .local(path: $1) })
+                $0[packageName] = .local(path: $1)
+            }
             )
         }
         if jsonDictionary["options"] != nil {

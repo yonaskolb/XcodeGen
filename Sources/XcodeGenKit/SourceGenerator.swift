@@ -60,12 +60,12 @@ class SourceGenerator {
             localPackageGroup = addObject(PBXGroup(sourceTree: .sourceRoot, name: groupName))
             rootGroups.insert(localPackageGroup!)
         }
-        
+
         let absolutePath = project.basePath + path.normalize()
 
         // Get the local package's relative path from the project root
         let fileReferencePath = try? absolutePath.relativePath(from: projectDirectory ?? project.basePath).string
-        
+
         let fileReference = addObject(
             PBXFileReference(
                 sourceTree: .sourceRoot,
@@ -130,7 +130,7 @@ class SourceGenerator {
         if !attributes.isEmpty {
             settings["ATTRIBUTES"] = attributes
         }
-        
+
         if chosenBuildPhase == .resources && !targetSource.resourceTags.isEmpty {
             settings["ASSET_TAGS"] = targetSource.resourceTags
         }
@@ -420,7 +420,8 @@ class SourceGenerator {
 
         let filePaths = children
             .filter { $0.isFile || $0.isDirectory && $0.extension != "lproj"
-                && Xcode.isDirectoryFileWrapper(path: $0) }
+                && Xcode.isDirectoryFileWrapper(path: $0)
+            }
 
         let localisedDirectories = children
             .filter { $0.extension == "lproj" }
@@ -552,7 +553,7 @@ class SourceGenerator {
 
         let type = targetSource.type ?? (path.isFile || path.extension != nil ? .file : .group)
 
-        let customParentGroups = (targetSource.group ?? "").split(separator: "/").map{ String($0) }
+        let customParentGroups = (targetSource.group ?? "").split(separator: "/").map { String($0) }
         let hasCustomParent = !customParentGroups.isEmpty
 
         let createIntermediateGroups = targetSource.createIntermediateGroups ?? project.options.createIntermediateGroups

@@ -845,7 +845,7 @@ class SpecLoadingTests: XCTestCase {
                             ["variable": "ENVIRONMENT", "value": "VARIABLE"],
                             ["variable": "OTHER_ENV_VAR", "value": "VAL", "isEnabled": false],
                         ],
-                        "launchAutomaticallySubstyle": "2"
+                        "launchAutomaticallySubstyle": "2",
                     ],
                     "test": [
                         "environmentVariables": [
@@ -1134,7 +1134,7 @@ class SpecLoadingTests: XCTestCase {
                     "package7": .remote(url: "package.git", versionRequirement: .exact("1.2.2")),
                     "package8": .remote(url: "package.git", versionRequirement: .upToNextMajorVersion("4.0.0-beta.5")),
                     "package9": .local(path: "package/package"),
-                    "XcodeGen": .local(path: "../XcodeGen")
+                    "XcodeGen": .local(path: "../XcodeGen"),
                 ], options: .init(localPackagesGroup: "MyPackages"))
 
                 let dictionary: [String: Any] = [
@@ -1151,18 +1151,18 @@ class SpecLoadingTests: XCTestCase {
                         "package6": ["url": "package.git", "minVersion": "1.2.0", "maxVersion": "1.2.5"],
                         "package7": ["url": "package.git", "version": "1.2.2"],
                         "package8": ["url": "package.git", "majorVersion": "4.0.0-beta.5"],
-                        "package9": ["path": "package/package"]
+                        "package9": ["path": "package/package"],
                     ],
-                    "localPackages": ["../XcodeGen"]
+                    "localPackages": ["../XcodeGen"],
                 ]
                 let parsedSpec = try getProjectSpec(dictionary)
                 try expect(parsedSpec) == project
             }
-            
+
             $0.it("parses old local package format") {
                 let project = Project(name: "spm", packages: [
                     "XcodeGen": .local(path: "../XcodeGen"),
-                    "Yams": .local(path: "Yams")
+                    "Yams": .local(path: "Yams"),
                 ], options: .init(localPackagesGroup: "MyPackages"))
 
                 let dictionary: [String: Any] = [
@@ -1170,7 +1170,7 @@ class SpecLoadingTests: XCTestCase {
                     "options": [
                         "localPackagesGroup": "MyPackages",
                     ],
-                    "localPackages": ["../XcodeGen", "Yams"]
+                    "localPackages": ["../XcodeGen", "Yams"],
                 ]
                 let parsedSpec = try getProjectSpec(dictionary)
                 try expect(parsedSpec) == project
@@ -1181,14 +1181,14 @@ class SpecLoadingTests: XCTestCase {
     func testPackagesVersion() {
         describe {
             let invalidPackages = [
-                [ "url": "package.git", "majorVersion": "master" ],
-                [ "url": "package.git", "from": "develop" ],
-                [ "url": "package.git", "minVersion": "feature/swift5.2", "maxVersion": "9.1.0" ],
-                [ "url": "package.git", "minorVersion": "x.1.2" ],
-                [ "url": "package.git", "exactVersion": "1.2.3.1" ],
-                [ "url": "package.git", "version": "foo-bar" ]
+                ["url": "package.git", "majorVersion": "master"],
+                ["url": "package.git", "from": "develop"],
+                ["url": "package.git", "minVersion": "feature/swift5.2", "maxVersion": "9.1.0"],
+                ["url": "package.git", "minorVersion": "x.1.2"],
+                ["url": "package.git", "exactVersion": "1.2.3.1"],
+                ["url": "package.git", "version": "foo-bar"],
             ]
-            
+
             $0.it("is an invalid package version") {
                 for dictionary in invalidPackages {
                     try expect { _ = try SwiftPackage(jsonDictionary: dictionary) }.toThrow()

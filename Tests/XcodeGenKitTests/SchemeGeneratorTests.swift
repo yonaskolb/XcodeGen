@@ -93,7 +93,7 @@ class SchemeGeneratorTests: XCTestCase {
 
                 try expect(xcscheme.launchAction?.selectedDebuggerIdentifier) == XCScheme.defaultDebugger
                 try expect(xcscheme.testAction?.selectedDebuggerIdentifier) == XCScheme.defaultDebugger
-                
+
                 try expect(xcscheme.launchAction?.askForAppToLaunch) == true
                 try expect(xcscheme.launchAction?.launchAutomaticallySubstyle) == "2"
                 try expect(xcscheme.launchAction?.allowLocationSimulation) == true

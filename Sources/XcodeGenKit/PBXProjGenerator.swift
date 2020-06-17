@@ -55,7 +55,7 @@ public class PBXProjGenerator {
         for group in project.fileGroups {
             try sourceGenerator.getFileGroups(path: group)
         }
-        
+
         let buildConfigs: [XCBuildConfiguration] = project.configs.map { config in
             let buildSettings = project.getProjectBuildSettings(config: config)
             var baseConfiguration: PBXFileReference?
@@ -212,7 +212,7 @@ public class PBXProjGenerator {
                 )
                 return [
                     "ProductGroup": group,
-                    "ProjectRef": projectReference
+                    "ProjectRef": projectReference,
                 ]
             }
 
@@ -281,10 +281,10 @@ public class PBXProjGenerator {
                 target.sources.map { $0.resourceTags }.flatMap { $0 }
             }.flatMap { $0 }
         ).sorted()
-        
+
         var projectAttributes: [String: Any] = ["LastUpgradeCheck": project.xcodeVersion]
             .merged(project.attributes)
-        
+
         if !assetTags.isEmpty {
             projectAttributes["knownAssetTags"] = assetTags
         }
@@ -431,7 +431,7 @@ public class PBXProjGenerator {
             let defaultConfigurationName = targetObject.buildConfigurationList?.defaultConfigurationName,
             let defaultConfiguration = buildConfigurations.first(where: { $0.name == defaultConfigurationName }) ?? buildConfigurations.first else {
 
-                fatalError("Missing target info")
+            fatalError("Missing target info")
         }
 
         let buildSettings = defaultConfiguration.buildSettings
@@ -574,28 +574,28 @@ public class PBXProjGenerator {
         let childGroups = group.children.compactMap { $0 as? PBXGroup }
         childGroups.forEach(sortGroups)
     }
-    
+
     public func setupGroupOrdering(group: PBXGroup) {
         let groupOrdering = project.options.groupOrdering.first { groupOrdering in
             let groupName = group.nameOrPath
-            
+
             if groupName == groupOrdering.pattern {
                 return true
             }
-            
+
             if let regex = groupOrdering.regex {
                 return regex.isMatch(to: groupName)
             }
-            
+
             return false
         }
-        
+
         if let order = groupOrdering?.order {
             let files = group.children.filter { $0 is PBXFileReference }
             var groups = group.children.filter { $0 is PBXGroup }
-            
+
             var filteredGroups = [PBXFileElement]()
-            
+
             for groupName in order {
                 guard let group = groups.first(where: { $0.nameOrPath == groupName }) else {
                     continue
@@ -606,7 +606,7 @@ public class PBXProjGenerator {
             }
 
             filteredGroups += groups
-            
+
             switch project.options.groupSortPosition {
             case .top:
                 group.children = filteredGroups + files
@@ -616,7 +616,7 @@ public class PBXProjGenerator {
                 break
             }
         }
-        
+
         // sort sub groups
         let childGroups = group.children.compactMap { $0 as? PBXGroup }
         childGroups.forEach(setupGroupOrdering)
@@ -684,7 +684,7 @@ public class PBXProjGenerator {
             let dependencyLinkage = dependencyTarget.type.defaultLinkage
             let link = dependency.link ??
                 ((dependencyLinkage == .dynamic && target.type != .staticLibrary) ||
-                (dependencyLinkage == .static && target.type.isExecutable))
+                    (dependencyLinkage == .static && target.type.isExecutable))
 
             if link, let dependencyFile = embedFileReference {
                 let buildFile = addObject(
@@ -854,7 +854,7 @@ public class PBXProjGenerator {
             // Embedding handled by iterating over `carthageDependencies` below
             case .package(let product):
                 let packageReference = packageReferences[dependency.reference]
-                
+
                 // If package's reference is none and there is no specified package in localPackages,
                 // then ignore the package specified as dependency.
                 if packageReference == nil, !localPackageReferences.contains(dependency.reference) {
@@ -879,7 +879,7 @@ public class PBXProjGenerator {
                     )
                     dependencies.append(targetDependency)
                 }
-                
+
                 if dependency.embed == true {
                     let embedFile = addObject(
                         PBXBuildFile(product: packageDependency,

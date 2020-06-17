@@ -1,7 +1,7 @@
 import Foundation
 
 extension String {
-  func printHelloWorld() {
-    print("Hello World!")
-  }
+    func printHelloWorld() {
+        print("Hello World!")
+    }
 }
