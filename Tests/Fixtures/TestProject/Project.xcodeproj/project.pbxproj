@@ -32,6 +32,7 @@
 		0AB541AE3163B063E7012877 /* StaticLibrary_ObjC.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5A2B916A11DCC2565241359F /* StaticLibrary_ObjC.h */; };
 		0BDA156BEBFCB9E65910F838 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = 6A58A16491CDDF968B0D56DE /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1551370B0ACAC632E15C853B /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF47010E7368583405AA50CB /* SwiftyJSON.framework */; };
+		1A1225961174B8FB59FB139F /* MyPlayground.playground in Resources */ = {isa = PBXBuildFile; fileRef = A3930F0C289A1C9628EAECCB /* MyPlayground.playground */; };
 		1BC891D89980D82738D963F3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 74FBDFA5CB063F6001AD8ACD /* Main.storyboard */; };
 		1E03FC7312293997599C6435 /* Empty.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 068EDF47F0B087F6A4052AC0 /* Empty.h */; };
 		1E2A4D61E96521FF7123D7B0 /* XPC Service.xpc in CopyFiles */ = {isa = PBXBuildFile; fileRef = 22237B8EBD9E6BE8EBC8735F /* XPC Service.xpc */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -540,6 +541,7 @@
 		9F27382DD66E26C059E26EFE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		A0DC40025AB59B688E758829 /* Framework2.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Framework2.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A220DE4EB3CB2E598D034D9D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		A3930F0C289A1C9628EAECCB /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; };
 		A3F6BCB5FEFB16F1BA368059 /* InterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterfaceController.swift; sourceTree = "<group>"; };
 		A4C3FE6B986506724DAB5D0F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		A680BE9F68A255B0FB291AE6 /* App_watchOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = App_watchOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -874,6 +876,7 @@
 			isa = PBXGroup;
 			children = (
 				93C033648A37D95027845BD3 /* main.swift */,
+				A3930F0C289A1C9628EAECCB /* MyPlayground.playground */,
 			);
 			path = Tool;
 			sourceTree = "<group>";
@@ -1235,6 +1238,7 @@
 			buildConfigurationList = 7881E73F05F096623E592040 /* Build configuration list for PBXNativeTarget "Tool" */;
 			buildPhases = (
 				2235AD7DEFC8FE534AB91B38 /* Sources */,
+				56F327C70680D6E4A222CB8A /* Resources */,
 			);
 			buildRules = (
 			);
@@ -1733,6 +1737,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				803B7CE086CFBA409F9D1ED7 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		56F327C70680D6E4A222CB8A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1A1225961174B8FB59FB139F /* MyPlayground.playground in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
