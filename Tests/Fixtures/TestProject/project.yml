@@ -15,6 +15,7 @@ fileGroups:
   - Configs
   - FileGroup
   - SomeFile
+  - Utilities
 projectReferences:
   AnotherProject:
     path: ./AnotherProject/AnotherProject.xcodeproj
