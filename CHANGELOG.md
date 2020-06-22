@@ -4,6 +4,9 @@
 
 ## 2.16.0
 
+#### Fixed
+- Bugfix: Treat all directories with known UTI as file wrapper. [#896](https://github.com/yonaskolb/XcodeGen/pull/896) @KhaosT
+
 #### Added
 - Improve speed of metadata parsing and dependency resolution. [#803](https://github.com/yonaskolb/XcodeGen/pull/803) @michaeleisel
 - Improve support for iOS sticker packs and add support for `launchAutomaticallySubstyle` to run schemes. [#824](https://github.com/yonaskolb/XcodeGen/pull/824) @scelis
