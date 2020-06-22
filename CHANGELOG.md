@@ -2,10 +2,10 @@
 
 ## Next Version
 
-## 2.16.0
-
 #### Fixed
 - Bugfix: Treat all directories with known UTI as file wrapper. [#896](https://github.com/yonaskolb/XcodeGen/pull/896) @KhaosT
+
+## 2.16.0
 
 #### Added
 - Improve speed of metadata parsing and dependency resolution. [#803](https://github.com/yonaskolb/XcodeGen/pull/803) @michaeleisel
