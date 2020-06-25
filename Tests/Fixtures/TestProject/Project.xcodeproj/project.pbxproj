@@ -470,6 +470,7 @@
 		020E4DA91C9132845CAFDC5D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		039F208D1138598CE060F140 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		03D6D1E34022DA9524E5B38D /* Mintfile */ = {isa = PBXFileReference; path = Mintfile; sourceTree = "<group>"; };
+		0510CEA09E3BFD387E3EDE28 /* MyPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = MyPlayground.playground; sourceTree = "<group>"; };
 		068EDF47F0B087F6A4052AC0 /* Empty.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Empty.h; sourceTree = "<group>"; };
 		0704B6CAFBB53E0EBB08F6B3 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		09B82F603D981398F38D762E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -755,6 +756,7 @@
 				BDA839814AF73F01F7710518 /* StaticLibrary_ObjC */,
 				CBDAC144248EE9D3838C6AAA /* StaticLibrary_Swift */,
 				8CFD8AD4820FAB9265663F92 /* Tool */,
+				4C7F5EB7D6F3E0E9B426AB4A /* Utilities */,
 				3FEA12CF227D41EF50E5C2DB /* Vendor */,
 				80C3A0E524EC1ABCB9149EA2 /* XPC Service */,
 				DAA7880242A9DE61E68026CC /* Folder */,
@@ -801,6 +803,14 @@
 				70A8E15C81E454DC950C59F0 /* SomeXPCService.xpc */,
 			);
 			path = Vendor;
+			sourceTree = "<group>";
+		};
+		4C7F5EB7D6F3E0E9B426AB4A /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				0510CEA09E3BFD387E3EDE28 /* MyPlayground.playground */,
+			);
+			path = Utilities;
 			sourceTree = "<group>";
 		};
 		5CBCE0E2A145046265FE99E2 /* FileGroup */ = {

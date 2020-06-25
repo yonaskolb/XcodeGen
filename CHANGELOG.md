@@ -2,6 +2,9 @@
 
 ## Next Version
 
+#### Fixed
+- Treat all directories with known UTI as file wrapper. [#896](https://github.com/yonaskolb/XcodeGen/pull/896) @KhaosT
+
 ## 2.16.0
 
 #### Added
