@@ -190,6 +190,7 @@ targets:
     sources: iMessageExtension
     settings:
       PRODUCT_BUNDLE_IDENTIFIER: com.project.iMessageApp.extension
+    scheme: {}
 
   iMessageStickersExtension:
     type: app-extension.messages-sticker-pack

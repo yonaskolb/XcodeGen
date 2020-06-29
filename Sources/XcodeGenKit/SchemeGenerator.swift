@@ -50,7 +50,6 @@ public class SchemeGenerator {
 
         for target in project.targets {
             if let targetScheme = target.scheme {
-
                 if targetScheme.configVariants.isEmpty {
                     let schemeName = target.name
 
@@ -283,7 +282,9 @@ public class SchemeGenerator {
             launchAction: launchAction,
             profileAction: profileAction,
             analyzeAction: analyzeAction,
-            archiveAction: archiveAction
+            archiveAction: archiveAction,
+            wasCreatedForAppExtension: target
+                .flatMap({ $0.type.isExtension ? true : nil })
         )
     }
 
