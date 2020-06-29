@@ -283,8 +283,8 @@ public class SchemeGenerator {
             profileAction: profileAction,
             analyzeAction: analyzeAction,
             archiveAction: archiveAction,
-            wasCreatedForAppExtension: target
-                .flatMap({ $0.type.isExtension ? true : nil })
+            wasCreatedForAppExtension: schemeTarget
+                .flatMap { $0.type.isExtension ? true : nil }
         )
     }
 
