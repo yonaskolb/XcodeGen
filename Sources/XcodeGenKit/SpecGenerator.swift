@@ -280,19 +280,43 @@ private func generateTargetSpec(target: PBXNativeTarget, mainGroup: PBXGroup, so
 
     let frameworks = target.buildPhases
         .compactMap { $0 as? PBXFrameworksBuildPhase }
-        .compactMap { $0.files?.compactMap { $0.file } }
+        .compactMap { $0.files }
         .reduce([], { $0 + $1 })
 
-    let dependencies: [Dependency] = frameworks.compactMap { fileElement in
-        guard let path = fileElement.path else {
+    let targetDependencies: [Dependency] = target.dependencies.compactMap {
+        guard let name = $0.target?.name else {
             return nil
         }
-        if let sourceTree = fileElement.sourceTree, sourceTree == .sdkRoot {
-            return Dependency(type: .sdk(root: Path(path).parent().string),
-                              reference: fileElement.name ?? Path(path).lastComponent)
+        return Dependency(type: .target, reference: name)
+    }
+
+    let targetDependencyProductNames = target.dependencies.compactMap { $0.target?.productNameWithExtension() }
+
+    let frameworkDependencies: [Dependency] = frameworks.compactMap { file in
+        guard let fileElement = file.file,
+            let path = fileElement.path else {
+                return nil
+        }
+        if let sourceTree = fileElement.sourceTree {
+            switch sourceTree {
+            case .sdkRoot:
+                return Dependency(type: .sdk(root: Path(path).parent().string),
+                                  reference: fileElement.name ?? Path(path).lastComponent)
+            case .buildProductsDir:
+                let file = Path(path).lastComponent
+                if targetDependencyProductNames.contains(file) {
+                    return nil // skip target dependency
+                }
+                return Dependency(type: .target,
+                                  reference: file)
+            default:
+                break
+            }
         }
         return Dependency(type: .framework, reference: path)
     }
+
+    let dependencies = targetDependencies + frameworkDependencies
 
     let targetSources = sources + headers + implicitHeaders + resources
 
