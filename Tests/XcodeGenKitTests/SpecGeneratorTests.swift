@@ -4,8 +4,22 @@ import TestSupport
 import XcodeProj
 import PathKit
 import Yams
+import ProjectSpec
 
 class SpecGeneratorTests: XCTestCase {
+    var target: Target!
+
+    override func setUpWithError() throws {
+        let file = fixturePath + "MigrationTestProject/MigrationTestProject.xcodeproj"
+        let xcodeProj = try XcodeProj(path: file)
+        let project = try generateSpec(xcodeProj: xcodeProj, projectDirectory: file.parent())!
+        target = project.targets.first { $0.name == "MigrationTestProject" }!
+
+        let projectDict = project.toJSONDictionary().removeEmpty()
+        let encodedYAML = try Yams.dump(object: projectDict)
+        print(encodedYAML)
+    }
+
     func testRemoveEmpty() {
         let arr: [Any] = [[], [1, [2], []], [3]]
         let removed: [Any] = arr.removeEmpty()
@@ -18,13 +32,15 @@ class SpecGeneratorTests: XCTestCase {
     }
 
     func testMigrateDependencies() throws {
-        let file = fixturePath + "MigrationTestProject/MigrationTestProject.xcodeproj"
-        let xcodeProj = try XcodeProj(path: file)
-        let project = try generateSpec(xcodeProj: xcodeProj, projectDirectory: file.parent())!
-        let target = project.targets.first { $0.name == "MigrationTestProject" }!
         XCTAssertEqual(target.dependencies[0].reference, "ExampleFramework")
         XCTAssertEqual(target.dependencies[0].type, .target)
         XCTAssertEqual(target.dependencies[1].reference, "AVKit.framework")
         XCTAssertEqual(target.dependencies[1].type, .sdk(root: "System/Library/Frameworks"))
+    }
+
+    func testBuildScript() throws {
+        XCTAssertEqual(target.preBuildScripts[0].name, "Pre Build Script")
+        XCTAssertEqual(target.postCompileScripts[0].name, "Post Compile Script")
+        XCTAssertEqual(target.postBuildScripts[0].name, "Post Build Script")
     }
 }

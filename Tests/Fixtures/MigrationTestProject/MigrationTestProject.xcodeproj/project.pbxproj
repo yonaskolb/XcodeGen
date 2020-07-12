@@ -244,10 +244,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D9BD320524BAE14C0056ACD2 /* Build configuration list for PBXNativeTarget "MigrationTestProject" */;
 			buildPhases = (
+				D9BD326124BAF0DE0056ACD2 /* Pre Build Script */,
 				D9BD31E224BAE14A0056ACD2 /* Sources */,
+				D9BD326224BAF48F0056ACD2 /* Post Compile Script */,
 				D9BD31E324BAE14A0056ACD2 /* Frameworks */,
 				D9BD31E424BAE14A0056ACD2 /* Resources */,
 				D9BD323024BAE7340056ACD2 /* Embed Frameworks */,
+				D9BD326024BAF0720056ACD2 /* Post Build Script */,
 			);
 			buildRules = (
 			);
@@ -394,6 +397,63 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		D9BD326024BAF0720056ACD2 /* Post Build Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Post Build Script";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\necho \"post build script\"\n";
+		};
+		D9BD326124BAF0DE0056ACD2 /* Pre Build Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Pre Build Script";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\necho \"pre build script\"\n";
+		};
+		D9BD326224BAF48F0056ACD2 /* Post Compile Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Post Compile Script";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\necho \"post compile script\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		D9BD31E224BAE14A0056ACD2 /* Sources */ = {

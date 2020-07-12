@@ -320,9 +320,31 @@ private func generateTargetSpec(target: PBXNativeTarget, mainGroup: PBXGroup, so
 
     let targetSources = sources + headers + implicitHeaders + resources
 
-    let buildScripts = target.buildPhases
-        .compactMap { $0 as? PBXShellScriptBuildPhase }
-        .map(BuildScript.init)
+    var preBuildScripts = [BuildScript]()
+    var postCompileScripts: [BuildScript]?
+    var postBuildScripts: [BuildScript]?
+
+    for buildPhase in target.buildPhases {
+        if postBuildScripts != nil {
+            if let buildPhase = buildPhase as? PBXShellScriptBuildPhase {
+                postBuildScripts?.append(BuildScript(buildPhase: buildPhase))
+            }
+        } else if postCompileScripts != nil {
+            // Scripts between the compile and non-script phases
+            if let buildPhase = buildPhase as? PBXShellScriptBuildPhase {
+                postCompileScripts?.append(BuildScript(buildPhase: buildPhase))
+            } else {
+                postBuildScripts = [BuildScript]()
+            }
+        } else {
+            // Script before the compile phase
+            if buildPhase is PBXSourcesBuildPhase {
+                postCompileScripts = [BuildScript]()
+            } else if let buildPhase = buildPhase as? PBXShellScriptBuildPhase {
+                preBuildScripts.append(BuildScript(buildPhase: buildPhase))
+            }
+        }
+    }
 
     let buildRules = target.buildRules.map(BuildRule.init)
 
@@ -336,7 +358,9 @@ private func generateTargetSpec(target: PBXNativeTarget, mainGroup: PBXGroup, so
                   settings: target.settings,
                   sources: targetSources,
                   dependencies: dependencies,
-                  postBuildScripts: buildScripts,
+                  preBuildScripts: preBuildScripts,
+                  postCompileScripts: postCompileScripts ?? [],
+                  postBuildScripts: postBuildScripts ?? [],
                   buildRules: buildRules)
 }
 
