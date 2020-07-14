@@ -5,6 +5,9 @@
 #### Fixed
 - Treat all directories with known UTI as file wrapper. [#896](https://github.com/yonaskolb/XcodeGen/pull/896) @KhaosT
 
+#### Internal
+- Updated to XcodeProj 7.13.0 [#908](https://github.com/yonaskolb/XcodeGen/pull/908) @brentleyjones
+
 ## 2.16.0
 
 #### Added
