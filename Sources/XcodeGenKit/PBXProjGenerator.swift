@@ -651,6 +651,7 @@ public class PBXProjGenerator {
         var copyWatchReferences: [PBXBuildFile] = []
         var packageDependencies: [XCSwiftPackageProductDependency] = []
         var extensions: [PBXBuildFile] = []
+        var appClips: [PBXBuildFile] = []
         var carthageFrameworksToEmbed: [String] = []
         let localPackageReferences: [String] = project.packages.compactMap { $0.value.isLocal ? $0.key : nil }
 
@@ -710,6 +711,9 @@ public class PBXProjGenerator {
                 if dependencyTarget.type.isExtension {
                     // embed app extension
                     extensions.append(embedFile)
+                } else if dependencyTarget.type == .onDemandInstallCapableApplication {
+                    // embed app clip
+                    appClips.append(embedFile)
                 } else if dependencyTarget.type.isFramework {
                     copyFrameworksReferences.append(embedFile)
                 } else if dependencyTarget.type.isApp && dependencyTarget.platform == .watchOS {
@@ -1067,6 +1071,20 @@ public class PBXProjGenerator {
                     dstSubfolderSpec: .plugins,
                     name: "Embed App Extensions",
                     files: extensions
+                )
+            )
+
+            buildPhases.append(copyFilesPhase)
+        }
+
+        if !appClips.isEmpty {
+
+            let copyFilesPhase = addObject(
+                PBXCopyFilesBuildPhase(
+                    dstPath: "$(CONTENTS_FOLDER_PATH)/AppClips",
+                    dstSubfolderSpec: .productsDirectory,
+                    name: "Embed App Clips",
+                    files: appClips
                 )
             )
 
