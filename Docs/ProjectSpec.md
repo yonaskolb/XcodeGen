@@ -782,7 +782,9 @@ A multiline script can be written using the various YAML multiline methods, for 
 - [x] **name**: **String** - The name of the target
 - [ ] **parallelizable**: **Bool** - Whether to run tests in parallel. Defaults to false
 - [ ] **randomExecutionOrder**: **Bool** - Whether to run tests in a random order. Defaults to false
+- [ ] **useTestSelectionWhitelist**: **Bool** - Whether to use a list of selected tests. Defaults to nil.
 - [ ] **skippedTests**: **[String]** - List of tests in the test target to skip. Defaults to empty.
+- [ ] **selectedTests**: **[String]** - List of tests in the test target to select. Defaults to empty.
 
 ### Archive Action
 

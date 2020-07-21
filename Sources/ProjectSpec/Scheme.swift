@@ -173,17 +173,23 @@ public struct Scheme: Equatable {
             public var randomExecutionOrder: Bool
             public var parallelizable: Bool
             public var skippedTests: [String]
+            public var selectedTests: [String]
+            public var useTestSelectionWhitelist: Bool?
 
             public init(
                 targetReference: TargetReference,
                 randomExecutionOrder: Bool = randomExecutionOrderDefault,
                 parallelizable: Bool = parallelizableDefault,
-                skippedTests: [String] = []
+                useTestSelectionWhitelist: Bool? = nil,
+                skippedTests: [String] = [],
+                selectedTests: [String] = []
             ) {
                 self.targetReference = targetReference
                 self.randomExecutionOrder = randomExecutionOrder
                 self.parallelizable = parallelizable
+                self.useTestSelectionWhitelist = useTestSelectionWhitelist
                 self.skippedTests = skippedTests
+                self.selectedTests = selectedTests
             }
 
             public init(stringLiteral value: String) {
@@ -192,6 +198,7 @@ public struct Scheme: Equatable {
                     randomExecutionOrder = false
                     parallelizable = false
                     skippedTests = []
+                    selectedTests = []
                 } catch {
                     fatalError(SpecParsingError.invalidTargetReference(value).description)
                 }
@@ -475,6 +482,8 @@ extension Scheme.Test.TestTarget: JSONObjectConvertible {
         randomExecutionOrder = jsonDictionary.json(atKeyPath: "randomExecutionOrder") ?? Scheme.Test.TestTarget.randomExecutionOrderDefault
         parallelizable = jsonDictionary.json(atKeyPath: "parallelizable") ?? Scheme.Test.TestTarget.parallelizableDefault
         skippedTests = jsonDictionary.json(atKeyPath: "skippedTests") ?? []
+        selectedTests = jsonDictionary.json(atKeyPath: "selectedTests") ?? []
+        useTestSelectionWhitelist = jsonDictionary.json(atKeyPath: "useTestSelectionWhitelist")
     }
 }
 

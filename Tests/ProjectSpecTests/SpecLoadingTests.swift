@@ -833,6 +833,48 @@ class SpecLoadingTests: XCTestCase {
                 try expect(scheme.test) == expectedTest
             }
 
+            $0.it("parses alternate test schemes") {
+                let schemeDictionary: [String: Any] = [
+                    "build": [
+                        "targets": ["Target1": "all"],
+                    ],
+                    "test": [
+                        "config": "debug",
+                        "targets": [
+                            "Target1",
+                            [
+                                "name": "ExternalProject/Target2",
+                                "parallelizable": true,
+                                "randomExecutionOrder": true,
+                                "useTestSelectionWhitelist": true,
+                                "selectedTests": ["Test/testExample()"],
+                            ],
+                        ],
+                        "gatherCoverageData": true,
+                        "disableMainThreadChecker": true,
+                        "stopOnEveryMainThreadCheckerIssue": true,
+                    ],
+                ]
+                let scheme = try Scheme(name: "Scheme", jsonDictionary: schemeDictionary)
+
+                let expectedTest = Scheme.Test(
+                    config: "debug",
+                    gatherCoverageData: true,
+                    disableMainThreadChecker: true,
+                    targets: [
+                        "Target1",
+                        Scheme.Test.TestTarget(
+                            targetReference: "ExternalProject/Target2",
+                            randomExecutionOrder: true,
+                            parallelizable: true,
+                            useTestSelectionWhitelist: true,
+                            selectedTests: ["Test/testExample()"]
+                        ),
+                    ]
+                )
+                try expect(scheme.test) == expectedTest
+            }
+
             $0.it("parses schemes variables") {
                 let schemeDictionary: [String: Any] = [
                     "build": [
