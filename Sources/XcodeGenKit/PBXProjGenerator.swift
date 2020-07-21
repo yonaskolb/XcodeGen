@@ -1076,12 +1076,15 @@ public class PBXProjGenerator {
         copyFrameworksReferences += getBuildFilesForPhase(.frameworks)
         if !copyFrameworksReferences.isEmpty {
 
+            let copyFilesActionMask: UInt = 8
             let copyFilesPhase = addObject(
                 PBXCopyFilesBuildPhase(
                     dstPath: "",
                     dstSubfolderSpec: .frameworks,
                     name: "Embed Frameworks",
-                    files: copyFrameworksReferences
+                    buildActionMask: target.onlyCopyFilesOnInstall ? copyFilesActionMask : PBXBuildPhase.defaultBuildActionMask,
+                    files: copyFrameworksReferences,
+                    runOnlyForDeploymentPostprocessing: target.onlyCopyFilesOnInstall ? true : false
                 )
             )
 
