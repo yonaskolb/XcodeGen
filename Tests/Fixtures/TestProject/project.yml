@@ -119,6 +119,7 @@ targets:
       - sdk: Contacts.framework
       - bundle: BundleX.bundle
       - target: AnotherProject/ExternalTarget
+    onlyCopyFilesOnInstall: true
     scheme:
       testTargets:
         - App_iOS_Tests
