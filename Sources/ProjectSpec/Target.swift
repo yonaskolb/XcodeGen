@@ -344,6 +344,10 @@ extension Target: JSONEncodable {
             dict["productName"] = productName
         }
 
+        if onlyCopyFilesOnInstall {
+            dict["onlyCopyFilesOnInstall"] = true
+        }
+
         return dict
     }
 }
