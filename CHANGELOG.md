@@ -1,6 +1,7 @@
 # Change Log
 
 ## Next Version
+- Fixed issue when generating schemes for application extension should contain wasCreatedForAppExtension = YES. [#898](https://github.com/yonaskolb/XcodeGen/issues/898) @muizidn
 
 #### Added
 - Add `onlyCopyFilesOnInstall` option to targets for the Embed Files build phase. [#912](https://github.com/yonaskolb/XcodeGen/pull/912) @jsorge
