@@ -772,6 +772,34 @@ class ProjectGeneratorTests: XCTestCase {
                 }
             }
 
+            $0.it("copies files only on install in the Embed Frameworks step") {
+                let app = Target(
+                    name: "App",
+                    type: .application,
+                    platform: .iOS,
+                    // Embeds it's frameworks, so they shouldn't embed in AppTest
+                    dependencies: [
+                        Dependency(type: .framework, reference: "FrameworkA.framework"),
+                        Dependency(type: .framework, reference: "FrameworkB.framework", embed: false),
+                    ],
+                    onlyCopyFilesOnInstall: true
+                )
+                
+                let project = Project(name: "test",targets: [app])
+                let pbxProject = try project.generatePbxProj()
+                let nativeTarget = try unwrap(pbxProject.nativeTargets.first(where: { $0.name == app.name }))
+                let buildPhases = nativeTarget.buildPhases
+
+                let embedFrameworkPhase = pbxProject
+                    .copyFilesBuildPhases
+                    .filter { buildPhases.contains($0) }
+                    .first { $0.dstSubfolderSpec == .frameworks }
+
+                let phase = try unwrap(embedFrameworkPhase)
+                try expect(phase.buildActionMask) == 8
+                try expect(phase.runOnlyForDeploymentPostprocessing) == true
+            }
+
             $0.it("sets -ObjC for targets that depend on requiresObjCLinking targets") {
                 let requiresObjCLinking = Target(
                     name: "requiresObjCLinking",

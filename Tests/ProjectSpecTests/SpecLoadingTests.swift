@@ -1011,6 +1011,13 @@ class SpecLoadingTests: XCTestCase {
                 try expect(scheme.test) == expectedTest
             }
 
+            $0.it("parses copy files on install") {
+                var targetSource = validTarget
+                targetSource["onlyCopyFilesOnInstall"] = true
+                let target = try Target(name: "Embed Frameworks", jsonDictionary: targetSource)
+                try expect(target.onlyCopyFilesOnInstall) == true
+            }
+
             $0.it("parses settings") {
                 let project = try Project(path: fixturePath + "settings_test.yml")
                 let buildSettings: BuildSettings = ["SETTING": "value"]
