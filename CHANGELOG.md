@@ -1,13 +1,13 @@
 # Change Log
 
 ## Next Version
-- Fixed issue when generating schemes for application extension should contain wasCreatedForAppExtension = YES. [#898](https://github.com/yonaskolb/XcodeGen/issues/898) @muizidn
 
 #### Added
 - Add `onlyCopyFilesOnInstall` option to targets for the Embed Files build phase. [#912](https://github.com/yonaskolb/XcodeGen/pull/912) @jsorge
 
 #### Fixed
 - Treat all directories with known UTI as file wrapper. [#896](https://github.com/yonaskolb/XcodeGen/pull/896) @KhaosT
+- Generated chemes for application extensions now contain `wasCreatedForAppExtension = YES`. [#898](https://github.com/yonaskolb/XcodeGen/issues/898) @muizidn
 
 #### Internal
 - Updated to XcodeProj 7.13.0 [#908](https://github.com/yonaskolb/XcodeGen/pull/908) @brentleyjones
