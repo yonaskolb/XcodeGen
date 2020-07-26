@@ -467,6 +467,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		01E6934B571B91EAAFF0EDCB /* Resource.abc */ = {isa = PBXFileReference; path = Resource.abc; sourceTree = "<group>"; };
 		020E4DA91C9132845CAFDC5D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		039F208D1138598CE060F140 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		03D6D1E34022DA9524E5B38D /* Mintfile */ = {isa = PBXFileReference; path = Mintfile; sourceTree = "<group>"; };
@@ -495,6 +496,7 @@
 		2A5F527F2590C14956518174 /* FrameworkFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameworkFile.swift; sourceTree = "<group>"; };
 		2E1E747C7BC434ADB80CC269 /* Headers */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Headers; sourceTree = SOURCE_ROOT; };
 		2F430AABE04B7499B458D9DB /* SwiftFileInDotPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftFileInDotPath.swift; sourceTree = "<group>"; };
+		325F18855099386B08DD309B /* Resource.abcd */ = {isa = PBXFileReference; path = Resource.abcd; sourceTree = "<group>"; };
 		33F6DCDC37D2E66543D4965D /* App_macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = App_macOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		34F13B632328979093CE6056 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		3571E41E19A5AB8AAAB04109 /* StandaloneAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = StandaloneAssets.xcassets; sourceTree = "<group>"; };
@@ -726,6 +728,8 @@
 				BF59AC868D227C92CA8B1B57 /* Model.xcmappingmodel */,
 				C7809CE9FE9852C2AA87ACE5 /* module.modulemap */,
 				553D289724905857912C7A1D /* outputList.xcfilelist */,
+				01E6934B571B91EAAFF0EDCB /* Resource.abc */,
+				325F18855099386B08DD309B /* Resource.abcd */,
 				8AF20308873AEEEC4D8C45D1 /* Settings.bundle */,
 				0704B6CAFBB53E0EBB08F6B3 /* ViewController.swift */,
 			);

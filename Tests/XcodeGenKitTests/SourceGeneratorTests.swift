@@ -654,6 +654,57 @@ class SourceGeneratorTests: XCTestCase {
                 try pbxProj.expectFile(paths: ["C", "WithPeriod2.0", "file.swift"], buildPhase: .sources)
             }
 
+            $0.it("sets file type properties") {
+                let directories = """
+                  A:
+                    - file.resource1
+                    - file.source1
+                    - file.abc:
+                        - file.a
+                    - file.exclude1
+                    - file.unphased1
+                    - ignored.swift
+                """
+                try createDirectories(directories)
+
+                let target = Target(name: "Test", type: .framework, platform: .iOS, sources: [
+                    TargetSource(path: "A"),
+                ])
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target], options: .init(fileTypes: [
+                    "abc": FileType(buildPhase: .sources),
+                    "source1": FileType(buildPhase: .sources, attributes: ["a1", "a2"], resourceTags: ["r1", "r2"], compilerFlags: ["-c1", "-c2"]),
+                    "resource1": FileType(buildPhase: .resources, attributes: ["a1", "a2"], resourceTags: ["r1", "r2"], compilerFlags: ["-c1", "-c2"]),
+                    "unphased1": FileType(buildPhase: BuildPhaseSpec.none),
+                    "swift": FileType(buildPhase: .resources),
+                ]))
+
+                let pbxProj = try project.generatePbxProj()
+                try pbxProj.expectFile(paths: ["A", "file.abc"], buildPhase: .sources)
+                try pbxProj.expectFile(paths: ["A", "file.source1"], buildPhase: .sources)
+                try pbxProj.expectFile(paths: ["A", "file.resource1"], buildPhase: .resources)
+                try pbxProj.expectFile(paths: ["A", "file.unphased1"], buildPhase: BuildPhaseSpec.none)
+                try pbxProj.expectFile(paths: ["A", "ignored.swift"], buildPhase: .resources)
+
+                do {
+                    let fileReference = try unwrap(pbxProj.getFileReference(paths: ["A", "file.resource1"], names: ["A", "file.resource1"]))
+                    let buildFile = try unwrap(pbxProj.buildFiles.first(where: { $0.file === fileReference }))
+                    let settings = NSDictionary(dictionary: buildFile.settings ?? [:])
+                    try expect(settings) == [
+                        "ATTRIBUTES": ["a1", "a2"],
+                        "ASSET_TAGS": ["r1", "r2"],
+                    ]
+                }
+                do {
+                    let fileReference = try unwrap(pbxProj.getFileReference(paths: ["A", "file.source1"], names: ["A", "file.source1"]))
+                    let buildFile = try unwrap(pbxProj.buildFiles.first(where: { $0.file === fileReference }))
+                    let settings = NSDictionary(dictionary: buildFile.settings ?? [:])
+                    try expect(settings) == [
+                        "ATTRIBUTES": ["a1", "a2"],
+                        "COMPILER_FLAGS": "-c1 -c2",
+                        ]
+                }
+            }
+
             $0.it("duplicate TargetSource is included once in sources build phase") {
                 let directories = """
                 Sources:

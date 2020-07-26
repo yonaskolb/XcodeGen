@@ -87,11 +87,22 @@ class SourceGenerator {
         _ = try getSourceFiles(targetType: .none, targetSource: TargetSource(path: path), path: fullPath)
     }
 
+    func getFileType(path: Path) -> FileType? {
+        if let fileExtension = path.extension {
+            return project.options.fileTypes[fileExtension] ?? FileType.defaultFileTypes[fileExtension]
+        } else {
+            return nil
+        }
+    }
+
     func generateSourceFile(targetType: PBXProductType, targetSource: TargetSource, path: Path, buildPhase: BuildPhaseSpec? = nil, fileReference: PBXFileElement? = nil) -> SourceFile {
         let fileReference = fileReference ?? fileReferencesByPath[path.string.lowercased()]!
         var settings: [String: Any] = [:]
-        var attributes: [String] = targetSource.attributes
+        let fileType = getFileType(path: path)
+        var attributes: [String] = targetSource.attributes + (fileType?.attributes ?? [])
         var chosenBuildPhase: BuildPhaseSpec?
+        var compilerFlags: String = ""
+        let assetTags: [String] = targetSource.resourceTags + (fileType?.resourceTags ?? [])
 
         let headerVisibility = targetSource.headerVisibility ?? .public
 
@@ -123,16 +134,28 @@ class SourceGenerator {
                 attributes.append(headerVisibility.settingName)
             }
         }
-        if chosenBuildPhase == .sources && targetSource.compilerFlags.count > 0 {
-            settings["COMPILER_FLAGS"] = targetSource.compilerFlags.joined(separator: " ")
+
+        if let flags = fileType?.compilerFlags {
+            compilerFlags += flags.joined(separator: " ")
+        }
+
+        if !targetSource.compilerFlags.isEmpty {
+            if !compilerFlags.isEmpty {
+                compilerFlags += " "
+            }
+            compilerFlags += targetSource.compilerFlags.joined(separator: " ")
+        }
+
+        if chosenBuildPhase == .sources && !compilerFlags.isEmpty {
+            settings["COMPILER_FLAGS"] = compilerFlags
         }
 
         if !attributes.isEmpty {
             settings["ATTRIBUTES"] = attributes
         }
-
-        if chosenBuildPhase == .resources && !targetSource.resourceTags.isEmpty {
-            settings["ASSET_TAGS"] = targetSource.resourceTags
+        
+        if chosenBuildPhase == .resources && !assetTags.isEmpty {
+            settings["ASSET_TAGS"] = assetTags
         }
 
         let buildFile = PBXBuildFile(file: fileReference, settings: settings.isEmpty ? nil : settings)
@@ -230,30 +253,11 @@ class SourceGenerator {
         if path.lastComponent == "Info.plist" {
             return nil
         }
+        if let buildPhase = getFileType(path: path)?.buildPhase {
+            return buildPhase
+        }
         if let fileExtension = path.extension {
             switch fileExtension {
-            case "swift",
-                 "m",
-                 "mm",
-                 "cpp",
-                 "c",
-                 "cc",
-                 "S",
-                 "xcdatamodeld",
-                 "xcmappingmodel",
-                 "intentdefinition",
-                 "metal",
-                 "mlmodel",
-                 "rcproject":
-                return .sources
-            case "h",
-                 "hh",
-                 "hpp",
-                 "ipp",
-                 "tpp",
-                 "hxx",
-                 "def":
-                return .headers
             case "modulemap":
                 guard targetType == .staticLibrary else { return nil }
                 return .copyFiles(BuildPhaseSpec.CopyFilesSettings(
@@ -261,18 +265,6 @@ class SourceGenerator {
                     subpath: "include/$(PRODUCT_NAME)",
                     phaseOrder: .preCompile
                 ))
-            case "framework":
-                return .frameworks
-            case "xpc":
-                return .copyFiles(.xpcServices)
-            case "xcconfig",
-                 "entitlements",
-                 "gpx",
-                 "lproj",
-                 "xcfilelist",
-                 "apns",
-                 "pch":
-                return nil
             default:
                 return .resources
             }
@@ -414,13 +406,24 @@ class SourceGenerator {
         let children = try getSourceChildren(targetSource: targetSource, dirPath: path, excludePaths: excludePaths, includePaths: includePaths)
 
         let createIntermediateGroups = targetSource.createIntermediateGroups ?? project.options.createIntermediateGroups
+        let nonLocalizedChildren = children.filter { $0.extension != "lproj" }
 
-        let directories = children
-            .filter { $0.isDirectory && !Xcode.isDirectoryFileWrapper(path: $0) && $0.extension != "lproj" }
+        let directories = nonLocalizedChildren
+            .filter {
+                if let fileType = getFileType(path: $0) {
+                    return !fileType.file
+                } else {
+                    return $0.isDirectory && !Xcode.isDirectoryFileWrapper(path: $0)
+                }
+            }
 
-        let filePaths = children
-            .filter { $0.isFile || $0.isDirectory && $0.extension != "lproj"
-                && Xcode.isDirectoryFileWrapper(path: $0)
+        let filePaths = nonLocalizedChildren
+            .filter {
+                if let fileType = getFileType(path: $0) {
+                    return fileType.file
+                } else {
+                    return $0.isFile || $0.isDirectory && Xcode.isDirectoryFileWrapper(path: $0)
+                }
             }
 
         let localisedDirectories = children
