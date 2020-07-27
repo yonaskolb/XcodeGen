@@ -8,6 +8,11 @@
 #### Internal
 - Updated to XcodeProj 7.13.0 [#908](https://github.com/yonaskolb/XcodeGen/pull/908) @brentleyjones
 
+## 2.16.1
+
+#### Added
+- Added support for SetectedTests in schemes `Test` configuration.  [#913](https://github.com/yonaskolb/XcodeGen/pull/913) @ooodin
+
 ## 2.16.0
 
 #### Added
