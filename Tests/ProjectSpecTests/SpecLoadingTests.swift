@@ -782,6 +782,7 @@ class SpecLoadingTests: XCTestCase {
                             [
                                 "name": "ExternalProject/Target2",
                                 "parallelizable": true,
+                                "skipped": true,
                                 "randomExecutionOrder": true,
                                 "skippedTests": ["Test/testExample()"],
                             ],
@@ -826,6 +827,7 @@ class SpecLoadingTests: XCTestCase {
                             targetReference: "ExternalProject/Target2",
                             randomExecutionOrder: true,
                             parallelizable: true,
+                            skipped: true,
                             skippedTests: ["Test/testExample()"]
                         ),
                     ]
