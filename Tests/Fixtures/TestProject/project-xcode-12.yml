@@ -2,18 +2,9 @@
 # this file can be merged into project.yml. As-is, it generates
 # targets that Xcode 11 doesn't understand or know how to build.
 name: ProjectXcode12
-include: [environments.yml]
-options:
-  bundleIdPrefix: com.project
-  usesTabs: false
-  indentWidth: 2
-  tabWidth: 2
-  transitivelyLinkDependencies: true
-  groupSortPosition: top
-configFiles:
-  Test Debug: Configs/config.xcconfig
+include: [project.yml]
 targets:
-  App_iOS:
+  App_iOS_With_Clip:
     type: application
     platform: iOS
     attributes:
@@ -30,7 +21,7 @@ targets:
           - "Model.xcmappingmodel"
     settings:
       INFOPLIST_FILE: App_iOS/Info.plist
-      PRODUCT_BUNDLE_IDENTIFIER: com.project.app
+      PRODUCT_BUNDLE_IDENTIFIER: com.project.appwithclip
     dependencies:
       - target: Framework_iOS
       - target: StaticLibrary_ObjC_iOS
@@ -48,13 +39,13 @@ targets:
     entitlements:
       path: App_Clip/Clip.entitlements
       properties:
-        com.apple.developer.parent-application-identifiers: [$(AppIdentifierPrefix)com.project.app]
+        com.apple.developer.parent-application-identifiers: [$(AppIdentifierPrefix)com.project.appwithclip]
         com.apple.security.application-groups: group.com.app
     sources:
       App_Clip
     settings:
       INFOPLIST_FILE: App_Clip/Info.plist
-      PRODUCT_BUNDLE_IDENTIFIER: com.project.app.clip
+      PRODUCT_BUNDLE_IDENTIFIER: com.project.appwithclip.clip
     dependencies:
       - target: Framework_iOS
       - target: StaticLibrary_ObjC_iOS
@@ -62,36 +53,6 @@ targets:
       testTargets:
         - App_Clip_Tests
         - App_Clip_UITests
-
-  StaticLibrary_ObjC:
-    type: library.static
-    platform: [iOS, tvOS, watchOS, macOS]
-    sources: StaticLibrary_ObjC
-
-  Framework:
-    type: framework
-    platform: [iOS, tvOS, watchOS, macOS]
-    sources:
-      - path: Framework
-        excludes:
-          - "*.xcodeproj"
-      - path: Headers
-        buildPhase: headers
-        type: folder
-        headerVisibility: public
-    dependencies:
-      - target: StaticLibrary_ObjC_${platform}
-
-  TestFramework:
-    type: framework
-    platform: iOS
-    sources:
-      - path: Framework
-        excludes:
-          - "*.xcodeproj"
-    depencencies:
-      - sdk: Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework
-        root: DEVELOPER_DIR
 
   App_Clip_Tests:
     type: bundle.unit-test
@@ -109,17 +70,3 @@ targets:
     sources: App_Clip_UITests
     dependencies:
       - target: App_Clip
-
-schemes:
-  App_Scheme:
-    build:
-      targets:
-        App_iOS: all
-targetTemplates:
-  MyTemplate:
-    scheme: {}
-aggregateTargets:
-  SuperTarget:
-    targets:
-      - App_iOS
-      - App_Clip

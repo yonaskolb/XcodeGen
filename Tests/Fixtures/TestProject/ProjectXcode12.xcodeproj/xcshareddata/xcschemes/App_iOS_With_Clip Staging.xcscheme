@@ -14,51 +14,28 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "991BCE8E861305DE596EACFE"
-               BuildableName = "App_iOS.app"
-               BlueprintName = "App_iOS"
+               BlueprintIdentifier = "21D7F6A04EF6BA1329685C17"
+               BuildableName = "App_iOS_With_Clip.app"
+               BlueprintName = "App_iOS_With_Clip"
                ReferencedContainer = "container:ProjectXcode12.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
-      buildConfiguration = "Production Debug"
+      buildConfiguration = "Staging Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      codeCoverageEnabled = "YES"
       onlyGenerateCoverageForSpecifiedTargets = "NO"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "6122E4E48939B4937E588B23"
-               BuildableName = "App_iOS_UITests.xctest"
-               BlueprintName = "App_iOS_UITests"
-               ReferencedContainer = "container:ProjectXcode12.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO"
-            parallelizable = "YES"
-            testExecutionOrdering = "random">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "9E7BCAAA9E855251D33C5730"
-               BuildableName = "App_iOS_Tests.xctest"
-               BlueprintName = "App_iOS_Tests"
-               ReferencedContainer = "container:ProjectXcode12.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "991BCE8E861305DE596EACFE"
-            BuildableName = "App_iOS.app"
-            BlueprintName = "App_iOS"
+            BlueprintIdentifier = "21D7F6A04EF6BA1329685C17"
+            BuildableName = "App_iOS_With_Clip.app"
+            BlueprintName = "App_iOS_With_Clip"
             ReferencedContainer = "container:ProjectXcode12.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -66,7 +43,7 @@
       </CommandLineArguments>
    </TestAction>
    <LaunchAction
-      buildConfiguration = "Production Debug"
+      buildConfiguration = "Staging Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
@@ -79,21 +56,17 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "991BCE8E861305DE596EACFE"
-            BuildableName = "App_iOS.app"
-            BlueprintName = "App_iOS"
+            BlueprintIdentifier = "21D7F6A04EF6BA1329685C17"
+            BuildableName = "App_iOS_With_Clip.app"
+            BlueprintName = "App_iOS_With_Clip"
             ReferencedContainer = "container:ProjectXcode12.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
-      <LocationScenarioReference
-         identifier = "Honolulu, HI, USA"
-         referenceType = "1">
-      </LocationScenarioReference>
       <CommandLineArguments>
       </CommandLineArguments>
    </LaunchAction>
    <ProfileAction
-      buildConfiguration = "Production Release"
+      buildConfiguration = "Staging Release"
       shouldUseLaunchSchemeArgsEnv = "YES"
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
@@ -102,18 +75,20 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "991BCE8E861305DE596EACFE"
-            BuildableName = "App_iOS.app"
-            BlueprintName = "App_iOS"
+            BlueprintIdentifier = "21D7F6A04EF6BA1329685C17"
+            BuildableName = "App_iOS_With_Clip.app"
+            BlueprintName = "App_iOS_With_Clip"
             ReferencedContainer = "container:ProjectXcode12.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
+      <CommandLineArguments>
+      </CommandLineArguments>
    </ProfileAction>
    <AnalyzeAction
-      buildConfiguration = "Production Debug">
+      buildConfiguration = "Staging Debug">
    </AnalyzeAction>
    <ArchiveAction
-      buildConfiguration = "Production Release"
+      buildConfiguration = "Staging Release"
       revealArchiveInOrganizer = "YES">
    </ArchiveAction>
 </Scheme>

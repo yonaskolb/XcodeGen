@@ -23,7 +23,7 @@ echo "✅ Successfully built iOS app"
 if [[ "$XCODE_VERSION" == 12* ]]; then
     echo "
     ⚙️ Building iOS app (Xcode 12+)"
-    xcodebuild -quiet -project ProjectXcode12.xcodeproj -scheme "App_iOS Test" -configuration "Test Debug" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGN_ENTITLEMENTS="" CODE_SIGNING_ALLOWED="NO"
+    xcodebuild -quiet -project ProjectXcode12.xcodeproj -scheme "App_iOS_With_Clip Test" -configuration "Test Debug" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGN_ENTITLEMENTS="" CODE_SIGNING_ALLOWED="NO"
     echo "✅ Successfully built iOS app (Xcode 12+)"
 fi
 

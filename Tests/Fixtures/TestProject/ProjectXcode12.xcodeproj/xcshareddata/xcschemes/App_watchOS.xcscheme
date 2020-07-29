@@ -14,6 +14,20 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "15A12B9A8B7A477CF2D4ABEF"
+               BuildableName = "App_watchOS.app"
+               BlueprintName = "App_watchOS"
+               ReferencedContainer = "container:ProjectXcode12.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "991BCE8E861305DE596EACFE"
                BuildableName = "App_iOS.app"
                BlueprintName = "App_iOS"
@@ -26,50 +40,20 @@
       buildConfiguration = "Production Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      codeCoverageEnabled = "YES"
       onlyGenerateCoverageForSpecifiedTargets = "NO"
-      shouldUseLaunchSchemeArgsEnv = "NO"
-      disableMainThreadChecker = "YES">
+      shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "9E7BCAAA9E855251D33C5730"
-               BuildableName = "App_iOS_Tests.xctest"
-               BlueprintName = "App_iOS_Tests"
-               ReferencedContainer = "container:ProjectXcode12.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "6122E4E48939B4937E588B23"
-               BuildableName = "App_iOS_UITests.xctest"
-               BlueprintName = "App_iOS_UITests"
-               ReferencedContainer = "container:ProjectXcode12.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "991BCE8E861305DE596EACFE"
-            BuildableName = "App_iOS.app"
-            BlueprintName = "App_iOS"
+            BlueprintIdentifier = "15A12B9A8B7A477CF2D4ABEF"
+            BuildableName = "App_watchOS.app"
+            BlueprintName = "App_watchOS"
             ReferencedContainer = "container:ProjectXcode12.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <CommandLineArguments>
-         <CommandLineArgument
-            argument = "MyDisabledArgument"
-            isEnabled = "NO">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "MyEnabledArgument"
-            isEnabled = "YES">
-         </CommandLineArgument>
       </CommandLineArguments>
    </TestAction>
    <LaunchAction
@@ -81,33 +65,24 @@
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
-      allowLocationSimulation = "YES"
-      disableMainThreadChecker = "YES"
-      stopOnEveryMainThreadCheckerIssue = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      allowLocationSimulation = "YES">
+      <RemoteRunnable
+         BundleIdentifier = "com.apple.Carousel"
+         runnableDebuggingMode = "2">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "991BCE8E861305DE596EACFE"
-            BuildableName = "App_iOS.app"
-            BlueprintName = "App_iOS"
+            BlueprintIdentifier = "15A12B9A8B7A477CF2D4ABEF"
+            BuildableName = "App_watchOS.app"
+            BlueprintName = "App_watchOS"
             ReferencedContainer = "container:ProjectXcode12.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </RemoteRunnable>
       <CommandLineArguments>
-         <CommandLineArgument
-            argument = "MyDisabledArgument"
-            isEnabled = "NO">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "MyEnabledArgument"
-            isEnabled = "YES">
-         </CommandLineArgument>
       </CommandLineArguments>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Production Release"
-      shouldUseLaunchSchemeArgsEnv = "NO"
+      shouldUseLaunchSchemeArgsEnv = "YES"
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
@@ -115,21 +90,13 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "991BCE8E861305DE596EACFE"
-            BuildableName = "App_iOS.app"
-            BlueprintName = "App_iOS"
+            BlueprintIdentifier = "15A12B9A8B7A477CF2D4ABEF"
+            BuildableName = "App_watchOS.app"
+            BlueprintName = "App_watchOS"
             ReferencedContainer = "container:ProjectXcode12.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <CommandLineArguments>
-         <CommandLineArgument
-            argument = "MyDisabledArgument"
-            isEnabled = "NO">
-         </CommandLineArgument>
-         <CommandLineArgument
-            argument = "MyEnabledArgument"
-            isEnabled = "YES">
-         </CommandLineArgument>
       </CommandLineArguments>
    </ProfileAction>
    <AnalyzeAction

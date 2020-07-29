@@ -26,9 +26,31 @@
       buildConfiguration = "Test Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
+      codeCoverageEnabled = "YES"
       onlyGenerateCoverageForSpecifiedTargets = "NO"
-      shouldUseLaunchSchemeArgsEnv = "YES">
+      shouldUseLaunchSchemeArgsEnv = "NO"
+      disableMainThreadChecker = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "9E7BCAAA9E855251D33C5730"
+               BuildableName = "App_iOS_Tests.xctest"
+               BlueprintName = "App_iOS_Tests"
+               ReferencedContainer = "container:ProjectXcode12.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "6122E4E48939B4937E588B23"
+               BuildableName = "App_iOS_UITests.xctest"
+               BlueprintName = "App_iOS_UITests"
+               ReferencedContainer = "container:ProjectXcode12.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
@@ -40,6 +62,14 @@
          </BuildableReference>
       </MacroExpansion>
       <CommandLineArguments>
+         <CommandLineArgument
+            argument = "MyDisabledArgument"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "MyEnabledArgument"
+            isEnabled = "YES">
+         </CommandLineArgument>
       </CommandLineArguments>
    </TestAction>
    <LaunchAction
@@ -51,7 +81,9 @@
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
-      allowLocationSimulation = "YES">
+      allowLocationSimulation = "YES"
+      disableMainThreadChecker = "YES"
+      stopOnEveryMainThreadCheckerIssue = "YES">
       <BuildableProductRunnable
          runnableDebuggingMode = "0">
          <BuildableReference
@@ -63,11 +95,19 @@
          </BuildableReference>
       </BuildableProductRunnable>
       <CommandLineArguments>
+         <CommandLineArgument
+            argument = "MyDisabledArgument"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "MyEnabledArgument"
+            isEnabled = "YES">
+         </CommandLineArgument>
       </CommandLineArguments>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Test Release"
-      shouldUseLaunchSchemeArgsEnv = "YES"
+      shouldUseLaunchSchemeArgsEnv = "NO"
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
@@ -82,6 +122,14 @@
          </BuildableReference>
       </BuildableProductRunnable>
       <CommandLineArguments>
+         <CommandLineArgument
+            argument = "MyDisabledArgument"
+            isEnabled = "NO">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "MyEnabledArgument"
+            isEnabled = "YES">
+         </CommandLineArgument>
       </CommandLineArguments>
    </ProfileAction>
    <AnalyzeAction
