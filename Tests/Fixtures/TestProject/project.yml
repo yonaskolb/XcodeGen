@@ -115,7 +115,6 @@ targets:
       - target: Framework2_iOS
         weak: true
       - target: App_watchOS
-      - target: App_Clip
       - target: iMessageApp
       - sdk: Contacts.framework
       - bundle: BundleX.bundle
@@ -145,27 +144,6 @@ targets:
           - App_iOS/inputList.xcfilelist
         outputFileLists:
           - App_iOS/outputList.xcfilelist
-
-  App_Clip:
-    type: application.on-demand-install-capable
-    platform: iOS
-    entitlements:
-      path: App_Clip/Clip.entitlements
-      properties:
-        com.apple.developer.parent-application-identifiers: [$(AppIdentifierPrefix)com.project.app]
-        com.apple.security.application-groups: group.com.app
-    sources:
-      App_Clip
-    settings:
-      INFOPLIST_FILE: App_Clip/Info.plist
-      PRODUCT_BUNDLE_IDENTIFIER: com.project.app.clip
-    dependencies:
-      - target: Framework_iOS
-      - target: StaticLibrary_ObjC_iOS
-    scheme:
-      testTargets:
-        - App_Clip_Tests
-        - App_Clip_UITests
 
   EntitledApp:
     type: application
@@ -281,22 +259,6 @@ targets:
     dependencies:
       - target: App_iOS
 
-  App_Clip_Tests:
-    type: bundle.unit-test
-    platform: iOS
-    sources: App_iOS_Tests
-    dependencies:
-      - target: App_Clip
-      - target: TestFramework
-      - carthage: swift-tagged
-        linkType: static
-  App_Clip_UITests:
-    type: bundle.ui-testing
-    platform: iOS
-    sources: App_Clip_UITests
-    dependencies:
-      - target: App_Clip
-
   App_macOS_Tests:
     type: bundle.unit-test
     platform: macOS
@@ -358,7 +320,6 @@ aggregateTargets:
       CUSTOM: value
     targets:
       - App_iOS
-      - App_Clip
       - Framework_iOS
     settings:
       MY_SETTING: hello
