@@ -19,6 +19,7 @@ targets:
     attributes:
       ProvisioningStyle: Automatic
     sources:
+      - path: StandaloneFiles/Standalone.swift
       - path: App_iOS
         name: App
         compilerFlags:
