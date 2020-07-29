@@ -4,7 +4,7 @@
 <dict>
 	<key>com.apple.developer.parent-application-identifiers</key>
 	<array>
-		<string>$(AppIdentifierPrefix)com.project.app</string>
+		<string>$(AppIdentifierPrefix)com.project.appwithclip</string>
 	</array>
 	<key>com.apple.security.application-groups</key>
 	<string>group.com.app</string>

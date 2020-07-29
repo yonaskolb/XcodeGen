@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "D137C04B64B7052419A2DF4E"
+               BlueprintIdentifier = "559F6E334A370096461729A9"
                BuildableName = "App_Clip.app"
                BlueprintName = "App_Clip"
-               ReferencedContainer = "container:Project.xcodeproj">
+               ReferencedContainer = "container:ProjectXcode12.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,30 +33,30 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "63BFF75AA22335E3DDD5E26A"
+               BlueprintIdentifier = "672091195E5FD01EDDFB6714"
                BuildableName = "App_Clip_Tests.xctest"
                BlueprintName = "App_Clip_Tests"
-               ReferencedContainer = "container:Project.xcodeproj">
+               ReferencedContainer = "container:ProjectXcode12.xcodeproj">
             </BuildableReference>
          </TestableReference>
          <TestableReference
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "91C3E922A8482E07649971B9"
+               BlueprintIdentifier = "6BBA6FB48BEE245ED177B75E"
                BuildableName = "App_Clip_UITests.xctest"
                BlueprintName = "App_Clip_UITests"
-               ReferencedContainer = "container:Project.xcodeproj">
+               ReferencedContainer = "container:ProjectXcode12.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "D137C04B64B7052419A2DF4E"
+            BlueprintIdentifier = "559F6E334A370096461729A9"
             BuildableName = "App_Clip.app"
             BlueprintName = "App_Clip"
-            ReferencedContainer = "container:Project.xcodeproj">
+            ReferencedContainer = "container:ProjectXcode12.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <CommandLineArguments>
@@ -76,10 +76,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "D137C04B64B7052419A2DF4E"
+            BlueprintIdentifier = "559F6E334A370096461729A9"
             BuildableName = "App_Clip.app"
             BlueprintName = "App_Clip"
-            ReferencedContainer = "container:Project.xcodeproj">
+            ReferencedContainer = "container:ProjectXcode12.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <CommandLineArguments>
@@ -95,10 +95,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "D137C04B64B7052419A2DF4E"
+            BlueprintIdentifier = "559F6E334A370096461729A9"
             BuildableName = "App_Clip.app"
             BlueprintName = "App_Clip"
-            ReferencedContainer = "container:Project.xcodeproj">
+            ReferencedContainer = "container:ProjectXcode12.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <CommandLineArguments>

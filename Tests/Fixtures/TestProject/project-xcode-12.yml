@@ -1,0 +1,72 @@
+# NOTE: when Xcode 12 goes GM and the Xcode 11 CI can be dropped,
+# this file can be merged into project.yml. As-is, it generates
+# targets that Xcode 11 doesn't understand or know how to build.
+name: ProjectXcode12
+include: [project.yml]
+targets:
+  App_iOS_With_Clip:
+    type: application
+    platform: iOS
+    attributes:
+      ProvisioningStyle: Automatic
+    sources:
+      - path: StandaloneFiles/Standalone.swift
+      - path: App_iOS
+        name: App
+        compilerFlags:
+          - "-Werror"
+        excludes:
+          - "**/excluded-file"
+          - "excluded-file"
+          - "Model.xcmappingmodel"
+    settings:
+      INFOPLIST_FILE: App_iOS/Info.plist
+      PRODUCT_BUNDLE_IDENTIFIER: com.project.appwithclip
+    dependencies:
+      - target: Framework_iOS
+      - target: StaticLibrary_ObjC_iOS
+      - target: App_Clip
+      - sdk: Contacts.framework
+    scheme:
+      configVariants:
+        - Test
+        - Staging
+        - Production
+
+  App_Clip:
+    type: application.on-demand-install-capable
+    platform: iOS
+    entitlements:
+      path: App_Clip/Clip.entitlements
+      properties:
+        com.apple.developer.parent-application-identifiers: [$(AppIdentifierPrefix)com.project.appwithclip]
+        com.apple.security.application-groups: group.com.app
+    sources:
+      App_Clip
+    settings:
+      INFOPLIST_FILE: App_Clip/Info.plist
+      PRODUCT_BUNDLE_IDENTIFIER: com.project.appwithclip.clip
+    dependencies:
+      - target: Framework_iOS
+      - target: StaticLibrary_ObjC_iOS
+    scheme:
+      testTargets:
+        - App_Clip_Tests
+        - App_Clip_UITests
+
+  App_Clip_Tests:
+    type: bundle.unit-test
+    platform: iOS
+    sources: App_iOS_Tests
+    dependencies:
+      - target: App_Clip
+      - target: TestFramework
+      - carthage: swift-tagged
+        linkType: static
+
+  App_Clip_UITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources: App_Clip_UITests
+    dependencies:
+      - target: App_Clip
