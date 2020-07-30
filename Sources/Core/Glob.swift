@@ -57,7 +57,9 @@ public class Glob: Collection {
 
     public static let defaultBlacklistedDirectories = ["node_modules", "Pods"]
 
-    private var isDirectoryCache = [String: Bool]()
+    // NSDictionary showed much better get/set performances when compared to Swift native dictionary when
+    // instrumenting (Swift 5.2.4) the isDirectory(path:) method
+    private static let isDirectoryCache = NSMutableDictionary()
 
     public let behavior: Behavior
     public let blacklistedDirectories: [String]
@@ -194,19 +196,19 @@ public class Glob: Collection {
     }
 
     private func isDirectory(path: String) -> Bool {
-        if let isDirectory = isDirectoryCache[path] {
-            return isDirectory
+        if let isDirectory = Self.isDirectoryCache.object(forKey: path as NSString) as? NSNumber {
+            return isDirectory.boolValue
         }
 
         var isDirectoryBool = ObjCBool(false)
         let isDirectory = FileManager.default.fileExists(atPath: path, isDirectory: &isDirectoryBool) && isDirectoryBool.boolValue
-        isDirectoryCache[path] = isDirectory
+        isDirectoryCache.setObject(isDirectoryBool.boolValue as NSNumber, forKey: path as NSString)
 
         return isDirectory
     }
 
     private func clearCaches() {
-        isDirectoryCache.removeAll()
+        isDirectoryCache.removeAllObjects()
     }
 
     private func populateFiles(gt: glob_t, includeFiles: Bool) {
