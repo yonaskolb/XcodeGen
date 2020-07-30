@@ -104,8 +104,6 @@ public class Glob: Collection {
         paths = Array(Set(paths)).sorted { lhs, rhs in
             lhs.compare(rhs) != ComparisonResult.orderedDescending
         }
-
-        clearCaches()
     }
 
     // MARK: Subscript Support
@@ -202,13 +200,9 @@ public class Glob: Collection {
 
         var isDirectoryBool = ObjCBool(false)
         let isDirectory = FileManager.default.fileExists(atPath: path, isDirectory: &isDirectoryBool) && isDirectoryBool.boolValue
-        isDirectoryCache.setObject(isDirectoryBool.boolValue as NSNumber, forKey: path as NSString)
+        Self.isDirectoryCache.setObject(isDirectoryBool.boolValue as NSNumber, forKey: path as NSString)
 
         return isDirectory
-    }
-
-    private func clearCaches() {
-        isDirectoryCache.removeAllObjects()
     }
 
     private func populateFiles(gt: glob_t, includeFiles: Bool) {
