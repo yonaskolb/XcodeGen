@@ -16,6 +16,7 @@
 
 #### Fixed
 - Remove force-unwrapping causing crash for `LegacyTarget`s [#982](https://github.com/yonaskolb/XcodeGen/pull/982) @jcolicchio
+- Improve performance of directory traversing by replacing cache type. [#918](https://github.com/yonaskolb/XcodeGen/issues/918) @tcamin
 
 ## 2.18.0
 
