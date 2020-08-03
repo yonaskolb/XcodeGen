@@ -123,6 +123,7 @@ Note that target names can also be changed by adding a `name` property to a targ
 - [ ] **generateEmptyDirectories**: **Bool** - If this is `true` then empty directories will be added to project too else will be missed. Defaults to `false`.
 - [ ] **findCarthageFrameworks**: **Bool** - When this is set to `true`, all the invididual frameworks for Carthage dependencies will automatically be found. This property can be overriden individually for each carthage dependency - for more details see See **findFrameworks** in the [Dependency](#dependency) section. Defaults to `false`.
 - [ ] **localPackagesGroup**: **String** - The group name that local packages are put into. This defaults to `Packages`
+- [ ] **fileTypes**: **[String: [FileType](#filetype)]** - A list of default file options for specific file extensions across the project. Values in [Sources](#sources) will overwrite these settings.
 - [ ] **preGenCommand**: **String** - A bash command to run before the project has been generated. If the project isn't generated due to no changes when using the cache then this won't run. This is useful for running things like generating resources files before the project is regenerated.
 - [ ] **postGenCommand**: **String** - A bash command to run after the project has been generated. If the project isn't generated due to no changes when using the cache then this won't run. This is useful for running things like `pod install` only if the project is actually regenerated.
 
@@ -150,6 +151,15 @@ options:
 ```
 
 In this example, we set up the order of two groups. First one is the main group, i.e. the project, note that in this case, we shouldn't set `pattern` option and the second group order is for groups whose names ends with `Screen`.
+
+### FileType
+Default settings for file extensions. See [Sources](#sources) for more documentation on properties. If you overwrite an extension that XcodeGen already provides by default, you will need to provide all the settings.
+
+- [ ] **file**: **Bool** - Whether this extension should be treated like a file. Defaults to true.
+- [ ] **buildPhase**: **String** - The default build phase.
+- [ ] **attributes**: **[String]** - Additional settings attributes that will be applied to any build files.
+- [ ] **resourceTags**: **[String]** - On Demand Resource Tags that will be applied to any resources. This also adds to the project attribute's knownAssetTags.
+- [ ] **compilerFlags**: **[String]** - A list of compiler flags to add.
 
 ### Configs
 

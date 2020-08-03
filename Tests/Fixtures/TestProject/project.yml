@@ -11,6 +11,11 @@ options:
   groupSortPosition: top
   preGenCommand: echo "This is a pre-gen command"
   postGenCommand: scripts/script.sh
+  fileTypes:
+    abc:
+      buildPhase: none
+    abcd:
+      buildPhase: none
 fileGroups:
   - Configs
   - FileGroup

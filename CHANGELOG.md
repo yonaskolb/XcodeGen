@@ -3,7 +3,8 @@
 ## Next Version
 
 #### Added
-- Add `onlyCopyFilesOnInstall` option to targets for the Embed Files build phase. [#912](https://github.com/yonaskolb/XcodeGen/pull/912) @jsorge
+- Added `options.fileTypes` which lets you set cross project defaults for certain file extensions [#914](https://github.com/yonaskolb/XcodeGen/pull/914) @yonaskolb
+- Added `onlyCopyFilesOnInstall` option to targets for the Embed Files build phase. [#912](https://github.com/yonaskolb/XcodeGen/pull/912) @jsorge
 
 #### Fixed
 - Treat all directories with known UTI as file wrapper. [#896](https://github.com/yonaskolb/XcodeGen/pull/896) @KhaosT

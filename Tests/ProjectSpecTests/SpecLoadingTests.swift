@@ -1110,6 +1110,12 @@ class SpecLoadingTests: XCTestCase {
                         watchOS: "3.0",
                         macOS: "10.12.1"
                     ),
+                    fileTypes: ["abc": FileType(
+                        file: false,
+                        buildPhase: .sources,
+                        attributes: ["a1", "a2"],
+                        resourceTags: ["r1", "r2"],
+                        compilerFlags: ["c1", "c2"])],
                     findCarthageFrameworks: true,
                     preGenCommand: "swiftgen",
                     postGenCommand: "pod install"
@@ -1125,6 +1131,13 @@ class SpecLoadingTests: XCTestCase {
                     "findCarthageFrameworks": true,
                     "preGenCommand": "swiftgen",
                     "postGenCommand": "pod install",
+                    "fileTypes": ["abc": [
+                        "file": false,
+                        "buildPhase": "sources",
+                        "attributes": ["a1", "a2"],
+                        "resourceTags": ["r1", "r2"],
+                        "compilerFlags": ["c1", "c2"],
+                        ]]
                 ]]
                 let parsedSpec = try getProjectSpec(dictionary)
                 try expect(parsedSpec) == expected
