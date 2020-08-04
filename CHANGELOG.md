@@ -2,6 +2,8 @@
 
 ## Next Version
 
+- Add `Scheme.Test.TestTarget.skipped` to allow skipping of an entire test target. [#916](https://github.com/yonaskolb/XcodeGen/pull/916) @codeman9
+
 ## 2.17.0
 
 #### Added
