@@ -865,7 +865,11 @@ public class PBXProjGenerator {
                 let packageDependency = addObject(
                     XCSwiftPackageProductDependency(productName: productName, package: packageReference)
                 )
-                packageDependencies.append(packageDependency)
+
+                // Add package dependency if linking is true.
+                if dependency.link ?? true {
+                    packageDependencies.append(packageDependency)
+                }
 
                 let link = dependency.link ?? (target.type != .staticLibrary)
                 if link {
