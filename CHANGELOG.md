@@ -2,6 +2,8 @@
 
 ## Next Version
 
+## 2.17.0
+
 #### Added
 - Added `options.fileTypes` which lets you set cross project defaults for certain file extensions [#914](https://github.com/yonaskolb/XcodeGen/pull/914) @yonaskolb
 - Added `onlyCopyFilesOnInstall` option to targets for the Embed Files build phase. [#912](https://github.com/yonaskolb/XcodeGen/pull/912) @jsorge
@@ -13,6 +15,8 @@
 
 #### Internal
 - Updated to XcodeProj 7.13.0 [#908](https://github.com/yonaskolb/XcodeGen/pull/908) @brentleyjones
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.16.0...2.17.0)
 
 ## 2.16.0
 
