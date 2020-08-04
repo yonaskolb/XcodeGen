@@ -500,6 +500,9 @@ extension Scheme.Test.TestTarget: JSONEncodable {
         if parallelizable != Scheme.Test.TestTarget.parallelizableDefault {
             dict["parallelizable"] = parallelizable
         }
+        if skipped {
+            dict["skipped"] = skipped
+        }
 
         return dict
     }
