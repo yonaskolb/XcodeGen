@@ -559,6 +559,9 @@ class ProjectGeneratorTests: XCTestCase {
                         Dependency(type: .package(product: "RxCocoa"), reference: "RxSwift"),
                         Dependency(type: .package(product: "RxRelay"), reference: "RxSwift"),
 
+                        // Validate - Do not link package
+                        Dependency(type: .package(product: "KeychainAccess"), reference: "KeychainAccess", link: false),
+
                         // Statically linked, so don't embed into test
                         Dependency(type: .target, reference: staticLibrary.name),
 
@@ -679,25 +682,37 @@ class ProjectGeneratorTests: XCTestCase {
                     iosFrameworkB.filename,
                 ])
 
+                let XCTestPath = "Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework"
+                let GXToolsPath = "Platforms/iPhoneOS.platform/Developer/Library/PrivateFrameworks/GXTools.framework"
+                let XCTAutomationPath = "Platforms/iPhoneOS.platform/Developer/Library/PrivateFrameworks/XCTAutomationSupport.framework"
                 let stickerPack = Target(
                     name: "MyStickerApp",
                     type: .stickerPack,
                     platform: .iOS,
                     dependencies: [
                         Dependency(type: .sdk(root: nil), reference: "NotificationCenter.framework"),
-                        Dependency(type: .sdk(root: "DEVELOPER_DIR"), reference: "Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework"),
+                        Dependency(type: .sdk(root: "DEVELOPER_DIR"), reference: XCTestPath),
+                        Dependency(type: .sdk(root: "DEVELOPER_DIR"), reference: GXToolsPath, embed: true),
+                        Dependency(type: .sdk(root: "DEVELOPER_DIR"), reference: XCTAutomationPath, embed: true, codeSign: true),
                     ]
                 )
                 expectedResourceFiles[stickerPack.name] = nil
                 expectedLinkedFiles[stickerPack.name] = Set([
                     "XCTest.framework",
                     "NotificationCenter.framework",
+                    "GXTools.framework",
+                    "XCTAutomationSupport.framework"
+                ])
+                expectedEmbeddedFrameworks[stickerPack.name] = Set([
+                    "GXTools.framework",
+                    "XCTAutomationSupport.framework"
                 ])
 
                 let targets = [app, iosFrameworkZ, iosFrameworkX, staticLibrary, resourceBundle, iosFrameworkA, iosFrameworkB, appTest, appTestWithoutTransitive, stickerPack]
 
                 let packages: [String: SwiftPackage] = [
                     "RxSwift": .remote(url: "https://github.com/ReactiveX/RxSwift", versionRequirement: .upToNextMajorVersion("5.1.1")),
+                    "KeychainAccess": .remote(url: "https://github.com/kishikawakatsumi/KeychainAccess", versionRequirement: .upToNextMajorVersion("4.2.0"))
                 ]
 
                 let project = Project(
