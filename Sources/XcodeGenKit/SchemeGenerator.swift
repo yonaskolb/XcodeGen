@@ -183,7 +183,7 @@ public class SchemeGenerator {
 
         let testables = zip(testTargets, testBuildTargetEntries).map { testTarget, testBuilEntries in
             XCScheme.TestableReference(
-                skipped: false,
+                skipped: testTarget.skipped,
                 parallelizable: testTarget.parallelizable,
                 randomExecutionOrdering: testTarget.randomExecutionOrder,
                 buildableReference: testBuilEntries.buildableReference,

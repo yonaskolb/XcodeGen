@@ -172,17 +172,20 @@ public struct Scheme: Equatable {
             public let targetReference: TargetReference
             public var randomExecutionOrder: Bool
             public var parallelizable: Bool
+            public var skipped: Bool
             public var skippedTests: [String]
 
             public init(
                 targetReference: TargetReference,
                 randomExecutionOrder: Bool = randomExecutionOrderDefault,
                 parallelizable: Bool = parallelizableDefault,
+                skipped: Bool = false,
                 skippedTests: [String] = []
             ) {
                 self.targetReference = targetReference
                 self.randomExecutionOrder = randomExecutionOrder
                 self.parallelizable = parallelizable
+                self.skipped = skipped
                 self.skippedTests = skippedTests
             }
 
@@ -191,6 +194,7 @@ public struct Scheme: Equatable {
                     targetReference = try TargetReference(value)
                     randomExecutionOrder = false
                     parallelizable = false
+                    skipped = false
                     skippedTests = []
                 } catch {
                     fatalError(SpecParsingError.invalidTargetReference(value).description)
@@ -474,6 +478,7 @@ extension Scheme.Test.TestTarget: JSONObjectConvertible {
         targetReference = try TargetReference(jsonDictionary.json(atKeyPath: "name"))
         randomExecutionOrder = jsonDictionary.json(atKeyPath: "randomExecutionOrder") ?? Scheme.Test.TestTarget.randomExecutionOrderDefault
         parallelizable = jsonDictionary.json(atKeyPath: "parallelizable") ?? Scheme.Test.TestTarget.parallelizableDefault
+        skipped = jsonDictionary.json(atKeyPath: "skipped") ?? false
         skippedTests = jsonDictionary.json(atKeyPath: "skippedTests") ?? []
     }
 }
@@ -494,6 +499,9 @@ extension Scheme.Test.TestTarget: JSONEncodable {
         }
         if parallelizable != Scheme.Test.TestTarget.parallelizableDefault {
             dict["parallelizable"] = parallelizable
+        }
+        if skipped {
+            dict["skipped"] = skipped
         }
 
         return dict
