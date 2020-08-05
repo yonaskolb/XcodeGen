@@ -7,6 +7,7 @@
 
 #### Fixed
 - Allow SDK dependencies to be embedded. [#922](https://github.com/yonaskolb/XcodeGen/pull/922) @k-thorat 
+- Prevent setting presets from overwriting settings in target xcconfig files. [#924](https://github.com/yonaskolb/XcodeGen/pull/924) @k-thorat
 
 ## 2.17.0
 
