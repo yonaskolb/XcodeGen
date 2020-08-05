@@ -827,6 +827,13 @@ public class PBXProjGenerator {
                 )
                 targetFrameworkBuildFiles.append(buildFile)
 
+                if dependency.embed == true {
+                    let embedFile = addObject(
+                        PBXBuildFile(file: fileReference, settings: getEmbedSettings(dependency: dependency, codeSign: dependency.codeSign ?? true))
+                    )
+                    copyFrameworksReferences.append(embedFile)
+                }
+
             case .carthage(let findFrameworks, let linkType):
                 let findFrameworks = findFrameworks ?? project.options.findCarthageFrameworks
                 let allDependencies = findFrameworks

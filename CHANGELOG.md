@@ -4,6 +4,9 @@
 
 - Add `Scheme.Test.TestTarget.skipped` to allow skipping of an entire test target. [#916](https://github.com/yonaskolb/XcodeGen/pull/916) @codeman9
 
+#### Fixed
+- Allow SDK dependencies to be embedded. [#922](https://github.com/yonaskolb/XcodeGen/pull/922) @k-thorat 
+
 ## 2.17.0
 
 #### Added
