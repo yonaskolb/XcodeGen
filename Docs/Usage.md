@@ -87,7 +87,7 @@ targets:
 ```
 
 ### xcodebuild environment variables
-You can also always overide any build settings on CI when building by passing specific build settings to xcodebuild like so:
+You can also always override any build settings on CI when building by passing specific build settings to xcodebuild like so:
 
 ```sh
 DEVELOPMENT_TEAM=XXXXXXXXX xcodebuild ...
