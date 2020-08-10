@@ -128,10 +128,6 @@ extension TargetSource: JSONEncodable {
             dict["optional"] = optional
         }
 
-        if dict.count == 0 {
-            return path
-        }
-
         dict["path"] = path
 
         return dict
