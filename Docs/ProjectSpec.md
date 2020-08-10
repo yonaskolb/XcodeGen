@@ -45,7 +45,7 @@ You can also use environment variables in your configuration file, by using `${S
 - [ ] **settings**: **[Settings](#settings)** - Project specific settings. Default base and config type settings will be applied first before any settings defined here
 - [ ] **settingGroups**: **[Setting Groups](#setting-groups)** - Setting groups mapped by name
 - [ ] **targets**: **[String: [Target](#target)]** - The list of targets in the project mapped by name
-- [ ] **fileGroups**: **[String]** - A list of paths to add to the root of the project. These aren't files that will be included in your targets, but that you'd like to include in the project hierachy anyway. For example a folder of xcconfig files that aren't already added by any target sources, or a Readme file.
+- [ ] **fileGroups**: **[String]** - A list of paths to add to the root of the project. These aren't files that will be included in your targets, but that you'd like to include in the project hierarchy anyway. For example a folder of xcconfig files that aren't already added by any target sources, or a Readme file.
 - [ ] **schemes**: **[Scheme](#scheme)** - A list of schemes by name. This allows more control over what is found in [Target Scheme](#target-scheme)
 - [ ] **targetTemplates**: **[String: [Target Template](#target-template)]** - a list of targets that can be used as templates for actual targets which reference them via a `template` property. They can be used to extract common target settings. Works great in combination with `include`.
 - [ ] **packages**: **[String: [Swift Package](#swift-package)]** - a map of Swift packages by name.
@@ -73,7 +73,7 @@ include:
 
 By default specs are merged additively. That is for every value:
 
-- if existing value and new value are both dictionaries merge them and continue down the hierachy
+- if existing value and new value are both dictionaries merge them and continue down the hierarchy
 - if existing value and new value are both an array then add the new value to the end of the array
 - otherwise replace the existing value with the new value
 
