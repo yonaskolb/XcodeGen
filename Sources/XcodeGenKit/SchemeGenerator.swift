@@ -50,7 +50,6 @@ public class SchemeGenerator {
 
         for target in project.targets {
             if let targetScheme = target.scheme {
-
                 if targetScheme.configVariants.isEmpty {
                     let schemeName = target.name
 
@@ -163,7 +162,7 @@ public class SchemeGenerator {
 
         let schemeTarget: Target?
 
-        if let targetName = scheme.run?.executableName {
+        if let targetName = scheme.run?.executable {
             schemeTarget = project.getTarget(targetName)
         } else {
             schemeTarget = target ?? project.getTarget(scheme.build.targets.first!.target.name)
@@ -184,7 +183,7 @@ public class SchemeGenerator {
 
         let testables = zip(testTargets, testBuildTargetEntries).map { testTarget, testBuilEntries in
             XCScheme.TestableReference(
-                skipped: false,
+                skipped: testTarget.skipped,
                 parallelizable: testTarget.parallelizable,
                 randomExecutionOrdering: testTarget.randomExecutionOrder,
                 buildableReference: testBuilEntries.buildableReference,
@@ -234,7 +233,7 @@ public class SchemeGenerator {
             }
             locationScenarioReference = XCScheme.LocationScenarioReference(identifier: identifier, referenceType: referenceType.rawValue)
         }
-        
+
         let launchAction = XCScheme.LaunchAction(
             runnable: shouldExecuteOnLaunch ? runnables.launch : nil,
             buildConfiguration: scheme.run?.config ?? defaultDebugConfig.name,
@@ -285,7 +284,9 @@ public class SchemeGenerator {
             launchAction: launchAction,
             profileAction: profileAction,
             analyzeAction: analyzeAction,
-            archiveAction: archiveAction
+            archiveAction: archiveAction,
+            wasCreatedForAppExtension: schemeTarget
+                .flatMap { $0.type.isExtension ? true : nil }
         )
     }
 

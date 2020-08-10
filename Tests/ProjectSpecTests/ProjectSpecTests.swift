@@ -126,7 +126,7 @@ class ProjectSpecTests: XCTestCase {
                 project.settings = invalidSettings
                 project.configFiles = ["invalidConfig": "invalidConfigFile"]
                 project.fileGroups = ["invalidFileGroup"]
-                project.packages = ["invalidLocalPackage" : .local(path: "invalidLocalPackage")]
+                project.packages = ["invalidLocalPackage": .local(path: "invalidLocalPackage")]
                 project.settingGroups = ["settingGroup1": Settings(
                     configSettings: ["invalidSettingGroupConfig": [:]],
                     groups: ["invalidSettingGroupSettingGroup"]
@@ -283,7 +283,7 @@ class ProjectSpecTests: XCTestCase {
                 var project = baseProject
                 let externalProjectPath = fixturePath + "TestProject/AnotherProject/AnotherProject.xcodeproj"
                 project.projectReferences = [
-                    ProjectReference(name: "validProjectRef", path: externalProjectPath.string)
+                    ProjectReference(name: "validProjectRef", path: externalProjectPath.string),
                 ]
                 project.targets = [
                     Target(
@@ -547,8 +547,8 @@ class ProjectSpecTests: XCTestCase {
                                                                                                                  settingsTarget: "foo")]))],
                                    packages: [
                                        "Yams": .remote(
-                                                url: "https://github.com/jpsim/Yams",
-                                                versionRequirement: .upToNextMajorVersion("2.0.0")
+                                           url: "https://github.com/jpsim/Yams",
+                                           versionRequirement: .upToNextMajorVersion("2.0.0")
                                        ),
                                    ],
                                    options: SpecOptions(minimumXcodeGenVersion: Version(major: 3, minor: 4, patch: 5),

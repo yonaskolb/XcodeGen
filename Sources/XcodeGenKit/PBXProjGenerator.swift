@@ -55,7 +55,7 @@ public class PBXProjGenerator {
         for group in project.fileGroups {
             try sourceGenerator.getFileGroups(path: group)
         }
-        
+
         let buildConfigs: [XCBuildConfiguration] = project.configs.map { config in
             let buildSettings = project.getProjectBuildSettings(config: config)
             var baseConfiguration: PBXFileReference?
@@ -212,7 +212,7 @@ public class PBXProjGenerator {
                 )
                 return [
                     "ProductGroup": group,
-                    "ProjectRef": projectReference
+                    "ProjectRef": projectReference,
                 ]
             }
 
@@ -281,10 +281,10 @@ public class PBXProjGenerator {
                 target.sources.map { $0.resourceTags }.flatMap { $0 }
             }.flatMap { $0 }
         ).sorted()
-        
+
         var projectAttributes: [String: Any] = ["LastUpgradeCheck": project.xcodeVersion]
             .merged(project.attributes)
-        
+
         if !assetTags.isEmpty {
             projectAttributes["knownAssetTags"] = assetTags
         }
@@ -431,7 +431,7 @@ public class PBXProjGenerator {
             let defaultConfigurationName = targetObject.buildConfigurationList?.defaultConfigurationName,
             let defaultConfiguration = buildConfigurations.first(where: { $0.name == defaultConfigurationName }) ?? buildConfigurations.first else {
 
-                fatalError("Missing target info")
+            fatalError("Missing target info")
         }
 
         let buildSettings = defaultConfiguration.buildSettings
@@ -476,7 +476,7 @@ public class PBXProjGenerator {
         return addObject(shellScriptPhase)
     }
 
-    func generateCopyFiles(targetName: String, copyFiles: TargetSource.BuildPhase.CopyFilesSettings, buildPhaseFiles: [PBXBuildFile]) -> PBXCopyFilesBuildPhase {
+    func generateCopyFiles(targetName: String, copyFiles: BuildPhaseSpec.CopyFilesSettings, buildPhaseFiles: [PBXBuildFile]) -> PBXCopyFilesBuildPhase {
         let copyFilesBuildPhase = PBXCopyFilesBuildPhase(
             dstPath: copyFiles.subpath,
             dstSubfolderSpec: copyFiles.destination.destination,
@@ -574,28 +574,28 @@ public class PBXProjGenerator {
         let childGroups = group.children.compactMap { $0 as? PBXGroup }
         childGroups.forEach(sortGroups)
     }
-    
+
     public func setupGroupOrdering(group: PBXGroup) {
         let groupOrdering = project.options.groupOrdering.first { groupOrdering in
             let groupName = group.nameOrPath
-            
+
             if groupName == groupOrdering.pattern {
                 return true
             }
-            
+
             if let regex = groupOrdering.regex {
                 return regex.isMatch(to: groupName)
             }
-            
+
             return false
         }
-        
+
         if let order = groupOrdering?.order {
             let files = group.children.filter { $0 is PBXFileReference }
             var groups = group.children.filter { $0 is PBXGroup }
-            
+
             var filteredGroups = [PBXFileElement]()
-            
+
             for groupName in order {
                 guard let group = groups.first(where: { $0.nameOrPath == groupName }) else {
                     continue
@@ -606,7 +606,7 @@ public class PBXProjGenerator {
             }
 
             filteredGroups += groups
-            
+
             switch project.options.groupSortPosition {
             case .top:
                 group.children = filteredGroups + files
@@ -616,7 +616,7 @@ public class PBXProjGenerator {
                 break
             }
         }
-        
+
         // sort sub groups
         let childGroups = group.children.compactMap { $0 as? PBXGroup }
         childGroups.forEach(setupGroupOrdering)
@@ -644,7 +644,7 @@ public class PBXProjGenerator {
         var dependencies: [PBXTargetDependency] = []
         var targetFrameworkBuildFiles: [PBXBuildFile] = []
         var frameworkBuildPaths = Set<String>()
-        var copyFilesBuildPhasesFiles: [TargetSource.BuildPhase.CopyFilesSettings: [PBXBuildFile]] = [:]
+        var copyFilesBuildPhasesFiles: [BuildPhaseSpec.CopyFilesSettings: [PBXBuildFile]] = [:]
         var copyFrameworksReferences: [PBXBuildFile] = []
         var copyResourcesReferences: [PBXBuildFile] = []
         var copyBundlesReferences: [PBXBuildFile] = []
@@ -684,7 +684,7 @@ public class PBXProjGenerator {
             let dependencyLinkage = dependencyTarget.type.defaultLinkage
             let link = dependency.link ??
                 ((dependencyLinkage == .dynamic && target.type != .staticLibrary) ||
-                (dependencyLinkage == .static && target.type.isExecutable))
+                    (dependencyLinkage == .static && target.type.isExecutable))
 
             if link, let dependencyFile = embedFileReference {
                 let buildFile = addObject(
@@ -827,6 +827,13 @@ public class PBXProjGenerator {
                 )
                 targetFrameworkBuildFiles.append(buildFile)
 
+                if dependency.embed == true {
+                    let embedFile = addObject(
+                        PBXBuildFile(file: fileReference, settings: getEmbedSettings(dependency: dependency, codeSign: dependency.codeSign ?? true))
+                    )
+                    copyFrameworksReferences.append(embedFile)
+                }
+
             case .carthage(let findFrameworks, let linkType):
                 let findFrameworks = findFrameworks ?? project.options.findCarthageFrameworks
                 let allDependencies = findFrameworks
@@ -843,7 +850,7 @@ public class PBXProjGenerator {
                     self.carthageFrameworksByPlatform[target.platform.carthageName, default: []].insert(fileReference)
 
                     let isStaticLibrary = target.type == .staticLibrary
-                    let isCarthageStaticLink = (dependency.carthageLinkType == .static || dependency.carthageLinkType == .staticBinary)
+                    let isCarthageStaticLink = dependency.carthageLinkType == .static
                     if dependency.link ?? (!isStaticLibrary && !isCarthageStaticLink) {
                         let buildFile = self.addObject(
                             PBXBuildFile(file: fileReference, settings: getDependencyFrameworkSettings(dependency: dependency))
@@ -854,7 +861,7 @@ public class PBXProjGenerator {
             // Embedding handled by iterating over `carthageDependencies` below
             case .package(let product):
                 let packageReference = packageReferences[dependency.reference]
-                
+
                 // If package's reference is none and there is no specified package in localPackages,
                 // then ignore the package specified as dependency.
                 if packageReference == nil, !localPackageReferences.contains(dependency.reference) {
@@ -865,7 +872,11 @@ public class PBXProjGenerator {
                 let packageDependency = addObject(
                     XCSwiftPackageProductDependency(productName: productName, package: packageReference)
                 )
-                packageDependencies.append(packageDependency)
+
+                // Add package dependency if linking is true.
+                if dependency.link ?? true {
+                    packageDependencies.append(packageDependency)
+                }
 
                 let link = dependency.link ?? (target.type != .staticLibrary)
                 if link {
@@ -879,7 +890,7 @@ public class PBXProjGenerator {
                     )
                     dependencies.append(targetDependency)
                 }
-                
+
                 if dependency.embed == true {
                     let embedFile = addObject(
                         PBXBuildFile(product: packageDependency,
@@ -919,7 +930,7 @@ public class PBXProjGenerator {
             }
             let fileReference = sourceGenerator.getFileReference(path: frameworkPath, inPath: platformPath)
 
-            if (dependency.carthageLinkType == .static || dependency.carthageLinkType == .staticBinary) {
+            if dependency.carthageLinkType == .static {
                 guard isFromTopLevelTarget else { continue } // ignore transitive dependencies if static
                 let linkFile = addObject(
                     PBXBuildFile(file: fileReference, settings: getDependencyFrameworkSettings(dependency: dependency))
@@ -955,8 +966,8 @@ public class PBXProjGenerator {
             return getBuildFilesForSourceFiles(filteredSourceFiles)
         }
 
-        func getBuildFilesForCopyFilesPhases() -> [TargetSource.BuildPhase.CopyFilesSettings: [PBXBuildFile]] {
-            var sourceFilesByCopyFiles: [TargetSource.BuildPhase.CopyFilesSettings: [SourceFile]] = [:]
+        func getBuildFilesForCopyFilesPhases() -> [BuildPhaseSpec.CopyFilesSettings: [PBXBuildFile]] {
+            var sourceFilesByCopyFiles: [BuildPhaseSpec.CopyFilesSettings: [SourceFile]] = [:]
             for sourceFile in sourceFiles {
                 guard case let .copyFiles(copyFilesSettings)? = sourceFile.buildPhase else { continue }
                 sourceFilesByCopyFiles[copyFilesSettings, default: []].append(sourceFile)
@@ -1076,12 +1087,15 @@ public class PBXProjGenerator {
         copyFrameworksReferences += getBuildFilesForPhase(.frameworks)
         if !copyFrameworksReferences.isEmpty {
 
+            let copyFilesActionMask: UInt = 8
             let copyFilesPhase = addObject(
                 PBXCopyFilesBuildPhase(
                     dstPath: "",
                     dstSubfolderSpec: .frameworks,
                     name: "Embed Frameworks",
-                    files: copyFrameworksReferences
+                    buildActionMask: target.onlyCopyFilesOnInstall ? copyFilesActionMask : PBXBuildPhase.defaultBuildActionMask,
+                    files: copyFrameworksReferences,
+                    runOnlyForDeploymentPostprocessing: target.onlyCopyFilesOnInstall ? true : false
                 )
             )
 
@@ -1207,11 +1221,7 @@ public class PBXProjGenerator {
                     let carthagePlatformBuildPath = "$(PROJECT_DIR)/" + carthageResolver.buildPath(for: target.platform, linkType: .dynamic)
                     carthagePlatformBuildPaths.insert(carthagePlatformBuildPath)
                 }
-                if carthageDependencies.contains(where: { $0.dependency.carthageLinkType == .staticBinary }) {
-                    let carthagePlatformBuildPath = "$(PROJECT_DIR)/" + carthageResolver.buildPath(for: target.platform, linkType: .staticBinary)
-                    carthagePlatformBuildPaths.insert(carthagePlatformBuildPath)
-                }
-                configFrameworkBuildPaths = Array(carthagePlatformBuildPaths).sorted() + frameworkBuildPaths.sorted()
+                configFrameworkBuildPaths = carthagePlatformBuildPaths.sorted() + frameworkBuildPaths.sorted()
             } else {
                 configFrameworkBuildPaths = frameworkBuildPaths.sorted()
             }

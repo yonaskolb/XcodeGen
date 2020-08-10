@@ -11,10 +11,16 @@ options:
   groupSortPosition: top
   preGenCommand: echo "This is a pre-gen command"
   postGenCommand: scripts/script.sh
+  fileTypes:
+    abc:
+      buildPhase: none
+    abcd:
+      buildPhase: none
 fileGroups:
   - Configs
   - FileGroup
   - SomeFile
+  - Utilities
 projectReferences:
   AnotherProject:
     path: ./AnotherProject/AnotherProject.xcodeproj
@@ -118,6 +124,7 @@ targets:
       - sdk: Contacts.framework
       - bundle: BundleX.bundle
       - target: AnotherProject/ExternalTarget
+    onlyCopyFilesOnInstall: true
     scheme:
       testTargets:
         - App_iOS_Tests
@@ -189,6 +196,7 @@ targets:
     sources: iMessageExtension
     settings:
       PRODUCT_BUNDLE_IDENTIFIER: com.project.iMessageApp.extension
+    scheme: {}
 
   iMessageStickersExtension:
     type: app-extension.messages-sticker-pack

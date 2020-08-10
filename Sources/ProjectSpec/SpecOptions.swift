@@ -27,6 +27,7 @@ public struct SpecOptions: Equatable {
     public var transitivelyLinkDependencies: Bool
     public var groupSortPosition: GroupSortPosition
     public var groupOrdering: [GroupOrdering]
+    public var fileTypes: [String: FileType]
     public var generateEmptyDirectories: Bool
     public var findCarthageFrameworks: Bool
     public var localPackagesGroup: String?
@@ -87,6 +88,7 @@ public struct SpecOptions: Equatable {
         transitivelyLinkDependencies: Bool = transitivelyLinkDependenciesDefault,
         groupSortPosition: GroupSortPosition = groupSortPositionDefault,
         groupOrdering: [GroupOrdering] = [],
+        fileTypes: [String: FileType] = [:],
         generateEmptyDirectories: Bool = generateEmptyDirectoriesDefault,
         findCarthageFrameworks: Bool = findCarthageFrameworksDefault,
         localPackagesGroup: String? = nil,
@@ -110,6 +112,7 @@ public struct SpecOptions: Equatable {
         self.transitivelyLinkDependencies = transitivelyLinkDependencies
         self.groupSortPosition = groupSortPosition
         self.groupOrdering = groupOrdering
+        self.fileTypes = fileTypes
         self.generateEmptyDirectories = generateEmptyDirectories
         self.findCarthageFrameworks = findCarthageFrameworks
         self.localPackagesGroup = localPackagesGroup
@@ -146,6 +149,11 @@ extension SpecOptions: JSONObjectConvertible {
         localPackagesGroup = jsonDictionary.json(atKeyPath: "localPackagesGroup")
         preGenCommand = jsonDictionary.json(atKeyPath: "preGenCommand")
         postGenCommand = jsonDictionary.json(atKeyPath: "postGenCommand")
+        if jsonDictionary["fileTypes"] != nil {
+            fileTypes = try jsonDictionary.json(atKeyPath: "fileTypes")
+        } else {
+            fileTypes = [:]
+        }
     }
 }
 
@@ -169,6 +177,7 @@ extension SpecOptions: JSONEncodable {
             "localPackagesGroup": localPackagesGroup,
             "preGenCommand": preGenCommand,
             "postGenCommand": postGenCommand,
+            "fileTypes": fileTypes
         ]
 
         if settingPresets != SpecOptions.settingPresetsDefault {

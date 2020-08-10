@@ -1,12 +1,36 @@
 # Change Log
 
 ## Next Version
+
+#### Added
+- Add `Scheme.Test.TestTarget.skipped` to allow skipping of an entire test target. [#916](https://github.com/yonaskolb/XcodeGen/pull/916) @codeman9
+
+#### Fixed
+- Allow SDK dependencies to be embedded. [#922](https://github.com/yonaskolb/XcodeGen/pull/922) @k-thorat 
+
+## 2.17.0
+
+#### Added
+- Added `options.fileTypes` which lets you set cross project defaults for certain file extensions [#914](https://github.com/yonaskolb/XcodeGen/pull/914) @yonaskolb
+- Added `onlyCopyFilesOnInstall` option to targets for the Embed Files build phase. [#912](https://github.com/yonaskolb/XcodeGen/pull/912) @jsorge
+
+#### Fixed
+- Treat all directories with known UTI as file wrapper. [#896](https://github.com/yonaskolb/XcodeGen/pull/896) @KhaosT
+- Generated schemes for application extensions now contain `wasCreatedForAppExtension = YES`. [#898](https://github.com/yonaskolb/XcodeGen/issues/898) @muizidn
+- Allow package dependencies to use `link: false` [#920](https://github.com/yonaskolb/XcodeGen/pull/920) @k-thorat   
+
+#### Internal
+- Updated to XcodeProj 7.13.0 [#908](https://github.com/yonaskolb/XcodeGen/pull/908) @brentleyjones
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.16.0...2.17.0)
+
+## 2.16.0
+
 #### Added
 - Improve speed of metadata parsing and dependency resolution. [#803](https://github.com/yonaskolb/XcodeGen/pull/803) @michaeleisel
 - Improve support for iOS sticker packs and add support for `launchAutomaticallySubstyle` to run schemes. [#824](https://github.com/yonaskolb/XcodeGen/pull/824) @scelis
 - Add --project-root option to generate command. [#828](https://github.com/yonaskolb/XcodeGen/pull/828) @ileitch
 - Add an ability to set an order of groups with `options.groupOrdering` [#613](https://github.com/yonaskolb/XcodeGen/pull/613) @Beniamiiin
-- Add `staticBinary` linkType for Carthage dependency [#847](https://github.com/yonaskolb/XcodeGen/pull/847) @d-date
 - Add the ability to output a dependency graph in graphviz format [#852](https://github.com/yonaskolb/XcodeGen/pull/852) @jeffctown
 - Adds uncluttering the project manifest dumped to YAML from empty values [#858](https://github.com/yonaskolb/XcodeGen/pull/858) @paciej00
 - Added ability to name the executable target when declaring schemes. [#869](https://github.com/yonaskolb/XcodeGen/pull/869) @elland
@@ -31,6 +55,8 @@
 - Fixed issue where wrapper folders may not include correctly in the generated project. [#862](https://github.com/yonaskolb/XcodeGen/pull/862) @KhaosT
 - Compile `xcmappingmodel` files instead of copying bundle resources. [#834](https://github.com/yonaskolb/XcodeGen/pull/834) @jcolicchio
 - Fixed issue where `Complie Sources` build phase is generated for resource bundles even when they have no files to compile [#878](https://github.com/yonaskolb/XcodeGen/pull/878) @nkukushkin
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.15.1...2.16.0)
 
 ## 2.15.1
 

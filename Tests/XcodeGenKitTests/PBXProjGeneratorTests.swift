@@ -28,7 +28,7 @@ extension Project {
             return xcodeProject
         }
     }
-    
+
 }
 
 extension PBXProj {
@@ -54,7 +54,7 @@ extension PBXProj {
         }
         try validateGroup(mainGroup)
     }
-    
+
     func getMainGroup(function: String = #function, file: String = #file, line: Int = #line) throws -> PBXGroup {
         guard let mainGroup = projects.first?.mainGroup else {
             throw failure("Couldn't find main group", file: file, line: line)
@@ -107,7 +107,7 @@ class PBXProjGeneratorTests: XCTestCase {
             $0.after {
                 removeDirectories()
             }
-            
+
             $0.it("setups group ordering with groupSortPosition = .top") {
                 var options = SpecOptions()
                 options.groupSortPosition = .top
@@ -118,7 +118,7 @@ class PBXProjGeneratorTests: XCTestCase {
                             "Resources",
                             "Tests",
                             "Support files",
-                            "Configurations"
+                            "Configurations",
                         ]
                     ),
                     GroupOrdering(
@@ -128,11 +128,11 @@ class PBXProjGeneratorTests: XCTestCase {
                             "Presenter",
                             "Interactor",
                             "Entities",
-                            "Assembly"
+                            "Assembly",
                         ]
-                    )
+                    ),
                 ]
-                
+
                 let directories = """
                     Configurations:
                       - file.swift
@@ -160,19 +160,19 @@ class PBXProjGeneratorTests: XCTestCase {
                       - file.swift
                 """
                 try createDirectories(directories)
-                
+
                 let target = Target(name: "Test", type: .application, platform: .iOS, sources: ["Configurations", "Resources", "Sources", "Support files", "Tests", "UITests"])
                 let project = Project(basePath: directoryPath, name: "Test", targets: [target], options: options)
                 let projGenerator = PBXProjGenerator(project: project)
-                
+
                 let pbxProj = try project.generatePbxProj()
                 let group = try pbxProj.getMainGroup()
-                
+
                 projGenerator.setupGroupOrdering(group: group)
-                
+
                 let mainGroups = group.children.map { $0.nameOrPath }
                 try expect(mainGroups) == ["Sources", "Resources", "Tests", "Support files", "Configurations", "UITests", "Products"]
-                
+
                 let screenGroups = group.children
                     .first { $0.nameOrPath == "Sources" }
                     .flatMap { $0 as? PBXGroup }?
@@ -183,7 +183,7 @@ class PBXProjGeneratorTests: XCTestCase {
                     .map { $0.nameOrPath }
                 try expect(screenGroups) == ["View", "Presenter", "Interactor", "Entities", "Assembly", "mainScreen1.swift", "mainScreen2.swift"]
             }
-            
+
             $0.it("setups group ordering with groupSortPosition = .bottom") {
                 var options = SpecOptions()
                 options.groupSortPosition = .bottom
@@ -194,7 +194,7 @@ class PBXProjGeneratorTests: XCTestCase {
                             "Resources",
                             "Tests",
                             "Support files",
-                            "Configurations"
+                            "Configurations",
                         ]
                     ),
                     GroupOrdering(
@@ -204,11 +204,11 @@ class PBXProjGeneratorTests: XCTestCase {
                             "Presenter",
                             "Interactor",
                             "Entities",
-                            "Assembly"
+                            "Assembly",
                         ]
-                    )
+                    ),
                 ]
-                
+
                 let directories = """
                     Configurations:
                       - file.swift
@@ -236,19 +236,19 @@ class PBXProjGeneratorTests: XCTestCase {
                       - file.swift
                 """
                 try createDirectories(directories)
-                
+
                 let target = Target(name: "Test", type: .application, platform: .iOS, sources: ["Configurations", "Resources", "Sources", "Support files", "Tests", "UITests"])
                 let project = Project(basePath: directoryPath, name: "Test", targets: [target], options: options)
                 let projGenerator = PBXProjGenerator(project: project)
-                
+
                 let pbxProj = try project.generatePbxProj()
                 let group = try pbxProj.getMainGroup()
-                
+
                 projGenerator.setupGroupOrdering(group: group)
-                
+
                 let mainGroups = group.children.map { $0.nameOrPath }
                 try expect(mainGroups) == ["Sources", "Resources", "Tests", "Support files", "Configurations", "UITests", "Products"]
-                
+
                 let screenGroups = group.children
                     .first { $0.nameOrPath == "Sources" }
                     .flatMap { $0 as? PBXGroup }?
@@ -261,5 +261,5 @@ class PBXProjGeneratorTests: XCTestCase {
             }
         }
     }
-    
+
 }

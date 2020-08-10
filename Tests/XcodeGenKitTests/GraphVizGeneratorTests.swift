@@ -14,8 +14,8 @@ private let app = Target(
         Dependency(type: .carthage(findFrameworks: true, linkType: .static), reference: "MyStaticFramework"),
         Dependency(type: .carthage(findFrameworks: true, linkType: .dynamic), reference: "MyDynamicFramework"),
         Dependency(type: .framework, reference: "MyExternalFramework"),
-        Dependency(type: .package(product: "MyPackage"), reference:"MyPackage"),
-        Dependency(type: .sdk(root: "MySDK"), reference: "MySDK")
+        Dependency(type: .package(product: "MyPackage"), reference: "MyPackage"),
+        Dependency(type: .sdk(root: "MySDK"), reference: "MySDK"),
     ]
 )
 
@@ -34,7 +34,6 @@ private let uiTest = Target(
     dependencies: [Dependency(type: .target, reference: "MyApp")]
 )
 
-
 private let targets = [app, framework, uiTest]
 
 class GraphVizGeneratorTests: XCTestCase {
@@ -46,28 +45,28 @@ class GraphVizGeneratorTests: XCTestCase {
                 try expect(graph.nodes.count) == 16
             }
             $0.it("generates box nodes") {
-                try expect(graph.nodes.filter({ $0.shape == .box }).count) == 16
+                try expect(graph.nodes.filter { $0.shape == .box }.count) == 16
             }
             $0.it("generates the expected carthage nodes") {
-                try expect(graph.nodes.filter({ $0.label?.contains("[carthage]") ?? false }).count) == 2
+                try expect(graph.nodes.filter { $0.label?.contains("[carthage]") ?? false }.count) == 2
             }
             $0.it("generates the expected sdk nodes") {
-                try expect(graph.nodes.filter({ $0.label?.contains("[sdk]") ?? false }).count) == 1
+                try expect(graph.nodes.filter { $0.label?.contains("[sdk]") ?? false }.count) == 1
             }
             $0.it("generates the expected Framework nodes") {
-                try expect(graph.nodes.filter({ $0.label?.contains("[framework]") ?? false }).count) == 1
+                try expect(graph.nodes.filter { $0.label?.contains("[framework]") ?? false }.count) == 1
             }
             $0.it("generates the expected package nodes") {
-                try expect(graph.nodes.filter({ $0.label?.contains("[package]") ?? false }).count) == 1
+                try expect(graph.nodes.filter { $0.label?.contains("[package]") ?? false }.count) == 1
             }
             $0.it("generates the expected bundle nodes") {
-                try expect(graph.nodes.filter({ $0.label?.contains("[bundle]") ?? false }).count) == 1
+                try expect(graph.nodes.filter { $0.label?.contains("[bundle]") ?? false }.count) == 1
             }
             $0.it("generates the expected edges") {
                 try expect(graph.edges.count) == 8
             }
             $0.it("generates dashed edges") {
-                try expect(graph.edges.filter({ $0.style == .dashed }).count) == 8
+                try expect(graph.edges.filter { $0.style == .dashed }.count) == 8
             }
             $0.it("generates the expected output") {
                 let output = GraphVizGenerator().generateModuleGraphViz(targets: targets)
@@ -103,4 +102,3 @@ class GraphVizGeneratorTests: XCTestCase {
         }
     }
 }
-

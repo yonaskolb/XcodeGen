@@ -9,7 +9,7 @@ public enum SwiftPackage: Equatable {
 
     case remote(url: String, versionRequirement: VersionRequirement)
     case local(path: String)
-    
+
     public var isLocal: Bool {
         if case .local = self {
             return true
@@ -80,7 +80,7 @@ extension SwiftPackage: JSONEncodable {
         case .local(let path):
             dictionary["path"] = path
         }
-        
+
         return dictionary
     }
 }

@@ -21,6 +21,7 @@ extension PBXProductType {
              .messagesApplication,
              .messagesExtension,
              .ocUnitTestBundle,
+             .onDemandInstallCapableApplication,
              .stickerPack,
              .tvExtension,
              .uiTestBundle,

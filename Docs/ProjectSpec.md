@@ -123,6 +123,7 @@ Note that target names can also be changed by adding a `name` property to a targ
 - [ ] **generateEmptyDirectories**: **Bool** - If this is `true` then empty directories will be added to project too else will be missed. Defaults to `false`.
 - [ ] **findCarthageFrameworks**: **Bool** - When this is set to `true`, all the invididual frameworks for Carthage dependencies will automatically be found. This property can be overriden individually for each carthage dependency - for more details see See **findFrameworks** in the [Dependency](#dependency) section. Defaults to `false`.
 - [ ] **localPackagesGroup**: **String** - The group name that local packages are put into. This defaults to `Packages`
+- [ ] **fileTypes**: **[String: [FileType](#filetype)]** - A list of default file options for specific file extensions across the project. Values in [Sources](#sources) will overwrite these settings.
 - [ ] **preGenCommand**: **String** - A bash command to run before the project has been generated. If the project isn't generated due to no changes when using the cache then this won't run. This is useful for running things like generating resources files before the project is regenerated.
 - [ ] **postGenCommand**: **String** - A bash command to run after the project has been generated. If the project isn't generated due to no changes when using the cache then this won't run. This is useful for running things like `pod install` only if the project is actually regenerated.
 
@@ -150,6 +151,15 @@ options:
 ```
 
 In this example, we set up the order of two groups. First one is the main group, i.e. the project, note that in this case, we shouldn't set `pattern` option and the second group order is for groups whose names ends with `Screen`.
+
+### FileType
+Default settings for file extensions. See [Sources](#sources) for more documentation on properties. If you overwrite an extension that XcodeGen already provides by default, you will need to provide all the settings.
+
+- [ ] **file**: **Bool** - Whether this extension should be treated like a file. Defaults to true.
+- [ ] **buildPhase**: **String** - The default build phase.
+- [ ] **attributes**: **[String]** - Additional settings attributes that will be applied to any build files.
+- [ ] **resourceTags**: **[String]** - On Demand Resource Tags that will be applied to any resources. This also adds to the project attribute's knownAssetTags.
+- [ ] **compilerFlags**: **[String]** - A list of compiler flags to add.
 
 ### Configs
 
@@ -239,6 +249,7 @@ Settings are merged in the following order: groups, base, configs.
 - [ ] **transitivelyLinkDependencies**: **Bool** - If this is not specified the value from the project set in [Options](#options)`.transitivelyLinkDependencies` will be used.
 - [ ] **directlyEmbedCarthageDependencies**: **Bool** - If this is `true` Carthage dependencies will be embedded using an `Embed Frameworks` build phase instead of the `copy-frameworks` script. Defaults to `true` for all targets except iOS/tvOS/watchOS Applications.
 - [ ] **requiresObjCLinking**: **Bool** - If this is `true` any targets that link to this target will have `-ObjC` added to their `OTHER_LDFLAGS`. This is required if a static library has any catagories or extensions on Objective-C code. See [this guide](https://pewpewthespells.com/blog/objc_linker_flags.html#objc) for more details. Defaults to `true` if `type` is `library.static`. If you are 100% sure you don't have catagories or extensions on Objective-C code (pure Swift with no use of Foundation/UIKit) you can set this to `false`, otherwise it's best to leave it alone.
+- [ ]**onlyCopyFilesOnInstall**: **Bool** – If this is `true`, the `Embed Frameworks` build phase will have the "Copy only when installing" chekbox checked. Defaults to `false`.
 - [ ] **preBuildScripts**: **[[Build Script](#build-script)]** - Build scripts that run *before* any other build phases
 - [ ] **postCompileScripts**: **[[Build Script](#build-script)]** - Build scripts that run after the Compile Sources phase
 - [ ] **postBuildScripts**: **[[Build Script](#build-script)]** - Build scripts that run *after* any other build phases
@@ -423,7 +434,7 @@ This only applies to `framework` dependencies. Implicit framework dependencies a
 **Carthage Dependency**
 
 - [ ] **findFrameworks**: **Bool** - Whether to find Carthage frameworks automatically. Defaults to `true` .
-- [ ] **linkType**: **String** - Dependency link type. This value should be `dynamic`,  `static` or `staticBinary`. Default value is `dynamic` . When you use Carthage with binary only framework with `binary` keyword, use `staticBinary`.
+- [ ] **linkType**: **String** - Dependency link type. This value should be `dynamic` or `static`. Default value is `dynamic` .
 
 Carthage frameworks are expected to be in `CARTHAGE_BUILD_PATH/PLATFORM/FRAMEWORK.framework` where:
 
@@ -770,7 +781,7 @@ Scheme run scripts added via **preActions** or **postActions**. They run before 
 A multiline script can be written using the various YAML multiline methods, for example with `|`. See [Build Script](#build-script).
 
 ### Run Action
-- [ ] **executableName**: **String** - the name of the target to launch as an executable. Defaults to the first build target in the scheme
+- [ ] **executable**: **String** - the name of the target to launch as an executable. Defaults to the first build target in the scheme
 - [ ] **customLLDBInit**: **String** - the absolute path to the custom `.lldbinit` file
 
 ### Test Action
@@ -784,6 +795,7 @@ A multiline script can be written using the various YAML multiline methods, for 
 - [x] **name**: **String** - The name of the target
 - [ ] **parallelizable**: **Bool** - Whether to run tests in parallel. Defaults to false
 - [ ] **randomExecutionOrder**: **Bool** - Whether to run tests in a random order. Defaults to false
+- [ ] **skipped**: **Bool** - Whether to skip all of the test target tests. Defaults to false
 - [ ] **skippedTests**: **[String]** - List of tests in the test target to skip. Defaults to empty.
 
 ### Archive Action

@@ -37,7 +37,7 @@ public struct Scheme: Equatable {
             case predefined = "1"
             case gpx = "0"
         }
-        
+
         public var allow: Bool
         public var defaultLocation: String?
 
@@ -112,12 +112,12 @@ public struct Scheme: Equatable {
         public var launchAutomaticallySubstyle: String?
         public var debugEnabled: Bool
         public var simulateLocation: SimulateLocation?
-        public var executableName: String?
+        public var executable: String?
         public var customLLDBInit: String?
 
         public init(
             config: String,
-            executableName: String? = nil,
+            executable: String? = nil,
             commandLineArguments: [String: Bool] = [:],
             preActions: [ExecutionAction] = [],
             postActions: [ExecutionAction] = [],
@@ -176,17 +176,20 @@ public struct Scheme: Equatable {
             public let targetReference: TargetReference
             public var randomExecutionOrder: Bool
             public var parallelizable: Bool
+            public var skipped: Bool
             public var skippedTests: [String]
 
             public init(
                 targetReference: TargetReference,
                 randomExecutionOrder: Bool = randomExecutionOrderDefault,
                 parallelizable: Bool = parallelizableDefault,
+                skipped: Bool = false,
                 skippedTests: [String] = []
             ) {
                 self.targetReference = targetReference
                 self.randomExecutionOrder = randomExecutionOrder
                 self.parallelizable = parallelizable
+                self.skipped = skipped
                 self.skippedTests = skippedTests
             }
 
@@ -195,6 +198,7 @@ public struct Scheme: Equatable {
                     targetReference = try TargetReference(value)
                     randomExecutionOrder = false
                     parallelizable = false
+                    skipped = false
                     skippedTests = []
                 } catch {
                     fatalError(SpecParsingError.invalidTargetReference(value).description)
@@ -339,7 +343,7 @@ extension Scheme.SimulateLocation: JSONObjectConvertible {
 extension Scheme.SimulateLocation: JSONEncodable {
     public func toJSONValue() -> Any {
         var dict: [String: Any] = [
-            "allow": allow
+            "allow": allow,
         ]
 
         if let defaultLocation = defaultLocation {
@@ -364,7 +368,7 @@ extension Scheme.Run: JSONObjectConvertible {
         region = jsonDictionary.json(atKeyPath: "region")
         debugEnabled = jsonDictionary.json(atKeyPath: "debugEnabled") ?? Scheme.Run.debugEnabledDefault
         simulateLocation = jsonDictionary.json(atKeyPath: "simulateLocation")
-        executableName = jsonDictionary.json(atKeyPath: "executable")
+        executable = jsonDictionary.json(atKeyPath: "executable")
 
         // launchAutomaticallySubstyle is defined as a String in XcodeProj but its value is often
         // an integer. Parse both to be nice.
@@ -373,7 +377,7 @@ extension Scheme.Run: JSONObjectConvertible {
         } else if let string: String = jsonDictionary.json(atKeyPath: "launchAutomaticallySubstyle") {
             launchAutomaticallySubstyle = string
         }
-        
+
         if let askLaunch: Bool = jsonDictionary.json(atKeyPath: "askForAppToLaunch") {
             askForAppToLaunch = askLaunch
         }
@@ -393,12 +397,13 @@ extension Scheme.Run: JSONEncodable {
             "region": region,
             "askForAppToLaunch": askForAppToLaunch,
             "launchAutomaticallySubstyle": launchAutomaticallySubstyle,
+            "executable": executable,
         ]
 
         if disableMainThreadChecker != Scheme.Run.disableMainThreadCheckerDefault {
             dict["disableMainThreadChecker"] = disableMainThreadChecker
         }
-      
+
         if stopOnEveryMainThreadCheckerIssue != Scheme.Run.stopOnEveryMainThreadCheckerIssueDefault {
             dict["stopOnEveryMainThreadCheckerIssue"] = stopOnEveryMainThreadCheckerIssue
         }
@@ -488,6 +493,7 @@ extension Scheme.Test.TestTarget: JSONObjectConvertible {
         targetReference = try TargetReference(jsonDictionary.json(atKeyPath: "name"))
         randomExecutionOrder = jsonDictionary.json(atKeyPath: "randomExecutionOrder") ?? Scheme.Test.TestTarget.randomExecutionOrderDefault
         parallelizable = jsonDictionary.json(atKeyPath: "parallelizable") ?? Scheme.Test.TestTarget.parallelizableDefault
+        skipped = jsonDictionary.json(atKeyPath: "skipped") ?? false
         skippedTests = jsonDictionary.json(atKeyPath: "skippedTests") ?? []
     }
 }
@@ -508,6 +514,9 @@ extension Scheme.Test.TestTarget: JSONEncodable {
         }
         if parallelizable != Scheme.Test.TestTarget.parallelizableDefault {
             dict["parallelizable"] = parallelizable
+        }
+        if skipped {
+            dict["skipped"] = skipped
         }
 
         return dict
