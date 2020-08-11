@@ -122,13 +122,12 @@ extension TargetSource: JSONEncodable {
             "buildPhase": buildPhase?.toJSONValue(),
             "createIntermediateGroups": createIntermediateGroups,
             "resourceTags": resourceTags,
+            "path": path,
         ]
 
         if optional != TargetSource.optionalDefault {
             dict["optional"] = optional
         }
-
-        dict["path"] = path
 
         return dict
     }
