@@ -311,6 +311,7 @@ schemes:
       simulateLocation:
         allow: true
         defaultLocation: Honolulu, HI, USA
+      customLLDBInit: ${SRCROOT}/.lldbinit
     test:
       gatherCoverageData: true
       targets:
@@ -318,6 +319,7 @@ schemes:
         - name: App_iOS_Tests
           parallelizable: true
           randomExecutionOrder: true
+      customLLDBInit: ${SRCROOT}/.lldbinit
 targetTemplates:
   MyTemplate:
     scheme: {}
