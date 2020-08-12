@@ -782,12 +782,14 @@ A multiline script can be written using the various YAML multiline methods, for 
 
 ### Run Action
 - [ ] **executable**: **String** - the name of the target to launch as an executable. Defaults to the first build target in the scheme
+- [ ] **customLLDBInit**: **String** - the absolute path to the custom `.lldbinit` file
 
 ### Test Action
 
 - [ ] **gatherCoverageData**: **Bool** - a boolean that indicates if this scheme should gather coverage data. This defaults to false
 - [ ] **coverageTargets**: **[String]** - a list of targets to gather code coverage. Each entry can either be a simple string, or a string using [Project Reference](#project-reference)
 - [ ] **targets**: **[[Test Target](#test-target)]** - a list of targets to test. Each entry can either be a simple string, or a [Test Target](#test-target)
+- [ ] **customLLDBInit**: **String** - the absolute path to the custom `.lldbinit` file
 
 #### Test Target
 - [x] **name**: **String** - The name of the target

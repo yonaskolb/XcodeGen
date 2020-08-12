@@ -51,7 +51,8 @@ class SchemeGeneratorTests: XCTestCase {
                 let scheme = Scheme(
                     name: "MyScheme",
                     build: Scheme.Build(targets: [buildTarget], preActions: [preAction]),
-                    run: Scheme.Run(config: "Debug", askForAppToLaunch: true, launchAutomaticallySubstyle: "2", simulateLocation: simulateLocation)
+                    run: Scheme.Run(config: "Debug", askForAppToLaunch: true, launchAutomaticallySubstyle: "2", simulateLocation: simulateLocation, customLLDBInit: "/sample/.lldbinit"),
+                    test: Scheme.Test(config: "Debug", customLLDBInit: "/test/.lldbinit")
                 )
                 let project = Project(
                     name: "test",
@@ -99,6 +100,8 @@ class SchemeGeneratorTests: XCTestCase {
                 try expect(xcscheme.launchAction?.allowLocationSimulation) == true
                 try expect(xcscheme.launchAction?.locationScenarioReference?.referenceType) == Scheme.SimulateLocation.ReferenceType.predefined.rawValue
                 try expect(xcscheme.launchAction?.locationScenarioReference?.identifier) == "New York, NY, USA"
+                try expect(xcscheme.launchAction?.customLLDBInitFile) == "/sample/.lldbinit"
+                try expect(xcscheme.testAction?.customLLDBInitFile) == "/test/.lldbinit"
             }
 
             $0.it("generates scheme with multiple configs") {

@@ -219,7 +219,8 @@ public class SchemeGenerator {
             commandlineArguments: testCommandLineArgs,
             environmentVariables: testVariables,
             language: scheme.test?.language,
-            region: scheme.test?.region
+            region: scheme.test?.region,
+            customLLDBInitFile: scheme.test?.customLLDBInit
         )
 
         let allowLocationSimulation = scheme.run?.simulateLocation?.allow ?? true
@@ -250,7 +251,8 @@ public class SchemeGenerator {
             environmentVariables: launchVariables,
             language: scheme.run?.language,
             region: scheme.run?.region,
-            launchAutomaticallySubstyle: scheme.run?.launchAutomaticallySubstyle
+            launchAutomaticallySubstyle: scheme.run?.launchAutomaticallySubstyle,
+            customLLDBInitFile: scheme.run?.customLLDBInit
         )
 
         let profileAction = XCScheme.ProfileAction(
