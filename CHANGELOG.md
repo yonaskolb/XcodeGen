@@ -6,9 +6,10 @@
 - Add `Scheme.Test.TestTarget.skipped` to allow skipping of an entire test target. [#916](https://github.com/yonaskolb/XcodeGen/pull/916) @codeman9
 - Added ability to set custom LLDBInit scripts for launch and test schemes [#929](https://github.com/yonaskolb/XcodeGen/pull/929) @polac24
 - Adds App Clip support. [#909](https://github.com/yonaskolb/XcodeGen/pull/909) @brentleyjones @dflems
+- Application extension schemes now default to `launchAutomaticallySubstyle = 2` and the correct debugger and launcher identifiers [#932](https://github.com/yonaskolb/XcodeGen/pull/932) @brentleyjones
 
 #### Fixed
-- Allow SDK dependencies to be embedded. [#922](https://github.com/yonaskolb/XcodeGen/pull/922) @k-thorat 
+- Allow SDK dependencies to be embedded. [#922](https://github.com/yonaskolb/XcodeGen/pull/922) @k-thorat
 
 ## 2.17.0
 
@@ -19,7 +20,7 @@
 #### Fixed
 - Treat all directories with known UTI as file wrapper. [#896](https://github.com/yonaskolb/XcodeGen/pull/896) @KhaosT
 - Generated schemes for application extensions now contain `wasCreatedForAppExtension = YES`. [#898](https://github.com/yonaskolb/XcodeGen/issues/898) @muizidn
-- Allow package dependencies to use `link: false` [#920](https://github.com/yonaskolb/XcodeGen/pull/920) @k-thorat   
+- Allow package dependencies to use `link: false` [#920](https://github.com/yonaskolb/XcodeGen/pull/920) @k-thorat
 - Fixed issue computing relative paths.  [#915](https://github.com/yonaskolb/XcodeGen/pull/915) @andrewreach
 
 #### Internal
