@@ -2,6 +2,8 @@
 
 ## Next Version
 
+- Added ability to set custom platform for dependency [#934](https://github.com/yonaskolb/XcodeGen/pull/934) @raptorxcz
+
 ## 2.22.0
 
 #### Added

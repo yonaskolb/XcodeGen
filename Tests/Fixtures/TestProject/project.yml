@@ -116,12 +116,16 @@ targets:
       PRODUCT_BUNDLE_IDENTIFIER: com.project.app
     dependencies:
       - target: Framework_iOS
+        platform: all
       - target: StaticLibrary_ObjC_iOS
       - carthage: Result
+        platform: macOS
       - carthage: SwiftyJSON
         linkType: static
+        platform: iOS
       - target: Framework2_iOS
         weak: true
+        platform: iOS
       - target: App_watchOS
       - target: iMessageApp
       - sdk: Contacts.framework

@@ -428,6 +428,7 @@ A dependency can be one of a 6 types:
 - [ ] **codeSign**: **Bool** - Whether the `codeSignOnCopy` setting is applied when embedding framework. Defaults to true
 - [ ] **removeHeaders**: **Bool** - Whether the `removeHeadersOnCopy` setting is applied when embedding the framework. Defaults to true
 - [ ] **weak**: **Bool** - Whether the `Weak` setting is applied when linking the framework. Defaults to false
+- [ ] **platform**: **String** - Add dependency to selected platforms. Available platforms are: **iOS**, **macOS** and **all**. Defaults is **all**
 
 **Implicit Framework options**:
 
