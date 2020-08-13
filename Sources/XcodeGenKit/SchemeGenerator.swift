@@ -240,8 +240,8 @@ public class SchemeGenerator {
             preActions: scheme.run?.preActions.map(getExecutionAction) ?? [],
             postActions: scheme.run?.postActions.map(getExecutionAction) ?? [],
             macroExpansion: shouldExecuteOnLaunch ? nil : buildableReference,
-            selectedDebuggerIdentifier: (scheme.run?.debugEnabled ?? Scheme.Run.debugEnabledDefault) ? XCScheme.defaultDebugger : "",
-            selectedLauncherIdentifier: (scheme.run?.debugEnabled ?? Scheme.Run.debugEnabledDefault) ? XCScheme.defaultLauncher : "Xcode.IDEFoundation.Launcher.PosixSpawn",
+            selectedDebuggerIdentifier: selectedDebuggerIdentifier(for: schemeTarget, run: scheme.run),
+            selectedLauncherIdentifier: selectedLauncherIdentifier(for: schemeTarget, run: scheme.run),
             askForAppToLaunch: scheme.run?.askForAppToLaunch,
             allowLocationSimulation: allowLocationSimulation,
             locationScenarioReference: locationScenarioReference,
@@ -309,6 +309,22 @@ public class SchemeGenerator {
             return (remote, buildable)
         } else {
             return (buildable, buildable)
+        }
+    }
+
+    private func selectedDebuggerIdentifier(for target: Target?, run: Scheme.Run?) -> String {
+        if target?.type.canUseDebugLauncher != false && run?.debugEnabled ?? Scheme.Run.debugEnabledDefault {
+            return XCScheme.defaultDebugger
+        } else {
+            return ""
+        }
+    }
+
+    private func selectedLauncherIdentifier(for target: Target?, run: Scheme.Run?) -> String {
+        if target?.type.canUseDebugLauncher != false && run?.debugEnabled ?? Scheme.Run.debugEnabledDefault {
+            return XCScheme.defaultLauncher
+        } else {
+            return "Xcode.IDEFoundation.Launcher.PosixSpawn"
         }
     }
 }
@@ -388,6 +404,11 @@ extension Scheme {
 }
 
 extension PBXProductType {
+    var canUseDebugLauncher: Bool {
+        // Extensions don't use the lldb launcher
+        return !isExtension
+    }
+
     var isWatchApp: Bool {
         switch self {
         case .watchApp, .watch2App:
