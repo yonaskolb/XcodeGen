@@ -251,7 +251,7 @@ public class SchemeGenerator {
             environmentVariables: launchVariables,
             language: scheme.run?.language,
             region: scheme.run?.region,
-            launchAutomaticallySubstyle: scheme.run?.launchAutomaticallySubstyle,
+            launchAutomaticallySubstyle: scheme.run?.launchAutomaticallySubstyle ?? launchAutomaticallySubstyle(for: schemeTarget),
             customLLDBInitFile: scheme.run?.customLLDBInit
         )
 
@@ -288,6 +288,14 @@ public class SchemeGenerator {
             wasCreatedForAppExtension: schemeTarget
                 .flatMap { $0.type.isExtension ? true : nil }
         )
+    }
+
+    private func launchAutomaticallySubstyle(for target: Target?) -> String? {
+        if target?.type.isExtension == true {
+            return "2"
+        } else {
+            return nil
+        }
     }
 
     private func makeProductRunnables(for target: Target?, buildableReference: XCScheme.BuildableReference) -> (launch: XCScheme.Runnable, profile: XCScheme.BuildableProductRunnable) {
