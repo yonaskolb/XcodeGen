@@ -34,10 +34,12 @@ The project spec is a YAML or JSON file that defines your targets, configuration
 - ✅ Integrate **Carthage** frameworks without any work
 - ✅ Export **Dependency Diagrams** to view in [Graphviz](https://www.graphviz.org)
 
-Given a very simple project spec file like this:
+Given an example project spec:
 
 ```yaml
 name: MyProject
+include:
+  - base_spec.yml
 options:
   bundleIdPrefix: com.myapp
 packages:
