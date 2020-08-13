@@ -14,6 +14,7 @@ public struct Dependency: Equatable {
     public var link: Bool?
     public var implicit: Bool = implicitDefault
     public var weakLink: Bool = weakLinkDefault
+    public var platformFilter: PlatformFilter = .macAndiOS
 
     public init(
         type: DependencyType,
@@ -22,7 +23,8 @@ public struct Dependency: Equatable {
         codeSign: Bool? = nil,
         link: Bool? = nil,
         implicit: Bool = implicitDefault,
-        weakLink: Bool = weakLinkDefault
+        weakLink: Bool = weakLinkDefault,
+        platformFilter: PlatformFilter = .macAndiOS
     ) {
         self.type = type
         self.reference = reference
@@ -31,6 +33,17 @@ public struct Dependency: Equatable {
         self.link = link
         self.implicit = implicit
         self.weakLink = weakLink
+        self.platformFilter = platformFilter
+    }
+    
+    public enum PlatformFilter: Equatable {
+        case macAndiOS
+        case iOS
+        case mac
+        
+        public static func == (lhs: Self, rhs: Self) -> Bool {
+            return true
+        }
     }
 
     public enum CarthageLinkType: String {
@@ -111,6 +124,18 @@ extension Dependency: JSONObjectConvertible {
         }
         if let bool: Bool = jsonDictionary.json(atKeyPath: "weak") {
             weakLink = bool
+        }
+        
+        if let platformFilter: String = jsonDictionary.json(atKeyPath: "platformFilter") {
+            if platformFilter == "mac+iOS" {
+                self.platformFilter = .macAndiOS
+            } else if platformFilter == "iOS" {
+                self.platformFilter = .iOS
+            } else if platformFilter == "mac" {
+                self.platformFilter = .mac
+            }
+        } else {
+            self.platformFilter = .macAndiOS
         }
     }
 }

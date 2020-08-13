@@ -55,7 +55,7 @@
 		2B74F88A338EE674477351B1 /* TestFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0838859105FF7ECEE5F2B6E5 /* TestFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		2CBE0DC8AC249AD1E42DC593 /* Headers in Headers */ = {isa = PBXBuildFile; fileRef = 574D072C770BAE53531249CF /* Headers */; settings = {ATTRIBUTES = (Public, ); }; };
 		2F0E1973A958FCDE8CE09F5E /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = 4711AC75927A510DEB4FCC31 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		2FB0D86C27098550FAFB4164 /* Framework2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C6EA871817E3A864FDE5DA1 /* Framework2.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		2FB0D86C27098550FAFB4164 /* Framework2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C6EA871817E3A864FDE5DA1 /* Framework2.framework */; platformFilter = ios; settings = {ATTRIBUTES = (Weak, ); }; };
 		30E0C7F5317477917CFFCE52 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 21AA0A827D6C74A605DEE03E /* Localizable.strings */; };
 		329F958FE3152A51D6DBDC4F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 917AA3E4306C1A12FCC17994 /* Main.storyboard */; };
 		35AA463863F88CB6290C264D /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC10D740EAC35BF970A7327A /* Result.framework */; };
@@ -102,7 +102,7 @@
 		83A04F08119B1A648940B631 /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F698427B31A67B1541925E /* FrameworkFile.swift */; };
 		84A839AF00AB269416E54CD4 /* Empty.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 241982105A45A78DDE5AE195 /* Empty.h */; };
 		85332C85D63B652CAB836FB9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 78B81AD14AB1A48CFA916FB2 /* Assets.xcassets */; };
-		866974B9FCB26B1FEB2B66AF /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC10D740EAC35BF970A7327A /* Result.framework */; };
+		866974B9FCB26B1FEB2B66AF /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC10D740EAC35BF970A7327A /* Result.framework */; platformFilter = maccatalyst; };
 		89D00F3D1A87503F10AE7432 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 917AA3E4306C1A12FCC17994 /* Main.storyboard */; };
 		8B078640745463EC45519361 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = 4711AC75927A510DEB4FCC31 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		8F2C2446CC90D71637CA98DE /* Model.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = C68273268C686B59A290EEF3 /* Model.xcmappingmodel */; };
@@ -144,7 +144,7 @@
 		D584474E14DF674265501DA7 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = 4711AC75927A510DEB4FCC31 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D6A9F9FE464839B860307F97 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B274B43FDC5E8E1FEF7E9FA /* ViewController.swift */; };
 		D6E1725E31FE9D8D8B0075AD /* XPC_Service.m in Sources */ = {isa = PBXBuildFile; fileRef = A2D7192D099F88F92AC33C9A /* XPC_Service.m */; };
-		D6F1CE68BD0D773AF8FB5166 /* Framework2.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0C6EA871817E3A864FDE5DA1 /* Framework2.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		D6F1CE68BD0D773AF8FB5166 /* Framework2.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0C6EA871817E3A864FDE5DA1 /* Framework2.framework */; platformFilter = ios; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D94D5D2D9EF9B359DEE438F6 /* Headers in Headers */ = {isa = PBXBuildFile; fileRef = 574D072C770BAE53531249CF /* Headers */; settings = {ATTRIBUTES = (Public, ); }; };
 		DCFAD099E6E129BDE43E1B79 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F6813B4F70D433054D0C8FB8 /* Assets.xcassets */; };
 		E013E10B776DC6DD0956F20E /* Result.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EC10D740EAC35BF970A7327A /* Result.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -2655,6 +2655,7 @@
 		};
 		578F376EB1922ADCB9482DE3 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
+			platformFilter = ios;
 			target = 5C6E1548456BE821C90E23F0 /* Framework2_iOS */;
 			targetProxy = 2F6AB4DC84D6D8156D9743ED /* PBXContainerItemProxy */;
 		};
