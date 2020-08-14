@@ -7,6 +7,7 @@
 - Added ability to set custom LLDBInit scripts for launch and test schemes [#929](https://github.com/yonaskolb/XcodeGen/pull/929) @polac24
 - Adds App Clip support. [#909](https://github.com/yonaskolb/XcodeGen/pull/909) @brentleyjones @dflems
 - Application extension schemes now default to `launchAutomaticallySubstyle = 2` and the correct debugger and launcher identifiers [#932](https://github.com/yonaskolb/XcodeGen/pull/932) @brentleyjones
+- Added better support for WidgetKit Extensions with the new `subtype` and `hostTarget` properties [#935](https://github.com/yonaskolb/XcodeGen/pull/935) @brentleyjones
 
 #### Fixed
 - Allow SDK dependencies to be embedded. [#922](https://github.com/yonaskolb/XcodeGen/pull/922) @k-thorat

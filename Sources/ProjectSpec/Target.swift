@@ -27,6 +27,7 @@ public struct LegacyTarget: Equatable {
 public struct Target: ProjectTarget {
     public var name: String
     public var type: PBXProductType
+    public var subtype: ProductSubtype?
     public var platform: Platform
     public var settings: Settings
     public var sources: [TargetSource]
@@ -66,6 +67,7 @@ public struct Target: ProjectTarget {
     public init(
         name: String,
         type: PBXProductType,
+        subtype: ProductSubtype? = nil,
         platform: Platform,
         productName: String? = nil,
         deploymentTarget: Version? = nil,
@@ -89,6 +91,7 @@ public struct Target: ProjectTarget {
     ) {
         self.name = name
         self.type = type
+        self.subtype = subtype
         self.platform = platform
         self.deploymentTarget = deploymentTarget
         self.productName = productName ?? name
@@ -115,7 +118,8 @@ public struct Target: ProjectTarget {
 extension Target: CustomStringConvertible {
 
     public var description: String {
-        "\(name): \(platform.rawValue) \(type)"
+        let subtypeSuffix = subtype.flatMap { " (\($0))" } ?? ""
+        return "\(name): \(platform.rawValue) \(type)\(subtypeSuffix)"
     }
 }
 
@@ -197,6 +201,7 @@ extension Target: Equatable {
     public static func == (lhs: Target, rhs: Target) -> Bool {
         lhs.name == rhs.name &&
             lhs.type == rhs.type &&
+            lhs.subtype == rhs.subtype &&
             lhs.platform == rhs.platform &&
             lhs.deploymentTarget == rhs.deploymentTarget &&
             lhs.transitivelyLinkDependencies == rhs.transitivelyLinkDependencies &&
@@ -255,6 +260,13 @@ extension Target: NamedJSONDictionaryConvertible {
             self.type = type
         } else {
             throw SpecParsingError.unknownTargetType(typeString)
+        }
+        if let subtypeString: String = jsonDictionary.json(atKeyPath: "subtype") {
+            if let subtype = ProductSubtype(rawValue: subtypeString) {
+                self.subtype = subtype
+            } else {
+                throw SpecParsingError.unknownTargetSubtype(subtypeString)
+            }
         }
         let platformString: String = try jsonDictionary.json(atKeyPath: "platform")
         if let platform = Platform(rawValue: platformString) {
@@ -320,6 +332,7 @@ extension Target: JSONEncodable {
     public func toJSONValue() -> Any {
         var dict: [String: Any?] = [
             "type": type.name,
+            "subtype": subtype?.rawValue,
             "platform": platform.rawValue,
             "settings": settings.toJSONValue(),
             "configFiles": configFiles,

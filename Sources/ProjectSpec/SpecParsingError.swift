@@ -2,6 +2,7 @@ import Foundation
 
 public enum SpecParsingError: Error, CustomStringConvertible {
     case unknownTargetType(String)
+    case unknownTargetSubtype(String)
     case unknownTargetPlatform(String)
     case invalidDependency([String: Any])
     case unknownPackageRequirement([String: Any])
@@ -13,6 +14,8 @@ public enum SpecParsingError: Error, CustomStringConvertible {
         switch self {
         case let .unknownTargetType(type):
             return "Unknown Target type: \(type)"
+        case let .unknownTargetSubtype(subtype):
+            return "Unknown Target subtype: \(subtype)"
         case let .unknownTargetPlatform(platform):
             return "Unknown Target platform: \(platform)"
         case let .invalidDependency(dependency):

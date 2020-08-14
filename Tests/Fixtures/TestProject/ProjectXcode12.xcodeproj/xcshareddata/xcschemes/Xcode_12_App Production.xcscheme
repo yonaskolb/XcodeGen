@@ -14,16 +14,16 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "21D7F6A04EF6BA1329685C17"
-               BuildableName = "App_iOS_With_Clip.app"
-               BlueprintName = "App_iOS_With_Clip"
+               BlueprintIdentifier = "978A6CC072084C774B554035"
+               BuildableName = "Xcode_12_App.app"
+               BlueprintName = "Xcode_12_App"
                ReferencedContainer = "container:ProjectXcode12.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
-      buildConfiguration = "Staging Debug"
+      buildConfiguration = "Production Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       onlyGenerateCoverageForSpecifiedTargets = "NO"
@@ -33,9 +33,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "21D7F6A04EF6BA1329685C17"
-            BuildableName = "App_iOS_With_Clip.app"
-            BlueprintName = "App_iOS_With_Clip"
+            BlueprintIdentifier = "978A6CC072084C774B554035"
+            BuildableName = "Xcode_12_App.app"
+            BlueprintName = "Xcode_12_App"
             ReferencedContainer = "container:ProjectXcode12.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -43,7 +43,7 @@
       </CommandLineArguments>
    </TestAction>
    <LaunchAction
-      buildConfiguration = "Staging Debug"
+      buildConfiguration = "Production Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
@@ -56,9 +56,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "21D7F6A04EF6BA1329685C17"
-            BuildableName = "App_iOS_With_Clip.app"
-            BlueprintName = "App_iOS_With_Clip"
+            BlueprintIdentifier = "978A6CC072084C774B554035"
+            BuildableName = "Xcode_12_App.app"
+            BlueprintName = "Xcode_12_App"
             ReferencedContainer = "container:ProjectXcode12.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -66,7 +66,7 @@
       </CommandLineArguments>
    </LaunchAction>
    <ProfileAction
-      buildConfiguration = "Staging Release"
+      buildConfiguration = "Production Release"
       shouldUseLaunchSchemeArgsEnv = "YES"
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
@@ -75,9 +75,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "21D7F6A04EF6BA1329685C17"
-            BuildableName = "App_iOS_With_Clip.app"
-            BlueprintName = "App_iOS_With_Clip"
+            BlueprintIdentifier = "978A6CC072084C774B554035"
+            BuildableName = "Xcode_12_App.app"
+            BlueprintName = "Xcode_12_App"
             ReferencedContainer = "container:ProjectXcode12.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -85,10 +85,10 @@
       </CommandLineArguments>
    </ProfileAction>
    <AnalyzeAction
-      buildConfiguration = "Staging Debug">
+      buildConfiguration = "Production Debug">
    </AnalyzeAction>
    <ArchiveAction
-      buildConfiguration = "Staging Release"
+      buildConfiguration = "Production Release"
       revealArchiveInOrganizer = "YES">
    </ArchiveAction>
 </Scheme>

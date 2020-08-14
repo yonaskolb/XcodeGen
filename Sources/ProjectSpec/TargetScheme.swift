@@ -9,6 +9,7 @@ public struct TargetScheme: Equatable {
     public static let buildImplicitDependenciesDefault = true
 
     public var testTargets: [Scheme.Test.TestTarget]
+    public var hostTargetReference: TargetReference?
     public var configVariants: [String]
     public var gatherCoverageData: Bool
     public var language: String?
@@ -23,6 +24,7 @@ public struct TargetScheme: Equatable {
 
     public init(
         testTargets: [Scheme.Test.TestTarget] = [],
+        hostTargetReference: TargetReference? = nil,
         configVariants: [String] = [],
         gatherCoverageData: Bool = gatherCoverageDataDefault,
         language: String? = nil,
@@ -36,6 +38,7 @@ public struct TargetScheme: Equatable {
         postActions: [Scheme.ExecutionAction] = []
     ) {
         self.testTargets = testTargets
+        self.hostTargetReference = hostTargetReference
         self.configVariants = configVariants
         self.gatherCoverageData = gatherCoverageData
         self.language = language
@@ -66,6 +69,7 @@ extension TargetScheme: JSONObjectConvertible {
         } else {
             testTargets = []
         }
+        hostTargetReference = try jsonDictionary.json(atKeyPath: "hostTarget").flatMap { try TargetReference($0) }
         configVariants = jsonDictionary.json(atKeyPath: "configVariants") ?? []
         gatherCoverageData = jsonDictionary.json(atKeyPath: "gatherCoverageData") ?? TargetScheme.gatherCoverageDataDefault
         language = jsonDictionary.json(atKeyPath: "language")
@@ -90,6 +94,10 @@ extension TargetScheme: JSONEncodable {
             "preActions": preActions.map { $0.toJSONValue() },
             "postActions": postActions.map { $0.toJSONValue() },
         ]
+
+        if let hostTargetReference = hostTargetReference {
+            dict["hostTarget"] = hostTargetReference.reference
+        }
 
         if gatherCoverageData != TargetScheme.gatherCoverageDataDefault {
             dict["gatherCoverageData"] = gatherCoverageData

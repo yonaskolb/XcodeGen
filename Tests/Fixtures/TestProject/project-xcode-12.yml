@@ -4,7 +4,7 @@
 name: ProjectXcode12
 include: [project.yml]
 targets:
-  App_iOS_With_Clip:
+  Xcode_12_App:
     type: application
     platform: iOS
     attributes:
@@ -26,6 +26,7 @@ targets:
       - target: Framework_iOS
       - target: StaticLibrary_ObjC_iOS
       - target: App_Clip
+      - target: WidgetKitExtension
       - sdk: Contacts.framework
     scheme:
       configVariants:
@@ -53,6 +54,15 @@ targets:
       testTargets:
         - App_Clip_Tests
         - App_Clip_UITests
+
+  WidgetKitExtension:
+    type: app-extension
+    subtype: widgetkit-extension
+    platform: iOS
+    sources: WidgetKitExtension
+    info:
+      path: WidgetKitExtension/Info.plist
+    scheme: {}
 
   App_Clip_Tests:
     type: bundle.unit-test
