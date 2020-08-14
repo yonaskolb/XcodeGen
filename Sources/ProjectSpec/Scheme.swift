@@ -113,11 +113,13 @@ public struct Scheme: Equatable {
         public var debugEnabled: Bool
         public var simulateLocation: SimulateLocation?
         public var executable: String?
+        public var hostTargetReference: TargetReference?
         public var customLLDBInit: String?
 
         public init(
             config: String,
             executable: String? = nil,
+            hostTargetReference: TargetReference? = nil,
             commandLineArguments: [String: Bool] = [:],
             preActions: [ExecutionAction] = [],
             postActions: [ExecutionAction] = [],
@@ -145,6 +147,8 @@ public struct Scheme: Equatable {
             self.launchAutomaticallySubstyle = launchAutomaticallySubstyle
             self.debugEnabled = debugEnabled
             self.simulateLocation = simulateLocation
+            self.executable = executable
+            self.hostTargetReference = hostTargetReference
             self.customLLDBInit = customLLDBInit
         }
     }
@@ -369,6 +373,7 @@ extension Scheme.Run: JSONObjectConvertible {
         debugEnabled = jsonDictionary.json(atKeyPath: "debugEnabled") ?? Scheme.Run.debugEnabledDefault
         simulateLocation = jsonDictionary.json(atKeyPath: "simulateLocation")
         executable = jsonDictionary.json(atKeyPath: "executable")
+        hostTargetReference = try jsonDictionary.json(atKeyPath: "hostTarget").flatMap { try TargetReference($0) }
 
         // launchAutomaticallySubstyle is defined as a String in XcodeProj but its value is often
         // an integer. Parse both to be nice.
@@ -399,6 +404,10 @@ extension Scheme.Run: JSONEncodable {
             "launchAutomaticallySubstyle": launchAutomaticallySubstyle,
             "executable": executable,
         ]
+
+        if let hostTargetReference = hostTargetReference {
+            dict["hostTarget"] = hostTargetReference.reference
+        }
 
         if disableMainThreadChecker != Scheme.Run.disableMainThreadCheckerDefault {
             dict["disableMainThreadChecker"] = disableMainThreadChecker

@@ -44,6 +44,13 @@ public class InfoPlistGenerator {
             targetInfoPlist["CFBundlePackageType"] = "XPC!"
         default: break
         }
+
+        switch target.subtype {
+        case .widgetKitExtension:
+            targetInfoPlist["NSExtension"] = ["NSExtensionPointIdentifier": "com.apple.widgetkit-extension"]
+        default: break
+        }
+
         return targetInfoPlist
     }
 }

@@ -161,16 +161,18 @@ public class SchemeGenerator {
         }
 
         let schemeTarget: Target?
-
         if let targetName = scheme.run?.executable {
             schemeTarget = project.getTarget(targetName)
         } else {
             schemeTarget = target ?? project.getTarget(scheme.build.targets.first!.target.name)
         }
 
+        let hostTarget = scheme.run?.hostTargetReference.flatMap { project.getTarget($0.name) }
+
         let shouldExecuteOnLaunch = schemeTarget?.shouldExecuteOnLaunch == true
 
         let buildableReference = buildActionEntries.first(where: { $0.buildableReference.blueprintName == schemeTarget?.name })?.buildableReference ?? buildActionEntries.first!.buildableReference
+        let hostBuildableReference = buildActionEntries.first(where: { $0.buildableReference.blueprintName == hostTarget?.name })?.buildableReference
         let runnables = makeProductRunnables(for: schemeTarget, buildableReference: buildableReference)
 
         let buildAction = XCScheme.BuildAction(
@@ -239,7 +241,7 @@ public class SchemeGenerator {
             buildConfiguration: scheme.run?.config ?? defaultDebugConfig.name,
             preActions: scheme.run?.preActions.map(getExecutionAction) ?? [],
             postActions: scheme.run?.postActions.map(getExecutionAction) ?? [],
-            macroExpansion: shouldExecuteOnLaunch ? nil : buildableReference,
+            macroExpansion: makeLaunchMacroExpansion(for: schemeTarget, buildableReference: buildableReference, hostBuildableReference: hostBuildableReference),
             selectedDebuggerIdentifier: selectedDebuggerIdentifier(for: schemeTarget, run: scheme.run),
             selectedLauncherIdentifier: selectedLauncherIdentifier(for: schemeTarget, run: scheme.run),
             askForAppToLaunch: scheme.run?.askForAppToLaunch,
@@ -298,12 +300,31 @@ public class SchemeGenerator {
         }
     }
 
+    private func makeLaunchMacroExpansion(for target: Target?, buildableReference: XCScheme.BuildableReference, hostBuildableReference: XCScheme.BuildableReference?) -> XCScheme.BuildableReference? {
+        if target?.shouldExecuteOnLaunch == true {
+            if target?.subtype == .widgetKitExtension {
+                return hostBuildableReference
+            } else {
+                return nil
+            }
+        } else {
+            return buildableReference
+        }
+    }
+
     private func makeProductRunnables(for target: Target?, buildableReference: XCScheme.BuildableReference) -> (launch: XCScheme.Runnable, profile: XCScheme.BuildableProductRunnable) {
         let buildable = XCScheme.BuildableProductRunnable(buildableReference: buildableReference)
         if target?.type.isWatchApp == true {
             let remote = XCScheme.RemoteRunnable(
                 buildableReference: buildableReference,
                 bundleIdentifier: "com.apple.Carousel",
+                runnableDebuggingMode: "2"
+            )
+            return (remote, buildable)
+        } else if target?.subtype == .widgetKitExtension {
+            let remote = XCScheme.RemoteRunnable(
+                buildableReference: buildableReference,
+                bundleIdentifier: "com.apple.springboard",
                 runnableDebuggingMode: "2"
             )
             return (remote, buildable)
@@ -346,16 +367,19 @@ enum SchemeGenerationError: Error, CustomStringConvertible {
 
 extension Scheme {
     public init(name: String, target: Target, targetScheme: TargetScheme, project: Project, debugConfig: String, releaseConfig: String) {
+        let (buildTargets, hostTarget) = Scheme.buildTargets(for: target, project: project, hostTargetReference: targetScheme.hostTargetReference)
+
         self.init(
             name: name,
             build: .init(
-                targets: Scheme.buildTargets(for: target, project: project),
+                targets: buildTargets,
                 buildImplicitDependencies: targetScheme.buildImplicitDependencies,
                 preActions: targetScheme.preActions,
                 postActions: targetScheme.postActions
             ),
             run: .init(
                 config: debugConfig,
+                hostTargetReference: hostTarget?.target,
                 commandLineArguments: targetScheme.commandLineArguments,
                 environmentVariables: targetScheme.environmentVariables,
                 disableMainThreadChecker: targetScheme.disableMainThreadChecker,
@@ -387,19 +411,35 @@ extension Scheme {
         )
     }
 
-    private static func buildTargets(for target: Target, project: Project) -> [BuildTarget] {
-        let buildTarget = Scheme.BuildTarget(target: TargetReference.local(target.name))
-        switch target.type {
-        case .watchApp, .watch2App:
-            let hostTarget = project.targets
-                .first { projectTarget in
-                    projectTarget.dependencies.contains { $0.reference == target.name }
-                }
-                .map { BuildTarget(target: TargetReference.local($0.name)) }
-            return hostTarget.map { [buildTarget, $0] } ?? [buildTarget]
-        default:
-            return [buildTarget]
+    private static func buildTargets(for target: Target, project: Project, hostTargetReference: TargetReference?) -> (targets: [BuildTarget], hostTarget: BuildTarget?) {
+        let hostTarget: BuildTarget?
+        if let hostTargetReference = hostTargetReference {
+            hostTarget = Scheme.BuildTarget(target: hostTargetReference)
+        } else {
+            let requiresHostTarget: Bool
+            switch target.type {
+            case .watchApp, .watch2App:
+                requiresHostTarget = true
+            case .appExtension:
+                requiresHostTarget = target.subtype == .widgetKitExtension
+            default:
+                requiresHostTarget = false
+            }
+
+            if requiresHostTarget {
+                hostTarget = project.targets
+                    .first { projectTarget in
+                        projectTarget.dependencies.contains { $0.reference == target.name }
+                    }
+                    .map { BuildTarget(target: TargetReference.local($0.name)) }
+            } else {
+                hostTarget = nil
+            }
         }
+
+        let buildTarget = Scheme.BuildTarget(target: TargetReference.local(target.name))
+        let buildTargets = hostTarget.map { [buildTarget, $0] } ?? [buildTarget]
+        return (buildTargets, hostTarget)
     }
 }
 

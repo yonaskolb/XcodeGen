@@ -144,7 +144,7 @@ Describe an order of groups. Available parameters:
 
 ```yaml
 options:
-  groupOrdering: 
+  groupOrdering:
     - order: [Sources, Resources, Tests, Support files, Configurations]
     - pattern: '^.*Screen$'
       order: [View, Presenter, Interactor, Entities, Assembly]
@@ -223,6 +223,7 @@ Settings are merged in the following order: groups, base, configs.
 ## Target
 
 - [x] **type**: **[Product Type](#product-type)** - Product type of the target
+- [ ] **subtype**: **[Product Subtype](#product-subtype)** - Product subtype of the target
 - [x] **platform**: **[Platform](#platform)** - Platform of the target
 - [ ] **deploymentTarget**: **String** - The deployment target (eg `9.2`). If this is not specified the value from the project set in [Options](#options)`.deploymentTarget.PLATFORM` will be used.
 - [ ] **sources**: **[Sources](#sources)** - Source directories of the target
@@ -291,6 +292,12 @@ This will provide default build settings for a certain product type. It can be a
 - `xcode-extension`
 - `xpc-service`
 - ``""`` (used for legacy targets)
+
+### Product Subtype
+
+This will provide default build settings for a certain product subtype. It can be any of the following:
+
+- `widgetkit-extension`
 
 ### Platform
 
@@ -502,7 +509,7 @@ packages:
 targets:
   App:
     dependencies:
-      - package: Yams 
+      - package: Yams
       - package: SwiftPM
         product: SPMUtility
 ```
@@ -624,6 +631,7 @@ This is a convenience used to automatically generate schemes for a target based 
 
 - [x] **configVariants**: **[String]** - This generates a scheme for each entry, using configs that contain the name with debug and release variants. This is useful for having different environment schemes.
 - [ ] **testTargets**: **[[Test Target](#test-target)]** - a list of test targets that should be included in the scheme. These will be added to the build targets and the test entries. Each entry can either be a simple string, or a [Test Target](#test-target)
+- [ ] **hostTarget**: **String** - The name of the target that embeds this extension or watch app. If specified, this target will be added to the built targets, and in some cases the Launch action will be modified to support launching this target. This defaults to the first target that embeds this target, if this target is a watch app or WidgetKit extension, and will need to be explicitly specified if multiple targets embed it.
 - [ ] **gatherCoverageData**: **Bool** - a boolean that indicates if this scheme should gather coverage data. This defaults to false
 - [ ] **disableMainThreadChecker**: **Bool** - a boolean that indicates if this scheme should disable the Main Thread Checker. This defaults to false
 - [ ] **stopOnEveryMainThreadCheckerIssue**: **Bool** - a boolean that indicates if this scheme should stop at every Main Thread Checker issue. This defaults to false
@@ -701,7 +709,7 @@ Any attributes defined within a targets `templateAttributes` will be used to rep
 ```yaml
 targets:
   MyFramework:
-    templates: 
+    templates:
       - Framework
     templateAttributes:
       frameworkName: AwesomeFramework
@@ -783,6 +791,7 @@ A multiline script can be written using the various YAML multiline methods, for 
 
 ### Run Action
 - [ ] **executable**: **String** - the name of the target to launch as an executable. Defaults to the first build target in the scheme
+- [ ] **hostTarget**: **String** - the name of the target that embeds this extension or watch app. If specified, the Launch action may be modified to support launching this target
 - [ ] **customLLDBInit**: **String** - the absolute path to the custom `.lldbinit` file
 
 ### Test Action
@@ -806,7 +815,7 @@ A multiline script can be written using the various YAML multiline methods, for 
 
 
 ### Simulate Location
-- [x] **allow**: **Bool** - enable location simulation 
+- [x] **allow**: **Bool** - enable location simulation
 - [ ] **defaultLocation**: **String** - set the default location, possible values:
 	- `London, England`
 	- `Johannesburg, South Africa`
@@ -820,9 +829,9 @@ A multiline script can be written using the various YAML multiline methods, for 
 	- `Mexico City, Mexico`
 	- `New York, NY, USA`
 	- `Rio de Janeiro, Brazil`
-	- `<relative-path-to-gpx-file>` (e.g. ./location.gpx)   
+	- `<relative-path-to-gpx-file>` (e.g. ./location.gpx)
 	 Setting the **defaultLocation** to a custom gpx file, you also need to add that file to `fileGroups` for Xcode be able to use it:
-	 
+
 ```yaml
 targets:
   MyTarget:
@@ -856,8 +865,8 @@ schemes:
       coverageTargets:
         - MyTarget1
         - ExternalTarget/OtherTarget1
-      targets: 
-        - Tester1 
+      targets:
+        - Tester1
         - name: Tester2
           parallelizable: true
           randomExecutionOrder: true
@@ -924,7 +933,7 @@ Swift packages are defined at a project level, and then linked to individual tar
   - `minVersion: 1.0.0, maxVersion: 1.2.9`
   - `branch: master`
   - `revision: xxxxxx`
-  
+
 ### Local Package
 
 - [x] **path**: **String** - the path to the package in local. The path must be directory with a `Package.swift`.
