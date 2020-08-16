@@ -49,7 +49,7 @@ extension Path {
                 return try pathComponents(for: path.dropFirst(), relativeTo: base, memo: memo + [rhs])
 
             // Both sides have a common parent
-            case (.some(let lhs), .some(let rhs)) where lhs == rhs:
+            case (.some(let lhs), .some(let rhs)) where memo.isEmpty && lhs == rhs:
                 return try pathComponents(for: path.dropFirst(), relativeTo: base.dropFirst(), memo: memo)
 
             // `base` has a path to back out of
