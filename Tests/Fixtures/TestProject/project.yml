@@ -201,7 +201,7 @@ targets:
   iMessageStickersExtension:
     type: app-extension.messages-sticker-pack
     platform: iOS
-    sources:       
+    sources:
       - path: iMessageStickers
 
   StaticLibrary_ObjC:
@@ -265,7 +265,7 @@ targets:
     sources: App_iOS_UITests
     dependencies:
       - target: App_iOS
-      
+
   App_macOS_Tests:
     type: bundle.unit-test
     platform: macOS
@@ -306,7 +306,7 @@ schemes:
   App_Scheme:
     build:
       targets:
-        App_iOS: all    
+        App_iOS: all
     run:
       simulateLocation:
         allow: true

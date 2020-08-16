@@ -266,17 +266,18 @@ Settings are merged in the following order: groups, base, configs.
 This will provide default build settings for a certain product type. It can be any of the following:
 
 - `application`
+- `application.on-demand-install-capable`
 - `application.messages`
 - `application.watchapp`
 - `application.watchapp2`
 - `app-extension`
+- `app-extension.intents-service`
 - `app-extension.messages`
 - `app-extension.messages-sticker-pack`
-- `app-extension.intents-service`
 - `bundle`
-- `bundle.unit-test`
-- `bundle.ui-testing`
 - `bundle.ocunit-test`
+- `bundle.ui-testing`
+- `bundle.unit-test`
 - `framework`
 - `instruments-package`
 - `library.dynamic`
@@ -284,9 +285,9 @@ This will provide default build settings for a certain product type. It can be a
 - `framework.static`
 - `tool`
 - `tv-app-extension`
+- `watchapp2-container`
 - `watchkit-extension`
 - `watchkit2-extension`
-- `watchapp2-container`
 - `xcode-extension`
 - `xpc-service`
 - ``""`` (used for legacy targets)
@@ -296,8 +297,8 @@ This will provide default build settings for a certain product type. It can be a
 This will provide default build settings for a certain platform. It can be any of the following:
 
 - `iOS`
-- `tvOS`
 - `macOS`
+- `tvOS`
 - `watchOS`
 
 **Multi Platform targets**
