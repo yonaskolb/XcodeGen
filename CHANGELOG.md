@@ -7,6 +7,9 @@
 - Added ability to set custom LLDBInit scripts for launch and test schemes [#929](https://github.com/yonaskolb/XcodeGen/pull/929) @polac24
 - Adds App Clip support. [#909](https://github.com/yonaskolb/XcodeGen/pull/909) @brentleyjones @dflems
 
+#### Internal
+- Updates CI to run on Xcode 12 beta. [#936](https://github.com/yonaskolb/XcodeGen/pull/936) @dflems
+
 #### Fixed
 - Allow SDK dependencies to be embedded. [#922](https://github.com/yonaskolb/XcodeGen/pull/922) @k-thorat 
 
