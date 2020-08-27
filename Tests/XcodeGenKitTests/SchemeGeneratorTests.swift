@@ -108,6 +108,7 @@ class SchemeGeneratorTests: XCTestCase {
                 try expect(xcscheme.launchAction?.locationScenarioReference?.identifier) == "New York, NY, USA"
                 try expect(xcscheme.launchAction?.customLLDBInitFile) == "/sample/.lldbinit"
                 try expect(xcscheme.testAction?.customLLDBInitFile) == "/test/.lldbinit"
+                try expect(xcscheme.testAction?.systemAttachmentLifetime).to.beNil()
             }
 
             let frameworkTarget = Scheme.BuildTarget(target: .local(framework.name), buildTypes: [.archiving])
@@ -445,6 +446,42 @@ class SchemeGeneratorTests: XCTestCase {
                 let xcscheme = try unwrap(xcodeProject.sharedData?.schemes.first)
                 try expect(xcscheme.launchAction?.macroExpansion?.buildableName) == "MyApp.app"
             }
+
+            $0.it("generates scheme capturing screenshots automatically and deleting on success") {
+                let xcscheme = try self.makeSnapshotScheme(
+                    buildTarget: buildTarget,
+                    captureScreenshotsAutomatically: true,
+                    deleteScreenshotsWhenEachTestSucceeds: true)
+
+                try expect(xcscheme.testAction?.systemAttachmentLifetime).to.beNil()
+            }
+
+            $0.it("generates scheme capturing screenshots and not deleting") {
+                let xcscheme = try self.makeSnapshotScheme(
+                    buildTarget: buildTarget,
+                    captureScreenshotsAutomatically: true,
+                    deleteScreenshotsWhenEachTestSucceeds: false)
+
+                try expect(xcscheme.testAction?.systemAttachmentLifetime) == .keepAlways
+            }
+
+            $0.it("generates scheme not capturing screenshots") {
+                let xcscheme = try self.makeSnapshotScheme(
+                    buildTarget: buildTarget,
+                    captureScreenshotsAutomatically: false,
+                    deleteScreenshotsWhenEachTestSucceeds: false)
+
+                try expect(xcscheme.testAction?.systemAttachmentLifetime) == .keepNever
+            }
+
+            $0.it("ignores screenshot delete preference when not capturing screenshots") {
+                let xcscheme = try self.makeSnapshotScheme(
+                    buildTarget: buildTarget,
+                    captureScreenshotsAutomatically: false,
+                    deleteScreenshotsWhenEachTestSucceeds: true)
+
+                try expect(xcscheme.testAction?.systemAttachmentLifetime) == .keepNever
+            }
         }
     }
     
@@ -499,6 +536,22 @@ class SchemeGeneratorTests: XCTestCase {
             name: "watch_test",
             targets: [hostApp, watchApp, watchExtension],
             options: .init(schemePathPrefix: "../")
+        )
+        let xcodeProject = try project.generateXcodeProject()
+        return try unwrap(xcodeProject.sharedData?.schemes.first)
+    }
+
+    private func makeSnapshotScheme(buildTarget: Scheme.BuildTarget, captureScreenshotsAutomatically: Bool, deleteScreenshotsWhenEachTestSucceeds: Bool) throws -> XCScheme {
+        let scheme = Scheme(
+            name: "MyScheme",
+            build: Scheme.Build(targets: [buildTarget]),
+            run: Scheme.Run(config: "Debug"),
+            test: Scheme.Test(config: "Debug", captureScreenshotsAutomatically: captureScreenshotsAutomatically, deleteScreenshotsWhenEachTestSucceeds: deleteScreenshotsWhenEachTestSucceeds)
+        )
+        let project = Project(
+            name: "test",
+            targets: [app, framework],
+            schemes: [scheme]
         )
         let xcodeProject = try project.generateXcodeProject()
         return try unwrap(xcodeProject.sharedData?.schemes.first)
