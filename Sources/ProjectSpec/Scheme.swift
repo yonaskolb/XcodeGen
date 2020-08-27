@@ -178,6 +178,8 @@ public struct Scheme: Equatable {
         public var region: String?
         public var debugEnabled: Bool
         public var customLLDBInit: String?
+        public var captureScreenshotsAutomatically: Bool
+        public var deleteScreenshotsWhenEachTestSucceeds: Bool
 
         public struct TestTarget: Equatable, ExpressibleByStringLiteral {
             public static let randomExecutionOrderDefault = false
@@ -236,7 +238,9 @@ public struct Scheme: Equatable {
             language: String? = nil,
             region: String? = nil,
             debugEnabled: Bool = debugEnabledDefault,
-            customLLDBInit: String? = nil
+            customLLDBInit: String? = nil,
+            captureScreenshotsAutomatically: Bool = true,
+            deleteScreenshotsWhenEachTestSucceeds: Bool = true
         ) {
             self.config = config
             self.gatherCoverageData = gatherCoverageData
@@ -251,6 +255,8 @@ public struct Scheme: Equatable {
             self.region = region
             self.debugEnabled = debugEnabled
             self.customLLDBInit = customLLDBInit
+            self.captureScreenshotsAutomatically = captureScreenshotsAutomatically
+            self.deleteScreenshotsWhenEachTestSucceeds = deleteScreenshotsWhenEachTestSucceeds
         }
 
         public var shouldUseLaunchSchemeArgsEnv: Bool {
@@ -475,6 +481,8 @@ extension Scheme.Test: JSONObjectConvertible {
         region = jsonDictionary.json(atKeyPath: "region")
         debugEnabled = jsonDictionary.json(atKeyPath: "debugEnabled") ?? Scheme.Test.debugEnabledDefault
         customLLDBInit = jsonDictionary.json(atKeyPath: "customLLDBInit")
+        captureScreenshotsAutomatically = jsonDictionary.json(atKeyPath: "captureScreenshotsAutomatically") ?? true
+        deleteScreenshotsWhenEachTestSucceeds = jsonDictionary.json(atKeyPath: "deleteScreenshotsWhenEachTestSucceeds") ?? true
     }
 }
 
