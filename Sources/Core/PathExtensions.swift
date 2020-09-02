@@ -73,4 +73,12 @@ extension Path {
                                                    relativeTo: ArraySlice(base.simplifyingParentDirectoryReferences().components),
                                                    memo: []))
     }
+
+    /// Returns whether `self` is a strict parent of `child`.
+    ///
+    /// Both paths must be asbolute or relative paths.
+    public func isParent(of child: Path) throws -> Bool {
+        let relativePath = try child.relativePath(from: self)
+        return relativePath.components.allSatisfy { $0 != ".." }
+    }
 }
