@@ -492,7 +492,7 @@ class SourceGeneratorTests: XCTestCase {
                 let pbxProj = try project.generatePbxProj()
                 try pbxProj.expectFile(paths: ["Sources", "A", "b.swift"], buildPhase: .sources)
                 try pbxProj.expectFile(paths: ["Sources", "F", "G", "h.swift"], buildPhase: .sources)
-                try pbxProj.expectFile(paths: ["../OtherDirectory/C/D", "e.swift"], names: ["D", "e.swift"], buildPhase: .sources)
+                try pbxProj.expectFile(paths: ["..", "OtherDirectory", "C", "D", "e.swift"], names: [".", "OtherDirectory", "C", "D", "e.swift"], buildPhase: .sources)
                 try pbxProj.expectFile(paths: ["Sources/B", "b.swift"], names: ["B", "b.swift"], buildPhase: .sources)
             }
 
