@@ -5,6 +5,9 @@
 #### Added
 - Add `useBaseInternationalization` to Project Spec Options to opt out of Base Internationalization. [#961](https://github.com/yonaskolb/XcodeGen/pull/961) @liamnichols
 
+#### Fixed
+- Adding Info.plists with custom names to Copy Bundle Resources build phase [#945](https://github.com/yonaskolb/XcodeGen/pull/945) @anivaros
+
 ## 2.18.0
 
 #### Added
