@@ -14,6 +14,7 @@ public struct BuildScript: Equatable {
     public var outputFileLists: [String]
     public var runOnlyWhenInstalling: Bool
     public let showEnvVars: Bool
+    public let discoveredDependencyFile: String?
 
     public enum ScriptType: Equatable {
         case path(String)
@@ -29,7 +30,8 @@ public struct BuildScript: Equatable {
         outputFileLists: [String] = [],
         shell: String? = nil,
         runOnlyWhenInstalling: Bool = runOnlyWhenInstallingDefault,
-        showEnvVars: Bool = showEnvVarsDefault
+        showEnvVars: Bool = showEnvVarsDefault,
+        dependency: String? = nil
     ) {
         self.script = script
         self.name = name
@@ -40,6 +42,7 @@ public struct BuildScript: Equatable {
         self.shell = shell
         self.runOnlyWhenInstalling = runOnlyWhenInstalling
         self.showEnvVars = showEnvVars
+        self.discoveredDependencyFile = dependency
     }
 }
 
@@ -61,6 +64,7 @@ extension BuildScript: JSONObjectConvertible {
         shell = jsonDictionary.json(atKeyPath: "shell")
         runOnlyWhenInstalling = jsonDictionary.json(atKeyPath: "runOnlyWhenInstalling") ?? BuildScript.runOnlyWhenInstallingDefault
         showEnvVars = jsonDictionary.json(atKeyPath: "showEnvVars") ?? BuildScript.showEnvVarsDefault
+        discoveredDependencyFile = jsonDictionary.json(atKeyPath: "discoveredDependencyFile")
     }
 }
 
@@ -85,6 +89,10 @@ extension BuildScript: JSONEncodable {
             dict["path"] = string
         case .script(let string):
             dict["script"] = string
+        }
+
+        if let dependency = discoveredDependencyFile {
+            dict["dependency"] = dependency
         }
 
         return dict

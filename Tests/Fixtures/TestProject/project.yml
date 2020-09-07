@@ -147,10 +147,12 @@ targets:
       - name: MyScript
         script: |
           echo "You ran a script!"
+          touch "${DERIVED_FILE_DIR}/target.d"
         inputFileLists:
           - App_iOS/inputList.xcfilelist
         outputFileLists:
           - App_iOS/outputList.xcfilelist
+        discoveredDependencyFile: $(DERIVED_FILE_DIR)/target.d
 
   EntitledApp:
     type: application
