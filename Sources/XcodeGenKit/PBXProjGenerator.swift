@@ -1074,6 +1074,8 @@ public class PBXProjGenerator {
             buildPhases.append(copyBundlesPhase)
         }
 
+        let copyFilesActionMask: UInt = 8
+
         if !extensions.isEmpty {
 
             let copyFilesPhase = addObject(
@@ -1081,7 +1083,9 @@ public class PBXProjGenerator {
                     dstPath: "",
                     dstSubfolderSpec: .plugins,
                     name: "Embed App Extensions",
-                    files: extensions
+                    buildActionMask: target.onlyCopyExtensionsOnInstall ? copyFilesActionMask : PBXBuildPhase.defaultBuildActionMask,
+                    files: extensions,
+                    runOnlyForDeploymentPostprocessing: target.onlyCopyExtensionsOnInstall ? true : false
                 )
             )
 
@@ -1105,7 +1109,6 @@ public class PBXProjGenerator {
         copyFrameworksReferences += getBuildFilesForPhase(.frameworks)
         if !copyFrameworksReferences.isEmpty {
 
-            let copyFilesActionMask: UInt = 8
             let copyFilesPhase = addObject(
                 PBXCopyFilesBuildPhase(
                     dstPath: "",
