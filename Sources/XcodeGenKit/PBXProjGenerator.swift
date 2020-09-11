@@ -13,6 +13,8 @@ public class PBXProjGenerator {
     let projectDirectory: Path?
     let carthageResolver: CarthageDependencyResolver
 
+    public static let copyFilesActionMask: UInt = 8
+
     var sourceGenerator: SourceGenerator!
 
     var targetObjects: [String: PBXTarget] = [:]
@@ -1074,8 +1076,6 @@ public class PBXProjGenerator {
             buildPhases.append(copyBundlesPhase)
         }
 
-        let copyFilesActionMask: UInt = 8
-
         if !extensions.isEmpty {
 
             let copyFilesPhase = addObject(
@@ -1083,7 +1083,7 @@ public class PBXProjGenerator {
                     dstPath: "",
                     dstSubfolderSpec: .plugins,
                     name: "Embed App Extensions",
-                    buildActionMask: target.onlyCopyExtensionsOnInstall ? copyFilesActionMask : PBXBuildPhase.defaultBuildActionMask,
+                    buildActionMask: target.onlyCopyExtensionsOnInstall ? PBXProjGenerator.copyFilesActionMask : PBXBuildPhase.defaultBuildActionMask,
                     files: extensions,
                     runOnlyForDeploymentPostprocessing: target.onlyCopyExtensionsOnInstall ? true : false
                 )
@@ -1114,7 +1114,7 @@ public class PBXProjGenerator {
                     dstPath: "",
                     dstSubfolderSpec: .frameworks,
                     name: "Embed Frameworks",
-                    buildActionMask: target.onlyCopyFilesOnInstall ? copyFilesActionMask : PBXBuildPhase.defaultBuildActionMask,
+                    buildActionMask: target.onlyCopyFilesOnInstall ? PBXProjGenerator.copyFilesActionMask : PBXBuildPhase.defaultBuildActionMask,
                     files: copyFrameworksReferences,
                     runOnlyForDeploymentPostprocessing: target.onlyCopyFilesOnInstall ? true : false
                 )
