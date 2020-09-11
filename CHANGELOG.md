@@ -7,6 +7,7 @@
 - Added ability to set custom LLDBInit scripts for launch and test schemes [#929](https://github.com/yonaskolb/XcodeGen/pull/929) @polac24
 - Adds App Clip support. [#909](https://github.com/yonaskolb/XcodeGen/pull/909) @brentleyjones @dflems
 - Application extension schemes now default to `launchAutomaticallySubstyle = 2` and the correct debugger and launcher identifiers [#932](https://github.com/yonaskolb/XcodeGen/pull/932) @brentleyjones
+- Added `onlyCopyExtensionsOnInstall` option to targets for the Embed App Extensions build phase. [#948](https://github.com/yonaskolb/XcodeGen/pull/948) @RomanPodymov
 
 #### Internal
 - Updates CI to run on Xcode 12 beta. [#936](https://github.com/yonaskolb/XcodeGen/pull/936) @dflems
