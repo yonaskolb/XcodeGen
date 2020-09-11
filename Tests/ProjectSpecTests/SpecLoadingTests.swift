@@ -1213,7 +1213,7 @@ class SpecLoadingTests: XCTestCase {
 
             $0.it("is an invalid package version") {
                 for dictionary in invalidPackages {
-                    try expect { _ = try SwiftPackage(jsonDictionary: dictionary) }.toThrow()
+                    try expect(expression: { _ = try SwiftPackage(jsonDictionary: dictionary) }).toThrow()
                 }
             }
         }
