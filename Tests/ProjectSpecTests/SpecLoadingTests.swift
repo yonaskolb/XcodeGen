@@ -1020,6 +1020,13 @@ class SpecLoadingTests: XCTestCase {
                 try expect(target.onlyCopyFilesOnInstall) == true
             }
 
+            $0.it("parses copy extensions on install") {
+                var targetSource = validTarget
+                targetSource["onlyCopyExtensionsOnInstall"] = true
+                let target = try Target(name: "Embed App Extensions", jsonDictionary: targetSource)
+                try expect(target.onlyCopyExtensionsOnInstall) == true
+            }
+
             $0.it("parses settings") {
                 let project = try Project(path: fixturePath + "settings_test.yml")
                 let buildSettings: BuildSettings = ["SETTING": "value"]
