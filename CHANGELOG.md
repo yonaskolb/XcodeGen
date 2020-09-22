@@ -8,6 +8,7 @@
 - Adds App Clip support. [#909](https://github.com/yonaskolb/XcodeGen/pull/909) @brentleyjones @dflems
 - Application extension schemes now default to `launchAutomaticallySubstyle = 2` and the correct debugger and launcher identifiers [#932](https://github.com/yonaskolb/XcodeGen/pull/932) @brentleyjones
 - Updated SettingsPresets to use new defaults from Xcode 12. [#953](https://github.com/yonaskolb/XcodeGen/pull/953) @liamnichols
+- Enable Base Internationalization by default as per Xcode 12 behavior. [#954](https://github.com/yonaskolb/XcodeGen/issues/954) @liamnichols
 
 #### Internal
 - Updates CI to run on Xcode 12 beta. [#936](https://github.com/yonaskolb/XcodeGen/pull/936) @dflems
