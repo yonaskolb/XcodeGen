@@ -104,6 +104,24 @@ class SchemeGeneratorTests: XCTestCase {
                 try expect(xcscheme.testAction?.customLLDBInitFile) == "/test/.lldbinit"
             }
 
+            let frameworkTarget = Scheme.BuildTarget(target: .local(framework.name), buildTypes: [.archiving])
+            $0.it("generates a scheme with the first runnable selected") {
+                let scheme = Scheme(
+                    name: "MyScheme",
+                    build: Scheme.Build(targets: [frameworkTarget, buildTarget])
+                )
+                let project = Project(
+                    name: "test",
+                    targets: [framework, app],
+                    schemes: [scheme]
+                )
+                let xcodeProject = try project.generateXcodeProject()
+                let xcscheme = try unwrap(xcodeProject.sharedData?.schemes.first)
+
+                let buildableReference = xcscheme.launchAction?.runnable?.buildableReference
+                try expect(buildableReference?.buildableName) == "MyApp.app"
+            }
+
             $0.it("generates scheme with multiple configs") {
                 let configs: [Config] = [
                     Config(name: "Beta", type: .debug),

@@ -47,6 +47,7 @@ You can also use environment variables in your configuration file, by using `${S
 - [ ] **targets**: **[String: [Target](#target)]** - The list of targets in the project mapped by name
 - [ ] **fileGroups**: **[String]** - A list of paths to add to the root of the project. These aren't files that will be included in your targets, but that you'd like to include in the project hierarchy anyway. For example a folder of xcconfig files that aren't already added by any target sources, or a Readme file.
 - [ ] **schemes**: **[Scheme](#scheme)** - A list of schemes by name. This allows more control over what is found in [Target Scheme](#target-scheme)
+- [ ] **schemeTemplates**: **[String: [Scheme Template](#scheme-template)]** - a list of schemes that can be used as templates for actual schems which reference them via a `template` property. They can be used to extract common scheme settings. Works great in combination with `include`.
 - [ ] **targetTemplates**: **[String: [Target Template](#target-template)]** - a list of targets that can be used as templates for actual targets which reference them via a `template` property. They can be used to extract common target settings. Works great in combination with `include`.
 - [ ] **packages**: **[String: [Swift Package](#swift-package)]** - a map of Swift packages by name.
 - [ ] **projectReferences**: **[String: [Project Reference](#project-reference)]** - a map of project references by name
@@ -249,8 +250,8 @@ Settings are merged in the following order: groups, base, configs.
 - [ ] **transitivelyLinkDependencies**: **Bool** - If this is not specified the value from the project set in [Options](#options)`.transitivelyLinkDependencies` will be used.
 - [ ] **directlyEmbedCarthageDependencies**: **Bool** - If this is `true` Carthage dependencies will be embedded using an `Embed Frameworks` build phase instead of the `copy-frameworks` script. Defaults to `true` for all targets except iOS/tvOS/watchOS Applications.
 - [ ] **requiresObjCLinking**: **Bool** - If this is `true` any targets that link to this target will have `-ObjC` added to their `OTHER_LDFLAGS`. This is required if a static library has any catagories or extensions on Objective-C code. See [this guide](https://pewpewthespells.com/blog/objc_linker_flags.html#objc) for more details. Defaults to `true` if `type` is `library.static`. If you are 100% sure you don't have catagories or extensions on Objective-C code (pure Swift with no use of Foundation/UIKit) you can set this to `false`, otherwise it's best to leave it alone.
-- [ ]**onlyCopyFilesOnInstall**: **Bool** – If this is `true`, the `Embed Frameworks` build phase will have the "Copy only when installing" chekbox checked. Defaults to `false`.
-- [ ]**onlyCopyExtensionsOnInstall**: **Bool** – If this is `true`, the `Embed App Extensions` build phase will have the "Copy only when installing" chekbox checked. Defaults to `false`.
+- [ ] **onlyCopyFilesOnInstall**: **Bool** – If this is `true`, the `Embed Frameworks` build phase will have the "Copy only when installing" chekbox checked. Defaults to `false`.
+- [ ] **onlyCopyExtensionsOnInstall**: **Bool** – If this is `true`, the `Embed App Extensions` build phase will have the "Copy only when installing" chekbox checked. Defaults to `false`.
 - [ ] **preBuildScripts**: **[[Build Script](#build-script)]** - Build scripts that run *before* any other build phases
 - [ ] **postCompileScripts**: **[[Build Script](#build-script)]** - Build scripts that run after the Compile Sources phase
 - [ ] **postBuildScripts**: **[[Build Script](#build-script)]** - Build scripts that run *after* any other build phases
@@ -783,7 +784,7 @@ Scheme run scripts added via **preActions** or **postActions**. They run before 
 A multiline script can be written using the various YAML multiline methods, for example with `|`. See [Build Script](#build-script).
 
 ### Run Action
-- [ ] **executable**: **String** - the name of the target to launch as an executable. Defaults to the first build target in the scheme
+- [ ] **executable**: **String** - the name of the target to launch as an executable. Defaults to the first runnable build target in the scheme, or the first build target if a runnable build target is not found
 - [ ] **customLLDBInit**: **String** - the absolute path to the custom `.lldbinit` file
 
 ### Test Action
