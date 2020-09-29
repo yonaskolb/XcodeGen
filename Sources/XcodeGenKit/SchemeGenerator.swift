@@ -165,7 +165,8 @@ public class SchemeGenerator {
         if let targetName = scheme.run?.executable {
             schemeTarget = project.getTarget(targetName)
         } else {
-            schemeTarget = target ?? project.getTarget(scheme.build.targets.first!.target.name)
+            let name = scheme.build.targets.first { $0.buildTypes.contains(.running) }?.target.name ?? scheme.build.targets.first!.target.name
+            schemeTarget = target ?? project.getTarget(name)
         }
 
         let shouldExecuteOnLaunch = schemeTarget?.shouldExecuteOnLaunch == true
