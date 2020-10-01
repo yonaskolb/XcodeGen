@@ -829,7 +829,7 @@ class ProjectGeneratorTests: XCTestCase {
                     dependencies: [
                         Dependency(type: .target, reference: "AppExtension")
                     ],
-                    onlyCopyExtensionsOnInstall: true
+                    onlyCopyFilesOnInstall: true
                 )
 
                 let project = Project(name: "test", targets: [app, appExtension])
