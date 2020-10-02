@@ -95,13 +95,14 @@ public class PBXProjGenerator {
             )
         )
 
+        let developmentRegion = project.options.developmentLanguage ?? "en"
         let pbxProject = addObject(
             PBXProject(
                 name: project.name,
                 buildConfigurationList: buildConfigList,
                 compatibilityVersion: project.compatibilityVersion,
                 mainGroup: mainGroup,
-                developmentRegion: project.options.developmentLanguage ?? "en"
+                developmentRegion: developmentRegion
             )
         )
 
@@ -291,8 +292,7 @@ public class PBXProjGenerator {
             projectAttributes["knownAssetTags"] = assetTags
         }
 
-        let knownRegions = sourceGenerator.knownRegions.sorted()
-        pbxProject.knownRegions = knownRegions.isEmpty ? ["en"] : knownRegions
+        pbxProject.knownRegions = sourceGenerator.knownRegions.union(["Base", developmentRegion]).sorted()
 
         pbxProject.packages = packageReferences.sorted { $0.key < $1.key }.map { $1 }
 
