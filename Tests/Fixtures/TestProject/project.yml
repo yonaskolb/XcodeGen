@@ -124,6 +124,7 @@ targets:
       - sdk: Contacts.framework
       - bundle: BundleX.bundle
       - target: AnotherProject/ExternalTarget
+      - target: App_Clip
     onlyCopyFilesOnInstall: true
     scheme:
       testTargets:
@@ -284,6 +285,44 @@ targets:
     platform: macOS
     sources: [Tool]
     scheme: {}
+
+  App_Clip:
+    type: application.on-demand-install-capable
+    platform: iOS
+    entitlements:
+      path: App_Clip/Clip.entitlements
+      properties:
+        com.apple.developer.parent-application-identifiers: [$(AppIdentifierPrefix)com.project.appwithclip]
+        com.apple.security.application-groups: group.com.app
+    sources:
+      App_Clip
+    settings:
+      INFOPLIST_FILE: App_Clip/Info.plist
+      PRODUCT_BUNDLE_IDENTIFIER: com.project.app.clip
+    dependencies:
+      - target: Framework_iOS
+      - target: StaticLibrary_ObjC_iOS
+    scheme:
+      testTargets:
+        - App_Clip_Tests
+        - App_Clip_UITests
+
+  App_Clip_Tests:
+    type: bundle.unit-test
+    platform: iOS
+    sources: App_iOS_Tests
+    dependencies:
+      - target: App_Clip
+      - target: TestFramework
+      - carthage: swift-tagged
+        linkType: static
+
+  App_Clip_UITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources: App_Clip_UITests
+    dependencies:
+      - target: App_Clip
 
 schemes:
   Framework:

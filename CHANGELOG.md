@@ -10,8 +10,11 @@
 - Updated SettingsPresets to use new defaults from Xcode 12. [#953](https://github.com/yonaskolb/XcodeGen/pull/953) @liamnichols
 - Enable Base Internationalization by default as per Xcode 12 behavior. [#954](https://github.com/yonaskolb/XcodeGen/issues/954) @liamnichols
 
+#### Changed
+- Change default project version to Xcode 12 [#960](https://github.com/yonaskolb/XcodeGen/pull/960) @yonaskolb
+
 #### Internal
-- Updates CI to run on Xcode 12 beta. [#936](https://github.com/yonaskolb/XcodeGen/pull/936) @dflems
+- Updates CI to run on Xcode 12. [#936](https://github.com/yonaskolb/XcodeGen/pull/936) [#960](https://github.com/yonaskolb/XcodeGen/pull/960) @dflems @yonaskolb
 
 #### Fixed
 - Select the first runnable build target, if present. [#957](https://github.com/yonaskolb/XcodeGen/pull/957) @codeman9
