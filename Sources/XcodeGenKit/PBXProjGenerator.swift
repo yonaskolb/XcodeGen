@@ -13,6 +13,8 @@ public class PBXProjGenerator {
     let projectDirectory: Path?
     let carthageResolver: CarthageDependencyResolver
 
+    public static let copyFilesActionMask: UInt = 8
+
     var sourceGenerator: SourceGenerator!
 
     var targetObjects: [String: PBXTarget] = [:]
@@ -979,6 +981,17 @@ public class PBXProjGenerator {
             return sourceFilesByCopyFiles.mapValues { getBuildFilesForSourceFiles($0) }
         }
 
+        func getPBXCopyFilesBuildPhase(dstSubfolderSpec: PBXCopyFilesBuildPhase.SubFolder, name: String, files: [PBXBuildFile]) -> PBXCopyFilesBuildPhase {
+            return PBXCopyFilesBuildPhase(
+                dstPath: "",
+                dstSubfolderSpec: dstSubfolderSpec,
+                name: name,
+                buildActionMask: target.onlyCopyFilesOnInstall ? PBXProjGenerator.copyFilesActionMask : PBXBuildPhase.defaultBuildActionMask,
+                files: files,
+                runOnlyForDeploymentPostprocessing: target.onlyCopyFilesOnInstall ? true : false
+            )
+        }
+        
         copyFilesBuildPhasesFiles.merge(getBuildFilesForCopyFilesPhases()) { $0 + $1 }
 
         buildPhases += try target.preBuildScripts.map { try generateBuildScript(targetName: target.name, buildScript: $0) }
@@ -1076,13 +1089,8 @@ public class PBXProjGenerator {
 
         if !extensions.isEmpty {
 
-            let copyFilesPhase = addObject(
-                PBXCopyFilesBuildPhase(
-                    dstPath: "",
-                    dstSubfolderSpec: .plugins,
-                    name: "Embed App Extensions",
-                    files: extensions
-                )
+            let copyFilesPhase = addObject(                
+                getPBXCopyFilesBuildPhase(dstSubfolderSpec: .plugins, name: "Embed App Extensions", files: extensions)
             )
 
             buildPhases.append(copyFilesPhase)
@@ -1105,16 +1113,8 @@ public class PBXProjGenerator {
         copyFrameworksReferences += getBuildFilesForPhase(.frameworks)
         if !copyFrameworksReferences.isEmpty {
 
-            let copyFilesActionMask: UInt = 8
             let copyFilesPhase = addObject(
-                PBXCopyFilesBuildPhase(
-                    dstPath: "",
-                    dstSubfolderSpec: .frameworks,
-                    name: "Embed Frameworks",
-                    buildActionMask: target.onlyCopyFilesOnInstall ? copyFilesActionMask : PBXBuildPhase.defaultBuildActionMask,
-                    files: copyFrameworksReferences,
-                    runOnlyForDeploymentPostprocessing: target.onlyCopyFilesOnInstall ? true : false
-                )
+                getPBXCopyFilesBuildPhase(dstSubfolderSpec: .frameworks, name: "Embed Frameworks", files: copyFrameworksReferences)
             )
 
             buildPhases.append(copyFilesPhase)

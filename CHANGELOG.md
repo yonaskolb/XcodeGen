@@ -16,6 +16,7 @@
 - Allow SDK dependencies to be embedded. [#922](https://github.com/yonaskolb/XcodeGen/pull/922) @k-thorat
 - Allow creating intermediary groups outside of the project directory. [#892](https://github.com/yonaskolb/XcodeGen/pull/892) @segiddins
 - Fix appex's Runpath Search Paths under macOS target. [#952](https://github.com/yonaskolb/XcodeGen/pull/952) @rinsuki
+- `onlyCopyFilesOnInstall` is extended for the Embed App Extensions build phase. [#948](https://github.com/yonaskolb/XcodeGen/pull/948) @RomanPodymov
 
 ## 2.17.0
 

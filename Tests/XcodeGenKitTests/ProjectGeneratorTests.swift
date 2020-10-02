@@ -805,16 +805,91 @@ class ProjectGeneratorTests: XCTestCase {
                 let nativeTarget = try unwrap(pbxProject.nativeTargets.first(where: { $0.name == app.name }))
                 let buildPhases = nativeTarget.buildPhases
 
-                let embedFrameworkPhase = pbxProject
+                let embedFrameworksPhase = pbxProject
                     .copyFilesBuildPhases
                     .filter { buildPhases.contains($0) }
                     .first { $0.dstSubfolderSpec == .frameworks }
 
-                let phase = try unwrap(embedFrameworkPhase)
-                try expect(phase.buildActionMask) == 8
+                let phase = try unwrap(embedFrameworksPhase)
+                try expect(phase.buildActionMask) == PBXProjGenerator.copyFilesActionMask
                 try expect(phase.runOnlyForDeploymentPostprocessing) == true
             }
 
+            $0.it("copies files only on install in the Embed App Extensions step") {
+                let appExtension = Target(
+                    name: "AppExtension",
+                    type: .appExtension,
+                    platform: .tvOS
+                )
+
+                let app = Target(
+                    name: "App",
+                    type: .application,
+                    platform: .tvOS,
+                    dependencies: [
+                        Dependency(type: .target, reference: "AppExtension")
+                    ],
+                    onlyCopyFilesOnInstall: true
+                )
+
+                let project = Project(name: "test", targets: [app, appExtension])
+                let pbxProject = try project.generatePbxProj()
+                let nativeTarget = try unwrap(pbxProject.nativeTargets.first(where: { $0.name == app.name }))
+                let buildPhases = nativeTarget.buildPhases
+
+                let embedAppExtensionsPhase = pbxProject
+                    .copyFilesBuildPhases
+                    .filter { buildPhases.contains($0) }
+                    .first { $0.dstSubfolderSpec == .plugins }
+
+                let phase = try unwrap(embedAppExtensionsPhase)
+                try expect(phase.buildActionMask) == PBXProjGenerator.copyFilesActionMask
+                try expect(phase.runOnlyForDeploymentPostprocessing) == true
+            }
+
+            $0.it("copies files only on install in the Embed Frameworks and Embed App Extensions steps") {
+                let appExtension = Target(
+                    name: "AppExtension",
+                    type: .appExtension,
+                    platform: .tvOS
+                )
+
+                let app = Target(
+                    name: "App",
+                    type: .application,
+                    platform: .tvOS,
+                    dependencies: [
+                        Dependency(type: .target, reference: "AppExtension"),
+                        Dependency(type: .framework, reference: "FrameworkA.framework"),
+                        Dependency(type: .framework, reference: "FrameworkB.framework", embed: false),
+                    ],
+                    onlyCopyFilesOnInstall: true
+                )
+
+                let project = Project(name: "test", targets: [app, appExtension])
+                let pbxProject = try project.generatePbxProj()
+                let nativeTarget = try unwrap(pbxProject.nativeTargets.first(where: { $0.name == app.name }))
+                let buildPhases = nativeTarget.buildPhases
+
+                let embedFrameworksPhase = pbxProject
+                    .copyFilesBuildPhases
+                    .filter { buildPhases.contains($0) }
+                    .first { $0.dstSubfolderSpec == .frameworks }
+
+                let embedFrameworksPhaseValue = try unwrap(embedFrameworksPhase)
+                try expect(embedFrameworksPhaseValue.buildActionMask) == PBXProjGenerator.copyFilesActionMask
+                try expect(embedFrameworksPhaseValue.runOnlyForDeploymentPostprocessing) == true
+                
+                let embedAppExtensionsPhase = pbxProject
+                    .copyFilesBuildPhases
+                    .filter { buildPhases.contains($0) }
+                    .first { $0.dstSubfolderSpec == .plugins }
+
+                let embedAppExtensionsPhaseValue = try unwrap(embedAppExtensionsPhase)
+                try expect(embedAppExtensionsPhaseValue.buildActionMask) == PBXProjGenerator.copyFilesActionMask
+                try expect(embedAppExtensionsPhaseValue.runOnlyForDeploymentPostprocessing) == true
+            }
+            
             $0.it("sets -ObjC for targets that depend on requiresObjCLinking targets") {
                 let requiresObjCLinking = Target(
                     name: "requiresObjCLinking",
