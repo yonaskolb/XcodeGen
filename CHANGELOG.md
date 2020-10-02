@@ -2,6 +2,8 @@
 
 ## Next Version
 
+## 2.18.0
+
 #### Added
 - Add `Scheme.Test.TestTarget.skipped` to allow skipping of an entire test target. [#916](https://github.com/yonaskolb/XcodeGen/pull/916) @codeman9
 - Added ability to set custom LLDBInit scripts for launch and test schemes [#929](https://github.com/yonaskolb/XcodeGen/pull/929) @polac24
@@ -22,6 +24,8 @@
 - Allow creating intermediary groups outside of the project directory. [#892](https://github.com/yonaskolb/XcodeGen/pull/892) @segiddins
 - Fix appex's Runpath Search Paths under macOS target. [#952](https://github.com/yonaskolb/XcodeGen/pull/952) @rinsuki
 - `onlyCopyFilesOnInstall` is extended for the Embed App Extensions build phase. [#948](https://github.com/yonaskolb/XcodeGen/pull/948) @RomanPodymov
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.17.0...2.18.0)
 
 ## 2.17.0
 
