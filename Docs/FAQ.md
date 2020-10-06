@@ -24,13 +24,12 @@ Yes, but you need to use a little trick when using CocoaPods. Add this script in
 
 ```ruby:Podfile
 // Your dependencies
-pod 'Fabric'
-pod 'Crashlytics'
+pod 'Firebase/Crashlytics'
 
-script_phase :name => 'Run Fabric',
-             :script => '"${PODS_ROOT}/Fabric/run"',
-             :input_files => ['$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)']
-
+script_phase name: 'Run Firebase Crashlytics',
+             shell_path: '/bin/sh',
+             script: '"${PODS_ROOT}/FirebaseCrashlytics/run"',
+             input_files: ['$(SRCROOT)/$(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)']
 ```
 
 This script will be added after `[CP] Embed Pods Frameworks.`
