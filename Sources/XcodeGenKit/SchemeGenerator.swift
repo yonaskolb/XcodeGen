@@ -370,7 +370,8 @@ extension Scheme {
                 disableMainThreadChecker: targetScheme.disableMainThreadChecker,
                 stopOnEveryMainThreadCheckerIssue: targetScheme.stopOnEveryMainThreadCheckerIssue,
                 language: targetScheme.language,
-                region: targetScheme.region
+                region: targetScheme.region,
+                storeKitConfiguration: targetScheme.storeKitConfiguration
             ),
             test: .init(
                 config: debugConfig,
