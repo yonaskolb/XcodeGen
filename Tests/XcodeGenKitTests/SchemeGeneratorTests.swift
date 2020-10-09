@@ -99,7 +99,7 @@ class SchemeGeneratorTests: XCTestCase {
                 try expect(xcscheme.launchAction?.askForAppToLaunch) == true
                 try expect(xcscheme.launchAction?.launchAutomaticallySubstyle) == "2"
                 try expect(xcscheme.launchAction?.allowLocationSimulation) == true
-                try expect(xcscheme.launchAction?.storeKitConfigurationFileReference?.identifier) == "../../Configuration.storekit"
+                try expect(xcscheme.launchAction?.storeKitConfigurationFileReference?.identifier) == "../Configuration.storekit"
                 try expect(xcscheme.launchAction?.locationScenarioReference?.referenceType) == Scheme.SimulateLocation.ReferenceType.predefined.rawValue
                 try expect(xcscheme.launchAction?.locationScenarioReference?.identifier) == "New York, NY, USA"
                 try expect(xcscheme.launchAction?.customLLDBInitFile) == "/sample/.lldbinit"
