@@ -235,6 +235,13 @@ public class SchemeGenerator {
             locationScenarioReference = XCScheme.LocationScenarioReference(identifier: identifier, referenceType: referenceType.rawValue)
         }
 
+        var storeKitConfigurationFileReference: XCScheme.StoreKitConfigurationFileReference?
+        if let storeKitConfiguration = scheme.run?.storeKitConfiguration {
+            var path = Path("../\(storeKitConfiguration)")
+            path = path.simplifyingParentDirectoryReferences()
+            storeKitConfigurationFileReference = XCScheme.StoreKitConfigurationFileReference(identifier: path.string)
+        }
+
         let launchAction = XCScheme.LaunchAction(
             runnable: shouldExecuteOnLaunch ? runnables.launch : nil,
             buildConfiguration: scheme.run?.config ?? defaultDebugConfig.name,
@@ -253,6 +260,7 @@ public class SchemeGenerator {
             language: scheme.run?.language,
             region: scheme.run?.region,
             launchAutomaticallySubstyle: scheme.run?.launchAutomaticallySubstyle ?? launchAutomaticallySubstyle(for: schemeTarget),
+            storeKitConfigurationFileReference: storeKitConfigurationFileReference,
             customLLDBInitFile: scheme.run?.customLLDBInit
         )
 

@@ -113,6 +113,7 @@ public struct Scheme: Equatable {
         public var debugEnabled: Bool
         public var simulateLocation: SimulateLocation?
         public var executable: String?
+        public var storeKitConfiguration: String?
         public var customLLDBInit: String?
 
         public init(
@@ -130,6 +131,7 @@ public struct Scheme: Equatable {
             launchAutomaticallySubstyle: String? = nil,
             debugEnabled: Bool = debugEnabledDefault,
             simulateLocation: SimulateLocation? = nil,
+            storeKitConfiguration: String? = nil,
             customLLDBInit: String? = nil
         ) {
             self.config = config
@@ -145,6 +147,7 @@ public struct Scheme: Equatable {
             self.launchAutomaticallySubstyle = launchAutomaticallySubstyle
             self.debugEnabled = debugEnabled
             self.simulateLocation = simulateLocation
+            self.storeKitConfiguration = storeKitConfiguration
             self.customLLDBInit = customLLDBInit
         }
     }
@@ -381,6 +384,9 @@ extension Scheme.Run: JSONObjectConvertible {
         if let askLaunch: Bool = jsonDictionary.json(atKeyPath: "askForAppToLaunch") {
             askForAppToLaunch = askLaunch
         }
+        if let string: String = jsonDictionary.json(atKeyPath: "storeKitConfiguration") {
+            storeKitConfiguration = string
+        }
         customLLDBInit = jsonDictionary.json(atKeyPath: "customLLDBInit")
     }
 }
@@ -414,6 +420,9 @@ extension Scheme.Run: JSONEncodable {
 
         if let simulateLocation = simulateLocation {
             dict["simulateLocation"] = simulateLocation.toJSONValue()
+        }
+        if let storeKitConfiguration = storeKitConfiguration {
+            dict["storeKitConfiguration"] = storeKitConfiguration
         }
         if let customLLDBInit = customLLDBInit {
             dict["customLLDBInit"] = customLLDBInit
