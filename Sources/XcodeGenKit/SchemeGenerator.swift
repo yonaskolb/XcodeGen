@@ -226,12 +226,9 @@ public class SchemeGenerator {
 
         let allowLocationSimulation = scheme.run?.simulateLocation?.allow ?? true
         var locationScenarioReference: XCScheme.LocationScenarioReference?
-        if let simulateLocation = scheme.run?.simulateLocation, var identifier = simulateLocation.defaultLocation, let referenceType = simulateLocation.referenceType {
-            if referenceType == .gpx {
-                var path = Path("../\(identifier)")
-                path = path.simplifyingParentDirectoryReferences()
-                identifier = path.string
-            }
+        if let simulateLocation = scheme.run?.simulateLocation,
+           let identifier = simulateLocation.identifier,
+           let referenceType = simulateLocation.referenceType {
             locationScenarioReference = XCScheme.LocationScenarioReference(identifier: identifier, referenceType: referenceType.rawValue)
         }
 
@@ -416,6 +413,33 @@ extension PBXProductType {
             return true
         default:
             return false
+        }
+    }
+}
+
+extension Scheme.SimulateLocation {
+
+    private struct SchemePath {
+        public var path: String
+        public var forWorkspace: Bool?
+
+        private var pathPrefix: String {
+            return forWorkspace == true ? "../" : "../../"
+        }
+
+        public var identifier: String {
+            return Path("\(pathPrefix)\(path)").simplifyingParentDirectoryReferences().string
+        }
+    }
+
+    var identifier: String? {
+        guard let defaultLocation = defaultLocation else {
+            return nil
+        }
+        switch referenceType {
+        case .predefined: return defaultLocation
+        case .gpx: return SchemePath(path: defaultLocation, forWorkspace: forWorkspace).identifier
+        default: return nil
         }
     }
 }

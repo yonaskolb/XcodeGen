@@ -40,6 +40,7 @@ public struct Scheme: Equatable {
 
         public var allow: Bool
         public var defaultLocation: String?
+        public var forWorkspace: Bool?
 
         public var referenceType: ReferenceType? {
             guard let defaultLocation = self.defaultLocation else {
@@ -52,9 +53,10 @@ public struct Scheme: Equatable {
             return .predefined
         }
 
-        public init(allow: Bool, defaultLocation: String) {
+        public init(allow: Bool, defaultLocation: String, forWorkspace: Bool) {
             self.allow = allow
             self.defaultLocation = defaultLocation
+            self.forWorkspace = forWorkspace
         }
     }
 
@@ -337,6 +339,7 @@ extension Scheme.SimulateLocation: JSONObjectConvertible {
     public init(jsonDictionary: JSONDictionary) throws {
         allow = try jsonDictionary.json(atKeyPath: "allow")
         defaultLocation = jsonDictionary.json(atKeyPath: "defaultLocation")
+        forWorkspace = jsonDictionary.json(atKeyPath: "forWorkspace")
     }
 }
 
@@ -348,6 +351,10 @@ extension Scheme.SimulateLocation: JSONEncodable {
 
         if let defaultLocation = defaultLocation {
             dict["defaultLocation"] = defaultLocation
+        }
+
+        if let forWorkspace = forWorkspace {
+            dict["forWorkspace"] = forWorkspace
         }
 
         return dict

@@ -47,7 +47,7 @@ class SchemeGeneratorTests: XCTestCase {
             let buildTarget = Scheme.BuildTarget(target: .local(app.name))
             $0.it("generates scheme") {
                 let preAction = Scheme.ExecutionAction(name: "Script", script: "echo Starting", settingsTarget: app.name)
-                let simulateLocation = Scheme.SimulateLocation(allow: true, defaultLocation: "New York, NY, USA")
+                let simulateLocation = Scheme.SimulateLocation(allow: true, defaultLocation: "New York, NY, USA", forWorkspace: false)
                 let scheme = Scheme(
                     name: "MyScheme",
                     build: Scheme.Build(targets: [buildTarget], preActions: [preAction]),
@@ -102,6 +102,46 @@ class SchemeGeneratorTests: XCTestCase {
                 try expect(xcscheme.launchAction?.locationScenarioReference?.identifier) == "New York, NY, USA"
                 try expect(xcscheme.launchAction?.customLLDBInitFile) == "/sample/.lldbinit"
                 try expect(xcscheme.testAction?.customLLDBInitFile) == "/test/.lldbinit"
+            }
+
+            $0.it("generates scheme with gpx defaultLocation") {
+                let simulateLocation = Scheme.SimulateLocation(allow: true, defaultLocation: "Location.gpx", forWorkspace: false)
+                let scheme = Scheme(
+                    name: "MyScheme",
+                    build: Scheme.Build(targets: [buildTarget]),
+                    run: Scheme.Run(config: "Debug", simulateLocation: simulateLocation)
+                )
+                let project = Project(
+                    name: "test",
+                    targets: [app, framework],
+                    schemes: [scheme]
+                )
+                let xcodeProject = try project.generateXcodeProject()
+                let xcscheme = try unwrap(xcodeProject.sharedData?.schemes.first)
+
+                try expect(xcscheme.launchAction?.allowLocationSimulation) == true
+                try expect(xcscheme.launchAction?.locationScenarioReference?.referenceType) == Scheme.SimulateLocation.ReferenceType.gpx.rawValue
+                try expect(xcscheme.launchAction?.locationScenarioReference?.identifier) == "../../Location.gpx"
+            }
+
+            $0.it("generates scheme with gpx defaultLocation for workspace") {
+                let simulateLocation = Scheme.SimulateLocation(allow: true, defaultLocation: "Location.gpx", forWorkspace: true)
+                let scheme = Scheme(
+                    name: "MyScheme",
+                    build: Scheme.Build(targets: [buildTarget]),
+                    run: Scheme.Run(config: "Debug", simulateLocation: simulateLocation)
+                )
+                let project = Project(
+                    name: "test",
+                    targets: [app, framework],
+                    schemes: [scheme]
+                )
+                let xcodeProject = try project.generateXcodeProject()
+                let xcscheme = try unwrap(xcodeProject.sharedData?.schemes.first)
+
+                try expect(xcscheme.launchAction?.allowLocationSimulation) == true
+                try expect(xcscheme.launchAction?.locationScenarioReference?.referenceType) == Scheme.SimulateLocation.ReferenceType.gpx.rawValue
+                try expect(xcscheme.launchAction?.locationScenarioReference?.identifier) == "../Location.gpx"
             }
 
             let frameworkTarget = Scheme.BuildTarget(target: .local(framework.name), buildTypes: [.archiving])
