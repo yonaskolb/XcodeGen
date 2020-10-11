@@ -88,8 +88,8 @@
          </BuildableReference>
       </BuildableProductRunnable>
       <LocationScenarioReference
-         identifier = "Honolulu, HI, USA"
-         referenceType = "1">
+         identifier = "../../App_iOS/Location.gpx"
+         referenceType = "0">
       </LocationScenarioReference>
       <CommandLineArguments>
       </CommandLineArguments>

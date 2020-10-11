@@ -349,7 +349,8 @@ schemes:
     run:
       simulateLocation:
         allow: true
-        defaultLocation: Honolulu, HI, USA
+        defaultLocation: App_iOS/Location.gpx
+        forWorkspace: false
       customLLDBInit: ${SRCROOT}/.lldbinit
     test:
       gatherCoverageData: true

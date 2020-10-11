@@ -588,6 +588,7 @@
 		0F5BD97AF0F94A15A5B7DDB7 /* Standalone.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Standalone.swift; sourceTree = "<group>"; };
 		102A08142A31E44F4ED52649 /* base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = base.xcconfig; sourceTree = "<group>"; };
 		108BB29172D27BE3BD1E7F35 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		12C77B0FF644E820A761A026 /* Location.gpx */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Location.gpx; sourceTree = "<group>"; };
 		13EEAB58665D79C15184D9D0 /* App_iOS_UITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = App_iOS_UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		148B7C933698BCC4F1DBA979 /* XPC_Service.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XPC_Service.m; sourceTree = "<group>"; };
 		16D662EE577E4CD6AFF39D66 /* config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = config.xcconfig; sourceTree = "<group>"; };
@@ -858,6 +859,7 @@
 				9E17D598D98065767A04740F /* Localizable.strings */,
 				65C8D6D1DDC1512D396C07B7 /* Localizable.stringsdict */,
 				0C6BA0D12467A13EC012C728 /* LocalizedStoryboard.storyboard */,
+				12C77B0FF644E820A761A026 /* Location.gpx */,
 				814D72C2B921F60B759C2D4B /* Main.storyboard */,
 				306796628DD52FA55E833B65 /* Model.xcdatamodeld */,
 				BF59AC868D227C92CA8B1B57 /* Model.xcmappingmodel */,
