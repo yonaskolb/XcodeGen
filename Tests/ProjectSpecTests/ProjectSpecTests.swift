@@ -111,7 +111,7 @@ class ProjectSpecTests: XCTestCase {
                 project.options = SpecOptions(minimumXcodeGenVersion: minimumVersion)
 
                 func expectMinimumXcodeGenVersionError(_ project: Project, minimumVersion: Version, xcodeGenVersion: Version, file: String = #file, line: Int = #line) throws {
-                    try expectError(SpecValidationError.ValidationError.invalidXcodeGenVersion(minimumVersion: minimumVersion, version: xcodeGenVersion), file: file, line: line) {
+                    try expectError(SpecValidationError(errors: [SpecValidationError.ValidationError.invalidXcodeGenVersion(minimumVersion: minimumVersion, version: xcodeGenVersion)]), file: file, line: line) {
                         try project.validateMinimumXcodeGenVersion(xcodeGenVersion)
                     }
                 }
