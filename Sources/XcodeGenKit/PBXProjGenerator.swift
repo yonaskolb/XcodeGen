@@ -292,7 +292,12 @@ public class PBXProjGenerator {
             projectAttributes["knownAssetTags"] = assetTags
         }
 
-        pbxProject.knownRegions = sourceGenerator.knownRegions.union(["Base", developmentRegion]).sorted()
+        var knownRegions = Set(sourceGenerator.knownRegions)
+        knownRegions.insert(developmentRegion)
+        if project.options.useBaseInternationalization {
+            knownRegions.insert("Base")
+        }
+        pbxProject.knownRegions = knownRegions.sorted()
 
         pbxProject.packages = packageReferences.sorted { $0.key < $1.key }.map { $1 }
 
