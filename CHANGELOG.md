@@ -5,6 +5,9 @@
 #### Added
 - Add `useBaseInternationalization` to Project Spec Options to opt out of Base Internationalization. [#961](https://github.com/yonaskolb/XcodeGen/pull/961) @liamnichols
 
+#### Fixed
+- Fixed error message output for `minimumXcodeGenVersion`. [#967](https://github.com/yonaskolb/XcodeGen/pull/967) @joshwalker
+
 ## 2.18.0
 
 #### Added
