@@ -4,6 +4,7 @@
 
 #### Added
 - Add `useBaseInternationalization` to Project Spec Options to opt out of Base Internationalization. [#961](https://github.com/yonaskolb/XcodeGen/pull/961) @liamnichols
+- Adds discovered dependency file for a build script [#970](https://github.com/yonaskolb/XcodeGen/pull/970) @polac24 @fggeraissate
 
 ## 2.18.0
 
@@ -14,7 +15,6 @@
 - Application extension schemes now default to `launchAutomaticallySubstyle = 2` and the correct debugger and launcher identifiers [#932](https://github.com/yonaskolb/XcodeGen/pull/932) @brentleyjones
 - Updated SettingsPresets to use new defaults from Xcode 12. [#953](https://github.com/yonaskolb/XcodeGen/pull/953) @liamnichols
 - Enable Base Internationalization by default as per Xcode 12 behavior. [#954](https://github.com/yonaskolb/XcodeGen/issues/954) @liamnichols
-- Adds discovered dependency file for a build script [#TBD](https://github.com/yonaskolb/XcodeGen/pull/TBD) @polac24
 
 #### Changed
 - Change default project version to Xcode 12 [#960](https://github.com/yonaskolb/XcodeGen/pull/960) @yonaskolb

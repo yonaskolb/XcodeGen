@@ -563,7 +563,7 @@ Each script can contain:
 - [ ] **shell**: **String** - shell used for the script. Defaults to `/bin/sh`
 - [ ] **showEnvVars**: **Bool** - whether the environment variables accessible to the script show be printed to the build log. Defaults to yes
 - [ ] **runOnlyWhenInstalling**: **Bool** - whether the script is only run when installing (`runOnlyForDeploymentPostprocessing`). Defaults to no
-- [] **discoveredDependencyFile**: **String** - discovered dependency .d file
+- [ ] **discoveredDependencyFile**: **String** - discovered dependency .d file
 
 
 Either a **path** or **script** must be defined, the rest are optional.
