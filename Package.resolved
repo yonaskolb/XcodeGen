@@ -74,21 +74,21 @@
         }
       },
       {
+        "package": "XcodeProj",
+        "repositoryURL": "https://github.com/tuist/XcodeProj.git",
+        "state": {
+          "branch": null,
+          "revision": "3038221d72c7202a7b72fb971495dc6257bc3835",
+          "version": "7.15.0"
+        }
+      },
+      {
         "package": "XcodeProjCExt",
         "repositoryURL": "https://github.com/tuist/XcodeProjCExt",
         "state": {
           "branch": null,
           "revision": "21a510c225ff2bc83d5920a21d902af4b1e7e218",
           "version": "0.1.0"
-        }
-      },
-      {
-        "package": "XcodeProj",
-        "repositoryURL": "https://github.com/polac24/xcproj.git",
-        "state": {
-          "branch": "20200907-discovery-d",
-          "revision": "5d70dfc362b8e25847e5ca01d66a9171de92dd9d",
-          "version": null
         }
       },
       {
