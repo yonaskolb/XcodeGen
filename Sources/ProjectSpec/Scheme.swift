@@ -1,5 +1,6 @@
 import Foundation
 import JSONUtilities
+import PathKit
 import XcodeProj
 
 public typealias BuildType = XCScheme.BuildAction.Entry.BuildFor
@@ -58,6 +59,24 @@ public struct Scheme: Equatable {
         }
     }
 
+    public struct StoreKitConfiguration: Equatable {
+        public var location: String
+        public var forWorkspace: Bool?
+
+        public init(location: String, forWorkspace: Bool? = nil) {
+            self.location = location
+            self.forWorkspace = forWorkspace
+        }
+
+        private var prefix: String {
+            return forWorkspace == true ? "../" : "../../"
+        }
+
+        public var identifier: String {
+            return Path("\(prefix)\(location)").simplifyingParentDirectoryReferences().string
+        }
+    }
+
     public struct ExecutionAction: Equatable {
         public var script: String
         public var name: String
@@ -113,7 +132,7 @@ public struct Scheme: Equatable {
         public var debugEnabled: Bool
         public var simulateLocation: SimulateLocation?
         public var executable: String?
-        public var storeKitConfiguration: String?
+        public var storeKitConfiguration: StoreKitConfiguration?
         public var customLLDBInit: String?
 
         public init(
@@ -131,7 +150,7 @@ public struct Scheme: Equatable {
             launchAutomaticallySubstyle: String? = nil,
             debugEnabled: Bool = debugEnabledDefault,
             simulateLocation: SimulateLocation? = nil,
-            storeKitConfiguration: String? = nil,
+            storeKitConfiguration: StoreKitConfiguration? = nil,
             customLLDBInit: String? = nil
         ) {
             self.config = config
@@ -357,6 +376,28 @@ extension Scheme.SimulateLocation: JSONEncodable {
     }
 }
 
+extension Scheme.StoreKitConfiguration: JSONObjectConvertible {
+
+    public init(jsonDictionary: JSONDictionary) throws {
+        location = try jsonDictionary.json(atKeyPath: "location")
+        forWorkspace = jsonDictionary.json(atKeyPath: "forWorkspace")
+    }
+}
+
+extension Scheme.StoreKitConfiguration: JSONEncodable {
+    public func toJSONValue() -> Any {
+        var dict: [String: Any] = [
+            "location": location,
+        ]
+        
+        if let forWorkspace = forWorkspace {
+            dict["forWorkspace"] = forWorkspace
+        }
+
+        return dict
+    }
+}
+
 extension Scheme.Run: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
@@ -371,6 +412,8 @@ extension Scheme.Run: JSONObjectConvertible {
         region = jsonDictionary.json(atKeyPath: "region")
         debugEnabled = jsonDictionary.json(atKeyPath: "debugEnabled") ?? Scheme.Run.debugEnabledDefault
         simulateLocation = jsonDictionary.json(atKeyPath: "simulateLocation")
+        let maybeStoreKitLocation: String? = jsonDictionary.json(atKeyPath: "storeKitConfiguration")
+        storeKitConfiguration = jsonDictionary.json(atKeyPath: "storeKitConfiguration") ?? maybeStoreKitLocation.flatMap { Scheme.StoreKitConfiguration(location: $0) }
         executable = jsonDictionary.json(atKeyPath: "executable")
 
         // launchAutomaticallySubstyle is defined as a String in XcodeProj but its value is often
@@ -383,9 +426,6 @@ extension Scheme.Run: JSONObjectConvertible {
 
         if let askLaunch: Bool = jsonDictionary.json(atKeyPath: "askForAppToLaunch") {
             askForAppToLaunch = askLaunch
-        }
-        if let string: String = jsonDictionary.json(atKeyPath: "storeKitConfiguration") {
-            storeKitConfiguration = string
         }
         customLLDBInit = jsonDictionary.json(atKeyPath: "customLLDBInit")
     }
@@ -422,7 +462,7 @@ extension Scheme.Run: JSONEncodable {
             dict["simulateLocation"] = simulateLocation.toJSONValue()
         }
         if let storeKitConfiguration = storeKitConfiguration {
-            dict["storeKitConfiguration"] = storeKitConfiguration
+            dict["storeKitConfiguration"] = storeKitConfiguration.toJSONValue()
         }
         if let customLLDBInit = customLLDBInit {
             dict["customLLDBInit"] = customLLDBInit
