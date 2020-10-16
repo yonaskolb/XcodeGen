@@ -140,6 +140,7 @@ targets:
       commandLineArguments:
           MyEnabledArgument: true
           MyDisabledArgument: false
+      storeKitConfiguration: "App_iOS/Configuration.storekit"
     postbuildScripts:
       - path: scripts/strip-frameworks.sh
         name: Strip Unused Architectures from Frameworks
@@ -351,6 +352,8 @@ schemes:
         allow: true
         defaultLocation: Honolulu, HI, USA
       customLLDBInit: ${SRCROOT}/.lldbinit
+      storeKitConfiguration:
+        location: "App_iOS/Configuration.storekit"
     test:
       gatherCoverageData: true
       targets:
