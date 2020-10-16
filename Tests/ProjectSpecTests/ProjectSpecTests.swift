@@ -506,7 +506,7 @@ class ProjectSpecTests: XCTestCase {
                                                                                                                         value: "bar",
                                                                                                                         enabled: false)],
                                                                     launchAutomaticallySubstyle: "2",
-                                                                    storeKitConfiguration: "Configuration.storekit"),
+                                                                    storeKitConfiguration: .init(location: "Configuration.storekit")),
                                                     test: Scheme.Test(config: "Config",
                                                                       gatherCoverageData: true,
                                                                       disableMainThreadChecker: true,

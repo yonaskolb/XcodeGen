@@ -737,7 +737,7 @@ class SpecLoadingTests: XCTestCase {
                     testTargets: ["t1", "t2"],
                     configVariants: ["dev", "app-store"],
                     gatherCoverageData: true,
-                    storeKitConfiguration: "Configuration.storekit",
+                    storeKitConfiguration: .init(location: "Configuration.storekit"),
                     language: "en",
                     region: "US",
                     disableMainThreadChecker: true,
@@ -776,7 +776,7 @@ class SpecLoadingTests: XCTestCase {
                     "run": [
                         "config": "debug",
                         "launchAutomaticallySubstyle": 2,
-                        "storeKitConfiguration": "Configuration.storekit"
+                        "storeKitConfiguration": "Configuration.storekit",
                     ],
                     "test": [
                         "config": "debug",
@@ -817,7 +817,7 @@ class SpecLoadingTests: XCTestCase {
                 let expectedRun = Scheme.Run(
                     config: "debug",
                     launchAutomaticallySubstyle: "2",
-                    storeKitConfiguration: "Configuration.storekit"
+                    storeKitConfiguration: .init(location: "Configuration.storekit")
                 )
                 try expect(scheme.run) == expectedRun
 
@@ -852,7 +852,10 @@ class SpecLoadingTests: XCTestCase {
                             ["variable": "OTHER_ENV_VAR", "value": "VAL", "isEnabled": false],
                         ],
                         "launchAutomaticallySubstyle": "2",
-                        "storeKitConfiguration": "Configuration.storekit",
+                        "storeKitConfiguration": [
+                            "location": "Configuration.storekit",
+                            "forWorkspace": true,
+                        ],
                     ],
                     "test": [
                         "environmentVariables": [
@@ -883,7 +886,7 @@ class SpecLoadingTests: XCTestCase {
 
                 try expect(scheme.run?.environmentVariables) == expectedRunVariables
                 try expect(scheme.run?.launchAutomaticallySubstyle) == "2"
-                try expect(scheme.run?.storeKitConfiguration) == "Configuration.storekit"
+                try expect(scheme.run?.storeKitConfiguration) == .init(location: "Configuration.storekit", forWorkspace: true)
                 try expect(scheme.test?.environmentVariables) == expectedTestVariables
                 try expect(scheme.profile?.config) == "Release"
                 try expect(scheme.profile?.environmentVariables.isEmpty) == true

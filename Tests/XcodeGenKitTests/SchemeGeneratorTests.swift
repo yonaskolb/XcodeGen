@@ -48,7 +48,7 @@ class SchemeGeneratorTests: XCTestCase {
             $0.it("generates scheme") {
                 let preAction = Scheme.ExecutionAction(name: "Script", script: "echo Starting", settingsTarget: app.name)
                 let simulateLocation = Scheme.SimulateLocation(allow: true, defaultLocation: "New York, NY, USA")
-                let storeKitConfiguration = "Configuration.storekit"
+                let storeKitConfiguration = Scheme.StoreKitConfiguration(location: "Configuration.storekit", forWorkspace: true)
                 let scheme = Scheme(
                     name: "MyScheme",
                     build: Scheme.Build(targets: [buildTarget], preActions: [preAction]),
