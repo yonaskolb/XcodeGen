@@ -3,6 +3,7 @@
 ## Next Version
 
 #### Added
+- Add `useBaseInternationalization` to Project Spec Options to opt out of Base Internationalization. [#961](https://github.com/yonaskolb/XcodeGen/pull/961) @liamnichols
 - Add `Scheme.StoreKitConfiguration` to allow specifying StoreKit Configuration in Scheme and TargetScheme, supporting either xcodeproj and xcworkspace. [#964](https://github.com/yonaskolb/XcodeGen/pull/964) @jcolicchio
 
 ## 2.18.0

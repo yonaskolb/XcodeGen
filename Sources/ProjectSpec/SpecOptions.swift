@@ -9,6 +9,7 @@ public struct SpecOptions: Equatable {
     public static let groupSortPositionDefault = GroupSortPosition.bottom
     public static let generateEmptyDirectoriesDefault = false
     public static let findCarthageFrameworksDefault = false
+    public static let useBaseInternationalizationDefault = true
 
     public var minimumXcodeGenVersion: Version?
     public var carthageBuildPath: String?
@@ -33,6 +34,7 @@ public struct SpecOptions: Equatable {
     public var localPackagesGroup: String?
     public var preGenCommand: String?
     public var postGenCommand: String?
+    public var useBaseInternationalization: Bool
 
     public enum ValidationType: String {
         case missingConfigs
@@ -93,7 +95,8 @@ public struct SpecOptions: Equatable {
         findCarthageFrameworks: Bool = findCarthageFrameworksDefault,
         localPackagesGroup: String? = nil,
         preGenCommand: String? = nil,
-        postGenCommand: String? = nil
+        postGenCommand: String? = nil,
+        useBaseInternationalization: Bool = useBaseInternationalizationDefault
     ) {
         self.minimumXcodeGenVersion = minimumXcodeGenVersion
         self.carthageBuildPath = carthageBuildPath
@@ -118,6 +121,7 @@ public struct SpecOptions: Equatable {
         self.localPackagesGroup = localPackagesGroup
         self.preGenCommand = preGenCommand
         self.postGenCommand = postGenCommand
+        self.useBaseInternationalization = useBaseInternationalization
     }
 }
 
@@ -149,6 +153,7 @@ extension SpecOptions: JSONObjectConvertible {
         localPackagesGroup = jsonDictionary.json(atKeyPath: "localPackagesGroup")
         preGenCommand = jsonDictionary.json(atKeyPath: "preGenCommand")
         postGenCommand = jsonDictionary.json(atKeyPath: "postGenCommand")
+        useBaseInternationalization = jsonDictionary.json(atKeyPath: "useBaseInternationalization") ?? SpecOptions.useBaseInternationalizationDefault
         if jsonDictionary["fileTypes"] != nil {
             fileTypes = try jsonDictionary.json(atKeyPath: "fileTypes")
         } else {
@@ -191,6 +196,9 @@ extension SpecOptions: JSONEncodable {
         }
         if findCarthageFrameworks != SpecOptions.findCarthageFrameworksDefault {
             dict["findCarthageFrameworks"] = findCarthageFrameworks
+        }
+        if useBaseInternationalization != SpecOptions.useBaseInternationalizationDefault {
+            dict["useBaseInternationalization"] = useBaseInternationalization
         }
 
         return dict

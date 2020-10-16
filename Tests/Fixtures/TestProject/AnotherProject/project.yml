@@ -1,5 +1,7 @@
 name: AnotherProject
 include: [../environments.yml]
+options:
+  useBaseInternationalization: false
 configFiles:
   Test Debug: ../Configs/config.xcconfig
 targets:
