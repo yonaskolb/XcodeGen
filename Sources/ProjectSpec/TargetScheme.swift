@@ -71,8 +71,7 @@ extension TargetScheme: JSONObjectConvertible {
         }
         configVariants = jsonDictionary.json(atKeyPath: "configVariants") ?? []
         gatherCoverageData = jsonDictionary.json(atKeyPath: "gatherCoverageData") ?? TargetScheme.gatherCoverageDataDefault
-        let maybeStoreKitLocation: String? = jsonDictionary.json(atKeyPath: "storeKitConfiguration")
-        storeKitConfiguration = jsonDictionary.json(atKeyPath: "storeKitConfiguration") ?? maybeStoreKitLocation.flatMap { Scheme.StoreKitConfiguration(location: $0) }
+        storeKitConfiguration = Scheme.StoreKitConfiguration(parentJSONDictionary: jsonDictionary)
         language = jsonDictionary.json(atKeyPath: "language")
         region = jsonDictionary.json(atKeyPath: "region")
         disableMainThreadChecker = jsonDictionary.json(atKeyPath: "disableMainThreadChecker") ?? TargetScheme.disableMainThreadCheckerDefault

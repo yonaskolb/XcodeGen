@@ -68,6 +68,18 @@ public struct Scheme: Equatable {
             self.forWorkspace = forWorkspace
         }
 
+        public init?(parentJSONDictionary: JSONDictionary, keyPath: KeyPath = "storeKitConfiguration") {
+            if let storeKitConfiguration: StoreKitConfiguration = parentJSONDictionary.json(atKeyPath: keyPath) {
+                // attempt to decode as StoreKitConfiguration
+                self = storeKitConfiguration
+            } else if let storeKitLocation: String = parentJSONDictionary.json(atKeyPath: keyPath) {
+                // attempt to decode as String
+                self = .init(location: storeKitLocation)
+            } else {
+                return nil
+            }
+        }
+
         private var prefix: String {
             return forWorkspace == true ? "../" : "../../"
         }
@@ -412,8 +424,7 @@ extension Scheme.Run: JSONObjectConvertible {
         region = jsonDictionary.json(atKeyPath: "region")
         debugEnabled = jsonDictionary.json(atKeyPath: "debugEnabled") ?? Scheme.Run.debugEnabledDefault
         simulateLocation = jsonDictionary.json(atKeyPath: "simulateLocation")
-        let maybeStoreKitLocation: String? = jsonDictionary.json(atKeyPath: "storeKitConfiguration")
-        storeKitConfiguration = jsonDictionary.json(atKeyPath: "storeKitConfiguration") ?? maybeStoreKitLocation.flatMap { Scheme.StoreKitConfiguration(location: $0) }
+        storeKitConfiguration = Scheme.StoreKitConfiguration(parentJSONDictionary: jsonDictionary)
         executable = jsonDictionary.json(atKeyPath: "executable")
 
         // launchAutomaticallySubstyle is defined as a String in XcodeProj but its value is often
