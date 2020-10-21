@@ -55,7 +55,10 @@ public func generateSpec(xcodeProj: XcodeProj, projectDirectory: Path) throws ->
                        attributes: pbxproj.attributes
     )
 
-    return try removeDefault(project: proj, sourceRoot: sourceRoot)
+    var optimizedProj = try removeDefault(project: proj, sourceRoot: sourceRoot)
+    optimizedProj = deintegrateCocoapods(optimizedProj)
+
+    return optimizedProj
 }
 
 private func getConfigType(for settings: BuildSettings) -> ConfigType {
@@ -587,4 +590,35 @@ private extension XCScheme.CommandLineArguments {
     func toDictionary() -> Dictionary<String, Bool> {
         return Dictionary(uniqueKeysWithValues: arguments.map { ($0.name, $0.enabled) })
     }
+}
+
+private func deintegrateCocoapods(_ project: Project) -> Project {
+    var p = project
+    p.targets = p.targets.map(deintegrateCocoapods)
+    return p
+}
+
+private func not<T>(_ fn: @escaping (T) -> Bool) -> (T) -> Bool {
+    return { v in !fn(v) }
+}
+
+private func deintegrateCocoapods(target: Target) -> Target {
+    func isCocoapodsBuildScript(buildScript: BuildScript) -> Bool {
+        // https://github.com/CocoaPods/CocoaPods/blob/master/lib/cocoapods/installer/user_project_integrator/target_integrator.rb#L16
+        return buildScript.name?.starts(with: "[CP] ") ?? false
+    }
+
+    var t = target
+
+    t.preBuildScripts = target.preBuildScripts.filter(not(isCocoapodsBuildScript))
+    t.postCompileScripts = target.postCompileScripts.filter(not(isCocoapodsBuildScript))
+    t.postBuildScripts = target.postBuildScripts.filter(not(isCocoapodsBuildScript))
+
+    // https://github.com/CocoaPods/cocoapods-deintegrate/blob/master/lib/cocoapods/deintegrator.rb#L5
+    let frameworkNames = try! NSRegularExpression(pattern: "^(libPods.*\\.a)|(Pods.*\\.framework)$")
+    t.dependencies = t.dependencies.filter {
+        !frameworkNames.isMatch(to: $0.reference)
+    }
+
+    return t
 }
