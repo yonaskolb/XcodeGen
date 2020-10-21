@@ -1,0 +1,16 @@
+PODS:
+  - Underscore.m (0.3.0)
+
+DEPENDENCIES:
+  - Underscore.m (~> 0.3)
+
+SPEC REPOS:
+  trunk:
+    - Underscore.m
+
+SPEC CHECKSUMS:
+  Underscore.m: dc9ca06fe2c9a79d01ce20c3d2c1e8f91f2d92dc
+
+PODFILE CHECKSUM: ff8da3fed856812b68598934ecba6ad0477f0a7c
+
+COCOAPODS: 1.10.0.rc.1

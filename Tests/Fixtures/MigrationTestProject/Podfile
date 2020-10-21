@@ -1,0 +1,28 @@
+# Uncomment the next line to define a global platform for your project
+# platform :ios, '9.0'
+
+target 'ExampleFramework' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for ExampleFramework
+
+  target 'ExampleFrameworkTests' do
+    # Pods for testing
+  end
+
+end
+
+target 'MigrationTestProject' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for MigrationTestProject
+  pod 'Underscore.m', '~> 0.3'
+
+  target 'MigrationTestProjectTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+end
