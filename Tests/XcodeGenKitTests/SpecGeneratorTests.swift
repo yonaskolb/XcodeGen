@@ -7,12 +7,13 @@ import Yams
 import ProjectSpec
 
 class SpecGeneratorTests: XCTestCase {
+    var project: Project!
     var target: Target!
 
     override func setUpWithError() throws {
         let file = fixturePath + "MigrationTestProject/MigrationTestProject.xcodeproj"
         let xcodeProj = try XcodeProj(path: file)
-        let project = try generateSpec(xcodeProj: xcodeProj, projectDirectory: file.parent())!
+        project = try generateSpec(xcodeProj: xcodeProj, projectDirectory: file.parent())
         target = project.targets.first { $0.name == "MigrationTestProject" }!
 
         let projectDict = project.toJSONDictionary().removeEmpty()
@@ -21,11 +22,12 @@ class SpecGeneratorTests: XCTestCase {
     }
 
     func testRemoveEmpty() {
-        let arr: [Any] = [[], [1, [2], []], [3]]
-        let removed: [Any] = arr.removeEmpty()
+        let arr = [[], [1, [2], []], [3]]
+        let removed = arr.removeEmpty()
+        XCTAssertEqual(removed.count, 2)
 
         let dict: [String: Any?] = ["e": nil]
-        let removed2: [String: Any] = dict.removeEmpty()
+        let removed2: [String: Any?] = dict.removeEmpty()
         XCTAssertEqual(removed2.count, 0)
         let removed3: [String: Any] = dict.compactMapValues { $0 }
         XCTAssertEqual(removed3.count, 0)
@@ -42,5 +44,9 @@ class SpecGeneratorTests: XCTestCase {
         XCTAssertEqual(target.preBuildScripts[0].name, "Pre Build Script")
         XCTAssertEqual(target.postCompileScripts[0].name, "Post Compile Script")
         XCTAssertEqual(target.postBuildScripts[0].name, "Post Build Script")
+    }
+
+    func testScheme() throws {
+        XCTAssertEqual(project.schemes.count, 2)
     }
 }

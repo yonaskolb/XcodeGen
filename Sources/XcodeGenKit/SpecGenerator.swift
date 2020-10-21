@@ -3,14 +3,21 @@ import ProjectSpec
 import XcodeProj
 import PathKit
 
-public func generateSpec(xcodeProj: XcodeProj, projectDirectory: Path) throws -> Project? {
-    guard let pbxproj = xcodeProj.pbxproj.rootObject else {
-        return nil
+public enum SpecGenerationError: Error, CustomStringConvertible {
+    case rootObjectNotFound
+
+    public var description: String {
+        switch self {
+        case .rootObjectNotFound:
+            return "Project does not contain root project"
+        }
     }
-    return try generateProjectSpec(pbxproj: pbxproj, projectDirectory: projectDirectory)
 }
 
-private func generateProjectSpec(pbxproj: PBXProject, projectDirectory: Path) throws -> Project {
+public func generateSpec(xcodeProj: XcodeProj, projectDirectory: Path) throws -> Project {
+    guard let pbxproj = xcodeProj.pbxproj.rootObject else {
+        throw SpecGenerationError.rootObjectNotFound
+    }
     let sourceRoot = projectDirectory + pbxproj.projectDirPath
 
     let targets = try pbxproj.targets
@@ -31,11 +38,14 @@ private func generateProjectSpec(pbxproj: PBXProject, projectDirectory: Path) th
 
     let options = SpecOptions(defaultConfig: pbxproj.buildConfigurationList.defaultConfigurationName)
 
+    let schems = xcodeProj.sharedData?.schemes.compactMap(Scheme.init) ?? []
+
     let proj = Project(basePath: Path(pbxproj.projectDirPath),
                        name: pbxproj.name,
                        targets: targets,
                        aggregateTargets: aggregateTargets,
                        settings: settings,
+                       schemes: schems,
                        options: options,
                        attributes: pbxproj.attributes)
 
@@ -458,5 +468,110 @@ extension PBXGroup {
 
             return nil
         }.reduce([], { $0 + $1 })
+    }
+}
+
+private extension Scheme {
+    init?(scheme: XCScheme) {
+        guard let buildAction = scheme.buildAction,
+              let buildableReference = buildAction.buildActionEntries.first?.buildableReference else {
+            return nil
+        }
+        self.init(
+            name: scheme.name,
+            build: Scheme.Build(
+                targets: [BuildTarget(target: TargetReference(name: buildableReference.blueprintName, location: .local))],
+                parallelizeBuild: buildAction.parallelizeBuild,
+                buildImplicitDependencies: buildAction.buildImplicitDependencies,
+                preActions: buildAction.preActions.map(Scheme.ExecutionAction.init),
+                postActions: buildAction.postActions.map(Scheme.ExecutionAction.init)
+            ),
+            run: scheme.launchAction.flatMap { launchAction in
+                Scheme.Run(
+                    config: launchAction.buildConfiguration,
+                    executable: launchAction.runnable?.buildableReference.blueprintName,
+                    commandLineArguments: launchAction.commandlineArguments?.toDictionary() ?? [:],
+                    preActions: launchAction.preActions.map(Scheme.ExecutionAction.init),
+                    postActions: launchAction.postActions.map(Scheme.ExecutionAction.init),
+                    environmentVariables: launchAction.environmentVariables ?? [],
+                    disableMainThreadChecker: launchAction.disableMainThreadChecker,
+                    stopOnEveryMainThreadCheckerIssue: launchAction.stopOnEveryMainThreadCheckerIssue,
+                    language: launchAction.language,
+                    region: launchAction.region,
+                    askForAppToLaunch: launchAction.askForAppToLaunch,
+                    launchAutomaticallySubstyle: launchAction.launchAutomaticallySubstyle,
+                    debugEnabled: !launchAction.selectedDebuggerIdentifier.isEmpty,
+                    simulateLocation: launchAction.locationScenarioReference.flatMap {
+                        SimulateLocation(allow: launchAction.allowLocationSimulation,
+                                         defaultLocation: $0.identifier)
+                    },
+                    customLLDBInit: launchAction.customLLDBInitFile)
+            },
+            test: scheme.testAction.flatMap { testAction in
+                let targets = testAction.testables.map {
+                    Scheme.Test.TestTarget(
+                        targetReference: TargetReference(
+                            name: $0.buildableReference.blueprintName,
+                            location: .local),
+                        randomExecutionOrder: $0.parallelizable,
+                        parallelizable: $0.parallelizable,
+                        skipped: $0.skipped,
+                        skippedTests: $0.skippedTests.map { $0.identifier })
+                }
+
+                return Scheme.Test(
+                    config: testAction.buildConfiguration,
+                    gatherCoverageData: testAction.codeCoverageEnabled,
+                    coverageTargets: testAction.codeCoverageTargets.map {
+                        TargetReference(name: $0.blueprintName, location: .local)
+                    },
+                    disableMainThreadChecker: testAction.disableMainThreadChecker,
+                    randomExecutionOrder: targets.allSatisfy { $0.randomExecutionOrder },
+                    parallelizable: targets.allSatisfy { $0.parallelizable },
+                    commandLineArguments: testAction.commandlineArguments?.toDictionary() ?? [:],
+                    targets: targets,
+                    preActions: testAction.preActions.map(Scheme.ExecutionAction.init),
+                    postActions: testAction.postActions.map(Scheme.ExecutionAction.init),
+                    environmentVariables: testAction.environmentVariables ?? [],
+                    language: testAction.language,
+                    region: testAction.region,
+                    debugEnabled: !testAction.selectedDebuggerIdentifier.isEmpty,
+                    customLLDBInit: testAction.customLLDBInitFile)
+            },
+            profile: scheme.profileAction.flatMap {
+                Scheme.Profile(
+                    config: $0.buildConfiguration,
+                    commandLineArguments: $0.commandlineArguments?.toDictionary() ?? [:],
+                    preActions: $0.preActions.map(Scheme.ExecutionAction.init),
+                    postActions: $0.postActions.map(Scheme.ExecutionAction.init),
+                    environmentVariables: $0.environmentVariables ?? [])
+            },
+            analyze: scheme.analyzeAction.flatMap {
+                Scheme.Analyze(config: $0.buildConfiguration)
+            },
+            archive: scheme.archiveAction.flatMap {
+                Scheme.Archive(
+                    config: $0.buildConfiguration,
+                    customArchiveName: $0.customArchiveName,
+                    revealArchiveInOrganizer: $0.revealArchiveInOrganizer,
+                    preActions: $0.preActions.map(Scheme.ExecutionAction.init),
+                    postActions: $0.postActions.map(Scheme.ExecutionAction.init))
+            })
+    }
+}
+
+private extension Scheme.ExecutionAction {
+    init(action: XCScheme.ExecutionAction) {
+        self.init(
+            name: action.title,
+            script: action.scriptText,
+            settingsTarget: action.environmentBuildable?.blueprintName
+        )
+    }
+}
+
+private extension XCScheme.CommandLineArguments {
+    func toDictionary() -> Dictionary<String, Bool> {
+        return Dictionary(uniqueKeysWithValues: arguments.map { ($0.name, $0.enabled) })
     }
 }

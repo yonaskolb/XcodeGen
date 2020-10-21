@@ -23,7 +23,7 @@ class MigrateCommand: Command {
         }
         let xcodeProj = try XcodeProj(path: file)
         let project = try generateSpec(xcodeProj: xcodeProj, projectDirectory: file.parent())
-        let projectDict = project?.toJSONDictionary().removeEmpty()
+        let projectDict = project.toJSONDictionary().removeEmpty()
         let encodedYAML = try Yams.dump(object: projectDict)
         let defaultOutPath = file.parent() + "project.yml"
         let outPath = spec.value ?? defaultOutPath
