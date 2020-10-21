@@ -40,16 +40,29 @@ public func generateSpec(xcodeProj: XcodeProj, projectDirectory: Path) throws ->
 
     let schems = xcodeProj.sharedData?.schemes.compactMap(Scheme.init) ?? []
 
+    let configs = pbxproj.buildConfigurationList.buildConfigurations.map {
+        Config(name: $0.name, type: getConfigType(for: $0.buildSettings))
+    }
+
     let proj = Project(basePath: Path(pbxproj.projectDirPath),
                        name: pbxproj.name,
+                       configs: configs,
                        targets: targets,
                        aggregateTargets: aggregateTargets,
                        settings: settings,
                        schemes: schems,
                        options: options,
-                       attributes: pbxproj.attributes)
+                       attributes: pbxproj.attributes
+    )
 
     return try removeDefault(project: proj, sourceRoot: sourceRoot)
+}
+
+private func getConfigType(for settings: BuildSettings) -> ConfigType {
+    guard let args = settings["GCC_PREPROCESSOR_DEFINITIONS"] as? [String] else {
+        return .release
+    }
+    return args.contains("DEBUG=1") ? .debug : .release
 }
 
 private extension BuildSettingsProvider.Variant {

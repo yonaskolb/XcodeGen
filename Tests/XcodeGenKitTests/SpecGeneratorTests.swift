@@ -47,6 +47,6 @@ class SpecGeneratorTests: XCTestCase {
     }
 
     func testScheme() throws {
-        XCTAssertEqual(project.schemes.count, 2)
+        XCTAssertEqual(project.schemes.count, 3)
     }
 }
