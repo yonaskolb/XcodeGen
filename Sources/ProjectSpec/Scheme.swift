@@ -61,11 +61,11 @@ public struct Scheme: Equatable {
 
     public struct StoreKitConfiguration: Equatable {
         public var location: String
-        public var forWorkspace: Bool?
+        public var pathPrefix: String?
 
-        public init(location: String, forWorkspace: Bool? = nil) {
+        public init(location: String, pathPrefix: String? = nil) {
             self.location = location
-            self.forWorkspace = forWorkspace
+            self.pathPrefix = pathPrefix
         }
 
         public init?(parentJSONDictionary: JSONDictionary, keyPath: KeyPath = "storeKitConfiguration") {
@@ -80,12 +80,8 @@ public struct Scheme: Equatable {
             }
         }
 
-        private var prefix: String {
-            return forWorkspace == true ? "../" : "../../"
-        }
-
         public var identifier: String {
-            return Path("\(prefix)\(location)").simplifyingParentDirectoryReferences().string
+            return Path("\(pathPrefix ?? "../../")\(location)").simplifyingParentDirectoryReferences().string
         }
     }
 
@@ -392,7 +388,7 @@ extension Scheme.StoreKitConfiguration: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
         location = try jsonDictionary.json(atKeyPath: "location")
-        forWorkspace = jsonDictionary.json(atKeyPath: "forWorkspace")
+        pathPrefix = jsonDictionary.json(atKeyPath: "pathPrefix")
     }
 }
 
@@ -402,8 +398,8 @@ extension Scheme.StoreKitConfiguration: JSONEncodable {
             "location": location,
         ]
         
-        if let forWorkspace = forWorkspace {
-            dict["forWorkspace"] = forWorkspace
+        if let pathPrefix = pathPrefix {
+            dict["pathPrefix"] = pathPrefix
         }
 
         return dict

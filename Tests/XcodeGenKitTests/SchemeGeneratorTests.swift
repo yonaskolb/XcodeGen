@@ -48,7 +48,7 @@ class SchemeGeneratorTests: XCTestCase {
             $0.it("generates scheme") {
                 let preAction = Scheme.ExecutionAction(name: "Script", script: "echo Starting", settingsTarget: app.name)
                 let simulateLocation = Scheme.SimulateLocation(allow: true, defaultLocation: "New York, NY, USA")
-                let storeKitConfiguration = Scheme.StoreKitConfiguration(location: "Configuration.storekit", forWorkspace: true)
+                let storeKitConfiguration = Scheme.StoreKitConfiguration(location: "Configuration.storekit", pathPrefix: "../")
                 let scheme = Scheme(
                     name: "MyScheme",
                     build: Scheme.Build(targets: [buildTarget], preActions: [preAction]),
@@ -135,7 +135,7 @@ class SchemeGeneratorTests: XCTestCase {
                     name: "MyFramework",
                     type: .application,
                     platform: .iOS,
-                    scheme: TargetScheme(testTargets: ["MyFrameworkTests"])
+                    scheme: TargetScheme(testTargets: ["MyFrameworkTests"], storeKitConfiguration: .init(location: "Configuration.storekit"))
                 )
                 let project = Project(
                     name: "test",
@@ -146,6 +146,7 @@ class SchemeGeneratorTests: XCTestCase {
                 let xcscheme = try unwrap(xcodeProject.sharedData?.schemes.first)
 
                 try expect(xcscheme.launchAction?.buildConfiguration) == "Debug"
+                try expect(xcscheme.launchAction?.storeKitConfigurationFileReference?.identifier) == "../../Configuration.storekit"
                 try expect(xcscheme.testAction?.buildConfiguration) == "Debug"
                 try expect(xcscheme.profileAction?.buildConfiguration) == "Release"
                 try expect(xcscheme.analyzeAction?.buildConfiguration) == "Debug"
@@ -161,7 +162,7 @@ class SchemeGeneratorTests: XCTestCase {
                 let scheme = Scheme(
                     name: "EnvironmentVariablesScheme",
                     build: Scheme.Build(targets: [buildTarget]),
-                    run: Scheme.Run(config: "Debug", environmentVariables: runVariables),
+                    run: Scheme.Run(config: "Debug", environmentVariables: runVariables, storeKitConfiguration: .init(location: "Configuration.storekit", pathPrefix: "../")),
                     test: Scheme.Test(config: "Debug"),
                     profile: Scheme.Profile(config: "Debug")
                 )
@@ -179,6 +180,7 @@ class SchemeGeneratorTests: XCTestCase {
                         .contains(where: { $0.name == app.name })
                 ).beTrue()
                 try expect(xcscheme.launchAction?.environmentVariables) == runVariables
+                try expect(xcscheme.launchAction?.storeKitConfigurationFileReference?.identifier) == "../Configuration.storekit"
                 try expect(xcscheme.testAction?.environmentVariables).to.beNil()
                 try expect(xcscheme.profileAction?.environmentVariables).to.beNil()
             }
@@ -233,7 +235,7 @@ class SchemeGeneratorTests: XCTestCase {
                 let scheme = Scheme(
                     name: "TestScheme",
                     build: Scheme.Build(targets: [buildTarget]),
-                    run: Scheme.Run(config: "Debug", debugEnabled: false)
+                    run: Scheme.Run(config: "Debug", debugEnabled: false, storeKitConfiguration: .init(location: "Configuration.storekit", pathPrefix: "../../"))
                 )
                 let project = Project(
                     name: "test",
@@ -246,6 +248,7 @@ class SchemeGeneratorTests: XCTestCase {
 
                 try expect(xcscheme.launchAction?.selectedDebuggerIdentifier) == ""
                 try expect(xcscheme.launchAction?.selectedLauncherIdentifier) == "Xcode.IDEFoundation.Launcher.PosixSpawn"
+                try expect(xcscheme.launchAction?.storeKitConfigurationFileReference?.identifier) == "../../Configuration.storekit"
             }
 
             $0.it("generate scheme without debugger - test") {
@@ -377,6 +380,7 @@ class SchemeGeneratorTests: XCTestCase {
             $0.it("generates scheme with remote runnable for watch app target") {
                 let xcscheme = try self.makeWatchScheme(appType: .watch2App, extensionType: .watch2Extension)
                 try expect(xcscheme.launchAction?.runnable).beOfType(XCScheme.RemoteRunnable.self)
+                try expect(xcscheme.launchAction?.storeKitConfigurationFileReference?.identifier) == "../Configuration.storekit"
             }
 
             $0.it("generates scheme with host target build action for watch") {
@@ -385,6 +389,7 @@ class SchemeGeneratorTests: XCTestCase {
                 try expect(buildEntries.count) == 2
                 try expect(buildEntries.first?.buildableReference.blueprintName) == "WatchApp"
                 try expect(buildEntries.last?.buildableReference.blueprintName) == "HostApp"
+                try expect(xcscheme.launchAction?.storeKitConfigurationFileReference?.identifier) == "../Configuration.storekit"
             }
         }
     }
@@ -402,7 +407,7 @@ class SchemeGeneratorTests: XCTestCase {
             type: appType,
             platform: .watchOS,
             dependencies: [Dependency(type: .target, reference: watchExtension.name)],
-            scheme: TargetScheme()
+            scheme: TargetScheme(storeKitConfiguration: .init(location: "Configuration.storekit", pathPrefix: "../"))
         )
         let hostApp = Target(
             name: "HostApp",

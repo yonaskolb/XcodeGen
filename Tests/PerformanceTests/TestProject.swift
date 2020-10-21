@@ -18,7 +18,7 @@ extension Project {
             testTargets: [],
             configVariants: ["Test", "Staging", "Prod"],
             gatherCoverageData: true,
-            storeKitConfiguration: .init(location: "Configuration.storekit"),
+            storeKitConfiguration: .init(location: "Configuration.storekit", pathPrefix: "../"),
             disableMainThreadChecker: true,
             stopOnEveryMainThreadCheckerIssue: false,
             commandLineArguments: [
