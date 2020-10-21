@@ -32,7 +32,7 @@ extension Node {
         self.init(target.name)
         self.shape = .box
     }
-    
+
     init(dependency: Dependency) {
         self.init(dependency.reference)
         self.shape = .box
@@ -41,13 +41,13 @@ extension Node {
 }
 
 public class GraphVizGenerator {
-    
+
     public init() {}
-    
+
     public func generateModuleGraphViz(targets: [Target]) -> String {
         return DOTEncoder().encode(generateGraph(targets: targets))
     }
-    
+
     func generateGraph(targets: [Target]) -> Graph {
         var graph = Graph(directed: true)
         targets.forEach { target in

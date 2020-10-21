@@ -11,10 +11,16 @@ options:
   groupSortPosition: top
   preGenCommand: echo "This is a pre-gen command"
   postGenCommand: scripts/script.sh
+  fileTypes:
+    abc:
+      buildPhase: none
+    abcd:
+      buildPhase: none
 fileGroups:
   - Configs
   - FileGroup
   - SomeFile
+  - Utilities
 projectReferences:
   AnotherProject:
     path: ./AnotherProject/AnotherProject.xcodeproj
@@ -69,9 +75,15 @@ targets:
         excludes:
           - "**/excluded-file"
           - "excluded-file"
+          - "Model.xcmappingmodel"
+      - path: App_iOS
+        name: App
+        includes:
+          - "Model.xcmappingmodel"
       - path: StandaloneFiles/Standalone.swift
       - FileGroup/UnderFileGroup
       - Resources/MyBundle.bundle
+      - Resources/SceneKitCatalog.scnassets
       - path: Resources/ResourceFolder
         type: folder
       - path: Folder
@@ -112,6 +124,8 @@ targets:
       - sdk: Contacts.framework
       - bundle: BundleX.bundle
       - target: AnotherProject/ExternalTarget
+      - target: App_Clip
+    onlyCopyFilesOnInstall: true
     scheme:
       testTargets:
         - App_iOS_Tests
@@ -183,11 +197,12 @@ targets:
     sources: iMessageExtension
     settings:
       PRODUCT_BUNDLE_IDENTIFIER: com.project.iMessageApp.extension
+    scheme: {}
 
   iMessageStickersExtension:
     type: app-extension.messages-sticker-pack
     platform: iOS
-    sources:       
+    sources:
       - path: iMessageStickers
 
   StaticLibrary_ObjC:
@@ -251,7 +266,7 @@ targets:
     sources: App_iOS_UITests
     dependencies:
       - target: App_iOS
-      
+
   App_macOS_Tests:
     type: bundle.unit-test
     platform: macOS
@@ -270,6 +285,44 @@ targets:
     platform: macOS
     sources: [Tool]
     scheme: {}
+
+  App_Clip:
+    type: application.on-demand-install-capable
+    platform: iOS
+    entitlements:
+      path: App_Clip/Clip.entitlements
+      properties:
+        com.apple.developer.parent-application-identifiers: [$(AppIdentifierPrefix)com.project.appwithclip]
+        com.apple.security.application-groups: group.com.app
+    sources:
+      App_Clip
+    settings:
+      INFOPLIST_FILE: App_Clip/Info.plist
+      PRODUCT_BUNDLE_IDENTIFIER: com.project.app.clip
+    dependencies:
+      - target: Framework_iOS
+      - target: StaticLibrary_ObjC_iOS
+    scheme:
+      testTargets:
+        - App_Clip_Tests
+        - App_Clip_UITests
+
+  App_Clip_Tests:
+    type: bundle.unit-test
+    platform: iOS
+    sources: App_iOS_Tests
+    dependencies:
+      - target: App_Clip
+      - target: TestFramework
+      - carthage: swift-tagged
+        linkType: static
+
+  App_Clip_UITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources: App_Clip_UITests
+    dependencies:
+      - target: App_Clip
 
 schemes:
   Framework:
@@ -292,11 +345,12 @@ schemes:
   App_Scheme:
     build:
       targets:
-        App_iOS: all    
+        App_iOS: all
     run:
       simulateLocation:
         allow: true
         defaultLocation: Honolulu, HI, USA
+      customLLDBInit: ${SRCROOT}/.lldbinit
     test:
       gatherCoverageData: true
       targets:
@@ -304,6 +358,7 @@ schemes:
         - name: App_iOS_Tests
           parallelizable: true
           randomExecutionOrder: true
+      customLLDBInit: ${SRCROOT}/.lldbinit
 targetTemplates:
   MyTemplate:
     scheme: {}

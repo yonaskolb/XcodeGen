@@ -1,0 +1,9 @@
+//
+// See https://github.com/Carthage/Carthage/issues/3019
+//
+// Skips building ARM slices for simulators until Carthage can support it
+//
+
+EXCLUDED_ARCHS__EFFECTIVE_PLATFORM_SUFFIX_simulator__NATIVE_ARCH_64_BIT_x86_64=arm64 arm64e armv7 armv7s armv6 armv8
+EXCLUDED_ARCHS_1200=$(inherited) $(EXCLUDED_ARCHS__EFFECTIVE_PLATFORM_SUFFIX_$(EFFECTIVE_PLATFORM_SUFFIX)__NATIVE_ARCH_64_BIT_$(NATIVE_ARCH_64_BIT))
+EXCLUDED_ARCHS=$(inherited) $(EXCLUDED_ARCHS_$(XCODE_VERSION_MAJOR))

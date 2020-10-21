@@ -44,7 +44,7 @@ public class CarthageDependencyResolver {
         switch linkType {
         case .static:
             return "\(buildPath)/\(platform.carthageName)/Static"
-        case .dynamic, .staticBinary:
+        case .dynamic:
             return "\(buildPath)/\(platform.carthageName)"
         }
     }

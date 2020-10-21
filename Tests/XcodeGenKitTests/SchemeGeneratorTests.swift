@@ -51,7 +51,8 @@ class SchemeGeneratorTests: XCTestCase {
                 let scheme = Scheme(
                     name: "MyScheme",
                     build: Scheme.Build(targets: [buildTarget], preActions: [preAction]),
-                    run: Scheme.Run(config: "Debug", launchAutomaticallySubstyle: "2", simulateLocation: simulateLocation)
+                    run: Scheme.Run(config: "Debug", askForAppToLaunch: true, launchAutomaticallySubstyle: "2", simulateLocation: simulateLocation, customLLDBInit: "/sample/.lldbinit"),
+                    test: Scheme.Test(config: "Debug", customLLDBInit: "/test/.lldbinit")
                 )
                 let project = Project(
                     name: "test",
@@ -93,11 +94,32 @@ class SchemeGeneratorTests: XCTestCase {
 
                 try expect(xcscheme.launchAction?.selectedDebuggerIdentifier) == XCScheme.defaultDebugger
                 try expect(xcscheme.testAction?.selectedDebuggerIdentifier) == XCScheme.defaultDebugger
-                
+
+                try expect(xcscheme.launchAction?.askForAppToLaunch) == true
                 try expect(xcscheme.launchAction?.launchAutomaticallySubstyle) == "2"
                 try expect(xcscheme.launchAction?.allowLocationSimulation) == true
                 try expect(xcscheme.launchAction?.locationScenarioReference?.referenceType) == Scheme.SimulateLocation.ReferenceType.predefined.rawValue
                 try expect(xcscheme.launchAction?.locationScenarioReference?.identifier) == "New York, NY, USA"
+                try expect(xcscheme.launchAction?.customLLDBInitFile) == "/sample/.lldbinit"
+                try expect(xcscheme.testAction?.customLLDBInitFile) == "/test/.lldbinit"
+            }
+
+            let frameworkTarget = Scheme.BuildTarget(target: .local(framework.name), buildTypes: [.archiving])
+            $0.it("generates a scheme with the first runnable selected") {
+                let scheme = Scheme(
+                    name: "MyScheme",
+                    build: Scheme.Build(targets: [frameworkTarget, buildTarget])
+                )
+                let project = Project(
+                    name: "test",
+                    targets: [framework, app],
+                    schemes: [scheme]
+                )
+                let xcodeProject = try project.generateXcodeProject()
+                let xcscheme = try unwrap(xcodeProject.sharedData?.schemes.first)
+
+                let buildableReference = xcscheme.launchAction?.runnable?.buildableReference
+                try expect(buildableReference?.buildableName) == "MyApp.app"
             }
 
             $0.it("generates scheme with multiple configs") {

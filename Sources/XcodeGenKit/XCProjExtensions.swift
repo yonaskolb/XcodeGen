@@ -62,4 +62,9 @@ extension Xcode {
             return Xcode.filetype(extension: fileExtension)
         }
     }
+
+    public static func isDirectoryFileWrapper(path: Path) -> Bool {
+        guard path.isDirectory else { return false }
+        return fileType(path: path) != nil
+    }
 }

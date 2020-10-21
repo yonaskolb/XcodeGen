@@ -49,7 +49,7 @@ extension Path {
                 return try pathComponents(for: path.dropFirst(), relativeTo: base, memo: memo + [rhs])
 
             // Both sides have a common parent
-            case (.some(let lhs), .some(let rhs)) where lhs == rhs:
+            case (.some(let lhs), .some(let rhs)) where memo.isEmpty && lhs == rhs:
                 return try pathComponents(for: path.dropFirst(), relativeTo: base.dropFirst(), memo: memo)
 
             // `base` has a path to back out of
@@ -72,5 +72,13 @@ extension Path {
         return Path(components: try pathComponents(for: ArraySlice(simplifyingParentDirectoryReferences().components),
                                                    relativeTo: ArraySlice(base.simplifyingParentDirectoryReferences().components),
                                                    memo: []))
+    }
+
+    /// Returns whether `self` is a strict parent of `child`.
+    ///
+    /// Both paths must be asbolute or relative paths.
+    public func isParent(of child: Path) throws -> Bool {
+        let relativePath = try child.relativePath(from: self)
+        return relativePath.components.allSatisfy { $0 != ".." }
     }
 }

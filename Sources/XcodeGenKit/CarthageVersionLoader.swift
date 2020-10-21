@@ -23,7 +23,7 @@ class Mutex<T> {
         return try closure(&value)
     }
 
-    func get(closure: (inout T) -> ()) {
+    func get(closure: (inout T) -> Void) {
         semaphore.wait()
         closure(&value)
         semaphore.signal()

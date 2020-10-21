@@ -48,7 +48,7 @@ class ProjectGeneratorTests: XCTestCase {
                 let options = SpecOptions(bundleIdPrefix: "com.test")
                 let project = Project(name: "test", targets: [framework], options: options)
                 let pbxProj = try project.generatePbxProj()
-                
+
                 guard let target = pbxProj.nativeTargets.first,
                     let buildConfigList = target.buildConfigurationList,
                     let buildConfig = buildConfigList.buildConfigurations.first else {
@@ -111,11 +111,11 @@ class ProjectGeneratorTests: XCTestCase {
                     name: "test",
                     configs: [
                         Config(name: "Aconfig"),
-                        Config(name: "Bconfig")
+                        Config(name: "Bconfig"),
                     ],
                     targets: [
                         Target(name: "1", type: .framework, platform: .iOS),
-                        Target(name: "2", type: .framework, platform: .iOS)
+                        Target(name: "2", type: .framework, platform: .iOS),
                     ],
                     options: options
                 )
@@ -126,7 +126,7 @@ class ProjectGeneratorTests: XCTestCase {
                     guard
                         let buildConfigurationList = target.buildConfigurationList,
                         let defaultConfigurationName = buildConfigurationList.defaultConfigurationName else {
-                            throw failure("Default configuration name not found")
+                        throw failure("Default configuration name not found")
                     }
 
                     try expect(defaultConfigurationName) == "Bconfig"
@@ -364,7 +364,7 @@ class ProjectGeneratorTests: XCTestCase {
                 let projectReference = ProjectReference(name: "AnotherProject", path: externalProjectPath.string)
                 var target = app
                 target.dependencies = [
-                    Dependency(type: .target, reference: "AnotherProject/ExternalTarget")
+                    Dependency(type: .target, reference: "AnotherProject/ExternalTarget"),
                 ]
                 let project = Project(
                     name: "test",
@@ -559,6 +559,9 @@ class ProjectGeneratorTests: XCTestCase {
                         Dependency(type: .package(product: "RxCocoa"), reference: "RxSwift"),
                         Dependency(type: .package(product: "RxRelay"), reference: "RxSwift"),
 
+                        // Validate - Do not link package
+                        Dependency(type: .package(product: "KeychainAccess"), reference: "KeychainAccess", link: false),
+
                         // Statically linked, so don't embed into test
                         Dependency(type: .target, reference: staticLibrary.name),
 
@@ -568,7 +571,7 @@ class ProjectGeneratorTests: XCTestCase {
                 )
                 expectedResourceFiles[iosFrameworkA.name] = Set()
                 expectedBundlesFiles[iosFrameworkA.name] = Set([
-                    "BundleA.bundle"
+                    "BundleA.bundle",
                 ])
                 expectedLinkedFiles[iosFrameworkA.name] = Set([
                     "FrameworkC.framework",
@@ -679,25 +682,37 @@ class ProjectGeneratorTests: XCTestCase {
                     iosFrameworkB.filename,
                 ])
 
+                let XCTestPath = "Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework"
+                let GXToolsPath = "Platforms/iPhoneOS.platform/Developer/Library/PrivateFrameworks/GXTools.framework"
+                let XCTAutomationPath = "Platforms/iPhoneOS.platform/Developer/Library/PrivateFrameworks/XCTAutomationSupport.framework"
                 let stickerPack = Target(
                     name: "MyStickerApp",
                     type: .stickerPack,
                     platform: .iOS,
                     dependencies: [
                         Dependency(type: .sdk(root: nil), reference: "NotificationCenter.framework"),
-                        Dependency(type: .sdk(root: "DEVELOPER_DIR"), reference: "Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework"),
+                        Dependency(type: .sdk(root: "DEVELOPER_DIR"), reference: XCTestPath),
+                        Dependency(type: .sdk(root: "DEVELOPER_DIR"), reference: GXToolsPath, embed: true),
+                        Dependency(type: .sdk(root: "DEVELOPER_DIR"), reference: XCTAutomationPath, embed: true, codeSign: true),
                     ]
                 )
                 expectedResourceFiles[stickerPack.name] = nil
                 expectedLinkedFiles[stickerPack.name] = Set([
                     "XCTest.framework",
                     "NotificationCenter.framework",
+                    "GXTools.framework",
+                    "XCTAutomationSupport.framework"
+                ])
+                expectedEmbeddedFrameworks[stickerPack.name] = Set([
+                    "GXTools.framework",
+                    "XCTAutomationSupport.framework"
                 ])
 
                 let targets = [app, iosFrameworkZ, iosFrameworkX, staticLibrary, resourceBundle, iosFrameworkA, iosFrameworkB, appTest, appTestWithoutTransitive, stickerPack]
 
                 let packages: [String: SwiftPackage] = [
                     "RxSwift": .remote(url: "https://github.com/ReactiveX/RxSwift", versionRequirement: .upToNextMajorVersion("5.1.1")),
+                    "KeychainAccess": .remote(url: "https://github.com/kishikawakatsumi/KeychainAccess", versionRequirement: .upToNextMajorVersion("4.2.0"))
                 ]
 
                 let project = Project(
@@ -719,9 +734,11 @@ class ProjectGeneratorTests: XCTestCase {
                     let copyBundlesPhase = copyFilesPhases.first { $0.dstSubfolderSpec == .resources }
 
                     // All targets should have a compile sources phase,
-                    // except for the sticker pack one
+                    // except for the resourceBundle and sticker pack one
+                    let targetsGeneratingSourcePhases = targets
+                        .filter { ![.bundle, .stickerPack].contains($0.type) }
                     let sourcesPhases = pbxProject.sourcesBuildPhases
-                    try expect(sourcesPhases.count) == targets.count - 1
+                    try expect(sourcesPhases.count) == targetsGeneratingSourcePhases.count
 
                     // ensure only the right resources are copied, no more, no less
                     if let expectedResourceFiles = expectedResourceFiles[target.name] {
@@ -770,6 +787,109 @@ class ProjectGeneratorTests: XCTestCase {
                 }
             }
 
+            $0.it("copies files only on install in the Embed Frameworks step") {
+                let app = Target(
+                    name: "App",
+                    type: .application,
+                    platform: .iOS,
+                    // Embeds it's frameworks, so they shouldn't embed in AppTest
+                    dependencies: [
+                        Dependency(type: .framework, reference: "FrameworkA.framework"),
+                        Dependency(type: .framework, reference: "FrameworkB.framework", embed: false),
+                    ],
+                    onlyCopyFilesOnInstall: true
+                )
+                
+                let project = Project(name: "test",targets: [app])
+                let pbxProject = try project.generatePbxProj()
+                let nativeTarget = try unwrap(pbxProject.nativeTargets.first(where: { $0.name == app.name }))
+                let buildPhases = nativeTarget.buildPhases
+
+                let embedFrameworksPhase = pbxProject
+                    .copyFilesBuildPhases
+                    .filter { buildPhases.contains($0) }
+                    .first { $0.dstSubfolderSpec == .frameworks }
+
+                let phase = try unwrap(embedFrameworksPhase)
+                try expect(phase.buildActionMask) == PBXProjGenerator.copyFilesActionMask
+                try expect(phase.runOnlyForDeploymentPostprocessing) == true
+            }
+
+            $0.it("copies files only on install in the Embed App Extensions step") {
+                let appExtension = Target(
+                    name: "AppExtension",
+                    type: .appExtension,
+                    platform: .tvOS
+                )
+
+                let app = Target(
+                    name: "App",
+                    type: .application,
+                    platform: .tvOS,
+                    dependencies: [
+                        Dependency(type: .target, reference: "AppExtension")
+                    ],
+                    onlyCopyFilesOnInstall: true
+                )
+
+                let project = Project(name: "test", targets: [app, appExtension])
+                let pbxProject = try project.generatePbxProj()
+                let nativeTarget = try unwrap(pbxProject.nativeTargets.first(where: { $0.name == app.name }))
+                let buildPhases = nativeTarget.buildPhases
+
+                let embedAppExtensionsPhase = pbxProject
+                    .copyFilesBuildPhases
+                    .filter { buildPhases.contains($0) }
+                    .first { $0.dstSubfolderSpec == .plugins }
+
+                let phase = try unwrap(embedAppExtensionsPhase)
+                try expect(phase.buildActionMask) == PBXProjGenerator.copyFilesActionMask
+                try expect(phase.runOnlyForDeploymentPostprocessing) == true
+            }
+
+            $0.it("copies files only on install in the Embed Frameworks and Embed App Extensions steps") {
+                let appExtension = Target(
+                    name: "AppExtension",
+                    type: .appExtension,
+                    platform: .tvOS
+                )
+
+                let app = Target(
+                    name: "App",
+                    type: .application,
+                    platform: .tvOS,
+                    dependencies: [
+                        Dependency(type: .target, reference: "AppExtension"),
+                        Dependency(type: .framework, reference: "FrameworkA.framework"),
+                        Dependency(type: .framework, reference: "FrameworkB.framework", embed: false),
+                    ],
+                    onlyCopyFilesOnInstall: true
+                )
+
+                let project = Project(name: "test", targets: [app, appExtension])
+                let pbxProject = try project.generatePbxProj()
+                let nativeTarget = try unwrap(pbxProject.nativeTargets.first(where: { $0.name == app.name }))
+                let buildPhases = nativeTarget.buildPhases
+
+                let embedFrameworksPhase = pbxProject
+                    .copyFilesBuildPhases
+                    .filter { buildPhases.contains($0) }
+                    .first { $0.dstSubfolderSpec == .frameworks }
+
+                let embedFrameworksPhaseValue = try unwrap(embedFrameworksPhase)
+                try expect(embedFrameworksPhaseValue.buildActionMask) == PBXProjGenerator.copyFilesActionMask
+                try expect(embedFrameworksPhaseValue.runOnlyForDeploymentPostprocessing) == true
+                
+                let embedAppExtensionsPhase = pbxProject
+                    .copyFilesBuildPhases
+                    .filter { buildPhases.contains($0) }
+                    .first { $0.dstSubfolderSpec == .plugins }
+
+                let embedAppExtensionsPhaseValue = try unwrap(embedAppExtensionsPhase)
+                try expect(embedAppExtensionsPhaseValue.buildActionMask) == PBXProjGenerator.copyFilesActionMask
+                try expect(embedAppExtensionsPhaseValue.runOnlyForDeploymentPostprocessing) == true
+            }
+            
             $0.it("sets -ObjC for targets that depend on requiresObjCLinking targets") {
                 let requiresObjCLinking = Target(
                     name: "requiresObjCLinking",
@@ -1046,7 +1166,7 @@ class ProjectGeneratorTests: XCTestCase {
                 let project = Project(name: "test", targets: [app], packages: [
                     "XcodeGen": .remote(url: "http://github.com/yonaskolb/XcodeGen", versionRequirement: .branch("master")),
                     "Codability": .remote(url: "http://github.com/yonaskolb/Codability", versionRequirement: .exact("1.0.0")),
-                    "Yams": .local(path: "../Yams")
+                    "Yams": .local(path: "../Yams"),
                 ], options: .init(localPackagesGroup: "MyPackages"))
 
                 let pbxProject = try project.generatePbxProj(specValidate: false)
@@ -1062,14 +1182,13 @@ class ProjectGeneratorTests: XCTestCase {
                 try expect(codabilityDependency.package?.name) == "Codability"
                 try expect(codabilityDependency.package?.versionRequirement) == .exact("1.0.0")
 
-
                 let localPackagesGroup = try unwrap(try pbxProject.getMainGroup().children.first(where: { $0.name == "MyPackages" }) as? PBXGroup)
 
                 let yamsLocalPackageFile = try unwrap(pbxProject.fileReferences.first(where: { $0.path == "../Yams" }))
                 try expect(localPackagesGroup.children.contains(yamsLocalPackageFile)) == true
                 try expect(yamsLocalPackageFile.lastKnownFileType) == "folder"
             }
-            
+
             $0.it("generates local swift packages") {
                 let app = Target(
                     name: "MyApp",
@@ -1080,19 +1199,19 @@ class ProjectGeneratorTests: XCTestCase {
                     ]
                 )
 
-                let project = Project(name: "test", targets: [app], packages: ["XcodeGen" : .local(path: "../XcodeGen")])
+                let project = Project(name: "test", targets: [app], packages: ["XcodeGen": .local(path: "../XcodeGen")])
 
                 let pbxProject = try project.generatePbxProj(specValidate: false)
                 let nativeTarget = try unwrap(pbxProject.nativeTargets.first(where: { $0.name == app.name }))
                 let localPackageFile = try unwrap(pbxProject.fileReferences.first(where: { $0.path == "../XcodeGen" }))
                 try expect(localPackageFile.lastKnownFileType) == "folder"
-                
+
                 let frameworkPhases = nativeTarget.buildPhases.compactMap { $0 as? PBXFrameworksBuildPhase }
-                
+
                 guard let frameworkPhase = frameworkPhases.first else {
                     return XCTFail("frameworkPhases should have more than one")
                 }
-                
+
                 guard let file = frameworkPhase.files?.first else {
                     return XCTFail("frameworkPhase should have file")
                 }
@@ -1315,109 +1434,6 @@ class ProjectGeneratorTests: XCTestCase {
                     }
                 }
 
-                $0.context("with static binary dependency") {
-                    $0.it("should set dependencies") {
-                        let app = Target(
-                            name: "MyApp",
-                            type: .application,
-                            platform: .iOS,
-                            dependencies: [
-                                Dependency(type: .carthage(findFrameworks: true, linkType: .staticBinary), reference: "MyStaticBinaryFramework")
-                            ]
-                        )
-                        let project = Project(name: "test", targets: [app])
-                        let pbxProject = try project.generatePbxProj()
-
-                        let target = pbxProject.nativeTargets.first!
-                        let configuration = target.buildConfigurationList!.buildConfigurations.first!
-                        try expect(configuration.buildSettings["FRAMEWORK_SEARCH_PATHS"] as? [String]) == ["$(inherited)", "$(PROJECT_DIR)/Carthage/Build/iOS"]
-                        let frameworkBuildPhase = try target.frameworksBuildPhase()
-                        guard let files = frameworkBuildPhase?.files, let file = files.first else {
-                            return XCTFail("frameworkBuildPhase should have files")
-                        }
-                        try expect(files.count) == 1
-                        try expect(file.file?.nameOrPath) == "MyStaticBinaryFramework.framework"
-
-                        try expect(target.carthageCopyFrameworkBuildPhase).beNil()
-                    }
-                }
-
-                $0.context("with dynamic and static binary dependency") {
-                    $0.it("should set dependencies") {
-                        let app = Target(
-                            name: "MyApp",
-                            type: .application,
-                            platform: .iOS,
-                            dependencies: [
-                                Dependency(type: .carthage(findFrameworks: true, linkType: .dynamic), reference: "MyDynamicFramework"),
-                                Dependency(type: .carthage(findFrameworks: true, linkType: .staticBinary), reference: "MyStaticBinaryFramework")
-                            ]
-                        )
-                        let project = Project(name: "test", targets: [app])
-                        let pbxProject = try project.generatePbxProj()
-
-                        let target = pbxProject.nativeTargets.first!
-                        let configuration = target.buildConfigurationList!.buildConfigurations.first!
-                        try expect(configuration.buildSettings["FRAMEWORK_SEARCH_PATHS"] as? [String]) == ["$(inherited)",  "$(PROJECT_DIR)/Carthage/Build/iOS"]
-                        let frameworkBuildPhase = try target.frameworksBuildPhase()
-                        guard let files = frameworkBuildPhase?.files else {
-                            return XCTFail("frameworkBuildPhase should have files")
-                        }
-                        try expect(files.count) == 2
-
-                        guard let dynamicFramework = files.first(where: { $0.file?.nameOrPath == "MyDynamicFramework.framework" }) else {
-                            return XCTFail("Framework Build Phase should have Dynamic Framework")
-                        }
-
-                        guard let _ = files.first(where: { $0.file?.nameOrPath == "MyStaticBinaryFramework.framework" }) else {
-                            return XCTFail("Framework Build Phase should have StaticBinary Framework")
-                        }
-
-                        guard let copyCarthagePhase = target.carthageCopyFrameworkBuildPhase else {
-                            return XCTFail("Carthage Build Phase should be exist")
-                        }
-                        try expect(copyCarthagePhase.inputPaths) == [dynamicFramework.file?.fullPath(sourceRoot: Path("$(SRCROOT)"))?.string]
-                        try expect(copyCarthagePhase.outputPaths) == ["$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/\(dynamicFramework.file!.path!)"]
-                    }
-                }
-
-                $0.context("with static and static binary dependency") {
-                    $0.it("should set dependencies") {
-                        let app = Target(
-                            name: "MyApp",
-                            type: .application,
-                            platform: .iOS,
-                            dependencies: [
-                                Dependency(type: .carthage(findFrameworks: true, linkType: .static), reference: "MyStaticFramework"),
-                                Dependency(type: .carthage(findFrameworks: true, linkType: .staticBinary), reference: "MyStaticBinaryFramework")
-                            ]
-                        )
-                        let project = Project(name: "test", targets: [app])
-                        let pbxProject = try project.generatePbxProj()
-
-                        let target = pbxProject.nativeTargets.first!
-                        let configuration = target.buildConfigurationList!.buildConfigurations.first!
-
-                        try expect(configuration.buildSettings["FRAMEWORK_SEARCH_PATHS"] as? [String]) == ["$(inherited)", "$(PROJECT_DIR)/Carthage/Build/iOS", "$(PROJECT_DIR)/Carthage/Build/iOS/Static"]
-
-                        let frameworkBuildPhase = try target.frameworksBuildPhase()
-                        guard let files = frameworkBuildPhase?.files else {
-                            return XCTFail("frameworkBuildPhase should have files")
-                        }
-                        try expect(files.count) == 2
-
-                        guard let _ = files.first(where: { $0.file?.nameOrPath == "MyStaticFramework.framework" }) else {
-                            return XCTFail("Framework Build Phase should have Static Framework")
-                        }
-
-                        guard let _ = files.first(where: { $0.file?.nameOrPath == "MyStaticBinaryFramework.framework" }) else {
-                            return XCTFail("Framework Build Phase should have StaticBinary Framework")
-                        }
-
-                        try expect(target.carthageCopyFrameworkBuildPhase).beNil()
-                    }
-                }
-
                 $0.context("with mixed dependencies") {
                     $0.it("should set dependencies") {
                         let app = Target(
@@ -1427,7 +1443,6 @@ class ProjectGeneratorTests: XCTestCase {
                             dependencies: [
                                 Dependency(type: .carthage(findFrameworks: true, linkType: .dynamic), reference: "MyDynamicFramework"),
                                 Dependency(type: .carthage(findFrameworks: true, linkType: .static), reference: "MyStaticFramework"),
-                                Dependency(type: .carthage(findFrameworks: true, linkType: .staticBinary), reference: "MyStaticBinaryFramework"),
                             ]
                         )
                         let project = Project(name: "test", targets: [app])
@@ -1442,17 +1457,13 @@ class ProjectGeneratorTests: XCTestCase {
                         guard let files = frameworkBuildPhase?.files else {
                             return XCTFail("frameworkBuildPhase should have files")
                         }
-                        try expect(files.count) == 3
+                        try expect(files.count) == 2
 
                         guard let dynamicFramework = files.first(where: { $0.file?.nameOrPath == "MyDynamicFramework.framework" }) else {
                             return XCTFail("Framework Build Phase should have Dynamic Framework")
                         }
                         guard let _ = files.first(where: { $0.file?.nameOrPath == "MyStaticFramework.framework" }) else {
                             return XCTFail("Framework Build Phase should have Static Framework")
-                        }
-
-                        guard let _ = files.first(where: { $0.file?.nameOrPath == "MyStaticBinaryFramework.framework" }) else {
-                            return XCTFail("Framework Build Phase should have StaticBinary Framework")
                         }
 
                         guard let copyCarthagePhase = target.carthageCopyFrameworkBuildPhase else {

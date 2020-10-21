@@ -34,10 +34,12 @@ The project spec is a YAML or JSON file that defines your targets, configuration
 - ✅ Integrate **Carthage** frameworks without any work
 - ✅ Export **Dependency Diagrams** to view in [Graphviz](https://www.graphviz.org)
 
-Given a very simple project spec file like this:
+Given an example project spec:
 
 ```yaml
 name: MyProject
+include:
+  - base_spec.yml
 options:
   bundleIdPrefix: com.myapp
 packages:
@@ -108,7 +110,7 @@ swift run xcodegen
 Add the following to your Package.swift file's dependencies:
 
 ```swift
-.package(url: "https://github.com/yonaskolb/XcodeGen.git", from: "2.15.1"),
+.package(url: "https://github.com/yonaskolb/XcodeGen.git", from: "2.18.0"),
 ```
 
 And then import wherever needed: `import XcodeGenKit`
@@ -173,7 +175,7 @@ If you want to pass any required arguments when running in Xcode, you can edit t
 ## Alternatives
 If XcodeGen doesn't meet your needs try these great alternatives:
 - [Tuist](https://github.com/tuist/tuist)
-- [xcake](https://github.com/igor-makarov/xcake)
+- [Xcake](https://github.com/igor-makarov/xcake)
 - [struct](https://github.com/workshop/struct)
 
 ## Attributions
@@ -189,7 +191,7 @@ This tool is powered by:
 Inspiration for this tool came from:
 
 - [struct](https://github.com/workshop/struct)
-- [xcake](https://github.com/jcampbell05/xcake)
+- [Xcake](https://github.com/igor-makarov/xcake)
 - [CocoaPods Xcodeproj](https://github.com/CocoaPods/Xcodeproj)
 
 ## Contributions

@@ -50,7 +50,6 @@ public class SchemeGenerator {
 
         for target in project.targets {
             if let targetScheme = target.scheme {
-
                 if targetScheme.configVariants.isEmpty {
                     let schemeName = target.name
 
@@ -161,10 +160,18 @@ public class SchemeGenerator {
             return XCScheme.ExecutionAction(scriptText: action.script, title: action.name, environmentBuildable: environmentBuildable)
         }
 
-        let schemeTarget = target ?? project.getTarget(scheme.build.targets.first!.target.name)
+        let schemeTarget: Target?
+
+        if let targetName = scheme.run?.executable {
+            schemeTarget = project.getTarget(targetName)
+        } else {
+            let name = scheme.build.targets.first { $0.buildTypes.contains(.running) }?.target.name ?? scheme.build.targets.first!.target.name
+            schemeTarget = target ?? project.getTarget(name)
+        }
+
         let shouldExecuteOnLaunch = schemeTarget?.shouldExecuteOnLaunch == true
 
-        let buildableReference = buildActionEntries.first!.buildableReference
+        let buildableReference = buildActionEntries.first(where: { $0.buildableReference.blueprintName == schemeTarget?.name })?.buildableReference ?? buildActionEntries.first!.buildableReference
         let runnables = makeProductRunnables(for: schemeTarget, buildableReference: buildableReference)
 
         let buildAction = XCScheme.BuildAction(
@@ -177,7 +184,7 @@ public class SchemeGenerator {
 
         let testables = zip(testTargets, testBuildTargetEntries).map { testTarget, testBuilEntries in
             XCScheme.TestableReference(
-                skipped: false,
+                skipped: testTarget.skipped,
                 parallelizable: testTarget.parallelizable,
                 randomExecutionOrdering: testTarget.randomExecutionOrder,
                 buildableReference: testBuilEntries.buildableReference,
@@ -213,7 +220,8 @@ public class SchemeGenerator {
             commandlineArguments: testCommandLineArgs,
             environmentVariables: testVariables,
             language: scheme.test?.language,
-            region: scheme.test?.region
+            region: scheme.test?.region,
+            customLLDBInitFile: scheme.test?.customLLDBInit
         )
 
         let allowLocationSimulation = scheme.run?.simulateLocation?.allow ?? true
@@ -226,14 +234,16 @@ public class SchemeGenerator {
             }
             locationScenarioReference = XCScheme.LocationScenarioReference(identifier: identifier, referenceType: referenceType.rawValue)
         }
+
         let launchAction = XCScheme.LaunchAction(
             runnable: shouldExecuteOnLaunch ? runnables.launch : nil,
             buildConfiguration: scheme.run?.config ?? defaultDebugConfig.name,
             preActions: scheme.run?.preActions.map(getExecutionAction) ?? [],
             postActions: scheme.run?.postActions.map(getExecutionAction) ?? [],
             macroExpansion: shouldExecuteOnLaunch ? nil : buildableReference,
-            selectedDebuggerIdentifier: (scheme.run?.debugEnabled ?? Scheme.Run.debugEnabledDefault) ? XCScheme.defaultDebugger : "",
-            selectedLauncherIdentifier: (scheme.run?.debugEnabled ?? Scheme.Run.debugEnabledDefault) ? XCScheme.defaultLauncher : "Xcode.IDEFoundation.Launcher.PosixSpawn",
+            selectedDebuggerIdentifier: selectedDebuggerIdentifier(for: schemeTarget, run: scheme.run),
+            selectedLauncherIdentifier: selectedLauncherIdentifier(for: schemeTarget, run: scheme.run),
+            askForAppToLaunch: scheme.run?.askForAppToLaunch,
             allowLocationSimulation: allowLocationSimulation,
             locationScenarioReference: locationScenarioReference,
             disableMainThreadChecker: scheme.run?.disableMainThreadChecker ?? Scheme.Run.disableMainThreadCheckerDefault,
@@ -242,7 +252,8 @@ public class SchemeGenerator {
             environmentVariables: launchVariables,
             language: scheme.run?.language,
             region: scheme.run?.region,
-            launchAutomaticallySubstyle: scheme.run?.launchAutomaticallySubstyle
+            launchAutomaticallySubstyle: scheme.run?.launchAutomaticallySubstyle ?? launchAutomaticallySubstyle(for: schemeTarget),
+            customLLDBInitFile: scheme.run?.customLLDBInit
         )
 
         let profileAction = XCScheme.ProfileAction(
@@ -274,8 +285,18 @@ public class SchemeGenerator {
             launchAction: launchAction,
             profileAction: profileAction,
             analyzeAction: analyzeAction,
-            archiveAction: archiveAction
+            archiveAction: archiveAction,
+            wasCreatedForAppExtension: schemeTarget
+                .flatMap { $0.type.isExtension ? true : nil }
         )
+    }
+
+    private func launchAutomaticallySubstyle(for target: Target?) -> String? {
+        if target?.type.isExtension == true {
+            return "2"
+        } else {
+            return nil
+        }
     }
 
     private func makeProductRunnables(for target: Target?, buildableReference: XCScheme.BuildableReference) -> (launch: XCScheme.Runnable, profile: XCScheme.BuildableProductRunnable) {
@@ -289,6 +310,22 @@ public class SchemeGenerator {
             return (remote, buildable)
         } else {
             return (buildable, buildable)
+        }
+    }
+
+    private func selectedDebuggerIdentifier(for target: Target?, run: Scheme.Run?) -> String {
+        if target?.type.canUseDebugLauncher != false && run?.debugEnabled ?? Scheme.Run.debugEnabledDefault {
+            return XCScheme.defaultDebugger
+        } else {
+            return ""
+        }
+    }
+
+    private func selectedLauncherIdentifier(for target: Target?, run: Scheme.Run?) -> String {
+        if target?.type.canUseDebugLauncher != false && run?.debugEnabled ?? Scheme.Run.debugEnabledDefault {
+            return XCScheme.defaultLauncher
+        } else {
+            return "Xcode.IDEFoundation.Launcher.PosixSpawn"
         }
     }
 }
@@ -368,6 +405,11 @@ extension Scheme {
 }
 
 extension PBXProductType {
+    var canUseDebugLauncher: Bool {
+        // Extensions don't use the lldb launcher
+        return !isExtension
+    }
+
     var isWatchApp: Bool {
         switch self {
         case .watchApp, .watch2App:

@@ -98,7 +98,7 @@ extension TargetScheme: JSONEncodable {
         if disableMainThreadChecker != TargetScheme.disableMainThreadCheckerDefault {
             dict["disableMainThreadChecker"] = disableMainThreadChecker
         }
-      
+
         if stopOnEveryMainThreadCheckerIssue != TargetScheme.stopOnEveryMainThreadCheckerIssueDefault {
             dict["stopOnEveryMainThreadCheckerIssue"] = stopOnEveryMainThreadCheckerIssue
         }

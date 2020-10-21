@@ -1,0 +1,7 @@
+#include "xcode12_workaround.xcconfig"
+
+// Common settings for fixtures
+CODE_SIGN_IDENTITY =
+CODE_SIGNING_REQUIRED = NO
+CODE_SIGN_ENTITLEMENTS =
+CODE_SIGNING_ALLOWED = NO

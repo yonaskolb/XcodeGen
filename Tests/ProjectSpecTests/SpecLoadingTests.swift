@@ -380,7 +380,6 @@ class SpecLoadingTests: XCTestCase {
                     ["target": "project/name", "embed": false],
                     ["carthage": "name", "findFrameworks": true],
                     ["carthage": "name", "findFrameworks": true, "linkType": "static"],
-                    ["carthage": "name", "findFrameworks": true, "linkType": "staticBinary"],
                     ["framework": "path", "weak": true],
                     ["sdk": "Contacts.framework"],
                     [
@@ -389,15 +388,14 @@ class SpecLoadingTests: XCTestCase {
                     ],
                 ]
                 let target = try Target(name: "test", jsonDictionary: targetDictionary)
-                try expect(target.dependencies.count) == 8
+                try expect(target.dependencies.count) == 7
                 try expect(target.dependencies[0]) == Dependency(type: .target, reference: "name", embed: false)
                 try expect(target.dependencies[1]) == Dependency(type: .target, reference: "project/name", embed: false)
                 try expect(target.dependencies[2]) == Dependency(type: .carthage(findFrameworks: true, linkType: .dynamic), reference: "name")
                 try expect(target.dependencies[3]) == Dependency(type: .carthage(findFrameworks: true, linkType: .static), reference: "name")
-                try expect(target.dependencies[4]) == Dependency(type: .carthage(findFrameworks: true, linkType: .staticBinary), reference: "name")
-                try expect(target.dependencies[5]) == Dependency(type: .framework, reference: "path", weakLink: true)
-                try expect(target.dependencies[6]) == Dependency(type: .sdk(root: nil), reference: "Contacts.framework")
-                try expect(target.dependencies[7]) == Dependency(type: .sdk(root: "DEVELOPER_DIR"), reference: "Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework")
+                try expect(target.dependencies[4]) == Dependency(type: .framework, reference: "path", weakLink: true)
+                try expect(target.dependencies[5]) == Dependency(type: .sdk(root: nil), reference: "Contacts.framework")
+                try expect(target.dependencies[6]) == Dependency(type: .sdk(root: "DEVELOPER_DIR"), reference: "Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework")
             }
 
             $0.it("parses info plist") {
@@ -784,6 +782,7 @@ class SpecLoadingTests: XCTestCase {
                             [
                                 "name": "ExternalProject/Target2",
                                 "parallelizable": true,
+                                "skipped": true,
                                 "randomExecutionOrder": true,
                                 "skippedTests": ["Test/testExample()"],
                             ],
@@ -828,6 +827,7 @@ class SpecLoadingTests: XCTestCase {
                             targetReference: "ExternalProject/Target2",
                             randomExecutionOrder: true,
                             parallelizable: true,
+                            skipped: true,
                             skippedTests: ["Test/testExample()"]
                         ),
                     ]
@@ -847,7 +847,7 @@ class SpecLoadingTests: XCTestCase {
                             ["variable": "ENVIRONMENT", "value": "VARIABLE"],
                             ["variable": "OTHER_ENV_VAR", "value": "VAL", "isEnabled": false],
                         ],
-                        "launchAutomaticallySubstyle": "2"
+                        "launchAutomaticallySubstyle": "2",
                     ],
                     "test": [
                         "environmentVariables": [
@@ -1013,6 +1013,13 @@ class SpecLoadingTests: XCTestCase {
                 try expect(scheme.test) == expectedTest
             }
 
+            $0.it("parses copy files on install") {
+                var targetSource = validTarget
+                targetSource["onlyCopyFilesOnInstall"] = true
+                let target = try Target(name: "Embed Frameworks", jsonDictionary: targetSource)
+                try expect(target.onlyCopyFilesOnInstall) == true
+            }
+
             $0.it("parses settings") {
                 let project = try Project(path: fixturePath + "settings_test.yml")
                 let buildSettings: BuildSettings = ["SETTING": "value"]
@@ -1105,6 +1112,12 @@ class SpecLoadingTests: XCTestCase {
                         watchOS: "3.0",
                         macOS: "10.12.1"
                     ),
+                    fileTypes: ["abc": FileType(
+                        file: false,
+                        buildPhase: .sources,
+                        attributes: ["a1", "a2"],
+                        resourceTags: ["r1", "r2"],
+                        compilerFlags: ["c1", "c2"])],
                     findCarthageFrameworks: true,
                     preGenCommand: "swiftgen",
                     postGenCommand: "pod install"
@@ -1120,6 +1133,13 @@ class SpecLoadingTests: XCTestCase {
                     "findCarthageFrameworks": true,
                     "preGenCommand": "swiftgen",
                     "postGenCommand": "pod install",
+                    "fileTypes": ["abc": [
+                        "file": false,
+                        "buildPhase": "sources",
+                        "attributes": ["a1", "a2"],
+                        "resourceTags": ["r1", "r2"],
+                        "compilerFlags": ["c1", "c2"],
+                        ]]
                 ]]
                 let parsedSpec = try getProjectSpec(dictionary)
                 try expect(parsedSpec) == expected
@@ -1136,7 +1156,7 @@ class SpecLoadingTests: XCTestCase {
                     "package7": .remote(url: "package.git", versionRequirement: .exact("1.2.2")),
                     "package8": .remote(url: "package.git", versionRequirement: .upToNextMajorVersion("4.0.0-beta.5")),
                     "package9": .local(path: "package/package"),
-                    "XcodeGen": .local(path: "../XcodeGen")
+                    "XcodeGen": .local(path: "../XcodeGen"),
                 ], options: .init(localPackagesGroup: "MyPackages"))
 
                 let dictionary: [String: Any] = [
@@ -1153,18 +1173,18 @@ class SpecLoadingTests: XCTestCase {
                         "package6": ["url": "package.git", "minVersion": "1.2.0", "maxVersion": "1.2.5"],
                         "package7": ["url": "package.git", "version": "1.2.2"],
                         "package8": ["url": "package.git", "majorVersion": "4.0.0-beta.5"],
-                        "package9": ["path": "package/package"]
+                        "package9": ["path": "package/package"],
                     ],
-                    "localPackages": ["../XcodeGen"]
+                    "localPackages": ["../XcodeGen"],
                 ]
                 let parsedSpec = try getProjectSpec(dictionary)
                 try expect(parsedSpec) == project
             }
-            
+
             $0.it("parses old local package format") {
                 let project = Project(name: "spm", packages: [
                     "XcodeGen": .local(path: "../XcodeGen"),
-                    "Yams": .local(path: "Yams")
+                    "Yams": .local(path: "Yams"),
                 ], options: .init(localPackagesGroup: "MyPackages"))
 
                 let dictionary: [String: Any] = [
@@ -1172,7 +1192,7 @@ class SpecLoadingTests: XCTestCase {
                     "options": [
                         "localPackagesGroup": "MyPackages",
                     ],
-                    "localPackages": ["../XcodeGen", "Yams"]
+                    "localPackages": ["../XcodeGen", "Yams"],
                 ]
                 let parsedSpec = try getProjectSpec(dictionary)
                 try expect(parsedSpec) == project
@@ -1183,17 +1203,17 @@ class SpecLoadingTests: XCTestCase {
     func testPackagesVersion() {
         describe {
             let invalidPackages = [
-                [ "url": "package.git", "majorVersion": "master" ],
-                [ "url": "package.git", "from": "develop" ],
-                [ "url": "package.git", "minVersion": "feature/swift5.2", "maxVersion": "9.1.0" ],
-                [ "url": "package.git", "minorVersion": "x.1.2" ],
-                [ "url": "package.git", "exactVersion": "1.2.3.1" ],
-                [ "url": "package.git", "version": "foo-bar" ]
+                ["url": "package.git", "majorVersion": "master"],
+                ["url": "package.git", "from": "develop"],
+                ["url": "package.git", "minVersion": "feature/swift5.2", "maxVersion": "9.1.0"],
+                ["url": "package.git", "minorVersion": "x.1.2"],
+                ["url": "package.git", "exactVersion": "1.2.3.1"],
+                ["url": "package.git", "version": "foo-bar"],
             ]
-            
+
             $0.it("is an invalid package version") {
                 for dictionary in invalidPackages {
-                    try expect { _ = try SwiftPackage(jsonDictionary: dictionary) }.toThrow()
+                    try expect(expression: { _ = try SwiftPackage(jsonDictionary: dictionary) }).toThrow()
                 }
             }
         }

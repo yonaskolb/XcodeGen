@@ -37,7 +37,7 @@ public struct Scheme: Equatable {
             case predefined = "1"
             case gpx = "0"
         }
-        
+
         public var allow: Bool
         public var defaultLocation: String?
 
@@ -78,6 +78,7 @@ public struct Scheme: Equatable {
         public var buildImplicitDependencies: Bool
         public var preActions: [ExecutionAction]
         public var postActions: [ExecutionAction]
+
         public init(
             targets: [BuildTarget],
             parallelizeBuild: Bool = parallelizeBuildDefault,
@@ -107,12 +108,16 @@ public struct Scheme: Equatable {
         public var stopOnEveryMainThreadCheckerIssue: Bool
         public var language: String?
         public var region: String?
+        public var askForAppToLaunch: Bool?
         public var launchAutomaticallySubstyle: String?
         public var debugEnabled: Bool
         public var simulateLocation: SimulateLocation?
+        public var executable: String?
+        public var customLLDBInit: String?
 
         public init(
             config: String,
+            executable: String? = nil,
             commandLineArguments: [String: Bool] = [:],
             preActions: [ExecutionAction] = [],
             postActions: [ExecutionAction] = [],
@@ -121,9 +126,11 @@ public struct Scheme: Equatable {
             stopOnEveryMainThreadCheckerIssue: Bool = stopOnEveryMainThreadCheckerIssueDefault,
             language: String? = nil,
             region: String? = nil,
+            askForAppToLaunch: Bool? = nil,
             launchAutomaticallySubstyle: String? = nil,
             debugEnabled: Bool = debugEnabledDefault,
-            simulateLocation: SimulateLocation? = nil
+            simulateLocation: SimulateLocation? = nil,
+            customLLDBInit: String? = nil
         ) {
             self.config = config
             self.commandLineArguments = commandLineArguments
@@ -134,9 +141,11 @@ public struct Scheme: Equatable {
             self.stopOnEveryMainThreadCheckerIssue = stopOnEveryMainThreadCheckerIssue
             self.language = language
             self.region = region
+            self.askForAppToLaunch = askForAppToLaunch
             self.launchAutomaticallySubstyle = launchAutomaticallySubstyle
             self.debugEnabled = debugEnabled
             self.simulateLocation = simulateLocation
+            self.customLLDBInit = customLLDBInit
         }
     }
 
@@ -157,6 +166,7 @@ public struct Scheme: Equatable {
         public var language: String?
         public var region: String?
         public var debugEnabled: Bool
+        public var customLLDBInit: String?
 
         public struct TestTarget: Equatable, ExpressibleByStringLiteral {
             public static let randomExecutionOrderDefault = false
@@ -166,17 +176,20 @@ public struct Scheme: Equatable {
             public let targetReference: TargetReference
             public var randomExecutionOrder: Bool
             public var parallelizable: Bool
+            public var skipped: Bool
             public var skippedTests: [String]
 
             public init(
                 targetReference: TargetReference,
                 randomExecutionOrder: Bool = randomExecutionOrderDefault,
                 parallelizable: Bool = parallelizableDefault,
+                skipped: Bool = false,
                 skippedTests: [String] = []
             ) {
                 self.targetReference = targetReference
                 self.randomExecutionOrder = randomExecutionOrder
                 self.parallelizable = parallelizable
+                self.skipped = skipped
                 self.skippedTests = skippedTests
             }
 
@@ -185,6 +198,7 @@ public struct Scheme: Equatable {
                     targetReference = try TargetReference(value)
                     randomExecutionOrder = false
                     parallelizable = false
+                    skipped = false
                     skippedTests = []
                 } catch {
                     fatalError(SpecParsingError.invalidTargetReference(value).description)
@@ -206,7 +220,8 @@ public struct Scheme: Equatable {
             environmentVariables: [XCScheme.EnvironmentVariable] = [],
             language: String? = nil,
             region: String? = nil,
-            debugEnabled: Bool = debugEnabledDefault
+            debugEnabled: Bool = debugEnabledDefault,
+            customLLDBInit: String? = nil
         ) {
             self.config = config
             self.gatherCoverageData = gatherCoverageData
@@ -220,6 +235,7 @@ public struct Scheme: Equatable {
             self.language = language
             self.region = region
             self.debugEnabled = debugEnabled
+            self.customLLDBInit = customLLDBInit
         }
 
         public var shouldUseLaunchSchemeArgsEnv: Bool {
@@ -327,7 +343,7 @@ extension Scheme.SimulateLocation: JSONObjectConvertible {
 extension Scheme.SimulateLocation: JSONEncodable {
     public func toJSONValue() -> Any {
         var dict: [String: Any] = [
-            "allow": allow
+            "allow": allow,
         ]
 
         if let defaultLocation = defaultLocation {
@@ -352,6 +368,7 @@ extension Scheme.Run: JSONObjectConvertible {
         region = jsonDictionary.json(atKeyPath: "region")
         debugEnabled = jsonDictionary.json(atKeyPath: "debugEnabled") ?? Scheme.Run.debugEnabledDefault
         simulateLocation = jsonDictionary.json(atKeyPath: "simulateLocation")
+        executable = jsonDictionary.json(atKeyPath: "executable")
 
         // launchAutomaticallySubstyle is defined as a String in XcodeProj but its value is often
         // an integer. Parse both to be nice.
@@ -360,6 +377,11 @@ extension Scheme.Run: JSONObjectConvertible {
         } else if let string: String = jsonDictionary.json(atKeyPath: "launchAutomaticallySubstyle") {
             launchAutomaticallySubstyle = string
         }
+
+        if let askLaunch: Bool = jsonDictionary.json(atKeyPath: "askForAppToLaunch") {
+            askForAppToLaunch = askLaunch
+        }
+        customLLDBInit = jsonDictionary.json(atKeyPath: "customLLDBInit")
     }
 }
 
@@ -373,13 +395,15 @@ extension Scheme.Run: JSONEncodable {
             "config": config,
             "language": language,
             "region": region,
+            "askForAppToLaunch": askForAppToLaunch,
             "launchAutomaticallySubstyle": launchAutomaticallySubstyle,
+            "executable": executable,
         ]
 
         if disableMainThreadChecker != Scheme.Run.disableMainThreadCheckerDefault {
             dict["disableMainThreadChecker"] = disableMainThreadChecker
         }
-      
+
         if stopOnEveryMainThreadCheckerIssue != Scheme.Run.stopOnEveryMainThreadCheckerIssueDefault {
             dict["stopOnEveryMainThreadCheckerIssue"] = stopOnEveryMainThreadCheckerIssue
         }
@@ -390,6 +414,9 @@ extension Scheme.Run: JSONEncodable {
 
         if let simulateLocation = simulateLocation {
             dict["simulateLocation"] = simulateLocation.toJSONValue()
+        }
+        if let customLLDBInit = customLLDBInit {
+            dict["customLLDBInit"] = customLLDBInit
         }
         return dict
     }
@@ -422,6 +449,7 @@ extension Scheme.Test: JSONObjectConvertible {
         language = jsonDictionary.json(atKeyPath: "language")
         region = jsonDictionary.json(atKeyPath: "region")
         debugEnabled = jsonDictionary.json(atKeyPath: "debugEnabled") ?? Scheme.Test.debugEnabledDefault
+        customLLDBInit = jsonDictionary.json(atKeyPath: "customLLDBInit")
     }
 }
 
@@ -451,6 +479,10 @@ extension Scheme.Test: JSONEncodable {
             dict["debugEnabled"] = debugEnabled
         }
 
+        if let customLLDBInit = customLLDBInit {
+            dict["customLLDBInit"] = customLLDBInit
+        }
+
         return dict
     }
 }
@@ -461,6 +493,7 @@ extension Scheme.Test.TestTarget: JSONObjectConvertible {
         targetReference = try TargetReference(jsonDictionary.json(atKeyPath: "name"))
         randomExecutionOrder = jsonDictionary.json(atKeyPath: "randomExecutionOrder") ?? Scheme.Test.TestTarget.randomExecutionOrderDefault
         parallelizable = jsonDictionary.json(atKeyPath: "parallelizable") ?? Scheme.Test.TestTarget.parallelizableDefault
+        skipped = jsonDictionary.json(atKeyPath: "skipped") ?? false
         skippedTests = jsonDictionary.json(atKeyPath: "skippedTests") ?? []
     }
 }
@@ -481,6 +514,9 @@ extension Scheme.Test.TestTarget: JSONEncodable {
         }
         if parallelizable != Scheme.Test.TestTarget.parallelizableDefault {
             dict["parallelizable"] = parallelizable
+        }
+        if skipped {
+            dict["skipped"] = skipped
         }
 
         return dict

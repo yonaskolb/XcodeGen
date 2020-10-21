@@ -1,16 +1,63 @@
 # Change Log
 
 ## Next Version
+
+#### Added
+- Add `useBaseInternationalization` to Project Spec Options to opt out of Base Internationalization. [#961](https://github.com/yonaskolb/XcodeGen/pull/961) @liamnichols
+
+## 2.18.0
+
+#### Added
+- Add `Scheme.Test.TestTarget.skipped` to allow skipping of an entire test target. [#916](https://github.com/yonaskolb/XcodeGen/pull/916) @codeman9
+- Added ability to set custom LLDBInit scripts for launch and test schemes [#929](https://github.com/yonaskolb/XcodeGen/pull/929) @polac24
+- Adds App Clip support. [#909](https://github.com/yonaskolb/XcodeGen/pull/909) @brentleyjones @dflems
+- Application extension schemes now default to `launchAutomaticallySubstyle = 2` and the correct debugger and launcher identifiers [#932](https://github.com/yonaskolb/XcodeGen/pull/932) @brentleyjones
+- Updated SettingsPresets to use new defaults from Xcode 12. [#953](https://github.com/yonaskolb/XcodeGen/pull/953) @liamnichols
+- Enable Base Internationalization by default as per Xcode 12 behavior. [#954](https://github.com/yonaskolb/XcodeGen/issues/954) @liamnichols
+
+#### Changed
+- Change default project version to Xcode 12 [#960](https://github.com/yonaskolb/XcodeGen/pull/960) @yonaskolb
+
+#### Internal
+- Updates CI to run on Xcode 12. [#936](https://github.com/yonaskolb/XcodeGen/pull/936) [#960](https://github.com/yonaskolb/XcodeGen/pull/960) @dflems @yonaskolb
+
+#### Fixed
+- Select the first runnable build target, if present. [#957](https://github.com/yonaskolb/XcodeGen/pull/957) @codeman9
+- Allow SDK dependencies to be embedded. [#922](https://github.com/yonaskolb/XcodeGen/pull/922) @k-thorat
+- Allow creating intermediary groups outside of the project directory. [#892](https://github.com/yonaskolb/XcodeGen/pull/892) @segiddins
+- Fix appex's Runpath Search Paths under macOS target. [#952](https://github.com/yonaskolb/XcodeGen/pull/952) @rinsuki
+- `onlyCopyFilesOnInstall` is extended for the Embed App Extensions build phase. [#948](https://github.com/yonaskolb/XcodeGen/pull/948) @RomanPodymov
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.17.0...2.18.0)
+
+## 2.17.0
+
+#### Added
+- Added `options.fileTypes` which lets you set cross project defaults for certain file extensions [#914](https://github.com/yonaskolb/XcodeGen/pull/914) @yonaskolb
+- Added `onlyCopyFilesOnInstall` option to targets for the Embed Files build phase. [#912](https://github.com/yonaskolb/XcodeGen/pull/912) @jsorge
+
+#### Fixed
+- Treat all directories with known UTI as file wrapper. [#896](https://github.com/yonaskolb/XcodeGen/pull/896) @KhaosT
+- Generated schemes for application extensions now contain `wasCreatedForAppExtension = YES`. [#898](https://github.com/yonaskolb/XcodeGen/issues/898) @muizidn
+- Allow package dependencies to use `link: false` [#920](https://github.com/yonaskolb/XcodeGen/pull/920) @k-thorat
+- Fixed issue computing relative paths.  [#915](https://github.com/yonaskolb/XcodeGen/pull/915) @andrewreach
+
+#### Internal
+- Updated to XcodeProj 7.13.0 [#908](https://github.com/yonaskolb/XcodeGen/pull/908) @brentleyjones
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.16.0...2.17.0)
+
+## 2.16.0
+
 #### Added
 - Improve speed of metadata parsing and dependency resolution. [#803](https://github.com/yonaskolb/XcodeGen/pull/803) @michaeleisel
 - Improve support for iOS sticker packs and add support for `launchAutomaticallySubstyle` to run schemes. [#824](https://github.com/yonaskolb/XcodeGen/pull/824) @scelis
 - Add --project-root option to generate command. [#828](https://github.com/yonaskolb/XcodeGen/pull/828) @ileitch
 - Add an ability to set an order of groups with `options.groupOrdering` [#613](https://github.com/yonaskolb/XcodeGen/pull/613) @Beniamiiin
-- Add `staticBinary` linkType for Carthage dependency [#847](https://github.com/yonaskolb/XcodeGen/pull/847) @d-date
 - Add the ability to output a dependency graph in graphviz format [#852](https://github.com/yonaskolb/XcodeGen/pull/852) @jeffctown
-- Adds uncluttering the project manifest dumped to YAML from empty values [#858](https://github.com/yonaskolb/XcodeGen/pull/858) @paciej00 
-
-
+- Adds uncluttering the project manifest dumped to YAML from empty values [#858](https://github.com/yonaskolb/XcodeGen/pull/858) @paciej00
+- Added ability to name the executable target when declaring schemes. [#869](https://github.com/yonaskolb/XcodeGen/pull/869) @elland
+- Added ability to set executable to Ask to Launch. [#871](https://github.com/yonaskolb/XcodeGen/pull/871) @pinda
 
 #### Fixed
 - Fixed issue when linking and embeding static frameworks: they should be linked and NOT embed. [#820](https://github.com/yonaskolb/XcodeGen/pull/820) @acecilia
@@ -27,6 +74,11 @@
 - Don't deduplicate files in `include` with different path but same name. [#849](https://github.com/yonaskolb/XcodeGen/pull/849) @akkyie
 - Don't link transitive static carthage libraries. [#853](https://github.com/yonaskolb/XcodeGen/pull/853) @akkyie
 - Optimize simplifying paths for faster project generation. [#857](https://github.com/yonaskolb/XcodeGen/pull/857) @akkyie
+- Fixed issue where wrapper folders may not include correctly in the generated project. [#862](https://github.com/yonaskolb/XcodeGen/pull/862) @KhaosT
+- Compile `xcmappingmodel` files instead of copying bundle resources. [#834](https://github.com/yonaskolb/XcodeGen/pull/834) @jcolicchio
+- Fixed issue where `Complie Sources` build phase is generated for resource bundles even when they have no files to compile [#878](https://github.com/yonaskolb/XcodeGen/pull/878) @nkukushkin
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.15.1...2.16.0)
 
 ## 2.15.1
 
