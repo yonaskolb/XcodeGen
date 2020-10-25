@@ -57,6 +57,7 @@ public func generateSpec(xcodeProj: XcodeProj, projectDirectory: Path) throws ->
 
     var optimizedProj = try removeDefault(project: proj, sourceRoot: sourceRoot)
     optimizedProj = deintegrateCocoapods(optimizedProj)
+    optimizedProj = deintegrateCarthage(optimizedProj)
 
     return optimizedProj
 }
@@ -618,6 +619,49 @@ private func deintegrateCocoapods(target: Target) -> Target {
     let frameworkNames = try! NSRegularExpression(pattern: "^(libPods.*\\.a)|(Pods.*\\.framework)$")
     t.dependencies = t.dependencies.filter {
         !frameworkNames.isMatch(to: $0.reference)
+    }
+
+    return t
+}
+
+private func deintegrateCarthage(_ project: Project) -> Project {
+    var p = project
+    p.targets = p.targets.map(deintegrateCarthage)
+    return p
+}
+
+private func deintegrateCarthage(target: Target) -> Target {
+    func isCarthageBuildScript(buildScript: BuildScript) -> Bool {
+        guard case .script(let script) = buildScript.script else {
+            return false
+        }
+        return script.contains("carthage copy-frameworks")
+    }
+
+    var t = target
+
+    t.preBuildScripts = target.preBuildScripts.filter(not(isCarthageBuildScript))
+    t.postCompileScripts = target.postCompileScripts.filter(not(isCarthageBuildScript))
+    t.postBuildScripts = target.postBuildScripts.filter(not(isCarthageBuildScript))
+
+    t.dependencies = t.dependencies.map {
+        if $0.reference.starts(with: "Carthage/Build/") {
+            return Dependency(
+                type: .carthage(findFrameworks: nil,
+                                linkType: .default),
+                reference: Path($0.reference).lastComponentWithoutExtension
+            )
+        }
+        return $0
+    }
+    
+    let frameworkSearchPaths = "FRAMEWORK_SEARCH_PATHS"
+    for key in t.settings.configSettings.keys {
+        if let searchPaths = t.settings.configSettings[key]?.buildSettings[frameworkSearchPaths] as? [String] {
+            t.settings.configSettings[key]?.buildSettings[frameworkSearchPaths] = searchPaths.filter {
+                !$0.starts(with: "$(PROJECT_DIR)/Carthage/Build")
+            }
+        }
     }
 
     return t
