@@ -10,10 +10,14 @@ public struct Config: Equatable {
         self.type = type
     }
 
-    public static var defaultConfigs: [Config] = [Config(name: "Debug", type: .debug), Config(name: "Release", type: .release)]
+    public static var defaultConfigs: [Config] = [Config(name: ConfigType.debug.name, type: .debug), Config(name: ConfigType.release.name, type: .release)]
 }
 
 public enum ConfigType: String {
     case debug
     case release
+    
+    public var name: String {
+        rawValue.prefix(1).uppercased() + rawValue.dropFirst()
+    }
 }

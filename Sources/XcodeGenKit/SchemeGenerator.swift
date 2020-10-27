@@ -11,6 +11,13 @@ private func suitableConfig(for type: ConfigType, in project: Project) -> Config
     return project.configs.first { $0.type == type }!
 }
 
+private extension String {
+    func variantName(for configType: ConfigType? ) -> String {
+        replacingOccurrences(of: configType?.name ?? "", with: "")
+            .trimmingCharacters(in: CharacterSet.whitespaces)
+    }
+}
+
 public class SchemeGenerator {
 
     let project: Project
@@ -70,11 +77,11 @@ public class SchemeGenerator {
                     for configVariant in targetScheme.configVariants {
 
                         let schemeName = "\(target.name) \(configVariant)"
-
+                        
                         let debugConfig = project.configs
-                            .first { $0.type == .debug && $0.name.contains(configVariant) }!
+                            .first { $0.type == .debug && $0.name.variantName(for: $0.type) == configVariant }!
                         let releaseConfig = project.configs
-                            .first { $0.type == .release && $0.name.contains(configVariant) }!
+                            .first { $0.type == .release && $0.name.variantName(for: $0.type) == configVariant }!
 
                         let scheme = Scheme(
                             name: schemeName,
