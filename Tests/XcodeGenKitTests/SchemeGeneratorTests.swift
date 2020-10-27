@@ -182,32 +182,35 @@ class SchemeGeneratorTests: XCTestCase {
             }
 
             $0.it("generates target schemes from config variant") {
-                let configVariants = ["Test", "Production"]
+                let configVariants = ["Test", "PREPROD", "PROD"]
                 var target = app
                 target.scheme = TargetScheme(configVariants: configVariants)
                 let configs: [Config] = [
                     Config(name: "Test Debug", type: .debug),
-                    Config(name: "Production Debug", type: .debug),
+                    Config(name: "PREPROD Debug", type: .debug),
+                    Config(name: "PROD Debug", type: .debug),
                     Config(name: "Test Release", type: .release),
-                    Config(name: "Production Release", type: .release),
+                    Config(name: "PREPROD Release", type: .release),
+                    Config(name: "PROD Release", type: .release),
                 ]
 
                 let project = Project(name: "test", configs: configs, targets: [target, framework])
                 let xcodeProject = try project.generateXcodeProject()
 
-                try expect(xcodeProject.sharedData?.schemes.count) == 2
-
-                let xcscheme = try unwrap(xcodeProject.sharedData?.schemes
-                    .first(where: { $0.name == "\(target.name) Test" }))
-                let buildActionEntry = try unwrap(xcscheme.buildAction?.buildActionEntries.first)
-
-                try expect(buildActionEntry.buildableReference.blueprintIdentifier.count > 0) == true
-
-                try expect(xcscheme.launchAction?.buildConfiguration) == "Test Debug"
-                try expect(xcscheme.testAction?.buildConfiguration) == "Test Debug"
-                try expect(xcscheme.profileAction?.buildConfiguration) == "Test Release"
-                try expect(xcscheme.analyzeAction?.buildConfiguration) == "Test Debug"
-                try expect(xcscheme.archiveAction?.buildConfiguration) == "Test Release"
+                try expect(xcodeProject.sharedData?.schemes.count) == 3
+                try configVariants.forEach { variantName in
+                    let xcscheme = try unwrap(xcodeProject.sharedData?.schemes
+                                                .first(where: { $0.name == "\(target.name) \(variantName)" }))
+                    let buildActionEntry = try unwrap(xcscheme.buildAction?.buildActionEntries.first)
+                    
+                    try expect(buildActionEntry.buildableReference.blueprintIdentifier.count > 0) == true
+                    
+                    try expect(xcscheme.launchAction?.buildConfiguration) == "\(variantName) Debug"
+                    try expect(xcscheme.testAction?.buildConfiguration) == "\(variantName) Debug"
+                    try expect(xcscheme.profileAction?.buildConfiguration) == "\(variantName) Release"
+                    try expect(xcscheme.analyzeAction?.buildConfiguration) == "\(variantName) Debug"
+                    try expect(xcscheme.archiveAction?.buildConfiguration) == "\(variantName) Release"
+                }
             }
 
             $0.it("generates environment variables for target schemes") {
