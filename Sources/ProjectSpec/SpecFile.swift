@@ -200,6 +200,7 @@ extension Dictionary where Key == String, Value: Any {
                     var defaultValue: String?
 
                     if let defaultValueStart = substring.firstIndex(of: ":"),
+                       defaultValueStart > nameStart,
                        defaultValueStart < variableEnd,
                        substring[substring.index(defaultValueStart, offsetBy: 1)] == "-" {
                         // with a default value
