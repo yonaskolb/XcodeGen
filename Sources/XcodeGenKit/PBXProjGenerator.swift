@@ -108,59 +108,20 @@ public class PBXProjGenerator {
 
         pbxProj.rootObject = pbxProject
 
-        for target in project.targets {
-            let targetObject: PBXTarget
-
-            if target.isLegacy {
-                targetObject = PBXLegacyTarget(
-                    name: target.name,
-                    buildToolPath: target.legacy?.toolPath,
-                    buildArgumentsString: target.legacy?.arguments,
-                    passBuildSettingsInEnvironment: target.legacy?.passSettings ?? false,
-                    buildWorkingDirectory: target.legacy?.workingDirectory,
-                    buildPhases: []
-                )
-            } else {
-                targetObject = PBXNativeTarget(name: target.name, buildPhases: [])
-            }
-
-            targetObjects[target.name] = addObject(targetObject)
-
-            var explicitFileType: String?
-            var lastKnownFileType: String?
-            let fileType = Xcode.fileType(path: Path(target.filename))
-            if target.platform == .macOS || target.platform == .watchOS || target.type == .framework {
-                explicitFileType = fileType
-            } else {
-                lastKnownFileType = fileType
-            }
-
-            if !target.isLegacy {
-                let fileReference = addObject(
-                    PBXFileReference(
-                        sourceTree: .buildProductsDir,
-                        explicitFileType: explicitFileType,
-                        lastKnownFileType: lastKnownFileType,
-                        path: target.filename,
-                        includeInIndex: false
-                    ),
-                    context: target.name
-                )
-
-                targetFileReferences[target.name] = fileReference
-            }
+        let generatedTargetResults = self.generateTargetInfo(targets: self.project.targets, aggregateTargets: self.project.aggregateTargets)
+        self.targetObjects = generatedTargetResults.targetObjects.reduce(into: [:]) { (dictionary, target) in
+            dictionary[target.name] = target
         }
-
-        for target in project.aggregateTargets {
-
-            let aggregateTarget = addObject(
-                PBXAggregateTarget(
-                    name: target.name,
-                    productName: target.name
-                )
-            )
-            targetAggregateObjects[target.name] = aggregateTarget
+        self.targetAggregateObjects = generatedTargetResults.targetAggregateObjects.reduce(into: [:]) { (dictionary, target) in
+            dictionary[target.name] = target
         }
+        ([self.targetObjects, self.targetAggregateObjects] as [[String: PBXObject]]).flatMap{ Array($0.values) }.forEach { addObject($0) }
+
+        self.targetFileReferences = generatedTargetResults.targetFileReferences.reduce(into: [:]) { (dictionary, targetFileReference) in
+            dictionary[targetFileReference.0] = targetFileReference.1
+        }
+        // file references need to be added to the target's context
+        generatedTargetResults.targetFileReferences.forEach { addObject($0.1, context: $0.0) }
 
         for (name, package) in project.packages {
             switch package {
@@ -637,6 +598,72 @@ public class PBXProjGenerator {
         let pbxproj = try XcodeProj(pathString: (project.basePath + Path(reference.path).normalize()).string).pbxproj
         projects[reference] = pbxproj
         return pbxproj
+    }
+
+    struct GeneratedTargetInfo {
+        let targetObjects: [PBXTarget]
+        let targetFileReferences: [(String, PBXFileReference)]
+        let targetAggregateObjects: [PBXAggregateTarget]
+    }
+
+    func generateTargetInfo(targets: [Target], aggregateTargets: [AggregateTarget]) -> GeneratedTargetInfo {
+        var targetObjects: [PBXTarget] = []
+        var targetFileReferences: [(String, PBXFileReference)] = []
+        var targetAggregateObjects: [PBXAggregateTarget] = []
+        for target in targets {
+            let targetObject: PBXTarget
+
+            if target.isLegacy {
+                targetObject = PBXLegacyTarget(
+                    name: target.name,
+                    buildToolPath: target.legacy?.toolPath,
+                    buildArgumentsString: target.legacy?.arguments,
+                    passBuildSettingsInEnvironment: target.legacy?.passSettings ?? false,
+                    buildWorkingDirectory: target.legacy?.workingDirectory,
+                    buildPhases: []
+                )
+            } else {
+                targetObject = PBXNativeTarget(name: target.name, buildPhases: [])
+            }
+
+            targetObjects.append(targetObject)
+
+            var explicitFileType: String?
+            var lastKnownFileType: String?
+            let fileType: String?
+            if let fileExtension = Path(target.filename).extension {
+                fileType = Xcode.filetype(extension: fileExtension)
+            } else {
+                fileType = nil
+            }
+
+            if target.platform == .macOS || target.platform == .watchOS || target.type == .framework {
+                explicitFileType = fileType
+            } else {
+                lastKnownFileType = fileType
+            }
+
+            if !target.isLegacy {
+                let fileReference = PBXFileReference(
+                    sourceTree: .buildProductsDir,
+                    explicitFileType: explicitFileType,
+                    lastKnownFileType: lastKnownFileType,
+                    path: target.filename,
+                    includeInIndex: false
+                )
+                targetFileReferences.append((target.name, fileReference))
+            }
+        }
+
+        for target in aggregateTargets {
+
+            let aggregateTarget = PBXAggregateTarget(
+                name: target.name,
+                productName: target.name
+            )
+            targetAggregateObjects.append(aggregateTarget)
+        }
+        return GeneratedTargetInfo(targetObjects: targetObjects, targetFileReferences: targetFileReferences, targetAggregateObjects: targetAggregateObjects)
     }
 
     func generateTarget(_ target: Target) throws {
