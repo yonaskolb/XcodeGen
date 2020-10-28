@@ -195,11 +195,25 @@ extension Dictionary where Key == String, Value: Any {
                 if let variableEnd = substring.firstIndex(of: "}") {
                     // ...with an end
                     let nameStart = result.index(variableStart, offsetBy: 2) // Skipping ${
-                    let nameEnd = result.index(variableEnd, offsetBy: -1) // Removing trailing }
+
+                    var nameEnd: String.Index
+                    var defaultValue: String?
+
+                    if let defaultValueStart = substring.firstIndex(of: ":"),
+                       defaultValueStart < variableEnd,
+                       substring[substring.index(defaultValueStart, offsetBy: 1)] == "-" {
+                        // with a default value
+                        nameEnd = result.index(defaultValueStart, offsetBy: -1) // Removing trailing :
+                        let valueStart = result.index(defaultValueStart, offsetBy: 2) // Skipping :-
+                        let valueEnd = result.index(variableEnd, offsetBy: -1) // Removing trailing }
+                        defaultValue = String(result[valueStart...valueEnd])
+                    } else {
+                        nameEnd = result.index(variableEnd, offsetBy: -1) // Removing trailing }
+                    }
 
                     let name = result[nameStart...nameEnd]
 
-                    if let value = variables[String(name)] {
+                    if let value = variables[String(name)] ?? defaultValue {
                         result.replaceSubrange(variableStart...variableEnd, with: value)
                         index = result.index(index, offsetBy: value.count)
                     } else {
