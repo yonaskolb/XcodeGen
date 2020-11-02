@@ -118,3 +118,12 @@ extension Settings: JSONEncodable {
         return buildSettings
     }
 }
+
+extension Settings: PathContainer {
+
+    static var pathProperties: [PathProperty] {
+        [
+            .string("HEADER_SEARCH_PATHS"),
+        ]
+    }
+}
