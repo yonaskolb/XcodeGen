@@ -163,7 +163,7 @@ public class Glob: Collection {
             lastPart = "*"
         }
         for directory in directories {
-            let partiallyResolvedPattern = NSString(string: directory).appendingPathComponent(lastPart)
+            let partiallyResolvedPattern = NSString(string: directory).appendingPathComponent(lastPart).standardizingPath
             results.append(contentsOf: expandGlobstar(pattern: partiallyResolvedPattern))
         }
 
@@ -176,13 +176,13 @@ public class Glob: Collection {
                 if blacklistedDirectories.contains(subpath) {
                     return nil
                 }
-                let firstLevelPath = NSString(string: path).appendingPathComponent(subpath)
+                let firstLevelPath = NSString(string: path).appendingPathComponent(subpath).standardizingPath
                 guard isDirectory(path: firstLevelPath) else {
                     return nil
                 }
                 var subDirs: [String] = try FileManager.default.subpathsOfDirectory(atPath: firstLevelPath)
                     .compactMap { subpath -> String? in
-                        let fullPath = NSString(string: firstLevelPath).appendingPathComponent(subpath)
+                        let fullPath = NSString(string: firstLevelPath).appendingPathComponent(subpath).standardizingPath
                         return isDirectory(path: fullPath) ? fullPath : nil
                     }
                 subDirs.append(firstLevelPath)
@@ -211,7 +211,12 @@ public class Glob: Collection {
     private func populateFiles(gt: glob_t, includeFiles: Bool) {
         let includeDirectories = behavior.includesDirectoriesInResults
 
-        for i in 0..<Int(gt.gl_matchc) {
+        #if os(macOS)
+        let matches = Int(gt.gl_matchc)
+        #else
+        let matches = Int(gt.gl_pathc)
+        #endif
+        for i in 0..<matches {
             if let path = String(validatingUTF8: gt.gl_pathv[i]!) {
                 if !includeFiles || !includeDirectories {
                     let isDirectory = self.isDirectory(path: path)
