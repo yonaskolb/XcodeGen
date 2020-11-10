@@ -12,7 +12,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/kylef/PathKit.git", from: "1.0.0"),
-        .package(url: "https://github.com/jpsim/Yams.git", from: "2.0.0"),
+        .package(url: "https://github.com/jpsim/Yams.git", from: "4.0.0"),
         .package(url: "https://github.com/yonaskolb/JSONUtilities.git", from: "4.2.0"),
         .package(url: "https://github.com/kylef/Spectre.git", from: "0.9.0"),
         .package(url: "https://github.com/onevcat/Rainbow.git", from: "3.0.0"),
