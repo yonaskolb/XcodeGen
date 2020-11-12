@@ -8,6 +8,9 @@
 #### Fixed
 - Fixed error message output for `minimumXcodeGenVersion`. [#967](https://github.com/yonaskolb/XcodeGen/pull/967) @joshwalker
 
+#### Internal
+- Updated to Yams 4.0.0 [#984](https://github.com/yonaskolb/XcodeGen/pull/984) @swiftty
+
 ## 2.18.0
 
 #### Added
