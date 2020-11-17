@@ -641,7 +641,7 @@ public class PBXProjGenerator {
     func generateTarget(_ target: Target) throws {
         let carthageDependencies = carthageResolver.dependencies(for: target)
 
-        let sourceFiles = try sourceGenerator.getAllSourceFiles(targetType: target.type, sources: target.sources)
+        let sourceFiles = try sourceGenerator.getAllSourceFiles(targetType: target.type, sources: target.sources, platform: target.platform)
             .sorted { $0.path.lastComponent < $1.path.lastComponent }
 
         var plistPath: Path?
