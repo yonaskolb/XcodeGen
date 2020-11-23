@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		6023D61BF2C57E6AE09CE7A3 /* BundleX.bundle */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.plug-in"; path = BundleX.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
+		6023D61BF2C57E6AE09CE7A3 /* BundleX.bundle */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = BundleX.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		60D6679FB526839EAFEA2EEE /* config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = config.xcconfig; sourceTree = "<group>"; };
 		D6340FC7DEBC81E0127BAFD6 /* ExternalTarget.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ExternalTarget.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
