@@ -3,6 +3,7 @@
 ## Next Version
 
 #### Added
+- Support for building and running on Linux platforms. Tested for compatibility with Swift 5.3+ and Ubuntu 18.04. [#988](https://github.com/yonaskolb/XcodeGen/pull/988) @elliottwilliams
 - Add `useBaseInternationalization` to Project Spec Options to opt out of Base Internationalization. [#961](https://github.com/yonaskolb/XcodeGen/pull/961) @liamnichols
 
 ## 2.18.0
