@@ -136,7 +136,7 @@ public class Glob: Collection {
         let firstPart = parts.removeFirst()
         var lastPart = parts.joined(separator: "**")
 
-        var directories: [String]
+        var directories: [URL]
 
         if FileManager.default.fileExists(atPath: firstPart) {
             do {
@@ -151,7 +151,7 @@ public class Glob: Collection {
 
         if behavior.includesFilesFromRootOfGlobstar {
             // Check the base directory for the glob star as well.
-            directories.insert(firstPart, at: 0)
+            directories.insert(URL(fileURLWithPath: firstPart), at: 0)
 
             // Include the globstar root directory ("dir/") in a pattern like "dir/**" or "dir/**/"
             if lastPart.isEmpty {
@@ -163,29 +163,30 @@ public class Glob: Collection {
             lastPart = "*"
         }
         for directory in directories {
-            let partiallyResolvedPattern = NSString(string: directory).appendingPathComponent(lastPart)
-            results.append(contentsOf: expandGlobstar(pattern: partiallyResolvedPattern))
+            let partiallyResolvedPattern = directory.appendingPathComponent(lastPart)
+            let standardizedPattern = (partiallyResolvedPattern.relativePath as NSString).standardizingPath
+            results.append(contentsOf: expandGlobstar(pattern: standardizedPattern))
         }
 
         return results
     }
 
-    private func exploreDirectories(path: String) throws -> [String] {
+    private func exploreDirectories(path: String) throws -> [URL] {
         try FileManager.default.contentsOfDirectory(atPath: path)
-            .compactMap { subpath -> [String]? in
+            .compactMap { subpath -> [URL]? in
                 if blacklistedDirectories.contains(subpath) {
                     return nil
                 }
-                let firstLevelPath = NSString(string: path).appendingPathComponent(subpath)
-                guard isDirectory(path: firstLevelPath) else {
+                let firstLevel = URL(fileURLWithPath: path).appendingPathComponent(subpath, isDirectory: true)
+                guard isDirectory(path: firstLevel.path) else {
                     return nil
                 }
-                var subDirs: [String] = try FileManager.default.subpathsOfDirectory(atPath: firstLevelPath)
-                    .compactMap { subpath -> String? in
-                        let fullPath = NSString(string: firstLevelPath).appendingPathComponent(subpath)
-                        return isDirectory(path: fullPath) ? fullPath : nil
+                var subDirs: [URL] = try FileManager.default.subpathsOfDirectory(atPath: firstLevel.path)
+                    .compactMap { subpath -> URL? in
+                        let full = firstLevel.appendingPathComponent(subpath, isDirectory: true)
+                        return isDirectory(path: full.path) ? full : nil
                     }
-                subDirs.append(firstLevelPath)
+                subDirs.append(firstLevel)
                 return subDirs
             }
             .joined()
@@ -211,7 +212,12 @@ public class Glob: Collection {
     private func populateFiles(gt: glob_t, includeFiles: Bool) {
         let includeDirectories = behavior.includesDirectoriesInResults
 
-        for i in 0..<Int(gt.gl_matchc) {
+        #if os(macOS)
+        let matches = Int(gt.gl_matchc)
+        #else
+        let matches = Int(gt.gl_pathc)
+        #endif
+        for i in 0..<matches {
             if let path = String(validatingUTF8: gt.gl_pathv[i]!) {
                 if !includeFiles || !includeDirectories {
                     let isDirectory = self.isDirectory(path: path)
