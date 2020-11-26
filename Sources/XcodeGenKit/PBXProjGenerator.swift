@@ -370,13 +370,13 @@ public class PBXProjGenerator {
 
     func generateExternalTargetDependency(from: String, to target: String, in project: String, platform: Platform) throws -> (PBXTargetDependency, Target, PBXReferenceProxy) {
         guard let projectReference = self.project.getProjectReference(project) else {
-            fatalError("project not found")
+            fatalError("project '\(project)' not found")
         }
 
         let pbxProj = try getPBXProj(from: projectReference)
 
         guard let targetObject = pbxProj.targets(named: target).first else {
-            fatalError("target not found")
+            fatalError("target '\(target)' not found in project '\(project)'")
         }
 
         let projectFileReferenceIndex = self.pbxProj.rootObject!
