@@ -4,14 +4,17 @@
 </a>
 </p>
 <p align="center">
-  <a href="https://swift.org/package-manager">
-    <img src="https://img.shields.io/badge/spm-compatible-brightgreen.svg?style=for-the-badge" alt="Swift Package Manager" />
-  </a>
   <a href="https://github.com/yonaskolb/XcodeGen/releases">
-    <img src="https://img.shields.io/github/release/yonaskolb/xcodegen.svg?style=for-the-badge"/>
+    <img src="https://img.shields.io/github/release/yonaskolb/xcodegen.svg"/>
+  </a>
+  <a href="https://swiftpackageindex.com/yonaskolb/XcodeGen">
+    <img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fyonaskolb%2FXcodeGen%2Fbadge%3Ftype%3Dplatforms" alt="Swift Package Manager Platforms" />
+  </a>
+  <a href="https://swiftpackageindex.com/yonaskolb/XcodeGen">
+    <img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fyonaskolb%2FXcodeGen%2Fbadge%3Ftype%3Dswift-versions" alt="Swift Versions" />
   </a>
   <a href="https://github.com/yonaskolb/XcodeGen/blob/master/LICENSE">
-    <img src="https://img.shields.io/github/license/yonaskolb/XcodeGen.svg?style=for-the-badge"/>
+    <img src="https://img.shields.io/github/license/yonaskolb/XcodeGen.svg"/>
   </a>
 </p>
 
