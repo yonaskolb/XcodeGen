@@ -42,7 +42,7 @@ class GlobTests: XCTestCase {
     }
 
     private func newTmpDir() -> String {
-        var tmpDirTmpl = "/tmp/glob-test.XXXXX".cString(using: .utf8)!
+        var tmpDirTmpl = "/tmp/glob-test.XXXXXX".cString(using: .utf8)!
         return String(validatingUTF8: mkdtemp(&tmpDirTmpl))!
     }
 

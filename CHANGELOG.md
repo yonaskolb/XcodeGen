@@ -3,8 +3,17 @@
 ## Next Version
 
 #### Added
+- Support for building and running on Linux platforms. Tested for compatibility with Swift 5.3+ and Ubuntu 18.04. [#988](https://github.com/yonaskolb/XcodeGen/pull/988) @elliottwilliams
 - Add `useBaseInternationalization` to Project Spec Options to opt out of Base Internationalization. [#961](https://github.com/yonaskolb/XcodeGen/pull/961) @liamnichols
 - Add `Scheme.StoreKitConfiguration` to allow specifying StoreKit Configuration in Scheme and TargetScheme, supporting either xcodeproj or xcworkspace. [#964](https://github.com/yonaskolb/XcodeGen/pull/964) @jcolicchio
+- More detailed error message with method arguments. [#990](https://github.com/yonaskolb/XcodeGen/pull/990) @bannzai
+
+#### Internal
+- Updated to Yams 4.0.0 [#984](https://github.com/yonaskolb/XcodeGen/pull/984) @swiftty
+
+#### Fixed
+- Fixed error message output for `minimumXcodeGenVersion`. [#967](https://github.com/yonaskolb/XcodeGen/pull/967) @joshwalker
+- Remove force-unwrapping causing crash for `LegacyTarget`s [#982](https://github.com/yonaskolb/XcodeGen/pull/982) @jcolicchio
 
 ## 2.18.0
 

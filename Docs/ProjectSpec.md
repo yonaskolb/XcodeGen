@@ -392,7 +392,7 @@ targets:
           - "configs/server[0-2].json"
           - "*-Private.h"
           - "**/*.md" # excludes all files with the .md extension
-          - "ios/**/*Tests.[hm] # excludes all files with an h or m extension within the ios directory.
+          - "ios/**/*Tests.[hm]" # excludes all files with an h or m extension within the ios directory.
         compilerFlags:
           - "-Werror"
           - "-Wextra"

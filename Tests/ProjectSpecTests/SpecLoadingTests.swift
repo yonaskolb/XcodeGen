@@ -202,7 +202,7 @@ class SpecLoadingTests: XCTestCase {
                         throw failure("\(key): \(parsedValue) does not equal \(expectedValue)")
                     }
                 }
-                if !(dictionary as NSDictionary).isEqual(expectedDictionary) {
+                if !(dictionary as NSDictionary).isEqual(expectedDictionary as NSDictionary) {
                     throw failure("parsed yaml types don't match:\n\nParsed:\n\t\(dictionary.map { "\($0.key): \($0.value)" }.joined(separator: "\n\t"))\nExpected:\n\t\(expectedDictionary.map { "\($0.key): \($0.value)" }.joined(separator: "\n\t"))")
                 }
             }
