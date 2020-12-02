@@ -4,6 +4,7 @@ import JSONUtilities
 public struct BuildScript: Equatable {
     public static let runOnlyWhenInstallingDefault = false
     public static let showEnvVarsDefault = true
+    public static let baseOnDependencyAnalysisDefault = true
 
     public var script: ScriptType
     public var name: String?
@@ -14,6 +15,7 @@ public struct BuildScript: Equatable {
     public var outputFileLists: [String]
     public var runOnlyWhenInstalling: Bool
     public let showEnvVars: Bool
+    public let baseOnDependencyAnalysis: Bool
 
     public enum ScriptType: Equatable {
         case path(String)
@@ -29,7 +31,8 @@ public struct BuildScript: Equatable {
         outputFileLists: [String] = [],
         shell: String? = nil,
         runOnlyWhenInstalling: Bool = runOnlyWhenInstallingDefault,
-        showEnvVars: Bool = showEnvVarsDefault
+        showEnvVars: Bool = showEnvVarsDefault,
+        baseOnDependencyAnalysis: Bool = baseOnDependencyAnalysisDefault
     ) {
         self.script = script
         self.name = name
@@ -40,6 +43,7 @@ public struct BuildScript: Equatable {
         self.shell = shell
         self.runOnlyWhenInstalling = runOnlyWhenInstalling
         self.showEnvVars = showEnvVars
+        self.baseOnDependencyAnalysis = baseOnDependencyAnalysis
     }
 }
 
@@ -61,6 +65,7 @@ extension BuildScript: JSONObjectConvertible {
         shell = jsonDictionary.json(atKeyPath: "shell")
         runOnlyWhenInstalling = jsonDictionary.json(atKeyPath: "runOnlyWhenInstalling") ?? BuildScript.runOnlyWhenInstallingDefault
         showEnvVars = jsonDictionary.json(atKeyPath: "showEnvVars") ?? BuildScript.showEnvVarsDefault
+        baseOnDependencyAnalysis = jsonDictionary.json(atKeyPath: "baseOnDependencyAnalysis") ?? BuildScript.baseOnDependencyAnalysisDefault
     }
 }
 
@@ -78,6 +83,10 @@ extension BuildScript: JSONEncodable {
 
         if showEnvVars != BuildScript.showEnvVarsDefault {
             dict["showEnvVars"] = showEnvVars
+        }
+
+        if baseOnDependencyAnalysis != BuildScript.baseOnDependencyAnalysisDefault {
+            dict["baseOnDependencyAnalysis"] = baseOnDependencyAnalysis
         }
 
         switch script {
