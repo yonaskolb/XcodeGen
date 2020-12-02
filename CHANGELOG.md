@@ -13,6 +13,9 @@
 #### Internal
 - Updated to Yams 4.0.0 [#984](https://github.com/yonaskolb/XcodeGen/pull/984) @swiftty
 
+#### Fixed
+- Remove force-unwrapping causing crash for `LegacyTarget`s [#982](https://github.com/yonaskolb/XcodeGen/pull/982) @jcolicchio
+
 ## 2.18.0
 
 #### Added
