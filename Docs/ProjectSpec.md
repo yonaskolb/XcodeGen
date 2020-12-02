@@ -23,7 +23,7 @@
 - [Aggregate Target](#aggregate-target)
 - [Target Template](#target-template)
 - [Scheme](#scheme)
-  - [Scheme Template](#scheme-template)
+- [Scheme Template](#scheme-template)
 - [Swift Package](#swift-package)
 
 ## General
@@ -879,7 +879,7 @@ schemes:
       revealArchiveInOrganizer: false
 ```
 
-### Scheme Template
+## Scheme Template
 
 This is a template that can be referenced from a normal scheme using the `templates` property. The properties of this template are the same as a [Scheme](#scheme). This functions identically in practice to [Target Template](#target-template).
 Any instances of `${scheme_name}` within each template will be replaced by the final scheme name which references the template.
