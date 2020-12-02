@@ -144,6 +144,7 @@ targets:
       - path: scripts/strip-frameworks.sh
         name: Strip Unused Architectures from Frameworks
         runOnlyWhenInstalling: true
+        baseOnDependencyAnalysis: false
       - name: MyScript
         script: |
           echo "You ran a script!"
