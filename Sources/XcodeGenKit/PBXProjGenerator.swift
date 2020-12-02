@@ -479,7 +479,7 @@ public class PBXProjGenerator {
             shellScript: shellScript,
             runOnlyForDeploymentPostprocessing: buildScript.runOnlyWhenInstalling,
             showEnvVarsInLog: buildScript.showEnvVars,
-            alwaysOutOfDate: !buildScript.baseOnDependencyAnalysis
+            alwaysOutOfDate: !buildScript.basedOnDependencyAnalysis
         )
         return addObject(shellScriptPhase)
     }
