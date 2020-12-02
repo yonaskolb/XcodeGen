@@ -478,7 +478,8 @@ public class PBXProjGenerator {
             shellPath: buildScript.shell ?? "/bin/sh",
             shellScript: shellScript,
             runOnlyForDeploymentPostprocessing: buildScript.runOnlyWhenInstalling,
-            showEnvVarsInLog: buildScript.showEnvVars
+            showEnvVarsInLog: buildScript.showEnvVars,
+            alwaysOutOfDate: !buildScript.baseOnDependencyAnalysis
         )
         return addObject(shellScriptPhase)
     }
