@@ -101,6 +101,7 @@ class GenerateCommand: ProjectCommand {
         info("⚙️  Generating project...")
         var errors: [Error] = []
         let overallDispatchGroup = DispatchGroup()
+        let startTime = Date()
         overallDispatchGroup.enter()
         let generateAndWriteProject = DispatchWorkItem { [weak self] in
             var xcodeProject: XcodeProj!
@@ -157,6 +158,7 @@ class GenerateCommand: ProjectCommand {
         }
         DispatchQueue.global(qos: .userInitiated).async(execute: generateAndWriteProject)
         overallDispatchGroup.wait()
+        info("Project was generated in \(Int(Date().timeIntervalSince(startTime))) seconds")
     }
 
     func info(_ string: String) {
