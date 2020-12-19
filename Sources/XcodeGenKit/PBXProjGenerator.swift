@@ -245,7 +245,6 @@ public class PBXProjGenerator {
             pbxProject.projects = subprojects
         }
 
-        let generateTargetsGroup = DispatchGroup()
         var targetErrors: [Error] = []
         var aggregateTargetsErrors: [Error] = []
 
@@ -270,28 +269,26 @@ public class PBXProjGenerator {
                 // pick atleast one target and proceed, to prevent an infinite loop
                 targetsReadyToGenerate = [targetsPendingDependencyGeneration.removeFirst()]
             }
-            generateTargetsGroup.enter()
-            DispatchQueue.global(qos: .userInitiated).async { [weak self] in
-                targetsReadyToGenerate.forEach { target in
-                    generateTargetsGroup.enter()
-                    DispatchQueue.global(qos: .userInitiated).async {
-                        do {
-                            try self?.generateTarget(target)
-                        } catch let error {
-                            targetErrors.append(error)
-                        }
-                        generatedTargetNames.append(target.name)
-                        generateTargetsGroup.leave()
+            let parallelTargetGenerationGroup = DispatchGroup()
+            for target in targetsReadyToGenerate {
+                parallelTargetGenerationGroup.enter()
+                DispatchQueue.global(qos: .userInitiated).async {
+                    do {
+                        try self.generateTarget(target)
+                    } catch let error {
+                        targetErrors.append(error)
                     }
+                    parallelTargetGenerationGroup.leave()
                 }
-                generateTargetsGroup.leave()
+                generatedTargetNames.append(target.name)
             }
-            generateTargetsGroup.wait()
+            parallelTargetGenerationGroup.wait()
             targetsPendingDependencyGeneration = targetsPendingDependencyGeneration.filter({ target in
                 !generatedTargetNames.contains(target.name)
             })
         }
 
+        let generateTargetsGroup = DispatchGroup()
         generateTargetsGroup.enter()
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             self?.project.aggregateTargets.forEach { target in
