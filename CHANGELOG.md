@@ -14,6 +14,7 @@
 #### Fixed
 - Fixed error message output for `minimumXcodeGenVersion`. [#967](https://github.com/yonaskolb/XcodeGen/pull/967) @joshwalker
 - Remove force-unwrapping causing crash for `LegacyTarget`s [#982](https://github.com/yonaskolb/XcodeGen/pull/982) @jcolicchio
+- Fixed issue where frameworks with `MACH_O_TYPE: staticlib` were being incorrectly embedded. [#1003](https://github.com/yonaskolb/XcodeGen/pull/1003) @mrabiciu
 
 #### Internal
 - Updated to Yams 4.0.0 [#984](https://github.com/yonaskolb/XcodeGen/pull/984) @swiftty
