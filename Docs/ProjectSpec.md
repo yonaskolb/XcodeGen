@@ -23,7 +23,7 @@
 - [Aggregate Target](#aggregate-target)
 - [Target Template](#target-template)
 - [Scheme](#scheme)
-  - [Scheme Template](#scheme-template)
+- [Scheme Template](#scheme-template)
 - [Swift Package](#swift-package)
 
 ## General
@@ -563,6 +563,7 @@ Each script can contain:
 - [ ] **shell**: **String** - shell used for the script. Defaults to `/bin/sh`
 - [ ] **showEnvVars**: **Bool** - whether the environment variables accessible to the script show be printed to the build log. Defaults to yes
 - [ ] **runOnlyWhenInstalling**: **Bool** - whether the script is only run when installing (`runOnlyForDeploymentPostprocessing`). Defaults to no
+- [ ] **basedOnDependencyAnalysis**: **Bool** - whether to skip the script if inputs, context, or outputs haven't changed. Defaults to yes
 
 Either a **path** or **script** must be defined, the rest are optional.
 
@@ -885,7 +886,7 @@ schemes:
       revealArchiveInOrganizer: false
 ```
 
-### Scheme Template
+## Scheme Template
 
 This is a template that can be referenced from a normal scheme using the `templates` property. The properties of this template are the same as a [Scheme](#scheme). This functions identically in practice to [Target Template](#target-template).
 Any instances of `${scheme_name}` within each template will be replaced by the final scheme name which references the template.

@@ -1068,8 +1068,10 @@ class SpecLoadingTests: XCTestCase {
                     ["path": "script.sh"],
                     ["script": "shell script\ndo thing", "name": "myscript", "inputFiles": ["file", "file2"], "outputFiles": ["file", "file2"], "shell": "bin/customshell", "runOnlyWhenInstalling": true],
                     ["script": "shell script\ndo thing", "name": "myscript", "inputFiles": ["file", "file2"], "outputFiles": ["file", "file2"], "shell": "bin/customshell", "showEnvVars": false],
+                    ["script": "shell script\ndo thing", "name": "myscript", "inputFiles": ["file", "file2"], "outputFiles": ["file", "file2"], "shell": "bin/customshell", "basedOnDependencyAnalysis": false],
                     ["script": "shell script\nwith file lists", "name": "myscript", "inputFileLists": ["inputList.xcfilelist"], "outputFileLists": ["outputList.xcfilelist"], "shell": "bin/customshell", "runOnlyWhenInstalling": true],
                     ["script": "shell script\nwith file lists", "name": "myscript", "inputFileLists": ["inputList.xcfilelist"], "outputFileLists": ["outputList.xcfilelist"], "shell": "bin/customshell", "showEnvVars": false],
+                    ["script": "shell script\nwith file lists", "name": "myscript", "inputFileLists": ["inputList.xcfilelist"], "outputFileLists": ["outputList.xcfilelist"], "shell": "bin/customshell", "basedOnDependencyAnalysis": false],
                 ]
                 target["preBuildScripts"] = scripts
                 target["postCompileScripts"] = scripts
@@ -1077,10 +1079,12 @@ class SpecLoadingTests: XCTestCase {
 
                 let expectedScripts = [
                     BuildScript(script: .path("script.sh")),
-                    BuildScript(script: .script("shell script\ndo thing"), name: "myscript", inputFiles: ["file", "file2"], outputFiles: ["file", "file2"], shell: "bin/customshell", runOnlyWhenInstalling: true, showEnvVars: true),
-                    BuildScript(script: .script("shell script\ndo thing"), name: "myscript", inputFiles: ["file", "file2"], outputFiles: ["file", "file2"], shell: "bin/customshell", runOnlyWhenInstalling: false, showEnvVars: false),
-                    BuildScript(script: .script("shell script\nwith file lists"), name: "myscript", inputFileLists: ["inputList.xcfilelist"], outputFileLists: ["outputList.xcfilelist"], shell: "bin/customshell", runOnlyWhenInstalling: true, showEnvVars: true),
-                    BuildScript(script: .script("shell script\nwith file lists"), name: "myscript", inputFileLists: ["inputList.xcfilelist"], outputFileLists: ["outputList.xcfilelist"], shell: "bin/customshell", runOnlyWhenInstalling: false, showEnvVars: false),
+                    BuildScript(script: .script("shell script\ndo thing"), name: "myscript", inputFiles: ["file", "file2"], outputFiles: ["file", "file2"], shell: "bin/customshell", runOnlyWhenInstalling: true, showEnvVars: true, basedOnDependencyAnalysis: true),
+                    BuildScript(script: .script("shell script\ndo thing"), name: "myscript", inputFiles: ["file", "file2"], outputFiles: ["file", "file2"], shell: "bin/customshell", runOnlyWhenInstalling: false, showEnvVars: false, basedOnDependencyAnalysis: true),
+                    BuildScript(script: .script("shell script\ndo thing"), name: "myscript", inputFiles: ["file", "file2"], outputFiles: ["file", "file2"], shell: "bin/customshell", runOnlyWhenInstalling: false, showEnvVars: true, basedOnDependencyAnalysis: false),
+                    BuildScript(script: .script("shell script\nwith file lists"), name: "myscript", inputFileLists: ["inputList.xcfilelist"], outputFileLists: ["outputList.xcfilelist"], shell: "bin/customshell", runOnlyWhenInstalling: true, showEnvVars: true, basedOnDependencyAnalysis: true),
+                    BuildScript(script: .script("shell script\nwith file lists"), name: "myscript", inputFileLists: ["inputList.xcfilelist"], outputFileLists: ["outputList.xcfilelist"], shell: "bin/customshell", runOnlyWhenInstalling: false, showEnvVars: false, basedOnDependencyAnalysis: true),
+                    BuildScript(script: .script("shell script\nwith file lists"), name: "myscript", inputFileLists: ["inputList.xcfilelist"], outputFileLists: ["outputList.xcfilelist"], shell: "bin/customshell", runOnlyWhenInstalling: false, showEnvVars: true, basedOnDependencyAnalysis: false),
                 ]
 
                 let parsedTarget = try Target(name: "test", jsonDictionary: target)

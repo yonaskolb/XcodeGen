@@ -2117,6 +2117,7 @@
 		};
 		71A4CC6ECC8522178F566E7B /* Strip Unused Architectures from Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
