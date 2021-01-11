@@ -20,6 +20,7 @@ extension PBXProductType {
              .intentsServiceExtension,
              .messagesApplication,
              .messagesExtension,
+             .metalLibrary,
              .ocUnitTestBundle,
              .onDemandInstallCapableApplication,
              .stickerPack,

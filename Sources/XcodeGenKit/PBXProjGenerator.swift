@@ -370,13 +370,13 @@ public class PBXProjGenerator {
 
     func generateExternalTargetDependency(from: String, to target: String, in project: String, platform: Platform) throws -> (PBXTargetDependency, Target, PBXReferenceProxy) {
         guard let projectReference = self.project.getProjectReference(project) else {
-            fatalError("project not found")
+            fatalError("project '\(project)' not found")
         }
 
         let pbxProj = try getPBXProj(from: projectReference)
 
         guard let targetObject = pbxProj.targets(named: target).first else {
-            fatalError("target not found")
+            fatalError("target '\(target)' not found in project '\(project)'")
         }
 
         let projectFileReferenceIndex = self.pbxProj.rootObject!
@@ -402,7 +402,7 @@ public class PBXProjGenerator {
         let productProxy = addObject(
             PBXContainerItemProxy(
                 containerPortal: .fileReference(projectFileReference),
-                remoteGlobalID: .object(targetObject.product!),
+                remoteGlobalID: targetObject.product.flatMap(PBXContainerItemProxy.RemoteGlobalID.object),
                 proxyType: .reference,
                 remoteInfo: target
             )
@@ -417,7 +417,7 @@ public class PBXProjGenerator {
 
         let productReferenceProxy = addObject(
             PBXReferenceProxy(
-                fileType: Xcode.fileType(path: Path(targetObject.productNameWithExtension()!)),
+                fileType: targetObject.productNameWithExtension().flatMap { Xcode.fileType(path: Path($0)) },
                 path: path,
                 remote: productProxy,
                 sourceTree: .buildProductsDir
@@ -433,14 +433,14 @@ public class PBXProjGenerator {
             )
         )
 
-        guard let productType = targetObject.productType,
-            let buildConfigurations = targetObject.buildConfigurationList?.buildConfigurations,
+        guard let buildConfigurations = targetObject.buildConfigurationList?.buildConfigurations,
             let defaultConfigurationName = targetObject.buildConfigurationList?.defaultConfigurationName,
             let defaultConfiguration = buildConfigurations.first(where: { $0.name == defaultConfigurationName }) ?? buildConfigurations.first else {
 
             fatalError("Missing target info")
         }
 
+        let productType: PBXProductType = targetObject.productType ?? .none
         let buildSettings = defaultConfiguration.buildSettings
         let settings = Settings(buildSettings: buildSettings, configSettings: [:], groups: [])
         let deploymentTargetString = buildSettings[platform.deploymentTargetSetting] as? String
@@ -478,7 +478,8 @@ public class PBXProjGenerator {
             shellPath: buildScript.shell ?? "/bin/sh",
             shellScript: shellScript,
             runOnlyForDeploymentPostprocessing: buildScript.runOnlyWhenInstalling,
-            showEnvVarsInLog: buildScript.showEnvVars
+            showEnvVarsInLog: buildScript.showEnvVars,
+            alwaysOutOfDate: !buildScript.basedOnDependencyAnalysis
         )
         return addObject(shellScriptPhase)
     }
