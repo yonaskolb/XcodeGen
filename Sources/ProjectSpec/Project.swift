@@ -227,7 +227,6 @@ extension Project: PathContainer {
             .object("targetTemplates", Target.pathProperties),
             .object("aggregateTargets", AggregateTarget.pathProperties),
             .object("projectReferences", ProjectReference.pathProperties),
-            .object("settings", Settings.pathProperties),
         ]
     }
 }
