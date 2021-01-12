@@ -250,7 +250,7 @@ class SourceGenerator {
 
     /// returns a default build phase for a given path. This is based off the filename
     private func getDefaultBuildPhase(for path: Path, targetType: PBXProductType) -> BuildPhaseSpec? {
-        if path.lastComponent == "Info.plist" {
+        if path.lastComponent.hasSuffix("Info.plist") {
             return nil
         }
         if let buildPhase = getFileType(path: path)?.buildPhase {
