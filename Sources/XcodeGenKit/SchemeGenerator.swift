@@ -203,7 +203,24 @@ public class SchemeGenerator {
         let testVariables = scheme.test.flatMap { $0.environmentVariables.isEmpty ? nil : $0.environmentVariables }
         let launchVariables = scheme.run.flatMap { $0.environmentVariables.isEmpty ? nil : $0.environmentVariables }
         let profileVariables = scheme.profile.flatMap { $0.environmentVariables.isEmpty ? nil : $0.environmentVariables }
-
+        
+        func getAdditionalOptions(_ options: AdditionalOptions) -> [XCScheme.AdditionalOption] {
+            var additionalOptions: [XCScheme.AdditionalOption] = []
+            if options.mallocScribble {
+                additionalOptions.append(XCScheme.AdditionalOption(key: "MallocScribble", value: "", isEnabled: true))
+            }
+            if options.mallocGuardEdges {
+                additionalOptions.append(XCScheme.AdditionalOption(key: "MallocGuardEdges", value: "", isEnabled: true))
+            }
+            if options.guardMalloc {
+                additionalOptions.append(XCScheme.AdditionalOption(key: "DYLD_INSERT_LIBRARIES", value: "/usr/lib/libgmalloc.dylib", isEnabled: true))
+            }
+            if options.zombieObjects {
+                additionalOptions.append(XCScheme.AdditionalOption(key: "NSZombieEnabled", value: "YES", isEnabled: true))
+            }
+            return additionalOptions
+        }
+                
         let testAction = XCScheme.TestAction(
             buildConfiguration: scheme.test?.config ?? defaultDebugConfig.name,
             macroExpansion: buildableReference,
@@ -217,6 +234,7 @@ public class SchemeGenerator {
             codeCoverageTargets: coverageBuildableTargets,
             onlyGenerateCoverageForSpecifiedTargets: !coverageBuildableTargets.isEmpty,
             disableMainThreadChecker: scheme.test?.disableMainThreadChecker ?? Scheme.Test.disableMainThreadCheckerDefault,
+            additionalOptions: scheme.test?.additionalOptions.map(getAdditionalOptions) ?? [],
             commandlineArguments: testCommandLineArgs,
             environmentVariables: testVariables,
             language: scheme.test?.language,
@@ -248,6 +266,7 @@ public class SchemeGenerator {
             locationScenarioReference: locationScenarioReference,
             disableMainThreadChecker: scheme.run?.disableMainThreadChecker ?? Scheme.Run.disableMainThreadCheckerDefault,
             stopOnEveryMainThreadCheckerIssue: scheme.run?.stopOnEveryMainThreadCheckerIssue ?? Scheme.Run.stopOnEveryMainThreadCheckerIssueDefault,
+            additionalOptions: scheme.run?.additionalOptions.map(getAdditionalOptions) ?? [],
             commandlineArguments: launchCommandLineArgs,
             environmentVariables: launchVariables,
             language: scheme.run?.language,
@@ -361,6 +380,7 @@ extension Scheme {
                 environmentVariables: targetScheme.environmentVariables,
                 disableMainThreadChecker: targetScheme.disableMainThreadChecker,
                 stopOnEveryMainThreadCheckerIssue: targetScheme.stopOnEveryMainThreadCheckerIssue,
+                additionalOptions: targetScheme.additionalOptions,
                 language: targetScheme.language,
                 region: targetScheme.region
             ),
@@ -368,6 +388,7 @@ extension Scheme {
                 config: debugConfig,
                 gatherCoverageData: targetScheme.gatherCoverageData,
                 disableMainThreadChecker: targetScheme.disableMainThreadChecker,
+                additionalOptions: targetScheme.additionalOptions,
                 commandLineArguments: targetScheme.commandLineArguments,
                 targets: targetScheme.testTargets,
                 environmentVariables: targetScheme.environmentVariables,

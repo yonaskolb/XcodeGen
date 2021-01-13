@@ -133,6 +133,11 @@ targets:
       gatherCoverageData: true
       disableMainThreadChecker: true
       stopOnEveryMainThreadCheckerIssue: true
+      additionalOptions:
+        mallocScribble: true
+        mallocGuardEdges: true
+        guardMalloc: true
+        zombieObjects: true
       configVariants:
         - Test
         - Staging
