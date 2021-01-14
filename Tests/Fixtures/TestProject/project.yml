@@ -1,5 +1,5 @@
 name: Project
-include: [environments.yml]
+include: [environments.yml, AnotherProject/project.yml]
 options:
   bundleIdPrefix: com.project
   usesTabs: false
