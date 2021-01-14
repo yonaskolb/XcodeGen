@@ -690,7 +690,7 @@ public class PBXProjGenerator {
         }
 
         func processTargetDependency(_ dependency: Dependency, dependencyTarget: Target, embedFileReference: PBXFileElement?) {
-            let dependencyLinkage = dependencyTarget.type.defaultLinkage
+            let dependencyLinkage = dependencyTarget.defaultLinkage
             let link = dependency.link ??
                 ((dependencyLinkage == .dynamic && target.type != .staticLibrary) ||
                     (dependencyLinkage == .static && target.type.isExecutable))
@@ -707,7 +707,7 @@ public class PBXProjGenerator {
                 }
             }
 
-            let embed = dependency.embed ?? target.type.shouldEmbed(dependencyTarget.type)
+            let embed = dependency.embed ?? target.type.shouldEmbed(dependencyTarget)
             if embed {
                 let embedFile = addObject(
                     PBXBuildFile(

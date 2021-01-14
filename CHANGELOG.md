@@ -17,6 +17,7 @@
 - Fixed error message output for `minimumXcodeGenVersion`. [#967](https://github.com/yonaskolb/XcodeGen/pull/967) @joshwalker
 - Remove force-unwrapping causing crash for `LegacyTarget`s [#982](https://github.com/yonaskolb/XcodeGen/pull/982) @jcolicchio
 - Fixed a race condition in an internal JSON decoder, which would occasionally fail with an error like `Parsing project spec failed: Error Domain=Unspecified error Code=0`. [#995](https://github.com/yonaskolb/XcodeGen/pull/995) @elliottwilliams
+- Fixed issue where frameworks with `MACH_O_TYPE: staticlib` were being incorrectly embedded. [#1003](https://github.com/yonaskolb/XcodeGen/pull/1003) @mrabiciu
 
 #### Internal
 - Updated to Yams 4.0.0 [#984](https://github.com/yonaskolb/XcodeGen/pull/984) @swiftty
