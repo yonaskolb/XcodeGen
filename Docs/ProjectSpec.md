@@ -605,6 +605,7 @@ targets:
 - [ ] **name**: **String** - The name of a build rule. Defaults to `Build Rule`
 - [ ] **outputFiles**: **[String]** - The list of output files
 - [ ] **outputFilesCompilerFlags**: **[String]** - The list of compiler flags to apply to the output files
+- [ ] **runOncePerArchitecture**: **Bool** - a boolean that indicates if this rule should run once per architecture. This defaults to true
 
 ```yaml
 targets:
@@ -619,6 +620,7 @@ targets:
         compilerSpec: com.apple.xcode.tools.swift.compiler
         outputFiles:
           - $(SRCROOT)/Generated.swift
+        runOncePerArchitecture: false
 ```
 
 ###  Target Scheme

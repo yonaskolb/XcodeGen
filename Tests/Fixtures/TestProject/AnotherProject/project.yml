@@ -11,3 +11,10 @@ targets:
   ExternalTarget:
     type: framework
     platform: iOS
+  IncludedLegacy:
+    type: ""
+    platform: iOS
+    legacy:
+      toolPath: /usr/bin/true
+      workingDirectory: .
+

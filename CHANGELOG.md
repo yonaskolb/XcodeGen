@@ -7,13 +7,16 @@
 - Add `useBaseInternationalization` to Project Spec Options to opt out of Base Internationalization. [#961](https://github.com/yonaskolb/XcodeGen/pull/961) @liamnichols
 - More detailed error message with method arguments. [#990](https://github.com/yonaskolb/XcodeGen/pull/990) @bannzai
 - Added `basedOnDependencyAnalysis` to Project Spec Build Script to be able to choose not to skip the script. [#992](https://github.com/yonaskolb/XcodeGen/pull/992) @myihsan
+- Add `BuildRule.runOncePerArchitecture` to allow running build rules once per architecture. [#950](https://github.com/yonaskolb/XcodeGen/pull/950) @sascha
 
 #### Changed
 - **Breaking**: Info.plists with custom prefixes are no longer added to the Copy Bundle Resources build phase [#945](https://github.com/yonaskolb/XcodeGen/pull/945) @anivaros
+- **Breaking**: `workingDirectory` of included legacy targets is now made relative to including project [#981](https://github.com/yonaskolb/XcodeGen/pull/981) @jcolicchio
 
 #### Fixed
 - Fixed error message output for `minimumXcodeGenVersion`. [#967](https://github.com/yonaskolb/XcodeGen/pull/967) @joshwalker
 - Remove force-unwrapping causing crash for `LegacyTarget`s [#982](https://github.com/yonaskolb/XcodeGen/pull/982) @jcolicchio
+- Fixed a race condition in an internal JSON decoder, which would occasionally fail with an error like `Parsing project spec failed: Error Domain=Unspecified error Code=0`. [#995](https://github.com/yonaskolb/XcodeGen/pull/995) @elliottwilliams
 - Fixed issue where frameworks with `MACH_O_TYPE: staticlib` were being incorrectly embedded. [#1003](https://github.com/yonaskolb/XcodeGen/pull/1003) @mrabiciu
 
 #### Internal
