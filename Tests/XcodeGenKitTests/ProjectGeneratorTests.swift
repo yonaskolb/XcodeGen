@@ -1164,6 +1164,9 @@ class ProjectGeneratorTests: XCTestCase {
                 try expect(buildPhases.contains(script2)) == true
                 try expect(buildPhases.contains(script3)) == true
                 try expect(buildPhases.contains(script4)) == true
+                try expect(script1.dependencyFile).beNil()
+                try expect(script2.dependencyFile).beNil()
+                try expect(script3.dependencyFile).beNil()
                 try expect(script4.dependencyFile) == "$(DERIVED_FILE_DIR)/target.d"
             }
 
