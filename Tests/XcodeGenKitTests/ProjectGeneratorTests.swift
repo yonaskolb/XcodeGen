@@ -786,6 +786,102 @@ class ProjectGeneratorTests: XCTestCase {
                     try expect(copyFilesPhases.count) == expectedCopyFilesPhasesCount
                 }
             }
+            
+            $0.it("ensures static frameworks are not embedded by default") {
+                
+                let app = Target(
+                    name: "App",
+                    type: .application,
+                    platform: .iOS,
+                    dependencies: [
+                        Dependency(type: .target, reference: "DynamicFramework"),
+                        Dependency(type: .target, reference: "DynamicFrameworkNotEmbedded", embed: false),
+                        Dependency(type: .target, reference: "StaticFramework"),
+                        Dependency(type: .target, reference: "StaticFrameworkExplicitlyEmbedded", embed: true),
+                        Dependency(type: .target, reference: "StaticFramework2"),
+                        Dependency(type: .target, reference: "StaticFramework2ExplicitlyEmbedded", embed: true),
+                        Dependency(type: .target, reference: "StaticLibrary"),
+                    ]
+                )
+
+                let targets = [
+                    app,
+                    Target(
+                        name: "DynamicFramework",
+                        type: .framework,
+                        platform: .iOS
+                    ),
+                    Target(
+                        name: "DynamicFrameworkNotEmbedded",
+                        type: .framework,
+                        platform: .iOS
+                    ),
+                    Target(
+                        name: "StaticFramework",
+                        type: .framework,
+                        platform: .iOS,
+                        settings: Settings(buildSettings: ["MACH_O_TYPE": "staticlib"])
+                    ),
+                    Target(
+                        name: "StaticFrameworkExplicitlyEmbedded",
+                        type: .framework,
+                        platform: .iOS,
+                        settings: Settings(buildSettings: ["MACH_O_TYPE": "staticlib"])
+                    ),
+                    Target(
+                        name: "StaticFramework2",
+                        type: .staticFramework,
+                        platform: .iOS
+                    ),
+                    Target(
+                        name: "StaticFramework2ExplicitlyEmbedded",
+                        type: .staticFramework,
+                        platform: .iOS
+                    ),
+                    Target(
+                        name: "StaticLibrary",
+                        type: .staticLibrary,
+                        platform: .iOS
+                    ),
+                ]
+                                
+                let expectedLinkedFiles = Set([
+                    "DynamicFramework.framework",
+                    "DynamicFrameworkNotEmbedded.framework",
+                    "StaticFramework.framework",
+                    "StaticFrameworkExplicitlyEmbedded.framework",
+                    "StaticFramework2.framework",
+                    "StaticFramework2ExplicitlyEmbedded.framework",
+                    "libStaticLibrary.a",
+                ])
+                
+                let expectedEmbeddedFrameworks = Set([
+                    "DynamicFramework.framework",
+                    "StaticFrameworkExplicitlyEmbedded.framework",
+                    "StaticFramework2ExplicitlyEmbedded.framework"
+                ])
+                                
+                let project = Project(
+                    name: "test",
+                    targets: targets
+                )
+                let pbxProject = try project.generatePbxProj()
+
+                let appTarget = try unwrap(pbxProject.nativeTargets.first(where: { $0.name == app.name }))
+                let buildPhases = appTarget.buildPhases
+                let frameworkPhases = pbxProject.frameworksBuildPhases.filter { buildPhases.contains($0) }
+                let copyFilesPhases = pbxProject.copyFilesBuildPhases.filter { buildPhases.contains($0) }
+                let embedFrameworkPhase = copyFilesPhases.first { $0.dstSubfolderSpec == .frameworks }
+
+                // Ensure all targets are linked
+                let linkFrameworks = (frameworkPhases[0].files ?? []).compactMap { $0.file?.nameOrPath }
+                let linkPackages = (frameworkPhases[0].files ?? []).compactMap { $0.product?.productName }
+                try expect(Set(linkFrameworks + linkPackages)) == expectedLinkedFiles
+
+                // Ensure only dynamic frameworks are embedded (unless there's an explicit override)
+                let embeddedFrameworks = Set((embedFrameworkPhase?.files ?? []).compactMap { $0.file?.nameOrPath })
+                try expect(embeddedFrameworks) == expectedEmbeddedFrameworks
+            }
 
             $0.it("copies files only on install in the Embed Frameworks step") {
                 let app = Target(

@@ -32,3 +32,10 @@ jobs:
       run: scripts/diff-fixtures.sh
     - name: Build fixtures
       run: scripts/build-fixtures.sh
+  run-linux:
+    runs-on: ubuntu-latest
+    name: Linux
+    steps:
+      - uses: actions/checkout@master
+      - name: Build and run tests
+        run: swift test --enable-test-discovery

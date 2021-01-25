@@ -24,6 +24,15 @@ public struct LegacyTarget: Equatable {
     }
 }
 
+extension LegacyTarget: PathContainer {
+
+    static var pathProperties: [PathProperty] {
+        [
+            .string("workingDirectory"),
+        ]
+    }
+}
+
 public struct Target: ProjectTarget {
     public var name: String
     public var type: PBXProductType
@@ -134,6 +143,7 @@ extension Target: PathContainer {
                 .object("prebuildScripts", BuildScript.pathProperties),
                 .object("postCompileScripts", BuildScript.pathProperties),
                 .object("postBuildScripts", BuildScript.pathProperties),
+                .object("legacy", LegacyTarget.pathProperties),
             ]),
         ]
     }

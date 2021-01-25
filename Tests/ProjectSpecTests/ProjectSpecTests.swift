@@ -111,7 +111,7 @@ class ProjectSpecTests: XCTestCase {
                 project.options = SpecOptions(minimumXcodeGenVersion: minimumVersion)
 
                 func expectMinimumXcodeGenVersionError(_ project: Project, minimumVersion: Version, xcodeGenVersion: Version, file: String = #file, line: Int = #line) throws {
-                    try expectError(SpecValidationError.ValidationError.invalidXcodeGenVersion(minimumVersion: minimumVersion, version: xcodeGenVersion), file: file, line: line) {
+                    try expectError(SpecValidationError(errors: [SpecValidationError.ValidationError.invalidXcodeGenVersion(minimumVersion: minimumVersion, version: xcodeGenVersion)]), file: file, line: line) {
                         try project.validateMinimumXcodeGenVersion(xcodeGenVersion)
                     }
                 }
@@ -388,7 +388,8 @@ class ProjectSpecTests: XCTestCase {
                                                                                   outputFileLists: ["bar.xcfilelist"],
                                                                                   shell: "/bin/bash",
                                                                                   runOnlyWhenInstalling: true,
-                                                                                  showEnvVars: true)],
+                                                                                  showEnvVars: true,
+                                                                                  basedOnDependencyAnalysis: false)],
                                                     postCompileScripts: [BuildScript(script: .path("cmd.sh"),
                                                                                      name: "Bar script",
                                                                                      inputFiles: ["foo"],
@@ -397,7 +398,8 @@ class ProjectSpecTests: XCTestCase {
                                                                                      outputFileLists: ["bar.xcfilelist"],
                                                                                      shell: "/bin/bash",
                                                                                      runOnlyWhenInstalling: true,
-                                                                                     showEnvVars: true)],
+                                                                                     showEnvVars: true,
+                                                                                     basedOnDependencyAnalysis: false)],
                                                     postBuildScripts: [BuildScript(script: .path("cmd.sh"),
                                                                                    name: "an another script",
                                                                                    inputFiles: ["foo"],
@@ -406,17 +408,20 @@ class ProjectSpecTests: XCTestCase {
                                                                                    outputFileLists: ["bar.xcfilelist"],
                                                                                    shell: "/bin/bash",
                                                                                    runOnlyWhenInstalling: true,
-                                                                                   showEnvVars: true)],
+                                                                                   showEnvVars: true,
+                                                                                   basedOnDependencyAnalysis: false)],
                                                     buildRules: [BuildRule(fileType: .pattern("*.xcassets"),
                                                                            action: .script("pre_process_swift.py"),
                                                                            name: "My Build Rule",
                                                                            outputFiles: ["$(SRCROOT)/Generated.swift"],
-                                                                           outputFilesCompilerFlags: ["foo"]),
+                                                                           outputFilesCompilerFlags: ["foo"],
+                                                                           runOncePerArchitecture: false),
                                                                  BuildRule(fileType: .type("sourcecode.swift"),
                                                                            action: .compilerSpec("com.apple.xcode.tools.swift.compiler"),
                                                                            name: nil,
                                                                            outputFiles: ["bar"],
-                                                                           outputFilesCompilerFlags: ["foo"])],
+                                                                           outputFilesCompilerFlags: ["foo"],
+                                                                           runOncePerArchitecture: true)],
                                                     scheme: TargetScheme(testTargets: [Scheme.Test.TestTarget(targetReference: "test target",
                                                                                                               randomExecutionOrder: false,
                                                                                                               parallelizable: false)],
@@ -455,7 +460,8 @@ class ProjectSpecTests: XCTestCase {
                                                                                                  outputFileLists: ["bar.xcfilelist"],
                                                                                                  shell: "/bin/bash",
                                                                                                  runOnlyWhenInstalling: true,
-                                                                                                 showEnvVars: false)],
+                                                                                                 showEnvVars: false,
+                                                                                                 basedOnDependencyAnalysis: false)],
                                                                       scheme: TargetScheme(testTargets: [Scheme.Test.TestTarget(targetReference: "test target",
                                                                                                                                 randomExecutionOrder: false,
                                                                                                                                 parallelizable: false)],

@@ -23,7 +23,7 @@
 - [Aggregate Target](#aggregate-target)
 - [Target Template](#target-template)
 - [Scheme](#scheme)
-  - [Scheme Template](#scheme-template)
+- [Scheme Template](#scheme-template)
 - [Swift Package](#swift-package)
 
 ## General
@@ -392,7 +392,7 @@ targets:
           - "configs/server[0-2].json"
           - "*-Private.h"
           - "**/*.md" # excludes all files with the .md extension
-          - "ios/**/*Tests.[hm] # excludes all files with an h or m extension within the ios directory.
+          - "ios/**/*Tests.[hm]" # excludes all files with an h or m extension within the ios directory.
         compilerFlags:
           - "-Werror"
           - "-Wextra"
@@ -563,6 +563,7 @@ Each script can contain:
 - [ ] **shell**: **String** - shell used for the script. Defaults to `/bin/sh`
 - [ ] **showEnvVars**: **Bool** - whether the environment variables accessible to the script show be printed to the build log. Defaults to yes
 - [ ] **runOnlyWhenInstalling**: **Bool** - whether the script is only run when installing (`runOnlyForDeploymentPostprocessing`). Defaults to no
+- [ ] **basedOnDependencyAnalysis**: **Bool** - whether to skip the script if inputs, context, or outputs haven't changed. Defaults to yes
 - [ ] **discoveredDependencyFile**: **String** - discovered dependency .d file
 
 
@@ -607,6 +608,7 @@ targets:
 - [ ] **name**: **String** - The name of a build rule. Defaults to `Build Rule`
 - [ ] **outputFiles**: **[String]** - The list of output files
 - [ ] **outputFilesCompilerFlags**: **[String]** - The list of compiler flags to apply to the output files
+- [ ] **runOncePerArchitecture**: **Bool** - a boolean that indicates if this rule should run once per architecture. This defaults to true
 
 ```yaml
 targets:
@@ -621,6 +623,7 @@ targets:
         compilerSpec: com.apple.xcode.tools.swift.compiler
         outputFiles:
           - $(SRCROOT)/Generated.swift
+        runOncePerArchitecture: false
 ```
 
 ###  Target Scheme
@@ -881,7 +884,7 @@ schemes:
       revealArchiveInOrganizer: false
 ```
 
-### Scheme Template
+## Scheme Template
 
 This is a template that can be referenced from a normal scheme using the `templates` property. The properties of this template are the same as a [Scheme](#scheme). This functions identically in practice to [Target Template](#target-template).
 Any instances of `${scheme_name}` within each template will be replaced by the final scheme name which references the template.
