@@ -1147,7 +1147,7 @@ class ProjectGeneratorTests: XCTestCase {
                 scriptSpec.targets[0].postCompileScripts = [BuildScript(script: .script("script2"))]
                 scriptSpec.targets[0].postBuildScripts = [
                     BuildScript(script: .script("script3")),
-                    BuildScript(script: .script("script4"), dependency: "$(DERIVED_FILE_DIR)/target.d")
+                    BuildScript(script: .script("script4"), discoveredDependencyFile: "$(DERIVED_FILE_DIR)/target.d")
                 ]
                 let pbxProject = try scriptSpec.generatePbxProj()
 

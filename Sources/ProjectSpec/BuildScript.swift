@@ -34,7 +34,7 @@ public struct BuildScript: Equatable {
         runOnlyWhenInstalling: Bool = runOnlyWhenInstallingDefault,
         showEnvVars: Bool = showEnvVarsDefault,
         basedOnDependencyAnalysis: Bool = basedOnDependencyAnalysisDefault,
-        dependency: String? = nil
+        discoveredDependencyFile: String? = nil
     ) {
         self.script = script
         self.name = name
@@ -46,7 +46,7 @@ public struct BuildScript: Equatable {
         self.runOnlyWhenInstalling = runOnlyWhenInstalling
         self.showEnvVars = showEnvVars
         self.basedOnDependencyAnalysis = basedOnDependencyAnalysis
-        self.discoveredDependencyFile = dependency
+        self.discoveredDependencyFile = discoveredDependencyFile
     }
 }
 
@@ -100,8 +100,8 @@ extension BuildScript: JSONEncodable {
             dict["script"] = string
         }
 
-        if let dependency = discoveredDependencyFile {
-            dict["dependency"] = dependency
+        if let discoveredDependencyFile = discoveredDependencyFile {
+            dict["discoveredDependencyFile"] = discoveredDependencyFile
         }
 
         return dict
