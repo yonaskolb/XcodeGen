@@ -386,6 +386,32 @@ class SchemeGeneratorTests: XCTestCase {
             }
         }
     }
+    
+    func testOverrideLastUpgradeVersionWhenUserDidSpecify() throws {
+        var target = app
+        target.scheme = TargetScheme()
+        
+        let lastUpgradeKey = "LastUpgradeCheck"
+        let lastUpgradeValue = "1234"
+        let attributes: [String: Any] = [lastUpgradeKey: lastUpgradeValue]
+        let project = Project(name: "test", targets: [target, framework], attributes: attributes)
+        let xcodeProject = try project.generateXcodeProject()
+
+        let xcscheme = try unwrap(xcodeProject.sharedData?.schemes.first)
+        XCTAssertEqual(xcscheme.lastUpgradeVersion, lastUpgradeValue)
+    }
+
+    
+    func testDefaultLastUpgradeVersionWhenUserDidNotSpecify() throws {
+        var target = app
+        target.scheme = TargetScheme()
+
+        let project = Project(name: "test", targets: [target, framework])
+        let xcodeProject = try project.generateXcodeProject()
+
+        let xcscheme = try unwrap(xcodeProject.sharedData?.schemes.first)
+        XCTAssertEqual(xcscheme.lastUpgradeVersion, project.xcodeVersion)
+    }
 
     // MARK: - Helpers
 

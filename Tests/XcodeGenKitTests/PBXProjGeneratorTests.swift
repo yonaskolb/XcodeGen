@@ -261,5 +261,43 @@ class PBXProjGeneratorTests: XCTestCase {
             }
         }
     }
-
+    
+    func testDefaultLastUpgradeCheckWhenUserDidSpecifyInvalidValue() throws {
+        let lastUpgradeKey = "LastUpgradeCheck"
+        let attributes: [String: Any] = [lastUpgradeKey: 1234]
+        let project = Project(name: "Test", attributes: attributes)
+        let projGenerator = PBXProjGenerator(project: project)
+        
+        let pbxProj = try projGenerator.generate()
+        
+        for pbxProject in pbxProj.projects {
+            XCTAssertEqual(pbxProject.attributes[lastUpgradeKey] as? String, project.xcodeVersion)
+        }
+    }
+    
+    func testOverrideLastUpgradeCheckWhenUserDidSpecifyValue() throws {
+        let lastUpgradeKey = "LastUpgradeCheck"
+        let lastUpgradeValue = "1234"
+        let attributes: [String: Any] = [lastUpgradeKey: lastUpgradeValue]
+        let project = Project(name: "Test", attributes: attributes)
+        let projGenerator = PBXProjGenerator(project: project)
+        
+        let pbxProj = try projGenerator.generate()
+        
+        for pbxProject in pbxProj.projects {
+            XCTAssertEqual(pbxProject.attributes[lastUpgradeKey] as? String, lastUpgradeValue)
+        }
+    }
+    
+    func testDefaultLastUpgradeCheckWhenUserDidNotSpecifyValue() throws {
+        let lastUpgradeKey = "LastUpgradeCheck"
+        let project = Project(name: "Test")
+        let projGenerator = PBXProjGenerator(project: project)
+        
+        let pbxProj = try projGenerator.generate()
+        
+        for pbxProject in pbxProj.projects {
+            XCTAssertEqual(pbxProject.attributes[lastUpgradeKey] as? String, project.xcodeVersion)
+        }
+    }
 }

@@ -276,9 +276,11 @@ public class SchemeGenerator {
             postActions: scheme.archive?.postActions.map(getExecutionAction) ?? []
         )
 
+        let lastUpgradeVersion = project.attributes["LastUpgradeCheck"] as? String ?? project.xcodeVersion
+
         return XCScheme(
             name: scheme.name,
-            lastUpgradeVersion: project.xcodeVersion,
+            lastUpgradeVersion: lastUpgradeVersion,
             version: project.schemeVersion,
             buildAction: buildAction,
             testAction: testAction,
