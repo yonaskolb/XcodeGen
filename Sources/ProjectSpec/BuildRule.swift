@@ -5,6 +5,7 @@ public struct BuildRule: Equatable {
 
     public static let scriptCompilerSpec = "com.apple.compilers.proxy.script"
     public static let filePatternFileType = "pattern.proxy"
+    public static let runOncePerArchitectureDefault = true
 
     public enum FileType: Equatable {
         case type(String)
@@ -49,13 +50,22 @@ public struct BuildRule: Equatable {
     public var outputFiles: [String]
     public var outputFilesCompilerFlags: [String]
     public var name: String?
+    public var runOncePerArchitecture: Bool
 
-    public init(fileType: FileType, action: Action, name: String? = nil, outputFiles: [String] = [], outputFilesCompilerFlags: [String] = []) {
+    public init(
+        fileType: FileType, 
+        action: Action, 
+        name: String? = nil, 
+        outputFiles: [String] = [], 
+        outputFilesCompilerFlags: [String] = [], 
+        runOncePerArchitecture: Bool = runOncePerArchitectureDefault
+    ) {
         self.fileType = fileType
         self.action = action
         self.name = name
         self.outputFiles = outputFiles
         self.outputFilesCompilerFlags = outputFilesCompilerFlags
+        self.runOncePerArchitecture = runOncePerArchitecture
     }
 }
 
@@ -78,6 +88,7 @@ extension BuildRule: JSONObjectConvertible {
         outputFiles = jsonDictionary.json(atKeyPath: "outputFiles") ?? []
         outputFilesCompilerFlags = jsonDictionary.json(atKeyPath: "outputFilesCompilerFlags") ?? []
         name = jsonDictionary.json(atKeyPath: "name")
+        runOncePerArchitecture = jsonDictionary.json(atKeyPath: "runOncePerArchitecture") ?? BuildRule.runOncePerArchitectureDefault
     }
 }
 
@@ -101,6 +112,10 @@ extension BuildRule: JSONEncodable {
             dict["compilerSpec"] = string
         case .script(let string):
             dict["script"] = string
+        }
+
+        if runOncePerArchitecture != BuildRule.runOncePerArchitectureDefault {
+            dict["runOncePerArchitecture"] = runOncePerArchitecture
         }
 
         return dict
