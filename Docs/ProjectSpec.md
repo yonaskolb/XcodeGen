@@ -774,7 +774,7 @@ The different actions share some properties:
 - [ ] **language**: **String** - `run` and `test` actions can define a language that is used for Application Language
 - [ ] **region**: **String** - `run` and `test` actions can define a language that is used for Application Region
 - [ ] **debugEnabled**: **Bool** - `run` and `test` actions can define a whether debugger should be used. This defaults to true.
-- [ ] **simulateLocation**: **[Simulate Location](#simulate-location)** - `run` action can define a simulated location
+- [ ] **simulateLocation**: **[Simulate Location](#simulate-location)** - `run` action can define a simulated location. See [Options](#options).
 - [ ] **askForAppToLaunch**: **Bool** - `run` action can define the executable set to ask to launch. This defaults to false.
 - [ ] **launchAutomaticallySubstyle**: **String** - `run` action can define the launch automatically substyle ('2' for extensions).
 - [ ] **storeKitConfiguration**: **String** - `run` action can specify a storekit configuration. See [Options](#options).

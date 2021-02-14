@@ -228,7 +228,7 @@ public class SchemeGenerator {
         var locationScenarioReference: XCScheme.LocationScenarioReference?
         if let simulateLocation = scheme.run?.simulateLocation, var identifier = simulateLocation.defaultLocation, let referenceType = simulateLocation.referenceType {
             if referenceType == .gpx {
-                var path = Path("../\(identifier)")
+                var path = Path(components: [project.options.schemePathPrefix, identifier])
                 path = path.simplifyingParentDirectoryReferences()
                 identifier = path.string
             }

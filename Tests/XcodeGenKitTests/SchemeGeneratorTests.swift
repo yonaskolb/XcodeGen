@@ -164,7 +164,7 @@ class SchemeGeneratorTests: XCTestCase {
                 let scheme = Scheme(
                     name: "EnvironmentVariablesScheme",
                     build: Scheme.Build(targets: [buildTarget]),
-                    run: Scheme.Run(config: "Debug", environmentVariables: runVariables, storeKitConfiguration: "Configuration.storekit"),
+                    run: Scheme.Run(config: "Debug", environmentVariables: runVariables, simulateLocation: .init(allow: true, defaultLocation: "File.gpx"), storeKitConfiguration: "Configuration.storekit"),
                     test: Scheme.Test(config: "Debug"),
                     profile: Scheme.Profile(config: "Debug")
                 )
@@ -184,6 +184,8 @@ class SchemeGeneratorTests: XCTestCase {
                 ).beTrue()
                 try expect(xcscheme.launchAction?.environmentVariables) == runVariables
                 try expect(xcscheme.launchAction?.storeKitConfigurationFileReference?.identifier) == "../Configuration.storekit"
+                try expect(xcscheme.launchAction?.locationScenarioReference?.referenceType) == Scheme.SimulateLocation.ReferenceType.gpx.rawValue
+                try expect(xcscheme.launchAction?.locationScenarioReference?.identifier) == "../File.gpx"
                 try expect(xcscheme.testAction?.environmentVariables).to.beNil()
                 try expect(xcscheme.profileAction?.environmentVariables).to.beNil()
             }
@@ -238,7 +240,7 @@ class SchemeGeneratorTests: XCTestCase {
                 let scheme = Scheme(
                     name: "TestScheme",
                     build: Scheme.Build(targets: [buildTarget]),
-                    run: Scheme.Run(config: "Debug", debugEnabled: false, storeKitConfiguration: "Configuration.storekit")
+                    run: Scheme.Run(config: "Debug", debugEnabled: false, simulateLocation: .init(allow: true, defaultLocation: "File.gpx"), storeKitConfiguration: "Configuration.storekit")
                 )
                 let project = Project(
                     name: "test",
@@ -252,6 +254,8 @@ class SchemeGeneratorTests: XCTestCase {
                 try expect(xcscheme.launchAction?.selectedDebuggerIdentifier) == ""
                 try expect(xcscheme.launchAction?.selectedLauncherIdentifier) == "Xcode.IDEFoundation.Launcher.PosixSpawn"
                 try expect(xcscheme.launchAction?.storeKitConfigurationFileReference?.identifier) == "../../Configuration.storekit"
+                try expect(xcscheme.launchAction?.locationScenarioReference?.referenceType) == Scheme.SimulateLocation.ReferenceType.gpx.rawValue
+                try expect(xcscheme.launchAction?.locationScenarioReference?.identifier) == "../../File.gpx"
             }
 
             $0.it("generate scheme without debugger - test") {

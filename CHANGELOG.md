@@ -13,6 +13,7 @@
 #### Changed
 - **Breaking**: Info.plists with custom prefixes are no longer added to the Copy Bundle Resources build phase [#945](https://github.com/yonaskolb/XcodeGen/pull/945) @anivaros
 - **Breaking**: `workingDirectory` of included legacy targets is now made relative to including project [#981](https://github.com/yonaskolb/XcodeGen/pull/981) @jcolicchio
+- **Breaking**: Make `simulateLocation` respect `schemePathPrefix` option. [#973](https://github.com/yonaskolb/XcodeGen/pull/973) @jcolicchio
 
 #### Fixed
 - Fixed error message output for `minimumXcodeGenVersion`. [#967](https://github.com/yonaskolb/XcodeGen/pull/967) @joshwalker
