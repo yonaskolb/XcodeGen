@@ -640,7 +640,7 @@ This is a convenience used to automatically generate schemes for a target based 
 - [ ] **environmentVariables**: **[[Environment Variable](#environment-variable)]** or **[String:String]** - environment variables for Run, Test and Profile scheme actions. When passing a dictionary, every key-value entry maps to a corresponding variable that is enabled.
 - [ ] **preActions**: **[[Execution Action](#execution-action)]** - Scripts that are run *before* the build action
 - [ ] **postActions**: **[[Execution Action](#execution-action)]** - Scripts that are run *after* the build action
-- [ ] **storeKitConfiguration**: **String** - specify storekit configuration to use during run.
+- [ ] **storeKitConfiguration**: **String** - specify storekit configuration to use during run. See [Options](#options).
 
 For example, the spec below would create 3 schemes called:
 
@@ -777,7 +777,7 @@ The different actions share some properties:
 - [ ] **simulateLocation**: **[Simulate Location](#simulate-location)** - `run` action can define a simulated location
 - [ ] **askForAppToLaunch**: **Bool** - `run` action can define the executable set to ask to launch. This defaults to false.
 - [ ] **launchAutomaticallySubstyle**: **String** - `run` action can define the launch automatically substyle ('2' for extensions).
-- [ ] **storeKitConfiguration**: **String** - `run` action can specify a storekit configuration.
+- [ ] **storeKitConfiguration**: **String** - `run` action can specify a storekit configuration. See [Options](#options).
 
 ### Execution Action
 
