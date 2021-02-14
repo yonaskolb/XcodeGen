@@ -48,7 +48,7 @@ class SchemeGeneratorTests: XCTestCase {
             $0.it("generates scheme") {
                 let preAction = Scheme.ExecutionAction(name: "Script", script: "echo Starting", settingsTarget: app.name)
                 let simulateLocation = Scheme.SimulateLocation(allow: true, defaultLocation: "New York, NY, USA")
-                let storeKitConfiguration = Scheme.StoreKitConfiguration(location: "Configuration.storekit", pathPrefix: "../")
+                let storeKitConfiguration = "Configuration.storekit"
                 let scheme = Scheme(
                     name: "MyScheme",
                     build: Scheme.Build(targets: [buildTarget], preActions: [preAction]),
@@ -58,7 +58,8 @@ class SchemeGeneratorTests: XCTestCase {
                 let project = Project(
                     name: "test",
                     targets: [app, framework],
-                    schemes: [scheme]
+                    schemes: [scheme],
+                    options: .init(schemePathPrefix: "../")
                 )
                 let xcodeProject = try project.generateXcodeProject()
                 let target = try unwrap(xcodeProject.pbxproj.nativeTargets
@@ -135,12 +136,13 @@ class SchemeGeneratorTests: XCTestCase {
                     name: "MyFramework",
                     type: .application,
                     platform: .iOS,
-                    scheme: TargetScheme(testTargets: ["MyFrameworkTests"], storeKitConfiguration: .init(location: "Configuration.storekit"))
+                    scheme: TargetScheme(testTargets: ["MyFrameworkTests"], storeKitConfiguration: "Configuration.storekit")
                 )
                 let project = Project(
                     name: "test",
                     configs: configs,
-                    targets: [framework, frameworkTest]
+                    targets: [framework, frameworkTest],
+                    options: .init(schemePathPrefix: "../../")
                 )
                 let xcodeProject = try project.generateXcodeProject()
                 let xcscheme = try unwrap(xcodeProject.sharedData?.schemes.first)
@@ -162,14 +164,15 @@ class SchemeGeneratorTests: XCTestCase {
                 let scheme = Scheme(
                     name: "EnvironmentVariablesScheme",
                     build: Scheme.Build(targets: [buildTarget]),
-                    run: Scheme.Run(config: "Debug", environmentVariables: runVariables, storeKitConfiguration: .init(location: "Configuration.storekit", pathPrefix: "../")),
+                    run: Scheme.Run(config: "Debug", environmentVariables: runVariables, storeKitConfiguration: "Configuration.storekit"),
                     test: Scheme.Test(config: "Debug"),
                     profile: Scheme.Profile(config: "Debug")
                 )
                 let project = Project(
                     name: "test",
                     targets: [app, framework],
-                    schemes: [scheme]
+                    schemes: [scheme],
+                    options: .init(schemePathPrefix: "../")
                 )
                 let xcodeProject = try project.generateXcodeProject()
 
@@ -235,7 +238,7 @@ class SchemeGeneratorTests: XCTestCase {
                 let scheme = Scheme(
                     name: "TestScheme",
                     build: Scheme.Build(targets: [buildTarget]),
-                    run: Scheme.Run(config: "Debug", debugEnabled: false, storeKitConfiguration: .init(location: "Configuration.storekit", pathPrefix: "../../"))
+                    run: Scheme.Run(config: "Debug", debugEnabled: false, storeKitConfiguration: "Configuration.storekit")
                 )
                 let project = Project(
                     name: "test",
@@ -407,7 +410,7 @@ class SchemeGeneratorTests: XCTestCase {
             type: appType,
             platform: .watchOS,
             dependencies: [Dependency(type: .target, reference: watchExtension.name)],
-            scheme: TargetScheme(storeKitConfiguration: .init(location: "Configuration.storekit", pathPrefix: "../"))
+            scheme: TargetScheme(storeKitConfiguration: "Configuration.storekit")
         )
         let hostApp = Target(
             name: "HostApp",
@@ -417,7 +420,8 @@ class SchemeGeneratorTests: XCTestCase {
         )
         let project = Project(
             name: "watch_test",
-            targets: [hostApp, watchApp, watchExtension]
+            targets: [hostApp, watchApp, watchExtension],
+            options: .init(schemePathPrefix: "../")
         )
         let xcodeProject = try project.generateXcodeProject()
         return try unwrap(xcodeProject.sharedData?.schemes.first)

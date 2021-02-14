@@ -737,7 +737,7 @@ class SpecLoadingTests: XCTestCase {
                     testTargets: ["t1", "t2"],
                     configVariants: ["dev", "app-store"],
                     gatherCoverageData: true,
-                    storeKitConfiguration: .init(location: "Configuration.storekit"),
+                    storeKitConfiguration: "Configuration.storekit",
                     language: "en",
                     region: "US",
                     disableMainThreadChecker: true,
@@ -817,7 +817,7 @@ class SpecLoadingTests: XCTestCase {
                 let expectedRun = Scheme.Run(
                     config: "debug",
                     launchAutomaticallySubstyle: "2",
-                    storeKitConfiguration: .init(location: "Configuration.storekit")
+                    storeKitConfiguration: "Configuration.storekit"
                 )
                 try expect(scheme.run) == expectedRun
 
@@ -852,10 +852,7 @@ class SpecLoadingTests: XCTestCase {
                             ["variable": "OTHER_ENV_VAR", "value": "VAL", "isEnabled": false],
                         ],
                         "launchAutomaticallySubstyle": "2",
-                        "storeKitConfiguration": [
-                            "location": "Configuration.storekit",
-                            "pathPrefix": "../",
-                        ],
+                        "storeKitConfiguration": "Configuration.storekit",
                     ],
                     "test": [
                         "environmentVariables": [
@@ -886,7 +883,7 @@ class SpecLoadingTests: XCTestCase {
 
                 try expect(scheme.run?.environmentVariables) == expectedRunVariables
                 try expect(scheme.run?.launchAutomaticallySubstyle) == "2"
-                try expect(scheme.run?.storeKitConfiguration) == .init(location: "Configuration.storekit", pathPrefix: "../")
+                try expect(scheme.run?.storeKitConfiguration) == "Configuration.storekit"
                 try expect(scheme.test?.environmentVariables) == expectedTestVariables
                 try expect(scheme.profile?.config) == "Release"
                 try expect(scheme.profile?.environmentVariables.isEmpty) == true
@@ -905,7 +902,7 @@ class SpecLoadingTests: XCTestCase {
 
                 let scheme = try Scheme(name: "Scheme", jsonDictionary: schemeDictionary)
                 try expect(scheme.run?.launchAutomaticallySubstyle) == "2"
-                try expect(scheme.run?.storeKitConfiguration) == .init(location: "Configuration.storekit")
+                try expect(scheme.run?.storeKitConfiguration) == "Configuration.storekit"
             }
 
             $0.it("parses scheme templates") {
@@ -1010,7 +1007,7 @@ class SpecLoadingTests: XCTestCase {
                 try expect(scheme.build.parallelizeBuild) == false
                 try expect(scheme.build.buildImplicitDependencies) == false
 
-                try expect(scheme.run?.storeKitConfiguration) == .init(location: "Configuration.storekit")
+                try expect(scheme.run?.storeKitConfiguration) == "Configuration.storekit"
 
                 let expectedTest = Scheme.Test(
                     config: "debug",
@@ -1140,7 +1137,8 @@ class SpecLoadingTests: XCTestCase {
                         compilerFlags: ["c1", "c2"])],
                     findCarthageFrameworks: true,
                     preGenCommand: "swiftgen",
-                    postGenCommand: "pod install"
+                    postGenCommand: "pod install",
+                    schemePathPrefix: "../"
                 )
                 let expected = Project(name: "test", options: options)
                 let dictionary: [String: Any] = ["options": [
@@ -1159,7 +1157,8 @@ class SpecLoadingTests: XCTestCase {
                         "attributes": ["a1", "a2"],
                         "resourceTags": ["r1", "r2"],
                         "compilerFlags": ["c1", "c2"],
-                        ]]
+                        ]],
+                    "schemePathPrefix": "../",
                 ]]
                 let parsedSpec = try getProjectSpec(dictionary)
                 try expect(parsedSpec) == expected
@@ -1227,42 +1226,7 @@ class SpecLoadingTests: XCTestCase {
                 let target = try Target(name: "test", jsonDictionary: targetDictionary)
 
                 let scheme = TargetScheme(
-                    storeKitConfiguration: .init(location: "Configuration.storekit")
-                )
-
-                try expect(target.scheme) == scheme
-            }
-
-            $0.it("parses TargetScheme storeKitConfiguration with no pathPrefix") {
-                var targetDictionary = validTarget
-                targetDictionary["scheme"] = [
-                    "storeKitConfiguration": [
-                        "location": "Configuration.storekit",
-                    ],
-                ]
-
-                let target = try Target(name: "test", jsonDictionary: targetDictionary)
-
-                let scheme = TargetScheme(
-                    storeKitConfiguration: .init(location: "Configuration.storekit")
-                )
-
-                try expect(target.scheme) == scheme
-            }
-
-            $0.it("parses TargetScheme storeKitConfiguration with pathPrefix") {
-                var targetDictionary = validTarget
-                targetDictionary["scheme"] = [
-                    "storeKitConfiguration": [
-                        "location": "Configuration.storekit",
-                        "pathPrefix": "../",
-                    ],
-                ]
-
-                let target = try Target(name: "test", jsonDictionary: targetDictionary)
-
-                let scheme = TargetScheme(
-                    storeKitConfiguration: .init(location: "Configuration.storekit", pathPrefix: "../")
+                    storeKitConfiguration: "Configuration.storekit"
                 )
 
                 try expect(target.scheme) == scheme
@@ -1282,52 +1246,7 @@ class SpecLoadingTests: XCTestCase {
 
                 let runAction = Scheme.Run(
                     config: "debug",
-                    storeKitConfiguration: .init(location: "Configuration.storekit")
-                )
-
-                try expect(scheme.run) == runAction
-            }
-
-            $0.it("parses Scheme.Run storeKitConfiguration with no pathPrefix") {
-                let schemeDictionary: [String: Any] = [
-                    "build": [
-                        "targets": [:],
-                    ],
-                    "run": [
-                        "config": "debug",
-                        "storeKitConfiguration": [
-                            "location": "Configuration.storekit",
-                        ],
-                    ],
-                ]
-                let scheme = try Scheme(name: "Scheme", jsonDictionary: schemeDictionary)
-
-                let runAction = Scheme.Run(
-                    config: "debug",
-                    storeKitConfiguration: .init(location: "Configuration.storekit")
-                )
-
-                try expect(scheme.run) == runAction
-            }
-
-            $0.it("parses Scheme.Run storeKitConfiguration with pathPrefix") {
-                let schemeDictionary: [String: Any] = [
-                    "build": [
-                        "targets": [:],
-                    ],
-                    "run": [
-                        "config": "debug",
-                        "storeKitConfiguration": [
-                            "location": "Configuration.storekit",
-                            "pathPrefix": "../",
-                        ],
-                    ],
-                ]
-                let scheme = try Scheme(name: "Scheme", jsonDictionary: schemeDictionary)
-
-                let runAction = Scheme.Run(
-                    config: "debug",
-                    storeKitConfiguration: .init(location: "Configuration.storekit", pathPrefix: "../")
+                    storeKitConfiguration: "Configuration.storekit"
                 )
 
                 try expect(scheme.run) == runAction
