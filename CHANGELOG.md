@@ -5,7 +5,7 @@
 #### Added
 - Support for building and running on Linux platforms. Tested for compatibility with Swift 5.3+ and Ubuntu 18.04. [#988](https://github.com/yonaskolb/XcodeGen/pull/988) @elliottwilliams
 - Add `useBaseInternationalization` to Project Spec Options to opt out of Base Internationalization. [#961](https://github.com/yonaskolb/XcodeGen/pull/961) @liamnichols
-- Add `Scheme.StoreKitConfiguration` to allow specifying StoreKit Configuration in Scheme and TargetScheme, supporting either xcodeproj or xcworkspace. [#964](https://github.com/yonaskolb/XcodeGen/pull/964) @jcolicchio
+- Add `storeKitConfiguration` to allow specifying StoreKit Configuration in Scheme and TargetScheme, supporting either xcodeproj or xcworkspace via `schemePathPrefix` option. [#964](https://github.com/yonaskolb/XcodeGen/pull/964) @jcolicchio
 - More detailed error message with method arguments. [#990](https://github.com/yonaskolb/XcodeGen/pull/990) @bannzai
 - Added `basedOnDependencyAnalysis` to Project Spec Build Script to be able to choose not to skip the script. [#992](https://github.com/yonaskolb/XcodeGen/pull/992) @myihsan
 - Add `BuildRule.runOncePerArchitecture` to allow running build rules once per architecture. [#950](https://github.com/yonaskolb/XcodeGen/pull/950) @sascha
