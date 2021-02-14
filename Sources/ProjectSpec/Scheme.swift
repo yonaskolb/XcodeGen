@@ -59,32 +59,6 @@ public struct Scheme: Equatable {
         }
     }
 
-    public struct StoreKitConfiguration: Equatable {
-        public var location: String
-        public var pathPrefix: String?
-
-        public init(location: String, pathPrefix: String? = nil) {
-            self.location = location
-            self.pathPrefix = pathPrefix
-        }
-
-        public init?(parentJSONDictionary: JSONDictionary, keyPath: KeyPath = "storeKitConfiguration") {
-            if let storeKitConfiguration: StoreKitConfiguration = parentJSONDictionary.json(atKeyPath: keyPath) {
-                // attempt to decode as StoreKitConfiguration
-                self = storeKitConfiguration
-            } else if let storeKitLocation: String = parentJSONDictionary.json(atKeyPath: keyPath) {
-                // attempt to decode as String
-                self = .init(location: storeKitLocation)
-            } else {
-                return nil
-            }
-        }
-
-        public var identifier: String {
-            return Path("\(pathPrefix ?? "../../")\(location)").simplifyingParentDirectoryReferences().string
-        }
-    }
-
     public struct ExecutionAction: Equatable {
         public var script: String
         public var name: String
@@ -140,7 +114,7 @@ public struct Scheme: Equatable {
         public var debugEnabled: Bool
         public var simulateLocation: SimulateLocation?
         public var executable: String?
-        public var storeKitConfiguration: StoreKitConfiguration?
+        public var storeKitConfiguration: String?
         public var customLLDBInit: String?
 
         public init(
@@ -158,7 +132,7 @@ public struct Scheme: Equatable {
             launchAutomaticallySubstyle: String? = nil,
             debugEnabled: Bool = debugEnabledDefault,
             simulateLocation: SimulateLocation? = nil,
-            storeKitConfiguration: StoreKitConfiguration? = nil,
+            storeKitConfiguration: String? = nil,
             customLLDBInit: String? = nil
         ) {
             self.config = config
@@ -384,28 +358,6 @@ extension Scheme.SimulateLocation: JSONEncodable {
     }
 }
 
-extension Scheme.StoreKitConfiguration: JSONObjectConvertible {
-
-    public init(jsonDictionary: JSONDictionary) throws {
-        location = try jsonDictionary.json(atKeyPath: "location")
-        pathPrefix = jsonDictionary.json(atKeyPath: "pathPrefix")
-    }
-}
-
-extension Scheme.StoreKitConfiguration: JSONEncodable {
-    public func toJSONValue() -> Any {
-        var dict: [String: Any] = [
-            "location": location,
-        ]
-        
-        if let pathPrefix = pathPrefix {
-            dict["pathPrefix"] = pathPrefix
-        }
-
-        return dict
-    }
-}
-
 extension Scheme.Run: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
@@ -420,7 +372,7 @@ extension Scheme.Run: JSONObjectConvertible {
         region = jsonDictionary.json(atKeyPath: "region")
         debugEnabled = jsonDictionary.json(atKeyPath: "debugEnabled") ?? Scheme.Run.debugEnabledDefault
         simulateLocation = jsonDictionary.json(atKeyPath: "simulateLocation")
-        storeKitConfiguration = Scheme.StoreKitConfiguration(parentJSONDictionary: jsonDictionary)
+        storeKitConfiguration = jsonDictionary.json(atKeyPath: "storeKitConfiguration")
         executable = jsonDictionary.json(atKeyPath: "executable")
 
         // launchAutomaticallySubstyle is defined as a String in XcodeProj but its value is often
@@ -469,7 +421,7 @@ extension Scheme.Run: JSONEncodable {
             dict["simulateLocation"] = simulateLocation.toJSONValue()
         }
         if let storeKitConfiguration = storeKitConfiguration {
-            dict["storeKitConfiguration"] = storeKitConfiguration.toJSONValue()
+            dict["storeKitConfiguration"] = storeKitConfiguration
         }
         if let customLLDBInit = customLLDBInit {
             dict["customLLDBInit"] = customLLDBInit

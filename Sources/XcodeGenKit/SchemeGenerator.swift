@@ -237,7 +237,8 @@ public class SchemeGenerator {
 
         var storeKitConfigurationFileReference: XCScheme.StoreKitConfigurationFileReference?
         if let storeKitConfiguration = scheme.run?.storeKitConfiguration {
-            storeKitConfigurationFileReference = XCScheme.StoreKitConfigurationFileReference(identifier: storeKitConfiguration.identifier)
+            let storeKitConfigurationPath = Path(components: [project.options.schemePathPrefix, storeKitConfiguration]).simplifyingParentDirectoryReferences()
+            storeKitConfigurationFileReference = XCScheme.StoreKitConfigurationFileReference(identifier: storeKitConfigurationPath.string)
         }
 
         let launchAction = XCScheme.LaunchAction(
