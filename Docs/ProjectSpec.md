@@ -565,6 +565,7 @@ Each script can contain:
 - [ ] **showEnvVars**: **Bool** - whether the environment variables accessible to the script show be printed to the build log. Defaults to yes
 - [ ] **runOnlyWhenInstalling**: **Bool** - whether the script is only run when installing (`runOnlyForDeploymentPostprocessing`). Defaults to no
 - [ ] **basedOnDependencyAnalysis**: **Bool** - whether to skip the script if inputs, context, or outputs haven't changed. Defaults to yes
+- [ ] **discoveredDependencyFile**: **String** - discovered dependency .d file. Defaults to none
 
 Either a **path** or **script** must be defined, the rest are optional.
 
@@ -586,6 +587,7 @@ targets:
           - $(DERIVED_FILE_DIR)/file2
         outputFileLists:
           - $(SRCROOT)/outputFiles.xcfilelist
+        discoveredDependencyFile: $(DERIVED_FILE_DIR)/target.d
     postCompileScripts:
       - script: swiftlint
         name: Swiftlint

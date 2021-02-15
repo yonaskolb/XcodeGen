@@ -2239,6 +2239,7 @@
 		CBE633966E8F3819F15270A3 /* MyScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
+			dependencyFile = "$(DERIVED_FILE_DIR)/target.d";
 			files = (
 			);
 			inputFileListPaths = (
@@ -2254,7 +2255,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "echo \"You ran a script!\"\n";
+			shellScript = "echo \"You ran a script!\"\ntouch \"${DERIVED_FILE_DIR}/target.d\"\n";
 		};
 		CF3AABFD4A48983B322677DA /* MyScript */ = {
 			isa = PBXShellScriptBuildPhase;
