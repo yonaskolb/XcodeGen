@@ -1145,20 +1145,29 @@ class ProjectGeneratorTests: XCTestCase {
                 var scriptSpec = project
                 scriptSpec.targets[0].preBuildScripts = [BuildScript(script: .script("script1"))]
                 scriptSpec.targets[0].postCompileScripts = [BuildScript(script: .script("script2"))]
-                scriptSpec.targets[0].postBuildScripts = [BuildScript(script: .script("script3"))]
+                scriptSpec.targets[0].postBuildScripts = [
+                    BuildScript(script: .script("script3")),
+                    BuildScript(script: .script("script4"), discoveredDependencyFile: "$(DERIVED_FILE_DIR)/target.d")
+                ]
                 let pbxProject = try scriptSpec.generatePbxProj()
 
-                let nativeTarget = try unwrap(pbxProject.nativeTargets.first(where: { $0.buildPhases.count >= 3 }))
+                let nativeTarget = try unwrap(pbxProject.nativeTargets.first(where: { $0.buildPhases.count >= 4 }))
                 let buildPhases = nativeTarget.buildPhases
 
                 let scripts = pbxProject.shellScriptBuildPhases
-                try expect(scripts.count) == 3
+                try expect(scripts.count) == 4
                 let script1 = scripts.first { $0.shellScript == "script1" }!
                 let script2 = scripts.first { $0.shellScript == "script2" }!
                 let script3 = scripts.first { $0.shellScript == "script3" }!
+                let script4 = scripts.first { $0.shellScript == "script4" }!
                 try expect(buildPhases.contains(script1)) == true
                 try expect(buildPhases.contains(script2)) == true
                 try expect(buildPhases.contains(script3)) == true
+                try expect(buildPhases.contains(script4)) == true
+                try expect(script1.dependencyFile).beNil()
+                try expect(script2.dependencyFile).beNil()
+                try expect(script3.dependencyFile).beNil()
+                try expect(script4.dependencyFile) == "$(DERIVED_FILE_DIR)/target.d"
             }
 
             $0.it("generates targets with cylical dependencies") {
