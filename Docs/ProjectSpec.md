@@ -840,6 +840,8 @@ targets:
       - location.gpx
 ```
 
+Note that the path the gpx file will be prefixed according to the `schemePathPrefix` option in order to support both `.xcodeproj` and `.xcworkspace` setups. See [Options](#options).
+
 
 ### Environment Variable
 
