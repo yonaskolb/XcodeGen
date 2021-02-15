@@ -128,6 +128,7 @@ Note that target names can also be changed by adding a `name` property to a targ
 - [ ] **preGenCommand**: **String** - A bash command to run before the project has been generated. If the project isn't generated due to no changes when using the cache then this won't run. This is useful for running things like generating resources files before the project is regenerated.
 - [ ] **postGenCommand**: **String** - A bash command to run after the project has been generated. If the project isn't generated due to no changes when using the cache then this won't run. This is useful for running things like `pod install` only if the project is actually regenerated.
 - [ ] **useBaseInternationalization**: **Bool** If this is `false` and your project does not include resources located in a **Base.lproj** directory then `Base` will not be included in the projects 'known regions'. The default value is `true`. 
+- [ ] **schemePathPrefix**: **String** - A path prefix for relative paths in schemes, such as StoreKitConfiguration. The default is `"../../"`, which is suitable for non-workspace projects. For use in workspaces, use `"../"`.
 
 ```yaml
 options:
@@ -639,6 +640,7 @@ This is a convenience used to automatically generate schemes for a target based 
 - [ ] **environmentVariables**: **[[Environment Variable](#environment-variable)]** or **[String:String]** - environment variables for Run, Test and Profile scheme actions. When passing a dictionary, every key-value entry maps to a corresponding variable that is enabled.
 - [ ] **preActions**: **[[Execution Action](#execution-action)]** - Scripts that are run *before* the build action
 - [ ] **postActions**: **[[Execution Action](#execution-action)]** - Scripts that are run *after* the build action
+- [ ] **storeKitConfiguration**: **String** - specify storekit configuration to use during run. See [Options](#options).
 
 For example, the spec below would create 3 schemes called:
 
@@ -775,6 +777,7 @@ The different actions share some properties:
 - [ ] **simulateLocation**: **[Simulate Location](#simulate-location)** - `run` action can define a simulated location
 - [ ] **askForAppToLaunch**: **Bool** - `run` action can define the executable set to ask to launch. This defaults to false.
 - [ ] **launchAutomaticallySubstyle**: **String** - `run` action can define the launch automatically substyle ('2' for extensions).
+- [ ] **storeKitConfiguration**: **String** - `run` action can specify a storekit configuration. See [Options](#options).
 
 ### Execution Action
 

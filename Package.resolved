@@ -15,8 +15,8 @@
         "repositoryURL": "https://github.com/SwiftDocOrg/GraphViz.git",
         "state": {
           "branch": null,
-          "revision": "c4746cb3ff6f5e7c5d5540c40b98555521c3ee43",
-          "version": "0.1.3"
+          "revision": "70bebcf4597b9ce33e19816d6bbd4ba9b7bdf038",
+          "version": "0.2.0"
         }
       },
       {
@@ -87,8 +87,8 @@
         "repositoryURL": "https://github.com/jpsim/Yams.git",
         "state": {
           "branch": null,
-          "revision": "88caa2e6fffdbef2e91c2022d038576062042907",
-          "version": "4.0.0"
+          "revision": "138cf1b701cf825233b92ceac919152d5aba8a3f",
+          "version": "4.0.1"
         }
       }
     ]
