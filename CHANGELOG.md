@@ -2,14 +2,16 @@
 
 ## Next Version
 
+## 2.19.0
+
 #### Added
-- Support for building and running on Linux platforms. Tested for compatibility with Swift 5.3+ and Ubuntu 18.04. [#988](https://github.com/yonaskolb/XcodeGen/pull/988) @elliottwilliams
-- Add `useBaseInternationalization` to Project Spec Options to opt out of Base Internationalization. [#961](https://github.com/yonaskolb/XcodeGen/pull/961) @liamnichols
-- Add `storeKitConfiguration` to allow specifying StoreKit Configuration in Scheme and TargetScheme, supporting either xcodeproj or xcworkspace via `schemePathPrefix` option. [#964](https://github.com/yonaskolb/XcodeGen/pull/964) @jcolicchio
-- More detailed error message with method arguments. [#990](https://github.com/yonaskolb/XcodeGen/pull/990) @bannzai
+- Added support for building and running on Linux platforms. Tested for compatibility with Swift 5.3+ and Ubuntu 18.04. [#988](https://github.com/yonaskolb/XcodeGen/pull/988) @elliottwilliams
+- Added `useBaseInternationalization` to Project Spec Options to opt out of Base Internationalization. [#961](https://github.com/yonaskolb/XcodeGen/pull/961) @liamnichols
+- Added `storeKitConfiguration` to allow specifying StoreKit Configuration in Scheme and TargetScheme, supporting either xcodeproj or xcworkspace via `schemePathPrefix` option. [#964](https://github.com/yonaskolb/XcodeGen/pull/964) @jcolicchio
+- Added more detailed error message with method arguments. [#990](https://github.com/yonaskolb/XcodeGen/pull/990) @bannzai
 - Added `basedOnDependencyAnalysis` to Project Spec Build Script to be able to choose not to skip the script. [#992](https://github.com/yonaskolb/XcodeGen/pull/992) @myihsan
-- Add `BuildRule.runOncePerArchitecture` to allow running build rules once per architecture. [#950](https://github.com/yonaskolb/XcodeGen/pull/950) @sascha
-- Adds discovered dependency file for a build script [#1012](https://github.com/yonaskolb/XcodeGen/pull/1012) @polac24 @fggeraissate
+- Added `BuildRule.runOncePerArchitecture` to allow running build rules once per architecture. [#950](https://github.com/yonaskolb/XcodeGen/pull/950) @sascha
+- Added discovered dependency file for a build script [#1012](https://github.com/yonaskolb/XcodeGen/pull/1012) @polac24 @fggeraissate
 
 #### Changed
 - **Breaking**: Info.plists with custom prefixes are no longer added to the Copy Bundle Resources build phase [#945](https://github.com/yonaskolb/XcodeGen/pull/945) @anivaros
@@ -24,6 +26,8 @@
 
 #### Internal
 - Updated to Yams 4.0.0 [#984](https://github.com/yonaskolb/XcodeGen/pull/984) @swiftty
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.18.0...2.19.0)
 
 ## 2.18.0
 
