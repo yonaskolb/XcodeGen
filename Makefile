@@ -9,17 +9,18 @@ CURRENT_PATH = $(PWD)
 REPO = https://github.com/yonaskolb/$(TOOL_NAME)
 RELEASE_TAR = $(REPO)/archive/$(VERSION).tar.gz
 SHA = $(shell curl -L -s $(RELEASE_TAR) | shasum -a 256 | sed 's/ .*//')
+SWIFT_BUILD_FLAGS = --disable-sandbox -c release --arch arm64 --arch x86_64
 
 .PHONY: install build uninstall format_code brew release
 
 install: build
 	mkdir -p $(PREFIX)/bin
-	cp -f .build/release/$(EXECUTABLE_NAME) $(INSTALL_PATH)
+	cp -f $(shell swift build $(SWIFT_BUILD_FLAGS) --show-bin-path)/$(EXECUTABLE_NAME) $(INSTALL_PATH)
 	mkdir -p $(SHARE_PATH)
 	cp -R $(CURRENT_PATH)/SettingPresets $(SHARE_PATH)/SettingPresets
 
 build:
-	swift build --disable-sandbox -c release
+	swift build $(SWIFT_BUILD_FLAGS)
 
 uninstall:
 	rm -f $(INSTALL_PATH)
