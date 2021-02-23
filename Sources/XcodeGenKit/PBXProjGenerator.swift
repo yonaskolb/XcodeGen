@@ -643,11 +643,10 @@ public class PBXProjGenerator {
     func generateTarget(_ target: Target) throws {
         let carthageDependencies = carthageResolver.dependencies(for: target)
 
+        let infoPlistFiles: [Config: String] = getInfoPlists(for: target)
         let sourceFiles = try sourceGenerator.getAllSourceFiles(targetType: target.type, sources: target.sources)
             .sorted { $0.path.lastComponent < $1.path.lastComponent }
 
-        var plistPath: Path?
-        var searchForPlist = true
         var anyDependencyRequiresObjCLinking = false
 
         var dependencies: [PBXTargetDependency] = []
@@ -1167,17 +1166,9 @@ public class PBXProjGenerator {
                 buildSettings["CODE_SIGN_ENTITLEMENTS"] = entitlements.path
             }
 
-            // Set INFOPLIST_FILE if not defined in settings
-            if !project.targetHasBuildSetting("INFOPLIST_FILE", target: target, config: config) {
-                if let info = target.info {
-                    buildSettings["INFOPLIST_FILE"] = info.path
-                } else if searchForPlist {
-                    plistPath = getInfoPlist(target.sources)
-                    searchForPlist = false
-                }
-                if let plistPath = plistPath {
-                    buildSettings["INFOPLIST_FILE"] = (try? plistPath.relativePath(from: projectDirectory ?? project.basePath)) ?? plistPath
-                }
+            // Set INFOPLIST_FILE based on the resolved value
+            if let infoPlistFile = infoPlistFiles[config] {
+                buildSettings["INFOPLIST_FILE"] = infoPlistFile
             }
 
             // automatically calculate bundle id
@@ -1299,6 +1290,42 @@ public class PBXProjGenerator {
         if !target.isLegacy {
             targetObject.productType = target.type
         }
+    }
+
+    func getInfoPlists(for target: Target) -> [Config: String] {
+        var searchForDefaultInfoPlist: Bool = true
+        var defaultInfoPlist: String?
+
+        let values: [(Config, String)] = project.configs.compactMap { config in
+            // First, if it was defined in the specs `info` object, use that.
+            if let value = target.info?.path {
+                return (config, value)
+            }
+
+            // Otherwise attempt to find the value from the build settings
+            let buildSettings = project.getTargetBuildSettings(target: target, config: config)
+            if let value = buildSettings["INFOPLIST_FILE"] as? String {
+                return (config, value)
+            }
+
+            // If we haven't yet looked for the default info plist, try doing so
+            if searchForDefaultInfoPlist {
+                searchForDefaultInfoPlist = false
+
+                if let plistPath = getInfoPlist(target.sources) {
+                    let relative = (try? plistPath.relativePath(from: projectDirectory ?? project.basePath)) ?? plistPath
+                    defaultInfoPlist = relative.string
+                }
+            }
+
+            // Return the default plist if there was one
+            if let value = defaultInfoPlist {
+                return (config, value)
+            }
+            return nil
+        }
+
+        return Dictionary(uniqueKeysWithValues: values)
     }
 
     func getInfoPlist(_ sources: [TargetSource]) -> Path? {
