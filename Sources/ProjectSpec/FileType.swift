@@ -71,6 +71,7 @@ extension FileType {
         // resources
         "bundle": FileType(buildPhase: .resources),
         "xcassets": FileType(buildPhase: .resources),
+        "storekit": FileType(buildPhase: .resources),
 
         // sources
         "swift": FileType(buildPhase: .sources),
@@ -110,6 +111,5 @@ extension FileType {
         "xcfilelist": FileType(buildPhase: BuildPhaseSpec.none),
         "apns": FileType(buildPhase: BuildPhaseSpec.none),
         "pch": FileType(buildPhase: BuildPhaseSpec.none),
-        "storekit": FileType(buildPhase: BuildPhaseSpec.none),
     ]
 }
