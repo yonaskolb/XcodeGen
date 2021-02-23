@@ -107,6 +107,7 @@
 		87927928A8A3460166ACB819 /* SwiftFileInDotPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F430AABE04B7499B458D9DB /* SwiftFileInDotPath.swift */; settings = {COMPILER_FLAGS = "-Werror"; }; };
 		8C941A6EF08069CB3CB88FC1 /* Result.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0C5AC2545AE4D4F7F44E2E9B /* Result.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		900CFAD929CAEE3861127627 /* MyBundle.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7B5068D64404C61A67A18458 /* MyBundle.bundle */; };
+		94FD20C3EA5EBCEC8783740C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BDCA996D141DD8A16B18D68F /* GoogleService-Info.plist */; };
 		95DD9941E1529FD2AE1A191D /* StaticLibrary_ObjC.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5A2B916A11DCC2565241359F /* StaticLibrary_ObjC.h */; };
 		96B55C0F660235FE6BDD8869 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = 6A58A16491CDDF968B0D56DE /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		998CCB995347CBB8EDC95FB5 /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A5F527F2590C14956518174 /* FrameworkFile.swift */; };
@@ -673,6 +674,7 @@
 		BA040F1F7D6CA08878323A55 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		BB178D03E75929F3F5B10C56 /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Result.framework; sourceTree = "<group>"; };
 		BC56891DA7446EAC8C2F27EB /* File2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = File2.swift; path = Group2/File2.swift; sourceTree = "<group>"; };
+		BDCA996D141DD8A16B18D68F /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		BECEA4A483ADEB8158F640B3 /* Tool */ = {isa = PBXFileReference; includeInIndex = 0; path = Tool; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF59AC868D227C92CA8B1B57 /* Model.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = Model.xcmappingmodel; sourceTree = "<group>"; };
 		C53ACB2962FED621389C36A2 /* iMessageStickersExtension.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = iMessageStickersExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1071,6 +1073,7 @@
 			isa = PBXGroup;
 			children = (
 				28360ECA4D727FAA58557A81 /* example.mp4 */,
+				BDCA996D141DD8A16B18D68F /* GoogleService-Info.plist */,
 				7B5068D64404C61A67A18458 /* MyBundle.bundle */,
 				C9E358FBE2B54D2B5C7FD609 /* SceneKitCatalog.scnassets */,
 			);
@@ -2052,6 +2055,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				447D59BE2E0993D7245EA247 /* Assets.xcassets in Resources */,
+				94FD20C3EA5EBCEC8783740C /* GoogleService-Info.plist in Resources */,
 				A9548E5DCFE92236494164DF /* LaunchScreen.storyboard in Resources */,
 				6E8F8303759824631C8D9DA3 /* Localizable.strings in Resources */,
 				E5DD0AD6F7AE1DD4AF98B83E /* Localizable.stringsdict in Resources */,

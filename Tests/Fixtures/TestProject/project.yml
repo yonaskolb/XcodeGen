@@ -86,6 +86,7 @@ targets:
       - FileGroup/UnderFileGroup
       - Resources/MyBundle.bundle
       - Resources/SceneKitCatalog.scnassets
+      - Resources/GoogleService-Info.plist
       - path: Resources/ResourceFolder
         type: folder
       - path: Folder
