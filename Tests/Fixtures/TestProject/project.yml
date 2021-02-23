@@ -21,6 +21,7 @@ fileGroups:
   - FileGroup
   - SomeFile
   - Utilities
+  - App_iOS/Configuration.storekit
 projectReferences:
   AnotherProject:
     path: ./AnotherProject/AnotherProject.xcodeproj
@@ -76,6 +77,7 @@ targets:
           - "**/excluded-file"
           - "excluded-file"
           - "Model.xcmappingmodel"
+          - "Configuration.storekit"
       - path: App_iOS
         name: App
         includes:

@@ -2,6 +2,9 @@
 
 ## Next Version
 
+#### Fixed
+- Fixed regression on **.storekit** configuration files' default build phase. [#1026](https://github.com/yonaskolb/XcodeGen/pull/1026) @jcolicchio
+
 ## 2.19.0
 
 #### Added
