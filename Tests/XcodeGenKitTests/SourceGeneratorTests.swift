@@ -591,6 +591,7 @@ class SourceGeneratorTests: XCTestCase {
                     - file.mlmodel
                     - Info.plist
                     - Intent.intentdefinition
+                    - Configuration.storekit
                     - Settings.bundle:
                       - en.lproj:
                         - Root.strings
@@ -646,6 +647,7 @@ class SourceGeneratorTests: XCTestCase {
                 try pbxProj.expectFile(paths: ["C", "file.metal"], buildPhase: .sources)
                 try pbxProj.expectFile(paths: ["C", "file.mlmodel"], buildPhase: .sources)
                 try pbxProj.expectFile(paths: ["C", "Intent.intentdefinition"], buildPhase: .sources)
+                try pbxProj.expectFile(paths: ["C", "Configuration.storekit"], buildPhase: .resources)
                 try pbxProj.expectFile(paths: ["C", "Settings.bundle"], buildPhase: .resources)
                 try pbxProj.expectFileMissing(paths: ["C", "Settings.bundle", "en.lproj"])
                 try pbxProj.expectFileMissing(paths: ["C", "Settings.bundle", "en.lproj", "Root.strings"])
