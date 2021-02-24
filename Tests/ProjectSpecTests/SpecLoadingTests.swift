@@ -1175,6 +1175,7 @@ class SpecLoadingTests: XCTestCase {
                     "package7": .remote(url: "package.git", versionRequirement: .exact("1.2.2")),
                     "package8": .remote(url: "package.git", versionRequirement: .upToNextMajorVersion("4.0.0-beta.5")),
                     "package9": .local(path: "package/package"),
+                    "package10": .remote(url: "https://github.com/yonaskolb/XcodeGen", versionRequirement: .exact("1.2.2")),
                     "XcodeGen": .local(path: "../XcodeGen"),
                 ], options: .init(localPackagesGroup: "MyPackages"))
 
@@ -1193,6 +1194,7 @@ class SpecLoadingTests: XCTestCase {
                         "package7": ["url": "package.git", "version": "1.2.2"],
                         "package8": ["url": "package.git", "majorVersion": "4.0.0-beta.5"],
                         "package9": ["path": "package/package"],
+                        "package10": ["github": "yonaskolb/XcodeGen", "exactVersion": "1.2.2"],
                     ],
                     "localPackages": ["../XcodeGen"],
                 ]

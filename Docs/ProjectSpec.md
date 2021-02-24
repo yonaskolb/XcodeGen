@@ -936,6 +936,7 @@ Swift packages are defined at a project level, and then linked to individual tar
   - `minVersion: 1.0.0, maxVersion: 1.2.9`
   - `branch: master`
   - `revision: xxxxxx`
+- [ ] **github** : **String**- this is an optional helper you can use for github repos. Instead of specifying the full url in `url` you can just specify the github org and repo
   
 ### Local Package
 
@@ -946,13 +947,11 @@ packages:
   Yams:
     url: https://github.com/jpsim/Yams
     from: 2.0.0
+  Yams:
+    github: JohnSundell/Ink
+    from: 0.5.0
   RxClient:
     path: ../RxClient
-targets:
-  App:
-    dependencies:
-      - package: Yams
-      - package: RxClient
 ```
 
 ## Project Reference

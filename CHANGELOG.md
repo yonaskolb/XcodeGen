@@ -2,6 +2,9 @@
 
 ## Next Version
 
+#### Added
+- Allow specifying a `github` name like `JohnSundell/Ink` instead of a full `url` for Swift Packages [#1029](https://github.com/yonaskolb/XcodeGen/pull/1029) @yonaskolb
+
 #### Fixed
 - Fixed regression on **.storekit** configuration files' default build phase. [#1026](https://github.com/yonaskolb/XcodeGen/pull/1026) @jcolicchio
 

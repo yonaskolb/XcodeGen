@@ -7,6 +7,8 @@ public enum SwiftPackage: Equatable {
 
     public typealias VersionRequirement = XCRemoteSwiftPackageReference.VersionRequirement
 
+    static let githubPrefix = "https://github.com/"
+
     case remote(url: String, versionRequirement: VersionRequirement)
     case local(path: String)
 
@@ -26,7 +28,14 @@ extension SwiftPackage: JSONObjectConvertible {
         } else {
             let versionRequirement: VersionRequirement = try VersionRequirement(jsonDictionary: jsonDictionary)
             try Self.validateVersion(versionRequirement: versionRequirement)
-            self = .remote(url: try jsonDictionary.json(atKeyPath: "url"), versionRequirement: versionRequirement)
+            let url: String
+            if jsonDictionary["github"] != nil {
+                let github: String = try jsonDictionary.json(atKeyPath: "github")
+                url = "\(Self.githubPrefix)\(github)"
+            } else {
+                url = try jsonDictionary.json(atKeyPath: "url")
+            }
+            self = .remote(url: url, versionRequirement: versionRequirement)
         }
     }
 
@@ -58,7 +67,11 @@ extension SwiftPackage: JSONEncodable {
         var dictionary: JSONDictionary = [:]
         switch self {
         case .remote(let url, let versionRequirement):
-            dictionary["url"] = url
+            if url.hasPrefix(Self.githubPrefix) {
+                dictionary["github"] = url.replacingOccurrences(of: Self.githubPrefix, with: "")
+            } else {
+                dictionary["url"] = url
+            }
 
             switch versionRequirement {
 
