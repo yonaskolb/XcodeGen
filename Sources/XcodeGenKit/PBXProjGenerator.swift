@@ -1297,14 +1297,14 @@ public class PBXProjGenerator {
         var defaultInfoPlist: String?
 
         let values: [(Config, String)] = project.configs.compactMap { config in
-            // First, if it was defined in the specs `info` object, use that.
-            if let value = target.info?.path {
+            // First, if the plist path was defined by `INFOPLIST_FILE`, use that
+            let buildSettings = project.getTargetBuildSettings(target: target, config: config)
+            if let value = buildSettings["INFOPLIST_FILE"] as? String {
                 return (config, value)
             }
 
-            // Otherwise attempt to find the value from the build settings
-            let buildSettings = project.getTargetBuildSettings(target: target, config: config)
-            if let value = buildSettings["INFOPLIST_FILE"] as? String {
+            // Otherwise check if the path was defined as part of the `info` spec
+            if let value = target.info?.path {
                 return (config, value)
             }
 
