@@ -11,6 +11,7 @@ public struct TargetScheme: Equatable {
     public var testTargets: [Scheme.Test.TestTarget]
     public var configVariants: [String]
     public var gatherCoverageData: Bool
+    public var storeKitConfiguration: String?
     public var language: String?
     public var region: String?
     public var disableMainThreadChecker: Bool
@@ -25,6 +26,7 @@ public struct TargetScheme: Equatable {
         testTargets: [Scheme.Test.TestTarget] = [],
         configVariants: [String] = [],
         gatherCoverageData: Bool = gatherCoverageDataDefault,
+        storeKitConfiguration: String? = nil,
         language: String? = nil,
         region: String? = nil,
         disableMainThreadChecker: Bool = disableMainThreadCheckerDefault,
@@ -38,6 +40,7 @@ public struct TargetScheme: Equatable {
         self.testTargets = testTargets
         self.configVariants = configVariants
         self.gatherCoverageData = gatherCoverageData
+        self.storeKitConfiguration = storeKitConfiguration
         self.language = language
         self.region = region
         self.disableMainThreadChecker = disableMainThreadChecker
@@ -68,6 +71,7 @@ extension TargetScheme: JSONObjectConvertible {
         }
         configVariants = jsonDictionary.json(atKeyPath: "configVariants") ?? []
         gatherCoverageData = jsonDictionary.json(atKeyPath: "gatherCoverageData") ?? TargetScheme.gatherCoverageDataDefault
+        storeKitConfiguration = jsonDictionary.json(atKeyPath: "storeKitConfiguration")
         language = jsonDictionary.json(atKeyPath: "language")
         region = jsonDictionary.json(atKeyPath: "region")
         disableMainThreadChecker = jsonDictionary.json(atKeyPath: "disableMainThreadChecker") ?? TargetScheme.disableMainThreadCheckerDefault
@@ -93,6 +97,10 @@ extension TargetScheme: JSONEncodable {
 
         if gatherCoverageData != TargetScheme.gatherCoverageDataDefault {
             dict["gatherCoverageData"] = gatherCoverageData
+        }
+
+        if let storeKitConfiguration = storeKitConfiguration {
+            dict["storeKitConfiguration"] = storeKitConfiguration
         }
 
         if disableMainThreadChecker != TargetScheme.disableMainThreadCheckerDefault {

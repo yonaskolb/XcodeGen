@@ -16,6 +16,7 @@ public struct BuildScript: Equatable {
     public var runOnlyWhenInstalling: Bool
     public let showEnvVars: Bool
     public let basedOnDependencyAnalysis: Bool
+    public let discoveredDependencyFile: String?
 
     public enum ScriptType: Equatable {
         case path(String)
@@ -32,7 +33,8 @@ public struct BuildScript: Equatable {
         shell: String? = nil,
         runOnlyWhenInstalling: Bool = runOnlyWhenInstallingDefault,
         showEnvVars: Bool = showEnvVarsDefault,
-        basedOnDependencyAnalysis: Bool = basedOnDependencyAnalysisDefault
+        basedOnDependencyAnalysis: Bool = basedOnDependencyAnalysisDefault,
+        discoveredDependencyFile: String? = nil
     ) {
         self.script = script
         self.name = name
@@ -44,6 +46,7 @@ public struct BuildScript: Equatable {
         self.runOnlyWhenInstalling = runOnlyWhenInstalling
         self.showEnvVars = showEnvVars
         self.basedOnDependencyAnalysis = basedOnDependencyAnalysis
+        self.discoveredDependencyFile = discoveredDependencyFile
     }
 }
 
@@ -66,6 +69,7 @@ extension BuildScript: JSONObjectConvertible {
         runOnlyWhenInstalling = jsonDictionary.json(atKeyPath: "runOnlyWhenInstalling") ?? BuildScript.runOnlyWhenInstallingDefault
         showEnvVars = jsonDictionary.json(atKeyPath: "showEnvVars") ?? BuildScript.showEnvVarsDefault
         basedOnDependencyAnalysis = jsonDictionary.json(atKeyPath: "basedOnDependencyAnalysis") ?? BuildScript.basedOnDependencyAnalysisDefault
+        discoveredDependencyFile = jsonDictionary.json(atKeyPath: "discoveredDependencyFile")
     }
 }
 
@@ -94,6 +98,10 @@ extension BuildScript: JSONEncodable {
             dict["path"] = string
         case .script(let string):
             dict["script"] = string
+        }
+
+        if let discoveredDependencyFile = discoveredDependencyFile {
+            dict["discoveredDependencyFile"] = discoveredDependencyFile
         }
 
         return dict

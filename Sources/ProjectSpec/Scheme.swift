@@ -1,5 +1,6 @@
 import Foundation
 import JSONUtilities
+import PathKit
 import XcodeProj
 
 public typealias BuildType = XCScheme.BuildAction.Entry.BuildFor
@@ -113,6 +114,7 @@ public struct Scheme: Equatable {
         public var debugEnabled: Bool
         public var simulateLocation: SimulateLocation?
         public var executable: String?
+        public var storeKitConfiguration: String?
         public var customLLDBInit: String?
 
         public init(
@@ -130,6 +132,7 @@ public struct Scheme: Equatable {
             launchAutomaticallySubstyle: String? = nil,
             debugEnabled: Bool = debugEnabledDefault,
             simulateLocation: SimulateLocation? = nil,
+            storeKitConfiguration: String? = nil,
             customLLDBInit: String? = nil
         ) {
             self.config = config
@@ -145,6 +148,7 @@ public struct Scheme: Equatable {
             self.launchAutomaticallySubstyle = launchAutomaticallySubstyle
             self.debugEnabled = debugEnabled
             self.simulateLocation = simulateLocation
+            self.storeKitConfiguration = storeKitConfiguration
             self.customLLDBInit = customLLDBInit
         }
     }
@@ -368,6 +372,7 @@ extension Scheme.Run: JSONObjectConvertible {
         region = jsonDictionary.json(atKeyPath: "region")
         debugEnabled = jsonDictionary.json(atKeyPath: "debugEnabled") ?? Scheme.Run.debugEnabledDefault
         simulateLocation = jsonDictionary.json(atKeyPath: "simulateLocation")
+        storeKitConfiguration = jsonDictionary.json(atKeyPath: "storeKitConfiguration")
         executable = jsonDictionary.json(atKeyPath: "executable")
 
         // launchAutomaticallySubstyle is defined as a String in XcodeProj but its value is often
@@ -414,6 +419,9 @@ extension Scheme.Run: JSONEncodable {
 
         if let simulateLocation = simulateLocation {
             dict["simulateLocation"] = simulateLocation.toJSONValue()
+        }
+        if let storeKitConfiguration = storeKitConfiguration {
+            dict["storeKitConfiguration"] = storeKitConfiguration
         }
         if let customLLDBInit = customLLDBInit {
             dict["customLLDBInit"] = customLLDBInit

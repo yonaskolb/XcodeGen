@@ -228,11 +228,17 @@ public class SchemeGenerator {
         var locationScenarioReference: XCScheme.LocationScenarioReference?
         if let simulateLocation = scheme.run?.simulateLocation, var identifier = simulateLocation.defaultLocation, let referenceType = simulateLocation.referenceType {
             if referenceType == .gpx {
-                var path = Path("../\(identifier)")
+                var path = Path(components: [project.options.schemePathPrefix, identifier])
                 path = path.simplifyingParentDirectoryReferences()
                 identifier = path.string
             }
             locationScenarioReference = XCScheme.LocationScenarioReference(identifier: identifier, referenceType: referenceType.rawValue)
+        }
+
+        var storeKitConfigurationFileReference: XCScheme.StoreKitConfigurationFileReference?
+        if let storeKitConfiguration = scheme.run?.storeKitConfiguration {
+            let storeKitConfigurationPath = Path(components: [project.options.schemePathPrefix, storeKitConfiguration]).simplifyingParentDirectoryReferences()
+            storeKitConfigurationFileReference = XCScheme.StoreKitConfigurationFileReference(identifier: storeKitConfigurationPath.string)
         }
 
         let launchAction = XCScheme.LaunchAction(
@@ -253,6 +259,7 @@ public class SchemeGenerator {
             language: scheme.run?.language,
             region: scheme.run?.region,
             launchAutomaticallySubstyle: scheme.run?.launchAutomaticallySubstyle ?? launchAutomaticallySubstyle(for: schemeTarget),
+            storeKitConfigurationFileReference: storeKitConfigurationFileReference,
             customLLDBInitFile: scheme.run?.customLLDBInit
         )
 
@@ -364,7 +371,8 @@ extension Scheme {
                 disableMainThreadChecker: targetScheme.disableMainThreadChecker,
                 stopOnEveryMainThreadCheckerIssue: targetScheme.stopOnEveryMainThreadCheckerIssue,
                 language: targetScheme.language,
-                region: targetScheme.region
+                region: targetScheme.region,
+                storeKitConfiguration: targetScheme.storeKitConfiguration
             ),
             test: .init(
                 config: debugConfig,

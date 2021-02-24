@@ -656,6 +656,7 @@
 		8D88C6BF7355702B74396791 /* TestProjectUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestProjectUITests.swift; sourceTree = "<group>"; };
 		93C033648A37D95027845BD3 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		9A87A926D563773658FB87FE /* iMessageApp.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = iMessageApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9D4AB3FCF725428EFB56F542 /* Configuration.storekit */ = {isa = PBXFileReference; path = Configuration.storekit; sourceTree = "<group>"; };
 		9F27382DD66E26C059E26EFE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		A0DC40025AB59B688E758829 /* Framework2.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Framework2.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A220DE4EB3CB2E598D034D9D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -854,6 +855,7 @@
 				F0D48A913C087D049C8EDDD7 /* App.entitlements */,
 				7F1A2F579A6F79C62DDA0571 /* AppDelegate.swift */,
 				3797E591F302ECC0AA2FC607 /* Assets.xcassets */,
+				9D4AB3FCF725428EFB56F542 /* Configuration.storekit */,
 				C9DDE1B06BCC1CDE0ECF1589 /* Info.plist */,
 				AAA49985DFFE797EE8416887 /* inputList.xcfilelist */,
 				CE1F06D99242F4223D081F0D /* LaunchScreen.storyboard */,
@@ -2237,6 +2239,7 @@
 		CBE633966E8F3819F15270A3 /* MyScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
+			dependencyFile = "$(DERIVED_FILE_DIR)/target.d";
 			files = (
 			);
 			inputFileListPaths = (
@@ -2252,7 +2255,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "echo \"You ran a script!\"\n";
+			shellScript = "echo \"You ran a script!\"\ntouch \"${DERIVED_FILE_DIR}/target.d\"\n";
 		};
 		CF3AABFD4A48983B322677DA /* MyScript */ = {
 			isa = PBXShellScriptBuildPhase;
