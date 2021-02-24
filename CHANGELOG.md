@@ -8,6 +8,7 @@
 - More detailed error message with method arguments. [#990](https://github.com/yonaskolb/XcodeGen/pull/990) @bannzai
 - Added `basedOnDependencyAnalysis` to Project Spec Build Script to be able to choose not to skip the script. [#992](https://github.com/yonaskolb/XcodeGen/pull/992) @myihsan
 - Add `BuildRule.runOncePerArchitecture` to allow running build rules once per architecture. [#950](https://github.com/yonaskolb/XcodeGen/pull/950) @sascha
+- Add Explicity `LastUpgradeCheck` and `LastUpgradeVersion` override support so it's possible to override these properties without using the `project.xcodeVersion`. [1013](https://github.com/yonaskolb/XcodeGen/pull/1013) @Andre113
 
 #### Changed
 - **Breaking**: Info.plists with custom prefixes are no longer added to the Copy Bundle Resources build phase [#945](https://github.com/yonaskolb/XcodeGen/pull/945) @anivaros
