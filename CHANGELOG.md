@@ -8,6 +8,9 @@
 #### Fixed
 - Fixed regression on **.storekit** configuration files' default build phase. [#1026](https://github.com/yonaskolb/XcodeGen/pull/1026) @jcolicchio
 
+#### Internal
+- Build universal binaries for release. XcodeGen now runs natively on Apple Silicon. [#1024](https://github.com/yonaskolb/XcodeGen/pull/1024) @thii
+
 ## 2.19.0
 
 #### Added
