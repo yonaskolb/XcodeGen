@@ -4,6 +4,7 @@
 
 #### Added
 - Allow specifying a `github` name like `JohnSundell/Ink` instead of a full `url` for Swift Packages [#1029](https://github.com/yonaskolb/XcodeGen/pull/1029) @yonaskolb
+- Added explicity `LastUpgradeCheck` and `LastUpgradeVersion` override support so it's possible to override these properties without using the `project.xcodeVersion`. [1013](https://github.com/yonaskolb/XcodeGen/pull/1013) @Andre113
 
 #### Fixed
 - Fixed regression on **.storekit** configuration files' default build phase. [#1026](https://github.com/yonaskolb/XcodeGen/pull/1026) @jcolicchio
@@ -16,10 +17,8 @@
 - Added `storeKitConfiguration` to allow specifying StoreKit Configuration in Scheme and TargetScheme, supporting either xcodeproj or xcworkspace via `schemePathPrefix` option. [#964](https://github.com/yonaskolb/XcodeGen/pull/964) @jcolicchio
 - Added more detailed error message with method arguments. [#990](https://github.com/yonaskolb/XcodeGen/pull/990) @bannzai
 - Added `basedOnDependencyAnalysis` to Project Spec Build Script to be able to choose not to skip the script. [#992](https://github.com/yonaskolb/XcodeGen/pull/992) @myihsan
-- Add `BuildRule.runOncePerArchitecture` to allow running build rules once per architecture. [#950](https://github.com/yonaskolb/XcodeGen/pull/950) @sascha
 - Added `BuildRule.runOncePerArchitecture` to allow running build rules once per architecture. [#950](https://github.com/yonaskolb/XcodeGen/pull/950) @sascha
 - Added discovered dependency file for a build script [#1012](https://github.com/yonaskolb/XcodeGen/pull/1012) @polac24 @fggeraissate
-- Added explicity `LastUpgradeCheck` and `LastUpgradeVersion` override support so it's possible to override these properties without using the `project.xcodeVersion`. [1013](https://github.com/yonaskolb/XcodeGen/pull/1013) @Andre113
 
 #### Changed
 - **Breaking**: Info.plists with custom prefixes are no longer added to the Copy Bundle Resources build phase [#945](https://github.com/yonaskolb/XcodeGen/pull/945) @anivaros
