@@ -78,13 +78,12 @@ class SourceGenerator {
     }
 
     func getAllSourceFiles(targetType: PBXProductType, sources: [TargetSource]) throws -> [SourceFile] {
-        try sources.flatMap { try getSourceFiles(targetType: targetType, targetSource: $0, path: project.basePath + $0.path) }
+        try sources.flatMap { try getSourceFiles(targetType: targetType, targetSource: $0) }
     }
 
     // get groups without build files. Use for Project.fileGroups
     func getFileGroups(path: String) throws {
-        let fullPath = project.basePath + path
-        _ = try getSourceFiles(targetType: .none, targetSource: TargetSource(path: path), path: fullPath)
+        _ = try getSourceFiles(targetType: .none, targetSource: TargetSource(path: path))
     }
 
     func getFileType(path: Path) -> FileType? {
@@ -95,7 +94,7 @@ class SourceGenerator {
         }
     }
 
-    func generateSourceFile(targetType: PBXProductType, targetSource: TargetSource, path: Path, buildPhase: BuildPhaseSpec? = nil, fileReference: PBXFileElement? = nil) -> SourceFile {
+    func generateSourceFile(targetType: PBXProductType, targetSource: TargetSource, path: Path, fileReference: PBXFileElement? = nil) -> SourceFile {
         let fileReference = fileReference ?? fileReferencesByPath[path.string.lowercased()]!
         var settings: [String: Any] = [:]
         let fileType = getFileType(path: path)
@@ -106,10 +105,10 @@ class SourceGenerator {
 
         let headerVisibility = targetSource.headerVisibility ?? .public
 
-        if let buildPhase = buildPhase {
+        if let buildPhase = targetSource.buildPhase {
             chosenBuildPhase = buildPhase
-        } else if let buildPhase = targetSource.buildPhase {
-            chosenBuildPhase = buildPhase
+        } else if resolvedTargetSourceType(for: targetSource, at: path) == .folder {
+            chosenBuildPhase = .resources
         } else {
             chosenBuildPhase = getDefaultBuildPhase(for: path, targetType: targetType)
         }
@@ -551,14 +550,15 @@ class SourceGenerator {
     }
 
     /// creates source files
-    private func getSourceFiles(targetType: PBXProductType, targetSource: TargetSource, path: Path) throws -> [SourceFile] {
+    private func getSourceFiles(targetType: PBXProductType, targetSource: TargetSource) throws -> [SourceFile] {
 
         // generate excluded paths
+        let path = project.basePath + targetSource.path
         let excludePaths = getSourceMatches(targetSource: targetSource, patterns: targetSource.excludes)
         // generate included paths. Excluded paths will override this.
         let includePaths = getSourceMatches(targetSource: targetSource, patterns: targetSource.includes)
 
-        let type = targetSource.type ?? (path.isFile || path.extension != nil ? .file : .group)
+        let type = resolvedTargetSourceType(for: targetSource, at: path)
 
         let customParentGroups = (targetSource.group ?? "").split(separator: "/").map { String($0) }
         let hasCustomParent = !customParentGroups.isEmpty
@@ -570,11 +570,10 @@ class SourceGenerator {
         var sourcePath = path
         switch type {
         case .folder:
-            let folderPath = project.basePath + Path(targetSource.path)
             let fileReference = getFileReference(
-                path: folderPath,
+                path: path,
                 inPath: project.basePath,
-                name: targetSource.name ?? folderPath.lastComponent,
+                name: targetSource.name ?? path.lastComponent,
                 sourceTree: .sourceRoot,
                 lastKnownFileType: "folder"
             )
@@ -583,14 +582,7 @@ class SourceGenerator {
                 rootGroups.insert(fileReference)
             }
 
-            let buildPhase: BuildPhaseSpec?
-            if let targetBuildPhase = targetSource.buildPhase {
-                buildPhase = targetBuildPhase
-            } else {
-                buildPhase = .resources
-            }
-
-            let sourceFile = generateSourceFile(targetType: targetType, targetSource: targetSource, path: folderPath, buildPhase: buildPhase)
+            let sourceFile = generateSourceFile(targetType: targetType, targetSource: targetSource, path: path)
 
             sourceFiles.append(sourceFile)
             sourceReference = fileReference
@@ -653,6 +645,13 @@ class SourceGenerator {
         }
 
         return sourceFiles
+    }
+
+    /// Returns the resolved `SourceType` for a given `TargetSource`.
+    ///
+    /// While `TargetSource` declares `type`, its optional and in the event that the value is not defined then we must resolve a sensible default based on the path of the source.
+    private func resolvedTargetSourceType(for targetSource: TargetSource, at path: Path) -> SourceType {
+        return targetSource.type ?? (path.isFile || path.extension != nil ? .file : .group)
     }
 
     private func createParentGroups(_ parentGroups: [String], for fileElement: PBXFileElement) {
