@@ -12,6 +12,7 @@ public class PBXProjGenerator {
     let pbxProj: PBXProj
     let projectDirectory: Path?
     let carthageResolver: CarthageDependencyResolver
+    let projGeneratorQueue: DispatchQueue = DispatchQueue(label: "com.yonaskolb.xcodegen.projGeneratorQueue")
 
     public static let copyFilesActionMask: UInt = 8
 
@@ -29,7 +30,7 @@ public class PBXProjGenerator {
 
     var generated = false
 
-    private var projects: [ProjectReference: PBXProj] = [:]
+    private var projects: Atomic<[ProjectReference: PBXProj]> = Atomic<[ProjectReference: PBXProj]>(wrappedValue: [:])
 
     public init(project: Project, projectDirectory: Path? = nil) {
         self.project = project
@@ -730,12 +731,16 @@ public class PBXProjGenerator {
     }
 
     func getPBXProj(from reference: ProjectReference) throws -> PBXProj {
-        if let cachedProject = projects[reference] {
-            return cachedProject
+        return try projGeneratorQueue.sync { [weak self] () -> PBXProj in
+            if let cachedProject = self?.projects.wrappedValue[reference] {
+                return cachedProject
+            }
+            let pbxprojFromDisk = try XcodeProj(pathString: (project.basePath + Path(reference.path).normalize()).string).pbxproj
+            self?.projects.mutate {
+                $0[reference] = pbxprojFromDisk
+            }
+            return pbxprojFromDisk
         }
-        let pbxproj = try XcodeProj(pathString: (project.basePath + Path(reference.path).normalize()).string).pbxproj
-        projects[reference] = pbxproj
-        return pbxproj
     }
 
     func generateTarget(_ target: Target) throws {

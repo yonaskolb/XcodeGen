@@ -29,15 +29,20 @@ public class SchemeGenerator {
         self.pbxProj = pbxProj
     }
 
-    private var projects: [ProjectReference: PBXProj] = [:]
+    private var projects: Atomic<[ProjectReference: PBXProj]> = Atomic<[ProjectReference: PBXProj]>(wrappedValue: [:])
+    let schemeGeneratorQueue: DispatchQueue = DispatchQueue(label: "com.yonaskolb.xcodegen.schemeGeneratorQueue")
 
     func getPBXProj(from reference: ProjectReference) throws -> PBXProj {
-        if let cachedProject = projects[reference] {
-            return cachedProject
+        return try schemeGeneratorQueue.sync { [weak self] () -> PBXProj in
+            if let cachedProject = self?.projects.wrappedValue[reference] {
+                return cachedProject
+            }
+            let pbxprojFromDisk = try XcodeProj(path: project.basePath + Path(reference.path)).pbxproj
+            self?.projects.mutate {
+                $0[reference] = pbxprojFromDisk
+            }
+            return pbxprojFromDisk
         }
-        let pbxproj = try XcodeProj(path: project.basePath + Path(reference.path)).pbxproj
-        projects[reference] = pbxproj
-        return pbxproj
     }
 
     public func generateSchemes() throws -> [XCScheme] {
