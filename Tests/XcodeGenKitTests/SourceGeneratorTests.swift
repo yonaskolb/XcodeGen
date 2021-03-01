@@ -559,13 +559,13 @@ class SourceGeneratorTests: XCTestCase {
                     - file.swift
                     - file.xcassets
                     - file.h
-                    - Info.plist
+                    - GoogleService-Info.plist
                     - file.xcconfig
                   B:
                     - file.swift
                     - file.xcassets
                     - file.h
-                    - Info.plist
+                    - Sample.plist
                     - file.xcconfig
                   C:
                     - file.swift
@@ -606,19 +606,19 @@ class SourceGeneratorTests: XCTestCase {
                     TargetSource(path: "B", buildPhase: BuildPhaseSpec.none),
                     TargetSource(path: "C", buildPhase: nil),
                 ])
-                let project = Project(basePath: directoryPath, name: "Test", targets: [target])
+                let project = Project(basePath: directoryPath.absolute(), name: "Test", targets: [target])
 
                 let pbxProj = try project.generatePbxProj()
                 try pbxProj.expectFile(paths: ["A", "file.swift"], buildPhase: .resources)
                 try pbxProj.expectFile(paths: ["A", "file.xcassets"], buildPhase: .resources)
                 try pbxProj.expectFile(paths: ["A", "file.h"], buildPhase: .resources)
-                try pbxProj.expectFile(paths: ["A", "Info.plist"], buildPhase: .resources)
+                try pbxProj.expectFile(paths: ["A", "GoogleService-Info.plist"], buildPhase: .resources)
                 try pbxProj.expectFile(paths: ["A", "file.xcconfig"], buildPhase: .resources)
 
                 try pbxProj.expectFile(paths: ["B", "file.swift"], buildPhase: BuildPhaseSpec.none)
                 try pbxProj.expectFile(paths: ["B", "file.xcassets"], buildPhase: BuildPhaseSpec.none)
                 try pbxProj.expectFile(paths: ["B", "file.h"], buildPhase: BuildPhaseSpec.none)
-                try pbxProj.expectFile(paths: ["B", "Info.plist"], buildPhase: BuildPhaseSpec.none)
+                try pbxProj.expectFile(paths: ["B", "Sample.plist"], buildPhase: BuildPhaseSpec.none)
                 try pbxProj.expectFile(paths: ["B", "file.xcconfig"], buildPhase: BuildPhaseSpec.none)
 
                 try pbxProj.expectFile(paths: ["C", "file.swift"], buildPhase: .sources)

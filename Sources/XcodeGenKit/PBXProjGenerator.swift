@@ -644,7 +644,9 @@ public class PBXProjGenerator {
         let carthageDependencies = carthageResolver.dependencies(for: target)
 
         let infoPlistFiles: [Config: String] = getInfoPlists(for: target)
-        let sourceFiles = try sourceGenerator.getAllSourceFiles(targetType: target.type, sources: target.sources)
+        let sourceFileBuildPhaseOverrideSequence: [(Path, BuildPhaseSpec)] = Set(infoPlistFiles.values).map({ (project.basePath + $0, .none) })
+        let sourceFileBuildPhaseOverrides = Dictionary(uniqueKeysWithValues: sourceFileBuildPhaseOverrideSequence)
+        let sourceFiles = try sourceGenerator.getAllSourceFiles(targetType: target.type, sources: target.sources, buildPhases: sourceFileBuildPhaseOverrides)
             .sorted { $0.path.lastComponent < $1.path.lastComponent }
 
         var anyDependencyRequiresObjCLinking = false
