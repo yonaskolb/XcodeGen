@@ -1372,7 +1372,7 @@ class ProjectGeneratorTests: XCTestCase {
             
             describe("XCFramework dependencies") {
                 $0.context("with xcframework dependency") {
-                    $0.it("should add FRAMEWORK_SEARCH_PATHS_SEARCH_PATHS") {
+                    $0.it("should add FRAMEWORK_SEARCH_PATHS") {
                         let app = Target(
                             name: "MyApp",
                             type: .application,
@@ -1390,7 +1390,7 @@ class ProjectGeneratorTests: XCTestCase {
                     }
                 }
                 $0.context("with regular framework") {
-                    $0.it("should add FRAMEWORK_SEARCH_PATHS_SEARCH_PATHS") {
+                    $0.it("should add FRAMEWORK_SEARCH_PATHS") {
                         let app = Target(
                             name: "MyApp",
                             type: .application,
