@@ -366,6 +366,14 @@ schemes:
           parallelizable: true
           randomExecutionOrder: true
       customLLDBInit: ${SRCROOT}/.lldbinit
+  App_Extension:
+    build:
+      targets:
+        App_iOS: all
+        iMessageExtension: all
+    run:
+      executable: iMessageExtension
+      macroExpansion: App_iOS 
 targetTemplates:
   MyTemplate:
     scheme: {}
