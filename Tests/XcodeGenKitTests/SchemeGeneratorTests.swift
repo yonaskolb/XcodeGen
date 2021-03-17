@@ -53,7 +53,8 @@ class SchemeGeneratorTests: XCTestCase {
                     name: "MyScheme",
                     build: Scheme.Build(targets: [buildTarget], preActions: [preAction]),
                     run: Scheme.Run(config: "Debug", askForAppToLaunch: true, launchAutomaticallySubstyle: "2", simulateLocation: simulateLocation, storeKitConfiguration: storeKitConfiguration, customLLDBInit: "/sample/.lldbinit"),
-                    test: Scheme.Test(config: "Debug", customLLDBInit: "/test/.lldbinit")
+                    test: Scheme.Test(config: "Debug", customLLDBInit: "/test/.lldbinit"),
+                    profile: Scheme.Profile(config: "Release", askForAppToLaunch: true)
                 )
                 let project = Project(
                     name: "test",
@@ -98,6 +99,7 @@ class SchemeGeneratorTests: XCTestCase {
                 try expect(xcscheme.testAction?.selectedDebuggerIdentifier) == XCScheme.defaultDebugger
 
                 try expect(xcscheme.launchAction?.askForAppToLaunch) == true
+                try expect(xcscheme.profileAction?.askForAppToLaunch) == true
                 try expect(xcscheme.launchAction?.launchAutomaticallySubstyle) == "2"
                 try expect(xcscheme.launchAction?.allowLocationSimulation) == true
                 try expect(xcscheme.launchAction?.storeKitConfigurationFileReference?.identifier) == "../Configuration.storekit"

@@ -269,6 +269,7 @@ public class SchemeGenerator {
             preActions: scheme.profile?.preActions.map(getExecutionAction) ?? [],
             postActions: scheme.profile?.postActions.map(getExecutionAction) ?? [],
             shouldUseLaunchSchemeArgsEnv: scheme.profile?.shouldUseLaunchSchemeArgsEnv ?? true,
+            askForAppToLaunch: scheme.profile?.askForAppToLaunch,
             commandlineArguments: profileCommandLineArgs,
             environmentVariables: profileVariables
         )
