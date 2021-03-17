@@ -204,9 +204,19 @@ public class SchemeGenerator {
         let launchVariables = scheme.run.flatMap { $0.environmentVariables.isEmpty ? nil : $0.environmentVariables }
         let profileVariables = scheme.profile.flatMap { $0.environmentVariables.isEmpty ? nil : $0.environmentVariables }
 
+        let macroExpansion: XCScheme.BuildableReference?
+        
+        if let macroExpansionName = scheme.run?.macroExpansion {
+            macroExpansion = buildActionEntries.first(where: { $0.buildableReference.blueprintName == macroExpansionName })?.buildableReference ?? buildableReference
+        } else if shouldExecuteOnLaunch {
+            macroExpansion = nil
+        } else {
+            macroExpansion = buildableReference
+        }
+
         let testAction = XCScheme.TestAction(
             buildConfiguration: scheme.test?.config ?? defaultDebugConfig.name,
-            macroExpansion: buildableReference,
+            macroExpansion: macroExpansion,
             testables: testables,
             preActions: scheme.test?.preActions.map(getExecutionAction) ?? [],
             postActions: scheme.test?.postActions.map(getExecutionAction) ?? [],
@@ -246,7 +256,7 @@ public class SchemeGenerator {
             buildConfiguration: scheme.run?.config ?? defaultDebugConfig.name,
             preActions: scheme.run?.preActions.map(getExecutionAction) ?? [],
             postActions: scheme.run?.postActions.map(getExecutionAction) ?? [],
-            macroExpansion: shouldExecuteOnLaunch ? nil : buildableReference,
+            macroExpansion: macroExpansion,
             selectedDebuggerIdentifier: selectedDebuggerIdentifier(for: schemeTarget, run: scheme.run),
             selectedLauncherIdentifier: selectedLauncherIdentifier(for: schemeTarget, run: scheme.run),
             askForAppToLaunch: scheme.run?.askForAppToLaunch,
