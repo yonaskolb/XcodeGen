@@ -204,19 +204,9 @@ public class SchemeGenerator {
         let launchVariables = scheme.run.flatMap { $0.environmentVariables.isEmpty ? nil : $0.environmentVariables }
         let profileVariables = scheme.profile.flatMap { $0.environmentVariables.isEmpty ? nil : $0.environmentVariables }
 
-        let macroExpansion: XCScheme.BuildableReference?
-        
-        if let macroExpansionName = scheme.run?.macroExpansion {
-            macroExpansion = buildActionEntries.first(where: { $0.buildableReference.blueprintName == macroExpansionName })?.buildableReference ?? buildableReference
-        } else if shouldExecuteOnLaunch {
-            macroExpansion = nil
-        } else {
-            macroExpansion = buildableReference
-        }
-
         let testAction = XCScheme.TestAction(
             buildConfiguration: scheme.test?.config ?? defaultDebugConfig.name,
-            macroExpansion: macroExpansion,
+            macroExpansion: buildableReference,
             testables: testables,
             preActions: scheme.test?.preActions.map(getExecutionAction) ?? [],
             postActions: scheme.test?.postActions.map(getExecutionAction) ?? [],
@@ -249,6 +239,13 @@ public class SchemeGenerator {
         if let storeKitConfiguration = scheme.run?.storeKitConfiguration {
             let storeKitConfigurationPath = Path(components: [project.options.schemePathPrefix, storeKitConfiguration]).simplifyingParentDirectoryReferences()
             storeKitConfigurationFileReference = XCScheme.StoreKitConfigurationFileReference(identifier: storeKitConfigurationPath.string)
+        }
+
+        let macroExpansion: XCScheme.BuildableReference?
+        if let macroExpansionName = scheme.run?.macroExpansion {
+            macroExpansion = buildActionEntries.first(where: { $0.buildableReference.blueprintName == macroExpansionName })?.buildableReference ?? buildableReference
+        } else {
+            macroExpansion = shouldExecuteOnLaunch ? nil : buildableReference
         }
 
         let launchAction = XCScheme.LaunchAction(
