@@ -263,18 +263,22 @@ public struct Scheme: Equatable {
         public var preActions: [ExecutionAction]
         public var postActions: [ExecutionAction]
         public var environmentVariables: [XCScheme.EnvironmentVariable]
+        public var askForAppToLaunch: Bool?
+
         public init(
             config: String,
             commandLineArguments: [String: Bool] = [:],
             preActions: [ExecutionAction] = [],
             postActions: [ExecutionAction] = [],
-            environmentVariables: [XCScheme.EnvironmentVariable] = []
+            environmentVariables: [XCScheme.EnvironmentVariable] = [],
+            askForAppToLaunch: Bool? = nil
         ) {
             self.config = config
             self.commandLineArguments = commandLineArguments
             self.preActions = preActions
             self.postActions = postActions
             self.environmentVariables = environmentVariables
+            self.askForAppToLaunch = askForAppToLaunch
         }
 
         public var shouldUseLaunchSchemeArgsEnv: Bool {
@@ -544,6 +548,9 @@ extension Scheme.Profile: JSONObjectConvertible {
         preActions = jsonDictionary.json(atKeyPath: "preActions") ?? []
         postActions = jsonDictionary.json(atKeyPath: "postActions") ?? []
         environmentVariables = try XCScheme.EnvironmentVariable.parseAll(jsonDictionary: jsonDictionary)
+        if let askLaunch: Bool = jsonDictionary.json(atKeyPath: "askForAppToLaunch") {
+            askForAppToLaunch = askLaunch
+        }
     }
 }
 
@@ -555,6 +562,7 @@ extension Scheme.Profile: JSONEncodable {
             "postActions": postActions.map { $0.toJSONValue() },
             "environmentVariables": environmentVariables.map { $0.toJSONValue() },
             "config": config,
+            "askForAppToLaunch": askForAppToLaunch,
         ] as [String: Any?]
     }
 }
