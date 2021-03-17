@@ -358,6 +358,7 @@ schemes:
         defaultLocation: Honolulu, HI, USA
       customLLDBInit: ${SRCROOT}/.lldbinit
       storeKitConfiguration: "App_iOS/Configuration.storekit"
+      macroExpansion: App_iOS 
     test:
       gatherCoverageData: true
       targets:
@@ -366,14 +367,6 @@ schemes:
           parallelizable: true
           randomExecutionOrder: true
       customLLDBInit: ${SRCROOT}/.lldbinit
-  App_Extension:
-    build:
-      targets:
-        App_iOS: all
-        iMessageExtension: all
-    run:
-      executable: iMessageExtension
-      macroExpansion: App_iOS 
 targetTemplates:
   MyTemplate:
     scheme: {}
