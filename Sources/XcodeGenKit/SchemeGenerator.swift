@@ -242,8 +242,9 @@ public class SchemeGenerator {
         }
 
         let macroExpansion: XCScheme.BuildableReference?
-        if let macroExpansionName = scheme.run?.macroExpansion {
-            macroExpansion = buildActionEntries.first(where: { $0.buildableReference.blueprintName == macroExpansionName })?.buildableReference ?? buildableReference
+        if let macroExpansionName = scheme.run?.macroExpansion,
+           let resolvedMacroExpansion = buildActionEntries.first(where: { $0.buildableReference.blueprintName == macroExpansionName })?.buildableReference {
+            macroExpansion = resolvedMacroExpansion
         } else {
             macroExpansion = shouldExecuteOnLaunch ? nil : buildableReference
         }
