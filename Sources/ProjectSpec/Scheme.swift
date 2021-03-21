@@ -116,6 +116,7 @@ public struct Scheme: Equatable {
         public var executable: String?
         public var storeKitConfiguration: String?
         public var customLLDBInit: String?
+        public var macroExpansion: String?
 
         public init(
             config: String,
@@ -133,7 +134,8 @@ public struct Scheme: Equatable {
             debugEnabled: Bool = debugEnabledDefault,
             simulateLocation: SimulateLocation? = nil,
             storeKitConfiguration: String? = nil,
-            customLLDBInit: String? = nil
+            customLLDBInit: String? = nil,
+            macroExpansion: String? = nil
         ) {
             self.config = config
             self.commandLineArguments = commandLineArguments
@@ -150,6 +152,7 @@ public struct Scheme: Equatable {
             self.simulateLocation = simulateLocation
             self.storeKitConfiguration = storeKitConfiguration
             self.customLLDBInit = customLLDBInit
+            self.macroExpansion = macroExpansion
         }
     }
 
@@ -391,6 +394,7 @@ extension Scheme.Run: JSONObjectConvertible {
             askForAppToLaunch = askLaunch
         }
         customLLDBInit = jsonDictionary.json(atKeyPath: "customLLDBInit")
+        macroExpansion = jsonDictionary.json(atKeyPath: "macroExpansion")
     }
 }
 
@@ -407,6 +411,7 @@ extension Scheme.Run: JSONEncodable {
             "askForAppToLaunch": askForAppToLaunch,
             "launchAutomaticallySubstyle": launchAutomaticallySubstyle,
             "executable": executable,
+            "macroExpansion": macroExpansion
         ]
 
         if disableMainThreadChecker != Scheme.Run.disableMainThreadCheckerDefault {

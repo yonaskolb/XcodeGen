@@ -400,6 +400,38 @@ class SchemeGeneratorTests: XCTestCase {
                 try expect(buildEntries.last?.buildableReference.blueprintName) == "HostApp"
                 try expect(xcscheme.launchAction?.storeKitConfigurationFileReference?.identifier) == "../Configuration.storekit"
             }
+            
+            $0.it("generates scheme with extension target and specify macroExpansion") {
+                let app = Target(
+                    name: "MyApp",
+                    type: .application,
+                    platform: .iOS,
+                    dependencies: [Dependency(type: .target, reference: "MyAppExtension", embed: false)]
+                )
+
+                let `extension` = Target(
+                    name: "MyAppExtension",
+                    type: .appExtension,
+                    platform: .iOS
+                )
+                let appTarget = Scheme.BuildTarget(target: .local(app.name), buildTypes: [.running])
+                let extensionTarget = Scheme.BuildTarget(target: .local(`extension`.name), buildTypes: [.running])
+            
+                let scheme = Scheme(
+                    name: "TestScheme",
+                    build: Scheme.Build(targets: [appTarget, extensionTarget]),
+                    run: Scheme.Run(config: "Debug", macroExpansion: "MyApp")
+                )
+                let project = Project(
+                    name: "test",
+                    targets: [app, `extension`],
+                    schemes: [scheme]
+                )
+                let xcodeProject = try project.generateXcodeProject()
+
+                let xcscheme = try unwrap(xcodeProject.sharedData?.schemes.first)
+                try expect(xcscheme.launchAction?.macroExpansion?.buildableName) == "MyApp.app"
+            }
         }
     }
 

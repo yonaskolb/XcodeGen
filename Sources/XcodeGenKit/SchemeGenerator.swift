@@ -241,12 +241,20 @@ public class SchemeGenerator {
             storeKitConfigurationFileReference = XCScheme.StoreKitConfigurationFileReference(identifier: storeKitConfigurationPath.string)
         }
 
+        let macroExpansion: XCScheme.BuildableReference?
+        if let macroExpansionName = scheme.run?.macroExpansion,
+           let resolvedMacroExpansion = buildActionEntries.first(where: { $0.buildableReference.blueprintName == macroExpansionName })?.buildableReference {
+            macroExpansion = resolvedMacroExpansion
+        } else {
+            macroExpansion = shouldExecuteOnLaunch ? nil : buildableReference
+        }
+
         let launchAction = XCScheme.LaunchAction(
             runnable: shouldExecuteOnLaunch ? runnables.launch : nil,
             buildConfiguration: scheme.run?.config ?? defaultDebugConfig.name,
             preActions: scheme.run?.preActions.map(getExecutionAction) ?? [],
             postActions: scheme.run?.postActions.map(getExecutionAction) ?? [],
-            macroExpansion: shouldExecuteOnLaunch ? nil : buildableReference,
+            macroExpansion: macroExpansion,
             selectedDebuggerIdentifier: selectedDebuggerIdentifier(for: schemeTarget, run: scheme.run),
             selectedLauncherIdentifier: selectedLauncherIdentifier(for: schemeTarget, run: scheme.run),
             askForAppToLaunch: scheme.run?.askForAppToLaunch,
