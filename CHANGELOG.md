@@ -3,6 +3,7 @@
 ## Next Version
 
 #### Added
+- Allow specifying a `copy` setting for each dependency. [#1038](https://github.com/yonaskolb/XcodeGen/pull/1039) @JakubBednar
 - Allow specifying a `github` name like `JohnSundell/Ink` instead of a full `url` for Swift Packages [#1029](https://github.com/yonaskolb/XcodeGen/pull/1029) @yonaskolb
 - Added `macroExpansion` for `run` in `schemes` [#1036](https://github.com/yonaskolb/XcodeGen/pull/1036) @freddi-kit
 - Added `askForAppToLaunch` for `profile` in `schemes`  [#1035](https://github.com/yonaskolb/XcodeGen/pull/1035) @freddi-kit

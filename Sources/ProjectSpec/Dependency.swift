@@ -14,6 +14,7 @@ public struct Dependency: Equatable {
     public var link: Bool?
     public var implicit: Bool = implicitDefault
     public var weakLink: Bool = weakLinkDefault
+    public var copyPhase: BuildPhaseSpec.CopyFilesSettings?
 
     public init(
         type: DependencyType,
@@ -22,7 +23,8 @@ public struct Dependency: Equatable {
         codeSign: Bool? = nil,
         link: Bool? = nil,
         implicit: Bool = implicitDefault,
-        weakLink: Bool = weakLinkDefault
+        weakLink: Bool = weakLinkDefault,
+        copyPhase: BuildPhaseSpec.CopyFilesSettings? = nil
     ) {
         self.type = type
         self.reference = reference
@@ -31,6 +33,7 @@ public struct Dependency: Equatable {
         self.link = link
         self.implicit = implicit
         self.weakLink = weakLink
+        self.copyPhase = copyPhase
     }
 
     public enum CarthageLinkType: String {
@@ -112,6 +115,9 @@ extension Dependency: JSONObjectConvertible {
         if let bool: Bool = jsonDictionary.json(atKeyPath: "weak") {
             weakLink = bool
         }
+        if let object: JSONDictionary = jsonDictionary.json(atKeyPath: "copy") {
+            copyPhase = try BuildPhaseSpec.CopyFilesSettings(jsonDictionary: object)
+        }
     }
 }
 
@@ -121,6 +127,7 @@ extension Dependency: JSONEncodable {
             "embed": embed,
             "codeSign": codeSign,
             "link": link,
+            "copy": copyPhase?.toJSONValue(),
         ]
 
         if removeHeaders != Dependency.removeHeadersDefault {

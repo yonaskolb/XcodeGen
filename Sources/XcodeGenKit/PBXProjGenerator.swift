@@ -654,6 +654,7 @@ public class PBXProjGenerator {
         var targetFrameworkBuildFiles: [PBXBuildFile] = []
         var frameworkBuildPaths = Set<String>()
         var copyFilesBuildPhasesFiles: [BuildPhaseSpec.CopyFilesSettings: [PBXBuildFile]] = [:]
+        var copyToolsReferences: [PBXBuildFile] = []
         var copyFrameworksReferences: [PBXBuildFile] = []
         var copyResourcesReferences: [PBXBuildFile] = []
         var copyBundlesReferences: [PBXBuildFile] = []
@@ -679,7 +680,11 @@ public class PBXProjGenerator {
             if dependency.removeHeaders {
                 embedAttributes.append("RemoveHeadersOnCopy")
             }
-            return ["ATTRIBUTES": embedAttributes]
+            var retval: [String:Any] = ["ATTRIBUTES": embedAttributes]
+            if let copyPhase = dependency.copyPhase {
+                retval["COPY_PHASE"] = copyPhase
+            }
+            return retval
         }
 
         func getDependencyFrameworkSettings(dependency: Dependency) -> [String: Any]? {
@@ -729,6 +734,9 @@ public class PBXProjGenerator {
                     copyWatchReferences.append(embedFile)
                 } else if dependencyTarget.type == .xpcService {
                     copyFilesBuildPhasesFiles[.xpcServices, default: []].append(embedFile)
+                } else if dependencyTarget.type == .commandLineTool, dependency.copyPhase != nil {
+                    // compatibility with older xcodeGen, when copyPhase was not specified the file was embeded into Resources
+                    copyToolsReferences.append(embedFile)
                 } else {
                     copyResourcesReferences.append(embedFile)
                 }
@@ -988,15 +996,29 @@ public class PBXProjGenerator {
             return sourceFilesByCopyFiles.mapValues { getBuildFilesForSourceFiles($0) }
         }
 
-        func getPBXCopyFilesBuildPhase(dstSubfolderSpec: PBXCopyFilesBuildPhase.SubFolder, name: String, files: [PBXBuildFile]) -> PBXCopyFilesBuildPhase {
+        func getPBXCopyFilesBuildPhase(dstPath: String = "", dstSubfolderSpec: PBXCopyFilesBuildPhase.SubFolder, name: String, files: [PBXBuildFile]) -> PBXCopyFilesBuildPhase {
             return PBXCopyFilesBuildPhase(
-                dstPath: "",
+                dstPath: dstPath,
                 dstSubfolderSpec: dstSubfolderSpec,
                 name: name,
                 buildActionMask: target.onlyCopyFilesOnInstall ? PBXProjGenerator.copyFilesActionMask : PBXBuildPhase.defaultBuildActionMask,
                 files: files,
                 runOnlyForDeploymentPostprocessing: target.onlyCopyFilesOnInstall ? true : false
             )
+        }
+        
+        func splitCopyDepsByDestination(_ references: [PBXBuildFile], withDefaultDestination: BuildPhaseSpec.CopyFilesSettings.Destination) -> [BuildPhaseSpec.CopyFilesSettings : [PBXBuildFile]] {
+        
+            var retval = [BuildPhaseSpec.CopyFilesSettings : [PBXBuildFile]]()
+            let defaultSpec = BuildPhaseSpec.CopyFilesSettings(destination: withDefaultDestination, subpath: "", phaseOrder: .postCompile)
+            for reference in references {
+                
+                let key = reference.settings?["COPY_PHASE"] as? BuildPhaseSpec.CopyFilesSettings ?? defaultSpec
+                var filesWithSameDestination = retval[key] ?? [PBXBuildFile]()
+                filesWithSameDestination.append(reference)
+                retval[key] = filesWithSameDestination
+            }
+            return retval
         }
         
         copyFilesBuildPhasesFiles.merge(getBuildFilesForCopyFilesPhases()) { $0 + $1 }
@@ -1120,13 +1142,31 @@ public class PBXProjGenerator {
         copyFrameworksReferences += getBuildFilesForPhase(.frameworks)
         if !copyFrameworksReferences.isEmpty {
 
-            let copyFilesPhase = addObject(
-                getPBXCopyFilesBuildPhase(dstSubfolderSpec: .frameworks, name: "Embed Frameworks", files: copyFrameworksReferences)
-            )
+            let splitted = splitCopyDepsByDestination(copyFrameworksReferences, withDefaultDestination: .frameworks)
+            for (phase, references) in splitted {
+                
+                let copyFilesPhase = addObject(
+                    getPBXCopyFilesBuildPhase(dstPath:phase.subpath, dstSubfolderSpec: phase.destination.destination ?? .frameworks, name: "Embed Frameworks", files: references)
+                )
 
-            buildPhases.append(copyFilesPhase)
+                buildPhases.append(copyFilesPhase)
+            }
         }
 
+        if !copyToolsReferences.isEmpty {
+            
+            // compatibility thing. The original XcodeGen was embedding command line tools into Resources folder
+            let splitted = splitCopyDepsByDestination(copyToolsReferences, withDefaultDestination: .resources)
+            for (phase, references) in splitted {
+                
+                let copyFilesPhase = addObject(
+                    getPBXCopyFilesBuildPhase(dstPath:phase.subpath, dstSubfolderSpec: phase.destination.destination ?? .resources, name: "Embed Tools", files: references)
+                )
+
+                buildPhases.append(copyFilesPhase)
+            }
+        }
+        
         if !copyWatchReferences.isEmpty {
 
             let copyFilesPhase = addObject(
