@@ -653,8 +653,8 @@ public class PBXProjGenerator {
         var dependencies: [PBXTargetDependency] = []
         var targetFrameworkBuildFiles: [PBXBuildFile] = []
         var frameworkBuildPaths = Set<String>()
+        var customCopyDependenciesReferences: [PBXBuildFile] = []
         var copyFilesBuildPhasesFiles: [BuildPhaseSpec.CopyFilesSettings: [PBXBuildFile]] = [:]
-        var copyToolsReferences: [PBXBuildFile] = []
         var copyFrameworksReferences: [PBXBuildFile] = []
         var copyResourcesReferences: [PBXBuildFile] = []
         var copyBundlesReferences: [PBXBuildFile] = []
@@ -722,7 +722,10 @@ public class PBXProjGenerator {
                     )
                 )
 
-                if dependencyTarget.type.isExtension {
+                if dependency.copyPhase != nil {
+                    // custom copy takes precedence
+                    customCopyDependenciesReferences.append(embedFile)
+                } else if dependencyTarget.type.isExtension {
                     // embed app extension
                     extensions.append(embedFile)
                 } else if dependencyTarget.type == .onDemandInstallCapableApplication {
@@ -734,9 +737,6 @@ public class PBXProjGenerator {
                     copyWatchReferences.append(embedFile)
                 } else if dependencyTarget.type == .xpcService {
                     copyFilesBuildPhasesFiles[.xpcServices, default: []].append(embedFile)
-                } else if dependencyTarget.type == .commandLineTool, dependency.copyPhase != nil {
-                    // compatibility with older xcodeGen, when copyPhase was not specified the file was embeded into Resources
-                    copyToolsReferences.append(embedFile)
                 } else {
                     copyResourcesReferences.append(embedFile)
                 }
@@ -801,7 +801,12 @@ public class PBXProjGenerator {
                     let embedFile = addObject(
                         PBXBuildFile(file: fileReference, settings: getEmbedSettings(dependency: dependency, codeSign: dependency.codeSign ?? true))
                     )
-                    copyFrameworksReferences.append(embedFile)
+                    
+                    if dependency.copyPhase != nil {
+                        customCopyDependenciesReferences.append(embedFile)
+                    } else {
+                        copyFrameworksReferences.append(embedFile)
+                    }
                 }
             case .sdk(let root):
 
@@ -852,7 +857,12 @@ public class PBXProjGenerator {
                     let embedFile = addObject(
                         PBXBuildFile(file: fileReference, settings: getEmbedSettings(dependency: dependency, codeSign: dependency.codeSign ?? true))
                     )
-                    copyFrameworksReferences.append(embedFile)
+                    
+                    if dependency.copyPhase != nil {
+                        customCopyDependenciesReferences.append(embedFile)
+                    } else {
+                        copyFrameworksReferences.append(embedFile)
+                    }
                 }
 
             case .carthage(let findFrameworks, let linkType):
@@ -917,7 +927,12 @@ public class PBXProjGenerator {
                         PBXBuildFile(product: packageDependency,
                                      settings: getEmbedSettings(dependency: dependency, codeSign: dependency.codeSign ?? true))
                     )
-                    copyFrameworksReferences.append(embedFile)
+                    
+                    if dependency.copyPhase != nil {
+                        customCopyDependenciesReferences.append(embedFile)
+                    } else {
+                        copyFrameworksReferences.append(embedFile)
+                    }
                 }
             case .bundle:
                 // Static and dynamic libraries can't copy resources
@@ -962,7 +977,11 @@ public class PBXProjGenerator {
                     let embedFile = addObject(
                         PBXBuildFile(file: fileReference, settings: getEmbedSettings(dependency: dependency, codeSign: dependency.codeSign ?? true))
                     )
-                    copyFrameworksReferences.append(embedFile)
+                    if dependency.copyPhase != nil {
+                        customCopyDependenciesReferences.append(embedFile)
+                    } else {
+                        copyFrameworksReferences.append(embedFile)
+                    }
                 } else {
                     carthageFrameworksToEmbed.append(dependency.reference)
                 }
@@ -1007,13 +1026,13 @@ public class PBXProjGenerator {
             )
         }
         
-        func splitCopyDepsByDestination(_ references: [PBXBuildFile], withDefaultDestination: BuildPhaseSpec.CopyFilesSettings.Destination) -> [BuildPhaseSpec.CopyFilesSettings : [PBXBuildFile]] {
+        func splitCopyDepsByDestination(_ references: [PBXBuildFile]) -> [BuildPhaseSpec.CopyFilesSettings : [PBXBuildFile]] {
         
             var retval = [BuildPhaseSpec.CopyFilesSettings : [PBXBuildFile]]()
-            let defaultSpec = BuildPhaseSpec.CopyFilesSettings(destination: withDefaultDestination, subpath: "", phaseOrder: .postCompile)
             for reference in references {
                 
-                let key = reference.settings?["COPY_PHASE"] as? BuildPhaseSpec.CopyFilesSettings ?? defaultSpec
+                // I would prefer force unwrap as it should never return nil, but I am not sure about code policy
+                guard let key = reference.settings?["COPY_PHASE"] as? BuildPhaseSpec.CopyFilesSettings else { continue }
                 var filesWithSameDestination = retval[key] ?? [PBXBuildFile]()
                 filesWithSameDestination.append(reference)
                 retval[key] = filesWithSameDestination
@@ -1142,25 +1161,24 @@ public class PBXProjGenerator {
         copyFrameworksReferences += getBuildFilesForPhase(.frameworks)
         if !copyFrameworksReferences.isEmpty {
 
-            let splitted = splitCopyDepsByDestination(copyFrameworksReferences, withDefaultDestination: .frameworks)
-            for (phase, references) in splitted {
-                
-                let copyFilesPhase = addObject(
-                    getPBXCopyFilesBuildPhase(dstPath:phase.subpath, dstSubfolderSpec: phase.destination.destination ?? .frameworks, name: "Embed Frameworks", files: references)
-                )
+            let copyFilesPhase = addObject(
+                getPBXCopyFilesBuildPhase(dstSubfolderSpec: .frameworks, name: "Embed Frameworks", files: copyFrameworksReferences)
+            )
 
-                buildPhases.append(copyFilesPhase)
-            }
+            buildPhases.append(copyFilesPhase)
         }
 
-        if !copyToolsReferences.isEmpty {
+        if !customCopyDependenciesReferences.isEmpty {
             
             // compatibility thing. The original XcodeGen was embedding command line tools into Resources folder
-            let splitted = splitCopyDepsByDestination(copyToolsReferences, withDefaultDestination: .resources)
+            let splitted = splitCopyDepsByDestination(customCopyDependenciesReferences)
             for (phase, references) in splitted {
                 
+                // I would prefer force unwrap as it should never return nil, but I am not sure about code policy
+                guard let destination = phase.destination.destination else { continue }
+                
                 let copyFilesPhase = addObject(
-                    getPBXCopyFilesBuildPhase(dstPath:phase.subpath, dstSubfolderSpec: phase.destination.destination ?? .resources, name: "Embed Tools", files: references)
+                    getPBXCopyFilesBuildPhase(dstPath:phase.subpath, dstSubfolderSpec: destination, name: "Embed Dependencis", files: references)
                 )
 
                 buildPhases.append(copyFilesPhase)
