@@ -68,6 +68,9 @@ public class CarthageDependencyResolver {
 
             if let target = projectTarget as? Target {
                 for dependency in target.dependencies {
+                    if case (false, false) = (dependency.link, dependency.embed ?? topLevelTarget.shouldEmbedCarthageDependencies) {
+                        continue
+                    }
                     guard !frameworks.contains(where: { $0.dependency == dependency }) else {
                         continue
                     }
