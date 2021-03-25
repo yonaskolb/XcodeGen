@@ -1170,7 +1170,6 @@ public class PBXProjGenerator {
 
         if !customCopyDependenciesReferences.isEmpty {
             
-            // compatibility thing. The original XcodeGen was embedding command line tools into Resources folder
             let splitted = splitCopyDepsByDestination(customCopyDependenciesReferences)
             for (phase, references) in splitted {
                 
@@ -1178,7 +1177,7 @@ public class PBXProjGenerator {
                 guard let destination = phase.destination.destination else { continue }
                 
                 let copyFilesPhase = addObject(
-                    getPBXCopyFilesBuildPhase(dstPath:phase.subpath, dstSubfolderSpec: destination, name: "Embed Dependencis", files: references)
+                    getPBXCopyFilesBuildPhase(dstPath:phase.subpath, dstSubfolderSpec: destination, name: "Embed Dependencies", files: references)
                 )
 
                 buildPhases.append(copyFilesPhase)
