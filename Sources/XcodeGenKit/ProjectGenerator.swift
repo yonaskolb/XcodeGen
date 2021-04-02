@@ -13,13 +13,34 @@ public class ProjectGenerator {
         self.project = project
     }
 
-    public func generateXcodeProject(in projectDirectory: Path? = nil) throws -> XcodeProj {
+    public func generateXcodeProject(in projectDirectory: Path? = nil, completion: @escaping ((XcodeProj) -> Void)) throws {
 
         // generate PBXProj
         let pbxProjGenerator = PBXProjGenerator(project: project,
                                                 projectDirectory: projectDirectory)
-        let pbxProj = try pbxProjGenerator.generate()
+        let pbxProjGroup = DispatchGroup()
+        var pbxProj: PBXProj!
+        pbxProjGroup.enter()
+        var pbxProjError: Error?
+        DispatchQueue.global(qos: .userInitiated).async {
+            do {
+                pbxProjGroup.enter()
+                try pbxProjGenerator.generate { (generatedPbxProj) in
+                    pbxProj = generatedPbxProj
+                    pbxProjGroup.leave()
+                }
+            } catch {
+                pbxProjError = error
+                pbxProjGroup.leave()
+            }
+            pbxProjGroup.leave()
+        }
 
+        pbxProjGroup.wait()
+
+        guard pbxProjError == nil else {
+            throw pbxProjError!
+        }
         // generate Schemes
         let schemeGenerator = SchemeGenerator(project: project, pbxProj: pbxProj)
         let schemes = try schemeGenerator.generateSchemes()
@@ -28,7 +49,7 @@ public class ProjectGenerator {
         let workspace = try generateWorkspace()
 
         let sharedData = XCSharedData(schemes: schemes)
-        return XcodeProj(workspace: workspace, pbxproj: pbxProj, sharedData: sharedData)
+        completion(XcodeProj(workspace: workspace, pbxproj: pbxProj, sharedData: sharedData))
     }
 
     func generateWorkspace() throws -> XCWorkspace {

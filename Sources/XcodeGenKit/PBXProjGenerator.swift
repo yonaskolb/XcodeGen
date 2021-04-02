@@ -17,14 +17,14 @@ public class PBXProjGenerator {
 
     var sourceGenerator: SourceGenerator!
 
-    var targetObjects: [String: PBXTarget] = [:]
+    var targetObjects: Atomic<[String: PBXTarget]> = Atomic<[String: PBXTarget]>(wrappedValue: [:])
     var targetAggregateObjects: [String: PBXAggregateTarget] = [:]
     var targetFileReferences: [String: PBXFileReference] = [:]
     var sdkFileReferences: [String: PBXFileReference] = [:]
     var packageReferences: [String: XCRemoteSwiftPackageReference] = [:]
 
     var carthageFrameworksByPlatform: [String: Set<PBXFileElement>] = [:]
-    var frameworkFiles: [PBXFileElement] = []
+    var frameworkFiles: Atomic<[PBXFileElement]> = Atomic<[PBXFileElement]>(wrappedValue: [])
     var bundleFiles: [PBXFileElement] = []
 
     var generated = false
@@ -48,14 +48,35 @@ public class PBXProjGenerator {
         return object
     }
 
-    public func generate() throws -> PBXProj {
+    public func generate(completion: ((PBXProj) -> Void)) throws {
         if generated {
             fatalError("Cannot use PBXProjGenerator to generate more than once")
         }
         generated = true
 
-        for group in project.fileGroups {
-            try sourceGenerator.getFileGroups(path: group)
+        var getFileGroupsError: [Error] = []
+        let getFileGroupsDispatchGroup = DispatchGroup()
+        getFileGroupsDispatchGroup.enter()
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+            defer {
+                getFileGroupsDispatchGroup.leave()
+            }
+            guard let strongSelf = self else {
+                return
+            }
+            for group in strongSelf.project.fileGroups {
+                do {
+                    try strongSelf.sourceGenerator.getFileGroups(path: group) {
+                    }
+                } catch let error {
+                    getFileGroupsError.append(error)
+                }
+            }
+        }
+        getFileGroupsDispatchGroup.wait()
+
+        guard getFileGroupsError.isEmpty else {
+            throw getFileGroupsError.first!
         }
 
         let buildConfigs: [XCBuildConfiguration] = project.configs.map { config in
@@ -124,7 +145,9 @@ public class PBXProjGenerator {
                 targetObject = PBXNativeTarget(name: target.name, buildPhases: [])
             }
 
-            targetObjects[target.name] = addObject(targetObject)
+            targetObjects.mutate {
+                $0[target.name] = addObject(targetObject)
+            }
 
             var explicitFileType: String?
             var lastKnownFileType: String?
@@ -222,8 +245,73 @@ public class PBXProjGenerator {
             pbxProject.projects = subprojects
         }
 
-        try project.targets.forEach(generateTarget)
-        try project.aggregateTargets.forEach(generateAggregateTarget)
+        var targetErrors: [Error] = []
+        var aggregateTargetsErrors: [Error] = []
+
+        var generatedTargetNames: [String] = []
+        var targetsPendingDependencyGeneration: [Target] = project.targets
+        while generatedTargetNames.count != project.targets.count {
+            var targetsReadyToGenerate = targetsPendingDependencyGeneration.filter({ [project] target in
+                let dependencies = target.getAllDependencies(usingProject: project)
+                return dependencies.reduce(into: true) { (result: inout Bool, dependency) in
+                    if dependency.reference.contains("/") {
+                        return // skip such dependencies because they are Project references most likely
+                    }
+                    result = result && generatedTargetNames.contains(dependency.reference)
+                }
+            })
+            // this means, that all pending targets probably depend on each other
+            if targetsReadyToGenerate.count == 0 {
+                // Sort pending targets by dependency when falling back to sequential target
+                // generation, thereby picking the targets with least dependencies first,
+                // so that further targets to be generated can be parallelized if possible
+                targetsPendingDependencyGeneration.sort(by: { $0.dependencies.count < $1.dependencies.count })
+                // pick atleast one target and proceed, to prevent an infinite loop
+                targetsReadyToGenerate = [targetsPendingDependencyGeneration.removeFirst()]
+            }
+            let parallelTargetGenerationGroup = DispatchGroup()
+            for target in targetsReadyToGenerate {
+                parallelTargetGenerationGroup.enter()
+                DispatchQueue.global(qos: .userInitiated).async {
+                    do {
+                        try self.generateTarget(target)
+                    } catch let error {
+                        targetErrors.append(error)
+                    }
+                    parallelTargetGenerationGroup.leave()
+                }
+                generatedTargetNames.append(target.name)
+            }
+            parallelTargetGenerationGroup.wait()
+            targetsPendingDependencyGeneration = targetsPendingDependencyGeneration.filter({ target in
+                !generatedTargetNames.contains(target.name)
+            })
+        }
+
+        let generateTargetsGroup = DispatchGroup()
+        generateTargetsGroup.enter()
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+            self?.project.aggregateTargets.forEach { target in
+                generateTargetsGroup.enter()
+                    do {
+                        try self?.generateAggregateTarget(target)
+                    } catch let error {
+                        aggregateTargetsErrors.append(error)
+                    }
+                generateTargetsGroup.leave()
+            }
+            generateTargetsGroup.leave()
+        }
+
+        generateTargetsGroup.wait()
+
+        guard targetErrors.isEmpty else {
+            throw targetErrors.first!
+        }
+
+        guard aggregateTargetsErrors.isEmpty else {
+            throw aggregateTargetsErrors.first!
+        }
 
         if !carthageFrameworksByPlatform.isEmpty {
             var platforms: [PBXGroup] = []
@@ -245,13 +333,15 @@ public class PBXProjGenerator {
                     path: carthageResolver.buildPath
                 )
             )
-            frameworkFiles.append(carthageGroup)
+            frameworkFiles.mutate {
+                $0.append(carthageGroup)
+            }
         }
 
-        if !frameworkFiles.isEmpty {
+        if !frameworkFiles.wrappedValue.isEmpty {
             let group = addObject(
                 PBXGroup(
-                    children: frameworkFiles,
+                    children: frameworkFiles.wrappedValue,
                     sourceTree: .group,
                     name: "Frameworks"
                 )
@@ -270,7 +360,7 @@ public class PBXProjGenerator {
             derivedGroups.append(group)
         }
 
-        mainGroup.children = Array(sourceGenerator.rootGroups)
+        mainGroup.children = Array(sourceGenerator.rootGroups.wrappedValue)
         sortGroups(group: mainGroup)
         setupGroupOrdering(group: mainGroup)
         // add derived groups at the end
@@ -292,7 +382,7 @@ public class PBXProjGenerator {
             projectAttributes["knownAssetTags"] = assetTags
         }
 
-        var knownRegions = Set(sourceGenerator.knownRegions)
+        var knownRegions = Set(sourceGenerator.knownRegions.wrappedValue)
         knownRegions.insert(developmentRegion)
         if project.options.useBaseInternationalization {
             knownRegions.insert("Base")
@@ -301,12 +391,12 @@ public class PBXProjGenerator {
 
         pbxProject.packages = packageReferences.sorted { $0.key < $1.key }.map { $1 }
 
-        let allTargets: [PBXTarget] = targetObjects.valueArray + targetAggregateObjects.valueArray
+        let allTargets: [PBXTarget] = targetObjects.wrappedValue.valueArray + targetAggregateObjects.valueArray
         pbxProject.targets = allTargets
             .sorted { $0.name < $1.name }
         pbxProject.attributes = projectAttributes
         pbxProject.targetAttributes = generateTargetAttributes()
-        return pbxProj
+        completion(pbxProj)
     }
 
     func generateAggregateTarget(_ target: AggregateTarget) throws {
@@ -346,8 +436,8 @@ public class PBXProjGenerator {
     }
 
     func generateTargetDependency(from: String, to target: String) -> PBXTargetDependency {
-        guard let targetObject = targetObjects[target] ?? targetAggregateObjects[target] else {
-            fatalError("Target dependency not found: from ( \(from) ) to ( \(target) )")
+        guard let targetObject = targetObjects.wrappedValue[target] ?? targetAggregateObjects[target] else {
+            fatalError("Target dependency not found: from  ( \(from) ) to ( \(target) )")
         }
 
         let targetProxy = addObject(
@@ -551,7 +641,7 @@ public class PBXProjGenerator {
         }
 
         for target in project.targets {
-            guard let pbxTarget = targetObjects[target.name] else {
+            guard let pbxTarget = targetObjects.wrappedValue[target.name] else {
                 continue
             }
             generateTargetAttributes(target, pbxTarget: pbxTarget)
@@ -643,8 +733,10 @@ public class PBXProjGenerator {
     func generateTarget(_ target: Target) throws {
         let carthageDependencies = carthageResolver.dependencies(for: target)
 
-        let sourceFiles = try sourceGenerator.getAllSourceFiles(targetType: target.type, sources: target.sources)
-            .sorted { $0.path.lastComponent < $1.path.lastComponent }
+        var sourceFiles: [SourceFile] = []
+        try sourceGenerator.getAllSourceFiles(targetType: target.type, sources: target.sources) { sources in
+            sourceFiles = sources.sorted { $0.path.lastComponent < $1.path.lastComponent }
+        }
 
         var plistPath: Path?
         var searchForPlist = true
@@ -664,8 +756,7 @@ public class PBXProjGenerator {
         var carthageFrameworksToEmbed: [String] = []
         let localPackageReferences: [String] = project.packages.compactMap { $0.value.isLocal ? $0.key : nil }
 
-        let targetDependencies = (target.transitivelyLinkDependencies ?? project.options.transitivelyLinkDependencies) ?
-            getAllDependenciesPlusTransitiveNeedingEmbedding(target: target) : target.dependencies
+        let targetDependencies = target.getAllDependencies(usingProject: self.project)
 
         let targetSupportsDirectEmbed = !(target.platform.requiresSimulatorStripping &&
             (target.type.isApp || target.type == .watch2Extension))
@@ -785,8 +876,10 @@ public class PBXProjGenerator {
                     targetFrameworkBuildFiles.append(buildFile)
                 }
 
-                if !frameworkFiles.contains(fileReference) {
-                    frameworkFiles.append(fileReference)
+                if !frameworkFiles.wrappedValue.contains(fileReference) {
+                    frameworkFiles.mutate {
+                        $0.append(fileReference)
+                    }
                 }
 
                 if embed {
@@ -829,7 +922,9 @@ public class PBXProjGenerator {
                         )
                     )
                     sdkFileReferences[dependency.reference] = fileReference
-                    frameworkFiles.append(fileReference)
+                    frameworkFiles.mutate({
+                        $0.append(fileReference)
+                    })
                 }
 
                 let buildFile = addObject(
@@ -1284,7 +1379,7 @@ public class PBXProjGenerator {
             defaultConfigurationName: defaultConfigurationName
         ))
 
-        let targetObject = targetObjects[target.name]!
+        let targetObject = targetObjects.wrappedValue[target.name]!
 
         let targetFileReference = targetFileReferences[target.name]
 
@@ -1314,77 +1409,11 @@ public class PBXProjGenerator {
             }
             .first
     }
-
-    func getAllDependenciesPlusTransitiveNeedingEmbedding(target topLevelTarget: Target) -> [Dependency] {
-        // this is used to resolve cyclical target dependencies
-        var visitedTargets: Set<String> = []
-        var dependencies: [String: Dependency] = [:]
-        var queue: [Target] = [topLevelTarget]
-        while !queue.isEmpty {
-            let target = queue.removeFirst()
-            if visitedTargets.contains(target.name) {
-                continue
-            }
-
-            let isTopLevel = target == topLevelTarget
-
-            for dependency in target.dependencies {
-                // don't overwrite dependencies, to allow top level ones to rule
-                if dependencies[dependency.uniqueID] != nil {
-                    continue
-                }
-
-                // don't want a dependency if it's going to be embedded or statically linked in a non-top level target
-                // in .target check we filter out targets that will embed all of their dependencies
-                // For some more context about the `dependency.embed != true` lines, refer to https://github.com/yonaskolb/XcodeGen/pull/820
-                switch dependency.type {
-                case .sdk:
-                    dependencies[dependency.uniqueID] = dependency
-                case .framework, .carthage, .package:
-                    if isTopLevel || dependency.embed != true {
-                        dependencies[dependency.uniqueID] = dependency
-                    }
-                case .target:
-                    let dependencyTargetReference = try! TargetReference(dependency.reference)
-
-                    switch dependencyTargetReference.location {
-                    case .local:
-                        if isTopLevel || dependency.embed != true {
-                            if let dependencyTarget = project.getTarget(dependency.reference) {
-                                dependencies[dependency.uniqueID] = dependency
-                                if !dependencyTarget.shouldEmbedDependencies {
-                                    // traverse target's dependencies if it doesn't embed them itself
-                                    queue.append(dependencyTarget)
-                                }
-                            } else if project.getAggregateTarget(dependency.reference) != nil {
-                                // Aggregate targets should be included
-                                dependencies[dependency.uniqueID] = dependency
-                            }
-                        }
-                    case .project:
-                        if isTopLevel || dependency.embed != true {
-                            dependencies[dependency.uniqueID] = dependency
-                        }
-                    }
-                case .bundle:
-                    if isTopLevel {
-                        dependencies[dependency.uniqueID] = dependency
-                    }
-                }
-            }
-
-            visitedTargets.update(with: target.name)
-        }
-
-        return dependencies.sorted(by: { $0.key < $1.key }).map { $0.value }
-    }
 }
 
 extension Target {
 
-    var shouldEmbedDependencies: Bool {
-        type.isApp || type.isTest
-    }
+
 
     var shouldEmbedCarthageDependencies: Bool {
         (type.isApp && platform != .watchOS)

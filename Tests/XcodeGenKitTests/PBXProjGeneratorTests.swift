@@ -15,7 +15,15 @@ extension Project {
                 try self.validate()
             }
             let generator = ProjectGenerator(project: self)
-            return try generator.generateXcodeProject()
+            let dispatchGroup = DispatchGroup()
+            dispatchGroup.enter()
+            var xcodeproj: XcodeProj!
+            try generator.generateXcodeProject() {
+                xcodeproj = $0
+                dispatchGroup.leave()
+            }
+            dispatchGroup.wait()
+            return xcodeproj
         }
     }
 
