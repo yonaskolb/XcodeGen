@@ -10,7 +10,7 @@
 #### Fixed
 - Fixed regression on **.storekit** configuration files' default build phase. [#1026](https://github.com/yonaskolb/XcodeGen/pull/1026) @jcolicchio
 - Fixed bug where schemes without a build target would crash instead of displaying an error [#1040](https://github.com/yonaskolb/XcodeGen/pull/1040) @dalemyers
-- Fix files such as **GoogleServices-Info.plist** from being omitted from the Copy Resources build phase. Now, only the resolved Info.plist path for a specific target is skipped. [#1027](https://github.com/yonaskolb/XcodeGen/pull/1027) @liamnichols
+- Fixed files with names ending in **Info.plist** (such as **GoogleServices-Info.plist**) from being omitted from the Copy Resources build phase. Now, only the resolved info plist file for each specific target is omitted. [#1027](https://github.com/yonaskolb/XcodeGen/pull/1027) @liamnichols
 
 #### Internal
 - Build universal binaries for release. XcodeGen now runs natively on Apple Silicon. [#1024](https://github.com/yonaskolb/XcodeGen/pull/1024) @thii
