@@ -606,7 +606,7 @@ class SourceGeneratorTests: XCTestCase {
                     TargetSource(path: "B", buildPhase: BuildPhaseSpec.none),
                     TargetSource(path: "C", buildPhase: nil),
                 ])
-                let project = Project(basePath: directoryPath.absolute(), name: "Test", targets: [target])
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target])
 
                 let pbxProj = try project.generatePbxProj()
                 try pbxProj.expectFile(paths: ["A", "file.swift"], buildPhase: .resources)

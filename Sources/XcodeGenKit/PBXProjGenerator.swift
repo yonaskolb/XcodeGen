@@ -1315,7 +1315,8 @@ public class PBXProjGenerator {
                 searchForDefaultInfoPlist = false
 
                 if let plistPath = getInfoPlist(target.sources) {
-                    let relative = (try? plistPath.relativePath(from: projectDirectory ?? project.basePath)) ?? plistPath
+                    let basePath = projectDirectory ?? project.basePath.absolute()
+                    let relative = (try? plistPath.relativePath(from: basePath)) ?? plistPath
                     defaultInfoPlist = relative.string
                 }
             }
