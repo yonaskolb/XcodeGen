@@ -1031,7 +1031,6 @@ public class PBXProjGenerator {
             var retval = [BuildPhaseSpec.CopyFilesSettings : [PBXBuildFile]]()
             for reference in references {
                 
-                // I would prefer force unwrap as it should never return nil, but I am not sure about code policy
                 guard let key = reference.settings?["COPY_PHASE"] as? BuildPhaseSpec.CopyFilesSettings else { continue }
                 var filesWithSameDestination = retval[key] ?? [PBXBuildFile]()
                 filesWithSameDestination.append(reference)
@@ -1173,7 +1172,6 @@ public class PBXProjGenerator {
             let splitted = splitCopyDepsByDestination(customCopyDependenciesReferences)
             for (phase, references) in splitted {
                 
-                // I would prefer force unwrap as it should never return nil, but I am not sure about code policy
                 guard let destination = phase.destination.destination else { continue }
                 
                 let copyFilesPhase = addObject(

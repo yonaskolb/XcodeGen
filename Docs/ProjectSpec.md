@@ -421,11 +421,14 @@ A dependency can be one of a 6 types:
 - `package: name` - links to a Swift Package. The name must match the name of a package defined in the top level `packages`
 - `bundle: name` - adds the pre-built bundle for the supplied name to the copy resources build phase. This is useful when a dependency exists on a static library target that has an associated bundle target, both existing in a separate project. Only usable in target types which can copy resources.
 
-**Copy options**:
+**Linking options**:
 
-Custom settings for embed destination. This only applies when `embed` is true.
-
-- `copy` - Copy Files Phase for this dependency. Must be specified as an object with the following fields:
+- [ ] **embed**: **Bool** - Whether to embed the dependency. Defaults to true for application target and false for non application targets.
+- [ ] **link**: **Bool** - Whether to link the dependency. Defaults to `true` depending on the type of the dependency and the type of the target (e.g. static libraries will only link to executables by default).
+- [ ] **codeSign**: **Bool** - Whether the `codeSignOnCopy` setting is applied when embedding framework. Defaults to true
+- [ ] **removeHeaders**: **Bool** - Whether the `removeHeadersOnCopy` setting is applied when embedding the framework. Defaults to true
+- [ ] **weak**: **Bool** - Whether the `Weak` setting is applied when linking the framework. Defaults to false
+- **copy** - Copy Files Phase for this dependency. This only applies when `embed` is true. Must be specified as an object with the following fields:
     - [x] **destination**: **String** - Destination of the Copy Files phase. This can be one of the following values:
         - `absolutePath`
         - `productsDirectory`
@@ -438,15 +441,6 @@ Custom settings for embed destination. This only applies when `embed` is true.
         - `sharedSupport`
         - `plugins`
     - [ ] **subpath**: **String** - The path inside of the destination to copy the files.
-
-
-**Linking options**:
-
-- [ ] **embed**: **Bool** - Whether to embed the dependency. Defaults to true for application target and false for non application targets.
-- [ ] **link**: **Bool** - Whether to link the dependency. Defaults to `true` depending on the type of the dependency and the type of the target (e.g. static libraries will only link to executables by default).
-- [ ] **codeSign**: **Bool** - Whether the `codeSignOnCopy` setting is applied when embedding framework. Defaults to true
-- [ ] **removeHeaders**: **Bool** - Whether the `removeHeadersOnCopy` setting is applied when embedding the framework. Defaults to true
-- [ ] **weak**: **Bool** - Whether the `Weak` setting is applied when linking the framework. Defaults to false
 
 **Implicit Framework options**:
 
