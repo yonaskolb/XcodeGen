@@ -1,5 +1,6 @@
 import Foundation
 import JSONUtilities
+import PathKit
 import XcodeProj
 
 public typealias BuildType = XCScheme.BuildAction.Entry.BuildFor
@@ -113,6 +114,9 @@ public struct Scheme: Equatable {
         public var debugEnabled: Bool
         public var simulateLocation: SimulateLocation?
         public var executable: String?
+        public var storeKitConfiguration: String?
+        public var customLLDBInit: String?
+        public var macroExpansion: String?
 
         public init(
             config: String,
@@ -128,7 +132,10 @@ public struct Scheme: Equatable {
             askForAppToLaunch: Bool? = nil,
             launchAutomaticallySubstyle: String? = nil,
             debugEnabled: Bool = debugEnabledDefault,
-            simulateLocation: SimulateLocation? = nil
+            simulateLocation: SimulateLocation? = nil,
+            storeKitConfiguration: String? = nil,
+            customLLDBInit: String? = nil,
+            macroExpansion: String? = nil
         ) {
             self.config = config
             self.commandLineArguments = commandLineArguments
@@ -143,6 +150,9 @@ public struct Scheme: Equatable {
             self.launchAutomaticallySubstyle = launchAutomaticallySubstyle
             self.debugEnabled = debugEnabled
             self.simulateLocation = simulateLocation
+            self.storeKitConfiguration = storeKitConfiguration
+            self.customLLDBInit = customLLDBInit
+            self.macroExpansion = macroExpansion
         }
     }
 
@@ -163,6 +173,7 @@ public struct Scheme: Equatable {
         public var language: String?
         public var region: String?
         public var debugEnabled: Bool
+        public var customLLDBInit: String?
 
         public struct TestTarget: Equatable, ExpressibleByStringLiteral {
             public static let randomExecutionOrderDefault = false
@@ -216,7 +227,8 @@ public struct Scheme: Equatable {
             environmentVariables: [XCScheme.EnvironmentVariable] = [],
             language: String? = nil,
             region: String? = nil,
-            debugEnabled: Bool = debugEnabledDefault
+            debugEnabled: Bool = debugEnabledDefault,
+            customLLDBInit: String? = nil
         ) {
             self.config = config
             self.gatherCoverageData = gatherCoverageData
@@ -230,6 +242,7 @@ public struct Scheme: Equatable {
             self.language = language
             self.region = region
             self.debugEnabled = debugEnabled
+            self.customLLDBInit = customLLDBInit
         }
 
         public var shouldUseLaunchSchemeArgsEnv: Bool {
@@ -250,18 +263,22 @@ public struct Scheme: Equatable {
         public var preActions: [ExecutionAction]
         public var postActions: [ExecutionAction]
         public var environmentVariables: [XCScheme.EnvironmentVariable]
+        public var askForAppToLaunch: Bool?
+
         public init(
             config: String,
             commandLineArguments: [String: Bool] = [:],
             preActions: [ExecutionAction] = [],
             postActions: [ExecutionAction] = [],
-            environmentVariables: [XCScheme.EnvironmentVariable] = []
+            environmentVariables: [XCScheme.EnvironmentVariable] = [],
+            askForAppToLaunch: Bool? = nil
         ) {
             self.config = config
             self.commandLineArguments = commandLineArguments
             self.preActions = preActions
             self.postActions = postActions
             self.environmentVariables = environmentVariables
+            self.askForAppToLaunch = askForAppToLaunch
         }
 
         public var shouldUseLaunchSchemeArgsEnv: Bool {
@@ -362,6 +379,7 @@ extension Scheme.Run: JSONObjectConvertible {
         region = jsonDictionary.json(atKeyPath: "region")
         debugEnabled = jsonDictionary.json(atKeyPath: "debugEnabled") ?? Scheme.Run.debugEnabledDefault
         simulateLocation = jsonDictionary.json(atKeyPath: "simulateLocation")
+        storeKitConfiguration = jsonDictionary.json(atKeyPath: "storeKitConfiguration")
         executable = jsonDictionary.json(atKeyPath: "executable")
 
         // launchAutomaticallySubstyle is defined as a String in XcodeProj but its value is often
@@ -375,6 +393,8 @@ extension Scheme.Run: JSONObjectConvertible {
         if let askLaunch: Bool = jsonDictionary.json(atKeyPath: "askForAppToLaunch") {
             askForAppToLaunch = askLaunch
         }
+        customLLDBInit = jsonDictionary.json(atKeyPath: "customLLDBInit")
+        macroExpansion = jsonDictionary.json(atKeyPath: "macroExpansion")
     }
 }
 
@@ -391,6 +411,7 @@ extension Scheme.Run: JSONEncodable {
             "askForAppToLaunch": askForAppToLaunch,
             "launchAutomaticallySubstyle": launchAutomaticallySubstyle,
             "executable": executable,
+            "macroExpansion": macroExpansion
         ]
 
         if disableMainThreadChecker != Scheme.Run.disableMainThreadCheckerDefault {
@@ -407,6 +428,12 @@ extension Scheme.Run: JSONEncodable {
 
         if let simulateLocation = simulateLocation {
             dict["simulateLocation"] = simulateLocation.toJSONValue()
+        }
+        if let storeKitConfiguration = storeKitConfiguration {
+            dict["storeKitConfiguration"] = storeKitConfiguration
+        }
+        if let customLLDBInit = customLLDBInit {
+            dict["customLLDBInit"] = customLLDBInit
         }
         return dict
     }
@@ -439,6 +466,7 @@ extension Scheme.Test: JSONObjectConvertible {
         language = jsonDictionary.json(atKeyPath: "language")
         region = jsonDictionary.json(atKeyPath: "region")
         debugEnabled = jsonDictionary.json(atKeyPath: "debugEnabled") ?? Scheme.Test.debugEnabledDefault
+        customLLDBInit = jsonDictionary.json(atKeyPath: "customLLDBInit")
     }
 }
 
@@ -466,6 +494,10 @@ extension Scheme.Test: JSONEncodable {
 
         if debugEnabled != Scheme.Run.debugEnabledDefault {
             dict["debugEnabled"] = debugEnabled
+        }
+
+        if let customLLDBInit = customLLDBInit {
+            dict["customLLDBInit"] = customLLDBInit
         }
 
         return dict
@@ -516,6 +548,9 @@ extension Scheme.Profile: JSONObjectConvertible {
         preActions = jsonDictionary.json(atKeyPath: "preActions") ?? []
         postActions = jsonDictionary.json(atKeyPath: "postActions") ?? []
         environmentVariables = try XCScheme.EnvironmentVariable.parseAll(jsonDictionary: jsonDictionary)
+        if let askLaunch: Bool = jsonDictionary.json(atKeyPath: "askForAppToLaunch") {
+            askForAppToLaunch = askLaunch
+        }
     }
 }
 
@@ -527,6 +562,7 @@ extension Scheme.Profile: JSONEncodable {
             "postActions": postActions.map { $0.toJSONValue() },
             "environmentVariables": environmentVariables.map { $0.toJSONValue() },
             "config": config,
+            "askForAppToLaunch": askForAppToLaunch,
         ] as [String: Any?]
     }
 }

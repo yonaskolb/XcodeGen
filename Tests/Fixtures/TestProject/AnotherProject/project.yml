@@ -1,5 +1,7 @@
 name: AnotherProject
 include: [../environments.yml]
+options:
+  useBaseInternationalization: false
 configFiles:
   Test Debug: ../Configs/config.xcconfig
 targets:
@@ -9,3 +11,10 @@ targets:
   ExternalTarget:
     type: framework
     platform: iOS
+  IncludedLegacy:
+    type: ""
+    platform: iOS
+    legacy:
+      toolPath: /usr/bin/true
+      workingDirectory: .
+

@@ -1,7 +1,7 @@
 import Foundation
 import JSONUtilities
 
-public struct Config: Equatable {
+public struct Config: Hashable {
     public var name: String
     public var type: ConfigType?
 

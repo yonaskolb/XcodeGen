@@ -13,6 +13,8 @@ public class PBXProjGenerator {
     let projectDirectory: Path?
     let carthageResolver: CarthageDependencyResolver
 
+    public static let copyFilesActionMask: UInt = 8
+
     var sourceGenerator: SourceGenerator!
 
     var targetObjects: [String: PBXTarget] = [:]
@@ -93,13 +95,14 @@ public class PBXProjGenerator {
             )
         )
 
+        let developmentRegion = project.options.developmentLanguage ?? "en"
         let pbxProject = addObject(
             PBXProject(
                 name: project.name,
                 buildConfigurationList: buildConfigList,
                 compatibilityVersion: project.compatibilityVersion,
                 mainGroup: mainGroup,
-                developmentRegion: project.options.developmentLanguage ?? "en"
+                developmentRegion: developmentRegion
             )
         )
 
@@ -282,15 +285,26 @@ public class PBXProjGenerator {
             }.flatMap { $0 }
         ).sorted()
 
-        var projectAttributes: [String: Any] = ["LastUpgradeCheck": project.xcodeVersion]
-            .merged(project.attributes)
-
+        var projectAttributes: [String: Any] = project.attributes
+        
+        // Set default LastUpgradeCheck if user did not specify
+        let lastUpgradeKey = "LastUpgradeCheck"
+        if !projectAttributes.contains(where: { (key, value) -> Bool in
+            key == lastUpgradeKey && value is String
+        }) {
+            projectAttributes[lastUpgradeKey] = project.xcodeVersion
+        }
+        
         if !assetTags.isEmpty {
             projectAttributes["knownAssetTags"] = assetTags
         }
 
-        let knownRegions = sourceGenerator.knownRegions.sorted()
-        pbxProject.knownRegions = knownRegions.isEmpty ? ["en"] : knownRegions
+        var knownRegions = Set(sourceGenerator.knownRegions)
+        knownRegions.insert(developmentRegion)
+        if project.options.useBaseInternationalization {
+            knownRegions.insert("Base")
+        }
+        pbxProject.knownRegions = knownRegions.sorted()
 
         pbxProject.packages = packageReferences.sorted { $0.key < $1.key }.map { $1 }
 
@@ -363,13 +377,13 @@ public class PBXProjGenerator {
 
     func generateExternalTargetDependency(from: String, to target: String, in project: String, platform: Platform) throws -> (PBXTargetDependency, Target, PBXReferenceProxy) {
         guard let projectReference = self.project.getProjectReference(project) else {
-            fatalError("project not found")
+            fatalError("project '\(project)' not found")
         }
 
         let pbxProj = try getPBXProj(from: projectReference)
 
         guard let targetObject = pbxProj.targets(named: target).first else {
-            fatalError("target not found")
+            fatalError("target '\(target)' not found in project '\(project)'")
         }
 
         let projectFileReferenceIndex = self.pbxProj.rootObject!
@@ -395,7 +409,7 @@ public class PBXProjGenerator {
         let productProxy = addObject(
             PBXContainerItemProxy(
                 containerPortal: .fileReference(projectFileReference),
-                remoteGlobalID: .object(targetObject.product!),
+                remoteGlobalID: targetObject.product.flatMap(PBXContainerItemProxy.RemoteGlobalID.object),
                 proxyType: .reference,
                 remoteInfo: target
             )
@@ -410,7 +424,7 @@ public class PBXProjGenerator {
 
         let productReferenceProxy = addObject(
             PBXReferenceProxy(
-                fileType: Xcode.fileType(path: Path(targetObject.productNameWithExtension()!)),
+                fileType: targetObject.productNameWithExtension().flatMap { Xcode.fileType(path: Path($0)) },
                 path: path,
                 remote: productProxy,
                 sourceTree: .buildProductsDir
@@ -426,14 +440,14 @@ public class PBXProjGenerator {
             )
         )
 
-        guard let productType = targetObject.productType,
-            let buildConfigurations = targetObject.buildConfigurationList?.buildConfigurations,
+        guard let buildConfigurations = targetObject.buildConfigurationList?.buildConfigurations,
             let defaultConfigurationName = targetObject.buildConfigurationList?.defaultConfigurationName,
             let defaultConfiguration = buildConfigurations.first(where: { $0.name == defaultConfigurationName }) ?? buildConfigurations.first else {
 
             fatalError("Missing target info")
         }
 
+        let productType: PBXProductType = targetObject.productType ?? .none
         let buildSettings = defaultConfiguration.buildSettings
         let settings = Settings(buildSettings: buildSettings, configSettings: [:], groups: [])
         let deploymentTargetString = buildSettings[platform.deploymentTargetSetting] as? String
@@ -471,7 +485,9 @@ public class PBXProjGenerator {
             shellPath: buildScript.shell ?? "/bin/sh",
             shellScript: shellScript,
             runOnlyForDeploymentPostprocessing: buildScript.runOnlyWhenInstalling,
-            showEnvVarsInLog: buildScript.showEnvVars
+            showEnvVarsInLog: buildScript.showEnvVars,
+            alwaysOutOfDate: !buildScript.basedOnDependencyAnalysis,
+            dependencyFile: buildScript.discoveredDependencyFile
         )
         return addObject(shellScriptPhase)
     }
@@ -634,11 +650,12 @@ public class PBXProjGenerator {
     func generateTarget(_ target: Target) throws {
         let carthageDependencies = carthageResolver.dependencies(for: target)
 
-        let sourceFiles = try sourceGenerator.getAllSourceFiles(targetType: target.type, sources: target.sources)
+        let infoPlistFiles: [Config: String] = getInfoPlists(for: target)
+        let sourceFileBuildPhaseOverrideSequence: [(Path, BuildPhaseSpec)] = Set(infoPlistFiles.values).map({ (project.basePath + $0, .none) })
+        let sourceFileBuildPhaseOverrides = Dictionary(uniqueKeysWithValues: sourceFileBuildPhaseOverrideSequence)
+        let sourceFiles = try sourceGenerator.getAllSourceFiles(targetType: target.type, sources: target.sources, buildPhases: sourceFileBuildPhaseOverrides)
             .sorted { $0.path.lastComponent < $1.path.lastComponent }
 
-        var plistPath: Path?
-        var searchForPlist = true
         var anyDependencyRequiresObjCLinking = false
 
         var dependencies: [PBXTargetDependency] = []
@@ -651,6 +668,7 @@ public class PBXProjGenerator {
         var copyWatchReferences: [PBXBuildFile] = []
         var packageDependencies: [XCSwiftPackageProductDependency] = []
         var extensions: [PBXBuildFile] = []
+        var appClips: [PBXBuildFile] = []
         var carthageFrameworksToEmbed: [String] = []
         let localPackageReferences: [String] = project.packages.compactMap { $0.value.isLocal ? $0.key : nil }
 
@@ -681,7 +699,7 @@ public class PBXProjGenerator {
         }
 
         func processTargetDependency(_ dependency: Dependency, dependencyTarget: Target, embedFileReference: PBXFileElement?) {
-            let dependencyLinkage = dependencyTarget.type.defaultLinkage
+            let dependencyLinkage = dependencyTarget.defaultLinkage
             let link = dependency.link ??
                 ((dependencyLinkage == .dynamic && target.type != .staticLibrary) ||
                     (dependencyLinkage == .static && target.type.isExecutable))
@@ -698,7 +716,7 @@ public class PBXProjGenerator {
                 }
             }
 
-            let embed = dependency.embed ?? target.type.shouldEmbed(dependencyTarget.type)
+            let embed = dependency.embed ?? target.type.shouldEmbed(dependencyTarget)
             if embed {
                 let embedFile = addObject(
                     PBXBuildFile(
@@ -710,6 +728,9 @@ public class PBXProjGenerator {
                 if dependencyTarget.type.isExtension {
                     // embed app extension
                     extensions.append(embedFile)
+                } else if dependencyTarget.type == .onDemandInstallCapableApplication {
+                    // embed app clip
+                    appClips.append(embedFile)
                 } else if dependencyTarget.type.isFramework {
                     copyFrameworksReferences.append(embedFile)
                 } else if dependencyTarget.type.isApp && dependencyTarget.platform == .watchOS {
@@ -746,9 +767,19 @@ public class PBXProjGenerator {
 
             case .framework:
                 if !dependency.implicit {
-                    let buildPath = Path(dependency.reference).parent().string.quoted
-                    frameworkBuildPaths.insert(buildPath)
+                    let buildPath = Path(dependency.reference)
+                    let buildPathString: String
+                    
+                    if buildPath.extension == "xcframework" {
+                        buildPathString = """
+                        "\(Path(dependency.reference).string)/**"
+                        """
+                    } else {
+                        buildPathString = buildPath.parent().string.quoted
+                    }
+                    frameworkBuildPaths.insert(buildPathString)
                 }
+                
 
                 let fileReference: PBXFileElement
                 if dependency.implicit {
@@ -975,6 +1006,17 @@ public class PBXProjGenerator {
             return sourceFilesByCopyFiles.mapValues { getBuildFilesForSourceFiles($0) }
         }
 
+        func getPBXCopyFilesBuildPhase(dstSubfolderSpec: PBXCopyFilesBuildPhase.SubFolder, name: String, files: [PBXBuildFile]) -> PBXCopyFilesBuildPhase {
+            return PBXCopyFilesBuildPhase(
+                dstPath: "",
+                dstSubfolderSpec: dstSubfolderSpec,
+                name: name,
+                buildActionMask: target.onlyCopyFilesOnInstall ? PBXProjGenerator.copyFilesActionMask : PBXBuildPhase.defaultBuildActionMask,
+                files: files,
+                runOnlyForDeploymentPostprocessing: target.onlyCopyFilesOnInstall ? true : false
+            )
+        }
+        
         copyFilesBuildPhasesFiles.merge(getBuildFilesForCopyFilesPhases()) { $0 + $1 }
 
         buildPhases += try target.preBuildScripts.map { try generateBuildScript(targetName: target.name, buildScript: $0) }
@@ -1072,12 +1114,21 @@ public class PBXProjGenerator {
 
         if !extensions.isEmpty {
 
+            let copyFilesPhase = addObject(                
+                getPBXCopyFilesBuildPhase(dstSubfolderSpec: .plugins, name: "Embed App Extensions", files: extensions)
+            )
+
+            buildPhases.append(copyFilesPhase)
+        }
+
+        if !appClips.isEmpty {
+
             let copyFilesPhase = addObject(
                 PBXCopyFilesBuildPhase(
-                    dstPath: "",
-                    dstSubfolderSpec: .plugins,
-                    name: "Embed App Extensions",
-                    files: extensions
+                    dstPath: "$(CONTENTS_FOLDER_PATH)/AppClips",
+                    dstSubfolderSpec: .productsDirectory,
+                    name: "Embed App Clips",
+                    files: appClips
                 )
             )
 
@@ -1087,16 +1138,8 @@ public class PBXProjGenerator {
         copyFrameworksReferences += getBuildFilesForPhase(.frameworks)
         if !copyFrameworksReferences.isEmpty {
 
-            let copyFilesActionMask: UInt = 8
             let copyFilesPhase = addObject(
-                PBXCopyFilesBuildPhase(
-                    dstPath: "",
-                    dstSubfolderSpec: .frameworks,
-                    name: "Embed Frameworks",
-                    buildActionMask: target.onlyCopyFilesOnInstall ? copyFilesActionMask : PBXBuildPhase.defaultBuildActionMask,
-                    files: copyFrameworksReferences,
-                    runOnlyForDeploymentPostprocessing: target.onlyCopyFilesOnInstall ? true : false
-                )
+                getPBXCopyFilesBuildPhase(dstSubfolderSpec: .frameworks, name: "Embed Frameworks", files: copyFrameworksReferences)
             )
 
             buildPhases.append(copyFilesPhase)
@@ -1126,7 +1169,8 @@ public class PBXProjGenerator {
                     name: buildRule.name ?? "Build Rule",
                     outputFiles: buildRule.outputFiles,
                     outputFilesCompilerFlags: buildRule.outputFilesCompilerFlags,
-                    script: buildRule.action.script
+                    script: buildRule.action.script,
+                    runOncePerArchitecture: buildRule.runOncePerArchitecture
                 )
             )
         }
@@ -1141,17 +1185,9 @@ public class PBXProjGenerator {
                 buildSettings["CODE_SIGN_ENTITLEMENTS"] = entitlements.path
             }
 
-            // Set INFOPLIST_FILE if not defined in settings
-            if !project.targetHasBuildSetting("INFOPLIST_FILE", target: target, config: config) {
-                if let info = target.info {
-                    buildSettings["INFOPLIST_FILE"] = info.path
-                } else if searchForPlist {
-                    plistPath = getInfoPlist(target.sources)
-                    searchForPlist = false
-                }
-                if let plistPath = plistPath {
-                    buildSettings["INFOPLIST_FILE"] = (try? plistPath.relativePath(from: projectDirectory ?? project.basePath)) ?? plistPath
-                }
+            // Set INFOPLIST_FILE based on the resolved value
+            if let infoPlistFile = infoPlistFiles[config] {
+                buildSettings["INFOPLIST_FILE"] = infoPlistFile
             }
 
             // automatically calculate bundle id
@@ -1273,6 +1309,43 @@ public class PBXProjGenerator {
         if !target.isLegacy {
             targetObject.productType = target.type
         }
+    }
+
+    func getInfoPlists(for target: Target) -> [Config: String] {
+        var searchForDefaultInfoPlist: Bool = true
+        var defaultInfoPlist: String?
+
+        let values: [(Config, String)] = project.configs.compactMap { config in
+            // First, if the plist path was defined by `INFOPLIST_FILE`, use that
+            let buildSettings = project.getTargetBuildSettings(target: target, config: config)
+            if let value = buildSettings["INFOPLIST_FILE"] as? String {
+                return (config, value)
+            }
+
+            // Otherwise check if the path was defined as part of the `info` spec
+            if let value = target.info?.path {
+                return (config, value)
+            }
+
+            // If we haven't yet looked for the default info plist, try doing so
+            if searchForDefaultInfoPlist {
+                searchForDefaultInfoPlist = false
+
+                if let plistPath = getInfoPlist(target.sources) {
+                    let basePath = projectDirectory ?? project.basePath.absolute()
+                    let relative = (try? plistPath.relativePath(from: basePath)) ?? plistPath
+                    defaultInfoPlist = relative.string
+                }
+            }
+
+            // Return the default plist if there was one
+            if let value = defaultInfoPlist {
+                return (config, value)
+            }
+            return nil
+        }
+
+        return Dictionary(uniqueKeysWithValues: values)
     }
 
     func getInfoPlist(_ sources: [TargetSource]) -> Path? {

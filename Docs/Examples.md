@@ -9,3 +9,4 @@ These are a bunch of real world examples of XcodeGen project specs. Feel free to
 - [atelier-socle/FrameworkRepositoryTemplate](https://github.com/atelier-socle/FrameworkRepositoryTemplate/blob/master/project.yml)
 - [scelis/XcodeGen-TestStickers](https://github.com/scelis/XcodeGen-TestStickers/blob/master/project.yml)
 - [minvws/nl-covid19-notification-app-ios](https://github.com/minvws/nl-covid19-notification-app-ios/blob/master/project.yml)
+- [pvinis/react-native-xcodegen](https://github.com/pvinis/react-native-xcodegen/blob/master/templates)

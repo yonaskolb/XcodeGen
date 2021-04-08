@@ -786,6 +786,102 @@ class ProjectGeneratorTests: XCTestCase {
                     try expect(copyFilesPhases.count) == expectedCopyFilesPhasesCount
                 }
             }
+            
+            $0.it("ensures static frameworks are not embedded by default") {
+                
+                let app = Target(
+                    name: "App",
+                    type: .application,
+                    platform: .iOS,
+                    dependencies: [
+                        Dependency(type: .target, reference: "DynamicFramework"),
+                        Dependency(type: .target, reference: "DynamicFrameworkNotEmbedded", embed: false),
+                        Dependency(type: .target, reference: "StaticFramework"),
+                        Dependency(type: .target, reference: "StaticFrameworkExplicitlyEmbedded", embed: true),
+                        Dependency(type: .target, reference: "StaticFramework2"),
+                        Dependency(type: .target, reference: "StaticFramework2ExplicitlyEmbedded", embed: true),
+                        Dependency(type: .target, reference: "StaticLibrary"),
+                    ]
+                )
+
+                let targets = [
+                    app,
+                    Target(
+                        name: "DynamicFramework",
+                        type: .framework,
+                        platform: .iOS
+                    ),
+                    Target(
+                        name: "DynamicFrameworkNotEmbedded",
+                        type: .framework,
+                        platform: .iOS
+                    ),
+                    Target(
+                        name: "StaticFramework",
+                        type: .framework,
+                        platform: .iOS,
+                        settings: Settings(buildSettings: ["MACH_O_TYPE": "staticlib"])
+                    ),
+                    Target(
+                        name: "StaticFrameworkExplicitlyEmbedded",
+                        type: .framework,
+                        platform: .iOS,
+                        settings: Settings(buildSettings: ["MACH_O_TYPE": "staticlib"])
+                    ),
+                    Target(
+                        name: "StaticFramework2",
+                        type: .staticFramework,
+                        platform: .iOS
+                    ),
+                    Target(
+                        name: "StaticFramework2ExplicitlyEmbedded",
+                        type: .staticFramework,
+                        platform: .iOS
+                    ),
+                    Target(
+                        name: "StaticLibrary",
+                        type: .staticLibrary,
+                        platform: .iOS
+                    ),
+                ]
+                                
+                let expectedLinkedFiles = Set([
+                    "DynamicFramework.framework",
+                    "DynamicFrameworkNotEmbedded.framework",
+                    "StaticFramework.framework",
+                    "StaticFrameworkExplicitlyEmbedded.framework",
+                    "StaticFramework2.framework",
+                    "StaticFramework2ExplicitlyEmbedded.framework",
+                    "libStaticLibrary.a",
+                ])
+                
+                let expectedEmbeddedFrameworks = Set([
+                    "DynamicFramework.framework",
+                    "StaticFrameworkExplicitlyEmbedded.framework",
+                    "StaticFramework2ExplicitlyEmbedded.framework"
+                ])
+                                
+                let project = Project(
+                    name: "test",
+                    targets: targets
+                )
+                let pbxProject = try project.generatePbxProj()
+
+                let appTarget = try unwrap(pbxProject.nativeTargets.first(where: { $0.name == app.name }))
+                let buildPhases = appTarget.buildPhases
+                let frameworkPhases = pbxProject.frameworksBuildPhases.filter { buildPhases.contains($0) }
+                let copyFilesPhases = pbxProject.copyFilesBuildPhases.filter { buildPhases.contains($0) }
+                let embedFrameworkPhase = copyFilesPhases.first { $0.dstSubfolderSpec == .frameworks }
+
+                // Ensure all targets are linked
+                let linkFrameworks = (frameworkPhases[0].files ?? []).compactMap { $0.file?.nameOrPath }
+                let linkPackages = (frameworkPhases[0].files ?? []).compactMap { $0.product?.productName }
+                try expect(Set(linkFrameworks + linkPackages)) == expectedLinkedFiles
+
+                // Ensure only dynamic frameworks are embedded (unless there's an explicit override)
+                let embeddedFrameworks = Set((embedFrameworkPhase?.files ?? []).compactMap { $0.file?.nameOrPath })
+                try expect(embeddedFrameworks) == expectedEmbeddedFrameworks
+            }
 
             $0.it("copies files only on install in the Embed Frameworks step") {
                 let app = Target(
@@ -805,16 +901,91 @@ class ProjectGeneratorTests: XCTestCase {
                 let nativeTarget = try unwrap(pbxProject.nativeTargets.first(where: { $0.name == app.name }))
                 let buildPhases = nativeTarget.buildPhases
 
-                let embedFrameworkPhase = pbxProject
+                let embedFrameworksPhase = pbxProject
                     .copyFilesBuildPhases
                     .filter { buildPhases.contains($0) }
                     .first { $0.dstSubfolderSpec == .frameworks }
 
-                let phase = try unwrap(embedFrameworkPhase)
-                try expect(phase.buildActionMask) == 8
+                let phase = try unwrap(embedFrameworksPhase)
+                try expect(phase.buildActionMask) == PBXProjGenerator.copyFilesActionMask
                 try expect(phase.runOnlyForDeploymentPostprocessing) == true
             }
 
+            $0.it("copies files only on install in the Embed App Extensions step") {
+                let appExtension = Target(
+                    name: "AppExtension",
+                    type: .appExtension,
+                    platform: .tvOS
+                )
+
+                let app = Target(
+                    name: "App",
+                    type: .application,
+                    platform: .tvOS,
+                    dependencies: [
+                        Dependency(type: .target, reference: "AppExtension")
+                    ],
+                    onlyCopyFilesOnInstall: true
+                )
+
+                let project = Project(name: "test", targets: [app, appExtension])
+                let pbxProject = try project.generatePbxProj()
+                let nativeTarget = try unwrap(pbxProject.nativeTargets.first(where: { $0.name == app.name }))
+                let buildPhases = nativeTarget.buildPhases
+
+                let embedAppExtensionsPhase = pbxProject
+                    .copyFilesBuildPhases
+                    .filter { buildPhases.contains($0) }
+                    .first { $0.dstSubfolderSpec == .plugins }
+
+                let phase = try unwrap(embedAppExtensionsPhase)
+                try expect(phase.buildActionMask) == PBXProjGenerator.copyFilesActionMask
+                try expect(phase.runOnlyForDeploymentPostprocessing) == true
+            }
+
+            $0.it("copies files only on install in the Embed Frameworks and Embed App Extensions steps") {
+                let appExtension = Target(
+                    name: "AppExtension",
+                    type: .appExtension,
+                    platform: .tvOS
+                )
+
+                let app = Target(
+                    name: "App",
+                    type: .application,
+                    platform: .tvOS,
+                    dependencies: [
+                        Dependency(type: .target, reference: "AppExtension"),
+                        Dependency(type: .framework, reference: "FrameworkA.framework"),
+                        Dependency(type: .framework, reference: "FrameworkB.framework", embed: false),
+                    ],
+                    onlyCopyFilesOnInstall: true
+                )
+
+                let project = Project(name: "test", targets: [app, appExtension])
+                let pbxProject = try project.generatePbxProj()
+                let nativeTarget = try unwrap(pbxProject.nativeTargets.first(where: { $0.name == app.name }))
+                let buildPhases = nativeTarget.buildPhases
+
+                let embedFrameworksPhase = pbxProject
+                    .copyFilesBuildPhases
+                    .filter { buildPhases.contains($0) }
+                    .first { $0.dstSubfolderSpec == .frameworks }
+
+                let embedFrameworksPhaseValue = try unwrap(embedFrameworksPhase)
+                try expect(embedFrameworksPhaseValue.buildActionMask) == PBXProjGenerator.copyFilesActionMask
+                try expect(embedFrameworksPhaseValue.runOnlyForDeploymentPostprocessing) == true
+                
+                let embedAppExtensionsPhase = pbxProject
+                    .copyFilesBuildPhases
+                    .filter { buildPhases.contains($0) }
+                    .first { $0.dstSubfolderSpec == .plugins }
+
+                let embedAppExtensionsPhaseValue = try unwrap(embedAppExtensionsPhase)
+                try expect(embedAppExtensionsPhaseValue.buildActionMask) == PBXProjGenerator.copyFilesActionMask
+                try expect(embedAppExtensionsPhaseValue.runOnlyForDeploymentPostprocessing) == true
+            }
+            
             $0.it("sets -ObjC for targets that depend on requiresObjCLinking targets") {
                 let requiresObjCLinking = Target(
                     name: "requiresObjCLinking",
@@ -974,20 +1145,29 @@ class ProjectGeneratorTests: XCTestCase {
                 var scriptSpec = project
                 scriptSpec.targets[0].preBuildScripts = [BuildScript(script: .script("script1"))]
                 scriptSpec.targets[0].postCompileScripts = [BuildScript(script: .script("script2"))]
-                scriptSpec.targets[0].postBuildScripts = [BuildScript(script: .script("script3"))]
+                scriptSpec.targets[0].postBuildScripts = [
+                    BuildScript(script: .script("script3")),
+                    BuildScript(script: .script("script4"), discoveredDependencyFile: "$(DERIVED_FILE_DIR)/target.d")
+                ]
                 let pbxProject = try scriptSpec.generatePbxProj()
 
-                let nativeTarget = try unwrap(pbxProject.nativeTargets.first(where: { $0.buildPhases.count >= 3 }))
+                let nativeTarget = try unwrap(pbxProject.nativeTargets.first(where: { $0.buildPhases.count >= 4 }))
                 let buildPhases = nativeTarget.buildPhases
 
                 let scripts = pbxProject.shellScriptBuildPhases
-                try expect(scripts.count) == 3
+                try expect(scripts.count) == 4
                 let script1 = scripts.first { $0.shellScript == "script1" }!
                 let script2 = scripts.first { $0.shellScript == "script2" }!
                 let script3 = scripts.first { $0.shellScript == "script3" }!
+                let script4 = scripts.first { $0.shellScript == "script4" }!
                 try expect(buildPhases.contains(script1)) == true
                 try expect(buildPhases.contains(script2)) == true
                 try expect(buildPhases.contains(script3)) == true
+                try expect(buildPhases.contains(script4)) == true
+                try expect(script1.dependencyFile).beNil()
+                try expect(script2.dependencyFile).beNil()
+                try expect(script3.dependencyFile).beNil()
+                try expect(script4.dependencyFile) == "$(DERIVED_FILE_DIR)/target.d"
             }
 
             $0.it("generates targets with cylical dependencies") {
@@ -1189,6 +1369,45 @@ class ProjectGeneratorTests: XCTestCase {
                 // generated plist should not be in buildsettings
                 try expect(targetConfig.buildSettings["INFOPLIST_FILE"] as? String) == predefinedPlistPath
             }
+            
+            describe("XCFramework dependencies") {
+                $0.context("with xcframework dependency") {
+                    $0.it("should add FRAMEWORK_SEARCH_PATHS") {
+                        let app = Target(
+                            name: "MyApp",
+                            type: .application,
+                            platform: .iOS,
+                            dependencies: [
+                                Dependency(type: .framework, reference: "some/folder/MyXCFramework.xcframework"),
+                            ]
+                        )
+                        let project = Project(name: "test", targets: [app])
+                        let pbxProject = try project.generatePbxProj()
+                        
+                        let target = pbxProject.nativeTargets.first!
+                        let configuration = target.buildConfigurationList!.buildConfigurations.first!
+                        try expect(configuration.buildSettings["FRAMEWORK_SEARCH_PATHS"] as? [String]) == ["$(inherited)", "\"some/folder/MyXCFramework.xcframework/**\""]
+                    }
+                }
+                $0.context("with regular framework") {
+                    $0.it("should add FRAMEWORK_SEARCH_PATHS") {
+                        let app = Target(
+                            name: "MyApp",
+                            type: .application,
+                            platform: .iOS,
+                            dependencies: [
+                                Dependency(type: .framework, reference: "some/folder/MyXCFramework.framework"),
+                            ]
+                        )
+                        let project = Project(name: "test", targets: [app])
+                        let pbxProject = try project.generatePbxProj()
+                        
+                        let target = pbxProject.nativeTargets.first!
+                        let configuration = target.buildConfigurationList!.buildConfigurations.first!
+                        try expect(configuration.buildSettings["FRAMEWORK_SEARCH_PATHS"] as? [String]) == ["$(inherited)", "\"some/folder\""]
+                    }
+                }
+            }
 
             describe("Carthage dependencies") {
                 $0.context("with static dependency") {
@@ -1323,7 +1542,7 @@ class ProjectGeneratorTests: XCTestCase {
                     let project = Project(name: "test", targets: [frameworkWithSources])
                     let generator = ProjectGenerator(project: project)
                     let generatedProject = try generator.generateXcodeProject(in: destinationPath)
-                    let plists = generatedProject.pbxproj.buildConfigurations.compactMap { $0.buildSettings["INFOPLIST_FILE"] as? Path }
+                    let plists = generatedProject.pbxproj.buildConfigurations.compactMap { $0.buildSettings["INFOPLIST_FILE"] as? String }
                     try expect(plists.count) == 2
                     for plist in plists {
                         try expect(plist) == "TestProject/App_iOS/Info.plist"
