@@ -165,7 +165,10 @@ public class SchemeGenerator {
         if let targetName = scheme.run?.executable {
             schemeTarget = project.getTarget(targetName)
         } else {
-            let name = scheme.build.targets.first { $0.buildTypes.contains(.running) }?.target.name ?? scheme.build.targets.first!.target.name
+            guard let firstTarget = scheme.build.targets.first else {
+                throw SchemeGenerationError.missingBuildTargets(scheme.name)
+            }
+            let name = scheme.build.targets.first { $0.buildTypes.contains(.running) }?.target.name ?? firstTarget.target.name
             schemeTarget = target ?? project.getTarget(name)
         }
 
@@ -241,12 +244,20 @@ public class SchemeGenerator {
             storeKitConfigurationFileReference = XCScheme.StoreKitConfigurationFileReference(identifier: storeKitConfigurationPath.string)
         }
 
+        let macroExpansion: XCScheme.BuildableReference?
+        if let macroExpansionName = scheme.run?.macroExpansion,
+           let resolvedMacroExpansion = buildActionEntries.first(where: { $0.buildableReference.blueprintName == macroExpansionName })?.buildableReference {
+            macroExpansion = resolvedMacroExpansion
+        } else {
+            macroExpansion = shouldExecuteOnLaunch ? nil : buildableReference
+        }
+
         let launchAction = XCScheme.LaunchAction(
             runnable: shouldExecuteOnLaunch ? runnables.launch : nil,
             buildConfiguration: scheme.run?.config ?? defaultDebugConfig.name,
             preActions: scheme.run?.preActions.map(getExecutionAction) ?? [],
             postActions: scheme.run?.postActions.map(getExecutionAction) ?? [],
-            macroExpansion: shouldExecuteOnLaunch ? nil : buildableReference,
+            macroExpansion: macroExpansion,
             selectedDebuggerIdentifier: selectedDebuggerIdentifier(for: schemeTarget, run: scheme.run),
             selectedLauncherIdentifier: selectedLauncherIdentifier(for: schemeTarget, run: scheme.run),
             askForAppToLaunch: scheme.run?.askForAppToLaunch,
@@ -269,6 +280,7 @@ public class SchemeGenerator {
             preActions: scheme.profile?.preActions.map(getExecutionAction) ?? [],
             postActions: scheme.profile?.postActions.map(getExecutionAction) ?? [],
             shouldUseLaunchSchemeArgsEnv: scheme.profile?.shouldUseLaunchSchemeArgsEnv ?? true,
+            askForAppToLaunch: scheme.profile?.askForAppToLaunch,
             commandlineArguments: profileCommandLineArgs,
             environmentVariables: profileVariables
         )
@@ -343,6 +355,7 @@ enum SchemeGenerationError: Error, CustomStringConvertible {
 
     case missingTarget(TargetReference, projectPath: String)
     case missingProject(String)
+    case missingBuildTargets(String)
 
     var description: String {
         switch self {
@@ -350,6 +363,8 @@ enum SchemeGenerationError: Error, CustomStringConvertible {
             return "Unable to find target named \"\(target)\" in \"\(projectPath)\""
         case .missingProject(let project):
             return "Unable to find project reference named \"\(project)\" in project.yml"
+        case .missingBuildTargets(let name):
+            return "Unable to find at least one build target in scheme \"\(name)\""
         }
     }
 }

@@ -53,7 +53,8 @@ class SchemeGeneratorTests: XCTestCase {
                     name: "MyScheme",
                     build: Scheme.Build(targets: [buildTarget], preActions: [preAction]),
                     run: Scheme.Run(config: "Debug", askForAppToLaunch: true, launchAutomaticallySubstyle: "2", simulateLocation: simulateLocation, storeKitConfiguration: storeKitConfiguration, customLLDBInit: "/sample/.lldbinit"),
-                    test: Scheme.Test(config: "Debug", customLLDBInit: "/test/.lldbinit")
+                    test: Scheme.Test(config: "Debug", customLLDBInit: "/test/.lldbinit"),
+                    profile: Scheme.Profile(config: "Release", askForAppToLaunch: true)
                 )
                 let project = Project(
                     name: "test",
@@ -98,6 +99,7 @@ class SchemeGeneratorTests: XCTestCase {
                 try expect(xcscheme.testAction?.selectedDebuggerIdentifier) == XCScheme.defaultDebugger
 
                 try expect(xcscheme.launchAction?.askForAppToLaunch) == true
+                try expect(xcscheme.profileAction?.askForAppToLaunch) == true
                 try expect(xcscheme.launchAction?.launchAutomaticallySubstyle) == "2"
                 try expect(xcscheme.launchAction?.allowLocationSimulation) == true
                 try expect(xcscheme.launchAction?.storeKitConfigurationFileReference?.identifier) == "../Configuration.storekit"
@@ -397,6 +399,38 @@ class SchemeGeneratorTests: XCTestCase {
                 try expect(buildEntries.first?.buildableReference.blueprintName) == "WatchApp"
                 try expect(buildEntries.last?.buildableReference.blueprintName) == "HostApp"
                 try expect(xcscheme.launchAction?.storeKitConfigurationFileReference?.identifier) == "../Configuration.storekit"
+            }
+            
+            $0.it("generates scheme with extension target and specify macroExpansion") {
+                let app = Target(
+                    name: "MyApp",
+                    type: .application,
+                    platform: .iOS,
+                    dependencies: [Dependency(type: .target, reference: "MyAppExtension", embed: false)]
+                )
+
+                let `extension` = Target(
+                    name: "MyAppExtension",
+                    type: .appExtension,
+                    platform: .iOS
+                )
+                let appTarget = Scheme.BuildTarget(target: .local(app.name), buildTypes: [.running])
+                let extensionTarget = Scheme.BuildTarget(target: .local(`extension`.name), buildTypes: [.running])
+            
+                let scheme = Scheme(
+                    name: "TestScheme",
+                    build: Scheme.Build(targets: [appTarget, extensionTarget]),
+                    run: Scheme.Run(config: "Debug", macroExpansion: "MyApp")
+                )
+                let project = Project(
+                    name: "test",
+                    targets: [app, `extension`],
+                    schemes: [scheme]
+                )
+                let xcodeProject = try project.generateXcodeProject()
+
+                let xcscheme = try unwrap(xcodeProject.sharedData?.schemes.first)
+                try expect(xcscheme.launchAction?.macroExpansion?.buildableName) == "MyApp.app"
             }
         }
     }
