@@ -191,7 +191,9 @@ public class SchemeGenerator {
                 parallelizable: testTarget.parallelizable,
                 randomExecutionOrdering: testTarget.randomExecutionOrder,
                 buildableReference: testBuilEntries.buildableReference,
-                skippedTests: testTarget.skippedTests.map(XCScheme.TestItem.init)
+                skippedTests: testTarget.skippedTests.map(XCScheme.TestItem.init),
+                selectedTests: testTarget.selectedTests.map(XCScheme.TestItem.init),
+                useTestSelectionWhitelist: !testTarget.selectedTests.isEmpty ? true : nil
             )
         }
 
