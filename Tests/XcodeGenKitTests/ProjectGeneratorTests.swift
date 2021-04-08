@@ -1369,6 +1369,45 @@ class ProjectGeneratorTests: XCTestCase {
                 // generated plist should not be in buildsettings
                 try expect(targetConfig.buildSettings["INFOPLIST_FILE"] as? String) == predefinedPlistPath
             }
+            
+            describe("XCFramework dependencies") {
+                $0.context("with xcframework dependency") {
+                    $0.it("should add FRAMEWORK_SEARCH_PATHS") {
+                        let app = Target(
+                            name: "MyApp",
+                            type: .application,
+                            platform: .iOS,
+                            dependencies: [
+                                Dependency(type: .framework, reference: "some/folder/MyXCFramework.xcframework"),
+                            ]
+                        )
+                        let project = Project(name: "test", targets: [app])
+                        let pbxProject = try project.generatePbxProj()
+                        
+                        let target = pbxProject.nativeTargets.first!
+                        let configuration = target.buildConfigurationList!.buildConfigurations.first!
+                        try expect(configuration.buildSettings["FRAMEWORK_SEARCH_PATHS"] as? [String]) == ["$(inherited)", "\"some/folder/MyXCFramework.xcframework/**\""]
+                    }
+                }
+                $0.context("with regular framework") {
+                    $0.it("should add FRAMEWORK_SEARCH_PATHS") {
+                        let app = Target(
+                            name: "MyApp",
+                            type: .application,
+                            platform: .iOS,
+                            dependencies: [
+                                Dependency(type: .framework, reference: "some/folder/MyXCFramework.framework"),
+                            ]
+                        )
+                        let project = Project(name: "test", targets: [app])
+                        let pbxProject = try project.generatePbxProj()
+                        
+                        let target = pbxProject.nativeTargets.first!
+                        let configuration = target.buildConfigurationList!.buildConfigurations.first!
+                        try expect(configuration.buildSettings["FRAMEWORK_SEARCH_PATHS"] as? [String]) == ["$(inherited)", "\"some/folder\""]
+                    }
+                }
+            }
 
             describe("Carthage dependencies") {
                 $0.context("with static dependency") {

@@ -760,9 +760,19 @@ public class PBXProjGenerator {
 
             case .framework:
                 if !dependency.implicit {
-                    let buildPath = Path(dependency.reference).parent().string.quoted
-                    frameworkBuildPaths.insert(buildPath)
+                    let buildPath = Path(dependency.reference)
+                    let buildPathString: String
+                    
+                    if buildPath.extension == "xcframework" {
+                        buildPathString = """
+                        "\(Path(dependency.reference).string)/**"
+                        """
+                    } else {
+                        buildPathString = buildPath.parent().string.quoted
+                    }
+                    frameworkBuildPaths.insert(buildPathString)
                 }
+                
 
                 let fileReference: PBXFileElement
                 if dependency.implicit {
