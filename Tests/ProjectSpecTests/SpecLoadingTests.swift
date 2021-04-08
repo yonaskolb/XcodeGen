@@ -852,7 +852,6 @@ class SpecLoadingTests: XCTestCase {
                                 "name": "ExternalProject/Target2",
                                 "parallelizable": true,
                                 "randomExecutionOrder": true,
-                                "useTestSelectionWhitelist": true,
                                 "selectedTests": ["Test/testExample()"],
                             ],
                         ],
@@ -873,7 +872,6 @@ class SpecLoadingTests: XCTestCase {
                             targetReference: "ExternalProject/Target2",
                             randomExecutionOrder: true,
                             parallelizable: true,
-                            useTestSelectionWhitelist: true,
                             selectedTests: ["Test/testExample()"]
                         ),
                     ]

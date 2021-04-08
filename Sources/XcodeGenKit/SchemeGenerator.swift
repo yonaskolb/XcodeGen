@@ -193,7 +193,7 @@ public class SchemeGenerator {
                 buildableReference: testBuilEntries.buildableReference,
                 skippedTests: testTarget.skippedTests.map(XCScheme.TestItem.init),
                 selectedTests: testTarget.selectedTests.map(XCScheme.TestItem.init),
-                useTestSelectionWhitelist: testTarget.useTestSelectionWhitelist
+                useTestSelectionWhitelist: !testTarget.selectedTests.isEmpty ? true : nil
             )
         }
 

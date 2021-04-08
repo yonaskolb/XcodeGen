@@ -186,14 +186,12 @@ public struct Scheme: Equatable {
             public var skipped: Bool
             public var skippedTests: [String]
             public var selectedTests: [String]
-            public var useTestSelectionWhitelist: Bool?
 
             public init(
                 targetReference: TargetReference,
                 randomExecutionOrder: Bool = randomExecutionOrderDefault,
                 parallelizable: Bool = parallelizableDefault,
                 skipped: Bool = false,
-                useTestSelectionWhitelist: Bool? = nil,
                 skippedTests: [String] = [],
                 selectedTests: [String] = []
             ) {
@@ -201,7 +199,6 @@ public struct Scheme: Equatable {
                 self.randomExecutionOrder = randomExecutionOrder
                 self.parallelizable = parallelizable
                 self.skipped = skipped
-                self.useTestSelectionWhitelist = useTestSelectionWhitelist
                 self.skippedTests = skippedTests
                 self.selectedTests = selectedTests
             }
@@ -520,7 +517,6 @@ extension Scheme.Test.TestTarget: JSONObjectConvertible {
         skipped = jsonDictionary.json(atKeyPath: "skipped") ?? false
         skippedTests = jsonDictionary.json(atKeyPath: "skippedTests") ?? []
         selectedTests = jsonDictionary.json(atKeyPath: "selectedTests") ?? []
-        useTestSelectionWhitelist = jsonDictionary.json(atKeyPath: "useTestSelectionWhitelist")
     }
 }
 
