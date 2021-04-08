@@ -182,16 +182,16 @@ class SchemeGeneratorTests: XCTestCase {
             }
 
             $0.it("generates target schemes from config variant") {
-                let configVariants = ["Test", "PREPROD", "PROD"]
+                let configVariants = ["Test", "PreProd", "Prod"]
                 var target = app
                 target.scheme = TargetScheme(configVariants: configVariants)
                 let configs: [Config] = [
                     Config(name: "Test Debug", type: .debug),
-                    Config(name: "PREPROD Debug", type: .debug),
-                    Config(name: "PROD Debug", type: .debug),
+                    Config(name: "PreProd Debug", type: .debug),
+                    Config(name: "Prod Debug", type: .debug),
                     Config(name: "Test Release", type: .release),
-                    Config(name: "PREPROD Release", type: .release),
-                    Config(name: "PROD Release", type: .release),
+                    Config(name: "PreProd Release", type: .release),
+                    Config(name: "Prod Release", type: .release),
                 ]
 
                 let project = Project(name: "test", configs: configs, targets: [target, framework])

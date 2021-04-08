@@ -21,3 +21,16 @@ public enum ConfigType: String {
         rawValue.prefix(1).uppercased() + rawValue.dropFirst()
     }
 }
+
+public extension Collection where Element == Config {
+    func first(with configVariant: String, for type: ConfigType) -> Config? {
+        first(where: { $0.type == type && $0.name.variantName(for: $0.type) == configVariant })
+    }
+}
+
+private extension String {
+    func variantName(for configType: ConfigType? ) -> String {
+        replacingOccurrences(of: configType?.name ?? "", with: "")
+            .trimmingCharacters(in: CharacterSet.whitespaces)
+    }
+}

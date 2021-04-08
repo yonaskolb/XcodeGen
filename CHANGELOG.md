@@ -5,6 +5,9 @@
 #### Added
 - Add `useBaseInternationalization` to Project Spec Options to opt out of Base Internationalization. [#961](https://github.com/yonaskolb/XcodeGen/pull/961) @liamnichols
 
+#### Fixed
+- Scheme config variants wrong assignment for similar config names. [#976](https://github.com/yonaskolb/XcodeGen/pull/976) @stefanomondino
+
 ## 2.18.0
 
 #### Added

@@ -90,16 +90,16 @@ extension Project {
             }
 
             if let scheme = target.scheme {
-
+                
                 for configVariant in scheme.configVariants {
-                    if !configs.contains(where: { $0.name.contains(configVariant) && $0.type == .debug }) {
+                    if configs.first(with: configVariant, for: .debug) == nil {
                         errors.append(.invalidTargetSchemeConfigVariant(
                             target: target.name,
                             configVariant: configVariant,
                             configType: .debug
                         ))
                     }
-                    if !configs.contains(where: { $0.name.contains(configVariant) && $0.type == .release }) {
+                    if configs.first(with: configVariant, for: .release) == nil {
                         errors.append(.invalidTargetSchemeConfigVariant(
                             target: target.name,
                             configVariant: configVariant,
