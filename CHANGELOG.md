@@ -2,14 +2,90 @@
 
 ## Next Version
 
+#### Added
+- Allow specifying a `github` name like `JohnSundell/Ink` instead of a full `url` for Swift Packages [#1029](https://github.com/yonaskolb/XcodeGen/pull/1029) @yonaskolb
+- Added explicity `LastUpgradeCheck` and `LastUpgradeVersion` override support so it's possible to override these properties without using the `project.xcodeVersion`. [1013](https://github.com/yonaskolb/XcodeGen/pull/1013) @Andre113
+- Added `macroExpansion` for `run` in `schemes` [#1036](https://github.com/yonaskolb/XcodeGen/pull/1036) @freddi-kit
+- Added `askForAppToLaunch` for `profile` in `schemes`  [#1035](https://github.com/yonaskolb/XcodeGen/pull/1035) @freddi-kit
+- Added support for selectedTests in schemes `Test` configuration. [#913](https://github.com/yonaskolb/XcodeGen/pull/913) @ooodin
+
+#### Fixed
+- Fixed regression on **.storekit** configuration files' default build phase. [#1026](https://github.com/yonaskolb/XcodeGen/pull/1026) @jcolicchio
+- Fixed framework search paths when using `.xcframework`s. [#1015](https://github.com/yonaskolb/XcodeGen/pull/1015) @FranzBusch
+- Fixed bug where schemes without a build target would crash instead of displaying an error [#1040](https://github.com/yonaskolb/XcodeGen/pull/1040) @dalemyers
+- Fixed files with names ending in **Info.plist** (such as **GoogleServices-Info.plist**) from being omitted from the Copy Resources build phase. Now, only the resolved info plist file for each specific target is omitted. [#1027](https://github.com/yonaskolb/XcodeGen/pull/1027) @liamnichols
+
+#### Internal
+- Build universal binaries for release. XcodeGen now runs natively on Apple Silicon. [#1024](https://github.com/yonaskolb/XcodeGen/pull/1024) @thii
+
+## 2.19.0
+
+#### Added
+- Added support for building and running on Linux platforms. Tested for compatibility with Swift 5.3+ and Ubuntu 18.04. [#988](https://github.com/yonaskolb/XcodeGen/pull/988) @elliottwilliams
+- Added `useBaseInternationalization` to Project Spec Options to opt out of Base Internationalization. [#961](https://github.com/yonaskolb/XcodeGen/pull/961) @liamnichols
+- Added `storeKitConfiguration` to allow specifying StoreKit Configuration in Scheme and TargetScheme, supporting either xcodeproj or xcworkspace via `schemePathPrefix` option. [#964](https://github.com/yonaskolb/XcodeGen/pull/964) @jcolicchio
+- Added more detailed error message with method arguments. [#990](https://github.com/yonaskolb/XcodeGen/pull/990) @bannzai
+- Added `basedOnDependencyAnalysis` to Project Spec Build Script to be able to choose not to skip the script. [#992](https://github.com/yonaskolb/XcodeGen/pull/992) @myihsan
+- Added `BuildRule.runOncePerArchitecture` to allow running build rules once per architecture. [#950](https://github.com/yonaskolb/XcodeGen/pull/950) @sascha
+- Added discovered dependency file for a build script [#1012](https://github.com/yonaskolb/XcodeGen/pull/1012) @polac24 @fggeraissate
+
+#### Changed
+- **Breaking**: Info.plists with custom prefixes are no longer added to the Copy Bundle Resources build phase [#945](https://github.com/yonaskolb/XcodeGen/pull/945) @anivaros
+- **Breaking**: `workingDirectory` of included legacy targets is now made relative to including project [#981](https://github.com/yonaskolb/XcodeGen/pull/981) @jcolicchio
+- **Breaking**: Make `simulateLocation` respect `schemePathPrefix` option. [#973](https://github.com/yonaskolb/XcodeGen/pull/973) @jcolicchio
+
+#### Fixed
+- Fixed error message output for `minimumXcodeGenVersion`. [#967](https://github.com/yonaskolb/XcodeGen/pull/967) @joshwalker
+- Remove force-unwrapping causing crash for `LegacyTarget`s [#982](https://github.com/yonaskolb/XcodeGen/pull/982) @jcolicchio
+- Fixed a race condition in an internal JSON decoder, which would occasionally fail with an error like `Parsing project spec failed: Error Domain=Unspecified error Code=0`. [#995](https://github.com/yonaskolb/XcodeGen/pull/995) @elliottwilliams
+- Fixed issue where frameworks with `MACH_O_TYPE: staticlib` were being incorrectly embedded. [#1003](https://github.com/yonaskolb/XcodeGen/pull/1003) @mrabiciu
+
+#### Internal
+- Updated to Yams 4.0.0 [#984](https://github.com/yonaskolb/XcodeGen/pull/984) @swiftty
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.18.0...2.19.0)
+
+## 2.18.0
+
+#### Added
+- Add `Scheme.Test.TestTarget.skipped` to allow skipping of an entire test target. [#916](https://github.com/yonaskolb/XcodeGen/pull/916) @codeman9
+- Added ability to set custom LLDBInit scripts for launch and test schemes [#929](https://github.com/yonaskolb/XcodeGen/pull/929) @polac24
+- Adds App Clip support. [#909](https://github.com/yonaskolb/XcodeGen/pull/909) @brentleyjones @dflems
+- Application extension schemes now default to `launchAutomaticallySubstyle = 2` and the correct debugger and launcher identifiers [#932](https://github.com/yonaskolb/XcodeGen/pull/932) @brentleyjones
+- Updated SettingsPresets to use new defaults from Xcode 12. [#953](https://github.com/yonaskolb/XcodeGen/pull/953) @liamnichols
+- Enable Base Internationalization by default as per Xcode 12 behavior. [#954](https://github.com/yonaskolb/XcodeGen/issues/954) @liamnichols
+
+#### Changed
+- Change default project version to Xcode 12 [#960](https://github.com/yonaskolb/XcodeGen/pull/960) @yonaskolb
+
+#### Internal
+- Updates CI to run on Xcode 12. [#936](https://github.com/yonaskolb/XcodeGen/pull/936) [#960](https://github.com/yonaskolb/XcodeGen/pull/960) @dflems @yonaskolb
+
+#### Fixed
+- Select the first runnable build target, if present. [#957](https://github.com/yonaskolb/XcodeGen/pull/957) @codeman9
+- Allow SDK dependencies to be embedded. [#922](https://github.com/yonaskolb/XcodeGen/pull/922) @k-thorat
+- Allow creating intermediary groups outside of the project directory. [#892](https://github.com/yonaskolb/XcodeGen/pull/892) @segiddins
+- Fix appex's Runpath Search Paths under macOS target. [#952](https://github.com/yonaskolb/XcodeGen/pull/952) @rinsuki
+- `onlyCopyFilesOnInstall` is extended for the Embed App Extensions build phase. [#948](https://github.com/yonaskolb/XcodeGen/pull/948) @RomanPodymov
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.17.0...2.18.0)
+
+## 2.17.0
+
+#### Added
+- Added `options.fileTypes` which lets you set cross project defaults for certain file extensions [#914](https://github.com/yonaskolb/XcodeGen/pull/914) @yonaskolb
+- Added `onlyCopyFilesOnInstall` option to targets for the Embed Files build phase. [#912](https://github.com/yonaskolb/XcodeGen/pull/912) @jsorge
+
 #### Fixed
 - Treat all directories with known UTI as file wrapper. [#896](https://github.com/yonaskolb/XcodeGen/pull/896) @KhaosT
+- Generated schemes for application extensions now contain `wasCreatedForAppExtension = YES`. [#898](https://github.com/yonaskolb/XcodeGen/issues/898) @muizidn
+- Allow package dependencies to use `link: false` [#920](https://github.com/yonaskolb/XcodeGen/pull/920) @k-thorat
+- Fixed issue computing relative paths.  [#915](https://github.com/yonaskolb/XcodeGen/pull/915) @andrewreach
 
 #### Internal
 - Updated to XcodeProj 7.13.0 [#908](https://github.com/yonaskolb/XcodeGen/pull/908) @brentleyjones
 
-#### Added
-- Added support for SetectedTests in schemes `Test` configuration.  [#913](https://github.com/yonaskolb/XcodeGen/pull/913) @ooodin
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.16.0...2.17.0)
 
 ## 2.16.0
 

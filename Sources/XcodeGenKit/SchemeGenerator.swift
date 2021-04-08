@@ -50,7 +50,6 @@ public class SchemeGenerator {
 
         for target in project.targets {
             if let targetScheme = target.scheme {
-
                 if targetScheme.configVariants.isEmpty {
                     let schemeName = target.name
 
@@ -166,7 +165,11 @@ public class SchemeGenerator {
         if let targetName = scheme.run?.executable {
             schemeTarget = project.getTarget(targetName)
         } else {
-            schemeTarget = target ?? project.getTarget(scheme.build.targets.first!.target.name)
+            guard let firstTarget = scheme.build.targets.first else {
+                throw SchemeGenerationError.missingBuildTargets(scheme.name)
+            }
+            let name = scheme.build.targets.first { $0.buildTypes.contains(.running) }?.target.name ?? firstTarget.target.name
+            schemeTarget = target ?? project.getTarget(name)
         }
 
         let shouldExecuteOnLaunch = schemeTarget?.shouldExecuteOnLaunch == true
@@ -184,7 +187,7 @@ public class SchemeGenerator {
 
         let testables = zip(testTargets, testBuildTargetEntries).map { testTarget, testBuilEntries in
             XCScheme.TestableReference(
-                skipped: false,
+                skipped: testTarget.skipped,
                 parallelizable: testTarget.parallelizable,
                 randomExecutionOrdering: testTarget.randomExecutionOrder,
                 buildableReference: testBuilEntries.buildableReference,
@@ -222,18 +225,33 @@ public class SchemeGenerator {
             commandlineArguments: testCommandLineArgs,
             environmentVariables: testVariables,
             language: scheme.test?.language,
-            region: scheme.test?.region
+            region: scheme.test?.region,
+            customLLDBInitFile: scheme.test?.customLLDBInit
         )
 
         let allowLocationSimulation = scheme.run?.simulateLocation?.allow ?? true
         var locationScenarioReference: XCScheme.LocationScenarioReference?
         if let simulateLocation = scheme.run?.simulateLocation, var identifier = simulateLocation.defaultLocation, let referenceType = simulateLocation.referenceType {
             if referenceType == .gpx {
-                var path = Path("../\(identifier)")
+                var path = Path(components: [project.options.schemePathPrefix, identifier])
                 path = path.simplifyingParentDirectoryReferences()
                 identifier = path.string
             }
             locationScenarioReference = XCScheme.LocationScenarioReference(identifier: identifier, referenceType: referenceType.rawValue)
+        }
+
+        var storeKitConfigurationFileReference: XCScheme.StoreKitConfigurationFileReference?
+        if let storeKitConfiguration = scheme.run?.storeKitConfiguration {
+            let storeKitConfigurationPath = Path(components: [project.options.schemePathPrefix, storeKitConfiguration]).simplifyingParentDirectoryReferences()
+            storeKitConfigurationFileReference = XCScheme.StoreKitConfigurationFileReference(identifier: storeKitConfigurationPath.string)
+        }
+
+        let macroExpansion: XCScheme.BuildableReference?
+        if let macroExpansionName = scheme.run?.macroExpansion,
+           let resolvedMacroExpansion = buildActionEntries.first(where: { $0.buildableReference.blueprintName == macroExpansionName })?.buildableReference {
+            macroExpansion = resolvedMacroExpansion
+        } else {
+            macroExpansion = shouldExecuteOnLaunch ? nil : buildableReference
         }
 
         let launchAction = XCScheme.LaunchAction(
@@ -241,9 +259,9 @@ public class SchemeGenerator {
             buildConfiguration: scheme.run?.config ?? defaultDebugConfig.name,
             preActions: scheme.run?.preActions.map(getExecutionAction) ?? [],
             postActions: scheme.run?.postActions.map(getExecutionAction) ?? [],
-            macroExpansion: shouldExecuteOnLaunch ? nil : buildableReference,
-            selectedDebuggerIdentifier: (scheme.run?.debugEnabled ?? Scheme.Run.debugEnabledDefault) ? XCScheme.defaultDebugger : "",
-            selectedLauncherIdentifier: (scheme.run?.debugEnabled ?? Scheme.Run.debugEnabledDefault) ? XCScheme.defaultLauncher : "Xcode.IDEFoundation.Launcher.PosixSpawn",
+            macroExpansion: macroExpansion,
+            selectedDebuggerIdentifier: selectedDebuggerIdentifier(for: schemeTarget, run: scheme.run),
+            selectedLauncherIdentifier: selectedLauncherIdentifier(for: schemeTarget, run: scheme.run),
             askForAppToLaunch: scheme.run?.askForAppToLaunch,
             allowLocationSimulation: allowLocationSimulation,
             locationScenarioReference: locationScenarioReference,
@@ -253,7 +271,9 @@ public class SchemeGenerator {
             environmentVariables: launchVariables,
             language: scheme.run?.language,
             region: scheme.run?.region,
-            launchAutomaticallySubstyle: scheme.run?.launchAutomaticallySubstyle
+            launchAutomaticallySubstyle: scheme.run?.launchAutomaticallySubstyle ?? launchAutomaticallySubstyle(for: schemeTarget),
+            storeKitConfigurationFileReference: storeKitConfigurationFileReference,
+            customLLDBInitFile: scheme.run?.customLLDBInit
         )
 
         let profileAction = XCScheme.ProfileAction(
@@ -262,6 +282,7 @@ public class SchemeGenerator {
             preActions: scheme.profile?.preActions.map(getExecutionAction) ?? [],
             postActions: scheme.profile?.postActions.map(getExecutionAction) ?? [],
             shouldUseLaunchSchemeArgsEnv: scheme.profile?.shouldUseLaunchSchemeArgsEnv ?? true,
+            askForAppToLaunch: scheme.profile?.askForAppToLaunch,
             commandlineArguments: profileCommandLineArgs,
             environmentVariables: profileVariables
         )
@@ -276,17 +297,29 @@ public class SchemeGenerator {
             postActions: scheme.archive?.postActions.map(getExecutionAction) ?? []
         )
 
+        let lastUpgradeVersion = project.attributes["LastUpgradeCheck"] as? String ?? project.xcodeVersion
+
         return XCScheme(
             name: scheme.name,
-            lastUpgradeVersion: project.xcodeVersion,
+            lastUpgradeVersion: lastUpgradeVersion,
             version: project.schemeVersion,
             buildAction: buildAction,
             testAction: testAction,
             launchAction: launchAction,
             profileAction: profileAction,
             analyzeAction: analyzeAction,
-            archiveAction: archiveAction
+            archiveAction: archiveAction,
+            wasCreatedForAppExtension: schemeTarget
+                .flatMap { $0.type.isExtension ? true : nil }
         )
+    }
+
+    private func launchAutomaticallySubstyle(for target: Target?) -> String? {
+        if target?.type.isExtension == true {
+            return "2"
+        } else {
+            return nil
+        }
     }
 
     private func makeProductRunnables(for target: Target?, buildableReference: XCScheme.BuildableReference) -> (launch: XCScheme.Runnable, profile: XCScheme.BuildableProductRunnable) {
@@ -302,12 +335,29 @@ public class SchemeGenerator {
             return (buildable, buildable)
         }
     }
+
+    private func selectedDebuggerIdentifier(for target: Target?, run: Scheme.Run?) -> String {
+        if target?.type.canUseDebugLauncher != false && run?.debugEnabled ?? Scheme.Run.debugEnabledDefault {
+            return XCScheme.defaultDebugger
+        } else {
+            return ""
+        }
+    }
+
+    private func selectedLauncherIdentifier(for target: Target?, run: Scheme.Run?) -> String {
+        if target?.type.canUseDebugLauncher != false && run?.debugEnabled ?? Scheme.Run.debugEnabledDefault {
+            return XCScheme.defaultLauncher
+        } else {
+            return "Xcode.IDEFoundation.Launcher.PosixSpawn"
+        }
+    }
 }
 
 enum SchemeGenerationError: Error, CustomStringConvertible {
 
     case missingTarget(TargetReference, projectPath: String)
     case missingProject(String)
+    case missingBuildTargets(String)
 
     var description: String {
         switch self {
@@ -315,6 +365,8 @@ enum SchemeGenerationError: Error, CustomStringConvertible {
             return "Unable to find target named \"\(target)\" in \"\(projectPath)\""
         case .missingProject(let project):
             return "Unable to find project reference named \"\(project)\" in project.yml"
+        case .missingBuildTargets(let name):
+            return "Unable to find at least one build target in scheme \"\(name)\""
         }
     }
 }
@@ -336,7 +388,8 @@ extension Scheme {
                 disableMainThreadChecker: targetScheme.disableMainThreadChecker,
                 stopOnEveryMainThreadCheckerIssue: targetScheme.stopOnEveryMainThreadCheckerIssue,
                 language: targetScheme.language,
-                region: targetScheme.region
+                region: targetScheme.region,
+                storeKitConfiguration: targetScheme.storeKitConfiguration
             ),
             test: .init(
                 config: debugConfig,
@@ -379,6 +432,11 @@ extension Scheme {
 }
 
 extension PBXProductType {
+    var canUseDebugLauncher: Bool {
+        // Extensions don't use the lldb launcher
+        return !isExtension
+    }
+
     var isWatchApp: Bool {
         switch self {
         case .watchApp, .watch2App:

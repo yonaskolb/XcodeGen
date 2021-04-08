@@ -202,7 +202,7 @@ class SpecLoadingTests: XCTestCase {
                         throw failure("\(key): \(parsedValue) does not equal \(expectedValue)")
                     }
                 }
-                if !(dictionary as NSDictionary).isEqual(expectedDictionary) {
+                if !(dictionary as NSDictionary).isEqual(expectedDictionary as NSDictionary) {
                     throw failure("parsed yaml types don't match:\n\nParsed:\n\t\(dictionary.map { "\($0.key): \($0.value)" }.joined(separator: "\n\t"))\nExpected:\n\t\(expectedDictionary.map { "\($0.key): \($0.value)" }.joined(separator: "\n\t"))")
                 }
             }
@@ -709,6 +709,7 @@ class SpecLoadingTests: XCTestCase {
                         "ENV1": true,
                     ],
                     "gatherCoverageData": true,
+                    "storeKitConfiguration": "Configuration.storekit",
                     "language": "en",
                     "region": "US",
                     "disableMainThreadChecker": true,
@@ -736,6 +737,7 @@ class SpecLoadingTests: XCTestCase {
                     testTargets: ["t1", "t2"],
                     configVariants: ["dev", "app-store"],
                     gatherCoverageData: true,
+                    storeKitConfiguration: "Configuration.storekit",
                     language: "en",
                     region: "US",
                     disableMainThreadChecker: true,
@@ -774,6 +776,7 @@ class SpecLoadingTests: XCTestCase {
                     "run": [
                         "config": "debug",
                         "launchAutomaticallySubstyle": 2,
+                        "storeKitConfiguration": "Configuration.storekit",
                     ],
                     "test": [
                         "config": "debug",
@@ -782,6 +785,7 @@ class SpecLoadingTests: XCTestCase {
                             [
                                 "name": "ExternalProject/Target2",
                                 "parallelizable": true,
+                                "skipped": true,
                                 "randomExecutionOrder": true,
                                 "skippedTests": ["Test/testExample()"],
                             ],
@@ -812,7 +816,8 @@ class SpecLoadingTests: XCTestCase {
 
                 let expectedRun = Scheme.Run(
                     config: "debug",
-                    launchAutomaticallySubstyle: "2"
+                    launchAutomaticallySubstyle: "2",
+                    storeKitConfiguration: "Configuration.storekit"
                 )
                 try expect(scheme.run) == expectedRun
 
@@ -826,6 +831,7 @@ class SpecLoadingTests: XCTestCase {
                             targetReference: "ExternalProject/Target2",
                             randomExecutionOrder: true,
                             parallelizable: true,
+                            skipped: true,
                             skippedTests: ["Test/testExample()"]
                         ),
                     ]
@@ -888,6 +894,7 @@ class SpecLoadingTests: XCTestCase {
                             ["variable": "OTHER_ENV_VAR", "value": "VAL", "isEnabled": false],
                         ],
                         "launchAutomaticallySubstyle": "2",
+                        "storeKitConfiguration": "Configuration.storekit",
                     ],
                     "test": [
                         "environmentVariables": [
@@ -918,6 +925,7 @@ class SpecLoadingTests: XCTestCase {
 
                 try expect(scheme.run?.environmentVariables) == expectedRunVariables
                 try expect(scheme.run?.launchAutomaticallySubstyle) == "2"
+                try expect(scheme.run?.storeKitConfiguration) == "Configuration.storekit"
                 try expect(scheme.test?.environmentVariables) == expectedTestVariables
                 try expect(scheme.profile?.config) == "Release"
                 try expect(scheme.profile?.environmentVariables.isEmpty) == true
@@ -930,11 +938,13 @@ class SpecLoadingTests: XCTestCase {
                     ],
                     "run": [
                         "launchAutomaticallySubstyle": 2, // Both integer and string supported
+                        "storeKitConfiguration": "Configuration.storekit",
                     ],
                 ]
 
                 let scheme = try Scheme(name: "Scheme", jsonDictionary: schemeDictionary)
                 try expect(scheme.run?.launchAutomaticallySubstyle) == "2"
+                try expect(scheme.run?.storeKitConfiguration) == "Configuration.storekit"
             }
 
             $0.it("parses scheme templates") {
@@ -989,6 +999,9 @@ class SpecLoadingTests: XCTestCase {
                                     ],
                                 ],
                             ],
+                            "run": [
+                                "storeKitConfiguration": "Configuration.storekit",
+                            ],
                             "test": [
                                 "config": "debug",
                                 "targets": [
@@ -1036,6 +1049,8 @@ class SpecLoadingTests: XCTestCase {
                 try expect(scheme.build.parallelizeBuild) == false
                 try expect(scheme.build.buildImplicitDependencies) == false
 
+                try expect(scheme.run?.storeKitConfiguration) == "Configuration.storekit"
+
                 let expectedTest = Scheme.Test(
                     config: "debug",
                     gatherCoverageData: true,
@@ -1051,6 +1066,13 @@ class SpecLoadingTests: XCTestCase {
                     ]
                 )
                 try expect(scheme.test) == expectedTest
+            }
+
+            $0.it("parses copy files on install") {
+                var targetSource = validTarget
+                targetSource["onlyCopyFilesOnInstall"] = true
+                let target = try Target(name: "Embed Frameworks", jsonDictionary: targetSource)
+                try expect(target.onlyCopyFilesOnInstall) == true
             }
 
             $0.it("parses settings") {
@@ -1085,8 +1107,10 @@ class SpecLoadingTests: XCTestCase {
                     ["path": "script.sh"],
                     ["script": "shell script\ndo thing", "name": "myscript", "inputFiles": ["file", "file2"], "outputFiles": ["file", "file2"], "shell": "bin/customshell", "runOnlyWhenInstalling": true],
                     ["script": "shell script\ndo thing", "name": "myscript", "inputFiles": ["file", "file2"], "outputFiles": ["file", "file2"], "shell": "bin/customshell", "showEnvVars": false],
+                    ["script": "shell script\ndo thing", "name": "myscript", "inputFiles": ["file", "file2"], "outputFiles": ["file", "file2"], "shell": "bin/customshell", "basedOnDependencyAnalysis": false],
                     ["script": "shell script\nwith file lists", "name": "myscript", "inputFileLists": ["inputList.xcfilelist"], "outputFileLists": ["outputList.xcfilelist"], "shell": "bin/customshell", "runOnlyWhenInstalling": true],
                     ["script": "shell script\nwith file lists", "name": "myscript", "inputFileLists": ["inputList.xcfilelist"], "outputFileLists": ["outputList.xcfilelist"], "shell": "bin/customshell", "showEnvVars": false],
+                    ["script": "shell script\nwith file lists", "name": "myscript", "inputFileLists": ["inputList.xcfilelist"], "outputFileLists": ["outputList.xcfilelist"], "shell": "bin/customshell", "basedOnDependencyAnalysis": false],
                 ]
                 target["preBuildScripts"] = scripts
                 target["postCompileScripts"] = scripts
@@ -1094,10 +1118,12 @@ class SpecLoadingTests: XCTestCase {
 
                 let expectedScripts = [
                     BuildScript(script: .path("script.sh")),
-                    BuildScript(script: .script("shell script\ndo thing"), name: "myscript", inputFiles: ["file", "file2"], outputFiles: ["file", "file2"], shell: "bin/customshell", runOnlyWhenInstalling: true, showEnvVars: true),
-                    BuildScript(script: .script("shell script\ndo thing"), name: "myscript", inputFiles: ["file", "file2"], outputFiles: ["file", "file2"], shell: "bin/customshell", runOnlyWhenInstalling: false, showEnvVars: false),
-                    BuildScript(script: .script("shell script\nwith file lists"), name: "myscript", inputFileLists: ["inputList.xcfilelist"], outputFileLists: ["outputList.xcfilelist"], shell: "bin/customshell", runOnlyWhenInstalling: true, showEnvVars: true),
-                    BuildScript(script: .script("shell script\nwith file lists"), name: "myscript", inputFileLists: ["inputList.xcfilelist"], outputFileLists: ["outputList.xcfilelist"], shell: "bin/customshell", runOnlyWhenInstalling: false, showEnvVars: false),
+                    BuildScript(script: .script("shell script\ndo thing"), name: "myscript", inputFiles: ["file", "file2"], outputFiles: ["file", "file2"], shell: "bin/customshell", runOnlyWhenInstalling: true, showEnvVars: true, basedOnDependencyAnalysis: true),
+                    BuildScript(script: .script("shell script\ndo thing"), name: "myscript", inputFiles: ["file", "file2"], outputFiles: ["file", "file2"], shell: "bin/customshell", runOnlyWhenInstalling: false, showEnvVars: false, basedOnDependencyAnalysis: true),
+                    BuildScript(script: .script("shell script\ndo thing"), name: "myscript", inputFiles: ["file", "file2"], outputFiles: ["file", "file2"], shell: "bin/customshell", runOnlyWhenInstalling: false, showEnvVars: true, basedOnDependencyAnalysis: false),
+                    BuildScript(script: .script("shell script\nwith file lists"), name: "myscript", inputFileLists: ["inputList.xcfilelist"], outputFileLists: ["outputList.xcfilelist"], shell: "bin/customshell", runOnlyWhenInstalling: true, showEnvVars: true, basedOnDependencyAnalysis: true),
+                    BuildScript(script: .script("shell script\nwith file lists"), name: "myscript", inputFileLists: ["inputList.xcfilelist"], outputFileLists: ["outputList.xcfilelist"], shell: "bin/customshell", runOnlyWhenInstalling: false, showEnvVars: false, basedOnDependencyAnalysis: true),
+                    BuildScript(script: .script("shell script\nwith file lists"), name: "myscript", inputFileLists: ["inputList.xcfilelist"], outputFileLists: ["outputList.xcfilelist"], shell: "bin/customshell", runOnlyWhenInstalling: false, showEnvVars: true, basedOnDependencyAnalysis: false),
                 ]
 
                 let parsedTarget = try Target(name: "test", jsonDictionary: target)
@@ -1145,9 +1171,16 @@ class SpecLoadingTests: XCTestCase {
                         watchOS: "3.0",
                         macOS: "10.12.1"
                     ),
+                    fileTypes: ["abc": FileType(
+                        file: false,
+                        buildPhase: .sources,
+                        attributes: ["a1", "a2"],
+                        resourceTags: ["r1", "r2"],
+                        compilerFlags: ["c1", "c2"])],
                     findCarthageFrameworks: true,
                     preGenCommand: "swiftgen",
-                    postGenCommand: "pod install"
+                    postGenCommand: "pod install",
+                    schemePathPrefix: "../"
                 )
                 let expected = Project(name: "test", options: options)
                 let dictionary: [String: Any] = ["options": [
@@ -1160,6 +1193,14 @@ class SpecLoadingTests: XCTestCase {
                     "findCarthageFrameworks": true,
                     "preGenCommand": "swiftgen",
                     "postGenCommand": "pod install",
+                    "fileTypes": ["abc": [
+                        "file": false,
+                        "buildPhase": "sources",
+                        "attributes": ["a1", "a2"],
+                        "resourceTags": ["r1", "r2"],
+                        "compilerFlags": ["c1", "c2"],
+                        ]],
+                    "schemePathPrefix": "../",
                 ]]
                 let parsedSpec = try getProjectSpec(dictionary)
                 try expect(parsedSpec) == expected
@@ -1176,6 +1217,7 @@ class SpecLoadingTests: XCTestCase {
                     "package7": .remote(url: "package.git", versionRequirement: .exact("1.2.2")),
                     "package8": .remote(url: "package.git", versionRequirement: .upToNextMajorVersion("4.0.0-beta.5")),
                     "package9": .local(path: "package/package"),
+                    "package10": .remote(url: "https://github.com/yonaskolb/XcodeGen", versionRequirement: .exact("1.2.2")),
                     "XcodeGen": .local(path: "../XcodeGen"),
                 ], options: .init(localPackagesGroup: "MyPackages"))
 
@@ -1194,6 +1236,7 @@ class SpecLoadingTests: XCTestCase {
                         "package7": ["url": "package.git", "version": "1.2.2"],
                         "package8": ["url": "package.git", "majorVersion": "4.0.0-beta.5"],
                         "package9": ["path": "package/package"],
+                        "package10": ["github": "yonaskolb/XcodeGen", "exactVersion": "1.2.2"],
                     ],
                     "localPackages": ["../XcodeGen"],
                 ]
@@ -1217,6 +1260,41 @@ class SpecLoadingTests: XCTestCase {
                 let parsedSpec = try getProjectSpec(dictionary)
                 try expect(parsedSpec) == project
             }
+
+            $0.it("parses TargetScheme storeKitConfiguration as string") {
+                var targetDictionary = validTarget
+                targetDictionary["scheme"] = [
+                    "storeKitConfiguration": "Configuration.storekit",
+                ]
+
+                let target = try Target(name: "test", jsonDictionary: targetDictionary)
+
+                let scheme = TargetScheme(
+                    storeKitConfiguration: "Configuration.storekit"
+                )
+
+                try expect(target.scheme) == scheme
+            }
+
+            $0.it("parses Scheme.Run storeKitConfiguration as string") {
+                let schemeDictionary: [String: Any] = [
+                    "build": [
+                        "targets": [:],
+                    ],
+                    "run": [
+                        "config": "debug",
+                        "storeKitConfiguration": "Configuration.storekit",
+                    ],
+                ]
+                let scheme = try Scheme(name: "Scheme", jsonDictionary: schemeDictionary)
+
+                let runAction = Scheme.Run(
+                    config: "debug",
+                    storeKitConfiguration: "Configuration.storekit"
+                )
+
+                try expect(scheme.run) == runAction
+            }
         }
     }
 
@@ -1233,7 +1311,7 @@ class SpecLoadingTests: XCTestCase {
 
             $0.it("is an invalid package version") {
                 for dictionary in invalidPackages {
-                    try expect { _ = try SwiftPackage(jsonDictionary: dictionary) }.toThrow()
+                    try expect(expression: { _ = try SwiftPackage(jsonDictionary: dictionary) }).toThrow()
                 }
             }
         }
