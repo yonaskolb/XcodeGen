@@ -285,9 +285,16 @@ public class PBXProjGenerator {
             }.flatMap { $0 }
         ).sorted()
 
-        var projectAttributes: [String: Any] = ["LastUpgradeCheck": project.xcodeVersion]
-            .merged(project.attributes)
-
+        var projectAttributes: [String: Any] = project.attributes
+        
+        // Set default LastUpgradeCheck if user did not specify
+        let lastUpgradeKey = "LastUpgradeCheck"
+        if !projectAttributes.contains(where: { (key, value) -> Bool in
+            key == lastUpgradeKey && value is String
+        }) {
+            projectAttributes[lastUpgradeKey] = project.xcodeVersion
+        }
+        
         if !assetTags.isEmpty {
             projectAttributes["knownAssetTags"] = assetTags
         }

@@ -4,6 +4,7 @@
 
 #### Added
 - Allow specifying a `github` name like `JohnSundell/Ink` instead of a full `url` for Swift Packages [#1029](https://github.com/yonaskolb/XcodeGen/pull/1029) @yonaskolb
+- Added explicity `LastUpgradeCheck` and `LastUpgradeVersion` override support so it's possible to override these properties without using the `project.xcodeVersion`. [1013](https://github.com/yonaskolb/XcodeGen/pull/1013) @Andre113
 - Added `macroExpansion` for `run` in `schemes` [#1036](https://github.com/yonaskolb/XcodeGen/pull/1036) @freddi-kit
 - Added `askForAppToLaunch` for `profile` in `schemes`  [#1035](https://github.com/yonaskolb/XcodeGen/pull/1035) @freddi-kit
 
