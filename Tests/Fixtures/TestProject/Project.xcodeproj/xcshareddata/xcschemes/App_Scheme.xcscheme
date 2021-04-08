@@ -91,8 +91,20 @@
          identifier = "Honolulu, HI, USA"
          referenceType = "1">
       </LocationScenarioReference>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "0867B0DACEF28C11442DE8F7"
+            BuildableName = "App_iOS.app"
+            BlueprintName = "App_iOS"
+            ReferencedContainer = "container:Project.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <CommandLineArguments>
       </CommandLineArguments>
+      <StoreKitConfigurationFileReference
+         identifier = "../../App_iOS/Configuration.storekit">
+      </StoreKitConfigurationFileReference>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Production Release"

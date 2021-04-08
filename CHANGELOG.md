@@ -3,7 +3,47 @@
 ## Next Version
 
 #### Added
-- Add `useBaseInternationalization` to Project Spec Options to opt out of Base Internationalization. [#961](https://github.com/yonaskolb/XcodeGen/pull/961) @liamnichols
+- Allow specifying a `github` name like `JohnSundell/Ink` instead of a full `url` for Swift Packages [#1029](https://github.com/yonaskolb/XcodeGen/pull/1029) @yonaskolb
+- Added explicity `LastUpgradeCheck` and `LastUpgradeVersion` override support so it's possible to override these properties without using the `project.xcodeVersion`. [1013](https://github.com/yonaskolb/XcodeGen/pull/1013) @Andre113
+- Added `macroExpansion` for `run` in `schemes` [#1036](https://github.com/yonaskolb/XcodeGen/pull/1036) @freddi-kit
+- Added `askForAppToLaunch` for `profile` in `schemes`  [#1035](https://github.com/yonaskolb/XcodeGen/pull/1035) @freddi-kit
+- Added support for selectedTests in schemes `Test` configuration. [#913](https://github.com/yonaskolb/XcodeGen/pull/913) @ooodin
+
+#### Fixed
+- Fixed regression on **.storekit** configuration files' default build phase. [#1026](https://github.com/yonaskolb/XcodeGen/pull/1026) @jcolicchio
+- Fixed framework search paths when using `.xcframework`s. [#1015](https://github.com/yonaskolb/XcodeGen/pull/1015) @FranzBusch
+- Fixed bug where schemes without a build target would crash instead of displaying an error [#1040](https://github.com/yonaskolb/XcodeGen/pull/1040) @dalemyers
+- Fixed files with names ending in **Info.plist** (such as **GoogleServices-Info.plist**) from being omitted from the Copy Resources build phase. Now, only the resolved info plist file for each specific target is omitted. [#1027](https://github.com/yonaskolb/XcodeGen/pull/1027) @liamnichols
+
+#### Internal
+- Build universal binaries for release. XcodeGen now runs natively on Apple Silicon. [#1024](https://github.com/yonaskolb/XcodeGen/pull/1024) @thii
+
+## 2.19.0
+
+#### Added
+- Added support for building and running on Linux platforms. Tested for compatibility with Swift 5.3+ and Ubuntu 18.04. [#988](https://github.com/yonaskolb/XcodeGen/pull/988) @elliottwilliams
+- Added `useBaseInternationalization` to Project Spec Options to opt out of Base Internationalization. [#961](https://github.com/yonaskolb/XcodeGen/pull/961) @liamnichols
+- Added `storeKitConfiguration` to allow specifying StoreKit Configuration in Scheme and TargetScheme, supporting either xcodeproj or xcworkspace via `schemePathPrefix` option. [#964](https://github.com/yonaskolb/XcodeGen/pull/964) @jcolicchio
+- Added more detailed error message with method arguments. [#990](https://github.com/yonaskolb/XcodeGen/pull/990) @bannzai
+- Added `basedOnDependencyAnalysis` to Project Spec Build Script to be able to choose not to skip the script. [#992](https://github.com/yonaskolb/XcodeGen/pull/992) @myihsan
+- Added `BuildRule.runOncePerArchitecture` to allow running build rules once per architecture. [#950](https://github.com/yonaskolb/XcodeGen/pull/950) @sascha
+- Added discovered dependency file for a build script [#1012](https://github.com/yonaskolb/XcodeGen/pull/1012) @polac24 @fggeraissate
+
+#### Changed
+- **Breaking**: Info.plists with custom prefixes are no longer added to the Copy Bundle Resources build phase [#945](https://github.com/yonaskolb/XcodeGen/pull/945) @anivaros
+- **Breaking**: `workingDirectory` of included legacy targets is now made relative to including project [#981](https://github.com/yonaskolb/XcodeGen/pull/981) @jcolicchio
+- **Breaking**: Make `simulateLocation` respect `schemePathPrefix` option. [#973](https://github.com/yonaskolb/XcodeGen/pull/973) @jcolicchio
+
+#### Fixed
+- Fixed error message output for `minimumXcodeGenVersion`. [#967](https://github.com/yonaskolb/XcodeGen/pull/967) @joshwalker
+- Remove force-unwrapping causing crash for `LegacyTarget`s [#982](https://github.com/yonaskolb/XcodeGen/pull/982) @jcolicchio
+- Fixed a race condition in an internal JSON decoder, which would occasionally fail with an error like `Parsing project spec failed: Error Domain=Unspecified error Code=0`. [#995](https://github.com/yonaskolb/XcodeGen/pull/995) @elliottwilliams
+- Fixed issue where frameworks with `MACH_O_TYPE: staticlib` were being incorrectly embedded. [#1003](https://github.com/yonaskolb/XcodeGen/pull/1003) @mrabiciu
+
+#### Internal
+- Updated to Yams 4.0.0 [#984](https://github.com/yonaskolb/XcodeGen/pull/984) @swiftty
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.18.0...2.19.0)
 
 #### Fixed
 - Scheme config variants wrong assignment for similar config names. [#976](https://github.com/yonaskolb/XcodeGen/pull/976) @stefanomondino

@@ -7,10 +7,10 @@ public enum Linkage {
     case none
 }
 
-extension PBXProductType {
+extension Target {
 
     public var defaultLinkage: Linkage {
-        switch self {
+        switch type {
         case .none,
              .appExtension,
              .application,
@@ -20,6 +20,7 @@ extension PBXProductType {
              .intentsServiceExtension,
              .messagesApplication,
              .messagesExtension,
+             .metalLibrary,
              .ocUnitTestBundle,
              .onDemandInstallCapableApplication,
              .stickerPack,
@@ -35,12 +36,23 @@ extension PBXProductType {
              .xpcService:
             return .none
         case .framework, .xcFramework:
-            // TODO: This should check `MACH_O_TYPE` in case this is a "Static Framework"
-            return .dynamic
+            // Check the MACH_O_TYPE for "Static Framework"
+            if settings.buildSettings.machOType == "staticlib" {
+                return .static
+            } else {
+                return .dynamic
+            }
         case .dynamicLibrary:
             return .dynamic
         case .staticLibrary, .staticFramework:
             return .static
         }
+    }
+}
+
+private extension BuildSettings {
+
+    var machOType: String? {
+        self["MACH_O_TYPE"] as? String
     }
 }

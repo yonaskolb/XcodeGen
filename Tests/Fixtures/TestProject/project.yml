@@ -1,5 +1,5 @@
 name: Project
-include: [environments.yml]
+include: [environments.yml, AnotherProject/project.yml]
 options:
   bundleIdPrefix: com.project
   usesTabs: false
@@ -21,6 +21,7 @@ fileGroups:
   - FileGroup
   - SomeFile
   - Utilities
+  - App_iOS/Configuration.storekit
 projectReferences:
   AnotherProject:
     path: ./AnotherProject/AnotherProject.xcodeproj
@@ -39,7 +40,7 @@ targets:
     platform: macOS
     scheme: {}
     info:
-      path: App_macOS/Info.plist
+      path: App_macOS/App-Info.plist
       properties:
         LSMinimumSystemVersion: $(MACOSX_DEPLOYMENT_TARGET)
         NSMainStoryboardFile: Main
@@ -76,6 +77,7 @@ targets:
           - "**/excluded-file"
           - "excluded-file"
           - "Model.xcmappingmodel"
+          - "Configuration.storekit"
       - path: App_iOS
         name: App
         includes:
@@ -84,6 +86,7 @@ targets:
       - FileGroup/UnderFileGroup
       - Resources/MyBundle.bundle
       - Resources/SceneKitCatalog.scnassets
+      - Resources/GoogleService-Info.plist
       - path: Resources/ResourceFolder
         type: folder
       - path: Folder
@@ -140,17 +143,21 @@ targets:
       commandLineArguments:
           MyEnabledArgument: true
           MyDisabledArgument: false
+      storeKitConfiguration: "App_iOS/Configuration.storekit"
     postbuildScripts:
       - path: scripts/strip-frameworks.sh
         name: Strip Unused Architectures from Frameworks
         runOnlyWhenInstalling: true
+        basedOnDependencyAnalysis: false
       - name: MyScript
         script: |
           echo "You ran a script!"
+          touch "${DERIVED_FILE_DIR}/target.d"
         inputFileLists:
           - App_iOS/inputList.xcfilelist
         outputFileLists:
           - App_iOS/outputList.xcfilelist
+        discoveredDependencyFile: $(DERIVED_FILE_DIR)/target.d
 
   EntitledApp:
     type: application
@@ -351,6 +358,8 @@ schemes:
         allow: true
         defaultLocation: Honolulu, HI, USA
       customLLDBInit: ${SRCROOT}/.lldbinit
+      storeKitConfiguration: "App_iOS/Configuration.storekit"
+      macroExpansion: App_iOS 
     test:
       gatherCoverageData: true
       targets:
