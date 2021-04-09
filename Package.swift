@@ -39,14 +39,14 @@ let package = Package(
             "JSONUtilities",
             "XcodeProj",
             "PathKit",
-            .target(name: "XcodeGenCore"),
+            "XcodeGenCore",
             "GraphViz",
         ]),
         .target(name: "ProjectSpec", dependencies: [
             "JSONUtilities",
             "XcodeProj",
             "Yams",
-            .target(name: "XcodeGenCore"),
+            "XcodeGenCore",
             "Version",
         ]),
         .target(name: "XcodeGenCore", dependencies: [
@@ -71,7 +71,7 @@ let package = Package(
             "TestSupport",
         ]),
         .testTarget(name: "CoreTests", dependencies: [
-            .target(name: "XcodeGenCore"),
+            "XcodeGenCore",
             "Spectre",
             "PathKit",
             "TestSupport",
