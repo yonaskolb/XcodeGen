@@ -30,7 +30,14 @@ public extension Collection where Element == Config {
 
 private extension String {
     func variantName(for configType: ConfigType? ) -> String {
-        replacingOccurrences(of: configType?.name ?? "", with: "")
+        self.components(separatedBy: " ")
+            .compactMap { component in
+                if component.lowercased() == (configType?.name.lowercased() ?? "") {
+                    return nil
+                }
+                return component
+            }
+            .joined(separator: " ")
             .trimmingCharacters(in: CharacterSet.whitespaces)
     }
 }
