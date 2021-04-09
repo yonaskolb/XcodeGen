@@ -2,6 +2,9 @@
 
 ## Next Version
 
+#### Fixed
+- Fix multiple targets named 'Core' in: GraphViz, XcodeGen [#1049](https://github.com/yonaskolb/XcodeGen/pull/1029) @d-date
+
 ## 2.20.0
 
 #### Added
