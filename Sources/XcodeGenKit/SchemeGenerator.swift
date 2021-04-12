@@ -72,10 +72,10 @@ public class SchemeGenerator {
                         let schemeName = "\(target.name) \(configVariant)"
                         
                         let debugConfig = project.configs
-                            .first(with: configVariant, for: .debug)!
+                            .first(including: configVariant, for: .debug)!
                         
                         let releaseConfig = project.configs
-                            .first(with: configVariant, for: .release)!
+                            .first(including: configVariant, for: .release)!
                      
                         let scheme = Scheme(
                             name: schemeName,

@@ -29,7 +29,7 @@ public extension Collection where Element == Config {
 }
 
 private extension String {
-    func variantName(for configType: ConfigType? ) -> String {
+    func variantName(for configType: ConfigType?) -> String {
         self.components(separatedBy: " ")
             .compactMap { component in
                 if component.lowercased() == (configType?.name.lowercased() ?? "") {
