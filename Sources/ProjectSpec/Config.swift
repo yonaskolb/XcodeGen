@@ -23,7 +23,7 @@ public enum ConfigType: String {
 }
 
 public extension Collection where Element == Config {
-    func first(with configVariant: String, for type: ConfigType) -> Config? {
+    func first(including configVariant: String, for type: ConfigType) -> Config? {
         first(where: { $0.type == type && $0.name.variantName(for: $0.type) == configVariant })
     }
 }
