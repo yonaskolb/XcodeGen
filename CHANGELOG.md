@@ -50,7 +50,7 @@
 [Commits](https://github.com/yonaskolb/XcodeGen/compare/2.18.0...2.19.0)
 
 #### Fixed
-- Scheme config variants wrong assignment for similar config names. [#976](https://github.com/yonaskolb/XcodeGen/pull/976) @stefanomondino
+- Lookup scheme config variants by whole words, fixing incorrect assignment in names that contain subtrings of each other (eg PreProd and Prod) [#976](https://github.com/yonaskolb/XcodeGen/pull/976) @stefanomondino
 
 ## 2.18.0
 
