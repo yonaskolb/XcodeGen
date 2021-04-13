@@ -2805,10 +2805,6 @@
 		00FD318C7418F3351FC00744 /* Test Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/watchOS",
-				);
 				INFOPLIST_FILE = App_watchOS/Info.plist;
 				PRODUCT_BUNDLE_IDENTIFIER = com.project.app.watch;
 				SDKROOT = watchos;
@@ -3329,10 +3325,6 @@
 		20803EC42C26E4EA13474E5A /* Production Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/watchOS",
-				);
 				INFOPLIST_FILE = App_watchOS/Info.plist;
 				PRODUCT_BUNDLE_IDENTIFIER = com.project.app.watch;
 				SDKROOT = watchos;
@@ -4700,10 +4692,6 @@
 		7B2A1BE6CA654E9903A4C680 /* Staging Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/watchOS",
-				);
 				INFOPLIST_FILE = App_watchOS/Info.plist;
 				PRODUCT_BUNDLE_IDENTIFIER = com.project.app.watch;
 				SDKROOT = watchos;
@@ -5453,10 +5441,6 @@
 		AABC1E325EADF86C5137D659 /* Production Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/watchOS",
-				);
 				INFOPLIST_FILE = App_watchOS/Info.plist;
 				PRODUCT_BUNDLE_IDENTIFIER = com.project.app.watch;
 				SDKROOT = watchos;
@@ -5961,10 +5945,6 @@
 		C4397CDA0D458BAD55C911B0 /* Staging Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/watchOS",
-				);
 				INFOPLIST_FILE = App_watchOS/Info.plist;
 				PRODUCT_BUNDLE_IDENTIFIER = com.project.app.watch;
 				SDKROOT = watchos;
@@ -6865,10 +6845,6 @@
 		F3AC6A112F81D0958A316D82 /* Test Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/Carthage/Build/watchOS",
-				);
 				INFOPLIST_FILE = App_watchOS/Info.plist;
 				PRODUCT_BUNDLE_IDENTIFIER = com.project.app.watch;
 				SDKROOT = watchos;
