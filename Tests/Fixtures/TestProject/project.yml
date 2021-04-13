@@ -40,7 +40,7 @@ targets:
     platform: macOS
     scheme: {}
     info:
-      path: App_macOS/Info.plist
+      path: App_macOS/App-Info.plist
       properties:
         LSMinimumSystemVersion: $(MACOSX_DEPLOYMENT_TARGET)
         NSMainStoryboardFile: Main
@@ -86,6 +86,7 @@ targets:
       - FileGroup/UnderFileGroup
       - Resources/MyBundle.bundle
       - Resources/SceneKitCatalog.scnassets
+      - Resources/GoogleService-Info.plist
       - path: Resources/ResourceFolder
         type: folder
       - path: Folder

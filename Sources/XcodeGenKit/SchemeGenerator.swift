@@ -165,7 +165,10 @@ public class SchemeGenerator {
         if let targetName = scheme.run?.executable {
             schemeTarget = project.getTarget(targetName)
         } else {
-            let name = scheme.build.targets.first { $0.buildTypes.contains(.running) }?.target.name ?? scheme.build.targets.first!.target.name
+            guard let firstTarget = scheme.build.targets.first else {
+                throw SchemeGenerationError.missingBuildTargets(scheme.name)
+            }
+            let name = scheme.build.targets.first { $0.buildTypes.contains(.running) }?.target.name ?? firstTarget.target.name
             schemeTarget = target ?? project.getTarget(name)
         }
 
@@ -188,7 +191,9 @@ public class SchemeGenerator {
                 parallelizable: testTarget.parallelizable,
                 randomExecutionOrdering: testTarget.randomExecutionOrder,
                 buildableReference: testBuilEntries.buildableReference,
-                skippedTests: testTarget.skippedTests.map(XCScheme.TestItem.init)
+                skippedTests: testTarget.skippedTests.map(XCScheme.TestItem.init),
+                selectedTests: testTarget.selectedTests.map(XCScheme.TestItem.init),
+                useTestSelectionWhitelist: !testTarget.selectedTests.isEmpty ? true : nil
             )
         }
 
@@ -292,9 +297,11 @@ public class SchemeGenerator {
             postActions: scheme.archive?.postActions.map(getExecutionAction) ?? []
         )
 
+        let lastUpgradeVersion = project.attributes["LastUpgradeCheck"] as? String ?? project.xcodeVersion
+
         return XCScheme(
             name: scheme.name,
-            lastUpgradeVersion: project.xcodeVersion,
+            lastUpgradeVersion: lastUpgradeVersion,
             version: project.schemeVersion,
             buildAction: buildAction,
             testAction: testAction,
@@ -350,6 +357,7 @@ enum SchemeGenerationError: Error, CustomStringConvertible {
 
     case missingTarget(TargetReference, projectPath: String)
     case missingProject(String)
+    case missingBuildTargets(String)
 
     var description: String {
         switch self {
@@ -357,6 +365,8 @@ enum SchemeGenerationError: Error, CustomStringConvertible {
             return "Unable to find target named \"\(target)\" in \"\(projectPath)\""
         case .missingProject(let project):
             return "Unable to find project reference named \"\(project)\" in project.yml"
+        case .missingBuildTargets(let name):
+            return "Unable to find at least one build target in scheme \"\(name)\""
         }
     }
 }

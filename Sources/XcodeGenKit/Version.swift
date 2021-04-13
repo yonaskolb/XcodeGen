@@ -3,7 +3,7 @@ import ProjectSpec
 
 extension Project {
 
-    var xcodeVersion: String {
+    public var xcodeVersion: String {
         XCodeVersion.parse(options.xcodeVersion ?? "12.0")
     }
 
