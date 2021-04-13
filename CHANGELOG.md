@@ -9,6 +9,7 @@
 
 #### Fixed
 - Fixed regression on **.storekit** configuration files' default build phase. [#1026](https://github.com/yonaskolb/XcodeGen/pull/1026) @jcolicchio
+- Carthage frameworks are no longer embedded for "order-only" target dependencies. This avoid redundant embeds in situations where a target's sources _import_ a Carthage framework but do not have a binary dependency on it (like a test target which runs in a host app). [#1041](https://github.com/yonaskolb/XcodeGen/pull/1041) @elliottwilliams
 
 #### Internal
 - Build universal binaries for release. XcodeGen now runs natively on Apple Silicon. [#1024](https://github.com/yonaskolb/XcodeGen/pull/1024) @thii
