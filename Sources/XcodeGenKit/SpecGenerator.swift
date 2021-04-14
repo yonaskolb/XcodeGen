@@ -14,6 +14,16 @@ public enum SpecGenerationError: Error, CustomStringConvertible {
     }
 }
 
+/**
+ Generate project spec from XcodeProj
+
+ Basically, it is a process of mapping the types defined in XcodeProj to the types defined in XcodeGen.
+ 
+ XcodeProj -> Project
+ PBXNativeTarget -> Target
+ 
+ For one-to-one relationship between types, the conversion is implemented by extension, and for other types, the mapping is done by functions such as generateTargetSpec.
+ */
 public func generateSpec(xcodeProj: XcodeProj, projectDirectory: Path) throws -> Project {
     guard let pbxproj = xcodeProj.pbxproj.rootObject else {
         throw SpecGenerationError.rootObjectNotFound
@@ -41,7 +51,7 @@ public func generateSpec(xcodeProj: XcodeProj, projectDirectory: Path) throws ->
     let schems = xcodeProj.sharedData?.schemes.compactMap(Scheme.init) ?? []
 
     let configs = pbxproj.buildConfigurationList.buildConfigurations.map {
-        Config(name: $0.name, type: getConfigType(for: $0.buildSettings))
+        Config(name: $0.name, type: $0.buildSettings.configType)
     }
 
     let proj = Project(basePath: Path(pbxproj.projectDirPath),
@@ -62,158 +72,14 @@ public func generateSpec(xcodeProj: XcodeProj, projectDirectory: Path) throws ->
     return optimizedProj
 }
 
-private func getConfigType(for settings: BuildSettings) -> ConfigType {
-    guard let args = settings["GCC_PREPROCESSOR_DEFINITIONS"] as? [String] else {
-        return .release
-    }
-    return args.contains("DEBUG=1") ? .debug : .release
-}
-
-private extension BuildSettingsProvider.Variant {
-    init(_ configType: ConfigType) {
-        switch configType {
-        case .debug: self = .debug
-        case .release: self = .release
-        }
-    }
-}
-
-private func removeDefault(project: Project, sourceRoot: Path) throws -> Project {
-    func removeDefaultsFromProjectSettings(_ settings: Settings) -> Settings {
-        var newSettings = settings
-
-        for case (let key, var settings) in newSettings.configSettings {
-            let variant = BuildSettingsProvider.Variant(key) ?? .debug
-            let defaultSettings = BuildSettingsProvider.projectDefault(variant: .all)
-                .merged(BuildSettingsProvider.projectDefault(variant: variant))
-            settings.buildSettings = settings.buildSettings.subtracting(defaultSettings)
-            newSettings.configSettings[key] = settings
-        }
-
-        return newSettings
-    }
-
-    func removeDefaultsFromTargetSettings(_ settings: Settings, in target: Target) -> Settings {
-        var newSettings = settings
-
-        for case (let key, var settings) in newSettings.configSettings {
-            let variant = BuildSettingsProvider.Variant(key) ?? .debug
-
-            let projectBuildSettings = project.settings.configSettings[key]?.buildSettings
-            let sdkRoot = projectBuildSettings?["SDKROOT"] as? String
-            let platform = BuildSettingsProvider.Platform(sdkRoot: sdkRoot)
-            let product = BuildSettingsProvider.Product(product: target.type)
-            let swift = projectBuildSettings?["SWIFT_OPTIMIZATION_LEVEL"] as? String != nil
-
-            let defaultSettings = BuildSettingsProvider.projectDefault(variant: .all)
-                .merged(BuildSettingsProvider.targetDefault(
-                    variant: variant,
-                    platform: platform,
-                    product: product,
-                    swift: swift))
-
-            settings.buildSettings = settings.buildSettings.subtracting(defaultSettings)
-            newSettings.configSettings[key] = settings
-        }
-
-        return newSettings
-    }
-
-    func optimizeSources(_ sources: [TargetSource], sourceRoot: Path) throws -> [TargetSource] {
-        let allSourcePaths = sources.map { sourceRoot + Path($0.path) }
-        var merged = [TargetSource]()
-
-        let completed = try sources
-            .sorted { Path($0.path).components.count > Path($1.path).components.count }
-            .compactMap { targetSource -> TargetSource? in
-                let parent = (sourceRoot + Path(targetSource.path)).parent()
-
-                // skip when parent directory is already added
-                if merged.contains(where: { (sourceRoot + Path($0.path)) == parent }) {
-                    return nil
-                }
-
-                let sameLevelFiles = try parent.children().filter {
-                    // ingore files that will specified in build configs
-                    $0.lastComponent != "Info.plist" &&
-                        $0.lastComponent != ".DS_Store" &&
-                        $0.extension != "modulemap" &&
-                        $0.extension != "entitlements"
-                }
-
-                // merge files into a directory if all its contents are in the target
-                if sameLevelFiles.allSatisfy({ allSourcePaths.contains($0) }) {
-                    merged.append(TargetSource(path: try parent.relativePath(from: sourceRoot).string,
-                                               name: parent.lastComponent))
-                    return nil
-                }
-                return targetSource
-        }
-
-        let result = merged.count > 0 ? try optimizeSources(completed + merged, sourceRoot: sourceRoot) : completed
-        return result.sorted { $0.path < $1.path }
-    }
-
-    var project = project
-    project.settings = removeDefaultsFromProjectSettings(project.settings)
-    project.targets = try project.targets.map { target in
-        var target = target
-        target.settings = removeDefaultsFromTargetSettings(target.settings, in: target)
-        target.sources = try optimizeSources(target.sources, sourceRoot: sourceRoot)
-        return target
-    }
-
-    return project
-}
-
-private extension BuildSettingsProvider.Product {
-    init?(product: PBXProductType) {
-        switch product {
-        case .bundle:
-            self = .bundle
-        case .application, .messagesApplication, .watch2App, .watchApp:
-            self = .application
-        case .framework, .staticFramework:
-            self = .framework
-        case .uiTestBundle:
-            self = .uiTests
-        case .unitTestBundle:
-            self = .unitTests
-        default:
-            return nil
-        }
-    }
-}
-
-private extension BuildSettingsProvider.Platform {
-    init?(sdkRoot: String?) {
-        guard let sdkRoot = sdkRoot else {
-            return nil
-        }
-        switch sdkRoot {
-        case "iphoneos": self = .iOS
-        case "appletvos": self = .tvOS
-        case "watchos": self = .watchOS
-        case "macosx": self = .macOS
-        default: return nil
-        }
-    }
-}
-
-private extension BuildSettingsProvider.Variant {
-    init?(_ string: String) {
-        switch string {
-        case "Debug":
-            self = .debug
-        case "Release":
-            self = .release
-        default:
-            return nil
-        }
-    }
-}
-
 private extension BuildSettings {
+    var configType: ConfigType {
+        guard let args = self["GCC_PREPROCESSOR_DEFINITIONS"] as? [String] else {
+            return .release
+        }
+        return args.contains("DEBUG=1") ? .debug : .release
+    }
+    
     func subtracting(_ other: BuildSettings) -> BuildSettings {
         func isEqualValue(_ a: Any, _ b: Any) -> Bool {
             switch (a, b) {
@@ -391,6 +257,247 @@ private func generateTargetSpec(target: PBXNativeTarget, mainGroup: PBXGroup, so
                   buildRules: buildRules)
 }
 
+// MARK: - Cleaning the spec
+
+private func removeDefault(project: Project, sourceRoot: Path) throws -> Project {
+    func removeDefaultsFromProjectSettings(_ settings: Settings) -> Settings {
+        var newSettings = settings
+
+        for case (let key, var settings) in newSettings.configSettings {
+            let variant = BuildSettingsProvider.Variant(key) ?? .debug
+            let defaultSettings = BuildSettingsProvider.projectDefault(variant: .all)
+                .merged(BuildSettingsProvider.projectDefault(variant: variant))
+            settings.buildSettings = settings.buildSettings.subtracting(defaultSettings)
+            newSettings.configSettings[key] = settings
+        }
+
+        return newSettings
+    }
+
+    func removeDefaultsFromTargetSettings(_ settings: Settings, in target: Target) -> Settings {
+        var newSettings = settings
+
+        for case (let key, var settings) in newSettings.configSettings {
+            let variant = BuildSettingsProvider.Variant(key) ?? .debug
+
+            let projectBuildSettings = project.settings.configSettings[key]?.buildSettings
+            let sdkRoot = projectBuildSettings?["SDKROOT"] as? String
+            let platform = BuildSettingsProvider.Platform(sdkRoot: sdkRoot)
+            let product = BuildSettingsProvider.Product(product: target.type)
+            let swift = projectBuildSettings?["SWIFT_OPTIMIZATION_LEVEL"] as? String != nil
+
+            let defaultSettings = BuildSettingsProvider.projectDefault(variant: .all)
+                .merged(BuildSettingsProvider.targetDefault(
+                    variant: variant,
+                    platform: platform,
+                    product: product,
+                    swift: swift))
+
+            settings.buildSettings = settings.buildSettings.subtracting(defaultSettings)
+            newSettings.configSettings[key] = settings
+        }
+
+        return newSettings
+    }
+
+    var project = project
+    project.settings = removeDefaultsFromProjectSettings(project.settings)
+    project.targets = try project.targets.map { target in
+        var target = target
+        target.settings = removeDefaultsFromTargetSettings(target.settings, in: target)
+        target.sources = try optimizeSources(target.sources, sourceRoot: sourceRoot)
+        return target
+    }
+
+    return project
+}
+
+private func optimizeSources(_ sources: [TargetSource], sourceRoot: Path) throws -> [TargetSource] {
+    let allSourcePaths = sources.map { sourceRoot + Path($0.path) }
+    var merged = [TargetSource]()
+
+    let completed = try sources
+        .sorted { Path($0.path).components.count > Path($1.path).components.count }
+        .compactMap { targetSource -> TargetSource? in
+            let parent = (sourceRoot + Path(targetSource.path)).parent()
+
+            // skip when parent directory is already added
+            if merged.contains(where: { (sourceRoot + Path($0.path)) == parent }) {
+                return nil
+            }
+
+            let sameLevelFiles = try parent.children().filter {
+                // ingore files that will specified in build configs
+                $0.lastComponent != "Info.plist" &&
+                    $0.lastComponent != ".DS_Store" &&
+                    $0.extension != "modulemap" &&
+                    $0.extension != "entitlements"
+            }
+
+            // merge files into a directory if all its contents are in the target
+            if sameLevelFiles.allSatisfy({ allSourcePaths.contains($0) }) {
+                merged.append(TargetSource(path: try parent.relativePath(from: sourceRoot).string,
+                                           name: parent.lastComponent))
+                return nil
+            }
+            return targetSource
+    }
+
+    let result = merged.count > 0 ? try optimizeSources(completed + merged, sourceRoot: sourceRoot) : completed
+    return result.sorted { $0.path < $1.path }
+}
+
+// MARK: - Cocoapods/Carthage deintegration
+
+private extension PBXGroup {
+    var allHeaderFiles: [PBXFileElement] {
+        return children.compactMap { file in
+            if let group = file as? PBXGroup {
+                return group.allHeaderFiles
+            }
+
+            if let path = file.path,
+                path.hasSuffix(".h") || path.hasSuffix(".hpp") {
+                return [file]
+            }
+
+            return nil
+        }.reduce([], { $0 + $1 })
+    }
+}
+
+private func deintegrateCocoapods(_ project: Project) -> Project {
+    var p = project
+    p.targets = p.targets.map(deintegrateCocoapods)
+    return p
+}
+
+private func not<T>(_ fn: @escaping (T) -> Bool) -> (T) -> Bool {
+    return { v in !fn(v) }
+}
+
+private func deintegrateCocoapods(target: Target) -> Target {
+    func isCocoapodsBuildScript(buildScript: BuildScript) -> Bool {
+        // https://github.com/CocoaPods/CocoaPods/blob/master/lib/cocoapods/installer/user_project_integrator/target_integrator.rb#L16
+        return buildScript.name?.starts(with: "[CP] ") ?? false
+    }
+
+    var t = target
+
+    t.preBuildScripts = target.preBuildScripts.filter(not(isCocoapodsBuildScript))
+    t.postCompileScripts = target.postCompileScripts.filter(not(isCocoapodsBuildScript))
+    t.postBuildScripts = target.postBuildScripts.filter(not(isCocoapodsBuildScript))
+
+    // https://github.com/CocoaPods/cocoapods-deintegrate/blob/master/lib/cocoapods/deintegrator.rb#L5
+    let frameworkNames = try! NSRegularExpression(pattern: "^(libPods.*\\.a)|(Pods.*\\.framework)$")
+    t.dependencies = t.dependencies.filter {
+        !frameworkNames.isMatch(to: $0.reference)
+    }
+
+    return t
+}
+
+private func deintegrateCarthage(_ project: Project) -> Project {
+    var p = project
+    p.targets = p.targets.map(deintegrateCarthage)
+    return p
+}
+
+private func deintegrateCarthage(target: Target) -> Target {
+    func isCarthageBuildScript(buildScript: BuildScript) -> Bool {
+        guard case .script(let script) = buildScript.script else {
+            return false
+        }
+        return script.contains("carthage copy-frameworks")
+    }
+
+    var t = target
+
+    t.preBuildScripts = target.preBuildScripts.filter(not(isCarthageBuildScript))
+    t.postCompileScripts = target.postCompileScripts.filter(not(isCarthageBuildScript))
+    t.postBuildScripts = target.postBuildScripts.filter(not(isCarthageBuildScript))
+
+    t.dependencies = t.dependencies.map {
+        if $0.reference.starts(with: "Carthage/Build/") {
+            return Dependency(
+                type: .carthage(findFrameworks: nil,
+                                linkType: .default),
+                reference: Path($0.reference).lastComponentWithoutExtension
+            )
+        }
+        return $0
+    }
+    
+    let frameworkSearchPaths = "FRAMEWORK_SEARCH_PATHS"
+    for key in t.settings.configSettings.keys {
+        if let searchPaths = t.settings.configSettings[key]?.buildSettings[frameworkSearchPaths] as? [String] {
+            t.settings.configSettings[key]?.buildSettings[frameworkSearchPaths] = searchPaths.filter {
+                !$0.starts(with: "$(PROJECT_DIR)/Carthage/Build")
+            }
+        }
+    }
+
+    return t
+}
+
+// MARK: - Extensions for type conversion
+
+private extension BuildSettingsProvider.Variant {
+    init(_ configType: ConfigType) {
+        switch configType {
+        case .debug: self = .debug
+        case .release: self = .release
+        }
+    }
+}
+
+private extension BuildSettingsProvider.Product {
+    init?(product: PBXProductType) {
+        switch product {
+        case .bundle:
+            self = .bundle
+        case .application, .messagesApplication, .watch2App, .watchApp:
+            self = .application
+        case .framework, .staticFramework:
+            self = .framework
+        case .uiTestBundle:
+            self = .uiTests
+        case .unitTestBundle:
+            self = .unitTests
+        default:
+            return nil
+        }
+    }
+}
+
+private extension BuildSettingsProvider.Platform {
+    init?(sdkRoot: String?) {
+        guard let sdkRoot = sdkRoot else {
+            return nil
+        }
+        switch sdkRoot {
+        case "iphoneos": self = .iOS
+        case "appletvos": self = .tvOS
+        case "watchos": self = .watchOS
+        case "macosx": self = .macOS
+        default: return nil
+        }
+    }
+}
+
+private extension BuildSettingsProvider.Variant {
+    init?(_ string: String) {
+        switch string {
+        case "Debug":
+            self = .debug
+        case "Release":
+            self = .release
+        default:
+            return nil
+        }
+    }
+}
+
 private extension BuildScript {
     init(buildPhase: PBXShellScriptBuildPhase) {
         self.init(script: .script(buildPhase.shellScript ?? ""),
@@ -468,23 +575,6 @@ private extension TargetSource.HeaderVisibility {
         default:
             return nil
         }
-    }
-}
-
-extension PBXGroup {
-    var allHeaderFiles: [PBXFileElement] {
-        return children.compactMap { file in
-            if let group = file as? PBXGroup {
-                return group.allHeaderFiles
-            }
-
-            if let path = file.path,
-                path.hasSuffix(".h") || path.hasSuffix(".hpp") {
-                return [file]
-            }
-
-            return nil
-        }.reduce([], { $0 + $1 })
     }
 }
 
@@ -591,78 +681,4 @@ private extension XCScheme.CommandLineArguments {
     func toDictionary() -> Dictionary<String, Bool> {
         return Dictionary(uniqueKeysWithValues: arguments.map { ($0.name, $0.enabled) })
     }
-}
-
-private func deintegrateCocoapods(_ project: Project) -> Project {
-    var p = project
-    p.targets = p.targets.map(deintegrateCocoapods)
-    return p
-}
-
-private func not<T>(_ fn: @escaping (T) -> Bool) -> (T) -> Bool {
-    return { v in !fn(v) }
-}
-
-private func deintegrateCocoapods(target: Target) -> Target {
-    func isCocoapodsBuildScript(buildScript: BuildScript) -> Bool {
-        // https://github.com/CocoaPods/CocoaPods/blob/master/lib/cocoapods/installer/user_project_integrator/target_integrator.rb#L16
-        return buildScript.name?.starts(with: "[CP] ") ?? false
-    }
-
-    var t = target
-
-    t.preBuildScripts = target.preBuildScripts.filter(not(isCocoapodsBuildScript))
-    t.postCompileScripts = target.postCompileScripts.filter(not(isCocoapodsBuildScript))
-    t.postBuildScripts = target.postBuildScripts.filter(not(isCocoapodsBuildScript))
-
-    // https://github.com/CocoaPods/cocoapods-deintegrate/blob/master/lib/cocoapods/deintegrator.rb#L5
-    let frameworkNames = try! NSRegularExpression(pattern: "^(libPods.*\\.a)|(Pods.*\\.framework)$")
-    t.dependencies = t.dependencies.filter {
-        !frameworkNames.isMatch(to: $0.reference)
-    }
-
-    return t
-}
-
-private func deintegrateCarthage(_ project: Project) -> Project {
-    var p = project
-    p.targets = p.targets.map(deintegrateCarthage)
-    return p
-}
-
-private func deintegrateCarthage(target: Target) -> Target {
-    func isCarthageBuildScript(buildScript: BuildScript) -> Bool {
-        guard case .script(let script) = buildScript.script else {
-            return false
-        }
-        return script.contains("carthage copy-frameworks")
-    }
-
-    var t = target
-
-    t.preBuildScripts = target.preBuildScripts.filter(not(isCarthageBuildScript))
-    t.postCompileScripts = target.postCompileScripts.filter(not(isCarthageBuildScript))
-    t.postBuildScripts = target.postBuildScripts.filter(not(isCarthageBuildScript))
-
-    t.dependencies = t.dependencies.map {
-        if $0.reference.starts(with: "Carthage/Build/") {
-            return Dependency(
-                type: .carthage(findFrameworks: nil,
-                                linkType: .default),
-                reference: Path($0.reference).lastComponentWithoutExtension
-            )
-        }
-        return $0
-    }
-    
-    let frameworkSearchPaths = "FRAMEWORK_SEARCH_PATHS"
-    for key in t.settings.configSettings.keys {
-        if let searchPaths = t.settings.configSettings[key]?.buildSettings[frameworkSearchPaths] as? [String] {
-            t.settings.configSettings[key]?.buildSettings[frameworkSearchPaths] = searchPaths.filter {
-                !$0.starts(with: "$(PROJECT_DIR)/Carthage/Build")
-            }
-        }
-    }
-
-    return t
 }
