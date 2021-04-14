@@ -1,7 +1,7 @@
 import Spectre
 import PathKit
 import XCTest
-import Core
+import XcodeGenCore
 import TestSupport
 
 class PathExtensionsTests: XCTestCase {
