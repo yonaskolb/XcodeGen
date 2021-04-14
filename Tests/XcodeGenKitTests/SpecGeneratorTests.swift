@@ -57,4 +57,21 @@ class SpecGeneratorTests: XCTestCase {
             XCTAssertTrue(target.dependencies.allSatisfy { !$0.reference.starts(with: "Pods_") })
         }
     }
+    
+    func testCarthageDeintegration() throws {
+        for target in project.targets {
+            XCTAssertTrue(target.buildScripts.allSatisfy {
+                if case let .script(text) = $0.script {
+                    return !text.contains("carthage copy-frameworks")
+                }
+                return true
+            })
+        }
+        XCTAssertTrue(target.dependencies.contains {
+            if case .carthage = $0.type {
+                return $0.reference == "Attributed"
+            }
+            return false
+        })
+    }
 }
