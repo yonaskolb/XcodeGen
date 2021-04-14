@@ -49,4 +49,12 @@ class SpecGeneratorTests: XCTestCase {
     func testScheme() throws {
         XCTAssertEqual(project.schemes.count, 3)
     }
+    
+    func testCocoapodsDeintegration() throws {
+        for target in project.targets {
+            XCTAssertTrue(target.buildScripts.allSatisfy { !($0.name ?? "").starts(with: "[CP]") })
+            XCTAssertTrue(target.dependencies.allSatisfy { !$0.reference.starts(with: "libPods") })
+            XCTAssertTrue(target.dependencies.allSatisfy { !$0.reference.starts(with: "Pods_") })
+        }
+    }
 }
