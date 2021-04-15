@@ -2,6 +2,14 @@
 
 ## Next Version
 
+#### Added
+- Add support for specifying Info.plist paths in an xcconfig using `SRCROOT` and `PRODUCT_NAME` variables [#1058](https://github.com/yonaskolb/XcodeGen/pull/1058) @dalemyers
+
+#### Fixed
+
+#### Internal
+
+
 ## 2.20.0
 
 #### Added

@@ -1315,11 +1315,34 @@ public class PBXProjGenerator {
         var searchForDefaultInfoPlist: Bool = true
         var defaultInfoPlist: String?
 
+
+        /// Expand known variables in a path
+        ///
+        /// Notes: So far, variables supported are:
+        ///     * SRCROOT
+        ///     * PRODUCT_NAME
+        ///
+        /// - Parameter path: The path to expand the variable in
+        /// - Returns: The fully expanded path
+        func expandVariablesInPath(_ path: String) -> String {
+            var expanded = path.replacingOccurrences(of: "$(PRODUCT_NAME)", with: target.productName)
+
+            // Do the one with the prefix first as it's most likely and lets
+            // us handle paths correctly
+            if expanded.hasPrefix("$(SRCROOT)/") {
+                expanded = String(expanded.dropFirst("$(SRCROOT)/".count))
+            }
+
+            expanded = expanded.replacingOccurrences(of: "$(SRCROOT)", with: project.basePath.string)
+
+            return expanded
+        }
+
         let values: [(Config, String)] = project.configs.compactMap { config in
             // First, if the plist path was defined by `INFOPLIST_FILE`, use that
             let buildSettings = project.getTargetBuildSettings(target: target, config: config)
             if let value = buildSettings["INFOPLIST_FILE"] as? String {
-                return (config, value)
+                return (config, expandVariablesInPath(value))
             }
 
             // Otherwise check if the path was defined as part of the `info` spec
