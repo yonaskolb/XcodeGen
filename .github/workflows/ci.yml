@@ -20,6 +20,9 @@ jobs:
         xcodebuild -version
         swift --version
         swift package --version
+    - name: Install System Dependencies
+      run: |
+        brew install graphviz
     - name: Resolve
       run: swift package resolve
     - name: Build
@@ -37,5 +40,9 @@ jobs:
     name: Linux
     steps:
       - uses: actions/checkout@master
+      - name: Install System Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libxml2-dev graphviz-dev
       - name: Build and run tests
         run: swift test --enable-test-discovery
