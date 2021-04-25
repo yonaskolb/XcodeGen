@@ -16,6 +16,7 @@ targets:
     scheme: {}
     dependencies:
       - package: Codability
+        weak: true
       - package: SwiftRoaring
         product: SwiftRoaringDynamic
         embed: true
