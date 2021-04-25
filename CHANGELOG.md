@@ -2,7 +2,7 @@
 
 ## Next Version
 #### Added
-- Support weak link for Swift Package Dependency [#](https://github.com/yonaskolb/XcodeGen/pull/) @freddi-kit
+- Support weak link for Swift Package Dependency [#1064](https://github.com/yonaskolb/XcodeGen/pull/1064) @freddi-kit
 
 ## 2.20.0
 
