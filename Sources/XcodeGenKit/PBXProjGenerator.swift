@@ -912,7 +912,7 @@ public class PBXProjGenerator {
                 let link = dependency.link ?? (target.type != .staticLibrary)
                 if link {
                     let buildFile = addObject(
-                        PBXBuildFile(product: packageDependency)
+                        PBXBuildFile(product: packageDependency, settings: getDependencyFrameworkSettings(dependency: dependency))
                     )
                     targetFrameworkBuildFiles.append(buildFile)
                 } else {
