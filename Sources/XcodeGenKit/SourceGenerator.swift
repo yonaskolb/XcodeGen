@@ -2,7 +2,7 @@ import Foundation
 import PathKit
 import ProjectSpec
 import XcodeProj
-import Core
+import XcodeGenCore
 
 struct SourceFile {
     let path: Path
