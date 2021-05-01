@@ -10,6 +10,7 @@
 
 #### Fixed
 - The `Core` target is renamed to avoid collisions with other packages. [#1057](https://github.com/yonaskolb/XcodeGen/pull/1057) @elliottwilliams
+- Lookup scheme config variants by whole words, fixing incorrect assignment in names that contain subtrings of each other (eg PreProd and Prod) [#976](https://github.com/yonaskolb/XcodeGen/pull/976) @stefanomondino
 
 ## 2.20.0
 
@@ -57,9 +58,6 @@
 - Updated to Yams 4.0.0 [#984](https://github.com/yonaskolb/XcodeGen/pull/984) @swiftty
 
 [Commits](https://github.com/yonaskolb/XcodeGen/compare/2.18.0...2.19.0)
-
-#### Fixed
-- Lookup scheme config variants by whole words, fixing incorrect assignment in names that contain subtrings of each other (eg PreProd and Prod) [#976](https://github.com/yonaskolb/XcodeGen/pull/976) @stefanomondino
 
 ## 2.18.0
 
