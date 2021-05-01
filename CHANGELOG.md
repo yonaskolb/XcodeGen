@@ -5,6 +5,9 @@
 #### Added
 - Support weak link for Swift Package Dependency [#1064](https://github.com/yonaskolb/XcodeGen/pull/1064) @freddi-kit
 
+#### Changed
+- Carthage frameworks are no longer embedded for "order-only" target dependencies. This avoid redundant embeds in situations where a target's sources _import_ a Carthage framework but do not have a binary dependency on it (like a test target which runs in a host app). [#1041](https://github.com/yonaskolb/XcodeGen/pull/1041) @elliottwilliams
+
 #### Fixed
 - The `Core` target is renamed to avoid collisions with other packages. [#1057](https://github.com/yonaskolb/XcodeGen/pull/1057) @elliottwilliams
 
@@ -22,7 +25,6 @@
 - Fixed framework search paths when using `.xcframework`s. [#1015](https://github.com/yonaskolb/XcodeGen/pull/1015) @FranzBusch
 - Fixed bug where schemes without a build target would crash instead of displaying an error [#1040](https://github.com/yonaskolb/XcodeGen/pull/1040) @dalemyers
 - Fixed files with names ending in **Info.plist** (such as **GoogleServices-Info.plist**) from being omitted from the Copy Resources build phase. Now, only the resolved info plist file for each specific target is omitted. [#1027](https://github.com/yonaskolb/XcodeGen/pull/1027) @liamnichols
-- Carthage frameworks are no longer embedded for "order-only" target dependencies. This avoid redundant embeds in situations where a target's sources _import_ a Carthage framework but do not have a binary dependency on it (like a test target which runs in a host app). [#1041](https://github.com/yonaskolb/XcodeGen/pull/1041) @elliottwilliams
 
 #### Internal
 - Build universal binaries for release. XcodeGen now runs natively on Apple Silicon. [#1024](https://github.com/yonaskolb/XcodeGen/pull/1024) @thii
