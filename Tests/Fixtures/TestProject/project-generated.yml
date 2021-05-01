@@ -1,0 +1,3457 @@
+# Generated from /Users/yonas/Developer/XcodeGen/Tests/Fixtures/TestProject/Project.xcodeproj
+aggregateTargets:
+  SuperTarget:
+    buildScripts:
+    - name: MyScript
+      runOnlyWhenInstalling: false
+      script: echo "do the thing"
+      shell: /bin/sh
+    scheme: null
+    settings:
+      configs:
+        Production Debug:
+          MY_SETTING: hello
+        Production Release:
+          MY_SETTING: hello
+        Staging Debug:
+          MY_SETTING: hello
+        Staging Release:
+          MY_SETTING: hello
+        Test Debug:
+          MY_SETTING: hello
+        Test Release:
+          MY_SETTING: hello
+    targets:
+    - App_iOS
+    - Framework_iOS
+attributes:
+  LastUpgradeCheck: 1200
+  knownAssetTags:
+  - tag1
+  - tag2
+configs:
+  Production Debug: debug
+  Production Release: release
+  Staging Debug: debug
+  Staging Release: release
+  Test Debug: debug
+  Test Release: release
+name: Project
+options:
+  bundleIdPrefix: null
+  carthageBuildPath: null
+  carthageExecutablePath: null
+  defaultConfig: Production Debug
+  deploymentTarget:
+    iOS: null
+    macOS: null
+    tvOS: null
+    watchOS: null
+  developmentLanguage: null
+  groupSortPosition: bottom
+  indentWidth: null
+  localPackagesGroup: null
+  minimumXcodeGenVersion: null
+  postGenCommand: null
+  preGenCommand: null
+  tabWidth: null
+  transitivelyLinkDependencies: false
+  usesTabs: null
+  xcodeVersion: null
+schemes:
+  App_Clip:
+    analyze:
+      config: Production Debug
+    archive:
+      config: Production Release
+      customArchiveName: null
+    build:
+      targets:
+        App_Clip:
+        - running
+        - testing
+        - profiling
+        - analyzing
+        - archiving
+    profile:
+      config: Production Release
+    run:
+      askForAppToLaunch: null
+      config: Production Debug
+      executable: null
+      language: null
+      launchAutomaticallySubstyle: null
+      region: null
+    test:
+      config: Production Debug
+      language: null
+      region: null
+      targets:
+      - App_Clip_Tests
+      - App_Clip_UITests
+  App_Scheme:
+    analyze:
+      config: Production Debug
+    archive:
+      config: Production Release
+      customArchiveName: null
+    build:
+      targets:
+        App_iOS:
+        - running
+        - testing
+        - profiling
+        - analyzing
+        - archiving
+    profile:
+      config: Production Release
+    run:
+      askForAppToLaunch: null
+      config: Production Debug
+      customLLDBInit: ${SRCROOT}/.lldbinit
+      executable: null
+      language: null
+      launchAutomaticallySubstyle: null
+      region: null
+      simulateLocation:
+        allow: true
+        defaultLocation: Honolulu, HI, USA
+    test:
+      config: Production Debug
+      customLLDBInit: ${SRCROOT}/.lldbinit
+      gatherCoverageData: true
+      language: null
+      region: null
+      targets:
+      - App_iOS_UITests
+      - name: App_iOS_Tests
+        parallelizable: true
+        randomExecutionOrder: true
+  App_iOS Production:
+    analyze:
+      config: Production Debug
+    archive:
+      config: Production Release
+      customArchiveName: null
+    build:
+      targets:
+        App_iOS:
+        - running
+        - testing
+        - profiling
+        - analyzing
+        - archiving
+    profile:
+      commandLineArguments:
+        MyDisabledArgument: false
+        MyEnabledArgument: true
+      config: Production Release
+    run:
+      askForAppToLaunch: null
+      commandLineArguments:
+        MyDisabledArgument: false
+        MyEnabledArgument: true
+      config: Production Debug
+      disableMainThreadChecker: true
+      executable: null
+      language: null
+      launchAutomaticallySubstyle: null
+      region: null
+      stopOnEveryMainThreadCheckerIssue: true
+    test:
+      commandLineArguments:
+        MyDisabledArgument: false
+        MyEnabledArgument: true
+      config: Production Debug
+      disableMainThreadChecker: true
+      gatherCoverageData: true
+      language: null
+      region: null
+      targets:
+      - App_iOS_Tests
+      - App_iOS_UITests
+  App_iOS Staging:
+    analyze:
+      config: Staging Debug
+    archive:
+      config: Staging Release
+      customArchiveName: null
+    build:
+      targets:
+        App_iOS:
+        - running
+        - testing
+        - profiling
+        - analyzing
+        - archiving
+    profile:
+      commandLineArguments:
+        MyDisabledArgument: false
+        MyEnabledArgument: true
+      config: Staging Release
+    run:
+      askForAppToLaunch: null
+      commandLineArguments:
+        MyDisabledArgument: false
+        MyEnabledArgument: true
+      config: Staging Debug
+      disableMainThreadChecker: true
+      executable: null
+      language: null
+      launchAutomaticallySubstyle: null
+      region: null
+      stopOnEveryMainThreadCheckerIssue: true
+    test:
+      commandLineArguments:
+        MyDisabledArgument: false
+        MyEnabledArgument: true
+      config: Staging Debug
+      disableMainThreadChecker: true
+      gatherCoverageData: true
+      language: null
+      region: null
+      targets:
+      - App_iOS_Tests
+      - App_iOS_UITests
+  App_iOS Test:
+    analyze:
+      config: Test Debug
+    archive:
+      config: Test Release
+      customArchiveName: null
+    build:
+      targets:
+        App_iOS:
+        - running
+        - testing
+        - profiling
+        - analyzing
+        - archiving
+    profile:
+      commandLineArguments:
+        MyDisabledArgument: false
+        MyEnabledArgument: true
+      config: Test Release
+    run:
+      askForAppToLaunch: null
+      commandLineArguments:
+        MyDisabledArgument: false
+        MyEnabledArgument: true
+      config: Test Debug
+      disableMainThreadChecker: true
+      executable: null
+      language: null
+      launchAutomaticallySubstyle: null
+      region: null
+      stopOnEveryMainThreadCheckerIssue: true
+    test:
+      commandLineArguments:
+        MyDisabledArgument: false
+        MyEnabledArgument: true
+      config: Test Debug
+      disableMainThreadChecker: true
+      gatherCoverageData: true
+      language: null
+      region: null
+      targets:
+      - App_iOS_Tests
+      - App_iOS_UITests
+  App_macOS:
+    analyze:
+      config: Production Debug
+    archive:
+      config: Production Release
+      customArchiveName: null
+    build:
+      targets:
+        App_macOS:
+        - running
+        - testing
+        - profiling
+        - analyzing
+        - archiving
+    profile:
+      config: Production Release
+    run:
+      askForAppToLaunch: null
+      config: Production Debug
+      executable: null
+      language: null
+      launchAutomaticallySubstyle: null
+      region: null
+    test:
+      config: Production Debug
+      language: null
+      region: null
+  App_watchOS:
+    analyze:
+      config: Production Debug
+    archive:
+      config: Production Release
+      customArchiveName: null
+    build:
+      targets:
+        App_watchOS:
+        - running
+        - testing
+        - profiling
+        - analyzing
+        - archiving
+    profile:
+      config: Production Release
+    run:
+      askForAppToLaunch: null
+      config: Production Debug
+      executable: null
+      language: null
+      launchAutomaticallySubstyle: null
+      region: null
+    test:
+      config: Production Debug
+      language: null
+      region: null
+  Framework:
+    analyze:
+      config: Production Debug
+    archive:
+      config: Production Release
+      customArchiveName: null
+    build:
+      buildImplicitDependencies: false
+      parallelizeBuild: false
+      preActions:
+      - name: Run Script
+        script: echo Starting Framework Build
+        settingsTarget: Framework_iOS
+      targets:
+        Framework_iOS:
+        - running
+        - testing
+        - profiling
+        - analyzing
+        - archiving
+    profile:
+      config: Production Release
+    run:
+      askForAppToLaunch: null
+      commandLineArguments:
+        argument: true
+        argument.with.dot: true
+      config: Production Debug
+      executable: null
+      language: null
+      launchAutomaticallySubstyle: null
+      region: null
+    test:
+      config: Production Debug
+      gatherCoverageData: true
+      language: ja
+      region: en
+  Tool:
+    analyze:
+      config: Production Debug
+    archive:
+      config: Production Release
+      customArchiveName: null
+    build:
+      targets:
+        Tool:
+        - running
+        - testing
+        - profiling
+        - analyzing
+        - archiving
+    profile:
+      config: Production Release
+    run:
+      askForAppToLaunch: null
+      config: Production Debug
+      executable: null
+      language: null
+      launchAutomaticallySubstyle: null
+      region: null
+    test:
+      config: Production Debug
+      language: null
+      region: null
+  iMessageApp:
+    analyze:
+      config: Production Debug
+    archive:
+      config: Production Release
+      customArchiveName: null
+    build:
+      targets:
+        iMessageApp:
+        - running
+        - testing
+        - profiling
+        - analyzing
+        - archiving
+    profile:
+      config: Production Release
+    run:
+      askForAppToLaunch: null
+      config: Production Debug
+      executable: null
+      language: null
+      launchAutomaticallySubstyle: null
+      region: null
+    test:
+      config: Production Debug
+      language: null
+      region: null
+  iMessageExtension:
+    analyze:
+      config: Production Debug
+    archive:
+      config: Production Release
+      customArchiveName: null
+    build:
+      targets:
+        iMessageExtension:
+        - running
+        - testing
+        - profiling
+        - analyzing
+        - archiving
+    profile:
+      config: Production Release
+    run:
+      askForAppToLaunch: null
+      config: Production Debug
+      debugEnabled: false
+      executable: null
+      language: null
+      launchAutomaticallySubstyle: 2
+      region: null
+    test:
+      config: Production Debug
+      language: null
+      region: null
+settings:
+  configs:
+    Production Debug:
+      CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER: YES
+      GCC_PREPROCESSOR_DEFINITIONS:
+      - $(inherited)
+      - DEBUG=1
+      MTL_ENABLE_DEBUG_INFO: INCLUDE_SOURCE
+      MTL_FAST_MATH: YES
+      SWIFT_ACTIVE_COMPILATION_CONDITIONS: DEBUG
+      SWIFT_OPTIMIZATION_LEVEL: -Onone
+      SWIFT_VERSION: 5.0
+      WATCHOS_DEPLOYMENT_TARGET: 4.0
+    Production Release:
+      CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER: YES
+      DEBUG_INFORMATION_FORMAT: dwarf-with-dsym
+      ENABLE_NS_ASSERTIONS: NO
+      MTL_ENABLE_DEBUG_INFO: NO
+      MTL_FAST_MATH: YES
+      SWIFT_COMPILATION_MODE: wholemodule
+      SWIFT_OPTIMIZATION_LEVEL: -O
+      SWIFT_VERSION: 5.0
+      WATCHOS_DEPLOYMENT_TARGET: 4.0
+    Staging Debug:
+      BUNDLE_ID_SUFFIX: .staging
+      CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER: YES
+      GCC_PREPROCESSOR_DEFINITIONS:
+      - $(inherited)
+      - DEBUG=1
+      MTL_ENABLE_DEBUG_INFO: INCLUDE_SOURCE
+      MTL_FAST_MATH: YES
+      SWIFT_ACTIVE_COMPILATION_CONDITIONS: DEBUG
+      SWIFT_OPTIMIZATION_LEVEL: -Onone
+      SWIFT_VERSION: 5.0
+      WATCHOS_DEPLOYMENT_TARGET: 4.0
+    Staging Release:
+      BUNDLE_ID_SUFFIX: .staging
+      CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER: YES
+      DEBUG_INFORMATION_FORMAT: dwarf-with-dsym
+      ENABLE_NS_ASSERTIONS: NO
+      MTL_ENABLE_DEBUG_INFO: NO
+      MTL_FAST_MATH: YES
+      SWIFT_COMPILATION_MODE: wholemodule
+      SWIFT_OPTIMIZATION_LEVEL: -O
+      SWIFT_VERSION: 5.0
+      WATCHOS_DEPLOYMENT_TARGET: 4.0
+    Test Debug:
+      BUNDLE_ID_SUFFIX: .test
+      CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER: YES
+      GCC_PREPROCESSOR_DEFINITIONS:
+      - $(inherited)
+      - DEBUG=1
+      MTL_ENABLE_DEBUG_INFO: INCLUDE_SOURCE
+      MTL_FAST_MATH: YES
+      SWIFT_ACTIVE_COMPILATION_CONDITIONS: DEBUG
+      SWIFT_OPTIMIZATION_LEVEL: -Onone
+      SWIFT_VERSION: 5.0
+      WATCHOS_DEPLOYMENT_TARGET: 4.0
+    Test Release:
+      BUNDLE_ID_SUFFIX: .test
+      CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER: YES
+      DEBUG_INFORMATION_FORMAT: dwarf-with-dsym
+      ENABLE_NS_ASSERTIONS: NO
+      MTL_ENABLE_DEBUG_INFO: NO
+      MTL_FAST_MATH: YES
+      SWIFT_COMPILATION_MODE: wholemodule
+      SWIFT_OPTIMIZATION_LEVEL: -O
+      SWIFT_VERSION: 5.0
+      WATCHOS_DEPLOYMENT_TARGET: 4.0
+targets:
+  App_Clip:
+    dependencies:
+    - codeSign: null
+      embed: null
+      link: null
+      target: Framework_iOS
+    - codeSign: null
+      embed: null
+      link: null
+      target: StaticLibrary_ObjC_iOS
+    - codeSign: null
+      embed: null
+      link: null
+      target: Framework.framework
+    - codeSign: null
+      embed: null
+      framework: Result.framework
+      link: null
+    - codeSign: null
+      embed: null
+      link: null
+      target: libStaticLibrary_ObjC.a
+    deploymentTarget: null
+    directlyEmbedCarthageDependencies: null
+    entitlements: null
+    info: null
+    legacy: null
+    platform: iOS
+    requiresObjCLinking: null
+    scheme: null
+    settings:
+      configs:
+        Production Debug:
+          CODE_SIGN_ENTITLEMENTS: App_Clip/Clip.entitlements
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: App_Clip/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          OTHER_LDFLAGS:
+          - $(inherited)
+          - -ObjC
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.app.clip
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+        Production Release:
+          CODE_SIGN_ENTITLEMENTS: App_Clip/Clip.entitlements
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: App_Clip/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          OTHER_LDFLAGS:
+          - $(inherited)
+          - -ObjC
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.app.clip
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+        Staging Debug:
+          CODE_SIGN_ENTITLEMENTS: App_Clip/Clip.entitlements
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: App_Clip/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          OTHER_LDFLAGS:
+          - $(inherited)
+          - -ObjC
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.app.clip
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+        Staging Release:
+          CODE_SIGN_ENTITLEMENTS: App_Clip/Clip.entitlements
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: App_Clip/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          OTHER_LDFLAGS:
+          - $(inherited)
+          - -ObjC
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.app.clip
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+        Test Debug:
+          CODE_SIGN_ENTITLEMENTS: App_Clip/Clip.entitlements
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: App_Clip/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          OTHER_LDFLAGS:
+          - $(inherited)
+          - -ObjC
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.app.clip
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+        Test Release:
+          CODE_SIGN_ENTITLEMENTS: App_Clip/Clip.entitlements
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: App_Clip/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          OTHER_LDFLAGS:
+          - $(inherited)
+          - -ObjC
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.app.clip
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+    sources:
+    - buildPhase: null
+      createIntermediateGroups: null
+      group: null
+      headerVisibility: null
+      name: App_Clip
+      path: App_Clip
+      type: null
+    transitivelyLinkDependencies: null
+    type: application.on-demand-install-capable
+  App_Clip_Tests:
+    dependencies:
+    - codeSign: null
+      embed: null
+      link: null
+      target: App_Clip
+    - codeSign: null
+      embed: null
+      link: null
+      target: TestFramework
+    - codeSign: null
+      embed: null
+      framework: swift-tagged.framework
+      link: null
+    deploymentTarget: null
+    directlyEmbedCarthageDependencies: null
+    entitlements: null
+    info: null
+    legacy: null
+    platform: iOS
+    requiresObjCLinking: null
+    scheme: null
+    settings:
+      configs:
+        Production Debug:
+          BUNDLE_LOADER: $(TEST_HOST)
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: App_iOS_Tests/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          - '@loader_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.App-Clip-Tests
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+          TEST_HOST: $(BUILT_PRODUCTS_DIR)/App_Clip.app/App_Clip
+        Production Release:
+          BUNDLE_LOADER: $(TEST_HOST)
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: App_iOS_Tests/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          - '@loader_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.App-Clip-Tests
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+          TEST_HOST: $(BUILT_PRODUCTS_DIR)/App_Clip.app/App_Clip
+        Staging Debug:
+          BUNDLE_LOADER: $(TEST_HOST)
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: App_iOS_Tests/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          - '@loader_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.App-Clip-Tests
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+          TEST_HOST: $(BUILT_PRODUCTS_DIR)/App_Clip.app/App_Clip
+        Staging Release:
+          BUNDLE_LOADER: $(TEST_HOST)
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: App_iOS_Tests/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          - '@loader_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.App-Clip-Tests
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+          TEST_HOST: $(BUILT_PRODUCTS_DIR)/App_Clip.app/App_Clip
+        Test Debug:
+          BUNDLE_LOADER: $(TEST_HOST)
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: App_iOS_Tests/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          - '@loader_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.App-Clip-Tests
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+          TEST_HOST: $(BUILT_PRODUCTS_DIR)/App_Clip.app/App_Clip
+        Test Release:
+          BUNDLE_LOADER: $(TEST_HOST)
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: App_iOS_Tests/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          - '@loader_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.App-Clip-Tests
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+          TEST_HOST: $(BUILT_PRODUCTS_DIR)/App_Clip.app/App_Clip
+    sources:
+    - buildPhase: null
+      createIntermediateGroups: null
+      group: null
+      headerVisibility: null
+      name: App_iOS_Tests
+      path: App_iOS_Tests
+      type: null
+    transitivelyLinkDependencies: null
+    type: bundle.unit-test
+  App_Clip_UITests:
+    dependencies:
+    - codeSign: null
+      embed: null
+      link: null
+      target: App_Clip
+    deploymentTarget: null
+    directlyEmbedCarthageDependencies: null
+    entitlements: null
+    info: null
+    legacy: null
+    platform: iOS
+    requiresObjCLinking: null
+    scheme: null
+    settings:
+      configs:
+        Production Debug:
+          BUNDLE_LOADER: $(TEST_HOST)
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: App_Clip_UITests/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          - '@loader_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.App-Clip-UITests
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+          TEST_TARGET_NAME: App_Clip
+        Production Release:
+          BUNDLE_LOADER: $(TEST_HOST)
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: App_Clip_UITests/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          - '@loader_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.App-Clip-UITests
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+          TEST_TARGET_NAME: App_Clip
+        Staging Debug:
+          BUNDLE_LOADER: $(TEST_HOST)
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: App_Clip_UITests/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          - '@loader_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.App-Clip-UITests
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+          TEST_TARGET_NAME: App_Clip
+        Staging Release:
+          BUNDLE_LOADER: $(TEST_HOST)
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: App_Clip_UITests/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          - '@loader_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.App-Clip-UITests
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+          TEST_TARGET_NAME: App_Clip
+        Test Debug:
+          BUNDLE_LOADER: $(TEST_HOST)
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: App_Clip_UITests/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          - '@loader_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.App-Clip-UITests
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+          TEST_TARGET_NAME: App_Clip
+        Test Release:
+          BUNDLE_LOADER: $(TEST_HOST)
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: App_Clip_UITests/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          - '@loader_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.App-Clip-UITests
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+          TEST_TARGET_NAME: App_Clip
+    sources:
+    - buildPhase: null
+      createIntermediateGroups: null
+      group: null
+      headerVisibility: null
+      name: App_Clip_UITests
+      path: App_Clip_UITests
+      type: null
+    transitivelyLinkDependencies: null
+    type: bundle.ui-testing
+  App_iOS:
+    dependencies:
+    - codeSign: null
+      embed: null
+      link: null
+      target: App_Clip
+    - codeSign: null
+      embed: null
+      link: null
+      target: App_watchOS
+    - codeSign: null
+      embed: null
+      link: null
+      target: Framework2_iOS
+    - codeSign: null
+      embed: null
+      link: null
+      target: Framework_iOS
+    - codeSign: null
+      embed: null
+      link: null
+      target: StaticLibrary_ObjC_iOS
+    - codeSign: null
+      embed: null
+      link: null
+      target: iMessageApp
+    - codeSign: null
+      embed: null
+      link: null
+      target: ExternalTarget.framework
+    - codeSign: null
+      embed: null
+      link: null
+      sdk: Contacts.framework
+    - codeSign: null
+      embed: null
+      link: null
+      target: Framework2.framework
+    - codeSign: null
+      embed: null
+      link: null
+      target: Framework.framework
+    - codeSign: null
+      embed: null
+      framework: Result.framework
+      link: null
+    - codeSign: null
+      embed: null
+      link: null
+      target: libStaticLibrary_ObjC.a
+    - codeSign: null
+      embed: null
+      framework: SwiftyJSON.framework
+      link: null
+    deploymentTarget: null
+    directlyEmbedCarthageDependencies: null
+    entitlements: null
+    info: null
+    legacy: null
+    platform: iOS
+    postbuildScripts:
+    - name: Strip Unused Architectures from Frameworks
+      runOnlyWhenInstalling: true
+      script: "################################################################################\n#\n#
+        Copyright 2015 Realm Inc.\n#\n# Licensed under the Apache License, Version
+        2.0 (the \"License\");\n# you may not use this file except in compliance with
+        the License.\n# You may obtain a copy of the License at\n#\n# http://www.apache.org/licenses/LICENSE-2.0\n#\n#
+        Unless required by applicable law or agreed to in writing, software\n# distributed
+        under the License is distributed on an \"AS IS\" BASIS,\n# WITHOUT WARRANTIES
+        OR CONDITIONS OF ANY KIND, either express or implied.\n# See the License for
+        the specific language governing permissions and\n# limitations under the License.\n#\n################################################################################\n\n#
+        This script strips all non-valid architectures from dynamic libraries in\n#
+        the application's `Frameworks` directory.\n#\n# The following environment
+        variables are required:\n#\n# BUILT_PRODUCTS_DIR\n# FRAMEWORKS_FOLDER_PATH\n#
+        VALID_ARCHS\n# EXPANDED_CODE_SIGN_IDENTITY\n\n\n# Signs a framework with the
+        provided identity\ncode_sign() {\n  # Use the current code_sign_identitiy\n
+        \ echo \"Code Signing $1 with Identity ${EXPANDED_CODE_SIGN_IDENTITY_NAME}\"\n
+        \ echo \"/usr/bin/codesign --force --sign ${EXPANDED_CODE_SIGN_IDENTITY} --preserve-metadata=identifier,entitlements
+        $1\"\n  /usr/bin/codesign --force --sign ${EXPANDED_CODE_SIGN_IDENTITY} --preserve-metadata=identifier,entitlements
+        \"$1\"\n}\n\n# Set working directory to product\u2019s embedded frameworks\ncd
+        \"${BUILT_PRODUCTS_DIR}/${FRAMEWORKS_FOLDER_PATH}\"\n\nif [ \"$ACTION\" =
+        \"install\" ]; then\n  echo \"Copy .bcsymbolmap files to .xcarchive\"\n  find
+        . -name '*.bcsymbolmap' -type f -exec mv {} \"${CONFIGURATION_BUILD_DIR}\"
+        \\;\nelse\n  # Delete *.bcsymbolmap files from framework bundle unless archiving\n
+        \ find . -name '*.bcsymbolmap' -type f -exec rm -rf \"{}\" +\\;\nfi\n\necho
+        \"Stripping frameworks\"\n\nfor file in $(find . -type f -perm +111); do\n
+        \ # Skip non-dynamic libraries\n  if ! [[ \"$(file \"$file\")\" == *\"dynamically
+        linked shared library\"* ]]; then\n    continue\n  fi\n  # Get architectures
+        for current file\n  archs=\"$(lipo -info \"${file}\" | rev | cut -d ':' -f1
+        | rev)\"\n  stripped=\"\"\n  for arch in $archs; do\n    if ! [[ \"${VALID_ARCHS}\"
+        == *\"$arch\"* ]]; then\n      # Strip non-valid architectures in-place\n
+        \     lipo -remove \"$arch\" -output \"$file\" \"$file\" || exit 1\n      stripped=\"$stripped
+        $arch\"\n    fi\n  done\n  if [[ \"$stripped\" != \"\" ]]; then\n    echo
+        \"Stripped $file of architectures:$stripped\"\n    if [ \"${CODE_SIGNING_REQUIRED}\"
+        == \"YES\" ]; then\n      code_sign \"${file}\"\n    fi\n  fi\ndone\n"
+      shell: /bin/sh
+    - inputFileLists:
+      - App_iOS/inputList.xcfilelist
+      name: MyScript
+      outputFileLists:
+      - App_iOS/outputList.xcfilelist
+      runOnlyWhenInstalling: false
+      script: 'echo "You ran a script!"
+
+        '
+      shell: /bin/sh
+    requiresObjCLinking: null
+    scheme: null
+    settings:
+      configs:
+        Production Debug:
+          CODE_SIGN_IDENTITY: iPhone Developer
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: App_iOS/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          OTHER_LDFLAGS:
+          - $(inherited)
+          - -ObjC
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.app
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+        Production Release:
+          CODE_SIGN_IDENTITY: iPhone Developer
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: App_iOS/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          OTHER_LDFLAGS:
+          - $(inherited)
+          - -ObjC
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.app
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+        Staging Debug:
+          CODE_SIGN_IDENTITY: iPhone Developer
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: App_iOS/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          OTHER_LDFLAGS:
+          - $(inherited)
+          - -ObjC
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.app
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+        Staging Release:
+          CODE_SIGN_IDENTITY: iPhone Developer
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: App_iOS/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          OTHER_LDFLAGS:
+          - $(inherited)
+          - -ObjC
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.app
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+        Test Debug:
+          CODE_SIGN_IDENTITY: iPhone Developer
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: App_iOS/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          OTHER_LDFLAGS:
+          - $(inherited)
+          - -ObjC
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.app
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+        Test Release:
+          CODE_SIGN_IDENTITY: iPhone Developer
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: App_iOS/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          OTHER_LDFLAGS:
+          - $(inherited)
+          - -ObjC
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.app
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+    sources:
+    - buildPhase: null
+      createIntermediateGroups: null
+      group: null
+      headerVisibility: null
+      name: null
+      path: App_iOS/AppDelegate.swift
+      type: null
+    - buildPhase: null
+      createIntermediateGroups: null
+      group: null
+      headerVisibility: null
+      name: null
+      path: App_iOS/Assets.xcassets
+      type: null
+    - buildPhase: null
+      createIntermediateGroups: null
+      group: null
+      headerVisibility: null
+      name: Base
+      path: App_iOS/Base.lproj/LaunchScreen.storyboard
+      type: null
+    - buildPhase: null
+      createIntermediateGroups: null
+      group: null
+      headerVisibility: null
+      name: Base
+      path: App_iOS/Base.lproj/Localizable.strings
+      type: null
+    - buildPhase: null
+      createIntermediateGroups: null
+      group: null
+      headerVisibility: null
+      name: Base
+      path: App_iOS/Base.lproj/Localizable.stringsdict
+      type: null
+    - buildPhase: null
+      createIntermediateGroups: null
+      group: null
+      headerVisibility: null
+      name: Base
+      path: App_iOS/Base.lproj/LocalizedStoryboard.storyboard
+      type: null
+    - buildPhase: null
+      createIntermediateGroups: null
+      group: null
+      headerVisibility: null
+      name: Base
+      path: App_iOS/Base.lproj/Main.storyboard
+      type: null
+    - buildPhase: null
+      createIntermediateGroups: null
+      group: null
+      headerVisibility: null
+      name: FolderWithDot2.0
+      path: App_iOS/FolderWithDot2.0
+      type: null
+    - buildPhase: null
+      createIntermediateGroups: null
+      group: null
+      headerVisibility: null
+      name: null
+      path: App_iOS/Model.xcdatamodeld
+      type: null
+    - buildPhase: null
+      createIntermediateGroups: null
+      group: null
+      headerVisibility: null
+      name: null
+      path: App_iOS/Model.xcmappingmodel
+      type: null
+    - buildPhase: null
+      createIntermediateGroups: null
+      group: null
+      headerVisibility: null
+      name: null
+      path: App_iOS/Settings.bundle
+      type: null
+    - buildPhase: null
+      createIntermediateGroups: null
+      group: null
+      headerVisibility: null
+      name: null
+      path: App_iOS/ViewController.swift
+      type: null
+    - buildPhase: null
+      createIntermediateGroups: null
+      group: null
+      headerVisibility: null
+      name: en.lproj
+      path: App_iOS/en.lproj
+      type: null
+    - buildPhase: null
+      createIntermediateGroups: null
+      group: null
+      headerVisibility: null
+      name: FileGroup
+      path: FileGroup
+      type: null
+    - buildPhase: null
+      createIntermediateGroups: null
+      group: null
+      headerVisibility: null
+      name: Group
+      path: Group
+      type: null
+    - buildPhase: null
+      createIntermediateGroups: null
+      group: null
+      headerVisibility: null
+      name: Group2
+      path: Group2
+      type: null
+    - buildPhase: null
+      createIntermediateGroups: null
+      group: null
+      headerVisibility: null
+      name: Resources
+      path: Resources
+      type: null
+    - buildPhase: null
+      createIntermediateGroups: null
+      group: null
+      headerVisibility: null
+      name: StandaloneFiles
+      path: StandaloneFiles
+      type: null
+    transitivelyLinkDependencies: null
+    type: application
+  App_iOS_Tests:
+    dependencies:
+    - codeSign: null
+      embed: null
+      link: null
+      target: App_iOS
+    - codeSign: null
+      embed: null
+      link: null
+      target: TestFramework
+    - codeSign: null
+      embed: null
+      framework: swift-tagged.framework
+      link: null
+    deploymentTarget: null
+    directlyEmbedCarthageDependencies: null
+    entitlements: null
+    info: null
+    legacy: null
+    platform: iOS
+    requiresObjCLinking: null
+    scheme: null
+    settings:
+      configs:
+        Production Debug:
+          BUNDLE_LOADER: $(TEST_HOST)
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: App_iOS_Tests/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          - '@loader_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.App-iOS-Tests
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+          TEST_HOST: $(BUILT_PRODUCTS_DIR)/App_iOS.app/App_iOS
+        Production Release:
+          BUNDLE_LOADER: $(TEST_HOST)
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: App_iOS_Tests/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          - '@loader_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.App-iOS-Tests
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+          TEST_HOST: $(BUILT_PRODUCTS_DIR)/App_iOS.app/App_iOS
+        Staging Debug:
+          BUNDLE_LOADER: $(TEST_HOST)
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: App_iOS_Tests/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          - '@loader_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.App-iOS-Tests
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+          TEST_HOST: $(BUILT_PRODUCTS_DIR)/App_iOS.app/App_iOS
+        Staging Release:
+          BUNDLE_LOADER: $(TEST_HOST)
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: App_iOS_Tests/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          - '@loader_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.App-iOS-Tests
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+          TEST_HOST: $(BUILT_PRODUCTS_DIR)/App_iOS.app/App_iOS
+        Test Debug:
+          BUNDLE_LOADER: $(TEST_HOST)
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: App_iOS_Tests/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          - '@loader_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.App-iOS-Tests
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+          TEST_HOST: $(BUILT_PRODUCTS_DIR)/App_iOS.app/App_iOS
+        Test Release:
+          BUNDLE_LOADER: $(TEST_HOST)
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: App_iOS_Tests/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          - '@loader_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.App-iOS-Tests
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+          TEST_HOST: $(BUILT_PRODUCTS_DIR)/App_iOS.app/App_iOS
+    sources:
+    - buildPhase: null
+      createIntermediateGroups: null
+      group: null
+      headerVisibility: null
+      name: App_iOS_Tests
+      path: App_iOS_Tests
+      type: null
+    transitivelyLinkDependencies: null
+    type: bundle.unit-test
+  App_iOS_UITests:
+    dependencies:
+    - codeSign: null
+      embed: null
+      link: null
+      target: App_iOS
+    deploymentTarget: null
+    directlyEmbedCarthageDependencies: null
+    entitlements: null
+    info: null
+    legacy: null
+    platform: iOS
+    requiresObjCLinking: null
+    scheme: null
+    settings:
+      configs:
+        Production Debug:
+          BUNDLE_LOADER: $(TEST_HOST)
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: App_iOS_UITests/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          - '@loader_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.App-iOS-UITests
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+          TEST_TARGET_NAME: App_iOS
+        Production Release:
+          BUNDLE_LOADER: $(TEST_HOST)
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: App_iOS_UITests/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          - '@loader_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.App-iOS-UITests
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+          TEST_TARGET_NAME: App_iOS
+        Staging Debug:
+          BUNDLE_LOADER: $(TEST_HOST)
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: App_iOS_UITests/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          - '@loader_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.App-iOS-UITests
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+          TEST_TARGET_NAME: App_iOS
+        Staging Release:
+          BUNDLE_LOADER: $(TEST_HOST)
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: App_iOS_UITests/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          - '@loader_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.App-iOS-UITests
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+          TEST_TARGET_NAME: App_iOS
+        Test Debug:
+          BUNDLE_LOADER: $(TEST_HOST)
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: App_iOS_UITests/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          - '@loader_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.App-iOS-UITests
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+          TEST_TARGET_NAME: App_iOS
+        Test Release:
+          BUNDLE_LOADER: $(TEST_HOST)
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: App_iOS_UITests/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          - '@loader_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.App-iOS-UITests
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+          TEST_TARGET_NAME: App_iOS
+    sources:
+    - buildPhase: null
+      createIntermediateGroups: null
+      group: null
+      headerVisibility: null
+      name: App_iOS_UITests
+      path: App_iOS_UITests
+      type: null
+    transitivelyLinkDependencies: null
+    type: bundle.ui-testing
+  App_macOS:
+    dependencies:
+    - codeSign: null
+      embed: null
+      link: null
+      target: Framework_macOS
+    - codeSign: null
+      embed: null
+      link: null
+      target: StaticLibrary_ObjC_macOS
+    - codeSign: null
+      embed: null
+      link: null
+      target: XPC Service
+    - codeSign: null
+      embed: null
+      link: null
+      sdk: Contacts.framework
+    - codeSign: null
+      embed: null
+      link: null
+      target: Framework.framework
+    - codeSign: null
+      embed: null
+      framework: Result.framework
+      link: null
+    - codeSign: null
+      embed: null
+      link: null
+      target: libStaticLibrary_ObjC.a
+    - codeSign: null
+      embed: null
+      link: null
+      sdk: libc++.tbd
+    - codeSign: null
+      embed: null
+      link: null
+      sdk: libz.dylib
+    deploymentTarget: null
+    directlyEmbedCarthageDependencies: null
+    entitlements: null
+    info: null
+    legacy: null
+    platform: iOS
+    requiresObjCLinking: null
+    scheme: null
+    settings:
+      configs:
+        Production Debug:
+          COMBINE_HIDPI_IMAGES: YES
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: App_macOS/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/../Frameworks'
+          OTHER_LDFLAGS:
+          - $(inherited)
+          - -ObjC
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.App-macOS
+          SDKROOT: macosx
+        Production Release:
+          COMBINE_HIDPI_IMAGES: YES
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: App_macOS/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/../Frameworks'
+          OTHER_LDFLAGS:
+          - $(inherited)
+          - -ObjC
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.App-macOS
+          SDKROOT: macosx
+        Staging Debug:
+          COMBINE_HIDPI_IMAGES: YES
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: App_macOS/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/../Frameworks'
+          OTHER_LDFLAGS:
+          - $(inherited)
+          - -ObjC
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.App-macOS
+          SDKROOT: macosx
+        Staging Release:
+          COMBINE_HIDPI_IMAGES: YES
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: App_macOS/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/../Frameworks'
+          OTHER_LDFLAGS:
+          - $(inherited)
+          - -ObjC
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.App-macOS
+          SDKROOT: macosx
+        Test Debug:
+          COMBINE_HIDPI_IMAGES: YES
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: App_macOS/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/../Frameworks'
+          OTHER_LDFLAGS:
+          - $(inherited)
+          - -ObjC
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.App-macOS
+          SDKROOT: macosx
+        Test Release:
+          COMBINE_HIDPI_IMAGES: YES
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: App_macOS/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/../Frameworks'
+          OTHER_LDFLAGS:
+          - $(inherited)
+          - -ObjC
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.App-macOS
+          SDKROOT: macosx
+    sources:
+    - buildPhase: null
+      createIntermediateGroups: null
+      group: null
+      headerVisibility: null
+      name: App_macOS
+      path: App_macOS
+      type: null
+    - buildPhase: null
+      createIntermediateGroups: null
+      group: null
+      headerVisibility: null
+      name: null
+      path: StandaloneFiles/Standalone.swift
+      type: null
+    transitivelyLinkDependencies: null
+    type: application
+  App_macOS_Tests:
+    dependencies:
+    - codeSign: null
+      embed: null
+      link: null
+      target: App_macOS
+    deploymentTarget: null
+    directlyEmbedCarthageDependencies: null
+    entitlements: null
+    info: null
+    legacy: null
+    platform: iOS
+    requiresObjCLinking: null
+    scheme: null
+    settings:
+      configs:
+        Production Debug:
+          BUNDLE_LOADER: $(TEST_HOST)
+          COMBINE_HIDPI_IMAGES: YES
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: App_macOS_Tests/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/../Frameworks'
+          - '@loader_path/../Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.App-macOS-Tests
+          SDKROOT: macosx
+          TEST_HOST: $(BUILT_PRODUCTS_DIR)/App_macOS.app/Contents/MacOS/App_macOS
+        Production Release:
+          BUNDLE_LOADER: $(TEST_HOST)
+          COMBINE_HIDPI_IMAGES: YES
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: App_macOS_Tests/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/../Frameworks'
+          - '@loader_path/../Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.App-macOS-Tests
+          SDKROOT: macosx
+          TEST_HOST: $(BUILT_PRODUCTS_DIR)/App_macOS.app/Contents/MacOS/App_macOS
+        Staging Debug:
+          BUNDLE_LOADER: $(TEST_HOST)
+          COMBINE_HIDPI_IMAGES: YES
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: App_macOS_Tests/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/../Frameworks'
+          - '@loader_path/../Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.App-macOS-Tests
+          SDKROOT: macosx
+          TEST_HOST: $(BUILT_PRODUCTS_DIR)/App_macOS.app/Contents/MacOS/App_macOS
+        Staging Release:
+          BUNDLE_LOADER: $(TEST_HOST)
+          COMBINE_HIDPI_IMAGES: YES
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: App_macOS_Tests/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/../Frameworks'
+          - '@loader_path/../Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.App-macOS-Tests
+          SDKROOT: macosx
+          TEST_HOST: $(BUILT_PRODUCTS_DIR)/App_macOS.app/Contents/MacOS/App_macOS
+        Test Debug:
+          BUNDLE_LOADER: $(TEST_HOST)
+          COMBINE_HIDPI_IMAGES: YES
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: App_macOS_Tests/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/../Frameworks'
+          - '@loader_path/../Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.App-macOS-Tests
+          SDKROOT: macosx
+          TEST_HOST: $(BUILT_PRODUCTS_DIR)/App_macOS.app/Contents/MacOS/App_macOS
+        Test Release:
+          BUNDLE_LOADER: $(TEST_HOST)
+          COMBINE_HIDPI_IMAGES: YES
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: App_macOS_Tests/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/../Frameworks'
+          - '@loader_path/../Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.App-macOS-Tests
+          SDKROOT: macosx
+          TEST_HOST: $(BUILT_PRODUCTS_DIR)/App_macOS.app/Contents/MacOS/App_macOS
+    sources:
+    - buildPhase: null
+      createIntermediateGroups: null
+      group: null
+      headerVisibility: null
+      name: App_macOS_Tests
+      path: App_macOS_Tests
+      type: null
+    transitivelyLinkDependencies: null
+    type: bundle.unit-test
+  App_watchOS:
+    dependencies:
+    - codeSign: null
+      embed: null
+      link: null
+      target: App_watchOS Extension
+    deploymentTarget: null
+    directlyEmbedCarthageDependencies: null
+    entitlements: null
+    info: null
+    legacy: null
+    platform: iOS
+    requiresObjCLinking: null
+    scheme: null
+    settings:
+      configs:
+        Production Debug:
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: App_watchOS/Info.plist
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.app.watch
+          SDKROOT: watchos
+          SKIP_INSTALL: YES
+          TARGETED_DEVICE_FAMILY: 4
+          WATCHOS_DEPLOYMENT_TARGET: 4.0
+        Production Release:
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: App_watchOS/Info.plist
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.app.watch
+          SDKROOT: watchos
+          SKIP_INSTALL: YES
+          TARGETED_DEVICE_FAMILY: 4
+          WATCHOS_DEPLOYMENT_TARGET: 4.0
+        Staging Debug:
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: App_watchOS/Info.plist
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.app.watch
+          SDKROOT: watchos
+          SKIP_INSTALL: YES
+          TARGETED_DEVICE_FAMILY: 4
+          WATCHOS_DEPLOYMENT_TARGET: 4.0
+        Staging Release:
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: App_watchOS/Info.plist
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.app.watch
+          SDKROOT: watchos
+          SKIP_INSTALL: YES
+          TARGETED_DEVICE_FAMILY: 4
+          WATCHOS_DEPLOYMENT_TARGET: 4.0
+        Test Debug:
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: App_watchOS/Info.plist
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.app.watch
+          SDKROOT: watchos
+          SKIP_INSTALL: YES
+          TARGETED_DEVICE_FAMILY: 4
+          WATCHOS_DEPLOYMENT_TARGET: 4.0
+        Test Release:
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: App_watchOS/Info.plist
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.app.watch
+          SDKROOT: watchos
+          SKIP_INSTALL: YES
+          TARGETED_DEVICE_FAMILY: 4
+          WATCHOS_DEPLOYMENT_TARGET: 4.0
+    sources:
+    - buildPhase: null
+      createIntermediateGroups: null
+      group: null
+      headerVisibility: null
+      name: App_watchOS
+      path: App_watchOS
+      type: null
+    transitivelyLinkDependencies: null
+    type: application.watchapp2
+  App_watchOS Extension:
+    deploymentTarget: null
+    directlyEmbedCarthageDependencies: null
+    entitlements: null
+    info: null
+    legacy: null
+    platform: iOS
+    requiresObjCLinking: null
+    scheme: null
+    settings:
+      configs:
+        Production Debug:
+          ASSETCATALOG_COMPILER_COMPLICATION_NAME: Complication
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: App_watchOS Extension/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          - '@executable_path/../../Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.app.watch.extension
+          SDKROOT: watchos
+          SKIP_INSTALL: YES
+          TARGETED_DEVICE_FAMILY: 4
+        Production Release:
+          ASSETCATALOG_COMPILER_COMPLICATION_NAME: Complication
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: App_watchOS Extension/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          - '@executable_path/../../Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.app.watch.extension
+          SDKROOT: watchos
+          SKIP_INSTALL: YES
+          TARGETED_DEVICE_FAMILY: 4
+        Staging Debug:
+          ASSETCATALOG_COMPILER_COMPLICATION_NAME: Complication
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: App_watchOS Extension/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          - '@executable_path/../../Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.app.watch.extension
+          SDKROOT: watchos
+          SKIP_INSTALL: YES
+          TARGETED_DEVICE_FAMILY: 4
+        Staging Release:
+          ASSETCATALOG_COMPILER_COMPLICATION_NAME: Complication
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: App_watchOS Extension/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          - '@executable_path/../../Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.app.watch.extension
+          SDKROOT: watchos
+          SKIP_INSTALL: YES
+          TARGETED_DEVICE_FAMILY: 4
+        Test Debug:
+          ASSETCATALOG_COMPILER_COMPLICATION_NAME: Complication
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: App_watchOS Extension/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          - '@executable_path/../../Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.app.watch.extension
+          SDKROOT: watchos
+          SKIP_INSTALL: YES
+          TARGETED_DEVICE_FAMILY: 4
+        Test Release:
+          ASSETCATALOG_COMPILER_COMPLICATION_NAME: Complication
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: App_watchOS Extension/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          - '@executable_path/../../Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.app.watch.extension
+          SDKROOT: watchos
+          SKIP_INSTALL: YES
+          TARGETED_DEVICE_FAMILY: 4
+    sources:
+    - buildPhase: null
+      createIntermediateGroups: null
+      group: null
+      headerVisibility: null
+      name: null
+      path: App_watchOS Extension/Assets.xcassets
+      type: null
+    - buildPhase: null
+      createIntermediateGroups: null
+      group: null
+      headerVisibility: null
+      name: null
+      path: App_watchOS Extension/ExtensionDelegate.swift
+      type: null
+    - buildPhase: null
+      createIntermediateGroups: null
+      group: null
+      headerVisibility: null
+      name: null
+      path: App_watchOS Extension/InterfaceController.swift
+      type: null
+    - buildPhase: null
+      createIntermediateGroups: null
+      group: null
+      headerVisibility: null
+      name: null
+      path: App_watchOS Extension/NotificationController.swift
+      type: null
+    transitivelyLinkDependencies: null
+    type: watchkit2-extension
+  EntitledApp:
+    deploymentTarget: null
+    directlyEmbedCarthageDependencies: null
+    entitlements: null
+    info: null
+    legacy: null
+    platform: iOS
+    requiresObjCLinking: null
+    scheme: null
+    settings:
+      configs:
+        Production Debug:
+          CODE_SIGN_ENTITLEMENTS: App_iOS/App.entitlements
+          CODE_SIGN_IDENTITY: iPhone Developer
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.EntitledApp
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+        Production Release:
+          CODE_SIGN_ENTITLEMENTS: App_iOS/App.entitlements
+          CODE_SIGN_IDENTITY: iPhone Developer
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.EntitledApp
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+        Staging Debug:
+          CODE_SIGN_ENTITLEMENTS: App_iOS/App.entitlements
+          CODE_SIGN_IDENTITY: iPhone Developer
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.EntitledApp
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+        Staging Release:
+          CODE_SIGN_ENTITLEMENTS: App_iOS/App.entitlements
+          CODE_SIGN_IDENTITY: iPhone Developer
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.EntitledApp
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+        Test Debug:
+          CODE_SIGN_ENTITLEMENTS: App_iOS/App.entitlements
+          CODE_SIGN_IDENTITY: iPhone Developer
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.EntitledApp
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+        Test Release:
+          CODE_SIGN_ENTITLEMENTS: App_iOS/App.entitlements
+          CODE_SIGN_IDENTITY: iPhone Developer
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.EntitledApp
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+    transitivelyLinkDependencies: null
+    type: application
+  Framework2_iOS:
+    deploymentTarget: null
+    directlyEmbedCarthageDependencies: null
+    entitlements: null
+    info: null
+    legacy: null
+    platform: iOS
+    requiresObjCLinking: null
+    scheme: null
+    settings:
+      configs:
+        Production Debug:
+          INFOPLIST_FILE: Framework/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework2-iOS
+          PRODUCT_NAME: Framework2
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+        Production Release:
+          INFOPLIST_FILE: Framework/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework2-iOS
+          PRODUCT_NAME: Framework2
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+        Staging Debug:
+          INFOPLIST_FILE: Framework/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework2-iOS
+          PRODUCT_NAME: Framework2
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+        Staging Release:
+          INFOPLIST_FILE: Framework/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework2-iOS
+          PRODUCT_NAME: Framework2
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+        Test Debug:
+          INFOPLIST_FILE: Framework/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework2-iOS
+          PRODUCT_NAME: Framework2
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+        Test Release:
+          INFOPLIST_FILE: Framework/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework2-iOS
+          PRODUCT_NAME: Framework2
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+    sources:
+    - buildPhase: null
+      createIntermediateGroups: null
+      group: null
+      headerVisibility: null
+      name: null
+      path: Framework/FrameworkFile.swift
+      type: null
+    - buildPhase: null
+      createIntermediateGroups: null
+      group: null
+      headerVisibility: public
+      name: null
+      path: Framework/MyFramework.h
+      type: null
+    transitivelyLinkDependencies: null
+    type: framework
+  Framework2_macOS:
+    deploymentTarget: null
+    directlyEmbedCarthageDependencies: null
+    entitlements: null
+    info: null
+    legacy: null
+    platform: iOS
+    requiresObjCLinking: null
+    scheme: null
+    settings:
+      configs:
+        Production Debug:
+          COMBINE_HIDPI_IMAGES: YES
+          INFOPLIST_FILE: Framework/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/../Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework2-macOS
+          PRODUCT_NAME: Framework2
+          SDKROOT: macosx
+        Production Release:
+          COMBINE_HIDPI_IMAGES: YES
+          INFOPLIST_FILE: Framework/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/../Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework2-macOS
+          PRODUCT_NAME: Framework2
+          SDKROOT: macosx
+        Staging Debug:
+          COMBINE_HIDPI_IMAGES: YES
+          INFOPLIST_FILE: Framework/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/../Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework2-macOS
+          PRODUCT_NAME: Framework2
+          SDKROOT: macosx
+        Staging Release:
+          COMBINE_HIDPI_IMAGES: YES
+          INFOPLIST_FILE: Framework/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/../Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework2-macOS
+          PRODUCT_NAME: Framework2
+          SDKROOT: macosx
+        Test Debug:
+          COMBINE_HIDPI_IMAGES: YES
+          INFOPLIST_FILE: Framework/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/../Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework2-macOS
+          PRODUCT_NAME: Framework2
+          SDKROOT: macosx
+        Test Release:
+          COMBINE_HIDPI_IMAGES: YES
+          INFOPLIST_FILE: Framework/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/../Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework2-macOS
+          PRODUCT_NAME: Framework2
+          SDKROOT: macosx
+    sources:
+    - buildPhase: null
+      createIntermediateGroups: null
+      group: null
+      headerVisibility: null
+      name: null
+      path: Framework/FrameworkFile.swift
+      type: null
+    - buildPhase: null
+      createIntermediateGroups: null
+      group: null
+      headerVisibility: public
+      name: null
+      path: Framework/MyFramework.h
+      type: null
+    transitivelyLinkDependencies: null
+    type: framework
+  Framework2_tvOS:
+    deploymentTarget: null
+    directlyEmbedCarthageDependencies: null
+    entitlements: null
+    info: null
+    legacy: null
+    platform: iOS
+    requiresObjCLinking: null
+    scheme: null
+    settings:
+      configs:
+        Production Debug:
+          INFOPLIST_FILE: Framework/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework2-tvOS
+          PRODUCT_NAME: Framework2
+          SDKROOT: appletvos
+          TARGETED_DEVICE_FAMILY: 3
+        Production Release:
+          INFOPLIST_FILE: Framework/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework2-tvOS
+          PRODUCT_NAME: Framework2
+          SDKROOT: appletvos
+          TARGETED_DEVICE_FAMILY: 3
+        Staging Debug:
+          INFOPLIST_FILE: Framework/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework2-tvOS
+          PRODUCT_NAME: Framework2
+          SDKROOT: appletvos
+          TARGETED_DEVICE_FAMILY: 3
+        Staging Release:
+          INFOPLIST_FILE: Framework/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework2-tvOS
+          PRODUCT_NAME: Framework2
+          SDKROOT: appletvos
+          TARGETED_DEVICE_FAMILY: 3
+        Test Debug:
+          INFOPLIST_FILE: Framework/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework2-tvOS
+          PRODUCT_NAME: Framework2
+          SDKROOT: appletvos
+          TARGETED_DEVICE_FAMILY: 3
+        Test Release:
+          INFOPLIST_FILE: Framework/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework2-tvOS
+          PRODUCT_NAME: Framework2
+          SDKROOT: appletvos
+          TARGETED_DEVICE_FAMILY: 3
+    sources:
+    - buildPhase: null
+      createIntermediateGroups: null
+      group: null
+      headerVisibility: null
+      name: null
+      path: Framework/FrameworkFile.swift
+      type: null
+    - buildPhase: null
+      createIntermediateGroups: null
+      group: null
+      headerVisibility: public
+      name: null
+      path: Framework/MyFramework.h
+      type: null
+    transitivelyLinkDependencies: null
+    type: framework
+  Framework2_watchOS:
+    deploymentTarget: null
+    directlyEmbedCarthageDependencies: null
+    entitlements: null
+    info: null
+    legacy: null
+    platform: iOS
+    requiresObjCLinking: null
+    scheme: null
+    settings:
+      configs:
+        Production Debug:
+          INFOPLIST_FILE: Framework/Info.plist
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework2-watchOS
+          PRODUCT_NAME: Framework2
+          SDKROOT: watchos
+          TARGETED_DEVICE_FAMILY: 4
+        Production Release:
+          INFOPLIST_FILE: Framework/Info.plist
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework2-watchOS
+          PRODUCT_NAME: Framework2
+          SDKROOT: watchos
+          TARGETED_DEVICE_FAMILY: 4
+        Staging Debug:
+          INFOPLIST_FILE: Framework/Info.plist
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework2-watchOS
+          PRODUCT_NAME: Framework2
+          SDKROOT: watchos
+          TARGETED_DEVICE_FAMILY: 4
+        Staging Release:
+          INFOPLIST_FILE: Framework/Info.plist
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework2-watchOS
+          PRODUCT_NAME: Framework2
+          SDKROOT: watchos
+          TARGETED_DEVICE_FAMILY: 4
+        Test Debug:
+          INFOPLIST_FILE: Framework/Info.plist
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework2-watchOS
+          PRODUCT_NAME: Framework2
+          SDKROOT: watchos
+          TARGETED_DEVICE_FAMILY: 4
+        Test Release:
+          INFOPLIST_FILE: Framework/Info.plist
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework2-watchOS
+          PRODUCT_NAME: Framework2
+          SDKROOT: watchos
+          TARGETED_DEVICE_FAMILY: 4
+    sources:
+    - buildPhase: null
+      createIntermediateGroups: null
+      group: null
+      headerVisibility: null
+      name: null
+      path: Framework/FrameworkFile.swift
+      type: null
+    - buildPhase: null
+      createIntermediateGroups: null
+      group: null
+      headerVisibility: public
+      name: null
+      path: Framework/MyFramework.h
+      type: null
+    transitivelyLinkDependencies: null
+    type: framework
+  Framework_iOS:
+    dependencies:
+    - codeSign: null
+      embed: null
+      link: null
+      target: StaticLibrary_ObjC_iOS
+    - codeSign: null
+      embed: null
+      framework: Result.framework
+      link: null
+    deploymentTarget: null
+    directlyEmbedCarthageDependencies: null
+    entitlements: null
+    info: null
+    legacy: null
+    platform: iOS
+    postbuildScripts:
+    - name: MyScript
+      runOnlyWhenInstalling: false
+      script: 'echo "You ran a script"
+
+        '
+      shell: /bin/sh
+    requiresObjCLinking: null
+    scheme: null
+    settings:
+      configs:
+        Production Debug:
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: Framework/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework-iOS
+          PRODUCT_NAME: Framework
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+        Production Release:
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: Framework/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework-iOS
+          PRODUCT_NAME: Framework
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+        Staging Debug:
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: Framework/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework-iOS
+          PRODUCT_NAME: Framework
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+        Staging Release:
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: Framework/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework-iOS
+          PRODUCT_NAME: Framework
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+        Test Debug:
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: Framework/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework-iOS
+          PRODUCT_NAME: Framework
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+        Test Release:
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: Framework/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework-iOS
+          PRODUCT_NAME: Framework
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+    sources:
+    - buildPhase: null
+      createIntermediateGroups: null
+      group: null
+      headerVisibility: null
+      name: null
+      path: Framework/FrameworkFile.swift
+      type: null
+    - buildPhase: null
+      createIntermediateGroups: null
+      group: null
+      headerVisibility: public
+      name: null
+      path: Framework/MyFramework.h
+      type: null
+    - buildPhase: null
+      createIntermediateGroups: null
+      group: null
+      headerVisibility: public
+      name: null
+      path: Headers
+      type: null
+    transitivelyLinkDependencies: null
+    type: framework
+  Framework_macOS:
+    dependencies:
+    - codeSign: null
+      embed: null
+      link: null
+      target: StaticLibrary_ObjC_macOS
+    - codeSign: null
+      embed: null
+      framework: Result.framework
+      link: null
+    deploymentTarget: null
+    directlyEmbedCarthageDependencies: null
+    entitlements: null
+    info: null
+    legacy: null
+    platform: iOS
+    postbuildScripts:
+    - name: MyScript
+      runOnlyWhenInstalling: false
+      script: 'echo "You ran a script"
+
+        '
+      shell: /bin/sh
+    requiresObjCLinking: null
+    scheme: null
+    settings:
+      configs:
+        Production Debug:
+          COMBINE_HIDPI_IMAGES: YES
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: Framework/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/../Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework-macOS
+          PRODUCT_NAME: Framework
+          SDKROOT: macosx
+        Production Release:
+          COMBINE_HIDPI_IMAGES: YES
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: Framework/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/../Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework-macOS
+          PRODUCT_NAME: Framework
+          SDKROOT: macosx
+        Staging Debug:
+          COMBINE_HIDPI_IMAGES: YES
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: Framework/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/../Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework-macOS
+          PRODUCT_NAME: Framework
+          SDKROOT: macosx
+        Staging Release:
+          COMBINE_HIDPI_IMAGES: YES
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: Framework/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/../Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework-macOS
+          PRODUCT_NAME: Framework
+          SDKROOT: macosx
+        Test Debug:
+          COMBINE_HIDPI_IMAGES: YES
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: Framework/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/../Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework-macOS
+          PRODUCT_NAME: Framework
+          SDKROOT: macosx
+        Test Release:
+          COMBINE_HIDPI_IMAGES: YES
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: Framework/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/../Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework-macOS
+          PRODUCT_NAME: Framework
+          SDKROOT: macosx
+    sources:
+    - buildPhase: null
+      createIntermediateGroups: null
+      group: null
+      headerVisibility: null
+      name: null
+      path: Framework/FrameworkFile.swift
+      type: null
+    - buildPhase: null
+      createIntermediateGroups: null
+      group: null
+      headerVisibility: public
+      name: null
+      path: Framework/MyFramework.h
+      type: null
+    - buildPhase: null
+      createIntermediateGroups: null
+      group: null
+      headerVisibility: public
+      name: null
+      path: Headers
+      type: null
+    transitivelyLinkDependencies: null
+    type: framework
+  Framework_tvOS:
+    dependencies:
+    - codeSign: null
+      embed: null
+      link: null
+      target: StaticLibrary_ObjC_tvOS
+    - codeSign: null
+      embed: null
+      framework: Result.framework
+      link: null
+    deploymentTarget: null
+    directlyEmbedCarthageDependencies: null
+    entitlements: null
+    info: null
+    legacy: null
+    platform: iOS
+    postbuildScripts:
+    - name: MyScript
+      runOnlyWhenInstalling: false
+      script: 'echo "You ran a script"
+
+        '
+      shell: /bin/sh
+    requiresObjCLinking: null
+    scheme: null
+    settings:
+      configs:
+        Production Debug:
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: Framework/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework-tvOS
+          PRODUCT_NAME: Framework
+          SDKROOT: appletvos
+          TARGETED_DEVICE_FAMILY: 3
+        Production Release:
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: Framework/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework-tvOS
+          PRODUCT_NAME: Framework
+          SDKROOT: appletvos
+          TARGETED_DEVICE_FAMILY: 3
+        Staging Debug:
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: Framework/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework-tvOS
+          PRODUCT_NAME: Framework
+          SDKROOT: appletvos
+          TARGETED_DEVICE_FAMILY: 3
+        Staging Release:
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: Framework/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework-tvOS
+          PRODUCT_NAME: Framework
+          SDKROOT: appletvos
+          TARGETED_DEVICE_FAMILY: 3
+        Test Debug:
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: Framework/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework-tvOS
+          PRODUCT_NAME: Framework
+          SDKROOT: appletvos
+          TARGETED_DEVICE_FAMILY: 3
+        Test Release:
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: Framework/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework-tvOS
+          PRODUCT_NAME: Framework
+          SDKROOT: appletvos
+          TARGETED_DEVICE_FAMILY: 3
+    sources:
+    - buildPhase: null
+      createIntermediateGroups: null
+      group: null
+      headerVisibility: null
+      name: null
+      path: Framework/FrameworkFile.swift
+      type: null
+    - buildPhase: null
+      createIntermediateGroups: null
+      group: null
+      headerVisibility: public
+      name: null
+      path: Framework/MyFramework.h
+      type: null
+    - buildPhase: null
+      createIntermediateGroups: null
+      group: null
+      headerVisibility: public
+      name: null
+      path: Headers
+      type: null
+    transitivelyLinkDependencies: null
+    type: framework
+  Framework_watchOS:
+    dependencies:
+    - codeSign: null
+      embed: null
+      link: null
+      target: StaticLibrary_ObjC_watchOS
+    - codeSign: null
+      embed: null
+      framework: Result.framework
+      link: null
+    deploymentTarget: null
+    directlyEmbedCarthageDependencies: null
+    entitlements: null
+    info: null
+    legacy: null
+    platform: iOS
+    postbuildScripts:
+    - name: MyScript
+      runOnlyWhenInstalling: false
+      script: 'echo "You ran a script"
+
+        '
+      shell: /bin/sh
+    requiresObjCLinking: null
+    scheme: null
+    settings:
+      configs:
+        Production Debug:
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: Framework/Info.plist
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework-watchOS
+          PRODUCT_NAME: Framework
+          SDKROOT: watchos
+          TARGETED_DEVICE_FAMILY: 4
+        Production Release:
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: Framework/Info.plist
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework-watchOS
+          PRODUCT_NAME: Framework
+          SDKROOT: watchos
+          TARGETED_DEVICE_FAMILY: 4
+        Staging Debug:
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: Framework/Info.plist
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework-watchOS
+          PRODUCT_NAME: Framework
+          SDKROOT: watchos
+          TARGETED_DEVICE_FAMILY: 4
+        Staging Release:
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: Framework/Info.plist
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework-watchOS
+          PRODUCT_NAME: Framework
+          SDKROOT: watchos
+          TARGETED_DEVICE_FAMILY: 4
+        Test Debug:
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: Framework/Info.plist
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework-watchOS
+          PRODUCT_NAME: Framework
+          SDKROOT: watchos
+          TARGETED_DEVICE_FAMILY: 4
+        Test Release:
+          FRAMEWORK_SEARCH_PATHS:
+          - $(inherited)
+          INFOPLIST_FILE: Framework/Info.plist
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework-watchOS
+          PRODUCT_NAME: Framework
+          SDKROOT: watchos
+          TARGETED_DEVICE_FAMILY: 4
+    sources:
+    - buildPhase: null
+      createIntermediateGroups: null
+      group: null
+      headerVisibility: null
+      name: null
+      path: Framework/FrameworkFile.swift
+      type: null
+    - buildPhase: null
+      createIntermediateGroups: null
+      group: null
+      headerVisibility: public
+      name: null
+      path: Framework/MyFramework.h
+      type: null
+    - buildPhase: null
+      createIntermediateGroups: null
+      group: null
+      headerVisibility: public
+      name: null
+      path: Headers
+      type: null
+    transitivelyLinkDependencies: null
+    type: framework
+  StaticLibrary_ObjC_iOS:
+    deploymentTarget: null
+    directlyEmbedCarthageDependencies: null
+    entitlements: null
+    info: null
+    legacy: null
+    platform: iOS
+    requiresObjCLinking: null
+    scheme: null
+    settings:
+      configs:
+        Production Debug:
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.StaticLibrary-ObjC-iOS
+          PRODUCT_NAME: StaticLibrary_ObjC
+          SDKROOT: iphoneos
+          SKIP_INSTALL: YES
+          TARGETED_DEVICE_FAMILY: 1,2
+        Production Release:
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.StaticLibrary-ObjC-iOS
+          PRODUCT_NAME: StaticLibrary_ObjC
+          SDKROOT: iphoneos
+          SKIP_INSTALL: YES
+          TARGETED_DEVICE_FAMILY: 1,2
+        Staging Debug:
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.StaticLibrary-ObjC-iOS
+          PRODUCT_NAME: StaticLibrary_ObjC
+          SDKROOT: iphoneos
+          SKIP_INSTALL: YES
+          TARGETED_DEVICE_FAMILY: 1,2
+        Staging Release:
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.StaticLibrary-ObjC-iOS
+          PRODUCT_NAME: StaticLibrary_ObjC
+          SDKROOT: iphoneos
+          SKIP_INSTALL: YES
+          TARGETED_DEVICE_FAMILY: 1,2
+        Test Debug:
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.StaticLibrary-ObjC-iOS
+          PRODUCT_NAME: StaticLibrary_ObjC
+          SDKROOT: iphoneos
+          SKIP_INSTALL: YES
+          TARGETED_DEVICE_FAMILY: 1,2
+        Test Release:
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.StaticLibrary-ObjC-iOS
+          PRODUCT_NAME: StaticLibrary_ObjC
+          SDKROOT: iphoneos
+          SKIP_INSTALL: YES
+          TARGETED_DEVICE_FAMILY: 1,2
+    sources:
+    - buildPhase: null
+      createIntermediateGroups: null
+      group: null
+      headerVisibility: null
+      name: null
+      path: StaticLibrary_ObjC/StaticLibrary_ObjC.m
+      type: null
+    transitivelyLinkDependencies: null
+    type: library.static
+  StaticLibrary_ObjC_macOS:
+    deploymentTarget: null
+    directlyEmbedCarthageDependencies: null
+    entitlements: null
+    info: null
+    legacy: null
+    platform: iOS
+    requiresObjCLinking: null
+    scheme: null
+    settings:
+      configs:
+        Production Debug:
+          COMBINE_HIDPI_IMAGES: YES
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/../Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.StaticLibrary-ObjC-macOS
+          PRODUCT_NAME: StaticLibrary_ObjC
+          SDKROOT: macosx
+          SKIP_INSTALL: YES
+        Production Release:
+          COMBINE_HIDPI_IMAGES: YES
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/../Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.StaticLibrary-ObjC-macOS
+          PRODUCT_NAME: StaticLibrary_ObjC
+          SDKROOT: macosx
+          SKIP_INSTALL: YES
+        Staging Debug:
+          COMBINE_HIDPI_IMAGES: YES
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/../Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.StaticLibrary-ObjC-macOS
+          PRODUCT_NAME: StaticLibrary_ObjC
+          SDKROOT: macosx
+          SKIP_INSTALL: YES
+        Staging Release:
+          COMBINE_HIDPI_IMAGES: YES
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/../Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.StaticLibrary-ObjC-macOS
+          PRODUCT_NAME: StaticLibrary_ObjC
+          SDKROOT: macosx
+          SKIP_INSTALL: YES
+        Test Debug:
+          COMBINE_HIDPI_IMAGES: YES
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/../Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.StaticLibrary-ObjC-macOS
+          PRODUCT_NAME: StaticLibrary_ObjC
+          SDKROOT: macosx
+          SKIP_INSTALL: YES
+        Test Release:
+          COMBINE_HIDPI_IMAGES: YES
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/../Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.StaticLibrary-ObjC-macOS
+          PRODUCT_NAME: StaticLibrary_ObjC
+          SDKROOT: macosx
+          SKIP_INSTALL: YES
+    sources:
+    - buildPhase: null
+      createIntermediateGroups: null
+      group: null
+      headerVisibility: null
+      name: null
+      path: StaticLibrary_ObjC/StaticLibrary_ObjC.m
+      type: null
+    transitivelyLinkDependencies: null
+    type: library.static
+  StaticLibrary_ObjC_tvOS:
+    deploymentTarget: null
+    directlyEmbedCarthageDependencies: null
+    entitlements: null
+    info: null
+    legacy: null
+    platform: iOS
+    requiresObjCLinking: null
+    scheme: null
+    settings:
+      configs:
+        Production Debug:
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.StaticLibrary-ObjC-tvOS
+          PRODUCT_NAME: StaticLibrary_ObjC
+          SDKROOT: appletvos
+          SKIP_INSTALL: YES
+          TARGETED_DEVICE_FAMILY: 3
+        Production Release:
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.StaticLibrary-ObjC-tvOS
+          PRODUCT_NAME: StaticLibrary_ObjC
+          SDKROOT: appletvos
+          SKIP_INSTALL: YES
+          TARGETED_DEVICE_FAMILY: 3
+        Staging Debug:
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.StaticLibrary-ObjC-tvOS
+          PRODUCT_NAME: StaticLibrary_ObjC
+          SDKROOT: appletvos
+          SKIP_INSTALL: YES
+          TARGETED_DEVICE_FAMILY: 3
+        Staging Release:
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.StaticLibrary-ObjC-tvOS
+          PRODUCT_NAME: StaticLibrary_ObjC
+          SDKROOT: appletvos
+          SKIP_INSTALL: YES
+          TARGETED_DEVICE_FAMILY: 3
+        Test Debug:
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.StaticLibrary-ObjC-tvOS
+          PRODUCT_NAME: StaticLibrary_ObjC
+          SDKROOT: appletvos
+          SKIP_INSTALL: YES
+          TARGETED_DEVICE_FAMILY: 3
+        Test Release:
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.StaticLibrary-ObjC-tvOS
+          PRODUCT_NAME: StaticLibrary_ObjC
+          SDKROOT: appletvos
+          SKIP_INSTALL: YES
+          TARGETED_DEVICE_FAMILY: 3
+    sources:
+    - buildPhase: null
+      createIntermediateGroups: null
+      group: null
+      headerVisibility: null
+      name: null
+      path: StaticLibrary_ObjC/StaticLibrary_ObjC.m
+      type: null
+    transitivelyLinkDependencies: null
+    type: library.static
+  StaticLibrary_ObjC_watchOS:
+    deploymentTarget: null
+    directlyEmbedCarthageDependencies: null
+    entitlements: null
+    info: null
+    legacy: null
+    platform: iOS
+    requiresObjCLinking: null
+    scheme: null
+    settings:
+      configs:
+        Production Debug:
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.StaticLibrary-ObjC-watchOS
+          PRODUCT_NAME: StaticLibrary_ObjC
+          SDKROOT: watchos
+          SKIP_INSTALL: YES
+          TARGETED_DEVICE_FAMILY: 4
+        Production Release:
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.StaticLibrary-ObjC-watchOS
+          PRODUCT_NAME: StaticLibrary_ObjC
+          SDKROOT: watchos
+          SKIP_INSTALL: YES
+          TARGETED_DEVICE_FAMILY: 4
+        Staging Debug:
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.StaticLibrary-ObjC-watchOS
+          PRODUCT_NAME: StaticLibrary_ObjC
+          SDKROOT: watchos
+          SKIP_INSTALL: YES
+          TARGETED_DEVICE_FAMILY: 4
+        Staging Release:
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.StaticLibrary-ObjC-watchOS
+          PRODUCT_NAME: StaticLibrary_ObjC
+          SDKROOT: watchos
+          SKIP_INSTALL: YES
+          TARGETED_DEVICE_FAMILY: 4
+        Test Debug:
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.StaticLibrary-ObjC-watchOS
+          PRODUCT_NAME: StaticLibrary_ObjC
+          SDKROOT: watchos
+          SKIP_INSTALL: YES
+          TARGETED_DEVICE_FAMILY: 4
+        Test Release:
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.StaticLibrary-ObjC-watchOS
+          PRODUCT_NAME: StaticLibrary_ObjC
+          SDKROOT: watchos
+          SKIP_INSTALL: YES
+          TARGETED_DEVICE_FAMILY: 4
+    sources:
+    - buildPhase: null
+      createIntermediateGroups: null
+      group: null
+      headerVisibility: null
+      name: null
+      path: StaticLibrary_ObjC/StaticLibrary_ObjC.m
+      type: null
+    transitivelyLinkDependencies: null
+    type: library.static
+  StaticLibrary_Swift:
+    deploymentTarget: null
+    directlyEmbedCarthageDependencies: null
+    entitlements: null
+    info: null
+    legacy: null
+    platform: iOS
+    postCompileScripts:
+    - inputFiles:
+      - $(DERIVED_SOURCES_DIR)/$(SWIFT_OBJC_INTERFACE_HEADER_NAME)
+      name: Copy Swift Objective-C Interface Header
+      outputFiles:
+      - $(BUILT_PRODUCTS_DIR)/include/$(PRODUCT_MODULE_NAME)/$(SWIFT_OBJC_INTERFACE_HEADER_NAME)
+      runOnlyWhenInstalling: false
+      script: 'ditto "${SCRIPT_INPUT_FILE_0}" "${SCRIPT_OUTPUT_FILE_0}"
+
+        '
+      shell: /bin/sh
+    requiresObjCLinking: null
+    scheme: null
+    settings:
+      configs:
+        Production Debug:
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.StaticLibrary-Swift
+          SDKROOT: iphoneos
+          SKIP_INSTALL: YES
+          TARGETED_DEVICE_FAMILY: 1,2
+        Production Release:
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.StaticLibrary-Swift
+          SDKROOT: iphoneos
+          SKIP_INSTALL: YES
+          TARGETED_DEVICE_FAMILY: 1,2
+        Staging Debug:
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.StaticLibrary-Swift
+          SDKROOT: iphoneos
+          SKIP_INSTALL: YES
+          TARGETED_DEVICE_FAMILY: 1,2
+        Staging Release:
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.StaticLibrary-Swift
+          SDKROOT: iphoneos
+          SKIP_INSTALL: YES
+          TARGETED_DEVICE_FAMILY: 1,2
+        Test Debug:
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.StaticLibrary-Swift
+          SDKROOT: iphoneos
+          SKIP_INSTALL: YES
+          TARGETED_DEVICE_FAMILY: 1,2
+        Test Release:
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.StaticLibrary-Swift
+          SDKROOT: iphoneos
+          SKIP_INSTALL: YES
+          TARGETED_DEVICE_FAMILY: 1,2
+    sources:
+    - buildPhase: null
+      createIntermediateGroups: null
+      group: null
+      headerVisibility: null
+      name: StaticLibrary_Swift
+      path: StaticLibrary_Swift
+      type: null
+    transitivelyLinkDependencies: null
+    type: library.static
+  TestFramework:
+    deploymentTarget: null
+    directlyEmbedCarthageDependencies: null
+    entitlements: null
+    info: null
+    legacy: null
+    platform: iOS
+    requiresObjCLinking: null
+    scheme: null
+    settings:
+      configs:
+        Production Debug:
+          INFOPLIST_FILE: Framework/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.TestFramework
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+        Production Release:
+          INFOPLIST_FILE: Framework/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.TestFramework
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+        Staging Debug:
+          INFOPLIST_FILE: Framework/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.TestFramework
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+        Staging Release:
+          INFOPLIST_FILE: Framework/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.TestFramework
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+        Test Debug:
+          INFOPLIST_FILE: Framework/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.TestFramework
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+        Test Release:
+          INFOPLIST_FILE: Framework/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.TestFramework
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+    sources:
+    - buildPhase: null
+      createIntermediateGroups: null
+      group: null
+      headerVisibility: null
+      name: null
+      path: Framework/FrameworkFile.swift
+      type: null
+    - buildPhase: null
+      createIntermediateGroups: null
+      group: null
+      headerVisibility: public
+      name: null
+      path: Framework/MyFramework.h
+      type: null
+    transitivelyLinkDependencies: null
+    type: framework
+  Tool:
+    deploymentTarget: null
+    directlyEmbedCarthageDependencies: null
+    entitlements: null
+    info: null
+    legacy: null
+    platform: iOS
+    requiresObjCLinking: null
+    scheme: null
+    settings:
+      configs:
+        Production Debug:
+          COMBINE_HIDPI_IMAGES: YES
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/../Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.Tool
+          SDKROOT: macosx
+        Production Release:
+          COMBINE_HIDPI_IMAGES: YES
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/../Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.Tool
+          SDKROOT: macosx
+        Staging Debug:
+          COMBINE_HIDPI_IMAGES: YES
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/../Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.Tool
+          SDKROOT: macosx
+        Staging Release:
+          COMBINE_HIDPI_IMAGES: YES
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/../Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.Tool
+          SDKROOT: macosx
+        Test Debug:
+          COMBINE_HIDPI_IMAGES: YES
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/../Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.Tool
+          SDKROOT: macosx
+        Test Release:
+          COMBINE_HIDPI_IMAGES: YES
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/../Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.Tool
+          SDKROOT: macosx
+    sources:
+    - buildPhase: null
+      createIntermediateGroups: null
+      group: null
+      headerVisibility: null
+      name: Tool
+      path: Tool
+      type: null
+    transitivelyLinkDependencies: null
+    type: tool
+  XPC Service:
+    deploymentTarget: null
+    directlyEmbedCarthageDependencies: null
+    entitlements: null
+    info: null
+    legacy: null
+    platform: iOS
+    requiresObjCLinking: null
+    scheme: null
+    settings:
+      configs:
+        Production Debug:
+          COMBINE_HIDPI_IMAGES: YES
+          INFOPLIST_FILE: XPC Service/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/../Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.XPCService
+          SDKROOT: macosx
+        Production Release:
+          COMBINE_HIDPI_IMAGES: YES
+          INFOPLIST_FILE: XPC Service/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/../Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.XPCService
+          SDKROOT: macosx
+        Staging Debug:
+          COMBINE_HIDPI_IMAGES: YES
+          INFOPLIST_FILE: XPC Service/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/../Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.XPCService
+          SDKROOT: macosx
+        Staging Release:
+          COMBINE_HIDPI_IMAGES: YES
+          INFOPLIST_FILE: XPC Service/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/../Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.XPCService
+          SDKROOT: macosx
+        Test Debug:
+          COMBINE_HIDPI_IMAGES: YES
+          INFOPLIST_FILE: XPC Service/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/../Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.XPCService
+          SDKROOT: macosx
+        Test Release:
+          COMBINE_HIDPI_IMAGES: YES
+          INFOPLIST_FILE: XPC Service/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/../Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.XPCService
+          SDKROOT: macosx
+    sources:
+    - buildPhase: null
+      createIntermediateGroups: null
+      group: null
+      headerVisibility: null
+      name: null
+      path: XPC Service/XPC_Service.m
+      type: null
+    - buildPhase: null
+      createIntermediateGroups: null
+      group: null
+      headerVisibility: null
+      name: null
+      path: XPC Service/main.m
+      type: null
+    transitivelyLinkDependencies: null
+    type: xpc-service
+  iMessageApp:
+    dependencies:
+    - codeSign: null
+      embed: null
+      link: null
+      target: iMessageExtension
+    deploymentTarget: null
+    directlyEmbedCarthageDependencies: null
+    entitlements: null
+    info: null
+    legacy: null
+    platform: iOS
+    requiresObjCLinking: null
+    scheme: null
+    settings:
+      configs:
+        Production Debug:
+          INFOPLIST_FILE: iMessageApp/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.iMessageApp
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+        Production Release:
+          INFOPLIST_FILE: iMessageApp/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.iMessageApp
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+        Staging Debug:
+          INFOPLIST_FILE: iMessageApp/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.iMessageApp
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+        Staging Release:
+          INFOPLIST_FILE: iMessageApp/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.iMessageApp
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+        Test Debug:
+          INFOPLIST_FILE: iMessageApp/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.iMessageApp
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+        Test Release:
+          INFOPLIST_FILE: iMessageApp/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.iMessageApp
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+    sources:
+    - buildPhase: null
+      createIntermediateGroups: null
+      group: null
+      headerVisibility: null
+      name: iMessageApp
+      path: iMessageApp
+      type: null
+    transitivelyLinkDependencies: null
+    type: application.messages
+  iMessageExtension:
+    deploymentTarget: null
+    directlyEmbedCarthageDependencies: null
+    entitlements: null
+    info: null
+    legacy: null
+    platform: iOS
+    requiresObjCLinking: null
+    scheme: null
+    settings:
+      configs:
+        Production Debug:
+          ASSETCATALOG_COMPILER_APPICON_NAME: iMessage App Icon
+          INFOPLIST_FILE: iMessageExtension/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          - '@executable_path/../../Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.iMessageApp.extension
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+        Production Release:
+          ASSETCATALOG_COMPILER_APPICON_NAME: iMessage App Icon
+          INFOPLIST_FILE: iMessageExtension/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          - '@executable_path/../../Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.iMessageApp.extension
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+        Staging Debug:
+          ASSETCATALOG_COMPILER_APPICON_NAME: iMessage App Icon
+          INFOPLIST_FILE: iMessageExtension/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          - '@executable_path/../../Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.iMessageApp.extension
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+        Staging Release:
+          ASSETCATALOG_COMPILER_APPICON_NAME: iMessage App Icon
+          INFOPLIST_FILE: iMessageExtension/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          - '@executable_path/../../Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.iMessageApp.extension
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+        Test Debug:
+          ASSETCATALOG_COMPILER_APPICON_NAME: iMessage App Icon
+          INFOPLIST_FILE: iMessageExtension/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          - '@executable_path/../../Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.iMessageApp.extension
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+        Test Release:
+          ASSETCATALOG_COMPILER_APPICON_NAME: iMessage App Icon
+          INFOPLIST_FILE: iMessageExtension/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          - '@executable_path/../../Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.iMessageApp.extension
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+    sources:
+    - buildPhase: null
+      createIntermediateGroups: null
+      group: null
+      headerVisibility: null
+      name: iMessageExtension
+      path: iMessageExtension
+      type: null
+    transitivelyLinkDependencies: null
+    type: app-extension.messages
+  iMessageStickersExtension:
+    deploymentTarget: null
+    directlyEmbedCarthageDependencies: null
+    entitlements: null
+    info: null
+    legacy: null
+    platform: iOS
+    requiresObjCLinking: null
+    scheme: null
+    settings:
+      configs:
+        Production Debug:
+          INFOPLIST_FILE: iMessageStickers/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.iMessageStickersExtension
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+        Production Release:
+          INFOPLIST_FILE: iMessageStickers/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.iMessageStickersExtension
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+        Staging Debug:
+          INFOPLIST_FILE: iMessageStickers/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.iMessageStickersExtension
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+        Staging Release:
+          INFOPLIST_FILE: iMessageStickers/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.iMessageStickersExtension
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+        Test Debug:
+          INFOPLIST_FILE: iMessageStickers/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.iMessageStickersExtension
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+        Test Release:
+          INFOPLIST_FILE: iMessageStickers/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.iMessageStickersExtension
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+    sources:
+    - buildPhase: null
+      createIntermediateGroups: null
+      group: null
+      headerVisibility: null
+      name: iMessageStickers
+      path: iMessageStickers
+      type: null
+    transitivelyLinkDependencies: null
+    type: app-extension.messages-sticker-pack

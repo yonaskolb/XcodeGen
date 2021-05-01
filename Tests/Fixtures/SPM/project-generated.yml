@@ -1,0 +1,191 @@
+# Generated from /Users/yonas/Developer/XcodeGen/Tests/Fixtures/SPM/SPM.xcodeproj
+attributes:
+  LastUpgradeCheck: 1200
+configs:
+  Debug: debug
+  Release: release
+name: SPM
+options:
+  bundleIdPrefix: null
+  carthageBuildPath: null
+  carthageExecutablePath: null
+  defaultConfig: Debug
+  deploymentTarget:
+    iOS: null
+    macOS: null
+    tvOS: null
+    watchOS: null
+  developmentLanguage: null
+  groupSortPosition: bottom
+  indentWidth: null
+  localPackagesGroup: null
+  minimumXcodeGenVersion: null
+  postGenCommand: null
+  preGenCommand: null
+  tabWidth: null
+  transitivelyLinkDependencies: false
+  usesTabs: null
+  xcodeVersion: null
+schemes:
+  App:
+    analyze:
+      config: Debug
+    archive:
+      config: Release
+      customArchiveName: null
+    build:
+      targets:
+        App:
+        - running
+        - testing
+        - profiling
+        - analyzing
+        - archiving
+    profile:
+      config: Release
+    run:
+      askForAppToLaunch: null
+      config: Debug
+      executable: null
+      language: null
+      launchAutomaticallySubstyle: null
+      region: null
+    test:
+      config: Debug
+      language: null
+      region: null
+settings:
+  configs:
+    Debug:
+      CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER: YES
+      GCC_PREPROCESSOR_DEFINITIONS:
+      - $(inherited)
+      - DEBUG=1
+      MTL_ENABLE_DEBUG_INFO: INCLUDE_SOURCE
+      MTL_FAST_MATH: YES
+      SDKROOT: iphoneos
+      SWIFT_ACTIVE_COMPILATION_CONDITIONS: DEBUG
+      SWIFT_OPTIMIZATION_LEVEL: -Onone
+      SWIFT_VERSION: 5.0
+    Release:
+      CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER: YES
+      MTL_FAST_MATH: YES
+      SDKROOT: iphoneos
+      SWIFT_COMPILATION_MODE: wholemodule
+      SWIFT_OPTIMIZATION_LEVEL: -O
+      SWIFT_VERSION: 5.0
+targets:
+  App:
+    dependencies:
+    - codeSign: null
+      embed: null
+      link: null
+      target: StaticLibrary
+    - codeSign: null
+      embed: null
+      link: null
+      target: libStaticLibrary.a
+    deploymentTarget: null
+    directlyEmbedCarthageDependencies: null
+    entitlements: null
+    info: null
+    legacy: null
+    platform: iOS
+    requiresObjCLinking: null
+    scheme: null
+    settings:
+      configs:
+        Debug:
+          INFOPLIST_FILE: SPM/Info.plist
+          OTHER_LDFLAGS:
+          - $(inherited)
+          - -ObjC
+        Release:
+          INFOPLIST_FILE: SPM/Info.plist
+          OTHER_LDFLAGS:
+          - $(inherited)
+          - -ObjC
+    sources:
+    - buildPhase: null
+      createIntermediateGroups: null
+      group: null
+      headerVisibility: null
+      name: SPM
+      path: SPM
+      type: null
+    transitivelyLinkDependencies: null
+    type: application
+  StaticLibrary:
+    deploymentTarget: null
+    directlyEmbedCarthageDependencies: null
+    entitlements: null
+    info: null
+    legacy: null
+    platform: iOS
+    postCompileScripts:
+    - inputFiles:
+      - $(DERIVED_SOURCES_DIR)/$(SWIFT_OBJC_INTERFACE_HEADER_NAME)
+      name: Copy Swift Objective-C Interface Header
+      outputFiles:
+      - $(BUILT_PRODUCTS_DIR)/include/$(PRODUCT_MODULE_NAME)/$(SWIFT_OBJC_INTERFACE_HEADER_NAME)
+      runOnlyWhenInstalling: false
+      script: 'ditto "${SCRIPT_INPUT_FILE_0}" "${SCRIPT_OUTPUT_FILE_0}"
+
+        '
+      shell: /bin/sh
+    requiresObjCLinking: null
+    scheme: null
+    settings:
+      configs:
+        Debug:
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          SKIP_INSTALL: YES
+        Release:
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          SKIP_INSTALL: YES
+    sources:
+    - buildPhase: null
+      createIntermediateGroups: null
+      group: null
+      headerVisibility: null
+      name: StaticLibrary
+      path: StaticLibrary
+      type: null
+    transitivelyLinkDependencies: null
+    type: library.static
+  Tests:
+    dependencies:
+    - codeSign: null
+      embed: null
+      link: null
+      target: App
+    deploymentTarget: null
+    directlyEmbedCarthageDependencies: null
+    entitlements: null
+    info: null
+    legacy: null
+    platform: iOS
+    requiresObjCLinking: null
+    scheme: null
+    settings:
+      configs:
+        Debug:
+          BUNDLE_LOADER: $(TEST_HOST)
+          TEST_HOST: $(BUILT_PRODUCTS_DIR)/App.app/App
+        Release:
+          BUNDLE_LOADER: $(TEST_HOST)
+          TEST_HOST: $(BUILT_PRODUCTS_DIR)/App.app/App
+    sources:
+    - buildPhase: null
+      createIntermediateGroups: null
+      group: null
+      headerVisibility: null
+      name: SPMTests
+      path: SPMTests
+      type: null
+    transitivelyLinkDependencies: null
+    type: bundle.unit-test
