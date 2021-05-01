@@ -58,6 +58,9 @@
 
 [Commits](https://github.com/yonaskolb/XcodeGen/compare/2.18.0...2.19.0)
 
+#### Fixed
+- Lookup scheme config variants by whole words, fixing incorrect assignment in names that contain subtrings of each other (eg PreProd and Prod) [#976](https://github.com/yonaskolb/XcodeGen/pull/976) @stefanomondino
+
 ## 2.18.0
 
 #### Added

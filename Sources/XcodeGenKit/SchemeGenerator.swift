@@ -70,12 +70,13 @@ public class SchemeGenerator {
                     for configVariant in targetScheme.configVariants {
 
                         let schemeName = "\(target.name) \(configVariant)"
-
+                        
                         let debugConfig = project.configs
-                            .first { $0.type == .debug && $0.name.contains(configVariant) }!
+                            .first(including: configVariant, for: .debug)!
+                        
                         let releaseConfig = project.configs
-                            .first { $0.type == .release && $0.name.contains(configVariant) }!
-
+                            .first(including: configVariant, for: .release)!
+                     
                         let scheme = Scheme(
                             name: schemeName,
                             target: target,
