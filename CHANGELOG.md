@@ -2,6 +2,8 @@
 
 ## Next Version
 
+## 2.21.0
+
 #### Added
 - Support weak link for Swift Package Dependency [#1064](https://github.com/yonaskolb/XcodeGen/pull/1064) @freddi-kit
 
@@ -11,6 +13,8 @@
 #### Fixed
 - The `Core` target is renamed to avoid collisions with other packages. [#1057](https://github.com/yonaskolb/XcodeGen/pull/1057) @elliottwilliams
 - Lookup scheme config variants by whole words, fixing incorrect assignment in names that contain subtrings of each other (eg PreProd and Prod) [#976](https://github.com/yonaskolb/XcodeGen/pull/976) @stefanomondino
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.20.0...2.21.0)
 
 ## 2.20.0
 
