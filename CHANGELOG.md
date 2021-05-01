@@ -1,8 +1,12 @@
 # Change Log
 
 ## Next Version
+
 #### Added
 - Support weak link for Swift Package Dependency [#1064](https://github.com/yonaskolb/XcodeGen/pull/1064) @freddi-kit
+
+#### Fixed
+- The `Core` target is renamed to avoid collisions with other packages. [#1057](https://github.com/yonaskolb/XcodeGen/pull/1057) @elliottwilliams
 
 ## 2.20.0
 
@@ -21,7 +25,6 @@
 
 #### Internal
 - Build universal binaries for release. XcodeGen now runs natively on Apple Silicon. [#1024](https://github.com/yonaskolb/XcodeGen/pull/1024) @thii
-- The `Core` target is renamed to avoid collisions with other packages. [#1057](https://github.com/yonaskolb/XcodeGen/pull/1057) @elliottwilliams
 
 [Commits](https://github.com/yonaskolb/XcodeGen/compare/2.19.0...2.20.0)
 
