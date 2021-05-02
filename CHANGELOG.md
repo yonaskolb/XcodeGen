@@ -2,6 +2,9 @@
 
 ## Next Version
 
+#### Fixed
+- Fixed no such mocule `DOT` error [#1065](https://github.com/yonaskolb/XcodeGen/pull/1065) @yanamura
+
 ## 2.21.0
 
 #### Added
