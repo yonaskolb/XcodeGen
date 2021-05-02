@@ -2,8 +2,12 @@
 
 ## Next Version
 
+## 2.21.1
+
 #### Fixed
 - Fixed no such module `DOT` error when package is used as a dependency [#1067](https://github.com/yonaskolb/XcodeGen/pull/1067) @yanamura
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.21.0...2.21.1)
 
 ## 2.21.0
 
