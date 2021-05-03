@@ -1,3 +1,4 @@
+import DOT
 import Foundation
 import GraphViz
 import ProjectSpec
