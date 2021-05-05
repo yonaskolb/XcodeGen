@@ -2,7 +2,7 @@
 
 ## Next Version
 #### Added
-- Support test target for local Swift Package  [#----](https://github.com/yonaskolb/XcodeGen/pull/----) @freddi-kit
+- Support test target for local Swift Package [#1074](https://github.com/yonaskolb/XcodeGen/pull/1074) @freddi-kit
 
 ## 2.22.0
 
