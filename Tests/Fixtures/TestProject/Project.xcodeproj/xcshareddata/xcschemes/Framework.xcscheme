@@ -5,7 +5,7 @@
    <BuildAction
       parallelizeBuildables = "NO"
       buildImplicitDependencies = "NO"
-      runPostActionsOnFailure = "NO">
+      runPostActionsOnFailure = "YES">
       <PreActions>
          <ExecutionAction
             ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">

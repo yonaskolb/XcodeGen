@@ -341,6 +341,7 @@ schemes:
       preActions:
         - script: echo Starting Framework Build
           settingsTarget: Framework_iOS
+      runPostActionsOnFailure: true
     run:
       commandLineArguments:
         argument: YES
