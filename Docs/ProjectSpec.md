@@ -752,6 +752,11 @@ Schemes allows for more control than the convenience [Target Scheme](#target-sch
   - `true`: Discover implicit dependencies of this scheme
   - `false`: Only build explicit dependencies of this scheme
 
+- [ ] **runPostActionsOnFailure**: **Bool** - Flag to determine if Xcode should run post scripts despite failure build. By default this is `false` if not set.
+- `true`: Run post scripts even if build is failed
+- `false`: Only run post scripts if build success
+
+
 ```yaml
 targets:
   MyTarget: all
