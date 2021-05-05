@@ -5,7 +5,7 @@
 ## 2.21.1
 
 #### Added
-- Support `runPostActionsOnFailure` for running build post scripts on failing build [#----](https://github.com/yonaskolb/XcodeGen/pull/----) @freddi-kit
+- Support `runPostActionsOnFailure` for running build post scripts on failing build [#1073](https://github.com/yonaskolb/XcodeGen/pull/1073) @freddi-kit
 
 #### Fixed
 - Fixed no such module `DOT` error when package is used as a dependency [#1067](https://github.com/yonaskolb/XcodeGen/pull/1067) @yanamura
