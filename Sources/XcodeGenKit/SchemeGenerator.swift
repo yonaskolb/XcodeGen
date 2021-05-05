@@ -142,12 +142,32 @@ public class SchemeGenerator {
             return XCScheme.BuildAction.Entry(buildableReference: buildableReference, buildFor: buildTarget.buildTypes)
         }
 
+        func getBuildEntryForTestTarget(_ buildTarget: Scheme.BuildTarget) throws -> XCScheme.BuildAction.Entry {
+            
+            // Need to check local Swift Package test case
+            func getBuildableReferenceForSPM(_ target: TargetReference) -> XCScheme.BuildableReference? {
+                if case .project(let project) = target.location,
+                   let package = self.project.getPackage(project), case .local(let path) = package {
+                    return XCScheme.BuildableReference(
+                        referencedContainer: "container:\(path)",
+                        blueprintIdentifier: target.name,
+                        buildableName: target.name,
+                        blueprintName: target.name
+                    )
+                } else {
+                    return nil
+                }
+            }
+            let buildableReference = try getBuildableReferenceForSPM(buildTarget.target) ?? getBuildableReference(buildTarget.target)
+            return XCScheme.BuildAction.Entry(buildableReference: buildableReference, buildFor: buildTarget.buildTypes)
+        }
+
         let testTargets = scheme.test?.targets ?? []
         let testBuildTargets = testTargets.map {
             Scheme.BuildTarget(target: $0.targetReference, buildTypes: BuildType.testOnly)
         }
 
-        let testBuildTargetEntries = try testBuildTargets.map(getBuildEntry)
+        let testBuildTargetEntries = try testBuildTargets.map(getBuildEntryForTestTarget)
 
         let buildActionEntries: [XCScheme.BuildAction.Entry] = try scheme.build.targets.map(getBuildEntry)
 

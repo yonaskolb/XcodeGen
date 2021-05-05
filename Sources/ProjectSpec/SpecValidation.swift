@@ -119,6 +119,10 @@ extension Project {
 
                 for testTarget in scheme.testTargets {
                     if getTarget(testTarget.name) == nil {
+                        // For test case of local Swift Package
+                        if case .project(let name) = testTarget.targetReference.location, getPackage(name) != nil {
+                            continue
+                        }
                         errors.append(.invalidTargetSchemeTest(target: target.name, testTarget: testTarget.name))
                     }
                 }
