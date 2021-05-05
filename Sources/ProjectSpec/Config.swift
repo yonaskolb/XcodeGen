@@ -22,22 +22,20 @@ public enum ConfigType: String {
     }
 }
 
-public extension Collection where Element == Config {
-    func first(including configVariant: String, for type: ConfigType) -> Config? {
-        first(where: { $0.type == type && $0.name.variantName(for: $0.type) == configVariant })
+extension Config {
+
+    public func matchesVariant(_ variant: String, for type: ConfigType) -> Bool {
+        guard self.type == type else { return false }
+        let nameWithoutType = self.name.lowercased()
+            .replacingOccurrences(of: type.name.lowercased(), with: "")
+            .trimmingCharacters(in: CharacterSet(charactersIn: " -_"))
+        return nameWithoutType == variant.lowercased()
     }
 }
 
-private extension String {
-    func variantName(for configType: ConfigType?) -> String {
-        self.components(separatedBy: " ")
-            .compactMap { component in
-                if component.lowercased() == (configType?.name.lowercased() ?? "") {
-                    return nil
-                }
-                return component
-            }
-            .joined(separator: " ")
-            .trimmingCharacters(in: CharacterSet.whitespaces)
+public extension Collection where Element == Config {
+    func first(including configVariant: String, for type: ConfigType) -> Config? {
+        first { $0.matchesVariant(configVariant, for: type) }
     }
 }
+
