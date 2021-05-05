@@ -3,7 +3,7 @@
 ## Next Version
 
 #### Fixed
-- Fixed no such module `DOT` error [#1067](https://github.com/yonaskolb/XcodeGen/pull/1067) @yanamura
+- Fixed no such module `DOT` error when package is used as a dependency [#1067](https://github.com/yonaskolb/XcodeGen/pull/1067) @yanamura
 
 ## 2.21.0
 
