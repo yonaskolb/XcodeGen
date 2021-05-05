@@ -197,11 +197,11 @@ class SchemeGeneratorTests: XCTestCase {
                 var target = app
                 target.scheme = TargetScheme(configVariants: configVariants)
                 
-                // Including here a double test for custom upper/lowercase in config types
+                // Including here a double test for custom upper/lowercase, and dash delimited in config types
                 let configs: [Config] = [
-                    Config(name: "Test Debug", type: .debug),
+                    Config(name: "Test-Debug", type: .debug),
                     Config(name: "PreProd debug", type: .debug),
-                    Config(name: "Prod Debug", type: .debug),
+                    Config(name: "Prod-Debug", type: .debug),
                     Config(name: "Test Release", type: .release),
                     Config(name: "PreProd release", type: .release),
                     Config(name: "Prod Release", type: .release),
@@ -224,10 +224,10 @@ class SchemeGeneratorTests: XCTestCase {
                         try expect(xcscheme.analyzeAction?.buildConfiguration) == "\(variantName) debug"
                         try expect(xcscheme.archiveAction?.buildConfiguration) == "\(variantName) release"
                     } else {
-                        try expect(xcscheme.launchAction?.buildConfiguration) == "\(variantName) Debug"
-                        try expect(xcscheme.testAction?.buildConfiguration) == "\(variantName) Debug"
+                        try expect(xcscheme.launchAction?.buildConfiguration) == "\(variantName)-Debug"
+                        try expect(xcscheme.testAction?.buildConfiguration) == "\(variantName)-Debug"
                         try expect(xcscheme.profileAction?.buildConfiguration) == "\(variantName) Release"
-                        try expect(xcscheme.analyzeAction?.buildConfiguration) == "\(variantName) Debug"
+                        try expect(xcscheme.analyzeAction?.buildConfiguration) == "\(variantName)-Debug"
                         try expect(xcscheme.archiveAction?.buildConfiguration) == "\(variantName) Release"
                     }
                 }

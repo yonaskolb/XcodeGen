@@ -6,6 +6,7 @@
 
 #### Fixed
 - Fixed no such module `DOT` error when package is used as a dependency [#1067](https://github.com/yonaskolb/XcodeGen/pull/1067) @yanamura
+- Fixed scheme config variant lookups for some configs like `ProdDebug` and `Prod-Debug` that broke in 2.21.0 [#1070](https://github.com/yonaskolb/XcodeGen/pull/1070) @yonaskolb
 
 [Commits](https://github.com/yonaskolb/XcodeGen/compare/2.21.0...2.21.1)
 
