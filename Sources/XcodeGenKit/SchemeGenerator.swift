@@ -147,7 +147,8 @@ public class SchemeGenerator {
             // Need to check local Swift Package test case
             func getBuildableReferenceForSPM(_ target: TargetReference) -> XCScheme.BuildableReference? {
                 if case .project(let project) = target.location,
-                   let package = self.project.getPackage(project), case .local(let path) = package {
+                   let package = self.project.getPackage(project), 
+                   case .local(let path) = package {
                     return XCScheme.BuildableReference(
                         referencedContainer: "container:\(path)",
                         blueprintIdentifier: target.name,
