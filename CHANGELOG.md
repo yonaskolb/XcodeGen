@@ -7,10 +7,12 @@
 #### Added
 - Support `runPostActionsOnFailure` for running build post scripts on failing build [#1075](https://github.com/yonaskolb/XcodeGen/pull/1075) @freddi-kit
 
+#### Changed
+- Xcode no longer alerts to project changes after regeneration, due to internal workspace not regenerating if identical [#1072](https://github.com/yonaskolb/XcodeGen/pull/1072) @yonaskolb
+
 #### Fixed
 - Fixed no such module `DOT` error when package is used as a dependency [#1067](https://github.com/yonaskolb/XcodeGen/pull/1067) @yanamura
 - Fixed scheme config variant lookups for some configs like `ProdDebug` and `Prod-Debug` that broke in 2.21.0 [#1070](https://github.com/yonaskolb/XcodeGen/pull/1070) @yonaskolb
-- Fixed Xcode alerting to project changes after regeneration [#1072](https://github.com/yonaskolb/XcodeGen/pull/1072) @yonaskolb
 
 [Commits](https://github.com/yonaskolb/XcodeGen/compare/2.21.0...2.22.0)
 
