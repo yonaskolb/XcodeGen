@@ -183,7 +183,8 @@ public class SchemeGenerator {
             preActions: scheme.build.preActions.map(getExecutionAction),
             postActions: scheme.build.postActions.map(getExecutionAction),
             parallelizeBuild: scheme.build.parallelizeBuild,
-            buildImplicitDependencies: scheme.build.buildImplicitDependencies
+            buildImplicitDependencies: scheme.build.buildImplicitDependencies,
+            runPostActionsOnFailure: scheme.build.runPostActionsOnFailure
         )
 
         let testables = zip(testTargets, testBuildTargetEntries).map { testTarget, testBuilEntries in

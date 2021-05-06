@@ -4,6 +4,9 @@
 
 ## 2.21.1
 
+#### Added
+- Support `runPostActionsOnFailure` for running build post scripts on failing build [#1075](https://github.com/yonaskolb/XcodeGen/pull/1075) @freddi-kit
+
 #### Fixed
 - Fixed no such module `DOT` error when package is used as a dependency [#1067](https://github.com/yonaskolb/XcodeGen/pull/1067) @yanamura
 - Fixed scheme config variant lookups for some configs like `ProdDebug` and `Prod-Debug` that broke in 2.21.0 [#1070](https://github.com/yonaskolb/XcodeGen/pull/1070) @yonaskolb

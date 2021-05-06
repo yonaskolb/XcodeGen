@@ -73,25 +73,29 @@ public struct Scheme: Equatable {
     public struct Build: Equatable {
         public static let parallelizeBuildDefault = true
         public static let buildImplicitDependenciesDefault = true
+        public static let runPostActionsOnFailureDefault = false
 
         public var targets: [BuildTarget]
         public var parallelizeBuild: Bool
         public var buildImplicitDependencies: Bool
         public var preActions: [ExecutionAction]
         public var postActions: [ExecutionAction]
+        public var runPostActionsOnFailure: Bool
 
         public init(
             targets: [BuildTarget],
             parallelizeBuild: Bool = parallelizeBuildDefault,
             buildImplicitDependencies: Bool = buildImplicitDependenciesDefault,
             preActions: [ExecutionAction] = [],
-            postActions: [ExecutionAction] = []
+            postActions: [ExecutionAction] = [],
+            runPostActionsOnFailure: Bool = false
         ) {
             self.targets = targets
             self.parallelizeBuild = parallelizeBuild
             self.buildImplicitDependencies = buildImplicitDependencies
             self.preActions = preActions
             self.postActions = postActions
+            self.runPostActionsOnFailure = runPostActionsOnFailure
         }
     }
 
@@ -671,6 +675,7 @@ extension Scheme.Build: JSONObjectConvertible {
         postActions = try jsonDictionary.json(atKeyPath: "postActions")?.map(Scheme.ExecutionAction.init) ?? []
         parallelizeBuild = jsonDictionary.json(atKeyPath: "parallelizeBuild") ?? Scheme.Build.parallelizeBuildDefault
         buildImplicitDependencies = jsonDictionary.json(atKeyPath: "buildImplicitDependencies") ?? Scheme.Build.buildImplicitDependenciesDefault
+        runPostActionsOnFailure = jsonDictionary.json(atKeyPath: "runPostActionsOnFailure") ?? Scheme.Build.runPostActionsOnFailureDefault
     }
 }
 
@@ -689,6 +694,9 @@ extension Scheme.Build: JSONEncodable {
         }
         if buildImplicitDependencies != Scheme.Build.buildImplicitDependenciesDefault {
             dict["buildImplicitDependencies"] = buildImplicitDependencies
+        }
+        if runPostActionsOnFailure != Scheme.Build.runPostActionsOnFailureDefault {
+            dict["runPostActionsOnFailure"] = runPostActionsOnFailure
         }
 
         return dict
