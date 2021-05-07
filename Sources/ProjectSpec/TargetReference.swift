@@ -55,3 +55,30 @@ extension TargetReference: CustomStringConvertible {
         reference
     }
 }
+
+extension TargetReference: JSONObjectConvertible {
+
+    public init(jsonDictionary: JSONDictionary) throws {
+        if let project: String = jsonDictionary.json(atKeyPath: "project") {
+            let paths = project.split(separator: "/")
+            name = String(paths[1])
+            location = .project(String(paths[0]))
+        } else {
+            name = try jsonDictionary.json(atKeyPath: "local")
+            location = .local
+        }
+    }
+}
+
+extension TargetReference: JSONEncodable {
+    public func toJSONValue() -> Any {
+        var dictionary: JSONDictionary = [:]
+        switch self.location {
+        case .project(let projectName):
+            dictionary["project"] = "\(projectName)/\(name)"
+        case .local:
+            dictionary["local"] = name
+        }
+        return dictionary
+    }
+}
