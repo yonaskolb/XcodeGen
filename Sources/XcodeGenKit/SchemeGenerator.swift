@@ -111,7 +111,8 @@ public class SchemeGenerator {
                 pbxProj = self.pbxProj
                 projectFilePath = "\(self.project.name).xcodeproj"
             case .package(let packageName):
-                guard let package = self.project.getPackage(packageName), case .local(let path) = package else {
+                guard let package = self.project.getPackage(packageName),
+                      case .local(let path) = package else {
                     throw SchemeGenerationError.missingPackage(packageName)
                 }
                 return XCScheme.BuildableReference(
