@@ -447,6 +447,8 @@ class SchemeGeneratorTests: XCTestCase {
             }
             
             $0.it("generates scheme with test target of local swift package") {
+                let targetScheme = TargetScheme(
+                    testTargets: [Scheme.Test.TestTarget(targetReference: TargetReference(name: "XcodeGenKitTests", location: .package("XcodeGen")))])
                 let app = Target(
                     name: "MyApp",
                     type: .application,
@@ -454,7 +456,7 @@ class SchemeGeneratorTests: XCTestCase {
                     dependencies: [
                         Dependency(type: .package(product: nil), reference: "XcodeGen")
                     ],
-                    scheme: TargetScheme(testTargets: ["XcodeGen/XcodeGenKitTests"])
+                    scheme: targetScheme
                 )
                 let project = Project(
                     name: "ios_test",
