@@ -8,6 +8,7 @@ public struct TargetReference: Hashable {
     public enum Location: Hashable {
         case local
         case project(String)
+        case package(String)
     }
 
     public init(name: String, location: Location) {
@@ -46,8 +47,8 @@ extension TargetReference: CustomStringConvertible {
     public var reference: String {
         switch location {
         case .local: return name
-        case .project(let projectPath):
-            return "\(projectPath)/\(name)"
+        case .project(let root), .package(let root):
+            return "\(root)/\(name)"
         }
     }
 
@@ -74,6 +75,8 @@ extension TargetReference: JSONEncodable {
     public func toJSONValue() -> Any {
         var dictionary: JSONDictionary = [:]
         switch self.location {
+        case .package(let packageName):
+            dictionary["package"] = "\(packageName)/\(name)"
         case .project(let projectName):
             dictionary["project"] = "\(projectName)/\(name)"
         case .local:

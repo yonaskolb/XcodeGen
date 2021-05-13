@@ -110,6 +110,16 @@ public class SchemeGenerator {
             case .local:
                 pbxProj = self.pbxProj
                 projectFilePath = "\(self.project.name).xcodeproj"
+            case .package(let packageName):
+                guard let package = self.project.getPackage(packageName), case .local(let path) = package else {
+                    throw SchemeGenerationError.missingPackage(packageName)
+                }
+                return XCScheme.BuildableReference(
+                    referencedContainer: "container:\(path)",
+                    blueprintIdentifier: target.name,
+                    buildableName: target.name,
+                    blueprintName: target.name
+                )
             }
 
             guard let pbxTarget = pbxProj.targets(named: target.name).first else {
@@ -127,6 +137,8 @@ public class SchemeGenerator {
                     fatalError("Unable to determinate \"buildableName\" for build target: \(target)")
                 }
                 buildableName = _buildableName
+            case .package: // all `package` target should be handled above
+                fatalError("unexpected package target is handled")
             }
 
             return XCScheme.BuildableReference(
@@ -142,32 +154,12 @@ public class SchemeGenerator {
             return XCScheme.BuildAction.Entry(buildableReference: buildableReference, buildFor: buildTarget.buildTypes)
         }
 
-        func getBuildEntryForTestTarget(_ buildTarget: Scheme.BuildTarget) throws -> XCScheme.BuildAction.Entry {
-            
-            // Need to check local Swift Package test case
-            func getBuildableReferenceForSPM(_ target: TargetReference) -> XCScheme.BuildableReference? {
-                if case .project(let project) = target.location,
-                   let package = self.project.getPackage(project), case .local(let path) = package {
-                    return XCScheme.BuildableReference(
-                        referencedContainer: "container:\(path)",
-                        blueprintIdentifier: target.name,
-                        buildableName: target.name,
-                        blueprintName: target.name
-                    )
-                } else {
-                    return nil
-                }
-            }
-            let buildableReference = try getBuildableReferenceForSPM(buildTarget.target) ?? getBuildableReference(buildTarget.target)
-            return XCScheme.BuildAction.Entry(buildableReference: buildableReference, buildFor: buildTarget.buildTypes)
-        }
-
         let testTargets = scheme.test?.targets ?? []
         let testBuildTargets = testTargets.map {
             Scheme.BuildTarget(target: $0.targetReference, buildTypes: BuildType.testOnly)
         }
 
-        let testBuildTargetEntries = try testBuildTargets.map(getBuildEntryForTestTarget)
+        let testBuildTargetEntries = try testBuildTargets.map(getBuildEntry)
 
         let buildActionEntries: [XCScheme.BuildAction.Entry] = try scheme.build.targets.map(getBuildEntry)
 
@@ -378,6 +370,7 @@ public class SchemeGenerator {
 enum SchemeGenerationError: Error, CustomStringConvertible {
 
     case missingTarget(TargetReference, projectPath: String)
+    case missingPackage(String)
     case missingProject(String)
     case missingBuildTargets(String)
 
@@ -389,6 +382,8 @@ enum SchemeGenerationError: Error, CustomStringConvertible {
             return "Unable to find project reference named \"\(project)\" in project.yml"
         case .missingBuildTargets(let name):
             return "Unable to find at least one build target in scheme \"\(name)\""
+        case .missingPackage(let package):
+            return "Unable to find swift package named \"\(package)\" in project.yml"
         }
     }
 }
