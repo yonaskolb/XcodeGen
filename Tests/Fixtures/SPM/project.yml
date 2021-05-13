@@ -15,7 +15,8 @@ targets:
     sources: [SPM]
     scheme:
       testTargets:
-        - XcodeGen/XcodeGenKitTests
+        - target:
+            package: XcodeGen/XcodeGenKitTests
     dependencies:
       - package: Codability
         weak: true

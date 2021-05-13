@@ -64,6 +64,10 @@ extension TargetReference: JSONObjectConvertible {
             let paths = project.split(separator: "/")
             name = String(paths[1])
             location = .project(String(paths[0]))
+        } else if let project: String = jsonDictionary.json(atKeyPath: "package") {
+            let paths = project.split(separator: "/")
+            name = String(paths[1])
+            location = .package(String(paths[0]))
         } else {
             name = try jsonDictionary.json(atKeyPath: "local")
             location = .local
