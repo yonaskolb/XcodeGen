@@ -2,6 +2,9 @@
 
 ## Next Version
 
+#### Fixed
+- Added `()` to config variant trimming charater set to fix scheme config variant lookups for some configs like `Debug (Development)` that broke in 2.22.0  [#1078](https://github.com/yonaskolb/XcodeGen/pull/1078) @DavidWoohyunLee
+
 ## 2.22.0
 
 #### Added
@@ -13,6 +16,7 @@
 #### Fixed
 - Fixed no such module `DOT` error when package is used as a dependency [#1067](https://github.com/yonaskolb/XcodeGen/pull/1067) @yanamura
 - Fixed scheme config variant lookups for some configs like `ProdDebug` and `Prod-Debug` that broke in 2.21.0 [#1070](https://github.com/yonaskolb/XcodeGen/pull/1070) @yonaskolb
+- Fixed scheme config variant lookups for some configs like ``
 
 [Commits](https://github.com/yonaskolb/XcodeGen/compare/2.21.0...2.22.0)
 
