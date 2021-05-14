@@ -2,6 +2,10 @@
 
 ## Next Version
 
+#### Fixed
+- Reverted "Change FRAMEWORK_SEARCH_PATH for xcframeworks (#1015)", introduced in 2.20.0. XCFrameworks need to be
+  referenced directly in the project for Xcode's build system to extract the appropriate frameworks.
+
 ## 2.22.0
 
 #### Added
@@ -41,6 +45,7 @@
 
 #### Fixed
 - Fixed regression on `.storekit` configuration files' default build phase. [#1026](https://github.com/yonaskolb/XcodeGen/pull/1026) @jcolicchio
+- Fixed framework search paths when using `.xcframework`s. [#1015](https://github.com/yonaskolb/XcodeGen/pull/1015) @FranzBusch
 - Fixed bug where schemes without a build target would crash instead of displaying an error [#1040](https://github.com/yonaskolb/XcodeGen/pull/1040) @dalemyers
 - Fixed files with names ending in **Info.plist** (such as **GoogleServices-Info.plist**) from being omitted from the Copy Resources build phase. Now, only the resolved info plist file for each specific target is omitted. [#1027](https://github.com/yonaskolb/XcodeGen/pull/1027) @liamnichols
 
