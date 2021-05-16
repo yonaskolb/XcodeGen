@@ -3,7 +3,7 @@
 ## Next Version
 
 #### Fixed
-- Added `()` to config variant trimming charater set to fix scheme config variant lookups for some configs like `Debug (Development)` that broke in 2.22.0  [#1078](https://github.com/yonaskolb/XcodeGen/pull/1078) @DavidWoohyunLee
+- Added `()` to config variant trimming charater set to fix scheme config variant lookups for some configs like `Debug (Development)` that broke in 2.22.0  [#1080](https://github.com/yonaskolb/XcodeGen/pull/1080) @DavidWoohyunLee
 
 ## 2.22.0
 
