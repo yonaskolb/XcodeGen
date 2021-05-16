@@ -38,4 +38,4 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - name: Build and run tests
-        run: swift test
+        run: swift build
