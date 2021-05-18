@@ -28,7 +28,7 @@ extension Config {
         guard self.type == type else { return false }
         let nameWithoutType = self.name.lowercased()
             .replacingOccurrences(of: type.name.lowercased(), with: "")
-            .trimmingCharacters(in: CharacterSet(charactersIn: " -_"))
+            .trimmingCharacters(in: CharacterSet(charactersIn: " -_()"))
         return nameWithoutType == variant.lowercased()
     }
 }
