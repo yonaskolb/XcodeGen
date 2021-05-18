@@ -6,7 +6,8 @@
 - Added ability to set custom platform for dependency [#934](https://github.com/yonaskolb/XcodeGen/pull/934) @raptorxcz
 
 #### Fixed
-- Added `()` to config variant trimming charater set to fix scheme config variant lookups for some configs like `Debug (Development)` that broke in 2.22.0  [#1078](https://github.com/yonaskolb/XcodeGen/pull/1078) @DavidWoohyunLee
+- Added `()` to config variant trimming charater set to fix scheme config variant lookups for some configs like `Debug (Development)` that broke in 2.22.0 [#1078](https://github.com/yonaskolb/XcodeGen/pull/1078) @DavidWoohyunLee
+- Fixed Linux builds on Swift 5.4 [#1083](https://github.com/yonaskolb/XcodeGen/pull/1083) @yonaskolb
 
 ## 2.22.0
 
