@@ -2,6 +2,8 @@
 
 ## Next Version
 
+## 2.23.0
+
 #### Added
 - Added ability to set custom platform for dependency [#934](https://github.com/yonaskolb/XcodeGen/pull/934) @raptorxcz
 
@@ -10,6 +12,8 @@
 - Fixed Linux builds on Swift 5.4 [#1083](https://github.com/yonaskolb/XcodeGen/pull/1083) @yonaskolb
 - Reverted "Change FRAMEWORK_SEARCH_PATH for xcframeworks (#1015)", introduced in 2.20.0. XCFrameworks need to be
   referenced directly in the project for Xcode's build system to extract the appropriate frameworks [#1081](https://github.com/yonaskolb/XcodeGen/pull/1081) @elliottwilliams
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.22.0...2.23.0)
 
 ## 2.22.0
 
