@@ -5,6 +5,7 @@ public struct Dependency: Equatable {
     public static let removeHeadersDefault = true
     public static let implicitDefault = false
     public static let weakLinkDefault = false
+    public static let platformDefault: Platform = .all
 
     public var type: DependencyType
     public var reference: String
@@ -14,6 +15,7 @@ public struct Dependency: Equatable {
     public var link: Bool?
     public var implicit: Bool = implicitDefault
     public var weakLink: Bool = weakLinkDefault
+    public var platform: Platform = platformDefault
 
     public init(
         type: DependencyType,
@@ -22,7 +24,8 @@ public struct Dependency: Equatable {
         codeSign: Bool? = nil,
         link: Bool? = nil,
         implicit: Bool = implicitDefault,
-        weakLink: Bool = weakLinkDefault
+        weakLink: Bool = weakLinkDefault,
+        platform: Platform = platformDefault
     ) {
         self.type = type
         self.reference = reference
@@ -31,6 +34,13 @@ public struct Dependency: Equatable {
         self.link = link
         self.implicit = implicit
         self.weakLink = weakLink
+        self.platform = platform
+    }
+    
+    public enum Platform: String, Equatable {
+        case all
+        case iOS
+        case macOS
     }
 
     public enum CarthageLinkType: String {
@@ -111,6 +121,12 @@ extension Dependency: JSONObjectConvertible {
         }
         if let bool: Bool = jsonDictionary.json(atKeyPath: "weak") {
             weakLink = bool
+        }
+        
+        if let platformString: String = jsonDictionary.json(atKeyPath: "platform"), let platform = Platform(rawValue: platformString) {
+            self.platform = platform
+        } else {
+            self.platform = .all
         }
     }
 }

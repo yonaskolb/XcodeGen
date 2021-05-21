@@ -2,8 +2,12 @@
 
 ## Next Version
 
+#### Added
+- Added ability to set custom platform for dependency [#934](https://github.com/yonaskolb/XcodeGen/pull/934) @raptorxcz
+
 #### Fixed
-- Added `()` to config variant trimming charater set to fix scheme config variant lookups for some configs like `Debug (Development)` that broke in 2.22.0  [#1078](https://github.com/yonaskolb/XcodeGen/pull/1078) @DavidWoohyunLee
+- Added `()` to config variant trimming charater set to fix scheme config variant lookups for some configs like `Debug (Development)` that broke in 2.22.0 [#1078](https://github.com/yonaskolb/XcodeGen/pull/1078) @DavidWoohyunLee
+- Fixed Linux builds on Swift 5.4 [#1083](https://github.com/yonaskolb/XcodeGen/pull/1083) @yonaskolb
 - Reverted "Change FRAMEWORK_SEARCH_PATH for xcframeworks (#1015)", introduced in 2.20.0. XCFrameworks need to be
   referenced directly in the project for Xcode's build system to extract the appropriate frameworks [#1081](https://github.com/yonaskolb/XcodeGen/pull/1081) @elliottwilliams
 
