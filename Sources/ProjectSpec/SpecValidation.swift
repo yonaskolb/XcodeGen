@@ -246,8 +246,8 @@ extension Project {
             return .invalidSchemeTarget(scheme: scheme.name, target: targetReference.name, action: action)
         case .project(let project) where getProjectReference(project) == nil:
             return .invalidProjectReference(scheme: scheme.name, reference: project)
-        case .package(let package) where getPackage(targetReference.name) == nil:
-            return .invalidSwiftPackage(name: targetReference.name, target: package)
+        case .package(let package) where getPackage(package) == nil:
+            return .invalidLocalPackage(package)
         case .local, .project, .package:
             return nil
         }

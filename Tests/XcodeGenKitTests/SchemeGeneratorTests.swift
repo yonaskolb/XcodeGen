@@ -366,6 +366,7 @@ class SchemeGeneratorTests: XCTestCase {
                         coverageTargets: [
                             "TestProject/ExternalTarget",
                             TargetReference(framework.name),
+                            TargetReference(name: "XcodeGenKitTests", location: .package("XcodeGen"))
                         ]
                     )
                 )
@@ -373,6 +374,7 @@ class SchemeGeneratorTests: XCTestCase {
                     name: "test",
                     targets: [framework],
                     schemes: [scheme],
+                    packages: ["XcodeGen": .local(path: "../")],
                     projectReferences: [
                         ProjectReference(name: "TestProject", path: externalProject.string),
                     ]
@@ -380,7 +382,7 @@ class SchemeGeneratorTests: XCTestCase {
                 let xcodeProject = try project.generateXcodeProject()
                 let xcscheme = try unwrap(xcodeProject.sharedData?.schemes.first)
                 try expect(xcscheme.testAction?.codeCoverageEnabled) == true
-                try expect(xcscheme.testAction?.codeCoverageTargets.count) == 2
+                try expect(xcscheme.testAction?.codeCoverageTargets.count) == 3
                 let buildableReference = xcscheme.testAction?.codeCoverageTargets.first
                 try expect(buildableReference?.blueprintName) == "ExternalTarget"
                 try expect(buildableReference?.referencedContainer) == "container:\(externalProject.string)"
