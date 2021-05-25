@@ -808,17 +808,29 @@ A multiline script can be written using the various YAML multiline methods, for 
 ### Test Action
 
 - [ ] **gatherCoverageData**: **Bool** - a boolean that indicates if this scheme should gather coverage data. This defaults to false
-- [ ] **coverageTargets**: **[String]** - a list of targets to gather code coverage. Each entry can either be a simple string, or a string using [Project Reference](#project-reference)
+- [ ] **coverageTargets**: **[[Target Reference](#target-reference)]** - a list of targets to gather code coverage. Each entry can also either be a simple string, a string using [Project Reference](#project-reference) or [Target Reference](#target-reference)
 - [ ] **targets**: **[[Test Target](#test-target)]** - a list of targets to test. Each entry can either be a simple string, or a [Test Target](#test-target)
 - [ ] **customLLDBInit**: **String** - the absolute path to the custom `.lldbinit` file
 
 #### Test Target
-- [x] **name**: **String** - The name of the target
+A target can be one of a 2 types:
+
+- **name**: **String** - The name of the target. If you want to specify local swift package, please use `target:`.
+- **target**: **[Target Reference](#target-reference)** - The information of the target. You can specify more detailed information than `name:`.
+
+#### Other Parameters
+
 - [ ] **parallelizable**: **Bool** - Whether to run tests in parallel. Defaults to false
 - [ ] **randomExecutionOrder**: **Bool** - Whether to run tests in a random order. Defaults to false
 - [ ] **skipped**: **Bool** - Whether to skip all of the test target tests. Defaults to false
 - [ ] **skippedTests**: **[String]** - List of tests in the test target to skip. Defaults to empty
 - [ ] **selectedTests**: **[String]** - List of tests in the test target to whitelist and select. Defaults to empty. This will override `skippedTests` if provided
+
+#### Target Reference
+A  Target Reference can be one of a 3 types:
+- `package: {local-swift-package-name}/{target-name}`: Name of local swift package and its target.
+- `local: {target-name}`:  Name of local target.
+- `project: {project-reference-name}/{target-name}`:  Name of local swift package and its target.
 
 ### Archive Action
 
@@ -879,12 +891,18 @@ schemes:
       coverageTargets:
         - MyTarget1
         - ExternalTarget/OtherTarget1
+        - target: 
+           package: LocalPackage/TestTarget
       targets: 
         - Tester1 
         - name: Tester2
           parallelizable: true
           randomExecutionOrder: true
           skippedTests: [Test/testExample()]
+        - target: 
+           package: APIClient/APIClientTests
+          parallelizable: true
+          randomExecutionOrder: true
       environmentVariables:
         - variable: TEST_ENV_VAR
           value: VALUE
