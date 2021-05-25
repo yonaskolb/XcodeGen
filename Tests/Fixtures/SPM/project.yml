@@ -17,6 +17,7 @@ targets:
       testTargets:
         - target:
             package: XcodeGen/XcodeGenKitTests
+        - Tests
     dependencies:
       - package: Codability
         weak: true
