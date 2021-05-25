@@ -452,11 +452,22 @@ extension Scheme.Test: JSONObjectConvertible {
     public init(jsonDictionary: JSONDictionary) throws {
         config = jsonDictionary.json(atKeyPath: "config")
         gatherCoverageData = jsonDictionary.json(atKeyPath: "gatherCoverageData") ?? Scheme.Test.gatherCoverageDataDefault
-        if let coverageTargets: [TargetReference] = jsonDictionary.json(atKeyPath: "coverageTargets") {
-            self.coverageTargets = coverageTargets
+
+        if let coverages = jsonDictionary["coverageTargets"] as? [Any] {
+            coverageTargets = try coverages.compactMap { target in
+                if let string = target as? String {
+                    return try TargetReference(string)
+                } else if let dictionary = target as? JSONDictionary,
+                          let target: TargetReference = try? .init(jsonDictionary: dictionary) {
+                    return target
+                } else {
+                    return nil
+                }
+            }
         } else {
-            self.coverageTargets = (try? jsonDictionary.json(atKeyPath: "coverageTargets").map { try TargetReference($0) }) ?? []
+            coverageTargets = []
         }
+        
         disableMainThreadChecker = jsonDictionary.json(atKeyPath: "disableMainThreadChecker") ?? Scheme.Test.disableMainThreadCheckerDefault
         commandLineArguments = jsonDictionary.json(atKeyPath: "commandLineArguments") ?? [:]
         if let targets = jsonDictionary["targets"] as? [Any] {
