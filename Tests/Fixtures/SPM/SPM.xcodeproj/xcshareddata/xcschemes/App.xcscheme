@@ -30,6 +30,16 @@
       onlyGenerateCoverageForSpecifiedTargets = "NO"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "XcodeGenKitTests"
+               BuildableName = "XcodeGenKitTests"
+               BlueprintName = "XcodeGenKitTests"
+               ReferencedContainer = "container:../../..">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
