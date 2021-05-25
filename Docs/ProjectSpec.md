@@ -891,8 +891,7 @@ schemes:
       coverageTargets:
         - MyTarget1
         - ExternalTarget/OtherTarget1
-        - target: 
-           package: LocalPackage/TestTarget
+        - package: LocalPackage/TestTarget
       targets: 
         - Tester1 
         - name: Tester2
