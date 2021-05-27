@@ -3,7 +3,7 @@
 ## Next Version
 
 #### Added
-- Added ability to set executable to an external application by providing a `filePath` in the Run Action
+- Added ability to set executable to an external application by providing a `filePath` in the Run Action [#1085](https://github.com/yonaskolb/XcodeGen/pull/1085) @platysma
 
 ## 2.23.1
 
