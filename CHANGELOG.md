@@ -2,6 +2,9 @@
 
 ## Next Version
 
+#### Added
+- Added ability to set executable to an external application by providing a `filePath` in the Run Action
+
 ## 2.23.1
 
 ### Changed
