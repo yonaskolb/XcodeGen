@@ -458,7 +458,7 @@ class SchemeGeneratorTests: XCTestCase {
                 let scheme = Scheme(
                     name: "TestScheme",
                     build: Scheme.Build(targets: [appTarget]),
-                    run: Scheme.Run(config: "Debug", filePath: "any/path", macroExpansion: "MyApp")
+                    run: Scheme.Run(config: "Debug", filePath: "/any/path", macroExpansion: "MyApp")
                 )
                 
                 let project = Project(
@@ -468,7 +468,8 @@ class SchemeGeneratorTests: XCTestCase {
                 )
                 let xcodeProject = try project.generateXcodeProject()
                 let xcscheme = try unwrap(xcodeProject.sharedData?.schemes.first)
-                try expect(xcscheme.launchAction?.pathRunnable?.filePath) == "any/path"
+                try expect(xcscheme.launchAction?.pathRunnable?.filePath) == "/any/path"
+                try expect(xcscheme.launchAction?.runnable?.buildableReference).to.beNil()
             }
         }
     }
