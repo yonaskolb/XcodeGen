@@ -167,7 +167,9 @@ public class SchemeGenerator {
         if let executable = scheme.run?.executable {
             schemeTarget = project.getTarget(executable)
         } else if let filePath = scheme.run?.filePath {
-            // Only use pathRunnable if no executable is provided.
+            guard Path(filePath).isAbsolute else {
+                throw SchemeGenerationError.pathNotAbsolute(filePath)
+            }
             pathRunnable = XCScheme.PathRunnable(filePath: filePath)
         } else {
             guard let firstTarget = scheme.build.targets.first else {
@@ -365,6 +367,7 @@ enum SchemeGenerationError: Error, CustomStringConvertible {
     case missingTarget(TargetReference, projectPath: String)
     case missingProject(String)
     case missingBuildTargets(String)
+    case pathNotAbsolute(String)
 
     var description: String {
         switch self {
@@ -374,6 +377,8 @@ enum SchemeGenerationError: Error, CustomStringConvertible {
             return "Unable to find project reference named \"\(project)\" in project.yml"
         case .missingBuildTargets(let name):
             return "Unable to find at least one build target in scheme \"\(name)\""
+        case .pathNotAbsolute(let path):
+            return "Provided filePath \"\(path)\" needs to be an absolute path"
         }
     }
 }
