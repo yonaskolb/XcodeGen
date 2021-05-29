@@ -803,7 +803,7 @@ A multiline script can be written using the various YAML multiline methods, for 
 
 ### Run Action
 - [ ] **executable**: **String** - the name of the target to launch as an executable. Defaults to the first runnable build target in the scheme, or the first build target if a runnable build target is not found
-- [ ] **filePath**: **String** - the absolute path to an external program to launch as an executable.
+- [ ] **filePath**: **String** - the absolute path to an external program to launch as an executable. This value is applied if `executable` is not set
 - [ ] **customLLDBInit**: **String** - the absolute path to the custom `.lldbinit` file
 
 ### Test Action
