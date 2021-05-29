@@ -118,6 +118,7 @@ public struct Scheme: Equatable {
         public var debugEnabled: Bool
         public var simulateLocation: SimulateLocation?
         public var executable: String?
+        public var filePath: String?
         public var storeKitConfiguration: String?
         public var customLLDBInit: String?
         public var macroExpansion: String?
@@ -125,6 +126,7 @@ public struct Scheme: Equatable {
         public init(
             config: String,
             executable: String? = nil,
+            filePath: String? = nil,
             commandLineArguments: [String: Bool] = [:],
             preActions: [ExecutionAction] = [],
             postActions: [ExecutionAction] = [],
@@ -157,6 +159,7 @@ public struct Scheme: Equatable {
             self.storeKitConfiguration = storeKitConfiguration
             self.customLLDBInit = customLLDBInit
             self.macroExpansion = macroExpansion
+            self.filePath = filePath
         }
     }
 
@@ -389,6 +392,7 @@ extension Scheme.Run: JSONObjectConvertible {
         simulateLocation = jsonDictionary.json(atKeyPath: "simulateLocation")
         storeKitConfiguration = jsonDictionary.json(atKeyPath: "storeKitConfiguration")
         executable = jsonDictionary.json(atKeyPath: "executable")
+        filePath = jsonDictionary.json(atKeyPath: "filePath")
 
         // launchAutomaticallySubstyle is defined as a String in XcodeProj but its value is often
         // an integer. Parse both to be nice.
@@ -419,6 +423,7 @@ extension Scheme.Run: JSONEncodable {
             "askForAppToLaunch": askForAppToLaunch,
             "launchAutomaticallySubstyle": launchAutomaticallySubstyle,
             "executable": executable,
+            "filePath": filePath,
             "macroExpansion": macroExpansion
         ]
 

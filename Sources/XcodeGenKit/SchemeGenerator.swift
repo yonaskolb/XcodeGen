@@ -161,10 +161,16 @@ public class SchemeGenerator {
             return XCScheme.ExecutionAction(scriptText: action.script, title: action.name, environmentBuildable: environmentBuildable)
         }
 
-        let schemeTarget: Target?
-
-        if let targetName = scheme.run?.executable {
-            schemeTarget = project.getTarget(targetName)
+        var schemeTarget: Target? = nil
+        var pathRunnable: XCScheme.PathRunnable? = nil
+        
+        if let executable = scheme.run?.executable {
+            schemeTarget = project.getTarget(executable)
+        } else if let filePath = scheme.run?.filePath {
+            guard Path(filePath).isAbsolute else {
+                throw SchemeGenerationError.pathNotAbsolute(filePath)
+            }
+            pathRunnable = XCScheme.PathRunnable(filePath: filePath)
         } else {
             guard let firstTarget = scheme.build.targets.first else {
                 throw SchemeGenerationError.missingBuildTargets(scheme.name)
@@ -261,10 +267,11 @@ public class SchemeGenerator {
             buildConfiguration: scheme.run?.config ?? defaultDebugConfig.name,
             preActions: scheme.run?.preActions.map(getExecutionAction) ?? [],
             postActions: scheme.run?.postActions.map(getExecutionAction) ?? [],
-            macroExpansion: macroExpansion,
+            macroExpansion: scheme.run?.filePath == nil ? macroExpansion : nil,
             selectedDebuggerIdentifier: selectedDebuggerIdentifier(for: schemeTarget, run: scheme.run),
             selectedLauncherIdentifier: selectedLauncherIdentifier(for: schemeTarget, run: scheme.run),
             askForAppToLaunch: scheme.run?.askForAppToLaunch,
+            pathRunnable: pathRunnable,
             allowLocationSimulation: allowLocationSimulation,
             locationScenarioReference: locationScenarioReference,
             disableMainThreadChecker: scheme.run?.disableMainThreadChecker ?? Scheme.Run.disableMainThreadCheckerDefault,
@@ -360,6 +367,7 @@ enum SchemeGenerationError: Error, CustomStringConvertible {
     case missingTarget(TargetReference, projectPath: String)
     case missingProject(String)
     case missingBuildTargets(String)
+    case pathNotAbsolute(String)
 
     var description: String {
         switch self {
@@ -369,6 +377,8 @@ enum SchemeGenerationError: Error, CustomStringConvertible {
             return "Unable to find project reference named \"\(project)\" in project.yml"
         case .missingBuildTargets(let name):
             return "Unable to find at least one build target in scheme \"\(name)\""
+        case .pathNotAbsolute(let path):
+            return "Provided filePath \"\(path)\" needs to be an absolute path"
         }
     }
 }

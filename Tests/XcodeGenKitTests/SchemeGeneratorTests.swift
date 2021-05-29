@@ -445,6 +445,32 @@ class SchemeGeneratorTests: XCTestCase {
                 let xcscheme = try unwrap(xcodeProject.sharedData?.schemes.first)
                 try expect(xcscheme.launchAction?.macroExpansion?.buildableName) == "MyApp.app"
             }
+            
+            $0.it("generates scheme with runnable path instead of executable") {
+                let app = Target(
+                    name: "MyApp",
+                    type: .application,
+                    platform: .macOS
+                )
+                
+                let appTarget = Scheme.BuildTarget(target: .local(app.name), buildTypes: [.running])
+                
+                let scheme = Scheme(
+                    name: "TestScheme",
+                    build: Scheme.Build(targets: [appTarget]),
+                    run: Scheme.Run(config: "Debug", filePath: "/any/path", macroExpansion: "MyApp")
+                )
+                
+                let project = Project(
+                    name: "test",
+                    targets: [app],
+                    schemes: [scheme]
+                )
+                let xcodeProject = try project.generateXcodeProject()
+                let xcscheme = try unwrap(xcodeProject.sharedData?.schemes.first)
+                try expect(xcscheme.launchAction?.pathRunnable?.filePath) == "/any/path"
+                try expect(xcscheme.launchAction?.runnable?.buildableReference).to.beNil()
+            }
         }
     }
     
