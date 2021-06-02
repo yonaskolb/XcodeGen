@@ -301,7 +301,12 @@ extension Target: NamedJSONDictionaryConvertible {
         if jsonDictionary["dependencies"] == nil {
             dependencies = []
         } else {
-            dependencies = try jsonDictionary.json(atKeyPath: "dependencies", invalidItemBehaviour: .fail)
+            let dependencies: [Dependency] = try jsonDictionary.json(atKeyPath: "dependencies", invalidItemBehaviour: .fail)
+            self.dependencies = dependencies.filter { [platform] dependency -> Bool in
+                // If unspecified, all platforms are supported
+                guard let platforms = dependency.conditionalPlatforms else { return true }
+                return platforms.contains(platform)
+            }
         }
 
         if jsonDictionary["info"] != nil {

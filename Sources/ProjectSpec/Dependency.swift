@@ -16,6 +16,7 @@ public struct Dependency: Equatable {
     public var implicit: Bool = implicitDefault
     public var weakLink: Bool = weakLinkDefault
     public var platform: Platform = platformDefault
+    public var conditionalPlatforms: Set<ProjectSpec.Platform>?
 
     public init(
         type: DependencyType,
@@ -25,7 +26,8 @@ public struct Dependency: Equatable {
         link: Bool? = nil,
         implicit: Bool = implicitDefault,
         weakLink: Bool = weakLinkDefault,
-        platform: Platform = platformDefault
+        platform: Platform = platformDefault,
+        conditionalPlatforms: Set<ProjectSpec.Platform>? = nil
     ) {
         self.type = type
         self.reference = reference
@@ -35,6 +37,7 @@ public struct Dependency: Equatable {
         self.implicit = implicit
         self.weakLink = weakLink
         self.platform = platform
+        self.conditionalPlatforms = conditionalPlatforms
     }
     
     public enum Platform: String, Equatable {
@@ -128,6 +131,10 @@ extension Dependency: JSONObjectConvertible {
         } else {
             self.platform = .all
         }
+
+        if let conditionalPlatforms: [ProjectSpec.Platform] = jsonDictionary.json(atKeyPath: "conditionalPlatforms") {
+            self.conditionalPlatforms = Set(conditionalPlatforms)
+        }
     }
 }
 
@@ -137,6 +144,7 @@ extension Dependency: JSONEncodable {
             "embed": embed,
             "codeSign": codeSign,
             "link": link,
+            "conditionalPlatforms": conditionalPlatforms.map(Array.init)?.map(\.rawValue)
         ]
 
         if removeHeaders != Dependency.removeHeadersDefault {
