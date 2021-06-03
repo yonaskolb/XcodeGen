@@ -5,6 +5,7 @@
 ### Added
 
 - Added support for DocC Catalogs [#1091](https://github.com/yonaskolb/XcodeGen/pull/1091) @brevansio
+- Add support for conditionally linking dependencies for specific platforms [#1087](https://github.com/yonaskolb/XcodeGen/pull/1087) @daltonclaybrook
 
 ## 2.23.1
 
