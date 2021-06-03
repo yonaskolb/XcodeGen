@@ -70,6 +70,7 @@
 		47D1F439B8E6D287B3F3E8D1 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = 6A58A16491CDDF968B0D56DE /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		47FC57B04A3AD83359F433EA /* StaticLibrary_ObjC.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5A2B916A11DCC2565241359F /* StaticLibrary_ObjC.h */; };
 		49A4B8937BB5520B36EA33F0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 814D72C2B921F60B759C2D4B /* Main.storyboard */; };
+		4C1504A05321046B3ED7A839 /* Framework2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB055761199DF36DB0C629A6 /* Framework2.framework */; };
 		4CB673A7C0C11E04F8544BDB /* Contacts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FDB2B6A77D39CD5602F2125F /* Contacts.framework */; };
 		4F6481557E2BEF8D749C37E3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 187E665975BB5611AF0F27E1 /* main.m */; };
 		52AD3276E068EB3396A292BB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8A016580A3B8F72B820BFBF /* Assets.xcassets */; };
@@ -119,6 +120,7 @@
 		A1588BF3BFFE1DF7409CBA10 /* Framework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A9274BE42A03DC5DA1FAD04 /* Framework.framework */; };
 		A1AEAAB53EAEDA1C307871FA /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB178D03E75929F3F5B10C56 /* Result.framework */; };
 		A59B3F08914812573AFF6C2D /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FD4A16C7B8FEB7F97F3CBE3F /* libz.dylib */; };
+		A7438C77A05D83E7016CF044 /* Framework2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0DC40025AB59B688E758829 /* Framework2.framework */; };
 		A7D1A9942302569A9515696A /* Result.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D296BB7355994040E197A1EE /* Result.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A9548E5DCFE92236494164DF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE1F06D99242F4223D081F0D /* LaunchScreen.storyboard */; };
 		AFF19412E9B35635D3AF48CB /* XPC_Service.m in Sources */ = {isa = PBXBuildFile; fileRef = 148B7C933698BCC4F1DBA979 /* XPC_Service.m */; };
@@ -209,6 +211,13 @@
 			remoteGlobalIDString = 0867B0DACEF28C11442DE8F7;
 			remoteInfo = App_iOS;
 		};
+		45907115465077029040BF29 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0FBAE303E3CFC2ABAC876A77 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 8B9A14DC280CCE013CC86440;
+			remoteInfo = Framework2_tvOS;
+		};
 		469D922BE967C6D52ED84552 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0FBAE303E3CFC2ABAC876A77 /* Project object */;
@@ -229,6 +238,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 13E8C5AB873CEE21E18E552F;
 			remoteInfo = StaticLibrary_ObjC_iOS;
+		};
+		59BFAC272F73B46E97B74426 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0FBAE303E3CFC2ABAC876A77 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6ED01BC471A8C3642258E178;
+			remoteInfo = Framework2_watchOS;
 		};
 		610412261F48A0A36C32FC5C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -735,6 +751,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4C1504A05321046B3ED7A839 /* Framework2.framework in Frameworks */,
 				A1AEAAB53EAEDA1C307871FA /* Result.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -743,6 +760,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A7438C77A05D83E7016CF044 /* Framework2.framework in Frameworks */,
 				9DF5931DAD58C35B830A0A75 /* Result.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1563,6 +1581,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				D6C733BEB62EAA62CCC68556 /* PBXTargetDependency */,
 				CE96B0951433713033A03DCD /* PBXTargetDependency */,
 			);
 			name = Framework_tvOS;
@@ -1652,6 +1671,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				0C99705018337CE91AA34CBA /* PBXTargetDependency */,
 				35DF16CA4A1F88140CF69620 /* PBXTargetDependency */,
 			);
 			name = Framework_watchOS;
@@ -2569,6 +2589,11 @@
 			target = 1C26A6A0BC446191F311D470 /* iMessageExtension */;
 			targetProxy = C8FD369800D87311EC532712 /* PBXContainerItemProxy */;
 		};
+		0C99705018337CE91AA34CBA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6ED01BC471A8C3642258E178 /* Framework2_watchOS */;
+			targetProxy = 59BFAC272F73B46E97B74426 /* PBXContainerItemProxy */;
+		};
 		0D33D01C71E8002A07F02122 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 208179651927D1138D19B5AD /* App_watchOS */;
@@ -2684,6 +2709,11 @@
 			isa = PBXTargetDependency;
 			target = 0867B0DACEF28C11442DE8F7 /* App_iOS */;
 			targetProxy = 3A81C6D6875469889D53A2C5 /* PBXContainerItemProxy */;
+		};
+		D6C733BEB62EAA62CCC68556 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 8B9A14DC280CCE013CC86440 /* Framework2_tvOS */;
+			targetProxy = 45907115465077029040BF29 /* PBXContainerItemProxy */;
 		};
 		E84285243DE0BB361A708079 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;

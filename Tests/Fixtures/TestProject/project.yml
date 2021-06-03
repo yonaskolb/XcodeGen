@@ -243,6 +243,8 @@ targets:
     dependencies:
       - carthage: Result
       - target: StaticLibrary_ObjC_${platform}
+      - target: Framework2_${platform}
+        conditionalPlatforms: [tvOS, watchOS]
 
   Framework2:
     type: framework

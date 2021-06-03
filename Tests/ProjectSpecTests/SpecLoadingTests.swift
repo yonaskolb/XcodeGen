@@ -386,9 +386,11 @@ class SpecLoadingTests: XCTestCase {
                         "sdk": "Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework",
                         "root": "DEVELOPER_DIR",
                     ],
+                    ["target": "conditionalMatch", "conditionalPlatforms": ["iOS"]],
+                    ["target": "conditionalMiss", "conditionalPlatforms": ["watchOS"]],
                 ]
                 let target = try Target(name: "test", jsonDictionary: targetDictionary)
-                try expect(target.dependencies.count) == 7
+                try expect(target.dependencies.count) == 8
                 try expect(target.dependencies[0]) == Dependency(type: .target, reference: "name", embed: false, platform: .all)
                 try expect(target.dependencies[1]) == Dependency(type: .target, reference: "project/name", embed: false, platform: .macOS)
                 try expect(target.dependencies[2]) == Dependency(type: .carthage(findFrameworks: true, linkType: .dynamic), reference: "name", platform: .iOS)
@@ -396,6 +398,7 @@ class SpecLoadingTests: XCTestCase {
                 try expect(target.dependencies[4]) == Dependency(type: .framework, reference: "path", weakLink: true)
                 try expect(target.dependencies[5]) == Dependency(type: .sdk(root: nil), reference: "Contacts.framework")
                 try expect(target.dependencies[6]) == Dependency(type: .sdk(root: "DEVELOPER_DIR"), reference: "Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework")
+                try expect(target.dependencies[7]) == Dependency(type: .target, reference: "conditionalMatch", conditionalPlatforms: [.iOS])
             }
 
             $0.it("parses info plist") {
