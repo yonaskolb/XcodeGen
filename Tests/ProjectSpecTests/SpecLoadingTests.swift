@@ -376,9 +376,9 @@ class SpecLoadingTests: XCTestCase {
             $0.it("parses target dependencies") {
                 var targetDictionary = validTarget
                 targetDictionary["dependencies"] = [
-                    ["target": "name", "embed": false, "platform": "all"],
-                    ["target": "project/name", "embed": false, "platform": "macOS"],
-                    ["carthage": "name", "findFrameworks": true, "platform": "iOS"],
+                    ["target": "name", "embed": false, "platformFilter": "all"],
+                    ["target": "project/name", "embed": false, "platformFilter": "macOS"],
+                    ["carthage": "name", "findFrameworks": true, "platformFilter": "iOS"],
                     ["carthage": "name", "findFrameworks": true, "linkType": "static"],
                     ["framework": "path", "weak": true],
                     ["sdk": "Contacts.framework"],
@@ -391,9 +391,9 @@ class SpecLoadingTests: XCTestCase {
                 ]
                 let target = try Target(name: "test", jsonDictionary: targetDictionary)
                 try expect(target.dependencies.count) == 8
-                try expect(target.dependencies[0]) == Dependency(type: .target, reference: "name", embed: false, platform: .all)
-                try expect(target.dependencies[1]) == Dependency(type: .target, reference: "project/name", embed: false, platform: .macOS)
-                try expect(target.dependencies[2]) == Dependency(type: .carthage(findFrameworks: true, linkType: .dynamic), reference: "name", platform: .iOS)
+                try expect(target.dependencies[0]) == Dependency(type: .target, reference: "name", embed: false, platformFilter: .all)
+                try expect(target.dependencies[1]) == Dependency(type: .target, reference: "project/name", embed: false, platformFilter: .macOS)
+                try expect(target.dependencies[2]) == Dependency(type: .carthage(findFrameworks: true, linkType: .dynamic), reference: "name", platformFilter: .iOS)
                 try expect(target.dependencies[3]) == Dependency(type: .carthage(findFrameworks: true, linkType: .static), reference: "name")
                 try expect(target.dependencies[4]) == Dependency(type: .framework, reference: "path", weakLink: true)
                 try expect(target.dependencies[5]) == Dependency(type: .sdk(root: nil), reference: "Contacts.framework")

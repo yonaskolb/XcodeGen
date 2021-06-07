@@ -428,8 +428,8 @@ A dependency can be one of a 6 types:
 - [ ] **codeSign**: **Bool** - Whether the `codeSignOnCopy` setting is applied when embedding framework. Defaults to true
 - [ ] **removeHeaders**: **Bool** - Whether the `removeHeadersOnCopy` setting is applied when embedding the framework. Defaults to true
 - [ ] **weak**: **Bool** - Whether the `Weak` setting is applied when linking the framework. Defaults to false
-- [ ] **platform**: **String** - Add dependency to selected platforms. Available platforms are: **iOS**, **macOS** and **all**. Defaults is **all**
-- [ ] **conditionalPlatforms**: **[Platform](#platform)** - List of platforms this dependency should apply to. Defaults to all applicable platforms.
+- [ ] **platformFilter**: **String** - This field is specific to Mac Catalyst. It corresponds to the "Platforms" dropdown in the Frameworks & Libraries section of Target settings in Xcode. Available options are: **iOS**, **macOS** and **all**. Defaults is **all**
+- [ ] **conditionalPlatforms**: **[[Platform](#platform)]** - List of platforms this dependency should apply to. Defaults to all applicable platforms.
 
 **Implicit Framework options**:
 

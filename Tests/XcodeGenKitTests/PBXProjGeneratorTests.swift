@@ -354,9 +354,9 @@ class PBXProjGeneratorTests: XCTestCase {
                 let target1 = Target(name: "TestAll", type: .application, platform: .iOS, sources: ["Sources"])
                 let target2 = Target(name: "TestiOS", type: .application, platform: .iOS, sources: ["Sources"])
                 let target3 = Target(name: "TestmacOS", type: .application, platform: .iOS, sources: ["Sources"])
-                let dependency1 = Dependency(type: .target, reference: "TestAll", platform: .all)
-                let dependency2 = Dependency(type: .target, reference: "TestiOS", platform: .iOS)
-                let dependency3 = Dependency(type: .target, reference: "TestmacOS", platform: .macOS)
+                let dependency1 = Dependency(type: .target, reference: "TestAll", platformFilter: .all)
+                let dependency2 = Dependency(type: .target, reference: "TestiOS", platformFilter: .iOS)
+                let dependency3 = Dependency(type: .target, reference: "TestmacOS", platformFilter: .macOS)
                 let target = Target(name: "Test", type: .application, platform: .iOS, sources: ["Sources"], dependencies: [dependency1, dependency2, dependency3])
                 let project = Project(basePath: directoryPath, name: "Test", targets: [target, target1, target2, target3])
 
