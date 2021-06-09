@@ -1,0 +1,29 @@
+{
+  "products" : [
+    {
+      "displayPrice" : "0.00",
+      "familyShareable" : false,
+      "internalID" : "6D7919A3",
+      "localizations" : [
+        {
+          "description" : "",
+          "displayName" : "",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.xcodegen.0",
+      "referenceName" : null,
+      "type" : "Consumable"
+    }
+  ],
+  "settings" : {
+
+  },
+  "subscriptionGroups" : [
+
+  ],
+  "version" : {
+    "major" : 1,
+    "minor" : 0
+  }
+}

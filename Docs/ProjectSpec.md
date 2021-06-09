@@ -39,7 +39,7 @@ You can also use environment variables in your configuration file, by using `${S
 - [x] **name**:  **String** - Name of the generated project
 - [ ] **include**:  **[Include](#include)** - One or more paths to other specs
 - [ ] **options**: **[Options](#options)** - Various options to override default behaviour
-- [ ] **attributes**: **[String: Any]** - The PBXProject attributes. This is for advanced use. This defaults to ``{"LastUpgradeCheck": "XcodeVersion"}`` with `xcodeVersion` being set by [Options](#options)`.xcodeVersion`
+- [ ] **attributes**: **[String: Any]** - The PBXProject attributes. This is for advanced use. If no value is set for `LastUpgradeCheck`, it will be defaulted to ``{"LastUpgradeCheck": "XcodeVersion"}`` with `xcodeVersion` being set by [Options](#options)`.xcodeVersion`
 - [ ] **configs**: **[Configs](#configs)** - Project build configurations. Defaults to `Debug` and `Release` configs
 - [ ] **configFiles**: **[Config Files](#config-files)** - `.xcconfig` files per config
 - [ ] **settings**: **[Settings](#settings)** - Project specific settings. Default base and config type settings will be applied first before any settings defined here
@@ -122,12 +122,13 @@ Note that target names can also be changed by adding a `name` property to a targ
 - [ ] **groupOrdering**: **[[GroupOrdering]](#groupOrdering)** - An order of groups.
 - [ ] **transitivelyLinkDependencies**: **Bool** - If this is `true` then targets will link to the dependencies of their target dependencies. If a target should embed its dependencies, such as application and test bundles, it will embed these transitive dependencies as well. Some complex setups might want to set this to `false` and explicitly specify dependencies at every level. Targets can override this with [Target](#target).transitivelyLinkDependencies. Defaults to `false`.
 - [ ] **generateEmptyDirectories**: **Bool** - If this is `true` then empty directories will be added to project too else will be missed. Defaults to `false`.
-- [ ] **findCarthageFrameworks**: **Bool** - When this is set to `true`, all the invididual frameworks for Carthage dependencies will automatically be found. This property can be overriden individually for each carthage dependency - for more details see See **findFrameworks** in the [Dependency](#dependency) section. Defaults to `false`.
+- [ ] **findCarthageFrameworks**: **Bool** - When this is set to `true`, all the invididual frameworks for Carthage framework dependencies will automatically be found. This property can be overriden individually for each carthage dependency - for more details see See **findFrameworks** in the [Dependency](#dependency) section. Defaults to `false`.
 - [ ] **localPackagesGroup**: **String** - The group name that local packages are put into. This defaults to `Packages`
 - [ ] **fileTypes**: **[String: [FileType](#filetype)]** - A list of default file options for specific file extensions across the project. Values in [Sources](#sources) will overwrite these settings.
 - [ ] **preGenCommand**: **String** - A bash command to run before the project has been generated. If the project isn't generated due to no changes when using the cache then this won't run. This is useful for running things like generating resources files before the project is regenerated.
 - [ ] **postGenCommand**: **String** - A bash command to run after the project has been generated. If the project isn't generated due to no changes when using the cache then this won't run. This is useful for running things like `pod install` only if the project is actually regenerated.
 - [ ] **useBaseInternationalization**: **Bool** If this is `false` and your project does not include resources located in a **Base.lproj** directory then `Base` will not be included in the projects 'known regions'. The default value is `true`. 
+- [ ] **schemePathPrefix**: **String** - A path prefix for relative paths in schemes, such as StoreKitConfiguration. The default is `"../../"`, which is suitable for non-workspace projects. For use in workspaces, use `"../"`.
 
 ```yaml
 options:
@@ -231,7 +232,7 @@ Settings are merged in the following order: groups, base, configs.
 - [ ] **configFiles**: **[Config Files](#config-files)** - `.xcconfig` files per config
 - [ ] **settings**: **[Settings](#settings)** - Target specific build settings. Default platform and product type settings will be applied first before any custom settings defined here. Other context dependant settings will be set automatically as well:
 	- `INFOPLIST_FILE`: If it doesn't exist your sources will be searched for `Info.plist` files and the first one found will be used for this setting
-	- `FRAMEWORK_SEARCH_PATHS`: If carthage dependencies are used, the platform build path will be added to this setting
+	- `FRAMEWORK_SEARCH_PATHS`: If carthage framework dependencies are used, the platform build path will be added to this setting
 	- `OTHER_LDFLAGS`:  See `requiresObjCLinking` below
   - `TEST_TARGET_NAME`: for ui tests that target an application
   - `TEST_HOST`: for unit tests that target an application
@@ -249,7 +250,7 @@ Settings are merged in the following order: groups, base, configs.
 - [ ] **templates**: **[String]** - A list of [Target Templates](#target-template) referenced by name that will be merged with the target in order. Any instances of `${target_name}` within these templates will be replaced with the target name.
 - [ ] **templateAttributes**: **[String: String]** - A list of attributes where each instance of `${attributeName}` within the templates listed in `templates` will be replaced with the value specified.
 - [ ] **transitivelyLinkDependencies**: **Bool** - If this is not specified the value from the project set in [Options](#options)`.transitivelyLinkDependencies` will be used.
-- [ ] **directlyEmbedCarthageDependencies**: **Bool** - If this is `true` Carthage dependencies will be embedded using an `Embed Frameworks` build phase instead of the `copy-frameworks` script. Defaults to `true` for all targets except iOS/tvOS/watchOS Applications.
+- [ ] **directlyEmbedCarthageDependencies**: **Bool** - If this is `true` Carthage framework dependencies will be embedded using an `Embed Frameworks` build phase instead of the `copy-frameworks` script. Defaults to `true` for all targets except iOS/tvOS/watchOS Applications.
 - [ ] **requiresObjCLinking**: **Bool** - If this is `true` any targets that link to this target will have `-ObjC` added to their `OTHER_LDFLAGS`. This is required if a static library has any catagories or extensions on Objective-C code. See [this guide](https://pewpewthespells.com/blog/objc_linker_flags.html#objc) for more details. Defaults to `true` if `type` is `library.static`. If you are 100% sure you don't have catagories or extensions on Objective-C code (pure Swift with no use of Foundation/UIKit) you can set this to `false`, otherwise it's best to leave it alone.
 - [ ] **onlyCopyFilesOnInstall**: **Bool** – If this is `true`, the `Embed Frameworks` and `Embed App Extensions` (if available) build phases will have the "Copy only when installing" chekbox checked. Defaults to `false`.
 - [ ] **preBuildScripts**: **[[Build Script](#build-script)]** - Build scripts that run *before* any other build phases
@@ -414,8 +415,8 @@ targets:
 A dependency can be one of a 6 types:
 
 - `target: name` - links to another target. If you are using project references you can specify a target within another project by using `ProjectName/TargetName` for the name
-- `framework: path` - links to a framework
-- `carthage: name` - helper for linking to a Carthage framework
+- `framework: path` - links to a framework or XCFramework
+- `carthage: name` - helper for linking to a Carthage framework (not XCFramework)
 - `sdk: name` - links to a dependency with the SDK. This can either be a relative path within the sdk root or a single filename that references a framework (.framework) or lib (.tbd)
 - `package: name` - links to a Swift Package. The name must match the name of a package defined in the top level `packages`
 - `bundle: name` - adds the pre-built bundle for the supplied name to the copy resources build phase. This is useful when a dependency exists on a static library target that has an associated bundle target, both existing in a separate project. Only usable in target types which can copy resources.
@@ -427,6 +428,7 @@ A dependency can be one of a 6 types:
 - [ ] **codeSign**: **Bool** - Whether the `codeSignOnCopy` setting is applied when embedding framework. Defaults to true
 - [ ] **removeHeaders**: **Bool** - Whether the `removeHeadersOnCopy` setting is applied when embedding the framework. Defaults to true
 - [ ] **weak**: **Bool** - Whether the `Weak` setting is applied when linking the framework. Defaults to false
+- [ ] **platform**: **String** - Add dependency to selected platforms. Available platforms are: **iOS**, **macOS** and **all**. Defaults is **all**
 
 **Implicit Framework options**:
 
@@ -444,6 +446,9 @@ Carthage frameworks are expected to be in `CARTHAGE_BUILD_PATH/PLATFORM/FRAMEWOR
  - `CARTHAGE_BUILD_PATH` = `options.carthageBuildPath` or `Carthage/Build` by default
  - `PLATFORM` = the target's platform
  - `FRAMEWORK` = the specified name.
+
+ To link an XCFramework produced by Carthage (in `CARTHAGE_BUILD_PATH/FRAMEWORK.xcframework`), use a normal `framework:`
+ dependency. The helper logic provided by this dependency type is not necessary.
 
 All the individual frameworks of a Carthage dependency can be automatically found via `findFrameworks: true`. This overrides the value of [Options](#options).findCarthageFrameworks. Otherwise each one will have to be listed individually.
 Xcodegen uses `.version` files generated by Carthage in order for this framework lookup to work, so the Carthage dependencies will need to have already been built at the time XcodeGen is run.
@@ -564,6 +569,7 @@ Each script can contain:
 - [ ] **showEnvVars**: **Bool** - whether the environment variables accessible to the script show be printed to the build log. Defaults to yes
 - [ ] **runOnlyWhenInstalling**: **Bool** - whether the script is only run when installing (`runOnlyForDeploymentPostprocessing`). Defaults to no
 - [ ] **basedOnDependencyAnalysis**: **Bool** - whether to skip the script if inputs, context, or outputs haven't changed. Defaults to yes
+- [ ] **discoveredDependencyFile**: **String** - discovered dependency .d file. Defaults to none
 
 Either a **path** or **script** must be defined, the rest are optional.
 
@@ -585,6 +591,7 @@ targets:
           - $(DERIVED_FILE_DIR)/file2
         outputFileLists:
           - $(SRCROOT)/outputFiles.xcfilelist
+        discoveredDependencyFile: $(DERIVED_FILE_DIR)/target.d
     postCompileScripts:
       - script: swiftlint
         name: Swiftlint
@@ -605,6 +612,7 @@ targets:
 - [ ] **name**: **String** - The name of a build rule. Defaults to `Build Rule`
 - [ ] **outputFiles**: **[String]** - The list of output files
 - [ ] **outputFilesCompilerFlags**: **[String]** - The list of compiler flags to apply to the output files
+- [ ] **runOncePerArchitecture**: **Bool** - a boolean that indicates if this rule should run once per architecture. This defaults to true
 
 ```yaml
 targets:
@@ -619,6 +627,7 @@ targets:
         compilerSpec: com.apple.xcode.tools.swift.compiler
         outputFiles:
           - $(SRCROOT)/Generated.swift
+        runOncePerArchitecture: false
 ```
 
 ###  Target Scheme
@@ -637,6 +646,7 @@ This is a convenience used to automatically generate schemes for a target based 
 - [ ] **environmentVariables**: **[[Environment Variable](#environment-variable)]** or **[String:String]** - environment variables for Run, Test and Profile scheme actions. When passing a dictionary, every key-value entry maps to a corresponding variable that is enabled.
 - [ ] **preActions**: **[[Execution Action](#execution-action)]** - Scripts that are run *before* the build action
 - [ ] **postActions**: **[[Execution Action](#execution-action)]** - Scripts that are run *after* the build action
+- [ ] **storeKitConfiguration**: **String** - specify storekit configuration to use during run. See [Options](#options).
 
 For example, the spec below would create 3 schemes called:
 
@@ -746,6 +756,11 @@ Schemes allows for more control than the convenience [Target Scheme](#target-sch
   - `true`: Discover implicit dependencies of this scheme
   - `false`: Only build explicit dependencies of this scheme
 
+- [ ] **runPostActionsOnFailure**: **Bool** - Flag to determine if Xcode should run post scripts despite failure build. By default this is `false` if not set.
+- `true`: Run post scripts even if build is failed
+- `false`: Only run post scripts if build success
+
+
 ```yaml
 targets:
   MyTarget: all
@@ -771,8 +786,10 @@ The different actions share some properties:
 - [ ] **region**: **String** - `run` and `test` actions can define a language that is used for Application Region
 - [ ] **debugEnabled**: **Bool** - `run` and `test` actions can define a whether debugger should be used. This defaults to true.
 - [ ] **simulateLocation**: **[Simulate Location](#simulate-location)** - `run` action can define a simulated location
-- [ ] **askForAppToLaunch**: **Bool** - `run` action can define the executable set to ask to launch. This defaults to false.
+- [ ] **askForAppToLaunch**: **Bool** - `run` and `profile` actions can define the executable set to ask to launch. This defaults to false.
 - [ ] **launchAutomaticallySubstyle**: **String** - `run` action can define the launch automatically substyle ('2' for extensions).
+- [ ] **storeKitConfiguration**: **String** - `run` action can specify a storekit configuration. See [Options](#options).
+- [ ] **macroExpansion**: **String** - `run` action can define the macro expansion from other target. This defaults to nil.
 
 ### Execution Action
 
@@ -800,7 +817,8 @@ A multiline script can be written using the various YAML multiline methods, for 
 - [ ] **parallelizable**: **Bool** - Whether to run tests in parallel. Defaults to false
 - [ ] **randomExecutionOrder**: **Bool** - Whether to run tests in a random order. Defaults to false
 - [ ] **skipped**: **Bool** - Whether to skip all of the test target tests. Defaults to false
-- [ ] **skippedTests**: **[String]** - List of tests in the test target to skip. Defaults to empty.
+- [ ] **skippedTests**: **[String]** - List of tests in the test target to skip. Defaults to empty
+- [ ] **selectedTests**: **[String]** - List of tests in the test target to whitelist and select. Defaults to empty. This will override `skippedTests` if provided
 
 ### Archive Action
 
@@ -832,6 +850,8 @@ targets:
     fileGroups:
       - location.gpx
 ```
+
+Note that the path the gpx file will be prefixed according to the `schemePathPrefix` option in order to support both `.xcodeproj` and `.xcworkspace` setups. See [Options](#options).
 
 
 ### Environment Variable
@@ -927,6 +947,7 @@ Swift packages are defined at a project level, and then linked to individual tar
   - `minVersion: 1.0.0, maxVersion: 1.2.9`
   - `branch: master`
   - `revision: xxxxxx`
+- [ ] **github** : **String**- this is an optional helper you can use for github repos. Instead of specifying the full url in `url` you can just specify the github org and repo
   
 ### Local Package
 
@@ -937,13 +958,11 @@ packages:
   Yams:
     url: https://github.com/jpsim/Yams
     from: 2.0.0
+  Yams:
+    github: JohnSundell/Ink
+    from: 0.5.0
   RxClient:
     path: ../RxClient
-targets:
-  App:
-    dependencies:
-      - package: Yams
-      - package: RxClient
 ```
 
 ## Project Reference

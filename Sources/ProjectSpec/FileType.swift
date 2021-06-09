@@ -71,6 +71,7 @@ extension FileType {
         // resources
         "bundle": FileType(buildPhase: .resources),
         "xcassets": FileType(buildPhase: .resources),
+        "storekit": FileType(buildPhase: .resources),
 
         // sources
         "swift": FileType(buildPhase: .sources),
