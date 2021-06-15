@@ -2,6 +2,10 @@
 
 ## Next Version
 
+### Added
+
+- Added support for DocC Catalogs [#----](https://github.com/yonaskolb/XcodeGen/pull/----) @brevansio
+
 ## 2.23.1
 
 ### Changed
