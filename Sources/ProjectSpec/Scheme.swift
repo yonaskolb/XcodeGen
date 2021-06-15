@@ -1,5 +1,6 @@
 import Foundation
 import JSONUtilities
+import PathKit
 import XcodeProj
 
 public typealias BuildType = XCScheme.BuildAction.Entry.BuildFor
@@ -72,25 +73,29 @@ public struct Scheme: Equatable {
     public struct Build: Equatable {
         public static let parallelizeBuildDefault = true
         public static let buildImplicitDependenciesDefault = true
+        public static let runPostActionsOnFailureDefault = false
 
         public var targets: [BuildTarget]
         public var parallelizeBuild: Bool
         public var buildImplicitDependencies: Bool
         public var preActions: [ExecutionAction]
         public var postActions: [ExecutionAction]
+        public var runPostActionsOnFailure: Bool
 
         public init(
             targets: [BuildTarget],
             parallelizeBuild: Bool = parallelizeBuildDefault,
             buildImplicitDependencies: Bool = buildImplicitDependenciesDefault,
             preActions: [ExecutionAction] = [],
-            postActions: [ExecutionAction] = []
+            postActions: [ExecutionAction] = [],
+            runPostActionsOnFailure: Bool = false
         ) {
             self.targets = targets
             self.parallelizeBuild = parallelizeBuild
             self.buildImplicitDependencies = buildImplicitDependencies
             self.preActions = preActions
             self.postActions = postActions
+            self.runPostActionsOnFailure = runPostActionsOnFailure
         }
     }
 
@@ -113,7 +118,9 @@ public struct Scheme: Equatable {
         public var debugEnabled: Bool
         public var simulateLocation: SimulateLocation?
         public var executable: String?
+        public var storeKitConfiguration: String?
         public var customLLDBInit: String?
+        public var macroExpansion: String?
 
         public init(
             config: String,
@@ -130,7 +137,9 @@ public struct Scheme: Equatable {
             launchAutomaticallySubstyle: String? = nil,
             debugEnabled: Bool = debugEnabledDefault,
             simulateLocation: SimulateLocation? = nil,
-            customLLDBInit: String? = nil
+            storeKitConfiguration: String? = nil,
+            customLLDBInit: String? = nil,
+            macroExpansion: String? = nil
         ) {
             self.config = config
             self.commandLineArguments = commandLineArguments
@@ -145,7 +154,9 @@ public struct Scheme: Equatable {
             self.launchAutomaticallySubstyle = launchAutomaticallySubstyle
             self.debugEnabled = debugEnabled
             self.simulateLocation = simulateLocation
+            self.storeKitConfiguration = storeKitConfiguration
             self.customLLDBInit = customLLDBInit
+            self.macroExpansion = macroExpansion
         }
     }
 
@@ -178,19 +189,22 @@ public struct Scheme: Equatable {
             public var parallelizable: Bool
             public var skipped: Bool
             public var skippedTests: [String]
+            public var selectedTests: [String]
 
             public init(
                 targetReference: TargetReference,
                 randomExecutionOrder: Bool = randomExecutionOrderDefault,
                 parallelizable: Bool = parallelizableDefault,
                 skipped: Bool = false,
-                skippedTests: [String] = []
+                skippedTests: [String] = [],
+                selectedTests: [String] = []
             ) {
                 self.targetReference = targetReference
                 self.randomExecutionOrder = randomExecutionOrder
                 self.parallelizable = parallelizable
                 self.skipped = skipped
                 self.skippedTests = skippedTests
+                self.selectedTests = selectedTests
             }
 
             public init(stringLiteral value: String) {
@@ -200,6 +214,7 @@ public struct Scheme: Equatable {
                     parallelizable = false
                     skipped = false
                     skippedTests = []
+                    selectedTests = []
                 } catch {
                     fatalError(SpecParsingError.invalidTargetReference(value).description)
                 }
@@ -256,18 +271,22 @@ public struct Scheme: Equatable {
         public var preActions: [ExecutionAction]
         public var postActions: [ExecutionAction]
         public var environmentVariables: [XCScheme.EnvironmentVariable]
+        public var askForAppToLaunch: Bool?
+
         public init(
             config: String,
             commandLineArguments: [String: Bool] = [:],
             preActions: [ExecutionAction] = [],
             postActions: [ExecutionAction] = [],
-            environmentVariables: [XCScheme.EnvironmentVariable] = []
+            environmentVariables: [XCScheme.EnvironmentVariable] = [],
+            askForAppToLaunch: Bool? = nil
         ) {
             self.config = config
             self.commandLineArguments = commandLineArguments
             self.preActions = preActions
             self.postActions = postActions
             self.environmentVariables = environmentVariables
+            self.askForAppToLaunch = askForAppToLaunch
         }
 
         public var shouldUseLaunchSchemeArgsEnv: Bool {
@@ -368,6 +387,7 @@ extension Scheme.Run: JSONObjectConvertible {
         region = jsonDictionary.json(atKeyPath: "region")
         debugEnabled = jsonDictionary.json(atKeyPath: "debugEnabled") ?? Scheme.Run.debugEnabledDefault
         simulateLocation = jsonDictionary.json(atKeyPath: "simulateLocation")
+        storeKitConfiguration = jsonDictionary.json(atKeyPath: "storeKitConfiguration")
         executable = jsonDictionary.json(atKeyPath: "executable")
 
         // launchAutomaticallySubstyle is defined as a String in XcodeProj but its value is often
@@ -382,6 +402,7 @@ extension Scheme.Run: JSONObjectConvertible {
             askForAppToLaunch = askLaunch
         }
         customLLDBInit = jsonDictionary.json(atKeyPath: "customLLDBInit")
+        macroExpansion = jsonDictionary.json(atKeyPath: "macroExpansion")
     }
 }
 
@@ -398,6 +419,7 @@ extension Scheme.Run: JSONEncodable {
             "askForAppToLaunch": askForAppToLaunch,
             "launchAutomaticallySubstyle": launchAutomaticallySubstyle,
             "executable": executable,
+            "macroExpansion": macroExpansion
         ]
 
         if disableMainThreadChecker != Scheme.Run.disableMainThreadCheckerDefault {
@@ -414,6 +436,9 @@ extension Scheme.Run: JSONEncodable {
 
         if let simulateLocation = simulateLocation {
             dict["simulateLocation"] = simulateLocation.toJSONValue()
+        }
+        if let storeKitConfiguration = storeKitConfiguration {
+            dict["storeKitConfiguration"] = storeKitConfiguration
         }
         if let customLLDBInit = customLLDBInit {
             dict["customLLDBInit"] = customLLDBInit
@@ -495,6 +520,7 @@ extension Scheme.Test.TestTarget: JSONObjectConvertible {
         parallelizable = jsonDictionary.json(atKeyPath: "parallelizable") ?? Scheme.Test.TestTarget.parallelizableDefault
         skipped = jsonDictionary.json(atKeyPath: "skipped") ?? false
         skippedTests = jsonDictionary.json(atKeyPath: "skippedTests") ?? []
+        selectedTests = jsonDictionary.json(atKeyPath: "selectedTests") ?? []
     }
 }
 
@@ -531,6 +557,9 @@ extension Scheme.Profile: JSONObjectConvertible {
         preActions = jsonDictionary.json(atKeyPath: "preActions") ?? []
         postActions = jsonDictionary.json(atKeyPath: "postActions") ?? []
         environmentVariables = try XCScheme.EnvironmentVariable.parseAll(jsonDictionary: jsonDictionary)
+        if let askLaunch: Bool = jsonDictionary.json(atKeyPath: "askForAppToLaunch") {
+            askForAppToLaunch = askLaunch
+        }
     }
 }
 
@@ -542,6 +571,7 @@ extension Scheme.Profile: JSONEncodable {
             "postActions": postActions.map { $0.toJSONValue() },
             "environmentVariables": environmentVariables.map { $0.toJSONValue() },
             "config": config,
+            "askForAppToLaunch": askForAppToLaunch,
         ] as [String: Any?]
     }
 }
@@ -645,6 +675,7 @@ extension Scheme.Build: JSONObjectConvertible {
         postActions = try jsonDictionary.json(atKeyPath: "postActions")?.map(Scheme.ExecutionAction.init) ?? []
         parallelizeBuild = jsonDictionary.json(atKeyPath: "parallelizeBuild") ?? Scheme.Build.parallelizeBuildDefault
         buildImplicitDependencies = jsonDictionary.json(atKeyPath: "buildImplicitDependencies") ?? Scheme.Build.buildImplicitDependenciesDefault
+        runPostActionsOnFailure = jsonDictionary.json(atKeyPath: "runPostActionsOnFailure") ?? Scheme.Build.runPostActionsOnFailureDefault
     }
 }
 
@@ -663,6 +694,9 @@ extension Scheme.Build: JSONEncodable {
         }
         if buildImplicitDependencies != Scheme.Build.buildImplicitDependenciesDefault {
             dict["buildImplicitDependencies"] = buildImplicitDependencies
+        }
+        if runPostActionsOnFailure != Scheme.Build.runPostActionsOnFailureDefault {
+            dict["runPostActionsOnFailure"] = runPostActionsOnFailure
         }
 
         return dict
