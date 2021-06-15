@@ -4,7 +4,7 @@
 
 ### Added
 
-- Added support for DocC Catalogs [#----](https://github.com/yonaskolb/XcodeGen/pull/----) @brevansio
+- Added support for DocC Catalogs [#1091](https://github.com/yonaskolb/XcodeGen/pull/1091) @brevansio
 
 ## 2.23.1
 
