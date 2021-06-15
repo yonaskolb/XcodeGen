@@ -674,6 +674,7 @@
 		B198242976C3395E31FE000A /* MessagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesViewController.swift; sourceTree = "<group>"; };
 		B1C33BB070583BE3B0EC0E68 /* App_iOS.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = App_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B221F5A689AD7D3AD52F56B8 /* libStaticLibrary_ObjC.a */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = archive.ar; path = libStaticLibrary_ObjC.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		B5C943D39DD7812CAB94B614 /* Documentation.docc */ = {isa = PBXFileReference; path = Documentation.docc; sourceTree = "<group>"; };
 		B76E17CE3574081D5BF45B44 /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Result.framework; sourceTree = "<group>"; };
 		BA040F1F7D6CA08878323A55 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		BB178D03E75929F3F5B10C56 /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Result.framework; sourceTree = "<group>"; };
@@ -862,6 +863,7 @@
 				7F1A2F579A6F79C62DDA0571 /* AppDelegate.swift */,
 				3797E591F302ECC0AA2FC607 /* Assets.xcassets */,
 				9D4AB3FCF725428EFB56F542 /* Configuration.storekit */,
+				B5C943D39DD7812CAB94B614 /* Documentation.docc */,
 				C9DDE1B06BCC1CDE0ECF1589 /* Info.plist */,
 				AAA49985DFFE797EE8416887 /* inputList.xcfilelist */,
 				CE1F06D99242F4223D081F0D /* LaunchScreen.storyboard */,
