@@ -899,7 +899,7 @@ schemes:
           randomExecutionOrder: true
           skippedTests: [Test/testExample()]
         - target: 
-           package: APIClient/APIClientTests
+          package: APIClient/APIClientTests
           parallelizable: true
           randomExecutionOrder: true
       environmentVariables:
