@@ -15,9 +15,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "4D3F77DC9E058A3AFB87B3D6"
-               BuildableName = "EndpointSecurityExtension.systemextension"
-               BlueprintName = "EndpointSecurityExtension"
+               BlueprintIdentifier = "AD28397BCC984F769EE8A937"
+               BuildableName = "NetworkSystemExtension.systemextension"
+               BlueprintName = "NetworkSystemExtension"
                ReferencedContainer = "container:Project.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -34,9 +34,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "4D3F77DC9E058A3AFB87B3D6"
-            BuildableName = "EndpointSecurityExtension.systemextension"
-            BlueprintName = "EndpointSecurityExtension"
+            BlueprintIdentifier = "AD28397BCC984F769EE8A937"
+            BuildableName = "NetworkSystemExtension.systemextension"
+            BlueprintName = "NetworkSystemExtension"
             ReferencedContainer = "container:Project.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -57,9 +57,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "4D3F77DC9E058A3AFB87B3D6"
-            BuildableName = "EndpointSecurityExtension.systemextension"
-            BlueprintName = "EndpointSecurityExtension"
+            BlueprintIdentifier = "AD28397BCC984F769EE8A937"
+            BuildableName = "NetworkSystemExtension.systemextension"
+            BlueprintName = "NetworkSystemExtension"
             ReferencedContainer = "container:Project.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -76,9 +76,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "4D3F77DC9E058A3AFB87B3D6"
-            BuildableName = "EndpointSecurityExtension.systemextension"
-            BlueprintName = "EndpointSecurityExtension"
+            BlueprintIdentifier = "AD28397BCC984F769EE8A937"
+            BuildableName = "NetworkSystemExtension.systemextension"
+            BlueprintName = "NetworkSystemExtension"
             ReferencedContainer = "container:Project.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

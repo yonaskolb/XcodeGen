@@ -58,8 +58,8 @@ targets:
     dependencies:
       - target: Framework_macOS
       - target: XPC Service
-      - target: NetworkExtension
-      - target: EndpointSecurityExtension
+      - target: NetworkSystemExtension
+      - target: EndpointSecuritySystemExtension
       - target: DriverKitDriver
       - sdk: Contacts.framework
       - sdk: libc++.tbd
@@ -233,7 +233,7 @@ targets:
     dependencies:
       - sdk: DriverKit.framework
 
-  NetworkExtension:
+  NetworkSystemExtension:
     platform: macOS
     type: system-extension
     sources:
@@ -245,7 +245,7 @@ targets:
     dependencies:
       - sdk: NetworkExtension.framework
 
-  EndpointSecurityExtension:
+  EndpointSecuritySystemExtension:
     platform: macOS
     type: system-extension
     sources:

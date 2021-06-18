@@ -37,9 +37,6 @@
 		0F99AECCB4691803C791CDCE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2FC2A8A829CE71B1CF415FF7 /* Main.storyboard */; };
 		15129B8D9ED000BDA1FEEC27 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A2F16890ECF2EE3FED72AE /* AppDelegate.swift */; };
 		1551370B0ACAC632E15C853B /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF47010E7368583405AA50CB /* SwiftyJSON.framework */; };
-		15F99D61E51A608410C643D1 /* EndpointSecurityExtension.systemextension in Embed System Extensions */ = {isa = PBXBuildFile; fileRef = 2CCD23B70972A53E04B80413 /* EndpointSecurityExtension.systemextension */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		18F0850D7E1C531C121EEE63 /* libEndpointSecurity.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0BC75409252FF15F540FBB7B /* libEndpointSecurity.tbd */; };
-		1A9D0B6372CCE14D6237DFB1 /* NetworkExtension.systemextension in Embed System Extensions */ = {isa = PBXBuildFile; fileRef = EB761CFA9A4B8C187A8C461A /* NetworkExtension.systemextension */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		1BC891D89980D82738D963F3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 74FBDFA5CB063F6001AD8ACD /* Main.storyboard */; };
 		1E03FC7312293997599C6435 /* Empty.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 068EDF47F0B087F6A4052AC0 /* Empty.h */; };
 		1E2A4D61E96521FF7123D7B0 /* XPC Service.xpc in CopyFiles */ = {isa = PBXBuildFile; fileRef = 22237B8EBD9E6BE8EBC8735F /* XPC Service.xpc */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -54,10 +51,8 @@
 		265B6A05C0198FD2EB485173 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93C033648A37D95027845BD3 /* main.swift */; };
 		2730C6D0A35AED4ADD6EDF17 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0704B6CAFBB53E0EBB08F6B3 /* ViewController.swift */; settings = {COMPILER_FLAGS = "-Werror"; }; };
 		28A96EBC76D53817AABDA91C /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 8AF20308873AEEEC4D8C45D1 /* Settings.bundle */; };
-		295C8506DE957BF301CA0DD4 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6680EFE4E908CDBDCE405C8 /* main.swift */; };
 		2A5356FCC03EE312F1738C61 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B82F603D981398F38D762E /* AppDelegate.swift */; };
 		2A7EB1A9A365A7EC5D49AFCF /* LocalizedStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0C6BA0D12467A13EC012C728 /* LocalizedStoryboard.storyboard */; };
-		2B768E6D6822174DFED02E0E /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03CD22B8CD2E91BB97CC534E /* main.swift */; };
 		2B940E57041A72E6A39B6BF0 /* Interface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C872631362DDBAFCE71E5C66 /* Interface.storyboard */; };
 		2C7C03B45571A13D472D6B23 /* iMessageApp.app in Resources */ = {isa = PBXBuildFile; fileRef = 9A87A926D563773658FB87FE /* iMessageApp.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		2FAE950E8FF2E7C0F7FF1FE9 /* Framework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A9274BE42A03DC5DA1FAD04 /* Framework.framework */; };
@@ -77,7 +72,7 @@
 		47FC57B04A3AD83359F433EA /* StaticLibrary_ObjC.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5A2B916A11DCC2565241359F /* StaticLibrary_ObjC.h */; };
 		49A4B8937BB5520B36EA33F0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 814D72C2B921F60B759C2D4B /* Main.storyboard */; };
 		4CB673A7C0C11E04F8544BDB /* Contacts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FDB2B6A77D39CD5602F2125F /* Contacts.framework */; };
-		4E7BA71AE5D59BE4C93389B1 /* FilterDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16AA52945B70B1BF9E246350 /* FilterDataProvider.swift */; };
+		4DA7140FF84DBF39961F3409 /* NetworkSystemExtension.systemextension in Embed System Extensions */ = {isa = PBXBuildFile; fileRef = 2049B6DD2AFE85F9DC9F3EB3 /* NetworkSystemExtension.systemextension */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		4F6481557E2BEF8D749C37E3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 187E665975BB5611AF0F27E1 /* main.m */; };
 		5126CD91C2CB41C9B14B6232 /* DriverKitDriver.dext in Embed System Extensions */ = {isa = PBXBuildFile; fileRef = 83B5EC7EF81F7E4B6F426D4E /* DriverKitDriver.dext */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		52AD3276E068EB3396A292BB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8A016580A3B8F72B820BFBF /* Assets.xcassets */; };
@@ -88,6 +83,7 @@
 		58C18019E71E372F635A3FB4 /* MoreUnder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8718C7CD3BE86D9B1F5120 /* MoreUnder.swift */; };
 		5D10822B0E7C33DD6979F656 /* Standalone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F5BD97AF0F94A15A5B7DDB7 /* Standalone.swift */; };
 		5E0369B907E239D1E6884ECF /* TestFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E43116070AFEF5D8C3A5A957 /* TestFramework.framework */; };
+		61401517ECCEB2362582B5DA /* libEndpointSecurity.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0BC75409252FF15F540FBB7B /* libEndpointSecurity.tbd */; };
 		61516CAC12B2843FBC4572E6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 59DA55A04FA2366B5D0BEEFF /* Assets.xcassets */; };
 		61601545B6BE00CA74A4E38F /* SceneKitCatalog.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = C9E358FBE2B54D2B5C7FD609 /* SceneKitCatalog.scnassets */; };
 		6241507B4947B0B65429587C /* ExternalTarget.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F6ADE654A3459AFDA2CC0CD3 /* ExternalTarget.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -123,7 +119,6 @@
 		96B55C0F660235FE6BDD8869 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = 6A58A16491CDDF968B0D56DE /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		998CCB995347CBB8EDC95FB5 /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A5F527F2590C14956518174 /* FrameworkFile.swift */; };
 		9AB50B81C29243936BB419E4 /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A5F527F2590C14956518174 /* FrameworkFile.swift */; };
-		9C37F81484165DA8F75AF1F9 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B785B1161553A7DD6DA4255 /* NetworkExtension.framework */; };
 		9C92B7C89E5F0A10A34F5AA4 /* Framework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8A9274BE42A03DC5DA1FAD04 /* Framework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9D80BD5FAE6BE61CFD74CF1B /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A5F527F2590C14956518174 /* FrameworkFile.swift */; };
 		9DF5931DAD58C35B830A0A75 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B76E17CE3574081D5BF45B44 /* Result.framework */; };
@@ -131,6 +126,7 @@
 		A1AEAAB53EAEDA1C307871FA /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB178D03E75929F3F5B10C56 /* Result.framework */; };
 		A59B3F08914812573AFF6C2D /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FD4A16C7B8FEB7F97F3CBE3F /* libz.dylib */; };
 		A7D1A9942302569A9515696A /* Result.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D296BB7355994040E197A1EE /* Result.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A90C4C147AD175DB9F7B5114 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03CD22B8CD2E91BB97CC534E /* main.swift */; };
 		A949422315536EACDF8DD78A /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B785B1161553A7DD6DA4255 /* NetworkExtension.framework */; };
 		A9548E5DCFE92236494164DF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE1F06D99242F4223D081F0D /* LaunchScreen.storyboard */; };
 		AFF19412E9B35635D3AF48CB /* XPC_Service.m in Sources */ = {isa = PBXBuildFile; fileRef = 148B7C933698BCC4F1DBA979 /* XPC_Service.m */; };
@@ -152,10 +148,13 @@
 		C4378E3DAF5E0B2F7AB60E03 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFE6A6FAAFF701FE729293DE /* ViewController.swift */; };
 		C836F09B677937EFF69B1FCE /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C934C1F7A68CCD0AB6B38478 /* NotificationController.swift */; };
 		C88598A49087A212990F4E8B /* ResourceFolder in Resources */ = {isa = PBXBuildFile; fileRef = 6B1603BA83AA0C7B94E45168 /* ResourceFolder */; };
+		CAE18A2194B57C830A297F83 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6680EFE4E908CDBDCE405C8 /* main.swift */; };
 		CCA17097382757012B58C17C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1BC32A813B80A53962A1F365 /* Assets.xcassets */; };
 		D5458D67C3596943114C3205 /* Standalone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F5BD97AF0F94A15A5B7DDB7 /* Standalone.swift */; };
 		D61BEABD5B26B2DE67D0C2EC /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A5F527F2590C14956518174 /* FrameworkFile.swift */; };
 		D8ED40ED61AD912385CFF5F0 /* StaticLibrary_ObjC.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D0C79A8C750EC0DE748C463 /* StaticLibrary_ObjC.m */; };
+		DD5FBFC3C1B2DB3D0D1CF210 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B785B1161553A7DD6DA4255 /* NetworkExtension.framework */; };
+		E0B27599D701E6BB0223D0A8 /* FilterDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16AA52945B70B1BF9E246350 /* FilterDataProvider.swift */; };
 		E1836941C13CC7F13650C317 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3ED831531AA349CCC19B258B /* Assets.xcassets */; };
 		E34351AC0049221C167A60AC /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = 6A58A16491CDDF968B0D56DE /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E4B41CB5C796DD2C3C2E564C /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = 6A58A16491CDDF968B0D56DE /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -165,6 +164,7 @@
 		E8A135F768448632F8D77C8F /* StandaloneAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3571E41E19A5AB8AAAB04109 /* StandaloneAssets.xcassets */; };
 		EDB55692D392FD09C3FCFBF6 /* libStaticLibrary_ObjC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 86169DEEDEAF09AB89C8A31D /* libStaticLibrary_ObjC.a */; };
 		EDE8DD3CB36D65C300A53D1E /* swift-tagged.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E4841131C451A658AC8596C /* swift-tagged.framework */; };
+		F4D77E81B0539EA5F4F141A6 /* EndpointSecuritySystemExtension.systemextension in Embed System Extensions */ = {isa = PBXBuildFile; fileRef = E5E0A80CCE8F8DB662DCD2D0 /* EndpointSecuritySystemExtension.systemextension */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		F5D71267BB5A326BDD69D532 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E55F45EACB0F382722D61C8D /* Assets.xcassets */; };
 		F6537CE373C94809E6653758 /* Headers in Headers */ = {isa = PBXBuildFile; fileRef = 2E1E747C7BC434ADB80CC269 /* Headers */; settings = {ATTRIBUTES = (Public, ); }; };
 		F7423E8738EECF04795C7601 /* InterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3F6BCB5FEFB16F1BA368059 /* InterfaceController.swift */; };
@@ -229,13 +229,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 0867B0DACEF28C11442DE8F7;
 			remoteInfo = App_iOS;
-		};
-		4B658CD081FA1C54455D6926 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0FBAE303E3CFC2ABAC876A77 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 4D3F77DC9E058A3AFB87B3D6;
-			remoteInfo = EndpointSecurityExtension;
 		};
 		57F1BE74D4C4252529F97984 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -321,13 +314,6 @@
 			remoteGlobalIDString = 307AE3FA155FFD09B74AE351;
 			remoteInfo = "App_watchOS Extension";
 		};
-		B575884F343346DEE94B0049 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0FBAE303E3CFC2ABAC876A77 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = CC95AC6A7C041C2A3C8ABD9D;
-			remoteInfo = NetworkExtension;
-		};
 		C42BA4EA0239AF536F0F0993 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0FBAE303E3CFC2ABAC876A77 /* Project object */;
@@ -362,6 +348,20 @@
 			proxyType = 1;
 			remoteGlobalIDString = CE7D183D3752B5B35D2D8E6D;
 			remoteInfo = Framework2_iOS;
+		};
+		D4A7C57F6272F44F2E69A5DB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0FBAE303E3CFC2ABAC876A77 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = AD28397BCC984F769EE8A937;
+			remoteInfo = NetworkSystemExtension;
+		};
+		DD32A97CFD2016BF1477CF6C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0FBAE303E3CFC2ABAC876A77 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9F551F66949B55E8328EB995;
+			remoteInfo = EndpointSecuritySystemExtension;
 		};
 		DECF0B88B325A158E4E1D9AE /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -569,8 +569,8 @@
 			dstSubfolderSpec = 16;
 			files = (
 				5126CD91C2CB41C9B14B6232 /* DriverKitDriver.dext in Embed System Extensions */,
-				15F99D61E51A608410C643D1 /* EndpointSecurityExtension.systemextension in Embed System Extensions */,
-				1A9D0B6372CCE14D6237DFB1 /* NetworkExtension.systemextension in Embed System Extensions */,
+				F4D77E81B0539EA5F4F141A6 /* EndpointSecuritySystemExtension.systemextension in Embed System Extensions */,
+				4DA7140FF84DBF39961F3409 /* NetworkSystemExtension.systemextension in Embed System Extensions */,
 			);
 			name = "Embed System Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -651,13 +651,13 @@
 		1BC32A813B80A53962A1F365 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1D0C79A8C750EC0DE748C463 /* StaticLibrary_ObjC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StaticLibrary_ObjC.m; sourceTree = "<group>"; };
 		1FA5E208EC184E3030D2A21D /* Clip.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Clip.entitlements; sourceTree = "<group>"; };
+		2049B6DD2AFE85F9DC9F3EB3 /* NetworkSystemExtension.systemextension */ = {isa = PBXFileReference; explicitFileType = "wrapper.system-extension"; includeInIndex = 0; path = NetworkSystemExtension.systemextension; sourceTree = BUILT_PRODUCTS_DIR; };
 		22237B8EBD9E6BE8EBC8735F /* XPC Service.xpc */ = {isa = PBXFileReference; explicitFileType = "wrapper.xpc-service"; includeInIndex = 0; path = "XPC Service.xpc"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2233774B86539B1574D206B0 /* Framework2.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Framework2.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2385A62F6C6EE8D461EE19F2 /* ExternalTarget.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ExternalTarget.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		23A2F16890ECF2EE3FED72AE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		28360ECA4D727FAA58557A81 /* example.mp4 */ = {isa = PBXFileReference; path = example.mp4; sourceTree = "<group>"; };
 		2A5F527F2590C14956518174 /* FrameworkFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameworkFile.swift; sourceTree = "<group>"; };
-		2CCD23B70972A53E04B80413 /* EndpointSecurityExtension.systemextension */ = {isa = PBXFileReference; explicitFileType = "wrapper.system-extension"; includeInIndex = 0; path = EndpointSecurityExtension.systemextension; sourceTree = BUILT_PRODUCTS_DIR; };
 		2E1E747C7BC434ADB80CC269 /* Headers */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Headers; sourceTree = SOURCE_ROOT; };
 		2F430AABE04B7499B458D9DB /* SwiftFileInDotPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftFileInDotPath.swift; sourceTree = "<group>"; };
 		3096A0760969873D46F80A92 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -764,8 +764,8 @@
 		E42335D1200CB7B8B91E962F /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = Base; path = Base.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		E43116070AFEF5D8C3A5A957 /* TestFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TestFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E55F45EACB0F382722D61C8D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		E5E0A80CCE8F8DB662DCD2D0 /* EndpointSecuritySystemExtension.systemextension */ = {isa = PBXFileReference; explicitFileType = "wrapper.system-extension"; includeInIndex = 0; path = EndpointSecuritySystemExtension.systemextension; sourceTree = BUILT_PRODUCTS_DIR; };
 		E9672EF8FE1DDC8DE0705129 /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
-		EB761CFA9A4B8C187A8C461A /* NetworkExtension.systemextension */ = {isa = PBXFileReference; explicitFileType = "wrapper.system-extension"; includeInIndex = 0; path = NetworkExtension.systemextension; sourceTree = BUILT_PRODUCTS_DIR; };
 		EDCC70978B8AD49373DA0DE0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		EE1343F2238429D4DA9D830B /* File1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = File1.swift; path = Group/File1.swift; sourceTree = "<group>"; };
 		F0D48A913C087D049C8EDDD7 /* App.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = App.entitlements; sourceTree = "<group>"; };
@@ -821,6 +821,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		7448069D11FB1A170F943C90 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DD5FBFC3C1B2DB3D0D1CF210 /* NetworkExtension.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		9B861C58E640BD4AD391900C /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -862,14 +870,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		C766767DB86BA16D8B6CD0D3 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				18F0850D7E1C531C121EEE63 /* libEndpointSecurity.tbd in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		DFDFD9EDAD45D89D1080FC5D /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -880,19 +880,19 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E63B2ED6C095617F6F53C14A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				61401517ECCEB2362582B5DA /* libEndpointSecurity.tbd in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		EA2F63A326C56F6ECA7F5D7D /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				8267B75289E9D6C7B38FC426 /* DriverKit.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		F560E7C61A42A1E97082216E /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				9C37F81484165DA8F75AF1F9 /* NetworkExtension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1237,7 +1237,7 @@
 				A680BE9F68A255B0FB291AE6 /* App_watchOS.app */,
 				84317819C92F78425870E483 /* BundleX.bundle */,
 				83B5EC7EF81F7E4B6F426D4E /* DriverKitDriver.dext */,
-				2CCD23B70972A53E04B80413 /* EndpointSecurityExtension.systemextension */,
+				E5E0A80CCE8F8DB662DCD2D0 /* EndpointSecuritySystemExtension.systemextension */,
 				7D700FA699849D2F95216883 /* EntitledApp.app */,
 				2385A62F6C6EE8D461EE19F2 /* ExternalTarget.framework */,
 				8A9274BE42A03DC5DA1FAD04 /* Framework.framework */,
@@ -1256,7 +1256,7 @@
 				469B630D28015F0EDC456F6B /* libStaticLibrary_ObjC.a */,
 				46DD8F9AAC104BDB63793625 /* libStaticLibrary_ObjC.a */,
 				8CB86294FB939FE6E90932E1 /* libStaticLibrary_Swift.a */,
-				EB761CFA9A4B8C187A8C461A /* NetworkExtension.systemextension */,
+				2049B6DD2AFE85F9DC9F3EB3 /* NetworkSystemExtension.systemextension */,
 				E43116070AFEF5D8C3A5A957 /* TestFramework.framework */,
 				BECEA4A483ADEB8158F640B3 /* Tool */,
 				22237B8EBD9E6BE8EBC8735F /* XPC Service.xpc */,
@@ -1516,9 +1516,9 @@
 			);
 			dependencies = (
 				6BE35B7C058BE1B6F3B906C0 /* PBXTargetDependency */,
-				9315FBE7B0CD3FA3BB711660 /* PBXTargetDependency */,
+				1652DB87B43B72B5DE0601C4 /* PBXTargetDependency */,
 				F3930A0708A7EB1BDA25B31B /* PBXTargetDependency */,
-				F381094BFEE40A7AEB99AD25 /* PBXTargetDependency */,
+				F7532D3474E04037FF26E9BC /* PBXTargetDependency */,
 				7EFC0278E67CD35F8981993C /* PBXTargetDependency */,
 				B95DA92D1265C094E71B4A5D /* PBXTargetDependency */,
 			);
@@ -1703,22 +1703,6 @@
 			productName = DriverKitDriver;
 			productReference = 83B5EC7EF81F7E4B6F426D4E /* DriverKitDriver.dext */;
 			productType = "com.apple.product-type.driver-extension";
-		};
-		4D3F77DC9E058A3AFB87B3D6 /* EndpointSecurityExtension */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 872C3CC728CB7A4AD8AC423A /* Build configuration list for PBXNativeTarget "EndpointSecurityExtension" */;
-			buildPhases = (
-				C5B067DFC07A37294FB71F06 /* Sources */,
-				C766767DB86BA16D8B6CD0D3 /* Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = EndpointSecurityExtension;
-			productName = EndpointSecurityExtension;
-			productReference = 2CCD23B70972A53E04B80413 /* EndpointSecurityExtension.systemextension */;
-			productType = "com.apple.product-type.system-extension";
 		};
 		536ACF18E4603B59207D43CE /* Framework_tvOS */ = {
 			isa = PBXNativeTarget;
@@ -1927,6 +1911,38 @@
 			productReference = 469B630D28015F0EDC456F6B /* libStaticLibrary_ObjC.a */;
 			productType = "com.apple.product-type.library.static";
 		};
+		9F551F66949B55E8328EB995 /* EndpointSecuritySystemExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C4FB84AAA6F6974CEA51D359 /* Build configuration list for PBXNativeTarget "EndpointSecuritySystemExtension" */;
+			buildPhases = (
+				EAFB6030AE5D2E4D9ACA6ECC /* Sources */,
+				E63B2ED6C095617F6F53C14A /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = EndpointSecuritySystemExtension;
+			productName = EndpointSecuritySystemExtension;
+			productReference = E5E0A80CCE8F8DB662DCD2D0 /* EndpointSecuritySystemExtension.systemextension */;
+			productType = "com.apple.product-type.system-extension";
+		};
+		AD28397BCC984F769EE8A937 /* NetworkSystemExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 78DB808B74D58314279E7FD7 /* Build configuration list for PBXNativeTarget "NetworkSystemExtension" */;
+			buildPhases = (
+				DEB2782C650F563EB8C62B28 /* Sources */,
+				7448069D11FB1A170F943C90 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = NetworkSystemExtension;
+			productName = NetworkSystemExtension;
+			productReference = 2049B6DD2AFE85F9DC9F3EB3 /* NetworkSystemExtension.systemextension */;
+			productType = "com.apple.product-type.system-extension";
+		};
 		AE3F93DB94E7208F2F1D9A78 /* Framework_iOS */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 50DA67E9A951C40D9536609D /* Build configuration list for PBXNativeTarget "Framework_iOS" */;
@@ -1960,22 +1976,6 @@
 			productName = EntitledApp;
 			productReference = 7D700FA699849D2F95216883 /* EntitledApp.app */;
 			productType = "com.apple.product-type.application";
-		};
-		CC95AC6A7C041C2A3C8ABD9D /* NetworkExtension */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 79FBC01E739AB9719F39ADB1 /* Build configuration list for PBXNativeTarget "NetworkExtension" */;
-			buildPhases = (
-				8E4CCC025876ABA0237C7C39 /* Sources */,
-				F560E7C61A42A1E97082216E /* Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = NetworkExtension;
-			productName = NetworkExtension;
-			productReference = EB761CFA9A4B8C187A8C461A /* NetworkExtension.systemextension */;
-			productType = "com.apple.product-type.system-extension";
 		};
 		CE7D183D3752B5B35D2D8E6D /* Framework2_iOS */ = {
 			isa = PBXNativeTarget;
@@ -2169,7 +2169,7 @@
 				307AE3FA155FFD09B74AE351 /* App_watchOS Extension */,
 				DA40AB367B606CCE2FDD398D /* BundleX */,
 				428715FBC1D86458DA70CBDE /* DriverKitDriver */,
-				4D3F77DC9E058A3AFB87B3D6 /* EndpointSecurityExtension */,
+				9F551F66949B55E8328EB995 /* EndpointSecuritySystemExtension */,
 				B61ED4688789B071275E2B7A /* EntitledApp */,
 				E7454C10EA126A93537DD57E /* ExternalTarget */,
 				CE7D183D3752B5B35D2D8E6D /* Framework2_iOS */,
@@ -2182,7 +2182,7 @@
 				71B5187E710718C1A205D4DC /* Framework_watchOS */,
 				700328EE1570207608D6ADB3 /* IncludedLegacy */,
 				72C923899DE05F1281872160 /* Legacy */,
-				CC95AC6A7C041C2A3C8ABD9D /* NetworkExtension */,
+				AD28397BCC984F769EE8A937 /* NetworkSystemExtension */,
 				13E8C5AB873CEE21E18E552F /* StaticLibrary_ObjC_iOS */,
 				578C80E461E675508CED5DC3 /* StaticLibrary_ObjC_macOS */,
 				93542A75A613F00FDB5C9C63 /* StaticLibrary_ObjC_tvOS */,
@@ -2630,15 +2630,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		8E4CCC025876ABA0237C7C39 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				4E7BA71AE5D59BE4C93389B1 /* FilterDataProvider.swift in Sources */,
-				2B768E6D6822174DFED02E0E /* main.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		8FD76C583F8C166F974F4BE2 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2736,19 +2727,20 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		C5B067DFC07A37294FB71F06 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				295C8506DE957BF301CA0DD4 /* main.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		D1F422E9C4DD531AA88418C9 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				998CCB995347CBB8EDC95FB5 /* FrameworkFile.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DEB2782C650F563EB8C62B28 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E0B27599D701E6BB0223D0A8 /* FilterDataProvider.swift in Sources */,
+				A90C4C147AD175DB9F7B5114 /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2764,6 +2756,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				3318F40C855184C18197ED30 /* StaticLibrary_ObjC.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EAFB6030AE5D2E4D9ACA6ECC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CAE18A2194B57C830A297F83 /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2797,6 +2797,11 @@
 			isa = PBXTargetDependency;
 			target = D137C04B64B7052419A2DF4E /* App_Clip */;
 			targetProxy = 0B37F7A37D610FCFE187A6B7 /* PBXContainerItemProxy */;
+		};
+		1652DB87B43B72B5DE0601C4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9F551F66949B55E8328EB995 /* EndpointSecuritySystemExtension */;
+			targetProxy = DD32A97CFD2016BF1477CF6C /* PBXContainerItemProxy */;
 		};
 		2D1B4333107E10912508724E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -2858,11 +2863,6 @@
 			target = D137C04B64B7052419A2DF4E /* App_Clip */;
 			targetProxy = 25714659454527D9511C6093 /* PBXContainerItemProxy */;
 		};
-		9315FBE7B0CD3FA3BB711660 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 4D3F77DC9E058A3AFB87B3D6 /* EndpointSecurityExtension */;
-			targetProxy = 4B658CD081FA1C54455D6926 /* PBXContainerItemProxy */;
-		};
 		981D116D40DBA0407D0E0E94 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 834F55973F05AC8A18144DB0 /* iMessageApp */;
@@ -2919,15 +2919,15 @@
 			target = 13E8C5AB873CEE21E18E552F /* StaticLibrary_ObjC_iOS */;
 			targetProxy = 02FC8A8CFD5676EA402CCCBC /* PBXContainerItemProxy */;
 		};
-		F381094BFEE40A7AEB99AD25 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = CC95AC6A7C041C2A3C8ABD9D /* NetworkExtension */;
-			targetProxy = B575884F343346DEE94B0049 /* PBXContainerItemProxy */;
-		};
 		F3930A0708A7EB1BDA25B31B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 53A3B531E3947D8A8722745E /* Framework_macOS */;
 			targetProxy = 7F4EAACE4AD6CF285B7D3308 /* PBXContainerItemProxy */;
+		};
+		F7532D3474E04037FF26E9BC /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = AD28397BCC984F769EE8A937 /* NetworkSystemExtension */;
+			targetProxy = D4A7C57F6272F44F2E69A5DB /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -3218,6 +3218,21 @@
 			};
 			name = "Test Release";
 		};
+		06D6C7ED89937E7891E70B55 /* Production Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "EndpointSecurity Extension/EndpointSecurity.entitlements";
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "EndpointSecurity Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-macOS.EndpointSecurity";
+				SDKROOT = macosx;
+			};
+			name = "Production Release";
+		};
 		06E4383A2687EAD5877836CD /* Staging Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -3328,6 +3343,21 @@
 			};
 			name = "Test Debug";
 		};
+		0C18EEAE68FBEBCF066E0CD9 /* Test Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "Network Extension/NetworkExtension.entitlements";
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "Network Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-macOS.NetworkExtension";
+				SDKROOT = macosx;
+			};
+			name = "Test Release";
+		};
 		0C66F8A2D0CB0D802A327EB4 /* Test Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -3410,6 +3440,21 @@
 			};
 			name = "Test Debug";
 		};
+		11919FD24AA8A110C24C0FEF /* Test Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "EndpointSecurity Extension/EndpointSecurity.entitlements";
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "EndpointSecurity Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-macOS.EndpointSecurity";
+				SDKROOT = macosx;
+			};
+			name = "Test Release";
+		};
 		12BCDE0EFCEE621B881E424C /* Test Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -3479,21 +3524,6 @@
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = 4;
-			};
-			name = "Staging Debug";
-		};
-		1569DBCA002DD08CF4EF381D /* Staging Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = "EndpointSecurity Extension/EndpointSecurity.entitlements";
-				COMBINE_HIDPI_IMAGES = YES;
-				INFOPLIST_FILE = "EndpointSecurity Extension/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-macOS.EndpointSecurity";
-				SDKROOT = macosx;
 			};
 			name = "Staging Debug";
 		};
@@ -3759,21 +3789,6 @@
 				SDKROOT = appletvos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = 3;
-			};
-			name = "Production Release";
-		};
-		28D1D5B0CEE76BEF6826B4B0 /* Production Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = "EndpointSecurity Extension/EndpointSecurity.entitlements";
-				COMBINE_HIDPI_IMAGES = YES;
-				INFOPLIST_FILE = "EndpointSecurity Extension/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-macOS.EndpointSecurity";
-				SDKROOT = macosx;
 			};
 			name = "Production Release";
 		};
@@ -4194,6 +4209,21 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = "Staging Release";
+		};
+		46DAC1602BF6BEBCD177342F /* Staging Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "EndpointSecurity Extension/EndpointSecurity.entitlements";
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "EndpointSecurity Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-macOS.EndpointSecurity";
+				SDKROOT = macosx;
+			};
+			name = "Staging Debug";
 		};
 		49322BF02F4F345A1339EF7A /* Test Debug */ = {
 			isa = XCBuildConfiguration;
@@ -4654,21 +4684,6 @@
 			};
 			name = "Production Release";
 		};
-		586D17F02A73D814DD215765 /* Production Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = "EndpointSecurity Extension/EndpointSecurity.entitlements";
-				COMBINE_HIDPI_IMAGES = YES;
-				INFOPLIST_FILE = "EndpointSecurity Extension/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-macOS.EndpointSecurity";
-				SDKROOT = macosx;
-			};
-			name = "Production Debug";
-		};
 		5876AA17762F3248F4FD66E1 /* Staging Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -4949,21 +4964,6 @@
 			};
 			name = "Test Debug";
 		};
-		6D065888298113744E449950 /* Test Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = "Network Extension/NetworkExtension.entitlements";
-				COMBINE_HIDPI_IMAGES = YES;
-				INFOPLIST_FILE = "Network Extension/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-macOS.NetworkExtension";
-				SDKROOT = macosx;
-			};
-			name = "Test Release";
-		};
 		72EDF2E14A4CE916F4E2B01B /* Staging Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -4988,21 +4988,6 @@
 			};
 			name = "Staging Debug";
 		};
-		75E420B35E8F9A112155BFE3 /* Staging Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = "EndpointSecurity Extension/EndpointSecurity.entitlements";
-				COMBINE_HIDPI_IMAGES = YES;
-				INFOPLIST_FILE = "EndpointSecurity Extension/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-macOS.EndpointSecurity";
-				SDKROOT = macosx;
-			};
-			name = "Staging Release";
-		};
 		77B8B41EBA5D778EB3AF89DC /* Production Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -5026,6 +5011,21 @@
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = "Production Debug";
+		};
+		77C426E60C6FCB5A01EFC401 /* Staging Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "Network Extension/NetworkExtension.entitlements";
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "Network Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-macOS.NetworkExtension";
+				SDKROOT = macosx;
+			};
+			name = "Staging Release";
 		};
 		7931F229200F89B8CDC8A5E3 /* Test Debug */ = {
 			isa = XCBuildConfiguration;
@@ -5174,21 +5174,6 @@
 			};
 			name = "Production Release";
 		};
-		7F26AC289B2881680ED1A242 /* Test Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = "EndpointSecurity Extension/EndpointSecurity.entitlements";
-				COMBINE_HIDPI_IMAGES = YES;
-				INFOPLIST_FILE = "EndpointSecurity Extension/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-macOS.EndpointSecurity";
-				SDKROOT = macosx;
-			};
-			name = "Test Release";
-		};
 		7F86E00770E76CA3412A03BD /* Staging Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -5242,21 +5227,6 @@
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = "Production Debug";
-		};
-		82320280E6A75765F634DAF0 /* Test Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = "Network Extension/NetworkExtension.entitlements";
-				COMBINE_HIDPI_IMAGES = YES;
-				INFOPLIST_FILE = "Network Extension/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-macOS.NetworkExtension";
-				SDKROOT = macosx;
-			};
-			name = "Test Debug";
 		};
 		8269ABE82BCBF550C38494DF /* Staging Debug */ = {
 			isa = XCBuildConfiguration;
@@ -5334,6 +5304,21 @@
 			};
 			name = "Production Debug";
 		};
+		86BDA2C16646B065BDE01177 /* Production Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "EndpointSecurity Extension/EndpointSecurity.entitlements";
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "EndpointSecurity Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-macOS.EndpointSecurity";
+				SDKROOT = macosx;
+			};
+			name = "Production Debug";
+		};
 		8A380D322263800338FA5139 /* Test Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -5346,6 +5331,21 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = "Test Release";
+		};
+		8BAC4B81735DDF8537709B8D /* Production Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "Network Extension/NetworkExtension.entitlements";
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "Network Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-macOS.NetworkExtension";
+				SDKROOT = macosx;
+			};
+			name = "Production Debug";
 		};
 		8C9F67C7AA56DBE79F0F2640 /* Test Debug */ = {
 			isa = XCBuildConfiguration;
@@ -5375,21 +5375,6 @@
 			};
 			name = "Test Debug";
 		};
-		90C869E4AC36FB20FCFF1B99 /* Test Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = "EndpointSecurity Extension/EndpointSecurity.entitlements";
-				COMBINE_HIDPI_IMAGES = YES;
-				INFOPLIST_FILE = "EndpointSecurity Extension/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-macOS.EndpointSecurity";
-				SDKROOT = macosx;
-			};
-			name = "Test Debug";
-		};
 		917341F64B3A9B883FE942AD /* Production Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -5400,21 +5385,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.project.BundleX;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = "Production Release";
-		};
-		92084290E6617183708B7667 /* Production Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = "Network Extension/NetworkExtension.entitlements";
-				COMBINE_HIDPI_IMAGES = YES;
-				INFOPLIST_FILE = "Network Extension/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-macOS.NetworkExtension";
-				SDKROOT = macosx;
 			};
 			name = "Production Release";
 		};
@@ -5783,21 +5753,6 @@
 			};
 			name = "Production Debug";
 		};
-		A39E103C10004F22DCBC77D5 /* Staging Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = "Network Extension/NetworkExtension.entitlements";
-				COMBINE_HIDPI_IMAGES = YES;
-				INFOPLIST_FILE = "Network Extension/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-macOS.NetworkExtension";
-				SDKROOT = macosx;
-			};
-			name = "Staging Release";
-		};
 		A59DDFBFCF18C44A993CFB00 /* Test Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -5920,6 +5875,21 @@
 			};
 			name = "Production Release";
 		};
+		AB455120CB69CF0A7E128221 /* Production Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "Network Extension/NetworkExtension.entitlements";
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "Network Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-macOS.NetworkExtension";
+				SDKROOT = macosx;
+			};
+			name = "Production Release";
+		};
 		AC8E8FEA35961580D23185B2 /* Test Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -5978,21 +5948,6 @@
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = "Test Release";
-		};
-		AEB22B904B64CEBB874AF174 /* Production Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = "Network Extension/NetworkExtension.entitlements";
-				COMBINE_HIDPI_IMAGES = YES;
-				INFOPLIST_FILE = "Network Extension/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-macOS.NetworkExtension";
-				SDKROOT = macosx;
-			};
-			name = "Production Debug";
 		};
 		AF25BBA6E0AD56CA13A3F6C6 /* Staging Release */ = {
 			isa = XCBuildConfiguration;
@@ -6240,6 +6195,21 @@
 			};
 			name = "Staging Debug";
 		};
+		B987E9BED4B423A049202386 /* Staging Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "Network Extension/NetworkExtension.entitlements";
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "Network Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-macOS.NetworkExtension";
+				SDKROOT = macosx;
+			};
+			name = "Staging Debug";
+		};
 		B9AF2E89FE3E9E03E0029607 /* Test Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -6438,6 +6408,21 @@
 				WATCHOS_DEPLOYMENT_TARGET = 4.0;
 			};
 			name = "Staging Debug";
+		};
+		C44EBD74DF4B95E30983A798 /* Staging Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "EndpointSecurity Extension/EndpointSecurity.entitlements";
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "EndpointSecurity Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-macOS.EndpointSecurity";
+				SDKROOT = macosx;
+			};
+			name = "Staging Release";
 		};
 		C59E649CEDC0E973B28B57A4 /* Test Release */ = {
 			isa = XCBuildConfiguration;
@@ -6777,6 +6762,21 @@
 			};
 			name = "Staging Release";
 		};
+		D93982FB34335E2D1B9751FE /* Test Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "EndpointSecurity Extension/EndpointSecurity.entitlements";
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "EndpointSecurity Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-macOS.EndpointSecurity";
+				SDKROOT = macosx;
+			};
+			name = "Test Debug";
+		};
 		D9A0609EE6F341CD4E8758C1 /* Test Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -6800,21 +6800,6 @@
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = "Test Release";
-		};
-		DC5C8BD1249F34A010DDFDF6 /* Staging Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = "Network Extension/NetworkExtension.entitlements";
-				COMBINE_HIDPI_IMAGES = YES;
-				INFOPLIST_FILE = "Network Extension/Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/../Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-macOS.NetworkExtension";
-				SDKROOT = macosx;
-			};
-			name = "Staging Debug";
 		};
 		DC80DC0AF0B4F2B51DAB0A52 /* Test Release */ = {
 			isa = XCBuildConfiguration;
@@ -7240,6 +7225,21 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				WATCHOS_DEPLOYMENT_TARGET = 4.0;
+			};
+			name = "Test Debug";
+		};
+		E9C964F0189C68721012002B /* Test Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "Network Extension/NetworkExtension.entitlements";
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "Network Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-macOS.NetworkExtension";
+				SDKROOT = macosx;
 			};
 			name = "Test Debug";
 		};
@@ -7899,15 +7899,15 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Production Debug";
 		};
-		79FBC01E739AB9719F39ADB1 /* Build configuration list for PBXNativeTarget "NetworkExtension" */ = {
+		78DB808B74D58314279E7FD7 /* Build configuration list for PBXNativeTarget "NetworkSystemExtension" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				AEB22B904B64CEBB874AF174 /* Production Debug */,
-				92084290E6617183708B7667 /* Production Release */,
-				DC5C8BD1249F34A010DDFDF6 /* Staging Debug */,
-				A39E103C10004F22DCBC77D5 /* Staging Release */,
-				82320280E6A75765F634DAF0 /* Test Debug */,
-				6D065888298113744E449950 /* Test Release */,
+				8BAC4B81735DDF8537709B8D /* Production Debug */,
+				AB455120CB69CF0A7E128221 /* Production Release */,
+				B987E9BED4B423A049202386 /* Staging Debug */,
+				77C426E60C6FCB5A01EFC401 /* Staging Release */,
+				E9C964F0189C68721012002B /* Test Debug */,
+				0C18EEAE68FBEBCF066E0CD9 /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Production Debug";
@@ -7934,19 +7934,6 @@
 				AF25BBA6E0AD56CA13A3F6C6 /* Staging Release */,
 				5180F6C101C0335213FB28E5 /* Test Debug */,
 				AE8DA78BA7A7194BD625DD45 /* Test Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Production Debug";
-		};
-		872C3CC728CB7A4AD8AC423A /* Build configuration list for PBXNativeTarget "EndpointSecurityExtension" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				586D17F02A73D814DD215765 /* Production Debug */,
-				28D1D5B0CEE76BEF6826B4B0 /* Production Release */,
-				1569DBCA002DD08CF4EF381D /* Staging Debug */,
-				75E420B35E8F9A112155BFE3 /* Staging Release */,
-				90C869E4AC36FB20FCFF1B99 /* Test Debug */,
-				7F26AC289B2881680ED1A242 /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Production Debug";
@@ -8025,6 +8012,19 @@
 				E599549D1B1432302031A904 /* Staging Release */,
 				9A891313A139893990989BDD /* Test Debug */,
 				3DEEA480EDDC83405CFB9BBA /* Test Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "Production Debug";
+		};
+		C4FB84AAA6F6974CEA51D359 /* Build configuration list for PBXNativeTarget "EndpointSecuritySystemExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				86BDA2C16646B065BDE01177 /* Production Debug */,
+				06D6C7ED89937E7891E70B55 /* Production Release */,
+				46DAC1602BF6BEBCD177342F /* Staging Debug */,
+				C44EBD74DF4B95E30983A798 /* Staging Release */,
+				D93982FB34335E2D1B9751FE /* Test Debug */,
+				11919FD24AA8A110C24C0FEF /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Production Debug";
