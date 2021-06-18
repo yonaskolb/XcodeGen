@@ -35,7 +35,6 @@
 		0AB541AE3163B063E7012877 /* StaticLibrary_ObjC.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5A2B916A11DCC2565241359F /* StaticLibrary_ObjC.h */; };
 		0BDA156BEBFCB9E65910F838 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = 6A58A16491CDDF968B0D56DE /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0F99AECCB4691803C791CDCE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2FC2A8A829CE71B1CF415FF7 /* Main.storyboard */; };
-		14A3FD8F27FFD5C769D116EA /* Driver.iig in Resources */ = {isa = PBXBuildFile; fileRef = 5A3A73F307648F58213E4EA1 /* Driver.iig */; };
 		15129B8D9ED000BDA1FEEC27 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A2F16890ECF2EE3FED72AE /* AppDelegate.swift */; };
 		1551370B0ACAC632E15C853B /* SwiftyJSON.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF47010E7368583405AA50CB /* SwiftyJSON.framework */; };
 		15F99D61E51A608410C643D1 /* EndpointSecurityExtension.systemextension in Embed System Extensions */ = {isa = PBXBuildFile; fileRef = 2CCD23B70972A53E04B80413 /* EndpointSecurityExtension.systemextension */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -170,6 +169,7 @@
 		F6537CE373C94809E6653758 /* Headers in Headers */ = {isa = PBXBuildFile; fileRef = 2E1E747C7BC434ADB80CC269 /* Headers */; settings = {ATTRIBUTES = (Public, ); }; };
 		F7423E8738EECF04795C7601 /* InterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3F6BCB5FEFB16F1BA368059 /* InterfaceController.swift */; };
 		F788A3FA1CE6489BC257C1C3 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 306796628DD52FA55E833B65 /* Model.xcdatamodeld */; settings = {COMPILER_FLAGS = "-Werror"; }; };
+		FB6DA0DB62C425066D51767E /* Driver.iig in Sources */ = {isa = PBXBuildFile; fileRef = 5A3A73F307648F58213E4EA1 /* Driver.iig */; };
 		FF030751A47C85F082C7EDB9 /* TestProjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D132EA69984F32DA9DC727B6 /* TestProjectTests.swift */; };
 /* End PBXBuildFile section */
 
@@ -1693,7 +1693,6 @@
 			buildConfigurationList = 412FA71CA97AD6851A1828DD /* Build configuration list for PBXNativeTarget "DriverKitDriver" */;
 			buildPhases = (
 				3422D8A97652F33BA3AEAD6E /* Sources */,
-				3114CF12623651B6B2B67F28 /* Resources */,
 				EA2F63A326C56F6ECA7F5D7D /* Frameworks */,
 			);
 			buildRules = (
@@ -2220,14 +2219,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		3114CF12623651B6B2B67F28 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				14A3FD8F27FFD5C769D116EA /* Driver.iig in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		4A6E8F3A477AA5F67A8EB733 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2555,6 +2546,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0932FB6FB887D7D6F7727CB7 /* Driver.cpp in Sources */,
+				FB6DA0DB62C425066D51767E /* Driver.iig in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
