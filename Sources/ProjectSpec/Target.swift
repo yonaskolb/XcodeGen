@@ -304,7 +304,7 @@ extension Target: NamedJSONDictionaryConvertible {
             let dependencies: [Dependency] = try jsonDictionary.json(atKeyPath: "dependencies", invalidItemBehaviour: .fail)
             self.dependencies = dependencies.filter { [platform] dependency -> Bool in
                 // If unspecified, all platforms are supported
-                guard let platforms = dependency.conditionalPlatforms else { return true }
+                guard let platforms = dependency.platforms else { return true }
                 return platforms.contains(platform)
             }
         }
