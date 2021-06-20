@@ -5,7 +5,7 @@ public struct Dependency: Equatable {
     public static let removeHeadersDefault = true
     public static let implicitDefault = false
     public static let weakLinkDefault = false
-    public static let platformDefault: Platform = .all
+    public static let platformFilterDefault: PlatformFilter = .all
 
     public var type: DependencyType
     public var reference: String
@@ -15,7 +15,8 @@ public struct Dependency: Equatable {
     public var link: Bool?
     public var implicit: Bool = implicitDefault
     public var weakLink: Bool = weakLinkDefault
-    public var platform: Platform = platformDefault
+    public var platformFilter: PlatformFilter = platformFilterDefault
+    public var platforms: Set<Platform>?
 
     public init(
         type: DependencyType,
@@ -25,7 +26,8 @@ public struct Dependency: Equatable {
         link: Bool? = nil,
         implicit: Bool = implicitDefault,
         weakLink: Bool = weakLinkDefault,
-        platform: Platform = platformDefault
+        platformFilter: PlatformFilter = platformFilterDefault,
+        platforms: Set<Platform>? = nil
     ) {
         self.type = type
         self.reference = reference
@@ -34,10 +36,11 @@ public struct Dependency: Equatable {
         self.link = link
         self.implicit = implicit
         self.weakLink = weakLink
-        self.platform = platform
+        self.platformFilter = platformFilter
+        self.platforms = platforms
     }
     
-    public enum Platform: String, Equatable {
+    public enum PlatformFilter: String, Equatable {
         case all
         case iOS
         case macOS
@@ -123,10 +126,14 @@ extension Dependency: JSONObjectConvertible {
             weakLink = bool
         }
         
-        if let platformString: String = jsonDictionary.json(atKeyPath: "platform"), let platform = Platform(rawValue: platformString) {
-            self.platform = platform
+        if let platformFilterString: String = jsonDictionary.json(atKeyPath: "platformFilter"), let platformFilter = PlatformFilter(rawValue: platformFilterString) {
+            self.platformFilter = platformFilter
         } else {
-            self.platform = .all
+            self.platformFilter = .all
+        }
+
+        if let platforms: [ProjectSpec.Platform] = jsonDictionary.json(atKeyPath: "platforms") {
+            self.platforms = Set(platforms)
         }
     }
 }
@@ -137,6 +144,7 @@ extension Dependency: JSONEncodable {
             "embed": embed,
             "codeSign": codeSign,
             "link": link,
+            "platforms": platforms?.map(\.rawValue).sorted()
         ]
 
         if removeHeaders != Dependency.removeHeadersDefault {

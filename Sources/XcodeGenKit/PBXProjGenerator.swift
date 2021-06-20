@@ -751,7 +751,7 @@ public class PBXProjGenerator {
         for dependency in targetDependencies {
 
             let embed = dependency.embed ?? target.shouldEmbedDependencies
-            let platform = makePlatform(for: dependency.platform)
+            let platform = makePlatformFilter(for: dependency.platformFilter)
             
             switch dependency.type {
             case .target:
@@ -1320,8 +1320,8 @@ public class PBXProjGenerator {
         }
     }
     
-    private func makePlatform(for platform: Dependency.Platform) -> String? {
-        switch platform {
+    private func makePlatformFilter(for filter: Dependency.PlatformFilter) -> String? {
+        switch filter {
         case .all:
             return nil
         case .macOS:
