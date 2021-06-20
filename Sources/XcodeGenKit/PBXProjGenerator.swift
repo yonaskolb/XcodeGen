@@ -669,6 +669,7 @@ public class PBXProjGenerator {
         var copyWatchReferences: [PBXBuildFile] = []
         var packageDependencies: [XCSwiftPackageProductDependency] = []
         var extensions: [PBXBuildFile] = []
+        var systemExtensions: [PBXBuildFile] = []
         var appClips: [PBXBuildFile] = []
         var carthageFrameworksToEmbed: [String] = []
         let localPackageReferences: [String] = project.packages.compactMap { $0.value.isLocal ? $0.key : nil }
@@ -729,6 +730,9 @@ public class PBXProjGenerator {
                 if dependencyTarget.type.isExtension {
                     // embed app extension
                     extensions.append(embedFile)
+                } else if dependencyTarget.type.isSystemExtension {
+                    // embed system extension
+                    systemExtensions.append(embedFile)
                 } else if dependencyTarget.type == .onDemandInstallCapableApplication {
                     // embed app clip
                     appClips.append(embedFile)
@@ -1001,9 +1005,9 @@ public class PBXProjGenerator {
             return sourceFilesByCopyFiles.mapValues { getBuildFilesForSourceFiles($0) }
         }
 
-        func getPBXCopyFilesBuildPhase(dstSubfolderSpec: PBXCopyFilesBuildPhase.SubFolder, name: String, files: [PBXBuildFile]) -> PBXCopyFilesBuildPhase {
+        func getPBXCopyFilesBuildPhase(dstSubfolderSpec: PBXCopyFilesBuildPhase.SubFolder, dstPath: String = "", name: String, files: [PBXBuildFile]) -> PBXCopyFilesBuildPhase {
             return PBXCopyFilesBuildPhase(
-                dstPath: "",
+                dstPath: dstPath,
                 dstSubfolderSpec: dstSubfolderSpec,
                 name: name,
                 buildActionMask: target.onlyCopyFilesOnInstall ? PBXProjGenerator.copyFilesActionMask : PBXBuildPhase.defaultBuildActionMask,
@@ -1111,6 +1115,16 @@ public class PBXProjGenerator {
 
             let copyFilesPhase = addObject(                
                 getPBXCopyFilesBuildPhase(dstSubfolderSpec: .plugins, name: "Embed App Extensions", files: extensions)
+            )
+
+            buildPhases.append(copyFilesPhase)
+        }
+
+        if !systemExtensions.isEmpty {
+
+            let copyFilesPhase = addObject(
+                // With parameters below the Xcode will show "Destination: System Extensions".
+                getPBXCopyFilesBuildPhase(dstSubfolderSpec: .productsDirectory, dstPath: "$(SYSTEM_EXTENSIONS_FOLDER_PATH)", name: "Embed System Extensions", files: systemExtensions)
             )
 
             buildPhases.append(copyFilesPhase)

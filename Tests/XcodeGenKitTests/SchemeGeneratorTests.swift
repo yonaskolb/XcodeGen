@@ -217,7 +217,7 @@ class SchemeGeneratorTests: XCTestCase {
                                                 .first(where: { $0.name == "\(target.name) \(variantName)" }))
                     let buildActionEntry = try unwrap(xcscheme.buildAction?.buildActionEntries.first)
                     
-                    try expect(buildActionEntry.buildableReference.blueprintIdentifier.count > 0) == true
+                    try expect((buildActionEntry.buildableReference.blueprintIdentifier?.count ?? 0) > 0) == true
                     if variantName == "PreProd" {
                         try expect(xcscheme.launchAction?.buildConfiguration) == "\(variantName) debug"
                         try expect(xcscheme.testAction?.buildConfiguration) == "\(variantName) debug"

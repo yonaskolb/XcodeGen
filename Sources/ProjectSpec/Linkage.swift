@@ -33,7 +33,9 @@ extension Target {
              .watch2AppContainer,
              .watch2Extension,
              .xcodeExtension,
-             .xpcService:
+             .xpcService,
+             .systemExtension,
+             .driverExtension:
             return .none
         case .framework, .xcFramework:
             // Check the MACH_O_TYPE for "Static Framework"

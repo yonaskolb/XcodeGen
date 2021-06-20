@@ -26,6 +26,10 @@ extension PBXProductType {
         fileExtension == "appex"
     }
 
+    public var isSystemExtension: Bool {
+        fileExtension == "dext" || fileExtension == "systemextension"
+    }
+
     public var isApp: Bool {
         fileExtension == "app"
     }
@@ -35,7 +39,7 @@ extension PBXProductType {
     }
 
     public var isExecutable: Bool {
-        isApp || isExtension || isTest || self == .commandLineTool
+        isApp || isExtension || isSystemExtension || isTest || self == .commandLineTool
     }
 
     public var name: String {
@@ -89,7 +93,7 @@ extension Platform {
 extension Target {
     public var shouldExecuteOnLaunch: Bool {
         // This is different from `type.isExecutable`, because we don't want to "run" a test
-        type.isApp || type.isExtension || type == .commandLineTool
+        type.isApp || type.isExtension || type.isSystemExtension || type == .commandLineTool
     }
 }
 
