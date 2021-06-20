@@ -292,6 +292,8 @@ This will provide default build settings for a certain product type. It can be a
 - `watchkit-extension`
 - `watchkit2-extension`
 - `xcode-extension`
+- `driver-extension`
+- `system-extension`
 - `xpc-service`
 - ``""`` (used for legacy targets)
 

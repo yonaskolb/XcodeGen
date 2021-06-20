@@ -87,6 +87,7 @@ extension FileType {
         "metal": FileType(buildPhase: .sources),
         "mlmodel": FileType(buildPhase: .sources),
         "rcproject": FileType(buildPhase: .sources),
+        "iig": FileType(buildPhase: .sources),
 
         // headers
         "h": FileType(buildPhase: .headers),

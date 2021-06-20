@@ -58,6 +58,9 @@ targets:
     dependencies:
       - target: Framework_macOS
       - target: XPC Service
+      - target: NetworkSystemExtension
+      - target: EndpointSecuritySystemExtension
+      - target: DriverKitDriver
       - sdk: Contacts.framework
       - sdk: libc++.tbd
       - sdk: libz.dylib
@@ -215,6 +218,44 @@ targets:
     platform: iOS
     sources:
       - path: iMessageStickers
+
+  DriverKitDriver:
+    platform: macOS
+    type: driver-extension
+    sources:
+      - DriverKit Driver
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: com.project.App-macOS.Driver
+      CODE_SIGN_ENTITLEMENTS: DriverKit Driver/Driver.entitlements
+      SDKROOT: driverkit
+      DRIVERKIT_DEPLOYMENT_TARGET: 20.4
+    scheme: {}
+    dependencies:
+      - sdk: DriverKit.framework
+
+  NetworkSystemExtension:
+    platform: macOS
+    type: system-extension
+    sources:
+      - Network Extension
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: com.project.App-macOS.NetworkExtension
+      CODE_SIGN_ENTITLEMENTS: Network Extension/NetworkExtension.entitlements
+    scheme: {}
+    dependencies:
+      - sdk: NetworkExtension.framework
+
+  EndpointSecuritySystemExtension:
+    platform: macOS
+    type: system-extension
+    sources:
+      - EndpointSecurity Extension
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: com.project.App-macOS.EndpointSecurity
+      CODE_SIGN_ENTITLEMENTS: EndpointSecurity Extension/EndpointSecurity.entitlements
+    scheme: {}
+    dependencies:
+      - sdk: libEndpointSecurity.tbd
 
   StaticLibrary_ObjC:
     type: library.static
