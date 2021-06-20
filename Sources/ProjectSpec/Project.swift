@@ -83,6 +83,10 @@ public struct Project: BuildSettingsContainer {
         targetsMap[targetName]
     }
 
+    public func getPackage(_ packageName: String) -> SwiftPackage? {
+        packages[packageName]
+    }
+
     public func getAggregateTarget(_ targetName: String) -> AggregateTarget? {
         aggregateTargetsMap[targetName]
     }

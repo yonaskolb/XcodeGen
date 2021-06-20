@@ -60,8 +60,9 @@ extension TargetScheme: JSONObjectConvertible {
             testTargets = try targets.compactMap { target in
                 if let string = target as? String {
                     return .init(targetReference: try TargetReference(string))
-                } else if let dictionary = target as? JSONDictionary {
-                    return try .init(jsonDictionary: dictionary)
+                } else if let dictionary = target as? JSONDictionary,
+                          let target: Scheme.Test.TestTarget = try? .init(jsonDictionary: dictionary) {
+                    return target
                 } else {
                     return nil
                 }

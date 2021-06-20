@@ -769,6 +769,10 @@ public class PBXProjGenerator {
                     let (targetDependency, dependencyTarget, dependencyProductProxy) = try generateExternalTargetDependency(from: target.name, to: dependencyTargetName, in: dependencyProjectName, platform: target.platform)
                     dependencies.append(targetDependency)
                     processTargetDependency(dependency, dependencyTarget: dependencyTarget, embedFileReference: dependencyProductProxy, platform: platform)
+                case .package:
+                    // Specifying as package dependency as target is not allowed.
+                    // This should be validated at SpecValidation part.
+                    fatalError("Package dependency should not be added as target dependency")
                 }
 
             case .framework:
@@ -1432,6 +1436,10 @@ public class PBXProjGenerator {
                         if isTopLevel || dependency.embed != true {
                             dependencies[dependency.uniqueID] = dependency
                         }
+                    case .package:
+                        // Specifying as package dependency as target is not allowed.
+                        // This should be validated at SpecValidation part.
+                        fatalError("Package dependency should not be added as target dependency")
                     }
                 case .bundle:
                     if isTopLevel {

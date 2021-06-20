@@ -119,6 +119,10 @@ extension Project {
 
                 for testTarget in scheme.testTargets {
                     if getTarget(testTarget.name) == nil {
+                        // For test case of local Swift Package
+                        if case .package(let name) = testTarget.targetReference.location, getPackage(name) != nil {
+                            continue
+                        }
                         errors.append(.invalidTargetSchemeTest(target: target.name, testTarget: testTarget.name))
                     }
                 }
@@ -159,6 +163,9 @@ extension Project {
                         if getProjectReference(dependencyProjectName) == nil {
                             errors.append(.invalidTargetDependency(target: target.name, dependency: dependency.reference))
                         }
+                    case .package:
+                        // Package depedency should be located in `package:`, not `target:`
+                        errors.append(.invalidPackageDependencyReference(name: target.name))
                     }
                 case .sdk:
                     let path = Path(dependency.reference)
@@ -239,7 +246,9 @@ extension Project {
             return .invalidSchemeTarget(scheme: scheme.name, target: targetReference.name, action: action)
         case .project(let project) where getProjectReference(project) == nil:
             return .invalidProjectReference(scheme: scheme.name, reference: project)
-        case .local, .project:
+        case .package(let package) where getPackage(package) == nil:
+            return .invalidLocalPackage(package)
+        case .local, .project, .package:
             return nil
         }
     }

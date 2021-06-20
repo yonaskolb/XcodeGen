@@ -366,6 +366,7 @@ class SchemeGeneratorTests: XCTestCase {
                         coverageTargets: [
                             "TestProject/ExternalTarget",
                             TargetReference(framework.name),
+                            TargetReference(name: "XcodeGenKitTests", location: .package("XcodeGen"))
                         ]
                     )
                 )
@@ -373,6 +374,7 @@ class SchemeGeneratorTests: XCTestCase {
                     name: "test",
                     targets: [framework],
                     schemes: [scheme],
+                    packages: ["XcodeGen": .local(path: "../")],
                     projectReferences: [
                         ProjectReference(name: "TestProject", path: externalProject.string),
                     ]
@@ -380,7 +382,7 @@ class SchemeGeneratorTests: XCTestCase {
                 let xcodeProject = try project.generateXcodeProject()
                 let xcscheme = try unwrap(xcodeProject.sharedData?.schemes.first)
                 try expect(xcscheme.testAction?.codeCoverageEnabled) == true
-                try expect(xcscheme.testAction?.codeCoverageTargets.count) == 2
+                try expect(xcscheme.testAction?.codeCoverageTargets.count) == 3
                 let buildableReference = xcscheme.testAction?.codeCoverageTargets.first
                 try expect(buildableReference?.blueprintName) == "ExternalTarget"
                 try expect(buildableReference?.referencedContainer) == "container:\(externalProject.string)"
@@ -444,6 +446,33 @@ class SchemeGeneratorTests: XCTestCase {
 
                 let xcscheme = try unwrap(xcodeProject.sharedData?.schemes.first)
                 try expect(xcscheme.launchAction?.macroExpansion?.buildableName) == "MyApp.app"
+            }
+            
+            $0.it("generates scheme with test target of local swift package") {
+                let targetScheme = TargetScheme(
+                    testTargets: [Scheme.Test.TestTarget(targetReference: TargetReference(name: "XcodeGenKitTests", location: .package("XcodeGen")))])
+                let app = Target(
+                    name: "MyApp",
+                    type: .application,
+                    platform: .iOS,
+                    dependencies: [
+                        Dependency(type: .package(product: nil), reference: "XcodeGen")
+                    ],
+                    scheme: targetScheme
+                )
+                let project = Project(
+                    name: "ios_test",
+                    targets: [app],
+                    packages: ["XcodeGen": .local(path: "../")]
+                )
+                let xcodeProject = try project.generateXcodeProject()
+                let xcscheme = try unwrap(xcodeProject.sharedData?.schemes.first)
+                let buildableReference = try unwrap(xcscheme.testAction?.testables.first?.buildableReference)
+
+                try expect(buildableReference.blueprintIdentifier) == "XcodeGenKitTests"
+                try expect(buildableReference.blueprintName) == "XcodeGenKitTests"
+                try expect(buildableReference.buildableName) == "XcodeGenKitTests"
+                try expect(buildableReference.referencedContainer) == "container:../"
             }
         }
     }

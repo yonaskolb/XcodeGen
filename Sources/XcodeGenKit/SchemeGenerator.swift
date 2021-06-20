@@ -110,6 +110,17 @@ public class SchemeGenerator {
             case .local:
                 pbxProj = self.pbxProj
                 projectFilePath = "\(self.project.name).xcodeproj"
+            case .package(let packageName):
+                guard let package = self.project.getPackage(packageName),
+                      case .local(let path) = package else {
+                    throw SchemeGenerationError.missingPackage(packageName)
+                }
+                return XCScheme.BuildableReference(
+                    referencedContainer: "container:\(path)",
+                    blueprintIdentifier: target.name,
+                    buildableName: target.name,
+                    blueprintName: target.name
+                )
             }
 
             guard let pbxTarget = pbxProj.targets(named: target.name).first else {
@@ -127,6 +138,8 @@ public class SchemeGenerator {
                     fatalError("Unable to determinate \"buildableName\" for build target: \(target)")
                 }
                 buildableName = _buildableName
+            case .package: // all `package` target should be handled above
+                fatalError("unexpected package target is handled")
             }
 
             return XCScheme.BuildableReference(
@@ -358,6 +371,7 @@ public class SchemeGenerator {
 enum SchemeGenerationError: Error, CustomStringConvertible {
 
     case missingTarget(TargetReference, projectPath: String)
+    case missingPackage(String)
     case missingProject(String)
     case missingBuildTargets(String)
 
@@ -369,6 +383,8 @@ enum SchemeGenerationError: Error, CustomStringConvertible {
             return "Unable to find project reference named \"\(project)\" in project.yml"
         case .missingBuildTargets(let name):
             return "Unable to find at least one build target in scheme \"\(name)\""
+        case .missingPackage(let package):
+            return "Unable to find swift package named \"\(package)\" in project.yml"
         }
     }
 }
