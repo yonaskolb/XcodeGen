@@ -498,6 +498,8 @@ extension Scheme.Test: JSONEncodable {
             "language": language,
             "region": region,
             "coverageTargets": coverageTargets.map { $0.reference },
+            "captureScreenshotsAutomatically": captureScreenshotsAutomatically,
+            "deleteScreenshotsWhenEachTestSucceeds": deleteScreenshotsWhenEachTestSucceeds,
         ]
 
         if gatherCoverageData != Scheme.Test.gatherCoverageDataDefault {
