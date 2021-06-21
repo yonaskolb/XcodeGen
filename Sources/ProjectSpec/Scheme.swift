@@ -164,6 +164,8 @@ public struct Scheme: Equatable {
         public static let gatherCoverageDataDefault = false
         public static let disableMainThreadCheckerDefault = false
         public static let debugEnabledDefault = true
+        public static let captureScreenshotsAutomaticallyDefault = true
+        public static let deleteScreenshotsWhenEachTestSucceedsDefault = true
 
         public var config: String?
         public var gatherCoverageData: Bool
@@ -481,8 +483,8 @@ extension Scheme.Test: JSONObjectConvertible {
         region = jsonDictionary.json(atKeyPath: "region")
         debugEnabled = jsonDictionary.json(atKeyPath: "debugEnabled") ?? Scheme.Test.debugEnabledDefault
         customLLDBInit = jsonDictionary.json(atKeyPath: "customLLDBInit")
-        captureScreenshotsAutomatically = jsonDictionary.json(atKeyPath: "captureScreenshotsAutomatically") ?? true
-        deleteScreenshotsWhenEachTestSucceeds = jsonDictionary.json(atKeyPath: "deleteScreenshotsWhenEachTestSucceeds") ?? true
+        captureScreenshotsAutomatically = jsonDictionary.json(atKeyPath: "captureScreenshotsAutomatically") ?? Scheme.Test.captureScreenshotsAutomaticallyDefault
+        deleteScreenshotsWhenEachTestSucceeds = jsonDictionary.json(atKeyPath: "deleteScreenshotsWhenEachTestSucceeds") ?? Scheme.Test.deleteScreenshotsWhenEachTestSucceedsDefault
     }
 }
 
@@ -498,8 +500,6 @@ extension Scheme.Test: JSONEncodable {
             "language": language,
             "region": region,
             "coverageTargets": coverageTargets.map { $0.reference },
-            "captureScreenshotsAutomatically": captureScreenshotsAutomatically,
-            "deleteScreenshotsWhenEachTestSucceeds": deleteScreenshotsWhenEachTestSucceeds,
         ]
 
         if gatherCoverageData != Scheme.Test.gatherCoverageDataDefault {
@@ -516,6 +516,14 @@ extension Scheme.Test: JSONEncodable {
 
         if let customLLDBInit = customLLDBInit {
             dict["customLLDBInit"] = customLLDBInit
+        }
+
+        if captureScreenshotsAutomatically != Scheme.Test.captureScreenshotsAutomaticallyDefault {
+            dict["captureScreenshotsAutomatically"] = captureScreenshotsAutomatically
+        }
+
+        if deleteScreenshotsWhenEachTestSucceeds != Scheme.Test.deleteScreenshotsWhenEachTestSucceedsDefault {
+            dict["deleteScreenshotsWhenEachTestSucceeds"] = deleteScreenshotsWhenEachTestSucceeds
         }
 
         return dict
