@@ -241,8 +241,8 @@ public struct Scheme: Equatable {
             region: String? = nil,
             debugEnabled: Bool = debugEnabledDefault,
             customLLDBInit: String? = nil,
-            captureScreenshotsAutomatically: Bool = true,
-            deleteScreenshotsWhenEachTestSucceeds: Bool = true
+            captureScreenshotsAutomatically: Bool = captureScreenshotsAutomaticallyDefault,
+            deleteScreenshotsWhenEachTestSucceeds: Bool = deleteScreenshotsWhenEachTestSucceedsDefault
         ) {
             self.config = config
             self.gatherCoverageData = gatherCoverageData
