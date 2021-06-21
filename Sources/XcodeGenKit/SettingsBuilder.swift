@@ -55,6 +55,8 @@ extension Project {
             buildSettings[target.platform.deploymentTargetSetting] = version.deploymentTarget
         }
 
+        buildSettings += getBuildSettings(settings: target.settings, config: config)
+        
         // Prevent setting presets from overrwriting settings in target xcconfig files
         if let configPath = target.configFiles[config.name] {
             buildSettings = removeConfigFileSettings(from: buildSettings, configPath: configPath)
@@ -63,8 +65,6 @@ extension Project {
         if let configPath = configFiles[config.name] {
             buildSettings = removeConfigFileSettings(from: buildSettings, configPath: configPath)
         }
-
-        buildSettings += getBuildSettings(settings: target.settings, config: config)
 
         return buildSettings
     }

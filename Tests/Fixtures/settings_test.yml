@@ -71,10 +71,15 @@ targets:
   Target:
     type: application
     platform: iOS
+    configFiles:
+      # To verify build setting merge we need to duplicate setting in configFiles and settings
+      # BASE_SETTING: baseSetting is defined in base.xcconfig and for this target under settings:base:
+      config1: TestProject/Configs/base.xcconfig
     settings:
       groups:
         - preset7
       base:
+        BASE_SETTING: baseSetting
         SETTING 2: value 2
       configs:
         config1:
