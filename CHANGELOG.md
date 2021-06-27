@@ -2,6 +2,8 @@
 
 ## Next Version
 
+## 2.24.0
+
 ### Added
 
 - Added support for DocC Catalogs [#1091](https://github.com/yonaskolb/XcodeGen/pull/1091) @brevansio
@@ -11,6 +13,8 @@
 
 ### Changed
 - **Breaking**: Rename the `platform` field on `Dependency` to `platformFilter` [#1087](https://github.com/yonaskolb/XcodeGen/pull/1087) @daltonclaybrook
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.23.1...2.24.0)
 
 ## 2.23.1
 
