@@ -91,7 +91,7 @@ class SourceGenerator {
         }
     }
 
-    func getAllSourceFiles(targetType: PBXProductType, sources: [TargetSource], completion: @escaping (([SourceFile]) -> Void), buildPhases: [Path : BuildPhaseSpec]) throws {
+    func getAllSourceFiles(targetType: PBXProductType, sources: [TargetSource], buildPhases: [Path : BuildPhaseSpec], completion: @escaping (([SourceFile]) -> Void)) throws {
         var flattenedSources: [SourceFile] = []
         let group = DispatchGroup()
         try sources.forEach { (source) in
@@ -106,7 +106,7 @@ class SourceGenerator {
     }
 
     // get groups without build files. Use for Project.fileGroups
-    func getFileGroups(path: String, completion: @escaping (() -> ()), buildPhases: [Path : BuildPhaseSpec]) throws {
+    func getFileGroups(path: String, completion: @escaping (() -> ())) throws {
         _ = try getSourceFiles(targetType: .none, targetSource: TargetSource(path: path), buildPhases: [:]) { _ in
             completion()
         }
