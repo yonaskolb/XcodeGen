@@ -275,8 +275,15 @@ class PBXProjGeneratorTests: XCTestCase {
         let attributes: [String: Any] = [lastUpgradeKey: 1234]
         let project = Project(name: "Test", attributes: attributes)
         let projGenerator = PBXProjGenerator(project: project)
-        
-        let pbxProj = try projGenerator.generate()
+
+        let dispatchGroup = DispatchGroup()
+        dispatchGroup.enter()
+        var pbxProj: PBXProj!
+        try projGenerator.generate { (generatedPbxproj) in
+            pbxProj = generatedPbxproj
+            dispatchGroup.leave()
+        }
+        dispatchGroup.wait()
         
         for pbxProject in pbxProj.projects {
             XCTAssertEqual(pbxProject.attributes[lastUpgradeKey] as? String, project.xcodeVersion)
@@ -290,7 +297,14 @@ class PBXProjGeneratorTests: XCTestCase {
         let project = Project(name: "Test", attributes: attributes)
         let projGenerator = PBXProjGenerator(project: project)
         
-        let pbxProj = try projGenerator.generate()
+        let dispatchGroup = DispatchGroup()
+        dispatchGroup.enter()
+        var pbxProj: PBXProj!
+        try projGenerator.generate { (generatedPbxproj) in
+            pbxProj = generatedPbxproj
+            dispatchGroup.leave()
+        }
+        dispatchGroup.wait()
         
         for pbxProject in pbxProj.projects {
             XCTAssertEqual(pbxProject.attributes[lastUpgradeKey] as? String, lastUpgradeValue)
@@ -302,7 +316,14 @@ class PBXProjGeneratorTests: XCTestCase {
         let project = Project(name: "Test")
         let projGenerator = PBXProjGenerator(project: project)
         
-        let pbxProj = try projGenerator.generate()
+        let dispatchGroup = DispatchGroup()
+        dispatchGroup.enter()
+        var pbxProj: PBXProj!
+        try projGenerator.generate { (generatedPbxproj) in
+            pbxProj = generatedPbxproj
+            dispatchGroup.leave()
+        }
+        dispatchGroup.wait()
         
         for pbxProject in pbxProj.projects {
             XCTAssertEqual(pbxProject.attributes[lastUpgradeKey] as? String, project.xcodeVersion)
