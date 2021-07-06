@@ -935,7 +935,10 @@ public class PBXProjGenerator {
                     sourceTree: .buildProductsDir
                 )
 
-                let pbxBuildFile = PBXBuildFile(file: fileReference, settings: nil)
+                let pbxBuildFile = PBXBuildFile(
+                    file: fileReference,
+                    settings: embed ? getEmbedSettings(dependency: dependency, codeSign: dependency.codeSign ?? true) : nil
+                )
                 pbxBuildFile.platformFilter = platform
                 let buildFile = addObject(pbxBuildFile)
                 copyBundlesReferences.append(buildFile)
