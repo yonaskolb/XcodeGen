@@ -559,13 +559,13 @@ class SourceGeneratorTests: XCTestCase {
                     - file.swift
                     - file.xcassets
                     - file.h
-                    - Info.plist
+                    - GoogleService-Info.plist
                     - file.xcconfig
                   B:
                     - file.swift
                     - file.xcassets
                     - file.h
-                    - Info.plist
+                    - Sample.plist
                     - file.xcconfig
                   C:
                     - file.swift
@@ -598,6 +598,7 @@ class SourceGeneratorTests: XCTestCase {
                       - Root.plist
                     - WithPeriod2.0:
                       - file.swift
+                    - Documentation.docc
                 """
                 try createDirectories(directories)
 
@@ -612,13 +613,13 @@ class SourceGeneratorTests: XCTestCase {
                 try pbxProj.expectFile(paths: ["A", "file.swift"], buildPhase: .resources)
                 try pbxProj.expectFile(paths: ["A", "file.xcassets"], buildPhase: .resources)
                 try pbxProj.expectFile(paths: ["A", "file.h"], buildPhase: .resources)
-                try pbxProj.expectFile(paths: ["A", "Info.plist"], buildPhase: .resources)
+                try pbxProj.expectFile(paths: ["A", "GoogleService-Info.plist"], buildPhase: .resources)
                 try pbxProj.expectFile(paths: ["A", "file.xcconfig"], buildPhase: .resources)
 
                 try pbxProj.expectFile(paths: ["B", "file.swift"], buildPhase: BuildPhaseSpec.none)
                 try pbxProj.expectFile(paths: ["B", "file.xcassets"], buildPhase: BuildPhaseSpec.none)
                 try pbxProj.expectFile(paths: ["B", "file.h"], buildPhase: BuildPhaseSpec.none)
-                try pbxProj.expectFile(paths: ["B", "Info.plist"], buildPhase: BuildPhaseSpec.none)
+                try pbxProj.expectFile(paths: ["B", "Sample.plist"], buildPhase: BuildPhaseSpec.none)
                 try pbxProj.expectFile(paths: ["B", "file.xcconfig"], buildPhase: BuildPhaseSpec.none)
 
                 try pbxProj.expectFile(paths: ["C", "file.swift"], buildPhase: .sources)
@@ -654,6 +655,77 @@ class SourceGeneratorTests: XCTestCase {
                 try pbxProj.expectFileMissing(paths: ["C", "Settings.bundle", "Root.plist"])
                 try pbxProj.expectFileMissing(paths: ["C", "WithPeriod2.0"])
                 try pbxProj.expectFile(paths: ["C", "WithPeriod2.0", "file.swift"], buildPhase: .sources)
+                try pbxProj.expectFile(paths: ["C", "Documentation.docc"], buildPhase: BuildPhaseSpec.none)
+            }
+
+            $0.it("only omits the defined Info.plist from resource build phases but not other plists") {
+                try createDirectories("""
+                  A:
+                    - A-Info.plist
+                  B:
+                    - Info.plist
+                    - GoogleServices-Info.plist
+                  C:
+                    - Info.plist
+                    - Info-Production.plist
+                  D:
+                    - Info-Staging.plist
+                    - Info-Production.plist
+                """)
+
+                // Explicit plist.path value is respected
+                let targetA = Target(
+                    name: "A",
+                    type: .application,
+                    platform: .iOS,
+                    sources: ["A"],
+                    info: Plist(path: "A/A-Info.plist")
+                )
+
+                // Automatically picks first 'Info.plist' at the top-level
+                let targetB = Target(
+                    name: "B",
+                    type: .application,
+                    platform: .iOS,
+                    sources: ["B"]
+                )
+
+                // Also respects INFOPLIST_FILE, ignores other files named Info.plist
+                let targetC = Target(
+                    name: "C",
+                    type: .application,
+                    platform: .iOS,
+                    settings: Settings(dictionary: [
+                        "INFOPLIST_FILE": "C/Info-Production.plist"
+                    ]),
+                    sources: ["C"]
+                )
+
+                // Does not support INFOPLIST_FILE value that requires expanding
+                let targetD = Target(
+                    name: "D",
+                    type: .application,
+                    platform: .iOS,
+                    settings: Settings(dictionary: [
+                        "ENVIRONMENT": "Production",
+                        "INFOPLIST_FILE": "D/Info-${ENVIRONMENT}.plist"
+                    ]),
+                    sources: ["D"]
+                )
+
+                let project = Project(basePath: directoryPath.absolute(), name: "Test", targets: [targetA, targetB, targetC, targetD])
+                let pbxProj = try project.generatePbxProj()
+
+                try pbxProj.expectFile(paths: ["A", "A-Info.plist"], buildPhase: BuildPhaseSpec.none)
+
+                try pbxProj.expectFile(paths: ["B", "Info.plist"], buildPhase: BuildPhaseSpec.none)
+                try pbxProj.expectFile(paths: ["B", "GoogleServices-Info.plist"], buildPhase: .resources)
+
+                try pbxProj.expectFile(paths: ["C", "Info.plist"], buildPhase: .resources)
+                try pbxProj.expectFile(paths: ["C", "Info-Production.plist"], buildPhase: BuildPhaseSpec.none)
+
+                try pbxProj.expectFile(paths: ["D", "Info-Staging.plist"], buildPhase: .resources)
+                try pbxProj.expectFile(paths: ["D", "Info-Production.plist"], buildPhase: .resources)
             }
 
             $0.it("sets file type properties") {

@@ -1,6 +1,6 @@
 TOOL_NAME = XcodeGen
 export EXECUTABLE_NAME = xcodegen
-VERSION = 2.19.0
+VERSION = 2.24.0
 
 PREFIX = /usr/local
 INSTALL_PATH = $(PREFIX)/bin/$(EXECUTABLE_NAME)
@@ -10,12 +10,13 @@ REPO = https://github.com/yonaskolb/$(TOOL_NAME)
 RELEASE_TAR = $(REPO)/archive/$(VERSION).tar.gz
 SHA = $(shell curl -L -s $(RELEASE_TAR) | shasum -a 256 | sed 's/ .*//')
 SWIFT_BUILD_FLAGS = --disable-sandbox -c release --arch arm64 --arch x86_64
+EXECUTABLE_PATH = $(shell swift build $(SWIFT_BUILD_FLAGS) --show-bin-path)/$(EXECUTABLE_NAME)
 
 .PHONY: install build uninstall format_code brew release
 
 install: build
 	mkdir -p $(PREFIX)/bin
-	cp -f $(shell swift build $(SWIFT_BUILD_FLAGS) --show-bin-path)/$(EXECUTABLE_NAME) $(INSTALL_PATH)
+	cp -f $(EXECUTABLE_PATH) $(INSTALL_PATH)
 	mkdir -p $(SHARE_PATH)
 	cp -R $(CURRENT_PATH)/SettingPresets $(SHARE_PATH)/SettingPresets
 
@@ -45,4 +46,4 @@ brew:
 	brew bump-formula-pr --url=$(RELEASE_TAR) XcodeGen
 
 archive: build
-	./scripts/archive.sh
+	./scripts/archive.sh $(EXECUTABLE_PATH)

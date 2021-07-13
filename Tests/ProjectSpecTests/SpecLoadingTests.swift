@@ -376,9 +376,9 @@ class SpecLoadingTests: XCTestCase {
             $0.it("parses target dependencies") {
                 var targetDictionary = validTarget
                 targetDictionary["dependencies"] = [
-                    ["target": "name", "embed": false],
-                    ["target": "project/name", "embed": false],
-                    ["carthage": "name", "findFrameworks": true],
+                    ["target": "name", "embed": false, "platformFilter": "all"],
+                    ["target": "project/name", "embed": false, "platformFilter": "macOS"],
+                    ["carthage": "name", "findFrameworks": true, "platformFilter": "iOS"],
                     ["carthage": "name", "findFrameworks": true, "linkType": "static"],
                     ["framework": "path", "weak": true],
                     ["sdk": "Contacts.framework"],
@@ -386,16 +386,19 @@ class SpecLoadingTests: XCTestCase {
                         "sdk": "Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework",
                         "root": "DEVELOPER_DIR",
                     ],
+                    ["target": "conditionalMatch", "platforms": ["iOS"]],
+                    ["target": "conditionalMiss", "platforms": ["watchOS"]],
                 ]
                 let target = try Target(name: "test", jsonDictionary: targetDictionary)
-                try expect(target.dependencies.count) == 7
-                try expect(target.dependencies[0]) == Dependency(type: .target, reference: "name", embed: false)
-                try expect(target.dependencies[1]) == Dependency(type: .target, reference: "project/name", embed: false)
-                try expect(target.dependencies[2]) == Dependency(type: .carthage(findFrameworks: true, linkType: .dynamic), reference: "name")
+                try expect(target.dependencies.count) == 8
+                try expect(target.dependencies[0]) == Dependency(type: .target, reference: "name", embed: false, platformFilter: .all)
+                try expect(target.dependencies[1]) == Dependency(type: .target, reference: "project/name", embed: false, platformFilter: .macOS)
+                try expect(target.dependencies[2]) == Dependency(type: .carthage(findFrameworks: true, linkType: .dynamic), reference: "name", platformFilter: .iOS)
                 try expect(target.dependencies[3]) == Dependency(type: .carthage(findFrameworks: true, linkType: .static), reference: "name")
                 try expect(target.dependencies[4]) == Dependency(type: .framework, reference: "path", weakLink: true)
                 try expect(target.dependencies[5]) == Dependency(type: .sdk(root: nil), reference: "Contacts.framework")
                 try expect(target.dependencies[6]) == Dependency(type: .sdk(root: "DEVELOPER_DIR"), reference: "Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework")
+                try expect(target.dependencies[7]) == Dependency(type: .target, reference: "conditionalMatch", platforms: [.iOS])
             }
 
             $0.it("parses info plist") {
@@ -756,6 +759,7 @@ class SpecLoadingTests: XCTestCase {
                     "build": [
                         "parallelizeBuild": false,
                         "buildImplicitDependencies": false,
+                        "runPostActionsOnFailure": true,
                         "targets": [
                             "Target1": "all",
                             "Target2": "testing",
@@ -813,6 +817,7 @@ class SpecLoadingTests: XCTestCase {
 
                 try expect(scheme.build.parallelizeBuild) == false
                 try expect(scheme.build.buildImplicitDependencies) == false
+                try expect(scheme.build.runPostActionsOnFailure) == true
 
                 let expectedRun = Scheme.Run(
                     config: "debug",
@@ -833,6 +838,46 @@ class SpecLoadingTests: XCTestCase {
                             parallelizable: true,
                             skipped: true,
                             skippedTests: ["Test/testExample()"]
+                        ),
+                    ]
+                )
+                try expect(scheme.test) == expectedTest
+            }
+
+            $0.it("parses alternate test schemes") {
+                let schemeDictionary: [String: Any] = [
+                    "build": [
+                        "targets": ["Target1": "all"],
+                    ],
+                    "test": [
+                        "config": "debug",
+                        "targets": [
+                            "Target1",
+                            [
+                                "name": "ExternalProject/Target2",
+                                "parallelizable": true,
+                                "randomExecutionOrder": true,
+                                "selectedTests": ["Test/testExample()"],
+                            ],
+                        ],
+                        "gatherCoverageData": true,
+                        "disableMainThreadChecker": true,
+                        "stopOnEveryMainThreadCheckerIssue": true,
+                    ],
+                ]
+                let scheme = try Scheme(name: "Scheme", jsonDictionary: schemeDictionary)
+
+                let expectedTest = Scheme.Test(
+                    config: "debug",
+                    gatherCoverageData: true,
+                    disableMainThreadChecker: true,
+                    targets: [
+                        "Target1",
+                        Scheme.Test.TestTarget(
+                            targetReference: "ExternalProject/Target2",
+                            randomExecutionOrder: true,
+                            parallelizable: true,
+                            selectedTests: ["Test/testExample()"]
                         ),
                     ]
                 )
@@ -941,6 +986,7 @@ class SpecLoadingTests: XCTestCase {
                             "build": [
                                 "parallelizeBuild": false,
                                 "buildImplicitDependencies": false,
+                                "runPostActionsOnFailure": true,
                                 "targets": [
                                     "Target${name_1}": "all",
                                     "Target2": "testing",
@@ -1006,6 +1052,7 @@ class SpecLoadingTests: XCTestCase {
 
                 try expect(scheme.build.parallelizeBuild) == false
                 try expect(scheme.build.buildImplicitDependencies) == false
+                try expect(scheme.build.runPostActionsOnFailure) == true
 
                 try expect(scheme.run?.storeKitConfiguration) == "Configuration.storekit"
 

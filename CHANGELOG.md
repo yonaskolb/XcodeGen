@@ -2,17 +2,87 @@
 
 ## Next Version
 
+## 2.24.0
+
+### Added
+
+- Added support for DocC Catalogs [#1091](https://github.com/yonaskolb/XcodeGen/pull/1091) @brevansio
+- Added support for "driver-extension" and "system-extension" product types [#1092](https://github.com/yonaskolb/XcodeGen/issues/1092) @vgorloff
+- Add support for conditionally linking dependencies for specific platforms [#1087](https://github.com/yonaskolb/XcodeGen/pull/1087) @daltonclaybrook
+- Add ability to specify UI testing screenshot behavior in test schemes [#942](https://github.com/yonaskolb/XcodeGen/pull/942) @daltonclaybrook
+
+### Changed
+- **Breaking**: Rename the `platform` field on `Dependency` to `platformFilter` [#1087](https://github.com/yonaskolb/XcodeGen/pull/1087) @daltonclaybrook
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.23.1...2.24.0)
+
+## 2.23.1
+
+### Changed
+- Reverted "Change FRAMEWORK_SEARCH_PATH for xcframeworks (#1015)", introduced in 2.20.0. XCFrameworks need to be
+  referenced directly in the project for Xcode's build system to extract the appropriate frameworks [#1081](https://github.com/yonaskolb/XcodeGen/pull/1081) @elliottwilliams
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.23.0...2.23.1)
+
+## 2.23.0
+
+#### Added
+- Added ability to set custom platform for dependency [#934](https://github.com/yonaskolb/XcodeGen/pull/934) @raptorxcz
+
+#### Fixed
+- Added `()` to config variant trimming charater set to fix scheme config variant lookups for some configs like `Debug (Development)` that broke in 2.22.0 [#1078](https://github.com/yonaskolb/XcodeGen/pull/1078) @DavidWoohyunLee
+- Fixed Linux builds on Swift 5.4 [#1083](https://github.com/yonaskolb/XcodeGen/pull/1083) @yonaskolb
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.22.0...2.23.0)
+
+## 2.22.0
+
+#### Added
+- Support `runPostActionsOnFailure` for running build post scripts on failing build [#1075](https://github.com/yonaskolb/XcodeGen/pull/1075) @freddi-kit
+
+#### Changed
+- Xcode no longer alerts to project changes after regeneration, due to internal workspace not regenerating if identical [#1072](https://github.com/yonaskolb/XcodeGen/pull/1072) @yonaskolb
+
+#### Fixed
+- Fixed no such module `DOT` error when package is used as a dependency [#1067](https://github.com/yonaskolb/XcodeGen/pull/1067) @yanamura
+- Fixed scheme config variant lookups for some configs like `ProdDebug` and `Prod-Debug` that broke in 2.21.0 [#1070](https://github.com/yonaskolb/XcodeGen/pull/1070) @yonaskolb
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.21.0...2.22.0)
+
+## 2.21.0
+
+#### Added
+- Support weak link for Swift Package Dependency [#1064](https://github.com/yonaskolb/XcodeGen/pull/1064) @freddi-kit
+
+#### Changed
+- Carthage frameworks are no longer embedded for "order-only" target dependencies. This avoid redundant embeds in situations where a target's sources _import_ a Carthage framework but do not have a binary dependency on it (like a test target which runs in a host app). [#1041](https://github.com/yonaskolb/XcodeGen/pull/1041) @elliottwilliams
+
+#### Fixed
+- The `Core` target is renamed to avoid collisions with other packages. [#1057](https://github.com/yonaskolb/XcodeGen/pull/1057) @elliottwilliams
+- Lookup scheme config variants by whole words, fixing incorrect assignment in names that contain subtrings of each other (eg PreProd and Prod) [#976](https://github.com/yonaskolb/XcodeGen/pull/976) @stefanomondino
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.20.0...2.21.0)
+
+## 2.20.0
+
 #### Added
 - Allow specifying a `copy` setting for each dependency. [#1038](https://github.com/yonaskolb/XcodeGen/pull/1039) @JakubBednar
 - Allow specifying a `github` name like `JohnSundell/Ink` instead of a full `url` for Swift Packages [#1029](https://github.com/yonaskolb/XcodeGen/pull/1029) @yonaskolb
+- Added explicity `LastUpgradeCheck` and `LastUpgradeVersion` override support so it's possible to override these properties without using the `project.xcodeVersion`. [1013](https://github.com/yonaskolb/XcodeGen/pull/1013) @Andre113
 - Added `macroExpansion` for `run` in `schemes` [#1036](https://github.com/yonaskolb/XcodeGen/pull/1036) @freddi-kit
-- Added `askForAppToLaunch` for `profile` in `schemes`  [#1035](https://github.com/yonaskolb/XcodeGen/pull/1035) @freddi-kit
+- Added `askForAppToLaunch` for `profile` in `schemes` [#1035](https://github.com/yonaskolb/XcodeGen/pull/1035) @freddi-kit
+- Added support for selectedTests in schemes `Test` configuration. [#913](https://github.com/yonaskolb/XcodeGen/pull/913) @ooodin
 
 #### Fixed
-- Fixed regression on **.storekit** configuration files' default build phase. [#1026](https://github.com/yonaskolb/XcodeGen/pull/1026) @jcolicchio
+- Fixed regression on `.storekit` configuration files' default build phase. [#1026](https://github.com/yonaskolb/XcodeGen/pull/1026) @jcolicchio
+- Fixed framework search paths when using `.xcframework`s. [#1015](https://github.com/yonaskolb/XcodeGen/pull/1015) @FranzBusch
+- Fixed bug where schemes without a build target would crash instead of displaying an error [#1040](https://github.com/yonaskolb/XcodeGen/pull/1040) @dalemyers
+- Fixed files with names ending in **Info.plist** (such as **GoogleServices-Info.plist**) from being omitted from the Copy Resources build phase. Now, only the resolved info plist file for each specific target is omitted. [#1027](https://github.com/yonaskolb/XcodeGen/pull/1027) @liamnichols
 
 #### Internal
 - Build universal binaries for release. XcodeGen now runs natively on Apple Silicon. [#1024](https://github.com/yonaskolb/XcodeGen/pull/1024) @thii
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.19.0...2.20.0)
 
 ## 2.19.0
 

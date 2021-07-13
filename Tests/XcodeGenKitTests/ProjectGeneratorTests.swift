@@ -1503,7 +1503,7 @@ class ProjectGeneratorTests: XCTestCase {
                     let project = Project(name: "test", targets: [frameworkWithSources])
                     let generator = ProjectGenerator(project: project)
                     let generatedProject = try generator.generateXcodeProject(in: destinationPath)
-                    let plists = generatedProject.pbxproj.buildConfigurations.compactMap { $0.buildSettings["INFOPLIST_FILE"] as? Path }
+                    let plists = generatedProject.pbxproj.buildConfigurations.compactMap { $0.buildSettings["INFOPLIST_FILE"] as? String }
                     try expect(plists.count) == 2
                     for plist in plists {
                         try expect(plist) == "TestProject/App_iOS/Info.plist"

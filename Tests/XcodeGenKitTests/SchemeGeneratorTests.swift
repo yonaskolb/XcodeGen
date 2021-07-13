@@ -69,6 +69,7 @@ class SchemeGeneratorTests: XCTestCase {
                 try expect(scheme.name) == "MyScheme"
                 try expect(xcscheme.buildAction?.buildImplicitDependencies) == true
                 try expect(xcscheme.buildAction?.parallelizeBuild) == true
+                try expect(xcscheme.buildAction?.runPostActionsOnFailure) == false
                 try expect(xcscheme.buildAction?.preActions.first?.title) == "Script"
                 try expect(xcscheme.buildAction?.preActions.first?.scriptText) == "echo Starting"
                 try expect(xcscheme.buildAction?.preActions.first?.environmentBuildable?.buildableName) == "MyApp.app"
@@ -107,6 +108,7 @@ class SchemeGeneratorTests: XCTestCase {
                 try expect(xcscheme.launchAction?.locationScenarioReference?.identifier) == "New York, NY, USA"
                 try expect(xcscheme.launchAction?.customLLDBInitFile) == "/sample/.lldbinit"
                 try expect(xcscheme.testAction?.customLLDBInitFile) == "/test/.lldbinit"
+                try expect(xcscheme.testAction?.systemAttachmentLifetime).to.beNil()
             }
 
             let frameworkTarget = Scheme.BuildTarget(target: .local(framework.name), buildTypes: [.archiving])
@@ -193,32 +195,44 @@ class SchemeGeneratorTests: XCTestCase {
             }
 
             $0.it("generates target schemes from config variant") {
-                let configVariants = ["Test", "Production"]
+                let configVariants = ["Test", "PreProd", "Prod"]
                 var target = app
                 target.scheme = TargetScheme(configVariants: configVariants)
+                
+                // Including here a double test for custom upper/lowercase, and dash delimited in config types
                 let configs: [Config] = [
-                    Config(name: "Test Debug", type: .debug),
-                    Config(name: "Production Debug", type: .debug),
+                    Config(name: "Test-Debug", type: .debug),
+                    Config(name: "PreProd debug", type: .debug),
+                    Config(name: "Prod-Debug", type: .debug),
                     Config(name: "Test Release", type: .release),
-                    Config(name: "Production Release", type: .release),
+                    Config(name: "PreProd release", type: .release),
+                    Config(name: "Prod Release", type: .release),
                 ]
 
                 let project = Project(name: "test", configs: configs, targets: [target, framework])
                 let xcodeProject = try project.generateXcodeProject()
 
-                try expect(xcodeProject.sharedData?.schemes.count) == 2
-
-                let xcscheme = try unwrap(xcodeProject.sharedData?.schemes
-                    .first(where: { $0.name == "\(target.name) Test" }))
-                let buildActionEntry = try unwrap(xcscheme.buildAction?.buildActionEntries.first)
-
-                try expect(buildActionEntry.buildableReference.blueprintIdentifier.count > 0) == true
-
-                try expect(xcscheme.launchAction?.buildConfiguration) == "Test Debug"
-                try expect(xcscheme.testAction?.buildConfiguration) == "Test Debug"
-                try expect(xcscheme.profileAction?.buildConfiguration) == "Test Release"
-                try expect(xcscheme.analyzeAction?.buildConfiguration) == "Test Debug"
-                try expect(xcscheme.archiveAction?.buildConfiguration) == "Test Release"
+                try expect(xcodeProject.sharedData?.schemes.count) == 3
+                try configVariants.forEach { variantName in
+                    let xcscheme = try unwrap(xcodeProject.sharedData?.schemes
+                                                .first(where: { $0.name == "\(target.name) \(variantName)" }))
+                    let buildActionEntry = try unwrap(xcscheme.buildAction?.buildActionEntries.first)
+                    
+                    try expect((buildActionEntry.buildableReference.blueprintIdentifier?.count ?? 0) > 0) == true
+                    if variantName == "PreProd" {
+                        try expect(xcscheme.launchAction?.buildConfiguration) == "\(variantName) debug"
+                        try expect(xcscheme.testAction?.buildConfiguration) == "\(variantName) debug"
+                        try expect(xcscheme.profileAction?.buildConfiguration) == "\(variantName) release"
+                        try expect(xcscheme.analyzeAction?.buildConfiguration) == "\(variantName) debug"
+                        try expect(xcscheme.archiveAction?.buildConfiguration) == "\(variantName) release"
+                    } else {
+                        try expect(xcscheme.launchAction?.buildConfiguration) == "\(variantName)-Debug"
+                        try expect(xcscheme.testAction?.buildConfiguration) == "\(variantName)-Debug"
+                        try expect(xcscheme.profileAction?.buildConfiguration) == "\(variantName) Release"
+                        try expect(xcscheme.analyzeAction?.buildConfiguration) == "\(variantName)-Debug"
+                        try expect(xcscheme.archiveAction?.buildConfiguration) == "\(variantName) Release"
+                    }
+                }
             }
 
             $0.it("generates environment variables for target schemes") {
@@ -432,7 +446,69 @@ class SchemeGeneratorTests: XCTestCase {
                 let xcscheme = try unwrap(xcodeProject.sharedData?.schemes.first)
                 try expect(xcscheme.launchAction?.macroExpansion?.buildableName) == "MyApp.app"
             }
+
+            $0.it("generates scheme capturing screenshots automatically and deleting on success") {
+                let xcscheme = try self.makeSnapshotScheme(
+                    buildTarget: buildTarget,
+                    captureScreenshotsAutomatically: true,
+                    deleteScreenshotsWhenEachTestSucceeds: true)
+
+                try expect(xcscheme.testAction?.systemAttachmentLifetime).to.beNil()
+            }
+
+            $0.it("generates scheme capturing screenshots and not deleting") {
+                let xcscheme = try self.makeSnapshotScheme(
+                    buildTarget: buildTarget,
+                    captureScreenshotsAutomatically: true,
+                    deleteScreenshotsWhenEachTestSucceeds: false)
+
+                try expect(xcscheme.testAction?.systemAttachmentLifetime) == .keepAlways
+            }
+
+            $0.it("generates scheme not capturing screenshots") {
+                let xcscheme = try self.makeSnapshotScheme(
+                    buildTarget: buildTarget,
+                    captureScreenshotsAutomatically: false,
+                    deleteScreenshotsWhenEachTestSucceeds: false)
+
+                try expect(xcscheme.testAction?.systemAttachmentLifetime) == .keepNever
+            }
+
+            $0.it("ignores screenshot delete preference when not capturing screenshots") {
+                let xcscheme = try self.makeSnapshotScheme(
+                    buildTarget: buildTarget,
+                    captureScreenshotsAutomatically: false,
+                    deleteScreenshotsWhenEachTestSucceeds: true)
+
+                try expect(xcscheme.testAction?.systemAttachmentLifetime) == .keepNever
+            }
         }
+    }
+    
+    func testOverrideLastUpgradeVersionWhenUserDidSpecify() throws {
+        var target = app
+        target.scheme = TargetScheme()
+        
+        let lastUpgradeKey = "LastUpgradeCheck"
+        let lastUpgradeValue = "1234"
+        let attributes: [String: Any] = [lastUpgradeKey: lastUpgradeValue]
+        let project = Project(name: "test", targets: [target, framework], attributes: attributes)
+        let xcodeProject = try project.generateXcodeProject()
+
+        let xcscheme = try unwrap(xcodeProject.sharedData?.schemes.first)
+        XCTAssertEqual(xcscheme.lastUpgradeVersion, lastUpgradeValue)
+    }
+
+    
+    func testDefaultLastUpgradeVersionWhenUserDidNotSpecify() throws {
+        var target = app
+        target.scheme = TargetScheme()
+
+        let project = Project(name: "test", targets: [target, framework])
+        let xcodeProject = try project.generateXcodeProject()
+
+        let xcscheme = try unwrap(xcodeProject.sharedData?.schemes.first)
+        XCTAssertEqual(xcscheme.lastUpgradeVersion, project.xcodeVersion)
     }
 
     // MARK: - Helpers
@@ -460,6 +536,22 @@ class SchemeGeneratorTests: XCTestCase {
             name: "watch_test",
             targets: [hostApp, watchApp, watchExtension],
             options: .init(schemePathPrefix: "../")
+        )
+        let xcodeProject = try project.generateXcodeProject()
+        return try unwrap(xcodeProject.sharedData?.schemes.first)
+    }
+
+    private func makeSnapshotScheme(buildTarget: Scheme.BuildTarget, captureScreenshotsAutomatically: Bool, deleteScreenshotsWhenEachTestSucceeds: Bool) throws -> XCScheme {
+        let scheme = Scheme(
+            name: "MyScheme",
+            build: Scheme.Build(targets: [buildTarget]),
+            run: Scheme.Run(config: "Debug"),
+            test: Scheme.Test(config: "Debug", captureScreenshotsAutomatically: captureScreenshotsAutomatically, deleteScreenshotsWhenEachTestSucceeds: deleteScreenshotsWhenEachTestSucceeds)
+        )
+        let project = Project(
+            name: "test",
+            targets: [app, framework],
+            schemes: [scheme]
         )
         let xcodeProject = try project.generateXcodeProject()
         return try unwrap(xcodeProject.sharedData?.schemes.first)

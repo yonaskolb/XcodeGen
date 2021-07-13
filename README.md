@@ -113,7 +113,7 @@ swift run xcodegen
 Add the following to your Package.swift file's dependencies:
 
 ```swift
-.package(url: "https://github.com/yonaskolb/XcodeGen.git", from: "2.19.0"),
+.package(url: "https://github.com/yonaskolb/XcodeGen.git", from: "2.24.0"),
 ```
 
 And then import wherever needed: `import XcodeGenKit`

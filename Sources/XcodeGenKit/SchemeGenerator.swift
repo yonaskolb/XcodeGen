@@ -70,12 +70,13 @@ public class SchemeGenerator {
                     for configVariant in targetScheme.configVariants {
 
                         let schemeName = "\(target.name) \(configVariant)"
-
+                        
                         let debugConfig = project.configs
-                            .first { $0.type == .debug && $0.name.contains(configVariant) }!
+                            .first(including: configVariant, for: .debug)!
+                        
                         let releaseConfig = project.configs
-                            .first { $0.type == .release && $0.name.contains(configVariant) }!
-
+                            .first(including: configVariant, for: .release)!
+                     
                         let scheme = Scheme(
                             name: schemeName,
                             target: target,
@@ -165,7 +166,10 @@ public class SchemeGenerator {
         if let targetName = scheme.run?.executable {
             schemeTarget = project.getTarget(targetName)
         } else {
-            let name = scheme.build.targets.first { $0.buildTypes.contains(.running) }?.target.name ?? scheme.build.targets.first!.target.name
+            guard let firstTarget = scheme.build.targets.first else {
+                throw SchemeGenerationError.missingBuildTargets(scheme.name)
+            }
+            let name = scheme.build.targets.first { $0.buildTypes.contains(.running) }?.target.name ?? firstTarget.target.name
             schemeTarget = target ?? project.getTarget(name)
         }
 
@@ -179,7 +183,8 @@ public class SchemeGenerator {
             preActions: scheme.build.preActions.map(getExecutionAction),
             postActions: scheme.build.postActions.map(getExecutionAction),
             parallelizeBuild: scheme.build.parallelizeBuild,
-            buildImplicitDependencies: scheme.build.buildImplicitDependencies
+            buildImplicitDependencies: scheme.build.buildImplicitDependencies,
+            runPostActionsOnFailure: scheme.build.runPostActionsOnFailure
         )
 
         let testables = zip(testTargets, testBuildTargetEntries).map { testTarget, testBuilEntries in
@@ -188,7 +193,9 @@ public class SchemeGenerator {
                 parallelizable: testTarget.parallelizable,
                 randomExecutionOrdering: testTarget.randomExecutionOrder,
                 buildableReference: testBuilEntries.buildableReference,
-                skippedTests: testTarget.skippedTests.map(XCScheme.TestItem.init)
+                skippedTests: testTarget.skippedTests.map(XCScheme.TestItem.init),
+                selectedTests: testTarget.selectedTests.map(XCScheme.TestItem.init),
+                useTestSelectionWhitelist: !testTarget.selectedTests.isEmpty ? true : nil
             )
         }
 
@@ -221,6 +228,7 @@ public class SchemeGenerator {
             environmentVariables: testVariables,
             language: scheme.test?.language,
             region: scheme.test?.region,
+            systemAttachmentLifetime: scheme.test?.systemAttachmentLifetime,
             customLLDBInitFile: scheme.test?.customLLDBInit
         )
 
@@ -292,9 +300,11 @@ public class SchemeGenerator {
             postActions: scheme.archive?.postActions.map(getExecutionAction) ?? []
         )
 
+        let lastUpgradeVersion = project.attributes["LastUpgradeCheck"] as? String ?? project.xcodeVersion
+
         return XCScheme(
             name: scheme.name,
-            lastUpgradeVersion: project.xcodeVersion,
+            lastUpgradeVersion: lastUpgradeVersion,
             version: project.schemeVersion,
             buildAction: buildAction,
             testAction: testAction,
@@ -350,6 +360,7 @@ enum SchemeGenerationError: Error, CustomStringConvertible {
 
     case missingTarget(TargetReference, projectPath: String)
     case missingProject(String)
+    case missingBuildTargets(String)
 
     var description: String {
         switch self {
@@ -357,6 +368,8 @@ enum SchemeGenerationError: Error, CustomStringConvertible {
             return "Unable to find target named \"\(target)\" in \"\(projectPath)\""
         case .missingProject(let project):
             return "Unable to find project reference named \"\(project)\" in project.yml"
+        case .missingBuildTargets(let name):
+            return "Unable to find at least one build target in scheme \"\(name)\""
         }
     }
 }
@@ -433,6 +446,19 @@ extension PBXProductType {
             return true
         default:
             return false
+        }
+    }
+}
+
+extension Scheme.Test {
+    var systemAttachmentLifetime: XCScheme.TestAction.AttachmentLifetime? {
+        switch (captureScreenshotsAutomatically, deleteScreenshotsWhenEachTestSucceeds) {
+        case (false, _):
+            return .keepNever
+        case (true, false):
+            return .keepAlways
+        case (true, true):
+            return nil
         }
     }
 }

@@ -73,25 +73,29 @@ public struct Scheme: Equatable {
     public struct Build: Equatable {
         public static let parallelizeBuildDefault = true
         public static let buildImplicitDependenciesDefault = true
+        public static let runPostActionsOnFailureDefault = false
 
         public var targets: [BuildTarget]
         public var parallelizeBuild: Bool
         public var buildImplicitDependencies: Bool
         public var preActions: [ExecutionAction]
         public var postActions: [ExecutionAction]
+        public var runPostActionsOnFailure: Bool
 
         public init(
             targets: [BuildTarget],
             parallelizeBuild: Bool = parallelizeBuildDefault,
             buildImplicitDependencies: Bool = buildImplicitDependenciesDefault,
             preActions: [ExecutionAction] = [],
-            postActions: [ExecutionAction] = []
+            postActions: [ExecutionAction] = [],
+            runPostActionsOnFailure: Bool = false
         ) {
             self.targets = targets
             self.parallelizeBuild = parallelizeBuild
             self.buildImplicitDependencies = buildImplicitDependencies
             self.preActions = preActions
             self.postActions = postActions
+            self.runPostActionsOnFailure = runPostActionsOnFailure
         }
     }
 
@@ -160,6 +164,8 @@ public struct Scheme: Equatable {
         public static let gatherCoverageDataDefault = false
         public static let disableMainThreadCheckerDefault = false
         public static let debugEnabledDefault = true
+        public static let captureScreenshotsAutomaticallyDefault = true
+        public static let deleteScreenshotsWhenEachTestSucceedsDefault = true
 
         public var config: String?
         public var gatherCoverageData: Bool
@@ -174,6 +180,8 @@ public struct Scheme: Equatable {
         public var region: String?
         public var debugEnabled: Bool
         public var customLLDBInit: String?
+        public var captureScreenshotsAutomatically: Bool
+        public var deleteScreenshotsWhenEachTestSucceeds: Bool
 
         public struct TestTarget: Equatable, ExpressibleByStringLiteral {
             public static let randomExecutionOrderDefault = false
@@ -185,19 +193,22 @@ public struct Scheme: Equatable {
             public var parallelizable: Bool
             public var skipped: Bool
             public var skippedTests: [String]
+            public var selectedTests: [String]
 
             public init(
                 targetReference: TargetReference,
                 randomExecutionOrder: Bool = randomExecutionOrderDefault,
                 parallelizable: Bool = parallelizableDefault,
                 skipped: Bool = false,
-                skippedTests: [String] = []
+                skippedTests: [String] = [],
+                selectedTests: [String] = []
             ) {
                 self.targetReference = targetReference
                 self.randomExecutionOrder = randomExecutionOrder
                 self.parallelizable = parallelizable
                 self.skipped = skipped
                 self.skippedTests = skippedTests
+                self.selectedTests = selectedTests
             }
 
             public init(stringLiteral value: String) {
@@ -207,6 +218,7 @@ public struct Scheme: Equatable {
                     parallelizable = false
                     skipped = false
                     skippedTests = []
+                    selectedTests = []
                 } catch {
                     fatalError(SpecParsingError.invalidTargetReference(value).description)
                 }
@@ -228,7 +240,9 @@ public struct Scheme: Equatable {
             language: String? = nil,
             region: String? = nil,
             debugEnabled: Bool = debugEnabledDefault,
-            customLLDBInit: String? = nil
+            customLLDBInit: String? = nil,
+            captureScreenshotsAutomatically: Bool = captureScreenshotsAutomaticallyDefault,
+            deleteScreenshotsWhenEachTestSucceeds: Bool = deleteScreenshotsWhenEachTestSucceedsDefault
         ) {
             self.config = config
             self.gatherCoverageData = gatherCoverageData
@@ -243,6 +257,8 @@ public struct Scheme: Equatable {
             self.region = region
             self.debugEnabled = debugEnabled
             self.customLLDBInit = customLLDBInit
+            self.captureScreenshotsAutomatically = captureScreenshotsAutomatically
+            self.deleteScreenshotsWhenEachTestSucceeds = deleteScreenshotsWhenEachTestSucceeds
         }
 
         public var shouldUseLaunchSchemeArgsEnv: Bool {
@@ -467,6 +483,8 @@ extension Scheme.Test: JSONObjectConvertible {
         region = jsonDictionary.json(atKeyPath: "region")
         debugEnabled = jsonDictionary.json(atKeyPath: "debugEnabled") ?? Scheme.Test.debugEnabledDefault
         customLLDBInit = jsonDictionary.json(atKeyPath: "customLLDBInit")
+        captureScreenshotsAutomatically = jsonDictionary.json(atKeyPath: "captureScreenshotsAutomatically") ?? Scheme.Test.captureScreenshotsAutomaticallyDefault
+        deleteScreenshotsWhenEachTestSucceeds = jsonDictionary.json(atKeyPath: "deleteScreenshotsWhenEachTestSucceeds") ?? Scheme.Test.deleteScreenshotsWhenEachTestSucceedsDefault
     }
 }
 
@@ -500,6 +518,14 @@ extension Scheme.Test: JSONEncodable {
             dict["customLLDBInit"] = customLLDBInit
         }
 
+        if captureScreenshotsAutomatically != Scheme.Test.captureScreenshotsAutomaticallyDefault {
+            dict["captureScreenshotsAutomatically"] = captureScreenshotsAutomatically
+        }
+
+        if deleteScreenshotsWhenEachTestSucceeds != Scheme.Test.deleteScreenshotsWhenEachTestSucceedsDefault {
+            dict["deleteScreenshotsWhenEachTestSucceeds"] = deleteScreenshotsWhenEachTestSucceeds
+        }
+
         return dict
     }
 }
@@ -512,6 +538,7 @@ extension Scheme.Test.TestTarget: JSONObjectConvertible {
         parallelizable = jsonDictionary.json(atKeyPath: "parallelizable") ?? Scheme.Test.TestTarget.parallelizableDefault
         skipped = jsonDictionary.json(atKeyPath: "skipped") ?? false
         skippedTests = jsonDictionary.json(atKeyPath: "skippedTests") ?? []
+        selectedTests = jsonDictionary.json(atKeyPath: "selectedTests") ?? []
     }
 }
 
@@ -666,6 +693,7 @@ extension Scheme.Build: JSONObjectConvertible {
         postActions = try jsonDictionary.json(atKeyPath: "postActions")?.map(Scheme.ExecutionAction.init) ?? []
         parallelizeBuild = jsonDictionary.json(atKeyPath: "parallelizeBuild") ?? Scheme.Build.parallelizeBuildDefault
         buildImplicitDependencies = jsonDictionary.json(atKeyPath: "buildImplicitDependencies") ?? Scheme.Build.buildImplicitDependenciesDefault
+        runPostActionsOnFailure = jsonDictionary.json(atKeyPath: "runPostActionsOnFailure") ?? Scheme.Build.runPostActionsOnFailureDefault
     }
 }
 
@@ -684,6 +712,9 @@ extension Scheme.Build: JSONEncodable {
         }
         if buildImplicitDependencies != Scheme.Build.buildImplicitDependenciesDefault {
             dict["buildImplicitDependencies"] = buildImplicitDependencies
+        }
+        if runPostActionsOnFailure != Scheme.Build.runPostActionsOnFailureDefault {
+            dict["runPostActionsOnFailure"] = runPostActionsOnFailure
         }
 
         return dict
