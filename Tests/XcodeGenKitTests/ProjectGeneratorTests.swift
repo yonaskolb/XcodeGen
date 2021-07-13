@@ -1604,6 +1604,25 @@ class ProjectGeneratorTests: XCTestCase {
                 return try project.generatePbxProj()
             }
             
+            func expectCopyPhase(in project:PBXProj, withFilePaths: [String]? = nil, withProductPaths: [String]? = nil, toSubFolder subfolder: PBXCopyFilesBuildPhase.SubFolder, dstPath: String? = nil) throws {
+                
+                let phases = project.copyFilesBuildPhases
+                try expect(phases.count) == 1
+                let phase = phases.first!
+                try expect(phase.dstSubfolderSpec) == subfolder
+                try expect(phase.dstPath) == dstPath
+                if let paths = withFilePaths {
+                    try expect(phase.files?.count) == paths.count
+                    let filePaths = phase.files!.map { $0.file!.path }
+                    try expect(filePaths) == paths
+                }
+                if let paths = withProductPaths {
+                    try expect(phase.files?.count) == paths.count
+                    let filePaths = phase.files!.map { $0.product!.productName }
+                    try expect(filePaths) == paths
+                }
+            }
+            
             $0.context("with target dependencies") {
                 $0.context("application") {
                     
@@ -1630,8 +1649,7 @@ class ProjectGeneratorTests: XCTestCase {
                         let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [ appA, appB ])
                         
                         // then
-                        let phases = pbxProject.copyFilesBuildPhases
-                        try expect(phases.count) == 0
+                        try expect(pbxProject.copyFilesBuildPhases.count) == 0
                     }
                     
                     $0.it("embeds them into custom location with copy phase spec") {
@@ -1646,14 +1664,7 @@ class ProjectGeneratorTests: XCTestCase {
                         let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [appA, appB])
                         
                         // then
-                        let phases = pbxProject.copyFilesBuildPhases
-                        try expect(phases.count) == 1
-                        let phase = phases.first!
-                        try expect(phase.dstSubfolderSpec) == .plugins
-                        try expect(phase.dstPath) == "test"
-                        try expect(phase.files?.count) == 1
-                        let filePaths = phase.files!.map { $0.file!.path }
-                        try expect(filePaths) == ["appA.app"]
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["appA.app"], toSubFolder: .plugins, dstPath: "test")
                     }
                 }
                 
@@ -1682,14 +1693,7 @@ class ProjectGeneratorTests: XCTestCase {
                         let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [frameworkA, frameworkB])
                         
                         // then
-                        let phases = pbxProject.copyFilesBuildPhases
-                        try expect(phases.count) == 1
-                        let phase = phases.first!
-                        try expect(phase.dstSubfolderSpec) == .frameworks
-                        try expect(phase.dstPath) == ""
-                        try expect(phase.files?.count) == 1
-                        let filePaths = phase.files!.map { $0.file!.path }
-                        try expect(filePaths) == ["frameworkA.framework"]
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["frameworkA.framework"], toSubFolder: .frameworks, dstPath: "")
                     }
                     
                     $0.it("embeds them into custom location with copy phase spec") {
@@ -1704,14 +1708,7 @@ class ProjectGeneratorTests: XCTestCase {
                         let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [frameworkA, frameworkB])
                         
                         // then
-                        let phases = pbxProject.copyFilesBuildPhases
-                        try expect(phases.count) == 1
-                        let phase = phases.first!
-                        try expect(phase.dstSubfolderSpec) == .plugins
-                        try expect(phase.dstPath) == "test"
-                        try expect(phase.files?.count) == 1
-                        let filePaths = phase.files!.map { $0.file!.path }
-                        try expect(filePaths) == ["frameworkA.framework"]
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["frameworkA.framework"], toSubFolder: .plugins, dstPath: "test")
                     }
                 }
                 
@@ -1740,14 +1737,7 @@ class ProjectGeneratorTests: XCTestCase {
                         let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [frameworkA, frameworkB])
                         
                         // then
-                        let phases = pbxProject.copyFilesBuildPhases
-                        try expect(phases.count) == 1
-                        let phase = phases.first!
-                        try expect(phase.dstSubfolderSpec) == .frameworks
-                        try expect(phase.dstPath) == ""
-                        try expect(phase.files?.count) == 1
-                        let filePaths = phase.files!.map { $0.file!.path }
-                        try expect(filePaths) == ["frameworkA.framework"]
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["frameworkA.framework"], toSubFolder: .frameworks, dstPath: "")
                     }
                     
                     $0.it("embeds them into custom location with copy phase spec") {
@@ -1762,14 +1752,7 @@ class ProjectGeneratorTests: XCTestCase {
                         let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [frameworkA, frameworkB])
                         
                         // then
-                        let phases = pbxProject.copyFilesBuildPhases
-                        try expect(phases.count) == 1
-                        let phase = phases.first!
-                        try expect(phase.dstSubfolderSpec) == .plugins
-                        try expect(phase.dstPath) == "test"
-                        try expect(phase.files?.count) == 1
-                        let filePaths = phase.files!.map { $0.file!.path }
-                        try expect(filePaths) == ["frameworkA.framework"]
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["frameworkA.framework"], toSubFolder: .plugins, dstPath: "test")
                     }
                 }
                 
@@ -1798,8 +1781,7 @@ class ProjectGeneratorTests: XCTestCase {
                         let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [frameworkA, frameworkB])
                         
                         // then
-                        let phases = pbxProject.copyFilesBuildPhases
-                        try expect(phases.count) == 0
+                        try expect(pbxProject.copyFilesBuildPhases.count) == 0
                     }
                     
                     $0.it("embeds them into custom location with copy phase spec") {
@@ -1814,14 +1796,7 @@ class ProjectGeneratorTests: XCTestCase {
                         let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [frameworkA, frameworkB])
                         
                         // then
-                        let phases = pbxProject.copyFilesBuildPhases
-                        try expect(phases.count) == 1
-                        let phase = phases.first!
-                        try expect(phase.dstSubfolderSpec) == .plugins
-                        try expect(phase.dstPath) == "test"
-                        try expect(phase.files?.count) == 1
-                        let filePaths = phase.files!.map { $0.file!.path }
-                        try expect(filePaths) == ["frameworkA.xcframework"]
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["frameworkA.xcframework"], toSubFolder: .plugins, dstPath: "test")
                     }
                 }
                 
@@ -1850,8 +1825,7 @@ class ProjectGeneratorTests: XCTestCase {
                         let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [libraryA, libraryB])
                         
                         // then
-                        let phases = pbxProject.copyFilesBuildPhases
-                        try expect(phases.count) == 0
+                        try expect(pbxProject.copyFilesBuildPhases.count) == 0
                     }
                     
                     $0.it("embeds them into custom location with copy phase spec") {
@@ -1866,14 +1840,7 @@ class ProjectGeneratorTests: XCTestCase {
                         let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [libraryA, libraryB])
                         
                         // then
-                        let phases = pbxProject.copyFilesBuildPhases
-                        try expect(phases.count) == 1
-                        let phase = phases.first!
-                        try expect(phase.dstSubfolderSpec) == .plugins
-                        try expect(phase.dstPath) == "test"
-                        try expect(phase.files?.count) == 1
-                        let filePaths = phase.files!.map { $0.file!.path }
-                        try expect(filePaths) == ["libraryA.dylib"]
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["libraryA.dylib"], toSubFolder: .plugins, dstPath: "test")
                     }
                 }
                 
@@ -1902,8 +1869,7 @@ class ProjectGeneratorTests: XCTestCase {
                         let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [libraryA, libraryB])
                         
                         // then
-                        let phases = pbxProject.copyFilesBuildPhases
-                        try expect(phases.count) == 0
+                        try expect(pbxProject.copyFilesBuildPhases.count) == 0
                     }
                     
                     $0.it("embeds them to custom location with copy phase spec") {
@@ -1918,14 +1884,7 @@ class ProjectGeneratorTests: XCTestCase {
                         let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [libraryA, libraryB])
                         
                         // then
-                        let phases = pbxProject.copyFilesBuildPhases
-                        try expect(phases.count) == 1
-                        let phase = phases.first!
-                        try expect(phase.dstSubfolderSpec) == .plugins
-                        try expect(phase.dstPath) == "test"
-                        try expect(phase.files?.count) == 1
-                        let filePaths = phase.files!.map { $0.file!.path }
-                        try expect(filePaths) == ["liblibraryA.a"]
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["liblibraryA.a"], toSubFolder: .plugins, dstPath: "test")
                     }
                 }
                 
@@ -1954,8 +1913,7 @@ class ProjectGeneratorTests: XCTestCase {
                         let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [bundleA, bundleB])
                         
                         // then
-                        let phases = pbxProject.copyFilesBuildPhases
-                        try expect(phases.count) == 0
+                        try expect(pbxProject.copyFilesBuildPhases.count) == 0
                     }
                     
                     $0.it("embeds them into custom location with copy phase spec") {
@@ -1970,14 +1928,7 @@ class ProjectGeneratorTests: XCTestCase {
                         let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [bundleA, bundleB])
                         
                         // then
-                        let phases = pbxProject.copyFilesBuildPhases
-                        try expect(phases.count) == 1
-                        let phase = phases.first!
-                        try expect(phase.dstSubfolderSpec) == .plugins
-                        try expect(phase.dstPath) == "test"
-                        try expect(phase.files?.count) == 1
-                        let filePaths = phase.files!.map { $0.file!.path }
-                        try expect(filePaths) == ["bundleA.bundle"]
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["bundleA.bundle"], toSubFolder: .plugins, dstPath: "test")
                     }
                 }
                 
@@ -2006,8 +1957,7 @@ class ProjectGeneratorTests: XCTestCase {
                         let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [bundleA, bundleB])
                         
                         // then
-                        let phases = pbxProject.copyFilesBuildPhases
-                        try expect(phases.count) == 0
+                        try expect(pbxProject.copyFilesBuildPhases.count) == 0
                     }
                     
                     $0.it("embeds them into custom location with copy phase spec") {
@@ -2022,14 +1972,7 @@ class ProjectGeneratorTests: XCTestCase {
                         let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [bundleA, bundleB])
                         
                         // then
-                        let phases = pbxProject.copyFilesBuildPhases
-                        try expect(phases.count) == 1
-                        let phase = phases.first!
-                        try expect(phase.dstSubfolderSpec) == .plugins
-                        try expect(phase.dstPath) == "test"
-                        try expect(phase.files?.count) == 1
-                        let filePaths = phase.files!.map { $0.file!.path }
-                        try expect(filePaths) == ["bundleA.xctest"]
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["bundleA.xctest"], toSubFolder: .plugins, dstPath: "test")
                     }
                 }
             
@@ -2058,8 +2001,7 @@ class ProjectGeneratorTests: XCTestCase {
                         let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [bundleA, bundleB])
                         
                         // then
-                        let phases = pbxProject.copyFilesBuildPhases
-                        try expect(phases.count) == 0
+                        try expect(pbxProject.copyFilesBuildPhases.count) == 0
                     }
                     
                     $0.it("embeds them into custom location with copy phase spec") {
@@ -2074,14 +2016,7 @@ class ProjectGeneratorTests: XCTestCase {
                         let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [bundleA, bundleB])
                         
                         // then
-                        let phases = pbxProject.copyFilesBuildPhases
-                        try expect(phases.count) == 1
-                        let phase = phases.first!
-                        try expect(phase.dstSubfolderSpec) == .plugins
-                        try expect(phase.dstPath) == "test"
-                        try expect(phase.files?.count) == 1
-                        let filePaths = phase.files!.map { $0.file!.path }
-                        try expect(filePaths) == ["bundleA.xctest"]
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["bundleA.xctest"], toSubFolder: .plugins, dstPath: "test")
                     }
                 }
                 
@@ -2110,14 +2045,7 @@ class ProjectGeneratorTests: XCTestCase {
                         let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [extA, extB])
                         
                         // then
-                        let phases = pbxProject.copyFilesBuildPhases
-                        try expect(phases.count) == 1
-                        let phase = phases.first!
-                        try expect(phase.dstSubfolderSpec) == .plugins
-                        try expect(phase.dstPath) == ""
-                        try expect(phase.files?.count) == 1
-                        let filePaths = phase.files!.map { $0.file!.path }
-                        try expect(filePaths) == ["extA.appex"]
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["extA.appex"], toSubFolder: .plugins, dstPath: "")
                     }
                     
                     $0.it("embeds them into custom location with copy phase spec") {
@@ -2132,14 +2060,7 @@ class ProjectGeneratorTests: XCTestCase {
                         let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [extA, extB])
                         
                         // then
-                        let phases = pbxProject.copyFilesBuildPhases
-                        try expect(phases.count) == 1
-                        let phase = phases.first!
-                        try expect(phase.dstSubfolderSpec) == .executables
-                        try expect(phase.dstPath) == "test"
-                        try expect(phase.files?.count) == 1
-                        let filePaths = phase.files!.map { $0.file!.path }
-                        try expect(filePaths) == ["extA.appex"]
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["extA.appex"], toSubFolder: .executables, dstPath: "test")
                     }
                 }
                 
@@ -2168,8 +2089,7 @@ class ProjectGeneratorTests: XCTestCase {
                         let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [toolA, toolB])
                         
                         // then
-                        let phases = pbxProject.copyFilesBuildPhases
-                        try expect(phases.count) == 0
+                        try expect(pbxProject.copyFilesBuildPhases.count) == 0
                     }
                     
                     $0.it("embeds them into custom location with copy phase spec") {
@@ -2184,14 +2104,7 @@ class ProjectGeneratorTests: XCTestCase {
                         let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [toolA, toolB])
                         
                         // then
-                        let phases = pbxProject.copyFilesBuildPhases
-                        try expect(phases.count) == 1
-                        let phase = phases.first!
-                        try expect(phase.dstSubfolderSpec) == .plugins
-                        try expect(phase.dstPath) == "test"
-                        try expect(phase.files?.count) == 1
-                        let filePaths = phase.files!.map { $0.file!.path }
-                        try expect(filePaths) == ["toolA"]
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["toolA"], toSubFolder: .plugins, dstPath: "test")
                     }
                 }
                 
@@ -2220,8 +2133,7 @@ class ProjectGeneratorTests: XCTestCase {
                         let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [appA, appB])
                         
                         // then
-                        let phases = pbxProject.copyFilesBuildPhases
-                        try expect(phases.count) == 0
+                        try expect(pbxProject.copyFilesBuildPhases.count) == 0
                     }
                     
                     $0.it("embeds them into custom location with copy phase spec") {
@@ -2236,14 +2148,7 @@ class ProjectGeneratorTests: XCTestCase {
                         let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [appA, appB])
                         
                         // then
-                        let phases = pbxProject.copyFilesBuildPhases
-                        try expect(phases.count) == 1
-                        let phase = phases.first!
-                        try expect(phase.dstSubfolderSpec) == .plugins
-                        try expect(phase.dstPath) == "test"
-                        try expect(phase.files?.count) == 1
-                        let filePaths = phase.files!.map { $0.file!.path }
-                        try expect(filePaths) == ["appA.app"]
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["appA.app"], toSubFolder: .plugins, dstPath: "test")
                     }
                 }
                 
@@ -2272,8 +2177,7 @@ class ProjectGeneratorTests: XCTestCase {
                         let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [appA, appB])
                         
                         // then
-                        let phases = pbxProject.copyFilesBuildPhases
-                        try expect(phases.count) == 0
+                        try expect(pbxProject.copyFilesBuildPhases.count) == 0
                     }
                     
                     $0.it("embeds them into custom location with copy phase spec") {
@@ -2288,14 +2192,7 @@ class ProjectGeneratorTests: XCTestCase {
                         let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [appA, appB])
                         
                         // then
-                        let phases = pbxProject.copyFilesBuildPhases
-                        try expect(phases.count) == 1
-                        let phase = phases.first!
-                        try expect(phase.dstSubfolderSpec) == .plugins
-                        try expect(phase.dstPath) == "test"
-                        try expect(phase.files?.count) == 1
-                        let filePaths = phase.files!.map { $0.file!.path }
-                        try expect(filePaths) == ["appA.app"]
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["appA.app"], toSubFolder: .plugins, dstPath: "test")
                     }
                 }
                 
@@ -2324,8 +2221,7 @@ class ProjectGeneratorTests: XCTestCase {
                         let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [appA, appB])
                         
                         // then
-                        let phases = pbxProject.copyFilesBuildPhases
-                        try expect(phases.count) == 0
+                        try expect(pbxProject.copyFilesBuildPhases.count) == 0
                     }
                     
                     $0.it("embeds them into custom location with copy phase spec") {
@@ -2340,14 +2236,7 @@ class ProjectGeneratorTests: XCTestCase {
                         let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [appA, appB])
                         
                         // then
-                        let phases = pbxProject.copyFilesBuildPhases
-                        try expect(phases.count) == 1
-                        let phase = phases.first!
-                        try expect(phase.dstSubfolderSpec) == .plugins
-                        try expect(phase.dstPath) == "test"
-                        try expect(phase.files?.count) == 1
-                        let filePaths = phase.files!.map { $0.file!.path }
-                        try expect(filePaths) == ["appA.app"]
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["appA.app"], toSubFolder: .plugins, dstPath: "test")
                     }
                 }
                 
@@ -2376,14 +2265,7 @@ class ProjectGeneratorTests: XCTestCase {
                         let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [extA, extB])
                         
                         // then
-                        let phases = pbxProject.copyFilesBuildPhases
-                        try expect(phases.count) == 1
-                        let phase = phases.first!
-                        try expect(phase.dstSubfolderSpec) == .plugins
-                        try expect(phase.dstPath) == ""
-                        try expect(phase.files?.count) == 1
-                        let filePaths = phase.files!.map { $0.file!.path }
-                        try expect(filePaths) == ["extA.appex"]
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["extA.appex"], toSubFolder: .plugins, dstPath: "")
                     }
                     
                     $0.it("embeds them into custom location with copy phase spec") {
@@ -2398,14 +2280,7 @@ class ProjectGeneratorTests: XCTestCase {
                         let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [extA, extB])
                         
                         // then
-                        let phases = pbxProject.copyFilesBuildPhases
-                        try expect(phases.count) == 1
-                        let phase = phases.first!
-                        try expect(phase.dstSubfolderSpec) == .frameworks
-                        try expect(phase.dstPath) == "test"
-                        try expect(phase.files?.count) == 1
-                        let filePaths = phase.files!.map { $0.file!.path }
-                        try expect(filePaths) == ["extA.appex"]
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["extA.appex"], toSubFolder: .frameworks, dstPath: "test")
                     }
                 }
                 
@@ -2434,14 +2309,7 @@ class ProjectGeneratorTests: XCTestCase {
                         let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [extA, extB])
                         
                         // then
-                        let phases = pbxProject.copyFilesBuildPhases
-                        try expect(phases.count) == 1
-                        let phase = phases.first!
-                        try expect(phase.dstSubfolderSpec) == .plugins
-                        try expect(phase.dstPath) == ""
-                        try expect(phase.files?.count) == 1
-                        let filePaths = phase.files!.map { $0.file!.path }
-                        try expect(filePaths) == ["extA.appex"]
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["extA.appex"], toSubFolder: .plugins, dstPath: "")
                     }
                     
                     $0.it("embeds them into custom location with copy phase spec") {
@@ -2456,14 +2324,7 @@ class ProjectGeneratorTests: XCTestCase {
                         let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [extA, extB])
                         
                         // then
-                        let phases = pbxProject.copyFilesBuildPhases
-                        try expect(phases.count) == 1
-                        let phase = phases.first!
-                        try expect(phase.dstSubfolderSpec) == .frameworks
-                        try expect(phase.dstPath) == "test"
-                        try expect(phase.files?.count) == 1
-                        let filePaths = phase.files!.map { $0.file!.path }
-                        try expect(filePaths) == ["extA.appex"]
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["extA.appex"], toSubFolder: .frameworks, dstPath: "test")
                     }
                 }
                 
@@ -2492,14 +2353,7 @@ class ProjectGeneratorTests: XCTestCase {
                         let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [extA, extB])
                         
                         // then
-                        let phases = pbxProject.copyFilesBuildPhases
-                        try expect(phases.count) == 1
-                        let phase = phases.first!
-                        try expect(phase.dstSubfolderSpec) == .plugins
-                        try expect(phase.dstPath) == ""
-                        try expect(phase.files?.count) == 1
-                        let filePaths = phase.files!.map { $0.file!.path }
-                        try expect(filePaths) == ["extA.appex"]
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["extA.appex"], toSubFolder: .plugins, dstPath: "")
                     }
                     
                     $0.it("embeds them into custom location with copy phase spec") {
@@ -2514,14 +2368,7 @@ class ProjectGeneratorTests: XCTestCase {
                         let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [extA, extB])
                         
                         // then
-                        let phases = pbxProject.copyFilesBuildPhases
-                        try expect(phases.count) == 1
-                        let phase = phases.first!
-                        try expect(phase.dstSubfolderSpec) == .frameworks
-                        try expect(phase.dstPath) == "test"
-                        try expect(phase.files?.count) == 1
-                        let filePaths = phase.files!.map { $0.file!.path }
-                        try expect(filePaths) == ["extA.appex"]
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["extA.appex"], toSubFolder: .frameworks, dstPath: "test")
                     }
                 }
                 
@@ -2550,8 +2397,7 @@ class ProjectGeneratorTests: XCTestCase {
                         let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [appA, appB])
                         
                         // then
-                        let phases = pbxProject.copyFilesBuildPhases
-                        try expect(phases.count) == 0
+                        try expect(pbxProject.copyFilesBuildPhases.count) == 0
                     }
                     
                     $0.it("embeds them into custom location with copy phase spec") {
@@ -2566,14 +2412,7 @@ class ProjectGeneratorTests: XCTestCase {
                         let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [appA, appB])
                         
                         // then
-                        let phases = pbxProject.copyFilesBuildPhases
-                        try expect(phases.count) == 1
-                        let phase = phases.first!
-                        try expect(phase.dstSubfolderSpec) == .plugins
-                        try expect(phase.dstPath) == "test"
-                        try expect(phase.files?.count) == 1
-                        let filePaths = phase.files!.map { $0.file!.path }
-                        try expect(filePaths) == ["appA.app"]
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["appA.app"], toSubFolder: .plugins, dstPath: "test")
                     }
                 }
                 
@@ -2602,14 +2441,7 @@ class ProjectGeneratorTests: XCTestCase {
                         let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [extA, extB])
                         
                         // then
-                        let phases = pbxProject.copyFilesBuildPhases
-                        try expect(phases.count) == 1
-                        let phase = phases.first!
-                        try expect(phase.dstSubfolderSpec) == .plugins
-                        try expect(phase.dstPath) == ""
-                        try expect(phase.files?.count) == 1
-                        let filePaths = phase.files!.map { $0.file!.path }
-                        try expect(filePaths) == ["extA.appex"]
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["extA.appex"], toSubFolder: .plugins, dstPath: "")
                     }
                     
                     $0.it("embeds them into custom location with copy phase spec") {
@@ -2624,14 +2456,7 @@ class ProjectGeneratorTests: XCTestCase {
                         let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [extA, extB])
                         
                         // then
-                        let phases = pbxProject.copyFilesBuildPhases
-                        try expect(phases.count) == 1
-                        let phase = phases.first!
-                        try expect(phase.dstSubfolderSpec) == .frameworks
-                        try expect(phase.dstPath) == "test"
-                        try expect(phase.files?.count) == 1
-                        let filePaths = phase.files!.map { $0.file!.path }
-                        try expect(filePaths) == ["extA.appex"]
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["extA.appex"], toSubFolder: .frameworks, dstPath: "test")
                     }
                 }
                 
@@ -2660,14 +2485,7 @@ class ProjectGeneratorTests: XCTestCase {
                         let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [extA, extB])
                         
                         // then
-                        let phases = pbxProject.copyFilesBuildPhases
-                        try expect(phases.count) == 1
-                        let phase = phases.first!
-                        try expect(phase.dstSubfolderSpec) == .plugins
-                        try expect(phase.dstPath) == ""
-                        try expect(phase.files?.count) == 1
-                        let filePaths = phase.files!.map { $0.file!.path }
-                        try expect(filePaths) == ["extA.appex"]
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["extA.appex"], toSubFolder: .plugins, dstPath: "")
                     }
                     
                     $0.it("embeds them into custom location with copy phase spec") {
@@ -2682,14 +2500,7 @@ class ProjectGeneratorTests: XCTestCase {
                         let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [extA, extB])
                         
                         // then
-                        let phases = pbxProject.copyFilesBuildPhases
-                        try expect(phases.count) == 1
-                        let phase = phases.first!
-                        try expect(phase.dstSubfolderSpec) == .frameworks
-                        try expect(phase.dstPath) == "test"
-                        try expect(phase.files?.count) == 1
-                        let filePaths = phase.files!.map { $0.file!.path }
-                        try expect(filePaths) == ["extA.appex"]
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["extA.appex"], toSubFolder: .frameworks, dstPath: "test")
                     }
                 }
                 
@@ -2718,14 +2529,7 @@ class ProjectGeneratorTests: XCTestCase {
                         let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [xpcA, xpcB])
                         
                         // then
-                        let phases = pbxProject.copyFilesBuildPhases
-                        try expect(phases.count) == 1
-                        let phase = phases.first!
-                        try expect(phase.dstSubfolderSpec) == .productsDirectory
-                        try expect(phase.dstPath) == "$(CONTENTS_FOLDER_PATH)/XPCServices"
-                        try expect(phase.files?.count) == 1
-                        let filePaths = phase.files!.map { $0.file!.path }
-                        try expect(filePaths) == ["xpcA.xpc"]
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["xpcA.xpc"], toSubFolder: .productsDirectory, dstPath: "$(CONTENTS_FOLDER_PATH)/XPCServices")
                     }
                     
                     $0.it("embeds them into custom location with copy phase spec") {
@@ -2740,14 +2544,7 @@ class ProjectGeneratorTests: XCTestCase {
                         let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [xpcA, xpcB])
                         
                         // then
-                        let phases = pbxProject.copyFilesBuildPhases
-                        try expect(phases.count) == 1
-                        let phase = phases.first!
-                        try expect(phase.dstSubfolderSpec) == .frameworks
-                        try expect(phase.dstPath) == "test"
-                        try expect(phase.files?.count) == 1
-                        let filePaths = phase.files!.map { $0.file!.path }
-                        try expect(filePaths) == ["xpcA.xpc"]
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["xpcA.xpc"], toSubFolder: .frameworks, dstPath: "test")
                     }
                 }
                 
@@ -2776,8 +2573,7 @@ class ProjectGeneratorTests: XCTestCase {
                         let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [bundleA, bundleB])
                         
                         // then
-                        let phases = pbxProject.copyFilesBuildPhases
-                        try expect(phases.count) == 0
+                        try expect(pbxProject.copyFilesBuildPhases.count) == 0
                     }
                     
                     $0.it("embeds them into custom location with copy phase spec") {
@@ -2792,14 +2588,7 @@ class ProjectGeneratorTests: XCTestCase {
                         let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [bundleA, bundleB])
                         
                         // then
-                        let phases = pbxProject.copyFilesBuildPhases
-                        try expect(phases.count) == 1
-                        let phase = phases.first!
-                        try expect(phase.dstSubfolderSpec) == .frameworks
-                        try expect(phase.dstPath) == "test"
-                        try expect(phase.files?.count) == 1
-                        let filePaths = phase.files!.map { $0.file!.path }
-                        try expect(filePaths) == ["bundleA.octest"]
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["bundleA.octest"], toSubFolder: .frameworks, dstPath: "test")
                     }
                 }
                 
@@ -2828,14 +2617,7 @@ class ProjectGeneratorTests: XCTestCase {
                         let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [extA, extB])
                         
                         // then
-                        let phases = pbxProject.copyFilesBuildPhases
-                        try expect(phases.count) == 1
-                        let phase = phases.first!
-                        try expect(phase.dstSubfolderSpec) == .plugins
-                        try expect(phase.dstPath) == ""
-                        try expect(phase.files?.count) == 1
-                        let filePaths = phase.files!.map { $0.file!.path }
-                        try expect(filePaths) == ["extA.appex"]
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["extA.appex"], toSubFolder: .plugins, dstPath: "")
                     }
                     
                     $0.it("embeds them into custom location with copy phase spec") {
@@ -2850,14 +2632,7 @@ class ProjectGeneratorTests: XCTestCase {
                         let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [extA, extB])
                         
                         // then
-                        let phases = pbxProject.copyFilesBuildPhases
-                        try expect(phases.count) == 1
-                        let phase = phases.first!
-                        try expect(phase.dstSubfolderSpec) == .frameworks
-                        try expect(phase.dstPath) == "test"
-                        try expect(phase.files?.count) == 1
-                        let filePaths = phase.files!.map { $0.file!.path }
-                        try expect(filePaths) == ["extA.appex"]
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["extA.appex"], toSubFolder: .frameworks, dstPath: "test")
                     }
                 }
                 
@@ -2886,8 +2661,7 @@ class ProjectGeneratorTests: XCTestCase {
                         let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [pkgA, pkgB])
                         
                         // then
-                        let phases = pbxProject.copyFilesBuildPhases
-                        try expect(phases.count) == 0
+                        try expect(pbxProject.copyFilesBuildPhases.count) == 0
                     }
                     
                     $0.it("embeds them into custom location with copy phase spec") {
@@ -2902,14 +2676,7 @@ class ProjectGeneratorTests: XCTestCase {
                         let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [pkgA, pkgB])
                         
                         // then
-                        let phases = pbxProject.copyFilesBuildPhases
-                        try expect(phases.count) == 1
-                        let phase = phases.first!
-                        try expect(phase.dstSubfolderSpec) == .frameworks
-                        try expect(phase.dstPath) == "test"
-                        try expect(phase.files?.count) == 1
-                        let filePaths = phase.files!.map { $0.file!.path }
-                        try expect(filePaths) == ["pkgA.instrpkg"]
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["pkgA.instrpkg"], toSubFolder: .frameworks, dstPath: "test")
                     }
                 }
                 
@@ -2938,14 +2705,7 @@ class ProjectGeneratorTests: XCTestCase {
                         let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [extA, extB])
                         
                         // then
-                        let phases = pbxProject.copyFilesBuildPhases
-                        try expect(phases.count) == 1
-                        let phase = phases.first!
-                        try expect(phase.dstSubfolderSpec) == .plugins
-                        try expect(phase.dstPath) == ""
-                        try expect(phase.files?.count) == 1
-                        let filePaths = phase.files!.map { $0.file!.path }
-                        try expect(filePaths) == ["extA.appex"]
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["extA.appex"], toSubFolder: .plugins, dstPath: "")
                     }
                     
                     $0.it("embeds them into custom location with copy phase spec") {
@@ -2960,14 +2720,7 @@ class ProjectGeneratorTests: XCTestCase {
                         let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [extA, extB])
                         
                         // then
-                        let phases = pbxProject.copyFilesBuildPhases
-                        try expect(phases.count) == 1
-                        let phase = phases.first!
-                        try expect(phase.dstSubfolderSpec) == .frameworks
-                        try expect(phase.dstPath) == "test"
-                        try expect(phase.files?.count) == 1
-                        let filePaths = phase.files!.map { $0.file!.path }
-                        try expect(filePaths) == ["extA.appex"]
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["extA.appex"], toSubFolder: .frameworks, dstPath: "test")
                     }
                 }
                 
@@ -2996,14 +2749,7 @@ class ProjectGeneratorTests: XCTestCase {
                         let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [clipA, clipB])
                         
                         // then
-                        let phases = pbxProject.copyFilesBuildPhases
-                        try expect(phases.count) == 1
-                        let phase = phases.first!
-                        try expect(phase.dstSubfolderSpec) == .productsDirectory
-                        try expect(phase.dstPath) == "$(CONTENTS_FOLDER_PATH)/AppClips"
-                        try expect(phase.files?.count) == 1
-                        let filePaths = phase.files!.map { $0.file!.path }
-                        try expect(filePaths) == ["clipA.app"]
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["clipA.app"], toSubFolder: .productsDirectory, dstPath: "$(CONTENTS_FOLDER_PATH)/AppClips")
                     }
                     
                     $0.it("embeds them into custom location with copy phase spec") {
@@ -3018,14 +2764,7 @@ class ProjectGeneratorTests: XCTestCase {
                         let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [clipA, clipB])
                         
                         // then
-                        let phases = pbxProject.copyFilesBuildPhases
-                        try expect(phases.count) == 1
-                        let phase = phases.first!
-                        try expect(phase.dstSubfolderSpec) == .plugins
-                        try expect(phase.dstPath) == "test"
-                        try expect(phase.files?.count) == 1
-                        let filePaths = phase.files!.map { $0.file!.path }
-                        try expect(filePaths) == ["clipA.app"]
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["clipA.app"], toSubFolder: .plugins, dstPath: "test")
                     }
                 }
                 
@@ -3054,8 +2793,7 @@ class ProjectGeneratorTests: XCTestCase {
                         let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [libraryA, libraryB])
                         
                         // then
-                        let phases = pbxProject.copyFilesBuildPhases
-                        try expect(phases.count) == 0
+                        try expect(pbxProject.copyFilesBuildPhases.count) == 0
                     }
                     
                     $0.it("embeds them to custom location with copy phase spec") {
@@ -3070,14 +2808,7 @@ class ProjectGeneratorTests: XCTestCase {
                         let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [libraryA, libraryB])
                         
                         // then
-                        let phases = pbxProject.copyFilesBuildPhases
-                        try expect(phases.count) == 1
-                        let phase = phases.first!
-                        try expect(phase.dstSubfolderSpec) == .plugins
-                        try expect(phase.dstPath) == "test"
-                        try expect(phase.files?.count) == 1
-                        let filePaths = phase.files!.map { $0.file!.path }
-                        try expect(filePaths) == ["libraryA.metallib"]
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["libraryA.metallib"], toSubFolder: .plugins, dstPath: "test")
                     }
                 }
             }
@@ -3095,14 +2826,7 @@ class ProjectGeneratorTests: XCTestCase {
                     let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [])
                     
                     // then
-                    let phases = pbxProject.copyFilesBuildPhases
-                    try expect(phases.count) == 1
-                    let phase = phases.first!
-                    try expect(phase.dstSubfolderSpec) == .frameworks
-                    try expect(phase.dstPath) == ""
-                    try expect(phase.files?.count) == 1
-                    let filePaths = phase.files!.map { $0.file!.path }
-                    try expect(filePaths) == ["frameworkA.framework"]
+                    try expectCopyPhase(in: pbxProject, withFilePaths: ["frameworkA.framework"], toSubFolder: .frameworks, dstPath: "")
                 }
                 
                 $0.it("embeds them into custom location with copy phase spec") {
@@ -3117,14 +2841,7 @@ class ProjectGeneratorTests: XCTestCase {
                     let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [])
                     
                     // then
-                    let phases = pbxProject.copyFilesBuildPhases
-                    try expect(phases.count) == 1
-                    let phase = phases.first!
-                    try expect(phase.dstSubfolderSpec) == .plugins
-                    try expect(phase.dstPath) == "test"
-                    try expect(phase.files?.count) == 1
-                    let filePaths = phase.files!.map { $0.file!.path }
-                    try expect(filePaths) == ["frameworkA.framework"]
+                    try expectCopyPhase(in: pbxProject, withFilePaths: ["frameworkA.framework"], toSubFolder: .plugins, dstPath: "test")
                 }
                 
                 $0.it("generates single copy phase for multiple frameworks with same copy phase spec") {
@@ -3139,14 +2856,7 @@ class ProjectGeneratorTests: XCTestCase {
                     let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [])
                     
                     // then
-                    let phases = pbxProject.copyFilesBuildPhases
-                    try expect(phases.count) == 1
-                    let phase = phases.first!
-                    try expect(phase.dstSubfolderSpec) == .plugins
-                    try expect(phase.dstPath) == "test"
-                    try expect(phase.files?.count) == 2
-                    let filePaths = phase.files!.map { $0.file!.path }
-                    try expect(filePaths) == ["frameworkA.framework", "frameworkB.framework"]
+                    try expectCopyPhase(in: pbxProject, withFilePaths: ["frameworkA.framework", "frameworkB.framework"], toSubFolder: .plugins, dstPath: "test")
                 }
             }
             
@@ -3164,14 +2874,7 @@ class ProjectGeneratorTests: XCTestCase {
                     let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [])
                     
                     // then
-                    let phases = pbxProject.copyFilesBuildPhases
-                    try expect(phases.count) == 1
-                    let phase = phases.first!
-                    try expect(phase.dstSubfolderSpec) == .frameworks
-                    try expect(phase.dstPath) == ""
-                    try expect(phase.files?.count) == 1
-                    let filePaths = phase.files!.map { $0.file!.path }
-                    try expect(filePaths) == ["System/Library/Frameworks/sdkA.framework"]
+                    try expectCopyPhase(in: pbxProject, withFilePaths: ["System/Library/Frameworks/sdkA.framework"], toSubFolder: .frameworks, dstPath: "")
                 }
                 
                 $0.it("embeds them into custom location with copy phase spec") {
@@ -3186,14 +2889,7 @@ class ProjectGeneratorTests: XCTestCase {
                     let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [])
                     
                     // then
-                    let phases = pbxProject.copyFilesBuildPhases
-                    try expect(phases.count) == 1
-                    let phase = phases.first!
-                    try expect(phase.dstSubfolderSpec) == .plugins
-                    try expect(phase.dstPath) == "test"
-                    try expect(phase.files?.count) == 1
-                    let filePaths = phase.files!.map { $0.file!.path }
-                    try expect(filePaths) == ["System/Library/Frameworks/sdkA.framework"]
+                    try expectCopyPhase(in: pbxProject, withFilePaths: ["System/Library/Frameworks/sdkA.framework"], toSubFolder: .plugins, dstPath: "test")
                 }
             }
             
@@ -3215,14 +2911,7 @@ class ProjectGeneratorTests: XCTestCase {
                     let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [], packages: packages)
                     
                     // then
-                    let phases = pbxProject.copyFilesBuildPhases
-                    try expect(phases.count) == 1
-                    let phase = phases.first!
-                    try expect(phase.dstSubfolderSpec) == .frameworks
-                    try expect(phase.dstPath) == ""
-                    try expect(phase.files?.count) == 1
-                    let products = phase.files!.map { $0.product!.productName }
-                    try expect(products) == ["RxSwift"]
+                    try expectCopyPhase(in: pbxProject, withProductPaths: ["RxSwift"], toSubFolder: .frameworks, dstPath: "")
                 }
                 
                 $0.it("embeds them into custom location with copy phase spec") {
@@ -3237,14 +2926,7 @@ class ProjectGeneratorTests: XCTestCase {
                     let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [], packages: packages)
                     
                     // then
-                    let phases = pbxProject.copyFilesBuildPhases
-                    try expect(phases.count) == 1
-                    let phase = phases.first!
-                    try expect(phase.dstSubfolderSpec) == .plugins
-                    try expect(phase.dstPath) == "test"
-                    try expect(phase.files?.count) == 1
-                    let products = phase.files!.map { $0.product!.productName }
-                    try expect(products) == ["RxSwift"]
+                    try expectCopyPhase(in: pbxProject, withProductPaths: ["RxSwift"], toSubFolder: .plugins, dstPath: "test")
                 }
             }
             
@@ -3262,14 +2944,7 @@ class ProjectGeneratorTests: XCTestCase {
                     let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [])
                     
                     // then
-                    let phases = pbxProject.copyFilesBuildPhases
-                    try expect(phases.count) == 1
-                    let phase = phases.first!
-                    try expect(phase.dstSubfolderSpec) == .frameworks
-                    try expect(phase.dstPath) == ""
-                    try expect(phase.files?.count) == 1
-                    let filePaths = phase.files!.map { $0.file!.path }
-                    try expect(filePaths) == ["frameworkA.framework"]
+                    try expectCopyPhase(in: pbxProject, withFilePaths: ["frameworkA.framework"], toSubFolder: .frameworks, dstPath: "")
                 }
                 
                 $0.it("embeds them into custom location with copy phase spec") {
@@ -3284,14 +2959,7 @@ class ProjectGeneratorTests: XCTestCase {
                     let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [])
                     
                     // then
-                    let phases = pbxProject.copyFilesBuildPhases
-                    try expect(phases.count) == 1
-                    let phase = phases.first!
-                    try expect(phase.dstSubfolderSpec) == .plugins
-                    try expect(phase.dstPath) == "test"
-                    try expect(phase.files?.count) == 1
-                    let filePaths = phase.files!.map { $0.file!.path }
-                    try expect(filePaths) == ["frameworkA.framework"]
+                    try expectCopyPhase(in: pbxProject, withFilePaths: ["frameworkA.framework"], toSubFolder: .plugins, dstPath: "test")
                 }
             }
             
@@ -3308,14 +2976,8 @@ class ProjectGeneratorTests: XCTestCase {
                     let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [])
                     
                     // then
-                    let phases = pbxProject.copyFilesBuildPhases
-                    try expect(phases.count) == 1
-                    let phase = phases.first!
-                    try expect(phase.dstSubfolderSpec) == .resources
                     /// XcodeGen ignores embed: false for bundles
-                    try expect(phase.files?.count) == 2
-                    let filePaths = phase.files!.map { $0.file!.path }
-                    try expect(filePaths) == ["bundleA.bundle", "bundleB.bundle"]
+                    try expectCopyPhase(in: pbxProject, withFilePaths: ["bundleA.bundle", "bundleB.bundle"], toSubFolder: .resources)
                 }
                 
                 $0.it("ignores custom copy phase spec") {
@@ -3330,14 +2992,8 @@ class ProjectGeneratorTests: XCTestCase {
                     let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [])
                     
                     // then
-                    let phases = pbxProject.copyFilesBuildPhases
-                    try expect(phases.count) == 1
-                    let phase = phases.first!
-                    try expect(phase.dstSubfolderSpec) == .resources
                     /// XcodeGen ignores embed: false for bundles
-                    try expect(phase.files?.count) == 2
-                    let filePaths = phase.files!.map { $0.file!.path }
-                    try expect(filePaths) == ["bundleA.bundle", "bundleB.bundle"]
+                    try expectCopyPhase(in: pbxProject, withFilePaths: ["bundleA.bundle", "bundleB.bundle"], toSubFolder: .resources)
                 }
             }
         }
