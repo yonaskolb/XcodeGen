@@ -1,4 +1,4 @@
-# Generated from /Users/yonas/Developer/XcodeGen/Tests/Fixtures/CarthageProject/Project.xcodeproj
+# Generated from /Users/ryohey/Repository/XcodeGen/Tests/Fixtures/CarthageProject/Project.xcodeproj
 attributes:
   LastUpgradeCheck: 1200
 configs:
@@ -6,26 +6,9 @@ configs:
   Release: release
 name: Project
 options:
-  bundleIdPrefix: null
-  carthageBuildPath: null
-  carthageExecutablePath: null
   defaultConfig: Debug
-  deploymentTarget:
-    iOS: null
-    macOS: null
-    tvOS: null
-    watchOS: null
-  developmentLanguage: null
   groupSortPosition: bottom
-  indentWidth: null
-  localPackagesGroup: null
-  minimumXcodeGenVersion: null
-  postGenCommand: null
-  preGenCommand: null
-  tabWidth: null
   transitivelyLinkDependencies: false
-  usesTabs: null
-  xcodeVersion: null
 settings:
   configs:
     Debug:
@@ -47,46 +30,15 @@ settings:
 targets:
   Framework_iOS:
     dependencies:
-    - codeSign: null
-      embed: null
-      framework: Result.framework
-      link: null
-    - codeSign: null
-      embed: null
-      framework: Alamofire.framework
-      link: null
-    - codeSign: null
-      embed: null
-      framework: CarthageTestFixture.framework
-      link: null
-    - codeSign: null
-      embed: null
-      framework: DependencyFixtureA.framework
-      link: null
-    - codeSign: null
-      embed: null
-      framework: DependencyFixtureB.framework
-      link: null
-    - codeSign: null
-      embed: null
-      framework: ReactiveSwift.framework
-      link: null
-    - codeSign: null
-      embed: null
-      framework: ReactiveCocoa.framework
-      link: null
-    - codeSign: null
-      embed: null
-      framework: ReactiveMapKit.framework
-      link: null
-    deploymentTarget: null
-    directlyEmbedCarthageDependencies: null
-    entitlements: null
-    info: null
-    legacy: null
+    - framework: Result.framework
+    - framework: Alamofire.framework
+    - framework: CarthageTestFixture.framework
+    - framework: DependencyFixtureA.framework
+    - framework: DependencyFixtureB.framework
+    - framework: ReactiveSwift.framework
+    - framework: ReactiveCocoa.framework
+    - framework: ReactiveMapKit.framework
     platform: iOS
-    requiresObjCLinking: null
-    scheme: null
     settings:
       configs:
         Debug:
@@ -107,50 +59,18 @@ targets:
           PRODUCT_NAME: Framework
           SDKROOT: iphoneos
           TARGETED_DEVICE_FAMILY: 1,2
-    transitivelyLinkDependencies: null
     type: framework
   Framework_macOS:
     dependencies:
-    - codeSign: null
-      embed: null
-      framework: Result.framework
-      link: null
-    - codeSign: null
-      embed: null
-      framework: Alamofire.framework
-      link: null
-    - codeSign: null
-      embed: null
-      framework: CarthageTestFixture.framework
-      link: null
-    - codeSign: null
-      embed: null
-      framework: DependencyFixtureA.framework
-      link: null
-    - codeSign: null
-      embed: null
-      framework: DependencyFixtureB.framework
-      link: null
-    - codeSign: null
-      embed: null
-      framework: ReactiveSwift.framework
-      link: null
-    - codeSign: null
-      embed: null
-      framework: ReactiveCocoa.framework
-      link: null
-    - codeSign: null
-      embed: null
-      framework: ReactiveMapKit.framework
-      link: null
-    deploymentTarget: null
-    directlyEmbedCarthageDependencies: null
-    entitlements: null
-    info: null
-    legacy: null
+    - framework: Result.framework
+    - framework: Alamofire.framework
+    - framework: CarthageTestFixture.framework
+    - framework: DependencyFixtureA.framework
+    - framework: DependencyFixtureB.framework
+    - framework: ReactiveSwift.framework
+    - framework: ReactiveCocoa.framework
+    - framework: ReactiveMapKit.framework
     platform: iOS
-    requiresObjCLinking: null
-    scheme: null
     settings:
       configs:
         Debug:
@@ -171,50 +91,18 @@ targets:
           - '@executable_path/../Frameworks'
           PRODUCT_NAME: Framework
           SDKROOT: macosx
-    transitivelyLinkDependencies: null
     type: framework
   Framework_tvOS:
     dependencies:
-    - codeSign: null
-      embed: null
-      framework: Result.framework
-      link: null
-    - codeSign: null
-      embed: null
-      framework: Alamofire.framework
-      link: null
-    - codeSign: null
-      embed: null
-      framework: CarthageTestFixture.framework
-      link: null
-    - codeSign: null
-      embed: null
-      framework: DependencyFixtureA.framework
-      link: null
-    - codeSign: null
-      embed: null
-      framework: DependencyFixtureB.framework
-      link: null
-    - codeSign: null
-      embed: null
-      framework: ReactiveSwift.framework
-      link: null
-    - codeSign: null
-      embed: null
-      framework: ReactiveCocoa.framework
-      link: null
-    - codeSign: null
-      embed: null
-      framework: ReactiveMapKit.framework
-      link: null
-    deploymentTarget: null
-    directlyEmbedCarthageDependencies: null
-    entitlements: null
-    info: null
-    legacy: null
+    - framework: Result.framework
+    - framework: Alamofire.framework
+    - framework: CarthageTestFixture.framework
+    - framework: DependencyFixtureA.framework
+    - framework: DependencyFixtureB.framework
+    - framework: ReactiveSwift.framework
+    - framework: ReactiveCocoa.framework
+    - framework: ReactiveMapKit.framework
     platform: iOS
-    requiresObjCLinking: null
-    scheme: null
     settings:
       configs:
         Debug:
@@ -235,46 +123,17 @@ targets:
           PRODUCT_NAME: Framework
           SDKROOT: appletvos
           TARGETED_DEVICE_FAMILY: 3
-    transitivelyLinkDependencies: null
     type: framework
   Framework_watchOS:
     dependencies:
-    - codeSign: null
-      embed: null
-      framework: Result.framework
-      link: null
-    - codeSign: null
-      embed: null
-      framework: Alamofire.framework
-      link: null
-    - codeSign: null
-      embed: null
-      framework: CarthageTestFixture.framework
-      link: null
-    - codeSign: null
-      embed: null
-      framework: DependencyFixtureA.framework
-      link: null
-    - codeSign: null
-      embed: null
-      framework: DependencyFixtureB.framework
-      link: null
-    - codeSign: null
-      embed: null
-      framework: ReactiveSwift.framework
-      link: null
-    - codeSign: null
-      embed: null
-      framework: ReactiveCocoa.framework
-      link: null
-    deploymentTarget: null
-    directlyEmbedCarthageDependencies: null
-    entitlements: null
-    info: null
-    legacy: null
+    - framework: Result.framework
+    - framework: Alamofire.framework
+    - framework: CarthageTestFixture.framework
+    - framework: DependencyFixtureA.framework
+    - framework: DependencyFixtureB.framework
+    - framework: ReactiveSwift.framework
+    - framework: ReactiveCocoa.framework
     platform: iOS
-    requiresObjCLinking: null
-    scheme: null
     settings:
       configs:
         Debug:
@@ -289,5 +148,4 @@ targets:
           PRODUCT_NAME: Framework
           SDKROOT: watchos
           TARGETED_DEVICE_FAMILY: 4
-    transitivelyLinkDependencies: null
     type: framework

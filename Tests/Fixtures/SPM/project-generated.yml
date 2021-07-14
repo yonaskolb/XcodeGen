@@ -1,4 +1,4 @@
-# Generated from /Users/yonas/Developer/XcodeGen/Tests/Fixtures/SPM/SPM.xcodeproj
+# Generated from /Users/ryohey/Repository/XcodeGen/Tests/Fixtures/SPM/SPM.xcodeproj
 attributes:
   LastUpgradeCheck: 1200
 configs:
@@ -6,33 +6,15 @@ configs:
   Release: release
 name: SPM
 options:
-  bundleIdPrefix: null
-  carthageBuildPath: null
-  carthageExecutablePath: null
   defaultConfig: Debug
-  deploymentTarget:
-    iOS: null
-    macOS: null
-    tvOS: null
-    watchOS: null
-  developmentLanguage: null
   groupSortPosition: bottom
-  indentWidth: null
-  localPackagesGroup: null
-  minimumXcodeGenVersion: null
-  postGenCommand: null
-  preGenCommand: null
-  tabWidth: null
   transitivelyLinkDependencies: false
-  usesTabs: null
-  xcodeVersion: null
 schemes:
   App:
     analyze:
       config: Debug
     archive:
       config: Release
-      customArchiveName: null
     build:
       targets:
         App:
@@ -44,16 +26,9 @@ schemes:
     profile:
       config: Release
     run:
-      askForAppToLaunch: null
       config: Debug
-      executable: null
-      language: null
-      launchAutomaticallySubstyle: null
-      region: null
     test:
       config: Debug
-      language: null
-      region: null
 settings:
   configs:
     Debug:
@@ -77,22 +52,9 @@ settings:
 targets:
   App:
     dependencies:
-    - codeSign: null
-      embed: null
-      link: null
-      target: StaticLibrary
-    - codeSign: null
-      embed: null
-      link: null
-      target: libStaticLibrary.a
-    deploymentTarget: null
-    directlyEmbedCarthageDependencies: null
-    entitlements: null
-    info: null
-    legacy: null
+    - target: StaticLibrary
+    - target: libStaticLibrary.a
     platform: iOS
-    requiresObjCLinking: null
-    scheme: null
     settings:
       configs:
         Debug:
@@ -106,21 +68,10 @@ targets:
           - $(inherited)
           - -ObjC
     sources:
-    - buildPhase: null
-      createIntermediateGroups: null
-      group: null
-      headerVisibility: null
-      name: SPM
+    - name: SPM
       path: SPM
-      type: null
-    transitivelyLinkDependencies: null
     type: application
   StaticLibrary:
-    deploymentTarget: null
-    directlyEmbedCarthageDependencies: null
-    entitlements: null
-    info: null
-    legacy: null
     platform: iOS
     postCompileScripts:
     - inputFiles:
@@ -133,8 +84,6 @@ targets:
 
         '
       shell: /bin/sh
-    requiresObjCLinking: null
-    scheme: null
     settings:
       configs:
         Debug:
@@ -148,29 +97,13 @@ targets:
           - '@executable_path/Frameworks'
           SKIP_INSTALL: YES
     sources:
-    - buildPhase: null
-      createIntermediateGroups: null
-      group: null
-      headerVisibility: null
-      name: StaticLibrary
+    - name: StaticLibrary
       path: StaticLibrary
-      type: null
-    transitivelyLinkDependencies: null
     type: library.static
   Tests:
     dependencies:
-    - codeSign: null
-      embed: null
-      link: null
-      target: App
-    deploymentTarget: null
-    directlyEmbedCarthageDependencies: null
-    entitlements: null
-    info: null
-    legacy: null
+    - target: App
     platform: iOS
-    requiresObjCLinking: null
-    scheme: null
     settings:
       configs:
         Debug:
@@ -180,12 +113,6 @@ targets:
           BUNDLE_LOADER: $(TEST_HOST)
           TEST_HOST: $(BUILT_PRODUCTS_DIR)/App.app/App
     sources:
-    - buildPhase: null
-      createIntermediateGroups: null
-      group: null
-      headerVisibility: null
-      name: SPMTests
+    - name: SPMTests
       path: SPMTests
-      type: null
-    transitivelyLinkDependencies: null
     type: bundle.unit-test

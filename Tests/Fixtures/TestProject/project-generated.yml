@@ -1,4 +1,4 @@
-# Generated from /Users/yonas/Developer/XcodeGen/Tests/Fixtures/TestProject/Project.xcodeproj
+# Generated from /Users/ryohey/Repository/XcodeGen/Tests/Fixtures/TestProject/Project.xcodeproj
 aggregateTargets:
   SuperTarget:
     buildScripts:
@@ -6,7 +6,6 @@ aggregateTargets:
       runOnlyWhenInstalling: false
       script: echo "do the thing"
       shell: /bin/sh
-    scheme: null
     settings:
       configs:
         Production Debug:
@@ -38,33 +37,15 @@ configs:
   Test Release: release
 name: Project
 options:
-  bundleIdPrefix: null
-  carthageBuildPath: null
-  carthageExecutablePath: null
   defaultConfig: Production Debug
-  deploymentTarget:
-    iOS: null
-    macOS: null
-    tvOS: null
-    watchOS: null
-  developmentLanguage: null
   groupSortPosition: bottom
-  indentWidth: null
-  localPackagesGroup: null
-  minimumXcodeGenVersion: null
-  postGenCommand: null
-  preGenCommand: null
-  tabWidth: null
   transitivelyLinkDependencies: false
-  usesTabs: null
-  xcodeVersion: null
 schemes:
   App_Clip:
     analyze:
       config: Production Debug
     archive:
       config: Production Release
-      customArchiveName: null
     build:
       targets:
         App_Clip:
@@ -76,16 +57,9 @@ schemes:
     profile:
       config: Production Release
     run:
-      askForAppToLaunch: null
       config: Production Debug
-      executable: null
-      language: null
-      launchAutomaticallySubstyle: null
-      region: null
     test:
       config: Production Debug
-      language: null
-      region: null
       targets:
       - App_Clip_Tests
       - App_Clip_UITests
@@ -94,7 +68,6 @@ schemes:
       config: Production Debug
     archive:
       config: Production Release
-      customArchiveName: null
     build:
       targets:
         App_iOS:
@@ -106,13 +79,8 @@ schemes:
     profile:
       config: Production Release
     run:
-      askForAppToLaunch: null
       config: Production Debug
       customLLDBInit: ${SRCROOT}/.lldbinit
-      executable: null
-      language: null
-      launchAutomaticallySubstyle: null
-      region: null
       simulateLocation:
         allow: true
         defaultLocation: Honolulu, HI, USA
@@ -120,8 +88,6 @@ schemes:
       config: Production Debug
       customLLDBInit: ${SRCROOT}/.lldbinit
       gatherCoverageData: true
-      language: null
-      region: null
       targets:
       - App_iOS_UITests
       - name: App_iOS_Tests
@@ -132,7 +98,6 @@ schemes:
       config: Production Debug
     archive:
       config: Production Release
-      customArchiveName: null
     build:
       targets:
         App_iOS:
@@ -147,16 +112,11 @@ schemes:
         MyEnabledArgument: true
       config: Production Release
     run:
-      askForAppToLaunch: null
       commandLineArguments:
         MyDisabledArgument: false
         MyEnabledArgument: true
       config: Production Debug
       disableMainThreadChecker: true
-      executable: null
-      language: null
-      launchAutomaticallySubstyle: null
-      region: null
       stopOnEveryMainThreadCheckerIssue: true
     test:
       commandLineArguments:
@@ -165,8 +125,6 @@ schemes:
       config: Production Debug
       disableMainThreadChecker: true
       gatherCoverageData: true
-      language: null
-      region: null
       targets:
       - App_iOS_Tests
       - App_iOS_UITests
@@ -175,7 +133,6 @@ schemes:
       config: Staging Debug
     archive:
       config: Staging Release
-      customArchiveName: null
     build:
       targets:
         App_iOS:
@@ -190,16 +147,11 @@ schemes:
         MyEnabledArgument: true
       config: Staging Release
     run:
-      askForAppToLaunch: null
       commandLineArguments:
         MyDisabledArgument: false
         MyEnabledArgument: true
       config: Staging Debug
       disableMainThreadChecker: true
-      executable: null
-      language: null
-      launchAutomaticallySubstyle: null
-      region: null
       stopOnEveryMainThreadCheckerIssue: true
     test:
       commandLineArguments:
@@ -208,8 +160,6 @@ schemes:
       config: Staging Debug
       disableMainThreadChecker: true
       gatherCoverageData: true
-      language: null
-      region: null
       targets:
       - App_iOS_Tests
       - App_iOS_UITests
@@ -218,7 +168,6 @@ schemes:
       config: Test Debug
     archive:
       config: Test Release
-      customArchiveName: null
     build:
       targets:
         App_iOS:
@@ -233,16 +182,11 @@ schemes:
         MyEnabledArgument: true
       config: Test Release
     run:
-      askForAppToLaunch: null
       commandLineArguments:
         MyDisabledArgument: false
         MyEnabledArgument: true
       config: Test Debug
       disableMainThreadChecker: true
-      executable: null
-      language: null
-      launchAutomaticallySubstyle: null
-      region: null
       stopOnEveryMainThreadCheckerIssue: true
     test:
       commandLineArguments:
@@ -251,8 +195,6 @@ schemes:
       config: Test Debug
       disableMainThreadChecker: true
       gatherCoverageData: true
-      language: null
-      region: null
       targets:
       - App_iOS_Tests
       - App_iOS_UITests
@@ -261,7 +203,6 @@ schemes:
       config: Production Debug
     archive:
       config: Production Release
-      customArchiveName: null
     build:
       targets:
         App_macOS:
@@ -273,22 +214,14 @@ schemes:
     profile:
       config: Production Release
     run:
-      askForAppToLaunch: null
       config: Production Debug
-      executable: null
-      language: null
-      launchAutomaticallySubstyle: null
-      region: null
     test:
       config: Production Debug
-      language: null
-      region: null
   App_watchOS:
     analyze:
       config: Production Debug
     archive:
       config: Production Release
-      customArchiveName: null
     build:
       targets:
         App_watchOS:
@@ -300,22 +233,14 @@ schemes:
     profile:
       config: Production Release
     run:
-      askForAppToLaunch: null
       config: Production Debug
-      executable: null
-      language: null
-      launchAutomaticallySubstyle: null
-      region: null
     test:
       config: Production Debug
-      language: null
-      region: null
   Framework:
     analyze:
       config: Production Debug
     archive:
       config: Production Release
-      customArchiveName: null
     build:
       buildImplicitDependencies: false
       parallelizeBuild: false
@@ -333,15 +258,10 @@ schemes:
     profile:
       config: Production Release
     run:
-      askForAppToLaunch: null
       commandLineArguments:
         argument: true
         argument.with.dot: true
       config: Production Debug
-      executable: null
-      language: null
-      launchAutomaticallySubstyle: null
-      region: null
     test:
       config: Production Debug
       gatherCoverageData: true
@@ -352,7 +272,6 @@ schemes:
       config: Production Debug
     archive:
       config: Production Release
-      customArchiveName: null
     build:
       targets:
         Tool:
@@ -364,22 +283,14 @@ schemes:
     profile:
       config: Production Release
     run:
-      askForAppToLaunch: null
       config: Production Debug
-      executable: null
-      language: null
-      launchAutomaticallySubstyle: null
-      region: null
     test:
       config: Production Debug
-      language: null
-      region: null
   iMessageApp:
     analyze:
       config: Production Debug
     archive:
       config: Production Release
-      customArchiveName: null
     build:
       targets:
         iMessageApp:
@@ -391,22 +302,14 @@ schemes:
     profile:
       config: Production Release
     run:
-      askForAppToLaunch: null
       config: Production Debug
-      executable: null
-      language: null
-      launchAutomaticallySubstyle: null
-      region: null
     test:
       config: Production Debug
-      language: null
-      region: null
   iMessageExtension:
     analyze:
       config: Production Debug
     archive:
       config: Production Release
-      customArchiveName: null
     build:
       targets:
         iMessageExtension:
@@ -418,17 +321,11 @@ schemes:
     profile:
       config: Production Release
     run:
-      askForAppToLaunch: null
       config: Production Debug
       debugEnabled: false
-      executable: null
-      language: null
       launchAutomaticallySubstyle: 2
-      region: null
     test:
       config: Production Debug
-      language: null
-      region: null
 settings:
   configs:
     Production Debug:
@@ -501,34 +398,12 @@ settings:
 targets:
   App_Clip:
     dependencies:
-    - codeSign: null
-      embed: null
-      link: null
-      target: Framework_iOS
-    - codeSign: null
-      embed: null
-      link: null
-      target: StaticLibrary_ObjC_iOS
-    - codeSign: null
-      embed: null
-      link: null
-      target: Framework.framework
-    - codeSign: null
-      embed: null
-      framework: Result.framework
-      link: null
-    - codeSign: null
-      embed: null
-      link: null
-      target: libStaticLibrary_ObjC.a
-    deploymentTarget: null
-    directlyEmbedCarthageDependencies: null
-    entitlements: null
-    info: null
-    legacy: null
+    - target: Framework_iOS
+    - target: StaticLibrary_ObjC_iOS
+    - target: Framework.framework
+    - framework: Result.framework
+    - target: libStaticLibrary_ObjC.a
     platform: iOS
-    requiresObjCLinking: null
-    scheme: null
     settings:
       configs:
         Production Debug:
@@ -616,37 +491,15 @@ targets:
           SDKROOT: iphoneos
           TARGETED_DEVICE_FAMILY: 1,2
     sources:
-    - buildPhase: null
-      createIntermediateGroups: null
-      group: null
-      headerVisibility: null
-      name: App_Clip
+    - name: App_Clip
       path: App_Clip
-      type: null
-    transitivelyLinkDependencies: null
     type: application.on-demand-install-capable
   App_Clip_Tests:
     dependencies:
-    - codeSign: null
-      embed: null
-      link: null
-      target: App_Clip
-    - codeSign: null
-      embed: null
-      link: null
-      target: TestFramework
-    - codeSign: null
-      embed: null
-      framework: swift-tagged.framework
-      link: null
-    deploymentTarget: null
-    directlyEmbedCarthageDependencies: null
-    entitlements: null
-    info: null
-    legacy: null
+    - target: App_Clip
+    - target: TestFramework
+    - framework: swift-tagged.framework
     platform: iOS
-    requiresObjCLinking: null
-    scheme: null
     settings:
       configs:
         Production Debug:
@@ -728,29 +581,13 @@ targets:
           TARGETED_DEVICE_FAMILY: 1,2
           TEST_HOST: $(BUILT_PRODUCTS_DIR)/App_Clip.app/App_Clip
     sources:
-    - buildPhase: null
-      createIntermediateGroups: null
-      group: null
-      headerVisibility: null
-      name: App_iOS_Tests
+    - name: App_iOS_Tests
       path: App_iOS_Tests
-      type: null
-    transitivelyLinkDependencies: null
     type: bundle.unit-test
   App_Clip_UITests:
     dependencies:
-    - codeSign: null
-      embed: null
-      link: null
-      target: App_Clip
-    deploymentTarget: null
-    directlyEmbedCarthageDependencies: null
-    entitlements: null
-    info: null
-    legacy: null
+    - target: App_Clip
     platform: iOS
-    requiresObjCLinking: null
-    scheme: null
     settings:
       configs:
         Production Debug:
@@ -832,74 +669,24 @@ targets:
           TARGETED_DEVICE_FAMILY: 1,2
           TEST_TARGET_NAME: App_Clip
     sources:
-    - buildPhase: null
-      createIntermediateGroups: null
-      group: null
-      headerVisibility: null
-      name: App_Clip_UITests
+    - name: App_Clip_UITests
       path: App_Clip_UITests
-      type: null
-    transitivelyLinkDependencies: null
     type: bundle.ui-testing
   App_iOS:
     dependencies:
-    - codeSign: null
-      embed: null
-      link: null
-      target: App_Clip
-    - codeSign: null
-      embed: null
-      link: null
-      target: App_watchOS
-    - codeSign: null
-      embed: null
-      link: null
-      target: Framework2_iOS
-    - codeSign: null
-      embed: null
-      link: null
-      target: Framework_iOS
-    - codeSign: null
-      embed: null
-      link: null
-      target: StaticLibrary_ObjC_iOS
-    - codeSign: null
-      embed: null
-      link: null
-      target: iMessageApp
-    - codeSign: null
-      embed: null
-      link: null
-      target: ExternalTarget.framework
-    - codeSign: null
-      embed: null
-      link: null
-      sdk: Contacts.framework
-    - codeSign: null
-      embed: null
-      link: null
-      target: Framework2.framework
-    - codeSign: null
-      embed: null
-      link: null
-      target: Framework.framework
-    - codeSign: null
-      embed: null
-      framework: Result.framework
-      link: null
-    - codeSign: null
-      embed: null
-      link: null
-      target: libStaticLibrary_ObjC.a
-    - codeSign: null
-      embed: null
-      framework: SwiftyJSON.framework
-      link: null
-    deploymentTarget: null
-    directlyEmbedCarthageDependencies: null
-    entitlements: null
-    info: null
-    legacy: null
+    - target: App_Clip
+    - target: App_watchOS
+    - target: Framework2_iOS
+    - target: Framework_iOS
+    - target: StaticLibrary_ObjC_iOS
+    - target: iMessageApp
+    - target: ExternalTarget.framework
+    - sdk: Contacts.framework
+    - target: Framework2.framework
+    - target: Framework.framework
+    - framework: Result.framework
+    - target: libStaticLibrary_ObjC.a
+    - framework: SwiftyJSON.framework
     platform: iOS
     postbuildScripts:
     - name: Strip Unused Architectures from Frameworks
@@ -947,8 +734,6 @@ targets:
 
         '
       shell: /bin/sh
-    requiresObjCLinking: null
-    scheme: null
     settings:
       configs:
         Production Debug:
@@ -1036,156 +821,43 @@ targets:
           SDKROOT: iphoneos
           TARGETED_DEVICE_FAMILY: 1,2
     sources:
-    - buildPhase: null
-      createIntermediateGroups: null
-      group: null
-      headerVisibility: null
-      name: null
-      path: App_iOS/AppDelegate.swift
-      type: null
-    - buildPhase: null
-      createIntermediateGroups: null
-      group: null
-      headerVisibility: null
-      name: null
-      path: App_iOS/Assets.xcassets
-      type: null
-    - buildPhase: null
-      createIntermediateGroups: null
-      group: null
-      headerVisibility: null
-      name: Base
+    - path: App_iOS/AppDelegate.swift
+    - path: App_iOS/Assets.xcassets
+    - name: Base
       path: App_iOS/Base.lproj/LaunchScreen.storyboard
-      type: null
-    - buildPhase: null
-      createIntermediateGroups: null
-      group: null
-      headerVisibility: null
-      name: Base
+    - name: Base
       path: App_iOS/Base.lproj/Localizable.strings
-      type: null
-    - buildPhase: null
-      createIntermediateGroups: null
-      group: null
-      headerVisibility: null
-      name: Base
+    - name: Base
       path: App_iOS/Base.lproj/Localizable.stringsdict
-      type: null
-    - buildPhase: null
-      createIntermediateGroups: null
-      group: null
-      headerVisibility: null
-      name: Base
+    - name: Base
       path: App_iOS/Base.lproj/LocalizedStoryboard.storyboard
-      type: null
-    - buildPhase: null
-      createIntermediateGroups: null
-      group: null
-      headerVisibility: null
-      name: Base
+    - name: Base
       path: App_iOS/Base.lproj/Main.storyboard
-      type: null
-    - buildPhase: null
-      createIntermediateGroups: null
-      group: null
-      headerVisibility: null
-      name: FolderWithDot2.0
+    - name: FolderWithDot2.0
       path: App_iOS/FolderWithDot2.0
-      type: null
-    - buildPhase: null
-      createIntermediateGroups: null
-      group: null
-      headerVisibility: null
-      name: null
-      path: App_iOS/Model.xcdatamodeld
-      type: null
-    - buildPhase: null
-      createIntermediateGroups: null
-      group: null
-      headerVisibility: null
-      name: null
-      path: App_iOS/Model.xcmappingmodel
-      type: null
-    - buildPhase: null
-      createIntermediateGroups: null
-      group: null
-      headerVisibility: null
-      name: null
-      path: App_iOS/Settings.bundle
-      type: null
-    - buildPhase: null
-      createIntermediateGroups: null
-      group: null
-      headerVisibility: null
-      name: null
-      path: App_iOS/ViewController.swift
-      type: null
-    - buildPhase: null
-      createIntermediateGroups: null
-      group: null
-      headerVisibility: null
-      name: en.lproj
+    - path: App_iOS/Model.xcdatamodeld
+    - path: App_iOS/Model.xcmappingmodel
+    - path: App_iOS/Settings.bundle
+    - path: App_iOS/ViewController.swift
+    - name: en.lproj
       path: App_iOS/en.lproj
-      type: null
-    - buildPhase: null
-      createIntermediateGroups: null
-      group: null
-      headerVisibility: null
-      name: FileGroup
+    - name: FileGroup
       path: FileGroup
-      type: null
-    - buildPhase: null
-      createIntermediateGroups: null
-      group: null
-      headerVisibility: null
-      name: Group
+    - name: Group
       path: Group
-      type: null
-    - buildPhase: null
-      createIntermediateGroups: null
-      group: null
-      headerVisibility: null
-      name: Group2
+    - name: Group2
       path: Group2
-      type: null
-    - buildPhase: null
-      createIntermediateGroups: null
-      group: null
-      headerVisibility: null
-      name: Resources
+    - name: Resources
       path: Resources
-      type: null
-    - buildPhase: null
-      createIntermediateGroups: null
-      group: null
-      headerVisibility: null
-      name: StandaloneFiles
+    - name: StandaloneFiles
       path: StandaloneFiles
-      type: null
-    transitivelyLinkDependencies: null
     type: application
   App_iOS_Tests:
     dependencies:
-    - codeSign: null
-      embed: null
-      link: null
-      target: App_iOS
-    - codeSign: null
-      embed: null
-      link: null
-      target: TestFramework
-    - codeSign: null
-      embed: null
-      framework: swift-tagged.framework
-      link: null
-    deploymentTarget: null
-    directlyEmbedCarthageDependencies: null
-    entitlements: null
-    info: null
-    legacy: null
+    - target: App_iOS
+    - target: TestFramework
+    - framework: swift-tagged.framework
     platform: iOS
-    requiresObjCLinking: null
-    scheme: null
     settings:
       configs:
         Production Debug:
@@ -1267,29 +939,13 @@ targets:
           TARGETED_DEVICE_FAMILY: 1,2
           TEST_HOST: $(BUILT_PRODUCTS_DIR)/App_iOS.app/App_iOS
     sources:
-    - buildPhase: null
-      createIntermediateGroups: null
-      group: null
-      headerVisibility: null
-      name: App_iOS_Tests
+    - name: App_iOS_Tests
       path: App_iOS_Tests
-      type: null
-    transitivelyLinkDependencies: null
     type: bundle.unit-test
   App_iOS_UITests:
     dependencies:
-    - codeSign: null
-      embed: null
-      link: null
-      target: App_iOS
-    deploymentTarget: null
-    directlyEmbedCarthageDependencies: null
-    entitlements: null
-    info: null
-    legacy: null
+    - target: App_iOS
     platform: iOS
-    requiresObjCLinking: null
-    scheme: null
     settings:
       configs:
         Production Debug:
@@ -1371,61 +1027,21 @@ targets:
           TARGETED_DEVICE_FAMILY: 1,2
           TEST_TARGET_NAME: App_iOS
     sources:
-    - buildPhase: null
-      createIntermediateGroups: null
-      group: null
-      headerVisibility: null
-      name: App_iOS_UITests
+    - name: App_iOS_UITests
       path: App_iOS_UITests
-      type: null
-    transitivelyLinkDependencies: null
     type: bundle.ui-testing
   App_macOS:
     dependencies:
-    - codeSign: null
-      embed: null
-      link: null
-      target: Framework_macOS
-    - codeSign: null
-      embed: null
-      link: null
-      target: StaticLibrary_ObjC_macOS
-    - codeSign: null
-      embed: null
-      link: null
-      target: XPC Service
-    - codeSign: null
-      embed: null
-      link: null
-      sdk: Contacts.framework
-    - codeSign: null
-      embed: null
-      link: null
-      target: Framework.framework
-    - codeSign: null
-      embed: null
-      framework: Result.framework
-      link: null
-    - codeSign: null
-      embed: null
-      link: null
-      target: libStaticLibrary_ObjC.a
-    - codeSign: null
-      embed: null
-      link: null
-      sdk: libc++.tbd
-    - codeSign: null
-      embed: null
-      link: null
-      sdk: libz.dylib
-    deploymentTarget: null
-    directlyEmbedCarthageDependencies: null
-    entitlements: null
-    info: null
-    legacy: null
+    - target: Framework_macOS
+    - target: StaticLibrary_ObjC_macOS
+    - target: XPC Service
+    - sdk: Contacts.framework
+    - target: Framework.framework
+    - framework: Result.framework
+    - target: libStaticLibrary_ObjC.a
+    - sdk: libc++.tbd
+    - sdk: libz.dylib
     platform: iOS
-    requiresObjCLinking: null
-    scheme: null
     settings:
       configs:
         Production Debug:
@@ -1507,36 +1123,14 @@ targets:
           PRODUCT_BUNDLE_IDENTIFIER: com.project.App-macOS
           SDKROOT: macosx
     sources:
-    - buildPhase: null
-      createIntermediateGroups: null
-      group: null
-      headerVisibility: null
-      name: App_macOS
+    - name: App_macOS
       path: App_macOS
-      type: null
-    - buildPhase: null
-      createIntermediateGroups: null
-      group: null
-      headerVisibility: null
-      name: null
-      path: StandaloneFiles/Standalone.swift
-      type: null
-    transitivelyLinkDependencies: null
+    - path: StandaloneFiles/Standalone.swift
     type: application
   App_macOS_Tests:
     dependencies:
-    - codeSign: null
-      embed: null
-      link: null
-      target: App_macOS
-    deploymentTarget: null
-    directlyEmbedCarthageDependencies: null
-    entitlements: null
-    info: null
-    legacy: null
+    - target: App_macOS
     platform: iOS
-    requiresObjCLinking: null
-    scheme: null
     settings:
       configs:
         Production Debug:
@@ -1618,29 +1212,13 @@ targets:
           SDKROOT: macosx
           TEST_HOST: $(BUILT_PRODUCTS_DIR)/App_macOS.app/Contents/MacOS/App_macOS
     sources:
-    - buildPhase: null
-      createIntermediateGroups: null
-      group: null
-      headerVisibility: null
-      name: App_macOS_Tests
+    - name: App_macOS_Tests
       path: App_macOS_Tests
-      type: null
-    transitivelyLinkDependencies: null
     type: bundle.unit-test
   App_watchOS:
     dependencies:
-    - codeSign: null
-      embed: null
-      link: null
-      target: App_watchOS Extension
-    deploymentTarget: null
-    directlyEmbedCarthageDependencies: null
-    entitlements: null
-    info: null
-    legacy: null
+    - target: App_watchOS Extension
     platform: iOS
-    requiresObjCLinking: null
-    scheme: null
     settings:
       configs:
         Production Debug:
@@ -1698,24 +1276,11 @@ targets:
           TARGETED_DEVICE_FAMILY: 4
           WATCHOS_DEPLOYMENT_TARGET: 4.0
     sources:
-    - buildPhase: null
-      createIntermediateGroups: null
-      group: null
-      headerVisibility: null
-      name: App_watchOS
+    - name: App_watchOS
       path: App_watchOS
-      type: null
-    transitivelyLinkDependencies: null
     type: application.watchapp2
   App_watchOS Extension:
-    deploymentTarget: null
-    directlyEmbedCarthageDependencies: null
-    entitlements: null
-    info: null
-    legacy: null
     platform: iOS
-    requiresObjCLinking: null
-    scheme: null
     settings:
       configs:
         Production Debug:
@@ -1797,45 +1362,13 @@ targets:
           SKIP_INSTALL: YES
           TARGETED_DEVICE_FAMILY: 4
     sources:
-    - buildPhase: null
-      createIntermediateGroups: null
-      group: null
-      headerVisibility: null
-      name: null
-      path: App_watchOS Extension/Assets.xcassets
-      type: null
-    - buildPhase: null
-      createIntermediateGroups: null
-      group: null
-      headerVisibility: null
-      name: null
-      path: App_watchOS Extension/ExtensionDelegate.swift
-      type: null
-    - buildPhase: null
-      createIntermediateGroups: null
-      group: null
-      headerVisibility: null
-      name: null
-      path: App_watchOS Extension/InterfaceController.swift
-      type: null
-    - buildPhase: null
-      createIntermediateGroups: null
-      group: null
-      headerVisibility: null
-      name: null
-      path: App_watchOS Extension/NotificationController.swift
-      type: null
-    transitivelyLinkDependencies: null
+    - path: App_watchOS Extension/Assets.xcassets
+    - path: App_watchOS Extension/ExtensionDelegate.swift
+    - path: App_watchOS Extension/InterfaceController.swift
+    - path: App_watchOS Extension/NotificationController.swift
     type: watchkit2-extension
   EntitledApp:
-    deploymentTarget: null
-    directlyEmbedCarthageDependencies: null
-    entitlements: null
-    info: null
-    legacy: null
     platform: iOS
-    requiresObjCLinking: null
-    scheme: null
     settings:
       configs:
         Production Debug:
@@ -1892,17 +1425,9 @@ targets:
           PRODUCT_BUNDLE_IDENTIFIER: com.project.EntitledApp
           SDKROOT: iphoneos
           TARGETED_DEVICE_FAMILY: 1,2
-    transitivelyLinkDependencies: null
     type: application
   Framework2_iOS:
-    deploymentTarget: null
-    directlyEmbedCarthageDependencies: null
-    entitlements: null
-    info: null
-    legacy: null
     platform: iOS
-    requiresObjCLinking: null
-    scheme: null
     settings:
       configs:
         Production Debug:
@@ -1960,31 +1485,12 @@ targets:
           SDKROOT: iphoneos
           TARGETED_DEVICE_FAMILY: 1,2
     sources:
-    - buildPhase: null
-      createIntermediateGroups: null
-      group: null
-      headerVisibility: null
-      name: null
-      path: Framework/FrameworkFile.swift
-      type: null
-    - buildPhase: null
-      createIntermediateGroups: null
-      group: null
-      headerVisibility: public
-      name: null
+    - path: Framework/FrameworkFile.swift
+    - headerVisibility: public
       path: Framework/MyFramework.h
-      type: null
-    transitivelyLinkDependencies: null
     type: framework
   Framework2_macOS:
-    deploymentTarget: null
-    directlyEmbedCarthageDependencies: null
-    entitlements: null
-    info: null
-    legacy: null
     platform: iOS
-    requiresObjCLinking: null
-    scheme: null
     settings:
       configs:
         Production Debug:
@@ -2042,31 +1548,12 @@ targets:
           PRODUCT_NAME: Framework2
           SDKROOT: macosx
     sources:
-    - buildPhase: null
-      createIntermediateGroups: null
-      group: null
-      headerVisibility: null
-      name: null
-      path: Framework/FrameworkFile.swift
-      type: null
-    - buildPhase: null
-      createIntermediateGroups: null
-      group: null
-      headerVisibility: public
-      name: null
+    - path: Framework/FrameworkFile.swift
+    - headerVisibility: public
       path: Framework/MyFramework.h
-      type: null
-    transitivelyLinkDependencies: null
     type: framework
   Framework2_tvOS:
-    deploymentTarget: null
-    directlyEmbedCarthageDependencies: null
-    entitlements: null
-    info: null
-    legacy: null
     platform: iOS
-    requiresObjCLinking: null
-    scheme: null
     settings:
       configs:
         Production Debug:
@@ -2124,31 +1611,12 @@ targets:
           SDKROOT: appletvos
           TARGETED_DEVICE_FAMILY: 3
     sources:
-    - buildPhase: null
-      createIntermediateGroups: null
-      group: null
-      headerVisibility: null
-      name: null
-      path: Framework/FrameworkFile.swift
-      type: null
-    - buildPhase: null
-      createIntermediateGroups: null
-      group: null
-      headerVisibility: public
-      name: null
+    - path: Framework/FrameworkFile.swift
+    - headerVisibility: public
       path: Framework/MyFramework.h
-      type: null
-    transitivelyLinkDependencies: null
     type: framework
   Framework2_watchOS:
-    deploymentTarget: null
-    directlyEmbedCarthageDependencies: null
-    entitlements: null
-    info: null
-    legacy: null
     platform: iOS
-    requiresObjCLinking: null
-    scheme: null
     settings:
       configs:
         Production Debug:
@@ -2188,37 +1656,14 @@ targets:
           SDKROOT: watchos
           TARGETED_DEVICE_FAMILY: 4
     sources:
-    - buildPhase: null
-      createIntermediateGroups: null
-      group: null
-      headerVisibility: null
-      name: null
-      path: Framework/FrameworkFile.swift
-      type: null
-    - buildPhase: null
-      createIntermediateGroups: null
-      group: null
-      headerVisibility: public
-      name: null
+    - path: Framework/FrameworkFile.swift
+    - headerVisibility: public
       path: Framework/MyFramework.h
-      type: null
-    transitivelyLinkDependencies: null
     type: framework
   Framework_iOS:
     dependencies:
-    - codeSign: null
-      embed: null
-      link: null
-      target: StaticLibrary_ObjC_iOS
-    - codeSign: null
-      embed: null
-      framework: Result.framework
-      link: null
-    deploymentTarget: null
-    directlyEmbedCarthageDependencies: null
-    entitlements: null
-    info: null
-    legacy: null
+    - target: StaticLibrary_ObjC_iOS
+    - framework: Result.framework
     platform: iOS
     postbuildScripts:
     - name: MyScript
@@ -2227,8 +1672,6 @@ targets:
 
         '
       shell: /bin/sh
-    requiresObjCLinking: null
-    scheme: null
     settings:
       configs:
         Production Debug:
@@ -2298,44 +1741,16 @@ targets:
           SDKROOT: iphoneos
           TARGETED_DEVICE_FAMILY: 1,2
     sources:
-    - buildPhase: null
-      createIntermediateGroups: null
-      group: null
-      headerVisibility: null
-      name: null
-      path: Framework/FrameworkFile.swift
-      type: null
-    - buildPhase: null
-      createIntermediateGroups: null
-      group: null
-      headerVisibility: public
-      name: null
+    - path: Framework/FrameworkFile.swift
+    - headerVisibility: public
       path: Framework/MyFramework.h
-      type: null
-    - buildPhase: null
-      createIntermediateGroups: null
-      group: null
-      headerVisibility: public
-      name: null
+    - headerVisibility: public
       path: Headers
-      type: null
-    transitivelyLinkDependencies: null
     type: framework
   Framework_macOS:
     dependencies:
-    - codeSign: null
-      embed: null
-      link: null
-      target: StaticLibrary_ObjC_macOS
-    - codeSign: null
-      embed: null
-      framework: Result.framework
-      link: null
-    deploymentTarget: null
-    directlyEmbedCarthageDependencies: null
-    entitlements: null
-    info: null
-    legacy: null
+    - target: StaticLibrary_ObjC_macOS
+    - framework: Result.framework
     platform: iOS
     postbuildScripts:
     - name: MyScript
@@ -2344,8 +1759,6 @@ targets:
 
         '
       shell: /bin/sh
-    requiresObjCLinking: null
-    scheme: null
     settings:
       configs:
         Production Debug:
@@ -2415,44 +1828,16 @@ targets:
           PRODUCT_NAME: Framework
           SDKROOT: macosx
     sources:
-    - buildPhase: null
-      createIntermediateGroups: null
-      group: null
-      headerVisibility: null
-      name: null
-      path: Framework/FrameworkFile.swift
-      type: null
-    - buildPhase: null
-      createIntermediateGroups: null
-      group: null
-      headerVisibility: public
-      name: null
+    - path: Framework/FrameworkFile.swift
+    - headerVisibility: public
       path: Framework/MyFramework.h
-      type: null
-    - buildPhase: null
-      createIntermediateGroups: null
-      group: null
-      headerVisibility: public
-      name: null
+    - headerVisibility: public
       path: Headers
-      type: null
-    transitivelyLinkDependencies: null
     type: framework
   Framework_tvOS:
     dependencies:
-    - codeSign: null
-      embed: null
-      link: null
-      target: StaticLibrary_ObjC_tvOS
-    - codeSign: null
-      embed: null
-      framework: Result.framework
-      link: null
-    deploymentTarget: null
-    directlyEmbedCarthageDependencies: null
-    entitlements: null
-    info: null
-    legacy: null
+    - target: StaticLibrary_ObjC_tvOS
+    - framework: Result.framework
     platform: iOS
     postbuildScripts:
     - name: MyScript
@@ -2461,8 +1846,6 @@ targets:
 
         '
       shell: /bin/sh
-    requiresObjCLinking: null
-    scheme: null
     settings:
       configs:
         Production Debug:
@@ -2532,44 +1915,16 @@ targets:
           SDKROOT: appletvos
           TARGETED_DEVICE_FAMILY: 3
     sources:
-    - buildPhase: null
-      createIntermediateGroups: null
-      group: null
-      headerVisibility: null
-      name: null
-      path: Framework/FrameworkFile.swift
-      type: null
-    - buildPhase: null
-      createIntermediateGroups: null
-      group: null
-      headerVisibility: public
-      name: null
+    - path: Framework/FrameworkFile.swift
+    - headerVisibility: public
       path: Framework/MyFramework.h
-      type: null
-    - buildPhase: null
-      createIntermediateGroups: null
-      group: null
-      headerVisibility: public
-      name: null
+    - headerVisibility: public
       path: Headers
-      type: null
-    transitivelyLinkDependencies: null
     type: framework
   Framework_watchOS:
     dependencies:
-    - codeSign: null
-      embed: null
-      link: null
-      target: StaticLibrary_ObjC_watchOS
-    - codeSign: null
-      embed: null
-      framework: Result.framework
-      link: null
-    deploymentTarget: null
-    directlyEmbedCarthageDependencies: null
-    entitlements: null
-    info: null
-    legacy: null
+    - target: StaticLibrary_ObjC_watchOS
+    - framework: Result.framework
     platform: iOS
     postbuildScripts:
     - name: MyScript
@@ -2578,8 +1933,6 @@ targets:
 
         '
       shell: /bin/sh
-    requiresObjCLinking: null
-    scheme: null
     settings:
       configs:
         Production Debug:
@@ -2631,38 +1984,14 @@ targets:
           SDKROOT: watchos
           TARGETED_DEVICE_FAMILY: 4
     sources:
-    - buildPhase: null
-      createIntermediateGroups: null
-      group: null
-      headerVisibility: null
-      name: null
-      path: Framework/FrameworkFile.swift
-      type: null
-    - buildPhase: null
-      createIntermediateGroups: null
-      group: null
-      headerVisibility: public
-      name: null
+    - path: Framework/FrameworkFile.swift
+    - headerVisibility: public
       path: Framework/MyFramework.h
-      type: null
-    - buildPhase: null
-      createIntermediateGroups: null
-      group: null
-      headerVisibility: public
-      name: null
+    - headerVisibility: public
       path: Headers
-      type: null
-    transitivelyLinkDependencies: null
     type: framework
   StaticLibrary_ObjC_iOS:
-    deploymentTarget: null
-    directlyEmbedCarthageDependencies: null
-    entitlements: null
-    info: null
-    legacy: null
     platform: iOS
-    requiresObjCLinking: null
-    scheme: null
     settings:
       configs:
         Production Debug:
@@ -2720,24 +2049,10 @@ targets:
           SKIP_INSTALL: YES
           TARGETED_DEVICE_FAMILY: 1,2
     sources:
-    - buildPhase: null
-      createIntermediateGroups: null
-      group: null
-      headerVisibility: null
-      name: null
-      path: StaticLibrary_ObjC/StaticLibrary_ObjC.m
-      type: null
-    transitivelyLinkDependencies: null
+    - path: StaticLibrary_ObjC/StaticLibrary_ObjC.m
     type: library.static
   StaticLibrary_ObjC_macOS:
-    deploymentTarget: null
-    directlyEmbedCarthageDependencies: null
-    entitlements: null
-    info: null
-    legacy: null
     platform: iOS
-    requiresObjCLinking: null
-    scheme: null
     settings:
       configs:
         Production Debug:
@@ -2795,24 +2110,10 @@ targets:
           SDKROOT: macosx
           SKIP_INSTALL: YES
     sources:
-    - buildPhase: null
-      createIntermediateGroups: null
-      group: null
-      headerVisibility: null
-      name: null
-      path: StaticLibrary_ObjC/StaticLibrary_ObjC.m
-      type: null
-    transitivelyLinkDependencies: null
+    - path: StaticLibrary_ObjC/StaticLibrary_ObjC.m
     type: library.static
   StaticLibrary_ObjC_tvOS:
-    deploymentTarget: null
-    directlyEmbedCarthageDependencies: null
-    entitlements: null
-    info: null
-    legacy: null
     platform: iOS
-    requiresObjCLinking: null
-    scheme: null
     settings:
       configs:
         Production Debug:
@@ -2870,24 +2171,10 @@ targets:
           SKIP_INSTALL: YES
           TARGETED_DEVICE_FAMILY: 3
     sources:
-    - buildPhase: null
-      createIntermediateGroups: null
-      group: null
-      headerVisibility: null
-      name: null
-      path: StaticLibrary_ObjC/StaticLibrary_ObjC.m
-      type: null
-    transitivelyLinkDependencies: null
+    - path: StaticLibrary_ObjC/StaticLibrary_ObjC.m
     type: library.static
   StaticLibrary_ObjC_watchOS:
-    deploymentTarget: null
-    directlyEmbedCarthageDependencies: null
-    entitlements: null
-    info: null
-    legacy: null
     platform: iOS
-    requiresObjCLinking: null
-    scheme: null
     settings:
       configs:
         Production Debug:
@@ -2927,21 +2214,9 @@ targets:
           SKIP_INSTALL: YES
           TARGETED_DEVICE_FAMILY: 4
     sources:
-    - buildPhase: null
-      createIntermediateGroups: null
-      group: null
-      headerVisibility: null
-      name: null
-      path: StaticLibrary_ObjC/StaticLibrary_ObjC.m
-      type: null
-    transitivelyLinkDependencies: null
+    - path: StaticLibrary_ObjC/StaticLibrary_ObjC.m
     type: library.static
   StaticLibrary_Swift:
-    deploymentTarget: null
-    directlyEmbedCarthageDependencies: null
-    entitlements: null
-    info: null
-    legacy: null
     platform: iOS
     postCompileScripts:
     - inputFiles:
@@ -2954,8 +2229,6 @@ targets:
 
         '
       shell: /bin/sh
-    requiresObjCLinking: null
-    scheme: null
     settings:
       configs:
         Production Debug:
@@ -3007,24 +2280,11 @@ targets:
           SKIP_INSTALL: YES
           TARGETED_DEVICE_FAMILY: 1,2
     sources:
-    - buildPhase: null
-      createIntermediateGroups: null
-      group: null
-      headerVisibility: null
-      name: StaticLibrary_Swift
+    - name: StaticLibrary_Swift
       path: StaticLibrary_Swift
-      type: null
-    transitivelyLinkDependencies: null
     type: library.static
   TestFramework:
-    deploymentTarget: null
-    directlyEmbedCarthageDependencies: null
-    entitlements: null
-    info: null
-    legacy: null
     platform: iOS
-    requiresObjCLinking: null
-    scheme: null
     settings:
       configs:
         Production Debug:
@@ -3076,31 +2336,12 @@ targets:
           SDKROOT: iphoneos
           TARGETED_DEVICE_FAMILY: 1,2
     sources:
-    - buildPhase: null
-      createIntermediateGroups: null
-      group: null
-      headerVisibility: null
-      name: null
-      path: Framework/FrameworkFile.swift
-      type: null
-    - buildPhase: null
-      createIntermediateGroups: null
-      group: null
-      headerVisibility: public
-      name: null
+    - path: Framework/FrameworkFile.swift
+    - headerVisibility: public
       path: Framework/MyFramework.h
-      type: null
-    transitivelyLinkDependencies: null
     type: framework
   Tool:
-    deploymentTarget: null
-    directlyEmbedCarthageDependencies: null
-    entitlements: null
-    info: null
-    legacy: null
     platform: iOS
-    requiresObjCLinking: null
-    scheme: null
     settings:
       configs:
         Production Debug:
@@ -3146,24 +2387,11 @@ targets:
           PRODUCT_BUNDLE_IDENTIFIER: com.project.Tool
           SDKROOT: macosx
     sources:
-    - buildPhase: null
-      createIntermediateGroups: null
-      group: null
-      headerVisibility: null
-      name: Tool
+    - name: Tool
       path: Tool
-      type: null
-    transitivelyLinkDependencies: null
     type: tool
   XPC Service:
-    deploymentTarget: null
-    directlyEmbedCarthageDependencies: null
-    entitlements: null
-    info: null
-    legacy: null
     platform: iOS
-    requiresObjCLinking: null
-    scheme: null
     settings:
       configs:
         Production Debug:
@@ -3215,36 +2443,13 @@ targets:
           PRODUCT_BUNDLE_IDENTIFIER: com.project.XPCService
           SDKROOT: macosx
     sources:
-    - buildPhase: null
-      createIntermediateGroups: null
-      group: null
-      headerVisibility: null
-      name: null
-      path: XPC Service/XPC_Service.m
-      type: null
-    - buildPhase: null
-      createIntermediateGroups: null
-      group: null
-      headerVisibility: null
-      name: null
-      path: XPC Service/main.m
-      type: null
-    transitivelyLinkDependencies: null
+    - path: XPC Service/XPC_Service.m
+    - path: XPC Service/main.m
     type: xpc-service
   iMessageApp:
     dependencies:
-    - codeSign: null
-      embed: null
-      link: null
-      target: iMessageExtension
-    deploymentTarget: null
-    directlyEmbedCarthageDependencies: null
-    entitlements: null
-    info: null
-    legacy: null
+    - target: iMessageExtension
     platform: iOS
-    requiresObjCLinking: null
-    scheme: null
     settings:
       configs:
         Production Debug:
@@ -3296,24 +2501,11 @@ targets:
           SDKROOT: iphoneos
           TARGETED_DEVICE_FAMILY: 1,2
     sources:
-    - buildPhase: null
-      createIntermediateGroups: null
-      group: null
-      headerVisibility: null
-      name: iMessageApp
+    - name: iMessageApp
       path: iMessageApp
-      type: null
-    transitivelyLinkDependencies: null
     type: application.messages
   iMessageExtension:
-    deploymentTarget: null
-    directlyEmbedCarthageDependencies: null
-    entitlements: null
-    info: null
-    legacy: null
     platform: iOS
-    requiresObjCLinking: null
-    scheme: null
     settings:
       configs:
         Production Debug:
@@ -3377,24 +2569,11 @@ targets:
           SDKROOT: iphoneos
           TARGETED_DEVICE_FAMILY: 1,2
     sources:
-    - buildPhase: null
-      createIntermediateGroups: null
-      group: null
-      headerVisibility: null
-      name: iMessageExtension
+    - name: iMessageExtension
       path: iMessageExtension
-      type: null
-    transitivelyLinkDependencies: null
     type: app-extension.messages
   iMessageStickersExtension:
-    deploymentTarget: null
-    directlyEmbedCarthageDependencies: null
-    entitlements: null
-    info: null
-    legacy: null
     platform: iOS
-    requiresObjCLinking: null
-    scheme: null
     settings:
       configs:
         Production Debug:
@@ -3446,12 +2625,6 @@ targets:
           SDKROOT: iphoneos
           TARGETED_DEVICE_FAMILY: 1,2
     sources:
-    - buildPhase: null
-      createIntermediateGroups: null
-      group: null
-      headerVisibility: null
-      name: iMessageStickers
+    - name: iMessageStickers
       path: iMessageStickers
-      type: null
-    transitivelyLinkDependencies: null
     type: app-extension.messages-sticker-pack

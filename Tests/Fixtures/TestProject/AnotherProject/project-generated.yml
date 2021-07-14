@@ -1,4 +1,4 @@
-# Generated from /Users/yonas/Developer/XcodeGen/Tests/Fixtures/TestProject/AnotherProject/AnotherProject.xcodeproj
+# Generated from /Users/ryohey/Repository/XcodeGen/Tests/Fixtures/TestProject/AnotherProject/AnotherProject.xcodeproj
 attributes:
   LastUpgradeCheck: 1200
 configs:
@@ -10,26 +10,9 @@ configs:
   Test Release: release
 name: AnotherProject
 options:
-  bundleIdPrefix: null
-  carthageBuildPath: null
-  carthageExecutablePath: null
   defaultConfig: Production Debug
-  deploymentTarget:
-    iOS: null
-    macOS: null
-    tvOS: null
-    watchOS: null
-  developmentLanguage: null
   groupSortPosition: bottom
-  indentWidth: null
-  localPackagesGroup: null
-  minimumXcodeGenVersion: null
-  postGenCommand: null
-  preGenCommand: null
-  tabWidth: null
   transitivelyLinkDependencies: false
-  usesTabs: null
-  xcodeVersion: null
 settings:
   configs:
     Production Debug:
@@ -101,14 +84,7 @@ settings:
       SWIFT_VERSION: 5.0
 targets:
   BundleX:
-    deploymentTarget: null
-    directlyEmbedCarthageDependencies: null
-    entitlements: null
-    info: null
-    legacy: null
     platform: iOS
-    requiresObjCLinking: null
-    scheme: null
     settings:
       configs:
         Production Debug:
@@ -135,16 +111,7 @@ targets:
           LD_RUNPATH_SEARCH_PATHS:
           - $(inherited)
           - '@executable_path/Frameworks'
-    transitivelyLinkDependencies: null
     type: bundle
   ExternalTarget:
-    deploymentTarget: null
-    directlyEmbedCarthageDependencies: null
-    entitlements: null
-    info: null
-    legacy: null
     platform: iOS
-    requiresObjCLinking: null
-    scheme: null
-    transitivelyLinkDependencies: null
     type: framework
