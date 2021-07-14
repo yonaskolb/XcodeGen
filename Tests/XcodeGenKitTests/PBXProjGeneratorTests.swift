@@ -261,5 +261,115 @@ class PBXProjGeneratorTests: XCTestCase {
             }
         }
     }
+    
+    func testDefaultLastUpgradeCheckWhenUserDidSpecifyInvalidValue() throws {
+        let lastUpgradeKey = "LastUpgradeCheck"
+        let attributes: [String: Any] = [lastUpgradeKey: 1234]
+        let project = Project(name: "Test", attributes: attributes)
+        let projGenerator = PBXProjGenerator(project: project)
+        
+        let pbxProj = try projGenerator.generate()
+        
+        for pbxProject in pbxProj.projects {
+            XCTAssertEqual(pbxProject.attributes[lastUpgradeKey] as? String, project.xcodeVersion)
+        }
+    }
+    
+    func testOverrideLastUpgradeCheckWhenUserDidSpecifyValue() throws {
+        let lastUpgradeKey = "LastUpgradeCheck"
+        let lastUpgradeValue = "1234"
+        let attributes: [String: Any] = [lastUpgradeKey: lastUpgradeValue]
+        let project = Project(name: "Test", attributes: attributes)
+        let projGenerator = PBXProjGenerator(project: project)
+        
+        let pbxProj = try projGenerator.generate()
+        
+        for pbxProject in pbxProj.projects {
+            XCTAssertEqual(pbxProject.attributes[lastUpgradeKey] as? String, lastUpgradeValue)
+        }
+    }
+    
+    func testDefaultLastUpgradeCheckWhenUserDidNotSpecifyValue() throws {
+        let lastUpgradeKey = "LastUpgradeCheck"
+        let project = Project(name: "Test")
+        let projGenerator = PBXProjGenerator(project: project)
+        
+        let pbxProj = try projGenerator.generate()
+        
+        for pbxProject in pbxProj.projects {
+            XCTAssertEqual(pbxProject.attributes[lastUpgradeKey] as? String, project.xcodeVersion)
+        }
+    }
 
+    func testPlatformDependencies() {
+        describe {
+            let directoryPath = Path("TestDirectory")
+
+            func createDirectories(_ directories: String) throws {
+                let yaml = try Yams.load(yaml: directories)!
+
+                func getFiles(_ file: Any, path: Path) -> [Path] {
+                    if let array = file as? [Any] {
+                        return array.flatMap { getFiles($0, path: path) }
+                    } else if let string = file as? String {
+                        return [path + string]
+                    } else if let dictionary = file as? [String: Any] {
+                        var array: [Path] = []
+                        for (key, value) in dictionary {
+                            array += getFiles(value, path: path + key)
+                        }
+                        return array
+                    } else {
+                        return []
+                    }
+                }
+
+                let files = getFiles(yaml, path: directoryPath).filter { $0.extension != nil }
+                for file in files {
+                    try file.parent().mkpath()
+                    try file.write("")
+                }
+            }
+
+            func removeDirectories() {
+                try? directoryPath.delete()
+            }
+
+            $0.before {
+                removeDirectories()
+            }
+
+            $0.after {
+                removeDirectories()
+            }
+
+            $0.it("setups target with different dependencies") {
+                let directories = """
+                    Sources:
+                      - MainScreen:
+                        - Entities:
+                            - file.swift
+                """
+                try createDirectories(directories)
+                let target1 = Target(name: "TestAll", type: .application, platform: .iOS, sources: ["Sources"])
+                let target2 = Target(name: "TestiOS", type: .application, platform: .iOS, sources: ["Sources"])
+                let target3 = Target(name: "TestmacOS", type: .application, platform: .iOS, sources: ["Sources"])
+                let dependency1 = Dependency(type: .target, reference: "TestAll", platformFilter: .all)
+                let dependency2 = Dependency(type: .target, reference: "TestiOS", platformFilter: .iOS)
+                let dependency3 = Dependency(type: .target, reference: "TestmacOS", platformFilter: .macOS)
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: ["Sources"], dependencies: [dependency1, dependency2, dependency3])
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target, target1, target2, target3])
+
+                let pbxProj = try project.generatePbxProj()
+
+                let targets = pbxProj.projects.first?.targets
+                let testTargetDependencies = pbxProj.projects.first?.targets.first(where: { $0.name == "Test" })?.dependencies
+                try expect(targets?.count) == 4
+                try expect(testTargetDependencies?.count) == 3
+                try expect(testTargetDependencies?[0].platformFilter).beNil()
+                try expect(testTargetDependencies?[1].platformFilter) == "ios"
+                try expect(testTargetDependencies?[2].platformFilter) == "maccatalyst"
+            }
+        }
+    }
 }

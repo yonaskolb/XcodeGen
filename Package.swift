@@ -12,14 +12,14 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/kylef/PathKit.git", from: "1.0.0"),
-        .package(url: "https://github.com/jpsim/Yams.git", from: "2.0.0"),
+        .package(url: "https://github.com/jpsim/Yams.git", from: "4.0.0"),
         .package(url: "https://github.com/yonaskolb/JSONUtilities.git", from: "4.2.0"),
-        .package(url: "https://github.com/kylef/Spectre.git", from: "0.9.0"),
+        .package(url: "https://github.com/kylef/Spectre.git", from: "0.9.2"),
         .package(url: "https://github.com/onevcat/Rainbow.git", from: "3.0.0"),
-        .package(url: "https://github.com/tuist/XcodeProj.git", .exact("7.13.0")),
+        .package(url: "https://github.com/tuist/XcodeProj.git", from: "8.0.0"),
         .package(url: "https://github.com/jakeheis/SwiftCLI.git", from: "6.0.0"),
         .package(url: "https://github.com/mxcl/Version", from: "2.0.0"),
-        .package(url: "https://github.com/SwiftDocOrg/GraphViz.git", from: "0.1.0"),
+        .package(url: "https://github.com/SwiftDocOrg/GraphViz.git", .exact("0.2.0")),
     ],
     targets: [
         .target(name: "XcodeGen", dependencies: [
@@ -39,17 +39,17 @@ let package = Package(
             "JSONUtilities",
             "XcodeProj",
             "PathKit",
-            "Core",
+            "XcodeGenCore",
             "GraphViz",
         ]),
         .target(name: "ProjectSpec", dependencies: [
             "JSONUtilities",
             "XcodeProj",
             "Yams",
-            "Core",
+            "XcodeGenCore",
             "Version",
         ]),
-        .target(name: "Core", dependencies: [
+        .target(name: "XcodeGenCore", dependencies: [
             "PathKit",
             "Yams",
         ]),
@@ -70,8 +70,8 @@ let package = Package(
             "PathKit",
             "TestSupport",
         ]),
-        .testTarget(name: "CoreTests", dependencies: [
-            "Core",
+        .testTarget(name: "XcodeGenCoreTests", dependencies: [
+            "XcodeGenCore",
             "Spectre",
             "PathKit",
             "TestSupport",

@@ -90,16 +90,16 @@ extension Project {
             }
 
             if let scheme = target.scheme {
-
+                
                 for configVariant in scheme.configVariants {
-                    if !configs.contains(where: { $0.name.contains(configVariant) && $0.type == .debug }) {
+                    if configs.first(including: configVariant, for: .debug) == nil {
                         errors.append(.invalidTargetSchemeConfigVariant(
                             target: target.name,
                             configVariant: configVariant,
                             configType: .debug
                         ))
                     }
-                    if !configs.contains(where: { $0.name.contains(configVariant) && $0.type == .release }) {
+                    if configs.first(including: configVariant, for: .release) == nil {
                         errors.append(.invalidTargetSchemeConfigVariant(
                             target: target.name,
                             configVariant: configVariant,
@@ -228,7 +228,7 @@ extension Project {
 
     public func validateMinimumXcodeGenVersion(_ xcodeGenVersion: Version) throws {
         if let minimumXcodeGenVersion = options.minimumXcodeGenVersion, xcodeGenVersion < minimumXcodeGenVersion {
-            throw SpecValidationError.ValidationError.invalidXcodeGenVersion(minimumVersion: minimumXcodeGenVersion, version: xcodeGenVersion)
+            throw SpecValidationError(errors: [SpecValidationError.ValidationError.invalidXcodeGenVersion(minimumVersion: minimumXcodeGenVersion, version: xcodeGenVersion)])
         }
     }
 

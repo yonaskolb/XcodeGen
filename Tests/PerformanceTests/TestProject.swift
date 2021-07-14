@@ -18,6 +18,7 @@ extension Project {
             testTargets: [],
             configVariants: ["Test", "Staging", "Prod"],
             gatherCoverageData: true,
+            storeKitConfiguration: "Configuration.storekit",
             disableMainThreadChecker: true,
             stopOnEveryMainThreadCheckerIssue: false,
             commandLineArguments: [
@@ -115,8 +116,8 @@ extension Project {
                 Config(name: "Release Test", type: .release),
                 Config(name: "Debug Staging", type: .debug),
                 Config(name: "Release Staging", type: .release),
-                Config(name: "Debug Production", type: .debug),
-                Config(name: "Release Production", type: .release),
+                Config(name: "Debug Prod", type: .debug),
+                Config(name: "Release Prod", type: .release),
             ],
             targets: targets,
             aggregateTargets: [],

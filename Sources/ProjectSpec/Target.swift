@@ -24,6 +24,15 @@ public struct LegacyTarget: Equatable {
     }
 }
 
+extension LegacyTarget: PathContainer {
+
+    static var pathProperties: [PathProperty] {
+        [
+            .string("workingDirectory"),
+        ]
+    }
+}
+
 public struct Target: ProjectTarget {
     public var name: String
     public var type: PBXProductType
@@ -134,6 +143,7 @@ extension Target: PathContainer {
                 .object("prebuildScripts", BuildScript.pathProperties),
                 .object("postCompileScripts", BuildScript.pathProperties),
                 .object("postBuildScripts", BuildScript.pathProperties),
+                .object("legacy", LegacyTarget.pathProperties),
             ]),
         ]
     }
@@ -291,7 +301,12 @@ extension Target: NamedJSONDictionaryConvertible {
         if jsonDictionary["dependencies"] == nil {
             dependencies = []
         } else {
-            dependencies = try jsonDictionary.json(atKeyPath: "dependencies", invalidItemBehaviour: .fail)
+            let dependencies: [Dependency] = try jsonDictionary.json(atKeyPath: "dependencies", invalidItemBehaviour: .fail)
+            self.dependencies = dependencies.filter { [platform] dependency -> Bool in
+                // If unspecified, all platforms are supported
+                guard let platforms = dependency.platforms else { return true }
+                return platforms.contains(platform)
+            }
         }
 
         if jsonDictionary["info"] != nil {

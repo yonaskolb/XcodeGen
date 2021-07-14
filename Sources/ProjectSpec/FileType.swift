@@ -71,6 +71,7 @@ extension FileType {
         // resources
         "bundle": FileType(buildPhase: .resources),
         "xcassets": FileType(buildPhase: .resources),
+        "storekit": FileType(buildPhase: .resources),
 
         // sources
         "swift": FileType(buildPhase: .sources),
@@ -86,6 +87,7 @@ extension FileType {
         "metal": FileType(buildPhase: .sources),
         "mlmodel": FileType(buildPhase: .sources),
         "rcproject": FileType(buildPhase: .sources),
+        "iig": FileType(buildPhase: .sources),
 
         // headers
         "h": FileType(buildPhase: .headers),
@@ -110,5 +112,6 @@ extension FileType {
         "xcfilelist": FileType(buildPhase: BuildPhaseSpec.none),
         "apns": FileType(buildPhase: BuildPhaseSpec.none),
         "pch": FileType(buildPhase: BuildPhaseSpec.none),
+        "docc": FileType(buildPhase: BuildPhaseSpec.none),
     ]
 }
