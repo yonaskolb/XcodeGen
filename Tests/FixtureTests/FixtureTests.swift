@@ -63,7 +63,7 @@ func generateProjectSpec(xcodeProjectPath: Path, specPath: Path) throws {
     let generatedProject = try generateSpec(xcodeProj: xcodeProj, projectDirectory: specPath.parent())
     let projectDict = generatedProject.toJSONDictionary().removeEmpty()
     var encodedYAML = try Yams.dump(object: projectDict)
-    encodedYAML = "# Generated from \(xcodeProjectPath)\n\(encodedYAML)"
+    encodedYAML = "# Generated from \(try xcodeProjectPath.relativePath(from: specPath.parent()))\n\(encodedYAML)"
     try encodedYAML.write(toFile: specPath.string, atomically: true, encoding: .utf8)
 }
 
