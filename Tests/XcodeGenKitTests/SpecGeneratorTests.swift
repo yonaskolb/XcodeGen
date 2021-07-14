@@ -86,14 +86,43 @@ class SpecGeneratorTests: XCTestCase {
     }
 
     func testRemoveEmpty() {
-        let arr = [[], [1, [2], []], [3]]
-        let removed = arr.removeEmpty()
-        XCTAssertEqual(removed.count, 2)
+        describe {
+            $0.it("removes empty arrays from array") {
+                let arr = [[], [1], [], [2, 3]]
+                XCTAssertEqual(arr.removeEmpty(), [[1], [2, 3]])
+            }
 
-        let dict: [String: Any?] = ["e": nil]
-        let removed2: [String: Any?] = dict.removeEmpty()
-        XCTAssertEqual(removed2.count, 0)
-        let removed3: [String: Any] = dict.compactMapValues { $0 }
-        XCTAssertEqual(removed3.count, 0)
+            $0.it("removes nils from array") {
+                let arr = [nil, 1, nil, 2, 3]
+                XCTAssertEqual(arr.removeEmpty(), [1, 2, 3])
+            }
+
+            $0.it("removes nils and empty arrays from array") {
+                let arr = [nil, [1], nil, [2], []]
+                XCTAssertEqual(arr.removeEmpty(), [[1], [2]])
+            }
+
+            $0.it("removes nils and empty arrays from nested array") {
+                let arr: [[[Int?]?]] = [[[1, nil], nil, []]]
+                XCTAssertEqual(arr.removeEmpty(), [[[1]]])
+            }
+
+            $0.it("removes empty dictionaries from array") {
+                let dict = [["foo": 1], [:], ["bar": 2]]
+                XCTAssertEqual(dict.removeEmpty(), [["foo": 1], ["bar": 2]])
+            }
+
+            $0.it("removes nils from dictionary") {
+                let dict = ["foo": nil, "bar": 1]
+                let b = dict.removeEmpty()
+                XCTAssertEqual(b, ["bar": 1])
+            }
+
+            $0.it("removes empty dictionaries from dictionary") {
+                let dict = ["foo": [:], "bar": ["x": 1]]
+                let b = dict.removeEmpty()
+                XCTAssertEqual(b, ["bar": ["x": 1]])
+            }
+        }
     }
 }

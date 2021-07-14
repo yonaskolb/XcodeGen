@@ -1,33 +1,38 @@
 import Foundation
 
-private protocol EmptyRemovable {
-    func removeEmpty() -> Self
-    var isEmpty: Bool { get }
-}
-
-extension Array: EmptyRemovable {
-    public func removeEmpty() -> Array {
-        return compactMap {
-            if let e = ($0 as? EmptyRemovable)?.removeEmpty() {
-                return e.isEmpty ? nil : e as? Element
-            }
-            return $0
+private func convertEmptyToNil<T>(_ value: T) -> T? {
+    switch value as Any {
+    case Optional<Any>.none:
+        return nil
+    case let arr as Array<Any>:
+        let arr = arr.removeEmpty()
+        if !arr.isEmpty,
+           let arr = arr as? T {
+            return arr
+        } else {
+            return nil
         }
+    case let dict as Dictionary<AnyHashable, Any>:
+        let dict = dict.removeEmpty()
+        if !dict.isEmpty,
+           let dict = dict as? T {
+            return dict
+        } else {
+            return nil
+        }
+    default:
+        return value
     }
 }
 
-extension Dictionary: EmptyRemovable {
-    // this is a little trick that defines the generics parameter from optional Value to unwrapped Value
-    private static func removeEmpty<Key, Value>(dict: Dictionary<Key, Value?>) -> Dictionary<Key, Value> {
-        return dict.compactMapValues {
-            if let e = ($0 as? EmptyRemovable)?.removeEmpty() {
-                return e.isEmpty ? nil : e as? Value
-            }
-            return $0
-        }
+extension Array {
+    public func removeEmpty() -> Self {
+        compactMap(convertEmptyToNil)
     }
+}
 
-    public func removeEmpty() -> Dictionary<Key, Value> {
-        return Dictionary.removeEmpty(dict: self)
+extension Dictionary {
+    public func removeEmpty() -> Self {
+        compactMapValues(convertEmptyToNil)
     }
 }
