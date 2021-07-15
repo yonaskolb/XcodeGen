@@ -110,11 +110,35 @@ extension Settings: JSONEncodable {
     public func toJSONValue() -> Any {
         if groups.count > 0 || configSettings.count > 0 {
             return [
-                "base": buildSettings,
+                "base": buildSettings.toJSONValue(),
                 "groups": groups,
                 "configs": configSettings.mapValues { $0.toJSONValue() },
             ]
         }
-        return buildSettings
+        return buildSettings.toJSONValue()
+    }
+}
+
+extension BuildSettings: JSONEncodable {
+    private func asJSONValue(_ value: Any) -> Any {
+        switch value {
+        case let value as Path:
+            return value.string
+        case let value as [Any]:
+            return value.map(asJSONValue)
+        case let value as [String: Any]:
+            return value.mapValues(asJSONValue)
+        case is Bool: fallthrough
+        case is Int: fallthrough
+        case is Double: fallthrough
+        case is String:
+            return value
+        default:
+            fatalError("not supported type")
+        }
+    }
+
+    public func toJSONValue() -> Any {
+        return mapValues(asJSONValue)
     }
 }

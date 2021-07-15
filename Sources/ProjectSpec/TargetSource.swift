@@ -129,6 +129,12 @@ extension TargetSource: JSONEncodable {
             dict["optional"] = optional
         }
 
+        if dict.removeEmpty().isEmpty {
+            return path
+        }
+
+        dict["path"] = path
+
         return dict
     }
 }

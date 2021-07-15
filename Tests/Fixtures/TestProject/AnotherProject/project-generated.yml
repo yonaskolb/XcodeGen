@@ -1,0 +1,111 @@
+# Generated from AnotherProject.xcodeproj
+attributes:
+  LastUpgradeCheck: '1200'
+configs:
+  Production Debug: debug
+  Production Release: release
+  Staging Debug: debug
+  Staging Release: release
+  Test Debug: debug
+  Test Release: release
+name: AnotherProject
+options:
+  defaultConfig: Production Debug
+  groupSortPosition: bottom
+  transitivelyLinkDependencies: false
+settings:
+  configs:
+    Production Debug:
+      GCC_PREPROCESSOR_DEFINITIONS:
+      - $(inherited)
+      - DEBUG=1
+      MTL_ENABLE_DEBUG_INFO: INCLUDE_SOURCE
+      MTL_FAST_MATH: 'YES'
+      SDKROOT: iphoneos
+      SWIFT_ACTIVE_COMPILATION_CONDITIONS: DEBUG
+      SWIFT_OPTIMIZATION_LEVEL: -Onone
+      SWIFT_VERSION: '5.0'
+    Production Release:
+      DEBUG_INFORMATION_FORMAT: dwarf-with-dsym
+      ENABLE_NS_ASSERTIONS: 'NO'
+      MTL_ENABLE_DEBUG_INFO: 'NO'
+      MTL_FAST_MATH: 'YES'
+      SDKROOT: iphoneos
+      SWIFT_COMPILATION_MODE: wholemodule
+      SWIFT_OPTIMIZATION_LEVEL: -O
+      SWIFT_VERSION: '5.0'
+    Staging Debug:
+      BUNDLE_ID_SUFFIX: .staging
+      GCC_PREPROCESSOR_DEFINITIONS:
+      - $(inherited)
+      - DEBUG=1
+      MTL_ENABLE_DEBUG_INFO: INCLUDE_SOURCE
+      MTL_FAST_MATH: 'YES'
+      SDKROOT: iphoneos
+      SWIFT_ACTIVE_COMPILATION_CONDITIONS: DEBUG
+      SWIFT_OPTIMIZATION_LEVEL: -Onone
+      SWIFT_VERSION: '5.0'
+    Staging Release:
+      BUNDLE_ID_SUFFIX: .staging
+      DEBUG_INFORMATION_FORMAT: dwarf-with-dsym
+      ENABLE_NS_ASSERTIONS: 'NO'
+      MTL_ENABLE_DEBUG_INFO: 'NO'
+      MTL_FAST_MATH: 'YES'
+      SDKROOT: iphoneos
+      SWIFT_COMPILATION_MODE: wholemodule
+      SWIFT_OPTIMIZATION_LEVEL: -O
+      SWIFT_VERSION: '5.0'
+    Test Debug:
+      BUNDLE_ID_SUFFIX: .test
+      GCC_PREPROCESSOR_DEFINITIONS:
+      - $(inherited)
+      - DEBUG=1
+      MTL_ENABLE_DEBUG_INFO: INCLUDE_SOURCE
+      MTL_FAST_MATH: 'YES'
+      SDKROOT: iphoneos
+      SWIFT_ACTIVE_COMPILATION_CONDITIONS: DEBUG
+      SWIFT_OPTIMIZATION_LEVEL: -Onone
+      SWIFT_VERSION: '5.0'
+    Test Release:
+      BUNDLE_ID_SUFFIX: .test
+      DEBUG_INFORMATION_FORMAT: dwarf-with-dsym
+      ENABLE_NS_ASSERTIONS: 'NO'
+      MTL_ENABLE_DEBUG_INFO: 'NO'
+      MTL_FAST_MATH: 'YES'
+      SDKROOT: iphoneos
+      SWIFT_COMPILATION_MODE: wholemodule
+      SWIFT_OPTIMIZATION_LEVEL: -O
+      SWIFT_VERSION: '5.0'
+targets:
+  BundleX:
+    platform: iOS
+    settings:
+      configs:
+        Production Debug:
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+        Production Release:
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+        Staging Debug:
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+        Staging Release:
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+        Test Debug:
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+        Test Release:
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+    type: bundle
+  ExternalTarget:
+    platform: iOS
+    type: framework
