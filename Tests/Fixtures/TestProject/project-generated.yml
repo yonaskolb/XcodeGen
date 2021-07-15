@@ -24,7 +24,7 @@ aggregateTargets:
     - App_iOS
     - Framework_iOS
 attributes:
-  LastUpgradeCheck: 1200
+  LastUpgradeCheck: '1200'
   knownAssetTags:
   - tag1
   - tag2
@@ -236,6 +236,44 @@ schemes:
       config: Production Debug
     test:
       config: Production Debug
+  DriverKitDriver:
+    analyze:
+      config: Production Debug
+    archive:
+      config: Production Release
+    build:
+      targets:
+        DriverKitDriver:
+        - running
+        - testing
+        - profiling
+        - analyzing
+        - archiving
+    profile:
+      config: Production Release
+    run:
+      config: Production Debug
+    test:
+      config: Production Debug
+  EndpointSecuritySystemExtension:
+    analyze:
+      config: Production Debug
+    archive:
+      config: Production Release
+    build:
+      targets:
+        EndpointSecuritySystemExtension:
+        - running
+        - testing
+        - profiling
+        - analyzing
+        - archiving
+    profile:
+      config: Production Release
+    run:
+      config: Production Debug
+    test:
+      config: Production Debug
   Framework:
     analyze:
       config: Production Debug
@@ -267,6 +305,25 @@ schemes:
       gatherCoverageData: true
       language: ja
       region: en
+  NetworkSystemExtension:
+    analyze:
+      config: Production Debug
+    archive:
+      config: Production Release
+    build:
+      targets:
+        NetworkSystemExtension:
+        - running
+        - testing
+        - profiling
+        - analyzing
+        - archiving
+    profile:
+      config: Production Release
+    run:
+      config: Production Debug
+    test:
+      config: Production Debug
   Tool:
     analyze:
       config: Production Debug
@@ -323,78 +380,72 @@ schemes:
     run:
       config: Production Debug
       debugEnabled: false
-      launchAutomaticallySubstyle: 2
+      launchAutomaticallySubstyle: '2'
     test:
       config: Production Debug
 settings:
   configs:
     Production Debug:
-      CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER: YES
       GCC_PREPROCESSOR_DEFINITIONS:
       - $(inherited)
       - DEBUG=1
       MTL_ENABLE_DEBUG_INFO: INCLUDE_SOURCE
-      MTL_FAST_MATH: YES
+      MTL_FAST_MATH: 'YES'
       SWIFT_ACTIVE_COMPILATION_CONDITIONS: DEBUG
       SWIFT_OPTIMIZATION_LEVEL: -Onone
-      SWIFT_VERSION: 5.0
-      WATCHOS_DEPLOYMENT_TARGET: 4.0
+      SWIFT_VERSION: '5.0'
+      WATCHOS_DEPLOYMENT_TARGET: '4.0'
     Production Release:
-      CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER: YES
       DEBUG_INFORMATION_FORMAT: dwarf-with-dsym
-      ENABLE_NS_ASSERTIONS: NO
-      MTL_ENABLE_DEBUG_INFO: NO
-      MTL_FAST_MATH: YES
+      ENABLE_NS_ASSERTIONS: 'NO'
+      MTL_ENABLE_DEBUG_INFO: 'NO'
+      MTL_FAST_MATH: 'YES'
       SWIFT_COMPILATION_MODE: wholemodule
       SWIFT_OPTIMIZATION_LEVEL: -O
-      SWIFT_VERSION: 5.0
-      WATCHOS_DEPLOYMENT_TARGET: 4.0
+      SWIFT_VERSION: '5.0'
+      WATCHOS_DEPLOYMENT_TARGET: '4.0'
     Staging Debug:
       BUNDLE_ID_SUFFIX: .staging
-      CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER: YES
       GCC_PREPROCESSOR_DEFINITIONS:
       - $(inherited)
       - DEBUG=1
       MTL_ENABLE_DEBUG_INFO: INCLUDE_SOURCE
-      MTL_FAST_MATH: YES
+      MTL_FAST_MATH: 'YES'
       SWIFT_ACTIVE_COMPILATION_CONDITIONS: DEBUG
       SWIFT_OPTIMIZATION_LEVEL: -Onone
-      SWIFT_VERSION: 5.0
-      WATCHOS_DEPLOYMENT_TARGET: 4.0
+      SWIFT_VERSION: '5.0'
+      WATCHOS_DEPLOYMENT_TARGET: '4.0'
     Staging Release:
       BUNDLE_ID_SUFFIX: .staging
-      CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER: YES
       DEBUG_INFORMATION_FORMAT: dwarf-with-dsym
-      ENABLE_NS_ASSERTIONS: NO
-      MTL_ENABLE_DEBUG_INFO: NO
-      MTL_FAST_MATH: YES
+      ENABLE_NS_ASSERTIONS: 'NO'
+      MTL_ENABLE_DEBUG_INFO: 'NO'
+      MTL_FAST_MATH: 'YES'
       SWIFT_COMPILATION_MODE: wholemodule
       SWIFT_OPTIMIZATION_LEVEL: -O
-      SWIFT_VERSION: 5.0
-      WATCHOS_DEPLOYMENT_TARGET: 4.0
+      SWIFT_VERSION: '5.0'
+      WATCHOS_DEPLOYMENT_TARGET: '4.0'
     Test Debug:
       BUNDLE_ID_SUFFIX: .test
-      CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER: YES
       GCC_PREPROCESSOR_DEFINITIONS:
       - $(inherited)
       - DEBUG=1
       MTL_ENABLE_DEBUG_INFO: INCLUDE_SOURCE
-      MTL_FAST_MATH: YES
+      MTL_FAST_MATH: 'YES'
       SWIFT_ACTIVE_COMPILATION_CONDITIONS: DEBUG
       SWIFT_OPTIMIZATION_LEVEL: -Onone
-      SWIFT_VERSION: 5.0
-      WATCHOS_DEPLOYMENT_TARGET: 4.0
+      SWIFT_VERSION: '5.0'
+      WATCHOS_DEPLOYMENT_TARGET: '4.0'
     Test Release:
       BUNDLE_ID_SUFFIX: .test
-      CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER: YES
       DEBUG_INFORMATION_FORMAT: dwarf-with-dsym
-      ENABLE_NS_ASSERTIONS: NO
-      MTL_ENABLE_DEBUG_INFO: NO
-      MTL_FAST_MATH: YES
+      ENABLE_NS_ASSERTIONS: 'NO'
+      MTL_ENABLE_DEBUG_INFO: 'NO'
+      MTL_FAST_MATH: 'YES'
       SWIFT_COMPILATION_MODE: wholemodule
       SWIFT_OPTIMIZATION_LEVEL: -O
-      SWIFT_VERSION: 5.0
-      WATCHOS_DEPLOYMENT_TARGET: 4.0
+      SWIFT_VERSION: '5.0'
+      WATCHOS_DEPLOYMENT_TARGET: '4.0'
 targets:
   App_Clip:
     dependencies:
@@ -732,6 +783,8 @@ targets:
       runOnlyWhenInstalling: false
       script: 'echo "You ran a script!"
 
+        touch "${DERIVED_FILE_DIR}/target.d"
+
         '
       shell: /bin/sh
     settings:
@@ -1032,23 +1085,29 @@ targets:
     type: bundle.ui-testing
   App_macOS:
     dependencies:
+    - target: DriverKitDriver
+    - target: EndpointSecuritySystemExtension
     - target: Framework_macOS
+    - target: NetworkSystemExtension
     - target: StaticLibrary_ObjC_macOS
     - target: XPC Service
     - sdk: Contacts.framework
+    - sdk: DriverKit.framework
     - target: Framework.framework
+    - sdk: NetworkExtension.framework
     - framework: Result.framework
     - target: libStaticLibrary_ObjC.a
+    - sdk: libEndpointSecurity.tbd
     - sdk: libc++.tbd
     - sdk: libz.dylib
     platform: iOS
     settings:
       configs:
         Production Debug:
-          COMBINE_HIDPI_IMAGES: YES
+          COMBINE_HIDPI_IMAGES: 'YES'
           FRAMEWORK_SEARCH_PATHS:
           - $(inherited)
-          INFOPLIST_FILE: App_macOS/Info.plist
+          INFOPLIST_FILE: App_macOS/App-Info.plist
           LD_RUNPATH_SEARCH_PATHS:
           - $(inherited)
           - '@executable_path/../Frameworks'
@@ -1058,10 +1117,10 @@ targets:
           PRODUCT_BUNDLE_IDENTIFIER: com.project.App-macOS
           SDKROOT: macosx
         Production Release:
-          COMBINE_HIDPI_IMAGES: YES
+          COMBINE_HIDPI_IMAGES: 'YES'
           FRAMEWORK_SEARCH_PATHS:
           - $(inherited)
-          INFOPLIST_FILE: App_macOS/Info.plist
+          INFOPLIST_FILE: App_macOS/App-Info.plist
           LD_RUNPATH_SEARCH_PATHS:
           - $(inherited)
           - '@executable_path/../Frameworks'
@@ -1071,10 +1130,10 @@ targets:
           PRODUCT_BUNDLE_IDENTIFIER: com.project.App-macOS
           SDKROOT: macosx
         Staging Debug:
-          COMBINE_HIDPI_IMAGES: YES
+          COMBINE_HIDPI_IMAGES: 'YES'
           FRAMEWORK_SEARCH_PATHS:
           - $(inherited)
-          INFOPLIST_FILE: App_macOS/Info.plist
+          INFOPLIST_FILE: App_macOS/App-Info.plist
           LD_RUNPATH_SEARCH_PATHS:
           - $(inherited)
           - '@executable_path/../Frameworks'
@@ -1084,10 +1143,10 @@ targets:
           PRODUCT_BUNDLE_IDENTIFIER: com.project.App-macOS
           SDKROOT: macosx
         Staging Release:
-          COMBINE_HIDPI_IMAGES: YES
+          COMBINE_HIDPI_IMAGES: 'YES'
           FRAMEWORK_SEARCH_PATHS:
           - $(inherited)
-          INFOPLIST_FILE: App_macOS/Info.plist
+          INFOPLIST_FILE: App_macOS/App-Info.plist
           LD_RUNPATH_SEARCH_PATHS:
           - $(inherited)
           - '@executable_path/../Frameworks'
@@ -1097,10 +1156,10 @@ targets:
           PRODUCT_BUNDLE_IDENTIFIER: com.project.App-macOS
           SDKROOT: macosx
         Test Debug:
-          COMBINE_HIDPI_IMAGES: YES
+          COMBINE_HIDPI_IMAGES: 'YES'
           FRAMEWORK_SEARCH_PATHS:
           - $(inherited)
-          INFOPLIST_FILE: App_macOS/Info.plist
+          INFOPLIST_FILE: App_macOS/App-Info.plist
           LD_RUNPATH_SEARCH_PATHS:
           - $(inherited)
           - '@executable_path/../Frameworks'
@@ -1110,10 +1169,10 @@ targets:
           PRODUCT_BUNDLE_IDENTIFIER: com.project.App-macOS
           SDKROOT: macosx
         Test Release:
-          COMBINE_HIDPI_IMAGES: YES
+          COMBINE_HIDPI_IMAGES: 'YES'
           FRAMEWORK_SEARCH_PATHS:
           - $(inherited)
-          INFOPLIST_FILE: App_macOS/Info.plist
+          INFOPLIST_FILE: App_macOS/App-Info.plist
           LD_RUNPATH_SEARCH_PATHS:
           - $(inherited)
           - '@executable_path/../Frameworks'
@@ -1123,8 +1182,11 @@ targets:
           PRODUCT_BUNDLE_IDENTIFIER: com.project.App-macOS
           SDKROOT: macosx
     sources:
-    - name: App_macOS
-      path: App_macOS
+    - path: App_macOS/AppDelegate.swift
+    - path: App_macOS/Assets.xcassets
+    - name: Base.lproj
+      path: App_macOS/Base.lproj
+    - path: App_macOS/ViewController.swift
     - path: StandaloneFiles/Standalone.swift
     type: application
   App_macOS_Tests:
@@ -1135,7 +1197,7 @@ targets:
       configs:
         Production Debug:
           BUNDLE_LOADER: $(TEST_HOST)
-          COMBINE_HIDPI_IMAGES: YES
+          COMBINE_HIDPI_IMAGES: 'YES'
           FRAMEWORK_SEARCH_PATHS:
           - $(inherited)
           INFOPLIST_FILE: App_macOS_Tests/Info.plist
@@ -1148,7 +1210,7 @@ targets:
           TEST_HOST: $(BUILT_PRODUCTS_DIR)/App_macOS.app/Contents/MacOS/App_macOS
         Production Release:
           BUNDLE_LOADER: $(TEST_HOST)
-          COMBINE_HIDPI_IMAGES: YES
+          COMBINE_HIDPI_IMAGES: 'YES'
           FRAMEWORK_SEARCH_PATHS:
           - $(inherited)
           INFOPLIST_FILE: App_macOS_Tests/Info.plist
@@ -1161,7 +1223,7 @@ targets:
           TEST_HOST: $(BUILT_PRODUCTS_DIR)/App_macOS.app/Contents/MacOS/App_macOS
         Staging Debug:
           BUNDLE_LOADER: $(TEST_HOST)
-          COMBINE_HIDPI_IMAGES: YES
+          COMBINE_HIDPI_IMAGES: 'YES'
           FRAMEWORK_SEARCH_PATHS:
           - $(inherited)
           INFOPLIST_FILE: App_macOS_Tests/Info.plist
@@ -1174,7 +1236,7 @@ targets:
           TEST_HOST: $(BUILT_PRODUCTS_DIR)/App_macOS.app/Contents/MacOS/App_macOS
         Staging Release:
           BUNDLE_LOADER: $(TEST_HOST)
-          COMBINE_HIDPI_IMAGES: YES
+          COMBINE_HIDPI_IMAGES: 'YES'
           FRAMEWORK_SEARCH_PATHS:
           - $(inherited)
           INFOPLIST_FILE: App_macOS_Tests/Info.plist
@@ -1187,7 +1249,7 @@ targets:
           TEST_HOST: $(BUILT_PRODUCTS_DIR)/App_macOS.app/Contents/MacOS/App_macOS
         Test Debug:
           BUNDLE_LOADER: $(TEST_HOST)
-          COMBINE_HIDPI_IMAGES: YES
+          COMBINE_HIDPI_IMAGES: 'YES'
           FRAMEWORK_SEARCH_PATHS:
           - $(inherited)
           INFOPLIST_FILE: App_macOS_Tests/Info.plist
@@ -1200,7 +1262,7 @@ targets:
           TEST_HOST: $(BUILT_PRODUCTS_DIR)/App_macOS.app/Contents/MacOS/App_macOS
         Test Release:
           BUNDLE_LOADER: $(TEST_HOST)
-          COMBINE_HIDPI_IMAGES: YES
+          COMBINE_HIDPI_IMAGES: 'YES'
           FRAMEWORK_SEARCH_PATHS:
           - $(inherited)
           INFOPLIST_FILE: App_macOS_Tests/Info.plist
@@ -1222,59 +1284,47 @@ targets:
     settings:
       configs:
         Production Debug:
-          FRAMEWORK_SEARCH_PATHS:
-          - $(inherited)
           INFOPLIST_FILE: App_watchOS/Info.plist
           PRODUCT_BUNDLE_IDENTIFIER: com.project.app.watch
           SDKROOT: watchos
-          SKIP_INSTALL: YES
-          TARGETED_DEVICE_FAMILY: 4
-          WATCHOS_DEPLOYMENT_TARGET: 4.0
+          SKIP_INSTALL: 'YES'
+          TARGETED_DEVICE_FAMILY: '4'
+          WATCHOS_DEPLOYMENT_TARGET: '4.0'
         Production Release:
-          FRAMEWORK_SEARCH_PATHS:
-          - $(inherited)
           INFOPLIST_FILE: App_watchOS/Info.plist
           PRODUCT_BUNDLE_IDENTIFIER: com.project.app.watch
           SDKROOT: watchos
-          SKIP_INSTALL: YES
-          TARGETED_DEVICE_FAMILY: 4
-          WATCHOS_DEPLOYMENT_TARGET: 4.0
+          SKIP_INSTALL: 'YES'
+          TARGETED_DEVICE_FAMILY: '4'
+          WATCHOS_DEPLOYMENT_TARGET: '4.0'
         Staging Debug:
-          FRAMEWORK_SEARCH_PATHS:
-          - $(inherited)
           INFOPLIST_FILE: App_watchOS/Info.plist
           PRODUCT_BUNDLE_IDENTIFIER: com.project.app.watch
           SDKROOT: watchos
-          SKIP_INSTALL: YES
-          TARGETED_DEVICE_FAMILY: 4
-          WATCHOS_DEPLOYMENT_TARGET: 4.0
+          SKIP_INSTALL: 'YES'
+          TARGETED_DEVICE_FAMILY: '4'
+          WATCHOS_DEPLOYMENT_TARGET: '4.0'
         Staging Release:
-          FRAMEWORK_SEARCH_PATHS:
-          - $(inherited)
           INFOPLIST_FILE: App_watchOS/Info.plist
           PRODUCT_BUNDLE_IDENTIFIER: com.project.app.watch
           SDKROOT: watchos
-          SKIP_INSTALL: YES
-          TARGETED_DEVICE_FAMILY: 4
-          WATCHOS_DEPLOYMENT_TARGET: 4.0
+          SKIP_INSTALL: 'YES'
+          TARGETED_DEVICE_FAMILY: '4'
+          WATCHOS_DEPLOYMENT_TARGET: '4.0'
         Test Debug:
-          FRAMEWORK_SEARCH_PATHS:
-          - $(inherited)
           INFOPLIST_FILE: App_watchOS/Info.plist
           PRODUCT_BUNDLE_IDENTIFIER: com.project.app.watch
           SDKROOT: watchos
-          SKIP_INSTALL: YES
-          TARGETED_DEVICE_FAMILY: 4
-          WATCHOS_DEPLOYMENT_TARGET: 4.0
+          SKIP_INSTALL: 'YES'
+          TARGETED_DEVICE_FAMILY: '4'
+          WATCHOS_DEPLOYMENT_TARGET: '4.0'
         Test Release:
-          FRAMEWORK_SEARCH_PATHS:
-          - $(inherited)
           INFOPLIST_FILE: App_watchOS/Info.plist
           PRODUCT_BUNDLE_IDENTIFIER: com.project.app.watch
           SDKROOT: watchos
-          SKIP_INSTALL: YES
-          TARGETED_DEVICE_FAMILY: 4
-          WATCHOS_DEPLOYMENT_TARGET: 4.0
+          SKIP_INSTALL: 'YES'
+          TARGETED_DEVICE_FAMILY: '4'
+          WATCHOS_DEPLOYMENT_TARGET: '4.0'
     sources:
     - name: App_watchOS
       path: App_watchOS
@@ -1294,8 +1344,8 @@ targets:
           - '@executable_path/../../Frameworks'
           PRODUCT_BUNDLE_IDENTIFIER: com.project.app.watch.extension
           SDKROOT: watchos
-          SKIP_INSTALL: YES
-          TARGETED_DEVICE_FAMILY: 4
+          SKIP_INSTALL: 'YES'
+          TARGETED_DEVICE_FAMILY: '4'
         Production Release:
           ASSETCATALOG_COMPILER_COMPLICATION_NAME: Complication
           FRAMEWORK_SEARCH_PATHS:
@@ -1307,8 +1357,8 @@ targets:
           - '@executable_path/../../Frameworks'
           PRODUCT_BUNDLE_IDENTIFIER: com.project.app.watch.extension
           SDKROOT: watchos
-          SKIP_INSTALL: YES
-          TARGETED_DEVICE_FAMILY: 4
+          SKIP_INSTALL: 'YES'
+          TARGETED_DEVICE_FAMILY: '4'
         Staging Debug:
           ASSETCATALOG_COMPILER_COMPLICATION_NAME: Complication
           FRAMEWORK_SEARCH_PATHS:
@@ -1320,8 +1370,8 @@ targets:
           - '@executable_path/../../Frameworks'
           PRODUCT_BUNDLE_IDENTIFIER: com.project.app.watch.extension
           SDKROOT: watchos
-          SKIP_INSTALL: YES
-          TARGETED_DEVICE_FAMILY: 4
+          SKIP_INSTALL: 'YES'
+          TARGETED_DEVICE_FAMILY: '4'
         Staging Release:
           ASSETCATALOG_COMPILER_COMPLICATION_NAME: Complication
           FRAMEWORK_SEARCH_PATHS:
@@ -1333,8 +1383,8 @@ targets:
           - '@executable_path/../../Frameworks'
           PRODUCT_BUNDLE_IDENTIFIER: com.project.app.watch.extension
           SDKROOT: watchos
-          SKIP_INSTALL: YES
-          TARGETED_DEVICE_FAMILY: 4
+          SKIP_INSTALL: 'YES'
+          TARGETED_DEVICE_FAMILY: '4'
         Test Debug:
           ASSETCATALOG_COMPILER_COMPLICATION_NAME: Complication
           FRAMEWORK_SEARCH_PATHS:
@@ -1346,8 +1396,8 @@ targets:
           - '@executable_path/../../Frameworks'
           PRODUCT_BUNDLE_IDENTIFIER: com.project.app.watch.extension
           SDKROOT: watchos
-          SKIP_INSTALL: YES
-          TARGETED_DEVICE_FAMILY: 4
+          SKIP_INSTALL: 'YES'
+          TARGETED_DEVICE_FAMILY: '4'
         Test Release:
           ASSETCATALOG_COMPILER_COMPLICATION_NAME: Complication
           FRAMEWORK_SEARCH_PATHS:
@@ -1359,14 +1409,195 @@ targets:
           - '@executable_path/../../Frameworks'
           PRODUCT_BUNDLE_IDENTIFIER: com.project.app.watch.extension
           SDKROOT: watchos
-          SKIP_INSTALL: YES
-          TARGETED_DEVICE_FAMILY: 4
+          SKIP_INSTALL: 'YES'
+          TARGETED_DEVICE_FAMILY: '4'
     sources:
     - path: App_watchOS Extension/Assets.xcassets
     - path: App_watchOS Extension/ExtensionDelegate.swift
     - path: App_watchOS Extension/InterfaceController.swift
     - path: App_watchOS Extension/NotificationController.swift
     type: watchkit2-extension
+  BundleX:
+    platform: iOS
+    settings:
+      configs:
+        Production Debug:
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.BundleX
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+        Production Release:
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.BundleX
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+        Staging Debug:
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.BundleX
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+        Staging Release:
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.BundleX
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+        Test Debug:
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.BundleX
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+        Test Release:
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.BundleX
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+    type: bundle
+  DriverKitDriver:
+    dependencies:
+    - sdk: DriverKit.framework
+    platform: iOS
+    settings:
+      configs:
+        Production Debug:
+          CODE_SIGN_ENTITLEMENTS: DriverKit Driver/Driver.entitlements
+          COMBINE_HIDPI_IMAGES: 'YES'
+          DRIVERKIT_DEPLOYMENT_TARGET: '20.4'
+          INFOPLIST_FILE: DriverKit Driver/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/../Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.App-macOS.Driver
+          SDKROOT: driverkit
+        Production Release:
+          CODE_SIGN_ENTITLEMENTS: DriverKit Driver/Driver.entitlements
+          COMBINE_HIDPI_IMAGES: 'YES'
+          DRIVERKIT_DEPLOYMENT_TARGET: '20.4'
+          INFOPLIST_FILE: DriverKit Driver/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/../Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.App-macOS.Driver
+          SDKROOT: driverkit
+        Staging Debug:
+          CODE_SIGN_ENTITLEMENTS: DriverKit Driver/Driver.entitlements
+          COMBINE_HIDPI_IMAGES: 'YES'
+          DRIVERKIT_DEPLOYMENT_TARGET: '20.4'
+          INFOPLIST_FILE: DriverKit Driver/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/../Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.App-macOS.Driver
+          SDKROOT: driverkit
+        Staging Release:
+          CODE_SIGN_ENTITLEMENTS: DriverKit Driver/Driver.entitlements
+          COMBINE_HIDPI_IMAGES: 'YES'
+          DRIVERKIT_DEPLOYMENT_TARGET: '20.4'
+          INFOPLIST_FILE: DriverKit Driver/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/../Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.App-macOS.Driver
+          SDKROOT: driverkit
+        Test Debug:
+          CODE_SIGN_ENTITLEMENTS: DriverKit Driver/Driver.entitlements
+          COMBINE_HIDPI_IMAGES: 'YES'
+          DRIVERKIT_DEPLOYMENT_TARGET: '20.4'
+          INFOPLIST_FILE: DriverKit Driver/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/../Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.App-macOS.Driver
+          SDKROOT: driverkit
+        Test Release:
+          CODE_SIGN_ENTITLEMENTS: DriverKit Driver/Driver.entitlements
+          COMBINE_HIDPI_IMAGES: 'YES'
+          DRIVERKIT_DEPLOYMENT_TARGET: '20.4'
+          INFOPLIST_FILE: DriverKit Driver/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/../Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.App-macOS.Driver
+          SDKROOT: driverkit
+    sources:
+    - name: DriverKit Driver
+      path: DriverKit Driver
+    type: driver-extension
+  EndpointSecuritySystemExtension:
+    dependencies:
+    - sdk: libEndpointSecurity.tbd
+    platform: iOS
+    settings:
+      configs:
+        Production Debug:
+          CODE_SIGN_ENTITLEMENTS: EndpointSecurity Extension/EndpointSecurity.entitlements
+          COMBINE_HIDPI_IMAGES: 'YES'
+          INFOPLIST_FILE: EndpointSecurity Extension/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/../Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.App-macOS.EndpointSecurity
+          SDKROOT: macosx
+        Production Release:
+          CODE_SIGN_ENTITLEMENTS: EndpointSecurity Extension/EndpointSecurity.entitlements
+          COMBINE_HIDPI_IMAGES: 'YES'
+          INFOPLIST_FILE: EndpointSecurity Extension/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/../Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.App-macOS.EndpointSecurity
+          SDKROOT: macosx
+        Staging Debug:
+          CODE_SIGN_ENTITLEMENTS: EndpointSecurity Extension/EndpointSecurity.entitlements
+          COMBINE_HIDPI_IMAGES: 'YES'
+          INFOPLIST_FILE: EndpointSecurity Extension/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/../Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.App-macOS.EndpointSecurity
+          SDKROOT: macosx
+        Staging Release:
+          CODE_SIGN_ENTITLEMENTS: EndpointSecurity Extension/EndpointSecurity.entitlements
+          COMBINE_HIDPI_IMAGES: 'YES'
+          INFOPLIST_FILE: EndpointSecurity Extension/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/../Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.App-macOS.EndpointSecurity
+          SDKROOT: macosx
+        Test Debug:
+          CODE_SIGN_ENTITLEMENTS: EndpointSecurity Extension/EndpointSecurity.entitlements
+          COMBINE_HIDPI_IMAGES: 'YES'
+          INFOPLIST_FILE: EndpointSecurity Extension/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/../Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.App-macOS.EndpointSecurity
+          SDKROOT: macosx
+        Test Release:
+          CODE_SIGN_ENTITLEMENTS: EndpointSecurity Extension/EndpointSecurity.entitlements
+          COMBINE_HIDPI_IMAGES: 'YES'
+          INFOPLIST_FILE: EndpointSecurity Extension/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/../Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.App-macOS.EndpointSecurity
+          SDKROOT: macosx
+    sources:
+    - name: EndpointSecurity Extension
+      path: EndpointSecurity Extension
+    type: system-extension
   EntitledApp:
     platform: iOS
     settings:
@@ -1426,6 +1657,53 @@ targets:
           SDKROOT: iphoneos
           TARGETED_DEVICE_FAMILY: 1,2
     type: application
+  ExternalTarget:
+    platform: iOS
+    settings:
+      configs:
+        Production Debug:
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.ExternalTarget
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+        Production Release:
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.ExternalTarget
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+        Staging Debug:
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.ExternalTarget
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+        Staging Release:
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.ExternalTarget
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+        Test Debug:
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.ExternalTarget
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+        Test Release:
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.ExternalTarget
+          SDKROOT: iphoneos
+          TARGETED_DEVICE_FAMILY: 1,2
+    type: framework
   Framework2_iOS:
     platform: iOS
     settings:
@@ -1494,7 +1772,7 @@ targets:
     settings:
       configs:
         Production Debug:
-          COMBINE_HIDPI_IMAGES: YES
+          COMBINE_HIDPI_IMAGES: 'YES'
           INFOPLIST_FILE: Framework/Info.plist
           LD_RUNPATH_SEARCH_PATHS:
           - $(inherited)
@@ -1503,7 +1781,7 @@ targets:
           PRODUCT_NAME: Framework2
           SDKROOT: macosx
         Production Release:
-          COMBINE_HIDPI_IMAGES: YES
+          COMBINE_HIDPI_IMAGES: 'YES'
           INFOPLIST_FILE: Framework/Info.plist
           LD_RUNPATH_SEARCH_PATHS:
           - $(inherited)
@@ -1512,7 +1790,7 @@ targets:
           PRODUCT_NAME: Framework2
           SDKROOT: macosx
         Staging Debug:
-          COMBINE_HIDPI_IMAGES: YES
+          COMBINE_HIDPI_IMAGES: 'YES'
           INFOPLIST_FILE: Framework/Info.plist
           LD_RUNPATH_SEARCH_PATHS:
           - $(inherited)
@@ -1521,7 +1799,7 @@ targets:
           PRODUCT_NAME: Framework2
           SDKROOT: macosx
         Staging Release:
-          COMBINE_HIDPI_IMAGES: YES
+          COMBINE_HIDPI_IMAGES: 'YES'
           INFOPLIST_FILE: Framework/Info.plist
           LD_RUNPATH_SEARCH_PATHS:
           - $(inherited)
@@ -1530,7 +1808,7 @@ targets:
           PRODUCT_NAME: Framework2
           SDKROOT: macosx
         Test Debug:
-          COMBINE_HIDPI_IMAGES: YES
+          COMBINE_HIDPI_IMAGES: 'YES'
           INFOPLIST_FILE: Framework/Info.plist
           LD_RUNPATH_SEARCH_PATHS:
           - $(inherited)
@@ -1539,7 +1817,7 @@ targets:
           PRODUCT_NAME: Framework2
           SDKROOT: macosx
         Test Release:
-          COMBINE_HIDPI_IMAGES: YES
+          COMBINE_HIDPI_IMAGES: 'YES'
           INFOPLIST_FILE: Framework/Info.plist
           LD_RUNPATH_SEARCH_PATHS:
           - $(inherited)
@@ -1564,7 +1842,7 @@ targets:
           PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework2-tvOS
           PRODUCT_NAME: Framework2
           SDKROOT: appletvos
-          TARGETED_DEVICE_FAMILY: 3
+          TARGETED_DEVICE_FAMILY: '3'
         Production Release:
           INFOPLIST_FILE: Framework/Info.plist
           LD_RUNPATH_SEARCH_PATHS:
@@ -1573,7 +1851,7 @@ targets:
           PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework2-tvOS
           PRODUCT_NAME: Framework2
           SDKROOT: appletvos
-          TARGETED_DEVICE_FAMILY: 3
+          TARGETED_DEVICE_FAMILY: '3'
         Staging Debug:
           INFOPLIST_FILE: Framework/Info.plist
           LD_RUNPATH_SEARCH_PATHS:
@@ -1582,7 +1860,7 @@ targets:
           PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework2-tvOS
           PRODUCT_NAME: Framework2
           SDKROOT: appletvos
-          TARGETED_DEVICE_FAMILY: 3
+          TARGETED_DEVICE_FAMILY: '3'
         Staging Release:
           INFOPLIST_FILE: Framework/Info.plist
           LD_RUNPATH_SEARCH_PATHS:
@@ -1591,7 +1869,7 @@ targets:
           PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework2-tvOS
           PRODUCT_NAME: Framework2
           SDKROOT: appletvos
-          TARGETED_DEVICE_FAMILY: 3
+          TARGETED_DEVICE_FAMILY: '3'
         Test Debug:
           INFOPLIST_FILE: Framework/Info.plist
           LD_RUNPATH_SEARCH_PATHS:
@@ -1600,7 +1878,7 @@ targets:
           PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework2-tvOS
           PRODUCT_NAME: Framework2
           SDKROOT: appletvos
-          TARGETED_DEVICE_FAMILY: 3
+          TARGETED_DEVICE_FAMILY: '3'
         Test Release:
           INFOPLIST_FILE: Framework/Info.plist
           LD_RUNPATH_SEARCH_PATHS:
@@ -1609,7 +1887,7 @@ targets:
           PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework2-tvOS
           PRODUCT_NAME: Framework2
           SDKROOT: appletvos
-          TARGETED_DEVICE_FAMILY: 3
+          TARGETED_DEVICE_FAMILY: '3'
     sources:
     - path: Framework/FrameworkFile.swift
     - headerVisibility: public
@@ -1624,37 +1902,37 @@ targets:
           PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework2-watchOS
           PRODUCT_NAME: Framework2
           SDKROOT: watchos
-          TARGETED_DEVICE_FAMILY: 4
+          TARGETED_DEVICE_FAMILY: '4'
         Production Release:
           INFOPLIST_FILE: Framework/Info.plist
           PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework2-watchOS
           PRODUCT_NAME: Framework2
           SDKROOT: watchos
-          TARGETED_DEVICE_FAMILY: 4
+          TARGETED_DEVICE_FAMILY: '4'
         Staging Debug:
           INFOPLIST_FILE: Framework/Info.plist
           PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework2-watchOS
           PRODUCT_NAME: Framework2
           SDKROOT: watchos
-          TARGETED_DEVICE_FAMILY: 4
+          TARGETED_DEVICE_FAMILY: '4'
         Staging Release:
           INFOPLIST_FILE: Framework/Info.plist
           PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework2-watchOS
           PRODUCT_NAME: Framework2
           SDKROOT: watchos
-          TARGETED_DEVICE_FAMILY: 4
+          TARGETED_DEVICE_FAMILY: '4'
         Test Debug:
           INFOPLIST_FILE: Framework/Info.plist
           PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework2-watchOS
           PRODUCT_NAME: Framework2
           SDKROOT: watchos
-          TARGETED_DEVICE_FAMILY: 4
+          TARGETED_DEVICE_FAMILY: '4'
         Test Release:
           INFOPLIST_FILE: Framework/Info.plist
           PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework2-watchOS
           PRODUCT_NAME: Framework2
           SDKROOT: watchos
-          TARGETED_DEVICE_FAMILY: 4
+          TARGETED_DEVICE_FAMILY: '4'
     sources:
     - path: Framework/FrameworkFile.swift
     - headerVisibility: public
@@ -1762,7 +2040,7 @@ targets:
     settings:
       configs:
         Production Debug:
-          COMBINE_HIDPI_IMAGES: YES
+          COMBINE_HIDPI_IMAGES: 'YES'
           FRAMEWORK_SEARCH_PATHS:
           - $(inherited)
           INFOPLIST_FILE: Framework/Info.plist
@@ -1773,7 +2051,7 @@ targets:
           PRODUCT_NAME: Framework
           SDKROOT: macosx
         Production Release:
-          COMBINE_HIDPI_IMAGES: YES
+          COMBINE_HIDPI_IMAGES: 'YES'
           FRAMEWORK_SEARCH_PATHS:
           - $(inherited)
           INFOPLIST_FILE: Framework/Info.plist
@@ -1784,7 +2062,7 @@ targets:
           PRODUCT_NAME: Framework
           SDKROOT: macosx
         Staging Debug:
-          COMBINE_HIDPI_IMAGES: YES
+          COMBINE_HIDPI_IMAGES: 'YES'
           FRAMEWORK_SEARCH_PATHS:
           - $(inherited)
           INFOPLIST_FILE: Framework/Info.plist
@@ -1795,7 +2073,7 @@ targets:
           PRODUCT_NAME: Framework
           SDKROOT: macosx
         Staging Release:
-          COMBINE_HIDPI_IMAGES: YES
+          COMBINE_HIDPI_IMAGES: 'YES'
           FRAMEWORK_SEARCH_PATHS:
           - $(inherited)
           INFOPLIST_FILE: Framework/Info.plist
@@ -1806,7 +2084,7 @@ targets:
           PRODUCT_NAME: Framework
           SDKROOT: macosx
         Test Debug:
-          COMBINE_HIDPI_IMAGES: YES
+          COMBINE_HIDPI_IMAGES: 'YES'
           FRAMEWORK_SEARCH_PATHS:
           - $(inherited)
           INFOPLIST_FILE: Framework/Info.plist
@@ -1817,7 +2095,7 @@ targets:
           PRODUCT_NAME: Framework
           SDKROOT: macosx
         Test Release:
-          COMBINE_HIDPI_IMAGES: YES
+          COMBINE_HIDPI_IMAGES: 'YES'
           FRAMEWORK_SEARCH_PATHS:
           - $(inherited)
           INFOPLIST_FILE: Framework/Info.plist
@@ -1836,7 +2114,9 @@ targets:
     type: framework
   Framework_tvOS:
     dependencies:
+    - target: Framework2_tvOS
     - target: StaticLibrary_ObjC_tvOS
+    - target: Framework2.framework
     - framework: Result.framework
     platform: iOS
     postbuildScripts:
@@ -1858,7 +2138,7 @@ targets:
           PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework-tvOS
           PRODUCT_NAME: Framework
           SDKROOT: appletvos
-          TARGETED_DEVICE_FAMILY: 3
+          TARGETED_DEVICE_FAMILY: '3'
         Production Release:
           FRAMEWORK_SEARCH_PATHS:
           - $(inherited)
@@ -1869,7 +2149,7 @@ targets:
           PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework-tvOS
           PRODUCT_NAME: Framework
           SDKROOT: appletvos
-          TARGETED_DEVICE_FAMILY: 3
+          TARGETED_DEVICE_FAMILY: '3'
         Staging Debug:
           FRAMEWORK_SEARCH_PATHS:
           - $(inherited)
@@ -1880,7 +2160,7 @@ targets:
           PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework-tvOS
           PRODUCT_NAME: Framework
           SDKROOT: appletvos
-          TARGETED_DEVICE_FAMILY: 3
+          TARGETED_DEVICE_FAMILY: '3'
         Staging Release:
           FRAMEWORK_SEARCH_PATHS:
           - $(inherited)
@@ -1891,7 +2171,7 @@ targets:
           PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework-tvOS
           PRODUCT_NAME: Framework
           SDKROOT: appletvos
-          TARGETED_DEVICE_FAMILY: 3
+          TARGETED_DEVICE_FAMILY: '3'
         Test Debug:
           FRAMEWORK_SEARCH_PATHS:
           - $(inherited)
@@ -1902,7 +2182,7 @@ targets:
           PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework-tvOS
           PRODUCT_NAME: Framework
           SDKROOT: appletvos
-          TARGETED_DEVICE_FAMILY: 3
+          TARGETED_DEVICE_FAMILY: '3'
         Test Release:
           FRAMEWORK_SEARCH_PATHS:
           - $(inherited)
@@ -1913,7 +2193,7 @@ targets:
           PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework-tvOS
           PRODUCT_NAME: Framework
           SDKROOT: appletvos
-          TARGETED_DEVICE_FAMILY: 3
+          TARGETED_DEVICE_FAMILY: '3'
     sources:
     - path: Framework/FrameworkFile.swift
     - headerVisibility: public
@@ -1923,7 +2203,9 @@ targets:
     type: framework
   Framework_watchOS:
     dependencies:
+    - target: Framework2_watchOS
     - target: StaticLibrary_ObjC_watchOS
+    - target: Framework2.framework
     - framework: Result.framework
     platform: iOS
     postbuildScripts:
@@ -1942,7 +2224,7 @@ targets:
           PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework-watchOS
           PRODUCT_NAME: Framework
           SDKROOT: watchos
-          TARGETED_DEVICE_FAMILY: 4
+          TARGETED_DEVICE_FAMILY: '4'
         Production Release:
           FRAMEWORK_SEARCH_PATHS:
           - $(inherited)
@@ -1950,7 +2232,7 @@ targets:
           PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework-watchOS
           PRODUCT_NAME: Framework
           SDKROOT: watchos
-          TARGETED_DEVICE_FAMILY: 4
+          TARGETED_DEVICE_FAMILY: '4'
         Staging Debug:
           FRAMEWORK_SEARCH_PATHS:
           - $(inherited)
@@ -1958,7 +2240,7 @@ targets:
           PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework-watchOS
           PRODUCT_NAME: Framework
           SDKROOT: watchos
-          TARGETED_DEVICE_FAMILY: 4
+          TARGETED_DEVICE_FAMILY: '4'
         Staging Release:
           FRAMEWORK_SEARCH_PATHS:
           - $(inherited)
@@ -1966,7 +2248,7 @@ targets:
           PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework-watchOS
           PRODUCT_NAME: Framework
           SDKROOT: watchos
-          TARGETED_DEVICE_FAMILY: 4
+          TARGETED_DEVICE_FAMILY: '4'
         Test Debug:
           FRAMEWORK_SEARCH_PATHS:
           - $(inherited)
@@ -1974,7 +2256,7 @@ targets:
           PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework-watchOS
           PRODUCT_NAME: Framework
           SDKROOT: watchos
-          TARGETED_DEVICE_FAMILY: 4
+          TARGETED_DEVICE_FAMILY: '4'
         Test Release:
           FRAMEWORK_SEARCH_PATHS:
           - $(inherited)
@@ -1982,7 +2264,7 @@ targets:
           PRODUCT_BUNDLE_IDENTIFIER: com.project.Framework-watchOS
           PRODUCT_NAME: Framework
           SDKROOT: watchos
-          TARGETED_DEVICE_FAMILY: 4
+          TARGETED_DEVICE_FAMILY: '4'
     sources:
     - path: Framework/FrameworkFile.swift
     - headerVisibility: public
@@ -1990,6 +2272,70 @@ targets:
     - headerVisibility: public
       path: Headers
     type: framework
+  NetworkSystemExtension:
+    dependencies:
+    - sdk: NetworkExtension.framework
+    platform: iOS
+    settings:
+      configs:
+        Production Debug:
+          CODE_SIGN_ENTITLEMENTS: Network Extension/NetworkExtension.entitlements
+          COMBINE_HIDPI_IMAGES: 'YES'
+          INFOPLIST_FILE: Network Extension/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/../Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.App-macOS.NetworkExtension
+          SDKROOT: macosx
+        Production Release:
+          CODE_SIGN_ENTITLEMENTS: Network Extension/NetworkExtension.entitlements
+          COMBINE_HIDPI_IMAGES: 'YES'
+          INFOPLIST_FILE: Network Extension/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/../Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.App-macOS.NetworkExtension
+          SDKROOT: macosx
+        Staging Debug:
+          CODE_SIGN_ENTITLEMENTS: Network Extension/NetworkExtension.entitlements
+          COMBINE_HIDPI_IMAGES: 'YES'
+          INFOPLIST_FILE: Network Extension/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/../Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.App-macOS.NetworkExtension
+          SDKROOT: macosx
+        Staging Release:
+          CODE_SIGN_ENTITLEMENTS: Network Extension/NetworkExtension.entitlements
+          COMBINE_HIDPI_IMAGES: 'YES'
+          INFOPLIST_FILE: Network Extension/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/../Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.App-macOS.NetworkExtension
+          SDKROOT: macosx
+        Test Debug:
+          CODE_SIGN_ENTITLEMENTS: Network Extension/NetworkExtension.entitlements
+          COMBINE_HIDPI_IMAGES: 'YES'
+          INFOPLIST_FILE: Network Extension/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/../Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.App-macOS.NetworkExtension
+          SDKROOT: macosx
+        Test Release:
+          CODE_SIGN_ENTITLEMENTS: Network Extension/NetworkExtension.entitlements
+          COMBINE_HIDPI_IMAGES: 'YES'
+          INFOPLIST_FILE: Network Extension/Info.plist
+          LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - '@executable_path/../Frameworks'
+          PRODUCT_BUNDLE_IDENTIFIER: com.project.App-macOS.NetworkExtension
+          SDKROOT: macosx
+    sources:
+    - name: Network Extension
+      path: Network Extension
+    type: system-extension
   StaticLibrary_ObjC_iOS:
     platform: iOS
     settings:
@@ -2001,7 +2347,7 @@ targets:
           PRODUCT_BUNDLE_IDENTIFIER: com.project.StaticLibrary-ObjC-iOS
           PRODUCT_NAME: StaticLibrary_ObjC
           SDKROOT: iphoneos
-          SKIP_INSTALL: YES
+          SKIP_INSTALL: 'YES'
           TARGETED_DEVICE_FAMILY: 1,2
         Production Release:
           LD_RUNPATH_SEARCH_PATHS:
@@ -2010,7 +2356,7 @@ targets:
           PRODUCT_BUNDLE_IDENTIFIER: com.project.StaticLibrary-ObjC-iOS
           PRODUCT_NAME: StaticLibrary_ObjC
           SDKROOT: iphoneos
-          SKIP_INSTALL: YES
+          SKIP_INSTALL: 'YES'
           TARGETED_DEVICE_FAMILY: 1,2
         Staging Debug:
           LD_RUNPATH_SEARCH_PATHS:
@@ -2019,7 +2365,7 @@ targets:
           PRODUCT_BUNDLE_IDENTIFIER: com.project.StaticLibrary-ObjC-iOS
           PRODUCT_NAME: StaticLibrary_ObjC
           SDKROOT: iphoneos
-          SKIP_INSTALL: YES
+          SKIP_INSTALL: 'YES'
           TARGETED_DEVICE_FAMILY: 1,2
         Staging Release:
           LD_RUNPATH_SEARCH_PATHS:
@@ -2028,7 +2374,7 @@ targets:
           PRODUCT_BUNDLE_IDENTIFIER: com.project.StaticLibrary-ObjC-iOS
           PRODUCT_NAME: StaticLibrary_ObjC
           SDKROOT: iphoneos
-          SKIP_INSTALL: YES
+          SKIP_INSTALL: 'YES'
           TARGETED_DEVICE_FAMILY: 1,2
         Test Debug:
           LD_RUNPATH_SEARCH_PATHS:
@@ -2037,7 +2383,7 @@ targets:
           PRODUCT_BUNDLE_IDENTIFIER: com.project.StaticLibrary-ObjC-iOS
           PRODUCT_NAME: StaticLibrary_ObjC
           SDKROOT: iphoneos
-          SKIP_INSTALL: YES
+          SKIP_INSTALL: 'YES'
           TARGETED_DEVICE_FAMILY: 1,2
         Test Release:
           LD_RUNPATH_SEARCH_PATHS:
@@ -2046,7 +2392,7 @@ targets:
           PRODUCT_BUNDLE_IDENTIFIER: com.project.StaticLibrary-ObjC-iOS
           PRODUCT_NAME: StaticLibrary_ObjC
           SDKROOT: iphoneos
-          SKIP_INSTALL: YES
+          SKIP_INSTALL: 'YES'
           TARGETED_DEVICE_FAMILY: 1,2
     sources:
     - path: StaticLibrary_ObjC/StaticLibrary_ObjC.m
@@ -2056,59 +2402,59 @@ targets:
     settings:
       configs:
         Production Debug:
-          COMBINE_HIDPI_IMAGES: YES
+          COMBINE_HIDPI_IMAGES: 'YES'
           LD_RUNPATH_SEARCH_PATHS:
           - $(inherited)
           - '@executable_path/../Frameworks'
           PRODUCT_BUNDLE_IDENTIFIER: com.project.StaticLibrary-ObjC-macOS
           PRODUCT_NAME: StaticLibrary_ObjC
           SDKROOT: macosx
-          SKIP_INSTALL: YES
+          SKIP_INSTALL: 'YES'
         Production Release:
-          COMBINE_HIDPI_IMAGES: YES
+          COMBINE_HIDPI_IMAGES: 'YES'
           LD_RUNPATH_SEARCH_PATHS:
           - $(inherited)
           - '@executable_path/../Frameworks'
           PRODUCT_BUNDLE_IDENTIFIER: com.project.StaticLibrary-ObjC-macOS
           PRODUCT_NAME: StaticLibrary_ObjC
           SDKROOT: macosx
-          SKIP_INSTALL: YES
+          SKIP_INSTALL: 'YES'
         Staging Debug:
-          COMBINE_HIDPI_IMAGES: YES
+          COMBINE_HIDPI_IMAGES: 'YES'
           LD_RUNPATH_SEARCH_PATHS:
           - $(inherited)
           - '@executable_path/../Frameworks'
           PRODUCT_BUNDLE_IDENTIFIER: com.project.StaticLibrary-ObjC-macOS
           PRODUCT_NAME: StaticLibrary_ObjC
           SDKROOT: macosx
-          SKIP_INSTALL: YES
+          SKIP_INSTALL: 'YES'
         Staging Release:
-          COMBINE_HIDPI_IMAGES: YES
+          COMBINE_HIDPI_IMAGES: 'YES'
           LD_RUNPATH_SEARCH_PATHS:
           - $(inherited)
           - '@executable_path/../Frameworks'
           PRODUCT_BUNDLE_IDENTIFIER: com.project.StaticLibrary-ObjC-macOS
           PRODUCT_NAME: StaticLibrary_ObjC
           SDKROOT: macosx
-          SKIP_INSTALL: YES
+          SKIP_INSTALL: 'YES'
         Test Debug:
-          COMBINE_HIDPI_IMAGES: YES
+          COMBINE_HIDPI_IMAGES: 'YES'
           LD_RUNPATH_SEARCH_PATHS:
           - $(inherited)
           - '@executable_path/../Frameworks'
           PRODUCT_BUNDLE_IDENTIFIER: com.project.StaticLibrary-ObjC-macOS
           PRODUCT_NAME: StaticLibrary_ObjC
           SDKROOT: macosx
-          SKIP_INSTALL: YES
+          SKIP_INSTALL: 'YES'
         Test Release:
-          COMBINE_HIDPI_IMAGES: YES
+          COMBINE_HIDPI_IMAGES: 'YES'
           LD_RUNPATH_SEARCH_PATHS:
           - $(inherited)
           - '@executable_path/../Frameworks'
           PRODUCT_BUNDLE_IDENTIFIER: com.project.StaticLibrary-ObjC-macOS
           PRODUCT_NAME: StaticLibrary_ObjC
           SDKROOT: macosx
-          SKIP_INSTALL: YES
+          SKIP_INSTALL: 'YES'
     sources:
     - path: StaticLibrary_ObjC/StaticLibrary_ObjC.m
     type: library.static
@@ -2123,8 +2469,8 @@ targets:
           PRODUCT_BUNDLE_IDENTIFIER: com.project.StaticLibrary-ObjC-tvOS
           PRODUCT_NAME: StaticLibrary_ObjC
           SDKROOT: appletvos
-          SKIP_INSTALL: YES
-          TARGETED_DEVICE_FAMILY: 3
+          SKIP_INSTALL: 'YES'
+          TARGETED_DEVICE_FAMILY: '3'
         Production Release:
           LD_RUNPATH_SEARCH_PATHS:
           - $(inherited)
@@ -2132,8 +2478,8 @@ targets:
           PRODUCT_BUNDLE_IDENTIFIER: com.project.StaticLibrary-ObjC-tvOS
           PRODUCT_NAME: StaticLibrary_ObjC
           SDKROOT: appletvos
-          SKIP_INSTALL: YES
-          TARGETED_DEVICE_FAMILY: 3
+          SKIP_INSTALL: 'YES'
+          TARGETED_DEVICE_FAMILY: '3'
         Staging Debug:
           LD_RUNPATH_SEARCH_PATHS:
           - $(inherited)
@@ -2141,8 +2487,8 @@ targets:
           PRODUCT_BUNDLE_IDENTIFIER: com.project.StaticLibrary-ObjC-tvOS
           PRODUCT_NAME: StaticLibrary_ObjC
           SDKROOT: appletvos
-          SKIP_INSTALL: YES
-          TARGETED_DEVICE_FAMILY: 3
+          SKIP_INSTALL: 'YES'
+          TARGETED_DEVICE_FAMILY: '3'
         Staging Release:
           LD_RUNPATH_SEARCH_PATHS:
           - $(inherited)
@@ -2150,8 +2496,8 @@ targets:
           PRODUCT_BUNDLE_IDENTIFIER: com.project.StaticLibrary-ObjC-tvOS
           PRODUCT_NAME: StaticLibrary_ObjC
           SDKROOT: appletvos
-          SKIP_INSTALL: YES
-          TARGETED_DEVICE_FAMILY: 3
+          SKIP_INSTALL: 'YES'
+          TARGETED_DEVICE_FAMILY: '3'
         Test Debug:
           LD_RUNPATH_SEARCH_PATHS:
           - $(inherited)
@@ -2159,8 +2505,8 @@ targets:
           PRODUCT_BUNDLE_IDENTIFIER: com.project.StaticLibrary-ObjC-tvOS
           PRODUCT_NAME: StaticLibrary_ObjC
           SDKROOT: appletvos
-          SKIP_INSTALL: YES
-          TARGETED_DEVICE_FAMILY: 3
+          SKIP_INSTALL: 'YES'
+          TARGETED_DEVICE_FAMILY: '3'
         Test Release:
           LD_RUNPATH_SEARCH_PATHS:
           - $(inherited)
@@ -2168,8 +2514,8 @@ targets:
           PRODUCT_BUNDLE_IDENTIFIER: com.project.StaticLibrary-ObjC-tvOS
           PRODUCT_NAME: StaticLibrary_ObjC
           SDKROOT: appletvos
-          SKIP_INSTALL: YES
-          TARGETED_DEVICE_FAMILY: 3
+          SKIP_INSTALL: 'YES'
+          TARGETED_DEVICE_FAMILY: '3'
     sources:
     - path: StaticLibrary_ObjC/StaticLibrary_ObjC.m
     type: library.static
@@ -2181,38 +2527,38 @@ targets:
           PRODUCT_BUNDLE_IDENTIFIER: com.project.StaticLibrary-ObjC-watchOS
           PRODUCT_NAME: StaticLibrary_ObjC
           SDKROOT: watchos
-          SKIP_INSTALL: YES
-          TARGETED_DEVICE_FAMILY: 4
+          SKIP_INSTALL: 'YES'
+          TARGETED_DEVICE_FAMILY: '4'
         Production Release:
           PRODUCT_BUNDLE_IDENTIFIER: com.project.StaticLibrary-ObjC-watchOS
           PRODUCT_NAME: StaticLibrary_ObjC
           SDKROOT: watchos
-          SKIP_INSTALL: YES
-          TARGETED_DEVICE_FAMILY: 4
+          SKIP_INSTALL: 'YES'
+          TARGETED_DEVICE_FAMILY: '4'
         Staging Debug:
           PRODUCT_BUNDLE_IDENTIFIER: com.project.StaticLibrary-ObjC-watchOS
           PRODUCT_NAME: StaticLibrary_ObjC
           SDKROOT: watchos
-          SKIP_INSTALL: YES
-          TARGETED_DEVICE_FAMILY: 4
+          SKIP_INSTALL: 'YES'
+          TARGETED_DEVICE_FAMILY: '4'
         Staging Release:
           PRODUCT_BUNDLE_IDENTIFIER: com.project.StaticLibrary-ObjC-watchOS
           PRODUCT_NAME: StaticLibrary_ObjC
           SDKROOT: watchos
-          SKIP_INSTALL: YES
-          TARGETED_DEVICE_FAMILY: 4
+          SKIP_INSTALL: 'YES'
+          TARGETED_DEVICE_FAMILY: '4'
         Test Debug:
           PRODUCT_BUNDLE_IDENTIFIER: com.project.StaticLibrary-ObjC-watchOS
           PRODUCT_NAME: StaticLibrary_ObjC
           SDKROOT: watchos
-          SKIP_INSTALL: YES
-          TARGETED_DEVICE_FAMILY: 4
+          SKIP_INSTALL: 'YES'
+          TARGETED_DEVICE_FAMILY: '4'
         Test Release:
           PRODUCT_BUNDLE_IDENTIFIER: com.project.StaticLibrary-ObjC-watchOS
           PRODUCT_NAME: StaticLibrary_ObjC
           SDKROOT: watchos
-          SKIP_INSTALL: YES
-          TARGETED_DEVICE_FAMILY: 4
+          SKIP_INSTALL: 'YES'
+          TARGETED_DEVICE_FAMILY: '4'
     sources:
     - path: StaticLibrary_ObjC/StaticLibrary_ObjC.m
     type: library.static
@@ -2237,7 +2583,7 @@ targets:
           - '@executable_path/Frameworks'
           PRODUCT_BUNDLE_IDENTIFIER: com.project.StaticLibrary-Swift
           SDKROOT: iphoneos
-          SKIP_INSTALL: YES
+          SKIP_INSTALL: 'YES'
           TARGETED_DEVICE_FAMILY: 1,2
         Production Release:
           LD_RUNPATH_SEARCH_PATHS:
@@ -2245,7 +2591,7 @@ targets:
           - '@executable_path/Frameworks'
           PRODUCT_BUNDLE_IDENTIFIER: com.project.StaticLibrary-Swift
           SDKROOT: iphoneos
-          SKIP_INSTALL: YES
+          SKIP_INSTALL: 'YES'
           TARGETED_DEVICE_FAMILY: 1,2
         Staging Debug:
           LD_RUNPATH_SEARCH_PATHS:
@@ -2253,7 +2599,7 @@ targets:
           - '@executable_path/Frameworks'
           PRODUCT_BUNDLE_IDENTIFIER: com.project.StaticLibrary-Swift
           SDKROOT: iphoneos
-          SKIP_INSTALL: YES
+          SKIP_INSTALL: 'YES'
           TARGETED_DEVICE_FAMILY: 1,2
         Staging Release:
           LD_RUNPATH_SEARCH_PATHS:
@@ -2261,7 +2607,7 @@ targets:
           - '@executable_path/Frameworks'
           PRODUCT_BUNDLE_IDENTIFIER: com.project.StaticLibrary-Swift
           SDKROOT: iphoneos
-          SKIP_INSTALL: YES
+          SKIP_INSTALL: 'YES'
           TARGETED_DEVICE_FAMILY: 1,2
         Test Debug:
           LD_RUNPATH_SEARCH_PATHS:
@@ -2269,7 +2615,7 @@ targets:
           - '@executable_path/Frameworks'
           PRODUCT_BUNDLE_IDENTIFIER: com.project.StaticLibrary-Swift
           SDKROOT: iphoneos
-          SKIP_INSTALL: YES
+          SKIP_INSTALL: 'YES'
           TARGETED_DEVICE_FAMILY: 1,2
         Test Release:
           LD_RUNPATH_SEARCH_PATHS:
@@ -2277,7 +2623,7 @@ targets:
           - '@executable_path/Frameworks'
           PRODUCT_BUNDLE_IDENTIFIER: com.project.StaticLibrary-Swift
           SDKROOT: iphoneos
-          SKIP_INSTALL: YES
+          SKIP_INSTALL: 'YES'
           TARGETED_DEVICE_FAMILY: 1,2
     sources:
     - name: StaticLibrary_Swift
@@ -2345,42 +2691,42 @@ targets:
     settings:
       configs:
         Production Debug:
-          COMBINE_HIDPI_IMAGES: YES
+          COMBINE_HIDPI_IMAGES: 'YES'
           LD_RUNPATH_SEARCH_PATHS:
           - $(inherited)
           - '@executable_path/../Frameworks'
           PRODUCT_BUNDLE_IDENTIFIER: com.project.Tool
           SDKROOT: macosx
         Production Release:
-          COMBINE_HIDPI_IMAGES: YES
+          COMBINE_HIDPI_IMAGES: 'YES'
           LD_RUNPATH_SEARCH_PATHS:
           - $(inherited)
           - '@executable_path/../Frameworks'
           PRODUCT_BUNDLE_IDENTIFIER: com.project.Tool
           SDKROOT: macosx
         Staging Debug:
-          COMBINE_HIDPI_IMAGES: YES
+          COMBINE_HIDPI_IMAGES: 'YES'
           LD_RUNPATH_SEARCH_PATHS:
           - $(inherited)
           - '@executable_path/../Frameworks'
           PRODUCT_BUNDLE_IDENTIFIER: com.project.Tool
           SDKROOT: macosx
         Staging Release:
-          COMBINE_HIDPI_IMAGES: YES
+          COMBINE_HIDPI_IMAGES: 'YES'
           LD_RUNPATH_SEARCH_PATHS:
           - $(inherited)
           - '@executable_path/../Frameworks'
           PRODUCT_BUNDLE_IDENTIFIER: com.project.Tool
           SDKROOT: macosx
         Test Debug:
-          COMBINE_HIDPI_IMAGES: YES
+          COMBINE_HIDPI_IMAGES: 'YES'
           LD_RUNPATH_SEARCH_PATHS:
           - $(inherited)
           - '@executable_path/../Frameworks'
           PRODUCT_BUNDLE_IDENTIFIER: com.project.Tool
           SDKROOT: macosx
         Test Release:
-          COMBINE_HIDPI_IMAGES: YES
+          COMBINE_HIDPI_IMAGES: 'YES'
           LD_RUNPATH_SEARCH_PATHS:
           - $(inherited)
           - '@executable_path/../Frameworks'
@@ -2395,7 +2741,7 @@ targets:
     settings:
       configs:
         Production Debug:
-          COMBINE_HIDPI_IMAGES: YES
+          COMBINE_HIDPI_IMAGES: 'YES'
           INFOPLIST_FILE: XPC Service/Info.plist
           LD_RUNPATH_SEARCH_PATHS:
           - $(inherited)
@@ -2403,7 +2749,7 @@ targets:
           PRODUCT_BUNDLE_IDENTIFIER: com.project.XPCService
           SDKROOT: macosx
         Production Release:
-          COMBINE_HIDPI_IMAGES: YES
+          COMBINE_HIDPI_IMAGES: 'YES'
           INFOPLIST_FILE: XPC Service/Info.plist
           LD_RUNPATH_SEARCH_PATHS:
           - $(inherited)
@@ -2411,7 +2757,7 @@ targets:
           PRODUCT_BUNDLE_IDENTIFIER: com.project.XPCService
           SDKROOT: macosx
         Staging Debug:
-          COMBINE_HIDPI_IMAGES: YES
+          COMBINE_HIDPI_IMAGES: 'YES'
           INFOPLIST_FILE: XPC Service/Info.plist
           LD_RUNPATH_SEARCH_PATHS:
           - $(inherited)
@@ -2419,7 +2765,7 @@ targets:
           PRODUCT_BUNDLE_IDENTIFIER: com.project.XPCService
           SDKROOT: macosx
         Staging Release:
-          COMBINE_HIDPI_IMAGES: YES
+          COMBINE_HIDPI_IMAGES: 'YES'
           INFOPLIST_FILE: XPC Service/Info.plist
           LD_RUNPATH_SEARCH_PATHS:
           - $(inherited)
@@ -2427,7 +2773,7 @@ targets:
           PRODUCT_BUNDLE_IDENTIFIER: com.project.XPCService
           SDKROOT: macosx
         Test Debug:
-          COMBINE_HIDPI_IMAGES: YES
+          COMBINE_HIDPI_IMAGES: 'YES'
           INFOPLIST_FILE: XPC Service/Info.plist
           LD_RUNPATH_SEARCH_PATHS:
           - $(inherited)
@@ -2435,7 +2781,7 @@ targets:
           PRODUCT_BUNDLE_IDENTIFIER: com.project.XPCService
           SDKROOT: macosx
         Test Release:
-          COMBINE_HIDPI_IMAGES: YES
+          COMBINE_HIDPI_IMAGES: 'YES'
           INFOPLIST_FILE: XPC Service/Info.plist
           LD_RUNPATH_SEARCH_PATHS:
           - $(inherited)

@@ -1,6 +1,6 @@
 # Generated from Project.xcodeproj
 attributes:
-  LastUpgradeCheck: 1200
+  LastUpgradeCheck: '1200'
 configs:
   Debug: debug
   Release: release
@@ -12,21 +12,19 @@ options:
 settings:
   configs:
     Debug:
-      CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER: YES
       GCC_PREPROCESSOR_DEFINITIONS:
       - $(inherited)
       - DEBUG=1
       MTL_ENABLE_DEBUG_INFO: INCLUDE_SOURCE
-      MTL_FAST_MATH: YES
+      MTL_FAST_MATH: 'YES'
       SWIFT_ACTIVE_COMPILATION_CONDITIONS: DEBUG
       SWIFT_OPTIMIZATION_LEVEL: -Onone
-      SWIFT_VERSION: 5.0
+      SWIFT_VERSION: '5.0'
     Release:
-      CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER: YES
-      MTL_FAST_MATH: YES
+      MTL_FAST_MATH: 'YES'
       SWIFT_COMPILATION_MODE: wholemodule
       SWIFT_OPTIMIZATION_LEVEL: -O
-      SWIFT_VERSION: 5.0
+      SWIFT_VERSION: '5.0'
 targets:
   Framework_iOS:
     dependencies:
@@ -74,7 +72,7 @@ targets:
     settings:
       configs:
         Debug:
-          COMBINE_HIDPI_IMAGES: YES
+          COMBINE_HIDPI_IMAGES: 'YES'
           FRAMEWORK_SEARCH_PATHS:
           - $(inherited)
           LD_RUNPATH_SEARCH_PATHS:
@@ -83,7 +81,7 @@ targets:
           PRODUCT_NAME: Framework
           SDKROOT: macosx
         Release:
-          COMBINE_HIDPI_IMAGES: YES
+          COMBINE_HIDPI_IMAGES: 'YES'
           FRAMEWORK_SEARCH_PATHS:
           - $(inherited)
           LD_RUNPATH_SEARCH_PATHS:
@@ -113,7 +111,7 @@ targets:
           - '@executable_path/Frameworks'
           PRODUCT_NAME: Framework
           SDKROOT: appletvos
-          TARGETED_DEVICE_FAMILY: 3
+          TARGETED_DEVICE_FAMILY: '3'
         Release:
           FRAMEWORK_SEARCH_PATHS:
           - $(inherited)
@@ -122,7 +120,7 @@ targets:
           - '@executable_path/Frameworks'
           PRODUCT_NAME: Framework
           SDKROOT: appletvos
-          TARGETED_DEVICE_FAMILY: 3
+          TARGETED_DEVICE_FAMILY: '3'
     type: framework
   Framework_watchOS:
     dependencies:
@@ -141,11 +139,11 @@ targets:
           - $(inherited)
           PRODUCT_NAME: Framework
           SDKROOT: watchos
-          TARGETED_DEVICE_FAMILY: 4
+          TARGETED_DEVICE_FAMILY: '4'
         Release:
           FRAMEWORK_SEARCH_PATHS:
           - $(inherited)
           PRODUCT_NAME: Framework
           SDKROOT: watchos
-          TARGETED_DEVICE_FAMILY: 4
+          TARGETED_DEVICE_FAMILY: '4'
     type: framework
