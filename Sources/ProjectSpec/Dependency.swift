@@ -17,6 +17,7 @@ public struct Dependency: Equatable {
     public var weakLink: Bool = weakLinkDefault
     public var platformFilter: PlatformFilter = platformFilterDefault
     public var platforms: Set<Platform>?
+    public var copyPhase: BuildPhaseSpec.CopyFilesSettings?
 
     public init(
         type: DependencyType,
@@ -27,7 +28,8 @@ public struct Dependency: Equatable {
         implicit: Bool = implicitDefault,
         weakLink: Bool = weakLinkDefault,
         platformFilter: PlatformFilter = platformFilterDefault,
-        platforms: Set<Platform>? = nil
+        platforms: Set<Platform>? = nil,
+        copyPhase: BuildPhaseSpec.CopyFilesSettings? = nil
     ) {
         self.type = type
         self.reference = reference
@@ -38,6 +40,7 @@ public struct Dependency: Equatable {
         self.weakLink = weakLink
         self.platformFilter = platformFilter
         self.platforms = platforms
+        self.copyPhase = copyPhase
     }
     
     public enum PlatformFilter: String, Equatable {
@@ -135,6 +138,10 @@ extension Dependency: JSONObjectConvertible {
         if let platforms: [ProjectSpec.Platform] = jsonDictionary.json(atKeyPath: "platforms") {
             self.platforms = Set(platforms)
         }
+
+        if let object: JSONDictionary = jsonDictionary.json(atKeyPath: "copy") {
+            copyPhase = try BuildPhaseSpec.CopyFilesSettings(jsonDictionary: object)
+        }
     }
 }
 
@@ -144,7 +151,8 @@ extension Dependency: JSONEncodable {
             "embed": embed,
             "codeSign": codeSign,
             "link": link,
-            "platforms": platforms?.map(\.rawValue).sorted()
+            "platforms": platforms?.map(\.rawValue).sorted(),
+            "copy": copyPhase?.toJSONValue(),
         ]
 
         if removeHeaders != Dependency.removeHeadersDefault {
