@@ -136,6 +136,7 @@ targets:
       - target: iMessageApp
       - sdk: Contacts.framework
       - bundle: BundleX.bundle
+      - { bundle: BundleY.bundle, codeSign: false }
       - target: AnotherProject/ExternalTarget
       - target: App_Clip
     onlyCopyFilesOnInstall: true

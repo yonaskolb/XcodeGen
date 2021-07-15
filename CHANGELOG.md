@@ -5,6 +5,10 @@
 ### Added
 - Allow specifying a `copy` setting for each dependency. [#1038](https://github.com/yonaskolb/XcodeGen/pull/1039) @JakubBednar
 
+### Fixed
+
+- Fix broken codesign option for bundle dependency [#1104](https://github.com/yonaskolb/XcodeGen/pull/1104) @kateinoigakukun
+
 ## 2.24.0
 
 ### Added
