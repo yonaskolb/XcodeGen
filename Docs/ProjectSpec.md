@@ -432,6 +432,19 @@ A dependency can be one of a 6 types:
 - [ ] **weak**: **Bool** - Whether the `Weak` setting is applied when linking the framework. Defaults to false
 - [ ] **platformFilter**: **String** - This field is specific to Mac Catalyst. It corresponds to the "Platforms" dropdown in the Frameworks & Libraries section of Target settings in Xcode. Available options are: **iOS**, **macOS** and **all**. Defaults is **all**
 - [ ] **platforms**: **[[Platform](#platform)]** - List of platforms this dependency should apply to. Defaults to all applicable platforms.
+- **copy** - Copy Files Phase for this dependency. This only applies when `embed` is true. Must be specified as an object with the following fields:
+    - [x] **destination**: **String** - Destination of the Copy Files phase. This can be one of the following values:
+        - `absolutePath`
+        - `productsDirectory`
+        - `wrapper`
+        - `executables`
+        - `resources`
+        - `javaResources`
+        - `frameworks`
+        - `sharedFrameworks`
+        - `sharedSupport`
+        - `plugins`
+    - [ ] **subpath**: **String** - The path inside of the destination to copy the files.
 
 **Implicit Framework options**:
 

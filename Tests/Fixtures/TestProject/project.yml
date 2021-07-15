@@ -57,6 +57,9 @@ targets:
         optional: true
     dependencies:
       - target: Framework_macOS
+        copy:
+            destination: plugins
+            subpath: "test"
       - target: XPC Service
       - target: NetworkSystemExtension
       - target: EndpointSecuritySystemExtension
