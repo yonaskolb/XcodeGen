@@ -1,0 +1,22 @@
+name: Target
+options:
+  bundleIdPrefix: com.xcodgentest
+projectReferences:
+  AnotherProject:
+    path: ../AnotherProject/AnotherProject.xcodeproj
+targets:
+  Target:
+    sources: Target
+    type: framework
+    platform: iOS
+    deploymentTarget: "11.0"
+    dependencies:
+      - target: AnotherProject/ExternalTarget
+  TargetExample:
+    sources: TargetExample
+    type: application
+    platform: iOS
+    deploymentTarget: "12.0"
+    dependencies:
+      - target: Target
+      - target: AnotherProject/ExternalTarget
