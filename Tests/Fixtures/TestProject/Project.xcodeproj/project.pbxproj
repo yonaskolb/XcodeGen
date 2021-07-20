@@ -116,7 +116,6 @@
 		818D448D4DDD6649B5B26098 /* example.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 28360ECA4D727FAA58557A81 /* example.mp4 */; settings = {ASSET_TAGS = (tag1, tag2, ); }; };
 		81DFAB3A7633CE97929B9B2A /* Framework.framework in Embed Dependencies */ = {isa = PBXBuildFile; fileRef = 41FC82ED1C4C3B7B3D7B2FB7 /* Framework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		8267B75289E9D6C7B38FC426 /* DriverKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0A428E67153BB40184F37BE /* DriverKit.framework */; };
-		859C935749C266DDD3800DA8 /* Framework2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EF21DF245F66BEF5446AAEF /* Framework2.framework */; };
 		87927928A8A3460166ACB819 /* SwiftFileInDotPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F430AABE04B7499B458D9DB /* SwiftFileInDotPath.swift */; settings = {COMPILER_FLAGS = "-Werror"; }; };
 		8C941A6EF08069CB3CB88FC1 /* Result.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0C5AC2545AE4D4F7F44E2E9B /* Result.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		900CFAD929CAEE3861127627 /* MyBundle.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7B5068D64404C61A67A18458 /* MyBundle.bundle */; };
@@ -153,7 +152,6 @@
 		C3672B561F456794151C047C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4C3FE6B986506724DAB5D0F /* ViewController.swift */; };
 		C400EBD25886ACB5CD9035EB /* module.modulemap in CopyFiles */ = {isa = PBXBuildFile; fileRef = F2950763C4C568CC85021D18 /* module.modulemap */; };
 		C4378E3DAF5E0B2F7AB60E03 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFE6A6FAAFF701FE729293DE /* ViewController.swift */; };
-		C5C1699FCCA824F17D9BE230 /* Framework2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EF21DF245F66BEF5446AAEF /* Framework2.framework */; };
 		C836F09B677937EFF69B1FCE /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C934C1F7A68CCD0AB6B38478 /* NotificationController.swift */; };
 		C88598A49087A212990F4E8B /* ResourceFolder in Resources */ = {isa = PBXBuildFile; fileRef = 6B1603BA83AA0C7B94E45168 /* ResourceFolder */; };
 		CAE18A2194B57C830A297F83 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6680EFE4E908CDBDCE405C8 /* main.swift */; };
@@ -954,22 +952,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8267B75289E9D6C7B38FC426 /* DriverKit.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		F062F57F00946DE894568D7A /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				C5C1699FCCA824F17D9BE230 /* Framework2.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		FB2304C5C470A5FD4BEB67C2 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				859C935749C266DDD3800DA8 /* Framework2.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2198,7 +2180,6 @@
 			buildPhases = (
 				D1C23C7C51130F15198430A5 /* Headers */,
 				24EB6BAACD2F34C1DFDB54A1 /* Sources */,
-				FB2304C5C470A5FD4BEB67C2 /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -2216,7 +2197,6 @@
 			buildPhases = (
 				678DC986851A2099BA3BAC9F /* Headers */,
 				D3399C3E3A574B2B179DC638 /* Sources */,
-				F062F57F00946DE894568D7A /* Frameworks */,
 			);
 			buildRules = (
 			);
