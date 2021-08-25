@@ -374,7 +374,7 @@ class SourceGenerator {
             // If includes is empty, it's included. If it's not empty, the path either needs to match exactly, or it needs to be a direct parent of an included path.
             && (includePaths.isEmpty || includePaths.contains(where: { includedFile in
                 if path == includedFile { return true }
-                return includedFile.description.contains(path.description)
+                return includedFile.description.hasPrefix(path.description)
             }))
     }
 
