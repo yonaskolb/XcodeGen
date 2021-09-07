@@ -344,26 +344,36 @@ class SourceGenerator {
         return variantGroup
     }
 
+    private struct SourceMatchesKey: Hashable {
+        let path: String
+        let patterns: [String]
+    }
+    private static var cachedSources = [SourceMatchesKey:Set<Path>]()
+    
     /// Collects all the excluded paths within the targetSource
     private func getSourceMatches(targetSource: TargetSource, patterns: [String]) -> Set<Path> {
         let rootSourcePath = project.basePath + targetSource.path
-
-        return Set(
-            patterns.map { pattern in
+        let key = SourceMatchesKey(path: rootSourcePath.string, patterns: patterns)
+        if let cachedResult = SourceGenerator.cachedSources[key] {
+            return cachedResult
+        }
+        let result = Set(
+            Array(patterns.map { pattern -> [Path] in
                 guard !pattern.isEmpty else { return [] }
-                return Glob(pattern: "\(rootSourcePath)/\(pattern)")
+                return Array(Glob(pattern: "\(rootSourcePath)/\(pattern)")
                     .map { Path($0) }
-                    .map {
-                        guard $0.isDirectory else {
-                            return [$0]
+                    .map { p -> [Path] in
+                        guard p.isDirectory else {
+                            return [p]
                         }
 
-                        return (try? $0.recursiveChildren()) ?? []
-                    }
-                    .reduce([], +)
+                        return (try? p.recursiveChildren()) ?? []
+                    }.joined(separator: []))
             }
-            .reduce([], +)
-        )
+        ).joined(separator: []))
+        // Cache value
+        SourceGenerator.cachedSources[key] = result
+        return result
     }
 
     /// Checks whether the path is not in any default or TargetSource excludes
@@ -374,7 +384,7 @@ class SourceGenerator {
             // If includes is empty, it's included. If it's not empty, the path either needs to match exactly, or it needs to be a direct parent of an included path.
             && (includePaths.isEmpty || includePaths.contains(where: { includedFile in
                 if path == includedFile { return true }
-                return includedFile.description.contains(path.description)
+                return includedFile.description.hasPrefix(path.description)
             }))
     }
 
@@ -389,9 +399,7 @@ class SourceGenerator {
                         return project.options.generateEmptyDirectories
                     }
 
-                    return !children
-                        .filter { self.isIncludedPath($0, excludePaths: excludePaths, includePaths: includePaths) }
-                        .isEmpty
+                    return children.contains { self.isIncludedPath($0, excludePaths: excludePaths, includePaths: includePaths) }
                 } else if $0.isFile {
                     return self.isIncludedPath($0, excludePaths: excludePaths, includePaths: includePaths)
                 } else {
