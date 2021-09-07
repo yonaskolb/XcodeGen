@@ -1,4 +1,4 @@
-// swift-tools-version:5.0
+// swift-tools-version:5.3
 
 import PackageDescription
 
@@ -11,10 +11,10 @@ let package = Package(
         .library(name: "ProjectSpec", targets: ["ProjectSpec"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/kylef/PathKit.git", from: "1.0.0"),
+        .package(url: "https://github.com/kylef/PathKit.git", .branch("master")),
         .package(url: "https://github.com/jpsim/Yams.git", from: "4.0.0"),
         .package(url: "https://github.com/yonaskolb/JSONUtilities.git", from: "4.2.0"),
-        .package(url: "https://github.com/kylef/Spectre.git", from: "0.9.2"),
+        .package(url: "https://github.com/kylef/Spectre.git", .upToNextMinor(from:"0.10.0")),
         .package(url: "https://github.com/onevcat/Rainbow.git", from: "3.0.0"),
         .package(url: "https://github.com/tuist/XcodeProj.git", from: "8.0.0"),
         .package(url: "https://github.com/jakeheis/SwiftCLI.git", from: "6.0.0"),

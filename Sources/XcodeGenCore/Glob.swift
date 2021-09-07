@@ -58,6 +58,7 @@ public class Glob: Collection {
     public static let defaultBlacklistedDirectories = ["node_modules", "Pods"]
 
     private var isDirectoryCache = [String: Bool]()
+    private static var directoriesCache = [String: [URL]]()
 
     public let behavior: Behavior
     public let blacklistedDirectories: [String]
@@ -90,14 +91,14 @@ public class Glob: Collection {
 
         let patterns = behavior.supportsGlobstar ? expandGlobstar(pattern: adjustedPattern) : [adjustedPattern]
 
-        for pattern in patterns {
+        paths = patterns.parallelMap { pattern -> [String] in
             var gt = glob_t()
+            defer { globfree(&gt) }
             if executeGlob(pattern: pattern, gt: &gt) {
-                populateFiles(gt: gt, includeFiles: includeFiles)
+                 return populateFiles(gt: gt, includeFiles: includeFiles)
             }
-
-            globfree(&gt)
-        }
+            return []
+        }.flatMap { $0 }
 
         paths = Array(Set(paths)).sorted { lhs, rhs in
             lhs.compare(rhs) != ComparisonResult.orderedDescending
@@ -172,7 +173,10 @@ public class Glob: Collection {
     }
 
     private func exploreDirectories(path: String) throws -> [URL] {
-        try FileManager.default.contentsOfDirectory(atPath: path)
+        if let cached = Glob.directoriesCache[path] {
+            return cached
+        }
+        let result = try FileManager.default.contentsOfDirectory(atPath: path)
             .compactMap { subpath -> [URL]? in
                 if blacklistedDirectories.contains(subpath) {
                     return nil
@@ -191,6 +195,8 @@ public class Glob: Collection {
             }
             .joined()
             .array()
+        Glob.directoriesCache[path] = result
+        return result
     }
 
     private func isDirectory(path: String) -> Bool {
@@ -209,9 +215,9 @@ public class Glob: Collection {
         isDirectoryCache.removeAll()
     }
 
-    private func populateFiles(gt: glob_t, includeFiles: Bool) {
+    private func populateFiles(gt: glob_t, includeFiles: Bool) -> [String] {
+        var paths = [String]()
         let includeDirectories = behavior.includesDirectoriesInResults
-
         #if os(macOS)
         let matches = Int(gt.gl_matchc)
         #else
@@ -229,6 +235,7 @@ public class Glob: Collection {
                 paths.append(path)
             }
         }
+        return paths
     }
 }
 
