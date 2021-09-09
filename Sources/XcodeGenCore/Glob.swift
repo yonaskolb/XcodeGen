@@ -90,14 +90,14 @@ public class Glob: Collection {
 
         let patterns = behavior.supportsGlobstar ? expandGlobstar(pattern: adjustedPattern) : [adjustedPattern]
 
-        for pattern in patterns {
+        paths = patterns.parallelMap { pattern -> [String] in
             var gt = glob_t()
+            defer { globfree(&gt) }
             if executeGlob(pattern: pattern, gt: &gt) {
-                populateFiles(gt: gt, includeFiles: includeFiles)
+                 return populateFiles(gt: gt, includeFiles: includeFiles)
             }
-
-            globfree(&gt)
-        }
+            return []
+        }.flatMap { $0 }
 
         paths = Array(Set(paths)).sorted { lhs, rhs in
             lhs.compare(rhs) != ComparisonResult.orderedDescending
@@ -209,7 +209,8 @@ public class Glob: Collection {
         isDirectoryCache.removeAll()
     }
 
-    private func populateFiles(gt: glob_t, includeFiles: Bool) {
+    private func populateFiles(gt: glob_t, includeFiles: Bool) -> [String] {
+        var paths = [String]()
         let includeDirectories = behavior.includesDirectoriesInResults
 
         #if os(macOS)
@@ -229,6 +230,7 @@ public class Glob: Collection {
                 paths.append(path)
             }
         }
+        return paths
     }
 }
 
