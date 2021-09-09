@@ -65,7 +65,11 @@ public class Glob: Collection {
     var paths = [String]()
     public var startIndex: Int { paths.startIndex }
     public var endIndex: Int { paths.endIndex }
-
+    
+    
+    /// Holds cache for unwrapping patterns. This is useful when same patter is passed multiple times
+    private static var patternsCache: [String: [String]] = [:]
+    
     /// Initialize a glob
     ///
     /// - Parameters:
@@ -89,8 +93,14 @@ public class Glob: Collection {
             }
         }
 
-        let patterns = behavior.supportsGlobstar ? expandGlobstar(pattern: adjustedPattern) : [adjustedPattern]
-
+        var patterns: [String] = []
+        if let cached = Glob.patternsCache[pattern] {
+            patterns = cached
+        } else {
+            patterns = behavior.supportsGlobstar ? expandGlobstar(pattern: adjustedPattern) : [adjustedPattern]
+            Glob.patternsCache[pattern] = patterns
+        }
+        
         paths = patterns.parallelMap { pattern -> [String] in
             var gt = glob_t()
             defer { globfree(&gt) }
