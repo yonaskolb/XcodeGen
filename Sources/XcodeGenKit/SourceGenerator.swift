@@ -206,7 +206,7 @@ class SourceGenerator {
             let lastKnownFileType = lastKnownFileType ?? Xcode.fileType(path: path)
 
             if path.extension == "xcdatamodeld" {
-                let versionedModels = (try? path.children()) ?? []
+                let versionedModels = (try? path.cachedChildren()) ?? []
 
                 // Sort the versions alphabetically
                 let sortedPaths = versionedModels
@@ -393,11 +393,11 @@ class SourceGenerator {
 
 
     /// Gets all the children paths that aren't excluded
-        try dirPath.children()
     private func getSourceChildren(targetSource: TargetSource, dirPath: Path, excludePaths: Set<Path>, includePaths: SortedArray<Path>) throws -> [Path] {
+        try dirPath.cachedChildren()
             .filter {
                 if $0.isDirectory {
-                    let children = try $0.children()
+                    let children = try $0.cachedChildren()
 
                     if children.isEmpty {
                         return project.options.generateEmptyDirectories
@@ -498,7 +498,7 @@ class SourceGenerator {
         var baseLocalisationVariantGroups: [PBXVariantGroup] = []
 
         if let baseLocalisedDirectory = baseLocalisedDirectory {
-            let filePaths = try baseLocalisedDirectory.children()
+            let filePaths = try baseLocalisedDirectory.cachedChildren()
                 .filter { self.isIncludedPath($0, excludePaths: excludePaths, includePaths: includePaths) }
                 .sorted()
             for filePath in filePaths {
@@ -518,7 +518,7 @@ class SourceGenerator {
         // add references to localised resources into base localisation variant groups
         for localisedDirectory in localisedDirectories {
             let localisationName = localisedDirectory.lastComponentWithoutExtension
-            let filePaths = try localisedDirectory.children()
+            let filePaths = try localisedDirectory.cachedChildren()
                 .filter { self.isIncludedPath($0, excludePaths: excludePaths, includePaths: includePaths) }
                 .sorted { $0.lastComponent < $1.lastComponent }
             for filePath in filePaths {
@@ -777,5 +777,18 @@ class SourceGenerator {
             return nil
         }
         return versionedModels.first(where: { $0.lastComponent == versionString })
+    }
+}
+
+
+private extension Path {
+    private static var _cache: [Path:[Path]] = [:]
+    func cachedChildren() throws -> [Path] {
+        if let cached = Path._cache[self] {
+            return cached
+        }
+        let value = try children()
+        Path._cache[self] = value
+        return value
     }
 }
