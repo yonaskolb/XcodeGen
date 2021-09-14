@@ -9,6 +9,7 @@
 
 - Fix broken codesign option for bundle dependency [#1104](https://github.com/yonaskolb/XcodeGen/pull/1104) @kateinoigakukun
 - Ensure fileTypes are mapped to JSON value [#1112](https://github.com/yonaskolb/XcodeGen/pull/1112) @namolnad
+- Fix platform filter for package dependecies [#1123](https://github.com/yonaskolb/XcodeGen/pull/1123) @raptorxcz
 
 ## 2.24.0
 
