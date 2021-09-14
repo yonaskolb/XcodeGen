@@ -10,6 +10,10 @@
 - Fix broken codesign option for bundle dependency [#1104](https://github.com/yonaskolb/XcodeGen/pull/1104) @kateinoigakukun
 - Ensure fileTypes are mapped to JSON value [#1112](https://github.com/yonaskolb/XcodeGen/pull/1112) @namolnad
 
+### Changed
+
+- Update XcodeProj to 8.2.0 [#1125](https://github.com/yonaskolb/XcodeGen/pull/1125) @nnsnodnb
+
 ## 2.24.0
 
 ### Added
