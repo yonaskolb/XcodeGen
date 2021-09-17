@@ -1,6 +1,7 @@
 import Foundation
 import PathKit
 import ProjectSpec
+import XcodeGenCore
 import XcodeProj
 
 public class FileWriter {
@@ -31,11 +32,13 @@ public class FileWriter {
             // write Info.plist
             if let plist = target.info {
                 let properties = infoPlistGenerator.generateProperties(for: target).merged(plist.properties)
+                Logger.shared.debug("Writing plist: \(plist.path)")
                 try writePlist(properties, path: plist.path)
             }
 
             // write entitlements
             if let plist = target.entitlements {
+                Logger.shared.debug("Writing entitlements: \(plist.path)")
                 try writePlist(plist.properties, path: plist.path)
             }
         }

@@ -1,6 +1,7 @@
 import Foundation
 import PathKit
 import ProjectSpec
+import XcodeGenCore
 import XcodeProj
 import Yams
 import Version
@@ -54,11 +55,16 @@ public class PBXProjGenerator {
         }
         generated = true
 
+        Logger.shared.debug("Loading file groups...")
         for group in project.fileGroups {
+            Logger.shared.debug("Getting file groups for \(group)")
             try sourceGenerator.getFileGroups(path: group)
         }
+        Logger.shared.debug("File groups loaded")
 
+        Logger.shared.debug("Loading build configs...")
         let buildConfigs: [XCBuildConfiguration] = project.configs.map { config in
+            Logger.shared.debug("Getting settings for config: \(config.name)")
             let buildSettings = project.getProjectBuildSettings(config: config)
             var baseConfiguration: PBXFileReference?
             if let configPath = project.configFiles[config.name],
@@ -74,6 +80,7 @@ public class PBXProjGenerator {
             buildConfig.baseConfiguration = baseConfiguration
             return buildConfig
         }
+        Logger.shared.debug("Build configs loaded")
 
         let configName = project.options.defaultConfig ?? buildConfigs.first?.name ?? ""
         let buildConfigList = addObject(
@@ -108,7 +115,10 @@ public class PBXProjGenerator {
 
         pbxProj.rootObject = pbxProject
 
+        Logger.shared.debug("Loading targets...")
         for target in project.targets {
+            Logger.shared.debug("Loading target \(target.name)")
+
             let targetObject: PBXTarget
 
             if target.isLegacy {
@@ -150,8 +160,11 @@ public class PBXProjGenerator {
                 targetFileReferences[target.name] = fileReference
             }
         }
+        Logger.shared.debug("Targets loaded")
 
+        Logger.shared.debug("Loading aggregate targets...")
         for target in project.aggregateTargets {
+            Logger.shared.debug("Loading target \(target.name)")
 
             let aggregateTarget = addObject(
                 PBXAggregateTarget(
@@ -161,8 +174,11 @@ public class PBXProjGenerator {
             )
             targetAggregateObjects[target.name] = aggregateTarget
         }
+        Logger.shared.debug("Aggregate targets loaded")
 
+        Logger.shared.debug("Loading packages...")
         for (name, package) in project.packages {
+            Logger.shared.debug("Loading package \(package)")
             switch package {
             case let .remote(url, versionRequirement):
                 let packageReference = XCRemoteSwiftPackageReference(repositoryURL: url, versionRequirement: versionRequirement)
@@ -172,7 +188,9 @@ public class PBXProjGenerator {
                 try sourceGenerator.createLocalPackage(path: Path(path))
             }
         }
+        Logger.shared.debug("Packages loaded")
 
+        Logger.shared.debug("Setting project references...")
         let productGroup = addObject(
             PBXGroup(
                 children: targetFileReferences.valueArray,
@@ -221,9 +239,15 @@ public class PBXProjGenerator {
 
             pbxProject.projects = subprojects
         }
+        Logger.shared.debug("Project references set")
 
+        Logger.shared.debug("Generating targets...")
         try project.targets.forEach(generateTarget)
+        Logger.shared.debug("Targets generated")
+
+        Logger.shared.debug("Generating aggregate targets...")
         try project.aggregateTargets.forEach(generateAggregateTarget)
+        Logger.shared.debug("Aggregate targets generated")
 
         if !carthageFrameworksByPlatform.isEmpty {
             var platforms: [PBXGroup] = []
@@ -270,6 +294,7 @@ public class PBXProjGenerator {
             derivedGroups.append(group)
         }
 
+        Logger.shared.debug("Setting up groups...")
         mainGroup.children = Array(sourceGenerator.rootGroups)
         sortGroups(group: mainGroup)
         setupGroupOrdering(group: mainGroup)
@@ -317,6 +342,7 @@ public class PBXProjGenerator {
     }
 
     func generateAggregateTarget(_ target: AggregateTarget) throws {
+        Logger.shared.debug("Generating aggregate target \(target.name)")
 
         let aggregateTarget = targetAggregateObjects[target.name]!
 
@@ -649,6 +675,8 @@ public class PBXProjGenerator {
     }
 
     func generateTarget(_ target: Target) throws {
+        Logger.shared.debug("Generating target \(target.name)")
+
         let carthageDependencies = carthageResolver.dependencies(for: target)
 
         let infoPlistFiles: [Config: String] = getInfoPlists(for: target)
@@ -757,6 +785,7 @@ public class PBXProjGenerator {
         }
 
         for dependency in targetDependencies {
+            Logger.shared.debug("\tLoading dependency: \(dependency)")
 
             let embed = dependency.embed ?? target.shouldEmbedDependencies
             let platform = makePlatformFilter(for: dependency.platformFilter)
@@ -973,6 +1002,7 @@ public class PBXProjGenerator {
         }
 
         for carthageDependency in carthageDependencies {
+            Logger.shared.debug("Loading carthage dependency: \(carthageDependency)")
             let dependency = carthageDependency.dependency
             let isFromTopLevelTarget = carthageDependency.isFromTopLevelTarget
             let embed = dependency.embed ?? target.shouldEmbedCarthageDependencies
@@ -1059,6 +1089,7 @@ public class PBXProjGenerator {
             return retval
         }
         
+        Logger.shared.debug("\tGenerating build phases...")
         copyFilesBuildPhasesFiles.merge(getBuildFilesForCopyFilesPhases()) { $0 + $1 }
 
         buildPhases += try target.preBuildScripts.map { try generateBuildScript(targetName: target.name, buildScript: $0) }
@@ -1243,6 +1274,8 @@ public class PBXProjGenerator {
         }
 
         buildPhases += try target.postBuildScripts.map { try generateBuildScript(targetName: target.name, buildScript: $0) }
+
+        Logger.shared.debug("\tBuild phases generated")
 
         let configs: [XCBuildConfiguration] = project.configs.map { config in
             var buildSettings = project.getTargetBuildSettings(target: target, config: config)

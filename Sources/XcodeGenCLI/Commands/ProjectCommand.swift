@@ -50,6 +50,8 @@ class ProjectCommand: Command, LogRenderer {
 
         let projectSpecPath = (spec ?? "project.yml").absolute()
 
+        Logger.shared.debug("Checking for spec file: \(projectSpecPath)")
+
         if !projectSpecPath.exists {
             throw GenerationError.missingProjectSpec(projectSpecPath)
         }
@@ -64,6 +66,8 @@ class ProjectCommand: Command, LogRenderer {
         } catch {
             throw GenerationError.projectSpecParsingError(error)
         }
+
+        Logger.shared.debug("Loaded project")
 
         try execute(specLoader: specLoader, projectSpecPath: projectSpecPath, project: project)
     }

@@ -34,6 +34,7 @@ class GenerateCommand: ProjectCommand {
         // validate project dictionary
         do {
             try specLoader.validateProjectDictionaryWarnings()
+            Logger.shared.debug("Validated project dictionary")
         } catch {
             Logger.shared.warning("\(error)")
         }
@@ -73,13 +74,16 @@ class GenerateCommand: ProjectCommand {
         // validate project
         do {
             try project.validateMinimumXcodeGenVersion(version)
+            Logger.shared.debug("Validated minimum Xcode version")
             try project.validate()
+            Logger.shared.debug("Validated project")
         } catch let error as SpecValidationError {
             throw GenerationError.validationError(error)
         }
 
         // run pre gen command
         if let command = project.options.preGenCommand {
+            Logger.shared.debug("Running pre-gen command: \(command)")
             try Task.run(bash: command, directory: projectDirectory.absolute().string)
         }
 
@@ -116,6 +120,7 @@ class GenerateCommand: ProjectCommand {
 
         // write cache
         if let cacheFile = cacheFile {
+            Logger.shared.debug("Writing cache...")
             do {
                 try cacheFilePath.parent().mkpath()
                 try cacheFilePath.write(cacheFile.string)
@@ -126,6 +131,7 @@ class GenerateCommand: ProjectCommand {
 
         // run post gen command
         if let command = project.options.postGenCommand {
+            Logger.shared.debug("Running post gen command: \(command)")
             try Task.run(bash: command, directory: projectDirectory.absolute().string)
         }
     }

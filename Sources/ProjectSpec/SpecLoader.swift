@@ -1,6 +1,7 @@
 import Foundation
 import JSONUtilities
 import PathKit
+import XcodeGenCore
 import XcodeProj
 import Yams
 import Version
@@ -16,6 +17,7 @@ public class SpecLoader {
     }
 
     public func loadProject(path: Path, projectRoot: Path? = nil, variables: [String: String] = [:]) throws -> Project {
+        Logger.shared.debug("Loading project file (and includes): \(path)")
         let spec = try SpecFile(path: path)
         let resolvedDictionary = spec.resolvedDictionary(variables: variables)
         let project = try Project(basePath: projectRoot ?? spec.basePath, jsonDictionary: resolvedDictionary)

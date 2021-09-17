@@ -1,5 +1,6 @@
 import Foundation
 import ProjectSpec
+import XcodeGenCore
 import XcodeProj
 import PathKit
 
@@ -141,6 +142,8 @@ public class SchemeGenerator {
             let buildableReference = try getBuildableReference(buildTarget.target)
             return XCScheme.BuildAction.Entry(buildableReference: buildableReference, buildFor: buildTarget.buildTypes)
         }
+
+        Logger.shared.debug("Generating scheme \(scheme.name)")
 
         let testTargets = scheme.test?.targets ?? []
         let testBuildTargets = testTargets.map {
