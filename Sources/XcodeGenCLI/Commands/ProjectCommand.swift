@@ -6,7 +6,7 @@ import PathKit
 import XcodeGenCore
 import Version
 
-class ProjectCommand: Command {
+class ProjectCommand: Command, LogRenderer {
 
     let version: Version
     let name: String
@@ -21,13 +21,32 @@ class ProjectCommand: Command {
     @Flag("-n", "--no-env", description: "Disable environment variable expansions")
     var disableEnvExpansion: Bool
 
+    @Flag("-q", "--quiet", description: "Suppress all informational and success output")
+    var quiet: Bool
+
+    @Flag("-d", "--debug", description: "Render all messages including debug (--quiet overrides this flag)")
+    var debug: Bool
+
     init(version: Version, name: String, shortDescription: String) {
         self.version = version
         self.name = name
         self.shortDescription = shortDescription
     }
 
+    func setupLogger() {
+        Logger.shared.delegate = self
+
+        if quiet {
+            Logger.shared.logLevel = .error
+        } else if debug {
+            Logger.shared.logLevel = .debug
+        } else {
+            Logger.shared.logLevel = .info
+        }
+    }
+
     func execute() throws {
+        setupLogger()
 
         let projectSpecPath = (spec ?? "project.yml").absolute()
 
@@ -50,4 +69,25 @@ class ProjectCommand: Command {
     }
 
     func execute(specLoader: SpecLoader, projectSpecPath: Path, project: Project) throws {}
+
+
+    func debug(_ string: String) {
+        stdout.print("[DEBUG] \(string)")
+    }
+
+    func info(_ string: String, wasSuccess: Bool) {
+        var coloredString = string
+        if wasSuccess {
+            coloredString = coloredString.green
+        }
+        stdout.print("[INFO] \(coloredString)")
+    }
+
+    func warning(_ string: String) {
+        stdout.print("[WARNING] \(string)".yellow)
+    }
+
+    func error(_ string: String) {
+        stderr.print("[ERROR] \(string)".red)
+    }
 }

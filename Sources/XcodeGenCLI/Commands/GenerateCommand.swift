@@ -2,14 +2,12 @@ import Foundation
 import PathKit
 import ProjectSpec
 import SwiftCLI
+import XcodeGenCore
 import XcodeGenKit
 import XcodeProj
 import Version
 
 class GenerateCommand: ProjectCommand {
-
-    @Flag("-q", "--quiet", description: "Suppress all informational and success output")
-    var quiet: Bool
 
     @Flag("-c", "--use-cache", description: "Use a cache for the xcodegen spec. This will prevent unnecessarily generating the project if nothing has changed")
     var useCache: Bool
@@ -37,7 +35,7 @@ class GenerateCommand: ProjectCommand {
         do {
             try specLoader.validateProjectDictionaryWarnings()
         } catch {
-            warning("\(error)")
+            Logger.shared.warning("\(error)")
         }
 
         let projectPath = projectDirectory + "\(project.name).xcodeproj"
@@ -64,11 +62,11 @@ class GenerateCommand: ProjectCommand {
             do {
                 let existingCacheFile: String = try cacheFilePath.read()
                 if cacheFile.string == existingCacheFile {
-                    info("Project has not changed since cache was written")
+                    Logger.shared.info("Project has not changed since cache was written")
                     return
                 }
             } catch {
-                info("Couldn't load cache at \(cacheFile)")
+                Logger.shared.info("Couldn't load cache at \(cacheFile)")
             }
         }
 
@@ -86,7 +84,7 @@ class GenerateCommand: ProjectCommand {
         }
 
         // generate plists
-        info("⚙️  Generating plists...")
+        Logger.shared.info("⚙️  Generating plists...")
         let fileWriter = FileWriter(project: project)
         do {
             try fileWriter.writePlists()
@@ -98,7 +96,7 @@ class GenerateCommand: ProjectCommand {
         }
 
         // generate project
-        info("⚙️  Generating project...")
+        Logger.shared.info("⚙️  Generating project...")
         let xcodeProject: XcodeProj
         do {
             let projectGenerator = ProjectGenerator(project: project)
@@ -108,10 +106,10 @@ class GenerateCommand: ProjectCommand {
         }
 
         // write project
-        info("⚙️  Writing project...")
+        Logger.shared.info("⚙️  Writing project...")
         do {
             try fileWriter.writeXcodeProject(xcodeProject, to: projectPath)
-            success("Created project at \(projectPath)")
+            Logger.shared.success("Created project at \(projectPath)")
         } catch {
             throw GenerationError.writingError(error)
         }
@@ -122,7 +120,7 @@ class GenerateCommand: ProjectCommand {
                 try cacheFilePath.parent().mkpath()
                 try cacheFilePath.write(cacheFile.string)
             } catch {
-                info("Failed to write cache: \(error.localizedDescription)")
+                Logger.shared.info("Failed to write cache: \(error.localizedDescription)")
             }
         }
 
@@ -132,21 +130,4 @@ class GenerateCommand: ProjectCommand {
         }
     }
 
-    func info(_ string: String) {
-        if !quiet {
-            stdout.print(string)
-        }
-    }
-
-    func warning(_ string: String) {
-        if !quiet {
-            stdout.print(string.yellow)
-        }
-    }
-
-    func success(_ string: String) {
-        if !quiet {
-            stdout.print(string.green)
-        }
-    }
 }

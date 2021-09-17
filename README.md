@@ -133,6 +133,7 @@ Options:
 - **--spec**: An optional path to a `.yml` or `.json` project spec. Defaults to `project.yml`
 - **--project**: An optional path to a directory where the project will be generated. By default this is the directory the spec lives in.
 - **--quiet**: Suppress informational and success messages.
+- **--debug**: The opposite to `--quiet`: Show all debug messages (`--quiet` overrides `--debug`)
 - **--use-cache**: Used to prevent unnecessarily generating the project. If this is set, then a cache file will be written to when a project is generated. If `xcodegen` is later run but the spec and all the files it contains are the same, the project won't be generated.
 - **--cache-path**: A custom path to use for your cache file. This defaults to `~/.xcodegen/cache/{PROJECT_SPEC_PATH_HASH}`
 
