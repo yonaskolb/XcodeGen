@@ -4,6 +4,7 @@
 
 ### Added
 - Allow specifying a `copy` setting for each dependency. [#1038](https://github.com/yonaskolb/XcodeGen/pull/1039) @JakubBednar
+- A `-d`/`--debug` flag is now available to render all debug logs when running the CLI tool. [#1128](https://github.com/yonaskolb/XcodeGen/pull/1128) @dalemyers
 
 ### Fixed
 
