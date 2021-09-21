@@ -17,7 +17,7 @@ let package = Package(
         .package(url: "https://github.com/kylef/Spectre.git", from: "0.9.0"),
         .package(url: "https://github.com/onevcat/Rainbow.git", from: "3.0.0"),
         .package(url: "https://github.com/tuist/XcodeProj.git", .exact("7.13.0")),
-        .package(url: "https://github.com/jakeheis/SwiftCLI.git", from: "6.0.0"),
+        .package(url: "https://github.com/jakeheis/SwiftCLI.git", exact: "6.0.3"),
         .package(url: "https://github.com/mxcl/Version", from: "2.0.0"),
         .package(url: "https://github.com/SwiftDocOrg/GraphViz.git", from: "0.1.0"),
     ],
