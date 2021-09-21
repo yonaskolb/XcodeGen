@@ -11,7 +11,7 @@ let package = Package(
         .library(name: "ProjectSpec", targets: ["ProjectSpec"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/kylef/PathKit.git", .branch("thebrowsercompany:feature/fix-build-Xcode-13-RC")),
+        .package(url: "https://github.com/kylef/PathKit.git", .revision("bd899badc81a3424f0e767b8e79f416ffe442248")),
         .package(url: "https://github.com/jpsim/Yams.git", from: "4.0.0"),
         .package(url: "https://github.com/yonaskolb/JSONUtilities.git", from: "4.2.0"),
         .package(url: "https://github.com/kylef/Spectre.git", from: "0.9.0"),
