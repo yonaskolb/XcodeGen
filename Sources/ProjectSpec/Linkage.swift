@@ -32,6 +32,9 @@ extension PBXProductType {
              .watch2AppContainer,
              .watch2Extension,
              .xcodeExtension,
+             .metalLibrary,
+             .driverExtension,
+             .systemExtension,
              .xpcService:
             return .none
         case .framework, .xcFramework:
