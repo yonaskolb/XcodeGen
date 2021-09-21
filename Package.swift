@@ -16,7 +16,7 @@ let package = Package(
         .package(url: "https://github.com/yonaskolb/JSONUtilities.git", from: "4.2.0"),
         .package(url: "https://github.com/kylef/Spectre.git", from: "0.9.0"),
         .package(url: "https://github.com/onevcat/Rainbow.git", from: "3.0.0"),
-        .package(url: "https://github.com/tuist/XcodeProj.git", from: "8.0.0"),
+        .package(url: "https://github.com/alekkania/XcodeProj.git", .revision("8f6af1428fad1e2d0944a09d9732ba7654424104")),
         .package(url: "https://github.com/jakeheis/SwiftCLI.git", .exact("6.0.3")),
         .package(url: "https://github.com/mxcl/Version", from: "2.0.0"),
         .package(url: "https://github.com/SwiftDocOrg/GraphViz.git", from: "0.1.0"),
