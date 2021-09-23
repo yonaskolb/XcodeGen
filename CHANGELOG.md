@@ -2,6 +2,10 @@
 
 ## Next Version
 
+### Fixed
+
+- Fix Xcode 13 build [#1130](https://github.com/yonaskolb/XcodeGen/issues/1127) @raptorxcz @mthole
+
 ## 2.25.0
 
 ### Added
