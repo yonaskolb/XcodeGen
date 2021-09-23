@@ -15,6 +15,10 @@
 
 [Commits](https://github.com/yonaskolb/XcodeGen/compare/2.24.0...2.25.0)
 
+### Changed
+
+- Update XcodeProj to 8.2.0 [#1125](https://github.com/yonaskolb/XcodeGen/pull/1125) @nnsnodnb
+
 ## 2.24.0
 
 ### Added
