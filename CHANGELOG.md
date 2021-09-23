@@ -2,6 +2,8 @@
 
 ## Next Version
 
+## 2.25.0
+
 ### Added
 - Allow specifying a `copy` setting for each dependency. [#1038](https://github.com/yonaskolb/XcodeGen/pull/1039) @JakubBednar
 
@@ -10,6 +12,8 @@
 - Fix broken codesign option for bundle dependency [#1104](https://github.com/yonaskolb/XcodeGen/pull/1104) @kateinoigakukun
 - Ensure fileTypes are mapped to JSON value [#1112](https://github.com/yonaskolb/XcodeGen/pull/1112) @namolnad
 - Fix platform filter for package dependecies [#1123](https://github.com/yonaskolb/XcodeGen/pull/1123) @raptorxcz
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.24.0...2.25.0)
 
 ## 2.24.0
 
