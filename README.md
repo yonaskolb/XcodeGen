@@ -156,7 +156,7 @@ To a file:
 xcodegen dump --type graphviz --file Graph.viz
 ```
 
-During implementation, `graphviz` formatting was validated using [GraphvizOnline](https://dreampuf.github.io/GraphvizOnline/), [WebGraphviz](http://www.webgraphviz.com), and [Graphviz on MacOS](graphviz.org).
+During implementation, `graphviz` formatting was validated using [GraphvizOnline](https://dreampuf.github.io/GraphvizOnline/), [WebGraphviz](http://www.webgraphviz.com), and [Graphviz on MacOS](https://graphviz.org).
 </details>
 
 ## Editing
