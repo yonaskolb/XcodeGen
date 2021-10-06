@@ -89,15 +89,13 @@ public class Glob: Collection {
         }
 
         let patterns = behavior.supportsGlobstar ? expandGlobstar(pattern: adjustedPattern) : [adjustedPattern]
-
-        paths = patterns.parallelMap { pattern -> [String] in
-            var gt = glob_t()
-            defer { globfree(&gt) }
-            if executeGlob(pattern: pattern, gt: &gt) {
-                 return populateFiles(gt: gt, includeFiles: includeFiles)
-            }
-            return []
-        }.flatMap { $0 }
+        
+        #if os(macOS)
+        paths = patterns.parallelMap { paths(usingPattern: $0, includeFiles: includeFiles) }.flatMap { $0 }
+        #else
+        // Parallel invocations of Glob on Linux seems to be causing unexpected crashes
+        paths = patterns.map { paths(usingPattern: $0, includeFiles: includeFiles) }.flatMap { $0 }
+        #endif
 
         paths = Array(Set(paths)).sorted { lhs, rhs in
             lhs.compare(rhs) != ComparisonResult.orderedDescending
@@ -209,6 +207,15 @@ public class Glob: Collection {
         isDirectoryCache.removeAll()
     }
 
+    private func paths(usingPattern pattern: String, includeFiles: Bool) -> [String] {
+        var gt = glob_t()
+        defer { globfree(&gt) }
+        if executeGlob(pattern: pattern, gt: &gt) {
+             return populateFiles(gt: gt, includeFiles: includeFiles)
+        }
+        return []
+    }
+    
     private func populateFiles(gt: glob_t, includeFiles: Bool) -> [String] {
         var paths = [String]()
         let includeDirectories = behavior.includesDirectoriesInResults
