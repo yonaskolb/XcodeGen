@@ -2,6 +2,10 @@
 
 ## Next Version
 
+### Changed
+
+- Speed up source inclusion checking for big projects [#1122](https://github.com/yonaskolb/XcodeGen/pull/1122) @PaulTaykalo 
+
 ## 2.25.0
 
 ### Added

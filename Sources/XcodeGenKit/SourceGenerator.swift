@@ -367,19 +367,23 @@ class SourceGenerator {
     }
 
     /// Checks whether the path is not in any default or TargetSource excludes
-    func isIncludedPath(_ path: Path, excludePaths: Set<Path>, includePaths: Set<Path>) -> Bool {
-        !defaultExcludedFiles.contains(where: { path.lastComponent.contains($0) })
+    func isIncludedPath(_ path: Path, excludePaths: Set<Path>, includePaths: SortedArray<Path>) -> Bool {
+        return !defaultExcludedFiles.contains(where: { path.lastComponent == $0 })
             && !(path.extension.map(defaultExcludedExtensions.contains) ?? false)
             && !excludePaths.contains(path)
             // If includes is empty, it's included. If it's not empty, the path either needs to match exactly, or it needs to be a direct parent of an included path.
-            && (includePaths.isEmpty || includePaths.contains(where: { includedFile in
-                if path == includedFile { return true }
-                return includedFile.description.contains(path.description)
-            }))
+            && (includePaths.value.isEmpty || _isIncludedPathSorted(path, sortedPaths: includePaths))
+    }
+    
+    private func _isIncludedPathSorted(_ path: Path, sortedPaths: SortedArray<Path>) -> Bool {
+        guard let idx = sortedPaths.firstIndex(where: { $0 >= path }) else { return false }
+        let foundPath = sortedPaths.value[idx]
+        return foundPath.description.hasPrefix(path.description)
     }
 
+
     /// Gets all the children paths that aren't excluded
-    private func getSourceChildren(targetSource: TargetSource, dirPath: Path, excludePaths: Set<Path>, includePaths: Set<Path>) throws -> [Path] {
+    private func getSourceChildren(targetSource: TargetSource, dirPath: Path, excludePaths: Set<Path>, includePaths: SortedArray<Path>) throws -> [Path] {
         try dirPath.children()
             .filter {
                 if $0.isDirectory {
@@ -408,7 +412,7 @@ class SourceGenerator {
         isBaseGroup: Bool,
         hasCustomParent: Bool,
         excludePaths: Set<Path>,
-        includePaths: Set<Path>,
+        includePaths: SortedArray<Path>,
         buildPhases: [Path: BuildPhaseSpec]
     ) throws -> (sourceFiles: [SourceFile], groups: [PBXGroup]) {
 
@@ -634,7 +638,7 @@ class SourceGenerator {
                 isBaseGroup: true,
                 hasCustomParent: hasCustomParent,
                 excludePaths: excludePaths,
-                includePaths: includePaths,
+                includePaths: SortedArray(includePaths),
                 buildPhases: buildPhases
             )
 
