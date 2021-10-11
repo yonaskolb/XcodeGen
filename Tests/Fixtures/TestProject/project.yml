@@ -27,6 +27,10 @@ projectReferences:
     path: ./AnotherProject/AnotherProject.xcodeproj
 configFiles:
   Test Debug: Configs/config.xcconfig
+packages:
+  Swinject:
+    url: https://github.com/Swinject/Swinject
+    version: 2.8.0
 targets:
   Legacy:
     type: ""
@@ -139,6 +143,9 @@ targets:
       - { bundle: BundleY.bundle, codeSign: false }
       - target: AnotherProject/ExternalTarget
       - target: App_Clip
+      - package: Swinject
+        product: Swinject
+        platformFilter: iOS
     onlyCopyFilesOnInstall: true
     scheme:
       testTargets:

@@ -3,11 +3,11 @@
     "pins": [
       {
         "package": "AEXML",
-        "repositoryURL": "https://github.com/tadija/AEXML",
+        "repositoryURL": "https://github.com/tadija/AEXML.git",
         "state": {
           "branch": null,
-          "revision": "8623e73b193386909566a9ca20203e33a09af142",
-          "version": "4.5.0"
+          "revision": "38f7d00b23ecd891e1ee656fa6aeebd6ba04ecc3",
+          "version": "4.6.1"
         }
       },
       {
@@ -32,18 +32,9 @@
         "package": "PathKit",
         "repositoryURL": "https://github.com/michaeleisel/PathKit.git",
         "state": {
-          "branch": "me-fast",
-          "revision": "a2e1212c4c7fd333e84539b7f7e92a42df6f0893",
-          "version": null
-        }
-      },
-      {
-        "package": "PathKitCExt",
-        "repositoryURL": "https://github.com/michaeleisel/PathKitCExt.git",
-        "state": {
-          "branch": "master",
-          "revision": "fddd173ba9f67d97363e2631b444b4a7eb2f1cf6",
-          "version": null
+          "branch": null,
+          "revision": "3bfd2737b700b9a36565a8c94f4ad2b050a5e574",
+          "version": "1.0.1"
         }
       },
       {
@@ -59,9 +50,9 @@
         "package": "Spectre",
         "repositoryURL": "https://github.com/kylef/Spectre.git",
         "state": {
-          "branch": "master",
+          "branch": null,
           "revision": "26cc5e9ae0947092c7139ef7ba612e34646086c7",
-          "version": null
+          "version": "0.10.1"
         }
       },
       {
@@ -69,8 +60,8 @@
         "repositoryURL": "https://github.com/jakeheis/SwiftCLI.git",
         "state": {
           "branch": null,
-          "revision": "2816678bcc37f4833d32abeddbdf5e757fa891d8",
-          "version": "6.0.2"
+          "revision": "2e949055d9797c1a6bddcda0e58dada16cc8e970",
+          "version": "6.0.3"
         }
       },
       {
@@ -87,8 +78,8 @@
         "repositoryURL": "https://github.com/tuist/XcodeProj.git",
         "state": {
           "branch": null,
-          "revision": "0b18c3e7a10c241323397a80cb445051f4494971",
-          "version": "8.0.0"
+          "revision": "446f3a0db73e141c7f57e26fcdb043096b1db52c",
+          "version": "8.3.1"
         }
       },
       {

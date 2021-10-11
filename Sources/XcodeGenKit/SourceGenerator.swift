@@ -392,6 +392,7 @@ class SourceGenerator {
     }
 
 
+
     /// Gets all the children paths that aren't excluded
     private func getSourceChildren(targetSource: TargetSource, dirPath: Path, excludePaths: Set<Path>, includePaths: SortedArray<Path>) throws -> [Path] {
         try dirPath.cachedChildren()
