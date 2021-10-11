@@ -11,15 +11,15 @@ let package = Package(
         .library(name: "ProjectSpec", targets: ["ProjectSpec"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/kylef/PathKit.git", .revision("bd899badc81a3424f0e767b8e79f416ffe442248")),
+        .package(url: "https://github.com/kylef/PathKit.git", from: "1.0.1"),
         .package(url: "https://github.com/jpsim/Yams.git", from: "4.0.0"),
         .package(url: "https://github.com/yonaskolb/JSONUtilities.git", from: "4.2.0"),
-        .package(url: "https://github.com/kylef/Spectre.git", from: "0.9.0"),
+        .package(url: "https://github.com/kylef/Spectre.git", from: "0.9.2"),
         .package(url: "https://github.com/onevcat/Rainbow.git", from: "3.0.0"),
-        .package(url: "https://github.com/alekkania/XcodeProj.git", .revision("8f6af1428fad1e2d0944a09d9732ba7654424104")),
-        .package(url: "https://github.com/jakeheis/SwiftCLI.git", .exact("6.0.3")),
+        .package(url: "https://github.com/tuist/XcodeProj.git", from: "8.3.1"),
+        .package(url: "https://github.com/jakeheis/SwiftCLI.git", from: "6.0.3"),
         .package(url: "https://github.com/mxcl/Version", from: "2.0.0"),
-        .package(url: "https://github.com/SwiftDocOrg/GraphViz.git", from: "0.1.0"),
+        .package(url: "https://github.com/SwiftDocOrg/GraphViz.git", .exact("0.2.0")),
     ],
     targets: [
         .target(name: "XcodeGen", dependencies: [
@@ -39,17 +39,17 @@ let package = Package(
             "JSONUtilities",
             "XcodeProj",
             "PathKit",
-            "Core",
+            "XcodeGenCore",
             "GraphViz",
         ]),
         .target(name: "ProjectSpec", dependencies: [
             "JSONUtilities",
             "XcodeProj",
             "Yams",
-            "Core",
+            "XcodeGenCore",
             "Version",
         ]),
-        .target(name: "Core", dependencies: [
+        .target(name: "XcodeGenCore", dependencies: [
             "PathKit",
             "Yams",
         ]),
@@ -70,8 +70,8 @@ let package = Package(
             "PathKit",
             "TestSupport",
         ]),
-        .testTarget(name: "CoreTests", dependencies: [
-            "Core",
+        .testTarget(name: "XcodeGenCoreTests", dependencies: [
+            "XcodeGenCore",
             "Spectre",
             "PathKit",
             "TestSupport",

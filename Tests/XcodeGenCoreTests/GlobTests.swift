@@ -7,7 +7,7 @@
 //  Adapted from https://gist.github.com/efirestone/ce01ae109e08772647eb061b3bb387c3
 
 import XCTest
-@testable import Core
+@testable import XcodeGenCore
 
 class GlobTests: XCTestCase {
 
@@ -42,7 +42,7 @@ class GlobTests: XCTestCase {
     }
 
     private func newTmpDir() -> String {
-        var tmpDirTmpl = "/tmp/glob-test.XXXXX".cString(using: .utf8)!
+        var tmpDirTmpl = "/tmp/glob-test.XXXXXX".cString(using: .utf8)!
         return String(validatingUTF8: mkdtemp(&tmpDirTmpl))!
     }
 

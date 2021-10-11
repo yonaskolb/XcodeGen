@@ -339,6 +339,30 @@ class ProjectSpecTests: XCTestCase {
                 project.schemes = [scheme]
                 try project.validate()
             }
+
+            $0.it("validates scheme variants") {
+
+                func expectVariant(_ variant: String, type: ConfigType = .debug, for config: Config, matches: Bool, file: String = #file, line: Int = #line) throws {
+                    let configs = [Config(name: "xxxxxxxxxxx", type: .debug), config]
+                    let foundConfig = configs.first(including: variant, for: type)
+                    let found = foundConfig != nil && foundConfig != configs[0]
+                    try expect(found, file: file, line: line) == matches
+                }
+
+                try expectVariant("Dev", for: Config(name: "DevDebug", type: .debug), matches: true)
+                try expectVariant("Dev", for: Config(name: "Dev debug", type: .debug), matches: true)
+                try expectVariant("Dev", for: Config(name: "DEV DEBUG", type: .debug), matches: true)
+                try expectVariant("Dev", for: Config(name: "Debug Dev", type: .debug), matches: true)
+                try expectVariant("Dev", for: Config(name: "dev Debug", type: .debug), matches: true)
+                try expectVariant("Dev", for: Config(name: "Dev debug", type: .release), matches: false)
+                try expectVariant("Dev", for: Config(name: "Dev-debug", type: .debug), matches: true)
+                try expectVariant("Dev", for: Config(name: "Dev_debug", type: .debug), matches: true)
+                try expectVariant("Prod", for: Config(name: "PreProd debug", type: .debug), matches: false)
+                try expectVariant("Develop", for: Config(name: "Dev debug", type: .debug), matches: false)
+                try expectVariant("Development", for: Config(name: "Debug (Development)", type: .debug), matches: true)
+                try expectVariant("Staging", for: Config(name: "Debug (Staging)", type: .debug), matches: true)
+                try expectVariant("Production", for: Config(name: "Debug (Production)", type: .debug), matches: true)
+            }
         }
     }
 
@@ -374,7 +398,8 @@ class ProjectSpecTests: XCTestCase {
                                                                               codeSign: true,
                                                                               link: true,
                                                                               implicit: true,
-                                                                              weakLink: true)],
+                                                                              weakLink: true,
+                                                                              copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .frameworks, subpath: "example", phaseOrder: .postCompile))],
                                                     info: Plist(path: "info.plist", attributes: ["foo": "bar"]),
                                                     entitlements: Plist(path: "entitlements.plist", attributes: ["foo": "bar"]),
                                                     transitivelyLinkDependencies: true,
@@ -388,7 +413,8 @@ class ProjectSpecTests: XCTestCase {
                                                                                   outputFileLists: ["bar.xcfilelist"],
                                                                                   shell: "/bin/bash",
                                                                                   runOnlyWhenInstalling: true,
-                                                                                  showEnvVars: true)],
+                                                                                  showEnvVars: true,
+                                                                                  basedOnDependencyAnalysis: false)],
                                                     postCompileScripts: [BuildScript(script: .path("cmd.sh"),
                                                                                      name: "Bar script",
                                                                                      inputFiles: ["foo"],
@@ -397,7 +423,8 @@ class ProjectSpecTests: XCTestCase {
                                                                                      outputFileLists: ["bar.xcfilelist"],
                                                                                      shell: "/bin/bash",
                                                                                      runOnlyWhenInstalling: true,
-                                                                                     showEnvVars: true)],
+                                                                                     showEnvVars: true,
+                                                                                     basedOnDependencyAnalysis: false)],
                                                     postBuildScripts: [BuildScript(script: .path("cmd.sh"),
                                                                                    name: "an another script",
                                                                                    inputFiles: ["foo"],
@@ -406,22 +433,37 @@ class ProjectSpecTests: XCTestCase {
                                                                                    outputFileLists: ["bar.xcfilelist"],
                                                                                    shell: "/bin/bash",
                                                                                    runOnlyWhenInstalling: true,
-                                                                                   showEnvVars: true)],
+                                                                                   showEnvVars: true,
+                                                                                   basedOnDependencyAnalysis: false),
+                                                                       BuildScript(script: .path("cmd.sh"),
+                                                                                   name: "Dependency script",
+                                                                                   inputFiles: ["foo"],
+                                                                                   outputFiles: ["bar"],
+                                                                                   inputFileLists: ["foo.xcfilelist"],
+                                                                                   outputFileLists: ["bar.xcfilelist"],
+                                                                                   shell: "/bin/bash",
+                                                                                   runOnlyWhenInstalling: true,
+                                                                                   showEnvVars: true,
+                                                                                   basedOnDependencyAnalysis: true,
+                                                                                   discoveredDependencyFile: "dep.d")],
                                                     buildRules: [BuildRule(fileType: .pattern("*.xcassets"),
                                                                            action: .script("pre_process_swift.py"),
                                                                            name: "My Build Rule",
                                                                            outputFiles: ["$(SRCROOT)/Generated.swift"],
-                                                                           outputFilesCompilerFlags: ["foo"]),
+                                                                           outputFilesCompilerFlags: ["foo"],
+                                                                           runOncePerArchitecture: false),
                                                                  BuildRule(fileType: .type("sourcecode.swift"),
                                                                            action: .compilerSpec("com.apple.xcode.tools.swift.compiler"),
                                                                            name: nil,
                                                                            outputFiles: ["bar"],
-                                                                           outputFilesCompilerFlags: ["foo"])],
+                                                                           outputFilesCompilerFlags: ["foo"],
+                                                                           runOncePerArchitecture: true)],
                                                     scheme: TargetScheme(testTargets: [Scheme.Test.TestTarget(targetReference: "test target",
                                                                                                               randomExecutionOrder: false,
                                                                                                               parallelizable: false)],
                                                                          configVariants: ["foo"],
                                                                          gatherCoverageData: true,
+                                                                         storeKitConfiguration: "Configuration.storekit",
                                                                          disableMainThreadChecker: true,
                                                                          stopOnEveryMainThreadCheckerIssue: false,
                                                                          commandLineArguments: ["foo": true],
@@ -455,7 +497,8 @@ class ProjectSpecTests: XCTestCase {
                                                                                                  outputFileLists: ["bar.xcfilelist"],
                                                                                                  shell: "/bin/bash",
                                                                                                  runOnlyWhenInstalling: true,
-                                                                                                 showEnvVars: false)],
+                                                                                                 showEnvVars: false,
+                                                                                                 basedOnDependencyAnalysis: false)],
                                                                       scheme: TargetScheme(testTargets: [Scheme.Test.TestTarget(targetReference: "test target",
                                                                                                                                 randomExecutionOrder: false,
                                                                                                                                 parallelizable: false)],
@@ -505,7 +548,8 @@ class ProjectSpecTests: XCTestCase {
                                                                     environmentVariables: [XCScheme.EnvironmentVariable(variable: "foo",
                                                                                                                         value: "bar",
                                                                                                                         enabled: false)],
-                                                                    launchAutomaticallySubstyle: "2"),
+                                                                    launchAutomaticallySubstyle: "2",
+                                                                    storeKitConfiguration: "Configuration.storekit"),
                                                     test: Scheme.Test(config: "Config",
                                                                       gatherCoverageData: true,
                                                                       disableMainThreadChecker: true,

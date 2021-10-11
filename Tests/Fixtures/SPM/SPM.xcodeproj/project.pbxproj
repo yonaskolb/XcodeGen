@@ -14,7 +14,7 @@
 		9AD886A88D3E4A1B5E900687 /* SPMTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7970A2253B14A9B27C307FAC /* SPMTests.swift */; };
 		9C4AD0711D706FD3ED0E436D /* StaticLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C17B77601A9D1B7895AB42 /* StaticLibrary.swift */; };
 		B89EA0F3859878A1DCF7BAFD /* SwiftRoaringDynamic in Embed Frameworks */ = {isa = PBXBuildFile; productRef = DC73B269C8B0C0BF6912842C /* SwiftRoaringDynamic */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		CE46CBA5671B951B546C8673 /* Codability in Frameworks */ = {isa = PBXBuildFile; productRef = 16E6FE01D5BD99F78D4A17E2 /* Codability */; };
+		CE46CBA5671B951B546C8673 /* Codability in Frameworks */ = {isa = PBXBuildFile; productRef = 16E6FE01D5BD99F78D4A17E2 /* Codability */; settings = {ATTRIBUTES = (Weak, ); }; };
 		E368431019ABC696E4FFC0CF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4E22B8BCC18A29EFE1DE3BE4 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 

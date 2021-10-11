@@ -10,6 +10,7 @@ public struct SpecOptions: Equatable {
     public static let generateEmptyDirectoriesDefault = false
     public static let findCarthageFrameworksDefault = false
     public static let useBaseInternationalizationDefault = true
+    public static let schemePathPrefixDefault = "../../"
 
     public var minimumXcodeGenVersion: Version?
     public var carthageBuildPath: String?
@@ -35,6 +36,7 @@ public struct SpecOptions: Equatable {
     public var preGenCommand: String?
     public var postGenCommand: String?
     public var useBaseInternationalization: Bool
+    public var schemePathPrefix: String
 
     public enum ValidationType: String {
         case missingConfigs
@@ -96,7 +98,8 @@ public struct SpecOptions: Equatable {
         localPackagesGroup: String? = nil,
         preGenCommand: String? = nil,
         postGenCommand: String? = nil,
-        useBaseInternationalization: Bool = useBaseInternationalizationDefault
+        useBaseInternationalization: Bool = useBaseInternationalizationDefault,
+        schemePathPrefix: String = schemePathPrefixDefault
     ) {
         self.minimumXcodeGenVersion = minimumXcodeGenVersion
         self.carthageBuildPath = carthageBuildPath
@@ -122,6 +125,7 @@ public struct SpecOptions: Equatable {
         self.preGenCommand = preGenCommand
         self.postGenCommand = postGenCommand
         self.useBaseInternationalization = useBaseInternationalization
+        self.schemePathPrefix = schemePathPrefix
     }
 }
 
@@ -154,6 +158,7 @@ extension SpecOptions: JSONObjectConvertible {
         preGenCommand = jsonDictionary.json(atKeyPath: "preGenCommand")
         postGenCommand = jsonDictionary.json(atKeyPath: "postGenCommand")
         useBaseInternationalization = jsonDictionary.json(atKeyPath: "useBaseInternationalization") ?? SpecOptions.useBaseInternationalizationDefault
+        schemePathPrefix = jsonDictionary.json(atKeyPath: "schemePathPrefix") ?? SpecOptions.schemePathPrefixDefault
         if jsonDictionary["fileTypes"] != nil {
             fileTypes = try jsonDictionary.json(atKeyPath: "fileTypes")
         } else {
@@ -182,7 +187,7 @@ extension SpecOptions: JSONEncodable {
             "localPackagesGroup": localPackagesGroup,
             "preGenCommand": preGenCommand,
             "postGenCommand": postGenCommand,
-            "fileTypes": fileTypes
+            "fileTypes": fileTypes.mapValues { $0.toJSONValue() }
         ]
 
         if settingPresets != SpecOptions.settingPresetsDefault {
@@ -199,6 +204,9 @@ extension SpecOptions: JSONEncodable {
         }
         if useBaseInternationalization != SpecOptions.useBaseInternationalizationDefault {
             dict["useBaseInternationalization"] = useBaseInternationalization
+        }
+        if schemePathPrefix != SpecOptions.schemePathPrefixDefault {
+            dict["schemePathPrefix"] = schemePathPrefix
         }
 
         return dict

@@ -26,6 +26,10 @@ extension PBXProductType {
         fileExtension == "appex"
     }
 
+    public var isSystemExtension: Bool {
+        fileExtension == "dext" || fileExtension == "systemextension"
+    }
+
     public var isApp: Bool {
         fileExtension == "app"
     }
@@ -35,7 +39,7 @@ extension PBXProductType {
     }
 
     public var isExecutable: Bool {
-        isApp || isExtension || isTest || self == .commandLineTool
+        isApp || isExtension || isSystemExtension || isTest || self == .commandLineTool
     }
 
     public var name: String {
@@ -54,17 +58,16 @@ extension PBXProductType {
     }
 
     /// Function to determine when a dependendency should be embedded into the target
-    public func shouldEmbed(_ dependencyType: PBXProductType) -> Bool {
-        switch dependencyType {
-        case .staticLibrary, .staticFramework:
-            // Some dependendencies should not be embed, independently of the target type
+    public func shouldEmbed(_ dependencyTarget: Target) -> Bool {
+        switch dependencyTarget.defaultLinkage {
+        case .static:
+            // Static dependencies should never embed
             return false
-
-        default:
+        case .dynamic, .none:
             if isApp {
-                // If target is an app, all dependencies should be embed (except for the ones mentioned above)
+                // If target is an app, all dependencies should be embed (unless they're static)
                 return true
-            } else if isTest, [.framework, .bundle].contains(dependencyType) {
+            } else if isTest, [.framework, .bundle].contains(dependencyTarget.type) {
                 // If target is test, some dependencies should be embed (depending on their type)
                 return true
             } else {
@@ -90,7 +93,7 @@ extension Platform {
 extension Target {
     public var shouldExecuteOnLaunch: Bool {
         // This is different from `type.isExecutable`, because we don't want to "run" a test
-        type.isApp || type.isExtension || type == .commandLineTool
+        type.isApp || type.isExtension || type.isSystemExtension || type == .commandLineTool
     }
 }
 

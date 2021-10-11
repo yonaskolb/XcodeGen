@@ -36,7 +36,7 @@ The values from [xcconfig files](#xcconfig-files) will then sit a level above th
 XcodeGen applies default settings to your project and targets similar to how Xcode creates them when you create a new project or target.
 Debug and Release settings will be applied to your project. Targets will also get specific settings depending on the platform and product type.
 
->You can change or disable how these setting presets are applied via the `options.settingPresets` which you can find more about in [Options](#options)
+>You can change or disable how these setting presets are applied via the `options.settingPresets` which you can find more about in [Options](ProjectSpec.md#options)
 
 ### Settings
 The `project` and each `target` have a `settings` object that you can define. This can be a simple map of build settings or can provide build settings per `config` via `configs` or `base`. See [Settings](ProjectSpec.md#settings) for more details.
