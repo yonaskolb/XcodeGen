@@ -376,6 +376,8 @@ public class PBXProjGenerator {
         return targetDependency
     }
 
+    var _targetDependencies: [String: PBXTargetDependency] = [:]
+
     func generateExternalTargetDependency(from: String, to target: String, in project: String, platform: Platform) throws -> (PBXTargetDependency, Target, PBXReferenceProxy) {
         guard let projectReference = self.project.getProjectReference(project) else {
             fatalError("project '\(project)' not found")
@@ -398,23 +400,27 @@ public class PBXProjGenerator {
             fatalError("Missing subproject file reference")
         }
 
-        let targetProxy = addObject(
-            PBXContainerItemProxy(
-                containerPortal: .fileReference(projectFileReference),
-                remoteGlobalID: .object(targetObject),
-                proxyType: .nativeTarget,
-                remoteInfo: target
+        // Generate target dependencies only once for each project reference pair to each target
+        let targetDependencyKey = [projectReference.path, targetObject.uuid, target].joined(separator: "|")
+        let targetDependency = _targetDependencies[targetDependencyKey] ?? {
+            let targetProxy = addObject(
+                PBXContainerItemProxy(
+                    containerPortal: .fileReference(projectFileReference),
+                    remoteGlobalID: .object(targetObject),
+                    proxyType: .nativeTarget,
+                    remoteInfo: target
+                )
             )
-        )
+            let targetDependency = addObject(
+                PBXTargetDependency(
+                    name: targetObject.name,
+                    targetProxy: targetProxy
+                )
+            )
+            return targetDependency
+        }()
 
-        let productProxy = addObject(
-            PBXContainerItemProxy(
-                containerPortal: .fileReference(projectFileReference),
-                remoteGlobalID: targetObject.product.flatMap(PBXContainerItemProxy.RemoteGlobalID.object),
-                proxyType: .reference,
-                remoteInfo: target
-            )
-        )
+        _targetDependencies[targetDependencyKey] = targetDependency
 
         var path = targetObject.productNameWithExtension()
 
@@ -423,23 +429,40 @@ public class PBXProjGenerator {
             path = "lib\(tmpPath)"
         }
 
-        let productReferenceProxy = addObject(
-            PBXReferenceProxy(
-                fileType: targetObject.productNameWithExtension().flatMap { Xcode.fileType(path: Path($0)) },
-                path: path,
-                remote: productProxy,
-                sourceTree: .buildProductsDir
+        // Generate product reference proxy only once for each path in target
+        // Xcode will remove duplicates and will leave project in inconsistent state
+        func createOrReturnProductReferenceProxy(for target: String, productPath: String?) -> PBXReferenceProxy {
+            if let existingProductReferenceProxy =
+                productsGroup.children.lazy
+                .compactMap({ $0 as? PBXReferenceProxy })
+                .first(where: {
+                    return $0.path == productPath && $0.remote?.remoteInfo == target
+                }) {
+                return existingProductReferenceProxy
+            }
+            
+            let productProxy = addObject(
+                PBXContainerItemProxy(
+                    containerPortal: .fileReference(projectFileReference),
+                    remoteGlobalID: targetObject.product.flatMap(PBXContainerItemProxy.RemoteGlobalID.object),
+                    proxyType: .reference,
+                    remoteInfo: target
+                )
             )
-        )
-
-        productsGroup.children.append(productReferenceProxy)
-
-        let targetDependency = addObject(
-            PBXTargetDependency(
-                name: targetObject.name,
-                targetProxy: targetProxy
+            
+            let productReferenceProxy = addObject(
+                PBXReferenceProxy(
+                    fileType: targetObject.productNameWithExtension().flatMap { Xcode.fileType(path: Path($0)) },
+                    path: path,
+                    remote: productProxy,
+                    sourceTree: .buildProductsDir
+                )
             )
-        )
+            productsGroup.children.append(productReferenceProxy)
+            return productReferenceProxy
+        }
+        
+        let productReferenceProxy = createOrReturnProductReferenceProxy(for: target, productPath: path)
 
         guard let buildConfigurations = targetObject.buildConfigurationList?.buildConfigurations,
             let defaultConfigurationName = targetObject.buildConfigurationList?.defaultConfigurationName,
