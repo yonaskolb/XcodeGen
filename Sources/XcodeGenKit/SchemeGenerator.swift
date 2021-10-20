@@ -161,7 +161,7 @@ public class SchemeGenerator {
         }
 
         let testTargets = scheme.test?.targets ?? []
-        let testBuildTargets = testTargets.compactMap {
+        let testBuildTargets = testTargets.map {
             Scheme.BuildTarget(target: $0.targetReference, buildTypes: BuildType.testOnly)
         }
 
