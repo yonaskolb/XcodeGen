@@ -110,17 +110,6 @@ public class SchemeGenerator {
             case .local:
                 pbxProj = self.pbxProj
                 projectFilePath = "\(self.project.name).xcodeproj"
-            case .package(let packageName):
-                guard let package = self.project.getPackage(packageName),
-                      case .local(let path) = package else {
-                    throw SchemeGenerationError.missingPackage(packageName)
-                }
-                return XCScheme.BuildableReference(
-                    referencedContainer: "container:\(path)",
-                    blueprintIdentifier: target.name,
-                    buildableName: target.name,
-                    blueprintName: target.name
-                )
             }
 
             guard let pbxTarget = pbxProj.targets(named: target.name).first else {
@@ -138,8 +127,6 @@ public class SchemeGenerator {
                     fatalError("Unable to determinate \"buildableName\" for build target: \(target)")
                 }
                 buildableName = _buildableName
-            case .package: // all `package` target should be handled above
-                fatalError("unexpected package target is handled")
             }
 
             return XCScheme.BuildableReference(
@@ -149,14 +136,32 @@ public class SchemeGenerator {
                 blueprintName: target.name
             )
         }
+        
+        func getBuildableTestableReference(_ target: TestableTargetReference) throws -> XCScheme.BuildableReference {
+            switch target.location {
+            case .package(let packageName):
+                guard let package = self.project.getPackage(packageName),
+                      case .local(let path) = package else {
+                    throw SchemeGenerationError.missingPackage(packageName)
+                }
+                return XCScheme.BuildableReference(
+                    referencedContainer: "container:\(path)",
+                    blueprintIdentifier: target.name,
+                    buildableName: target.name,
+                    blueprintName: target.name
+                )
+            default:
+                return try getBuildableReference(target.targetReference)
+            }
+        }
 
         func getBuildEntry(_ buildTarget: Scheme.BuildTarget) throws -> XCScheme.BuildAction.Entry {
-            let buildableReference = try getBuildableReference(buildTarget.target)
+            let buildableReference = try getBuildableTestableReference(buildTarget.target)
             return XCScheme.BuildAction.Entry(buildableReference: buildableReference, buildFor: buildTarget.buildTypes)
         }
 
         let testTargets = scheme.test?.targets ?? []
-        let testBuildTargets = testTargets.map {
+        let testBuildTargets = testTargets.compactMap {
             Scheme.BuildTarget(target: $0.targetReference, buildTypes: BuildType.testOnly)
         }
 
@@ -213,7 +218,7 @@ public class SchemeGenerator {
         }
 
         let coverageBuildableTargets = try scheme.test?.coverageTargets.map {
-            try getBuildableReference($0)
+            try getBuildableTestableReference($0)
         } ?? []
 
         let testCommandLineArgs = scheme.test.map { XCScheme.CommandLineArguments($0.commandLineArguments) }
@@ -434,14 +439,14 @@ extension Scheme {
     }
 
     private static func buildTargets(for target: Target, project: Project) -> [BuildTarget] {
-        let buildTarget = Scheme.BuildTarget(target: TargetReference.local(target.name))
+        let buildTarget = Scheme.BuildTarget(target: TestableTargetReference.local(target.name))
         switch target.type {
         case .watchApp, .watch2App:
             let hostTarget = project.targets
                 .first { projectTarget in
                     projectTarget.dependencies.contains { $0.reference == target.name }
                 }
-                .map { BuildTarget(target: TargetReference.local($0.name)) }
+                .map { BuildTarget(target: TestableTargetReference.local($0.name)) }
             return hostTarget.map { [buildTarget, $0] } ?? [buildTarget]
         default:
             return [buildTarget]

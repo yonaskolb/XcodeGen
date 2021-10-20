@@ -365,8 +365,8 @@ class SchemeGeneratorTests: XCTestCase {
                         gatherCoverageData: true,
                         coverageTargets: [
                             "TestProject/ExternalTarget",
-                            TargetReference(framework.name),
-                            TargetReference(name: "XcodeGenKitTests", location: .package("XcodeGen"))
+                            TestableTargetReference(framework.name),
+                            TestableTargetReference(name: "XcodeGenKitTests", location: .package("XcodeGen"))
                         ]
                     )
                 )
@@ -450,7 +450,7 @@ class SchemeGeneratorTests: XCTestCase {
             
             $0.it("generates scheme with test target of local swift package") {
                 let targetScheme = TargetScheme(
-                    testTargets: [Scheme.Test.TestTarget(targetReference: TargetReference(name: "XcodeGenKitTests", location: .package("XcodeGen")))])
+                    testTargets: [Scheme.Test.TestTarget(targetReference: TestableTargetReference(name: "XcodeGenKitTests", location: .package("XcodeGen")))])
                 let app = Target(
                     name: "MyApp",
                     type: .application,

@@ -163,9 +163,6 @@ extension Project {
                         if getProjectReference(dependencyProjectName) == nil {
                             errors.append(.invalidTargetDependency(target: target.name, dependency: dependency.reference))
                         }
-                    case .package:
-                        // Package depedency should be located in `package:`, not `target:`
-                        errors.append(.invalidPackageDependencyReference(name: target.name))
                     }
                 case .sdk:
                     let path = Path(dependency.reference)
@@ -244,6 +241,18 @@ extension Project {
         switch targetReference.location {
         case .local where getProjectTarget(targetReference.name) == nil:
             return .invalidSchemeTarget(scheme: scheme.name, target: targetReference.name, action: action)
+        case .project(let project) where getProjectReference(project) == nil:
+            return .invalidProjectReference(scheme: scheme.name, reference: project)
+        case .local, .project:
+            return nil
+        }
+    }
+    
+    /// Returns a descriptive error if the given target reference was invalid otherwise `nil`.
+    private func validationError(for testableTargetReference: TestableTargetReference, in scheme: Scheme, action: String) -> SpecValidationError.ValidationError? {
+        switch testableTargetReference.location {
+        case .local where getProjectTarget(testableTargetReference.name) == nil:
+            return .invalidSchemeTarget(scheme: scheme.name, target: testableTargetReference.name, action: action)
         case .project(let project) where getProjectReference(project) == nil:
             return .invalidProjectReference(scheme: scheme.name, reference: project)
         case .package(let package) where getPackage(package) == nil:
