@@ -246,6 +246,7 @@ public class SchemeGenerator {
             environmentVariables: testVariables,
             language: scheme.test?.language,
             region: scheme.test?.region,
+            systemAttachmentLifetime: scheme.test?.systemAttachmentLifetime,
             customLLDBInitFile: scheme.test?.customLLDBInit
         )
 
@@ -466,6 +467,19 @@ extension PBXProductType {
             return true
         default:
             return false
+        }
+    }
+}
+
+extension Scheme.Test {
+    var systemAttachmentLifetime: XCScheme.TestAction.AttachmentLifetime? {
+        switch (captureScreenshotsAutomatically, deleteScreenshotsWhenEachTestSucceeds) {
+        case (false, _):
+            return .keepNever
+        case (true, false):
+            return .keepAlways
+        case (true, true):
+            return nil
         }
     }
 }

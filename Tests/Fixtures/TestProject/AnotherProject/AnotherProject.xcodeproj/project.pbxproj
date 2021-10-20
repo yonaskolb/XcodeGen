@@ -10,6 +10,7 @@
 		6023D61BF2C57E6AE09CE7A3 /* BundleX.bundle */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = BundleX.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		60D6679FB526839EAFEA2EEE /* config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = config.xcconfig; sourceTree = "<group>"; };
 		D6340FC7DEBC81E0127BAFD6 /* ExternalTarget.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ExternalTarget.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F1EFFCA88BFC3A1DD2D89DA7 /* BundleY.bundle */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = BundleY.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -34,6 +35,7 @@
 			isa = PBXGroup;
 			children = (
 				6023D61BF2C57E6AE09CE7A3 /* BundleX.bundle */,
+				F1EFFCA88BFC3A1DD2D89DA7 /* BundleY.bundle */,
 				D6340FC7DEBC81E0127BAFD6 /* ExternalTarget.framework */,
 			);
 			name = Products;
@@ -59,6 +61,20 @@
 /* End PBXLegacyTarget section */
 
 /* Begin PBXNativeTarget section */
+		201AC870383B8CD218AD0FAB /* BundleY */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EF9E2AA4073D3B2EC8195688 /* Build configuration list for PBXNativeTarget "BundleY" */;
+			buildPhases = (
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = BundleY;
+			productName = BundleY;
+			productReference = F1EFFCA88BFC3A1DD2D89DA7 /* BundleY.bundle */;
+			productType = "com.apple.product-type.bundle";
+		};
 		63A2D4898D974A06E85B07F8 /* BundleX */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 32C09717E388BCD9DB9E513C /* Build configuration list for PBXNativeTarget "BundleX" */;
@@ -110,6 +126,7 @@
 			projectRoot = "";
 			targets = (
 				63A2D4898D974A06E85B07F8 /* BundleX */,
+				201AC870383B8CD218AD0FAB /* BundleY */,
 				E76A5F5E363E470416D3B487 /* ExternalTarget */,
 				A6D9FB94860C005F0B723B5F /* IncludedLegacy */,
 			);
@@ -321,6 +338,18 @@
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = "Test Debug";
+		};
+		1CE986A8B593E707AB71BDBA /* Production Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Production Release";
 		};
 		270E1D32776D2D196D435FDA /* Staging Debug */ = {
 			isa = XCBuildConfiguration;
@@ -570,6 +599,18 @@
 			};
 			name = "Production Debug";
 		};
+		58F418B6745A09C6479FDD6E /* Staging Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Staging Release";
+		};
 		5F14CE04E33ACD729A0EE6B6 /* Test Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -647,6 +688,18 @@
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = "Test Release";
+		};
+		816E80EA88CB645CE988138C /* Staging Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Staging Debug";
 		};
 		9BD6CAD5463121A1C3FED138 /* Production Release */ = {
 			isa = XCBuildConfiguration;
@@ -760,6 +813,42 @@
 			};
 			name = "Production Release";
 		};
+		E7907C46C6282D78E009083B /* Test Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Test Debug";
+		};
+		FB66976FF75B2B0B255D5AA4 /* Test Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Test Release";
+		};
+		FD9323224BE5A91248B7BEF2 /* Production Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Production Debug";
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -811,6 +900,19 @@
 				30E2E954A636A240B1CE5C15 /* Staging Release */,
 				1B1B4A623B8E9937627EF22C /* Test Debug */,
 				7919FDD28F9A535EA26FB151 /* Test Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "Production Debug";
+		};
+		EF9E2AA4073D3B2EC8195688 /* Build configuration list for PBXNativeTarget "BundleY" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FD9323224BE5A91248B7BEF2 /* Production Debug */,
+				1CE986A8B593E707AB71BDBA /* Production Release */,
+				816E80EA88CB645CE988138C /* Staging Debug */,
+				58F418B6745A09C6479FDD6E /* Staging Release */,
+				E7907C46C6282D78E009083B /* Test Debug */,
+				FB66976FF75B2B0B255D5AA4 /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Production Debug";

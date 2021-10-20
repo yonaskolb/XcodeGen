@@ -4,6 +4,42 @@
 #### Added
 - Support test target for local Swift Package [#1074](https://github.com/yonaskolb/XcodeGen/pull/1074) @freddi-kit
 
+### Changed
+
+- Speed up source inclusion checking for big projects [#1122](https://github.com/yonaskolb/XcodeGen/pull/1122) @PaulTaykalo 
+
+## 2.25.0
+
+### Added
+- Allow specifying a `copy` setting for each dependency. [#1038](https://github.com/yonaskolb/XcodeGen/pull/1039) @JakubBednar
+
+### Fixed
+
+- Fix broken codesign option for bundle dependency [#1104](https://github.com/yonaskolb/XcodeGen/pull/1104) @kateinoigakukun
+- Ensure fileTypes are mapped to JSON value [#1112](https://github.com/yonaskolb/XcodeGen/pull/1112) @namolnad
+- Fix platform filter for package dependecies [#1123](https://github.com/yonaskolb/XcodeGen/pull/1123) @raptorxcz
+- Fix Xcode 13 build [#1130](https://github.com/yonaskolb/XcodeGen/issues/1127) @raptorxcz @mthole
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.24.0...2.25.0)
+
+### Changed
+
+- Update XcodeProj to 8.2.0 [#1125](https://github.com/yonaskolb/XcodeGen/pull/1125) @nnsnodnb
+
+## 2.24.0
+
+### Added
+
+- Added support for DocC Catalogs [#1091](https://github.com/yonaskolb/XcodeGen/pull/1091) @brevansio
+- Added support for "driver-extension" and "system-extension" product types [#1092](https://github.com/yonaskolb/XcodeGen/issues/1092) @vgorloff
+- Add support for conditionally linking dependencies for specific platforms [#1087](https://github.com/yonaskolb/XcodeGen/pull/1087) @daltonclaybrook
+- Add ability to specify UI testing screenshot behavior in test schemes [#942](https://github.com/yonaskolb/XcodeGen/pull/942) @daltonclaybrook
+
+### Changed
+- **Breaking**: Rename the `platform` field on `Dependency` to `platformFilter` [#1087](https://github.com/yonaskolb/XcodeGen/pull/1087) @daltonclaybrook
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.23.1...2.24.0)
+
 ## 2.23.1
 
 ### Changed

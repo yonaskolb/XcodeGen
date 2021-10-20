@@ -354,21 +354,26 @@ class PBXProjGeneratorTests: XCTestCase {
                 let target1 = Target(name: "TestAll", type: .application, platform: .iOS, sources: ["Sources"])
                 let target2 = Target(name: "TestiOS", type: .application, platform: .iOS, sources: ["Sources"])
                 let target3 = Target(name: "TestmacOS", type: .application, platform: .iOS, sources: ["Sources"])
-                let dependency1 = Dependency(type: .target, reference: "TestAll", platform: .all)
-                let dependency2 = Dependency(type: .target, reference: "TestiOS", platform: .iOS)
-                let dependency3 = Dependency(type: .target, reference: "TestmacOS", platform: .macOS)
-                let target = Target(name: "Test", type: .application, platform: .iOS, sources: ["Sources"], dependencies: [dependency1, dependency2, dependency3])
-                let project = Project(basePath: directoryPath, name: "Test", targets: [target, target1, target2, target3])
+                let dependency1 = Dependency(type: .target, reference: "TestAll", platformFilter: .all)
+                let dependency2 = Dependency(type: .target, reference: "TestiOS", platformFilter: .iOS)
+                let dependency3 = Dependency(type: .target, reference: "TestmacOS", platformFilter: .macOS)
+                let dependency4 = Dependency(type: .package(product: "Swinject"), reference: "Swinject", platformFilter: .iOS)
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: ["Sources"], dependencies: [dependency1, dependency2, dependency3, dependency4])
+                let swinjectPackage = SwiftPackage.remote(url: "https://github.com/Swinject/Swinject", versionRequirement: .exact("2.8.0"))
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target, target1, target2, target3], packages: ["Swinject": swinjectPackage])
 
                 let pbxProj = try project.generatePbxProj()
 
                 let targets = pbxProj.projects.first?.targets
-                let testTargetDependencies = pbxProj.projects.first?.targets.first(where: { $0.name == "Test" })?.dependencies
+                let testTarget = pbxProj.projects.first?.targets.first(where: { $0.name == "Test" })
+                let testTargetDependencies = testTarget?.dependencies
                 try expect(targets?.count) == 4
                 try expect(testTargetDependencies?.count) == 3
                 try expect(testTargetDependencies?[0].platformFilter).beNil()
                 try expect(testTargetDependencies?[1].platformFilter) == "ios"
                 try expect(testTargetDependencies?[2].platformFilter) == "maccatalyst"
+                try expect(testTarget?.frameworksBuildPhase()?.files?.count) == 1
+                try expect(testTarget?.frameworksBuildPhase()?.files?[0].platformFilter) == "ios"
             }
         }
     }

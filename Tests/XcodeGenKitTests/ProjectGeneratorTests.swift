@@ -1581,6 +1581,1423 @@ class ProjectGeneratorTests: XCTestCase {
             }
         }
     }
+        
+    func testGenerateXcodeProjectWithCustomDependencyDestinations() throws {
+        
+        describe("generateXcodeProject") {
+            
+            func generateProjectForApp(withDependencies: [Dependency], targets: [Target], packages: [String: SwiftPackage] = [:]) throws -> PBXProj {
+                
+                let app = Target(
+                    name: "App",
+                    type: .application,
+                    platform: .macOS,
+                    dependencies: withDependencies
+                )
+                
+                let project = Project(
+                    name: "test",
+                    targets: targets + [app],
+                    packages: packages
+                )
+
+                return try project.generatePbxProj()
+            }
+            
+            func expectCopyPhase(in project:PBXProj, withFilePaths: [String]? = nil, withProductPaths: [String]? = nil, toSubFolder subfolder: PBXCopyFilesBuildPhase.SubFolder, dstPath: String? = nil) throws {
+                
+                let phases = project.copyFilesBuildPhases
+                try expect(phases.count) == 1
+                let phase = phases.first!
+                try expect(phase.dstSubfolderSpec) == subfolder
+                try expect(phase.dstPath) == dstPath
+                if let paths = withFilePaths {
+                    try expect(phase.files?.count) == paths.count
+                    let filePaths = phase.files!.map { $0.file!.path }
+                    try expect(filePaths) == paths
+                }
+                if let paths = withProductPaths {
+                    try expect(phase.files?.count) == paths.count
+                    let filePaths = phase.files!.map { $0.product!.productName }
+                    try expect(filePaths) == paths
+                }
+            }
+            
+            $0.context("with target dependencies") {
+                $0.context("application") {
+                    
+                    let appA = Target(
+                        name: "appA",
+                        type: .application,
+                        platform: .macOS
+                    )
+                    let appB = Target(
+                        name: "appB",
+                        type: .application,
+                        platform: .macOS
+                    )
+                    
+                    $0.it("does not embed them without copy phase spec") {
+                        
+                        // given
+                        let dependencies = [
+                            Dependency(type: .target, reference: appA.name, embed: true),
+                            Dependency(type: .target, reference: appB.name, embed: false),
+                        ]
+
+                        // when
+                        let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [ appA, appB ])
+                        
+                        // then
+                        try expect(pbxProject.copyFilesBuildPhases.count) == 0
+                    }
+                    
+                    $0.it("embeds them into custom location with copy phase spec") {
+                        
+                        // given
+                        let dependencies = [
+                            Dependency(type: .target, reference: appA.name, embed: true, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .plugins, subpath: "test", phaseOrder: .postCompile)),
+                            Dependency(type: .target, reference: appB.name, embed: false, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .plugins, subpath: "test", phaseOrder: .postCompile)),
+                        ]
+                        
+                        // when
+                        let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [appA, appB])
+                        
+                        // then
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["appA.app"], toSubFolder: .plugins, dstPath: "test")
+                    }
+                }
+                
+                $0.context("framework") {
+                    
+                    let frameworkA = Target(
+                        name: "frameworkA",
+                        type: .framework,
+                        platform: .macOS
+                    )
+                    let frameworkB = Target(
+                        name: "frameworkB",
+                        type: .framework,
+                        platform: .macOS
+                    )
+                    
+                    $0.it("embeds them into frameworks without copy phase spec") {
+                        
+                        // given
+                        let dependencies = [
+                            Dependency(type: .target, reference: frameworkA.name, embed: true),
+                            Dependency(type: .target, reference: frameworkB.name, embed: false),
+                        ]
+                        
+                        // when
+                        let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [frameworkA, frameworkB])
+                        
+                        // then
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["frameworkA.framework"], toSubFolder: .frameworks, dstPath: "")
+                    }
+                    
+                    $0.it("embeds them into custom location with copy phase spec") {
+                        
+                        // given
+                        let dependencies = [
+                            Dependency(type: .target, reference: frameworkA.name, embed: true, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .plugins, subpath: "test", phaseOrder: .postCompile)),
+                            Dependency(type: .target, reference: frameworkB.name, embed: false, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .plugins, subpath: "test", phaseOrder: .postCompile)),
+                        ]
+                        
+                        // when
+                        let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [frameworkA, frameworkB])
+                        
+                        // then
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["frameworkA.framework"], toSubFolder: .plugins, dstPath: "test")
+                    }
+                }
+                
+                $0.context("staticFramework") {
+                    
+                    let frameworkA = Target(
+                        name: "frameworkA",
+                        type: .staticFramework,
+                        platform: .macOS
+                    )
+                    let frameworkB = Target(
+                        name: "frameworkB",
+                        type: .staticFramework,
+                        platform: .macOS
+                    )
+                    
+                    $0.it("embeds them into frameworks without copy phase spec") {
+                        
+                        // given
+                        let dependencies = [
+                            Dependency(type: .target, reference: frameworkA.name, embed: true),
+                            Dependency(type: .target, reference: frameworkB.name, embed: false),
+                        ]
+                        
+                        // when
+                        let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [frameworkA, frameworkB])
+                        
+                        // then
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["frameworkA.framework"], toSubFolder: .frameworks, dstPath: "")
+                    }
+                    
+                    $0.it("embeds them into custom location with copy phase spec") {
+                        
+                        // given
+                        let dependencies = [
+                            Dependency(type: .target, reference: frameworkA.name, embed: true, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .plugins, subpath: "test", phaseOrder: .postCompile)),
+                            Dependency(type: .target, reference: frameworkB.name, embed: false, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .plugins, subpath: "test", phaseOrder: .postCompile)),
+                        ]
+
+                        // when
+                        let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [frameworkA, frameworkB])
+                        
+                        // then
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["frameworkA.framework"], toSubFolder: .plugins, dstPath: "test")
+                    }
+                }
+                
+                $0.context("xcFramework") {
+                    
+                    let frameworkA = Target(
+                        name: "frameworkA",
+                        type: .xcFramework,
+                        platform: .macOS
+                    )
+                    let frameworkB = Target(
+                        name: "frameworkB",
+                        type: .xcFramework,
+                        platform: .macOS
+                    )
+                    
+                    $0.it("does not embed them without copy phase spec") {
+                        
+                        // given
+                        let dependencies = [
+                            Dependency(type: .target, reference: frameworkA.name, embed: true),
+                            Dependency(type: .target, reference: frameworkB.name, embed: false),
+                        ]
+                        
+                        // when
+                        let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [frameworkA, frameworkB])
+                        
+                        // then
+                        try expect(pbxProject.copyFilesBuildPhases.count) == 0
+                    }
+                    
+                    $0.it("embeds them into custom location with copy phase spec") {
+                        
+                        // given
+                        let dependencies = [
+                            Dependency(type: .target, reference: frameworkA.name, embed: true, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .plugins, subpath: "test", phaseOrder: .postCompile)),
+                            Dependency(type: .target, reference: frameworkB.name, embed: false, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .plugins, subpath: "test", phaseOrder: .postCompile)),
+                        ]
+                        
+                        // when
+                        let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [frameworkA, frameworkB])
+                        
+                        // then
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["frameworkA.xcframework"], toSubFolder: .plugins, dstPath: "test")
+                    }
+                }
+                
+                $0.context("Dynamic Library") {
+                    
+                    let libraryA = Target(
+                        name: "libraryA",
+                        type: .dynamicLibrary,
+                        platform: .macOS
+                    )
+                    let libraryB = Target(
+                        name: "libraryB",
+                        type: .dynamicLibrary,
+                        platform: .macOS
+                    )
+                    
+                    $0.it("does not embed them without copy phase spec") {
+                        
+                        // given
+                        let dependencies = [
+                            Dependency(type: .target, reference: libraryA.name, embed: true),
+                            Dependency(type: .target, reference: libraryB.name, embed: false),
+                        ]
+                        
+                        // when
+                        let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [libraryA, libraryB])
+                        
+                        // then
+                        try expect(pbxProject.copyFilesBuildPhases.count) == 0
+                    }
+                    
+                    $0.it("embeds them into custom location with copy phase spec") {
+                        
+                        // given
+                        let dependencies = [
+                            Dependency(type: .target, reference: libraryA.name, embed: true, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .plugins, subpath: "test", phaseOrder: .postCompile)),
+                            Dependency(type: .target, reference: libraryB.name, embed: false, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .plugins, subpath: "test", phaseOrder: .postCompile)),
+                        ]
+                        
+                        // when
+                        let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [libraryA, libraryB])
+                        
+                        // then
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["libraryA.dylib"], toSubFolder: .plugins, dstPath: "test")
+                    }
+                }
+                
+                $0.context("Static Library") {
+                    
+                    let libraryA = Target(
+                        name: "libraryA",
+                        type: .staticLibrary,
+                        platform: .macOS
+                    )
+                    let libraryB = Target(
+                        name: "libraryB",
+                        type: .staticLibrary,
+                        platform: .macOS
+                    )
+                    
+                    $0.it("does not embed them without copy phase spec") {
+                        
+                        // given
+                        let dependencies = [
+                            Dependency(type: .target, reference: libraryA.name, embed: true),
+                            Dependency(type: .target, reference: libraryB.name, embed: false),
+                        ]
+                        
+                        // when
+                        let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [libraryA, libraryB])
+                        
+                        // then
+                        try expect(pbxProject.copyFilesBuildPhases.count) == 0
+                    }
+                    
+                    $0.it("embeds them to custom location with copy phase spec") {
+                        
+                        // given
+                        let dependencies = [
+                            Dependency(type: .target, reference: libraryA.name, embed: true, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .plugins, subpath: "test", phaseOrder: .postCompile)),
+                            Dependency(type: .target, reference: libraryB.name, embed: false, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .plugins, subpath: "test", phaseOrder: .postCompile)),
+                        ]
+                        
+                        // when
+                        let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [libraryA, libraryB])
+                        
+                        // then
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["liblibraryA.a"], toSubFolder: .plugins, dstPath: "test")
+                    }
+                }
+                
+                $0.context("bundle") {
+                    
+                    let bundleA = Target(
+                        name: "bundleA",
+                        type: .bundle,
+                        platform: .macOS
+                    )
+                    let bundleB = Target(
+                        name: "bundleB",
+                        type: .bundle,
+                        platform: .macOS
+                    )
+                    
+                    $0.it("does not embed them without copy phase spec") {
+                        
+                        // given
+                        let dependencies = [
+                            Dependency(type: .target, reference: bundleA.name, embed: true),
+                            Dependency(type: .target, reference: bundleB.name, embed: false),
+                        ]
+
+                        // when
+                        let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [bundleA, bundleB])
+                        
+                        // then
+                        try expect(pbxProject.copyFilesBuildPhases.count) == 0
+                    }
+                    
+                    $0.it("embeds them into custom location with copy phase spec") {
+                        
+                        // given
+                        let dependencies = [
+                            Dependency(type: .target, reference: bundleA.name, embed: true, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .plugins, subpath: "test", phaseOrder: .postCompile)),
+                            Dependency(type: .target, reference: bundleB.name, embed: false, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .plugins, subpath: "test", phaseOrder: .postCompile)),
+                        ]
+                        
+                        // when
+                        let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [bundleA, bundleB])
+                        
+                        // then
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["bundleA.bundle"], toSubFolder: .plugins, dstPath: "test")
+                    }
+                }
+                
+                $0.context("unitTestBundle") {
+                    
+                    let bundleA = Target(
+                        name: "bundleA",
+                        type: .unitTestBundle,
+                        platform: .macOS
+                    )
+                    let bundleB = Target(
+                        name: "bundleB",
+                        type: .unitTestBundle,
+                        platform: .macOS
+                    )
+                    
+                    $0.it("does not embed them without copy phase spec") {
+                        
+                        // given
+                        let dependencies = [
+                            Dependency(type: .target, reference: bundleA.name, embed: true),
+                            Dependency(type: .target, reference: bundleB.name, embed: false),
+                        ]
+
+                        // when
+                        let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [bundleA, bundleB])
+                        
+                        // then
+                        try expect(pbxProject.copyFilesBuildPhases.count) == 0
+                    }
+                    
+                    $0.it("embeds them into custom location with copy phase spec") {
+                        
+                        // given
+                        let dependencies = [
+                            Dependency(type: .target, reference: bundleA.name, embed: true, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .plugins, subpath: "test", phaseOrder: .postCompile)),
+                            Dependency(type: .target, reference: bundleB.name, embed: false, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .plugins, subpath: "test", phaseOrder: .postCompile)),
+                        ]
+                        
+                        // when
+                        let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [bundleA, bundleB])
+                        
+                        // then
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["bundleA.xctest"], toSubFolder: .plugins, dstPath: "test")
+                    }
+                }
+            
+                $0.context("uitTestBundle") {
+                    
+                    let bundleA = Target(
+                        name: "bundleA",
+                        type: .uiTestBundle,
+                        platform: .macOS
+                    )
+                    let bundleB = Target(
+                        name: "bundleB",
+                        type: .uiTestBundle,
+                        platform: .macOS
+                    )
+                    
+                    $0.it("does not embed them without copy phase spec") {
+                        
+                        // given
+                        let dependencies = [
+                            Dependency(type: .target, reference: bundleA.name, embed: true),
+                            Dependency(type: .target, reference: bundleB.name, embed: false),
+                        ]
+
+                        // when
+                        let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [bundleA, bundleB])
+                        
+                        // then
+                        try expect(pbxProject.copyFilesBuildPhases.count) == 0
+                    }
+                    
+                    $0.it("embeds them into custom location with copy phase spec") {
+                        
+                        // given
+                        let dependencies = [
+                            Dependency(type: .target, reference: bundleA.name, embed: true, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .plugins, subpath: "test", phaseOrder: .postCompile)),
+                            Dependency(type: .target, reference: bundleB.name, embed: false, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .plugins, subpath: "test", phaseOrder: .postCompile)),
+                        ]
+                        
+                        // when
+                        let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [bundleA, bundleB])
+                        
+                        // then
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["bundleA.xctest"], toSubFolder: .plugins, dstPath: "test")
+                    }
+                }
+                
+                $0.context("appExtension") {
+                    
+                    let extA = Target(
+                        name: "extA",
+                        type: .appExtension,
+                        platform: .macOS
+                    )
+                    let extB = Target(
+                        name: "extB",
+                        type: .appExtension,
+                        platform: .macOS
+                    )
+                    
+                    $0.it("embeds them into plugins without copy phase spec") {
+                        
+                        // given
+                        let dependencies = [
+                            Dependency(type: .target, reference: extA.name, embed: true),
+                            Dependency(type: .target, reference: extB.name, embed: false),
+                        ]
+                        
+                        // when
+                        let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [extA, extB])
+                        
+                        // then
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["extA.appex"], toSubFolder: .plugins, dstPath: "")
+                    }
+                    
+                    $0.it("embeds them into custom location with copy phase spec") {
+                        
+                        // given
+                        let dependencies = [
+                            Dependency(type: .target, reference: extA.name, embed: true, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .executables, subpath: "test", phaseOrder: .postCompile)),
+                            Dependency(type: .target, reference: extB.name, embed: false, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .executables, subpath: "test", phaseOrder: .postCompile)),
+                        ]
+
+                        // when
+                        let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [extA, extB])
+                        
+                        // then
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["extA.appex"], toSubFolder: .executables, dstPath: "test")
+                    }
+                }
+                
+                $0.context("commandLineTool") {
+                    
+                    let toolA = Target(
+                        name: "toolA",
+                        type: .commandLineTool,
+                        platform: .macOS
+                    )
+                    let toolB = Target(
+                        name: "toolB",
+                        type: .commandLineTool,
+                        platform: .macOS
+                    )
+                    
+                    $0.it("does not embed them without copy phase spec") {
+                        
+                        // given
+                        let dependencies = [
+                            Dependency(type: .target, reference: toolA.name, embed: true),
+                            Dependency(type: .target, reference: toolB.name, embed: false),
+                        ]
+
+                        // when
+                        let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [toolA, toolB])
+                        
+                        // then
+                        try expect(pbxProject.copyFilesBuildPhases.count) == 0
+                    }
+                    
+                    $0.it("embeds them into custom location with copy phase spec") {
+                        
+                        // given
+                        let dependencies = [
+                            Dependency(type: .target, reference: toolA.name, embed: true, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .plugins, subpath: "test", phaseOrder: .postCompile)),
+                            Dependency(type: .target, reference: toolB.name, embed: false, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .plugins, subpath: "test", phaseOrder: .postCompile)),
+                        ]
+                        
+                        // when
+                        let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [toolA, toolB])
+                        
+                        // then
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["toolA"], toSubFolder: .plugins, dstPath: "test")
+                    }
+                }
+                
+                $0.context("watchApp") {
+                    
+                    let appA = Target(
+                        name: "appA",
+                        type: .watchApp,
+                        platform: .macOS
+                    )
+                    let appB = Target(
+                        name: "appB",
+                        type: .watchApp,
+                        platform: .macOS
+                    )
+                    
+                    $0.it("does not embed them without copy phase spec") {
+                        
+                        // given
+                        let dependencies = [
+                            Dependency(type: .target, reference: appA.name, embed: true),
+                            Dependency(type: .target, reference: appB.name, embed: false),
+                        ]
+
+                        // when
+                        let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [appA, appB])
+                        
+                        // then
+                        try expect(pbxProject.copyFilesBuildPhases.count) == 0
+                    }
+                    
+                    $0.it("embeds them into custom location with copy phase spec") {
+                        
+                        // given
+                        let dependencies = [
+                            Dependency(type: .target, reference: appA.name, embed: true, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .plugins, subpath: "test", phaseOrder: .postCompile)),
+                            Dependency(type: .target, reference: appB.name, embed: false, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .plugins, subpath: "test", phaseOrder: .postCompile)),
+                        ]
+                        
+                        // when
+                        let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [appA, appB])
+                        
+                        // then
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["appA.app"], toSubFolder: .plugins, dstPath: "test")
+                    }
+                }
+                
+                $0.context("watch2App") {
+                    
+                    let appA = Target(
+                        name: "appA",
+                        type: .watch2App,
+                        platform: .macOS
+                    )
+                    let appB = Target(
+                        name: "appB",
+                        type: .watch2App,
+                        platform: .macOS
+                    )
+                    
+                    $0.it("does not embed them without copy phase spec") {
+                        
+                        // given
+                        let dependencies = [
+                            Dependency(type: .target, reference: appA.name, embed: true),
+                            Dependency(type: .target, reference: appB.name, embed: false),
+                        ]
+
+                        // when
+                        let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [appA, appB])
+                        
+                        // then
+                        try expect(pbxProject.copyFilesBuildPhases.count) == 0
+                    }
+                    
+                    $0.it("embeds them into custom location with copy phase spec") {
+                        
+                        // given
+                        let dependencies = [
+                            Dependency(type: .target, reference: appA.name, embed: true, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .plugins, subpath: "test", phaseOrder: .postCompile)),
+                            Dependency(type: .target, reference: appB.name, embed: false, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .plugins, subpath: "test", phaseOrder: .postCompile)),
+                        ]
+                        
+                        // when
+                        let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [appA, appB])
+                        
+                        // then
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["appA.app"], toSubFolder: .plugins, dstPath: "test")
+                    }
+                }
+                
+                $0.context("watch2AppContainer") {
+                    
+                    let appA = Target(
+                        name: "appA",
+                        type: .watch2AppContainer,
+                        platform: .macOS
+                    )
+                    let appB = Target(
+                        name: "appB",
+                        type: .watch2AppContainer,
+                        platform: .macOS
+                    )
+                    
+                    $0.it("does not embed them without copy phase spec") {
+                        
+                        // given
+                        let dependencies = [
+                            Dependency(type: .target, reference: appA.name, embed: true),
+                            Dependency(type: .target, reference: appB.name, embed: false),
+                        ]
+
+                        // when
+                        let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [appA, appB])
+                        
+                        // then
+                        try expect(pbxProject.copyFilesBuildPhases.count) == 0
+                    }
+                    
+                    $0.it("embeds them into custom location with copy phase spec") {
+                        
+                        // given
+                        let dependencies = [
+                            Dependency(type: .target, reference: appA.name, embed: true, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .plugins, subpath: "test", phaseOrder: .postCompile)),
+                            Dependency(type: .target, reference: appB.name, embed: false, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .plugins, subpath: "test", phaseOrder: .postCompile)),
+                        ]
+                        
+                        // when
+                        let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [appA, appB])
+                        
+                        // then
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["appA.app"], toSubFolder: .plugins, dstPath: "test")
+                    }
+                }
+                
+                $0.context("watchExtension") {
+                    
+                    let extA = Target(
+                        name: "extA",
+                        type: .watchExtension,
+                        platform: .macOS
+                    )
+                    let extB = Target(
+                        name: "extB",
+                        type: .watchExtension,
+                        platform: .macOS
+                    )
+                    
+                    $0.it("embeds them into plugins without copy phase spec") {
+                        
+                        // given
+                        let dependencies = [
+                            Dependency(type: .target, reference: extA.name, embed: true),
+                            Dependency(type: .target, reference: extB.name, embed: false),
+                        ]
+
+                        // when
+                        let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [extA, extB])
+                        
+                        // then
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["extA.appex"], toSubFolder: .plugins, dstPath: "")
+                    }
+                    
+                    $0.it("embeds them into custom location with copy phase spec") {
+                        
+                        // given
+                        let dependencies = [
+                            Dependency(type: .target, reference: extA.name, embed: true, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .frameworks, subpath: "test", phaseOrder: .postCompile)),
+                            Dependency(type: .target, reference: extB.name, embed: false, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .frameworks, subpath: "test", phaseOrder: .postCompile)),
+                        ]
+                        
+                        // when
+                        let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [extA, extB])
+                        
+                        // then
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["extA.appex"], toSubFolder: .frameworks, dstPath: "test")
+                    }
+                }
+                
+                $0.context("watch2Extension") {
+                    
+                    let extA = Target(
+                        name: "extA",
+                        type: .watch2Extension,
+                        platform: .macOS
+                    )
+                    let extB = Target(
+                        name: "extB",
+                        type: .watch2Extension,
+                        platform: .macOS
+                    )
+                    
+                    $0.it("embeds them into plugins without copy phase spec") {
+                        
+                        // given
+                        let dependencies = [
+                            Dependency(type: .target, reference: extA.name, embed: true),
+                            Dependency(type: .target, reference: extB.name, embed: false),
+                        ]
+
+                        // when
+                        let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [extA, extB])
+                        
+                        // then
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["extA.appex"], toSubFolder: .plugins, dstPath: "")
+                    }
+                    
+                    $0.it("embeds them into custom location with copy phase spec") {
+                        
+                        // given
+                        let dependencies = [
+                            Dependency(type: .target, reference: extA.name, embed: true, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .frameworks, subpath: "test", phaseOrder: .postCompile)),
+                            Dependency(type: .target, reference: extB.name, embed: false, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .frameworks, subpath: "test", phaseOrder: .postCompile)),
+                        ]
+                        
+                        // when
+                        let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [extA, extB])
+                        
+                        // then
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["extA.appex"], toSubFolder: .frameworks, dstPath: "test")
+                    }
+                }
+                
+                $0.context("tvExtension") {
+                    
+                    let extA = Target(
+                        name: "extA",
+                        type: .tvExtension,
+                        platform: .macOS
+                    )
+                    let extB = Target(
+                        name: "extB",
+                        type: .tvExtension,
+                        platform: .macOS
+                    )
+                    
+                    $0.it("embeds them into plugins without copy phase spec") {
+                        
+                        // given
+                        let dependencies = [
+                            Dependency(type: .target, reference: extA.name, embed: true),
+                            Dependency(type: .target, reference: extB.name, embed: false),
+                        ]
+
+                        // when
+                        let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [extA, extB])
+                        
+                        // then
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["extA.appex"], toSubFolder: .plugins, dstPath: "")
+                    }
+                    
+                    $0.it("embeds them into custom location with copy phase spec") {
+                        
+                        // given
+                        let dependencies = [
+                            Dependency(type: .target, reference: extA.name, embed: true, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .frameworks, subpath: "test", phaseOrder: .postCompile)),
+                            Dependency(type: .target, reference: extB.name, embed: false, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .frameworks, subpath: "test", phaseOrder: .postCompile)),
+                        ]
+                        
+                        // when
+                        let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [extA, extB])
+                        
+                        // then
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["extA.appex"], toSubFolder: .frameworks, dstPath: "test")
+                    }
+                }
+                
+                $0.context("messagesApplication") {
+                    
+                    let appA = Target(
+                        name: "appA",
+                        type: .messagesApplication,
+                        platform: .macOS
+                    )
+                    let appB = Target(
+                        name: "appB",
+                        type: .messagesApplication,
+                        platform: .macOS
+                    )
+                    
+                    $0.it("does not embed them without copy phase spec") {
+                        
+                        // given
+                        let dependencies = [
+                            Dependency(type: .target, reference: appA.name, embed: true),
+                            Dependency(type: .target, reference: appB.name, embed: false),
+                        ]
+
+                        // when
+                        let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [appA, appB])
+                        
+                        // then
+                        try expect(pbxProject.copyFilesBuildPhases.count) == 0
+                    }
+                    
+                    $0.it("embeds them into custom location with copy phase spec") {
+                        
+                        // given
+                        let dependencies = [
+                            Dependency(type: .target, reference: appA.name, embed: true, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .plugins, subpath: "test", phaseOrder: .postCompile)),
+                            Dependency(type: .target, reference: appB.name, embed: false, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .plugins, subpath: "test", phaseOrder: .postCompile)),
+                        ]
+                        
+                        // when
+                        let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [appA, appB])
+                        
+                        // then
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["appA.app"], toSubFolder: .plugins, dstPath: "test")
+                    }
+                }
+                
+                $0.context("messagesExtension") {
+                    
+                    let extA = Target(
+                        name: "extA",
+                        type: .messagesExtension,
+                        platform: .macOS
+                    )
+                    let extB = Target(
+                        name: "extB",
+                        type: .messagesExtension,
+                        platform: .macOS
+                    )
+                    
+                    $0.it("embeds them into plugins without copy phase spec") {
+                        
+                        // given
+                        let dependencies = [
+                            Dependency(type: .target, reference: extA.name, embed: true),
+                            Dependency(type: .target, reference: extB.name, embed: false),
+                        ]
+
+                        // when
+                        let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [extA, extB])
+                        
+                        // then
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["extA.appex"], toSubFolder: .plugins, dstPath: "")
+                    }
+                    
+                    $0.it("embeds them into custom location with copy phase spec") {
+                        
+                        // given
+                        let dependencies = [
+                            Dependency(type: .target, reference: extA.name, embed: true, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .frameworks, subpath: "test", phaseOrder: .postCompile)),
+                            Dependency(type: .target, reference: extB.name, embed: false, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .frameworks, subpath: "test", phaseOrder: .postCompile)),
+                        ]
+                        
+                        // when
+                        let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [extA, extB])
+                        
+                        // then
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["extA.appex"], toSubFolder: .frameworks, dstPath: "test")
+                    }
+                }
+                
+                $0.context("stickerPack") {
+                    
+                    let extA = Target(
+                        name: "extA",
+                        type: .stickerPack,
+                        platform: .macOS
+                    )
+                    let extB = Target(
+                        name: "extB",
+                        type: .stickerPack,
+                        platform: .macOS
+                    )
+                    
+                    $0.it("embeds them into plugins without copy phase spec") {
+                        
+                        // given
+                        let dependencies = [
+                            Dependency(type: .target, reference: extA.name, embed: true),
+                            Dependency(type: .target, reference: extB.name, embed: false),
+                        ]
+
+                        // when
+                        let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [extA, extB])
+                        
+                        // then
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["extA.appex"], toSubFolder: .plugins, dstPath: "")
+                    }
+                    
+                    $0.it("embeds them into custom location with copy phase spec") {
+                        
+                        // given
+                        let dependencies = [
+                            Dependency(type: .target, reference: extA.name, embed: true, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .frameworks, subpath: "test", phaseOrder: .postCompile)),
+                            Dependency(type: .target, reference: extB.name, embed: false, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .frameworks, subpath: "test", phaseOrder: .postCompile)),
+                        ]
+                        
+                        // when
+                        let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [extA, extB])
+                        
+                        // then
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["extA.appex"], toSubFolder: .frameworks, dstPath: "test")
+                    }
+                }
+                
+                $0.context("xpcService") {
+                    
+                    let xpcA = Target(
+                        name: "xpcA",
+                        type: .xpcService,
+                        platform: .macOS
+                    )
+                    let xpcB = Target(
+                        name: "xpcB",
+                        type: .xpcService,
+                        platform: .macOS
+                    )
+                    
+                    $0.it("embeds them into plugins without copy phase spec") {
+                        
+                        // given
+                        let dependencies = [
+                            Dependency(type: .target, reference: xpcA.name, embed: true),
+                            Dependency(type: .target, reference: xpcB.name, embed: false),
+                        ]
+
+                        // when
+                        let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [xpcA, xpcB])
+                        
+                        // then
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["xpcA.xpc"], toSubFolder: .productsDirectory, dstPath: "$(CONTENTS_FOLDER_PATH)/XPCServices")
+                    }
+                    
+                    $0.it("embeds them into custom location with copy phase spec") {
+                        
+                        // given
+                        let dependencies = [
+                            Dependency(type: .target, reference: xpcA.name, embed: true, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .frameworks, subpath: "test", phaseOrder: .postCompile)),
+                            Dependency(type: .target, reference: xpcB.name, embed: false, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .frameworks, subpath: "test", phaseOrder: .postCompile)),
+                        ]
+                        
+                        // when
+                        let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [xpcA, xpcB])
+                        
+                        // then
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["xpcA.xpc"], toSubFolder: .frameworks, dstPath: "test")
+                    }
+                }
+                
+                $0.context("ocUnitTestBundle") {
+                    
+                    let bundleA = Target(
+                        name: "bundleA",
+                        type: .ocUnitTestBundle,
+                        platform: .macOS
+                    )
+                    let bundleB = Target(
+                        name: "bundleB",
+                        type: .ocUnitTestBundle,
+                        platform: .macOS
+                    )
+                    
+                    $0.it("does not embed them without copy phase spec") {
+                        
+                        // given
+                        let dependencies = [
+                            Dependency(type: .target, reference: bundleA.name, embed: true),
+                            Dependency(type: .target, reference: bundleB.name, embed: false),
+                        ]
+
+                        // when
+                        let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [bundleA, bundleB])
+                        
+                        // then
+                        try expect(pbxProject.copyFilesBuildPhases.count) == 0
+                    }
+                    
+                    $0.it("embeds them into custom location with copy phase spec") {
+                        
+                        // given
+                        let dependencies = [
+                            Dependency(type: .target, reference: bundleA.name, embed: true, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .frameworks, subpath: "test", phaseOrder: .postCompile)),
+                            Dependency(type: .target, reference: bundleB.name, embed: false, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .frameworks, subpath: "test", phaseOrder: .postCompile)),
+                        ]
+                        
+                        // when
+                        let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [bundleA, bundleB])
+                        
+                        // then
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["bundleA.octest"], toSubFolder: .frameworks, dstPath: "test")
+                    }
+                }
+                
+                $0.context("xcodeExtension") {
+                    
+                    let extA = Target(
+                        name: "extA",
+                        type: .xcodeExtension,
+                        platform: .macOS
+                    )
+                    let extB = Target(
+                        name: "extB",
+                        type: .xcodeExtension,
+                        platform: .macOS
+                    )
+                    
+                    $0.it("embeds them into plugins without copy phase spec") {
+                        
+                        // given
+                        let dependencies = [
+                            Dependency(type: .target, reference: extA.name, embed: true),
+                            Dependency(type: .target, reference: extB.name, embed: false),
+                        ]
+
+                        // when
+                        let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [extA, extB])
+                        
+                        // then
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["extA.appex"], toSubFolder: .plugins, dstPath: "")
+                    }
+                    
+                    $0.it("embeds them into custom location with copy phase spec") {
+                        
+                        // given
+                        let dependencies = [
+                            Dependency(type: .target, reference: extA.name, embed: true, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .frameworks, subpath: "test", phaseOrder: .postCompile)),
+                            Dependency(type: .target, reference: extB.name, embed: false, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .frameworks, subpath: "test", phaseOrder: .postCompile)),
+                        ]
+                        
+                        // when
+                        let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [extA, extB])
+                        
+                        // then
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["extA.appex"], toSubFolder: .frameworks, dstPath: "test")
+                    }
+                }
+                
+                $0.context("instrumentsPackage") {
+                    
+                    let pkgA = Target(
+                        name: "pkgA",
+                        type: .instrumentsPackage,
+                        platform: .macOS
+                    )
+                    let pkgB = Target(
+                        name: "pkgB",
+                        type: .instrumentsPackage,
+                        platform: .macOS
+                    )
+                    
+                    $0.it("does not embed them without copy phase spec") {
+                        
+                        // given
+                        let dependencies = [
+                            Dependency(type: .target, reference: pkgA.name, embed: true),
+                            Dependency(type: .target, reference: pkgB.name, embed: false),
+                        ]
+
+                        // when
+                        let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [pkgA, pkgB])
+                        
+                        // then
+                        try expect(pbxProject.copyFilesBuildPhases.count) == 0
+                    }
+                    
+                    $0.it("embeds them into custom location with copy phase spec") {
+                        
+                        // given
+                        let dependencies = [
+                            Dependency(type: .target, reference: pkgA.name, embed: true, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .frameworks, subpath: "test", phaseOrder: .postCompile)),
+                            Dependency(type: .target, reference: pkgB.name, embed: false, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .frameworks, subpath: "test", phaseOrder: .postCompile)),
+                        ]
+                        
+                        // when
+                        let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [pkgA, pkgB])
+                        
+                        // then
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["pkgA.instrpkg"], toSubFolder: .frameworks, dstPath: "test")
+                    }
+                }
+                
+                $0.context("intentsServiceExtension") {
+                    
+                    let extA = Target(
+                        name: "extA",
+                        type: .intentsServiceExtension,
+                        platform: .macOS
+                    )
+                    let extB = Target(
+                        name: "extB",
+                        type: .intentsServiceExtension,
+                        platform: .macOS
+                    )
+                    
+                    $0.it("embeds them into plugins without copy phase spec") {
+                        
+                        // given
+                        let dependencies = [
+                            Dependency(type: .target, reference: extA.name, embed: true),
+                            Dependency(type: .target, reference: extB.name, embed: false),
+                        ]
+
+                        // when
+                        let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [extA, extB])
+                        
+                        // then
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["extA.appex"], toSubFolder: .plugins, dstPath: "")
+                    }
+                    
+                    $0.it("embeds them into custom location with copy phase spec") {
+                        
+                        // given
+                        let dependencies = [
+                            Dependency(type: .target, reference: extA.name, embed: true, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .frameworks, subpath: "test", phaseOrder: .postCompile)),
+                            Dependency(type: .target, reference: extB.name, embed: false, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .frameworks, subpath: "test", phaseOrder: .postCompile)),
+                        ]
+                        
+                        // when
+                        let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [extA, extB])
+                        
+                        // then
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["extA.appex"], toSubFolder: .frameworks, dstPath: "test")
+                    }
+                }
+                
+                $0.context("appClip") {
+                    
+                    let clipA = Target(
+                        name: "clipA",
+                        type: .onDemandInstallCapableApplication,
+                        platform: .macOS
+                    )
+                    let clipB = Target(
+                        name: "clipB",
+                        type: .onDemandInstallCapableApplication,
+                        platform: .macOS
+                    )
+                    
+                    $0.it("does embed them into products directory without copy phase spec") {
+                        
+                        // given
+                        let dependencies = [
+                            Dependency(type: .target, reference: clipA.name, embed: true),
+                            Dependency(type: .target, reference: clipB.name, embed: false),
+                        ]
+
+                        // when
+                        let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [clipA, clipB])
+                        
+                        // then
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["clipA.app"], toSubFolder: .productsDirectory, dstPath: "$(CONTENTS_FOLDER_PATH)/AppClips")
+                    }
+                    
+                    $0.it("embeds them into custom location with copy phase spec") {
+                        
+                        // given
+                        let dependencies = [
+                            Dependency(type: .target, reference: clipA.name, embed: true, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .plugins, subpath: "test", phaseOrder: .postCompile)),
+                            Dependency(type: .target, reference: clipB.name, embed: false, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .plugins, subpath: "test", phaseOrder: .postCompile)),
+                        ]
+                        
+                        // when
+                        let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [clipA, clipB])
+                        
+                        // then
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["clipA.app"], toSubFolder: .plugins, dstPath: "test")
+                    }
+                }
+                
+                $0.context("Metal Library") {
+                    
+                    let libraryA = Target(
+                        name: "libraryA",
+                        type: .metalLibrary,
+                        platform: .macOS
+                    )
+                    let libraryB = Target(
+                        name: "libraryB",
+                        type: .metalLibrary,
+                        platform: .macOS
+                    )
+                    
+                    $0.it("does not embed them without copy phase spec") {
+                        
+                        // given
+                        let dependencies = [
+                            Dependency(type: .target, reference: libraryA.name, embed: true),
+                            Dependency(type: .target, reference: libraryB.name, embed: false),
+                        ]
+                        
+                        // when
+                        let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [libraryA, libraryB])
+                        
+                        // then
+                        try expect(pbxProject.copyFilesBuildPhases.count) == 0
+                    }
+                    
+                    $0.it("embeds them to custom location with copy phase spec") {
+                        
+                        // given
+                        let dependencies = [
+                            Dependency(type: .target, reference: libraryA.name, embed: true, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .plugins, subpath: "test", phaseOrder: .postCompile)),
+                            Dependency(type: .target, reference: libraryB.name, embed: false, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .plugins, subpath: "test", phaseOrder: .postCompile)),
+                        ]
+                        
+                        // when
+                        let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [libraryA, libraryB])
+                        
+                        // then
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["libraryA.metallib"], toSubFolder: .plugins, dstPath: "test")
+                    }
+                }
+            }
+            
+            $0.context("with framework dependencies") {
+                $0.it("embeds them into frameworks without copy phase spec") {
+                    
+                    // given
+                    let dependencies = [
+                        Dependency(type: .framework, reference: "frameworkA.framework", embed: true),
+                        Dependency(type: .framework, reference: "frameworkB.framework", embed: false),
+                    ]
+                    
+                    // when
+                    let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [])
+                    
+                    // then
+                    try expectCopyPhase(in: pbxProject, withFilePaths: ["frameworkA.framework"], toSubFolder: .frameworks, dstPath: "")
+                }
+                
+                $0.it("embeds them into custom location with copy phase spec") {
+                    
+                    // given
+                    let dependencies = [
+                        Dependency(type: .framework, reference: "frameworkA.framework", embed: true, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .plugins, subpath: "test", phaseOrder: .postCompile)),
+                        Dependency(type: .framework, reference: "frameworkB.framework", embed: false, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .plugins, subpath: "test", phaseOrder: .postCompile)),
+                    ]
+                    
+                    // when
+                    let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [])
+                    
+                    // then
+                    try expectCopyPhase(in: pbxProject, withFilePaths: ["frameworkA.framework"], toSubFolder: .plugins, dstPath: "test")
+                }
+                
+                $0.it("generates single copy phase for multiple frameworks with same copy phase spec") {
+                    
+                    // given
+                    let dependencies = [
+                        Dependency(type: .framework, reference: "frameworkA.framework", embed: true, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .plugins, subpath: "test", phaseOrder: .postCompile)),
+                        Dependency(type: .framework, reference: "frameworkB.framework", embed: true, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .plugins, subpath: "test", phaseOrder: .postCompile)),
+                    ]
+                    
+                    // when
+                    let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [])
+                    
+                    // then
+                    try expectCopyPhase(in: pbxProject, withFilePaths: ["frameworkA.framework", "frameworkB.framework"], toSubFolder: .plugins, dstPath: "test")
+                }
+            }
+            
+            $0.context("with sdk dependencies") {
+                
+                $0.it("embeds them into frameworks without copy phase spec") {
+
+                    // given
+                    let dependencies = [
+                        Dependency(type: .sdk(root: nil), reference: "sdkA.framework", embed: true),
+                        Dependency(type: .sdk(root: nil), reference: "sdkB.framework", embed: false),
+                    ]
+                    
+                    // when
+                    let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [])
+                    
+                    // then
+                    try expectCopyPhase(in: pbxProject, withFilePaths: ["System/Library/Frameworks/sdkA.framework"], toSubFolder: .frameworks, dstPath: "")
+                }
+                
+                $0.it("embeds them into custom location with copy phase spec") {
+                    
+                    // given
+                    let dependencies = [
+                        Dependency(type: .sdk(root: nil), reference: "sdkA.framework", embed: true, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .plugins, subpath: "test", phaseOrder: .postCompile)),
+                        Dependency(type: .sdk(root: nil), reference: "sdkB.framework", embed: false, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .plugins, subpath: "test", phaseOrder: .postCompile)),
+                    ]
+                    
+                    // when
+                    let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [])
+                    
+                    // then
+                    try expectCopyPhase(in: pbxProject, withFilePaths: ["System/Library/Frameworks/sdkA.framework"], toSubFolder: .plugins, dstPath: "test")
+                }
+            }
+            
+            $0.context("with package dependencies") {
+                
+                let packages: [String: SwiftPackage] = [
+                    "RxSwift": .remote(url: "https://github.com/ReactiveX/RxSwift", versionRequirement: .upToNextMajorVersion("5.1.1")),
+                ]
+                
+                $0.it("embeds them into frameworks without copy phase spec") {
+
+                    // given
+                    let dependencies = [
+                        Dependency(type: .package(product: "RxSwift"), reference: "RxSwift", embed: true),
+                        Dependency(type: .package(product: "RxCocoa"), reference: "RxSwift", embed: false),
+                    ]
+                    
+                    // when
+                    let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [], packages: packages)
+                    
+                    // then
+                    try expectCopyPhase(in: pbxProject, withProductPaths: ["RxSwift"], toSubFolder: .frameworks, dstPath: "")
+                }
+                
+                $0.it("embeds them into custom location with copy phase spec") {
+                    
+                    // given
+                    let dependencies = [
+                        Dependency(type: .package(product: "RxSwift"), reference: "RxSwift", embed: true, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .plugins, subpath: "test", phaseOrder: .postCompile)),
+                        Dependency(type: .package(product: "RxCocoa"), reference: "RxSwift", embed: false, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .plugins, subpath: "test", phaseOrder: .postCompile)),
+                    ]
+                    
+                    // when
+                    let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [], packages: packages)
+                    
+                    // then
+                    try expectCopyPhase(in: pbxProject, withProductPaths: ["RxSwift"], toSubFolder: .plugins, dstPath: "test")
+                }
+            }
+            
+            $0.context("with carthage dependencies") {
+                
+                $0.it("embeds them into frameworks without copy phase spec") {
+                    
+                    // given
+                    let dependencies = [
+                        Dependency(type: .carthage(findFrameworks: false, linkType: .dynamic), reference: "frameworkA.framework", embed: true),
+                        Dependency(type: .carthage(findFrameworks: false, linkType: .dynamic), reference: "frameworkB.framework", embed: false),
+                    ]
+                    
+                    // when
+                    let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [])
+                    
+                    // then
+                    try expectCopyPhase(in: pbxProject, withFilePaths: ["frameworkA.framework"], toSubFolder: .frameworks, dstPath: "")
+                }
+                
+                $0.it("embeds them into custom location with copy phase spec") {
+                    
+                    // given
+                    let dependencies = [
+                        Dependency(type: .carthage(findFrameworks: false, linkType: .dynamic), reference: "frameworkA.framework", embed: true, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .plugins, subpath: "test", phaseOrder: .postCompile)),
+                        Dependency(type: .carthage(findFrameworks: false, linkType: .static), reference: "frameworkB.framework", embed: false, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .plugins, subpath: "test", phaseOrder: .postCompile)),
+                    ]
+                    
+                    // when
+                    let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [])
+                    
+                    // then
+                    try expectCopyPhase(in: pbxProject, withFilePaths: ["frameworkA.framework"], toSubFolder: .plugins, dstPath: "test")
+                }
+            }
+            
+            $0.context("with bundle dependencies") {
+                $0.it("embeds them into resources without copy phase spec") {
+                    
+                    // given
+                    let dependencies = [
+                        Dependency(type: .bundle, reference: "bundleA.bundle", embed: true),
+                        Dependency(type: .bundle, reference: "bundleB.bundle", embed: false),
+                    ]
+                    
+                    // when
+                    let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [])
+                    
+                    // then
+                    /// XcodeGen ignores embed: false for bundles
+                    try expectCopyPhase(in: pbxProject, withFilePaths: ["bundleA.bundle", "bundleB.bundle"], toSubFolder: .resources)
+                }
+                
+                $0.it("ignores custom copy phase spec") {
+                    
+                    // given
+                    let dependencies = [
+                        Dependency(type: .bundle, reference: "bundleA.bundle", embed: true, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .plugins, subpath: "test", phaseOrder: .postCompile)),
+                        Dependency(type: .bundle, reference: "bundleB.bundle", embed: false, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .plugins, subpath: "test", phaseOrder: .postCompile)),
+                    ]
+                    
+                    // when
+                    let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [])
+                    
+                    // then
+                    /// XcodeGen ignores embed: false for bundles
+                    try expectCopyPhase(in: pbxProject, withFilePaths: ["bundleA.bundle", "bundleB.bundle"], toSubFolder: .resources)
+                }
+            }
+        }
+    }
 }
 
 private extension PBXTarget {

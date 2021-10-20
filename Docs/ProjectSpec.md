@@ -292,6 +292,8 @@ This will provide default build settings for a certain product type. It can be a
 - `watchkit-extension`
 - `watchkit2-extension`
 - `xcode-extension`
+- `driver-extension`
+- `system-extension`
 - `xpc-service`
 - ``""`` (used for legacy targets)
 
@@ -428,7 +430,21 @@ A dependency can be one of a 6 types:
 - [ ] **codeSign**: **Bool** - Whether the `codeSignOnCopy` setting is applied when embedding framework. Defaults to true
 - [ ] **removeHeaders**: **Bool** - Whether the `removeHeadersOnCopy` setting is applied when embedding the framework. Defaults to true
 - [ ] **weak**: **Bool** - Whether the `Weak` setting is applied when linking the framework. Defaults to false
-- [ ] **platform**: **String** - Add dependency to selected platforms. Available platforms are: **iOS**, **macOS** and **all**. Defaults is **all**
+- [ ] **platformFilter**: **String** - This field is specific to Mac Catalyst. It corresponds to the "Platforms" dropdown in the Frameworks & Libraries section of Target settings in Xcode. Available options are: **iOS**, **macOS** and **all**. Defaults is **all**
+- [ ] **platforms**: **[[Platform](#platform)]** - List of platforms this dependency should apply to. Defaults to all applicable platforms.
+- **copy** - Copy Files Phase for this dependency. This only applies when `embed` is true. Must be specified as an object with the following fields:
+    - [x] **destination**: **String** - Destination of the Copy Files phase. This can be one of the following values:
+        - `absolutePath`
+        - `productsDirectory`
+        - `wrapper`
+        - `executables`
+        - `resources`
+        - `javaResources`
+        - `frameworks`
+        - `sharedFrameworks`
+        - `sharedSupport`
+        - `plugins`
+    - [ ] **subpath**: **String** - The path inside of the destination to copy the files.
 
 **Implicit Framework options**:
 
@@ -811,6 +827,8 @@ A multiline script can be written using the various YAML multiline methods, for 
 - [ ] **coverageTargets**: **[[Target Reference](#target-reference)]** - a list of targets to gather code coverage. Each entry can also either be a simple string, a string using [Project Reference](#project-reference) or [Target Reference](#target-reference)
 - [ ] **targets**: **[[Test Target](#test-target)]** - a list of targets to test. Each entry can either be a simple string, or a [Test Target](#test-target)
 - [ ] **customLLDBInit**: **String** - the absolute path to the custom `.lldbinit` file
+- [ ] **captureScreenshotsAutomatically**: **Bool** - indicates whether screenshots should be captured automatically while UI Testing. This defaults to true.
+- [ ] **deleteScreenshotsWhenEachTestSucceeds**: **Bool** - whether successful UI tests should cause automatically-captured screenshots to be deleted. If `captureScreenshotsAutomatically` is false, this value is ignored. This defaults to true.
 
 #### Test Target
 A target can be one of a 2 types:
