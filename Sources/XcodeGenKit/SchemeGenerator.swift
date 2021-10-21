@@ -414,7 +414,8 @@ extension Scheme {
             ),
             archive: .init(
                 config: releaseConfig
-            )
+            ),
+            management: targetScheme.management
         )
     }
 

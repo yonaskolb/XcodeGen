@@ -663,6 +663,9 @@ This is a convenience used to automatically generate schemes for a target based 
 - [ ] **environmentVariables**: **[[Environment Variable](#environment-variable)]** or **[String:String]** - environment variables for Run, Test and Profile scheme actions. When passing a dictionary, every key-value entry maps to a corresponding variable that is enabled.
 - [ ] **preActions**: **[[Execution Action](#execution-action)]** - Scripts that are run *before* the build action
 - [ ] **postActions**: **[[Execution Action](#execution-action)]** - Scripts that are run *after* the build action
+- [ ] **shared**: **Bool** - indicates whether the scheme is shared. This defaults to true
+- [ ] **orderHint**: **Int** - used by Xcode to sort the schemes
+- [ ] **isShown**: **Bool** ** - indicates whether the sheme is shown in the scheme list
 - [ ] **storeKitConfiguration**: **String** - specify storekit configuration to use during run. See [Options](#options).
 
 For example, the spec below would create 3 schemes called:
