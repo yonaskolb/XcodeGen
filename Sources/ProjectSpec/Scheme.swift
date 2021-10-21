@@ -35,14 +35,14 @@ public struct Scheme: Equatable {
         self.archive = archive
         self.management = management
     }
-    
+
     public struct Management: Equatable {
         public static let sharedDefault = true
-        
+
         public var shared: Bool
         public var orderHint: Int?
         public var isShown: Bool?
-        
+
         public init(
             shared: Bool = true,
             orderHint: Int?,

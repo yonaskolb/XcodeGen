@@ -757,6 +757,7 @@ Schemes allows for more control than the convenience [Target Scheme](#target-sch
 - [ ] ***profile***: The profile action
 - [ ] ***analyze***: The analyze action
 - [ ] ***archive***: The archive action
+- [ ] ***management***: **[Scheme Management](#scheme-management)]** - Scheme management metadata
 
 ### Build
 
@@ -874,6 +875,10 @@ targets:
 
 Note that the path the gpx file will be prefixed according to the `schemePathPrefix` option in order to support both `.xcodeproj` and `.xcworkspace` setups. See [Options](#options).
 
+### Scheme Management
+- [x] **shared**: **Bool** - indicates whether the scheme is shared
+- [x] **orderHint**: **Int** - used by Xcode to sort the schemes
+- [x] **isShown**: **Bool** - indicates whether the sheme is shown in the scheme list
 
 ### Environment Variable
 
