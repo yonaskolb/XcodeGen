@@ -14,6 +14,7 @@ public struct Scheme: Equatable {
     public var analyze: Analyze?
     public var test: Test?
     public var profile: Profile?
+    public var management: Management?
 
     public init(
         name: String,
@@ -22,7 +23,8 @@ public struct Scheme: Equatable {
         test: Test? = nil,
         profile: Profile? = nil,
         analyze: Analyze? = nil,
-        archive: Archive? = nil
+        archive: Archive? = nil,
+        management: Management? = nil
     ) {
         self.name = name
         self.build = build
@@ -31,6 +33,25 @@ public struct Scheme: Equatable {
         self.profile = profile
         self.analyze = analyze
         self.archive = archive
+        self.management = management
+    }
+    
+    public struct Management: Equatable {
+        public static let sharedDefault = true
+        
+        public var shared: Bool
+        public var orderHint: Int?
+        public var isShown: Bool?
+        
+        public init(
+            shared: Bool = true,
+            orderHint: Int?,
+            isShown: Bool?
+        ) {
+            self.shared = shared
+            self.orderHint = orderHint
+            self.isShown = isShown
+        }
     }
 
     public struct SimulateLocation: Equatable {
@@ -381,6 +402,35 @@ extension Scheme.SimulateLocation: JSONEncodable {
     }
 }
 
+extension Scheme.Management: JSONObjectConvertible {
+
+    public init(jsonDictionary: JSONDictionary) throws {
+        shared = jsonDictionary.json(atKeyPath: "shared") ?? Scheme.Management.sharedDefault
+        orderHint = jsonDictionary.json(atKeyPath: "orderHint")
+        isShown = jsonDictionary.json(atKeyPath: "isShown")
+    }
+}
+
+extension Scheme.Management: JSONEncodable {
+    public func toJSONValue() -> Any {
+        var dict: [String: Any?] = [:]
+
+        if shared != Scheme.Management.sharedDefault {
+            dict["shared"] = isShown
+        }
+
+        if let isShown = isShown {
+            dict["isShown"] = isShown
+        }
+
+        if let orderHint = orderHint {
+            dict["orderHint"] = orderHint
+        }
+
+        return dict
+    }
+}
+
 extension Scheme.Run: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
@@ -647,6 +697,7 @@ extension Scheme: NamedJSONDictionaryConvertible {
         analyze = jsonDictionary.json(atKeyPath: "analyze")
         profile = jsonDictionary.json(atKeyPath: "profile")
         archive = jsonDictionary.json(atKeyPath: "archive")
+        management = jsonDictionary.json(atKeyPath: "management")
     }
 }
 
@@ -659,6 +710,7 @@ extension Scheme: JSONEncodable {
             "analyze": analyze?.toJSONValue(),
             "profile": profile?.toJSONValue(),
             "archive": archive?.toJSONValue(),
+            "management": management?.toJSONValue(),
         ] as [String: Any?]
     }
 }

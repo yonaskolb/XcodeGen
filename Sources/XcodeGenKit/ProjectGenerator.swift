@@ -35,9 +35,9 @@ public class ProjectGenerator {
         let userStateSchemes = project.targets.map { target -> XCSchemeManagement.UserStateScheme in
             XCSchemeManagement.UserStateScheme(
                 name: target.name + ".xcscheme",
-                shared: true,
-                orderHint: nil,
-                isShown: target.scheme?.isShown ?? TargetScheme.isShownDefault
+                shared: target.scheme?.shared ?? TargetScheme.sharedDefault,
+                orderHint: target.scheme?.orderHint,
+                isShown: target.scheme?.isShown ?? nil
             )
         }
         
