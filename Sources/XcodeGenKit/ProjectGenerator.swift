@@ -30,6 +30,25 @@ public class ProjectGenerator {
         let sharedData = XCSharedData(schemes: schemes)
         return XcodeProj(workspace: workspace, pbxproj: pbxProj, sharedData: sharedData)
     }
+    
+    public func generateSchemeManagement() -> XCSchemeManagement {
+        let userStateSchemes = project.targets.map { target -> XCSchemeManagement.UserStateScheme in
+            XCSchemeManagement.UserStateScheme(
+                name: target.name + ".xcscheme",
+                shared: true,
+                orderHint: nil,
+                isShown: target.scheme?.isShown ?? TargetScheme.isShownDefault
+            )
+        }
+        
+        let schemeManagement = XCSchemeManagement(
+            schemeUserState: userStateSchemes,
+            suppressBuildableAutocreation: nil
+        )
+        
+        return schemeManagement
+    }
+    
 
     func generateWorkspace() throws -> XCWorkspace {
         let selfReference = XCWorkspaceDataFileRef(location: .`self`(""))

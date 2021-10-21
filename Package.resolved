@@ -78,8 +78,8 @@
         "repositoryURL": "https://github.com/tuist/XcodeProj.git",
         "state": {
           "branch": null,
-          "revision": "446f3a0db73e141c7f57e26fcdb043096b1db52c",
-          "version": "8.3.1"
+          "revision": "64c4b956c1095dbba7a07107005342a25f1c5d6b",
+          "version": "8.5.0"
         }
       },
       {

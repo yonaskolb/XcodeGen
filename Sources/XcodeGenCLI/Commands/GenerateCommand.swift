@@ -103,6 +103,25 @@ class GenerateCommand: ProjectCommand {
         do {
             let projectGenerator = ProjectGenerator(project: project)
             xcodeProject = try projectGenerator.generateXcodeProject(in: projectDirectory)
+            
+        } catch {
+            throw GenerationError.generationError(error)
+        }
+        
+        info("⚙️  Generating userdata...")
+        do {
+            guard let userName = ProcessInfo.processInfo.environment["LOGNAME"] else {
+                throw GenerationError.missingUsername
+            }
+            
+            let schemeManagement = ProjectGenerator(project: project).generateSchemeManagement()
+            // create directory
+            let schemeManagementDirectory = projectPath + "xcuserdata/\(userName).xcuserdatad/xcschemes"
+            if !schemeManagementDirectory.exists {
+                try schemeManagementDirectory.mkpath()
+            }
+            
+            try schemeManagement.write(path: schemeManagementDirectory + "xcschememanagement.plist")
         } catch {
             throw GenerationError.generationError(error)
         }

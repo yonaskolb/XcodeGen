@@ -4,6 +4,7 @@ import XcodeProj
 
 public struct TargetScheme: Equatable {
     public static let gatherCoverageDataDefault = false
+    public static let isShownDefault = true
     public static let disableMainThreadCheckerDefault = false
     public static let stopOnEveryMainThreadCheckerIssueDefault = false
     public static let buildImplicitDependenciesDefault = true
@@ -11,6 +12,7 @@ public struct TargetScheme: Equatable {
     public var testTargets: [Scheme.Test.TestTarget]
     public var configVariants: [String]
     public var gatherCoverageData: Bool
+    public var isShown: Bool
     public var storeKitConfiguration: String?
     public var language: String?
     public var region: String?
@@ -26,6 +28,7 @@ public struct TargetScheme: Equatable {
         testTargets: [Scheme.Test.TestTarget] = [],
         configVariants: [String] = [],
         gatherCoverageData: Bool = gatherCoverageDataDefault,
+        isShown: Bool = isShownDefault,
         storeKitConfiguration: String? = nil,
         language: String? = nil,
         region: String? = nil,
@@ -40,6 +43,7 @@ public struct TargetScheme: Equatable {
         self.testTargets = testTargets
         self.configVariants = configVariants
         self.gatherCoverageData = gatherCoverageData
+        self.isShown = isShown
         self.storeKitConfiguration = storeKitConfiguration
         self.language = language
         self.region = region
@@ -71,6 +75,7 @@ extension TargetScheme: JSONObjectConvertible {
         }
         configVariants = jsonDictionary.json(atKeyPath: "configVariants") ?? []
         gatherCoverageData = jsonDictionary.json(atKeyPath: "gatherCoverageData") ?? TargetScheme.gatherCoverageDataDefault
+        isShown = jsonDictionary.json(atKeyPath: "isShown") ?? TargetScheme.isShownDefault
         storeKitConfiguration = jsonDictionary.json(atKeyPath: "storeKitConfiguration")
         language = jsonDictionary.json(atKeyPath: "language")
         region = jsonDictionary.json(atKeyPath: "region")
@@ -97,6 +102,10 @@ extension TargetScheme: JSONEncodable {
 
         if gatherCoverageData != TargetScheme.gatherCoverageDataDefault {
             dict["gatherCoverageData"] = gatherCoverageData
+        }
+        
+        if isShown != TargetScheme.isShownDefault {
+            dict["isShown"] = isShown
         }
 
         if let storeKitConfiguration = storeKitConfiguration {
