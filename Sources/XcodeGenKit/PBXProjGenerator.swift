@@ -1,3 +1,4 @@
+import Dispatch
 import Foundation
 import PathKit
 import ProjectSpec
@@ -27,6 +28,8 @@ public class PBXProjGenerator {
     var frameworkFiles: [PBXFileElement] = []
     var bundleFiles: [PBXFileElement] = []
 
+    private let mutationQueue = DispatchQueue(label: "com.xcodegen.PBXProjGenerator.mutationQueue")
+
     var generated = false
 
     private var projects: [ProjectReference: PBXProj] = [:]
@@ -54,8 +57,9 @@ public class PBXProjGenerator {
         }
         generated = true
 
-        for group in project.fileGroups {
-            try sourceGenerator.getFileGroups(path: group)
+        DispatchQueue.concurrentPerform(iterations: project.fileGroups.count) { idx in
+            // TODO: Handle errors
+            try! sourceGenerator.getFileGroups(path: project.fileGroups[idx])
         }
 
         let buildConfigs: [XCBuildConfiguration] = project.configs.map { config in
@@ -222,7 +226,11 @@ public class PBXProjGenerator {
             pbxProject.projects = subprojects
         }
 
-        try project.targets.forEach(generateTarget)
+        DispatchQueue.concurrentPerform(iterations: project.targets.count) { idx in
+            // TODO: Handle errors
+            try! generateTarget(project.targets[idx])
+        }
+
         try project.aggregateTargets.forEach(generateAggregateTarget)
 
         if !carthageFrameworksByPlatform.isEmpty {
@@ -807,8 +815,10 @@ public class PBXProjGenerator {
                     targetFrameworkBuildFiles.append(buildFile)
                 }
 
-                if !frameworkFiles.contains(fileReference) {
-                    frameworkFiles.append(fileReference)
+                mutationQueue.sync {
+                    if !frameworkFiles.contains(fileReference) {
+                        frameworkFiles.append(fileReference)
+                    }
                 }
 
                 if embed {
@@ -838,7 +848,8 @@ public class PBXProjGenerator {
                 }
 
                 let fileReference: PBXFileReference
-                if let existingFileReferences = sdkFileReferences[dependency.reference] {
+                let existingFileReferences = mutationQueue.sync { sdkFileReferences[dependency.reference] }
+                if let existingFileReferences = existingFileReferences {
                     fileReference = existingFileReferences
                 } else {
                     let sourceTree: PBXSourceTree
@@ -855,8 +866,10 @@ public class PBXProjGenerator {
                             path: dependencyPath.string
                         )
                     )
-                    sdkFileReferences[dependency.reference] = fileReference
-                    frameworkFiles.append(fileReference)
+                    mutationQueue.sync {
+                        sdkFileReferences[dependency.reference] = fileReference
+                        frameworkFiles.append(fileReference)
+                    }
                 }
 
                 let pbxBuildFile = PBXBuildFile(

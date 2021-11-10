@@ -1,3 +1,4 @@
+import Dispatch
 import Foundation
 import PathKit
 import ProjectSpec
@@ -19,6 +20,7 @@ class SourceGenerator {
     private var groupsByPath: [Path: PBXGroup] = [:]
     private var variantGroupsByPath: [Path: PBXVariantGroup] = [:]
     private var localPackageGroup: PBXGroup?
+    private let mutationQueue = DispatchQueue(label: "com.xcodegen.SourceGenerator.mutationQueue")
 
     private let project: Project
     let pbxProj: PBXProj
@@ -101,7 +103,9 @@ class SourceGenerator {
     }
 
     func generateSourceFile(targetType: PBXProductType, targetSource: TargetSource, path: Path, fileReference: PBXFileElement? = nil, buildPhases: [Path: BuildPhaseSpec]) -> SourceFile {
-        let fileReference = fileReference ?? fileReferencesByPath[path.string.lowercased()]!
+        let fileReference = fileReference ??
+            mutationQueue.sync { fileReferencesByPath[path.string.lowercased()]! }
+
         var settings: [String: Any] = [:]
         let fileType = getFileType(path: path)
         var attributes: [String] = targetSource.attributes + (fileType?.attributes ?? [])
@@ -195,7 +199,8 @@ class SourceGenerator {
 
     func getFileReference(path: Path, inPath: Path, name: String? = nil, sourceTree: PBXSourceTree = .group, lastKnownFileType: String? = nil) -> PBXFileElement {
         let fileReferenceKey = path.string.lowercased()
-        if let fileReference = fileReferencesByPath[fileReferenceKey] {
+        let fileReference = mutationQueue.sync { fileReferencesByPath[fileReferenceKey] }
+        if let fileReference = fileReference {
             return fileReference
         } else {
             let fileReferencePath = (try? path.relativePath(from: inPath)) ?? path
@@ -237,7 +242,10 @@ class SourceGenerator {
                     versionGroupType: "wrapper.xcdatamodel",
                     children: modelFileReferences
                 ))
-                fileReferencesByPath[fileReferenceKey] = versionGroup
+                mutationQueue.sync {
+                    fileReferencesByPath[fileReferenceKey] = versionGroup
+                }
+
                 return versionGroup
             } else {
                 // For all extensions other than `xcdatamodeld`
@@ -249,7 +257,10 @@ class SourceGenerator {
                         path: fileReferencePath.string
                     )
                 )
-                fileReferencesByPath[fileReferenceKey] = fileReference
+                mutationQueue.sync {
+                    fileReferencesByPath[fileReferenceKey] = fileReference
+                }
+
                 return fileReference
             }
         }
@@ -281,8 +292,9 @@ class SourceGenerator {
     private func getGroup(path: Path, name: String? = nil, mergingChildren children: [PBXFileElement], createIntermediateGroups: Bool, hasCustomParent: Bool, isBaseGroup: Bool) -> PBXGroup {
         let groupReference: PBXGroup
 
-        if let cachedGroup = groupsByPath[path] {
-            var cachedGroupChildren = cachedGroup.children
+        let cachedGroup = mutationQueue.sync { groupsByPath[path] }
+        if let cachedGroup = cachedGroup {
+            var cachedGroupChildren = mutationQueue.sync { cachedGroup.children }
             for child in children {
                 // only add the children that aren't already in the cachedGroup
                 // Check equality by path and sourceTree because XcodeProj.PBXObject.== is very slow.
@@ -291,7 +303,11 @@ class SourceGenerator {
                     child.parent = cachedGroup
                 }
             }
-            cachedGroup.children = cachedGroupChildren
+
+            mutationQueue.sync {
+                cachedGroup.children = cachedGroupChildren
+            }
+
             groupReference = cachedGroup
         } else {
 
@@ -312,17 +328,19 @@ class SourceGenerator {
 
             let groupPath = resolveGroupPath(path, isTopLevelGroup: hasCustomParent || isTopLevelGroup)
 
-            let group = PBXGroup(
-                children: children,
-                sourceTree: .group,
-                name: groupName != groupPath ? groupName : nil,
-                path: groupPath
-            )
-            groupReference = addObject(group)
-            groupsByPath[path] = groupReference
-
-            if isTopLevelGroup {
-                rootGroups.insert(groupReference)
+            groupReference = mutationQueue.sync {
+                let group = PBXGroup(
+                    children: children,
+                    sourceTree: .group,
+                    name: groupName != groupPath ? groupName : nil,
+                    path: groupPath
+                )
+                let groupReference = addObject(group)
+                groupsByPath[path] = groupReference
+                if isTopLevelGroup {
+                    rootGroups.insert(groupReference)
+                }
+                return groupReference
             }
         }
         return groupReference
@@ -484,7 +502,10 @@ class SourceGenerator {
                 findLocalisedDirectory(by: NSLocale.canonicalLanguageIdentifier(from: project.options.developmentLanguage ?? "en"))
         }()
 
-        knownRegions.formUnion(localisedDirectories.map { $0.lastComponentWithoutExtension })
+        let newRegions = localisedDirectories.map { $0.lastComponentWithoutExtension }
+        mutationQueue.sync {
+            knownRegions.formUnion(newRegions)
+        }
 
         // create variant groups of the base localisation first
         var baseLocalisationVariantGroups: [PBXVariantGroup] = []
@@ -494,7 +515,7 @@ class SourceGenerator {
                 .filter { self.isIncludedPath($0, excludePaths: excludePaths, includePaths: includePaths) }
                 .sorted()
             for filePath in filePaths {
-                let variantGroup = getVariantGroup(path: filePath, inPath: path)
+                let variantGroup = mutationQueue.sync { getVariantGroup(path: filePath, inPath: path) }
                 groupChildren.append(variantGroup)
                 baseLocalisationVariantGroups.append(variantGroup)
 
@@ -675,7 +696,7 @@ class SourceGenerator {
 
         let parentPath = project.basePath + Path(parentGroups.joined(separator: "/"))
         let parentPathExists = parentPath.exists
-        let parentGroupAlreadyExists = groupsByPath[parentPath] != nil
+        let parentGroupAlreadyExists = mutationQueue.sync { groupsByPath[parentPath] != nil }
 
         let parentGroup = getGroup(
             path: parentPath,
@@ -705,7 +726,7 @@ class SourceGenerator {
             return
         }
 
-        let hasParentGroup = groupsByPath[parentPath] != nil
+        let hasParentGroup = mutationQueue.sync { groupsByPath[parentPath] != nil }
         if !hasParentGroup {
             do {
                 // if the path is a parent of the project base path (or if calculating that fails)
