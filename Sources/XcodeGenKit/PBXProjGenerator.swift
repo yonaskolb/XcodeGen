@@ -1569,7 +1569,7 @@ private extension Dependency {
     }
 }
 
-private let concurrentForEachErrorQueue = DispatchQueue(label: "com.xcodegen.PBXProjGenerator.mutationQueue")
+private let concurrentForEachErrorQueue = DispatchQueue(label: "com.xcodegen.concurrentForEachErrorQueue")
 
 private extension Collection where Index == Int {
     func concurrentForEach(_ body: (Element) throws -> Void) throws {
