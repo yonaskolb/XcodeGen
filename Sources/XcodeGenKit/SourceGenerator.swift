@@ -613,7 +613,9 @@ class SourceGenerator {
             )
 
             if !(createIntermediateGroups || hasCustomParent) || path.parent() == project.basePath {
-                rootGroups.insert(fileReference)
+                _ = mutationQueue.sync {
+                    rootGroups.insert(fileReference)
+                }
             }
 
             let sourceFile = generateSourceFile(targetType: targetType, targetSource: targetSource, path: path, buildPhases: buildPhases)
@@ -632,7 +634,9 @@ class SourceGenerator {
             } else if parentPath == project.basePath {
                 sourcePath = path
                 sourceReference = fileReference
-                rootGroups.insert(fileReference)
+                _ = mutationQueue.sync {
+                    rootGroups.insert(fileReference)
+                }
             } else {
                 let parentGroup = getGroup(
                     path: parentPath,

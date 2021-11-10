@@ -659,7 +659,7 @@ public class PBXProjGenerator {
     func generateTarget(_ target: Target) throws {
         let carthageDependencies = carthageResolver.dependencies(for: target)
 
-        let infoPlistFiles: [Config: String] = getInfoPlists(for: target)
+        let infoPlistFiles: [Config: String] = mutationQueue.sync { getInfoPlists(for: target) }
         let sourceFileBuildPhaseOverrideSequence: [(Path, BuildPhaseSpec)] = Set(infoPlistFiles.values).map({ (project.basePath + $0, .none) })
         let sourceFileBuildPhaseOverrides = Dictionary(uniqueKeysWithValues: sourceFileBuildPhaseOverrideSequence)
         let sourceFiles = try sourceGenerator.getAllSourceFiles(targetType: target.type, sources: target.sources, buildPhases: sourceFileBuildPhaseOverrides)
@@ -905,7 +905,9 @@ public class PBXProjGenerator {
                     }
                     let fileReference = self.sourceGenerator.getFileReference(path: frameworkPath, inPath: platformPath)
 
-                    self.carthageFrameworksByPlatform[target.platform.carthageName, default: []].insert(fileReference)
+                    _ = mutationQueue.sync {
+                        self.carthageFrameworksByPlatform[target.platform.carthageName, default: []].insert(fileReference)
+                    }
 
                     let isStaticLibrary = target.type == .staticLibrary
                     let isCarthageStaticLink = dependency.carthageLinkType == .static
