@@ -276,7 +276,7 @@ public class PBXProjGenerator {
             derivedGroups.append(group)
         }
 
-        mainGroup.children = Array(sourceGenerator.rootGroups)
+        mainGroup.children = sourceGenerator.rootGroupsArray
         sortGroups(group: mainGroup)
         setupGroupOrdering(group: mainGroup)
         // add derived groups at the end

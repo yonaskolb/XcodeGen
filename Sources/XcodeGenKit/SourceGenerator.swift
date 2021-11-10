@@ -14,7 +14,13 @@ struct SourceFile {
 
 class SourceGenerator {
 
-    var rootGroups: Set<PBXFileElement> = []
+    private var rootGroups: Set<PBXFileElement> = []
+    var rootGroupsArray: [PBXFileElement] {
+        mutationQueue.sync {
+            Array(rootGroups)
+        }
+    }
+
     private let projectDirectory: Path?
     private var fileReferencesByPath: [String: PBXFileElement] = [:]
     private var groupsByPath: [Path: PBXGroup] = [:]
@@ -60,7 +66,9 @@ class SourceGenerator {
         if localPackageGroup == nil {
             let groupName = project.options.localPackagesGroup ?? "Packages"
             localPackageGroup = addObject(PBXGroup(sourceTree: .sourceRoot, name: groupName))
-            rootGroups.insert(localPackageGroup!)
+            _ = mutationQueue.sync {
+                rootGroups.insert(localPackageGroup!)
+            }
         }
 
         let absolutePath = project.basePath + path.normalize()
