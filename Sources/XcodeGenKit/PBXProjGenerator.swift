@@ -225,7 +225,10 @@ public class PBXProjGenerator {
             pbxProject.projects = subprojects
         }
 
-        try project.targets.concurrentForEach { target in
+        // TODO: Generate targets concurrently
+        // At the moment, there's some non-determinism involved, leading to different framework orders in the
+        // generated project.
+        try project.targets.forEach { target in
             try generateTarget(target)
         }
 
