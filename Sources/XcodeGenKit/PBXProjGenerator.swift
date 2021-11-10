@@ -57,9 +57,8 @@ public class PBXProjGenerator {
         }
         generated = true
 
-        DispatchQueue.concurrentPerform(iterations: project.fileGroups.count) { idx in
-            // TODO: Handle errors
-            try! sourceGenerator.getFileGroups(path: project.fileGroups[idx])
+        try project.fileGroups.concurrentForEach { path in
+            try sourceGenerator.getFileGroups(path: path)
         }
 
         let buildConfigs: [XCBuildConfiguration] = project.configs.map { config in
@@ -226,9 +225,8 @@ public class PBXProjGenerator {
             pbxProject.projects = subprojects
         }
 
-        DispatchQueue.concurrentPerform(iterations: project.targets.count) { idx in
-            // TODO: Handle errors
-            try! generateTarget(project.targets[idx])
+        try project.targets.concurrentForEach { target in
+            try generateTarget(target)
         }
 
         try project.aggregateTargets.forEach(generateAggregateTarget)
@@ -1567,6 +1565,30 @@ private extension Dependency {
             return linkType
         default:
             return nil
+        }
+    }
+}
+
+private let concurrentForEachErrorQueue = DispatchQueue(label: "com.xcodegen.PBXProjGenerator.mutationQueue")
+
+private extension Collection where Index == Int {
+    func concurrentForEach(_ body: (Element) throws -> Void) throws {
+        var seenError: Error?
+        DispatchQueue.concurrentPerform(iterations: count) { index in
+            let hasError = concurrentForEachErrorQueue.sync { seenError != nil }
+            if hasError { return }
+
+            do {
+                try body(self[index])
+            } catch {
+                concurrentForEachErrorQueue.sync {
+                    seenError = error
+                }
+            }
+        }
+
+        if let seenError = seenError {
+            throw seenError
         }
     }
 }
