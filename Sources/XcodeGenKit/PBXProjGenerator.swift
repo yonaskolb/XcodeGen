@@ -225,10 +225,7 @@ public class PBXProjGenerator {
             pbxProject.projects = subprojects
         }
 
-        // TODO: Generate targets concurrently
-        // At the moment, there's some non-determinism involved, leading to different framework orders in the
-        // generated project.
-        try project.targets.forEach { target in
+        try project.targets.concurrentForEach { target in
             try generateTarget(target)
         }
 
@@ -794,18 +791,19 @@ public class PBXProjGenerator {
                     frameworkBuildPaths.insert(buildPath)
                 }
 
-                let fileReference: PBXFileElement
-                if dependency.implicit {
-                    fileReference = sourceGenerator.getFileReference(
-                        path: Path(dependency.reference),
-                        inPath: project.basePath,
-                        sourceTree: .buildProductsDir
-                    )
-                } else {
-                    fileReference = sourceGenerator.getFileReference(
-                        path: Path(dependency.reference),
-                        inPath: project.basePath
-                    )
+                let fileReference: PBXFileElement = mutationQueue.sync {
+                    if dependency.implicit {
+                        return sourceGenerator.getFileReference(
+                            path: Path(dependency.reference),
+                            inPath: project.basePath,
+                            sourceTree: .buildProductsDir
+                        )
+                    } else {
+                        return sourceGenerator.getFileReference(
+                            path: Path(dependency.reference),
+                            inPath: project.basePath
+                        )
+                    }
                 }
 
                 if dependency.link ?? (target.type != .staticLibrary) {
@@ -848,28 +846,28 @@ public class PBXProjGenerator {
                     }
                 }
 
-                let fileReference: PBXFileReference
-                let existingFileReferences = mutationQueue.sync { sdkFileReferences[dependency.reference] }
-                if let existingFileReferences = existingFileReferences {
-                    fileReference = existingFileReferences
-                } else {
-                    let sourceTree: PBXSourceTree
-                    if let root = root {
-                        sourceTree = .custom(root)
+                let fileReference: PBXFileReference = mutationQueue.sync {
+                    let existingFileReferences = sdkFileReferences[dependency.reference]
+                    if let existingFileReferences = existingFileReferences {
+                        return existingFileReferences
                     } else {
-                        sourceTree = .sdkRoot
-                    }
-                    fileReference = addObject(
-                        PBXFileReference(
-                            sourceTree: sourceTree,
-                            name: dependencyPath.lastComponent,
-                            lastKnownFileType: Xcode.fileType(path: dependencyPath),
-                            path: dependencyPath.string
+                        let sourceTree: PBXSourceTree
+                        if let root = root {
+                            sourceTree = .custom(root)
+                        } else {
+                            sourceTree = .sdkRoot
+                        }
+                        let fileReference = addObject(
+                            PBXFileReference(
+                                sourceTree: sourceTree,
+                                name: dependencyPath.lastComponent,
+                                lastKnownFileType: Xcode.fileType(path: dependencyPath),
+                                path: dependencyPath.string
+                            )
                         )
-                    )
-                    mutationQueue.sync {
                         sdkFileReferences[dependency.reference] = fileReference
                         frameworkFiles.append(fileReference)
+                        return fileReference
                     }
                 }
 
@@ -898,16 +896,15 @@ public class PBXProjGenerator {
                 let allDependencies = findFrameworks
                     ? carthageResolver.relatedDependencies(for: dependency, in: target.platform) : [dependency]
                 allDependencies.forEach { dependency in
-
-                    let platformPath = Path(carthageResolver.buildPath(for: target.platform, linkType: linkType))
-                    var frameworkPath = platformPath + dependency.reference
-                    if frameworkPath.extension == nil {
-                        frameworkPath = Path(frameworkPath.string + ".framework")
-                    }
-                    let fileReference = self.sourceGenerator.getFileReference(path: frameworkPath, inPath: platformPath)
-
-                    _ = mutationQueue.sync {
+                    let fileReference: PBXFileElement = mutationQueue.sync {
+                        let platformPath = Path(carthageResolver.buildPath(for: target.platform, linkType: linkType))
+                        var frameworkPath = platformPath + dependency.reference
+                        if frameworkPath.extension == nil {
+                            frameworkPath = Path(frameworkPath.string + ".framework")
+                        }
+                        let fileReference = self.sourceGenerator.getFileReference(path: frameworkPath, inPath: platformPath)
                         self.carthageFrameworksByPlatform[target.platform.carthageName, default: []].insert(fileReference)
+                        return fileReference
                     }
 
                     let isStaticLibrary = target.type == .staticLibrary
@@ -921,7 +918,7 @@ public class PBXProjGenerator {
                 }
             // Embedding handled by iterating over `carthageDependencies` below
             case .package(let product):
-                let packageReference = packageReferences[dependency.reference]
+                let packageReference = mutationQueue.sync { packageReferences[dependency.reference] }
 
                 // If package's reference is none and there is no specified package in localPackages,
                 // then ignore the package specified as dependency.
@@ -941,7 +938,8 @@ public class PBXProjGenerator {
 
                 let link = dependency.link ?? (target.type != .staticLibrary)
                 if link {
-                    let file = PBXBuildFile(product: packageDependency, settings: getDependencyFrameworkSettings(dependency: dependency))
+                    let settings = mutationQueue.sync { getDependencyFrameworkSettings(dependency: dependency) }
+                    let file = PBXBuildFile(product: packageDependency, settings: settings)
                     file.platformFilter = platform
                     let buildFile = addObject(file)
                     targetFrameworkBuildFiles.append(buildFile)
@@ -968,11 +966,13 @@ public class PBXProjGenerator {
                 // Static and dynamic libraries can't copy resources
                 guard target.type != .staticLibrary && target.type != .dynamicLibrary else { break }
 
-                let fileReference = sourceGenerator.getFileReference(
-                    path: Path(dependency.reference),
-                    inPath: project.basePath,
-                    sourceTree: .buildProductsDir
-                )
+                let fileReference = mutationQueue.sync {
+                    sourceGenerator.getFileReference(
+                        path: Path(dependency.reference),
+                        inPath: project.basePath,
+                        sourceTree: .buildProductsDir
+                    )
+                }
 
                 let pbxBuildFile = PBXBuildFile(
                     file: fileReference,
@@ -982,8 +982,10 @@ public class PBXProjGenerator {
                 let buildFile = addObject(pbxBuildFile)
                 copyBundlesReferences.append(buildFile)
 
-                if !bundleFiles.contains(fileReference) {
-                    bundleFiles.append(fileReference)
+                mutationQueue.sync {
+                    if !bundleFiles.contains(fileReference) {
+                        bundleFiles.append(fileReference)
+                    }
                 }
             }
         }
@@ -998,7 +1000,7 @@ public class PBXProjGenerator {
             if frameworkPath.extension == nil {
                 frameworkPath = Path(frameworkPath.string + ".framework")
             }
-            let fileReference = sourceGenerator.getFileReference(path: frameworkPath, inPath: platformPath)
+            let fileReference = mutationQueue.sync { sourceGenerator.getFileReference(path: frameworkPath, inPath: platformPath) }
 
             if dependency.carthageLinkType == .static {
                 guard isFromTopLevelTarget else { continue } // ignore transitive dependencies if static
@@ -1083,7 +1085,7 @@ public class PBXProjGenerator {
             .filter { $0.key.phaseOrder == .preCompile }
             .map { generateCopyFiles(targetName: target.name, copyFiles: $0, buildPhaseFiles: $1) }
 
-        let headersBuildPhaseFiles = getBuildFilesForPhase(.headers)
+        let headersBuildPhaseFiles = mutationQueue.sync { getBuildFilesForPhase(.headers) }
         if !headersBuildPhaseFiles.isEmpty {
             if target.type.isFramework || target.type == .dynamicLibrary {
                 let headersBuildPhase = addObject(PBXHeadersBuildPhase(files: headersBuildPhaseFiles))
@@ -1093,7 +1095,7 @@ public class PBXProjGenerator {
             }
         }
 
-        let sourcesBuildPhaseFiles = getBuildFilesForPhase(.sources)
+        let sourcesBuildPhaseFiles = mutationQueue.sync { getBuildFilesForPhase(.sources) }
         let shouldSkipSourcesBuildPhase = sourcesBuildPhaseFiles.isEmpty && target.type.canSkipCompileSourcesBuildPhase
         if !shouldSkipSourcesBuildPhase {
             let sourcesBuildPhase = addObject(PBXSourcesBuildPhase(files: sourcesBuildPhaseFiles))
@@ -1130,14 +1132,17 @@ public class PBXProjGenerator {
             buildPhases.append(script)
         }
 
-        buildPhases += copyFilesBuildPhasesFiles
-            .filter { $0.key.phaseOrder == .postCompile }
-            .map { generateCopyFiles(targetName: target.name, copyFiles: $0, buildPhaseFiles: $1) }
+        buildPhases += mutationQueue.sync {
+            copyFilesBuildPhasesFiles
+                .filter { $0.key.phaseOrder == .postCompile }
+                .map { generateCopyFiles(targetName: target.name, copyFiles: $0, buildPhaseFiles: $1) }
+        }
 
         if !carthageFrameworksToEmbed.isEmpty {
-
-            let inputPaths = carthageFrameworksToEmbed
-                .map { "$(SRCROOT)/\(carthageResolver.buildPath(for: target.platform, linkType: .dynamic))/\($0)\($0.contains(".") ? "" : ".framework")" }
+            let inputPaths = mutationQueue.sync {
+                carthageFrameworksToEmbed
+                    .map { "$(SRCROOT)/\(carthageResolver.buildPath(for: target.platform, linkType: .dynamic))/\($0)\($0.contains(".") ? "" : ".framework")" }
+            }
             let outputPaths = carthageFrameworksToEmbed
                 .map { "$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/\($0)\($0.contains(".") ? "" : ".framework")" }
             let carthageExecutable = carthageResolver.executable
@@ -1153,8 +1158,9 @@ public class PBXProjGenerator {
             buildPhases.append(carthageScript)
         }
 
-        if !targetFrameworkBuildFiles.isEmpty {
+        let targetObject: PBXTarget = try mutationQueue.sync {
 
+        if !targetFrameworkBuildFiles.isEmpty {
             let frameworkBuildPhase = addObject(
                 PBXFrameworksBuildPhase(files: targetFrameworkBuildFiles)
             )
@@ -1381,14 +1387,17 @@ public class PBXProjGenerator {
 
         let targetFileReference = targetFileReferences[target.name]
 
-        targetObject.name = target.name
         targetObject.buildConfigurationList = buildConfigList
+        targetObject.buildRules = buildRules
+        targetObject.product = targetFileReference
+        return targetObject
+        } // mutationQueue.sync
+
+        targetObject.name = target.name
         targetObject.buildPhases = buildPhases
         targetObject.dependencies = dependencies
         targetObject.productName = target.name
-        targetObject.buildRules = buildRules
         targetObject.packageProductDependencies = packageDependencies
-        targetObject.product = targetFileReference
         if !target.isLegacy {
             targetObject.productType = target.type
         }
