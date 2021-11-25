@@ -184,6 +184,35 @@ public struct Scheme: Equatable {
         public var deleteScreenshotsWhenEachTestSucceeds: Bool
 
         public struct TestTarget: Equatable, ExpressibleByStringLiteral {
+            
+            public struct SimulateLocation: Equatable {
+                
+                public enum ReferenceType: String {
+                    case predefined = "1"
+                    case gpx = "0"
+                }
+                
+                public var location: String?
+                
+                public var referenceType: ReferenceType? {
+                    
+                    guard let location = self.location else {
+                        return nil
+                    }
+                    
+                    if location.contains(".gpx") {
+                        return .gpx
+                    }
+                    
+                    return .predefined
+                }
+                
+                public init(location: String) {
+                    self.location = location
+                }
+                
+            }
+            
             public static let randomExecutionOrderDefault = false
             public static let parallelizableDefault = false
 
@@ -191,6 +220,7 @@ public struct Scheme: Equatable {
             public let targetReference: TargetReference
             public var randomExecutionOrder: Bool
             public var parallelizable: Bool
+            public var location: Test.TestTarget.SimulateLocation?
             public var skipped: Bool
             public var skippedTests: [String]
             public var selectedTests: [String]
@@ -199,6 +229,7 @@ public struct Scheme: Equatable {
                 targetReference: TargetReference,
                 randomExecutionOrder: Bool = randomExecutionOrderDefault,
                 parallelizable: Bool = parallelizableDefault,
+                location: Test.TestTarget.SimulateLocation? = nil,
                 skipped: Bool = false,
                 skippedTests: [String] = [],
                 selectedTests: [String] = []
@@ -206,6 +237,7 @@ public struct Scheme: Equatable {
                 self.targetReference = targetReference
                 self.randomExecutionOrder = randomExecutionOrder
                 self.parallelizable = parallelizable
+                self.location = location
                 self.skipped = skipped
                 self.skippedTests = skippedTests
                 self.selectedTests = selectedTests
@@ -216,6 +248,7 @@ public struct Scheme: Equatable {
                     targetReference = try TargetReference(value)
                     randomExecutionOrder = false
                     parallelizable = false
+                    location = nil
                     skipped = false
                     skippedTests = []
                     selectedTests = []
@@ -536,6 +569,7 @@ extension Scheme.Test.TestTarget: JSONObjectConvertible {
         targetReference = try TargetReference(jsonDictionary.json(atKeyPath: "name"))
         randomExecutionOrder = jsonDictionary.json(atKeyPath: "randomExecutionOrder") ?? Scheme.Test.TestTarget.randomExecutionOrderDefault
         parallelizable = jsonDictionary.json(atKeyPath: "parallelizable") ?? Scheme.Test.TestTarget.parallelizableDefault
+        location = jsonDictionary.json(atKeyPath: "location") ?? nil
         skipped = jsonDictionary.json(atKeyPath: "skipped") ?? false
         skippedTests = jsonDictionary.json(atKeyPath: "skippedTests") ?? []
         selectedTests = jsonDictionary.json(atKeyPath: "selectedTests") ?? []
@@ -559,10 +593,31 @@ extension Scheme.Test.TestTarget: JSONEncodable {
         if parallelizable != Scheme.Test.TestTarget.parallelizableDefault {
             dict["parallelizable"] = parallelizable
         }
+        if let location = location {
+            dict["location"] = location.toJSONValue()
+        }
         if skipped {
             dict["skipped"] = skipped
         }
 
+        return dict
+    }
+}
+
+extension Scheme.Test.TestTarget.SimulateLocation: JSONObjectConvertible {
+    public init(jsonDictionary: JSONDictionary) throws {
+        location = jsonDictionary.json(atKeyPath: "location")
+    }
+}
+
+extension Scheme.Test.TestTarget.SimulateLocation: JSONEncodable {
+    public func toJSONValue() -> Any {
+        var dict: [String: Any] = [:]
+        
+        if let location = location {
+            dict["location"] = location
+        }
+        
         return dict
     }
 }
