@@ -397,6 +397,7 @@ extension Scheme {
             test: .init(
                 config: debugConfig,
                 gatherCoverageData: targetScheme.gatherCoverageData,
+                coverageTargets: targetScheme.coverageTargets,
                 disableMainThreadChecker: targetScheme.disableMainThreadChecker,
                 commandLineArguments: targetScheme.commandLineArguments,
                 targets: targetScheme.testTargets,

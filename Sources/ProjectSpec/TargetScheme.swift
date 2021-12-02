@@ -11,6 +11,7 @@ public struct TargetScheme: Equatable {
     public var testTargets: [Scheme.Test.TestTarget]
     public var configVariants: [String]
     public var gatherCoverageData: Bool
+    public var coverageTargets: [TargetReference]
     public var storeKitConfiguration: String?
     public var language: String?
     public var region: String?
@@ -26,6 +27,7 @@ public struct TargetScheme: Equatable {
         testTargets: [Scheme.Test.TestTarget] = [],
         configVariants: [String] = [],
         gatherCoverageData: Bool = gatherCoverageDataDefault,
+        coverageTargets: [TargetReference] = [],
         storeKitConfiguration: String? = nil,
         language: String? = nil,
         region: String? = nil,
@@ -40,6 +42,7 @@ public struct TargetScheme: Equatable {
         self.testTargets = testTargets
         self.configVariants = configVariants
         self.gatherCoverageData = gatherCoverageData
+        self.coverageTargets = coverageTargets
         self.storeKitConfiguration = storeKitConfiguration
         self.language = language
         self.region = region
@@ -71,6 +74,7 @@ extension TargetScheme: JSONObjectConvertible {
         }
         configVariants = jsonDictionary.json(atKeyPath: "configVariants") ?? []
         gatherCoverageData = jsonDictionary.json(atKeyPath: "gatherCoverageData") ?? TargetScheme.gatherCoverageDataDefault
+        coverageTargets = try (jsonDictionary.json(atKeyPath: "coverageTargets") ?? []).map { try TargetReference($0) }
         storeKitConfiguration = jsonDictionary.json(atKeyPath: "storeKitConfiguration")
         language = jsonDictionary.json(atKeyPath: "language")
         region = jsonDictionary.json(atKeyPath: "region")
