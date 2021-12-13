@@ -594,7 +594,7 @@ extension Scheme.Test.TestTarget: JSONEncodable {
             dict["parallelizable"] = parallelizable
         }
         if let location = location {
-            dict["location"] = location.toJSONValue()
+            dict["location"] = location
         }
         if skipped {
             dict["skipped"] = skipped
@@ -606,19 +606,7 @@ extension Scheme.Test.TestTarget: JSONEncodable {
 
 extension Scheme.Test.TestTarget.SimulateLocation: JSONObjectConvertible {
     public init(jsonDictionary: JSONDictionary) throws {
-        location = jsonDictionary.json(atKeyPath: "location")
-    }
-}
-
-extension Scheme.Test.TestTarget.SimulateLocation: JSONEncodable {
-    public func toJSONValue() -> Any {
-        var dict: [String: Any] = [:]
-        
-        if let location = location {
-            dict["location"] = location
-        }
-        
-        return dict
+        location = jsonDictionary.json(atKeyPath: "location") ?? nil
     }
 }
 
