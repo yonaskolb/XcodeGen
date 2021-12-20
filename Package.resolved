@@ -42,8 +42,8 @@
         "repositoryURL": "https://github.com/onevcat/Rainbow.git",
         "state": {
           "branch": null,
-          "revision": "626c3d4b6b55354b4af3aa309f998fae9b31a3d9",
-          "version": "3.2.0"
+          "revision": "9c52c1952e9b2305d4507cf473392ac2d7c9b155",
+          "version": "3.1.5"
         }
       },
       {
@@ -69,8 +69,8 @@
         "repositoryURL": "https://github.com/mxcl/Version",
         "state": {
           "branch": null,
-          "revision": "a94b48f36763c05629fc102837398505032dead9",
-          "version": "2.0.0"
+          "revision": "1fe824b80d89201652e7eca7c9252269a1d85e25",
+          "version": "2.0.1"
         }
       },
       {
@@ -78,8 +78,8 @@
         "repositoryURL": "https://github.com/tuist/XcodeProj.git",
         "state": {
           "branch": null,
-          "revision": "446f3a0db73e141c7f57e26fcdb043096b1db52c",
-          "version": "8.3.1"
+          "revision": "c75c3acc25460195cfd203a04dde165395bf00e0",
+          "version": "8.7.1"
         }
       },
       {
