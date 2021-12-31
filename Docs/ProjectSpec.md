@@ -824,7 +824,7 @@ A multiline script can be written using the various YAML multiline methods, for 
 ### Test Action
 
 - [ ] **gatherCoverageData**: **Bool** - a boolean that indicates if this scheme should gather coverage data. This defaults to false
-- [ ] **coverageTargets**: **[[Testable Target Reference](#testable-target-reference)]** - a list of targets to gather code coverage. Each entry can also either be a simple string, a string using [Project Reference](#project-reference) or [Testable Target Reference](#testable-target-reference)
+- [ ] **coverageTargets**: **[[Testable Target Reference](#testable-target-reference)]** - a list of targets to gather code coverage. Each entry can also either be a simple string, or a [Test Target](#test-target)
 - [ ] **targets**: **[[Test Target](#test-target)]** - a list of targets to test. Each entry can either be a simple string, or a [Test Target](#test-target)
 - [ ] **customLLDBInit**: **String** - the absolute path to the custom `.lldbinit` file
 - [ ] **captureScreenshotsAutomatically**: **Bool** - indicates whether screenshots should be captured automatically while UI Testing. This defaults to true.

@@ -43,6 +43,17 @@ extension TestableTargetReference {
         }
     }
 
+    public init?(value: Any) throws {
+        if let string = value as? String {
+            try self.init(string)
+        } else if let dictionary = value as? JSONDictionary,
+                    let reference = try? TestableTargetReference(jsonDictionary: dictionary) {
+            self = reference
+        } else {
+            return nil
+        }
+    }
+
     public static func local(_ name: String) -> TestableTargetReference {
         TestableTargetReference(name: name, location: .local)
     }
@@ -79,6 +90,8 @@ extension TestableTargetReference: JSONObjectConvertible {
             let paths = project.split(separator: "/")
             name = String(paths[1])
             location = .package(String(paths[0]))
+        } else if let name: String = jsonDictionary.json(atKeyPath: "name") {
+            self = try TestableTargetReference(name)
         } else {
             name = try jsonDictionary.json(atKeyPath: "local")
             location = .local

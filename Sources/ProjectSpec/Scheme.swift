@@ -462,16 +462,7 @@ extension Scheme.Test: JSONObjectConvertible {
         gatherCoverageData = jsonDictionary.json(atKeyPath: "gatherCoverageData") ?? Scheme.Test.gatherCoverageDataDefault
 
         if let coverages = jsonDictionary["coverageTargets"] as? [Any] {
-            coverageTargets = try coverages.compactMap { target in
-                if let string = target as? String {
-                    return try TestableTargetReference(string)
-                } else if let dictionary = target as? JSONDictionary,
-                          let target: TestableTargetReference = try? .init(jsonDictionary: dictionary) {
-                    return target
-                } else {
-                    return nil
-                }
-            }
+            coverageTargets = try coverages.compactMap(TestableTargetReference.init)
         } else {
             coverageTargets = []
         }
@@ -548,11 +539,7 @@ extension Scheme.Test: JSONEncodable {
 extension Scheme.Test.TestTarget: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
-        if let name: String = jsonDictionary.json(atKeyPath: "name")  {
-            targetReference = try TestableTargetReference(name)
-        } else {
-            self.targetReference = try jsonDictionary.json(atKeyPath: "target")
-        }
+        targetReference = try TestableTargetReference(jsonDictionary: jsonDictionary)
         randomExecutionOrder = jsonDictionary.json(atKeyPath: "randomExecutionOrder") ?? Scheme.Test.TestTarget.randomExecutionOrderDefault
         parallelizable = jsonDictionary.json(atKeyPath: "parallelizable") ?? Scheme.Test.TestTarget.parallelizableDefault
         skipped = jsonDictionary.json(atKeyPath: "skipped") ?? false
