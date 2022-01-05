@@ -8,25 +8,21 @@ import Yams
 
 class MigrateCommand: Command {
     let name: String = "migrate"
+    let shortDescription: String = "Migrates an Xcode project to an XcodeGen project spec"
 
-    let projectFile = Key<Path>("-p", "--project", description: "The path to the project file")
+    @Param
+    var projectPath: Path
 
-    let spec = Key<Path>(
-        "-s",
-        "--spec",
-        description: "The path to the project spec file should be generated. Defaults to project.yml"
-    )
+    @Key("-s", "--spec", description: "The path to the generated project spec. Defaults to project.yml in the same directory as the project")
+    var spec: Path?
 
     func execute() throws {
-        guard let file = projectFile.value else {
-            return
-        }
-        let xcodeProj = try XcodeProj(path: file)
-        let project = try generateSpec(xcodeProj: xcodeProj, projectDirectory: file.parent())
+        let xcodeProj = try XcodeProj(path: projectPath)
+        let project = try generateSpec(xcodeProj: xcodeProj, projectDirectory: projectPath.parent())
         let projectDict = project.toJSONDictionary().removeEmpty()
         let encodedYAML = try Yams.dump(object: projectDict)
-        let defaultOutPath = file.parent() + "project.yml"
-        let outPath = spec.value ?? defaultOutPath
+        let defaultOutPath = projectPath.parent() + "project.yml"
+        let outPath = spec ?? defaultOutPath
         try encodedYAML.write(toFile: outPath.string, atomically: true, encoding: .utf8)
     }
 }
