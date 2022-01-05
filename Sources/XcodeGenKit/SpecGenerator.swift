@@ -596,7 +596,7 @@ private extension Scheme {
             run: scheme.launchAction.flatMap { launchAction in
                 Scheme.Run(
                     config: launchAction.buildConfiguration,
-                    executable: launchAction.runnable?.buildableReference.blueprintName,
+                    executable: launchAction.runnable?.buildableReference?.blueprintName,
                     commandLineArguments: launchAction.commandlineArguments?.toDictionary() ?? [:],
                     preActions: launchAction.preActions.map(Scheme.ExecutionAction.init),
                     postActions: launchAction.postActions.map(Scheme.ExecutionAction.init),
