@@ -207,7 +207,7 @@ public struct Scheme: Equatable {
                     return .predefined
                 }
                 
-                public init(location: String) {
+                public init(_ location: String) {
                     self.location = location
                 }
                 
