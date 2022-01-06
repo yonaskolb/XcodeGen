@@ -185,25 +185,6 @@ public struct Scheme: Equatable {
 
         public struct TestTarget: Equatable, ExpressibleByStringLiteral {
             
-            public struct Location: Equatable {
-                
-                public enum ReferenceType: String {
-                    case predefined = "1"
-                    case gpx = "0"
-                }
-                
-                public var location: String!
-                
-                public var referenceType: ReferenceType? {
-                    return self.location.contains(".gpx") ? .gpx : .predefined
-                }
-                
-                public init(_ location: String) {
-                    self.location = location
-                }
-                
-            }
-            
             public static let randomExecutionOrderDefault = false
             public static let parallelizableDefault = false
 
@@ -211,7 +192,7 @@ public struct Scheme: Equatable {
             public let targetReference: TargetReference
             public var randomExecutionOrder: Bool
             public var parallelizable: Bool
-            public var location: Test.TestTarget.Location?
+            public var location: String?
             public var skipped: Bool
             public var skippedTests: [String]
             public var selectedTests: [String]
@@ -220,7 +201,7 @@ public struct Scheme: Equatable {
                 targetReference: TargetReference,
                 randomExecutionOrder: Bool = randomExecutionOrderDefault,
                 parallelizable: Bool = parallelizableDefault,
-                location: Test.TestTarget.Location? = nil,
+                location: String? = nil,
                 skipped: Bool = false,
                 skippedTests: [String] = [],
                 selectedTests: [String] = []
@@ -585,19 +566,13 @@ extension Scheme.Test.TestTarget: JSONEncodable {
             dict["parallelizable"] = parallelizable
         }
         if let location = location {
-            dict["location"] = location.location
+            dict["location"] = location
         }
         if skipped {
             dict["skipped"] = skipped
         }
 
         return dict
-    }
-}
-
-extension Scheme.Test.TestTarget.Location: JSONObjectConvertible {
-    public init(jsonDictionary: JSONDictionary) throws {
-        location = jsonDictionary.json(atKeyPath: "location") ?? nil
     }
 }
 

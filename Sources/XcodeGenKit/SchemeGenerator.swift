@@ -190,13 +190,17 @@ public class SchemeGenerator {
         let testables: [XCScheme.TestableReference] = zip(testTargets, testBuildTargetEntries).map { testTarget, testBuildEntries in
             
             var locationScenarioReference: XCScheme.LocationScenarioReference?
-            if let testableLocation = testTarget.location, var identifier = testableLocation.location, let referenceType = testableLocation.referenceType {
-                if referenceType == .gpx {
-                    var path = Path(components: [project.options.schemePathPrefix, identifier])
+            if var location = testTarget.location {
+                
+                if location.contains(".gpx") {
+                    var path = Path(components: [project.options.schemePathPrefix, location])
                     path = path.simplifyingParentDirectoryReferences()
-                    identifier = path.string
+                    location = path.string
                 }
-                locationScenarioReference = XCScheme.LocationScenarioReference(identifier: identifier, referenceType: referenceType.rawValue)
+                
+                let referenceType = location.contains(".gpx") ? "0" : "1"
+                locationScenarioReference = XCScheme.LocationScenarioReference(identifier: location, referenceType: referenceType)
+                
             }
             
             return XCScheme.TestableReference(
