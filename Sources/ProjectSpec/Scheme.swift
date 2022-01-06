@@ -192,19 +192,10 @@ public struct Scheme: Equatable {
                     case gpx = "0"
                 }
                 
-                public var location: String?
+                public var location: String!
                 
                 public var referenceType: ReferenceType? {
-                    
-                    guard let location = self.location else {
-                        return nil
-                    }
-                    
-                    if location.contains(".gpx") {
-                        return .gpx
-                    }
-                    
-                    return .predefined
+                    return self.location.contains(".gpx") ? .gpx : .predefined
                 }
                 
                 public init(_ location: String) {
