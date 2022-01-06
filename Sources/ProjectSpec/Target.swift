@@ -173,18 +173,23 @@ extension Target {
                     let newTargetName = platformPrefix + targetName + platformSuffix
 
                     var settings = platformTarget["settings"] as? JSONDictionary ?? [:]
+                    var newProductName: String?
                     if settings["configs"] != nil || settings["groups"] != nil || settings["base"] != nil {
                         var base = settings["base"] as? JSONDictionary ?? [:]
-                        if base["PRODUCT_NAME"] == nil {
+                        if let baseProductName = base["PRODUCT_NAME"] as? String {
+                            newProductName = baseProductName
+                        } else {
                             base["PRODUCT_NAME"] = targetName
                         }
                         settings["base"] = base
                     } else {
-                        if settings["PRODUCT_NAME"] == nil {
+                        if let productName = settings["PRODUCT_NAME"] as? String {
+                            newProductName = productName
+                        } else {
                             settings["PRODUCT_NAME"] = targetName
                         }
                     }
-                    platformTarget["productName"] = targetName
+                    platformTarget["productName"] = newProductName ?? targetName
                     platformTarget["settings"] = settings
                     if let deploymentTargets = target["deploymentTarget"] as? [String: Any] {
                         platformTarget["deploymentTarget"] = deploymentTargets[platform]
