@@ -185,7 +185,7 @@ public struct Scheme: Equatable {
 
         public struct TestTarget: Equatable, ExpressibleByStringLiteral {
             
-            public struct SimulateLocation: Equatable {
+            public struct Location: Equatable {
                 
                 public enum ReferenceType: String {
                     case predefined = "1"
@@ -211,7 +211,7 @@ public struct Scheme: Equatable {
             public let targetReference: TargetReference
             public var randomExecutionOrder: Bool
             public var parallelizable: Bool
-            public var location: Test.TestTarget.SimulateLocation?
+            public var location: Test.TestTarget.Location?
             public var skipped: Bool
             public var skippedTests: [String]
             public var selectedTests: [String]
@@ -220,7 +220,7 @@ public struct Scheme: Equatable {
                 targetReference: TargetReference,
                 randomExecutionOrder: Bool = randomExecutionOrderDefault,
                 parallelizable: Bool = parallelizableDefault,
-                location: Test.TestTarget.SimulateLocation? = nil,
+                location: Test.TestTarget.Location? = nil,
                 skipped: Bool = false,
                 skippedTests: [String] = [],
                 selectedTests: [String] = []
@@ -595,7 +595,7 @@ extension Scheme.Test.TestTarget: JSONEncodable {
     }
 }
 
-extension Scheme.Test.TestTarget.SimulateLocation: JSONObjectConvertible {
+extension Scheme.Test.TestTarget.Location: JSONObjectConvertible {
     public init(jsonDictionary: JSONDictionary) throws {
         location = jsonDictionary.json(atKeyPath: "location") ?? nil
     }
