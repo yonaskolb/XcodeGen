@@ -594,7 +594,7 @@ extension Scheme.Test.TestTarget: JSONEncodable {
             dict["parallelizable"] = parallelizable
         }
         if let location = location {
-            dict["location"] = location
+            dict["location"] = location.location
         }
         if skipped {
             dict["skipped"] = skipped
