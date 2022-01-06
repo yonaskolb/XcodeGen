@@ -189,7 +189,7 @@ extension Target {
                             settings["PRODUCT_NAME"] = targetName
                         }
                     }
-                    platformTarget["productName"] = newProductName ?? targetName
+                    platformTarget["productName"] = ((platformTarget["productNameFromSettings"] as? Bool == true) ? newProductName : nil) ?? targetName
                     platformTarget["settings"] = settings
                     if let deploymentTargets = target["deploymentTarget"] as? [String: Any] {
                         platformTarget["deploymentTarget"] = deploymentTargets[platform]
