@@ -53,6 +53,10 @@
                BlueprintName = "App_iOS_Tests"
                ReferencedContainer = "container:Project.xcodeproj">
             </BuildableReference>
+            <LocationScenarioReference
+               identifier = "New York, NY, USA"
+               referenceType = "1">
+            </LocationScenarioReference>
          </TestableReference>
       </Testables>
       <MacroExpansion>

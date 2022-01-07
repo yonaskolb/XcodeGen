@@ -2,6 +2,10 @@
 
 ## Next Version
 
+### Added
+
+- Added the option to specify a `location` in a test target [#1150](https://github.com/yonaskolb/XcodeGen/issues/1150) @KrisRJack
+
 ### Changed
 
 - Speed up source inclusion checking for big projects [#1122](https://github.com/yonaskolb/XcodeGen/pull/1122) @PaulTaykalo 
