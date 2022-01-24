@@ -549,7 +549,7 @@ extension Scheme.Test.TestTarget: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
         if let name: String = jsonDictionary.json(atKeyPath: "name")  {
-            targetReference = try TestableTargetReference(name)
+            self.targetReference = try TestableTargetReference(name)
         } else {
             self.targetReference = try jsonDictionary.json(atKeyPath: "target")
         }

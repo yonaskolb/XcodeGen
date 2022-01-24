@@ -107,6 +107,8 @@ public class SchemeGenerator {
                 }
                 pbxProj = try getPBXProj(from: projectReference)
                 projectFilePath = projectReference.path
+            case .package:
+                fatalError("Currently unsupported to use package for: \(target)")
             case .local:
                 pbxProj = self.pbxProj
                 projectFilePath = "\(self.project.name).xcodeproj"
@@ -120,6 +122,8 @@ public class SchemeGenerator {
             switch target.location {
             case .project:
                 buildableName = pbxTarget.productNameWithExtension() ?? pbxTarget.name
+            case .package:
+                fatalError("Currently unsupported to use package for: \(target)")
             case .local:
                 guard let _buildableName =
                     project.getTarget(target.name)?.filename ??

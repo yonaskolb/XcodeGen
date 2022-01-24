@@ -159,7 +159,7 @@ extension Project {
                         if getProjectTarget(dependency.reference) == nil {
                             errors.append(.invalidTargetDependency(target: target.name, dependency: dependency.reference))
                         }
-                    case .project(let dependencyProjectName):
+                    case .project(let dependencyProjectName), .package(let dependencyProjectName):
                         if getProjectReference(dependencyProjectName) == nil {
                             errors.append(.invalidTargetDependency(target: target.name, dependency: dependency.reference))
                         }
@@ -241,6 +241,8 @@ extension Project {
         switch targetReference.location {
         case .local where getProjectTarget(targetReference.name) == nil:
             return .invalidSchemeTarget(scheme: scheme.name, target: targetReference.name, action: action)
+        case .package(_):
+            return .invalidPackageDependencyReference(name: scheme.name)
         case .project(let project) where getProjectReference(project) == nil:
             return .invalidProjectReference(scheme: scheme.name, reference: project)
         case .local, .project:
