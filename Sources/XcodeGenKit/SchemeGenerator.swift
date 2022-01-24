@@ -141,8 +141,8 @@ public class SchemeGenerator {
             )
         }
         
-        func getBuildableTestableReference(_ target: TestableTargetReference) throws -> XCScheme.BuildableReference {
-            switch target.location {
+        func getBuildableTestableReference(_ targetReference: TargetReference) throws -> XCScheme.BuildableReference {
+            switch targetReference.location {
             case .package(let packageName):
                 guard let package = self.project.getPackage(packageName),
                       case .local(let path) = package else {
@@ -150,12 +150,12 @@ public class SchemeGenerator {
                 }
                 return XCScheme.BuildableReference(
                     referencedContainer: "container:\(path)",
-                    blueprintIdentifier: target.name,
-                    buildableName: target.name,
-                    blueprintName: target.name
+                    blueprintIdentifier: targetReference.name,
+                    buildableName: targetReference.name,
+                    blueprintName: targetReference.name
                 )
             default:
-                return try getBuildableReference(target.targetReference)
+                return try getBuildableReference(targetReference)
             }
         }
 
@@ -444,14 +444,14 @@ extension Scheme {
     }
 
     private static func buildTargets(for target: Target, project: Project) -> [BuildTarget] {
-        let buildTarget = Scheme.BuildTarget(target: TestableTargetReference.local(target.name))
+        let buildTarget = Scheme.BuildTarget(target: TargetReference.local(target.name))
         switch target.type {
         case .watchApp, .watch2App:
             let hostTarget = project.targets
                 .first { projectTarget in
                     projectTarget.dependencies.contains { $0.reference == target.name }
                 }
-                .map { BuildTarget(target: TestableTargetReference.local($0.name)) }
+                .map { BuildTarget(target: TargetReference.local($0.name)) }
             return hostTarget.map { [buildTarget, $0] } ?? [buildTarget]
         default:
             return [buildTarget]
