@@ -54,8 +54,8 @@ class SchemeGeneratorTests: XCTestCase {
                     build: Scheme.Build(targets: [buildTarget], preActions: [preAction]),
                     run: Scheme.Run(config: "Debug", askForAppToLaunch: true, launchAutomaticallySubstyle: "2", simulateLocation: simulateLocation, storeKitConfiguration: storeKitConfiguration, customLLDBInit: "/sample/.lldbinit"),
                     test: Scheme.Test(config: "Debug", targets: [
-                        Scheme.Test.TestTarget(targetReference: TargetReference(framework.name), location: "test.gpx"),
-                        Scheme.Test.TestTarget(targetReference: TargetReference(framework.name), location: "New York, NY, USA")
+                        Scheme.Test.TestTarget(targetReference: TestableTargetReference(framework.name), location: "test.gpx"),
+                        Scheme.Test.TestTarget(targetReference: TestableTargetReference(framework.name), location: "New York, NY, USA")
                     ], customLLDBInit: "/test/.lldbinit"),
                     profile: Scheme.Profile(config: "Release", askForAppToLaunch: true)
                 )
