@@ -46,6 +46,16 @@ extension TestableTargetReference {
     public static func local(_ name: String) -> TestableTargetReference {
         TestableTargetReference(name: name, location: .local)
     }
+
+    public static func project(_ name: String) -> TestableTargetReference {
+        let paths = name.split(separator: "/")
+        return TestableTargetReference(name: String(paths[1]), location: .project(String(paths[0])))
+    }
+
+    public static func package(_ name: String) -> TestableTargetReference {
+        let paths = name.split(separator: "/")
+        return TestableTargetReference(name: String(paths[1]), location: .package(String(paths[0])))
+    }
 }
 
 extension TestableTargetReference: ExpressibleByStringLiteral {

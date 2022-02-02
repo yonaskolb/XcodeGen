@@ -550,6 +550,12 @@ extension Scheme.Test.TestTarget: JSONObjectConvertible {
     public init(jsonDictionary: JSONDictionary) throws {
         if let name: String = jsonDictionary.json(atKeyPath: "name")  {
             targetReference = try TestableTargetReference(name)
+        } else if let local: String = jsonDictionary.json(atKeyPath: "local") {
+            self.targetReference = TestableTargetReference.local(local)
+        } else if let project: String = jsonDictionary.json(atKeyPath: "project") {
+            self.targetReference = TestableTargetReference.project(project)
+        } else if let package: String = jsonDictionary.json(atKeyPath: "package") {
+            self.targetReference = TestableTargetReference.package(package)
         } else {
             self.targetReference = try jsonDictionary.json(atKeyPath: "target")
         }

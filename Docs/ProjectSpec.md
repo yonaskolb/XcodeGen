@@ -833,8 +833,10 @@ A multiline script can be written using the various YAML multiline methods, for 
 #### Test Target
 A target can be one of a 2 types:
 
-- **name**: **String** - The name of the target. If you want to specify local swift package, please use `target:`.
-- **target**: **[Testable Target Reference](#target-reference)** - The information of the target. You can specify more detailed information than `name:`.
+- **name**: **String** - The name of the target.
+- **target**: **[Testable Target Reference](#testable-target-reference)** - The information of the target. You can specify more detailed information than `name:`.
+
+As syntax suger, you can also specify **[Testable Target Reference](#testable-target-reference)** without `target`.
 
 #### Other Parameters
 
@@ -916,8 +918,7 @@ schemes:
           parallelizable: true
           randomExecutionOrder: true
           skippedTests: [Test/testExample()]
-        - target: 
-          package: APIClient/APIClientTests
+        - package: APIClient/APIClientTests
           parallelizable: true
           randomExecutionOrder: true
       environmentVariables:
