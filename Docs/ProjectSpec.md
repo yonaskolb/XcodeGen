@@ -842,6 +842,7 @@ As syntax suger, you can also specify **[Testable Target Reference](#testable-ta
 
 - [ ] **parallelizable**: **Bool** - Whether to run tests in parallel. Defaults to false
 - [ ] **randomExecutionOrder**: **Bool** - Whether to run tests in a random order. Defaults to false
+- [ ] **location**: **String** - GPX file or predefined value for simulating location. See [Simulate Location](#simulate-location) for location examples.
 - [ ] **skipped**: **Bool** - Whether to skip all of the test target tests. Defaults to false
 - [ ] **skippedTests**: **[String]** - List of tests in the test target to skip. Defaults to empty
 - [ ] **selectedTests**: **[String]** - List of tests in the test target to whitelist and select. Defaults to empty. This will override `skippedTests` if provided

@@ -49,11 +49,14 @@ class SchemeGeneratorTests: XCTestCase {
                 let preAction = Scheme.ExecutionAction(name: "Script", script: "echo Starting", settingsTarget: app.name)
                 let simulateLocation = Scheme.SimulateLocation(allow: true, defaultLocation: "New York, NY, USA")
                 let storeKitConfiguration = "Configuration.storekit"
-                let scheme = Scheme(
+                let scheme = try Scheme(
                     name: "MyScheme",
                     build: Scheme.Build(targets: [buildTarget], preActions: [preAction]),
                     run: Scheme.Run(config: "Debug", askForAppToLaunch: true, launchAutomaticallySubstyle: "2", simulateLocation: simulateLocation, storeKitConfiguration: storeKitConfiguration, customLLDBInit: "/sample/.lldbinit"),
-                    test: Scheme.Test(config: "Debug", customLLDBInit: "/test/.lldbinit"),
+                    test: Scheme.Test(config: "Debug", targets: [
+                        Scheme.Test.TestTarget(targetReference: TargetReference(framework.name), location: "test.gpx"),
+                        Scheme.Test.TestTarget(targetReference: TargetReference(framework.name), location: "New York, NY, USA")
+                    ], customLLDBInit: "/test/.lldbinit"),
                     profile: Scheme.Profile(config: "Release", askForAppToLaunch: true)
                 )
                 let project = Project(
@@ -109,6 +112,13 @@ class SchemeGeneratorTests: XCTestCase {
                 try expect(xcscheme.launchAction?.customLLDBInitFile) == "/sample/.lldbinit"
                 try expect(xcscheme.testAction?.customLLDBInitFile) == "/test/.lldbinit"
                 try expect(xcscheme.testAction?.systemAttachmentLifetime).to.beNil()
+                
+                try expect(xcscheme.testAction?.testables[0].locationScenarioReference?.referenceType) == "0"
+                try expect(xcscheme.testAction?.testables[0].locationScenarioReference?.identifier) == "../test.gpx"
+                
+                try expect(xcscheme.testAction?.testables[1].locationScenarioReference?.referenceType) == "1"
+                try expect(xcscheme.testAction?.testables[1].locationScenarioReference?.identifier) == "New York, NY, USA"
+                
             }
 
             let frameworkTarget = Scheme.BuildTarget(target: .local(framework.name), buildTypes: [.archiving])

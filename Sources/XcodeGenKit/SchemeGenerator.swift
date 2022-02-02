@@ -205,12 +205,28 @@ public class SchemeGenerator {
             runPostActionsOnFailure: scheme.build.runPostActionsOnFailure
         )
 
-        let testables = zip(testTargets, testBuildTargetEntries).map { testTarget, testBuilEntries in
-            XCScheme.TestableReference(
+        let testables: [XCScheme.TestableReference] = zip(testTargets, testBuildTargetEntries).map { testTarget, testBuildEntries in
+            
+            var locationScenarioReference: XCScheme.LocationScenarioReference?
+            if var location = testTarget.location {
+                
+                if location.contains(".gpx") {
+                    var path = Path(components: [project.options.schemePathPrefix, location])
+                    path = path.simplifyingParentDirectoryReferences()
+                    location = path.string
+                }
+                
+                let referenceType = location.contains(".gpx") ? "0" : "1"
+                locationScenarioReference = XCScheme.LocationScenarioReference(identifier: location, referenceType: referenceType)
+                
+            }
+            
+            return XCScheme.TestableReference(
                 skipped: testTarget.skipped,
                 parallelizable: testTarget.parallelizable,
                 randomExecutionOrdering: testTarget.randomExecutionOrder,
-                buildableReference: testBuilEntries.buildableReference,
+                buildableReference: testBuildEntries.buildableReference,
+                locationScenarioReference: locationScenarioReference,
                 skippedTests: testTarget.skippedTests.map(XCScheme.TestItem.init),
                 selectedTests: testTarget.selectedTests.map(XCScheme.TestItem.init),
                 useTestSelectionWhitelist: !testTarget.selectedTests.isEmpty ? true : nil
