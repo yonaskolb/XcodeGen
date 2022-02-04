@@ -54,8 +54,8 @@ class SchemeGeneratorTests: XCTestCase {
                     build: Scheme.Build(targets: [buildTarget], preActions: [preAction]),
                     run: Scheme.Run(config: "Debug", askForAppToLaunch: true, launchAutomaticallySubstyle: "2", simulateLocation: simulateLocation, storeKitConfiguration: storeKitConfiguration, customLLDBInit: "/sample/.lldbinit"),
                     test: Scheme.Test(config: "Debug", targets: [
-                        Scheme.Test.TestTarget(targetReference: TestableTargetReference(framework.name), location: "test.gpx"),
-                        Scheme.Test.TestTarget(targetReference: TestableTargetReference(framework.name), location: "New York, NY, USA")
+                        Scheme.Test.TestTarget(targetReference: TargetReference(framework.name), location: "test.gpx"),
+                        Scheme.Test.TestTarget(targetReference: TargetReference(framework.name), location: "New York, NY, USA")
                     ], customLLDBInit: "/test/.lldbinit"),
                     profile: Scheme.Profile(config: "Release", askForAppToLaunch: true)
                 )
@@ -376,8 +376,8 @@ class SchemeGeneratorTests: XCTestCase {
                         gatherCoverageData: true,
                         coverageTargets: [
                             "TestProject/ExternalTarget",
-                            TestableTargetReference(framework.name),
-                            TestableTargetReference(name: "XcodeGenKitTests", location: .package("XcodeGen"))
+                            TargetReference(framework.name),
+                            TargetReference(name: "XcodeGenKitTests", location: .package("XcodeGen"))
                         ]
                     )
                 )
@@ -461,7 +461,7 @@ class SchemeGeneratorTests: XCTestCase {
             
             $0.it("generates scheme with test target of local swift package") {
                 let targetScheme = TargetScheme(
-                    testTargets: [Scheme.Test.TestTarget(targetReference: TestableTargetReference(name: "XcodeGenKitTests", location: .package("XcodeGen")))])
+                    testTargets: [Scheme.Test.TestTarget(targetReference: TargetReference(name: "XcodeGenKitTests", location: .package("XcodeGen")))])
                 let app = Target(
                     name: "MyApp",
                     type: .application,

@@ -169,7 +169,7 @@ public struct Scheme: Equatable {
 
         public var config: String?
         public var gatherCoverageData: Bool
-        public var coverageTargets: [TestableTargetReference]
+        public var coverageTargets: [TargetReference]
         public var disableMainThreadChecker: Bool
         public var commandLineArguments: [String: Bool]
         public var targets: [TestTarget]
@@ -189,7 +189,7 @@ public struct Scheme: Equatable {
             public static let parallelizableDefault = false
 
             public var name: String { targetReference.name }
-            public let targetReference: TestableTargetReference
+            public let targetReference: TargetReference
             public var randomExecutionOrder: Bool
             public var parallelizable: Bool
             public var location: String?
@@ -198,7 +198,7 @@ public struct Scheme: Equatable {
             public var selectedTests: [String]
 
             public init(
-                targetReference: TestableTargetReference,
+                targetReference: TargetReference,
                 randomExecutionOrder: Bool = randomExecutionOrderDefault,
                 parallelizable: Bool = parallelizableDefault,
                 location: String? = nil,
@@ -217,7 +217,7 @@ public struct Scheme: Equatable {
 
             public init(stringLiteral value: String) {
                 do {
-                    targetReference = try TestableTargetReference(value)
+                    targetReference = try TargetReference(value)
                     randomExecutionOrder = false
                     parallelizable = false
                     location = nil
@@ -233,7 +233,7 @@ public struct Scheme: Equatable {
         public init(
             config: String,
             gatherCoverageData: Bool = gatherCoverageDataDefault,
-            coverageTargets: [TestableTargetReference] = [],
+            coverageTargets: [TargetReference] = [],
             disableMainThreadChecker: Bool = disableMainThreadCheckerDefault,
             randomExecutionOrder: Bool = false,
             parallelizable: Bool = false,
@@ -331,10 +331,10 @@ public struct Scheme: Equatable {
     }
 
     public struct BuildTarget: Equatable, Hashable {
-        public var target: TestableTargetReference
+        public var target: TargetReference
         public var buildTypes: [BuildType]
 
-        public init(target: TestableTargetReference, buildTypes: [BuildType] = BuildType.all) {
+        public init(target: TargetReference, buildTypes: [BuildType] = BuildType.all) {
             self.target = target
             self.buildTypes = buildTypes
         }
@@ -469,9 +469,9 @@ extension Scheme.Test: JSONObjectConvertible {
         if let coverages = jsonDictionary["coverageTargets"] as? [Any] {
             coverageTargets = try coverages.compactMap { target in
                 if let string = target as? String {
-                    return try TestableTargetReference(string)
+                    return try TargetReference(string)
                 } else if let dictionary = target as? JSONDictionary,
-                          let target: TestableTargetReference = try? .init(jsonDictionary: dictionary) {
+                          let target: TargetReference = try? .init(jsonDictionary: dictionary) {
                     return target
                 } else {
                     return nil
@@ -486,7 +486,7 @@ extension Scheme.Test: JSONObjectConvertible {
         if let targets = jsonDictionary["targets"] as? [Any] {
             self.targets = try targets.compactMap { target in
                 if let string = target as? String {
-                    return try TestTarget(targetReference: TestableTargetReference(string))
+                    return try TestTarget(targetReference: TargetReference(string))
                 } else if let dictionary = target as? JSONDictionary {
                     return try TestTarget(jsonDictionary: dictionary)
                 } else {
@@ -554,13 +554,13 @@ extension Scheme.Test.TestTarget: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
         if let name: String = jsonDictionary.json(atKeyPath: "name")  {
-            targetReference = try TestableTargetReference(name)
+            self.targetReference = try TargetReference(name)
         } else if let local: String = jsonDictionary.json(atKeyPath: "local") {
-            self.targetReference = TestableTargetReference.local(local)
+            self.targetReference = TargetReference.local(local)
         } else if let project: String = jsonDictionary.json(atKeyPath: "project") {
-            self.targetReference = TestableTargetReference.project(project)
+            self.targetReference = TargetReference.project(project)
         } else if let package: String = jsonDictionary.json(atKeyPath: "package") {
-            self.targetReference = TestableTargetReference.package(package)
+            self.targetReference = TargetReference.package(package)
         } else {
             self.targetReference = try jsonDictionary.json(atKeyPath: "target")
         }
@@ -719,7 +719,7 @@ extension Scheme.Build: JSONObjectConvertible {
             } else {
                 buildTypes = BuildType.all
             }
-            let target = try TestableTargetReference(targetRepr)
+            let target = try TargetReference(targetRepr)
             targets.append(Scheme.BuildTarget(target: target, buildTypes: buildTypes))
         }
         self.targets = targets.sorted { $0.target.name < $1.target.name }

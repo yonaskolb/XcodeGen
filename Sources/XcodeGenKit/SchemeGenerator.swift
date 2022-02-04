@@ -107,6 +107,8 @@ public class SchemeGenerator {
                 }
                 pbxProj = try getPBXProj(from: projectReference)
                 projectFilePath = projectReference.path
+            case .package:
+                fatalError("Currently unsupported to use package for: \(target)")
             case .local:
                 pbxProj = self.pbxProj
                 projectFilePath = "\(self.project.name).xcodeproj"
@@ -120,6 +122,8 @@ public class SchemeGenerator {
             switch target.location {
             case .project:
                 buildableName = pbxTarget.productNameWithExtension() ?? pbxTarget.name
+            case .package:
+                fatalError("Currently unsupported to use package for: \(target)")
             case .local:
                 guard let _buildableName =
                     project.getTarget(target.name)?.filename ??
@@ -137,7 +141,7 @@ public class SchemeGenerator {
             )
         }
         
-        func getBuildableTestableReference(_ target: TestableTargetReference) throws -> XCScheme.BuildableReference {
+        func getBuildableTestableReference(_ target: TargetReference) throws -> XCScheme.BuildableReference {
             switch target.location {
             case .package(let packageName):
                 guard let package = self.project.getPackage(packageName),
@@ -151,7 +155,7 @@ public class SchemeGenerator {
                     blueprintName: target.name
                 )
             default:
-                return try getBuildableReference(target.targetReference)
+                return try getBuildableReference(target)
             }
         }
 
@@ -456,14 +460,14 @@ extension Scheme {
     }
 
     private static func buildTargets(for target: Target, project: Project) -> [BuildTarget] {
-        let buildTarget = Scheme.BuildTarget(target: TestableTargetReference.local(target.name))
+        let buildTarget = Scheme.BuildTarget(target: TargetReference.local(target.name))
         switch target.type {
         case .watchApp, .watch2App:
             let hostTarget = project.targets
                 .first { projectTarget in
                     projectTarget.dependencies.contains { $0.reference == target.name }
                 }
-                .map { BuildTarget(target: TestableTargetReference.local($0.name)) }
+                .map { BuildTarget(target: TargetReference.local($0.name)) }
             return hostTarget.map { [buildTarget, $0] } ?? [buildTarget]
         default:
             return [buildTarget]

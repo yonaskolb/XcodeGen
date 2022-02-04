@@ -772,6 +772,8 @@ public class PBXProjGenerator {
                     dependencies.append(targetDependency)
                     guard let dependencyTarget = project.getTarget(dependencyTargetName) else { continue }
                     processTargetDependency(dependency, dependencyTarget: dependencyTarget, embedFileReference: targetFileReferences[dependencyTarget.name], platform: platform)
+                case .package:
+                    fatalError("Currently unsupported to use package for: \(target)")
                 case .project(let dependencyProjectName):
                     let dependencyTargetName = dependencyTargetReference.name
                     let (targetDependency, dependencyTarget, dependencyProductProxy) = try generateExternalTargetDependency(from: target.name, to: dependencyTargetName, in: dependencyProjectName, platform: target.platform)
@@ -1486,6 +1488,8 @@ public class PBXProjGenerator {
                                 dependencies[dependency.uniqueID] = dependency
                             }
                         }
+                    case .package:
+                        fatalError("Currently unsupported to use package for: \(target)")
                     case .project:
                         if isTopLevel || dependency.embed != true {
                             dependencies[dependency.uniqueID] = dependency
