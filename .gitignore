@@ -7,3 +7,4 @@ xcuserdata
 *.xcuserstate
 XcodeGen.xcodeproj
 xcodegen.zip
+.vscode/launch.json
