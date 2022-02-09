@@ -46,4 +46,4 @@ brew:
 	brew bump-formula-pr --url=$(RELEASE_TAR) XcodeGen
 
 archive: build
-	./scripts/archive.sh $(EXECUTABLE_PATH)
+	./scripts/archive.sh "$(EXECUTABLE_PATH)"
