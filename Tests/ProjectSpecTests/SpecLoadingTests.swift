@@ -1227,9 +1227,10 @@ class SpecLoadingTests: XCTestCase {
                     "package6": .remote(url: "package.git", versionRequirement: .range(from: "1.2.0", to: "1.2.5")),
                     "package7": .remote(url: "package.git", versionRequirement: .exact("1.2.2")),
                     "package8": .remote(url: "package.git", versionRequirement: .upToNextMajorVersion("4.0.0-beta.5")),
-                    "package9": .local(path: "package/package"),
+                    "package9": .local(path: "package/package", xcodePath: nil),
                     "package10": .remote(url: "https://github.com/yonaskolb/XcodeGen", versionRequirement: .exact("1.2.2")),
-                    "XcodeGen": .local(path: "../XcodeGen"),
+                    "XcodeGen": .local(path: "../XcodeGen", xcodePath: nil),
+                    "package11": .local(path: "../XcodeGen", xcodePath: "Packages/Feature"),
                 ], options: .init(localPackagesGroup: "MyPackages"))
 
                 let dictionary: [String: Any] = [
@@ -1248,6 +1249,7 @@ class SpecLoadingTests: XCTestCase {
                         "package8": ["url": "package.git", "majorVersion": "4.0.0-beta.5"],
                         "package9": ["path": "package/package"],
                         "package10": ["github": "yonaskolb/XcodeGen", "exactVersion": "1.2.2"],
+                        "package11": ["path": "../XcodeGen", "xcodePath": "Packages/Feature"],
                     ],
                     "localPackages": ["../XcodeGen"],
                 ]
@@ -1257,8 +1259,8 @@ class SpecLoadingTests: XCTestCase {
 
             $0.it("parses old local package format") {
                 let project = Project(name: "spm", packages: [
-                    "XcodeGen": .local(path: "../XcodeGen"),
-                    "Yams": .local(path: "Yams"),
+                    "XcodeGen": .local(path: "../XcodeGen", xcodePath: nil),
+                    "Yams": .local(path: "Yams", xcodePath: nil),
                 ], options: .init(localPackagesGroup: "MyPackages"))
 
                 let dictionary: [String: Any] = [
