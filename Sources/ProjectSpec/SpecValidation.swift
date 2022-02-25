@@ -155,15 +155,15 @@ extension Project {
                     let dependencyTargetReference = try TargetReference(dependency.reference)
 
                     switch dependencyTargetReference.location {
-                    case .local:
-                        if getProjectTarget(dependency.reference) == nil {
-                            errors.append(.invalidTargetDependency(target: target.name, dependency: dependency.reference))
-                        }
-                    case .project(let dependencyProjectName), .package(let dependencyProjectName):
-                        if getProjectReference(dependencyProjectName) == nil {
-                            errors.append(.invalidTargetDependency(target: target.name, dependency: dependency.reference))
-                        }
+                    case .local where getProjectTarget(dependency.reference) == nil:
+                        errors.append(.invalidTargetDependency(target: target.name, dependency: dependency.reference))
+                    case .project(let dependencyProjectName) where getProjectReference(dependencyProjectName) == nil:
+                        errors.append(.invalidTargetDependency(target: target.name, dependency: dependency.reference))
+                    case .package(let package) where getPackage(package) == nil:
+                        errors.append(.invalidTargetDependency(target: target.name, dependency: dependency.reference))
+                    default: break
                     }
+                    
                 case .sdk:
                     let path = Path(dependency.reference)
                     if !dependency.reference.contains("/") {
