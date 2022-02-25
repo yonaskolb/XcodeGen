@@ -100,6 +100,7 @@ public class SchemeGenerator {
         func getBuildableReference(_ target: TargetReference) throws -> XCScheme.BuildableReference {
             let pbxProj: PBXProj
             let projectFilePath: String
+            
             switch target.location {
             case .project(let project):
                 guard let projectReference = self.project.getProjectReference(project) else {
@@ -107,8 +108,14 @@ public class SchemeGenerator {
                 }
                 pbxProj = try getPBXProj(from: projectReference)
                 projectFilePath = projectReference.path
-            case .package:
-                fatalError("Currently unsupported to use package for: \(target)")
+            case .package(let packageName):
+                guard let package = self.project.getPackage(packageName),
+                    case .local(let path) = package else {
+                    throw SchemeGenerationError.missingPackage(packageName)
+                }
+                pbxProj = self.pbxProj
+                projectFilePath = "\(path)"
+                
             case .local:
                 pbxProj = self.pbxProj
                 projectFilePath = "\(self.project.name).xcodeproj"
@@ -123,7 +130,7 @@ public class SchemeGenerator {
             case .project:
                 buildableName = pbxTarget.productNameWithExtension() ?? pbxTarget.name
             case .package:
-                fatalError("Currently unsupported to use package for: \(target)")
+                buildableName = target.name
             case .local:
                 guard let _buildableName =
                     project.getTarget(target.name)?.filename ??
