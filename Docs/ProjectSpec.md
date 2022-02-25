@@ -127,7 +127,7 @@ Note that target names can also be changed by adding a `name` property to a targ
 - [ ] **fileTypes**: **[String: [FileType](#filetype)]** - A list of default file options for specific file extensions across the project. Values in [Sources](#sources) will overwrite these settings.
 - [ ] **preGenCommand**: **String** - A bash command to run before the project has been generated. If the project isn't generated due to no changes when using the cache then this won't run. This is useful for running things like generating resources files before the project is regenerated.
 - [ ] **postGenCommand**: **String** - A bash command to run after the project has been generated. If the project isn't generated due to no changes when using the cache then this won't run. This is useful for running things like `pod install` only if the project is actually regenerated.
-- [ ] **useBaseInternationalization**: **Bool** If this is `false` and your project does not include resources located in a **Base.lproj** directory then `Base` will not be included in the projects 'known regions'. The default value is `true`. 
+- [ ] **useBaseInternationalization**: **Bool** If this is `false` and your project does not include resources located in a **Base.lproj** directory then `Base` will not be included in the projects 'known regions'. The default value is `true`.
 - [ ] **schemePathPrefix**: **String** - A path prefix for relative paths in schemes, such as StoreKitConfiguration. The default is `"../../"`, which is suitable for non-workspace projects. For use in workspaces, use `"../"`.
 
 ```yaml
@@ -147,7 +147,7 @@ Describe an order of groups. Available parameters:
 
 ```yaml
 options:
-  groupOrdering: 
+  groupOrdering:
     - order: [Sources, Resources, Tests, Support files, Configurations]
     - pattern: '^.*Screen$'
       order: [View, Presenter, Interactor, Entities, Assembly]
@@ -525,7 +525,7 @@ packages:
 targets:
   App:
     dependencies:
-      - package: Yams 
+      - package: Yams
       - package: SwiftPM
         product: SPMUtility
 ```
@@ -730,7 +730,7 @@ Any attributes defined within a targets `templateAttributes` will be used to rep
 ```yaml
 targets:
   MyFramework:
-    templates: 
+    templates:
       - Framework
     templateAttributes:
       frameworkName: AwesomeFramework
@@ -824,7 +824,7 @@ A multiline script can be written using the various YAML multiline methods, for 
 ### Test Action
 
 - [ ] **gatherCoverageData**: **Bool** - a boolean that indicates if this scheme should gather coverage data. This defaults to false
-- [ ] **coverageTargets**: **[[Testable Target Reference](#testable-target-reference)]** - a list of targets to gather code coverage. Each entry can also either be a simple string, a string using [Project Reference](#project-reference) or [Testable Target Reference](#testable-target-reference)
+- [ ] **coverageTargets**: **[String OR [Target Reference](#target-reference)]** - a list of targets to gather code coverage. Each entry can also either be a simple string, a string using [Project Reference](#project-reference) or [Target Reference](#target-reference)
 - [ ] **targets**: **[[Test Target](#test-target)]** - a list of targets to test. Each entry can either be a simple string, or a [Test Target](#test-target)
 - [ ] **customLLDBInit**: **String** - the absolute path to the custom `.lldbinit` file
 - [ ] **captureScreenshotsAutomatically**: **Bool** - indicates whether screenshots should be captured automatically while UI Testing. This defaults to true.
@@ -834,9 +834,9 @@ A multiline script can be written using the various YAML multiline methods, for 
 A target can be one of a 2 types:
 
 - **name**: **String** - The name of the target.
-- **target**: **[Testable Target Reference](#testable-target-reference)** - The information of the target. You can specify more detailed information than `name:`.
+- **target**: **[Target Reference](#target-reference)** - The information of the target. You can specify more detailed information than `name:`.
 
-As syntax suger, you can also specify **[Testable Target Reference](#testable-target-reference)** without `target`.
+As syntax suger, you can also specify **[Target Reference](#target-reference)** without `target`.
 
 #### Other Parameters
 
@@ -847,7 +847,7 @@ As syntax suger, you can also specify **[Testable Target Reference](#testable-ta
 - [ ] **skippedTests**: **[String]** - List of tests in the test target to skip. Defaults to empty
 - [ ] **selectedTests**: **[String]** - List of tests in the test target to whitelist and select. Defaults to empty. This will override `skippedTests` if provided
 
-#### Testable Target Reference
+#### Target Reference
 A Testable Target Reference can be one of 3 types:
 - `package: {local-swift-package-name}/{target-name}`: Name of local swift package and its target.
 - `local: {target-name}`:  Name of local target.
@@ -860,7 +860,7 @@ A Testable Target Reference can be one of 3 types:
 
 
 ### Simulate Location
-- [x] **allow**: **Bool** - enable location simulation 
+- [x] **allow**: **Bool** - enable location simulation
 - [ ] **defaultLocation**: **String** - set the default location, possible values:
 	- `London, England`
 	- `Johannesburg, South Africa`
@@ -874,9 +874,9 @@ A Testable Target Reference can be one of 3 types:
 	- `Mexico City, Mexico`
 	- `New York, NY, USA`
 	- `Rio de Janeiro, Brazil`
-	- `<relative-path-to-gpx-file>` (e.g. ./location.gpx)   
+	- `<relative-path-to-gpx-file>` (e.g. ./location.gpx)
 	 Setting the **defaultLocation** to a custom gpx file, you also need to add that file to `fileGroups` for Xcode be able to use it:
-	 
+
 ```yaml
 targets:
   MyTarget:
@@ -913,8 +913,8 @@ schemes:
         - MyTarget1
         - ExternalTarget/OtherTarget1
         - package: LocalPackage/TestTarget
-      targets: 
-        - Tester1 
+      targets:
+        - Tester1
         - name: Tester2
           parallelizable: true
           randomExecutionOrder: true
@@ -985,7 +985,7 @@ Swift packages are defined at a project level, and then linked to individual tar
   - `branch: master`
   - `revision: xxxxxx`
 - [ ] **github** : **String**- this is an optional helper you can use for github repos. Instead of specifying the full url in `url` you can just specify the github org and repo
-  
+
 ### Local Package
 
 - [x] **path**: **String** - the path to the package in local. The path must be directory with a `Package.swift`.
