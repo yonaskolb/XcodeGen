@@ -2,6 +2,10 @@
 
 ## Next Version
 
+### Fixed
+
+- Skip generating empty compile sources build phases for watch apps [#1185](https://github.com/yonaskolb/XcodeGen/issues/1185) @evandcoleman
+
 ## 2.26.0
 
 ### Added
