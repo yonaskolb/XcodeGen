@@ -78,6 +78,14 @@ extension Project {
             errors += validateSettings(settings)
         }
 
+        for target in targets {
+            let dependencyMap = Dictionary(grouping: target.dependencies, by: { "\($0.type.hashValue)-\($0.reference)" })
+            let duplicates = dependencyMap.filter({ $1.count > 1 })
+            for duplicate in duplicates {
+                errors.append(.duplicateDependencies(target: target.name, dependencyReference: duplicate.1[0].reference))
+            }
+        }
+
         for target in projectTargets {
 
             for (config, configFile) in target.configFiles {
