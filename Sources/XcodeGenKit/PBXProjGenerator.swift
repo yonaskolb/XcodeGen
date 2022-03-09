@@ -708,7 +708,7 @@ public class PBXProjGenerator {
         func processTargetDependency(_ dependency: Dependency, dependencyTarget: Target, embedFileReference: PBXFileElement?, platform: String?) {
             let dependencyLinkage = dependencyTarget.defaultLinkage
             let link = dependency.link ??
-                ((dependencyLinkage == .dynamic && target.type != .staticLibrary) ||
+                ((dependencyLinkage == .dynamic && target.defaultLinkage != .static) ||
                     (dependencyLinkage == .static && target.type.isExecutable))
 
             if link, let dependencyFile = embedFileReference {

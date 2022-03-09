@@ -277,6 +277,8 @@ targets:
     type: library.static
     platform: iOS
     sources: StaticLibrary_Swift
+    dependencies:
+      - target: Framework2_iOS
 
   Framework:
     type: framework
@@ -305,6 +307,30 @@ targets:
       - path: Framework
         excludes:
           - "*.xcodeproj"
+
+  FrameworkStatic:
+    type: framework.static
+    platform: iOS
+    sources:
+      - path: Framework
+        excludes:
+          - "*.xcodeproj"
+    dependencies:
+      - target: Framework2_iOS
+
+  FrameworkWithStaticlibMatchOType:
+    type: framework
+    platform: iOS
+    settings:
+      base:
+        MACH_O_TYPE: staticlib
+    sources:
+      - path: Framework
+        excludes:
+          - "*.xcodeproj"
+    dependencies:
+      - target: Framework2_iOS
+
   TestFramework:
     type: framework
     platform: iOS
@@ -418,7 +444,7 @@ schemes:
         defaultLocation: Honolulu, HI, USA
       customLLDBInit: ${SRCROOT}/.lldbinit
       storeKitConfiguration: "App_iOS/Configuration.storekit"
-      macroExpansion: App_iOS 
+      macroExpansion: App_iOS
     test:
       gatherCoverageData: true
       targets:
