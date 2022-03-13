@@ -463,6 +463,7 @@ class ProjectSpecTests: XCTestCase {
                                                                                                               parallelizable: false)],
                                                                          configVariants: ["foo"],
                                                                          gatherCoverageData: true,
+                                                                         coverageTargets: ["App"],
                                                                          storeKitConfiguration: "Configuration.storekit",
                                                                          disableMainThreadChecker: true,
                                                                          stopOnEveryMainThreadCheckerIssue: false,

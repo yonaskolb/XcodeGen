@@ -11,6 +11,7 @@
 ### Added
 
 - Added the option to specify a `location` in a test target [#1150](https://github.com/yonaskolb/XcodeGen/issues/1150) @KrisRJack
+- Added `coverageTargets` for target test schemes. This enables to gather code coverage for specific targets. [#????](https://github.com/yonaskolb/XcodeGen/pull/????) @gabriellanata
 
 ### Changed
 

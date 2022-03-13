@@ -326,6 +326,25 @@ class SchemeGeneratorTests: XCTestCase {
                 try expect(xcscheme.testAction?.postActions.count) == 0
             }
 
+            $0.it("generates target schemes with code coverage options") {
+                var target = app
+                target.scheme = try TargetScheme(
+                    gatherCoverageData: true,
+                    coverageTargets: [
+                        TargetReference(framework.name),
+                    ]
+                )
+
+                let project = Project(name: "test", targets: [target, framework])
+                let xcodeProject = try project.generateXcodeProject()
+                try expect(xcodeProject.sharedData?.schemes.count) == 1
+
+                let xcscheme = try unwrap(xcodeProject.sharedData?.schemes.first)
+                try expect(xcscheme.testAction?.codeCoverageEnabled) == true
+                try expect(xcscheme.testAction?.codeCoverageTargets.count) == 1
+                try expect(xcscheme.testAction?.codeCoverageTargets.first?.blueprintName) == framework.name
+            }
+
             $0.it("generates scheme using external project file") {
                 prepareXcodeProj: do {
                     let project = try! Project(path: fixturePath + "scheme_test/test_project.yml")

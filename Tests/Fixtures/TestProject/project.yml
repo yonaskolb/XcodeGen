@@ -152,6 +152,8 @@ targets:
         - App_iOS_Tests
         - App_iOS_UITests
       gatherCoverageData: true
+      coverageTargets:
+        - App_iOS
       disableMainThreadChecker: true
       stopOnEveryMainThreadCheckerIssue: true
       configVariants:
