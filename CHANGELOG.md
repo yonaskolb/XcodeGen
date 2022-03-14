@@ -2,9 +2,21 @@
 
 ## Next Version
 
+### Fixed
+
+- Fixed crash caused by a simultaneous write during a glob processing [#1177](https://github.com/yonaskolb/XcodeGen/issues/1177) @tr1ckyf0x
+
+## 2.26.0
+
+### Added
+
+- Added the option to specify a `location` in a test target [#1150](https://github.com/yonaskolb/XcodeGen/issues/1150) @KrisRJack
+
 ### Changed
 
 - Speed up source inclusion checking for big projects [#1122](https://github.com/yonaskolb/XcodeGen/pull/1122) @PaulTaykalo 
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.25.0...2.26.0)
 
 ## 2.25.0
 

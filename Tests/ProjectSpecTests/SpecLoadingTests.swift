@@ -790,6 +790,7 @@ class SpecLoadingTests: XCTestCase {
                                 "name": "ExternalProject/Target2",
                                 "parallelizable": true,
                                 "skipped": true,
+                                "location": "test.gpx",
                                 "randomExecutionOrder": true,
                                 "skippedTests": ["Test/testExample()"],
                             ],
@@ -836,6 +837,7 @@ class SpecLoadingTests: XCTestCase {
                             targetReference: "ExternalProject/Target2",
                             randomExecutionOrder: true,
                             parallelizable: true,
+                            location: "test.gpx",
                             skipped: true,
                             skippedTests: ["Test/testExample()"]
                         ),
@@ -856,6 +858,7 @@ class SpecLoadingTests: XCTestCase {
                             [
                                 "name": "ExternalProject/Target2",
                                 "parallelizable": true,
+                                "location": "New York, NY, USA",
                                 "randomExecutionOrder": true,
                                 "selectedTests": ["Test/testExample()"],
                             ],
@@ -877,6 +880,7 @@ class SpecLoadingTests: XCTestCase {
                             targetReference: "ExternalProject/Target2",
                             randomExecutionOrder: true,
                             parallelizable: true,
+                            location: "New York, NY, USA",
                             selectedTests: ["Test/testExample()"]
                         ),
                     ]
