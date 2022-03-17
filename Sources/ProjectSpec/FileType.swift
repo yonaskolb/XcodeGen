@@ -75,6 +75,7 @@ extension FileType {
 
         // sources
         "swift": FileType(buildPhase: .sources),
+        "gyb": FileType(buildPhase: .sources),
         "m": FileType(buildPhase: .sources),
         "mm": FileType(buildPhase: .sources),
         "cpp": FileType(buildPhase: .sources),
