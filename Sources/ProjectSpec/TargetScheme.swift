@@ -11,6 +11,7 @@ public struct TargetScheme: Equatable {
     public var testTargets: [Scheme.Test.TestTarget]
     public var configVariants: [String]
     public var gatherCoverageData: Bool
+    public var coverageTargets: [TargetReference]
     public var storeKitConfiguration: String?
     public var language: String?
     public var region: String?
@@ -26,6 +27,7 @@ public struct TargetScheme: Equatable {
         testTargets: [Scheme.Test.TestTarget] = [],
         configVariants: [String] = [],
         gatherCoverageData: Bool = gatherCoverageDataDefault,
+        coverageTargets: [TargetReference] = [],
         storeKitConfiguration: String? = nil,
         language: String? = nil,
         region: String? = nil,
@@ -40,6 +42,7 @@ public struct TargetScheme: Equatable {
         self.testTargets = testTargets
         self.configVariants = configVariants
         self.gatherCoverageData = gatherCoverageData
+        self.coverageTargets = coverageTargets
         self.storeKitConfiguration = storeKitConfiguration
         self.language = language
         self.region = region
@@ -69,6 +72,19 @@ extension TargetScheme: JSONObjectConvertible {
         } else {
             testTargets = []
         }
+
+        if let targets = jsonDictionary["coverageTargets"] as? [Any] {
+            coverageTargets = try targets.compactMap { target in
+                if let string = target as? String {
+                    return try TargetReference(string)
+                } else {
+                    return nil
+                }
+            }
+        } else {
+            coverageTargets = []
+        }
+
         configVariants = jsonDictionary.json(atKeyPath: "configVariants") ?? []
         gatherCoverageData = jsonDictionary.json(atKeyPath: "gatherCoverageData") ?? TargetScheme.gatherCoverageDataDefault
         storeKitConfiguration = jsonDictionary.json(atKeyPath: "storeKitConfiguration")
@@ -88,6 +104,7 @@ extension TargetScheme: JSONEncodable {
     public func toJSONValue() -> Any {
         var dict: [String: Any] = [
             "configVariants": configVariants,
+            "coverageTargets": coverageTargets.map { $0.reference },
             "commandLineArguments": commandLineArguments,
             "testTargets": testTargets.map { $0.toJSONValue() },
             "environmentVariables": environmentVariables.map { $0.toJSONValue() },
