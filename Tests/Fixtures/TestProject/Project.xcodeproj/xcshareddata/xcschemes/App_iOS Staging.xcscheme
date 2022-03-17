@@ -28,7 +28,7 @@
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       codeCoverageEnabled = "YES"
-      onlyGenerateCoverageForSpecifiedTargets = "NO"
+      onlyGenerateCoverageForSpecifiedTargets = "YES"
       shouldUseLaunchSchemeArgsEnv = "NO"
       disableMainThreadChecker = "YES">
       <Testables>
@@ -72,6 +72,15 @@
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>
+      <CodeCoverageTargets>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "0867B0DACEF28C11442DE8F7"
+            BuildableName = "App_iOS.app"
+            BlueprintName = "App_iOS"
+            ReferencedContainer = "container:Project.xcodeproj">
+         </BuildableReference>
+      </CodeCoverageTargets>
    </TestAction>
    <LaunchAction
       buildConfiguration = "Staging Debug"
