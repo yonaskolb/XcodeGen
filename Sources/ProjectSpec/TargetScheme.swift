@@ -11,7 +11,7 @@ public struct TargetScheme: Equatable {
     public var testTargets: [Scheme.Test.TestTarget]
     public var configVariants: [String]
     public var gatherCoverageData: Bool
-    public var coverageTargets: [TargetReference]
+    public var coverageTargets: [TestableTargetReference]
     public var storeKitConfiguration: String?
     public var language: String?
     public var region: String?
@@ -27,7 +27,7 @@ public struct TargetScheme: Equatable {
         testTargets: [Scheme.Test.TestTarget] = [],
         configVariants: [String] = [],
         gatherCoverageData: Bool = gatherCoverageDataDefault,
-        coverageTargets: [TargetReference] = [],
+        coverageTargets: [TestableTargetReference] = [],
         storeKitConfiguration: String? = nil,
         language: String? = nil,
         region: String? = nil,
@@ -77,7 +77,10 @@ extension TargetScheme: JSONObjectConvertible {
         if let targets = jsonDictionary["coverageTargets"] as? [Any] {
             coverageTargets = try targets.compactMap { target in
                 if let string = target as? String {
-                    return try TargetReference(string)
+                    return try TestableTargetReference(string)
+                } else if let dictionary = target as? JSONDictionary,
+                          let target: TestableTargetReference = try? .init(jsonDictionary: dictionary) {
+                    return target
                 } else {
                     return nil
                 }

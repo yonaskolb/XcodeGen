@@ -331,7 +331,7 @@ class SchemeGeneratorTests: XCTestCase {
                 target.scheme = try TargetScheme(
                     gatherCoverageData: true,
                     coverageTargets: [
-                        TargetReference(framework.name),
+                        TestableTargetReference(framework.name),
                     ]
                 )
 
