@@ -10,7 +10,6 @@
 ### Added
 
 - Added `coverageTargets` for target test schemes. This enables to gather code coverage for specific targets. [#1189](https://github.com/yonaskolb/XcodeGen/pull/1189) @gabriellanata
-
 - Fixed issue where .gyb files could not be added to source file list [#1191]((https://github.com/yonaskolb/XcodeGen/issues/1191) @hakkurishian
 
 ## 2.26.0
