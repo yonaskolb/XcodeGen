@@ -2,6 +2,8 @@
 
 ## Next Version
 
+## 2.27.0
+
 #### Added
 
 - Support test target for local Swift Package [#1074](https://github.com/yonaskolb/XcodeGen/pull/1074) @freddi-kit
@@ -12,6 +14,8 @@
 
 - Fixed crash caused by a simultaneous write during a glob processing [#1177](https://github.com/yonaskolb/XcodeGen/issues/1177) @tr1ckyf0x
 - Skip generating empty compile sources build phases for watch apps [#1185](https://github.com/yonaskolb/XcodeGen/issues/1185) @evandcoleman
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.26.0...2.27.0)
 
 ## 2.26.0
 
