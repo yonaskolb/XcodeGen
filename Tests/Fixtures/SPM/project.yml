@@ -6,14 +6,17 @@ packages:
   SwiftRoaring:
     url: https://github.com/piotte13/SwiftRoaring
     majorVersion: 1.0.4
-  XcodeGen: 
+  XcodeGen:
     path: ../../.. #XcodeGen itself
 targets:
   App:
     type: application
     platform: iOS
     sources: [SPM]
-    scheme: {}
+    scheme:
+      testTargets:
+        - package: XcodeGen/XcodeGenKitTests
+        - Tests
     dependencies:
       - package: Codability
         weak: true

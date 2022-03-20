@@ -119,6 +119,10 @@ extension Project {
 
                 for testTarget in scheme.testTargets {
                     if getTarget(testTarget.name) == nil {
+                        // For test case of local Swift Package
+                        if case .package(let name) = testTarget.targetReference.location, getPackage(name) != nil {
+                            continue
+                        }
                         errors.append(.invalidTargetSchemeTest(target: target.name, testTarget: testTarget.name))
                     }
                 }
@@ -240,6 +244,20 @@ extension Project {
         case .project(let project) where getProjectReference(project) == nil:
             return .invalidProjectReference(scheme: scheme.name, reference: project)
         case .local, .project:
+            return nil
+        }
+    }
+    
+    /// Returns a descriptive error if the given target reference was invalid otherwise `nil`.
+    private func validationError(for testableTargetReference: TestableTargetReference, in scheme: Scheme, action: String) -> SpecValidationError.ValidationError? {
+        switch testableTargetReference.location {
+        case .local where getProjectTarget(testableTargetReference.name) == nil:
+            return .invalidSchemeTarget(scheme: scheme.name, target: testableTargetReference.name, action: action)
+        case .project(let project) where getProjectReference(project) == nil:
+            return .invalidProjectReference(scheme: scheme.name, reference: project)
+        case .package(let package) where getPackage(package) == nil:
+            return .invalidLocalPackage(package)
+        case .local, .project, .package:
             return nil
         }
     }

@@ -1,6 +1,8 @@
 # Change Log
 
 ## Next Version
+#### Added
+- Support test target for local Swift Package [#1074](https://github.com/yonaskolb/XcodeGen/pull/1074) @freddi-kit
 
 ### Fixed
 

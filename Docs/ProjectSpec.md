@@ -828,20 +828,34 @@ A multiline script can be written using the various YAML multiline methods, for 
 ### Test Action
 
 - [ ] **gatherCoverageData**: **Bool** - a boolean that indicates if this scheme should gather coverage data. This defaults to false
-- [ ] **coverageTargets**: **[String]** - a list of targets to gather code coverage. Each entry can either be a simple string, or a string using [Project Reference](#project-reference)
+- [ ] **coverageTargets**: **[[Testable Target Reference](#testable-target-reference)]** - a list of targets to gather code coverage. Each entry can also either be a simple string, a string using [Project Reference](#project-reference) or [Testable Target Reference](#testable-target-reference)
 - [ ] **targets**: **[[Test Target](#test-target)]** - a list of targets to test. Each entry can either be a simple string, or a [Test Target](#test-target)
 - [ ] **customLLDBInit**: **String** - the absolute path to the custom `.lldbinit` file
 - [ ] **captureScreenshotsAutomatically**: **Bool** - indicates whether screenshots should be captured automatically while UI Testing. This defaults to true.
 - [ ] **deleteScreenshotsWhenEachTestSucceeds**: **Bool** - whether successful UI tests should cause automatically-captured screenshots to be deleted. If `captureScreenshotsAutomatically` is false, this value is ignored. This defaults to true.
 
 #### Test Target
-- [x] **name**: **String** - The name of the target
+A target can be one of a 2 types:
+
+- **name**: **String** - The name of the target.
+- **target**: **[Testable Target Reference](#testable-target-reference)** - The information of the target. You can specify more detailed information than `name:`.
+
+As syntax suger, you can also specify **[Testable Target Reference](#testable-target-reference)** without `target`.
+
+#### Other Parameters
+
 - [ ] **parallelizable**: **Bool** - Whether to run tests in parallel. Defaults to false
 - [ ] **randomExecutionOrder**: **Bool** - Whether to run tests in a random order. Defaults to false
 - [ ] **location**: **String** - GPX file or predefined value for simulating location. See [Simulate Location](#simulate-location) for location examples.
 - [ ] **skipped**: **Bool** - Whether to skip all of the test target tests. Defaults to false
 - [ ] **skippedTests**: **[String]** - List of tests in the test target to skip. Defaults to empty
 - [ ] **selectedTests**: **[String]** - List of tests in the test target to whitelist and select. Defaults to empty. This will override `skippedTests` if provided
+
+#### Testable Target Reference
+A Testable Target Reference can be one of 3 types:
+- `package: {local-swift-package-name}/{target-name}`: Name of local swift package and its target.
+- `local: {target-name}`:  Name of local target.
+- `project: {project-reference-name}/{target-name}`:  Name of local swift package and its target.
 
 ### Archive Action
 
@@ -902,12 +916,16 @@ schemes:
       coverageTargets:
         - MyTarget1
         - ExternalTarget/OtherTarget1
+        - package: LocalPackage/TestTarget
       targets: 
         - Tester1 
         - name: Tester2
           parallelizable: true
           randomExecutionOrder: true
           skippedTests: [Test/testExample()]
+        - package: APIClient/APIClientTests
+          parallelizable: true
+          randomExecutionOrder: true
       environmentVariables:
         - variable: TEST_ENV_VAR
           value: VALUE

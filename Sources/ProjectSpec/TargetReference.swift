@@ -46,8 +46,8 @@ extension TargetReference: CustomStringConvertible {
     public var reference: String {
         switch location {
         case .local: return name
-        case .project(let projectPath):
-            return "\(projectPath)/\(name)"
+        case .project(let root):
+            return "\(root)/\(name)"
         }
     }
 
