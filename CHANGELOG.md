@@ -1,18 +1,17 @@
 # Change Log
 
 ## Next Version
+
 #### Added
+
 - Support test target for local Swift Package [#1074](https://github.com/yonaskolb/XcodeGen/pull/1074) @freddi-kit
+- Added `coverageTargets` for target test schemes. This enables to gather code coverage for specific targets. [#1189](https://github.com/yonaskolb/XcodeGen/pull/1189) @gabriellanata
+- Fixed issue where .gyb files could not be added to source file list [#1191]((https://github.com/yonaskolb/XcodeGen/issues/1191) @hakkurishian
 
 ### Fixed
 
 - Fixed crash caused by a simultaneous write during a glob processing [#1177](https://github.com/yonaskolb/XcodeGen/issues/1177) @tr1ckyf0x
 - Skip generating empty compile sources build phases for watch apps [#1185](https://github.com/yonaskolb/XcodeGen/issues/1185) @evandcoleman
-
-### Added
-
-- Added `coverageTargets` for target test schemes. This enables to gather code coverage for specific targets. [#1189](https://github.com/yonaskolb/XcodeGen/pull/1189) @gabriellanata
-- Fixed issue where .gyb files could not be added to source file list [#1191]((https://github.com/yonaskolb/XcodeGen/issues/1191) @hakkurishian
 
 ## 2.26.0
 
