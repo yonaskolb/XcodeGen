@@ -2,13 +2,14 @@
 
 ## Next Version
 
-### Added
-
-- Added `coverageTargets` for target test schemes. This enables to gather code coverage for specific targets. [#1189](https://github.com/yonaskolb/XcodeGen/pull/1189) @gabriellanata
-
 ### Fixed
 
 - Fixed crash caused by a simultaneous write during a glob processing [#1177](https://github.com/yonaskolb/XcodeGen/issues/1177) @tr1ckyf0x
+- Skip generating empty compile sources build phases for watch apps [#1185](https://github.com/yonaskolb/XcodeGen/issues/1185) @evandcoleman
+
+### Added
+
+- Added `coverageTargets` for target test schemes. This enables to gather code coverage for specific targets. [#1189](https://github.com/yonaskolb/XcodeGen/pull/1189) @gabriellanata
 
 ## 2.26.0
 

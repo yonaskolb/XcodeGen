@@ -1697,7 +1697,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6B5C5F08C0EF06457756E379 /* Build configuration list for PBXNativeTarget "App_watchOS" */;
 			buildPhases = (
-				91C895DE8170C96A75D29426 /* Sources */,
 				B7B71FA7D279029BF7A7FC7C /* Resources */,
 				C765431E5FF4B02F59DE79B0 /* Embed App Extensions */,
 			);
@@ -2703,13 +2702,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				9D80BD5FAE6BE61CFD74CF1B /* FrameworkFile.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		91C895DE8170C96A75D29426 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
