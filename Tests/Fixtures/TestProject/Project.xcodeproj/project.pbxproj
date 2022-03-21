@@ -2383,7 +2383,7 @@
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Result.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
+			shellPath = "/bin/sh -l";
 			shellScript = "carthage copy-frameworks\n";
 		};
 		3D0637F4554EAD6FA48105BF /* MyScript */ = {
@@ -2472,7 +2472,7 @@
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Result.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
+			shellPath = "/bin/sh -l";
 			shellScript = "carthage copy-frameworks\n";
 		};
 		BA454AAC926EDFCDA9226CBC /* MyScript */ = {
@@ -2545,7 +2545,7 @@
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Result.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
+			shellPath = "/bin/sh -l";
 			shellScript = "carthage copy-frameworks\n";
 		};
 /* End PBXShellScriptBuildPhase section */

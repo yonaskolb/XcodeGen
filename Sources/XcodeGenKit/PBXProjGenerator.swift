@@ -1130,7 +1130,7 @@ public class PBXProjGenerator {
                     name: "Carthage",
                     inputPaths: inputPaths,
                     outputPaths: outputPaths,
-                    shellPath: "/bin/sh",
+                    shellPath: "/bin/sh -l",
                     shellScript: "\(carthageExecutable) copy-frameworks\n"
                 )
             )
