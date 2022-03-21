@@ -21,6 +21,7 @@
 - Ensure fileTypes are mapped to JSON value [#1112](https://github.com/yonaskolb/XcodeGen/pull/1112) @namolnad
 - Fix platform filter for package dependecies [#1123](https://github.com/yonaskolb/XcodeGen/pull/1123) @raptorxcz
 - Fix Xcode 13 build [#1130](https://github.com/yonaskolb/XcodeGen/issues/1127) @raptorxcz @mthole
+- Fix Monterey MacOS shell version, shell login flag for environments [#1167](https://github.com/yonaskolb/XcodeGen/issues/1167) @bimawa
 
 [Commits](https://github.com/yonaskolb/XcodeGen/compare/2.24.0...2.25.0)
 
