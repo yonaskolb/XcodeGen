@@ -993,7 +993,7 @@ Swift packages are defined at a project level, and then linked to individual tar
 ### Local Package
 
 - [x] **path**: **String** - the path to the package in local. The path must be directory with a `Package.swift`.
-- [ ] **xcodePath** : **String**- Optional path that specifies the location where the package will live in your xcode project.
+- [ ] **group** : **String**- Optional path that specifies the location where the package will live in your xcode project.
 
 ```yml
 packages:
@@ -1007,7 +1007,7 @@ packages:
     path: ../RxClient
   AppFeature:
     path: ../Packages
-    xcodePath Domains/AppFeature
+    group: Domains/AppFeature
 ```
 
 ## Project Reference

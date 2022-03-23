@@ -53,12 +53,12 @@ class SourceGenerator {
         return object
     }
 
-    func createLocalPackage(path: Path, xcodePath: Path?) throws {
-        var group: PBXGroup?
+    func createLocalPackage(path: Path, group: Path?) throws {
+        var pbxGroup: PBXGroup?
         
-        if let location = xcodePath {
+        if let location = group {
             let fullLocationPath = project.basePath + location
-            group = getGroup(path: fullLocationPath, mergingChildren: [], createIntermediateGroups: true, hasCustomParent: false, isBaseGroup: true)
+            pbxGroup = getGroup(path: fullLocationPath, mergingChildren: [], createIntermediateGroups: true, hasCustomParent: false, isBaseGroup: true)
         }
         
         if localPackageGroup == nil && group == nil {
@@ -80,8 +80,8 @@ class SourceGenerator {
                 path: fileReferencePath
             )
         )
-        if let group = group {
-            group.children.append(fileReference)
+        if let pbxGroup = pbxGroup {
+            pbxGroup.children.append(fileReference)
         } else {
             localPackageGroup!.children.append(fileReference)
         }

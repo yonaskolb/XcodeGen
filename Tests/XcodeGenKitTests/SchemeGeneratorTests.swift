@@ -404,7 +404,7 @@ class SchemeGeneratorTests: XCTestCase {
                     name: "test",
                     targets: [framework],
                     schemes: [scheme],
-                    packages: ["XcodeGen": .local(path: "../")],
+                    packages: ["XcodeGen": .local(path: "../", group: nil)],
                     projectReferences: [
                         ProjectReference(name: "TestProject", path: externalProject.string),
                     ]
@@ -493,7 +493,7 @@ class SchemeGeneratorTests: XCTestCase {
                 let project = Project(
                     name: "ios_test",
                     targets: [app],
-                    packages: ["XcodeGen": .local(path: "../")]
+                    packages: ["XcodeGen": .local(path: "../", group: nil)]
                 )
                 let xcodeProject = try project.generateXcodeProject()
                 let xcscheme = try unwrap(xcodeProject.sharedData?.schemes.first)

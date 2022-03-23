@@ -10,7 +10,7 @@ public enum SwiftPackage: Equatable {
     static let githubPrefix = "https://github.com/"
 
     case remote(url: String, versionRequirement: VersionRequirement)
-    case local(path: String, xcodePath: String?)
+    case local(path: String, group: String?)
 
     public var isLocal: Bool {
         if case .local = self {
@@ -23,10 +23,10 @@ public enum SwiftPackage: Equatable {
 extension SwiftPackage: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
-        if let path: String = jsonDictionary.json(atKeyPath: "path"), let customLocation: String = jsonDictionary.json(atKeyPath: "xcodePath") {
-            self = .local(path: path, xcodePath: customLocation)
+        if let path: String = jsonDictionary.json(atKeyPath: "path"), let customLocation: String = jsonDictionary.json(atKeyPath: "group") {
+            self = .local(path: path, group: customLocation)
         } else if let path: String = jsonDictionary.json(atKeyPath: "path") {
-            self = .local(path: path, xcodePath: nil)
+            self = .local(path: path, group: nil)
         } else {
             let versionRequirement: VersionRequirement = try VersionRequirement(jsonDictionary: jsonDictionary)
             try Self.validateVersion(versionRequirement: versionRequirement)
@@ -92,9 +92,9 @@ extension SwiftPackage: JSONEncodable {
                 dictionary["revision"] = revision
             }
             return dictionary
-        case let .local(path, localPath):
+        case let .local(path, group):
             dictionary["path"] = path
-            dictionary["localPath"] = localPath
+            dictionary["group"] = group
         }
 
         return dictionary
