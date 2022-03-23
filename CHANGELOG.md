@@ -2,6 +2,9 @@
 
 ## Next Version
 
+#### Added
+- Support for specifying custom group locations for SPM packages. [#1173](https://github.com/yonaskolb/XcodeGen/issues/1173) @John-Connolly 
+
 ### Fixed
 
 - Fix Monterey macOS shell version, shell login flag for environments [#1167](https://github.com/yonaskolb/XcodeGen/issues/1167) @bimawa

@@ -8,6 +8,7 @@ packages:
     majorVersion: 1.0.4
   XcodeGen:
     path: ../../.. #XcodeGen itself
+    group: SPM
 targets:
   App:
     type: application
@@ -24,6 +25,7 @@ targets:
         product: SwiftRoaringDynamic
         embed: true
       - target: StaticLibrary
+      - package: XcodeGen
   Tests:
     type: bundle.unit-test
     platform: iOS
