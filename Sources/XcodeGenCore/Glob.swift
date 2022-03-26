@@ -57,7 +57,7 @@ public class Glob: Collection {
 
     public static let defaultBlacklistedDirectories = ["node_modules", "Pods"]
 
-    @Atomic private var isDirectoryCache = [String: Bool]()
+    private var isDirectoryCache = AtomicDictionary<String, Bool>()
 
     public let behavior: Behavior
     public let blacklistedDirectories: [String]

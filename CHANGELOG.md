@@ -8,6 +8,7 @@
 ### Fixed
 
 - Fix Monterey macOS shell version, shell login flag for environments [#1167](https://github.com/yonaskolb/XcodeGen/issues/1167) @bimawa
+- Fixed crash caused by a simultaneous write during a glob processing [#1177](https://github.com/yonaskolb/XcodeGen/issues/1177) @tr1ckyf0x
 
 ## 2.27.0
 
