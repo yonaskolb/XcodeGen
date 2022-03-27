@@ -1,5 +1,5 @@
 //
-//  ThreadSafeDictionaryTests.swift
+//  ThreadSafeContainerTests.swift
 //  
 //
 //  Created by Vladislav Lisianskii on 27.03.2022.
@@ -8,9 +8,9 @@
 import XCTest
 @testable import XcodeGenCore
 
-final class ThreadSafeDictionaryTests: XCTestCase {
+final class ThreadSafeContainerTests: XCTestCase {
 
-    private var threadSafeDictionary = ThreadSafeDictionary<String, Int>()
+    private var threadSafeDictionary = ThreadSafeContainer([String: Int]())
 
     func testSimultaneousWriteOrder() {
         let group = DispatchGroup()
@@ -18,7 +18,7 @@ final class ThreadSafeDictionaryTests: XCTestCase {
         for index in (0..<10) {
             group.enter()
             DispatchQueue.global().async {
-                self.threadSafeDictionary["\(index)"] = index
+                self.threadSafeDictionary.value["\(index)"] = index
                 group.leave()
             }
         }
@@ -26,7 +26,7 @@ final class ThreadSafeDictionaryTests: XCTestCase {
         group.notify(queue: .main, execute: {
             XCTAssertEqual(
                 self.threadSafeDictionary,
-                ThreadSafeDictionary(["0": 0, "1": 1, "2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7": 7, "8": 8, "9": 9])
+                ThreadSafeContainer(["0": 0, "1": 1, "2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7": 7, "8": 8, "9": 9])
             )
         })
     }

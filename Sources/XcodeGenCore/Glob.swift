@@ -57,7 +57,7 @@ public class Glob: Collection {
 
     public static let defaultBlacklistedDirectories = ["node_modules", "Pods"]
 
-    private var isDirectoryCache = ThreadSafeDictionary<String, Bool>()
+    private var isDirectoryCache = ThreadSafeContainer([String: Bool]())
 
     public let behavior: Behavior
     public let blacklistedDirectories: [String]
@@ -192,19 +192,19 @@ public class Glob: Collection {
     }
 
     private func isDirectory(path: String) -> Bool {
-        if let isDirectory = isDirectoryCache[path] {
+        if let isDirectory = isDirectoryCache.value[path] {
             return isDirectory
         }
 
         var isDirectoryBool = ObjCBool(false)
         let isDirectory = FileManager.default.fileExists(atPath: path, isDirectory: &isDirectoryBool) && isDirectoryBool.boolValue
-        isDirectoryCache[path] = isDirectory
+        isDirectoryCache.value[path] = isDirectory
 
         return isDirectory
     }
 
     private func clearCaches() {
-        isDirectoryCache.removeAll()
+        isDirectoryCache.value.removeAll()
     }
 
     private func paths(usingPattern pattern: String, includeFiles: Bool) -> [String] {
