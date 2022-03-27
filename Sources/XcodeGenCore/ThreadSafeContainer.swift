@@ -25,26 +25,14 @@ public final class ThreadSafeContainer<Value> {
 
     public var value: Value {
         get {
-            reader { $0 }
+            queue.sync {
+                _value
+            }
         }
         set {
-            writer { $0 = newValue }
-        }
-    }
-}
-
-// MARK: - Private methods
-extension ThreadSafeContainer {
-    private func reader<U>(_ closure: (Value) -> U) -> U {
-        queue.sync {
-            closure(_value)
-        }
-    }
-
-    private func writer(_ closure: @escaping (inout Value) -> Void) {
-        queue.async(flags: .barrier) { [weak self] in
-            guard let self = self else { return }
-            closure(&self._value)
+            queue.async(flags: .barrier) { [weak self] in
+                self?._value = newValue
+            }
         }
     }
 }
