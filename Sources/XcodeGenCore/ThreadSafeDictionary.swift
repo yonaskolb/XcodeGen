@@ -1,5 +1,5 @@
 //
-//  AtomicDict.swift
+//  ThreadSafeDictionary.swift
 //  
 //
 //  Created by Vladislav Lisianskii on 26.03.2022.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-public final class AtomicDictionary<Key: Hashable, Value>: CustomDebugStringConvertible {
+public final class ThreadSafeDictionary<Key: Hashable, Value>: CustomDebugStringConvertible {
 
     public typealias StorageType = [Key: Value]
 
@@ -41,8 +41,8 @@ public final class AtomicDictionary<Key: Hashable, Value>: CustomDebugStringConv
     }
 }
 
-extension AtomicDictionary: Equatable where Value: Equatable {
-    public static func ==(lhs: AtomicDictionary, rhs: AtomicDictionary) -> Bool {
+extension ThreadSafeDictionary: Equatable where Value: Equatable {
+    public static func ==(lhs: ThreadSafeDictionary, rhs: ThreadSafeDictionary) -> Bool {
         lhs.storage == rhs.storage
     }
 }
