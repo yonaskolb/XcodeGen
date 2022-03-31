@@ -2,7 +2,10 @@
 
 ## Next Version
 
+## 2.28.0
+
 #### Added
+
 - Support for specifying custom group locations for SPM packages. [#1173](https://github.com/yonaskolb/XcodeGen/issues/1173) @John-Connolly 
 
 ### Fixed
@@ -13,6 +16,8 @@
 ### Changed
 
 - Run target source pattern matching in parallel [#1197](https://github.com/yonaskolb/XcodeGen/pull/1197) @alvarhansen
+
+[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.27.0...2.28.0)
 
 ## 2.27.0
 
