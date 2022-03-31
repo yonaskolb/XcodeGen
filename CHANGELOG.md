@@ -10,6 +10,10 @@
 - Fix Monterey macOS shell version, shell login flag for environments [#1167](https://github.com/yonaskolb/XcodeGen/issues/1167) @bimawa
 - Fixed crash caused by a simultaneous write during a glob processing [#1177](https://github.com/yonaskolb/XcodeGen/issues/1177) @tr1ckyf0x
 
+### Changed
+
+- Run target source pattern matching in parallel [#1197](https://github.com/yonaskolb/XcodeGen/pull/1197) @alvarhansen
+
 ## 2.27.0
 
 #### Added

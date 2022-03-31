@@ -359,7 +359,7 @@ class SourceGenerator {
         let rootSourcePath = project.basePath + targetSource.path
 
         return Set(
-            patterns.map { pattern in
+            patterns.parallelMap { pattern in
                 guard !pattern.isEmpty else { return [] }
                 return Glob(pattern: "\(rootSourcePath)/\(pattern)")
                     .map { Path($0) }
