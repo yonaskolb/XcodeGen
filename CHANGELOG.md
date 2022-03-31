@@ -17,8 +17,6 @@
 
 - Run target source pattern matching in parallel #1197 @alvarhansen
 
-[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.27.0...2.28.0)
-
 ## 2.27.0
 
 #### Added
@@ -32,8 +30,6 @@
 - Fixed crash caused by a simultaneous write during a glob processing #1177 @tr1ckyf0x
 - Skip generating empty compile sources build phases for watch apps #1185 @evandcoleman
 
-[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.26.0...2.27.0)
-
 ## 2.26.0
 
 ### Added
@@ -43,8 +39,6 @@
 ### Changed
 
 - Speed up source inclusion checking for big projects #1122 @PaulTaykalo 
-
-[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.25.0...2.26.0)
 
 ## 2.25.0
 
@@ -57,8 +51,6 @@
 - Ensure fileTypes are mapped to JSON value #1112 @namolnad
 - Fix platform filter for package dependecies #1123 @raptorxcz
 - Fix Xcode 13 build #1130 @raptorxcz @mthole
-
-[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.24.0...2.25.0)
 
 ### Changed
 
@@ -76,15 +68,11 @@
 ### Changed
 - **Breaking**: Rename the `platform` field on `Dependency` to `platformFilter` #1087 @daltonclaybrook
 
-[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.23.1...2.24.0)
-
 ## 2.23.1
 
 ### Changed
 - Reverted "Change FRAMEWORK_SEARCH_PATH for xcframeworks (#1015)", introduced in 2.20.0. XCFrameworks need to be
   referenced directly in the project for Xcode's build system to extract the appropriate frameworks #1081 @elliottwilliams
-
-[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.23.0...2.23.1)
 
 ## 2.23.0
 
@@ -94,8 +82,6 @@
 #### Fixed
 - Added `()` to config variant trimming charater set to fix scheme config variant lookups for some configs like `Debug (Development)` that broke in 2.22.0 #1078 @DavidWoohyunLee
 - Fixed Linux builds on Swift 5.4 #1083 @yonaskolb
-
-[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.22.0...2.23.0)
 
 ## 2.22.0
 
@@ -109,8 +95,6 @@
 - Fixed no such module `DOT` error when package is used as a dependency #1067 @yanamura
 - Fixed scheme config variant lookups for some configs like `ProdDebug` and `Prod-Debug` that broke in 2.21.0 #1070 @yonaskolb
 
-[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.21.0...2.22.0)
-
 ## 2.21.0
 
 #### Added
@@ -122,8 +106,6 @@
 #### Fixed
 - The `Core` target is renamed to avoid collisions with other packages. #1057 @elliottwilliams
 - Lookup scheme config variants by whole words, fixing incorrect assignment in names that contain subtrings of each other (eg PreProd and Prod) #976 @stefanomondino
-
-[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.20.0...2.21.0)
 
 ## 2.20.0
 
@@ -142,8 +124,6 @@
 
 #### Internal
 - Build universal binaries for release. XcodeGen now runs natively on Apple Silicon. #1024 @thii
-
-[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.19.0...2.20.0)
 
 ## 2.19.0
 
@@ -170,8 +150,6 @@
 #### Internal
 - Updated to Yams 4.0.0 #984 @swiftty
 
-[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.18.0...2.19.0)
-
 ## 2.18.0
 
 #### Added
@@ -195,8 +173,6 @@
 - Fix appex's Runpath Search Paths under macOS target. #952 @rinsuki
 - `onlyCopyFilesOnInstall` is extended for the Embed App Extensions build phase. #948 @RomanPodymov
 
-[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.17.0...2.18.0)
-
 ## 2.17.0
 
 #### Added
@@ -211,8 +187,6 @@
 
 #### Internal
 - Updated to XcodeProj 7.13.0 #908 @brentleyjones
-
-[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.16.0...2.17.0)
 
 ## 2.16.0
 
@@ -245,16 +219,12 @@
 - Compile `xcmappingmodel` files instead of copying bundle resources. #834 @jcolicchio
 - Fixed issue where `Complie Sources` build phase is generated for resource bundles even when they have no files to compile #878 @nkukushkin
 
-[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.15.1...2.16.0)
-
 ## 2.15.1
 
 #### Fixed
 - Fixed issue which caused watch app schemes to be generated incorrectly, preventing these apps from launching. #798 @daltonclaybrook
 - Added build presets for the target type `framework.static`. #819 @acecilia
 - Fixed XcodeProj resolution and updated to 7.10.0 #822 @soffes
-
-[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.15.0...2.15.1)
 
 ## 2.15.0
 
@@ -267,8 +237,6 @@
 - Added ability to stop on every main thread checker issue on Run schemes and TargetSchemes #799 @ionutivan
 - Avoid copying ObjC interface header when SWIFT_INSTALL_OBJC_HEADER=false. #805 @kateinoigakukun
 
-[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.14.0...2.15.0)
-
 ## 2.14.0
 
 #### Added
@@ -280,8 +248,6 @@
 - Set `TEST_TARGET_NAME` only when a project has UITest bundle. #792 @ken0nek
 - Set xcodeproj path in project.xcworkspace/contents.xcworkspacedata #793 @ken0nek
 
-[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.13.1...2.14.0)
-
 ## 2.13.1
 
 #### Fixed
@@ -292,8 +258,6 @@
 #### Internal
 - Updated to XcodeProj 7.8.0 #777 @yonaskolb
 - Use https://github.com/mxcl/Version #779 @yonaskolb
-
-[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.13.0...2.13.1)
 
 ## 2.13.0
 
@@ -307,8 +271,6 @@
 
 #### Internal
 - Updated to XcodeProj 7.7.0 #767 @yonaskolb
-
-[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.12.0...2.13.0)
 
 ## 2.12.0
 
@@ -328,8 +290,6 @@
 
 #### Internal
 - Update to SwiftCLI 6.0 and use the new property wrappers #749 @yonaskolb
-
-[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.11.0...2.12.0)
 
 ## 2.11.0
 
@@ -353,16 +313,12 @@
 - Updated XcodeProj to 7.4.0 #709 @yonaskolb
 - Updated to Swift 5.1 #714 @yonaskolb
 
-[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.10.1...2.11.0)
-
 ## 2.10.1
 
 #### Fixed
 - Add Base to knownRegions even if one doesn't exist #694 @bryansum
 - Fixed missing `onlyGenerateCoverageForSpecifiedTargets` issue #700 @kateinoigakukun
 - Fixed regression on dependencies `link` flag #703 @rcari
-
-[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.10.0...2.10.1)
 
 ## 2.10.0
 
@@ -380,8 +336,6 @@
 #### Internal
 - Restructure targets #698 @yonaskolb
 
-[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.9.0...2.10.0)
-
 ## 2.9.0
 
 #### Added
@@ -396,8 +350,6 @@
 #### Internal
 - Updated to SwiftCLI 5.3.2 #667 @giginet
 - Fixed tests in case-sensitive file system #670 @Qusic
-
-[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.8.0...2.9.0)
 
 ## 2.8.0
 
@@ -417,8 +369,6 @@
 - Removed needless `Array` initialization. #661 @RomanPodymov
 - Updated to XcodeProj 7.1.0 #624 @yonaskolb
 
-[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.7.0...2.8.0)
-
 ## 2.7.0
 
 #### Added
@@ -431,8 +381,6 @@
 
 #### Changed
 - Allow linking of dependencies into static libraries when `link` is set to true #635 @kateinoigakukun
-
-[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.6.0...2.7.0)
 
 ## 2.6.0
 
@@ -453,8 +401,6 @@
 #### Internal
 - Added ability to encode ProjectSpec #545 @ryohey
 
-[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.5.0...2.6.0)
-
 ## 2.5.0
 
 #### Added
@@ -472,8 +418,6 @@
 - Fixed `optional` file sources not being added to the project #557 @yonaskolb
 - Fixed Carthage dependencies being incorrectly embedded in WatchKit app bundles instead of a WatchKit app extension #558 @KhaosT
 
-[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.4.0...2.5.0)
-
 ## 2.4.0
 
 #### Fixed:
@@ -481,8 +425,6 @@
 
 #### Changed
 - Updated to Swift 5 and dropped Swift 4.2 #549 @yonaskolb
-
-[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.3.0...2.4.0)
 
 ## 2.3.0
 
@@ -505,8 +447,6 @@
 - Fix multi-platform target templates #541 @yonaskolb
 - Fixed sources in an included target not being relative when the sources are mix of string and dictionaries #542 @yonaskolb
 
-[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.2.0...2.3.0)
-
 ## 2.2.0
 
 #### Added
@@ -528,8 +468,6 @@
 - Fixed generated schemes for tool targets not setting the executable #496 @yonaskolb
 - Fixed resolving Carthage dependencies for iOS app with watchOS target. [465](https://github.com/yonaskolb/XcodeGen/pull/465) @raptorxcz
 
-[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.1.0...2.2.0)
-
 ## 2.1.0
 
 #### Added
@@ -549,8 +487,6 @@
 - Fixed static libraries not including external frameworks in their search paths #454 @brentleyjones
 - Add `.intentdefinition` files to sources build phase instead of resources #442 @yonaskolb
 - Add `mlmodel` files to sources build phase instead of resources #457 @dwb357
-
-[Commits](https://github.com/yonaskolb/XcodeGen/compare/2.0.0...2.1.0)
 
 ## 2.0.0
 
@@ -576,8 +512,6 @@
 - Fixed `TargetSource.headerVisibility` not being set in initializer #419 @jerrymarino
 - Fixed crash when using Xcode Legacy targets as dependencies #427 @dflems
 
-[Commits](https://github.com/yonaskolb/XcodeGen/compare/1.11.2...2.0.0)
-
 ## 1.11.2
 
 If XcodeGen is compiled with Swift 4.2, then UUID's in the generated project will not be deterministic. This will be fixed in an upcoming release with an update to xcodeproj 6.0
@@ -592,15 +526,11 @@ If XcodeGen is compiled with Swift 4.2, then UUID's in the generated project wil
 - Added `en` as default value for knownRegions #390 @Saik0s
 - Update `PathKit`, `Spectre`, `Yams` and `xcodeproj` dependencies
 
-[Commits](https://github.com/yonaskolb/XcodeGen/compare/1.11.1...1.11.2)
-
 ## 1.11.1
 
 #### Fixed
 - Fixed `FRAMEWORK_SEARCH_PATHS` for `framework` dependency paths with spaces #382 @brentleyjones
 - Fixed aggregate targets not being found with `transitivelyLinkDependencies` #383 @brentleyjones
-
-[Commits](https://github.com/yonaskolb/XcodeGen/compare/1.11.0...1.11.1)
 
 ## 1.11.0
 
@@ -639,21 +569,15 @@ If XcodeGen is compiled with Swift 4.2, then UUID's in the generated project wil
 - Moved brew formula to homebrew core
 - Added `CONTRIBUTING.md`
 
-[Commits](https://github.com/yonaskolb/XcodeGen/compare/1.10.3...1.11.0)
-
 ## 1.10.3
 
 #### Fixed
 - Fixed Mint installations finding `SettingPresets` #338 @yonaskolb
 
-[Commits](https://github.com/yonaskolb/XcodeGen/compare/1.10.2...1.10.3)
-
 ## 1.10.2
 
 #### Changed
 - Set `transitivelyLinkDependencies` to false by default
-
-[Commits](https://github.com/yonaskolb/XcodeGen/compare/1.10.1...1.10.2)
 
 ## 1.10.1
 
@@ -663,8 +587,6 @@ If XcodeGen is compiled with Swift 4.2, then UUID's in the generated project wil
 
 #### Changed
 - Code sign all dependencies by default except target executables #332 @yonaskolb
-
-[Commits](https://github.com/yonaskolb/XcodeGen/compare/1.10.0...1.10.1)
 
 ## 1.10.0
 
@@ -690,8 +612,6 @@ If XcodeGen is compiled with Swift 4.2, then UUID's in the generated project wil
 - Made `PBXContainerItemProxy` ID more deterministic
 - Fixed generated framework schemes from being executable #328 @brentleyjones
 
-[Commits](https://github.com/yonaskolb/XcodeGen/compare/1.9.0...1.10.0)
-
 ## 1.9.0
 
 #### Added
@@ -710,8 +630,6 @@ If XcodeGen is compiled with Swift 4.2, then UUID's in the generated project wil
 - Fixed Homebrew installations issues on some machines #289 @vhbit
 - Fixed files that are added as root sources from having invalid parent groups outside the project directory #293 @yonaskolb
 
-[Commits](https://github.com/yonaskolb/XcodeGen/compare/1.8.0...1.9.0)
-
 ## 1.8.0
 
 #### Added
@@ -725,8 +643,6 @@ If XcodeGen is compiled with Swift 4.2, then UUID's in the generated project wil
 #### Internal
 - Make `LegacyTarget` init public #264 @jerrymarino
 - Upgrade to *xcproj* to 4.2.0, *Yams* to 0.6.0 and *PathKit* to 0.9.1 @yonaskolb
-
-[Commits](https://github.com/yonaskolb/XcodeGen/compare/1.7.0...1.8.0)
 
 ## 1.7.0
 
@@ -750,8 +666,6 @@ If XcodeGen is compiled with Swift 4.2, then UUID's in the generated project wil
 - iMessage extensions now have proper setting presets in regards to app icon and runtime search paths #255 @yonaskolb
 - Excluded files are not added within .lproj directories #238 @toshi0383
 
-[Commits](https://github.com/yonaskolb/XcodeGen/compare/1.6.0...1.7.0)
-
 ## 1.6.0
 
 #### Added
@@ -768,8 +682,6 @@ If XcodeGen is compiled with Swift 4.2, then UUID's in the generated project wil
 #### Changed
 - Change arrays to strings in setting presets #218 @allu22
 - Updated to xcproj 4.0 #227
-
-[Commits](https://github.com/yonaskolb/XcodeGen/compare/1.5.0...1.6.0)
 
 ## 1.5.0
 
@@ -808,8 +720,6 @@ If XcodeGen is compiled with Swift 4.2, then UUID's in the generated project wil
 - fixed source files from being duplicated if referenced with different casing #212 @yonaskolb
 - fixed target product name not being written. Fixes integration with R.swift #213 @yonaskolb
 
-[Commits](https://github.com/yonaskolb/XcodeGen/compare/1.4.0...1.5.0)
-
 ## 1.4.0
 
 #### Added
@@ -845,8 +755,6 @@ If XcodeGen is compiled with Swift 4.2, then UUID's in the generated project wil
 - more tests
 - added release scripts
 
-[Commits](https://github.com/yonaskolb/XcodeGen/compare/1.3.0...1.4.0)
-
 ## 1.3.0
 
 #### Added
@@ -872,8 +780,6 @@ If XcodeGen is compiled with Swift 4.2, then UUID's in the generated project wil
 - fixed duplicate carthage file references #107 @yonaskolb
 - an error is now shown if you try and generate a target scheme and don't have debug and release builds @yonaskolb
 
-[Commits](https://github.com/yonaskolb/XcodeGen/compare/1.2.4...1.3.0)
-
 ## 1.2.4
 
 #### Fixed
@@ -884,8 +790,6 @@ If XcodeGen is compiled with Swift 4.2, then UUID's in the generated project wil
 #### Changed
 - update to xcproj 0.3.0
 
-[Commits](https://github.com/yonaskolb/XcodeGen/compare/1.2.3...1.2.4)
-
 ## 1.2.3
 
 #### Fixed
@@ -893,8 +797,6 @@ If XcodeGen is compiled with Swift 4.2, then UUID's in the generated project wil
 - Removed unnecessary `carthage copy-frameworks` for macOS app target #76 @toshi0383
 - Added some missing default settings for framework targets. `SKIP_INSTALL: YES` fixes archiving
 - Filter out nulls from setting presets if specifying an empty string
-
-[Commits](https://github.com/yonaskolb/XcodeGen/compare/1.2.2...1.2.3)
 
 ## 1.2.2
 
@@ -905,8 +807,6 @@ If XcodeGen is compiled with Swift 4.2, then UUID's in the generated project wil
 - set `DYLIB_INSTALL_NAME_BASE` to `@rpath` in framework target presets
 - fixed tvOS launch screen setting. `ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME` is now `LaunchImage` not `tvOS LaunchImage`
 
-
-[Commits](https://github.com/yonaskolb/XcodeGen/compare/1.2.0...1.2.2)
 
 ## 1.2.0
 
@@ -925,23 +825,17 @@ If XcodeGen is compiled with Swift 4.2, then UUID's in the generated project wil
 - look for `INFOPLIST_FILE` setting in project and xcconfig files before adding it automatically. It was just looking in target settings before #64
 - exit with error on failure
 
-[Commits](https://github.com/yonaskolb/XcodeGen/compare/1.1.0...1.2.0)
-
 ## 1.1.0
 
 #### Changed
 - set project version to Xcode 9 - `LastUpgradeVersion` attribute to `0900`
 - set default Swift version to 4.0 - `SWIFT_VERSION` build setting to `4.0`
 
-[Commits](https://github.com/yonaskolb/XcodeGen/compare/1.0.1...1.1.0)
-
 ### 1.0.1
 
 ### Fixed
 - fixed incorrect default build script shell path
 - fixed install scripts
-
-[Commits](https://github.com/yonaskolb/XcodeGen/compare/1.0.0...1.0.1)
 
 ## 1.0.0
 
@@ -958,8 +852,6 @@ If XcodeGen is compiled with Swift 4.2, then UUID's in the generated project wil
 - **BREAKING**: changed target definitions from list to map #54
 
 
-[Commits](https://github.com/yonaskolb/XcodeGen/compare/0.6.1...1.0.0)
-
 ## 0.6.1
 
 #### Added
@@ -968,8 +860,6 @@ If XcodeGen is compiled with Swift 4.2, then UUID's in the generated project wil
 #### Changed
 - Don't bother linking target frameworks for target dependencies.
 - Move code signing default settings from all iOS targets to iOS application targets, via Product + Platform setting preset files #46
-
-[Commits](https://github.com/yonaskolb/XcodeGen/compare/0.6.0...0.6.1)
 
 ## 0.6.0
 
@@ -980,16 +870,12 @@ If XcodeGen is compiled with Swift 4.2, then UUID's in the generated project wil
 - Changed default spec path to `project.yml`
 - Changed default project directory to the current directory instead of the spec file's directory
 
-[Commits](https://github.com/yonaskolb/XcodeGen/compare/0.5.1...0.6.0)
-
 ## 0.5.1
 
 #### Fixed
 - Fix embedded framework dependencies
 - Add `CODE_SIGN_IDENTITY[sdk=iphoneos*]` back to iOS targets
 - Fix build scripts with "" generating invalid projects #43
-
-[Commits](https://github.com/yonaskolb/XcodeGen/compare/0.5.0...0.5.1)
 
 ## 0.5.0
 #### Added
@@ -1005,8 +891,6 @@ If XcodeGen is compiled with Swift 4.2, then UUID's in the generated project wil
 - Renamed Setting Presets to Setting Groups
 - Carthage group is now created under top level Frameworks group
 
-[Commits](https://github.com/yonaskolb/XcodeGen/compare/0.4.0...0.5.0)
-
 ## 0.4.0
 
 ##### Added
@@ -1019,8 +903,6 @@ If XcodeGen is compiled with Swift 4.2, then UUID's in the generated project wil
 
 #### Changed
 - Upgraded to https://github.com/swift-xcode/xcodeproj 0.1.1 #33
-
-[Commits](https://github.com/yonaskolb/XcodeGen/compare/0.3.0...0.4.0)
 
 ## 0.3.0 - Extensions and Scheme Tests
 
@@ -1037,8 +919,6 @@ If XcodeGen is compiled with Swift 4.2, then UUID's in the generated project wil
 #### Breaking changes
 - Changed `Target.generatedSchemes` to `Target.scheme.configVariants`
 
-[Commits](https://github.com/yonaskolb/XcodeGen/compare/0.2...0.3.0)
-
 ## 0.2.0 - Build scripts
 
 #### Added
@@ -1049,7 +929,6 @@ If XcodeGen is compiled with Swift 4.2, then UUID's in the generated project wil
 #### Fixed
 - Fixed some project objects sometimes having duplicate ids
 
-[Commits](https://github.com/yonaskolb/XcodeGen/compare/0.1...0.2)
-
 ## 0.1.0
 First official release
+
