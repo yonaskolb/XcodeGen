@@ -8,20 +8,45 @@
 import Foundation
 
 @propertyWrapper
-struct Atomic<Value> {
-    private let queue = DispatchQueue(label: "com.xcodegencore.atomic")
+public final class Atomic<Value> {
+
     private var value: Value
 
-    init(wrappedValue: Value) {
+    private let queue = DispatchQueue(
+        label: "com.xcodegencore.atomic.\(UUID().uuidString)",
+        qos: .utility,
+        attributes: .concurrent,
+        autoreleaseFrequency: .inherit,
+        target: .global()
+    )
+
+    public init(wrappedValue: Value) {
         self.value = wrappedValue
     }
 
-    var wrappedValue: Value {
+    public var wrappedValue: Value {
         get {
-            return queue.sync { value }
+            queue.sync { value }
         }
         set {
-            queue.sync { value = newValue }
+            queue.async(flags: .barrier) { [weak self] in
+                self?.value = newValue
+            }
+        }
+    }
+
+    /// Allows us to get the actual `Atomic` instance with the $
+    /// prefix.
+    public var projectedValue: Atomic<Value> {
+        return self
+    }
+
+    /// Modifies the protected value using `closure`.
+    public func with<R>(
+        _ closure: (inout Value) throws -> R
+    ) rethrows -> R {
+        try queue.sync(flags: .barrier) {
+            try closure(&value)
         }
     }
 }
