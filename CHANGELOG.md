@@ -2,6 +2,10 @@
 
 ## Next Version
 
+#### Fixed
+
+- Fixed an issue where DocC was not added to source file list #1202 @hiragram
+
 ## 2.28.0
 
 #### Added
