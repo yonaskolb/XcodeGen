@@ -34,7 +34,7 @@
       <TestPlans>
          <TestPlanReference
             default = "YES"
-            reference = "container:App_iOS.xctestplan">
+            reference = "container:App_iOS/App_iOS.xctestplan">
          </TestPlanReference>
       </TestPlans>
       <Testables>

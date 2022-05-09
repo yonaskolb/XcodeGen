@@ -85,7 +85,7 @@ public struct SpecValidationError: Error, CustomStringConvertible {
             case let .invalidProjectReferencePath(reference):
                 return "Project reference \(reference.name) has a project file path that doesn't exist \"\(reference.path)\""
             case let .invalidTestPlan(testPlan):
-                return "Test path \(testPlan.path) doesn't exist"
+                return "Test plan path \(testPlan.path) doesn't exist"
             case let .multipleDefaultTestPlans:
                 return "Your test plan definition contains more than one default test plan"
             }
