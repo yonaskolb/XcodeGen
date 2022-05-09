@@ -478,7 +478,7 @@ extension Scheme.Test: PathContainer {
 
     static var pathProperties: [PathProperty] {
         [
-            .string("testPlans")
+            .object("testPlans", TestPlan.pathProperties),
         ]
     }
 }
@@ -540,7 +540,7 @@ extension Scheme.Test: JSONEncodable {
             "preActions": preActions.map { $0.toJSONValue() },
             "postActions": postActions.map { $0.toJSONValue() },
             "environmentVariables": environmentVariables.map { $0.toJSONValue() },
-            "testPlans": testPlans,
+            "testPlans": testPlans.map { $0.toJSONValue() },
             "config": config,
             "language": language,
             "region": region,
