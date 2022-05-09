@@ -543,13 +543,15 @@ class SchemeGeneratorTests: XCTestCase {
 
             $0.it("generate test plans ") {
 
-                let testPlanPath = "\(fixturePath.string)/TestProject/App_iOS/App_iOS.xctestplan"
+                let testPlanPath1 = "\(fixturePath.string)/TestProject/App_iOS/App_iOS.xctestplan"
+                let testPlanPath2 = "\(fixturePath.string)/TestProject/App_iOS/App_iOS.xctestplan"
 
                 let scheme = Scheme(
                     name: "TestScheme",
                     build: Scheme.Build(targets: [buildTarget]),
                     test: Scheme.Test(config: "Debug", testPlans: [
-                        .init(path: testPlanPath, defaultPlan: true),
+                        .init(path: testPlanPath1, defaultPlan: false),
+                        .init(path: testPlanPath2, defaultPlan: true),
                     ])
                 )
                 let project = Project(
@@ -561,7 +563,8 @@ class SchemeGeneratorTests: XCTestCase {
 
                 let xcscheme = try unwrap(xcodeProject.sharedData?.schemes.first)
                 try expect(xcscheme.testAction?.testPlans) == [
-                    .init(reference: "container:\(testPlanPath)", default: true),
+                    .init(reference: "container:\(testPlanPath1)", default: false),
+                    .init(reference: "container:\(testPlanPath2)", default: true),
                 ]
             }
         }

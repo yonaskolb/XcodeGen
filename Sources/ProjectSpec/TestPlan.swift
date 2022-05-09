@@ -9,10 +9,6 @@ public struct TestPlan: Equatable {
         self.defaultPlan = defaultPlan
         self.path = path
     }
-
-    public static func == (lhs: TestPlan, rhs: TestPlan) -> Bool {
-        lhs.path == rhs.path && lhs.defaultPlan == rhs.defaultPlan
-    }
 }
 
 

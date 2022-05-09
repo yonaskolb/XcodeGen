@@ -392,8 +392,6 @@ class ProjectSpecTests: XCTestCase {
                 try expectValidationError(project, .invalidTestPlan(testPlan))
             }
 
-
-
             $0.it("fails on multiple default test plans") {
                 var project = baseProject
 

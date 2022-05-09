@@ -431,7 +431,7 @@ schemes:
           location: New York, NY, USA
       customLLDBInit: ${SRCROOT}/.lldbinit
       testPlans:
-        - App_iOS.xctestplan
+        - path: App_iOS.xctestplan
 targetTemplates:
   MyTemplate:
     scheme: {}
