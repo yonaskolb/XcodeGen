@@ -98,7 +98,8 @@ class SpecLoadingTests: XCTestCase {
                         entitlements: Plist(path: "paths_test/entitlements"),
                         preBuildScripts: [BuildScript(script: .path("paths_test/preBuildScript"))],
                         postCompileScripts: [BuildScript(script: .path("paths_test/postCompileScript"))],
-                        postBuildScripts: [BuildScript(script: .path("paths_test/postBuildScript"))]
+                        postBuildScripts: [BuildScript(script: .path("paths_test/postBuildScript"))],
+                        scheme: TargetScheme(testPlans: [.init(path: "paths_test/TestPlan.xctestplan")])
                     ),
                     Target(
                         name: "NewTarget",

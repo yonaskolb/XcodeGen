@@ -20,11 +20,14 @@ targets:
     entitlements:
       path: entitlements
     preBuildScripts:
-    - path: preBuildScript
+      - path: preBuildScript
     postCompileScripts:
-    - path: postCompileScript
+      - path: postCompileScript
     postBuildScripts:
-    - path: postBuildScript
+      - path: postBuildScript
+    scheme:
+      testPlans:
+        - path: TestPlan.xctestplan
 aggregateTargets:
   IncludedAggregateTarget:
     targets:

@@ -445,6 +445,7 @@ extension Scheme {
                 commandLineArguments: targetScheme.commandLineArguments,
                 targets: targetScheme.testTargets,
                 environmentVariables: targetScheme.environmentVariables,
+                testPlans: targetScheme.testPlans,
                 language: targetScheme.language,
                 region: targetScheme.region
             ),
