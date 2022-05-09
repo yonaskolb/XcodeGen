@@ -4,6 +4,7 @@ import Spectre
 import XcodeProj
 import XCTest
 import TestSupport
+import Version
 
 class ProjectSpecTests: XCTestCase {
 
@@ -39,6 +40,35 @@ class ProjectSpecTests: XCTestCase {
         }
     }
 
+    func testTargetFilename() {
+        describe {
+
+            let framework = Target(
+                name: "MyFramework",
+                type: .framework,
+                platform: .iOS,
+                settings: Settings(buildSettings: [:])
+            )
+            let staticLibrary = Target(
+                name: "MyStaticLibrary",
+                type: .staticLibrary,
+                platform: .iOS,
+                settings: Settings(buildSettings: [:])
+            )
+            let dynamicLibrary = Target(
+                name: "MyDynamicLibrary",
+                type: .dynamicLibrary,
+                platform: .iOS,
+                settings: Settings(buildSettings: [:])
+            )
+            $0.it("has correct filename") {
+                try expect(framework.filename) == "MyFramework.framework"
+                try expect(staticLibrary.filename) == "libMyStaticLibrary.a"
+                try expect(dynamicLibrary.filename) == "MyDynamicLibrary.dylib"
+            }
+        }
+    }
+
     func testDeploymentTarget() {
         describe {
 
@@ -50,18 +80,18 @@ class ProjectSpecTests: XCTestCase {
             }
 
             $0.it("parses version correctly") {
-                try expect(Version("2").deploymentTarget) == "2.0"
-                try expect(Version("2.0").deploymentTarget) == "2.0"
-                try expect(Version("2.1").deploymentTarget) == "2.1"
-                try expect(Version("2.10").deploymentTarget) == "2.10"
-                try expect(Version("2.1.0").deploymentTarget) == "2.1"
-                try expect(Version("2.12.0").deploymentTarget) == "2.12"
-                try expect(Version("2.1.2").deploymentTarget) == "2.1.2"
-                try expect(Version("2.10.2").deploymentTarget) == "2.10.2"
-                try expect(Version("2.0.2").deploymentTarget) == "2.0.2"
-                try expect(Version(2).deploymentTarget) == "2.0"
-                try expect(Version(2.0).deploymentTarget) == "2.0"
-                try expect(Version(2.1).deploymentTarget) == "2.1"
+                try expect(Version.parse("2").deploymentTarget) == "2.0"
+                try expect(Version.parse("2.0").deploymentTarget) == "2.0"
+                try expect(Version.parse("2.1").deploymentTarget) == "2.1"
+                try expect(Version.parse("2.10").deploymentTarget) == "2.10"
+                try expect(Version.parse("2.1.0").deploymentTarget) == "2.1"
+                try expect(Version.parse("2.12.0").deploymentTarget) == "2.12"
+                try expect(Version.parse("2.1.2").deploymentTarget) == "2.1.2"
+                try expect(Version.parse("2.10.2").deploymentTarget) == "2.10.2"
+                try expect(Version.parse("2.0.2").deploymentTarget) == "2.0.2"
+                try expect(Version.parse(2).deploymentTarget) == "2.0"
+                try expect(Version.parse(2.0).deploymentTarget) == "2.0"
+                try expect(Version.parse(2.1).deploymentTarget) == "2.1"
             }
         }
     }
@@ -76,19 +106,19 @@ class ProjectSpecTests: XCTestCase {
             )
 
             $0.it("fails with invalid XcodeGen version") {
-                let minimumVersion = Version("1.11.1")
+                let minimumVersion = try Version.parse("1.11.1")
                 var project = baseProject
                 project.options = SpecOptions(minimumXcodeGenVersion: minimumVersion)
 
                 func expectMinimumXcodeGenVersionError(_ project: Project, minimumVersion: Version, xcodeGenVersion: Version, file: String = #file, line: Int = #line) throws {
-                    try expectError(SpecValidationError.ValidationError.invalidXcodeGenVersion(minimumVersion: minimumVersion, version: xcodeGenVersion), file: file, line: line) {
+                    try expectError(SpecValidationError(errors: [SpecValidationError.ValidationError.invalidXcodeGenVersion(minimumVersion: minimumVersion, version: xcodeGenVersion)]), file: file, line: line) {
                         try project.validateMinimumXcodeGenVersion(xcodeGenVersion)
                     }
                 }
 
-                try expectMinimumXcodeGenVersionError(project, minimumVersion: minimumVersion, xcodeGenVersion: Version("1.11.0"))
-                try expectMinimumXcodeGenVersionError(project, minimumVersion: minimumVersion, xcodeGenVersion: Version("1.10.99"))
-                try expectMinimumXcodeGenVersionError(project, minimumVersion: minimumVersion, xcodeGenVersion: Version("0.99"))
+                try expectMinimumXcodeGenVersionError(project, minimumVersion: minimumVersion, xcodeGenVersion: Version.parse("1.11.0"))
+                try expectMinimumXcodeGenVersionError(project, minimumVersion: minimumVersion, xcodeGenVersion: Version.parse("1.10.99"))
+                try expectMinimumXcodeGenVersionError(project, minimumVersion: minimumVersion, xcodeGenVersion: Version.parse("0.99"))
             }
 
             $0.it("fails with invalid project") {
@@ -96,7 +126,7 @@ class ProjectSpecTests: XCTestCase {
                 project.settings = invalidSettings
                 project.configFiles = ["invalidConfig": "invalidConfigFile"]
                 project.fileGroups = ["invalidFileGroup"]
-                project.localPackages = ["invalidLocalPackage"]
+                project.packages = ["invalidLocalPackage": .local(path: "invalidLocalPackage", group: nil)]
                 project.settingGroups = ["settingGroup1": Settings(
                     configSettings: ["invalidSettingGroupConfig": [:]],
                     groups: ["invalidSettingGroupSettingGroup"]
@@ -209,15 +239,18 @@ class ProjectSpecTests: XCTestCase {
                     name: "scheme1",
                     build: .init(targets: [.init(target: "invalidTarget")]),
                     run: .init(config: "debugInvalid"),
+                    test: .init(config: "testInvalid", coverageTargets: ["SubProject/Yams"], targets: [.init(targetReference: "invalidTarget")]),
                     archive: .init(config: "releaseInvalid")
                 )]
 
-                try expectValidationError(project, .invalidSchemeTarget(scheme: "scheme1", target: "invalidTarget"))
+                try expectValidationError(project, .invalidSchemeTarget(scheme: "scheme1", target: "invalidTarget", action: "build"))
                 try expectValidationError(project, .invalidSchemeConfig(scheme: "scheme1", config: "debugInvalid"))
                 try expectValidationError(project, .invalidSchemeConfig(scheme: "scheme1", config: "releaseInvalid"))
+                try expectValidationError(project, .invalidSchemeTarget(scheme: "scheme1", target: "invalidTarget", action: "test"))
+                try expectValidationError(project, .invalidProjectReference(scheme: "scheme1", reference: "SubProject"))
             }
 
-            $0.it("fails with invalid project reference") {
+            $0.it("fails with invalid project reference in scheme") {
                 var project = baseProject
                 project.schemes = [Scheme(
                     name: "scheme1",
@@ -231,6 +264,36 @@ class ProjectSpecTests: XCTestCase {
                 let reference = ProjectReference(name: "InvalidProj", path: "invalid_path")
                 project.projectReferences = [reference]
                 try expectValidationError(project, .invalidProjectReferencePath(reference))
+            }
+
+            $0.it("fails with invalid project reference in dependency") {
+                var project = baseProject
+                project.targets = [
+                    Target(
+                        name: "target1",
+                        type: .application,
+                        platform: .iOS,
+                        dependencies: [Dependency(type: .target, reference: "invalidProjectRef/target2")]
+                    ),
+                ]
+                try expectValidationError(project, .invalidTargetDependency(target: "target1", dependency: "invalidProjectRef/target2"))
+            }
+
+            $0.it("allows project reference in target dependency") {
+                var project = baseProject
+                let externalProjectPath = fixturePath + "TestProject/AnotherProject/AnotherProject.xcodeproj"
+                project.projectReferences = [
+                    ProjectReference(name: "validProjectRef", path: externalProjectPath.string),
+                ]
+                project.targets = [
+                    Target(
+                        name: "target1",
+                        type: .application,
+                        platform: .iOS,
+                        dependencies: [Dependency(type: .target, reference: "validProjectRef/ExternalTarget")]
+                    ),
+                ]
+                try project.validate()
             }
 
             $0.it("allows missing optional file") {
@@ -276,6 +339,30 @@ class ProjectSpecTests: XCTestCase {
                 project.schemes = [scheme]
                 try project.validate()
             }
+
+            $0.it("validates scheme variants") {
+
+                func expectVariant(_ variant: String, type: ConfigType = .debug, for config: Config, matches: Bool, file: String = #file, line: Int = #line) throws {
+                    let configs = [Config(name: "xxxxxxxxxxx", type: .debug), config]
+                    let foundConfig = configs.first(including: variant, for: type)
+                    let found = foundConfig != nil && foundConfig != configs[0]
+                    try expect(found, file: file, line: line) == matches
+                }
+
+                try expectVariant("Dev", for: Config(name: "DevDebug", type: .debug), matches: true)
+                try expectVariant("Dev", for: Config(name: "Dev debug", type: .debug), matches: true)
+                try expectVariant("Dev", for: Config(name: "DEV DEBUG", type: .debug), matches: true)
+                try expectVariant("Dev", for: Config(name: "Debug Dev", type: .debug), matches: true)
+                try expectVariant("Dev", for: Config(name: "dev Debug", type: .debug), matches: true)
+                try expectVariant("Dev", for: Config(name: "Dev debug", type: .release), matches: false)
+                try expectVariant("Dev", for: Config(name: "Dev-debug", type: .debug), matches: true)
+                try expectVariant("Dev", for: Config(name: "Dev_debug", type: .debug), matches: true)
+                try expectVariant("Prod", for: Config(name: "PreProd debug", type: .debug), matches: false)
+                try expectVariant("Develop", for: Config(name: "Dev debug", type: .debug), matches: false)
+                try expectVariant("Development", for: Config(name: "Debug (Development)", type: .debug), matches: true)
+                try expectVariant("Staging", for: Config(name: "Debug (Staging)", type: .debug), matches: true)
+                try expectVariant("Production", for: Config(name: "Debug (Production)", type: .debug), matches: true)
+            }
         }
     }
 
@@ -311,7 +398,8 @@ class ProjectSpecTests: XCTestCase {
                                                                               codeSign: true,
                                                                               link: true,
                                                                               implicit: true,
-                                                                              weakLink: true)],
+                                                                              weakLink: true,
+                                                                              copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .frameworks, subpath: "example", phaseOrder: .postCompile))],
                                                     info: Plist(path: "info.plist", attributes: ["foo": "bar"]),
                                                     entitlements: Plist(path: "entitlements.plist", attributes: ["foo": "bar"]),
                                                     transitivelyLinkDependencies: true,
@@ -325,7 +413,8 @@ class ProjectSpecTests: XCTestCase {
                                                                                   outputFileLists: ["bar.xcfilelist"],
                                                                                   shell: "/bin/bash",
                                                                                   runOnlyWhenInstalling: true,
-                                                                                  showEnvVars: true)],
+                                                                                  showEnvVars: true,
+                                                                                  basedOnDependencyAnalysis: false)],
                                                     postCompileScripts: [BuildScript(script: .path("cmd.sh"),
                                                                                      name: "Bar script",
                                                                                      inputFiles: ["foo"],
@@ -334,7 +423,8 @@ class ProjectSpecTests: XCTestCase {
                                                                                      outputFileLists: ["bar.xcfilelist"],
                                                                                      shell: "/bin/bash",
                                                                                      runOnlyWhenInstalling: true,
-                                                                                     showEnvVars: true)],
+                                                                                     showEnvVars: true,
+                                                                                     basedOnDependencyAnalysis: false)],
                                                     postBuildScripts: [BuildScript(script: .path("cmd.sh"),
                                                                                    name: "an another script",
                                                                                    inputFiles: ["foo"],
@@ -343,23 +433,40 @@ class ProjectSpecTests: XCTestCase {
                                                                                    outputFileLists: ["bar.xcfilelist"],
                                                                                    shell: "/bin/bash",
                                                                                    runOnlyWhenInstalling: true,
-                                                                                   showEnvVars: true)],
+                                                                                   showEnvVars: true,
+                                                                                   basedOnDependencyAnalysis: false),
+                                                                       BuildScript(script: .path("cmd.sh"),
+                                                                                   name: "Dependency script",
+                                                                                   inputFiles: ["foo"],
+                                                                                   outputFiles: ["bar"],
+                                                                                   inputFileLists: ["foo.xcfilelist"],
+                                                                                   outputFileLists: ["bar.xcfilelist"],
+                                                                                   shell: "/bin/bash",
+                                                                                   runOnlyWhenInstalling: true,
+                                                                                   showEnvVars: true,
+                                                                                   basedOnDependencyAnalysis: true,
+                                                                                   discoveredDependencyFile: "dep.d")],
                                                     buildRules: [BuildRule(fileType: .pattern("*.xcassets"),
                                                                            action: .script("pre_process_swift.py"),
                                                                            name: "My Build Rule",
                                                                            outputFiles: ["$(SRCROOT)/Generated.swift"],
-                                                                           outputFilesCompilerFlags: ["foo"]),
+                                                                           outputFilesCompilerFlags: ["foo"],
+                                                                           runOncePerArchitecture: false),
                                                                  BuildRule(fileType: .type("sourcecode.swift"),
                                                                            action: .compilerSpec("com.apple.xcode.tools.swift.compiler"),
                                                                            name: nil,
                                                                            outputFiles: ["bar"],
-                                                                           outputFilesCompilerFlags: ["foo"])],
+                                                                           outputFilesCompilerFlags: ["foo"],
+                                                                           runOncePerArchitecture: true)],
                                                     scheme: TargetScheme(testTargets: [Scheme.Test.TestTarget(targetReference: "test target",
                                                                                                               randomExecutionOrder: false,
                                                                                                               parallelizable: false)],
                                                                          configVariants: ["foo"],
                                                                          gatherCoverageData: true,
+                                                                         coverageTargets: ["App"],
+                                                                         storeKitConfiguration: "Configuration.storekit",
                                                                          disableMainThreadChecker: true,
+                                                                         stopOnEveryMainThreadCheckerIssue: false,
                                                                          commandLineArguments: ["foo": true],
                                                                          environmentVariables: [XCScheme.EnvironmentVariable(variable: "environmentVariable",
                                                                                                                              value: "bar",
@@ -391,7 +498,8 @@ class ProjectSpecTests: XCTestCase {
                                                                                                  outputFileLists: ["bar.xcfilelist"],
                                                                                                  shell: "/bin/bash",
                                                                                                  runOnlyWhenInstalling: true,
-                                                                                                 showEnvVars: false)],
+                                                                                                 showEnvVars: false,
+                                                                                                 basedOnDependencyAnalysis: false)],
                                                                       scheme: TargetScheme(testTargets: [Scheme.Test.TestTarget(targetReference: "test target",
                                                                                                                                 randomExecutionOrder: false,
                                                                                                                                 parallelizable: false)],
@@ -440,7 +548,9 @@ class ProjectSpecTests: XCTestCase {
                                                                                                          settingsTarget: "foo")],
                                                                     environmentVariables: [XCScheme.EnvironmentVariable(variable: "foo",
                                                                                                                         value: "bar",
-                                                                                                                        enabled: false)]),
+                                                                                                                        enabled: false)],
+                                                                    launchAutomaticallySubstyle: "2",
+                                                                    storeKitConfiguration: "Configuration.storekit"),
                                                     test: Scheme.Test(config: "Config",
                                                                       gatherCoverageData: true,
                                                                       disableMainThreadChecker: true,
@@ -481,12 +591,11 @@ class ProjectSpecTests: XCTestCase {
                                                                                                                  script: "bar",
                                                                                                                  settingsTarget: "foo")]))],
                                    packages: [
-                                       "Yams": SwiftPackage(
+                                       "Yams": .remote(
                                            url: "https://github.com/jpsim/Yams",
                                            versionRequirement: .upToNextMajorVersion("2.0.0")
                                        ),
                                    ],
-                                   localPackages: ["../../Package"],
                                    options: SpecOptions(minimumXcodeGenVersion: Version(major: 3, minor: 4, patch: 5),
                                                         carthageBuildPath: "carthageBuildPath",
                                                         carthageExecutablePath: "carthageExecutablePath",
@@ -515,7 +624,7 @@ class ProjectSpecTests: XCTestCase {
                 let json = proj.toJSONDictionary()
                 let restoredProj = try Project(basePath: Path.current, jsonDictionary: json)
 
-                // Examin some properties to make debugging easier
+                // Examine some properties to make debugging easier
                 try expect(proj.aggregateTargets) == restoredProj.aggregateTargets
                 try expect(proj.configFiles) == restoredProj.configFiles
                 try expect(proj.settings) == restoredProj.settings

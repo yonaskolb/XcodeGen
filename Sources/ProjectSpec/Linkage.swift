@@ -1,4 +1,5 @@
 import Foundation
+import XcodeProj
 
 public enum Linkage {
     case dynamic
@@ -19,7 +20,9 @@ extension Target {
              .intentsServiceExtension,
              .messagesApplication,
              .messagesExtension,
+             .metalLibrary,
              .ocUnitTestBundle,
+             .onDemandInstallCapableApplication,
              .stickerPack,
              .tvExtension,
              .uiTestBundle,
@@ -30,15 +33,28 @@ extension Target {
              .watch2AppContainer,
              .watch2Extension,
              .xcodeExtension,
-             .xpcService:
+             .xpcService,
+             .systemExtension,
+             .driverExtension:
             return .none
-        case .framework:
-            // TODO: This should check `MACH_O_TYPE` in case this is a "Static Framework"
-            return .dynamic
+        case .framework, .xcFramework:
+            // Check the MACH_O_TYPE for "Static Framework"
+            if settings.buildSettings.machOType == "staticlib" {
+                return .static
+            } else {
+                return .dynamic
+            }
         case .dynamicLibrary:
             return .dynamic
         case .staticLibrary, .staticFramework:
             return .static
         }
+    }
+}
+
+private extension BuildSettings {
+
+    var machOType: String? {
+        self["MACH_O_TYPE"] as? String
     }
 }

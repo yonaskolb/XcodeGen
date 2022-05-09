@@ -1,5 +1,6 @@
 import Foundation
-import Core
+import XcodeGenCore
+import Version
 
 public class CacheFile {
 

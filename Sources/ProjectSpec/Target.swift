@@ -1,6 +1,7 @@
 import Foundation
 import JSONUtilities
 import XcodeProj
+import Version
 
 public struct LegacyTarget: Equatable {
     public static let passSettingsDefault = false
@@ -20,6 +21,15 @@ public struct LegacyTarget: Equatable {
         self.arguments = arguments
         self.passSettings = passSettings
         self.workingDirectory = workingDirectory
+    }
+}
+
+extension LegacyTarget: PathContainer {
+
+    static var pathProperties: [PathProperty] {
+        [
+            .string("workingDirectory"),
+        ]
     }
 }
 
@@ -45,6 +55,7 @@ public struct Target: ProjectTarget {
     public var deploymentTarget: Version?
     public var attributes: [String: Any]
     public var productName: String
+    public var onlyCopyFilesOnInstall: Bool
 
     public var isLegacy: Bool {
         legacy != nil
@@ -54,6 +65,9 @@ public struct Target: ProjectTarget {
         var filename = productName
         if let fileExtension = type.fileExtension {
             filename += ".\(fileExtension)"
+        }
+        if type == .staticLibrary {
+            filename = "lib\(filename)"
         }
         return filename
     }
@@ -79,7 +93,8 @@ public struct Target: ProjectTarget {
         buildRules: [BuildRule] = [],
         scheme: TargetScheme? = nil,
         legacy: LegacyTarget? = nil,
-        attributes: [String: Any] = [:]
+        attributes: [String: Any] = [:],
+        onlyCopyFilesOnInstall: Bool = false
     ) {
         self.name = name
         self.type = type
@@ -102,6 +117,7 @@ public struct Target: ProjectTarget {
         self.scheme = scheme
         self.legacy = legacy
         self.attributes = attributes
+        self.onlyCopyFilesOnInstall = onlyCopyFilesOnInstall
     }
 }
 
@@ -127,6 +143,7 @@ extension Target: PathContainer {
                 .object("prebuildScripts", BuildScript.pathProperties),
                 .object("postCompileScripts", BuildScript.pathProperties),
                 .object("postBuildScripts", BuildScript.pathProperties),
+                .object("legacy", LegacyTarget.pathProperties),
             ]),
         ]
     }
@@ -257,9 +274,9 @@ extension Target: NamedJSONDictionaryConvertible {
         }
 
         if let string: String = jsonDictionary.json(atKeyPath: "deploymentTarget") {
-            deploymentTarget = try Version(string)
+            deploymentTarget = try Version.parse(string)
         } else if let double: Double = jsonDictionary.json(atKeyPath: "deploymentTarget") {
-            deploymentTarget = try Version(double)
+            deploymentTarget = try Version.parse(String(double))
         } else {
             deploymentTarget = nil
         }
@@ -284,7 +301,12 @@ extension Target: NamedJSONDictionaryConvertible {
         if jsonDictionary["dependencies"] == nil {
             dependencies = []
         } else {
-            dependencies = try jsonDictionary.json(atKeyPath: "dependencies", invalidItemBehaviour: .fail)
+            let dependencies: [Dependency] = try jsonDictionary.json(atKeyPath: "dependencies", invalidItemBehaviour: .fail)
+            self.dependencies = dependencies.filter { [platform] dependency -> Bool in
+                // If unspecified, all platforms are supported
+                guard let platforms = dependency.platforms else { return true }
+                return platforms.contains(platform)
+            }
         }
 
         if jsonDictionary["info"] != nil {
@@ -305,6 +327,7 @@ extension Target: NamedJSONDictionaryConvertible {
         scheme = jsonDictionary.json(atKeyPath: "scheme")
         legacy = jsonDictionary.json(atKeyPath: "legacy")
         attributes = jsonDictionary.json(atKeyPath: "attributes") ?? [:]
+        onlyCopyFilesOnInstall = jsonDictionary.json(atKeyPath: "onlyCopyFilesOnInstall") ?? false
     }
 }
 
@@ -334,6 +357,10 @@ extension Target: JSONEncodable {
 
         if productName != name {
             dict["productName"] = productName
+        }
+
+        if onlyCopyFilesOnInstall {
+            dict["onlyCopyFilesOnInstall"] = true
         }
 
         return dict

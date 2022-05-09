@@ -62,6 +62,8 @@ class SourceGeneratorTests: XCTestCase {
                     - a.swift
                     - B:
                       - b.swift
+                    - C2.0:
+                      - c.swift
                 """
                 try createDirectories(directories)
 
@@ -71,6 +73,7 @@ class SourceGeneratorTests: XCTestCase {
                 let pbxProj = try project.generatePbxProj()
                 try pbxProj.expectFile(paths: ["Sources", "A", "a.swift"], buildPhase: .sources)
                 try pbxProj.expectFile(paths: ["Sources", "A", "B", "b.swift"], buildPhase: .sources)
+                try pbxProj.expectFile(paths: ["Sources", "A", "C2.0", "c.swift"], buildPhase: .sources)
             }
 
             $0.it("supports frameworks in sources") {
@@ -119,6 +122,21 @@ class SourceGeneratorTests: XCTestCase {
                 try expect(versionGroup.children.count) == 3
                 try expect(versionGroup.path) == "model.xcdatamodeld"
                 try expect(fileReference.path) == "model2.xcdatamodel"
+            }
+
+            $0.it("generates core data mapping models") {
+                let directories = """
+                Sources:
+                    model.xcmappingmodel:
+                        - xcmapping.xml
+                """
+                try createDirectories(directories)
+
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: ["Sources"])
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target])
+
+                let pbxProj = try project.generatePbxProj()
+                try pbxProj.expectFile(paths: ["Sources", "model.xcmappingmodel"], buildPhase: .sources)
             }
 
             $0.it("generates variant groups") {
@@ -400,13 +418,19 @@ class SourceGeneratorTests: XCTestCase {
                     - B:
                       - b.swift
                       - c.jpg
+                    - D2.0:
+                      - d.swift
+                    - E.bundle:
+                      - e.json
                 """
                 try createDirectories(directories)
 
                 let target = Target(name: "Test", type: .application, platform: .iOS, sources: [
                     "Sources/A/a.swift",
                     "Sources/A/B/b.swift",
+                    "Sources/A/D2.0/d.swift",
                     "Sources/A/Assets.xcassets",
+                    "Sources/A/E.bundle/e.json",
                     "Sources/A/B/c.jpg",
                 ])
                 let project = Project(basePath: directoryPath, name: "Test", targets: [target])
@@ -414,8 +438,10 @@ class SourceGeneratorTests: XCTestCase {
                 let pbxProj = try project.generatePbxProj()
                 try pbxProj.expectFile(paths: ["Sources/A", "a.swift"], names: ["A", "a.swift"], buildPhase: .sources)
                 try pbxProj.expectFile(paths: ["Sources/A/B", "b.swift"], names: ["B", "b.swift"], buildPhase: .sources)
+                try pbxProj.expectFile(paths: ["Sources/A/D2.0", "d.swift"], names: ["D2.0", "d.swift"], buildPhase: .sources)
                 try pbxProj.expectFile(paths: ["Sources/A/B", "c.jpg"], names: ["B", "c.jpg"], buildPhase: .resources)
                 try pbxProj.expectFile(paths: ["Sources/A", "Assets.xcassets"], names: ["A", "Assets.xcassets"], buildPhase: .resources)
+                try pbxProj.expectFile(paths: ["Sources/A/E.bundle", "e.json"], names: ["E.bundle", "e.json"], buildPhase: .resources)
             }
 
             $0.it("generates shared sources") {
@@ -466,7 +492,7 @@ class SourceGeneratorTests: XCTestCase {
                 let pbxProj = try project.generatePbxProj()
                 try pbxProj.expectFile(paths: ["Sources", "A", "b.swift"], buildPhase: .sources)
                 try pbxProj.expectFile(paths: ["Sources", "F", "G", "h.swift"], buildPhase: .sources)
-                try pbxProj.expectFile(paths: ["../OtherDirectory/C/D", "e.swift"], names: ["D", "e.swift"], buildPhase: .sources)
+                try pbxProj.expectFile(paths: ["..", "OtherDirectory", "C", "D", "e.swift"], names: [".", "OtherDirectory", "C", "D", "e.swift"], buildPhase: .sources)
                 try pbxProj.expectFile(paths: ["Sources/B", "b.swift"], names: ["B", "b.swift"], buildPhase: .sources)
             }
 
@@ -533,13 +559,13 @@ class SourceGeneratorTests: XCTestCase {
                     - file.swift
                     - file.xcassets
                     - file.h
-                    - Info.plist
+                    - GoogleService-Info.plist
                     - file.xcconfig
                   B:
                     - file.swift
                     - file.xcassets
                     - file.h
-                    - Info.plist
+                    - Sample.plist
                     - file.xcconfig
                   C:
                     - file.swift
@@ -565,12 +591,20 @@ class SourceGeneratorTests: XCTestCase {
                     - file.mlmodel
                     - Info.plist
                     - Intent.intentdefinition
+                    - Configuration.storekit
+                    - Settings.bundle:
+                      - en.lproj:
+                        - Root.strings
+                      - Root.plist
+                    - WithPeriod2.0:
+                      - file.swift
+                    - Documentation.docc
                 """
                 try createDirectories(directories)
 
                 let target = Target(name: "Test", type: .framework, platform: .iOS, sources: [
                     TargetSource(path: "A", buildPhase: .resources),
-                    TargetSource(path: "B", buildPhase: TargetSource.BuildPhase.none),
+                    TargetSource(path: "B", buildPhase: BuildPhaseSpec.none),
                     TargetSource(path: "C", buildPhase: nil),
                 ])
                 let project = Project(basePath: directoryPath, name: "Test", targets: [target])
@@ -579,14 +613,14 @@ class SourceGeneratorTests: XCTestCase {
                 try pbxProj.expectFile(paths: ["A", "file.swift"], buildPhase: .resources)
                 try pbxProj.expectFile(paths: ["A", "file.xcassets"], buildPhase: .resources)
                 try pbxProj.expectFile(paths: ["A", "file.h"], buildPhase: .resources)
-                try pbxProj.expectFile(paths: ["A", "Info.plist"], buildPhase: .resources)
+                try pbxProj.expectFile(paths: ["A", "GoogleService-Info.plist"], buildPhase: .resources)
                 try pbxProj.expectFile(paths: ["A", "file.xcconfig"], buildPhase: .resources)
 
-                try pbxProj.expectFile(paths: ["B", "file.swift"], buildPhase: TargetSource.BuildPhase.none)
-                try pbxProj.expectFile(paths: ["B", "file.xcassets"], buildPhase: TargetSource.BuildPhase.none)
-                try pbxProj.expectFile(paths: ["B", "file.h"], buildPhase: TargetSource.BuildPhase.none)
-                try pbxProj.expectFile(paths: ["B", "Info.plist"], buildPhase: TargetSource.BuildPhase.none)
-                try pbxProj.expectFile(paths: ["B", "file.xcconfig"], buildPhase: TargetSource.BuildPhase.none)
+                try pbxProj.expectFile(paths: ["B", "file.swift"], buildPhase: BuildPhaseSpec.none)
+                try pbxProj.expectFile(paths: ["B", "file.xcassets"], buildPhase: BuildPhaseSpec.none)
+                try pbxProj.expectFile(paths: ["B", "file.h"], buildPhase: BuildPhaseSpec.none)
+                try pbxProj.expectFile(paths: ["B", "Sample.plist"], buildPhase: BuildPhaseSpec.none)
+                try pbxProj.expectFile(paths: ["B", "file.xcconfig"], buildPhase: BuildPhaseSpec.none)
 
                 try pbxProj.expectFile(paths: ["C", "file.swift"], buildPhase: .sources)
                 try pbxProj.expectFile(paths: ["C", "file.m"], buildPhase: .sources)
@@ -601,19 +635,148 @@ class SourceGeneratorTests: XCTestCase {
                 try pbxProj.expectFile(paths: ["C", "file.tpp"], buildPhase: .headers)
                 try pbxProj.expectFile(paths: ["C", "file.hxx"], buildPhase: .headers)
                 try pbxProj.expectFile(paths: ["C", "file.def"], buildPhase: .headers)
-                try pbxProj.expectFile(paths: ["C", "file.xcconfig"], buildPhase: TargetSource.BuildPhase.none)
-                try pbxProj.expectFile(paths: ["C", "file.entitlements"], buildPhase: TargetSource.BuildPhase.none)
-                try pbxProj.expectFile(paths: ["C", "file.gpx"], buildPhase: TargetSource.BuildPhase.none)
-                try pbxProj.expectFile(paths: ["C", "file.apns"], buildPhase: TargetSource.BuildPhase.none)
-                try pbxProj.expectFile(paths: ["C", "file.xcconfig"], buildPhase: TargetSource.BuildPhase.none)
-                try pbxProj.expectFile(paths: ["C", "file.xcconfig"], buildPhase: TargetSource.BuildPhase.none)
-                try pbxProj.expectFile(paths: ["C", "file.xcconfig"], buildPhase: TargetSource.BuildPhase.none)
+                try pbxProj.expectFile(paths: ["C", "file.xcconfig"], buildPhase: BuildPhaseSpec.none)
+                try pbxProj.expectFile(paths: ["C", "file.entitlements"], buildPhase: BuildPhaseSpec.none)
+                try pbxProj.expectFile(paths: ["C", "file.gpx"], buildPhase: BuildPhaseSpec.none)
+                try pbxProj.expectFile(paths: ["C", "file.apns"], buildPhase: BuildPhaseSpec.none)
+                try pbxProj.expectFile(paths: ["C", "file.xcconfig"], buildPhase: BuildPhaseSpec.none)
+                try pbxProj.expectFile(paths: ["C", "file.xcconfig"], buildPhase: BuildPhaseSpec.none)
+                try pbxProj.expectFile(paths: ["C", "file.xcconfig"], buildPhase: BuildPhaseSpec.none)
                 try pbxProj.expectFile(paths: ["C", "file.xcassets"], buildPhase: .resources)
                 try pbxProj.expectFile(paths: ["C", "file.123"], buildPhase: .resources)
-                try pbxProj.expectFile(paths: ["C", "Info.plist"], buildPhase: TargetSource.BuildPhase.none)
+                try pbxProj.expectFile(paths: ["C", "Info.plist"], buildPhase: BuildPhaseSpec.none)
                 try pbxProj.expectFile(paths: ["C", "file.metal"], buildPhase: .sources)
                 try pbxProj.expectFile(paths: ["C", "file.mlmodel"], buildPhase: .sources)
                 try pbxProj.expectFile(paths: ["C", "Intent.intentdefinition"], buildPhase: .sources)
+                try pbxProj.expectFile(paths: ["C", "Configuration.storekit"], buildPhase: .resources)
+                try pbxProj.expectFile(paths: ["C", "Settings.bundle"], buildPhase: .resources)
+                try pbxProj.expectFileMissing(paths: ["C", "Settings.bundle", "en.lproj"])
+                try pbxProj.expectFileMissing(paths: ["C", "Settings.bundle", "en.lproj", "Root.strings"])
+                try pbxProj.expectFileMissing(paths: ["C", "Settings.bundle", "Root.plist"])
+                try pbxProj.expectFileMissing(paths: ["C", "WithPeriod2.0"])
+                try pbxProj.expectFile(paths: ["C", "WithPeriod2.0", "file.swift"], buildPhase: .sources)
+                try pbxProj.expectFile(paths: ["C", "Documentation.docc"], buildPhase: BuildPhaseSpec.none)
+            }
+
+            $0.it("only omits the defined Info.plist from resource build phases but not other plists") {
+                try createDirectories("""
+                  A:
+                    - A-Info.plist
+                  B:
+                    - Info.plist
+                    - GoogleServices-Info.plist
+                  C:
+                    - Info.plist
+                    - Info-Production.plist
+                  D:
+                    - Info-Staging.plist
+                    - Info-Production.plist
+                """)
+
+                // Explicit plist.path value is respected
+                let targetA = Target(
+                    name: "A",
+                    type: .application,
+                    platform: .iOS,
+                    sources: ["A"],
+                    info: Plist(path: "A/A-Info.plist")
+                )
+
+                // Automatically picks first 'Info.plist' at the top-level
+                let targetB = Target(
+                    name: "B",
+                    type: .application,
+                    platform: .iOS,
+                    sources: ["B"]
+                )
+
+                // Also respects INFOPLIST_FILE, ignores other files named Info.plist
+                let targetC = Target(
+                    name: "C",
+                    type: .application,
+                    platform: .iOS,
+                    settings: Settings(dictionary: [
+                        "INFOPLIST_FILE": "C/Info-Production.plist"
+                    ]),
+                    sources: ["C"]
+                )
+
+                // Does not support INFOPLIST_FILE value that requires expanding
+                let targetD = Target(
+                    name: "D",
+                    type: .application,
+                    platform: .iOS,
+                    settings: Settings(dictionary: [
+                        "ENVIRONMENT": "Production",
+                        "INFOPLIST_FILE": "D/Info-${ENVIRONMENT}.plist"
+                    ]),
+                    sources: ["D"]
+                )
+
+                let project = Project(basePath: directoryPath.absolute(), name: "Test", targets: [targetA, targetB, targetC, targetD])
+                let pbxProj = try project.generatePbxProj()
+
+                try pbxProj.expectFile(paths: ["A", "A-Info.plist"], buildPhase: BuildPhaseSpec.none)
+
+                try pbxProj.expectFile(paths: ["B", "Info.plist"], buildPhase: BuildPhaseSpec.none)
+                try pbxProj.expectFile(paths: ["B", "GoogleServices-Info.plist"], buildPhase: .resources)
+
+                try pbxProj.expectFile(paths: ["C", "Info.plist"], buildPhase: .resources)
+                try pbxProj.expectFile(paths: ["C", "Info-Production.plist"], buildPhase: BuildPhaseSpec.none)
+
+                try pbxProj.expectFile(paths: ["D", "Info-Staging.plist"], buildPhase: .resources)
+                try pbxProj.expectFile(paths: ["D", "Info-Production.plist"], buildPhase: .resources)
+            }
+
+            $0.it("sets file type properties") {
+                let directories = """
+                  A:
+                    - file.resource1
+                    - file.source1
+                    - file.abc:
+                        - file.a
+                    - file.exclude1
+                    - file.unphased1
+                    - ignored.swift
+                """
+                try createDirectories(directories)
+
+                let target = Target(name: "Test", type: .framework, platform: .iOS, sources: [
+                    TargetSource(path: "A"),
+                ])
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target], options: .init(fileTypes: [
+                    "abc": FileType(buildPhase: .sources),
+                    "source1": FileType(buildPhase: .sources, attributes: ["a1", "a2"], resourceTags: ["r1", "r2"], compilerFlags: ["-c1", "-c2"]),
+                    "resource1": FileType(buildPhase: .resources, attributes: ["a1", "a2"], resourceTags: ["r1", "r2"], compilerFlags: ["-c1", "-c2"]),
+                    "unphased1": FileType(buildPhase: BuildPhaseSpec.none),
+                    "swift": FileType(buildPhase: .resources),
+                ]))
+
+                let pbxProj = try project.generatePbxProj()
+                try pbxProj.expectFile(paths: ["A", "file.abc"], buildPhase: .sources)
+                try pbxProj.expectFile(paths: ["A", "file.source1"], buildPhase: .sources)
+                try pbxProj.expectFile(paths: ["A", "file.resource1"], buildPhase: .resources)
+                try pbxProj.expectFile(paths: ["A", "file.unphased1"], buildPhase: BuildPhaseSpec.none)
+                try pbxProj.expectFile(paths: ["A", "ignored.swift"], buildPhase: .resources)
+
+                do {
+                    let fileReference = try unwrap(pbxProj.getFileReference(paths: ["A", "file.resource1"], names: ["A", "file.resource1"]))
+                    let buildFile = try unwrap(pbxProj.buildFiles.first(where: { $0.file === fileReference }))
+                    let settings = NSDictionary(dictionary: buildFile.settings ?? [:])
+                    try expect(settings) == [
+                        "ATTRIBUTES": ["a1", "a2"],
+                        "ASSET_TAGS": ["r1", "r2"],
+                    ]
+                }
+                do {
+                    let fileReference = try unwrap(pbxProj.getFileReference(paths: ["A", "file.source1"], names: ["A", "file.source1"]))
+                    let buildFile = try unwrap(pbxProj.buildFiles.first(where: { $0.file === fileReference }))
+                    let settings = NSDictionary(dictionary: buildFile.settings ?? [:])
+                    try expect(settings) == [
+                        "ATTRIBUTES": ["a1", "a2"],
+                        "COMPILER_FLAGS": "-c1 -c2",
+                        ]
+                }
             }
 
             $0.it("duplicate TargetSource is included once in sources build phase") {
@@ -676,6 +839,10 @@ class SourceGeneratorTests: XCTestCase {
 
             $0.it("sorts files") {
                 let directories = """
+                    A:
+                    - A.swift
+                    Source:
+                        - file.swift
                     Sources:
                     - file3.swift
                     - file.swift
@@ -686,17 +853,55 @@ class SourceGeneratorTests: XCTestCase {
                         - file.swift
                     - group:
                         - file.swift
+                    Z:
+                    - A:
+                        - file.swift
+                    B:
+                    - file.swift
                 """
                 try createDirectories(directories)
 
-                let target = Target(name: "Test", type: .application, platform: .iOS, sources: ["Sources"], dependencies: [Dependency(type: .carthage(findFrameworks: false, linkType: .dynamic), reference: "Alamofire")])
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: [
+                    "Sources",
+                    TargetSource(path: "Source", name: "S"),
+                    "A",
+                    TargetSource(path: "Z/A", name: "B"),
+                    "B",
+                ], dependencies: [Dependency(type: .carthage(findFrameworks: false, linkType: .dynamic), reference: "Alamofire")])
                 let project = Project(basePath: directoryPath, name: "Test", targets: [target])
 
                 let pbxProj = try project.generatePbxProj()
                 let mainGroup = try pbxProj.getMainGroup()
-                let group = mainGroup.children.compactMap { $0 as? PBXGroup }.first { $0.nameOrPath == "Sources" }!
-                let names = group.children.compactMap { $0.nameOrPath }
+                let mainGroupNames = mainGroup.children.prefix(5).map { $0.name }
+                try expect(mainGroupNames) == [
+                    nil,
+                    nil,
+                    "B",
+                    "S",
+                    nil,
+                ]
+                let mainGroupPaths = mainGroup.children.prefix(5).map { $0.path }
+                try expect(mainGroupPaths) == [
+                    "A",
+                    "B",
+                    "Z/A",
+                    "Source",
+                    "Sources",
+                ]
+
+                let group = mainGroup.children.compactMap { $0 as? PBXGroup }.first { $0.path == "Sources" }!
+                let names = group.children.map { $0.name }
                 try expect(names) == [
+                    nil,
+                    nil,
+                    nil,
+                    nil,
+                    nil,
+                    nil,
+                    nil,
+                ]
+                let paths = group.children.map { $0.path }
+                try expect(paths) == [
                     "1file.a",
                     "10file.a",
                     "file.swift",
@@ -928,6 +1133,74 @@ class SourceGeneratorTests: XCTestCase {
                         try expect(resourcesBuildPhase.files?.compactMap { $0.file?.nameOrPath }) == ["Intents.intentdefinition"]
                     }
                 }
+
+                $0.it("generates resource tags") {
+                    let directories = """
+                    A:
+                        - resourceFile.mp4
+                        - resourceFile2.mp4
+                        - sourceFile.swift
+                    """
+                    try createDirectories(directories)
+
+                    let target = Target(
+                        name: "Test",
+                        type: .application,
+                        platform: .iOS,
+                        sources: [
+                            TargetSource(path: "A/resourceFile.mp4", buildPhase: .resources, resourceTags: ["tag1", "tag2"]),
+                            TargetSource(path: "A/resourceFile2.mp4", buildPhase: .resources, resourceTags: ["tag2", "tag3"]),
+                            TargetSource(path: "A/sourceFile.swift", buildPhase: .sources, resourceTags: ["tag1", "tag2"]),
+                        ]
+                    )
+
+                    let project = Project(basePath: directoryPath,
+                                          name: "Test",
+                                          targets: [target])
+
+                    let pbxProj = try project.generatePbxProj()
+
+                    let resourceFileReference = try unwrap(pbxProj.getFileReference(
+                        paths: ["A", "resourceFile.mp4"],
+                        names: ["A", "resourceFile.mp4"]
+                    ))
+
+                    let resourceFileReference2 = try unwrap(pbxProj.getFileReference(
+                        paths: ["A", "resourceFile2.mp4"],
+                        names: ["A", "resourceFile2.mp4"]
+                    ))
+
+                    let sourceFileReference = try unwrap(pbxProj.getFileReference(
+                        paths: ["A", "sourceFile.swift"],
+                        names: ["A", "sourceFile.swift"]
+                    ))
+
+                    try pbxProj.expectFile(paths: ["A", "resourceFile.mp4"], buildPhase: .resources)
+                    try pbxProj.expectFile(paths: ["A", "resourceFile2.mp4"], buildPhase: .resources)
+                    try pbxProj.expectFile(paths: ["A", "sourceFile.swift"], buildPhase: .sources)
+
+                    let resourceBuildFile = try unwrap(pbxProj.buildFiles.first(where: { $0.file == resourceFileReference }))
+                    let resourceBuildFile2 = try unwrap(pbxProj.buildFiles.first(where: { $0.file == resourceFileReference2 }))
+                    let sourceBuildFile = try unwrap(pbxProj.buildFiles.first(where: { $0.file == sourceFileReference }))
+
+                    if (resourceBuildFile.settings! as NSDictionary) != (["ASSET_TAGS": ["tag1", "tag2"]] as NSDictionary) {
+                        throw failure("File does not contain tag1 and tag2 ASSET_TAGS")
+                    }
+
+                    if (resourceBuildFile2.settings! as NSDictionary) != (["ASSET_TAGS": ["tag2", "tag3"]] as NSDictionary) {
+                        throw failure("File does not contain tag2 and tag3 ASSET_TAGS")
+                    }
+
+                    if sourceBuildFile.settings != nil {
+                        throw failure("File that buildPhase is source contain settings")
+                    }
+
+                    if !pbxProj.rootObject!.attributes.keys.contains("knownAssetTags") {
+                        throw failure("PBXProject does not contain knownAssetTags")
+                    }
+
+                    try expect(pbxProj.rootObject!.attributes["knownAssetTags"] as? [String]) == ["tag1", "tag2", "tag3"]
+                }
             }
         }
     }
@@ -936,7 +1209,7 @@ class SourceGeneratorTests: XCTestCase {
 extension PBXProj {
 
     /// expect a file within groups of the paths, using optional different names
-    func expectFile(paths: [String], names: [String]? = nil, buildPhase: TargetSource.BuildPhase? = nil, file: String = #file, line: Int = #line) throws {
+    func expectFile(paths: [String], names: [String]? = nil, buildPhase: BuildPhaseSpec? = nil, file: String = #file, line: Int = #line) throws {
         guard let fileReference = getFileReference(paths: paths, names: names ?? paths) else {
             var error = "Could not find file at path \(paths.joined(separator: "/").quoted)"
             if let names = names, names != paths {
@@ -982,13 +1255,6 @@ extension PBXProj {
         guard let mainGroup = projects.first?.mainGroup else { return nil }
 
         return getFileReference(group: mainGroup, paths: paths, names: names)
-    }
-
-    func getMainGroup(function: String = #function, file: String = #file, line: Int = #line) throws -> PBXGroup {
-        guard let mainGroup = projects.first?.mainGroup else {
-            throw failure("Couldn't find main group", file: file, line: line)
-        }
-        return mainGroup
     }
 
     private func getFileReference(group: PBXGroup, paths: [String], names: [String]) -> PBXFileReference? {

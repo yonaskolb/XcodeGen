@@ -1,25 +1,65 @@
 import Foundation
 import XcodeProj
 import JSONUtilities
+import Version
 
-public struct SwiftPackage: Equatable {
+public enum SwiftPackage: Equatable {
 
     public typealias VersionRequirement = XCRemoteSwiftPackageReference.VersionRequirement
 
-    public let url: String
-    public let versionRequirement: VersionRequirement
+    static let githubPrefix = "https://github.com/"
 
-    public init(url: String, versionRequirement: VersionRequirement) {
-        self.url = url
-        self.versionRequirement = versionRequirement
+    case remote(url: String, versionRequirement: VersionRequirement)
+    case local(path: String, group: String?)
+
+    public var isLocal: Bool {
+        if case .local = self {
+            return true
+        }
+        return false
     }
 }
 
 extension SwiftPackage: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
-        url = try jsonDictionary.json(atKeyPath: "url")
-        versionRequirement = try VersionRequirement(jsonDictionary: jsonDictionary)
+        if let path: String = jsonDictionary.json(atKeyPath: "path"), let customLocation: String = jsonDictionary.json(atKeyPath: "group") {
+            self = .local(path: path, group: customLocation)
+        } else if let path: String = jsonDictionary.json(atKeyPath: "path") {
+            self = .local(path: path, group: nil)
+        } else {
+            let versionRequirement: VersionRequirement = try VersionRequirement(jsonDictionary: jsonDictionary)
+            try Self.validateVersion(versionRequirement: versionRequirement)
+            let url: String
+            if jsonDictionary["github"] != nil {
+                let github: String = try jsonDictionary.json(atKeyPath: "github")
+                url = "\(Self.githubPrefix)\(github)"
+            } else {
+                url = try jsonDictionary.json(atKeyPath: "url")
+            }
+            self = .remote(url: url, versionRequirement: versionRequirement)
+        }
+    }
+
+    private static func validateVersion(versionRequirement: VersionRequirement) throws {
+        switch versionRequirement {
+
+        case .upToNextMajorVersion(let version):
+            try _ = Version.parse(version)
+
+        case .upToNextMinorVersion(let version):
+            try _ = Version.parse(version)
+
+        case .range(let from, let to):
+            try _ = Version.parse(from)
+            try _ = Version.parse(to)
+
+        case .exact(let version):
+            try _ = Version.parse(version)
+
+        default:
+            break
+        }
     }
 }
 
@@ -27,24 +67,36 @@ extension SwiftPackage: JSONEncodable {
 
     public func toJSONValue() -> Any {
         var dictionary: JSONDictionary = [:]
-        dictionary["url"] = url
+        switch self {
+        case .remote(let url, let versionRequirement):
+            if url.hasPrefix(Self.githubPrefix) {
+                dictionary["github"] = url.replacingOccurrences(of: Self.githubPrefix, with: "")
+            } else {
+                dictionary["url"] = url
+            }
 
-        switch versionRequirement {
+            switch versionRequirement {
 
-        case .upToNextMajorVersion(let version):
-            dictionary["majorVersion"] = version
-        case .upToNextMinorVersion(let version):
-            dictionary["minorVersion"] = version
-        case .range(let from, let to):
-            dictionary["minVersion"] = from
-            dictionary["maxVersion"] = to
-        case .exact(let version):
-            dictionary["exactVersion"] = version
-        case .branch(let branch):
-            dictionary["branch"] = branch
-        case .revision(let revision):
-            dictionary["revision"] = revision
+            case .upToNextMajorVersion(let version):
+                dictionary["majorVersion"] = version
+            case .upToNextMinorVersion(let version):
+                dictionary["minorVersion"] = version
+            case .range(let from, let to):
+                dictionary["minVersion"] = from
+                dictionary["maxVersion"] = to
+            case .exact(let version):
+                dictionary["exactVersion"] = version
+            case .branch(let branch):
+                dictionary["branch"] = branch
+            case .revision(let revision):
+                dictionary["revision"] = revision
+            }
+            return dictionary
+        case let .local(path, group):
+            dictionary["path"] = path
+            dictionary["group"] = group
         }
+
         return dictionary
     }
 }

@@ -120,7 +120,11 @@ class CarthageDependencyResolverTests: XCTestCase {
                 let target = Target(name: "1", type: .application, platform: .iOS, dependencies: [dependency])
                 let dependencies = resolver.dependencies(for: target)
 
-                try expect(dependencies) == [dependency]
+                let expectedDependencies = [dependency].map {
+                    ResolvedCarthageDependency(dependency: $0, isFromTopLevelTarget: true)
+                }
+
+                try expect(dependencies) == expectedDependencies
             }
 
             $0.it("fetches all carthage dependencies for a given target, sorted alphabetically") {
@@ -134,7 +138,36 @@ class CarthageDependencyResolverTests: XCTestCase {
 
                 let related = resolver.dependencies(for: target)
 
-                try expect(related) == dependencies.sorted(by: { $0.reference < $1.reference })
+                let expectedDependencies = dependencies
+                    .sorted(by: { $0.reference < $1.reference })
+                    .map {
+                        ResolvedCarthageDependency(dependency: $0, isFromTopLevelTarget: true)
+                    }
+
+                try expect(related) == expectedDependencies
+            }
+
+            $0.it("skips dependencies which are not embedded") {
+                let resolver = CarthageDependencyResolver(project: makeTestProject())
+
+                let target = Target(name: "1", type: .application, platform: .iOS, dependencies: [
+                    Dependency(type: .carthage(findFrameworks: false, linkType: .dynamic), reference: dependencyFixtureName, embed: false, link: false)
+                ])
+                try expect(resolver.dependencies(for: target)) == []
+            }
+
+            $0.it("skips dependencies nested in targets which are not embedded") {
+                let nestedTarget = Target(name: "1", type: .framework, platform: .iOS, dependencies: [
+                    Dependency(type: .carthage(findFrameworks: false, linkType: .dynamic), reference: dependencyFixtureName)
+                ])
+
+                let resolver = CarthageDependencyResolver(project: makeTestProject(with: [nestedTarget]))
+
+                let target = Target(name: "2", type: .application, platform: .iOS, dependencies: [
+                    Dependency(type: .target, reference: "1", embed: false, link: false)
+                ])
+                try expect(resolver.dependencies(for: target)) == []
+
             }
         }
     }

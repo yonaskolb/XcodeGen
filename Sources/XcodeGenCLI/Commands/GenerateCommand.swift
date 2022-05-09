@@ -4,6 +4,7 @@ import ProjectSpec
 import SwiftCLI
 import XcodeGenKit
 import XcodeProj
+import Version
 
 class GenerateCommand: ProjectCommand {
 
@@ -79,6 +80,11 @@ class GenerateCommand: ProjectCommand {
             throw GenerationError.validationError(error)
         }
 
+        // run pre gen command
+        if let command = project.options.preGenCommand {
+            try Task.run(bash: command, directory: projectDirectory.absolute().string)
+        }
+
         // generate plists
         info("⚙️  Generating plists...")
         let fileWriter = FileWriter(project: project)
@@ -118,6 +124,11 @@ class GenerateCommand: ProjectCommand {
             } catch {
                 info("Failed to write cache: \(error.localizedDescription)")
             }
+        }
+
+        // run post gen command
+        if let command = project.options.postGenCommand {
+            try Task.run(bash: command, directory: projectDirectory.absolute().string)
         }
     }
 

@@ -4,18 +4,36 @@ import PathKit
 import Yams
 
 extension Dictionary where Key: JSONKey {
-
-    public func json<T: NamedJSONDictionaryConvertible>(atKeyPath keyPath: JSONUtilities.KeyPath, invalidItemBehaviour: InvalidItemBehaviour<T> = .remove) throws -> [T] {
+    public func json<T: NamedJSONDictionaryConvertible>(atKeyPath keyPath: JSONUtilities.KeyPath, invalidItemBehaviour: InvalidItemBehaviour<T> = .remove, parallel: Bool = false) throws -> [T] {
         guard let dictionary = json(atKeyPath: keyPath) as JSONDictionary? else {
             return []
         }
-        var items: [T] = []
-        for (key, _) in dictionary {
-            let jsonDictionary: JSONDictionary = try dictionary.json(atKeyPath: .key(key))
-            let item = try T(name: key, jsonDictionary: jsonDictionary)
-            items.append(item)
+        if parallel {
+            let defaultError = NSError(domain: "Unspecified error", code: 0, userInfo: nil)
+            let keys = Array(dictionary.keys)
+            var itemResults: [Result<T, Error>] = Array(repeating: .failure(defaultError), count: keys.count)
+            itemResults.withUnsafeMutableBufferPointer { buffer in
+                DispatchQueue.concurrentPerform(iterations: dictionary.count) { idx in
+                    do {
+                        let key = keys[idx]
+                        let jsonDictionary: JSONDictionary = try dictionary.json(atKeyPath: .key(key))
+                        let item = try T(name: key, jsonDictionary: jsonDictionary)
+                        buffer[idx] = .success(item)
+                    } catch {
+                        buffer[idx] = .failure(error)
+                    }
+                }
+            }
+            return try itemResults.map { try $0.get() }
+        } else {
+            var items: [T] = []
+            for (key, _) in dictionary {
+                let jsonDictionary: JSONDictionary = try dictionary.json(atKeyPath: .key(key))
+                let item = try T(name: key, jsonDictionary: jsonDictionary)
+                items.append(item)
+            }
+            return items
         }
-        return items
     }
 
     public func json<T: NamedJSONConvertible>(atKeyPath keyPath: JSONUtilities.KeyPath, invalidItemBehaviour: InvalidItemBehaviour<T> = .remove) throws -> [T] {

@@ -10,7 +10,7 @@ LICENSE=LICENSE
 # copy
 
 mkdir -p $BINDIR
-cp -f .build/release/$EXECUTABLE_NAME $BINDIR
+cp -f "$1" $BINDIR
 
 mkdir -p $SHAREDIR
 cp -R SettingPresets $SHAREDIR/SettingPresets

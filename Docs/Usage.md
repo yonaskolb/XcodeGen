@@ -36,7 +36,7 @@ The values from [xcconfig files](#xcconfig-files) will then sit a level above th
 XcodeGen applies default settings to your project and targets similar to how Xcode creates them when you create a new project or target.
 Debug and Release settings will be applied to your project. Targets will also get specific settings depending on the platform and product type.
 
->You can change or disable how these setting presets are applied via the `options.settingPresets` which you can find more about in [Options](#options)
+>You can change or disable how these setting presets are applied via the `options.settingPresets` which you can find more about in [Options](ProjectSpec.md#options)
 
 ### Settings
 The `project` and each `target` have a `settings` object that you can define. This can be a simple map of build settings or can provide build settings per `config` via `configs` or `base`. See [Settings](ProjectSpec.md#settings) for more details.
@@ -87,7 +87,7 @@ targets:
 ```
 
 ### xcodebuild environment variables
-You can also always overide any build settings on CI when building by passing specific build settings to xcodebuild like so:
+You can also always override any build settings on CI when building by passing specific build settings to xcodebuild like so:
 
 ```sh
 DEVELOPMENT_TEAM=XXXXXXXXX xcodebuild ...
@@ -122,7 +122,7 @@ By default these all have to be listed if you want to link and use them:
 ```yml
 targets:
   App:
-    frameworks:
+    dependencies:
       - carthage: ReactiveCocoa
       - carthage: ReactiveMapKit 
 ```
@@ -134,7 +134,7 @@ options:
   findCarthageFrameworks: true
 targets:
   App:
-    frameworks:
+    dependencies:
       - carthage: ReactiveCocoa # will find ReactiveMapKit as well
       - carthage: OtherCarthageDependency
         findFrameworks: false # disables the global option
@@ -165,12 +165,15 @@ packages:
   SwiftPM:
     url: https://github.com/apple/swift-package-manager
     branch: swift-5.0-branch
+  RxClient:
+    path: ../RxClient
 targets:
   App:
     dependencies:
       # by default the package product that is linked to is the same as the package name
       - package: Yams
       - package: SwiftPM
+      - package: RxClient
       - package: SwiftPM
         product: SPMUtility # specify a specific product
 ```
@@ -178,16 +181,7 @@ If you want to check in the `Package.resolved` file so that everyone is on the s
 
 > Note that Swift Packages don't work in projects with configurations other than `Debug` and `Release`. That limitation is tracked here bugs.swift.org/browse/SR-10927
 
-You can also include local Swift Packages by referencing them by paths in `localPackages`. When these have the same name as `packages` they will be used instead of the remote repos. This is useful for local development.
-
-```yml
-localPackages:
- - ../../Yams
- - ~/Developer/MyPackage
-```
-These local packages get put into a `Packages` group in the root of the project by default. This can be changed with `options.localPackagesGroup`
-
-> For now local packages that don't mirror remote packages aren't able to be linked to
+Specified local packages get put into a `Packages` group in the root of the project by default. This can be changed with `options.localPackagesGroup`.
 
 ### SDK
 System frameworks and libs can be linked by using the `sdk` dependency type. You can either specify frameworks or libs by using a `.framework`, `.tbd` or `dylib` filename, respectively

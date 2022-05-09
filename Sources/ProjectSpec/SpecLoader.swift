@@ -3,6 +3,7 @@ import JSONUtilities
 import PathKit
 import XcodeProj
 import Yams
+import Version
 
 public class SpecLoader {
 
@@ -14,10 +15,10 @@ public class SpecLoader {
         self.version = version
     }
 
-    public func loadProject(path: Path, variables: [String: String] = [:]) throws -> Project {
+    public func loadProject(path: Path, projectRoot: Path? = nil, variables: [String: String] = [:]) throws -> Project {
         let spec = try SpecFile(path: path)
         let resolvedDictionary = spec.resolvedDictionary(variables: variables)
-        let project = try Project(basePath: spec.basePath, jsonDictionary: resolvedDictionary)
+        let project = try Project(basePath: projectRoot ?? spec.basePath, jsonDictionary: resolvedDictionary)
 
         self.project = project
         projectDictionary = resolvedDictionary

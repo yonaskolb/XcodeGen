@@ -4,6 +4,7 @@ import JSONUtilities
 public struct BuildScript: Equatable {
     public static let runOnlyWhenInstallingDefault = false
     public static let showEnvVarsDefault = true
+    public static let basedOnDependencyAnalysisDefault = true
 
     public var script: ScriptType
     public var name: String?
@@ -14,6 +15,8 @@ public struct BuildScript: Equatable {
     public var outputFileLists: [String]
     public var runOnlyWhenInstalling: Bool
     public let showEnvVars: Bool
+    public let basedOnDependencyAnalysis: Bool
+    public let discoveredDependencyFile: String?
 
     public enum ScriptType: Equatable {
         case path(String)
@@ -29,7 +32,9 @@ public struct BuildScript: Equatable {
         outputFileLists: [String] = [],
         shell: String? = nil,
         runOnlyWhenInstalling: Bool = runOnlyWhenInstallingDefault,
-        showEnvVars: Bool = showEnvVarsDefault
+        showEnvVars: Bool = showEnvVarsDefault,
+        basedOnDependencyAnalysis: Bool = basedOnDependencyAnalysisDefault,
+        discoveredDependencyFile: String? = nil
     ) {
         self.script = script
         self.name = name
@@ -40,6 +45,8 @@ public struct BuildScript: Equatable {
         self.shell = shell
         self.runOnlyWhenInstalling = runOnlyWhenInstalling
         self.showEnvVars = showEnvVars
+        self.basedOnDependencyAnalysis = basedOnDependencyAnalysis
+        self.discoveredDependencyFile = discoveredDependencyFile
     }
 }
 
@@ -61,6 +68,8 @@ extension BuildScript: JSONObjectConvertible {
         shell = jsonDictionary.json(atKeyPath: "shell")
         runOnlyWhenInstalling = jsonDictionary.json(atKeyPath: "runOnlyWhenInstalling") ?? BuildScript.runOnlyWhenInstallingDefault
         showEnvVars = jsonDictionary.json(atKeyPath: "showEnvVars") ?? BuildScript.showEnvVarsDefault
+        basedOnDependencyAnalysis = jsonDictionary.json(atKeyPath: "basedOnDependencyAnalysis") ?? BuildScript.basedOnDependencyAnalysisDefault
+        discoveredDependencyFile = jsonDictionary.json(atKeyPath: "discoveredDependencyFile")
     }
 }
 
@@ -80,11 +89,19 @@ extension BuildScript: JSONEncodable {
             dict["showEnvVars"] = showEnvVars
         }
 
+        if basedOnDependencyAnalysis != BuildScript.basedOnDependencyAnalysisDefault {
+            dict["basedOnDependencyAnalysis"] = basedOnDependencyAnalysis
+        }
+
         switch script {
         case .path(let string):
             dict["path"] = string
         case .script(let string):
             dict["script"] = string
+        }
+
+        if let discoveredDependencyFile = discoveredDependencyFile {
+            dict["discoveredDependencyFile"] = discoveredDependencyFile
         }
 
         return dict

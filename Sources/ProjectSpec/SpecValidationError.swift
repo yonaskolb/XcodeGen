@@ -1,4 +1,5 @@
 import Foundation
+import Version
 
 public struct SpecValidationError: Error, CustomStringConvertible {
 
@@ -16,9 +17,10 @@ public struct SpecValidationError: Error, CustomStringConvertible {
         case invalidTargetConfigFile(target: String, configFile: String, config: String)
         case invalidTargetSchemeConfigVariant(target: String, configVariant: String, configType: ConfigType)
         case invalidTargetSchemeTest(target: String, testTarget: String)
-        case invalidSchemeTarget(scheme: String, target: String)
+        case invalidSchemeTarget(scheme: String, target: String, action: String)
         case invalidSchemeConfig(scheme: String, config: String)
         case invalidSwiftPackage(name: String, target: String)
+        case invalidPackageDependencyReference(name: String)
         case invalidLocalPackage(String)
         case invalidConfigFile(configFile: String, config: String)
         case invalidBuildSettingConfig(String)
@@ -50,8 +52,8 @@ public struct SpecValidationError: Error, CustomStringConvertible {
                 return "Target \(target.quoted) scheme has invalid test \(test.quoted)"
             case let .invalidConfigFile(configFile, config):
                 return "Invalid config file \(configFile.quoted) for config \(config.quoted)"
-            case let .invalidSchemeTarget(scheme, target):
-                return "Scheme \(scheme.quoted) has invalid build target \(target.quoted)"
+            case let .invalidSchemeTarget(scheme, target, action):
+                return "Scheme \(scheme.quoted) has invalid \(action) target \(target.quoted)"
             case let .invalidSchemeConfig(scheme, config):
                 return "Scheme \(scheme.quoted) has invalid build configuration \(config.quoted)"
             case let .invalidBuildSettingConfig(config):
@@ -68,6 +70,8 @@ public struct SpecValidationError: Error, CustomStringConvertible {
                 return "Target \(target.quoted) has an invalid package dependency \(name.quoted)"
             case let .invalidLocalPackage(path):
                 return "Invalid local package \(path.quoted)"
+            case let .invalidPackageDependencyReference(name):
+                return "Package reference \(name) must be specified as package dependency, not target"
             case let .missingConfigForTargetScheme(target, configType):
                 return "Target \(target.quoted) is missing a config of type \(configType.rawValue) to generate its scheme"
             case let .missingDefaultConfig(name):

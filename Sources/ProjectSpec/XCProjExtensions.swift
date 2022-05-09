@@ -26,6 +26,10 @@ extension PBXProductType {
         fileExtension == "appex"
     }
 
+    public var isSystemExtension: Bool {
+        fileExtension == "dext" || fileExtension == "systemextension"
+    }
+
     public var isApp: Bool {
         fileExtension == "app"
     }
@@ -35,11 +39,42 @@ extension PBXProductType {
     }
 
     public var isExecutable: Bool {
-        isApp || isExtension || isTest || self == .commandLineTool
+        isApp || isExtension || isSystemExtension || isTest || self == .commandLineTool
     }
 
     public var name: String {
         rawValue.replacingOccurrences(of: "com.apple.product-type.", with: "")
+    }
+
+    public var canSkipCompileSourcesBuildPhase: Bool {
+        switch self {
+        case .bundle, .watch2App, .stickerPack, .messagesApplication:
+            // Bundles, watch apps, sticker packs and simple messages applications without sources should not include a
+            // compile sources build phase. Doing so can cause Xcode to produce an error on build.
+            return true
+        default:
+            return false
+        }
+    }
+
+    /// Function to determine when a dependendency should be embedded into the target
+    public func shouldEmbed(_ dependencyTarget: Target) -> Bool {
+        switch dependencyTarget.defaultLinkage {
+        case .static:
+            // Static dependencies should never embed
+            return false
+        case .dynamic, .none:
+            if isApp {
+                // If target is an app, all dependencies should be embed (unless they're static)
+                return true
+            } else if isTest, [.framework, .bundle].contains(dependencyTarget.type) {
+                // If target is test, some dependencies should be embed (depending on their type)
+                return true
+            } else {
+                // If none of the above, do not embed the dependency
+                return false
+            }
+        }
     }
 }
 
@@ -52,6 +87,13 @@ extension Platform {
         case .tvOS: return "📺"
         case .macOS: return "🖥"
         }
+    }
+}
+
+extension Target {
+    public var shouldExecuteOnLaunch: Bool {
+        // This is different from `type.isExecutable`, because we don't want to "run" a test
+        type.isApp || type.isExtension || type.isSystemExtension || type == .commandLineTool
     }
 }
 
