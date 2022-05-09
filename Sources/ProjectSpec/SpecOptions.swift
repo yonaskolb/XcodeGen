@@ -41,6 +41,7 @@ public struct SpecOptions: Equatable {
     public enum ValidationType: String {
         case missingConfigs
         case missingConfigFiles
+        case missingTestPlans
     }
 
     public enum SettingPresets: String {

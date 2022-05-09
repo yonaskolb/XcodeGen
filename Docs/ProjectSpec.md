@@ -114,6 +114,7 @@ Note that target names can also be changed by adding a `name` property to a targ
 - [ ] **disabledValidations**: **[String]** - A list of validations that can be disabled if they're too strict for your use case. By default this is set to an empty array. Currently these are the available options:
   - `missingConfigs`: Disable errors for configurations in yaml files that don't exist in the project itself. This can be useful if you include the same yaml file in different projects
   - `missingConfigFiles`: Disable checking for the existence of configuration files. This can be useful for generating a project in a context where config files are not available.
+  - `missingTestPlans`: Disable checking if test plan paths exist. This can be useful if your test plans haven't been created yet.
 - [ ] **defaultConfig**: **String** - The default configuration for command line builds from Xcode. If the configuration provided here doesn't match one in your [configs](#configs) key, XcodeGen will fail. If you don't set this, the first configuration alphabetically will be chosen.
 - [ ] **groupSortPosition**: **String** - Where groups are sorted in relation to other files. Either:
   - `none` - sorted alphabetically with all the other files
