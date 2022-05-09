@@ -245,11 +245,9 @@ public class SchemeGenerator {
         let launchVariables = scheme.run.flatMap { $0.environmentVariables.isEmpty ? nil : $0.environmentVariables }
         let profileVariables = scheme.profile.flatMap { $0.environmentVariables.isEmpty ? nil : $0.environmentVariables }
 
-        let testPlans = scheme.test?.testPlans.map {
-            testPlan in XCScheme.TestPlanReference(
-                reference: "container:\(testPlan.path)",
-                default: testPlan.defaultPlan
-            )
+        let defaultTestPlanIndex = scheme.test?.testPlans.firstIndex { $0.defaultPlan } ?? 0
+        let testPlans = scheme.test?.testPlans.enumerated().map { index, testPlan in
+             XCScheme.TestPlanReference(reference: "container:\(testPlan.path)", default: defaultTestPlanIndex == index)
         } ?? []
 
         let testAction = XCScheme.TestAction(

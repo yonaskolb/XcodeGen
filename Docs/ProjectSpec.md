@@ -940,10 +940,11 @@ schemes:
       customArchiveName: MyTarget
       revealArchiveInOrganizer: false
 ```
+
 ### Test Plan
 
 - [x] **path**: **String** - path that provides the `xctestplan` location.
-- [ ] **defaultPlan**: **Bool** - a bool that defines if given plan is the default one. Defaults to false.
+- [ ] **defaultPlan**: **Bool** - a bool that defines if given plan is the default one. Defaults to false. If no default is set on any test plan, the first plan is set as the default.
 
 ```yaml
 schemes:
