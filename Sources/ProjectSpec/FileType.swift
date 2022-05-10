@@ -114,5 +114,6 @@ extension FileType {
         "xcfilelist": FileType(buildPhase: BuildPhaseSpec.none),
         "apns": FileType(buildPhase: BuildPhaseSpec.none),
         "pch": FileType(buildPhase: BuildPhaseSpec.none),
+        "xctestplan": FileType(buildPhase: BuildPhaseSpec.none),
     ]
 }

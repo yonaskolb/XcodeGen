@@ -430,6 +430,8 @@ schemes:
           randomExecutionOrder: true
           location: New York, NY, USA
       customLLDBInit: ${SRCROOT}/.lldbinit
+      testPlans:
+        - path: App_iOS/App_iOS.xctestplan
 targetTemplates:
   MyTemplate:
     scheme: {}

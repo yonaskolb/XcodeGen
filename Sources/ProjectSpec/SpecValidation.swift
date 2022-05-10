@@ -126,6 +126,11 @@ extension Project {
                         errors.append(.invalidTargetSchemeTest(target: target.name, testTarget: testTarget.name))
                     }
                 }
+
+                if !options.disabledValidations.contains(.missingTestPlans) {
+                    let invalidTestPlans: [TestPlan] = scheme.testPlans.filter { !(basePath + $0.path).exists }
+                    errors.append(contentsOf: invalidTestPlans.map{ .invalidTestPlan($0) })
+                }
             }
 
             for script in target.buildScripts {
@@ -205,6 +210,17 @@ extension Project {
             if let action = scheme.run, let config = action.config, getConfig(config) == nil {
                 errors.append(.invalidSchemeConfig(scheme: scheme.name, config: config))
             }
+
+            if !options.disabledValidations.contains(.missingTestPlans) {
+                let invalidTestPlans: [TestPlan] = scheme.test?.testPlans.filter { !(basePath + $0.path).exists } ?? []
+                errors.append(contentsOf: invalidTestPlans.map{ .invalidTestPlan($0) })
+            }
+
+            let defaultPlanCount = scheme.test?.testPlans.filter { $0.defaultPlan }.count ?? 0
+            if (defaultPlanCount > 1) {
+                errors.append(.multipleDefaultTestPlans)
+            }
+
             if let action = scheme.test, let config = action.config, getConfig(config) == nil {
                 errors.append(.invalidSchemeConfig(scheme: scheme.name, config: config))
             }

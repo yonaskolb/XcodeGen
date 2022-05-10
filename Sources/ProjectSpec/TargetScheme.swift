@@ -22,9 +22,11 @@ public struct TargetScheme: Equatable {
     public var environmentVariables: [XCScheme.EnvironmentVariable]
     public var preActions: [Scheme.ExecutionAction]
     public var postActions: [Scheme.ExecutionAction]
+    public var testPlans: [TestPlan]
 
     public init(
         testTargets: [Scheme.Test.TestTarget] = [],
+        testPlans: [TestPlan] = [],
         configVariants: [String] = [],
         gatherCoverageData: Bool = gatherCoverageDataDefault,
         coverageTargets: [TestableTargetReference] = [],
@@ -40,6 +42,7 @@ public struct TargetScheme: Equatable {
         postActions: [Scheme.ExecutionAction] = []
     ) {
         self.testTargets = testTargets
+        self.testPlans = testPlans
         self.configVariants = configVariants
         self.gatherCoverageData = gatherCoverageData
         self.coverageTargets = coverageTargets
@@ -89,6 +92,7 @@ extension TargetScheme: JSONObjectConvertible {
             coverageTargets = []
         }
 
+        testPlans = try (jsonDictionary.json(atKeyPath: "testPlans") ?? []).map { try TestPlan(jsonDictionary: $0) }
         configVariants = jsonDictionary.json(atKeyPath: "configVariants") ?? []
         gatherCoverageData = jsonDictionary.json(atKeyPath: "gatherCoverageData") ?? TargetScheme.gatherCoverageDataDefault
         storeKitConfiguration = jsonDictionary.json(atKeyPath: "storeKitConfiguration")
@@ -111,6 +115,7 @@ extension TargetScheme: JSONEncodable {
             "coverageTargets": coverageTargets.map { $0.reference },
             "commandLineArguments": commandLineArguments,
             "testTargets": testTargets.map { $0.toJSONValue() },
+            "testPlans": testPlans.map { $0.toJSONValue() },
             "environmentVariables": environmentVariables.map { $0.toJSONValue() },
             "preActions": preActions.map { $0.toJSONValue() },
             "postActions": postActions.map { $0.toJSONValue() },
@@ -145,5 +150,14 @@ extension TargetScheme: JSONEncodable {
         }
 
         return dict
+    }
+}
+
+extension TargetScheme: PathContainer {
+
+    static var pathProperties: [PathProperty] {
+        [
+            .object("testPlans", TestPlan.pathProperties),
+        ]
     }
 }
