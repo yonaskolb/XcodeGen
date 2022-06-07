@@ -274,6 +274,7 @@ This will provide default build settings for a certain product type. It can be a
 - `application.messages`
 - `application.watchapp`
 - `application.watchapp2`
+- `application.watchapp2-container`
 - `app-extension`
 - `app-extension.intents-service`
 - `app-extension.messages`
@@ -289,7 +290,6 @@ This will provide default build settings for a certain product type. It can be a
 - `framework.static`
 - `tool`
 - `tv-app-extension`
-- `watchapp2-container`
 - `watchkit-extension`
 - `watchkit2-extension`
 - `xcode-extension`
