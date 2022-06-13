@@ -11,12 +11,10 @@ extension Project {
         var buildSettings: BuildSettings = [:]
 
         // set project SDKROOT is a single platform
-        if targets.count > 0 {
-            let platforms = Dictionary(grouping: targets) { $0.platform }
-            if platforms.count == 1 {
-                let platform = platforms.first!.key
-                buildSettings["SDKROOT"] = platform.sdkRoot
-            }
+        if let firstPlatform = targets.first?.platform,
+           targets.allSatisfy({ $0.platform == firstPlatform })
+        {
+            buildSettings["SDKROOT"] = firstPlatform.sdkRoot
         }
 
         if let type = config.type, options.settingPresets.applyProject {
@@ -31,7 +29,7 @@ extension Project {
             }
         }
 
-        // Prevent setting presets from overrwriting settings in project xcconfig files
+        // Prevent setting presets from overwriting settings in project xcconfig files
         if let configPath = configFiles[config.name] {
             buildSettings = removeConfigFileSettings(from: buildSettings, configPath: configPath)
         }
