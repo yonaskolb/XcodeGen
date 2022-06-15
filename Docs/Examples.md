@@ -11,3 +11,4 @@ These are a bunch of real world examples of XcodeGen project specs. Feel free to
 - [minvws/nl-covid19-notification-app-ios](https://github.com/minvws/nl-covid19-notification-app-ios/blob/master/project.yml)
 - [pvinis/react-native-xcodegen](https://github.com/pvinis/react-native-xcodegen/blob/master/templates)
 - [covid19cz/erouska-ios](https://github.com/covid19cz/erouska-ios/blob/develop/project.yml)
+- [markst/hotreloading-vscode-ios](https://github.com/markst/hotreloading-vscode-ios)
