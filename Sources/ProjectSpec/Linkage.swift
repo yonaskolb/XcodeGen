@@ -35,7 +35,8 @@ extension Target {
              .xcodeExtension,
              .xpcService,
              .systemExtension,
-             .driverExtension:
+             .driverExtension,
+             .extensionKitExtension:
             return .none
         case .framework, .xcFramework:
             // Check the MACH_O_TYPE for "Static Framework"

@@ -5,6 +5,7 @@
 ### Changed
 
 - Speed up generating build settings for large projects #1221 @jpsim
+- Fix XcodeGen building after XcodeProj update to 8.8.0 #1228 @aleksproger
 
 ## 2.29.0
 
