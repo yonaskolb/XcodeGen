@@ -282,6 +282,7 @@ This will provide default build settings for a certain product type. It can be a
 - `bundle.ocunit-test`
 - `bundle.ui-testing`
 - `bundle.unit-test`
+- `extensionkit-extension`
 - `framework`
 - `instruments-package`
 - `library.dynamic`
