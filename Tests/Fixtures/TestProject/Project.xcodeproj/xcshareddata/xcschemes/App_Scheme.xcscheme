@@ -27,16 +27,25 @@
       buildConfiguration = "Production Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      codeCoverageEnabled = "YES"
-      onlyGenerateCoverageForSpecifiedTargets = "NO"
+      customLLDBInitFile = "${SRCROOT}/.lldbinit"
       shouldUseLaunchSchemeArgsEnv = "YES"
-      customLLDBInitFile = "${SRCROOT}/.lldbinit">
+      codeCoverageEnabled = "YES"
+      onlyGenerateCoverageForSpecifiedTargets = "NO">
       <TestPlans>
          <TestPlanReference
             default = "YES"
             reference = "container:App_iOS/App_iOS.xctestplan">
          </TestPlanReference>
       </TestPlans>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "0867B0DACEF28C11442DE8F7"
+            BuildableName = "App_iOS.app"
+            BlueprintName = "App_iOS"
+            ReferencedContainer = "container:Project.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <Testables>
          <TestableReference
             skipped = "NO">
@@ -65,15 +74,6 @@
             </LocationScenarioReference>
          </TestableReference>
       </Testables>
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "0867B0DACEF28C11442DE8F7"
-            BuildableName = "App_iOS.app"
-            BlueprintName = "App_iOS"
-            ReferencedContainer = "container:Project.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
       <CommandLineArguments>
       </CommandLineArguments>
    </TestAction>
@@ -81,13 +81,13 @@
       buildConfiguration = "Production Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
+      customLLDBInitFile = "${SRCROOT}/.lldbinit"
       launchStyle = "0"
       useCustomWorkingDirectory = "NO"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
-      allowLocationSimulation = "YES"
-      customLLDBInitFile = "${SRCROOT}/.lldbinit">
+      allowLocationSimulation = "YES">
       <BuildableProductRunnable
          runnableDebuggingMode = "0">
          <BuildableReference
