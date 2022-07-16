@@ -2,10 +2,14 @@
 
 ## Next Version
 
-### Changed
+### Added
+- Added support for new target type `extensionkit-extension` in Xcode 14 #1228 @aleksproger
 
+### Changed
 - Speed up generating build settings for large projects #1221 @jpsim
-- Fix XcodeGen building after XcodeProj update to 8.8.0 #1228 @aleksproger
+
+### Fixed
+- Fix XcodeGen building as library after breaking XcodeProj update 8.8.0 #1228 @aleksproger
 
 ## 2.29.0
 
