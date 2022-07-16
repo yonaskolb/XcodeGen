@@ -2,6 +2,8 @@
 
 ## Next Version
 
+## 2.30.0
+
 ### Added
 - Added support for new target type `extensionkit-extension` in Xcode 14 #1228 @aleksproger
 
