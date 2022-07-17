@@ -128,8 +128,8 @@ public class PBXProjGenerator {
 
             var explicitFileType: String?
             var lastKnownFileType: String?
-            let fileType = Xcode.fileType(path: Path(target.filename))
-            if target.platform == .macOS || target.platform == .watchOS || target.type == .framework {
+            let fileType = Xcode.fileType(path: Path(target.filename), productType: target.type)
+            if target.platform == .macOS || target.platform == .watchOS || target.type == .framework || target.type == .extensionKitExtension {
                 explicitFileType = fileType
             } else {
                 lastKnownFileType = fileType
