@@ -670,6 +670,7 @@ public class PBXProjGenerator {
         var copyWatchReferences: [PBXBuildFile] = []
         var packageDependencies: [XCSwiftPackageProductDependency] = []
         var extensions: [PBXBuildFile] = []
+        var extensionKitExtensions: [PBXBuildFile] = []
         var systemExtensions: [PBXBuildFile] = []
         var appClips: [PBXBuildFile] = []
         var carthageFrameworksToEmbed: [String] = []
@@ -735,9 +736,11 @@ public class PBXProjGenerator {
                 if dependency.copyPhase != nil {
                     // custom copy takes precedence
                     customCopyDependenciesReferences.append(embedFile)
-                } else if dependencyTarget.type.isExtension {
+                } else if dependencyTarget.type.isExtension && dependencyTarget.type != .extensionKitExtension {
                     // embed app extension
                     extensions.append(embedFile)
+                } else if dependencyTarget.type == .extensionKitExtension {
+                    extensionKitExtensions.append(embedFile)
                 } else if dependencyTarget.type.isSystemExtension {
                     // embed system extension
                     systemExtensions.append(embedFile)
@@ -1156,10 +1159,18 @@ public class PBXProjGenerator {
 
         if !extensions.isEmpty {
 
-            let copyFilesPhase = addObject(                
+            let copyFilesPhase = addObject(
                 getPBXCopyFilesBuildPhase(dstSubfolderSpec: .plugins, name: "Embed App Extensions", files: extensions)
             )
 
+            buildPhases.append(copyFilesPhase)
+        }
+
+        if !extensionKitExtensions.isEmpty {
+
+            let copyFilesPhase = addObject(
+                getPBXCopyFilesBuildPhase(dstSubfolderSpec: .productsDirectory, dstPath: "$(EXTENSIONS_FOLDER_PATH)", name: "Embed ExtensionKit Extensions", files: extensionKitExtensions)
+            )
             buildPhases.append(copyFilesPhase)
         }
 

@@ -2094,6 +2094,50 @@ class ProjectGeneratorTests: XCTestCase {
                         try expectCopyPhase(in: pbxProject, withFilePaths: ["extA.appex"], toSubFolder: .executables, dstPath: "test")
                     }
                 }
+
+                $0.context("extensionKit") {
+
+                    let extA = Target(
+                        name: "extA",
+                        type: .extensionKitExtension,
+                        platform: .macOS
+                    )
+                    let extB = Target(
+                        name: "extB",
+                        type: .extensionKitExtension,
+                        platform: .macOS
+                    )
+
+                    $0.it("embeds them into plugins without copy phase spec") {
+
+                        // given
+                        let dependencies = [
+                            Dependency(type: .target, reference: extA.name, embed: true),
+                            Dependency(type: .target, reference: extB.name, embed: false),
+                        ]
+
+                        // when
+                        let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [extA, extB])
+
+                        // then
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["extA.appex"], toSubFolder: .productsDirectory, dstPath: "$(EXTENSIONS_FOLDER_PATH)")
+                    }
+
+                    $0.it("embeds them into custom location with copy phase spec") {
+
+                        // given
+                        let dependencies = [
+                            Dependency(type: .target, reference: extA.name, embed: true, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .productsDirectory, subpath: "test", phaseOrder: .postCompile)),
+                            Dependency(type: .target, reference: extB.name, embed: false, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .productsDirectory, subpath: "test", phaseOrder: .postCompile)),
+                        ]
+
+                        // when
+                        let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [extA, extB])
+
+                        // then
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["extA.appex"], toSubFolder: .productsDirectory, dstPath: "test")
+                    }
+                }
                 
                 $0.context("commandLineTool") {
                     
