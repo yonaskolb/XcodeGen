@@ -1,6 +1,8 @@
 # Change Log
 
 ## Next Version
+### Added
+- Added a new CopyFilesBuildPhase, "Embed ExtensionKit Extensions" #1230 @mtj0928
 
 ## 2.30.0
 
