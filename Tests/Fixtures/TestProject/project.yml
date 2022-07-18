@@ -146,6 +146,7 @@ targets:
       - package: Swinject
         product: Swinject
         platformFilter: iOS
+      - target: ExtensionKitExtension
     onlyCopyFilesOnInstall: true
     scheme:
       testTargets:
@@ -390,6 +391,11 @@ targets:
     sources: App_Clip_UITests
     dependencies:
       - target: App_Clip
+
+  ExtensionKitExtension:
+    type: extensionkit-extension
+    platform: iOS
+    sources: ExtensionKit Extension
 
 schemes:
   Framework:
