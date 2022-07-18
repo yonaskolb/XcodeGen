@@ -736,11 +736,14 @@ public class PBXProjGenerator {
                 if dependency.copyPhase != nil {
                     // custom copy takes precedence
                     customCopyDependenciesReferences.append(embedFile)
-                } else if dependencyTarget.type.isExtension && dependencyTarget.type != .extensionKitExtension {
-                    // embed app extension
-                    extensions.append(embedFile)
-                } else if dependencyTarget.type == .extensionKitExtension {
-                    extensionKitExtensions.append(embedFile)
+                } else if dependencyTarget.type.isExtension {
+                    if dependencyTarget.type == .extensionKitExtension {
+                        // embed extension kit extension
+                        extensionKitExtensions.append(embedFile)
+                    } else {
+                        // embed app extension
+                        extensions.append(embedFile)
+                    }
                 } else if dependencyTarget.type.isSystemExtension {
                     // embed system extension
                     systemExtensions.append(embedFile)
