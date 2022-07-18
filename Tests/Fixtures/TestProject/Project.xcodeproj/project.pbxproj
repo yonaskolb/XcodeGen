@@ -109,6 +109,7 @@
 		778F71CA1CC4BEECDACAD8B9 /* Result.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0C5AC2545AE4D4F7F44E2E9B /* Result.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		77C3CB285572EA4BB7E201A7 /* App_Clip.app in Embed App Clips */ = {isa = PBXBuildFile; fileRef = 38DB679FF1CF4E379D1AB103 /* App_Clip.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		7A0DABBEA55B06E148C665A8 /* StaticLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AC91042453E18DF74BA1C0F /* StaticLibrary.swift */; };
+		7A5E898E776D00935CBA2F1A /* Intent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 181422B9EBFACCF6D9688634 /* Intent.swift */; };
 		7A8C78212CEAC6452DFAB00E /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A5F527F2590C14956518174 /* FrameworkFile.swift */; };
 		7C8FF0B857E390417134C10F /* Result.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D296BB7355994040E197A1EE /* Result.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		7F658343A505B824321E086B /* Headers in Headers */ = {isa = PBXBuildFile; fileRef = 2E1E747C7BC434ADB80CC269 /* Headers */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -119,6 +120,7 @@
 		87927928A8A3460166ACB819 /* SwiftFileInDotPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F430AABE04B7499B458D9DB /* SwiftFileInDotPath.swift */; settings = {COMPILER_FLAGS = "-Werror"; }; };
 		8C941A6EF08069CB3CB88FC1 /* Result.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0C5AC2545AE4D4F7F44E2E9B /* Result.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		900CFAD929CAEE3861127627 /* MyBundle.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 7B5068D64404C61A67A18458 /* MyBundle.bundle */; };
+		90335B78D7681DFED096EC6D /* EntryPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 838384AD4D146667BAE1C1B5 /* EntryPoint.swift */; };
 		94FD20C3EA5EBCEC8783740C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BDCA996D141DD8A16B18D68F /* GoogleService-Info.plist */; };
 		95DD9941E1529FD2AE1A191D /* StaticLibrary_ObjC.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5A2B916A11DCC2565241359F /* StaticLibrary_ObjC.h */; };
 		96B55C0F660235FE6BDD8869 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = 6A58A16491CDDF968B0D56DE /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -142,6 +144,7 @@
 		B2D43A31C184E34EF9CB743C /* Framework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8A9274BE42A03DC5DA1FAD04 /* Framework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B47F2629BFE5853767C8BB5E /* Contacts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FDB2B6A77D39CD5602F2125F /* Contacts.framework */; };
 		B49D3A51787E362DE4D0E78A /* SomeXPCService.xpc in CopyFiles */ = {isa = PBXBuildFile; fileRef = 70A8E15C81E454DC950C59F0 /* SomeXPCService.xpc */; };
+		B5C73BC3495B36D7E2E77FD0 /* ExtensionKitExtension.appex in Embed ExtensionKit Extensions */ = {isa = PBXBuildFile; fileRef = 23158D160F3E34EE4E252D05 /* ExtensionKitExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		B9F3C9E77019EC3423A7F5D8 /* TestProjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87DF9DCA8399E3214A7E27CF /* TestProjectTests.swift */; };
 		BAA1C1E3828F5D43546AF997 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0BB1B49A91B892152D68ED76 /* libc++.tbd */; };
 		BB06A57E259D0D2A001EA21F /* Result.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0C5AC2545AE4D4F7F44E2E9B /* Result.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -269,6 +272,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 020A320BB3736FCDE6CC4E70;
 			remoteInfo = App_macOS;
+		};
+		637435E7B5453059F8DBAC36 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0FBAE303E3CFC2ABAC876A77 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F44ADF447ED210C91B29879E;
+			remoteInfo = ExtensionKitExtension;
 		};
 		69E205A3F578A8FFE3ECF3F9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -446,6 +456,17 @@
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
+		};
+		253AB801AE49578006CF2C13 /* Embed ExtensionKit Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 8;
+			dstPath = "$(EXTENSIONS_FOLDER_PATH)";
+			dstSubfolderSpec = 16;
+			files = (
+				B5C73BC3495B36D7E2E77FD0 /* ExtensionKitExtension.appex in Embed ExtensionKit Extensions */,
+			);
+			name = "Embed ExtensionKit Extensions";
+			runOnlyForDeploymentPostprocessing = 1;
 		};
 		2F0735A423E554B267BBA0A5 /* Embed App Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -677,6 +698,7 @@
 		148B7C933698BCC4F1DBA979 /* XPC_Service.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XPC_Service.m; sourceTree = "<group>"; };
 		16AA52945B70B1BF9E246350 /* FilterDataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterDataProvider.swift; sourceTree = "<group>"; };
 		16D662EE577E4CD6AFF39D66 /* config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = config.xcconfig; sourceTree = "<group>"; };
+		181422B9EBFACCF6D9688634 /* Intent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Intent.swift; sourceTree = "<group>"; };
 		187E665975BB5611AF0F27E1 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		1BC32A813B80A53962A1F365 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1D0C79A8C750EC0DE748C463 /* StaticLibrary_ObjC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = StaticLibrary_ObjC.m; sourceTree = "<group>"; };
@@ -684,6 +706,7 @@
 		2049B6DD2AFE85F9DC9F3EB3 /* NetworkSystemExtension.systemextension */ = {isa = PBXFileReference; explicitFileType = "wrapper.system-extension"; includeInIndex = 0; path = NetworkSystemExtension.systemextension; sourceTree = BUILT_PRODUCTS_DIR; };
 		22237B8EBD9E6BE8EBC8735F /* XPC Service.xpc */ = {isa = PBXFileReference; explicitFileType = "wrapper.xpc-service"; includeInIndex = 0; path = "XPC Service.xpc"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2233774B86539B1574D206B0 /* Framework2.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Framework2.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		23158D160F3E34EE4E252D05 /* ExtensionKitExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.extensionkit-extension"; includeInIndex = 0; path = ExtensionKitExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		2385A62F6C6EE8D461EE19F2 /* ExternalTarget.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ExternalTarget.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		23A2F16890ECF2EE3FED72AE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		28360ECA4D727FAA58557A81 /* example.mp4 */ = {isa = PBXFileReference; path = example.mp4; sourceTree = "<group>"; };
@@ -694,6 +717,7 @@
 		325F18855099386B08DD309B /* Resource.abcd */ = {isa = PBXFileReference; path = Resource.abcd; sourceTree = "<group>"; };
 		33F6DCDC37D2E66543D4965D /* App_macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = App_macOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		34F13B632328979093CE6056 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		354C853F924B2951B0F93235 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		3571E41E19A5AB8AAAB04109 /* StandaloneAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = StandaloneAssets.xcassets; sourceTree = "<group>"; };
 		3797E591F302ECC0AA2FC607 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		382E11E88B12BCB30F575686 /* Driver.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Driver.entitlements; sourceTree = "<group>"; };
@@ -738,6 +762,7 @@
 		7F1A2F579A6F79C62DDA0571 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7FDC16E1938AA114B67D87A9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
 		814822136AF3C64428D69DD6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		838384AD4D146667BAE1C1B5 /* EntryPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryPoint.swift; sourceTree = "<group>"; };
 		83B5EC7EF81F7E4B6F426D4E /* DriverKitDriver.dext */ = {isa = PBXFileReference; explicitFileType = "wrapper.driver-extension"; includeInIndex = 0; path = DriverKitDriver.dext; sourceTree = BUILT_PRODUCTS_DIR; };
 		84317819C92F78425870E483 /* BundleX.bundle */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = BundleX.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		86169DEEDEAF09AB89C8A31D /* libStaticLibrary_ObjC.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libStaticLibrary_ObjC.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1038,6 +1063,7 @@
 				FCC084D4F8992BBC49983A38 /* CustomGroup */,
 				7979F5A04B370C36415EFB11 /* DriverKit Driver */,
 				99EF37D6DEE914E180236A91 /* EndpointSecurity Extension */,
+				6069E4C26E04A41AF4DBC701 /* ExtensionKit Extension */,
 				5CBCE0E2A145046265FE99E2 /* FileGroup */,
 				1A57D1EE1FBC13598F6B5CB0 /* Framework */,
 				A3DCF90D9B1EF4E27CF54B19 /* iMessageApp */,
@@ -1112,6 +1138,16 @@
 				68829F7392F2B367129BA0E7 /* UnderFileGroup */,
 			);
 			path = FileGroup;
+			sourceTree = "<group>";
+		};
+		6069E4C26E04A41AF4DBC701 /* ExtensionKit Extension */ = {
+			isa = PBXGroup;
+			children = (
+				838384AD4D146667BAE1C1B5 /* EntryPoint.swift */,
+				354C853F924B2951B0F93235 /* Info.plist */,
+				181422B9EBFACCF6D9688634 /* Intent.swift */,
+			);
+			path = "ExtensionKit Extension";
 			sourceTree = "<group>";
 		};
 		68829F7392F2B367129BA0E7 /* UnderFileGroup */ = {
@@ -1278,6 +1314,7 @@
 				83B5EC7EF81F7E4B6F426D4E /* DriverKitDriver.dext */,
 				E5E0A80CCE8F8DB662DCD2D0 /* EndpointSecuritySystemExtension.systemextension */,
 				7D700FA699849D2F95216883 /* EntitledApp.app */,
+				23158D160F3E34EE4E252D05 /* ExtensionKitExtension.appex */,
 				2385A62F6C6EE8D461EE19F2 /* ExternalTarget.framework */,
 				8A9274BE42A03DC5DA1FAD04 /* Framework.framework */,
 				41FC82ED1C4C3B7B3D7B2FB7 /* Framework.framework */,
@@ -1593,6 +1630,7 @@
 				37182EC208DBF03DB1BAF452 /* Carthage */,
 				117840B4DBC04099F6779D00 /* Frameworks */,
 				E8BC0F358D693454E5027ECC /* Copy Bundle Resources */,
+				253AB801AE49578006CF2C13 /* Embed ExtensionKit Extensions */,
 				94FF9CA021C43301BA069930 /* Embed App Clips */,
 				FE78CC3322C9C2DB1D64EAAA /* Embed Frameworks */,
 				807155B9081529D99AAB4743 /* Embed Watch Content */,
@@ -1605,6 +1643,7 @@
 				4FA29DA80DA668224AED741F /* PBXTargetDependency */,
 				8B6243D8D47A6ADA4CA0D7BD /* PBXTargetDependency */,
 				0D33D01C71E8002A07F02122 /* PBXTargetDependency */,
+				728B714A29ADC8279A0F5225 /* PBXTargetDependency */,
 				A94F38390A74E215EC107BB5 /* PBXTargetDependency */,
 				E84285243DE0BB361A708079 /* PBXTargetDependency */,
 				E8C078B0A2A2B0E1D35694D5 /* PBXTargetDependency */,
@@ -2135,6 +2174,21 @@
 			productReference = 22237B8EBD9E6BE8EBC8735F /* XPC Service.xpc */;
 			productType = "com.apple.product-type.xpc-service";
 		};
+		F44ADF447ED210C91B29879E /* ExtensionKitExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 746C5EC57766652AAFCB0D89 /* Build configuration list for PBXNativeTarget "ExtensionKitExtension" */;
+			buildPhases = (
+				22086680A1CD5B6F9120DD31 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ExtensionKitExtension;
+			productName = ExtensionKitExtension;
+			productReference = 23158D160F3E34EE4E252D05 /* ExtensionKitExtension.appex */;
+			productType = "com.apple.product-type.extensionkit-extension";
+		};
 		F674B2CFC4738EEC49BAD0DA /* App_iOS_UITests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 68CC35789B0DB020E2CFC517 /* Build configuration list for PBXNativeTarget "App_iOS_UITests" */;
@@ -2233,6 +2287,7 @@
 				428715FBC1D86458DA70CBDE /* DriverKitDriver */,
 				9F551F66949B55E8328EB995 /* EndpointSecuritySystemExtension */,
 				B61ED4688789B071275E2B7A /* EntitledApp */,
+				F44ADF447ED210C91B29879E /* ExtensionKitExtension */,
 				E7454C10EA126A93537DD57E /* ExternalTarget */,
 				CE7D183D3752B5B35D2D8E6D /* Framework2_iOS */,
 				FC26AF2506D3B2B40DE8A5F8 /* Framework2_macOS */,
@@ -2579,6 +2634,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		22086680A1CD5B6F9120DD31 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				90335B78D7681DFED096EC6D /* EntryPoint.swift in Sources */,
+				7A5E898E776D00935CBA2F1A /* Intent.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		2235AD7DEFC8FE534AB91B38 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2908,6 +2972,11 @@
 			isa = PBXTargetDependency;
 			target = 428715FBC1D86458DA70CBDE /* DriverKitDriver */;
 			targetProxy = 6ED42BD51E8832232E58D9C1 /* PBXContainerItemProxy */;
+		};
+		728B714A29ADC8279A0F5225 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F44ADF447ED210C91B29879E /* ExtensionKitExtension */;
+			targetProxy = 637435E7B5453059F8DBAC36 /* PBXContainerItemProxy */;
 		};
 		7EFC0278E67CD35F8981993C /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -4011,6 +4080,20 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = "Staging Debug";
+		};
+		36AE3E6FE1D5370BC2BDBFA0 /* Test Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = "ExtensionKit Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.ExtensionKitExtension;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Test Release";
 		};
 		36C4B3A6EACCB88098CE13D7 /* Test Release */ = {
 			isa = XCBuildConfiguration;
@@ -5119,6 +5202,20 @@
 			};
 			name = "Staging Release";
 		};
+		78C70580A5A5DC35167DEF84 /* Production Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = "ExtensionKit Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.ExtensionKitExtension;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Production Debug";
+		};
 		7931F229200F89B8CDC8A5E3 /* Test Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -5155,6 +5252,20 @@
 					"@executable_path/../../Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.project.iMessageApp.extension;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Production Release";
+		};
+		7A2BB9872B1489E2595FA31B /* Production Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = "ExtensionKit Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.ExtensionKitExtension;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -5871,6 +5982,20 @@
 			};
 			name = "Production Debug";
 		};
+		A536BC5E74350FE26AE93196 /* Staging Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = "ExtensionKit Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.ExtensionKitExtension;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Staging Debug";
+		};
 		A59DDFBFCF18C44A993CFB00 /* Test Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -6450,6 +6575,20 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = "Production Debug";
+		};
+		BF9706E8855063B196C87707 /* Staging Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = "ExtensionKit Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.ExtensionKitExtension;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Staging Release";
 		};
 		C00DBF60DC8C1A570738241F /* Test Release */ = {
 			isa = XCBuildConfiguration;
@@ -7716,6 +7855,20 @@
 			};
 			name = "Test Debug";
 		};
+		FCDAC56AAE539E041C4667EE /* Test Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = "ExtensionKit Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.ExtensionKitExtension;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Test Debug";
+		};
 		FE029D76C57D0661E4B8F13B /* Staging Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -8000,6 +8153,19 @@
 				7B2A1BE6CA654E9903A4C680 /* Staging Release */,
 				00FD318C7418F3351FC00744 /* Test Debug */,
 				F3AC6A112F81D0958A316D82 /* Test Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "Production Debug";
+		};
+		746C5EC57766652AAFCB0D89 /* Build configuration list for PBXNativeTarget "ExtensionKitExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				78C70580A5A5DC35167DEF84 /* Production Debug */,
+				7A2BB9872B1489E2595FA31B /* Production Release */,
+				A536BC5E74350FE26AE93196 /* Staging Debug */,
+				BF9706E8855063B196C87707 /* Staging Release */,
+				FCDAC56AAE539E041C4667EE /* Test Debug */,
+				36AE3E6FE1D5370BC2BDBFA0 /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Production Debug";
