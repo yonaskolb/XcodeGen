@@ -160,23 +160,11 @@ extension Project {
     }
 }
 
-private enum Cached<T> {
-    case cached(T)
-    case nothing
-
-    var value: T? {
-        switch self {
-        case let .cached(value): return value
-        case .nothing: return nil
-        }
-    }
-}
-
 // cached flattened xcconfig file settings
-private var configFileSettings: [String: Cached<BuildSettings>] = [:]
+private var configFileSettings = NSCache<NSString, CacheContainer>()
 
 // cached setting preset settings
-private var settingPresetSettings: [String: Cached<BuildSettings>] = [:]
+private var settingPresetSettings = NSCache<NSString, CacheContainer>()
 
 extension SettingsPresetFile {
 
