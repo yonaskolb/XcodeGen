@@ -146,6 +146,9 @@ targets:
       - package: Swinject
         product: Swinject
         platformFilter: iOS
+# https://github.com/yonaskolb/XcodeGen/issues/1232
+# After GitHub Actions start supporting Xcode 14, an example for extensionKit should be added.
+#      - target: ExtensionKitExtension
     onlyCopyFilesOnInstall: true
     scheme:
       testTargets:
@@ -390,6 +393,12 @@ targets:
     sources: App_Clip_UITests
     dependencies:
       - target: App_Clip
+# https://github.com/yonaskolb/XcodeGen/issues/1232
+# After GitHub Actions start supporting Xcode 14, an example for extensionKit should be added.
+#  ExtensionKitExtension:
+#    type: extensionkit-extension
+#    platform: iOS
+#    sources: ExtensionKit Extension
 
 schemes:
   Framework:
