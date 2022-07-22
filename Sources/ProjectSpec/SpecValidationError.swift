@@ -35,6 +35,7 @@ public struct SpecValidationError: Error, CustomStringConvertible {
         case invalidProjectReferencePath(ProjectReference)
         case invalidTestPlan(TestPlan)
         case multipleDefaultTestPlans
+        case duplicateDependencies(target: String, dependencyReference: String)
 
         public var description: String {
             switch self {
@@ -88,6 +89,8 @@ public struct SpecValidationError: Error, CustomStringConvertible {
                 return "Test plan path \"\(testPlan.path)\" doesn't exist"
             case .multipleDefaultTestPlans:
                 return "Your test plans contain more than one default test plan"
+            case let .duplicateDependencies(target, dependencyReference):
+                 return "Target \(target.quoted) has the dependency \(dependencyReference.quoted) multiple times"
             }
         }
     }

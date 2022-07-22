@@ -142,6 +142,40 @@ class ProjectSpecTests: XCTestCase {
                 try expectValidationError(project, .invalidBuildSettingConfig("invalidSettingGroupConfig"))
             }
 
+            $0.it("fails with duplicate dependencies") {
+                var project = baseProject
+                project.targets = [
+                    Target(
+                        name: "target1",
+                        type: .application,
+                        platform: .iOS,
+                        settings: invalidSettings,
+                        dependencies: [
+                            Dependency(type: .target, reference: "dependency1"),
+                            Dependency(type: .target, reference: "dependency1"),
+                            Dependency(type: .framework, reference: "dependency2"),
+                            Dependency(type: .framework, reference: "dependency2"),
+                        ]
+                    ),
+                    Target(
+                        name: "target2",
+                        type: .framework,
+                        platform: .iOS,
+                        settings: invalidSettings,
+                        dependencies: [
+                            Dependency(type: .framework, reference: "dependency3"),
+                            Dependency(type: .target, reference: "dependency3"),
+                            Dependency(type: .target, reference: "dependency4"),
+                            Dependency(type: .target, reference: "dependency4"),
+                        ]
+                    )
+                ]
+
+                try expectValidationError(project, .duplicateDependencies(target: "target1", dependencyReference: "dependency1"))
+                try expectValidationError(project, .duplicateDependencies(target: "target1", dependencyReference: "dependency2"))
+                try expectValidationError(project, .duplicateDependencies(target: "target2", dependencyReference: "dependency4"))
+            }
+
             $0.it("allows non-existent configurations") {
                 var project = baseProject
                 project.options = SpecOptions(disabledValidations: [.missingConfigs])

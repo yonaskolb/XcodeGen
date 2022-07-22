@@ -154,38 +154,16 @@ extension Project {
         }
 
         for target in targets {
-            for dependency in target.dependencies {
-                switch dependency.type {
-                case .target:
-                    let dependencyTargetReference = try TargetReference(dependency.reference)
+            var uniqueDependencies = Set<Dependency>()
 
-                    switch dependencyTargetReference.location {
-                    case .local:
-                        if getProjectTarget(dependency.reference) == nil {
-                            errors.append(.invalidTargetDependency(target: target.name, dependency: dependency.reference))
-                        }
-                    case .project(let dependencyProjectName):
-                        if getProjectReference(dependencyProjectName) == nil {
-                            errors.append(.invalidTargetDependency(target: target.name, dependency: dependency.reference))
-                        }
-                    }
-                case .sdk:
-                    let path = Path(dependency.reference)
-                    if !dependency.reference.contains("/") {
-                        switch path.extension {
-                        case "framework"?,
-                             "tbd"?,
-                             "dylib"?:
-                            break
-                        default:
-                            errors.append(.invalidSDKDependency(target: target.name, dependency: dependency.reference))
-                        }
-                    }
-                case .package:
-                    if packages[dependency.reference] == nil {
-                        errors.append(.invalidSwiftPackage(name: dependency.reference, target: target.name))
-                    }
-                default: break
+            for dependency in target.dependencies {
+                let dependencyValidationErrors = try validate(dependency, in: target)
+                errors.append(contentsOf: dependencyValidationErrors)
+
+                if uniqueDependencies.contains(dependency) {
+                    errors.append(.duplicateDependencies(target: target.name, dependencyReference: dependency.reference))
+                } else {
+                    uniqueDependencies.insert(dependency)
                 }
             }
 
@@ -250,6 +228,46 @@ extension Project {
         if let minimumXcodeGenVersion = options.minimumXcodeGenVersion, xcodeGenVersion < minimumXcodeGenVersion {
             throw SpecValidationError(errors: [SpecValidationError.ValidationError.invalidXcodeGenVersion(minimumVersion: minimumXcodeGenVersion, version: xcodeGenVersion)])
         }
+    }
+
+    // Returns error if the given dependency from target is invalid.
+    private func validate(_ dependency: Dependency, in target: Target) throws -> [SpecValidationError.ValidationError] {
+        var errors: [SpecValidationError.ValidationError] = []
+
+        switch dependency.type {
+            case .target:
+                let dependencyTargetReference = try TargetReference(dependency.reference)
+
+                switch dependencyTargetReference.location {
+                case .local:
+                    if getProjectTarget(dependency.reference) == nil {
+                        errors.append(.invalidTargetDependency(target: target.name, dependency: dependency.reference))
+                    }
+                case .project(let dependencyProjectName):
+                    if getProjectReference(dependencyProjectName) == nil {
+                        errors.append(.invalidTargetDependency(target: target.name, dependency: dependency.reference))
+                    }
+                }
+            case .sdk:
+                let path = Path(dependency.reference)
+                if !dependency.reference.contains("/") {
+                    switch path.extension {
+                    case "framework"?,
+                            "tbd"?,
+                            "dylib"?:
+                        break
+                    default:
+                        errors.append(.invalidSDKDependency(target: target.name, dependency: dependency.reference))
+                    }
+                }
+            case .package:
+                if packages[dependency.reference] == nil {
+                    errors.append(.invalidSwiftPackage(name: dependency.reference, target: target.name))
+                }
+            default: break
+        }
+
+        return errors
     }
 
     /// Returns a descriptive error if the given target reference was invalid otherwise `nil`.
