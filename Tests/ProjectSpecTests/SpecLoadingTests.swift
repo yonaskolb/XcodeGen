@@ -727,6 +727,12 @@ class SpecLoadingTests: XCTestCase {
                     "region": "US",
                     "disableMainThreadChecker": true,
                     "stopOnEveryMainThreadCheckerIssue": true,
+                    "additionalOptions": [
+                        "mallocScribble": true,
+                        "mallocGuardEdges": false,
+                        "guardMalloc": true,
+                        "zombieObjects": true
+                    ],
                     "environmentVariables": [
                         "TEST_VAR": "TEST_VAL",
                     ],
@@ -756,6 +762,12 @@ class SpecLoadingTests: XCTestCase {
                     region: "US",
                     disableMainThreadChecker: true,
                     stopOnEveryMainThreadCheckerIssue: true,
+                    additionalOptions: AdditionalOptions(
+                        mallocScribble: true,
+                        mallocGuardEdges: false,
+                        guardMalloc: true,
+                        zombieObjects: true
+                    ),
                     commandLineArguments: ["ENV1": true],
                     environmentVariables: [XCScheme.EnvironmentVariable(variable: "TEST_VAR", value: "TEST_VAL", enabled: true)],
                     preActions: [.init(name: "Do Thing", script: "dothing", settingsTarget: "test")],
@@ -792,6 +804,10 @@ class SpecLoadingTests: XCTestCase {
                         "config": "debug",
                         "launchAutomaticallySubstyle": 2,
                         "storeKitConfiguration": "Configuration.storekit",
+                        "additionalOptions": [
+                            "mallocGuardEdges": true,
+                            "guardMalloc": true,
+                        ]
                     ],
                     "test": [
                         "config": "debug",
@@ -816,6 +832,10 @@ class SpecLoadingTests: XCTestCase {
                             [
                                 "path": "Path/Plan2.xctestplan"
                             ]
+                        ],
+                        "additionalOptions": [
+                            "mallocScribble": true,
+                            "guardMalloc": true,
                         ]
                     ],
                 ]
@@ -841,6 +861,12 @@ class SpecLoadingTests: XCTestCase {
 
                 let expectedRun = Scheme.Run(
                     config: "debug",
+                    additionalOptions: AdditionalOptions(
+                        mallocScribble: false,
+                        mallocGuardEdges: true,
+                        guardMalloc: true,
+                        zombieObjects: false
+                    ),
                     launchAutomaticallySubstyle: "2",
                     storeKitConfiguration: "Configuration.storekit"
                 )
@@ -850,6 +876,12 @@ class SpecLoadingTests: XCTestCase {
                     config: "debug",
                     gatherCoverageData: true,
                     disableMainThreadChecker: true,
+                    additionalOptions: AdditionalOptions(
+                        mallocScribble: true,
+                        mallocGuardEdges: false,
+                        guardMalloc: true,
+                        zombieObjects: false
+                    ),
                     targets: [
                         "Target1",
                         Scheme.Test.TestTarget(
