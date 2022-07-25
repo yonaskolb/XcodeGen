@@ -13,6 +13,7 @@ public class PBXProjGenerator {
     let projectDirectory: Path?
     let carthageResolver: CarthageDependencyResolver
     let projGeneratorQueue: DispatchQueue = DispatchQueue(label: "com.yonaskolb.xcodegen.projGeneratorQueue")
+    let childrenUpdateQueue: DispatchQueue = DispatchQueue(label: "com.yonaskolb.xcodegen.projGeneratorChildrenUpdatesQueue")
 
     public static let copyFilesActionMask: UInt = 8
 
@@ -523,7 +524,9 @@ public class PBXProjGenerator {
             )
         )
 
-        productsGroup.children.append(productReferenceProxy)
+        childrenUpdateQueue.sync {
+            productsGroup.children.append(productReferenceProxy)
+        }
 
         let targetDependency = addObject(
             PBXTargetDependency(

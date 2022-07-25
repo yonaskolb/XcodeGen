@@ -21,6 +21,8 @@ class SourceGenerator {
     private var localPackageGroup: PBXGroup?
     private let serialQueueForGroupGeneration: DispatchQueue = DispatchQueue(label: "com.yonaskolb.xcodegen.group_generation.serial")
     private let serialQueueForFileGeneration: DispatchQueue = DispatchQueue(label: "com.yonaskolb.xcodegen.file_generation.serial")
+    private let serialQueueForChildGroupUpdates: DispatchQueue = DispatchQueue(label: "com.yonaskolb.xcodegen.source_generator_child_groupupdates.serial")
+
 
     private let project: Project
     let pbxProj: PBXProj
@@ -566,8 +568,10 @@ class SourceGenerator {
                 )
 
                 if let variantGroup = variantGroup {
-                    if !variantGroup.children.contains(fileReference) {
-                        variantGroup.children.append(fileReference)
+                    serialQueueForChildGroupUpdates.sync {
+                        if !variantGroup.children.contains(fileReference) {
+                            variantGroup.children.append(fileReference)
+                        }
                     }
                 } else {
                     // add SourceFile to group if there is no Base.lproj directory
