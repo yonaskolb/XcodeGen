@@ -2,6 +2,10 @@
 
 ## Next Version
 
+### Added
+
+- Add support for `mlmodelc` files #1236 @antonsergeev88
+
 ## 2.31.0
 
 ### Added
