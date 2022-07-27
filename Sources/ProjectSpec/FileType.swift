@@ -87,6 +87,7 @@ extension FileType {
         "intentdefinition": FileType(buildPhase: .sources),
         "metal": FileType(buildPhase: .sources),
         "mlmodel": FileType(buildPhase: .sources),
+        "mlmodelc": FileType(buildPhase: .resources),
         "rcproject": FileType(buildPhase: .sources),
         "iig": FileType(buildPhase: .sources),
         "docc": FileType(buildPhase: .sources),
