@@ -1019,7 +1019,7 @@ packages:
   Yams:
     url: https://github.com/jpsim/Yams
     from: 2.0.0
-  Yams:
+  Ink:
     github: JohnSundell/Ink
     from: 0.5.0
   RxClient:
