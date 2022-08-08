@@ -64,7 +64,7 @@ An include can be provided via a string (the path) or an object of the form:
 
 - [x] **path**: **String** - The path to the included file.
 - [ ] **relativePaths**: **Bool** - Dictates whether the included spec specifies paths relative to itself (the default) or the root spec file.
-- [ ] **enable**: **Bool** - Dictates whether the specified spec should be included or not. You can specify it by environment variable.
+- [ ] **enable**: **Bool** - Dictates whether the specified spec should be included or not. You can also specify it by environment variable.
 ```yaml
 include:
   - includedFile.yml
