@@ -5,6 +5,10 @@
 ### Added
 
 - Add support for `mlmodelc` files #1236 @antonsergeev88
+- Add `enable` option for `include` #MMMM @freddi-kit
+
+### Fixed
+- Fix checking environment variable in `include` #MMMM @freddi-kit
 
 ## 2.31.0
 
