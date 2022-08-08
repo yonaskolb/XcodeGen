@@ -1,6 +1,6 @@
 include:
     - included.yml
-    - path: non-include.yml
+    - path: included_addtional.yml
       enable: ${INCLUDE_ADDTIONAL_YAML}
 packages:
   Yams:
