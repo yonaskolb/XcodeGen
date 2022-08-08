@@ -13,17 +13,21 @@ public struct SpecFile {
     fileprivate struct Include {
         let path: Path
         let relativePaths: Bool
+        let enable: Bool
 
         static let defaultRelativePaths = true
+        static let defaultEnable = true
 
         init?(any: Any) {
             if let string = any as? String {
                 path = Path(string)
                 relativePaths = Include.defaultRelativePaths
+                enable = Include.defaultEnable
             } else if let dictionary = any as? JSONDictionary,
                 let path = dictionary["path"] as? String {
                 self.path = Path(path)
                 relativePaths = dictionary["relativePaths"] as? Bool ?? Include.defaultRelativePaths
+                enable = dictionary["enable"] as? Bool ?? Include.defaultEnable
             } else {
                 return nil
             }
@@ -64,9 +68,11 @@ public struct SpecFile {
         let jsonDictionary = try SpecFile.loadDictionary(path: path)
 
         let includes = Include.parse(json: jsonDictionary["include"])
-        let subSpecs: [SpecFile] = try includes.map { include in
-            try SpecFile(include: include, basePath: basePath, relativePath: relativePath)
-        }
+        let subSpecs: [SpecFile] = try includes
+            .filter(\.enable)
+            .map { include in
+                try SpecFile(include: include, basePath: basePath, relativePath: relativePath)
+            }
 
         self.init(filePath: filePath, jsonDictionary: jsonDictionary, basePath: basePath, relativePath: relativePath, subSpecs: subSpecs)
     }
