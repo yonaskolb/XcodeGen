@@ -28,8 +28,9 @@ public struct SpecFile {
                 let expandedDictionary = dictionary.expand(variables: variables)
                 guard let path = expandedDictionary["path"] as? String else { return nil }
                 self.path = Path(path)
-                relativePaths = expandedDictionary["relativePaths"] as? Bool ?? Include.defaultRelativePaths
-                enable = (expandedDictionary["enable"] as? NSString)?.boolValue ?? Include.defaultEnable
+
+                relativePaths = Self.resolveBoolean(expandedDictionary, key: "relativePaths") ?? Include.defaultRelativePaths
+                enable = Self.resolveBoolean(expandedDictionary, key: "enable") ?? Include.defaultEnable
             } else {
                 return nil
             }
@@ -43,6 +44,10 @@ public struct SpecFile {
             } else {
                 return []
             }
+        }
+
+        private static func resolveBoolean(_ dictionary: [String: Any], key: String) -> Bool? {
+            dictionary[key] as? Bool ?? (dictionary[key] as? NSString)?.boolValue
         }
     }
 
