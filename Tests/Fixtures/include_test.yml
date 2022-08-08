@@ -1,4 +1,7 @@
-include: [included.yml]
+include:
+    - included.yml
+    - path: non-include.yml
+      enable: ${INCLUDE_ADDTIONAL_YAML}
 name: NewName
 settingGroups:
   test:

@@ -29,7 +29,7 @@ class SpecLoadingTests: XCTestCase {
         describe {
             $0.it("merges includes") {
                 let path = fixturePath + "include_test.yml"
-                let project = try loadSpec(path: path)
+                let project = try loadSpec(path: path, variables: ["INCLUDE_ADDTIONAL_YAML" : "NO"])
 
                 try expect(project.name) == "NewName"
                 try expect(project.settingGroups) == [
