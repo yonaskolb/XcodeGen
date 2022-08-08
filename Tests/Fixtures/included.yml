@@ -1,4 +1,8 @@
 name: Included
+packages:
+  SwiftPM:
+    url: https://github.com/apple/swift-package-manager
+    branch: swift-5.0-branch
 settingGroups:
   test:
     MY_SETTING1: VALUE1
@@ -12,6 +16,8 @@ targets:
     platform: iOS
     sources:
       - Target
+    dependencies:
+      - package: SwiftPM
 targetTemplates:
   IncludedTemplate:
     sources:

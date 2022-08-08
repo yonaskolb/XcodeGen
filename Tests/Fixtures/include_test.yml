@@ -2,6 +2,10 @@ include:
     - included.yml
     - path: non-include.yml
       enable: ${INCLUDE_ADDTIONAL_YAML}
+packages:
+  Yams:
+    url: https://github.com/jpsim/Yams
+    majorVersion: 2.0.0
 name: NewName
 settingGroups:
   test:
@@ -22,3 +26,5 @@ targets:
     name: IncludedTargetNew
     platform: tvOS
     sources:REPLACE: NewSource
+    dependencies:
+      - package: Yams
