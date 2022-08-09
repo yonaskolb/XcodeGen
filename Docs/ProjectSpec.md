@@ -729,7 +729,7 @@ This is used to override settings or run build scripts in specific targets
 
 ## Target Template
 
-This is a template that can be referenced from a normal target using the `templates` property. The properties of this template are the same as a [Target](#target)].
+This is a template that can be referenced from a normal target using the `templates` property. The properties of this template are the same as a [Target](#target).
 Any instances of `${target_name}` within each template will be replaced by the final target name which references the template.
 Any attributes defined within a targets `templateAttributes` will be used to replace any attribute references in the template using the syntax `${attribute_name}`.
 
