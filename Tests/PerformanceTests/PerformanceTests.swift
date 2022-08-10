@@ -15,8 +15,8 @@ class GeneratedPerformanceTests: XCTestCase {
         try dumpYamlDictionary(project.toJSONDictionary(), path: specPath)
 
         measure {
-            let spec = try! SpecFile(path: specPath)
-            _ = spec.resolvedDictionary(variables: ProcessInfo.processInfo.environment)
+            let spec = try! SpecFile(path: specPath, variables: ProcessInfo.processInfo.environment)
+            _ = spec.resolvedDictionary()
         }
     }
 

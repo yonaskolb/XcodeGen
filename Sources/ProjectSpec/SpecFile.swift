@@ -19,27 +19,24 @@ public struct SpecFile {
         static let defaultRelativePaths = true
         static let defaultEnable = true
 
-        init?(any: Any, variables: [String: String]) {
+        init?(any: Any) {
             if let string = any as? String {
                 path = Path(string)
                 relativePaths = Include.defaultRelativePaths
                 enable = Include.defaultEnable
-            } else if let dictionary = any as? JSONDictionary {
-                let expandedDictionary = dictionary.expand(variables: variables)
-                guard let path = expandedDictionary["path"] as? String else { return nil }
+            } else if let dictionary = any as? JSONDictionary, let path = dictionary["path"] as? String {
                 self.path = Path(path)
-
-                relativePaths = Self.resolveBoolean(expandedDictionary, key: "relativePaths") ?? Include.defaultRelativePaths
-                enable = Self.resolveBoolean(expandedDictionary, key: "enable") ?? Include.defaultEnable
+                relativePaths = Self.resolveBoolean(dictionary, key: "relativePaths") ?? Include.defaultRelativePaths
+                enable = Self.resolveBoolean(dictionary, key: "enable") ?? Include.defaultEnable
             } else {
                 return nil
             }
         }
 
-        static func parse(json: Any?, variables: [String: String]) -> [Include] {
+        static func parse(json: Any?) -> [Include] {
             if let array = json as? [Any] {
-                return array.compactMap { Include(any: $0, variables: variables) }
-            } else if let object = json, let include = Include(any: object, variables: variables) {
+                return array.compactMap(Include.init)
+            } else if let object = json, let include = Include(any: object) {
                 return [include]
             } else {
                 return []
@@ -72,9 +69,9 @@ public struct SpecFile {
 
     private init(filePath: Path, basePath: Path, variables: [String: String], relativePath: Path = "") throws {
         let path = basePath + relativePath + filePath.lastComponent
-        let jsonDictionary = try SpecFile.loadDictionary(path: path)
+        let jsonDictionary = try SpecFile.loadDictionary(path: path).expand(variables: variables)
 
-        let includes = Include.parse(json: jsonDictionary["include"], variables: variables)
+        let includes = Include.parse(json: jsonDictionary["include"])
         let subSpecs: [SpecFile] = try includes
             .filter(\.enable)
             .map { include in
@@ -98,8 +95,8 @@ public struct SpecFile {
         }
     }
 
-    public func resolvedDictionary(variables: [String: String] = [:]) -> JSONDictionary {
-        resolvedDictionaryWithUniqueTargets().expand(variables: variables)
+    public func resolvedDictionary() -> JSONDictionary {
+        resolvedDictionaryWithUniqueTargets()
     }
 
     private func resolvedDictionaryWithUniqueTargets() -> JSONDictionary {
