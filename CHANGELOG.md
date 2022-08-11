@@ -6,6 +6,10 @@
 
 - Add support for `mlmodelc` files #1236 @antonsergeev88
 
+### Fixed
+
+- Fix profile action for frameworks in Xcode 14 #1245 @SSheldon
+
 ## 2.31.0
 
 ### Added
