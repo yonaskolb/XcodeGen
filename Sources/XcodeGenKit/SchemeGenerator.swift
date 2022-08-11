@@ -320,10 +320,11 @@ public class SchemeGenerator {
         )
 
         let profileAction = XCScheme.ProfileAction(
-            buildableProductRunnable: runnables.profile,
+            buildableProductRunnable: shouldExecuteOnLaunch ? runnables.profile : nil,
             buildConfiguration: scheme.profile?.config ?? defaultReleaseConfig.name,
             preActions: scheme.profile?.preActions.map(getExecutionAction) ?? [],
             postActions: scheme.profile?.postActions.map(getExecutionAction) ?? [],
+            macroExpansion: shouldExecuteOnLaunch ? nil : buildableReference,
             shouldUseLaunchSchemeArgsEnv: scheme.profile?.shouldUseLaunchSchemeArgsEnv ?? true,
             askForAppToLaunch: scheme.profile?.askForAppToLaunch,
             commandlineArguments: profileCommandLineArgs,

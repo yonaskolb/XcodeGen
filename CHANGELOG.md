@@ -6,6 +6,10 @@
 
 - Add support for `mlmodelc` files #1236 @antonsergeev88
 
+### Fixed
+
+- Fix profile action to not run frameworks @SSheldon
+
 ## 2.31.0
 
 ### Added
