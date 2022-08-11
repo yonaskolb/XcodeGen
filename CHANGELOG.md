@@ -8,7 +8,7 @@
 
 ### Fixed
 
-- Fix profile action to not run frameworks #1245 @SSheldon
+- Fix profile action for frameworks in Xcode 14 #1245 @SSheldon
 
 ## 2.31.0
 
