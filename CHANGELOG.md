@@ -8,7 +8,7 @@
 
 ### Fixed
 
-- Fix profile action to not run frameworks @SSheldon
+- Fix profile action to not run frameworks #1245 @SSheldon
 
 ## 2.31.0
 
