@@ -59,6 +59,22 @@ class SpecLoadingTests: XCTestCase {
                 ]
             }
 
+            $0.it("merges includes without addtional one by environemnt variable") {
+                let path = fixturePath + "include_test.yml"
+                let project = try loadSpec(path: path, variables: ["INCLUDE_ADDTIONAL_YAML": "NO"])
+
+                try expect(project.name) == "NewName"
+                try expect(project.settingGroups) == [
+                    "test": Settings(dictionary: ["MY_SETTING1": "NEW VALUE", "MY_SETTING2": "VALUE2", "MY_SETTING3": "VALUE3", "MY_SETTING4": "${SETTING4}"]),
+                    "new": Settings(dictionary: ["MY_SETTING": "VALUE"]),
+                    "toReplace": Settings(dictionary: ["MY_SETTING2": "VALUE2"]),
+                ]
+                try expect(project.targets) == [
+                    Target(name: "IncludedTargetNew", type: .application, platform: .tvOS, sources: ["NewSource"], dependencies: [Dependency(type: .package(product: nil), reference: "Yams")]),
+                    Target(name: "NewTarget", type: .application, platform: .iOS, sources: ["template", "target"]),
+                ]
+            }
+
             $0.it("expands directories") {
                 let path = fixturePath + "paths_test.yml"
                 let project = try loadSpec(path: path)
