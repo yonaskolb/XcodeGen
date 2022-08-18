@@ -2,16 +2,16 @@
 
 ## Next Version
 
+## 2.32.0
+
 ### Added
 
 - Add support for `mlmodelc` files #1236 @antonsergeev88
 - Add `enable` option for `include` #1242 @freddi-kit
 
 ### Fixed
+
 - Fix checking environment variable in `include` #1242 @freddi-kit
-
-### Fixed
-
 - Fix profile action for frameworks in Xcode 14 #1245 @SSheldon
 
 ## 2.31.0
