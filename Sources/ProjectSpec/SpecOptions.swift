@@ -41,6 +41,7 @@ public struct SpecOptions: Equatable {
     public enum ValidationType: String {
         case missingConfigs
         case missingConfigFiles
+        case missingTestPlans
     }
 
     public enum SettingPresets: String {
@@ -187,7 +188,7 @@ extension SpecOptions: JSONEncodable {
             "localPackagesGroup": localPackagesGroup,
             "preGenCommand": preGenCommand,
             "postGenCommand": postGenCommand,
-            "fileTypes": fileTypes
+            "fileTypes": fileTypes.mapValues { $0.toJSONValue() }
         ]
 
         if settingPresets != SpecOptions.settingPresetsDefault {

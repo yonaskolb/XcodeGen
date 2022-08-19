@@ -57,7 +57,7 @@ public class Glob: Collection {
 
     public static let defaultBlacklistedDirectories = ["node_modules", "Pods"]
 
-    private var isDirectoryCache = [String: Bool]()
+    @Atomic private var isDirectoryCache = [String: Bool]()
 
     public let behavior: Behavior
     public let blacklistedDirectories: [String]
@@ -89,15 +89,13 @@ public class Glob: Collection {
         }
 
         let patterns = behavior.supportsGlobstar ? expandGlobstar(pattern: adjustedPattern) : [adjustedPattern]
-
-        for pattern in patterns {
-            var gt = glob_t()
-            if executeGlob(pattern: pattern, gt: &gt) {
-                populateFiles(gt: gt, includeFiles: includeFiles)
-            }
-
-            globfree(&gt)
-        }
+        
+        #if os(macOS)
+        paths = patterns.parallelMap { paths(usingPattern: $0, includeFiles: includeFiles) }.flatMap { $0 }
+        #else
+        // Parallel invocations of Glob on Linux seems to be causing unexpected crashes
+        paths = patterns.map { paths(usingPattern: $0, includeFiles: includeFiles) }.flatMap { $0 }
+        #endif
 
         paths = Array(Set(paths)).sorted { lhs, rhs in
             lhs.compare(rhs) != ComparisonResult.orderedDescending
@@ -200,16 +198,30 @@ public class Glob: Collection {
 
         var isDirectoryBool = ObjCBool(false)
         let isDirectory = FileManager.default.fileExists(atPath: path, isDirectory: &isDirectoryBool) && isDirectoryBool.boolValue
-        isDirectoryCache[path] = isDirectory
+        $isDirectoryCache.with { isDirectoryCache in
+            isDirectoryCache[path] = isDirectory
+        }
 
         return isDirectory
     }
 
     private func clearCaches() {
-        isDirectoryCache.removeAll()
+        $isDirectoryCache.with { isDirectoryCache in
+            isDirectoryCache.removeAll()
+        }
     }
 
-    private func populateFiles(gt: glob_t, includeFiles: Bool) {
+    private func paths(usingPattern pattern: String, includeFiles: Bool) -> [String] {
+        var gt = glob_t()
+        defer { globfree(&gt) }
+        if executeGlob(pattern: pattern, gt: &gt) {
+             return populateFiles(gt: gt, includeFiles: includeFiles)
+        }
+        return []
+    }
+    
+    private func populateFiles(gt: glob_t, includeFiles: Bool) -> [String] {
+        var paths = [String]()
         let includeDirectories = behavior.includesDirectoriesInResults
 
         #if os(macOS)
@@ -229,6 +241,7 @@ public class Glob: Collection {
                 paths.append(path)
             }
         }
+        return paths
     }
 }
 
