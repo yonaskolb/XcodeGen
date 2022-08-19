@@ -83,6 +83,10 @@ public struct Project: BuildSettingsContainer {
         targetsMap[targetName]
     }
 
+    public func getPackage(_ packageName: String) -> SwiftPackage? {
+        packages[packageName]
+    }
+
     public func getAggregateTarget(_ targetName: String) -> AggregateTarget? {
         aggregateTargetsMap[targetName]
     }
@@ -189,7 +193,7 @@ extension Project {
             packages.merge(localPackages.reduce(into: [String: SwiftPackage]()) {
                 // Project name will be obtained by resolved abstractpath's lastComponent for dealing with some path case, like "../"
                 let packageName = (basePath + Path($1).normalize()).lastComponent
-                $0[packageName] = .local(path: $1)
+                $0[packageName] = .local(path: $1, group: nil)
             }
             )
         }
@@ -226,6 +230,7 @@ extension Project: PathContainer {
             .object("targets", Target.pathProperties),
             .object("targetTemplates", Target.pathProperties),
             .object("aggregateTargets", AggregateTarget.pathProperties),
+            .object("schemes", Scheme.pathProperties),
             .object("projectReferences", ProjectReference.pathProperties),
         ]
     }

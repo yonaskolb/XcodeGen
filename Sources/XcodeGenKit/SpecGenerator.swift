@@ -587,7 +587,7 @@ private extension Scheme {
         self.init(
             name: scheme.name,
             build: Scheme.Build(
-                targets: [BuildTarget(target: TargetReference(name: buildableReference.blueprintName, location: .local))],
+                targets: [BuildTarget(target: TestableTargetReference(name: buildableReference.blueprintName, location: .local))],
                 parallelizeBuild: buildAction.parallelizeBuild,
                 buildImplicitDependencies: buildAction.buildImplicitDependencies,
                 preActions: buildAction.preActions.map(Scheme.ExecutionAction.init),
@@ -617,7 +617,7 @@ private extension Scheme {
             test: scheme.testAction.flatMap { testAction in
                 let targets = testAction.testables.map {
                     Scheme.Test.TestTarget(
-                        targetReference: TargetReference(
+                        targetReference: TestableTargetReference(
                             name: $0.buildableReference.blueprintName,
                             location: .local),
                         randomExecutionOrder: $0.parallelizable,
@@ -630,7 +630,7 @@ private extension Scheme {
                     config: testAction.buildConfiguration,
                     gatherCoverageData: testAction.codeCoverageEnabled,
                     coverageTargets: testAction.codeCoverageTargets.map {
-                        TargetReference(name: $0.blueprintName, location: .local)
+                        TestableTargetReference(name: $0.blueprintName, location: .local)
                     },
                     disableMainThreadChecker: testAction.disableMainThreadChecker,
                     randomExecutionOrder: targets.allSatisfy { $0.randomExecutionOrder },

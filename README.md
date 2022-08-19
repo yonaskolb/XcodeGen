@@ -113,7 +113,7 @@ swift run xcodegen
 Add the following to your Package.swift file's dependencies:
 
 ```swift
-.package(url: "https://github.com/yonaskolb/XcodeGen.git", from: "2.24.0"),
+.package(url: "https://github.com/yonaskolb/XcodeGen.git", from: "2.32.0"),
 ```
 
 And then import wherever needed: `import XcodeGenKit`
@@ -156,7 +156,7 @@ To a file:
 xcodegen dump --type graphviz --file Graph.viz
 ```
 
-During implementation, `graphviz` formatting was validated using [GraphvizOnline](https://dreampuf.github.io/GraphvizOnline/), [WebGraphviz](http://www.webgraphviz.com), and [Graphviz on MacOS](graphviz.org).
+During implementation, `graphviz` formatting was validated using [GraphvizOnline](https://dreampuf.github.io/GraphvizOnline/), [WebGraphviz](http://www.webgraphviz.com), and [Graphviz on MacOS](https://graphviz.org).
 </details>
 
 ## Editing

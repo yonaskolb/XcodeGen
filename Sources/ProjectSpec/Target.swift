@@ -144,6 +144,7 @@ extension Target: PathContainer {
                 .object("postCompileScripts", BuildScript.pathProperties),
                 .object("postBuildScripts", BuildScript.pathProperties),
                 .object("legacy", LegacyTarget.pathProperties),
+                .object("scheme", TargetScheme.pathProperties),
             ]),
         ]
     }

@@ -1,6 +1,7 @@
 import Foundation
 import JSONUtilities
 import PathKit
+import Yams
 
 public struct SpecFile {
     public let basePath: Path
@@ -13,17 +14,20 @@ public struct SpecFile {
     fileprivate struct Include {
         let path: Path
         let relativePaths: Bool
+        let enable: Bool
 
         static let defaultRelativePaths = true
+        static let defaultEnable = true
 
         init?(any: Any) {
             if let string = any as? String {
                 path = Path(string)
                 relativePaths = Include.defaultRelativePaths
-            } else if let dictionary = any as? JSONDictionary,
-                let path = dictionary["path"] as? String {
+                enable = Include.defaultEnable
+            } else if let dictionary = any as? JSONDictionary, let path = dictionary["path"] as? String {
                 self.path = Path(path)
-                relativePaths = dictionary["relativePaths"] as? Bool ?? Include.defaultRelativePaths
+                relativePaths = Self.resolveBoolean(dictionary, key: "relativePaths") ?? Include.defaultRelativePaths
+                enable = Self.resolveBoolean(dictionary, key: "enable") ?? Include.defaultEnable
             } else {
                 return nil
             }
@@ -38,10 +42,14 @@ public struct SpecFile {
                 return []
             }
         }
+
+        private static func resolveBoolean(_ dictionary: [String: Any], key: String) -> Bool? {
+            dictionary[key] as? Bool ?? (dictionary[key] as? NSString)?.boolValue
+        }
     }
 
-    public init(path: Path) throws {
-        try self.init(filePath: path, basePath: path.parent())
+    public init(path: Path, variables: [String: String] = [:]) throws {
+        try self.init(filePath: path, basePath: path.parent(), variables: variables)
     }
 
     public init(filePath: Path, jsonDictionary: JSONDictionary, basePath: Path = "", relativePath: Path = "", subSpecs: [SpecFile] = []) {
@@ -52,21 +60,23 @@ public struct SpecFile {
         self.filePath = filePath
     }
 
-    private init(include: Include, basePath: Path, relativePath: Path) throws {
+    private init(include: Include, basePath: Path, relativePath: Path, variables: [String: String]) throws {
         let basePath = include.relativePaths ? (basePath + relativePath) : (basePath + relativePath + include.path.parent())
         let relativePath = include.relativePaths ? include.path.parent() : Path()
 
-        try self.init(filePath: include.path, basePath: basePath, relativePath: relativePath)
+        try self.init(filePath: include.path, basePath: basePath, variables: variables, relativePath: relativePath)
     }
 
-    private init(filePath: Path, basePath: Path, relativePath: Path = "") throws {
+    private init(filePath: Path, basePath: Path, variables: [String: String], relativePath: Path = "") throws {
         let path = basePath + relativePath + filePath.lastComponent
-        let jsonDictionary = try SpecFile.loadDictionary(path: path)
+        let jsonDictionary = try SpecFile.loadDictionary(path: path).expand(variables: variables)
 
         let includes = Include.parse(json: jsonDictionary["include"])
-        let subSpecs: [SpecFile] = try includes.map { include in
-            try SpecFile(include: include, basePath: basePath, relativePath: relativePath)
-        }
+        let subSpecs: [SpecFile] = try includes
+            .filter(\.enable)
+            .map { include in
+                try SpecFile(include: include, basePath: basePath, relativePath: relativePath, variables: variables)
+            }
 
         self.init(filePath: filePath, jsonDictionary: jsonDictionary, basePath: basePath, relativePath: relativePath, subSpecs: subSpecs)
     }
@@ -85,8 +95,8 @@ public struct SpecFile {
         }
     }
 
-    public func resolvedDictionary(variables: [String: String] = [:]) -> JSONDictionary {
-        resolvedDictionaryWithUniqueTargets().expand(variables: variables)
+    public func resolvedDictionary() -> JSONDictionary {
+        resolvedDictionaryWithUniqueTargets()
     }
 
     private func resolvedDictionaryWithUniqueTargets() -> JSONDictionary {
