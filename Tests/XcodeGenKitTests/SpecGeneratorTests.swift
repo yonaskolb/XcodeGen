@@ -58,6 +58,21 @@ class SpecGeneratorTests: XCTestCase {
                 try expect (project.schemes.count) == 3
             }
             
+            $0.it("check scheme names") {
+                try expect(project.schemes[0].name) == "ExampleFramework"
+                try expect(project.schemes[1].name) == "ExampleScheme"
+                try expect(project.schemes[2].name) == "MigrationTestProject"
+            }
+            
+            $0.it("check scheme test targets") {
+                try expect(project.schemes[2].test?.targets.count) == 4
+                try expect(project.schemes[2].test?.targets[0].name) == "MigrationTestProjectTests"
+                try expect(project.schemes[2].test?.targets[1].name) == "ExampleFrameworkTests"
+                try expect(project.schemes[2].test?.targets[2].name) == "Tests"
+                try expect(project.schemes[2].test?.targets[3].name) == "spm-projectTests"
+                //try expect(project.schemes[2].test?.targets[3].targetReference) == "spm-projectTests"
+            }
+            
             $0.it("deintegrates Cocoapods") {
                 for target in project.targets {
                     try expect(target.buildScripts.allSatisfy { !($0.name ?? "").starts(with: "[CP]") }).to.beTrue()

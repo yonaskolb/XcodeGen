@@ -85,6 +85,7 @@
 		566B1C7B0D39BF3A11552878 /* Pods-MigrationTestProjectTests.debug2.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MigrationTestProjectTests.debug2.xcconfig"; path = "Target Support Files/Pods-MigrationTestProjectTests/Pods-MigrationTestProjectTests.debug2.xcconfig"; sourceTree = "<group>"; };
 		568B909CEE0C7F9F12ACD764 /* Pods-MigrationTestProject.debug2.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MigrationTestProject.debug2.xcconfig"; path = "Target Support Files/Pods-MigrationTestProject/Pods-MigrationTestProject.debug2.xcconfig"; sourceTree = "<group>"; };
 		66F5BEAC7F35B64781832095 /* Pods-ExampleFramework.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ExampleFramework.release.xcconfig"; path = "Target Support Files/Pods-ExampleFramework/Pods-ExampleFramework.release.xcconfig"; sourceTree = "<group>"; };
+		678E967428AF1485006F06D2 /* SPM-project */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "SPM-project"; path = "../SPM-project"; sourceTree = "<group>"; };
 		73FC1184ACCE8E5FC651CA81 /* Pods-ExampleFramework.adhoc.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ExampleFramework.adhoc.xcconfig"; path = "Target Support Files/Pods-ExampleFramework/Pods-ExampleFramework.adhoc.xcconfig"; sourceTree = "<group>"; };
 		7C3BDAF0C1634E298DC42D1E /* Pods-ExampleFramework-ExampleFrameworkTests.debug2.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ExampleFramework-ExampleFrameworkTests.debug2.xcconfig"; path = "Target Support Files/Pods-ExampleFramework-ExampleFrameworkTests/Pods-ExampleFramework-ExampleFrameworkTests.debug2.xcconfig"; sourceTree = "<group>"; };
 		852055E33EDB0B4F05F5CCCA /* Pods-MigrationTestProject.adhoc.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MigrationTestProject.adhoc.xcconfig"; path = "Target Support Files/Pods-MigrationTestProject/Pods-MigrationTestProject.adhoc.xcconfig"; sourceTree = "<group>"; };
@@ -189,6 +190,14 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		678E967328AF1485006F06D2 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				678E967428AF1485006F06D2 /* SPM-project */,
+			);
+			name = Packages;
+			sourceTree = "<group>";
+		};
 		D9B458342545207400C2DB2E /* ObjC */ = {
 			isa = PBXGroup;
 			children = (
@@ -201,6 +210,7 @@
 		D9BD31DD24BAE14A0056ACD2 = {
 			isa = PBXGroup;
 			children = (
+				678E967328AF1485006F06D2 /* Packages */,
 				D9BD31E824BAE14A0056ACD2 /* MigrationTestProject */,
 				D9BD31FF24BAE14C0056ACD2 /* MigrationTestProjectTests */,
 				D9BD321124BAE38F0056ACD2 /* ExampleFramework */,
