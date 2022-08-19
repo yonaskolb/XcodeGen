@@ -1,7 +1,9 @@
 # Change Log
 
 ## Next Version
+### Fixed
 
+- Fix scheme not being generated for aggregate targets #1250 @CraigSiemens
 ## 2.32.0
 
 ### Added
