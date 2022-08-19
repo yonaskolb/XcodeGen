@@ -48,7 +48,7 @@ public class SchemeGenerator {
             xcschemes.append(xcscheme)
         }
 
-        for target in project.targets {
+        for target in project.projectTargets {
             if let targetScheme = target.scheme {
                 if targetScheme.configVariants.isEmpty {
                     let schemeName = target.name
@@ -95,7 +95,7 @@ public class SchemeGenerator {
         return xcschemes
     }
 
-    public func generateScheme(_ scheme: Scheme, for target: Target? = nil) throws -> XCScheme {
+    public func generateScheme(_ scheme: Scheme, for target: ProjectTarget? = nil) throws -> XCScheme {
 
         func getBuildableReference(_ target: TargetReference) throws -> XCScheme.BuildableReference {
             let pbxProj: PBXProj
@@ -179,7 +179,7 @@ public class SchemeGenerator {
             return XCScheme.ExecutionAction(scriptText: action.script, title: action.name, environmentBuildable: environmentBuildable)
         }
 
-        let schemeTarget: Target?
+        let schemeTarget: ProjectTarget?
 
         if let targetName = scheme.run?.executable {
             schemeTarget = project.getTarget(targetName)
@@ -358,7 +358,7 @@ public class SchemeGenerator {
         )
     }
 
-    private func launchAutomaticallySubstyle(for target: Target?) -> String? {
+    private func launchAutomaticallySubstyle(for target: ProjectTarget?) -> String? {
         if target?.type.isExtension == true {
             return "2"
         } else {
@@ -366,7 +366,7 @@ public class SchemeGenerator {
         }
     }
 
-    private func makeProductRunnables(for target: Target?, buildableReference: XCScheme.BuildableReference) -> (launch: XCScheme.Runnable, profile: XCScheme.BuildableProductRunnable) {
+    private func makeProductRunnables(for target: ProjectTarget?, buildableReference: XCScheme.BuildableReference) -> (launch: XCScheme.Runnable, profile: XCScheme.BuildableProductRunnable) {
         let buildable = XCScheme.BuildableProductRunnable(buildableReference: buildableReference)
         if target?.type.isWatchApp == true {
             let remote = XCScheme.RemoteRunnable(
@@ -380,7 +380,7 @@ public class SchemeGenerator {
         }
     }
 
-    private func selectedDebuggerIdentifier(for target: Target?, run: Scheme.Run?) -> String {
+    private func selectedDebuggerIdentifier(for target: ProjectTarget?, run: Scheme.Run?) -> String {
         if target?.type.canUseDebugLauncher != false && run?.debugEnabled ?? Scheme.Run.debugEnabledDefault {
             return XCScheme.defaultDebugger
         } else {
@@ -388,7 +388,7 @@ public class SchemeGenerator {
         }
     }
 
-    private func selectedLauncherIdentifier(for target: Target?, run: Scheme.Run?) -> String {
+    private func selectedLauncherIdentifier(for target: ProjectTarget?, run: Scheme.Run?) -> String {
         if target?.type.canUseDebugLauncher != false && run?.debugEnabled ?? Scheme.Run.debugEnabledDefault {
             return XCScheme.defaultLauncher
         } else {
@@ -419,7 +419,7 @@ enum SchemeGenerationError: Error, CustomStringConvertible {
 }
 
 extension Scheme {
-    public init(name: String, target: Target, targetScheme: TargetScheme, project: Project, debugConfig: String, releaseConfig: String) {
+    public init(name: String, target: ProjectTarget, targetScheme: TargetScheme, project: Project, debugConfig: String, releaseConfig: String) {
         self.init(
             name: name,
             build: .init(
@@ -464,7 +464,7 @@ extension Scheme {
         )
     }
 
-    private static func buildTargets(for target: Target, project: Project) -> [BuildTarget] {
+    private static func buildTargets(for target: ProjectTarget, project: Project) -> [BuildTarget] {
         let buildTarget = Scheme.BuildTarget(target: TestableTargetReference.local(target.name))
         switch target.type {
         case .watchApp, .watch2App:

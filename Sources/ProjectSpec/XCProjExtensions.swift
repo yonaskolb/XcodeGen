@@ -90,7 +90,7 @@ extension Platform {
     }
 }
 
-extension Target {
+extension ProjectTarget {
     public var shouldExecuteOnLaunch: Bool {
         // This is different from `type.isExecutable`, because we don't want to "run" a test
         type.isApp || type.isExtension || type.isSystemExtension || type == .commandLineTool
