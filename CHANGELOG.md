@@ -2,7 +2,7 @@
 
 ## Next Version
 
-### Changed
+### Added
 
 - Added support for `enableGPUFrameCaptureMode` #1251 @bsudekum
 
