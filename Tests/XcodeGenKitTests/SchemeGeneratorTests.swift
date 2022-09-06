@@ -266,7 +266,7 @@ class SchemeGeneratorTests: XCTestCase {
                 let scheme = Scheme(
                     name: "TestScheme",
                     build: Scheme.Build(targets: [buildTarget]),
-                    run: Scheme.Run(config: "Debug", debugEnabled: false, simulateLocation: .init(allow: true, defaultLocation: "File.gpx"), storeKitConfiguration: "Configuration.storekit")
+                    run: Scheme.Run(config: "Debug", enableGPUFrameCaptureMode: .metal, debugEnabled: false, simulateLocation: .init(allow: true, defaultLocation: "File.gpx"), storeKitConfiguration: "Configuration.storekit")
                 )
                 let project = Project(
                     name: "test",
@@ -282,6 +282,7 @@ class SchemeGeneratorTests: XCTestCase {
                 try expect(xcscheme.launchAction?.storeKitConfigurationFileReference?.identifier) == "../../Configuration.storekit"
                 try expect(xcscheme.launchAction?.locationScenarioReference?.referenceType) == Scheme.SimulateLocation.ReferenceType.gpx.rawValue
                 try expect(xcscheme.launchAction?.locationScenarioReference?.identifier) == "../../File.gpx"
+                try expect(xcscheme.launchAction?.enableGPUFrameCaptureMode) == .metal
             }
 
             $0.it("generate scheme without debugger - test") {
