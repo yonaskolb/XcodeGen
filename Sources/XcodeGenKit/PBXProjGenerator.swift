@@ -344,15 +344,13 @@ public class PBXProjGenerator {
                 , let projectName: String = tokens[0]
                 , let targetName: String = tokens[1] {
                 
-                
-                if let packageReference = packageReferences[dependency] {
+                if nil != project.packages[projectName] {
                     let productName = targetName
                     let packageDependency = addObject(
-                        XCSwiftPackageProductDependency(productName: productName, package: packageReference)
+                        XCSwiftPackageProductDependency(productName: productName)
                     )
                     
                     let targetDependency = addObject(
-                        //platformFilter: platform,
                         PBXTargetDependency( product: packageDependency)
                     )
                     return targetDependency
