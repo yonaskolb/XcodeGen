@@ -97,7 +97,7 @@ class SpecLoadingTests: XCTestCase {
                 try expect(project.aggregateTargets) == [
                     AggregateTarget(
                         name: "IncludedAggregateTarget",
-                        targets: ["IncludedTarget"],
+                        targets: ["IncludedTarget", "ProjX/TestFramework"],
                         configFiles: ["Config": "paths_test/config"],
                         buildScripts: [BuildScript(script: .path("paths_test/buildScript"))]
                     ),

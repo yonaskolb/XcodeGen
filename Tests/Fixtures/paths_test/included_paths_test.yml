@@ -32,6 +32,7 @@ aggregateTargets:
   IncludedAggregateTarget:
     targets:
       - IncludedTarget
+      - AnotherProject/ExternalTarget
     configFiles:
       Config: config
     buildScripts:

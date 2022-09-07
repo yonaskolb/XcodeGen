@@ -336,7 +336,36 @@ public class PBXProjGenerator {
             return addObject(buildConfig)
         }
 
-        let dependencies = target.targets.map { generateTargetDependency(from: target.name, to: $0, platform: nil) }
+        let dependencies = target.targets.map {
+            let dependency = $0
+            if dependency.contains("/")
+                , let tokens: [String] = dependency.components(separatedBy: "/")
+                , tokens.count == 2
+                , let projectName: String = tokens[0]
+                , let targetName: String = tokens[1] {
+                
+                
+                if let packageReference = packageReferences[dependency] {
+                    let productName = targetName
+                    let packageDependency = addObject(
+                        XCSwiftPackageProductDependency(productName: productName, package: packageReference)
+                    )
+                    
+                    let targetDependency = addObject(
+                        //platformFilter: platform,
+                        PBXTargetDependency( product: packageDependency)
+                    )
+                    return targetDependency
+                }
+                
+                do {
+                    return try generateExternalTargetDependency(from: target.name, to: targetName, in: projectName, platform: .iOS).0
+                } catch {
+                    print("Error: \(error)")
+                }
+            }
+            return generateTargetDependency(from: target.name, to: $0, platform: nil)
+        }
 
         let defaultConfigurationName = project.options.defaultConfig ?? project.configs.first?.name ?? ""
         let buildConfigList = addObject(XCConfigurationList(
