@@ -336,7 +336,7 @@ public class PBXProjGenerator {
             return addObject(buildConfig)
         }
 
-        let dependencies = target.targets.map {
+        let dependencies: [PBXTargetDependency] = target.targets.map {
             let dependency = $0
             if dependency.contains("/")
                 , let tokens: [String] = dependency.components(separatedBy: "/")
