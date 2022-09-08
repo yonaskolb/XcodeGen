@@ -173,7 +173,6 @@ public struct Scheme: Equatable {
         public var config: String?
         public var gatherCoverageData: Bool
         public var coverageTargets: [TestableTargetReference]
-        public var enableGPUFrameCaptureMode: XCScheme.LaunchAction.GPUFrameCaptureMode
         public var disableMainThreadChecker: Bool
         public var commandLineArguments: [String: Bool]
         public var targets: [TestTarget]
@@ -239,7 +238,6 @@ public struct Scheme: Equatable {
             config: String? = nil,
             gatherCoverageData: Bool = gatherCoverageDataDefault,
             coverageTargets: [TestableTargetReference] = [],
-            enableGPUFrameCaptureMode: XCScheme.LaunchAction.GPUFrameCaptureMode = XCScheme.LaunchAction.defaultGPUFrameCaptureMode,
             disableMainThreadChecker: Bool = disableMainThreadCheckerDefault,
             randomExecutionOrder: Bool = false,
             parallelizable: Bool = false,
@@ -259,7 +257,6 @@ public struct Scheme: Equatable {
             self.config = config
             self.gatherCoverageData = gatherCoverageData
             self.coverageTargets = coverageTargets
-            self.enableGPUFrameCaptureMode = enableGPUFrameCaptureMode
             self.disableMainThreadChecker = disableMainThreadChecker
             self.commandLineArguments = commandLineArguments
             self.targets = targets
@@ -514,7 +511,6 @@ extension Scheme.Test: JSONObjectConvertible {
         } else {
             coverageTargets = []
         }
-        enableGPUFrameCaptureMode = jsonDictionary.json(atKeyPath: "enableGPUFrameCaptureMode") ?? XCScheme.LaunchAction.defaultGPUFrameCaptureMode
         disableMainThreadChecker = jsonDictionary.json(atKeyPath: "disableMainThreadChecker") ?? Scheme.Test.disableMainThreadCheckerDefault
         commandLineArguments = jsonDictionary.json(atKeyPath: "commandLineArguments") ?? [:]
         if let targets = jsonDictionary["targets"] as? [Any] {
@@ -560,10 +556,6 @@ extension Scheme.Test: JSONEncodable {
 
         if gatherCoverageData != Scheme.Test.gatherCoverageDataDefault {
             dict["gatherCoverageData"] = gatherCoverageData
-        }
-
-        if enableGPUFrameCaptureMode != XCScheme.LaunchAction.defaultGPUFrameCaptureMode {
-            dict["enableGPUFrameCaptureMode"] = enableGPUFrameCaptureMode
         }
 
         if disableMainThreadChecker != Scheme.Test.disableMainThreadCheckerDefault {

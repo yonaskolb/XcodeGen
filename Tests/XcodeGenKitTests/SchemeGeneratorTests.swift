@@ -52,7 +52,7 @@ class SchemeGeneratorTests: XCTestCase {
                 let scheme = try Scheme(
                     name: "MyScheme",
                     build: Scheme.Build(targets: [buildTarget], preActions: [preAction]),
-                    run: Scheme.Run(config: "Debug", askForAppToLaunch: true, launchAutomaticallySubstyle: "2", simulateLocation: simulateLocation, storeKitConfiguration: storeKitConfiguration, customLLDBInit: "/sample/.lldbinit"),
+                    run: Scheme.Run(config: "Debug", enableGPUFrameCaptureMode: .metal, askForAppToLaunch: true, launchAutomaticallySubstyle: "2", simulateLocation: simulateLocation, storeKitConfiguration: storeKitConfiguration, customLLDBInit: "/sample/.lldbinit"),
                     test: Scheme.Test(config: "Debug", targets: [
                         Scheme.Test.TestTarget(targetReference: TestableTargetReference(framework.name), location: "test.gpx"),
                         Scheme.Test.TestTarget(targetReference: TestableTargetReference(framework.name), location: "New York, NY, USA")
@@ -110,6 +110,7 @@ class SchemeGeneratorTests: XCTestCase {
                 try expect(xcscheme.launchAction?.locationScenarioReference?.referenceType) == Scheme.SimulateLocation.ReferenceType.predefined.rawValue
                 try expect(xcscheme.launchAction?.locationScenarioReference?.identifier) == "New York, NY, USA"
                 try expect(xcscheme.launchAction?.customLLDBInitFile) == "/sample/.lldbinit"
+                try expect(xcscheme.launchAction?.enableGPUFrameCaptureMode) == .metal
                 try expect(xcscheme.testAction?.customLLDBInitFile) == "/test/.lldbinit"
                 try expect(xcscheme.testAction?.systemAttachmentLifetime).to.beNil()
                 

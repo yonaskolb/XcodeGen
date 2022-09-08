@@ -823,6 +823,7 @@ class SpecLoadingTests: XCTestCase {
                     "run": [
                         "config": "debug",
                         "launchAutomaticallySubstyle": 2,
+                        "enableGPUFrameCaptureMode": "3",
                         "storeKitConfiguration": "Configuration.storekit",
                     ],
                     "test": [
@@ -839,7 +840,6 @@ class SpecLoadingTests: XCTestCase {
                             ],
                         ],
                         "gatherCoverageData": true,
-                        "enableGPUFrameCaptureMode": "1",
                         "disableMainThreadChecker": true,
                         "stopOnEveryMainThreadCheckerIssue": true,
                         "testPlans": [
@@ -871,10 +871,10 @@ class SpecLoadingTests: XCTestCase {
                 try expect(scheme.build.parallelizeBuild) == false
                 try expect(scheme.build.buildImplicitDependencies) == false
                 try expect(scheme.build.runPostActionsOnFailure) == true
-                try expect(scheme.test?.enableGPUFrameCaptureMode) == .metal
 
                 let expectedRun = Scheme.Run(
                     config: "debug",
+                    enableGPUFrameCaptureMode: .disabled,
                     launchAutomaticallySubstyle: "2",
                     storeKitConfiguration: "Configuration.storekit"
                 )
@@ -883,7 +883,6 @@ class SpecLoadingTests: XCTestCase {
                 let expectedTest = Scheme.Test(
                     config: "debug",
                     gatherCoverageData: true,
-                    enableGPUFrameCaptureMode: .metal,
                     disableMainThreadChecker: true,
                     targets: [
                         "Target1",
