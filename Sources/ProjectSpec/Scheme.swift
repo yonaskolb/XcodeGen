@@ -902,7 +902,7 @@ extension XCScheme.LaunchAction.GPUFrameCaptureMode: JSONEncodable {
         case "disabled":
             return .disabled
         default:
-            assert(true, "Invalid enableGPUFrameCaptureMode value. Valid values are: autoEnabled, metal, openGL, disabled")
+            assert(false, "Invalid enableGPUFrameCaptureMode value. Valid values are: autoEnabled, metal, openGL, disabled")
             return .autoEnabled
         }
     }
