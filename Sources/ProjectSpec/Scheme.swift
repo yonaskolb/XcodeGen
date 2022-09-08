@@ -412,7 +412,7 @@ extension Scheme.Run: JSONObjectConvertible {
         postActions = jsonDictionary.json(atKeyPath: "postActions") ?? []
         environmentVariables = try XCScheme.EnvironmentVariable.parseAll(jsonDictionary: jsonDictionary)
         if let gpuFrameCaptureMode: String = jsonDictionary.json(atKeyPath: "enableGPUFrameCaptureMode") {
-            enableGPUFrameCaptureMode = gpuFrameCaptureMode.toGPUFrameCaptureMode()
+            enableGPUFrameCaptureMode = XCScheme.LaunchAction.GPUFrameCaptureMode.fromJSONValue(gpuFrameCaptureMode)
         } else {
             enableGPUFrameCaptureMode = XCScheme.LaunchAction.defaultGPUFrameCaptureMode
         }
@@ -458,7 +458,7 @@ extension Scheme.Run: JSONEncodable {
         ]
 
         if enableGPUFrameCaptureMode != XCScheme.LaunchAction.defaultGPUFrameCaptureMode {
-            dict["enableGPUFrameCaptureMode"] = enableGPUFrameCaptureMode
+            dict["enableGPUFrameCaptureMode"] = enableGPUFrameCaptureMode.toJSONValue()
         }
 
         if disableMainThreadChecker != Scheme.Run.disableMainThreadCheckerDefault {
@@ -876,14 +876,27 @@ extension XCScheme.EnvironmentVariable: JSONEncodable {
     }
 }
 
-private extension String {
-    func toGPUFrameCaptureMode() -> XCScheme.LaunchAction.GPUFrameCaptureMode {
-        switch self.lowercased() {
-        case "autoenabled":
+extension XCScheme.LaunchAction.GPUFrameCaptureMode: JSONEncodable {
+    public func toJSONValue() -> Any {
+        switch self {
+        case .autoEnabled:
+            return "autoEnabled"
+        case .metal:
+            return "metal"
+        case .openGL:
+            return "openGL"
+        case .disabled:
+            return "disabled"
+        }
+    }
+
+    static func fromJSONValue(_ string: String) -> XCScheme.LaunchAction.GPUFrameCaptureMode {
+        switch string {
+        case "autoEnabled":
             return .autoEnabled
         case "metal":
             return .metal
-        case "opengl":
+        case "openGL":
             return .openGL
         case "disabled":
             return .disabled
