@@ -515,7 +515,7 @@ extension Scheme.Test: JSONObjectConvertible {
         } else {
             coverageTargets = []
         }
-
+        
         disableMainThreadChecker = jsonDictionary.json(atKeyPath: "disableMainThreadChecker") ?? Scheme.Test.disableMainThreadCheckerDefault
         commandLineArguments = jsonDictionary.json(atKeyPath: "commandLineArguments") ?? [:]
         if let targets = jsonDictionary["targets"] as? [Any] {
