@@ -17,7 +17,7 @@ public class SpecLoader {
 
     public func loadProject(path: Path, projectRoot: Path? = nil, variables: [String: String] = [:]) throws -> Project {
         var cachedSpecFiles: [Path: SpecFile] = [:]
-        let spec = try SpecFile(filePath: path, basePath: projectRoot ?? path.parent(), cachedSpecFiles: &cachedSpecFiles, variables: variables)
+        let spec = try SpecFile(path: path, basePath: projectRoot, cachedSpecFiles: &cachedSpecFiles, variables: variables)
         let resolvedDictionary = spec.resolvedDictionary()
         let project = try Project(basePath: projectRoot ?? spec.basePath, jsonDictionary: resolvedDictionary)
 

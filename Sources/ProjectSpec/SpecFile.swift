@@ -4,11 +4,17 @@ import PathKit
 import Yams
 
 public struct SpecFile {
+    /// For the root spec, this is the folder containing the SpecFile. For subSpecs this is the path
+    /// to the folder of the parent spec that is including this SpecFile.
     public let basePath: Path
-    public let relativePath: Path
     public let jsonDictionary: JSONDictionary
     public let subSpecs: [SpecFile]
 
+    /// The relative path to use when resolving paths in the json dictionary. Is an empty path when
+    /// included with relativePaths disabled.
+    private let relativePath: Path
+    
+    /// The path to the file relative to the basePath.
     private let filePath: Path
 
     fileprivate struct Include {
@@ -48,8 +54,11 @@ public struct SpecFile {
         }
     }
 
-    public init(path: Path, cachedSpecFiles: inout [Path: SpecFile], variables: [String: String] = [:]) throws {
-        try self.init(filePath: path, basePath: path.parent(), cachedSpecFiles: &cachedSpecFiles, variables: variables)
+    public init(path: Path, basePath: Path? = nil, cachedSpecFiles: inout [Path: SpecFile], variables: [String: String] = [:]) throws {
+        let basePath = basePath ?? path.parent()
+        let filePath = try path.relativePath(from: basePath)
+        
+        try self.init(filePath: filePath, basePath: basePath, cachedSpecFiles: &cachedSpecFiles, variables: variables)
     }
 
     public init(filePath: Path, jsonDictionary: JSONDictionary, basePath: Path = "", relativePath: Path = "", subSpecs: [SpecFile] = []) {
@@ -63,13 +72,14 @@ public struct SpecFile {
     private init(include: Include, basePath: Path, relativePath: Path, cachedSpecFiles: inout [Path: SpecFile], variables: [String: String]) throws {
         let basePath = include.relativePaths ? (basePath + relativePath) : basePath
         let relativePath = include.relativePaths ? include.path.parent() : Path()
-        let includePath = include.relativePaths ? basePath + relativePath + include.path.lastComponent : basePath + include.path
 
-        try self.init(filePath: includePath, basePath: basePath, cachedSpecFiles: &cachedSpecFiles, variables: variables, relativePath: relativePath)
+        try self.init(filePath: include.path, basePath: basePath, cachedSpecFiles: &cachedSpecFiles, variables: variables, relativePath: relativePath)
     }
 
-    public init(filePath: Path, basePath: Path, cachedSpecFiles: inout [Path: SpecFile], variables: [String: String] = [:], relativePath: Path = "") throws {
-        let jsonDictionary = try SpecFile.loadDictionary(path: filePath).expand(variables: variables)
+    private init(filePath: Path, basePath: Path, cachedSpecFiles: inout [Path: SpecFile], variables: [String: String], relativePath: Path = "") throws {
+        let path = basePath + filePath
+        let jsonDictionary = try SpecFile.loadDictionary(path: path).expand(variables: variables)
+
         let includes = Include.parse(json: jsonDictionary["include"])
         let subSpecs: [SpecFile] = try includes
             .filter(\.enable)
@@ -107,23 +117,22 @@ public struct SpecFile {
         var cachedSpecFiles: [Path: SpecFile] = [:]
         let resolvedSpec = resolvingPaths(cachedSpecFiles: &cachedSpecFiles)
 
-        var value = Set<String>()
-        return resolvedSpec.mergedDictionary(set: &value)
+        var mergedSpecPaths = Set<Path>()
+        return resolvedSpec.mergedDictionary(set: &mergedSpecPaths)
     }
 
-    func mergedDictionary(set mergedTargets: inout Set<String>) -> JSONDictionary {
-        let name = filePath.description
+    private func mergedDictionary(set mergedSpecPaths: inout Set<Path>) -> JSONDictionary {
+        let path = basePath + filePath
 
-        guard !mergedTargets.contains(name) else { return [:] }
-        mergedTargets.insert(name)
+        guard mergedSpecPaths.insert(path).inserted else { return [:] }
 
         return jsonDictionary.merged(onto:
             subSpecs
-                .map { $0.mergedDictionary(set: &mergedTargets) }
+                .map { $0.mergedDictionary(set: &mergedSpecPaths) }
                 .reduce([:]) { $1.merged(onto: $0) })
     }
 
-    func resolvingPaths(cachedSpecFiles: inout [Path: SpecFile], relativeTo basePath: Path = Path()) -> SpecFile {
+    private func resolvingPaths(cachedSpecFiles: inout [Path: SpecFile], relativeTo basePath: Path = Path()) -> SpecFile {
         if let cachedSpecFile = cachedSpecFiles[filePath] {
             return cachedSpecFile
         }
@@ -137,6 +146,7 @@ public struct SpecFile {
         let specFile = SpecFile(
             filePath: filePath,
             jsonDictionary: jsonDictionary,
+            basePath: self.basePath,
             relativePath: self.relativePath,
             subSpecs: subSpecs.map { $0.resolvingPaths(cachedSpecFiles: &cachedSpecFiles, relativeTo: relativePath) }
         )
