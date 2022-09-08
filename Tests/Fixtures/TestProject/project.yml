@@ -428,6 +428,7 @@ schemes:
         allow: true
         defaultLocation: Honolulu, HI, USA
       customLLDBInit: ${SRCROOT}/.lldbinit
+      enableGPUFrameCaptureMode: "disabled"
       storeKitConfiguration: "App_iOS/Configuration.storekit"
       macroExpansion: App_iOS 
     test:

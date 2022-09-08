@@ -823,7 +823,7 @@ class SpecLoadingTests: XCTestCase {
                     "run": [
                         "config": "debug",
                         "launchAutomaticallySubstyle": 2,
-                        "enableGPUFrameCaptureMode": "3",
+                        "enableGPUFrameCaptureMode": "disabled",
                         "storeKitConfiguration": "Configuration.storekit",
                     ],
                     "test": [
