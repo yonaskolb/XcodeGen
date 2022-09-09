@@ -338,11 +338,10 @@ public class PBXProjGenerator {
 
         let dependencies: [PBXTargetDependency] = target.targets.map {
             let dependency = $0
-            if dependency.contains("/")
-                , let tokens: [String] = dependency.components(separatedBy: "/")
-                , tokens.count == 2
-                , let projectName: String = tokens[0]
-                , let targetName: String = tokens[1] {
+            if dependency.contains("/") && dependency.components(separatedBy: "/").count == 2 {
+                let tokens: [String] = dependency.components(separatedBy: "/")
+                let projectName: String = tokens[0]
+                let targetName: String = tokens[1]
                 
                 if nil != project.packages[projectName] {
                     let productName = targetName
