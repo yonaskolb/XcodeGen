@@ -109,6 +109,7 @@ public struct Scheme: Equatable {
         public var preActions: [ExecutionAction]
         public var postActions: [ExecutionAction]
         public var environmentVariables: [XCScheme.EnvironmentVariable]
+        public var enableGPUFrameCaptureMode: XCScheme.LaunchAction.GPUFrameCaptureMode
         public var disableMainThreadChecker: Bool
         public var stopOnEveryMainThreadCheckerIssue: Bool
         public var language: String?
@@ -129,6 +130,7 @@ public struct Scheme: Equatable {
             preActions: [ExecutionAction] = [],
             postActions: [ExecutionAction] = [],
             environmentVariables: [XCScheme.EnvironmentVariable] = [],
+            enableGPUFrameCaptureMode: XCScheme.LaunchAction.GPUFrameCaptureMode = XCScheme.LaunchAction.defaultGPUFrameCaptureMode,
             disableMainThreadChecker: Bool = disableMainThreadCheckerDefault,
             stopOnEveryMainThreadCheckerIssue: Bool = stopOnEveryMainThreadCheckerIssueDefault,
             language: String? = nil,
@@ -147,6 +149,7 @@ public struct Scheme: Equatable {
             self.postActions = postActions
             self.environmentVariables = environmentVariables
             self.disableMainThreadChecker = disableMainThreadChecker
+            self.enableGPUFrameCaptureMode = enableGPUFrameCaptureMode
             self.stopOnEveryMainThreadCheckerIssue = stopOnEveryMainThreadCheckerIssue
             self.language = language
             self.region = region
@@ -408,6 +411,11 @@ extension Scheme.Run: JSONObjectConvertible {
         preActions = jsonDictionary.json(atKeyPath: "preActions") ?? []
         postActions = jsonDictionary.json(atKeyPath: "postActions") ?? []
         environmentVariables = try XCScheme.EnvironmentVariable.parseAll(jsonDictionary: jsonDictionary)
+        if let gpuFrameCaptureMode: String = jsonDictionary.json(atKeyPath: "enableGPUFrameCaptureMode") {
+            enableGPUFrameCaptureMode = XCScheme.LaunchAction.GPUFrameCaptureMode.fromJSONValue(gpuFrameCaptureMode)
+        } else {
+            enableGPUFrameCaptureMode = XCScheme.LaunchAction.defaultGPUFrameCaptureMode
+        }
         disableMainThreadChecker = jsonDictionary.json(atKeyPath: "disableMainThreadChecker") ?? Scheme.Run.disableMainThreadCheckerDefault
         stopOnEveryMainThreadCheckerIssue = jsonDictionary.json(atKeyPath: "stopOnEveryMainThreadCheckerIssue") ?? Scheme.Run.stopOnEveryMainThreadCheckerIssueDefault
         language = jsonDictionary.json(atKeyPath: "language")
@@ -448,6 +456,10 @@ extension Scheme.Run: JSONEncodable {
             "executable": executable,
             "macroExpansion": macroExpansion
         ]
+
+        if enableGPUFrameCaptureMode != XCScheme.LaunchAction.defaultGPUFrameCaptureMode {
+            dict["enableGPUFrameCaptureMode"] = enableGPUFrameCaptureMode.toJSONValue()
+        }
 
         if disableMainThreadChecker != Scheme.Run.disableMainThreadCheckerDefault {
             dict["disableMainThreadChecker"] = disableMainThreadChecker
@@ -862,5 +874,35 @@ extension XCScheme.EnvironmentVariable: JSONEncodable {
         }
 
         return dict
+    }
+}
+
+extension XCScheme.LaunchAction.GPUFrameCaptureMode: JSONEncodable {
+    public func toJSONValue() -> Any {
+        switch self {
+        case .autoEnabled:
+            return "autoEnabled"
+        case .metal:
+            return "metal"
+        case .openGL:
+            return "openGL"
+        case .disabled:
+            return "disabled"
+        }
+    }
+
+    static func fromJSONValue(_ string: String) -> XCScheme.LaunchAction.GPUFrameCaptureMode {
+        switch string {
+        case "autoEnabled":
+            return .autoEnabled
+        case "metal":
+            return .metal
+        case "openGL":
+            return .openGL
+        case "disabled":
+            return .disabled
+        default:
+            fatalError("Invalid enableGPUFrameCaptureMode value. Valid values are: autoEnabled, metal, openGL, disabled")
+        }
     }
 }
