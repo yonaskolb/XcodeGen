@@ -823,6 +823,7 @@ class SpecLoadingTests: XCTestCase {
                     "run": [
                         "config": "debug",
                         "launchAutomaticallySubstyle": 2,
+                        "enableGPUFrameCaptureMode": "disabled",
                         "storeKitConfiguration": "Configuration.storekit",
                     ],
                     "test": [
@@ -873,6 +874,7 @@ class SpecLoadingTests: XCTestCase {
 
                 let expectedRun = Scheme.Run(
                     config: "debug",
+                    enableGPUFrameCaptureMode: .disabled,
                     launchAutomaticallySubstyle: "2",
                     storeKitConfiguration: "Configuration.storekit"
                 )

@@ -640,6 +640,7 @@ class ProjectSpecTests: XCTestCase {
                                                                     environmentVariables: [XCScheme.EnvironmentVariable(variable: "foo",
                                                                                                                         value: "bar",
                                                                                                                         enabled: false)],
+                                                                    enableGPUFrameCaptureMode: .openGL,
                                                                     launchAutomaticallySubstyle: "2",
                                                                     storeKitConfiguration: "Configuration.storekit"),
                                                     test: Scheme.Test(config: "Config",

@@ -1,9 +1,15 @@
 # Change Log
 
 ## Next Version
+
+### Added
+
+- Added support for `enableGPUFrameCaptureMode` #1251 @bsudekum
+
 ### Fixed
 
 - Fix scheme not being generated for aggregate targets #1250 @CraigSiemens
+
 ## 2.32.0
 
 ### Added
