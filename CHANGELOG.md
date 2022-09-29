@@ -5,6 +5,7 @@
 ### Added
 
 - Added support for `enableGPUFrameCaptureMode` #1251 @bsudekum
+- Added support for project files, files that don't belong to any target #1268 @skofgar
 
 ### Fixed
 
