@@ -5,6 +5,7 @@
 ### Added
 
 - Added support for `enableGPUFrameCaptureMode` #1251 @bsudekum
+- Added support for hiding Scheme #1142 @wendyliga
 
 ### Fixed
 
