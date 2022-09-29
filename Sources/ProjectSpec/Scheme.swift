@@ -44,7 +44,7 @@ public struct Scheme: Equatable {
         public var isShown: Bool?
 
         public init(
-            shared: Bool = true,
+            shared: Bool = Scheme.Management.sharedDefault,
             orderHint: Int?,
             isShown: Bool?
         ) {
