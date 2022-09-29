@@ -774,6 +774,7 @@ class SpecLoadingTests: XCTestCase {
                             "script": "hello",
                         ],
                     ],
+                    "isShown": true
                 ]
 
                 let target = try Target(name: "test", jsonDictionary: targetDictionary)
@@ -791,7 +792,8 @@ class SpecLoadingTests: XCTestCase {
                     commandLineArguments: ["ENV1": true],
                     environmentVariables: [XCScheme.EnvironmentVariable(variable: "TEST_VAR", value: "TEST_VAL", enabled: true)],
                     preActions: [.init(name: "Do Thing", script: "dothing", settingsTarget: "test")],
-                    postActions: [.init(name: "Run Script", script: "hello")]
+                    postActions: [.init(name: "Run Script", script: "hello")],
+                    isShown: true
                 )
 
                 try expect(target.scheme) == scheme

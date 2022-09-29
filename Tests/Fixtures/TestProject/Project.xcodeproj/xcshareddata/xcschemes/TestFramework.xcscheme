@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
    LastUpgradeVersion = "1200"
-   version = "1.3">
+   version = "1.7">
    <BuildAction
       parallelizeBuildables = "YES"
-      buildImplicitDependencies = "YES">
+      buildImplicitDependencies = "YES"
+      runPostActionsOnFailure = "NO">
       <BuildActionEntries>
          <BuildActionEntry
             buildForTesting = "YES"
@@ -14,23 +15,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "208179651927D1138D19B5AD"
-               BuildableName = "App_watchOS.app"
-               BlueprintName = "App_watchOS"
-               ReferencedContainer = "container:Project.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "0867B0DACEF28C11442DE8F7"
-               BuildableName = "App_iOS.app"
-               BlueprintName = "App_iOS"
+               BlueprintIdentifier = "0636AAF06498C336E1CEEDE4"
+               BuildableName = "TestFramework.framework"
+               BlueprintName = "TestFramework"
                ReferencedContainer = "container:Project.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -40,18 +27,21 @@
       buildConfiguration = "Production Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      shouldUseLaunchSchemeArgsEnv = "YES">
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      onlyGenerateCoverageForSpecifiedTargets = "NO">
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "208179651927D1138D19B5AD"
-            BuildableName = "App_watchOS.app"
-            BlueprintName = "App_watchOS"
+            BlueprintIdentifier = "0636AAF06498C336E1CEEDE4"
+            BuildableName = "TestFramework.framework"
+            BlueprintName = "TestFramework"
             ReferencedContainer = "container:Project.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <Testables>
       </Testables>
+      <CommandLineArguments>
+      </CommandLineArguments>
    </TestAction>
    <LaunchAction
       buildConfiguration = "Production Debug"
@@ -63,18 +53,17 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <RemoteRunnable
-         runnableDebuggingMode = "2"
-         BundleIdentifier = "com.apple.Carousel"
-         RemotePath = "/App_iOS">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "208179651927D1138D19B5AD"
-            BuildableName = "App_watchOS.app"
-            BlueprintName = "App_watchOS"
+            BlueprintIdentifier = "0636AAF06498C336E1CEEDE4"
+            BuildableName = "TestFramework.framework"
+            BlueprintName = "TestFramework"
             ReferencedContainer = "container:Project.xcodeproj">
          </BuildableReference>
-      </RemoteRunnable>
+      </MacroExpansion>
+      <CommandLineArguments>
+      </CommandLineArguments>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Production Release"
@@ -82,24 +71,14 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <RemoteRunnable
-         runnableDebuggingMode = "2"
-         BundleIdentifier = "com.apple.Carousel"
-         RemotePath = "/App_iOS">
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "208179651927D1138D19B5AD"
-            BuildableName = "App_watchOS.app"
-            BlueprintName = "App_watchOS"
-            ReferencedContainer = "container:Project.xcodeproj">
-         </BuildableReference>
-      </RemoteRunnable>
+      <CommandLineArguments>
+      </CommandLineArguments>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "208179651927D1138D19B5AD"
-            BuildableName = "App_watchOS.app"
-            BlueprintName = "App_watchOS"
+            BlueprintIdentifier = "0636AAF06498C336E1CEEDE4"
+            BuildableName = "TestFramework.framework"
+            BlueprintName = "TestFramework"
             ReferencedContainer = "container:Project.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

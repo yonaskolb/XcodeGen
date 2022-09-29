@@ -23,11 +23,10 @@ public struct TargetScheme: Equatable {
     public var environmentVariables: [XCScheme.EnvironmentVariable]
     public var preActions: [Scheme.ExecutionAction]
     public var postActions: [Scheme.ExecutionAction]
-    public var testPlans: [TestPlan]
-
     public var shared: Bool
     public var orderHint: Int?
     public var isShown: Bool?
+    public var testPlans: [TestPlan]
 
     public init(
         testTargets: [Scheme.Test.TestTarget] = [],
@@ -59,15 +58,15 @@ public struct TargetScheme: Equatable {
         self.region = region
         self.disableMainThreadChecker = disableMainThreadChecker
         self.stopOnEveryMainThreadCheckerIssue = stopOnEveryMainThreadCheckerIssue
-        self.isShown = isShown
         self.buildImplicitDependencies = buildImplicitDependencies
         self.commandLineArguments = commandLineArguments
         self.environmentVariables = environmentVariables
         self.preActions = preActions
         self.postActions = postActions
+        self.postActions = postActions
+        self.isShown = isShown
         self.shared = shared
         self.orderHint = orderHint
-        self.postActions = postActions
     }
 
     public var management: Scheme.Management? {
