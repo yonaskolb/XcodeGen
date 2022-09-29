@@ -30,7 +30,7 @@ public class ProjectGenerator {
         let sharedData = XCSharedData(schemes: schemes)
         return XcodeProj(workspace: workspace, pbxproj: pbxProj, sharedData: sharedData)
     }
-    
+
     func generateWorkspace() throws -> XCWorkspace {
         let selfReference = XCWorkspaceDataFileRef(location: .current(""))
         let dataElement = XCWorkspaceDataElement.file(selfReference)
