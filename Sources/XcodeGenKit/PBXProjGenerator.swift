@@ -26,6 +26,7 @@ public class PBXProjGenerator {
     var carthageFrameworksByPlatform: [String: Set<PBXFileElement>] = [:]
     var frameworkFiles: [PBXFileElement] = []
     var bundleFiles: [PBXFileElement] = []
+    var projectFiles: [PBXFileElement] = []
 
     var generated = false
 
@@ -107,7 +108,9 @@ public class PBXProjGenerator {
         )
 
         pbxProj.rootObject = pbxProject
-
+        
+        // Files that do not belong to a target
+        let sourceFiles = try sourceGenerator.getAllSourceFiles(targetType: .none, sources: project.files, buildPhases: [:]).sorted { $0.path.lastComponent < $1.path.lastComponent }
         for target in project.targets {
             let targetObject: PBXTarget
 
