@@ -359,6 +359,24 @@ public class SchemeGenerator {
         )
     }
 
+    public static func generateSchemeManagement(project: Project) -> XCSchemeManagement {
+        let userStateSchemes = project.targets.map { target -> XCSchemeManagement.UserStateScheme in
+            XCSchemeManagement.UserStateScheme(
+                name: target.name + ".xcscheme",
+                shared: target.scheme?.shared ?? TargetScheme.sharedDefault,
+                orderHint: target.scheme?.orderHint,
+                isShown: target.scheme?.isShown ?? nil
+            )
+        }
+        
+        let schemeManagement = XCSchemeManagement(
+            schemeUserState: userStateSchemes,
+            suppressBuildableAutocreation: nil
+        )
+        
+        return schemeManagement
+    }
+    
     private func launchAutomaticallySubstyle(for target: ProjectTarget?) -> String? {
         if target?.type.isExtension == true {
             return "2"

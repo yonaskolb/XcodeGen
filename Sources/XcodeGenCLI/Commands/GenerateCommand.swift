@@ -114,7 +114,16 @@ class GenerateCommand: ProjectCommand {
                 throw GenerationError.missingUsername
             }
             
-            let schemeManagement = ProjectGenerator(project: project).generateSchemeManagement()
+            // TODO: future improvement
+            /// as xcodeproj doesn't natively support `xcuserdata` on `Xcodeproj`
+            /// here i manually create the path to place the `xcschememanagement.plist`
+            /// once xcodeproj support natively `xcuserdata`, this process can be merge into `Writing project...`
+            ///
+            /// also we can remove static from `generateSchemeManagement`, and use `SchemeGenerator` `project` reference
+            
+            // generate Scheme Management
+            let schemeManagement = SchemeGenerator.generateSchemeManagement(project: project)
+            
             // create directory
             let schemeManagementDirectory = projectPath + "xcuserdata/\(userName).xcuserdatad/xcschemes"
             if !schemeManagementDirectory.exists {
