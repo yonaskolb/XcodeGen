@@ -128,8 +128,8 @@ public class PBXProjGenerator {
 
             var explicitFileType: String?
             var lastKnownFileType: String?
-            let fileType = Xcode.fileType(path: Path(target.filename))
-            if target.platform == .macOS || target.platform == .watchOS || target.type == .framework {
+            let fileType = Xcode.fileType(path: Path(target.filename), productType: target.type)
+            if target.platform == .macOS || target.platform == .watchOS || target.type == .framework || target.type == .extensionKitExtension {
                 explicitFileType = fileType
             } else {
                 lastKnownFileType = fileType
@@ -168,8 +168,8 @@ public class PBXProjGenerator {
                 let packageReference = XCRemoteSwiftPackageReference(repositoryURL: url, versionRequirement: versionRequirement)
                 packageReferences[name] = packageReference
                 addObject(packageReference)
-            case let .local(path):
-                try sourceGenerator.createLocalPackage(path: Path(path))
+            case let .local(path, group):
+                try sourceGenerator.createLocalPackage(path: Path(path), group: group.map { Path($0) })
             }
         }
 
@@ -670,6 +670,7 @@ public class PBXProjGenerator {
         var copyWatchReferences: [PBXBuildFile] = []
         var packageDependencies: [XCSwiftPackageProductDependency] = []
         var extensions: [PBXBuildFile] = []
+        var extensionKitExtensions: [PBXBuildFile] = []
         var systemExtensions: [PBXBuildFile] = []
         var appClips: [PBXBuildFile] = []
         var carthageFrameworksToEmbed: [String] = []
@@ -736,8 +737,13 @@ public class PBXProjGenerator {
                     // custom copy takes precedence
                     customCopyDependenciesReferences.append(embedFile)
                 } else if dependencyTarget.type.isExtension {
-                    // embed app extension
-                    extensions.append(embedFile)
+                    if dependencyTarget.type == .extensionKitExtension {
+                        // embed extension kit extension
+                        extensionKitExtensions.append(embedFile)
+                    } else {
+                        // embed app extension
+                        extensions.append(embedFile)
+                    }
                 } else if dependencyTarget.type.isSystemExtension {
                     // embed system extension
                     systemExtensions.append(embedFile)
@@ -1130,7 +1136,7 @@ public class PBXProjGenerator {
                     name: "Carthage",
                     inputPaths: inputPaths,
                     outputPaths: outputPaths,
-                    shellPath: "/bin/sh",
+                    shellPath: "/bin/sh -l",
                     shellScript: "\(carthageExecutable) copy-frameworks\n"
                 )
             )
@@ -1156,10 +1162,18 @@ public class PBXProjGenerator {
 
         if !extensions.isEmpty {
 
-            let copyFilesPhase = addObject(                
+            let copyFilesPhase = addObject(
                 getPBXCopyFilesBuildPhase(dstSubfolderSpec: .plugins, name: "Embed App Extensions", files: extensions)
             )
 
+            buildPhases.append(copyFilesPhase)
+        }
+
+        if !extensionKitExtensions.isEmpty {
+
+            let copyFilesPhase = addObject(
+                getPBXCopyFilesBuildPhase(dstSubfolderSpec: .productsDirectory, dstPath: "$(EXTENSIONS_FOLDER_PATH)", name: "Embed ExtensionKit Extensions", files: extensionKitExtensions)
+            )
             buildPhases.append(copyFilesPhase)
         }
 

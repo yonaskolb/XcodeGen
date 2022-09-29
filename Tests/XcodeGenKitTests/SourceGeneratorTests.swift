@@ -589,6 +589,7 @@ class SourceGeneratorTests: XCTestCase {
                     - file.xcassets
                     - file.metal
                     - file.mlmodel
+                    - file.mlmodelc
                     - Info.plist
                     - Intent.intentdefinition
                     - Configuration.storekit
@@ -647,6 +648,7 @@ class SourceGeneratorTests: XCTestCase {
                 try pbxProj.expectFile(paths: ["C", "Info.plist"], buildPhase: BuildPhaseSpec.none)
                 try pbxProj.expectFile(paths: ["C", "file.metal"], buildPhase: .sources)
                 try pbxProj.expectFile(paths: ["C", "file.mlmodel"], buildPhase: .sources)
+                try pbxProj.expectFile(paths: ["C", "file.mlmodelc"], buildPhase: .resources)
                 try pbxProj.expectFile(paths: ["C", "Intent.intentdefinition"], buildPhase: .sources)
                 try pbxProj.expectFile(paths: ["C", "Configuration.storekit"], buildPhase: .resources)
                 try pbxProj.expectFile(paths: ["C", "Settings.bundle"], buildPhase: .resources)
@@ -655,7 +657,7 @@ class SourceGeneratorTests: XCTestCase {
                 try pbxProj.expectFileMissing(paths: ["C", "Settings.bundle", "Root.plist"])
                 try pbxProj.expectFileMissing(paths: ["C", "WithPeriod2.0"])
                 try pbxProj.expectFile(paths: ["C", "WithPeriod2.0", "file.swift"], buildPhase: .sources)
-                try pbxProj.expectFile(paths: ["C", "Documentation.docc"], buildPhase: BuildPhaseSpec.none)
+                try pbxProj.expectFile(paths: ["C", "Documentation.docc"], buildPhase: .sources)
             }
 
             $0.it("only omits the defined Info.plist from resource build phases but not other plists") {

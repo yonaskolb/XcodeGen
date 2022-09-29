@@ -1,8 +1,10 @@
 import Foundation
 import JSONUtilities
+import XcodeProj
 
 public struct AggregateTarget: ProjectTarget {
     public var name: String
+    public var type: PBXProductType = .none
     public var targets: [String]
     public var settings: Settings
     public var buildScripts: [BuildScript]

@@ -126,7 +126,7 @@ class ProjectSpecTests: XCTestCase {
                 project.settings = invalidSettings
                 project.configFiles = ["invalidConfig": "invalidConfigFile"]
                 project.fileGroups = ["invalidFileGroup"]
-                project.packages = ["invalidLocalPackage": .local(path: "invalidLocalPackage")]
+                project.packages = ["invalidLocalPackage": .local(path: "invalidLocalPackage", group: nil)]
                 project.settingGroups = ["settingGroup1": Settings(
                     configSettings: ["invalidSettingGroupConfig": [:]],
                     groups: ["invalidSettingGroupSettingGroup"]
@@ -140,6 +140,40 @@ class ProjectSpecTests: XCTestCase {
                 try expectValidationError(project, .invalidLocalPackage("invalidLocalPackage"))
                 try expectValidationError(project, .invalidSettingsGroup("invalidSettingGroupSettingGroup"))
                 try expectValidationError(project, .invalidBuildSettingConfig("invalidSettingGroupConfig"))
+            }
+
+            $0.it("fails with duplicate dependencies") {
+                var project = baseProject
+                project.targets = [
+                    Target(
+                        name: "target1",
+                        type: .application,
+                        platform: .iOS,
+                        settings: invalidSettings,
+                        dependencies: [
+                            Dependency(type: .target, reference: "dependency1"),
+                            Dependency(type: .target, reference: "dependency1"),
+                            Dependency(type: .framework, reference: "dependency2"),
+                            Dependency(type: .framework, reference: "dependency2"),
+                        ]
+                    ),
+                    Target(
+                        name: "target2",
+                        type: .framework,
+                        platform: .iOS,
+                        settings: invalidSettings,
+                        dependencies: [
+                            Dependency(type: .framework, reference: "dependency3"),
+                            Dependency(type: .target, reference: "dependency3"),
+                            Dependency(type: .target, reference: "dependency4"),
+                            Dependency(type: .target, reference: "dependency4"),
+                        ]
+                    )
+                ]
+
+                try expectValidationError(project, .duplicateDependencies(target: "target1", dependencyReference: "dependency1"))
+                try expectValidationError(project, .duplicateDependencies(target: "target1", dependencyReference: "dependency2"))
+                try expectValidationError(project, .duplicateDependencies(target: "target2", dependencyReference: "dependency4"))
             }
 
             $0.it("allows non-existent configurations") {
@@ -363,6 +397,63 @@ class ProjectSpecTests: XCTestCase {
                 try expectVariant("Staging", for: Config(name: "Debug (Staging)", type: .debug), matches: true)
                 try expectVariant("Production", for: Config(name: "Debug (Production)", type: .debug), matches: true)
             }
+
+            $0.it("fails on missing test plan file") {
+                var project = baseProject
+
+                project.configs = Config.defaultConfigs
+
+                project.targets = [Target(
+                    name: "target1",
+                    type: .application,
+                    platform: .iOS
+                )]
+
+                let testPlan = try TestPlan(path: "does-not-exist.xctestplan")
+
+                let scheme = Scheme(
+                    name: "xctestplan-scheme",
+                    build: Scheme.Build(targets: [
+                        Scheme.BuildTarget(target: "target1")
+                    ]),
+                    test: Scheme.Test(config: "Debug",
+                        testPlans: [testPlan]
+                    )
+                )
+
+                project.schemes = [scheme]
+
+                try expectValidationError(project, .invalidTestPlan(testPlan))
+            }
+
+            $0.it("fails on multiple default test plans") {
+                var project = baseProject
+
+                project.configs = Config.defaultConfigs
+
+                project.targets = [Target(
+                    name: "target1",
+                    type: .application,
+                    platform: .iOS
+                )]
+
+                let testPlan1 = try TestPlan(path: "\(fixturePath.string)/TestProject/App_iOS/App_iOS.xctestplan", defaultPlan: true)
+                let testPlan2 = try TestPlan(path: "\(fixturePath.string)/TestProject/App_iOS/App_iOS.xctestplan", defaultPlan: true)
+
+                let scheme = Scheme(
+                    name: "xctestplan-scheme",
+                    build: Scheme.Build(targets: [
+                        Scheme.BuildTarget(target: "target1")
+                    ]),
+                    test: Scheme.Test(config: "Debug",
+                        testPlans: [testPlan1, testPlan2]
+                    )
+                )
+
+                project.schemes = [scheme]
+
+                try expectValidationError(project, .multipleDefaultTestPlans)
+            }
         }
     }
 
@@ -463,6 +554,7 @@ class ProjectSpecTests: XCTestCase {
                                                                                                               parallelizable: false)],
                                                                          configVariants: ["foo"],
                                                                          gatherCoverageData: true,
+                                                                         coverageTargets: ["App"],
                                                                          storeKitConfiguration: "Configuration.storekit",
                                                                          disableMainThreadChecker: true,
                                                                          stopOnEveryMainThreadCheckerIssue: false,
@@ -548,6 +640,7 @@ class ProjectSpecTests: XCTestCase {
                                                                     environmentVariables: [XCScheme.EnvironmentVariable(variable: "foo",
                                                                                                                         value: "bar",
                                                                                                                         enabled: false)],
+                                                                    enableGPUFrameCaptureMode: .openGL,
                                                                     launchAutomaticallySubstyle: "2",
                                                                     storeKitConfiguration: "Configuration.storekit"),
                                                     test: Scheme.Test(config: "Config",

@@ -1271,7 +1271,7 @@ class ProjectGeneratorTests: XCTestCase {
                 let project = Project(name: "test", targets: [app], packages: [
                     "XcodeGen": .remote(url: "http://github.com/yonaskolb/XcodeGen", versionRequirement: .branch("master")),
                     "Codability": .remote(url: "http://github.com/yonaskolb/Codability", versionRequirement: .exact("1.0.0")),
-                    "Yams": .local(path: "../Yams"),
+                    "Yams": .local(path: "../Yams", group: nil),
                 ], options: .init(localPackagesGroup: "MyPackages"))
 
                 let pbxProject = try project.generatePbxProj(specValidate: false)
@@ -1304,7 +1304,38 @@ class ProjectGeneratorTests: XCTestCase {
                     ]
                 )
 
-                let project = Project(name: "test", targets: [app], packages: ["XcodeGen": .local(path: "../XcodeGen")])
+                let project = Project(name: "test", targets: [app], packages: ["XcodeGen": .local(path: "../XcodeGen", group: nil)])
+
+                let pbxProject = try project.generatePbxProj(specValidate: false)
+                let nativeTarget = try unwrap(pbxProject.nativeTargets.first(where: { $0.name == app.name }))
+                let localPackageFile = try unwrap(pbxProject.fileReferences.first(where: { $0.path == "../XcodeGen" }))
+                try expect(localPackageFile.lastKnownFileType) == "folder"
+
+                let frameworkPhases = nativeTarget.buildPhases.compactMap { $0 as? PBXFrameworksBuildPhase }
+
+                guard let frameworkPhase = frameworkPhases.first else {
+                    return XCTFail("frameworkPhases should have more than one")
+                }
+
+                guard let file = frameworkPhase.files?.first else {
+                    return XCTFail("frameworkPhase should have file")
+                }
+
+                try expect(file.product?.productName) == "XcodeGen"
+            }
+            
+            
+            $0.it("generates local swift packages with custom xcode path") {
+                let app = Target(
+                    name: "MyApp",
+                    type: .application,
+                    platform: .iOS,
+                    dependencies: [
+                        Dependency(type: .package(product: nil), reference: "XcodeGen"),
+                    ]
+                )
+
+                let project = Project(name: "test", targets: [app], packages: ["XcodeGen": .local(path: "../XcodeGen", group: "Packages/Feature")])
 
                 let pbxProject = try project.generatePbxProj(specValidate: false)
                 let nativeTarget = try unwrap(pbxProject.nativeTargets.first(where: { $0.name == app.name }))
@@ -2061,6 +2092,50 @@ class ProjectGeneratorTests: XCTestCase {
                         
                         // then
                         try expectCopyPhase(in: pbxProject, withFilePaths: ["extA.appex"], toSubFolder: .executables, dstPath: "test")
+                    }
+                }
+
+                $0.context("extensionKit") {
+
+                    let extA = Target(
+                        name: "extA",
+                        type: .extensionKitExtension,
+                        platform: .macOS
+                    )
+                    let extB = Target(
+                        name: "extB",
+                        type: .extensionKitExtension,
+                        platform: .macOS
+                    )
+
+                    $0.it("embeds them into plugins without copy phase spec") {
+
+                        // given
+                        let dependencies = [
+                            Dependency(type: .target, reference: extA.name, embed: true),
+                            Dependency(type: .target, reference: extB.name, embed: false),
+                        ]
+
+                        // when
+                        let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [extA, extB])
+
+                        // then
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["extA.appex"], toSubFolder: .productsDirectory, dstPath: "$(EXTENSIONS_FOLDER_PATH)")
+                    }
+
+                    $0.it("embeds them into custom location with copy phase spec") {
+
+                        // given
+                        let dependencies = [
+                            Dependency(type: .target, reference: extA.name, embed: true, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .productsDirectory, subpath: "test", phaseOrder: .postCompile)),
+                            Dependency(type: .target, reference: extB.name, embed: false, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .productsDirectory, subpath: "test", phaseOrder: .postCompile)),
+                        ]
+
+                        // when
+                        let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [extA, extB])
+
+                        // then
+                        try expectCopyPhase(in: pbxProject, withFilePaths: ["extA.appex"], toSubFolder: .productsDirectory, dstPath: "test")
                     }
                 }
                 

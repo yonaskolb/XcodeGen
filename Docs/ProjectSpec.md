@@ -64,12 +64,13 @@ An include can be provided via a string (the path) or an object of the form:
 
 - [x] **path**: **String** - The path to the included file.
 - [ ] **relativePaths**: **Bool** - Dictates whether the included spec specifies paths relative to itself (the default) or the root spec file.
-
+- [ ] **enable**: **Bool** - Dictates whether the specified spec should be included or not. You can also specify it by environment variable.
 ```yaml
 include:
   - includedFile.yml
   - path: path/to/includedFile.yml
     relativePaths: false
+    enable: ${INCLUDE_ADDITIONAL_YAML}
 ```
 
 By default specs are merged additively. That is for every value:
@@ -114,6 +115,7 @@ Note that target names can also be changed by adding a `name` property to a targ
 - [ ] **disabledValidations**: **[String]** - A list of validations that can be disabled if they're too strict for your use case. By default this is set to an empty array. Currently these are the available options:
   - `missingConfigs`: Disable errors for configurations in yaml files that don't exist in the project itself. This can be useful if you include the same yaml file in different projects
   - `missingConfigFiles`: Disable checking for the existence of configuration files. This can be useful for generating a project in a context where config files are not available.
+  - `missingTestPlans`: Disable checking if test plan paths exist. This can be useful if your test plans haven't been created yet.
 - [ ] **defaultConfig**: **String** - The default configuration for command line builds from Xcode. If the configuration provided here doesn't match one in your [configs](#configs) key, XcodeGen will fail. If you don't set this, the first configuration alphabetically will be chosen.
 - [ ] **groupSortPosition**: **String** - Where groups are sorted in relation to other files. Either:
   - `none` - sorted alphabetically with all the other files
@@ -273,6 +275,7 @@ This will provide default build settings for a certain product type. It can be a
 - `application.messages`
 - `application.watchapp`
 - `application.watchapp2`
+- `application.watchapp2-container`
 - `app-extension`
 - `app-extension.intents-service`
 - `app-extension.messages`
@@ -281,6 +284,7 @@ This will provide default build settings for a certain product type. It can be a
 - `bundle.ocunit-test`
 - `bundle.ui-testing`
 - `bundle.unit-test`
+- `extensionkit-extension`
 - `framework`
 - `instruments-package`
 - `library.dynamic`
@@ -288,7 +292,6 @@ This will provide default build settings for a certain product type. It can be a
 - `framework.static`
 - `tool`
 - `tv-app-extension`
-- `watchapp2-container`
 - `watchkit-extension`
 - `watchkit2-extension`
 - `xcode-extension`
@@ -653,6 +656,7 @@ This is a convenience used to automatically generate schemes for a target based 
 - [x] **configVariants**: **[String]** - This generates a scheme for each entry, using configs that contain the name with debug and release variants. This is useful for having different environment schemes.
 - [ ] **testTargets**: **[[Test Target](#test-target)]** - a list of test targets that should be included in the scheme. These will be added to the build targets and the test entries. Each entry can either be a simple string, or a [Test Target](#test-target)
 - [ ] **gatherCoverageData**: **Bool** - a boolean that indicates if this scheme should gather coverage data. This defaults to false
+- [ ] **coverageTargets**: **[[Testable Target Reference](#testable-target-reference) - a list of targets to gather code coverage. Each entry can either be a simple string, a string using [Project Reference](#project-reference) or [Testable Target Reference](#testable-target-reference)
 - [ ] **disableMainThreadChecker**: **Bool** - a boolean that indicates if this scheme should disable the Main Thread Checker. This defaults to false
 - [ ] **stopOnEveryMainThreadCheckerIssue**: **Bool** - a boolean that indicates if this scheme should stop at every Main Thread Checker issue. This defaults to false
 - [ ] **buildImplicitDependencies**: **Bool** - Flag to determine if Xcode should build implicit dependencies of this scheme. By default this is `true` if not set.
@@ -660,6 +664,7 @@ This is a convenience used to automatically generate schemes for a target based 
 - [ ] **region**: **String** - a String that indicates the region used for running and testing. This defaults to nil
 - [ ] **commandLineArguments**: **[String:Bool]** - a dictionary from the argument name (`String`) to if it is enabled (`Bool`). These arguments will be added to the Test, Profile and Run scheme actions
 - [ ] **environmentVariables**: **[[Environment Variable](#environment-variable)]** or **[String:String]** - environment variables for Run, Test and Profile scheme actions. When passing a dictionary, every key-value entry maps to a corresponding variable that is enabled.
+- [ ] **testPlans**:  **[[Test Plan](#test-plan)]** - List of test plan locations that will be referenced in the scheme.
 - [ ] **preActions**: **[[Execution Action](#execution-action)]** - Scripts that are run *before* the build action
 - [ ] **postActions**: **[[Execution Action](#execution-action)]** - Scripts that are run *after* the build action
 - [ ] **shared**: **Bool** - indicates whether the scheme is shared. This defaults to true
@@ -694,6 +699,9 @@ targets:
         - Staging
         - Production
       gatherCoverageData: true
+      coverageTargets:
+        - MyTarget1
+        - ExternalTarget/OtherTarget1
       commandLineArguments:
         "-MyEnabledArg": true
         "-MyDisabledArg": false
@@ -725,7 +733,7 @@ This is used to override settings or run build scripts in specific targets
 
 ## Target Template
 
-This is a template that can be referenced from a normal target using the `templates` property. The properties of this template are the same as a [Target](#target)].
+This is a template that can be referenced from a normal target using the `templates` property. The properties of this template are the same as a [Target](#target).
 Any instances of `${target_name}` within each template will be replaced by the final target name which references the template.
 Any attributes defined within a targets `templateAttributes` will be used to replace any attribute references in the template using the syntax `${attribute_name}`.
 
@@ -800,6 +808,7 @@ The different actions share some properties:
 - [ ] **preActions**: **[[Execution Action](#execution-action)]** - Scripts that are run *before* the action
 - [ ] **postActions**: **[[Execution Action](#execution-action)]** - Scripts that are run *after* the action
 - [ ] **environmentVariables**: **[[Environment Variable](#environment-variable)]** or **[String:String]** - `run`, `test` and `profile` actions can define the environment variables. When passing a dictionary, every key-value entry maps to a corresponding variable that is enabled.
+- [ ] **enableGPUFrameCaptureMode**: **GPUFrameCaptureMode** - Property value set for `GPU Frame Capture`. Possible values are `autoEnabled`, `metal`, `openGL`, `disabled`. Default is `autoEnabled`.
 - [ ] **disableMainThreadChecker**: **Bool** - `run` and `test` actions can define a boolean that indicates that this scheme should disable the Main Thread Checker. This defaults to false
 - [ ] **stopOnEveryMainThreadCheckerIssue**: **Bool** - a boolean that indicates if this scheme should stop at every Main Thread Checker issue. This defaults to false
 - [ ] **language**: **String** - `run` and `test` actions can define a language that is used for Application Language
@@ -828,19 +837,35 @@ A multiline script can be written using the various YAML multiline methods, for 
 ### Test Action
 
 - [ ] **gatherCoverageData**: **Bool** - a boolean that indicates if this scheme should gather coverage data. This defaults to false
-- [ ] **coverageTargets**: **[String]** - a list of targets to gather code coverage. Each entry can either be a simple string, or a string using [Project Reference](#project-reference)
+- [ ] **coverageTargets**: **[[Testable Target Reference](#testable-target-reference)]** - a list of targets to gather code coverage. Each entry can either be a simple string, a string using [Project Reference](#project-reference) or [Testable Target Reference](#testable-target-reference)
 - [ ] **targets**: **[[Test Target](#test-target)]** - a list of targets to test. Each entry can either be a simple string, or a [Test Target](#test-target)
 - [ ] **customLLDBInit**: **String** - the absolute path to the custom `.lldbinit` file
 - [ ] **captureScreenshotsAutomatically**: **Bool** - indicates whether screenshots should be captured automatically while UI Testing. This defaults to true.
 - [ ] **deleteScreenshotsWhenEachTestSucceeds**: **Bool** - whether successful UI tests should cause automatically-captured screenshots to be deleted. If `captureScreenshotsAutomatically` is false, this value is ignored. This defaults to true.
+- [ ] **testPlans**:  **[[Test Plan](#test-plan)]** - List of test plan locations that will be referenced in the scheme.
 
 #### Test Target
-- [x] **name**: **String** - The name of the target
+A target can be one of a 2 types:
+
+- **name**: **String** - The name of the target.
+- **target**: **[Testable Target Reference](#testable-target-reference)** - The information of the target. You can specify more detailed information than `name:`.
+
+As syntax suger, you can also specify **[Testable Target Reference](#testable-target-reference)** without `target`.
+
+#### Other Parameters
+
 - [ ] **parallelizable**: **Bool** - Whether to run tests in parallel. Defaults to false
 - [ ] **randomExecutionOrder**: **Bool** - Whether to run tests in a random order. Defaults to false
+- [ ] **location**: **String** - GPX file or predefined value for simulating location. See [Simulate Location](#simulate-location) for location examples.
 - [ ] **skipped**: **Bool** - Whether to skip all of the test target tests. Defaults to false
 - [ ] **skippedTests**: **[String]** - List of tests in the test target to skip. Defaults to empty
 - [ ] **selectedTests**: **[String]** - List of tests in the test target to whitelist and select. Defaults to empty. This will override `skippedTests` if provided
+
+#### Testable Target Reference
+A Testable Target Reference can be one of 3 types:
+- `package: {local-swift-package-name}/{target-name}`: Name of local swift package and its target.
+- `local: {target-name}`:  Name of local target.
+- `project: {project-reference-name}/{target-name}`:  Name of local swift package and its target.
 
 ### Archive Action
 
@@ -905,12 +930,16 @@ schemes:
       coverageTargets:
         - MyTarget1
         - ExternalTarget/OtherTarget1
+        - package: LocalPackage/TestTarget
       targets: 
         - Tester1 
         - name: Tester2
           parallelizable: true
           randomExecutionOrder: true
           skippedTests: [Test/testExample()]
+        - package: APIClient/APIClientTests
+          parallelizable: true
+          randomExecutionOrder: true
       environmentVariables:
         - variable: TEST_ENV_VAR
           value: VALUE
@@ -923,6 +952,21 @@ schemes:
       config: prod-release
       customArchiveName: MyTarget
       revealArchiveInOrganizer: false
+```
+
+### Test Plan
+For now test plans are not generated by XcodeGen and must be created in Xcode and checked in, and then referenced by path. If the test targets are added, removed or renamed, the test plans may need to be updated in Xcode.
+
+- [x] **path**: **String** - path that provides the `xctestplan` location.
+- [ ] **defaultPlan**: **Bool** - a bool that defines if given plan is the default one. Defaults to false. If no default is set on any test plan, the first plan is set as the default.
+
+```yaml
+schemes:
+  TestTarget:
+    test:
+      testPlans:
+        - path: app.xctestplan
+          defaultPlan: true
 ```
 
 ## Scheme Template
@@ -978,17 +1022,21 @@ Swift packages are defined at a project level, and then linked to individual tar
 ### Local Package
 
 - [x] **path**: **String** - the path to the package in local. The path must be directory with a `Package.swift`.
+- [ ] **group** : **String**- Optional path that specifies the location where the package will live in your xcode project.
 
 ```yml
 packages:
   Yams:
     url: https://github.com/jpsim/Yams
     from: 2.0.0
-  Yams:
+  Ink:
     github: JohnSundell/Ink
     from: 0.5.0
   RxClient:
     path: ../RxClient
+  AppFeature:
+    path: ../Packages
+    group: Domains/AppFeature
 ```
 
 ## Project Reference

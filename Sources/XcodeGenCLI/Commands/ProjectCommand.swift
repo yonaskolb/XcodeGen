@@ -28,9 +28,9 @@ class ProjectCommand: Command {
     }
 
     func execute() throws {
-
+        
         let projectSpecPath = (spec ?? "project.yml").absolute()
-
+        
         if !projectSpecPath.exists {
             throw GenerationError.missingProjectSpec(projectSpecPath)
         }

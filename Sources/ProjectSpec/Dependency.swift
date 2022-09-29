@@ -56,7 +56,7 @@ public struct Dependency: Equatable {
         public static let `default` = dynamic
     }
 
-    public enum DependencyType: Equatable {
+    public enum DependencyType: Hashable {
         case target
         case framework
         case carthage(findFrameworks: Bool?, linkType: CarthageLinkType)

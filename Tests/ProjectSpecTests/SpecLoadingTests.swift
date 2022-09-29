@@ -29,7 +29,7 @@ class SpecLoadingTests: XCTestCase {
         describe {
             $0.it("merges includes") {
                 let path = fixturePath + "include_test.yml"
-                let project = try loadSpec(path: path)
+                let project = try loadSpec(path: path, variables: [:])
 
                 try expect(project.name) == "NewName"
                 try expect(project.settingGroups) == [
@@ -38,7 +38,39 @@ class SpecLoadingTests: XCTestCase {
                     "toReplace": Settings(dictionary: ["MY_SETTING2": "VALUE2"]),
                 ]
                 try expect(project.targets) == [
-                    Target(name: "IncludedTargetNew", type: .application, platform: .tvOS, sources: ["NewSource"]),
+                    Target(name: "IncludedTargetNew", type: .application, platform: .tvOS, sources: ["NewSource"], dependencies: [Dependency(type: .package(product: nil), reference: "Yams")]),
+                    Target(name: "NewTarget", type: .application, platform: .iOS, sources: ["template", "target"]),
+                ]
+            }
+
+            $0.it("merges includes with addtional one") {
+                let path = fixturePath + "include_test.yml"
+                let project = try loadSpec(path: path, variables: ["INCLUDE_ADDTIONAL_YAML": "YES"])
+
+                try expect(project.name) == "NewName"
+                try expect(project.settingGroups) == [
+                    "test": Settings(dictionary: ["MY_SETTING1": "NEW VALUE", "MY_SETTING2": "VALUE2", "MY_SETTING3": "VALUE3", "MY_SETTING4": "${SETTING4}", "MY_SETTING5": "ADDTIONAL"]),
+                    "new": Settings(dictionary: ["MY_SETTING": "VALUE"]),
+                    "toReplace": Settings(dictionary: ["MY_SETTING2": "VALUE2"]),
+                ]
+                try expect(project.targets) == [
+                    Target(name: "IncludedTargetNew", type: .application, platform: .tvOS, sources: ["NewSource"], dependencies: [Dependency(type: .package(product: nil), reference: "SwiftPM"), Dependency(type: .package(product: nil), reference: "Yams")]),
+                    Target(name: "NewTarget", type: .application, platform: .iOS, sources: ["template", "target"]),
+                ]
+            }
+
+            $0.it("merges includes without addtional one by environemnt variable") {
+                let path = fixturePath + "include_test.yml"
+                let project = try loadSpec(path: path, variables: ["INCLUDE_ADDTIONAL_YAML": "NO"])
+
+                try expect(project.name) == "NewName"
+                try expect(project.settingGroups) == [
+                    "test": Settings(dictionary: ["MY_SETTING1": "NEW VALUE", "MY_SETTING2": "VALUE2", "MY_SETTING3": "VALUE3", "MY_SETTING4": "${SETTING4}"]),
+                    "new": Settings(dictionary: ["MY_SETTING": "VALUE"]),
+                    "toReplace": Settings(dictionary: ["MY_SETTING2": "VALUE2"]),
+                ]
+                try expect(project.targets) == [
+                    Target(name: "IncludedTargetNew", type: .application, platform: .tvOS, sources: ["NewSource"], dependencies: [Dependency(type: .package(product: nil), reference: "Yams")]),
                     Target(name: "NewTarget", type: .application, platform: .iOS, sources: ["template", "target"]),
                 ]
             }
@@ -98,7 +130,8 @@ class SpecLoadingTests: XCTestCase {
                         entitlements: Plist(path: "paths_test/entitlements"),
                         preBuildScripts: [BuildScript(script: .path("paths_test/preBuildScript"))],
                         postCompileScripts: [BuildScript(script: .path("paths_test/postCompileScript"))],
-                        postBuildScripts: [BuildScript(script: .path("paths_test/postBuildScript"))]
+                        postBuildScripts: [BuildScript(script: .path("paths_test/postBuildScript"))],
+                        scheme: TargetScheme(testPlans: [.init(path: "paths_test/TestPlan.xctestplan")])
                     ),
                     Target(
                         name: "NewTarget",
@@ -129,6 +162,14 @@ class SpecLoadingTests: XCTestCase {
                         postCompileScripts: [BuildScript(script: .path("paths_test/recursive_test/postCompileScript"))],
                         postBuildScripts: [BuildScript(script: .path("paths_test/recursive_test/postBuildScript"))]
                     ),
+                ]
+
+                try expect(project.schemes) == [
+                    Scheme(
+                        name: "Scheme",
+                        build: .init(targets: [.init(target: "NewTarget")]),
+                        test: .init(testPlans: [.init(path: "paths_test/TestPlan.xctestplan")])
+                    )
                 ]
             }
 
@@ -712,6 +753,7 @@ class SpecLoadingTests: XCTestCase {
                         "ENV1": true,
                     ],
                     "gatherCoverageData": true,
+                    "coverageTargets": ["t1"],
                     "storeKitConfiguration": "Configuration.storekit",
                     "language": "en",
                     "region": "US",
@@ -740,6 +782,7 @@ class SpecLoadingTests: XCTestCase {
                     testTargets: ["t1", "t2"],
                     configVariants: ["dev", "app-store"],
                     gatherCoverageData: true,
+                    coverageTargets: ["t1"],
                     storeKitConfiguration: "Configuration.storekit",
                     language: "en",
                     region: "US",
@@ -780,6 +823,7 @@ class SpecLoadingTests: XCTestCase {
                     "run": [
                         "config": "debug",
                         "launchAutomaticallySubstyle": 2,
+                        "enableGPUFrameCaptureMode": "disabled",
                         "storeKitConfiguration": "Configuration.storekit",
                     ],
                     "test": [
@@ -790,6 +834,7 @@ class SpecLoadingTests: XCTestCase {
                                 "name": "ExternalProject/Target2",
                                 "parallelizable": true,
                                 "skipped": true,
+                                "location": "test.gpx",
                                 "randomExecutionOrder": true,
                                 "skippedTests": ["Test/testExample()"],
                             ],
@@ -797,6 +842,14 @@ class SpecLoadingTests: XCTestCase {
                         "gatherCoverageData": true,
                         "disableMainThreadChecker": true,
                         "stopOnEveryMainThreadCheckerIssue": true,
+                        "testPlans": [
+                            [
+                                "path": "Path/Plan.xctestplan"
+                            ],
+                            [
+                                "path": "Path/Plan2.xctestplan"
+                            ]
+                        ]
                     ],
                 ]
                 let scheme = try Scheme(name: "Scheme", jsonDictionary: schemeDictionary)
@@ -821,6 +874,7 @@ class SpecLoadingTests: XCTestCase {
 
                 let expectedRun = Scheme.Run(
                     config: "debug",
+                    enableGPUFrameCaptureMode: .disabled,
                     launchAutomaticallySubstyle: "2",
                     storeKitConfiguration: "Configuration.storekit"
                 )
@@ -836,9 +890,14 @@ class SpecLoadingTests: XCTestCase {
                             targetReference: "ExternalProject/Target2",
                             randomExecutionOrder: true,
                             parallelizable: true,
+                            location: "test.gpx",
                             skipped: true,
                             skippedTests: ["Test/testExample()"]
                         ),
+                    ],
+                    testPlans: [
+                        .init(path: "Path/Plan.xctestplan"),
+                        .init(path: "Path/Plan2.xctestplan")
                     ]
                 )
                 try expect(scheme.test) == expectedTest
@@ -856,6 +915,7 @@ class SpecLoadingTests: XCTestCase {
                             [
                                 "name": "ExternalProject/Target2",
                                 "parallelizable": true,
+                                "location": "New York, NY, USA",
                                 "randomExecutionOrder": true,
                                 "selectedTests": ["Test/testExample()"],
                             ],
@@ -877,6 +937,7 @@ class SpecLoadingTests: XCTestCase {
                             targetReference: "ExternalProject/Target2",
                             randomExecutionOrder: true,
                             parallelizable: true,
+                            location: "New York, NY, USA",
                             selectedTests: ["Test/testExample()"]
                         ),
                     ]
@@ -1221,9 +1282,10 @@ class SpecLoadingTests: XCTestCase {
                     "package6": .remote(url: "package.git", versionRequirement: .range(from: "1.2.0", to: "1.2.5")),
                     "package7": .remote(url: "package.git", versionRequirement: .exact("1.2.2")),
                     "package8": .remote(url: "package.git", versionRequirement: .upToNextMajorVersion("4.0.0-beta.5")),
-                    "package9": .local(path: "package/package"),
+                    "package9": .local(path: "package/package", group: nil),
                     "package10": .remote(url: "https://github.com/yonaskolb/XcodeGen", versionRequirement: .exact("1.2.2")),
-                    "XcodeGen": .local(path: "../XcodeGen"),
+                    "XcodeGen": .local(path: "../XcodeGen", group: nil),
+                    "package11": .local(path: "../XcodeGen", group: "Packages/Feature"),
                 ], options: .init(localPackagesGroup: "MyPackages"))
 
                 let dictionary: [String: Any] = [
@@ -1242,6 +1304,7 @@ class SpecLoadingTests: XCTestCase {
                         "package8": ["url": "package.git", "majorVersion": "4.0.0-beta.5"],
                         "package9": ["path": "package/package"],
                         "package10": ["github": "yonaskolb/XcodeGen", "exactVersion": "1.2.2"],
+                        "package11": ["path": "../XcodeGen", "group": "Packages/Feature"],
                     ],
                     "localPackages": ["../XcodeGen"],
                 ]
@@ -1251,8 +1314,8 @@ class SpecLoadingTests: XCTestCase {
 
             $0.it("parses old local package format") {
                 let project = Project(name: "spm", packages: [
-                    "XcodeGen": .local(path: "../XcodeGen"),
-                    "Yams": .local(path: "Yams"),
+                    "XcodeGen": .local(path: "../XcodeGen", group: nil),
+                    "Yams": .local(path: "Yams", group: nil),
                 ], options: .init(localPackagesGroup: "MyPackages"))
 
                 let dictionary: [String: Any] = [

@@ -146,12 +146,17 @@ targets:
       - package: Swinject
         product: Swinject
         platformFilter: iOS
+# https://github.com/yonaskolb/XcodeGen/issues/1232
+# After GitHub Actions start supporting Xcode 14, an example for extensionKit should be added.
+#      - target: ExtensionKitExtension
     onlyCopyFilesOnInstall: true
     scheme:
       testTargets:
         - App_iOS_Tests
         - App_iOS_UITests
       gatherCoverageData: true
+      coverageTargets:
+        - App_iOS
       disableMainThreadChecker: true
       stopOnEveryMainThreadCheckerIssue: true
       configVariants:
@@ -388,6 +393,12 @@ targets:
     sources: App_Clip_UITests
     dependencies:
       - target: App_Clip
+# https://github.com/yonaskolb/XcodeGen/issues/1232
+# After GitHub Actions start supporting Xcode 14, an example for extensionKit should be added.
+#  ExtensionKitExtension:
+#    type: extensionkit-extension
+#    platform: iOS
+#    sources: ExtensionKit Extension
 
 schemes:
   Framework:
@@ -417,6 +428,7 @@ schemes:
         allow: true
         defaultLocation: Honolulu, HI, USA
       customLLDBInit: ${SRCROOT}/.lldbinit
+      enableGPUFrameCaptureMode: "disabled"
       storeKitConfiguration: "App_iOS/Configuration.storekit"
       macroExpansion: App_iOS 
     test:
@@ -426,7 +438,10 @@ schemes:
         - name: App_iOS_Tests
           parallelizable: true
           randomExecutionOrder: true
+          location: New York, NY, USA
       customLLDBInit: ${SRCROOT}/.lldbinit
+      testPlans:
+        - path: App_iOS/App_iOS.xctestplan
 targetTemplates:
   MyTemplate:
     scheme: {}

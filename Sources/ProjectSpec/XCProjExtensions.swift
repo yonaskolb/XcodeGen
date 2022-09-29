@@ -48,8 +48,8 @@ extension PBXProductType {
 
     public var canSkipCompileSourcesBuildPhase: Bool {
         switch self {
-        case .bundle, .stickerPack, .messagesApplication:
-            // Bundles, sticker packs and simple messages applications without sources should not include a
+        case .bundle, .watch2App, .stickerPack, .messagesApplication:
+            // Bundles, watch apps, sticker packs and simple messages applications without sources should not include a
             // compile sources build phase. Doing so can cause Xcode to produce an error on build.
             return true
         default:
@@ -90,7 +90,7 @@ extension Platform {
     }
 }
 
-extension Target {
+extension ProjectTarget {
     public var shouldExecuteOnLaunch: Bool {
         // This is different from `type.isExecutable`, because we don't want to "run" a test
         type.isApp || type.isExtension || type.isSystemExtension || type == .commandLineTool

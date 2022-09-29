@@ -42,6 +42,7 @@
 		1E03FC7312293997599C6435 /* Empty.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 068EDF47F0B087F6A4052AC0 /* Empty.h */; };
 		1E2A4D61E96521FF7123D7B0 /* XPC Service.xpc in CopyFiles */ = {isa = PBXBuildFile; fileRef = 22237B8EBD9E6BE8EBC8735F /* XPC Service.xpc */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1E457F55331FD2C3E8E00BE2 /* Result.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0C5AC2545AE4D4F7F44E2E9B /* Result.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		1F9168A43FD8E2FCC2699E14 /* Documentation.docc in Sources */ = {isa = PBXBuildFile; fileRef = B5C943D39DD7812CAB94B614 /* Documentation.docc */; settings = {COMPILER_FLAGS = "-Werror"; }; };
 		210B49C23B9717C668B40C8C /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A5F527F2590C14956518174 /* FrameworkFile.swift */; };
 		2116F89CF5A04EA0EFA30A89 /* TestProjectUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D88C6BF7355702B74396791 /* TestProjectUITests.swift */; };
 		212BCB51DAF3212993DDD49E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D51CC8BCCBD68A90E90A3207 /* Assets.xcassets */; };
@@ -760,11 +761,12 @@
 		A680BE9F68A255B0FB291AE6 /* App_watchOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = App_watchOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AAA49985DFFE797EE8416887 /* inputList.xcfilelist */ = {isa = PBXFileReference; lastKnownFileType = text.xcfilelist; path = inputList.xcfilelist; sourceTree = "<group>"; };
 		AB055761199DF36DB0C629A6 /* Framework2.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Framework2.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		AEBCA8CFF769189C0D52031E /* App_iOS.xctestplan */ = {isa = PBXFileReference; path = App_iOS.xctestplan; sourceTree = "<group>"; };
 		B17B8D9C9B391332CD176A35 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LocalizedStoryboard.storyboard; sourceTree = "<group>"; };
 		B198242976C3395E31FE000A /* MessagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesViewController.swift; sourceTree = "<group>"; };
 		B1C33BB070583BE3B0EC0E68 /* App_iOS.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = App_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B221F5A689AD7D3AD52F56B8 /* libStaticLibrary_ObjC.a */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = archive.ar; path = libStaticLibrary_ObjC.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		B5C943D39DD7812CAB94B614 /* Documentation.docc */ = {isa = PBXFileReference; path = Documentation.docc; sourceTree = "<group>"; };
+		B5C943D39DD7812CAB94B614 /* Documentation.docc */ = {isa = PBXFileReference; lastKnownFileType = folder.documentationcatalog; path = Documentation.docc; sourceTree = "<group>"; };
 		B76E17CE3574081D5BF45B44 /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Result.framework; sourceTree = "<group>"; };
 		BA040F1F7D6CA08878323A55 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		BB178D03E75929F3F5B10C56 /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Result.framework; sourceTree = "<group>"; };
@@ -985,6 +987,7 @@
 			isa = PBXGroup;
 			children = (
 				2F80635127D17ECB7748067B /* FolderWithDot2.0 */,
+				AEBCA8CFF769189C0D52031E /* App_iOS.xctestplan */,
 				F0D48A913C087D049C8EDDD7 /* App.entitlements */,
 				7F1A2F579A6F79C62DDA0571 /* AppDelegate.swift */,
 				3797E591F302ECC0AA2FC607 /* Assets.xcassets */,
@@ -1697,7 +1700,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6B5C5F08C0EF06457756E379 /* Build configuration list for PBXNativeTarget "App_watchOS" */;
 			buildPhases = (
-				91C895DE8170C96A75D29426 /* Sources */,
 				B7B71FA7D279029BF7A7FC7C /* Resources */,
 				C765431E5FF4B02F59DE79B0 /* Embed App Extensions */,
 			);
@@ -2196,7 +2198,7 @@
 				);
 			};
 			buildConfigurationList = D91E14E36EC0B415578456F2 /* Build configuration list for PBXProject "Project" */;
-			compatibilityVersion = "Xcode 10.0";
+			compatibilityVersion = "Xcode 11.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -2384,7 +2386,7 @@
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Result.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
+			shellPath = "/bin/sh -l";
 			shellScript = "carthage copy-frameworks\n";
 		};
 		3D0637F4554EAD6FA48105BF /* MyScript */ = {
@@ -2473,7 +2475,7 @@
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Result.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
+			shellPath = "/bin/sh -l";
 			shellScript = "carthage copy-frameworks\n";
 		};
 		BA454AAC926EDFCDA9226CBC /* MyScript */ = {
@@ -2546,7 +2548,7 @@
 				"$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/Result.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
+			shellPath = "/bin/sh -l";
 			shellScript = "carthage copy-frameworks\n";
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -2656,6 +2658,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				09617AB755651FFEB2564CBC /* AppDelegate.swift in Sources */,
+				1F9168A43FD8E2FCC2699E14 /* Documentation.docc in Sources */,
 				666DEC173BC78C7641AB22EC /* File1.swift in Sources */,
 				339578307B9266AB3D7722D9 /* File2.swift in Sources */,
 				F788A3FA1CE6489BC257C1C3 /* Model.xcdatamodeld in Sources */,
@@ -2703,13 +2706,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				9D80BD5FAE6BE61CFD74CF1B /* FrameworkFile.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		91C895DE8170C96A75D29426 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
