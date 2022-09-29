@@ -166,6 +166,7 @@ targets:
       commandLineArguments:
           MyEnabledArgument: true
           MyDisabledArgument: false
+      isShown: true
       storeKitConfiguration: "App_iOS/Configuration.storekit"
     postbuildScripts:
       - path: scripts/strip-frameworks.sh

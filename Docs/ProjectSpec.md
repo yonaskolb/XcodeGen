@@ -669,7 +669,7 @@ This is a convenience used to automatically generate schemes for a target based 
 - [ ] **postActions**: **[[Execution Action](#execution-action)]** - Scripts that are run *after* the build action
 - [ ] **shared**: **Bool** - indicates whether the scheme is shared. This defaults to true
 - [ ] **orderHint**: **Int** - used by Xcode to sort the schemes
-- [ ] **isShown**: **Bool** ** - indicates whether the sheme is shown in the scheme list
+- [ ] **isShown**: **Bool** - indicates whether the sheme is shown in the scheme list
 - [ ] **storeKitConfiguration**: **String** - specify storekit configuration to use during run. See [Options](#options).
 
 For example, the spec below would create 3 schemes called:
@@ -765,7 +765,7 @@ Schemes allows for more control than the convenience [Target Scheme](#target-sch
 - [ ] ***profile***: The profile action
 - [ ] ***analyze***: The analyze action
 - [ ] ***archive***: The archive action
-- [ ] ***management***: **[Scheme Management](#scheme-management)]** - Scheme management metadata
+- [ ] ***management***: management metadata
 
 ### Build
 
