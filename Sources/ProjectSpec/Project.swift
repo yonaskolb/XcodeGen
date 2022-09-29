@@ -208,7 +208,7 @@ extension Project {
         targetsMap = Dictionary(uniqueKeysWithValues: targets.map { ($0.name, $0) })
         aggregateTargetsMap = Dictionary(uniqueKeysWithValues: aggregateTargets.map { ($0.name, $0) })
         projectReferencesMap = Dictionary(uniqueKeysWithValues: projectReferences.map { ($0.name, $0) })
-        files =  try jsonDictionary.json(atKeyPath: "files")
+        files = jsonDictionary.json(atKeyPath: "files") ?? []
     }
 
     static func resolveProject(jsonDictionary: JSONDictionary) -> JSONDictionary {
