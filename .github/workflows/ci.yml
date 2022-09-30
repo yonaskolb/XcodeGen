@@ -4,7 +4,7 @@ on:
   pull_request: {}
 jobs:
   run:
-    runs-on: macos-11
+    runs-on: macos-12
     name: Xcode ${{ matrix.xcode }}
     strategy:
       matrix:
