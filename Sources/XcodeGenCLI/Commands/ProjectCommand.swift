@@ -12,7 +12,7 @@ class ProjectCommand: Command {
     let name: String
     let shortDescription: String
 
-    @Key("-s", "--spec", description: "The path to the project spec file. Defaults to project.yml")
+    @Key("-s", "--spec", description: "The path to the project spec file. Defaults to project.yml. (It is also possible to link to multiple spec files by comma separating them. Note that all other flags will be the same.)")
     var spec: String?
 
     @Key("-r", "--project-root", description: "The path to the project root directory. Defaults to the directory containing the project spec.")
