@@ -8,7 +8,7 @@ jobs:
     name: Xcode ${{ matrix.xcode }}
     strategy:
       matrix:
-        xcode: ["12.5.1", "14.0"]
+        xcode: ["13.4.1", "14.0"]
     steps:
     - uses: actions/checkout@master
     - name: Set Xcode
