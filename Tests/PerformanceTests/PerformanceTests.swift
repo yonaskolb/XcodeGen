@@ -4,6 +4,7 @@ import ProjectSpec
 import XcodeGenKit
 import XcodeProj
 import XCTest
+import XcodeGenCore
 
 class GeneratedPerformanceTests: XCTestCase {
 
@@ -78,3 +79,24 @@ class FixturePerformanceTests: XCTestCase {
         }
     }
 }
+
+#if os(macOS)
+class GlobPerformanceTests: XCTestCase {
+    let path = "/Applications/Xcode.app/**/*.*"
+    
+    
+    func testGlobSearchWithEnumeration() throws {
+        let options = XCTMeasureOptions.default
+        measure(options: options) {
+            _ = Glob(pattern: path, useEnumeration: true)
+        }
+    }
+    
+    func testGlobSearch() throws {
+        let options = XCTMeasureOptions.default
+        measure(options: options) {
+            _ = Glob(pattern: path, useEnumeration: false)
+        }
+    }
+}
+#endif

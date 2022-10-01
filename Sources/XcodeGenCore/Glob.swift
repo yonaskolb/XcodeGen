@@ -61,6 +61,7 @@ public class Glob: Collection {
 
     public let behavior: Behavior
     public let blacklistedDirectories: [String]
+    private let useEnumeration: Bool
     var paths = [String]()
     public var startIndex: Int { paths.startIndex }
     public var endIndex: Int { paths.endIndex }
@@ -71,10 +72,11 @@ public class Glob: Collection {
     ///   - pattern: The pattern to use when building the list of matching directories.
     ///   - behavior: See individual descriptions on `Glob.Behavior` values.
     ///   - blacklistedDirectories: An array of directories to ignore at the root level of the project.
-    public init(pattern: String, behavior: Behavior = Glob.defaultBehavior, blacklistedDirectories: [String] = defaultBlacklistedDirectories) {
+    public init(pattern: String, behavior: Behavior = Glob.defaultBehavior, blacklistedDirectories: [String] = defaultBlacklistedDirectories, useEnumeration: Bool = true) {
 
         self.behavior = behavior
         self.blacklistedDirectories = blacklistedDirectories
+        self.useEnumeration = useEnumeration
 
         var adjustedPattern = pattern
         let hasTrailingGlobstarSlash = pattern.hasSuffix("**/")
@@ -138,7 +140,11 @@ public class Glob: Collection {
 
         if FileManager.default.fileExists(atPath: firstPart) {
             do {
-                directories = try exploreDirectories(path: firstPart)
+                if useEnumeration {
+                    directories = try exploreDirectoriesUsingEnumerator(path: firstPart)
+                } else {
+                    directories = try exploreDirectories(path: firstPart)
+                }
             } catch {
                 directories = []
                 print("Error parsing file system item: \(error)")
@@ -190,7 +196,31 @@ public class Glob: Collection {
             .joined()
             .array()
     }
+    
+    private func exploreDirectoriesUsingEnumerator(path: String) throws -> [URL] {
+         try FileManager.default.contentsOfDirectory(atPath: path)
+            .reduce(into: [URL]()) { res, subpath in
+                guard !blacklistedDirectories.contains(subpath) else { return }
+                let firstLevel = URL(fileURLWithPath: path).appendingPathComponent(subpath, isDirectory: true)
+                guard firstLevel.isDirectory else { return }
+                let subDirs = _allSubDirectories(of: firstLevel)
+                res.append(contentsOf: subDirs)
+            }
+    }
+    
+    private func _allSubDirectories(of url: URL) -> [URL] {
+        guard let enumerator = FileManager.default.enumerator(at: url, includingPropertiesForKeys: [.isDirectoryKey]) else {
+            return [url]
+        }
 
+        var subDirs: [URL] = []
+        for case let fileURL as URL in enumerator where fileURL.isDirectory {
+            subDirs.append(fileURL)
+        }
+        subDirs.append(url)
+        return subDirs
+    }
+    
     private func isDirectory(path: String) -> Bool {
         if let isDirectory = isDirectoryCache[path] {
             return isDirectory
@@ -248,5 +278,11 @@ public class Glob: Collection {
 private extension Sequence {
     func array() -> [Element] {
         Array(self)
+    }
+}
+
+private extension URL {
+    var isDirectory: Bool {
+       (try? resourceValues(forKeys: [.isDirectoryKey]))?.isDirectory == true
     }
 }
