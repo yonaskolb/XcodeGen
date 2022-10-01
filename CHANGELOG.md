@@ -5,6 +5,7 @@
 ### Added
 
 - Added support for `enableGPUFrameCaptureMode` #1251 @bsudekum
+- Config setting presets can now also be loaded from the main bundle when bundling XcodeGenKit #1135 @SofteqDG
 
 ### Fixed
 
