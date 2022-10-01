@@ -193,6 +193,10 @@ extension SettingsPresetFile {
             Path(#file).parent().parent().parent() + relativePath,
         ]
 
+        if let resourcePath = Bundle.main.resourcePath {
+            possibleSettingsPaths.append(Path(resourcePath) + relativePath)
+        }
+
         if let symlink = try? (bundlePath + "xcodegen").symlinkDestination() {
             possibleSettingsPaths = [
                 symlink.parent() + relativePath,
