@@ -725,6 +725,7 @@
 		6AC91042453E18DF74BA1C0F /* StaticLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaticLibrary.swift; sourceTree = "<group>"; };
 		6B1603BA83AA0C7B94E45168 /* ResourceFolder */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ResourceFolder; path = Resources/ResourceFolder; sourceTree = SOURCE_ROOT; };
 		6BBE762F36D94AB6FFBFE834 /* SomeFile */ = {isa = PBXFileReference; path = SomeFile; sourceTree = "<group>"; };
+		6CB97D33CC3783752331E3B7 /* project.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = project.yml; sourceTree = "<group>"; };
 		6F165CDD5BCC13AFF50B65E2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		70A8E15C81E454DC950C59F0 /* SomeXPCService.xpc */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.xpc-service"; path = SomeXPCService.xpc; sourceTree = "<group>"; };
 		72A14C887EF7E9C8CBE914AC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -1054,6 +1055,7 @@
 				80C3A0E524EC1ABCB9149EA2 /* XPC Service */,
 				DAA7880242A9DE61E68026CC /* Folder */,
 				2E1E747C7BC434ADB80CC269 /* Headers */,
+				6CB97D33CC3783752331E3B7 /* project.yml */,
 				6B1603BA83AA0C7B94E45168 /* ResourceFolder */,
 				6BBE762F36D94AB6FFBFE834 /* SomeFile */,
 				79DC4A1E4D2E0D3A215179BC /* Bundles */,

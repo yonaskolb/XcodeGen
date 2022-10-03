@@ -25,6 +25,7 @@
 - [Scheme](#scheme)
 - [Scheme Template](#scheme-template)
 - [Swift Package](#swift-package)
+- [Files](#files)
 
 ## General
 
@@ -1046,4 +1047,20 @@ schemes:
     build:
       targets:
         YamsProject/Yams: ["run"]
+```
+
+## Files
+
+Specify additional files to be included in the project. This can either be a single source or a list of sources. These files are not associated with a target.
+
+A source can be provided via a string (the path) or an object of the form of a [Target Source](#target-source) 
+
+```yml
+files:
+  - path: README.md
+  - path: project.yml
+  - path: Resources/Config
+    name: Config
+    includes:
+      - "*.json"
 ```

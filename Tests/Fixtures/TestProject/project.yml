@@ -457,3 +457,5 @@ aggregateTargets:
     buildScripts:
       - name: MyScript
         script: echo "do the thing"
+files:
+    - path: project.yml

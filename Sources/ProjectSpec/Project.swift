@@ -35,6 +35,7 @@ public struct Project: BuildSettingsContainer {
             projectReferencesMap = Dictionary(uniqueKeysWithValues: projectReferences.map { ($0.name, $0) })
         }
     }
+    public var files: [TargetSource]
 
     private var targetsMap: [String: Target]
     private var aggregateTargetsMap: [String: AggregateTarget]
@@ -54,7 +55,8 @@ public struct Project: BuildSettingsContainer {
         fileGroups: [String] = [],
         configFiles: [String: String] = [:],
         attributes: [String: Any] = [:],
-        projectReferences: [ProjectReference] = []
+        projectReferences: [ProjectReference] = [],
+        files: [TargetSource] = []
     ) {
         self.basePath = basePath
         self.name = name
@@ -73,6 +75,7 @@ public struct Project: BuildSettingsContainer {
         self.attributes = attributes
         self.projectReferences = projectReferences
         projectReferencesMap = Dictionary(uniqueKeysWithValues: self.projectReferences.map { ($0.name, $0) })
+        self.files = files
     }
 
     public func getProjectReference(_ projectName: String) -> ProjectReference? {
@@ -205,6 +208,7 @@ extension Project {
         targetsMap = Dictionary(uniqueKeysWithValues: targets.map { ($0.name, $0) })
         aggregateTargetsMap = Dictionary(uniqueKeysWithValues: aggregateTargets.map { ($0.name, $0) })
         projectReferencesMap = Dictionary(uniqueKeysWithValues: projectReferences.map { ($0.name, $0) })
+        files = jsonDictionary.json(atKeyPath: "files") ?? []
     }
 
     static func resolveProject(jsonDictionary: JSONDictionary) -> JSONDictionary {
