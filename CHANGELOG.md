@@ -5,6 +5,7 @@
 ### Added
 
 - Added support for `enableGPUFrameCaptureMode` #1251 @bsudekum
+- Added ability to generate multiple projects in one XcodeGen launch #1270 @skofgar
 
 ### Fixed
 
