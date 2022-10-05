@@ -16,5 +16,5 @@ targetTemplates:
   Variables:
     sources:
       - ${target_name}
-      - ${variable}
+      - ${variable:-default value}
       - ${templateVariable}

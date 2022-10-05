@@ -33,7 +33,9 @@ class SpecLoadingTests: XCTestCase {
 
                 try expect(project.name) == "NewName"
                 try expect(project.settingGroups) == [
-                    "test": Settings(dictionary: ["MY_SETTING1": "NEW VALUE", "MY_SETTING2": "VALUE2", "MY_SETTING3": "VALUE3", "MY_SETTING4": "${SETTING4}"]),
+                    "test": Settings(dictionary: ["MY_SETTING1": "NEW VALUE", "MY_SETTING2": "VALUE2",
+                                                  "MY_SETTING3": "VALUE3", "MY_SETTING4": "${SETTING4:-DEFAULT VALUE4}",
+                                                  "INVALID_VARIABLE": "${:-DEFAULT}"]),
                     "new": Settings(dictionary: ["MY_SETTING": "VALUE"]),
                     "toReplace": Settings(dictionary: ["MY_SETTING2": "VALUE2"]),
                 ]
@@ -258,10 +260,25 @@ class SpecLoadingTests: XCTestCase {
 
                 try expect(project.name) == "NewName"
                 try expect(project.settingGroups) == [
-                    "test": Settings(dictionary: ["MY_SETTING1": "ENV VALUE1", "MY_SETTING2": "VALUE2", "MY_SETTING4": "ENV VALUE4"]),
+                    "test": Settings(dictionary: ["MY_SETTING1": "ENV VALUE1", "MY_SETTING2": "VALUE2", "MY_SETTING4": "ENV VALUE4", "INVALID_VARIABLE": "${:-DEFAULT}"]),
                     "toReplace": Settings(dictionary: ["MY_SETTING1": "VALUE1"]),
                 ]
                 try expect(project.targets.last?.sources) == ["SomeTarget", "doesWin", "templateVariable"]
+            }
+
+            $0.it("uses a default value for non-existing variable") {
+                let path = fixturePath + "variables_test.yml"
+                let project = try loadSpec(path: path, variables: [
+                    "SETTING1": "ENV VALUE1"
+                ])
+
+                try expect(project.name) == "NewName"
+                try expect(project.settingGroups) == [
+                    "test": Settings(dictionary: ["MY_SETTING1": "ENV VALUE1", "MY_SETTING2": "VALUE2",
+                                                  "MY_SETTING4": "DEFAULT VALUE4", "INVALID_VARIABLE": "${:-DEFAULT}"]),
+                    "toReplace": Settings(dictionary: ["MY_SETTING1": "VALUE1"]),
+                ]
+                try expect(project.targets.last?.sources) == ["SomeTarget", "default value", "templateVariable"]
             }
         }
     }
@@ -274,7 +291,9 @@ class SpecLoadingTests: XCTestCase {
 
                 try expect(project.name) == "NewName"
                 try expect(project.settingGroups) == [
-                    "test": Settings(dictionary: ["MY_SETTING1": "NEW VALUE", "MY_SETTING2": "VALUE2", "MY_SETTING3": "VALUE3", "MY_SETTING4": "${SETTING4}"]),
+                    "test": Settings(dictionary: ["MY_SETTING1": "NEW VALUE", "MY_SETTING2": "VALUE2",
+                                                  "MY_SETTING3": "VALUE3", "MY_SETTING4": "${SETTING4:-DEFAULT VALUE4}",
+                                                  "INVALID_VARIABLE": "${:-DEFAULT}"]),
                     "new": Settings(dictionary: ["MY_SETTING": "VALUE"]),
                     "toReplace": Settings(dictionary: ["MY_SETTING2": "VALUE2"]),
                 ]
