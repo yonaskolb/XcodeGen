@@ -155,7 +155,12 @@ extension Project: Equatable {
 extension Project {
 
     public init(path: Path) throws {
-        let spec = try SpecFile(path: path)
+        let spec = try SpecFile(filePath: path, basePath: path.parent())
+        try self.init(spec: spec)
+    }
+
+    public init(path: Path, basePath: Path) throws {
+        let spec = try SpecFile(filePath: path, basePath: basePath)
         try self.init(spec: spec)
     }
 

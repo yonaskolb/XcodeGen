@@ -16,7 +16,7 @@ public class SpecLoader {
     }
 
     public func loadProject(path: Path, projectRoot: Path? = nil, variables: [String: String] = [:]) throws -> Project {
-        let spec = try SpecFile(path: path, variables: variables)
+        let spec = try SpecFile(filePath: path, basePath: projectRoot ?? path.parent(), variables: variables)
         let resolvedDictionary = spec.resolvedDictionary()
         let project = try Project(basePath: projectRoot ?? spec.basePath, jsonDictionary: resolvedDictionary)
 

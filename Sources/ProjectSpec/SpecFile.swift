@@ -68,7 +68,7 @@ public struct SpecFile {
         try self.init(filePath: includePath, basePath: basePath, variables: variables, relativePath: relativePath)
     }
 
-    private init(filePath: Path, basePath: Path, variables: [String: String], relativePath: Path = "") throws {
+    public init(filePath: Path, basePath: Path, variables: [String: String] = [:], relativePath: Path = "") throws {
         let jsonDictionary = try SpecFile.loadDictionary(path: filePath).expand(variables: variables)
 
         let includes = Include.parse(json: jsonDictionary["include"])
