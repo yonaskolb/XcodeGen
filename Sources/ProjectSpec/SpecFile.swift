@@ -61,15 +61,15 @@ public struct SpecFile {
     }
 
     private init(include: Include, basePath: Path, relativePath: Path, variables: [String: String]) throws {
-        let basePath = include.relativePaths ? (basePath + relativePath) : (basePath + relativePath + include.path.parent())
+        let basePath = include.relativePaths ? (basePath + relativePath) : basePath
         let relativePath = include.relativePaths ? include.path.parent() : Path()
+        let includePath = include.relativePaths ? basePath + relativePath + include.path.lastComponent : basePath + include.path
 
-        try self.init(filePath: include.path, basePath: basePath, variables: variables, relativePath: relativePath)
+        try self.init(filePath: includePath, basePath: basePath, variables: variables, relativePath: relativePath)
     }
 
     private init(filePath: Path, basePath: Path, variables: [String: String], relativePath: Path = "") throws {
-        let path = basePath + relativePath + filePath.lastComponent
-        let jsonDictionary = try SpecFile.loadDictionary(path: path).expand(variables: variables)
+        let jsonDictionary = try SpecFile.loadDictionary(path: filePath).expand(variables: variables)
 
         let includes = Include.parse(json: jsonDictionary["include"])
         let subSpecs: [SpecFile] = try includes
