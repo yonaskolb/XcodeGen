@@ -40,6 +40,10 @@ breakpoints:
       - type: Log
         message: message
         conveyanceType: speak
+  - type: File
+    path: App_iOS/AppDelegate.swift
+    line: 11
+    column: 13
   - type: Exception
     scope: All
     stopOnStype: Catch

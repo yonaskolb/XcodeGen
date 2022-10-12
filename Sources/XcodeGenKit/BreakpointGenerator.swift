@@ -22,15 +22,17 @@ public class BreakpointGenerator {
         let breakpointExtensionID: BreakpointExtensionID
         var filePath: String?
         var line: String?
+        var column: String?
         var scope: String?
         var stopOnStyle: String?
         var symbol: String?
         var module: String?
         switch breakpoint.type {
-        case let .file(path, lineNumber):
+        case let .file(path, lineNumber, columnNumber):
             breakpointExtensionID = .file
             filePath = path
             line = String(lineNumber)
+            column = columnNumber.map(String.init)
         case let .exception(exception):
             breakpointExtensionID = .exception
             scope = exception.scope.rawValue
@@ -53,6 +55,8 @@ public class BreakpointGenerator {
             ignoreCount: String(breakpoint.ignoreCount),
             continueAfterRunningActions: breakpoint.continueAfterRunningActions,
             filePath: filePath,
+            startingColumn: column,
+            endingColumn: column,
             startingLine: line,
             endingLine: line,
             symbol: symbol,

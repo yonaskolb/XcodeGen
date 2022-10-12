@@ -418,7 +418,7 @@ class SpecLoadingTests: XCTestCase {
 
             $0.it("parses breakpoints") {
                 let breakpointDictionaries = [
-                    ["type": "File", "path": "Foo.swift", "line": 7, "condition": "bar == nil"],
+                    ["type": "File", "path": "Foo.swift", "line": 7, "column": 14, "condition": "bar == nil"],
                     ["type": "Exception", "scope": "All", "stopOnStyle": "Catch"],
                     ["type": "SwiftError", "enabled": false],
                     ["type": "OpenGLError", "ignoreCount": 2],
@@ -430,7 +430,7 @@ class SpecLoadingTests: XCTestCase {
                 let project = try getProjectSpec(["breakpoints": breakpointDictionaries])
 
                 let expectedBreakpoints = [
-                    Breakpoint(type: .file(path: "Foo.swift", line: 7), condition: "bar == nil"),
+                    Breakpoint(type: .file(path: "Foo.swift", line: 7, column: 14), condition: "bar == nil"),
                     Breakpoint(type: .exception(.init(scope: .all, stopOnStyle: .catch))),
                     Breakpoint(type: .swiftError, enabled: false),
                     Breakpoint(type: .openGLError, ignoreCount: 2),

@@ -31,7 +31,7 @@ public struct Breakpoint: Equatable {
                 self.stopOnStyle = stopOnStyle
             }
         }
-        case file(path: String, line: Int)
+        case file(path: String, line: Int, column: Int?)
         case exception(Exception)
         case swiftError
         case openGLError
@@ -217,7 +217,8 @@ extension Breakpoint: JSONObjectConvertible {
         case .file:
             let path: String = try jsonDictionary.json(atKeyPath: "path")
             let line: Int = try jsonDictionary.json(atKeyPath: "line")
-            type = .file(path: path, line: line)
+            let column: Int? = jsonDictionary.json(atKeyPath: "column")
+            type = .file(path: path, line: line, column: column)
         case .exception:
             let scope: BreakpointType.Exception.Scope
             if jsonDictionary["scope"] != nil {
