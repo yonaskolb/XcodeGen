@@ -64,7 +64,7 @@ class GenerateCommand: ProjectCommand {
             do {
                 let existingCacheFile: String = try cacheFilePath.read()
                 if cacheFile.string == existingCacheFile {
-                    info("Project has not changed since cache was written")
+                    info("Project \(project.name) has not changed since cache was written")
                     return
                 }
             } catch {
