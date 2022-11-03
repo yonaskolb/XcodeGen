@@ -1,5 +1,8 @@
 configFiles:
   IncludedConfig: config
+include:
+  - path: legacy_paths_test/recursive_include.yml
+    relativePaths: false
 options:
   carthageBuildPath: carthage_build
   carthageExecutablePath: carthage_executable
@@ -9,8 +12,6 @@ targets:
     platform: tvOS
     configFiles:
       Config: config
-    sources:
-      - source
     dependencies:
       - framework: Framework
     info:
