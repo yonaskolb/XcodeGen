@@ -40,6 +40,10 @@ public class FileWriter {
             }
         }
     }
+    
+    public func writeMarkdownRendererPlist() throws {
+        try writePlist([:], path: project.defaultProjectPath.string.appending("/.xcodesamplecode.plist"))
+    }
 
     private func writePlist(_ plist: [String: Any], path: String) throws {
         let path = project.basePath + path

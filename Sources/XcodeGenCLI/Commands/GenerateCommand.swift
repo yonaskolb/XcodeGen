@@ -22,6 +22,9 @@ class GenerateCommand: ProjectCommand {
 
     @Flag("--only-plists", description: "Generate only plist files")
     var onlyPlists: Bool
+    
+    @Flag("--render-markdowns", description: "Render markdown files with `.md` extension")
+    var renderMarkdowns: Bool
 
     init(version: Version) {
         super.init(version: version,
@@ -114,6 +117,16 @@ class GenerateCommand: ProjectCommand {
             success("Created project at \(projectPath)")
         } catch {
             throw GenerationError.writingError(error)
+        }
+        
+        // add markdown renderer if needed
+        if renderMarkdowns {
+            do {
+                try fileWriter.writeMarkdownRendererPlist()
+                success("Created markdown renderer in the project file")
+            } catch {
+                throw GenerationError.writingError(error)
+            }
         }
 
         // write cache
