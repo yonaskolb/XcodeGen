@@ -123,7 +123,7 @@ class GenerateCommand: ProjectCommand {
         if renderMarkdowns {
             do {
                 try fileWriter.writeMarkdownRendererPlist()
-                success("Created markdown renderer in the project file")
+                success("Xcode markdown rendering enabled")
             } catch {
                 throw GenerationError.writingError(error)
             }
