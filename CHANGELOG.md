@@ -8,6 +8,7 @@
 - Config setting presets can now also be loaded from the main bundle when bundling XcodeGenKit #1135 @SofteqDG
 - Added ability to generate multiple projects in one XcodeGen launch #1270 @skofgar
 - Use memoization during recursive SpecFiles creation. This provides a drastic performance boost with lots of recursive includes #1275 @ma-oli
+- Added `--render-markdowns` command flag to generate the `.xcodesamplecode.plist` inside the project container and let Xcode render the markdown files with `md` extension.
 
 ### Fixed
 
