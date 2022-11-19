@@ -53,14 +53,21 @@ public struct SpecFile {
             dictionary[key] as? Bool ?? (dictionary[key] as? NSString)?.boolValue
         }
     }
-
-    public init(path: Path, basePath: Path? = nil, cachedSpecFiles: inout [Path: SpecFile], variables: [String: String] = [:]) throws {
-        let basePath = basePath ?? path.parent()
+    
+    /// Create a SpecFile for a Project
+    /// - Parameters:
+    ///   - path: The absolute path to the spec file
+    ///   - projectRoot: The root of the project to use as the base path. When nil, uses the parent
+    ///     of the path.
+    public init(path: Path, projectRoot: Path? = nil, variables: [String: String] = [:]) throws {
+        let basePath = projectRoot ?? path.parent()
         let filePath = try path.relativePath(from: basePath)
+        var cachedSpecFiles: [Path: SpecFile] = [:]
         
         try self.init(filePath: filePath, basePath: basePath, cachedSpecFiles: &cachedSpecFiles, variables: variables)
     }
-
+    
+    /// Memberwise initializer for SpecFile
     public init(filePath: Path, jsonDictionary: JSONDictionary, basePath: Path = "", relativePath: Path = "", subSpecs: [SpecFile] = []) {
         self.basePath = basePath
         self.relativePath = relativePath
@@ -78,21 +85,22 @@ public struct SpecFile {
 
     private init(filePath: Path, basePath: Path, cachedSpecFiles: inout [Path: SpecFile], variables: [String: String], relativePath: Path = "") throws {
         let path = basePath + filePath
+        if let specFile = cachedSpecFiles[path] {
+            self = specFile
+            return
+        }
+
         let jsonDictionary = try SpecFile.loadDictionary(path: path).expand(variables: variables)
 
         let includes = Include.parse(json: jsonDictionary["include"])
         let subSpecs: [SpecFile] = try includes
             .filter(\.enable)
             .map { include in
-                if let specFile = cachedSpecFiles[filePath] {
-                    return specFile
-                } else {
-                    return try SpecFile(include: include, basePath: basePath, relativePath: relativePath, cachedSpecFiles: &cachedSpecFiles, variables: variables)
-                }
+                return try SpecFile(include: include, basePath: basePath, relativePath: relativePath, cachedSpecFiles: &cachedSpecFiles, variables: variables)
             }
 
         self.init(filePath: filePath, jsonDictionary: jsonDictionary, basePath: basePath, relativePath: relativePath, subSpecs: subSpecs)
-        cachedSpecFiles[filePath] = self
+        cachedSpecFiles[path] = self
     }
 
     static func loadDictionary(path: Path) throws -> JSONDictionary {
@@ -133,7 +141,8 @@ public struct SpecFile {
     }
 
     private func resolvingPaths(cachedSpecFiles: inout [Path: SpecFile], relativeTo basePath: Path = Path()) -> SpecFile {
-        if let cachedSpecFile = cachedSpecFiles[filePath] {
+        let path = basePath + filePath
+        if let cachedSpecFile = cachedSpecFiles[path] {
             return cachedSpecFile
         }
 
@@ -150,7 +159,7 @@ public struct SpecFile {
             relativePath: self.relativePath,
             subSpecs: subSpecs.map { $0.resolvingPaths(cachedSpecFiles: &cachedSpecFiles, relativeTo: relativePath) }
         )
-        cachedSpecFiles[filePath] = specFile
+        cachedSpecFiles[path] = specFile
         return specFile
     }
 }
