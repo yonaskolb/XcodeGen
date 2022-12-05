@@ -222,7 +222,8 @@ public class PBXProjGenerator {
             pbxProject.projects = subprojects
         }
 
-        try project.targets.forEach(generateTarget)
+        let pbxVariantGroupInfoList = try PBXVariantGroupGenerator(pbxProj: pbxProj, project: project).generate()
+        try project.targets.forEach { try generateTarget($0, pbxVariantGroupInfoList: pbxVariantGroupInfoList) }
         try project.aggregateTargets.forEach(generateAggregateTarget)
 
         if !carthageFrameworksByPlatform.isEmpty {
@@ -648,13 +649,13 @@ public class PBXProjGenerator {
         return pbxproj
     }
 
-    func generateTarget(_ target: Target) throws {
+    func generateTarget(_ target: Target, pbxVariantGroupInfoList: [PBXVariantGroupInfo]) throws {
         let carthageDependencies = carthageResolver.dependencies(for: target)
 
         let infoPlistFiles: [Config: String] = getInfoPlists(for: target)
         let sourceFileBuildPhaseOverrideSequence: [(Path, BuildPhaseSpec)] = Set(infoPlistFiles.values).map({ (project.basePath + $0, .none) })
         let sourceFileBuildPhaseOverrides = Dictionary(uniqueKeysWithValues: sourceFileBuildPhaseOverrideSequence)
-        let sourceFiles = try sourceGenerator.getAllSourceFiles(targetType: target.type, sources: target.sources, buildPhases: sourceFileBuildPhaseOverrides)
+        let sourceFiles = try sourceGenerator.getAllSourceFiles(targetName: target.name, targetType: target.type, sources: target.sources, buildPhases: sourceFileBuildPhaseOverrides, pbxVariantGroupInfoList: pbxVariantGroupInfoList)
             .sorted { $0.path.lastComponent < $1.path.lastComponent }
 
         var anyDependencyRequiresObjCLinking = false
