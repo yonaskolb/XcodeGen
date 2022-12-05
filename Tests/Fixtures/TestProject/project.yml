@@ -121,6 +121,7 @@ targets:
         resourceTags:
           - tag1
           - tag2
+      - path: App_Clip/Base.lproj/Main.storyboard
     settings:
       INFOPLIST_FILE: App_iOS/Info.plist
       PRODUCT_BUNDLE_IDENTIFIER: com.project.app
@@ -390,7 +391,9 @@ targets:
   App_Clip_UITests:
     type: bundle.ui-testing
     platform: iOS
-    sources: App_Clip_UITests
+    sources:
+     - path: App_Clip_UITests
+     - path: App_Clip/en.lproj/Localizable.stringsdict
     dependencies:
       - target: App_Clip
 # https://github.com/yonaskolb/XcodeGen/issues/1232
