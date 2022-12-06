@@ -48,12 +48,12 @@ extension TargetSourceFilterable {
         && !excludePaths.contains(path)
         // If includes is empty, it's included. If it's not empty, the path either needs to match exactly, or it needs to be a direct parent of an included path.
         && (includePaths.value.isEmpty || _isIncludedPathSorted(path, sortedPaths: includePaths))
-        
-        func _isIncludedPathSorted(_ path: Path, sortedPaths: SortedArray<Path>) -> Bool {
-            guard let idx = sortedPaths.firstIndex(where: { $0 >= path }) else { return false }
-            let foundPath = sortedPaths.value[idx]
-            return foundPath.description.hasPrefix(path.description)
-        }
+    }
+    
+    private func _isIncludedPathSorted(_ path: Path, sortedPaths: SortedArray<Path>) -> Bool {
+        guard let idx = sortedPaths.firstIndex(where: { $0 >= path }) else { return false }
+        let foundPath = sortedPaths.value[idx]
+        return foundPath.description.hasPrefix(path.description)
     }
     
     func getSourceMatches(targetSource: TargetSource, patterns: [String]) -> Set<Path> {
