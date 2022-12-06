@@ -121,7 +121,7 @@ targets:
         resourceTags:
           - tag1
           - tag2
-      - path: App_Clip/Base.lproj/Main.storyboard
+      - path: App_Clip/Base.lproj/Storyboard.storyboard
     settings:
       INFOPLIST_FILE: App_iOS/Info.plist
       PRODUCT_BUNDLE_IDENTIFIER: com.project.app
