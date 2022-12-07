@@ -77,6 +77,13 @@ class PBXVariantGroupGenerator: TargetSourceFilterable {
             
             let localizeDirs: [Path] = children
                 .filter ({ $0.extension == "lproj" })
+                .reduce(into: [Path]()) { partialResult, path in
+                    if path.lastComponentWithoutExtension == "Base" {
+                        partialResult.append(path)
+                    } else {
+                        partialResult.insert(path, at: 0)
+                    }
+                }
             
             guard localizeDirs.count > 0 else {
                 return
