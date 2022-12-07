@@ -113,10 +113,13 @@ class PBXVariantGroupGenerator: TargetSourceFilterable {
             let pbxVariantGroupInfo = variantGroupInfoList
                 .filter { $0.targetName == targetName }
                 .first {
-                    let existsAlwaysStoredBaseFile = alwaysStoredBaseExtensions
-                        .reduce(into: [Bool]()) { $0.append(localizedChildPath.lastComponent.contains($1)) }
-                        .filter { $0 }
-                        .count > 0
+                    let existsAlwaysStoredBaseFile: Bool = {
+                        var containExtensionList: [Bool] = []
+                        alwaysStoredBaseExtensions.forEach { alwaysStoredBaseExtension in
+                            containExtensionList.append(localizedChildPath.lastComponent.contains(alwaysStoredBaseExtension))
+                        }
+                        return containExtensionList.filter { $0 }.count > 0
+                    }()
                     
                     if existsAlwaysStoredBaseFile {
                         return $0.path.lastComponentWithoutExtension == localizedChildPath.lastComponentWithoutExtension
