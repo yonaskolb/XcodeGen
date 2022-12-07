@@ -10,7 +10,8 @@ REPO = https://github.com/yonaskolb/$(TOOL_NAME)
 RELEASE_TAR = $(REPO)/archive/$(VERSION).tar.gz
 SHA = $(shell curl -L -s $(RELEASE_TAR) | shasum -a 256 | sed 's/ .*//')
 SWIFT_BUILD_FLAGS = --disable-sandbox -c release --arch arm64 --arch x86_64
-EXECUTABLE_PATH = $(shell swift build $(SWIFT_BUILD_FLAGS) --show-bin-path)/$(EXECUTABLE_NAME)
+BUILD_PATH = $(shell swift build $(SWIFT_BUILD_FLAGS) --show-bin-path)
+EXECUTABLE_PATH = $(BUILD_PATH)/$(EXECUTABLE_NAME)
 
 .PHONY: install build uninstall format_code brew release
 
