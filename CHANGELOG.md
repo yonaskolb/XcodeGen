@@ -14,6 +14,7 @@
 - Fix scheme not being generated for aggregate targets #1250 @CraigSiemens
 - Fix recursive include path when relativePath is not set #1275 @ma-oli
 - Include projectRoot in include paths #1275 @ma-oli
+- Delete ignored `try` keyword #1298 @s2mr
 
 ### Internal
 - Updated to Yams 5.0.1 [#1297](https://github.com/yonaskolb/XcodeGen/pull/1297) @s2mr
