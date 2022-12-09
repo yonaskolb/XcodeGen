@@ -14,6 +14,7 @@
 - Fix scheme not being generated for aggregate targets #1250 @CraigSiemens
 - Fix recursive include path when relativePath is not set #1275 @ma-oli
 - Include projectRoot in include paths #1275 @ma-oli
+- Delete ignored `try` keyword #1298 @s2mr
 
 ## 2.32.0
 

@@ -409,7 +409,7 @@ class ProjectSpecTests: XCTestCase {
                     platform: .iOS
                 )]
 
-                let testPlan = try TestPlan(path: "does-not-exist.xctestplan")
+                let testPlan = TestPlan(path: "does-not-exist.xctestplan")
 
                 let scheme = Scheme(
                     name: "xctestplan-scheme",
@@ -437,8 +437,8 @@ class ProjectSpecTests: XCTestCase {
                     platform: .iOS
                 )]
 
-                let testPlan1 = try TestPlan(path: "\(fixturePath.string)/TestProject/App_iOS/App_iOS.xctestplan", defaultPlan: true)
-                let testPlan2 = try TestPlan(path: "\(fixturePath.string)/TestProject/App_iOS/App_iOS.xctestplan", defaultPlan: true)
+                let testPlan1 = TestPlan(path: "\(fixturePath.string)/TestProject/App_iOS/App_iOS.xctestplan", defaultPlan: true)
+                let testPlan2 = TestPlan(path: "\(fixturePath.string)/TestProject/App_iOS/App_iOS.xctestplan", defaultPlan: true)
 
                 let scheme = Scheme(
                     name: "xctestplan-scheme",
