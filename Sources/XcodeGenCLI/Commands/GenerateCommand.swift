@@ -11,6 +11,9 @@ class GenerateCommand: ProjectCommand {
     @Flag("-q", "--quiet", description: "Suppress all informational and success output")
     var quiet: Bool
 
+    @Flag("-k", "--kinda-quiet", description: "Only output project path upon success")
+    var kindaQuiet: Bool
+
     @Flag("-c", "--use-cache", description: "Use a cache for the xcodegen spec. This will prevent unnecessarily generating the project if nothing has changed")
     var useCache: Bool
 
@@ -111,7 +114,8 @@ class GenerateCommand: ProjectCommand {
         info("⚙️  Writing project...")
         do {
             try fileWriter.writeXcodeProject(xcodeProject, to: projectPath)
-            success("Created project at \(projectPath)")
+            let successStr = kindaQuiet ? projectPath.string : "Created project at \(projectPath)"
+            success(successStr)
         } catch {
             throw GenerationError.writingError(error)
         }
@@ -133,20 +137,20 @@ class GenerateCommand: ProjectCommand {
     }
 
     func info(_ string: String) {
-        if !quiet {
+        if !quiet && !kindaQuiet{
             stdout.print(string)
         }
     }
 
     func warning(_ string: String) {
-        if !quiet {
+        if !quiet && !kindaQuiet {
             stdout.print(string.yellow)
         }
     }
 
     func success(_ string: String) {
-        if !quiet {
-            stdout.print(string.green)
+        if !quiet || kindaQuiet {
+            stdout.print(kindaQuiet ? string : string.green)
         }
     }
 }
