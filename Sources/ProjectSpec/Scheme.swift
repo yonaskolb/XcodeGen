@@ -468,6 +468,10 @@ extension Scheme.Run: JSONEncodable {
         if enableGPUFrameCaptureMode != XCScheme.LaunchAction.defaultGPUFrameCaptureMode {
             dict["enableGPUFrameCaptureMode"] = enableGPUFrameCaptureMode.toJSONValue()
         }
+        
+        if enableGPUValidationMode != XCScheme.LaunchAction.defaultGPUValidationMode {
+            dict["enableGPUValidationMode"] = enableGPUValidationMode.toJSONValue()
+        }
 
         if disableMainThreadChecker != Scheme.Run.disableMainThreadCheckerDefault {
             dict["disableMainThreadChecker"] = disableMainThreadChecker
