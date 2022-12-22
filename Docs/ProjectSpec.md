@@ -4,27 +4,42 @@
 
 - [General](#general)
 - [Project](#project)
-	- [Include](#include)
-	- [Options](#options)
-	- [Configs](#configs)
-	- [Setting Groups](#setting-groups)
+       - [Include](#include)
+       - [Options](#options)
+       - [GroupOrdering](#groupordering)
+       - [FileType](#filetype)
+       - [Configs](#configs)
+       - [Setting Groups](#setting-groups)
 - [Settings](#settings)
 - [Target](#target)
-	- [Product Type](#product-type)
-	- [Platform](#platform)
-	- [Sources](#sources)
-	- [Config Files](#config-files)
-	- [Settings](#settings)
-	- [Build Script](#build-script)
-	- [Build Rule](#build-rule)
-	- [Dependency](#dependency)
-	- [Target Scheme](#target-scheme)
-	- [Legacy Target](#legacy-target)
+       - [Product Type](#product-type)
+       - [Platform](#platform)
+       - [Sources](#sources)
+       - [Dependency](#dependency)
+       - [Config Files](#config-files)
+       - [Plist](#plist)
+       - [Build Script](#build-script)
+       - [Build Rule](#build-rule)
+       - [Target Scheme](#target-scheme)
+       - [Legacy Target](#legacy-target)
 - [Aggregate Target](#aggregate-target)
 - [Target Template](#target-template)
 - [Scheme](#scheme)
+       - [Build](#build)
+       - [Common Build Action options](#common-build-action-options)
+       - [Execution Action](#execution-action)
+       - [Run Action](#run-action)
+       - [Test Action](#test-action)
+       - [Archive Action](#archive-action)
+       - [Simulate Location](#simulate-location)
+       - [Scheme Management](#scheme-management)
+       - [Environment Variable](#environment-variable)
+       - [Test Plan](#test-plan)
 - [Scheme Template](#scheme-template)
+       - [Remote Package](#remote-package)
+       - [Local Package](#local-package)
 - [Swift Package](#swift-package)
+- [Project Reference](#project-reference)
 
 ## General
 
@@ -649,7 +664,7 @@ targets:
         runOncePerArchitecture: false
 ```
 
-###  Target Scheme
+### Target Scheme
 
 This is a convenience used to automatically generate schemes for a target based on different configs or included tests. If you want more control check out the top level [Scheme](#scheme).
 
@@ -711,7 +726,7 @@ targets:
     sources: Tests
 ```
 
-###  Legacy Target
+### Legacy Target
 
 By providing a legacy target, you are opting in to the "Legacy Target" mode. This is the "External Build Tool" from the Xcode GUI. This is useful for scripts that you want to run as dependencies of other targets, but you want to make sure that it only runs once even if it is specified as a dependency from multiple other targets.
 
