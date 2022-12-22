@@ -9,7 +9,7 @@ public struct SpecValidationError: Error, CustomStringConvertible {
         self.errors = errors
     }
 
-    public enum ValidationError: Error, CustomStringConvertible {
+    public enum ValidationError: Hashable, Error, CustomStringConvertible {
         case invalidXcodeGenVersion(minimumVersion: Version, version: Version)
         case invalidSDKDependency(target: String, dependency: String)
         case invalidTargetDependency(target: String, dependency: String)

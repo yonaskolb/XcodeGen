@@ -1,7 +1,7 @@
 import Foundation
 import JSONUtilities
 
-public struct TestPlan: Equatable {
+public struct TestPlan: Hashable {
     public var path: String
     public var defaultPlan: Bool
 
