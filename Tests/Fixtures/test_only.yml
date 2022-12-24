@@ -1,0 +1,12 @@
+name: TestOnly
+targets:
+  Target:
+    type: application
+    platform: iOS
+    sources:
+      - Target
+schemes:
+  TestOnly:
+    test:
+      targets:
+      - Target

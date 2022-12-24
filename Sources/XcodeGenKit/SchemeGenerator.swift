@@ -167,7 +167,7 @@ public class SchemeGenerator {
 
         let testBuildTargetEntries = try testBuildTargets.map(getBuildEntry)
 
-        let buildActionEntries: [XCScheme.BuildAction.Entry] = try scheme.build.targets.map(getBuildEntry)
+        let buildActionEntries: [XCScheme.BuildAction.Entry] = try scheme.build?.targets.map(getBuildEntry) ?? []
 
         func getExecutionAction(_ action: Scheme.ExecutionAction) -> XCScheme.ExecutionAction {
             // ExecutionActions can require the use of build settings. Xcode allows the settings to come from a build or test target.
@@ -183,27 +183,42 @@ public class SchemeGenerator {
 
         if let targetName = scheme.run?.executable {
             schemeTarget = project.getTarget(targetName)
-        } else {
-            guard let firstTarget = scheme.build.targets.first else {
-                throw SchemeGenerationError.missingBuildTargets(scheme.name)
-            }
-            let name = scheme.build.targets.first { $0.buildTypes.contains(.running) }?.target.name ?? firstTarget.target.name
+        } else if
+            let targets = scheme.build?.targets,
+            let firstTarget = targets.first
+        {
+            let name = targets.first { $0.buildTypes.contains(.running) }?.target.name ?? firstTarget.target.name
             schemeTarget = target ?? project.getTarget(name)
+        } else {
+            schemeTarget = nil
         }
 
         let shouldExecuteOnLaunch = schemeTarget?.shouldExecuteOnLaunch == true
+        let buildableReference: XCScheme.BuildableReference?
+        let buildAction: XCScheme.BuildAction?
+        let runnables: (launch: XCScheme.Runnable, profile: XCScheme.BuildableProductRunnable)?
 
-        let buildableReference = buildActionEntries.first(where: { $0.buildableReference.blueprintName == schemeTarget?.name })?.buildableReference ?? buildActionEntries.first!.buildableReference
-        let runnables = makeProductRunnables(for: schemeTarget, buildableReference: buildableReference)
+        if let buildableReferenceCandidate = buildActionEntries.first(where: { $0.buildableReference.blueprintName == schemeTarget?.name })?.buildableReference ?? buildActionEntries.first?.buildableReference
+        {
+            runnables = makeProductRunnables(for: schemeTarget, buildableReference: buildableReferenceCandidate)
 
-        let buildAction = XCScheme.BuildAction(
-            buildActionEntries: buildActionEntries,
-            preActions: scheme.build.preActions.map(getExecutionAction),
-            postActions: scheme.build.postActions.map(getExecutionAction),
-            parallelizeBuild: scheme.build.parallelizeBuild,
-            buildImplicitDependencies: scheme.build.buildImplicitDependencies,
-            runPostActionsOnFailure: scheme.build.runPostActionsOnFailure
-        )
+            buildableReference = buildableReferenceCandidate
+            buildAction = scheme.build.flatMap { build in
+                XCScheme.BuildAction(
+                    buildActionEntries: buildActionEntries,
+                    preActions: build.preActions.map(getExecutionAction),
+                    postActions: build.postActions.map(getExecutionAction),
+                    parallelizeBuild: build.parallelizeBuild,
+                    buildImplicitDependencies: build.buildImplicitDependencies,
+                    runPostActionsOnFailure: build.runPostActionsOnFailure
+                )
+            }
+        } else {
+            buildableReference = nil
+            buildAction = nil
+            runnables = nil
+        }
+
 
         let testables: [XCScheme.TestableReference] = zip(testTargets, testBuildTargetEntries).map { testTarget, testBuildEntries in
             
@@ -298,7 +313,7 @@ public class SchemeGenerator {
         }
 
         let launchAction = XCScheme.LaunchAction(
-            runnable: shouldExecuteOnLaunch ? runnables.launch : nil,
+            runnable: shouldExecuteOnLaunch ? runnables?.launch : nil,
             buildConfiguration: scheme.run?.config ?? defaultDebugConfig.name,
             preActions: scheme.run?.preActions.map(getExecutionAction) ?? [],
             postActions: scheme.run?.postActions.map(getExecutionAction) ?? [],
@@ -321,7 +336,7 @@ public class SchemeGenerator {
         )
 
         let profileAction = XCScheme.ProfileAction(
-            buildableProductRunnable: shouldExecuteOnLaunch ? runnables.profile : nil,
+            buildableProductRunnable: shouldExecuteOnLaunch ? runnables?.profile : nil,
             buildConfiguration: scheme.profile?.config ?? defaultReleaseConfig.name,
             preActions: scheme.profile?.preActions.map(getExecutionAction) ?? [],
             postActions: scheme.profile?.postActions.map(getExecutionAction) ?? [],
@@ -403,7 +418,6 @@ enum SchemeGenerationError: Error, CustomStringConvertible {
     case missingTarget(TargetReference, projectPath: String)
     case missingPackage(String)
     case missingProject(String)
-    case missingBuildTargets(String)
 
     var description: String {
         switch self {
@@ -411,8 +425,6 @@ enum SchemeGenerationError: Error, CustomStringConvertible {
             return "Unable to find target named \"\(target)\" in \"\(projectPath)\""
         case .missingProject(let project):
             return "Unable to find project reference named \"\(project)\" in project.yml"
-        case .missingBuildTargets(let name):
-            return "Unable to find at least one build target in scheme \"\(name)\""
         case .missingPackage(let package):
             return "Unable to find swift package named \"\(package)\" in project.yml"
         }
