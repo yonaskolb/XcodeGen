@@ -43,11 +43,15 @@ public struct Scheme: Equatable {
         public var orderHint: Int?
         public var isShown: Bool?
 
-        public init(
+        public init?(
             shared: Bool = Scheme.Management.sharedDefault,
-            orderHint: Int?,
-            isShown: Bool?
+            orderHint: Int? = nil,
+            isShown: Bool? = nil
         ) {
+            if shared == Scheme.Management.sharedDefault, orderHint == nil, isShown == nil {
+                return nil
+            }
+
             self.shared = shared
             self.orderHint = orderHint
             self.isShown = isShown
@@ -438,7 +442,7 @@ extension Scheme.Management: JSONEncodable {
         var dict: [String: Any?] = [:]
 
         if shared != Scheme.Management.sharedDefault {
-            dict["shared"] = isShown
+            dict["shared"] = shared
         }
 
         if let isShown = isShown {

@@ -102,35 +102,13 @@ class GenerateCommand: ProjectCommand {
         let xcodeProject: XcodeProj
         do {
             let projectGenerator = ProjectGenerator(project: project)
-            xcodeProject = try projectGenerator.generateXcodeProject(in: projectDirectory)
-            
-        } catch {
-            throw GenerationError.generationError(error)
-        }
-        
-        info("⚙️  Generating userdata...")
-        do {
+
             guard let userName = ProcessInfo.processInfo.environment["LOGNAME"] else {
                 throw GenerationError.missingUsername
             }
+
+            xcodeProject = try projectGenerator.generateXcodeProject(in: projectDirectory, userName: userName)
             
-            // TODO: future improvement
-            /// as xcodeproj doesn't natively support `xcuserdata` on `Xcodeproj`
-            /// here i manually create the path to place the `xcschememanagement.plist`
-            /// once xcodeproj support natively `xcuserdata`, this process can be merge into `Writing project...`
-            ///
-            /// also we can remove static from `generateSchemeManagement`, and use `SchemeGenerator` `project` reference
-            
-            // generate Scheme Management
-            let schemeManagement = SchemeGenerator.generateSchemeManagement(project: project)
-            
-            // create directory
-            let schemeManagementDirectory = projectPath + "xcuserdata/\(userName).xcuserdatad/xcschemes"
-            if !schemeManagementDirectory.exists {
-                try schemeManagementDirectory.mkpath()
-            }
-            
-            try schemeManagement.write(path: schemeManagementDirectory + "xcschememanagement.plist")
         } catch {
             throw GenerationError.generationError(error)
         }
@@ -139,6 +117,7 @@ class GenerateCommand: ProjectCommand {
         info("⚙️  Writing project...")
         do {
             try fileWriter.writeXcodeProject(xcodeProject, to: projectPath)
+
             success("Created project at \(projectPath)")
         } catch {
             throw GenerationError.writingError(error)

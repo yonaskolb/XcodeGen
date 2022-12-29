@@ -31,9 +31,7 @@ extension Project {
             ],
             preActions: [Scheme.ExecutionAction(name: "run", script: "script")],
             postActions: [Scheme.ExecutionAction(name: "run", script: "script")],
-            shared: false,
-            orderHint: 1,
-            isShown: true
+            management: Scheme.Management(shared: false, orderHint: 1, isShown: true)
         )
         for platform in Platform.allCases {
             let appTarget = Target(

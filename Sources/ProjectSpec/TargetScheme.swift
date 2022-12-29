@@ -7,7 +7,6 @@ public struct TargetScheme: Equatable {
     public static let disableMainThreadCheckerDefault = false
     public static let stopOnEveryMainThreadCheckerIssueDefault = false
     public static let buildImplicitDependenciesDefault = true
-    public static let sharedDefault = true
 
     public var testTargets: [Scheme.Test.TestTarget]
     public var configVariants: [String]
@@ -23,9 +22,7 @@ public struct TargetScheme: Equatable {
     public var environmentVariables: [XCScheme.EnvironmentVariable]
     public var preActions: [Scheme.ExecutionAction]
     public var postActions: [Scheme.ExecutionAction]
-    public var shared: Bool
-    public var orderHint: Int?
-    public var isShown: Bool?
+    public var management: Scheme.Management?
     public var testPlans: [TestPlan]
 
     public init(
@@ -44,9 +41,7 @@ public struct TargetScheme: Equatable {
         environmentVariables: [XCScheme.EnvironmentVariable] = [],
         preActions: [Scheme.ExecutionAction] = [],
         postActions: [Scheme.ExecutionAction] = [],
-        shared: Bool = sharedDefault,
-        orderHint: Int? = nil,
-        isShown: Bool? = nil
+        management: Scheme.Management? = nil
     ) {
         self.testTargets = testTargets
         self.testPlans = testPlans
@@ -64,17 +59,7 @@ public struct TargetScheme: Equatable {
         self.preActions = preActions
         self.postActions = postActions
         self.postActions = postActions
-        self.isShown = isShown
-        self.shared = shared
-        self.orderHint = orderHint
-    }
-
-    public var management: Scheme.Management? {
-        guard shared != TargetScheme.sharedDefault || orderHint != nil || isShown != nil else {
-            return nil
-        }
-        
-        return Scheme.Management(shared: shared,orderHint: orderHint,isShown: isShown)
+        self.management = management
     }
 }
 
@@ -124,9 +109,7 @@ extension TargetScheme: JSONObjectConvertible {
         environmentVariables = try XCScheme.EnvironmentVariable.parseAll(jsonDictionary: jsonDictionary)
         preActions = jsonDictionary.json(atKeyPath: "preActions") ?? []
         postActions = jsonDictionary.json(atKeyPath: "postActions") ?? []
-        shared = jsonDictionary.json(atKeyPath: "shared") ?? TargetScheme.sharedDefault
-        orderHint = jsonDictionary.json(atKeyPath: "orderHint")
-        isShown = jsonDictionary.json(atKeyPath: "isShown")
+        management = jsonDictionary.json(atKeyPath: "management")
     }
 }
 
@@ -171,16 +154,8 @@ extension TargetScheme: JSONEncodable {
             dict["region"] = region
         }
 
-        if shared != TargetScheme.sharedDefault {
-            dict["shared"] = shared
-        }
-
-        if let orderHint = orderHint {
-            dict["orderHint"] = orderHint
-        }
-
-        if let isShown = isShown {
-            dict["isShown"] = isShown
+        if let management = management {
+            dict["management"] = management.toJSONValue()
         }
 
         return dict
