@@ -113,7 +113,7 @@ swift run xcodegen
 Add the following to your Package.swift file's dependencies:
 
 ```swift
-.package(url: "https://github.com/yonaskolb/XcodeGen.git", from: "2.32.0"),
+.package(url: "https://github.com/yonaskolb/XcodeGen.git", from: "2.33.0"),
 ```
 
 And then import wherever needed: `import XcodeGenKit`
@@ -130,7 +130,7 @@ This will look for a project spec in the current directory called `project.yml` 
 
 Options:
 
-- **--spec**: An optional path to a `.yml` or `.json` project spec. Defaults to `project.yml`
+- **--spec**: An optional path to a `.yml` or `.json` project spec. Defaults to `project.yml`. (It is also possible to link to multiple spec files by comma separating them. Note that all other flags will be the same.)
 - **--project**: An optional path to a directory where the project will be generated. By default this is the directory the spec lives in.
 - **--quiet**: Suppress informational and success messages.
 - **--use-cache**: Used to prevent unnecessarily generating the project. If this is set, then a cache file will be written to when a project is generated. If `xcodegen` is later run but the spec and all the files it contains are the same, the project won't be generated.

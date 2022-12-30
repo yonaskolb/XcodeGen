@@ -149,19 +149,21 @@ class ProjectSpecTests: XCTestCase {
                         name: "target1",
                         type: .application,
                         platform: .iOS,
-                        settings: invalidSettings,
                         dependencies: [
                             Dependency(type: .target, reference: "dependency1"),
                             Dependency(type: .target, reference: "dependency1"),
                             Dependency(type: .framework, reference: "dependency2"),
                             Dependency(type: .framework, reference: "dependency2"),
+
+                            // multiple package dependencies with different products should be allowed
+                            Dependency(type: .package(product: "one"), reference: "package1"),
+                            Dependency(type: .package(product: "two"), reference: "package1"),
                         ]
                     ),
                     Target(
                         name: "target2",
                         type: .framework,
                         platform: .iOS,
-                        settings: invalidSettings,
                         dependencies: [
                             Dependency(type: .framework, reference: "dependency3"),
                             Dependency(type: .target, reference: "dependency3"),
@@ -170,10 +172,11 @@ class ProjectSpecTests: XCTestCase {
                         ]
                     )
                 ]
-
                 try expectValidationError(project, .duplicateDependencies(target: "target1", dependencyReference: "dependency1"))
                 try expectValidationError(project, .duplicateDependencies(target: "target1", dependencyReference: "dependency2"))
                 try expectValidationError(project, .duplicateDependencies(target: "target2", dependencyReference: "dependency4"))
+
+                try expectNoValidationError(project, .duplicateDependencies(target: "target1", dependencyReference: "package1"))
             }
 
             $0.it("allows non-existent configurations") {
@@ -409,7 +412,7 @@ class ProjectSpecTests: XCTestCase {
                     platform: .iOS
                 )]
 
-                let testPlan = try TestPlan(path: "does-not-exist.xctestplan")
+                let testPlan = TestPlan(path: "does-not-exist.xctestplan")
 
                 let scheme = Scheme(
                     name: "xctestplan-scheme",
@@ -437,8 +440,8 @@ class ProjectSpecTests: XCTestCase {
                     platform: .iOS
                 )]
 
-                let testPlan1 = try TestPlan(path: "\(fixturePath.string)/TestProject/App_iOS/App_iOS.xctestplan", defaultPlan: true)
-                let testPlan2 = try TestPlan(path: "\(fixturePath.string)/TestProject/App_iOS/App_iOS.xctestplan", defaultPlan: true)
+                let testPlan1 = TestPlan(path: "\(fixturePath.string)/TestProject/App_iOS/App_iOS.xctestplan", defaultPlan: true)
+                let testPlan2 = TestPlan(path: "\(fixturePath.string)/TestProject/App_iOS/App_iOS.xctestplan", defaultPlan: true)
 
                 let scheme = Scheme(
                     name: "xctestplan-scheme",
@@ -734,17 +737,47 @@ class ProjectSpecTests: XCTestCase {
     }
 }
 
-private func expectValidationError(_ project: Project, _ expectedError: SpecValidationError.ValidationError, file: String = #file, line: Int = #line) throws {
+private func expectValidationErrors(_ project: Project, _ expectedErrors: Set<SpecValidationError.ValidationError>, file: String = #file, line: Int = #line) throws {
+    let expectedErrorString = expectedErrors
+        .map { $0.description }
+        .sorted()
+        .joined(separator: "\n")
     do {
         try project.validate()
+        if !expectedErrors.isEmpty {
+            throw failure("Supposed to fail with:\n\(expectedErrorString)", file: file, line: line)
+        }
     } catch let error as SpecValidationError {
-        if !error.errors
-            .contains(where: { $0.description == expectedError.description }) {
-            throw failure("Supposed to fail with:\n\(expectedError)\nbut got:\n\(error.errors.map { $0.description }.joined(separator: "\n"))", file: file, line: line)
+        if Set(error.errors) != expectedErrors {
+            throw failure("Supposed to fail with:\n\(expectedErrorString)\nbut got:\n\(error.errors.map { $0.description }.sorted().joined(separator: "\n"))", file: file, line: line)
         }
         return
     } catch {
+        throw failure("Supposed to fail with:\n\(expectedErrorString)", file: file, line: line)
+    }
+}
+
+private func expectValidationError(_ project: Project, _ expectedError: SpecValidationError.ValidationError, file: String = #file, line: Int = #line) throws {
+    do {
+        try project.validate()
+        throw failure("Supposed to fail with \"\(expectedError)\"", file: file, line: line)
+    } catch let error as SpecValidationError {
+        if !error.errors.contains(expectedError) {
+            throw failure("Supposed to fail with:\n\(expectedError)\nbut got:\n\(error.errors.map { $0.description }.joined(separator: "\n"))", file: file, line: line)
+        }
+    } catch {
         throw failure("Supposed to fail with \"\(expectedError)\"", file: file, line: line)
     }
-    throw failure("Supposed to fail with \"\(expectedError)\"", file: file, line: line)
+}
+
+private func expectNoValidationError(_ project: Project, _ error: SpecValidationError.ValidationError, file: String = #file, line: Int = #line) throws {
+    do {
+        try project.validate()
+    } catch let validationError as SpecValidationError {
+        if validationError.errors.contains(error) {
+            throw failure("Failed with:\n\(error.description)", file: file, line: line)
+        }
+    } catch {
+        throw failure("Failed with:\n\(error)", file: file, line: line)
+    }
 }

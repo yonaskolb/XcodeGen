@@ -1,0 +1,4 @@
+targets:
+  IncludedTarget:
+    sources:
+      - source

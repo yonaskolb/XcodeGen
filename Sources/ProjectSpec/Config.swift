@@ -13,7 +13,7 @@ public struct Config: Hashable {
     public static var defaultConfigs: [Config] = [Config(name: ConfigType.debug.name, type: .debug), Config(name: ConfigType.release.name, type: .release)]
 }
 
-public enum ConfigType: String {
+public enum ConfigType: String, Hashable {
     case debug
     case release
     
