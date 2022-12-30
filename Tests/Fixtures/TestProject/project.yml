@@ -166,7 +166,6 @@ targets:
       commandLineArguments:
           MyEnabledArgument: true
           MyDisabledArgument: false
-      isShown: true
       storeKitConfiguration: "App_iOS/Configuration.storekit"
     postbuildScripts:
       - path: scripts/strip-frameworks.sh
@@ -321,8 +320,6 @@ targets:
     depencencies:
       - sdk: Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework
         root: DEVELOPER_DIR
-    scheme:
-        isShown: false
 
   App_iOS_Tests:
     type: bundle.unit-test

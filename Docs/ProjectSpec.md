@@ -4,27 +4,42 @@
 
 - [General](#general)
 - [Project](#project)
-	- [Include](#include)
-	- [Options](#options)
-	- [Configs](#configs)
-	- [Setting Groups](#setting-groups)
+       - [Include](#include)
+       - [Options](#options)
+       - [GroupOrdering](#groupordering)
+       - [FileType](#filetype)
+       - [Configs](#configs)
+       - [Setting Groups](#setting-groups)
 - [Settings](#settings)
 - [Target](#target)
-	- [Product Type](#product-type)
-	- [Platform](#platform)
-	- [Sources](#sources)
-	- [Config Files](#config-files)
-	- [Settings](#settings)
-	- [Build Script](#build-script)
-	- [Build Rule](#build-rule)
-	- [Dependency](#dependency)
-	- [Target Scheme](#target-scheme)
-	- [Legacy Target](#legacy-target)
+       - [Product Type](#product-type)
+       - [Platform](#platform)
+       - [Sources](#sources)
+       - [Dependency](#dependency)
+       - [Config Files](#config-files)
+       - [Plist](#plist)
+       - [Build Script](#build-script)
+       - [Build Rule](#build-rule)
+       - [Target Scheme](#target-scheme)
+       - [Legacy Target](#legacy-target)
 - [Aggregate Target](#aggregate-target)
 - [Target Template](#target-template)
 - [Scheme](#scheme)
+       - [Build](#build)
+       - [Common Build Action options](#common-build-action-options)
+       - [Execution Action](#execution-action)
+       - [Run Action](#run-action)
+       - [Test Action](#test-action)
+       - [Archive Action](#archive-action)
+       - [Simulate Location](#simulate-location)
+       - [Scheme Management](#scheme-management)
+       - [Environment Variable](#environment-variable)
+       - [Test Plan](#test-plan)
 - [Scheme Template](#scheme-template)
+       - [Remote Package](#remote-package)
+       - [Local Package](#local-package)
 - [Swift Package](#swift-package)
+- [Project Reference](#project-reference)
 
 ## General
 
@@ -649,7 +664,7 @@ targets:
         runOncePerArchitecture: false
 ```
 
-###  Target Scheme
+### Target Scheme
 
 This is a convenience used to automatically generate schemes for a target based on different configs or included tests. If you want more control check out the top level [Scheme](#scheme).
 
@@ -667,9 +682,7 @@ This is a convenience used to automatically generate schemes for a target based 
 - [ ] **testPlans**:  **[[Test Plan](#test-plan)]** - List of test plan locations that will be referenced in the scheme.
 - [ ] **preActions**: **[[Execution Action](#execution-action)]** - Scripts that are run *before* the build action
 - [ ] **postActions**: **[[Execution Action](#execution-action)]** - Scripts that are run *after* the build action
-- [ ] **shared**: **Bool** - indicates whether the scheme is shared. This defaults to true
-- [ ] **orderHint**: **Int** - used by Xcode to sort the schemes
-- [ ] **isShown**: **Bool** - indicates whether the sheme is shown in the scheme list
+- [ ] **management**: **[Scheme Management](#scheme-management)** - Management options for the scheme
 - [ ] **storeKitConfiguration**: **String** - specify storekit configuration to use during run. See [Options](#options).
 
 For example, the spec below would create 3 schemes called:
@@ -711,7 +724,7 @@ targets:
     sources: Tests
 ```
 
-###  Legacy Target
+### Legacy Target
 
 By providing a legacy target, you are opting in to the "Legacy Target" mode. This is the "External Build Tool" from the Xcode GUI. This is useful for scripts that you want to run as dependencies of other targets, but you want to make sure that it only runs once even if it is specified as a dependency from multiple other targets.
 
@@ -901,9 +914,9 @@ targets:
 Note that the path the gpx file will be prefixed according to the `schemePathPrefix` option in order to support both `.xcodeproj` and `.xcworkspace` setups. See [Options](#options).
 
 ### Scheme Management
-- [x] **shared**: **Bool** - indicates whether the scheme is shared
-- [x] **orderHint**: **Int** - used by Xcode to sort the schemes
-- [x] **isShown**: **Bool** - indicates whether the sheme is shown in the scheme list
+- [ ] **shared**: **Bool** - indicates whether the scheme is shared
+- [ ] **orderHint**: **Int** - used by Xcode to sort the schemes
+- [ ] **isShown**: **Bool** - indicates whether the sheme is shown in the scheme list
 
 ### Environment Variable
 

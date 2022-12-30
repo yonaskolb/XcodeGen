@@ -15,16 +15,16 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "0636AAF06498C336E1CEEDE4"
-               BuildableName = "TestFramework.framework"
-               BlueprintName = "TestFramework"
-               ReferencedContainer = "container:Project.xcodeproj">
+               BlueprintIdentifier = "7D5ECBED52C0D723572BDC7A"
+               BuildableName = "Shared_TargetScheme.bundle"
+               BlueprintName = "Shared_TargetScheme"
+               ReferencedContainer = "container:TestProject.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
-      buildConfiguration = "Production Debug"
+      buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES"
@@ -32,10 +32,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "0636AAF06498C336E1CEEDE4"
-            BuildableName = "TestFramework.framework"
-            BlueprintName = "TestFramework"
-            ReferencedContainer = "container:Project.xcodeproj">
+            BlueprintIdentifier = "7D5ECBED52C0D723572BDC7A"
+            BuildableName = "Shared_TargetScheme.bundle"
+            BlueprintName = "Shared_TargetScheme"
+            ReferencedContainer = "container:TestProject.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <Testables>
@@ -44,7 +44,7 @@
       </CommandLineArguments>
    </TestAction>
    <LaunchAction
-      buildConfiguration = "Production Debug"
+      buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
@@ -56,17 +56,17 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "0636AAF06498C336E1CEEDE4"
-            BuildableName = "TestFramework.framework"
-            BlueprintName = "TestFramework"
-            ReferencedContainer = "container:Project.xcodeproj">
+            BlueprintIdentifier = "7D5ECBED52C0D723572BDC7A"
+            BuildableName = "Shared_TargetScheme.bundle"
+            BlueprintName = "Shared_TargetScheme"
+            ReferencedContainer = "container:TestProject.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <CommandLineArguments>
       </CommandLineArguments>
    </LaunchAction>
    <ProfileAction
-      buildConfiguration = "Production Release"
+      buildConfiguration = "Release"
       shouldUseLaunchSchemeArgsEnv = "YES"
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
@@ -76,18 +76,18 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "0636AAF06498C336E1CEEDE4"
-            BuildableName = "TestFramework.framework"
-            BlueprintName = "TestFramework"
-            ReferencedContainer = "container:Project.xcodeproj">
+            BlueprintIdentifier = "7D5ECBED52C0D723572BDC7A"
+            BuildableName = "Shared_TargetScheme.bundle"
+            BlueprintName = "Shared_TargetScheme"
+            ReferencedContainer = "container:TestProject.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
-      buildConfiguration = "Production Debug">
+      buildConfiguration = "Debug">
    </AnalyzeAction>
    <ArchiveAction
-      buildConfiguration = "Production Release"
+      buildConfiguration = "Release"
       revealArchiveInOrganizer = "YES">
    </ArchiveAction>
 </Scheme>

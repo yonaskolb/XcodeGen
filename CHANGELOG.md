@@ -2,7 +2,9 @@
 
 ## Next Version
 
-- Added support for hiding Scheme #1142 @wendyliga
+### Added
+
+- Added support for [Scheme Management](Docs/ProjectSpec.md##scheme-management) #1142 @wendyliga, @teameh
 
 ## 2.33.0
 
