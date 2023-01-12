@@ -1163,7 +1163,7 @@ public class PBXProjGenerator {
         if !extensions.isEmpty {
 
             let copyFilesPhase = addObject(
-                getPBXCopyFilesBuildPhase(dstSubfolderSpec: .plugins, name: "Embed App Extensions", files: extensions)
+                getPBXCopyFilesBuildPhase(dstSubfolderSpec: .plugins, name: "Embed Foundation Extensions", files: extensions)
             )
 
             buildPhases.append(copyFilesPhase)
