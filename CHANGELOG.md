@@ -2,6 +2,10 @@
 
 ## Next Version
 
+### Changed
+
+- Renamed build phase `Embed App Extensions` to `Embed Foundation Extensions` #1310 @casperriboe
+
 ## 2.33.0
 
 ### Added
