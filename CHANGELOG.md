@@ -2,6 +2,8 @@
 
 ## Next Version
 
+## 2.33.0
+
 ### Added
 
 - Added support for `enableGPUFrameCaptureMode` #1251 @bsudekum
@@ -14,6 +16,10 @@
 - Fix scheme not being generated for aggregate targets #1250 @CraigSiemens
 - Fix recursive include path when relativePath is not set #1275 @ma-oli
 - Include projectRoot in include paths #1275 @ma-oli
+
+### Internal
+- Updated to Yams 5.0.1 #1297 @s2mr
+- Delete ignored `try` keyword #1298 @s2mr
 
 ## 2.32.0
 
