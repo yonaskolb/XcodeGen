@@ -2,6 +2,10 @@
 
 ## Next Version
 
+### Fixed
+
+- Fix includes when the projectRoot is a realtive path #1262 @CraigSiemens
+
 ## 2.33.0
 
 ### Added
