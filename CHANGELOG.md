@@ -4,7 +4,7 @@
 
 ### Fixed
 
-- Fix includes when the projectRoot is a realtive path #1262 @CraigSiemens
+- Fix includes when the projectRoot is a relative path #1262 @CraigSiemens
 
 ## 2.33.0
 
