@@ -1,0 +1,6 @@
+targets:
+  target2:
+    type: framework
+    platform: macOS
+    sources:
+    - source

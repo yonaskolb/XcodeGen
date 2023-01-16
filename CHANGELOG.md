@@ -6,6 +6,10 @@
 
 - Renamed build phase `Embed App Extensions` to `Embed Foundation Extensions` #1310 @casperriboe
 
+### Fixed
+
+- Fix includes when the projectRoot is a relative path #1262 @CraigSiemens
+
 ## 2.33.0
 
 ### Added
