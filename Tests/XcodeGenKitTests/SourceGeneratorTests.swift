@@ -143,41 +143,77 @@ class SourceGeneratorTests: XCTestCase {
                 let directories = """
                 Sources:
                     Base.lproj:
+                        - LocalizedXib.xib
                         - LocalizedStoryboard.storyboard
+                        - IntentDefinition.intentdefinition
+                        - BaseLocalizable.strings
                     en.lproj:
+                        - LocalizedXib.strings
                         - LocalizedStoryboard.strings
+                        - IntentDefinition.strings
+                        - BaseLocalizable.strings
+                        - Localizable.strings
+                    ja.lproj:
+                        - LocalizedXib.strings
+                        - LocalizedStoryboard.strings
+                        - IntentDefinition.strings
+                        - BaseLocalizable.strings
+                        - Localizable.strings
                 """
                 try createDirectories(directories)
 
                 let target = Target(name: "Test", type: .application, platform: .iOS, sources: ["Sources"])
-                let project = Project(basePath: directoryPath, name: "Test", targets: [target])
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target], options: SpecOptions(developmentLanguage: "en"))
 
                 let pbxProj = try project.generatePbxProj()
-
-                func getFileReferences(_ path: String) -> [PBXFileReference] {
-                    pbxProj.fileReferences.filter { $0.path == path }
-                }
-
-                func getVariableGroups(_ name: String?) -> [PBXVariantGroup] {
-                    pbxProj.variantGroups.filter { $0.name == name }
-                }
-
-                let resourceName = "LocalizedStoryboard.storyboard"
-                let baseResource = "Base.lproj/LocalizedStoryboard.storyboard"
-                let localizedResource = "en.lproj/LocalizedStoryboard.strings"
-
-                let variableGroup = try unwrap(getVariableGroups(resourceName).first)
-
-                do {
-                    let refs = getFileReferences(baseResource)
-                    try expect(refs.count) == 1
-                    try expect(variableGroup.children.filter { $0 == refs.first }.count) == 1
-                }
-
-                do {
-                    let refs = getFileReferences(localizedResource)
-                    try expect(refs.count) == 1
-                    try expect(variableGroup.children.filter { $0 == refs.first }.count) == 1
+                
+                let resourceList: [(name: String, basePath: String, localizedResources: [String])] = [
+                    // resouce is stored in base localized directory
+                    (
+                        name: "LocalizedXib.xib",
+                        basePath: "Base.lproj/LocalizedXib.xib",
+                        localizedResources: ["en.lproj/LocalizedXib.strings", "ja.lproj/LocalizedXib.strings"]
+                    ),
+                    (
+                        name: "LocalizedStoryboard.storyboard",
+                        basePath: "Base.lproj/LocalizedStoryboard.storyboard",
+                        localizedResources: ["en.lproj/LocalizedStoryboard.strings", "ja.lproj/LocalizedStoryboard.strings"]
+                    ),
+                    (
+                        name: "IntentDefinition.intentdefinition",
+                        basePath: "Base.lproj/IntentDefinition.intentdefinition",
+                        localizedResources: ["en.lproj/IntentDefinition.strings", "ja.lproj/IntentDefinition.strings"]
+                    ),
+                    (
+                        name: "BaseLocalizable.strings",
+                        basePath: "Base.lproj/BaseLocalizable.strings",
+                        localizedResources: ["en.lproj/BaseLocalizable.strings", "ja.lproj/BaseLocalizable.strings"]
+                    ),
+                    // resouce is not stored in base localized directory
+                    (
+                        name: "Localizable.strings",
+                        basePath: "en.lproj/Localizable.strings",
+                        localizedResources: ["ja.lproj/Localizable.strings"]
+                    )
+                ]
+                
+                try resourceList.forEach { resource in
+                    
+                    let variableGroup = try unwrap(pbxProj.variantGroups.filter { $0.name == resource.name }.first)
+                    
+                    do {
+                        let refs = pbxProj.fileReferences.filter { $0.path == resource.basePath }
+                        try expect(refs.count) == 1
+                        try expect(variableGroup.children.filter { $0 == refs.first }.count) == 1
+                    }
+                    
+                    try resource.localizedResources.forEach { localizedResource in
+                        do {
+                            let refs = pbxProj.fileReferences.filter { $0.path == localizedResource }
+                            try expect(refs.count) == 1
+                            try expect(variableGroup.children.filter { $0 == refs.first }.count) == 1
+                        }
+                    }
                 }
             }
 

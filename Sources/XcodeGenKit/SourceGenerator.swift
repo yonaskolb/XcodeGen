@@ -11,24 +11,17 @@ struct SourceFile {
     let buildPhase: BuildPhaseSpec?
 }
 
-class SourceGenerator {
+class SourceGenerator: TargetSourceFilterable {
 
     var rootGroups: Set<PBXFileElement> = []
     private let projectDirectory: Path?
     private var fileReferencesByPath: [String: PBXFileElement] = [:]
     private var groupsByPath: [Path: PBXGroup] = [:]
-    private var variantGroupsByPath: [Path: PBXVariantGroup] = [:]
+    private var pbxVariantGroupInfoList: [PBXVariantGroupInfo] = []
     private var localPackageGroup: PBXGroup?
 
-    private let project: Project
+    let project: Project
     let pbxProj: PBXProj
-
-    private var defaultExcludedFiles = [
-        ".DS_Store",
-    ]
-    private let defaultExcludedExtensions = [
-        "orig",
-    ]
 
     private(set) var knownRegions: Set<String> = []
 
@@ -90,16 +83,19 @@ class SourceGenerator {
     /// Collects an array complete of all `SourceFile` objects that make up the target based on the provided `TargetSource` definitions.
     ///
     /// - Parameters:
-    ///   - targetType: The type of target that the source files should belong to.
-    ///   - sources: The array of sources defined as part of the targets spec.
-    ///   - buildPhases: A dictionary containing any build phases that should be applied to source files at specific paths in the event that the associated `TargetSource` didn't already define a `buildPhase`. Values from this dictionary are used in cases where the project generator knows more about a file than the spec/filesystem does (i.e if the file should be treated as the targets Info.plist and so on).
-    func getAllSourceFiles(targetType: PBXProductType, sources: [TargetSource], buildPhases: [Path : BuildPhaseSpec]) throws -> [SourceFile] {
-        try sources.flatMap { try getSourceFiles(targetType: targetType, targetSource: $0, buildPhases: buildPhases) }
+    ///  - targetName: The name of target that the source files should belong to.
+    ///  - targetType: The type of target that the source files should belong to.
+    ///  - sources: The array of sources defined as part of the targets spec.
+    ///  - buildPhases: A dictionary containing any build phases that should be applied to source files at specific paths in the event that the associated `TargetSource` didn't already define a `buildPhase`. Values from this dictionary are used in cases where the project generator knows more about a file than the spec/filesystem does (i.e if the file should be treated as the targets Info.plist and so on).
+    ///  - pbxVariantGroupInfoList: An array of all PBXVariantGroup information expected to be added to the target
+    func getAllSourceFiles(targetName: String, targetType: PBXProductType, sources: [TargetSource], buildPhases: [Path : BuildPhaseSpec], pbxVariantGroupInfoList: [PBXVariantGroupInfo]) throws -> [SourceFile] {
+        self.pbxVariantGroupInfoList = pbxVariantGroupInfoList
+        return try sources.flatMap { try getSourceFiles(targetName: targetName, targetType: targetType, targetSource: $0, buildPhases: buildPhases) }
     }
 
     // get groups without build files. Use for Project.fileGroups
     func getFileGroups(path: String) throws {
-        _ = try getSourceFiles(targetType: .none, targetSource: TargetSource(path: path), buildPhases: [:])
+        _ = try getSourceFiles(targetName: "", targetType: .none, targetSource: TargetSource(path: path), buildPhases: [:])
     }
 
     func getFileType(path: Path) -> FileType? {
@@ -338,84 +334,9 @@ class SourceGenerator {
         return groupReference
     }
 
-    /// Creates a variant group or returns an existing one at the path
-    private func getVariantGroup(path: Path, inPath: Path) -> PBXVariantGroup {
-        let variantGroup: PBXVariantGroup
-        if let cachedGroup = variantGroupsByPath[path] {
-            variantGroup = cachedGroup
-        } else {
-            let group = PBXVariantGroup(
-                sourceTree: .group,
-                name: path.lastComponent
-            )
-            variantGroup = addObject(group)
-            variantGroupsByPath[path] = variantGroup
-        }
-        return variantGroup
-    }
-
-    /// Collects all the excluded paths within the targetSource
-    private func getSourceMatches(targetSource: TargetSource, patterns: [String]) -> Set<Path> {
-        let rootSourcePath = project.basePath + targetSource.path
-
-        return Set(
-            patterns.parallelMap { pattern in
-                guard !pattern.isEmpty else { return [] }
-                return Glob(pattern: "\(rootSourcePath)/\(pattern)")
-                    .map { Path($0) }
-                    .map {
-                        guard $0.isDirectory else {
-                            return [$0]
-                        }
-
-                        return (try? $0.recursiveChildren()) ?? []
-                    }
-                    .reduce([], +)
-            }
-            .reduce([], +)
-        )
-    }
-
-    /// Checks whether the path is not in any default or TargetSource excludes
-    func isIncludedPath(_ path: Path, excludePaths: Set<Path>, includePaths: SortedArray<Path>) -> Bool {
-        return !defaultExcludedFiles.contains(where: { path.lastComponent == $0 })
-            && !(path.extension.map(defaultExcludedExtensions.contains) ?? false)
-            && !excludePaths.contains(path)
-            // If includes is empty, it's included. If it's not empty, the path either needs to match exactly, or it needs to be a direct parent of an included path.
-            && (includePaths.value.isEmpty || _isIncludedPathSorted(path, sortedPaths: includePaths))
-    }
-    
-    private func _isIncludedPathSorted(_ path: Path, sortedPaths: SortedArray<Path>) -> Bool {
-        guard let idx = sortedPaths.firstIndex(where: { $0 >= path }) else { return false }
-        let foundPath = sortedPaths.value[idx]
-        return foundPath.description.hasPrefix(path.description)
-    }
-
-
-    /// Gets all the children paths that aren't excluded
-    private func getSourceChildren(targetSource: TargetSource, dirPath: Path, excludePaths: Set<Path>, includePaths: SortedArray<Path>) throws -> [Path] {
-        try dirPath.children()
-            .filter {
-                if $0.isDirectory {
-                    let children = try $0.children()
-
-                    if children.isEmpty {
-                        return project.options.generateEmptyDirectories
-                    }
-
-                    return !children
-                        .filter { self.isIncludedPath($0, excludePaths: excludePaths, includePaths: includePaths) }
-                        .isEmpty
-                } else if $0.isFile {
-                    return self.isIncludedPath($0, excludePaths: excludePaths, includePaths: includePaths)
-                } else {
-                    return false
-                }
-            }
-    }
-
     /// creates all the source files and groups they belong to for a given targetSource
     private func getGroupSources(
+        targetName: String,
         targetType: PBXProductType,
         targetSource: TargetSource,
         path: Path,
@@ -449,9 +370,6 @@ class SourceGenerator {
                 }
             }
 
-        let localisedDirectories = children
-            .filter { $0.extension == "lproj" }
-
         var groupChildren: [PBXFileElement] = filePaths.map { getFileReference(path: $0, inPath: path) }
         var allSourceFiles: [SourceFile] = filePaths.map {
             generateSourceFile(targetType: targetType, targetSource: targetSource, path: $0, buildPhases: buildPhases)
@@ -461,6 +379,7 @@ class SourceGenerator {
         for path in directories {
 
             let subGroups = try getGroupSources(
+                targetName: targetName,
                 targetType: targetType,
                 targetSource: targetSource,
                 path: path,
@@ -484,79 +403,36 @@ class SourceGenerator {
                 groups += subGroups.groups
             }
         }
-
-        // find the base localised directory
-        let baseLocalisedDirectory: Path? = {
-            func findLocalisedDirectory(by languageId: String) -> Path? {
-                localisedDirectories.first { $0.lastComponent == "\(languageId).lproj" }
-            }
-            return findLocalisedDirectory(by: "Base") ??
-                findLocalisedDirectory(by: NSLocale.canonicalLanguageIdentifier(from: project.options.developmentLanguage ?? "en"))
-        }()
-
-        knownRegions.formUnion(localisedDirectories.map { $0.lastComponentWithoutExtension })
-
-        // create variant groups of the base localisation first
-        var baseLocalisationVariantGroups: [PBXVariantGroup] = []
-
-        if let baseLocalisedDirectory = baseLocalisedDirectory {
-            let filePaths = try baseLocalisedDirectory.children()
+        
+        let localisedDirectories = children
+            .filter { $0.extension == "lproj" }
+        
+        for localizedDir in localisedDirectories {
+            
+            let localizedDirChildren = try localizedDir.children()
                 .filter { self.isIncludedPath($0, excludePaths: excludePaths, includePaths: includePaths) }
                 .sorted()
-            for filePath in filePaths {
-                let variantGroup = getVariantGroup(path: filePath, inPath: path)
-                groupChildren.append(variantGroup)
-                baseLocalisationVariantGroups.append(variantGroup)
-
+            
+            for localizedDirChildPath in localizedDirChildren {
+                
+                guard let variantGroupInfo = pbxVariantGroupInfoList
+                    .filter({ $0.targetName == targetName })
+                    .first(where: { $0.path == localizedDirChildPath }) else {
+                    break
+                }
+                groupChildren.append(variantGroupInfo.variantGroup)
+                
                 let sourceFile = generateSourceFile(targetType: targetType,
                                                     targetSource: targetSource,
-                                                    path: filePath,
-                                                    fileReference: variantGroup,
+                                                    path: localizedDirChildPath,
+                                                    fileReference: variantGroupInfo.variantGroup,
                                                     buildPhases: buildPhases)
                 allSourceFiles.append(sourceFile)
             }
         }
-
-        // add references to localised resources into base localisation variant groups
-        for localisedDirectory in localisedDirectories {
-            let localisationName = localisedDirectory.lastComponentWithoutExtension
-            let filePaths = try localisedDirectory.children()
-                .filter { self.isIncludedPath($0, excludePaths: excludePaths, includePaths: includePaths) }
-                .sorted { $0.lastComponent < $1.lastComponent }
-            for filePath in filePaths {
-                // find base localisation variant group
-                // ex: Foo.strings will be added to Foo.strings or Foo.storyboard variant group
-                let variantGroup = baseLocalisationVariantGroups
-                    .first {
-                        Path($0.name!).lastComponent == filePath.lastComponent
-
-                    } ?? baseLocalisationVariantGroups.first {
-                        Path($0.name!).lastComponentWithoutExtension == filePath.lastComponentWithoutExtension
-                    }
-
-                let fileReference = getFileReference(
-                    path: filePath,
-                    inPath: path,
-                    name: variantGroup != nil ? localisationName : filePath.lastComponent
-                )
-
-                if let variantGroup = variantGroup {
-                    if !variantGroup.children.contains(fileReference) {
-                        variantGroup.children.append(fileReference)
-                    }
-                } else {
-                    // add SourceFile to group if there is no Base.lproj directory
-                    let sourceFile = generateSourceFile(targetType: targetType,
-                                                        targetSource: targetSource,
-                                                        path: filePath,
-                                                        fileReference: fileReference,
-                                                        buildPhases: buildPhases)
-                    allSourceFiles.append(sourceFile)
-                    groupChildren.append(fileReference)
-                }
-            }
-        }
-
+        
+        knownRegions.formUnion(localisedDirectories.map { $0.lastComponentWithoutExtension })
+        
         let group = getGroup(
             path: path,
             mergingChildren: groupChildren,
@@ -573,7 +449,7 @@ class SourceGenerator {
     }
 
     /// creates source files
-    private func getSourceFiles(targetType: PBXProductType, targetSource: TargetSource, buildPhases: [Path: BuildPhaseSpec]) throws -> [SourceFile] {
+    private func getSourceFiles(targetName: String, targetType: PBXProductType, targetSource: TargetSource, buildPhases: [Path: BuildPhaseSpec]) throws -> [SourceFile] {
 
         // generate excluded paths
         let path = project.basePath + targetSource.path
@@ -642,6 +518,7 @@ class SourceGenerator {
             }
 
             let (groupSourceFiles, groups) = try getGroupSources(
+                targetName: targetName,
                 targetType: targetType,
                 targetSource: targetSource,
                 path: path,
@@ -659,6 +536,19 @@ class SourceGenerator {
 
             sourceFiles += groupSourceFiles
             sourceReference = group
+            
+        case .variantGroup:
+            let variantGroup: PBXVariantGroup? = pbxVariantGroupInfoList
+                .first { $0.path == path }?.variantGroup
+            
+            let sourceFile = generateSourceFile(targetType: targetType,
+                                                targetSource: targetSource,
+                                                path: path,
+                                                fileReference: variantGroup,
+                                                buildPhases: buildPhases)
+            
+            sourceFiles.append(sourceFile)
+            sourceReference = variantGroup!
         }
 
         if hasCustomParent {
@@ -675,7 +565,11 @@ class SourceGenerator {
     ///
     /// While `TargetSource` declares `type`, its optional and in the event that the value is not defined then we must resolve a sensible default based on the path of the source.
     private func resolvedTargetSourceType(for targetSource: TargetSource, at path: Path) -> SourceType {
-        return targetSource.type ?? (path.isFile || path.extension != nil ? .file : .group)
+        if targetSource.path.contains(".lproj") {
+            return .variantGroup
+        } else {
+            return targetSource.type ?? (path.isFile || path.extension != nil ? .file : .group)
+        }
     }
 
     private func createParentGroups(_ parentGroups: [String], for fileElement: PBXFileElement) {
