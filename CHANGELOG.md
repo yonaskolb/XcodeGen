@@ -4,7 +4,7 @@
 
 ### Changed
 
-- Renamed build phase `Embed App Extensions` to `Embed Foundation Extensions` #1310 @casperriboe
+- Renamed build phase `Embed App Extensions` to `Embed Foundation Extensions` to fix Xcode 14 warning #1310 @casperriboe
 
 ### Fixed
 
