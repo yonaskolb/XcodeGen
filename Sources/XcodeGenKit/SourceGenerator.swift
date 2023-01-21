@@ -1,4 +1,5 @@
 import Foundation
+import SwiftCLI
 import PathKit
 import ProjectSpec
 import XcodeProj
@@ -277,6 +278,13 @@ class SourceGenerator {
                 return .copyFiles(BuildPhaseSpec.CopyFilesSettings(
                     destination: .productsDirectory,
                     subpath: "include/$(PRODUCT_NAME)",
+                    phaseOrder: .preCompile
+                ))
+            case "swiftcrossimport":
+                guard targetType == .framework else { return nil }
+                return .copyFiles(BuildPhaseSpec.CopyFilesSettings(
+                    destination: .productsDirectory,
+                    subpath: "$(PRODUCT_NAME).framework/Modules",
                     phaseOrder: .preCompile
                 ))
             default:
