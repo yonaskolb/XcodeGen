@@ -1,5 +1,4 @@
 import Foundation
-import SwiftCLI
 import PathKit
 import ProjectSpec
 import XcodeProj
