@@ -5,6 +5,7 @@
 ### Changed
 
 - Renamed build phase `Embed App Extensions` to `Embed Foundation Extensions` to fix Xcode 14 warning #1310 @casperriboe
+- Added support for `swiftcrossimport` folders. @Iron-Ham
 
 ### Fixed
 
