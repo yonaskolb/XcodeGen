@@ -321,6 +321,14 @@ targets:
       - sdk: Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework
         root: DEVELOPER_DIR
 
+  CrossOverlayFramework:
+    type: Framework
+    platform: [iOS, tvOS, watchOS, macOS]
+    sources:
+      - path: CrossOverlayFramework
+        excludes:
+          - "*.xcodeproj"
+
   App_iOS_Tests:
     type: bundle.unit-test
     platform: iOS
