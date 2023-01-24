@@ -322,7 +322,7 @@ targets:
         root: DEVELOPER_DIR
 
   CrossOverlayFramework:
-    type: Framework
+    type: framework
     platform: [iOS, tvOS, watchOS, macOS]
     sources:
       - path: CrossOverlayFramework
