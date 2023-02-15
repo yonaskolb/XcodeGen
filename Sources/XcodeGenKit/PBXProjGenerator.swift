@@ -586,21 +586,40 @@ public class PBXProjGenerator {
 
     func sortGroups(group: PBXGroup) {
         // sort children
-        let children = group.children
-            .sorted { child1, child2 in
-                let sortOrder1 = child1.getSortOrder(groupSortPosition: project.options.groupSortPosition)
-                let sortOrder2 = child2.getSortOrder(groupSortPosition: project.options.groupSortPosition)
+        let children: [PBXFileElement]
+        if group.name == "Packages",
+           let packagesOrdering = project.options.groupOrdering.first(where: { $0.pattern == "Packages" }) {
+            
+            var sortedPackages = [PBXFileElement]()
+            var unsortedPackages = Array(group.children)
+            for packageName in packagesOrdering.order {
+                guard let matchingPackage = unsortedPackages.first(where: { $0.nameOrPath == packageName }) else {
+                    continue
+                }
 
-                if sortOrder1 != sortOrder2 {
-                    return sortOrder1 < sortOrder2
-                } else {
-                    if (child1.name, child1.path) != (child2.name, child2.path) {
-                        return PBXFileElement.sortByNamePath(child1, child2)
+                sortedPackages.append(matchingPackage)
+                unsortedPackages.removeAll { $0 == matchingPackage }
+            }
+            
+            children = sortedPackages + unsortedPackages
+        } else {
+            children = group.children
+                .sorted { child1, child2 in
+                    let sortOrder1 = child1.getSortOrder(groupSortPosition: project.options.groupSortPosition)
+                    let sortOrder2 = child2.getSortOrder(groupSortPosition: project.options.groupSortPosition)
+                    
+                    if sortOrder1 != sortOrder2 {
+                        return sortOrder1 < sortOrder2
                     } else {
-                        return child1.context ?? "" < child2.context ?? ""
+                        if (child1.name, child1.path) != (child2.name, child2.path) {
+                            return PBXFileElement.sortByNamePath(child1, child2)
+                        } else {
+                            return child1.context ?? "" < child2.context ?? ""
+                        }
                     }
                 }
-            }
+        }
+
         group.children = children.filter { $0 != group }
 
         // sort sub groups
