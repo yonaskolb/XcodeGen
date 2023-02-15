@@ -1,7 +1,7 @@
 include:
     - included.yml
-    - path: included_addtional.yml
-      enable: ${INCLUDE_ADDTIONAL_YAML}
+    - path: included_additional.yml
+      enable: ${INCLUDE_ADDITIONAL_YAML}
 packages:
   Yams:
     url: https://github.com/jpsim/Yams
