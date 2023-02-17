@@ -997,8 +997,6 @@ The result will be a scheme that builds `MyModule` when you request a build, and
 ## Swift Package
 Swift packages are defined at a project level, and then linked to individual targets via a [Dependency](#dependency).
 
-> Note that Swift Packages don't work in projects with configurations other than `Debug` and `Release`. That limitation is tracked here bugs.swift.org/browse/SR-10927
-
 ### Remote Package
 
 - [x] **url**: **URL** - the url to the package
