@@ -49,7 +49,7 @@ class SpecLoadingTests: XCTestCase {
 
                 try expect(project.name) == "NewName"
                 try expect(project.settingGroups) == [
-                    "test": Settings(dictionary: ["MY_SETTING1": "NEW VALUE", "MY_SETTING2": "VALUE2", "MY_SETTING3": "VALUE3", "MY_SETTING4": "${SETTING4}", "MY_SETTING5": "ADDIITIONAL"]),
+                    "test": Settings(dictionary: ["MY_SETTING1": "NEW VALUE", "MY_SETTING2": "VALUE2", "MY_SETTING3": "VALUE3", "MY_SETTING4": "${SETTING4}", "MY_SETTING5": "ADDITIONAL"]),
                     "new": Settings(dictionary: ["MY_SETTING": "VALUE"]),
                     "toReplace": Settings(dictionary: ["MY_SETTING2": "VALUE2"]),
                 ]
