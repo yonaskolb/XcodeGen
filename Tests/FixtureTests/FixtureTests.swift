@@ -28,7 +28,12 @@ private func generateXcodeProject(specPath: Path, file: String = #file, line: In
     let project = try Project(path: specPath)
     let generator = ProjectGenerator(project: project)
     let writer = FileWriter(project: project)
-    let xcodeProject = try generator.generateXcodeProject()
-    try writer.writeXcodeProject(xcodeProject)
-    try writer.writePlists()
+    try generator.generateXcodeProject() { (xcodeProject) in
+        do {
+            try writer.writeXcodeProject(xcodeProject)
+            try writer.writePlists()
+        } catch {
+            XCTFail(error.localizedDescription)
+        }
+    }
 }
