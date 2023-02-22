@@ -59,7 +59,7 @@ class SpecLoadingTests: XCTestCase {
                 ]
             }
 
-            $0.it("merges includes without additional by environemnt variable") {
+            $0.it("merges includes without additional by environment variable") {
                 let path = fixturePath + "include_test.yml"
                 let project = try loadSpec(path: path, variables: ["INCLUDE_ADDITIONAL_YAML": "NO"])
 
