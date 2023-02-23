@@ -102,7 +102,13 @@ class GenerateCommand: ProjectCommand {
         let xcodeProject: XcodeProj
         do {
             let projectGenerator = ProjectGenerator(project: project)
-            xcodeProject = try projectGenerator.generateXcodeProject(in: projectDirectory)
+
+            guard let userName = ProcessInfo.processInfo.environment["LOGNAME"] else {
+                throw GenerationError.missingUsername
+            }
+
+            xcodeProject = try projectGenerator.generateXcodeProject(in: projectDirectory, userName: userName)
+            
         } catch {
             throw GenerationError.generationError(error)
         }
@@ -111,6 +117,7 @@ class GenerateCommand: ProjectCommand {
         info("⚙️  Writing project...")
         do {
             try fileWriter.writeXcodeProject(xcodeProject, to: projectPath)
+
             success("Created project at \(projectPath)")
         } catch {
             throw GenerationError.writingError(error)

@@ -25,14 +25,14 @@ class GeneratedPerformanceTests: XCTestCase {
         let project = try Project.testProject(basePath: basePath)
         measure {
             let generator = ProjectGenerator(project: project)
-            _ = try! generator.generateXcodeProject()
+            _ = try! generator.generateXcodeProject(userName: "someUser")
         }
     }
 
     func testWriting() throws {
         let project = try Project.testProject(basePath: basePath)
         let generator = ProjectGenerator(project: project)
-        let xcodeProject = try generator.generateXcodeProject()
+        let xcodeProject = try generator.generateXcodeProject(userName: "someUser")
         measure {
             xcodeProject.pbxproj.invalidateUUIDs()
             try! xcodeProject.write(path: project.defaultProjectPath)
@@ -65,14 +65,14 @@ class FixturePerformanceTests: XCTestCase {
         let project = try Project(path: specPath)
         measure {
             let generator = ProjectGenerator(project: project)
-            _ = try! generator.generateXcodeProject()
+            _ = try! generator.generateXcodeProject(userName: "someUser")
         }
     }
 
     func testFixtureWriting() throws {
         let project = try Project(path: specPath)
         let generator = ProjectGenerator(project: project)
-        let xcodeProject = try generator.generateXcodeProject()
+        let xcodeProject = try generator.generateXcodeProject(userName: "someUser")
         measure {
             xcodeProject.pbxproj.invalidateUUIDs()
             try! xcodeProject.write(path: project.defaultProjectPath)

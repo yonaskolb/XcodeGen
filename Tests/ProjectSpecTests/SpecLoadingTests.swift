@@ -796,6 +796,11 @@ class SpecLoadingTests: XCTestCase {
                             "script": "hello",
                         ],
                     ],
+                    "management": [
+                        "shared": false,
+                        "isShown": true,
+                        "orderHint": 10
+                    ],
                 ]
 
                 let target = try Target(name: "test", jsonDictionary: targetDictionary)
@@ -813,7 +818,8 @@ class SpecLoadingTests: XCTestCase {
                     commandLineArguments: ["ENV1": true],
                     environmentVariables: [XCScheme.EnvironmentVariable(variable: "TEST_VAR", value: "TEST_VAL", enabled: true)],
                     preActions: [.init(name: "Do Thing", script: "dothing", settingsTarget: "test")],
-                    postActions: [.init(name: "Run Script", script: "hello")]
+                    postActions: [.init(name: "Run Script", script: "hello")],
+                    management: Scheme.Management(shared: false, orderHint: 10, isShown: true)
                 )
 
                 try expect(target.scheme) == scheme
@@ -873,6 +879,10 @@ class SpecLoadingTests: XCTestCase {
                             ]
                         ]
                     ],
+                    "management": [
+                        "isShown": false,
+                        "orderHint": 4
+                    ],
                 ]
                 let scheme = try Scheme(name: "Scheme", jsonDictionary: schemeDictionary)
                 let expectedTargets: [Scheme.BuildTarget] = [
@@ -923,6 +933,9 @@ class SpecLoadingTests: XCTestCase {
                     ]
                 )
                 try expect(scheme.test) == expectedTest
+
+                let expectedManagement = Scheme.Management(shared: true, orderHint: 4, isShown: false)
+                try expect(scheme.management) == expectedManagement
             }
 
             $0.it("parses alternate test schemes") {
@@ -946,6 +959,9 @@ class SpecLoadingTests: XCTestCase {
                         "disableMainThreadChecker": true,
                         "stopOnEveryMainThreadCheckerIssue": true,
                     ],
+                    "management": [
+                        "isShown": false
+                    ],
                 ]
                 let scheme = try Scheme(name: "Scheme", jsonDictionary: schemeDictionary)
 
@@ -965,6 +981,9 @@ class SpecLoadingTests: XCTestCase {
                     ]
                 )
                 try expect(scheme.test) == expectedTest
+
+                let expectedManagement = Scheme.Management(shared: true, orderHint: nil, isShown: false)
+                try expect(scheme.management) == expectedManagement
             }
 
             $0.it("parses schemes variables") {
@@ -1104,6 +1123,10 @@ class SpecLoadingTests: XCTestCase {
                                 "disableMainThreadChecker": true,
                                 "stopOnEveryMainThreadCheckerIssue": false,
                             ],
+                            "management": [
+                                "shared": false,
+                                "orderHint": 8
+                            ],
                         ],
                     ],
                     "schemes": [
@@ -1154,6 +1177,9 @@ class SpecLoadingTests: XCTestCase {
                     ]
                 )
                 try expect(scheme.test) == expectedTest
+
+                let expectedManagement = Scheme.Management(shared: false, orderHint: 8, isShown: nil)
+                try expect(scheme.management) == expectedManagement
             }
 
             $0.it("parses copy files on install") {
