@@ -31,11 +31,9 @@ public class ProjectGenerator {
         let sharedData = XCSharedData(schemes: sharedSchemes)
 
         // generate user data
-        let userData = try composeUserData(
-            schemes: userSchemes,
-            schemeManagement: schemeManagement,
-            userName: userName
-        )
+        let userData = userSchemes.isEmpty && schemeManagement == nil ? [] : [
+            XCUserData(userName: userName, schemes: userSchemes, schemeManagement: schemeManagement)
+        ]
 
         return XcodeProj(
             workspace: workspace,
@@ -43,24 +41,6 @@ public class ProjectGenerator {
             sharedData: sharedData,
             userData: userData
         )
-    }
-
-    public func composeUserData(
-        schemes: [XCScheme],
-        schemeManagement: XCSchemeManagement?,
-        userName: String
-    ) throws -> [XCUserData] {
-        if schemes.isEmpty && schemeManagement == nil {
-            return []
-        }
-
-        let userData = XCUserData(
-            userName: userName,
-            schemes: schemes,
-            schemeManagement: schemeManagement
-        )
-
-        return [userData]
     }
 
     func generateWorkspace() throws -> XCWorkspace {
