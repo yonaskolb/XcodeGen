@@ -3,6 +3,6 @@ import ProjectSpec
 import XcodeGenCLI
 import Version
 
-let version = Version("2.33.0")
+let version = Version("2.34.0")
 let cli = XcodeGenCLI(version: version)
 cli.execute()
