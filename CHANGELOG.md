@@ -2,9 +2,15 @@
 
 ## Next Version
 
-### Added
+### Changed
 
+- Renamed build phase `Embed App Extensions` to `Embed Foundation Extensions` to fix Xcode 14 warning #1310 @casperriboe
+- Added support for `swiftcrossimport` folders. #1317 @Iron-Ham
 - Added support for [Scheme Management](Docs/ProjectSpec.md##scheme-management) #1142 @wendyliga, @teameh
+
+### Fixed
+
+- Fix includes when the projectRoot is a relative path #1262 @CraigSiemens
 
 ## 2.33.0
 

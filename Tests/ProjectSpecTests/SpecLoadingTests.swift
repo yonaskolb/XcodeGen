@@ -162,6 +162,28 @@ class SpecLoadingTests: XCTestCase {
                         postCompileScripts: [BuildScript(script: .path("paths_test/recursive_test/postCompileScript"))],
                         postBuildScripts: [BuildScript(script: .path("paths_test/recursive_test/postBuildScript"))]
                     ),
+                    Target(
+                        name: "app",
+                        type: .application,
+                        platform: .macOS,
+                        sources: ["paths_test/same_relative_path_test/source"],
+                        dependencies: [
+                            Dependency(type: .target, reference: "target1"),
+                            Dependency(type: .target, reference: "target2")
+                        ]
+                    ),
+                    Target(
+                        name: "target1",
+                        type: .framework,
+                        platform: .macOS,
+                        sources: ["paths_test/same_relative_path_test/parent1/same/target1/source"]
+                    ),
+                    Target(
+                        name: "target2",
+                        type: .framework,
+                        platform: .macOS,
+                        sources: ["paths_test/same_relative_path_test/parent2/same/target2/source"]
+                    )
                 ]
 
                 try expect(project.schemes) == [

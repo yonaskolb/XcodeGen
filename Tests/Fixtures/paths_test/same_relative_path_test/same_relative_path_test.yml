@@ -1,0 +1,12 @@
+include:
+- parent1/parent1.yml
+- parent2/parent2.yml
+targets:
+  app:
+    type: application
+    platform: macOS
+    sources:
+    - source
+    dependencies:
+    - target: target1
+    - target: target2
