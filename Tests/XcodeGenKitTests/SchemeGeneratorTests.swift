@@ -119,7 +119,6 @@ class SchemeGeneratorTests: XCTestCase {
                 
                 try expect(xcscheme.testAction?.testables[1].locationScenarioReference?.referenceType) == "1"
                 try expect(xcscheme.testAction?.testables[1].locationScenarioReference?.identifier) == "New York, NY, USA"
-                
             }
 
             let frameworkTarget = Scheme.BuildTarget(target: .local(framework.name), buildTypes: [.archiving])
@@ -352,7 +351,7 @@ class SchemeGeneratorTests: XCTestCase {
                     let project = try! Project(path: fixturePath + "scheme_test/test_project.yml")
                     let generator = ProjectGenerator(project: project)
                     let writer = FileWriter(project: project)
-                    let xcodeProject = try! generator.generateXcodeProject()
+                    let xcodeProject = try! generator.generateXcodeProject(userName: "someUser")
                     try! writer.writeXcodeProject(xcodeProject)
                     try! writer.writePlists()
                 }
@@ -383,7 +382,7 @@ class SchemeGeneratorTests: XCTestCase {
                     let project = try! Project(path: fixturePath + "scheme_test/test_project.yml")
                     let generator = ProjectGenerator(project: project)
                     let writer = FileWriter(project: project)
-                    let xcodeProject = try! generator.generateXcodeProject()
+                    let xcodeProject = try! generator.generateXcodeProject(userName: "someUser")
                     try! writer.writeXcodeProject(xcodeProject)
                     try! writer.writePlists()
                 }
@@ -586,7 +585,7 @@ class SchemeGeneratorTests: XCTestCase {
         XCTAssertEqual(xcscheme.lastUpgradeVersion, lastUpgradeValue)
     }
 
-    
+
     func testDefaultLastUpgradeVersionWhenUserDidNotSpecify() throws {
         var target = app
         target.scheme = TargetScheme()
@@ -596,6 +595,20 @@ class SchemeGeneratorTests: XCTestCase {
 
         let xcscheme = try unwrap(xcodeProject.sharedData?.schemes.first)
         XCTAssertEqual(xcscheme.lastUpgradeVersion, project.xcodeVersion)
+    }
+
+    func testGenerateSchemeManagementOnHiddenTargetScheme() throws {
+        var target = app
+        target.scheme = TargetScheme(management: Scheme.Management(isShown: false))
+
+        let project = Project(name: "test", targets: [target, framework])
+        let xcodeProject = try project.generateXcodeProject()
+
+        let xcSchemeManagement = try XCTUnwrap(xcodeProject.userData.first?.schemeManagement)
+        XCTAssertEqual(xcSchemeManagement.schemeUserState![0].name, "MyApp.xcscheme")
+        XCTAssertEqual(xcSchemeManagement.schemeUserState![0].shared, true)
+        XCTAssertEqual(xcSchemeManagement.schemeUserState![0].isShown, false)
+        XCTAssertEqual(xcSchemeManagement.schemeUserState![0].orderHint, nil)
     }
 
     // MARK: - Helpers

@@ -83,6 +83,7 @@ extension Dependency {
 extension Dependency: Hashable {
     public func hash(into hasher: inout Hasher) {
         hasher.combine(reference)
+        hasher.combine(type)
     }
 }
 

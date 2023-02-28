@@ -279,6 +279,13 @@ class SourceGenerator {
                     subpath: "include/$(PRODUCT_NAME)",
                     phaseOrder: .preCompile
                 ))
+            case "swiftcrossimport":
+                guard targetType == .framework else { return nil }
+                return .copyFiles(BuildPhaseSpec.CopyFilesSettings(
+                    destination: .productsDirectory,
+                    subpath: "$(PRODUCT_NAME).framework/Modules",
+                    phaseOrder: .preCompile
+                ))
             default:
                 return .resources
             }

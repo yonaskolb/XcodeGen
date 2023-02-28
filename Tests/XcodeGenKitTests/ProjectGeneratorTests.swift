@@ -355,7 +355,7 @@ class ProjectGeneratorTests: XCTestCase {
                     let project = try! Project(path: fixturePath + "TestProject/AnotherProject/project.yml")
                     let generator = ProjectGenerator(project: project)
                     let writer = FileWriter(project: project)
-                    let xcodeProject = try! generator.generateXcodeProject()
+                    let xcodeProject = try! generator.generateXcodeProject(userName: "someUser")
                     try! writer.writeXcodeProject(xcodeProject)
                     try! writer.writePlists()
                     subproject = xcodeProject.pbxproj
@@ -1513,7 +1513,7 @@ class ProjectGeneratorTests: XCTestCase {
                 $0.it("generate groups") {
                     let project = Project(name: "test", targets: [frameworkWithSources])
                     let generator = ProjectGenerator(project: project)
-                    let generatedProject = try generator.generateXcodeProject()
+                    let generatedProject = try generator.generateXcodeProject(userName: "someUser")
                     let group = generatedProject.pbxproj.groups.first(where: { $0.nameOrPath == groupName })
                     try expect(group?.path) == "App_iOS"
                 }
@@ -1524,7 +1524,7 @@ class ProjectGeneratorTests: XCTestCase {
                     let destinationPath = fixturePath
                     let project = Project(name: "test", targets: [frameworkWithSources])
                     let generator = ProjectGenerator(project: project)
-                    let generatedProject = try generator.generateXcodeProject(in: destinationPath)
+                    let generatedProject = try generator.generateXcodeProject(in: destinationPath, userName: "someUser")
                     let group = generatedProject.pbxproj.groups.first(where: { $0.nameOrPath == groupName })
                     try expect(group?.path) == "TestProject/App_iOS"
                 }
@@ -1533,7 +1533,7 @@ class ProjectGeneratorTests: XCTestCase {
                     let destinationPath = fixturePath
                     let project = Project(name: "test", targets: [frameworkWithSources])
                     let generator = ProjectGenerator(project: project)
-                    let generatedProject = try generator.generateXcodeProject(in: destinationPath)
+                    let generatedProject = try generator.generateXcodeProject(in: destinationPath, userName: "someUser")
                     let plists = generatedProject.pbxproj.buildConfigurations.compactMap { $0.buildSettings["INFOPLIST_FILE"] as? String }
                     try expect(plists.count) == 2
                     for plist in plists {

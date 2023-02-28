@@ -15,7 +15,7 @@ extension Project {
                 try self.validate()
             }
             let generator = ProjectGenerator(project: self)
-            return try generator.generateXcodeProject()
+            return try generator.generateXcodeProject(userName: "someUser")
         }
     }
 
