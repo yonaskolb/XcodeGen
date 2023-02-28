@@ -379,6 +379,7 @@ class SpecLoadingTests: XCTestCase {
 
     func testProjectSpecParser() {
         let validTarget: [String: Any] = ["type": "application", "platform": "iOS"]
+        let validBreakpoint: [String: Any] = ["type": "Exception", "scope": "All", "stopOnStyle": "Catch"]
         let invalid = "invalid"
 
         describe {
@@ -399,6 +400,93 @@ class SpecLoadingTests: XCTestCase {
                 var target = validTarget
                 target["dependencies"] = [[invalid: "name"]]
                 try expectTargetError(target, .invalidDependency([invalid: "name"]))
+            }
+
+            $0.it("fails with incorrect breakpoint type") {
+                var breakpoint = validBreakpoint
+                breakpoint["type"] = invalid
+                try expectBreakpointError(breakpoint, .unknownBreakpointType(invalid))
+            }
+
+            $0.it("fails with incorrect breakpoint scope") {
+                var target = validBreakpoint
+                target["scope"] = invalid
+                try expectBreakpointError(target, .unknownBreakpointScope(invalid))
+            }
+
+            $0.it("fails with incorrect breakpoint stop on style") {
+                var target = validBreakpoint
+                target["stopOnStyle"] = invalid
+                try expectBreakpointError(target, .unknownBreakpointStopOnStyle(invalid))
+            }
+
+            $0.it("fails with incorrect breakpoint action type") {
+                var breakpoint = validBreakpoint
+                breakpoint["actions"] = [["type": invalid]]
+                try expectBreakpointError(breakpoint, .unknownBreakpointActionType(invalid))
+            }
+
+            $0.it("fails with incorrect breakpoint action conveyance type") {
+                var breakpoint = validBreakpoint
+                breakpoint["actions"] = [["type": "Log", "conveyanceType": invalid]]
+                try expectBreakpointError(breakpoint, .unknownBreakpointActionConveyanceType(invalid))
+            }
+
+            $0.it("fails with incorrect breakpoint action sound name") {
+                var breakpoint = validBreakpoint
+                breakpoint["actions"] = [["type": "Sound", "sound": invalid]]
+                try expectBreakpointError(breakpoint, .unknownBreakpointActionSoundName(invalid))
+            }
+
+            $0.it("parses breakpoints") {
+                let breakpointDictionaries = [
+                    ["type": "File", "path": "Foo.swift", "line": 7, "column": 14, "condition": "bar == nil"],
+                    ["type": "Exception", "scope": "All", "stopOnStyle": "Catch"],
+                    ["type": "SwiftError", "enabled": false],
+                    ["type": "OpenGLError", "ignoreCount": 2],
+                    ["type": "Symbolic", "symbol": "UIViewAlertForUnsatisfiableConstraints", "module": "UIKitCore"],
+                    ["type": "IDEConstraintError", "continueAfterRunningActions": true],
+                    ["type": "IDETestFailure"],
+                ]
+
+                let project = try getProjectSpec(["breakpoints": breakpointDictionaries])
+
+                let expectedBreakpoints = [
+                    Breakpoint(type: .file(path: "Foo.swift", line: 7, column: 14), condition: "bar == nil"),
+                    Breakpoint(type: .exception(.init(scope: .all, stopOnStyle: .catch))),
+                    Breakpoint(type: .swiftError, enabled: false),
+                    Breakpoint(type: .openGLError, ignoreCount: 2),
+                    Breakpoint(type: .symbolic(symbol: "UIViewAlertForUnsatisfiableConstraints", module: "UIKitCore")),
+                    Breakpoint(type: .ideConstraintError, continueAfterRunningActions: true),
+                    Breakpoint(type: .ideTestFailure),
+                ]
+
+                try expect(project.breakpoints) == expectedBreakpoints
+            }
+
+            $0.it("parses breakpoint actions") {
+                var breakpointDicationary = validBreakpoint
+                breakpointDicationary["actions"] = [
+                    ["type": "DebuggerCommand", "command": "po $arg1"],
+                    ["type": "Log", "message": "message", "conveyanceType": "speak"],
+                    ["type": "ShellCommand", "path": "script.sh", "arguments": "argument1, argument2", "waitUntilDone": true],
+                    ["type": "GraphicsTrace"],
+                    ["type": "AppleScript", "script": #"display alert "Hello!""#],
+                    ["type": "Sound", "sound": "Hero"],
+                ]
+
+                let breakpoint = try Breakpoint(jsonDictionary: breakpointDicationary)
+
+                let expectedActions: [Breakpoint.Action] = [
+                    .debuggerCommand("po $arg1"),
+                    .log(.init(message: "message", conveyanceType: .speak)),
+                    .shellCommand(path: "script.sh", arguments: "argument1, argument2", waitUntilDone: true),
+                    .graphicsTrace,
+                    .appleScript(#"display alert "Hello!""#),
+                    .sound(.hero),
+                ]
+
+                try expect(breakpoint.actions) == expectedActions
             }
 
             $0.it("parses sources") {
@@ -1480,5 +1568,11 @@ private func expectSpecError(_ project: [String: Any], _ expectedError: SpecPars
 private func expectTargetError(_ target: [String: Any], _ expectedError: SpecParsingError, file: String = #file, line: Int = #line) throws {
     try expectError(expectedError, file: file, line: line) {
         _ = try Target(name: "test", jsonDictionary: target)
+    }
+}
+
+private func expectBreakpointError(_ breakpoint: [String: Any], _ expectedError: SpecParsingError, file: String = #file, line: Int = #line) throws {
+    try expectError(expectedError, file: file, line: line) {
+        _ = try Breakpoint(jsonDictionary: breakpoint)
     }
 }

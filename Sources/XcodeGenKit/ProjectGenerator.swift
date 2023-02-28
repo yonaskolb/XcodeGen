@@ -27,8 +27,12 @@ public class ProjectGenerator {
         let schemeGenerator = SchemeGenerator(project: project, pbxProj: pbxProj)
         let (sharedSchemes, userSchemes, schemeManagement) = try schemeGenerator.generateSchemes()
 
+        // generate Breakpoints
+        let breakpointGenerator = BreakpointGenerator(project: project)
+        let xcbreakpointlist = try breakpointGenerator.generateBreakpointList()
+
         // generate shared data
-        let sharedData = XCSharedData(schemes: sharedSchemes)
+        let sharedData = XCSharedData(schemes: sharedSchemes, breakpoints: xcbreakpointlist)
 
         // generate user data
         let userData = userSchemes.isEmpty && schemeManagement == nil ? [] : [

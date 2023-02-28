@@ -106,3 +106,30 @@ extension XCScheme.CommandLineArguments {
         self.init(arguments: args)
     }
 }
+
+extension BreakpointExtensionID {
+
+    init(string: String) throws {
+        if let id = BreakpointExtensionID(rawValue: "Xcode.Breakpoint.\(string)Breakpoint") {
+            self = id
+        } else if let id = BreakpointExtensionID(rawValue: string) {
+            self = id
+        } else {
+            throw SpecParsingError.unknownBreakpointType(string)
+        }
+    }
+}
+
+extension BreakpointActionExtensionID {
+
+    init(string: String) throws {
+        if let type = BreakpointActionExtensionID(rawValue: "Xcode.BreakpointAction.\(string)") {
+            self = type
+        } else if let type = BreakpointActionExtensionID(rawValue: string) {
+            self = type
+        } else {
+            throw SpecParsingError.unknownBreakpointActionType(string)
+        }
+    }
+}
+

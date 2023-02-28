@@ -55,6 +55,7 @@ You can also use environment variables in your configuration file, by using `${S
 - [ ] **include**:  **[Include](#include)** - One or more paths to other specs
 - [ ] **options**: **[Options](#options)** - Various options to override default behaviour
 - [ ] **attributes**: **[String: Any]** - The PBXProject attributes. This is for advanced use. If no value is set for `LastUpgradeCheck`, it will be defaulted to ``{"LastUpgradeCheck": "XcodeVersion"}`` with `xcodeVersion` being set by [Options](#options)`.xcodeVersion`
+- [ ] **breakpoints**: [Breakpoints](#breakpoints) - Add shared breakpoints to the generated project
 - [ ] **configs**: **[Configs](#configs)** - Project build configurations. Defaults to `Debug` and `Release` configs
 - [ ] **configFiles**: **[Config Files](#config-files)** - `.xcconfig` files per config
 - [ ] **settings**: **[Settings](#settings)** - Project specific settings. Default base and config type settings will be applied first before any settings defined here
@@ -180,6 +181,81 @@ Default settings for file extensions. See [Sources](#sources) for more documenta
 - [ ] **attributes**: **[String]** - Additional settings attributes that will be applied to any build files.
 - [ ] **resourceTags**: **[String]** - On Demand Resource Tags that will be applied to any resources. This also adds to the project attribute's knownAssetTags.
 - [ ] **compilerFlags**: **[String]** - A list of compiler flags to add.
+
+### Breakpoints
+
+- [x] **type**: **String** - Breakpoint type
+    - `File`: file breakpoint
+    - `Exception`: exception breakpoint
+    - `SwiftError`: swift error breakpoint
+    - `OpenGLError`: OpenGL breakpoint
+    - `Symbolic`: symbolic breakpoint
+    - `IDEConstraintError`: IDE constraint breakpoint
+    - `IDETestFailure`: IDE test failure breakpoint
+- [ ] **enabled**: **Bool** - Indicates whether it should be active. Default to `true`
+- [ ] **ignoreCount**: **Int** - Indicates how many times it should be ignored before stopping, Default to `0`
+- [ ] **continueAfterRunningActions**: **Bool** - Indicates if should automatically continue after evaluating actions, Default to `false`
+- [ ] **path**: **String** - Breakpoint file path (only required by file breakpoints)
+- [ ] **line**: **Int** - Breakpoint line (only required by file breakpoints)
+- [ ] **symbol**: **String** - Breakpoint symbol (only used by symbolic breakpoints)
+- [ ] **module**: **String** - Breakpoint module (only used by symbolic breakpoints)
+- [ ] **scope**: **String** - Breakpoint scope (only used by exception breakpoints)
+    - `All`
+    - `Objective-C` (default)
+    - `C++`
+- [ ] **stopOnStyle**: **String** - Indicates if should stop on style (only used by exception breakpoints)
+    -`throw` (default)
+    -`catch`
+- [ ] **condition**: **String** - Breakpoint condition
+- [ ] **actions**: **[[Breakpoint Action](#breakpoint-action)]** - breakpoint actions
+
+```yaml
+breakpoints:
+  - type: ExceptionBreakpoint
+    enabled: true
+    ignoreCount: 0
+    continueAfterRunningActions: false
+```
+
+#### Breakpoint Action
+
+- [x] **type**: **String** - Breakpoint action type
+    - `DebuggerCommand`: execute debugger command
+    - `Log`: log message
+    - `ShellCommand`: execute shell command
+    - `GraphicsTrace`: capture GPU frame
+    - `AppleScript`: execute AppleScript
+    - `Sound`: play sound
+- [ ] **command**: **String** - Debugger command (only used by debugger command breakpoint action)
+- [ ] **message**: **String** - Log message (only used log message breakpoint action)
+- [ ] **conveyanceType**: **String** - Conveyance type (only used by log message breakpoint action)
+    - `console`: log message to console (default)
+    - `speak`: speak message
+- [ ] **path**: **String** - Shell command file path (only used by shell command breakpoint action)
+- [ ] **arguments**: **String** - Shell command arguments (only used by shell command breakpoint action)
+- [ ] **waitUntilDone**: **Bool** - Indicates whether it should wait until done (only used by shell command breakpoint action). Default to `false`
+- [ ] **script**: **String** - AppleScript (only used by AppleScript breakpoint action)
+- [ ] **sound**: **String** - Sound name (only used by sound breakpoint action)
+    - `Basso` (default)
+    - `Blow`
+    - `Bottle`
+    - `Frog`
+    - `Funk`
+    - `Glass`
+    - `Hero`
+    - `Morse`
+    - `Ping`
+    - `Pop`
+    - `Purr`
+    - `Sosumi`
+    - `Submarine`
+    - `Tink`
+
+```yaml
+actions:
+  - type: Sound
+    sound: Blow
+```
 
 ### Configs
 

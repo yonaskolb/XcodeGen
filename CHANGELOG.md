@@ -2,6 +2,10 @@
 
 ## Next Version
 
+### Added
+
+- Added support for shared breakpoints #177 @alexruperez @myihsan
+
 ## 2.34.0
 
 ### Changed

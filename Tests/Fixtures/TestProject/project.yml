@@ -31,6 +31,46 @@ packages:
   Swinject:
     url: https://github.com/Swinject/Swinject
     version: 2.8.0
+breakpoints:
+  - type: File
+    path: App_iOS/AppDelegate.swift
+    line: 7
+    condition: launchOptions == nil
+    actions:
+      - type: Log
+        message: message
+        conveyanceType: speak
+  - type: File
+    path: App_iOS/AppDelegate.swift
+    line: 11
+    column: 13
+  - type: Exception
+    scope: All
+    stopOnStype: Catch
+    actions:
+      - type: DebuggerCommand
+        command: po $arg1
+      - type: AppleScript
+        script: display alert "Exception happened!"
+      - type: Sound
+        sound: Blow
+  - type: SwiftError
+    enabled: false
+  - type: OpenGLError
+    ignoreCount: 2
+    actions:
+      - type: ShellCommand
+        path: script.sh
+        arguments: argument1, argument2
+        waitUntilDone: true
+  - type: Symbolic
+    symbol: UIViewAlertForUnsatisfiableConstraints
+    module: UIKitCore
+    actions:
+      - type: GraphicsTrace
+  - type: IDEConstraintError
+    continueAfterRunningActions: true
+  - type: IDETestFailure
 targets:
   Legacy:
     type: ""
