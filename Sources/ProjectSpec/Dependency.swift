@@ -16,6 +16,7 @@ public struct Dependency: Equatable {
     public var implicit: Bool = implicitDefault
     public var weakLink: Bool = weakLinkDefault
     public var platformFilter: PlatformFilter = platformFilterDefault
+    public var platformFilters: [PlatformFilters]?
     public var platforms: Set<Platform>?
     public var copyPhase: BuildPhaseSpec.CopyFilesSettings?
 
@@ -28,6 +29,7 @@ public struct Dependency: Equatable {
         implicit: Bool = implicitDefault,
         weakLink: Bool = weakLinkDefault,
         platformFilter: PlatformFilter = platformFilterDefault,
+        platformFilters: [PlatformFilters]? = nil,
         platforms: Set<Platform>? = nil,
         copyPhase: BuildPhaseSpec.CopyFilesSettings? = nil
     ) {
@@ -39,6 +41,7 @@ public struct Dependency: Equatable {
         self.implicit = implicit
         self.weakLink = weakLink
         self.platformFilter = platformFilter
+        self.platformFilters = platformFilters
         self.platforms = platforms
         self.copyPhase = copyPhase
     }
@@ -48,7 +51,13 @@ public struct Dependency: Equatable {
         case iOS
         case macOS
     }
-
+    
+    public enum PlatformFilters: String, Equatable {
+        case iOS
+        case tvOS
+        case macOS
+    }
+    
     public enum CarthageLinkType: String {
         case dynamic
         case `static`
@@ -135,7 +144,14 @@ extension Dependency: JSONObjectConvertible {
         } else {
             self.platformFilter = .all
         }
-
+        
+        if jsonDictionary["platformFilters"] == nil {
+            self.platformFilters = nil
+        } else {
+            let platformFilters: [PlatformFilters] = try jsonDictionary.json(atKeyPath: "platformFilters", invalidItemBehaviour: .fail)
+            self.platformFilters = platformFilters
+        }
+        
         if let platforms: [ProjectSpec.Platform] = jsonDictionary.json(atKeyPath: "platforms") {
             self.platforms = Set(platforms)
         }
