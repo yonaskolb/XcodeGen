@@ -109,7 +109,20 @@ class SourceGenerator {
             return nil
         }
     }
-
+    
+    private func makePlatformFilters(for filters: [PlatformFilters]?) -> [String]? {
+        guard let filters = filters, !filters.isEmpty else { return nil }
+        
+        return filters.map { filter in
+            switch filter {
+            case .iOS:
+                return "ios"
+            case .tvOS:
+                return "tvos"
+            }
+        }
+    }
+    
     func generateSourceFile(targetType: PBXProductType, targetSource: TargetSource, path: Path, fileReference: PBXFileElement? = nil, buildPhases: [Path: BuildPhaseSpec]) -> SourceFile {
         let fileReference = fileReference ?? fileReferencesByPath[path.string.lowercased()]!
         var settings: [String: Any] = [:]
@@ -174,8 +187,10 @@ class SourceGenerator {
         if chosenBuildPhase == .resources && !assetTags.isEmpty {
             settings["ASSET_TAGS"] = assetTags
         }
-
-        let buildFile = PBXBuildFile(file: fileReference, settings: settings.isEmpty ? nil : settings)
+        
+        let platforms = makePlatformFilters(for: targetSource.platformFilters)
+        
+        let buildFile = PBXBuildFile(file: fileReference, settings: settings.isEmpty ? nil : settings, platformFilters: platforms)
         return SourceFile(
             path: path,
             fileReference: fileReference,

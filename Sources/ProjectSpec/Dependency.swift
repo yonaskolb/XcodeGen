@@ -52,12 +52,6 @@ public struct Dependency: Equatable {
         case macOS
     }
     
-    public enum PlatformFilters: String, Equatable {
-        case iOS
-        case tvOS
-        case macOS
-    }
-    
     public enum CarthageLinkType: String {
         case dynamic
         case `static`

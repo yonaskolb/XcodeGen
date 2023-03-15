@@ -18,6 +18,7 @@ public struct TargetSource: Equatable {
     public var createIntermediateGroups: Bool?
     public var attributes: [String]
     public var resourceTags: [String]
+    public var platformFilters: [PlatformFilters]?
 
     public enum HeaderVisibility: String {
         case `public`
@@ -46,7 +47,8 @@ public struct TargetSource: Equatable {
         headerVisibility: HeaderVisibility? = nil,
         createIntermediateGroups: Bool? = nil,
         attributes: [String] = [],
-        resourceTags: [String] = []
+        resourceTags: [String] = [],
+        platformFilters: [PlatformFilters]? = nil
     ) {
         self.path = path
         self.name = name
@@ -61,6 +63,7 @@ public struct TargetSource: Equatable {
         self.createIntermediateGroups = createIntermediateGroups
         self.attributes = attributes
         self.resourceTags = resourceTags
+        self.platformFilters = platformFilters
     }
 }
 
@@ -106,6 +109,13 @@ extension TargetSource: JSONObjectConvertible {
         createIntermediateGroups = jsonDictionary.json(atKeyPath: "createIntermediateGroups")
         attributes = jsonDictionary.json(atKeyPath: "attributes") ?? []
         resourceTags = jsonDictionary.json(atKeyPath: "resourceTags") ?? []
+        
+        if jsonDictionary["platformFilters"] == nil {
+            self.platformFilters = nil
+        } else {
+            let platformFilters: [PlatformFilters] = try jsonDictionary.json(atKeyPath: "platformFilters", invalidItemBehaviour: .fail)
+            self.platformFilters = platformFilters
+        }
     }
 }
 
@@ -123,6 +133,7 @@ extension TargetSource: JSONEncodable {
             "createIntermediateGroups": createIntermediateGroups,
             "resourceTags": resourceTags,
             "path": path,
+            "platformFilters": platformFilters,
         ]
 
         if optional != TargetSource.optionalDefault {

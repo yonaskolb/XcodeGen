@@ -1417,13 +1417,11 @@ public class PBXProjGenerator {
         }
     }
     
-    private func makePlatformFilters(for filters: [Dependency.PlatformFilters]?) -> [String]? {
+    private func makePlatformFilters(for filters: [PlatformFilters]?) -> [String]? {
         guard let filters = filters, !filters.isEmpty else { return nil }
         
         return filters.map { filter in
             switch filter {
-            case .macOS:
-                return "maccatalyst"
             case .iOS:
                 return "ios"
             case .tvOS:

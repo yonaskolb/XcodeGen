@@ -6,3 +6,8 @@ public enum Platform: String, Hashable, CaseIterable {
     case tvOS
     case macOS
 }
+
+public enum PlatformFilters: String, Equatable {
+    case iOS
+    case tvOS
+}
