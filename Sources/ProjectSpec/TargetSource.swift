@@ -133,7 +133,6 @@ extension TargetSource: JSONEncodable {
             "createIntermediateGroups": createIntermediateGroups,
             "resourceTags": resourceTags,
             "path": path,
-            "platformFilters": platformFilters,
         ]
 
         if optional != TargetSource.optionalDefault {
