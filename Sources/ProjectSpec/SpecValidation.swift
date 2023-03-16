@@ -177,13 +177,13 @@ extension Project {
             if target.platform == .watchOS,
                target.supportedPlatforms != nil {
                 
-                errors.append(.invalidTargetSupportedPlatform(target: target.name, platform: target.platform))
+                errors.append(.invalidTargetSupportedPlatforms(target: target.name, platform: target.platform))
             }
             
             if target.supportedPlatforms?.contains(.macOS) == true,
                target.supportedPlatforms?.contains(.macCatalyst) == true {
                 
-                errors.append(.invalidTargetMacSupportedPlatform(target: target.name))
+                errors.append(.invalidTargetMacSupportedPlatforms(target: target.name))
             }
         }
 
