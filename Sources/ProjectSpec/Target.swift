@@ -276,7 +276,13 @@ extension Target: NamedJSONDictionaryConvertible {
         } else {
             throw SpecParsingError.unknownTargetPlatform(platformString)
         }
-
+        if jsonDictionary["supportedPlatforms"] == nil {
+            self.supportedPlatforms = nil
+        } else {
+            let supportedPlatforms: [SupportedPlatforms] = try jsonDictionary.json(atKeyPath: "supportedPlatforms", invalidItemBehaviour: .fail)
+            self.supportedPlatforms = supportedPlatforms
+        }
+        
         if let string: String = jsonDictionary.json(atKeyPath: "deploymentTarget") {
             deploymentTarget = try Version.parse(string)
         } else if let double: Double = jsonDictionary.json(atKeyPath: "deploymentTarget") {

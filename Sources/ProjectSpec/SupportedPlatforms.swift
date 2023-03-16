@@ -1,6 +1,6 @@
 import Foundation
 
-public enum SupportedPlatforms: String, Hashable, CaseIterable {
+public enum SupportedPlatforms: String, Equatable {
     case iOS
     case tvOS
     case macOS
