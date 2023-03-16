@@ -18,7 +18,7 @@ public struct TargetSource: Equatable {
     public var createIntermediateGroups: Bool?
     public var attributes: [String]
     public var resourceTags: [String]
-    public var platformFilters: [PlatformFilters]?
+    public var platformFilters: [SupportedPlatforms]?
 
     public enum HeaderVisibility: String {
         case `public`
@@ -48,7 +48,7 @@ public struct TargetSource: Equatable {
         createIntermediateGroups: Bool? = nil,
         attributes: [String] = [],
         resourceTags: [String] = [],
-        platformFilters: [PlatformFilters]? = nil
+        platformFilters: [SupportedPlatforms]? = nil
     ) {
         self.path = path
         self.name = name
@@ -113,7 +113,7 @@ extension TargetSource: JSONObjectConvertible {
         if jsonDictionary["platformFilters"] == nil {
             self.platformFilters = nil
         } else {
-            let platformFilters: [PlatformFilters] = try jsonDictionary.json(atKeyPath: "platformFilters", invalidItemBehaviour: .fail)
+            let platformFilters: [SupportedPlatforms] = try jsonDictionary.json(atKeyPath: "platformFilters", invalidItemBehaviour: .fail)
             self.platformFilters = platformFilters
         }
     }

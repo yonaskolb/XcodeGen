@@ -16,7 +16,7 @@ public struct Dependency: Equatable {
     public var implicit: Bool = implicitDefault
     public var weakLink: Bool = weakLinkDefault
     public var platformFilter: PlatformFilter = platformFilterDefault
-    public var platformFilters: [PlatformFilters]?
+    public var platformFilters: [SupportedPlatforms]?
     public var platforms: Set<Platform>?
     public var copyPhase: BuildPhaseSpec.CopyFilesSettings?
 
@@ -29,7 +29,7 @@ public struct Dependency: Equatable {
         implicit: Bool = implicitDefault,
         weakLink: Bool = weakLinkDefault,
         platformFilter: PlatformFilter = platformFilterDefault,
-        platformFilters: [PlatformFilters]? = nil,
+        platformFilters: [SupportedPlatforms]? = nil,
         platforms: Set<Platform>? = nil,
         copyPhase: BuildPhaseSpec.CopyFilesSettings? = nil
     ) {
@@ -142,7 +142,7 @@ extension Dependency: JSONObjectConvertible {
         if jsonDictionary["platformFilters"] == nil {
             self.platformFilters = nil
         } else {
-            let platformFilters: [PlatformFilters] = try jsonDictionary.json(atKeyPath: "platformFilters", invalidItemBehaviour: .fail)
+            let platformFilters: [SupportedPlatforms] = try jsonDictionary.json(atKeyPath: "platformFilters", invalidItemBehaviour: .fail)
             self.platformFilters = platformFilters
         }
         

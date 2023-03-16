@@ -37,6 +37,7 @@ public struct Target: ProjectTarget {
     public var name: String
     public var type: PBXProductType
     public var platform: Platform
+    public var supportedPlatforms: [SupportedPlatforms]?
     public var settings: Settings
     public var sources: [TargetSource]
     public var dependencies: [Dependency]
@@ -76,6 +77,7 @@ public struct Target: ProjectTarget {
         name: String,
         type: PBXProductType,
         platform: Platform,
+        supportedPlatforms: [SupportedPlatforms]? = nil,
         productName: String? = nil,
         deploymentTarget: Version? = nil,
         settings: Settings = .empty,
@@ -99,6 +101,7 @@ public struct Target: ProjectTarget {
         self.name = name
         self.type = type
         self.platform = platform
+        self.supportedPlatforms = supportedPlatforms
         self.deploymentTarget = deploymentTarget
         self.productName = productName ?? name
         self.settings = settings
@@ -161,7 +164,7 @@ extension Target {
 
         for (targetName, target) in targetsDictionary {
 
-            if let platforms = target["platform"] as? [String] {
+            if let platforms = target["platform"] as? [String], target["supportedPlatforms"] == nil {
 
                 for platform in platforms {
                     var platformTarget = target

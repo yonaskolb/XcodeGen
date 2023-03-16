@@ -1417,7 +1417,7 @@ public class PBXProjGenerator {
         }
     }
     
-    private func makePlatformFilters(for filters: [PlatformFilters]?) -> [String]? {
+    private func makePlatformFilters(for filters: [SupportedPlatforms]?) -> [String]? {
         guard let filters = filters, !filters.isEmpty else { return nil }
         
         return filters.map { filter in
@@ -1426,6 +1426,10 @@ public class PBXProjGenerator {
                 return "ios"
             case .tvOS:
                 return "tvos"
+            case .macOS:
+                return "macos"
+            case .macCatalyst:
+                return "maccatalyst"
             }
         }
     }
