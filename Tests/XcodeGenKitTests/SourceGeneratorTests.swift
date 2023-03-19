@@ -1042,6 +1042,39 @@ class SourceGeneratorTests: XCTestCase {
                 try pbxProj.expectFileMissing(paths: ["Sources", "group", "file.swift"])
             }
 
+            $0.it("handles includes with no matches correctly") {
+                let directories = """
+                Sources:
+                  - file3.swift
+                  - file3Tests.swift
+                  - file2.swift
+                  - file2Tests.swift
+                  - group2:
+                    - file.swift
+                    - fileTests.swift
+                  - group:
+                    - file.swift
+                """
+                try createDirectories(directories)
+
+                let includes = [
+                    "**/*NonExistent.*",
+                ]
+
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: [TargetSource(path: "Sources", includes: includes)])
+
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target])
+                let pbxProj = try project.generatePbxProj()
+
+                try pbxProj.expectFileMissing(paths: ["Sources", "file2.swift"])
+                try pbxProj.expectFileMissing(paths: ["Sources", "file3.swift"])
+                try pbxProj.expectFileMissing(paths: ["Sources", "file2Tests.swift"])
+                try pbxProj.expectFileMissing(paths: ["Sources", "file3Tests.swift"])
+                try pbxProj.expectFileMissing(paths: ["Sources", "group2", "file.swift"])
+                try pbxProj.expectFileMissing(paths: ["Sources", "group2", "fileTests.swift"])
+                try pbxProj.expectFileMissing(paths: ["Sources", "group", "file.swift"])
+            }
+
             $0.it("prioritizes excludes over includes when both are present") {
                 let directories = """
                 Sources:
