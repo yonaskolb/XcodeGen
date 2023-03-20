@@ -344,7 +344,7 @@ extension Target: JSONEncodable {
         var dict: [String: Any?] = [
             "type": type.name,
             "platform": platform.rawValue,
-            // "supportedPlatforms": supportedPlatforms?.map { $0.rawValue },
+            "supportedPlatforms": supportedPlatforms?.map { $0.rawValue },
             "settings": settings.toJSONValue(),
             "configFiles": configFiles,
             "attributes": attributes,

@@ -469,6 +469,7 @@ class ProjectSpecTests: XCTestCase {
                                    targets: [Target(name: "App",
                                                     type: .application,
                                                     platform: .iOS,
+                                                    supportedPlatforms: [.iOS, .tvOS],
                                                     productName: "App",
                                                     deploymentTarget: Version(major: 0, minor: 1, patch: 2),
                                                     settings: Settings(buildSettings: ["foo": "bar"],
