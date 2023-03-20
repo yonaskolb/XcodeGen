@@ -111,17 +111,16 @@ class SourceGenerator {
     }
     
     private func makePlatformFilters(for path: Path, with filters: [SupportedPlatforms]?, or inferPlatformFiltersByPath: Bool?) -> [String]? {
-        if inferPlatformFiltersByPath == true {
+        if let filters = filters, !filters.isEmpty {
+            return filters.map { $0.string }
+        } else if inferPlatformFiltersByPath == true {
             for supportedPlatform in SupportedPlatforms.allCases {
                 if path.string.contains("/\(supportedPlatform)/") || path.string.hasSuffix("_\(supportedPlatform).swift") {
                     return [supportedPlatform.string]
                 }
             }
-            return nil
-        } else {
-            guard let filters = filters, !filters.isEmpty else { return nil }
-            return filters.map { $0.string }
         }
+        return nil
     }
     
     func generateSourceFile(targetType: PBXProductType, targetSource: TargetSource, path: Path, fileReference: PBXFileElement? = nil, buildPhases: [Path: BuildPhaseSpec]) -> SourceFile {
