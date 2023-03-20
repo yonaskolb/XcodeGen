@@ -110,20 +110,17 @@ class SourceGenerator {
         }
     }
     
-    private func makePlatformFilters(for filters: [SupportedPlatforms]?) -> [String]? {
-        guard let filters = filters, !filters.isEmpty else { return nil }
-        
-        return filters.map { filter in
-            switch filter {
-            case .iOS:
-                return "ios"
-            case .tvOS:
-                return "tvos"
-            case .macOS:
-                return "macos"
-            case .macCatalyst:
-                return "maccatalyst"
+    private func makePlatformFilters(for path: Path, with filters: [SupportedPlatforms]?, or inferPlatformFiltersByPath: Bool?) -> [String]? {
+        if inferPlatformFiltersByPath == true {
+            for supportedPlatform in SupportedPlatforms.allCases {
+                if path.string.contains("/\(supportedPlatform)/") || path.string.hasSuffix("_\(supportedPlatform).swift") {
+                    return [supportedPlatform.string]
+                }
             }
+            return nil
+        } else {
+            guard let filters = filters, !filters.isEmpty else { return nil }
+            return filters.map { $0.string }
         }
     }
     
@@ -192,7 +189,7 @@ class SourceGenerator {
             settings["ASSET_TAGS"] = assetTags
         }
         
-        let platforms = makePlatformFilters(for: targetSource.platformFilters)
+        let platforms = makePlatformFilters(for: path, with: targetSource.platformFilters, or: targetSource.inferPlatformFiltersByPath)
         
         let buildFile = PBXBuildFile(file: fileReference, settings: settings.isEmpty ? nil : settings, platformFilters: platforms)
         return SourceFile(

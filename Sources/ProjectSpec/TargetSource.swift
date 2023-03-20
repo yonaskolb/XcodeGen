@@ -18,6 +18,7 @@ public struct TargetSource: Equatable {
     public var createIntermediateGroups: Bool?
     public var attributes: [String]
     public var resourceTags: [String]
+    public var inferPlatformFiltersByPath: Bool?
     public var platformFilters: [SupportedPlatforms]?
 
     public enum HeaderVisibility: String {
@@ -48,6 +49,7 @@ public struct TargetSource: Equatable {
         createIntermediateGroups: Bool? = nil,
         attributes: [String] = [],
         resourceTags: [String] = [],
+        inferPlatformFiltersByPath: Bool? = nil,
         platformFilters: [SupportedPlatforms]? = nil
     ) {
         self.path = path
@@ -63,6 +65,7 @@ public struct TargetSource: Equatable {
         self.createIntermediateGroups = createIntermediateGroups
         self.attributes = attributes
         self.resourceTags = resourceTags
+        self.inferPlatformFiltersByPath = inferPlatformFiltersByPath
         self.platformFilters = platformFilters
     }
 }
@@ -110,6 +113,7 @@ extension TargetSource: JSONObjectConvertible {
         attributes = jsonDictionary.json(atKeyPath: "attributes") ?? []
         resourceTags = jsonDictionary.json(atKeyPath: "resourceTags") ?? []
         
+        inferPlatformFiltersByPath = jsonDictionary.json(atKeyPath: "inferPlatformFiltersByPath")
         if jsonDictionary["platformFilters"] == nil {
             self.platformFilters = nil
         } else {

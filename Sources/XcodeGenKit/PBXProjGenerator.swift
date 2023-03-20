@@ -1419,19 +1419,7 @@ public class PBXProjGenerator {
     
     private func makePlatformFilters(for filters: [SupportedPlatforms]?) -> [String]? {
         guard let filters = filters, !filters.isEmpty else { return nil }
-        
-        return filters.map { filter in
-            switch filter {
-            case .iOS:
-                return "ios"
-            case .tvOS:
-                return "tvos"
-            case .macOS:
-                return "macos"
-            case .macCatalyst:
-                return "maccatalyst"
-            }
-        }
+        return filters.map { $0.string }
     }
     
     func getInfoPlists(for target: Target) -> [Config: String] {
