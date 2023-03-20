@@ -114,11 +114,11 @@ extension TargetSource: JSONObjectConvertible {
         resourceTags = jsonDictionary.json(atKeyPath: "resourceTags") ?? []
         
         inferPlatformFiltersByPath = jsonDictionary.json(atKeyPath: "inferPlatformFiltersByPath")
-        if jsonDictionary["platformFilters"] == nil {
-            self.platformFilters = nil
-        } else {
-            let platformFilters: [SupportedPlatforms] = try jsonDictionary.json(atKeyPath: "platformFilters", invalidItemBehaviour: .fail)
+        
+        if let platformFilters: [SupportedPlatforms] = jsonDictionary.json(atKeyPath: "platformFilters") {
             self.platformFilters = platformFilters
+        } else {
+            self.platformFilters = nil
         }
     }
 }

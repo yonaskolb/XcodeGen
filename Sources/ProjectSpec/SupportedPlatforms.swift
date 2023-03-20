@@ -7,9 +7,9 @@ public enum SupportedPlatforms: String, CaseIterable {
     case macCatalyst
 }
 
-public extension SupportedPlatforms {
+extension SupportedPlatforms {
     
-    var string: String {
+    public var string: String {
         switch self {
         case .iOS:
             return "ios"
@@ -20,5 +20,12 @@ public extension SupportedPlatforms {
         case .macCatalyst:
             return "maccatalyst"
         }
+    }
+}
+
+extension SupportedPlatforms: JSONEncodable {
+    
+    public func toJSONValue() -> Any {
+        return rawValue
     }
 }

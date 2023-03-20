@@ -276,11 +276,11 @@ extension Target: NamedJSONDictionaryConvertible {
         } else {
             throw SpecParsingError.unknownTargetPlatform(platformString)
         }
-        if jsonDictionary["supportedPlatforms"] == nil {
-            self.supportedPlatforms = nil
-        } else {
-            let supportedPlatforms: [SupportedPlatforms] = try jsonDictionary.json(atKeyPath: "supportedPlatforms", invalidItemBehaviour: .fail)
+        
+        if let supportedPlatforms: [SupportedPlatforms] = jsonDictionary.json(atKeyPath: "supportedPlatforms") {
             self.supportedPlatforms = supportedPlatforms
+        } else {
+            self.supportedPlatforms = nil
         }
         
         if let string: String = jsonDictionary.json(atKeyPath: "deploymentTarget") {
@@ -346,6 +346,7 @@ extension Target: JSONEncodable {
         var dict: [String: Any?] = [
             "type": type.name,
             "platform": platform.rawValue,
+            // "supportedPlatforms": supportedPlatforms?.map { $0.rawValue },
             "settings": settings.toJSONValue(),
             "configFiles": configFiles,
             "attributes": attributes,

@@ -13,7 +13,7 @@ public struct SpecValidationError: Error, CustomStringConvertible {
         case invalidXcodeGenVersion(minimumVersion: Version, version: Version)
         case invalidSDKDependency(target: String, dependency: String)
         case invalidTargetSupportedPlatforms(target: String, platform: Platform)
-        case invalidTargetMacSupportedPlatforms(target: String)
+        case invalidMacTargetSupportedPlatforms(target: String)
         case invalidTargetDependency(target: String, dependency: String)
         case invalidTargetSource(target: String, source: String)
         case invalidTargetConfigFile(target: String, configFile: String, config: String)
@@ -47,7 +47,7 @@ public struct SpecValidationError: Error, CustomStringConvertible {
                 return "Target \(target.quoted) has invalid sdk dependency: \(dependency.quoted). It must be a full path or have the following extensions: .framework, .dylib, .tbd"
             case let .invalidTargetSupportedPlatforms(target, platform):
                 return "Target \(target.quoted) has platform \(platform.rawValue.quoted) that does not expect supported platforms"
-            case let .invalidTargetMacSupportedPlatforms(target):
+            case let .invalidMacTargetSupportedPlatforms(target):
                 return "Target \(target.quoted) has invalid supported platforms, only one Mac app can be added to the App Store"
             case let .invalidTargetDependency(target, dependency):
                 return "Target \(target.quoted) has invalid dependency: \(dependency.quoted)"

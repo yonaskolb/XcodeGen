@@ -183,7 +183,7 @@ extension Project {
             if target.supportedPlatforms?.contains(.macOS) == true,
                target.supportedPlatforms?.contains(.macCatalyst) == true {
                 
-                errors.append(.invalidTargetMacSupportedPlatforms(target: target.name))
+                errors.append(.invalidMacTargetSupportedPlatforms(target: target.name))
             }
         }
 
