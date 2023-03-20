@@ -279,8 +279,6 @@ extension Target: NamedJSONDictionaryConvertible {
         
         if let supportedPlatforms: [SupportedPlatforms] = jsonDictionary.json(atKeyPath: "supportedPlatforms") {
             self.supportedPlatforms = supportedPlatforms
-        } else {
-            self.supportedPlatforms = nil
         }
         
         if let string: String = jsonDictionary.json(atKeyPath: "deploymentTarget") {

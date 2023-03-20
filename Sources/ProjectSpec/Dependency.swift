@@ -141,8 +141,6 @@ extension Dependency: JSONObjectConvertible {
         
         if let platformFilters: [SupportedPlatforms] = jsonDictionary.json(atKeyPath: "platformFilters") {
             self.platformFilters = platformFilters
-        } else {
-            self.platformFilters = nil
         }
         
         if let platforms: [ProjectSpec.Platform] = jsonDictionary.json(atKeyPath: "platforms") {

@@ -117,8 +117,6 @@ extension TargetSource: JSONObjectConvertible {
         
         if let platformFilters: [SupportedPlatforms] = jsonDictionary.json(atKeyPath: "platformFilters") {
             self.platformFilters = platformFilters
-        } else {
-            self.platformFilters = nil
         }
     }
 }
