@@ -55,22 +55,14 @@ extension Project {
             var targetedDeviceFamily: [String] = []
             
             for supportedPlatform in specSupportedPlatforms {
-                switch supportedPlatform {
-                case .iOS:
-                    supportedPlatforms += ["iphoneos", "iphonesimulator"]
-                    targetedDeviceFamily += ["1","2"]
-                    buildSettings["SUPPORTS_MACCATALYST"] = "NO"
-                    buildSettings["SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD"] = "YES"
-                case .tvOS:
-                    supportedPlatforms += ["appletvos", "appletvsimulator"]
-                    targetedDeviceFamily += ["3"]
-                case .macOS:
-                    supportedPlatforms += ["macosx"]
-                    buildSettings["SUPPORTS_MACCATALYST"] = "NO"
-                    buildSettings["SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD"] = "NO"
-                case .macCatalyst:
-                    buildSettings["SUPPORTS_MACCATALYST"] = "YES"
-                    buildSettings["SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD"] = "NO"
+                let supportedPlatformBuildSettings = SettingsPresetFile.supportedPlatform(supportedPlatform).getBuildSettings()
+                buildSettings += supportedPlatformBuildSettings
+                
+                if let value = supportedPlatformBuildSettings?["SUPPORTED_PLATFORMS"] as? String {
+                    supportedPlatforms += value.components(separatedBy: " ")
+                }
+                if let value = supportedPlatformBuildSettings?["TARGETED_DEVICE_FAMILY"] as? String {
+                    targetedDeviceFamily += value.components(separatedBy: ",")
                 }
             }
             
@@ -235,7 +227,7 @@ extension SettingsPresetFile {
 
         guard let settingsPath = possibleSettingsPaths.first(where: { $0.exists }) else {
             switch self {
-            case .base, .config, .platform:
+            case .base, .config, .platform, .supportedPlatform:
                 print("No \"\(name)\" settings found")
             case .product, .productPlatform:
                 break

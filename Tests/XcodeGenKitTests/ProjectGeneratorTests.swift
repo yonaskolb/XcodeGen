@@ -345,8 +345,8 @@ class ProjectGeneratorTests: XCTestCase {
                 
                 try expect(targetConfig1.buildSettings["SUPPORTED_PLATFORMS"] as? String) == "iphoneos iphonesimulator appletvos appletvsimulator"
                 try expect(targetConfig1.buildSettings["TARGETED_DEVICE_FAMILY"] as? String) == "1,2,3"
-                try expect(targetConfig1.buildSettings["SUPPORTS_MACCATALYST"] as? String) == "NO"
-                try expect(targetConfig1.buildSettings["SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD"] as? String) == "YES"
+                try expect(targetConfig1.buildSettings["SUPPORTS_MACCATALYST"] as? Bool) == false
+                try expect(targetConfig1.buildSettings["SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD"] as? Bool) == true
             }
             
             $0.it("supportedPlaforms merges settings - iOS, tvOS, macOS") {
@@ -358,8 +358,8 @@ class ProjectGeneratorTests: XCTestCase {
                 
                 try expect(targetConfig1.buildSettings["SUPPORTED_PLATFORMS"] as? String) == "iphoneos iphonesimulator appletvos appletvsimulator macosx"
                 try expect(targetConfig1.buildSettings["TARGETED_DEVICE_FAMILY"] as? String) == "1,2,3"
-                try expect(targetConfig1.buildSettings["SUPPORTS_MACCATALYST"] as? String) == "NO"
-                try expect(targetConfig1.buildSettings["SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD"] as? String) == "NO"
+                try expect(targetConfig1.buildSettings["SUPPORTS_MACCATALYST"] as? Bool) == false
+                try expect(targetConfig1.buildSettings["SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD"] as? Bool) == false
             }
             
             $0.it("supportedPlaforms merges settings - iOS, tvOS, macCatalyst") {
@@ -371,8 +371,8 @@ class ProjectGeneratorTests: XCTestCase {
                 
                 try expect(targetConfig1.buildSettings["SUPPORTED_PLATFORMS"] as? String) == "iphoneos iphonesimulator appletvos appletvsimulator"
                 try expect(targetConfig1.buildSettings["TARGETED_DEVICE_FAMILY"] as? String) == "1,2,3"
-                try expect(targetConfig1.buildSettings["SUPPORTS_MACCATALYST"] as? String) == "YES"
-                try expect(targetConfig1.buildSettings["SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD"] as? String) == "NO"
+                try expect(targetConfig1.buildSettings["SUPPORTS_MACCATALYST"] as? Bool) == true
+                try expect(targetConfig1.buildSettings["SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD"] as? Bool) == false
             }
             
             $0.it("supportedPlaforms merges settings - iOS, macOS") {
@@ -384,8 +384,8 @@ class ProjectGeneratorTests: XCTestCase {
                 
                 try expect(targetConfig1.buildSettings["SUPPORTED_PLATFORMS"] as? String) == "iphoneos iphonesimulator macosx"
                 try expect(targetConfig1.buildSettings["TARGETED_DEVICE_FAMILY"] as? String) == "1,2"
-                try expect(targetConfig1.buildSettings["SUPPORTS_MACCATALYST"] as? String) == "NO"
-                try expect(targetConfig1.buildSettings["SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD"] as? String) == "NO"
+                try expect(targetConfig1.buildSettings["SUPPORTS_MACCATALYST"] as? Bool) == false
+                try expect(targetConfig1.buildSettings["SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD"] as? Bool) == false
             }
             
             $0.it("supportedPlaforms merges settings - tvOS, macOS") {
@@ -397,8 +397,8 @@ class ProjectGeneratorTests: XCTestCase {
                 
                 try expect(targetConfig1.buildSettings["SUPPORTED_PLATFORMS"] as? String) == "appletvos appletvsimulator macosx"
                 try expect(targetConfig1.buildSettings["TARGETED_DEVICE_FAMILY"] as? String) == "3"
-                try expect(targetConfig1.buildSettings["SUPPORTS_MACCATALYST"] as? String) == "NO"
-                try expect(targetConfig1.buildSettings["SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD"] as? String) == "NO"
+                try expect(targetConfig1.buildSettings["SUPPORTS_MACCATALYST"] as? Bool) == false
+                try expect(targetConfig1.buildSettings["SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD"] as? Bool) == false
             }
             
             $0.it("supportedPlaforms merges settings - iOS, macCatalyst") {
@@ -410,8 +410,8 @@ class ProjectGeneratorTests: XCTestCase {
                 
                 try expect(targetConfig1.buildSettings["SUPPORTED_PLATFORMS"] as? String) == "iphoneos iphonesimulator"
                 try expect(targetConfig1.buildSettings["TARGETED_DEVICE_FAMILY"] as? String) == "1,2"
-                try expect(targetConfig1.buildSettings["SUPPORTS_MACCATALYST"] as? String) == "YES"
-                try expect(targetConfig1.buildSettings["SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD"] as? String) == "NO"
+                try expect(targetConfig1.buildSettings["SUPPORTS_MACCATALYST"] as? Bool) == true
+                try expect(targetConfig1.buildSettings["SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD"] as? Bool) == false
             }
             
             $0.it("generates dependencies") {
