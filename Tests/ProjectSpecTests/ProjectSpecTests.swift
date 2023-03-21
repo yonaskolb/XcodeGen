@@ -178,7 +178,33 @@ class ProjectSpecTests: XCTestCase {
 
                 try expectNoValidationError(project, .duplicateDependencies(target: "target1", dependencyReference: "package1"))
             }
-
+            
+            $0.it("watch app unexpected supported platforms") {
+                var project = baseProject
+                project.targets = [
+                    Target(
+                        name: "target1",
+                        type: .application,
+                        platform: .watchOS,
+                        supportedPlatforms: [.macOS]
+                    )
+                ]
+                try expectValidationError(project, .unexpectedTargetSupportedPlatforms(target: "target1", platform: .watchOS))
+            }
+            
+            $0.it("mac app invalid supported platforms") {
+                var project = baseProject
+                project.targets = [
+                    Target(
+                        name: "target1",
+                        type: .application,
+                        platform: .iOS,
+                        supportedPlatforms: [.macOS, .macCatalyst]
+                    )
+                ]
+                try expectValidationError(project, .invalidTargetSupportedPlatformsForMacApp(target: "target1"))
+            }
+            
             $0.it("allows non-existent configurations") {
                 var project = baseProject
                 project.options = SpecOptions(disabledValidations: [.missingConfigs])

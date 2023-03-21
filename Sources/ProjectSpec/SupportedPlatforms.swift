@@ -22,10 +22,3 @@ extension SupportedPlatforms {
         }
     }
 }
-
-extension SupportedPlatforms: JSONEncodable {
-    
-    public func toJSONValue() -> Any {
-        return rawValue
-    }
-}
