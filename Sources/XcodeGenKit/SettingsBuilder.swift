@@ -48,34 +48,34 @@ extension Project {
             buildSettings += SettingsPresetFile.productPlatform(target.type, target.platform).getBuildSettings()
         }
         
-        if let specSupportedPlatforms = target.supportedPlatforms {
+        if let specSupportedPlatforms = target.supportedPlatforms?.sorted(by: { $0.index < $1.index }),
+           specSupportedPlatforms.count > 1 {
+            
             var supportedPlatforms: [String] = []
             var targetedDeviceFamily: [String] = []
-            var supportsMacCatalyst = "NO"
-            var supportsMacDesignedForIPAD = "YES"
             
             for supportedPlatform in specSupportedPlatforms {
                 switch supportedPlatform {
                 case .iOS:
                     supportedPlatforms += ["iphoneos", "iphonesimulator"]
                     targetedDeviceFamily += ["1","2"]
+                    buildSettings["SUPPORTS_MACCATALYST"] = "NO"
+                    buildSettings["SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD"] = "YES"
                 case .tvOS:
                     supportedPlatforms += ["appletvos", "appletvsimulator"]
                     targetedDeviceFamily += ["3"]
                 case .macOS:
                     supportedPlatforms += ["macosx"]
-                    supportsMacCatalyst = "NO"
-                    supportsMacDesignedForIPAD = "NO"
+                    buildSettings["SUPPORTS_MACCATALYST"] = "NO"
+                    buildSettings["SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD"] = "NO"
                 case .macCatalyst:
-                    supportsMacCatalyst = "YES"
-                    supportsMacDesignedForIPAD = "NO"
+                    buildSettings["SUPPORTS_MACCATALYST"] = "YES"
+                    buildSettings["SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD"] = "NO"
                 }
             }
             
             buildSettings["SUPPORTED_PLATFORMS"] = supportedPlatforms.joined(separator: " ")
             buildSettings["TARGETED_DEVICE_FAMILY"] = targetedDeviceFamily.joined(separator: ",")
-            buildSettings["SUPPORTS_MACCATALYST"] = supportsMacCatalyst
-            buildSettings["SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD"] = supportsMacDesignedForIPAD
         }
         
         // apply custom platform version

@@ -161,6 +161,7 @@ extension Dependency: JSONEncodable {
             "link": link,
             "platforms": platforms?.map(\.rawValue).sorted(),
             "copy": copyPhase?.toJSONValue(),
+            "platformFilters": platformFilters?.map { $0.rawValue },
         ]
 
         if removeHeaders != Dependency.removeHeadersDefault {

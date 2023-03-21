@@ -21,4 +21,17 @@ extension SupportedPlatforms {
             return "maccatalyst"
         }
     }
+    
+    public var index: Int {
+        switch self {
+        case .iOS:
+            return 0
+        case .tvOS:
+            return 1
+        case .macOS:
+            return 2
+        case .macCatalyst:
+            return 3
+        }
+    }
 }

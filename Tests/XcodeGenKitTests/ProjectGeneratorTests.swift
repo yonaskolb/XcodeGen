@@ -335,7 +335,85 @@ class ProjectGeneratorTests: XCTestCase {
                 try expect(targetConfig.buildSettings["WATCHOS_DEPLOYMENT_TARGET"] as? String) == "2.0"
                 try expect(targetConfig.buildSettings["TVOS_DEPLOYMENT_TARGET"]).beNil()
             }
-
+            
+            $0.it("supportedPlaforms merges settings - iOS, tvOS") {
+                let target = Target(name: "Target", type: .application, platform: .iOS, supportedPlatforms: [.tvOS, .iOS])
+                let project = Project(name: "", targets: [target])
+                
+                let pbxProject = try project.generatePbxProj()
+                let targetConfig1 = try unwrap(pbxProject.nativeTargets.first?.buildConfigurationList?.buildConfigurations.first)
+                
+                try expect(targetConfig1.buildSettings["SUPPORTED_PLATFORMS"] as? String) == "iphoneos iphonesimulator appletvos appletvsimulator"
+                try expect(targetConfig1.buildSettings["TARGETED_DEVICE_FAMILY"] as? String) == "1,2,3"
+                try expect(targetConfig1.buildSettings["SUPPORTS_MACCATALYST"] as? String) == "NO"
+                try expect(targetConfig1.buildSettings["SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD"] as? String) == "YES"
+            }
+            
+            $0.it("supportedPlaforms merges settings - iOS, tvOS, macOS") {
+                let target = Target(name: "Target", type: .application, platform: .iOS, supportedPlatforms: [.iOS, .tvOS, .macOS])
+                let project = Project(name: "", targets: [target])
+                
+                let pbxProject = try project.generatePbxProj()
+                let targetConfig1 = try unwrap(pbxProject.nativeTargets.first?.buildConfigurationList?.buildConfigurations.first)
+                
+                try expect(targetConfig1.buildSettings["SUPPORTED_PLATFORMS"] as? String) == "iphoneos iphonesimulator appletvos appletvsimulator macosx"
+                try expect(targetConfig1.buildSettings["TARGETED_DEVICE_FAMILY"] as? String) == "1,2,3"
+                try expect(targetConfig1.buildSettings["SUPPORTS_MACCATALYST"] as? String) == "NO"
+                try expect(targetConfig1.buildSettings["SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD"] as? String) == "NO"
+            }
+            
+            $0.it("supportedPlaforms merges settings - iOS, tvOS, macCatalyst") {
+                let target = Target(name: "Target", type: .application, platform: .iOS, supportedPlatforms: [.iOS, .tvOS, .macCatalyst])
+                let project = Project(name: "", targets: [target])
+                
+                let pbxProject = try project.generatePbxProj()
+                let targetConfig1 = try unwrap(pbxProject.nativeTargets.first?.buildConfigurationList?.buildConfigurations.first)
+                
+                try expect(targetConfig1.buildSettings["SUPPORTED_PLATFORMS"] as? String) == "iphoneos iphonesimulator appletvos appletvsimulator"
+                try expect(targetConfig1.buildSettings["TARGETED_DEVICE_FAMILY"] as? String) == "1,2,3"
+                try expect(targetConfig1.buildSettings["SUPPORTS_MACCATALYST"] as? String) == "YES"
+                try expect(targetConfig1.buildSettings["SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD"] as? String) == "NO"
+            }
+            
+            $0.it("supportedPlaforms merges settings - iOS, macOS") {
+                let target = Target(name: "Target", type: .application, platform: .iOS, supportedPlatforms: [.iOS, .macOS])
+                let project = Project(name: "", targets: [target])
+                
+                let pbxProject = try project.generatePbxProj()
+                let targetConfig1 = try unwrap(pbxProject.nativeTargets.first?.buildConfigurationList?.buildConfigurations.first)
+                
+                try expect(targetConfig1.buildSettings["SUPPORTED_PLATFORMS"] as? String) == "iphoneos iphonesimulator macosx"
+                try expect(targetConfig1.buildSettings["TARGETED_DEVICE_FAMILY"] as? String) == "1,2"
+                try expect(targetConfig1.buildSettings["SUPPORTS_MACCATALYST"] as? String) == "NO"
+                try expect(targetConfig1.buildSettings["SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD"] as? String) == "NO"
+            }
+            
+            $0.it("supportedPlaforms merges settings - tvOS, macOS") {
+                let target = Target(name: "Target", type: .application, platform: .tvOS, supportedPlatforms: [.tvOS, .macOS])
+                let project = Project(name: "", targets: [target])
+                
+                let pbxProject = try project.generatePbxProj()
+                let targetConfig1 = try unwrap(pbxProject.nativeTargets.first?.buildConfigurationList?.buildConfigurations.first)
+                
+                try expect(targetConfig1.buildSettings["SUPPORTED_PLATFORMS"] as? String) == "appletvos appletvsimulator macosx"
+                try expect(targetConfig1.buildSettings["TARGETED_DEVICE_FAMILY"] as? String) == "3"
+                try expect(targetConfig1.buildSettings["SUPPORTS_MACCATALYST"] as? String) == "NO"
+                try expect(targetConfig1.buildSettings["SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD"] as? String) == "NO"
+            }
+            
+            $0.it("supportedPlaforms merges settings - iOS, macCatalyst") {
+                let target = Target(name: "Target", type: .application, platform: .iOS, supportedPlatforms: [.iOS, .macCatalyst])
+                let project = Project(name: "", targets: [target])
+                
+                let pbxProject = try project.generatePbxProj()
+                let targetConfig1 = try unwrap(pbxProject.nativeTargets.first?.buildConfigurationList?.buildConfigurations.first)
+                
+                try expect(targetConfig1.buildSettings["SUPPORTED_PLATFORMS"] as? String) == "iphoneos iphonesimulator"
+                try expect(targetConfig1.buildSettings["TARGETED_DEVICE_FAMILY"] as? String) == "1,2"
+                try expect(targetConfig1.buildSettings["SUPPORTS_MACCATALYST"] as? String) == "YES"
+                try expect(targetConfig1.buildSettings["SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD"] as? String) == "NO"
+            }
+            
             $0.it("generates dependencies") {
                 let pbxProject = try project.generatePbxProj()
 
