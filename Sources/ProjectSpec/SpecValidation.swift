@@ -183,7 +183,13 @@ extension Project {
             if target.supportedPlatforms?.contains(.macOS) == true,
                target.supportedPlatforms?.contains(.macCatalyst) == true {
                 
-                errors.append(.invalidTargetSupportedPlatformsForMacApp(target: target.name))
+                errors.append(.multipleMacPlatformInSupportedPlatforms(target: target.name))
+            }
+            
+            if target.supportedPlatforms?.contains(.macCatalyst) == true,
+               target.platform != .iOS {
+                
+                errors.append(.invalidTargetPlatformForSupportedPlatforms(target: target.name))
             }
         }
 

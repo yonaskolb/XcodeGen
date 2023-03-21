@@ -179,7 +179,7 @@ class ProjectSpecTests: XCTestCase {
                 try expectNoValidationError(project, .duplicateDependencies(target: "target1", dependencyReference: "package1"))
             }
             
-            $0.it("watch app unexpected supported platforms") {
+            $0.it("unexpected supported platforms for watch app") {
                 var project = baseProject
                 project.targets = [
                     Target(
@@ -192,7 +192,7 @@ class ProjectSpecTests: XCTestCase {
                 try expectValidationError(project, .unexpectedTargetSupportedPlatforms(target: "target1", platform: .watchOS))
             }
             
-            $0.it("mac app invalid supported platforms") {
+            $0.it("multiple definitions of mac platform in supported platforms") {
                 var project = baseProject
                 project.targets = [
                     Target(
@@ -202,7 +202,20 @@ class ProjectSpecTests: XCTestCase {
                         supportedPlatforms: [.macOS, .macCatalyst]
                     )
                 ]
-                try expectValidationError(project, .invalidTargetSupportedPlatformsForMacApp(target: "target1"))
+                try expectValidationError(project, .multipleMacPlatformInSupportedPlatforms(target: "target1"))
+            }
+            
+            $0.it("invalid target platform for macCatalyst supported platforms") {
+                var project = baseProject
+                project.targets = [
+                    Target(
+                        name: "target1",
+                        type: .application,
+                        platform: .tvOS,
+                        supportedPlatforms: [.tvOS, .macCatalyst]
+                    )
+                ]
+                try expectValidationError(project, .invalidTargetPlatformForSupportedPlatforms(target: "target1"))
             }
             
             $0.it("allows non-existent configurations") {
