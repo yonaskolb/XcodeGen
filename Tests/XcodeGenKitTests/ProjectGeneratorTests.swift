@@ -1144,7 +1144,92 @@ class ProjectGeneratorTests: XCTestCase {
                 try expect(app2OtherLinkerSettings.contains("-ObjC")) == false
                 try expect(app3OtherLinkerSettings.contains("-ObjC")) == true
             }
-
+            
+            $0.it("filter sources with inferPlatformFiltersByPath") {
+                let sourceFiles = TargetSource(path: "AnotherProject/Sources", inferPlatformFiltersByPath: true)
+                
+                let target = Target(
+                    name: "test",
+                    type: .application,
+                    platform: .iOS,
+                    sources: [sourceFiles],
+                    dependencies: []
+                )
+                
+                let project = Project(
+                    basePath: fixturePath + "TestProject",
+                    name: "test",
+                    targets: [target]
+                )
+                
+                let pbxProject = try project.generatePbxProj()
+                let buildFiles = pbxProject.buildFiles
+                
+                try expect(buildFiles.count) == 8
+                
+                for buildFile in buildFiles {
+                    let name = buildFile.file?.nameOrPath
+                    
+                    if buildFile.platformFilters == [SupportedPlatforms.iOS.string] && (name == "File_ios.swift" || name == "File_A.swift") {
+                        // ok
+                    } else if buildFile.platformFilters == [SupportedPlatforms.tvOS.string] && (name == "File_tvOs.swift" || name == "File_B.swift") {
+                        // ok
+                    } else if buildFile.platformFilters == [SupportedPlatforms.macOS.string] && (name == "File_macOS.swift" || name == "File_C.swift") {
+                        // ok
+                    } else if buildFile.platformFilters == [SupportedPlatforms.macCatalyst.string] && (name == "File_MACCATALYST.swift" || name == "File_D.swift") {
+                        // ok
+                    } else {
+                        throw failure("Unexpected source file / platformFilters")
+                    }
+                }
+            }
+            
+            $0.it("filter sources with platformFilters") {
+                let sourceFile1 = TargetSource(path: "AnotherProject/Sources/iOs", platformFilters: [.iOS])
+                let sourceFile2 = TargetSource(path: "AnotherProject/Sources/TVOS", platformFilters: [.tvOS])
+                let sourceFile3 = TargetSource(path: "AnotherProject/Sources/macos", platformFilters: [.macOS, .macCatalyst])
+                let sourceFile4 = TargetSource(path: "AnotherProject/Sources/macCatalyst", platformFilters: [.macOS, .macCatalyst])
+                let sourceFile5 = TargetSource(path: "AnotherProject/Sources/File_ios.swift", platformFilters: [.iOS])
+                let sourceFile6 = TargetSource(path: "AnotherProject/Sources/File_tvOs.swift", platformFilters: [.tvOS])
+                let sourceFile7 = TargetSource(path: "AnotherProject/Sources/File_macOS.swift", platformFilters: [.macOS, .macCatalyst])
+                let sourceFile8 = TargetSource(path: "AnotherProject/Sources/File_MACCATALYST.swift", platformFilters: [.macOS, .macCatalyst])
+                
+                let target = Target(
+                    name: "test",
+                    type: .application,
+                    platform: .iOS,
+                    sources: [sourceFile1, sourceFile2, sourceFile3, sourceFile4, sourceFile5, sourceFile6, sourceFile7, sourceFile8],
+                    dependencies: []
+                )
+                
+                let project = Project(
+                    basePath: fixturePath + "TestProject",
+                    name: "test",
+                    targets: [target]
+                )
+                
+                let pbxProject = try project.generatePbxProj()
+                let buildFiles = pbxProject.buildFiles
+                
+                try expect(buildFiles.count) == 8
+                
+                for buildFile in buildFiles {
+                    let name = buildFile.file?.nameOrPath
+                    
+                    if buildFile.platformFilters == [SupportedPlatforms.iOS.string] && (name == "File_ios.swift" || name == "File_A.swift") {
+                        // ok
+                    } else if buildFile.platformFilters == [SupportedPlatforms.tvOS.string] && (name == "File_tvOs.swift" || name == "File_B.swift") {
+                        // ok
+                    } else if buildFile.platformFilters == [SupportedPlatforms.macOS.string, SupportedPlatforms.macCatalyst.string] && (name == "File_C.swift" || name == "File_D.swift") {
+                        // ok
+                    } else if buildFile.platformFilters == [SupportedPlatforms.macOS.string, SupportedPlatforms.macCatalyst.string] && (name == "File_macOS.swift" || name == "File_MACCATALYST.swift") {
+                        // ok
+                    } else {
+                        throw failure("Unexpected source file / platformFilters")
+                    }
+                }
+            }
+            
             $0.it("copies Swift Objective-C Interface Header") {
                 let swiftStaticLibraryWithHeader = Target(
                     name: "swiftStaticLibraryWithHeader",
