@@ -135,6 +135,7 @@ extension TargetSource: JSONEncodable {
             "createIntermediateGroups": createIntermediateGroups,
             "resourceTags": resourceTags,
             "path": path,
+            "inferPlatformFiltersByPath": inferPlatformFiltersByPath,
             "platformFilters": platformFilters?.map { $0.rawValue },
         ]
 

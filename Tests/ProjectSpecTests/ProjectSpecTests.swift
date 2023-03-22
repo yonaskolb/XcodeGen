@@ -526,6 +526,7 @@ class ProjectSpecTests: XCTestCase {
                                                                            buildPhase: .resources,
                                                                            headerVisibility: .private,
                                                                            createIntermediateGroups: true,
+                                                                           inferPlatformFiltersByPath: true,
                                                                            platformFilters: [.tvOS])],
                                                     dependencies: [Dependency(type: .carthage(findFrameworks: true, linkType: .dynamic),
                                                                               reference: "reference",
