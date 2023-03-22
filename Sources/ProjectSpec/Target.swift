@@ -159,13 +159,17 @@ extension Target {
         guard let targetsDictionary: [String: JSONDictionary] = jsonDictionary["targets"] as? [String: JSONDictionary] else {
             return jsonDictionary
         }
-
+        
         var crossPlatformTargets: [String: JSONDictionary] = [:]
 
         for (targetName, target) in targetsDictionary {
-
-            if let platforms = target["platform"] as? [String], target["supportedPlatforms"] == nil {
-
+            var target = target
+            
+            if let platforms = target["platform"] as? [String], target["supportedPlatforms"] != nil {
+                target["platform"] = platforms.first
+            }
+            
+            if let platforms = target["platform"] as? [String] {
                 for platform in platforms {
                     var platformTarget = target
 
@@ -199,8 +203,8 @@ extension Target {
                 crossPlatformTargets[targetName] = target
             }
         }
+        
         var merged = jsonDictionary
-
         merged["targets"] = crossPlatformTargets
         return merged
     }

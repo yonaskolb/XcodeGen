@@ -607,7 +607,26 @@ class SpecLoadingTests: XCTestCase {
                 try expect(project.targets.count) == 2
                 try expect(project.targets) == [target_iOS, target_tvOS]
             }
+            
+            $0.it("parses target with supported platforms, cross platform targets generation is ignored") {
+                let targetDictionary: [String: Any] = [
+                    "platform": ["iOS", "tvOS"],
+                    "supportedPlatforms": ["iOS", "tvOS"],
+                    "type": "framework",
+                    "sources": ["Framework", "Framework"],
+                    "settings": ["SETTING": "value"],
+                ]
 
+                let project = try getProjectSpec(["targets": ["Framework": targetDictionary]])
+                var target_iOS = Target(name: "Framework", type: .framework, platform: .iOS, supportedPlatforms: [.iOS, .tvOS])
+                
+                target_iOS.sources = ["Framework", "Framework"]
+                target_iOS.settings = ["SETTING": "value"]
+                
+                try expect(project.targets.count) == 1
+                try expect(project.targets) == [target_iOS]
+            }
+            
             $0.it("parses target templates") {
 
                 let targetDictionary: [String: Any] = [
