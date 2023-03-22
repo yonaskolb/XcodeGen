@@ -115,7 +115,9 @@ class SourceGenerator {
             return filters.map { $0.string }
         } else if inferPlatformFiltersByPath == true {
             for supportedPlatform in SupportedPlatforms.allCases {
-                if path.string.contains("/\(supportedPlatform)/") || path.string.hasSuffix("_\(supportedPlatform).swift") {
+                if  path.string.range(of: "/\(supportedPlatform)/", options: .caseInsensitive) != nil ||
+                    path.string.range(of: "_\(supportedPlatform).swift", options: .caseInsensitive) != nil {
+                    
                     return [supportedPlatform.string]
                 }
             }
