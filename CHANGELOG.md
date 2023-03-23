@@ -6,6 +6,10 @@
 
 - Added support for shared breakpoints #177 @alexruperez @myihsan
 
+### Fixed
+
+- Fix case where source paths may not be deduplicated correctly resulting in duplicate groups and/or a crash in running Xcodegen #1341 @dalemyers
+
 ## 2.34.0
 
 ### Changed
