@@ -1794,7 +1794,7 @@ class ProjectGeneratorTests: XCTestCase {
     
     func testGenerateXcodeProjectWithPlatformFilteredDependencies() throws {
         
-        describe("generateXcodeProject") {
+        describe("generateXcodeProject with platformFilters") {
             
             func generateProjectForApp(withDependencies: [Dependency], targets: [Target], packages: [String: SwiftPackage] = [:]) throws -> PBXProj {
                 
