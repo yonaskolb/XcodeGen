@@ -321,6 +321,7 @@ Settings are merged in the following order: groups, base, configs.
 
 - [x] **type**: **[Product Type](#product-type)** - Product type of the target
 - [x] **platform**: **[Platform](#platform)** - Platform of the target
+- [ ] **supportedPlatforms**: **[[Supported Platforms](#supported-platforms)]** - List of supported platforms for the target.
 - [ ] **deploymentTarget**: **String** - The deployment target (eg `9.2`). If this is not specified the value from the project set in [Options](#options)`.deploymentTarget.PLATFORM` will be used.
 - [ ] **sources**: **[Sources](#sources)** - Source directories of the target
 - [ ] **configFiles**: **[Config Files](#config-files)** - `.xcconfig` files per config
@@ -442,6 +443,22 @@ This will provide a mix of default build settings for the chosen platforms. It c
 
 Note that the definition of supported platforms will skip the `Multi Platform targets` generation.
 
+```yaml
+targets:
+  MyFramework:
+    sources: MyFramework
+    platform: iOS
+    supportedPlatforms: [iOS, tvOS]
+    deploymentTarget:
+      iOS: 9.0
+      tvOS: 10.0
+    type: framework
+    settings:
+      base:
+        INFOPLIST_FILE: MyApp/Info.plist
+        PRODUCT_BUNDLE_IDENTIFIER: com.myapp
+```
+
 ### Sources
 
 Specifies the source directories for a target. This can either be a single source or a list of sources. Applicable source files, resources, headers, and `.lproj` files will be parsed appropriately.
@@ -456,7 +473,7 @@ A source can be provided via a string (the path) or an object of the form:
 - [ ] **compilerFlags**: **[String]** or **String** - A list of compilerFlags to add to files under this specific path provided as a list or a space delimitted string. Defaults to empty.
 - [ ] **excludes**: **[String]** - A list of [global patterns](https://en.wikipedia.org/wiki/Glob_(programming)) representing the files to exclude. These rules are relative to `path` and _not the directory where `project.yml` resides_. XcodeGen uses Bash 4's Glob behaviors where globstar (**) is enabled.
 - [ ] **includes**: **[String]** - A list of global patterns in the same format as `excludes` representing the files to include. These rules are relative to `path` and _not the directory where `project.yml` resides_. If **excludes** is present and file conflicts with **includes**, **excludes** will override the **includes** behavior.
-- [ ] **platformFilters**: **[[SupportedPlatforms](#supported-platforms)]** - List of supported platforms the files should apply to. Defaults to all supported platforms.
+- [ ] **platformFilters**: **[[Supported Platforms](#supported-platforms)]** - List of supported platforms the files should apply to. Defaults to all supported platforms.
 - [ ] **createIntermediateGroups**: **Bool** - This overrides the value in [Options](#options).
 - [ ] **optional**: **Bool** - Disable missing path check. Defaults to false.
 - [ ] **buildPhase**: **String** - This manually sets the build phase this file or files in this directory will be added to, otherwise XcodeGen will guess based on the file extension. Note that `Info.plist` files will never be added to any build phases, no matter what this setting is. Possible values are:
@@ -508,6 +525,7 @@ targets:
           - "-Wextra"
       - path: MyOtherTargetSource3
         compilerFlags: "-Werror -Wextra"
+        platformFilters: [iOS]
       - path: ModuleMaps
         buildPhase:
           copyFiles:
@@ -538,7 +556,7 @@ A dependency can be one of a 6 types:
 - [ ] **removeHeaders**: **Bool** - Whether the `removeHeadersOnCopy` setting is applied when embedding the framework. Defaults to true.
 - [ ] **weak**: **Bool** - Whether the `Weak` setting is applied when linking the framework. Defaults to false.
 - [ ] **platformFilter**: **String** - This field is specific to Mac Catalyst. It corresponds to the "Platforms" dropdown in the Frameworks & Libraries section of Target settings in Xcode. Available options are: **iOS**, **macOS** and **all**. Defaults is **all**.
-- [ ] **platformFilters**: **[[SupportedPlatforms](#supported-platforms)]** - List of supported platforms this dependency should apply to. Defaults to all supported platforms.
+- [ ] **platformFilters**: **[[Supported Platforms](#supported-platforms)]** - List of supported platforms this dependency should apply to. Defaults to all supported platforms.
 - [ ] **platforms**: **[[Platform](#platform)]** - List of platforms this dependency should apply to. Defaults to all applicable platforms.
 - **copy** - Copy Files Phase for this dependency. This only applies when `embed` is true. Must be specified as an object with the following fields:
     - [x] **destination**: **String** - Destination of the Copy Files phase. This can be one of the following values:
@@ -592,9 +610,11 @@ targets:
       - target: MyFramework
       - target: FooLib/FooTarget
       - framework: path/to/framework.framework
+        platformFilters: [iOS]
       - carthage: Result
         findFrameworks: false
         linkType: static
+        platformFilters: [iOS, tvOS]
       - sdk: Contacts.framework
       - sdk: libc++.tbd
       - sdk: libz.dylib
