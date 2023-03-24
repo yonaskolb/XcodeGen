@@ -1791,7 +1791,78 @@ class ProjectGeneratorTests: XCTestCase {
             }
         }
     }
+    
+    func testGenerateXcodeProjectWithPlatformFilteredDependencies() throws {
         
+        describe("generateXcodeProject") {
+            
+            func generateProjectForApp(withDependencies: [Dependency], targets: [Target], packages: [String: SwiftPackage] = [:]) throws -> PBXProj {
+                
+                let app = Target(
+                    name: "App",
+                    type: .application,
+                    platform: .iOS,
+                    dependencies: withDependencies
+                )
+                
+                let project = Project(
+                    name: "test",
+                    targets: targets + [app],
+                    packages: packages
+                )
+                
+                return try project.generatePbxProj()
+            }
+            
+            func expectLinkedDependecies(_ expectedLinkedFiles: [String: [String]], in project: PBXProj) throws {
+                let buildPhases = project.buildPhases
+                let frameworkPhases = project.frameworksBuildPhases.filter { buildPhases.contains($0) }
+                
+                var linkedFiles: [String: [String]] = [:]
+                
+                for link in frameworkPhases[0].files ?? [] {
+                    if let name = link.file?.nameOrPath ?? link.product?.productName  {
+                        linkedFiles[name] = link.platformFilters
+                    }
+                }
+                
+                try expect(linkedFiles) == expectedLinkedFiles
+            }
+            
+            $0.it("target dependencies") {
+                
+                let frameworkA = Target(
+                    name: "frameworkA",
+                    type: .framework,
+                    platform: .iOS
+                )
+                
+                let frameworkB = Target(
+                    name: "frameworkB",
+                    type: .framework,
+                    platform: .iOS
+                )
+                
+                let expectedLinkedFiles = [
+                    "frameworkA.framework": [SupportedPlatforms.iOS.string],
+                    "frameworkB.framework": [SupportedPlatforms.iOS.string, SupportedPlatforms.tvOS.string]
+                ]
+                
+                // given
+                let dependencies = [
+                    Dependency(type: .target, reference: frameworkA.name, platformFilters: [.iOS]),
+                    Dependency(type: .target, reference: frameworkB.name, platformFilters: [.iOS, .tvOS]),
+                ]
+                
+                // when
+                let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [frameworkA, frameworkB])
+                
+                // then ensure that everything is linked
+                try expectLinkedDependecies(expectedLinkedFiles, in: pbxProject)
+            }
+        }
+    }
+    
     func testGenerateXcodeProjectWithCustomDependencyDestinations() throws {
         
         describe("generateXcodeProject") {
