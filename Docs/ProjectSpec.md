@@ -14,6 +14,7 @@
 - [Target](#target)
      - [Product Type](#product-type)
      - [Platform](#platform)
+     - [SupportedPlatforms](#supported-platforms)
      - [Sources](#sources)
      - [Dependency](#dependency)
      - [Config Files](#config-files)
@@ -536,7 +537,7 @@ A dependency can be one of a 6 types:
 - [ ] **removeHeaders**: **Bool** - Whether the `removeHeadersOnCopy` setting is applied when embedding the framework. Defaults to true
 - [ ] **weak**: **Bool** - Whether the `Weak` setting is applied when linking the framework. Defaults to false
 - [ ] **platformFilter**: **String** - This field is specific to Mac Catalyst. It corresponds to the "Platforms" dropdown in the Frameworks & Libraries section of Target settings in Xcode. Available options are: **iOS**, **macOS** and **all**. Defaults is **all**
-- [ ] **platformFilters**: **[[SupportedPlatforms](#supportedplatforms)]** - List of supported platforms this dependency should apply to.
+- [ ] **platformFilters**: **[[SupportedPlatforms](#supported-platforms)]** - List of supported platforms this dependency should apply to.
 - [ ] **platforms**: **[[Platform](#platform)]** - List of platforms this dependency should apply to. Defaults to all applicable platforms.
 - **copy** - Copy Files Phase for this dependency. This only applies when `embed` is true. Must be specified as an object with the following fields:
     - [x] **destination**: **String** - Destination of the Copy Files phase. This can be one of the following values:
