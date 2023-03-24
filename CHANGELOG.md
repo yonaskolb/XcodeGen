@@ -2,6 +2,13 @@
 
 ## Next Version
 
+### Feature
+
+- Added support for multiple deployment targets with xcode 14
+- Added `supportedPlatforms` for target
+- Added `platformFilters` for sources and dependecies
+- Added `inferPlatformFiltersByPath` for an convience sources filtering
+
 ### Added
 
 - Added support for shared breakpoints #177 @alexruperez @myihsan
