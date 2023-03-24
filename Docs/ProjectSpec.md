@@ -430,6 +430,17 @@ targets:
 
 The above will generate 2 targets named `MyFramework_iOS` and `MyFramework_tvOS`, with all the relevant platform build settings. They will both have a `PRODUCT_NAME` of `MyFramework`
 
+### Supported Platforms
+
+This will provide a mix of default build settings for the chosen platforms. It can be any of the following:
+
+- `iOS`
+- `tvOS`
+- `macOS`
+- `macCatalyst`
+
+Note that the definition of supported platforms will skip the `Multi Platform targets` generation.
+
 ### Sources
 
 Specifies the source directories for a target. This can either be a single source or a list of sources. Applicable source files, resources, headers, and `.lproj` files will be parsed appropriately.
@@ -525,6 +536,7 @@ A dependency can be one of a 6 types:
 - [ ] **removeHeaders**: **Bool** - Whether the `removeHeadersOnCopy` setting is applied when embedding the framework. Defaults to true
 - [ ] **weak**: **Bool** - Whether the `Weak` setting is applied when linking the framework. Defaults to false
 - [ ] **platformFilter**: **String** - This field is specific to Mac Catalyst. It corresponds to the "Platforms" dropdown in the Frameworks & Libraries section of Target settings in Xcode. Available options are: **iOS**, **macOS** and **all**. Defaults is **all**
+- [ ] **platformFilters**: **[[SupportedPlatforms](#supportedplatforms)]** - List of supported platforms this dependency should apply to.
 - [ ] **platforms**: **[[Platform](#platform)]** - List of platforms this dependency should apply to. Defaults to all applicable platforms.
 - **copy** - Copy Files Phase for this dependency. This only applies when `embed` is true. Must be specified as an object with the following fields:
     - [x] **destination**: **String** - Destination of the Copy Files phase. This can be one of the following values:
