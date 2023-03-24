@@ -1829,6 +1829,21 @@ class ProjectGeneratorTests: XCTestCase {
                 try expect(linkedFiles) == expectedLinkedFiles
             }
             
+            func expectCopiedBundles(_ expectedCopiedBundleFiles: [String: [String]], in project: PBXProj) throws {
+                let buildPhases = project.buildPhases
+                let copyBundlesPhase = project.copyFilesBuildPhases.filter { buildPhases.contains($0) }
+                
+                var copiedFiles: [String: [String]] = [:]
+                
+                for copy in copyBundlesPhase[0].files ?? [] {
+                    if let name = copy.file?.nameOrPath {
+                        copiedFiles[name] = copy.platformFilters
+                    }
+                }
+                
+                try expect(copiedFiles) == expectedCopiedBundleFiles
+            }
+            
             $0.it("target dependencies") {
                 
                 let frameworkA = Target(
@@ -1859,6 +1874,110 @@ class ProjectGeneratorTests: XCTestCase {
                 
                 // then ensure that everything is linked
                 try expectLinkedDependecies(expectedLinkedFiles, in: pbxProject)
+            }
+            
+            $0.it("framework dependencies") {
+                
+                let expectedLinkedFiles = [
+                    "frameworkA.framework": [SupportedPlatforms.iOS.string],
+                    "frameworkB.framework": [SupportedPlatforms.iOS.string, SupportedPlatforms.tvOS.string]
+                ]
+                
+                // given
+                let dependencies = [
+                    Dependency(type: .framework, reference: "frameworkA.framework", platformFilters: [.iOS]),
+                    Dependency(type: .framework, reference: "frameworkB.framework", platformFilters: [.iOS, .tvOS]),
+                ]
+                
+                // when
+                let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [])
+                
+                // then ensure that everything is linked
+                try expectLinkedDependecies(expectedLinkedFiles, in: pbxProject)
+            }
+            
+            $0.it("carthage dependencies") {
+                
+                let expectedLinkedFiles = [
+                    "frameworkA.framework": [SupportedPlatforms.iOS.string],
+                    "frameworkB.framework": [SupportedPlatforms.iOS.string, SupportedPlatforms.tvOS.string]
+                ]
+                
+                // given
+                let dependencies = [
+                    Dependency(type: .carthage(findFrameworks: false, linkType: .dynamic), reference: "frameworkA.framework", platformFilters: [.iOS]),
+                    Dependency(type: .carthage(findFrameworks: false, linkType: .dynamic), reference: "frameworkB.framework", platformFilters: [.iOS, .tvOS]),
+                ]
+                
+                // when
+                let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [])
+                
+                // then ensure that everything is linked
+                try expectLinkedDependecies(expectedLinkedFiles, in: pbxProject)
+            }
+            
+            $0.it("sdk dependencies") {
+                
+                let expectedLinkedFiles = [
+                    "sdkA.framework": [SupportedPlatforms.iOS.string],
+                    "sdkB.framework": [SupportedPlatforms.iOS.string, SupportedPlatforms.tvOS.string]
+                ]
+                
+                // given
+                let dependencies = [
+                    Dependency(type: .sdk(root: nil), reference: "sdkA.framework", platformFilters: [.iOS]),
+                    Dependency(type: .sdk(root: nil), reference: "sdkB.framework", platformFilters: [.iOS, .tvOS]),
+                ]
+                
+                // when
+                let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [])
+                
+                // then ensure that everything is linked
+                try expectLinkedDependecies(expectedLinkedFiles, in: pbxProject)
+            }
+            
+            $0.it("package dependencies") {
+                
+                let packages: [String: SwiftPackage] = [
+                    "RxSwift": .remote(url: "https://github.com/ReactiveX/RxSwift", versionRequirement: .upToNextMajorVersion("5.1.1")),
+                ]
+                
+                let expectedLinkedFiles = [
+                    "RxSwift": [SupportedPlatforms.iOS.string],
+                    "RxCocoa": [SupportedPlatforms.iOS.string, SupportedPlatforms.tvOS.string]
+                ]
+                
+                // given
+                let dependencies = [
+                    Dependency(type: .package(product: "RxSwift"), reference: "RxSwift", platformFilters: [.iOS]),
+                    Dependency(type: .package(product: "RxCocoa"), reference: "RxSwift", platformFilters: [.iOS, .tvOS]),
+                ]
+                
+                // when
+                let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [], packages: packages)
+                
+                // then ensure that everything is linked
+                try expectLinkedDependecies(expectedLinkedFiles, in: pbxProject)
+            }
+            
+            $0.it("bundle dependencies") {
+                
+                let expectedCopiedBundleFiles = [
+                    "bundleA.bundle": [SupportedPlatforms.iOS.string],
+                    "bundleB.bundle": [SupportedPlatforms.iOS.string, SupportedPlatforms.tvOS.string]
+                ]
+                
+                // given
+                let dependencies = [
+                    Dependency(type: .bundle, reference: "bundleA.bundle", platformFilters: [.iOS]),
+                    Dependency(type: .bundle, reference: "bundleB.bundle", platformFilters: [.iOS, .tvOS]),
+                ]
+                
+                // when
+                let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [])
+                
+                // then ensure that everything is linked
+                try expectCopiedBundles(expectedCopiedBundleFiles, in: pbxProject)
             }
         }
     }
