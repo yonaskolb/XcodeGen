@@ -1172,19 +1172,19 @@ class ProjectGeneratorTests: XCTestCase {
                     
                     if buildFile.platformFilters == [SupportedPlatforms.iOS.string] &&
                         (name == "File_ios.swift" || name == "File_A.swift") {
-                        // ok
+                        continue
                     } else if buildFile.platformFilters == [SupportedPlatforms.tvOS.string] &&
                                 (name == "File_tvOs.swift" || name == "File_B.swift") {
-                        // ok
+                        continue
                     } else if buildFile.platformFilters == [SupportedPlatforms.macOS.string] &&
                                 (name == "File_macOS.swift" || name == "File_C.swift") {
-                        // ok
+                        continue
                     } else if buildFile.platformFilters == [SupportedPlatforms.macCatalyst.string] &&
                                 (name == "File_MACCATALYST.swift" || name == "File_D.swift") {
-                        // ok
-                    } else {
-                        throw failure("Unexpected source file / platformFilters")
+                        continue
                     }
+                    
+                    throw failure("Unexpected source file / platformFilters")
                 }
             }
             
@@ -1230,19 +1230,19 @@ class ProjectGeneratorTests: XCTestCase {
                     
                     if buildFile.platformFilters == [SupportedPlatforms.iOS.string] &&
                         (name == "File_ios.swift" || name == "File_A.swift") {
-                        // ok
+                        continue
                     } else if buildFile.platformFilters == [SupportedPlatforms.tvOS.string] &&
                                 (name == "File_tvOs.swift" || name == "File_B.swift") {
-                        // ok
+                        continue
                     } else if buildFile.platformFilters == [SupportedPlatforms.macOS.string, SupportedPlatforms.macCatalyst.string] &&
                                 (name == "File_C.swift" || name == "File_D.swift") {
-                        // ok
+                        continue
                     } else if buildFile.platformFilters == [SupportedPlatforms.macOS.string, SupportedPlatforms.macCatalyst.string] &&
                                 (name == "File_macOS.swift" || name == "File_MACCATALYST.swift") {
-                        // ok
-                    } else {
-                        throw failure("Unexpected source file / platformFilters")
+                        continue
                     }
+                    
+                    throw failure("Unexpected source file / platformFilters")
                 }
             }
             
