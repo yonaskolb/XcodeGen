@@ -5,14 +5,9 @@ import PathKit
 public struct TargetSource: Equatable {
     public static let optionalDefault = false
     
-    private var _path: String = ""
-
     public var path: String {
-        get {
-            return _path
-        }
-        set {
-            _path = TargetSource.clean(path: newValue)
+        didSet {
+            path = (path as NSString).standardizingPath
         }
     }
     
@@ -58,7 +53,7 @@ public struct TargetSource: Equatable {
         attributes: [String] = [],
         resourceTags: [String] = []
     ) {
-        self._path = TargetSource.clean(path: path)
+        self.path = path
         self.name = name
         self.group = group
         self.compilerFlags = compilerFlags
@@ -71,14 +66,6 @@ public struct TargetSource: Equatable {
         self.createIntermediateGroups = createIntermediateGroups
         self.attributes = attributes
         self.resourceTags = resourceTags
-    }
-    
-    private static func clean(path: String) -> String {
-        if path.hasSuffix("//") {
-            return String(path.dropLast())
-        } else {
-            return path
-        }
     }
 }
 
@@ -100,7 +87,7 @@ extension TargetSource: ExpressibleByStringLiteral {
 extension TargetSource: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
-        _path = TargetSource.clean(path: try jsonDictionary.json(atKeyPath: "path"))
+        path = try jsonDictionary.json(atKeyPath: "path")
         name = jsonDictionary.json(atKeyPath: "name")
         group = jsonDictionary.json(atKeyPath: "group")
 
