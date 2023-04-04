@@ -87,7 +87,8 @@ extension TargetSource: ExpressibleByStringLiteral {
 extension TargetSource: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
-        path = ((try jsonDictionary.json(atKeyPath: "path")) as NSString).standardizingPath
+        path = try jsonDictionary.json(atKeyPath: "path")
+        path = (path as NSString).standardizingPath // Done in two steps as the compiler can't figure out the types otherwise
         name = jsonDictionary.json(atKeyPath: "name")
         group = jsonDictionary.json(atKeyPath: "group")
 
