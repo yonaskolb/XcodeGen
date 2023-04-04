@@ -53,7 +53,7 @@ public struct TargetSource: Equatable {
         attributes: [String] = [],
         resourceTags: [String] = []
     ) {
-        self.path = path
+        self.path = (path as NSString).standardizingPath
         self.name = name
         self.group = group
         self.compilerFlags = compilerFlags
@@ -87,7 +87,7 @@ extension TargetSource: ExpressibleByStringLiteral {
 extension TargetSource: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
-        path = try jsonDictionary.json(atKeyPath: "path")
+        path = ((try jsonDictionary.json(atKeyPath: "path")) as NSString).standardizingPath
         name = jsonDictionary.json(atKeyPath: "name")
         group = jsonDictionary.json(atKeyPath: "group")
 
