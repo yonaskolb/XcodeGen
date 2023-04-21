@@ -1652,8 +1652,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 77CE5B5E5DEAC820254D484C /* Build configuration list for PBXNativeTarget "App_macOS" */;
 			buildPhases = (
-				96BB43F4706B031DA45166E8 /* Sources */,
 				77D35586228BF8AB74152BB5 /* Resources */,
+				96BB43F4706B031DA45166E8 /* Sources */,
 				FB79B30FEA6073A29B4D9FCC /* CopyFiles */,
 				A6E1C88C073F8CC6B5B072B6 /* Frameworks */,
 				DE875E9A37F7CB9C347AEFA0 /* Embed System Extensions */,

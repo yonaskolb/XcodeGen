@@ -375,6 +375,45 @@ class PBXProjGeneratorTests: XCTestCase {
                 try expect(testTarget?.frameworksBuildPhase()?.files?.count) == 1
                 try expect(testTarget?.frameworksBuildPhase()?.files?[0].platformFilter) == "ios"
             }
+
+            $0.it("places resources before sources buildPhase") {
+                let directories = """
+                    Sources:
+                      - MainScreen:
+                        - Entities:
+                            - file.swift
+                            - image.jpg
+                """
+                try createDirectories(directories)
+                let target1 = Target(
+                    name: "TestAll",
+                    type: .application,
+                    platform: .iOS,
+                    sources: ["Sources"],
+                    resourcesBeforeSourcesBuildPhase: true
+                )
+                let target2 = Target(
+                    name: "TestiOS",
+                    type: .application,
+                    platform: .iOS,
+                    sources: ["Sources"],
+                    resourcesBeforeSourcesBuildPhase: false
+                )
+
+                let swinjectPackage = SwiftPackage.remote(url: "https://github.com/Swinject/Swinject", versionRequirement: .exact("2.8.0"))
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target1, target2], packages: ["Swinject": swinjectPackage])
+
+                let pbxProj = try project.generatePbxProj()
+
+                let targets = pbxProj.projects.first?.targets
+                try expect(targets?.count) == 2
+                try expect(targets?.first?.buildPhases.first).to.beOfType(PBXResourcesBuildPhase.self)
+                try expect(targets?.first?.buildPhases.last).to.beOfType(PBXSourcesBuildPhase.self)
+
+                try expect(targets?.last?.buildPhases.first).to.beOfType(PBXSourcesBuildPhase.self)
+                try expect(targets?.last?.buildPhases.last).to.beOfType(PBXResourcesBuildPhase.self)
+            }
         }
     }
+
 }

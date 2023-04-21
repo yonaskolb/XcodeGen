@@ -1083,6 +1083,18 @@ public class PBXProjGenerator {
             }
         }
 
+        func addresourcesBuildPhase() {
+            let resourcesBuildPhaseFiles = getBuildFilesForPhase(.resources) + copyResourcesReferences
+            if !resourcesBuildPhaseFiles.isEmpty {
+                let resourcesBuildPhase = addObject(PBXResourcesBuildPhase(files: resourcesBuildPhaseFiles))
+                buildPhases.append(resourcesBuildPhase)
+            }
+        }
+
+        if target.resourcesBeforeSourcesBuildPhase {
+            addresourcesBuildPhase()
+        }
+
         let sourcesBuildPhaseFiles = getBuildFilesForPhase(.sources)
         let shouldSkipSourcesBuildPhase = sourcesBuildPhaseFiles.isEmpty && target.type.canSkipCompileSourcesBuildPhase
         if !shouldSkipSourcesBuildPhase {
@@ -1092,10 +1104,8 @@ public class PBXProjGenerator {
 
         buildPhases += try target.postCompileScripts.map { try generateBuildScript(targetName: target.name, buildScript: $0) }
 
-        let resourcesBuildPhaseFiles = getBuildFilesForPhase(.resources) + copyResourcesReferences
-        if !resourcesBuildPhaseFiles.isEmpty {
-            let resourcesBuildPhase = addObject(PBXResourcesBuildPhase(files: resourcesBuildPhaseFiles))
-            buildPhases.append(resourcesBuildPhase)
+        if !target.resourcesBeforeSourcesBuildPhase {
+            addresourcesBuildPhase()
         }
 
         let swiftObjCInterfaceHeader = project.getCombinedBuildSetting("SWIFT_OBJC_INTERFACE_HEADER_NAME", target: target, config: project.configs[0]) as? String
