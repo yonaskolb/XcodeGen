@@ -390,18 +390,17 @@ class PBXProjGeneratorTests: XCTestCase {
                     type: .application,
                     platform: .iOS,
                     sources: ["Sources"],
-                    resourcesBeforeSourcesBuildPhase: true
+                    putResourcesBeforeSourcesBuildPhase: true
                 )
                 let target2 = Target(
                     name: "TestiOS",
                     type: .application,
                     platform: .iOS,
                     sources: ["Sources"],
-                    resourcesBeforeSourcesBuildPhase: false
+                    putResourcesBeforeSourcesBuildPhase: false
                 )
 
-                let swinjectPackage = SwiftPackage.remote(url: "https://github.com/Swinject/Swinject", versionRequirement: .exact("2.8.0"))
-                let project = Project(basePath: directoryPath, name: "Test", targets: [target1, target2], packages: ["Swinject": swinjectPackage])
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target1, target2])
 
                 let pbxProj = try project.generatePbxProj()
 

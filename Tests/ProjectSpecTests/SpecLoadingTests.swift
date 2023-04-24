@@ -1277,11 +1277,11 @@ class SpecLoadingTests: XCTestCase {
                 try expect(target.onlyCopyFilesOnInstall) == true
             }
 
-            $0.it("parses resources before Sources Build Phase ") {
+            $0.it("parses put resources before Sources Build Phase") {
                 var targetSource = validTarget
-                targetSource["resourcesBeforeSourcesBuildPhase"] = true
+                targetSource["putResourcesBeforeSourcesBuildPhase"] = true
                 let target = try Target(name: "Embed Frameworks", jsonDictionary: targetSource)
-                try expect(target.resourcesBeforeSourcesBuildPhase) == true
+                try expect(target.putResourcesBeforeSourcesBuildPhase) == true
             }
 
             $0.it("parses settings") {

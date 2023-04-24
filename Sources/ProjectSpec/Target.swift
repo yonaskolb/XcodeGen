@@ -56,7 +56,7 @@ public struct Target: ProjectTarget {
     public var attributes: [String: Any]
     public var productName: String
     public var onlyCopyFilesOnInstall: Bool
-    public var resourcesBeforeSourcesBuildPhase: Bool
+    public var putResourcesBeforeSourcesBuildPhase: Bool
 
     public var isLegacy: Bool {
         legacy != nil
@@ -96,7 +96,7 @@ public struct Target: ProjectTarget {
         legacy: LegacyTarget? = nil,
         attributes: [String: Any] = [:],
         onlyCopyFilesOnInstall: Bool = false,
-        resourcesBeforeSourcesBuildPhase: Bool = false
+        putResourcesBeforeSourcesBuildPhase: Bool = false
     ) {
         self.name = name
         self.type = type
@@ -120,7 +120,7 @@ public struct Target: ProjectTarget {
         self.legacy = legacy
         self.attributes = attributes
         self.onlyCopyFilesOnInstall = onlyCopyFilesOnInstall
-        self.resourcesBeforeSourcesBuildPhase = resourcesBeforeSourcesBuildPhase
+        self.putResourcesBeforeSourcesBuildPhase = putResourcesBeforeSourcesBuildPhase
     }
 }
 
@@ -332,7 +332,7 @@ extension Target: NamedJSONDictionaryConvertible {
         legacy = jsonDictionary.json(atKeyPath: "legacy")
         attributes = jsonDictionary.json(atKeyPath: "attributes") ?? [:]
         onlyCopyFilesOnInstall = jsonDictionary.json(atKeyPath: "onlyCopyFilesOnInstall") ?? false
-        resourcesBeforeSourcesBuildPhase = jsonDictionary.json(atKeyPath: "resourcesBeforeSourcesBuildPhase") ?? false
+        putResourcesBeforeSourcesBuildPhase = jsonDictionary.json(atKeyPath: "putResourcesBeforeSourcesBuildPhase") ?? false
     }
 }
 
@@ -368,8 +368,8 @@ extension Target: JSONEncodable {
             dict["onlyCopyFilesOnInstall"] = true
         }
 
-        if resourcesBeforeSourcesBuildPhase {
-            dict["resourcesBeforeSourcesBuildPhase"] = true
+        if putResourcesBeforeSourcesBuildPhase {
+            dict["putResourcesBeforeSourcesBuildPhase"] = true
         }
 
         return dict

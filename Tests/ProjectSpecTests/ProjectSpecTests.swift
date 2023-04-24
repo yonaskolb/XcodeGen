@@ -576,7 +576,7 @@ class ProjectSpecTests: XCTestCase {
                                                                          arguments: "bar",
                                                                          workingDirectory: "foo"),
                                                     attributes: ["foo": "bar"],
-                                                    resourcesBeforeSourcesBuildPhase: true)],
+                                                    putResourcesBeforeSourcesBuildPhase: true)],
                                    aggregateTargets: [AggregateTarget(name: "aggregate target",
                                                                       targets: ["App"],
                                                                       settings: Settings(buildSettings: ["buildSettings": "bar"],

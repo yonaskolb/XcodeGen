@@ -111,7 +111,7 @@ targets:
       - sdk: Contacts.framework
       - sdk: libc++.tbd
       - sdk: libz.dylib
-    resourcesBeforeSourcesBuildPhase: true
+    putResourcesBeforeSourcesBuildPhase: true
 
   App_iOS:
     type: application
