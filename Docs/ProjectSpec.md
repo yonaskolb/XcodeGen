@@ -356,6 +356,7 @@ Settings are merged in the following order: groups, base, configs.
 	- `DevelopmentTeam`: if all configurations have the same `DEVELOPMENT_TEAM` setting
 	- `ProvisioningStyle`: if all configurations have the same `CODE_SIGN_STYLE` setting
 	- `TestTargetID`: if all configurations have the same `TEST_TARGET_NAME` setting
+- [ ] **putResourcesBeforeSourcesBuildPhase**: **Bool** - If this is `true` the `Copy Resources` step will be placed before the `Compile Sources` build step.
 
 ### Product Type
 
