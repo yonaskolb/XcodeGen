@@ -1277,6 +1277,13 @@ class SpecLoadingTests: XCTestCase {
                 try expect(target.onlyCopyFilesOnInstall) == true
             }
 
+            $0.it("parses put resources before Sources Build Phase") {
+                var targetSource = validTarget
+                targetSource["putResourcesBeforeSourcesBuildPhase"] = true
+                let target = try Target(name: "Embed Frameworks", jsonDictionary: targetSource)
+                try expect(target.putResourcesBeforeSourcesBuildPhase) == true
+            }
+
             $0.it("parses settings") {
                 let project = try Project(path: fixturePath + "settings_test.yml")
                 let buildSettings: BuildSettings = ["SETTING": "value"]
