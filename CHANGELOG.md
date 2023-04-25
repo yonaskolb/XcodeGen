@@ -5,7 +5,7 @@
 ### Added
 
 - Added support for shared breakpoints #177 @alexruperez @myihsan
-- Added support for putting the resources build phase before the sources build phase to add the #1351 @mat1th 
+- Added support for `putResourcesBeforeSourcesBuildPhase` in a target #1351 @mat1th 
 
 ### Fixed
 
