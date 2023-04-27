@@ -2,44 +2,52 @@
 
 ### Index
 
-- [General](#general)
-- [Project](#project)
-     - [Include](#include)
-     - [Options](#options)
-     - [GroupOrdering](#groupordering)
-     - [FileType](#filetype)
-     - [Configs](#configs)
-     - [Setting Groups](#setting-groups)
-- [Settings](#settings)
-- [Target](#target)
-     - [Product Type](#product-type)
-     - [Platform](#platform)
-     - [Sources](#sources)
-     - [Dependency](#dependency)
-     - [Config Files](#config-files)
-     - [Plist](#plist)
-     - [Build Script](#build-script)
-     - [Build Rule](#build-rule)
-     - [Target Scheme](#target-scheme)
-     - [Legacy Target](#legacy-target)
-- [Aggregate Target](#aggregate-target)
-- [Target Template](#target-template)
-- [Scheme](#scheme)
-     - [Build](#build)
-     - [Common Build Action options](#common-build-action-options)
-     - [Execution Action](#execution-action)
-     - [Run Action](#run-action)
-     - [Test Action](#test-action)
-     - [Archive Action](#archive-action)
-     - [Simulate Location](#simulate-location)
-     - [Scheme Management](#scheme-management)
-     - [Environment Variable](#environment-variable)
-     - [Test Plan](#test-plan)
-- [Scheme Template](#scheme-template)
-     - [Remote Package](#remote-package)
-     - [Local Package](#local-package)
-- [Swift Package](#swift-package)
-- [Project Reference](#project-reference)
+- [Project Spec](#project-spec)
+    - [Index](#index)
+  - [General](#general)
+  - [Project](#project)
+    - [Include](#include)
+    - [Options](#options)
+    - [GroupOrdering](#groupordering)
+    - [FileType](#filetype)
+    - [Breakpoints](#breakpoints)
+      - [Breakpoint Action](#breakpoint-action)
+    - [Configs](#configs)
+    - [Setting Groups](#setting-groups)
+  - [Settings](#settings)
+  - [Target](#target)
+    - [Product Type](#product-type)
+    - [Platform](#platform)
+    - [Sources](#sources)
+      - [Target Source](#target-source)
+    - [Dependency](#dependency)
+    - [Config Files](#config-files)
+    - [Plist](#plist)
+    - [Build Script](#build-script)
+    - [Build Rule](#build-rule)
+    - [Target Scheme](#target-scheme)
+    - [Legacy Target](#legacy-target)
+  - [Aggregate Target](#aggregate-target)
+  - [Target Template](#target-template)
+  - [Scheme](#scheme)
+    - [Build](#build)
+    - [Common Build Action options](#common-build-action-options)
+    - [Execution Action](#execution-action)
+    - [Run Action](#run-action)
+    - [Test Action](#test-action)
+      - [Test Target](#test-target)
+      - [Other Parameters](#other-parameters)
+      - [Testable Target Reference](#testable-target-reference)
+    - [Archive Action](#archive-action)
+    - [Simulate Location](#simulate-location)
+    - [Scheme Management](#scheme-management)
+    - [Environment Variable](#environment-variable)
+    - [Test Plan](#test-plan)
+  - [Scheme Template](#scheme-template)
+  - [Swift Package](#swift-package)
+    - [Remote Package](#remote-package)
+    - [Local Package](#local-package)
+  - [Project Reference](#project-reference)
 
 ## General
 
@@ -259,7 +267,7 @@ actions:
 
 ### Configs
 
-Each config maps to a build type of either `debug` or `release` which will then apply default build settings to the project. Any value other than `debug` or `release` (for example `none`), will mean no default build settings will be applied to the project.
+Each config maps to a build type of either `debug` or `release` which will then apply default `Build Settings` to the project. Any value other than `debug` or `release` (for example `none`), will mean no default `Build Settings` will be applied to the project.
 
 ```yaml
 configs:
@@ -271,50 +279,80 @@ If no configs are specified, default `Debug` and `Release` configs will be creat
 
 ### Setting Groups
 
-Setting groups are named groups of build settings that can be reused elsewhere. Each preset is a [Settings](#settings) schema, so can include other groups
+Setting groups are named groups of `Build Settings` that can be reused elsewhere. Each preset is a [Settings](#settings) schema, so can include other `groups`  or define settings by `configs`.
 
 ```yaml
 settingGroups:
-  preset1:
-    BUILD_SETTING: value
-  preset2:
+  preset_generic:
+    CUSTOM_SETTING: value_custom
+  preset_debug:
+    BUILD_SETTING: value_debug
+  preset_release:
     base:
-      BUILD_SETTING: value
+      BUILD_SETTING: value_release
+  preset_all:
     groups:
-      - preset
-  preset3:
-     configs:
-        debug:
-          groups:
-            - preset
+      - preset_generic
+    configs:
+      debug:
+        groups:
+          - preset_debug
+      release:
+        groups:
+          - preset_release
+
+targets:
+  Application:
+    settings:
+      groups: 
+        - preset_all
 ```
 
 ## Settings
 
-Settings can either be a simple map of build settings `[String:String]`, or can be more advanced with the following properties:
+Settings correspond to `Build Settings` tab in Xcode. To display Setting Names instead of Setting Titles, select `Editor -> Show Setting Names` in Xcode.
 
-- [ ] **groups**: **[String]** - List of setting groups to include and merge
+Settings can either be a simple map of `Build Settings` `[String:String]`, or can be more advanced with the following properties:
+
+- [ ] **groups**: **[String]** - List of [Setting Groups](#setting-groups) to include and merge
 - [ ] **configs**: **[String:[Settings](#settings)]** - Mapping of config name to a settings spec. These settings will only be applied for that config. Each key will be matched to any configs that contain the key and is case insensitive. So if you had `Staging Debug` and `Staging Release`, you could apply settings to both of them using `staging`. However if a config name is an exact match to a config it won't be applied to any others. eg `Release` will be applied to config `Release` but not `Staging Release`
 - [ ] **base**: **[String:String]** - Used to specify default settings that apply to any config
 
 ```yaml
 settings:
-  BUILD_SETTING_1: value 1
-  BUILD_SETTING_2: value 2
+  GENERATE_INFOPLIST_FILE: NO
+  CODE_SIGNING_ALLOWED: NO
+  WRAPPER_EXTENSION: bundle
+```
+
+Don't mix simple maps with `groups`, `base` and `configs`.
+If `groups`, `base`, `configs` are used then simple maps is silently ignored.
+
+In this example, `CURRENT_PROJECT_VERSION` will be set, but `MARKETING_VERSION` will be ignored:
+```yaml
+settings:
+  MARKETING_VERSION: 100.0.0
+  base:
+    CURRENT_PROJECT_VERSION: 100.0
 ```
 
 ```yaml
 settings:
   base:
-    BUILD_SETTING_1: value 1
+    PRODUCT_NAME: XcodeGenProduct
   configs:
-    my_config:
-      BUILD_SETTING_2: value 2
+    debug:
+      CODE_SIGN_IDENTITY: iPhone Developer
+      PRODUCT_BUNDLE_IDENTIFIER: com.tomtom.debug_app
+    release:
+      CODE_SIGN_IDENTITY: iPhone Distribution
+      PRODUCT_BUNDLE_IDENTIFIER: com.tomtom.app
+      PROVISIONING_PROFILE_SPECIFIER: "Xcodegen Release"
   groups:
     - my_settings
 ```
 
-Settings are merged in the following order: groups, base, configs.
+Settings are merged in the following order: `groups`, `base`, `configs` (simple maps are ignored).
 
 ## Target
 
