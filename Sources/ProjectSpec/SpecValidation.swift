@@ -137,7 +137,7 @@ extension Project {
                 if case let .path(pathString) = script.script {
                     let scriptPath = basePath + pathString
                     if !scriptPath.exists {
-                        errors.append(.invalidBuildScriptPath(target: target.name, name: script.name, path: pathString))
+                        errors.append(.invalidBuildScriptPath(target: target.name, name: script.name, path: scriptPath.string))
                     }
                 }
             }
