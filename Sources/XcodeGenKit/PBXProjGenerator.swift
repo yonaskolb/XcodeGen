@@ -423,16 +423,32 @@ public class PBXProjGenerator {
             path = "lib\(tmpPath)"
         }
 
-        let productReferenceProxy = addObject(
-            PBXReferenceProxy(
-                fileType: targetObject.productNameWithExtension().flatMap { Xcode.fileType(path: Path($0)) },
-                path: path,
-                remote: productProxy,
-                sourceTree: .buildProductsDir
-            )
-        )
+        let productReferenceProxyFileType = targetObject.productNameWithExtension()
+            .flatMap { Xcode.fileType(path: Path($0)) }
 
-        productsGroup.children.append(productReferenceProxy)
+        let existingValue = self.pbxProj.referenceProxies.first { referenceProxy in
+            referenceProxy.path == path &&
+            referenceProxy.remote == productProxy &&
+            referenceProxy.sourceTree == .buildProductsDir &&
+            referenceProxy.fileType == productReferenceProxyFileType
+        }
+
+        let productReferenceProxy: PBXReferenceProxy
+        if let existingValue = existingValue {
+            productReferenceProxy = existingValue
+        } else {
+            productReferenceProxy = addObject(
+                PBXReferenceProxy(
+                    fileType: productReferenceProxyFileType,
+                    path: path,
+                    remote: productProxy,
+                    sourceTree: .buildProductsDir
+                )
+            )
+
+            productsGroup.children.append(productReferenceProxy)
+        }
+
 
         let targetDependency = addObject(
             PBXTargetDependency(
