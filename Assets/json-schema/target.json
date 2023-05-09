@@ -1,0 +1,129 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "XcodeGen Target Object",
+  "description": "XcodeGen Target Object.\n https://github.com/yonaskolb/XcodeGen/blob/master/Docs/ProjectSpec.md#target",
+  "type": "object",
+  "properties": {
+    "type": {
+      "description": "Product type of the target"
+    },
+    "platform": {
+      "description": "Platform of the target",
+      "$ref": "platform.json"
+    },
+    "deploymentTarget": {
+      "description": "The deployment target (eg 9.2). If this is not specified the value from the project set in Options.deploymentTarget.PLATFORM will be used.",
+      "oneOf": [{ "type": "string" }, { "type": "number" }]
+    },
+    "sources": {
+      "description": "Source directories of the target\nhttps://github.com/yonaskolb/XcodeGen/blob/master/Docs/ProjectSpec.md#sources",
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "minItems": 1,
+            "$ref": "sources.json"
+          }
+        },
+        { "type": "string" }
+      ]
+    },
+    "configFiles": {
+      "description": ".xcconfig files per config",
+      "type": "object",
+      "$ref": "config_files.json"
+    },
+    "settings": {
+      "description": "Target specific build settings. Default platform and product type settings will be applied first before any custom settings defined here.\nhttps://developer.apple.com/documentation/xcode/build-settings-reference\nhttps://github.com/yonaskolb/XcodeGen/blob/master/Docs/ProjectSpec.md#settings",
+      "type": "object",
+      "$ref": "xcode_settings.json"
+    },
+    "dependencies": {
+      "description": "Dependencies for the target\nhttps://github.com/yonaskolb/XcodeGen/blob/master/Docs/ProjectSpec.md#dependency",
+      "type": "array",
+      "items": {
+        "$ref": "dependency.json"
+      }
+    },
+    "info": {
+      "description": "If defined, this will generate and write an Info.plist to the specified path and use it by setting the INFOPLIST_FILE build setting for every configuration, unless INFOPLIST_FILE is already defined in settings for this configuration."
+    },
+    "entitlements": {
+      "description": "If defined this will generate and write a .entitlements file, and use it by setting CODE_SIGN_ENTITLEMENTS build setting for every configuration. All properties must be provided"
+    },
+    "templates": {
+      "description": "A list of Target Templates referenced by name that will be merged with the target in order. Any instances of ${target_name} within these templates will be replaced with the target name.",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minItems": 1,
+        "uniqueItems": true
+      }
+    },
+    "templateAttributes": {
+      "description": "A list of Target Templates referenced by name that will be merged with the target in order. Any instances of ${target_name} within these templates will be replaced with the target name.",
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "transitivelyLinkDependencies": {
+      "description": "If this is not specified the value from the project set in Options.transitivelyLinkDependencies will be used.",
+      "type": "boolean"
+    },
+    "directlyEmbedCarthageDependencies": {
+      "description": "If this is true Carthage framework dependencies will be embedded using an Embed Frameworks build phase instead of the copy-frameworks script. Defaults to true for all targets except iOS/tvOS/watchOS Applications.",
+      "type": "boolean"
+    },
+    "requiresObjCLinking": {
+      "description": "If this is true any targets that link to this target will have -ObjC added to their OTHER_LDFLAGS. This is required if a static library has any categories or extensions on Objective-C code. See this guide for more details. Defaults to true if type is library.static. If you are 100% sure you don't have categories or extensions on Objective-C code (pure Swift with no use of Foundation/UIKit) you can set this to false, otherwise it's best to leave it alone.",
+      "type": "boolean"
+    },
+    "onlyCopyFilesOnInstall": {
+      "description": "If this is true, the Embed Frameworks and Embed App Extensions (if available) build phases will have the \"Copy only when installing\" chekbox checked. Defaults to false.",
+      "type": "boolean",
+      "default": false
+    },
+    "preBuildScripts": {
+      "description": "Build scripts that run before any other build phases",
+      "type": "array",
+      "items": {
+        "$ref": "build_script.json",
+        "minItems": 1
+      }
+    },
+    "postCompileScripts": {
+      "description": "Build scripts that run after the Compile Sources phase",
+      "type": "array",
+      "items": {
+        "$ref": "build_script.json",
+        "minItems": 1
+      }
+    },
+    "postBuildScripts": {
+      "description": "Build scripts that run after any other build phases\nhttps://github.com/yonaskolb/XcodeGen/blob/master/Docs/ProjectSpec.md#build-script",
+      "type": "array",
+      "items": {
+        "$ref": "build_script.json",
+        "minItems": 1
+      }
+    },
+    "buildRules": {
+      "description": "Custom build rules"
+    },
+    "scheme": {
+      "description": "Generated scheme with tests or config variants"
+    },
+    "legacy": {
+      "description": "When present, opt-in to make an Xcode \"External Build System\" legacy target instead."
+    },
+    "attributes": {
+      "description": "This sets values in the project TargetAttributes. It is merged with attributes from the project and anything automatically added by XcodeGen, with any duplicate values being override by values specified here. This is for advanced use only. Properties that are already set include:\n- DevelopmentTeam: if all configurations have the same\n- DEVELOPMENT_TEAM setting\n-ProvisioningStyle: if all configurations have the same CODE_SIGN_STYLE setting\n-TestTargetID: if all configurations have the same TEST_TARGET_NAME setting"
+    },
+    "putResourcesBeforeSourcesBuildPhase": {
+      "description": "If this is true the Copy Resources step will be placed before the Compile Sources build step.",
+      "type": "boolean"
+    }
+  },
+  "required": []
+}

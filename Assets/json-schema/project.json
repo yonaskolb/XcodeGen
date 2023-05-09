@@ -1,0 +1,116 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "XcodeGen Project",
+  "description": "XcodeGen project spec.\n https://github.com/yonaskolb/XcodeGen/blob/master/Docs/ProjectSpec.md#project-spec\ncommit:5cad639",
+  "type": "object",
+  "properties": {
+    "name": {
+      "description": "Name of the generated project",
+      "type": "string"
+    },
+    "include": {
+      "description": "One or more specs can be included in the project spec. This can be used to split your project spec into multiple files, for easier structuring or sharing between multiple specs. Included specs can also include other specs and so on.\n https://github.com/yonaskolb/XcodeGen/blob/master/Docs/ProjectSpec.md#include",
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "$ref": "include.json",
+            "minItems": 1,
+            "uniqueItems": true
+          }
+        },
+        {
+          "$ref": "include.json"
+        }
+      ]
+    },
+    "options": {
+      "description": "Various options to override default behaviour\nhttps://github.com/yonaskolb/XcodeGen/blob/master/Docs/ProjectSpec.md#options",
+      "type": "object",
+      "$ref": "options.json"
+    },
+    "attributes": {
+      "description": "The PBXProject attributes. This is for advanced use. If no value is set for LastUpgradeCheck, it will be defaulted to {\"LastUpgradeCheck\": \"XcodeVersion\"} with xcodeVersion being set by Options.xcodeVersion breakpoints: Breakpoints - Add shared breakpoints to the generated project",
+      "type": "object",
+      "examples": ["CLASSPREFIX: TT"]
+    },
+    "breakpoints": {
+      "description": "Add shared breakpoints to the generated project",
+      "type": "array",
+      "items": {
+        "$ref": "breakpoints.json"
+      }
+    },
+    "configs": {
+      "description": "Project build configurations. Defaults to Debug and Release configs\nhttps://github.com/yonaskolb/XcodeGen/blob/master/Docs/ProjectSpec.md#configs",
+      "type": "object",
+      "$ref": "configs.json"
+    },
+    "configFiles": {
+      "description": ".xcconfig files per config\nhttps://github.com/yonaskolb/XcodeGen/blob/master/Docs/ProjectSpec.md#config-files",
+      "type": "object",
+      "$ref": "config_files.json"
+    },
+    "settings": {
+      "description": "Project specific settings. Default base and config type settings will be applied first before any settings defined here. \nhttps://developer.apple.com/documentation/xcode/build-settings-reference\nhttps://github.com/yonaskolb/XcodeGen/blob/master/Docs/ProjectSpec.md#settings",
+      "type": "object",
+      "$ref": "xcode_settings.json"
+    },
+    "settingGroups": {
+      "title": "Setting groups mapped by name",
+      "description": "Setting groups are named groups of Build Settings that can be reused elsewhere. Each preset is a Settings schema, so can include other groups or define settings by configs.\nhttps://github.com/yonaskolb/XcodeGen/blob/master/Docs/ProjectSpec.md#setting-groups",
+      "type": "object"
+    },
+    "targets": {
+      "description": "The list of targets in the project mapped by name\nhttps://github.com/yonaskolb/XcodeGen/blob/master/Docs/ProjectSpec.md#target",
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "$ref": "target.json"
+      }
+    },
+    "fileGroups": {
+      "description": "A list of paths to add to the root of the project. These aren't files that will be included in your targets, but that you'd like to include in the project hierarchy anyway. For example a folder of xcconfig files that aren't already added by any target sources, or a Readme file.",
+      "type": "array"
+    },
+    "schemes": {
+      "description": "A list of schemes by name. This allows more control over what is found in Target Scheme",
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "$ref": "scheme.json"
+      }
+    },
+    "schemeTemplates": {
+      "description": "a list of schemes that can be used as templates for actual schems which reference them via a template property. They can be used to extract common scheme settings. Works great in combination with include.\nhttps://github.com/yonaskolb/XcodeGen/blob/master/Docs/ProjectSpec.md#scheme-template",
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "scheme.json"
+      }
+    },
+    "targetTemplates": {
+      "description": "a list of targets that can be used as templates for actual targets which reference them via a template property. They can be used to extract common target settings. Works great in combination with include.\nhttps://github.com/yonaskolb/XcodeGen/blob/master/Docs/ProjectSpec.md#target-template",
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "$ref": "target.json"
+      }
+    },
+    "packages": {
+      "description": "a map of Swift packages by name.",
+      "type": "object",
+      "additionalProperties": {
+        "description": "Swift packages are defined at a project level, and then linked to individual targets via a Dependency.\nhttps://github.com/yonaskolb/XcodeGen/blob/master/Docs/ProjectSpec.md#swift-package",
+        "type": "object"
+      }
+    },
+    "projectReferences": {
+      "description": "a map of project references by name",
+      "type": "object",
+      "additionalProperties": {
+        "description": "Project References are defined at a project level, and then you can use the project name to refer its target via a Scheme\nhttps://github.com/yonaskolb/XcodeGen/blob/master/Docs/ProjectSpec.md#project-reference",
+        "type": "object"
+      }
+    }
+  }
+}

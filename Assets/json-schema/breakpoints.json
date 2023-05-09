@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "XcodeGen Breakpoints Object",
+  "description": "XcodeGen Breakpoints Object.\n https://github.com/yonaskolb/XcodeGen/blob/master/Docs/ProjectSpec.md#breakpoints",
+  "type": "object",
+  "properties": {
+    "type": {
+      "description": "Breakpoint type",
+      "type": "string",
+      "enum": [
+        "File",
+        "Exception",
+        "SwiftError",
+        "OpenGLError",
+        "Symbolic",
+        "IDEConstraintError",
+        "IDETestFailure",
+        "FileBreakpoint",
+        "ExceptionBreakpoint",
+        "SwiftErrorBreakpoint",
+        "OpenGLErrorBreakpoint",
+        "SymbolicBreakpoint",
+        "IDEConstraintErrorBreakpoint",
+        "IDETestFailureBreakpoint"
+      ],
+      "examples": [
+        "File",
+        "Exception",
+        "SwiftError",
+        "OpenGLError",
+        "Symbolic",
+        "IDEConstraintError",
+        "IDETestFailure",
+        "FileBreakpoint",
+        "ExceptionBreakpoint",
+        "SwiftErrorBreakpoint",
+        "OpenGLErrorBreakpoint",
+        "SymbolicBreakpoint",
+        "IDEConstraintErrorBreakpoint",
+        "IDETestFailureBreakpoint"
+      ]
+    },
+    "enabled": {
+      "description": "Indicates whether it should be active. Default to true",
+      "default": true,
+      "type": "boolean"
+    },
+    "ignoreCount": {
+      "description": "Indicates how many times it should be ignored before stopping, Default to 0",
+      "type": "integer",
+      "default": 0
+    },
+    "continueAfterRunningActions": {
+      "description": "Indicates if should automatically continue after evaluating actions, Default to false",
+      "default": false,
+      "type": "boolean"
+    },
+    "path": {
+      "description": "Breakpoint file path (only required by file breakpoints)",
+      "type": "string"
+    },
+    "line": {
+      "description": "Breakpoint line (only required by file breakpoints)",
+      "type": "integer"
+    },
+    "symbol": {
+      "description": "Breakpoint symbol (only used by symbolic breakpoints)",
+      "type": "string"
+    },
+    "module": {
+      "description": "Breakpoint module (only used by symbolic breakpoints)",
+      "type": "string"
+    },
+    "scope": {
+      "description": "Breakpoint scope (only used by exception breakpoints)",
+      "type": "string",
+      "default": "Objective-C",
+      "enum": ["All", "Objective-C", "C++"]
+    },
+    "stopOnStyle": {
+      "description": "Indicates if should stop on style (only used by exception breakpoints) -throw (default) -catch",
+      "type": "string"
+    },
+    "condition": {
+      "description": "Breakpoint condition",
+      "type": "string"
+    },
+    "actions": {
+      "description": "breakpoint actions",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "$ref": "breakpoint_action.json"
+      }
+    }
+  },
+  "required": ["type"]
+}
