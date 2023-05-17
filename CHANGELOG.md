@@ -6,7 +6,7 @@
 
 ### Fixed
 
-- Fix external dependecies been removed by Xcode #1354 @OdNairy
+- Fix external dependencies from being removed by Xcode #1354 @OdNairy
 
 ## 2.35.0
 
