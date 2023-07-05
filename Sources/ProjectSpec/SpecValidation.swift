@@ -81,8 +81,9 @@ extension Project {
         for target in projectTargets {
 
             for (config, configFile) in target.configFiles {
-                if !options.disabledValidations.contains(.missingConfigFiles) && !(basePath + configFile).exists {
-                    errors.append(.invalidTargetConfigFile(target: target.name, configFile: configFile, config: config))
+                let configPath = basePath + configFile
+                if !options.disabledValidations.contains(.missingConfigFiles) && !configPath.exists {
+                    errors.append(.invalidTargetConfigFile(target: target.name, configFile: configPath.string, config: config))
                 }
                 if !options.disabledValidations.contains(.missingConfigs) && getConfig(config) == nil {
                     errors.append(.invalidConfigFileConfig(config))
@@ -137,7 +138,7 @@ extension Project {
                 if case let .path(pathString) = script.script {
                     let scriptPath = basePath + pathString
                     if !scriptPath.exists {
-                        errors.append(.invalidBuildScriptPath(target: target.name, name: script.name, path: pathString))
+                        errors.append(.invalidBuildScriptPath(target: target.name, name: script.name, path: scriptPath.string))
                     }
                 }
             }

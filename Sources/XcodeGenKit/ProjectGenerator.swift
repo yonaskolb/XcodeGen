@@ -13,22 +13,38 @@ public class ProjectGenerator {
         self.project = project
     }
 
-    public func generateXcodeProject(in projectDirectory: Path? = nil) throws -> XcodeProj {
+    public func generateXcodeProject(in projectDirectory: Path? = nil, userName: String) throws -> XcodeProj {
 
         // generate PBXProj
         let pbxProjGenerator = PBXProjGenerator(project: project,
                                                 projectDirectory: projectDirectory)
         let pbxProj = try pbxProjGenerator.generate()
 
-        // generate Schemes
-        let schemeGenerator = SchemeGenerator(project: project, pbxProj: pbxProj)
-        let schemes = try schemeGenerator.generateSchemes()
-
         // generate Workspace
         let workspace = try generateWorkspace()
 
-        let sharedData = XCSharedData(schemes: schemes)
-        return XcodeProj(workspace: workspace, pbxproj: pbxProj, sharedData: sharedData)
+        // generate Schemes
+        let schemeGenerator = SchemeGenerator(project: project, pbxProj: pbxProj)
+        let (sharedSchemes, userSchemes, schemeManagement) = try schemeGenerator.generateSchemes()
+
+        // generate Breakpoints
+        let breakpointGenerator = BreakpointGenerator(project: project)
+        let xcbreakpointlist = try breakpointGenerator.generateBreakpointList()
+
+        // generate shared data
+        let sharedData = XCSharedData(schemes: sharedSchemes, breakpoints: xcbreakpointlist)
+
+        // generate user data
+        let userData = userSchemes.isEmpty && schemeManagement == nil ? [] : [
+            XCUserData(userName: userName, schemes: userSchemes, schemeManagement: schemeManagement)
+        ]
+
+        return XcodeProj(
+            workspace: workspace,
+            pbxproj: pbxProj,
+            sharedData: sharedData,
+            userData: userData
+        )
     }
 
     func generateWorkspace() throws -> XCWorkspace {

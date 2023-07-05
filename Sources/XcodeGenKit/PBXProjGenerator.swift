@@ -423,16 +423,32 @@ public class PBXProjGenerator {
             path = "lib\(tmpPath)"
         }
 
-        let productReferenceProxy = addObject(
-            PBXReferenceProxy(
-                fileType: targetObject.productNameWithExtension().flatMap { Xcode.fileType(path: Path($0)) },
-                path: path,
-                remote: productProxy,
-                sourceTree: .buildProductsDir
-            )
-        )
+        let productReferenceProxyFileType = targetObject.productNameWithExtension()
+            .flatMap { Xcode.fileType(path: Path($0)) }
 
-        productsGroup.children.append(productReferenceProxy)
+        let existingValue = self.pbxProj.referenceProxies.first { referenceProxy in
+            referenceProxy.path == path &&
+            referenceProxy.remote == productProxy &&
+            referenceProxy.sourceTree == .buildProductsDir &&
+            referenceProxy.fileType == productReferenceProxyFileType
+        }
+
+        let productReferenceProxy: PBXReferenceProxy
+        if let existingValue = existingValue {
+            productReferenceProxy = existingValue
+        } else {
+            productReferenceProxy = addObject(
+                PBXReferenceProxy(
+                    fileType: productReferenceProxyFileType,
+                    path: path,
+                    remote: productProxy,
+                    sourceTree: .buildProductsDir
+                )
+            )
+
+            productsGroup.children.append(productReferenceProxy)
+        }
+
 
         let targetDependency = addObject(
             PBXTargetDependency(
@@ -1083,6 +1099,18 @@ public class PBXProjGenerator {
             }
         }
 
+        func addResourcesBuildPhase() {
+            let resourcesBuildPhaseFiles = getBuildFilesForPhase(.resources) + copyResourcesReferences
+            if !resourcesBuildPhaseFiles.isEmpty {
+                let resourcesBuildPhase = addObject(PBXResourcesBuildPhase(files: resourcesBuildPhaseFiles))
+                buildPhases.append(resourcesBuildPhase)
+            }
+        }
+
+        if target.putResourcesBeforeSourcesBuildPhase {
+            addResourcesBuildPhase()
+        }
+
         let sourcesBuildPhaseFiles = getBuildFilesForPhase(.sources)
         let shouldSkipSourcesBuildPhase = sourcesBuildPhaseFiles.isEmpty && target.type.canSkipCompileSourcesBuildPhase
         if !shouldSkipSourcesBuildPhase {
@@ -1092,10 +1120,8 @@ public class PBXProjGenerator {
 
         buildPhases += try target.postCompileScripts.map { try generateBuildScript(targetName: target.name, buildScript: $0) }
 
-        let resourcesBuildPhaseFiles = getBuildFilesForPhase(.resources) + copyResourcesReferences
-        if !resourcesBuildPhaseFiles.isEmpty {
-            let resourcesBuildPhase = addObject(PBXResourcesBuildPhase(files: resourcesBuildPhaseFiles))
-            buildPhases.append(resourcesBuildPhase)
+        if !target.putResourcesBeforeSourcesBuildPhase {
+            addResourcesBuildPhase()
         }
 
         let swiftObjCInterfaceHeader = project.getCombinedBuildSetting("SWIFT_OBJC_INTERFACE_HEADER_NAME", target: target, config: project.configs[0]) as? String
@@ -1163,7 +1189,7 @@ public class PBXProjGenerator {
         if !extensions.isEmpty {
 
             let copyFilesPhase = addObject(
-                getPBXCopyFilesBuildPhase(dstSubfolderSpec: .plugins, name: "Embed App Extensions", files: extensions)
+                getPBXCopyFilesBuildPhase(dstSubfolderSpec: .plugins, name: "Embed Foundation Extensions", files: extensions)
             )
 
             buildPhases.append(copyFilesPhase)

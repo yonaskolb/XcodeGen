@@ -127,7 +127,7 @@ targets:
       - carthage: ReactiveMapKit 
 ```
 
-XcodeGen can look these up for you automatically! This can be enabled with a global `options.findCarthageFrameworks` or can be overriden for each Carthage dependency. Note that if this is enabled, the Carthage dependencies need to have already been built before XcodeGen is run. This is because XcodeGen loads `.version` files that Carthage writes in the `Carthage/Build` directory which lists the all the frameworks. The name you use must also be the name of the `.version` file Carthage writes to `Carthage/Build`. Be aware that in some cases this name can differ from the name of the repo in the Cartfile and even the framework name. If the `.version` file is not found or fails parsing, XcodeGen will fallback to the regular Framework lookup in the relevant Carthage directory.
+XcodeGen can look these up for you automatically! This can be enabled with a global `options.findCarthageFrameworks` or can be overridden for each Carthage dependency. Note that if this is enabled, the Carthage dependencies need to have already been built before XcodeGen is run. This is because XcodeGen loads `.version` files that Carthage writes in the `Carthage/Build` directory which lists the all the frameworks. The name you use must also be the name of the `.version` file Carthage writes to `Carthage/Build`. Be aware that in some cases this name can differ from the name of the repo in the Cartfile and even the framework name. If the `.version` file is not found or fails parsing, XcodeGen will fallback to the regular Framework lookup in the relevant Carthage directory.
 
 ```yml
 options:

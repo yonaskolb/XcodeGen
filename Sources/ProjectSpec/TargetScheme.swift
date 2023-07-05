@@ -22,6 +22,7 @@ public struct TargetScheme: Equatable {
     public var environmentVariables: [XCScheme.EnvironmentVariable]
     public var preActions: [Scheme.ExecutionAction]
     public var postActions: [Scheme.ExecutionAction]
+    public var management: Scheme.Management?
     public var testPlans: [TestPlan]
 
     public init(
@@ -39,7 +40,8 @@ public struct TargetScheme: Equatable {
         commandLineArguments: [String: Bool] = [:],
         environmentVariables: [XCScheme.EnvironmentVariable] = [],
         preActions: [Scheme.ExecutionAction] = [],
-        postActions: [Scheme.ExecutionAction] = []
+        postActions: [Scheme.ExecutionAction] = [],
+        management: Scheme.Management? = nil
     ) {
         self.testTargets = testTargets
         self.testPlans = testPlans
@@ -56,6 +58,8 @@ public struct TargetScheme: Equatable {
         self.environmentVariables = environmentVariables
         self.preActions = preActions
         self.postActions = postActions
+        self.postActions = postActions
+        self.management = management
     }
 }
 
@@ -105,6 +109,7 @@ extension TargetScheme: JSONObjectConvertible {
         environmentVariables = try XCScheme.EnvironmentVariable.parseAll(jsonDictionary: jsonDictionary)
         preActions = jsonDictionary.json(atKeyPath: "preActions") ?? []
         postActions = jsonDictionary.json(atKeyPath: "postActions") ?? []
+        management = jsonDictionary.json(atKeyPath: "management")
     }
 }
 
@@ -147,6 +152,10 @@ extension TargetScheme: JSONEncodable {
 
         if let region = region {
             dict["region"] = region
+        }
+
+        if let management = management {
+            dict["management"] = management.toJSONValue()
         }
 
         return dict

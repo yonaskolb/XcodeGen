@@ -4,6 +4,37 @@
 
 ### Added
 
+### Fixed
+
+- Fix external dependencies from being removed by Xcode #1354 @OdNairy
+
+## 2.35.0
+
+### Added
+
+- Added support for shared breakpoints #177 @alexruperez @myihsan
+- Added support for `putResourcesBeforeSourcesBuildPhase` in a target #1351 @mat1th
+
+### Fixed
+
+- Fix case where source paths may not be deduplicated correctly resulting in duplicate groups and/or a crash in running Xcodegen #1341 @dalemyers
+
+## 2.34.0
+
+### Changed
+
+- Added support for `swiftcrossimport` folders. #1317 @Iron-Ham
+- Added support for [Scheme Management](Docs/ProjectSpec.md##scheme-management) #1142 @wendyliga, @teameh
+
+### Fixed
+
+- Fix includes when the projectRoot is a relative path #1262 @CraigSiemens
+- Renamed build phase `Embed App Extensions` to `Embed Foundation Extensions` to fix Xcode 14 warning #1310 @casperriboe
+
+## 2.33.0
+
+### Added
+
 - Added support for `enableGPUFrameCaptureMode` #1251 @bsudekum
 - Config setting presets can now also be loaded from the main bundle when bundling XcodeGenKit #1135 @SofteqDG
 - Added ability to generate multiple projects in one XcodeGen launch #1270 @skofgar
@@ -14,6 +45,10 @@
 - Fix scheme not being generated for aggregate targets #1250 @CraigSiemens
 - Fix recursive include path when relativePath is not set #1275 @ma-oli
 - Include projectRoot in include paths #1275 @ma-oli
+
+### Internal
+- Updated to Yams 5.0.1 #1297 @s2mr
+- Delete ignored `try` keyword #1298 @s2mr
 
 ## 2.32.0
 

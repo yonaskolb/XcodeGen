@@ -3,7 +3,6 @@
 1. Make sure `CHANGELOG.md` is up to date:
    - All relevant entries have been added with the PR link and author
    - The new version number is added at the top after `Master`
-   - The `Commits` link is at the bottom of the release
 1. Update the version at the top of `Makefile`
 1. Run `make release`
 1. Push commit and tag to github

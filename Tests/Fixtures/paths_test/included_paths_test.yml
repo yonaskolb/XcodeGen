@@ -1,4 +1,6 @@
-include: recursive_test/recursive_test.yml
+include:
+  - recursive_test/recursive_test.yml
+  - same_relative_path_test/same_relative_path_test.yml
 configFiles:
   IncludedConfig: config
 projectReferences:

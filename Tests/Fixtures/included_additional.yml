@@ -1,7 +1,7 @@
-name: Included_Addtional
+name: Included_Additional
 settingGroups:
   test:
-    MY_SETTING5: ADDTIONAL
+    MY_SETTING5: ADDITIONAL
 packages:
   SwiftPM:
     url: https://github.com/apple/swift-package-manager

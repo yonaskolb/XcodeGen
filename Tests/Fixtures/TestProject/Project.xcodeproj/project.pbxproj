@@ -25,6 +25,9 @@
 /* Begin PBXBuildFile section */
 		01BFA2C4D9C5BBC72C015AA8 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = 6A58A16491CDDF968B0D56DE /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		02F9D686CBA6068A8EE58026 /* StaticLibrary_ObjC.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D0C79A8C750EC0DE748C463 /* StaticLibrary_ObjC.m */; };
+		03FFCE664129864A8F167C2F /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E4CCE342955E0E934BE533 /* FrameworkFile.swift */; };
+		052D6B4572FBF002286865D7 /* CrossOverlayFramework.swiftcrossimport in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8DD7A61B07AD2F91BDECC255 /* CrossOverlayFramework.swiftcrossimport */; };
+		06F1750F0E45E4822F806523 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = 576675973B56A96047CB4944 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0786F9C725AD215C4F915BB5 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = 6A58A16491CDDF968B0D56DE /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		078FAAF5C2B851C7D5EA714F /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D296BB7355994040E197A1EE /* Result.framework */; };
 		079B6E02AF21664AB08E621C /* TestProjectUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587B9E9A3533E965CA602B76 /* TestProjectUITests.swift */; };
@@ -42,7 +45,9 @@
 		1E03FC7312293997599C6435 /* Empty.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 068EDF47F0B087F6A4052AC0 /* Empty.h */; };
 		1E2A4D61E96521FF7123D7B0 /* XPC Service.xpc in CopyFiles */ = {isa = PBXBuildFile; fileRef = 22237B8EBD9E6BE8EBC8735F /* XPC Service.xpc */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1E457F55331FD2C3E8E00BE2 /* Result.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0C5AC2545AE4D4F7F44E2E9B /* Result.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		1EFFFE113C5E54A91148D3EB /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E4CCE342955E0E934BE533 /* FrameworkFile.swift */; };
 		1F9168A43FD8E2FCC2699E14 /* Documentation.docc in Sources */ = {isa = PBXBuildFile; fileRef = B5C943D39DD7812CAB94B614 /* Documentation.docc */; settings = {COMPILER_FLAGS = "-Werror"; }; };
+		204958B9AD868004CCE6B779 /* App_watchOS Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 0D09D243DBCF9D32E239F1E8 /* App_watchOS Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		210B49C23B9717C668B40C8C /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A5F527F2590C14956518174 /* FrameworkFile.swift */; };
 		2116F89CF5A04EA0EFA30A89 /* TestProjectUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D88C6BF7355702B74396791 /* TestProjectUITests.swift */; };
 		212BCB51DAF3212993DDD49E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D51CC8BCCBD68A90E90A3207 /* Assets.xcassets */; };
@@ -67,13 +72,13 @@
 		3788E1382B38DF4ACE3D2BB1 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = 6A58A16491CDDF968B0D56DE /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3BBCA6F76E5F212E9C55FB78 /* BundleX.bundle in Copy Bundle Resources */ = {isa = PBXBuildFile; fileRef = 45C12576F5AA694DD0CE2132 /* BundleX.bundle */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3C5134EE524310ACF7B7CD6E /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CAF6C55B555E3E1352645B6 /* ExtensionDelegate.swift */; };
-		42BC5788871D1D838B253952 /* App_watchOS Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 0D09D243DBCF9D32E239F1E8 /* App_watchOS Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		447D59BE2E0993D7245EA247 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3797E591F302ECC0AA2FC607 /* Assets.xcassets */; };
 		45E6702CD9C088FF1FC25F34 /* App_watchOS.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = A680BE9F68A255B0FB291AE6 /* App_watchOS.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		470D3493CDBFE56E2083A5FD /* BundleY.bundle in Copy Bundle Resources */ = {isa = PBXBuildFile; fileRef = E3958AB20082EA12D4D5E60C /* BundleY.bundle */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		47D1F439B8E6D287B3F3E8D1 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = 6A58A16491CDDF968B0D56DE /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		47FC57B04A3AD83359F433EA /* StaticLibrary_ObjC.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5A2B916A11DCC2565241359F /* StaticLibrary_ObjC.h */; };
 		49A4B8937BB5520B36EA33F0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 814D72C2B921F60B759C2D4B /* Main.storyboard */; };
+		4B862F11762F6BB54E97E401 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = 576675973B56A96047CB4944 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4C1504A05321046B3ED7A839 /* Framework2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB055761199DF36DB0C629A6 /* Framework2.framework */; };
 		4CB673A7C0C11E04F8544BDB /* Contacts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FDB2B6A77D39CD5602F2125F /* Contacts.framework */; };
 		4DA7140FF84DBF39961F3409 /* NetworkSystemExtension.systemextension in Embed System Extensions */ = {isa = PBXBuildFile; fileRef = 2049B6DD2AFE85F9DC9F3EB3 /* NetworkSystemExtension.systemextension */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -82,8 +87,8 @@
 		52AD3276E068EB3396A292BB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8A016580A3B8F72B820BFBF /* Assets.xcassets */; };
 		535A98A3E3B74E09891D977F /* TestFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E43116070AFEF5D8C3A5A957 /* TestFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5447AD526B2A1FD4262E2B61 /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A5F527F2590C14956518174 /* FrameworkFile.swift */; };
-		54A255D331B04F08583F5417 /* iMessageExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = D629E142AB87C681D4EC90F7 /* iMessageExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		5748F702ADFB9D85D0F97862 /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A5F527F2590C14956518174 /* FrameworkFile.swift */; };
+		57DC116CE5C9F93FBA529C2F /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = 576675973B56A96047CB4944 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		58C18019E71E372F635A3FB4 /* MoreUnder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA8718C7CD3BE86D9B1F5120 /* MoreUnder.swift */; };
 		5D10822B0E7C33DD6979F656 /* Standalone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F5BD97AF0F94A15A5B7DDB7 /* Standalone.swift */; };
 		5E0369B907E239D1E6884ECF /* TestFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E43116070AFEF5D8C3A5A957 /* TestFramework.framework */; };
@@ -99,7 +104,9 @@
 		666DEC173BC78C7641AB22EC /* File1.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE1343F2238429D4DA9D830B /* File1.swift */; };
 		66C3C5E3C13325F351A3008F /* module.modulemap in CopyFiles */ = {isa = PBXBuildFile; fileRef = F2950763C4C568CC85021D18 /* module.modulemap */; };
 		6B0BCD3573931F7BE133B301 /* TestProjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D132EA69984F32DA9DC727B6 /* TestProjectTests.swift */; };
+		6C02002A4EE169CEBEC7BA7F /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E4CCE342955E0E934BE533 /* FrameworkFile.swift */; };
 		6E8F8303759824631C8D9DA3 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9E17D598D98065767A04740F /* Localizable.strings */; };
+		713F57A10C62F70058D7FB0A /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E4CCE342955E0E934BE533 /* FrameworkFile.swift */; };
 		7148A4172BFA1CC22E6ED5DB /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 753001CDCEAA4C4E1AFF8E87 /* MainInterface.storyboard */; };
 		71A2AAC5934BDC9EDB6F0D9E /* libStaticLibrary_ObjC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B221F5A689AD7D3AD52F56B8 /* libStaticLibrary_ObjC.a */; };
 		747CAE14D196F5652E93353C /* Headers in Headers */ = {isa = PBXBuildFile; fileRef = 2E1E747C7BC434ADB80CC269 /* Headers */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -142,6 +149,7 @@
 		B2D43A31C184E34EF9CB743C /* Framework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8A9274BE42A03DC5DA1FAD04 /* Framework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B47F2629BFE5853767C8BB5E /* Contacts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FDB2B6A77D39CD5602F2125F /* Contacts.framework */; };
 		B49D3A51787E362DE4D0E78A /* SomeXPCService.xpc in CopyFiles */ = {isa = PBXBuildFile; fileRef = 70A8E15C81E454DC950C59F0 /* SomeXPCService.xpc */; };
+		B502EF8F7605CBD038298F23 /* CrossOverlayFramework.swiftcrossimport in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8DD7A61B07AD2F91BDECC255 /* CrossOverlayFramework.swiftcrossimport */; };
 		B9F3C9E77019EC3423A7F5D8 /* TestProjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 87DF9DCA8399E3214A7E27CF /* TestProjectTests.swift */; };
 		BAA1C1E3828F5D43546AF997 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0BB1B49A91B892152D68ED76 /* libc++.tbd */; };
 		BB06A57E259D0D2A001EA21F /* Result.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0C5AC2545AE4D4F7F44E2E9B /* Result.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -155,9 +163,12 @@
 		C88598A49087A212990F4E8B /* ResourceFolder in Resources */ = {isa = PBXBuildFile; fileRef = 6B1603BA83AA0C7B94E45168 /* ResourceFolder */; };
 		CAE18A2194B57C830A297F83 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6680EFE4E908CDBDCE405C8 /* main.swift */; };
 		CCA17097382757012B58C17C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1BC32A813B80A53962A1F365 /* Assets.xcassets */; };
+		D058D241BDF5FB0C919BBECA /* CrossOverlayFramework.swiftcrossimport in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8DD7A61B07AD2F91BDECC255 /* CrossOverlayFramework.swiftcrossimport */; };
 		D5458D67C3596943114C3205 /* Standalone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F5BD97AF0F94A15A5B7DDB7 /* Standalone.swift */; };
 		D61BEABD5B26B2DE67D0C2EC /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A5F527F2590C14956518174 /* FrameworkFile.swift */; };
+		D62AB3A85B32F353ABBD57BC /* iMessageExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = D629E142AB87C681D4EC90F7 /* iMessageExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		D8ED40ED61AD912385CFF5F0 /* StaticLibrary_ObjC.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D0C79A8C750EC0DE748C463 /* StaticLibrary_ObjC.m */; };
+		DBCA8149E5C4183AB52B8D99 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = 576675973B56A96047CB4944 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		DD5FBFC3C1B2DB3D0D1CF210 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B785B1161553A7DD6DA4255 /* NetworkExtension.framework */; };
 		E0B27599D701E6BB0223D0A8 /* FilterDataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16AA52945B70B1BF9E246350 /* FilterDataProvider.swift */; };
 		E1836941C13CC7F13650C317 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3ED831531AA349CCC19B258B /* Assets.xcassets */; };
@@ -172,6 +183,7 @@
 		F4D77E81B0539EA5F4F141A6 /* EndpointSecuritySystemExtension.systemextension in Embed System Extensions */ = {isa = PBXBuildFile; fileRef = E5E0A80CCE8F8DB662DCD2D0 /* EndpointSecuritySystemExtension.systemextension */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		F5D71267BB5A326BDD69D532 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E55F45EACB0F382722D61C8D /* Assets.xcassets */; };
 		F6537CE373C94809E6653758 /* Headers in Headers */ = {isa = PBXBuildFile; fileRef = 2E1E747C7BC434ADB80CC269 /* Headers */; settings = {ATTRIBUTES = (Public, ); }; };
+		F6734680031310575CDE9F23 /* CrossOverlayFramework.swiftcrossimport in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8DD7A61B07AD2F91BDECC255 /* CrossOverlayFramework.swiftcrossimport */; };
 		F7423E8738EECF04795C7601 /* InterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3F6BCB5FEFB16F1BA368059 /* InterfaceController.swift */; };
 		F788A3FA1CE6489BC257C1C3 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 306796628DD52FA55E833B65 /* Model.xcdatamodeld */; settings = {COMPILER_FLAGS = "-Werror"; }; };
 		FB6DA0DB62C425066D51767E /* Driver.iig in Sources */ = {isa = PBXBuildFile; fileRef = 5A3A73F307648F58213E4EA1 /* Driver.iig */; };
@@ -413,6 +425,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		04D94C495E299B50EB0DC7C4 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(PRODUCT_NAME).framework/Modules";
+			dstSubfolderSpec = 16;
+			files = (
+				B502EF8F7605CBD038298F23 /* CrossOverlayFramework.swiftcrossimport in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		05D615CB74F875917AA8C9B0 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -447,15 +469,14 @@
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		2F0735A423E554B267BBA0A5 /* Embed App Extensions */ = {
+		096753D5DAA26D110F699A7F /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 13;
+			dstPath = "$(PRODUCT_NAME).framework/Modules";
+			dstSubfolderSpec = 16;
 			files = (
-				54A255D331B04F08583F5417 /* iMessageExtension.appex in Embed App Extensions */,
+				F6734680031310575CDE9F23 /* CrossOverlayFramework.swiftcrossimport in CopyFiles */,
 			);
-			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		30A8F3568B05F3DB13D8B466 /* Embed Frameworks */ = {
@@ -479,6 +500,17 @@
 				95DD9941E1529FD2AE1A191D /* StaticLibrary_ObjC.h in CopyFiles */,
 				768648ED7E93B6D888574144 /* module.modulemap in CopyFiles */,
 			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		661E0CEEEC2395C39375961F /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				204958B9AD868004CCE6B779 /* App_watchOS Extension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		6CB76DFA8662672C4245AF41 /* Embed Frameworks */ = {
@@ -570,15 +602,14 @@
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		C765431E5FF4B02F59DE79B0 /* Embed App Extensions */ = {
+		ADD98000970B8907F73BFD92 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 13;
+			dstPath = "$(PRODUCT_NAME).framework/Modules";
+			dstSubfolderSpec = 16;
 			files = (
-				42BC5788871D1D838B253952 /* App_watchOS Extension.appex in Embed App Extensions */,
+				052D6B4572FBF002286865D7 /* CrossOverlayFramework.swiftcrossimport in CopyFiles */,
 			);
-			name = "Embed App Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		CF6B94E7B2D2312582A526F5 /* Embed Dependencies */ = {
@@ -605,6 +636,16 @@
 			name = "Embed System Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E1C04BDC65F3DC88D6D0473F /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(PRODUCT_NAME).framework/Modules";
+			dstSubfolderSpec = 16;
+			files = (
+				D058D241BDF5FB0C919BBECA /* CrossOverlayFramework.swiftcrossimport in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E8BC0F358D693454E5027ECC /* Copy Bundle Resources */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -614,6 +655,17 @@
 				470D3493CDBFE56E2083A5FD /* BundleY.bundle in Copy Bundle Resources */,
 			);
 			name = "Copy Bundle Resources";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EB212BCB1E2E1D2667233F98 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				D62AB3A85B32F353ABBD57BC /* iMessageExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		F8CDEFED6ED131A09041F995 /* Embed Frameworks */ = {
@@ -654,6 +706,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0095836FE59395511E0CB4F0 /* CrossOverlayFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CrossOverlayFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		01E6934B571B91EAAFF0EDCB /* Resource.abc */ = {isa = PBXFileReference; path = Resource.abc; sourceTree = "<group>"; };
 		020E4DA91C9132845CAFDC5D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		039F208D1138598CE060F140 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -713,6 +766,7 @@
 		4BF4D16042A80576D259160C /* Model 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 3.xcdatamodel"; sourceTree = "<group>"; };
 		5116B3B58070BCD09F1487BA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		553D289724905857912C7A1D /* outputList.xcfilelist */ = {isa = PBXFileReference; lastKnownFileType = text.xcfilelist; path = outputList.xcfilelist; sourceTree = "<group>"; };
+		576675973B56A96047CB4944 /* MyFramework.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyFramework.h; sourceTree = "<group>"; };
 		57FF8864B8EBAB5777DC12E6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		587B9E9A3533E965CA602B76 /* TestProjectUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestProjectUITests.swift; sourceTree = "<group>"; };
 		59DA55A04FA2366B5D0BEEFF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -738,16 +792,20 @@
 		7F1A2F579A6F79C62DDA0571 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7FDC16E1938AA114B67D87A9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Interface.storyboard; sourceTree = "<group>"; };
 		814822136AF3C64428D69DD6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		81E4CCE342955E0E934BE533 /* FrameworkFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameworkFile.swift; sourceTree = "<group>"; };
 		83B5EC7EF81F7E4B6F426D4E /* DriverKitDriver.dext */ = {isa = PBXFileReference; explicitFileType = "wrapper.driver-extension"; includeInIndex = 0; path = DriverKitDriver.dext; sourceTree = BUILT_PRODUCTS_DIR; };
 		84317819C92F78425870E483 /* BundleX.bundle */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = BundleX.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		86169DEEDEAF09AB89C8A31D /* libStaticLibrary_ObjC.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libStaticLibrary_ObjC.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		87DF9DCA8399E3214A7E27CF /* TestProjectTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestProjectTests.swift; sourceTree = "<group>"; };
+		89EB41A001D8BF26431C5798 /* CrossOverlayFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CrossOverlayFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A9274BE42A03DC5DA1FAD04 /* Framework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Framework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8AF20308873AEEEC4D8C45D1 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = wrapper.cfbundle; path = Settings.bundle; sourceTree = "<group>"; };
 		8C62E8644AC5070AFC737BCC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8CAF6C55B555E3E1352645B6 /* ExtensionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDelegate.swift; sourceTree = "<group>"; };
 		8CB86294FB939FE6E90932E1 /* libStaticLibrary_Swift.a */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = archive.ar; path = libStaticLibrary_Swift.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D88C6BF7355702B74396791 /* TestProjectUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestProjectUITests.swift; sourceTree = "<group>"; };
+		8DD7A61B07AD2F91BDECC255 /* CrossOverlayFramework.swiftcrossimport */ = {isa = PBXFileReference; lastKnownFileType = wrapper.swiftcrossimport; path = CrossOverlayFramework.swiftcrossimport; sourceTree = "<group>"; };
+		8FE05BF7897ECFD58B7AC8B1 /* CrossOverlayFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CrossOverlayFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		93C033648A37D95027845BD3 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		9528528C989D24FE3E6C533E /* App-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "App-Info.plist"; sourceTree = "<group>"; };
 		9A87A926D563773658FB87FE /* iMessageApp.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = iMessageApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -784,6 +842,7 @@
 		CA8718C7CD3BE86D9B1F5120 /* MoreUnder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreUnder.swift; sourceTree = "<group>"; };
 		CB77A637470A3CDA2BDDBE99 /* App_iOS_Tests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = App_iOS_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D132EA69984F32DA9DC727B6 /* TestProjectTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestProjectTests.swift; sourceTree = "<group>"; };
+		D21BB1B6FA5A025305B223BA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		D296BB7355994040E197A1EE /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Result.framework; sourceTree = "<group>"; };
 		D51CC8BCCBD68A90E90A3207 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D629E142AB87C681D4EC90F7 /* iMessageExtension.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = iMessageExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -793,6 +852,7 @@
 		D8A016580A3B8F72B820BFBF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DAA7880242A9DE61E68026CC /* Folder */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Folder; sourceTree = SOURCE_ROOT; };
 		DFE6A6FAAFF701FE729293DE /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		E0F31A9DE15B210D101AFC81 /* CrossOverlayFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CrossOverlayFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E3958AB20082EA12D4D5E60C /* BundleY.bundle */ = {isa = PBXFileReference; lastKnownFileType = wrapper.cfbundle; path = BundleY.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		E42335D1200CB7B8B91E962F /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = Base; path = Base.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		E43116070AFEF5D8C3A5A957 /* TestFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TestFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1035,6 +1095,7 @@
 				795B8D70B674C850B57DD39D /* App_watchOS Extension */,
 				6DBE0EE90642BB3F6E58AD43 /* Configs */,
 				3F2E22B7AB20FA42CD205C2A /* CopyFiles */,
+				ED8625A7E716E1BA50AB88AB /* CrossOverlayFramework */,
 				FCC084D4F8992BBC49983A38 /* CustomGroup */,
 				7979F5A04B370C36415EFB11 /* DriverKit Driver */,
 				99EF37D6DEE914E180236A91 /* EndpointSecurity Extension */,
@@ -1275,6 +1336,10 @@
 				A680BE9F68A255B0FB291AE6 /* App_watchOS.app */,
 				84317819C92F78425870E483 /* BundleX.bundle */,
 				BB677D970923F663D846D7E0 /* BundleY.bundle */,
+				8FE05BF7897ECFD58B7AC8B1 /* CrossOverlayFramework.framework */,
+				E0F31A9DE15B210D101AFC81 /* CrossOverlayFramework.framework */,
+				0095836FE59395511E0CB4F0 /* CrossOverlayFramework.framework */,
+				89EB41A001D8BF26431C5798 /* CrossOverlayFramework.framework */,
 				83B5EC7EF81F7E4B6F426D4E /* DriverKitDriver.dext */,
 				E5E0A80CCE8F8DB662DCD2D0 /* EndpointSecuritySystemExtension.systemextension */,
 				7D700FA699849D2F95216883 /* EntitledApp.app */,
@@ -1380,6 +1445,17 @@
 				FF47010E7368583405AA50CB /* SwiftyJSON.framework */,
 			);
 			path = iOS;
+			sourceTree = "<group>";
+		};
+		ED8625A7E716E1BA50AB88AB /* CrossOverlayFramework */ = {
+			isa = PBXGroup;
+			children = (
+				8DD7A61B07AD2F91BDECC255 /* CrossOverlayFramework.swiftcrossimport */,
+				81E4CCE342955E0E934BE533 /* FrameworkFile.swift */,
+				D21BB1B6FA5A025305B223BA /* Info.plist */,
+				576675973B56A96047CB4944 /* MyFramework.h */,
+			);
+			path = CrossOverlayFramework;
 			sourceTree = "<group>";
 		};
 		EE78B4FBD0137D1975C47D76 /* App_macOS */ = {
@@ -1490,11 +1566,43 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		942F7B856687815A6B056194 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				06F1750F0E45E4822F806523 /* MyFramework.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A24F1A0AC15CAE82CD3EDFE2 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4B862F11762F6BB54E97E401 /* MyFramework.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		AEC8E1CFD02926FADE734D82 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				0786F9C725AD215C4F915BB5 /* MyFramework.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C5BCD048B70E4D35B14AA8E9 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DBCA8149E5C4183AB52B8D99 /* MyFramework.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DA6BC7F9BB12AC09AB3AF202 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				57DC116CE5C9F93FBA529C2F /* MyFramework.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1544,8 +1652,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 77CE5B5E5DEAC820254D484C /* Build configuration list for PBXNativeTarget "App_macOS" */;
 			buildPhases = (
-				96BB43F4706B031DA45166E8 /* Sources */,
 				77D35586228BF8AB74152BB5 /* Resources */,
+				96BB43F4706B031DA45166E8 /* Sources */,
 				FB79B30FEA6073A29B4D9FCC /* CopyFiles */,
 				A6E1C88C073F8CC6B5B072B6 /* Frameworks */,
 				DE875E9A37F7CB9C347AEFA0 /* Embed System Extensions */,
@@ -1633,6 +1741,23 @@
 			productReference = BECEA4A483ADEB8158F640B3 /* Tool */;
 			productType = "com.apple.product-type.tool";
 		};
+		0CE8BE7C80651629EC056066 /* CrossOverlayFramework_iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 641D1B2D88B93FAD0EA09187 /* Build configuration list for PBXNativeTarget "CrossOverlayFramework_iOS" */;
+			buildPhases = (
+				096753D5DAA26D110F699A7F /* CopyFiles */,
+				C5BCD048B70E4D35B14AA8E9 /* Headers */,
+				84FEBA4F84620938800D12A4 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CrossOverlayFramework_iOS;
+			productName = CrossOverlayFramework_iOS;
+			productReference = 8FE05BF7897ECFD58B7AC8B1 /* CrossOverlayFramework.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 		13E8C5AB873CEE21E18E552F /* StaticLibrary_ObjC_iOS */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 56BF985F253DD84AD7C37538 /* Build configuration list for PBXNativeTarget "StaticLibrary_ObjC_iOS" */;
@@ -1701,7 +1826,7 @@
 			buildConfigurationList = 6B5C5F08C0EF06457756E379 /* Build configuration list for PBXNativeTarget "App_watchOS" */;
 			buildPhases = (
 				B7B71FA7D279029BF7A7FC7C /* Resources */,
-				C765431E5FF4B02F59DE79B0 /* Embed App Extensions */,
+				661E0CEEEC2395C39375961F /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
@@ -1727,6 +1852,23 @@
 			productReference = BB677D970923F663D846D7E0 /* BundleY.bundle */;
 			productType = "com.apple.product-type.bundle";
 		};
+		2F4FEAEFD7EE82DC49D899FC /* CrossOverlayFramework_macOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9C9913AAE0ABA99337F0C069 /* Build configuration list for PBXNativeTarget "CrossOverlayFramework_macOS" */;
+			buildPhases = (
+				E1C04BDC65F3DC88D6D0473F /* CopyFiles */,
+				942F7B856687815A6B056194 /* Headers */,
+				A87FBABC2AA10F8D044526BD /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CrossOverlayFramework_macOS;
+			productName = CrossOverlayFramework_macOS;
+			productReference = E0F31A9DE15B210D101AFC81 /* CrossOverlayFramework.framework */;
+			productType = "com.apple.product-type.framework";
+		};
 		307AE3FA155FFD09B74AE351 /* App_watchOS Extension */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3F3C272D2EA61F6B88B80D44 /* Build configuration list for PBXNativeTarget "App_watchOS Extension" */;
@@ -1743,6 +1885,23 @@
 			productName = "App_watchOS Extension";
 			productReference = 0D09D243DBCF9D32E239F1E8 /* App_watchOS Extension.appex */;
 			productType = "com.apple.product-type.watchkit2-extension";
+		};
+		3BF66A4668DFAF9338791F60 /* CrossOverlayFramework_tvOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E3D23AF56C29471E48CA9A11 /* Build configuration list for PBXNativeTarget "CrossOverlayFramework_tvOS" */;
+			buildPhases = (
+				04D94C495E299B50EB0DC7C4 /* CopyFiles */,
+				DA6BC7F9BB12AC09AB3AF202 /* Headers */,
+				E9BE8745FD5B1ACBE43B9E0C /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CrossOverlayFramework_tvOS;
+			productName = CrossOverlayFramework_tvOS;
+			productReference = 0095836FE59395511E0CB4F0 /* CrossOverlayFramework.framework */;
+			productType = "com.apple.product-type.framework";
 		};
 		428715FBC1D86458DA70CBDE /* DriverKitDriver */ = {
 			isa = PBXNativeTarget;
@@ -1908,7 +2067,7 @@
 			buildConfigurationList = 1FC6945BE13C2202A2BCA3BC /* Build configuration list for PBXNativeTarget "iMessageApp" */;
 			buildPhases = (
 				61001E265009194959C2CF36 /* Resources */,
-				2F0735A423E554B267BBA0A5 /* Embed App Extensions */,
+				EB212BCB1E2E1D2667233F98 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
@@ -2034,6 +2193,23 @@
 			productName = EntitledApp;
 			productReference = 7D700FA699849D2F95216883 /* EntitledApp.app */;
 			productType = "com.apple.product-type.application";
+		};
+		C7F90FD0FAAF232B3E015D38 /* CrossOverlayFramework_watchOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C483BD5456B09C276DE6EFC1 /* Build configuration list for PBXNativeTarget "CrossOverlayFramework_watchOS" */;
+			buildPhases = (
+				ADD98000970B8907F73BFD92 /* CopyFiles */,
+				A24F1A0AC15CAE82CD3EDFE2 /* Headers */,
+				C975C5F0085D232AF63E0F3E /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CrossOverlayFramework_watchOS;
+			productName = CrossOverlayFramework_watchOS;
+			productReference = 89EB41A001D8BF26431C5798 /* CrossOverlayFramework.framework */;
+			productType = "com.apple.product-type.framework";
 		};
 		CE7D183D3752B5B35D2D8E6D /* Framework2_iOS */ = {
 			isa = PBXNativeTarget;
@@ -2230,6 +2406,10 @@
 				307AE3FA155FFD09B74AE351 /* App_watchOS Extension */,
 				DA40AB367B606CCE2FDD398D /* BundleX */,
 				271CAC331D24F4F7E12C819C /* BundleY */,
+				0CE8BE7C80651629EC056066 /* CrossOverlayFramework_iOS */,
+				2F4FEAEFD7EE82DC49D899FC /* CrossOverlayFramework_macOS */,
+				3BF66A4668DFAF9338791F60 /* CrossOverlayFramework_tvOS */,
+				C7F90FD0FAAF232B3E015D38 /* CrossOverlayFramework_watchOS */,
 				428715FBC1D86458DA70CBDE /* DriverKitDriver */,
 				9F551F66949B55E8328EB995 /* EndpointSecuritySystemExtension */,
 				B61ED4688789B071275E2B7A /* EntitledApp */,
@@ -2685,6 +2865,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		84FEBA4F84620938800D12A4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1EFFFE113C5E54A91148D3EB /* FrameworkFile.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		8A616537E6E1BEAB59E069C7 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2766,6 +2954,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A87FBABC2AA10F8D044526BD /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6C02002A4EE169CEBEC7BA7F /* FrameworkFile.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		AE7971E1CA54D23C264E6541 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2780,6 +2976,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C975C5F0085D232AF63E0F3E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				713F57A10C62F70058D7FB0A /* FrameworkFile.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2804,6 +3008,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E9BE8745FD5B1ACBE43B9E0C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				03FFCE664129864A8F167C2F /* FrameworkFile.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3158,6 +3370,30 @@
 				SKIP_INSTALL = YES;
 			};
 			name = "Staging Release";
+		};
+		02E38E444E372E89E589E022 /* Production Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = CrossOverlayFramework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.CrossOverlayFramework-tvOS";
+				PRODUCT_NAME = CrossOverlayFramework;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = "Production Debug";
 		};
 		02EB0C0230E6616EC8057F1C /* Staging Debug */ = {
 			isa = XCBuildConfiguration;
@@ -3691,6 +3927,70 @@
 			};
 			name = "Test Debug";
 		};
+		19BF18E6EAA8B30F894EAB4E /* Test Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = CrossOverlayFramework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.CrossOverlayFramework-watchOS";
+				PRODUCT_NAME = CrossOverlayFramework;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = "Test Release";
+		};
+		1C63C4A728212D903E4F2CBB /* Test Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = CrossOverlayFramework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.CrossOverlayFramework-iOS";
+				PRODUCT_NAME = CrossOverlayFramework;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = "Test Release";
+		};
+		1C644E47F1C539F2B95160B8 /* Production Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = CrossOverlayFramework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.CrossOverlayFramework-watchOS";
+				PRODUCT_NAME = CrossOverlayFramework;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = "Production Debug";
+		};
 		1D61DC7F5309F4C8B7692D85 /* Test Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -3704,6 +4004,30 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = "Test Release";
+		};
+		1FB2AFB2F45076B4A047499E /* Staging Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = CrossOverlayFramework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.CrossOverlayFramework-iOS";
+				PRODUCT_NAME = CrossOverlayFramework;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = "Staging Debug";
 		};
 		20803EC42C26E4EA13474E5A /* Production Debug */ = {
 			isa = XCBuildConfiguration;
@@ -3975,6 +4299,30 @@
 			};
 			name = "Staging Debug";
 		};
+		321D6FAF1E7AA977008359C7 /* Staging Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = CrossOverlayFramework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.CrossOverlayFramework-tvOS";
+				PRODUCT_NAME = CrossOverlayFramework;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = "Staging Debug";
+		};
 		3236B7B20520584116A96C0D /* Production Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -3993,6 +4341,30 @@
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = App_Clip;
+			};
+			name = "Production Release";
+		};
+		34ED16009A759D256D7ECB53 /* Production Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = CrossOverlayFramework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.CrossOverlayFramework-macOS";
+				PRODUCT_NAME = CrossOverlayFramework;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = "Production Release";
 		};
@@ -4250,6 +4622,26 @@
 			};
 			name = "Test Debug";
 		};
+		45FD151DC9928DE066A3B1AD /* Staging Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = CrossOverlayFramework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.CrossOverlayFramework-watchOS";
+				PRODUCT_NAME = CrossOverlayFramework;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = "Staging Release";
+		};
 		4621C6C8A78FBB1CF4078178 /* Production Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -4404,6 +4796,26 @@
 				TARGETED_DEVICE_FAMILY = 4;
 			};
 			name = "Production Release";
+		};
+		4D5DC2028DC046B8AF0B9B83 /* Test Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = CrossOverlayFramework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.CrossOverlayFramework-watchOS";
+				PRODUCT_NAME = CrossOverlayFramework;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = "Test Debug";
 		};
 		4D86BBA6893D41140152B8CC /* Staging Release */ = {
 			isa = XCBuildConfiguration;
@@ -5043,6 +5455,54 @@
 			};
 			name = "Test Debug";
 		};
+		6E93ACBBB608F386C0EB0F40 /* Staging Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = CrossOverlayFramework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.CrossOverlayFramework-iOS";
+				PRODUCT_NAME = CrossOverlayFramework;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = "Staging Release";
+		};
+		6FCE7B896519D4B364BD3A71 /* Staging Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = CrossOverlayFramework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.CrossOverlayFramework-macOS";
+				PRODUCT_NAME = CrossOverlayFramework;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = "Staging Release";
+		};
 		71529460FB00BCDF2064C57F /* Staging Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -5424,6 +5884,30 @@
 			};
 			name = "Production Debug";
 		};
+		8705629C56ACC795F1DDB96D /* Staging Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = CrossOverlayFramework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.CrossOverlayFramework-macOS";
+				PRODUCT_NAME = CrossOverlayFramework;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = "Staging Debug";
+		};
 		8A380D322263800338FA5139 /* Test Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -5479,6 +5963,30 @@
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = "Test Debug";
+		};
+		8FEAEB3CB45479405F52D3AF /* Test Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = CrossOverlayFramework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.CrossOverlayFramework-tvOS";
+				PRODUCT_NAME = CrossOverlayFramework;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = "Test Release";
 		};
 		917341F64B3A9B883FE942AD /* Production Release */ = {
 			isa = XCBuildConfiguration;
@@ -5573,6 +6081,30 @@
 			};
 			name = "Production Debug";
 		};
+		94C7D2D3D0907DF146EFC13C /* Test Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = CrossOverlayFramework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.CrossOverlayFramework-macOS";
+				PRODUCT_NAME = CrossOverlayFramework;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = "Test Debug";
+		};
 		94ECCEFE29DB30C48B227A16 /* Staging Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -5594,6 +6126,30 @@
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = "Staging Release";
+		};
+		96130B9B35FEC2FEA00AFDB9 /* Test Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = CrossOverlayFramework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.CrossOverlayFramework-macOS";
+				PRODUCT_NAME = CrossOverlayFramework;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = "Test Release";
 		};
 		9666BFAAA42CE2DC7E368E7D /* Production Release */ = {
 			isa = XCBuildConfiguration;
@@ -5764,6 +6320,30 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = "Staging Debug";
+		};
+		9E1F620F233A34DE80D84356 /* Staging Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = CrossOverlayFramework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.CrossOverlayFramework-tvOS";
+				PRODUCT_NAME = CrossOverlayFramework;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = "Staging Release";
 		};
 		9E38571B33C3CE5CA10C8452 /* Staging Debug */ = {
 			isa = XCBuildConfiguration;
@@ -5949,6 +6529,30 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = "Production Release";
+		};
+		A9483E827FAD142F28A0E16D /* Production Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = CrossOverlayFramework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.CrossOverlayFramework-iOS";
+				PRODUCT_NAME = CrossOverlayFramework;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = "Production Debug";
 		};
 		AA4F4236D960D3ACE683A815 /* Staging Release */ = {
 			isa = XCBuildConfiguration;
@@ -6267,6 +6871,30 @@
 			};
 			name = "Staging Release";
 		};
+		B4464446E556BA3E731D3D25 /* Production Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = CrossOverlayFramework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.CrossOverlayFramework-tvOS";
+				PRODUCT_NAME = CrossOverlayFramework;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = "Production Release";
+		};
 		B5E1584A197C52FC47245FC8 /* Staging Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -6301,6 +6929,26 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = "Test Release";
+		};
+		B8CC52B6DC03DACD9B1309E0 /* Staging Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = CrossOverlayFramework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.CrossOverlayFramework-watchOS";
+				PRODUCT_NAME = CrossOverlayFramework;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = "Staging Debug";
 		};
 		B928E061A126AC8D17D81D1E /* Staging Debug */ = {
 			isa = XCBuildConfiguration;
@@ -6738,6 +7386,30 @@
 			};
 			name = "Test Debug";
 		};
+		C9D8E28D29695DF97266F229 /* Test Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = CrossOverlayFramework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.CrossOverlayFramework-tvOS";
+				PRODUCT_NAME = CrossOverlayFramework;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = "Test Debug";
+		};
 		CA08CB7E7DBBC99CDC7F2C2E /* Test Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -6804,6 +7476,30 @@
 				SDKROOT = macosx;
 			};
 			name = "Staging Release";
+		};
+		CF25791E297417E38800A521 /* Production Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = CrossOverlayFramework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.CrossOverlayFramework-macOS";
+				PRODUCT_NAME = CrossOverlayFramework;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = "Production Debug";
 		};
 		CF7D27DBBF0667D789D53D29 /* Staging Release */ = {
 			isa = XCBuildConfiguration;
@@ -6986,6 +7682,26 @@
 			};
 			name = "Production Debug";
 		};
+		DE81296F5A364B236643A3B9 /* Production Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = CrossOverlayFramework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.CrossOverlayFramework-watchOS";
+				PRODUCT_NAME = CrossOverlayFramework;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = "Production Release";
+		};
 		DF558E25A4E143219DF4AA51 /* Staging Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -7008,6 +7724,30 @@
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = "Staging Debug";
+		};
+		E0DF26EA764106961DEC59C9 /* Test Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = CrossOverlayFramework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.CrossOverlayFramework-iOS";
+				PRODUCT_NAME = CrossOverlayFramework;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = "Test Debug";
 		};
 		E24703CFCCBD727B3FE08F51 /* Test Release */ = {
 			isa = XCBuildConfiguration;
@@ -7239,6 +7979,30 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = "Staging Release";
+		};
+		E5EB6CE05568645829D40384 /* Production Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = CrossOverlayFramework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.CrossOverlayFramework-iOS";
+				PRODUCT_NAME = CrossOverlayFramework;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = "Production Release";
 		};
 		E683F74557A3FC7BD78CAB2B /* Production Debug */ = {
 			isa = XCBuildConfiguration;
@@ -7965,6 +8729,19 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Production Debug";
 		};
+		641D1B2D88B93FAD0EA09187 /* Build configuration list for PBXNativeTarget "CrossOverlayFramework_iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A9483E827FAD142F28A0E16D /* Production Debug */,
+				E5EB6CE05568645829D40384 /* Production Release */,
+				1FB2AFB2F45076B4A047499E /* Staging Debug */,
+				6E93ACBBB608F386C0EB0F40 /* Staging Release */,
+				E0DF26EA764106961DEC59C9 /* Test Debug */,
+				1C63C4A728212D903E4F2CBB /* Test Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "Production Debug";
+		};
 		658628E35283172E17BFC6A3 /* Build configuration list for PBXNativeTarget "Framework_tvOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -8121,6 +8898,19 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Production Debug";
 		};
+		9C9913AAE0ABA99337F0C069 /* Build configuration list for PBXNativeTarget "CrossOverlayFramework_macOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CF25791E297417E38800A521 /* Production Debug */,
+				34ED16009A759D256D7ECB53 /* Production Release */,
+				8705629C56ACC795F1DDB96D /* Staging Debug */,
+				6FCE7B896519D4B364BD3A71 /* Staging Release */,
+				94C7D2D3D0907DF146EFC13C /* Test Debug */,
+				96130B9B35FEC2FEA00AFDB9 /* Test Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "Production Debug";
+		};
 		9F4CBE5D909D2757B3D334B3 /* Build configuration list for PBXNativeTarget "TestFramework" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -8156,6 +8946,19 @@
 				E599549D1B1432302031A904 /* Staging Release */,
 				9A891313A139893990989BDD /* Test Debug */,
 				3DEEA480EDDC83405CFB9BBA /* Test Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "Production Debug";
+		};
+		C483BD5456B09C276DE6EFC1 /* Build configuration list for PBXNativeTarget "CrossOverlayFramework_watchOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1C644E47F1C539F2B95160B8 /* Production Debug */,
+				DE81296F5A364B236643A3B9 /* Production Release */,
+				B8CC52B6DC03DACD9B1309E0 /* Staging Debug */,
+				45FD151DC9928DE066A3B1AD /* Staging Release */,
+				4D5DC2028DC046B8AF0B9B83 /* Test Debug */,
+				19BF18E6EAA8B30F894EAB4E /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Production Debug";
@@ -8234,6 +9037,19 @@
 				7D73A7FB339A39293BD2DB9E /* Staging Release */,
 				B227B91964080DEF6C426483 /* Test Debug */,
 				BA21E149424C2D03E5E50EC1 /* Test Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = "Production Debug";
+		};
+		E3D23AF56C29471E48CA9A11 /* Build configuration list for PBXNativeTarget "CrossOverlayFramework_tvOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				02E38E444E372E89E589E022 /* Production Debug */,
+				B4464446E556BA3E731D3D25 /* Production Release */,
+				321D6FAF1E7AA977008359C7 /* Staging Debug */,
+				9E1F620F233A34DE80D84356 /* Staging Release */,
+				C9D8E28D29695DF97266F229 /* Test Debug */,
+				8FEAEB3CB45479405F52D3AF /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = "Production Debug";

@@ -10,6 +10,7 @@ enum GenerationError: Error, CustomStringConvertible, ProcessError {
     case cacheGenerationError(Error)
     case validationError(SpecValidationError)
     case generationError(Error)
+    case missingUsername
     case writingError(Error)
 
     var description: String {
@@ -24,6 +25,8 @@ enum GenerationError: Error, CustomStringConvertible, ProcessError {
             return error.description
         case let .generationError(error):
             return String(describing: error)
+        case .missingUsername:
+            return "Couldn't find current username"
         case let .writingError(error):
             return String(describing: error)
         }

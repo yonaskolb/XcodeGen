@@ -40,12 +40,15 @@ public class SchemeGenerator {
         return pbxproj
     }
 
-    public func generateSchemes() throws -> [XCScheme] {
-        var xcschemes: [XCScheme] = []
+    public func generateSchemes() throws -> (
+        shared: [XCScheme],
+        user: [XCScheme],
+        management: XCSchemeManagement?
+    ) {
+        var schemes: [(Scheme, ProjectTarget?)] = []
 
         for scheme in project.schemes {
-            let xcscheme = try generateScheme(scheme)
-            xcschemes.append(xcscheme)
+            schemes.append((scheme, nil))
         }
 
         for target in project.projectTargets {
@@ -64,19 +67,18 @@ public class SchemeGenerator {
                         debugConfig: debugConfig.name,
                         releaseConfig: releaseConfig.name
                     )
-                    let xcscheme = try generateScheme(scheme, for: target)
-                    xcschemes.append(xcscheme)
+                    schemes.append((scheme, target))
                 } else {
                     for configVariant in targetScheme.configVariants {
 
                         let schemeName = "\(target.name) \(configVariant)"
-                        
+
                         let debugConfig = project.configs
                             .first(including: configVariant, for: .debug)!
-                        
+
                         let releaseConfig = project.configs
                             .first(including: configVariant, for: .release)!
-                     
+
                         let scheme = Scheme(
                             name: schemeName,
                             target: target,
@@ -85,14 +87,44 @@ public class SchemeGenerator {
                             debugConfig: debugConfig.name,
                             releaseConfig: releaseConfig.name
                         )
-                        let xcscheme = try generateScheme(scheme, for: target)
-                        xcschemes.append(xcscheme)
+                        schemes.append((scheme, target))
                     }
                 }
             }
         }
 
-        return xcschemes
+        var sharedSchemes: [XCScheme] = []
+        var userSchemes: [XCScheme] = []
+        var schemeManagements: [XCSchemeManagement.UserStateScheme] = []
+
+        for (scheme, projectTarget) in schemes {
+            let xcscheme = try generateScheme(scheme, for: projectTarget)
+
+            if scheme.management?.shared == false {
+                userSchemes.append(xcscheme)
+            } else {
+                sharedSchemes.append(xcscheme)
+            }
+
+            if let management = scheme.management {
+                schemeManagements.append(
+                    XCSchemeManagement.UserStateScheme(
+                        name: scheme.name + ".xcscheme",
+                        shared: management.shared,
+                        orderHint: management.orderHint,
+                        isShown: management.isShown
+                    )
+                )
+            }
+        }
+
+        return (
+            shared: sharedSchemes,
+            user: userSchemes,
+            management: schemeManagements.isEmpty
+                ? nil
+                : XCSchemeManagement(schemeUserState: schemeManagements, suppressBuildableAutocreation: nil)
+        )
     }
 
     public func generateScheme(_ scheme: Scheme, for target: ProjectTarget? = nil) throws -> XCScheme {
@@ -359,7 +391,7 @@ public class SchemeGenerator {
                 .flatMap { $0.type.isExtension ? true : nil }
         )
     }
-
+    
     private func launchAutomaticallySubstyle(for target: ProjectTarget?) -> String? {
         if target?.type.isExtension == true {
             return "2"
@@ -462,7 +494,8 @@ extension Scheme {
             ),
             archive: .init(
                 config: releaseConfig
-            )
+            ),
+            management: targetScheme.management
         )
     }
 

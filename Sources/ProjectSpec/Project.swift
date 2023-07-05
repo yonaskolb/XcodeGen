@@ -25,6 +25,7 @@ public struct Project: BuildSettingsContainer {
     public var settingGroups: [String: Settings]
     public var configs: [Config]
     public var schemes: [Scheme]
+    public var breakpoints: [Breakpoint]
     public var options: SpecOptions
     public var attributes: [String: Any]
     public var fileGroups: [String]
@@ -49,6 +50,7 @@ public struct Project: BuildSettingsContainer {
         settings: Settings = .empty,
         settingGroups: [String: Settings] = [:],
         schemes: [Scheme] = [],
+        breakpoints: [Breakpoint] = [],
         packages: [String: SwiftPackage] = [:],
         options: SpecOptions = SpecOptions(),
         fileGroups: [String] = [],
@@ -66,6 +68,7 @@ public struct Project: BuildSettingsContainer {
         self.settings = settings
         self.settingGroups = settingGroups
         self.schemes = schemes
+        self.breakpoints = breakpoints
         self.packages = packages
         self.options = options
         self.fileGroups = fileGroups
@@ -144,6 +147,7 @@ extension Project: Equatable {
             lhs.settingGroups == rhs.settingGroups &&
             lhs.configs == rhs.configs &&
             lhs.schemes == rhs.schemes &&
+            lhs.breakpoints == rhs.breakpoints &&
             lhs.fileGroups == rhs.fileGroups &&
             lhs.configFiles == rhs.configFiles &&
             lhs.options == rhs.options &&
@@ -155,14 +159,7 @@ extension Project: Equatable {
 extension Project {
 
     public init(path: Path) throws {
-        var cachedSpecFiles: [Path: SpecFile] = [:]
-        let spec = try SpecFile(filePath: path, basePath: path.parent(), cachedSpecFiles: &cachedSpecFiles)
-        try self.init(spec: spec)
-    }
-
-    public init(path: Path, basePath: Path) throws {
-        var cachedSpecFiles: [Path: SpecFile] = [:]
-        let spec = try SpecFile(filePath: path, basePath: basePath, cachedSpecFiles: &cachedSpecFiles)
+        let spec = try SpecFile(path: path)
         try self.init(spec: spec)
     }
 
@@ -186,6 +183,11 @@ extension Project {
         aggregateTargets = try jsonDictionary.json(atKeyPath: "aggregateTargets").sorted { $0.name < $1.name }
         projectReferences = try jsonDictionary.json(atKeyPath: "projectReferences").sorted { $0.name < $1.name }
         schemes = try jsonDictionary.json(atKeyPath: "schemes")
+        if jsonDictionary["breakpoints"] != nil {
+            breakpoints = try jsonDictionary.json(atKeyPath: "breakpoints", invalidItemBehaviour: .fail)
+        } else {
+            breakpoints = []
+        }
         fileGroups = jsonDictionary.json(atKeyPath: "fileGroups") ?? []
         configFiles = jsonDictionary.json(atKeyPath: "configFiles") ?? [:]
         attributes = jsonDictionary.json(atKeyPath: "attributes") ?? [:]

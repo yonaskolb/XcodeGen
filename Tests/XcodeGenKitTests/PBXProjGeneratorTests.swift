@@ -15,7 +15,7 @@ extension Project {
                 try self.validate()
             }
             let generator = ProjectGenerator(project: self)
-            return try generator.generateXcodeProject()
+            return try generator.generateXcodeProject(userName: "someUser")
         }
     }
 
@@ -375,6 +375,44 @@ class PBXProjGeneratorTests: XCTestCase {
                 try expect(testTarget?.frameworksBuildPhase()?.files?.count) == 1
                 try expect(testTarget?.frameworksBuildPhase()?.files?[0].platformFilter) == "ios"
             }
+
+            $0.it("places resources before sources buildPhase") {
+                let directories = """
+                    Sources:
+                      - MainScreen:
+                        - Entities:
+                            - file.swift
+                            - image.jpg
+                """
+                try createDirectories(directories)
+                let target1 = Target(
+                    name: "TestAll",
+                    type: .application,
+                    platform: .iOS,
+                    sources: ["Sources"],
+                    putResourcesBeforeSourcesBuildPhase: true
+                )
+                let target2 = Target(
+                    name: "TestiOS",
+                    type: .application,
+                    platform: .iOS,
+                    sources: ["Sources"],
+                    putResourcesBeforeSourcesBuildPhase: false
+                )
+
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target1, target2])
+
+                let pbxProj = try project.generatePbxProj()
+
+                let targets = pbxProj.projects.first?.targets
+                try expect(targets?.count) == 2
+                try expect(targets?.first?.buildPhases.first).to.beOfType(PBXResourcesBuildPhase.self)
+                try expect(targets?.first?.buildPhases.last).to.beOfType(PBXSourcesBuildPhase.self)
+
+                try expect(targets?.last?.buildPhases.first).to.beOfType(PBXSourcesBuildPhase.self)
+                try expect(targets?.last?.buildPhases.last).to.beOfType(PBXResourcesBuildPhase.self)
+            }
         }
     }
+
 }
