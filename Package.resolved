@@ -75,11 +75,11 @@
       },
       {
         "package": "XcodeProj",
-        "repositoryURL": "https://github.com/tuist/XcodeProj.git",
+        "repositoryURL": "https://github.com/BarredEwe/XcodeProj.git",
         "state": {
-          "branch": null,
-          "revision": "c4d5f9d7f789dd944222be95938810947561e559",
-          "version": "8.12.0"
+          "branch": "feature/build-tool-plugin",
+          "revision": "a055d6b9f7cfd22e872db492d8c62ab8ab974bf9",
+          "version": null
         }
       },
       {
