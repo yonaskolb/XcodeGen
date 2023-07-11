@@ -11,7 +11,20 @@
 
 ### Added
 
+### Fixed
+
+- Fix external dependencies from being removed by Xcode #1354 @OdNairy
+
+## 2.35.0
+
+### Added
+
 - Added support for shared breakpoints #177 @alexruperez @myihsan
+- Added support for `putResourcesBeforeSourcesBuildPhase` in a target #1351 @mat1th
+
+### Fixed
+
+- Fix case where source paths may not be deduplicated correctly resulting in duplicate groups and/or a crash in running Xcodegen #1341 @dalemyers
 
 ## 2.34.0
 

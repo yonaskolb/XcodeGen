@@ -4,8 +4,13 @@ import PathKit
 
 public struct TargetSource: Equatable {
     public static let optionalDefault = false
-
-    public var path: String
+    
+    public var path: String {
+        didSet {
+            path = (path as NSString).standardizingPath
+        }
+    }
+    
     public var name: String?
     public var group: String?
     public var compilerFlags: [String]
@@ -52,7 +57,7 @@ public struct TargetSource: Equatable {
         inferPlatformFiltersByPath: Bool? = nil,
         platformFilters: [SupportedPlatforms]? = nil
     ) {
-        self.path = path
+        self.path = (path as NSString).standardizingPath
         self.name = name
         self.group = group
         self.compilerFlags = compilerFlags
@@ -89,6 +94,7 @@ extension TargetSource: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
         path = try jsonDictionary.json(atKeyPath: "path")
+        path = (path as NSString).standardizingPath // Done in two steps as the compiler can't figure out the types otherwise
         name = jsonDictionary.json(atKeyPath: "name")
         group = jsonDictionary.json(atKeyPath: "group")
 

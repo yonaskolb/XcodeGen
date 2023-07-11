@@ -1,54 +1,58 @@
 # Project Spec
 
-### Index
+The project spec can be written in either YAML or JSON. All the examples below use YAML.
 
-- [General](#general)
+- [x] required property
+- [ ] optional property
+
+Some of the YAML examples below don't show all the required properties. For example not all target examples will have a platform or type, even though they are required.
+
+You can also use environment variables in your configuration file, by using `${SOME_VARIABLE}` in a string.
+
 - [Project](#project)
-     - [Include](#include)
-     - [Options](#options)
-     - [GroupOrdering](#groupordering)
-     - [FileType](#filetype)
-     - [Configs](#configs)
-     - [Setting Groups](#setting-groups)
+  - [Include](#include)
+  - [Options](#options)
+  - [GroupOrdering](#groupordering)
+  - [FileType](#filetype)
+  - [Breakpoints](#breakpoints)
+    - [Breakpoint Action](#breakpoint-action)
+  - [Configs](#configs)
+  - [Setting Groups](#setting-groups)
 - [Settings](#settings)
 - [Target](#target)
-     - [Product Type](#product-type)
-     - [Platform](#platform)
-     - [Supported Platforms](#supported-platforms)
-     - [Sources](#sources)
-     - [Dependency](#dependency)
-     - [Config Files](#config-files)
-     - [Plist](#plist)
-     - [Build Script](#build-script)
-     - [Build Rule](#build-rule)
-     - [Target Scheme](#target-scheme)
-     - [Legacy Target](#legacy-target)
+  - [Product Type](#product-type)
+  - [Platform](#platform)
+  - [Supported Platforms](#supported-platforms)
+  - [Sources](#sources)
+    - [Target Source](#target-source)
+  - [Dependency](#dependency)
+  - [Config Files](#config-files)
+  - [Plist](#plist)
+  - [Build Script](#build-script)
+  - [Build Rule](#build-rule)
+  - [Target Scheme](#target-scheme)
+  - [Legacy Target](#legacy-target)
 - [Aggregate Target](#aggregate-target)
 - [Target Template](#target-template)
 - [Scheme](#scheme)
-     - [Build](#build)
-     - [Common Build Action options](#common-build-action-options)
-     - [Execution Action](#execution-action)
-     - [Run Action](#run-action)
-     - [Test Action](#test-action)
-     - [Archive Action](#archive-action)
-     - [Simulate Location](#simulate-location)
-     - [Scheme Management](#scheme-management)
-     - [Environment Variable](#environment-variable)
-     - [Test Plan](#test-plan)
+  - [Build](#build)
+  - [Common Build Action options](#common-build-action-options)
+  - [Execution Action](#execution-action)
+  - [Run Action](#run-action)
+  - [Test Action](#test-action)
+    - [Test Target](#test-target)
+    - [Other Parameters](#other-parameters)
+    - [Testable Target Reference](#testable-target-reference)
+  - [Archive Action](#archive-action)
+  - [Simulate Location](#simulate-location)
+  - [Scheme Management](#scheme-management)
+  - [Environment Variable](#environment-variable)
+  - [Test Plan](#test-plan)
 - [Scheme Template](#scheme-template)
-     - [Remote Package](#remote-package)
-     - [Local Package](#local-package)
 - [Swift Package](#swift-package)
+  - [Remote Package](#remote-package)
+  - [Local Package](#local-package)
 - [Project Reference](#project-reference)
-
-## General
-
-The project spec can be written in either YAML or JSON. All the examples below use YAML.
-
-Required properties are marked with checkbox. Some of the YAML examples don't show all the required properties. For example not all target examples will have a platform or type, even though they are required.
-
-You can also use environment variables in your configuration file, by using `${SOME_VARIABLE}` in a string.
 
 ## Project
 
@@ -116,7 +120,7 @@ Note that target names can also be changed by adding a `name` property to a targ
 - [ ] **minimumXcodeGenVersion**: **String** - The minimum version of XcodeGen required.
 - [ ] **carthageBuildPath**: **String** - The path to the carthage build directory. Defaults to `Carthage/Build`. This is used when specifying target carthage dependencies
 - [ ] **carthageExecutablePath**: **String** - The path to the carthage executable. Defaults to `carthage`. You can specify when you use custom built or locally installed Carthage using [Mint](https://github.com/yonaskolb/Mint), for example.
-- [ ] **createIntermediateGroups**: **Bool** - If this is specified and set to `true`, then intermediate groups will be created for every path component between the folder containing the source and next existing group it finds or the base path. For example, when enabled if a source path is specified as `Vendor/Foo/Hello.swift`, the group `Vendor` will created as a parent of the `Foo` group. This can be overriden in a specific [Target source](#target-source)
+- [ ] **createIntermediateGroups**: **Bool** - If this is specified and set to `true`, then intermediate groups will be created for every path component between the folder containing the source and next existing group it finds or the base path. For example, when enabled if a source path is specified as `Vendor/Foo/Hello.swift`, the group `Vendor` will created as a parent of the `Foo` group. This can be overridden in a specific [Target source](#target-source)
 - [ ] **bundleIdPrefix**: **String** - If this is specified then any target that doesn't have an `PRODUCT_BUNDLE_IDENTIFIER` (via all levels of build settings) will get an autogenerated one by combining `bundleIdPrefix` and the target name: `bundleIdPrefix.name`. The target name will be stripped of all characters that aren't alphanumerics, hyphens, or periods. Underscores will be replaced with hyphens.
 - [ ] **settingPresets**: **String** - This controls the settings that are automatically applied to the project and its targets. These are the same build settings that Xcode would add when creating a new project. Project settings are applied by config type. Target settings are applied by the product type and platform. By default this is set to `all`
 	- `all`: project and target settings
@@ -141,7 +145,7 @@ Note that target names can also be changed by adding a `name` property to a targ
 - [ ] **groupOrdering**: **[[GroupOrdering]](#groupOrdering)** - An order of groups.
 - [ ] **transitivelyLinkDependencies**: **Bool** - If this is `true` then targets will link to the dependencies of their target dependencies. If a target should embed its dependencies, such as application and test bundles, it will embed these transitive dependencies as well. Some complex setups might want to set this to `false` and explicitly specify dependencies at every level. Targets can override this with [Target](#target).transitivelyLinkDependencies. Defaults to `false`.
 - [ ] **generateEmptyDirectories**: **Bool** - If this is `true` then empty directories will be added to project too else will be missed. Defaults to `false`.
-- [ ] **findCarthageFrameworks**: **Bool** - When this is set to `true`, all the invididual frameworks for Carthage framework dependencies will automatically be found. This property can be overriden individually for each carthage dependency - for more details see See **findFrameworks** in the [Dependency](#dependency) section. Defaults to `false`.
+- [ ] **findCarthageFrameworks**: **Bool** - When this is set to `true`, all the individual frameworks for Carthage framework dependencies will automatically be found. This property can be overridden individually for each carthage dependency - for more details see See **findFrameworks** in the [Dependency](#dependency) section. Defaults to `false`.
 - [ ] **localPackagesGroup**: **String** - The group name that local packages are put into. This defaults to `Packages`
 - [ ] **fileTypes**: **[String: [FileType](#filetype)]** - A list of default file options for specific file extensions across the project. Values in [Sources](#sources) will overwrite these settings.
 - [ ] **preGenCommand**: **String** - A bash command to run before the project has been generated. If the project isn't generated due to no changes when using the cache then this won't run. This is useful for running things like generating resources files before the project is regenerated.
@@ -260,7 +264,7 @@ actions:
 
 ### Configs
 
-Each config maps to a build type of either `debug` or `release` which will then apply default build settings to the project. Any value other than `debug` or `release` (for example `none`), will mean no default build settings will be applied to the project.
+Each config maps to a build type of either `debug` or `release` which will then apply default `Build Settings` to the project. Any value other than `debug` or `release` (for example `none`), will mean no default `Build Settings` will be applied to the project.
 
 ```yaml
 configs:
@@ -272,50 +276,80 @@ If no configs are specified, default `Debug` and `Release` configs will be creat
 
 ### Setting Groups
 
-Setting groups are named groups of build settings that can be reused elsewhere. Each preset is a [Settings](#settings) schema, so can include other groups
+Setting groups are named groups of `Build Settings` that can be reused elsewhere. Each preset is a [Settings](#settings) schema, so can include other `groups`  or define settings by `configs`.
 
 ```yaml
 settingGroups:
-  preset1:
-    BUILD_SETTING: value
-  preset2:
+  preset_generic:
+    CUSTOM_SETTING: value_custom
+  preset_debug:
+    BUILD_SETTING: value_debug
+  preset_release:
     base:
-      BUILD_SETTING: value
+      BUILD_SETTING: value_release
+  preset_all:
     groups:
-      - preset
-  preset3:
-     configs:
-        debug:
-          groups:
-            - preset
+      - preset_generic
+    configs:
+      debug:
+        groups:
+          - preset_debug
+      release:
+        groups:
+          - preset_release
+
+targets:
+  Application:
+    settings:
+      groups: 
+        - preset_all
 ```
 
 ## Settings
 
-Settings can either be a simple map of build settings `[String:String]`, or can be more advanced with the following properties:
+Settings correspond to `Build Settings` tab in Xcode. To display Setting Names instead of Setting Titles, select `Editor -> Show Setting Names` in Xcode.
 
-- [ ] **groups**: **[String]** - List of setting groups to include and merge
+Settings can either be a simple map of `Build Settings` `[String:String]`, or can be more advanced with the following properties:
+
+- [ ] **groups**: **[String]** - List of [Setting Groups](#setting-groups) to include and merge
 - [ ] **configs**: **[String:[Settings](#settings)]** - Mapping of config name to a settings spec. These settings will only be applied for that config. Each key will be matched to any configs that contain the key and is case insensitive. So if you had `Staging Debug` and `Staging Release`, you could apply settings to both of them using `staging`. However if a config name is an exact match to a config it won't be applied to any others. eg `Release` will be applied to config `Release` but not `Staging Release`
 - [ ] **base**: **[String:String]** - Used to specify default settings that apply to any config
 
 ```yaml
 settings:
-  BUILD_SETTING_1: value 1
-  BUILD_SETTING_2: value 2
+  GENERATE_INFOPLIST_FILE: NO
+  CODE_SIGNING_ALLOWED: NO
+  WRAPPER_EXTENSION: bundle
+```
+
+Don't mix simple maps with `groups`, `base` and `configs`.
+If `groups`, `base`, `configs` are used then simple maps is silently ignored.
+
+In this example, `CURRENT_PROJECT_VERSION` will be set, but `MARKETING_VERSION` will be ignored:
+```yaml
+settings:
+  MARKETING_VERSION: 100.0.0
+  base:
+    CURRENT_PROJECT_VERSION: 100.0
 ```
 
 ```yaml
 settings:
   base:
-    BUILD_SETTING_1: value 1
+    PRODUCT_NAME: XcodeGenProduct
   configs:
-    my_config:
-      BUILD_SETTING_2: value 2
+    debug:
+      CODE_SIGN_IDENTITY: iPhone Developer
+      PRODUCT_BUNDLE_IDENTIFIER: com.tomtom.debug_app
+    release:
+      CODE_SIGN_IDENTITY: iPhone Distribution
+      PRODUCT_BUNDLE_IDENTIFIER: com.tomtom.app
+      PROVISIONING_PROFILE_SPECIFIER: "Xcodegen Release"
   groups:
     - my_settings
 ```
 
-Settings are merged in the following order: groups, base, configs.
+Settings are merged in the following order: `groups`, `base`, `configs` (simple maps are ignored).
 
 ## Target
 
@@ -346,7 +380,7 @@ Settings are merged in the following order: groups, base, configs.
 - [ ] **templateAttributes**: **[String: String]** - A list of attributes where each instance of `${attributeName}` within the templates listed in `templates` will be replaced with the value specified.
 - [ ] **transitivelyLinkDependencies**: **Bool** - If this is not specified the value from the project set in [Options](#options)`.transitivelyLinkDependencies` will be used.
 - [ ] **directlyEmbedCarthageDependencies**: **Bool** - If this is `true` Carthage framework dependencies will be embedded using an `Embed Frameworks` build phase instead of the `copy-frameworks` script. Defaults to `true` for all targets except iOS/tvOS/watchOS Applications.
-- [ ] **requiresObjCLinking**: **Bool** - If this is `true` any targets that link to this target will have `-ObjC` added to their `OTHER_LDFLAGS`. This is required if a static library has any catagories or extensions on Objective-C code. See [this guide](https://pewpewthespells.com/blog/objc_linker_flags.html#objc) for more details. Defaults to `true` if `type` is `library.static`. If you are 100% sure you don't have catagories or extensions on Objective-C code (pure Swift with no use of Foundation/UIKit) you can set this to `false`, otherwise it's best to leave it alone.
+- [ ] **requiresObjCLinking**: **Bool** - If this is `true` any targets that link to this target will have `-ObjC` added to their `OTHER_LDFLAGS`. This is required if a static library has any categories or extensions on Objective-C code. See [this guide](https://pewpewthespells.com/blog/objc_linker_flags.html#objc) for more details. Defaults to `true` if `type` is `library.static`. If you are 100% sure you don't have categories or extensions on Objective-C code (pure Swift with no use of Foundation/UIKit) you can set this to `false`, otherwise it's best to leave it alone.
 - [ ] **onlyCopyFilesOnInstall**: **Bool** – If this is `true`, the `Embed Frameworks` and `Embed App Extensions` (if available) build phases will have the "Copy only when installing" chekbox checked. Defaults to `false`.
 - [ ] **preBuildScripts**: **[[Build Script](#build-script)]** - Build scripts that run *before* any other build phases
 - [ ] **postCompileScripts**: **[[Build Script](#build-script)]** - Build scripts that run after the Compile Sources phase
@@ -358,6 +392,7 @@ Settings are merged in the following order: groups, base, configs.
 	- `DevelopmentTeam`: if all configurations have the same `DEVELOPMENT_TEAM` setting
 	- `ProvisioningStyle`: if all configurations have the same `CODE_SIGN_STYLE` setting
 	- `TestTargetID`: if all configurations have the same `TEST_TARGET_NAME` setting
+- [ ] **putResourcesBeforeSourcesBuildPhase**: **Bool** - If this is `true` the `Copy Resources` step will be placed before the `Compile Sources` build step.
 
 ### Product Type
 
@@ -470,7 +505,7 @@ A source can be provided via a string (the path) or an object of the form:
 - [x] **path**: **String** - The path to the source file or directory.
 - [ ] **name**: **String** - Can be used to override the name of the source file or directory. By default the last component of the path is used for the name
 - [ ] **group**: **String** - Can be used to override the parent group of the source file or directory. By default a group is created at the root with the name of this source file or directory or intermediate groups are created if `createIntermediateGroups` is set to `true`. Multiple groups can be created by separating each one using a `/`. If multiple target sources share the same `group`, they will be put together in the same parent group.
-- [ ] **compilerFlags**: **[String]** or **String** - A list of compilerFlags to add to files under this specific path provided as a list or a space delimitted string. Defaults to empty.
+- [ ] **compilerFlags**: **[String]** or **String** - A list of compilerFlags to add to files under this specific path provided as a list or a space delimited string. Defaults to empty.
 - [ ] **excludes**: **[String]** - A list of [global patterns](https://en.wikipedia.org/wiki/Glob_(programming)) representing the files to exclude. These rules are relative to `path` and _not the directory where `project.yml` resides_. XcodeGen uses Bash 4's Glob behaviors where globstar (**) is enabled.
 - [ ] **includes**: **[String]** - A list of global patterns in the same format as `excludes` representing the files to include. These rules are relative to `path` and _not the directory where `project.yml` resides_. If **excludes** is present and file conflicts with **includes**, **excludes** will override the **includes** behavior.
 - [ ] **platformFilters**: **[[Supported Platforms](#supported-platforms)]** - List of supported platforms the files should filter to. Defaults to all supported platforms.

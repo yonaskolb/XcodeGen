@@ -49,7 +49,7 @@ public struct SpecValidationError: Error, CustomStringConvertible {
             case let .invalidTargetDependency(target, dependency):
                 return "Target \(target.quoted) has invalid dependency: \(dependency.quoted)"
             case let .invalidTargetConfigFile(target, configFile, config):
-                return "Target \(target.quoted) has invalid config file \(configFile.quoted) for config \(config.quoted)"
+                return "Target \(target.quoted) has invalid config file path \(configFile.quoted) for config \(config.quoted)"
             case let .invalidTargetSource(target, source):
                 return "Target \(target.quoted) has a missing source directory \(source.quoted)"
             case let .invalidTargetSchemeConfigVariant(target, configVariant, configType):
