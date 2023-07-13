@@ -4,6 +4,8 @@
 
 ### Added
 
+- Added `scheme.enableGPUValidationMode` #1294 @LouisLWang
+  
 ### Fixed
 
 - Fix external dependencies from being removed by Xcode #1354 @OdNairy
