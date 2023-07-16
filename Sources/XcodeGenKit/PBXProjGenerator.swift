@@ -1032,6 +1032,7 @@ public class PBXProjGenerator {
         
         carthageFrameworksToEmbed = carthageFrameworksToEmbed.uniqued()
 
+        #if swift(>=5.7)
         // Adding `Build Tools Plug-ins` as a dependency to the target
         for buildToolPlugin in target.buildToolPlugins {
             let packageReference = packageReferences[buildToolPlugin.package]
@@ -1048,6 +1049,7 @@ public class PBXProjGenerator {
 
             dependencies.append(targetDependency)
         }
+        #endif
         
         var buildPhases: [PBXBuildPhase] = []
 

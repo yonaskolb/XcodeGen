@@ -1,4 +1,4 @@
-// swift-tools-version:5.7
+// swift-tools-version:5.4
 
 import PackageDescription
 
@@ -16,14 +16,14 @@ let package = Package(
         .package(url: "https://github.com/yonaskolb/JSONUtilities.git", from: "4.2.0"),
         .package(url: "https://github.com/kylef/Spectre.git", from: "0.9.2"),
         .package(url: "https://github.com/onevcat/Rainbow.git", from: "3.0.0"),
-        .package(url: "https://github.com/BarredEwe/XcodeProj.git", branch: "feature/build-tool-plugin"), // Will be support 8.13.0
+        .package(url: "https://github.com/tuist/XcodeProj.git", from: "8.9.0"),
         .package(url: "https://github.com/jakeheis/SwiftCLI.git", from: "6.0.3"),
         .package(url: "https://github.com/mxcl/Version", from: "2.0.0"),
-        .package(url: "https://github.com/SwiftDocOrg/GraphViz.git", exact: "0.2.0"),
+        .package(url: "https://github.com/SwiftDocOrg/GraphViz.git", .exact("0.2.0")),
     ],
 
     targets: [
-        .executableTarget(name: "XcodeGen", dependencies: [
+        .target(name: "XcodeGen", dependencies: [
             "XcodeGenCLI",
             "Version",
         ]),
