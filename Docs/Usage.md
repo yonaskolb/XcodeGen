@@ -209,6 +209,7 @@ targets:
 XCodeGen supports working with [Swift Package Plug-ins](https://github.com/apple/swift-package-manager/blob/main/Documentation/Plugins.md#using-a-package-plugin).
 
 To use plugins, you need to specify in your target which plugin you want to connect, and don't forget to connect the package to target.
+
 ```yaml
 packages:
   Prefire:
@@ -217,6 +218,6 @@ packages:
 targets:
   App:
     buildToolPlugins:
-      - package: Prefire
-        product: PrefirePlaybookPlugin
+      - plugin: PrefirePlaybookPlugin
+        package: Prefire
 ```

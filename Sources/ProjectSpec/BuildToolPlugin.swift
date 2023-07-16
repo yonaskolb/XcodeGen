@@ -1,31 +1,34 @@
 import Foundation
 import JSONUtilities
 
+/// Specifies the use of a plug-in product in a target.
 public struct BuildToolPlugin: Equatable {
-    
+
+    /// The name of the plug-in target.
+    public var plugin: String
+    /// The name of the package that defines the plug-in target.
     public var package: String
-    public var product: String
     
     public init(
-        package: String,
-        product: String
+        plugin: String,
+        package: String
     ) {
+        self.plugin = plugin
         self.package = package
-        self.product = product
     }
 }
 
 extension BuildToolPlugin: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
-        if let package: String = jsonDictionary.json(atKeyPath: "package") {
-            self.package = package
+        if let plugin: String = jsonDictionary.json(atKeyPath: "plugin") {
+            self.plugin = plugin
         } else {
             throw SpecParsingError.invalidDependency(jsonDictionary)
         }
         
-        if let product: String = jsonDictionary.json(atKeyPath: "product") {
-            self.product = product
+        if let package: String = jsonDictionary.json(atKeyPath: "package") {
+            self.package = package
         } else {
             throw SpecParsingError.invalidDependency(jsonDictionary)
         }
@@ -34,7 +37,7 @@ extension BuildToolPlugin: JSONObjectConvertible {
 
 extension BuildToolPlugin {
     public var uniqueID: String {
-        return "\(package)/\(product)"
+        return "\(plugin)/\(package)"
     }
 }
 
@@ -47,8 +50,8 @@ extension BuildToolPlugin: Hashable {
 extension BuildToolPlugin: JSONEncodable {
     public func toJSONValue() -> Any {
         [
-            "package": package,
-            "product": product
+            "plugin": plugin,
+            "package": package
         ]
     }
 }
