@@ -1,0 +1,32 @@
+name: MyProject
+packages:
+  Yams:
+    url: https://github.com/jpsim/Yams
+    from: 2.0.0
+  Lottie:
+    url: https://github.com/airbnb/lottie-spm.git
+    from: 4.2.0
+targets:
+  MyApp:
+    type: application
+    platform: iOS
+    supportedPlatforms: [iOS, tvOS]
+    info:
+      path: Info.generated.plist
+      properties:
+        CFBundleDisplayName: "MyApp"
+        CFBundleVersion: "1.0.0"
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.test.MyApp
+    sources:
+      - path: Sources
+        inferPlatformFiltersByPath: true
+      - path: Storyboards
+        platformFilters: [iOS]
+    dependencies:
+      - package: Yams
+        product: Yams
+        platformFilters: [tvOS]
+      - package: Lottie
+        product: Lottie
