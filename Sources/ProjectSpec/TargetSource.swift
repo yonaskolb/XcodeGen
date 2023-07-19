@@ -24,7 +24,7 @@ public struct TargetSource: Equatable {
     public var attributes: [String]
     public var resourceTags: [String]
     public var inferPlatformFiltersByPath: Bool?
-    public var platformFilters: [SupportedPlatforms]?
+    public var platformFilters: [SupportedPlatform]?
 
     public enum HeaderVisibility: String {
         case `public`
@@ -55,7 +55,7 @@ public struct TargetSource: Equatable {
         attributes: [String] = [],
         resourceTags: [String] = [],
         inferPlatformFiltersByPath: Bool? = nil,
-        platformFilters: [SupportedPlatforms]? = nil
+        platformFilters: [SupportedPlatform]? = nil
     ) {
         self.path = (path as NSString).standardizingPath
         self.name = name
@@ -121,7 +121,7 @@ extension TargetSource: JSONObjectConvertible {
         
         inferPlatformFiltersByPath = jsonDictionary.json(atKeyPath: "inferPlatformFiltersByPath")
         
-        if let platformFilters: [SupportedPlatforms] = jsonDictionary.json(atKeyPath: "platformFilters") {
+        if let platformFilters: [SupportedPlatform] = jsonDictionary.json(atKeyPath: "platformFilters") {
             self.platformFilters = platformFilters
         }
     }

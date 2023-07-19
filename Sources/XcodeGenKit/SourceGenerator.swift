@@ -110,11 +110,11 @@ class SourceGenerator {
         }
     }
     
-    private func makePlatformFilters(for path: Path, with filters: [SupportedPlatforms]?, or inferPlatformFiltersByPath: Bool?) -> [String]? {
+    private func makePlatformFilters(for path: Path, with filters: [SupportedPlatform]?, or inferPlatformFiltersByPath: Bool?) -> [String]? {
         if let filters = filters, !filters.isEmpty {
             return filters.map { $0.string }
         } else if inferPlatformFiltersByPath == true {
-            for supportedPlatform in SupportedPlatforms.allCases {
+            for supportedPlatform in SupportedPlatform.allCases {
                 let regex1 = try? NSRegularExpression(pattern: "\\/\(supportedPlatform)\\/", options: .caseInsensitive)
                 let regex2 = try? NSRegularExpression(pattern: "\\_\(supportedPlatform)\\.swift$", options: .caseInsensitive)
                 

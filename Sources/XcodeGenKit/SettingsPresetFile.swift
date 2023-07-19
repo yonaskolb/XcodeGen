@@ -5,7 +5,7 @@ import XcodeProj
 public enum SettingsPresetFile {
     case config(ConfigType)
     case platform(Platform)
-    case supportedPlatform(SupportedPlatforms)
+    case supportedPlatform(SupportedPlatform)
     case product(PBXProductType)
     case productPlatform(PBXProductType, Platform)
     case base

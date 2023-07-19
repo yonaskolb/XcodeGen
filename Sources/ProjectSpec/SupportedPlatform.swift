@@ -1,13 +1,13 @@
 import Foundation
 
-public enum SupportedPlatforms: String, CaseIterable {
+public enum SupportedPlatform: String, CaseIterable {
     case iOS
     case tvOS
     case macOS
     case macCatalyst
 }
 
-extension SupportedPlatforms {
+extension SupportedPlatform {
     
     public var string: String {
         switch self {

@@ -37,7 +37,7 @@ public struct Target: ProjectTarget {
     public var name: String
     public var type: PBXProductType
     public var platform: Platform
-    public var supportedPlatforms: [SupportedPlatforms]?
+    public var supportedPlatforms: [SupportedPlatform]?
     public var settings: Settings
     public var sources: [TargetSource]
     public var dependencies: [Dependency]
@@ -78,7 +78,7 @@ public struct Target: ProjectTarget {
         name: String,
         type: PBXProductType,
         platform: Platform,
-        supportedPlatforms: [SupportedPlatforms]? = nil,
+        supportedPlatforms: [SupportedPlatform]? = nil,
         productName: String? = nil,
         deploymentTarget: Version? = nil,
         settings: Settings = .empty,
@@ -284,7 +284,7 @@ extension Target: NamedJSONDictionaryConvertible {
             throw SpecParsingError.unknownTargetPlatform(platformString)
         }
         
-        if let supportedPlatforms: [SupportedPlatforms] = jsonDictionary.json(atKeyPath: "supportedPlatforms") {
+        if let supportedPlatforms: [SupportedPlatform] = jsonDictionary.json(atKeyPath: "supportedPlatforms") {
             self.supportedPlatforms = supportedPlatforms
         }
         

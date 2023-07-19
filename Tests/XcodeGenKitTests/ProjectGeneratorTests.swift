@@ -1170,16 +1170,16 @@ class ProjectGeneratorTests: XCTestCase {
                 for buildFile in buildFiles {
                     let name = buildFile.file?.nameOrPath
                     
-                    if buildFile.platformFilters == [SupportedPlatforms.iOS.string] &&
+                    if buildFile.platformFilters == [SupportedPlatform.iOS.string] &&
                         (name == "File_ios.swift" || name == "File_A.swift") {
                         continue
-                    } else if buildFile.platformFilters == [SupportedPlatforms.tvOS.string] &&
+                    } else if buildFile.platformFilters == [SupportedPlatform.tvOS.string] &&
                                 (name == "File_tvOs.swift" || name == "File_B.swift") {
                         continue
-                    } else if buildFile.platformFilters == [SupportedPlatforms.macOS.string] &&
+                    } else if buildFile.platformFilters == [SupportedPlatform.macOS.string] &&
                                 (name == "File_macOS.swift" || name == "File_C.swift") {
                         continue
-                    } else if buildFile.platformFilters == [SupportedPlatforms.macCatalyst.string] &&
+                    } else if buildFile.platformFilters == [SupportedPlatform.macCatalyst.string] &&
                                 (name == "File_MACCATALYST.swift" || name == "File_D.swift") {
                         continue
                     }
@@ -1228,16 +1228,16 @@ class ProjectGeneratorTests: XCTestCase {
                 for buildFile in buildFiles {
                     let name = buildFile.file?.nameOrPath
                     
-                    if buildFile.platformFilters == [SupportedPlatforms.iOS.string] &&
+                    if buildFile.platformFilters == [SupportedPlatform.iOS.string] &&
                         (name == "File_ios.swift" || name == "File_A.swift") {
                         continue
-                    } else if buildFile.platformFilters == [SupportedPlatforms.tvOS.string] &&
+                    } else if buildFile.platformFilters == [SupportedPlatform.tvOS.string] &&
                                 (name == "File_tvOs.swift" || name == "File_B.swift") {
                         continue
-                    } else if buildFile.platformFilters == [SupportedPlatforms.macOS.string, SupportedPlatforms.macCatalyst.string] &&
+                    } else if buildFile.platformFilters == [SupportedPlatform.macOS.string, SupportedPlatform.macCatalyst.string] &&
                                 (name == "File_C.swift" || name == "File_D.swift") {
                         continue
-                    } else if buildFile.platformFilters == [SupportedPlatforms.macOS.string, SupportedPlatforms.macCatalyst.string] &&
+                    } else if buildFile.platformFilters == [SupportedPlatform.macOS.string, SupportedPlatform.macCatalyst.string] &&
                                 (name == "File_macOS.swift" || name == "File_MACCATALYST.swift") {
                         continue
                     }
@@ -1859,8 +1859,8 @@ class ProjectGeneratorTests: XCTestCase {
                 )
                 
                 let expectedLinkedFiles = [
-                    "frameworkA.framework": [SupportedPlatforms.iOS.string],
-                    "frameworkB.framework": [SupportedPlatforms.iOS.string, SupportedPlatforms.tvOS.string]
+                    "frameworkA.framework": [SupportedPlatform.iOS.string],
+                    "frameworkB.framework": [SupportedPlatform.iOS.string, SupportedPlatform.tvOS.string]
                 ]
                 
                 // given
@@ -1879,8 +1879,8 @@ class ProjectGeneratorTests: XCTestCase {
             $0.it("framework dependencies") {
                 
                 let expectedLinkedFiles = [
-                    "frameworkA.framework": [SupportedPlatforms.iOS.string],
-                    "frameworkB.framework": [SupportedPlatforms.iOS.string, SupportedPlatforms.tvOS.string]
+                    "frameworkA.framework": [SupportedPlatform.iOS.string],
+                    "frameworkB.framework": [SupportedPlatform.iOS.string, SupportedPlatform.tvOS.string]
                 ]
                 
                 // given
@@ -1899,8 +1899,8 @@ class ProjectGeneratorTests: XCTestCase {
             $0.it("carthage dependencies") {
                 
                 let expectedLinkedFiles = [
-                    "frameworkA.framework": [SupportedPlatforms.iOS.string],
-                    "frameworkB.framework": [SupportedPlatforms.iOS.string, SupportedPlatforms.tvOS.string]
+                    "frameworkA.framework": [SupportedPlatform.iOS.string],
+                    "frameworkB.framework": [SupportedPlatform.iOS.string, SupportedPlatform.tvOS.string]
                 ]
                 
                 // given
@@ -1919,8 +1919,8 @@ class ProjectGeneratorTests: XCTestCase {
             $0.it("sdk dependencies") {
                 
                 let expectedLinkedFiles = [
-                    "sdkA.framework": [SupportedPlatforms.iOS.string],
-                    "sdkB.framework": [SupportedPlatforms.iOS.string, SupportedPlatforms.tvOS.string]
+                    "sdkA.framework": [SupportedPlatform.iOS.string],
+                    "sdkB.framework": [SupportedPlatform.iOS.string, SupportedPlatform.tvOS.string]
                 ]
                 
                 // given
@@ -1943,8 +1943,8 @@ class ProjectGeneratorTests: XCTestCase {
                 ]
                 
                 let expectedLinkedFiles = [
-                    "RxSwift": [SupportedPlatforms.iOS.string],
-                    "RxCocoa": [SupportedPlatforms.iOS.string, SupportedPlatforms.tvOS.string]
+                    "RxSwift": [SupportedPlatform.iOS.string],
+                    "RxCocoa": [SupportedPlatform.iOS.string, SupportedPlatform.tvOS.string]
                 ]
                 
                 // given
@@ -1963,8 +1963,8 @@ class ProjectGeneratorTests: XCTestCase {
             $0.it("bundle dependencies") {
                 
                 let expectedCopiedBundleFiles = [
-                    "bundleA.bundle": [SupportedPlatforms.iOS.string],
-                    "bundleB.bundle": [SupportedPlatforms.iOS.string, SupportedPlatforms.tvOS.string]
+                    "bundleA.bundle": [SupportedPlatform.iOS.string],
+                    "bundleB.bundle": [SupportedPlatform.iOS.string, SupportedPlatform.tvOS.string]
                 ]
                 
                 // given
