@@ -7,6 +7,7 @@ public enum SpecParsingError: Error, CustomStringConvertible {
     case unknownPackageRequirement([String: Any])
     case invalidSourceBuildPhase(String)
     case invalidTargetReference(String)
+    case invalidTargetPlatform(String)
     case invalidVersion(String)
     case unknownBreakpointType(String)
     case unknownBreakpointScope(String)
@@ -27,6 +28,8 @@ public enum SpecParsingError: Error, CustomStringConvertible {
             return "Invalid Source Build Phase: \(error)"
         case let .invalidTargetReference(targetReference):
             return "Invalid Target Reference Syntax: \(targetReference)"
+        case let .invalidTargetPlatform(targetReference):
+            return "Invalid Target Platform definition: \(targetReference)"
         case let .invalidVersion(version):
             return "Invalid version: \(version)"
         case let .unknownPackageRequirement(package):

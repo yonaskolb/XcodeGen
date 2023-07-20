@@ -170,7 +170,7 @@ extension Project {
     public init(basePath: Path = "", jsonDictionary: JSONDictionary) throws {
         self.basePath = basePath
 
-        let jsonDictionary = Project.resolveProject(jsonDictionary: jsonDictionary)
+        let jsonDictionary = try Project.resolveProject(jsonDictionary: jsonDictionary)
 
         name = try jsonDictionary.json(atKeyPath: "name")
         settings = jsonDictionary.json(atKeyPath: "settings") ?? .empty
@@ -216,15 +216,15 @@ extension Project {
         projectReferencesMap = Dictionary(uniqueKeysWithValues: projectReferences.map { ($0.name, $0) })
     }
 
-    static func resolveProject(jsonDictionary: JSONDictionary) -> JSONDictionary {
+    static func resolveProject(jsonDictionary: JSONDictionary) throws -> JSONDictionary {
         var jsonDictionary = jsonDictionary
 
         // resolve multiple times so that we support both multi-platform templates,
         // as well as platform specific templates in multi-platform targets
-        jsonDictionary = Target.resolveMultiplatformTargets(jsonDictionary: jsonDictionary)
+        jsonDictionary = try Target.resolveMultiplatformTargets(jsonDictionary: jsonDictionary)
         jsonDictionary = Target.resolveTargetTemplates(jsonDictionary: jsonDictionary)
         jsonDictionary = Scheme.resolveSchemeTemplates(jsonDictionary: jsonDictionary)
-        jsonDictionary = Target.resolveMultiplatformTargets(jsonDictionary: jsonDictionary)
+        jsonDictionary = try Target.resolveMultiplatformTargets(jsonDictionary: jsonDictionary)
 
         return jsonDictionary
     }

@@ -476,7 +476,7 @@ This will provide a mix of default build settings for the chosen platforms. It c
 - `macOS`
 - `macCatalyst`
 
-Note that the definition of supported platforms will skip the `Multi Platform targets` generation.
+Note that the definition of supported platforms can be applied to every type of bundle making everything more easy to manage (app targets, unit tests, UI tests etc).
 
 ```yaml
 targets:

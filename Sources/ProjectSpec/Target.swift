@@ -158,7 +158,7 @@ extension Target: PathContainer {
 
 extension Target {
 
-    static func resolveMultiplatformTargets(jsonDictionary: JSONDictionary) -> JSONDictionary {
+    static func resolveMultiplatformTargets(jsonDictionary: JSONDictionary) throws -> JSONDictionary {
         guard let targetsDictionary: [String: JSONDictionary] = jsonDictionary["targets"] as? [String: JSONDictionary] else {
             return jsonDictionary
         }
@@ -166,10 +166,8 @@ extension Target {
         var crossPlatformTargets: [String: JSONDictionary] = [:]
 
         for (targetName, target) in targetsDictionary {
-            var target = target
-            
-            if let platforms = target["platform"] as? [String], target["supportedPlatforms"] != nil {
-                target["platform"] = platforms.first
+            if target["platform"] is [String], target["supportedPlatforms"] != nil {
+                throw SpecParsingError.invalidTargetPlatform(targetName)
             }
             
             if let platforms = target["platform"] as? [String] {
