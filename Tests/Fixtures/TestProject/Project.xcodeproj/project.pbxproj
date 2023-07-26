@@ -431,13 +431,6 @@
 			remoteGlobalIDString = E76A5F5E363E470416D3B487;
 			remoteInfo = ExternalTarget;
 		};
-		"TEMP_A41397D8-6F8E-4BD7-9419-3A5905F50810" /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = F192E783CCA898FBAA5C34EA /* AnotherProject */;
-			proxyType = 2;
-			remoteGlobalIDString = D6340FC7DEBC81E0127BAFD6;
-			remoteInfo = ExternalTarget;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
