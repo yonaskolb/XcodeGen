@@ -72,10 +72,10 @@
 		3788E1382B38DF4ACE3D2BB1 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = 6A58A16491CDDF968B0D56DE /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		3BBCA6F76E5F212E9C55FB78 /* BundleX.bundle in Copy Bundle Resources */ = {isa = PBXBuildFile; fileRef = 45C12576F5AA694DD0CE2132 /* BundleX.bundle */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3C5134EE524310ACF7B7CD6E /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CAF6C55B555E3E1352645B6 /* ExtensionDelegate.swift */; };
+		3DF22C477446669094AC7C8C /* ExternalTarget.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F6ADE654A3459AFDA2CC0CD3 /* ExternalTarget.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		447D59BE2E0993D7245EA247 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3797E591F302ECC0AA2FC607 /* Assets.xcassets */; };
 		45E6702CD9C088FF1FC25F34 /* App_watchOS.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = A680BE9F68A255B0FB291AE6 /* App_watchOS.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		470D3493CDBFE56E2083A5FD /* BundleY.bundle in Copy Bundle Resources */ = {isa = PBXBuildFile; fileRef = E3958AB20082EA12D4D5E60C /* BundleY.bundle */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		47895AC91BDA62F8B16D8F92 /* ExternalTarget.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6ADE654A3459AFDA2CC0CD3 /* ExternalTarget.framework */; };
 		47D1F439B8E6D287B3F3E8D1 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = 6A58A16491CDDF968B0D56DE /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		47FC57B04A3AD83359F433EA /* StaticLibrary_ObjC.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5A2B916A11DCC2565241359F /* StaticLibrary_ObjC.h */; };
 		49A4B8937BB5520B36EA33F0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 814D72C2B921F60B759C2D4B /* Main.storyboard */; };
@@ -144,7 +144,6 @@
 		A949422315536EACDF8DD78A /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B785B1161553A7DD6DA4255 /* NetworkExtension.framework */; };
 		A9548E5DCFE92236494164DF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE1F06D99242F4223D081F0D /* LaunchScreen.storyboard */; };
 		AFF19412E9B35635D3AF48CB /* XPC_Service.m in Sources */ = {isa = PBXBuildFile; fileRef = 148B7C933698BCC4F1DBA979 /* XPC_Service.m */; };
-		B0F8307F5DAC9FB068CC20C7 /* ExternalTarget.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F6ADE654A3459AFDA2CC0CD3 /* ExternalTarget.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B142965C5AE9C6200BF65802 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0C5AC2545AE4D4F7F44E2E9B /* Result.framework */; platformFilter = maccatalyst; };
 		B18C121B0A4D43ED8149D8E2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 79325B44B19B83EC6CEDBCC5 /* LaunchScreen.storyboard */; };
 		B20617116B230DED1F7AF5E5 /* libStaticLibrary_ObjC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B221F5A689AD7D3AD52F56B8 /* libStaticLibrary_ObjC.a */; };
@@ -167,6 +166,7 @@
 		CCA17097382757012B58C17C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1BC32A813B80A53962A1F365 /* Assets.xcassets */; };
 		D058D241BDF5FB0C919BBECA /* CrossOverlayFramework.swiftcrossimport in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8DD7A61B07AD2F91BDECC255 /* CrossOverlayFramework.swiftcrossimport */; };
 		D5458D67C3596943114C3205 /* Standalone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F5BD97AF0F94A15A5B7DDB7 /* Standalone.swift */; };
+		D5D493E4A7AD63860E1399DD /* ExternalTarget.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6ADE654A3459AFDA2CC0CD3 /* ExternalTarget.framework */; };
 		D61BEABD5B26B2DE67D0C2EC /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A5F527F2590C14956518174 /* FrameworkFile.swift */; };
 		D62AB3A85B32F353ABBD57BC /* iMessageExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = D629E142AB87C681D4EC90F7 /* iMessageExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		D8ED40ED61AD912385CFF5F0 /* StaticLibrary_ObjC.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D0C79A8C750EC0DE748C463 /* StaticLibrary_ObjC.m */; };
@@ -354,13 +354,6 @@
 			remoteGlobalIDString = 0636AAF06498C336E1CEEDE4;
 			remoteInfo = TestFramework;
 		};
-		C67F9A19E94E68C98C952054 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = F192E783CCA898FBAA5C34EA /* AnotherProject */;
-			proxyType = 1;
-			remoteGlobalIDString = E76A5F5E363E470416D3B487;
-			remoteInfo = ExternalTarget;
-		};
 		C8FD369800D87311EC532712 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0FBAE303E3CFC2ABAC876A77 /* Project object */;
@@ -374,6 +367,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 0867B0DACEF28C11442DE8F7;
 			remoteInfo = App_iOS;
+		};
+		CA16090DFCA7842CB4E20265 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F192E783CCA898FBAA5C34EA /* AnotherProject */;
+			proxyType = 1;
+			remoteGlobalIDString = E76A5F5E363E470416D3B487;
+			remoteInfo = ExternalTarget;
 		};
 		CB8F4B3FDD84A2A6F3CA7F4C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -561,6 +561,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				3DF22C477446669094AC7C8C /* ExternalTarget.framework in Embed Frameworks */,
 				9C92B7C89E5F0A10A34F5AA4 /* Framework.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -683,7 +684,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				B0F8307F5DAC9FB068CC20C7 /* ExternalTarget.framework in Embed Frameworks */,
 				A7D1A9942302569A9515696A /* Result.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -956,7 +956,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				47895AC91BDA62F8B16D8F92 /* ExternalTarget.framework in Frameworks */,
 				B47F2629BFE5853767C8BB5E /* Contacts.framework in Frameworks */,
 				76DC6A4B18F434BAC239CC4A /* DriverKit.framework in Frameworks */,
 				21425F6DE3D493B6F1E33D21 /* Framework.framework in Frameworks */,
@@ -981,6 +980,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D5D493E4A7AD63860E1399DD /* ExternalTarget.framework in Frameworks */,
 				A1588BF3BFFE1DF7409CBA10 /* Framework.framework in Frameworks */,
 				65EBD2D87F1F5FDA63F8C027 /* Result.framework in Frameworks */,
 				71A2AAC5934BDC9EDB6F0D9E /* libStaticLibrary_ObjC.a in Frameworks */,
@@ -1674,7 +1674,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				9ACC4BE5CA7A423F83EA88B3 /* PBXTargetDependency */,
 				6BE35B7C058BE1B6F3B906C0 /* PBXTargetDependency */,
 				1652DB87B43B72B5DE0601C4 /* PBXTargetDependency */,
 				F3930A0708A7EB1BDA25B31B /* PBXTargetDependency */,
@@ -2252,6 +2251,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				FD2D68EC95DC231C4007FB08 /* PBXTargetDependency */,
 				BE9300E427142E634A8A91B8 /* PBXTargetDependency */,
 				CFEACC1CED73B52EA1CCD054 /* PBXTargetDependency */,
 			);
@@ -3153,11 +3153,6 @@
 			target = 834F55973F05AC8A18144DB0 /* iMessageApp */;
 			targetProxy = 57F1BE74D4C4252529F97984 /* PBXContainerItemProxy */;
 		};
-		9ACC4BE5CA7A423F83EA88B3 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = ExternalTarget;
-			targetProxy = C67F9A19E94E68C98C952054 /* PBXContainerItemProxy */;
-		};
 		A19BEE3154D879101F865BB2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = D137C04B64B7052419A2DF4E /* App_Clip */;
@@ -3223,6 +3218,11 @@
 			isa = PBXTargetDependency;
 			target = AD28397BCC984F769EE8A937 /* NetworkSystemExtension */;
 			targetProxy = D4A7C57F6272F44F2E69A5DB /* PBXContainerItemProxy */;
+		};
+		FD2D68EC95DC231C4007FB08 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = ExternalTarget;
+			targetProxy = CA16090DFCA7842CB4E20265 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 

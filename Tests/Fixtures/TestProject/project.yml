@@ -108,7 +108,6 @@ targets:
       - target: NetworkSystemExtension
       - target: EndpointSecuritySystemExtension
       - target: DriverKitDriver
-      - target: AnotherProject/ExternalTarget
       - sdk: Contacts.framework
       - sdk: libc++.tbd
       - sdk: libz.dylib
@@ -422,6 +421,7 @@ targets:
     dependencies:
       - target: Framework_iOS
       - target: StaticLibrary_ObjC_iOS
+      - target: AnotherProject/ExternalTarget
     scheme:
       testTargets:
         - App_Clip_Tests
