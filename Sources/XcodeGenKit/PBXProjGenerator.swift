@@ -407,13 +407,11 @@ public class PBXProjGenerator {
             )
         )
 
-        let productProxy = addObject(
-            PBXContainerItemProxy(
-                containerPortal: .fileReference(projectFileReference),
-                remoteGlobalID: targetObject.product.flatMap(PBXContainerItemProxy.RemoteGlobalID.object),
-                proxyType: .reference,
-                remoteInfo: target
-            )
+        let productProxy = PBXContainerItemProxy(
+            containerPortal: .fileReference(projectFileReference),
+            remoteGlobalID: targetObject.product.flatMap(PBXContainerItemProxy.RemoteGlobalID.object),
+            proxyType: .reference,
+            remoteInfo: target
         )
 
         var path = targetObject.productNameWithExtension()
@@ -437,6 +435,7 @@ public class PBXProjGenerator {
         if let existingValue = existingValue {
             productReferenceProxy = existingValue
         } else {
+            addObject(productProxy)
             productReferenceProxy = addObject(
                 PBXReferenceProxy(
                     fileType: productReferenceProxyFileType,
