@@ -108,6 +108,7 @@ targets:
       - target: NetworkSystemExtension
       - target: EndpointSecuritySystemExtension
       - target: DriverKitDriver
+      - target: AnotherProject/ExternalTarget
       - sdk: Contacts.framework
       - sdk: libc++.tbd
       - sdk: libz.dylib
