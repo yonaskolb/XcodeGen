@@ -159,6 +159,8 @@ extension Platform {
             return "watchOS"
         case .macOS:
             return "Mac"
+        case .visionOS:
+            fatalError("Not supported.")
         }
     }
 }

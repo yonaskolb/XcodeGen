@@ -1561,7 +1561,7 @@ extension Platform {
     /// - returns: `true` for platforms that the app store requires simulator slices to be stripped.
     public var requiresSimulatorStripping: Bool {
         switch self {
-        case .iOS, .tvOS, .watchOS:
+        case .iOS, .tvOS, .watchOS, .visionOS:
             return true
         case .macOS:
             return false
