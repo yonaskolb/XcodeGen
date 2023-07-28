@@ -31,6 +31,12 @@ packages:
   Swinject:
     url: https://github.com/Swinject/Swinject
     version: 2.8.0
+  Yams:
+    url: https://github.com/jpsim/Yams
+    from: 2.0.0
+  Lottie:
+    url: https://github.com/airbnb/lottie-spm.git
+    from: 4.2.0
 breakpoints:
   - type: File
     path: App_iOS/AppDelegate.swift
@@ -230,6 +236,32 @@ targets:
       path: App_iOS/App.entitlements
       properties:
         com.apple.security.application-groups: group.com.app
+
+  App_supportedPlatforms:
+    type: application
+    platform: iOS
+    supportedPlatforms: [iOS, tvOS]
+    info:
+      path: App_supportedPlatforms/Info.generated.plist
+      properties:
+        CFBundleDisplayName: "TestApp"
+        CFBundleVersion: "1.0.0"
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.test.TestApp
+    sources:
+      - path: App_supportedPlatforms/Sources
+        group: App_supportedPlatforms
+        inferPlatformFiltersByPath: true
+      - path: App_supportedPlatforms/Storyboards
+        group: App_supportedPlatforms
+        platformFilters: [iOS]
+    dependencies:
+      - package: Yams
+        product: Yams
+        platformFilters: [tvOS]
+      - package: Lottie
+        product: Lottie
 
   App_watchOS:
       type: application.watchapp2
@@ -479,7 +511,7 @@ schemes:
       customLLDBInit: ${SRCROOT}/.lldbinit
       enableGPUFrameCaptureMode: "disabled"
       storeKitConfiguration: "App_iOS/Configuration.storekit"
-      macroExpansion: App_iOS 
+      macroExpansion: App_iOS
     test:
       gatherCoverageData: true
       targets:
