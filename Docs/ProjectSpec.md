@@ -434,6 +434,7 @@ This will provide default build settings for a certain platform. It can be any o
 - `macOS`
 - `tvOS`
 - `watchOS`
+- `visionOS`
 
 **Multi Platform targets**
 
