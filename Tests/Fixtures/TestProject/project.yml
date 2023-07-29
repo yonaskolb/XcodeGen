@@ -31,12 +31,6 @@ packages:
   Swinject:
     url: https://github.com/Swinject/Swinject
     version: 2.8.0
-  Yams:
-    url: https://github.com/jpsim/Yams
-    version: 2.0.0
-  Lottie:
-    url: https://github.com/airbnb/lottie-spm.git
-    version: 4.2.0
 breakpoints:
   - type: File
     path: App_iOS/AppDelegate.swift
@@ -257,11 +251,9 @@ targets:
         group: App_supportedPlatforms
         platformFilters: [iOS]
     dependencies:
-      - package: Yams
-        product: Yams
+      - package: Swinject
+        product: Swinject
         platformFilters: [tvOS]
-      - package: Lottie
-        product: Lottie
 
   App_watchOS:
       type: application.watchapp2
