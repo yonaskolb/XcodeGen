@@ -218,6 +218,27 @@ class ProjectSpecTests: XCTestCase {
                 try expectValidationError(project, .invalidTargetPlatformForSupportedPlatforms(target: "target1"))
             }
             
+            $0.it("invalid target because supported platforms is defined and platform is an array") {
+                let expectedError = SpecValidationError.ValidationError.invalidTargetPlatform(target: "target1_iOS")
+                
+                let targetDictionary: [String: Any] = [
+                    "name": "project1",
+                    "targets": ["target1": [
+                        "type": "application",
+                        "platform": ["iOS", "tvOS"],
+                        "supportedPlatforms": ["iOS", "tvOS"]
+                    ] as [String : Any]]
+                ]
+                
+                do {
+                    let project = try Project(jsonDictionary: targetDictionary)
+                    
+                    try expectValidationError(project, expectedError)
+                } catch {
+                    throw failure("Supposed to fail with \"\(expectedError)\"")
+                }
+            }
+            
             $0.it("allows non-existent configurations") {
                 var project = baseProject
                 project.options = SpecOptions(disabledValidations: [.missingConfigs])

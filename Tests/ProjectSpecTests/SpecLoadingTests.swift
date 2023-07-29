@@ -1506,26 +1506,6 @@ class SpecLoadingTests: XCTestCase {
 
                 try expect(scheme.run) == runAction
             }
-            
-            $0.it("parses target with supported platforms and platform as an array") {
-                let expectedError = SpecParsingError.invalidTargetPlatform("Framework")
-                
-                let targetDictionary: [String: Any] = [
-                    "targets": ["Framework": [
-                        "type": "application",
-                        "platform": ["iOS", "tvOS"],
-                        "supportedPlatforms": ["iOS", "tvOS"]
-                    ]]
-                ]
-                
-                do {
-                    _ = try Project(jsonDictionary: targetDictionary)
-                } catch let error as SpecParsingError {
-                    try expect(error.description) == expectedError.description
-                } catch {
-                    throw failure("Supposed to fail with \"\(expectedError)\"")
-                }
-            }
         }
     }
 

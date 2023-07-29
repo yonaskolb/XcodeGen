@@ -58,7 +58,8 @@ public struct Target: ProjectTarget {
     public var productName: String
     public var onlyCopyFilesOnInstall: Bool
     public var putResourcesBeforeSourcesBuildPhase: Bool
-
+    public var isResolved: Bool
+    
     public var isLegacy: Bool {
         legacy != nil
     }
@@ -98,7 +99,8 @@ public struct Target: ProjectTarget {
         legacy: LegacyTarget? = nil,
         attributes: [String: Any] = [:],
         onlyCopyFilesOnInstall: Bool = false,
-        putResourcesBeforeSourcesBuildPhase: Bool = false
+        putResourcesBeforeSourcesBuildPhase: Bool = false,
+        isResolved: Bool = false
     ) {
         self.name = name
         self.type = type
@@ -124,6 +126,7 @@ public struct Target: ProjectTarget {
         self.attributes = attributes
         self.onlyCopyFilesOnInstall = onlyCopyFilesOnInstall
         self.putResourcesBeforeSourcesBuildPhase = putResourcesBeforeSourcesBuildPhase
+        self.isResolved = isResolved
     }
 }
 
@@ -158,7 +161,7 @@ extension Target: PathContainer {
 
 extension Target {
 
-    static func resolveMultiplatformTargets(jsonDictionary: JSONDictionary) throws -> JSONDictionary {
+    static func resolveMultiplatformTargets(jsonDictionary: JSONDictionary) -> JSONDictionary {
         guard let targetsDictionary: [String: JSONDictionary] = jsonDictionary["targets"] as? [String: JSONDictionary] else {
             return jsonDictionary
         }
@@ -166,13 +169,10 @@ extension Target {
         var crossPlatformTargets: [String: JSONDictionary] = [:]
 
         for (targetName, target) in targetsDictionary {
-            if target["platform"] is [String], target["supportedPlatforms"] != nil {
-                throw SpecParsingError.invalidTargetPlatform(targetName)
-            }
-            
             if let platforms = target["platform"] as? [String] {
                 for platform in platforms {
                     var platformTarget = target
+                    platformTarget["isResolved"] = true
 
                     platformTarget = platformTarget.expand(variables: ["platform": platform])
 
@@ -342,6 +342,7 @@ extension Target: NamedJSONDictionaryConvertible {
         attributes = jsonDictionary.json(atKeyPath: "attributes") ?? [:]
         onlyCopyFilesOnInstall = jsonDictionary.json(atKeyPath: "onlyCopyFilesOnInstall") ?? false
         putResourcesBeforeSourcesBuildPhase = jsonDictionary.json(atKeyPath: "putResourcesBeforeSourcesBuildPhase") ?? false
+        isResolved = jsonDictionary.json(atKeyPath: "isResolved") ?? false
     }
 }
 

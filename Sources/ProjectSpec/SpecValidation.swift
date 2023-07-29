@@ -192,6 +192,10 @@ extension Project {
                 
                 errors.append(.invalidTargetPlatformForSupportedPlatforms(target: target.name))
             }
+            
+            if target.isResolved, target.supportedPlatforms != nil {
+                errors.append(.invalidTargetPlatform(target: target.name))
+            }
         }
 
         for projectReference in projectReferences {
