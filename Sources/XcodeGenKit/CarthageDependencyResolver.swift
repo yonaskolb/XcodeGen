@@ -160,7 +160,8 @@ extension Platform {
         case .macOS:
             return "Mac"
         case .visionOS:
-            fatalError("Not supported.")
+            // This is a dummy value because Carthage doesn't support visionOS.
+            return "visionOS"
         }
     }
 }
