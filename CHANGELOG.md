@@ -18,7 +18,6 @@
 
 - Added support for adding `Build Tool Plug-ins` to targets #1374 @BarredEwe
 
-### Added
 
 - Added `scheme.enableGPUValidationMode` #1294 @LouisLWang
 - Added visionOS support #1379 @shiba1014
