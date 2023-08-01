@@ -43,6 +43,7 @@ extension BuildToolPlugin {
 
 extension BuildToolPlugin: Hashable {
     public func hash(into hasher: inout Hasher) {
+        hasher.combine(plugin)
         hasher.combine(package)
     }
 }
