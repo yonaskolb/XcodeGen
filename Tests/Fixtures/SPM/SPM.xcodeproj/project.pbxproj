@@ -181,6 +181,7 @@
 			);
 			dependencies = (
 				078202CF7B08B66ACF7FEC23 /* PBXTargetDependency */,
+				E157C6348B8AD6A28C706801 /* PBXTargetDependency */,
 			);
 			name = App;
 			packageProductDependencies = (
@@ -214,6 +215,7 @@
 			mainGroup = 218F6C96DF9E182F526258CF;
 			packageReferences = (
 				5BA91390AE78D2EE15C60091 /* XCRemoteSwiftPackageReference "Codability" */,
+				348C81C327DB1710B742C370 /* XCRemoteSwiftPackageReference "Prefire" */,
 				E3887F3CB2C069E70D98092F /* XCRemoteSwiftPackageReference "SwiftRoaring" */,
 			);
 			projectDirPath = "";
@@ -305,6 +307,10 @@
 		DDD17C561AD5065DF4FA4072 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			productRef = C816AEB28ED71C3C47F31B98 /* SwiftRoaringDynamic */;
+		};
+		E157C6348B8AD6A28C706801 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = DC47EF1BFBBD751E3C1C95E3 /* PrefirePlaybookPlugin */;
 		};
 /* End PBXTargetDependency section */
 
@@ -562,6 +568,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		348C81C327DB1710B742C370 /* XCRemoteSwiftPackageReference "Prefire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/BarredEwe/Prefire";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.4.1;
+			};
+		};
 		5BA91390AE78D2EE15C60091 /* XCRemoteSwiftPackageReference "Codability" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/yonaskolb/Codability";
@@ -603,6 +617,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E3887F3CB2C069E70D98092F /* XCRemoteSwiftPackageReference "SwiftRoaring" */;
 			productName = SwiftRoaringDynamic;
+		};
+		DC47EF1BFBBD751E3C1C95E3 /* PrefirePlaybookPlugin */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 348C81C327DB1710B742C370 /* XCRemoteSwiftPackageReference "Prefire" */;
+			productName = "plugin:PrefirePlaybookPlugin";
 		};
 		DC73B269C8B0C0BF6912842C /* SwiftRoaringDynamic */ = {
 			isa = XCSwiftPackageProductDependency;
