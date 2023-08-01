@@ -16,7 +16,7 @@
 
 ### Added
 
-- Added support for adding `Build Tool Plug-ins`` to targets #1374 @BarredEwe
+- Added support for adding `Build Tool Plug-ins` to targets #1374 @BarredEwe
 
 ### Added
 
