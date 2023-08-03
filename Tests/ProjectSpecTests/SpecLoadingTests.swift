@@ -869,6 +869,7 @@ class SpecLoadingTests: XCTestCase {
                     "region": "US",
                     "disableMainThreadChecker": true,
                     "stopOnEveryMainThreadCheckerIssue": true,
+                    "disableThreadPerformanceChecker": true,
                     "environmentVariables": [
                         "TEST_VAR": "TEST_VAL",
                     ],
@@ -903,6 +904,7 @@ class SpecLoadingTests: XCTestCase {
                     region: "US",
                     disableMainThreadChecker: true,
                     stopOnEveryMainThreadCheckerIssue: true,
+                    disableThreadPerformanceChecker: true,
                     commandLineArguments: ["ENV1": true],
                     environmentVariables: [XCScheme.EnvironmentVariable(variable: "TEST_VAR", value: "TEST_VAL", enabled: true)],
                     preActions: [.init(name: "Do Thing", script: "dothing", settingsTarget: "test")],
@@ -941,6 +943,7 @@ class SpecLoadingTests: XCTestCase {
                         "launchAutomaticallySubstyle": 2,
                         "enableGPUFrameCaptureMode": "disabled",
                         "storeKitConfiguration": "Configuration.storekit",
+                        "disableThreadPerformanceChecker": true,
                     ],
                     "test": [
                         "config": "debug",
@@ -995,6 +998,7 @@ class SpecLoadingTests: XCTestCase {
                 let expectedRun = Scheme.Run(
                     config: "debug",
                     enableGPUFrameCaptureMode: .disabled,
+                    disableThreadPerformanceChecker: true,
                     launchAutomaticallySubstyle: "2",
                     storeKitConfiguration: "Configuration.storekit"
                 )
