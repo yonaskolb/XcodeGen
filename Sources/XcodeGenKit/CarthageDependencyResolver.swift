@@ -159,6 +159,9 @@ extension Platform {
             return "watchOS"
         case .macOS:
             return "Mac"
+        case .visionOS:
+            // This is a dummy value because Carthage doesn't support visionOS.
+            return "visionOS"
         }
     }
 }

@@ -421,6 +421,7 @@ targets:
     dependencies:
       - target: Framework_iOS
       - target: StaticLibrary_ObjC_iOS
+      - target: AnotherProject/ExternalTarget
     scheme:
       testTargets:
         - App_Clip_Tests
@@ -478,6 +479,7 @@ schemes:
         defaultLocation: Honolulu, HI, USA
       customLLDBInit: ${SRCROOT}/.lldbinit
       enableGPUFrameCaptureMode: "disabled"
+      enableGPUValidationMode: "disabled"
       storeKitConfiguration: "App_iOS/Configuration.storekit"
       macroExpansion: App_iOS 
     test:

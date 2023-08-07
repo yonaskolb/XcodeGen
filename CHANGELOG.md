@@ -4,6 +4,9 @@
 
 ### Added
 
+- Added `scheme.enableGPUValidationMode` #1294 @LouisLWang
+- Added visionOS support #1379 @shiba1014
+
 ### Changed
 
 - The project object version has been updated for Xcode 14.3 #1368 @leonardorock
@@ -11,6 +14,7 @@
 ### Fixed
 
 - Fix external dependencies from being removed by Xcode #1354 @OdNairy
+- Stop creating orphaned object references when reusing references to external dependencies #1377 @liamnichols
 
 ## 2.35.0
 

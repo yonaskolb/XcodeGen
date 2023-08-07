@@ -407,13 +407,11 @@ public class PBXProjGenerator {
             )
         )
 
-        let productProxy = addObject(
-            PBXContainerItemProxy(
-                containerPortal: .fileReference(projectFileReference),
-                remoteGlobalID: targetObject.product.flatMap(PBXContainerItemProxy.RemoteGlobalID.object),
-                proxyType: .reference,
-                remoteInfo: target
-            )
+        let productProxy = PBXContainerItemProxy(
+            containerPortal: .fileReference(projectFileReference),
+            remoteGlobalID: targetObject.product.flatMap(PBXContainerItemProxy.RemoteGlobalID.object),
+            proxyType: .reference,
+            remoteInfo: target
         )
 
         var path = targetObject.productNameWithExtension()
@@ -437,6 +435,7 @@ public class PBXProjGenerator {
         if let existingValue = existingValue {
             productReferenceProxy = existingValue
         } else {
+            addObject(productProxy)
             productReferenceProxy = addObject(
                 PBXReferenceProxy(
                     fileType: productReferenceProxyFileType,
@@ -1562,7 +1561,7 @@ extension Platform {
     /// - returns: `true` for platforms that the app store requires simulator slices to be stripped.
     public var requiresSimulatorStripping: Bool {
         switch self {
-        case .iOS, .tvOS, .watchOS:
+        case .iOS, .tvOS, .watchOS, .visionOS:
             return true
         case .macOS:
             return false
