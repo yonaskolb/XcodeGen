@@ -4,6 +4,10 @@
 
 ### Added
 
+### Changed
+
+- The project object version has been updated for Xcode 14.3 #1368 @leonardorock
+
 ### Fixed
 
 - Fix external dependencies from being removed by Xcode #1354 @OdNairy
