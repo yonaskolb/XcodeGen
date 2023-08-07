@@ -786,6 +786,7 @@ This is a convenience used to automatically generate schemes for a target based 
 - [ ] **coverageTargets**: **[[Testable Target Reference](#testable-target-reference) - a list of targets to gather code coverage. Each entry can either be a simple string, a string using [Project Reference](#project-reference) or [Testable Target Reference](#testable-target-reference)
 - [ ] **disableMainThreadChecker**: **Bool** - a boolean that indicates if this scheme should disable the Main Thread Checker. This defaults to false
 - [ ] **stopOnEveryMainThreadCheckerIssue**: **Bool** - a boolean that indicates if this scheme should stop at every Main Thread Checker issue. This defaults to false
+- [ ] **disableThreadPerformanceChecker**: **Bool** - a boolean that indicates if this scheme should disable the Thread Performance Checker. This defaults to false
 - [ ] **buildImplicitDependencies**: **Bool** - Flag to determine if Xcode should build implicit dependencies of this scheme. By default this is `true` if not set.
 - [ ] **language**: **String** - a String that indicates the language used for running and testing. This defaults to nil
 - [ ] **region**: **String** - a String that indicates the region used for running and testing. This defaults to nil
@@ -937,6 +938,7 @@ The different actions share some properties:
 - [ ] **enableGPUValidationMode**: **GPUValidationMode** - Property value set for `Metal API Validation`. Possible values are `enabled`, `disabled`, `extended`. Default is `enabled`.
 - [ ] **disableMainThreadChecker**: **Bool** - `run` and `test` actions can define a boolean that indicates that this scheme should disable the Main Thread Checker. This defaults to false
 - [ ] **stopOnEveryMainThreadCheckerIssue**: **Bool** - a boolean that indicates if this scheme should stop at every Main Thread Checker issue. This defaults to false
+- [ ] **disableThreadPerformanceChecker**: **Bool** - `run` action can define a boolean that indicates that this scheme should disable the Thread Performance Checker. This defaults to false
 - [ ] **language**: **String** - `run` and `test` actions can define a language that is used for Application Language
 - [ ] **region**: **String** - `run` and `test` actions can define a language that is used for Application Region
 - [ ] **debugEnabled**: **Bool** - `run` and `test` actions can define a whether debugger should be used. This defaults to true.
