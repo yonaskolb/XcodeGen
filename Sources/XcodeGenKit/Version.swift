@@ -16,7 +16,7 @@ extension Project {
     }
 
     var objectVersion: UInt {
-        51
+        54
     }
 }
 
