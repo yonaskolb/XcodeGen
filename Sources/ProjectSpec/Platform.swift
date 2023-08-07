@@ -5,4 +5,5 @@ public enum Platform: String, Hashable, CaseIterable {
     case watchOS
     case tvOS
     case macOS
+    case visionOS
 }
