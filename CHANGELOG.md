@@ -6,6 +6,7 @@
 
 - Added `scheme.enableGPUValidationMode` #1294 @LouisLWang
 - Added visionOS support #1379 @shiba1014
+- Added ability to disable Thread performance checker in Schemes #1380 @piellarda
 
 ### Fixed
 
