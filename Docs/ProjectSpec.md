@@ -712,9 +712,9 @@ Each script can contain:
 - [ ] **inputFileLists**: **[String]** - list of input .xcfilelist
 - [ ] **outputFileLists**: **[String]** - list of output .xcfilelist
 - [ ] **shell**: **String** - shell used for the script. Defaults to `/bin/sh`
-- [ ] **showEnvVars**: **Bool** - whether the environment variables accessible to the script show be printed to the build log. Defaults to yes
-- [ ] **runOnlyWhenInstalling**: **Bool** - whether the script is only run when installing (`runOnlyForDeploymentPostprocessing`). Defaults to no
-- [ ] **basedOnDependencyAnalysis**: **Bool** - whether to skip the script if inputs, context, or outputs haven't changed. Defaults to yes
+- [ ] **showEnvVars**: **Bool** - whether the environment variables accessible to the script show be printed to the build log. Defaults to `true`
+- [ ] **runOnlyWhenInstalling**: **Bool** - whether the script is only run when installing (`runOnlyForDeploymentPostprocessing`). Defaults to `false`
+- [ ] **basedOnDependencyAnalysis**: **Bool** - whether to skip the script if inputs, context, or outputs haven't changed. Defaults to `true`
 - [ ] **discoveredDependencyFile**: **String** - discovered dependency .d file. Defaults to none
 
 Either a **path** or **script** must be defined, the rest are optional.
