@@ -7,10 +7,12 @@
 - Added `scheme.enableGPUValidationMode` #1294 @LouisLWang
 - Added visionOS support #1379 @shiba1014
 - Added ability to disable Thread performance checker in Schemes #1380 @piellarda
+- Added support for `RuntimeIssue` breakpoints #1384 @yonaskolb
 
 ### Changed
 
 - The project object version has been updated for Xcode 14.3 #1368 @leonardorock
+- Dropped support for Xcode 12 and 13, due to XcodeProj update #1384 @yonaskolb
 
 ### Fixed
 
