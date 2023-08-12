@@ -2,6 +2,8 @@
 
 ## Next Version
 
+## 2.36.0
+
 ### Added
 
 - Added `scheme.enableGPUValidationMode` #1294 @LouisLWang
@@ -12,8 +14,8 @@
 ### Changed
 
 - The project object version has been updated for Xcode 14.3 #1368 @leonardorock
+- Updated recommended settings for Xcode 14.3 #1385 @yonaskolb
 - Dropped support for Xcode 12 and 13, due to XcodeProj update #1384 @yonaskolb
-- Updated recommended settings for Xcode 14 #1385 @yonaskolb
 
 ### Fixed
 
