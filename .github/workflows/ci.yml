@@ -8,12 +8,8 @@ jobs:
     name: Xcode ${{ matrix.xcode }}
     strategy:
       matrix:
-        xcode: ["12.5.1", "13.4.1", "14.3.1"]
+        xcode: ["14.3.1"]
         include:
-        - xcode: "12.5.1"
-          macos: macos-11
-        - xcode: "13.4.1"
-          macos: macos-12
         - xcode: "14.3.1"
           macos: macos-13
     env:
