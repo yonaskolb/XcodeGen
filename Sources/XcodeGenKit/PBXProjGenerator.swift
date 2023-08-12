@@ -285,7 +285,10 @@ public class PBXProjGenerator {
             }.flatMap { $0 }
         ).sorted()
 
-        var projectAttributes: [String: Any] = project.attributes
+        let defaultAttributes: [String: Any] = [
+            "BuildIndependentTargetsInParallel": "YES"
+        ]
+        var projectAttributes: [String: Any] = defaultAttributes.merged(project.attributes)
         
         // Set default LastUpgradeCheck if user did not specify
         let lastUpgradeKey = "LastUpgradeCheck"

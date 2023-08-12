@@ -4,7 +4,7 @@ import ProjectSpec
 extension Project {
 
     public var xcodeVersion: String {
-        XCodeVersion.parse(options.xcodeVersion ?? "12.0")
+        XCodeVersion.parse(options.xcodeVersion ?? "14.3")
     }
 
     var schemeVersion: String {
@@ -12,7 +12,7 @@ extension Project {
     }
 
     var compatibilityVersion: String {
-        "Xcode 11.0"
+        "Xcode 14.0"
     }
 
     var objectVersion: UInt {
