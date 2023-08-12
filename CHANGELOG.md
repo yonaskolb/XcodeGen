@@ -13,6 +13,7 @@
 
 - The project object version has been updated for Xcode 14.3 #1368 @leonardorock
 - Dropped support for Xcode 12 and 13, due to XcodeProj update #1384 @yonaskolb
+- Updated recommended settings for Xcode 14 #1385 @yonaskolb
 
 ### Fixed
 
