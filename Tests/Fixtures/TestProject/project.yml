@@ -71,6 +71,7 @@ breakpoints:
   - type: IDEConstraintError
     continueAfterRunningActions: true
   - type: IDETestFailure
+  - type: RuntimeIssue
 targets:
   Legacy:
     type: ""

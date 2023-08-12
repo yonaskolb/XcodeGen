@@ -196,6 +196,7 @@ Default settings for file extensions. See [Sources](#sources) for more documenta
     - `Symbolic`: symbolic breakpoint
     - `IDEConstraintError`: IDE constraint breakpoint
     - `IDETestFailure`: IDE test failure breakpoint
+    - `RuntimeIssue`: Runtime issue breakpoint
 - [ ] **enabled**: **Bool** - Indicates whether it should be active. Default to `true`
 - [ ] **ignoreCount**: **Int** - Indicates how many times it should be ignored before stopping, Default to `0`
 - [ ] **continueAfterRunningActions**: **Bool** - Indicates if should automatically continue after evaluating actions, Default to `false`
