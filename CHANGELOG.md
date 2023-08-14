@@ -2,6 +2,12 @@
 
 ## Next Version
 
+## 2.36.1
+
+### Fixed
+
+- Revert addition of `ENABLE_MODULE_VERIFIER` build setting for causing issues in tests and some setups #1387 @yonaskolb
+
 ## 2.36.0
 
 ### Added
