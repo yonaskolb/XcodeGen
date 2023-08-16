@@ -2,6 +2,13 @@
 
 import PackageDescription
 
+let macOSOnlyDependency: [Package.Dependency]
+#if !os(Linux)
+    macOSOnlyDependency = [Package.Dependency.package(url: "https://github.com/freddi-kit/ArtifactBundleGen", exact: "0.0.2")]
+#else
+    macOSOnlyDependency = []
+#endif
+
 let package = Package(
     name: "XcodeGen",
     platforms: [.macOS(.v10_13)],
@@ -20,8 +27,7 @@ let package = Package(
         .package(url: "https://github.com/jakeheis/SwiftCLI.git", from: "6.0.3"),
         .package(url: "https://github.com/mxcl/Version", from: "2.0.0"),
         .package(url: "https://github.com/SwiftDocOrg/GraphViz.git", exact: "0.2.0"),
-        .package(url: "https://github.com/freddi-kit/ArtifactBundleGen", exact: "0.0.2"),
-    ],
+    ] + macOSOnlyDependency,
     targets: [
         .executableTarget(name: "XcodeGen", dependencies: [
             "XcodeGenCLI",
