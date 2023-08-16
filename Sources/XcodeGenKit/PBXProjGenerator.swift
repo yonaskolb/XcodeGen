@@ -1032,6 +1032,23 @@ public class PBXProjGenerator {
         
         carthageFrameworksToEmbed = carthageFrameworksToEmbed.uniqued()
 
+        // Adding `Build Tools Plug-ins` as a dependency to the target
+        for buildToolPlugin in target.buildToolPlugins {
+            let packageReference = packageReferences[buildToolPlugin.package]
+            if packageReference == nil, !localPackageReferences.contains(buildToolPlugin.package) {
+                continue
+            }
+
+            let packageDependency = addObject(
+                XCSwiftPackageProductDependency(productName: buildToolPlugin.plugin, package: packageReference, isPlugin: true)
+            )
+            let targetDependency = addObject(
+                PBXTargetDependency(product: packageDependency)
+            )
+
+            dependencies.append(targetDependency)
+        }
+        
         var buildPhases: [PBXBuildPhase] = []
 
         func getBuildFilesForSourceFiles(_ sourceFiles: [SourceFile]) -> [PBXBuildFile] {

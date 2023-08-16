@@ -1510,6 +1510,29 @@ class SpecLoadingTests: XCTestCase {
 
                 try expect(scheme.run) == runAction
             }
+
+            $0.it("parses buildToolPlugins") {
+                var target = validTarget
+                let buildToolPlugins: [[String: Any]] = [
+                    [
+                        "plugin": "FirstPlugin",
+                        "package": "FirstPackage"
+                    ],
+                    [
+                        "plugin": "SecondPlugin",
+                        "package": "SecondPackage"
+                    ]
+                ]
+                target["buildToolPlugins"] = buildToolPlugins
+
+                let expectedBuildToolPlugins = [
+                    BuildToolPlugin(plugin: "FirstPlugin", package: "FirstPackage"),
+                    BuildToolPlugin(plugin: "SecondPlugin", package: "SecondPackage")
+                ]
+
+                let parsedTarget = try Target(name: "test", jsonDictionary: target)
+                try expect(parsedTarget.buildToolPlugins) == expectedBuildToolPlugins
+            }
         }
     }
 

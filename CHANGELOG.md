@@ -6,6 +6,10 @@
 
 - Fixed source file `includes` not working when no paths were found #1337 @shnhrrsn
 
+### Added
+
+- Added support for adding `Build Tool Plug-ins` to targets #1374 @BarredEwe
+
 ## 2.36.1
 
 ### Fixed

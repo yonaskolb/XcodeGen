@@ -27,6 +27,7 @@ You can also use environment variables in your configuration file, by using `${S
   - [Dependency](#dependency)
   - [Config Files](#config-files)
   - [Plist](#plist)
+  - [Build Tool Plug-ins](#build-tool-plug-ins)
   - [Build Script](#build-script)
   - [Build Rule](#build-rule)
   - [Target Scheme](#target-scheme)
@@ -381,6 +382,7 @@ Settings are merged in the following order: `groups`, `base`, `configs` (simple 
 - [ ] **directlyEmbedCarthageDependencies**: **Bool** - If this is `true` Carthage framework dependencies will be embedded using an `Embed Frameworks` build phase instead of the `copy-frameworks` script. Defaults to `true` for all targets except iOS/tvOS/watchOS Applications.
 - [ ] **requiresObjCLinking**: **Bool** - If this is `true` any targets that link to this target will have `-ObjC` added to their `OTHER_LDFLAGS`. This is required if a static library has any categories or extensions on Objective-C code. See [this guide](https://pewpewthespells.com/blog/objc_linker_flags.html#objc) for more details. Defaults to `true` if `type` is `library.static`. If you are 100% sure you don't have categories or extensions on Objective-C code (pure Swift with no use of Foundation/UIKit) you can set this to `false`, otherwise it's best to leave it alone.
 - [ ] **onlyCopyFilesOnInstall**: **Bool** – If this is `true`, the `Embed Frameworks` and `Embed App Extensions` (if available) build phases will have the "Copy only when installing" chekbox checked. Defaults to `false`.
+- [ ] **buildToolPlugins**: **[[Build Tool Plug-ins](#build-tool-plug-ins)]** - Commands for the build system that run automatically *during* the build.
 - [ ] **preBuildScripts**: **[[Build Script](#build-script)]** - Build scripts that run *before* any other build phases
 - [ ] **postCompileScripts**: **[[Build Script](#build-script)]** - Build scripts that run after the Compile Sources phase
 - [ ] **postBuildScripts**: **[[Build Script](#build-script)]** - Build scripts that run *after* any other build phases
@@ -695,6 +697,36 @@ targets:
         com.apple.security.application-groups: group.com.app
 ```
 
+### Build Tool Plug-ins
+
+To add `Build Tool Plug-ins`, you need to add information about plugins to [Target](#target):
+
+- **buildToolPlugins**: List of plugins to connect to the target
+
+Each plugin includes information:
+
+- [x] **plugin**: **String** - plugin name 
+- [x] **package**: **String** - the name of the package that contains the plugin
+
+Сonnect the plugin to the desired target:
+
+```yaml
+targets:
+  App:
+    buildToolPlugins:
+      - plugin: MyPlugin
+        package: MyPackage
+```
+
+Don't forget to add a package containing the plugin we need:
+
+```yaml
+packages:
+  MyPackage:
+    url: https://github.com/MyPackage
+    from: 1.3.0
+```
+
 ### Build Script
 
 Run script build phases can be added at 3 different points in the build:
@@ -854,6 +886,7 @@ This is used to override settings or run build scripts in specific targets
 - [x] **targets**: **[String]** - The list of target names to include as target dependencies
 - [ ] **configFiles**: **[Config Files](#config-files)** - `.xcconfig` files per config
 - [ ] **settings**: **[Settings](#settings)** - Target specific build settings.
+- [ ] **buildToolPlugins**: **[[Build Tool Plug-ins](#build-tool-plug-ins)]** - Commands for the build system that run automatically *during* the build
 - [ ] **buildScripts**: **[[Build Script](#build-script)]** - Build scripts to run
 - [ ] **scheme**: **[Target Scheme](#target-scheme)** - Generated scheme
 - [ ] **attributes**: **[String: Any]** - This sets values in the project `TargetAttributes`. It is merged with `attributes` from the project and anything automatically added by XcodeGen, with any duplicate values being override by values specified here
