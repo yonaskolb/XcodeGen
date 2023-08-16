@@ -2,6 +2,10 @@
 
 ## Next Version
 
+### Added
+
+- Support Artifact Bundle # @freddi-kit
+
 ## 2.37.0
 
 ### Fixed
