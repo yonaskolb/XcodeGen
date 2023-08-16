@@ -4,7 +4,7 @@
 
 ### Added
 
-- Support Artifact Bundle # @freddi-kit
+- Support Artifact Bundle #1388 @freddi-kit
 
 ## 2.37.0
 
