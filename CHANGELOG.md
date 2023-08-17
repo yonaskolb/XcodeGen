@@ -2,11 +2,11 @@
 
 ## Next Version
 
-## 2.37.0
-
 ### Fixed
 
 - Fixed source file `includes` not working when no paths were found #1337 @shnhrrsn
+
+## 2.37.0
 
 ### Added
 
