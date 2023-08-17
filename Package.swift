@@ -4,7 +4,7 @@ import PackageDescription
 
 let macOSOnlyDependency: [Package.Dependency]
 #if !os(Linux)
-    macOSOnlyDependency = [Package.Dependency.package(url: "https://github.com/freddi-kit/ArtifactBundleGen", exact: "0.0.2")]
+    macOSOnlyDependency = [Package.Dependency.package(url: "https://github.com/freddi-kit/ArtifactBundleGen", exact: "0.0.3")]
 #else
     macOSOnlyDependency = []
 #endif
