@@ -144,6 +144,12 @@ extension Project {
             }
 
             errors += validateSettings(target.settings)
+
+            for buildToolPlugin in target.buildToolPlugins {
+                if packages[buildToolPlugin.package] == nil {
+                    errors.append(.invalidPluginPackageReference(plugin: buildToolPlugin.plugin, package: buildToolPlugin.package))
+                }
+            }
         }
 
         for target in aggregateTargets {
@@ -172,12 +178,6 @@ extension Project {
                 let sourcePath = basePath + source.path
                 if !source.optional && !sourcePath.exists {
                     errors.append(.invalidTargetSource(target: target.name, source: sourcePath.string))
-                }
-            }
-
-            for buildToolPlugin in target.buildToolPlugins {
-                if packages[buildToolPlugin.package] == nil {
-                    errors.append(.invalidPluginPackageReference(plugin: buildToolPlugin.plugin, package: buildToolPlugin.package))
                 }
             }
         }
