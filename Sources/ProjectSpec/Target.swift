@@ -58,6 +58,9 @@ public struct Target: ProjectTarget {
     public var productName: String
     public var onlyCopyFilesOnInstall: Bool
     public var putResourcesBeforeSourcesBuildPhase: Bool
+    
+    /// This property is set by the tool during the parsing of the spec and exists only to help us to check, in SpecValidation, that there no conflicts in the definition of the platforms.
+    /// We want to ensure that the user didn't define, at the same time, the new Xcode 14 supported destinations and the XcodeGen generation of Multiple Platform Targets (when you define the platform field as an array).
     public var isResolved: Bool
     
     public var isLegacy: Bool {
