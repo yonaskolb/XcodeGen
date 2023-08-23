@@ -48,13 +48,13 @@ extension Project {
             buildSettings += SettingsPresetFile.productPlatform(target.type, target.platform).getBuildSettings()
         }
         
-        if let specSupportedPlatforms = target.supportedPlatforms?.sorted(by: { $0.index < $1.index }),
-           specSupportedPlatforms.count > 1 {
+        if let specSupportedDestinations = target.supportedDestinations?.sorted(by: { $0.index < $1.index }),
+           specSupportedDestinations.count > 1 {
             
             var supportedPlatforms: [String] = []
             var targetedDeviceFamily: [String] = []
             
-            for supportedPlatform in specSupportedPlatforms {
+            for supportedPlatform in specSupportedDestinations {
                 let supportedPlatformBuildSettings = SettingsPresetFile.supportedPlatform(supportedPlatform).getBuildSettings()
                 buildSettings += supportedPlatformBuildSettings
                 

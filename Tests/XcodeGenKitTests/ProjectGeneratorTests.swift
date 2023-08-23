@@ -337,7 +337,7 @@ class ProjectGeneratorTests: XCTestCase {
             }
             
             $0.it("supportedPlaforms merges settings - iOS, tvOS") {
-                let target = Target(name: "Target", type: .application, platform: .iOS, supportedPlatforms: [.tvOS, .iOS])
+                let target = Target(name: "Target", type: .application, platform: .iOS, supportedDestinations: [.tvOS, .iOS])
                 let project = Project(name: "", targets: [target])
                 
                 let pbxProject = try project.generatePbxProj()
@@ -350,7 +350,7 @@ class ProjectGeneratorTests: XCTestCase {
             }
             
             $0.it("supportedPlaforms merges settings - iOS, tvOS, macOS") {
-                let target = Target(name: "Target", type: .application, platform: .iOS, supportedPlatforms: [.iOS, .tvOS, .macOS])
+                let target = Target(name: "Target", type: .application, platform: .iOS, supportedDestinations: [.iOS, .tvOS, .macOS])
                 let project = Project(name: "", targets: [target])
                 
                 let pbxProject = try project.generatePbxProj()
@@ -363,7 +363,7 @@ class ProjectGeneratorTests: XCTestCase {
             }
             
             $0.it("supportedPlaforms merges settings - iOS, tvOS, macCatalyst") {
-                let target = Target(name: "Target", type: .application, platform: .iOS, supportedPlatforms: [.iOS, .tvOS, .macCatalyst])
+                let target = Target(name: "Target", type: .application, platform: .iOS, supportedDestinations: [.iOS, .tvOS, .macCatalyst])
                 let project = Project(name: "", targets: [target])
                 
                 let pbxProject = try project.generatePbxProj()
@@ -376,7 +376,7 @@ class ProjectGeneratorTests: XCTestCase {
             }
             
             $0.it("supportedPlaforms merges settings - iOS, macOS") {
-                let target = Target(name: "Target", type: .application, platform: .iOS, supportedPlatforms: [.iOS, .macOS])
+                let target = Target(name: "Target", type: .application, platform: .iOS, supportedDestinations: [.iOS, .macOS])
                 let project = Project(name: "", targets: [target])
                 
                 let pbxProject = try project.generatePbxProj()
@@ -389,7 +389,7 @@ class ProjectGeneratorTests: XCTestCase {
             }
             
             $0.it("supportedPlaforms merges settings - tvOS, macOS") {
-                let target = Target(name: "Target", type: .application, platform: .tvOS, supportedPlatforms: [.tvOS, .macOS])
+                let target = Target(name: "Target", type: .application, platform: .tvOS, supportedDestinations: [.tvOS, .macOS])
                 let project = Project(name: "", targets: [target])
                 
                 let pbxProject = try project.generatePbxProj()
@@ -402,7 +402,7 @@ class ProjectGeneratorTests: XCTestCase {
             }
             
             $0.it("supportedPlaforms merges settings - iOS, macCatalyst") {
-                let target = Target(name: "Target", type: .application, platform: .iOS, supportedPlatforms: [.iOS, .macCatalyst])
+                let target = Target(name: "Target", type: .application, platform: .iOS, supportedDestinations: [.iOS, .macCatalyst])
                 let project = Project(name: "", targets: [target])
                 
                 let pbxProject = try project.generatePbxProj()
@@ -1170,16 +1170,16 @@ class ProjectGeneratorTests: XCTestCase {
                 for buildFile in buildFiles {
                     let name = buildFile.file?.nameOrPath
                     
-                    if buildFile.platformFilters == [SupportedPlatform.iOS.string] &&
+                    if buildFile.platformFilters == [SupportedDestination.iOS.string] &&
                         (name == "File_ios.swift" || name == "File_A.swift") {
                         continue
-                    } else if buildFile.platformFilters == [SupportedPlatform.tvOS.string] &&
+                    } else if buildFile.platformFilters == [SupportedDestination.tvOS.string] &&
                                 (name == "File_tvOs.swift" || name == "File_B.swift") {
                         continue
-                    } else if buildFile.platformFilters == [SupportedPlatform.macOS.string] &&
+                    } else if buildFile.platformFilters == [SupportedDestination.macOS.string] &&
                                 (name == "File_macOS.swift" || name == "File_C.swift") {
                         continue
-                    } else if buildFile.platformFilters == [SupportedPlatform.macCatalyst.string] &&
+                    } else if buildFile.platformFilters == [SupportedDestination.macCatalyst.string] &&
                                 (name == "File_MACCATALYST.swift" || name == "File_D.swift") {
                         continue
                     }
@@ -1228,16 +1228,16 @@ class ProjectGeneratorTests: XCTestCase {
                 for buildFile in buildFiles {
                     let name = buildFile.file?.nameOrPath
                     
-                    if buildFile.platformFilters == [SupportedPlatform.iOS.string] &&
+                    if buildFile.platformFilters == [SupportedDestination.iOS.string] &&
                         (name == "File_ios.swift" || name == "File_A.swift") {
                         continue
-                    } else if buildFile.platformFilters == [SupportedPlatform.tvOS.string] &&
+                    } else if buildFile.platformFilters == [SupportedDestination.tvOS.string] &&
                                 (name == "File_tvOs.swift" || name == "File_B.swift") {
                         continue
-                    } else if buildFile.platformFilters == [SupportedPlatform.macOS.string, SupportedPlatform.macCatalyst.string] &&
+                    } else if buildFile.platformFilters == [SupportedDestination.macOS.string, SupportedDestination.macCatalyst.string] &&
                                 (name == "File_C.swift" || name == "File_D.swift") {
                         continue
-                    } else if buildFile.platformFilters == [SupportedPlatform.macOS.string, SupportedPlatform.macCatalyst.string] &&
+                    } else if buildFile.platformFilters == [SupportedDestination.macOS.string, SupportedDestination.macCatalyst.string] &&
                                 (name == "File_macOS.swift" || name == "File_MACCATALYST.swift") {
                         continue
                     }
@@ -1859,8 +1859,8 @@ class ProjectGeneratorTests: XCTestCase {
                 )
                 
                 let expectedLinkedFiles = [
-                    "frameworkA.framework": [SupportedPlatform.iOS.string],
-                    "frameworkB.framework": [SupportedPlatform.iOS.string, SupportedPlatform.tvOS.string]
+                    "frameworkA.framework": [SupportedDestination.iOS.string],
+                    "frameworkB.framework": [SupportedDestination.iOS.string, SupportedDestination.tvOS.string]
                 ]
                 
                 // given
@@ -1879,8 +1879,8 @@ class ProjectGeneratorTests: XCTestCase {
             $0.it("framework dependencies") {
                 
                 let expectedLinkedFiles = [
-                    "frameworkA.framework": [SupportedPlatform.iOS.string],
-                    "frameworkB.framework": [SupportedPlatform.iOS.string, SupportedPlatform.tvOS.string]
+                    "frameworkA.framework": [SupportedDestination.iOS.string],
+                    "frameworkB.framework": [SupportedDestination.iOS.string, SupportedDestination.tvOS.string]
                 ]
                 
                 // given
@@ -1899,8 +1899,8 @@ class ProjectGeneratorTests: XCTestCase {
             $0.it("carthage dependencies") {
                 
                 let expectedLinkedFiles = [
-                    "frameworkA.framework": [SupportedPlatform.iOS.string],
-                    "frameworkB.framework": [SupportedPlatform.iOS.string, SupportedPlatform.tvOS.string]
+                    "frameworkA.framework": [SupportedDestination.iOS.string],
+                    "frameworkB.framework": [SupportedDestination.iOS.string, SupportedDestination.tvOS.string]
                 ]
                 
                 // given
@@ -1919,8 +1919,8 @@ class ProjectGeneratorTests: XCTestCase {
             $0.it("sdk dependencies") {
                 
                 let expectedLinkedFiles = [
-                    "sdkA.framework": [SupportedPlatform.iOS.string],
-                    "sdkB.framework": [SupportedPlatform.iOS.string, SupportedPlatform.tvOS.string]
+                    "sdkA.framework": [SupportedDestination.iOS.string],
+                    "sdkB.framework": [SupportedDestination.iOS.string, SupportedDestination.tvOS.string]
                 ]
                 
                 // given
@@ -1943,8 +1943,8 @@ class ProjectGeneratorTests: XCTestCase {
                 ]
                 
                 let expectedLinkedFiles = [
-                    "RxSwift": [SupportedPlatform.iOS.string],
-                    "RxCocoa": [SupportedPlatform.iOS.string, SupportedPlatform.tvOS.string]
+                    "RxSwift": [SupportedDestination.iOS.string],
+                    "RxCocoa": [SupportedDestination.iOS.string, SupportedDestination.tvOS.string]
                 ]
                 
                 // given
@@ -1963,8 +1963,8 @@ class ProjectGeneratorTests: XCTestCase {
             $0.it("bundle dependencies") {
                 
                 let expectedCopiedBundleFiles = [
-                    "bundleA.bundle": [SupportedPlatform.iOS.string],
-                    "bundleB.bundle": [SupportedPlatform.iOS.string, SupportedPlatform.tvOS.string]
+                    "bundleA.bundle": [SupportedDestination.iOS.string],
+                    "bundleB.bundle": [SupportedDestination.iOS.string, SupportedDestination.tvOS.string]
                 ]
                 
                 // given

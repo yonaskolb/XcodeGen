@@ -58,13 +58,13 @@ public struct SpecValidationError: Error, CustomStringConvertible {
             case let .invalidTargetSchemeTest(target, test):
                 return "Target \(target.quoted) scheme has invalid test \(test.quoted)"
             case let .invalidTargetPlatformForSupportedPlatforms(target):
-                return "Target \(target.quoted) has supported platforms that require a target platform iOS"
+                return "Target \(target.quoted) has supported destinations that require a target platform iOS"
             case let .invalidTargetPlatform(target):
-                return "Target \(target.quoted) is using multiple ways to define platforms. If you use supported platforms you must not define platform field as an array"
+                return "Target \(target.quoted) is using multiple ways to define platforms. If you use supported destinations you must not define platform field as an array"
             case let .unexpectedTargetSupportedPlatforms(target, platform):
-                return "Target \(target.quoted) has platform \(platform.rawValue.quoted) that does not expect supported platforms"
+                return "Target \(target.quoted) has platform \(platform.rawValue.quoted) that does not expect supported destinations"
             case let .multipleMacPlatformInSupportedPlatforms(target):
-                return "Target \(target.quoted) has multiple definitions of mac platform in supported platforms"
+                return "Target \(target.quoted) has multiple definitions of mac platform in supported destinations"
             case let .invalidConfigFile(configFile, config):
                 return "Invalid config file \(configFile.quoted) for config \(config.quoted)"
             case let .invalidSchemeTarget(scheme, target, action):

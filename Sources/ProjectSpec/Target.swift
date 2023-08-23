@@ -37,7 +37,7 @@ public struct Target: ProjectTarget {
     public var name: String
     public var type: PBXProductType
     public var platform: Platform
-    public var supportedPlatforms: [SupportedPlatform]?
+    public var supportedDestinations: [SupportedDestination]?
     public var settings: Settings
     public var sources: [TargetSource]
     public var dependencies: [Dependency]
@@ -82,7 +82,7 @@ public struct Target: ProjectTarget {
         name: String,
         type: PBXProductType,
         platform: Platform,
-        supportedPlatforms: [SupportedPlatform]? = nil,
+        supportedDestinations: [SupportedDestination]? = nil,
         productName: String? = nil,
         deploymentTarget: Version? = nil,
         settings: Settings = .empty,
@@ -108,7 +108,7 @@ public struct Target: ProjectTarget {
         self.name = name
         self.type = type
         self.platform = platform
-        self.supportedPlatforms = supportedPlatforms
+        self.supportedDestinations = supportedDestinations
         self.deploymentTarget = deploymentTarget
         self.productName = productName ?? name
         self.settings = settings
@@ -285,8 +285,8 @@ extension Target: NamedJSONDictionaryConvertible {
             throw SpecParsingError.unknownTargetPlatform(platformString)
         }
         
-        if let supportedPlatforms: [SupportedPlatform] = jsonDictionary.json(atKeyPath: "supportedPlatforms") {
-            self.supportedPlatforms = supportedPlatforms
+        if let supportedDestinations: [SupportedDestination] = jsonDictionary.json(atKeyPath: "supportedDestinations") {
+            self.supportedDestinations = supportedDestinations
         }
         
         if let string: String = jsonDictionary.json(atKeyPath: "deploymentTarget") {
@@ -354,7 +354,7 @@ extension Target: JSONEncodable {
         var dict: [String: Any?] = [
             "type": type.name,
             "platform": platform.rawValue,
-            "supportedPlatforms": supportedPlatforms?.map { $0.rawValue },
+            "supportedDestinations": supportedDestinations?.map { $0.rawValue },
             "settings": settings.toJSONValue(),
             "configFiles": configFiles,
             "attributes": attributes,

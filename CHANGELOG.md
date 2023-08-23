@@ -5,7 +5,7 @@
 ### Feature
 
 - Added support for multiple deployment targets with xcode 14
-- Added `supportedPlatforms` for target
+- Added `supportedDestinations` for target
 - Added `platformFilters` for sources and dependecies
 - Added `inferPlatformFiltersByPath`, a convenience filter for sources
 

@@ -176,24 +176,24 @@ extension Project {
             }
             
             if target.platform == .watchOS,
-               target.supportedPlatforms != nil {
+               target.supportedDestinations != nil {
                 
                 errors.append(.unexpectedTargetSupportedPlatforms(target: target.name, platform: target.platform))
             }
             
-            if target.supportedPlatforms?.contains(.macOS) == true,
-               target.supportedPlatforms?.contains(.macCatalyst) == true {
+            if target.supportedDestinations?.contains(.macOS) == true,
+               target.supportedDestinations?.contains(.macCatalyst) == true {
                 
                 errors.append(.multipleMacPlatformInSupportedPlatforms(target: target.name))
             }
             
-            if target.supportedPlatforms?.contains(.macCatalyst) == true,
+            if target.supportedDestinations?.contains(.macCatalyst) == true,
                target.platform != .iOS {
                 
                 errors.append(.invalidTargetPlatformForSupportedPlatforms(target: target.name))
             }
             
-            if target.isResolved, target.supportedPlatforms != nil {
+            if target.isResolved, target.supportedDestinations != nil {
                 errors.append(.invalidTargetPlatform(target: target.name))
             }
         }

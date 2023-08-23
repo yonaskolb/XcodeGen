@@ -1443,7 +1443,7 @@ public class PBXProjGenerator {
         }
     }
     
-    private func makePlatformFilters(for filters: [SupportedPlatform]?) -> [String]? {
+    private func makePlatformFilters(for filters: [SupportedDestination]?) -> [String]? {
         guard let filters = filters, !filters.isEmpty else { return nil }
         return filters.map { $0.string }
     }

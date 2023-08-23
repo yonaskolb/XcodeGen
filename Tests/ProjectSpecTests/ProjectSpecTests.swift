@@ -179,46 +179,46 @@ class ProjectSpecTests: XCTestCase {
                 try expectNoValidationError(project, .duplicateDependencies(target: "target1", dependencyReference: "package1"))
             }
             
-            $0.it("unexpected supported platforms for watch app") {
+            $0.it("unexpected supported destinations for watch app") {
                 var project = baseProject
                 project.targets = [
                     Target(
                         name: "target1",
                         type: .application,
                         platform: .watchOS,
-                        supportedPlatforms: [.macOS]
+                        supportedDestinations: [.macOS]
                     )
                 ]
                 try expectValidationError(project, .unexpectedTargetSupportedPlatforms(target: "target1", platform: .watchOS))
             }
             
-            $0.it("multiple definitions of mac platform in supported platforms") {
+            $0.it("multiple definitions of mac platform in supported destinations") {
                 var project = baseProject
                 project.targets = [
                     Target(
                         name: "target1",
                         type: .application,
                         platform: .iOS,
-                        supportedPlatforms: [.macOS, .macCatalyst]
+                        supportedDestinations: [.macOS, .macCatalyst]
                     )
                 ]
                 try expectValidationError(project, .multipleMacPlatformInSupportedPlatforms(target: "target1"))
             }
             
-            $0.it("invalid target platform for macCatalyst supported platforms") {
+            $0.it("invalid target platform for macCatalyst supported destinations") {
                 var project = baseProject
                 project.targets = [
                     Target(
                         name: "target1",
                         type: .application,
                         platform: .tvOS,
-                        supportedPlatforms: [.tvOS, .macCatalyst]
+                        supportedDestinations: [.tvOS, .macCatalyst]
                     )
                 ]
                 try expectValidationError(project, .invalidTargetPlatformForSupportedPlatforms(target: "target1"))
             }
             
-            $0.it("invalid target because supported platforms is defined and platform is an array") {
+            $0.it("invalid target because supported destinations is defined and platform is an array") {
                 let expectedError = SpecValidationError.ValidationError.invalidTargetPlatform(target: "target1_iOS")
                 
                 let targetDictionary: [String: Any] = [
@@ -226,7 +226,7 @@ class ProjectSpecTests: XCTestCase {
                     "targets": ["target1": [
                         "type": "application",
                         "platform": ["iOS", "tvOS"],
-                        "supportedPlatforms": ["iOS", "tvOS"]
+                        "supportedDestinations": ["iOS", "tvOS"]
                     ] as [String : Any]]
                 ]
                 
@@ -529,7 +529,7 @@ class ProjectSpecTests: XCTestCase {
                                    targets: [Target(name: "App",
                                                     type: .application,
                                                     platform: .iOS,
-                                                    supportedPlatforms: [.iOS, .tvOS],
+                                                    supportedDestinations: [.iOS, .tvOS],
                                                     productName: "App",
                                                     deploymentTarget: Version(major: 0, minor: 1, patch: 2),
                                                     settings: Settings(buildSettings: ["foo": "bar"],
