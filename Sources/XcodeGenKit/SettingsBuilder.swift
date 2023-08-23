@@ -54,8 +54,8 @@ extension Project {
             var supportedPlatforms: [String] = []
             var targetedDeviceFamily: [String] = []
             
-            for supportedPlatform in specSupportedDestinations {
-                let supportedPlatformBuildSettings = SettingsPresetFile.supportedPlatform(supportedPlatform).getBuildSettings()
+            for supportedDestination in specSupportedDestinations {
+                let supportedPlatformBuildSettings = SettingsPresetFile.supportedDestination(supportedDestination).getBuildSettings()
                 buildSettings += supportedPlatformBuildSettings
                 
                 if let value = supportedPlatformBuildSettings?["SUPPORTED_PLATFORMS"] as? String {
@@ -227,7 +227,7 @@ extension SettingsPresetFile {
 
         guard let settingsPath = possibleSettingsPaths.first(where: { $0.exists }) else {
             switch self {
-            case .base, .config, .platform, .supportedPlatform:
+            case .base, .config, .platform, .supportedDestination:
                 print("No \"\(name)\" settings found")
             case .product, .productPlatform:
                 break

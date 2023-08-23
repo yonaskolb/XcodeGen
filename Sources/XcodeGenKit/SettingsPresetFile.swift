@@ -5,7 +5,7 @@ import XcodeProj
 public enum SettingsPresetFile {
     case config(ConfigType)
     case platform(Platform)
-    case supportedPlatform(SupportedDestination)
+    case supportedDestination(SupportedDestination)
     case product(PBXProductType)
     case productPlatform(PBXProductType, Platform)
     case base
@@ -14,7 +14,7 @@ public enum SettingsPresetFile {
         switch self {
         case let .config(config): return "Configs/\(config.rawValue)"
         case let .platform(platform): return "Platforms/\(platform.rawValue)"
-        case let .supportedPlatform(supportedPlatform): return "SupportedPlatforms/\(supportedPlatform.rawValue)"
+        case let .supportedDestination(supportedDestination): return "SupportedDestinations/\(supportedDestination.rawValue)"
         case let .product(product): return "Products/\(product.name)"
         case let .productPlatform(product, platform): return "Product_Platform/\(product.name)_\(platform.rawValue)"
         case .base: return "base"
@@ -25,7 +25,7 @@ public enum SettingsPresetFile {
         switch self {
         case let .config(config): return "\(config.rawValue) config"
         case let .platform(platform): return platform.rawValue
-        case let .supportedPlatform(supportedPlatform): return supportedPlatform.rawValue
+        case let .supportedDestination(supportedDestination): return supportedDestination.rawValue
         case let .product(product): return product.name
         case let .productPlatform(product, platform): return "\(platform) \(product)"
         case .base: return "base"

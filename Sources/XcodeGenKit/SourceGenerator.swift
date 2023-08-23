@@ -114,12 +114,12 @@ class SourceGenerator {
         if let filters = filters, !filters.isEmpty {
             return filters.map { $0.string }
         } else if inferPlatformFiltersByPath == true {
-            for supportedPlatform in SupportedDestination.allCases {
-                let regex1 = try? NSRegularExpression(pattern: "\\/\(supportedPlatform)\\/", options: .caseInsensitive)
-                let regex2 = try? NSRegularExpression(pattern: "\\_\(supportedPlatform)\\.swift$", options: .caseInsensitive)
+            for supportedDestination in SupportedDestination.allCases {
+                let regex1 = try? NSRegularExpression(pattern: "\\/\(supportedDestination)\\/", options: .caseInsensitive)
+                let regex2 = try? NSRegularExpression(pattern: "\\_\(supportedDestination)\\.swift$", options: .caseInsensitive)
                 
                 if regex1?.isMatch(to: path.string) == true || regex2?.isMatch(to: path.string) == true {
-                    return [supportedPlatform.string]
+                    return [supportedDestination.string]
                 }
             }
         }

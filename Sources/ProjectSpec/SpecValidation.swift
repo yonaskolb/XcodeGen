@@ -178,19 +178,19 @@ extension Project {
             if target.platform == .watchOS,
                target.supportedDestinations != nil {
                 
-                errors.append(.unexpectedTargetSupportedPlatforms(target: target.name, platform: target.platform))
+                errors.append(.unexpectedTargetSupportedDestinations(target: target.name, platform: target.platform))
             }
             
             if target.supportedDestinations?.contains(.macOS) == true,
                target.supportedDestinations?.contains(.macCatalyst) == true {
                 
-                errors.append(.multipleMacPlatformInSupportedPlatforms(target: target.name))
+                errors.append(.multipleMacPlatformInSupportedDestinations(target: target.name))
             }
             
             if target.supportedDestinations?.contains(.macCatalyst) == true,
                target.platform != .iOS {
                 
-                errors.append(.invalidTargetPlatformForSupportedPlatforms(target: target.name))
+                errors.append(.invalidTargetPlatformForSupportedDestinations(target: target.name))
             }
             
             if target.isResolved, target.supportedDestinations != nil {

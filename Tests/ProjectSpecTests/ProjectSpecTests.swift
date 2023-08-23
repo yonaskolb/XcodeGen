@@ -189,7 +189,7 @@ class ProjectSpecTests: XCTestCase {
                         supportedDestinations: [.macOS]
                     )
                 ]
-                try expectValidationError(project, .unexpectedTargetSupportedPlatforms(target: "target1", platform: .watchOS))
+                try expectValidationError(project, .unexpectedTargetSupportedDestinations(target: "target1", platform: .watchOS))
             }
             
             $0.it("multiple definitions of mac platform in supported destinations") {
@@ -202,7 +202,7 @@ class ProjectSpecTests: XCTestCase {
                         supportedDestinations: [.macOS, .macCatalyst]
                     )
                 ]
-                try expectValidationError(project, .multipleMacPlatformInSupportedPlatforms(target: "target1"))
+                try expectValidationError(project, .multipleMacPlatformInSupportedDestinations(target: "target1"))
             }
             
             $0.it("invalid target platform for macCatalyst supported destinations") {
@@ -215,7 +215,7 @@ class ProjectSpecTests: XCTestCase {
                         supportedDestinations: [.tvOS, .macCatalyst]
                     )
                 ]
-                try expectValidationError(project, .invalidTargetPlatformForSupportedPlatforms(target: "target1"))
+                try expectValidationError(project, .invalidTargetPlatformForSupportedDestinations(target: "target1"))
             }
             
             $0.it("invalid target because supported destinations is defined and platform is an array") {
