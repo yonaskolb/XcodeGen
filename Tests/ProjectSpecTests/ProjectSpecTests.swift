@@ -517,6 +517,37 @@ class ProjectSpecTests: XCTestCase {
 
                 try expectValidationError(project, .multipleDefaultTestPlans)
             }
+
+            $0.it("fails on packages has not plugin packge reference") {
+                var project = baseProject
+                project.targets = [
+                    Target(
+                        name: "target",
+                        type: .application,
+                        platform: .iOS,
+                        buildToolPlugins: [
+                            BuildToolPlugin(plugin: "plugin", package: "package")
+                        ]
+                    )
+                ]
+                try expectValidationError(project, .invalidPluginPackageReference(plugin: "plugin", package: "package"))
+            }
+
+            $0.it("allow on packages has plugin packge reference") {
+                var project = baseProject
+                project.packages["package"] = .remote(url: "url", versionRequirement: .branch("branch"))
+                project.targets = [
+                    Target(
+                        name: "target",
+                        type: .application,
+                        platform: .iOS,
+                        buildToolPlugins: [
+                            BuildToolPlugin(plugin: "plugin", package: "package")
+                        ]
+                    )
+                ]
+                try expectNoValidationError(project, .invalidPluginPackageReference(plugin: "plugin", package: "package"))
+            }
         }
     }
 
@@ -573,6 +604,7 @@ class ProjectSpecTests: XCTestCase {
                                                                                   runOnlyWhenInstalling: true,
                                                                                   showEnvVars: true,
                                                                                   basedOnDependencyAnalysis: false)],
+                                                    buildToolPlugins: [BuildToolPlugin(plugin: "plugin", package: "Yams")],
                                                     postCompileScripts: [BuildScript(script: .path("cmd.sh"),
                                                                                      name: "Bar script",
                                                                                      inputFiles: ["foo"],
@@ -625,6 +657,7 @@ class ProjectSpecTests: XCTestCase {
                                                                          storeKitConfiguration: "Configuration.storekit",
                                                                          disableMainThreadChecker: true,
                                                                          stopOnEveryMainThreadCheckerIssue: false,
+                                                                         disableThreadPerformanceChecker: true,
                                                                          commandLineArguments: ["foo": true],
                                                                          environmentVariables: [XCScheme.EnvironmentVariable(variable: "environmentVariable",
                                                                                                                              value: "bar",
@@ -665,6 +698,7 @@ class ProjectSpecTests: XCTestCase {
                                                                                            configVariants: ["foo"],
                                                                                            gatherCoverageData: true,
                                                                                            disableMainThreadChecker: true,
+                                                                                           disableThreadPerformanceChecker: true,
                                                                                            commandLineArguments: ["foo": true],
                                                                                            environmentVariables: [XCScheme.EnvironmentVariable(variable: "environmentVariable",
                                                                                                                                                value: "bar",

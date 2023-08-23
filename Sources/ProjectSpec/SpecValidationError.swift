@@ -40,6 +40,7 @@ public struct SpecValidationError: Error, CustomStringConvertible {
         case invalidTestPlan(TestPlan)
         case multipleDefaultTestPlans
         case duplicateDependencies(target: String, dependencyReference: String)
+        case invalidPluginPackageReference(plugin: String, package: String)
 
         public var description: String {
             switch self {
@@ -103,6 +104,8 @@ public struct SpecValidationError: Error, CustomStringConvertible {
                 return "Your test plans contain more than one default test plan"
             case let .duplicateDependencies(target, dependencyReference):
                  return "Target \(target.quoted) has the dependency \(dependencyReference.quoted) multiple times"
+            case let .invalidPluginPackageReference(plugin, package):
+                return "Plugin \(plugin) has invalide package reference \(package)"
             }
         }
     }

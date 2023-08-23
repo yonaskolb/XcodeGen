@@ -285,7 +285,10 @@ public class PBXProjGenerator {
             }.flatMap { $0 }
         ).sorted()
 
-        var projectAttributes: [String: Any] = project.attributes
+        let defaultAttributes: [String: Any] = [
+            "BuildIndependentTargetsInParallel": "YES"
+        ]
+        var projectAttributes: [String: Any] = defaultAttributes.merged(project.attributes)
         
         // Set default LastUpgradeCheck if user did not specify
         let lastUpgradeKey = "LastUpgradeCheck"
@@ -408,13 +411,11 @@ public class PBXProjGenerator {
             )
         )
 
-        let productProxy = addObject(
-            PBXContainerItemProxy(
-                containerPortal: .fileReference(projectFileReference),
-                remoteGlobalID: targetObject.product.flatMap(PBXContainerItemProxy.RemoteGlobalID.object),
-                proxyType: .reference,
-                remoteInfo: target
-            )
+        let productProxy = PBXContainerItemProxy(
+            containerPortal: .fileReference(projectFileReference),
+            remoteGlobalID: targetObject.product.flatMap(PBXContainerItemProxy.RemoteGlobalID.object),
+            proxyType: .reference,
+            remoteInfo: target
         )
 
         var path = targetObject.productNameWithExtension()
@@ -438,6 +439,7 @@ public class PBXProjGenerator {
         if let existingValue = existingValue {
             productReferenceProxy = existingValue
         } else {
+            addObject(productProxy)
             productReferenceProxy = addObject(
                 PBXReferenceProxy(
                     fileType: productReferenceProxyFileType,
@@ -1044,6 +1046,23 @@ public class PBXProjGenerator {
         
         carthageFrameworksToEmbed = carthageFrameworksToEmbed.uniqued()
 
+        // Adding `Build Tools Plug-ins` as a dependency to the target
+        for buildToolPlugin in target.buildToolPlugins {
+            let packageReference = packageReferences[buildToolPlugin.package]
+            if packageReference == nil, !localPackageReferences.contains(buildToolPlugin.package) {
+                continue
+            }
+
+            let packageDependency = addObject(
+                XCSwiftPackageProductDependency(productName: buildToolPlugin.plugin, package: packageReference, isPlugin: true)
+            )
+            let targetDependency = addObject(
+                PBXTargetDependency(product: packageDependency)
+            )
+
+            dependencies.append(targetDependency)
+        }
+        
         var buildPhases: [PBXBuildPhase] = []
 
         func getBuildFilesForSourceFiles(_ sourceFiles: [SourceFile]) -> [PBXBuildFile] {
@@ -1581,7 +1600,7 @@ extension Platform {
     /// - returns: `true` for platforms that the app store requires simulator slices to be stripped.
     public var requiresSimulatorStripping: Bool {
         switch self {
-        case .iOS, .tvOS, .watchOS:
+        case .iOS, .tvOS, .watchOS, .visionOS:
             return true
         case .macOS:
             return false

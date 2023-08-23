@@ -38,6 +38,7 @@ public struct Breakpoint: Equatable {
         case symbolic(symbol: String?, module: String?)
         case ideConstraintError
         case ideTestFailure
+        case runtimeIssue
     }
 
     public enum Action: Equatable {
@@ -247,6 +248,8 @@ extension Breakpoint: JSONObjectConvertible {
             type = .ideConstraintError
         case .ideTestFailure:
             type = .ideTestFailure
+        case .runtimeIssue:
+            type = .runtimeIssue
         }
         enabled = jsonDictionary.json(atKeyPath: "enabled") ?? true
         ignoreCount = jsonDictionary.json(atKeyPath: "ignoreCount") ?? 0

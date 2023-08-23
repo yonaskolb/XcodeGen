@@ -4,22 +4,18 @@ on:
   pull_request: {}
 jobs:
   run:
-    runs-on: macos-11
+    runs-on: ${{ matrix.macos }}
     name: Xcode ${{ matrix.xcode }}
     strategy:
       matrix:
-        xcode: ["12.5.1", "13.0"]
+        xcode: ["14.3.1"]
+        include:
+        - xcode: "14.3.1"
+          macos: macos-13
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_${{ matrix.xcode }}.app/Contents/Developer
     steps:
     - uses: actions/checkout@master
-    - name: Set Xcode
-      run: |
-        echo "Available Xcode versions:"
-        ls /Applications | grep Xcode
-        echo "Choosing Xcode_${{ matrix.xcode }}.app"
-        sudo xcode-select -s /Applications/Xcode_${{ matrix.xcode }}.app
-        xcodebuild -version
-        swift --version
-        swift package --version
     - name: Resolve
       run: swift package resolve
     - name: Build

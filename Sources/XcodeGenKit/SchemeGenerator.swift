@@ -341,7 +341,9 @@ public class SchemeGenerator {
             allowLocationSimulation: allowLocationSimulation,
             locationScenarioReference: locationScenarioReference,
             enableGPUFrameCaptureMode: scheme.run?.enableGPUFrameCaptureMode ?? XCScheme.LaunchAction.defaultGPUFrameCaptureMode,
+            enableGPUValidationMode: scheme.run?.enableGPUValidationMode ?? XCScheme.LaunchAction.defaultGPUValidationMode,
             disableMainThreadChecker: scheme.run?.disableMainThreadChecker ?? Scheme.Run.disableMainThreadCheckerDefault,
+            disablePerformanceAntipatternChecker: scheme.run?.disableThreadPerformanceChecker ?? Scheme.Run.disableThreadPerformanceCheckerDefault,
             stopOnEveryMainThreadCheckerIssue: scheme.run?.stopOnEveryMainThreadCheckerIssue ?? Scheme.Run.stopOnEveryMainThreadCheckerIssueDefault,
             commandlineArguments: launchCommandLineArgs,
             environmentVariables: launchVariables,
@@ -467,6 +469,7 @@ extension Scheme {
                 environmentVariables: targetScheme.environmentVariables,
                 disableMainThreadChecker: targetScheme.disableMainThreadChecker,
                 stopOnEveryMainThreadCheckerIssue: targetScheme.stopOnEveryMainThreadCheckerIssue,
+                disableThreadPerformanceChecker: targetScheme.disableThreadPerformanceChecker,
                 language: targetScheme.language,
                 region: targetScheme.region,
                 storeKitConfiguration: targetScheme.storeKitConfiguration

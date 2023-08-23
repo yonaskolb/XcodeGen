@@ -77,7 +77,7 @@ A project would be created with 2 connected targets, with all the required confi
 
 ## Installing
 
-Make sure Xcode 11 is installed first.
+Make sure the latest stable (non-beta) version of Xcode is installed first.
 
 ### [Mint](https://github.com/yonaskolb/mint)
 ```sh
@@ -113,7 +113,7 @@ swift run xcodegen
 Add the following to your Package.swift file's dependencies:
 
 ```swift
-.package(url: "https://github.com/yonaskolb/XcodeGen.git", from: "2.35.0"),
+.package(url: "https://github.com/yonaskolb/XcodeGen.git", from: "2.37.0"),
 ```
 
 And then import wherever needed: `import XcodeGenKit`

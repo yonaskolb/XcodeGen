@@ -9,11 +9,42 @@
 - Added `platformFilters` for sources and dependecies
 - Added `inferPlatformFiltersByPath`, a convenience filter for sources
 
+### Fixed
+
+- Fixed source file `includes` not working when no paths were found #1337 @shnhrrsn
+
+## 2.37.0
+
+
 ### Added
+
+- Added support for adding `Build Tool Plug-ins` to targets #1374 @BarredEwe
+
+## 2.36.1
+
+### Fixed
+
+- Revert addition of `ENABLE_MODULE_VERIFIER` build setting for causing issues in tests and some setups #1387 @yonaskolb
+
+## 2.36.0
+
+### Added
+
+- Added `scheme.enableGPUValidationMode` #1294 @LouisLWang
+- Added visionOS support #1379 @shiba1014
+- Added ability to disable Thread performance checker in Schemes #1380 @piellarda
+- Added support for `RuntimeIssue` breakpoints #1384 @yonaskolb
+
+### Changed
+
+- The project object version has been updated for Xcode 14.3 #1368 @leonardorock
+- Updated recommended settings for Xcode 14.3 #1385 @yonaskolb
+- Dropped support for Xcode 12 and 13, due to XcodeProj update #1384 @yonaskolb
 
 ### Fixed
 
 - Fix external dependencies from being removed by Xcode #1354 @OdNairy
+- Stop creating orphaned object references when reusing references to external dependencies #1377 @liamnichols
 
 ## 2.35.0
 

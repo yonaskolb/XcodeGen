@@ -86,6 +86,7 @@ extension Platform {
         case .watchOS: return "⌚️"
         case .tvOS: return "📺"
         case .macOS: return "🖥"
+        case .visionOS: return "🕶️"
         }
     }
 }

@@ -28,6 +28,7 @@ You can also use environment variables in your configuration file, by using `${S
   - [Dependency](#dependency)
   - [Config Files](#config-files)
   - [Plist](#plist)
+  - [Build Tool Plug-ins](#build-tool-plug-ins)
   - [Build Script](#build-script)
   - [Build Rule](#build-rule)
   - [Target Scheme](#target-scheme)
@@ -197,6 +198,7 @@ Default settings for file extensions. See [Sources](#sources) for more documenta
     - `Symbolic`: symbolic breakpoint
     - `IDEConstraintError`: IDE constraint breakpoint
     - `IDETestFailure`: IDE test failure breakpoint
+    - `RuntimeIssue`: Runtime issue breakpoint
 - [ ] **enabled**: **Bool** - Indicates whether it should be active. Default to `true`
 - [ ] **ignoreCount**: **Int** - Indicates how many times it should be ignored before stopping, Default to `0`
 - [ ] **continueAfterRunningActions**: **Bool** - Indicates if should automatically continue after evaluating actions, Default to `false`
@@ -382,6 +384,7 @@ Settings are merged in the following order: `groups`, `base`, `configs` (simple 
 - [ ] **directlyEmbedCarthageDependencies**: **Bool** - If this is `true` Carthage framework dependencies will be embedded using an `Embed Frameworks` build phase instead of the `copy-frameworks` script. Defaults to `true` for all targets except iOS/tvOS/watchOS Applications.
 - [ ] **requiresObjCLinking**: **Bool** - If this is `true` any targets that link to this target will have `-ObjC` added to their `OTHER_LDFLAGS`. This is required if a static library has any categories or extensions on Objective-C code. See [this guide](https://pewpewthespells.com/blog/objc_linker_flags.html#objc) for more details. Defaults to `true` if `type` is `library.static`. If you are 100% sure you don't have categories or extensions on Objective-C code (pure Swift with no use of Foundation/UIKit) you can set this to `false`, otherwise it's best to leave it alone.
 - [ ] **onlyCopyFilesOnInstall**: **Bool** – If this is `true`, the `Embed Frameworks` and `Embed App Extensions` (if available) build phases will have the "Copy only when installing" chekbox checked. Defaults to `false`.
+- [ ] **buildToolPlugins**: **[[Build Tool Plug-ins](#build-tool-plug-ins)]** - Commands for the build system that run automatically *during* the build.
 - [ ] **preBuildScripts**: **[[Build Script](#build-script)]** - Build scripts that run *before* any other build phases
 - [ ] **postCompileScripts**: **[[Build Script](#build-script)]** - Build scripts that run after the Compile Sources phase
 - [ ] **postBuildScripts**: **[[Build Script](#build-script)]** - Build scripts that run *after* any other build phases
@@ -436,6 +439,7 @@ This will provide default build settings for a certain platform. It can be any o
 - `macOS`
 - `tvOS`
 - `watchOS`
+- `visionOS` (`visionOS` doesn't support Carthage usage)
 
 **Multi Platform targets**
 
@@ -732,6 +736,36 @@ targets:
         com.apple.security.application-groups: group.com.app
 ```
 
+### Build Tool Plug-ins
+
+To add `Build Tool Plug-ins`, you need to add information about plugins to [Target](#target):
+
+- **buildToolPlugins**: List of plugins to connect to the target
+
+Each plugin includes information:
+
+- [x] **plugin**: **String** - plugin name 
+- [x] **package**: **String** - the name of the package that contains the plugin
+
+Сonnect the plugin to the desired target:
+
+```yaml
+targets:
+  App:
+    buildToolPlugins:
+      - plugin: MyPlugin
+        package: MyPackage
+```
+
+Don't forget to add a package containing the plugin we need:
+
+```yaml
+packages:
+  MyPackage:
+    url: https://github.com/MyPackage
+    from: 1.3.0
+```
+
 ### Build Script
 
 Run script build phases can be added at 3 different points in the build:
@@ -750,9 +784,9 @@ Each script can contain:
 - [ ] **inputFileLists**: **[String]** - list of input .xcfilelist
 - [ ] **outputFileLists**: **[String]** - list of output .xcfilelist
 - [ ] **shell**: **String** - shell used for the script. Defaults to `/bin/sh`
-- [ ] **showEnvVars**: **Bool** - whether the environment variables accessible to the script show be printed to the build log. Defaults to yes
-- [ ] **runOnlyWhenInstalling**: **Bool** - whether the script is only run when installing (`runOnlyForDeploymentPostprocessing`). Defaults to no
-- [ ] **basedOnDependencyAnalysis**: **Bool** - whether to skip the script if inputs, context, or outputs haven't changed. Defaults to yes
+- [ ] **showEnvVars**: **Bool** - whether the environment variables accessible to the script show be printed to the build log. Defaults to `true`
+- [ ] **runOnlyWhenInstalling**: **Bool** - whether the script is only run when installing (`runOnlyForDeploymentPostprocessing`). Defaults to `false`
+- [ ] **basedOnDependencyAnalysis**: **Bool** - whether to skip the script if inputs, context, or outputs haven't changed. Defaults to `true`
 - [ ] **discoveredDependencyFile**: **String** - discovered dependency .d file. Defaults to none
 
 Either a **path** or **script** must be defined, the rest are optional.
@@ -824,6 +858,7 @@ This is a convenience used to automatically generate schemes for a target based 
 - [ ] **coverageTargets**: **[[Testable Target Reference](#testable-target-reference) - a list of targets to gather code coverage. Each entry can either be a simple string, a string using [Project Reference](#project-reference) or [Testable Target Reference](#testable-target-reference)
 - [ ] **disableMainThreadChecker**: **Bool** - a boolean that indicates if this scheme should disable the Main Thread Checker. This defaults to false
 - [ ] **stopOnEveryMainThreadCheckerIssue**: **Bool** - a boolean that indicates if this scheme should stop at every Main Thread Checker issue. This defaults to false
+- [ ] **disableThreadPerformanceChecker**: **Bool** - a boolean that indicates if this scheme should disable the Thread Performance Checker. This defaults to false
 - [ ] **buildImplicitDependencies**: **Bool** - Flag to determine if Xcode should build implicit dependencies of this scheme. By default this is `true` if not set.
 - [ ] **language**: **String** - a String that indicates the language used for running and testing. This defaults to nil
 - [ ] **region**: **String** - a String that indicates the region used for running and testing. This defaults to nil
@@ -890,6 +925,7 @@ This is used to override settings or run build scripts in specific targets
 - [x] **targets**: **[String]** - The list of target names to include as target dependencies
 - [ ] **configFiles**: **[Config Files](#config-files)** - `.xcconfig` files per config
 - [ ] **settings**: **[Settings](#settings)** - Target specific build settings.
+- [ ] **buildToolPlugins**: **[[Build Tool Plug-ins](#build-tool-plug-ins)]** - Commands for the build system that run automatically *during* the build
 - [ ] **buildScripts**: **[[Build Script](#build-script)]** - Build scripts to run
 - [ ] **scheme**: **[Target Scheme](#target-scheme)** - Generated scheme
 - [ ] **attributes**: **[String: Any]** - This sets values in the project `TargetAttributes`. It is merged with `attributes` from the project and anything automatically added by XcodeGen, with any duplicate values being override by values specified here
@@ -972,8 +1008,10 @@ The different actions share some properties:
 - [ ] **postActions**: **[[Execution Action](#execution-action)]** - Scripts that are run *after* the action
 - [ ] **environmentVariables**: **[[Environment Variable](#environment-variable)]** or **[String:String]** - `run`, `test` and `profile` actions can define the environment variables. When passing a dictionary, every key-value entry maps to a corresponding variable that is enabled.
 - [ ] **enableGPUFrameCaptureMode**: **GPUFrameCaptureMode** - Property value set for `GPU Frame Capture`. Possible values are `autoEnabled`, `metal`, `openGL`, `disabled`. Default is `autoEnabled`.
+- [ ] **enableGPUValidationMode**: **GPUValidationMode** - Property value set for `Metal API Validation`. Possible values are `enabled`, `disabled`, `extended`. Default is `enabled`.
 - [ ] **disableMainThreadChecker**: **Bool** - `run` and `test` actions can define a boolean that indicates that this scheme should disable the Main Thread Checker. This defaults to false
 - [ ] **stopOnEveryMainThreadCheckerIssue**: **Bool** - a boolean that indicates if this scheme should stop at every Main Thread Checker issue. This defaults to false
+- [ ] **disableThreadPerformanceChecker**: **Bool** - `run` action can define a boolean that indicates that this scheme should disable the Thread Performance Checker. This defaults to false
 - [ ] **language**: **String** - `run` and `test` actions can define a language that is used for Application Language
 - [ ] **region**: **String** - `run` and `test` actions can define a language that is used for Application Region
 - [ ] **debugEnabled**: **Bool** - `run` and `test` actions can define a whether debugger should be used. This defaults to true.

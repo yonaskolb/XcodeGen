@@ -49,6 +49,8 @@ public class BreakpointGenerator {
             breakpointExtensionID = .ideConstraintError
         case .ideTestFailure:
             breakpointExtensionID = .ideTestFailure
+        case .runtimeIssue:
+            breakpointExtensionID = .runtimeIssue
         }
         let xcbreakpoint = XCBreakpointList.BreakpointProxy.BreakpointContent(
             enabled: breakpoint.enabled,

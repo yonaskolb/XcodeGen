@@ -75,6 +75,7 @@
 		3A3BA9F91994D8B472C71F04 /* Swinject in Frameworks */ = {isa = PBXBuildFile; platformFilters = (tvos, ); productRef = C7F9B7EDE85527EFEA85D46D /* Swinject */; };
 		3BBCA6F76E5F212E9C55FB78 /* BundleX.bundle in Copy Bundle Resources */ = {isa = PBXBuildFile; fileRef = 45C12576F5AA694DD0CE2132 /* BundleX.bundle */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3C5134EE524310ACF7B7CD6E /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CAF6C55B555E3E1352645B6 /* ExtensionDelegate.swift */; };
+		3DF22C477446669094AC7C8C /* ExternalTarget.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F6ADE654A3459AFDA2CC0CD3 /* ExternalTarget.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		447D59BE2E0993D7245EA247 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3797E591F302ECC0AA2FC607 /* Assets.xcassets */; };
 		45E6702CD9C088FF1FC25F34 /* App_watchOS.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = A680BE9F68A255B0FB291AE6 /* App_watchOS.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		470D3493CDBFE56E2083A5FD /* BundleY.bundle in Copy Bundle Resources */ = {isa = PBXBuildFile; fileRef = E3958AB20082EA12D4D5E60C /* BundleY.bundle */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -170,6 +171,7 @@
 		CCA17097382757012B58C17C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1BC32A813B80A53962A1F365 /* Assets.xcassets */; };
 		D058D241BDF5FB0C919BBECA /* CrossOverlayFramework.swiftcrossimport in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8DD7A61B07AD2F91BDECC255 /* CrossOverlayFramework.swiftcrossimport */; };
 		D5458D67C3596943114C3205 /* Standalone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0F5BD97AF0F94A15A5B7DDB7 /* Standalone.swift */; };
+		D5D493E4A7AD63860E1399DD /* ExternalTarget.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F6ADE654A3459AFDA2CC0CD3 /* ExternalTarget.framework */; };
 		D61BEABD5B26B2DE67D0C2EC /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A5F527F2590C14956518174 /* FrameworkFile.swift */; };
 		D62AB3A85B32F353ABBD57BC /* iMessageExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = D629E142AB87C681D4EC90F7 /* iMessageExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		D8ED40ED61AD912385CFF5F0 /* StaticLibrary_ObjC.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D0C79A8C750EC0DE748C463 /* StaticLibrary_ObjC.m */; };
@@ -385,6 +387,13 @@
 			remoteGlobalIDString = 0867B0DACEF28C11442DE8F7;
 			remoteInfo = App_iOS;
 		};
+		CA16090DFCA7842CB4E20265 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F192E783CCA898FBAA5C34EA /* AnotherProject */;
+			proxyType = 1;
+			remoteGlobalIDString = E76A5F5E363E470416D3B487;
+			remoteInfo = ExternalTarget;
+		};
 		CB8F4B3FDD84A2A6F3CA7F4C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0FBAE303E3CFC2ABAC876A77 /* Project object */;
@@ -571,6 +580,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				3DF22C477446669094AC7C8C /* ExternalTarget.framework in Embed Frameworks */,
 				9C92B7C89E5F0A10A34F5AA4 /* Framework.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -1002,6 +1012,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D5D493E4A7AD63860E1399DD /* ExternalTarget.framework in Frameworks */,
 				A1588BF3BFFE1DF7409CBA10 /* Framework.framework in Frameworks */,
 				65EBD2D87F1F5FDA63F8C027 /* Result.framework in Frameworks */,
 				71A2AAC5934BDC9EDB6F0D9E /* libStaticLibrary_ObjC.a in Frameworks */,
@@ -2338,6 +2349,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				FD2D68EC95DC231C4007FB08 /* PBXTargetDependency */,
 				BE9300E427142E634A8A91B8 /* PBXTargetDependency */,
 				CFEACC1CED73B52EA1CCD054 /* PBXTargetDependency */,
 			);
@@ -2448,7 +2460,8 @@
 		0FBAE303E3CFC2ABAC876A77 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1200;
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
 				TargetAttributes = {
 					020A320BB3736FCDE6CC4E70 = {
 						ProvisioningStyle = Automatic;
@@ -2472,7 +2485,7 @@
 				);
 			};
 			buildConfigurationList = D91E14E36EC0B415578456F2 /* Build configuration list for PBXProject "Project" */;
-			compatibilityVersion = "Xcode 11.0";
+			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -3337,6 +3350,11 @@
 			isa = PBXTargetDependency;
 			target = AD28397BCC984F769EE8A937 /* NetworkSystemExtension */;
 			targetProxy = D4A7C57F6272F44F2E69A5DB /* PBXContainerItemProxy */;
+		};
+		FD2D68EC95DC231C4007FB08 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = ExternalTarget;
+			targetProxy = CA16090DFCA7842CB4E20265 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
