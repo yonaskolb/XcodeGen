@@ -231,12 +231,12 @@ targets:
       properties:
         com.apple.security.application-groups: group.com.app
 
-  App_supportedPlatforms:
+  App_supportedDestinations:
     type: application
     platform: iOS
-    supportedPlatforms: [iOS, tvOS]
+    supportedDestinations: [iOS, tvOS]
     info:
-      path: App_supportedPlatforms/Info.generated.plist
+      path: App_supportedDestinations/Info.generated.plist
       properties:
         CFBundleDisplayName: "TestApp"
         CFBundleVersion: "1.0.0"
@@ -244,11 +244,11 @@ targets:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.test.TestApp
     sources:
-      - path: App_supportedPlatforms/Sources
-        group: App_supportedPlatforms
+      - path: App_supportedDestinations/Sources
+        group: App_supportedDestinations
         inferPlatformFiltersByPath: true
-      - path: App_supportedPlatforms/Storyboards
-        group: App_supportedPlatforms
+      - path: App_supportedDestinations/Storyboards
+        group: App_supportedDestinations
         platformFilters: [iOS]
     dependencies:
       - package: Swinject

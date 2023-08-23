@@ -1146,7 +1146,7 @@ class ProjectGeneratorTests: XCTestCase {
             }
             
             $0.it("filter sources with inferPlatformFiltersByPath") {
-                let sourceFiles = TargetSource(path: "App_supportedPlatforms/TestResources", inferPlatformFiltersByPath: true)
+                let sourceFiles = TargetSource(path: "App_supportedDestinations/TestResources", inferPlatformFiltersByPath: true)
                 
                 let target = Target(
                     name: "test",
@@ -1189,21 +1189,21 @@ class ProjectGeneratorTests: XCTestCase {
             }
             
             $0.it("filter sources with platformFilters") {
-                let sourceFile1 = TargetSource(path: "App_supportedPlatforms/TestResources/iOs",
+                let sourceFile1 = TargetSource(path: "App_supportedDestinations/TestResources/iOs",
                                                platformFilters: [.iOS])
-                let sourceFile2 = TargetSource(path: "App_supportedPlatforms/TestResources/TVOS",
+                let sourceFile2 = TargetSource(path: "App_supportedDestinations/TestResources/TVOS",
                                                platformFilters: [.tvOS])
-                let sourceFile3 = TargetSource(path: "App_supportedPlatforms/TestResources/macos",
+                let sourceFile3 = TargetSource(path: "App_supportedDestinations/TestResources/macos",
                                                platformFilters: [.macOS, .macCatalyst])
-                let sourceFile4 = TargetSource(path: "App_supportedPlatforms/TestResources/macCatalyst",
+                let sourceFile4 = TargetSource(path: "App_supportedDestinations/TestResources/macCatalyst",
                                                platformFilters: [.macOS, .macCatalyst])
-                let sourceFile5 = TargetSource(path: "App_supportedPlatforms/TestResources/File_ios.swift",
+                let sourceFile5 = TargetSource(path: "App_supportedDestinations/TestResources/File_ios.swift",
                                                platformFilters: [.iOS])
-                let sourceFile6 = TargetSource(path: "App_supportedPlatforms/TestResources/File_tvOs.swift",
+                let sourceFile6 = TargetSource(path: "App_supportedDestinations/TestResources/File_tvOs.swift",
                                                platformFilters: [.tvOS])
-                let sourceFile7 = TargetSource(path: "App_supportedPlatforms/TestResources/File_macOS.swift",
+                let sourceFile7 = TargetSource(path: "App_supportedDestinations/TestResources/File_macOS.swift",
                                                platformFilters: [.macOS, .macCatalyst])
-                let sourceFile8 = TargetSource(path: "App_supportedPlatforms/TestResources/File_MACCATALYST.swift",
+                let sourceFile8 = TargetSource(path: "App_supportedDestinations/TestResources/File_MACCATALYST.swift",
                                                platformFilters: [.macOS, .macCatalyst])
                 
                 let target = Target(
