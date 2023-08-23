@@ -15,7 +15,6 @@
 
 ## 2.37.0
 
-
 ### Added
 
 - Added support for adding `Build Tool Plug-ins` to targets #1374 @BarredEwe
