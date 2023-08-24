@@ -49,7 +49,7 @@ extension Project {
         }
         
         if let specSupportedDestinations = target.supportedDestinations?.sorted(by: { $0.index < $1.index }),
-           specSupportedDestinations.count > 0 {
+           !specSupportedDestinations.isEmpty {
             
             var supportedPlatforms: [String] = []
             var targetedDeviceFamily: [String] = []
@@ -72,7 +72,15 @@ extension Project {
         
         // apply custom platform version
         if let version = target.deploymentTarget {
-            buildSettings[target.platform.deploymentTargetSetting] = version.deploymentTarget
+            if let specSupportedDestinations = target.supportedDestinations, !specSupportedDestinations.isEmpty {
+                for supportedDestination in specSupportedDestinations {
+                    if let platform = Platform(rawValue: supportedDestination.rawValue) {
+                        buildSettings[platform.deploymentTargetSetting] = version.deploymentTarget
+                    }
+                }
+            } else {
+                buildSettings[target.platform.deploymentTargetSetting] = version.deploymentTarget
+            }
         }
 
         // Prevent setting presets from overrwriting settings in target xcconfig files
