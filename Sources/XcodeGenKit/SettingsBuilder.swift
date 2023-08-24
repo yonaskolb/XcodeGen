@@ -49,7 +49,7 @@ extension Project {
         }
         
         if let specSupportedDestinations = target.supportedDestinations?.sorted(by: { $0.index < $1.index }),
-           specSupportedDestinations.count > 1 {
+           specSupportedDestinations.count > 0 {
             
             var supportedPlatforms: [String] = []
             var targetedDeviceFamily: [String] = []

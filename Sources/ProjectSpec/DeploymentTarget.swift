@@ -26,6 +26,7 @@ public struct DeploymentTarget: Equatable {
 
     public func version(for platform: Platform) -> Version? {
         switch platform {
+        case .auto: return nil
         case .iOS: return iOS
         case .tvOS: return tvOS
         case .watchOS: return watchOS
@@ -39,6 +40,7 @@ extension Platform {
 
     public var deploymentTargetSetting: String {
         switch self {
+        case .auto: return ""
         case .iOS: return "IPHONEOS_DEPLOYMENT_TARGET"
         case .tvOS: return "TVOS_DEPLOYMENT_TARGET"
         case .watchOS: return "WATCHOS_DEPLOYMENT_TARGET"
@@ -49,6 +51,7 @@ extension Platform {
 
     public var sdkRoot: String {
         switch self {
+        case .auto: return "auto"
         case .iOS: return "iphoneos"
         case .tvOS: return "appletvos"
         case .watchOS: return "watchos"
