@@ -42,6 +42,7 @@ extension Project {
     public func getTargetBuildSettings(target: Target, config: Config) -> BuildSettings {
         var buildSettings = BuildSettings()
         
+        // list of supported destination sorted by priority
         let specSupportedDestinations = target.supportedDestinations?.sorted(by: { $0.priority < $1.priority }) ?? []
         
         if options.settingPresets.applyTarget {
@@ -49,9 +50,9 @@ extension Project {
             
             if target.platform == .auto,
                let firstDestination = specSupportedDestinations.first,
-               let firstPlatform = Platform(rawValue: firstDestination.rawValue) {
+               let firstDestinationPlatform = Platform(rawValue: firstDestination.rawValue) {
                 
-                platform = firstPlatform
+                platform = firstDestinationPlatform
             } else {
                 platform = target.platform
             }
@@ -61,7 +62,7 @@ extension Project {
             buildSettings += SettingsPresetFile.productPlatform(target.type, platform).getBuildSettings()
             
             if target.platform == .auto {
-                // This fix is necessary because the platform preset overrides the original value
+                // this fix is necessary because the platform preset overrides the original value
                 buildSettings["SDKROOT"] = Platform.auto.rawValue
             }
         }
