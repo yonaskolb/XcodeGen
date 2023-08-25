@@ -22,7 +22,7 @@ extension SupportedDestination {
         }
     }
     
-    public var index: Int {
+    public var priority: Int {
         switch self {
         case .iOS:
             return 0

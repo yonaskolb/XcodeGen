@@ -42,7 +42,7 @@ extension Project {
     public func getTargetBuildSettings(target: Target, config: Config) -> BuildSettings {
         var buildSettings = BuildSettings()
         
-        let specSupportedDestinations = target.supportedDestinations?.sorted(by: { $0.index < $1.index }) ?? []
+        let specSupportedDestinations = target.supportedDestinations?.sorted(by: { $0.priority < $1.priority }) ?? []
         
         if options.settingPresets.applyTarget {
             let platform: Platform
