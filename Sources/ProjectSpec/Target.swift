@@ -276,21 +276,28 @@ extension Target: NamedJSONDictionaryConvertible {
         let resolvedName: String = jsonDictionary.json(atKeyPath: "name") ?? name
         self.name = resolvedName
         productName = jsonDictionary.json(atKeyPath: "productName") ?? resolvedName
-        let typeString: String = try jsonDictionary.json(atKeyPath: "type")
+        
+        let typeString: String = jsonDictionary.json(atKeyPath: "type") ?? ""
         if let type = PBXProductType(string: typeString) {
             self.type = type
         } else {
             throw SpecParsingError.unknownTargetType(typeString)
         }
-        let platformString: String = try jsonDictionary.json(atKeyPath: "platform")
+        
+        if let supportedDestinations: [SupportedDestination] = jsonDictionary.json(atKeyPath: "supportedDestinations") {
+            self.supportedDestinations = supportedDestinations
+        }
+        
+        var platformString: String = jsonDictionary.json(atKeyPath: "platform") ?? ""
+        // platform defaults to 'auto' if it is empty and we are using supported destinations
+        if supportedDestinations != nil, platformString.isEmpty {
+            platformString = Platform.auto.rawValue
+        }
+        
         if let platform = Platform(rawValue: platformString) {
             self.platform = platform
         } else {
             throw SpecParsingError.unknownTargetPlatform(platformString)
-        }
-        
-        if let supportedDestinations: [SupportedDestination] = jsonDictionary.json(atKeyPath: "supportedDestinations") {
-            self.supportedDestinations = supportedDestinations
         }
         
         if let string: String = jsonDictionary.json(atKeyPath: "deploymentTarget") {

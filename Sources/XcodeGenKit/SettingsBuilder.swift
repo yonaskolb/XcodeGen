@@ -41,16 +41,32 @@ extension Project {
 
     public func getTargetBuildSettings(target: Target, config: Config) -> BuildSettings {
         var buildSettings = BuildSettings()
-
+        
+        let specSupportedDestinations = target.supportedDestinations?.sorted(by: { $0.index < $1.index }) ?? []
+        
         if options.settingPresets.applyTarget {
-            buildSettings += SettingsPresetFile.platform(target.platform).getBuildSettings()
+            let platform: Platform
+            
+            if target.platform == .auto,
+               let firstDestination = specSupportedDestinations.first,
+               let firstPlatform = Platform(rawValue: firstDestination.rawValue) {
+                
+                platform = firstPlatform
+            } else {
+                platform = target.platform
+            }
+            
+            buildSettings += SettingsPresetFile.platform(platform).getBuildSettings()
             buildSettings += SettingsPresetFile.product(target.type).getBuildSettings()
-            buildSettings += SettingsPresetFile.productPlatform(target.type, target.platform).getBuildSettings()
+            buildSettings += SettingsPresetFile.productPlatform(target.type, platform).getBuildSettings()
+            
+            if target.platform == .auto {
+                // This fix is necessary because the platform preset overrides the original value
+                buildSettings["SDKROOT"] = Platform.auto.rawValue
+            }
         }
         
-        if let specSupportedDestinations = target.supportedDestinations?.sorted(by: { $0.index < $1.index }),
-           !specSupportedDestinations.isEmpty {
-            
+        if !specSupportedDestinations.isEmpty {
             var supportedPlatforms: [String] = []
             var targetedDeviceFamily: [String] = []
             
@@ -72,7 +88,7 @@ extension Project {
         
         // apply custom platform version
         if let version = target.deploymentTarget {
-            if let specSupportedDestinations = target.supportedDestinations, !specSupportedDestinations.isEmpty {
+            if !specSupportedDestinations.isEmpty {
                 for supportedDestination in specSupportedDestinations {
                     if let platform = Platform(rawValue: supportedDestination.rawValue) {
                         buildSettings[platform.deploymentTargetSetting] = version.deploymentTarget
