@@ -189,7 +189,7 @@ class ProjectSpecTests: XCTestCase {
                         supportedDestinations: [.macOS]
                     )
                 ]
-                try expectValidationError(project, .unexpectedTargetSupportedDestinations(target: "target1", platform: .watchOS))
+                try expectValidationError(project, .unexpectedTargetPlatformForSupportedDestinations(target: "target1", platform: .watchOS))
             }
             
             $0.it("multiple definitions of mac platform in supported destinations") {
@@ -202,7 +202,7 @@ class ProjectSpecTests: XCTestCase {
                         supportedDestinations: [.macOS, .macCatalyst]
                     )
                 ]
-                try expectValidationError(project, .multipleMacPlatformInSupportedDestinations(target: "target1"))
+                try expectValidationError(project, .multipleMacPlatformsInSupportedDestinations(target: "target1"))
             }
             
             $0.it("invalid target platform for macCatalyst supported destinations") {
@@ -219,7 +219,7 @@ class ProjectSpecTests: XCTestCase {
             }
             
             $0.it("invalid target because supported destinations is defined and platform is an array") {
-                let expectedError = SpecValidationError.ValidationError.invalidTargetPlatform(target: "target1_iOS")
+                let expectedError = SpecValidationError.ValidationError.invalidTargetMultiPlatforms(target: "target1_iOS")
                 
                 let targetDictionary: [String: Any] = [
                     "name": "project1",

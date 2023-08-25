@@ -18,9 +18,9 @@ public struct SpecValidationError: Error, CustomStringConvertible {
         case invalidTargetSchemeConfigVariant(target: String, configVariant: String, configType: ConfigType)
         case invalidTargetSchemeTest(target: String, testTarget: String)
         case invalidTargetPlatformForSupportedDestinations(target: String)
-        case invalidTargetPlatform(target: String)
-        case unexpectedTargetSupportedDestinations(target: String, platform: Platform)
-        case multipleMacPlatformInSupportedDestinations(target: String)
+        case invalidTargetMultiPlatforms(target: String)
+        case unexpectedTargetPlatformForSupportedDestinations(target: String, platform: Platform)
+        case multipleMacPlatformsInSupportedDestinations(target: String)
         case invalidSchemeTarget(scheme: String, target: String, action: String)
         case invalidSchemeConfig(scheme: String, config: String)
         case invalidSwiftPackage(name: String, target: String)
@@ -59,13 +59,13 @@ public struct SpecValidationError: Error, CustomStringConvertible {
             case let .invalidTargetSchemeTest(target, test):
                 return "Target \(target.quoted) scheme has invalid test \(test.quoted)"
             case let .invalidTargetPlatformForSupportedDestinations(target):
-                return "Target \(target.quoted) has supported destinations that require a target platform iOS"
-            case let .invalidTargetPlatform(target):
-                return "Target \(target.quoted) is using multiple ways to define platforms. If you use supported destinations you must not define platform field as an array"
-            case let .unexpectedTargetSupportedDestinations(target, platform):
+                return "Target \(target.quoted) has supported destinations that require a target platform iOS or auto"
+            case let .invalidTargetMultiPlatforms(target):
+                return "Target \(target.quoted) has conflicts to support multi-platforms. If you use supported destinations you must not define platform field as an array"
+            case let .unexpectedTargetPlatformForSupportedDestinations(target, platform):
                 return "Target \(target.quoted) has platform \(platform.rawValue.quoted) that does not expect supported destinations"
-            case let .multipleMacPlatformInSupportedDestinations(target):
-                return "Target \(target.quoted) has multiple definitions of mac platform in supported destinations"
+            case let .multipleMacPlatformsInSupportedDestinations(target):
+                return "Target \(target.quoted) has multiple definitions of mac platforms in supported destinations"
             case let .invalidConfigFile(configFile, config):
                 return "Invalid config file \(configFile.quoted) for config \(config.quoted)"
             case let .invalidSchemeTarget(scheme, target, action):

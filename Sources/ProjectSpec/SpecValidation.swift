@@ -181,26 +181,24 @@ extension Project {
                 }
             }
             
-            if target.platform == .watchOS,
-               target.supportedDestinations != nil {
-                
-                errors.append(.unexpectedTargetSupportedDestinations(target: target.name, platform: target.platform))
+            if target.supportedDestinations != nil, target.platform == .watchOS {
+                errors.append(.unexpectedTargetPlatformForSupportedDestinations(target: target.name, platform: target.platform))
             }
             
             if target.supportedDestinations?.contains(.macOS) == true,
                target.supportedDestinations?.contains(.macCatalyst) == true {
                 
-                errors.append(.multipleMacPlatformInSupportedDestinations(target: target.name))
+                errors.append(.multipleMacPlatformsInSupportedDestinations(target: target.name))
             }
             
             if target.supportedDestinations?.contains(.macCatalyst) == true,
-               target.platform != .iOS {
+               target.platform != .iOS, target.platform != .auto {
                 
                 errors.append(.invalidTargetPlatformForSupportedDestinations(target: target.name))
             }
             
             if target.isResolved, target.supportedDestinations != nil {
-                errors.append(.invalidTargetPlatform(target: target.name))
+                errors.append(.invalidTargetMultiPlatforms(target: target.name))
             }
         }
 
