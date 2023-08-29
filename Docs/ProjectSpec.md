@@ -489,7 +489,6 @@ Note that the definition of supported destinations can be applied to every type 
 targets:
   MyFramework:
     sources: MyFramework
-    platform: iOS
     supportedDestinations: [iOS, tvOS]
     deploymentTarget:
       iOS: 9.0
@@ -499,6 +498,11 @@ targets:
       base:
         INFOPLIST_FILE: MyApp/Info.plist
         PRODUCT_BUNDLE_IDENTIFIER: com.myapp
+    sources:
+      - path: MySources
+        inferPlatformFiltersByPath: true
+      - path: OtherSources
+        platformFilters: [iOS]
 ```
 
 ### Sources
@@ -554,7 +558,6 @@ targets:
     sources: MyTargetSource
   MyOtherTarget:
     platform: iOS
-    supportedDestinations: [iOS, tvOS]
     sources:
       - MyOtherTargetSource1
       - path: MyOtherTargetSource2
@@ -570,7 +573,6 @@ targets:
           - "-Wextra"
       - path: MyOtherTargetSource3
         compilerFlags: "-Werror -Wextra"
-        platformFilters: [iOS]
       - path: ModuleMaps
         buildPhase:
           copyFiles:
@@ -652,16 +654,13 @@ projectReferences:
 targets:
   MyTarget:
     platform: iOS
-    supportedDestinations: [iOS, tvOS]
     dependencies:
       - target: MyFramework
       - target: FooLib/FooTarget
       - framework: path/to/framework.framework
-        platformFilters: [iOS]
       - carthage: Result
         findFrameworks: false
         linkType: static
-        platformFilters: [iOS, tvOS]
       - sdk: Contacts.framework
       - sdk: libc++.tbd
       - sdk: libz.dylib
