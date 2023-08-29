@@ -435,11 +435,14 @@ This will provide default build settings for a certain product type. It can be a
 
 This will provide default build settings for a certain platform. It can be any of the following:
 
+- `auto` (available only when we use `supportedDestinations`)
 - `iOS`
 - `macOS`
 - `tvOS`
 - `watchOS`
 - `visionOS` (`visionOS` doesn't support Carthage usage)
+
+Note that when we use supported destinations with Xcode 14+ we can avoid the definition of platform that fallbacks to the `auto` value.
 
 **Multi Platform targets**
 

@@ -2,10 +2,11 @@
 
 ## Next Version
 
-### Feature
+### Feature support for multiple deployment targets with xcode 14
 
-- Added support for multiple deployment targets with xcode 14
 - Added `supportedDestinations` for target
+- Added a new platform value `auto` that we can use only with `supportedDestinations`
+- Added the possiblity to avoid the definition of plaform, only when we use `supportedDestinations`, that fallbacks to 'auto'
 - Added `platformFilters` for sources and dependecies
 - Added `inferPlatformFiltersByPath`, a convenience filter for sources
 
