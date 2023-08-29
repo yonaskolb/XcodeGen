@@ -337,7 +337,7 @@ class ProjectGeneratorTests: XCTestCase {
             }
             
             $0.it("supportedPlaforms merges settings - iOS, tvOS") {
-                let target = Target(name: "Target", type: .application, platform: .iOS, supportedDestinations: [.tvOS, .iOS])
+                let target = Target(name: "Target", type: .application, platform: .auto, supportedDestinations: [.tvOS, .iOS])
                 let project = Project(name: "", targets: [target])
                 
                 let pbxProject = try project.generatePbxProj()
@@ -347,10 +347,15 @@ class ProjectGeneratorTests: XCTestCase {
                 try expect(targetConfig1.buildSettings["TARGETED_DEVICE_FAMILY"] as? String) == "1,2,3"
                 try expect(targetConfig1.buildSettings["SUPPORTS_MACCATALYST"] as? Bool) == false
                 try expect(targetConfig1.buildSettings["SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD"] as? Bool) == true
+                
+                try expect(targetConfig1.buildSettings["LD_RUNPATH_SEARCH_PATHS"] as? [String]) == ["$(inherited)", "@executable_path/Frameworks"]
+                try expect(targetConfig1.buildSettings["SDKROOT"] as? String) == "auto"
+                try expect(targetConfig1.buildSettings["ASSETCATALOG_COMPILER_APPICON_NAME"] as? String) == "AppIcon"
+                try expect(targetConfig1.buildSettings["CODE_SIGN_IDENTITY"] as? String) == "iPhone Developer"
             }
             
             $0.it("supportedPlaforms merges settings - iOS, tvOS, macOS") {
-                let target = Target(name: "Target", type: .application, platform: .iOS, supportedDestinations: [.iOS, .tvOS, .macOS])
+                let target = Target(name: "Target", type: .application, platform: .auto, supportedDestinations: [.iOS, .tvOS, .macOS])
                 let project = Project(name: "", targets: [target])
                 
                 let pbxProject = try project.generatePbxProj()
@@ -360,10 +365,15 @@ class ProjectGeneratorTests: XCTestCase {
                 try expect(targetConfig1.buildSettings["TARGETED_DEVICE_FAMILY"] as? String) == "1,2,3"
                 try expect(targetConfig1.buildSettings["SUPPORTS_MACCATALYST"] as? Bool) == false
                 try expect(targetConfig1.buildSettings["SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD"] as? Bool) == false
+                
+                try expect(targetConfig1.buildSettings["LD_RUNPATH_SEARCH_PATHS"] as? [String]) == ["$(inherited)", "@executable_path/Frameworks"]
+                try expect(targetConfig1.buildSettings["SDKROOT"] as? String) == "auto"
+                try expect(targetConfig1.buildSettings["ASSETCATALOG_COMPILER_APPICON_NAME"] as? String) == "AppIcon"
+                try expect(targetConfig1.buildSettings["CODE_SIGN_IDENTITY"] as? String) == "iPhone Developer"
             }
             
             $0.it("supportedPlaforms merges settings - iOS, tvOS, macCatalyst") {
-                let target = Target(name: "Target", type: .application, platform: .iOS, supportedDestinations: [.iOS, .tvOS, .macCatalyst])
+                let target = Target(name: "Target", type: .application, platform: .auto, supportedDestinations: [.iOS, .tvOS, .macCatalyst])
                 let project = Project(name: "", targets: [target])
                 
                 let pbxProject = try project.generatePbxProj()
@@ -373,10 +383,15 @@ class ProjectGeneratorTests: XCTestCase {
                 try expect(targetConfig1.buildSettings["TARGETED_DEVICE_FAMILY"] as? String) == "1,2,3"
                 try expect(targetConfig1.buildSettings["SUPPORTS_MACCATALYST"] as? Bool) == true
                 try expect(targetConfig1.buildSettings["SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD"] as? Bool) == false
+                
+                try expect(targetConfig1.buildSettings["LD_RUNPATH_SEARCH_PATHS"] as? [String]) == ["$(inherited)", "@executable_path/Frameworks"]
+                try expect(targetConfig1.buildSettings["SDKROOT"] as? String) == "auto"
+                try expect(targetConfig1.buildSettings["ASSETCATALOG_COMPILER_APPICON_NAME"] as? String) == "AppIcon"
+                try expect(targetConfig1.buildSettings["CODE_SIGN_IDENTITY"] as? String) == "iPhone Developer"
             }
             
             $0.it("supportedPlaforms merges settings - iOS, macOS") {
-                let target = Target(name: "Target", type: .application, platform: .iOS, supportedDestinations: [.iOS, .macOS])
+                let target = Target(name: "Target", type: .application, platform: .auto, supportedDestinations: [.iOS, .macOS])
                 let project = Project(name: "", targets: [target])
                 
                 let pbxProject = try project.generatePbxProj()
@@ -386,10 +401,15 @@ class ProjectGeneratorTests: XCTestCase {
                 try expect(targetConfig1.buildSettings["TARGETED_DEVICE_FAMILY"] as? String) == "1,2"
                 try expect(targetConfig1.buildSettings["SUPPORTS_MACCATALYST"] as? Bool) == false
                 try expect(targetConfig1.buildSettings["SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD"] as? Bool) == false
+                
+                try expect(targetConfig1.buildSettings["LD_RUNPATH_SEARCH_PATHS"] as? [String]) == ["$(inherited)", "@executable_path/Frameworks"]
+                try expect(targetConfig1.buildSettings["SDKROOT"] as? String) == "auto"
+                try expect(targetConfig1.buildSettings["ASSETCATALOG_COMPILER_APPICON_NAME"] as? String) == "AppIcon"
+                try expect(targetConfig1.buildSettings["CODE_SIGN_IDENTITY"] as? String) == "iPhone Developer"
             }
             
             $0.it("supportedPlaforms merges settings - tvOS, macOS") {
-                let target = Target(name: "Target", type: .application, platform: .tvOS, supportedDestinations: [.tvOS, .macOS])
+                let target = Target(name: "Target", type: .application, platform: .auto, supportedDestinations: [.tvOS, .macOS])
                 let project = Project(name: "", targets: [target])
                 
                 let pbxProject = try project.generatePbxProj()
@@ -399,10 +419,15 @@ class ProjectGeneratorTests: XCTestCase {
                 try expect(targetConfig1.buildSettings["TARGETED_DEVICE_FAMILY"] as? String) == "3"
                 try expect(targetConfig1.buildSettings["SUPPORTS_MACCATALYST"] as? Bool) == false
                 try expect(targetConfig1.buildSettings["SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD"] as? Bool) == false
+                
+                try expect(targetConfig1.buildSettings["LD_RUNPATH_SEARCH_PATHS"] as? [String]) == ["$(inherited)", "@executable_path/Frameworks"]
+                try expect(targetConfig1.buildSettings["SDKROOT"] as? String) == "auto"
+                try expect(targetConfig1.buildSettings["ASSETCATALOG_COMPILER_APPICON_NAME"] as? String) == "App Icon & Top Shelf Image"
+                try expect(targetConfig1.buildSettings["ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME"] as? String) == "LaunchImage"
             }
             
             $0.it("supportedPlaforms merges settings - iOS, macCatalyst") {
-                let target = Target(name: "Target", type: .application, platform: .iOS, supportedDestinations: [.iOS, .macCatalyst])
+                let target = Target(name: "Target", type: .application, platform: .auto, supportedDestinations: [.iOS, .macCatalyst])
                 let project = Project(name: "", targets: [target])
                 
                 let pbxProject = try project.generatePbxProj()
@@ -412,6 +437,11 @@ class ProjectGeneratorTests: XCTestCase {
                 try expect(targetConfig1.buildSettings["TARGETED_DEVICE_FAMILY"] as? String) == "1,2"
                 try expect(targetConfig1.buildSettings["SUPPORTS_MACCATALYST"] as? Bool) == true
                 try expect(targetConfig1.buildSettings["SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD"] as? Bool) == false
+                
+                try expect(targetConfig1.buildSettings["LD_RUNPATH_SEARCH_PATHS"] as? [String]) == ["$(inherited)", "@executable_path/Frameworks"]
+                try expect(targetConfig1.buildSettings["SDKROOT"] as? String) == "auto"
+                try expect(targetConfig1.buildSettings["ASSETCATALOG_COMPILER_APPICON_NAME"] as? String) == "AppIcon"
+                try expect(targetConfig1.buildSettings["CODE_SIGN_IDENTITY"] as? String) == "iPhone Developer"
             }
             
             $0.it("generates dependencies") {
@@ -1151,7 +1181,7 @@ class ProjectGeneratorTests: XCTestCase {
                 let target = Target(
                     name: "test",
                     type: .application,
-                    platform: .iOS,
+                    platform: .auto,
                     sources: [sourceFiles],
                     dependencies: []
                 )
@@ -1209,7 +1239,7 @@ class ProjectGeneratorTests: XCTestCase {
                 let target = Target(
                     name: "test",
                     type: .application,
-                    platform: .iOS,
+                    platform: .auto,
                     sources: [sourceFile1, sourceFile2, sourceFile3, sourceFile4, sourceFile5, sourceFile6, sourceFile7, sourceFile8],
                     dependencies: []
                 )

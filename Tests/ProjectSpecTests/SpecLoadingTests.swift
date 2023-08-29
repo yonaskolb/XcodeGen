@@ -604,8 +604,34 @@ class SpecLoadingTests: XCTestCase {
                 target_iOS.deploymentTarget = Version(major: 9, minor: 0, patch: 0)
                 target_tvOS.deploymentTarget = Version(major: 10, minor: 0, patch: 0)
 
-                try expect(project.targets.count) == 2
                 try expect(project.targets) == [target_iOS, target_tvOS]
+            }
+            
+            $0.it("parses no platform fallbacks to auto if we are using supported destinations") {
+                let targetDictionary: [String: Any] = [
+                    "type": "framework",
+                    "supportedDestinations": ["iOS", "tvOS"]
+                ]
+
+                let project = try getProjectSpec(["targets": ["Framework": targetDictionary]])
+                let target = Target(name: "Framework", type: .framework, platform: .auto)
+                
+                try expect(project.targets) == [target]
+            }
+            
+            $0.it("parses no platform fails if we are not using supported destinations") {
+                let expectedError = SpecParsingError.unknownTargetPlatform("")
+                
+                let projectDictionary: [String: Any] = [
+                    "name": "test",
+                    "targets": ["target1": [
+                        "type": "application"
+                    ] as [String : Any]]
+                ]
+                
+                try expectError(expectedError) {
+                    _ = try Project(jsonDictionary: projectDictionary)
+                }
             }
             
             $0.it("invalid target platform because platform is an array and supported destinations is in use") {
