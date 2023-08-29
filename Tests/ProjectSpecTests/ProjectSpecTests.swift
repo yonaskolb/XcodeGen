@@ -73,12 +73,23 @@ class ProjectSpecTests: XCTestCase {
         describe {
 
             $0.it("has correct build setting") {
+                try expect(Platform.auto.deploymentTargetSetting) == ""
                 try expect(Platform.iOS.deploymentTargetSetting) == "IPHONEOS_DEPLOYMENT_TARGET"
                 try expect(Platform.tvOS.deploymentTargetSetting) == "TVOS_DEPLOYMENT_TARGET"
                 try expect(Platform.watchOS.deploymentTargetSetting) == "WATCHOS_DEPLOYMENT_TARGET"
                 try expect(Platform.macOS.deploymentTargetSetting) == "MACOSX_DEPLOYMENT_TARGET"
+                try expect(Platform.visionOS.deploymentTargetSetting) == "XROS_DEPLOYMENT_TARGET"
             }
 
+            $0.it("has correct sdk root") {
+                try expect(Platform.auto.sdkRoot) == "auto"
+                try expect(Platform.iOS.sdkRoot) == "iphoneos"
+                try expect(Platform.tvOS.sdkRoot) == "appletvos"
+                try expect(Platform.watchOS.sdkRoot) == "watchos"
+                try expect(Platform.macOS.sdkRoot) == "macosx"
+                try expect(Platform.visionOS.sdkRoot) == "xros"
+            }
+            
             $0.it("parses version correctly") {
                 try expect(Version.parse("2").deploymentTarget) == "2.0"
                 try expect(Version.parse("2.0").deploymentTarget) == "2.0"
@@ -216,27 +227,6 @@ class ProjectSpecTests: XCTestCase {
                     )
                 ]
                 try expectValidationError(project, .invalidTargetPlatformForSupportedDestinations(target: "target1"))
-            }
-            
-            $0.it("invalid target because supported destinations is defined and platform is an array") {
-                let expectedError = SpecValidationError.ValidationError.invalidTargetMultiPlatforms(target: "target1_iOS")
-                
-                let targetDictionary: [String: Any] = [
-                    "name": "project1",
-                    "targets": ["target1": [
-                        "type": "application",
-                        "platform": ["iOS", "tvOS"],
-                        "supportedDestinations": ["iOS", "tvOS"]
-                    ] as [String : Any]]
-                ]
-                
-                do {
-                    let project = try Project(jsonDictionary: targetDictionary)
-                    
-                    try expectValidationError(project, expectedError)
-                } catch {
-                    throw failure("Supposed to fail with \"\(expectedError)\"")
-                }
             }
             
             $0.it("allows non-existent configurations") {

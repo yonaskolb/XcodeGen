@@ -608,6 +608,23 @@ class SpecLoadingTests: XCTestCase {
                 try expect(project.targets) == [target_iOS, target_tvOS]
             }
             
+            $0.it("invalid target platform because platform is an array and supported destinations is in use") {
+                let expectedError = SpecParsingError.invalidTargetPlatformAsArray
+                
+                let projectDictionary: [String: Any] = [
+                    "name": "test",
+                    "targets": ["target1": [
+                        "type": "application",
+                        "platform": ["iOS", "tvOS"],
+                        "supportedDestinations": ["iOS", "tvOS"]
+                    ] as [String : Any]]
+                ]
+                
+                try expectError(expectedError) {
+                    _ = try Project(jsonDictionary: projectDictionary)
+                }
+            }
+            
             $0.it("parses target templates") {
 
                 let targetDictionary: [String: Any] = [

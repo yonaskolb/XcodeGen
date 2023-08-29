@@ -60,10 +60,6 @@ public struct Target: ProjectTarget {
     public var onlyCopyFilesOnInstall: Bool
     public var putResourcesBeforeSourcesBuildPhase: Bool
     
-    /// This property is set by the tool during the parsing of the spec and exists only to help us to check, in SpecValidation, that there no conflicts in the definition of the platforms.
-    /// We want to ensure that the user didn't define, at the same time, the new Xcode 14 supported destinations and the XcodeGen generation of Multiple Platform Targets (when you define the platform field as an array).
-    public var isResolved: Bool
-    
     public var isLegacy: Bool {
         legacy != nil
     }
@@ -104,8 +100,7 @@ public struct Target: ProjectTarget {
         legacy: LegacyTarget? = nil,
         attributes: [String: Any] = [:],
         onlyCopyFilesOnInstall: Bool = false,
-        putResourcesBeforeSourcesBuildPhase: Bool = false,
-        isResolved: Bool = false
+        putResourcesBeforeSourcesBuildPhase: Bool = false
     ) {
         self.name = name
         self.type = type
@@ -132,7 +127,6 @@ public struct Target: ProjectTarget {
         self.attributes = attributes
         self.onlyCopyFilesOnInstall = onlyCopyFilesOnInstall
         self.putResourcesBeforeSourcesBuildPhase = putResourcesBeforeSourcesBuildPhase
-        self.isResolved = isResolved
     }
 }
 
@@ -178,6 +172,9 @@ extension Target {
             if let platforms = target["platform"] as? [String] {
                 for platform in platforms {
                     var platformTarget = target
+                    
+                    /// This value is set to help us to check, in Target init, that there are no conflicts in the definition of the platforms. We want to ensure that the user didn't define, at the same time,
+                    /// the new Xcode 14 supported destinations and the XcodeGen generation of Multiple Platform Targets (when you define the platform field as an array).
                     platformTarget["isResolved"] = true
 
                     platformTarget = platformTarget.expand(variables: ["platform": platform])
@@ -288,6 +285,11 @@ extension Target: NamedJSONDictionaryConvertible {
             self.supportedDestinations = supportedDestinations
         }
         
+        let isResolved = jsonDictionary.json(atKeyPath: "isResolved") ?? false
+        if isResolved, supportedDestinations != nil {
+            throw SpecParsingError.invalidTargetPlatformAsArray
+        }
+        
         var platformString: String = jsonDictionary.json(atKeyPath: "platform") ?? ""
         // platform defaults to 'auto' if it is empty and we are using supported destinations
         if supportedDestinations != nil, platformString.isEmpty {
@@ -362,7 +364,6 @@ extension Target: NamedJSONDictionaryConvertible {
         attributes = jsonDictionary.json(atKeyPath: "attributes") ?? [:]
         onlyCopyFilesOnInstall = jsonDictionary.json(atKeyPath: "onlyCopyFilesOnInstall") ?? false
         putResourcesBeforeSourcesBuildPhase = jsonDictionary.json(atKeyPath: "putResourcesBeforeSourcesBuildPhase") ?? false
-        isResolved = jsonDictionary.json(atKeyPath: "isResolved") ?? false
     }
 }
 
