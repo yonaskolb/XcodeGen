@@ -552,9 +552,11 @@ targets:
   MyTarget:
     sources: MyTargetSource
   MyOtherTarget:
+    supportedDestinations: [iOS, tvOS]
     sources:
       - MyOtherTargetSource1
       - path: MyOtherTargetSource2
+        inferPlatformFiltersByPath: true
         name: MyNewName
         excludes:
           - "ios/*.[mh]"
@@ -566,6 +568,7 @@ targets:
           - "-Werror"
           - "-Wextra"
       - path: MyOtherTargetSource3
+        platformFilters: [iOS]
         compilerFlags: "-Werror -Wextra"
       - path: ModuleMaps
         buildPhase:
@@ -647,14 +650,17 @@ projectReferences:
     path: path/to/FooLib.xcodeproj
 targets:
   MyTarget:
-    platform: iOS
+    supportedDestinations: [iOS, tvOS]
     dependencies:
       - target: MyFramework
+        platformFilters: [iOS]
       - target: FooLib/FooTarget
       - framework: path/to/framework.framework
+        platformFilters: [tvOS]
       - carthage: Result
         findFrameworks: false
         linkType: static
+        platformFilters: [iOS]
       - sdk: Contacts.framework
       - sdk: libc++.tbd
       - sdk: libz.dylib
