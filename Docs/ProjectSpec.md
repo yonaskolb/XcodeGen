@@ -483,27 +483,22 @@ This will provide a mix of default build settings for the chosen platform destin
 - `macOS`
 - `macCatalyst`
 
-Note that the definition of supported destinations can be applied to every type of bundle making everything more easy to manage (app targets, unit tests, UI tests etc).
-
 ```yaml
 targets:
   MyFramework:
-    sources: MyFramework
+    type: framework
     supportedDestinations: [iOS, tvOS]
     deploymentTarget:
       iOS: 9.0
       tvOS: 10.0
-    type: framework
-    settings:
-      base:
-        INFOPLIST_FILE: MyApp/Info.plist
-        PRODUCT_BUNDLE_IDENTIFIER: com.myapp
     sources:
       - path: MySources
         inferPlatformFiltersByPath: true
       - path: OtherSources
         platformFilters: [iOS]
 ```
+
+Note that the definition of supported destinations can be applied to every type of bundle making everything more easy to manage (app targets, unit tests, UI tests etc).
 
 ### Sources
 
@@ -557,7 +552,6 @@ targets:
   MyTarget:
     sources: MyTargetSource
   MyOtherTarget:
-    platform: iOS
     sources:
       - MyOtherTargetSource1
       - path: MyOtherTargetSource2
