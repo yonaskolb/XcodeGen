@@ -646,6 +646,7 @@ targets:
 
 **Package dependency**
 - [ ] **product**: **String** - The product to use from the package. This defaults to the package name, so is only required if a Package has multiple libraries or a library with a differing name
+- [ ] **products**: **String** - A list of products to use from the package. This can be used when depending on multiple products from a package.
 
 ```yaml
 packages:
@@ -661,6 +662,21 @@ targets:
       - package: Yams 
       - package: SwiftPM
         product: SPMUtility
+```
+
+Depending on multiple products from a package:
+
+```yaml
+packages:
+  FooFeature:
+    path: Packages/FooFeature
+targets:
+  App:
+    dependencies:
+      - package: FooFeature
+        products:
+          - FooDomain
+          - FooUI
 ```
 
 ### Config Files
