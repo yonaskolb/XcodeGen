@@ -487,7 +487,7 @@ class SchemeGeneratorTests: XCTestCase {
                     type: .application,
                     platform: .iOS,
                     dependencies: [
-                        Dependency(type: .package(product: nil), reference: "XcodeGen")
+                        Dependency(type: .package(products: []), reference: "XcodeGen")
                     ],
                     scheme: targetScheme
                 )

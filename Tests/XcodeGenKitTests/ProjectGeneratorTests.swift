@@ -555,12 +555,12 @@ class ProjectGeneratorTests: XCTestCase {
                         Dependency(type: .target, reference: resourceBundle.name),
                         Dependency(type: .framework, reference: "FrameworkC.framework"),
                         Dependency(type: .carthage(findFrameworks: false, linkType: .dynamic), reference: "CarthageA"),
-                        Dependency(type: .package(product: "RxSwift"), reference: "RxSwift"),
-                        Dependency(type: .package(product: "RxCocoa"), reference: "RxSwift"),
-                        Dependency(type: .package(product: "RxRelay"), reference: "RxSwift"),
+                        Dependency(type: .package(products: ["RxSwift"]), reference: "RxSwift"),
+                        Dependency(type: .package(products: ["RxCocoa"]), reference: "RxSwift"),
+                        Dependency(type: .package(products: ["RxRelay"]), reference: "RxSwift"),
 
                         // Validate - Do not link package
-                        Dependency(type: .package(product: "KeychainAccess"), reference: "KeychainAccess", link: false),
+                        Dependency(type: .package(products: ["KeychainAccess"]), reference: "KeychainAccess", link: false),
 
                         // Statically linked, so don't embed into test
                         Dependency(type: .target, reference: staticLibrary.name),
@@ -1263,8 +1263,8 @@ class ProjectGeneratorTests: XCTestCase {
                     type: .application,
                     platform: .iOS,
                     dependencies: [
-                        Dependency(type: .package(product: "ProjectSpec"), reference: "XcodeGen"),
-                        Dependency(type: .package(product: nil), reference: "Codability"),
+                        Dependency(type: .package(products: ["ProjectSpec"]), reference: "XcodeGen"),
+                        Dependency(type: .package(products: []), reference: "Codability"),
                     ]
                 )
 
@@ -1300,7 +1300,7 @@ class ProjectGeneratorTests: XCTestCase {
                     type: .application,
                     platform: .iOS,
                     dependencies: [
-                        Dependency(type: .package(product: nil), reference: "XcodeGen"),
+                        Dependency(type: .package(products: []), reference: "XcodeGen"),
                     ]
                 )
 
@@ -1324,14 +1324,13 @@ class ProjectGeneratorTests: XCTestCase {
                 try expect(file.product?.productName) == "XcodeGen"
             }
             
-            
             $0.it("generates local swift packages with custom xcode path") {
                 let app = Target(
                     name: "MyApp",
                     type: .application,
                     platform: .iOS,
                     dependencies: [
-                        Dependency(type: .package(product: nil), reference: "XcodeGen"),
+                        Dependency(type: .package(products: []), reference: "XcodeGen"),
                     ]
                 )
 
@@ -1494,6 +1493,40 @@ class ProjectGeneratorTests: XCTestCase {
                 ]
 
                 try expect(NSDictionary(dictionary: expectedInfoPlist).isEqual(to: infoPlist)).beTrue()
+            }
+
+            $0.it("generates local swift packages with multiple products") {
+                let app = Target(
+                    name: "MyApp",
+                    type: .application,
+                    platform: .iOS,
+                    dependencies: [
+                        Dependency(type: .package(products: ["FooDomain", "FooUI"]), reference: "FooFeature")
+                    ]
+                )
+
+                let project = Project(name: "test", targets: [app], packages: [
+                    "FooFeature": .local(path: "../FooFeature", group: nil)
+                ], options: .init(localPackagesGroup: "MyPackages"))
+
+                let pbxProject = try project.generatePbxProj(specValidate: false)
+                let nativeTarget = try unwrap(pbxProject.nativeTargets.first(where: { $0.name == app.name }))
+                let localPackageFile = try unwrap(pbxProject.fileReferences.first(where: { $0.path == "../FooFeature" }))
+                try expect(localPackageFile.lastKnownFileType) == "folder"
+
+                let frameworkPhases = nativeTarget.buildPhases.compactMap { $0 as? PBXFrameworksBuildPhase }
+
+                guard let frameworkPhase = frameworkPhases.first else {
+                    return XCTFail("frameworkPhases should have more than one")
+                }
+
+                guard let files = frameworkPhase.files, files.count == 2 else {
+                    return XCTFail("frameworkPhase should have exactly two files")
+                }
+
+                let productNames = files.compactMap(\.product?.productName)
+                try expect(productNames).contains { $0 == "FooDomain" }
+                try expect(productNames).contains { $0 == "FooUI" }
             }
         }
     }
@@ -2978,8 +3011,8 @@ class ProjectGeneratorTests: XCTestCase {
 
                     // given
                     let dependencies = [
-                        Dependency(type: .package(product: "RxSwift"), reference: "RxSwift", embed: true),
-                        Dependency(type: .package(product: "RxCocoa"), reference: "RxSwift", embed: false),
+                        Dependency(type: .package(products: ["RxSwift"]), reference: "RxSwift", embed: true),
+                        Dependency(type: .package(products: ["RxCocoa"]), reference: "RxSwift", embed: false),
                     ]
                     
                     // when
@@ -2993,8 +3026,8 @@ class ProjectGeneratorTests: XCTestCase {
                     
                     // given
                     let dependencies = [
-                        Dependency(type: .package(product: "RxSwift"), reference: "RxSwift", embed: true, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .plugins, subpath: "test", phaseOrder: .postCompile)),
-                        Dependency(type: .package(product: "RxCocoa"), reference: "RxSwift", embed: false, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .plugins, subpath: "test", phaseOrder: .postCompile)),
+                        Dependency(type: .package(products: ["RxSwift"]), reference: "RxSwift", embed: true, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .plugins, subpath: "test", phaseOrder: .postCompile)),
+                        Dependency(type: .package(products: ["RxCocoa"]), reference: "RxSwift", embed: false, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .plugins, subpath: "test", phaseOrder: .postCompile)),
                     ]
                     
                     // when
