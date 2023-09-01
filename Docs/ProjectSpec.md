@@ -437,8 +437,8 @@ This will provide default build settings for a certain platform. It can be any o
 
 - `auto` (available only when we use `supportedDestinations`)
 - `iOS`
-- `macOS`
 - `tvOS`
+- `macOS`
 - `watchOS`
 - `visionOS` (`visionOS` doesn't support Carthage usage)
 
@@ -482,6 +482,7 @@ This will provide a mix of default build settings for the chosen platform destin
 - `tvOS`
 - `macOS`
 - `macCatalyst`
+- `visionOS`
 
 ```yaml
 targets:
