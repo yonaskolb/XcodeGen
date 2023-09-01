@@ -25,17 +25,20 @@ extension SupportedDestination {
         }
     }
     
+    // This is used to:
+    // 1. Get the first one and apply SettingPresets 'Platforms' and 'Product_Platform' if the platform is 'auto'
+    // 2. Sort, loop and merge together SettingPresets 'SupportedDestinations'
     public var priority: Int {
         switch self {
         case .iOS:
             return 0
         case .tvOS:
             return 1
-        case .macOS:
-            return 2
-        case .macCatalyst:
-            return 3
         case .visionOS:
+            return 2
+        case .macOS:
+            return 3
+        case .macCatalyst:
             return 4
         }
     }
