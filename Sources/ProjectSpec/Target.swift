@@ -295,6 +295,12 @@ extension Target: NamedJSONDictionaryConvertible {
         if supportedDestinations != nil, platformString.isEmpty {
             platformString = Platform.auto.rawValue
         }
+        // we add 'iOS' in supported destinations if it contains only 'macCatalyst'
+        if supportedDestinations?.contains(.macCatalyst) == true,
+           supportedDestinations?.contains(.iOS) == false {
+            
+            supportedDestinations?.append(.iOS)
+        }
         
         if let platform = Platform(rawValue: platformString) {
             self.platform = platform

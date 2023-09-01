@@ -196,6 +196,13 @@ extension Project {
                 
                 errors.append(.invalidTargetPlatformForSupportedDestinations(target: target.name))
             }
+            
+            if target.platform != .auto, target.platform != .watchOS,
+               let supportedDestination = SupportedDestination(rawValue: target.platform.rawValue),
+               target.supportedDestinations?.contains(supportedDestination) == false {
+                
+                errors.append(.missingTargetPlatformInSupportedDestinations(target: target.name, platform: target.platform))
+            }
         }
 
         for projectReference in projectReferences {

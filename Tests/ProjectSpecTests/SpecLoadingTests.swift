@@ -634,6 +634,19 @@ class SpecLoadingTests: XCTestCase {
                 }
             }
             
+            $0.it("parses supported destinations with macCatalyst but not iOS, we add iOS") {
+                let targetDictionary: [String: Any] = [
+                    "type": "framework",
+                    "supportedDestinations": ["macCatalyst"]
+                ]
+                
+                let project = try getProjectSpec(["targets": ["Framework": targetDictionary]])
+                let target = Target(name: "Framework", type: .framework, platform: .auto)
+                
+                try expect(project.targets) == [target]
+                try expect(project.targets.first?.supportedDestinations) == [.macCatalyst, .iOS]
+            }
+            
             $0.it("invalid target platform because platform is an array and supported destinations is in use") {
                 let expectedError = SpecParsingError.invalidTargetPlatformAsArray
                 

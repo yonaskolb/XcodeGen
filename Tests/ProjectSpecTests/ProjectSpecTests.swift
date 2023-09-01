@@ -229,6 +229,19 @@ class ProjectSpecTests: XCTestCase {
                 try expectValidationError(project, .invalidTargetPlatformForSupportedDestinations(target: "target1"))
             }
             
+            $0.it("missing target platform in supported destinations") {
+                var project = baseProject
+                project.targets = [
+                    Target(
+                        name: "target1",
+                        type: .application,
+                        platform: .iOS,
+                        supportedDestinations: [.tvOS]
+                    )
+                ]
+                try expectValidationError(project, .missingTargetPlatformInSupportedDestinations(target: "target1", platform: .iOS))
+            }
+            
             $0.it("allows non-existent configurations") {
                 var project = baseProject
                 project.options = SpecOptions(disabledValidations: [.missingConfigs])

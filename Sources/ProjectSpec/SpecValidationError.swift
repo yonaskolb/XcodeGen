@@ -20,6 +20,7 @@ public struct SpecValidationError: Error, CustomStringConvertible {
         case invalidTargetPlatformForSupportedDestinations(target: String)
         case unexpectedTargetPlatformForSupportedDestinations(target: String, platform: Platform)
         case multipleMacPlatformsInSupportedDestinations(target: String)
+        case missingTargetPlatformInSupportedDestinations(target: String, platform: Platform)
         case invalidSchemeTarget(scheme: String, target: String, action: String)
         case invalidSchemeConfig(scheme: String, config: String)
         case invalidSwiftPackage(name: String, target: String)
@@ -63,6 +64,8 @@ public struct SpecValidationError: Error, CustomStringConvertible {
                 return "Target \(target.quoted) has platform \(platform.rawValue.quoted) that does not expect supported destinations"
             case let .multipleMacPlatformsInSupportedDestinations(target):
                 return "Target \(target.quoted) has multiple definitions of mac platforms in supported destinations"
+            case let .missingTargetPlatformInSupportedDestinations(target, platform):
+                return "Target \(target.quoted) has platform \(platform.rawValue.quoted) that is missing in supported destinations"
             case let .invalidConfigFile(configFile, config):
                 return "Invalid config file \(configFile.quoted) for config \(config.quoted)"
             case let .invalidSchemeTarget(scheme, target, action):
