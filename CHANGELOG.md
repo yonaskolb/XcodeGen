@@ -11,6 +11,10 @@
 - Added `inferPlatformFiltersByPath`, a convenience filter for sources
 - Added visionOS support
 
+### Added
+
+- `.mlpackage` files now default to being a source type #1398 @aaron-foreflight
+ 
 ### Fixed
 
 - Fixed source file `includes` not working when no paths were found #1337 @shnhrrsn
