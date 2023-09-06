@@ -4,7 +4,7 @@ import PackageDescription
 
 let macOSOnlyDependency: [Package.Dependency]
 #if !os(Linux)
-    macOSOnlyDependency = [Package.Dependency.package(url: "https://github.com/freddi-kit/ArtifactBundleGen", exact: "0.0.3")]
+    macOSOnlyDependency = [Package.Dependency.package(url: "https://github.com/freddi-kit/ArtifactBundleGen", exact: "0.0.4")]
 #else
     macOSOnlyDependency = []
 #endif
@@ -48,6 +48,8 @@ let package = Package(
             "PathKit",
             "XcodeGenCore",
             "GraphViz",
+        ], resources: [
+            .copy("SettingPresets")
         ]),
         .target(name: "ProjectSpec", dependencies: [
             "JSONUtilities",

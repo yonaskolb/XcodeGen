@@ -52,4 +52,3 @@ archive: build
 		--package-version $(VERSION) \
 		--executable-name $(EXECUTABLE_NAME) \
 		--build-config release \
-		--include-resource-path $(CURRENT_PATH)/SettingPresets
