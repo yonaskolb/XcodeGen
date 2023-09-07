@@ -34,6 +34,7 @@ You can also use environment variables in your configuration file, by using `${S
   - [Legacy Target](#legacy-target)
 - [Aggregate Target](#aggregate-target)
 - [Target Template](#target-template)
+- [Global Template Attributes](#global-template-attributes)
 - [Scheme](#scheme)
   - [Build](#build)
   - [Common Build Action options](#common-build-action-options)
@@ -913,6 +914,15 @@ targetTemplates:
     type: framework
     sources:
       - ${frameworkName}/${target_name}
+```
+
+## Global template attributes
+
+This is place to define global variables used to resolve missing `${target_name}` within each template. This also helps share attributes between yaml files.
+
+```yaml
+globalTemplateAttributes:
+  version: legacy
 ```
 
 ## Scheme
