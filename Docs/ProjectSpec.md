@@ -645,7 +645,7 @@ targets:
 ```
 
 **Package dependency**
-- [ ] **product**: **String** - The product to use from the package. This defaults to the package name, so is only required if a Package has multiple libraries or a library with a differing name
+- [ ] **product**: **String** - The product to use from the package. This defaults to the package name, so is only required if a Package has multiple libraries or a library with a differing name. Use this over `products` when you want to define different linking options per product.
 - [ ] **products**: **String** - A list of products to use from the package. This can be used when depending on multiple products from a package.
 
 ```yaml
