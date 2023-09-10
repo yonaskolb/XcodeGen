@@ -51,4 +51,4 @@ archive: build
 	swift package plugin --allow-writing-to-package-directory generate-artifact-bundle \
 		--package-version $(VERSION) \
 		--executable-name $(EXECUTABLE_NAME) \
-		--build-config release \
+		--build-config release
