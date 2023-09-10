@@ -12,6 +12,11 @@ packages:
   XcodeGen:
     path: ../../.. #XcodeGen itself
     group: SPM
+aggregateTargets:
+  AggTarget:
+    buildToolPlugins:
+      - plugin: PrefirePlaybookPlugin
+        package: Prefire
 targets:
   App:
     type: application

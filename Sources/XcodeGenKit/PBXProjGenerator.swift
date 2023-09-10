@@ -30,6 +30,7 @@ public class PBXProjGenerator {
     var generated = false
 
     private var projects: [ProjectReference: PBXProj] = [:]
+    lazy private var localPackageReferences: [String] = project.packages.compactMap { $0.value.isLocal ? $0.key : nil }
 
     public init(project: Project, projectDirectory: Path? = nil) {
         self.project = project
@@ -339,7 +340,7 @@ public class PBXProjGenerator {
             return addObject(buildConfig)
         }
 
-        let dependencies = target.targets.map { generateTargetDependency(from: target.name, to: $0, platform: nil) }
+        var dependencies = target.targets.map { generateTargetDependency(from: target.name, to: $0, platform: nil) }
 
         let defaultConfigurationName = project.options.defaultConfig ?? project.configs.first?.name ?? ""
         let buildConfigList = addObject(XCConfigurationList(
@@ -349,6 +350,9 @@ public class PBXProjGenerator {
 
         var buildPhases: [PBXBuildPhase] = []
         buildPhases += try target.buildScripts.map { try generateBuildScript(targetName: target.name, buildScript: $0) }
+
+        let packagePluginDependencies = makePackagePluginDependency(for: target)
+        dependencies.append(contentsOf: packagePluginDependencies)
 
         aggregateTarget.buildPhases = buildPhases
         aggregateTarget.buildConfigurationList = buildConfigList
@@ -692,7 +696,6 @@ public class PBXProjGenerator {
         var systemExtensions: [PBXBuildFile] = []
         var appClips: [PBXBuildFile] = []
         var carthageFrameworksToEmbed: [String] = []
-        let localPackageReferences: [String] = project.packages.compactMap { $0.value.isLocal ? $0.key : nil }
 
         let targetDependencies = (target.transitivelyLinkDependencies ?? project.options.transitivelyLinkDependencies) ?
             getAllDependenciesPlusTransitiveNeedingEmbedding(target: target) : target.dependencies
@@ -1032,22 +1035,8 @@ public class PBXProjGenerator {
         
         carthageFrameworksToEmbed = carthageFrameworksToEmbed.uniqued()
 
-        // Adding `Build Tools Plug-ins` as a dependency to the target
-        for buildToolPlugin in target.buildToolPlugins {
-            let packageReference = packageReferences[buildToolPlugin.package]
-            if packageReference == nil, !localPackageReferences.contains(buildToolPlugin.package) {
-                continue
-            }
-
-            let packageDependency = addObject(
-                XCSwiftPackageProductDependency(productName: buildToolPlugin.plugin, package: packageReference, isPlugin: true)
-            )
-            let targetDependency = addObject(
-                PBXTargetDependency(product: packageDependency)
-            )
-
-            dependencies.append(targetDependency)
-        }
+        let packagePluginDependencies = makePackagePluginDependency(for: target)
+        dependencies.append(contentsOf: packagePluginDependencies)
         
         var buildPhases: [PBXBuildPhase] = []
 
@@ -1445,6 +1434,27 @@ public class PBXProjGenerator {
             return "maccatalyst"
         case .iOS:
             return "ios"
+        }
+    }
+
+    /// Make `Build Tools Plug-ins` as a dependency to the target
+    /// - Parameter target: ProjectTarget
+    /// - Returns: Elements for referencing other targets through content proxies.
+    func makePackagePluginDependency(for target: ProjectTarget) -> [PBXTargetDependency] {
+        target.buildToolPlugins.compactMap { buildToolPlugin in
+            let packageReference = packageReferences[buildToolPlugin.package]
+            if packageReference == nil, !localPackageReferences.contains(buildToolPlugin.package) {
+                return nil
+            }
+
+            let packageDependency = addObject(
+                XCSwiftPackageProductDependency(productName: buildToolPlugin.plugin, package: packageReference, isPlugin: true)
+            )
+            let targetDependency = addObject(
+                PBXTargetDependency(product: packageDependency)
+            )
+
+            return targetDependency
         }
     }
 
