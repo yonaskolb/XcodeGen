@@ -14,6 +14,11 @@ packages:
     group: SPM
   FooFeature:
     path: FooFeature
+aggregateTargets:
+  AggTarget:
+    buildToolPlugins:
+      - plugin: PrefirePlaybookPlugin
+        package: Prefire
 targets:
   App:
     type: application

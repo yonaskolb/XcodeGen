@@ -6,6 +6,20 @@
 	objectVersion = 54;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		ADD3CE771A0D5E996031A193 /* AggTarget */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = A7ABF1B35D9170092F822790 /* Build configuration list for PBXAggregateTarget "AggTarget" */;
+			buildPhases = (
+			);
+			dependencies = (
+				D287BAAB664D1A024D9DD57E /* PBXTargetDependency */,
+			);
+			name = AggTarget;
+			productName = AggTarget;
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		23C6626698DE560017A89F2F /* XcodeGen in Frameworks */ = {isa = PBXBuildFile; productRef = 6F7DEA2D82649EDF903FBDBD /* XcodeGen */; };
 		2DA7998902987953B119E4CE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26F7EFEE613987D1E1258A60 /* AppDelegate.swift */; };
@@ -241,6 +255,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
+				ADD3CE771A0D5E996031A193 /* AggTarget */,
 				C99E3C420D63D5219CE57E33 /* App */,
 				3F8D94C4EFC431F646AAFB28 /* StaticLibrary */,
 				339863E54E2D955C00B56802 /* Tests */,
@@ -328,6 +343,10 @@
 			isa = PBXTargetDependency;
 			productRef = 5A36E2FE69703FCAC0BE8064 /* XcodeGen */;
 		};
+		D287BAAB664D1A024D9DD57E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 896D1E2063A93D40F04D7864 /* PrefirePlaybookPlugin */;
+		};
 		D85FFB99444DD260A72DDDA7 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			productRef = AF233B61592982A7F6431FC6 /* Codability */;
@@ -343,6 +362,12 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		0C023F1AE037C42683029CE9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Debug;
+		};
 		0CCC06807E5CD8361D899B7F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -387,6 +412,12 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
+		};
+		5E087A904FBC0E623E672507 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+			};
+			name = Release;
 		};
 		7A384B9B9CF42FCF9EF02057 /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -593,6 +624,15 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
+		A7ABF1B35D9170092F822790 /* Build configuration list for PBXAggregateTarget "AggTarget" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0C023F1AE037C42683029CE9 /* Debug */,
+				5E087A904FBC0E623E672507 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
@@ -643,6 +683,11 @@
 		6F7DEA2D82649EDF903FBDBD /* XcodeGen */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = XcodeGen;
+		};
+		896D1E2063A93D40F04D7864 /* PrefirePlaybookPlugin */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 348C81C327DB1710B742C370 /* XCRemoteSwiftPackageReference "Prefire" */;
+			productName = "plugin:PrefirePlaybookPlugin";
 		};
 		8D2DC638BEF7FDF23907E134 /* FooDomain */ = {
 			isa = XCSwiftPackageProductDependency;
