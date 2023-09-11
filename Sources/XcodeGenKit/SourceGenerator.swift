@@ -110,10 +110,10 @@ class SourceGenerator {
         }
     }
     
-    private func makePlatformFilters(for path: Path, with filters: [SupportedDestination]?, or inferPlatformFiltersByPath: Bool?) -> [String]? {
+    private func makeDestinationFilters(for path: Path, with filters: [SupportedDestination]?, or inferDestinationFiltersByPath: Bool?) -> [String]? {
         if let filters = filters, !filters.isEmpty {
             return filters.map { $0.string }
-        } else if inferPlatformFiltersByPath == true {
+        } else if inferDestinationFiltersByPath == true {
             for supportedDestination in SupportedDestination.allCases {
                 let regex1 = try? NSRegularExpression(pattern: "\\/\(supportedDestination)\\/", options: .caseInsensitive)
                 let regex2 = try? NSRegularExpression(pattern: "\\_\(supportedDestination)\\.swift$", options: .caseInsensitive)
@@ -191,7 +191,7 @@ class SourceGenerator {
             settings["ASSET_TAGS"] = assetTags
         }
         
-        let platforms = makePlatformFilters(for: path, with: targetSource.platformFilters, or: targetSource.inferPlatformFiltersByPath)
+        let platforms = makeDestinationFilters(for: path, with: targetSource.destinationFilters, or: targetSource.inferDestinationFiltersByPath)
         
         let buildFile = PBXBuildFile(file: fileReference, settings: settings.isEmpty ? nil : settings, platformFilters: platforms)
         return SourceFile(

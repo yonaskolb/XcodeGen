@@ -16,7 +16,7 @@ public struct Dependency: Equatable {
     public var implicit: Bool = implicitDefault
     public var weakLink: Bool = weakLinkDefault
     public var platformFilter: PlatformFilter = platformFilterDefault
-    public var platformFilters: [SupportedDestination]?
+    public var destinationFilters: [SupportedDestination]?
     public var platforms: Set<Platform>?
     public var copyPhase: BuildPhaseSpec.CopyFilesSettings?
 
@@ -29,7 +29,7 @@ public struct Dependency: Equatable {
         implicit: Bool = implicitDefault,
         weakLink: Bool = weakLinkDefault,
         platformFilter: PlatformFilter = platformFilterDefault,
-        platformFilters: [SupportedDestination]? = nil,
+        destinationFilters: [SupportedDestination]? = nil,
         platforms: Set<Platform>? = nil,
         copyPhase: BuildPhaseSpec.CopyFilesSettings? = nil
     ) {
@@ -41,7 +41,7 @@ public struct Dependency: Equatable {
         self.implicit = implicit
         self.weakLink = weakLink
         self.platformFilter = platformFilter
-        self.platformFilters = platformFilters
+        self.destinationFilters = destinationFilters
         self.platforms = platforms
         self.copyPhase = copyPhase
     }
@@ -146,8 +146,8 @@ extension Dependency: JSONObjectConvertible {
             self.platformFilter = .all
         }
         
-        if let platformFilters: [SupportedDestination] = jsonDictionary.json(atKeyPath: "platformFilters") {
-            self.platformFilters = platformFilters
+        if let destinationFilters: [SupportedDestination] = jsonDictionary.json(atKeyPath: "destinationFilters") {
+            self.destinationFilters = destinationFilters
         }
         
         if let platforms: [ProjectSpec.Platform] = jsonDictionary.json(atKeyPath: "platforms") {
@@ -168,7 +168,7 @@ extension Dependency: JSONEncodable {
             "link": link,
             "platforms": platforms?.map(\.rawValue).sorted(),
             "copy": copyPhase?.toJSONValue(),
-            "platformFilters": platformFilters?.map { $0.rawValue },
+            "destinationFilters": destinationFilters?.map { $0.rawValue },
         ]
 
         if removeHeaders != Dependency.removeHeadersDefault {

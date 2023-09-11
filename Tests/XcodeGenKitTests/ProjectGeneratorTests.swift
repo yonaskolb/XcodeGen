@@ -1216,8 +1216,8 @@ class ProjectGeneratorTests: XCTestCase {
                 try expect(app3OtherLinkerSettings.contains("-ObjC")) == true
             }
             
-            $0.it("filter sources with inferPlatformFiltersByPath") {
-                let sourceFiles = TargetSource(path: "App_supportedDestinations/TestResources", inferPlatformFiltersByPath: true)
+            $0.it("filter sources with inferDestinationFiltersByPath") {
+                let sourceFiles = TargetSource(path: "App_supportedDestinations/TestResources", inferDestinationFiltersByPath: true)
                 
                 let target = Target(
                     name: "test",
@@ -1255,27 +1255,27 @@ class ProjectGeneratorTests: XCTestCase {
                         continue
                     }
                     
-                    throw failure("Unexpected source file / platformFilters")
+                    throw failure("Unexpected source file / destinationFilters")
                 }
             }
             
-            $0.it("filter sources with platformFilters") {
+            $0.it("filter sources with destinationFilters") {
                 let sourceFile1 = TargetSource(path: "App_supportedDestinations/TestResources/iOs",
-                                               platformFilters: [.iOS])
+                                               destinationFilters: [.iOS])
                 let sourceFile2 = TargetSource(path: "App_supportedDestinations/TestResources/TVOS",
-                                               platformFilters: [.tvOS])
+                                               destinationFilters: [.tvOS])
                 let sourceFile3 = TargetSource(path: "App_supportedDestinations/TestResources/macos",
-                                               platformFilters: [.macOS, .macCatalyst])
+                                               destinationFilters: [.macOS, .macCatalyst])
                 let sourceFile4 = TargetSource(path: "App_supportedDestinations/TestResources/macCatalyst",
-                                               platformFilters: [.macOS, .macCatalyst])
+                                               destinationFilters: [.macOS, .macCatalyst])
                 let sourceFile5 = TargetSource(path: "App_supportedDestinations/TestResources/File_ios.swift",
-                                               platformFilters: [.iOS])
+                                               destinationFilters: [.iOS])
                 let sourceFile6 = TargetSource(path: "App_supportedDestinations/TestResources/File_tvOs.swift",
-                                               platformFilters: [.tvOS])
+                                               destinationFilters: [.tvOS])
                 let sourceFile7 = TargetSource(path: "App_supportedDestinations/TestResources/File_macOS.swift",
-                                               platformFilters: [.macOS, .macCatalyst])
+                                               destinationFilters: [.macOS, .macCatalyst])
                 let sourceFile8 = TargetSource(path: "App_supportedDestinations/TestResources/File_MACCATALYST.swift",
-                                               platformFilters: [.macOS, .macCatalyst])
+                                               destinationFilters: [.macOS, .macCatalyst])
                 
                 let target = Target(
                     name: "test",
@@ -1313,7 +1313,7 @@ class ProjectGeneratorTests: XCTestCase {
                         continue
                     }
                     
-                    throw failure("Unexpected source file / platformFilters")
+                    throw failure("Unexpected source file / destinationFilters")
                 }
             }
             
@@ -1898,7 +1898,7 @@ class ProjectGeneratorTests: XCTestCase {
     
     func testGenerateXcodeProjectWithPlatformFilteredDependencies() throws {
         
-        describe("generateXcodeProject with platformFilters") {
+        describe("generateXcodeProject with destinationFilters") {
             
             func generateProjectForApp(withDependencies: [Dependency], targets: [Target], packages: [String: SwiftPackage] = [:]) throws -> PBXProj {
                 
@@ -1969,8 +1969,8 @@ class ProjectGeneratorTests: XCTestCase {
                 
                 // given
                 let dependencies = [
-                    Dependency(type: .target, reference: frameworkA.name, platformFilters: [.iOS]),
-                    Dependency(type: .target, reference: frameworkB.name, platformFilters: [.iOS, .tvOS]),
+                    Dependency(type: .target, reference: frameworkA.name, destinationFilters: [.iOS]),
+                    Dependency(type: .target, reference: frameworkB.name, destinationFilters: [.iOS, .tvOS]),
                 ]
                 
                 // when
@@ -1989,8 +1989,8 @@ class ProjectGeneratorTests: XCTestCase {
                 
                 // given
                 let dependencies = [
-                    Dependency(type: .framework, reference: "frameworkA.framework", platformFilters: [.iOS]),
-                    Dependency(type: .framework, reference: "frameworkB.framework", platformFilters: [.iOS, .tvOS]),
+                    Dependency(type: .framework, reference: "frameworkA.framework", destinationFilters: [.iOS]),
+                    Dependency(type: .framework, reference: "frameworkB.framework", destinationFilters: [.iOS, .tvOS]),
                 ]
                 
                 // when
@@ -2009,8 +2009,8 @@ class ProjectGeneratorTests: XCTestCase {
                 
                 // given
                 let dependencies = [
-                    Dependency(type: .carthage(findFrameworks: false, linkType: .dynamic), reference: "frameworkA.framework", platformFilters: [.iOS]),
-                    Dependency(type: .carthage(findFrameworks: false, linkType: .dynamic), reference: "frameworkB.framework", platformFilters: [.iOS, .tvOS]),
+                    Dependency(type: .carthage(findFrameworks: false, linkType: .dynamic), reference: "frameworkA.framework", destinationFilters: [.iOS]),
+                    Dependency(type: .carthage(findFrameworks: false, linkType: .dynamic), reference: "frameworkB.framework", destinationFilters: [.iOS, .tvOS]),
                 ]
                 
                 // when
@@ -2029,8 +2029,8 @@ class ProjectGeneratorTests: XCTestCase {
                 
                 // given
                 let dependencies = [
-                    Dependency(type: .sdk(root: nil), reference: "sdkA.framework", platformFilters: [.iOS]),
-                    Dependency(type: .sdk(root: nil), reference: "sdkB.framework", platformFilters: [.iOS, .tvOS]),
+                    Dependency(type: .sdk(root: nil), reference: "sdkA.framework", destinationFilters: [.iOS]),
+                    Dependency(type: .sdk(root: nil), reference: "sdkB.framework", destinationFilters: [.iOS, .tvOS]),
                 ]
                 
                 // when
@@ -2053,8 +2053,8 @@ class ProjectGeneratorTests: XCTestCase {
                 
                 // given
                 let dependencies = [
-                    Dependency(type: .package(products: ["RxSwift"]), reference: "RxSwift", platformFilters: [.iOS]),
-                    Dependency(type: .package(products: ["RxCocoa"]), reference: "RxSwift", platformFilters: [.iOS, .tvOS]),
+                    Dependency(type: .package(products: ["RxSwift"]), reference: "RxSwift", destinationFilters: [.iOS]),
+                    Dependency(type: .package(products: ["RxCocoa"]), reference: "RxSwift", destinationFilters: [.iOS, .tvOS]),
                 ]
                 
                 // when
@@ -2073,8 +2073,8 @@ class ProjectGeneratorTests: XCTestCase {
                 
                 // given
                 let dependencies = [
-                    Dependency(type: .bundle, reference: "bundleA.bundle", platformFilters: [.iOS]),
-                    Dependency(type: .bundle, reference: "bundleB.bundle", platformFilters: [.iOS, .tvOS]),
+                    Dependency(type: .bundle, reference: "bundleA.bundle", destinationFilters: [.iOS]),
+                    Dependency(type: .bundle, reference: "bundleB.bundle", destinationFilters: [.iOS, .tvOS]),
                 ]
                 
                 // when

@@ -494,9 +494,9 @@ targets:
       tvOS: 10.0
     sources:
       - path: MySources
-        inferPlatformFiltersByPath: true
+        inferDestinationFiltersByPath: true
       - path: OtherSources
-        platformFilters: [iOS]
+        destinationFilters: [iOS]
 ```
 
 Note that the definition of supported destinations can be applied to every type of bundle making everything more easy to manage (app targets, unit tests, UI tests etc).
@@ -515,8 +515,8 @@ A source can be provided via a string (the path) or an object of the form:
 - [ ] **compilerFlags**: **[String]** or **String** - A list of compilerFlags to add to files under this specific path provided as a list or a space delimited string. Defaults to empty.
 - [ ] **excludes**: **[String]** - A list of [global patterns](https://en.wikipedia.org/wiki/Glob_(programming)) representing the files to exclude. These rules are relative to `path` and _not the directory where `project.yml` resides_. XcodeGen uses Bash 4's Glob behaviors where globstar (**) is enabled.
 - [ ] **includes**: **[String]** - A list of global patterns in the same format as `excludes` representing the files to include. These rules are relative to `path` and _not the directory where `project.yml` resides_. If **excludes** is present and file conflicts with **includes**, **excludes** will override the **includes** behavior.
-- [ ] **platformFilters**: **[[Supported Destinations](#supported-destinations)]** - List of supported platform destinations the files should filter to. Defaults to all supported destinations.
-- [ ] **inferPlatformFiltersByPath**: **Bool** - This is a convenience filter that helps you to filter the files if their paths match these patterns `**/<supportedDestination>/*` or `*_<supportedDestination>.swift`. Note, if you use `platformFilters` this flag will be ignored.
+- [ ] **destinationFilters**: **[[Supported Destinations](#supported-destinations)]** - List of supported platform destinations the files should filter to. Defaults to all supported destinations.
+- [ ] **inferDestinationFiltersByPath**: **Bool** - This is a convenience filter that helps you to filter the files if their paths match these patterns `**/<supportedDestination>/*` or `*_<supportedDestination>.swift`. Note, if you use `destinationFilters` this flag will be ignored.
 - [ ] **createIntermediateGroups**: **Bool** - This overrides the value in [Options](#options).
 - [ ] **optional**: **Bool** - Disable missing path check. Defaults to false.
 - [ ] **buildPhase**: **String** - This manually sets the build phase this file or files in this directory will be added to, otherwise XcodeGen will guess based on the file extension. Note that `Info.plist` files will never be added to any build phases, no matter what this setting is. Possible values are:
@@ -557,7 +557,7 @@ targets:
     sources:
       - MyOtherTargetSource1
       - path: MyOtherTargetSource2
-        inferPlatformFiltersByPath: true
+        inferDestinationFiltersByPath: true
         name: MyNewName
         excludes:
           - "ios/*.[mh]"
@@ -569,7 +569,7 @@ targets:
           - "-Werror"
           - "-Wextra"
       - path: MyOtherTargetSource3
-        platformFilters: [iOS]
+        destinationFilters: [iOS]
         compilerFlags: "-Werror -Wextra"
       - path: ModuleMaps
         buildPhase:
@@ -601,7 +601,7 @@ A dependency can be one of a 6 types:
 - [ ] **removeHeaders**: **Bool** - Whether the `removeHeadersOnCopy` setting is applied when embedding the framework. Defaults to true.
 - [ ] **weak**: **Bool** - Whether the `Weak` setting is applied when linking the framework. Defaults to false.
 - [ ] **platformFilter**: **String** - This field is specific to Mac Catalyst. It corresponds to the "Platforms" dropdown in the Frameworks & Libraries section of Target settings in Xcode. Available options are: **iOS**, **macOS** and **all**. Defaults is **all**.
-- [ ] **platformFilters**: **[[Supported Destinations](#supported-destinations)]** - List of supported platform destinations this dependency should filter to. Defaults to all supported destinations.
+- [ ] **destinationFilters**: **[[Supported Destinations](#supported-destinations)]** - List of supported platform destinations this dependency should filter to. Defaults to all supported destinations.
 - [ ] **platforms**: **[[Platform](#platform)]** - List of platforms this dependency should apply to. Defaults to all applicable platforms.
 - **copy** - Copy Files Phase for this dependency. This only applies when `embed` is true. Must be specified as an object with the following fields:
     - [x] **destination**: **String** - Destination of the Copy Files phase. This can be one of the following values:
@@ -654,14 +654,14 @@ targets:
     supportedDestinations: [iOS, tvOS]
     dependencies:
       - target: MyFramework
-        platformFilters: [iOS]
+        destinationFilters: [iOS]
       - target: FooLib/FooTarget
       - framework: path/to/framework.framework
-        platformFilters: [tvOS]
+        destinationFilters: [tvOS]
       - carthage: Result
         findFrameworks: false
         linkType: static
-        platformFilters: [iOS]
+        destinationFilters: [iOS]
       - sdk: Contacts.framework
       - sdk: libc++.tbd
       - sdk: libz.dylib

@@ -246,14 +246,14 @@ targets:
     sources:
       - path: App_supportedDestinations/Sources
         group: App_supportedDestinations
-        inferPlatformFiltersByPath: true
+        inferDestinationFiltersByPath: true
       - path: App_supportedDestinations/Storyboards
         group: App_supportedDestinations
-        platformFilters: [iOS]
+        destinationFilters: [iOS]
     dependencies:
       - package: Swinject
         product: Swinject
-        platformFilters: [tvOS]
+        destinationFilters: [tvOS]
 
   App_watchOS:
       type: application.watchapp2

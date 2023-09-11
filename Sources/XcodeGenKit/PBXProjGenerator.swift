@@ -790,7 +790,7 @@ public class PBXProjGenerator {
 
             let embed = dependency.embed ?? target.shouldEmbedDependencies
             let platform = makePlatformFilter(for: dependency.platformFilter)
-            let platforms = makePlatformFilters(for: dependency.platformFilters)
+            let platforms = makeDestinationFilters(for: dependency.destinationFilters)
             
             switch dependency.type {
             case .target:
@@ -1458,7 +1458,7 @@ public class PBXProjGenerator {
         }
     }
     
-    private func makePlatformFilters(for filters: [SupportedDestination]?) -> [String]? {
+    private func makeDestinationFilters(for filters: [SupportedDestination]?) -> [String]? {
         guard let filters = filters, !filters.isEmpty else { return nil }
         return filters.map { $0.string }
     }
