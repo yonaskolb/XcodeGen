@@ -181,12 +181,6 @@ extension Project {
                 }
             }
             
-            for buildToolPlugin in target.buildToolPlugins {
-                if packages[buildToolPlugin.package] == nil {
-                    errors.append(.invalidPluginPackageReference(plugin: buildToolPlugin.plugin, package: buildToolPlugin.package))
-                }
-            }
-            
             if target.supportedDestinations != nil, target.platform == .watchOS {
                 errors.append(.unexpectedTargetPlatformForSupportedDestinations(target: target.name, platform: target.platform))
             }
