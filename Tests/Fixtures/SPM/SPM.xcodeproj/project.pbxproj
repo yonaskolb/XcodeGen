@@ -23,10 +23,12 @@
 /* Begin PBXBuildFile section */
 		23C6626698DE560017A89F2F /* XcodeGen in Frameworks */ = {isa = PBXBuildFile; productRef = 6F7DEA2D82649EDF903FBDBD /* XcodeGen */; };
 		2DA7998902987953B119E4CE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26F7EFEE613987D1E1258A60 /* AppDelegate.swift */; };
+		36CE2E6187D9709BAD9EF807 /* FooUI in Frameworks */ = {isa = PBXBuildFile; productRef = 927CB19D94339CC9960E930C /* FooUI */; };
 		3986ED6965842721C46C0452 /* SwiftRoaringDynamic in Frameworks */ = {isa = PBXBuildFile; productRef = DC73B269C8B0C0BF6912842C /* SwiftRoaringDynamic */; };
 		4CC663B42B270404EF5FD037 /* libStaticLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CAB5625F6FEA668410ED5482 /* libStaticLibrary.a */; };
 		9AD886A88D3E4A1B5E900687 /* SPMTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7970A2253B14A9B27C307FAC /* SPMTests.swift */; };
 		9C4AD0711D706FD3ED0E436D /* StaticLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C17B77601A9D1B7895AB42 /* StaticLibrary.swift */; };
+		AF8E362713B9D28EA9A5C9FC /* FooDomain in Frameworks */ = {isa = PBXBuildFile; productRef = 8D2DC638BEF7FDF23907E134 /* FooDomain */; };
 		B89EA0F3859878A1DCF7BAFD /* SwiftRoaringDynamic in Embed Frameworks */ = {isa = PBXBuildFile; productRef = DC73B269C8B0C0BF6912842C /* SwiftRoaringDynamic */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CE46CBA5671B951B546C8673 /* Codability in Frameworks */ = {isa = PBXBuildFile; productRef = 16E6FE01D5BD99F78D4A17E2 /* Codability */; settings = {ATTRIBUTES = (Weak, ); }; };
 		E368431019ABC696E4FFC0CF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4E22B8BCC18A29EFE1DE3BE4 /* Assets.xcassets */; };
@@ -71,6 +73,7 @@
 		4E22B8BCC18A29EFE1DE3BE4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		61C17B77601A9D1B7895AB42 /* StaticLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaticLibrary.swift; sourceTree = "<group>"; };
 		7970A2253B14A9B27C307FAC /* SPMTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SPMTests.swift; sourceTree = "<group>"; };
+		979AE1767E2AF6B3B9D7F13D /* FooFeature */ = {isa = PBXFileReference; lastKnownFileType = folder; name = FooFeature; path = FooFeature; sourceTree = SOURCE_ROOT; };
 		A9601593D0AD02931266A4E5 /* App.xctestplan */ = {isa = PBXFileReference; path = App.xctestplan; sourceTree = "<group>"; };
 		CAB5625F6FEA668410ED5482 /* libStaticLibrary.a */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = archive.ar; path = libStaticLibrary.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED284AB7C13DCC0A95DAA680 /* XcodeGen */ = {isa = PBXFileReference; lastKnownFileType = folder; name = XcodeGen; path = ../../..; sourceTree = SOURCE_ROOT; };
@@ -85,6 +88,8 @@
 				3986ED6965842721C46C0452 /* SwiftRoaringDynamic in Frameworks */,
 				4CC663B42B270404EF5FD037 /* libStaticLibrary.a in Frameworks */,
 				23C6626698DE560017A89F2F /* XcodeGen in Frameworks */,
+				AF8E362713B9D28EA9A5C9FC /* FooDomain in Frameworks */,
+				36CE2E6187D9709BAD9EF807 /* FooUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -114,6 +119,7 @@
 		218F6C96DF9E182F526258CF = {
 			isa = PBXGroup;
 			children = (
+				AD0F3623091EEA8D1EA3DFF8 /* Packages */,
 				17DD374CC81D710476AFF41C /* SPM */,
 				CF3BD77AEAA56553289456BA /* SPMTests */,
 				1FA59BFD192FB5A68D5F587C /* StaticLibrary */,
@@ -130,6 +136,14 @@
 			);
 			name = Products;
 			sourceTree = "<group>";
+		};
+		AD0F3623091EEA8D1EA3DFF8 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				979AE1767E2AF6B3B9D7F13D /* FooFeature */,
+			);
+			name = Packages;
+			sourceTree = SOURCE_ROOT;
 		};
 		CF3BD77AEAA56553289456BA /* SPMTests */ = {
 			isa = PBXGroup;
@@ -171,12 +185,16 @@
 				D85FFB99444DD260A72DDDA7 /* PBXTargetDependency */,
 				DDD17C561AD5065DF4FA4072 /* PBXTargetDependency */,
 				C6360997FFC102F6725099D4 /* PBXTargetDependency */,
+				00B467060F3DEC027711F9C2 /* PBXTargetDependency */,
+				7EB17E90A4D8F26FEABEEDF6 /* PBXTargetDependency */,
 			);
 			name = StaticLibrary;
 			packageProductDependencies = (
 				AF233B61592982A7F6431FC6 /* Codability */,
 				C816AEB28ED71C3C47F31B98 /* SwiftRoaringDynamic */,
 				5A36E2FE69703FCAC0BE8064 /* XcodeGen */,
+				6B8A6E1EA485E607A1D1DCD1 /* FooDomain */,
+				15DB49096E2978F6BCA8D604 /* FooUI */,
 			);
 			productName = StaticLibrary;
 			productReference = CAB5625F6FEA668410ED5482 /* libStaticLibrary.a */;
@@ -202,6 +220,8 @@
 				16E6FE01D5BD99F78D4A17E2 /* Codability */,
 				DC73B269C8B0C0BF6912842C /* SwiftRoaringDynamic */,
 				6F7DEA2D82649EDF903FBDBD /* XcodeGen */,
+				8D2DC638BEF7FDF23907E134 /* FooDomain */,
+				927CB19D94339CC9960E930C /* FooUI */,
 			);
 			productName = App;
 			productReference = 097F2DB5622B591E21BC3C73 /* App.app */;
@@ -301,10 +321,18 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		00B467060F3DEC027711F9C2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 6B8A6E1EA485E607A1D1DCD1 /* FooDomain */;
+		};
 		078202CF7B08B66ACF7FEC23 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 3F8D94C4EFC431F646AAFB28 /* StaticLibrary */;
 			targetProxy = 29147E1DDAEB1AAC20CB0CF9 /* PBXContainerItemProxy */;
+		};
+		7EB17E90A4D8F26FEABEEDF6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 15DB49096E2978F6BCA8D604 /* FooUI */;
 		};
 		8693351DA9DBE579AC9DD513 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -635,6 +663,10 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		15DB49096E2978F6BCA8D604 /* FooUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FooUI;
+		};
 		16E6FE01D5BD99F78D4A17E2 /* Codability */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 5BA91390AE78D2EE15C60091 /* XCRemoteSwiftPackageReference "Codability" */;
@@ -644,6 +676,10 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = XcodeGen;
 		};
+		6B8A6E1EA485E607A1D1DCD1 /* FooDomain */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FooDomain;
+		};
 		6F7DEA2D82649EDF903FBDBD /* XcodeGen */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = XcodeGen;
@@ -652,6 +688,14 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 348C81C327DB1710B742C370 /* XCRemoteSwiftPackageReference "Prefire" */;
 			productName = "plugin:PrefirePlaybookPlugin";
+		};
+		8D2DC638BEF7FDF23907E134 /* FooDomain */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FooDomain;
+		};
+		927CB19D94339CC9960E930C /* FooUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FooUI;
 		};
 		AF233B61592982A7F6431FC6 /* Codability */ = {
 			isa = XCSwiftPackageProductDependency;

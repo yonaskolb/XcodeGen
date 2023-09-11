@@ -10,6 +10,7 @@
 ### Fixed
 
 - Fixed source file `includes` not working when no paths were found #1337 @shnhrrsn
+- Supports specifying multiple package products #1395 @simonbs
 
 ## 2.37.0
 

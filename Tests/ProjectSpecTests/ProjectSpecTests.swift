@@ -156,8 +156,8 @@ class ProjectSpecTests: XCTestCase {
                             Dependency(type: .framework, reference: "dependency2"),
 
                             // multiple package dependencies with different products should be allowed
-                            Dependency(type: .package(product: "one"), reference: "package1"),
-                            Dependency(type: .package(product: "two"), reference: "package1"),
+                            Dependency(type: .package(products: ["one"]), reference: "package1"),
+                            Dependency(type: .package(products: ["two"]), reference: "package1"),
                         ]
                     ),
                     Target(
@@ -205,7 +205,7 @@ class ProjectSpecTests: XCTestCase {
                     sources: ["invalidSource"],
                     dependencies: [
                         Dependency(type: .target, reference: "invalidDependency"),
-                        Dependency(type: .package(product: nil), reference: "invalidPackage"),
+                        Dependency(type: .package(products: []), reference: "invalidPackage"),
                     ],
                     preBuildScripts: [BuildScript(script: .path("invalidPreBuildScript"), name: "preBuildScript1")],
                     postCompileScripts: [BuildScript(script: .path("invalidPostCompileScript"))],

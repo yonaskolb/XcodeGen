@@ -931,7 +931,7 @@ public class PBXProjGenerator {
                     }
                 }
             // Embedding handled by iterating over `carthageDependencies` below
-            case .package(let product):
+            case .package(let products):
                 let packageReference = packageReferences[dependency.reference]
 
                 // If package's reference is none and there is no specified package in localPackages,
@@ -940,40 +940,49 @@ public class PBXProjGenerator {
                     continue
                 }
 
-                let productName = product ?? dependency.reference
-                let packageDependency = addObject(
-                    XCSwiftPackageProductDependency(productName: productName, package: packageReference)
-                )
-
-                // Add package dependency if linking is true.
-                if dependency.link ?? true {
-                    packageDependencies.append(packageDependency)
-                }
-
-                let link = dependency.link ?? (target.type != .staticLibrary)
-                if link {
-                    let file = PBXBuildFile(product: packageDependency, settings: getDependencyFrameworkSettings(dependency: dependency))
-                    file.platformFilter = platform
-                    let buildFile = addObject(file)
-                    targetFrameworkBuildFiles.append(buildFile)
-                } else {
-                    let targetDependency = addObject(
-                        PBXTargetDependency(platformFilter: platform, product: packageDependency)
+                func addPackageProductDependency(named productName: String) {
+                    let packageDependency = addObject(
+                        XCSwiftPackageProductDependency(productName: productName, package: packageReference)
                     )
-                    dependencies.append(targetDependency)
+
+                    // Add package dependency if linking is true.
+                    if dependency.link ?? true {
+                        packageDependencies.append(packageDependency)
+                    }
+
+                    let link = dependency.link ?? (target.type != .staticLibrary)
+                    if link {
+                        let file = PBXBuildFile(product: packageDependency, settings: getDependencyFrameworkSettings(dependency: dependency))
+                        file.platformFilter = platform
+                        let buildFile = addObject(file)
+                        targetFrameworkBuildFiles.append(buildFile)
+                    } else {
+                        let targetDependency = addObject(
+                            PBXTargetDependency(platformFilter: platform, product: packageDependency)
+                        )
+                        dependencies.append(targetDependency)
+                    }
+
+                    if dependency.embed == true {
+                        let pbxBuildFile = PBXBuildFile(product: packageDependency,
+                        settings: getEmbedSettings(dependency: dependency, codeSign: dependency.codeSign ?? true))
+                        pbxBuildFile.platformFilter = platform
+                        let embedFile = addObject(pbxBuildFile)
+
+                        if dependency.copyPhase != nil {
+                            customCopyDependenciesReferences.append(embedFile)
+                        } else {
+                            copyFrameworksReferences.append(embedFile)
+                        }
+                    }
                 }
 
-                if dependency.embed == true {
-                    let pbxBuildFile = PBXBuildFile(product: packageDependency,
-                    settings: getEmbedSettings(dependency: dependency, codeSign: dependency.codeSign ?? true))
-                    pbxBuildFile.platformFilter = platform
-                    let embedFile = addObject(pbxBuildFile)
-                    
-                    if dependency.copyPhase != nil {
-                        customCopyDependenciesReferences.append(embedFile)
-                    } else {
-                        copyFrameworksReferences.append(embedFile)
+                if !products.isEmpty {
+                    for product in products {
+                        addPackageProductDependency(named: product)
                     }
+                } else {
+                    addPackageProductDependency(named: dependency.reference)
                 }
             case .bundle:
                 // Static and dynamic libraries can't copy resources
