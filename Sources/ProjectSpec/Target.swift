@@ -175,7 +175,7 @@ extension Target {
                     
                     /// This value is set to help us to check, in Target init, that there are no conflicts in the definition of the platforms. We want to ensure that the user didn't define, at the same time,
                     /// the new Xcode 14 supported destinations and the XcodeGen generation of Multiple Platform Targets (when you define the platform field as an array).
-                    platformTarget["isResolved"] = true
+                    platformTarget["isMultiPlatformTarget"] = true
 
                     platformTarget = platformTarget.expand(variables: ["platform": platform])
 
@@ -285,7 +285,7 @@ extension Target: NamedJSONDictionaryConvertible {
             self.supportedDestinations = supportedDestinations
         }
         
-        let isResolved = jsonDictionary.json(atKeyPath: "isResolved") ?? false
+        let isResolved = jsonDictionary.json(atKeyPath: "isMultiPlatformTarget") ?? false
         if isResolved, supportedDestinations != nil {
             throw SpecParsingError.invalidTargetPlatformAsArray
         }

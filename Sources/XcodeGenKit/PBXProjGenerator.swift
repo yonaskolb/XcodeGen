@@ -340,7 +340,7 @@ public class PBXProjGenerator {
             return addObject(buildConfig)
         }
 
-        let dependencies = target.targets.map { generateTargetDependency(from: target.name, to: $0, platform: nil, platforms: nil) }
+        var dependencies = target.targets.map { generateTargetDependency(from: target.name, to: $0, platform: nil, platforms: nil) }
 
         let defaultConfigurationName = project.options.defaultConfig ?? project.configs.first?.name ?? ""
         let buildConfigList = addObject(XCConfigurationList(
@@ -963,11 +963,12 @@ public class PBXProjGenerator {
                     if link {
                         let file = PBXBuildFile(product: packageDependency, settings: getDependencyFrameworkSettings(dependency: dependency))
                         file.platformFilter = platform
+                        file.platformFilters = platforms
                         let buildFile = addObject(file)
                         targetFrameworkBuildFiles.append(buildFile)
                     } else {
                         let targetDependency = addObject(
-                            PBXTargetDependency(platformFilter: platform, product: packageDependency)
+                            PBXTargetDependency(platformFilter: platform, platformFilters: platforms, product: packageDependency)
                         )
                         dependencies.append(targetDependency)
                     }
@@ -976,6 +977,7 @@ public class PBXProjGenerator {
                         let pbxBuildFile = PBXBuildFile(product: packageDependency,
                         settings: getEmbedSettings(dependency: dependency, codeSign: dependency.codeSign ?? true))
                         pbxBuildFile.platformFilter = platform
+                        pbxBuildFile.platformFilters = platforms
                         let embedFile = addObject(pbxBuildFile)
 
                         if dependency.copyPhase != nil {

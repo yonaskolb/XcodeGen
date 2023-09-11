@@ -2053,8 +2053,8 @@ class ProjectGeneratorTests: XCTestCase {
                 
                 // given
                 let dependencies = [
-                    Dependency(type: .package(product: "RxSwift"), reference: "RxSwift", platformFilters: [.iOS]),
-                    Dependency(type: .package(product: "RxCocoa"), reference: "RxSwift", platformFilters: [.iOS, .tvOS]),
+                    Dependency(type: .package(products: ["RxSwift"]), reference: "RxSwift", platformFilters: [.iOS]),
+                    Dependency(type: .package(products: ["RxCocoa"]), reference: "RxSwift", platformFilters: [.iOS, .tvOS]),
                 ]
                 
                 // when
