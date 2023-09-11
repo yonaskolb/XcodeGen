@@ -357,7 +357,7 @@ class PBXProjGeneratorTests: XCTestCase {
                 let dependency1 = Dependency(type: .target, reference: "TestAll", platformFilter: .all)
                 let dependency2 = Dependency(type: .target, reference: "TestiOS", platformFilter: .iOS)
                 let dependency3 = Dependency(type: .target, reference: "TestmacOS", platformFilter: .macOS)
-                let dependency4 = Dependency(type: .package(product: "Swinject"), reference: "Swinject", platformFilter: .iOS)
+                let dependency4 = Dependency(type: .package(products: ["Swinject"]), reference: "Swinject", platformFilter: .iOS)
                 let target = Target(name: "Test", type: .application, platform: .iOS, sources: ["Sources"], dependencies: [dependency1, dependency2, dependency3, dependency4])
                 let swinjectPackage = SwiftPackage.remote(url: "https://github.com/Swinject/Swinject", versionRequirement: .exact("2.8.0"))
                 let project = Project(basePath: directoryPath, name: "Test", targets: [target, target1, target2, target3], packages: ["Swinject": swinjectPackage])

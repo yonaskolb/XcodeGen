@@ -30,6 +30,7 @@ public class PBXProjGenerator {
     var generated = false
 
     private var projects: [ProjectReference: PBXProj] = [:]
+    lazy private var localPackageReferences: [String] = project.packages.compactMap { $0.value.isLocal ? $0.key : nil }
 
     public init(project: Project, projectDirectory: Path? = nil) {
         self.project = project
@@ -349,6 +350,9 @@ public class PBXProjGenerator {
 
         var buildPhases: [PBXBuildPhase] = []
         buildPhases += try target.buildScripts.map { try generateBuildScript(targetName: target.name, buildScript: $0) }
+
+        let packagePluginDependencies = makePackagePluginDependency(for: target)
+        dependencies.append(contentsOf: packagePluginDependencies)
 
         aggregateTarget.buildPhases = buildPhases
         aggregateTarget.buildConfigurationList = buildConfigList
@@ -693,7 +697,6 @@ public class PBXProjGenerator {
         var systemExtensions: [PBXBuildFile] = []
         var appClips: [PBXBuildFile] = []
         var carthageFrameworksToEmbed: [String] = []
-        let localPackageReferences: [String] = project.packages.compactMap { $0.value.isLocal ? $0.key : nil }
 
         let targetDependencies = (target.transitivelyLinkDependencies ?? project.options.transitivelyLinkDependencies) ?
             getAllDependenciesPlusTransitiveNeedingEmbedding(target: target) : target.dependencies
@@ -937,7 +940,7 @@ public class PBXProjGenerator {
                     }
                 }
             // Embedding handled by iterating over `carthageDependencies` below
-            case .package(let product):
+            case .package(let products):
                 let packageReference = packageReferences[dependency.reference]
 
                 // If package's reference is none and there is no specified package in localPackages,
@@ -946,44 +949,49 @@ public class PBXProjGenerator {
                     continue
                 }
 
-                let productName = product ?? dependency.reference
-                let packageDependency = addObject(
-                    XCSwiftPackageProductDependency(productName: productName, package: packageReference)
-                )
-
-                // Add package dependency if linking is true.
-                if dependency.link ?? true {
-                    packageDependencies.append(packageDependency)
-                }
-
-                let link = dependency.link ?? (target.type != .staticLibrary)
-                if link {
-                    let file = PBXBuildFile(product: packageDependency, settings: getDependencyFrameworkSettings(dependency: dependency))
-                    file.platformFilter = platform
-                    file.platformFilters = platforms
-                    let buildFile = addObject(file)
-                    targetFrameworkBuildFiles.append(buildFile)
-                } else {
-                    let targetDependency = addObject(
-                        PBXTargetDependency(platformFilter: platform,
-                                            platformFilters: platforms,
-                                            product: packageDependency)
+                func addPackageProductDependency(named productName: String) {
+                    let packageDependency = addObject(
+                        XCSwiftPackageProductDependency(productName: productName, package: packageReference)
                     )
-                    dependencies.append(targetDependency)
+
+                    // Add package dependency if linking is true.
+                    if dependency.link ?? true {
+                        packageDependencies.append(packageDependency)
+                    }
+
+                    let link = dependency.link ?? (target.type != .staticLibrary)
+                    if link {
+                        let file = PBXBuildFile(product: packageDependency, settings: getDependencyFrameworkSettings(dependency: dependency))
+                        file.platformFilter = platform
+                        let buildFile = addObject(file)
+                        targetFrameworkBuildFiles.append(buildFile)
+                    } else {
+                        let targetDependency = addObject(
+                            PBXTargetDependency(platformFilter: platform, product: packageDependency)
+                        )
+                        dependencies.append(targetDependency)
+                    }
+
+                    if dependency.embed == true {
+                        let pbxBuildFile = PBXBuildFile(product: packageDependency,
+                        settings: getEmbedSettings(dependency: dependency, codeSign: dependency.codeSign ?? true))
+                        pbxBuildFile.platformFilter = platform
+                        let embedFile = addObject(pbxBuildFile)
+
+                        if dependency.copyPhase != nil {
+                            customCopyDependenciesReferences.append(embedFile)
+                        } else {
+                            copyFrameworksReferences.append(embedFile)
+                        }
+                    }
                 }
 
-                if dependency.embed == true {
-                    let pbxBuildFile = PBXBuildFile(product: packageDependency,
-                    settings: getEmbedSettings(dependency: dependency, codeSign: dependency.codeSign ?? true))
-                    pbxBuildFile.platformFilter = platform
-                    pbxBuildFile.platformFilters = platforms
-                    let embedFile = addObject(pbxBuildFile)
-                    
-                    if dependency.copyPhase != nil {
-                        customCopyDependenciesReferences.append(embedFile)
-                    } else {
-                        copyFrameworksReferences.append(embedFile)
+                if !products.isEmpty {
+                    for product in products {
+                        addPackageProductDependency(named: product)
                     }
+                } else {
+                    addPackageProductDependency(named: dependency.reference)
                 }
             case .bundle:
                 // Static and dynamic libraries can't copy resources
@@ -1046,22 +1054,8 @@ public class PBXProjGenerator {
         
         carthageFrameworksToEmbed = carthageFrameworksToEmbed.uniqued()
 
-        // Adding `Build Tools Plug-ins` as a dependency to the target
-        for buildToolPlugin in target.buildToolPlugins {
-            let packageReference = packageReferences[buildToolPlugin.package]
-            if packageReference == nil, !localPackageReferences.contains(buildToolPlugin.package) {
-                continue
-            }
-
-            let packageDependency = addObject(
-                XCSwiftPackageProductDependency(productName: buildToolPlugin.plugin, package: packageReference, isPlugin: true)
-            )
-            let targetDependency = addObject(
-                PBXTargetDependency(product: packageDependency)
-            )
-
-            dependencies.append(targetDependency)
-        }
+        let packagePluginDependencies = makePackagePluginDependency(for: target)
+        dependencies.append(contentsOf: packagePluginDependencies)
         
         var buildPhases: [PBXBuildPhase] = []
 
@@ -1465,6 +1459,27 @@ public class PBXProjGenerator {
     private func makePlatformFilters(for filters: [SupportedDestination]?) -> [String]? {
         guard let filters = filters, !filters.isEmpty else { return nil }
         return filters.map { $0.string }
+    }
+    
+    /// Make `Build Tools Plug-ins` as a dependency to the target
+    /// - Parameter target: ProjectTarget
+    /// - Returns: Elements for referencing other targets through content proxies.
+    func makePackagePluginDependency(for target: ProjectTarget) -> [PBXTargetDependency] {
+        target.buildToolPlugins.compactMap { buildToolPlugin in
+            let packageReference = packageReferences[buildToolPlugin.package]
+            if packageReference == nil, !localPackageReferences.contains(buildToolPlugin.package) {
+                return nil
+            }
+
+            let packageDependency = addObject(
+                XCSwiftPackageProductDependency(productName: buildToolPlugin.plugin, package: packageReference, isPlugin: true)
+            )
+            let targetDependency = addObject(
+                PBXTargetDependency(product: packageDependency)
+            )
+
+            return targetDependency
+        }
     }
     
     func getInfoPlists(for target: Target) -> [Config: String] {

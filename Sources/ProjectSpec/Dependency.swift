@@ -64,7 +64,7 @@ public struct Dependency: Equatable {
         case framework
         case carthage(findFrameworks: Bool?, linkType: CarthageLinkType)
         case sdk(root: String?)
-        case package(product: String?)
+        case package(products: [String])
         case bundle
     }
 }
@@ -72,9 +72,9 @@ public struct Dependency: Equatable {
 extension Dependency {
     public var uniqueID: String {
         switch type {
-        case .package(let product):
-            if let product = product {
-                return "\(reference)/\(product)"
+        case .package(let products):
+            if !products.isEmpty {
+                return "\(reference)/\(products.joined(separator: ","))"
             } else {
                 return reference
             }
@@ -109,9 +109,16 @@ extension Dependency: JSONObjectConvertible {
             type = .sdk(root: sdkRoot)
             reference = sdk
         } else if let package: String = jsonDictionary.json(atKeyPath: "package") {
-            let product: String? = jsonDictionary.json(atKeyPath: "product")
-            type = .package(product: product)
-            reference = package
+            if let products: [String] = jsonDictionary.json(atKeyPath: "products") {
+                type = .package(products: products)
+                reference = package
+            } else if let product: String = jsonDictionary.json(atKeyPath: "product") {
+                type = .package(products: [product])
+                reference = package
+            } else {
+                type = .package(products: [])
+                reference = package
+            }
         } else if let bundle: String = jsonDictionary.json(atKeyPath: "bundle") {
             type = .bundle
             reference = bundle

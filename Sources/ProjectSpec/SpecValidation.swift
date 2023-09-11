@@ -144,6 +144,12 @@ extension Project {
             }
 
             errors += validateSettings(target.settings)
+
+            for buildToolPlugin in target.buildToolPlugins {
+                if packages[buildToolPlugin.package] == nil {
+                    errors.append(.invalidPluginPackageReference(plugin: buildToolPlugin.plugin, package: buildToolPlugin.package))
+                }
+            }
         }
 
         for target in aggregateTargets {

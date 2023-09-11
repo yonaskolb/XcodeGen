@@ -14,10 +14,12 @@
 ### Added
 
 - `.mlpackage` files now default to being a source type #1398 @aaron-foreflight
- 
+- Added support for `Build Tool Plug-ins` in `AggregateTarget` #1390 @BarredEwe
+
 ### Fixed
 
 - Fixed source file `includes` not working when no paths were found #1337 @shnhrrsn
+- Supports specifying multiple package products #1395 @simonbs
 
 ## 2.37.0
 

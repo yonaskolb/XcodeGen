@@ -38,7 +38,7 @@ class SpecLoadingTests: XCTestCase {
                     "toReplace": Settings(dictionary: ["MY_SETTING2": "VALUE2"]),
                 ]
                 try expect(project.targets) == [
-                    Target(name: "IncludedTargetNew", type: .application, platform: .tvOS, sources: ["NewSource"], dependencies: [Dependency(type: .package(product: nil), reference: "Yams")]),
+                    Target(name: "IncludedTargetNew", type: .application, platform: .tvOS, sources: ["NewSource"], dependencies: [Dependency(type: .package(products: []), reference: "Yams")]),
                     Target(name: "NewTarget", type: .application, platform: .iOS, sources: ["template", "target"]),
                 ]
             }
@@ -54,7 +54,7 @@ class SpecLoadingTests: XCTestCase {
                     "toReplace": Settings(dictionary: ["MY_SETTING2": "VALUE2"]),
                 ]
                 try expect(project.targets) == [
-                    Target(name: "IncludedTargetNew", type: .application, platform: .tvOS, sources: ["NewSource"], dependencies: [Dependency(type: .package(product: nil), reference: "SwiftPM"), Dependency(type: .package(product: nil), reference: "Yams")]),
+                    Target(name: "IncludedTargetNew", type: .application, platform: .tvOS, sources: ["NewSource"], dependencies: [Dependency(type: .package(products: []), reference: "SwiftPM"), Dependency(type: .package(products: []), reference: "Yams")]),
                     Target(name: "NewTarget", type: .application, platform: .iOS, sources: ["template", "target"]),
                 ]
             }
@@ -70,7 +70,7 @@ class SpecLoadingTests: XCTestCase {
                     "toReplace": Settings(dictionary: ["MY_SETTING2": "VALUE2"]),
                 ]
                 try expect(project.targets) == [
-                    Target(name: "IncludedTargetNew", type: .application, platform: .tvOS, sources: ["NewSource"], dependencies: [Dependency(type: .package(product: nil), reference: "Yams")]),
+                    Target(name: "IncludedTargetNew", type: .application, platform: .tvOS, sources: ["NewSource"], dependencies: [Dependency(type: .package(products: []), reference: "Yams")]),
                     Target(name: "NewTarget", type: .application, platform: .iOS, sources: ["template", "target"]),
                 ]
             }
