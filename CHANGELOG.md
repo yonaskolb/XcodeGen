@@ -361,7 +361,7 @@ Some support for Xcode Test Plans has been added. For now test plans are not gen
 
 #### Fixed
 
-- Fixed issue when linking and embeding static frameworks: they should be linked and NOT embed. #820 @acecilia
+- Fixed issue when linking and embedding static frameworks: they should be linked and NOT embed. #820 @acecilia
 - Fixed issue when generating projects for paths with a dot in the folder for swift sources. #826 @asifmohd
 - Prefix static library target filenames with 'lib' to match Xcode. #831 @ileitch
 - Fixed duplicate addition of carthage static frameworks. #829 @funzin
