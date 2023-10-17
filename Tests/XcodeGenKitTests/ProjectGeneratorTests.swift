@@ -1530,6 +1530,69 @@ class ProjectGeneratorTests: XCTestCase {
             }
         }
     }
+    
+    func testGenerateMultipleXcodeProjectWithMultipleTargetDependencies() {
+        describe {
+            $0.it("generates dependency from external project file") {
+                let appProject: PBXProj
+                prepareXcodeProj: do {
+                    let project = try! Project(path: fixturePath + "TestProject/App_AnotherProject/project.yml")
+                    let generator = ProjectGenerator(project: project)
+                    let writer = FileWriter(project: project)
+                    let xcodeProject = try! generator.generateXcodeProject()
+                    try! writer.writeXcodeProject(xcodeProject)
+                    try! writer.writePlists()
+                    appProject = xcodeProject.pbxproj
+                }
+                let externalProjectPath = fixturePath + "TestProject/AnotherProject/AnotherProject.xcodeproj"
+                let projectReference = ProjectReference(name: "AnotherProject", path: externalProjectPath.string)
+                let frameworkTarget = Target(
+                    name: "Target",
+                    type: .framework,
+                    platform: .iOS,
+                    dependencies: [
+                        Dependency(type: .target, reference: "AnotherProject/ExternalTarget")
+                    ]
+                )
+                let exampleTarget = Target(
+                    name: "TargetExample",
+                    type: .application,
+                    platform: .iOS,
+                    dependencies: [
+                        Dependency(type: .target, reference: "Target"),
+                        Dependency(type: .target, reference: "AnotherProject/ExternalTarget")
+                    ]
+                )
+                let project = Project(
+                    name: "Target",
+                    targets: [frameworkTarget, exampleTarget],
+                    schemes: [],
+                    projectReferences: [projectReference]
+                )
+                let pbxProject = try project.generatePbxProj()
+                
+                let generatedReferenceProxies = appProject.referenceProxies
+                let projectReferenceProxies = pbxProject.referenceProxies
+                
+                try expect(generatedReferenceProxies.count) == 1
+                try expect(projectReferenceProxies.count == generatedReferenceProxies.count) == true
+
+                let projectReferences = pbxProject.rootObject?.projects ?? []
+                try expect(projectReferences.count) == 1
+                try expect((projectReferences.first?["ProjectRef"])?.name) == "AnotherProject"
+                
+                let dependencies = pbxProject.targetDependencies
+                
+                let targetUuid = appProject.targetDependencies
+                    .first(where: { $0.name == "ExternalTarget" })?.targetProxy?.remoteGlobalID
+                try expect(dependencies).contains { dependency in
+                    guard let id = dependency.targetProxy?.remoteGlobalID else { return false }
+                    
+                    return id == targetUuid
+                }
+            }
+        }
+    }
 
     func testGenerateXcodeProjectWithDestination() throws {
         let groupName = "App_iOS"

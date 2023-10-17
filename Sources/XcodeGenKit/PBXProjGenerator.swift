@@ -17,6 +17,7 @@ public class PBXProjGenerator {
 
     var sourceGenerator: SourceGenerator!
 
+    var dependencySet: [String: (Target, PBXReferenceProxy)] = [:]
     var targetObjects: [String: PBXTarget] = [:]
     var targetAggregateObjects: [String: PBXAggregateTarget] = [:]
     var targetFileReferences: [String: PBXFileReference] = [:]
@@ -800,10 +801,16 @@ public class PBXProjGenerator {
                     guard let dependencyTarget = project.getTarget(dependencyTargetName) else { continue }
                     processTargetDependency(dependency, dependencyTarget: dependencyTarget, embedFileReference: targetFileReferences[dependencyTarget.name], platform: platform)
                 case .project(let dependencyProjectName):
-                    let dependencyTargetName = dependencyTargetReference.name
-                    let (targetDependency, dependencyTarget, dependencyProductProxy) = try generateExternalTargetDependency(from: target.name, to: dependencyTargetName, in: dependencyProjectName, platform: target.platform)
-                    dependencies.append(targetDependency)
-                    processTargetDependency(dependency, dependencyTarget: dependencyTarget, embedFileReference: dependencyProductProxy, platform: platform)
+                    let id = "\(dependencyProjectName)_\(dependency.uniqueID)"
+                    if let dependencySet = dependencySet[id] {
+                        processTargetDependency(dependency, dependencyTarget: dependencySet.0, embedFileReference: dependencySet.1, platform: platform)
+                    } else {
+                        let dependencyTargetName = dependencyTargetReference.name
+                        let (targetDependency, dependencyTarget, dependencyProductProxy) = try generateExternalTargetDependency(from: target.name, to: dependencyTargetName, in: dependencyProjectName, platform: target.platform)
+                        dependencies.append(targetDependency)
+                        processTargetDependency(dependency, dependencyTarget: dependencyTarget, embedFileReference: dependencyProductProxy, platform: platform)
+                        dependencySet[id] = (dependencyTarget, dependencyProductProxy)
+                    }
                 }
 
             case .framework:
