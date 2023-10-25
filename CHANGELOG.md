@@ -11,6 +11,7 @@
 
 - Fixed source file `includes` not working when no paths were found #1337 @shnhrrsn
 - Supports specifying multiple package products #1395 @simonbs
+- Fixed generation of multiple schemes when running xcodegen in preAction scheme script
 
 ## 2.37.0
 
