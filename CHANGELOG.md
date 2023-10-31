@@ -5,6 +5,7 @@
 ## 2.38.0
 
 ### Added
+
 - [Multi-destination targets](https://github.com/yonaskolb/XcodeGen/blob/master/Docs/ProjectSpec.md#supported-destinations) #1336 @amatig
   - Added `supportedDestinations` to target
   - Added optional new `platform` value of `auto` when using `supportedDestinations`
