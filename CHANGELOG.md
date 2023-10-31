@@ -9,7 +9,7 @@
 - [Multi-destination targets](https://github.com/yonaskolb/XcodeGen/blob/master/Docs/ProjectSpec.md#supported-destinations) #1336 @amatig
   - Added `supportedDestinations` to target
   - Added optional new `platform` value of `auto` when using `supportedDestinations`
-  - Added `destinationFilters` for sources and dependecies
+  - Added `destinationFilters` for sources and dependencies
   - Added `inferDestinationFiltersByPath`, a convenience filter for sources
 - `.mlpackage` files now default to being a source type #1398 @aaron-foreflight
 - Added support for `Build Tool Plug-ins` in `AggregateTarget` #1390 @BarredEwe
