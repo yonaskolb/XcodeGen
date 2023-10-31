@@ -16,6 +16,11 @@ options:
       buildPhase: none
     abcd:
       buildPhase: none
+globalTemplateAttributes:
+  version: legacy
+configs:
+  Debug: debug
+  Release: release
 fileGroups:
   - Configs
   - FileGroup
@@ -79,7 +84,9 @@ targets:
     legacy:
       toolPath: /usr/bin/true
       passSettings: true
-
+  ContentBlocker:
+    templates:
+      - ContentBlockerTemplate
   App_macOS:
     type: application
     platform: macOS
@@ -497,6 +504,16 @@ schemes:
 targetTemplates:
   MyTemplate:
     scheme: {}
+  ContentBlockerTemplate:
+    platform: iOS
+    type: app-extension
+    settings:
+      CODE_SIGN_IDENTITY: Apple Development
+    configFiles:
+      Debug: ContentBlocker/Configs/${version}/Debug.xcconfig
+      Release: ContentBlocker/Configs/${version}/Release.xcconfig
+    sources:
+      - ContentBlocker
 aggregateTargets:
   SuperTarget:
     attributes:
