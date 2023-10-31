@@ -76,6 +76,7 @@
 		3BBCA6F76E5F212E9C55FB78 /* BundleX.bundle in Copy Bundle Resources */ = {isa = PBXBuildFile; fileRef = 45C12576F5AA694DD0CE2132 /* BundleX.bundle */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		3C5134EE524310ACF7B7CD6E /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8CAF6C55B555E3E1352645B6 /* ExtensionDelegate.swift */; };
 		3DF22C477446669094AC7C8C /* ExternalTarget.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F6ADE654A3459AFDA2CC0CD3 /* ExternalTarget.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		419BA91BBFD0053822D29F8B /* ContentBlockerRequestHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFD19E77891EFBB771E7C1F6 /* ContentBlockerRequestHandler.swift */; };
 		447D59BE2E0993D7245EA247 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3797E591F302ECC0AA2FC607 /* Assets.xcassets */; };
 		45E6702CD9C088FF1FC25F34 /* App_watchOS.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = A680BE9F68A255B0FB291AE6 /* App_watchOS.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		470D3493CDBFE56E2083A5FD /* BundleY.bundle in Copy Bundle Resources */ = {isa = PBXBuildFile; fileRef = E3958AB20082EA12D4D5E60C /* BundleY.bundle */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -99,6 +100,7 @@
 		61401517ECCEB2362582B5DA /* libEndpointSecurity.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0BC75409252FF15F540FBB7B /* libEndpointSecurity.tbd */; };
 		61516CAC12B2843FBC4572E6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 59DA55A04FA2366B5D0BEEFF /* Assets.xcassets */; };
 		61601545B6BE00CA74A4E38F /* SceneKitCatalog.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = C9E358FBE2B54D2B5C7FD609 /* SceneKitCatalog.scnassets */; };
+		61E7E700A540CA86CFE30987 /* blockerList.json in Resources */ = {isa = PBXBuildFile; fileRef = B003E6782AAF80CE3DC662F4 /* blockerList.json */; };
 		6241507B4947B0B65429587C /* ExternalTarget.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F6ADE654A3459AFDA2CC0CD3 /* ExternalTarget.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		632774E7F21CCB386A76B2A8 /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B198242976C3395E31FE000A /* MessagesViewController.swift */; };
 		63D8E7F00276736EDA62D227 /* Framework2.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 3EF21DF245F66BEF5446AAEF /* Framework2.framework */; platformFilter = ios; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -723,6 +725,7 @@
 /* Begin PBXFileReference section */
 		0095836FE59395511E0CB4F0 /* CrossOverlayFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CrossOverlayFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		01E6934B571B91EAAFF0EDCB /* Resource.abc */ = {isa = PBXFileReference; path = Resource.abc; sourceTree = "<group>"; };
+		020B4FF64D029A2F6B13984D /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
 		020E4DA91C9132845CAFDC5D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		039F208D1138598CE060F140 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		03CD22B8CD2E91BB97CC534E /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
@@ -762,6 +765,7 @@
 		2F430AABE04B7499B458D9DB /* SwiftFileInDotPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftFileInDotPath.swift; sourceTree = "<group>"; };
 		3096A0760969873D46F80A92 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		325F18855099386B08DD309B /* Resource.abcd */ = {isa = PBXFileReference; path = Resource.abcd; sourceTree = "<group>"; };
+		334B75B25BEE708C56586797 /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Release.xcconfig; sourceTree = "<group>"; };
 		33F6DCDC37D2E66543D4965D /* App_macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = App_macOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		34F13B632328979093CE6056 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		3571E41E19A5AB8AAAB04109 /* StandaloneAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = StandaloneAssets.xcassets; sourceTree = "<group>"; };
@@ -773,6 +777,8 @@
 		3ED831531AA349CCC19B258B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3EF21DF245F66BEF5446AAEF /* Framework2.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Framework2.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3FC04772130400920D68A167 /* App_Clip_Tests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = App_Clip_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		4060DCDEBE331FD9C0D33D14 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		40707675B7DC5C5158C16329 /* ContentBlocker.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = ContentBlocker.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		407C3F0009FDCE5B1B7DC2A8 /* App_supportedDestinations.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = App_supportedDestinations.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		40863AE6202CFCD0529D8438 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		41FC82ED1C4C3B7B3D7B2FB7 /* Framework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Framework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -839,6 +845,7 @@
 		AB055761199DF36DB0C629A6 /* Framework2.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Framework2.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AEBCA8CFF769189C0D52031E /* App_iOS.xctestplan */ = {isa = PBXFileReference; path = App_iOS.xctestplan; sourceTree = "<group>"; };
 		AEEFDE76B5FEC833403C0869 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		B003E6782AAF80CE3DC662F4 /* blockerList.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = blockerList.json; sourceTree = "<group>"; };
 		B17B8D9C9B391332CD176A35 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LocalizedStoryboard.storyboard; sourceTree = "<group>"; };
 		B198242976C3395E31FE000A /* MessagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesViewController.swift; sourceTree = "<group>"; };
 		B1C33BB070583BE3B0EC0E68 /* App_iOS.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = App_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -871,6 +878,7 @@
 		D7E73F4E11A4B74449E7FDFE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		D8A016580A3B8F72B820BFBF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DAA7880242A9DE61E68026CC /* Folder */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Folder; sourceTree = SOURCE_ROOT; };
+		DFD19E77891EFBB771E7C1F6 /* ContentBlockerRequestHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentBlockerRequestHandler.swift; sourceTree = "<group>"; };
 		DFE6A6FAAFF701FE729293DE /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		E0F31A9DE15B210D101AFC81 /* CrossOverlayFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CrossOverlayFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E3958AB20082EA12D4D5E60C /* BundleY.bundle */ = {isa = PBXFileReference; lastKnownFileType = wrapper.cfbundle; path = BundleY.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1124,6 +1132,7 @@
 				BAE6C12745737019DC9E98BF /* App_watchOS */,
 				795B8D70B674C850B57DD39D /* App_watchOS Extension */,
 				6DBE0EE90642BB3F6E58AD43 /* Configs */,
+				F1FBA0D5C2FF5CB9E3DF1C94 /* ContentBlocker */,
 				3F2E22B7AB20FA42CD205C2A /* CopyFiles */,
 				ED8625A7E716E1BA50AB88AB /* CrossOverlayFramework */,
 				FCC084D4F8992BBC49983A38 /* CustomGroup */,
@@ -1403,6 +1412,7 @@
 				A680BE9F68A255B0FB291AE6 /* App_watchOS.app */,
 				84317819C92F78425870E483 /* BundleX.bundle */,
 				BB677D970923F663D846D7E0 /* BundleY.bundle */,
+				40707675B7DC5C5158C16329 /* ContentBlocker.appex */,
 				8FE05BF7897ECFD58B7AC8B1 /* CrossOverlayFramework.framework */,
 				E0F31A9DE15B210D101AFC81 /* CrossOverlayFramework.framework */,
 				0095836FE59395511E0CB4F0 /* CrossOverlayFramework.framework */,
@@ -1435,6 +1445,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		AF78B31F5BDF95A9589B3879 /* legacy */ = {
+			isa = PBXGroup;
+			children = (
+				020B4FF64D029A2F6B13984D /* Debug.xcconfig */,
+				334B75B25BEE708C56586797 /* Release.xcconfig */,
+			);
+			path = legacy;
+			sourceTree = "<group>";
+		};
 		BAE6C12745737019DC9E98BF /* App_watchOS */ = {
 			isa = PBXGroup;
 			children = (
@@ -1464,6 +1483,14 @@
 				B198242976C3395E31FE000A /* MessagesViewController.swift */,
 			);
 			path = iMessageExtension;
+			sourceTree = "<group>";
+		};
+		C273E3A2CF5F0D2308907EB1 /* Configs */ = {
+			isa = PBXGroup;
+			children = (
+				AF78B31F5BDF95A9589B3879 /* legacy */,
+			);
+			path = Configs;
 			sourceTree = "<group>";
 		};
 		C81493FAD71E9A9A19E00AD5 /* App_Clip */ = {
@@ -1544,6 +1571,17 @@
 				A4C3FE6B986506724DAB5D0F /* ViewController.swift */,
 			);
 			path = App_macOS;
+			sourceTree = "<group>";
+		};
+		F1FBA0D5C2FF5CB9E3DF1C94 /* ContentBlocker */ = {
+			isa = PBXGroup;
+			children = (
+				C273E3A2CF5F0D2308907EB1 /* Configs */,
+				B003E6782AAF80CE3DC662F4 /* blockerList.json */,
+				DFD19E77891EFBB771E7C1F6 /* ContentBlockerRequestHandler.swift */,
+				4060DCDEBE331FD9C0D33D14 /* Info.plist */,
+			);
+			path = ContentBlocker;
 			sourceTree = "<group>";
 		};
 		FC1515684236259C50A7747F /* Frameworks */ = {
@@ -2323,6 +2361,22 @@
 			productReference = 3EF21DF245F66BEF5446AAEF /* Framework2.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		CE850EC53E9530D777ED6B31 /* ContentBlocker */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E52CEBE94EB3DA1F6DECC49F /* Build configuration list for PBXNativeTarget "ContentBlocker" */;
+			buildPhases = (
+				3EF36228A8A64153AF4A166C /* Sources */,
+				F0E27F118501847320425EB6 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ContentBlocker;
+			productName = ContentBlocker;
+			productReference = 40707675B7DC5C5158C16329 /* ContentBlocker.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		D137C04B64B7052419A2DF4E /* App_Clip */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 07B4E73E56B7C2C80DE2A378 /* Build configuration list for PBXNativeTarget "App_Clip" */;
@@ -2505,6 +2559,7 @@
 				307AE3FA155FFD09B74AE351 /* App_watchOS Extension */,
 				DA40AB367B606CCE2FDD398D /* BundleX */,
 				271CAC331D24F4F7E12C819C /* BundleY */,
+				CE850EC53E9530D777ED6B31 /* ContentBlocker */,
 				0CE8BE7C80651629EC056066 /* CrossOverlayFramework_iOS */,
 				2F4FEAEFD7EE82DC49D899FC /* CrossOverlayFramework_macOS */,
 				3BF66A4668DFAF9338791F60 /* CrossOverlayFramework_tvOS */,
@@ -2638,6 +2693,14 @@
 			files = (
 				52AD3276E068EB3396A292BB /* Assets.xcassets in Resources */,
 				2B940E57041A72E6A39B6BF0 /* Interface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F0E27F118501847320425EB6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				61E7E700A540CA86CFE30987 /* blockerList.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2896,6 +2959,14 @@
 			files = (
 				0932FB6FB887D7D6F7727CB7 /* Driver.cpp in Sources */,
 				FB6DA0DB62C425066D51767E /* Driver.iig in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		3EF36228A8A64153AF4A166C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				419BA91BBFD0053822D29F8B /* ContentBlockerRequestHandler.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3548,6 +3619,61 @@
 			};
 			name = "Production Debug";
 		};
+		036FCF7C4B48C154279F289D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				WATCHOS_DEPLOYMENT_TARGET = 4.0;
+			};
+			name = Release;
+		};
 		03B133682B8BEF8B1D647C76 /* Production Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -3682,6 +3808,57 @@
 			};
 			name = "Staging Release";
 		};
+		06FEE6A4375FED73FBBB4162 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
+				INFOPLIST_FILE = Framework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.Framework-iOS";
+				PRODUCT_NAME = Framework;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Release;
+		};
+		0759152BA40030DC660A8A75 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
+				INFOPLIST_FILE = "App_macOS/App-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-macOS";
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
 		079E494F34C3CAFB8F9E44B3 /* Production Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -3723,6 +3900,30 @@
 			};
 			name = "Production Debug";
 		};
+		07E5149D107F99C5B177E334 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Framework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.Framework2-macOS";
+				PRODUCT_NAME = Framework2;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Debug;
+		};
 		082A10B9E5EAC6E783EAB9B0 /* Production Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -3744,6 +3945,20 @@
 				TEST_TARGET_NAME = App_iOS;
 			};
 			name = "Production Debug";
+		};
+		08CC6F3F14F7A79BDA93A05C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "XPC Service/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.XPCService;
+				SDKROOT = macosx;
+			};
+			name = Debug;
 		};
 		0AB9030B7E8A8BBA74CCB1A9 /* Test Debug */ = {
 			isa = XCBuildConfiguration;
@@ -3840,6 +4055,28 @@
 			};
 			name = "Staging Release";
 		};
+		101BFAA9BA10EE5B908E9FBC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.ExternalTarget;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Debug;
+		};
 		10E250D1DC79E11058B933F9 /* Test Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -3915,6 +4152,30 @@
 			};
 			name = "Test Debug";
 		};
+		13F2B56968ABE133E25DA1AD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = CrossOverlayFramework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.CrossOverlayFramework-macOS";
+				PRODUCT_NAME = CrossOverlayFramework;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Debug;
+		};
 		13FF53C2B3637EA82E3DF577 /* Production Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -3929,6 +4190,26 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = "Production Debug";
+		};
+		14254D2EA8A51831F2C68BCF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = App_supportedDestinations/Info.generated.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.test.TestApp;
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator appletvos appletvsimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = YES;
+				TARGETED_DEVICE_FAMILY = "1,2,3";
+			};
+			name = Debug;
 		};
 		1539437BBB98703535876E35 /* Staging Debug */ = {
 			isa = XCBuildConfiguration;
@@ -4013,6 +4294,22 @@
 			};
 			name = "Production Release";
 		};
+		18AA8BA9237D5BC52525C664 /* Production Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "Apple Development";
+				INFOPLIST_FILE = ContentBlocker/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.ContentBlocker;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Production Release";
+		};
 		18B5349AE18B7183BE4B4363 /* Staging Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -4048,6 +4345,30 @@
 				SDKROOT = macosx;
 			};
 			name = "Test Debug";
+		};
+		197BE53586CE04464012ADB4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Framework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.Framework2-iOS";
+				PRODUCT_NAME = Framework2;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Release;
 		};
 		19BF18E6EAA8B30F894EAB4E /* Test Release */ = {
 			isa = XCBuildConfiguration;
@@ -4126,6 +4447,22 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = "Test Release";
+		};
+		1D6D36790F00BE5A86FF54A4 /* Staging Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "Apple Development";
+				INFOPLIST_FILE = ContentBlocker/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.ContentBlocker;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Staging Release";
 		};
 		1FB2AFB2F45076B4A047499E /* Staging Debug */ = {
 			isa = XCBuildConfiguration;
@@ -4260,6 +4597,18 @@
 			};
 			name = "Test Debug";
 		};
+		25BDDBB812A4685EA72281C8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = App_watchOS/Info.plist;
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.app.watch;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 4.0;
+			};
+			name = Debug;
+		};
 		25E62244CD9C539F614224DF /* Production Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -4324,6 +4673,28 @@
 			};
 			name = "Production Release";
 		};
+		285C62725752B7E4A94D2A66 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)/Carthage/Build/iOS/Static",
+				);
+				INFOPLIST_FILE = App_iOS_Tests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-Clip-Tests";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/App_Clip.app/App_Clip";
+			};
+			name = Debug;
+		};
 		291A37106E83E5C30890F422 /* Staging Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -4339,6 +4710,54 @@
 				SDKROOT = driverkit;
 			};
 			name = "Staging Debug";
+		};
+		29BC1A1643DAF571152D9B51 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)/Carthage/Build/iOS/Static",
+				);
+				INFOPLIST_FILE = App_iOS/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.app;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		29E0786EB928072F62658FF9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = App_Clip/Clip.entitlements;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
+				INFOPLIST_FILE = App_Clip/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.app.clip;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
 		};
 		2C6AB16720ADFB2436337A8F /* Test Debug */ = {
 			isa = XCBuildConfiguration;
@@ -4428,6 +4847,19 @@
 			};
 			name = "Test Debug";
 		};
+		2FDEB16B10C7D839F9026421 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.BundleY;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
 		31931061043C66589547105C /* Staging Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -4485,6 +4917,28 @@
 				TEST_TARGET_NAME = App_Clip;
 			};
 			name = "Production Release";
+		};
+		3493518E9B2D0A8E96C9197D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.ExternalTarget;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Release;
 		};
 		34ED16009A759D256D7ECB53 /* Production Release */ = {
 			isa = XCBuildConfiguration;
@@ -4555,6 +5009,39 @@
 			};
 			name = "Production Release";
 		};
+		38AA62088F1A0275FDE90E4C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.Tool;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		3A6F627CE40E07364C47A27D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Framework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.Framework2-watchOS";
+				PRODUCT_NAME = Framework2;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Release;
+		};
 		3BDE7967B50F4358BD4702AD /* Test Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -4598,6 +5085,50 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = "Production Release";
+		};
+		3C7BCBE02EC81CC6BD815687 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.Legacy;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		3CD40ADE056770AA24716676 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "DriverKit Driver/Driver.entitlements";
+				COMBINE_HIDPI_IMAGES = YES;
+				DRIVERKIT_DEPLOYMENT_TARGET = 20.4;
+				INFOPLIST_FILE = "DriverKit Driver/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-macOS.Driver";
+				SDKROOT = driverkit;
+			};
+			name = Release;
+		};
+		3D678B42EE12C56238305F21 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.StaticLibrary-ObjC-macOS";
+				PRODUCT_NAME = StaticLibrary_ObjC;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
 		};
 		3DEEA480EDDC83405CFB9BBA /* Test Release */ = {
 			isa = XCBuildConfiguration;
@@ -4742,6 +5273,19 @@
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = "Production Debug";
+		};
+		44923A4B24045BA0AC8F0370 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.IncludedLegacy;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
 		};
 		44C2FD12D7D26D71D8150C76 /* Test Debug */ = {
 			isa = XCBuildConfiguration;
@@ -4918,6 +5462,34 @@
 			};
 			name = "Staging Debug";
 		};
+		4B38A1B61BF658ED9AA04C45 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.StaticLibrary-ObjC-iOS";
+				PRODUCT_NAME = StaticLibrary_ObjC;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		4B549E045D45E9B0C6C012F4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.BundleY;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		4BCE080A33E3A2F26D1DBEEB /* Production Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -4958,6 +5530,29 @@
 				TARGETED_DEVICE_FAMILY = "1,2,3";
 			};
 			name = "Staging Debug";
+		};
+		4D227A3D659A08E1566A09D4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Framework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.TestFramework;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Debug;
 		};
 		4D5DC2028DC046B8AF0B9B83 /* Test Debug */ = {
 			isa = XCBuildConfiguration;
@@ -5008,6 +5603,55 @@
 				SDKROOT = driverkit;
 			};
 			name = "Test Release";
+		};
+		4E58D9519178F36BF308221B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Framework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.Framework2-iOS";
+				PRODUCT_NAME = Framework2;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Debug;
+		};
+		4E90E14FF3C5DAE5BA3997A0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)/Carthage/Build/iOS/Static",
+				);
+				INFOPLIST_FILE = App_iOS/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.app;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
 		};
 		4EBCDEB4013FDB0720343467 /* Production Debug */ = {
 			isa = XCBuildConfiguration;
@@ -5128,6 +5772,20 @@
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = "Test Debug";
+		};
+		51DF682533FD5A75D5E9D9D6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "XPC Service/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.XPCService;
+				SDKROOT = macosx;
+			};
+			name = Release;
 		};
 		522E20DF286BE38B925CC57E /* Test Debug */ = {
 			isa = XCBuildConfiguration;
@@ -5337,6 +5995,27 @@
 			};
 			name = "Production Release";
 		};
+		586FF908646236A0A3292893 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
+				INFOPLIST_FILE = App_Clip_UITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-Clip-UITests";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = App_Clip;
+			};
+			name = Debug;
+		};
 		5876AA17762F3248F4FD66E1 /* Staging Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -5350,6 +6029,21 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = "Staging Debug";
+		};
+		588E8CD7441FD2E44C451F61 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.StaticLibrary-ObjC-tvOS";
+				PRODUCT_NAME = StaticLibrary_ObjC;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+			};
+			name = Debug;
 		};
 		589D05992FDC35F6BE056958 /* Production Debug */ = {
 			isa = XCBuildConfiguration;
@@ -5417,6 +6111,30 @@
 			};
 			name = "Test Release";
 		};
+		5AB82D2FA60B0166CC9F49C9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Framework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.Framework2-tvOS";
+				PRODUCT_NAME = Framework2;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Release;
+		};
 		5B13119724286962FB8C78CE /* Production Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -5440,6 +6158,44 @@
 			};
 			name = "Production Release";
 		};
+		5B918BC7E4B80DCEF3135787 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Framework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.Framework2-tvOS";
+				PRODUCT_NAME = Framework2;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Debug;
+		};
+		5C154C9E8CFEA83BAEE00796 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = iMessageApp/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.iMessageApp;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		5FAA92426D53E239CDB39102 /* Test Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -5460,6 +6216,78 @@
 				TARGETED_DEVICE_FAMILY = 4;
 			};
 			name = "Test Debug";
+		};
+		6081E9515EB8A378BEE3E57A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/watchOS",
+				);
+				INFOPLIST_FILE = Framework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.Framework-watchOS";
+				PRODUCT_NAME = Framework;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Debug;
+		};
+		6180235BE7A080288B4210C8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Framework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.Framework2-watchOS";
+				PRODUCT_NAME = Framework2;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Debug;
+		};
+		62D4835A6A4EDD4CF8DDCB41 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/tvOS",
+				);
+				INFOPLIST_FILE = Framework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.Framework-tvOS";
+				PRODUCT_NAME = Framework;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Release;
 		};
 		62F50207E03F6D9813514977 /* Staging Release */ = {
 			isa = XCBuildConfiguration;
@@ -5488,6 +6316,53 @@
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = "Staging Release";
+		};
+		63B59211531AEA91CFFDE5B7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
+				INFOPLIST_FILE = "App_macOS/App-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-macOS";
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		64088483BD83513738F0F56F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = CrossOverlayFramework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.CrossOverlayFramework-iOS";
+				PRODUCT_NAME = CrossOverlayFramework;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Debug;
 		};
 		64BEC335CD4016B9BC59F3C9 /* Production Release */ = {
 			isa = XCBuildConfiguration;
@@ -5560,6 +6435,20 @@
 			};
 			name = "Test Release";
 		};
+		66AE78E1313555E20BAA1685 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = iMessageApp/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.iMessageApp;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
 		66DBF782276810342031776D /* Staging Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -5573,6 +6462,40 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = "Staging Debug";
+		};
+		675DAB03F679C41D4E737DF9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = App_watchOS/Info.plist;
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.app.watch;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 4.0;
+			};
+			name = Release;
+		};
+		69907AF2374C5E29186D4B13 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)/Carthage/Build/iOS/Static",
+				);
+				INFOPLIST_FILE = App_iOS_UITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-iOS-UITests";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = App_iOS;
+			};
+			name = Debug;
 		};
 		6A11812952F34525D14A4104 /* Staging Debug */ = {
 			isa = XCBuildConfiguration;
@@ -5588,6 +6511,27 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = "Staging Debug";
+		};
+		6A14A7C9344E50CDBEBD23C7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/watchOS",
+				);
+				INFOPLIST_FILE = "App_watchOS Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.app.watch.extension;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+			};
+			name = Debug;
 		};
 		6B5A31340B8CF5849805CA3D /* Staging Debug */ = {
 			isa = XCBuildConfiguration;
@@ -5617,6 +6561,30 @@
 			};
 			name = "Test Debug";
 		};
+		6D4575F120C426FEC8956CCB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/watchOS",
+				);
+				INFOPLIST_FILE = Framework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.Framework-watchOS";
+				PRODUCT_NAME = Framework;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Release;
+		};
 		6E93ACBBB608F386C0EB0F40 /* Staging Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -5640,6 +6608,26 @@
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = "Staging Release";
+		};
+		6EF4849580399D47ACE92687 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = CrossOverlayFramework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.CrossOverlayFramework-watchOS";
+				PRODUCT_NAME = CrossOverlayFramework;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Release;
 		};
 		6FCE7B896519D4B364BD3A71 /* Staging Release */ = {
 			isa = XCBuildConfiguration;
@@ -5677,6 +6665,27 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = "Staging Debug";
+		};
+		72BF73819A0BC44ACCA3A3D0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
+				INFOPLIST_FILE = App_macOS_Tests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-macOS-Tests";
+				SDKROOT = macosx;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/App_macOS.app/Contents/MacOS/App_macOS";
+			};
+			name = Debug;
 		};
 		72EDF2E14A4CE916F4E2B01B /* Staging Debug */ = {
 			isa = XCBuildConfiguration;
@@ -5802,6 +6811,44 @@
 			};
 			name = "Production Release";
 		};
+		7A0CDACFAF80B9B9272804AE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.StaticLibrary-ObjC-macOS";
+				PRODUCT_NAME = StaticLibrary_ObjC;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		7A3CE054CFD88556204ECCA7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = App_Clip/Clip.entitlements;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
+				INFOPLIST_FILE = App_Clip/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.app.clip;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		7B2A1BE6CA654E9903A4C680 /* Staging Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -5883,6 +6930,20 @@
 			};
 			name = "Test Debug";
 		};
+		7CF11C1AAE2C34BB0AB3D416 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.StaticLibrary-Swift";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		7D73A7FB339A39293BD2DB9E /* Staging Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -5951,6 +7012,51 @@
 				TARGETED_DEVICE_FAMILY = 4;
 			};
 			name = "Staging Release";
+		};
+		810452F1992D6AAAC6B24903 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = CrossOverlayFramework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.CrossOverlayFramework-tvOS";
+				PRODUCT_NAME = CrossOverlayFramework;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Release;
+		};
+		814DBED1AAE8F9A2007AC370 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
+				INFOPLIST_FILE = App_macOS_Tests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-macOS-Tests";
+				SDKROOT = macosx;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/App_macOS.app/Contents/MacOS/App_macOS";
+			};
+			name = Release;
 		};
 		817AFA080A41D783F5801C5A /* Test Debug */ = {
 			isa = XCBuildConfiguration;
@@ -6055,6 +7161,21 @@
 			};
 			name = "Test Debug";
 		};
+		85F0FA972C1EE03D22DF5DFB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "Network Extension/NetworkExtension.entitlements";
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "Network Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-macOS.NetworkExtension";
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
 		862658ACA3BF7AE7FA22870C /* Production Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -6070,6 +7191,34 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = "Production Debug";
+		};
+		86602EB00607C9B20F3534A4 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
+				INFOPLIST_FILE = Framework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.Framework-iOS";
+				PRODUCT_NAME = Framework;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Debug;
 		};
 		86BDA2C16646B065BDE01177 /* Production Debug */ = {
 			isa = XCBuildConfiguration;
@@ -6110,6 +7259,22 @@
 			};
 			name = "Staging Debug";
 		};
+		891442B9E90C9D637AC2C072 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
+				INFOPLIST_FILE = iMessageExtension/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.iMessageApp.extension;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		8A380D322263800338FA5139 /* Test Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -6137,6 +7302,17 @@
 				SDKROOT = macosx;
 			};
 			name = "Production Debug";
+		};
+		8C2C42A889B58C36B36CC94F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.StaticLibrary-ObjC-watchOS";
+				PRODUCT_NAME = StaticLibrary_ObjC;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+			};
+			name = Debug;
 		};
 		8C9F67C7AA56DBE79F0F2640 /* Test Debug */ = {
 			isa = XCBuildConfiguration;
@@ -6166,6 +7342,28 @@
 			};
 			name = "Test Debug";
 		};
+		8DDDF36C4CE06F74DCDC58FF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)/Carthage/Build/iOS/Static",
+				);
+				INFOPLIST_FILE = App_iOS_UITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-iOS-UITests";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = App_iOS;
+			};
+			name = Release;
+		};
 		8FEAEB3CB45479405F52D3AF /* Test Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -6189,6 +7387,17 @@
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = "Test Release";
+		};
+		908DF1E0F721373BA8B59EB4 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.StaticLibrary-ObjC-watchOS";
+				PRODUCT_NAME = StaticLibrary_ObjC;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+			};
+			name = Release;
 		};
 		917341F64B3A9B883FE942AD /* Production Release */ = {
 			isa = XCBuildConfiguration;
@@ -6243,6 +7452,20 @@
 				SKIP_INSTALL = YES;
 			};
 			name = "Production Debug";
+		};
+		938F6BBA69BF79120F480FB5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = iMessageStickers/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.iMessageStickersExtension;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
 		};
 		94295771D06A8E3DC6DCC8AD /* Staging Release */ = {
 			isa = XCBuildConfiguration;
@@ -6415,6 +7638,21 @@
 			};
 			name = "Staging Debug";
 		};
+		9812D482A37B22CE67E529F2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "Network Extension/NetworkExtension.entitlements";
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "Network Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-macOS.NetworkExtension";
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
 		982EA5A9273899567804B40D /* Production Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -6472,6 +7710,30 @@
 			};
 			name = "Staging Debug";
 		};
+		98DF392E14FEC2F0602E59FC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Framework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.Framework2-macOS";
+				PRODUCT_NAME = Framework2;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Release;
+		};
 		98EE00BF46FAE62F16C25E9C /* Test Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -6492,6 +7754,82 @@
 			};
 			name = "Test Release";
 		};
+		999683C4B5329A72D12AD584 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				WATCHOS_DEPLOYMENT_TARGET = 4.0;
+			};
+			name = Debug;
+		};
+		99B758C8942BB50704E1E1A5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = iMessageStickers/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.iMessageStickersExtension;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		9A891313A139893990989BDD /* Test Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -6504,6 +7842,21 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = "Test Debug";
+		};
+		9ABEDB1C2ED162E2F4208010 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "EndpointSecurity Extension/EndpointSecurity.entitlements";
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "EndpointSecurity Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-macOS.EndpointSecurity";
+				SDKROOT = macosx;
+			};
+			name = Release;
 		};
 		9AFD84FE41E84631927FC891 /* Production Release */ = {
 			isa = XCBuildConfiguration;
@@ -6637,6 +7990,29 @@
 			};
 			name = "Test Release";
 		};
+		A0C553ABCADE301A9CE66745 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = Framework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.TestFramework;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Release;
+		};
 		A0CBB78FB8E4FB0004B05DE0 /* Test Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -6731,6 +8107,30 @@
 			};
 			name = "Production Release";
 		};
+		A80DAC592525B93474086D26 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = CrossOverlayFramework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.CrossOverlayFramework-tvOS";
+				PRODUCT_NAME = CrossOverlayFramework;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Debug;
+		};
 		A861DE7670417FA256F4E459 /* Test Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -6796,6 +8196,13 @@
 			};
 			name = "Production Debug";
 		};
+		A966488896E423A8E7CF2BC2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				MY_SETTING = hello;
+			};
+			name = Debug;
+		};
 		AA4F4236D960D3ACE683A815 /* Staging Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -6853,6 +8260,36 @@
 				SDKROOT = macosx;
 			};
 			name = "Production Release";
+		};
+		ABCE46E6EA33795DE0FE9BAD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.StaticLibrary-ObjC-tvOS";
+				PRODUCT_NAME = StaticLibrary_ObjC;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+			};
+			name = Release;
+		};
+		AC07690C3A54B0C17363FA5C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "EndpointSecurity Extension/EndpointSecurity.entitlements";
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "EndpointSecurity Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-macOS.EndpointSecurity";
+				SDKROOT = macosx;
+			};
+			name = Debug;
 		};
 		AC8E8FEA35961580D23185B2 /* Test Release */ = {
 			isa = XCBuildConfiguration;
@@ -7037,6 +8474,29 @@
 			};
 			name = "Production Debug";
 		};
+		B28BBA178361B7B957E20E76 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				MY_SETTING = hello;
+			};
+			name = Release;
+		};
+		B2D62E426DBC2DE731C9790D /* Test Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "Apple Development";
+				INFOPLIST_FILE = ContentBlocker/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.ContentBlocker;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Test Debug";
+		};
 		B3B2FEA08FA4ACD18FDF9BC2 /* Production Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -7137,6 +8597,19 @@
 			};
 			name = "Production Release";
 		};
+		B557605BF9A77D8072E8BCDE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.BundleX;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
 		B5E1584A197C52FC47245FC8 /* Staging Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -7158,6 +8631,68 @@
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = "Staging Debug";
+		};
+		B6B6FEB3642C6C3CF2EA58A5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.BundleX;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		B7544571511FFC03F6471D80 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
+				INFOPLIST_FILE = Framework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.Framework-macOS";
+				PRODUCT_NAME = Framework;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Debug;
+		};
+		B7AF753D78800E3C2A2138D6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
+				INFOPLIST_FILE = App_Clip_UITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-Clip-UITests";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = App_Clip;
+			};
+			name = Release;
 		};
 		B7EBD1A3A3A7E66100F5C845 /* Test Release */ = {
 			isa = XCBuildConfiguration;
@@ -7305,6 +8840,28 @@
 			};
 			name = "Production Release";
 		};
+		BB6AAEF3105165C9B61F2D32 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)/Carthage/Build/iOS/Static",
+				);
+				INFOPLIST_FILE = App_iOS_Tests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-iOS-Tests";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/App_iOS.app/App_iOS";
+			};
+			name = Release;
+		};
 		BBA736CF3FB466E323EA8462 /* Test Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -7326,6 +8883,58 @@
 				TEST_TARGET_NAME = App_iOS;
 			};
 			name = "Test Release";
+		};
+		BDA13298C3CFFB1070D442F7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
+				INFOPLIST_FILE = iMessageExtension/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.iMessageApp.extension;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		BE68867C3C7CC92029EA9BC9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)/Carthage/Build/iOS/Static",
+				);
+				INFOPLIST_FILE = App_iOS_Tests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-Clip-Tests";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/App_Clip.app/App_Clip";
+			};
+			name = Release;
+		};
+		BE76C6547509861DDFC275BE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.StaticLibrary-Swift";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
 		};
 		BF2F04729CC0602591655B25 /* Production Debug */ = {
 			isa = XCBuildConfiguration;
@@ -7353,6 +8962,34 @@
 				SDKROOT = macosx;
 			};
 			name = "Test Release";
+		};
+		C04D53CA1D822DDDB3DF4B3F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
+				INFOPLIST_FILE = Framework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.Framework-macOS";
+				PRODUCT_NAME = Framework;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Release;
 		};
 		C0BE0797A2AD213D59FF13F8 /* Staging Release */ = {
 			isa = XCBuildConfiguration;
@@ -7430,6 +9067,23 @@
 				WATCHOS_DEPLOYMENT_TARGET = 4.0;
 			};
 			name = "Production Release";
+		};
+		C24D086DE920FA5BAEA22F9D /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 334B75B25BEE708C56586797 /* Release.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "Apple Development";
+				INFOPLIST_FILE = ContentBlocker/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.ContentBlocker;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
 		};
 		C4397CDA0D458BAD55C911B0 /* Staging Debug */ = {
 			isa = XCBuildConfiguration;
@@ -7604,6 +9258,30 @@
 			};
 			name = "Production Debug";
 		};
+		C8E468493F1947B06874526F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = CrossOverlayFramework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.CrossOverlayFramework-macOS";
+				PRODUCT_NAME = CrossOverlayFramework;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Release;
+		};
 		C96EA1AD4B3ABB8A49B98BC2 /* Test Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -7679,6 +9357,26 @@
 				SDKROOT = macosx;
 			};
 			name = "Test Debug";
+		};
+		CA48C0FE754160448216B307 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = App_supportedDestinations/Info.generated.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.test.TestApp;
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator appletvos appletvsimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = YES;
+				TARGETED_DEVICE_FAMILY = "1,2,3";
+			};
+			name = Release;
 		};
 		CB4F81A519CA89CAF5703DAB /* Test Debug */ = {
 			isa = XCBuildConfiguration;
@@ -7774,6 +9472,21 @@
 			};
 			name = "Production Release";
 		};
+		D37B194FE07F278E16E482A1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.StaticLibrary-ObjC-iOS";
+				PRODUCT_NAME = StaticLibrary_ObjC;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		D37EB6FE8C8C4040A394F1E9 /* Test Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -7793,6 +9506,38 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = "Staging Debug";
+		};
+		D69E04FC7BE3A6968EF236C1 /* Staging Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "Apple Development";
+				INFOPLIST_FILE = ContentBlocker/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.ContentBlocker;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Staging Debug";
+		};
+		D6A2E246E9EEDAA18B76937A /* Production Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "Apple Development";
+				INFOPLIST_FILE = ContentBlocker/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.ContentBlocker;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Production Debug";
 		};
 		D70B7AB6D219453ABF475EED /* Production Debug */ = {
 			isa = XCBuildConfiguration;
@@ -7967,6 +9712,19 @@
 			};
 			name = "Staging Debug";
 		};
+		DFB840C816F8CEE7632413E2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.IncludedLegacy;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		E0DF26EA764106961DEC59C9 /* Test Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -8081,6 +9839,49 @@
 				WATCHOS_DEPLOYMENT_TARGET = 4.0;
 			};
 			name = "Staging Debug";
+		};
+		E2A3FE2BBE5C19FD7FA56ACD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+					"$(PROJECT_DIR)/Carthage/Build/iOS/Static",
+				);
+				INFOPLIST_FILE = App_iOS_Tests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-iOS-Tests";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/App_iOS.app/App_iOS";
+			};
+			name = Debug;
+		};
+		E3928F655645B3F0E814CA9A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/watchOS",
+				);
+				INFOPLIST_FILE = "App_watchOS Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.app.watch.extension;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+			};
+			name = Release;
 		};
 		E3E69C722D5BBAF4C8EF4D29 /* Test Release */ = {
 			isa = XCBuildConfiguration;
@@ -8393,6 +10194,23 @@
 			};
 			name = "Test Debug";
 		};
+		E9ED9DC863F062CFEA59A5F5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 020B4FF64D029A2F6B13984D /* Debug.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "Apple Development";
+				INFOPLIST_FILE = ContentBlocker/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.ContentBlocker;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
 		EA62022185E4BCDA6786EC0D /* Production Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -8495,6 +10313,34 @@
 			};
 			name = "Production Release";
 		};
+		EE917255DA1F2644A2985FE7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/tvOS",
+				);
+				INFOPLIST_FILE = Framework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.Framework-tvOS";
+				PRODUCT_NAME = Framework;
+				SDKROOT = appletvos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 3;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Debug;
+		};
 		EF6AB18F2D803CB530422BAE /* Staging Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -8508,6 +10354,35 @@
 			};
 			name = "Staging Release";
 		};
+		F0F667F2F5C4861CDAB98794 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = App_iOS/App.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.EntitledApp;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		F297F21D0911CC153E7B69D7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.Tool;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
 		F3AC6A112F81D0958A316D82 /* Test Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -8519,6 +10394,22 @@
 				WATCHOS_DEPLOYMENT_TARGET = 4.0;
 			};
 			name = "Test Release";
+		};
+		F4243E7280405D3AEC628388 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = App_iOS/App.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.EntitledApp;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
 		};
 		F443D526C71E9F3481F46EC0 /* Staging Release */ = {
 			isa = XCBuildConfiguration;
@@ -8565,6 +10456,30 @@
 			};
 			name = "Staging Debug";
 		};
+		F55591BEDF0F59892149D399 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = CrossOverlayFramework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.CrossOverlayFramework-iOS";
+				PRODUCT_NAME = CrossOverlayFramework;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Release;
+		};
 		F75CC02D1BB9B39C329A9B43 /* Staging Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -8585,6 +10500,19 @@
 				TARGETED_DEVICE_FAMILY = 4;
 			};
 			name = "Staging Release";
+		};
+		F88865EFC26CE0BD91837B5A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.Legacy;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
 		};
 		F961247BCE59D147388CA721 /* Test Release */ = {
 			isa = XCBuildConfiguration;
@@ -8722,6 +10650,26 @@
 			};
 			name = "Test Debug";
 		};
+		FD1052A80FCA115BC0694C88 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = CrossOverlayFramework/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.CrossOverlayFramework-watchOS";
+				PRODUCT_NAME = CrossOverlayFramework;
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = 4;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Debug;
+		};
 		FE029D76C57D0661E4B8F13B /* Staging Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -8760,593 +10708,730 @@
 			};
 			name = "Staging Release";
 		};
+		FEB136E85FD2B092F6E2E3EC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "DriverKit Driver/Driver.entitlements";
+				COMBINE_HIDPI_IMAGES = YES;
+				DRIVERKIT_DEPLOYMENT_TARGET = 20.4;
+				INFOPLIST_FILE = "DriverKit Driver/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.project.App-macOS.Driver";
+				SDKROOT = driverkit;
+			};
+			name = Debug;
+		};
+		FFA29E0E53E5B870627E1A2C /* Test Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "Apple Development";
+				INFOPLIST_FILE = ContentBlocker/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.ContentBlocker;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Test Release";
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
 		0129D8A8DCD54069136D90F7 /* Build configuration list for PBXNativeTarget "StaticLibrary_ObjC_watchOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
+				8C2C42A889B58C36B36CC94F /* Debug */,
 				B24243F387A725EAFE802321 /* Production Debug */,
 				7E81F863EF51334FDDCC8A39 /* Production Release */,
+				908DF1E0F721373BA8B59EB4 /* Release */,
 				74E52B213DA9EAFA77BC05D0 /* Staging Debug */,
 				7F86E00770E76CA3412A03BD /* Staging Release */,
 				49322BF02F4F345A1339EF7A /* Test Debug */,
 				058734C3B593A26E24211133 /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Production Debug";
+			defaultConfigurationName = Debug;
 		};
 		02B721AF7361EBCFA91410BF /* Build configuration list for PBXLegacyTarget "IncludedLegacy" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
+				44923A4B24045BA0AC8F0370 /* Debug */,
 				221A50372FFB2F1202940FDC /* Production Debug */,
 				AF4B5E2FF8B6C883C40737C6 /* Production Release */,
+				DFB840C816F8CEE7632413E2 /* Release */,
 				D4A6D5FE11C6652E092629BF /* Staging Debug */,
 				EF6AB18F2D803CB530422BAE /* Staging Release */,
 				57CEA8537C6F3E5B425C5A8E /* Test Debug */,
 				8A380D322263800338FA5139 /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Production Debug";
+			defaultConfigurationName = Debug;
 		};
 		02E5A42C8065AF7CCB48FACE /* Build configuration list for PBXNativeTarget "Framework2_macOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
+				07E5149D107F99C5B177E334 /* Debug */,
 				15A9BF8518A5155B879C8DAF /* Production Debug */,
 				9AFD84FE41E84631927FC891 /* Production Release */,
+				98DF392E14FEC2F0602E59FC /* Release */,
 				8269ABE82BCBF550C38494DF /* Staging Debug */,
 				F443D526C71E9F3481F46EC0 /* Staging Release */,
 				A59DDFBFCF18C44A993CFB00 /* Test Debug */,
 				5675C7C51DC1B8D63CBAE30A /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Production Debug";
+			defaultConfigurationName = Debug;
 		};
 		07B4E73E56B7C2C80DE2A378 /* Build configuration list for PBXNativeTarget "App_Clip" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
+				29E0786EB928072F62658FF9 /* Debug */,
 				C734956B0E352751B5DA14A6 /* Production Debug */,
 				3BE60579CA725E23659AEA80 /* Production Release */,
+				7A3CE054CFD88556204ECCA7 /* Release */,
 				84404129017F8D027A24136A /* Staging Debug */,
 				4EDC77FA8569D4AB3135780D /* Staging Release */,
 				7C9FE720B05E0120F78B81AF /* Test Debug */,
 				0579BA94EA238151DAFC2FFC /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Production Debug";
+			defaultConfigurationName = Debug;
 		};
 		129D9E77D45A66B1C78578F2 /* Build configuration list for PBXNativeTarget "App_Clip_UITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
+				586FF908646236A0A3292893 /* Debug */,
 				07DF024D82D64A8D76209B90 /* Production Debug */,
 				3236B7B20520584116A96C0D /* Production Release */,
+				B7AF753D78800E3C2A2138D6 /* Release */,
 				F48A0BCE0F515E3472B34F66 /* Staging Debug */,
 				554E51BF9C8020AFC98E2EEF /* Staging Release */,
 				3BDE7967B50F4358BD4702AD /* Test Debug */,
 				498F2DC7204423CCCABAEE80 /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Production Debug";
+			defaultConfigurationName = Debug;
 		};
 		1FC6945BE13C2202A2BCA3BC /* Build configuration list for PBXNativeTarget "iMessageApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
+				66AE78E1313555E20BAA1685 /* Debug */,
 				511E983641E821858100107B /* Production Debug */,
 				EA62022185E4BCDA6786EC0D /* Production Release */,
+				5C154C9E8CFEA83BAEE00796 /* Release */,
 				5876AA17762F3248F4FD66E1 /* Staging Debug */,
 				4D86BBA6893D41140152B8CC /* Staging Release */,
 				6C201A244077B7B453E15C1A /* Test Debug */,
 				F961247BCE59D147388CA721 /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Production Debug";
+			defaultConfigurationName = Debug;
 		};
 		2C39D94CF9C8B1CB79F04AC8 /* Build configuration list for PBXNativeTarget "BundleX" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
+				B557605BF9A77D8072E8BCDE /* Debug */,
 				64EC1B53D612851D51D18FD2 /* Production Debug */,
 				917341F64B3A9B883FE942AD /* Production Release */,
+				B6B6FEB3642C6C3CF2EA58A5 /* Release */,
 				31931061043C66589547105C /* Staging Debug */,
 				EBA3332D0144AAAA57630865 /* Staging Release */,
 				85E6B40848AC2A0B1F921553 /* Test Debug */,
 				B7EBD1A3A3A7E66100F5C845 /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Production Debug";
+			defaultConfigurationName = Debug;
 		};
 		3F3C272D2EA61F6B88B80D44 /* Build configuration list for PBXNativeTarget "App_watchOS Extension" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
+				6A14A7C9344E50CDBEBD23C7 /* Debug */,
 				4EBCDEB4013FDB0720343467 /* Production Debug */,
 				4BCE080A33E3A2F26D1DBEEB /* Production Release */,
+				E3928F655645B3F0E814CA9A /* Release */,
 				1539437BBB98703535876E35 /* Staging Debug */,
 				F75CC02D1BB9B39C329A9B43 /* Staging Release */,
 				5FAA92426D53E239CDB39102 /* Test Debug */,
 				0C66F8A2D0CB0D802A327EB4 /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Production Debug";
+			defaultConfigurationName = Debug;
 		};
 		412FA71CA97AD6851A1828DD /* Build configuration list for PBXNativeTarget "DriverKitDriver" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
+				FEB136E85FD2B092F6E2E3EC /* Debug */,
 				035FC5362AE3E9696248DFD0 /* Production Debug */,
 				03B133682B8BEF8B1D647C76 /* Production Release */,
+				3CD40ADE056770AA24716676 /* Release */,
 				291A37106E83E5C30890F422 /* Staging Debug */,
 				CF7D27DBBF0667D789D53D29 /* Staging Release */,
 				AA6BC5199D9705F3182D0C00 /* Test Debug */,
 				4DA924C751AD8FAF891F953D /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Production Debug";
+			defaultConfigurationName = Debug;
 		};
 		498FA7414845B8834E48496F /* Build configuration list for PBXNativeTarget "App_Clip_Tests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
+				285C62725752B7E4A94D2A66 /* Debug */,
 				D70B7AB6D219453ABF475EED /* Production Debug */,
 				E7E05E5BC42C73136CDC5CFE /* Production Release */,
+				BE68867C3C7CC92029EA9BC9 /* Release */,
 				E8F5F216BCFE54CB22B80237 /* Staging Debug */,
 				C0BE0797A2AD213D59FF13F8 /* Staging Release */,
 				2E5159957368A9CF77A3C9FC /* Test Debug */,
 				A0CBB78FB8E4FB0004B05DE0 /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Production Debug";
+			defaultConfigurationName = Debug;
 		};
 		4A036BD16A0E9D22AE065AC9 /* Build configuration list for PBXNativeTarget "StaticLibrary_Swift" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
+				BE76C6547509861DDFC275BE /* Debug */,
 				9FCB2F3977FC0F94393F86FE /* Production Debug */,
 				3764AEC1D64BC7805DC73900 /* Production Release */,
+				7CF11C1AAE2C34BB0AB3D416 /* Release */,
 				66DBF782276810342031776D /* Staging Debug */,
 				FE46BDDF158F46B264958EA5 /* Staging Release */,
 				A0AA826373CDC7E0A8797430 /* Test Debug */,
 				1D61DC7F5309F4C8B7692D85 /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Production Debug";
+			defaultConfigurationName = Debug;
 		};
 		4A8774E3B4F5C9B98E0D0CF9 /* Build configuration list for PBXNativeTarget "Framework_watchOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
+				6081E9515EB8A378BEE3E57A /* Debug */,
 				E514F031B181A327296DB27B /* Production Debug */,
 				9666BFAAA42CE2DC7E368E7D /* Production Release */,
+				6D4575F120C426FEC8956CCB /* Release */,
 				B928E061A126AC8D17D81D1E /* Staging Debug */,
 				015D35ADD269DCBEA53B52A3 /* Staging Release */,
 				C96EA1AD4B3ABB8A49B98BC2 /* Test Debug */,
 				D9A0609EE6F341CD4E8758C1 /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Production Debug";
+			defaultConfigurationName = Debug;
 		};
 		50DA67E9A951C40D9536609D /* Build configuration list for PBXNativeTarget "Framework_iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
+				86602EB00607C9B20F3534A4 /* Debug */,
 				81AE120E23F0108E77BBCE22 /* Production Debug */,
 				580039D71F71A98572051157 /* Production Release */,
+				06FEE6A4375FED73FBBB4162 /* Release */,
 				55DA94C85E0E63D3AD593A08 /* Staging Debug */,
 				62F50207E03F6D9813514977 /* Staging Release */,
 				8C9F67C7AA56DBE79F0F2640 /* Test Debug */,
 				A861DE7670417FA256F4E459 /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Production Debug";
+			defaultConfigurationName = Debug;
 		};
 		56BF985F253DD84AD7C37538 /* Build configuration list for PBXNativeTarget "StaticLibrary_ObjC_iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
+				4B38A1B61BF658ED9AA04C45 /* Debug */,
 				13FF53C2B3637EA82E3DF577 /* Production Debug */,
 				D24E68EE5DE052219B036D63 /* Production Release */,
+				D37B194FE07F278E16E482A1 /* Release */,
 				6A11812952F34525D14A4104 /* Staging Debug */,
 				AA4F4236D960D3ACE683A815 /* Staging Release */,
 				EC9867399E6694681F8903B1 /* Test Debug */,
 				CA08CB7E7DBBC99CDC7F2C2E /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Production Debug";
+			defaultConfigurationName = Debug;
 		};
 		5EC789CCE1928A4CDA00DD1E /* Build configuration list for PBXNativeTarget "App_supportedDestinations" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
+				14254D2EA8A51831F2C68BCF /* Debug */,
 				24CFBB3ABB9E14E85035B892 /* Production Debug */,
 				7F3F6A813F8B126258780E8D /* Production Release */,
+				CA48C0FE754160448216B307 /* Release */,
 				4C11A3E7EA48B5FB556D4614 /* Staging Debug */,
 				75B3C83C754AA9C12ABF5E54 /* Staging Release */,
 				A4015127D0A01FE60CF5621B /* Test Debug */,
 				98EE00BF46FAE62F16C25E9C /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Production Debug";
+			defaultConfigurationName = Debug;
 		};
 		62C52A55CB8D3BD9A055FD14 /* Build configuration list for PBXNativeTarget "App_macOS_Tests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
+				72BF73819A0BC44ACCA3A3D0 /* Debug */,
 				4F029A78B7BAB85B1E284798 /* Production Debug */,
 				4FA4DE89FDED9F49FAABED58 /* Production Release */,
+				814DBED1AAE8F9A2007AC370 /* Release */,
 				FB472DFA702C8A3B55153F97 /* Staging Debug */,
 				EBD2F70285E21FFAB1C23D01 /* Staging Release */,
 				44C2FD12D7D26D71D8150C76 /* Test Debug */,
 				12BCDE0EFCEE621B881E424C /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Production Debug";
+			defaultConfigurationName = Debug;
 		};
 		62D7BB889799B73F7E8B798F /* Build configuration list for PBXNativeTarget "App_iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
+				29BC1A1643DAF571152D9B51 /* Debug */,
 				AE37A01B34B4B956E784082C /* Production Debug */,
 				545342CFDF7810F2EBFFFC5E /* Production Release */,
+				4E90E14FF3C5DAE5BA3997A0 /* Release */,
 				B008685BA25BB8FD771F0AE3 /* Staging Debug */,
 				06E4383A2687EAD5877836CD /* Staging Release */,
 				7931F229200F89B8CDC8A5E3 /* Test Debug */,
 				DC80DC0AF0B4F2B51DAB0A52 /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Production Debug";
+			defaultConfigurationName = Debug;
 		};
 		641D1B2D88B93FAD0EA09187 /* Build configuration list for PBXNativeTarget "CrossOverlayFramework_iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
+				64088483BD83513738F0F56F /* Debug */,
 				A9483E827FAD142F28A0E16D /* Production Debug */,
 				E5EB6CE05568645829D40384 /* Production Release */,
+				F55591BEDF0F59892149D399 /* Release */,
 				1FB2AFB2F45076B4A047499E /* Staging Debug */,
 				6E93ACBBB608F386C0EB0F40 /* Staging Release */,
 				E0DF26EA764106961DEC59C9 /* Test Debug */,
 				1C63C4A728212D903E4F2CBB /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Production Debug";
+			defaultConfigurationName = Debug;
 		};
 		658628E35283172E17BFC6A3 /* Build configuration list for PBXNativeTarget "Framework_tvOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
+				EE917255DA1F2644A2985FE7 /* Debug */,
 				589D05992FDC35F6BE056958 /* Production Debug */,
 				5822FCD48FCC177980F672D4 /* Production Release */,
+				62D4835A6A4EDD4CF8DDCB41 /* Release */,
 				9E38571B33C3CE5CA10C8452 /* Staging Debug */,
 				4089B74CA10172B8ED2D004B /* Staging Release */,
 				2569D399CA3C4828EF87AD78 /* Test Debug */,
 				E24703CFCCBD727B3FE08F51 /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Production Debug";
+			defaultConfigurationName = Debug;
 		};
 		68CC35789B0DB020E2CFC517 /* Build configuration list for PBXNativeTarget "App_iOS_UITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
+				69907AF2374C5E29186D4B13 /* Debug */,
 				082A10B9E5EAC6E783EAB9B0 /* Production Debug */,
 				184E4078B13FE1CC6A11BD52 /* Production Release */,
+				8DDDF36C4CE06F74DCDC58FF /* Release */,
 				E3FC19CE2B78DA85314CB6A5 /* Staging Debug */,
 				04172E0BDC7C512A23A51C76 /* Staging Release */,
 				0AB9030B7E8A8BBA74CCB1A9 /* Test Debug */,
 				BBA736CF3FB466E323EA8462 /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Production Debug";
+			defaultConfigurationName = Debug;
 		};
 		6B5C5F08C0EF06457756E379 /* Build configuration list for PBXNativeTarget "App_watchOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
+				25BDDBB812A4685EA72281C8 /* Debug */,
 				20803EC42C26E4EA13474E5A /* Production Debug */,
 				AABC1E325EADF86C5137D659 /* Production Release */,
+				675DAB03F679C41D4E737DF9 /* Release */,
 				C4397CDA0D458BAD55C911B0 /* Staging Debug */,
 				7B2A1BE6CA654E9903A4C680 /* Staging Release */,
 				00FD318C7418F3351FC00744 /* Test Debug */,
 				F3AC6A112F81D0958A316D82 /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Production Debug";
+			defaultConfigurationName = Debug;
 		};
 		752BB3C1A601770BDD9AC01E /* Build configuration list for PBXNativeTarget "StaticLibrary_ObjC_macOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
+				7A0CDACFAF80B9B9272804AE /* Debug */,
 				92602C025633FBA848F91812 /* Production Debug */,
 				EC3A16C2887B72837F84904A /* Production Release */,
+				3D678B42EE12C56238305F21 /* Release */,
 				02EB0C0230E6616EC8057F1C /* Staging Debug */,
 				01BF8C6D1C21955BA7E803E8 /* Staging Release */,
 				1341099486D8FE68A99CB5FE /* Test Debug */,
 				0CE2F7B8A955BE108A66FF68 /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Production Debug";
+			defaultConfigurationName = Debug;
 		};
 		77CE5B5E5DEAC820254D484C /* Build configuration list for PBXNativeTarget "App_macOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
+				0759152BA40030DC660A8A75 /* Debug */,
 				943D402E936EC5BD391F9FD0 /* Production Debug */,
 				4621C6C8A78FBB1CF4078178 /* Production Release */,
+				63B59211531AEA91CFFDE5B7 /* Release */,
 				97009625463EC8B19F53007A /* Staging Debug */,
 				CBE9D80AD0719511A13A889E /* Staging Release */,
 				196FEEE6C4B0DDE53AD16BD6 /* Test Debug */,
 				3FFEE1ED324166B88F5F9A45 /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Production Debug";
+			defaultConfigurationName = Debug;
 		};
 		7881E73F05F096623E592040 /* Build configuration list for PBXNativeTarget "Tool" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
+				38AA62088F1A0275FDE90E4C /* Debug */,
 				436FB4981A66822DAF6F22AC /* Production Debug */,
 				921EC740167F616C38809275 /* Production Release */,
+				F297F21D0911CC153E7B69D7 /* Release */,
 				98A87959E6B7464168469594 /* Staging Debug */,
 				18B5349AE18B7183BE4B4363 /* Staging Release */,
 				CA45EC48C1EDE1A41141A103 /* Test Debug */,
 				C00DBF60DC8C1A570738241F /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Production Debug";
+			defaultConfigurationName = Debug;
 		};
 		78DB808B74D58314279E7FD7 /* Build configuration list for PBXNativeTarget "NetworkSystemExtension" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
+				85F0FA972C1EE03D22DF5DFB /* Debug */,
 				8BAC4B81735DDF8537709B8D /* Production Debug */,
 				AB455120CB69CF0A7E128221 /* Production Release */,
+				9812D482A37B22CE67E529F2 /* Release */,
 				B987E9BED4B423A049202386 /* Staging Debug */,
 				77C426E60C6FCB5A01EFC401 /* Staging Release */,
 				E9C964F0189C68721012002B /* Test Debug */,
 				0C18EEAE68FBEBCF066E0CD9 /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Production Debug";
+			defaultConfigurationName = Debug;
 		};
 		7CBF487CACC0BBFB530D7963 /* Build configuration list for PBXAggregateTarget "SuperTarget" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
+				A966488896E423A8E7CF2BC2 /* Debug */,
 				40A3301910021B57051D1BD5 /* Production Debug */,
 				A79632AF4FFC93B0940CE8E3 /* Production Release */,
+				B28BBA178361B7B957E20E76 /* Release */,
 				F9AA169AF7F8FB31037CB416 /* Staging Debug */,
 				A696B22A9734326DBFD20EC8 /* Staging Release */,
 				26BACA32C62C38FAB45F532D /* Test Debug */,
 				D37EB6FE8C8C4040A394F1E9 /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Production Debug";
+			defaultConfigurationName = Debug;
 		};
 		7E4887637B4FA5B8E2F349CA /* Build configuration list for PBXNativeTarget "Framework2_watchOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
+				6180235BE7A080288B4210C8 /* Debug */,
 				079E494F34C3CAFB8F9E44B3 /* Production Debug */,
 				B18D58177F363DF071A9AF95 /* Production Release */,
+				3A6F627CE40E07364C47A27D /* Release */,
 				236247F0F85C9D342FAEE803 /* Staging Debug */,
 				AF25BBA6E0AD56CA13A3F6C6 /* Staging Release */,
 				5180F6C101C0335213FB28E5 /* Test Debug */,
 				AE8DA78BA7A7194BD625DD45 /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Production Debug";
+			defaultConfigurationName = Debug;
 		};
 		906B8E5233EE4169E84ABAF3 /* Build configuration list for PBXNativeTarget "StaticLibrary_ObjC_tvOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
+				588E8CD7441FD2E44C451F61 /* Debug */,
 				96B8ADD171694B9A9E3ABC7E /* Production Debug */,
 				278E3C762E54ADDA52F9E687 /* Production Release */,
+				ABCE46E6EA33795DE0FE9BAD /* Release */,
 				E5854B94A71A091D61E6ACD3 /* Staging Debug */,
 				E4257B4F823EE947AADAD195 /* Staging Release */,
 				817AFA080A41D783F5801C5A /* Test Debug */,
 				36C4B3A6EACCB88098CE13D7 /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Production Debug";
+			defaultConfigurationName = Debug;
 		};
 		91E8D6B95F23669734D43FDC /* Build configuration list for PBXNativeTarget "EntitledApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
+				F0F667F2F5C4861CDAB98794 /* Debug */,
 				DDECE7D81A63C1C46A08F1F4 /* Production Debug */,
 				BA5AD3137CD90C50E5E1BDA0 /* Production Release */,
+				F4243E7280405D3AEC628388 /* Release */,
 				234640A811EF6EB9CC9081CA /* Staging Debug */,
 				94295771D06A8E3DC6DCC8AD /* Staging Release */,
 				CB4F81A519CA89CAF5703DAB /* Test Debug */,
 				983ACA9F991B0B18D9760B12 /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Production Debug";
+			defaultConfigurationName = Debug;
 		};
 		9A0EF0B71AD44055E8749C42 /* Build configuration list for PBXNativeTarget "Framework2_iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
+				4E58D9519178F36BF308221B /* Debug */,
 				E683F74557A3FC7BD78CAB2B /* Production Debug */,
 				EDAF427566F715F739A4A1E1 /* Production Release */,
+				197BE53586CE04464012ADB4 /* Release */,
 				4B389C6B6140EE7DE69A248A /* Staging Debug */,
 				FE029D76C57D0661E4B8F13B /* Staging Release */,
 				10E250D1DC79E11058B933F9 /* Test Debug */,
 				5A9C67C1F423247AE1541F63 /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Production Debug";
+			defaultConfigurationName = Debug;
 		};
 		9C9913AAE0ABA99337F0C069 /* Build configuration list for PBXNativeTarget "CrossOverlayFramework_macOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
+				13F2B56968ABE133E25DA1AD /* Debug */,
 				CF25791E297417E38800A521 /* Production Debug */,
 				34ED16009A759D256D7ECB53 /* Production Release */,
+				C8E468493F1947B06874526F /* Release */,
 				8705629C56ACC795F1DDB96D /* Staging Debug */,
 				6FCE7B896519D4B364BD3A71 /* Staging Release */,
 				94C7D2D3D0907DF146EFC13C /* Test Debug */,
 				96130B9B35FEC2FEA00AFDB9 /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Production Debug";
+			defaultConfigurationName = Debug;
 		};
 		9F4CBE5D909D2757B3D334B3 /* Build configuration list for PBXNativeTarget "TestFramework" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
+				4D227A3D659A08E1566A09D4 /* Debug */,
 				43C2B4D01A14EF502D0F0113 /* Production Debug */,
 				5B13119724286962FB8C78CE /* Production Release */,
+				A0C553ABCADE301A9CE66745 /* Release */,
 				DF558E25A4E143219DF4AA51 /* Staging Debug */,
 				E3F181704254174DA162D2C7 /* Staging Release */,
 				C6891AC5A8D8021B47DD852F /* Test Debug */,
 				B9AF2E89FE3E9E03E0029607 /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Production Debug";
+			defaultConfigurationName = Debug;
 		};
 		B40D2F785317445D9A9C8C12 /* Build configuration list for PBXNativeTarget "iMessageStickersExtension" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
+				938F6BBA69BF79120F480FB5 /* Debug */,
 				BF2F04729CC0602591655B25 /* Production Debug */,
 				59416DBF97224D8A1B28D610 /* Production Release */,
+				99B758C8942BB50704E1E1A5 /* Release */,
 				9E0CC963DE7E2ED71A4C16C1 /* Staging Debug */,
 				B4297CD61108CE066C299844 /* Staging Release */,
 				FC4A8130B924FC04E9190AB6 /* Test Debug */,
 				A0C50DBBF4AC5D30C92B19F7 /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Production Debug";
+			defaultConfigurationName = Debug;
 		};
 		BE0FF81B67730F081F45BC78 /* Build configuration list for PBXLegacyTarget "Legacy" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
+				F88865EFC26CE0BD91837B5A /* Debug */,
 				53C3CC585BF0EAB4CA31AD3E /* Production Debug */,
 				A91B13C5688E9BCC925C702A /* Production Release */,
+				3C7BCBE02EC81CC6BD815687 /* Release */,
 				72EDF2E14A4CE916F4E2B01B /* Staging Debug */,
 				E599549D1B1432302031A904 /* Staging Release */,
 				9A891313A139893990989BDD /* Test Debug */,
 				3DEEA480EDDC83405CFB9BBA /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Production Debug";
+			defaultConfigurationName = Debug;
 		};
 		C483BD5456B09C276DE6EFC1 /* Build configuration list for PBXNativeTarget "CrossOverlayFramework_watchOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
+				FD1052A80FCA115BC0694C88 /* Debug */,
 				1C644E47F1C539F2B95160B8 /* Production Debug */,
 				DE81296F5A364B236643A3B9 /* Production Release */,
+				6EF4849580399D47ACE92687 /* Release */,
 				B8CC52B6DC03DACD9B1309E0 /* Staging Debug */,
 				45FD151DC9928DE066A3B1AD /* Staging Release */,
 				4D5DC2028DC046B8AF0B9B83 /* Test Debug */,
 				19BF18E6EAA8B30F894EAB4E /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Production Debug";
+			defaultConfigurationName = Debug;
 		};
 		C4FB84AAA6F6974CEA51D359 /* Build configuration list for PBXNativeTarget "EndpointSecuritySystemExtension" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
+				AC07690C3A54B0C17363FA5C /* Debug */,
 				86BDA2C16646B065BDE01177 /* Production Debug */,
 				06D6C7ED89937E7891E70B55 /* Production Release */,
+				9ABEDB1C2ED162E2F4208010 /* Release */,
 				46DAC1602BF6BEBCD177342F /* Staging Debug */,
 				C44EBD74DF4B95E30983A798 /* Staging Release */,
 				D93982FB34335E2D1B9751FE /* Test Debug */,
 				11919FD24AA8A110C24C0FEF /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Production Debug";
+			defaultConfigurationName = Debug;
 		};
 		D379D1BBEF24ED05EB6ADEB3 /* Build configuration list for PBXNativeTarget "XPC Service" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
+				08CC6F3F14F7A79BDA93A05C /* Debug */,
 				A2EBD902E6DE2B2BD12C4484 /* Production Debug */,
 				64BEC335CD4016B9BC59F3C9 /* Production Release */,
+				51DF682533FD5A75D5E9D9D6 /* Release */,
 				6B5A31340B8CF5849805CA3D /* Staging Debug */,
 				7E101F97604A0990174A46CD /* Staging Release */,
 				2630B88F53876A9AD7B61A4E /* Test Debug */,
 				AC8E8FEA35961580D23185B2 /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Production Debug";
+			defaultConfigurationName = Debug;
 		};
 		D60A551D881B4B91F4535B78 /* Build configuration list for PBXNativeTarget "Framework_macOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
+				B7544571511FFC03F6471D80 /* Debug */,
 				982EA5A9273899567804B40D /* Production Debug */,
 				25E62244CD9C539F614224DF /* Production Release */,
+				C04D53CA1D822DDDB3DF4B3F /* Release */,
 				65A21512F2B980615DF51D77 /* Staging Debug */,
 				D8267FD376089FF4497ED3F1 /* Staging Release */,
 				522E20DF286BE38B925CC57E /* Test Debug */,
 				E3E69C722D5BBAF4C8EF4D29 /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Production Debug";
+			defaultConfigurationName = Debug;
 		};
 		D91E14E36EC0B415578456F2 /* Build configuration list for PBXProject "Project" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
+				999683C4B5329A72D12AD584 /* Debug */,
 				B3B2FEA08FA4ACD18FDF9BC2 /* Production Debug */,
 				C0D5765142C68AF68B954B3F /* Production Release */,
+				036FCF7C4B48C154279F289D /* Release */,
 				E29961CFB084F6C1BF2CCCAE /* Staging Debug */,
 				FBC34FE61DA25D0516C15B60 /* Staging Release */,
 				E95B2CE470959F04BE6AACA9 /* Test Debug */,
 				C59E649CEDC0E973B28B57A4 /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Production Debug";
+			defaultConfigurationName = Debug;
 		};
 		D9EF39CA9A17477264F02057 /* Build configuration list for PBXNativeTarget "ExternalTarget" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
+				101BFAA9BA10EE5B908E9FBC /* Debug */,
 				C745E36B41A4ABD1E24A69AF /* Production Debug */,
 				045CB2D74D9A3532E128BDD2 /* Production Release */,
+				3493518E9B2D0A8E96C9197D /* Release */,
 				B5E1584A197C52FC47245FC8 /* Staging Debug */,
 				94ECCEFE29DB30C48B227A16 /* Staging Release */,
 				2C6AB16720ADFB2436337A8F /* Test Debug */,
 				AF3DD6DCF141F35D4129FFF5 /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Production Debug";
+			defaultConfigurationName = Debug;
 		};
 		DA49CF5A1AC4FC1A7EE979E8 /* Build configuration list for PBXNativeTarget "BundleY" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
+				2FDEB16B10C7D839F9026421 /* Debug */,
 				924BB9ED8B14A02ABF88CC23 /* Production Debug */,
 				414544E2FA4DE102442A71CD /* Production Release */,
+				4B549E045D45E9B0C6C012F4 /* Release */,
 				71529460FB00BCDF2064C57F /* Staging Debug */,
 				7D73A7FB339A39293BD2DB9E /* Staging Release */,
 				B227B91964080DEF6C426483 /* Test Debug */,
 				BA21E149424C2D03E5E50EC1 /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Production Debug";
+			defaultConfigurationName = Debug;
 		};
 		E3D23AF56C29471E48CA9A11 /* Build configuration list for PBXNativeTarget "CrossOverlayFramework_tvOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
+				A80DAC592525B93474086D26 /* Debug */,
 				02E38E444E372E89E589E022 /* Production Debug */,
 				B4464446E556BA3E731D3D25 /* Production Release */,
+				810452F1992D6AAAC6B24903 /* Release */,
 				321D6FAF1E7AA977008359C7 /* Staging Debug */,
 				9E1F620F233A34DE80D84356 /* Staging Release */,
 				C9D8E28D29695DF97266F229 /* Test Debug */,
 				8FEAEB3CB45479405F52D3AF /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Production Debug";
+			defaultConfigurationName = Debug;
+		};
+		E52CEBE94EB3DA1F6DECC49F /* Build configuration list for PBXNativeTarget "ContentBlocker" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E9ED9DC863F062CFEA59A5F5 /* Debug */,
+				D6A2E246E9EEDAA18B76937A /* Production Debug */,
+				18AA8BA9237D5BC52525C664 /* Production Release */,
+				C24D086DE920FA5BAEA22F9D /* Release */,
+				D69E04FC7BE3A6968EF236C1 /* Staging Debug */,
+				1D6D36790F00BE5A86FF54A4 /* Staging Release */,
+				B2D62E426DBC2DE731C9790D /* Test Debug */,
+				FFA29E0E53E5B870627E1A2C /* Test Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
 		};
 		ED1A174BA92C6E5172B519B7 /* Build configuration list for PBXNativeTarget "iMessageExtension" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
+				BDA13298C3CFFB1070D442F7 /* Debug */,
 				862658ACA3BF7AE7FA22870C /* Production Debug */,
 				79FA19BACBA7B6C15E0399C0 /* Production Release */,
+				891442B9E90C9D637AC2C072 /* Release */,
 				366C92A637FDA940E6BCB591 /* Staging Debug */,
 				4662A9062E19E6BC30C9E0A1 /* Staging Release */,
 				15F79278F4ABD33584FC69E4 /* Test Debug */,
 				6645E6A343F71C3E91656BE9 /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Production Debug";
+			defaultConfigurationName = Debug;
 		};
 		EF0A56586AB1ED900B70D5BC /* Build configuration list for PBXNativeTarget "Framework2_tvOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
+				5B918BC7E4B80DCEF3135787 /* Debug */,
 				77B8B41EBA5D778EB3AF89DC /* Production Debug */,
 				00AF278082A5D7C2A6555867 /* Production Release */,
+				5AB82D2FA60B0166CC9F49C9 /* Release */,
 				4A0624A4FC88A7E232411C95 /* Staging Debug */,
 				7C473021DB2A2D88B535FBD6 /* Staging Release */,
 				401097AC487BBA8C7B2B4938 /* Test Debug */,
 				F9F2DA45FBEAF1528EC026FB /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Production Debug";
+			defaultConfigurationName = Debug;
 		};
 		F888428CB91ACDDAAE8C8F21 /* Build configuration list for PBXNativeTarget "App_iOS_Tests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
+				E2A3FE2BBE5C19FD7FA56ACD /* Debug */,
 				C7EF8D96FA7893ADD61CF4C0 /* Production Debug */,
 				B9BEDF424FEFB1047765C3C6 /* Production Release */,
+				BB6AAEF3105165C9B61F2D32 /* Release */,
 				2F1CDD64CD0684A2B09D6ED3 /* Staging Debug */,
 				0EFE33A4C09DCF9FE1519D37 /* Staging Release */,
 				2F88193D8069519CD36F649B /* Test Debug */,
 				7B4F942EA48FC1FED21AA2EE /* Test Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = "Production Debug";
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 
