@@ -335,7 +335,156 @@ class ProjectGeneratorTests: XCTestCase {
                 try expect(targetConfig.buildSettings["WATCHOS_DEPLOYMENT_TARGET"] as? String) == "2.0"
                 try expect(targetConfig.buildSettings["TVOS_DEPLOYMENT_TARGET"]).beNil()
             }
-
+            
+            $0.it("supportedPlaforms merges settings - iOS, tvOS") {
+                let target = Target(name: "Target", type: .application, platform: .auto, supportedDestinations: [.tvOS, .iOS])
+                let project = Project(name: "", targets: [target])
+                
+                let pbxProject = try project.generatePbxProj()
+                let targetConfig1 = try unwrap(pbxProject.nativeTargets.first?.buildConfigurationList?.buildConfigurations.first)
+                
+                try expect(targetConfig1.buildSettings["SUPPORTED_PLATFORMS"] as? String) == "iphoneos iphonesimulator appletvos appletvsimulator"
+                try expect(targetConfig1.buildSettings["TARGETED_DEVICE_FAMILY"] as? String) == "1,2,3"
+                try expect(targetConfig1.buildSettings["SUPPORTS_MACCATALYST"] as? Bool) == false
+                try expect(targetConfig1.buildSettings["SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD"] as? Bool) == true
+                try expect(targetConfig1.buildSettings["SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD"] as? Bool) == true
+                
+                try expect(targetConfig1.buildSettings["LD_RUNPATH_SEARCH_PATHS"] as? [String]) == ["$(inherited)", "@executable_path/Frameworks"]
+                try expect(targetConfig1.buildSettings["SDKROOT"] as? String) == "auto"
+                try expect(targetConfig1.buildSettings["ASSETCATALOG_COMPILER_APPICON_NAME"] as? String) == "AppIcon"
+                try expect(targetConfig1.buildSettings["CODE_SIGN_IDENTITY"] as? String) == "iPhone Developer"
+            }
+            
+            $0.it("supportedPlaforms merges settings - iOS, visionOS") {
+                let target = Target(name: "Target", type: .application, platform: .auto, supportedDestinations: [.visionOS, .iOS])
+                let project = Project(name: "", targets: [target])
+                
+                let pbxProject = try project.generatePbxProj()
+                let targetConfig1 = try unwrap(pbxProject.nativeTargets.first?.buildConfigurationList?.buildConfigurations.first)
+                
+                try expect(targetConfig1.buildSettings["SUPPORTED_PLATFORMS"] as? String) == "iphoneos iphonesimulator xros xrsimulator"
+                try expect(targetConfig1.buildSettings["TARGETED_DEVICE_FAMILY"] as? String) == "1,2,7"
+                try expect(targetConfig1.buildSettings["SUPPORTS_MACCATALYST"] as? Bool) == false
+                try expect(targetConfig1.buildSettings["SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD"] as? Bool) == true
+                try expect(targetConfig1.buildSettings["SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD"] as? Bool) == false
+                
+                try expect(targetConfig1.buildSettings["LD_RUNPATH_SEARCH_PATHS"] as? [String]) == ["$(inherited)", "@executable_path/Frameworks"]
+                try expect(targetConfig1.buildSettings["SDKROOT"] as? String) == "auto"
+                try expect(targetConfig1.buildSettings["ASSETCATALOG_COMPILER_APPICON_NAME"] as? String) == "AppIcon"
+                try expect(targetConfig1.buildSettings["CODE_SIGN_IDENTITY"] as? String) == "iPhone Developer"
+            }
+            
+            $0.it("supportedPlaforms merges settings - iOS, tvOS, macOS") {
+                let target = Target(name: "Target", type: .application, platform: .auto, supportedDestinations: [.iOS, .tvOS, .macOS])
+                let project = Project(name: "", targets: [target])
+                
+                let pbxProject = try project.generatePbxProj()
+                let targetConfig1 = try unwrap(pbxProject.nativeTargets.first?.buildConfigurationList?.buildConfigurations.first)
+                
+                try expect(targetConfig1.buildSettings["SUPPORTED_PLATFORMS"] as? String) == "iphoneos iphonesimulator appletvos appletvsimulator macosx"
+                try expect(targetConfig1.buildSettings["TARGETED_DEVICE_FAMILY"] as? String) == "1,2,3"
+                try expect(targetConfig1.buildSettings["SUPPORTS_MACCATALYST"] as? Bool) == false
+                try expect(targetConfig1.buildSettings["SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD"] as? Bool) == false
+                try expect(targetConfig1.buildSettings["SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD"] as? Bool) == true
+                
+                try expect(targetConfig1.buildSettings["LD_RUNPATH_SEARCH_PATHS"] as? [String]) == ["$(inherited)", "@executable_path/Frameworks"]
+                try expect(targetConfig1.buildSettings["SDKROOT"] as? String) == "auto"
+                try expect(targetConfig1.buildSettings["ASSETCATALOG_COMPILER_APPICON_NAME"] as? String) == "AppIcon"
+                try expect(targetConfig1.buildSettings["CODE_SIGN_IDENTITY"] as? String) == "iPhone Developer"
+            }
+            
+            $0.it("supportedPlaforms merges settings - iOS, tvOS, macCatalyst") {
+                let target = Target(name: "Target", type: .application, platform: .auto, supportedDestinations: [.iOS, .tvOS, .macCatalyst])
+                let project = Project(name: "", targets: [target])
+                
+                let pbxProject = try project.generatePbxProj()
+                let targetConfig1 = try unwrap(pbxProject.nativeTargets.first?.buildConfigurationList?.buildConfigurations.first)
+                
+                try expect(targetConfig1.buildSettings["SUPPORTED_PLATFORMS"] as? String) == "iphoneos iphonesimulator appletvos appletvsimulator"
+                try expect(targetConfig1.buildSettings["TARGETED_DEVICE_FAMILY"] as? String) == "1,2,3"
+                try expect(targetConfig1.buildSettings["SUPPORTS_MACCATALYST"] as? Bool) == true
+                try expect(targetConfig1.buildSettings["SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD"] as? Bool) == false
+                try expect(targetConfig1.buildSettings["SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD"] as? Bool) == true
+                
+                try expect(targetConfig1.buildSettings["LD_RUNPATH_SEARCH_PATHS"] as? [String]) == ["$(inherited)", "@executable_path/Frameworks"]
+                try expect(targetConfig1.buildSettings["SDKROOT"] as? String) == "auto"
+                try expect(targetConfig1.buildSettings["ASSETCATALOG_COMPILER_APPICON_NAME"] as? String) == "AppIcon"
+                try expect(targetConfig1.buildSettings["CODE_SIGN_IDENTITY"] as? String) == "iPhone Developer"
+            }
+            
+            $0.it("supportedPlaforms merges settings - iOS, macOS") {
+                let target = Target(name: "Target", type: .application, platform: .auto, supportedDestinations: [.iOS, .macOS])
+                let project = Project(name: "", targets: [target])
+                
+                let pbxProject = try project.generatePbxProj()
+                let targetConfig1 = try unwrap(pbxProject.nativeTargets.first?.buildConfigurationList?.buildConfigurations.first)
+                
+                try expect(targetConfig1.buildSettings["SUPPORTED_PLATFORMS"] as? String) == "iphoneos iphonesimulator macosx"
+                try expect(targetConfig1.buildSettings["TARGETED_DEVICE_FAMILY"] as? String) == "1,2"
+                try expect(targetConfig1.buildSettings["SUPPORTS_MACCATALYST"] as? Bool) == false
+                try expect(targetConfig1.buildSettings["SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD"] as? Bool) == false
+                try expect(targetConfig1.buildSettings["SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD"] as? Bool) == true
+                
+                try expect(targetConfig1.buildSettings["LD_RUNPATH_SEARCH_PATHS"] as? [String]) == ["$(inherited)", "@executable_path/Frameworks"]
+                try expect(targetConfig1.buildSettings["SDKROOT"] as? String) == "auto"
+                try expect(targetConfig1.buildSettings["ASSETCATALOG_COMPILER_APPICON_NAME"] as? String) == "AppIcon"
+                try expect(targetConfig1.buildSettings["CODE_SIGN_IDENTITY"] as? String) == "iPhone Developer"
+            }
+            
+            $0.it("supportedPlaforms merges settings - tvOS, macOS") {
+                let target = Target(name: "Target", type: .application, platform: .auto, supportedDestinations: [.tvOS, .macOS])
+                let project = Project(name: "", targets: [target])
+                
+                let pbxProject = try project.generatePbxProj()
+                let targetConfig1 = try unwrap(pbxProject.nativeTargets.first?.buildConfigurationList?.buildConfigurations.first)
+                
+                try expect(targetConfig1.buildSettings["SUPPORTED_PLATFORMS"] as? String) == "appletvos appletvsimulator macosx"
+                try expect(targetConfig1.buildSettings["TARGETED_DEVICE_FAMILY"] as? String) == "3"
+                try expect(targetConfig1.buildSettings["SUPPORTS_MACCATALYST"] as? Bool) == false
+                try expect(targetConfig1.buildSettings["SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD"] as? Bool) == false
+                
+                try expect(targetConfig1.buildSettings["LD_RUNPATH_SEARCH_PATHS"] as? [String]) == ["$(inherited)", "@executable_path/Frameworks"]
+                try expect(targetConfig1.buildSettings["SDKROOT"] as? String) == "auto"
+                try expect(targetConfig1.buildSettings["ASSETCATALOG_COMPILER_APPICON_NAME"] as? String) == "App Icon & Top Shelf Image"
+                try expect(targetConfig1.buildSettings["ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME"] as? String) == "LaunchImage"
+            }
+            
+            $0.it("supportedPlaforms merges settings - visionOS, macOS") {
+                let target = Target(name: "Target", type: .application, platform: .auto, supportedDestinations: [.visionOS, .macOS])
+                let project = Project(name: "", targets: [target])
+                
+                let pbxProject = try project.generatePbxProj()
+                let targetConfig1 = try unwrap(pbxProject.nativeTargets.first?.buildConfigurationList?.buildConfigurations.first)
+                
+                try expect(targetConfig1.buildSettings["SUPPORTED_PLATFORMS"] as? String) == "xros xrsimulator macosx"
+                try expect(targetConfig1.buildSettings["TARGETED_DEVICE_FAMILY"] as? String) == "7"
+                try expect(targetConfig1.buildSettings["SUPPORTS_MACCATALYST"] as? Bool) == false
+                try expect(targetConfig1.buildSettings["SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD"] as? Bool) == false
+                try expect(targetConfig1.buildSettings["SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD"] as? Bool) == false
+                
+                try expect(targetConfig1.buildSettings["SDKROOT"] as? String) == "auto"
+                try expect(targetConfig1.buildSettings["ASSETCATALOG_COMPILER_APPICON_NAME"] as? String) == "AppIcon"
+            }
+            
+            $0.it("supportedPlaforms merges settings - iOS, macCatalyst") {
+                let target = Target(name: "Target", type: .application, platform: .auto, supportedDestinations: [.iOS, .macCatalyst])
+                let project = Project(name: "", targets: [target])
+                
+                let pbxProject = try project.generatePbxProj()
+                let targetConfig1 = try unwrap(pbxProject.nativeTargets.first?.buildConfigurationList?.buildConfigurations.first)
+                
+                try expect(targetConfig1.buildSettings["SUPPORTED_PLATFORMS"] as? String) == "iphoneos iphonesimulator"
+                try expect(targetConfig1.buildSettings["TARGETED_DEVICE_FAMILY"] as? String) == "1,2"
+                try expect(targetConfig1.buildSettings["SUPPORTS_MACCATALYST"] as? Bool) == true
+                try expect(targetConfig1.buildSettings["SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD"] as? Bool) == false
+                try expect(targetConfig1.buildSettings["SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD"] as? Bool) == true
+                
+                try expect(targetConfig1.buildSettings["LD_RUNPATH_SEARCH_PATHS"] as? [String]) == ["$(inherited)", "@executable_path/Frameworks"]
+                try expect(targetConfig1.buildSettings["SDKROOT"] as? String) == "auto"
+                try expect(targetConfig1.buildSettings["ASSETCATALOG_COMPILER_APPICON_NAME"] as? String) == "AppIcon"
+                try expect(targetConfig1.buildSettings["CODE_SIGN_IDENTITY"] as? String) == "iPhone Developer"
+            }
+            
             $0.it("generates dependencies") {
                 let pbxProject = try project.generatePbxProj()
 
@@ -555,12 +704,12 @@ class ProjectGeneratorTests: XCTestCase {
                         Dependency(type: .target, reference: resourceBundle.name),
                         Dependency(type: .framework, reference: "FrameworkC.framework"),
                         Dependency(type: .carthage(findFrameworks: false, linkType: .dynamic), reference: "CarthageA"),
-                        Dependency(type: .package(product: "RxSwift"), reference: "RxSwift"),
-                        Dependency(type: .package(product: "RxCocoa"), reference: "RxSwift"),
-                        Dependency(type: .package(product: "RxRelay"), reference: "RxSwift"),
+                        Dependency(type: .package(products: ["RxSwift"]), reference: "RxSwift"),
+                        Dependency(type: .package(products: ["RxCocoa"]), reference: "RxSwift"),
+                        Dependency(type: .package(products: ["RxRelay"]), reference: "RxSwift"),
 
                         // Validate - Do not link package
-                        Dependency(type: .package(product: "KeychainAccess"), reference: "KeychainAccess", link: false),
+                        Dependency(type: .package(products: ["KeychainAccess"]), reference: "KeychainAccess", link: false),
 
                         // Statically linked, so don't embed into test
                         Dependency(type: .target, reference: staticLibrary.name),
@@ -1066,7 +1215,108 @@ class ProjectGeneratorTests: XCTestCase {
                 try expect(app2OtherLinkerSettings.contains("-ObjC")) == false
                 try expect(app3OtherLinkerSettings.contains("-ObjC")) == true
             }
-
+            
+            $0.it("filter sources with inferDestinationFiltersByPath") {
+                let sourceFiles = TargetSource(path: "App_supportedDestinations/TestResources", inferDestinationFiltersByPath: true)
+                
+                let target = Target(
+                    name: "test",
+                    type: .application,
+                    platform: .auto,
+                    sources: [sourceFiles],
+                    dependencies: []
+                )
+                
+                let project = Project(
+                    basePath: fixturePath + "TestProject",
+                    name: "test",
+                    targets: [target]
+                )
+                
+                let pbxProject = try project.generatePbxProj()
+                let buildFiles = pbxProject.buildFiles
+                
+                try expect(buildFiles.count) == 8
+                
+                for buildFile in buildFiles {
+                    let name = buildFile.file?.nameOrPath
+                    
+                    if buildFile.platformFilters == [SupportedDestination.iOS.string] &&
+                        (name == "File_ios.swift" || name == "File_A.swift") {
+                        continue
+                    } else if buildFile.platformFilters == [SupportedDestination.tvOS.string] &&
+                                (name == "File_tvOs.swift" || name == "File_B.swift") {
+                        continue
+                    } else if buildFile.platformFilters == [SupportedDestination.macOS.string] &&
+                                (name == "File_macOS.swift" || name == "File_C.swift") {
+                        continue
+                    } else if buildFile.platformFilters == [SupportedDestination.macCatalyst.string] &&
+                                (name == "File_MACCATALYST.swift" || name == "File_D.swift") {
+                        continue
+                    }
+                    
+                    throw failure("Unexpected source file / destinationFilters")
+                }
+            }
+            
+            $0.it("filter sources with destinationFilters") {
+                let sourceFile1 = TargetSource(path: "App_supportedDestinations/TestResources/iOs",
+                                               destinationFilters: [.iOS])
+                let sourceFile2 = TargetSource(path: "App_supportedDestinations/TestResources/TVOS",
+                                               destinationFilters: [.tvOS])
+                let sourceFile3 = TargetSource(path: "App_supportedDestinations/TestResources/macos",
+                                               destinationFilters: [.macOS, .macCatalyst])
+                let sourceFile4 = TargetSource(path: "App_supportedDestinations/TestResources/macCatalyst",
+                                               destinationFilters: [.macOS, .macCatalyst])
+                let sourceFile5 = TargetSource(path: "App_supportedDestinations/TestResources/File_ios.swift",
+                                               destinationFilters: [.iOS])
+                let sourceFile6 = TargetSource(path: "App_supportedDestinations/TestResources/File_tvOs.swift",
+                                               destinationFilters: [.tvOS])
+                let sourceFile7 = TargetSource(path: "App_supportedDestinations/TestResources/File_macOS.swift",
+                                               destinationFilters: [.macOS, .macCatalyst])
+                let sourceFile8 = TargetSource(path: "App_supportedDestinations/TestResources/File_MACCATALYST.swift",
+                                               destinationFilters: [.macOS, .macCatalyst])
+                
+                let target = Target(
+                    name: "test",
+                    type: .application,
+                    platform: .auto,
+                    sources: [sourceFile1, sourceFile2, sourceFile3, sourceFile4, sourceFile5, sourceFile6, sourceFile7, sourceFile8],
+                    dependencies: []
+                )
+                
+                let project = Project(
+                    basePath: fixturePath + "TestProject",
+                    name: "test",
+                    targets: [target]
+                )
+                
+                let pbxProject = try project.generatePbxProj()
+                let buildFiles = pbxProject.buildFiles
+                
+                try expect(buildFiles.count) == 8
+                
+                for buildFile in buildFiles {
+                    let name = buildFile.file?.nameOrPath
+                    
+                    if buildFile.platformFilters == [SupportedDestination.iOS.string] &&
+                        (name == "File_ios.swift" || name == "File_A.swift") {
+                        continue
+                    } else if buildFile.platformFilters == [SupportedDestination.tvOS.string] &&
+                                (name == "File_tvOs.swift" || name == "File_B.swift") {
+                        continue
+                    } else if buildFile.platformFilters == [SupportedDestination.macOS.string, SupportedDestination.macCatalyst.string] &&
+                                (name == "File_C.swift" || name == "File_D.swift") {
+                        continue
+                    } else if buildFile.platformFilters == [SupportedDestination.macOS.string, SupportedDestination.macCatalyst.string] &&
+                                (name == "File_macOS.swift" || name == "File_MACCATALYST.swift") {
+                        continue
+                    }
+                    
+                    throw failure("Unexpected source file / destinationFilters")
+                }
+            }
+            
             $0.it("copies Swift Objective-C Interface Header") {
                 let swiftStaticLibraryWithHeader = Target(
                     name: "swiftStaticLibraryWithHeader",
@@ -1263,8 +1513,8 @@ class ProjectGeneratorTests: XCTestCase {
                     type: .application,
                     platform: .iOS,
                     dependencies: [
-                        Dependency(type: .package(product: "ProjectSpec"), reference: "XcodeGen"),
-                        Dependency(type: .package(product: nil), reference: "Codability"),
+                        Dependency(type: .package(products: ["ProjectSpec"]), reference: "XcodeGen"),
+                        Dependency(type: .package(products: []), reference: "Codability"),
                     ]
                 )
 
@@ -1300,7 +1550,7 @@ class ProjectGeneratorTests: XCTestCase {
                     type: .application,
                     platform: .iOS,
                     dependencies: [
-                        Dependency(type: .package(product: nil), reference: "XcodeGen"),
+                        Dependency(type: .package(products: []), reference: "XcodeGen"),
                     ]
                 )
 
@@ -1324,14 +1574,13 @@ class ProjectGeneratorTests: XCTestCase {
                 try expect(file.product?.productName) == "XcodeGen"
             }
             
-            
             $0.it("generates local swift packages with custom xcode path") {
                 let app = Target(
                     name: "MyApp",
                     type: .application,
                     platform: .iOS,
                     dependencies: [
-                        Dependency(type: .package(product: nil), reference: "XcodeGen"),
+                        Dependency(type: .package(products: []), reference: "XcodeGen"),
                     ]
                 )
 
@@ -1495,6 +1744,40 @@ class ProjectGeneratorTests: XCTestCase {
 
                 try expect(NSDictionary(dictionary: expectedInfoPlist).isEqual(to: infoPlist)).beTrue()
             }
+
+            $0.it("generates local swift packages with multiple products") {
+                let app = Target(
+                    name: "MyApp",
+                    type: .application,
+                    platform: .iOS,
+                    dependencies: [
+                        Dependency(type: .package(products: ["FooDomain", "FooUI"]), reference: "FooFeature")
+                    ]
+                )
+
+                let project = Project(name: "test", targets: [app], packages: [
+                    "FooFeature": .local(path: "../FooFeature", group: nil)
+                ], options: .init(localPackagesGroup: "MyPackages"))
+
+                let pbxProject = try project.generatePbxProj(specValidate: false)
+                let nativeTarget = try unwrap(pbxProject.nativeTargets.first(where: { $0.name == app.name }))
+                let localPackageFile = try unwrap(pbxProject.fileReferences.first(where: { $0.path == "../FooFeature" }))
+                try expect(localPackageFile.lastKnownFileType) == "folder"
+
+                let frameworkPhases = nativeTarget.buildPhases.compactMap { $0 as? PBXFrameworksBuildPhase }
+
+                guard let frameworkPhase = frameworkPhases.first else {
+                    return XCTFail("frameworkPhases should have more than one")
+                }
+
+                guard let files = frameworkPhase.files, files.count == 2 else {
+                    return XCTFail("frameworkPhase should have exactly two files")
+                }
+
+                let productNames = files.compactMap(\.product?.productName)
+                try expect(productNames).contains { $0 == "FooDomain" }
+                try expect(productNames).contains { $0 == "FooUI" }
+            }
         }
     }
 
@@ -1612,7 +1895,197 @@ class ProjectGeneratorTests: XCTestCase {
             }
         }
     }
+    
+    func testGenerateXcodeProjectWithPlatformFilteredDependencies() throws {
         
+        describe("generateXcodeProject with destinationFilters") {
+            
+            func generateProjectForApp(withDependencies: [Dependency], targets: [Target], packages: [String: SwiftPackage] = [:]) throws -> PBXProj {
+                
+                let app = Target(
+                    name: "App",
+                    type: .application,
+                    platform: .iOS,
+                    dependencies: withDependencies
+                )
+                
+                let project = Project(
+                    name: "test",
+                    targets: targets + [app],
+                    packages: packages
+                )
+                
+                return try project.generatePbxProj()
+            }
+            
+            func expectLinkedDependecies(_ expectedLinkedFiles: [String: [String]], in project: PBXProj) throws {
+                let buildPhases = project.buildPhases
+                let frameworkPhases = project.frameworksBuildPhases.filter { buildPhases.contains($0) }
+                
+                var linkedFiles: [String: [String]] = [:]
+                
+                for link in frameworkPhases[0].files ?? [] {
+                    if let name = link.file?.nameOrPath ?? link.product?.productName  {
+                        linkedFiles[name] = link.platformFilters
+                    }
+                }
+                
+                try expect(linkedFiles) == expectedLinkedFiles
+            }
+            
+            func expectCopiedBundles(_ expectedCopiedBundleFiles: [String: [String]], in project: PBXProj) throws {
+                let buildPhases = project.buildPhases
+                let copyBundlesPhase = project.copyFilesBuildPhases.filter { buildPhases.contains($0) }
+                
+                var copiedFiles: [String: [String]] = [:]
+                
+                for copy in copyBundlesPhase[0].files ?? [] {
+                    if let name = copy.file?.nameOrPath {
+                        copiedFiles[name] = copy.platformFilters
+                    }
+                }
+                
+                try expect(copiedFiles) == expectedCopiedBundleFiles
+            }
+            
+            $0.it("target dependencies") {
+                
+                let frameworkA = Target(
+                    name: "frameworkA",
+                    type: .framework,
+                    platform: .iOS
+                )
+                
+                let frameworkB = Target(
+                    name: "frameworkB",
+                    type: .framework,
+                    platform: .iOS
+                )
+                
+                let expectedLinkedFiles = [
+                    "frameworkA.framework": [SupportedDestination.iOS.string],
+                    "frameworkB.framework": [SupportedDestination.iOS.string, SupportedDestination.tvOS.string]
+                ]
+                
+                // given
+                let dependencies = [
+                    Dependency(type: .target, reference: frameworkA.name, destinationFilters: [.iOS]),
+                    Dependency(type: .target, reference: frameworkB.name, destinationFilters: [.iOS, .tvOS]),
+                ]
+                
+                // when
+                let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [frameworkA, frameworkB])
+                
+                // then ensure that everything is linked
+                try expectLinkedDependecies(expectedLinkedFiles, in: pbxProject)
+            }
+            
+            $0.it("framework dependencies") {
+                
+                let expectedLinkedFiles = [
+                    "frameworkA.framework": [SupportedDestination.iOS.string],
+                    "frameworkB.framework": [SupportedDestination.iOS.string, SupportedDestination.tvOS.string]
+                ]
+                
+                // given
+                let dependencies = [
+                    Dependency(type: .framework, reference: "frameworkA.framework", destinationFilters: [.iOS]),
+                    Dependency(type: .framework, reference: "frameworkB.framework", destinationFilters: [.iOS, .tvOS]),
+                ]
+                
+                // when
+                let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [])
+                
+                // then ensure that everything is linked
+                try expectLinkedDependecies(expectedLinkedFiles, in: pbxProject)
+            }
+            
+            $0.it("carthage dependencies") {
+                
+                let expectedLinkedFiles = [
+                    "frameworkA.framework": [SupportedDestination.iOS.string],
+                    "frameworkB.framework": [SupportedDestination.iOS.string, SupportedDestination.tvOS.string]
+                ]
+                
+                // given
+                let dependencies = [
+                    Dependency(type: .carthage(findFrameworks: false, linkType: .dynamic), reference: "frameworkA.framework", destinationFilters: [.iOS]),
+                    Dependency(type: .carthage(findFrameworks: false, linkType: .dynamic), reference: "frameworkB.framework", destinationFilters: [.iOS, .tvOS]),
+                ]
+                
+                // when
+                let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [])
+                
+                // then ensure that everything is linked
+                try expectLinkedDependecies(expectedLinkedFiles, in: pbxProject)
+            }
+            
+            $0.it("sdk dependencies") {
+                
+                let expectedLinkedFiles = [
+                    "sdkA.framework": [SupportedDestination.iOS.string],
+                    "sdkB.framework": [SupportedDestination.iOS.string, SupportedDestination.tvOS.string]
+                ]
+                
+                // given
+                let dependencies = [
+                    Dependency(type: .sdk(root: nil), reference: "sdkA.framework", destinationFilters: [.iOS]),
+                    Dependency(type: .sdk(root: nil), reference: "sdkB.framework", destinationFilters: [.iOS, .tvOS]),
+                ]
+                
+                // when
+                let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [])
+                
+                // then ensure that everything is linked
+                try expectLinkedDependecies(expectedLinkedFiles, in: pbxProject)
+            }
+            
+            $0.it("package dependencies") {
+                
+                let packages: [String: SwiftPackage] = [
+                    "RxSwift": .remote(url: "https://github.com/ReactiveX/RxSwift", versionRequirement: .upToNextMajorVersion("5.1.1")),
+                ]
+                
+                let expectedLinkedFiles = [
+                    "RxSwift": [SupportedDestination.iOS.string],
+                    "RxCocoa": [SupportedDestination.iOS.string, SupportedDestination.tvOS.string]
+                ]
+                
+                // given
+                let dependencies = [
+                    Dependency(type: .package(products: ["RxSwift"]), reference: "RxSwift", destinationFilters: [.iOS]),
+                    Dependency(type: .package(products: ["RxCocoa"]), reference: "RxSwift", destinationFilters: [.iOS, .tvOS]),
+                ]
+                
+                // when
+                let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [], packages: packages)
+                
+                // then ensure that everything is linked
+                try expectLinkedDependecies(expectedLinkedFiles, in: pbxProject)
+            }
+            
+            $0.it("bundle dependencies") {
+                
+                let expectedCopiedBundleFiles = [
+                    "bundleA.bundle": [SupportedDestination.iOS.string],
+                    "bundleB.bundle": [SupportedDestination.iOS.string, SupportedDestination.tvOS.string]
+                ]
+                
+                // given
+                let dependencies = [
+                    Dependency(type: .bundle, reference: "bundleA.bundle", destinationFilters: [.iOS]),
+                    Dependency(type: .bundle, reference: "bundleB.bundle", destinationFilters: [.iOS, .tvOS]),
+                ]
+                
+                // when
+                let pbxProject = try generateProjectForApp(withDependencies: dependencies, targets: [])
+                
+                // then ensure that everything is linked
+                try expectCopiedBundles(expectedCopiedBundleFiles, in: pbxProject)
+            }
+        }
+    }
+    
     func testGenerateXcodeProjectWithCustomDependencyDestinations() throws {
         
         describe("generateXcodeProject") {
@@ -2978,8 +3451,8 @@ class ProjectGeneratorTests: XCTestCase {
 
                     // given
                     let dependencies = [
-                        Dependency(type: .package(product: "RxSwift"), reference: "RxSwift", embed: true),
-                        Dependency(type: .package(product: "RxCocoa"), reference: "RxSwift", embed: false),
+                        Dependency(type: .package(products: ["RxSwift"]), reference: "RxSwift", embed: true),
+                        Dependency(type: .package(products: ["RxCocoa"]), reference: "RxSwift", embed: false),
                     ]
                     
                     // when
@@ -2993,8 +3466,8 @@ class ProjectGeneratorTests: XCTestCase {
                     
                     // given
                     let dependencies = [
-                        Dependency(type: .package(product: "RxSwift"), reference: "RxSwift", embed: true, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .plugins, subpath: "test", phaseOrder: .postCompile)),
-                        Dependency(type: .package(product: "RxCocoa"), reference: "RxSwift", embed: false, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .plugins, subpath: "test", phaseOrder: .postCompile)),
+                        Dependency(type: .package(products: ["RxSwift"]), reference: "RxSwift", embed: true, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .plugins, subpath: "test", phaseOrder: .postCompile)),
+                        Dependency(type: .package(products: ["RxCocoa"]), reference: "RxSwift", embed: false, copyPhase: BuildPhaseSpec.CopyFilesSettings(destination: .plugins, subpath: "test", phaseOrder: .postCompile)),
                     ]
                     
                     // when

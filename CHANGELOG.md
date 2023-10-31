@@ -2,13 +2,22 @@
 
 ## Next Version
 
+## 2.38.0
+
 ### Added
 
+- [Multi-destination targets](https://github.com/yonaskolb/XcodeGen/blob/master/Docs/ProjectSpec.md#supported-destinations) #1336 @amatig
+  - Added `supportedDestinations` to target
+  - Added optional new `platform` value of `auto` when using `supportedDestinations`
+  - Added `destinationFilters` for sources and dependencies
+  - Added `inferDestinationFiltersByPath`, a convenience filter for sources
 - `.mlpackage` files now default to being a source type #1398 @aaron-foreflight
- 
+- Added support for `Build Tool Plug-ins` in `AggregateTarget` #1390 @BarredEwe
+
 ### Fixed
 
 - Fixed source file `includes` not working when no paths were found #1337 @shnhrrsn
+- Supports specifying multiple package products #1395 @simonbs
 
 ## 2.37.0
 
@@ -359,7 +368,7 @@ Some support for Xcode Test Plans has been added. For now test plans are not gen
 
 #### Fixed
 
-- Fixed issue when linking and embeding static frameworks: they should be linked and NOT embed. #820 @acecilia
+- Fixed issue when linking and embedding static frameworks: they should be linked and NOT embed. #820 @acecilia
 - Fixed issue when generating projects for paths with a dot in the folder for swift sources. #826 @asifmohd
 - Prefix static library target filenames with 'lib' to match Xcode. #831 @ileitch
 - Fixed duplicate addition of carthage static frameworks. #829 @funzin

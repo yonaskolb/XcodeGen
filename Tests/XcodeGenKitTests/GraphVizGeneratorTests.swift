@@ -14,7 +14,7 @@ private let app = Target(
         Dependency(type: .carthage(findFrameworks: true, linkType: .static), reference: "MyStaticFramework"),
         Dependency(type: .carthage(findFrameworks: true, linkType: .dynamic), reference: "MyDynamicFramework"),
         Dependency(type: .framework, reference: "MyExternalFramework"),
-        Dependency(type: .package(product: "MyPackage"), reference: "MyPackage"),
+        Dependency(type: .package(products: ["MyPackage"]), reference: "MyPackage"),
         Dependency(type: .sdk(root: "MySDK"), reference: "MySDK"),
     ]
 )

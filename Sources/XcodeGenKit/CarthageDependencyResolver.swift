@@ -151,6 +151,9 @@ extension Platform {
 
     public var carthageName: String {
         switch self {
+        case .auto:
+            // This is a dummy value
+            return "auto"
         case .iOS:
             return "iOS"
         case .tvOS:

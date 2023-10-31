@@ -239,6 +239,29 @@ targets:
       properties:
         com.apple.security.application-groups: group.com.app
 
+  App_supportedDestinations:
+    type: application
+    supportedDestinations: [iOS, tvOS]
+    info:
+      path: App_supportedDestinations/Info.generated.plist
+      properties:
+        CFBundleDisplayName: "TestApp"
+        CFBundleVersion: "1.0.0"
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.test.TestApp
+    sources:
+      - path: App_supportedDestinations/Sources
+        group: App_supportedDestinations
+        inferDestinationFiltersByPath: true
+      - path: App_supportedDestinations/Storyboards
+        group: App_supportedDestinations
+        destinationFilters: [iOS]
+    dependencies:
+      - package: Swinject
+        product: Swinject
+        destinationFilters: [tvOS]
+
   App_watchOS:
       type: application.watchapp2
       platform: watchOS
@@ -489,7 +512,7 @@ schemes:
       enableGPUFrameCaptureMode: "disabled"
       enableGPUValidationMode: "disabled"
       storeKitConfiguration: "App_iOS/Configuration.storekit"
-      macroExpansion: App_iOS 
+      macroExpansion: App_iOS
     test:
       gatherCoverageData: true
       targets:

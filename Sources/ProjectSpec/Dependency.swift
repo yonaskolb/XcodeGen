@@ -16,6 +16,7 @@ public struct Dependency: Equatable {
     public var implicit: Bool = implicitDefault
     public var weakLink: Bool = weakLinkDefault
     public var platformFilter: PlatformFilter = platformFilterDefault
+    public var destinationFilters: [SupportedDestination]?
     public var platforms: Set<Platform>?
     public var copyPhase: BuildPhaseSpec.CopyFilesSettings?
 
@@ -28,6 +29,7 @@ public struct Dependency: Equatable {
         implicit: Bool = implicitDefault,
         weakLink: Bool = weakLinkDefault,
         platformFilter: PlatformFilter = platformFilterDefault,
+        destinationFilters: [SupportedDestination]? = nil,
         platforms: Set<Platform>? = nil,
         copyPhase: BuildPhaseSpec.CopyFilesSettings? = nil
     ) {
@@ -39,6 +41,7 @@ public struct Dependency: Equatable {
         self.implicit = implicit
         self.weakLink = weakLink
         self.platformFilter = platformFilter
+        self.destinationFilters = destinationFilters
         self.platforms = platforms
         self.copyPhase = copyPhase
     }
@@ -48,7 +51,7 @@ public struct Dependency: Equatable {
         case iOS
         case macOS
     }
-
+    
     public enum CarthageLinkType: String {
         case dynamic
         case `static`
@@ -61,7 +64,7 @@ public struct Dependency: Equatable {
         case framework
         case carthage(findFrameworks: Bool?, linkType: CarthageLinkType)
         case sdk(root: String?)
-        case package(product: String?)
+        case package(products: [String])
         case bundle
     }
 }
@@ -69,9 +72,9 @@ public struct Dependency: Equatable {
 extension Dependency {
     public var uniqueID: String {
         switch type {
-        case .package(let product):
-            if let product = product {
-                return "\(reference)/\(product)"
+        case .package(let products):
+            if !products.isEmpty {
+                return "\(reference)/\(products.joined(separator: ","))"
             } else {
                 return reference
             }
@@ -106,9 +109,16 @@ extension Dependency: JSONObjectConvertible {
             type = .sdk(root: sdkRoot)
             reference = sdk
         } else if let package: String = jsonDictionary.json(atKeyPath: "package") {
-            let product: String? = jsonDictionary.json(atKeyPath: "product")
-            type = .package(product: product)
-            reference = package
+            if let products: [String] = jsonDictionary.json(atKeyPath: "products") {
+                type = .package(products: products)
+                reference = package
+            } else if let product: String = jsonDictionary.json(atKeyPath: "product") {
+                type = .package(products: [product])
+                reference = package
+            } else {
+                type = .package(products: [])
+                reference = package
+            }
         } else if let bundle: String = jsonDictionary.json(atKeyPath: "bundle") {
             type = .bundle
             reference = bundle
@@ -135,7 +145,11 @@ extension Dependency: JSONObjectConvertible {
         } else {
             self.platformFilter = .all
         }
-
+        
+        if let destinationFilters: [SupportedDestination] = jsonDictionary.json(atKeyPath: "destinationFilters") {
+            self.destinationFilters = destinationFilters
+        }
+        
         if let platforms: [ProjectSpec.Platform] = jsonDictionary.json(atKeyPath: "platforms") {
             self.platforms = Set(platforms)
         }
@@ -154,6 +168,7 @@ extension Dependency: JSONEncodable {
             "link": link,
             "platforms": platforms?.map(\.rawValue).sorted(),
             "copy": copyPhase?.toJSONValue(),
+            "destinationFilters": destinationFilters?.map { $0.rawValue },
         ]
 
         if removeHeaders != Dependency.removeHeadersDefault {
