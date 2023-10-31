@@ -73,12 +73,23 @@ class ProjectSpecTests: XCTestCase {
         describe {
 
             $0.it("has correct build setting") {
+                try expect(Platform.auto.deploymentTargetSetting) == ""
                 try expect(Platform.iOS.deploymentTargetSetting) == "IPHONEOS_DEPLOYMENT_TARGET"
                 try expect(Platform.tvOS.deploymentTargetSetting) == "TVOS_DEPLOYMENT_TARGET"
                 try expect(Platform.watchOS.deploymentTargetSetting) == "WATCHOS_DEPLOYMENT_TARGET"
                 try expect(Platform.macOS.deploymentTargetSetting) == "MACOSX_DEPLOYMENT_TARGET"
+                try expect(Platform.visionOS.deploymentTargetSetting) == "XROS_DEPLOYMENT_TARGET"
             }
 
+            $0.it("has correct sdk root") {
+                try expect(Platform.auto.sdkRoot) == "auto"
+                try expect(Platform.iOS.sdkRoot) == "iphoneos"
+                try expect(Platform.tvOS.sdkRoot) == "appletvos"
+                try expect(Platform.watchOS.sdkRoot) == "watchos"
+                try expect(Platform.macOS.sdkRoot) == "macosx"
+                try expect(Platform.visionOS.sdkRoot) == "xros"
+            }
+            
             $0.it("parses version correctly") {
                 try expect(Version.parse("2").deploymentTarget) == "2.0"
                 try expect(Version.parse("2.0").deploymentTarget) == "2.0"
@@ -178,7 +189,59 @@ class ProjectSpecTests: XCTestCase {
 
                 try expectNoValidationError(project, .duplicateDependencies(target: "target1", dependencyReference: "package1"))
             }
-
+            
+            $0.it("unexpected supported destinations for watch app") {
+                var project = baseProject
+                project.targets = [
+                    Target(
+                        name: "target1",
+                        type: .application,
+                        platform: .watchOS,
+                        supportedDestinations: [.macOS]
+                    )
+                ]
+                try expectValidationError(project, .unexpectedTargetPlatformForSupportedDestinations(target: "target1", platform: .watchOS))
+            }
+            
+            $0.it("multiple definitions of mac platform in supported destinations") {
+                var project = baseProject
+                project.targets = [
+                    Target(
+                        name: "target1",
+                        type: .application,
+                        platform: .iOS,
+                        supportedDestinations: [.macOS, .macCatalyst]
+                    )
+                ]
+                try expectValidationError(project, .multipleMacPlatformsInSupportedDestinations(target: "target1"))
+            }
+            
+            $0.it("invalid target platform for macCatalyst supported destinations") {
+                var project = baseProject
+                project.targets = [
+                    Target(
+                        name: "target1",
+                        type: .application,
+                        platform: .tvOS,
+                        supportedDestinations: [.tvOS, .macCatalyst]
+                    )
+                ]
+                try expectValidationError(project, .invalidTargetPlatformForSupportedDestinations(target: "target1"))
+            }
+            
+            $0.it("missing target platform in supported destinations") {
+                var project = baseProject
+                project.targets = [
+                    Target(
+                        name: "target1",
+                        type: .application,
+                        platform: .iOS,
+                        supportedDestinations: [.tvOS]
+                    )
+                ]
+                try expectValidationError(project, .missingTargetPlatformInSupportedDestinations(target: "target1", platform: .iOS))
+            }
+            
             $0.it("allows non-existent configurations") {
                 var project = baseProject
                 project.options = SpecOptions(disabledValidations: [.missingConfigs])

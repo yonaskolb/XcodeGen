@@ -30,7 +30,7 @@ extension Plist: JSONEncodable {
         [
             "path": path,
             "properties": properties,
-        ]
+        ] as [String : Any]
     }
 }
 

@@ -82,6 +82,7 @@ extension Platform {
 
     public var emoji: String {
         switch self {
+        case .auto: return "🤖"
         case .iOS: return "📱"
         case .watchOS: return "⌚️"
         case .tvOS: return "📺"

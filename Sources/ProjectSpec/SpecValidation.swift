@@ -180,6 +180,29 @@ extension Project {
                     errors.append(.invalidTargetSource(target: target.name, source: sourcePath.string))
                 }
             }
+            
+            if target.supportedDestinations != nil, target.platform == .watchOS {
+                errors.append(.unexpectedTargetPlatformForSupportedDestinations(target: target.name, platform: target.platform))
+            }
+            
+            if target.supportedDestinations?.contains(.macOS) == true,
+               target.supportedDestinations?.contains(.macCatalyst) == true {
+                
+                errors.append(.multipleMacPlatformsInSupportedDestinations(target: target.name))
+            }
+            
+            if target.supportedDestinations?.contains(.macCatalyst) == true,
+               target.platform != .iOS, target.platform != .auto {
+                
+                errors.append(.invalidTargetPlatformForSupportedDestinations(target: target.name))
+            }
+            
+            if target.platform != .auto, target.platform != .watchOS,
+               let supportedDestination = SupportedDestination(rawValue: target.platform.rawValue),
+               target.supportedDestinations?.contains(supportedDestination) == false {
+                
+                errors.append(.missingTargetPlatformInSupportedDestinations(target: target.name, platform: target.platform))
+            }
         }
 
         for projectReference in projectReferences {

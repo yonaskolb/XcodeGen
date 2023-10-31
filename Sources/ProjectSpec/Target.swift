@@ -37,6 +37,7 @@ public struct Target: ProjectTarget {
     public var name: String
     public var type: PBXProductType
     public var platform: Platform
+    public var supportedDestinations: [SupportedDestination]?
     public var settings: Settings
     public var sources: [TargetSource]
     public var dependencies: [Dependency]
@@ -58,7 +59,7 @@ public struct Target: ProjectTarget {
     public var productName: String
     public var onlyCopyFilesOnInstall: Bool
     public var putResourcesBeforeSourcesBuildPhase: Bool
-
+    
     public var isLegacy: Bool {
         legacy != nil
     }
@@ -78,6 +79,7 @@ public struct Target: ProjectTarget {
         name: String,
         type: PBXProductType,
         platform: Platform,
+        supportedDestinations: [SupportedDestination]? = nil,
         productName: String? = nil,
         deploymentTarget: Version? = nil,
         settings: Settings = .empty,
@@ -103,6 +105,7 @@ public struct Target: ProjectTarget {
         self.name = name
         self.type = type
         self.platform = platform
+        self.supportedDestinations = supportedDestinations
         self.deploymentTarget = deploymentTarget
         self.productName = productName ?? name
         self.settings = settings
@@ -162,15 +165,17 @@ extension Target {
         guard let targetsDictionary: [String: JSONDictionary] = jsonDictionary["targets"] as? [String: JSONDictionary] else {
             return jsonDictionary
         }
-
+        
         var crossPlatformTargets: [String: JSONDictionary] = [:]
 
         for (targetName, target) in targetsDictionary {
-
             if let platforms = target["platform"] as? [String] {
-
                 for platform in platforms {
                     var platformTarget = target
+                    
+                    /// This value is set to help us to check, in Target init, that there are no conflicts in the definition of the platforms. We want to ensure that the user didn't define, at the same time,
+                    /// the new Xcode 14 supported destinations and the XcodeGen generation of Multiple Platform Targets (when you define the platform field as an array).
+                    platformTarget["isMultiPlatformTarget"] = true
 
                     platformTarget = platformTarget.expand(variables: ["platform": platform])
 
@@ -202,8 +207,8 @@ extension Target {
                 crossPlatformTargets[targetName] = target
             }
         }
+        
         var merged = jsonDictionary
-
         merged["targets"] = crossPlatformTargets
         return merged
     }
@@ -268,19 +273,41 @@ extension Target: NamedJSONDictionaryConvertible {
         let resolvedName: String = jsonDictionary.json(atKeyPath: "name") ?? name
         self.name = resolvedName
         productName = jsonDictionary.json(atKeyPath: "productName") ?? resolvedName
-        let typeString: String = try jsonDictionary.json(atKeyPath: "type")
+        
+        let typeString: String = jsonDictionary.json(atKeyPath: "type") ?? ""
         if let type = PBXProductType(string: typeString) {
             self.type = type
         } else {
             throw SpecParsingError.unknownTargetType(typeString)
         }
-        let platformString: String = try jsonDictionary.json(atKeyPath: "platform")
+        
+        if let supportedDestinations: [SupportedDestination] = jsonDictionary.json(atKeyPath: "supportedDestinations") {
+            self.supportedDestinations = supportedDestinations
+        }
+        
+        let isResolved = jsonDictionary.json(atKeyPath: "isMultiPlatformTarget") ?? false
+        if isResolved, supportedDestinations != nil {
+            throw SpecParsingError.invalidTargetPlatformAsArray
+        }
+        
+        var platformString: String = jsonDictionary.json(atKeyPath: "platform") ?? ""
+        // platform defaults to 'auto' if it is empty and we are using supported destinations
+        if supportedDestinations != nil, platformString.isEmpty {
+            platformString = Platform.auto.rawValue
+        }
+        // we add 'iOS' in supported destinations if it contains only 'macCatalyst'
+        if supportedDestinations?.contains(.macCatalyst) == true,
+           supportedDestinations?.contains(.iOS) == false {
+            
+            supportedDestinations?.append(.iOS)
+        }
+        
         if let platform = Platform(rawValue: platformString) {
             self.platform = platform
         } else {
             throw SpecParsingError.unknownTargetPlatform(platformString)
         }
-
+        
         if let string: String = jsonDictionary.json(atKeyPath: "deploymentTarget") {
             deploymentTarget = try Version.parse(string)
         } else if let double: Double = jsonDictionary.json(atKeyPath: "deploymentTarget") {
@@ -351,6 +378,7 @@ extension Target: JSONEncodable {
         var dict: [String: Any?] = [
             "type": type.name,
             "platform": platform.rawValue,
+            "supportedDestinations": supportedDestinations?.map { $0.rawValue },
             "settings": settings.toJSONValue(),
             "configFiles": configFiles,
             "attributes": attributes,

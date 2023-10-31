@@ -41,16 +41,63 @@ extension Project {
 
     public func getTargetBuildSettings(target: Target, config: Config) -> BuildSettings {
         var buildSettings = BuildSettings()
-
+        
+        // list of supported destination sorted by priority
+        let specSupportedDestinations = target.supportedDestinations?.sorted(by: { $0.priority < $1.priority }) ?? []
+        
         if options.settingPresets.applyTarget {
-            buildSettings += SettingsPresetFile.platform(target.platform).getBuildSettings()
+            let platform: Platform
+            
+            if target.platform == .auto,
+               let firstDestination = specSupportedDestinations.first,
+               let firstDestinationPlatform = Platform(rawValue: firstDestination.rawValue) {
+                
+                platform = firstDestinationPlatform
+            } else {
+                platform = target.platform
+            }
+            
+            buildSettings += SettingsPresetFile.platform(platform).getBuildSettings()
             buildSettings += SettingsPresetFile.product(target.type).getBuildSettings()
-            buildSettings += SettingsPresetFile.productPlatform(target.type, target.platform).getBuildSettings()
+            buildSettings += SettingsPresetFile.productPlatform(target.type, platform).getBuildSettings()
+            
+            if target.platform == .auto {
+                // this fix is necessary because the platform preset overrides the original value
+                buildSettings["SDKROOT"] = Platform.auto.rawValue
+            }
         }
-
+        
+        if !specSupportedDestinations.isEmpty {
+            var supportedPlatforms: [String] = []
+            var targetedDeviceFamily: [String] = []
+            
+            for supportedDestination in specSupportedDestinations {
+                let supportedPlatformBuildSettings = SettingsPresetFile.supportedDestination(supportedDestination).getBuildSettings()
+                buildSettings += supportedPlatformBuildSettings
+                
+                if let value = supportedPlatformBuildSettings?["SUPPORTED_PLATFORMS"] as? String {
+                    supportedPlatforms += value.components(separatedBy: " ")
+                }
+                if let value = supportedPlatformBuildSettings?["TARGETED_DEVICE_FAMILY"] as? String {
+                    targetedDeviceFamily += value.components(separatedBy: ",")
+                }
+            }
+            
+            buildSettings["SUPPORTED_PLATFORMS"] = supportedPlatforms.joined(separator: " ")
+            buildSettings["TARGETED_DEVICE_FAMILY"] = targetedDeviceFamily.joined(separator: ",")
+        }
+        
         // apply custom platform version
         if let version = target.deploymentTarget {
-            buildSettings[target.platform.deploymentTargetSetting] = version.deploymentTarget
+            if !specSupportedDestinations.isEmpty {
+                for supportedDestination in specSupportedDestinations {
+                    if let platform = Platform(rawValue: supportedDestination.rawValue) {
+                        buildSettings[platform.deploymentTargetSetting] = version.deploymentTarget
+                    }
+                }
+            } else {
+                buildSettings[target.platform.deploymentTargetSetting] = version.deploymentTarget
+            }
         }
 
         // Prevent setting presets from overrwriting settings in target xcconfig files
@@ -205,7 +252,7 @@ extension SettingsPresetFile {
 
         guard let settingsPath = possibleSettingsPaths.first(where: { $0.exists }) else {
             switch self {
-            case .base, .config, .platform:
+            case .base, .config, .platform, .supportedDestination:
                 print("No \"\(name)\" settings found")
             case .product, .productPlatform:
                 break

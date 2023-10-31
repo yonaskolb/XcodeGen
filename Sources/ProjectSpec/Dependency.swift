@@ -16,6 +16,7 @@ public struct Dependency: Equatable {
     public var implicit: Bool = implicitDefault
     public var weakLink: Bool = weakLinkDefault
     public var platformFilter: PlatformFilter = platformFilterDefault
+    public var destinationFilters: [SupportedDestination]?
     public var platforms: Set<Platform>?
     public var copyPhase: BuildPhaseSpec.CopyFilesSettings?
 
@@ -28,6 +29,7 @@ public struct Dependency: Equatable {
         implicit: Bool = implicitDefault,
         weakLink: Bool = weakLinkDefault,
         platformFilter: PlatformFilter = platformFilterDefault,
+        destinationFilters: [SupportedDestination]? = nil,
         platforms: Set<Platform>? = nil,
         copyPhase: BuildPhaseSpec.CopyFilesSettings? = nil
     ) {
@@ -39,6 +41,7 @@ public struct Dependency: Equatable {
         self.implicit = implicit
         self.weakLink = weakLink
         self.platformFilter = platformFilter
+        self.destinationFilters = destinationFilters
         self.platforms = platforms
         self.copyPhase = copyPhase
     }
@@ -48,7 +51,7 @@ public struct Dependency: Equatable {
         case iOS
         case macOS
     }
-
+    
     public enum CarthageLinkType: String {
         case dynamic
         case `static`
@@ -142,7 +145,11 @@ extension Dependency: JSONObjectConvertible {
         } else {
             self.platformFilter = .all
         }
-
+        
+        if let destinationFilters: [SupportedDestination] = jsonDictionary.json(atKeyPath: "destinationFilters") {
+            self.destinationFilters = destinationFilters
+        }
+        
         if let platforms: [ProjectSpec.Platform] = jsonDictionary.json(atKeyPath: "platforms") {
             self.platforms = Set(platforms)
         }
@@ -161,6 +168,7 @@ extension Dependency: JSONEncodable {
             "link": link,
             "platforms": platforms?.map(\.rawValue).sorted(),
             "copy": copyPhase?.toJSONValue(),
+            "destinationFilters": destinationFilters?.map { $0.rawValue },
         ]
 
         if removeHeaders != Dependency.removeHeadersDefault {
