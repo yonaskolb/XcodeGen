@@ -2,17 +2,12 @@
 
 ## Next Version
 
-### Feature support for multiple deployment targets with xcode 14
-
-- Added `supportedDestinations` for target
-- Added a new platform value `auto` that we can use only with `supportedDestinations`
-- Added the possiblity to avoid the definition of plaform, only when we use `supportedDestinations`, that fallbacks to 'auto'
-- Added `destinationFilters` for sources and dependecies
-- Added `inferDestinationFiltersByPath`, a convenience filter for sources
-- Added visionOS support
-
 ### Added
-
+- [Multi-destination targets](https://github.com/yonaskolb/XcodeGen/blob/master/Docs/ProjectSpec.md#supported-destinations) #1336 @amatig
+  - Added `supportedDestinations` to target
+  - Added optional new `platform` value of `auto` when using `supportedDestinations`
+  - Added `destinationFilters` for sources and dependecies
+  - Added `inferDestinationFiltersByPath`, a convenience filter for sources
 - `.mlpackage` files now default to being a source type #1398 @aaron-foreflight
 - Added support for `Build Tool Plug-ins` in `AggregateTarget` #1390 @BarredEwe
 
