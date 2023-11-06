@@ -54,21 +54,8 @@ class SourceGenerator {
     }
 
     func createLocalPackage(path: Path, group: Path?) throws {
-        var pbxGroup: PBXGroup?
-        
-        if let location = group {
-            let fullLocationPath = project.basePath + location
-            pbxGroup = getGroup(path: fullLocationPath, mergingChildren: [], createIntermediateGroups: true, hasCustomParent: false, isBaseGroup: true)
-        }
-        
-        if localPackageGroup == nil && group == nil {
-            let groupName = project.options.localPackagesGroup ?? "Packages"
-            localPackageGroup = addObject(PBXGroup(sourceTree: .sourceRoot, name: groupName))
-            rootGroups.insert(localPackageGroup!)
-        }
-        
         let absolutePath = project.basePath + path.normalize()
-        
+
         // Get the local package's relative path from the project root
         let fileReferencePath = try? absolutePath.relativePath(from: projectDirectory ?? project.basePath).string
 
@@ -80,6 +67,28 @@ class SourceGenerator {
                 path: fileReferencePath
             )
         )
+
+        var pbxGroup: PBXGroup?
+
+        if let location = group {
+            if location == "" {
+                pbxGroup = pbxProj.rootObject?.mainGroup
+                rootGroups.insert(fileReference)
+            } else {
+                let fullLocationPath = project.basePath + location
+                pbxGroup = getGroup(path: fullLocationPath, mergingChildren: [], createIntermediateGroups: true, hasCustomParent: false, isBaseGroup: true)
+            }
+        } else if localPackageGroup == nil {
+            let groupName = project.options.localPackagesGroup ?? "Packages"
+            if groupName == "" {
+                pbxGroup = pbxProj.rootObject?.mainGroup
+                rootGroups.insert(fileReference)
+            } else {
+                localPackageGroup = addObject(PBXGroup(sourceTree: .sourceRoot, name: groupName))
+                rootGroups.insert(localPackageGroup!)
+            }
+        }
+
         if let pbxGroup = pbxGroup {
             pbxGroup.children.append(fileReference)
         } else {
