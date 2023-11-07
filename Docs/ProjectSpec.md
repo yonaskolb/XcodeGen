@@ -1228,7 +1228,7 @@ Swift packages are defined at a project level, and then linked to individual tar
 ### Remote Package
 
 - [x] **url**: **URL** - the url to the package
-- [x] **version**: **String** - the version of the package to use. It can take a few forms:
+- [x] **version**: **String** - the version of the package to use. It can take a few forms (it doesn't matter if it has the prefix v):
   - `majorVersion: 1.2.0` or `from: 1.2.0`
   - `minorVersion: 1.2.1`
   - `exactVersion: 1.2.1` or `version: 1.2.1`
