@@ -2,6 +2,8 @@
 
 ## Next Version
 
+- Fixed custom local package groups not being created #1416 @JaapManenschijn
+
 ## 2.38.0
 
 ### Added

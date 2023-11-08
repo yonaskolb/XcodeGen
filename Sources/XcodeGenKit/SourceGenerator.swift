@@ -54,19 +54,11 @@ class SourceGenerator {
     }
 
     func createLocalPackage(path: Path, group: Path?) throws {
-        var pbxGroup: PBXGroup?
-        
-        if let location = group {
-            let fullLocationPath = project.basePath + location
-            pbxGroup = getGroup(path: fullLocationPath, mergingChildren: [], createIntermediateGroups: true, hasCustomParent: false, isBaseGroup: true)
+        var parentGroup: String = project.options.localPackagesGroup ?? "Packages"
+        if let group {
+          parentGroup = group.string
         }
-        
-        if localPackageGroup == nil && group == nil {
-            let groupName = project.options.localPackagesGroup ?? "Packages"
-            localPackageGroup = addObject(PBXGroup(sourceTree: .sourceRoot, name: groupName))
-            rootGroups.insert(localPackageGroup!)
-        }
-        
+
         let absolutePath = project.basePath + path.normalize()
         
         // Get the local package's relative path from the project root
@@ -80,11 +72,9 @@ class SourceGenerator {
                 path: fileReferencePath
             )
         )
-        if let pbxGroup = pbxGroup {
-            pbxGroup.children.append(fileReference)
-        } else {
-            localPackageGroup!.children.append(fileReference)
-        }
+
+        let parentGroups = parentGroup.components(separatedBy: "/")
+        createParentGroups(parentGroups, for: fileReference)
     }
 
     /// Collects an array complete of all `SourceFile` objects that make up the target based on the provided `TargetSource` definitions.
