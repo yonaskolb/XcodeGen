@@ -18,7 +18,6 @@ class SourceGenerator {
     private var fileReferencesByPath: [String: PBXFileElement] = [:]
     private var groupsByPath: [Path: PBXGroup] = [:]
     private var variantGroupsByPath: [Path: PBXVariantGroup] = [:]
-    private var localPackageGroup: PBXGroup?
 
     private let project: Project
     let pbxProj: PBXProj
