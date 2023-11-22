@@ -382,7 +382,7 @@ targets:
       - path: Framework
         excludes:
           - "*.xcodeproj"
-    depencencies:
+    dependencies:
       - sdk: Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework
         root: DEVELOPER_DIR
 
