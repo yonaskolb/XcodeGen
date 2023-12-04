@@ -2,6 +2,10 @@
 
 ## Next Version
 
+### Added
+
+- Added support for String Catalogs (`.xcstrings`) #TODO @nicolasbosi95
+
 ## 2.38.0
 
 ### Added
@@ -13,7 +17,6 @@
   - Added `inferDestinationFiltersByPath`, a convenience filter for sources
 - `.mlpackage` files now default to being a source type #1398 @aaron-foreflight
 - Added support for `Build Tool Plug-ins` in `AggregateTarget` #1390 @BarredEwe
-- Added support for String Catalogs (`.xcstrings`) #TODO @nicolasbosi95
 
 ### Fixed
 

@@ -561,6 +561,7 @@ class SourceGeneratorTests: XCTestCase {
                     - file.h
                     - GoogleService-Info.plist
                     - file.xcconfig
+                    - Localizable.xcstrings
                   B:
                     - file.swift
                     - file.xcassets
@@ -617,6 +618,7 @@ class SourceGeneratorTests: XCTestCase {
                 try pbxProj.expectFile(paths: ["A", "file.h"], buildPhase: .resources)
                 try pbxProj.expectFile(paths: ["A", "GoogleService-Info.plist"], buildPhase: .resources)
                 try pbxProj.expectFile(paths: ["A", "file.xcconfig"], buildPhase: .resources)
+                try pbxProj.expectFile(paths: ["A", "Localizable.xcstrings"], buildPhase: .resources)
 
                 try pbxProj.expectFile(paths: ["B", "file.swift"], buildPhase: BuildPhaseSpec.none)
                 try pbxProj.expectFile(paths: ["B", "file.xcassets"], buildPhase: BuildPhaseSpec.none)
