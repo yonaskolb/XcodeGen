@@ -4,7 +4,7 @@
 
 ### Added
 
-- Added support for String Catalogs (`.xcstrings`) #TODO @nicolasbosi95
+- Added support for String Catalogs (`.xcstrings`) #1421 @nicolasbosi95
 
 ## 2.38.0
 
