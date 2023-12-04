@@ -1,7 +1,7 @@
 import PathKit
 import ProjectSpec
 import Spectre
-import XcodeGenKit
+@testable import XcodeGenKit
 import XcodeProj
 import XCTest
 import Yams
@@ -40,6 +40,13 @@ class SourceGeneratorTests: XCTestCase {
                     try file.parent().mkpath()
                     try file.write("")
                 }
+            }
+            
+            func createFile(at relativePath: Path, content: String) throws -> Path {
+                let filePath = directoryPath + relativePath
+                try filePath.parent().mkpath()
+                try filePath.write(content)
+                return filePath
             }
 
             func removeDirectories() {
@@ -1239,6 +1246,69 @@ class SourceGeneratorTests: XCTestCase {
                     }
 
                     try expect(pbxProj.rootObject!.attributes["knownAssetTags"] as? [String]) == ["tag1", "tag2", "tag3"]
+                }
+                
+                $0.it("Detects all locales present in a String Catalog") {
+                    /// This is a catalog with gaps:
+                    /// - String "foo" is translated into English (en) and Spanish (es)
+                    /// - String "bar" is translated into English (en) and Italian (it)
+                    ///
+                    /// It is aimed at representing real world scenarios where translators have not finished translating all strings into their respective languages.
+                    /// The expectation in this kind of cases is that `includedLocales` returns all locales found at least once in the catalog.
+                    /// In this example, `includedLocales` is expected to be a set only containing "en", "es" and "it".
+                    let stringCatalogContent = """
+                    {
+                      "sourceLanguage" : "en",
+                      "strings" : {
+                        "foo" : {
+                          "comment" : "Sample string in an asset catalog",
+                          "extractionState" : "manual",
+                          "localizations" : {
+                            "en" : {
+                              "stringUnit" : {
+                                "state" : "translated",
+                                "value" : "Foo English"
+                              }
+                            },
+                            "es" : {
+                              "stringUnit" : {
+                                "state" : "translated",
+                                "value" : "Foo Spanish"
+                              }
+                            }
+                          }
+                        },
+                        "bar" : {
+                          "comment" : "Another sample string in an asset catalog",
+                          "extractionState" : "manual",
+                          "localizations" : {
+                            "en" : {
+                              "stringUnit" : {
+                                "state" : "translated",
+                                "value" : "Bar English"
+                              }
+                            },
+                            "it" : {
+                              "stringUnit" : {
+                                "state" : "translated",
+                                "value" : "Bar Italian"
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "version" : "1.0"
+                    }
+                    """
+                    
+                    let testStringCatalogRelativePath = Path("Localizable.xcstrings")
+                    let testStringCatalogPath = try createFile(at: testStringCatalogRelativePath, content: stringCatalogContent)
+
+                    guard let stringCatalog = StringCatalog(from: testStringCatalogPath) else {
+                        throw failure("Failed decoding string catalog from \(testStringCatalogPath)")
+                    }
+                    
+                    try expect(stringCatalog.includedLocales.sorted(by: { $0 < $1 })) == ["en", "es", "it"]
                 }
             }
         }
