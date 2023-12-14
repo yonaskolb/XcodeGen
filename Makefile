@@ -1,6 +1,6 @@
 TOOL_NAME = XcodeGen
 export EXECUTABLE_NAME = xcodegen
-VERSION = 2.37.0
+VERSION = 2.38.0
 
 PREFIX = /usr/local
 INSTALL_PATH = $(PREFIX)/bin/$(EXECUTABLE_NAME)

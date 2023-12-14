@@ -109,7 +109,23 @@ class SourceGenerator {
             return nil
         }
     }
-
+    
+    private func makeDestinationFilters(for path: Path, with filters: [SupportedDestination]?, or inferDestinationFiltersByPath: Bool?) -> [String]? {
+        if let filters = filters, !filters.isEmpty {
+            return filters.map { $0.string }
+        } else if inferDestinationFiltersByPath == true {
+            for supportedDestination in SupportedDestination.allCases {
+                let regex1 = try? NSRegularExpression(pattern: "\\/\(supportedDestination)\\/", options: .caseInsensitive)
+                let regex2 = try? NSRegularExpression(pattern: "\\_\(supportedDestination)\\.swift$", options: .caseInsensitive)
+                
+                if regex1?.isMatch(to: path.string) == true || regex2?.isMatch(to: path.string) == true {
+                    return [supportedDestination.string]
+                }
+            }
+        }
+        return nil
+    }
+    
     func generateSourceFile(targetType: PBXProductType, targetSource: TargetSource, path: Path, fileReference: PBXFileElement? = nil, buildPhases: [Path: BuildPhaseSpec]) -> SourceFile {
         let fileReference = fileReference ?? fileReferencesByPath[path.string.lowercased()]!
         var settings: [String: Any] = [:]
@@ -174,8 +190,10 @@ class SourceGenerator {
         if chosenBuildPhase == .resources && !assetTags.isEmpty {
             settings["ASSET_TAGS"] = assetTags
         }
-
-        let buildFile = PBXBuildFile(file: fileReference, settings: settings.isEmpty ? nil : settings)
+        
+        let platforms = makeDestinationFilters(for: path, with: targetSource.destinationFilters, or: targetSource.inferDestinationFiltersByPath)
+        
+        let buildFile = PBXBuildFile(file: fileReference, settings: settings.isEmpty ? nil : settings, platformFilters: platforms)
         return SourceFile(
             path: path,
             fileReference: fileReference,
