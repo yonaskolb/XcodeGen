@@ -4,7 +4,7 @@ import PackageDescription
 
 let package = Package(
     name: "XcodeGen",
-    platforms: [.macOS(.v10_13)],
+    platforms: [.macOS(.v10_13), .iOS(.v13)],
     products: [
         .executable(name: "xcodegen", targets: ["XcodeGen"]),
         .library(name: "XcodeGenKit", targets: ["XcodeGenKit"]),
@@ -23,6 +23,13 @@ let package = Package(
     ],
 
     targets: [
+//        .plugin(
+//            name: "XcodeGenPlugin",
+//            capability: .buildTool(),
+//            dependencies: [
+//                .target(name: "XcodeGen", condition: .when(platforms: [.macOS]))
+//            ]
+//        ),
         .executableTarget(name: "XcodeGen", dependencies: [
             "XcodeGenCLI",
             "Version",
