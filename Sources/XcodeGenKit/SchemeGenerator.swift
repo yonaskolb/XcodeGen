@@ -208,7 +208,12 @@ public class SchemeGenerator {
                     .first { settingsTarget == $0.buildableReference.blueprintName }?
                     .buildableReference
             }
-            return XCScheme.ExecutionAction(scriptText: action.script, title: action.name, environmentBuildable: environmentBuildable)
+            return XCScheme.ExecutionAction(
+                scriptText: action.script,
+                title: action.name,
+                shellToInvoke: action.shell,
+                environmentBuildable: environmentBuildable
+            )
         }
 
         let schemeTarget: ProjectTarget?
