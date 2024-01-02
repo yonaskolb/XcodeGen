@@ -291,8 +291,8 @@ class SpecLoadingTests: XCTestCase {
 
                 let project = try loadSpec(path: path)
                 let extensionTarget = project.targets.first!
-                try expect(extensionTarget.configFiles["Debug"]) == "ContentBlocker/Configs/legacy/Debug.xcconfig"
-                try expect(extensionTarget.configFiles["Release"]) == "ContentBlocker/Configs/legacy/Release.xcconfig"
+                try expect(extensionTarget.configFiles["Production Debug"]) == "ContentBlocker/Configs/legacy/Debug.xcconfig"
+                try expect(extensionTarget.configFiles["Production Release"]) == "ContentBlocker/Configs/legacy/Release.xcconfig"
             }
         }
     }
