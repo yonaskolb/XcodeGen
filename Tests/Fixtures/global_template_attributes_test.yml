@@ -5,8 +5,12 @@ targetTemplates:
     settings:
       CODE_SIGN_IDENTITY: Apple Development
     configFiles:
-      Debug: ContentBlocker/Configs/${version}/Debug.xcconfig
-      Release: ContentBlocker/Configs/${version}/Release.xcconfig
+      Test Debug: ContentBlocker/Configs/${version}/Debug.xcconfig
+      Staging Debug: ContentBlocker/Configs/${version}/Debug.xcconfig
+      Production Debug: ContentBlocker/Configs/${version}/Debug.xcconfig
+      Test Release: ContentBlocker/Configs/${version}/Release.xcconfig
+      Staging Release: ContentBlocker/Configs/${version}/Release.xcconfig
+      Production Release: ContentBlocker/Configs/${version}/Release.xcconfig
     sources:
       - ContentBlocker
 
