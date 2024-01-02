@@ -1,10 +1,3 @@
-//
-//  ContentBlockerRequestHandler.swift
-//  ContentBlocker
-//
-//  Created by Thanh Vu on 31/10/2023.
-//
-
 import UIKit
 import MobileCoreServices
 
