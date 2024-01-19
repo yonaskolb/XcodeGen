@@ -5,6 +5,7 @@ public enum SupportedDestination: String, CaseIterable {
     case tvOS
     case macOS
     case macCatalyst
+    case watchOS
     case visionOS
 }
 
@@ -20,6 +21,8 @@ extension SupportedDestination {
             return "macos"
         case .macCatalyst:
             return "maccatalyst"
+        case .watchOS:
+            return "watchos"
         case .visionOS:
             return "xros"
         }
@@ -40,6 +43,8 @@ extension SupportedDestination {
             return 3
         case .macCatalyst:
             return 4
+        case .watchOS:
+            return 5
         }
     }
 }
