@@ -484,7 +484,33 @@ class ProjectGeneratorTests: XCTestCase {
                 try expect(targetConfig1.buildSettings["ASSETCATALOG_COMPILER_APPICON_NAME"] as? String) == "AppIcon"
                 try expect(targetConfig1.buildSettings["CODE_SIGN_IDENTITY"] as? String) == "iPhone Developer"
             }
-            
+
+            $0.it("supportedDestinations merges settings - iOS, watchOS") {
+                let target = Target(name: "Target", type: .application, platform: .auto, supportedDestinations: [.iOS, .watchOS])
+                let project = Project(name: "", targets: [target])
+
+                let pbxProject = try project.generatePbxProj()
+                let targetConfig1 = try unwrap(pbxProject.nativeTargets.first?.buildConfigurationList?.buildConfigurations.first)
+
+                try expect(targetConfig1.buildSettings["SUPPORTED_PLATFORMS"] as? String) == "iphoneos iphonesimulator watchos watchsimulator"
+                try expect(targetConfig1.buildSettings["TARGETED_DEVICE_FAMILY"] as? String) == "1,2,4"
+                try expect(targetConfig1.buildSettings["SUPPORTS_MACCATALYST"] as? Bool) == false
+                try expect(targetConfig1.buildSettings["SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD"] as? Bool) == true
+                try expect(targetConfig1.buildSettings["SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD"] as? Bool) == true
+            }
+
+            $0.it("supportedDestinations merges settings - visionOS, watchOS") {
+                let target = Target(name: "Target", type: .application, platform: .auto, supportedDestinations: [.visionOS, .watchOS])
+                let project = Project(name: "", targets: [target])
+
+                let pbxProject = try project.generatePbxProj()
+                let targetConfig1 = try unwrap(pbxProject.nativeTargets.first?.buildConfigurationList?.buildConfigurations.first)
+
+                try expect(targetConfig1.buildSettings["SUPPORTED_PLATFORMS"] as? String) == "watchos watchsimulator xros xrsimulator"
+                try expect(targetConfig1.buildSettings["TARGETED_DEVICE_FAMILY"] as? String) == "4,7"
+                try expect(targetConfig1.buildSettings["SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD"] as? Bool) == false
+            }
+
             $0.it("generates dependencies") {
                 let pbxProject = try project.generatePbxProj()
 
