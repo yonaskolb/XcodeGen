@@ -336,7 +336,7 @@ class ProjectGeneratorTests: XCTestCase {
                 try expect(targetConfig.buildSettings["TVOS_DEPLOYMENT_TARGET"]).beNil()
             }
             
-            $0.it("supportedPlaforms merges settings - iOS, tvOS") {
+            $0.it("supportedDestinations merges settings - iOS, tvOS") {
                 let target = Target(name: "Target", type: .application, platform: .auto, supportedDestinations: [.tvOS, .iOS])
                 let project = Project(name: "", targets: [target])
                 
@@ -355,7 +355,7 @@ class ProjectGeneratorTests: XCTestCase {
                 try expect(targetConfig1.buildSettings["CODE_SIGN_IDENTITY"] as? String) == "iPhone Developer"
             }
             
-            $0.it("supportedPlaforms merges settings - iOS, visionOS") {
+            $0.it("supportedDestinations merges settings - iOS, visionOS") {
                 let target = Target(name: "Target", type: .application, platform: .auto, supportedDestinations: [.visionOS, .iOS])
                 let project = Project(name: "", targets: [target])
                 
@@ -374,7 +374,7 @@ class ProjectGeneratorTests: XCTestCase {
                 try expect(targetConfig1.buildSettings["CODE_SIGN_IDENTITY"] as? String) == "iPhone Developer"
             }
             
-            $0.it("supportedPlaforms merges settings - iOS, tvOS, macOS") {
+            $0.it("supportedDestinations merges settings - iOS, tvOS, macOS") {
                 let target = Target(name: "Target", type: .application, platform: .auto, supportedDestinations: [.iOS, .tvOS, .macOS])
                 let project = Project(name: "", targets: [target])
                 
@@ -393,7 +393,7 @@ class ProjectGeneratorTests: XCTestCase {
                 try expect(targetConfig1.buildSettings["CODE_SIGN_IDENTITY"] as? String) == "iPhone Developer"
             }
             
-            $0.it("supportedPlaforms merges settings - iOS, tvOS, macCatalyst") {
+            $0.it("supportedDestinations merges settings - iOS, tvOS, macCatalyst") {
                 let target = Target(name: "Target", type: .application, platform: .auto, supportedDestinations: [.iOS, .tvOS, .macCatalyst])
                 let project = Project(name: "", targets: [target])
                 
@@ -412,7 +412,7 @@ class ProjectGeneratorTests: XCTestCase {
                 try expect(targetConfig1.buildSettings["CODE_SIGN_IDENTITY"] as? String) == "iPhone Developer"
             }
             
-            $0.it("supportedPlaforms merges settings - iOS, macOS") {
+            $0.it("supportedDestinations merges settings - iOS, macOS") {
                 let target = Target(name: "Target", type: .application, platform: .auto, supportedDestinations: [.iOS, .macOS])
                 let project = Project(name: "", targets: [target])
                 
@@ -431,7 +431,7 @@ class ProjectGeneratorTests: XCTestCase {
                 try expect(targetConfig1.buildSettings["CODE_SIGN_IDENTITY"] as? String) == "iPhone Developer"
             }
             
-            $0.it("supportedPlaforms merges settings - tvOS, macOS") {
+            $0.it("supportedDestinations merges settings - tvOS, macOS") {
                 let target = Target(name: "Target", type: .application, platform: .auto, supportedDestinations: [.tvOS, .macOS])
                 let project = Project(name: "", targets: [target])
                 
@@ -449,7 +449,7 @@ class ProjectGeneratorTests: XCTestCase {
                 try expect(targetConfig1.buildSettings["ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME"] as? String) == "LaunchImage"
             }
             
-            $0.it("supportedPlaforms merges settings - visionOS, macOS") {
+            $0.it("supportedDestinations merges settings - visionOS, macOS") {
                 let target = Target(name: "Target", type: .application, platform: .auto, supportedDestinations: [.visionOS, .macOS])
                 let project = Project(name: "", targets: [target])
                 
@@ -466,7 +466,7 @@ class ProjectGeneratorTests: XCTestCase {
                 try expect(targetConfig1.buildSettings["ASSETCATALOG_COMPILER_APPICON_NAME"] as? String) == "AppIcon"
             }
             
-            $0.it("supportedPlaforms merges settings - iOS, macCatalyst") {
+            $0.it("supportedDestinations merges settings - iOS, macCatalyst") {
                 let target = Target(name: "Target", type: .application, platform: .auto, supportedDestinations: [.iOS, .macCatalyst])
                 let project = Project(name: "", targets: [target])
                 
