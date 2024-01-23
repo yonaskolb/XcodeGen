@@ -37,13 +37,13 @@ extension SupportedDestination {
             return 0
         case .tvOS:
             return 1
-        case .visionOS:
-            return 2
-        case .macOS:
-            return 3
-        case .macCatalyst:
-            return 4
         case .watchOS:
+            return 2
+        case .visionOS:
+            return 3
+        case .macOS:
+            return 4
+        case .macCatalyst:
             return 5
         }
     }
