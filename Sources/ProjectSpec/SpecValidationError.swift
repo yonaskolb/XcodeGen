@@ -105,7 +105,7 @@ public struct SpecValidationError: Error, CustomStringConvertible {
             case let .duplicateDependencies(target, dependencyReference):
                  return "Target \(target.quoted) has the dependency \(dependencyReference.quoted) multiple times"
             case let .invalidPluginPackageReference(plugin, package):
-                return "Plugin \(plugin) has invalide package reference \(package)"
+                return "Plugin \(plugin) has invalid package reference \(package)"
             }
         }
     }
