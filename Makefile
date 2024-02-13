@@ -48,3 +48,8 @@ brew:
 
 archive: build
 	./scripts/archive.sh "$(EXECUTABLE_PATH)"
+	swift package plugin --allow-writing-to-package-directory generate-artifact-bundle \
+		--package-version $(VERSION) \
+		--executable-name $(EXECUTABLE_NAME) \
+		--build-config release \
+		--include-resource-path LICENSE

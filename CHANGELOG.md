@@ -1,6 +1,9 @@
 # Change Log
 
 ## Next Version
+### Added
+
+- Support Artifact Bundle #1388 @freddi-kit
 
 ## 2.38.0
 

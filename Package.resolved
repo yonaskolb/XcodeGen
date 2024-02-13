@@ -10,6 +10,15 @@
       }
     },
     {
+      "identity" : "artifactbundlegen",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/freddi-kit/ArtifactBundleGen",
+      "state" : {
+        "revision" : "707e4ccc4b1c7e48e881cd5ea91e493a95df24bf",
+        "version" : "0.0.6"
+      }
+    },
+    {
       "identity" : "graphviz",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/SwiftDocOrg/GraphViz.git",
