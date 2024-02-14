@@ -1610,7 +1610,8 @@ class ProjectGeneratorTests: XCTestCase {
                     ]
                 )
 
-                let project = Project(name: "test", targets: [app], packages: ["XcodeGen": .local(path: "../XcodeGen", group: "Packages/Feature")])
+                let customLocalPackageGroup = "Packages/Feature"
+                let project = Project(name: "test", targets: [app], packages: ["XcodeGen": .local(path: "../XcodeGen", group: customLocalPackageGroup)])
 
                 let pbxProject = try project.generatePbxProj(specValidate: false)
                 let nativeTarget = try unwrap(pbxProject.nativeTargets.first(where: { $0.name == app.name }))
@@ -1618,6 +1619,17 @@ class ProjectGeneratorTests: XCTestCase {
                 try expect(localPackageFile.lastKnownFileType) == "folder"
 
                 let frameworkPhases = nativeTarget.buildPhases.compactMap { $0 as? PBXFrameworksBuildPhase }
+
+                let packagesGroup = try unwrap(pbxProject.groups.first(where: { $0.name == "Packages" }))
+                let featureGroup = try unwrap(pbxProject.groups.first(where: { $0.name == "Feature" }))
+
+                guard featureGroup.parent?.uuid == packagesGroup.uuid else {
+                  return XCTFail("Packages group should be parent of Feature group")
+                }
+
+                guard localPackageFile.parent?.uuid == featureGroup.uuid else {
+                  return XCTFail("Packages group should be parent of Feature group")
+                }
 
                 guard let frameworkPhase = frameworkPhases.first else {
                     return XCTFail("frameworkPhases should have more than one")

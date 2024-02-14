@@ -9,6 +9,8 @@
 
 - Added support for String Catalogs (`.xcstrings`) #1421 @nicolasbosi95
 
+- Fixed custom local package groups not being created #1416 @JaapManenschijn
+
 ## 2.38.0
 
 ### Added
