@@ -80,6 +80,8 @@ extension FileType {
         "m": FileType(buildPhase: .sources),
         "mm": FileType(buildPhase: .sources),
         "cpp": FileType(buildPhase: .sources),
+        "cp": FileType(buildPhase: .sources),
+        "cxx": FileType(buildPhase: .sources),
         "c": FileType(buildPhase: .sources),
         "cc": FileType(buildPhase: .sources),
         "S": FileType(buildPhase: .sources),
