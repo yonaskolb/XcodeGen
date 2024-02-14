@@ -1,15 +1,25 @@
 # Change Log
 
 ## Next Version
+
+## 2.39.0
+
 ### Added
 
 - Support Artifact Bundle #1388 @freddi-kit
+- Added support for `.xcstrings` String Catalogs #1421 @nicolasbosi95
+- Added default `LD_RUNPATH_SEARCH_PATHS` for visionOS #1444 @Dahlgren
+- Added `watchOS` as a supported cross platform destination #1438 @tatsuky
 
-### Added
-
-- Added support for String Catalogs (`.xcstrings`) #1421 @nicolasbosi95
+### Fixed
 
 - Fixed custom local package groups not being created #1416 @JaapManenschijn
+- Fixed spec validation error type #1439 @Lutzifer
+- Create parent group for local package groups if it does not exist already #1417 @JaapManenschijn
+
+### Internal
+
+- Updated Rainbow version #1424 @nysander
 
 ## 2.38.0
 
