@@ -455,6 +455,7 @@ class SourceGenerator {
 
         let createIntermediateGroups = targetSource.createIntermediateGroups ?? project.options.createIntermediateGroups
         let nonLocalizedChildren = children.filter { $0.extension != "lproj" }
+        let stringCatalogChildren = children.filter { $0.extension == "xcstrings" }
 
         let directories = nonLocalizedChildren
             .filter {
@@ -520,6 +521,15 @@ class SourceGenerator {
         }()
 
         knownRegions.formUnion(localisedDirectories.map { $0.lastComponentWithoutExtension })
+        
+        // XCode 15 - Detect known regions from locales present in string catalogs
+        
+        let stringCatalogsLocales = stringCatalogChildren
+            .compactMap { StringCatalog(from: $0) }
+            .reduce(Set<String>(), { partialResult, stringCatalog in
+                partialResult.union(stringCatalog.includedLocales)
+            })
+        knownRegions.formUnion(stringCatalogsLocales)
 
         // create variant groups of the base localisation first
         var baseLocalisationVariantGroups: [PBXVariantGroup] = []

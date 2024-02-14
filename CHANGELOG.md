@@ -5,6 +5,10 @@
 
 - Support Artifact Bundle #1388 @freddi-kit
 
+### Added
+
+- Added support for String Catalogs (`.xcstrings`) #1421 @nicolasbosi95
+
 ## 2.38.0
 
 ### Added

@@ -163,6 +163,7 @@ targets:
         resourceTags:
           - tag1
           - tag2
+      - String Catalogs/Localizable.xcstrings
     settings:
       INFOPLIST_FILE: App_iOS/Info.plist
       PRODUCT_BUNDLE_IDENTIFIER: com.project.app
