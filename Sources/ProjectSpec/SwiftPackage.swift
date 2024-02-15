@@ -105,25 +105,39 @@ extension SwiftPackage.VersionRequirement: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
         if jsonDictionary["exactVersion"] != nil {
-            self = try .exact(jsonDictionary.json(atKeyPath: "exactVersion"))
+            let version = Self.removePrefixVIfNeeded(version: try jsonDictionary.json(atKeyPath: "exactVersion"))
+            self = .exact(version)
         } else if jsonDictionary["version"] != nil {
-            self = try .exact(jsonDictionary.json(atKeyPath: "version"))
+            let version = Self.removePrefixVIfNeeded(version: try jsonDictionary.json(atKeyPath: "version"))
+            self = .exact(version)
         } else if jsonDictionary["revision"] != nil {
             self = try .revision(jsonDictionary.json(atKeyPath: "revision"))
         } else if jsonDictionary["branch"] != nil {
             self = try .branch(jsonDictionary.json(atKeyPath: "branch"))
         } else if jsonDictionary["minVersion"] != nil && jsonDictionary["maxVersion"] != nil {
-            let minimum: String = try jsonDictionary.json(atKeyPath: "minVersion")
-            let maximum: String = try jsonDictionary.json(atKeyPath: "maxVersion")
+            let minimum = Self.removePrefixVIfNeeded(version: try jsonDictionary.json(atKeyPath: "minVersion"))
+            let maximum = Self.removePrefixVIfNeeded(version: try jsonDictionary.json(atKeyPath: "maxVersion"))
             self = .range(from: minimum, to: maximum)
         } else if jsonDictionary["minorVersion"] != nil {
-            self = try .upToNextMinorVersion(jsonDictionary.json(atKeyPath: "minorVersion"))
+            let version = Self.removePrefixVIfNeeded(version: try jsonDictionary.json(atKeyPath: "minorVersion"))
+            self = .upToNextMinorVersion(version)
         } else if jsonDictionary["majorVersion"] != nil {
-            self = try .upToNextMajorVersion(jsonDictionary.json(atKeyPath: "majorVersion"))
+            let version = Self.removePrefixVIfNeeded(version: try jsonDictionary.json(atKeyPath: "majorVersion"))
+            self = .upToNextMajorVersion(version)
         } else if jsonDictionary["from"] != nil {
-            self = try .upToNextMajorVersion(jsonDictionary.json(atKeyPath: "from"))
+            let version = Self.removePrefixVIfNeeded(version: try jsonDictionary.json(atKeyPath: "from"))
+            self = .upToNextMajorVersion(version)
         } else {
             throw SpecParsingError.unknownPackageRequirement(jsonDictionary)
         }
+    }
+
+    /// Remove the "v" prefix (for "version")
+    private static func removePrefixVIfNeeded(version: String) -> String {
+        if version.hasPrefix("v") {
+            let startIndex = version.index(version.startIndex, offsetBy: 1)
+            return String(version[startIndex...])
+        }
+        return version
     }
 }
