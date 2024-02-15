@@ -7,5 +7,5 @@
 1. Run `make release`
 1. Push commit and tag to github
 1. Create release from tag on GitHub using the version number and relevant changelog contents
-1. Run `make archive` and upload `xcodegen.zip` and `xcodegen.artifactbundle.zip` to the github release
+1. Run `make archive` and upload `xcodegen.zip` to the github release
 1. Run `make brew` which will open a PR on homebrew core

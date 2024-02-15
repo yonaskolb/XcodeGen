@@ -249,9 +249,6 @@ extension SettingsPresetFile {
                 symlink.parent() + relativePath,
             ] + possibleSettingsPaths
         }
-        if let moduleResourcePath = Bundle.module.path(forResource: "SettingPresets", ofType: nil) {
-            possibleSettingsPaths.append(Path(moduleResourcePath) + "\(path).yml")
-        }
 
         guard let settingsPath = possibleSettingsPaths.first(where: { $0.exists }) else {
             switch self {
