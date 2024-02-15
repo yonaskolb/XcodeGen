@@ -2,6 +2,13 @@
 
 ## Next Version
 
+## 2.39.1
+
+### Fixed
+
+- Fixed bundle access crash #1448 @freddi-kit
+- Pinned XcodeProj version to fix breaking changes when XcodeGen is used as a dependency #1449 @yonaskolb
+
 ## 2.39.0
 
 ### Added
