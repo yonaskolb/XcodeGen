@@ -4,6 +4,10 @@
 
 ## 2.39.1
 
+### Added
+
+- Proper defaults for `.cp` and `.cxx` files #1447 @eschwieb
+
 ### Fixed
 
 - Fixed bundle access crash #1448 @freddi-kit
