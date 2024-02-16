@@ -201,6 +201,7 @@ public struct Scheme: Equatable {
         public static let debugEnabledDefault = true
         public static let captureScreenshotsAutomaticallyDefault = true
         public static let deleteScreenshotsWhenEachTestSucceedsDefault = true
+        public static let preferredScreenCaptureFormatDefault = XCScheme.TestAction.ScreenCaptureFormat.screenRecording
 
         public var config: String?
         public var gatherCoverageData: Bool
@@ -218,6 +219,7 @@ public struct Scheme: Equatable {
         public var captureScreenshotsAutomatically: Bool
         public var deleteScreenshotsWhenEachTestSucceeds: Bool
         public var testPlans: [TestPlan]
+        public var preferredScreenCaptureFormat: XCScheme.TestAction.ScreenCaptureFormat
 
         public struct TestTarget: Equatable, ExpressibleByStringLiteral {
             
@@ -284,7 +286,8 @@ public struct Scheme: Equatable {
             debugEnabled: Bool = debugEnabledDefault,
             customLLDBInit: String? = nil,
             captureScreenshotsAutomatically: Bool = captureScreenshotsAutomaticallyDefault,
-            deleteScreenshotsWhenEachTestSucceeds: Bool = deleteScreenshotsWhenEachTestSucceedsDefault
+            deleteScreenshotsWhenEachTestSucceeds: Bool = deleteScreenshotsWhenEachTestSucceedsDefault,
+            preferredScreenCaptureFormat: XCScheme.TestAction.ScreenCaptureFormat = preferredScreenCaptureFormatDefault
         ) {
             self.config = config
             self.gatherCoverageData = gatherCoverageData
@@ -302,6 +305,7 @@ public struct Scheme: Equatable {
             self.customLLDBInit = customLLDBInit
             self.captureScreenshotsAutomatically = captureScreenshotsAutomatically
             self.deleteScreenshotsWhenEachTestSucceeds = deleteScreenshotsWhenEachTestSucceeds
+            self.preferredScreenCaptureFormat = preferredScreenCaptureFormat
         }
 
         public var shouldUseLaunchSchemeArgsEnv: Bool {
@@ -616,6 +620,7 @@ extension Scheme.Test: JSONObjectConvertible {
         customLLDBInit = jsonDictionary.json(atKeyPath: "customLLDBInit")
         captureScreenshotsAutomatically = jsonDictionary.json(atKeyPath: "captureScreenshotsAutomatically") ?? Scheme.Test.captureScreenshotsAutomaticallyDefault
         deleteScreenshotsWhenEachTestSucceeds = jsonDictionary.json(atKeyPath: "deleteScreenshotsWhenEachTestSucceeds") ?? Scheme.Test.deleteScreenshotsWhenEachTestSucceedsDefault
+        preferredScreenCaptureFormat = jsonDictionary.json(atKeyPath: "preferredScreenCaptureFormat") ?? Scheme.Test.preferredScreenCaptureFormatDefault
     }
 }
 
@@ -656,6 +661,10 @@ extension Scheme.Test: JSONEncodable {
 
         if deleteScreenshotsWhenEachTestSucceeds != Scheme.Test.deleteScreenshotsWhenEachTestSucceedsDefault {
             dict["deleteScreenshotsWhenEachTestSucceeds"] = deleteScreenshotsWhenEachTestSucceeds
+        }
+
+        if preferredScreenCaptureFormat != Scheme.Test.preferredScreenCaptureFormatDefault {
+            dict["preferredScreenCaptureFormat"] = preferredScreenCaptureFormat.toJSONValue()
         }
 
         return dict
@@ -1007,5 +1016,11 @@ extension XCScheme.LaunchAction.GPUValidationMode: JSONEncodable {
         default:
             fatalError("Invalid enableGPUValidationMode value. Valid values are: enable, disable, extended")
         }
+    }
+}
+
+extension XCScheme.TestAction.ScreenCaptureFormat: JSONEncodable {
+    public func toJSONValue() -> Any {
+        rawValue
     }
 }
