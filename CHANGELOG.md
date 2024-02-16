@@ -2,6 +2,10 @@
 
 ## Next Version
 
+### Added
+
+- Support preferredScreenCaptureFormat #1450 @vakhidbetrakhmadov
+
 ## 2.39.1
 
 ### Added
