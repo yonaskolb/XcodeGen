@@ -19,7 +19,7 @@ public class FileWriter {
         
         var tempXcodeProj: XcodeProj?
         if projectPath.exists {
-            tempXcodeProj = XcodeProj(path: projectPath)
+            tempXcodeProj = try XcodeProj(path: projectPath)
             try tempXcodeProj?.write(path: tempPath, override: true)
         }
         
