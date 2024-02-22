@@ -15,12 +15,17 @@ public class FileWriter {
         let projectPath = projectPath ?? project.defaultProjectPath
         let tempPath = try Path.processUniqueTemporary() + "XcodeGen"
         try? tempPath.delete()
+        
+        var tempXcodeProj: XcodeProj?
         if projectPath.exists {
-            try projectPath.move(tempPath)
+            tempXcodeProj = XcodeProj()
+            try tempXcodeProj.write(path: tempPath, override: true)
         }
+        
         try xcodeProject.write(path: tempPath, override: true)
         try? projectPath.delete()
         try tempPath.move(projectPath)
+        try? tempPath.delete()
     }
 
     public func writePlists() throws {
