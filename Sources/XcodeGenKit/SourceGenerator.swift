@@ -376,7 +376,7 @@ class SourceGenerator {
             patterns.parallelMap { pattern in
                 guard !pattern.isEmpty else { return [] }
                 return Glob(pattern: "\(rootSourcePath)/\(pattern)")
-                    .map { Path($0) }
+                    .map { Path($0).absolute() }
                     .map {
                         guard $0.isDirectory else {
                             return [$0]
