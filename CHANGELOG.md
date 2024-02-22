@@ -2,6 +2,10 @@
 
 ## Next Version
 
+### Fixed
+
+- Fixed exclusion of relative paths when including a relative path in target sources #1454 @dalemyers
+
 ## 2.39.1
 
 ### Added
