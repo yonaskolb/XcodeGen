@@ -85,6 +85,7 @@
 		4B862F11762F6BB54E97E401 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = 576675973B56A96047CB4944 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4C1504A05321046B3ED7A839 /* Framework2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB055761199DF36DB0C629A6 /* Framework2.framework */; };
 		4CB673A7C0C11E04F8544BDB /* Contacts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FDB2B6A77D39CD5602F2125F /* Contacts.framework */; };
+		4CCBDB0492AB3542B2AB6D94 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = AEDB7833B8AE2126630D6FCB /* Localizable.xcstrings */; };
 		4DA7140FF84DBF39961F3409 /* NetworkSystemExtension.systemextension in Embed System Extensions */ = {isa = PBXBuildFile; fileRef = 2049B6DD2AFE85F9DC9F3EB3 /* NetworkSystemExtension.systemextension */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		4F6481557E2BEF8D749C37E3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 187E665975BB5611AF0F27E1 /* main.m */; };
 		5126CD91C2CB41C9B14B6232 /* DriverKitDriver.dext in Embed System Extensions */ = {isa = PBXBuildFile; fileRef = 83B5EC7EF81F7E4B6F426D4E /* DriverKitDriver.dext */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -838,6 +839,7 @@
 		AAA49985DFFE797EE8416887 /* inputList.xcfilelist */ = {isa = PBXFileReference; lastKnownFileType = text.xcfilelist; path = inputList.xcfilelist; sourceTree = "<group>"; };
 		AB055761199DF36DB0C629A6 /* Framework2.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Framework2.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AEBCA8CFF769189C0D52031E /* App_iOS.xctestplan */ = {isa = PBXFileReference; path = App_iOS.xctestplan; sourceTree = "<group>"; };
+		AEDB7833B8AE2126630D6FCB /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		AEEFDE76B5FEC833403C0869 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		B17B8D9C9B391332CD176A35 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LocalizedStoryboard.storyboard; sourceTree = "<group>"; };
 		B198242976C3395E31FE000A /* MessagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesViewController.swift; sourceTree = "<group>"; };
@@ -1139,6 +1141,7 @@
 				9DB22CB08CFAA455518700DB /* StandaloneFiles */,
 				BDA839814AF73F01F7710518 /* StaticLibrary_ObjC */,
 				CBDAC144248EE9D3838C6AAA /* StaticLibrary_Swift */,
+				6E0D17C5B4E6F01B89254309 /* String Catalogs */,
 				8CFD8AD4820FAB9265663F92 /* Tool */,
 				4C7F5EB7D6F3E0E9B426AB4A /* Utilities */,
 				3FEA12CF227D41EF50E5C2DB /* Vendor */,
@@ -1255,6 +1258,14 @@
 				87DF9DCA8399E3214A7E27CF /* TestProjectTests.swift */,
 			);
 			path = App_macOS_Tests;
+			sourceTree = "<group>";
+		};
+		6E0D17C5B4E6F01B89254309 /* String Catalogs */ = {
+			isa = PBXGroup;
+			children = (
+				AEDB7833B8AE2126630D6FCB /* Localizable.xcstrings */,
+			);
+			path = "String Catalogs";
 			sourceTree = "<group>";
 		};
 		795B8D70B674C850B57DD39D /* App_watchOS Extension */ = {
@@ -2594,6 +2605,7 @@
 				A9548E5DCFE92236494164DF /* LaunchScreen.storyboard in Resources */,
 				6E8F8303759824631C8D9DA3 /* Localizable.strings in Resources */,
 				E5DD0AD6F7AE1DD4AF98B83E /* Localizable.stringsdict in Resources */,
+				4CCBDB0492AB3542B2AB6D94 /* Localizable.xcstrings in Resources */,
 				2A7EB1A9A365A7EC5D49AFCF /* LocalizedStoryboard.storyboard in Resources */,
 				49A4B8937BB5520B36EA33F0 /* Main.storyboard in Resources */,
 				900CFAD929CAEE3861127627 /* MyBundle.bundle in Resources */,

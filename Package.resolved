@@ -10,6 +10,15 @@
       }
     },
     {
+      "identity" : "artifactbundlegen",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/freddi-kit/ArtifactBundleGen",
+      "state" : {
+        "revision" : "707e4ccc4b1c7e48e881cd5ea91e493a95df24bf",
+        "version" : "0.0.6"
+      }
+    },
+    {
       "identity" : "graphviz",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/SwiftDocOrg/GraphViz.git",
@@ -41,8 +50,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/onevcat/Rainbow.git",
       "state" : {
-        "revision" : "626c3d4b6b55354b4af3aa309f998fae9b31a3d9",
-        "version" : "3.2.0"
+        "revision" : "e0dada9cd44e3fa7ec3b867e49a8ddbf543e3df3",
+        "version" : "4.0.1"
       }
     },
     {
