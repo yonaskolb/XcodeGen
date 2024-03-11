@@ -88,10 +88,12 @@ public struct Scheme: Equatable {
         public var script: String
         public var name: String
         public var settingsTarget: String?
-        public init(name: String, script: String, settingsTarget: String? = nil) {
+        public var shell: String?
+        public init(name: String, script: String, shell: String? = nil, settingsTarget: String? = nil) {
             self.script = script
             self.name = name
             self.settingsTarget = settingsTarget
+            self.shell = shell
         }
     }
 
@@ -400,6 +402,7 @@ extension Scheme.ExecutionAction: JSONObjectConvertible {
         script = try jsonDictionary.json(atKeyPath: "script")
         name = jsonDictionary.json(atKeyPath: "name") ?? "Run Script"
         settingsTarget = jsonDictionary.json(atKeyPath: "settingsTarget")
+        shell = jsonDictionary.json(atKeyPath: "shell")
     }
 }
 
@@ -409,6 +412,7 @@ extension Scheme.ExecutionAction: JSONEncodable {
             "script": script,
             "name": name,
             "settingsTarget": settingsTarget,
+            "shell": shell
         ]
     }
 }
