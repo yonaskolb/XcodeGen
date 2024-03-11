@@ -143,7 +143,7 @@
 				979AE1767E2AF6B3B9D7F13D /* FooFeature */,
 			);
 			name = Packages;
-			sourceTree = SOURCE_ROOT;
+			sourceTree = "<group>";
 		};
 		CF3BD77AEAA56553289456BA /* SPMTests */ = {
 			isa = PBXGroup;

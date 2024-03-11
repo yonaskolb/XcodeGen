@@ -1,6 +1,6 @@
 TOOL_NAME = XcodeGen
 export EXECUTABLE_NAME = xcodegen
-VERSION = 2.38.1
+VERSION = 2.39.1
 
 PREFIX = /usr/local
 INSTALL_PATH = $(PREFIX)/bin/$(EXECUTABLE_NAME)
@@ -48,3 +48,8 @@ brew:
 
 archive: build
 	./scripts/archive.sh "$(EXECUTABLE_PATH)"
+	swift package plugin --allow-writing-to-package-directory generate-artifact-bundle \
+		--package-version $(VERSION) \
+		--executable-name $(EXECUTABLE_NAME) \
+		--build-config release \
+		--include-resource-path LICENSE
