@@ -1140,12 +1140,16 @@ schemes:
         MyTarget2: [run, archive]
     run:
       config: prod-debug
-      commandLineArguments: "--option value"
+      commandLineArguments:
+        "-MyEnabledArg": true
+        "-MyDisabledArg": false
       environmentVariables:
         RUN_ENV_VAR: VALUE
     test:
       config: prod-debug
-      commandLineArguments: "--option testValue"
+      commandLineArguments:
+        "-MyEnabledArg": true
+        "-MyDisabledArg": false
       gatherCoverageData: true
       coverageTargets:
         - MyTarget1
