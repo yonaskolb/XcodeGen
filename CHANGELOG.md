@@ -2,6 +2,10 @@
 
 ## Next Version
 
+### Added
+
+- Added support for local Swift packages at the project root #1413 @hiltonc
+
 ## 2.39.1
 
 ### Added
