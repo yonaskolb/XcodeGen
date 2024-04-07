@@ -483,6 +483,7 @@ This will provide a mix of default build settings for the chosen platform destin
 - `macOS`
 - `macCatalyst`
 - `visionOS`
+- `watchOS`
 
 ```yaml
 targets:
