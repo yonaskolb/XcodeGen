@@ -2,9 +2,16 @@
 
 ## Next Version
 
+## 2.40.0
+
 ### Added
 
-- Added support for local Swift packages at the project root #1413 @hiltonc
+- Added support for local Swift packages at the project root by specifying a "" group #1413 @hiltonc
+- Added a custom `shell` to a scheme's pre and post actions #1430 @balazs-vimn
+
+### Changed
+
+- `.xcprivacy` files are now not added to any build phases by default #1464 @yonaskolb
 
 ## 2.39.1
 
