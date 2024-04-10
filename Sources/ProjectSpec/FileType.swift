@@ -120,6 +120,5 @@ extension FileType {
         "apns": FileType(buildPhase: BuildPhaseSpec.none),
         "pch": FileType(buildPhase: BuildPhaseSpec.none),
         "xctestplan": FileType(buildPhase: BuildPhaseSpec.none),
-        "xcprivacy": FileType(buildPhase: BuildPhaseSpec.none),
     ]
 }
