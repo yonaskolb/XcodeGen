@@ -2,6 +2,12 @@
 
 ## Next Version
 
+## 2.40.1
+
+### Fixed
+
+- Reverted `.xcprivacy` handling. They will now again be treated as resources by default @yonaskolb
+
 ## 2.40.0
 
 ### Added
