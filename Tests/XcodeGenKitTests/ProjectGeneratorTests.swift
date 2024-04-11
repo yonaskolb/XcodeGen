@@ -485,8 +485,8 @@ class ProjectGeneratorTests: XCTestCase {
                 try expect(targetConfig1.buildSettings["CODE_SIGN_IDENTITY"] as? String) == "iPhone Developer"
             }
 
-            $0.it("supportedDestinations merges settings - iOS, watchOS") {
-                let target = Target(name: "Target", type: .application, platform: .auto, supportedDestinations: [.iOS, .watchOS])
+            $0.it("supportedDestinations merges settings - iOS, watchOS (framework)") {
+                let target = Target(name: "Target", type: .framework, platform: .auto, supportedDestinations: [.iOS, .watchOS])
                 let project = Project(name: "", targets: [target])
 
                 let pbxProject = try project.generatePbxProj()
@@ -499,8 +499,8 @@ class ProjectGeneratorTests: XCTestCase {
                 try expect(targetConfig1.buildSettings["SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD"] as? Bool) == true
             }
 
-            $0.it("supportedDestinations merges settings - visionOS, watchOS") {
-                let target = Target(name: "Target", type: .application, platform: .auto, supportedDestinations: [.visionOS, .watchOS])
+            $0.it("supportedDestinations merges settings - visionOS, watchOS (framework)") {
+                let target = Target(name: "Target", type: .framework, platform: .auto, supportedDestinations: [.visionOS, .watchOS])
                 let project = Project(name: "", targets: [target])
 
                 let pbxProject = try project.generatePbxProj()

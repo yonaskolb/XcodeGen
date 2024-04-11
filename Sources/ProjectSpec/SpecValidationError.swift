@@ -19,6 +19,7 @@ public struct SpecValidationError: Error, CustomStringConvertible {
         case invalidTargetSchemeTest(target: String, testTarget: String)
         case invalidTargetPlatformForSupportedDestinations(target: String)
         case unexpectedTargetPlatformForSupportedDestinations(target: String, platform: Platform)
+        case containsWatchOSDestinationForMultiplatformApp(target: String)
         case multipleMacPlatformsInSupportedDestinations(target: String)
         case missingTargetPlatformInSupportedDestinations(target: String, platform: Platform)
         case invalidSchemeTarget(scheme: String, target: String, action: String)
@@ -66,6 +67,8 @@ public struct SpecValidationError: Error, CustomStringConvertible {
                 return "Target \(target.quoted) has multiple definitions of mac platforms in supported destinations"
             case let .missingTargetPlatformInSupportedDestinations(target, platform):
                 return "Target \(target.quoted) has platform \(platform.rawValue.quoted) that is missing in supported destinations"
+            case let .containsWatchOSDestinationForMultiplatformApp(target):
+                return "Multiplatform app \(target.quoted) cannot contain watchOS in \"supportedDestinations\". Create a separate target using \"platform\" for watchOS apps"
             case let .invalidConfigFile(configFile, config):
                 return "Invalid config file \(configFile.quoted) for config \(config.quoted)"
             case let .invalidSchemeTarget(scheme, target, action):
