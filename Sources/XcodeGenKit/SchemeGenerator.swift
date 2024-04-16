@@ -227,7 +227,7 @@ public class SchemeGenerator {
 
         let buildableReference = buildActionEntries.first(where: { $0.buildableReference.blueprintName == schemeTarget?.name })?.buildableReference ?? buildActionEntries.first!.buildableReference
         let runnables = makeProductRunnables(for: schemeTarget, buildableReference: buildableReference)
-        
+
         let testMacroExpansion: XCScheme.BuildableReference = buildActionEntries.first(
             where: { $0.buildableReference.blueprintName == scheme.test?.macroExpansion }
         )?.buildableReference ?? buildableReference

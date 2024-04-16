@@ -479,7 +479,7 @@ class SchemeGeneratorTests: XCTestCase {
                 try expect(xcscheme.testAction?.macroExpansion?.buildableName) == "MyApp.app"
                 try expect(xcscheme.launchAction?.macroExpansion?.buildableName) == "MyApp.app"
             }
-            
+
             $0.it("allows to override test macroExpansion") {
                 let app = Target(
                     name: "MyApp",
