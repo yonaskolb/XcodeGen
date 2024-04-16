@@ -1038,7 +1038,7 @@ The different actions share some properties:
 - [ ] **askForAppToLaunch**: **Bool** - `run` and `profile` actions can define the executable set to ask to launch. This defaults to false.
 - [ ] **launchAutomaticallySubstyle**: **String** - `run` action can define the launch automatically substyle ('2' for extensions).
 - [ ] **storeKitConfiguration**: **String** - `run` action can specify a storekit configuration. See [Options](#options).
-- [ ] **macroExpansion**: **String** - `run` action can define the macro expansion from other target. This defaults to nil.
+- [ ] **macroExpansion**: **String** - `run` and `test` action can define the macro expansion from other target. This defaults to nil.
 
 ### Execution Action
 
