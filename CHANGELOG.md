@@ -2,6 +2,10 @@
 
 ## Next Version
 
+### Fixed
+
+- Fixed `supportedDestinations` validation when it contains watchOS for multiplatform apps. #1470 @tatsuky
+
 ## 2.40.1
 
 ### Fixed
