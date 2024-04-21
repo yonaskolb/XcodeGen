@@ -281,8 +281,8 @@ public class SchemeGenerator {
         let testPlans = scheme.test?.testPlans.enumerated().map { index, testPlan in
              XCScheme.TestPlanReference(reference: "container:\(testPlan.path)", default: defaultTestPlanIndex == index)
         } ?? []
-
-        let testMacroExpansionBuildableRef = testBuildTargetEntries.map(\.buildableReference).contains(buildableReference) ? buildableReference : testBuildTargetEntries.first?.buildableReference
+        let testBuildableEntries = buildActionEntries.filter({ $0.buildFor.contains(.testing) }) + testBuildTargetEntries
+        let testMacroExpansionBuildableRef = testBuildableEntries.map(\.buildableReference).contains(buildableReference) ? buildableReference : testBuildableEntries.first?.buildableReference
 
         let testAction = XCScheme.TestAction(
             buildConfiguration: scheme.test?.config ?? defaultDebugConfig.name,
