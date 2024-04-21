@@ -282,9 +282,11 @@ public class SchemeGenerator {
              XCScheme.TestPlanReference(reference: "container:\(testPlan.path)", default: defaultTestPlanIndex == index)
         } ?? []
 
+        let testMacroExpansionBuildableRef = testBuildTargetEntries.map(\.buildableReference).contains(buildableReference) ? buildableReference : testBuildTargetEntries.first?.buildableReference
+
         let testAction = XCScheme.TestAction(
             buildConfiguration: scheme.test?.config ?? defaultDebugConfig.name,
-            macroExpansion: buildableReference,
+            macroExpansion: testMacroExpansionBuildableRef,
             testables: testables,
             testPlans: testPlans.isEmpty ? nil : testPlans,
             preActions: scheme.test?.preActions.map(getExecutionAction) ?? [],
