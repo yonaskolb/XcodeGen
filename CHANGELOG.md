@@ -2,6 +2,10 @@
 
 ## Next Version
 
+### Added
+
+- Added support for local Swift packages in Xcode 15 #1465 @kinnarr
+
 ## 2.40.1
 
 ### Fixed
