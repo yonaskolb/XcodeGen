@@ -631,8 +631,8 @@ public class PBXProjGenerator {
         }
 
         if let order = groupOrdering?.order {
-            let files = group.children.filter { $0 is PBXFileReference }
-            var groups = group.children.filter { $0 is PBXGroup }
+            let files = group.children.filter { !$0.isGroupOrFolder }
+            var groups = group.children.filter {  $0.isGroupOrFolder }
 
             var filteredGroups = [PBXFileElement]()
 
@@ -1626,6 +1626,10 @@ extension Platform {
 }
 
 extension PBXFileElement {
+    /// - returns: `true` if the element is a group or a folder reference. Likely an SPM package.
+    var isGroupOrFolder: Bool {
+        self is PBXGroup || (self as? PBXFileReference)?.lastKnownFileType == "folder"
+    }
 
     public func getSortOrder(groupSortPosition: SpecOptions.GroupSortPosition) -> Int {
         if type(of: self).isa == "PBXGroup" {

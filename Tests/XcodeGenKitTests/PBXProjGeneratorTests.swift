@@ -259,6 +259,96 @@ class PBXProjGeneratorTests: XCTestCase {
                     .map { $0.nameOrPath }
                 try expect(screenGroups) == ["mainScreen1.swift", "mainScreen2.swift", "View", "Presenter", "Interactor", "Entities", "Assembly"]
             }
+            
+            $0.it("sorts SPM packages") {
+                var options = SpecOptions()
+                options.groupSortPosition = .top
+                options.groupOrdering = [
+                    GroupOrdering(
+                        order: [
+                            "Sources",
+                            "Resources",
+                            "Tests",
+                            "Packages",
+                            "Support files",
+                            "Configurations",
+                        ]
+                    ),
+                    GroupOrdering(
+                        pattern: "Packages",
+                        order: [
+                            "FeatureA",
+                            "FeatureB",
+                            "Common",
+                        ]
+                    ),
+                ]
+
+                let directories = """
+                    Configurations:
+                      - file.swift
+                    Resources:
+                      - file.swift
+                    Sources:
+                      - MainScreen:
+                        - mainScreen1.swift
+                        - mainScreen2.swift
+                        - Assembly:
+                            - file.swift
+                        - Entities:
+                            - file.swift
+                        - Interactor:
+                            - file.swift
+                        - Presenter:
+                            - file.swift
+                        - View:
+                            - file.swift
+                    Support files:
+                      - file.swift
+                    Packages:
+                      - Common:
+                        - Package.swift
+                      - FeatureA:
+                        - Package.swift
+                      - FeatureB:
+                        - Package.swift
+                    Tests:
+                      - file.swift
+                    UITests:
+                      - file.swift
+                """
+                try createDirectories(directories)
+
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: ["Configurations", "Resources", "Sources", "Support files", "Tests", "UITests"])
+                let project = Project(
+                    basePath: directoryPath,
+                    name: "Test",
+                    targets: [target],
+                    packages: [
+                        "Common": .local(path: "Packages/Common", group: nil),
+                        "FeatureA": .local(path: "Packages/FeatureA", group: nil),
+                        "FeatureB": .local(path: "Packages/FeatureB", group: nil),
+                    ],
+                    options: options
+                )
+                let projGenerator = PBXProjGenerator(project: project)
+
+                let pbxProj = try project.generatePbxProj()
+                let group = try pbxProj.getMainGroup()
+
+                projGenerator.setupGroupOrdering(group: group)
+
+                let mainGroups = group.children.map { $0.nameOrPath }
+                try expect(mainGroups) == ["Sources", "Resources", "Tests", "Packages", "Support files", "Configurations", "UITests", "Products"]
+
+                let packages = group.children
+                    .first { $0.nameOrPath == "Packages" }
+                    .flatMap { $0 as? PBXGroup }?
+                    .children
+                    .map(\.nameOrPath)
+
+                try expect(packages) == ["FeatureA", "FeatureB", "Common"]
+            }
         }
     }
     
