@@ -500,7 +500,7 @@ targets:
         destinationFilters: [iOS]
 ```
 
-Note that the definition of supported destinations can be applied to every type of bundle making everything more easy to manage (app targets, unit tests, UI tests etc).
+Note that the definition of supported destinations can be applied to almost every type of bundle making everything more easy to manage (app targets, unit tests, UI tests etc). App targets currently do not support the watchOS destination. Create a separate target using `platform` for watchOS apps. See Apple's [Configuring a multiplatform app](https://developer.apple.com/documentation/xcode/configuring-a-multiplatform-app-target) for details.
 
 ### Sources
 
