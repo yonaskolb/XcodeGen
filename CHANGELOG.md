@@ -2,6 +2,16 @@
 
 ## Next Version
 
+## 2.41.0
+
+### Added
+
+- Added `xcodegen cache` command that writes the cache. Useful for `post-commit` git hook integration #1476 @yonaskolb
+
+### Changed
+
+- Include folders in file sorting #1466 @jflan-dd
+
 ### Fixed
 
 - Fixed `supportedDestinations` validation when it contains watchOS for multiplatform apps. #1470 @tatsuky
