@@ -11,7 +11,7 @@ SWIFT_BUILD_FLAGS = --disable-sandbox -c release --arch arm64 --arch x86_64
 BUILD_PATH = $(shell swift build $(SWIFT_BUILD_FLAGS) --show-bin-path)
 EXECUTABLE_PATH = $(BUILD_PATH)/$(EXECUTABLE_NAME)
 
-.PHONY: install build uninstall format_code brew release
+.PHONY: install build uninstall format_code release
 
 install: build
 	mkdir -p $(PREFIX)/bin
@@ -37,7 +37,7 @@ release:
 	git commit -m "Update to $(VERSION)"
 	#git tag $(VERSION)
 
-publish: archive brew
+publish: archive
 	echo "published $(VERSION)"
 
 archive: build
