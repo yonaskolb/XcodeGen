@@ -49,7 +49,7 @@ class DumpCommand: ProjectCommand {
             try file.parent().mkpath()
             try file.write(output)
         } else {
-            stdout.print(output)
+            success(output)
         }
     }
 }
