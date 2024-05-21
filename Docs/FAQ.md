@@ -13,10 +13,10 @@ If files were added or removed in the new checkout you will most likely need to 
 
 It's recommended to set up some [git hooks](https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks) to automate the process:
 - run `xcodegen generate --use-cache` on the following hooks. This will make sure the project is up to date when checking out, merging and rebasing
-  - post-checkout
-  - post-rewrite
-  - post-merge
-- run `xcodegen cache` on `post-commit`. This will make sure that when switching branches the cache will be updated in case you made local changes, or are ammending a commit that added a new file.
+  - `post-checkout`
+  - `post-rewrite`
+  - `post-merge`
+- run `xcodegen cache` on `pre-commit`. This will make sure that when switching branches the cache will be updated in case you made local changes, or are ammending a commit that added a new file.
  
 ## Can I use CocoaPods
 Yes, you will just need to run `pod install` after the project is generated to integrate Cocoapods changes.
