@@ -1,6 +1,7 @@
 import Foundation
 import JSONUtilities
 import PathKit
+import XcodeGenCore
 import Yams
 
 public struct SpecFile {
@@ -26,22 +27,50 @@ public struct SpecFile {
         static let defaultEnable = true
 
         init?(any: Any) {
-            if let string = any as? String {
-                path = Path(string)
-                relativePaths = Include.defaultRelativePaths
-                enable = Include.defaultEnable
+            if let path = any as? String {
+                self.init(
+                    path: Path(path),
+                    relativePaths: Include.defaultRelativePaths,
+                    enable: Include.defaultEnable
+                )
             } else if let dictionary = any as? JSONDictionary, let path = dictionary["path"] as? String {
-                self.path = Path(path)
-                relativePaths = Self.resolveBoolean(dictionary, key: "relativePaths") ?? Include.defaultRelativePaths
-                enable = Self.resolveBoolean(dictionary, key: "enable") ?? Include.defaultEnable
+                self.init(
+                    path: Path(path),
+                    dictionary: dictionary
+                )
             } else {
                 return nil
             }
         }
+        
+        private init(path: Path, relativePaths: Bool, enable: Bool) {
+            self.path = path
+            self.relativePaths = relativePaths
+            self.enable = enable
+        }
+        
+        private init?(path: Path, dictionary: JSONDictionary) {
+            self.path = path
+            relativePaths = Self.resolveBoolean(dictionary, key: "relativePaths") ?? Include.defaultRelativePaths
+            enable = Self.resolveBoolean(dictionary, key: "enable") ?? Include.defaultEnable
+        }
+        
+        private static func includes(from array: [Any], basePath: Path) -> [Include] {
+            array.flatMap { entry -> [Include] in
+                if let string = entry as? String, let include = Include(any: string) {
+                    [include]
+                } else if let dictionary = entry as? JSONDictionary, let path = dictionary["path"] as? String {
+                    Glob(pattern: (basePath + Path(path)).normalize().string)
+                        .compactMap { Include(path: Path($0), dictionary: dictionary) }
+                } else {
+                    []
+                }
+            }
+        }
 
-        static func parse(json: Any?) -> [Include] {
+        static func parse(json: Any?, basePath: Path) -> [Include] {
             if let array = json as? [Any] {
-                return array.compactMap(Include.init)
+                return includes(from: array, basePath: basePath)
             } else if let object = json, let include = Include(any: object) {
                 return [include]
             } else {
@@ -92,7 +121,7 @@ public struct SpecFile {
 
         let jsonDictionary = try SpecFile.loadDictionary(path: path).expand(variables: variables)
 
-        let includes = Include.parse(json: jsonDictionary["include"])
+        let includes = Include.parse(json: jsonDictionary["include"], basePath: basePath)
         let subSpecs: [SpecFile] = try includes
             .filter(\.enable)
             .map { include in
