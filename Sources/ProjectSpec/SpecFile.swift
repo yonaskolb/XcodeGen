@@ -58,12 +58,12 @@ public struct SpecFile {
         private static func includes(from array: [Any], basePath: Path) -> [Include] {
             array.flatMap { entry -> [Include] in
                 if let string = entry as? String, let include = Include(any: string) {
-                    [include]
+                   return [include]
                 } else if let dictionary = entry as? JSONDictionary, let path = dictionary["path"] as? String {
-                    Glob(pattern: (basePath + Path(path)).normalize().string)
+                    return Glob(pattern: (basePath + Path(path)).normalize().string)
                         .compactMap { Include(path: Path($0), dictionary: dictionary) }
                 } else {
-                    []
+                    return []
                 }
             }
         }
