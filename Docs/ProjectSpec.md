@@ -1064,6 +1064,7 @@ A multiline script can be written using the various YAML multiline methods, for 
 - [ ] **captureScreenshotsAutomatically**: **Bool** - indicates whether screenshots should be captured automatically while UI Testing. This defaults to true.
 - [ ] **deleteScreenshotsWhenEachTestSucceeds**: **Bool** - whether successful UI tests should cause automatically-captured screenshots to be deleted. If `captureScreenshotsAutomatically` is false, this value is ignored. This defaults to true.
 - [ ] **testPlans**:  **[[Test Plan](#test-plan)]** - List of test plan locations that will be referenced in the scheme.
+- [ ] **preferredScreenCaptureFormat**: **String** - automatic screen capture format to use while UI Testing. Possible values are `screenshots`, `screenRecording`. Default is `screenRecording`.
 
 #### Test Target
 A target can be one of a 2 types:
