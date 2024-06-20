@@ -476,6 +476,41 @@ class SchemeGeneratorTests: XCTestCase {
                 let xcodeProject = try project.generateXcodeProject()
 
                 let xcscheme = try unwrap(xcodeProject.sharedData?.schemes.first)
+                try expect(xcscheme.testAction?.macroExpansion?.buildableName) == "MyApp.app"
+                try expect(xcscheme.launchAction?.macroExpansion?.buildableName) == "MyApp.app"
+            }
+
+            $0.it("allows to override test macroExpansion") {
+                let app = Target(
+                    name: "MyApp",
+                    type: .application,
+                    platform: .iOS,
+                    dependencies: [Dependency(type: .target, reference: "MyAppExtension", embed: false)]
+                )
+
+                let `extension` = Target(
+                    name: "MyAppExtension",
+                    type: .appExtension,
+                    platform: .iOS
+                )
+                let appTarget = Scheme.BuildTarget(target: .local(app.name), buildTypes: [.running])
+                let extensionTarget = Scheme.BuildTarget(target: .local(`extension`.name), buildTypes: [.running])
+            
+                let scheme = Scheme(
+                    name: "TestScheme",
+                    build: Scheme.Build(targets: [appTarget, extensionTarget]),
+                    run: Scheme.Run(config: "Debug", macroExpansion: "MyApp"),
+                    test: .init(macroExpansion: "MyAppExtension")
+                )
+                let project = Project(
+                    name: "test",
+                    targets: [app, `extension`],
+                    schemes: [scheme]
+                )
+                let xcodeProject = try project.generateXcodeProject()
+
+                let xcscheme = try unwrap(xcodeProject.sharedData?.schemes.first)
+                try expect(xcscheme.testAction?.macroExpansion?.buildableName) == "MyAppExtension.appex"
                 try expect(xcscheme.launchAction?.macroExpansion?.buildableName) == "MyApp.app"
             }
             
