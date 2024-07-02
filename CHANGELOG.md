@@ -2,6 +2,8 @@
 
 ## Next Version
 
+- Removed `xcodegen dump --type graphviz` feature. @giginet
+
 ## 2.41.0
 
 ### Added
