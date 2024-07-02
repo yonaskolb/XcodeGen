@@ -19,6 +19,9 @@ class GenerateCommand: ProjectCommand {
 
     @Flag("--only-plists", description: "Generate only plist files")
     var onlyPlists: Bool
+    
+    @Flag("--render-markdowns", description: "Render markdown files with `.md` extension")
+    var renderMarkdowns: Bool
 
     init(version: Version) {
         super.init(version: version,
@@ -118,6 +121,39 @@ class GenerateCommand: ProjectCommand {
             success("Created project at \(projectPath)")
         } catch {
             throw GenerationError.writingError(error)
+        }
+        
+        switch project.options.renderMarkdowns {
+        case .some(true):
+            do {
+                try fileWriter.writeMarkdownRendererPlist()
+                success("Xcode markdown rendering enabled")
+            } catch {
+                throw GenerationError.writingError(error)
+            }
+        case .some(false):
+            do {
+                try fileWriter.deleteMarkdownRendererPlist()
+                success("Xcode markdown rendering disabled")
+            } catch {
+                info("Failed to disable Xcode markdown rendering: \(error.localizedDescription)")
+            }
+        case .none: break
+            // No need for change
+        }
+        
+        // add markdown renderer if needed
+        /// - Note: this flag will override the spec option
+        if renderMarkdowns && project.options.renderMarkdowns != true {
+            do {
+                if project.options.renderMarkdowns == false {
+                    info("Overriding markdown rendering option because of the given --render-markdowns flag")
+                }
+                try fileWriter.writeMarkdownRendererPlist()
+                success("Xcode markdown rendering enabled")
+            } catch {
+                throw GenerationError.writingError(error)
+            }
         }
 
         // write cache
