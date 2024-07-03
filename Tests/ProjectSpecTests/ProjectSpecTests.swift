@@ -203,6 +203,32 @@ class ProjectSpecTests: XCTestCase {
                 try expectValidationError(project, .unexpectedTargetPlatformForSupportedDestinations(target: "target1", platform: .watchOS))
             }
             
+            $0.it("watchOS in multiplatform app's supported destinations") {
+                var project = baseProject
+                project.targets = [
+                    Target(
+                        name: "target1",
+                        type: .application,
+                        platform: .auto,
+                        supportedDestinations: [.watchOS]
+                    )
+                ]
+                try expectValidationError(project, .containsWatchOSDestinationForMultiplatformApp(target: "target1"))
+            }
+            
+            $0.it("watchOS in non-app's supported destinations") {
+                var project = baseProject
+                project.targets = [
+                    Target(
+                        name: "target1",
+                        type: .framework,
+                        platform: .auto,
+                        supportedDestinations: [.watchOS]
+                    )
+                ]
+                try expectNoValidationError(project, .containsWatchOSDestinationForMultiplatformApp(target: "target1"))
+            }
+            
             $0.it("multiple definitions of mac platform in supported destinations") {
                 var project = baseProject
                 project.targets = [

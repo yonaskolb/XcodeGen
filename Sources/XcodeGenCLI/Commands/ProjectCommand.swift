@@ -12,6 +12,9 @@ class ProjectCommand: Command {
     let name: String
     let shortDescription: String
 
+    @Flag("-q", "--quiet", description: "Suppress all informational and success output")
+    var quiet: Bool
+    
     @Key("-s", "--spec", description: "The path to the project spec file. Defaults to project.yml. (It is also possible to link to multiple spec files by comma separating them. Note that all other flags will be the same.)")
     var spec: String?
 
@@ -58,4 +61,22 @@ class ProjectCommand: Command {
     }
 
     func execute(specLoader: SpecLoader, projectSpecPath: Path, project: Project) throws {}
+
+    func info(_ string: String) {
+        if !quiet {
+            stdout.print(string)
+        }
+    }
+
+    func warning(_ string: String) {
+        if !quiet {
+            stdout.print(string.yellow)
+        }
+    }
+
+    func success(_ string: String) {
+        if !quiet {
+            stdout.print(string.green)
+        }
+    }
 }

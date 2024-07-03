@@ -2,6 +2,39 @@
 
 ## Next Version
 
+- Removed `xcodegen dump --type graphviz` feature. @giginet
+
+## 2.41.0
+
+### Added
+
+- Added `xcodegen cache` command that writes the cache. Useful for `post-commit` git hook integration #1476 @yonaskolb
+
+### Changed
+
+- Include folders in file sorting #1466 @jflan-dd
+
+### Fixed
+
+- Fixed `supportedDestinations` validation when it contains watchOS for multiplatform apps. #1470 @tatsuky
+
+## 2.40.1
+
+### Fixed
+
+- Reverted `.xcprivacy` handling. They will now again be treated as resources by default @yonaskolb
+
+## 2.40.0
+
+### Added
+
+- Added support for local Swift packages at the project root by specifying a "" group #1413 @hiltonc
+- Added a custom `shell` to a scheme's pre and post actions #1430 @balazs-vimn
+
+### Changed
+
+- `.xcprivacy` files are now not added to any build phases by default #1464 @yonaskolb
+
 ## 2.39.1
 
 ### Added

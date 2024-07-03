@@ -208,7 +208,12 @@ public class SchemeGenerator {
                     .first { settingsTarget == $0.buildableReference.blueprintName }?
                     .buildableReference
             }
-            return XCScheme.ExecutionAction(scriptText: action.script, title: action.name, environmentBuildable: environmentBuildable)
+            return XCScheme.ExecutionAction(
+                scriptText: action.script,
+                title: action.name,
+                shellToInvoke: action.shell,
+                environmentBuildable: environmentBuildable
+            )
         }
 
         let schemeTarget: ProjectTarget?
@@ -290,6 +295,16 @@ public class SchemeGenerator {
         let testPlans = scheme.test?.testPlans.enumerated().map { index, testPlan in
              XCScheme.TestPlanReference(reference: "container:\(testPlan.path)", default: defaultTestPlanIndex == index)
         } ?? []
+        let testBuildableEntries = buildActionEntries.filter({ $0.buildFor.contains(.testing) }) + testBuildTargetEntries
+        let testMacroExpansionBuildableRef = testBuildableEntries.map(\.buildableReference).contains(buildableReference) ? buildableReference : testBuildableEntries.first?.buildableReference
+        let testMacroExpansion: XCScheme.BuildableReference = buildActionEntries.first(
+            where: { value in
+                if let macroExpansion = scheme.test?.macroExpansion {
+                    return value.buildableReference.blueprintName == macroExpansion
+                }
+                return false
+            }
+        )?.buildableReference ?? testMacroExpansionBuildableRef
 
         let testAction = XCScheme.TestAction(
             buildConfiguration: scheme.test?.config ?? defaultDebugConfig.name,

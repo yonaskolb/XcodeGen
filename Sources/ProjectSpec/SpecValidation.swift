@@ -185,6 +185,12 @@ extension Project {
                 errors.append(.unexpectedTargetPlatformForSupportedDestinations(target: target.name, platform: target.platform))
             }
             
+            if let supportedDestinations = target.supportedDestinations,
+               target.type.isApp,
+               supportedDestinations.contains(.watchOS) {
+                errors.append(.containsWatchOSDestinationForMultiplatformApp(target: target.name))
+            }
+
             if target.supportedDestinations?.contains(.macOS) == true,
                target.supportedDestinations?.contains(.macCatalyst) == true {
                 

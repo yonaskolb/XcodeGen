@@ -1,14 +1,12 @@
 TOOL_NAME = XcodeGen
 export EXECUTABLE_NAME = xcodegen
-VERSION = 2.39.1
+VERSION = 2.41.0
 
 PREFIX = /usr/local
 INSTALL_PATH = $(PREFIX)/bin/$(EXECUTABLE_NAME)
 SHARE_PATH = $(PREFIX)/share/$(EXECUTABLE_NAME)
 CURRENT_PATH = $(PWD)
 REPO = https://github.com/yonaskolb/$(TOOL_NAME)
-RELEASE_TAR = $(REPO)/archive/$(VERSION).tar.gz
-SHA = $(shell curl -L -s $(RELEASE_TAR) | shasum -a 256 | sed 's/ .*//')
 SWIFT_BUILD_FLAGS = --disable-sandbox -c release --arch arm64 --arch x86_64
 BUILD_PATH = $(shell swift build $(SWIFT_BUILD_FLAGS) --show-bin-path)
 EXECUTABLE_PATH = $(BUILD_PATH)/$(EXECUTABLE_NAME)
@@ -41,10 +39,6 @@ release:
 
 publish: archive brew
 	echo "published $(VERSION)"
-
-brew:
-	brew update
-	brew bump-formula-pr --url=$(RELEASE_TAR) XcodeGen
 
 archive: build
 	./scripts/archive.sh "$(EXECUTABLE_PATH)"
