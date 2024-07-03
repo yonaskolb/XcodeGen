@@ -233,15 +233,6 @@ public class SchemeGenerator {
         let buildableReference = buildActionEntries.first(where: { $0.buildableReference.blueprintName == schemeTarget?.name })?.buildableReference ?? buildActionEntries.first!.buildableReference
         let runnables = makeProductRunnables(for: schemeTarget, buildableReference: buildableReference)
 
-        let testMacroExpansion: XCScheme.BuildableReference = buildActionEntries.first(
-            where: { value in
-                if let macroExpansion = scheme.test?.macroExpansion {
-                    return value.buildableReference.blueprintName == macroExpansion
-                }
-                return false
-            }
-        )?.buildableReference ?? buildableReference
-
         let buildAction = XCScheme.BuildAction(
             buildActionEntries: buildActionEntries,
             preActions: scheme.build.preActions.map(getExecutionAction),
@@ -297,6 +288,7 @@ public class SchemeGenerator {
         } ?? []
         let testBuildableEntries = buildActionEntries.filter({ $0.buildFor.contains(.testing) }) + testBuildTargetEntries
         let testMacroExpansionBuildableRef = testBuildableEntries.map(\.buildableReference).contains(buildableReference) ? buildableReference : testBuildableEntries.first?.buildableReference
+
         let testMacroExpansion: XCScheme.BuildableReference = buildActionEntries.first(
             where: { value in
                 if let macroExpansion = scheme.test?.macroExpansion {
@@ -304,7 +296,7 @@ public class SchemeGenerator {
                 }
                 return false
             }
-        )?.buildableReference ?? testMacroExpansionBuildableRef
+        )?.buildableReference ?? testMacroExpansionBuildableRef ?? buildableReference
 
         let testAction = XCScheme.TestAction(
             buildConfiguration: scheme.test?.config ?? defaultDebugConfig.name,
