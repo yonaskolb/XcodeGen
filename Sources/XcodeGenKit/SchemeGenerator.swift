@@ -308,6 +308,7 @@ public class SchemeGenerator {
             language: scheme.test?.language,
             region: scheme.test?.region,
             systemAttachmentLifetime: scheme.test?.systemAttachmentLifetime,
+            preferredScreenCaptureFormat: scheme.test?.preferredScreenCaptureFormat,
             customLLDBInitFile: scheme.test?.customLLDBInit
         )
 
