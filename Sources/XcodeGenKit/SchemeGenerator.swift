@@ -289,9 +289,18 @@ public class SchemeGenerator {
         let testBuildableEntries = buildActionEntries.filter({ $0.buildFor.contains(.testing) }) + testBuildTargetEntries
         let testMacroExpansionBuildableRef = testBuildableEntries.map(\.buildableReference).contains(buildableReference) ? buildableReference : testBuildableEntries.first?.buildableReference
 
+        let testMacroExpansion: XCScheme.BuildableReference = buildActionEntries.first(
+            where: { value in
+                if let macroExpansion = scheme.test?.macroExpansion {
+                    return value.buildableReference.blueprintName == macroExpansion
+                }
+                return false
+            }
+        )?.buildableReference ?? testMacroExpansionBuildableRef ?? buildableReference
+
         let testAction = XCScheme.TestAction(
             buildConfiguration: scheme.test?.config ?? defaultDebugConfig.name,
-            macroExpansion: testMacroExpansionBuildableRef,
+            macroExpansion: testMacroExpansion,
             testables: testables,
             testPlans: testPlans.isEmpty ? nil : testPlans,
             preActions: scheme.test?.preActions.map(getExecutionAction) ?? [],
