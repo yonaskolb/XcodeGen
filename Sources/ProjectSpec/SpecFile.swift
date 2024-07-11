@@ -55,6 +55,14 @@ public struct SpecFile {
             enable = Self.resolveBoolean(dictionary, key: "enable") ?? Include.defaultEnable
         }
         
+        private func replacingPath(with newPath: Path) -> Include {
+            Include(
+                path: newPath,
+                relativePaths: relativePaths,
+                enable: enable
+            )
+        }
+        
         private static func includes(from array: [Any], basePath: Path) -> [Include] {
             array.flatMap { entry -> [Include] in
                 if let string = entry as? String, let include = Include(any: string) {
@@ -72,7 +80,9 @@ public struct SpecFile {
             if let array = json as? [Any] {
                 return includes(from: array, basePath: basePath)
             } else if let object = json, let include = Include(any: object) {
-                return [include]
+                return Glob(pattern: (basePath + include.path.normalize()).string)
+                    .compactMap { try? Path($0).relativePath(from: basePath) }
+                    .compactMap { include.replacingPath(with: $0) }
             } else {
                 return []
             }

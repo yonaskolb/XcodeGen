@@ -35,6 +35,17 @@ class SpecLoadingTests: XCTestCase {
             }
         }
     }
+    
+    func testSpecLoaderGlobImportsString() {
+        describe {
+            $0.it("includes files via glob") {
+                let path = fixturePath + "glob_include/glob_include_sut_string.yml"
+                let project = try loadSpec(path: path)
+
+                try expect(project.fileGroups) == ["First", "Second", "Third"]
+            }
+        }
+    }
 
     func testSpecLoader() {
         describe {
