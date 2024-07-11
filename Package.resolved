@@ -19,15 +19,6 @@
       }
     },
     {
-      "identity" : "graphviz",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/SwiftDocOrg/GraphViz.git",
-      "state" : {
-        "revision" : "70bebcf4597b9ce33e19816d6bbd4ba9b7bdf038",
-        "version" : "0.2.0"
-      }
-    },
-    {
       "identity" : "jsonutilities",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/yonaskolb/JSONUtilities.git",

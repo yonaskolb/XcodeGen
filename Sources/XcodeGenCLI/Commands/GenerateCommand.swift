@@ -8,9 +8,6 @@ import Version
 
 class GenerateCommand: ProjectCommand {
 
-    @Flag("-q", "--quiet", description: "Suppress all informational and success output")
-    var quiet: Bool
-
     @Flag("-c", "--use-cache", description: "Use a cache for the xcodegen spec. This will prevent unnecessarily generating the project if nothing has changed")
     var useCache: Bool
 
@@ -46,7 +43,7 @@ class GenerateCommand: ProjectCommand {
             Path("~/.xcodegen/cache/\(projectSpecPath.absolute().string.md5)").absolute()
         var cacheFile: CacheFile?
 
-        // read cache
+        // generate cache
         if useCache || self.cacheFilePath != nil {
             do {
                 cacheFile = try specLoader.generateCacheFile()
@@ -136,24 +133,6 @@ class GenerateCommand: ProjectCommand {
         // run post gen command
         if let command = project.options.postGenCommand {
             try Task.run(bash: command, directory: projectDirectory.absolute().string)
-        }
-    }
-
-    func info(_ string: String) {
-        if !quiet {
-            stdout.print(string)
-        }
-    }
-
-    func warning(_ string: String) {
-        if !quiet {
-            stdout.print(string.yellow)
-        }
-    }
-
-    func success(_ string: String) {
-        if !quiet {
-            stdout.print(string.green)
         }
     }
 }

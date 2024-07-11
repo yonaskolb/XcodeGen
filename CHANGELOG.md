@@ -2,9 +2,34 @@
 
 ## Next Version
 
+## 2.42.0
+
 ### Added
 
-- Added support for local Swift packages in Xcode 15 #1465 @kinnarr
+- Better support for local Swift packages in Xcode 15 #1465 @kinnarr
+- Added `macroExpansion` to test actions in schemes #1468 @erneestoc
+
+### Changed
+
+- Better default macroExpansion target in schemes #1471 @erneestoc
+
+### Removed
+
+- Removed `xcodegen dump --type graphviz` as graphviz no longer builds in Swift 6 and is no longer maintained. If anyone uses this feature and wishes to keep it, please submit a PR providing a suitable alternative. #1485 @giginet
+
+## 2.41.0
+
+### Added
+
+- Added `xcodegen cache` command that writes the cache. Useful for `post-commit` git hook integration #1476 @yonaskolb
+
+### Changed
+
+- Include folders in file sorting #1466 @jflan-dd
+
+### Fixed
+
+- Fixed `supportedDestinations` validation when it contains watchOS for multiplatform apps. #1470 @tatsuky
 
 ## 2.40.1
 
