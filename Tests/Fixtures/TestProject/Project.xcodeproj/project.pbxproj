@@ -25,6 +25,7 @@
 /* Begin PBXBuildFile section */
 		01BFA2C4D9C5BBC72C015AA8 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = 6A58A16491CDDF968B0D56DE /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		02F9D686CBA6068A8EE58026 /* StaticLibrary_ObjC.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D0C79A8C750EC0DE748C463 /* StaticLibrary_ObjC.m */; };
+		03D1147528CED90EC1D844CE /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C7F9636B706AC92629D0B48 /* XCTest.framework */; };
 		03FFCE664129864A8F167C2F /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E4CCE342955E0E934BE533 /* FrameworkFile.swift */; };
 		052D6B4572FBF002286865D7 /* CrossOverlayFramework.swiftcrossimport in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8DD7A61B07AD2F91BDECC255 /* CrossOverlayFramework.swiftcrossimport */; };
 		06F1750F0E45E4822F806523 /* MyFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = 576675973B56A96047CB4944 /* MyFramework.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -116,6 +117,7 @@
 		71A2AAC5934BDC9EDB6F0D9E /* libStaticLibrary_ObjC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B221F5A689AD7D3AD52F56B8 /* libStaticLibrary_ObjC.a */; };
 		747CAE14D196F5652E93353C /* Headers in Headers */ = {isa = PBXBuildFile; fileRef = 2E1E747C7BC434ADB80CC269 /* Headers */; settings = {ATTRIBUTES = (Public, ); }; };
 		75F2774F183838AF34CA9B8A /* StaticLibrary_ObjC.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D0C79A8C750EC0DE748C463 /* StaticLibrary_ObjC.m */; };
+		76156B580B30704346296641 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C7F9636B706AC92629D0B48 /* XCTest.framework */; };
 		768648ED7E93B6D888574144 /* module.modulemap in CopyFiles */ = {isa = PBXBuildFile; fileRef = F2950763C4C568CC85021D18 /* module.modulemap */; };
 		76DC6A4B18F434BAC239CC4A /* DriverKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0A428E67153BB40184F37BE /* DriverKit.framework */; };
 		778F71CA1CC4BEECDACAD8B9 /* Result.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0C5AC2545AE4D4F7F44E2E9B /* Result.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -141,6 +143,7 @@
 		9DF5931DAD58C35B830A0A75 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B76E17CE3574081D5BF45B44 /* Result.framework */; };
 		A1588BF3BFFE1DF7409CBA10 /* Framework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A9274BE42A03DC5DA1FAD04 /* Framework.framework */; };
 		A1AEAAB53EAEDA1C307871FA /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB178D03E75929F3F5B10C56 /* Result.framework */; };
+		A496E1DB82E16DA4099D1411 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C7F9636B706AC92629D0B48 /* XCTest.framework */; };
 		A59B3F08914812573AFF6C2D /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FD4A16C7B8FEB7F97F3CBE3F /* libz.dylib */; };
 		A7438C77A05D83E7016CF044 /* Framework2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0DC40025AB59B688E758829 /* Framework2.framework */; };
 		A7D1A9942302569A9515696A /* Result.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D296BB7355994040E197A1EE /* Result.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -783,6 +786,7 @@
 		469B630D28015F0EDC456F6B /* libStaticLibrary_ObjC.a */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = archive.ar; path = libStaticLibrary_ObjC.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		46DD8F9AAC104BDB63793625 /* libStaticLibrary_ObjC.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libStaticLibrary_ObjC.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		4BF4D16042A80576D259160C /* Model 3.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "Model 3.xcdatamodel"; sourceTree = "<group>"; };
+		4C7F9636B706AC92629D0B48 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		5116B3B58070BCD09F1487BA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		553D289724905857912C7A1D /* outputList.xcfilelist */ = {isa = PBXFileReference; lastKnownFileType = text.xcfilelist; path = outputList.xcfilelist; sourceTree = "<group>"; };
 		576675973B56A96047CB4944 /* MyFramework.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyFramework.h; sourceTree = "<group>"; };
@@ -942,6 +946,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A496E1DB82E16DA4099D1411 /* XCTest.framework in Frameworks */,
 				5E0369B907E239D1E6884ECF /* TestFramework.framework in Frameworks */,
 				EDE8DD3CB36D65C300A53D1E /* swift-tagged.framework in Frameworks */,
 			);
@@ -952,6 +957,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				DD5FBFC3C1B2DB3D0D1CF210 /* NetworkExtension.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8189054F985D26094EE77069 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				03D1147528CED90EC1D844CE /* XCTest.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -967,6 +980,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				76156B580B30704346296641 /* XCTest.framework in Frameworks */,
 				E4D0F435405DABCB51C5B684 /* TestFramework.framework in Frameworks */,
 				32956CD11BD6B02E64F5D8D1 /* swift-tagged.framework in Frameworks */,
 			);
@@ -1567,6 +1581,7 @@
 				0BC75409252FF15F540FBB7B /* libEndpointSecurity.tbd */,
 				FD4A16C7B8FEB7F97F3CBE3F /* libz.dylib */,
 				5B785B1161553A7DD6DA4255 /* NetworkExtension.framework */,
+				4C7F9636B706AC92629D0B48 /* XCTest.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1768,6 +1783,7 @@
 			buildPhases = (
 				2F72F6483B3356C11F79ACCF /* Headers */,
 				902C8700CD150C726365CB8A /* Sources */,
+				8189054F985D26094EE77069 /* Frameworks */,
 			);
 			buildRules = (
 			);
