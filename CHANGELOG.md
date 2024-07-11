@@ -6,6 +6,7 @@
 
 ### Added
 
+- Better support for local Swift packages in Xcode 15 #1465 @kinnarr
 - Added `macroExpansion` to test actions in schemes #1468 @erneestoc
 
 ### Changed
