@@ -16,10 +16,9 @@ let package = Package(
         .package(url: "https://github.com/yonaskolb/JSONUtilities.git", from: "4.2.0"),
         .package(url: "https://github.com/kylef/Spectre.git", from: "0.9.2"),
         .package(url: "https://github.com/onevcat/Rainbow.git", from: "4.0.0"),
-        .package(url: "https://github.com/tuist/XcodeProj.git", exact: "8.13.0"),
+        .package(url: "https://github.com/tuist/XcodeProj.git", exact: "8.16.0"),
         .package(url: "https://github.com/jakeheis/SwiftCLI.git", from: "6.0.3"),
         .package(url: "https://github.com/mxcl/Version", from: "2.0.0"),
-        .package(url: "https://github.com/SwiftDocOrg/GraphViz.git", exact: "0.2.0"),
         .package(url: "https://github.com/freddi-kit/ArtifactBundleGen", exact: "0.0.6")
     ],
     targets: [
@@ -41,7 +40,6 @@ let package = Package(
             "XcodeProj",
             "PathKit",
             "XcodeGenCore",
-            "GraphViz",
         ], resources: [
             .copy("SettingPresets")
         ]),

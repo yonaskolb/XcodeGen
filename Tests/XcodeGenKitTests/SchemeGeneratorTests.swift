@@ -476,9 +476,84 @@ class SchemeGeneratorTests: XCTestCase {
                 let xcodeProject = try project.generateXcodeProject()
 
                 let xcscheme = try unwrap(xcodeProject.sharedData?.schemes.first)
+                try expect(xcscheme.testAction?.macroExpansion?.buildableName) == "MyApp.app"
+                try expect(xcscheme.launchAction?.macroExpansion?.buildableName) == "MyApp.app"
+            }
+
+            $0.it("allows to override test macroExpansion") {
+                let app = Target(
+                    name: "MyApp",
+                    type: .application,
+                    platform: .iOS,
+                    dependencies: [Dependency(type: .target, reference: "MyAppExtension", embed: false)]
+                )
+
+                let `extension` = Target(
+                    name: "MyAppExtension",
+                    type: .appExtension,
+                    platform: .iOS
+                )
+                let appTarget = Scheme.BuildTarget(target: .local(app.name), buildTypes: [.running])
+                let extensionTarget = Scheme.BuildTarget(target: .local(`extension`.name), buildTypes: [.running])
+            
+                let scheme = Scheme(
+                    name: "TestScheme",
+                    build: Scheme.Build(targets: [appTarget, extensionTarget]),
+                    run: Scheme.Run(config: "Debug", macroExpansion: "MyApp"),
+                    test: .init(macroExpansion: "MyAppExtension")
+                )
+                let project = Project(
+                    name: "test",
+                    targets: [app, `extension`],
+                    schemes: [scheme]
+                )
+                let xcodeProject = try project.generateXcodeProject()
+
+                let xcscheme = try unwrap(xcodeProject.sharedData?.schemes.first)
+                try expect(xcscheme.testAction?.macroExpansion?.buildableName) == "MyAppExtension.appex"
                 try expect(xcscheme.launchAction?.macroExpansion?.buildableName) == "MyApp.app"
             }
             
+            $0.it("generates scheme with macroExpansion from tests when the main target is not part of the scheme") {
+                let app = Target(
+                    name: "MyApp",
+                    type: .application,
+                    platform: .iOS,
+                    dependencies: []
+                )
+
+                let mockApp = Target(
+                    name: "MockApp",
+                    type: .application,
+                    platform: .iOS,
+                    dependencies: []
+                )
+
+                let testBundle = Target(
+                    name: "TestBundle",
+                    type: .unitTestBundle,
+                    platform: .iOS
+                )
+                let appTarget = Scheme.BuildTarget(target: .local(app.name), buildTypes: [.running])
+                let mockAppTarget = Scheme.BuildTarget(target: .local(mockApp.name), buildTypes: [.testing])
+                let testBundleTarget = Scheme.BuildTarget(target: .local(testBundle.name), buildTypes: [.testing])
+
+                let scheme = Scheme(
+                    name: "TestScheme",
+                    build: Scheme.Build(targets: [appTarget, mockAppTarget, testBundleTarget]),
+                    run: Scheme.Run(config: "Debug", macroExpansion: "MyApp")
+                )
+                let project = Project(
+                    name: "test",
+                    targets: [app, mockApp, testBundle],
+                    schemes: [scheme]
+                )
+                let xcodeProject = try project.generateXcodeProject()
+
+                let xcscheme = try unwrap(xcodeProject.sharedData?.schemes.first)
+                try expect(xcscheme.testAction?.macroExpansion?.buildableName) == "MockApp.app"
+            }
+
             $0.it("generates scheme with test target of local swift package") {
                 let targetScheme = TargetScheme(
                     testTargets: [Scheme.Test.TestTarget(targetReference: TestableTargetReference(name: "XcodeGenKitTests", location: .package("XcodeGen")))])

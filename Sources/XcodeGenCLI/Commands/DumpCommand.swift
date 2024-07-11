@@ -41,8 +41,6 @@ class DumpCommand: ProjectCommand {
             output = try Yams.dump(object: project.toJSONDictionary())
         case .summary:
             output = project.debugDescription
-        case .graphviz:
-            output = GraphVizGenerator().generateModuleGraphViz(targets: project.targets)
         }
 
         if let file = file {
@@ -61,7 +59,6 @@ private enum DumpType: String, ConvertibleFromString, CaseIterable {
     case parsedJSON = "parsed-json"
     case parsedYaml = "parsed-yaml"
     case summary
-    case graphviz
 
     static var defaultValue: DumpType { .yaml }
 }
