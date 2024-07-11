@@ -2,7 +2,19 @@
 
 ## Next Version
 
-- Removed `xcodegen dump --type graphviz` feature. @giginet
+## 2.42.0
+
+### Added
+
+- Added `macroExpansion` to test actions in schemes #1468 @erneestoc
+
+### Changed
+
+- Better default macroExpansion target in schemes #1471 @erneestoc
+
+### Removed
+
+- Removed `xcodegen dump --type graphviz` as graphviz no longer builds in Swift 6 and is no longer maintained. If anyone uses this feature and wishes to keep it, please submit a PR providing a suitable alternative. #1485 @giginet
 
 ## 2.41.0
 
