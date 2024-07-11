@@ -1586,6 +1586,10 @@ class ProjectGeneratorTests: XCTestCase {
                 let nativeTarget = try unwrap(pbxProject.nativeTargets.first(where: { $0.name == app.name }))
                 let localPackageFile = try unwrap(pbxProject.fileReferences.first(where: { $0.path == "../XcodeGen" }))
                 try expect(localPackageFile.lastKnownFileType) == "folder"
+                
+                let localPackageReference = try unwrap(pbxProject.rootObject?.localPackages.first)
+                try expect(pbxProject.rootObject?.localPackages.count) == 1
+                try expect(localPackageReference.relativePath) == "../XcodeGen"
 
                 let frameworkPhases = nativeTarget.buildPhases.compactMap { $0 as? PBXFrameworksBuildPhase }
 
