@@ -547,7 +547,7 @@ class ProjectSpecTests: XCTestCase {
                 try expectValidationError(project, .multipleDefaultTestPlans)
             }
 
-            $0.it("fails on packages has not plugin packge reference") {
+            $0.it("fails on packages has not plugin package reference") {
                 var project = baseProject
                 project.targets = [
                     Target(
@@ -562,7 +562,7 @@ class ProjectSpecTests: XCTestCase {
                 try expectValidationError(project, .invalidPluginPackageReference(plugin: "plugin", package: "package"))
             }
 
-            $0.it("allow on packages has plugin packge reference") {
+            $0.it("allow on packages has plugin package reference") {
                 var project = baseProject
                 project.packages["package"] = .remote(url: "url", versionRequirement: .branch("branch"))
                 project.targets = [

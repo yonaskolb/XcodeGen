@@ -339,7 +339,7 @@ Some support for Xcode Test Plans has been added. For now test plans are not gen
 #### Added
 
 - Allow specifying a `github` name like `JohnSundell/Ink` instead of a full `url` for Swift Packages #1029 @yonaskolb
-- Added explicity `LastUpgradeCheck` and `LastUpgradeVersion` override support so it's possible to override these properties without using the `project.xcodeVersion`. [1013](https://github.com/yonaskolb/XcodeGen/pull/1013) @Andre113
+- Added explicit `LastUpgradeCheck` and `LastUpgradeVersion` override support so it's possible to override these properties without using the `project.xcodeVersion`. [1013](https://github.com/yonaskolb/XcodeGen/pull/1013) @Andre113
 - Added `macroExpansion` for `run` in `schemes` #1036 @freddi-kit
 - Added `askForAppToLaunch` for `profile` in `schemes` #1035 @freddi-kit
 - Added support for selectedTests in schemes `Test` configuration. #913 @ooodin
@@ -711,7 +711,7 @@ Some support for Xcode Test Plans has been added. For now test plans are not gen
 
 #### Added
 
-- Added ability to automatically find all the frameworks for Carthage dependencies via the global `options.findCarthageFrameworks` or dependency specfic `dependency.findFrameworks`. See the [Carthage](Docs/Usage.md#carthage) usage docs for more info #506 @rpassis @yonaskolb
+- Added ability to automatically find all the frameworks for Carthage dependencies via the global `options.findCarthageFrameworks` or dependency specific `dependency.findFrameworks`. See the [Carthage](Docs/Usage.md#carthage) usage docs for more info #506 @rpassis @yonaskolb
 - Added support for nested target templates #534 @tomquist
 - Added ability to define `templateAttributes` within a target to be able to parameterize templates. #533 @tomquist
 - Added ability to set `link` to false in framework dependencies #532 @dimatosaurus
@@ -770,7 +770,7 @@ Some support for Xcode Test Plans has been added. For now test plans are not gen
 #### Fixed
 
 - Fixed XPC Service package type in generated `Info.plist` #435 @alvarhansen
-- Fixed phase ordering for modulemap and static libary header Copy File phases. [402](https://github.com/yonaskolb/XcodeGen/pull/402) @brentleyjones
+- Fixed phase ordering for modulemap and static library header Copy File phases. [402](https://github.com/yonaskolb/XcodeGen/pull/402) @brentleyjones
 - Fixed intermittent errors when running multiple `xcodegen`s concurrently #450 @bryansum
 - Fixed `--project` argument not working #437 @yonaskolb
 - Fixed unit tests not hooking up to host applications properly by default. They now generate a `TEST_HOST` and a `TestTargetID` #452 @yonaskolb
