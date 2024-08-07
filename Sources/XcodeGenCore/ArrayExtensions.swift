@@ -1,13 +1,13 @@
 import Foundation
 
-public extension Array {
+public extension Array where Element: Sendable {
 
     func parallelMap<T>(transform: @Sendable (Element) -> T) -> [T] {
-       var buffer: [T] = []
-       DispatchQueue.concurrentPerform(iterations: count) { idx in
-           buffer[idx] = transform(self[idx])
-       }
-       return buffer
+      var buffer = Array<T?>(repeating: nil, count: count)
+      DispatchQueue.concurrentPerform(iterations: count) { idx in
+        buffer[idx] = transform(self[idx])
+      }
+      return buffer.map { $0! }
    }
 }
 
