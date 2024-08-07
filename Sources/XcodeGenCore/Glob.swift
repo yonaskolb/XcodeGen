@@ -89,9 +89,10 @@ public class Glob: Collection {
         }
 
         let patterns = behavior.supportsGlobstar ? expandGlobstar(pattern: adjustedPattern) : [adjustedPattern]
-        
+
         #if os(macOS)
-        paths = patterns.parallelMap { paths(usingPattern: $0, includeFiles: includeFiles) }.flatMap { $0 }
+        let isIncludingFiles = includeFiles
+        paths = patterns.parallelMap { paths(usingPattern: $0, includeFiles: isIncludingFiles) }.flatMap { $0 }
         #else
         // Parallel invocations of Glob on Linux seems to be causing unexpected crashes
         paths = patterns.map { paths(usingPattern: $0, includeFiles: includeFiles) }.flatMap { $0 }
