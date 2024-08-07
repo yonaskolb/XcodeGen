@@ -12,16 +12,14 @@ extension Dictionary where Key: JSONKey {
             let defaultError = NSError(domain: "Unspecified error", code: 0, userInfo: nil)
             let keys = Array(dictionary.keys)
             var itemResults: [Result<T, Error>] = Array(repeating: .failure(defaultError), count: keys.count)
-            itemResults.withUnsafeMutableBufferPointer { buffer in
-                DispatchQueue.concurrentPerform(iterations: dictionary.count) { idx in
-                    do {
-                        let key = keys[idx]
-                        let jsonDictionary: JSONDictionary = try dictionary.json(atKeyPath: .key(key))
-                        let item = try T(name: key, jsonDictionary: jsonDictionary)
-                        buffer[idx] = .success(item)
-                    } catch {
-                        buffer[idx] = .failure(error)
-                    }
+            DispatchQueue.concurrentPerform(iterations: dictionary.count) { idx in
+                do {
+                    let key = keys[idx]
+                    let jsonDictionary: JSONDictionary = try dictionary.json(atKeyPath: .key(key))
+                    let item = try T(name: key, jsonDictionary: jsonDictionary)
+                    itemResults[idx] = .success(item)
+                } catch {
+                    itemResults[idx] = .failure(error)
                 }
             }
             return try itemResults.map { try $0.get() }

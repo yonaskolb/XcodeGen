@@ -1,15 +1,13 @@
 import Foundation
 
-public extension Array {
+public extension Array where Element: Sendable {
 
-   func parallelMap<T>(transform: (Element) -> T) -> [T] {
-       var result = ContiguousArray<T?>(repeating: nil, count: count)
-       return result.withUnsafeMutableBufferPointer { buffer in
-           DispatchQueue.concurrentPerform(iterations: buffer.count) { idx in
-               buffer[idx] = transform(self[idx])
-           }
-           return buffer.map { $0! }
-       }
+    func parallelMap<T>(transform: @Sendable (Element) -> T) -> [T] {
+      var buffer = ContiguousArray<T?>(repeating: nil, count: count)
+      DispatchQueue.concurrentPerform(iterations: count) { idx in
+        buffer[idx] = transform(self[idx])
+      }
+      return buffer.map { $0! }
    }
 }
 
