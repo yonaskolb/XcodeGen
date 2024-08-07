@@ -3,7 +3,7 @@ import Foundation
 public extension Array where Element: Sendable {
 
     func parallelMap<T>(transform: @Sendable (Element) -> T) -> [T] {
-      var buffer = Array<T?>(repeating: nil, count: count)
+      var buffer = ContiguousArray<T?>(repeating: nil, count: count)
       DispatchQueue.concurrentPerform(iterations: count) { idx in
         buffer[idx] = transform(self[idx])
       }
