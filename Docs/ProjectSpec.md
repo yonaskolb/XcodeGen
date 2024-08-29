@@ -1071,7 +1071,7 @@ A target can be one of a 2 types:
 - **name**: **String** - The name of the target.
 - **target**: **[Testable Target Reference](#testable-target-reference)** - The information of the target. You can specify more detailed information than `name:`.
 
-As syntax suger, you can also specify **[Testable Target Reference](#testable-target-reference)** without `target`.
+As syntax sugar, you can also specify **[Testable Target Reference](#testable-target-reference)** without `target`.
 
 #### Other Parameters
 
