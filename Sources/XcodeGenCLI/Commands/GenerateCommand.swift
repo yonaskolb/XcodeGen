@@ -69,17 +69,17 @@ class GenerateCommand: ProjectCommand {
             }
         }
 
+        // run pre gen command
+        if let command = project.options.preGenCommand {
+            try Task.run(bash: command, directory: projectDirectory.absolute().string)
+        }
+
         // validate project
         do {
             try project.validateMinimumXcodeGenVersion(version)
             try project.validate()
         } catch let error as SpecValidationError {
             throw GenerationError.validationError(error)
-        }
-
-        // run pre gen command
-        if let command = project.options.preGenCommand {
-            try Task.run(bash: command, directory: projectDirectory.absolute().string)
         }
 
         // generate plists
