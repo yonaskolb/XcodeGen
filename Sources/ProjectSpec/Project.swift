@@ -241,6 +241,7 @@ extension Project: PathContainer {
             .object("aggregateTargets", AggregateTarget.pathProperties),
             .object("schemes", Scheme.pathProperties),
             .object("projectReferences", ProjectReference.pathProperties),
+            .object("packages", SwiftPackage.pathProperties)
         ]
     }
 }

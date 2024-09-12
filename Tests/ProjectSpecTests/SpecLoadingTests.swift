@@ -193,6 +193,10 @@ class SpecLoadingTests: XCTestCase {
                         test: .init(testPlans: [.init(path: "paths_test/TestPlan.xctestplan")])
                     )
                 ]
+
+                try expect(project.packages) == [
+                    "LocalPackage": .local(path: "paths_test/relative_local_package/LocalPackage", group: nil),
+                ]
             }
 
             $0.it("respects directory expansion preference") {

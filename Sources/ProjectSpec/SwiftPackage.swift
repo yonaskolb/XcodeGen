@@ -127,3 +127,13 @@ extension SwiftPackage.VersionRequirement: JSONObjectConvertible {
         }
     }
 }
+
+extension SwiftPackage: PathContainer {
+    static var pathProperties: [PathProperty] {
+        [
+            .dictionary([
+                .string("path"),
+            ]),
+        ]
+    }
+}
