@@ -1,0 +1,32 @@
+targetTemplates:
+  ContentBlockerTemplate:
+    platform: iOS
+    type: app-extension
+    settings:
+      CODE_SIGN_IDENTITY: Apple Development
+    configFiles:
+      Test Debug: ContentBlocker/Configs/${version}/Debug.xcconfig
+      Staging Debug: ContentBlocker/Configs/${version}/Debug.xcconfig
+      Production Debug: ContentBlocker/Configs/${version}/Debug.xcconfig
+      Test Release: ContentBlocker/Configs/${version}/Release.xcconfig
+      Staging Release: ContentBlocker/Configs/${version}/Release.xcconfig
+      Production Release: ContentBlocker/Configs/${version}/Release.xcconfig
+    sources:
+      - ContentBlocker
+
+globalTemplateAttributes:
+  version: legacy
+
+name: Demo
+options:
+  createIntermediateGroups: True
+targets:
+  Demo:
+    type: application
+    platform: iOS
+    deploymentTarget: "10.0"
+    sources:
+      - DemoXcodeGenGlobalTemplateAttribute
+  ContentBlocker:
+    templates:
+      - ContentBlockerTemplate
