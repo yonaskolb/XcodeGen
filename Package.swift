@@ -2,6 +2,12 @@
 
 import PackageDescription
 
+func swiftSettings() -> [SwiftSetting] {
+    return [
+        .define("FOUNDATION_FRAMEWORK", .when(platforms: [.linux])),
+    ]
+}
+
 let package = Package(
     name: "XcodeGen",
     platforms: [.macOS(.v10_13)],
@@ -33,7 +39,7 @@ let package = Package(
             "Rainbow",
             "PathKit",
             "Version",
-        ]),
+        ], swiftSettings: swiftSettings()),
         .target(name: "XcodeGenKit", dependencies: [
             "ProjectSpec",
             "JSONUtilities",
@@ -42,52 +48,52 @@ let package = Package(
             "XcodeGenCore",
         ], resources: [
             .copy("SettingPresets")
-        ]),
+        ], swiftSettings: swiftSettings()),
         .target(name: "ProjectSpec", dependencies: [
             "JSONUtilities",
             "XcodeProj",
             "Yams",
             "XcodeGenCore",
             "Version",
-        ]),
+        ], swiftSettings: swiftSettings()),
         .target(name: "XcodeGenCore", dependencies: [
             "PathKit",
             "Yams",
-        ]),
+        ], swiftSettings: swiftSettings()),
         .target(name: "TestSupport", dependencies: [
             "XcodeProj",
             "Spectre",
             "PathKit",
-        ]),
+        ], swiftSettings: swiftSettings()),
         .testTarget(name: "XcodeGenKitTests", dependencies: [
             "XcodeGenKit",
             "Spectre",
             "PathKit",
             "TestSupport",
-        ]),
+        ], swiftSettings: swiftSettings()),
         .testTarget(name: "FixtureTests", dependencies: [
             "XcodeGenKit",
             "Spectre",
             "PathKit",
             "TestSupport",
-        ]),
+        ], swiftSettings: swiftSettings()),
         .testTarget(name: "XcodeGenCoreTests", dependencies: [
             "XcodeGenCore",
             "Spectre",
             "PathKit",
             "TestSupport",
-        ]),
+        ], swiftSettings: swiftSettings()),
         .testTarget(name: "ProjectSpecTests", dependencies: [
             "ProjectSpec",
             "Spectre",
             "PathKit",
             "TestSupport",
-        ]),
+        ], swiftSettings: swiftSettings()),
         .testTarget(name: "PerformanceTests", dependencies: [
             "XcodeGenKit",
             "Spectre",
             "PathKit",
             "TestSupport",
-        ]),
+        ], swiftSettings: swiftSettings()),
     ]
 )
