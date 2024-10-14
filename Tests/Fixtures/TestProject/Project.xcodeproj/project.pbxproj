@@ -18,6 +18,8 @@
 				106CDB4BCFD183241A565E6C /* PBXTargetDependency */,
 			);
 			name = SuperTarget;
+			packageProductDependencies = (
+			);
 			productName = SuperTarget;
 		};
 /* End PBXAggregateTarget section */
@@ -1731,6 +1733,8 @@
 			dependencies = (
 			);
 			name = IncludedLegacy;
+			packageProductDependencies = (
+			);
 			passBuildSettingsInEnvironment = 0;
 			productName = IncludedLegacy;
 		};
@@ -1744,6 +1748,8 @@
 			dependencies = (
 			);
 			name = Legacy;
+			packageProductDependencies = (
+			);
 			passBuildSettingsInEnvironment = 1;
 			productName = Legacy;
 		};
@@ -1773,6 +1779,8 @@
 				B95DA92D1265C094E71B4A5D /* PBXTargetDependency */,
 			);
 			name = App_macOS;
+			packageProductDependencies = (
+			);
 			productName = App_macOS;
 			productReference = 33F6DCDC37D2E66543D4965D /* App_macOS.app */;
 			productType = "com.apple.product-type.application";
@@ -1790,6 +1798,8 @@
 			dependencies = (
 			);
 			name = TestFramework;
+			packageProductDependencies = (
+			);
 			productName = TestFramework;
 			productReference = E43116070AFEF5D8C3A5A957 /* TestFramework.framework */;
 			productType = "com.apple.product-type.framework";
@@ -1840,6 +1850,8 @@
 			dependencies = (
 			);
 			name = Tool;
+			packageProductDependencies = (
+			);
 			productName = Tool;
 			productReference = BECEA4A483ADEB8158F640B3 /* Tool */;
 			productType = "com.apple.product-type.tool";
@@ -1857,6 +1869,8 @@
 			dependencies = (
 			);
 			name = CrossOverlayFramework_iOS;
+			packageProductDependencies = (
+			);
 			productName = CrossOverlayFramework_iOS;
 			productReference = 8FE05BF7897ECFD58B7AC8B1 /* CrossOverlayFramework.framework */;
 			productType = "com.apple.product-type.framework";
@@ -1873,6 +1887,8 @@
 			dependencies = (
 			);
 			name = StaticLibrary_ObjC_iOS;
+			packageProductDependencies = (
+			);
 			productName = StaticLibrary_ObjC_iOS;
 			productReference = B221F5A689AD7D3AD52F56B8 /* libStaticLibrary_ObjC.a */;
 			productType = "com.apple.product-type.library.static";
@@ -1888,6 +1904,8 @@
 			dependencies = (
 			);
 			name = iMessageStickersExtension;
+			packageProductDependencies = (
+			);
 			productName = iMessageStickersExtension;
 			productReference = C53ACB2962FED621389C36A2 /* iMessageStickersExtension.appex */;
 			productType = "com.apple.product-type.app-extension.messages-sticker-pack";
@@ -1904,6 +1922,8 @@
 			dependencies = (
 			);
 			name = StaticLibrary_Swift;
+			packageProductDependencies = (
+			);
 			productName = StaticLibrary_Swift;
 			productReference = 8CB86294FB939FE6E90932E1 /* libStaticLibrary_Swift.a */;
 			productType = "com.apple.product-type.library.static";
@@ -1920,6 +1940,8 @@
 			dependencies = (
 			);
 			name = iMessageExtension;
+			packageProductDependencies = (
+			);
 			productName = iMessageExtension;
 			productReference = D629E142AB87C681D4EC90F7 /* iMessageExtension.appex */;
 			productType = "com.apple.product-type.app-extension.messages";
@@ -1937,6 +1959,8 @@
 				62DA64F61B337719A2CF993D /* PBXTargetDependency */,
 			);
 			name = App_watchOS;
+			packageProductDependencies = (
+			);
 			productName = App_watchOS;
 			productReference = A680BE9F68A255B0FB291AE6 /* App_watchOS.app */;
 			productType = "com.apple.product-type.application.watchapp2";
@@ -1951,6 +1975,8 @@
 			dependencies = (
 			);
 			name = BundleY;
+			packageProductDependencies = (
+			);
 			productName = BundleY;
 			productReference = BB677D970923F663D846D7E0 /* BundleY.bundle */;
 			productType = "com.apple.product-type.bundle";
@@ -1968,6 +1994,8 @@
 			dependencies = (
 			);
 			name = CrossOverlayFramework_macOS;
+			packageProductDependencies = (
+			);
 			productName = CrossOverlayFramework_macOS;
 			productReference = E0F31A9DE15B210D101AFC81 /* CrossOverlayFramework.framework */;
 			productType = "com.apple.product-type.framework";
@@ -1985,6 +2013,8 @@
 			dependencies = (
 			);
 			name = "App_watchOS Extension";
+			packageProductDependencies = (
+			);
 			productName = "App_watchOS Extension";
 			productReference = 0D09D243DBCF9D32E239F1E8 /* App_watchOS Extension.appex */;
 			productType = "com.apple.product-type.watchkit2-extension";
@@ -2002,6 +2032,8 @@
 			dependencies = (
 			);
 			name = CrossOverlayFramework_tvOS;
+			packageProductDependencies = (
+			);
 			productName = CrossOverlayFramework_tvOS;
 			productReference = 0095836FE59395511E0CB4F0 /* CrossOverlayFramework.framework */;
 			productType = "com.apple.product-type.framework";
@@ -2018,6 +2050,8 @@
 			dependencies = (
 			);
 			name = DriverKitDriver;
+			packageProductDependencies = (
+			);
 			productName = DriverKitDriver;
 			productReference = 83B5EC7EF81F7E4B6F426D4E /* DriverKitDriver.dext */;
 			productType = "com.apple.product-type.driver-extension";
@@ -2038,6 +2072,8 @@
 				CE96B0951433713033A03DCD /* PBXTargetDependency */,
 			);
 			name = Framework_tvOS;
+			packageProductDependencies = (
+			);
 			productName = Framework_tvOS;
 			productReference = 7D67F1C1BFBACE101DE7DB51 /* Framework.framework */;
 			productType = "com.apple.product-type.framework";
@@ -2057,6 +2093,8 @@
 				AD555A4814F2D294E2AC72D8 /* PBXTargetDependency */,
 			);
 			name = Framework_macOS;
+			packageProductDependencies = (
+			);
 			productName = Framework_macOS;
 			productReference = 41FC82ED1C4C3B7B3D7B2FB7 /* Framework.framework */;
 			productType = "com.apple.product-type.framework";
@@ -2073,6 +2111,8 @@
 			dependencies = (
 			);
 			name = StaticLibrary_ObjC_macOS;
+			packageProductDependencies = (
+			);
 			productName = StaticLibrary_ObjC_macOS;
 			productReference = 86169DEEDEAF09AB89C8A31D /* libStaticLibrary_ObjC.a */;
 			productType = "com.apple.product-type.library.static";
@@ -2092,6 +2132,8 @@
 				2D1B4333107E10912508724E /* PBXTargetDependency */,
 			);
 			name = App_Clip_Tests;
+			packageProductDependencies = (
+			);
 			productName = App_Clip_Tests;
 			productReference = 3FC04772130400920D68A167 /* App_Clip_Tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -2108,6 +2150,8 @@
 			dependencies = (
 			);
 			name = Framework2_watchOS;
+			packageProductDependencies = (
+			);
 			productName = Framework2_watchOS;
 			productReference = AB055761199DF36DB0C629A6 /* Framework2.framework */;
 			productType = "com.apple.product-type.framework";
@@ -2128,6 +2172,8 @@
 				35DF16CA4A1F88140CF69620 /* PBXTargetDependency */,
 			);
 			name = Framework_watchOS;
+			packageProductDependencies = (
+			);
 			productName = Framework_watchOS;
 			productReference = 6177CC6263783487E93F7F4D /* Framework.framework */;
 			productType = "com.apple.product-type.framework";
@@ -2145,6 +2191,8 @@
 				8B1B6143B8996B3CF0FE61C5 /* PBXTargetDependency */,
 			);
 			name = App_macOS_Tests;
+			packageProductDependencies = (
+			);
 			productName = App_macOS_Tests;
 			productReference = 0B9D98D935F2C69A1F5BA539 /* App_macOS_Tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -2161,6 +2209,8 @@
 			dependencies = (
 			);
 			name = StaticLibrary_ObjC_watchOS;
+			packageProductDependencies = (
+			);
 			productName = StaticLibrary_ObjC_watchOS;
 			productReference = 46DD8F9AAC104BDB63793625 /* libStaticLibrary_ObjC.a */;
 			productType = "com.apple.product-type.library.static";
@@ -2178,6 +2228,8 @@
 				053FF4219E7A0E38E90071B0 /* PBXTargetDependency */,
 			);
 			name = iMessageApp;
+			packageProductDependencies = (
+			);
 			productName = iMessageApp;
 			productReference = 9A87A926D563773658FB87FE /* iMessageApp.app */;
 			productType = "com.apple.product-type.application.messages";
@@ -2194,6 +2246,8 @@
 			dependencies = (
 			);
 			name = Framework2_tvOS;
+			packageProductDependencies = (
+			);
 			productName = Framework2_tvOS;
 			productReference = A0DC40025AB59B688E758829 /* Framework2.framework */;
 			productType = "com.apple.product-type.framework";
@@ -2211,6 +2265,8 @@
 				1341A437B2D0402F4F4CEA51 /* PBXTargetDependency */,
 			);
 			name = App_Clip_UITests;
+			packageProductDependencies = (
+			);
 			productName = App_Clip_UITests;
 			productReference = 7C7EC00B53FF878007F6ECAB /* App_Clip_UITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
@@ -2227,6 +2283,8 @@
 			dependencies = (
 			);
 			name = StaticLibrary_ObjC_tvOS;
+			packageProductDependencies = (
+			);
 			productName = StaticLibrary_ObjC_tvOS;
 			productReference = 469B630D28015F0EDC456F6B /* libStaticLibrary_ObjC.a */;
 			productType = "com.apple.product-type.library.static";
@@ -2243,6 +2301,8 @@
 			dependencies = (
 			);
 			name = EndpointSecuritySystemExtension;
+			packageProductDependencies = (
+			);
 			productName = EndpointSecuritySystemExtension;
 			productReference = E5E0A80CCE8F8DB662DCD2D0 /* EndpointSecuritySystemExtension.systemextension */;
 			productType = "com.apple.product-type.system-extension";
@@ -2259,6 +2319,8 @@
 			dependencies = (
 			);
 			name = NetworkSystemExtension;
+			packageProductDependencies = (
+			);
 			productName = NetworkSystemExtension;
 			productReference = 2049B6DD2AFE85F9DC9F3EB3 /* NetworkSystemExtension.systemextension */;
 			productType = "com.apple.product-type.system-extension";
@@ -2278,6 +2340,8 @@
 				486D84E583999BAA22C679EC /* PBXTargetDependency */,
 			);
 			name = Framework_iOS;
+			packageProductDependencies = (
+			);
 			productName = Framework_iOS;
 			productReference = 8A9274BE42A03DC5DA1FAD04 /* Framework.framework */;
 			productType = "com.apple.product-type.framework";
@@ -2293,6 +2357,8 @@
 			dependencies = (
 			);
 			name = EntitledApp;
+			packageProductDependencies = (
+			);
 			productName = EntitledApp;
 			productReference = 7D700FA699849D2F95216883 /* EntitledApp.app */;
 			productType = "com.apple.product-type.application";
@@ -2330,6 +2396,8 @@
 			dependencies = (
 			);
 			name = CrossOverlayFramework_watchOS;
+			packageProductDependencies = (
+			);
 			productName = CrossOverlayFramework_watchOS;
 			productReference = 89EB41A001D8BF26431C5798 /* CrossOverlayFramework.framework */;
 			productType = "com.apple.product-type.framework";
@@ -2346,6 +2414,8 @@
 			dependencies = (
 			);
 			name = Framework2_iOS;
+			packageProductDependencies = (
+			);
 			productName = Framework2_iOS;
 			productReference = 3EF21DF245F66BEF5446AAEF /* Framework2.framework */;
 			productType = "com.apple.product-type.framework";
@@ -2368,6 +2438,8 @@
 				CFEACC1CED73B52EA1CCD054 /* PBXTargetDependency */,
 			);
 			name = App_Clip;
+			packageProductDependencies = (
+			);
 			productName = App_Clip;
 			productReference = 38DB679FF1CF4E379D1AB103 /* App_Clip.app */;
 			productType = "com.apple.product-type.application.on-demand-install-capable";
@@ -2382,6 +2454,8 @@
 			dependencies = (
 			);
 			name = BundleX;
+			packageProductDependencies = (
+			);
 			productName = BundleX;
 			productReference = 84317819C92F78425870E483 /* BundleX.bundle */;
 			productType = "com.apple.product-type.bundle";
@@ -2401,6 +2475,8 @@
 				6AE62A40F64046B597B07801 /* PBXTargetDependency */,
 			);
 			name = App_iOS_Tests;
+			packageProductDependencies = (
+			);
 			productName = App_iOS_Tests;
 			productReference = CB77A637470A3CDA2BDDBE99 /* App_iOS_Tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -2416,6 +2492,8 @@
 			dependencies = (
 			);
 			name = ExternalTarget;
+			packageProductDependencies = (
+			);
 			productName = ExternalTarget;
 			productReference = 2385A62F6C6EE8D461EE19F2 /* ExternalTarget.framework */;
 			productType = "com.apple.product-type.framework";
@@ -2431,6 +2509,8 @@
 			dependencies = (
 			);
 			name = "XPC Service";
+			packageProductDependencies = (
+			);
 			productName = "XPC Service";
 			productReference = 22237B8EBD9E6BE8EBC8735F /* XPC Service.xpc */;
 			productType = "com.apple.product-type.xpc-service";
@@ -2448,6 +2528,8 @@
 				49587048934568C2182DA825 /* PBXTargetDependency */,
 			);
 			name = App_iOS_UITests;
+			packageProductDependencies = (
+			);
 			productName = App_iOS_UITests;
 			productReference = 13EEAB58665D79C15184D9D0 /* App_iOS_UITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
@@ -2464,6 +2546,8 @@
 			dependencies = (
 			);
 			name = Framework2_macOS;
+			packageProductDependencies = (
+			);
 			productName = Framework2_macOS;
 			productReference = 2233774B86539B1574D206B0 /* Framework2.framework */;
 			productType = "com.apple.product-type.framework";
@@ -2507,9 +2591,11 @@
 				en,
 			);
 			mainGroup = 293D0FF827366B513839236A;
+			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				4EDA79334592CBBA0E507AD2 /* XCRemoteSwiftPackageReference "Swinject" */,
 			);
+			preferredProjectObjectVersion = 54;
 			projectDirPath = "";
 			projectReferences = (
 				{

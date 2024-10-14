@@ -18,6 +18,10 @@ extension Project {
     var objectVersion: UInt {
         54
     }
+
+    var minimizedProjectReferenceProxies: Int {
+        1
+    }
 }
 
 public struct XCodeVersion {

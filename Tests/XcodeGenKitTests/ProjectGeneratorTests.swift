@@ -1553,12 +1553,12 @@ class ProjectGeneratorTests: XCTestCase {
                 let pbxProject = try project.generatePbxProj(specValidate: false)
                 let nativeTarget = try unwrap(pbxProject.nativeTargets.first(where: { $0.name == app.name }))
 
-                let projectSpecDependency = try unwrap(nativeTarget.packageProductDependencies.first(where: { $0.productName == "ProjectSpec" }))
+                let projectSpecDependency = try unwrap(nativeTarget.packageProductDependencies?.first(where: { $0.productName == "ProjectSpec" }))
 
                 try expect(projectSpecDependency.package?.name) == "XcodeGen"
                 try expect(projectSpecDependency.package?.versionRequirement) == .branch("master")
 
-                let codabilityDependency = try unwrap(nativeTarget.packageProductDependencies.first(where: { $0.productName == "Codability" }))
+                let codabilityDependency = try unwrap(nativeTarget.packageProductDependencies?.first(where: { $0.productName == "Codability" }))
 
                 try expect(codabilityDependency.package?.name) == "Codability"
                 try expect(codabilityDependency.package?.versionRequirement) == .exact("1.0.0")
