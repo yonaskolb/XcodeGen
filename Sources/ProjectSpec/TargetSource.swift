@@ -15,6 +15,7 @@ public struct TargetSource: Equatable {
     public var group: String?
     public var compilerFlags: [String]
     public var excludes: [String]
+    public var excludePatterns: [NSRegularExpression]
     public var includes: [String]
     public var type: SourceType?
     public var optional: Bool
@@ -46,6 +47,7 @@ public struct TargetSource: Equatable {
         group: String? = nil,
         compilerFlags: [String] = [],
         excludes: [String] = [],
+        excludePatterns: [NSRegularExpression] = [],
         includes: [String] = [],
         type: SourceType? = nil,
         optional: Bool = optionalDefault,
@@ -62,6 +64,7 @@ public struct TargetSource: Equatable {
         self.group = group
         self.compilerFlags = compilerFlags
         self.excludes = excludes
+        self.excludePatterns = excludePatterns
         self.includes = includes
         self.type = type
         self.optional = optional
@@ -105,6 +108,10 @@ extension TargetSource: JSONObjectConvertible {
 
         headerVisibility = jsonDictionary.json(atKeyPath: "headerVisibility")
         excludes = jsonDictionary.json(atKeyPath: "excludes") ?? []
+        let regexPatterns: [String] = jsonDictionary.json(atKeyPath: "excludePatterns") ?? []
+        excludePatterns = try regexPatterns.map({
+            try NSRegularExpression(pattern: $0)
+        })
         includes = jsonDictionary.json(atKeyPath: "includes") ?? []
         type = jsonDictionary.json(atKeyPath: "type")
         optional = jsonDictionary.json(atKeyPath: "optional") ?? TargetSource.optionalDefault

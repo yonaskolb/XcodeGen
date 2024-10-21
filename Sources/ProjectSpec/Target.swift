@@ -34,7 +34,11 @@ extension LegacyTarget: PathContainer {
 }
 
 public struct Target: ProjectTarget {
+    
+    public static var defaultNameDividerChar = "_"
+    
     public var name: String
+    public var nameDividerChar: String
     public var type: PBXProductType
     public var platform: Platform
     public var supportedDestinations: [SupportedDestination]?
@@ -77,6 +81,7 @@ public struct Target: ProjectTarget {
 
     public init(
         name: String,
+        nameDividerChar: String = Target.defaultNameDividerChar,
         type: PBXProductType,
         platform: Platform,
         supportedDestinations: [SupportedDestination]? = nil,
@@ -103,6 +108,7 @@ public struct Target: ProjectTarget {
         putResourcesBeforeSourcesBuildPhase: Bool = false
     ) {
         self.name = name
+        self.nameDividerChar = nameDividerChar
         self.type = type
         self.platform = platform
         self.supportedDestinations = supportedDestinations
@@ -272,6 +278,8 @@ extension Target: NamedJSONDictionaryConvertible {
     public init(name: String, jsonDictionary: JSONDictionary) throws {
         let resolvedName: String = jsonDictionary.json(atKeyPath: "name") ?? name
         self.name = resolvedName
+        self.nameDividerChar = jsonDictionary.json(atKeyPath: "nameDividerChar")
+            ?? Target.defaultNameDividerChar
         productName = jsonDictionary.json(atKeyPath: "productName") ?? resolvedName
         
         let typeString: String = jsonDictionary.json(atKeyPath: "type") ?? ""

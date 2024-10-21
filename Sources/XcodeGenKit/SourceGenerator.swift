@@ -22,6 +22,7 @@ class SourceGenerator {
     private let project: Project
     let pbxProj: PBXProj
 
+    var excludePatterns: [NSRegularExpression] = []
     private var defaultExcludedFiles = [
         ".DS_Store",
     ]
@@ -86,8 +87,16 @@ class SourceGenerator {
     ///   - targetType: The type of target that the source files should belong to.
     ///   - sources: The array of sources defined as part of the targets spec.
     ///   - buildPhases: A dictionary containing any build phases that should be applied to source files at specific paths in the event that the associated `TargetSource` didn't already define a `buildPhase`. Values from this dictionary are used in cases where the project generator knows more about a file than the spec/filesystem does (i.e if the file should be treated as the targets Info.plist and so on).
-    func getAllSourceFiles(targetType: PBXProductType, sources: [TargetSource], buildPhases: [Path : BuildPhaseSpec]) throws -> [SourceFile] {
-        try sources.flatMap { try getSourceFiles(targetType: targetType, targetSource: $0, buildPhases: buildPhases) }
+    func getAllSourceFiles(targetType: PBXProductType, sources: [TargetSource], platform: Platform, buildPhases: [Path : BuildPhaseSpec]) throws -> [SourceFile] {
+        try sources
+            .flatMap {
+                try getSourceFiles(
+                    targetType: targetType,
+                    targetSource: $0,
+                    platform: platform,
+                    buildPhases: buildPhases
+                )
+            }
     }
 
     // get groups without build files. Use for Project.fileGroups
@@ -393,12 +402,25 @@ class SourceGenerator {
             .reduce([], +)
         )
     }
+    
+    func isExcludedPattern(_ path: Path) -> Bool {
+        return excludePatterns.reduce(false) {
+            (result: Bool, expression: NSRegularExpression) -> Bool in
+
+             let string: String = path.string
+            let range = NSRange(location: 0, length: string.count)
+            let matches = expression.matches(in: string, range: range)
+
+             return result || (matches.count > 0)
+         }
+    }
 
     /// Checks whether the path is not in any default or TargetSource excludes
     func isIncludedPath(_ path: Path, excludePaths: Set<Path>, includePaths: SortedArray<Path>?) -> Bool {
         return !defaultExcludedFiles.contains(where: { path.lastComponent == $0 })
             && !(path.extension.map(defaultExcludedExtensions.contains) ?? false)
             && !excludePaths.contains(path)
+            && !isExcludedPattern(path)
             // If includes is empty, it's included. If it's not empty, the path either needs to match exactly, or it needs to be a direct parent of an included path.
             && (includePaths.flatMap { _isIncludedPathSorted(path, sortedPaths: $0) } ?? true)
     }
@@ -599,13 +621,28 @@ class SourceGenerator {
         groups.insert(group, at: 0)
         return (allSourceFiles, groups)
     }
+    
+    private func excludePatternsForPlatform(_ platform: Platform) throws
+            -> NSRegularExpression {
+
+         let pattern = "\\/\(platform.rawValue)\\/"
+        return try NSRegularExpression(pattern: pattern)
+    }
 
     /// creates source files
-    private func getSourceFiles(targetType: PBXProductType, targetSource: TargetSource, buildPhases: [Path: BuildPhaseSpec]) throws -> [SourceFile] {
+    private func getSourceFiles(targetType: PBXProductType, targetSource: TargetSource, platform: Platform? = nil, buildPhases: [Path: BuildPhaseSpec]) throws -> [SourceFile] {
 
         // generate excluded paths
         let path = project.basePath + targetSource.path
         let excludePaths = getSourceMatches(targetSource: targetSource, patterns: targetSource.excludes)
+        excludePatterns = targetSource.excludePatterns
+        if let platform = platform {
+            var platforms = Set(Platform.allCases)
+            platforms.remove(platform)
+            excludePatterns += try platforms.map({
+                try excludePatternsForPlatform($0)
+            })
+        }
         // generate included paths. Excluded paths will override this.
         let includePaths = targetSource.includes.isEmpty ? nil : getSourceMatches(targetSource: targetSource, patterns: targetSource.includes)
 

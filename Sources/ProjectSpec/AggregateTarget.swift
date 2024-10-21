@@ -12,6 +12,7 @@ public struct AggregateTarget: ProjectTarget {
     public var configFiles: [String: String]
     public var scheme: TargetScheme?
     public var attributes: [String: Any]
+    public var nameDividerChar: String = Target.defaultNameDividerChar
 
     public init(
         name: String,

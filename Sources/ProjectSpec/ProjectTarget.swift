@@ -9,6 +9,7 @@ public protocol ProjectTarget: BuildSettingsContainer {
     var buildToolPlugins: [BuildToolPlugin] { get }
     var scheme: TargetScheme? { get }
     var attributes: [String: Any] { get }
+    var nameDividerChar: String? { get }
 }
 
 extension Target {

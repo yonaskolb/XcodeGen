@@ -71,7 +71,8 @@ public class SchemeGenerator {
                 } else {
                     for configVariant in targetScheme.configVariants {
 
-                        let schemeName = "\(target.name) \(configVariant)"
+                        let divider = target.nameDividerChar ?? Target.defaultNameDividerChar
+                        let schemeName = "\(target.name)\(divider)\(configVariant)"
 
                         let debugConfig = project.configs
                             .first(including: configVariant, for: .debug)!
