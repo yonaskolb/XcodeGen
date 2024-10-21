@@ -14,7 +14,7 @@ XCODE_XCCONFIG_FILE="$PWD/carthage_static.xcconfig" \
 
 echo "
 ⚙️ Building iOS app"
-xcodebuild -quiet -workspace Workspace.xcworkspace -scheme "App_iOS Test" -configuration "Test Debug" -xcconfig fixtures.xcconfig
+xcodebuild -quiet -workspace Workspace.xcworkspace -scheme "App_iOS_Test" -configuration "Test Debug" -xcconfig fixtures.xcconfig
 echo "✅ Successfully built iOS app"
 
 echo "
