@@ -62,6 +62,11 @@ class FixturePerformanceTests: XCTestCase {
     }
 
     func testFixtureGeneration() throws {
+        #if os(Linux) && swift(<6.0.2)
+            // https://github.com/swiftlang/swift-foundation/pull/1002
+            throw XCTSkip("Skipping test on Linux until PropertyListDecoder issues are fixed.")
+        #endif
+
         let project = try Project(path: specPath)
         measure {
             let generator = ProjectGenerator(project: project)
@@ -70,6 +75,11 @@ class FixturePerformanceTests: XCTestCase {
     }
 
     func testFixtureWriting() throws {
+        #if os(Linux) && swift(<6.0.2)
+            // https://github.com/swiftlang/swift-foundation/pull/1002
+            throw XCTSkip("Skipping test on Linux until PropertyListDecoder issues are fixed.")
+        #endif
+
         let project = try Project(path: specPath)
         let generator = ProjectGenerator(project: project)
         let xcodeProject = try generator.generateXcodeProject(userName: "someUser")
