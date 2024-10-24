@@ -275,7 +275,8 @@ class ProjectGeneratorTests: XCTestCase {
         }
     }
 
-    func testTargets() {
+    func testTargets() throws {
+        try skipIfNecessary()
         describe {
 
             let project = Project(name: "test", targets: targets)
