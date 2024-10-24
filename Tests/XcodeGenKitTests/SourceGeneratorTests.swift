@@ -9,7 +9,11 @@ import TestSupport
 
 class SourceGeneratorTests: XCTestCase {
 
-    func testSourceGenerator() {
+    func testSourceGenerator() throws {
+        #if os(Linux) && swift(<6.0.2)
+            // https://github.com/swiftlang/swift-foundation/pull/1002         
+            throw XCTSkip("Skipping test on Linux until PropertyListDecoder issues are fixed.")
+        #endif
         describe {
 
             let directoryPath = Path("TestDirectory")
