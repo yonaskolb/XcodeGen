@@ -8,7 +8,8 @@ import TestSupport
 
 class FixtureTests: XCTestCase {
 
-    func testProjectFixture() {
+    func testProjectFixture() throws {
+        try skipIfNecessary()
         describe {
             $0.it("generates Test Project") {
                 try generateXcodeProject(specPath: fixturePath + "TestProject/AnotherProject/project.yml")
