@@ -41,7 +41,8 @@ private let uiTest = Target(
 
 class SchemeGeneratorTests: XCTestCase {
 
-    func testSchemes() {
+    func testSchemes() throws {
+        try skipIfNecessary()
         describe {
 
             let buildTarget = Scheme.BuildTarget(target: .local(app.name))
