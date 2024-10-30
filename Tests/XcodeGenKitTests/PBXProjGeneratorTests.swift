@@ -325,9 +325,9 @@ class PBXProjGeneratorTests: XCTestCase {
                     name: "Test",
                     targets: [target],
                     packages: [
-                        "Common": .local(path: "Packages/Common", group: nil),
-                        "FeatureA": .local(path: "Packages/FeatureA", group: nil),
-                        "FeatureB": .local(path: "Packages/FeatureB", group: nil),
+                        "Common": .local(path: "Packages/Common", group: nil, excludeFromProject: false),
+                        "FeatureA": .local(path: "Packages/FeatureA", group: nil, excludeFromProject: false),
+                        "FeatureB": .local(path: "Packages/FeatureB", group: nil, excludeFromProject: false),
                     ],
                     options: options
                 )

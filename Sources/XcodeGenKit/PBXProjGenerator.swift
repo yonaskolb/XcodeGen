@@ -169,12 +169,14 @@ public class PBXProjGenerator {
                 let packageReference = XCRemoteSwiftPackageReference(repositoryURL: url, versionRequirement: versionRequirement)
                 packageReferences[name] = packageReference
                 addObject(packageReference)
-            case let .local(path, group):
+            case let .local(path, group, excludeFromProject):
                 let packageReference = XCLocalSwiftPackageReference(relativePath: path)
                 localPackageReferences[name] = packageReference
-                addObject(packageReference)
-                
-                try sourceGenerator.createLocalPackage(path: Path(path), group: group.map { Path($0) })
+
+                if !excludeFromProject {
+                    addObject(packageReference)
+                    try sourceGenerator.createLocalPackage(path: Path(path), group: group.map { Path($0) })
+                }
             }
         }
 
