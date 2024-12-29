@@ -8,26 +8,26 @@ jobs:
     name: Xcode ${{ matrix.xcode }}
     strategy:
       matrix:
-        xcode: ["14.3.1"]
+        xcode: ["15.3"]
         include:
-        - xcode: "14.3.1"
-          macos: macos-13
+          - xcode: "15.3"
+            macos: macos-14
     env:
       DEVELOPER_DIR: /Applications/Xcode_${{ matrix.xcode }}.app/Contents/Developer
     steps:
-    - uses: actions/checkout@master
-    - name: Resolve
-      run: swift package resolve
-    - name: Build
-      run: swift build
-    - name: Test
-      run: set -o pipefail && swift test 2>&1 | xcpretty
-    - name: Gen fixtures
-      run: scripts/gen-fixtures.sh
-    - name: Check fixtures
-      run: scripts/diff-fixtures.sh
-    - name: Build fixtures
-      run: scripts/build-fixtures.sh
+      - uses: actions/checkout@master
+      - name: Resolve
+        run: swift package resolve
+      - name: Build
+        run: swift build
+      - name: Test
+        run: set -o pipefail && swift test 2>&1 | xcpretty
+      - name: Gen fixtures
+        run: scripts/gen-fixtures.sh
+      - name: Check fixtures
+        run: scripts/diff-fixtures.sh
+      - name: Build fixtures
+        run: scripts/build-fixtures.sh
   run-linux:
     runs-on: ubuntu-latest
     name: Linux
