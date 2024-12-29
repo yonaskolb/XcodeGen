@@ -101,7 +101,7 @@ extension SwiftPackage: JSONEncodable {
     }
 }
 
-extension SwiftPackage.VersionRequirement: JSONObjectConvertible {
+extension SwiftPackage.VersionRequirement: JSONUtilities.JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
         if jsonDictionary["exactVersion"] != nil {
