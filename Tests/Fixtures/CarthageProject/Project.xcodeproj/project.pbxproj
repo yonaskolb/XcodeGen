@@ -254,6 +254,8 @@
 			dependencies = (
 			);
 			name = Framework_tvOS;
+			packageProductDependencies = (
+			);
 			productName = Framework_tvOS;
 			productReference = 7D67F1C1BFBACE101DE7DB51 /* Framework.framework */;
 			productType = "com.apple.product-type.framework";
@@ -270,6 +272,8 @@
 			dependencies = (
 			);
 			name = Framework_macOS;
+			packageProductDependencies = (
+			);
 			productName = Framework_macOS;
 			productReference = 41FC82ED1C4C3B7B3D7B2FB7 /* Framework.framework */;
 			productType = "com.apple.product-type.framework";
@@ -286,6 +290,8 @@
 			dependencies = (
 			);
 			name = Framework_watchOS;
+			packageProductDependencies = (
+			);
 			productName = Framework_watchOS;
 			productReference = 6177CC6263783487E93F7F4D /* Framework.framework */;
 			productType = "com.apple.product-type.framework";
@@ -302,6 +308,8 @@
 			dependencies = (
 			);
 			name = Framework_iOS;
+			packageProductDependencies = (
+			);
 			productName = Framework_iOS;
 			productReference = 8A9274BE42A03DC5DA1FAD04 /* Framework.framework */;
 			productType = "com.apple.product-type.framework";
@@ -326,6 +334,8 @@
 				en,
 			);
 			mainGroup = 293D0FF827366B513839236A;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 54;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (

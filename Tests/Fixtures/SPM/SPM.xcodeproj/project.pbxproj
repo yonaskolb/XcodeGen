@@ -16,6 +16,8 @@
 				D287BAAB664D1A024D9DD57E /* PBXTargetDependency */,
 			);
 			name = AggTarget;
+			packageProductDependencies = (
+			);
 			productName = AggTarget;
 		};
 /* End PBXAggregateTarget section */
@@ -168,6 +170,8 @@
 				8693351DA9DBE579AC9DD513 /* PBXTargetDependency */,
 			);
 			name = Tests;
+			packageProductDependencies = (
+			);
 			productName = Tests;
 			productReference = 0613661C0D45064E81E80C37 /* Tests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -247,6 +251,7 @@
 				en,
 			);
 			mainGroup = 218F6C96DF9E182F526258CF;
+			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				5BA91390AE78D2EE15C60091 /* XCRemoteSwiftPackageReference "Codability" */,
 				348C81C327DB1710B742C370 /* XCRemoteSwiftPackageReference "Prefire" */,
@@ -254,6 +259,7 @@
 				630A8CE9F2BE39704ED9D461 /* XCLocalSwiftPackageReference "FooFeature" */,
 				C6539B364583AE96C18CE377 /* XCLocalSwiftPackageReference "../../.." */,
 			);
+			preferredProjectObjectVersion = 54;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -637,6 +643,17 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCLocalSwiftPackageReference section */
+		630A8CE9F2BE39704ED9D461 /* XCLocalSwiftPackageReference "FooFeature" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = FooFeature;
+		};
+		C6539B364583AE96C18CE377 /* XCLocalSwiftPackageReference "../../.." */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../../..;
+		};
+/* End XCLocalSwiftPackageReference section */
+
 /* Begin XCRemoteSwiftPackageReference section */
 		348C81C327DB1710B742C370 /* XCRemoteSwiftPackageReference "Prefire" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -663,17 +680,6 @@
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCLocalSwiftPackageReference section */
-		630A8CE9F2BE39704ED9D461 /* XCLocalSwiftPackageReference "FooFeature" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = FooFeature;
-		};
-		C6539B364583AE96C18CE377 /* XCLocalSwiftPackageReference "../../.." */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = ../../..;
-		};
-/* End XCLocalSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
 		15DB49096E2978F6BCA8D604 /* FooUI */ = {
