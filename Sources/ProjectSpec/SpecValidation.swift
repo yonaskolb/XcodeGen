@@ -17,27 +17,30 @@ extension Project {
                     errors.append(.invalidSettingsGroup(group))
                 }
             }
+
             for config in settings.configSettings.keys {
-                if !configs.contains(where: { $0.name.lowercased().contains(config.lowercased()) }) {
-                    if !options.disabledValidations.contains(.missingConfigs) {
-                        errors.append(.invalidBuildSettingConfig(config))
-                    }
+                if !configs.contains(where: { $0.name.lowercased().contains(config.lowercased()) }),
+                   !options.disabledValidations.contains(.missingConfigs) {
+                    errors.append(.invalidBuildSettingConfig(config))
                 }
             }
 
             if settings.buildSettings.count == configs.count {
                 var allConfigs = true
-                for buildSetting in settings.buildSettings.keys {
+                outerLoop: for buildSetting in settings.buildSettings.keys {
                     var isConfig = false
                     for config in configs {
                         if config.name.lowercased().contains(buildSetting.lowercased()) {
                             isConfig = true
+                            break
                         }
                     }
                     if !isConfig {
                         allConfigs = false
+                        break outerLoop
                     }
                 }
+
                 if allConfigs {
                     errors.append(.invalidPerConfigSettings)
                 }
