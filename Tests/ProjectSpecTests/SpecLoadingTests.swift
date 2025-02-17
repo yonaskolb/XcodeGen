@@ -75,6 +75,15 @@ class SpecLoadingTests: XCTestCase {
                 ]
             }
 
+            $0.it("accepts schemes that have no build phase") {
+                let path = fixturePath + "test_only.yml"
+                let project = try loadSpec(path: path)
+                try expect(project.name) == "TestOnly"
+                try expect(project.schemes.count) == 1
+                try expect(project.schemes.first?.build).to.beNil()
+                try expect(project.schemes.first?.test?.targets.first?.name) == "Target"
+            }
+
             $0.it("expands directories") {
                 let path = fixturePath + "paths_test.yml"
                 let project = try loadSpec(path: path)

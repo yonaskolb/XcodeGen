@@ -221,9 +221,11 @@ extension Project {
         }
 
         for scheme in schemes {
-            errors.append(
-                contentsOf: scheme.build.targets.compactMap { validationError(for: $0.target, in: scheme, action: "build") }
-            )
+            if let action = scheme.build {
+                errors.append(contentsOf: action.targets.compactMap {
+                    validationError(for: $0.target, in: scheme, action: "build")
+                })
+            }
             if let action = scheme.run, let config = action.config, getConfig(config) == nil {
                 errors.append(.invalidSchemeConfig(scheme: scheme.name, config: config))
             }

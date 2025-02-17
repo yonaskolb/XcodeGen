@@ -8,7 +8,7 @@ public typealias BuildType = XCScheme.BuildAction.Entry.BuildFor
 public struct Scheme: Equatable {
 
     public var name: String
-    public var build: Build
+    public var build: Build!
     public var run: Run?
     public var archive: Archive?
     public var analyze: Analyze?
@@ -18,7 +18,7 @@ public struct Scheme: Equatable {
 
     public init(
         name: String,
-        build: Build,
+        build: Build? = nil,
         run: Run? = nil,
         test: Test? = nil,
         profile: Profile? = nil,
@@ -805,7 +805,7 @@ extension Scheme: NamedJSONDictionaryConvertible {
 
     public init(name: String, jsonDictionary: JSONDictionary) throws {
         self.name = name
-        build = try jsonDictionary.json(atKeyPath: "build")
+        build = jsonDictionary.json(atKeyPath: "build")
         run = jsonDictionary.json(atKeyPath: "run")
         test = jsonDictionary.json(atKeyPath: "test")
         analyze = jsonDictionary.json(atKeyPath: "analyze")
@@ -818,7 +818,7 @@ extension Scheme: NamedJSONDictionaryConvertible {
 extension Scheme: JSONEncodable {
     public func toJSONValue() -> Any {
         [
-            "build": build.toJSONValue(),
+            "build": build?.toJSONValue(),
             "run": run?.toJSONValue(),
             "test": test?.toJSONValue(),
             "analyze": analyze?.toJSONValue(),
