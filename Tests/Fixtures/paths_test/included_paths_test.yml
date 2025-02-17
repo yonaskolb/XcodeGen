@@ -1,6 +1,8 @@
 include:
   - recursive_test/recursive_test.yml
   - same_relative_path_test/same_relative_path_test.yml
+  - path: relative_local_package/inc.yml
+    relativePaths: true
 configFiles:
   IncludedConfig: config
 projectReferences:

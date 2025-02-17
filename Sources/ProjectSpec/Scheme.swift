@@ -88,10 +88,12 @@ public struct Scheme: Equatable {
         public var script: String
         public var name: String
         public var settingsTarget: String?
-        public init(name: String, script: String, settingsTarget: String? = nil) {
+        public var shell: String?
+        public init(name: String, script: String, shell: String? = nil, settingsTarget: String? = nil) {
             self.script = script
             self.name = name
             self.settingsTarget = settingsTarget
+            self.shell = shell
         }
     }
 
@@ -219,6 +221,7 @@ public struct Scheme: Equatable {
         public var captureScreenshotsAutomatically: Bool
         public var deleteScreenshotsWhenEachTestSucceeds: Bool
         public var testPlans: [TestPlan]
+        public var macroExpansion: String?
         public var preferredScreenCaptureFormat: XCScheme.TestAction.ScreenCaptureFormat
 
         public struct TestTarget: Equatable, ExpressibleByStringLiteral {
@@ -287,6 +290,7 @@ public struct Scheme: Equatable {
             customLLDBInit: String? = nil,
             captureScreenshotsAutomatically: Bool = captureScreenshotsAutomaticallyDefault,
             deleteScreenshotsWhenEachTestSucceeds: Bool = deleteScreenshotsWhenEachTestSucceedsDefault,
+            macroExpansion: String? = nil,
             preferredScreenCaptureFormat: XCScheme.TestAction.ScreenCaptureFormat = preferredScreenCaptureFormatDefault
         ) {
             self.config = config
@@ -305,6 +309,7 @@ public struct Scheme: Equatable {
             self.customLLDBInit = customLLDBInit
             self.captureScreenshotsAutomatically = captureScreenshotsAutomatically
             self.deleteScreenshotsWhenEachTestSucceeds = deleteScreenshotsWhenEachTestSucceeds
+            self.macroExpansion = macroExpansion
             self.preferredScreenCaptureFormat = preferredScreenCaptureFormat
         }
 
@@ -404,6 +409,7 @@ extension Scheme.ExecutionAction: JSONObjectConvertible {
         script = try jsonDictionary.json(atKeyPath: "script")
         name = jsonDictionary.json(atKeyPath: "name") ?? "Run Script"
         settingsTarget = jsonDictionary.json(atKeyPath: "settingsTarget")
+        shell = jsonDictionary.json(atKeyPath: "shell")
     }
 }
 
@@ -413,6 +419,7 @@ extension Scheme.ExecutionAction: JSONEncodable {
             "script": script,
             "name": name,
             "settingsTarget": settingsTarget,
+            "shell": shell
         ]
     }
 }
@@ -620,6 +627,7 @@ extension Scheme.Test: JSONObjectConvertible {
         customLLDBInit = jsonDictionary.json(atKeyPath: "customLLDBInit")
         captureScreenshotsAutomatically = jsonDictionary.json(atKeyPath: "captureScreenshotsAutomatically") ?? Scheme.Test.captureScreenshotsAutomaticallyDefault
         deleteScreenshotsWhenEachTestSucceeds = jsonDictionary.json(atKeyPath: "deleteScreenshotsWhenEachTestSucceeds") ?? Scheme.Test.deleteScreenshotsWhenEachTestSucceedsDefault
+        macroExpansion = jsonDictionary.json(atKeyPath: "macroExpansion")
         preferredScreenCaptureFormat = jsonDictionary.json(atKeyPath: "preferredScreenCaptureFormat") ?? Scheme.Test.preferredScreenCaptureFormatDefault
     }
 }
@@ -637,6 +645,7 @@ extension Scheme.Test: JSONEncodable {
             "language": language,
             "region": region,
             "coverageTargets": coverageTargets.map { $0.reference },
+            "macroExpansion": macroExpansion
         ]
 
         if gatherCoverageData != Scheme.Test.gatherCoverageDataDefault {
@@ -878,7 +887,7 @@ extension Scheme.Build: JSONEncodable {
     }
 }
 
-extension BuildType: JSONPrimitiveConvertible {
+extension BuildType: JSONUtilities.JSONPrimitiveConvertible {
 
     public typealias JSONType = String
 
@@ -910,7 +919,7 @@ extension BuildType: JSONEncodable {
     }
 }
 
-extension XCScheme.EnvironmentVariable: JSONObjectConvertible {
+extension XCScheme.EnvironmentVariable: JSONUtilities.JSONObjectConvertible {
     public static let enabledDefault = true
 
     private static func parseValue(_ value: Any) -> String {

@@ -137,7 +137,7 @@ class ProjectSpecTests: XCTestCase {
                 project.settings = invalidSettings
                 project.configFiles = ["invalidConfig": "invalidConfigFile"]
                 project.fileGroups = ["invalidFileGroup"]
-                project.packages = ["invalidLocalPackage": .local(path: "invalidLocalPackage", group: nil)]
+                project.packages = ["invalidLocalPackage": .local(path: "invalidLocalPackage", group: nil, excludeFromProject: false)]
                 project.settingGroups = ["settingGroup1": Settings(
                     configSettings: ["invalidSettingGroupConfig": [:]],
                     groups: ["invalidSettingGroupSettingGroup"]
@@ -201,6 +201,32 @@ class ProjectSpecTests: XCTestCase {
                     )
                 ]
                 try expectValidationError(project, .unexpectedTargetPlatformForSupportedDestinations(target: "target1", platform: .watchOS))
+            }
+            
+            $0.it("watchOS in multiplatform app's supported destinations") {
+                var project = baseProject
+                project.targets = [
+                    Target(
+                        name: "target1",
+                        type: .application,
+                        platform: .auto,
+                        supportedDestinations: [.watchOS]
+                    )
+                ]
+                try expectValidationError(project, .containsWatchOSDestinationForMultiplatformApp(target: "target1"))
+            }
+            
+            $0.it("watchOS in non-app's supported destinations") {
+                var project = baseProject
+                project.targets = [
+                    Target(
+                        name: "target1",
+                        type: .framework,
+                        platform: .auto,
+                        supportedDestinations: [.watchOS]
+                    )
+                ]
+                try expectNoValidationError(project, .containsWatchOSDestinationForMultiplatformApp(target: "target1"))
             }
             
             $0.it("multiple definitions of mac platform in supported destinations") {
@@ -521,7 +547,7 @@ class ProjectSpecTests: XCTestCase {
                 try expectValidationError(project, .multipleDefaultTestPlans)
             }
 
-            $0.it("fails on packages has not plugin packge reference") {
+            $0.it("fails on packages has not plugin package reference") {
                 var project = baseProject
                 project.targets = [
                     Target(
@@ -536,7 +562,7 @@ class ProjectSpecTests: XCTestCase {
                 try expectValidationError(project, .invalidPluginPackageReference(plugin: "plugin", package: "package"))
             }
 
-            $0.it("allow on packages has plugin packge reference") {
+            $0.it("allow on packages has plugin package reference") {
                 var project = baseProject
                 project.packages["package"] = .remote(url: "url", versionRequirement: .branch("branch"))
                 project.targets = [

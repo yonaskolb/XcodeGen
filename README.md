@@ -35,7 +35,6 @@ The project spec is a YAML or JSON file that defines your targets, configuration
 - ✅ Distribute your spec amongst multiple files for easy **sharing** and overriding
 - ✅ Easily create **multi-platform** frameworks
 - ✅ Integrate **Carthage** frameworks without any work
-- ✅ Export **Dependency Diagrams** to view in [Graphviz](https://www.graphviz.org)
 
 Given an example project spec:
 
@@ -113,7 +112,7 @@ swift run xcodegen
 Add the following to your Package.swift file's dependencies:
 
 ```swift
-.package(url: "https://github.com/yonaskolb/XcodeGen.git", from: "2.39.1"),
+.package(url: "https://github.com/yonaskolb/XcodeGen.git", from: "2.42.0"),
 ```
 
 And then import wherever needed: `import XcodeGenKit`
@@ -136,28 +135,7 @@ Options:
 - **--use-cache**: Used to prevent unnecessarily generating the project. If this is set, then a cache file will be written to when a project is generated. If `xcodegen` is later run but the spec and all the files it contains are the same, the project won't be generated.
 - **--cache-path**: A custom path to use for your cache file. This defaults to `~/.xcodegen/cache/{PROJECT_SPEC_PATH_HASH}`
 
-There are other commands as well such as `xcodegen dump` which lets out output the resolved spec in many different formats, or write it to a file. Use `xcodegen help` to see more detailed usage information.
-
-## Dependency Diagrams
-<details>
-  <summary>Click to expand!</summary>
-
-#### How to export dependency diagrams:
-
-To stdout:
-
-```
-xcodegen dump --type graphviz
-```
-
-To a file:
-
-```
-xcodegen dump --type graphviz --file Graph.viz
-```
-
-During implementation, `graphviz` formatting was validated using [GraphvizOnline](https://dreampuf.github.io/GraphvizOnline/), [WebGraphviz](http://www.webgraphviz.com), and [Graphviz on MacOS](https://graphviz.org).
-</details>
+There are other commands as well such as `xcodegen dump` which lets one output the resolved spec in many different formats, or write it to a file. Use `xcodegen help` to see more detailed usage information.
 
 ## Editing
 ```shell

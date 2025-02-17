@@ -73,7 +73,7 @@ struct CarthageVersionFile: Decodable {
     }
 }
 
-extension Platform: CodingKey {
+extension Platform: Swift.CodingKey {
 
     public var stringValue: String {
         carthageName

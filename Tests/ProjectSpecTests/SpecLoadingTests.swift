@@ -193,6 +193,10 @@ class SpecLoadingTests: XCTestCase {
                         test: .init(testPlans: [.init(path: "paths_test/TestPlan.xctestplan")])
                     )
                 ]
+
+                try expect(project.packages) == [
+                    "LocalPackage": .local(path: "paths_test/relative_local_package/LocalPackage", group: nil, excludeFromProject: false),
+                ]
             }
 
             $0.it("respects directory expansion preference") {
@@ -1485,10 +1489,10 @@ class SpecLoadingTests: XCTestCase {
                     "package6": .remote(url: "package.git", versionRequirement: .range(from: "1.2.0", to: "1.2.5")),
                     "package7": .remote(url: "package.git", versionRequirement: .exact("1.2.2")),
                     "package8": .remote(url: "package.git", versionRequirement: .upToNextMajorVersion("4.0.0-beta.5")),
-                    "package9": .local(path: "package/package", group: nil),
+                    "package9": .local(path: "package/package", group: nil, excludeFromProject: false),
                     "package10": .remote(url: "https://github.com/yonaskolb/XcodeGen", versionRequirement: .exact("1.2.2")),
-                    "XcodeGen": .local(path: "../XcodeGen", group: nil),
-                    "package11": .local(path: "../XcodeGen", group: "Packages/Feature"),
+                    "XcodeGen": .local(path: "../XcodeGen", group: nil, excludeFromProject: false),
+                    "package11": .local(path: "../XcodeGen", group: "Packages/Feature", excludeFromProject: false),
                 ], options: .init(localPackagesGroup: "MyPackages"))
 
                 let dictionary: [String: Any] = [
@@ -1517,8 +1521,8 @@ class SpecLoadingTests: XCTestCase {
 
             $0.it("parses old local package format") {
                 let project = Project(name: "spm", packages: [
-                    "XcodeGen": .local(path: "../XcodeGen", group: nil),
-                    "Yams": .local(path: "Yams", group: nil),
+                    "XcodeGen": .local(path: "../XcodeGen", group: nil, excludeFromProject: false),
+                    "Yams": .local(path: "Yams", group: nil, excludeFromProject: false),
                 ], options: .init(localPackagesGroup: "MyPackages"))
 
                 let dictionary: [String: Any] = [

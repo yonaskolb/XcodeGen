@@ -59,7 +59,7 @@ class SourceGenerator {
         }
 
         let absolutePath = project.basePath + path.normalize()
-        
+
         // Get the local package's relative path from the project root
         let fileReferencePath = try? absolutePath.relativePath(from: projectDirectory ?? project.basePath).string
 
@@ -72,8 +72,12 @@ class SourceGenerator {
             )
         )
 
-        let parentGroups = parentGroup.components(separatedBy: "/")
-        createParentGroups(parentGroups, for: fileReference)
+        if parentGroup == "" {
+            rootGroups.insert(fileReference)
+        } else {
+            let parentGroups = parentGroup.components(separatedBy: "/")
+            createParentGroups(parentGroups, for: fileReference)
+        }
     }
 
     /// Collects an array complete of all `SourceFile` objects that make up the target based on the provided `TargetSource` definitions.
@@ -660,7 +664,7 @@ class SourceGenerator {
             sourceFiles.append(sourceFile)
 
         case .group:
-            if targetSource.optional && !Path(targetSource.path).exists {
+            if targetSource.optional && !path.exists {
                 // This group is missing, so if's optional just return an empty array
                 return []
             }

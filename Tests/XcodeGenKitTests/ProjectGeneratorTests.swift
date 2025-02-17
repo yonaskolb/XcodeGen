@@ -275,7 +275,8 @@ class ProjectGeneratorTests: XCTestCase {
         }
     }
 
-    func testTargets() {
+    func testTargets() throws {
+        try skipIfNecessary()
         describe {
 
             let project = Project(name: "test", targets: targets)
@@ -485,8 +486,8 @@ class ProjectGeneratorTests: XCTestCase {
                 try expect(targetConfig1.buildSettings["CODE_SIGN_IDENTITY"] as? String) == "iPhone Developer"
             }
 
-            $0.it("supportedDestinations merges settings - iOS, watchOS") {
-                let target = Target(name: "Target", type: .application, platform: .auto, supportedDestinations: [.iOS, .watchOS])
+            $0.it("supportedDestinations merges settings - iOS, watchOS (framework)") {
+                let target = Target(name: "Target", type: .framework, platform: .auto, supportedDestinations: [.iOS, .watchOS])
                 let project = Project(name: "", targets: [target])
 
                 let pbxProject = try project.generatePbxProj()
@@ -499,8 +500,8 @@ class ProjectGeneratorTests: XCTestCase {
                 try expect(targetConfig1.buildSettings["SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD"] as? Bool) == true
             }
 
-            $0.it("supportedDestinations merges settings - visionOS, watchOS") {
-                let target = Target(name: "Target", type: .application, platform: .auto, supportedDestinations: [.visionOS, .watchOS])
+            $0.it("supportedDestinations merges settings - visionOS, watchOS (framework)") {
+                let target = Target(name: "Target", type: .framework, platform: .auto, supportedDestinations: [.visionOS, .watchOS])
                 let project = Project(name: "", targets: [target])
 
                 let pbxProject = try project.generatePbxProj()
@@ -1547,7 +1548,7 @@ class ProjectGeneratorTests: XCTestCase {
                 let project = Project(name: "test", targets: [app], packages: [
                     "XcodeGen": .remote(url: "http://github.com/yonaskolb/XcodeGen", versionRequirement: .branch("master")),
                     "Codability": .remote(url: "http://github.com/yonaskolb/Codability", versionRequirement: .exact("1.0.0")),
-                    "Yams": .local(path: "../Yams", group: nil),
+                    "Yams": .local(path: "../Yams", group: nil, excludeFromProject: false),
                 ], options: .init(localPackagesGroup: "MyPackages"))
 
                 let pbxProject = try project.generatePbxProj(specValidate: false)
@@ -1580,12 +1581,16 @@ class ProjectGeneratorTests: XCTestCase {
                     ]
                 )
 
-                let project = Project(name: "test", targets: [app], packages: ["XcodeGen": .local(path: "../XcodeGen", group: nil)])
+                let project = Project(name: "test", targets: [app], packages: ["XcodeGen": .local(path: "../XcodeGen", group: nil, excludeFromProject: false)])
 
                 let pbxProject = try project.generatePbxProj(specValidate: false)
                 let nativeTarget = try unwrap(pbxProject.nativeTargets.first(where: { $0.name == app.name }))
                 let localPackageFile = try unwrap(pbxProject.fileReferences.first(where: { $0.path == "../XcodeGen" }))
                 try expect(localPackageFile.lastKnownFileType) == "folder"
+                
+                let localPackageReference = try unwrap(pbxProject.rootObject?.localPackages.first)
+                try expect(pbxProject.rootObject?.localPackages.count) == 1
+                try expect(localPackageReference.relativePath) == "../XcodeGen"
 
                 let frameworkPhases = nativeTarget.buildPhases.compactMap { $0 as? PBXFrameworksBuildPhase }
 
@@ -1599,7 +1604,49 @@ class ProjectGeneratorTests: XCTestCase {
 
                 try expect(file.product?.productName) == "XcodeGen"
             }
-            
+
+            $0.it("excludes local swift packages from generated project if needed") {
+                let app = Target(
+                    name: "MyApp",
+                    type: .application,
+                    platform: .iOS,
+                    dependencies: [
+                        Dependency(type: .package(products: ["XcodeGen"]), reference: "XcodeGen"),
+                    ]
+                )
+
+                let project = Project(
+                    name: "test",
+                    targets: [app],
+                    packages: [
+                        "XcodeGen": .local(
+                            path: "../XcodeGen",
+                            group: nil,
+                            excludeFromProject: true
+                        )
+                    ]
+                )
+
+                let pbxProject = try project.generatePbxProj(specValidate: false)
+                let nativeTarget = try unwrap(pbxProject.nativeTargets.first(where: { $0.name == app.name }))
+                let localPackageFile = pbxProject.fileReferences.first(where: { $0.path == "../XcodeGen" })
+
+                try expect(localPackageFile).to.beNil()
+                try expect(pbxProject.rootObject?.localPackages.count) == 0
+
+                let frameworkPhases = nativeTarget.buildPhases.compactMap { $0 as? PBXFrameworksBuildPhase }
+
+                guard let frameworkPhase = frameworkPhases.first else {
+                    return XCTFail("frameworkPhases should have more than one")
+                }
+
+                guard let file = frameworkPhase.files?.first else {
+                    return XCTFail("frameworkPhase should have file")
+                }
+
+                try expect(file.product?.productName) == "XcodeGen"
+            }
+
             $0.it("generates local swift packages with custom xcode path") {
                 let app = Target(
                     name: "MyApp",
@@ -1611,7 +1658,7 @@ class ProjectGeneratorTests: XCTestCase {
                 )
 
                 let customLocalPackageGroup = "Packages/Feature"
-                let project = Project(name: "test", targets: [app], packages: ["XcodeGen": .local(path: "../XcodeGen", group: customLocalPackageGroup)])
+                let project = Project(name: "test", targets: [app], packages: ["XcodeGen": .local(path: "../XcodeGen", group: customLocalPackageGroup, excludeFromProject: false)])
 
                 let pbxProject = try project.generatePbxProj(specValidate: false)
                 let nativeTarget = try unwrap(pbxProject.nativeTargets.first(where: { $0.name == app.name }))
@@ -1630,6 +1677,74 @@ class ProjectGeneratorTests: XCTestCase {
                 guard localPackageFile.parent?.uuid == featureGroup.uuid else {
                   return XCTFail("Packages group should be parent of Feature group")
                 }
+
+                guard let frameworkPhase = frameworkPhases.first else {
+                    return XCTFail("frameworkPhases should have more than one")
+                }
+
+                guard let file = frameworkPhase.files?.first else {
+                    return XCTFail("frameworkPhase should have file")
+                }
+
+                try expect(file.product?.productName) == "XcodeGen"
+            }
+
+            $0.it("generates local swift packages at the top level") {
+                let app = Target(
+                    name: "MyApp",
+                    type: .application,
+                    platform: .iOS,
+                    dependencies: [
+                        Dependency(type: .package(products: []), reference: "XcodeGen"),
+                    ]
+                )
+
+                let project = Project(name: "test", targets: [app], packages: ["XcodeGen": .local(path: "../XcodeGen", group: "", excludeFromProject: false)])
+
+                let pbxProject = try project.generatePbxProj(specValidate: false)
+                let nativeTarget = try unwrap(pbxProject.nativeTargets.first(where: { $0.name == app.name }))
+                let localPackageFile = try unwrap(pbxProject.fileReferences.first(where: { $0.path == "../XcodeGen" }))
+                try expect(localPackageFile.lastKnownFileType) == "folder"
+
+                let mainGroup = try pbxProject.getMainGroup()
+
+                try expect(mainGroup.children.contains(localPackageFile)) == true
+
+                let frameworkPhases = nativeTarget.buildPhases.compactMap { $0 as? PBXFrameworksBuildPhase }
+
+                guard let frameworkPhase = frameworkPhases.first else {
+                    return XCTFail("frameworkPhases should have more than one")
+                }
+
+                guard let file = frameworkPhase.files?.first else {
+                    return XCTFail("frameworkPhase should have file")
+                }
+
+                try expect(file.product?.productName) == "XcodeGen"
+            }
+
+            $0.it("generates local swift package group at the top level") {
+                let app = Target(
+                    name: "MyApp",
+                    type: .application,
+                    platform: .iOS,
+                    dependencies: [
+                        Dependency(type: .package(products: []), reference: "XcodeGen"),
+                    ]
+                )
+
+                let project = Project(name: "test", targets: [app], packages: ["XcodeGen": .local(path: "../XcodeGen", group: nil, excludeFromProject: false)], options: .init(localPackagesGroup: ""))
+
+                let pbxProject = try project.generatePbxProj(specValidate: false)
+                let nativeTarget = try unwrap(pbxProject.nativeTargets.first(where: { $0.name == app.name }))
+                let localPackageFile = try unwrap(pbxProject.fileReferences.first(where: { $0.path == "../XcodeGen" }))
+                try expect(localPackageFile.lastKnownFileType) == "folder"
+
+                let mainGroup = try pbxProject.getMainGroup()
+
+                try expect(mainGroup.children.contains(localPackageFile)) == true
+
+                let frameworkPhases = nativeTarget.buildPhases.compactMap { $0 as? PBXFrameworksBuildPhase }
 
                 guard let frameworkPhase = frameworkPhases.first else {
                     return XCTFail("frameworkPhases should have more than one")
@@ -1794,7 +1909,7 @@ class ProjectGeneratorTests: XCTestCase {
                 )
 
                 let project = Project(name: "test", targets: [app], packages: [
-                    "FooFeature": .local(path: "../FooFeature", group: nil)
+                    "FooFeature": .local(path: "../FooFeature", group: nil, excludeFromProject: false)
                 ], options: .init(localPackagesGroup: "MyPackages"))
 
                 let pbxProject = try project.generatePbxProj(specValidate: false)
