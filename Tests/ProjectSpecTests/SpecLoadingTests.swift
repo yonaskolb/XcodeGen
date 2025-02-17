@@ -1028,7 +1028,8 @@ class SpecLoadingTests: XCTestCase {
                             [
                                 "path": "Path/Plan2.xctestplan"
                             ]
-                        ]
+                        ],
+                        "preferredScreenCaptureFormat": "screenshots",
                     ],
                     "management": [
                         "isShown": false,
@@ -1082,7 +1083,8 @@ class SpecLoadingTests: XCTestCase {
                     testPlans: [
                         .init(path: "Path/Plan.xctestplan"),
                         .init(path: "Path/Plan2.xctestplan")
-                    ]
+                    ],
+                    preferredScreenCaptureFormat: .screenshots
                 )
                 try expect(scheme.test) == expectedTest
 
