@@ -2,6 +2,10 @@
 
 ## Next Version
 
+### Fixed
+
+- Require swift-tools-version 5.9. #1489 @0111b
+
 ## 2.42.0
 
 ### Added
