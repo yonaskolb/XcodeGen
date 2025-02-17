@@ -8,10 +8,12 @@ jobs:
     name: Xcode ${{ matrix.xcode }}
     strategy:
       matrix:
-        xcode: ["15.3"]
+        xcode: ["15.4", "16.0"]
         include:
-          - xcode: "15.3"
-            macos: macos-14
+        - xcode: "15.4"
+          macos: macos-15
+        - xcode: "16.0"
+          macos: macos-15
     env:
       DEVELOPER_DIR: /Applications/Xcode_${{ matrix.xcode }}.app/Contents/Developer
     steps:
@@ -27,6 +29,8 @@ jobs:
       - name: Check fixtures
         run: scripts/diff-fixtures.sh
       - name: Build fixtures
+        env:
+          GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: scripts/build-fixtures.sh
   run-linux:
     runs-on: ubuntu-latest
