@@ -171,7 +171,7 @@ This tool is powered by:
 
 Inspiration for this tool came from:
 
-- [struct](https://github.com/workshop/struct)
+- [struct](https://github.com/lyptt/struct)
 - [Xcake](https://github.com/igor-makarov/xcake)
 - [CocoaPods Xcodeproj](https://github.com/CocoaPods/Xcodeproj)
 
