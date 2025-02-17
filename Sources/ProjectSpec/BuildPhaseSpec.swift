@@ -27,6 +27,12 @@ public enum BuildPhaseSpec: Equatable {
             phaseOrder: .postCompile
         )
 
+        public static let plugins = CopyFilesSettings(
+            destination: .plugins,
+            subpath: "$(CONTENTS_FOLDER_PATH)/PlugIns",
+            phaseOrder: .postCompile
+        )
+
         public enum Destination: String {
             case absolutePath
             case productsDirectory

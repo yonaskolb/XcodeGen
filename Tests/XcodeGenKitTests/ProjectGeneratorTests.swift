@@ -275,7 +275,8 @@ class ProjectGeneratorTests: XCTestCase {
         }
     }
 
-    func testTargets() {
+    func testTargets() throws {
+        try skipIfNecessary()
         describe {
 
             let project = Project(name: "test", targets: targets)
@@ -1547,7 +1548,7 @@ class ProjectGeneratorTests: XCTestCase {
                 let project = Project(name: "test", targets: [app], packages: [
                     "XcodeGen": .remote(url: "http://github.com/yonaskolb/XcodeGen", versionRequirement: .branch("master")),
                     "Codability": .remote(url: "http://github.com/yonaskolb/Codability", versionRequirement: .exact("1.0.0")),
-                    "Yams": .local(path: "../Yams", group: nil),
+                    "Yams": .local(path: "../Yams", group: nil, excludeFromProject: false),
                 ], options: .init(localPackagesGroup: "MyPackages"))
 
                 let pbxProject = try project.generatePbxProj(specValidate: false)
@@ -1580,7 +1581,7 @@ class ProjectGeneratorTests: XCTestCase {
                     ]
                 )
 
-                let project = Project(name: "test", targets: [app], packages: ["XcodeGen": .local(path: "../XcodeGen", group: nil)])
+                let project = Project(name: "test", targets: [app], packages: ["XcodeGen": .local(path: "../XcodeGen", group: nil, excludeFromProject: false)])
 
                 let pbxProject = try project.generatePbxProj(specValidate: false)
                 let nativeTarget = try unwrap(pbxProject.nativeTargets.first(where: { $0.name == app.name }))
@@ -1603,7 +1604,49 @@ class ProjectGeneratorTests: XCTestCase {
 
                 try expect(file.product?.productName) == "XcodeGen"
             }
-            
+
+            $0.it("excludes local swift packages from generated project if needed") {
+                let app = Target(
+                    name: "MyApp",
+                    type: .application,
+                    platform: .iOS,
+                    dependencies: [
+                        Dependency(type: .package(products: ["XcodeGen"]), reference: "XcodeGen"),
+                    ]
+                )
+
+                let project = Project(
+                    name: "test",
+                    targets: [app],
+                    packages: [
+                        "XcodeGen": .local(
+                            path: "../XcodeGen",
+                            group: nil,
+                            excludeFromProject: true
+                        )
+                    ]
+                )
+
+                let pbxProject = try project.generatePbxProj(specValidate: false)
+                let nativeTarget = try unwrap(pbxProject.nativeTargets.first(where: { $0.name == app.name }))
+                let localPackageFile = pbxProject.fileReferences.first(where: { $0.path == "../XcodeGen" })
+
+                try expect(localPackageFile).to.beNil()
+                try expect(pbxProject.rootObject?.localPackages.count) == 0
+
+                let frameworkPhases = nativeTarget.buildPhases.compactMap { $0 as? PBXFrameworksBuildPhase }
+
+                guard let frameworkPhase = frameworkPhases.first else {
+                    return XCTFail("frameworkPhases should have more than one")
+                }
+
+                guard let file = frameworkPhase.files?.first else {
+                    return XCTFail("frameworkPhase should have file")
+                }
+
+                try expect(file.product?.productName) == "XcodeGen"
+            }
+
             $0.it("generates local swift packages with custom xcode path") {
                 let app = Target(
                     name: "MyApp",
@@ -1615,7 +1658,7 @@ class ProjectGeneratorTests: XCTestCase {
                 )
 
                 let customLocalPackageGroup = "Packages/Feature"
-                let project = Project(name: "test", targets: [app], packages: ["XcodeGen": .local(path: "../XcodeGen", group: customLocalPackageGroup)])
+                let project = Project(name: "test", targets: [app], packages: ["XcodeGen": .local(path: "../XcodeGen", group: customLocalPackageGroup, excludeFromProject: false)])
 
                 let pbxProject = try project.generatePbxProj(specValidate: false)
                 let nativeTarget = try unwrap(pbxProject.nativeTargets.first(where: { $0.name == app.name }))
@@ -1656,7 +1699,7 @@ class ProjectGeneratorTests: XCTestCase {
                     ]
                 )
 
-                let project = Project(name: "test", targets: [app], packages: ["XcodeGen": .local(path: "../XcodeGen", group: "")])
+                let project = Project(name: "test", targets: [app], packages: ["XcodeGen": .local(path: "../XcodeGen", group: "", excludeFromProject: false)])
 
                 let pbxProject = try project.generatePbxProj(specValidate: false)
                 let nativeTarget = try unwrap(pbxProject.nativeTargets.first(where: { $0.name == app.name }))
@@ -1690,7 +1733,7 @@ class ProjectGeneratorTests: XCTestCase {
                     ]
                 )
 
-                let project = Project(name: "test", targets: [app], packages: ["XcodeGen": .local(path: "../XcodeGen", group: nil)], options: .init(localPackagesGroup: ""))
+                let project = Project(name: "test", targets: [app], packages: ["XcodeGen": .local(path: "../XcodeGen", group: nil, excludeFromProject: false)], options: .init(localPackagesGroup: ""))
 
                 let pbxProject = try project.generatePbxProj(specValidate: false)
                 let nativeTarget = try unwrap(pbxProject.nativeTargets.first(where: { $0.name == app.name }))
@@ -1866,7 +1909,7 @@ class ProjectGeneratorTests: XCTestCase {
                 )
 
                 let project = Project(name: "test", targets: [app], packages: [
-                    "FooFeature": .local(path: "../FooFeature", group: nil)
+                    "FooFeature": .local(path: "../FooFeature", group: nil, excludeFromProject: false)
                 ], options: .init(localPackagesGroup: "MyPackages"))
 
                 let pbxProject = try project.generatePbxProj(specValidate: false)

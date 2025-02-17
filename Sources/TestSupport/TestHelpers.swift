@@ -124,3 +124,11 @@ extension XCTestCase {
         describe(name, test)
     }
 }
+
+
+public func skipIfNecessary() throws {
+    #if os(Linux) && swift(<6.0.2)
+        // https://github.com/swiftlang/swift-foundation/pull/1002
+        throw XCTSkip("Skipping test on Linux until PropertyListDecoder issues are fixed.")
+    #endif
+}

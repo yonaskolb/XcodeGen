@@ -1064,6 +1064,7 @@ A multiline script can be written using the various YAML multiline methods, for 
 - [ ] **captureScreenshotsAutomatically**: **Bool** - indicates whether screenshots should be captured automatically while UI Testing. This defaults to true.
 - [ ] **deleteScreenshotsWhenEachTestSucceeds**: **Bool** - whether successful UI tests should cause automatically-captured screenshots to be deleted. If `captureScreenshotsAutomatically` is false, this value is ignored. This defaults to true.
 - [ ] **testPlans**:  **[[Test Plan](#test-plan)]** - List of test plan locations that will be referenced in the scheme.
+- [ ] **preferredScreenCaptureFormat**: **String** - automatic screen capture format to use while UI Testing. Possible values are `screenshots`, `screenRecording`. Default is `screenRecording`.
 
 #### Test Target
 A target can be one of a 2 types:
@@ -1071,7 +1072,7 @@ A target can be one of a 2 types:
 - **name**: **String** - The name of the target.
 - **target**: **[Testable Target Reference](#testable-target-reference)** - The information of the target. You can specify more detailed information than `name:`.
 
-As syntax suger, you can also specify **[Testable Target Reference](#testable-target-reference)** without `target`.
+As syntax sugar, you can also specify **[Testable Target Reference](#testable-target-reference)** without `target`.
 
 #### Other Parameters
 
@@ -1246,6 +1247,7 @@ Swift packages are defined at a project level, and then linked to individual tar
 
 - [x] **path**: **String** - the path to the package in local. The path must be directory with a `Package.swift`.
 - [ ] **group** : **String**- Optional path that specifies the location where the package will live in your xcode project. Use `""` to specify the project root.
+- [ ] **excludeFromProject** : **String**- Optional flag to exclude the package from the generated project (useful if the package is already added via xcworkspace and the project is not intended for standalone use), defaults to `false`
 
 ```yml
 packages:
@@ -1260,6 +1262,7 @@ packages:
   AppFeature:
     path: ../Packages
     group: Domains/AppFeature
+    excludeFromProject: false
 ```
 
 ## Project Reference
