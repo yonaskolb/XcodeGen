@@ -55,6 +55,8 @@
 			dependencies = (
 			);
 			name = IncludedLegacy;
+			packageProductDependencies = (
+			);
 			passBuildSettingsInEnvironment = 0;
 			productName = IncludedLegacy;
 		};
@@ -71,6 +73,8 @@
 			dependencies = (
 			);
 			name = BundleY;
+			packageProductDependencies = (
+			);
 			productName = BundleY;
 			productReference = F1EFFCA88BFC3A1DD2D89DA7 /* BundleY.bundle */;
 			productType = "com.apple.product-type.bundle";
@@ -85,6 +89,8 @@
 			dependencies = (
 			);
 			name = BundleX;
+			packageProductDependencies = (
+			);
 			productName = BundleX;
 			productReference = 6023D61BF2C57E6AE09CE7A3 /* BundleX.bundle */;
 			productType = "com.apple.product-type.bundle";
@@ -100,6 +106,8 @@
 			dependencies = (
 			);
 			name = ExternalTarget;
+			packageProductDependencies = (
+			);
 			productName = ExternalTarget;
 			productReference = D6340FC7DEBC81E0127BAFD6 /* ExternalTarget.framework */;
 			productType = "com.apple.product-type.framework";
@@ -123,6 +131,8 @@
 				en,
 			);
 			mainGroup = 4E8CFA4275C972686621210C;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 54;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
