@@ -72,6 +72,7 @@ extension FileType {
         "bundle": FileType(buildPhase: .resources),
         "xcassets": FileType(buildPhase: .resources),
         "storekit": FileType(buildPhase: .resources),
+        "xcstrings": FileType(buildPhase: .resources),
 
         // sources
         "swift": FileType(buildPhase: .sources),
@@ -79,6 +80,8 @@ extension FileType {
         "m": FileType(buildPhase: .sources),
         "mm": FileType(buildPhase: .sources),
         "cpp": FileType(buildPhase: .sources),
+        "cp": FileType(buildPhase: .sources),
+        "cxx": FileType(buildPhase: .sources),
         "c": FileType(buildPhase: .sources),
         "cc": FileType(buildPhase: .sources),
         "S": FileType(buildPhase: .sources),
@@ -87,6 +90,7 @@ extension FileType {
         "intentdefinition": FileType(buildPhase: .sources),
         "metal": FileType(buildPhase: .sources),
         "mlmodel": FileType(buildPhase: .sources),
+        "mlpackage" : FileType(buildPhase: .sources),
         "mlmodelc": FileType(buildPhase: .resources),
         "rcproject": FileType(buildPhase: .sources),
         "iig": FileType(buildPhase: .sources),
@@ -106,6 +110,7 @@ extension FileType {
 
         // copyfiles
         "xpc": FileType(buildPhase: .copyFiles(.xpcServices)),
+        "appex": FileType(buildPhase: .copyFiles(.plugins)),
 
         // no build phase (not resources)
         "xcconfig": FileType(buildPhase: BuildPhaseSpec.none),

@@ -59,6 +59,10 @@ extension Xcode {
         // cases that aren't handled (yet) in XcodeProj.
         case ("appex", .extensionKitExtension):
             return "wrapper.extensionkit-extension"
+        case ("swiftcrossimport", _):
+            return "wrapper.swiftcrossimport"
+        case ("xcstrings", _):
+            return "text.json.xcstrings"
         default:
             // fallback to XcodeProj defaults
             return Xcode.filetype(extension: fileExtension)

@@ -14,6 +14,7 @@ public struct Scheme: Equatable {
     public var analyze: Analyze?
     public var test: Test?
     public var profile: Profile?
+    public var management: Management?
 
     public init(
         name: String,
@@ -22,7 +23,8 @@ public struct Scheme: Equatable {
         test: Test? = nil,
         profile: Profile? = nil,
         analyze: Analyze? = nil,
-        archive: Archive? = nil
+        archive: Archive? = nil,
+        management: Management? = nil
     ) {
         self.name = name
         self.build = build
@@ -31,6 +33,29 @@ public struct Scheme: Equatable {
         self.profile = profile
         self.analyze = analyze
         self.archive = archive
+        self.management = management
+    }
+
+    public struct Management: Equatable {
+        public static let sharedDefault = true
+
+        public var shared: Bool
+        public var orderHint: Int?
+        public var isShown: Bool?
+
+        public init?(
+            shared: Bool = Scheme.Management.sharedDefault,
+            orderHint: Int? = nil,
+            isShown: Bool? = nil
+        ) {
+            if shared == Scheme.Management.sharedDefault, orderHint == nil, isShown == nil {
+                return nil
+            }
+
+            self.shared = shared
+            self.orderHint = orderHint
+            self.isShown = isShown
+        }
     }
 
     public struct SimulateLocation: Equatable {
@@ -63,10 +88,12 @@ public struct Scheme: Equatable {
         public var script: String
         public var name: String
         public var settingsTarget: String?
-        public init(name: String, script: String, settingsTarget: String? = nil) {
+        public var shell: String?
+        public init(name: String, script: String, shell: String? = nil, settingsTarget: String? = nil) {
             self.script = script
             self.name = name
             self.settingsTarget = settingsTarget
+            self.shell = shell
         }
     }
 
@@ -102,6 +129,7 @@ public struct Scheme: Equatable {
     public struct Run: BuildAction {
         public static let disableMainThreadCheckerDefault = false
         public static let stopOnEveryMainThreadCheckerIssueDefault = false
+        public static let disableThreadPerformanceCheckerDefault = false
         public static let debugEnabledDefault = true
 
         public var config: String?
@@ -110,8 +138,10 @@ public struct Scheme: Equatable {
         public var postActions: [ExecutionAction]
         public var environmentVariables: [XCScheme.EnvironmentVariable]
         public var enableGPUFrameCaptureMode: XCScheme.LaunchAction.GPUFrameCaptureMode
+        public var enableGPUValidationMode: XCScheme.LaunchAction.GPUValidationMode
         public var disableMainThreadChecker: Bool
         public var stopOnEveryMainThreadCheckerIssue: Bool
+        public var disableThreadPerformanceChecker: Bool
         public var language: String?
         public var region: String?
         public var askForAppToLaunch: Bool?
@@ -131,8 +161,10 @@ public struct Scheme: Equatable {
             postActions: [ExecutionAction] = [],
             environmentVariables: [XCScheme.EnvironmentVariable] = [],
             enableGPUFrameCaptureMode: XCScheme.LaunchAction.GPUFrameCaptureMode = XCScheme.LaunchAction.defaultGPUFrameCaptureMode,
+            enableGPUValidationMode: XCScheme.LaunchAction.GPUValidationMode = XCScheme.LaunchAction.GPUValidationMode.enabled,
             disableMainThreadChecker: Bool = disableMainThreadCheckerDefault,
             stopOnEveryMainThreadCheckerIssue: Bool = stopOnEveryMainThreadCheckerIssueDefault,
+            disableThreadPerformanceChecker: Bool = disableThreadPerformanceCheckerDefault,
             language: String? = nil,
             region: String? = nil,
             askForAppToLaunch: Bool? = nil,
@@ -150,7 +182,9 @@ public struct Scheme: Equatable {
             self.environmentVariables = environmentVariables
             self.disableMainThreadChecker = disableMainThreadChecker
             self.enableGPUFrameCaptureMode = enableGPUFrameCaptureMode
+            self.enableGPUValidationMode = enableGPUValidationMode
             self.stopOnEveryMainThreadCheckerIssue = stopOnEveryMainThreadCheckerIssue
+            self.disableThreadPerformanceChecker = disableThreadPerformanceChecker
             self.language = language
             self.region = region
             self.askForAppToLaunch = askForAppToLaunch
@@ -186,6 +220,7 @@ public struct Scheme: Equatable {
         public var captureScreenshotsAutomatically: Bool
         public var deleteScreenshotsWhenEachTestSucceeds: Bool
         public var testPlans: [TestPlan]
+        public var macroExpansion: String?
 
         public struct TestTarget: Equatable, ExpressibleByStringLiteral {
             
@@ -252,7 +287,8 @@ public struct Scheme: Equatable {
             debugEnabled: Bool = debugEnabledDefault,
             customLLDBInit: String? = nil,
             captureScreenshotsAutomatically: Bool = captureScreenshotsAutomaticallyDefault,
-            deleteScreenshotsWhenEachTestSucceeds: Bool = deleteScreenshotsWhenEachTestSucceedsDefault
+            deleteScreenshotsWhenEachTestSucceeds: Bool = deleteScreenshotsWhenEachTestSucceedsDefault,
+            macroExpansion: String? = nil
         ) {
             self.config = config
             self.gatherCoverageData = gatherCoverageData
@@ -270,6 +306,7 @@ public struct Scheme: Equatable {
             self.customLLDBInit = customLLDBInit
             self.captureScreenshotsAutomatically = captureScreenshotsAutomatically
             self.deleteScreenshotsWhenEachTestSucceeds = deleteScreenshotsWhenEachTestSucceeds
+            self.macroExpansion = macroExpansion
         }
 
         public var shouldUseLaunchSchemeArgsEnv: Bool {
@@ -368,6 +405,7 @@ extension Scheme.ExecutionAction: JSONObjectConvertible {
         script = try jsonDictionary.json(atKeyPath: "script")
         name = jsonDictionary.json(atKeyPath: "name") ?? "Run Script"
         settingsTarget = jsonDictionary.json(atKeyPath: "settingsTarget")
+        shell = jsonDictionary.json(atKeyPath: "shell")
     }
 }
 
@@ -377,6 +415,7 @@ extension Scheme.ExecutionAction: JSONEncodable {
             "script": script,
             "name": name,
             "settingsTarget": settingsTarget,
+            "shell": shell
         ]
     }
 }
@@ -403,6 +442,35 @@ extension Scheme.SimulateLocation: JSONEncodable {
     }
 }
 
+extension Scheme.Management: JSONObjectConvertible {
+
+    public init(jsonDictionary: JSONDictionary) throws {
+        shared = jsonDictionary.json(atKeyPath: "shared") ?? Scheme.Management.sharedDefault
+        orderHint = jsonDictionary.json(atKeyPath: "orderHint")
+        isShown = jsonDictionary.json(atKeyPath: "isShown")
+    }
+}
+
+extension Scheme.Management: JSONEncodable {
+    public func toJSONValue() -> Any {
+        var dict: [String: Any?] = [:]
+
+        if shared != Scheme.Management.sharedDefault {
+            dict["shared"] = shared
+        }
+
+        if let isShown = isShown {
+            dict["isShown"] = isShown
+        }
+
+        if let orderHint = orderHint {
+            dict["orderHint"] = orderHint
+        }
+
+        return dict
+    }
+}
+
 extension Scheme.Run: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
@@ -416,8 +484,14 @@ extension Scheme.Run: JSONObjectConvertible {
         } else {
             enableGPUFrameCaptureMode = XCScheme.LaunchAction.defaultGPUFrameCaptureMode
         }
+        if let gpuValidationMode: String = jsonDictionary.json(atKeyPath: "enableGPUValidationMode") {
+            enableGPUValidationMode = XCScheme.LaunchAction.GPUValidationMode.fromJSONValue(gpuValidationMode)
+        } else {
+            enableGPUValidationMode = XCScheme.LaunchAction.defaultGPUValidationMode
+        }
         disableMainThreadChecker = jsonDictionary.json(atKeyPath: "disableMainThreadChecker") ?? Scheme.Run.disableMainThreadCheckerDefault
         stopOnEveryMainThreadCheckerIssue = jsonDictionary.json(atKeyPath: "stopOnEveryMainThreadCheckerIssue") ?? Scheme.Run.stopOnEveryMainThreadCheckerIssueDefault
+        disableThreadPerformanceChecker = jsonDictionary.json(atKeyPath: "disableThreadPerformanceChecker") ?? Scheme.Run.disableThreadPerformanceCheckerDefault
         language = jsonDictionary.json(atKeyPath: "language")
         region = jsonDictionary.json(atKeyPath: "region")
         debugEnabled = jsonDictionary.json(atKeyPath: "debugEnabled") ?? Scheme.Run.debugEnabledDefault
@@ -460,6 +534,10 @@ extension Scheme.Run: JSONEncodable {
         if enableGPUFrameCaptureMode != XCScheme.LaunchAction.defaultGPUFrameCaptureMode {
             dict["enableGPUFrameCaptureMode"] = enableGPUFrameCaptureMode.toJSONValue()
         }
+        
+        if enableGPUValidationMode != XCScheme.LaunchAction.defaultGPUValidationMode {
+            dict["enableGPUValidationMode"] = enableGPUValidationMode.toJSONValue()
+        }
 
         if disableMainThreadChecker != Scheme.Run.disableMainThreadCheckerDefault {
             dict["disableMainThreadChecker"] = disableMainThreadChecker
@@ -467,6 +545,10 @@ extension Scheme.Run: JSONEncodable {
 
         if stopOnEveryMainThreadCheckerIssue != Scheme.Run.stopOnEveryMainThreadCheckerIssueDefault {
             dict["stopOnEveryMainThreadCheckerIssue"] = stopOnEveryMainThreadCheckerIssue
+        }
+
+        if disableThreadPerformanceChecker != Scheme.Run.disableThreadPerformanceCheckerDefault {
+            dict["disableThreadPerformanceChecker"] = disableThreadPerformanceChecker
         }
 
         if debugEnabled != Scheme.Run.debugEnabledDefault {
@@ -541,6 +623,7 @@ extension Scheme.Test: JSONObjectConvertible {
         customLLDBInit = jsonDictionary.json(atKeyPath: "customLLDBInit")
         captureScreenshotsAutomatically = jsonDictionary.json(atKeyPath: "captureScreenshotsAutomatically") ?? Scheme.Test.captureScreenshotsAutomaticallyDefault
         deleteScreenshotsWhenEachTestSucceeds = jsonDictionary.json(atKeyPath: "deleteScreenshotsWhenEachTestSucceeds") ?? Scheme.Test.deleteScreenshotsWhenEachTestSucceedsDefault
+        macroExpansion = jsonDictionary.json(atKeyPath: "macroExpansion")
     }
 }
 
@@ -557,6 +640,7 @@ extension Scheme.Test: JSONEncodable {
             "language": language,
             "region": region,
             "coverageTargets": coverageTargets.map { $0.reference },
+            "macroExpansion": macroExpansion
         ]
 
         if gatherCoverageData != Scheme.Test.gatherCoverageDataDefault {
@@ -718,6 +802,7 @@ extension Scheme: NamedJSONDictionaryConvertible {
         analyze = jsonDictionary.json(atKeyPath: "analyze")
         profile = jsonDictionary.json(atKeyPath: "profile")
         archive = jsonDictionary.json(atKeyPath: "archive")
+        management = jsonDictionary.json(atKeyPath: "management")
     }
 }
 
@@ -730,6 +815,7 @@ extension Scheme: JSONEncodable {
             "analyze": analyze?.toJSONValue(),
             "profile": profile?.toJSONValue(),
             "archive": archive?.toJSONValue(),
+            "management": management?.toJSONValue(),
         ] as [String: Any?]
     }
 }
@@ -792,7 +878,7 @@ extension Scheme.Build: JSONEncodable {
     }
 }
 
-extension BuildType: JSONPrimitiveConvertible {
+extension BuildType: JSONUtilities.JSONPrimitiveConvertible {
 
     public typealias JSONType = String
 
@@ -824,7 +910,7 @@ extension BuildType: JSONEncodable {
     }
 }
 
-extension XCScheme.EnvironmentVariable: JSONObjectConvertible {
+extension XCScheme.EnvironmentVariable: JSONUtilities.JSONObjectConvertible {
     public static let enabledDefault = true
 
     private static func parseValue(_ value: Any) -> String {
@@ -903,6 +989,32 @@ extension XCScheme.LaunchAction.GPUFrameCaptureMode: JSONEncodable {
             return .disabled
         default:
             fatalError("Invalid enableGPUFrameCaptureMode value. Valid values are: autoEnabled, metal, openGL, disabled")
+        }
+    }
+}
+
+extension XCScheme.LaunchAction.GPUValidationMode: JSONEncodable {
+    public func toJSONValue() -> Any {
+        switch self {
+        case .enabled:
+            return "enabled"
+        case .disabled:
+            return "disabled"
+        case .extended:
+            return "extended"
+        }
+    }
+    
+    static func fromJSONValue(_ string: String) -> XCScheme.LaunchAction.GPUValidationMode {
+        switch string {
+        case "enabled":
+            return .enabled
+        case "disabled":
+            return .disabled
+        case "extended":
+            return .extended
+        default:
+            fatalError("Invalid enableGPUValidationMode value. Valid values are: enable, disable, extended")
         }
     }
 }

@@ -18,7 +18,6 @@ class SourceGenerator {
     private var fileReferencesByPath: [String: PBXFileElement] = [:]
     private var groupsByPath: [Path: PBXGroup] = [:]
     private var variantGroupsByPath: [Path: PBXVariantGroup] = [:]
-    private var localPackageGroup: PBXGroup?
 
     private let project: Project
     let pbxProj: PBXProj
@@ -54,21 +53,13 @@ class SourceGenerator {
     }
 
     func createLocalPackage(path: Path, group: Path?) throws {
-        var pbxGroup: PBXGroup?
-        
-        if let location = group {
-            let fullLocationPath = project.basePath + location
-            pbxGroup = getGroup(path: fullLocationPath, mergingChildren: [], createIntermediateGroups: true, hasCustomParent: false, isBaseGroup: true)
+        var parentGroup: String = project.options.localPackagesGroup ?? "Packages"
+        if let group {
+          parentGroup = group.string
         }
-        
-        if localPackageGroup == nil && group == nil {
-            let groupName = project.options.localPackagesGroup ?? "Packages"
-            localPackageGroup = addObject(PBXGroup(sourceTree: .sourceRoot, name: groupName))
-            rootGroups.insert(localPackageGroup!)
-        }
-        
+
         let absolutePath = project.basePath + path.normalize()
-        
+
         // Get the local package's relative path from the project root
         let fileReferencePath = try? absolutePath.relativePath(from: projectDirectory ?? project.basePath).string
 
@@ -80,10 +71,12 @@ class SourceGenerator {
                 path: fileReferencePath
             )
         )
-        if let pbxGroup = pbxGroup {
-            pbxGroup.children.append(fileReference)
+
+        if parentGroup == "" {
+            rootGroups.insert(fileReference)
         } else {
-            localPackageGroup!.children.append(fileReference)
+            let parentGroups = parentGroup.components(separatedBy: "/")
+            createParentGroups(parentGroups, for: fileReference)
         }
     }
 
@@ -109,7 +102,23 @@ class SourceGenerator {
             return nil
         }
     }
-
+    
+    private func makeDestinationFilters(for path: Path, with filters: [SupportedDestination]?, or inferDestinationFiltersByPath: Bool?) -> [String]? {
+        if let filters = filters, !filters.isEmpty {
+            return filters.map { $0.string }
+        } else if inferDestinationFiltersByPath == true {
+            for supportedDestination in SupportedDestination.allCases {
+                let regex1 = try? NSRegularExpression(pattern: "\\/\(supportedDestination)\\/", options: .caseInsensitive)
+                let regex2 = try? NSRegularExpression(pattern: "\\_\(supportedDestination)\\.swift$", options: .caseInsensitive)
+                
+                if regex1?.isMatch(to: path.string) == true || regex2?.isMatch(to: path.string) == true {
+                    return [supportedDestination.string]
+                }
+            }
+        }
+        return nil
+    }
+    
     func generateSourceFile(targetType: PBXProductType, targetSource: TargetSource, path: Path, fileReference: PBXFileElement? = nil, buildPhases: [Path: BuildPhaseSpec]) -> SourceFile {
         let fileReference = fileReference ?? fileReferencesByPath[path.string.lowercased()]!
         var settings: [String: Any] = [:]
@@ -174,8 +183,10 @@ class SourceGenerator {
         if chosenBuildPhase == .resources && !assetTags.isEmpty {
             settings["ASSET_TAGS"] = assetTags
         }
-
-        let buildFile = PBXBuildFile(file: fileReference, settings: settings.isEmpty ? nil : settings)
+        
+        let platforms = makeDestinationFilters(for: path, with: targetSource.destinationFilters, or: targetSource.inferDestinationFiltersByPath)
+        
+        let buildFile = PBXBuildFile(file: fileReference, settings: settings.isEmpty ? nil : settings, platformFilters: platforms)
         return SourceFile(
             path: path,
             fileReference: fileReference,
@@ -279,6 +290,13 @@ class SourceGenerator {
                     subpath: "include/$(PRODUCT_NAME)",
                     phaseOrder: .preCompile
                 ))
+            case "swiftcrossimport":
+                guard targetType == .framework else { return nil }
+                return .copyFiles(BuildPhaseSpec.CopyFilesSettings(
+                    destination: .productsDirectory,
+                    subpath: "$(PRODUCT_NAME).framework/Modules",
+                    phaseOrder: .preCompile
+                ))
             default:
                 return .resources
             }
@@ -377,12 +395,12 @@ class SourceGenerator {
     }
 
     /// Checks whether the path is not in any default or TargetSource excludes
-    func isIncludedPath(_ path: Path, excludePaths: Set<Path>, includePaths: SortedArray<Path>) -> Bool {
+    func isIncludedPath(_ path: Path, excludePaths: Set<Path>, includePaths: SortedArray<Path>?) -> Bool {
         return !defaultExcludedFiles.contains(where: { path.lastComponent == $0 })
             && !(path.extension.map(defaultExcludedExtensions.contains) ?? false)
             && !excludePaths.contains(path)
             // If includes is empty, it's included. If it's not empty, the path either needs to match exactly, or it needs to be a direct parent of an included path.
-            && (includePaths.value.isEmpty || _isIncludedPathSorted(path, sortedPaths: includePaths))
+            && (includePaths.flatMap { _isIncludedPathSorted(path, sortedPaths: $0) } ?? true)
     }
     
     private func _isIncludedPathSorted(_ path: Path, sortedPaths: SortedArray<Path>) -> Bool {
@@ -393,7 +411,7 @@ class SourceGenerator {
 
 
     /// Gets all the children paths that aren't excluded
-    private func getSourceChildren(targetSource: TargetSource, dirPath: Path, excludePaths: Set<Path>, includePaths: SortedArray<Path>) throws -> [Path] {
+    private func getSourceChildren(targetSource: TargetSource, dirPath: Path, excludePaths: Set<Path>, includePaths: SortedArray<Path>?) throws -> [Path] {
         try dirPath.children()
             .filter {
                 if $0.isDirectory {
@@ -422,7 +440,7 @@ class SourceGenerator {
         isBaseGroup: Bool,
         hasCustomParent: Bool,
         excludePaths: Set<Path>,
-        includePaths: SortedArray<Path>,
+        includePaths: SortedArray<Path>?,
         buildPhases: [Path: BuildPhaseSpec]
     ) throws -> (sourceFiles: [SourceFile], groups: [PBXGroup]) {
 
@@ -430,6 +448,7 @@ class SourceGenerator {
 
         let createIntermediateGroups = targetSource.createIntermediateGroups ?? project.options.createIntermediateGroups
         let nonLocalizedChildren = children.filter { $0.extension != "lproj" }
+        let stringCatalogChildren = children.filter { $0.extension == "xcstrings" }
 
         let directories = nonLocalizedChildren
             .filter {
@@ -495,6 +514,15 @@ class SourceGenerator {
         }()
 
         knownRegions.formUnion(localisedDirectories.map { $0.lastComponentWithoutExtension })
+        
+        // XCode 15 - Detect known regions from locales present in string catalogs
+        
+        let stringCatalogsLocales = stringCatalogChildren
+            .compactMap { StringCatalog(from: $0) }
+            .reduce(Set<String>(), { partialResult, stringCatalog in
+                partialResult.union(stringCatalog.includedLocales)
+            })
+        knownRegions.formUnion(stringCatalogsLocales)
 
         // create variant groups of the base localisation first
         var baseLocalisationVariantGroups: [PBXVariantGroup] = []
@@ -579,7 +607,7 @@ class SourceGenerator {
         let path = project.basePath + targetSource.path
         let excludePaths = getSourceMatches(targetSource: targetSource, patterns: targetSource.excludes)
         // generate included paths. Excluded paths will override this.
-        let includePaths = getSourceMatches(targetSource: targetSource, patterns: targetSource.includes)
+        let includePaths = targetSource.includes.isEmpty ? nil : getSourceMatches(targetSource: targetSource, patterns: targetSource.includes)
 
         let type = resolvedTargetSourceType(for: targetSource, at: path)
 
@@ -636,7 +664,7 @@ class SourceGenerator {
             sourceFiles.append(sourceFile)
 
         case .group:
-            if targetSource.optional && !Path(targetSource.path).exists {
+            if targetSource.optional && !path.exists {
                 // This group is missing, so if's optional just return an empty array
                 return []
             }
@@ -648,7 +676,7 @@ class SourceGenerator {
                 isBaseGroup: true,
                 hasCustomParent: hasCustomParent,
                 excludePaths: excludePaths,
-                includePaths: SortedArray(includePaths),
+                includePaths: includePaths.flatMap(SortedArray.init(_:)),
                 buildPhases: buildPhases
             )
 

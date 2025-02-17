@@ -25,7 +25,7 @@ extension TestPlan: JSONEncodable {
         [
             "path": path,
             "defaultPlan": defaultPlan,
-        ]
+        ] as [String : Any]
     }
 }
 

@@ -1,4 +1,4 @@
-#include "xcode12_and_13_workaround.xcconfig"
+#include "xcode12_13_and_14_workaround.xcconfig"
 
 // Common settings for fixtures
 CODE_SIGN_IDENTITY =

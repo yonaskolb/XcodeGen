@@ -3,7 +3,7 @@ set -e
 
 if [[ `git status --porcelain Tests/Fixtures` ]]; then
   echo ""
-  echo "⚠️  Generated fixturess have changed."
+  echo "⚠️  Generated fixtures have changed."
   echo "⚠️  If this is a valid change please run the tests and commit the updates."
   echo ""
   git --no-pager diff --color=always Tests/Fixtures

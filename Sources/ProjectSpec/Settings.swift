@@ -113,7 +113,7 @@ extension Settings: JSONEncodable {
                 "base": buildSettings,
                 "groups": groups,
                 "configs": configSettings.mapValues { $0.toJSONValue() },
-            ]
+            ] as [String : Any]
         }
         return buildSettings
     }

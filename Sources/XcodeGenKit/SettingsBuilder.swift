@@ -41,16 +41,63 @@ extension Project {
 
     public func getTargetBuildSettings(target: Target, config: Config) -> BuildSettings {
         var buildSettings = BuildSettings()
-
+        
+        // list of supported destination sorted by priority
+        let specSupportedDestinations = target.supportedDestinations?.sorted(by: { $0.priority < $1.priority }) ?? []
+        
         if options.settingPresets.applyTarget {
-            buildSettings += SettingsPresetFile.platform(target.platform).getBuildSettings()
+            let platform: Platform
+            
+            if target.platform == .auto,
+               let firstDestination = specSupportedDestinations.first,
+               let firstDestinationPlatform = Platform(rawValue: firstDestination.rawValue) {
+                
+                platform = firstDestinationPlatform
+            } else {
+                platform = target.platform
+            }
+            
+            buildSettings += SettingsPresetFile.platform(platform).getBuildSettings()
             buildSettings += SettingsPresetFile.product(target.type).getBuildSettings()
-            buildSettings += SettingsPresetFile.productPlatform(target.type, target.platform).getBuildSettings()
+            buildSettings += SettingsPresetFile.productPlatform(target.type, platform).getBuildSettings()
+            
+            if target.platform == .auto {
+                // this fix is necessary because the platform preset overrides the original value
+                buildSettings["SDKROOT"] = Platform.auto.rawValue
+            }
         }
-
+        
+        if !specSupportedDestinations.isEmpty {
+            var supportedPlatforms: [String] = []
+            var targetedDeviceFamily: [String] = []
+            
+            for supportedDestination in specSupportedDestinations {
+                let supportedPlatformBuildSettings = SettingsPresetFile.supportedDestination(supportedDestination).getBuildSettings()
+                buildSettings += supportedPlatformBuildSettings
+                
+                if let value = supportedPlatformBuildSettings?["SUPPORTED_PLATFORMS"] as? String {
+                    supportedPlatforms += value.components(separatedBy: " ")
+                }
+                if let value = supportedPlatformBuildSettings?["TARGETED_DEVICE_FAMILY"] as? String {
+                    targetedDeviceFamily += value.components(separatedBy: ",")
+                }
+            }
+            
+            buildSettings["SUPPORTED_PLATFORMS"] = supportedPlatforms.joined(separator: " ")
+            buildSettings["TARGETED_DEVICE_FAMILY"] = targetedDeviceFamily.joined(separator: ",")
+        }
+        
         // apply custom platform version
         if let version = target.deploymentTarget {
-            buildSettings[target.platform.deploymentTargetSetting] = version.deploymentTarget
+            if !specSupportedDestinations.isEmpty {
+                for supportedDestination in specSupportedDestinations {
+                    if let platform = Platform(rawValue: supportedDestination.rawValue) {
+                        buildSettings[platform.deploymentTargetSetting] = version.deploymentTarget
+                    }
+                }
+            } else {
+                buildSettings[target.platform.deploymentTargetSetting] = version.deploymentTarget
+            }
         }
 
         // Prevent setting presets from overrwriting settings in target xcconfig files
@@ -202,10 +249,13 @@ extension SettingsPresetFile {
                 symlink.parent() + relativePath,
             ] + possibleSettingsPaths
         }
+        if let moduleResourcePath = Bundle.availableModule?.path(forResource: "SettingPresets", ofType: nil) {
+            possibleSettingsPaths.append(Path(moduleResourcePath) + "\(path).yml")
+        }
 
         guard let settingsPath = possibleSettingsPaths.first(where: { $0.exists }) else {
             switch self {
-            case .base, .config, .platform:
+            case .base, .config, .platform, .supportedDestination:
                 print("No \"\(name)\" settings found")
             case .product, .productPlatform:
                 break
@@ -221,4 +271,49 @@ extension SettingsPresetFile {
         settingPresetSettings[path] = .cached(buildSettings)
         return buildSettings
     }
+}
+
+private class BundleFinder {}
+
+/// The default SPM generated `Bundle.module` crashes on runtime if there is no .bundle file.
+/// Below implementation modified from generated `Bundle.module` code which call `fatalError` if .bundle file not found.
+private extension Bundle {
+    /// Returns the resource bundle associated with the current Swift module.
+    static let availableModule: Bundle? = {
+        let bundleName = "XcodeGen_XcodeGenKit"
+
+        let overrides: [URL]
+        #if DEBUG
+        // The 'PACKAGE_RESOURCE_BUNDLE_PATH' name is preferred since the expected value is a path. The
+        // check for 'PACKAGE_RESOURCE_BUNDLE_URL' will be removed when all clients have switched over.
+        // This removal is tracked by rdar://107766372.
+        if let override = ProcessInfo.processInfo.environment["PACKAGE_RESOURCE_BUNDLE_PATH"]
+                       ?? ProcessInfo.processInfo.environment["PACKAGE_RESOURCE_BUNDLE_URL"] {
+            overrides = [URL(fileURLWithPath: override)]
+        } else {
+            overrides = []
+        }
+        #else
+        overrides = []
+        #endif
+
+        let candidates = overrides + [
+            // Bundle should be present here when the package is linked into an App.
+            Bundle.main.resourceURL,
+
+            // Bundle should be present here when the package is linked into a framework.
+            Bundle(for: BundleFinder.self).resourceURL,
+
+            // For command-line tools.
+            Bundle.main.bundleURL,
+        ]
+
+        for candidate in candidates {
+            let bundlePath = candidate?.appendingPathComponent(bundleName + ".bundle")
+            if let bundle = bundlePath.flatMap(Bundle.init(url:)) {
+                return bundle
+            }
+        }
+        return nil
+    }()
 }

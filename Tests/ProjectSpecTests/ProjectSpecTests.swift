@@ -73,12 +73,23 @@ class ProjectSpecTests: XCTestCase {
         describe {
 
             $0.it("has correct build setting") {
+                try expect(Platform.auto.deploymentTargetSetting) == ""
                 try expect(Platform.iOS.deploymentTargetSetting) == "IPHONEOS_DEPLOYMENT_TARGET"
                 try expect(Platform.tvOS.deploymentTargetSetting) == "TVOS_DEPLOYMENT_TARGET"
                 try expect(Platform.watchOS.deploymentTargetSetting) == "WATCHOS_DEPLOYMENT_TARGET"
                 try expect(Platform.macOS.deploymentTargetSetting) == "MACOSX_DEPLOYMENT_TARGET"
+                try expect(Platform.visionOS.deploymentTargetSetting) == "XROS_DEPLOYMENT_TARGET"
             }
 
+            $0.it("has correct sdk root") {
+                try expect(Platform.auto.sdkRoot) == "auto"
+                try expect(Platform.iOS.sdkRoot) == "iphoneos"
+                try expect(Platform.tvOS.sdkRoot) == "appletvos"
+                try expect(Platform.watchOS.sdkRoot) == "watchos"
+                try expect(Platform.macOS.sdkRoot) == "macosx"
+                try expect(Platform.visionOS.sdkRoot) == "xros"
+            }
+            
             $0.it("parses version correctly") {
                 try expect(Version.parse("2").deploymentTarget) == "2.0"
                 try expect(Version.parse("2.0").deploymentTarget) == "2.0"
@@ -126,7 +137,7 @@ class ProjectSpecTests: XCTestCase {
                 project.settings = invalidSettings
                 project.configFiles = ["invalidConfig": "invalidConfigFile"]
                 project.fileGroups = ["invalidFileGroup"]
-                project.packages = ["invalidLocalPackage": .local(path: "invalidLocalPackage", group: nil)]
+                project.packages = ["invalidLocalPackage": .local(path: "invalidLocalPackage", group: nil, excludeFromProject: false)]
                 project.settingGroups = ["settingGroup1": Settings(
                     configSettings: ["invalidSettingGroupConfig": [:]],
                     groups: ["invalidSettingGroupSettingGroup"]
@@ -156,8 +167,8 @@ class ProjectSpecTests: XCTestCase {
                             Dependency(type: .framework, reference: "dependency2"),
 
                             // multiple package dependencies with different products should be allowed
-                            Dependency(type: .package(product: "one"), reference: "package1"),
-                            Dependency(type: .package(product: "two"), reference: "package1"),
+                            Dependency(type: .package(products: ["one"]), reference: "package1"),
+                            Dependency(type: .package(products: ["two"]), reference: "package1"),
                         ]
                     ),
                     Target(
@@ -178,7 +189,85 @@ class ProjectSpecTests: XCTestCase {
 
                 try expectNoValidationError(project, .duplicateDependencies(target: "target1", dependencyReference: "package1"))
             }
-
+            
+            $0.it("unexpected supported destinations for watch app") {
+                var project = baseProject
+                project.targets = [
+                    Target(
+                        name: "target1",
+                        type: .application,
+                        platform: .watchOS,
+                        supportedDestinations: [.macOS]
+                    )
+                ]
+                try expectValidationError(project, .unexpectedTargetPlatformForSupportedDestinations(target: "target1", platform: .watchOS))
+            }
+            
+            $0.it("watchOS in multiplatform app's supported destinations") {
+                var project = baseProject
+                project.targets = [
+                    Target(
+                        name: "target1",
+                        type: .application,
+                        platform: .auto,
+                        supportedDestinations: [.watchOS]
+                    )
+                ]
+                try expectValidationError(project, .containsWatchOSDestinationForMultiplatformApp(target: "target1"))
+            }
+            
+            $0.it("watchOS in non-app's supported destinations") {
+                var project = baseProject
+                project.targets = [
+                    Target(
+                        name: "target1",
+                        type: .framework,
+                        platform: .auto,
+                        supportedDestinations: [.watchOS]
+                    )
+                ]
+                try expectNoValidationError(project, .containsWatchOSDestinationForMultiplatformApp(target: "target1"))
+            }
+            
+            $0.it("multiple definitions of mac platform in supported destinations") {
+                var project = baseProject
+                project.targets = [
+                    Target(
+                        name: "target1",
+                        type: .application,
+                        platform: .iOS,
+                        supportedDestinations: [.macOS, .macCatalyst]
+                    )
+                ]
+                try expectValidationError(project, .multipleMacPlatformsInSupportedDestinations(target: "target1"))
+            }
+            
+            $0.it("invalid target platform for macCatalyst supported destinations") {
+                var project = baseProject
+                project.targets = [
+                    Target(
+                        name: "target1",
+                        type: .application,
+                        platform: .tvOS,
+                        supportedDestinations: [.tvOS, .macCatalyst]
+                    )
+                ]
+                try expectValidationError(project, .invalidTargetPlatformForSupportedDestinations(target: "target1"))
+            }
+            
+            $0.it("missing target platform in supported destinations") {
+                var project = baseProject
+                project.targets = [
+                    Target(
+                        name: "target1",
+                        type: .application,
+                        platform: .iOS,
+                        supportedDestinations: [.tvOS]
+                    )
+                ]
+                try expectValidationError(project, .missingTargetPlatformInSupportedDestinations(target: "target1", platform: .iOS))
+            }
+            
             $0.it("allows non-existent configurations") {
                 var project = baseProject
                 project.options = SpecOptions(disabledValidations: [.missingConfigs])
@@ -205,7 +294,7 @@ class ProjectSpecTests: XCTestCase {
                     sources: ["invalidSource"],
                     dependencies: [
                         Dependency(type: .target, reference: "invalidDependency"),
-                        Dependency(type: .package(product: nil), reference: "invalidPackage"),
+                        Dependency(type: .package(products: []), reference: "invalidPackage"),
                     ],
                     preBuildScripts: [BuildScript(script: .path("invalidPreBuildScript"), name: "preBuildScript1")],
                     postCompileScripts: [BuildScript(script: .path("invalidPostCompileScript"))],
@@ -457,6 +546,37 @@ class ProjectSpecTests: XCTestCase {
 
                 try expectValidationError(project, .multipleDefaultTestPlans)
             }
+
+            $0.it("fails on packages has not plugin package reference") {
+                var project = baseProject
+                project.targets = [
+                    Target(
+                        name: "target",
+                        type: .application,
+                        platform: .iOS,
+                        buildToolPlugins: [
+                            BuildToolPlugin(plugin: "plugin", package: "package")
+                        ]
+                    )
+                ]
+                try expectValidationError(project, .invalidPluginPackageReference(plugin: "plugin", package: "package"))
+            }
+
+            $0.it("allow on packages has plugin package reference") {
+                var project = baseProject
+                project.packages["package"] = .remote(url: "url", versionRequirement: .branch("branch"))
+                project.targets = [
+                    Target(
+                        name: "target",
+                        type: .application,
+                        platform: .iOS,
+                        buildToolPlugins: [
+                            BuildToolPlugin(plugin: "plugin", package: "package")
+                        ]
+                    )
+                ]
+                try expectNoValidationError(project, .invalidPluginPackageReference(plugin: "plugin", package: "package"))
+            }
         }
     }
 
@@ -509,6 +629,7 @@ class ProjectSpecTests: XCTestCase {
                                                                                   runOnlyWhenInstalling: true,
                                                                                   showEnvVars: true,
                                                                                   basedOnDependencyAnalysis: false)],
+                                                    buildToolPlugins: [BuildToolPlugin(plugin: "plugin", package: "Yams")],
                                                     postCompileScripts: [BuildScript(script: .path("cmd.sh"),
                                                                                      name: "Bar script",
                                                                                      inputFiles: ["foo"],
@@ -561,6 +682,7 @@ class ProjectSpecTests: XCTestCase {
                                                                          storeKitConfiguration: "Configuration.storekit",
                                                                          disableMainThreadChecker: true,
                                                                          stopOnEveryMainThreadCheckerIssue: false,
+                                                                         disableThreadPerformanceChecker: true,
                                                                          commandLineArguments: ["foo": true],
                                                                          environmentVariables: [XCScheme.EnvironmentVariable(variable: "environmentVariable",
                                                                                                                              value: "bar",
@@ -575,7 +697,8 @@ class ProjectSpecTests: XCTestCase {
                                                                          passSettings: true,
                                                                          arguments: "bar",
                                                                          workingDirectory: "foo"),
-                                                    attributes: ["foo": "bar"])],
+                                                    attributes: ["foo": "bar"],
+                                                    putResourcesBeforeSourcesBuildPhase: true)],
                                    aggregateTargets: [AggregateTarget(name: "aggregate target",
                                                                       targets: ["App"],
                                                                       settings: Settings(buildSettings: ["buildSettings": "bar"],
@@ -600,6 +723,7 @@ class ProjectSpecTests: XCTestCase {
                                                                                            configVariants: ["foo"],
                                                                                            gatherCoverageData: true,
                                                                                            disableMainThreadChecker: true,
+                                                                                           disableThreadPerformanceChecker: true,
                                                                                            commandLineArguments: ["foo": true],
                                                                                            environmentVariables: [XCScheme.EnvironmentVariable(variable: "environmentVariable",
                                                                                                                                                value: "bar",

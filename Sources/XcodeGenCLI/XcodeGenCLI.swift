@@ -15,6 +15,7 @@ public class XcodeGenCLI {
             description: "Generates Xcode projects",
             commands: [
                 generateCommand,
+                CacheCommand(version: version),
                 DumpCommand(version: version),
             ]
         )

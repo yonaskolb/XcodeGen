@@ -40,12 +40,15 @@ public class SchemeGenerator {
         return pbxproj
     }
 
-    public func generateSchemes() throws -> [XCScheme] {
-        var xcschemes: [XCScheme] = []
+    public func generateSchemes() throws -> (
+        shared: [XCScheme],
+        user: [XCScheme],
+        management: XCSchemeManagement?
+    ) {
+        var schemes: [(Scheme, ProjectTarget?)] = []
 
         for scheme in project.schemes {
-            let xcscheme = try generateScheme(scheme)
-            xcschemes.append(xcscheme)
+            schemes.append((scheme, nil))
         }
 
         for target in project.projectTargets {
@@ -64,19 +67,18 @@ public class SchemeGenerator {
                         debugConfig: debugConfig.name,
                         releaseConfig: releaseConfig.name
                     )
-                    let xcscheme = try generateScheme(scheme, for: target)
-                    xcschemes.append(xcscheme)
+                    schemes.append((scheme, target))
                 } else {
                     for configVariant in targetScheme.configVariants {
 
                         let schemeName = "\(target.name) \(configVariant)"
-                        
+
                         let debugConfig = project.configs
                             .first(including: configVariant, for: .debug)!
-                        
+
                         let releaseConfig = project.configs
                             .first(including: configVariant, for: .release)!
-                     
+
                         let scheme = Scheme(
                             name: schemeName,
                             target: target,
@@ -85,14 +87,44 @@ public class SchemeGenerator {
                             debugConfig: debugConfig.name,
                             releaseConfig: releaseConfig.name
                         )
-                        let xcscheme = try generateScheme(scheme, for: target)
-                        xcschemes.append(xcscheme)
+                        schemes.append((scheme, target))
                     }
                 }
             }
         }
 
-        return xcschemes
+        var sharedSchemes: [XCScheme] = []
+        var userSchemes: [XCScheme] = []
+        var schemeManagements: [XCSchemeManagement.UserStateScheme] = []
+
+        for (scheme, projectTarget) in schemes {
+            let xcscheme = try generateScheme(scheme, for: projectTarget)
+
+            if scheme.management?.shared == false {
+                userSchemes.append(xcscheme)
+            } else {
+                sharedSchemes.append(xcscheme)
+            }
+
+            if let management = scheme.management {
+                schemeManagements.append(
+                    XCSchemeManagement.UserStateScheme(
+                        name: scheme.name + ".xcscheme",
+                        shared: management.shared,
+                        orderHint: management.orderHint,
+                        isShown: management.isShown
+                    )
+                )
+            }
+        }
+
+        return (
+            shared: sharedSchemes,
+            user: userSchemes,
+            management: schemeManagements.isEmpty
+                ? nil
+                : XCSchemeManagement(schemeUserState: schemeManagements, suppressBuildableAutocreation: nil)
+        )
     }
 
     public func generateScheme(_ scheme: Scheme, for target: ProjectTarget? = nil) throws -> XCScheme {
@@ -141,7 +173,7 @@ public class SchemeGenerator {
             switch target.location {
             case .package(let packageName):
                 guard let package = self.project.getPackage(packageName),
-                      case let .local(path, _) = package else {
+                      case let .local(path, _, _) = package else {
                     throw SchemeGenerationError.missingPackage(packageName)
                 }
                 return XCScheme.BuildableReference(
@@ -176,7 +208,12 @@ public class SchemeGenerator {
                     .first { settingsTarget == $0.buildableReference.blueprintName }?
                     .buildableReference
             }
-            return XCScheme.ExecutionAction(scriptText: action.script, title: action.name, environmentBuildable: environmentBuildable)
+            return XCScheme.ExecutionAction(
+                scriptText: action.script,
+                title: action.name,
+                shellToInvoke: action.shell,
+                environmentBuildable: environmentBuildable
+            )
         }
 
         let schemeTarget: ProjectTarget?
@@ -264,10 +301,21 @@ public class SchemeGenerator {
         let testPlans = scheme.test?.testPlans.enumerated().map { index, testPlan in
              XCScheme.TestPlanReference(reference: "container:\(testPlan.path)", default: defaultTestPlanIndex == index)
         } ?? []
+        let testBuildableEntries = buildActionEntries.filter({ $0.buildFor.contains(.testing) }) + testBuildTargetEntries
+        let testMacroExpansionBuildableRef = testBuildableEntries.map(\.buildableReference).contains(buildableReference) ? buildableReference : testBuildableEntries.first?.buildableReference
+
+        let testMacroExpansion: XCScheme.BuildableReference = buildActionEntries.first(
+            where: { value in
+                if let macroExpansion = scheme.test?.macroExpansion {
+                    return value.buildableReference.blueprintName == macroExpansion
+                }
+                return false
+            }
+        )?.buildableReference ?? testMacroExpansionBuildableRef ?? buildableReference
 
         let testAction = XCScheme.TestAction(
             buildConfiguration: scheme.test?.config ?? defaultDebugConfig.name,
-            macroExpansion: buildableReference,
+            macroExpansion: testMacroExpansion,
             testables: testables,
             testPlans: testPlans.isEmpty ? nil : testPlans,
             preActions: scheme.test?.preActions.map(getExecutionAction) ?? [],
@@ -324,7 +372,9 @@ public class SchemeGenerator {
             allowLocationSimulation: allowLocationSimulation,
             locationScenarioReference: locationScenarioReference,
             enableGPUFrameCaptureMode: scheme.run?.enableGPUFrameCaptureMode ?? XCScheme.LaunchAction.defaultGPUFrameCaptureMode,
+            enableGPUValidationMode: scheme.run?.enableGPUValidationMode ?? XCScheme.LaunchAction.defaultGPUValidationMode,
             disableMainThreadChecker: scheme.run?.disableMainThreadChecker ?? Scheme.Run.disableMainThreadCheckerDefault,
+            disablePerformanceAntipatternChecker: scheme.run?.disableThreadPerformanceChecker ?? Scheme.Run.disableThreadPerformanceCheckerDefault,
             stopOnEveryMainThreadCheckerIssue: scheme.run?.stopOnEveryMainThreadCheckerIssue ?? Scheme.Run.stopOnEveryMainThreadCheckerIssueDefault,
             commandlineArguments: launchCommandLineArgs,
             environmentVariables: launchVariables,
@@ -373,7 +423,7 @@ public class SchemeGenerator {
                 .flatMap { $0.type.isExtension ? true : nil }
         )
     }
-
+    
     private func launchAutomaticallySubstyle(for target: ProjectTarget?) -> String? {
         if target?.type.isExtension == true {
             return "2"
@@ -447,6 +497,7 @@ extension Scheme {
                 environmentVariables: targetScheme.environmentVariables,
                 disableMainThreadChecker: targetScheme.disableMainThreadChecker,
                 stopOnEveryMainThreadCheckerIssue: targetScheme.stopOnEveryMainThreadCheckerIssue,
+                disableThreadPerformanceChecker: targetScheme.disableThreadPerformanceChecker,
                 language: targetScheme.language,
                 region: targetScheme.region,
                 storeKitConfiguration: targetScheme.storeKitConfiguration
@@ -473,7 +524,8 @@ extension Scheme {
             ),
             archive: .init(
                 config: releaseConfig
-            )
+            ),
+            management: targetScheme.management
         )
     }
 

@@ -17,27 +17,30 @@ extension Project {
                     errors.append(.invalidSettingsGroup(group))
                 }
             }
+
             for config in settings.configSettings.keys {
-                if !configs.contains(where: { $0.name.lowercased().contains(config.lowercased()) }) {
-                    if !options.disabledValidations.contains(.missingConfigs) {
-                        errors.append(.invalidBuildSettingConfig(config))
-                    }
+                if !configs.contains(where: { $0.name.lowercased().contains(config.lowercased()) }),
+                   !options.disabledValidations.contains(.missingConfigs) {
+                    errors.append(.invalidBuildSettingConfig(config))
                 }
             }
 
             if settings.buildSettings.count == configs.count {
                 var allConfigs = true
-                for buildSetting in settings.buildSettings.keys {
+                outerLoop: for buildSetting in settings.buildSettings.keys {
                     var isConfig = false
                     for config in configs {
                         if config.name.lowercased().contains(buildSetting.lowercased()) {
                             isConfig = true
+                            break
                         }
                     }
                     if !isConfig {
                         allConfigs = false
+                        break outerLoop
                     }
                 }
+
                 if allConfigs {
                     errors.append(.invalidPerConfigSettings)
                 }
@@ -54,7 +57,7 @@ extension Project {
         }
 
         for (name, package) in packages {
-            if case let .local(path, _) = package, !(basePath + Path(path).normalize()).exists {
+            if case let .local(path, _, _) = package, !(basePath + Path(path).normalize()).exists {
                 errors.append(.invalidLocalPackage(name))
             }
         }
@@ -81,8 +84,9 @@ extension Project {
         for target in projectTargets {
 
             for (config, configFile) in target.configFiles {
-                if !options.disabledValidations.contains(.missingConfigFiles) && !(basePath + configFile).exists {
-                    errors.append(.invalidTargetConfigFile(target: target.name, configFile: configFile, config: config))
+                let configPath = basePath + configFile
+                if !options.disabledValidations.contains(.missingConfigFiles) && !configPath.exists {
+                    errors.append(.invalidTargetConfigFile(target: target.name, configFile: configPath.string, config: config))
                 }
                 if !options.disabledValidations.contains(.missingConfigs) && getConfig(config) == nil {
                     errors.append(.invalidConfigFileConfig(config))
@@ -137,12 +141,18 @@ extension Project {
                 if case let .path(pathString) = script.script {
                     let scriptPath = basePath + pathString
                     if !scriptPath.exists {
-                        errors.append(.invalidBuildScriptPath(target: target.name, name: script.name, path: pathString))
+                        errors.append(.invalidBuildScriptPath(target: target.name, name: script.name, path: scriptPath.string))
                     }
                 }
             }
 
             errors += validateSettings(target.settings)
+
+            for buildToolPlugin in target.buildToolPlugins {
+                if packages[buildToolPlugin.package] == nil {
+                    errors.append(.invalidPluginPackageReference(plugin: buildToolPlugin.plugin, package: buildToolPlugin.package))
+                }
+            }
         }
 
         for target in aggregateTargets {
@@ -172,6 +182,35 @@ extension Project {
                 if !source.optional && !sourcePath.exists {
                     errors.append(.invalidTargetSource(target: target.name, source: sourcePath.string))
                 }
+            }
+            
+            if target.supportedDestinations != nil, target.platform == .watchOS {
+                errors.append(.unexpectedTargetPlatformForSupportedDestinations(target: target.name, platform: target.platform))
+            }
+            
+            if let supportedDestinations = target.supportedDestinations,
+               target.type.isApp,
+               supportedDestinations.contains(.watchOS) {
+                errors.append(.containsWatchOSDestinationForMultiplatformApp(target: target.name))
+            }
+
+            if target.supportedDestinations?.contains(.macOS) == true,
+               target.supportedDestinations?.contains(.macCatalyst) == true {
+                
+                errors.append(.multipleMacPlatformsInSupportedDestinations(target: target.name))
+            }
+            
+            if target.supportedDestinations?.contains(.macCatalyst) == true,
+               target.platform != .iOS, target.platform != .auto {
+                
+                errors.append(.invalidTargetPlatformForSupportedDestinations(target: target.name))
+            }
+            
+            if target.platform != .auto, target.platform != .watchOS,
+               let supportedDestination = SupportedDestination(rawValue: target.platform.rawValue),
+               target.supportedDestinations?.contains(supportedDestination) == false {
+                
+                errors.append(.missingTargetPlatformInSupportedDestinations(target: target.name, platform: target.platform))
             }
         }
 

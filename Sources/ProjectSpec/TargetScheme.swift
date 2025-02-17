@@ -6,6 +6,7 @@ public struct TargetScheme: Equatable {
     public static let gatherCoverageDataDefault = false
     public static let disableMainThreadCheckerDefault = false
     public static let stopOnEveryMainThreadCheckerIssueDefault = false
+    public static let disableThreadPerformanceCheckerDefault = false
     public static let buildImplicitDependenciesDefault = true
 
     public var testTargets: [Scheme.Test.TestTarget]
@@ -17,11 +18,13 @@ public struct TargetScheme: Equatable {
     public var region: String?
     public var disableMainThreadChecker: Bool
     public var stopOnEveryMainThreadCheckerIssue: Bool
+    public var disableThreadPerformanceChecker: Bool
     public var buildImplicitDependencies: Bool
     public var commandLineArguments: [String: Bool]
     public var environmentVariables: [XCScheme.EnvironmentVariable]
     public var preActions: [Scheme.ExecutionAction]
     public var postActions: [Scheme.ExecutionAction]
+    public var management: Scheme.Management?
     public var testPlans: [TestPlan]
 
     public init(
@@ -35,11 +38,13 @@ public struct TargetScheme: Equatable {
         region: String? = nil,
         disableMainThreadChecker: Bool = disableMainThreadCheckerDefault,
         stopOnEveryMainThreadCheckerIssue: Bool = stopOnEveryMainThreadCheckerIssueDefault,
+        disableThreadPerformanceChecker: Bool = disableThreadPerformanceCheckerDefault,
         buildImplicitDependencies: Bool = buildImplicitDependenciesDefault,
         commandLineArguments: [String: Bool] = [:],
         environmentVariables: [XCScheme.EnvironmentVariable] = [],
         preActions: [Scheme.ExecutionAction] = [],
-        postActions: [Scheme.ExecutionAction] = []
+        postActions: [Scheme.ExecutionAction] = [],
+        management: Scheme.Management? = nil
     ) {
         self.testTargets = testTargets
         self.testPlans = testPlans
@@ -51,11 +56,14 @@ public struct TargetScheme: Equatable {
         self.region = region
         self.disableMainThreadChecker = disableMainThreadChecker
         self.stopOnEveryMainThreadCheckerIssue = stopOnEveryMainThreadCheckerIssue
+        self.disableThreadPerformanceChecker = disableThreadPerformanceChecker
         self.buildImplicitDependencies = buildImplicitDependencies
         self.commandLineArguments = commandLineArguments
         self.environmentVariables = environmentVariables
         self.preActions = preActions
         self.postActions = postActions
+        self.postActions = postActions
+        self.management = management
     }
 }
 
@@ -100,11 +108,13 @@ extension TargetScheme: JSONObjectConvertible {
         region = jsonDictionary.json(atKeyPath: "region")
         disableMainThreadChecker = jsonDictionary.json(atKeyPath: "disableMainThreadChecker") ?? TargetScheme.disableMainThreadCheckerDefault
         stopOnEveryMainThreadCheckerIssue = jsonDictionary.json(atKeyPath: "stopOnEveryMainThreadCheckerIssue") ?? TargetScheme.stopOnEveryMainThreadCheckerIssueDefault
+        disableThreadPerformanceChecker = jsonDictionary.json(atKeyPath: "disableThreadPerformanceChecker") ?? TargetScheme.disableThreadPerformanceCheckerDefault
         buildImplicitDependencies = jsonDictionary.json(atKeyPath: "buildImplicitDependencies") ?? TargetScheme.buildImplicitDependenciesDefault
         commandLineArguments = jsonDictionary.json(atKeyPath: "commandLineArguments") ?? [:]
         environmentVariables = try XCScheme.EnvironmentVariable.parseAll(jsonDictionary: jsonDictionary)
         preActions = jsonDictionary.json(atKeyPath: "preActions") ?? []
         postActions = jsonDictionary.json(atKeyPath: "postActions") ?? []
+        management = jsonDictionary.json(atKeyPath: "management")
     }
 }
 
@@ -137,6 +147,10 @@ extension TargetScheme: JSONEncodable {
             dict["stopOnEveryMainThreadCheckerIssue"] = stopOnEveryMainThreadCheckerIssue
         }
 
+        if disableThreadPerformanceChecker != TargetScheme.disableThreadPerformanceCheckerDefault {
+            dict["disableThreadPerformanceChecker"] = disableThreadPerformanceChecker
+        }
+
         if buildImplicitDependencies != TargetScheme.buildImplicitDependenciesDefault {
             dict["buildImplicitDependencies"] = buildImplicitDependencies
         }
@@ -147,6 +161,10 @@ extension TargetScheme: JSONEncodable {
 
         if let region = region {
             dict["region"] = region
+        }
+
+        if let management = management {
+            dict["management"] = management.toJSONValue()
         }
 
         return dict

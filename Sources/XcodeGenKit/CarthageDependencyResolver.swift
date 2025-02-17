@@ -151,6 +151,9 @@ extension Platform {
 
     public var carthageName: String {
         switch self {
+        case .auto:
+            // This is a dummy value
+            return "auto"
         case .iOS:
             return "iOS"
         case .tvOS:
@@ -159,6 +162,9 @@ extension Platform {
             return "watchOS"
         case .macOS:
             return "Mac"
+        case .visionOS:
+            // This is a dummy value because Carthage doesn't support visionOS.
+            return "visionOS"
         }
     }
 }

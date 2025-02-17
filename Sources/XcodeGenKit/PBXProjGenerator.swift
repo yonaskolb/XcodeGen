@@ -22,6 +22,7 @@ public class PBXProjGenerator {
     var targetFileReferences: [String: PBXFileReference] = [:]
     var sdkFileReferences: [String: PBXFileReference] = [:]
     var packageReferences: [String: XCRemoteSwiftPackageReference] = [:]
+    var localPackageReferences: [String: XCLocalSwiftPackageReference] = [:]
 
     var carthageFrameworksByPlatform: [String: Set<PBXFileElement>] = [:]
     var frameworkFiles: [PBXFileElement] = []
@@ -168,8 +169,14 @@ public class PBXProjGenerator {
                 let packageReference = XCRemoteSwiftPackageReference(repositoryURL: url, versionRequirement: versionRequirement)
                 packageReferences[name] = packageReference
                 addObject(packageReference)
-            case let .local(path, group):
-                try sourceGenerator.createLocalPackage(path: Path(path), group: group.map { Path($0) })
+            case let .local(path, group, excludeFromProject):
+                let packageReference = XCLocalSwiftPackageReference(relativePath: path)
+                localPackageReferences[name] = packageReference
+
+                if !excludeFromProject {
+                    addObject(packageReference)
+                    try sourceGenerator.createLocalPackage(path: Path(path), group: group.map { Path($0) })
+                }
             }
         }
 
@@ -285,7 +292,10 @@ public class PBXProjGenerator {
             }.flatMap { $0 }
         ).sorted()
 
-        var projectAttributes: [String: Any] = project.attributes
+        let defaultAttributes: [String: Any] = [
+            "BuildIndependentTargetsInParallel": "YES"
+        ]
+        var projectAttributes: [String: Any] = defaultAttributes.merged(project.attributes)
         
         // Set default LastUpgradeCheck if user did not specify
         let lastUpgradeKey = "LastUpgradeCheck"
@@ -306,7 +316,8 @@ public class PBXProjGenerator {
         }
         pbxProject.knownRegions = knownRegions.sorted()
 
-        pbxProject.packages = packageReferences.sorted { $0.key < $1.key }.map { $1 }
+        pbxProject.remotePackages = packageReferences.sorted { $0.key < $1.key }.map { $1 }
+        pbxProject.localPackages = localPackageReferences.sorted { $0.key < $1.key }.map { $1 }
 
         let allTargets: [PBXTarget] = targetObjects.valueArray + targetAggregateObjects.valueArray
         pbxProject.targets = allTargets
@@ -336,7 +347,7 @@ public class PBXProjGenerator {
             return addObject(buildConfig)
         }
 
-        let dependencies = target.targets.map { generateTargetDependency(from: target.name, to: $0, platform: nil) }
+        var dependencies = target.targets.map { generateTargetDependency(from: target.name, to: $0, platform: nil, platforms: nil) }
 
         let defaultConfigurationName = project.options.defaultConfig ?? project.configs.first?.name ?? ""
         let buildConfigList = addObject(XCConfigurationList(
@@ -347,12 +358,15 @@ public class PBXProjGenerator {
         var buildPhases: [PBXBuildPhase] = []
         buildPhases += try target.buildScripts.map { try generateBuildScript(targetName: target.name, buildScript: $0) }
 
+        let packagePluginDependencies = makePackagePluginDependency(for: target)
+        dependencies.append(contentsOf: packagePluginDependencies)
+
         aggregateTarget.buildPhases = buildPhases
         aggregateTarget.buildConfigurationList = buildConfigList
         aggregateTarget.dependencies = dependencies
     }
 
-    func generateTargetDependency(from: String, to target: String, platform: String?) -> PBXTargetDependency {
+    func generateTargetDependency(from: String, to target: String, platform: String?, platforms: [String]?) -> PBXTargetDependency {
         guard let targetObject = targetObjects[target] ?? targetAggregateObjects[target] else {
             fatalError("Target dependency not found: from ( \(from) ) to ( \(target) )")
         }
@@ -369,6 +383,7 @@ public class PBXProjGenerator {
         let targetDependency = addObject(
             PBXTargetDependency(
                 platformFilter: platform,
+                platformFilters: platforms,
                 target: targetObject,
                 targetProxy: targetProxy
             )
@@ -407,13 +422,11 @@ public class PBXProjGenerator {
             )
         )
 
-        let productProxy = addObject(
-            PBXContainerItemProxy(
-                containerPortal: .fileReference(projectFileReference),
-                remoteGlobalID: targetObject.product.flatMap(PBXContainerItemProxy.RemoteGlobalID.object),
-                proxyType: .reference,
-                remoteInfo: target
-            )
+        let productProxy = PBXContainerItemProxy(
+            containerPortal: .fileReference(projectFileReference),
+            remoteGlobalID: targetObject.product.flatMap(PBXContainerItemProxy.RemoteGlobalID.object),
+            proxyType: .reference,
+            remoteInfo: target
         )
 
         var path = targetObject.productNameWithExtension()
@@ -423,16 +436,33 @@ public class PBXProjGenerator {
             path = "lib\(tmpPath)"
         }
 
-        let productReferenceProxy = addObject(
-            PBXReferenceProxy(
-                fileType: targetObject.productNameWithExtension().flatMap { Xcode.fileType(path: Path($0)) },
-                path: path,
-                remote: productProxy,
-                sourceTree: .buildProductsDir
-            )
-        )
+        let productReferenceProxyFileType = targetObject.productNameWithExtension()
+            .flatMap { Xcode.fileType(path: Path($0)) }
 
-        productsGroup.children.append(productReferenceProxy)
+        let existingValue = self.pbxProj.referenceProxies.first { referenceProxy in
+            referenceProxy.path == path &&
+            referenceProxy.remote == productProxy &&
+            referenceProxy.sourceTree == .buildProductsDir &&
+            referenceProxy.fileType == productReferenceProxyFileType
+        }
+
+        let productReferenceProxy: PBXReferenceProxy
+        if let existingValue = existingValue {
+            productReferenceProxy = existingValue
+        } else {
+            addObject(productProxy)
+            productReferenceProxy = addObject(
+                PBXReferenceProxy(
+                    fileType: productReferenceProxyFileType,
+                    path: path,
+                    remote: productProxy,
+                    sourceTree: .buildProductsDir
+                )
+            )
+
+            productsGroup.children.append(productReferenceProxy)
+        }
+
 
         let targetDependency = addObject(
             PBXTargetDependency(
@@ -608,8 +638,8 @@ public class PBXProjGenerator {
         }
 
         if let order = groupOrdering?.order {
-            let files = group.children.filter { $0 is PBXFileReference }
-            var groups = group.children.filter { $0 is PBXGroup }
+            let files = group.children.filter { !$0.isGroupOrFolder }
+            var groups = group.children.filter {  $0.isGroupOrFolder }
 
             var filteredGroups = [PBXFileElement]()
 
@@ -674,7 +704,6 @@ public class PBXProjGenerator {
         var systemExtensions: [PBXBuildFile] = []
         var appClips: [PBXBuildFile] = []
         var carthageFrameworksToEmbed: [String] = []
-        let localPackageReferences: [String] = project.packages.compactMap { $0.value.isLocal ? $0.key : nil }
 
         let targetDependencies = (target.transitivelyLinkDependencies ?? project.options.transitivelyLinkDependencies) ?
             getAllDependenciesPlusTransitiveNeedingEmbedding(target: target) : target.dependencies
@@ -706,7 +735,7 @@ public class PBXProjGenerator {
             return !linkingAttributes.isEmpty ? ["ATTRIBUTES": linkingAttributes] : nil
         }
 
-        func processTargetDependency(_ dependency: Dependency, dependencyTarget: Target, embedFileReference: PBXFileElement?, platform: String?) {
+        func processTargetDependency(_ dependency: Dependency, dependencyTarget: Target, embedFileReference: PBXFileElement?, platform: String?, platforms: [String]?) {
             let dependencyLinkage = dependencyTarget.defaultLinkage
             let link = dependency.link ??
                 ((dependencyLinkage == .dynamic && target.type != .staticLibrary) ||
@@ -715,6 +744,7 @@ public class PBXProjGenerator {
             if link, let dependencyFile = embedFileReference {
                 let pbxBuildFile = PBXBuildFile(file: dependencyFile, settings: getDependencyFrameworkSettings(dependency: dependency))
                 pbxBuildFile.platformFilter = platform
+                pbxBuildFile.platformFilters = platforms
                 let buildFile = addObject(pbxBuildFile)
                 targetFrameworkBuildFiles.append(buildFile)
 
@@ -731,6 +761,7 @@ public class PBXProjGenerator {
                     settings: getEmbedSettings(dependency: dependency, codeSign: dependency.codeSign ?? !dependencyTarget.type.isExecutable)
                 )
                 pbxBuildFile.platformFilter = platform
+                pbxBuildFile.platformFilters = platforms
                 let embedFile = addObject(pbxBuildFile)
 
                 if dependency.copyPhase != nil {
@@ -766,6 +797,7 @@ public class PBXProjGenerator {
 
             let embed = dependency.embed ?? target.shouldEmbedDependencies
             let platform = makePlatformFilter(for: dependency.platformFilter)
+            let platforms = makeDestinationFilters(for: dependency.destinationFilters)
             
             switch dependency.type {
             case .target:
@@ -774,15 +806,15 @@ public class PBXProjGenerator {
                 switch dependencyTargetReference.location {
                 case .local:
                     let dependencyTargetName = dependency.reference
-                    let targetDependency = generateTargetDependency(from: target.name, to: dependencyTargetName, platform: platform)
+                    let targetDependency = generateTargetDependency(from: target.name, to: dependencyTargetName, platform: platform, platforms: platforms)
                     dependencies.append(targetDependency)
                     guard let dependencyTarget = project.getTarget(dependencyTargetName) else { continue }
-                    processTargetDependency(dependency, dependencyTarget: dependencyTarget, embedFileReference: targetFileReferences[dependencyTarget.name], platform: platform)
+                    processTargetDependency(dependency, dependencyTarget: dependencyTarget, embedFileReference: targetFileReferences[dependencyTarget.name], platform: platform, platforms: platforms)
                 case .project(let dependencyProjectName):
                     let dependencyTargetName = dependencyTargetReference.name
                     let (targetDependency, dependencyTarget, dependencyProductProxy) = try generateExternalTargetDependency(from: target.name, to: dependencyTargetName, in: dependencyProjectName, platform: target.platform)
                     dependencies.append(targetDependency)
-                    processTargetDependency(dependency, dependencyTarget: dependencyTarget, embedFileReference: dependencyProductProxy, platform: platform)
+                    processTargetDependency(dependency, dependencyTarget: dependencyTarget, embedFileReference: dependencyProductProxy, platform: platform, platforms: platforms)
                 }
 
             case .framework:
@@ -808,6 +840,7 @@ public class PBXProjGenerator {
                 if dependency.link ?? (target.type != .staticLibrary) {
                     let pbxBuildFile = PBXBuildFile(file: fileReference, settings: getDependencyFrameworkSettings(dependency: dependency))
                     pbxBuildFile.platformFilter = platform
+                    pbxBuildFile.platformFilters = platforms
                     let buildFile = addObject(pbxBuildFile)
 
                     targetFrameworkBuildFiles.append(buildFile)
@@ -820,6 +853,7 @@ public class PBXProjGenerator {
                 if embed {
                     let pbxBuildFile = PBXBuildFile(file: fileReference, settings: getEmbedSettings(dependency: dependency, codeSign: dependency.codeSign ?? true))
                     pbxBuildFile.platformFilter = platform
+                    pbxBuildFile.platformFilters = platforms
                     let embedFile = addObject(pbxBuildFile)
                     
                     if dependency.copyPhase != nil {
@@ -870,12 +904,14 @@ public class PBXProjGenerator {
                     settings: getDependencyFrameworkSettings(dependency: dependency)
                 )
                 pbxBuildFile.platformFilter = platform
+                pbxBuildFile.platformFilters = platforms
                 let buildFile = addObject(pbxBuildFile)
                 targetFrameworkBuildFiles.append(buildFile)
 
                 if dependency.embed == true {
                     let pbxBuildFile = PBXBuildFile(file: fileReference, settings: getEmbedSettings(dependency: dependency, codeSign: dependency.codeSign ?? true))
                     pbxBuildFile.platformFilter = platform
+                    pbxBuildFile.platformFilters = platforms
                     let embedFile = addObject(pbxBuildFile)
                     
                     if dependency.copyPhase != nil {
@@ -905,54 +941,66 @@ public class PBXProjGenerator {
                     if dependency.link ?? (!isStaticLibrary && !isCarthageStaticLink) {
                         let pbxBuildFile = PBXBuildFile(file: fileReference, settings: getDependencyFrameworkSettings(dependency: dependency))
                         pbxBuildFile.platformFilter = platform
+                        pbxBuildFile.platformFilters = platforms
                         let buildFile = addObject(pbxBuildFile)
                         targetFrameworkBuildFiles.append(buildFile)
                     }
                 }
             // Embedding handled by iterating over `carthageDependencies` below
-            case .package(let product):
+            case .package(let products):
                 let packageReference = packageReferences[dependency.reference]
 
                 // If package's reference is none and there is no specified package in localPackages,
                 // then ignore the package specified as dependency.
-                if packageReference == nil, !localPackageReferences.contains(dependency.reference) {
+                if packageReference == nil, localPackageReferences[dependency.reference] == nil {
                     continue
                 }
 
-                let productName = product ?? dependency.reference
-                let packageDependency = addObject(
-                    XCSwiftPackageProductDependency(productName: productName, package: packageReference)
-                )
-
-                // Add package dependency if linking is true.
-                if dependency.link ?? true {
-                    packageDependencies.append(packageDependency)
-                }
-
-                let link = dependency.link ?? (target.type != .staticLibrary)
-                if link {
-                    let file = PBXBuildFile(product: packageDependency, settings: getDependencyFrameworkSettings(dependency: dependency))
-                    file.platformFilter = platform
-                    let buildFile = addObject(file)
-                    targetFrameworkBuildFiles.append(buildFile)
-                } else {
-                    let targetDependency = addObject(
-                        PBXTargetDependency(platformFilter: platform, product: packageDependency)
+                func addPackageProductDependency(named productName: String) {
+                    let packageDependency = addObject(
+                        XCSwiftPackageProductDependency(productName: productName, package: packageReference)
                     )
-                    dependencies.append(targetDependency)
+
+                    // Add package dependency if linking is true.
+                    if dependency.link ?? true {
+                        packageDependencies.append(packageDependency)
+                    }
+
+                    let link = dependency.link ?? (target.type != .staticLibrary)
+                    if link {
+                        let file = PBXBuildFile(product: packageDependency, settings: getDependencyFrameworkSettings(dependency: dependency))
+                        file.platformFilter = platform
+                        file.platformFilters = platforms
+                        let buildFile = addObject(file)
+                        targetFrameworkBuildFiles.append(buildFile)
+                    } else {
+                        let targetDependency = addObject(
+                            PBXTargetDependency(platformFilter: platform, platformFilters: platforms, product: packageDependency)
+                        )
+                        dependencies.append(targetDependency)
+                    }
+
+                    if dependency.embed == true {
+                        let pbxBuildFile = PBXBuildFile(product: packageDependency,
+                        settings: getEmbedSettings(dependency: dependency, codeSign: dependency.codeSign ?? true))
+                        pbxBuildFile.platformFilter = platform
+                        pbxBuildFile.platformFilters = platforms
+                        let embedFile = addObject(pbxBuildFile)
+
+                        if dependency.copyPhase != nil {
+                            customCopyDependenciesReferences.append(embedFile)
+                        } else {
+                            copyFrameworksReferences.append(embedFile)
+                        }
+                    }
                 }
 
-                if dependency.embed == true {
-                    let pbxBuildFile = PBXBuildFile(product: packageDependency,
-                    settings: getEmbedSettings(dependency: dependency, codeSign: dependency.codeSign ?? true))
-                    pbxBuildFile.platformFilter = platform
-                    let embedFile = addObject(pbxBuildFile)
-                    
-                    if dependency.copyPhase != nil {
-                        customCopyDependenciesReferences.append(embedFile)
-                    } else {
-                        copyFrameworksReferences.append(embedFile)
+                if !products.isEmpty {
+                    for product in products {
+                        addPackageProductDependency(named: product)
                     }
+                } else {
+                    addPackageProductDependency(named: dependency.reference)
                 }
             case .bundle:
                 // Static and dynamic libraries can't copy resources
@@ -969,6 +1017,7 @@ public class PBXProjGenerator {
                     settings: embed ? getEmbedSettings(dependency: dependency, codeSign: dependency.codeSign ?? true) : nil
                 )
                 pbxBuildFile.platformFilter = platform
+                pbxBuildFile.platformFilters = platforms
                 let buildFile = addObject(pbxBuildFile)
                 copyBundlesReferences.append(buildFile)
 
@@ -1014,6 +1063,9 @@ public class PBXProjGenerator {
         
         carthageFrameworksToEmbed = carthageFrameworksToEmbed.uniqued()
 
+        let packagePluginDependencies = makePackagePluginDependency(for: target)
+        dependencies.append(contentsOf: packagePluginDependencies)
+        
         var buildPhases: [PBXBuildPhase] = []
 
         func getBuildFilesForSourceFiles(_ sourceFiles: [SourceFile]) -> [PBXBuildFile] {
@@ -1083,6 +1135,18 @@ public class PBXProjGenerator {
             }
         }
 
+        func addResourcesBuildPhase() {
+            let resourcesBuildPhaseFiles = getBuildFilesForPhase(.resources) + copyResourcesReferences
+            if !resourcesBuildPhaseFiles.isEmpty {
+                let resourcesBuildPhase = addObject(PBXResourcesBuildPhase(files: resourcesBuildPhaseFiles))
+                buildPhases.append(resourcesBuildPhase)
+            }
+        }
+
+        if target.putResourcesBeforeSourcesBuildPhase {
+            addResourcesBuildPhase()
+        }
+
         let sourcesBuildPhaseFiles = getBuildFilesForPhase(.sources)
         let shouldSkipSourcesBuildPhase = sourcesBuildPhaseFiles.isEmpty && target.type.canSkipCompileSourcesBuildPhase
         if !shouldSkipSourcesBuildPhase {
@@ -1092,10 +1156,8 @@ public class PBXProjGenerator {
 
         buildPhases += try target.postCompileScripts.map { try generateBuildScript(targetName: target.name, buildScript: $0) }
 
-        let resourcesBuildPhaseFiles = getBuildFilesForPhase(.resources) + copyResourcesReferences
-        if !resourcesBuildPhaseFiles.isEmpty {
-            let resourcesBuildPhase = addObject(PBXResourcesBuildPhase(files: resourcesBuildPhaseFiles))
-            buildPhases.append(resourcesBuildPhase)
+        if !target.putResourcesBeforeSourcesBuildPhase {
+            addResourcesBuildPhase()
         }
 
         let swiftObjCInterfaceHeader = project.getCombinedBuildSetting("SWIFT_OBJC_INTERFACE_HEADER_NAME", target: target, config: project.configs[0]) as? String
@@ -1163,7 +1225,7 @@ public class PBXProjGenerator {
         if !extensions.isEmpty {
 
             let copyFilesPhase = addObject(
-                getPBXCopyFilesBuildPhase(dstSubfolderSpec: .plugins, name: "Embed App Extensions", files: extensions)
+                getPBXCopyFilesBuildPhase(dstSubfolderSpec: .plugins, name: "Embed Foundation Extensions", files: extensions)
             )
 
             buildPhases.append(copyFilesPhase)
@@ -1402,7 +1464,33 @@ public class PBXProjGenerator {
             return "ios"
         }
     }
+    
+    private func makeDestinationFilters(for filters: [SupportedDestination]?) -> [String]? {
+        guard let filters = filters, !filters.isEmpty else { return nil }
+        return filters.map { $0.string }
+    }
+    
+    /// Make `Build Tools Plug-ins` as a dependency to the target
+    /// - Parameter target: ProjectTarget
+    /// - Returns: Elements for referencing other targets through content proxies.
+    func makePackagePluginDependency(for target: ProjectTarget) -> [PBXTargetDependency] {
+        target.buildToolPlugins.compactMap { buildToolPlugin in
+            let packageReference = packageReferences[buildToolPlugin.package]
+            if packageReference == nil, localPackageReferences[buildToolPlugin.package] == nil {
+                return nil
+            }
 
+            let packageDependency = addObject(
+                XCSwiftPackageProductDependency(productName: buildToolPlugin.plugin, package: packageReference, isPlugin: true)
+            )
+            let targetDependency = addObject(
+                PBXTargetDependency(product: packageDependency)
+            )
+
+            return targetDependency
+        }
+    }
+    
     func getInfoPlists(for target: Target) -> [Config: String] {
         var searchForDefaultInfoPlist: Bool = true
         var defaultInfoPlist: String?
@@ -1536,7 +1624,7 @@ extension Platform {
     /// - returns: `true` for platforms that the app store requires simulator slices to be stripped.
     public var requiresSimulatorStripping: Bool {
         switch self {
-        case .iOS, .tvOS, .watchOS:
+        case .auto, .iOS, .tvOS, .watchOS, .visionOS:
             return true
         case .macOS:
             return false
@@ -1545,6 +1633,10 @@ extension Platform {
 }
 
 extension PBXFileElement {
+    /// - returns: `true` if the element is a group or a folder reference. Likely an SPM package.
+    var isGroupOrFolder: Bool {
+        self is PBXGroup || (self as? PBXFileReference)?.lastKnownFileType == "folder"
+    }
 
     public func getSortOrder(groupSortPosition: SpecOptions.GroupSortPosition) -> Int {
         if type(of: self).isa == "PBXGroup" {

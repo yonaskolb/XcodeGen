@@ -1,2 +1,8 @@
-#include "xcode12_and_13_workaround.xcconfig"
+#include "xcode12_13_and_14_workaround.xcconfig"
+
 MACH_O_TYPE = staticlib
+
+IPHONEOS_DEPLOYMENT_TARGET=14.0
+MACOSX_DEPLOYMENT_TARGET=10.15
+TVOS_DEPLOYMENT_TARGET=14.0
+WATCHOS_DEPLOYMENT_TARGET=7.0

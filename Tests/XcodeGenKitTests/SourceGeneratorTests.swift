@@ -1,7 +1,7 @@
 import PathKit
 import ProjectSpec
 import Spectre
-import XcodeGenKit
+@testable import XcodeGenKit
 import XcodeProj
 import XCTest
 import Yams
@@ -9,7 +9,8 @@ import TestSupport
 
 class SourceGeneratorTests: XCTestCase {
 
-    func testSourceGenerator() {
+    func testSourceGenerator() throws {
+        try skipIfNecessary()
         describe {
 
             let directoryPath = Path("TestDirectory")
@@ -40,6 +41,13 @@ class SourceGeneratorTests: XCTestCase {
                     try file.parent().mkpath()
                     try file.write("")
                 }
+            }
+            
+            func createFile(at relativePath: Path, content: String) throws -> Path {
+                let filePath = directoryPath + relativePath
+                try filePath.parent().mkpath()
+                try filePath.write(content)
+                return filePath
             }
 
             func removeDirectories() {
@@ -561,6 +569,7 @@ class SourceGeneratorTests: XCTestCase {
                     - file.h
                     - GoogleService-Info.plist
                     - file.xcconfig
+                    - Localizable.xcstrings
                   B:
                     - file.swift
                     - file.xcassets
@@ -589,6 +598,7 @@ class SourceGeneratorTests: XCTestCase {
                     - file.xcassets
                     - file.metal
                     - file.mlmodel
+                    - file.mlpackage
                     - file.mlmodelc
                     - Info.plist
                     - Intent.intentdefinition
@@ -616,6 +626,7 @@ class SourceGeneratorTests: XCTestCase {
                 try pbxProj.expectFile(paths: ["A", "file.h"], buildPhase: .resources)
                 try pbxProj.expectFile(paths: ["A", "GoogleService-Info.plist"], buildPhase: .resources)
                 try pbxProj.expectFile(paths: ["A", "file.xcconfig"], buildPhase: .resources)
+                try pbxProj.expectFile(paths: ["A", "Localizable.xcstrings"], buildPhase: .resources)
 
                 try pbxProj.expectFile(paths: ["B", "file.swift"], buildPhase: BuildPhaseSpec.none)
                 try pbxProj.expectFile(paths: ["B", "file.xcassets"], buildPhase: BuildPhaseSpec.none)
@@ -648,6 +659,7 @@ class SourceGeneratorTests: XCTestCase {
                 try pbxProj.expectFile(paths: ["C", "Info.plist"], buildPhase: BuildPhaseSpec.none)
                 try pbxProj.expectFile(paths: ["C", "file.metal"], buildPhase: .sources)
                 try pbxProj.expectFile(paths: ["C", "file.mlmodel"], buildPhase: .sources)
+                try pbxProj.expectFile(paths: ["C", "file.mlpackage"], buildPhase: .sources)
                 try pbxProj.expectFile(paths: ["C", "file.mlmodelc"], buildPhase: .resources)
                 try pbxProj.expectFile(paths: ["C", "Intent.intentdefinition"], buildPhase: .sources)
                 try pbxProj.expectFile(paths: ["C", "Configuration.storekit"], buildPhase: .resources)
@@ -1042,6 +1054,39 @@ class SourceGeneratorTests: XCTestCase {
                 try pbxProj.expectFileMissing(paths: ["Sources", "group", "file.swift"])
             }
 
+            $0.it("handles includes with no matches correctly") {
+                let directories = """
+                Sources:
+                  - file3.swift
+                  - file3Tests.swift
+                  - file2.swift
+                  - file2Tests.swift
+                  - group2:
+                    - file.swift
+                    - fileTests.swift
+                  - group:
+                    - file.swift
+                """
+                try createDirectories(directories)
+
+                let includes = [
+                    "**/*NonExistent.*",
+                ]
+
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: [TargetSource(path: "Sources", includes: includes)])
+
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target])
+                let pbxProj = try project.generatePbxProj()
+
+                try pbxProj.expectFileMissing(paths: ["Sources", "file2.swift"])
+                try pbxProj.expectFileMissing(paths: ["Sources", "file3.swift"])
+                try pbxProj.expectFileMissing(paths: ["Sources", "file2Tests.swift"])
+                try pbxProj.expectFileMissing(paths: ["Sources", "file3Tests.swift"])
+                try pbxProj.expectFileMissing(paths: ["Sources", "group2", "file.swift"])
+                try pbxProj.expectFileMissing(paths: ["Sources", "group2", "fileTests.swift"])
+                try pbxProj.expectFileMissing(paths: ["Sources", "group", "file.swift"])
+            }
+
             $0.it("prioritizes excludes over includes when both are present") {
                 let directories = """
                 Sources:
@@ -1202,6 +1247,69 @@ class SourceGeneratorTests: XCTestCase {
                     }
 
                     try expect(pbxProj.rootObject!.attributes["knownAssetTags"] as? [String]) == ["tag1", "tag2", "tag3"]
+                }
+                
+                $0.it("Detects all locales present in a String Catalog") {
+                    /// This is a catalog with gaps:
+                    /// - String "foo" is translated into English (en) and Spanish (es)
+                    /// - String "bar" is translated into English (en) and Italian (it)
+                    ///
+                    /// It is aimed at representing real world scenarios where translators have not finished translating all strings into their respective languages.
+                    /// The expectation in this kind of cases is that `includedLocales` returns all locales found at least once in the catalog.
+                    /// In this example, `includedLocales` is expected to be a set only containing "en", "es" and "it".
+                    let stringCatalogContent = """
+                    {
+                      "sourceLanguage" : "en",
+                      "strings" : {
+                        "foo" : {
+                          "comment" : "Sample string in an asset catalog",
+                          "extractionState" : "manual",
+                          "localizations" : {
+                            "en" : {
+                              "stringUnit" : {
+                                "state" : "translated",
+                                "value" : "Foo English"
+                              }
+                            },
+                            "es" : {
+                              "stringUnit" : {
+                                "state" : "translated",
+                                "value" : "Foo Spanish"
+                              }
+                            }
+                          }
+                        },
+                        "bar" : {
+                          "comment" : "Another sample string in an asset catalog",
+                          "extractionState" : "manual",
+                          "localizations" : {
+                            "en" : {
+                              "stringUnit" : {
+                                "state" : "translated",
+                                "value" : "Bar English"
+                              }
+                            },
+                            "it" : {
+                              "stringUnit" : {
+                                "state" : "translated",
+                                "value" : "Bar Italian"
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "version" : "1.0"
+                    }
+                    """
+                    
+                    let testStringCatalogRelativePath = Path("Localizable.xcstrings")
+                    let testStringCatalogPath = try createFile(at: testStringCatalogRelativePath, content: stringCatalogContent)
+
+                    guard let stringCatalog = StringCatalog(from: testStringCatalogPath) else {
+                        throw failure("Failed decoding string catalog from \(testStringCatalogPath)")
+                    }
+                    
+                    try expect(stringCatalog.includedLocales.sorted(by: { $0 < $1 })) == ["en", "es", "it"]
                 }
             }
         }

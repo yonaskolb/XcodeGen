@@ -15,7 +15,7 @@ extension Project {
                 try self.validate()
             }
             let generator = ProjectGenerator(project: self)
-            return try generator.generateXcodeProject()
+            return try generator.generateXcodeProject(userName: "someUser")
         }
     }
 
@@ -259,6 +259,96 @@ class PBXProjGeneratorTests: XCTestCase {
                     .map { $0.nameOrPath }
                 try expect(screenGroups) == ["mainScreen1.swift", "mainScreen2.swift", "View", "Presenter", "Interactor", "Entities", "Assembly"]
             }
+            
+            $0.it("sorts SPM packages") {
+                var options = SpecOptions()
+                options.groupSortPosition = .top
+                options.groupOrdering = [
+                    GroupOrdering(
+                        order: [
+                            "Sources",
+                            "Resources",
+                            "Tests",
+                            "Packages",
+                            "Support files",
+                            "Configurations",
+                        ]
+                    ),
+                    GroupOrdering(
+                        pattern: "Packages",
+                        order: [
+                            "FeatureA",
+                            "FeatureB",
+                            "Common",
+                        ]
+                    ),
+                ]
+
+                let directories = """
+                    Configurations:
+                      - file.swift
+                    Resources:
+                      - file.swift
+                    Sources:
+                      - MainScreen:
+                        - mainScreen1.swift
+                        - mainScreen2.swift
+                        - Assembly:
+                            - file.swift
+                        - Entities:
+                            - file.swift
+                        - Interactor:
+                            - file.swift
+                        - Presenter:
+                            - file.swift
+                        - View:
+                            - file.swift
+                    Support files:
+                      - file.swift
+                    Packages:
+                      - Common:
+                        - Package.swift
+                      - FeatureA:
+                        - Package.swift
+                      - FeatureB:
+                        - Package.swift
+                    Tests:
+                      - file.swift
+                    UITests:
+                      - file.swift
+                """
+                try createDirectories(directories)
+
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: ["Configurations", "Resources", "Sources", "Support files", "Tests", "UITests"])
+                let project = Project(
+                    basePath: directoryPath,
+                    name: "Test",
+                    targets: [target],
+                    packages: [
+                        "Common": .local(path: "Packages/Common", group: nil, excludeFromProject: false),
+                        "FeatureA": .local(path: "Packages/FeatureA", group: nil, excludeFromProject: false),
+                        "FeatureB": .local(path: "Packages/FeatureB", group: nil, excludeFromProject: false),
+                    ],
+                    options: options
+                )
+                let projGenerator = PBXProjGenerator(project: project)
+
+                let pbxProj = try project.generatePbxProj()
+                let group = try pbxProj.getMainGroup()
+
+                projGenerator.setupGroupOrdering(group: group)
+
+                let mainGroups = group.children.map { $0.nameOrPath }
+                try expect(mainGroups) == ["Sources", "Resources", "Tests", "Packages", "Support files", "Configurations", "UITests", "Products"]
+
+                let packages = group.children
+                    .first { $0.nameOrPath == "Packages" }
+                    .flatMap { $0 as? PBXGroup }?
+                    .children
+                    .map(\.nameOrPath)
+
+                try expect(packages) == ["FeatureA", "FeatureB", "Common"]
+            }
         }
     }
     
@@ -357,7 +447,7 @@ class PBXProjGeneratorTests: XCTestCase {
                 let dependency1 = Dependency(type: .target, reference: "TestAll", platformFilter: .all)
                 let dependency2 = Dependency(type: .target, reference: "TestiOS", platformFilter: .iOS)
                 let dependency3 = Dependency(type: .target, reference: "TestmacOS", platformFilter: .macOS)
-                let dependency4 = Dependency(type: .package(product: "Swinject"), reference: "Swinject", platformFilter: .iOS)
+                let dependency4 = Dependency(type: .package(products: ["Swinject"]), reference: "Swinject", platformFilter: .iOS)
                 let target = Target(name: "Test", type: .application, platform: .iOS, sources: ["Sources"], dependencies: [dependency1, dependency2, dependency3, dependency4])
                 let swinjectPackage = SwiftPackage.remote(url: "https://github.com/Swinject/Swinject", versionRequirement: .exact("2.8.0"))
                 let project = Project(basePath: directoryPath, name: "Test", targets: [target, target1, target2, target3], packages: ["Swinject": swinjectPackage])
@@ -375,6 +465,44 @@ class PBXProjGeneratorTests: XCTestCase {
                 try expect(testTarget?.frameworksBuildPhase()?.files?.count) == 1
                 try expect(testTarget?.frameworksBuildPhase()?.files?[0].platformFilter) == "ios"
             }
+
+            $0.it("places resources before sources buildPhase") {
+                let directories = """
+                    Sources:
+                      - MainScreen:
+                        - Entities:
+                            - file.swift
+                            - image.jpg
+                """
+                try createDirectories(directories)
+                let target1 = Target(
+                    name: "TestAll",
+                    type: .application,
+                    platform: .iOS,
+                    sources: ["Sources"],
+                    putResourcesBeforeSourcesBuildPhase: true
+                )
+                let target2 = Target(
+                    name: "TestiOS",
+                    type: .application,
+                    platform: .iOS,
+                    sources: ["Sources"],
+                    putResourcesBeforeSourcesBuildPhase: false
+                )
+
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target1, target2])
+
+                let pbxProj = try project.generatePbxProj()
+
+                let targets = pbxProj.projects.first?.targets
+                try expect(targets?.count) == 2
+                try expect(targets?.first?.buildPhases.first).to.beOfType(PBXResourcesBuildPhase.self)
+                try expect(targets?.first?.buildPhases.last).to.beOfType(PBXSourcesBuildPhase.self)
+
+                try expect(targets?.last?.buildPhases.first).to.beOfType(PBXSourcesBuildPhase.self)
+                try expect(targets?.last?.buildPhases.last).to.beOfType(PBXResourcesBuildPhase.self)
+            }
         }
     }
+
 }

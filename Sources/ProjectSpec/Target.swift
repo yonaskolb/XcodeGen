@@ -37,6 +37,7 @@ public struct Target: ProjectTarget {
     public var name: String
     public var type: PBXProductType
     public var platform: Platform
+    public var supportedDestinations: [SupportedDestination]?
     public var settings: Settings
     public var sources: [TargetSource]
     public var dependencies: [Dependency]
@@ -46,6 +47,7 @@ public struct Target: ProjectTarget {
     public var directlyEmbedCarthageDependencies: Bool?
     public var requiresObjCLinking: Bool?
     public var preBuildScripts: [BuildScript]
+    public var buildToolPlugins: [BuildToolPlugin]
     public var postCompileScripts: [BuildScript]
     public var postBuildScripts: [BuildScript]
     public var buildRules: [BuildRule]
@@ -56,7 +58,8 @@ public struct Target: ProjectTarget {
     public var attributes: [String: Any]
     public var productName: String
     public var onlyCopyFilesOnInstall: Bool
-
+    public var putResourcesBeforeSourcesBuildPhase: Bool
+    
     public var isLegacy: Bool {
         legacy != nil
     }
@@ -76,6 +79,7 @@ public struct Target: ProjectTarget {
         name: String,
         type: PBXProductType,
         platform: Platform,
+        supportedDestinations: [SupportedDestination]? = nil,
         productName: String? = nil,
         deploymentTarget: Version? = nil,
         settings: Settings = .empty,
@@ -88,17 +92,20 @@ public struct Target: ProjectTarget {
         directlyEmbedCarthageDependencies: Bool? = nil,
         requiresObjCLinking: Bool? = nil,
         preBuildScripts: [BuildScript] = [],
+        buildToolPlugins: [BuildToolPlugin] = [],
         postCompileScripts: [BuildScript] = [],
         postBuildScripts: [BuildScript] = [],
         buildRules: [BuildRule] = [],
         scheme: TargetScheme? = nil,
         legacy: LegacyTarget? = nil,
         attributes: [String: Any] = [:],
-        onlyCopyFilesOnInstall: Bool = false
+        onlyCopyFilesOnInstall: Bool = false,
+        putResourcesBeforeSourcesBuildPhase: Bool = false
     ) {
         self.name = name
         self.type = type
         self.platform = platform
+        self.supportedDestinations = supportedDestinations
         self.deploymentTarget = deploymentTarget
         self.productName = productName ?? name
         self.settings = settings
@@ -111,6 +118,7 @@ public struct Target: ProjectTarget {
         self.directlyEmbedCarthageDependencies = directlyEmbedCarthageDependencies
         self.requiresObjCLinking = requiresObjCLinking
         self.preBuildScripts = preBuildScripts
+        self.buildToolPlugins = buildToolPlugins
         self.postCompileScripts = postCompileScripts
         self.postBuildScripts = postBuildScripts
         self.buildRules = buildRules
@@ -118,6 +126,7 @@ public struct Target: ProjectTarget {
         self.legacy = legacy
         self.attributes = attributes
         self.onlyCopyFilesOnInstall = onlyCopyFilesOnInstall
+        self.putResourcesBeforeSourcesBuildPhase = putResourcesBeforeSourcesBuildPhase
     }
 }
 
@@ -156,15 +165,17 @@ extension Target {
         guard let targetsDictionary: [String: JSONDictionary] = jsonDictionary["targets"] as? [String: JSONDictionary] else {
             return jsonDictionary
         }
-
+        
         var crossPlatformTargets: [String: JSONDictionary] = [:]
 
         for (targetName, target) in targetsDictionary {
-
             if let platforms = target["platform"] as? [String] {
-
                 for platform in platforms {
                     var platformTarget = target
+                    
+                    /// This value is set to help us to check, in Target init, that there are no conflicts in the definition of the platforms. We want to ensure that the user didn't define, at the same time,
+                    /// the new Xcode 14 supported destinations and the XcodeGen generation of Multiple Platform Targets (when you define the platform field as an array).
+                    platformTarget["isMultiPlatformTarget"] = true
 
                     platformTarget = platformTarget.expand(variables: ["platform": platform])
 
@@ -196,8 +207,8 @@ extension Target {
                 crossPlatformTargets[targetName] = target
             }
         }
+        
         var merged = jsonDictionary
-
         merged["targets"] = crossPlatformTargets
         return merged
     }
@@ -220,6 +231,7 @@ extension Target: Equatable {
             lhs.entitlements == rhs.entitlements &&
             lhs.dependencies == rhs.dependencies &&
             lhs.preBuildScripts == rhs.preBuildScripts &&
+            lhs.buildToolPlugins == rhs.buildToolPlugins &&
             lhs.postCompileScripts == rhs.postCompileScripts &&
             lhs.postBuildScripts == rhs.postBuildScripts &&
             lhs.buildRules == rhs.buildRules &&
@@ -261,19 +273,41 @@ extension Target: NamedJSONDictionaryConvertible {
         let resolvedName: String = jsonDictionary.json(atKeyPath: "name") ?? name
         self.name = resolvedName
         productName = jsonDictionary.json(atKeyPath: "productName") ?? resolvedName
-        let typeString: String = try jsonDictionary.json(atKeyPath: "type")
+        
+        let typeString: String = jsonDictionary.json(atKeyPath: "type") ?? ""
         if let type = PBXProductType(string: typeString) {
             self.type = type
         } else {
             throw SpecParsingError.unknownTargetType(typeString)
         }
-        let platformString: String = try jsonDictionary.json(atKeyPath: "platform")
+        
+        if let supportedDestinations: [SupportedDestination] = jsonDictionary.json(atKeyPath: "supportedDestinations") {
+            self.supportedDestinations = supportedDestinations
+        }
+        
+        let isResolved = jsonDictionary.json(atKeyPath: "isMultiPlatformTarget") ?? false
+        if isResolved, supportedDestinations != nil {
+            throw SpecParsingError.invalidTargetPlatformAsArray
+        }
+        
+        var platformString: String = jsonDictionary.json(atKeyPath: "platform") ?? ""
+        // platform defaults to 'auto' if it is empty and we are using supported destinations
+        if supportedDestinations != nil, platformString.isEmpty {
+            platformString = Platform.auto.rawValue
+        }
+        // we add 'iOS' in supported destinations if it contains only 'macCatalyst'
+        if supportedDestinations?.contains(.macCatalyst) == true,
+           supportedDestinations?.contains(.iOS) == false {
+            
+            supportedDestinations?.append(.iOS)
+        }
+        
         if let platform = Platform(rawValue: platformString) {
             self.platform = platform
         } else {
             throw SpecParsingError.unknownTargetPlatform(platformString)
         }
-
+        
         if let string: String = jsonDictionary.json(atKeyPath: "deploymentTarget") {
             deploymentTarget = try Version.parse(string)
         } else if let double: Double = jsonDictionary.json(atKeyPath: "deploymentTarget") {
@@ -309,7 +343,13 @@ extension Target: NamedJSONDictionaryConvertible {
                 return platforms.contains(platform)
             }
         }
-
+        
+        if jsonDictionary["buildToolPlugins"] == nil {
+            buildToolPlugins = []
+        } else {
+            self.buildToolPlugins = try jsonDictionary.json(atKeyPath: "buildToolPlugins", invalidItemBehaviour: .fail)
+        }
+        
         if jsonDictionary["info"] != nil {
             info = try jsonDictionary.json(atKeyPath: "info") as Plist
         }
@@ -329,6 +369,7 @@ extension Target: NamedJSONDictionaryConvertible {
         legacy = jsonDictionary.json(atKeyPath: "legacy")
         attributes = jsonDictionary.json(atKeyPath: "attributes") ?? [:]
         onlyCopyFilesOnInstall = jsonDictionary.json(atKeyPath: "onlyCopyFilesOnInstall") ?? false
+        putResourcesBeforeSourcesBuildPhase = jsonDictionary.json(atKeyPath: "putResourcesBeforeSourcesBuildPhase") ?? false
     }
 }
 
@@ -337,6 +378,7 @@ extension Target: JSONEncodable {
         var dict: [String: Any?] = [
             "type": type.name,
             "platform": platform.rawValue,
+            "supportedDestinations": supportedDestinations?.map { $0.rawValue },
             "settings": settings.toJSONValue(),
             "configFiles": configFiles,
             "attributes": attributes,
@@ -344,6 +386,7 @@ extension Target: JSONEncodable {
             "dependencies": dependencies.map { $0.toJSONValue() },
             "postCompileScripts": postCompileScripts.map { $0.toJSONValue() },
             "prebuildScripts": preBuildScripts.map { $0.toJSONValue() },
+            "buildToolPlugins": buildToolPlugins.map { $0.toJSONValue() },
             "postbuildScripts": postBuildScripts.map { $0.toJSONValue() },
             "buildRules": buildRules.map { $0.toJSONValue() },
             "deploymentTarget": deploymentTarget?.deploymentTarget,
@@ -362,6 +405,10 @@ extension Target: JSONEncodable {
 
         if onlyCopyFilesOnInstall {
             dict["onlyCopyFilesOnInstall"] = true
+        }
+
+        if putResourcesBeforeSourcesBuildPhase {
+            dict["putResourcesBeforeSourcesBuildPhase"] = true
         }
 
         return dict

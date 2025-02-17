@@ -8,7 +8,8 @@ import TestSupport
 
 class FixtureTests: XCTestCase {
 
-    func testProjectFixture() {
+    func testProjectFixture() throws {
+        try skipIfNecessary()
         describe {
             $0.it("generates Test Project") {
                 try generateXcodeProject(specPath: fixturePath + "TestProject/AnotherProject/project.yml")
@@ -28,7 +29,7 @@ private func generateXcodeProject(specPath: Path, file: String = #file, line: In
     let project = try Project(path: specPath)
     let generator = ProjectGenerator(project: project)
     let writer = FileWriter(project: project)
-    let xcodeProject = try generator.generateXcodeProject()
+    let xcodeProject = try generator.generateXcodeProject(userName: "someUser")
     try writer.writeXcodeProject(xcodeProject)
     try writer.writePlists()
 }

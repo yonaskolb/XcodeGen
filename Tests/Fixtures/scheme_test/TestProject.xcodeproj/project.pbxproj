@@ -3,10 +3,11 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXFileReference section */
+		5FE827133AD803E389008F92 /* Shared_TargetScheme.bundle */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = Shared_TargetScheme.bundle; sourceTree = BUILT_PRODUCTS_DIR; };
 		9194D98A5CC4C58074AED541 /* ExternalTarget.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ExternalTarget.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -22,6 +23,7 @@
 			isa = PBXGroup;
 			children = (
 				9194D98A5CC4C58074AED541 /* ExternalTarget.framework */,
+				5FE827133AD803E389008F92 /* Shared_TargetScheme.bundle */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -44,18 +46,33 @@
 			productReference = 9194D98A5CC4C58074AED541 /* ExternalTarget.framework */;
 			productType = "com.apple.product-type.framework";
 		};
+		7D5ECBED52C0D723572BDC7A /* Shared_TargetScheme */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FF87BC5AF9E43A6A84F165D0 /* Build configuration list for PBXNativeTarget "Shared_TargetScheme" */;
+			buildPhases = (
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Shared_TargetScheme;
+			productName = Shared_TargetScheme;
+			productReference = 5FE827133AD803E389008F92 /* Shared_TargetScheme.bundle */;
+			productType = "com.apple.product-type.bundle";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		8702E0566EC7EF0ABE948569 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1200;
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
 				TargetAttributes = {
 				};
 			};
 			buildConfigurationList = E903F6E8184E2A86CEC31778 /* Build configuration list for PBXProject "TestProject" */;
-			compatibilityVersion = "Xcode 11.0";
+			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -67,6 +84,7 @@
 			projectRoot = "";
 			targets = (
 				370BCE474732AA3FDEE3019C /* ExternalTarget */,
+				7D5ECBED52C0D723572BDC7A /* Shared_TargetScheme */,
 			);
 		};
 /* End PBXProject section */
@@ -241,6 +259,30 @@
 			};
 			name = Debug;
 		};
+		EC8D269E955A03687C9CC471 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		EFFEE19ADA3596D4D0EDD264 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -258,6 +300,15 @@
 			buildConfigurations = (
 				E03B593805F20F9465213BC5 /* Debug */,
 				1030670B17865EFEEDFC485B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		FF87BC5AF9E43A6A84F165D0 /* Build configuration list for PBXNativeTarget "Shared_TargetScheme" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EC8D269E955A03687C9CC471 /* Debug */,
+				EFFEE19ADA3596D4D0EDD264 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
