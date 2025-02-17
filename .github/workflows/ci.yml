@@ -29,6 +29,8 @@ jobs:
       - name: Check fixtures
         run: scripts/diff-fixtures.sh
       - name: Build fixtures
+        env:
+          GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: scripts/build-fixtures.sh
   run-linux:
     runs-on: ubuntu-latest
