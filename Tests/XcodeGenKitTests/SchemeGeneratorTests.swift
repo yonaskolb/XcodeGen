@@ -644,6 +644,42 @@ class SchemeGeneratorTests: XCTestCase {
                     .init(reference: "container:\(testPlanPath2)", default: true),
                 ]
             }
+
+            $0.it("generates scheme with screenshots as preferred screen capture format") {
+                let scheme = Scheme(
+                    name: "MyScheme",
+                    build: Scheme.Build(targets: [buildTarget]),
+                    run: Scheme.Run(config: "Debug"),
+                    test: Scheme.Test(config: "Debug", preferredScreenCaptureFormat: .screenshots)
+                )
+                let project = Project(
+                    name: "test",
+                    targets: [app, framework],
+                    schemes: [scheme]
+                )
+                let xcodeProject = try project.generateXcodeProject()
+
+                let xcscheme = try unwrap(xcodeProject.sharedData?.schemes.first)
+                try expect(xcscheme.testAction?.preferredScreenCaptureFormat) == .screenshots
+            }
+
+            $0.it("generates scheme with screen recording as preferred screen capture format") {
+                let scheme = Scheme(
+                    name: "MyScheme",
+                    build: Scheme.Build(targets: [buildTarget]),
+                    run: Scheme.Run(config: "Debug"),
+                    test: Scheme.Test(config: "Debug", preferredScreenCaptureFormat: .screenRecording)
+                )
+                let project = Project(
+                    name: "test",
+                    targets: [app, framework],
+                    schemes: [scheme]
+                )
+                let xcodeProject = try project.generateXcodeProject()
+
+                let xcscheme = try unwrap(xcodeProject.sharedData?.schemes.first)
+                try expect(xcscheme.testAction?.preferredScreenCaptureFormat) == .screenRecording
+            }
         }
     }
     
