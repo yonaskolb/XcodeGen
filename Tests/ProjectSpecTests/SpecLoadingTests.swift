@@ -195,7 +195,7 @@ class SpecLoadingTests: XCTestCase {
                 ]
 
                 try expect(project.packages) == [
-                    "LocalPackage": .local(path: "paths_test/relative_local_package/LocalPackage", group: nil),
+                    "LocalPackage": .local(path: "paths_test/relative_local_package/LocalPackage", group: nil, excludeFromProject: false),
                 ]
             }
 
