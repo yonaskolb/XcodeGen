@@ -1246,6 +1246,7 @@ Swift packages are defined at a project level, and then linked to individual tar
 
 - [x] **path**: **String** - the path to the package in local. The path must be directory with a `Package.swift`.
 - [ ] **group** : **String**- Optional path that specifies the location where the package will live in your xcode project. Use `""` to specify the project root.
+- [ ] **excludeFromProject** : **String**- Optional flag to exclude the package from the generated project (useful if the package is already added via xcworkspace and the project is not intended for standalone use), defaults to `false`
 
 ```yml
 packages:
@@ -1260,6 +1261,7 @@ packages:
   AppFeature:
     path: ../Packages
     group: Domains/AppFeature
+    excludeFromProject: false
 ```
 
 ## Project Reference
