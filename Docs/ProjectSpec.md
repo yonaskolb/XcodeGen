@@ -1039,7 +1039,7 @@ The different actions share some properties:
 - [ ] **askForAppToLaunch**: **Bool** - `run` and `profile` actions can define the executable set to ask to launch. This defaults to false.
 - [ ] **launchAutomaticallySubstyle**: **String** - `run` action can define the launch automatically substyle ('2' for extensions).
 - [ ] **storeKitConfiguration**: **String** - `run` action can specify a storekit configuration. See [Options](#options).
-- [ ] **macroExpansion**: **String** - `run` and `test` action can define the macro expansion from other target. This defaults to nil.
+- [ ] **macroExpansion**: **String** - `run` and `test` actions can define the macro expansion from other target. This defaults to nil.
 
 ### Execution Action
 
@@ -1071,7 +1071,7 @@ A target can be one of a 2 types:
 - **name**: **String** - The name of the target.
 - **target**: **[Testable Target Reference](#testable-target-reference)** - The information of the target. You can specify more detailed information than `name:`.
 
-As syntax suger, you can also specify **[Testable Target Reference](#testable-target-reference)** without `target`.
+As syntax sugar, you can also specify **[Testable Target Reference](#testable-target-reference)** without `target`.
 
 #### Other Parameters
 
@@ -1246,6 +1246,7 @@ Swift packages are defined at a project level, and then linked to individual tar
 
 - [x] **path**: **String** - the path to the package in local. The path must be directory with a `Package.swift`.
 - [ ] **group** : **String**- Optional path that specifies the location where the package will live in your xcode project. Use `""` to specify the project root.
+- [ ] **excludeFromProject** : **String**- Optional flag to exclude the package from the generated project (useful if the package is already added via xcworkspace and the project is not intended for standalone use), defaults to `false`
 
 ```yml
 packages:
@@ -1260,6 +1261,7 @@ packages:
   AppFeature:
     path: ../Packages
     group: Domains/AppFeature
+    excludeFromProject: false
 ```
 
 ## Project Reference
