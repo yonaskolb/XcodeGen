@@ -1536,7 +1536,7 @@ public class PBXProjGenerator {
                 if path.isFile {
                     return path.lastComponent == "Info.plist" ? path : nil
                 } else {
-                    return path.first(where: { $0.lastComponent == "Info.plist" })
+                    return path.first(where: { $0.lastComponent == "Info.plist" })?.absolute()
                 }
             }
             .first
