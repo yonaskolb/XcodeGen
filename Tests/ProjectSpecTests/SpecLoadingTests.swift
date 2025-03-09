@@ -197,6 +197,8 @@ class SpecLoadingTests: XCTestCase {
                 try expect(project.packages) == [
                     "LocalPackage": .local(path: "paths_test/relative_local_package/LocalPackage", group: nil, excludeFromProject: false),
                 ]
+
+                try expect(project.fileGroups.contains("paths_test/relative_file_groups/TestFile.md")) == true
             }
 
             $0.it("respects directory expansion preference") {
