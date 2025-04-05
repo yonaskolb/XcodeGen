@@ -171,12 +171,14 @@ public class PBXProjGenerator {
                 let packageReference = XCRemoteSwiftPackageReference(repositoryURL: url, versionRequirement: versionRequirement)
                 packageReferences[name] = packageReference
                 addObject(packageReference)
-            case let .local(path, group):
+            case let .local(path, group, excludeFromProject):
                 let packageReference = XCLocalSwiftPackageReference(relativePath: path)
                 localPackageReferences[name] = packageReference
-                addObject(packageReference)
-                
-                try sourceGenerator.createLocalPackage(path: Path(path), group: group.map { Path($0) })
+
+                if !excludeFromProject {
+                    addObject(packageReference)
+                    try sourceGenerator.createLocalPackage(path: Path(path), group: group.map { Path($0) })
+                }
             }
         }
 
@@ -1536,7 +1538,7 @@ public class PBXProjGenerator {
                 if path.isFile {
                     return path.lastComponent == "Info.plist" ? path : nil
                 } else {
-                    return path.first(where: { $0.lastComponent == "Info.plist" })
+                    return path.first(where: { $0.lastComponent == "Info.plist" })?.absolute()
                 }
             }
             .first

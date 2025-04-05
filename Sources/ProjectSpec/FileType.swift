@@ -110,6 +110,7 @@ extension FileType {
 
         // copyfiles
         "xpc": FileType(buildPhase: .copyFiles(.xpcServices)),
+        "appex": FileType(buildPhase: .copyFiles(.plugins)),
 
         // no build phase (not resources)
         "xcconfig": FileType(buildPhase: BuildPhaseSpec.none),

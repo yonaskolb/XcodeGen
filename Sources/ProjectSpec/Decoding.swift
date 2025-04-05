@@ -13,14 +13,15 @@ extension Dictionary where Key: JSONKey {
             let keys = Array(dictionary.keys)
             var itemResults: [Result<T, Error>] = Array(repeating: .failure(defaultError), count: keys.count)
             itemResults.withUnsafeMutableBufferPointer { buffer in
+                let bufferWrapper = BufferWrapper(buffer: buffer)
                 DispatchQueue.concurrentPerform(iterations: dictionary.count) { idx in
                     do {
                         let key = keys[idx]
                         let jsonDictionary: JSONDictionary = try dictionary.json(atKeyPath: .key(key))
                         let item = try T(name: key, jsonDictionary: jsonDictionary)
-                        buffer[idx] = .success(item)
+                        bufferWrapper.buffer[idx] = .success(item)
                     } catch {
-                        buffer[idx] = .failure(error)
+                        bufferWrapper.buffer[idx] = .failure(error)
                     }
                 }
             }
@@ -46,6 +47,14 @@ extension Dictionary where Key: JSONKey {
             items.append(item)
         }
         return items
+    }
+}
+
+private final class BufferWrapper<T>: @unchecked Sendable {
+    var buffer: UnsafeMutableBufferPointer<T>
+
+    init(buffer: UnsafeMutableBufferPointer<T>) {
+        self.buffer = buffer
     }
 }
 

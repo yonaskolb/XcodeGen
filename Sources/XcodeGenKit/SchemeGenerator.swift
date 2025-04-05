@@ -173,7 +173,7 @@ public class SchemeGenerator {
             switch target.location {
             case .package(let packageName):
                 guard let package = self.project.getPackage(packageName),
-                      case let .local(path, _) = package else {
+                      case let .local(path, _, _) = package else {
                     throw SchemeGenerationError.missingPackage(packageName)
                 }
                 return XCScheme.BuildableReference(
@@ -317,6 +317,7 @@ public class SchemeGenerator {
             language: scheme.test?.language,
             region: scheme.test?.region,
             systemAttachmentLifetime: scheme.test?.systemAttachmentLifetime,
+            preferredScreenCaptureFormat: scheme.test?.preferredScreenCaptureFormat,
             customLLDBInitFile: scheme.test?.customLLDBInit
         )
 

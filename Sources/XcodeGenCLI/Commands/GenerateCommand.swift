@@ -39,6 +39,11 @@ class GenerateCommand: ProjectCommand {
 
         let projectPath = projectDirectory + "\(project.name).xcodeproj"
 
+        // run pre gen command before we use the cache as the scripts may change it
+        if let command = project.options.preGenCommand {
+            try Task.run(bash: command, directory: projectDirectory.absolute().string)
+        }
+
         let cacheFilePath = self.cacheFilePath ??
             Path("~/.xcodegen/cache/\(projectSpecPath.absolute().string.md5)").absolute()
         var cacheFile: CacheFile?
@@ -67,11 +72,6 @@ class GenerateCommand: ProjectCommand {
             } catch {
                 info("Couldn't load cache at \(cacheFile)")
             }
-        }
-
-        // run pre gen command
-        if let command = project.options.preGenCommand {
-            try Task.run(bash: command, directory: projectDirectory.absolute().string)
         }
 
         // validate project

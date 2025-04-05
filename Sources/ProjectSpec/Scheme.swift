@@ -204,6 +204,7 @@ public struct Scheme: Equatable {
         public static let debugEnabledDefault = true
         public static let captureScreenshotsAutomaticallyDefault = true
         public static let deleteScreenshotsWhenEachTestSucceedsDefault = true
+        public static let preferredScreenCaptureFormatDefault = XCScheme.TestAction.ScreenCaptureFormat.screenRecording
 
         public var config: String?
         public var gatherCoverageData: Bool
@@ -222,6 +223,7 @@ public struct Scheme: Equatable {
         public var deleteScreenshotsWhenEachTestSucceeds: Bool
         public var testPlans: [TestPlan]
         public var macroExpansion: String?
+        public var preferredScreenCaptureFormat: XCScheme.TestAction.ScreenCaptureFormat
 
         public struct TestTarget: Equatable, ExpressibleByStringLiteral {
             
@@ -289,7 +291,8 @@ public struct Scheme: Equatable {
             customLLDBInit: String? = nil,
             captureScreenshotsAutomatically: Bool = captureScreenshotsAutomaticallyDefault,
             deleteScreenshotsWhenEachTestSucceeds: Bool = deleteScreenshotsWhenEachTestSucceedsDefault,
-            macroExpansion: String? = nil
+            macroExpansion: String? = nil,
+            preferredScreenCaptureFormat: XCScheme.TestAction.ScreenCaptureFormat = preferredScreenCaptureFormatDefault
         ) {
             self.config = config
             self.gatherCoverageData = gatherCoverageData
@@ -308,6 +311,7 @@ public struct Scheme: Equatable {
             self.captureScreenshotsAutomatically = captureScreenshotsAutomatically
             self.deleteScreenshotsWhenEachTestSucceeds = deleteScreenshotsWhenEachTestSucceeds
             self.macroExpansion = macroExpansion
+            self.preferredScreenCaptureFormat = preferredScreenCaptureFormat
         }
 
         public var shouldUseLaunchSchemeArgsEnv: Bool {
@@ -621,6 +625,7 @@ extension Scheme.Test: JSONObjectConvertible {
         captureScreenshotsAutomatically = jsonDictionary.json(atKeyPath: "captureScreenshotsAutomatically") ?? Scheme.Test.captureScreenshotsAutomaticallyDefault
         deleteScreenshotsWhenEachTestSucceeds = jsonDictionary.json(atKeyPath: "deleteScreenshotsWhenEachTestSucceeds") ?? Scheme.Test.deleteScreenshotsWhenEachTestSucceedsDefault
         macroExpansion = jsonDictionary.json(atKeyPath: "macroExpansion")
+        preferredScreenCaptureFormat = jsonDictionary.json(atKeyPath: "preferredScreenCaptureFormat") ?? Scheme.Test.preferredScreenCaptureFormatDefault
     }
 }
 
@@ -662,6 +667,10 @@ extension Scheme.Test: JSONEncodable {
 
         if deleteScreenshotsWhenEachTestSucceeds != Scheme.Test.deleteScreenshotsWhenEachTestSucceedsDefault {
             dict["deleteScreenshotsWhenEachTestSucceeds"] = deleteScreenshotsWhenEachTestSucceeds
+        }
+
+        if preferredScreenCaptureFormat != Scheme.Test.preferredScreenCaptureFormatDefault {
+            dict["preferredScreenCaptureFormat"] = preferredScreenCaptureFormat.toJSONValue()
         }
 
         return dict
@@ -875,7 +884,7 @@ extension Scheme.Build: JSONEncodable {
     }
 }
 
-extension BuildType: JSONPrimitiveConvertible {
+extension BuildType: JSONUtilities.JSONPrimitiveConvertible {
 
     public typealias JSONType = String
 
@@ -907,7 +916,7 @@ extension BuildType: JSONEncodable {
     }
 }
 
-extension XCScheme.EnvironmentVariable: JSONObjectConvertible {
+extension XCScheme.EnvironmentVariable: JSONUtilities.JSONObjectConvertible {
     public static let enabledDefault = true
 
     private static func parseValue(_ value: Any) -> String {
@@ -987,5 +996,11 @@ extension XCScheme.LaunchAction.GPUFrameCaptureMode: JSONEncodable {
         default:
             fatalError("Invalid enableGPUFrameCaptureMode value. Valid values are: autoEnabled, metal, openGL, disabled")
         }
+    }
+}
+
+extension XCScheme.TestAction.ScreenCaptureFormat: JSONEncodable {
+    public func toJSONValue() -> Any {
+        rawValue
     }
 }

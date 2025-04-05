@@ -8,7 +8,7 @@
 import Foundation
 import Version
 
-extension Version: ExpressibleByStringLiteral {
+extension Version: Swift.ExpressibleByStringLiteral {
 
     public static func parse(_ string: String) throws -> Version {
         if let version = Version(tolerant: string) {
