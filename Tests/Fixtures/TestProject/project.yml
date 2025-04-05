@@ -163,7 +163,7 @@ targets:
         resourceTags:
           - tag1
           - tag2
-      - String Catalogs/Localizable.xcstrings
+      - String Catalogs/LocalizableStrings.xcstrings
     settings:
       INFOPLIST_FILE: App_iOS/Info.plist
       PRODUCT_BUNDLE_IDENTIFIER: com.project.app
@@ -171,11 +171,6 @@ targets:
       - target: Framework_iOS
         platformFilter: all
       - target: StaticLibrary_ObjC_iOS
-      - carthage: Result
-        platformFilter: macOS
-      - carthage: SwiftyJSON
-        linkType: static
-        platformFilter: iOS
       - target: Framework2_iOS
         weak: true
         platformFilter: iOS
@@ -275,9 +270,6 @@ targets:
         App_watchOS Extension
       settings:
         PRODUCT_BUNDLE_IDENTIFIER: com.project.app.watch.extension
-      dependencies:
-        - carthage: Result
-          link: false
 
   iMessageApp:
     type: application.messages
@@ -364,7 +356,6 @@ targets:
       - name: MyScript
         path: scripts/script.sh
     dependencies:
-      - carthage: Result
       - target: StaticLibrary_ObjC_${platform}
       - target: Framework2_${platform}
         platforms: [tvOS, watchOS]
@@ -402,8 +393,6 @@ targets:
     dependencies:
       - target: App_iOS
       - target: TestFramework
-      - carthage: swift-tagged
-        linkType: static
   App_iOS_UITests:
     type: bundle.ui-testing
     platform: iOS
@@ -459,8 +448,6 @@ targets:
     dependencies:
       - target: App_Clip
       - target: TestFramework
-      - carthage: swift-tagged
-        linkType: static
 
   App_Clip_UITests:
     type: bundle.ui-testing
