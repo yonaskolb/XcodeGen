@@ -8,12 +8,18 @@ targets:
   BundleX:
     type: bundle
     platform: iOS
+    settings:
+      GENERATE_INFOPLIST_FILE: YES
   BundleY:
     type: bundle
     platform: iOS
+    settings:
+      GENERATE_INFOPLIST_FILE: YES
   ExternalTarget:
     type: framework
     platform: iOS
+    settings:
+      GENERATE_INFOPLIST_FILE: YES
   IncludedLegacy:
     type: ""
     platform: iOS
