@@ -242,7 +242,8 @@ extension Project: PathContainer {
             .object("schemes", Scheme.pathProperties),
             .object("projectReferences", ProjectReference.pathProperties),
             .object("packages", SwiftPackage.pathProperties),
-            .string("localPackages")
+            .string("localPackages"),
+            .string("fileGroups")
         ]
     }
 }

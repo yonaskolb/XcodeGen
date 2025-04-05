@@ -2,7 +2,8 @@ include:
   - duplicated_import_transitive.yml
   - duplicated_import_root.yml
   - duplicated_import_root.yml
-  - different_path/duplicated_import_root.yml
+  - path: different_path/duplicated_import_root.yml
+    relativePaths: false
 name: DuplicatedImportDependent
 targets:
   IncludedTarget:
