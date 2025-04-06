@@ -489,7 +489,17 @@ extension Scheme.Run: JSONObjectConvertible {
         } else {
             enableGPUFrameCaptureMode = XCScheme.LaunchAction.defaultGPUFrameCaptureMode
         }
-        enableGPUValidationMode = jsonDictionary.json(atKeyPath: "enableGPUValidationMode") ?? Scheme.Run.enableGPUValidationModeDefault
+
+        // support deprecated gpuValidationMode enum that was removed from XcodeProj
+        if let gpuValidationMode: String = jsonDictionary.json(atKeyPath: "enableGPUValidationMode") {
+            switch gpuValidationMode {
+            case "enabled", "extended": enableGPUValidationMode = true
+            case "disabled": enableGPUValidationMode = false
+            default: enableGPUValidationMode = Scheme.Run.enableGPUValidationModeDefault
+            }
+        } else {
+            enableGPUValidationMode = jsonDictionary.json(atKeyPath: "enableGPUValidationMode") ?? Scheme.Run.enableGPUValidationModeDefault
+        }
         disableMainThreadChecker = jsonDictionary.json(atKeyPath: "disableMainThreadChecker") ?? Scheme.Run.disableMainThreadCheckerDefault
         stopOnEveryMainThreadCheckerIssue = jsonDictionary.json(atKeyPath: "stopOnEveryMainThreadCheckerIssue") ?? Scheme.Run.stopOnEveryMainThreadCheckerIssueDefault
         disableThreadPerformanceChecker = jsonDictionary.json(atKeyPath: "disableThreadPerformanceChecker") ?? Scheme.Run.disableThreadPerformanceCheckerDefault
