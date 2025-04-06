@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXAggregateTarget section */
@@ -239,8 +239,6 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1430;
-				TargetAttributes = {
-				};
 			};
 			buildConfigurationList = 425866ADA259DB93FC4AF1E3 /* Build configuration list for PBXProject "SPM" */;
 			compatibilityVersion = "Xcode 14.0";
@@ -259,7 +257,7 @@
 				630A8CE9F2BE39704ED9D461 /* XCLocalSwiftPackageReference "FooFeature" */,
 				C6539B364583AE96C18CE377 /* XCLocalSwiftPackageReference "../../.." */,
 			);
-			preferredProjectObjectVersion = 54;
+			preferredProjectObjectVersion = 70;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
