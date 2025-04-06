@@ -102,6 +102,8 @@ public class PBXProjGenerator {
                 name: project.name,
                 buildConfigurationList: buildConfigList,
                 compatibilityVersion: project.compatibilityVersion,
+                preferredProjectObjectVersion: Int(project.objectVersion),
+                minimizedProjectReferenceProxies: project.minimizedProjectReferenceProxies,
                 mainGroup: mainGroup,
                 developmentRegion: developmentRegion
             )

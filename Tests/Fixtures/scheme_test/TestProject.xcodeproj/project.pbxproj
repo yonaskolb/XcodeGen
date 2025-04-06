@@ -42,6 +42,8 @@
 			dependencies = (
 			);
 			name = ExternalTarget;
+			packageProductDependencies = (
+			);
 			productName = ExternalTarget;
 			productReference = 9194D98A5CC4C58074AED541 /* ExternalTarget.framework */;
 			productType = "com.apple.product-type.framework";
@@ -56,6 +58,8 @@
 			dependencies = (
 			);
 			name = Shared_TargetScheme;
+			packageProductDependencies = (
+			);
 			productName = Shared_TargetScheme;
 			productReference = 5FE827133AD803E389008F92 /* Shared_TargetScheme.bundle */;
 			productType = "com.apple.product-type.bundle";
@@ -80,6 +84,8 @@
 				en,
 			);
 			mainGroup = 2D08B11F4EE060D112B7BCA1;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 54;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
