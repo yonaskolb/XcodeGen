@@ -10,7 +10,6 @@ import TestSupport
 class SourceGeneratorTests: XCTestCase {
 
     func testSourceGenerator() throws {
-        try skipIfNecessary()
         describe {
 
             let directoryPath = Path("TestDirectory")

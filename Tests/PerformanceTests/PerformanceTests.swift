@@ -63,7 +63,6 @@ class FixturePerformanceTests: XCTestCase {
     }
 
     func testFixtureGeneration() throws {
-        try skipIfNecessary()
         let project = try Project(path: specPath)
         measure {
             let generator = ProjectGenerator(project: project)
@@ -72,7 +71,6 @@ class FixturePerformanceTests: XCTestCase {
     }
 
     func testFixtureWriting() throws {
-        try skipIfNecessary()
         let project = try Project(path: specPath)
         let generator = ProjectGenerator(project: project)
         let xcodeProject = try generator.generateXcodeProject(userName: "someUser")
