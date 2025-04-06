@@ -2,9 +2,32 @@
 
 ## Next Version
 
+### Added
+
+- Added `excludeFromProject` from local packages #1512 @maximkrouk
+- Added support for `preferredScreenCaptureFormat` in schemes #1450 @vakhidbetrakhmadov
+
+### Changes
+
+- `.appex` files are now copied to plugins directory by default #1531 @iljaiwas
+- The `preGenCommand` is now run before validation and caching #1500 #1519 @simonbs @dalemyers
+- Improve performance of spec validation #1522 @zewuchen
+- The `enableGPUValidationMode` enum is deprecated and is now a boolean #1515 @marcosgriselli @yonaskolb
+
 ### Fixed
 
-- Require swift-tools-version 5.9. #1489 @0111b
+- **Breaking**: `fileGroups` are now relative paths when in included files, like other paths #1534 @shnhrrsn
+- **Breaking**: Local package paths are now relative paths when in included files, like other paths #1498 @juri
+- Optional groups are no longer skipped when missing and generating projects from a different directory #1529 @SSheldon
+
+### Internal
+
+- Fix Swift 6.0 warnings #1513 @marcosgriselli
+- Update package swift tools to 5.9 #1489 @0111b
+- Add Xcode 16 to CI #1439 @giginet
+- Fix test project building on CI #1537 @yonaskolb
+- Skip failing tests on Linux #1517 @marcosgriselli
+- XcodeProj updated to 8.24.3 #1515 @marcosgriselli @yonaskolb
 
 ## 2.42.0
 
