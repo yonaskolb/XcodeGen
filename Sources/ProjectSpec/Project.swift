@@ -170,6 +170,14 @@ extension Project {
     public init(basePath: Path = "", jsonDictionary: JSONDictionary) throws {
         self.basePath = basePath
 
+        let validKeys = Set(["name", "settings", "settingGroups", "settingPresets", "configs", "targets", "aggregateTargets", "projectReferences", "schemes", "breakpoints", "fileGroups", "configFiles", "attributes", "breakpoints", "packages", "localPackages", "options", "targetTemplates", "include", "templates", "schemeTemplates"])
+
+        for key in jsonDictionary.keys {
+            if !validKeys.contains(key) {
+                throw SpecValidationError(errors: [.unknownDictionaryKey(key)])
+            }
+        }
+
         let jsonDictionary = Project.resolveProject(jsonDictionary: jsonDictionary)
 
         name = try jsonDictionary.json(atKeyPath: "name")
