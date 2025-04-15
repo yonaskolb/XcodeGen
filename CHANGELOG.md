@@ -2,6 +2,8 @@
 
 ## Next Version
 
+## 2.43.0
+
 ### Added
 
 - Added `excludeFromProject` from local packages #1512 @maximkrouk
