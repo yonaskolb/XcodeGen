@@ -38,6 +38,8 @@ extension PBXProj {
                 string += "\n 🌎 " + variantGroup.nameOrPath
             } else if let versionGroup = child as? XCVersionGroup {
                 string += "\n 🔢 " + versionGroup.nameOrPath
+            } else if let syncedFolder = child as? PBXFileSystemSynchronizedRootGroup {
+                string += "\n 📁 " + syncedFolder.nameOrPath
             }
         }
         return string
