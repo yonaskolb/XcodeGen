@@ -1454,6 +1454,12 @@ public class PBXProjGenerator {
         if !target.isLegacy {
             targetObject.productType = target.type
         }
+
+        // add fileSystemSynchronizedGroups
+        let synchronizedRootGroups = sourceFiles.compactMap { $0.synchronizedRootGroup }
+        if !synchronizedRootGroups.isEmpty {
+            targetObject.fileSystemSynchronizedGroups = synchronizedRootGroups
+        }
     }
     
     private func makePlatformFilter(for filter: Dependency.PlatformFilter) -> String? {

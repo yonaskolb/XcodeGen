@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXAggregateTarget section */
@@ -830,6 +830,18 @@
 		FED40A89162E446494DDE7C7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		AE2AB2772F70DFFF402AA02B /* SyncedFolder */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			explicitFileTypes = {
+			};
+			explicitFolders = (
+			);
+			path = SyncedFolder;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
 /* Begin PBXFrameworksBuildPhase section */
 		117840B4DBC04099F6779D00 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
@@ -1050,6 +1062,7 @@
 				2E1E747C7BC434ADB80CC269 /* Headers */,
 				6B1603BA83AA0C7B94E45168 /* ResourceFolder */,
 				6BBE762F36D94AB6FFBFE834 /* SomeFile */,
+				AE2AB2772F70DFFF402AA02B /* SyncedFolder */,
 				79DC4A1E4D2E0D3A215179BC /* Bundles */,
 				FC1515684236259C50A7747F /* Frameworks */,
 				AC523591AC7BE9275003D2DB /* Products */,
@@ -1685,6 +1698,9 @@
 				E84285243DE0BB361A708079 /* PBXTargetDependency */,
 				E8C078B0A2A2B0E1D35694D5 /* PBXTargetDependency */,
 				981D116D40DBA0407D0E0E94 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				AE2AB2772F70DFFF402AA02B /* SyncedFolder */,
 			);
 			name = App_iOS;
 			packageProductDependencies = (
@@ -2443,7 +2459,7 @@
 			packageReferences = (
 				4EDA79334592CBBA0E507AD2 /* XCRemoteSwiftPackageReference "Swinject" */,
 			);
-			preferredProjectObjectVersion = 54;
+			preferredProjectObjectVersion = 70;
 			projectDirPath = "";
 			projectReferences = (
 				{

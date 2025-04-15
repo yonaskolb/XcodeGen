@@ -9,6 +9,7 @@ struct SourceFile {
     let fileReference: PBXFileElement
     let buildFile: PBXBuildFile
     let buildPhase: BuildPhaseSpec?
+    var synchronizedRootGroup: PBXFileSystemSynchronizedRootGroup?
 }
 
 class SourceGenerator {
@@ -687,6 +688,33 @@ class SourceGenerator {
 
             sourceFiles += groupSourceFiles
             sourceReference = group
+        case .syncedFolder:
+
+            let relativePath = (try? path.relativePath(from: project.basePath)) ?? path
+
+            let syncedRootGroup = PBXFileSystemSynchronizedRootGroup(
+                sourceTree: .group,
+                path: relativePath.string,
+                name: targetSource.name,
+                explicitFileTypes: [:],
+                exceptions: [],
+                explicitFolders: []
+            )
+            addObject(syncedRootGroup)
+            sourceReference = syncedRootGroup
+
+            // TODO: adjust if hasCustomParent == true
+            rootGroups.insert(syncedRootGroup)
+
+            var sourceFile = generateSourceFile(
+                targetType: targetType,
+                targetSource: targetSource,
+                path: path,
+                fileReference: syncedRootGroup,
+                buildPhases: buildPhases
+            )
+            sourceFile.synchronizedRootGroup = syncedRootGroup
+            sourceFiles.append(sourceFile)
         }
 
         if hasCustomParent {
@@ -703,7 +731,17 @@ class SourceGenerator {
     ///
     /// While `TargetSource` declares `type`, its optional and in the event that the value is not defined then we must resolve a sensible default based on the path of the source.
     private func resolvedTargetSourceType(for targetSource: TargetSource, at path: Path) -> SourceType {
-        return targetSource.type ?? (path.isFile || path.extension != nil ? .file : .group)
+        if let chosenType = targetSource.type {
+            return chosenType
+        } else {
+            if path.isFile || path.extension != nil {
+                return .file
+            } else if let sourceType = project.options.defaultSourceDirectoryType {
+                return sourceType
+            } else {
+                return .group
+            }
+        }
     }
 
     private func createParentGroups(_ parentGroups: [String], for fileElement: PBXFileElement) {

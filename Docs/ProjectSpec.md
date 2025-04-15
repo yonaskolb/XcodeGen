@@ -153,6 +153,10 @@ Note that target names can also be changed by adding a `name` property to a targ
 - [ ] **postGenCommand**: **String** - A bash command to run after the project has been generated. If the project isn't generated due to no changes when using the cache then this won't run. This is useful for running things like `pod install` only if the project is actually regenerated.
 - [ ] **useBaseInternationalization**: **Bool** If this is `false` and your project does not include resources located in a **Base.lproj** directory then `Base` will not be included in the projects 'known regions'. The default value is `true`. 
 - [ ] **schemePathPrefix**: **String** - A path prefix for relative paths in schemes, such as StoreKitConfiguration. The default is `"../../"`, which is suitable for non-workspace projects. For use in workspaces, use `"../"`.
+- [ ] **defaultSourceDirectoryType**: **String** - When a [Target source](#target-source) doesn't specify a type and is a directory, this is the type that will be used. If nothing is specified for either then `group` will be used.
+  - `group` (default)
+  - `folder`
+  - `syncedFolder`
 
 ```yaml
 options:
@@ -542,6 +546,7 @@ A source can be provided via a string (the path) or an object of the form:
 	- `file`: a file reference with a parent group will be created (Default for files or directories with extensions)
 	- `group`: a group with all it's containing files. (Default for directories without extensions)
 	- `folder`: a folder reference.
+	- `syncedFolder`: Xcode 16's synchronized folders, also knows as buildable folders
 - [ ] **headerVisibility**: **String** - The visibility of any headers. This defaults to `public`, but can be either:
 	- `public`
 	- `private`

@@ -37,6 +37,7 @@ public struct SpecOptions: Equatable {
     public var postGenCommand: String?
     public var useBaseInternationalization: Bool
     public var schemePathPrefix: String
+    public var defaultSourceDirectoryType: SourceType?
 
     public enum ValidationType: String {
         case missingConfigs
@@ -100,7 +101,8 @@ public struct SpecOptions: Equatable {
         preGenCommand: String? = nil,
         postGenCommand: String? = nil,
         useBaseInternationalization: Bool = useBaseInternationalizationDefault,
-        schemePathPrefix: String = schemePathPrefixDefault
+        schemePathPrefix: String = schemePathPrefixDefault,
+        defaultSourceDirectoryType: SourceType? = nil
     ) {
         self.minimumXcodeGenVersion = minimumXcodeGenVersion
         self.carthageBuildPath = carthageBuildPath
@@ -127,6 +129,7 @@ public struct SpecOptions: Equatable {
         self.postGenCommand = postGenCommand
         self.useBaseInternationalization = useBaseInternationalization
         self.schemePathPrefix = schemePathPrefix
+        self.defaultSourceDirectoryType = defaultSourceDirectoryType
     }
 }
 
@@ -160,6 +163,7 @@ extension SpecOptions: JSONObjectConvertible {
         postGenCommand = jsonDictionary.json(atKeyPath: "postGenCommand")
         useBaseInternationalization = jsonDictionary.json(atKeyPath: "useBaseInternationalization") ?? SpecOptions.useBaseInternationalizationDefault
         schemePathPrefix = jsonDictionary.json(atKeyPath: "schemePathPrefix") ?? SpecOptions.schemePathPrefixDefault
+        defaultSourceDirectoryType = jsonDictionary.json(atKeyPath: "defaultSourceDirectoryType")
         if jsonDictionary["fileTypes"] != nil {
             fileTypes = try jsonDictionary.json(atKeyPath: "fileTypes")
         } else {
