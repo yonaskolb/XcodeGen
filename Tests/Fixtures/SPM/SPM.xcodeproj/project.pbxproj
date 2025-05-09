@@ -255,6 +255,7 @@
 			packageReferences = (
 				5BA91390AE78D2EE15C60091 /* XCRemoteSwiftPackageReference "Codability" */,
 				348C81C327DB1710B742C370 /* XCRemoteSwiftPackageReference "Prefire" */,
+				63B845B0C9058076DD19CA85 /* XCRemoteSwiftPackageReference "SwiftLocation" */,
 				E3887F3CB2C069E70D98092F /* XCRemoteSwiftPackageReference "SwiftRoaring" */,
 				630A8CE9F2BE39704ED9D461 /* XCLocalSwiftPackageReference "FooFeature" */,
 				C6539B364583AE96C18CE377 /* XCLocalSwiftPackageReference "../../.." */,
@@ -669,6 +670,14 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 0.2.1;
+			};
+		};
+		63B845B0C9058076DD19CA85 /* XCRemoteSwiftPackageReference "SwiftLocation" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/malcommac/SwiftLocation";
+			requirement = {
+				kind = exactVersion;
+				version = 6.0.0;
 			};
 		};
 		E3887F3CB2C069E70D98092F /* XCRemoteSwiftPackageReference "SwiftRoaring" */ = {

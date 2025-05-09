@@ -193,7 +193,16 @@ extension Project {
         attributes = jsonDictionary.json(atKeyPath: "attributes") ?? [:]
         include = jsonDictionary.json(atKeyPath: "include") ?? []
         if jsonDictionary["packages"] != nil {
-            packages = try jsonDictionary.json(atKeyPath: "packages", invalidItemBehaviour: .fail)
+            packages = try jsonDictionary.json(atKeyPath: "packages", invalidItemBehaviour: .custom({ error in
+                var pairs = [(String, Any)]()
+                for item in error.dictionary {
+                    pairs.append((
+                        item.key as? String ?? "",
+                        (item.value as? Double).map { String($0) + ".0" } ?? item.value
+                    ))
+                }
+                return (try? .value(.init(jsonDictionary: .init(uniqueKeysWithValues: pairs)))) ?? .fail
+            }))
         } else {
             packages = [:]
         }
