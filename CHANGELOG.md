@@ -21,6 +21,7 @@
 - **Breaking**: `fileGroups` are now relative paths when in included files, like other paths #1534 @shnhrrsn
 - **Breaking**: Local package paths are now relative paths when in included files, like other paths #1498 @juri
 - Optional groups are no longer skipped when missing and generating projects from a different directory #1529 @SSheldon
+- Handle major.minor SPM packages versions #1546 @RomanPodymov
 
 ### Internal
 
