@@ -42,6 +42,7 @@ targets:
         embed: true
       - target: StaticLibrary
       - package: XcodeGen
+      - package: SwiftLocation
       - package: FooFeature
         products:
           - FooDomain
