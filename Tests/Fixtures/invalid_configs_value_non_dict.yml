@@ -1,0 +1,8 @@
+name: InvalidConfigsNonDict
+
+settings:
+  configs:
+    invalid_key0: value0
+    debug:
+      valid_key: value1
+    invalid_key1: value2
