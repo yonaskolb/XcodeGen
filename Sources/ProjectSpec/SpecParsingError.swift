@@ -15,6 +15,7 @@ public enum SpecParsingError: Error, CustomStringConvertible {
     case unknownBreakpointActionType(String)
     case unknownBreakpointActionConveyanceType(String)
     case unknownBreakpointActionSoundName(String)
+    case invalidConfigsFormat(keys: Set<String>)
 
     public var description: String {
         switch self {
@@ -46,6 +47,8 @@ public enum SpecParsingError: Error, CustomStringConvertible {
             return "Unknown Breakpoint Action conveyance type: \(type)"
         case let .unknownBreakpointActionSoundName(name):
             return "Unknown Breakpoint Action sound name: \(name)"
+        case let .invalidConfigsFormat(keys):
+            return "The value for \"\(keys.sorted().joined(separator: ", "))\" in configs must be a dictionary"
         }
     }
 }

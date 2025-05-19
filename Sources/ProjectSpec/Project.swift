@@ -173,7 +173,17 @@ extension Project {
         let jsonDictionary = Project.resolveProject(jsonDictionary: jsonDictionary)
 
         name = try jsonDictionary.json(atKeyPath: "name")
-        settings = jsonDictionary.json(atKeyPath: "settings") ?? .empty
+
+        do {
+            settings = try jsonDictionary.json(atKeyPath: "settings")
+        } catch let specParsingError as SpecParsingError {
+            // Rethrow SpecParsingError to prevent misuse of settings.configs
+            throw specParsingError
+        } catch {
+            // Ignore any errors other than SpecParsingError
+            settings = .empty
+        }
+
         settingGroups = jsonDictionary.json(atKeyPath: "settingGroups")
             ?? jsonDictionary.json(atKeyPath: "settingPresets") ?? [:]
         let configs: [String: String] = jsonDictionary.json(atKeyPath: "configs") ?? [:]

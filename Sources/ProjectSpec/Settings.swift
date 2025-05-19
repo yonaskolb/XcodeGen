@@ -28,7 +28,23 @@ public struct Settings: Equatable, JSONObjectConvertible, CustomStringConvertibl
             groups = jsonDictionary.json(atKeyPath: "groups") ?? jsonDictionary.json(atKeyPath: "presets") ?? []
             let buildSettingsDictionary: JSONDictionary = jsonDictionary.json(atKeyPath: "base") ?? [:]
             buildSettings = buildSettingsDictionary
-            configSettings = jsonDictionary.json(atKeyPath: "configs") ?? [:]
+
+            guard let configSettings = jsonDictionary["configs"] as? JSONDictionary else {
+                configSettings = [:]
+                return
+            }
+
+            let invalidConfigKeys = configSettings.reduce(into: Set<String>()) { partialResult, config in
+                if !(config.value is JSONDictionary) {
+                    partialResult.insert(config.key)
+                }
+            }
+
+            guard invalidConfigKeys.isEmpty else {
+                throw SpecParsingError.invalidConfigsFormat(keys: invalidConfigKeys)
+            }
+
+            self.configSettings = try jsonDictionary.json(atKeyPath: "configs")
         } else {
             buildSettings = jsonDictionary
             configSettings = [:]
