@@ -1,4 +1,4 @@
-name: InvalidConfigsNonDict
+name: InvalidConfigsValueNonMapping
 
 # This fixture is used to test the validation that ensures all values under `settings.configs`
 # are mappings. `invalid_key0` and `invalid_key1` are not mapping,

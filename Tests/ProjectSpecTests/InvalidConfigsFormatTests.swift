@@ -6,7 +6,7 @@ import PathKit
 struct invalidConfigsMappingFormatTests {
     @Test("throws invalidConfigsMappingFormat error for non-dictionary configs entries")
     func testNonDictionaryConfigsEntries() throws {
-        let path = fixturePath + "invalid_configs_value_non_dict.yml"
+        let path = fixturePath + "invalid_configs_value_non_mapping.yml"
         let expectedError = SpecParsingError.invalidConfigsMappingFormat(keys: ["invalid_key0", "invalid_key1"])
 
         #expect(throws: EquatableErrorBox(expectedError)) {
