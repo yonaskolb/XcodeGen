@@ -132,6 +132,7 @@ public struct Scheme: Equatable {
         public static let disableThreadPerformanceCheckerDefault = false
         public static let debugEnabledDefault = true
         public static let enableGPUValidationModeDefault = true
+        public static let useCustomWorkingDirectoryDefault = false
 
         public var config: String?
         public var commandLineArguments: [String: Bool]
@@ -153,6 +154,8 @@ public struct Scheme: Equatable {
         public var storeKitConfiguration: String?
         public var customLLDBInit: String?
         public var macroExpansion: String?
+        public var customWorkingDirectory: String?
+        public var useCustomWorkingDirectory: Bool
 
         public init(
             config: String? = nil,
@@ -174,7 +177,9 @@ public struct Scheme: Equatable {
             simulateLocation: SimulateLocation? = nil,
             storeKitConfiguration: String? = nil,
             customLLDBInit: String? = nil,
-            macroExpansion: String? = nil
+            macroExpansion: String? = nil,
+            customWorkingDirectory: String? = nil,
+            useCustomWorkingDirectory: Bool = useCustomWorkingDirectoryDefault
         ) {
             self.config = config
             self.commandLineArguments = commandLineArguments
@@ -195,6 +200,8 @@ public struct Scheme: Equatable {
             self.storeKitConfiguration = storeKitConfiguration
             self.customLLDBInit = customLLDBInit
             self.macroExpansion = macroExpansion
+            self.customWorkingDirectory = customWorkingDirectory
+            self.useCustomWorkingDirectory = useCustomWorkingDirectory
         }
     }
 
@@ -523,6 +530,8 @@ extension Scheme.Run: JSONObjectConvertible {
         }
         customLLDBInit = jsonDictionary.json(atKeyPath: "customLLDBInit")
         macroExpansion = jsonDictionary.json(atKeyPath: "macroExpansion")
+        customWorkingDirectory = jsonDictionary.json(atKeyPath: "customWorkingDirectory")
+        useCustomWorkingDirectory = jsonDictionary.json(atKeyPath: "useCustomWorkingDirectory") ?? Scheme.Run.useCustomWorkingDirectoryDefault
     }
 }
 
