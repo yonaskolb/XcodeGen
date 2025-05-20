@@ -29,27 +29,29 @@ public struct Settings: Equatable, JSONObjectConvertible, CustomStringConvertibl
             let buildSettingsDictionary: JSONDictionary = jsonDictionary.json(atKeyPath: "base") ?? [:]
             buildSettings = buildSettingsDictionary
 
-            guard let configSettings = jsonDictionary["configs"] as? JSONDictionary else {
-                configSettings = [:]
-                return
-            }
-
-            let invalidConfigKeys = configSettings.reduce(into: Set<String>()) { partialResult, config in
-                if !(config.value is JSONDictionary) {
-                    partialResult.insert(config.key)
-                }
-            }
-
-            guard invalidConfigKeys.isEmpty else {
-                throw SpecParsingError.invalidConfigsFormat(keys: invalidConfigKeys)
-            }
-
-            self.configSettings = try jsonDictionary.json(atKeyPath: "configs")
+            self.configSettings = try Self.validateMappingStyleInConfig(jsonDictionary: jsonDictionary)
         } else {
             buildSettings = jsonDictionary
             configSettings = [:]
             groups = []
         }
+    }
+
+    private static func validateMappingStyleInConfig(jsonDictionary: JSONDictionary) throws -> [String: Settings] {
+        guard let configSettings = jsonDictionary["configs"] as? JSONDictionary else {
+            return [:]
+        }
+
+        let invalidConfigKeys = Set(
+            configSettings.filter { !($0.value is JSONDictionary) }
+            .map { $0.key }
+        )
+
+        guard invalidConfigKeys.isEmpty else {
+            throw SpecParsingError.invalidConfigsFormat(keys: invalidConfigKeys)
+        }
+
+        return try jsonDictionary.json(atKeyPath: "configs")
     }
 
     public static func == (lhs: Settings, rhs: Settings) -> Bool {
