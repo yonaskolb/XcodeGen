@@ -1,0 +1,15 @@
+name: InvalidConfigsValueNonMappingTargets
+
+# This fixture tests nested validation of `settings.configs` under a target.
+# Here, `invalid_key0` and `invalid_key1` are scalar values (not mappings),
+# so parsing should throw SpecParsingError.invalidConfigsMappingFormat.
+targets:
+  invalid_target:
+    type: application
+    platform: iOS
+    settings:
+      configs:
+        invalid_key0: value0
+        debug:
+          valid_key: value1
+        invalid_key1: value2
