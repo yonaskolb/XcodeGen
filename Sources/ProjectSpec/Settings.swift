@@ -37,7 +37,7 @@ public struct Settings: Equatable, JSONObjectConvertible, CustomStringConvertibl
         }
     }
 
-    private static func validateMappingStyleInConfig(jsonDictionary: JSONDictionary) throws -> [String: Settings] {
+    private static func extractValidConfigs(from jsonDictionary: JSONDictionary) throws -> [String: Settings] {
         guard let configSettings = jsonDictionary["configs"] as? JSONDictionary else {
             return [:]
         }
