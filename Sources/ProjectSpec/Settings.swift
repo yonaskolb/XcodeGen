@@ -48,7 +48,7 @@ public struct Settings: Equatable, JSONObjectConvertible, CustomStringConvertibl
         )
 
         guard invalidConfigKeys.isEmpty else {
-            throw SpecParsingError.invalidConfigsFormat(keys: invalidConfigKeys)
+            throw SpecParsingError.invalidConfigsMappingFormat(keys: invalidConfigKeys)
         }
 
         return try jsonDictionary.json(atKeyPath: "configs")
