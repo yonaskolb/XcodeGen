@@ -174,15 +174,7 @@ extension Project {
 
         name = try jsonDictionary.json(atKeyPath: "name")
 
-        do {
-            settings = try jsonDictionary.json(atKeyPath: "settings")
-        } catch let specParsingError as SpecParsingError {
-            // Re-throw `SpecParsingError` to prevent the misuse of settings.configs.
-            throw specParsingError
-        } catch {
-            // Ignore all errors except `SpecParsingError`
-            settings = .empty
-        }
+        settings = try ValidSettingsExtractor(jsonDictionary: jsonDictionary).extract()
 
         settingGroups = jsonDictionary.json(atKeyPath: "settingGroups")
             ?? jsonDictionary.json(atKeyPath: "settingPresets") ?? [:]
