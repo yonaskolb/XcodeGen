@@ -44,7 +44,7 @@ public struct Settings: Equatable, JSONObjectConvertible, CustomStringConvertibl
 
         let invalidConfigKeys = Set(
             configSettings.filter { !($0.value is JSONDictionary) }
-            .map { $0.key }
+                .map(\.key)
         )
 
         guard invalidConfigKeys.isEmpty else {
