@@ -177,10 +177,10 @@ extension Project {
         do {
             settings = try jsonDictionary.json(atKeyPath: "settings")
         } catch let specParsingError as SpecParsingError {
-            // Rethrow SpecParsingError to prevent misuse of settings.configs
+            // Re-throw `SpecParsingError` to prevent the misuse of settings.configs.
             throw specParsingError
         } catch {
-            // Ignore any errors other than SpecParsingError
+            // Ignore all errors except `SpecParsingError`
             settings = .empty
         }
 

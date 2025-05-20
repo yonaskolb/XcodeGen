@@ -48,7 +48,7 @@ public enum SpecParsingError: Error, CustomStringConvertible {
         case let .unknownBreakpointActionSoundName(name):
             return "Unknown Breakpoint Action sound name: \(name)"
         case let .invalidConfigsMappingFormat(keys):
-            return "The value for \"\(keys.sorted().joined(separator: ", "))\" in configs must be a dictionary"
+            return "Invalid format: The value for \"\(keys.sorted().joined(separator: ", "))\" in `configs` must be mapping format"
         }
     }
 }
