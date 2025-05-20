@@ -29,7 +29,7 @@ public struct Settings: Equatable, JSONObjectConvertible, CustomStringConvertibl
             let buildSettingsDictionary: JSONDictionary = jsonDictionary.json(atKeyPath: "base") ?? [:]
             buildSettings = buildSettingsDictionary
 
-            self.configSettings = try Self.validateMappingStyleInConfig(jsonDictionary: jsonDictionary)
+            self.configSettings = try Self.extractValidConfigs(from: jsonDictionary)
         } else {
             buildSettings = jsonDictionary
             configSettings = [:]
@@ -37,6 +37,9 @@ public struct Settings: Equatable, JSONObjectConvertible, CustomStringConvertibl
         }
     }
 
+    /// Extracts and validates the `configs` mapping from the given JSON dictionary.
+    /// - Parameter jsonDictionary: The JSON dictionary to extract `configs` from.
+    /// - Returns: A dictionary mapping configuration names to `Settings` objects.
     private static func extractValidConfigs(from jsonDictionary: JSONDictionary) throws -> [String: Settings] {
         guard let configSettings = jsonDictionary["configs"] as? JSONDictionary else {
             return [:]
