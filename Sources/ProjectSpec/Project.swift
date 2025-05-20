@@ -173,7 +173,9 @@ extension Project {
         let jsonDictionary = Project.resolveProject(jsonDictionary: jsonDictionary)
 
         name = try jsonDictionary.json(atKeyPath: "name")
-        settings = jsonDictionary.json(atKeyPath: "settings") ?? .empty
+
+        settings = try ValidSettingsExtractor(jsonDictionary: jsonDictionary).extract()
+
         settingGroups = jsonDictionary.json(atKeyPath: "settingGroups")
             ?? jsonDictionary.json(atKeyPath: "settingPresets") ?? [:]
         let configs: [String: String] = jsonDictionary.json(atKeyPath: "configs") ?? [:]

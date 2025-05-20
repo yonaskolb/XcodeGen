@@ -60,7 +60,7 @@ extension AggregateTarget: NamedJSONDictionaryConvertible {
     public init(name: String, jsonDictionary: JSONDictionary) throws {
         self.name = jsonDictionary.json(atKeyPath: "name") ?? name
         targets = jsonDictionary.json(atKeyPath: "targets") ?? []
-        settings = jsonDictionary.json(atKeyPath: "settings") ?? .empty
+        settings = try ValidSettingsExtractor(jsonDictionary: jsonDictionary).extract()
         configFiles = jsonDictionary.json(atKeyPath: "configFiles") ?? [:]
         buildScripts = jsonDictionary.json(atKeyPath: "buildScripts") ?? []
         buildToolPlugins = jsonDictionary.json(atKeyPath: "buildToolPlugins") ?? []
