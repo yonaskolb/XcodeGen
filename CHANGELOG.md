@@ -2,6 +2,8 @@
 
 ## Next Version
 
+- Added Address Sanitizer & similar options in run/test schemes #1550 @hi-kumar
+
 ## 2.43.0
 
 ### Added
