@@ -20,15 +20,18 @@ struct BuildSettingsParser {
         }
     }
 
-    func parseSettingGroups(withDefault defaultGroups: [String: Settings]) throws -> [String: Settings] {
+    /// Attempts to extract and parse setting groups from the dictionary with fallback defaults.
+    ///
+    /// - Returns: Parsed setting groups or default groups if parsing fails
+    func parseSettingGroups() throws -> [String: Settings] {
         do {
             return try jsonDictionary.json(atKeyPath: "settingGroups", invalidItemBehaviour: .fail)
         } catch let specParsingError as SpecParsingError {
-            // Re-throw `SpecParsingError` to prevent the misuse of settings.configs.
+            // Re-throw `SpecParsingError` to prevent the misuse of settingGroups.
             throw specParsingError
         } catch {
             // Ignore all errors except `SpecParsingError`
-            return defaultGroups
+            return jsonDictionary.json(atKeyPath: "settingPresets") ?? [:]
         }
     }
 }
