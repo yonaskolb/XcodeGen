@@ -4,41 +4,40 @@ import TestSupport
 import PathKit
 
 struct invalidConfigsMappingFormatTests {
-    let invalidConfigsFixturePath: Path = fixturePath + "invalid_configs"
-
-    @Test("throws invalidConfigsMappingFormat for non-mapping settings.configs entries at root level")
-    func testNonMappingSettingsConfigsEntries() throws {
-        let path = invalidConfigsFixturePath + "invalid_configs_value_non_mapping_settings.yml"
-        let expectedError = SpecParsingError.invalidConfigsMappingFormat(keys: ["invalid_key0", "invalid_key1"])
-
-        #expect {
-            try Project(path: path)
-        } throws: { actualError in
-            (actualError as any CustomStringConvertible).description == expectedError.description
-        }
+    struct InvalidConfigsTestArguments {
+        var fixturePath: Path
+        var expectedError: SpecParsingError
     }
 
-    @Test("throws invalidConfigsMappingFormat for non-mapping settings.configs entries in a target")
-    func testNonMappingTargetsConfigsEntries() throws {
-        let path = invalidConfigsFixturePath + "invalid_configs_value_non_mapping_targets.yml"
-        let expectedError = SpecParsingError.invalidConfigsMappingFormat(keys: ["invalid_key0", "invalid_key1"])
-
-        #expect {
-            try Project(path: path)
-        } throws: { actualError in
-            (actualError as any CustomStringConvertible).description == expectedError.description
-        }
+    private static var testArguments: [InvalidConfigsTestArguments] {
+        let invalidConfigsFixturePath: Path = fixturePath + "invalid_configs"
+        return [
+            InvalidConfigsTestArguments(
+                fixturePath: invalidConfigsFixturePath + "invalid_configs_value_non_mapping_settings.yml",
+                expectedError: SpecParsingError.invalidConfigsMappingFormat(keys: ["invalid_key0", "invalid_key1"])
+            ),
+            InvalidConfigsTestArguments(
+                fixturePath: invalidConfigsFixturePath + "invalid_configs_value_non_mapping_targets.yml",
+                expectedError: SpecParsingError.invalidConfigsMappingFormat(keys: ["invalid_key0", "invalid_key1"])
+            ),
+            InvalidConfigsTestArguments(
+                fixturePath: invalidConfigsFixturePath + "invalid_configs_value_non_mapping_aggregate_targets.yml",
+                expectedError: SpecParsingError.invalidConfigsMappingFormat(keys: ["invalid_key0", "invalid_key1"])
+            ),
+            InvalidConfigsTestArguments(
+                fixturePath: invalidConfigsFixturePath + "invalid_configs_value_non_mapping_setting_groups.yml",
+                expectedError: SpecParsingError.invalidConfigsMappingFormat(keys: ["invalid_key0", "invalid_key1"])
+            )
+        ]
     }
 
-    @Test("throws invalidConfigsMappingFormat for non-mapping settings.configs entries in an aggregate target")
-    func testNonMappingAggregateTargetsConfigsEntries() throws {
-        let path = invalidConfigsFixturePath + "invalid_configs_value_non_mapping_aggregate_targets.yml"
-        let expectedError = SpecParsingError.invalidConfigsMappingFormat(keys: ["invalid_key0", "invalid_key1"])
-
+    @Test("throws invalidConfigsMappingFormat for non-mapping configs entries", arguments: testArguments)
+    func testInvalidConfigsMappingFormat(_ arguments: InvalidConfigsTestArguments) throws {
         #expect {
-            try Project(path: path)
+            try Project(path: arguments.fixturePath)
         } throws: { actualError in
-            (actualError as any CustomStringConvertible).description == expectedError.description
+            (actualError as any CustomStringConvertible).description
+            == arguments.expectedError.description
         }
     }
 }
