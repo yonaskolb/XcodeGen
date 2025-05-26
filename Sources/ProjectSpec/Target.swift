@@ -316,7 +316,7 @@ extension Target: NamedJSONDictionaryConvertible {
             deploymentTarget = nil
         }
 
-        settings = try ValidSettingsExtractor(jsonDictionary: jsonDictionary).extract()
+        settings = try BuildSettingsParser(jsonDictionary: jsonDictionary).extract()
         configFiles = jsonDictionary.json(atKeyPath: "configFiles") ?? [:]
         if let source: String = jsonDictionary.json(atKeyPath: "sources") {
             sources = [TargetSource(path: source)]

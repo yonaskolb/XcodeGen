@@ -2,7 +2,7 @@ import Foundation
 import JSONUtilities
 
 /// A helper for extracting and validating the `Settings` object from a JSON dictionary.
-struct ValidSettingsExtractor {
+struct BuildSettingsParser {
     let jsonDictionary: JSONDictionary
 
     /// Attempts to extract and parse the `Settings` from the dictionary.

@@ -174,7 +174,7 @@ extension Project {
 
         name = try jsonDictionary.json(atKeyPath: "name")
 
-        settings = try ValidSettingsExtractor(jsonDictionary: jsonDictionary).extract()
+        settings = try BuildSettingsParser(jsonDictionary: jsonDictionary).extract()
 
         settingGroups = jsonDictionary.json(atKeyPath: "settingGroups")
             ?? jsonDictionary.json(atKeyPath: "settingPresets") ?? [:]
