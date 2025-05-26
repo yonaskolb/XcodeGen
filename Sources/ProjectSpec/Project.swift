@@ -175,9 +175,9 @@ extension Project {
 
         name = try jsonDictionary.json(atKeyPath: "name")
 
-        settings = try buildSettingsParser.extract()
+        settings = try buildSettingsParser.parse()
 
-        settingGroups = try buildSettingsParser.extractSettingGroups(withDefault: jsonDictionary.json(atKeyPath: "settingPresets") ?? [:])
+        settingGroups = try buildSettingsParser.parseSettingGroups(withDefault: jsonDictionary.json(atKeyPath: "settingPresets") ?? [:])
         let configs: [String: String] = jsonDictionary.json(atKeyPath: "configs") ?? [:]
         self.configs = configs.isEmpty ? Config.defaultConfigs :
             configs.map { Config(name: $0, type: ConfigType(rawValue: $1)) }.sorted { $0.name < $1.name }

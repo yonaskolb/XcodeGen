@@ -8,7 +8,7 @@ struct BuildSettingsParser {
     /// Attempts to extract and parse the `Settings` from the dictionary.
     ///
     /// - Returns: A valid `Settings` object
-    func extract() throws -> Settings {
+    func parse() throws -> Settings {
         do {
             return try jsonDictionary.json(atKeyPath: "settings")
         } catch let specParsingError as SpecParsingError {
@@ -20,7 +20,7 @@ struct BuildSettingsParser {
         }
     }
 
-    func extractSettingGroups(withDefault defaultGroups: [String: Settings]) throws -> [String: Settings] {
+    func parseSettingGroups(withDefault defaultGroups: [String: Settings]) throws -> [String: Settings] {
         do {
             return try jsonDictionary.json(atKeyPath: "settingGroups", invalidItemBehaviour: .fail)
         } catch let specParsingError as SpecParsingError {
