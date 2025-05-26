@@ -171,11 +171,13 @@ extension Project {
         self.basePath = basePath
 
         let jsonDictionary = Project.resolveProject(jsonDictionary: jsonDictionary)
+        let buildSettingsParser = BuildSettingsParser(jsonDictionary: jsonDictionary)
 
         name = try jsonDictionary.json(atKeyPath: "name")
-        settings = jsonDictionary.json(atKeyPath: "settings") ?? .empty
-        settingGroups = jsonDictionary.json(atKeyPath: "settingGroups")
-            ?? jsonDictionary.json(atKeyPath: "settingPresets") ?? [:]
+
+        settings = try buildSettingsParser.parse()
+        settingGroups = try buildSettingsParser.parseSettingGroups()
+
         let configs: [String: String] = jsonDictionary.json(atKeyPath: "configs") ?? [:]
         self.configs = configs.isEmpty ? Config.defaultConfigs :
             configs.map { Config(name: $0, type: ConfigType(rawValue: $1)) }.sorted { $0.name < $1.name }
