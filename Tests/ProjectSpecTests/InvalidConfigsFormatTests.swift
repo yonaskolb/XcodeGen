@@ -3,7 +3,7 @@ import Testing
 import TestSupport
 import PathKit
 
-struct invalidConfigsMappingFormatTests {
+struct InvalidConfigsMappingFormatTests {
     struct InvalidConfigsTestArguments {
         var fixturePath: Path
         var expectedError: SpecParsingError
