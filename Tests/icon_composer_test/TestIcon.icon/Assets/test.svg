@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg">
+  <!-- Simple test icon for XcodeGen IconComposer support -->
+  <rect width="100" height="100" fill="#007AFF" rx="20"/>
+  <text x="50" y="55" font-family="Arial" font-size="14" fill="white" text-anchor="middle">TEST</text>
+</svg> 

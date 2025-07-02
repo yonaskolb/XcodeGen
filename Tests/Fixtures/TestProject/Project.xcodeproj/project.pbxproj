@@ -3359,6 +3359,7 @@
 		00FD318C7418F3351FC00744 /* Test Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = App_watchOS/Info.plist;
 				PRODUCT_BUNDLE_IDENTIFIER = com.project.app.watch;
 				SDKROOT = watchos;
@@ -3517,6 +3518,7 @@
 		0579BA94EA238151DAFC2FFC /* Test Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = App_Clip/Clip.entitlements;
 				INFOPLIST_FILE = App_Clip/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -4011,6 +4013,7 @@
 		20803EC42C26E4EA13474E5A /* Production Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = App_watchOS/Info.plist;
 				PRODUCT_BUNDLE_IDENTIFIER = com.project.app.watch;
 				SDKROOT = watchos;
@@ -4407,6 +4410,7 @@
 		3BE60579CA725E23659AEA80 /* Production Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = App_Clip/Clip.entitlements;
 				INFOPLIST_FILE = App_Clip/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -4783,6 +4787,7 @@
 		4D86BBA6893D41140152B8CC /* Staging Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = iMessageApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -4830,6 +4835,7 @@
 		4EDC77FA8569D4AB3135780D /* Staging Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = App_Clip/Clip.entitlements;
 				INFOPLIST_FILE = App_Clip/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -4883,6 +4889,7 @@
 		511E983641E821858100107B /* Production Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = iMessageApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5100,6 +5107,7 @@
 		5876AA17762F3248F4FD66E1 /* Staging Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = iMessageApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5351,6 +5359,7 @@
 		6C201A244077B7B453E15C1A /* Test Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = iMessageApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5546,6 +5555,7 @@
 		7B2A1BE6CA654E9903A4C680 /* Staging Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = App_watchOS/Info.plist;
 				PRODUCT_BUNDLE_IDENTIFIER = com.project.app.watch;
 				SDKROOT = watchos;
@@ -5599,6 +5609,7 @@
 		7C9FE720B05E0120F78B81AF /* Test Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = App_Clip/Clip.entitlements;
 				INFOPLIST_FILE = App_Clip/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -5751,6 +5762,7 @@
 		84404129017F8D027A24136A /* Staging Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = App_Clip/Clip.entitlements;
 				INFOPLIST_FILE = App_Clip/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -6526,6 +6538,7 @@
 		AABC1E325EADF86C5137D659 /* Production Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = App_watchOS/Info.plist;
 				PRODUCT_BUNDLE_IDENTIFIER = com.project.app.watch;
 				SDKROOT = watchos;
@@ -7106,6 +7119,7 @@
 		C4397CDA0D458BAD55C911B0 /* Staging Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = App_watchOS/Info.plist;
 				PRODUCT_BUNDLE_IDENTIFIER = com.project.app.watch;
 				SDKROOT = watchos;
@@ -7212,6 +7226,7 @@
 		C734956B0E352751B5DA14A6 /* Production Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = App_Clip/Clip.entitlements;
 				INFOPLIST_FILE = App_Clip/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -8007,6 +8022,7 @@
 		EA62022185E4BCDA6786EC0D /* Production Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = iMessageApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -8119,6 +8135,7 @@
 		F3AC6A112F81D0958A316D82 /* Test Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = App_watchOS/Info.plist;
 				PRODUCT_BUNDLE_IDENTIFIER = com.project.app.watch;
 				SDKROOT = watchos;
@@ -8189,6 +8206,7 @@
 		F961247BCE59D147388CA721 /* Test Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = iMessageApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

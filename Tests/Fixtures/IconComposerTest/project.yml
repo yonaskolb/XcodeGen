@@ -1,0 +1,14 @@
+name: IconComposerTest
+options:
+  bundleIdPrefix: com.example
+targets:
+  IconComposerApp:
+    type: application
+    platform: iOS
+    sources:
+      - path: App
+        type: folder
+      - path: ../../icon_composer_test/TestIcon.icon
+    settings:
+      INFOPLIST_FILE: App/Info.plist
+      PRODUCT_BUNDLE_IDENTIFIER: com.example.iconcomposerapp 
