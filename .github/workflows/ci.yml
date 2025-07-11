@@ -4,14 +4,11 @@ on:
   pull_request: {}
 jobs:
   run:
-    runs-on: ${{ matrix.macos }}
+    runs-on: macos-15
     name: Xcode ${{ matrix.xcode }}
     strategy:
       matrix:
-        xcode: ["16.0"]
-        include:
-        - xcode: "16.0"
-          macos: macos-15
+        xcode: ["16.0", "16.3"]
     env:
       DEVELOPER_DIR: /Applications/Xcode_${{ matrix.xcode }}.app/Contents/Developer
     steps:

@@ -2,6 +2,11 @@
 
 ## Next Version
 
+### Fixed
+- Added validation to ensure that all values in `settings.configs` are mappings. Previously, passing non-mapping values did not raise an error, making it difficult to detect misconfigurations. Now, `SpecParsingError.invalidConfigsMappingFormat` is thrown if misused. #1547 @Ryu0118
+
+## 2.43.0
+
 ### Added
 
 - Added `excludeFromProject` from local packages #1512 @maximkrouk
