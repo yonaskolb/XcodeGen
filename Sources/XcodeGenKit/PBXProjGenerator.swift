@@ -1456,7 +1456,7 @@ public class PBXProjGenerator {
         }
 
         // add fileSystemSynchronizedGroups
-        let synchronizedRootGroups = sourceFiles.compactMap { $0.synchronizedRootGroup }
+        let synchronizedRootGroups = sourceFiles.compactMap { $0.fileReference as? PBXFileSystemSynchronizedRootGroup }
         if !synchronizedRootGroups.isEmpty {
             targetObject.fileSystemSynchronizedGroups = synchronizedRootGroups
         }
