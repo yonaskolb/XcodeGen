@@ -9,7 +9,6 @@ struct SourceFile {
     let fileReference: PBXFileElement
     let buildFile: PBXBuildFile
     let buildPhase: BuildPhaseSpec?
-    var synchronizedRootGroup: PBXFileSystemSynchronizedRootGroup?
 }
 
 class SourceGenerator {
@@ -706,14 +705,13 @@ class SourceGenerator {
             // TODO: adjust if hasCustomParent == true
             rootGroups.insert(syncedRootGroup)
 
-            var sourceFile = generateSourceFile(
+            let sourceFile = generateSourceFile(
                 targetType: targetType,
                 targetSource: targetSource,
                 path: path,
                 fileReference: syncedRootGroup,
                 buildPhases: buildPhases
             )
-            sourceFile.synchronizedRootGroup = syncedRootGroup
             sourceFiles.append(sourceFile)
         }
 
