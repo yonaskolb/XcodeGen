@@ -1335,6 +1335,14 @@ public class PBXProjGenerator {
                 buildSettings["INFOPLIST_FILE"] = infoPlistFile
             }
 
+            // Set ASSETCATALOG_COMPILER_APPICON_NAME for IconComposer-generated icons
+            if let iconComposerIconName = detectIconComposerAppIconName(for: target) {
+                buildSettings["ASSETCATALOG_COMPILER_APPICON_NAME"] = iconComposerIconName
+            } else if target.type.isApp && !project.targetHasBuildSetting("ASSETCATALOG_COMPILER_APPICON_NAME", target: target, config: config) {
+                // Set default AppIcon for application targets that don't have IconComposer icons
+                buildSettings["ASSETCATALOG_COMPILER_APPICON_NAME"] = "AppIcon"
+            }
+
             // automatically calculate bundle id
             if let bundleIdPrefix = project.options.bundleIdPrefix,
                 !project.targetHasBuildSetting("PRODUCT_BUNDLE_IDENTIFIER", target: target, config: config) {
@@ -1476,6 +1484,85 @@ public class PBXProjGenerator {
     private func makeDestinationFilters(for filters: [SupportedDestination]?) -> [String]? {
         guard let filters = filters, !filters.isEmpty else { return nil }
         return filters.map { $0.string }
+    }
+    
+    /// Detects IconComposer-generated app icon name for a target
+    /// - Parameter target: The target to check
+    /// - Returns: The app icon name if IconComposer-generated icons are found, nil otherwise
+    private func detectIconComposerAppIconName(for target: Target) -> String? {
+        // Scan target sources for asset catalogs
+        for source in target.sources {
+            let sourcePath = project.basePath + source.path
+            
+            // If the source is an asset catalog
+            if sourcePath.extension == "xcassets" {
+                if let iconName = IconComposerSupport.detectAppIconName(for: sourcePath) {
+                    return iconName
+                }
+            }
+            
+            // If the source is a directory, scan for asset catalogs and .icon folders
+            if sourcePath.isDirectory {
+                // Check for asset catalogs
+                let assetCatalogs = findAssetCatalogs(in: sourcePath)
+                for assetCatalog in assetCatalogs {
+                    if let iconName = IconComposerSupport.detectAppIconName(for: assetCatalog) {
+                        return iconName
+                    }
+                }
+                
+                // Check for .icon folders
+                let iconFolders = findIconFolders(in: sourcePath)
+                for iconFolder in iconFolders {
+                    // For .icon folders, we can use the folder name as the icon name
+                    return iconFolder.lastComponentWithoutExtension
+                }
+            }
+        }
+        
+        return nil
+    }
+    
+    /// Recursively finds all asset catalogs in a directory
+    /// - Parameter directory: The directory to scan
+    /// - Returns: Array of asset catalog paths
+    private func findAssetCatalogs(in directory: Path) -> [Path] {
+        var assetCatalogs: [Path] = []
+        
+        guard directory.isDirectory else { return assetCatalogs }
+        
+        let children = (try? directory.children()) ?? []
+        
+        for child in children {
+            if child.extension == "xcassets" {
+                assetCatalogs.append(child)
+            } else if child.isDirectory {
+                assetCatalogs.append(contentsOf: findAssetCatalogs(in: child))
+            }
+        }
+        
+        return assetCatalogs
+    }
+    
+    /// Recursively finds all .icon folders in a directory
+    /// - Parameter directory: The directory to scan
+    /// - Returns: Array of .icon folder paths
+    private func findIconFolders(in directory: Path) -> [Path] {
+        var iconFolders: [Path] = []
+        
+        guard directory.isDirectory else { return iconFolders }
+        
+        let children = (try? directory.children()) ?? []
+        
+        for child in children {
+            if child.extension == "icon" {
+                iconFolders.append(child)
+            } else if child.isDirectory {
+                iconFolders.append(contentsOf: findIconFolders(in: child))
+            }
+        }
+        
+        return iconFolders
     }
     
     /// Make `Build Tools Plug-ins` as a dependency to the target

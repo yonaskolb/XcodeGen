@@ -1,0 +1,13 @@
+{
+  "version": "1.0",
+  "name": "TestIcon",
+  "description": "Test icon for XcodeGen IconComposer support",
+  "author": "XcodeGen Test Suite",
+  "assets": [
+    {
+      "name": "icon",
+      "type": "icon",
+      "layers": []
+    }
+  ]
+} 
