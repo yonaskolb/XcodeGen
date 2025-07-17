@@ -86,13 +86,13 @@ class SourceGenerator {
     ///   - targetType: The type of target that the source files should belong to.
     ///   - sources: The array of sources defined as part of the targets spec.
     ///   - buildPhases: A dictionary containing any build phases that should be applied to source files at specific paths in the event that the associated `TargetSource` didn't already define a `buildPhase`. Values from this dictionary are used in cases where the project generator knows more about a file than the spec/filesystem does (i.e if the file should be treated as the targets Info.plist and so on).
-    func getAllSourceFiles(targetType: PBXProductType, sources: [TargetSource], buildPhases: [Path : BuildPhaseSpec]) throws -> [SourceFile] {
-        try sources.flatMap { try getSourceFiles(targetType: targetType, targetSource: $0, buildPhases: buildPhases) }
+    func getAllSourceFiles(target: PBXTarget, targetType: PBXProductType, sources: [TargetSource], buildPhases: [Path : BuildPhaseSpec]) throws -> [SourceFile] {
+        try sources.flatMap { try getSourceFiles(target: target, targetType: targetType, targetSource: $0, buildPhases: buildPhases) }
     }
 
     // get groups without build files. Use for Project.fileGroups
     func getFileGroups(path: String) throws {
-        _ = try getSourceFiles(targetType: .none, targetSource: TargetSource(path: path), buildPhases: [:])
+        _ = try getSourceFiles(target: nil, targetType: .none, targetSource: TargetSource(path: path), buildPhases: [:])
     }
 
     func getFileType(path: Path) -> FileType? {
@@ -601,7 +601,7 @@ class SourceGenerator {
     }
 
     /// creates source files
-    private func getSourceFiles(targetType: PBXProductType, targetSource: TargetSource, buildPhases: [Path: BuildPhaseSpec]) throws -> [SourceFile] {
+    private func getSourceFiles(target: PBXTarget?, targetType: PBXProductType, targetSource: TargetSource, buildPhases: [Path: BuildPhaseSpec]) throws -> [SourceFile] {
 
         // generate excluded paths
         let path = project.basePath + targetSource.path
@@ -690,13 +690,23 @@ class SourceGenerator {
         case .syncedFolder:
 
             let relativePath = (try? path.relativePath(from: project.basePath)) ?? path
-
+			
+            var exceptions: [PBXFileSystemSynchronizedExceptionSet] = []
+            let ignoredFiles = Array(buildPhases.filter { $0.value == .none }.keys)
+            if let target, !ignoredFiles.isEmpty {
+                let memberShipExceptions = ignoredFiles
+                    .map { (try? $0.relativePath(from: project.basePath)) ?? $0 }
+                    .map(\.string)
+                let exception = PBXFileSystemSynchronizedBuildFileExceptionSet(target: target, membershipExceptions: memberShipExceptions, publicHeaders: nil, privateHeaders: nil, additionalCompilerFlagsByRelativePath: nil, attributesByRelativePath: nil)
+                addObject(exception)
+                exceptions.append(exception)
+            }
             let syncedRootGroup = PBXFileSystemSynchronizedRootGroup(
                 sourceTree: .group,
                 path: relativePath.string,
                 name: targetSource.name,
                 explicitFileTypes: [:],
-                exceptions: [],
+                exceptions: exceptions,
                 explicitFolders: []
             )
             addObject(syncedRootGroup)
