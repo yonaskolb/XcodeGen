@@ -25,15 +25,16 @@
 /* Begin PBXBuildFile section */
 		23C6626698DE560017A89F2F /* XcodeGen in Frameworks */ = {isa = PBXBuildFile; productRef = 6F7DEA2D82649EDF903FBDBD /* XcodeGen */; };
 		2DA7998902987953B119E4CE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26F7EFEE613987D1E1258A60 /* AppDelegate.swift */; };
-		36CE2E6187D9709BAD9EF807 /* FooUI in Frameworks */ = {isa = PBXBuildFile; productRef = 927CB19D94339CC9960E930C /* FooUI */; };
+		36CE2E6187D9709BAD9EF807 /* FooDomain in Frameworks */ = {isa = PBXBuildFile; productRef = 8D2DC638BEF7FDF23907E134 /* FooDomain */; };
 		3986ED6965842721C46C0452 /* SwiftRoaringDynamic in Frameworks */ = {isa = PBXBuildFile; productRef = DC73B269C8B0C0BF6912842C /* SwiftRoaringDynamic */; };
 		4CC663B42B270404EF5FD037 /* libStaticLibrary.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CAB5625F6FEA668410ED5482 /* libStaticLibrary.a */; };
 		9AD886A88D3E4A1B5E900687 /* SPMTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7970A2253B14A9B27C307FAC /* SPMTests.swift */; };
 		9C4AD0711D706FD3ED0E436D /* StaticLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 61C17B77601A9D1B7895AB42 /* StaticLibrary.swift */; };
-		AF8E362713B9D28EA9A5C9FC /* FooDomain in Frameworks */ = {isa = PBXBuildFile; productRef = 8D2DC638BEF7FDF23907E134 /* FooDomain */; };
+		AF8E362713B9D28EA9A5C9FC /* SwiftLocation in Frameworks */ = {isa = PBXBuildFile; productRef = 04F71F974C4771232AF4FEC2 /* SwiftLocation */; };
 		B89EA0F3859878A1DCF7BAFD /* SwiftRoaringDynamic in Embed Frameworks */ = {isa = PBXBuildFile; productRef = DC73B269C8B0C0BF6912842C /* SwiftRoaringDynamic */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CE46CBA5671B951B546C8673 /* Codability in Frameworks */ = {isa = PBXBuildFile; productRef = 16E6FE01D5BD99F78D4A17E2 /* Codability */; settings = {ATTRIBUTES = (Weak, ); }; };
 		E368431019ABC696E4FFC0CF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4E22B8BCC18A29EFE1DE3BE4 /* Assets.xcassets */; };
+		ECC4F5F3B3D1391712A7AFE3 /* FooUI in Frameworks */ = {isa = PBXBuildFile; productRef = 927CB19D94339CC9960E930C /* FooUI */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -90,8 +91,9 @@
 				3986ED6965842721C46C0452 /* SwiftRoaringDynamic in Frameworks */,
 				4CC663B42B270404EF5FD037 /* libStaticLibrary.a in Frameworks */,
 				23C6626698DE560017A89F2F /* XcodeGen in Frameworks */,
-				AF8E362713B9D28EA9A5C9FC /* FooDomain in Frameworks */,
-				36CE2E6187D9709BAD9EF807 /* FooUI in Frameworks */,
+				AF8E362713B9D28EA9A5C9FC /* SwiftLocation in Frameworks */,
+				36CE2E6187D9709BAD9EF807 /* FooDomain in Frameworks */,
+				ECC4F5F3B3D1391712A7AFE3 /* FooUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -224,6 +226,7 @@
 				16E6FE01D5BD99F78D4A17E2 /* Codability */,
 				DC73B269C8B0C0BF6912842C /* SwiftRoaringDynamic */,
 				6F7DEA2D82649EDF903FBDBD /* XcodeGen */,
+				04F71F974C4771232AF4FEC2 /* SwiftLocation */,
 				8D2DC638BEF7FDF23907E134 /* FooDomain */,
 				927CB19D94339CC9960E930C /* FooUI */,
 			);
@@ -253,6 +256,7 @@
 			packageReferences = (
 				5BA91390AE78D2EE15C60091 /* XCRemoteSwiftPackageReference "Codability" */,
 				348C81C327DB1710B742C370 /* XCRemoteSwiftPackageReference "Prefire" */,
+				63B845B0C9058076DD19CA85 /* XCRemoteSwiftPackageReference "SwiftLocation" */,
 				E3887F3CB2C069E70D98092F /* XCRemoteSwiftPackageReference "SwiftRoaring" */,
 				630A8CE9F2BE39704ED9D461 /* XCLocalSwiftPackageReference "FooFeature" */,
 				C6539B364583AE96C18CE377 /* XCLocalSwiftPackageReference "../../.." */,
@@ -669,6 +673,14 @@
 				minimumVersion = 0.2.1;
 			};
 		};
+		63B845B0C9058076DD19CA85 /* XCRemoteSwiftPackageReference "SwiftLocation" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/malcommac/SwiftLocation";
+			requirement = {
+				kind = exactVersion;
+				version = 6.0;
+			};
+		};
 		E3887F3CB2C069E70D98092F /* XCRemoteSwiftPackageReference "SwiftRoaring" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/piotte13/SwiftRoaring";
@@ -680,6 +692,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		04F71F974C4771232AF4FEC2 /* SwiftLocation */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 63B845B0C9058076DD19CA85 /* XCRemoteSwiftPackageReference "SwiftLocation" */;
+			productName = SwiftLocation;
+		};
 		15DB49096E2978F6BCA8D604 /* FooUI */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = FooUI;
