@@ -100,7 +100,7 @@ class GenerateCommand: ProjectCommand {
         do {
             let projectGenerator = ProjectGenerator(project: project)
 
-            guard let userName = ProcessInfo.processInfo.environment["LOGNAME"] else {
+            guard let userName = ProcessInfo.processInfo.environment["USER"] else {
                 throw GenerationError.missingUsername
             }
 

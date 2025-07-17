@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -322,8 +322,6 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1430;
-				TargetAttributes = {
-				};
 			};
 			buildConfigurationList = D91E14E36EC0B415578456F2 /* Build configuration list for PBXProject "Project" */;
 			compatibilityVersion = "Xcode 14.0";
@@ -335,7 +333,7 @@
 			);
 			mainGroup = 293D0FF827366B513839236A;
 			minimizedProjectReferenceProxies = 1;
-			preferredProjectObjectVersion = 54;
+			preferredProjectObjectVersion = 70;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (

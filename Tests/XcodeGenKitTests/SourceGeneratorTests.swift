@@ -84,6 +84,42 @@ class SourceGeneratorTests: XCTestCase {
                 try pbxProj.expectFile(paths: ["Sources", "A", "C2.0", "c.swift"], buildPhase: .sources)
             }
 
+            $0.it("generates synced folder") {
+                let directories = """
+                Sources:
+                  A:
+                    - a.swift
+                """
+                try createDirectories(directories)
+
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: [.init(path: "Sources", type: .syncedFolder)])
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target])
+
+                let pbxProj = try project.generatePbxProj()
+                let syncedFolders = try pbxProj.getMainGroup().children.compactMap { $0 as? PBXFileSystemSynchronizedRootGroup }
+                let syncedFolder = try unwrap(syncedFolders.first)
+
+                try expect([syncedFolder]) == pbxProj.nativeTargets.first?.fileSystemSynchronizedGroups
+            }
+
+            $0.it("respects defaultSourceDirectoryType") {
+                let directories = """
+                Sources:
+                  A:
+                    - a.swift
+                """
+                try createDirectories(directories)
+
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: ["Sources"])
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target], options: .init(defaultSourceDirectoryType: .syncedFolder))
+
+                let pbxProj = try project.generatePbxProj()
+                let syncedFolders = try pbxProj.getMainGroup().children.compactMap { $0 as? PBXFileSystemSynchronizedRootGroup }
+                let syncedFolder = try unwrap(syncedFolders.first)
+
+                try expect([syncedFolder]) == pbxProj.nativeTargets.first?.fileSystemSynchronizedGroups
+            }
+
             $0.it("supports frameworks in sources") {
                 let directories = """
                 Sources:
