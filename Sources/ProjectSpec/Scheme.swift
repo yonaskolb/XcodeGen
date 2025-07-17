@@ -584,6 +584,9 @@ extension Scheme.Run: JSONEncodable {
         if let customLLDBInit = customLLDBInit {
             dict["customLLDBInit"] = customLLDBInit
         }
+        if let customWorkingDirectory = customWorkingDirectory {
+            dict["customWorkingDirectory"] = customWorkingDirectory
+        }
         return dict
     }
 }
