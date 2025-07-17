@@ -28,12 +28,33 @@ public struct Settings: Equatable, JSONObjectConvertible, CustomStringConvertibl
             groups = jsonDictionary.json(atKeyPath: "groups") ?? jsonDictionary.json(atKeyPath: "presets") ?? []
             let buildSettingsDictionary: JSONDictionary = jsonDictionary.json(atKeyPath: "base") ?? [:]
             buildSettings = buildSettingsDictionary
-            configSettings = jsonDictionary.json(atKeyPath: "configs") ?? [:]
+
+            self.configSettings = try Self.extractValidConfigs(from: jsonDictionary)
         } else {
             buildSettings = jsonDictionary
             configSettings = [:]
             groups = []
         }
+    }
+
+    /// Extracts and validates the `configs` mapping from the given JSON dictionary.
+    /// - Parameter jsonDictionary: The JSON dictionary to extract `configs` from.
+    /// - Returns: A dictionary mapping configuration names to `Settings` objects.
+    private static func extractValidConfigs(from jsonDictionary: JSONDictionary) throws -> [String: Settings] {
+        guard let configSettings = jsonDictionary["configs"] as? JSONDictionary else {
+            return [:]
+        }
+
+        let invalidConfigKeys = Set(
+            configSettings.filter { !($0.value is JSONDictionary) }
+                .map(\.key)
+        )
+
+        guard invalidConfigKeys.isEmpty else {
+            throw SpecParsingError.invalidConfigsMappingFormat(keys: invalidConfigKeys)
+        }
+
+        return try jsonDictionary.json(atKeyPath: "configs")
     }
 
     public static func == (lhs: Settings, rhs: Settings) -> Bool {
