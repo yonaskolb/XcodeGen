@@ -161,6 +161,7 @@ public struct Scheme: Equatable {
         public var storeKitConfiguration: String?
         public var customLLDBInit: String?
         public var macroExpansion: String?
+        public var customWorkingDirectory: String?
 
         public init(
             config: String? = nil,
@@ -186,7 +187,8 @@ public struct Scheme: Equatable {
             simulateLocation: SimulateLocation? = nil,
             storeKitConfiguration: String? = nil,
             customLLDBInit: String? = nil,
-            macroExpansion: String? = nil
+            macroExpansion: String? = nil,
+            customWorkingDirectory: String? = nil
         ) {
             self.config = config
             self.commandLineArguments = commandLineArguments
@@ -211,6 +213,7 @@ public struct Scheme: Equatable {
             self.storeKitConfiguration = storeKitConfiguration
             self.customLLDBInit = customLLDBInit
             self.macroExpansion = macroExpansion
+            self.customWorkingDirectory = customWorkingDirectory
         }
     }
 
@@ -559,6 +562,7 @@ extension Scheme.Run: JSONObjectConvertible {
         }
         customLLDBInit = jsonDictionary.json(atKeyPath: "customLLDBInit")
         macroExpansion = jsonDictionary.json(atKeyPath: "macroExpansion")
+        customWorkingDirectory = jsonDictionary.json(atKeyPath: "customWorkingDirectory")
     }
 }
 
@@ -626,6 +630,9 @@ extension Scheme.Run: JSONEncodable {
         }
         if let customLLDBInit = customLLDBInit {
             dict["customLLDBInit"] = customLLDBInit
+        }
+        if let customWorkingDirectory = customWorkingDirectory {
+            dict["customWorkingDirectory"] = customWorkingDirectory
         }
         return dict
     }
