@@ -130,10 +130,8 @@ extension SwiftPackage.VersionRequirement: JSONUtilities.JSONObjectConvertible {
             self = .revision(revision)
         } else if let branch = json(atKeyPath: "branch") {
             self = .branch(branch)
-        } else if jsonDictionary["minVersion"] != nil && jsonDictionary["maxVersion"] != nil {
-            let minimum: String = try jsonDictionary.json(atKeyPath: "minVersion")
-            let maximum: String = try jsonDictionary.json(atKeyPath: "maxVersion")
-            self = .range(from: minimum, to: maximum)
+        } else if let minVersion = json(atKeyPath: "minVersion"), let maxVersion = json(atKeyPath: "maxVersion") {
+            self = .range(from: minVersion, to: maxVersion)
         } else if let minorVersion = json(atKeyPath: "minorVersion") {
             self = .upToNextMinorVersion(minorVersion)
         } else if let majorVersion = json(atKeyPath: "majorVersion") {
