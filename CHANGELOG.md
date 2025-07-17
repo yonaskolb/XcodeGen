@@ -2,11 +2,19 @@
 
 ## Next Version
 
+## 2.44.0
+
 ### Added
+- Basic support for Xcode 16's synchronized folders #1541 @yonaskolb
+  - `TargetSource.type` can now be `syncedFolder`
+  - `Options.defaultSourceDirectoryType` can be set to `syncedFolder` for the default type in all sources in the project (defaults to `group`)
+  - Benefits include faster generation and no cache invalidation or need to regenerate when files are added or removed from these folders
+  - Note that not all TargetSource options like excludes are supported, just a simple path. Please test and see what is missing in your projects
 - Added sanitizer options to run and test actions in Scheme #1550 @hi-kumar
 
 ### Fixed
 - Added validation to ensure that all values in `settings.configs` are mappings. Previously, passing non-mapping values did not raise an error, making it difficult to detect misconfigurations. Now, `SpecParsingError.invalidConfigsMappingFormat` is thrown if misused. #1547 @Ryu0118
+- Use `USER` instead of `LOGNAME` for XCUserData #1559 @KostyaSha
 
 ## 2.43.0
 
