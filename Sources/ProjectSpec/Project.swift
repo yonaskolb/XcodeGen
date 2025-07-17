@@ -252,7 +252,7 @@ extension Project: PathContainer {
 
 extension Project {
 
-    public var allFiles: [Path] {
+    public var allTrackedFiles: [Path] {
         var files: [Path] = []
         files.append(contentsOf: configFilePaths)
         for fileGroup in fileGroups {
@@ -270,12 +270,28 @@ extension Project {
             files.append(contentsOf: target.configFilePaths)
             for source in target.sources {
                 let sourcePath = basePath + source.path
-                let sourceChildren = (try? sourcePath.recursiveChildren()) ?? []
-                files.append(contentsOf: sourceChildren)
+                
+                let type = source.type ?? options.defaultSourceDirectoryType ?? .group
+                if type.projectTracksChildren {
+                    let sourceChildren = (try? sourcePath.recursiveChildren()) ?? []
+                    files.append(contentsOf: sourceChildren)
+                }
                 files.append(sourcePath)
             }
         }
         return files
+    }
+}
+
+extension SourceType {
+    
+    var projectTracksChildren: Bool {
+        switch self {
+        case .file: false
+        case .folder: false
+        case .group: true
+        case .syncedFolder: false
+        }
     }
 }
 
