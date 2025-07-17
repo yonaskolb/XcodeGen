@@ -356,7 +356,7 @@ public class SchemeGenerator {
             selectedLauncherIdentifier: selectedLauncherIdentifier(for: schemeTarget, run: scheme.run),
             askForAppToLaunch: scheme.run?.askForAppToLaunch,
             customWorkingDirectory: scheme.run?.customWorkingDirectory,
-            useCustomWorkingDirectory: scheme.run?.useCustomWorkingDirectory ?? Scheme.Run.useCustomWorkingDirectoryDefault,
+            useCustomWorkingDirectory: scheme.run?.customWorkingDirectory != nil,
             allowLocationSimulation: allowLocationSimulation,
             locationScenarioReference: locationScenarioReference,
             enableGPUFrameCaptureMode: scheme.run?.enableGPUFrameCaptureMode ?? XCScheme.LaunchAction.defaultGPUFrameCaptureMode,
