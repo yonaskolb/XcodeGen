@@ -686,8 +686,14 @@ public class PBXProjGenerator {
         let infoPlistFiles: [Config: String] = getInfoPlists(for: target)
         let sourceFileBuildPhaseOverrideSequence: [(Path, BuildPhaseSpec)] = Set(infoPlistFiles.values).map({ (project.basePath + $0, .none) })
         let sourceFileBuildPhaseOverrides = Dictionary(uniqueKeysWithValues: sourceFileBuildPhaseOverrideSequence)
-        let sourceFiles = try sourceGenerator.getAllSourceFiles(targetType: target.type, sources: target.sources, buildPhases: sourceFileBuildPhaseOverrides)
-            .sorted { $0.path.lastComponent < $1.path.lastComponent }
+        let targetObject = targetObjects[target.name]!
+        let sourceFiles = try sourceGenerator.getAllSourceFiles(
+            target: targetObject,
+            targetType: target.type,
+            sources: target.sources,
+            buildPhases: sourceFileBuildPhaseOverrides
+        )
+        .sorted { $0.path.lastComponent < $1.path.lastComponent }
 
         var anyDependencyRequiresObjCLinking = false
 
@@ -1438,8 +1444,6 @@ public class PBXProjGenerator {
             buildConfigurations: configs,
             defaultConfigurationName: defaultConfigurationName
         ))
-
-        let targetObject = targetObjects[target.name]!
 
         let targetFileReference = targetFileReferences[target.name]
 
