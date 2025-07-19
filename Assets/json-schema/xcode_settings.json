@@ -1,0 +1,3102 @@
+{
+  "title": "XcodeGen Settings Object",
+  "description": "Settings correspond to Build Settings tab in Xcode. To display Setting Names instead of Setting Titles, select Editor -> Show Setting Names in Xcode.\n https://github.com/yonaskolb/XcodeGen/blob/master/Docs/ProjectSpec.md#settings",
+  "type": "object",
+  "properties": {
+    "ACTION": {
+      "description": "A string identifying the build system action being performed.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "ADDITIONAL_SDKS": {
+      "description": "The locations of any sparse SDKs that should be layered on top of the one specified by SDKROOT. If more than one SDK is listed, the first one has highest precedence. Every SDK specified in this setting should be a “sparse” SDK, for example, not an SDK for an entire macOS release.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "ALLOW_TARGET_PLATFORM_SPECIALIZATION": {
+      "description": "If enabled, allows targets to build multiple times within a single build operation. Targets will build for the platform of the active run destination, as well as the platforms of any targets which depend on them.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "ALTERNATE_GROUP": {
+      "description": "The group name or gid for the files listed under the ALTERNATE_PERMISSIONS_FILES setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "ALTERNATE_MODE": {
+      "description": "Permissions used for the files listed under the ALTERNATE_PERMISSIONS_FILES setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "ALTERNATE_OWNER": {
+      "description": "The owner name or uid for the files listed under the ALTERNATE_PERMISSIONS_FILES setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "ALTERNATE_PERMISSIONS_FILES": {
+      "description": "List of files to which the alternate owner, group and permissions are applied.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES": {
+      "description": "Always embed the Swift standard libraries in the target’s products, even if the target does not contain any Swift code. For example, this should be enabled if the target is embedding other products which contain Swift, or if it is a test target which does not contain Swift but which is testing a product which does. This setting only applies to wrapped products, not to standalone binary products.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "ALWAYS_SEARCH_USER_PATHS": {
+      "description": "This setting is deprecated as of Xcode 8.3 and may not be supported in future versions. It is recommended that you disable the setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "APPLICATION_EXTENSION_API_ONLY": {
+      "description": "When enabled, this causes the compiler and linker to disallow use of APIs that are not available to app extensions and to disallow linking to frameworks that have not been built with this setting enabled.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "APPLY_RULES_IN_COPY_FILES": {
+      "description": "Enabling this setting will cause files in the target’s Copy Files build phases to be processed by build rules. For example, property list files (.plist) and strings files will be converted as specified by PLIST_FILE_OUTPUT_FORMAT and STRINGS_FILE_OUTPUT_ENCODING, respectively.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "APPLY_RULES_IN_COPY_HEADERS": {
+      "description": "Enabling this setting will cause all Public and Private headers in the target’s Copy Headers build phase to be processed by build rules. This allows custom build rules to be defined to process these headers. Custom script rules can define their outputs relative to HEADER_OUTPUT_DIR, which will be provided to that script, taking the header visibility into account. The scripts are also passed SCRIPT_HEADER_VISIBILITY (“public” or “private”). Files that should not be processed by build rules may need to be moved to a Copy Files build phase when this setting is enabled.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "ARCHS": {
+      "description": "A list of the architectures for which the product will be built. This is usually set to a predefined build setting provided by the platform. If more than one architecture is specified, a universal binary will be produced.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES": {
+      "description": "A set of additional app icon set names to include as in the built product. The icons will be available at runtime for use as alternate app icons. This is an alternative to --include-all-app-icons providing more detailed control.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "ASSETCATALOG_COMPILER_APPICON_NAME": {
+      "description": "Name of an app icon set for the target’s default app icon. The contents will be merged into the Info.plist.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "ASSETCATALOG_COMPILER_COMPLICATION_NAME": {
+      "description": "The name of a watch complication to use from the asset catalog.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME": {
+      "description": "The name of a color resource to use as a the target’s accent color, used as the default tint color on iOS and watchOS, and accent color on macOS.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS": {
+      "description": "When true, all app icon assets from the target’s Asset Catalogs will be included in the built product, making the available at runtime for use as alternate app icons. When false, only the primary app icon will be included in the built product.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "ASSETCATALOG_COMPILER_INCLUDE_INFOPLIST_LOCALIZATIONS": {
+      "description": "When enabled, includes the localization information of the selected assets in the generated partial Info.plist file under the CFBundleLocalizations key. This will allow the assets to be used at runtime in the absence of a corresponding lproj directory in the bundle.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME": {
+      "description": "Name of an asset catalog launch image set whose contents will be merged into the Info.plist.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "ASSETCATALOG_COMPILER_LEADERBOARD_IDENTIFIER_PREFIX": {
+      "description": "Leaderboards in the asset catalog may optionally specify a Game Center identifier. If they do not, their name will be prefixed by this value to form an automatically generated identifier.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "ASSETCATALOG_COMPILER_LEADERBOARD_SET_IDENTIFIER_PREFIX": {
+      "description": "Leaderboard sets in the asset catalog may optionally specify a Game Center identifier. If they do not, their name will be prefixed by this value to form an automatically generated identifier.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "ASSETCATALOG_COMPILER_OPTIMIZATION": {
+      "description": "With no value, the compiler uses the default optimization. You can also specify time to optimize for speed of access or space to optimize for a smaller compiled asset catalogs.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "ASSETCATALOG_COMPILER_SKIP_APP_STORE_DEPLOYMENT": {
+      "description": "Whether to perform App Store-specific behaviors such as validations. For example, building for an iOS or watchOS app will warn if a 1024 App Store icon is not present, but only when compiling for App Store deployment.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "ASSETCATALOG_COMPILER_STANDALONE_ICON_BEHAVIOR": {
+      "description": "Controls whether loose PNG or ICNS files are created for the primary app icon, in addition to including the content in the Assets.car file. By default, a small subset of sizes are included as loose files, allowing external management tools to display a representative icon without reading the CAR file. This can be set to ‘all’ or ‘none’ to include more or fewer icon sizes as loose files.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "ASSETCATALOG_COMPILER_STICKER_PACK_IDENTIFIER_PREFIX": {
+      "description": "Sticker Packs in the asset catalog may optionally specify an identifier. If they do not, their name will be prefixed by this value to form an automatically generated identifier.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME": {
+      "description": "The name of a color resource to use as the background color for a widget.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "ASSETCATALOG_NOTICES": {
+      "description": "Show notices encountered during the compilation of asset catalogs.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "ASSETCATALOG_OTHER_FLAGS": {
+      "description": "Pass additional flags through to the asset catalog compiler.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "ASSETCATALOG_WARNINGS": {
+      "description": "Show warnings encountered during the compilation of asset catalogs.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "ASSET_PACK_MANIFEST_URL_PREFIX": {
+      "description": "If set to anything other than the empty string, every URL in the AssetPackManifest.plist file will consist of this string with the name of the asset pack appended. If not set, the URLs in the AssetPackManifest.plist will be formed as appropriate for the build location of the asset packs. The prefix string is not escaped or quoted in any way, so any necessary escaping must be part of the URL string. This setting affects only URLs in the AssetPackManifest.plist file — it does not affect where asset packs are built in the local file system.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "BUILD_COMPONENTS": {
+      "description": "A list of components being built during this action.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "BUILD_LIBRARY_FOR_DISTRIBUTION": {
+      "description": "Ensures that your libraries are built for distribution. For Swift, this enables support for library evolution and generation of a module interface file.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "BUILD_VARIANTS": {
+      "description": "A list of the build variants of the linked binary that will be produced. By default, only the normal variant is produced. Other common values include debug and profile.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "BUILT_PRODUCTS_DIR": {
+      "description": "Identifies the directory under which all the product’s files can be found. This directory contains either product files or symbolic links to them. Run Script build phases can use the value of this build setting as a convenient way to refer to the product files built by one or more targets even when these files are scattered throughout a directory hierarchy (for example, when DEPLOYMENT_LOCATION is set to YES.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "BUNDLE_LOADER": {
+      "description": "Specifies the executable that will load the bundle output file being linked. Undefined symbols from the bundle are checked against the specified executable as if it is one of the dynamic libraries the bundle was linked with.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_ADDRESS_SANITIZER_CONTAINER_OVERFLOW": {
+      "description": "Check for C++ container overflow when Address Sanitizer is enabled. This check requires the entire application to be built with Address Sanitizer. If not, it may report false positives.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES": {
+      "description": "Enabling this setting allows non-modular includes to be used from within framework modules. This is inherently unsafe, as such headers might cause duplicate definitions when used by any client that imports both the framework and the non-modular includes.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_ANALYZER_DEADCODE_DEADSTORES": {
+      "description": "Check for values stored to variables and never read again.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_ANALYZER_DIVIDE_BY_ZERO": {
+      "description": "Check for division by zero.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_ANALYZER_GCD": {
+      "description": "Check for misuses of the Grand Central Dispatch API.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_ANALYZER_GCD_PERFORMANCE": {
+      "description": "Check for Grand Central Dispatch idioms that may lead to poor performance.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_ANALYZER_LIBKERN_RETAIN_COUNT": {
+      "description": "Finds leaks and overreleases associated with objects inheriting from OSObject.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_ANALYZER_LOCALIZABILITY_EMPTY_CONTEXT": {
+      "description": "Warn when a call to an NSLocalizedString() macro is missing a context comment for the localizer.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED": {
+      "description": "Warn when a nonlocalized string is passed to a user interface method expecting a localized string.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_ANALYZER_MEMORY_MANAGEMENT": {
+      "description": "Warn about memory leaks, use-after-free, and other API misuses.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_ANALYZER_MIG_CONVENTIONS": {
+      "description": "Warn when a MIG routine violates memory management conventions.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_ANALYZER_NONNULL": {
+      "description": "Check for misuses of nonnull parameter and return types.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_ANALYZER_NULL_DEREFERENCE": {
+      "description": "Check for dereferences of null pointers.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION": {
+      "description": "Warn when a number object, such as an instance of NSNumber, CFNumberRef, OSNumber, or OSBoolean is compared or converted to a primitive value instead of another object.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_ANALYZER_OBJC_ATSYNC": {
+      "description": "Warn on nil pointers used as mutexes for @synchronized.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_ANALYZER_OBJC_COLLECTIONS": {
+      "description": "Warn if CF collections are created with non-pointer-size values. Check if NS collections are initialized with non-Objective-C type elements.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_ANALYZER_OBJC_DEALLOC": {
+      "description": "Warn when an instance is improperly cleaned up in -dealloc.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_ANALYZER_OBJC_GENERICS": {
+      "description": "Warn if a specialized generic type is converted to an incompatible type.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_ANALYZER_OBJC_INCOMP_METHOD_TYPES": {
+      "description": "Warn about Objective-C method signatures with type incompatibilities.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_ANALYZER_OBJC_NSCFERROR": {
+      "description": "Warn if functions accepting CFErrorRef or NSError cannot indicate that an error occurred.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_ANALYZER_OBJC_RETAIN_COUNT": {
+      "description": "Warn on leaks and improper reference count management.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_ANALYZER_OBJC_SELF_INIT": {
+      "description": "Check that super init is properly called within an Objective-C initialization method.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_ANALYZER_OBJC_UNUSED_IVARS": {
+      "description": "Warn about private ivars that are never used.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_ANALYZER_OSOBJECT_C_STYLE_CAST": {
+      "description": "Warn when a C-style cast is used for downcasting a pointer to an OSObject. RTTI-aware casts (OSRequiredCast, OSDynamicCast) are more secure and should be used instead of C-style casts in order to avoid potential type confusion attacks.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_ANALYZER_SECURITY_BUFFER_OVERFLOW_EXPERIMENTAL": {
+      "description": "Check for potential buffer overflows.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_ANALYZER_SECURITY_FLOATLOOPCOUNTER": {
+      "description": "Warn on using a floating point value as a loop counter (CERT: FLP30-C, FLP30-CPP).",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_ANALYZER_SECURITY_INSECUREAPI_GETPW_GETS": {
+      "description": "Warn on uses of getpw and gets. The functions are dangerous as they may trigger a buffer overflow.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_ANALYZER_SECURITY_INSECUREAPI_MKSTEMP": {
+      "description": "Warn on uses of mktemp, which produces predictable temporary files. It is obsoleted by mktemps. Warn when mkstemp is passed fewer than 6 X’s in the format string.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_ANALYZER_SECURITY_INSECUREAPI_RAND": {
+      "description": "Warn on uses of rand, random, and related functions, which produce predictable random number sequences. Use arc4random instead.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_ANALYZER_SECURITY_INSECUREAPI_STRCPY": {
+      "description": "Warn on uses of the strcpy and strcat functions, which can result in buffer overflows. Use strlcpy or strlcat instead.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_ANALYZER_SECURITY_INSECUREAPI_UNCHECKEDRETURN": {
+      "description": "Warn on uses of sensitive functions whose return values must be always checked.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_ANALYZER_SECURITY_INSECUREAPI_VFORK": {
+      "description": "Warn on uses of the vfork function, which is inherently insecure. Use the safer posix_spawn function instead.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_ANALYZER_SECURITY_KEYCHAIN_API": {
+      "description": "Check for leaks of keychain attribute lists and data buffers returned by the Keychain Services API.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_ANALYZER_USE_AFTER_MOVE": {
+      "description": "Warn when a C++ object is used after it has been moved from.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_CXX_LANGUAGE_STANDARD": {
+      "description": "Choose a standard or non-standard C++ language dialect. Options include:",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_DEBUG_INFORMATION_LEVEL": {
+      "description": "Toggles the amount of debug information emitted when debug symbols are enabled. This can impact the size of the generated debug information, which may matter in some cases for large projects, such as when using LTO.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_ENABLE_CODE_COVERAGE": {
+      "description": "Enables building with code coverage instrumentation. This is only used when the build has code coverage enabled, which is typically done via the Xcode scheme settings.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_ENABLE_CPP_STATIC_DESTRUCTORS": {
+      "description": "Controls whether variables with static or thread storage duration should have their exit-time destructors run.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_ENABLE_MODULES": {
+      "description": "Enables the use of modules for system APIs. System headers are imported as semantic modules instead of raw headers. This can result in faster builds and project indexing.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_ENABLE_MODULE_DEBUGGING": {
+      "description": "When this setting is enabled, clang will use the shared debug info available in clang modules and precompiled headers. This results in smaller build artifacts, faster compile times, and more complete debug info. This setting should only be disabled when building static libraries with debug info for distribution.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_ENABLE_OBJC_ARC": {
+      "description": "Compiles reference-counted Objective-C code (when garbage collection is not enabled) to use Automatic Reference Counting. Code compiled using automated reference counting is compatible with other code (such as frameworks) compiled using either manual reference counting (for example, traditional retain and release messages) or automated reference counting. Using this mode is currently incompatible with compiling code to use Objective-C Garbage Collection.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_ENABLE_OBJC_WEAK": {
+      "description": "Compiles Objective-C code to enable weak references for code compiled with manual retain release (MRR) semantics.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_LINK_OBJC_RUNTIME": {
+      "description": "When linking a target using Objective-C code, implicitly link in Foundation (and if deploying back to an older OS) a backwards compatibility library to allow newer language features to run on an OS where the runtime support is not natively available. Most targets that use Objective-C should use this, although there are rare cases where a target should opt out of this behavior.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_MIGRATOR_ANNOTATIONS": {
+      "description": "Add attribute annotations to properties and methods.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_MIGRATOR_INSTANCE_TYPE": {
+      "description": "Infer instancetype for method result type instead of id.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_MIGRATOR_NSENUM_MACROS": {
+      "description": "Use NS_ENUM/NS_OPTIONS macros for enumerators.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_MIGRATOR_OBJC_DESIGNATED_INIT": {
+      "description": "Infer NS_DESIGNATED_INITIALIZER for designated initializer methods.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_MIGRATOR_OBJC_LITERALS": {
+      "description": "Enable migration to modern ObjC literals syntax.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_MIGRATOR_OBJC_SUBSCRIPTING": {
+      "description": "Enable migration to modern ObjC subscripting syntax.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_MIGRATOR_PROPERTY_ATOMICITY": {
+      "description": "Choose the atomicity of the inferred properties.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_MIGRATOR_PROPERTY_DOT_SYNTAX": {
+      "description": "Enable migration of setter/getter messages to property-dot syntax.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_MIGRATOR_PROTOCOL_CONFORMANCE": {
+      "description": "Infer protocol conformance from the interface methods.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_MIGRATOR_PUBLIC_HEADERS_ONLY": {
+      "description": "Only modify public headers of a target.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_MIGRATOR_READONLY_PROPERTY": {
+      "description": "Infer readonly properties from getter methods.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_MIGRATOR_READWRITE_PROPERTY": {
+      "description": "Infer readwrite properties from a getter and setter method.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_MODULES_AUTOLINK": {
+      "description": "Automatically link SDK frameworks that are referenced using #import or #include. This feature requires also enabling support for modules. This build setting only applies to C-family languages.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_MODULES_DISABLE_PRIVATE_WARNING": {
+      "description": "Disable warnings related to the recommended use of private module naming. This only makes sense when support for modules is enabled.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_OPTIMIZATION_PROFILE_FILE": {
+      "description": "The path to the file of the profile data to use when CLANG_USE_OPTIMIZATION_PROFILE is enabled.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_STATIC_ANALYZER_MODE": {
+      "description": "The depth the static analyzer uses during the Build action. Use Deep to exercise the full power of the analyzer. Use Shallow for faster analysis.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_STATIC_ANALYZER_MODE_ON_ANALYZE_ACTION": {
+      "description": "The depth the static analyzer uses during the Analyze action. Use Deep to exercise the full power of the analyzer. Use Shallow for faster analysis.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_TIDY_BUGPRONE_ASSERT_SIDE_EFFECT": {
+      "description": "Warn when condition of assert or NSAssert has a side effect. Assert conditions are not evaluated during release builds.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_TIDY_BUGPRONE_INFINITE_LOOP": {
+      "description": "Warn when a loop is discovered to have no termination condition.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_TIDY_BUGPRONE_MOVE_FORWARDING_REFERENCE": {
+      "description": "Warn when use of std::move on a universal reference would cause non-expiring lvalue arguments to be moved unexpectedly.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_TIDY_BUGPRONE_REDUNDANT_BRANCH_CONDITION": {
+      "description": "Warn when an if-statement is redundant because its condition is equivalent to the condition of a larger if-statement it is nested into.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_TIDY_MISC_REDUNDANT_EXPRESSION": {
+      "description": "Warn when a sub-expression of an arithmetic or logic expression can be omitted because it has no effect on the result.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_TRIVIAL_AUTO_VAR_INIT": {
+      "description": "Specify whether stack variables should be uninitialized, which can cause inadvertent information disclosure when uninitialized stack variables are used, or whether they should be pattern-initialized.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_UNDEFINED_BEHAVIOR_SANITIZER_INTEGER": {
+      "description": "Check for unsigned integer overflow, in addition to checks for signed integer overflow.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_UNDEFINED_BEHAVIOR_SANITIZER_NULLABILITY": {
+      "description": "Check for violations of nullability annotations in function calls, return statements, and assignments.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_USE_OPTIMIZATION_PROFILE": {
+      "description": "When this setting is enabled, clang will use the optimization profile collected for a target when building it.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_WARN_ASSIGN_ENUM": {
+      "description": "Warn about assigning integer constants to enum values that are out of the range of the enumerated type.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_WARN_ATOMIC_IMPLICIT_SEQ_CST": {
+      "description": "Warns when an atomic is used with an implicitly sequentially-consistent memory order, instead of explicitly specifying memory order.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING": {
+      "description": "Warn about block captures of implicitly autoreleasing parameters.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_WARN_BOOL_CONVERSION": {
+      "description": "Warn about implicit conversions to boolean values that are suspicious. For example, writing if (foo) where foo is the name a function will trigger a warning.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_WARN_COMMA": {
+      "description": "Warn about suspicious uses of the comma operator.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_WARN_COMPLETION_HANDLER_MISUSE": {
+      "description": "Warn when a function-like parameter annotated as a completion handler is called more than once or not called at all on an execution path.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_WARN_CONSTANT_CONVERSION": {
+      "description": "Warn about implicit conversions of constant values that cause the constant value to change, either through a loss of precision, or entirely in its meaning.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_WARN_CXX0X_EXTENSIONS": {
+      "description": "When compiling C++ code using a language standard older than C++11, warn about the use of C++11 extensions.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_WARN_DELETE_NON_VIRTUAL_DTOR": {
+      "description": "Warn when deleting an instance of a polymorphic class with virtual functions but without a virtual destructor.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS": {
+      "description": "Warn if an Objective-C class either subclasses a deprecated class or overrides a method that has been marked deprecated or unavailable.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_WARN_DIRECT_OBJC_ISA_USAGE": {
+      "description": "Warn about direct accesses to the Objective-C isa pointer instead of using a runtime API.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_WARN_DOCUMENTATION_COMMENTS": {
+      "description": "Warns about issues in documentation comments (doxygen-style) such as missing or incorrect documentation tags.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_WARN_EMPTY_BODY": {
+      "description": "Warn about loop bodies that are suspiciously empty.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_WARN_ENUM_CONVERSION": {
+      "description": "Warn about implicit conversions between different kinds of enum values. For example, this can catch issues when using the wrong enum flag as an argument to a function or method.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_WARN_FLOAT_CONVERSION": {
+      "description": "Warn about implicit conversions that turn floating-point numbers into integers.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_WARN_FRAMEWORK_INCLUDE_PRIVATE_FROM_PUBLIC": {
+      "description": "Warns when a public framework header includes a private framework header.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_WARN_IMPLICIT_FALLTHROUGH": {
+      "description": "Warn about implicit fallthrough in switch statement. Use __attribute__((fallthrough)) (C/ObjC) or [[fallthrough]] (C++) to mark intentional fallthrough.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_WARN_IMPLICIT_SIGN_CONVERSION": {
+      "description": "Warn about implicit integer conversions that change the signedness of an integer value.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_WARN_INFINITE_RECURSION": {
+      "description": "Warn if all paths through a function call itself.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_WARN_INT_CONVERSION": {
+      "description": "Warn about implicit conversions between pointers and integers. For example, this can catch issues when one incorrectly intermixes using NSNumber*’s and raw integers.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_WARN_MISSING_NOESCAPE": {
+      "description": "Warn about noescape annotations that are missing in a method’s signature.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_WARN_NON_LITERAL_NULL_CONVERSION": {
+      "description": "Warn about non-literal expressions that evaluate to zero being treated as a null pointer.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_WARN_NULLABLE_TO_NONNULL_CONVERSION": {
+      "description": "Warns when a nullable expression is used somewhere it’s not allowed, such as when passed as a _Nonnull parameter.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_WARN_OBJC_EXPLICIT_OWNERSHIP_TYPE": {
+      "description": "Warn about implicit ownership types on Objective-C object references as out parameters. For example, declaring a parameter with type NSObject** will produce a warning because the compiler will assume that the out parameter’s ownership type is __autoreleasing.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_WARN_OBJC_IMPLICIT_ATOMIC_PROPERTIES": {
+      "description": "Warn about @property declarations that are implicitly atomic.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF": {
+      "description": "Warn about implicit retains of self within blocks, which can create a retain-cycle.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_WARN_OBJC_INTERFACE_IVARS": {
+      "description": "Warn about instance variable declarations in @interface.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_WARN_OBJC_LITERAL_CONVERSION": {
+      "description": "Warn about implicit conversions from Objective-C literals to values of incompatible type.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_WARN_OBJC_MISSING_PROPERTY_SYNTHESIS": {
+      "description": "Starting in Xcode 4.4, Apple Clang will implicitly synthesize properties that are not explicitly synthesized using @synthesize. This setting warns about such implicit behavior, even though the property is still synthesized. This is essentially a backwards compatibility warning, or for those who wish to continue to explicitly use @synthesize.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_WARN_OBJC_REPEATED_USE_OF_WEAK": {
+      "description": "Warn about repeatedly using a weak reference without assigning the weak reference to a strong reference. This is often symptomatic of a race condition where the weak reference can become nil between accesses, resulting in unexpected behavior. Assigning to temporary strong reference ensures the object stays alive during the related accesses.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_WARN_OBJC_ROOT_CLASS": {
+      "description": "Warn about classes that unintentionally do not subclass a root class, such as NSObject.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_WARN_PRAGMA_PACK": {
+      "description": "Warn when a translation unit is missing terminating ‘#pragma pack (pop)’ directives or when the ‘#pragma pack’ state immediately after an #include is different from the state immediately before.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_WARN_PRIVATE_MODULE": {
+      "description": "Warn about private modules that do not use the recommended private module layout.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER": {
+      "description": "Warns when a quoted include is used instead of a framework style include in a framework header.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_WARN_RANGE_LOOP_ANALYSIS": {
+      "description": "Warn about ranged-based for loops.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_WARN_SEMICOLON_BEFORE_METHOD_BODY": {
+      "description": "Warn about ignored semicolon between a method implementation’s signature and body.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_WARN_STRICT_PROTOTYPES": {
+      "description": "Warn about non-prototype declarations.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_WARN_SUSPICIOUS_IMPLICIT_CONVERSION": {
+      "description": "Warn about various implicit conversions that can lose information or are otherwise suspicious.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_WARN_SUSPICIOUS_MOVE": {
+      "description": "Warn about suspicious uses of std::move.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_WARN_UNGUARDED_AVAILABILITY": {
+      "description": "Warn if an API that is newer than the deployment target is used without “if (@available(…))” guards.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_WARN_UNREACHABLE_CODE": {
+      "description": "Warns about potentially unreachable code.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_WARN_VEXING_PARSE": {
+      "description": "Warn about a parsing ambiguity between a variable declaration and a function-style cast.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_WARN__ARC_BRIDGE_CAST_NONARC": {
+      "description": "Warn about using __bridge casts when not using ARC, where they have no effect.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_WARN__DUPLICATE_METHOD_MATCH": {
+      "description": "Warn about declaring the same method more than once within the same @interface.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_WARN__EXIT_TIME_DESTRUCTORS": {
+      "description": "Warn about destructors for C++ objects that are called when an application is terminating.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CLANG_X86_VECTOR_INSTRUCTIONS": {
+      "description": "Enables the use of extended vector instructions. Only used when targeting Intel architectures.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CODE_SIGN_ENTITLEMENTS": {
+      "description": "The path to a file specifying code-signing entitlements.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CODE_SIGN_IDENTITY": {
+      "description": "The name, also known as the common name, of a valid code-signing certificate in a keychain within your keychain path. A missing or invalid certificate will cause a build error.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CODE_SIGN_INJECT_BASE_ENTITLEMENTS": {
+      "description": "Automatically inject entitlements from the platform’s BaseEntitlements.plist into the code signatures of executables.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CODE_SIGN_STYLE": {
+      "description": "This setting specifies the method used to acquire and locate signing assets. Choose Automatic to let Xcode automatically create and update profiles, app IDs, and certificates. Choose Manual to create and update these yourself on the developer website.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "COMBINE_HIDPI_IMAGES": {
+      "description": "Combines image files at different resolutions into one multi-page TIFF file that is HiDPI compliant for macOS 10.7 and later. Only image files in the same directory and with the same base name and extension are combined. The file names must conform to the naming convention used in HiDPI.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "COMPILER_INDEX_STORE_ENABLE": {
+      "description": "Control whether the compiler should emit index data while building.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "COMPRESS_PNG_FILES": {
+      "description": "If enabled, PNG resource files are compressed as they are copied.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CONFIGURATION": {
+      "description": "Identifies the build configuration, such as Debug or Release, that the target uses to generate the product.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CONFIGURATION_BUILD_DIR": {
+      "description": "The base path where build products will be placed during a build for a given configuration. By default, this is set to $(BUILD_DIR)/$(CONFIGURATION).",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CONFIGURATION_TEMP_DIR": {
+      "description": "The base path where intermediates will be placed during a build for a given configuration. By default, this is set to $(PROJECT_TEMP_DIR)/$(CONFIGURATION).",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CONTENTS_FOLDER_PATH": {
+      "description": "Specifies the directory inside the generated bundle that contains the product’s files.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "COPYING_PRESERVES_HFS_DATA": {
+      "description": "Causes the copying of resources to preserve resource forks and Finder info.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "COPY_HEADERS_RUN_UNIFDEF": {
+      "description": "If enabled, headers are run through the unifdef(1) tool when copied to the product.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "COPY_HEADERS_UNIFDEF_FLAGS": {
+      "description": "Specifies the flags to pass to unifdef(1) when invoking that tool to copy headers. This setting has no effect unless COPY_HEADERS_RUN_UNIFDEF is enabled.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "COPY_PHASE_STRIP": {
+      "description": "Specifies whether binary files that are copied during the build, such as in a Copy Bundle Resources or Copy Files build phase, should be stripped of debugging symbols. It does not cause the linked product of a target to be stripped—use STRIP_INSTALLED_PRODUCT for that.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "COREML_CODEGEN_LANGUAGE": {
+      "description": "The Source-code language to use for generated CoreML model class. By default “Automatic” will analyze your project to determine the correct language. Adjust this setting to explicitly select “Swift” or “Objective-C”, or select “None” to disable model class generation.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "COREML_CODEGEN_SWIFT_GLOBAL_MODULE": {
+      "description": "Generate Swift model classes that are marked with @objc and are descendants of NSObject, in order to be accessible and usable in Objective-C. This setting has no effect if “CoreML Model Class Generation Language” is set to “Objective-C”.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CPP_OTHER_PREPROCESSOR_FLAGS": {
+      "description": "Other flags to pass to the C preprocessor when using the standalone C Preprocessor rule.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CPP_PREFIX_HEADER": {
+      "description": "Implicitly include the given file when preprocessing using the standalone C Preprocessor rule. The path given should either be a project relative path or an absolute path.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CPP_PREPROCESSOR_DEFINITIONS": {
+      "description": "Space-separated list of preprocessor macros of the form foo or foo=bar. These macros are used when preprocessing using the standalone C Preprocessor rule.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CREATE_INFOPLIST_SECTION_IN_BINARY": {
+      "description": "Enabling this setting will create a section in the product’s linked binary containing the processed Info.plist file for the target. This setting only applies to command-line tool targets.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CURRENT_ARCH": {
+      "description": "The name of the active architecture being processed.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CURRENT_PROJECT_VERSION": {
+      "description": "This setting defines the current version of the project. The value must be a integer or floating point number, such as 57 or 365.8.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "CURRENT_VARIANT": {
+      "description": "The name of the active variant being processed.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "DEAD_CODE_STRIPPING": {
+      "description": "Activating this setting causes the -dead_strip flag to be passed to ld(1) via cc(1) to turn on dead code stripping.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "DEBUG_INFORMATION_FORMAT": {
+      "description": "The type of debug information to produce.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "DEFINES_MODULE": {
+      "description": "If enabled, the product will be treated as defining its own module. This enables automatic production of LLVM module map files when appropriate, and allows the product to be imported as a module.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "DEPLOYMENT_LOCATION": {
+      "description": "If enabled, built products are placed in their installed locations in addition to the built products folder.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "DEPLOYMENT_POSTPROCESSING": {
+      "description": "If enabled, indicates that binaries should be stripped and file mode, owner, and group information should be set to standard values.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "DEPLOYMENT_TARGET_SETTING_NAME": {
+      "description": "The name of the build setting for the deployment target for the effective platform. This can be used to evaluate the build setting using build setting interpolation without hard-coding the name, e.g. $($(DEPLOYMENT_TARGET_SETTING_NAME)), or to compose the names of other settings which contain its name, such as the RECOMMENDED_<platform>_DEPLOYMENT_TARGET settings.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "DERIVED_FILE_DIR": {
+      "description": "Identifies the directory into which derived source files, such as those generated by lex and yacc, are placed.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "DERIVE_MACCATALYST_PRODUCT_BUNDLE_IDENTIFIER": {
+      "description": "When enabled, Xcode will automatically derive a bundle identifier for this target from its original bundle identifier when it’s building for Mac Catalyst.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "DEVELOPMENT_ASSET_PATHS": {
+      "description": "Files and directories used only for development. Archive and install builds will exclude this content.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "DEVELOPMENT_TEAM": {
+      "description": "The team ID of a development team to use for signing certificates and provisioning profiles.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "DOCC_EXTRACT_OBJC_INFO_FOR_SWIFT_SYMBOLS": {
+      "description": "Extract Objective-C symbol information for targets that contain only Swift code so that the documentation output can be read as both Swift and Objective-C.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "DOCC_EXTRACT_SWIFT_INFO_FOR_OBJC_SYMBOLS": {
+      "description": "Extract Swift symbol information for targets that contain only Objective-C code so that the documentation output can be read as both Swift and Objective-C.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "DOCC_HOSTING_BASE_PATH": {
+      "description": "The base path your documentation website will be hosted at. For example, if you plan on hosting your DocC archive at https://example.com/ProjectName/documentation instead of https://example.com/documentation, set this value to \"ProjectName\".",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "DOCUMENTATION_FOLDER_PATH": {
+      "description": "Identifies the directory that contains the bundle’s documentation files.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "DONT_GENERATE_INFOPLIST_FILE": {
+      "description": "If enabled, don’t automatically generate an Info.plist file for wrapped products when the INFOPLIST_FILE build setting is empty.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "DSTROOT": {
+      "description": "The path at which all products will be rooted when performing an install build. For instance, to install your products on the system proper, set this path to /. Defaults to /tmp/$(PROJECT_NAME).dst to prevent a test install build from accidentally overwriting valid and needed data in the ultimate install path.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "DTRACE_OTHER_FLAGS": {
+      "description": "Space-separated list of additional flags to pass to the dtrace compiler. Be sure to backslash-escape any arguments that contain spaces or special characters, such as path names that may contain spaces. Use this setting if Xcode does not already provide UI for a particular dtrace flag.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "DYLIB_COMPATIBILITY_VERSION": {
+      "description": "Determines the compatibility version of the resulting library, bundle, or framework binary. See Dynamic Library Design Guidelines in Dynamic Library Programming Topics for details on assigning version numbers of dynamic libraries.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "DYLIB_CURRENT_VERSION": {
+      "description": "This setting defines the current version of any framework built by the project. As with CURRENT_PROJECT_VERSION, the value must be an integer or floating point number, such as 57 or 365.8. By default, it is set to $(CURRENT_PROJECT_VERSION). See Dynamic Library Design Guidelines in Dynamic Library Programming Topics for details on assigning version numbers of dynamic libraries.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "DYLIB_INSTALL_NAME_BASE": {
+      "description": "Sets the base value for the internal install path (LC_ID_DYLIB) in a dynamic library. This will be combined with the EXECUTABLE_PATH to form the full install path. Setting LD_DYLIB_INSTALL_NAME directly will override this setting. This setting defaults to the target’s INSTALL_PATH. It is ignored when building any product other than a dynamic library.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "EAGER_LINKING": {
+      "description": "If enabled, the build system will emit a TBD file for Swift-only framework and dynamic library targets to unblock linking of dependent targets before their dependency has finished linking.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "EMBED_ASSET_PACKS_IN_PRODUCT_BUNDLE": {
+      "description": "Embed all the built asset packs inside the product bundle. Since this negates the performance benefits of the On Demand Resources feature, it is only useful for testing purposes when it isn’t practical to use an asset pack server.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "ENABLE_APP_SANDBOX": {
+      "description": "When set, enables App Sandbox for a target.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "ENABLE_BITCODE": {
+      "description": "Activating this setting indicates that the target or project should generate bitcode during compilation for platforms and architectures that support it. For Archive builds, bitcode will be generated in the linked binary for submission to the App Store. For other builds, the compiler and linker will check whether the code complies with the requirements for bitcode generation, but will not generate actual bitcode.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "ENABLE_HARDENED_RUNTIME": {
+      "description": "Enable hardened runtime restrictions.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "ENABLE_HEADER_DEPENDENCIES": {
+      "description": "Specifies whether to automatically track dependencies on included header files.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "ENABLE_INCREMENTAL_DISTILL": {
+      "description": "Enabled the incremental distill option in the asset catalog compiler. This feature is experimental and should only be enabled with caution.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "ENABLE_NS_ASSERTIONS": {
+      "description": "Controls whether assertion logic provided by NSAssert is included in the preprocessed source code or is elided during preprocessing. Disabling assertions can improve code performance.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "ENABLE_ONLY_ACTIVE_RESOURCES": {
+      "description": "Omit inapplicable resources when building for a single device. For example, when building for a device with a Retina display, exclude 1x resources.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "ENABLE_ON_DEMAND_RESOURCES": {
+      "description": "If enabled, tagged assets—files and asset catalog entries—are built into asset packs based on their combination of tags. Untagged resources are treated normally.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "ENABLE_PREVIEWS": {
+      "description": "If enabled, the product will be built with options appropriate for supporting previews.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "ENABLE_STRICT_OBJC_MSGSEND": {
+      "description": "Controls whether objc_msgSend calls must be cast to the appropriate function pointer type before being called.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "ENABLE_TESTABILITY": {
+      "description": "When this setting is activated, the product will be built with options appropriate for running automated tests, such as making private interfaces accessible to the tests. This may result in tests running slower than they would without testability enabled.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "ENABLE_TESTING_SEARCH_PATHS": {
+      "description": "Specifies whether the build system should add the search paths necessary for compiling and linking against XCTest. This setting is enabled by default if the target is a unit test target or if the target explicitly links to the XCTest framework.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "ENABLE_USER_SCRIPT_SANDBOXING": {
+      "description": "If enabled, the build system will sandbox user scripts to disallow undeclared input/output dependencies.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "ENABLE_USER_SELECTED_FILES": {
+      "description": "This setting indicates whether App Sandbox allows access to files the user selects with an Open or Save dialog.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "EXCLUDED_ARCHS": {
+      "description": "A list of architectures for which the target should not be built. These architectures will be removed from the list in ARCHS when the target is built. If the resulting list of architectures is empty, no binary will be produced. This can be used to declare architectures a target does not support for use in environments where ARCHS is being overridden at a higher level (e.g., via xcodebuild).",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "EXCLUDED_RECURSIVE_SEARCH_PATH_SUBDIRECTORIES": {
+      "description": "This is a list of fnmatch()-style patterns of file or directory names to exclude when performing a recursive search. By default, this is set to \\*.nib \\*.lproj \\*.framework \\*.gch \\*.xcode (\\*) .DS_Store CVS .svn .git .hg. Normally, if you override this value you should include the default values via the $(inherited) macro.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "EXCLUDED_SOURCE_FILE_NAMES": {
+      "description": "A list of patterns (as defined by fnmatch(3)) specifying the names of source files to explicitly exclude when processing the files in the target’s build phases (see also INCLUDED_SOURCE_FILE_NAMES). This setting can be used to define complex filters for which files from the phase should be built in response to other build settings; for example, a value of *.$(CURRENT_ARCH).c could serve to exclude particular files based on the architecture being built.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "EXECUTABLES_FOLDER_PATH": {
+      "description": "Identifies the directory that contains additional binary files.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "EXECUTABLE_EXTENSION": {
+      "description": "This is the extension used for the executable product generated by the target, which has a default value based on the product type.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "EXECUTABLE_FOLDER_PATH": {
+      "description": "Identifies the directory that contains the binary the target builds.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "EXECUTABLE_NAME": {
+      "description": "Specifies the name of the binary the target produces.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "EXECUTABLE_PATH": {
+      "description": "Specifies the path to the binary the target produces within its bundle.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "EXECUTABLE_PREFIX": {
+      "description": "The prefix used for the executable product generated by the target, which has a default value based on the product type.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "EXECUTABLE_SUFFIX": {
+      "description": "Specifies the suffix of the binary filename, including the character that separates the extension from the rest of the bundle name.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "EXPORTED_SYMBOLS_FILE": {
+      "description": "This is a project-relative path to a file that lists the symbols to export. See ld -exported_symbols_list for details on exporting symbols.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "FRAMEWORKS_FOLDER_PATH": {
+      "description": "Specifies the directory that contains the product’s embedded frameworks.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "FRAMEWORK_SEARCH_PATHS": {
+      "description": "This is a list of paths to folders containing frameworks to be searched by the compiler for both included or imported header files when compiling C, Objective-C, C++, or Objective-C++, and by the linker for frameworks used by the product. Paths are delimited by whitespace, so any paths with spaces in them must be properly quoted.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "FRAMEWORK_VERSION": {
+      "description": "Framework bundles are versioned by having contents in subfolders of a version folder that has links to the current version and its contents.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "FUSE_BUILD_SCRIPT_PHASES": {
+      "description": "If enabled, consecutive run script phases will be allowed to run in parallel if they fully specify their input and output dependencies.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_CHAR_IS_UNSIGNED_CHAR": {
+      "description": "Enabling this setting causes char to be unsigned by default, disabling it causes char to be signed by default.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_CW_ASM_SYNTAX": {
+      "description": "Enable the CodeWarrior/Microsoft syntax for inline assembly code in addition to the standard GCC syntax.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_C_LANGUAGE_STANDARD": {
+      "description": "Choose a standard or non-standard C language dialect.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_DYNAMIC_NO_PIC": {
+      "description": "Faster function calls for applications. Not appropriate for shared libraries, which need to be position-independent.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_ENABLE_ASM_KEYWORD": {
+      "description": "Controls whether asm, inline, and typeof are treated as keywords or whether they can be used as identifiers.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_ENABLE_BUILTIN_FUNCTIONS": {
+      "description": "Controls whether builtin functions that do not begin with \\_\\_builtin\\_ as prefix are recognized.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_ENABLE_CPP_EXCEPTIONS": {
+      "description": "Enable C++ exception handling. Generates extra code needed to propagate exceptions. For some targets, this implies GCC will generate frame unwind information for all functions, which can produce significant data size overhead, although it does not affect execution. If you do not specify this option, GCC will enable it by default for languages like C++ that normally require exception handling, and disable it for languages like C that do not normally require it. However, you may need to enable this option when compiling C code that needs to interoperate properly with exception handlers written in C++.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_ENABLE_CPP_RTTI": {
+      "description": "Enable generation of information about every class with virtual functions for use by the C++ runtime type identification features (dynamic_cast and typeid). If you don’t use those parts of the language, you can save some space by using this flag. Note that exception handling uses the same information, but it will generate it as needed.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_ENABLE_EXCEPTIONS": {
+      "description": "Enable exception handling. Generates extra code needed to propagate exceptions. For some targets, this implies GCC will generate frame unwind information for all functions, which can produce significant data size overhead, although it does not affect execution. If you do not specify this option, GCC will enable it by default for languages like C++ and Objective-C that normally require exception handling, and disable it for languages like C that do not normally require it. However, you may need to enable this option when compiling C code that needs to interoperate properly with exception handlers written in other languages. You may also wish to disable this option if you are compiling older programs that don’t use exception handling.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_ENABLE_FLOATING_POINT_LIBRARY_CALLS": {
+      "description": "Generate output containing library calls for floating point.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_ENABLE_KERNEL_DEVELOPMENT": {
+      "description": "Activating this setting enables kernel development mode.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_ENABLE_OBJC_EXCEPTIONS": {
+      "description": "This setting enables @try/@catch/@throw syntax for handling exceptions in Objective-C code. Only applies to Objective-C.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_ENABLE_PASCAL_STRINGS": {
+      "description": "Recognize and construct Pascal-style string literals. Its use in new code is discouraged.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_ENABLE_SSE3_EXTENSIONS": {
+      "description": "Specifies whether the binary uses the builtin functions that provide access to the SSE3 extensions to the IA-32 architecture.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_ENABLE_SSE41_EXTENSIONS": {
+      "description": "Specifies whether the binary uses the builtin functions that provide access to the SSE4.1 extensions to the IA-32 architecture.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_ENABLE_SSE42_EXTENSIONS": {
+      "description": "Specifies whether the binary uses the builtin functions that provide access to the SSE4.2 extensions to the IA-32 architecture.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_ENABLE_TRIGRAPHS": {
+      "description": "Controls whether or not trigraphs are permitted in the source code.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_FAST_MATH": {
+      "description": "Enables some floating point optimizations that are not IEEE754-compliant, but which usually work. Programs that require strict IEEE compliance may not work with this option.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_GENERATE_DEBUGGING_SYMBOLS": {
+      "description": "Enables or disables generation of debug symbols. When debug symbols are enabled, the level of detail can be controlled by the DEBUG_INFORMATION_FORMAT setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_GENERATE_TEST_COVERAGE_FILES": {
+      "description": "Activating this setting causes a notes file to be produced that the gcov code-coverage utility can use to show program coverage.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_INCREASE_PRECOMPILED_HEADER_SHARING": {
+      "description": "Enabling this option will enable increased sharing of precompiled headers among targets that share the same prefix header and precompiled header directory.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_INLINES_ARE_PRIVATE_EXTERN": {
+      "description": "When enabled, out-of-line copies of inline methods are declared private extern.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_INPUT_FILETYPE": {
+      "description": "Specifies whether to compile each source file according to its file type, or whether to treat all source files in the target as if they are of a specific language.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_INSTRUMENT_PROGRAM_FLOW_ARCS": {
+      "description": "Activating this setting indicates that code should be added so program flow arcs are instrumented.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_LINK_WITH_DYNAMIC_LIBRARIES": {
+      "description": "Enabling this option allows linking with the shared libraries. This is the default for most product types.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_NO_COMMON_BLOCKS": {
+      "description": "In C, allocate even uninitialized global variables in the data section of the object file, rather than generating them as common blocks. This has the effect that if the same variable is declared (without extern) in two different compilations, you will get an error when you link them.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_OPTIMIZATION_LEVEL": {
+      "description": "Specifies the degree to which the generated code is optimized for speed and binary size.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_PRECOMPILE_PREFIX_HEADER": {
+      "description": "Generates a precompiled header for the prefix header, which should reduce overall build times.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_PREFIX_HEADER": {
+      "description": "Implicitly include the named header. The path given should either be a project relative path or an absolute path.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_PREPROCESSOR_DEFINITIONS": {
+      "description": "Space-separated list of preprocessor macros of the form foo or foo=bar.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_PREPROCESSOR_DEFINITIONS_NOT_USED_IN_PRECOMPS": {
+      "description": "Space-separated list of preprocessor macros of the form foo or foo=bar. These macros are not used when precompiling a prefix header file.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_REUSE_STRINGS": {
+      "description": "Reuse string literals.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_SHORT_ENUMS": {
+      "description": "Make enums only as large as needed for the range of possible values.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_STRICT_ALIASING": {
+      "description": "Optimize code by making more aggressive assumptions about whether pointers can point to the same objects as other pointers. Programs that use pointers a lot may benefit from this, but programs that don’t strictly follow the ISO C rules about the type with which an object may be accessed may behave unexpectedly.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_SYMBOLS_PRIVATE_EXTERN": {
+      "description": "When enabled, all symbols are declared private extern unless explicitly marked to be exported using \\_\\_attribute\\_\\_((visibility(\"default\"))) in code. If not enabled, all symbols are exported unless explicitly marked as private extern. See Controlling Symbol Visibility in C++ Runtime Environment Programming Guide.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_THREADSAFE_STATICS": {
+      "description": "Emits extra code to use the routines specified in the C++ ABI for thread-safe initialization of local statics. You can disable this option to reduce code size slightly in code that doesn’t need to be thread-safe.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_TREAT_IMPLICIT_FUNCTION_DECLARATIONS_AS_ERRORS": {
+      "description": "Causes warnings about missing function prototypes to be treated as errors. Only applies to C and Objective-C.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_TREAT_INCOMPATIBLE_POINTER_TYPE_WARNINGS_AS_ERRORS": {
+      "description": "Enabling this option causes warnings about incompatible pointer types to be treated as errors.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_TREAT_WARNINGS_AS_ERRORS": {
+      "description": "Enabling this option causes all warnings to be treated as errors.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_UNROLL_LOOPS": {
+      "description": "Unrolls loops. Unrolling makes the code larger, but may make it faster by reducing the number of branches executed.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_USE_STANDARD_INCLUDE_SEARCHING": {
+      "description": "Controls whether the standard system directories are searched for header files. When disabled, only the directories you have specified with -I options (and the directory of the current file, if appropriate) are searched.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_VERSION": {
+      "description": "The compiler to use for C, C++, and Objective-C.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_WARN_64_TO_32_BIT_CONVERSION": {
+      "description": "Warn if a value is implicitly converted from a 64-bit type to a 32-bit type. This is a subset of the warnings provided by -Wconversion.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_WARN_ABOUT_DEPRECATED_FUNCTIONS": {
+      "description": "Warn about the use of deprecated functions, variables, and types (as indicated by the deprecated attribute).",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_WARN_ABOUT_INVALID_OFFSETOF_MACRO": {
+      "description": "Unchecking this setting will suppress warnings from applying the offsetof macro to a non-POD type. According to the 1998 ISO C++ standard, applying offsetof to a non-POD type is undefined. In existing C++ implementations, however, offsetof typically gives meaningful results even when applied to certain kinds of non-POD types, such as a simple struct that fails to be a POD type only by virtue of having a constructor. This flag is for users who are aware that they are writing nonportable code and who have deliberately chosen to ignore the warning about it.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS": {
+      "description": "Warn if a structure’s initializer has some fields missing. For example, the following code would cause such a warning because x.h is implicitly zero:",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_WARN_ABOUT_MISSING_NEWLINE": {
+      "description": "Warn when a source file does not end with a newline.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_WARN_ABOUT_MISSING_PROTOTYPES": {
+      "description": "Causes warnings to be emitted about missing prototypes.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_WARN_ABOUT_POINTER_SIGNEDNESS": {
+      "description": "Warn when pointers passed via arguments or assigned to a variable differ in sign.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_WARN_ABOUT_RETURN_TYPE": {
+      "description": "Causes warnings to be emitted when a function with a defined return type (not void) contains a return statement without a return-value or when it does not contain any return statements. Also emits a warning when a function with a void return type tries to return a value.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_WARN_ALLOW_INCOMPLETE_PROTOCOL": {
+      "description": "Warn if methods required by a protocol are not implemented in the class adopting it. Only applies to Objective-C.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_WARN_CHECK_SWITCH_STATEMENTS": {
+      "description": "Warn whenever a switch statement has an index of enumeral type and lacks a case for one or more of the named codes of that enumeration. The presence of a default label prevents this warning. Case labels outside the enumeration range also provoke warnings when this option is used.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_WARN_FOUR_CHARACTER_CONSTANTS": {
+      "description": "Warn about four-char literals (for example, macOS-style OSTypes: 'APPL').",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS": {
+      "description": "Warn when a function declaration hides virtual functions from a base class.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_WARN_INHIBIT_ALL_WARNINGS": {
+      "description": "Inhibit all warning messages.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED": {
+      "description": "Warn if an aggregate or union initializer is not fully bracketed. In the following example, the initializer for a is not fully bracketed, but the initializer for b is fully bracketed.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_WARN_MISSING_PARENTHESES": {
+      "description": "Warn if parentheses are omitted in certain contexts, such as when there is an assignment in a context where a truth value is expected, or when operators are nested whose precedence causes confusion. Also, warn about constructions where there may be confusion as to which if statement an else branch belongs. For example:",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_WARN_NON_VIRTUAL_DESTRUCTOR": {
+      "description": "Warn when a class declares an nonvirtual destructor that should probably be virtual, because it looks like the class will be used polymorphically. This is only active for C++ or Objective-C++ sources.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_WARN_PEDANTIC": {
+      "description": "Issue all the warnings demanded by strict ISO C and ISO C++; reject all programs that use forbidden extensions, and some other programs that do not follow ISO C and ISO C++. For ISO C, follows the version of the ISO C standard specified by any -std option used.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_WARN_SHADOW": {
+      "description": "Warn whenever a local variable shadows another local variable, parameter or global variable or whenever a builtin function is shadowed.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_WARN_SIGN_COMPARE": {
+      "description": "Warn when a comparison between signed and unsigned values could produce an incorrect result when the signed value is converted to unsigned.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_WARN_STRICT_SELECTOR_MATCH": {
+      "description": "Warn if multiple methods with differing argument and/or return types are found for a given selector when attempting to send a message using this selector to a receiver of type id or Class. When this setting is disabled, the compiler will omit such warnings if any differences found are confined to types that share the same size and alignment.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_WARN_TYPECHECK_CALLS_TO_PRINTF": {
+      "description": "Check calls to printf and scanf to make sure that the arguments supplied have types appropriate to the format string specified, and that the conversions specified in the format string make sense.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_WARN_UNDECLARED_SELECTOR": {
+      "description": "Warn if a @selector(...) expression referring to an undeclared selector is found. A selector is considered undeclared if no method with that name has been declared before the @selector(...) expression, either explicitly in an @interface or @protocol declaration, or implicitly in an @implementation section. This option always performs its checks as soon as a @selector(...) expression is found, while -Wselector only performs its checks in the final stage of compilation. This also enforces the coding style convention that methods and selectors must be declared before being used.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_WARN_UNINITIALIZED_AUTOS": {
+      "description": "Warn if a variable might be clobbered by a setjmp call or if an automatic variable is used without prior initialization.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_WARN_UNKNOWN_PRAGMAS": {
+      "description": "Warn when a #pragma directive is encountered that is not understood by GCC. If this command line option is used, warnings will even be issued for unknown pragmas in system header files. This is not the case if the warnings were only enabled by the -Wall command-line option.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_WARN_UNUSED_FUNCTION": {
+      "description": "Warn whenever a static function is declared but not defined or a noninline static function is unused.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_WARN_UNUSED_LABEL": {
+      "description": "Warn whenever a label is declared but not used.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_WARN_UNUSED_PARAMETER": {
+      "description": "Warn whenever a function parameter is unused aside from its declaration.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_WARN_UNUSED_VALUE": {
+      "description": "Warn whenever a statement computes a result that is explicitly not used.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GCC_WARN_UNUSED_VARIABLE": {
+      "description": "Warn whenever a local variable or nonconstant static variable is unused aside from its declaration.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GENERATE_INFOPLIST_FILE": {
+      "description": "Automatically generate an Info.plist file.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GENERATE_MASTER_OBJECT_FILE": {
+      "description": "Activating this setting will cause the object files built by a target to be prelinked using ld -r into a single object file, and that object file will then be linked into the final product. This is useful to force the linker to resolve symbols and link the object files into a single module before building a static library. Also, a separate set of link flags can be applied to the prelink allowing additional control over, for instance, exported symbols.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GENERATE_PKGINFO_FILE": {
+      "description": "Forces the PkgInfo file to be written to wrapped products even if this file is not expected.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GENERATE_PROFILING_CODE": {
+      "description": "Activating this setting will cause the compiler and linker to generate profiling code. For example, GCC will generate code suitable for use with gprof(1).",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "GENERATE_TEXT_BASED_STUBS": {
+      "description": "Enables the generation of Text-Based stubs for dynamic libraries and frameworks.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "HEADERMAP_INCLUDES_FLAT_ENTRIES_FOR_TARGET_BEING_BUILT": {
+      "description": "Specifies whether the header map contains a name/path entry for every header in the target being built.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "HEADERMAP_INCLUDES_FRAMEWORK_ENTRIES_FOR_ALL_PRODUCT_TYPES": {
+      "description": "Specifies whether the header map contains a framework-name/path entry for every header in the target being built, including targets that do not build frameworks.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "HEADERMAP_INCLUDES_PROJECT_HEADERS": {
+      "description": "Specifies whether the header map contains a name/path entry for every header in the project, regardless of the headers’ target membership.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "HEADER_SEARCH_PATHS": {
+      "description": "This is a list of paths to folders to be searched by the compiler for included or imported header files when compiling C, Objective-C, C++, or Objective-C++. Paths are delimited by whitespace, so any paths with spaces in them need to be properly quoted.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "IBC_COMPILER_AUTO_ACTIVATE_CUSTOM_FONTS": {
+      "description": "Instructs the XIB compiler to add custom fonts to the application’s Info.plist, which will cause the fonts to activate upon application launch.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "IBC_ERRORS": {
+      "description": "Show errors encountered during the compilation of XIB files.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "IBC_FLATTEN_NIBS": {
+      "description": "If enabled, compile XIB files into flattened (non-wrapper) NIB files. After flattening, the resulting NIB is more compact but no longer editable by Interface Builder. When this option is disabled, the resulting NIB file remains editable in Interface Builder.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "IBC_MODULE": {
+      "description": "Defines the module name for Swift classes referenced without a specific module name.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "IBC_NOTICES": {
+      "description": "Show notices encountered during the compilation of XIB files.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "IBC_OTHER_FLAGS": {
+      "description": "A list of additional flags to pass to the Interface Builder Compiler. Use this setting if Xcode does not already provide UI for a particular Interface Builder Compiler flag.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "IBC_OVERRIDING_PLUGINS_AND_FRAMEWORKS_DIR": {
+      "description": "Instructs Interface Builder to load frameworks and Interface Builder plugins from the specified directory. Setting this value to $(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME) will ensure that Interface Builder will load frameworks and plug-ins from the built products directory of the current build configuration.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "IBC_PLUGINS": {
+      "description": "A list of paths to Interface Builder plugins to load when compiling XIB files.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "IBC_PLUGIN_SEARCH_PATHS": {
+      "description": "A list of paths to be searched for Interface Builder plug-ins to load when compiling XIB files.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "IBC_STRIP_NIBS": {
+      "description": "Strips an Interface Builder NIB to reduce its size for deployment. The resulting NIB is more compact but no longer editable by Interface Builder. When this option is disabled, the resulting NIB file remains editable by Interface Builder.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "IBC_WARNINGS": {
+      "description": "Show warnings encountered during the compilation of XIB files.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "IBSC_COMPILER_AUTO_ACTIVATE_CUSTOM_FONTS": {
+      "description": "Instructs the Storyboard compiler to add custom fonts to the application’s Info.plist that will cause the fonts to activate upon application launch.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "IBSC_ERRORS": {
+      "description": "Show errors encountered during the compilation of Storyboard files.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "IBSC_FLATTEN_NIBS": {
+      "description": "Compiles a Storyboard file into flattened (non-wrapper) Storyboard file. After flattening, the resulting Storyboard is more compact but no longer editable by Interface Builder. When this option is disabled, the resulting Storyboard file remains editable in Interface Builder.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "IBSC_MODULE": {
+      "description": "Defines the module name for Swift classes referenced without a specific module name.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "IBSC_NOTICES": {
+      "description": "Show notices encountered during the compilation of Storyboard files.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "IBSC_OTHER_FLAGS": {
+      "description": "A list of additional flags to pass to the Interface Builder Compiler. Use this setting if Xcode does not already provide UI for a particular Interface Builder Compiler flag.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "IBSC_STRIP_NIBS": {
+      "description": "Strips an editable Interface Builder storyboardc file to reduce its size for deployment. The resulting storyboardc is more compact but no longer editable by Interface Builder. When this option is disabled, the resulting storyboardc file remains editable by Interface Builder.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "IBSC_WARNINGS": {
+      "description": "Show warnings encountered during the compilation of Storyboard files.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INCLUDED_RECURSIVE_SEARCH_PATH_SUBDIRECTORIES": {
+      "description": "This is a list of fnmatch()-style patterns of file or directory names to include when performing a recursive search. By default, this is empty and is only customized when you want to provide exceptions to the list of filename patterns provided in EXCLUDED_RECURSIVE_SEARCH_PATH_SUBDIRECTORIES.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INCLUDED_SOURCE_FILE_NAMES": {
+      "description": "A list of patterns (as defined by fnmatch(3)) specifying the names of source files to explicitly include when processing the files in the target’s build phases. This setting is only useful when combined with EXCLUDED_SOURCE_FILE_NAMES, and can be used to define complex filters for which files from the phase should be built in response to other build settings.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_EXPAND_BUILD_SETTINGS": {
+      "description": "Expand build settings in the Info.plist file.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_FILE": {
+      "description": "The project-relative path to the property list file that contains the Info.plist information used by bundles. For details on information property list files, see Information Property List.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_CFBundleDisplayName": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the CFBundleDisplayName key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_CLKComplicationPrincipalClass": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the CLKComplicationPrincipalClass key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_LSApplicationCategoryType": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the LSApplicationCategoryType key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_LSBackgroundOnly": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the LSBackgroundOnly key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the LSSupportsOpeningDocumentsInPlace key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_LSUIElement": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the LSUIElement key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_MetalCaptureEnabled": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the MetalCaptureEnabled key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_NFCReaderUsageDescription": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the NFCReaderUsageDescription key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_NSAppleEventsUsageDescription": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the NSAppleEventsUsageDescription key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_NSAppleMusicUsageDescription": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the NSAppleMusicUsageDescription key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the NSBluetoothAlwaysUsageDescription key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_NSBluetoothPeripheralUsageDescription": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the NSBluetoothPeripheralUsageDescription key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_NSBluetoothWhileInUseUsageDescription": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the NSBluetoothWhileInUseUsageDescription key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_NSCalendarsUsageDescription": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the NSCalendarsUsageDescription key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_NSCameraUsageDescription": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the NSCameraUsageDescription key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_NSContactsUsageDescription": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the NSContactsUsageDescription key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_NSDesktopFolderUsageDescription": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the NSDesktopFolderUsageDescription key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_NSDocumentsFolderUsageDescription": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the NSDocumentsFolderUsageDescription key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_NSDownloadsFolderUsageDescription": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the NSDownloadsFolderUsageDescription key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_NSFaceIDUsageDescription": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the NSFaceIDUsageDescription key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_NSFallDetectionUsageDescription": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the NSFallDetectionUsageDescription key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_NSFileProviderDomainUsageDescription": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the NSFileProviderDomainUsageDescription key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_NSFileProviderPresenceUsageDescription": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the NSFileProviderPresenceUsageDescription key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_NSFocusStatusUsageDescription": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the NSFocusStatusUsageDescription key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_NSGKFriendListUsageDescription": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the NSGKFriendListUsageDescription key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_NSHealthClinicalHealthRecordsShareUsageDescription": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the NSHealthClinicalHealthRecordsShareUsageDescription key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_NSHealthShareUsageDescription": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the NSHealthShareUsageDescription key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_NSHealthUpdateUsageDescription": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the NSHealthUpdateUsageDescription key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_NSHomeKitUsageDescription": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the NSHomeKitUsageDescription key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_NSHumanReadableCopyright": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the NSHumanReadableCopyright key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_NSLocalNetworkUsageDescription": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the NSLocalNetworkUsageDescription key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the NSLocationAlwaysAndWhenInUseUsageDescription key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_NSLocationAlwaysUsageDescription": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the NSLocationAlwaysUsageDescription key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_NSLocationTemporaryUsageDescriptionDictionary": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the NSLocationTemporaryUsageDescriptionDictionary key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_NSLocationUsageDescription": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the NSLocationUsageDescription key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_NSLocationWhenInUseUsageDescription": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the NSLocationWhenInUseUsageDescription key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_NSMainNibFile": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the NSMainNibFile key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_NSMainStoryboardFile": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the NSMainStoryboardFile key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_NSMicrophoneUsageDescription": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the NSMicrophoneUsageDescription key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_NSMotionUsageDescription": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the NSMotionUsageDescription key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_NSNearbyInteractionAllowOnceUsageDescription": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the NSNearbyInteractionAllowOnceUsageDescription key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_NSNearbyInteractionUsageDescription": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the NSNearbyInteractionUsageDescription key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_NSNetworkVolumesUsageDescription": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the NSNetworkVolumesUsageDescription key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the NSPhotoLibraryAddUsageDescription key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_NSPhotoLibraryUsageDescription": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the NSPhotoLibraryUsageDescription key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_NSPrincipalClass": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the NSPrincipalClass key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_NSRemindersUsageDescription": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the NSRemindersUsageDescription key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_NSRemovableVolumesUsageDescription": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the NSRemovableVolumesUsageDescription key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_NSSensorKitPrivacyPolicyURL": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the NSSensorKitPrivacyPolicyURL key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_NSSensorKitUsageDescription": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the NSSensorKitUsageDescription key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_NSSiriUsageDescription": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the NSSiriUsageDescription key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_NSSpeechRecognitionUsageDescription": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the NSSpeechRecognitionUsageDescription key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_NSSystemAdministrationUsageDescription": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the NSSystemAdministrationUsageDescription key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_NSSystemExtensionUsageDescription": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the NSSystemExtensionUsageDescription key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_NSUserTrackingUsageDescription": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the NSUserTrackingUsageDescription key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_NSVideoSubscriberAccountUsageDescription": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the NSVideoSubscriberAccountUsageDescription key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_NSVoIPUsageDescription": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the NSVoIPUsageDescription key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_OSBundleUsageDescription": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the OSBundleUsageDescription key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_UIApplicationSceneManifest_Generation": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the UIApplicationSceneManifest key in the Info.plist file to an entry suitable for a multi-window application.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the UIApplicationSupportsIndirectInputEvents key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_UILaunchScreen_Generation": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the UILaunchScreen key in the Info.plist file to an empty dictionary.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_UILaunchStoryboardName": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the UILaunchStoryboardName key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_UIMainStoryboardFile": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the UIMainStoryboardFile key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_UIRequiredDeviceCapabilities": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the UIRequiredDeviceCapabilities key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_UIRequiresFullScreen": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the UIRequiresFullScreen key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_UIStatusBarHidden": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the UIStatusBarHidden key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_UIStatusBarStyle": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the UIStatusBarStyle key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_UISupportedInterfaceOrientations": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the UISupportedInterfaceOrientations key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the UISupportedInterfaceOrientations~iPad key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the UISupportedInterfaceOrientations~iPhone key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_UISupportsDocumentBrowser": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the UISupportsDocumentBrowser key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_UIUserInterfaceStyle": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the UIUserInterfaceStyle key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_WKCompanionAppBundleIdentifier": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the WKCompanionAppBundleIdentifier key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_WKExtensionDelegateClassName": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the WKExtensionDelegateClassName key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the WKRunsIndependentlyOfCompanionApp key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_KEY_WKWatchOnly": {
+      "description": "When GENERATE_INFOPLIST_FILE is enabled, sets the value of the WKWatchOnly key in the Info.plist file to the value of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_OTHER_PREPROCESSOR_FLAGS": {
+      "description": "Other flags to pass to the C preprocessor when preprocessing the Info.plist file.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_OUTPUT_FORMAT": {
+      "description": "Specifies the output encoding for the output Info.plist. The output encodings can be binary or XML. By default, the output encoding will be unchanged from the input.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_PATH": {
+      "description": "Specifies the path to the bundle’s information property list file.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_PREFIX_HEADER": {
+      "description": "Implicitly include the given file when preprocessing the Info.plist file. The path given should either be a project relative path or an absolute path.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_PREPROCESS": {
+      "description": "Preprocess the Info.plist file using the C Preprocessor.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOPLIST_PREPROCESSOR_DEFINITIONS": {
+      "description": "Space-separated list of preprocessor macros of the form foo or foo=bar. These macros are used when preprocessing the Info.plist file.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INFOSTRINGS_PATH": {
+      "description": "Specifies the file that contains the bundle’s localized strings file.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INIT_ROUTINE": {
+      "description": "This is the name of the routine to use for initialization.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INLINE_PRIVATE_FRAMEWORKS": {
+      "description": "Enables private framework inlining for Text-Based Stubs.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INSTALLHDRS_COPY_PHASE": {
+      "description": "Specifies whether the target’s Copy Files build phases are executed in installhdr builds.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INSTALLHDRS_SCRIPT_PHASE": {
+      "description": "Specifies whether the target’s Run Script build phases are executed in installhdr builds. See ACTION for details on installhdr builds.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INSTALL_DIR": {
+      "description": "Identifies the directory in the developer’s filesystem into which the installed product is placed.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INSTALL_GROUP": {
+      "description": "The group name or gid for installed products.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INSTALL_MODE_FLAG": {
+      "description": "Permissions used for installed product files.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INSTALL_OWNER": {
+      "description": "The owner name or uid for installed products.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INSTALL_PATH": {
+      "description": "The directory in which to install the build products. This path is prepended by the DSTROOT.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "INTENTS_CODEGEN_LANGUAGE": {
+      "description": "The Source-code language to use for generated Intent class. By default “Automatic” will analyze your project to determine the correct language. Adjust this setting to explicitly select “Swift” or “Objective-C”.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "IS_MACCATALYST": {
+      "description": "Indicates whether the target is building for Mac Catalyst. This build setting is intended for use in shell scripts and build setting composition and should be considered read-only.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "KEEP_PRIVATE_EXTERNS": {
+      "description": "Activating this setting will preserve private external symbols, rather than turning them into static symbols. This setting is also respected when performing a single-object prelink.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "LD_DEPENDENCY_INFO_FILE": {
+      "description": "This setting defines the path to which the linker should emit information about what files it used as inputs and generated. Xcode uses this information for its dependency tracking. Setting the value of this setting to empty will disable passing this option to the linker.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "LD_DYLIB_ALLOWABLE_CLIENTS": {
+      "description": "This setting restricts the clients allowed to link a dylib by passing -allowable_client to the linker for each supplied value.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "LD_DYLIB_INSTALL_NAME": {
+      "description": "Sets an internal install path (LC_ID_DYLIB) in a dynamic library. Any clients linked against the library will record that path as the way dyld should locate this library. If this option is not specified, then the -o path will be used. This setting is ignored when building any product other than a dynamic library. See Dynamic Library Programming Topics.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "LD_GENERATE_MAP_FILE": {
+      "description": "Activating this setting will cause the linker to write a map file to disk, which details all symbols and their addresses in the output image. The path to the map file is defined by the LD_MAP_FILE_PATH setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "LD_MAP_FILE_PATH": {
+      "description": "This setting defines the path to the map file written by the linker when the LD_GENERATE_MAP_FILE setting is activated. By default, a separate file will be written for each architecture and build variant, and these will be generated in the Intermediates directory for the target whose product is being linked.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "LD_NO_PIE": {
+      "description": "Activating this setting will prevent Xcode from building a main executable that is position independent (PIE). When targeting macOS 10.7 or later, PIE is the default for main executables, so activating this setting will change that behavior. When targeting OS X 10.6 or earlier, or when building for i386, PIE is not the default, so activating this setting does nothing.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "LD_QUOTE_LINKER_ARGUMENTS_FOR_COMPILER_DRIVER": {
+      "description": "This setting controls whether arguments to the linker should be quoted using -Xlinker. By default, Xcode invokes the linker by invoking the driver of the compiler used to build the source files in the target, and passing -Xlinker to quote arguments will cause the compiler driver to pass them through to the linker (rather than trying to evaluate them within the driver). By default, this setting is enabled. Disabling it will cause Xcode to not use -Xlinker to pass arguments to the linker. Disabling this setting is useful if the target has instructed Xcode to use an alternate linker (for example, by setting the LD setting to the path to another linker) and that alternate linker does not recognize -Xlinker.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "LD_RUNPATH_SEARCH_PATHS": {
+      "description": "This is a list of paths to be added to the runpath search path list for the image being created. At runtime, dyld uses the runpath when searching for dylibs whose load path begins with @rpath/. See Dynamic Library Programming Topics.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "LEXFLAGS": {
+      "description": "Space-separated list of additional flags to pass to lex. Be sure to backslash-escape any arguments that contain spaces or special characters, such as path names that may contain spaces. Use this setting if Xcode does not already provide UI for a lex flag.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "LEX_CASE_INSENSITIVE_SCANNER": {
+      "description": "Enabling this option causes lex to generate a case-insensitive scanner. The case of letters given in the lex input patterns will be ignored, and tokens in the input will be matched regardless of case. The matched text given in yytext will have the preserved case (for example, it will not be folded).",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "LEX_INSERT_LINE_DIRECTIVES": {
+      "description": "Enabling this option instructs lex to insert #line directives so error messages in the actions will be correctly located with respect to either the original lex input file (if the errors are due to code in the input file), or lex.yy.c (if the errors are lex’s fault). This option is enabled by default; disabling it passes a flag to lex to not insert #line directives.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "LEX_SUPPRESS_DEFAULT_RULE": {
+      "description": "Enabling this option causes the default rule (that unmatched scanner input is echoed to stdout) to be suppressed. If the scanner encounters input that does not match any of its rules, it aborts with an error. This option is useful for finding holes in a scanner’s rule set.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "LEX_SUPPRESS_WARNINGS": {
+      "description": "Enabling this option causes lex to suppress its warning messages.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "LIBRARY_SEARCH_PATHS": {
+      "description": "This is a list of paths to folders to be searched by the linker for libraries used by the product. Paths are delimited by whitespace, so any paths with spaces in them need to be properly quoted.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "LINKER_DISPLAYS_MANGLED_NAMES": {
+      "description": "Activating this setting causes the linker to display mangled names for C++ symbols. Normally, this is not recommended, but turning it on can help to diagnose and solve C++ link errors.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "LINK_WITH_STANDARD_LIBRARIES": {
+      "description": "When this setting is enabled, the compiler driver will automatically pass its standard libraries to the linker to use during linking. If desired, this flag can be used to disable linking with the standard libraries, and then individual libraries can be passed as OTHER_LDFLAGS.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "LLVM_LTO": {
+      "description": "Enabling this setting allows optimization across file boundaries during linking.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "LOCALIZATION_EXPORT_SUPPORTED": {
+      "description": "When enabled, localizable content in this target/project can be exported.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "LOCALIZED_STRING_MACRO_NAMES": {
+      "description": "The base names for NSLocalizedString-like macros or functions used to produce localized strings in source code. The default base names of NSLocalizedString and CFCopyLocalizedString are always considered, even if this setting is empty.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "LOCALIZED_STRING_SWIFTUI_SUPPORT": {
+      "description": "When enabled, literal strings in SwiftUI will be extracted during localization export. This will only extract string literals in Text() initializers, unless SWIFT_EMIT_LOC_STRINGS is also enabled.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "MACH_O_TYPE": {
+      "description": "This setting determines the format of the produced binary and how it can be linked when building other binaries. For information on binary types, see Building Mach-O Files in Mach-O Programming Topics.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "MAPC_NO_WARNINGS": {
+      "description": "Compile .xcmappingmodel files into .cdm without reporting warnings.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "MARKETING_VERSION": {
+      "description": "This setting defines the user-visible version of the project. The value corresponds to the CFBundleShortVersionString key in your app’s Info.plist.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "MODULEMAP_FILE": {
+      "description": "This is the project-relative path to the LLVM module map file that defines the module structure for the compiler. If empty, it will be automatically generated for appropriate products when DEFINES_MODULE is enabled.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "MODULEMAP_PRIVATE_FILE": {
+      "description": "This is the project-relative path to the LLVM module map file that defines the module structure for private headers.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "MODULES_FOLDER_PATH": {
+      "description": "Specifies the directory that contains the product’s Clang module maps and Swift module content.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "MODULE_CACHE_DIR": {
+      "description": "Absolute path of folder in which compiler stores its cached modules—this cache is a performance improvement.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "MODULE_NAME": {
+      "description": "This is the identifier of the kernel module listed in the generated stub. This is only used when building kernel extensions.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "MODULE_START": {
+      "description": "This defines the name of the kernel module start routine. This is only used when building kernel extensions.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "MODULE_STOP": {
+      "description": "This defines the name of the kernel module stop routine. This is only used when building kernel extensions.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "MODULE_VERSION": {
+      "description": "This is the version of the kernel module listed in the generated stub. This is only used when building kernel extensions.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "MOMC_NO_DELETE_RULE_WARNINGS": {
+      "description": "Suppress managed object model compiler (momc) warnings for delete rules during the compilation of .xcdatamodel(d) files.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "MOMC_NO_INVERSE_RELATIONSHIP_WARNINGS": {
+      "description": "Suppress managed object model compiler (momc) warnings from output on missing inverse relationships during the compilation of .xcdatamodel(d) files",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "MOMC_NO_MAX_PROPERTY_COUNT_WARNINGS": {
+      "description": "Suppress managed object model compiler (momc) warnings from output on entities with more than 100 properties during the compilation of .xcdatamodel(d) files.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "MOMC_NO_WARNINGS": {
+      "description": "Suppress managed object model compiler (momc) warnings from output during the compilation of .xcdatamodel(d) files",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "MOMC_SUPPRESS_INVERSE_TRANSIENT_ERROR": {
+      "description": "Suppress managed object model compiler (momc) warnings from output on transient inverse relationships during the compilation of .xcdatamodel(d) files. This is only intended to be used on 10.4.x created models that compiled properly in 10.4.x before the error was introduced in 10.5",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "MTLLINKER_FLAGS": {
+      "description": "Space-separated list of metal linker flags",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "MTL_COMPILER_FLAGS": {
+      "description": "Space-separated list of compiler flags",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "MTL_ENABLE_DEBUG_INFO": {
+      "description": "Debugging information is required for shader debugging and profiling.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "MTL_ENABLE_INDEX_STORE": {
+      "description": "Control whether the compiler should emit index data while building.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "MTL_ENABLE_MODULES": {
+      "description": "Enable the use of modules. Headers are imported as semantic modules instead of raw headers. This can result in faster builds and project indexing.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "MTL_FAST_MATH": {
+      "description": "Enable optimizations for floating-point arithmetic that may violate the IEEE 754 standard and disable the high precision variant of math functions for single and half precision floating-point.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "MTL_HEADER_SEARCH_PATHS": {
+      "description": "This is a list of paths to folders to be searched by the compiler for included or imported header files when compiling Metal. Paths are delimited by whitespace, so any paths with spaces in them need to be properly quoted. [MTL_HEADER_SEARCH_PATHS, -I]",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "MTL_IGNORE_WARNINGS": {
+      "description": "Enabling this option causes all warnings to be ignored. [MTL_IGNORE_WARNINGS, -W]",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "MTL_LANGUAGE_REVISION": {
+      "description": "Determine the language revision to use. A value for this option must be provided.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "MTL_OPTIMIZATION_LEVEL": {
+      "description": "Optimization level for the Metal compiler.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "MTL_PREPROCESSOR_DEFINITIONS": {
+      "description": "Space-separated list of preprocessor macros of the form “foo” or “foo=bar”.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "MTL_TREAT_WARNINGS_AS_ERRORS": {
+      "description": "Enabling this option causes all warnings to be treated as errors. [MTL_TREAT_WARNINGS_AS_ERRORS, -Werror]",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "NASM_OTHER_FLAGS": {
+      "description": "Space-separated list of additional flags to pass to the nasm assembler. Be sure to backslash-escape any arguments that contain spaces or special characters, such as path names that may contain spaces. Use this setting if Xcode does not already provide UI for a particular nasm flag.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "NASM_PREINCLUDE_FILE": {
+      "description": "Specifies a file to be preincluded, before the main source file starts to be processed.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "NATIVE_ARCH": {
+      "description": "Identifies the architecture on which the build is being performed.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "OBJECT_FILE_DIR": {
+      "description": "Partially identifies the directory into which variant object files are placed. The complete specification is computed using the variants of this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "OBJROOT": {
+      "description": "The path where intermediate files will be placed during a build. Intermediate files include generated sources, object files, etc. Shell script build phases can place and access files here, as well. Typically this path is not set per target, but is set per project or per user. By default, this is set to $(PROJECT_DIR)/build.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "ONLY_ACTIVE_ARCH": {
+      "description": "If enabled, only the active architecture is built. This setting will be ignored when building with a run destination which does not define a specific architecture, such as a ‘Generic Device’ run destination.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "ON_DEMAND_RESOURCES_INITIAL_INSTALL_TAGS": {
+      "description": "Defined a set of initial On Demand Resources tags to be downloaded and installed with your application.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "ON_DEMAND_RESOURCES_PREFETCH_ORDER": {
+      "description": "Once your app is installed, this defined a set of On Demand Resources tags that should be downloaded. These tags are downloaded after the initial installation of your application, and will be downloaded in the order the tags provided in the list from first to last.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "OPENCL_ARCHS": {
+      "description": "A list of the architectures for which the product will be built. This is usually set to a predefined build setting provided by the platform.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "OPENCL_AUTO_VECTORIZE_ENABLE": {
+      "description": "Auto-vectorizes the OpenCL kernels for the CPU. This setting takes effect only for the CPU. This makes it possible to write a single kernel that is portable and performant across CPUs and GPUs.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "OPENCL_COMPILER_VERSION": {
+      "description": "The OpenCL C compiler version supported by the platform.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "OPENCL_DENORMS_ARE_ZERO": {
+      "description": "This option controls how single precision and double precision denormalized numbers are handled. If specified as a build option, the single precision denormalized numbers may be flushed to zero; double precision denormalized numbers may also be flushed to zero if the optional extension for double precision is supported. This is intended to be a performance hint and the OpenCL compiler can choose not to flush denorms to zero if the device supports single precision (or double precision) denormalized numbers.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "OPENCL_DOUBLE_AS_SINGLE": {
+      "description": "Treat double precision floating-point expression as a single precision floating-point expression. This option is available for GPUs only.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "OPENCL_FAST_RELAXED_MATH": {
+      "description": "This allows optimizations for floating-point arithmetic that may violate the IEEE 754 standard and the OpenCL numerical compliance requirements defined in in section 7.4 for single-precision floating-point, section 9.3.9 for double-precision floating-point, and edge case behavior in section 7.5 of the OpenCL 1.1 specification.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "OPENCL_MAD_ENABLE": {
+      "description": "Allow a * b + c to be replaced by a mad instruction. The mad computes a * b + c with reduced accuracy. For example, some OpenCL devices implement mad as truncate the result of a * b before adding it to c.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "OPENCL_OPTIMIZATION_LEVEL": {
+      "description": "None: Do not optimize. [-O0] With this setting, the compiler’s goal is to reduce the cost of compilation and to make debugging produce the expected results. Statements are independent: if you stop the program with a breakpoint between statements, you can then assign a new value to any variable or change the program counter to any other statement in the function and get exactly the results you would expect from the source code.\n\nFast: Optimizing compilation takes somewhat more time, and a lot more memory for a large function. [-O, -O1] With this setting, the compiler tries to reduce code size and execution time, without performing any optimizations that take a great deal of compilation time. In Apple’s compiler, strict aliasing, block reordering, and inter-block scheduling are disabled by default when optimizing.\n\nFaster: The compiler performs nearly all supported optimizations that do not involve a space-speed tradeoff. [-O2] With this setting, the compiler does not perform loop unrolling or function inlining, or register renaming. As compared to the Fast setting, this setting increases both compilation time and the performance of the generated code.\n\nFastest: Turns on all optimizations specified by the Faster setting and also turns on function inlining and register renaming options. This setting may result in a larger binary. [-O3]\n\nFastest, smallest: Optimize for size. This setting enables all Faster optimizations that do not typically increase code size. It also performs further optimizations designed to reduce code size. [-Os]",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "OPENCL_OTHER_BC_FLAGS": {
+      "description": "Space-separated list of additional flags to pass to the compiler. Be sure to backslash-escape any arguments that contain spaces or special characters, such as path names that may contain spaces. Use this setting if Xcode does not already provide UI for a particular compiler flag.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "OPENCL_PREPROCESSOR_DEFINITIONS": {
+      "description": "Space-separated list of preprocessor macros of the form foo or foo=bar.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "ORDER_FILE": {
+      "description": "The path to a file that alters the order in which functions and data are laid out.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "OSACOMPILE_EXECUTE_ONLY": {
+      "description": "Saves the output script in execute-only form; the script can be run, but cannot be opened in Script Editor or Xcode. With this option turned off, a user may see the original script source by opening the script.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "OTHER_CFLAGS": {
+      "description": "Space-separated list of additional flags to pass to the compiler for C and Objective-C files. Be sure to backslash-escape any arguments that contain spaces or special characters, such as path names that may contain spaces. Use this setting if Xcode does not already provide UI for a particular C or Objective-C compiler flag.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "OTHER_CODE_SIGN_FLAGS": {
+      "description": "A list of additional options to pass to codesign(1).",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "OTHER_CPLUSPLUSFLAGS": {
+      "description": "Space-separated list of additional flags to pass to the compiler for C++ and Objective-C++ files. Be sure to backslash-escape any arguments that contain spaces or special characters, such as path names that may contain spaces. Use this setting if Xcode does not already provide UI for a C++ or Objective-C++ compiler flag.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "OTHER_DOCC_FLAGS": {
+      "description": "A list of additional flags to pass to DocC",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "OTHER_IIG_CFLAGS": {
+      "description": "Space-separated list of additional flags to pass to the iig invocation of clang. Be sure to backslash-escape any arguments that contain spaces or special characters, such as path names that may contain spaces. Use this setting if Xcode does not already provide UI for a particular iig flag",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "OTHER_IIG_FLAGS": {
+      "description": "Space-separated list of additional flags to pass to the iig compiler. Be sure to backslash-escape any arguments that contain spaces or special characters, such as path names that may contain spaces. Use this setting if Xcode does not already provide UI for a particular iig flag",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "OTHER_LDFLAGS": {
+      "description": "Options defined in this setting are passed to invocations of the linker.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "OTHER_LIBTOOLFLAGS": {
+      "description": "Options defined in this setting are passed to all invocations of the archive librarian, which is used to generate static libraries.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "OTHER_MIGFLAGS": {
+      "description": "Space-separated list of additional flags to pass to mig. Be sure to backslash-escape any arguments that contain spaces or special characters, such as path names that may contain spaces. Use this setting if Xcode does not already provide UI for a mig flag.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "OTHER_OSACOMPILEFLAGS": {
+      "description": "Space-separated list of additional flags to pass to osacompile. Be sure to backslash-escape any arguments that contain spaces or special characters, such as path names that may contain spaces. Use this setting if Xcode does not already provide UI for a particular osacompile flag.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "OTHER_REZFLAGS": {
+      "description": "Space-separated list of additional flags to pass to the Rez compiler. Be sure to backslash-escape any arguments that contain spaces or special characters, such as path names that may contain spaces. Use this setting if Xcode does not already provide UI for a particular Rez flag.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "OTHER_SWIFT_FLAGS": {
+      "description": "A list of additional flags to pass to the Swift compiler.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "OTHER_TAPI_FLAGS": {
+      "description": "Options defined in this setting are passed to invocations of the Text-Based InstallAPI tool.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "PACKAGE_TYPE": {
+      "description": "Uniform type identifier. Identifies the type of the product the target builds. Some products may be made up of a single binary or archive. Others may comprise several files, which are grouped under a single directory. These container directories are known as bundles.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "PLIST_FILE_OUTPUT_FORMAT": {
+      "description": "Specifies the output encoding for property list files (.plist). The output encodings can be binary or XML. By default, the output encoding will be unchanged from the input.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "PLUGINS_FOLDER_PATH": {
+      "description": "Specifies the directory that contains the product’s plugins.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR": {
+      "description": "This setting allows for better control of sharing precompiled prefix header files between projects. By default, Xcode assumes that the prefix header file may include header files from the build directory if the build directory is outside of the project directory. Xcode cannot determine this ahead of time since other projects may not have been built into the shared build directory at the time the information is needed.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "PRELINK_FLAGS": {
+      "description": "Additional flags to pass when performing a single-object prelink.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "PRELINK_LIBS": {
+      "description": "Additional libraries to pass when performing a single-object prelink.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "PRESERVE_DEAD_CODE_INITS_AND_TERMS": {
+      "description": "Activating this setting, in combination with the DEAD_CODE_STRIPPING (-dead_strip) option, causes the -no_dead_strip_inits_and_terms flag to be passed to ld(1) via cc(1) to disable dead code stripping for initialization and termination routines. This option should not be used without the aforementioned DEAD_CODE_STRIPPING option.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "PRIVATE_HEADERS_FOLDER_PATH": {
+      "description": "The location to copy the private headers to during building, relative to the built products folder.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "PRODUCT_BUNDLE_IDENTIFIER": {
+      "description": "A string that uniquely identifies the bundle. The string should be in reverse DNS format using only alphanumeric characters (A-Z, a-z, 0-9), the dot (.), and the hyphen (-). This value is used as the CFBundleIdentifier in the Info.plist of the built bundle.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "PRODUCT_DEFINITION_PLIST": {
+      "description": "Path to a file specifying additional requirements for a product archive.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "PRODUCT_MODULE_NAME": {
+      "description": "The name to use for the source code module constructed for this target, and which will be used to import the module in implementation source files. Must be a valid identifier.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "PRODUCT_NAME": {
+      "description": "This is the basename of the product generated by the target.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "PROJECT_NAME": {
+      "description": "The name of the current project.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "PROJECT_TEMP_DIR": {
+      "description": "Identifies the directory in which the project’s intermediate build files are placed. This directory is shared between all the targets defined by the project. Run Script build phases should generate intermediate build files in the directory identified by DERIVED_FILE_DIR, not the location this build setting specifies.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "PROVISIONING_PROFILE_SPECIFIER": {
+      "description": "Must contain a profile name (or UUID). A missing or invalid profile will cause a build error. Use in conjunction with [DEVELOPMENT_TEAM] to fully specify provisioning profile.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "PUBLIC_HEADERS_FOLDER_PATH": {
+      "description": "The location to copy the public headers to during building, relative to the built products folder.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "RCPROJECT_CODEGEN_LANGUAGE": {
+      "description": "The Source-code language to use for generated RC objects. By default Xcode will generate Swift types that represent the objects in your scene. Adjust this setting to explicitly select “Swift”, or select “None” to disable RC object generation.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "REEXPORTED_FRAMEWORK_NAMES": {
+      "description": "List of framework names that should have their symbols be reexported from the built library.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "REEXPORTED_LIBRARY_NAMES": {
+      "description": "List of library names that should have their symbols be reexported from the built library.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "REEXPORTED_LIBRARY_PATHS": {
+      "description": "List of library paths that should have their symbols be reexported from the built library.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "REMOVE_CVS_FROM_RESOURCES": {
+      "description": "Specifies whether to remove CVS directories from bundle resources when they are copied.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "REMOVE_GIT_FROM_RESOURCES": {
+      "description": "Specifies whether to remove .git directories from bundle resources when they are copied.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "REMOVE_HG_FROM_RESOURCES": {
+      "description": "Specifies whether to remove .hg directories from bundle resources when they are copied.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "REMOVE_SVN_FROM_RESOURCES": {
+      "description": "Specifies whether to remove SVN directories from bundle resources when they are copied.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "RESMERGER_SOURCES_FORK": {
+      "description": "Determines whether ResMerger treats binary input files as data-fork hosted or resource-fork hosted, or whether it automatically examines each input file.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "RESOURCES_TARGETED_DEVICE_FAMILY": {
+      "description": "Overrides TARGETED_DEVICE_FAMILY when the resource copying needs to differ from the default targeted device.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "RETAIN_RAW_BINARIES": {
+      "description": "Specifies whether to keep copies of unstripped binaries available.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "REZ_COLLECTOR_DIR": {
+      "description": "Specifies the directory in which the collected Resource Manager resources generated by ResMerger are stored before they are added to the product.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "REZ_OBJECTS_DIR": {
+      "description": "Specifies the directory in which compiled Resource Manager resources generated by Rez are stored before they are collected using ResMerger.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "REZ_PREFIX_FILE": {
+      "description": "Implicitly include the named file on the command line for each Rez file compiled. The path given should either be a project relative path or an absolute path.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "REZ_PREPROCESSOR_DEFINITIONS": {
+      "description": "These strings will be defined when compiling resource manager resources.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "REZ_PREPROCESSOR_UNDEFINITIONS": {
+      "description": "These strings will be undefined when compiling resource manager resources.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "REZ_RESOLVE_ALIASES": {
+      "description": "Enables aliases to be unresolved or conditionally resolved. The default is to resolve aliases always.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "REZ_RESOURCE_MAP_READ_ONLY": {
+      "description": "Enabling this option causes the resource map output to be read-only.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "REZ_SCRIPT_TYPE": {
+      "description": "Enables the recognition of a specific 2-byte character script identifier to use when compiling resource manager resources. This allows for 2-byte characters in strings to be handled as indivisible entities. The default language is Roman, which specifies 1-byte character sets.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "REZ_SEARCH_PATHS": {
+      "description": "This is a list of paths to search for files with resource manager resources. Paths are delimited by whitespace, so any paths with spaces in them need to be properly quoted.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "REZ_SHOW_DEBUG_OUTPUT": {
+      "description": "Enabling this option causes version and progress information to be written when compiling resource manager resources.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "REZ_SUPPRESS_REDECLARED_RESOURCE_TYPE_WARNINGS": {
+      "description": "Enabling this option causes warnings about redeclared resource types to be suppressed.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "RUN_CLANG_STATIC_ANALYZER": {
+      "description": "Activating this setting will cause Xcode to run the Clang static analysis tool on qualifying source files during every build.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "RUN_DOCUMENTATION_COMPILER": {
+      "description": "Also build documentation as part of the ‘Build’ action.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "SCAN_ALL_SOURCE_FILES_FOR_INCLUDES": {
+      "description": "Activating this setting will cause all source files to be scanned for includes (for example, of header files) when computing the dependency graph, in which case if an included file is changed then the including file will be rebuilt next time a target containing it is built. Normally only certain types of files, such as C-language source files, are scanned.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "SCRIPTS_FOLDER_PATH": {
+      "description": "Specifies the directory that contains the product’s scripts.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "SDKROOT": {
+      "description": "The name or path of the base SDK being used during the build. The product will be built against the headers and libraries located inside the indicated SDK. This path will be prepended to all search paths, and will be passed through the environment to the compiler and linker. Additional SDKs can be specified in the ADDITIONAL_SDKS setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "SECTORDER_FLAGS": {
+      "description": "These flags are typically used to specify options for ordering symbols within segments, for example the -sectorder option to ld.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "SEPARATE_SYMBOL_EDIT": {
+      "description": "Activating this setting when the linked product’s symbols are to be edited will cause editing to occur via a separate invocation of nmedit(1). Otherwise editing will occur during linking, if possible.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "SHARED_FRAMEWORKS_FOLDER_PATH": {
+      "description": "Specifies the directory that contains the product’s shared frameworks.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "SHARED_PRECOMPS_DIR": {
+      "description": "The path where precompiled prefix header files are placed during a build. Defaults to $(OBJROOT)/SharedPrecompiledHeaders. Using a common location allows precompiled headers to be shared between multiple projects.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "SKIP_INSTALL": {
+      "description": "If enabled, don’t install built products even if deployment locations are active.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "SRCROOT": {
+      "description": "Identifies the directory containing the target’s source files.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "STRINGSDATA_DIR": {
+      "description": "The location to write .stringsdata files to when SWIFT_EMIT_LOC_STRINGS is enabled.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "STRINGSDATA_ROOT": {
+      "description": "The location to traverse and collect .stringsdata files from when exporting for localization.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "STRINGS_FILE_INFOPLIST_RENAME": {
+      "description": "If enabled, renames .strings files whose basename matches that of the target’s Info.plist file, to InfoPlist.strings in the built product.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "STRINGS_FILE_OUTPUT_ENCODING": {
+      "description": "Specify the output encoding to be used for Strings files - the default is UTF-16. The value can be either an NSStringEncoding, such as one of the numeric values recognized by NSString, or an IANA character set name as understood by CFString. It is recommended that the source file be in UTF-8 encoding, which is the default encoding for standard strings files, and Xcode will automatically process it to the output encoding. Processing will fail if the file cannot be converted to the specified encoding.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "STRIPFLAGS": {
+      "description": "Additional flags to be passed when stripping the linked product of the build.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "STRIP_INSTALLED_PRODUCT": {
+      "description": "If enabled, the linked product of the build will be stripped of symbols when performing deployment postprocessing.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "STRIP_PNG_TEXT": {
+      "description": "Metadata in the form of text chunks in PNG files will be removed to reduce their footprint on disk.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "STRIP_STYLE": {
+      "description": "The level of symbol stripping to be performed on the linked product of the build. The default value is defined by the target’s product type.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "STRIP_SWIFT_SYMBOLS": {
+      "description": "Adjust the level of symbol stripping specified by the STRIP_STYLE setting so that when the linked product of the build is stripped, all Swift symbols will be removed.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "SUPPORTED_PLATFORMS": {
+      "description": "The list of supported platforms from which a base SDK can be used. This setting is used if the product can be built for multiple platforms using different SDKs.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "SUPPORTS_MACCATALYST": {
+      "description": "Support building this target for Mac Catalyst.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD": {
+      "description": "Show the Mac (Designed for iPhone) and Mac (Designed for iPad) destinations.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "SUPPORTS_TEXT_BASED_API": {
+      "description": "Enable to indicate that the target supports Text-Based InstallAPI, which will enable its generation during install builds.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "SWIFT_ACTIVE_COMPILATION_CONDITIONS": {
+      "description": "A list of compilation conditions to enable for conditional compilation expressions.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "SWIFT_COMPILATION_MODE": {
+      "description": "This setting controls the way the Swift files in a module are rebuilt.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "SWIFT_DISABLE_SAFETY_CHECKS": {
+      "description": "Disable runtime safety checks when optimizing.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "SWIFT_EMIT_LOC_STRINGS": {
+      "description": "When enabled, the Swift compiler will be used to extract Swift string literal and interpolation LocalizedStringKey and LocalizationKey types during localization export.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "SWIFT_ENABLE_BARE_SLASH_REGEX": {
+      "description": "Enable the use of forward slash regular-expression literal syntax (-enable-bare-slash-regex)",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "SWIFT_ENFORCE_EXCLUSIVE_ACCESS": {
+      "description": "Enforce exclusive access at run-time.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "SWIFT_INCLUDE_PATHS": {
+      "description": "A list of paths to be searched by the Swift compiler for additional Swift modules.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "SWIFT_INSTALL_MODULE": {
+      "description": "For frameworks, install the Swift module so it can be accessed from Swift code using the framework.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "SWIFT_INSTALL_OBJC_HEADER": {
+      "description": "For frameworks, install the Objective-C compatibility header describing bridged Swift classes into the PUBLIC_HEADERS_FOLDER_PATH so they may be accessed from Objective-C code using the framework. Defaults to YES.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "SWIFT_OBJC_BRIDGING_HEADER": {
+      "description": "Path to the header defining the Objective-C interfaces to be exposed in Swift.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "SWIFT_OBJC_INTERFACE_HEADER_NAME": {
+      "description": "Name to use for the header that is generated by the Swift compiler for use in #import statements in Objective-C.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "SWIFT_OPTIMIZATION_LEVEL": {
+      "description": "None: Compile without any optimization. [-Onone]\n\nOptimize for Speed: [-O]\n\nOptimize for Size: [-Osize]\n\nWhole Module Optimization: [-O -whole-module-optimization]",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "SWIFT_PRECOMPILE_BRIDGING_HEADER": {
+      "description": "Generate a precompiled header for the Objective-C bridging header, if used, in order to reduce overall build times.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "SWIFT_REFLECTION_METADATA_LEVEL": {
+      "description": "This setting controls the level of reflection metadata the Swift compiler emits.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "SWIFT_STRICT_CONCURRENCY": {
+      "description": "This setting controls the level of Sendable enforcement and actor-isolation checking performed by the Swift compiler.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "SWIFT_SUPPRESS_WARNINGS": {
+      "description": "Don’t emit any warnings.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "SWIFT_TREAT_WARNINGS_AS_ERRORS": {
+      "description": "Treat all warnings as errors.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "SWIFT_VERSION": {
+      "description": "The language version used to compile the target’s Swift code.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "SYMBOL_GRAPH_EXTRACTOR_MODULE_NAME": {
+      "description": "The name of the main module to extract.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "SYMBOL_GRAPH_EXTRACTOR_OUTPUT_DIR": {
+      "description": "The symbol graph JSON output directory.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "SYMROOT": {
+      "description": "The path at which all products will be placed when performing a build. Typically this path is not set per target, but is set per-project or per-user. By default, this is set to $(PROJECT_DIR)/build.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "SYSTEM_FRAMEWORK_SEARCH_PATHS": {
+      "description": "This is a list of paths to folders containing system frameworks to be searched by the compiler for both included or imported header files when compiling C, Objective-C, C++, or Objective-C++, and by the linker for frameworks used by the product. The order is from highest to lowest precedence. Paths are delimited by whitespace, so any paths with spaces in them need to be properly quoted. This setting is very similar to “Framework Search Paths”, except that the search paths are passed to the compiler in a way that suppresses most warnings for headers found in system search paths. If the compiler doesn’t support the concept of system framework search paths, then the search paths are appended to any existing framework search paths defined in “Framework Search Paths”.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "SYSTEM_HEADER_SEARCH_PATHS": {
+      "description": "This is a list of paths to folders to be searched by the compiler for included or imported system header files when compiling C, Objective-C, C++, or Objective-C++. The order is from highest to lowest precedence. Paths are delimited by whitespace, so any paths with spaces in them need to be properly quoted. This setting is very similar to “Header Search Paths”, except that headers are passed to the compiler in a way that suppresses most warnings for headers found in system search paths. If the compiler doesn’t support the concept of system header search paths, then the search paths are appended to any existing header search paths defined in “Header Search Paths”.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "TAPI_ENABLE_PROJECT_HEADERS": {
+      "description": "Include project-level headers when building Text-Based InstallAPI.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "TAPI_VERIFY_MODE": {
+      "description": "Selects the level of warnings and errors to report when building Text-Based InstallAPI.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "TARGETED_DEVICE_FAMILY": {
+      "description": "The build system uses the selected device to set the correct value for the UIDeviceFamily key it adds to the target’s Info.plist file. This also drives the –target-device flag to actool, which determines the idioms selected during catalog compilation.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "TARGET_BUILD_DIR": {
+      "description": "Identifies the root of the directory hierarchy that contains the product’s files (no intermediate build files). Run Script build phases that operate on product files of the target that defines them should use the value of this build setting, but Run Script build phases that operate on product files of other targets should use BUILT_PRODUCTS_DIR instead.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "TARGET_NAME": {
+      "description": "The name of the current target.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "TARGET_TEMP_DIR": {
+      "description": "Identifies the directory containing the target’s intermediate build files. Run Script build phases should place intermediate files at the location indicated by DERIVED_FILE_DIR, not the directory identified by this build setting.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "TEST_HOST": {
+      "description": "Path to the executable into which a bundle of tests is injected. Only specify this setting if testing an application or other executable.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "TREAT_MISSING_BASELINES_AS_TEST_FAILURES": {
+      "description": "When running tests that measure performance via XCTestCase, report missing baselines as test failures.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "UNEXPORTED_SYMBOLS_FILE": {
+      "description": "A project-relative path to a file that lists the symbols not to export. See ld -exported_symbols_list for details on exporting symbols.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "UNLOCALIZED_RESOURCES_FOLDER_PATH": {
+      "description": "Specifies the directory that contains the product’s unlocalized resources.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "USER_HEADER_SEARCH_PATHS": {
+      "description": "This is a list of paths to folders to be searched by the compiler for included or imported user header files (those headers listed in quotes) when compiling C, Objective-C, C++, or Objective-C++. Paths are delimited by whitespace, so any paths with spaces in them need to be properly quoted. See ALWAYS_SEARCH_USER_PATHS for more details on how this setting is used. If the compiler doesn’t support the concept of user headers, then the search paths are prepended to the any existing header search paths defined in HEADER_SEARCH_PATHS.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "USE_HEADERMAP": {
+      "description": "Enable the use of Header Maps, which provide the compiler with a mapping from textual header names to their locations, bypassing the normal compiler header search path mechanisms. This allows source code to include headers from various locations in the file system without needing to update the header search path build settings.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "VALIDATE_PRODUCT": {
+      "description": "If enabled, perform validation checks on the product as part of the build process.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "VERBOSE_PBXCP": {
+      "description": "Specifies whether the target’s Copy Files build phases generate additional information when copying files.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "VERSIONING_SYSTEM": {
+      "description": "Selects the process used for version-stamping generated files.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "VERSION_INFO_BUILDER": {
+      "description": "This defines a reference to the user performing a build to be included in the generated Apple Generic Versioning stub. Defaults to the value of the USER environment variable.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "VERSION_INFO_EXPORT_DECL": {
+      "description": "This defines a prefix string for the version info symbol declaration in the generated Apple Generic Versioning stub. This can be used, for example, to add an optional export keyword to the version symbol declaration. This should rarely be changed.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "VERSION_INFO_FILE": {
+      "description": "Used to specify a name for the source file that will be generated by Apple Generic Versioning and compiled into your product. By default, this is set to $(PRODUCT_NAME)_vers.c.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "VERSION_INFO_PREFIX": {
+      "description": "Used as a prefix for the name of the version info symbol in the generated versioning source file. If you prefix your exported symbols you will probably want to set this to the same prefix.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "VERSION_INFO_SUFFIX": {
+      "description": "Used as a suffix for the name of the version info symbol in the generated versioning source file. This is rarely used.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "WARNING_CFLAGS": {
+      "description": "Space-separated list of additional warning flags to pass to the compiler. Use this setting if Xcode does not already provide UI for a particular compiler warning flag.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "WARNING_LDFLAGS": {
+      "description": "These flags are passed with linker invocations, and by default give the -no_arch_warnings flag to the linker to avoid many warnings being generated during multi-architecture builds.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "WRAPPER_EXTENSION": {
+      "description": "The extension used for product wrappers, which has a default value based on the product type.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "WRAPPER_NAME": {
+      "description": "Specifies the filename, including the appropriate extension, of the product bundle.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "WRAPPER_SUFFIX": {
+      "description": "Specifies the suffix of the product bundle name, including the character that separates the extension from the rest of the bundle name.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "YACCFLAGS": {
+      "description": "Space-separated list of additional flags to pass to yacc. Be sure to backslash-escape any arguments that contain spaces or special characters, such as path names that may contain spaces. Use this setting if Xcode does not already provide UI for a yacc flag.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "YACC_GENERATED_FILE_STEM": {
+      "description": "The file stem to use for the files generated by yacc. The files will be named <stem>.tab.c and <stem>.tab.h based on the value of this setting. The Standard (y) option will cause all yacc source files in the same target to produce the same output file, and it is not recommended for targets containing multiple yacc source files.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "YACC_GENERATE_DEBUGGING_DIRECTIVES": {
+      "description": "Enabling this option changes the preprocessor directives generated by yacc so that debugging statements will be incorporated in the compiled code.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    },
+    "YACC_INSERT_LINE_DIRECTIVES": {
+      "description": "Enabling this option causes yacc to insert the #line directives in the generated code. The #line directives let the C compiler relate errors in the generated code to the user’s original code. If this option is disabled, #line directives specified by the user in the source file will still be retained.",
+      "type": "string",
+      "examples": ["$(inherited)"]
+    }
+  }
+}
