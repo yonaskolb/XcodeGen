@@ -260,7 +260,7 @@ public class SchemeGenerator {
             
             return XCScheme.TestableReference(
                 skipped: testTarget.skipped,
-                parallelizable: testTarget.parallelizable,
+                parallelization: testTarget.parallelizable ? .all : .none,
                 randomExecutionOrdering: testTarget.randomExecutionOrder,
                 buildableReference: testBuildEntries.buildableReference,
                 locationScenarioReference: locationScenarioReference,
