@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 70;
+	objectVersion = 77;
 	objects = {
 
 /* Begin PBXAggregateTarget section */
@@ -2459,7 +2459,7 @@
 			packageReferences = (
 				4EDA79334592CBBA0E507AD2 /* XCRemoteSwiftPackageReference "Swinject" */,
 			);
-			preferredProjectObjectVersion = 70;
+			preferredProjectObjectVersion = 77;
 			projectDirPath = "";
 			projectReferences = (
 				{
