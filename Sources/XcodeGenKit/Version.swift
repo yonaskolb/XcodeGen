@@ -16,7 +16,7 @@ extension Project {
     }
 
     var objectVersion: UInt {
-        70
+        77
     }
 
     var minimizedProjectReferenceProxies: Int {
