@@ -1055,7 +1055,6 @@ A multiline script can be written using the various YAML multiline methods, for 
 - [ ] **executable**: **String** - the name of the target to launch as an executable. Defaults to the first runnable build target in the scheme, or the first build target if a runnable build target is not found
 - [ ] **customLLDBInit**: **String** - the absolute path to the custom `.lldbinit` file
 - [ ] **customWorkingDirectory**: **String** - a path to use as the working directory when launching the executable.
-- [ ] **useCustomWorkingDirectory**: **Bool** - sets if the custom working directory should be used. This defaults to false.
 
 ### Test Action
 
