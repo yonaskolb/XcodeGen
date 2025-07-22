@@ -244,7 +244,6 @@
 				LastUpgradeCheck = 1430;
 			};
 			buildConfigurationList = 425866ADA259DB93FC4AF1E3 /* Build configuration list for PBXProject "SPM" */;
-			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (

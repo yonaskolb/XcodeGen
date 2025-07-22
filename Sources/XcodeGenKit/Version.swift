@@ -11,12 +11,16 @@ extension Project {
         "1.7"
     }
 
-    var compatibilityVersion: String {
-        "Xcode 14.0"
+    var compatibilityVersion: String? {
+        ProjectFormat.default.compatibilityVersion
     }
 
     var objectVersion: UInt {
-        77
+        ProjectFormat.default.objectVersion
+    }
+
+    var preferredProjectObjectVersion: UInt? {
+        ProjectFormat.default.preferredProjectObjectVersion
     }
 
     var minimizedProjectReferenceProxies: Int {
