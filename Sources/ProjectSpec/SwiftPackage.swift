@@ -105,24 +105,39 @@ extension SwiftPackage: JSONEncodable {
 extension SwiftPackage.VersionRequirement: JSONUtilities.JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
-        if jsonDictionary["exactVersion"] != nil {
-            self = try .exact(jsonDictionary.json(atKeyPath: "exactVersion"))
-        } else if jsonDictionary["version"] != nil {
-            self = try .exact(jsonDictionary.json(atKeyPath: "version"))
-        } else if jsonDictionary["revision"] != nil {
-            self = try .revision(jsonDictionary.json(atKeyPath: "revision"))
-        } else if jsonDictionary["branch"] != nil {
-            self = try .branch(jsonDictionary.json(atKeyPath: "branch"))
-        } else if jsonDictionary["minVersion"] != nil && jsonDictionary["maxVersion"] != nil {
-            let minimum: String = try jsonDictionary.json(atKeyPath: "minVersion")
-            let maximum: String = try jsonDictionary.json(atKeyPath: "maxVersion")
-            self = .range(from: minimum, to: maximum)
-        } else if jsonDictionary["minorVersion"] != nil {
-            self = try .upToNextMinorVersion(jsonDictionary.json(atKeyPath: "minorVersion"))
-        } else if jsonDictionary["majorVersion"] != nil {
-            self = try .upToNextMajorVersion(jsonDictionary.json(atKeyPath: "majorVersion"))
-        } else if jsonDictionary["from"] != nil {
-            self = try .upToNextMajorVersion(jsonDictionary.json(atKeyPath: "from"))
+        func json(atKeyPath keyPath: String) -> String? {
+            if jsonDictionary[keyPath] != nil {
+                do {
+                    let value: String = try jsonDictionary.json(atKeyPath: .init(rawValue: keyPath))
+                    return value
+                } catch {
+                    do {
+                        let value: Double = try jsonDictionary.json(atKeyPath: .init(rawValue: keyPath))
+                        return String(value)
+                    } catch {
+                        return nil
+                    }
+                }
+            }
+            return nil
+        }
+        
+        if let exactVersion = json(atKeyPath: "exactVersion") {
+            self = .exact(exactVersion)
+        } else if let version = json(atKeyPath: "version") {
+            self = .exact(version)
+        } else if let revision = json(atKeyPath: "revision") {
+            self = .revision(revision)
+        } else if let branch = json(atKeyPath: "branch") {
+            self = .branch(branch)
+        } else if let minVersion = json(atKeyPath: "minVersion"), let maxVersion = json(atKeyPath: "maxVersion") {
+            self = .range(from: minVersion, to: maxVersion)
+        } else if let minorVersion = json(atKeyPath: "minorVersion") {
+            self = .upToNextMinorVersion(minorVersion)
+        } else if let majorVersion = json(atKeyPath: "majorVersion") {
+            self = .upToNextMajorVersion(majorVersion)
+        } else if let from = json(atKeyPath: "from") {
+            self = .upToNextMajorVersion(from)
         } else {
             throw SpecParsingError.unknownPackageRequirement(jsonDictionary)
         }

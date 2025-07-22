@@ -9,6 +9,9 @@ packages:
   Prefire:
     url: https://github.com/BarredEwe/Prefire
     majorVersion: 1.4.1
+  SwiftLocation:
+    url: https://github.com/malcommac/SwiftLocation
+    exactVersion: 6.0
   XcodeGen:
     path: ../../.. #XcodeGen itself
     group: SPM
@@ -39,6 +42,7 @@ targets:
         embed: true
       - target: StaticLibrary
       - package: XcodeGen
+      - package: SwiftLocation
       - package: FooFeature
         products:
           - FooDomain
