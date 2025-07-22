@@ -53,7 +53,7 @@ class SchemeGeneratorTests: XCTestCase {
                 let scheme = try Scheme(
                     name: "MyScheme",
                     build: Scheme.Build(targets: [buildTarget], preActions: [preAction]),
-                    run: Scheme.Run(config: "Debug", enableGPUFrameCaptureMode: .metal, askForAppToLaunch: true, launchAutomaticallySubstyle: "2", simulateLocation: simulateLocation, storeKitConfiguration: storeKitConfiguration, customLLDBInit: "/sample/.lldbinit"),
+                    run: Scheme.Run(config: "Debug", enableGPUFrameCaptureMode: .metal, askForAppToLaunch: true, launchAutomaticallySubstyle: "2", simulateLocation: simulateLocation, storeKitConfiguration: storeKitConfiguration, customLLDBInit: "/sample/.lldbinit", customWorkingDirectory: "/test"),
                     test: Scheme.Test(config: "Debug", targets: [
                         Scheme.Test.TestTarget(targetReference: TestableTargetReference(framework.name), location: "test.gpx"),
                         Scheme.Test.TestTarget(targetReference: TestableTargetReference(framework.name), location: "New York, NY, USA")
@@ -114,7 +114,10 @@ class SchemeGeneratorTests: XCTestCase {
                 try expect(xcscheme.launchAction?.enableGPUFrameCaptureMode) == .metal
                 try expect(xcscheme.testAction?.customLLDBInitFile) == "/test/.lldbinit"
                 try expect(xcscheme.testAction?.systemAttachmentLifetime).to.beNil()
-                
+
+                try expect(xcscheme.launchAction?.useCustomWorkingDirectory) == true
+                try expect(xcscheme.launchAction?.customWorkingDirectory) == "/test"
+
                 try expect(xcscheme.testAction?.testables[0].locationScenarioReference?.referenceType) == "0"
                 try expect(xcscheme.testAction?.testables[0].locationScenarioReference?.identifier) == "../test.gpx"
                 
