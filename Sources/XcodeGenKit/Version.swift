@@ -7,16 +7,24 @@ extension Project {
         XCodeVersion.parse(options.xcodeVersion ?? "14.3")
     }
 
+    public var projectFormat: ProjectFormat {
+        options.projectFormat.flatMap(ProjectFormat.init) ?? .default
+    }
+
     var schemeVersion: String {
         "1.7"
     }
 
-    var compatibilityVersion: String {
-        "Xcode 14.0"
+    var compatibilityVersion: String? {
+        projectFormat.compatibilityVersion
     }
 
     var objectVersion: UInt {
-        77
+        projectFormat.objectVersion
+    }
+
+    var preferredProjectObjectVersion: UInt? {
+        projectFormat.preferredProjectObjectVersion
     }
 
     var minimizedProjectReferenceProxies: Int {

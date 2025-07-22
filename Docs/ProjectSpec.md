@@ -133,6 +133,13 @@ Note that target names can also be changed by adding a `name` property to a targ
 - [ ] **indentWidth**: **Int** - If this is specified, the Xcode project will override the user's setting for indent width in number of spaces.
 - [ ] **tabWidth**: **Int** - If this is specified, the Xcode project will override the user's setting for indent width in number of spaces.
 - [ ] **xcodeVersion**: **String** - The version of Xcode. This defaults to the latest version periodically. You can specify it in the format `0910` or `9.1`
+- [ ] **projectFormat**: **String** - The version of Xcode project. By default this is set to `xcode16_0`
+  - `xcode16_3`: Xcode 16.3
+  - `xcode16_0`: Xcode 16.0
+  - `xcode15_3`: Xcode 15.3
+  - `xcode15_0`: Xcode 15.0
+  - `xcode14_0`: Xcode 14.0
+
 - [ ] **deploymentTarget**: **[[Platform](#platform): String]** - A project wide deployment target can be specified for each platform otherwise the default SDK version in Xcode will be used. This will be overridden by any custom build settings that set the deployment target eg `IPHONEOS_DEPLOYMENT_TARGET`. Target specific deployment targets can also be set with [Target](#target).deploymentTarget.
 - [ ] **disabledValidations**: **[String]** - A list of validations that can be disabled if they're too strict for your use case. By default this is set to an empty array. Currently these are the available options:
   - `missingConfigs`: Disable errors for configurations in yaml files that don't exist in the project itself. This can be useful if you include the same yaml file in different projects
@@ -156,7 +163,7 @@ Note that target names can also be changed by adding a `name` property to a targ
 - [ ] **defaultSourceDirectoryType**: **String** - When a [Target source](#target-source) doesn't specify a type and is a directory, this is the type that will be used. If nothing is specified for either then `group` will be used.
   - `group` (default)
   - `folder`
-  - `syncedFolder`
+  - `syncedFolder`: Can be used starting from **projectFormat** `xcode16_0`
 
 ```yaml
 options:
