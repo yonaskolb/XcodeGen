@@ -2,6 +2,13 @@
 
 ## Next Version
 
+## 2.44.1
+
+### Fixed
+- Set the correct object version of 77 for Xcode 16 projects @jakobfelsatdm #1563
+- Support major.minor SPM package versions which would otherwise fail to decode to a string in yaml specs #1546 @RomanPodymov
+- Fix regression for `parallelizable` in scheme. It now resolves to "Enabled" and not "Swift Testing Only" #1565 @CraigSiemens
+
 ## 2.44.0
 
 ### Added
@@ -35,7 +42,6 @@
 - **Breaking**: `fileGroups` are now relative paths when in included files, like other paths #1534 @shnhrrsn
 - **Breaking**: Local package paths are now relative paths when in included files, like other paths #1498 @juri
 - Optional groups are no longer skipped when missing and generating projects from a different directory #1529 @SSheldon
-- Handle major.minor SPM packages versions #1546 @RomanPodymov
 
 ### Internal
 
