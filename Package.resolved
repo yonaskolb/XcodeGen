@@ -14,8 +14,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/freddi-kit/ArtifactBundleGen",
       "state" : {
-        "revision" : "707e4ccc4b1c7e48e881cd5ea91e493a95df24bf",
-        "version" : "0.0.6"
+        "revision" : "33f4a65acb296dcde04aeb828b6850fcf9dceb6c",
+        "version" : "0.0.8"
       }
     },
     {
