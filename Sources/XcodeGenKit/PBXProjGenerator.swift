@@ -1569,6 +1569,11 @@ public class PBXProjGenerator {
                     continue
                 }
 
+                // don't include dependencies from lower levels if they ask to not be included in transitive linking
+                if !isTopLevel && dependency.excludeFromTransitiveLinking {
+                    continue
+                }
+
                 // don't want a dependency if it's going to be embedded or statically linked in a non-top level target
                 // in .target check we filter out targets that will embed all of their dependencies
                 // For some more context about the `dependency.embed != true` lines, refer to https://github.com/yonaskolb/XcodeGen/pull/820
