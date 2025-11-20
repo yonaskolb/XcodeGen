@@ -1139,7 +1139,8 @@ public class PBXProjGenerator {
 
         func addResourcesBuildPhase() {
             let resourcesBuildPhaseFiles = getBuildFilesForPhase(.resources) + copyResourcesReferences
-            if !resourcesBuildPhaseFiles.isEmpty {
+            let hasSynchronizedRootGroups = sourceFiles.contains { $0.fileReference is PBXFileSystemSynchronizedRootGroup }
+            if !resourcesBuildPhaseFiles.isEmpty || hasSynchronizedRootGroups {
                 let resourcesBuildPhase = addObject(PBXResourcesBuildPhase(files: resourcesBuildPhaseFiles))
                 buildPhases.append(resourcesBuildPhase)
             }
@@ -1458,6 +1459,45 @@ public class PBXProjGenerator {
         // add fileSystemSynchronizedGroups
         let synchronizedRootGroups = sourceFiles.compactMap { $0.fileReference as? PBXFileSystemSynchronizedRootGroup }
         if !synchronizedRootGroups.isEmpty {
+            for syncedGroup in synchronizedRootGroups {
+                guard let syncedGroupPath = syncedGroup.path else { continue }
+                let syncedPath = (project.basePath + Path(syncedGroupPath)).normalize()
+
+                if let targetSource = target.sources.first(where: { 
+                    let sourcePath = (project.basePath + $0.path).normalize()
+                    return sourcePath == syncedPath
+                }) {
+                    var membershipExceptions = targetSource.excludes
+
+                    for infoPlistPath in infoPlistFiles.values {
+                        let infoPlistFullPath = (project.basePath + infoPlistPath).normalize()
+                        if infoPlistFullPath.string.hasPrefix(syncedPath.string + "/") {
+                            if let relativePath = try? infoPlistFullPath.relativePath(from: syncedPath) {
+                                let relativePathString = relativePath.string
+                                if !membershipExceptions.contains(relativePathString) {
+                                    membershipExceptions.append(relativePathString)
+                                }
+                            }
+                        }
+                    }
+
+                    if !membershipExceptions.isEmpty {
+                        let exceptionSet = PBXFileSystemSynchronizedBuildFileExceptionSet(
+                            target: targetObject,
+                            membershipExceptions: membershipExceptions,
+                            publicHeaders: nil,
+                            privateHeaders: nil,
+                            additionalCompilerFlagsByRelativePath: nil,
+                            attributesByRelativePath: nil
+                        )
+                        addObject(exceptionSet)
+                        if syncedGroup.exceptions == nil {
+                            syncedGroup.exceptions = []
+                        }
+                        syncedGroup.exceptions?.append(exceptionSet)
+                    }
+                }
+            }
             targetObject.fileSystemSynchronizedGroups = synchronizedRootGroups
         }
     }
