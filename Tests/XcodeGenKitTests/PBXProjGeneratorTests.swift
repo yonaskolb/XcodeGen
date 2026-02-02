@@ -391,6 +391,57 @@ class PBXProjGeneratorTests: XCTestCase {
         }
     }
 
+    func testProductsGroupIsSet() throws {
+        let target = Target(name: "TestApp", type: .application, platform: .iOS)
+        let project = Project(name: "Test", targets: [target])
+        let projGenerator = PBXProjGenerator(project: project)
+
+        let pbxProj = try projGenerator.generate()
+
+        let pbxProject = try XCTUnwrap(pbxProj.projects.first)
+        let productsGroup = try XCTUnwrap(pbxProject.productsGroup)
+
+        XCTAssertEqual(productsGroup.name, "Products")
+        XCTAssertEqual(productsGroup.children.count, 1)
+
+        let productReference = try XCTUnwrap(productsGroup.children.first as? PBXFileReference)
+        XCTAssertEqual(productReference.path, "TestApp.app")
+    }
+
+    func testProductsGroupIsSetWithMultipleTargets() throws {
+        let appTarget = Target(name: "TestApp", type: .application, platform: .iOS)
+        let frameworkTarget = Target(name: "TestFramework", type: .framework, platform: .iOS)
+        let project = Project(name: "Test", targets: [appTarget, frameworkTarget])
+        let projGenerator = PBXProjGenerator(project: project)
+
+        let pbxProj = try projGenerator.generate()
+
+        let pbxProject = try XCTUnwrap(pbxProj.projects.first)
+        let productsGroup = try XCTUnwrap(pbxProject.productsGroup)
+
+        XCTAssertEqual(productsGroup.name, "Products")
+        XCTAssertEqual(productsGroup.children.count, 2)
+
+        let productNames = productsGroup.children
+            .compactMap { $0 as? PBXFileReference }
+            .compactMap { $0.path }
+            .sorted()
+        XCTAssertEqual(productNames, ["TestApp.app", "TestFramework.framework"])
+    }
+
+    func testProductsGroupIsSetWithNoTargets() throws {
+        let project = Project(name: "Test")
+        let projGenerator = PBXProjGenerator(project: project)
+
+        let pbxProj = try projGenerator.generate()
+
+        let pbxProject = try XCTUnwrap(pbxProj.projects.first)
+        let productsGroup = try XCTUnwrap(pbxProject.productsGroup)
+
+        XCTAssertEqual(productsGroup.name, "Products")
+        XCTAssertEqual(productsGroup.children.count, 0)
+    }
+
     func testPlatformDependencies() {
         describe {
             let directoryPath = Path("TestDirectory")

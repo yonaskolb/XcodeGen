@@ -334,6 +334,7 @@
 			mainGroup = 293D0FF827366B513839236A;
 			minimizedProjectReferenceProxies = 1;
 			preferredProjectObjectVersion = 77;
+			productRefGroup = AC523591AC7BE9275003D2DB /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
