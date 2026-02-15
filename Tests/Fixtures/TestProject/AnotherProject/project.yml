@@ -20,6 +20,7 @@ targets:
     platform: iOS
     settings:
       GENERATE_INFOPLIST_FILE: YES
+      PRODUCT_BUNDLE_IDENTIFIER: com.project.external
   IncludedLegacy:
     type: ""
     platform: iOS
