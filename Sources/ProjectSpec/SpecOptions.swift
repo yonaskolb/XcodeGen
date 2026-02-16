@@ -16,6 +16,7 @@ public struct SpecOptions: Equatable {
     public var carthageBuildPath: String?
     public var carthageExecutablePath: String?
     public var createIntermediateGroups: Bool
+    public var renderMarkdowns: Bool?
     public var bundleIdPrefix: String?
     public var settingPresets: SettingPresets
     public var disabledValidations: [ValidationType]
@@ -81,6 +82,7 @@ public struct SpecOptions: Equatable {
         carthageBuildPath: String? = nil,
         carthageExecutablePath: String? = nil,
         createIntermediateGroups: Bool = createIntermediateGroupsDefault,
+        renderMarkdowns: Bool? = nil,
         bundleIdPrefix: String? = nil,
         settingPresets: SettingPresets = settingPresetsDefault,
         developmentLanguage: String? = nil,
@@ -108,6 +110,7 @@ public struct SpecOptions: Equatable {
         self.carthageBuildPath = carthageBuildPath
         self.carthageExecutablePath = carthageExecutablePath
         self.createIntermediateGroups = createIntermediateGroups
+        self.renderMarkdowns = renderMarkdowns
         self.bundleIdPrefix = bundleIdPrefix
         self.settingPresets = settingPresets
         self.developmentLanguage = developmentLanguage
@@ -145,6 +148,7 @@ extension SpecOptions: JSONObjectConvertible {
         bundleIdPrefix = jsonDictionary.json(atKeyPath: "bundleIdPrefix")
         settingPresets = jsonDictionary.json(atKeyPath: "settingPresets") ?? SpecOptions.settingPresetsDefault
         createIntermediateGroups = jsonDictionary.json(atKeyPath: "createIntermediateGroups") ?? SpecOptions.createIntermediateGroupsDefault
+        renderMarkdowns = jsonDictionary.json(atKeyPath: "renderMarkdowns")
         developmentLanguage = jsonDictionary.json(atKeyPath: "developmentLanguage")
         usesTabs = jsonDictionary.json(atKeyPath: "usesTabs")
         xcodeVersion = jsonDictionary.json(atKeyPath: "xcodeVersion")
