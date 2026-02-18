@@ -226,6 +226,20 @@ class SourceGenerator {
             }
             let lastKnownFileType = lastKnownFileType ?? Xcode.fileType(path: path)
 
+            // Special handling for .icon folders (IconComposer)
+            if path.extension == "icon" {
+                let fileReference = addObject(
+                    PBXFileReference(
+                        sourceTree: sourceTree,
+                        name: fileReferenceName,
+                        lastKnownFileType: "wrapper.icon",
+                        path: fileReferencePath.string
+                    )
+                )
+                fileReferencesByPath[fileReferenceKey] = fileReference
+                return fileReference
+            }
+
             if path.extension == "xcdatamodeld" {
                 let versionedModels = (try? path.children()) ?? []
 
@@ -462,7 +476,7 @@ class SourceGenerator {
         let filePaths = nonLocalizedChildren
             .filter {
                 if let fileType = getFileType(path: $0) {
-                    return fileType.file
+                    return fileType.file || Xcode.isDirectoryFileWrapper(path: $0)
                 } else {
                     return $0.isFile || $0.isDirectory && Xcode.isDirectoryFileWrapper(path: $0)
                 }
