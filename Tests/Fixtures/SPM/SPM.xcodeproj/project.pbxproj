@@ -262,6 +262,7 @@
 				C6539B364583AE96C18CE377 /* XCLocalSwiftPackageReference "../../.." */,
 			);
 			preferredProjectObjectVersion = 77;
+			productRefGroup = 5D68FDDE55EE935627A1B376 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
