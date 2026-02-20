@@ -42,6 +42,7 @@ public struct SpecValidationError: Error, CustomStringConvertible {
         case multipleDefaultTestPlans
         case duplicateDependencies(target: String, dependencyReference: String)
         case invalidPluginPackageReference(plugin: String, package: String)
+        case unknownDictionaryKey(String)
 
         public var description: String {
             switch self {
@@ -109,6 +110,8 @@ public struct SpecValidationError: Error, CustomStringConvertible {
                  return "Target \(target.quoted) has the dependency \(dependencyReference.quoted) multiple times"
             case let .invalidPluginPackageReference(plugin, package):
                 return "Plugin \(plugin) has invalid package reference \(package)"
+            case let .unknownDictionaryKey(key):
+                return "Unknown key \(key)"
             }
         }
     }
