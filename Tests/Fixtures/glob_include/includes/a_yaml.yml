@@ -1,0 +1,4 @@
+name: DuplicatedImportRoot
+fileGroups:
+  - First
+  - Second
