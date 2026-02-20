@@ -177,7 +177,7 @@ public class PBXProjGenerator {
 
                 if !excludeFromProject {
                     addObject(packageReference)
-                    try sourceGenerator.createLocalPackage(path: Path(path), group: group.map { Path($0) })
+                    try sourceGenerator.createLocalPackage(name: name, path: Path(path), group: group.map { Path($0) })
                 }
             }
         }
