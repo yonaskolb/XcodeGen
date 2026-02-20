@@ -1,0 +1,147 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "XcodeGen Dependency Object",
+  "description": "https://github.com/yonaskolb/XcodeGen/blob/master/Docs/ProjectSpec.md#dependency",
+  "type": "object",
+  "oneOf": [
+    {
+      "type": "object",
+      "properties": {
+        "target": {
+          "description": "links to another target. If you are using project references you can specify a target within another project by using ProjectName/TargetName for the name",
+          "type": "string"
+        },
+        "embed": { "$ref": "#/$defs/embed" },
+        "link": { "$ref": "#/$defs/link" },
+        "codeSign": { "$ref": "#/$defs/codeSign" },
+        "removeHeaders": { "$ref": "#/$defs/removeHeaders" },
+        "weak": { "$ref": "#/$defs/weak" },
+        "platformFilter": { "$ref": "#/$defs/platformFilter" },
+        "platforms": { "$ref": "#/$defs/platforms" }
+      },
+      "required": ["target"]
+    },
+    {
+      "type": "object",
+      "properties": {
+        "framework": {
+          "description": "links to a framework or XCFramework",
+          "type": "string"
+        },
+        "embed": { "$ref": "#/$defs/embed" },
+        "link": { "$ref": "#/$defs/link" },
+        "codeSign": { "$ref": "#/$defs/codeSign" },
+        "removeHeaders": { "$ref": "#/$defs/removeHeaders" },
+        "weak": { "$ref": "#/$defs/weak" },
+        "platformFilter": { "$ref": "#/$defs/platformFilter" },
+        "platforms": { "$ref": "#/$defs/platforms" },
+        "additionalProperties": false
+      },
+      "required": ["framework"]
+    },
+    {
+      "type": "object",
+      "properties": {
+        "carthage": {
+          "description": "helper for linking to a Carthage framework (not XCFramework)",
+          "type": "string"
+        },
+        "embed": { "$ref": "#/$defs/embed" },
+        "link": { "$ref": "#/$defs/link" },
+        "codeSign": { "$ref": "#/$defs/codeSign" },
+        "removeHeaders": { "$ref": "#/$defs/removeHeaders" },
+        "weak": { "$ref": "#/$defs/weak" },
+        "platformFilter": { "$ref": "#/$defs/platformFilter" },
+        "platforms": { "$ref": "#/$defs/platforms" }
+      },
+      "required": ["carthage"]
+    },
+    {
+      "type": "object",
+      "properties": {
+        "sdk": {
+          "description": "links to a dependency with the SDK. This can either be a relative path within the sdk root or a single filename that references a framework (.framework) or lib (.tbd)",
+          "type": "string"
+        },
+        "embed": { "$ref": "#/$defs/embed" },
+        "link": { "$ref": "#/$defs/link" },
+        "codeSign": { "$ref": "#/$defs/codeSign" },
+        "removeHeaders": { "$ref": "#/$defs/removeHeaders" },
+        "weak": { "$ref": "#/$defs/weak" },
+        "platformFilter": { "$ref": "#/$defs/platformFilter" },
+        "platforms": { "$ref": "#/$defs/platforms" }
+      },
+      "required": ["sdk"]
+    },
+    {
+      "type": "object",
+      "properties": {
+        "package": {
+          "description": "links to a Swift Package. The name must match the name of a package defined in the top level packages",
+          "type": "string"
+        },
+        "embed": { "$ref": "#/$defs/embed" },
+        "link": { "$ref": "#/$defs/link" },
+        "codeSign": { "$ref": "#/$defs/codeSign" },
+        "removeHeaders": { "$ref": "#/$defs/removeHeaders" },
+        "weak": { "$ref": "#/$defs/weak" },
+        "platformFilter": { "$ref": "#/$defs/platformFilter" },
+        "platforms": { "$ref": "#/$defs/platforms" }
+      },
+      "required": ["package"]
+    },
+    {
+      "type": "object",
+      "properties": {
+        "bundle": {
+          "description": "adds the pre-built bundle for the supplied name to the copy resources build phase. This is useful when a dependency exists on a static library target that has an associated bundle target, both existing in a separate project. Only usable in target types which can copy resources.",
+          "type": "string"
+        },
+        "embed": { "$ref": "#/$defs/embed" },
+        "link": { "$ref": "#/$defs/link" },
+        "codeSign": { "$ref": "#/$defs/codeSign" },
+        "removeHeaders": { "$ref": "#/$defs/removeHeaders" },
+        "weak": { "$ref": "#/$defs/weak" },
+        "platformFilter": { "$ref": "#/$defs/platformFilter" },
+        "platforms": { "$ref": "#/$defs/platforms" }
+      },
+      "required": ["bundle"]
+    }
+  ],
+  "$defs": {
+    "embed": {
+      "description": "Whether to embed the dependency. Defaults to true for application target and false for non application targets.",
+      "type": "boolean"
+    },
+    "link": {
+      "description": "Whether to link the dependency. Defaults to true depending on the type of the dependency and the type of the target (e.g. static libraries will only link to executables by default).",
+      "type": "boolean"
+    },
+    "codeSign": {
+      "description": "Whether the codeSignOnCopy setting is applied when embedding framework. Defaults to true",
+      "type": "boolean",
+      "default": true
+    },
+    "removeHeaders": {
+      "description": "Whether the removeHeadersOnCopy setting is applied when embedding the framework. Defaults to true",
+      "type": "boolean",
+      "default": true
+    },
+    "weak": {
+      "description": "Whether the Weak setting is applied when linking the framework. Defaults to false",
+      "type": "boolean",
+      "default": false
+    },
+    "platformFilter": {
+      "description": "This field is specific to Mac Catalyst. It corresponds to the \"Platforms\" dropdown in the Frameworks & Libraries section of Target settings in Xcode. Available options are: iOS, macOS and all. Defaults is all",
+      "type": "string",
+      "enum": ["iOS", "macOS", "all"],
+      "default": "all"
+    },
+    "platforms": {
+      "description": "List of platforms this dependency should apply to. Defaults to all applicable platforms.",
+      "type": "array",
+      "items": { "$ref": "platform.json" }
+    }
+  }
+}
