@@ -66,6 +66,10 @@ private func resolveTemplates(jsonDictionary: JSONDictionary, templateStructure:
             if let templateAttributes = reference["templateAttributes"] as? [String: String] {
                 reference = reference.expand(variables: templateAttributes)
             }
+
+            if let globalVariables = jsonDictionary["globalTemplateAttributes"] as? [String: String] {
+                reference = reference.expand(variables: globalVariables)
+            }
         }
         baseDictionary[referenceName] = reference
     }
