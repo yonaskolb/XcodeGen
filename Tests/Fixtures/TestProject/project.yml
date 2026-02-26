@@ -169,6 +169,9 @@ targets:
         excludes:
           - ExcludedFile.swift
           - Info.plist
+        explicitFolders:
+          - Resources
+          - "**/*Tests"
     settings:
       INFOPLIST_FILE: App_iOS/Info.plist
       PRODUCT_BUNDLE_IDENTIFIER: com.project.app

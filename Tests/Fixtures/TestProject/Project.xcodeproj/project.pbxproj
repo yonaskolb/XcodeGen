@@ -850,6 +850,9 @@
 			explicitFileTypes = {
 			};
 			explicitFolders = (
+				Resources,
+				FeatureATests,
+				FeatureBTests,
 			);
 			path = SyncedFolder;
 			sourceTree = "<group>";

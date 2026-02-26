@@ -102,6 +102,34 @@ class SourceGeneratorTests: XCTestCase {
                 try expect([syncedFolder]) == pbxProj.nativeTargets.first?.fileSystemSynchronizedGroups
             }
 
+            $0.it("generates synced folder with explicitFolders") {
+                let directories = """
+                Sources:
+                  Images:
+                    - image.png
+                  MainSuite:
+                    FeatureATests:
+                      - __Snapshots__:
+                        - snap.png
+                    FeatureBTests:
+                      - __Snapshots__:
+                        - snap.png
+                  NotATest:
+                    - file.swift
+                """
+                try createDirectories(directories)
+
+                let source = TargetSource(path: "Sources", explicitFolders: ["Images", "**/*Tests"], type: .syncedFolder)
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: [source])
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target])
+
+                let pbxProj = try project.generatePbxProj()
+                let syncedFolders = try pbxProj.getMainGroup().children.compactMap { $0 as? PBXFileSystemSynchronizedRootGroup }
+                let syncedFolder = try unwrap(syncedFolders.first)
+
+                try expect(syncedFolder.explicitFolders) == ["Images", "MainSuite/FeatureATests", "MainSuite/FeatureBTests"]
+            }
+
             $0.it("respects defaultSourceDirectoryType") {
                 let directories = """
                 Sources:
