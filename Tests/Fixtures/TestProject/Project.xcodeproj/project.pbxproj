@@ -842,6 +842,16 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		A2F1B5386E15A261AC8A4DEE /* SyncedChild */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			explicitFileTypes = {
+			};
+			explicitFolders = (
+			);
+			name = SyncedChild;
+			path = SyncedChild;
+			sourceTree = "<group>";
+		};
 		AE2AB2772F70DFFF402AA02B /* SyncedFolder */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
@@ -1015,6 +1025,12 @@
 			isa = PBXGroup;
 			children = (
 				2F80635127D17ECB7748067B /* FolderWithDot2.0 */,
+				CE1F06D99242F4223D081F0D /* LaunchScreen.storyboard */,
+				9E17D598D98065767A04740F /* Localizable.strings */,
+				65C8D6D1DDC1512D396C07B7 /* Localizable.stringsdict */,
+				0C6BA0D12467A13EC012C728 /* LocalizedStoryboard.storyboard */,
+				814D72C2B921F60B759C2D4B /* Main.storyboard */,
+				306796628DD52FA55E833B65 /* Model.xcdatamodeld */,
 				AEBCA8CFF769189C0D52031E /* App_iOS.xctestplan */,
 				F0D48A913C087D049C8EDDD7 /* App.entitlements */,
 				7F1A2F579A6F79C62DDA0571 /* AppDelegate.swift */,
@@ -1023,12 +1039,6 @@
 				B5C943D39DD7812CAB94B614 /* Documentation.docc */,
 				C9DDE1B06BCC1CDE0ECF1589 /* Info.plist */,
 				AAA49985DFFE797EE8416887 /* inputList.xcfilelist */,
-				CE1F06D99242F4223D081F0D /* LaunchScreen.storyboard */,
-				9E17D598D98065767A04740F /* Localizable.strings */,
-				65C8D6D1DDC1512D396C07B7 /* Localizable.stringsdict */,
-				0C6BA0D12467A13EC012C728 /* LocalizedStoryboard.storyboard */,
-				814D72C2B921F60B759C2D4B /* Main.storyboard */,
-				306796628DD52FA55E833B65 /* Model.xcdatamodeld */,
 				BF59AC868D227C92CA8B1B57 /* Model.xcmappingmodel */,
 				C7809CE9FE9852C2AA87ACE5 /* module.modulemap */,
 				553D289724905857912C7A1D /* outputList.xcfilelist */,
@@ -1071,6 +1081,8 @@
 				BDA839814AF73F01F7710518 /* StaticLibrary_ObjC */,
 				CBDAC144248EE9D3838C6AAA /* StaticLibrary_Swift */,
 				6E0D17C5B4E6F01B89254309 /* String Catalogs */,
+				AE2AB2772F70DFFF402AA02B /* SyncedFolder */,
+				AB527E0D553CE53AF54C39CD /* SyncedParent */,
 				8CFD8AD4820FAB9265663F92 /* Tool */,
 				4C7F5EB7D6F3E0E9B426AB4A /* Utilities */,
 				3FEA12CF227D41EF50E5C2DB /* Vendor */,
@@ -1079,7 +1091,6 @@
 				2E1E747C7BC434ADB80CC269 /* Headers */,
 				6B1603BA83AA0C7B94E45168 /* ResourceFolder */,
 				6BBE762F36D94AB6FFBFE834 /* SomeFile */,
-				AE2AB2772F70DFFF402AA02B /* SyncedFolder */,
 				79DC4A1E4D2E0D3A215179BC /* Bundles */,
 				FC1515684236259C50A7747F /* Frameworks */,
 				AC523591AC7BE9275003D2DB /* Products */,
@@ -1320,6 +1331,14 @@
 			path = iMessageApp;
 			sourceTree = "<group>";
 		};
+		AB527E0D553CE53AF54C39CD /* SyncedParent */ = {
+			isa = PBXGroup;
+			children = (
+				A2F1B5386E15A261AC8A4DEE /* SyncedChild */,
+			);
+			path = SyncedParent;
+			sourceTree = "<group>";
+		};
 		AC523591AC7BE9275003D2DB /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1371,9 +1390,9 @@
 		BAE6C12745737019DC9E98BF /* App_watchOS */ = {
 			isa = PBXGroup;
 			children = (
+				C872631362DDBAFCE71E5C66 /* Interface.storyboard */,
 				D8A016580A3B8F72B820BFBF /* Assets.xcassets */,
 				FED40A89162E446494DDE7C7 /* Info.plist */,
-				C872631362DDBAFCE71E5C66 /* Interface.storyboard */,
 			);
 			path = App_watchOS;
 			sourceTree = "<group>";
@@ -1391,9 +1410,9 @@
 		BF58996786F85CB77BEE72EF /* iMessageExtension */ = {
 			isa = PBXGroup;
 			children = (
+				753001CDCEAA4C4E1AFF8E87 /* MainInterface.storyboard */,
 				1BC32A813B80A53962A1F365 /* Assets.xcassets */,
 				40863AE6202CFCD0529D8438 /* Info.plist */,
-				753001CDCEAA4C4E1AFF8E87 /* MainInterface.storyboard */,
 				B198242976C3395E31FE000A /* MessagesViewController.swift */,
 			);
 			path = iMessageExtension;
@@ -1402,12 +1421,12 @@
 		C81493FAD71E9A9A19E00AD5 /* App_Clip */ = {
 			isa = PBXGroup;
 			children = (
+				79325B44B19B83EC6CEDBCC5 /* LaunchScreen.storyboard */,
+				2FC2A8A829CE71B1CF415FF7 /* Main.storyboard */,
 				23A2F16890ECF2EE3FED72AE /* AppDelegate.swift */,
 				59DA55A04FA2366B5D0BEEFF /* Assets.xcassets */,
 				1FA5E208EC184E3030D2A21D /* Clip.entitlements */,
 				6F165CDD5BCC13AFF50B65E2 /* Info.plist */,
-				79325B44B19B83EC6CEDBCC5 /* LaunchScreen.storyboard */,
-				2FC2A8A829CE71B1CF415FF7 /* Main.storyboard */,
 				DFE6A6FAAFF701FE729293DE /* ViewController.swift */,
 			);
 			path = App_Clip;
@@ -1452,10 +1471,10 @@
 		EE78B4FBD0137D1975C47D76 /* App_macOS */ = {
 			isa = PBXGroup;
 			children = (
+				74FBDFA5CB063F6001AD8ACD /* Main.storyboard */,
 				9528528C989D24FE3E6C533E /* App-Info.plist */,
 				09B82F603D981398F38D762E /* AppDelegate.swift */,
 				E55F45EACB0F382722D61C8D /* Assets.xcassets */,
-				74FBDFA5CB063F6001AD8ACD /* Main.storyboard */,
 				A4C3FE6B986506724DAB5D0F /* ViewController.swift */,
 			);
 			path = App_macOS;
@@ -1717,6 +1736,7 @@
 				981D116D40DBA0407D0E0E94 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
+				A2F1B5386E15A261AC8A4DEE /* SyncedChild */,
 				AE2AB2772F70DFFF402AA02B /* SyncedFolder */,
 			);
 			name = App_iOS;

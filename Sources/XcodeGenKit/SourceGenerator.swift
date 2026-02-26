@@ -722,8 +722,9 @@ class SourceGenerator {
             addObject(syncedRootGroup)
             sourceReference = syncedRootGroup
 
-            // TODO: adjust if hasCustomParent == true
-            rootGroups.insert(syncedRootGroup)
+            if !(createIntermediateGroups || hasCustomParent) || path.parent() == project.basePath {
+                rootGroups.insert(syncedRootGroup)
+            }
 
             let sourceFile = generateSourceFile(
                 targetType: targetType,
@@ -740,6 +741,7 @@ class SourceGenerator {
             try makePathRelative(for: sourceReference, at: path)
         } else if createIntermediateGroups {
             createIntermediaGroups(for: sourceReference, at: sourcePath)
+            try makePathRelative(for: sourceReference, at: sourcePath)
         }
 
         return sourceFiles

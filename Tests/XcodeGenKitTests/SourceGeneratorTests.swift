@@ -130,6 +130,32 @@ class SourceGeneratorTests: XCTestCase {
                 try expect(syncedFolder.explicitFolders) == ["Images", "MainSuite/FeatureATests", "MainSuite/FeatureBTests"]
             }
 
+            $0.it("generates synced folder with createIntermediateGroups") {
+                let directories = """
+                Parent:
+                  Child:
+                    - a.swift
+                """
+                try createDirectories(directories)
+
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: [.init(path: "Parent/Child", type: .syncedFolder)])
+                let options = SpecOptions(createIntermediateGroups: true)
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target], options: options)
+
+                let pbxProj = try project.generatePbxProj()
+                let mainGroup = try pbxProj.getMainGroup()
+
+                let rootSyncedFolders = mainGroup.children.compactMap { $0 as? PBXFileSystemSynchronizedRootGroup }
+                try expect(rootSyncedFolders.count) == 0
+
+                let parentGroup = try unwrap(mainGroup.children.compactMap({ $0 as? PBXGroup }).first(where: { $0.nameOrPath == "Parent" }))
+                let nestedSyncedFolders = parentGroup.children.compactMap { $0 as? PBXFileSystemSynchronizedRootGroup }
+                let syncedFolder = try unwrap(nestedSyncedFolders.first)
+
+                try expect(syncedFolder.path) == "Child"
+                try expect([syncedFolder]) == pbxProj.nativeTargets.first?.fileSystemSynchronizedGroups
+            }
+
             $0.it("respects defaultSourceDirectoryType") {
                 let directories = """
                 Sources:
