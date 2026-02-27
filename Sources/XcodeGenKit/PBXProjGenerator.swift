@@ -1692,13 +1692,13 @@ extension Platform {
 }
 
 extension PBXFileElement {
-    /// - returns: `true` if the element is a group or a folder reference. Likely an SPM package.
+    /// - returns: `true` if the element is a group, a folder reference (likely an SPM package), or a synced folder.
     var isGroupOrFolder: Bool {
-        self is PBXGroup || (self as? PBXFileReference)?.lastKnownFileType == "folder"
+        self is PBXGroup || self is PBXFileSystemSynchronizedRootGroup || (self as? PBXFileReference)?.lastKnownFileType == "folder"
     }
 
     public func getSortOrder(groupSortPosition: SpecOptions.GroupSortPosition) -> Int {
-        if type(of: self).isa == "PBXGroup" {
+        if self is PBXGroup || self is PBXFileSystemSynchronizedRootGroup {
             switch groupSortPosition {
             case .top: return -1
             case .bottom: return 1
