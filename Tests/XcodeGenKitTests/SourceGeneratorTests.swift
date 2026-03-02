@@ -203,6 +203,29 @@ class SourceGeneratorTests: XCTestCase {
                 try expect(exceptions.contains("a.swift")) == false
             }
 
+            $0.it("adds membership exceptions for nested synced folder with intermediate groups") {
+                let directories = """
+                Sources:
+                  Nested:
+                    - a.swift
+                    - b.swift
+                """
+                try createDirectories(directories)
+
+                let source = TargetSource(path: "Sources/Nested", excludes: ["b.swift"], type: .syncedFolder)
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: [source])
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target], options: .init(createIntermediateGroups: true))
+
+                let pbxProj = try project.generatePbxProj()
+                let sourcesGroup = try unwrap(try pbxProj.getMainGroup().children.first { $0.nameOrPath == "Sources" } as? PBXGroup)
+                let syncedFolder = try unwrap(sourcesGroup.children.compactMap { $0 as? PBXFileSystemSynchronizedRootGroup }.first)
+
+                let exceptionSet = try unwrap(syncedFolder.exceptions?.first as? PBXFileSystemSynchronizedBuildFileExceptionSet)
+                let exceptions = try unwrap(exceptionSet.membershipExceptions)
+
+                try expect(exceptions) == ["b.swift"]
+            }
+
             $0.it("auto-excludes Info.plist from synced folder membership") {
                 let directories = """
                 Sources:

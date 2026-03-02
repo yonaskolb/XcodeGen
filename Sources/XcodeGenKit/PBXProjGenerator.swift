@@ -1459,29 +1459,30 @@ public class PBXProjGenerator {
         }
 
         // add fileSystemSynchronizedGroups
-        let synchronizedRootGroups = sourceFiles.compactMap { $0.fileReference as? PBXFileSystemSynchronizedRootGroup }
+		let synchronizedRootGroups: [PBXFileSystemSynchronizedRootGroup] = sourceFiles.compactMap { sourceFile in
+            guard let syncedGroup = sourceFile.fileReference as? PBXFileSystemSynchronizedRootGroup else { return nil }
+            
+            configureMembershipExceptions(
+                for: syncedGroup,
+                path: sourceFile.path,
+                target: target,
+                targetObject: targetObject,
+                infoPlistFiles: infoPlistFiles
+            )
+            return syncedGroup
+        }
         if !synchronizedRootGroups.isEmpty {
-            for syncedGroup in synchronizedRootGroups {
-                configureMembershipExceptions(
-                    for: syncedGroup,
-                    target: target,
-                    targetObject: targetObject,
-                    infoPlistFiles: infoPlistFiles
-                )
-            }
             targetObject.fileSystemSynchronizedGroups = synchronizedRootGroups
         }
     }
 
     private func configureMembershipExceptions(
         for syncedGroup: PBXFileSystemSynchronizedRootGroup,
+        path syncedPath: Path,
         target: Target,
         targetObject: PBXTarget,
         infoPlistFiles: [Config: String]
     ) {
-        guard let syncedGroupPath = syncedGroup.path else { return }
-        let syncedPath = (project.basePath + Path(syncedGroupPath)).normalize()
-
         guard let targetSource = target.sources.first(where: {
             (project.basePath + $0.path).normalize() == syncedPath
         }) else { return }
