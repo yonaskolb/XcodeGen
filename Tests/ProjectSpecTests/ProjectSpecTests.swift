@@ -442,7 +442,7 @@ class ProjectSpecTests: XCTestCase {
             $0.it("validates config settings format") {
                 var project = baseProject
                 project.configs = Config.defaultConfigs
-                project.settings.buildSettings = ["Debug": ["SETTING": "VALUE"], "Release": ["SETTING": "VALUE"]]
+                project.settings.buildSettings = ["Debug": "VALUE", "Release": "VALUE"]
 
                 try expectValidationError(project, .invalidPerConfigSettings)
             }

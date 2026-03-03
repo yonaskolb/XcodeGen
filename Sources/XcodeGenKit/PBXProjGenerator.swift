@@ -294,21 +294,21 @@ public class PBXProjGenerator {
             }.flatMap { $0 }
         ).sorted()
 
-        let defaultAttributes: [String: Any] = [
+        var projectAttributes: [String: ProjectAttribute] = [
             "BuildIndependentTargetsInParallel": "YES"
         ]
-        var projectAttributes: [String: Any] = defaultAttributes.merged(project.attributes)
-        
-        // Set default LastUpgradeCheck if user did not specify
-        let lastUpgradeKey = "LastUpgradeCheck"
-        if !projectAttributes.contains(where: { (key, value) -> Bool in
-            key == lastUpgradeKey && value is String
-        }) {
-            projectAttributes[lastUpgradeKey] = project.xcodeVersion
+        for (key, value) in project.attributes {
+            projectAttributes[key] = ProjectAttribute(any: value)
         }
-        
+
+        // Set default LastUpgradeCheck if user did not specify a valid string value
+        let lastUpgradeKey = "LastUpgradeCheck"
+        if !(project.attributes[lastUpgradeKey] is String) {
+            projectAttributes[lastUpgradeKey] = .string(project.xcodeVersion)
+        }
+
         if !assetTags.isEmpty {
-            projectAttributes["knownAssetTags"] = assetTags
+            projectAttributes["knownAssetTags"] = .array(assetTags)
         }
 
         var knownRegions = Set(sourceGenerator.knownRegions)
@@ -483,9 +483,9 @@ public class PBXProjGenerator {
         let productType: PBXProductType = targetObject.productType ?? .none
         let buildSettings = defaultConfiguration.buildSettings
         let settings = Settings(buildSettings: buildSettings, configSettings: [:], groups: [])
-        let deploymentTargetString = buildSettings[platform.deploymentTargetSetting] as? String
+        let deploymentTargetString = buildSettings[platform.deploymentTargetSetting]?.stringValue
         let deploymentTarget = deploymentTargetString == nil ? nil : try Version.parse(deploymentTargetString!)
-        let requiresObjCLinking = (buildSettings["OTHER_LDFLAGS"] as? String)?.contains("-ObjC") ?? (productType == .staticLibrary)
+        let requiresObjCLinking = buildSettings["OTHER_LDFLAGS"]?.stringValue?.contains("-ObjC") ?? (productType == .staticLibrary)
         let dependencyTarget = Target(
             name: targetObject.name,
             type: productType,
@@ -534,9 +534,9 @@ public class PBXProjGenerator {
         return addObject(copyFilesBuildPhase)
     }
 
-    func generateTargetAttributes() -> [PBXTarget: [String: Any]] {
+    func generateTargetAttributes() -> [PBXTarget: [String: ProjectAttribute]] {
 
-        var targetAttributes: [PBXTarget: [String: Any]] = [:]
+        var targetAttributes: [PBXTarget: [String: ProjectAttribute]] = [:]
 
         let testTargets = pbxProj.nativeTargets.filter { $0.productType == .uiTestBundle || $0.productType == .unitTestBundle }
         for testTarget in testTargets {
@@ -546,24 +546,24 @@ public class PBXProjGenerator {
                 guard let buildConfigurations = target.buildConfigurationList?.buildConfigurations else { return nil }
 
                 return buildConfigurations
-                    .compactMap { $0.buildSettings["TEST_TARGET_NAME"] as? String }
+                    .compactMap { $0.buildSettings["TEST_TARGET_NAME"]?.stringValue }
                     .first
             }
 
             guard let name = testTargetName(testTarget) else { continue }
             guard let target = self.pbxProj.targets(named: name).first else { continue }
 
-            targetAttributes[testTarget, default: [:]].merge(["TestTargetID": target])
+            targetAttributes[testTarget, default: [:]].merge(["TestTargetID": .targetReference(target)])
         }
 
         func generateTargetAttributes(_ target: ProjectTarget, pbxTarget: PBXTarget) {
             if !target.attributes.isEmpty {
-                targetAttributes[pbxTarget, default: [:]].merge(target.attributes)
+                targetAttributes[pbxTarget, default: [:]].merge(target.attributes.mapValues { ProjectAttribute(any: $0) })
             }
 
             func getSingleBuildSetting(_ setting: String) -> String? {
                 let settings = project.configs.compactMap {
-                    project.getCombinedBuildSetting(setting, target: target, config: $0) as? String
+                    project.getCombinedBuildSetting(setting, target: target, config: $0)?.stringValue
                 }
                 guard settings.count == project.configs.count,
                     let firstSetting = settings.first,
@@ -575,7 +575,7 @@ public class PBXProjGenerator {
 
             func setTargetAttribute(attribute: String, buildSetting: String) {
                 if let setting = getSingleBuildSetting(buildSetting) {
-                    targetAttributes[pbxTarget, default: [:]].merge([attribute: setting])
+                    targetAttributes[pbxTarget, default: [:]].merge([attribute: .string(setting)])
                 }
             }
 
@@ -706,6 +706,7 @@ public class PBXProjGenerator {
         var systemExtensions: [PBXBuildFile] = []
         var appClips: [PBXBuildFile] = []
         var carthageFrameworksToEmbed: [String] = []
+        var buildFileCopyPhases: [PBXBuildFile: BuildPhaseSpec.CopyFilesSettings] = [:]
 
         let targetDependencies = (target.transitivelyLinkDependencies ?? project.options.transitivelyLinkDependencies) ?
             getAllDependenciesPlusTransitiveNeedingEmbedding(target: target) : target.dependencies
@@ -714,7 +715,7 @@ public class PBXProjGenerator {
             (target.type.isApp || target.type == .watch2Extension))
         let directlyEmbedCarthage = target.directlyEmbedCarthageDependencies ?? targetSupportsDirectEmbed
 
-        func getEmbedSettings(dependency: Dependency, codeSign: Bool) -> [String: Any] {
+        func getEmbedSettings(dependency: Dependency, codeSign: Bool) -> [String: BuildFileSetting] {
             var embedAttributes: [String] = []
             if codeSign {
                 embedAttributes.append("CodeSignOnCopy")
@@ -722,19 +723,15 @@ public class PBXProjGenerator {
             if dependency.removeHeaders {
                 embedAttributes.append("RemoveHeadersOnCopy")
             }
-            var retval: [String:Any] = ["ATTRIBUTES": embedAttributes]
-            if let copyPhase = dependency.copyPhase {
-                retval["COPY_PHASE"] = copyPhase
-            }
-            return retval
+            return ["ATTRIBUTES": .array(embedAttributes)]
         }
 
-        func getDependencyFrameworkSettings(dependency: Dependency) -> [String: Any]? {
+        func getDependencyFrameworkSettings(dependency: Dependency) -> [String: BuildFileSetting]? {
             var linkingAttributes: [String] = []
             if dependency.weakLink {
                 linkingAttributes.append("Weak")
             }
-            return !linkingAttributes.isEmpty ? ["ATTRIBUTES": linkingAttributes] : nil
+            return !linkingAttributes.isEmpty ? ["ATTRIBUTES": .array(linkingAttributes)] : nil
         }
 
         func processTargetDependency(_ dependency: Dependency, dependencyTarget: Target, embedFileReference: PBXFileElement?, platform: String?, platforms: [String]?) {
@@ -766,8 +763,9 @@ public class PBXProjGenerator {
                 pbxBuildFile.platformFilters = platforms
                 let embedFile = addObject(pbxBuildFile)
 
-                if dependency.copyPhase != nil {
+                if let copyPhase = dependency.copyPhase {
                     // custom copy takes precedence
+                    buildFileCopyPhases[embedFile] = copyPhase
                     customCopyDependenciesReferences.append(embedFile)
                 } else if dependencyTarget.type.isExtension {
                     if dependencyTarget.type == .extensionKitExtension {
@@ -858,7 +856,8 @@ public class PBXProjGenerator {
                     pbxBuildFile.platformFilters = platforms
                     let embedFile = addObject(pbxBuildFile)
                     
-                    if dependency.copyPhase != nil {
+                    if let copyPhase = dependency.copyPhase {
+                        buildFileCopyPhases[embedFile] = copyPhase
                         customCopyDependenciesReferences.append(embedFile)
                     } else {
                         copyFrameworksReferences.append(embedFile)
@@ -916,7 +915,8 @@ public class PBXProjGenerator {
                     pbxBuildFile.platformFilters = platforms
                     let embedFile = addObject(pbxBuildFile)
                     
-                    if dependency.copyPhase != nil {
+                    if let copyPhase = dependency.copyPhase {
+                        buildFileCopyPhases[embedFile] = copyPhase
                         customCopyDependenciesReferences.append(embedFile)
                     } else {
                         copyFrameworksReferences.append(embedFile)
@@ -989,7 +989,8 @@ public class PBXProjGenerator {
                         pbxBuildFile.platformFilters = platforms
                         let embedFile = addObject(pbxBuildFile)
 
-                        if dependency.copyPhase != nil {
+                        if let copyPhase = dependency.copyPhase {
+                            buildFileCopyPhases[embedFile] = copyPhase
                             customCopyDependenciesReferences.append(embedFile)
                         } else {
                             copyFrameworksReferences.append(embedFile)
@@ -1052,7 +1053,8 @@ public class PBXProjGenerator {
                     let embedFile = addObject(
                         PBXBuildFile(file: fileReference, settings: getEmbedSettings(dependency: dependency, codeSign: dependency.codeSign ?? true))
                     )
-                    if dependency.copyPhase != nil {
+                    if let copyPhase = dependency.copyPhase {
+                        buildFileCopyPhases[embedFile] = copyPhase
                         customCopyDependenciesReferences.append(embedFile)
                     } else {
                         copyFrameworksReferences.append(embedFile)
@@ -1107,11 +1109,11 @@ public class PBXProjGenerator {
         }
         
         func splitCopyDepsByDestination(_ references: [PBXBuildFile]) -> [BuildPhaseSpec.CopyFilesSettings : [PBXBuildFile]] {
-        
+
             var retval = [BuildPhaseSpec.CopyFilesSettings : [PBXBuildFile]]()
             for reference in references {
-                
-                guard let key = reference.settings?["COPY_PHASE"] as? BuildPhaseSpec.CopyFilesSettings else { continue }
+
+                guard let key = buildFileCopyPhases[reference] else { continue }
                 var filesWithSameDestination = retval[key] ?? [PBXBuildFile]()
                 filesWithSameDestination.append(reference)
                 retval[key] = filesWithSameDestination
@@ -1162,7 +1164,7 @@ public class PBXProjGenerator {
             addResourcesBuildPhase()
         }
 
-        let swiftObjCInterfaceHeader = project.getCombinedBuildSetting("SWIFT_OBJC_INTERFACE_HEADER_NAME", target: target, config: project.configs[0]) as? String
+        let swiftObjCInterfaceHeader = project.getCombinedBuildSetting("SWIFT_OBJC_INTERFACE_HEADER_NAME", target: target, config: project.configs[0])?.stringValue
         let swiftInstallObjCHeader = project.getBoolBuildSetting("SWIFT_INSTALL_OBJC_HEADER", target: target, config: project.configs[0]) ?? true // Xcode default
 
         if target.type == .staticLibrary
@@ -1327,12 +1329,12 @@ public class PBXProjGenerator {
 
             // Set CODE_SIGN_ENTITLEMENTS
             if let entitlements = target.entitlements {
-                buildSettings["CODE_SIGN_ENTITLEMENTS"] = entitlements.path
+                buildSettings["CODE_SIGN_ENTITLEMENTS"] = .string(entitlements.path)
             }
 
             // Set INFOPLIST_FILE based on the resolved value
             if let infoPlistFile = infoPlistFiles[config] {
-                buildSettings["INFOPLIST_FILE"] = infoPlistFile
+                buildSettings["INFOPLIST_FILE"] = .string(infoPlistFile)
             }
 
             // automatically calculate bundle id
@@ -1343,7 +1345,7 @@ public class PBXProjGenerator {
                     .replacingOccurrences(of: "_", with: "-")
                     .components(separatedBy: characterSet)
                     .joined(separator: "")
-                buildSettings["PRODUCT_BUNDLE_IDENTIFIER"] = bundleIdPrefix + "." + escapedTargetName
+                buildSettings["PRODUCT_BUNDLE_IDENTIFIER"] = .string(bundleIdPrefix + "." + escapedTargetName)
             }
 
             // automatically set test target name
@@ -1353,7 +1355,7 @@ public class PBXProjGenerator {
                     if dependency.type == .target,
                         let dependencyTarget = project.getTarget(dependency.reference),
                         dependencyTarget.type.isApp {
-                        buildSettings["TEST_TARGET_NAME"] = dependencyTarget.name
+                        buildSettings["TEST_TARGET_NAME"] = .string(dependencyTarget.name)
                         break
                     }
                 }
@@ -1380,13 +1382,13 @@ public class PBXProjGenerator {
             if anyDependencyRequiresObjCLinking {
                 let otherLinkingFlags = "OTHER_LDFLAGS"
                 let objCLinking = "-ObjC"
-                if var array = buildSettings[otherLinkingFlags] as? [String] {
+                if var array = buildSettings[otherLinkingFlags]?.arrayValue {
                     array.append(objCLinking)
-                    buildSettings[otherLinkingFlags] = array
-                } else if let string = buildSettings[otherLinkingFlags] as? String {
-                    buildSettings[otherLinkingFlags] = [string, objCLinking]
+                    buildSettings[otherLinkingFlags] = .array(array)
+                } else if let string = buildSettings[otherLinkingFlags]?.stringValue {
+                    buildSettings[otherLinkingFlags] = .array([string, objCLinking])
                 } else {
-                    buildSettings[otherLinkingFlags] = ["$(inherited)", objCLinking]
+                    buildSettings[otherLinkingFlags] = .array(["$(inherited)", objCLinking])
                 }
             }
 
@@ -1410,13 +1412,13 @@ public class PBXProjGenerator {
             // set framework search paths
             if !configFrameworkBuildPaths.isEmpty {
                 let frameworkSearchPaths = "FRAMEWORK_SEARCH_PATHS"
-                if var array = buildSettings[frameworkSearchPaths] as? [String] {
+                if var array = buildSettings[frameworkSearchPaths]?.arrayValue {
                     array.append(contentsOf: configFrameworkBuildPaths)
-                    buildSettings[frameworkSearchPaths] = array
-                } else if let string = buildSettings[frameworkSearchPaths] as? String {
-                    buildSettings[frameworkSearchPaths] = [string] + configFrameworkBuildPaths
+                    buildSettings[frameworkSearchPaths] = .array(array)
+                } else if let string = buildSettings[frameworkSearchPaths]?.stringValue {
+                    buildSettings[frameworkSearchPaths] = .array([string] + configFrameworkBuildPaths)
                 } else {
-                    buildSettings[frameworkSearchPaths] = ["$(inherited)"] + configFrameworkBuildPaths
+                    buildSettings[frameworkSearchPaths] = .array(["$(inherited)"] + configFrameworkBuildPaths)
                 }
             }
 
@@ -1506,7 +1508,7 @@ public class PBXProjGenerator {
         let values: [(Config, String)] = project.configs.compactMap { config in
             // First, if the plist path was defined by `INFOPLIST_FILE`, use that
             let buildSettings = project.getTargetBuildSettings(target: target, config: config)
-            if let value = buildSettings["INFOPLIST_FILE"] as? String {
+            if let value = buildSettings["INFOPLIST_FILE"]?.stringValue {
                 return (config, value)
             }
 
