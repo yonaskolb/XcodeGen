@@ -835,6 +835,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				ExcludedFile.swift,
+				Info.plist,
 			);
 			target = 0867B0DACEF28C11442DE8F7 /* App_iOS */;
 		};

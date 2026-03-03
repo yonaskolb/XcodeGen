@@ -168,6 +168,7 @@ targets:
         type: syncedFolder
         excludes:
           - ExcludedFile.swift
+          - Info.plist
     settings:
       INFOPLIST_FILE: App_iOS/Info.plist
       PRODUCT_BUNDLE_IDENTIFIER: com.project.app
