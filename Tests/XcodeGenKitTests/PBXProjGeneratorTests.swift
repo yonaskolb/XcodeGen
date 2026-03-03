@@ -361,7 +361,7 @@ class PBXProjGeneratorTests: XCTestCase {
         let pbxProj = try projGenerator.generate()
         
         for pbxProject in pbxProj.projects {
-            XCTAssertEqual(pbxProject.attributes[lastUpgradeKey] as? String, project.xcodeVersion)
+            XCTAssertEqual(pbxProject.attributes[lastUpgradeKey]?.stringValue, project.xcodeVersion)
         }
     }
     
@@ -375,7 +375,7 @@ class PBXProjGeneratorTests: XCTestCase {
         let pbxProj = try projGenerator.generate()
         
         for pbxProject in pbxProj.projects {
-            XCTAssertEqual(pbxProject.attributes[lastUpgradeKey] as? String, lastUpgradeValue)
+            XCTAssertEqual(pbxProject.attributes[lastUpgradeKey]?.stringValue, lastUpgradeValue)
         }
     }
     
@@ -387,7 +387,7 @@ class PBXProjGeneratorTests: XCTestCase {
         let pbxProj = try projGenerator.generate()
         
         for pbxProject in pbxProj.projects {
-            XCTAssertEqual(pbxProject.attributes[lastUpgradeKey] as? String, project.xcodeVersion)
+            XCTAssertEqual(pbxProject.attributes[lastUpgradeKey]?.stringValue, project.xcodeVersion)
         }
     }
 
