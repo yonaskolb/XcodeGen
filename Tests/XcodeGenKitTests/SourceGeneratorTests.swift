@@ -120,6 +120,99 @@ class SourceGeneratorTests: XCTestCase {
                 try expect([syncedFolder]) == pbxProj.nativeTargets.first?.fileSystemSynchronizedGroups
             }
 
+            $0.it("adds excludes as membership exceptions for synced folder") {
+                let directories = """
+                Sources:
+                  - a.swift
+                  - b.swift
+                  - Generated:
+                    - c.generated.swift
+                    - d.generated.swift
+                """
+                try createDirectories(directories)
+
+                let source = TargetSource(path: "Sources", excludes: ["b.swift", "Generated/*.generated.swift"], type: .syncedFolder)
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: [source])
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target])
+
+                let pbxProj = try project.generatePbxProj()
+                let syncedFolders = try pbxProj.getMainGroup().children.compactMap { $0 as? PBXFileSystemSynchronizedRootGroup }
+                let syncedFolder = try unwrap(syncedFolders.first)
+
+                let exceptionSets = syncedFolder.exceptions?.compactMap { $0 as? PBXFileSystemSynchronizedBuildFileExceptionSet }
+                let exceptionSet = try unwrap(exceptionSets?.first)
+                let exceptions = try unwrap(exceptionSet.membershipExceptions)
+
+                try expect(exceptions.contains("b.swift")) == true
+                try expect(exceptions.contains("Generated/c.generated.swift")) == true
+                try expect(exceptions.contains("Generated/d.generated.swift")) == true
+                try expect(exceptions.contains("a.swift")) == false
+            }
+
+            $0.it("auto-excludes Info.plist from synced folder membership") {
+                let directories = """
+                Sources:
+                  - a.swift
+                  - Info.plist
+                """
+                try createDirectories(directories)
+
+                let source = TargetSource(path: "Sources", type: .syncedFolder)
+                let target = Target(
+                    name: "Test",
+                    type: .application,
+                    platform: .iOS,
+                    settings: try Settings(jsonDictionary: ["INFOPLIST_FILE": "Sources/Info.plist"]),
+                    sources: [source]
+                )
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target])
+
+                let pbxProj = try project.generatePbxProj()
+                let syncedFolders = try pbxProj.getMainGroup().children.compactMap { $0 as? PBXFileSystemSynchronizedRootGroup }
+                let syncedFolder = try unwrap(syncedFolders.first)
+
+                let exceptionSets = syncedFolder.exceptions?.compactMap { $0 as? PBXFileSystemSynchronizedBuildFileExceptionSet }
+                let exceptionSet = try unwrap(exceptionSets?.first)
+                let exceptions = try unwrap(exceptionSet.membershipExceptions)
+
+                try expect(exceptions.contains("Info.plist")) == true
+            }
+
+            $0.it("creates no exception set for synced folder without excludes") {
+                let directories = """
+                Sources:
+                  - a.swift
+                """
+                try createDirectories(directories)
+
+                let source = TargetSource(path: "Sources", type: .syncedFolder)
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: [source])
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target])
+
+                let pbxProj = try project.generatePbxProj()
+                let syncedFolders = try pbxProj.getMainGroup().children.compactMap { $0 as? PBXFileSystemSynchronizedRootGroup }
+                let syncedFolder = try unwrap(syncedFolders.first)
+
+                try expect(syncedFolder.exceptions?.isEmpty ?? true) == true
+            }
+
+            $0.it("adds empty resources build phase for synced folder") {
+                let directories = """
+                Sources:
+                  - a.swift
+                """
+                try createDirectories(directories)
+
+                let source = TargetSource(path: "Sources", type: .syncedFolder)
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: [source])
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target])
+
+                let pbxProj = try project.generatePbxProj()
+                let nativeTarget = try unwrap(pbxProj.nativeTargets.first)
+                let hasResourcesPhase = nativeTarget.buildPhases.contains { $0 is PBXResourcesBuildPhase }
+                try expect(hasResourcesPhase) == true
+            }
+
             $0.it("supports frameworks in sources") {
                 let directories = """
                 Sources:
