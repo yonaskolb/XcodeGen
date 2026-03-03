@@ -162,7 +162,7 @@ class SourceGeneratorTests: XCTestCase {
                     name: "Test",
                     type: .application,
                     platform: .iOS,
-                    settings: Settings(dictionary: ["INFOPLIST_FILE": "Sources/Info.plist"]),
+                    settings: try Settings(jsonDictionary: ["INFOPLIST_FILE": "Sources/Info.plist"]),
                     sources: [source]
                 )
                 let project = Project(basePath: directoryPath, name: "Test", targets: [target])
