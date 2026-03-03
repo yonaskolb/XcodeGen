@@ -166,9 +166,8 @@ targets:
       - String Catalogs/LocalizableStrings.xcstrings
       - path: SyncedFolder
         type: syncedFolder
-# Commented out until we update xcodeproj (TEMP id issue causes non-deterministic generation on CI)
-#        excludes:
-#          - ExcludedFile.swift
+        excludes:
+          - ExcludedFile.swift
     settings:
       INFOPLIST_FILE: App_iOS/Info.plist
       PRODUCT_BUNDLE_IDENTIFIER: com.project.app
