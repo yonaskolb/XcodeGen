@@ -830,9 +830,22 @@
 		FED40A89162E446494DDE7C7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		9A259ACEBCE19CC5F22B6DD4 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				ExcludedFile.swift,
+			);
+			target = 0867B0DACEF28C11442DE8F7 /* App_iOS */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		AE2AB2772F70DFFF402AA02B /* SyncedFolder */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				9A259ACEBCE19CC5F22B6DD4 /* PBXFileSystemSynchronizedBuildFileExceptionSet */,
+			);
 			explicitFileTypes = {
 			};
 			explicitFolders = (
