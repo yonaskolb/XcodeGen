@@ -65,26 +65,26 @@ extension Project {
                 // this fix is necessary because the platform preset overrides the original value
                 buildSettings["SDKROOT"] = .string(Platform.auto.rawValue)
             }
-        }
-        
-        if !specSupportedDestinations.isEmpty {
-            var supportedPlatforms: [String] = []
-            var targetedDeviceFamily: [String] = []
             
-            for supportedDestination in specSupportedDestinations {
-                let supportedPlatformBuildSettings = SettingsPresetFile.supportedDestination(supportedDestination).getBuildSettings()
-                buildSettings += supportedPlatformBuildSettings
+            if !specSupportedDestinations.isEmpty {
+                var supportedPlatforms: [String] = []
+                var targetedDeviceFamily: [String] = []
                 
-                if let value = supportedPlatformBuildSettings?["SUPPORTED_PLATFORMS"]?.stringValue {
-                    supportedPlatforms += value.components(separatedBy: " ")
+                for supportedDestination in specSupportedDestinations {
+                    let supportedPlatformBuildSettings = SettingsPresetFile.supportedDestination(supportedDestination).getBuildSettings()
+                    buildSettings += supportedPlatformBuildSettings
+                    
+                    if let value = supportedPlatformBuildSettings?["SUPPORTED_PLATFORMS"]?.stringValue {
+                        supportedPlatforms += value.components(separatedBy: " ")
+                    }
+                    if let value = supportedPlatformBuildSettings?["TARGETED_DEVICE_FAMILY"]?.stringValue {
+                        targetedDeviceFamily += value.components(separatedBy: ",")
+                    }
                 }
-                if let value = supportedPlatformBuildSettings?["TARGETED_DEVICE_FAMILY"]?.stringValue {
-                    targetedDeviceFamily += value.components(separatedBy: ",")
-                }
+                
+                buildSettings["SUPPORTED_PLATFORMS"] = .string(supportedPlatforms.joined(separator: " "))
+                buildSettings["TARGETED_DEVICE_FAMILY"] = .string(targetedDeviceFamily.joined(separator: ","))
             }
-            
-            buildSettings["SUPPORTED_PLATFORMS"] = .string(supportedPlatforms.joined(separator: " "))
-            buildSettings["TARGETED_DEVICE_FAMILY"] = .string(targetedDeviceFamily.joined(separator: ","))
         }
         
         // apply custom platform version

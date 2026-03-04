@@ -516,6 +516,21 @@ class ProjectGeneratorTests: XCTestCase {
                 try expect(targetConfig1.buildSettings["SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD"]?.boolValue) == false
             }
 
+            $0.it("supportedDestinations respects settingPresets none") {
+                let target = Target(name: "Target", type: .application, platform: .auto, supportedDestinations: [.iOS, .macOS])
+                let options = SpecOptions(settingPresets: .none)
+                let project = Project(name: "", targets: [target], options: options)
+
+                let pbxProject = try project.generatePbxProj()
+                let targetConfig = try unwrap(pbxProject.nativeTargets.first?.buildConfigurationList?.buildConfigurations.first)
+
+                try expect(targetConfig.buildSettings["SUPPORTS_MACCATALYST"]).beNil()
+                try expect(targetConfig.buildSettings["SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD"]).beNil()
+                try expect(targetConfig.buildSettings["SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD"]).beNil()
+                try expect(targetConfig.buildSettings["SUPPORTED_PLATFORMS"]).beNil()
+                try expect(targetConfig.buildSettings["TARGETED_DEVICE_FAMILY"]).beNil()
+            }
+
             $0.it("generates dependencies") {
                 let pbxProject = try project.generatePbxProj()
 
