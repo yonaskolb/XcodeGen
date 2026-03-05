@@ -2,6 +2,11 @@
 
 ## Next Version
 
+## 2.45.1
+
+### Added
+- Added built in `.icon` folder support for IconComposer #1600 @yonaskolb
+
 ## 2.45.0
 
 ### Added
