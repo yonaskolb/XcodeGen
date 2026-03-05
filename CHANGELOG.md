@@ -2,8 +2,11 @@
 
 ## Next Version
 
-### Fixed
 - Fix missing productRefGroup in generated projects #1591 @ruslic19
+- Adds an `explicitFolders` property to `TargetSource` that is passed through to `PBXFileSystemSynchronizedRootGroup`, to turn entire subfolders into Resources. #1596 @macguru
+- Allow synced folders to be sorted using `groupOrdering`. #1596 @macguru
+- Fixed synced folders ignoring `createIntermediateGroups=YES` and always beging created at the root level. #1596 @macguru
+- Fix membership exceptions not working for nested synced folders with intermediate groups enabled. #1596 @macguru
 
 ## 2.44.1
 
