@@ -2,6 +2,8 @@
 
 ## Next Version
 
+- Fix missing productRefGroup in generated projects #1591 @ruslic19
+
 ## 2.45.1
 
 ### Added
