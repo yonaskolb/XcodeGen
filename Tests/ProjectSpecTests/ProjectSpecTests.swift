@@ -320,6 +320,17 @@ class ProjectSpecTests: XCTestCase {
                 try expectValidationError(project, .invalidTargetSchemeConfigVariant(target: "target1", configVariant: "invalidVariant", configType: .debug))
             }
 
+            $0.it("fails with empty source path") {
+                var project = baseProject
+                project.targets = [Target(
+                    name: "target1",
+                    type: .application,
+                    platform: .iOS,
+                    sources: ["", "validSource"]
+                )]
+                try expectValidationError(project, .emptySourcePath(target: "target1"))
+            }
+
             $0.it("fails with invalid aggregate target") {
                 var project = baseProject
                 project.aggregateTargets = [AggregateTarget(
