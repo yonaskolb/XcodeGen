@@ -33,9 +33,9 @@ class SpecLoadingTests: XCTestCase {
 
                 try expect(project.name) == "NewName"
                 try expect(project.settingGroups) == [
-                    "test": Settings(dictionary: ["MY_SETTING1": "NEW VALUE", "MY_SETTING2": "VALUE2", "MY_SETTING3": "VALUE3", "MY_SETTING4": "${SETTING4}"]),
-                    "new": Settings(dictionary: ["MY_SETTING": "VALUE"]),
-                    "toReplace": Settings(dictionary: ["MY_SETTING2": "VALUE2"]),
+                    "test": Settings(buildSettings: ["MY_SETTING1": "NEW VALUE", "MY_SETTING2": "VALUE2", "MY_SETTING3": "VALUE3", "MY_SETTING4": "${SETTING4}"]),
+                    "new": Settings(buildSettings: ["MY_SETTING": "VALUE"]),
+                    "toReplace": Settings(buildSettings: ["MY_SETTING2": "VALUE2"]),
                 ]
                 try expect(project.targets) == [
                     Target(name: "IncludedTargetNew", type: .application, platform: .tvOS, sources: ["NewSource"], dependencies: [Dependency(type: .package(products: []), reference: "Yams")]),
@@ -49,9 +49,9 @@ class SpecLoadingTests: XCTestCase {
 
                 try expect(project.name) == "NewName"
                 try expect(project.settingGroups) == [
-                    "test": Settings(dictionary: ["MY_SETTING1": "NEW VALUE", "MY_SETTING2": "VALUE2", "MY_SETTING3": "VALUE3", "MY_SETTING4": "${SETTING4}", "MY_SETTING5": "ADDITIONAL"]),
-                    "new": Settings(dictionary: ["MY_SETTING": "VALUE"]),
-                    "toReplace": Settings(dictionary: ["MY_SETTING2": "VALUE2"]),
+                    "test": Settings(buildSettings: ["MY_SETTING1": "NEW VALUE", "MY_SETTING2": "VALUE2", "MY_SETTING3": "VALUE3", "MY_SETTING4": "${SETTING4}", "MY_SETTING5": "ADDITIONAL"]),
+                    "new": Settings(buildSettings: ["MY_SETTING": "VALUE"]),
+                    "toReplace": Settings(buildSettings: ["MY_SETTING2": "VALUE2"]),
                 ]
                 try expect(project.targets) == [
                     Target(name: "IncludedTargetNew", type: .application, platform: .tvOS, sources: ["NewSource"], dependencies: [Dependency(type: .package(products: []), reference: "SwiftPM"), Dependency(type: .package(products: []), reference: "Yams")]),
@@ -65,9 +65,9 @@ class SpecLoadingTests: XCTestCase {
 
                 try expect(project.name) == "NewName"
                 try expect(project.settingGroups) == [
-                    "test": Settings(dictionary: ["MY_SETTING1": "NEW VALUE", "MY_SETTING2": "VALUE2", "MY_SETTING3": "VALUE3", "MY_SETTING4": "${SETTING4}"]),
-                    "new": Settings(dictionary: ["MY_SETTING": "VALUE"]),
-                    "toReplace": Settings(dictionary: ["MY_SETTING2": "VALUE2"]),
+                    "test": Settings(buildSettings: ["MY_SETTING1": "NEW VALUE", "MY_SETTING2": "VALUE2", "MY_SETTING3": "VALUE3", "MY_SETTING4": "${SETTING4}"]),
+                    "new": Settings(buildSettings: ["MY_SETTING": "VALUE"]),
+                    "toReplace": Settings(buildSettings: ["MY_SETTING2": "VALUE2"]),
                 ]
                 try expect(project.targets) == [
                     Target(name: "IncludedTargetNew", type: .application, platform: .tvOS, sources: ["NewSource"], dependencies: [Dependency(type: .package(products: []), reference: "Yams")]),
@@ -286,8 +286,8 @@ class SpecLoadingTests: XCTestCase {
 
                 try expect(project.name) == "NewName"
                 try expect(project.settingGroups) == [
-                    "test": Settings(dictionary: ["MY_SETTING1": "ENV VALUE1", "MY_SETTING2": "VALUE2", "MY_SETTING4": "ENV VALUE4"]),
-                    "toReplace": Settings(dictionary: ["MY_SETTING1": "VALUE1"]),
+                    "test": Settings(buildSettings: ["MY_SETTING1": "ENV VALUE1", "MY_SETTING2": "VALUE2", "MY_SETTING4": "ENV VALUE4"]),
+                    "toReplace": Settings(buildSettings: ["MY_SETTING1": "VALUE1"]),
                 ]
                 try expect(project.targets.last?.sources) == ["SomeTarget", "doesWin", "templateVariable"]
             }
@@ -302,9 +302,9 @@ class SpecLoadingTests: XCTestCase {
 
                 try expect(project.name) == "NewName"
                 try expect(project.settingGroups) == [
-                    "test": Settings(dictionary: ["MY_SETTING1": "NEW VALUE", "MY_SETTING2": "VALUE2", "MY_SETTING3": "VALUE3", "MY_SETTING4": "${SETTING4}"]),
-                    "new": Settings(dictionary: ["MY_SETTING": "VALUE"]),
-                    "toReplace": Settings(dictionary: ["MY_SETTING2": "VALUE2"]),
+                    "test": Settings(buildSettings: ["MY_SETTING1": "NEW VALUE", "MY_SETTING2": "VALUE2", "MY_SETTING3": "VALUE3", "MY_SETTING4": "${SETTING4}"]),
+                    "new": Settings(buildSettings: ["MY_SETTING": "VALUE"]),
+                    "toReplace": Settings(buildSettings: ["MY_SETTING2": "VALUE2"]),
                 ]
                 try expect(project.targets) == [
                     Target(name: "IncludedTargetNew", type: .application, platform: .tvOS, sources: ["NewSource"]),

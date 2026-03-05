@@ -120,6 +120,99 @@ class SourceGeneratorTests: XCTestCase {
                 try expect([syncedFolder]) == pbxProj.nativeTargets.first?.fileSystemSynchronizedGroups
             }
 
+            $0.it("adds excludes as membership exceptions for synced folder") {
+                let directories = """
+                Sources:
+                  - a.swift
+                  - b.swift
+                  - Generated:
+                    - c.generated.swift
+                    - d.generated.swift
+                """
+                try createDirectories(directories)
+
+                let source = TargetSource(path: "Sources", excludes: ["b.swift", "Generated/*.generated.swift"], type: .syncedFolder)
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: [source])
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target])
+
+                let pbxProj = try project.generatePbxProj()
+                let syncedFolders = try pbxProj.getMainGroup().children.compactMap { $0 as? PBXFileSystemSynchronizedRootGroup }
+                let syncedFolder = try unwrap(syncedFolders.first)
+
+                let exceptionSets = syncedFolder.exceptions?.compactMap { $0 as? PBXFileSystemSynchronizedBuildFileExceptionSet }
+                let exceptionSet = try unwrap(exceptionSets?.first)
+                let exceptions = try unwrap(exceptionSet.membershipExceptions)
+
+                try expect(exceptions.contains("b.swift")) == true
+                try expect(exceptions.contains("Generated/c.generated.swift")) == true
+                try expect(exceptions.contains("Generated/d.generated.swift")) == true
+                try expect(exceptions.contains("a.swift")) == false
+            }
+
+            $0.it("auto-excludes Info.plist from synced folder membership") {
+                let directories = """
+                Sources:
+                  - a.swift
+                  - Info.plist
+                """
+                try createDirectories(directories)
+
+                let source = TargetSource(path: "Sources", type: .syncedFolder)
+                let target = Target(
+                    name: "Test",
+                    type: .application,
+                    platform: .iOS,
+                    settings: try Settings(jsonDictionary: ["INFOPLIST_FILE": "Sources/Info.plist"]),
+                    sources: [source]
+                )
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target])
+
+                let pbxProj = try project.generatePbxProj()
+                let syncedFolders = try pbxProj.getMainGroup().children.compactMap { $0 as? PBXFileSystemSynchronizedRootGroup }
+                let syncedFolder = try unwrap(syncedFolders.first)
+
+                let exceptionSets = syncedFolder.exceptions?.compactMap { $0 as? PBXFileSystemSynchronizedBuildFileExceptionSet }
+                let exceptionSet = try unwrap(exceptionSets?.first)
+                let exceptions = try unwrap(exceptionSet.membershipExceptions)
+
+                try expect(exceptions.contains("Info.plist")) == true
+            }
+
+            $0.it("creates no exception set for synced folder without excludes") {
+                let directories = """
+                Sources:
+                  - a.swift
+                """
+                try createDirectories(directories)
+
+                let source = TargetSource(path: "Sources", type: .syncedFolder)
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: [source])
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target])
+
+                let pbxProj = try project.generatePbxProj()
+                let syncedFolders = try pbxProj.getMainGroup().children.compactMap { $0 as? PBXFileSystemSynchronizedRootGroup }
+                let syncedFolder = try unwrap(syncedFolders.first)
+
+                try expect(syncedFolder.exceptions?.isEmpty ?? true) == true
+            }
+
+            $0.it("adds empty resources build phase for synced folder") {
+                let directories = """
+                Sources:
+                  - a.swift
+                """
+                try createDirectories(directories)
+
+                let source = TargetSource(path: "Sources", type: .syncedFolder)
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: [source])
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target])
+
+                let pbxProj = try project.generatePbxProj()
+                let nativeTarget = try unwrap(pbxProj.nativeTargets.first)
+                let hasResourcesPhase = nativeTarget.buildPhases.contains { $0 is PBXResourcesBuildPhase }
+                try expect(hasResourcesPhase) == true
+            }
+
             $0.it("supports frameworks in sources") {
                 let directories = """
                 Sources:
@@ -745,7 +838,7 @@ class SourceGeneratorTests: XCTestCase {
                     name: "C",
                     type: .application,
                     platform: .iOS,
-                    settings: Settings(dictionary: [
+                    settings: Settings(buildSettings: [
                         "INFOPLIST_FILE": "C/Info-Production.plist"
                     ]),
                     sources: ["C"]
@@ -756,7 +849,7 @@ class SourceGeneratorTests: XCTestCase {
                     name: "D",
                     type: .application,
                     platform: .iOS,
-                    settings: Settings(dictionary: [
+                    settings: Settings(buildSettings: [
                         "ENVIRONMENT": "Production",
                         "INFOPLIST_FILE": "D/Info-${ENVIRONMENT}.plist"
                     ]),
@@ -812,20 +905,16 @@ class SourceGeneratorTests: XCTestCase {
                 do {
                     let fileReference = try unwrap(pbxProj.getFileReference(paths: ["A", "file.resource1"], names: ["A", "file.resource1"]))
                     let buildFile = try unwrap(pbxProj.buildFiles.first(where: { $0.file === fileReference }))
-                    let settings = NSDictionary(dictionary: buildFile.settings ?? [:])
-                    try expect(settings) == [
-                        "ATTRIBUTES": ["a1", "a2"],
-                        "ASSET_TAGS": ["r1", "r2"],
-                    ]
+                    let settings = buildFile.settings ?? [:]
+                    try expect(settings["ATTRIBUTES"]?.arrayValue) == ["a1", "a2"]
+                    try expect(settings["ASSET_TAGS"]?.arrayValue) == ["r1", "r2"]
                 }
                 do {
                     let fileReference = try unwrap(pbxProj.getFileReference(paths: ["A", "file.source1"], names: ["A", "file.source1"]))
                     let buildFile = try unwrap(pbxProj.buildFiles.first(where: { $0.file === fileReference }))
-                    let settings = NSDictionary(dictionary: buildFile.settings ?? [:])
-                    try expect(settings) == [
-                        "ATTRIBUTES": ["a1", "a2"],
-                        "COMPILER_FLAGS": "-c1 -c2",
-                        ]
+                    let settings = buildFile.settings ?? [:]
+                    try expect(settings["ATTRIBUTES"]?.arrayValue) == ["a1", "a2"]
+                    try expect(settings["COMPILER_FLAGS"]?.stringValue) == "-c1 -c2"
                 }
             }
 
@@ -1041,7 +1130,7 @@ class SourceGeneratorTests: XCTestCase {
 
                 try pbxProj.expectFile(paths: ["A", definition], buildPhase: .sources)
 
-                if (buildFile.settings! as NSDictionary) != (["ATTRIBUTES": ["no_codegen"]] as NSDictionary) {
+                if buildFile.settings?["ATTRIBUTES"]?.arrayValue != ["no_codegen"] {
                     throw failure("File does not contain no_codegen attribute")
                 }
             }
@@ -1266,11 +1355,11 @@ class SourceGeneratorTests: XCTestCase {
                     let resourceBuildFile2 = try unwrap(pbxProj.buildFiles.first(where: { $0.file == resourceFileReference2 }))
                     let sourceBuildFile = try unwrap(pbxProj.buildFiles.first(where: { $0.file == sourceFileReference }))
 
-                    if (resourceBuildFile.settings! as NSDictionary) != (["ASSET_TAGS": ["tag1", "tag2"]] as NSDictionary) {
+                    if resourceBuildFile.settings?["ASSET_TAGS"]?.arrayValue != ["tag1", "tag2"] {
                         throw failure("File does not contain tag1 and tag2 ASSET_TAGS")
                     }
 
-                    if (resourceBuildFile2.settings! as NSDictionary) != (["ASSET_TAGS": ["tag2", "tag3"]] as NSDictionary) {
+                    if resourceBuildFile2.settings?["ASSET_TAGS"]?.arrayValue != ["tag2", "tag3"] {
                         throw failure("File does not contain tag2 and tag3 ASSET_TAGS")
                     }
 
@@ -1282,7 +1371,7 @@ class SourceGeneratorTests: XCTestCase {
                         throw failure("PBXProject does not contain knownAssetTags")
                     }
 
-                    try expect(pbxProj.rootObject!.attributes["knownAssetTags"] as? [String]) == ["tag1", "tag2", "tag3"]
+                    try expect(pbxProj.rootObject!.attributes["knownAssetTags"]?.arrayValue) == ["tag1", "tag2", "tag3"]
                 }
                 
                 $0.it("Detects all locales present in a String Catalog") {
