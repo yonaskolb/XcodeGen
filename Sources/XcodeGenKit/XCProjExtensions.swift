@@ -65,6 +65,8 @@ extension Xcode {
             return "wrapper.swiftcrossimport"
         case ("xcstrings", _):
             return "text.json.xcstrings"
+        case ("icon", _):
+            return "wrapper.icon"
         default:
             // fallback to XcodeProj defaults
             return Xcode.filetype(extension: fileExtension)

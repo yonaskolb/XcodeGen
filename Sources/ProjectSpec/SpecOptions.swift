@@ -24,6 +24,7 @@ public struct SpecOptions: Equatable {
     public var tabWidth: UInt?
     public var indentWidth: UInt?
     public var xcodeVersion: String?
+    public var projectFormat: String?
     public var deploymentTarget: DeploymentTarget
     public var defaultConfig: String?
     public var transitivelyLinkDependencies: Bool
@@ -88,6 +89,7 @@ public struct SpecOptions: Equatable {
         tabWidth: UInt? = nil,
         usesTabs: Bool? = nil,
         xcodeVersion: String? = nil,
+        projectFormat: String? = nil,
         deploymentTarget: DeploymentTarget = .init(),
         disabledValidations: [ValidationType] = [],
         defaultConfig: String? = nil,
@@ -115,6 +117,7 @@ public struct SpecOptions: Equatable {
         self.indentWidth = indentWidth
         self.usesTabs = usesTabs
         self.xcodeVersion = xcodeVersion
+        self.projectFormat = projectFormat
         self.deploymentTarget = deploymentTarget
         self.disabledValidations = disabledValidations
         self.defaultConfig = defaultConfig
@@ -148,6 +151,7 @@ extension SpecOptions: JSONObjectConvertible {
         developmentLanguage = jsonDictionary.json(atKeyPath: "developmentLanguage")
         usesTabs = jsonDictionary.json(atKeyPath: "usesTabs")
         xcodeVersion = jsonDictionary.json(atKeyPath: "xcodeVersion")
+        projectFormat = jsonDictionary.json(atKeyPath: "projectFormat")
         indentWidth = (jsonDictionary.json(atKeyPath: "indentWidth") as Int?).flatMap(UInt.init)
         tabWidth = (jsonDictionary.json(atKeyPath: "tabWidth") as Int?).flatMap(UInt.init)
         deploymentTarget = jsonDictionary.json(atKeyPath: "deploymentTarget") ?? DeploymentTarget()
@@ -186,6 +190,7 @@ extension SpecOptions: JSONEncodable {
             "developmentLanguage": developmentLanguage,
             "usesTabs": usesTabs,
             "xcodeVersion": xcodeVersion,
+            "projectFormat": projectFormat,
             "indentWidth": indentWidth.flatMap { Int($0) },
             "tabWidth": tabWidth.flatMap { Int($0) },
             "defaultConfig": defaultConfig,

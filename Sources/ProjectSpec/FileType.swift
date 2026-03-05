@@ -73,6 +73,7 @@ extension FileType {
         "xcassets": FileType(buildPhase: .resources),
         "storekit": FileType(buildPhase: .resources),
         "xcstrings": FileType(buildPhase: .resources),
+        "icon": FileType(buildPhase: .resources),
 
         // sources
         "swift": FileType(buildPhase: .sources),
