@@ -24,6 +24,7 @@ public struct SpecOptions: Equatable {
     public var tabWidth: UInt?
     public var indentWidth: UInt?
     public var xcodeVersion: String?
+    public var projectFormat: String?
     public var deploymentTarget: DeploymentTarget
     public var defaultConfig: String?
     public var transitivelyLinkDependencies: Bool
@@ -37,6 +38,7 @@ public struct SpecOptions: Equatable {
     public var postGenCommand: String?
     public var useBaseInternationalization: Bool
     public var schemePathPrefix: String
+    public var defaultSourceDirectoryType: SourceType?
 
     public enum ValidationType: String {
         case missingConfigs
@@ -87,6 +89,7 @@ public struct SpecOptions: Equatable {
         tabWidth: UInt? = nil,
         usesTabs: Bool? = nil,
         xcodeVersion: String? = nil,
+        projectFormat: String? = nil,
         deploymentTarget: DeploymentTarget = .init(),
         disabledValidations: [ValidationType] = [],
         defaultConfig: String? = nil,
@@ -100,7 +103,8 @@ public struct SpecOptions: Equatable {
         preGenCommand: String? = nil,
         postGenCommand: String? = nil,
         useBaseInternationalization: Bool = useBaseInternationalizationDefault,
-        schemePathPrefix: String = schemePathPrefixDefault
+        schemePathPrefix: String = schemePathPrefixDefault,
+        defaultSourceDirectoryType: SourceType? = nil
     ) {
         self.minimumXcodeGenVersion = minimumXcodeGenVersion
         self.carthageBuildPath = carthageBuildPath
@@ -113,6 +117,7 @@ public struct SpecOptions: Equatable {
         self.indentWidth = indentWidth
         self.usesTabs = usesTabs
         self.xcodeVersion = xcodeVersion
+        self.projectFormat = projectFormat
         self.deploymentTarget = deploymentTarget
         self.disabledValidations = disabledValidations
         self.defaultConfig = defaultConfig
@@ -127,6 +132,7 @@ public struct SpecOptions: Equatable {
         self.postGenCommand = postGenCommand
         self.useBaseInternationalization = useBaseInternationalization
         self.schemePathPrefix = schemePathPrefix
+        self.defaultSourceDirectoryType = defaultSourceDirectoryType
     }
 }
 
@@ -145,6 +151,7 @@ extension SpecOptions: JSONObjectConvertible {
         developmentLanguage = jsonDictionary.json(atKeyPath: "developmentLanguage")
         usesTabs = jsonDictionary.json(atKeyPath: "usesTabs")
         xcodeVersion = jsonDictionary.json(atKeyPath: "xcodeVersion")
+        projectFormat = jsonDictionary.json(atKeyPath: "projectFormat")
         indentWidth = (jsonDictionary.json(atKeyPath: "indentWidth") as Int?).flatMap(UInt.init)
         tabWidth = (jsonDictionary.json(atKeyPath: "tabWidth") as Int?).flatMap(UInt.init)
         deploymentTarget = jsonDictionary.json(atKeyPath: "deploymentTarget") ?? DeploymentTarget()
@@ -160,6 +167,7 @@ extension SpecOptions: JSONObjectConvertible {
         postGenCommand = jsonDictionary.json(atKeyPath: "postGenCommand")
         useBaseInternationalization = jsonDictionary.json(atKeyPath: "useBaseInternationalization") ?? SpecOptions.useBaseInternationalizationDefault
         schemePathPrefix = jsonDictionary.json(atKeyPath: "schemePathPrefix") ?? SpecOptions.schemePathPrefixDefault
+        defaultSourceDirectoryType = jsonDictionary.json(atKeyPath: "defaultSourceDirectoryType")
         if jsonDictionary["fileTypes"] != nil {
             fileTypes = try jsonDictionary.json(atKeyPath: "fileTypes")
         } else {
@@ -182,6 +190,7 @@ extension SpecOptions: JSONEncodable {
             "developmentLanguage": developmentLanguage,
             "usesTabs": usesTabs,
             "xcodeVersion": xcodeVersion,
+            "projectFormat": projectFormat,
             "indentWidth": indentWidth.flatMap { Int($0) },
             "tabWidth": tabWidth.flatMap { Int($0) },
             "defaultConfig": defaultConfig,

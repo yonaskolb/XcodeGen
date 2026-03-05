@@ -349,6 +349,51 @@ class PBXProjGeneratorTests: XCTestCase {
 
                 try expect(packages) == ["FeatureA", "FeatureB", "Common"]
             }
+
+            $0.it("sorts synced folders alongside groups") {
+                var options = SpecOptions()
+                options.groupSortPosition = .top
+                options.groupOrdering = [
+                    GroupOrdering(
+                        order: [
+                            "Sources",
+                            "SyncedSources",
+                            "Resources",
+                        ]
+                    ),
+                ]
+
+                let directories = """
+                    Resources:
+                      - file.swift
+                    Sources:
+                      - file.swift
+                    SyncedSources:
+                      - file.swift
+                """
+                try createDirectories(directories)
+
+                let target = Target(
+                    name: "Test",
+                    type: .application,
+                    platform: .iOS,
+                    sources: [
+                        "Sources",
+                        .init(path: "SyncedSources", type: .syncedFolder),
+                        "Resources",
+                    ]
+                )
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target], options: options)
+                let projGenerator = PBXProjGenerator(project: project)
+
+                let pbxProj = try project.generatePbxProj()
+                let group = try pbxProj.getMainGroup()
+
+                projGenerator.setupGroupOrdering(group: group)
+
+                let mainGroups = group.children.map { $0.nameOrPath }
+                try expect(mainGroups) == ["Sources", "SyncedSources", "Resources", "Products"]
+            }
         }
     }
     
@@ -361,7 +406,7 @@ class PBXProjGeneratorTests: XCTestCase {
         let pbxProj = try projGenerator.generate()
         
         for pbxProject in pbxProj.projects {
-            XCTAssertEqual(pbxProject.attributes[lastUpgradeKey] as? String, project.xcodeVersion)
+            XCTAssertEqual(pbxProject.attributes[lastUpgradeKey]?.stringValue, project.xcodeVersion)
         }
     }
     
@@ -375,7 +420,7 @@ class PBXProjGeneratorTests: XCTestCase {
         let pbxProj = try projGenerator.generate()
         
         for pbxProject in pbxProj.projects {
-            XCTAssertEqual(pbxProject.attributes[lastUpgradeKey] as? String, lastUpgradeValue)
+            XCTAssertEqual(pbxProject.attributes[lastUpgradeKey]?.stringValue, lastUpgradeValue)
         }
     }
     
@@ -387,7 +432,7 @@ class PBXProjGeneratorTests: XCTestCase {
         let pbxProj = try projGenerator.generate()
         
         for pbxProject in pbxProj.projects {
-            XCTAssertEqual(pbxProject.attributes[lastUpgradeKey] as? String, project.xcodeVersion)
+            XCTAssertEqual(pbxProject.attributes[lastUpgradeKey]?.stringValue, project.xcodeVersion)
         }
     }
 

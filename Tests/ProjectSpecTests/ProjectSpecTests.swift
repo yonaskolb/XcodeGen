@@ -442,7 +442,7 @@ class ProjectSpecTests: XCTestCase {
             $0.it("validates config settings format") {
                 var project = baseProject
                 project.configs = Config.defaultConfigs
-                project.settings.buildSettings = ["Debug": ["SETTING": "VALUE"], "Release": ["SETTING": "VALUE"]]
+                project.settings.buildSettings = ["Debug": "VALUE", "Release": "VALUE"]
 
                 try expectValidationError(project, .invalidPerConfigSettings)
             }
@@ -768,10 +768,18 @@ class ProjectSpecTests: XCTestCase {
                                                                                                                         value: "bar",
                                                                                                                         enabled: false)],
                                                                     enableGPUFrameCaptureMode: .openGL,
+                                                                    enableAddressSanitizer: true,
+                                                                    enableASanStackUseAfterReturn: true,
+                                                                    enableThreadSanitizer: true,
+                                                                    enableUBSanitizer: true,
                                                                     launchAutomaticallySubstyle: "2",
                                                                     storeKitConfiguration: "Configuration.storekit"),
                                                     test: Scheme.Test(config: "Config",
                                                                       gatherCoverageData: true,
+                                                                      enableAddressSanitizer: true,
+                                                                      enableASanStackUseAfterReturn: true,
+                                                                      enableThreadSanitizer: true,
+                                                                      enableUBSanitizer: true,
                                                                       disableMainThreadChecker: true,
                                                                       randomExecutionOrder: false,
                                                                       parallelizable: false,

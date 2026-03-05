@@ -2,8 +2,46 @@
 
 ## Next Version
 
+## 2.45.0
+
+### Added
+- Added ability to specify project format version via `projectFormat` option #1566 @anivaros
+- Added `explicitFolders` property to `TargetSource` that is passed through to `PBXFileSystemSynchronizedRootGroup`, to turn entire subfolders into Resources #1596 @macguru
+- Allow synced folders to be sorted using `groupOrdering` #1596 @macguru
+- Added `excludes` support for `syncedFolder` sources with glob pattern matching #1587 @mirkokg
+
+### Fixed
+- Fixed synced folders ignoring `createIntermediateGroups=YES` and always being created at the root level #1596 @macguru
+- Fix membership exceptions not working for nested synced folders with intermediate groups enabled #1596 @macguru
+- Fix `supportedDestinations` presets being injected when `settingPresets` is `none` #1599 @macguru
+- Automatically exclude `Info.plist` from synced folder membership when it's within the synced folder #1587 @mirkokg
+- Add empty copy resources build phase for synced folders so resources are copied correctly #1587 @mirkokg
+
+### Internal
+- Update to XcodeProj 9.10.1 #1597 @yonaskolb
+- Fix CI: add explicit xcodebuild destinations and update Xcode matrix #1594 @yonaskolb
+- Update ArtifactBundleGen to 0.0.8 #1570 @georgenavarro
+
+## 2.44.1
+
+### Fixed
+- Set the correct object version of 77 for Xcode 16 projects @jakobfelsatdm #1563
+- Support major.minor SPM package versions which would otherwise fail to decode to a string in yaml specs #1546 @RomanPodymov
+- Fix regression for `parallelizable` in scheme. It now resolves to "Enabled" and not "Swift Testing Only" #1565 @CraigSiemens
+
+## 2.44.0
+
+### Added
+- Basic support for Xcode 16's synchronized folders #1541 @yonaskolb
+  - `TargetSource.type` can now be `syncedFolder`
+  - `Options.defaultSourceDirectoryType` can be set to `syncedFolder` for the default type in all sources in the project (defaults to `group`)
+  - Benefits include faster generation and no cache invalidation or need to regenerate when files are added or removed from these folders
+  - Note that not all TargetSource options like excludes are supported, just a simple path. Please test and see what is missing in your projects
+- Added sanitizer options to run and test actions in Scheme #1550 @hi-kumar
+
 ### Fixed
 - Added validation to ensure that all values in `settings.configs` are mappings. Previously, passing non-mapping values did not raise an error, making it difficult to detect misconfigurations. Now, `SpecParsingError.invalidConfigsMappingFormat` is thrown if misused. #1547 @Ryu0118
+- Use `USER` instead of `LOGNAME` for XCUserData #1559 @KostyaSha
 
 ## 2.43.0
 

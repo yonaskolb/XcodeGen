@@ -127,6 +127,10 @@ public struct Scheme: Equatable {
     }
 
     public struct Run: BuildAction {
+        public static let enableAddressSanitizerDefault = false
+        public static let enableASanStackUseAfterReturnDefault = false
+        public static let enableThreadSanitizerDefault = false
+        public static let enableUBSanitizerDefault = false
         public static let disableMainThreadCheckerDefault = false
         public static let stopOnEveryMainThreadCheckerIssueDefault = false
         public static let disableThreadPerformanceCheckerDefault = false
@@ -140,6 +144,10 @@ public struct Scheme: Equatable {
         public var environmentVariables: [XCScheme.EnvironmentVariable]
         public var enableGPUFrameCaptureMode: XCScheme.LaunchAction.GPUFrameCaptureMode
         public var enableGPUValidationMode: Bool
+        public var enableAddressSanitizer: Bool
+        public var enableASanStackUseAfterReturn: Bool
+        public var enableThreadSanitizer: Bool
+        public var enableUBSanitizer: Bool
         public var disableMainThreadChecker: Bool
         public var stopOnEveryMainThreadCheckerIssue: Bool
         public var disableThreadPerformanceChecker: Bool
@@ -153,6 +161,7 @@ public struct Scheme: Equatable {
         public var storeKitConfiguration: String?
         public var customLLDBInit: String?
         public var macroExpansion: String?
+        public var customWorkingDirectory: String?
 
         public init(
             config: String? = nil,
@@ -163,6 +172,10 @@ public struct Scheme: Equatable {
             environmentVariables: [XCScheme.EnvironmentVariable] = [],
             enableGPUFrameCaptureMode: XCScheme.LaunchAction.GPUFrameCaptureMode = XCScheme.LaunchAction.defaultGPUFrameCaptureMode,
             enableGPUValidationMode: Bool = enableGPUValidationModeDefault,
+            enableAddressSanitizer: Bool = enableAddressSanitizerDefault,
+            enableASanStackUseAfterReturn: Bool = enableASanStackUseAfterReturnDefault,
+            enableThreadSanitizer: Bool = enableThreadSanitizerDefault,
+            enableUBSanitizer: Bool = enableUBSanitizerDefault,
             disableMainThreadChecker: Bool = disableMainThreadCheckerDefault,
             stopOnEveryMainThreadCheckerIssue: Bool = stopOnEveryMainThreadCheckerIssueDefault,
             disableThreadPerformanceChecker: Bool = disableThreadPerformanceCheckerDefault,
@@ -174,13 +187,18 @@ public struct Scheme: Equatable {
             simulateLocation: SimulateLocation? = nil,
             storeKitConfiguration: String? = nil,
             customLLDBInit: String? = nil,
-            macroExpansion: String? = nil
+            macroExpansion: String? = nil,
+            customWorkingDirectory: String? = nil
         ) {
             self.config = config
             self.commandLineArguments = commandLineArguments
             self.preActions = preActions
             self.postActions = postActions
             self.environmentVariables = environmentVariables
+            self.enableAddressSanitizer = enableAddressSanitizer
+            self.enableASanStackUseAfterReturn = enableASanStackUseAfterReturn
+            self.enableThreadSanitizer = enableThreadSanitizer
+            self.enableUBSanitizer = enableUBSanitizer
             self.disableMainThreadChecker = disableMainThreadChecker
             self.enableGPUFrameCaptureMode = enableGPUFrameCaptureMode
             self.enableGPUValidationMode = enableGPUValidationMode
@@ -195,11 +213,16 @@ public struct Scheme: Equatable {
             self.storeKitConfiguration = storeKitConfiguration
             self.customLLDBInit = customLLDBInit
             self.macroExpansion = macroExpansion
+            self.customWorkingDirectory = customWorkingDirectory
         }
     }
 
     public struct Test: BuildAction {
         public static let gatherCoverageDataDefault = false
+        public static let enableAddressSanitizerDefault = false
+        public static let enableASanStackUseAfterReturnDefault = false
+        public static let enableThreadSanitizerDefault = false
+        public static let enableUBSanitizerDefault = false
         public static let disableMainThreadCheckerDefault = false
         public static let debugEnabledDefault = true
         public static let captureScreenshotsAutomaticallyDefault = true
@@ -209,6 +232,10 @@ public struct Scheme: Equatable {
         public var config: String?
         public var gatherCoverageData: Bool
         public var coverageTargets: [TestableTargetReference]
+        public var enableAddressSanitizer: Bool
+        public var enableASanStackUseAfterReturn: Bool
+        public var enableThreadSanitizer: Bool
+        public var enableUBSanitizer: Bool
         public var disableMainThreadChecker: Bool
         public var commandLineArguments: [String: Bool]
         public var targets: [TestTarget]
@@ -276,6 +303,10 @@ public struct Scheme: Equatable {
             config: String? = nil,
             gatherCoverageData: Bool = gatherCoverageDataDefault,
             coverageTargets: [TestableTargetReference] = [],
+            enableAddressSanitizer: Bool = enableAddressSanitizerDefault,
+            enableASanStackUseAfterReturn: Bool = enableASanStackUseAfterReturnDefault,
+            enableThreadSanitizer: Bool = enableThreadSanitizerDefault,
+            enableUBSanitizer: Bool = enableUBSanitizerDefault,
             disableMainThreadChecker: Bool = disableMainThreadCheckerDefault,
             randomExecutionOrder: Bool = false,
             parallelizable: Bool = false,
@@ -297,6 +328,10 @@ public struct Scheme: Equatable {
             self.config = config
             self.gatherCoverageData = gatherCoverageData
             self.coverageTargets = coverageTargets
+            self.enableAddressSanitizer = enableAddressSanitizer
+            self.enableASanStackUseAfterReturn = enableASanStackUseAfterReturn
+            self.enableThreadSanitizer = enableThreadSanitizer
+            self.enableUBSanitizer = enableUBSanitizer
             self.disableMainThreadChecker = disableMainThreadChecker
             self.commandLineArguments = commandLineArguments
             self.targets = targets
@@ -500,6 +535,10 @@ extension Scheme.Run: JSONObjectConvertible {
         } else {
             enableGPUValidationMode = jsonDictionary.json(atKeyPath: "enableGPUValidationMode") ?? Scheme.Run.enableGPUValidationModeDefault
         }
+        enableAddressSanitizer = jsonDictionary.json(atKeyPath: "enableAddressSanitizer") ?? Scheme.Run.enableAddressSanitizerDefault
+        enableASanStackUseAfterReturn = jsonDictionary.json(atKeyPath: "enableASanStackUseAfterReturn") ?? Scheme.Run.enableASanStackUseAfterReturnDefault
+        enableThreadSanitizer = jsonDictionary.json(atKeyPath: "enableThreadSanitizer") ?? Scheme.Run.enableThreadSanitizerDefault
+        enableUBSanitizer = jsonDictionary.json(atKeyPath: "enableUBSanitizer") ?? Scheme.Run.enableUBSanitizerDefault
         disableMainThreadChecker = jsonDictionary.json(atKeyPath: "disableMainThreadChecker") ?? Scheme.Run.disableMainThreadCheckerDefault
         stopOnEveryMainThreadCheckerIssue = jsonDictionary.json(atKeyPath: "stopOnEveryMainThreadCheckerIssue") ?? Scheme.Run.stopOnEveryMainThreadCheckerIssueDefault
         disableThreadPerformanceChecker = jsonDictionary.json(atKeyPath: "disableThreadPerformanceChecker") ?? Scheme.Run.disableThreadPerformanceCheckerDefault
@@ -523,6 +562,7 @@ extension Scheme.Run: JSONObjectConvertible {
         }
         customLLDBInit = jsonDictionary.json(atKeyPath: "customLLDBInit")
         macroExpansion = jsonDictionary.json(atKeyPath: "macroExpansion")
+        customWorkingDirectory = jsonDictionary.json(atKeyPath: "customWorkingDirectory")
     }
 }
 
@@ -550,6 +590,22 @@ extension Scheme.Run: JSONEncodable {
             dict["enableGPUValidationMode"] = enableGPUValidationMode
         }
 
+        if enableAddressSanitizer != Scheme.Run.enableAddressSanitizerDefault {
+            dict["enableAddressSanitizer"] = enableAddressSanitizer
+        }
+
+        if enableASanStackUseAfterReturn != Scheme.Run.enableASanStackUseAfterReturnDefault {
+            dict["enableASanStackUseAfterReturn"] = enableASanStackUseAfterReturn
+        }
+
+        if enableThreadSanitizer != Scheme.Run.enableThreadSanitizerDefault {
+            dict["enableThreadSanitizer"] = enableThreadSanitizer
+        }
+
+        if enableUBSanitizer != Scheme.Run.enableUBSanitizerDefault {
+            dict["enableUBSanitizer"] = enableUBSanitizer
+        }
+
         if disableMainThreadChecker != Scheme.Run.disableMainThreadCheckerDefault {
             dict["disableMainThreadChecker"] = disableMainThreadChecker
         }
@@ -574,6 +630,9 @@ extension Scheme.Run: JSONEncodable {
         }
         if let customLLDBInit = customLLDBInit {
             dict["customLLDBInit"] = customLLDBInit
+        }
+        if let customWorkingDirectory = customWorkingDirectory {
+            dict["customWorkingDirectory"] = customWorkingDirectory
         }
         return dict
     }
@@ -608,7 +667,11 @@ extension Scheme.Test: JSONObjectConvertible {
         } else {
             coverageTargets = []
         }
-        
+
+        enableAddressSanitizer = jsonDictionary.json(atKeyPath: "enableAddressSanitizer") ?? Scheme.Test.enableAddressSanitizerDefault
+        enableASanStackUseAfterReturn = jsonDictionary.json(atKeyPath: "enableASanStackUseAfterReturn") ?? Scheme.Test.enableASanStackUseAfterReturnDefault
+        enableThreadSanitizer = jsonDictionary.json(atKeyPath: "enableThreadSanitizer") ?? Scheme.Test.enableThreadSanitizerDefault
+        enableUBSanitizer = jsonDictionary.json(atKeyPath: "enableUBSanitizer") ?? Scheme.Test.enableUBSanitizerDefault
         disableMainThreadChecker = jsonDictionary.json(atKeyPath: "disableMainThreadChecker") ?? Scheme.Test.disableMainThreadCheckerDefault
         commandLineArguments = jsonDictionary.json(atKeyPath: "commandLineArguments") ?? [:]
         if let targets = jsonDictionary["targets"] as? [Any] {
@@ -657,6 +720,22 @@ extension Scheme.Test: JSONEncodable {
 
         if gatherCoverageData != Scheme.Test.gatherCoverageDataDefault {
             dict["gatherCoverageData"] = gatherCoverageData
+        }
+
+        if enableAddressSanitizer != Scheme.Test.enableAddressSanitizerDefault {
+            dict["enableAddressSanitizer"] = enableAddressSanitizer
+        }
+
+        if enableASanStackUseAfterReturn != Scheme.Test.enableASanStackUseAfterReturnDefault {
+            dict["enableASanStackUseAfterReturn"] = enableASanStackUseAfterReturn
+        }
+
+        if enableThreadSanitizer != Scheme.Test.enableThreadSanitizerDefault {
+            dict["enableThreadSanitizer"] = enableThreadSanitizer
+        }
+
+        if enableUBSanitizer != Scheme.Test.enableUBSanitizerDefault {
+            dict["enableUBSanitizer"] = enableUBSanitizer
         }
 
         if disableMainThreadChecker != Scheme.Test.disableMainThreadCheckerDefault {
