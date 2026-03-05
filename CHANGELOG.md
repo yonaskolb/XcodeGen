@@ -2,10 +2,25 @@
 
 ## Next Version
 
-- Adds an `explicitFolders` property to `TargetSource` that is passed through to `PBXFileSystemSynchronizedRootGroup`, to turn entire subfolders into Resources. #1596 @macguru
-- Allow synced folders to be sorted using `groupOrdering`. #1596 @macguru
-- Fixed synced folders ignoring `createIntermediateGroups=YES` and always beging created at the root level. #1596 @macguru
-- Fix membership exceptions not working for nested synced folders with intermediate groups enabled. #1596 @macguru
+## 2.45.0
+
+### Added
+- Added ability to specify project format version via `projectFormat` option #1566 @anivaros
+- Added `explicitFolders` property to `TargetSource` that is passed through to `PBXFileSystemSynchronizedRootGroup`, to turn entire subfolders into Resources #1596 @macguru
+- Allow synced folders to be sorted using `groupOrdering` #1596 @macguru
+- Added `excludes` support for `syncedFolder` sources with glob pattern matching #1587 @mirkokg
+
+### Fixed
+- Fixed synced folders ignoring `createIntermediateGroups=YES` and always being created at the root level #1596 @macguru
+- Fix membership exceptions not working for nested synced folders with intermediate groups enabled #1596 @macguru
+- Fix `supportedDestinations` presets being injected when `settingPresets` is `none` #1599 @macguru
+- Automatically exclude `Info.plist` from synced folder membership when it's within the synced folder #1587 @mirkokg
+- Add empty copy resources build phase for synced folders so resources are copied correctly #1587 @mirkokg
+
+### Internal
+- Update to XcodeProj 9.10.1 #1597 @yonaskolb
+- Fix CI: add explicit xcodebuild destinations and update Xcode matrix #1594 @yonaskolb
+- Update ArtifactBundleGen to 0.0.8 #1570 @georgenavarro
 
 ## 2.44.1
 
