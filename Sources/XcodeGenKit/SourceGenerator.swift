@@ -399,6 +399,20 @@ class SourceGenerator {
         )
     }
 
+    /// Expands glob patterns in `explicitFolders` relative to the synced root path.
+    private func resolveExplicitFolders(targetSource: TargetSource) -> [String] {
+        let rootSourcePath = project.basePath + targetSource.path
+
+        return targetSource.explicitFolders.flatMap { pattern in
+            let matches = Glob(pattern: "\(rootSourcePath)/\(pattern)")
+                .map { Path($0) }
+                .filter { $0.isDirectory }
+                .compactMap { try? $0.relativePath(from: rootSourcePath).string }
+                .sorted()
+            return matches.isEmpty ? [pattern] : matches
+        }
+    }
+
     /// Checks whether the path is not in any default or TargetSource excludes
     func isIncludedPath(_ path: Path, excludePaths: Set<Path>, includePaths: SortedArray<Path>?) -> Bool {
         return !defaultExcludedFiles.contains(where: { path.lastComponent == $0 })
@@ -695,6 +709,7 @@ class SourceGenerator {
         case .syncedFolder:
 
             let relativePath = (try? path.relativePath(from: project.basePath)) ?? path
+            let resolvedExplicitFolders = resolveExplicitFolders(targetSource: targetSource)
 
             let syncedRootGroup = PBXFileSystemSynchronizedRootGroup(
                 sourceTree: .group,
@@ -702,13 +717,14 @@ class SourceGenerator {
                 name: targetSource.name,
                 explicitFileTypes: [:],
                 exceptions: [],
-                explicitFolders: []
+                explicitFolders: resolvedExplicitFolders
             )
             addObject(syncedRootGroup)
             sourceReference = syncedRootGroup
 
-            // TODO: adjust if hasCustomParent == true
-            rootGroups.insert(syncedRootGroup)
+            if !(createIntermediateGroups || hasCustomParent) || path.parent() == project.basePath {
+                rootGroups.insert(syncedRootGroup)
+            }
 
             let sourceFile = generateSourceFile(
                 targetType: targetType,
@@ -725,6 +741,7 @@ class SourceGenerator {
             try makePathRelative(for: sourceReference, at: path)
         } else if createIntermediateGroups {
             createIntermediaGroups(for: sourceReference, at: sourcePath)
+            try makePathRelative(for: sourceReference, at: sourcePath)
         }
 
         return sourceFiles

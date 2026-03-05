@@ -1459,29 +1459,30 @@ public class PBXProjGenerator {
         }
 
         // add fileSystemSynchronizedGroups
-        let synchronizedRootGroups = sourceFiles.compactMap { $0.fileReference as? PBXFileSystemSynchronizedRootGroup }
+		let synchronizedRootGroups: [PBXFileSystemSynchronizedRootGroup] = sourceFiles.compactMap { sourceFile in
+            guard let syncedGroup = sourceFile.fileReference as? PBXFileSystemSynchronizedRootGroup else { return nil }
+            
+            configureMembershipExceptions(
+                for: syncedGroup,
+                path: sourceFile.path,
+                target: target,
+                targetObject: targetObject,
+                infoPlistFiles: infoPlistFiles
+            )
+            return syncedGroup
+        }
         if !synchronizedRootGroups.isEmpty {
-            for syncedGroup in synchronizedRootGroups {
-                configureMembershipExceptions(
-                    for: syncedGroup,
-                    target: target,
-                    targetObject: targetObject,
-                    infoPlistFiles: infoPlistFiles
-                )
-            }
             targetObject.fileSystemSynchronizedGroups = synchronizedRootGroups
         }
     }
 
     private func configureMembershipExceptions(
         for syncedGroup: PBXFileSystemSynchronizedRootGroup,
+        path syncedPath: Path,
         target: Target,
         targetObject: PBXTarget,
         infoPlistFiles: [Config: String]
     ) {
-        guard let syncedGroupPath = syncedGroup.path else { return }
-        let syncedPath = (project.basePath + Path(syncedGroupPath)).normalize()
-
         guard let targetSource = target.sources.first(where: {
             (project.basePath + $0.path).normalize() == syncedPath
         }) else { return }
@@ -1692,13 +1693,13 @@ extension Platform {
 }
 
 extension PBXFileElement {
-    /// - returns: `true` if the element is a group or a folder reference. Likely an SPM package.
+    /// - returns: `true` if the element is a group, a folder reference (likely an SPM package), or a synced folder.
     var isGroupOrFolder: Bool {
-        self is PBXGroup || (self as? PBXFileReference)?.lastKnownFileType == "folder"
+        self is PBXGroup || self is PBXFileSystemSynchronizedRootGroup || (self as? PBXFileReference)?.lastKnownFileType == "folder"
     }
 
     public func getSortOrder(groupSortPosition: SpecOptions.GroupSortPosition) -> Int {
-        if type(of: self).isa == "PBXGroup" {
+        if self is PBXGroup || self is PBXFileSystemSynchronizedRootGroup {
             switch groupSortPosition {
             case .top: return -1
             case .bottom: return 1
