@@ -1,7 +1,7 @@
 # The release process for XcodeGen
 
 1. Make sure `CHANGELOG.md` is up to date:
-   - All relevant entries have been added with the PR link and author
+   - All merged PRs since the last release have been added with the PR link and author (check `git log <last-tag>..HEAD`)
    - The new version number is added at the top after `Master`
 1. Update the version at the top of `Makefile`
 1. Run `make release`

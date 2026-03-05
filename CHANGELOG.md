@@ -2,6 +2,10 @@
 
 ## Next Version
 
+## 2.45.2
+
+### Fixed
+- Validate empty source paths to prevent project root inclusion #1601 @yonaskolb
 - Fix missing productRefGroup in generated projects #1591 @ruslic19
 
 ## 2.45.1
