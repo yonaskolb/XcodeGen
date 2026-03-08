@@ -415,6 +415,82 @@ class SourceGeneratorTests: XCTestCase {
                 try expect(exceptions.contains("Nested/b.swift")) == false
             }
 
+            $0.it("excludes entire subdirectory as single exception when no files in it are included") {
+                let directories = """
+                Sources:
+                  - a.swift
+                  - ExcludedDir:
+                    - x.swift
+                    - y.swift
+                """
+                try createDirectories(directories)
+
+                let source = TargetSource(path: "Sources", includes: ["a.swift"], type: .syncedFolder)
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: [source])
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target])
+
+                let pbxProj = try project.generatePbxProj()
+                let syncedFolders = try pbxProj.getMainGroup().children.compactMap { $0 as? PBXFileSystemSynchronizedRootGroup }
+                let syncedFolder = try unwrap(syncedFolders.first)
+
+                let exceptionSet = try unwrap(syncedFolder.exceptions?.first as? PBXFileSystemSynchronizedBuildFileExceptionSet)
+                let exceptions = try unwrap(exceptionSet.membershipExceptions)
+
+                // The whole directory should be a single exception entry, not each file within it
+                try expect(exceptions.contains("ExcludedDir")) == true
+                try expect(exceptions.contains("ExcludedDir/x.swift")) == false
+                try expect(exceptions.contains("ExcludedDir/y.swift")) == false
+                try expect(exceptions.contains("a.swift")) == false
+            }
+
+            $0.it("respects excludes when includes are also specified") {
+                let directories = """
+                Sources:
+                  - a.swift
+                  - b.swift
+                  - c.swift
+                """
+                try createDirectories(directories)
+
+                // includes a.swift and b.swift, but b.swift is also excluded → only a.swift is effectively included
+                let source = TargetSource(path: "Sources", excludes: ["b.swift"], includes: ["a.swift", "b.swift"], type: .syncedFolder)
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: [source])
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target])
+
+                let pbxProj = try project.generatePbxProj()
+                let syncedFolders = try pbxProj.getMainGroup().children.compactMap { $0 as? PBXFileSystemSynchronizedRootGroup }
+                let syncedFolder = try unwrap(syncedFolders.first)
+
+                let exceptionSet = try unwrap(syncedFolder.exceptions?.first as? PBXFileSystemSynchronizedBuildFileExceptionSet)
+                let exceptions = try unwrap(exceptionSet.membershipExceptions)
+
+                try expect(exceptions.contains("a.swift")) == false
+                try expect(exceptions.contains("b.swift")) == true
+                try expect(exceptions.contains("c.swift")) == true
+            }
+
+            $0.it("deduplicates synced folders and both targets reference the same group object") {
+                let directories = """
+                Sources:
+                  - a.swift
+                """
+                try createDirectories(directories)
+
+                let source = TargetSource(path: "Sources", type: .syncedFolder)
+                let target1 = Target(name: "App", type: .application, platform: .iOS, sources: [source])
+                let target2 = Target(name: "Tests", type: .unitTestBundle, platform: .iOS, sources: [source])
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target1, target2])
+
+                let pbxProj = try project.generatePbxProj()
+                let nativeTargets = pbxProj.nativeTargets
+                let appTarget = try unwrap(nativeTargets.first { $0.name == "App" })
+                let testsTarget = try unwrap(nativeTargets.first { $0.name == "Tests" })
+
+                let appGroup = try unwrap(appTarget.fileSystemSynchronizedGroups?.first)
+                let testsGroup = try unwrap(testsTarget.fileSystemSynchronizedGroups?.first)
+                try expect(appGroup === testsGroup) == true
+            }
+
             $0.it("supports frameworks in sources") {
                 let directories = """
                 Sources:
