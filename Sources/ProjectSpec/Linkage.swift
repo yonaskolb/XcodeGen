@@ -56,6 +56,6 @@ extension Target {
 private extension BuildSettings {
 
     var machOType: String? {
-        self["MACH_O_TYPE"] as? String
+        self["MACH_O_TYPE"]?.stringValue
     }
 }

@@ -349,6 +349,51 @@ class PBXProjGeneratorTests: XCTestCase {
 
                 try expect(packages) == ["FeatureA", "FeatureB", "Common"]
             }
+
+            $0.it("sorts synced folders alongside groups") {
+                var options = SpecOptions()
+                options.groupSortPosition = .top
+                options.groupOrdering = [
+                    GroupOrdering(
+                        order: [
+                            "Sources",
+                            "SyncedSources",
+                            "Resources",
+                        ]
+                    ),
+                ]
+
+                let directories = """
+                    Resources:
+                      - file.swift
+                    Sources:
+                      - file.swift
+                    SyncedSources:
+                      - file.swift
+                """
+                try createDirectories(directories)
+
+                let target = Target(
+                    name: "Test",
+                    type: .application,
+                    platform: .iOS,
+                    sources: [
+                        "Sources",
+                        .init(path: "SyncedSources", type: .syncedFolder),
+                        "Resources",
+                    ]
+                )
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target], options: options)
+                let projGenerator = PBXProjGenerator(project: project)
+
+                let pbxProj = try project.generatePbxProj()
+                let group = try pbxProj.getMainGroup()
+
+                projGenerator.setupGroupOrdering(group: group)
+
+                let mainGroups = group.children.map { $0.nameOrPath }
+                try expect(mainGroups) == ["Sources", "SyncedSources", "Resources", "Products"]
+            }
         }
     }
     
@@ -361,7 +406,7 @@ class PBXProjGeneratorTests: XCTestCase {
         let pbxProj = try projGenerator.generate()
         
         for pbxProject in pbxProj.projects {
-            XCTAssertEqual(pbxProject.attributes[lastUpgradeKey] as? String, project.xcodeVersion)
+            XCTAssertEqual(pbxProject.attributes[lastUpgradeKey]?.stringValue, project.xcodeVersion)
         }
     }
     
@@ -375,7 +420,7 @@ class PBXProjGeneratorTests: XCTestCase {
         let pbxProj = try projGenerator.generate()
         
         for pbxProject in pbxProj.projects {
-            XCTAssertEqual(pbxProject.attributes[lastUpgradeKey] as? String, lastUpgradeValue)
+            XCTAssertEqual(pbxProject.attributes[lastUpgradeKey]?.stringValue, lastUpgradeValue)
         }
     }
     
@@ -387,8 +432,59 @@ class PBXProjGeneratorTests: XCTestCase {
         let pbxProj = try projGenerator.generate()
         
         for pbxProject in pbxProj.projects {
-            XCTAssertEqual(pbxProject.attributes[lastUpgradeKey] as? String, project.xcodeVersion)
+            XCTAssertEqual(pbxProject.attributes[lastUpgradeKey]?.stringValue, project.xcodeVersion)
         }
+    }
+
+    func testProductsGroupIsSet() throws {
+        let target = Target(name: "TestApp", type: .application, platform: .iOS)
+        let project = Project(name: "Test", targets: [target])
+        let projGenerator = PBXProjGenerator(project: project)
+
+        let pbxProj = try projGenerator.generate()
+
+        let pbxProject = try XCTUnwrap(pbxProj.projects.first)
+        let productsGroup = try XCTUnwrap(pbxProject.productsGroup)
+
+        XCTAssertEqual(productsGroup.name, "Products")
+        XCTAssertEqual(productsGroup.children.count, 1)
+
+        let productReference = try XCTUnwrap(productsGroup.children.first as? PBXFileReference)
+        XCTAssertEqual(productReference.path, "TestApp.app")
+    }
+
+    func testProductsGroupIsSetWithMultipleTargets() throws {
+        let appTarget = Target(name: "TestApp", type: .application, platform: .iOS)
+        let frameworkTarget = Target(name: "TestFramework", type: .framework, platform: .iOS)
+        let project = Project(name: "Test", targets: [appTarget, frameworkTarget])
+        let projGenerator = PBXProjGenerator(project: project)
+
+        let pbxProj = try projGenerator.generate()
+
+        let pbxProject = try XCTUnwrap(pbxProj.projects.first)
+        let productsGroup = try XCTUnwrap(pbxProject.productsGroup)
+
+        XCTAssertEqual(productsGroup.name, "Products")
+        XCTAssertEqual(productsGroup.children.count, 2)
+
+        let productNames = productsGroup.children
+            .compactMap { $0 as? PBXFileReference }
+            .compactMap { $0.path }
+            .sorted()
+        XCTAssertEqual(productNames, ["TestApp.app", "TestFramework.framework"])
+    }
+
+    func testProductsGroupIsSetWithNoTargets() throws {
+        let project = Project(name: "Test")
+        let projGenerator = PBXProjGenerator(project: project)
+
+        let pbxProj = try projGenerator.generate()
+
+        let pbxProject = try XCTUnwrap(pbxProj.projects.first)
+        let productsGroup = try XCTUnwrap(pbxProject.productsGroup)
+
+        XCTAssertEqual(productsGroup.name, "Products")
+        XCTAssertEqual(productsGroup.children.count, 0)
     }
 
     func testPlatformDependencies() {

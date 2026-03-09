@@ -18,6 +18,7 @@ class SourceGenerator {
     private var fileReferencesByPath: [String: PBXFileElement] = [:]
     private var groupsByPath: [Path: PBXGroup] = [:]
     private var variantGroupsByPath: [Path: PBXVariantGroup] = [:]
+    private var syncedGroupsByPath: [String: PBXFileSystemSynchronizedRootGroup] = [:]
 
     private let project: Project
     let pbxProj: PBXProj
@@ -121,7 +122,7 @@ class SourceGenerator {
     
     func generateSourceFile(targetType: PBXProductType, targetSource: TargetSource, path: Path, fileReference: PBXFileElement? = nil, buildPhases: [Path: BuildPhaseSpec]) -> SourceFile {
         let fileReference = fileReference ?? fileReferencesByPath[path.string.lowercased()]!
-        var settings: [String: Any] = [:]
+        var settings: [String: BuildFileSetting] = [:]
         let fileType = getFileType(path: path)
         var attributes: [String] = targetSource.attributes + (fileType?.attributes ?? [])
         var chosenBuildPhase: BuildPhaseSpec?
@@ -173,15 +174,15 @@ class SourceGenerator {
         }
 
         if chosenBuildPhase == .sources && !compilerFlags.isEmpty {
-            settings["COMPILER_FLAGS"] = compilerFlags
+            settings["COMPILER_FLAGS"] = .string(compilerFlags)
         }
 
         if !attributes.isEmpty {
-            settings["ATTRIBUTES"] = attributes
+            settings["ATTRIBUTES"] = .array(attributes)
         }
-        
+
         if chosenBuildPhase == .resources && !assetTags.isEmpty {
-            settings["ASSET_TAGS"] = assetTags
+            settings["ASSET_TAGS"] = .array(assetTags)
         }
         
         let platforms = makeDestinationFilters(for: path, with: targetSource.destinationFilters, or: targetSource.inferDestinationFiltersByPath)
@@ -372,6 +373,39 @@ class SourceGenerator {
         return variantGroup
     }
 
+    /// Returns the expanded set of excluded paths for a target source by resolving its exclude glob patterns.
+    func expandedExcludes(for targetSource: TargetSource) -> Set<Path> {
+        getSourceMatches(targetSource: targetSource, patterns: targetSource.excludes)
+    }
+
+    /// Returns the expanded set of exception paths for a synced folder, including excludes and non-included files.
+    func syncedFolderExceptions(for targetSource: TargetSource, at syncedPath: Path) -> Set<Path> {
+        let excludePaths = expandedExcludes(for: targetSource)
+        if targetSource.includes.isEmpty {
+            return excludePaths
+        }
+
+        let includePaths = SortedArray(getSourceMatches(targetSource: targetSource, patterns: targetSource.includes))
+        var exceptions: Set<Path> = []
+
+        func findExceptions(in path: Path) {
+            guard let children = try? path.children() else { return }
+
+            for child in children {
+                if isIncludedPath(child, excludePaths: excludePaths, includePaths: includePaths) {
+                    if child.isDirectory && !Xcode.isDirectoryFileWrapper(path: child) {
+                        findExceptions(in: child)
+                    }
+                } else {
+                    exceptions.insert(child)
+                }
+            }
+        }
+
+        findExceptions(in: syncedPath)
+        return exceptions
+    }
+
     /// Collects all the excluded paths within the targetSource
     private func getSourceMatches(targetSource: TargetSource, patterns: [String]) -> Set<Path> {
         let rootSourcePath = project.basePath + targetSource.path
@@ -392,6 +426,20 @@ class SourceGenerator {
             }
             .reduce([], +)
         )
+    }
+
+    /// Expands glob patterns in `explicitFolders` relative to the synced root path.
+    private func resolveExplicitFolders(targetSource: TargetSource) -> [String] {
+        let rootSourcePath = project.basePath + targetSource.path
+
+        return targetSource.explicitFolders.flatMap { pattern in
+            let matches = Glob(pattern: "\(rootSourcePath)/\(pattern)")
+                .map { Path($0) }
+                .filter { $0.isDirectory }
+                .compactMap { try? $0.relativePath(from: rootSourcePath).string }
+                .sorted()
+            return matches.isEmpty ? [pattern] : matches
+        }
     }
 
     /// Checks whether the path is not in any default or TargetSource excludes
@@ -690,20 +738,32 @@ class SourceGenerator {
         case .syncedFolder:
 
             let relativePath = (try? path.relativePath(from: project.basePath)) ?? path
+            let resolvedExplicitFolders = resolveExplicitFolders(targetSource: targetSource)
 
-            let syncedRootGroup = PBXFileSystemSynchronizedRootGroup(
-                sourceTree: .group,
-                path: relativePath.string,
-                name: targetSource.name,
-                explicitFileTypes: [:],
-                exceptions: [],
-                explicitFolders: []
-            )
-            addObject(syncedRootGroup)
+            let syncedRootGroup: PBXFileSystemSynchronizedRootGroup
+            if let existingGroup = syncedGroupsByPath[relativePath.string] {
+                syncedRootGroup = existingGroup
+                let newExplicitFolders = Set(syncedRootGroup.explicitFolders ?? [])
+                    .union(resolvedExplicitFolders)
+                    .sorted()
+                syncedRootGroup.explicitFolders = newExplicitFolders
+            } else {
+                syncedRootGroup = PBXFileSystemSynchronizedRootGroup(
+                    sourceTree: .group,
+                    path: relativePath.string,
+                    name: targetSource.name,
+                    explicitFileTypes: [:],
+                    exceptions: [],
+                    explicitFolders: resolvedExplicitFolders
+                )
+                addObject(syncedRootGroup)
+                syncedGroupsByPath[relativePath.string] = syncedRootGroup
+            }
             sourceReference = syncedRootGroup
 
-            // TODO: adjust if hasCustomParent == true
-            rootGroups.insert(syncedRootGroup)
+            if !(createIntermediateGroups || hasCustomParent) || path.parent() == project.basePath {
+                rootGroups.insert(syncedRootGroup)
+            }
 
             let sourceFile = generateSourceFile(
                 targetType: targetType,
@@ -720,6 +780,7 @@ class SourceGenerator {
             try makePathRelative(for: sourceReference, at: path)
         } else if createIntermediateGroups {
             createIntermediaGroups(for: sourceReference, at: sourcePath)
+            try makePathRelative(for: sourceReference, at: sourcePath)
         }
 
         return sourceFiles

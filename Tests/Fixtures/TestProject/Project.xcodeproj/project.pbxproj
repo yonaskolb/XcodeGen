@@ -105,6 +105,7 @@
 		6B0BCD3573931F7BE133B301 /* TestProjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D132EA69984F32DA9DC727B6 /* TestProjectTests.swift */; };
 		6C02002A4EE169CEBEC7BA7F /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E4CCE342955E0E934BE533 /* FrameworkFile.swift */; };
 		6E8F8303759824631C8D9DA3 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9E17D598D98065767A04740F /* Localizable.strings */; };
+		6F3848C1EF3E43A5AC2A4D40 /* TestIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = FD5AEA58D3C0A1C8EEDF00F7 /* TestIcon.icon */; };
 		713F57A10C62F70058D7FB0A /* FrameworkFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E4CCE342955E0E934BE533 /* FrameworkFile.swift */; };
 		7148A4172BFA1CC22E6ED5DB /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 753001CDCEAA4C4E1AFF8E87 /* MainInterface.storyboard */; };
 		71A2AAC5934BDC9EDB6F0D9E /* libStaticLibrary_ObjC.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B221F5A689AD7D3AD52F56B8 /* libStaticLibrary_ObjC.a */; };
@@ -826,16 +827,44 @@
 		FA86D418796C1A6864414460 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
 		FD05F36F95D6F098A76F220B /* XPC_Service.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XPC_Service.h; sourceTree = "<group>"; };
 		FD4A16C7B8FEB7F97F3CBE3F /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		FD5AEA58D3C0A1C8EEDF00F7 /* TestIcon.icon */ = {isa = PBXFileReference; lastKnownFileType = wrapper.icon; path = TestIcon.icon; sourceTree = "<group>"; };
 		FDB2B6A77D39CD5602F2125F /* Contacts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Contacts.framework; path = System/Library/Frameworks/Contacts.framework; sourceTree = SDKROOT; };
 		FED40A89162E446494DDE7C7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		9A259ACEBCE19CC5F22B6DD4 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				ExcludedFile.swift,
+				Info.plist,
+			);
+			target = 0867B0DACEF28C11442DE8F7 /* App_iOS */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		AE2AB2772F70DFFF402AA02B /* SyncedFolder */ = {
+		A2F1B5386E15A261AC8A4DEE /* SyncedChild */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			explicitFileTypes = {
 			};
 			explicitFolders = (
+			);
+			name = SyncedChild;
+			path = SyncedChild;
+			sourceTree = "<group>";
+		};
+		AE2AB2772F70DFFF402AA02B /* SyncedFolder */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				9A259ACEBCE19CC5F22B6DD4 /* PBXFileSystemSynchronizedBuildFileExceptionSet */,
+			);
+			explicitFileTypes = {
+			};
+			explicitFolders = (
+				Resources,
+				FeatureATests,
+				FeatureBTests,
 			);
 			path = SyncedFolder;
 			sourceTree = "<group>";
@@ -998,6 +1027,12 @@
 			isa = PBXGroup;
 			children = (
 				2F80635127D17ECB7748067B /* FolderWithDot2.0 */,
+				CE1F06D99242F4223D081F0D /* LaunchScreen.storyboard */,
+				9E17D598D98065767A04740F /* Localizable.strings */,
+				65C8D6D1DDC1512D396C07B7 /* Localizable.stringsdict */,
+				0C6BA0D12467A13EC012C728 /* LocalizedStoryboard.storyboard */,
+				814D72C2B921F60B759C2D4B /* Main.storyboard */,
+				306796628DD52FA55E833B65 /* Model.xcdatamodeld */,
 				AEBCA8CFF769189C0D52031E /* App_iOS.xctestplan */,
 				F0D48A913C087D049C8EDDD7 /* App.entitlements */,
 				7F1A2F579A6F79C62DDA0571 /* AppDelegate.swift */,
@@ -1006,18 +1041,13 @@
 				B5C943D39DD7812CAB94B614 /* Documentation.docc */,
 				C9DDE1B06BCC1CDE0ECF1589 /* Info.plist */,
 				AAA49985DFFE797EE8416887 /* inputList.xcfilelist */,
-				CE1F06D99242F4223D081F0D /* LaunchScreen.storyboard */,
-				9E17D598D98065767A04740F /* Localizable.strings */,
-				65C8D6D1DDC1512D396C07B7 /* Localizable.stringsdict */,
-				0C6BA0D12467A13EC012C728 /* LocalizedStoryboard.storyboard */,
-				814D72C2B921F60B759C2D4B /* Main.storyboard */,
-				306796628DD52FA55E833B65 /* Model.xcdatamodeld */,
 				BF59AC868D227C92CA8B1B57 /* Model.xcmappingmodel */,
 				C7809CE9FE9852C2AA87ACE5 /* module.modulemap */,
 				553D289724905857912C7A1D /* outputList.xcfilelist */,
 				01E6934B571B91EAAFF0EDCB /* Resource.abc */,
 				325F18855099386B08DD309B /* Resource.abcd */,
 				8AF20308873AEEEC4D8C45D1 /* Settings.bundle */,
+				FD5AEA58D3C0A1C8EEDF00F7 /* TestIcon.icon */,
 				0704B6CAFBB53E0EBB08F6B3 /* ViewController.swift */,
 			);
 			name = App;
@@ -1054,6 +1084,8 @@
 				BDA839814AF73F01F7710518 /* StaticLibrary_ObjC */,
 				CBDAC144248EE9D3838C6AAA /* StaticLibrary_Swift */,
 				6E0D17C5B4E6F01B89254309 /* String Catalogs */,
+				AE2AB2772F70DFFF402AA02B /* SyncedFolder */,
+				AB527E0D553CE53AF54C39CD /* SyncedParent */,
 				8CFD8AD4820FAB9265663F92 /* Tool */,
 				4C7F5EB7D6F3E0E9B426AB4A /* Utilities */,
 				3FEA12CF227D41EF50E5C2DB /* Vendor */,
@@ -1062,7 +1094,6 @@
 				2E1E747C7BC434ADB80CC269 /* Headers */,
 				6B1603BA83AA0C7B94E45168 /* ResourceFolder */,
 				6BBE762F36D94AB6FFBFE834 /* SomeFile */,
-				AE2AB2772F70DFFF402AA02B /* SyncedFolder */,
 				79DC4A1E4D2E0D3A215179BC /* Bundles */,
 				FC1515684236259C50A7747F /* Frameworks */,
 				AC523591AC7BE9275003D2DB /* Products */,
@@ -1303,6 +1334,14 @@
 			path = iMessageApp;
 			sourceTree = "<group>";
 		};
+		AB527E0D553CE53AF54C39CD /* SyncedParent */ = {
+			isa = PBXGroup;
+			children = (
+				A2F1B5386E15A261AC8A4DEE /* SyncedChild */,
+			);
+			path = SyncedParent;
+			sourceTree = "<group>";
+		};
 		AC523591AC7BE9275003D2DB /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -1354,9 +1393,9 @@
 		BAE6C12745737019DC9E98BF /* App_watchOS */ = {
 			isa = PBXGroup;
 			children = (
+				C872631362DDBAFCE71E5C66 /* Interface.storyboard */,
 				D8A016580A3B8F72B820BFBF /* Assets.xcassets */,
 				FED40A89162E446494DDE7C7 /* Info.plist */,
-				C872631362DDBAFCE71E5C66 /* Interface.storyboard */,
 			);
 			path = App_watchOS;
 			sourceTree = "<group>";
@@ -1374,9 +1413,9 @@
 		BF58996786F85CB77BEE72EF /* iMessageExtension */ = {
 			isa = PBXGroup;
 			children = (
+				753001CDCEAA4C4E1AFF8E87 /* MainInterface.storyboard */,
 				1BC32A813B80A53962A1F365 /* Assets.xcassets */,
 				40863AE6202CFCD0529D8438 /* Info.plist */,
-				753001CDCEAA4C4E1AFF8E87 /* MainInterface.storyboard */,
 				B198242976C3395E31FE000A /* MessagesViewController.swift */,
 			);
 			path = iMessageExtension;
@@ -1385,12 +1424,12 @@
 		C81493FAD71E9A9A19E00AD5 /* App_Clip */ = {
 			isa = PBXGroup;
 			children = (
+				79325B44B19B83EC6CEDBCC5 /* LaunchScreen.storyboard */,
+				2FC2A8A829CE71B1CF415FF7 /* Main.storyboard */,
 				23A2F16890ECF2EE3FED72AE /* AppDelegate.swift */,
 				59DA55A04FA2366B5D0BEEFF /* Assets.xcassets */,
 				1FA5E208EC184E3030D2A21D /* Clip.entitlements */,
 				6F165CDD5BCC13AFF50B65E2 /* Info.plist */,
-				79325B44B19B83EC6CEDBCC5 /* LaunchScreen.storyboard */,
-				2FC2A8A829CE71B1CF415FF7 /* Main.storyboard */,
 				DFE6A6FAAFF701FE729293DE /* ViewController.swift */,
 			);
 			path = App_Clip;
@@ -1435,10 +1474,10 @@
 		EE78B4FBD0137D1975C47D76 /* App_macOS */ = {
 			isa = PBXGroup;
 			children = (
+				74FBDFA5CB063F6001AD8ACD /* Main.storyboard */,
 				9528528C989D24FE3E6C533E /* App-Info.plist */,
 				09B82F603D981398F38D762E /* AppDelegate.swift */,
 				E55F45EACB0F382722D61C8D /* Assets.xcassets */,
-				74FBDFA5CB063F6001AD8ACD /* Main.storyboard */,
 				A4C3FE6B986506724DAB5D0F /* ViewController.swift */,
 			);
 			path = App_macOS;
@@ -1700,6 +1739,7 @@
 				981D116D40DBA0407D0E0E94 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
+				A2F1B5386E15A261AC8A4DEE /* SyncedChild */,
 				AE2AB2772F70DFFF402AA02B /* SyncedFolder */,
 			);
 			name = App_iOS;
@@ -2447,7 +2487,6 @@
 				);
 			};
 			buildConfigurationList = D91E14E36EC0B415578456F2 /* Build configuration list for PBXProject "Project" */;
-			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -2460,6 +2499,7 @@
 				4EDA79334592CBBA0E507AD2 /* XCRemoteSwiftPackageReference "Swinject" */,
 			);
 			preferredProjectObjectVersion = 77;
+			productRefGroup = AC523591AC7BE9275003D2DB /* Products */;
 			projectDirPath = "";
 			projectReferences = (
 				{
@@ -2579,6 +2619,7 @@
 				61601545B6BE00CA74A4E38F /* SceneKitCatalog.scnassets in Resources */,
 				28A96EBC76D53817AABDA91C /* Settings.bundle in Resources */,
 				E8A135F768448632F8D77C8F /* StandaloneAssets.xcassets in Resources */,
+				6F3848C1EF3E43A5AC2A4D40 /* TestIcon.icon in Resources */,
 				818D448D4DDD6649B5B26098 /* example.mp4 in Resources */,
 				2C7C03B45571A13D472D6B23 /* iMessageApp.app in Resources */,
 			);
@@ -3522,7 +3563,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.project.ExternalTarget;
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.external;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -4220,7 +4261,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.project.ExternalTarget;
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.external;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -6058,7 +6099,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.project.ExternalTarget;
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.external;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -6655,7 +6696,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.project.ExternalTarget;
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.external;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -6856,7 +6897,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.project.ExternalTarget;
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.external;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -7259,7 +7300,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.project.ExternalTarget;
+				PRODUCT_BUNDLE_IDENTIFIER = com.project.external;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";

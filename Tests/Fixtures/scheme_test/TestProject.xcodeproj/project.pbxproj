@@ -72,9 +72,10 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+				};
 			};
 			buildConfigurationList = E903F6E8184E2A86CEC31778 /* Build configuration list for PBXProject "TestProject" */;
-			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -84,6 +85,7 @@
 			mainGroup = 2D08B11F4EE060D112B7BCA1;
 			minimizedProjectReferenceProxies = 1;
 			preferredProjectObjectVersion = 77;
+			productRefGroup = 5B8D13EAC88739DF2D92F8AE /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
