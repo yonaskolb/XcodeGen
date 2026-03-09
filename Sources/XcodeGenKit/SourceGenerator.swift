@@ -18,6 +18,7 @@ class SourceGenerator {
     private var fileReferencesByPath: [String: PBXFileElement] = [:]
     private var groupsByPath: [Path: PBXGroup] = [:]
     private var variantGroupsByPath: [Path: PBXVariantGroup] = [:]
+    private var syncedGroupsByPath: [String: PBXFileSystemSynchronizedRootGroup] = [:]
 
     private let project: Project
     let pbxProj: PBXProj
@@ -377,6 +378,34 @@ class SourceGenerator {
         getSourceMatches(targetSource: targetSource, patterns: targetSource.excludes)
     }
 
+    /// Returns the expanded set of exception paths for a synced folder, including excludes and non-included files.
+    func syncedFolderExceptions(for targetSource: TargetSource, at syncedPath: Path) -> Set<Path> {
+        let excludePaths = expandedExcludes(for: targetSource)
+        if targetSource.includes.isEmpty {
+            return excludePaths
+        }
+
+        let includePaths = SortedArray(getSourceMatches(targetSource: targetSource, patterns: targetSource.includes))
+        var exceptions: Set<Path> = []
+
+        func findExceptions(in path: Path) {
+            guard let children = try? path.children() else { return }
+
+            for child in children {
+                if isIncludedPath(child, excludePaths: excludePaths, includePaths: includePaths) {
+                    if child.isDirectory && !Xcode.isDirectoryFileWrapper(path: child) {
+                        findExceptions(in: child)
+                    }
+                } else {
+                    exceptions.insert(child)
+                }
+            }
+        }
+
+        findExceptions(in: syncedPath)
+        return exceptions
+    }
+
     /// Collects all the excluded paths within the targetSource
     private func getSourceMatches(targetSource: TargetSource, patterns: [String]) -> Set<Path> {
         let rootSourcePath = project.basePath + targetSource.path
@@ -711,15 +740,25 @@ class SourceGenerator {
             let relativePath = (try? path.relativePath(from: project.basePath)) ?? path
             let resolvedExplicitFolders = resolveExplicitFolders(targetSource: targetSource)
 
-            let syncedRootGroup = PBXFileSystemSynchronizedRootGroup(
-                sourceTree: .group,
-                path: relativePath.string,
-                name: targetSource.name,
-                explicitFileTypes: [:],
-                exceptions: [],
-                explicitFolders: resolvedExplicitFolders
-            )
-            addObject(syncedRootGroup)
+            let syncedRootGroup: PBXFileSystemSynchronizedRootGroup
+            if let existingGroup = syncedGroupsByPath[relativePath.string] {
+                syncedRootGroup = existingGroup
+                let newExplicitFolders = Set(syncedRootGroup.explicitFolders ?? [])
+                    .union(resolvedExplicitFolders)
+                    .sorted()
+                syncedRootGroup.explicitFolders = newExplicitFolders
+            } else {
+                syncedRootGroup = PBXFileSystemSynchronizedRootGroup(
+                    sourceTree: .group,
+                    path: relativePath.string,
+                    name: targetSource.name,
+                    explicitFileTypes: [:],
+                    exceptions: [],
+                    explicitFolders: resolvedExplicitFolders
+                )
+                addObject(syncedRootGroup)
+                syncedGroupsByPath[relativePath.string] = syncedRootGroup
+            }
             sourceReference = syncedRootGroup
 
             if !(createIntermediateGroups || hasCustomParent) || path.parent() == project.basePath {
