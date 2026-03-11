@@ -200,11 +200,12 @@ class SourceGenerator {
         let createIntermediateGroups = project.options.createIntermediateGroups
 
         let parentPath = path.parent()
-        let fileReference = getFileReference(path: path, inPath: parentPath)
 
         guard !isInsideSyncedFolder(path: path) else {
-            return fileReference
+            return getFileReference(path: path, inPath: project.basePath, sourceTree: .sourceRoot)
         }
+
+        let fileReference = getFileReference(path: path, inPath: parentPath)
 
         let parentGroup = getGroup(
             path: parentPath,
@@ -368,7 +369,7 @@ class SourceGenerator {
             groupReference = addObject(group)
             groupsByPath[path] = groupReference
 
-            if isTopLevelGroup {
+            if isTopLevelGroup && !isInsideSyncedFolder(path: path) {
                 rootGroups.insert(groupReference)
             }
         }
@@ -414,6 +415,8 @@ class SourceGenerator {
                     if child.isDirectory && !Xcode.isDirectoryFileWrapper(path: child) {
                         findExceptions(in: child)
                     }
+                } else if child.isDirectory && !Xcode.isDirectoryFileWrapper(path: child) {
+                    findExceptions(in: child)
                 } else {
                     exceptions.insert(child)
                 }
