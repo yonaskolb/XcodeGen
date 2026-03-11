@@ -415,7 +415,7 @@ class SourceGeneratorTests: XCTestCase {
                 try expect(exceptions.contains("Nested/b.swift")) == false
             }
 
-            $0.it("excludes entire subdirectory as single exception when no files in it are included") {
+            $0.it("excludes individual files in subdirectory when no files in it are included") {
                 let directories = """
                 Sources:
                   - a.swift
@@ -436,10 +436,11 @@ class SourceGeneratorTests: XCTestCase {
                 let exceptionSet = try unwrap(syncedFolder.exceptions?.first as? PBXFileSystemSynchronizedBuildFileExceptionSet)
                 let exceptions = try unwrap(exceptionSet.membershipExceptions)
 
-                // The whole directory should be a single exception entry, not each file within it
-                try expect(exceptions.contains("ExcludedDir")) == true
-                try expect(exceptions.contains("ExcludedDir/x.swift")) == false
-                try expect(exceptions.contains("ExcludedDir/y.swift")) == false
+                // Xcode does not recursively exclude directory contents from membershipExceptions,
+                // so individual files must be listed instead of the directory name
+                try expect(exceptions.contains("ExcludedDir")) == false
+                try expect(exceptions.contains("ExcludedDir/x.swift")) == true
+                try expect(exceptions.contains("ExcludedDir/y.swift")) == true
                 try expect(exceptions.contains("a.swift")) == false
             }
 
