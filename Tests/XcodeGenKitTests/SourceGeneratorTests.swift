@@ -996,6 +996,29 @@ class SourceGeneratorTests: XCTestCase {
                 try pbxProj.expectFileMissing(paths: ["Sources", "A", "a.swift"])
             }
 
+            $0.it("generates folder references with createIntermediateGroups") {
+                let directories = """
+                Sources:
+                  A:
+                    - a.resource
+                    - b.resource
+                """
+                try createDirectories(directories)
+
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: [
+                    TargetSource(path: "Sources/A", type: .folder),
+                ])
+                let project = Project(
+                    basePath: directoryPath,
+                    name: "Test",
+                    targets: [target],
+                    options: .init(createIntermediateGroups: true)
+                )
+
+                let pbxProj = try project.generatePbxProj()
+                try pbxProj.expectFile(paths: ["Sources", "Sources/A"], names: ["Sources", "A"], buildPhase: .resources)
+            }
+
             $0.it("adds files to correct build phase") {
                 let directories = """
                   A:

@@ -2,6 +2,12 @@
 
 ## Next Version
 
+## 2.45.3
+
+### Fixed
+- Fix folder source PBXFileReference path regression with createIntermediateGroups #1605 @yonaskolb
+- Fix synced folders: includes silently ignored + no deduplication across targets #1604 @4brunu
+
 ## 2.45.2
 
 ### Fixed

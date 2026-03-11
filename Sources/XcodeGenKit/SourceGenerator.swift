@@ -798,7 +798,9 @@ class SourceGenerator {
             try makePathRelative(for: sourceReference, at: path)
         } else if createIntermediateGroups {
             createIntermediaGroups(for: sourceReference, at: sourcePath)
-            try makePathRelative(for: sourceReference, at: sourcePath)
+            if type != .folder {
+                try makePathRelative(for: sourceReference, at: sourcePath)
+            }
         }
 
         return sourceFiles
