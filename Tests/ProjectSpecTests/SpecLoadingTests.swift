@@ -291,6 +291,15 @@ class SpecLoadingTests: XCTestCase {
                 ]
                 try expect(project.targets.last?.sources) == ["SomeTarget", "doesWin", "templateVariable"]
             }
+
+            $0.it("lookup global template attributes") {
+                let path = fixturePath + "global_template_attributes_test.yml"
+
+                let project = try loadSpec(path: path)
+                let extensionTarget = project.targets.first!
+                try expect(extensionTarget.configFiles["Production Debug"]) == "ContentBlocker/Configs/legacy/Debug.xcconfig"
+                try expect(extensionTarget.configFiles["Production Release"]) == "ContentBlocker/Configs/legacy/Release.xcconfig"
+            }
         }
     }
 
