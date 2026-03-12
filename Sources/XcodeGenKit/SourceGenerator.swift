@@ -32,6 +32,12 @@ class SourceGenerator {
 
     private(set) var knownRegions: Set<String> = []
 
+    /// The effective base path for resolving group and file paths in the generated project.
+    /// Uses `projectDirectory` when the xcodeproj is generated in a different location than the spec.
+    private var basePath: Path {
+        projectDirectory ?? project.basePath
+    }
+
     init(project: Project, pbxProj: PBXProj, projectDirectory: Path?) {
         self.project = project
         self.pbxProj = pbxProj
@@ -39,7 +45,7 @@ class SourceGenerator {
     }
 
     private func resolveGroupPath(_ path: Path, isTopLevelGroup: Bool) -> String {
-        if isTopLevelGroup, let relativePath = try? path.relativePath(from: projectDirectory ?? project.basePath).string {
+        if isTopLevelGroup, let relativePath = try? path.relativePath(from: basePath).string {
             return relativePath
         } else {
             return path.lastComponent
@@ -62,7 +68,7 @@ class SourceGenerator {
         let absolutePath = project.basePath + path.normalize()
 
         // Get the local package's relative path from the project root
-        let fileReferencePath = try? absolutePath.relativePath(from: projectDirectory ?? project.basePath).string
+        let fileReferencePath = try? absolutePath.relativePath(from: basePath).string
 
         let fileReference = addObject(
             PBXFileReference(
@@ -886,7 +892,7 @@ class SourceGenerator {
             element = parent
         }
 
-        let completePath = (projectDirectory ?? project.basePath) + Path(paths.joined(separator: "/"))
+        let completePath = (basePath) + Path(paths.joined(separator: "/"))
         let relativePath = try path.relativePath(from: completePath)
         let relativePathString = relativePath.string
 
