@@ -886,7 +886,7 @@ class SourceGenerator {
             element = parent
         }
 
-        let completePath = project.basePath + Path(paths.joined(separator: "/"))
+        let completePath = (projectDirectory ?? project.basePath) + Path(paths.joined(separator: "/"))
         let relativePath = try path.relativePath(from: completePath)
         let relativePathString = relativePath.string
 

@@ -911,6 +911,40 @@ class SourceGeneratorTests: XCTestCase {
                 try pbxProj.expectFile(paths: ["Sources/B", "b.swift"], names: ["B", "b.swift"], buildPhase: .sources)
             }
 
+            $0.it("generates intermediate groups with different projectDirectory") {
+
+                let directories = """
+                Sources:
+                  - a.swift
+                  - b.swift
+                Modules:
+                  - m.swift
+                """
+                try createDirectories(directories)
+
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: [
+                    "../Sources",
+                    "../Modules",
+                ])
+                let options = SpecOptions(createIntermediateGroups: true)
+                // basePath is a subdirectory (simulating spec in a subdir like ProjectRoot/XcodeGen/)
+                // projectDirectory is the parent (simulating --project pointing to ProjectRoot/)
+                let subdir = directoryPath + "SubDir"
+                try subdir.mkpath()
+                let project = Project(basePath: subdir, name: "Test", targets: [target], options: options)
+
+                let generator = PBXProjGenerator(project: project, projectDirectory: directoryPath)
+                let pbxProj = try generator.generate()
+
+                // Sources and Modules should have path = "Sources"/"Modules" (not "../Sources")
+                // The intermediate group for TestDirectory should have path = "."
+                // So Xcode resolves: projectDir/./Sources = correct
+                // Before fix: path was "../Sources", resolving to projectDir/./../Sources = wrong
+                try pbxProj.expectFile(paths: [".", "Sources", "a.swift"], names: ["TestDirectory", "Sources", "a.swift"], buildPhase: .sources)
+                try pbxProj.expectFile(paths: [".", "Sources", "b.swift"], names: ["TestDirectory", "Sources", "b.swift"], buildPhase: .sources)
+                try pbxProj.expectFile(paths: [".", "Modules", "m.swift"], names: ["TestDirectory", "Modules", "m.swift"], buildPhase: .sources)
+            }
+
             $0.it("generates custom groups") {
 
                 let directories = """
