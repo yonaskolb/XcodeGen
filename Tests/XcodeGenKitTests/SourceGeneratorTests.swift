@@ -415,7 +415,7 @@ class SourceGeneratorTests: XCTestCase {
                 try expect(exceptions.contains("Nested/b.swift")) == false
             }
 
-            $0.it("excludes entire subdirectory as single exception when no files in it are included") {
+            $0.it("excludes individual files in subdirectory when no files in it are included") {
                 let directories = """
                 Sources:
                   - a.swift
@@ -436,10 +436,11 @@ class SourceGeneratorTests: XCTestCase {
                 let exceptionSet = try unwrap(syncedFolder.exceptions?.first as? PBXFileSystemSynchronizedBuildFileExceptionSet)
                 let exceptions = try unwrap(exceptionSet.membershipExceptions)
 
-                // The whole directory should be a single exception entry, not each file within it
-                try expect(exceptions.contains("ExcludedDir")) == true
-                try expect(exceptions.contains("ExcludedDir/x.swift")) == false
-                try expect(exceptions.contains("ExcludedDir/y.swift")) == false
+                // Xcode does not recursively exclude directory contents from membershipExceptions,
+                // so individual files must be listed instead of the directory name
+                try expect(exceptions.contains("ExcludedDir")) == false
+                try expect(exceptions.contains("ExcludedDir/x.swift")) == true
+                try expect(exceptions.contains("ExcludedDir/y.swift")) == true
                 try expect(exceptions.contains("a.swift")) == false
             }
 
@@ -489,6 +490,34 @@ class SourceGeneratorTests: XCTestCase {
                 let appGroup = try unwrap(appTarget.fileSystemSynchronizedGroups?.first)
                 let testsGroup = try unwrap(testsTarget.fileSystemSynchronizedGroups?.first)
                 try expect(appGroup === testsGroup) == true
+            }
+
+            $0.it("does not create duplicate group for configFiles inside synced folder") {
+                let directories = """
+                Sources:
+                  - a.swift
+                  - Config:
+                    - config.xcconfig
+                """
+                try createDirectories(directories)
+
+                let source = TargetSource(path: "Sources", type: .syncedFolder)
+                let target = Target(name: "Target1", type: .application, platform: .iOS, sources: [source])
+                let project = Project(
+                    basePath: directoryPath,
+                    name: "Test",
+                    targets: [target],
+                    configFiles: ["Debug": "Sources/Config/config.xcconfig"]
+                )
+
+                let pbxProj = try project.generatePbxProj()
+                let mainGroup = try pbxProj.getMainGroup()
+
+                let sourcesChildren = mainGroup.children.filter { $0.path == "Sources" || $0.name == "Sources" }
+                try expect(sourcesChildren.count) == 1
+
+                let syncedFolders = mainGroup.children.compactMap { $0 as? PBXFileSystemSynchronizedRootGroup }
+                try expect(syncedFolders.count) == 1
             }
 
             $0.it("supports frameworks in sources") {
