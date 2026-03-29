@@ -17,6 +17,7 @@ public class XcodeGenCLI {
                 generateCommand,
                 CacheCommand(version: version),
                 DumpCommand(version: version),
+                ValidateCommand(version: version),
             ]
         )
         cli.parser.routeBehavior = .searchWithFallback(generateCommand)
