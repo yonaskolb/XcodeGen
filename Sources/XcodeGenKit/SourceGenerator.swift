@@ -208,7 +208,7 @@ class SourceGenerator {
         let parentPath = path.parent()
 
         guard !isInsideSyncedFolder(path: path) else {
-            return getFileReference(path: path, inPath: project.basePath, sourceTree: .sourceRoot)
+            return getFileReference(path: path, inPath: basePath, sourceTree: .sourceRoot)
         }
 
         let fileReference = getFileReference(path: path, inPath: parentPath)
@@ -293,7 +293,7 @@ class SourceGenerator {
     /// Checks the project spec directly because configFiles are resolved before target sources
     /// populate `syncedGroupsByPath`.
     private func isInsideSyncedFolder(path: Path) -> Bool {
-        let relativePath = (try? path.relativePath(from: project.basePath)) ?? path
+        let relativePath = (try? path.relativePath(from: basePath)) ?? path
         return project.targets.contains { target in
             target.sources.contains { source in
                 let type = source.type ?? (project.options.defaultSourceDirectoryType ?? .group)
