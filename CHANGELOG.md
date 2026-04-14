@@ -2,6 +2,14 @@
 
 ## Next Version
 
+## 2.45.4
+
+### Fixed
+- Fix makePathRelative using wrong base path when projectDirectory differs #1608 @yonaskolb
+- Fix synced folder configFiles creating duplicate groups #1607 @AlexNsbmr
+- Fix synced folder root group duplication for paths referenced by multiple targets #1607 @AlexNsbmr
+- Fix synced folder directory-level membershipExceptions not working #1607 @AlexNsbmr
+
 ## 2.45.3
 
 ### Fixed
