@@ -206,7 +206,13 @@ class SourceGenerator {
         let createIntermediateGroups = project.options.createIntermediateGroups
 
         let parentPath = path.parent()
+
+        guard !isInsideSyncedFolder(path: path) else {
+            return getFileReference(path: path, inPath: basePath, sourceTree: .sourceRoot)
+        }
+
         let fileReference = getFileReference(path: path, inPath: parentPath)
+
         let parentGroup = getGroup(
             path: parentPath,
             mergingChildren: [fileReference],
@@ -279,6 +285,19 @@ class SourceGenerator {
                 )
                 fileReferencesByPath[fileReferenceKey] = fileReference
                 return fileReference
+            }
+        }
+    }
+
+    /// Whether the given path falls inside a target source configured as a synced folder.
+    /// Checks the project spec directly because configFiles are resolved before target sources
+    /// populate `syncedGroupsByPath`.
+    private func isInsideSyncedFolder(path: Path) -> Bool {
+        let relativePath = (try? path.relativePath(from: basePath)) ?? path
+        return project.targets.contains { target in
+            target.sources.contains { source in
+                let type = source.type ?? (project.options.defaultSourceDirectoryType ?? .group)
+                return type == .syncedFolder && relativePath.string.hasPrefix(source.path + "/")
             }
         }
     }
@@ -356,7 +375,7 @@ class SourceGenerator {
             groupReference = addObject(group)
             groupsByPath[path] = groupReference
 
-            if isTopLevelGroup {
+            if isTopLevelGroup && !isInsideSyncedFolder(path: path) {
                 rootGroups.insert(groupReference)
             }
         }
@@ -402,6 +421,8 @@ class SourceGenerator {
                     if child.isDirectory && !Xcode.isDirectoryFileWrapper(path: child) {
                         findExceptions(in: child)
                     }
+                } else if child.isDirectory && !Xcode.isDirectoryFileWrapper(path: child) {
+                    findExceptions(in: child)
                 } else {
                     exceptions.insert(child)
                 }
