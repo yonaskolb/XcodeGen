@@ -358,7 +358,7 @@ class SourceGeneratorTests: XCTestCase {
                 let exceptions = try unwrap(exceptionSet.membershipExceptions)
 
                 try expect(exceptions.contains("Config.xcconfig")) == true
-                try expect(exceptions.contains("README")) == true
+                try expect(exceptions.contains("README")) == false
                 try expect(exceptions.contains("a.swift")) == false
                 try expect(exceptions.contains("Icon.icon")) == false
             }

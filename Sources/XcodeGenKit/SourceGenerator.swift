@@ -418,7 +418,7 @@ class SourceGenerator {
                         findExceptions(in: child)
                     } else {
                         let buildPhase = getDefaultBuildPhase(for: child, targetType: targetType)
-                        if buildPhase == nil || buildPhase == BuildPhaseSpec.none {
+                        if buildPhase == BuildPhaseSpec.none {
                             exceptions.insert(child)
                         }
                     }
