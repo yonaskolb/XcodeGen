@@ -1491,6 +1491,7 @@ public class PBXProjGenerator {
         var exceptions: Set<String> = Set(
             sourceGenerator.syncedFolderExceptions(for: targetSource, at: syncedPath)
                 .compactMap { try? $0.relativePath(from: syncedPath).string }
+                .map { syncedFolderLocalizedMembershipException($0) }
         )
 
         for infoPlistPath in Set(infoPlistFiles.values) {
@@ -1514,7 +1515,19 @@ public class PBXProjGenerator {
         addObject(exceptionSet)
         syncedGroup.exceptions = (syncedGroup.exceptions ?? []) + [exceptionSet]
     }
-    
+
+    /// In synced folders, Xcode expects localized file membership exceptions to use a
+    /// `/Localized:` prefix with the variant-group path (stripping the `.lproj` component), e.g.:
+    /// `Resources/de.lproj/Localizable.strings` → `/Localized: Resources/Localizable.strings`
+    private func syncedFolderLocalizedMembershipException(_ path: String) -> String {
+        var components = path.split(separator: "/").map(String.init)
+        guard let lprojIndex = components.firstIndex(where: { $0.hasSuffix(".lproj") }) else {
+            return path
+        }
+        components.remove(at: lprojIndex)
+        return "/Localized: " + components.joined(separator: "/")
+    }
+
     private func makePlatformFilter(for filter: Dependency.PlatformFilter) -> String? {
         switch filter {
         case .all:
