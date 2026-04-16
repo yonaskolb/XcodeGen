@@ -36,7 +36,7 @@ class SourceGeneratorTests: XCTestCase {
                     }
                 }
 
-                let files = getFiles(yaml, path: directoryPath).filter { $0.extension != nil }
+                let files = getFiles(yaml, path: directoryPath).filter { $0.extension != nil || $0.lastComponent.hasPrefix(".") }
                 for file in files {
                     try file.parent().mkpath()
                     try file.write("")
@@ -203,6 +203,33 @@ class SourceGeneratorTests: XCTestCase {
                 try expect(exceptions.contains("a.swift")) == false
             }
 
+            $0.it("excludes .DS_Store and .xcconfig from synced folder membership") {
+                let directories = """
+                Sources:
+                  - a.swift
+                  - .DS_Store
+                  - config.xcconfig
+                  - Subfolder:
+                    - nested.xcconfig
+                """
+                try createDirectories(directories)
+
+                let source = TargetSource(path: "Sources", type: .syncedFolder)
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: [source])
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target])
+
+                let pbxProj = try project.generatePbxProj()
+                let syncedFolder = try unwrap(pbxProj.getMainGroup().children.compactMap { $0 as? PBXFileSystemSynchronizedRootGroup }.first)
+
+                let exceptionSets = syncedFolder.exceptions?.compactMap { $0 as? PBXFileSystemSynchronizedBuildFileExceptionSet }
+                let exceptionSet = try unwrap(exceptionSets?.first)
+                let exceptions = try unwrap(exceptionSet.membershipExceptions)
+
+                try expect(exceptions.contains("config.xcconfig")) == true
+                try expect(exceptions.contains("Subfolder/nested.xcconfig")) == true
+                try expect(exceptions.contains(".DS_Store")) == true
+            }
+
             $0.it("adds membership exceptions for nested synced folder with intermediate groups") {
                 let directories = """
                 Sources:
@@ -308,6 +335,82 @@ class SourceGeneratorTests: XCTestCase {
                 try expect(syncedFolders.count) == 1
             }
 
+            $0.it("excludes xcconfig files from synced folder membership") {
+                let directories = """
+                Sources:
+                  - a.swift
+                  - Config.xcconfig
+                  - Icon.icon
+                """
+                try createDirectories(directories)
+                _ = try createFile(at: "Sources/README", content: "")
+
+                let source = TargetSource(path: "Sources", type: .syncedFolder)
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: [source])
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target])
+
+                let pbxProj = try project.generatePbxProj()
+                let syncedFolders = try pbxProj.getMainGroup().children.compactMap { $0 as? PBXFileSystemSynchronizedRootGroup }
+                let syncedFolder = try unwrap(syncedFolders.first)
+
+                let exceptionSets = syncedFolder.exceptions?.compactMap { $0 as? PBXFileSystemSynchronizedBuildFileExceptionSet }
+                let exceptionSet = try unwrap(exceptionSets?.first)
+                let exceptions = try unwrap(exceptionSet.membershipExceptions)
+
+                try expect(exceptions.contains("Config.xcconfig")) == true
+                try expect(exceptions.contains("README")) == false
+                try expect(exceptions.contains("a.swift")) == false
+                try expect(exceptions.contains("Icon.icon")) == false
+            }
+
+            $0.it("excludes nested xcconfig files from synced folder membership") {
+                let directories = """
+                Sources:
+                  Nested:
+                    - a.swift
+                    - Config.xcconfig
+                """
+                try createDirectories(directories)
+
+                let source = TargetSource(path: "Sources", type: .syncedFolder)
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: [source])
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target])
+
+                let pbxProj = try project.generatePbxProj()
+                let syncedFolders = try pbxProj.getMainGroup().children.compactMap { $0 as? PBXFileSystemSynchronizedRootGroup }
+                let syncedFolder = try unwrap(syncedFolders.first)
+
+                let exceptionSets = syncedFolder.exceptions?.compactMap { $0 as? PBXFileSystemSynchronizedBuildFileExceptionSet }
+                let exceptionSet = try unwrap(exceptionSets?.first)
+                let exceptions = try unwrap(exceptionSet.membershipExceptions)
+
+                try expect(exceptions.contains("Nested/Config.xcconfig")) == true
+                try expect(exceptions.contains("Nested/a.swift")) == false
+            }
+
+            $0.it("includes default excluded files in synced folder membership exceptions") {
+               let directories = """
+               Sources:
+                 - a.swift
+                 - .DS_Store
+                 - a.swift.orig
+               """
+               try createDirectories(directories)
+
+               let source = TargetSource(path: "Sources", type: .syncedFolder)
+               let target = Target(name: "Test", type: .application, platform: .iOS, sources: [source])
+               let project = Project(basePath: directoryPath, name: "Test", targets: [target])
+
+               let pbxProj = try project.generatePbxProj()
+               let syncedFolders = try pbxProj.getMainGroup().children.compactMap { $0 as? PBXFileSystemSynchronizedRootGroup }
+               let syncedFolder = try unwrap(syncedFolders.first)
+
+               let exceptionSets = try unwrap(syncedFolder.exceptions?.compactMap { $0 as? PBXFileSystemSynchronizedBuildFileExceptionSet })
+               let exceptionSet = try unwrap(exceptionSets.first)
+               let exceptions = try unwrap(exceptionSet.membershipExceptions)
+               try expect(exceptions.contains(".DS_Store")) == true
+               try expect(exceptions.contains("a.swift.orig")) == true
+            }
             $0.it("supports includes for synced folders") {
                 let directories = """
                 Sources:
