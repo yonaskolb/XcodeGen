@@ -1489,7 +1489,7 @@ public class PBXProjGenerator {
         }) else { return }
 
         var exceptions: Set<String> = Set(
-            sourceGenerator.syncedFolderExceptions(for: targetSource, at: syncedPath)
+            sourceGenerator.syncedFolderExceptions(for: targetSource, at: syncedPath, targetType: target.type)
                 .compactMap { try? $0.relativePath(from: syncedPath).string }
         )
 

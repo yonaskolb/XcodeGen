@@ -404,13 +404,9 @@ class SourceGenerator {
     }
 
     /// Returns the expanded set of exception paths for a synced folder, including excludes and non-included files.
-    func syncedFolderExceptions(for targetSource: TargetSource, at syncedPath: Path) -> Set<Path> {
+    func syncedFolderExceptions(for targetSource: TargetSource, at syncedPath: Path, targetType: PBXProductType) -> Set<Path> {
         let excludePaths = expandedExcludes(for: targetSource)
-        if targetSource.includes.isEmpty {
-            return excludePaths
-        }
-
-        let includePaths = SortedArray(getSourceMatches(targetSource: targetSource, patterns: targetSource.includes))
+        let includePaths = targetSource.includes.isEmpty ? nil : SortedArray(getSourceMatches(targetSource: targetSource, patterns: targetSource.includes))
         var exceptions: Set<Path> = []
 
         func findExceptions(in path: Path) {
@@ -420,6 +416,11 @@ class SourceGenerator {
                 if isIncludedPath(child, excludePaths: excludePaths, includePaths: includePaths) {
                     if child.isDirectory && !Xcode.isDirectoryFileWrapper(path: child) {
                         findExceptions(in: child)
+                    } else {
+                        let buildPhase = getDefaultBuildPhase(for: child, targetType: targetType)
+                        if buildPhase == nil || buildPhase == BuildPhaseSpec.none {
+                            exceptions.insert(child)
+                        }
                     }
                 } else if child.isDirectory && !Xcode.isDirectoryFileWrapper(path: child) {
                     findExceptions(in: child)
@@ -469,10 +470,15 @@ class SourceGenerator {
         }
     }
 
+    /// Checks whether the path is in any default excludes
+    func isDefaultExcluded(_ path: Path) -> Bool {
+        return defaultExcludedFiles.contains(where: { path.lastComponent == $0 })
+            || (path.extension.map(defaultExcludedExtensions.contains) ?? false)
+    }
+
     /// Checks whether the path is not in any default or TargetSource excludes
     func isIncludedPath(_ path: Path, excludePaths: Set<Path>, includePaths: SortedArray<Path>?) -> Bool {
-        return !defaultExcludedFiles.contains(where: { path.lastComponent == $0 })
-            && !(path.extension.map(defaultExcludedExtensions.contains) ?? false)
+        return !isDefaultExcluded(path)
             && !excludePaths.contains(path)
             // If includes is empty, it's included. If it's not empty, the path either needs to match exactly, or it needs to be a direct parent of an included path.
             && (includePaths.flatMap { _isIncludedPathSorted(path, sortedPaths: $0) } ?? true)
