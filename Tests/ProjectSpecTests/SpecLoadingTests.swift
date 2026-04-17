@@ -1483,6 +1483,21 @@ class SpecLoadingTests: XCTestCase {
                 try expect(parsedSpec) == expected
             }
 
+            $0.it("parses targetOrdering option") {
+                let options = SpecOptions(targetOrdering: ["App", "Tests"])
+                let expected = Project(name: "test", options: options)
+                let dictionary: [String: Any] = ["options": [
+                    "targetOrdering": ["App", "Tests"],
+                ]]
+                let parsedSpec = try getProjectSpec(dictionary)
+                try expect(parsedSpec) == expected
+            }
+
+            $0.it("defaults targetOrdering to empty when not specified") {
+                let parsedSpec = try getProjectSpec(["options": [String: Any]()])
+                try expect(parsedSpec.options.targetOrdering) == []
+            }
+
             $0.it("parses packages") {
                 let project = Project(name: "spm", packages: [
                     "package1": .remote(url: "package.git", versionRequirement: .exact("1.2.2")),

@@ -43,6 +43,8 @@ public struct SpecValidationError: Error, CustomStringConvertible {
         case duplicateDependencies(target: String, dependencyReference: String)
         case invalidPluginPackageReference(plugin: String, package: String)
         case emptySourcePath(target: String)
+        case invalidTargetOrderingReference(String)
+        case duplicateTargetOrderingEntry(String)
 
         public var description: String {
             switch self {
@@ -112,6 +114,10 @@ public struct SpecValidationError: Error, CustomStringConvertible {
                 return "Plugin \(plugin) has invalid package reference \(package)"
             case let .emptySourcePath(target):
                 return "Target \(target.quoted) has an empty source path entry"
+            case let .invalidTargetOrderingReference(name):
+                return "Target ordering includes \(name.quoted) which is not a known target or aggregate target"
+            case let .duplicateTargetOrderingEntry(name):
+                return "Target ordering contains \(name.quoted) more than once"
             }
         }
     }

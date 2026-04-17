@@ -77,6 +77,19 @@ extension Project {
             }
         }
 
+        if !options.targetOrdering.isEmpty {
+            let knownTargetNames = Set(projectTargets.map { $0.name })
+            var seen = Set<String>()
+            for name in options.targetOrdering {
+                if !seen.insert(name).inserted {
+                    errors.append(.duplicateTargetOrderingEntry(name))
+                }
+                if !knownTargetNames.contains(name) {
+                    errors.append(.invalidTargetOrderingReference(name))
+                }
+            }
+        }
+
         for settings in settingGroups.values {
             errors += validateSettings(settings)
         }

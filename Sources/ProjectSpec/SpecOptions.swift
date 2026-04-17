@@ -30,6 +30,7 @@ public struct SpecOptions: Equatable {
     public var transitivelyLinkDependencies: Bool
     public var groupSortPosition: GroupSortPosition
     public var groupOrdering: [GroupOrdering]
+    public var targetOrdering: [String]
     public var fileTypes: [String: FileType]
     public var generateEmptyDirectories: Bool
     public var findCarthageFrameworks: Bool
@@ -96,6 +97,7 @@ public struct SpecOptions: Equatable {
         transitivelyLinkDependencies: Bool = transitivelyLinkDependenciesDefault,
         groupSortPosition: GroupSortPosition = groupSortPositionDefault,
         groupOrdering: [GroupOrdering] = [],
+        targetOrdering: [String] = [],
         fileTypes: [String: FileType] = [:],
         generateEmptyDirectories: Bool = generateEmptyDirectoriesDefault,
         findCarthageFrameworks: Bool = findCarthageFrameworksDefault,
@@ -124,6 +126,7 @@ public struct SpecOptions: Equatable {
         self.transitivelyLinkDependencies = transitivelyLinkDependencies
         self.groupSortPosition = groupSortPosition
         self.groupOrdering = groupOrdering
+        self.targetOrdering = targetOrdering
         self.fileTypes = fileTypes
         self.generateEmptyDirectories = generateEmptyDirectories
         self.findCarthageFrameworks = findCarthageFrameworks
@@ -160,6 +163,7 @@ extension SpecOptions: JSONObjectConvertible {
         transitivelyLinkDependencies = jsonDictionary.json(atKeyPath: "transitivelyLinkDependencies") ?? SpecOptions.transitivelyLinkDependenciesDefault
         groupSortPosition = jsonDictionary.json(atKeyPath: "groupSortPosition") ?? SpecOptions.groupSortPositionDefault
         groupOrdering = jsonDictionary.json(atKeyPath: "groupOrdering") ?? []
+        targetOrdering = jsonDictionary.json(atKeyPath: "targetOrdering") ?? []
         generateEmptyDirectories = jsonDictionary.json(atKeyPath: "generateEmptyDirectories") ?? SpecOptions.generateEmptyDirectoriesDefault
         findCarthageFrameworks = jsonDictionary.json(atKeyPath: "findCarthageFrameworks") ?? SpecOptions.findCarthageFrameworksDefault
         localPackagesGroup = jsonDictionary.json(atKeyPath: "localPackagesGroup")
@@ -217,6 +221,9 @@ extension SpecOptions: JSONEncodable {
         }
         if schemePathPrefix != SpecOptions.schemePathPrefixDefault {
             dict["schemePathPrefix"] = schemePathPrefix
+        }
+        if !targetOrdering.isEmpty {
+            dict["targetOrdering"] = targetOrdering
         }
 
         return dict

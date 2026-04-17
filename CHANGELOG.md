@@ -2,6 +2,9 @@
 
 ## Next Version
 
+### Added
+- Added `targetOrdering` option to control the order of targets in the generated project (sidebar in Xcode, `xcodebuild -list` output). Unlisted targets fall back to the existing alphabetical order, so behavior is unchanged when the option is not set. @mirkokg
+
 ## 2.45.4
 
 ### Fixed

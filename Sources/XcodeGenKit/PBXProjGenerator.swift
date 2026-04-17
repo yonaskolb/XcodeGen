@@ -323,8 +323,15 @@ public class PBXProjGenerator {
         pbxProject.localPackages = localPackageReferences.sorted { $0.key < $1.key }.map { $1 }
 
         let allTargets: [PBXTarget] = targetObjects.valueArray + targetAggregateObjects.valueArray
-        pbxProject.targets = allTargets
-            .sorted { $0.name < $1.name }
+        let targetOrdering = project.options.targetOrdering
+        pbxProject.targets = allTargets.sorted { lhs, rhs in
+            let lhsIndex = targetOrdering.firstIndex(of: lhs.name) ?? Int.max
+            let rhsIndex = targetOrdering.firstIndex(of: rhs.name) ?? Int.max
+            if lhsIndex != rhsIndex {
+                return lhsIndex < rhsIndex
+            }
+            return lhs.name < rhs.name
+        }
         pbxProject.attributes = projectAttributes
         pbxProject.targetAttributes = generateTargetAttributes()
         return pbxProj
