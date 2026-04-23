@@ -92,8 +92,9 @@ public struct SpecFile {
             return
         }
 
-        let jsonDictionary = try SpecFile.loadDictionary(path: path).expand(variables: variables)
-        let targetDeclarationOrder = try loadOrderedTargetNames(path: path)
+        let contents: String = try path.read()
+        let jsonDictionary = try SpecFile.loadDictionary(path: path, contents: contents).expand(variables: variables)
+        let targetDeclarationOrder = try loadOrderedTargetNames(contents: contents)
 
         let includes = Include.parse(json: jsonDictionary["include"])
         let subSpecs: [SpecFile] = try includes
@@ -107,16 +108,20 @@ public struct SpecFile {
     }
 
     static func loadDictionary(path: Path) throws -> JSONDictionary {
+        let contents: String = try path.read()
+        return try loadDictionary(path: path, contents: contents)
+    }
+
+    static func loadDictionary(path: Path, contents: String) throws -> JSONDictionary {
         // Depending on the extension we will either load the file as YAML or JSON
         if path.extension?.lowercased() == "json" {
-            let data: Data = try path.read()
-            let jsonData = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
+            let jsonData = try JSONSerialization.jsonObject(with: Data(contents.utf8), options: .allowFragments)
             guard let jsonDictionary = jsonData as? [String: Any] else {
                 fatalError("Invalid JSON at path \(path)")
             }
             return jsonDictionary
         } else {
-            return try loadYamlDictionary(path: path)
+            return try loadYamlDictionary(contents: contents)
         }
     }
 
