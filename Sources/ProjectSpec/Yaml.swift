@@ -18,7 +18,6 @@ public func loadYamlDictionary(path: Path) throws -> [String: Any] {
 }
 
 public func loadOrderedTargetNames(path: Path) throws -> [String] {
-    guard path.extension?.lowercased() != "json" else { return [] }
     let string: String = try path.read()
     guard !string.isEmpty else { return [] }
     guard let node = try Yams.compose(yaml: string),

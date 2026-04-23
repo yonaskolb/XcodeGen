@@ -33,6 +33,13 @@ class SpecLoadingTests: XCTestCase {
 
                 try expect(project.targets.map { $0.name }) == ["Zebra", "Apple", "Mango", "Banana"]
             }
+
+            $0.it("preserves target declaration order from JSON") {
+                let path = fixturePath + "target_ordering_test.json"
+                let project = try loadSpec(path: path)
+
+                try expect(project.targets.map { $0.name }) == ["Zebra", "Apple", "Mango", "Banana"]
+            }
         }
     }
 

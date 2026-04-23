@@ -93,7 +93,7 @@ public struct SpecFile {
         }
 
         let jsonDictionary = try SpecFile.loadDictionary(path: path).expand(variables: variables)
-        let targetDeclarationOrder = try SpecFile.loadTargetDeclarationOrder(path: path)
+        let targetDeclarationOrder = try loadOrderedTargetNames(path: path)
 
         let includes = Include.parse(json: jsonDictionary["include"])
         let subSpecs: [SpecFile] = try includes
@@ -104,13 +104,6 @@ public struct SpecFile {
 
         self.init(filePath: filePath, jsonDictionary: jsonDictionary, basePath: basePath, relativePath: relativePath, subSpecs: subSpecs, targetDeclarationOrder: targetDeclarationOrder)
         cachedSpecFiles[path] = self
-    }
-
-    static func loadTargetDeclarationOrder(path: Path) throws -> [String] {
-        if path.extension?.lowercased() == "json" {
-            return []
-        }
-        return try loadOrderedTargetNames(path: path)
     }
 
     static func loadDictionary(path: Path) throws -> JSONDictionary {
