@@ -190,14 +190,7 @@ extension Project {
             configs.map { Config(name: $0, type: ConfigType(rawValue: $1)) }.sorted { $0.name < $1.name }
         let parsedTargets: [Target] = try jsonDictionary.json(atKeyPath: "targets", parallel: true)
         let targetOrderIndex = Dictionary(uniqueKeysWithValues: expandedTargetOrder.enumerated().map { ($1, $0) })
-        targets = parsedTargets.sorted { lhs, rhs in
-            let lhsIndex = targetOrderIndex[lhs.name] ?? Int.max
-            let rhsIndex = targetOrderIndex[rhs.name] ?? Int.max
-            if lhsIndex != rhsIndex {
-                return lhsIndex < rhsIndex
-            }
-            return lhs.name < rhs.name
-        }
+        targets = parsedTargets.sorted { (targetOrderIndex[$0.name] ?? .max, $0.name) < (targetOrderIndex[$1.name] ?? .max, $1.name) }
         aggregateTargets = try jsonDictionary.json(atKeyPath: "aggregateTargets").sorted { $0.name < $1.name }
         projectReferences = try jsonDictionary.json(atKeyPath: "projectReferences").sorted { $0.name < $1.name }
         schemes = try jsonDictionary.json(atKeyPath: "schemes")
