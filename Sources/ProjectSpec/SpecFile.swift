@@ -107,11 +107,6 @@ public struct SpecFile {
         cachedSpecFiles[path] = self
     }
 
-    static func loadDictionary(path: Path) throws -> JSONDictionary {
-        let contents: String = try path.read()
-        return try loadDictionary(path: path, contents: contents)
-    }
-
     static func loadDictionary(path: Path, contents: String) throws -> JSONDictionary {
         // Depending on the extension we will either load the file as YAML or JSON
         if path.extension?.lowercased() == "json" {
@@ -161,21 +156,9 @@ public struct SpecFile {
 
         guard mergedSpecPaths.insert(path).inserted else { return [] }
 
-        var order: [String] = []
+        let fromSubSpecs = subSpecs.flatMap { $0.mergedTargetDeclarationOrder(set: &mergedSpecPaths) }
         var seen = Set<String>()
-        for subSpec in subSpecs {
-            for name in subSpec.mergedTargetDeclarationOrder(set: &mergedSpecPaths) {
-                if seen.insert(name).inserted {
-                    order.append(name)
-                }
-            }
-        }
-        for name in targetDeclarationOrder {
-            if seen.insert(name).inserted {
-                order.append(name)
-            }
-        }
-        return order
+        return (fromSubSpecs + targetDeclarationOrder).filter { seen.insert($0).inserted }
     }
 
     private func resolvingPaths(cachedSpecFiles: inout [Path: SpecFile], relativeTo basePath: Path = Path()) -> SpecFile {
