@@ -3,7 +3,7 @@
 ## Next Version
 
 ### Changed
-- Targets in the generated project now follow the declaration order from the YAML spec (Xcode sidebar, `xcodebuild -list` output). Previously they were always sorted alphabetically. JSON specs and projects built programmatically continue to sort alphabetically, since key order isn't recoverable. @mirkokg
+- Targets in the generated project now follow the declaration order from the source spec (Xcode sidebar, `xcodebuild -list` output). Previously they were always sorted alphabetically. Applies to both YAML and JSON specs. @mirkokg
 
 ## 2.45.4
 
