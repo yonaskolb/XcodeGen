@@ -322,9 +322,9 @@ public class PBXProjGenerator {
         pbxProject.remotePackages = packageReferences.sorted { $0.key < $1.key }.map { $1 }
         pbxProject.localPackages = localPackageReferences.sorted { $0.key < $1.key }.map { $1 }
 
-        let allTargets: [PBXTarget] = targetObjects.valueArray + targetAggregateObjects.valueArray
-        pbxProject.targets = allTargets
-            .sorted { $0.name < $1.name }
+        let orderedNativeTargets: [PBXTarget] = project.targets.compactMap { targetObjects[$0.name] }
+        let orderedAggregateTargets: [PBXTarget] = project.aggregateTargets.compactMap { targetAggregateObjects[$0.name] }
+        pbxProject.targets = orderedNativeTargets + orderedAggregateTargets
         pbxProject.attributes = projectAttributes
         pbxProject.targetAttributes = generateTargetAttributes()
         return pbxProj

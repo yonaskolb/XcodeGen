@@ -25,6 +25,24 @@ class SpecLoadingTests: XCTestCase {
         }
     }
 
+    func testTargetDeclarationOrder() {
+        describe {
+            $0.it("preserves target declaration order from YAML") {
+                let path = fixturePath + "target_ordering_test.yml"
+                let project = try loadSpec(path: path)
+
+                try expect(project.targets.map { $0.name }) == ["Zebra", "Apple", "Mango", "Banana"]
+            }
+
+            $0.it("preserves target declaration order from JSON") {
+                let path = fixturePath + "target_ordering_test.json"
+                let project = try loadSpec(path: path)
+
+                try expect(project.targets.map { $0.name }) == ["Zebra", "Apple", "Mango", "Banana"]
+            }
+        }
+    }
+
     func testSpecLoader() {
         describe {
             $0.it("merges includes") {
@@ -117,6 +135,41 @@ class SpecLoadingTests: XCTestCase {
 
                 try expect(project.targets) == [
                     Target(
+                        name: "RecursiveTarget",
+                        type: .application,
+                        platform: .macOS,
+                        configFiles: ["Config": "paths_test/recursive_test/config"],
+                        sources: ["paths_test/recursive_test/source"],
+                        dependencies: [Dependency(type: .framework, reference: "paths_test/recursive_test/Framework")],
+                        info: Plist(path: "paths_test/recursive_test/info"),
+                        entitlements: Plist(path: "paths_test/recursive_test/entitlements"),
+                        preBuildScripts: [BuildScript(script: .path("paths_test/recursive_test/prebuildScript"))],
+                        postCompileScripts: [BuildScript(script: .path("paths_test/recursive_test/postCompileScript"))],
+                        postBuildScripts: [BuildScript(script: .path("paths_test/recursive_test/postBuildScript"))]
+                    ),
+                    Target(
+                        name: "target1",
+                        type: .framework,
+                        platform: .macOS,
+                        sources: ["paths_test/same_relative_path_test/parent1/same/target1/source"]
+                    ),
+                    Target(
+                        name: "target2",
+                        type: .framework,
+                        platform: .macOS,
+                        sources: ["paths_test/same_relative_path_test/parent2/same/target2/source"]
+                    ),
+                    Target(
+                        name: "app",
+                        type: .application,
+                        platform: .macOS,
+                        sources: ["paths_test/same_relative_path_test/source"],
+                        dependencies: [
+                            Dependency(type: .target, reference: "target1"),
+                            Dependency(type: .target, reference: "target2")
+                        ]
+                    ),
+                    Target(
                         name: "IncludedTarget",
                         type: .application,
                         platform: .tvOS,
@@ -149,41 +202,6 @@ class SpecLoadingTests: XCTestCase {
                         postCompileScripts: [BuildScript(script: .path("postCompileScript"))],
                         postBuildScripts: [BuildScript(script: .path("postBuildScript"))]
                     ),
-                    Target(
-                        name: "RecursiveTarget",
-                        type: .application,
-                        platform: .macOS,
-                        configFiles: ["Config": "paths_test/recursive_test/config"],
-                        sources: ["paths_test/recursive_test/source"],
-                        dependencies: [Dependency(type: .framework, reference: "paths_test/recursive_test/Framework")],
-                        info: Plist(path: "paths_test/recursive_test/info"),
-                        entitlements: Plist(path: "paths_test/recursive_test/entitlements"),
-                        preBuildScripts: [BuildScript(script: .path("paths_test/recursive_test/prebuildScript"))],
-                        postCompileScripts: [BuildScript(script: .path("paths_test/recursive_test/postCompileScript"))],
-                        postBuildScripts: [BuildScript(script: .path("paths_test/recursive_test/postBuildScript"))]
-                    ),
-                    Target(
-                        name: "app",
-                        type: .application,
-                        platform: .macOS,
-                        sources: ["paths_test/same_relative_path_test/source"],
-                        dependencies: [
-                            Dependency(type: .target, reference: "target1"),
-                            Dependency(type: .target, reference: "target2")
-                        ]
-                    ),
-                    Target(
-                        name: "target1",
-                        type: .framework,
-                        platform: .macOS,
-                        sources: ["paths_test/same_relative_path_test/parent1/same/target1/source"]
-                    ),
-                    Target(
-                        name: "target2",
-                        type: .framework,
-                        platform: .macOS,
-                        sources: ["paths_test/same_relative_path_test/parent2/same/target2/source"]
-                    )
                 ]
 
                 try expect(project.schemes) == [

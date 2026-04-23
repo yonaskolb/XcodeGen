@@ -9,6 +9,7 @@ public struct SpecFile {
     public let basePath: Path
     public let jsonDictionary: JSONDictionary
     public let subSpecs: [SpecFile]
+    public let targetDeclarationOrder: [String]
 
     /// The relative path to use when resolving paths in the json dictionary. Is an empty path when
     /// included with relativePaths disabled.
@@ -68,12 +69,13 @@ public struct SpecFile {
     }
     
     /// Memberwise initializer for SpecFile
-    public init(filePath: Path, jsonDictionary: JSONDictionary, basePath: Path = "", relativePath: Path = "", subSpecs: [SpecFile] = []) {
+    public init(filePath: Path, jsonDictionary: JSONDictionary, basePath: Path = "", relativePath: Path = "", subSpecs: [SpecFile] = [], targetDeclarationOrder: [String] = []) {
         self.basePath = basePath
         self.relativePath = relativePath
         self.jsonDictionary = jsonDictionary
         self.subSpecs = subSpecs
         self.filePath = filePath
+        self.targetDeclarationOrder = targetDeclarationOrder
     }
 
     private init(include: Include, basePath: Path, relativePath: Path, cachedSpecFiles: inout [Path: SpecFile], variables: [String: String]) throws {
@@ -90,7 +92,9 @@ public struct SpecFile {
             return
         }
 
-        let jsonDictionary = try SpecFile.loadDictionary(path: path).expand(variables: variables)
+        let contents: String = try path.read()
+        let jsonDictionary = try SpecFile.loadDictionary(path: path, contents: contents).expand(variables: variables)
+        let targetDeclarationOrder = try loadOrderedTargetNames(contents: contents)
 
         let includes = Include.parse(json: jsonDictionary["include"])
         let subSpecs: [SpecFile] = try includes
@@ -99,26 +103,33 @@ public struct SpecFile {
                 return try SpecFile(include: include, basePath: basePath, relativePath: relativePath, cachedSpecFiles: &cachedSpecFiles, variables: variables)
             }
 
-        self.init(filePath: filePath, jsonDictionary: jsonDictionary, basePath: basePath, relativePath: relativePath, subSpecs: subSpecs)
+        self.init(filePath: filePath, jsonDictionary: jsonDictionary, basePath: basePath, relativePath: relativePath, subSpecs: subSpecs, targetDeclarationOrder: targetDeclarationOrder)
         cachedSpecFiles[path] = self
     }
 
-    static func loadDictionary(path: Path) throws -> JSONDictionary {
+    static func loadDictionary(path: Path, contents: String) throws -> JSONDictionary {
         // Depending on the extension we will either load the file as YAML or JSON
         if path.extension?.lowercased() == "json" {
-            let data: Data = try path.read()
-            let jsonData = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
+            let jsonData = try JSONSerialization.jsonObject(with: Data(contents.utf8), options: .allowFragments)
             guard let jsonDictionary = jsonData as? [String: Any] else {
                 fatalError("Invalid JSON at path \(path)")
             }
             return jsonDictionary
         } else {
-            return try loadYamlDictionary(path: path)
+            return try loadYamlDictionary(contents: contents)
         }
     }
 
     public func resolvedDictionary() -> JSONDictionary {
         resolvedDictionaryWithUniqueTargets()
+    }
+
+    public func resolvedTargetDeclarationOrder() -> [String] {
+        var cachedSpecFiles: [Path: SpecFile] = [:]
+        let resolvedSpec = resolvingPaths(cachedSpecFiles: &cachedSpecFiles)
+
+        var mergedSpecPaths = Set<Path>()
+        return resolvedSpec.mergedTargetDeclarationOrder(set: &mergedSpecPaths)
     }
 
     private func resolvedDictionaryWithUniqueTargets() -> JSONDictionary {
@@ -140,6 +151,16 @@ public struct SpecFile {
                 .reduce([:]) { $1.merged(onto: $0) })
     }
 
+    private func mergedTargetDeclarationOrder(set mergedSpecPaths: inout Set<Path>) -> [String] {
+        let path = basePath + filePath
+
+        guard mergedSpecPaths.insert(path).inserted else { return [] }
+
+        let fromSubSpecs = subSpecs.flatMap { $0.mergedTargetDeclarationOrder(set: &mergedSpecPaths) }
+        var seen = Set<String>()
+        return (fromSubSpecs + targetDeclarationOrder).filter { seen.insert($0).inserted }
+    }
+
     private func resolvingPaths(cachedSpecFiles: inout [Path: SpecFile], relativeTo basePath: Path = Path()) -> SpecFile {
         let path = basePath + filePath
         if let cachedSpecFile = cachedSpecFiles[path] {
@@ -157,7 +178,8 @@ public struct SpecFile {
             jsonDictionary: jsonDictionary,
             basePath: self.basePath,
             relativePath: self.relativePath,
-            subSpecs: subSpecs.map { $0.resolvingPaths(cachedSpecFiles: &cachedSpecFiles, relativeTo: relativePath) }
+            subSpecs: subSpecs.map { $0.resolvingPaths(cachedSpecFiles: &cachedSpecFiles, relativeTo: relativePath) },
+            targetDeclarationOrder: targetDeclarationOrder
         )
         cachedSpecFiles[path] = specFile
         return specFile
