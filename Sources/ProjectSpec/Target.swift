@@ -180,9 +180,7 @@ extension Target {
                     platformTarget = platformTarget.expand(variables: ["platform": platform])
 
                     platformTarget["platform"] = platform
-                    let platformSuffix = platformTarget["platformSuffix"] as? String ?? "_\(platform)"
-                    let platformPrefix = platformTarget["platformPrefix"] as? String ?? ""
-                    let newTargetName = platformPrefix + targetName + platformSuffix
+                    let newTargetName = multiplatformTargetName(fromExpanded: platformTarget, key: targetName, platform: platform)
 
                     var settings = platformTarget["settings"] as? JSONDictionary ?? [:]
                     if settings["configs"] != nil || settings["groups"] != nil || settings["base"] != nil {
@@ -211,6 +209,22 @@ extension Target {
         var merged = jsonDictionary
         merged["targets"] = crossPlatformTargets
         return merged
+    }
+
+    static func resolvedNames(forRawTarget dict: JSONDictionary, key: String) -> [String] {
+        if let platforms = dict["platform"] as? [String] {
+            return platforms.map { platform in
+                let expanded = dict.expand(variables: ["platform": platform])
+                return multiplatformTargetName(fromExpanded: expanded, key: key, platform: platform)
+            }
+        }
+        return [dict["name"] as? String ?? key]
+    }
+
+    static func multiplatformTargetName(fromExpanded expanded: JSONDictionary, key: String, platform: String) -> String {
+        let prefix = expanded["platformPrefix"] as? String ?? ""
+        let suffix = expanded["platformSuffix"] as? String ?? "_\(platform)"
+        return prefix + key + suffix
     }
 }
 

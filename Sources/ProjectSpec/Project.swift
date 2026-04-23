@@ -235,21 +235,10 @@ extension Project {
     }
 
     static func expandedTargetOrder(_ declarationOrder: [String], rawTargets: JSONDictionary) -> [String] {
-        var result: [String] = []
-        for key in declarationOrder {
-            guard let target = rawTargets[key] as? JSONDictionary else { continue }
-            if let platforms = target["platform"] as? [String] {
-                for platform in platforms {
-                    let prefix = target["platformPrefix"] as? String ?? ""
-                    let suffix = target["platformSuffix"] as? String ?? "_\(platform)"
-                    result.append(prefix + key + suffix)
-                }
-            } else {
-                let resolvedName = target["name"] as? String ?? key
-                result.append(resolvedName)
-            }
+        declarationOrder.flatMap { key -> [String] in
+            guard let target = rawTargets[key] as? JSONDictionary else { return [] }
+            return Target.resolvedNames(forRawTarget: target, key: key)
         }
-        return result
     }
 
     static func resolveProject(jsonDictionary: JSONDictionary) -> JSONDictionary {
