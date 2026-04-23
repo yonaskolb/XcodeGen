@@ -399,48 +399,48 @@ class PBXProjGeneratorTests: XCTestCase {
 
     func testTargetOrdering() {
         describe {
-            $0.it("honors targetOrdering in the generated pbxproj") {
-                var options = SpecOptions()
-                options.targetOrdering = ["C", "A"]
-
-                let a = Target(name: "A", type: .framework, platform: .iOS)
-                let b = Target(name: "B", type: .framework, platform: .iOS)
-                let c = Target(name: "C", type: .framework, platform: .iOS)
-                let project = Project(name: "Test", targets: [a, b, c], options: options)
+            $0.it("honors declaration order in the generated pbxproj") {
+                let project = try Project(
+                    jsonDictionary: [
+                        "name": "Test",
+                        "targets": [
+                            "A": ["type": "framework", "platform": "iOS"],
+                            "B": ["type": "framework", "platform": "iOS"],
+                            "C": ["type": "framework", "platform": "iOS"],
+                        ],
+                    ],
+                    targetDeclarationOrder: ["C", "A", "B"]
+                )
 
                 let pbxProj = try project.generatePbxProj()
                 let targetNames = pbxProj.projects.first?.targets.map { $0.name }
                 try expect(targetNames) == ["C", "A", "B"]
             }
 
-            $0.it("falls back to alphabetical when targetOrdering is empty") {
+            $0.it("preserves the order of targets in a programmatically-built project") {
+                let c = Target(name: "C", type: .framework, platform: .iOS)
                 let a = Target(name: "A", type: .framework, platform: .iOS)
                 let b = Target(name: "B", type: .framework, platform: .iOS)
-                let c = Target(name: "C", type: .framework, platform: .iOS)
-                let project = Project(name: "Test", targets: [a, b, c])
+                let project = Project(name: "Test", targets: [c, a, b])
 
                 let pbxProj = try project.generatePbxProj()
                 let targetNames = pbxProj.projects.first?.targets.map { $0.name }
-                try expect(targetNames) == ["A", "B", "C"]
+                try expect(targetNames) == ["C", "A", "B"]
             }
 
-            $0.it("orders aggregate targets alongside native targets") {
-                var options = SpecOptions()
-                options.targetOrdering = ["Agg", "App"]
-
+            $0.it("places aggregate targets after native targets") {
                 let app = Target(name: "App", type: .application, platform: .iOS)
                 let framework = Target(name: "Framework", type: .framework, platform: .iOS)
                 let aggregate = AggregateTarget(name: "Agg", targets: ["App"])
                 let project = Project(
                     name: "Test",
                     targets: [app, framework],
-                    aggregateTargets: [aggregate],
-                    options: options
+                    aggregateTargets: [aggregate]
                 )
 
                 let pbxProj = try project.generatePbxProj()
                 let targetNames = pbxProj.projects.first?.targets.map { $0.name }
-                try expect(targetNames) == ["Agg", "App", "Framework"]
+                try expect(targetNames) == ["App", "Framework", "Agg"]
             }
         }
     }

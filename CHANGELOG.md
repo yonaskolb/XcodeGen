@@ -2,8 +2,8 @@
 
 ## Next Version
 
-### Added
-- Added `targetOrdering` option to control the order of targets in the generated project (sidebar in Xcode, `xcodebuild -list` output). Unlisted targets fall back to the existing alphabetical order, so behavior is unchanged when the option is not set. @mirkokg
+### Changed
+- Targets in the generated project now follow the declaration order from the YAML spec (Xcode sidebar, `xcodebuild -list` output). Previously they were always sorted alphabetically. JSON specs and projects built programmatically continue to sort alphabetically, since key order isn't recoverable. @mirkokg
 
 ## 2.45.4
 

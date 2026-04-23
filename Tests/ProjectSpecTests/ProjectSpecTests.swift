@@ -153,32 +153,6 @@ class ProjectSpecTests: XCTestCase {
                 try expectValidationError(project, .invalidBuildSettingConfig("invalidSettingGroupConfig"))
             }
 
-            $0.it("fails with unknown target in targetOrdering") {
-                var project = baseProject
-                project.targets = [Target(name: "App", type: .application, platform: .iOS)]
-                project.options = SpecOptions(targetOrdering: ["App", "Ghost"])
-                try expectValidationError(project, .invalidTargetOrderingReference("Ghost"))
-            }
-
-            $0.it("fails with duplicate entry in targetOrdering") {
-                var project = baseProject
-                project.targets = [
-                    Target(name: "App", type: .application, platform: .iOS),
-                    Target(name: "Tests", type: .unitTestBundle, platform: .iOS),
-                ]
-                project.options = SpecOptions(targetOrdering: ["App", "Tests", "App"])
-                try expectValidationError(project, .duplicateTargetOrderingEntry("App"))
-            }
-
-            $0.it("accepts a valid targetOrdering referencing native and aggregate targets") {
-                var project = baseProject
-                project.targets = [Target(name: "App", type: .application, platform: .iOS)]
-                project.aggregateTargets = [AggregateTarget(name: "Agg", targets: ["App"])]
-                project.options = SpecOptions(targetOrdering: ["Agg", "App"])
-                try expectNoValidationError(project, .invalidTargetOrderingReference("Agg"))
-                try expectNoValidationError(project, .invalidTargetOrderingReference("App"))
-            }
-
             $0.it("fails with duplicate dependencies") {
                 var project = baseProject
                 project.targets = [

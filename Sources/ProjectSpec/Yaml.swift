@@ -17,6 +17,19 @@ public func loadYamlDictionary(path: Path) throws -> [String: Any] {
     return yaml as? [String: Any] ?? [:]
 }
 
+public func loadOrderedTargetNames(path: Path) throws -> [String] {
+    guard path.extension?.lowercased() != "json" else { return [] }
+    let string: String = try path.read()
+    guard !string.isEmpty else { return [] }
+    guard let node = try Yams.compose(yaml: string),
+          let rootMapping = node.mapping,
+          let targetsNode = rootMapping["targets"],
+          let targetsMapping = targetsNode.mapping else {
+        return []
+    }
+    return targetsMapping.compactMap { key, _ in key.string }
+}
+
 public func dumpYamlDictionary(_ dictionary: [String: Any], path: Path) throws {
     let uncluttered = (dictionary as [String: Any?]).removingEmptyArraysDictionariesAndNils()
     let string: String = try Yams.dump(object: uncluttered)

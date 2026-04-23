@@ -340,9 +340,9 @@
 			projectRoot = "";
 			targets = (
 				AE3F93DB94E7208F2F1D9A78 /* Framework_iOS */,
-				53A3B531E3947D8A8722745E /* Framework_macOS */,
 				536ACF18E4603B59207D43CE /* Framework_tvOS */,
 				71B5187E710718C1A205D4DC /* Framework_watchOS */,
+				53A3B531E3947D8A8722745E /* Framework_macOS */,
 			);
 		};
 /* End PBXProject section */
