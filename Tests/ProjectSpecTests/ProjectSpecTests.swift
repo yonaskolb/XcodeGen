@@ -593,7 +593,7 @@ class ProjectSpecTests: XCTestCase {
 
     func testAllTrackedFilesExcludesIgnoredFiles() {
         describe {
-            let directoryPath = Path(ProcessInfo.processInfo.globallyUniqueString)
+            let directoryPath = Path(components: [NSTemporaryDirectory(), ProcessInfo.processInfo.globallyUniqueString])
 
             $0.before {
                 try? directoryPath.delete()
