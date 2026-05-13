@@ -252,6 +252,21 @@ extension Project: PathContainer {
 
 extension Project {
 
+    /// Files excluded from cache tracking to match SourceGenerator's default exclusions.
+    /// Without this filter, changes to these files cause spurious project regeneration.
+    private static let defaultExcludedFileNames: Set<String> = [".DS_Store"]
+    private static let defaultExcludedExtensions: Set<String> = ["orig"]
+
+    private static func isTrackedFile(_ path: Path) -> Bool {
+        if defaultExcludedFileNames.contains(path.lastComponent) {
+            return false
+        }
+        if let ext = path.extension, defaultExcludedExtensions.contains(ext) {
+            return false
+        }
+        return true
+    }
+
     public var allTrackedFiles: [Path] {
         var files: [Path] = []
         files.append(contentsOf: configFilePaths)
@@ -270,7 +285,7 @@ extension Project {
             files.append(contentsOf: target.configFilePaths)
             for source in target.sources {
                 let sourcePath = basePath + source.path
-                
+
                 let type = source.type ?? options.defaultSourceDirectoryType ?? .group
                 if type.projectTracksChildren {
                     let sourceChildren = (try? sourcePath.recursiveChildren()) ?? []
@@ -279,7 +294,7 @@ extension Project {
                 files.append(sourcePath)
             }
         }
-        return files
+        return files.filter(Self.isTrackedFile)
     }
 }
 
