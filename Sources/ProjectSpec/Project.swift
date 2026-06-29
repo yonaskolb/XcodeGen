@@ -21,6 +21,8 @@ public struct Project: BuildSettingsContainer {
 
     public var packages: [String: SwiftPackage]
 
+    public var registries: SwiftPackageRegistries
+
     public var settings: Settings
     public var settingGroups: [String: Settings]
     public var configs: [Config]
@@ -52,6 +54,7 @@ public struct Project: BuildSettingsContainer {
         schemes: [Scheme] = [],
         breakpoints: [Breakpoint] = [],
         packages: [String: SwiftPackage] = [:],
+        registries: SwiftPackageRegistries = SwiftPackageRegistries(),
         options: SpecOptions = SpecOptions(),
         fileGroups: [String] = [],
         configFiles: [String: String] = [:],
@@ -70,6 +73,7 @@ public struct Project: BuildSettingsContainer {
         self.schemes = schemes
         self.breakpoints = breakpoints
         self.packages = packages
+        self.registries = registries
         self.options = options
         self.fileGroups = fileGroups
         self.configFiles = configFiles
@@ -152,6 +156,7 @@ extension Project: Equatable {
             lhs.configFiles == rhs.configFiles &&
             lhs.options == rhs.options &&
             lhs.packages == rhs.packages &&
+            lhs.registries == rhs.registries &&
             NSDictionary(dictionary: lhs.attributes).isEqual(to: rhs.attributes)
     }
 }
@@ -207,6 +212,11 @@ extension Project {
                 $0[packageName] = .local(path: $1, group: nil, excludeFromProject: false)
             }
             )
+        }
+        if jsonDictionary["registries"] != nil {
+            registries = try jsonDictionary.json(atKeyPath: "registries")
+        } else {
+            registries = SwiftPackageRegistries()
         }
         if jsonDictionary["options"] != nil {
             options = try jsonDictionary.json(atKeyPath: "options")
@@ -323,6 +333,9 @@ extension Project: JSONEncodable {
         dictionary["include"] = include
         dictionary["attributes"] = attributes
         dictionary["packages"] = packages.mapValues { $0.toJSONValue() }
+        if !registries.isEmpty {
+            dictionary["registries"] = registries.toJSONValue()
+        }
         dictionary["targets"] = Dictionary(uniqueKeysWithValues: targetPairs)
         dictionary["configs"] = Dictionary(uniqueKeysWithValues: configsPairs)
         dictionary["aggregateTargets"] = Dictionary(uniqueKeysWithValues: aggregateTargetsPairs)

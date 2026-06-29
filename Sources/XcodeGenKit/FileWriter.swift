@@ -24,6 +24,22 @@ public class FileWriter {
         try? tempPath.delete()
     }
 
+    /// Writes the Swift Package Registry configuration (registries.json) into the generated
+    /// project's workspace, so SwiftPM/Xcode can resolve `.package(id:)` dependencies from a
+    /// registry. No-op when no registries are configured or when the file is unchanged.
+    public func writeSwiftPackageRegistries(to projectPath: Path? = nil) throws {
+        guard !project.registries.isEmpty else { return }
+        let projectPath = projectPath ?? project.defaultProjectPath
+        let configurationPath = projectPath + "project.xcworkspace/xcshareddata/swiftpm/configuration/registries.json"
+        let data = try project.registries.registriesJSONData()
+        if configurationPath.exists, let existing: Data = try? configurationPath.read(), existing == data {
+            // file is the same
+            return
+        }
+        try configurationPath.parent().mkpath()
+        try configurationPath.write(data)
+    }
+
     public func writePlists() throws {
 
         let infoPlistGenerator = InfoPlistGenerator()

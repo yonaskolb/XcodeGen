@@ -2,6 +2,9 @@
 
 ## Next Version
 
+### Added
+- Add `registries` to generate a Swift Package Registry (SE-0292) `registries.json` into the project's SwiftPM configuration, so generated projects can resolve `.package(id:)` dependencies from a registry @bdolewski
+
 ## 2.45.4
 
 ### Fixed

@@ -114,6 +114,7 @@ class GenerateCommand: ProjectCommand {
         info("⚙️  Writing project...")
         do {
             try fileWriter.writeXcodeProject(xcodeProject, to: projectPath)
+            try fileWriter.writeSwiftPackageRegistries(to: projectPath)
 
             success("Created project at \(projectPath)")
         } catch {
