@@ -51,6 +51,7 @@ You can also use environment variables in your configuration file, by using `${S
   - [Test Plan](#test-plan)
 - [Scheme Template](#scheme-template)
 - [Swift Package](#swift-package)
+- [Swift Package Registries](#swift-package-registries)
   - [Remote Package](#remote-package)
   - [Local Package](#local-package)
 - [Project Reference](#project-reference)
@@ -72,6 +73,7 @@ You can also use environment variables in your configuration file, by using `${S
 - [ ] **schemeTemplates**: **[String: [Scheme Template](#scheme-template)]** - a list of schemes that can be used as templates for actual schemes which reference them via a `template` property. They can be used to extract common scheme settings. Works great in combination with `include`.
 - [ ] **targetTemplates**: **[String: [Target Template](#target-template)]** - a list of targets that can be used as templates for actual targets which reference them via a `template` property. They can be used to extract common target settings. Works great in combination with `include`.
 - [ ] **packages**: **[String: [Swift Package](#swift-package)]** - a map of Swift packages by name.
+- [ ] **registries**: **[Swift Package Registries](#swift-package-registries)** - Swift Package Registry (SE-0292) configuration, written to the generated project's SwiftPM `registries.json`.
 - [ ] **projectReferences**: **[String: [Project Reference](#project-reference)]** - a map of project references by name
 
 ### Include
@@ -394,7 +396,7 @@ Settings are merged in the following order: `groups`, `base`, `configs` (simple 
 - [ ] **transitivelyLinkDependencies**: **Bool** - If this is not specified the value from the project set in [Options](#options)`.transitivelyLinkDependencies` will be used.
 - [ ] **directlyEmbedCarthageDependencies**: **Bool** - If this is `true` Carthage framework dependencies will be embedded using an `Embed Frameworks` build phase instead of the `copy-frameworks` script. Defaults to `true` for all targets except iOS/tvOS/watchOS Applications.
 - [ ] **requiresObjCLinking**: **Bool** - If this is `true` any targets that link to this target will have `-ObjC` added to their `OTHER_LDFLAGS`. This is required if a static library has any categories or extensions on Objective-C code. See [this guide](https://pewpewthespells.com/blog/objc_linker_flags.html#objc) for more details. Defaults to `true` if `type` is `library.static`. If you are 100% sure you don't have categories or extensions on Objective-C code (pure Swift with no use of Foundation/UIKit) you can set this to `false`, otherwise it's best to leave it alone.
-- [ ] **onlyCopyFilesOnInstall**: **Bool** – If this is `true`, the `Embed Frameworks` and `Embed App Extensions` (if available) build phases will have the "Copy only when installing" chekbox checked. Defaults to `false`.
+- [ ] **onlyCopyFilesOnInstall**: **Bool** - If this is `true`, the `Embed Frameworks` and `Embed App Extensions` (if available) build phases will have the "Copy only when installing" chekbox checked. Defaults to `false`.
 - [ ] **buildToolPlugins**: **[[Build Tool Plug-ins](#build-tool-plug-ins)]** - Commands for the build system that run automatically *during* the build.
 - [ ] **preBuildScripts**: **[[Build Script](#build-script)]** - Build scripts that run *before* any other build phases
 - [ ] **postCompileScripts**: **[[Build Script](#build-script)]** - Build scripts that run after the Compile Sources phase
@@ -1277,6 +1279,29 @@ packages:
     path: ../Packages
     group: Domains/AppFeature
     excludeFromProject: false
+```
+
+## Swift Package Registries
+
+Configures one or more Swift Package Registries (SE-0292) for the generated project. XcodeGen serializes this into `<project>.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/configuration/registries.json`, the file SwiftPM and Xcode read to resolve registry (`.package(id:)`) dependencies. There is no project-level (pbxproj) representation for registry packages, so this configuration file is the supported way to point a generated project at a registry.
+
+- [ ] **default**: **String** or **{ url, supportsAvailability }** - The default registry, written under SwiftPM's `[default]` key. A bare string is treated as the registry `url`, with `supportsAvailability` defaulting to `false`.
+- [ ] **scopes**: **[String: String or { url, supportsAvailability }]** - Scoped registries keyed by package scope. A package whose identity is `<scope>.<name>` resolves from the matching scope's registry.
+
+Each registry value is either a URL string or a mapping:
+
+- [x] **url**: **String** - The registry base URL.
+- [ ] **supportsAvailability**: **Bool** - Whether the registry implements the SE-0292 availability API. Defaults to `false`.
+
+The dependencies themselves are still declared the supported way: by referencing a local Swift package whose `Package.swift` uses `.package(id:)` (see [Swift Package](#swift-package) `path`). XcodeGen does not write registry references into the `.xcodeproj` itself, because Xcode has no pbxproj representation for them. Authentication credentials are never written here; configure them via `.netrc` or the keychain as usual.
+
+```yaml
+registries:
+  default: https://tuist.dev/api/registry/swift
+  scopes:
+    acme:
+      url: https://packages.example.com/artifactory/api/swift/swift-registry
+      supportsAvailability: false
 ```
 
 ## Project Reference

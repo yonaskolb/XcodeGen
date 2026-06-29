@@ -1523,6 +1523,49 @@ class SpecLoadingTests: XCTestCase {
                 try expect(parsedSpec) == project
             }
 
+            $0.it("parses swift package registries") {
+                let project = Project(name: "test", registries: SwiftPackageRegistries(
+                    defaultRegistry: SwiftPackageRegistries.Registry(url: "https://tuist.dev/api/registry/swift"),
+                    scopes: [
+                        "acme": SwiftPackageRegistries.Registry(url: "https://packages.example.com/artifactory/api/swift/swift-registry"),
+                        "example": SwiftPackageRegistries.Registry(url: "https://example.com/registry", supportsAvailability: true),
+                    ]
+                ))
+
+                let dictionary: [String: Any] = [
+                    "name": "test",
+                    "registries": [
+                        "default": "https://tuist.dev/api/registry/swift",
+                        "scopes": [
+                            "acme": "https://packages.example.com/artifactory/api/swift/swift-registry",
+                            "example": ["url": "https://example.com/registry", "supportsAvailability": true],
+                        ],
+                    ],
+                ]
+                let parsedSpec = try getProjectSpec(dictionary)
+                try expect(parsedSpec) == project
+            }
+
+            $0.it("serializes swift package registries to registries.json") {
+                let registries = SwiftPackageRegistries(
+                    defaultRegistry: SwiftPackageRegistries.Registry(url: "https://tuist.dev/api/registry/swift"),
+                    scopes: ["acme": SwiftPackageRegistries.Registry(url: "https://packages.example.com/artifactory/api/swift/swift-registry")]
+                )
+                let data = try registries.registriesJSONData()
+                let string = String(data: data, encoding: .utf8) ?? ""
+                // Slashes must not be escaped, matching `swift package-registry set` output.
+                try expect(string.contains("https://tuist.dev/api/registry/swift")) == true
+                try expect(string.contains("\\/")) == false
+
+                let json = try JSONSerialization.jsonObject(with: data) as! [String: Any]
+                try expect(json["version"] as? Int) == 1
+                try expect(json["authentication"] is [String: Any]) == true
+                let parsedRegistries = json["registries"] as! [String: [String: Any]]
+                try expect(parsedRegistries["[default]"]?["url"] as? String) == "https://tuist.dev/api/registry/swift"
+                try expect(parsedRegistries["[default]"]?["supportsAvailability"] as? Bool) == false
+                try expect(parsedRegistries["acme"]?["url"] as? String) == "https://packages.example.com/artifactory/api/swift/swift-registry"
+            }
+
             $0.it("parses old local package format") {
                 let project = Project(name: "spm", packages: [
                     "XcodeGen": .local(path: "../XcodeGen", group: nil, excludeFromProject: false),
