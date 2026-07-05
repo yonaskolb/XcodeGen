@@ -982,8 +982,8 @@ class ProjectGeneratorTests: XCTestCase {
                 }
             }
             
-            $0.it("ensures static frameworks are not embedded by default") {
-                
+            $0.it("ensures static frameworks are embedded by default") {
+
                 let app = Target(
                     name: "App",
                     type: .application,
@@ -992,9 +992,9 @@ class ProjectGeneratorTests: XCTestCase {
                         Dependency(type: .target, reference: "DynamicFramework"),
                         Dependency(type: .target, reference: "DynamicFrameworkNotEmbedded", embed: false),
                         Dependency(type: .target, reference: "StaticFramework"),
-                        Dependency(type: .target, reference: "StaticFrameworkExplicitlyEmbedded", embed: true),
+                        Dependency(type: .target, reference: "StaticFrameworkNotEmbedded", embed: false),
                         Dependency(type: .target, reference: "StaticFramework2"),
-                        Dependency(type: .target, reference: "StaticFramework2ExplicitlyEmbedded", embed: true),
+                        Dependency(type: .target, reference: "StaticFramework2NotEmbedded", embed: false),
                         Dependency(type: .target, reference: "StaticLibrary"),
                     ]
                 )
@@ -1018,7 +1018,7 @@ class ProjectGeneratorTests: XCTestCase {
                         settings: Settings(buildSettings: ["MACH_O_TYPE": "staticlib"])
                     ),
                     Target(
-                        name: "StaticFrameworkExplicitlyEmbedded",
+                        name: "StaticFrameworkNotEmbedded",
                         type: .framework,
                         platform: .iOS,
                         settings: Settings(buildSettings: ["MACH_O_TYPE": "staticlib"])
@@ -1029,7 +1029,7 @@ class ProjectGeneratorTests: XCTestCase {
                         platform: .iOS
                     ),
                     Target(
-                        name: "StaticFramework2ExplicitlyEmbedded",
+                        name: "StaticFramework2NotEmbedded",
                         type: .staticFramework,
                         platform: .iOS
                     ),
@@ -1039,21 +1039,21 @@ class ProjectGeneratorTests: XCTestCase {
                         platform: .iOS
                     ),
                 ]
-                                
+
                 let expectedLinkedFiles = Set([
                     "DynamicFramework.framework",
                     "DynamicFrameworkNotEmbedded.framework",
                     "StaticFramework.framework",
-                    "StaticFrameworkExplicitlyEmbedded.framework",
+                    "StaticFrameworkNotEmbedded.framework",
                     "StaticFramework2.framework",
-                    "StaticFramework2ExplicitlyEmbedded.framework",
+                    "StaticFramework2NotEmbedded.framework",
                     "libStaticLibrary.a",
                 ])
-                
+
                 let expectedEmbeddedFrameworks = Set([
                     "DynamicFramework.framework",
-                    "StaticFrameworkExplicitlyEmbedded.framework",
-                    "StaticFramework2ExplicitlyEmbedded.framework"
+                    "StaticFramework.framework",
+                    "StaticFramework2.framework",
                 ])
                                 
                 let project = Project(
@@ -1073,7 +1073,7 @@ class ProjectGeneratorTests: XCTestCase {
                 let linkPackages = (frameworkPhases[0].files ?? []).compactMap { $0.product?.productName }
                 try expect(Set(linkFrameworks + linkPackages)) == expectedLinkedFiles
 
-                // Ensure only dynamic frameworks are embedded (unless there's an explicit override)
+                // Ensure all frameworks are embedded (unless there's an explicit override)
                 let embeddedFrameworks = Set((embedFrameworkPhase?.files ?? []).compactMap { $0.file?.nameOrPath })
                 try expect(embeddedFrameworks) == expectedEmbeddedFrameworks
             }
