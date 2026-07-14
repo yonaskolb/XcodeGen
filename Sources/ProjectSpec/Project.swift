@@ -204,7 +204,7 @@ extension Project {
             packages.merge(localPackages.reduce(into: [String: SwiftPackage]()) {
                 // Project name will be obtained by resolved abstractpath's lastComponent for dealing with some path case, like "../"
                 let packageName = (basePath + Path($1).normalize()).lastComponent
-                $0[packageName] = .local(path: $1, group: nil, excludeFromProject: false)
+                $0[packageName] = .local(path: $1, group: nil, excludeFromProject: false, traits: nil)
             }
             )
         }

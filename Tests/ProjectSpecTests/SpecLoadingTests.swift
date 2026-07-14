@@ -1485,7 +1485,7 @@ class SpecLoadingTests: XCTestCase {
 
             $0.it("parses packages") {
                 let project = Project(name: "spm", packages: [
-                    "package1": .remote(url: "package.git", versionRequirement: .exact("1.2.2")),
+                    "package1": .remote(url: "package.git", versionRequirement: .exact("1.2.2"), traits: ["FeatureA", "FeatureB"]),
                     "package2": .remote(url: "package.git", versionRequirement: .upToNextMajorVersion("1.2.2")),
                     "package3": .remote(url: "package.git", versionRequirement: .upToNextMinorVersion("1.2.2")),
                     "package4": .remote(url: "package.git", versionRequirement: .branch("master")),
@@ -1493,10 +1493,11 @@ class SpecLoadingTests: XCTestCase {
                     "package6": .remote(url: "package.git", versionRequirement: .range(from: "1.2.0", to: "1.2.5")),
                     "package7": .remote(url: "package.git", versionRequirement: .exact("1.2.2")),
                     "package8": .remote(url: "package.git", versionRequirement: .upToNextMajorVersion("4.0.0-beta.5")),
-                    "package9": .local(path: "package/package", group: nil, excludeFromProject: false),
+                    "package9": .local(path: "package/package", group: nil, excludeFromProject: false, traits: ["NoUIFramework", "Networking"]),
                     "package10": .remote(url: "https://github.com/yonaskolb/XcodeGen", versionRequirement: .exact("1.2.2")),
                     "XcodeGen": .local(path: "../XcodeGen", group: nil, excludeFromProject: false),
                     "package11": .local(path: "../XcodeGen", group: "Packages/Feature", excludeFromProject: false),
+                    "package12": .remote(url: "empty-traits.git", versionRequirement: .exact("1.0.0"), traits: []),
                 ], options: .init(localPackagesGroup: "MyPackages"))
 
                 let dictionary: [String: Any] = [
@@ -1505,7 +1506,7 @@ class SpecLoadingTests: XCTestCase {
                         "localPackagesGroup": "MyPackages",
                     ],
                     "packages": [
-                        "package1": ["url": "package.git", "exactVersion": "1.2.2"],
+                        "package1": ["url": "package.git", "exactVersion": "1.2.2", "traits": ["FeatureA", "FeatureB"]],
                         "package2": ["url": "package.git", "majorVersion": "1.2.2"],
                         "package3": ["url": "package.git", "minorVersion": "1.2.2"],
                         "package4": ["url": "package.git", "branch": "master"],
@@ -1513,14 +1514,78 @@ class SpecLoadingTests: XCTestCase {
                         "package6": ["url": "package.git", "minVersion": "1.2.0", "maxVersion": "1.2.5"],
                         "package7": ["url": "package.git", "version": "1.2.2"],
                         "package8": ["url": "package.git", "majorVersion": "4.0.0-beta.5"],
-                        "package9": ["path": "package/package"],
+                        "package9": ["path": "package/package", "traits": ["NoUIFramework", "Networking"]],
                         "package10": ["github": "yonaskolb/XcodeGen", "exactVersion": "1.2.2"],
                         "package11": ["path": "../XcodeGen", "group": "Packages/Feature"],
+                        "package12": ["url": "empty-traits.git", "exactVersion": "1.0.0", "traits": [String]()],
                     ],
                     "localPackages": ["../XcodeGen"],
                 ]
                 let parsedSpec = try getProjectSpec(dictionary)
                 try expect(parsedSpec) == project
+            }
+
+            $0.it("encodes package traits while preserving omitted, empty, and non-empty values") {
+                func jsonDictionary(for package: SwiftPackage) throws -> [String: Any] {
+                    try unwrap(package.toJSONValue() as? [String: Any])
+                }
+
+                let remoteWithoutTraits = try jsonDictionary(for: .remote(
+                    url: "package.git",
+                    versionRequirement: .exact("1.0.0")
+                ))
+                let remoteWithEmptyTraits = try jsonDictionary(for: .remote(
+                    url: "package.git",
+                    versionRequirement: .exact("1.0.0"),
+                    traits: []
+                ))
+                let remoteWithTraits = try jsonDictionary(for: .remote(
+                    url: "package.git",
+                    versionRequirement: .exact("1.0.0"),
+                    traits: ["FeatureA", "FeatureB"]
+                ))
+                let localWithoutTraits = try jsonDictionary(for: .local(
+                    path: "../Package",
+                    group: nil,
+                    excludeFromProject: false
+                ))
+                let localWithEmptyTraits = try jsonDictionary(for: .local(
+                    path: "../Package",
+                    group: nil,
+                    excludeFromProject: false,
+                    traits: []
+                ))
+                let localWithTraits = try jsonDictionary(for: .local(
+                    path: "../Package",
+                    group: nil,
+                    excludeFromProject: false,
+                    traits: ["NoUIFramework", "Networking"]
+                ))
+
+                XCTAssertFalse(remoteWithoutTraits.keys.contains("traits"))
+                XCTAssertEqual(remoteWithEmptyTraits["traits"] as? [String], [])
+                XCTAssertEqual(remoteWithTraits["traits"] as? [String], ["FeatureA", "FeatureB"])
+                XCTAssertFalse(localWithoutTraits.keys.contains("traits"))
+                XCTAssertEqual(localWithEmptyTraits["traits"] as? [String], [])
+                XCTAssertEqual(localWithTraits["traits"] as? [String], ["NoUIFramework", "Networking"])
+            }
+
+            $0.it("rejects invalid package traits") {
+                let invalidPackages: [[String: Any]] = [
+                    [
+                        "url": "package.git",
+                        "exactVersion": "1.0.0",
+                        "traits": "FeatureA",
+                    ],
+                    [
+                        "path": "../Package",
+                        "traits": ["FeatureA", 1],
+                    ],
+                ]
+
+                for dictionary in invalidPackages {
+                    try expect(expression: { _ = try SwiftPackage(jsonDictionary: dictionary) }).toThrow()
+                }
             }
 
             $0.it("parses old local package format") {
