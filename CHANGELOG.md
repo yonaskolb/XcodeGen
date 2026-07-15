@@ -3,7 +3,7 @@
 ## Next Version
 
 ### Changed
-- Targets in the generated project now follow the declaration order from the source spec (Xcode sidebar, `xcodebuild -list` output). Previously they were always sorted alphabetically. Applies to both YAML and JSON specs. @mirkokg
+- Targets in the generated project now follow the declaration order from the source spec (Xcode sidebar, `xcodebuild -list` output). Previously they were always sorted alphabetically. Applies to both YAML and JSON specs. Declaration order is now also preserved for targets whose `platform`/`name` come from a target template and for targets whose key is a `${VARIABLE}`. @mirkokg
 
 ## 2.45.4
 

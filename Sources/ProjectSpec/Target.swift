@@ -161,6 +161,8 @@ extension Target: PathContainer {
 
 extension Target {
 
+    static let declarationIndexKey = "__declarationIndex"
+
     static func resolveMultiplatformTargets(jsonDictionary: JSONDictionary) -> JSONDictionary {
         guard let targetsDictionary: [String: JSONDictionary] = jsonDictionary["targets"] as? [String: JSONDictionary] else {
             return jsonDictionary
@@ -172,7 +174,7 @@ extension Target {
             if let platforms = target["platform"] as? [String] {
                 for platform in platforms {
                     var platformTarget = target
-                    
+
                     /// This value is set to help us to check, in Target init, that there are no conflicts in the definition of the platforms. We want to ensure that the user didn't define, at the same time,
                     /// the new Xcode 14 supported destinations and the XcodeGen generation of Multiple Platform Targets (when you define the platform field as an array).
                     platformTarget["isMultiPlatformTarget"] = true
@@ -209,16 +211,6 @@ extension Target {
         var merged = jsonDictionary
         merged["targets"] = crossPlatformTargets
         return merged
-    }
-
-    static func resolvedNames(forRawTarget dict: JSONDictionary, key: String) -> [String] {
-        if let platforms = dict["platform"] as? [String] {
-            return platforms.map { platform in
-                let expanded = dict.expand(variables: ["platform": platform])
-                return multiplatformTargetName(fromExpanded: expanded, key: key, platform: platform)
-            }
-        }
-        return [dict["name"] as? String ?? key]
     }
 
     static func multiplatformTargetName(fromExpanded expanded: JSONDictionary, key: String, platform: String) -> String {

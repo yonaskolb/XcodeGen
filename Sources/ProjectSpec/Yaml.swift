@@ -21,14 +21,9 @@ public func loadYamlDictionary(contents: String) throws -> [String: Any] {
     return yaml as? [String: Any] ?? [:]
 }
 
-public func loadOrderedTargetNames(path: Path) throws -> [String] {
-    let string: String = try path.read()
-    return try loadOrderedTargetNames(contents: string)
-}
-
-public func loadOrderedTargetNames(contents: String) throws -> [String] {
+public func loadOrderedTargetNames(contents: String) -> [String] {
     guard !contents.isEmpty else { return [] }
-    guard let node = try Yams.compose(yaml: contents),
+    guard let node = try? Yams.compose(yaml: contents),
           let rootMapping = node.mapping,
           let targetsNode = rootMapping["targets"],
           let targetsMapping = targetsNode.mapping else {

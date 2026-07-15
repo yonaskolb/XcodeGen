@@ -40,6 +40,31 @@ class SpecLoadingTests: XCTestCase {
 
                 try expect(project.targets.map { $0.name }) == ["Zebra", "Apple", "Mango", "Banana"]
             }
+
+            $0.it("preserves declaration order for a template-supplied platform array") {
+                let path = fixturePath + "target_ordering_template_test.yml"
+                let project = try loadSpec(path: path)
+
+                try expect(project.targets.map { $0.name }) == ["Zebra_iOS", "Zebra_tvOS", "Apple"]
+            }
+
+            $0.it("returns an empty order for contents that are not valid YAML") {
+                try expect(loadOrderedTargetNames(contents: "\ttargets:\n\tZebra:")) == []
+            }
+
+            $0.it("preserves declaration order for a template-supplied target name") {
+                let path = fixturePath + "target_ordering_template_name_test.yml"
+                let project = try loadSpec(path: path)
+
+                try expect(project.targets.map { $0.name }) == ["Zulu", "Apple"]
+            }
+
+            $0.it("preserves declaration order for a variable-expanded target key") {
+                let path = fixturePath + "target_ordering_variable_test.yml"
+                let project = try loadSpec(path: path, variables: ["FIRST_TARGET": "Zebra"])
+
+                try expect(project.targets.map { $0.name }) == ["Zebra", "Apple"]
+            }
         }
     }
 

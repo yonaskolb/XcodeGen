@@ -94,7 +94,8 @@ public struct SpecFile {
 
         let contents: String = try path.read()
         let jsonDictionary = try SpecFile.loadDictionary(path: path, contents: contents).expand(variables: variables)
-        let targetDeclarationOrder = try loadOrderedTargetNames(contents: contents)
+        let targetDeclarationOrder = loadOrderedTargetNames(contents: contents)
+            .map { [$0: ""].expand(variables: variables).keys.first ?? $0 }
 
         let includes = Include.parse(json: jsonDictionary["include"])
         let subSpecs: [SpecFile] = try includes
@@ -125,11 +126,8 @@ public struct SpecFile {
     }
 
     public func resolvedTargetDeclarationOrder() -> [String] {
-        var cachedSpecFiles: [Path: SpecFile] = [:]
-        let resolvedSpec = resolvingPaths(cachedSpecFiles: &cachedSpecFiles)
-
         var mergedSpecPaths = Set<Path>()
-        return resolvedSpec.mergedTargetDeclarationOrder(set: &mergedSpecPaths)
+        return mergedTargetDeclarationOrder(set: &mergedSpecPaths)
     }
 
     private func resolvedDictionaryWithUniqueTargets() -> JSONDictionary {

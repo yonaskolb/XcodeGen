@@ -174,10 +174,15 @@ extension Project {
     public init(basePath: Path = "", jsonDictionary: JSONDictionary, targetDeclarationOrder: [String] = []) throws {
         self.basePath = basePath
 
-        let rawTargets = jsonDictionary["targets"] as? JSONDictionary ?? [:]
-        let expandedTargetOrder = Project.expandedTargetOrder(targetDeclarationOrder, rawTargets: rawTargets)
+        var jsonDictionary = jsonDictionary
+        if var rawTargets = jsonDictionary["targets"] as? [String: JSONDictionary] {
+            for (index, key) in targetDeclarationOrder.enumerated() where rawTargets[key] != nil {
+                rawTargets[key]?[Target.declarationIndexKey] = index
+            }
+            jsonDictionary["targets"] = rawTargets
+        }
 
-        let jsonDictionary = Project.resolveProject(jsonDictionary: jsonDictionary)
+        jsonDictionary = Project.resolveProject(jsonDictionary: jsonDictionary)
         let buildSettingsParser = BuildSettingsParser(jsonDictionary: jsonDictionary)
 
         name = try jsonDictionary.json(atKeyPath: "name")
@@ -189,8 +194,13 @@ extension Project {
         self.configs = configs.isEmpty ? Config.defaultConfigs :
             configs.map { Config(name: $0, type: ConfigType(rawValue: $1)) }.sorted { $0.name < $1.name }
         let parsedTargets: [Target] = try jsonDictionary.json(atKeyPath: "targets", parallel: true)
-        let targetOrderIndex = Dictionary(uniqueKeysWithValues: expandedTargetOrder.enumerated().map { ($1, $0) })
-        targets = parsedTargets.sorted { (targetOrderIndex[$0.name] ?? .max, $0.name) < (targetOrderIndex[$1.name] ?? .max, $1.name) }
+        let resolvedTargets = jsonDictionary["targets"] as? [String: JSONDictionary] ?? [:]
+        var targetOrder: [String: Int] = [:]
+        for (key, target) in resolvedTargets {
+            let name = target["name"] as? String ?? key
+            targetOrder[name] = (target[Target.declarationIndexKey] as? Int) ?? .max
+        }
+        targets = parsedTargets.sorted { (targetOrder[$0.name] ?? .max, $0.name) < (targetOrder[$1.name] ?? .max, $1.name) }
         aggregateTargets = try jsonDictionary.json(atKeyPath: "aggregateTargets").sorted { $0.name < $1.name }
         projectReferences = try jsonDictionary.json(atKeyPath: "projectReferences").sorted { $0.name < $1.name }
         schemes = try jsonDictionary.json(atKeyPath: "schemes")
@@ -225,13 +235,6 @@ extension Project {
         targetsMap = Dictionary(uniqueKeysWithValues: targets.map { ($0.name, $0) })
         aggregateTargetsMap = Dictionary(uniqueKeysWithValues: aggregateTargets.map { ($0.name, $0) })
         projectReferencesMap = Dictionary(uniqueKeysWithValues: projectReferences.map { ($0.name, $0) })
-    }
-
-    static func expandedTargetOrder(_ declarationOrder: [String], rawTargets: JSONDictionary) -> [String] {
-        declarationOrder.flatMap { key -> [String] in
-            guard let target = rawTargets[key] as? JSONDictionary else { return [] }
-            return Target.resolvedNames(forRawTarget: target, key: key)
-        }
     }
 
     static func resolveProject(jsonDictionary: JSONDictionary) -> JSONDictionary {
