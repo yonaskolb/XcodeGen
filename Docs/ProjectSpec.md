@@ -1256,21 +1256,29 @@ Swift packages are defined at a project level, and then linked to individual tar
   - `branch: master`
   - `revision: xxxxxx`
 - [ ] **github** : **String**- this is an optional helper you can use for github repos. Instead of specifying the full url in `url` you can just specify the github org and repo
+- [ ] **traits**: **[String]** - Optional Swift package traits to enable for this package reference. Trait names are written to the Xcode project in the specified order.
   
 ### Local Package
 
 - [x] **path**: **String** - the path to the package in local. The path must be directory with a `Package.swift`.
 - [ ] **group** : **String**- Optional path that specifies the location where the package will live in your xcode project. Use `""` to specify the project root.
 - [ ] **excludeFromProject** : **String**- Optional flag to exclude the package from the generated project (useful if the package is already added via xcworkspace and the project is not intended for standalone use), defaults to `false`
+- [ ] **traits**: **[String]** - Optional Swift package traits to enable for this package reference. Use the top-level `packages` mapping because the legacy `localPackages` syntax cannot specify traits.
 
 ```yml
 packages:
   Yams:
     url: https://github.com/jpsim/Yams
     from: 2.0.0
+    traits:
+      - StrictConcurrency
   Ink:
     github: JohnSundell/Ink
     from: 0.5.0
+  Sentry:
+    path: ../..
+    traits:
+      - NoUIFramework
   RxClient:
     path: ../RxClient
   AppFeature:

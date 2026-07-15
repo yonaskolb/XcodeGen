@@ -1565,9 +1565,9 @@ class ProjectGeneratorTests: XCTestCase {
                 )
 
                 let project = Project(name: "test", targets: [app], packages: [
-                    "XcodeGen": .remote(url: "http://github.com/yonaskolb/XcodeGen", versionRequirement: .branch("master")),
+                    "XcodeGen": .remote(url: "http://github.com/yonaskolb/XcodeGen", versionRequirement: .branch("master"), traits: ["FeatureA", "FeatureB"]),
                     "Codability": .remote(url: "http://github.com/yonaskolb/Codability", versionRequirement: .exact("1.0.0")),
-                    "Yams": .local(path: "../Yams", group: nil, excludeFromProject: false),
+                    "Yams": .local(path: "../Yams", group: nil, excludeFromProject: false, traits: ["NoUIFramework", "Networking"]),
                 ], options: .init(localPackagesGroup: "MyPackages"))
 
                 let pbxProject = try project.generatePbxProj(specValidate: false)
@@ -1577,17 +1577,22 @@ class ProjectGeneratorTests: XCTestCase {
 
                 try expect(projectSpecDependency.package?.name) == "XcodeGen"
                 try expect(projectSpecDependency.package?.versionRequirement) == .branch("master")
+                try expect(projectSpecDependency.package?.traits) == ["FeatureA", "FeatureB"]
 
                 let codabilityDependency = try unwrap(nativeTarget.packageProductDependencies?.first(where: { $0.productName == "Codability" }))
 
                 try expect(codabilityDependency.package?.name) == "Codability"
                 try expect(codabilityDependency.package?.versionRequirement) == .exact("1.0.0")
+                try expect(codabilityDependency.package?.traits).beNil()
 
                 let localPackagesGroup = try unwrap(try pbxProject.getMainGroup().children.first(where: { $0.name == "MyPackages" }) as? PBXGroup)
 
                 let yamsLocalPackageFile = try unwrap(pbxProject.fileReferences.first(where: { $0.path == "../Yams" }))
                 try expect(localPackagesGroup.children.contains(yamsLocalPackageFile)) == true
                 try expect(yamsLocalPackageFile.lastKnownFileType) == "folder"
+
+                let yamsPackageReference = try unwrap(pbxProject.rootObject?.localPackages.first(where: { $0.relativePath == "../Yams" }))
+                try expect(yamsPackageReference.traits) == ["NoUIFramework", "Networking"]
             }
 
             $0.it("generates local swift packages") {
@@ -1610,6 +1615,7 @@ class ProjectGeneratorTests: XCTestCase {
                 let localPackageReference = try unwrap(pbxProject.rootObject?.localPackages.first)
                 try expect(pbxProject.rootObject?.localPackages.count) == 1
                 try expect(localPackageReference.relativePath) == "../XcodeGen"
+                try expect(localPackageReference.traits).beNil()
 
                 let frameworkPhases = nativeTarget.buildPhases.compactMap { $0 as? PBXFrameworksBuildPhase }
 
