@@ -58,14 +58,21 @@ extension PBXProductType {
     }
 
     /// Function to determine when a dependendency should be embedded into the target
-    public func shouldEmbed(_ dependencyTarget: Target) -> Bool {
-        guard dependencyTarget.defaultLinkage != .static || dependencyTarget.type.isFramework else {
-            // Non-framework static dependencies should never embed
+    ///
+    /// - Parameter supportsStaticFrameworkEmbedding: Whether the target Xcode version (15+) strips
+    ///   the static binary when embedding a static framework bundle. When `false`, static frameworks
+    ///   are only linked, never embedded by default, to avoid duplicating statically-linked code
+    ///   into the product on Xcode 14 and earlier.
+    public func shouldEmbed(_ dependencyTarget: Target, supportsStaticFrameworkEmbedding: Bool) -> Bool {
+        // Static libraries are never embedded. Static frameworks are only embedded on Xcode 15+,
+        // where the build system strips the static binary from the copied bundle.
+        guard dependencyTarget.defaultLinkage != .static
+            || (dependencyTarget.type.isFramework && supportsStaticFrameworkEmbedding) else {
             return false
         }
 
         if isApp {
-            // If target is an app, all dependencies should be embed (unless they're static)
+            // If target is an app, all linkable dependencies should be embedded
             return true
         } else if isTest, [.framework, .staticFramework, .bundle].contains(dependencyTarget.type) {
             // If target is test, some dependencies should be embed (depending on their type)
@@ -133,4 +140,3 @@ extension BreakpointActionExtensionID {
         }
     }
 }
-

@@ -754,7 +754,7 @@ public class PBXProjGenerator {
                 }
             }
 
-            let embed = dependency.embed ?? target.type.shouldEmbed(dependencyTarget)
+            let embed = dependency.embed ?? target.type.shouldEmbed(dependencyTarget, supportsStaticFrameworkEmbedding: project.supportsStaticFrameworkEmbedding)
             if embed {
                 let pbxBuildFile = PBXBuildFile(
                     file: embedFileReference,

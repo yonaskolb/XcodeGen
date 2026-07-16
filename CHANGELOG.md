@@ -2,6 +2,9 @@
 
 ## Next Version
 
+### Changed
+- Static frameworks are now embedded by default, since Xcode 15+ strips the static binary from the embedded bundle (avoiding code duplication) and this is required to ship resources bundled inside a static framework. Projects that explicitly target Xcode 14 or earlier via `options.xcodeVersion` keep the previous link-only behavior, and `embed: false` on a dependency opts out on any version. #1628 @daltonclaybrook
+
 ## 2.45.4
 
 ### Fixed

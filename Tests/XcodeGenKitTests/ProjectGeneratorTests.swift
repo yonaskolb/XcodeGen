@@ -982,7 +982,7 @@ class ProjectGeneratorTests: XCTestCase {
                 }
             }
             
-            $0.it("ensures static frameworks are embedded by default") {
+            $0.it("embeds static frameworks by default unless targeting Xcode 14 or earlier") {
 
                 let app = Target(
                     name: "App",
@@ -993,8 +993,10 @@ class ProjectGeneratorTests: XCTestCase {
                         Dependency(type: .target, reference: "DynamicFrameworkNotEmbedded", embed: false),
                         Dependency(type: .target, reference: "StaticFramework"),
                         Dependency(type: .target, reference: "StaticFrameworkNotEmbedded", embed: false),
+                        Dependency(type: .target, reference: "StaticFrameworkExplicitlyEmbedded", embed: true),
                         Dependency(type: .target, reference: "StaticFramework2"),
                         Dependency(type: .target, reference: "StaticFramework2NotEmbedded", embed: false),
+                        Dependency(type: .target, reference: "StaticFramework2ExplicitlyEmbedded", embed: true),
                         Dependency(type: .target, reference: "StaticLibrary"),
                     ]
                 )
@@ -1024,12 +1026,23 @@ class ProjectGeneratorTests: XCTestCase {
                         settings: Settings(buildSettings: ["MACH_O_TYPE": "staticlib"])
                     ),
                     Target(
+                        name: "StaticFrameworkExplicitlyEmbedded",
+                        type: .framework,
+                        platform: .iOS,
+                        settings: Settings(buildSettings: ["MACH_O_TYPE": "staticlib"])
+                    ),
+                    Target(
                         name: "StaticFramework2",
                         type: .staticFramework,
                         platform: .iOS
                     ),
                     Target(
                         name: "StaticFramework2NotEmbedded",
+                        type: .staticFramework,
+                        platform: .iOS
+                    ),
+                    Target(
+                        name: "StaticFramework2ExplicitlyEmbedded",
                         type: .staticFramework,
                         platform: .iOS
                     ),
@@ -1045,37 +1058,60 @@ class ProjectGeneratorTests: XCTestCase {
                     "DynamicFrameworkNotEmbedded.framework",
                     "StaticFramework.framework",
                     "StaticFrameworkNotEmbedded.framework",
+                    "StaticFrameworkExplicitlyEmbedded.framework",
                     "StaticFramework2.framework",
                     "StaticFramework2NotEmbedded.framework",
+                    "StaticFramework2ExplicitlyEmbedded.framework",
                     "libStaticLibrary.a",
                 ])
 
-                let expectedEmbeddedFrameworks = Set([
+                // Xcode 15+ embeds static frameworks by default; explicit `embed: false` still opts out.
+                let expectedEmbeddedFrameworksModern = Set([
                     "DynamicFramework.framework",
                     "StaticFramework.framework",
+                    "StaticFrameworkExplicitlyEmbedded.framework",
                     "StaticFramework2.framework",
+                    "StaticFramework2ExplicitlyEmbedded.framework",
                 ])
-                                
-                let project = Project(
-                    name: "test",
-                    targets: targets
-                )
-                let pbxProject = try project.generatePbxProj()
 
-                let appTarget = try unwrap(pbxProject.nativeTargets.first(where: { $0.name == app.name }))
-                let buildPhases = appTarget.buildPhases
-                let frameworkPhases = pbxProject.frameworksBuildPhases.filter { buildPhases.contains($0) }
-                let copyFilesPhases = pbxProject.copyFilesBuildPhases.filter { buildPhases.contains($0) }
-                let embedFrameworkPhase = copyFilesPhases.first { $0.dstSubfolderSpec == .frameworks }
+                // Xcode 14 links static frameworks but does not embed them by default;
+                // only dynamic frameworks and explicit `embed: true` overrides are embedded.
+                let expectedEmbeddedFrameworksLegacy = Set([
+                    "DynamicFramework.framework",
+                    "StaticFrameworkExplicitlyEmbedded.framework",
+                    "StaticFramework2ExplicitlyEmbedded.framework",
+                ])
 
-                // Ensure all targets are linked
-                let linkFrameworks = (frameworkPhases[0].files ?? []).compactMap { $0.file?.nameOrPath }
-                let linkPackages = (frameworkPhases[0].files ?? []).compactMap { $0.product?.productName }
-                try expect(Set(linkFrameworks + linkPackages)) == expectedLinkedFiles
+                func embeddedFrameworks(xcodeVersion: String?) throws -> Set<String> {
+                    let project = Project(
+                        name: "test",
+                        targets: targets,
+                        options: SpecOptions(xcodeVersion: xcodeVersion)
+                    )
+                    let pbxProject = try project.generatePbxProj()
 
-                // Ensure all frameworks are embedded (unless there's an explicit override)
-                let embeddedFrameworks = Set((embedFrameworkPhase?.files ?? []).compactMap { $0.file?.nameOrPath })
-                try expect(embeddedFrameworks) == expectedEmbeddedFrameworks
+                    let appTarget = try unwrap(pbxProject.nativeTargets.first(where: { $0.name == app.name }))
+                    let buildPhases = appTarget.buildPhases
+                    let frameworkPhases = pbxProject.frameworksBuildPhases.filter { buildPhases.contains($0) }
+                    let copyFilesPhases = pbxProject.copyFilesBuildPhases.filter { buildPhases.contains($0) }
+                    let embedFrameworkPhase = copyFilesPhases.first { $0.dstSubfolderSpec == .frameworks }
+
+                    // Ensure all targets are linked regardless of Xcode version
+                    let linkFrameworks = (frameworkPhases[0].files ?? []).compactMap { $0.file?.nameOrPath }
+                    let linkPackages = (frameworkPhases[0].files ?? []).compactMap { $0.product?.productName }
+                    try expect(Set(linkFrameworks + linkPackages)) == expectedLinkedFiles
+
+                    return Set((embedFrameworkPhase?.files ?? []).compactMap { $0.file?.nameOrPath })
+                }
+
+                // No explicit xcodeVersion defaults to the modern embedding behavior
+                try expect(embeddedFrameworks(xcodeVersion: nil)) == expectedEmbeddedFrameworksModern
+                try expect(embeddedFrameworks(xcodeVersion: "15.0")) == expectedEmbeddedFrameworksModern
+                try expect(embeddedFrameworks(xcodeVersion: "1500")) == expectedEmbeddedFrameworksModern
+                // Explicitly targeting Xcode 14 links but does not embed static frameworks
+                try expect(embeddedFrameworks(xcodeVersion: "14.0")) == expectedEmbeddedFrameworksLegacy
+                try expect(embeddedFrameworks(xcodeVersion: "1400")) == expectedEmbeddedFrameworksLegacy
+                try expect(embeddedFrameworks(xcodeVersion: "1430")) == expectedEmbeddedFrameworksLegacy
             }
 
             $0.it("copies files only on install in the Embed Frameworks step") {
