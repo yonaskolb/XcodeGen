@@ -55,7 +55,7 @@ class CarthageDependencyResolverTests: XCTestCase {
                 }
 
                 try allPlatforms.forEach { platform in
-                    try expect(expectedByPlatform[platform]) == resolver.buildPath(for: platform, linkType: .dynamic)
+                    try expect(expectedByPlatform[platform]) == resolver.buildPath(for: platform, linkType: .dynamic, xcFramework: false)
                 }
             }
         }
