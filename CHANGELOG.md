@@ -4,6 +4,7 @@
 
 ### Changed
 - Static frameworks are now embedded by default, since Xcode 15+ strips the static binary from the embedded bundle (avoiding code duplication) and this is required to ship resources bundled inside a static framework. Projects that explicitly target Xcode 14 or earlier via `options.xcodeVersion` keep the previous link-only behavior, and `embed: false` on a dependency opts out on any version. #1628 @daltonclaybrook
+- Targets in the generated project now follow the declaration order from the source spec (Xcode sidebar, `xcodebuild -list` output). Previously they were always sorted alphabetically. Applies to both YAML and JSON specs. Declaration order is now also preserved for targets whose `platform`/`name` come from a target template and for targets whose key is a `${VARIABLE}`. @mirkokg
 
 ## 2.45.4
 

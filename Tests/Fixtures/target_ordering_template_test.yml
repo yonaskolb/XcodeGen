@@ -1,0 +1,11 @@
+name: TargetOrderingTemplate
+targets:
+  Zebra:
+    type: framework
+    templates: [CrossPlatform]
+  Apple:
+    type: framework
+    platform: iOS
+targetTemplates:
+  CrossPlatform:
+    platform: [iOS, tvOS]
