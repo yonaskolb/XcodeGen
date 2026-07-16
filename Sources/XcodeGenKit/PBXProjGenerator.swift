@@ -1295,11 +1295,15 @@ public class PBXProjGenerator {
         }
         
         if !copyWatchReferences.isEmpty {
+            // Xcode 16+ requires watchOS apps to be embedded in PlugIns/
+            // (as foundation extensions) instead of the legacy Watch/ directory.
+            let xcodeVersionNumber = Int(project.xcodeVersion.prefix(2)) ?? 0
+            let usePlugIns = xcodeVersionNumber >= 16
 
             let copyFilesPhase = addObject(
                 PBXCopyFilesBuildPhase(
-                    dstPath: "$(CONTENTS_FOLDER_PATH)/Watch",
-                    dstSubfolderSpec: .productsDirectory,
+                    dstPath: usePlugIns ? "" : "$(CONTENTS_FOLDER_PATH)/Watch",
+                    dstSubfolderSpec: usePlugIns ? .plugins : .productsDirectory,
                     name: "Embed Watch Content",
                     files: copyWatchReferences
                 )
