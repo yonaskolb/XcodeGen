@@ -591,6 +591,69 @@ class ProjectSpecTests: XCTestCase {
         }
     }
 
+    func testAllTrackedFilesExcludesIgnoredFiles() {
+        describe {
+            let directoryPath = Path(components: [NSTemporaryDirectory(), ProcessInfo.processInfo.globallyUniqueString])
+
+            $0.before {
+                try? directoryPath.delete()
+            }
+
+            $0.after {
+                try? directoryPath.delete()
+            }
+
+            $0.it("excludes .DS_Store and .orig files from tracked files") {
+                // Create source directory with a mix of valid and ignored files
+                let sourcesDir = directoryPath + "Sources"
+                try sourcesDir.mkpath()
+                try (sourcesDir + "main.swift").write("")
+                try (sourcesDir + ".DS_Store").write("")
+                try (sourcesDir + "file.swift.orig").write("")
+
+                let target = Target(
+                    name: "App",
+                    type: .application,
+                    platform: .iOS,
+                    sources: [TargetSource(path: "Sources")]
+                )
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target])
+                let trackedFiles = project.allTrackedFiles
+
+                let trackedFileStrings = trackedFiles.map { $0.string }
+                let hasDSStore = trackedFileStrings.contains { $0.contains(".DS_Store") }
+                let hasOrig = trackedFileStrings.contains { $0.hasSuffix(".orig") }
+                let hasSwift = trackedFileStrings.contains { $0.contains("main.swift") }
+
+                try expect(hasDSStore).to.beFalse()
+                try expect(hasOrig).to.beFalse()
+                try expect(hasSwift).to.beTrue()
+            }
+
+            $0.it("excludes .DS_Store from fileGroup tracked files") {
+                // Create fileGroup directory with .DS_Store
+                let fileGroupDir = directoryPath + "Resources"
+                try fileGroupDir.mkpath()
+                try (fileGroupDir + "image.png").write("")
+                try (fileGroupDir + ".DS_Store").write("")
+
+                let project = Project(
+                    basePath: directoryPath,
+                    name: "Test",
+                    fileGroups: ["Resources"]
+                )
+                let trackedFiles = project.allTrackedFiles
+
+                let trackedFileStrings = trackedFiles.map { $0.string }
+                let hasDSStore = trackedFileStrings.contains { $0.contains(".DS_Store") }
+                let hasImage = trackedFileStrings.contains { $0.contains("image.png") }
+
+                try expect(hasDSStore).to.beFalse()
+                try expect(hasImage).to.beTrue()
+            }
+        }
+    }
+
     func testJSONEncodable() {
         describe {
             $0.it("encodes to json") {
