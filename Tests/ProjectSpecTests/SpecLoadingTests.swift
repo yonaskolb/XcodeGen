@@ -1526,6 +1526,18 @@ class SpecLoadingTests: XCTestCase {
                 try expect(parsedSpec) == expected
             }
 
+            $0.it("parses createLocalPackageGroups option") {
+                let defaultSpec = try getProjectSpec(["options": [String: Any]()])
+                try expect(defaultSpec.options.createLocalPackageGroups) == true
+
+                let expected = Project(name: "test", options: .init(createLocalPackageGroups: false))
+                let dictionary: [String: Any] = ["options": [
+                    "createLocalPackageGroups": false,
+                ]]
+                let parsedSpec = try getProjectSpec(dictionary)
+                try expect(parsedSpec) == expected
+            }
+
             $0.it("parses packages") {
                 let project = Project(name: "spm", packages: [
                     "package1": .remote(url: "package.git", versionRequirement: .exact("1.2.2"), traits: ["FeatureA", "FeatureB"]),

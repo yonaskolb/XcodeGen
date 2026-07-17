@@ -1,5 +1,10 @@
 # Change Log
 
+## Next
+
+### Added
+- Added `options.createLocalPackageGroups` (default `true`). When set to `false`, local Swift packages are referenced only via `XCLocalSwiftPackageReference` (shown under "Package Dependencies") without an additional folder/group in the navigator. #<PR> @vahanbabayan-bloom
+
 ## 2.46.0
 
 ### Added

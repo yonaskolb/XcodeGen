@@ -10,6 +10,7 @@ public struct SpecOptions: Equatable {
     public static let generateEmptyDirectoriesDefault = false
     public static let findCarthageFrameworksDefault = false
     public static let useBaseInternationalizationDefault = true
+    public static let createLocalPackageGroupsDefault = true
     public static let schemePathPrefixDefault = "../../"
 
     public var minimumXcodeGenVersion: Version?
@@ -34,6 +35,7 @@ public struct SpecOptions: Equatable {
     public var generateEmptyDirectories: Bool
     public var findCarthageFrameworks: Bool
     public var localPackagesGroup: String?
+    public var createLocalPackageGroups: Bool
     public var preGenCommand: String?
     public var postGenCommand: String?
     public var useBaseInternationalization: Bool
@@ -100,6 +102,7 @@ public struct SpecOptions: Equatable {
         generateEmptyDirectories: Bool = generateEmptyDirectoriesDefault,
         findCarthageFrameworks: Bool = findCarthageFrameworksDefault,
         localPackagesGroup: String? = nil,
+        createLocalPackageGroups: Bool = createLocalPackageGroupsDefault,
         preGenCommand: String? = nil,
         postGenCommand: String? = nil,
         useBaseInternationalization: Bool = useBaseInternationalizationDefault,
@@ -128,6 +131,7 @@ public struct SpecOptions: Equatable {
         self.generateEmptyDirectories = generateEmptyDirectories
         self.findCarthageFrameworks = findCarthageFrameworks
         self.localPackagesGroup = localPackagesGroup
+        self.createLocalPackageGroups = createLocalPackageGroups
         self.preGenCommand = preGenCommand
         self.postGenCommand = postGenCommand
         self.useBaseInternationalization = useBaseInternationalization
@@ -163,6 +167,7 @@ extension SpecOptions: JSONObjectConvertible {
         generateEmptyDirectories = jsonDictionary.json(atKeyPath: "generateEmptyDirectories") ?? SpecOptions.generateEmptyDirectoriesDefault
         findCarthageFrameworks = jsonDictionary.json(atKeyPath: "findCarthageFrameworks") ?? SpecOptions.findCarthageFrameworksDefault
         localPackagesGroup = jsonDictionary.json(atKeyPath: "localPackagesGroup")
+        createLocalPackageGroups = jsonDictionary.json(atKeyPath: "createLocalPackageGroups") ?? SpecOptions.createLocalPackageGroupsDefault
         preGenCommand = jsonDictionary.json(atKeyPath: "preGenCommand")
         postGenCommand = jsonDictionary.json(atKeyPath: "postGenCommand")
         useBaseInternationalization = jsonDictionary.json(atKeyPath: "useBaseInternationalization") ?? SpecOptions.useBaseInternationalizationDefault
@@ -217,6 +222,9 @@ extension SpecOptions: JSONEncodable {
         }
         if schemePathPrefix != SpecOptions.schemePathPrefixDefault {
             dict["schemePathPrefix"] = schemePathPrefix
+        }
+        if createLocalPackageGroups != SpecOptions.createLocalPackageGroupsDefault {
+            dict["createLocalPackageGroups"] = createLocalPackageGroups
         }
 
         return dict
