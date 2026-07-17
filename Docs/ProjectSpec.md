@@ -155,6 +155,7 @@ Note that target names can also be changed by adding a `name` property to a targ
 - [ ] **generateEmptyDirectories**: **Bool** - If this is `true` then empty directories will be added to project too else will be missed. Defaults to `false`.
 - [ ] **findCarthageFrameworks**: **Bool** - When this is set to `true`, all the individual frameworks for Carthage framework dependencies will automatically be found. This property can be overridden individually for each carthage dependency - for more details see See **findFrameworks** in the [Dependency](#dependency) section. Defaults to `false`.
 - [ ] **localPackagesGroup**: **String** - The group name that local packages are put into. This defaults to `Packages`. Use `""` to specify the project root.
+- [ ] **createLocalPackageGroups**: **Bool** - Whether local packages get a browsable folder/group in the project navigator in addition to the Package Dependencies entry. Defaults to `true`. Set to `false` to show local packages only under "Package Dependencies" (matching Xcode's "Add Local…" behavior).
 - [ ] **fileTypes**: **[String: [FileType](#filetype)]** - A list of default file options for specific file extensions across the project. Values in [Sources](#sources) will overwrite these settings.
 - [ ] **preGenCommand**: **String** - A bash command to run before the project has been generated. If the project isn't generated due to no changes when using the cache then this won't run. This is useful for running things like generating resources files before the project is regenerated.
 - [ ] **postGenCommand**: **String** - A bash command to run after the project has been generated. If the project isn't generated due to no changes when using the cache then this won't run. This is useful for running things like `pod install` only if the project is actually regenerated.
@@ -1261,7 +1262,7 @@ Swift packages are defined at a project level, and then linked to individual tar
 ### Local Package
 
 - [x] **path**: **String** - the path to the package in local. The path must be directory with a `Package.swift`.
-- [ ] **group** : **String**- Optional path that specifies the location where the package will live in your xcode project. Use `""` to specify the project root.
+- [ ] **group** : **String**- Optional path that specifies the location where the package will live in your xcode project. Use `""` to specify the project root. To not create any group for local packages, set [Options](#options).createLocalPackageGroups to `false`.
 - [ ] **excludeFromProject** : **String**- Optional flag to exclude the package from the generated project (useful if the package is already added via xcworkspace and the project is not intended for standalone use), defaults to `false`
 - [ ] **traits**: **[String]** - Optional Swift package traits to enable for this package reference. Use the top-level `packages` mapping because the legacy `localPackages` syntax cannot specify traits.
 

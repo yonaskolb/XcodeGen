@@ -350,6 +350,49 @@ class PBXProjGeneratorTests: XCTestCase {
                 try expect(packages) == ["FeatureA", "FeatureB", "Common"]
             }
 
+            $0.it("doesn't create groups for local packages when createLocalPackageGroups is disabled") {
+                var options = SpecOptions()
+                options.createLocalPackageGroups = false
+
+                let directories = """
+                    Sources:
+                      - file.swift
+                    Packages:
+                      - Common:
+                        - Package.swift
+                      - FeatureA:
+                        - Package.swift
+                      - FeatureB:
+                        - Package.swift
+                """
+                try createDirectories(directories)
+
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: ["Sources"])
+                let project = Project(
+                    basePath: directoryPath,
+                    name: "Test",
+                    targets: [target],
+                    packages: [
+                        "Common": .local(path: "Packages/Common", group: nil, excludeFromProject: false),
+                        "FeatureA": .local(path: "Packages/FeatureA", group: nil, excludeFromProject: false),
+                        "FeatureB": .local(path: "Packages/FeatureB", group: nil, excludeFromProject: false),
+                    ],
+                    options: options
+                )
+
+                let pbxProj = try project.generatePbxProj()
+                let group = try pbxProj.getMainGroup()
+
+                let mainGroups = group.children.map { $0.nameOrPath }
+                try expect(mainGroups.contains("Packages")) == false
+
+                let folderReferences = pbxProj.fileReferences.filter { $0.lastKnownFileType == "folder" }
+                try expect(folderReferences.isEmpty) == true
+
+                let localPackages = pbxProj.rootObject?.localPackages ?? []
+                try expect(localPackages.map(\.relativePath).sorted()) == ["Packages/Common", "Packages/FeatureA", "Packages/FeatureB"]
+            }
+
             $0.it("sorts synced folders alongside groups") {
                 var options = SpecOptions()
                 options.groupSortPosition = .top
