@@ -203,6 +203,39 @@ class SourceGeneratorTests: XCTestCase {
                 try expect(exceptions.contains("a.swift")) == false
             }
 
+            $0.it("excludes localized files from synced folders using the variant-group form") {
+                let directories = """
+                Sources:
+                  - a.swift
+                  - b.swift
+                  - Resources:
+                    - en.lproj:
+                      - Localizable.strings
+                      - AppShortcuts.strings
+                    - fr.lproj:
+                      - Localizable.strings
+                      - AppShortcuts.strings
+                """
+                try createDirectories(directories)
+
+                let source = TargetSource(path: "Sources", includes: ["a.swift", "Resources/*.lproj/Localizable.strings"], type: .syncedFolder)
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: [source])
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target])
+
+                let pbxProj = try project.generatePbxProj()
+                let syncedFolders = try pbxProj.getMainGroup().children.compactMap { $0 as? PBXFileSystemSynchronizedRootGroup }
+                let syncedFolder = try unwrap(syncedFolders.first)
+
+                let exceptionSet = try unwrap(syncedFolder.exceptions?.first as? PBXFileSystemSynchronizedBuildFileExceptionSet)
+                let exceptions = try unwrap(exceptionSet.membershipExceptions)
+
+                try expect(exceptions.contains("/Localized: Resources/AppShortcuts.strings")) == true
+                try expect(exceptions.contains("Resources/en.lproj/AppShortcuts.strings")) == false
+                try expect(exceptions.contains("Resources/fr.lproj/AppShortcuts.strings")) == false
+                try expect(exceptions.contains("/Localized: Resources/Localizable.strings")) == false
+                try expect(exceptions.contains("b.swift")) == true
+            }
+
             $0.it("adds membership exceptions for nested synced folder with intermediate groups") {
                 let directories = """
                 Sources:
