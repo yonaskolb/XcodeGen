@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "XcodeGen FileType Object",
+  "description": "XcodeGen FileType Object.\n https://github.com/yonaskolb/XcodeGen/blob/master/Docs/ProjectSpec.md#filetype",
+  "type": "object",
+  "properties": {
+    "file": {
+      "description": "Whether this extension should be treated like a file. Defaults to true.",
+      "type": "boolean",
+      "default": true
+    },
+    "buildPhase": {
+      "description": "The default build phase.",
+      "type": "string"
+    },
+    "attributes": {
+      "description": "Additional settings attributes that will be applied to any build files.",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minItems": 1,
+        "uniqueItems": true
+      }
+    },
+    "resourceTags": {
+      "description": "On Demand Resource Tags that will be applied to any resources. This also adds to the project attribute's knownAssetTags.",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minItems": 1,
+        "uniqueItems": true
+      }
+    },
+    "compilerFlags": {
+      "description": "A list of compiler flags to add.",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minItems": 1,
+        "uniqueItems": true
+      }
+    }
+  }
+}
