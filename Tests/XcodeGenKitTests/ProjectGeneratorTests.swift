@@ -1956,6 +1956,63 @@ class ProjectGeneratorTests: XCTestCase {
                 try expect(productNames).contains { $0 == "FooDomain" }
                 try expect(productNames).contains { $0 == "FooUI" }
             }
+
+            $0.it("does not link packages in static framework targets") {
+                let staticFramework = Target(
+                    name: "MyStaticFramework",
+                    type: .staticFramework,
+                    platform: .iOS,
+                    dependencies: [
+                        Dependency(type: .package(products: ["RxSwift"]), reference: "RxSwift"),
+                    ]
+                )
+
+                let project = Project(name: "test", targets: [staticFramework], packages: [
+                    "RxSwift": .remote(url: "http://github.com/ReactiveX/RxSwift", versionRequirement: .exact("6.0.0")),
+                ])
+
+                let pbxProject = try project.generatePbxProj(specValidate: false)
+                let nativeTarget = try unwrap(pbxProject.nativeTargets.first(where: { $0.name == staticFramework.name }))
+
+                // Package should not appear in packageProductDependencies
+                try expect(nativeTarget.packageProductDependencies?.isEmpty ?? true) == true
+
+                // Package should not appear in the Frameworks build phase
+                let frameworkPhases = nativeTarget.buildPhases.compactMap { $0 as? PBXFrameworksBuildPhase }
+                let linkedPackages = (frameworkPhases.first?.files ?? []).compactMap { $0.product?.productName }
+                try expect(linkedPackages.isEmpty) == true
+
+                // Package should appear as a build-order-only target dependency
+                let depProductNames = nativeTarget.dependencies.compactMap { $0.product?.productName }
+                try expect(depProductNames) == ["RxSwift"]
+            }
+
+            $0.it("links packages in static library targets' packageProductDependencies") {
+                let staticLibrary = Target(
+                    name: "MyStaticLibrary",
+                    type: .staticLibrary,
+                    platform: .iOS,
+                    dependencies: [
+                        Dependency(type: .package(products: ["RxSwift"]), reference: "RxSwift"),
+                    ]
+                )
+
+                let project = Project(name: "test", targets: [staticLibrary], packages: [
+                    "RxSwift": .remote(url: "http://github.com/ReactiveX/RxSwift", versionRequirement: .exact("6.0.0")),
+                ])
+
+                let pbxProject = try project.generatePbxProj(specValidate: false)
+                let nativeTarget = try unwrap(pbxProject.nativeTargets.first(where: { $0.name == staticLibrary.name }))
+
+                // Package should appear in packageProductDependencies (module is importable)
+                let packageDepNames = nativeTarget.packageProductDependencies?.map(\.productName) ?? []
+                try expect(packageDepNames) == ["RxSwift"]
+
+                // Package should not appear in the Frameworks build phase
+                let frameworkPhases = nativeTarget.buildPhases.compactMap { $0 as? PBXFrameworksBuildPhase }
+                let linkedPackages = (frameworkPhases.first?.files ?? []).compactMap { $0.product?.productName }
+                try expect(linkedPackages.isEmpty) == true
+            }
         }
     }
 
