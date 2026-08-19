@@ -332,7 +332,7 @@ class ProjectGeneratorTests: XCTestCase {
                         "com.apple.Keychain": ["enabled": 1],
                     ],
                 ]
-                let project = Project(name: "test", targets: [appTargetWithAttributes])
+                let project = Project(name: "test", targets: [appTargetWithAttributes, framework])
                 let pbxProject = try project.generatePbxProj()
 
                 let targetAttributes = try unwrap(pbxProject.projects.first?.targetAttributes)
