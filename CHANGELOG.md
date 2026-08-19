@@ -1,5 +1,10 @@
 # Change Log
 
+## Master
+
+### Fixed
+- Fix nested target attributes (e.g. `attributes.SystemCapabilities`) being serialized as a stringified Swift `Dictionary` description instead of a proper nested plist dictionary, which also caused non-deterministic key ordering in generated `project.pbxproj` files across runs @imadaan
+
 ## 2.46.0
 
 ### Added
