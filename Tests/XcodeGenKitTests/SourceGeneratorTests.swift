@@ -625,6 +625,211 @@ class SourceGeneratorTests: XCTestCase {
                 }
             }
 
+            $0.it("generates localized folder variant groups") {
+                // Plain directories inside localization folders are opaque folder references:
+                //
+                //     Resources/
+                //     |-- Base.lproj/
+                //     |   |-- Help/
+                //     |   |   `-- index.html
+                //     |   `-- View.xib
+                //     `-- en.lproj/
+                //         |-- Help/
+                //         |   `-- index.html
+                //         `-- View.xib
+                //
+                //     Help
+                //     |-- Base -> Base.lproj/Help [folder]
+                //     `-- en   -> en.lproj/Help [folder]
+                //
+                // Xcode copies each Help directory as a unit, while View.xib remains an ordinary
+                // localized file that Xcode compiles.
+                let directories = """
+                Resources:
+                    Base.lproj:
+                        - Help:
+                            - index.html
+                        - View.xib
+                    en.lproj:
+                        - Help:
+                            - index.html
+                        - View.xib
+                """
+                try createDirectories(directories)
+
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: ["Resources"])
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target])
+
+                let outputXcodeProj = try project.generateXcodeProject()
+                try outputXcodeProj.write(path: directoryPath)
+                let pbxProj = try XcodeProj(path: directoryPath).pbxproj
+                let nativeTarget = try unwrap(pbxProj.nativeTargets.first { $0.name == "Test" })
+                let resources = try unwrap(
+                    nativeTarget.buildPhases.compactMap { $0 as? PBXResourcesBuildPhase }.first
+                )
+                let resourceElements = resources.files?.compactMap(\.file) ?? []
+                let helpGroup = try unwrap(
+                    resourceElements.first { $0.nameOrPath == "Help" } as? PBXVariantGroup
+                )
+                let viewGroup = try unwrap(
+                    resourceElements.first { $0.nameOrPath == "View.xib" } as? PBXVariantGroup
+                )
+
+                try expect(helpGroup.children.compactMap(\.name).sorted()) == ["Base", "en"]
+                for child in helpGroup.children {
+                    let language = try unwrap(child.name)
+                    try expect(child.path) == "\(language).lproj/Help"
+                    try expect((child as? PBXFileReference)?.lastKnownFileType) == "folder"
+                    try expect(child.parent === helpGroup) == true
+                }
+
+                try expect(viewGroup.children.compactMap(\.name).sorted()) == ["Base", "en"]
+                try expect(pbxProj.fileReferences.contains { $0.path?.hasSuffix("Help/index.html") == true }) == false
+            }
+
+            $0.it("keeps localized folder selections separate across targets") {
+                let directories = """
+                Resources:
+                    Base.lproj:
+                        - Help:
+                            - index.html
+                    de.lproj:
+                        - Help:
+                            - index.html
+                    en.lproj:
+                        - Help:
+                            - index.html
+                """
+                try createDirectories(directories)
+
+                let germanTarget = Target(
+                    name: "German",
+                    type: .application,
+                    platform: .iOS,
+                    sources: [
+                        TargetSource(path: "Resources", includes: ["de.lproj/Help/**"])
+                    ]
+                )
+                let allLanguagesTarget = Target(
+                    name: "AllLanguages",
+                    type: .application,
+                    platform: .iOS,
+                    sources: ["Resources"]
+                )
+                let project = Project(
+                    basePath: directoryPath,
+                    name: "Test",
+                    targets: [germanTarget, allLanguagesTarget]
+                )
+
+                let pbxProj = try project.generatePbxProj()
+
+                func helpVariantGroup(for targetName: String) throws -> PBXVariantGroup {
+                    let target = try unwrap(pbxProj.nativeTargets.first { $0.name == targetName })
+                    let resources = try unwrap(
+                        target.buildPhases.compactMap { $0 as? PBXResourcesBuildPhase }.first
+                    )
+                    return try unwrap(
+                        resources.files?
+                            .compactMap(\.file)
+                            .first { $0.nameOrPath == "Help" } as? PBXVariantGroup
+                    )
+                }
+
+                let germanHelp = try helpVariantGroup(for: "German")
+                let allLanguagesHelp = try helpVariantGroup(for: "AllLanguages")
+
+                try expect(germanHelp === allLanguagesHelp) == false
+                try expect(germanHelp.children.compactMap(\.name)) == ["de"]
+                try expect(allLanguagesHelp.children.compactMap(\.name).sorted()) == ["Base", "de", "en"]
+                for variantGroup in [germanHelp, allLanguagesHelp] {
+                    for child in variantGroup.children {
+                        try expect((child as? PBXFileReference)?.lastKnownFileType) == "folder"
+                        try expect(child.parent === variantGroup) == true
+                    }
+                }
+            }
+
+            $0.it("generates localized folder variant groups missing from the base localization") {
+                let directories = """
+                Resources:
+                    Base.lproj:
+                        - Localizable.strings
+                    de.lproj:
+                        - Help:
+                            - index.html
+                    en.lproj:
+                        - Help:
+                            - index.html
+                        - Localizable.strings
+                """
+                try createDirectories(directories)
+
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: ["Resources"])
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target])
+
+                let pbxProj = try project.generatePbxProj()
+                let nativeTarget = try unwrap(pbxProj.nativeTargets.first { $0.name == "Test" })
+                let resources = try unwrap(
+                    nativeTarget.buildPhases.compactMap { $0 as? PBXResourcesBuildPhase }.first
+                )
+                let helpGroup = try unwrap(
+                    resources.files?
+                        .compactMap(\.file)
+                        .first { $0.nameOrPath == "Help" } as? PBXVariantGroup
+                )
+
+                try expect(helpGroup.children.compactMap(\.name).sorted()) == ["de", "en"]
+                for child in helpGroup.children {
+                    let language = try unwrap(child.name)
+                    try expect(child.path) == "\(language).lproj/Help"
+                    try expect((child as? PBXFileReference)?.lastKnownFileType) == "folder"
+                    try expect(child.parent === helpGroup) == true
+                }
+            }
+
+            $0.it("does not match localized folders with same-stem files") {
+                let directories = """
+                Resources:
+                    Base.lproj:
+                        - Help:
+                            - index.html
+                        - Guide.strings
+                    de.lproj:
+                        - Help.strings
+                        - Guide:
+                            - index.html
+                """
+                try createDirectories(directories)
+
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: ["Resources"])
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target])
+
+                let pbxProj = try project.generatePbxProj()
+                let nativeTarget = try unwrap(pbxProj.nativeTargets.first { $0.name == "Test" })
+                let resources = try unwrap(
+                    nativeTarget.buildPhases.compactMap { $0 as? PBXResourcesBuildPhase }.first
+                )
+                let resourceElements = resources.files?.compactMap(\.file) ?? []
+                let helpGroup = try unwrap(
+                    resourceElements.first { $0.nameOrPath == "Help" } as? PBXVariantGroup
+                )
+                let guideGroup = try unwrap(
+                    resourceElements.first { $0.nameOrPath == "Guide" } as? PBXVariantGroup
+                )
+                let guideStringsGroup = try unwrap(
+                    resourceElements.first { $0.nameOrPath == "Guide.strings" } as? PBXVariantGroup
+                )
+                let helpStrings = try unwrap(
+                    resourceElements.first { $0.nameOrPath == "Help.strings" } as? PBXFileReference
+                )
+
+                try expect(helpGroup.children.compactMap(\.name)) == ["Base"]
+                try expect(guideGroup.children.compactMap(\.name)) == ["de"]
+                try expect(guideStringsGroup.children.compactMap(\.name)) == ["Base"]
+                try expect(helpStrings.path) == "de.lproj/Help.strings"
+            }
+
             $0.it("handles localized resources") {
                 let directories = """
                 App:

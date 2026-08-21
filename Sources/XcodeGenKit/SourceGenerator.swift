@@ -116,6 +116,10 @@ class SourceGenerator {
             return nil
         }
     }
+
+    private func isPlainDirectory(_ path: Path) -> Bool {
+        path.isDirectory && !Xcode.isDirectoryFileWrapper(path: path)
+    }
     
     private func makeDestinationFilters(for path: Path, with filters: [SupportedDestination]?, or inferDestinationFiltersByPath: Bool?) -> [String]? {
         if let filters = filters, !filters.isEmpty {
@@ -147,6 +151,9 @@ class SourceGenerator {
         if let buildPhase = targetSource.buildPhase {
             chosenBuildPhase = buildPhase
         } else if resolvedTargetSourceType(for: targetSource, at: path) == .folder {
+            chosenBuildPhase = .resources
+        } else if fileReference is PBXVariantGroup, isPlainDirectory(path) {
+            // A directory discovered inside an .lproj is a folder resource even though its TargetSource is a group.
             chosenBuildPhase = .resources
         } else if let buildPhase = buildPhases[path] {
             chosenBuildPhase = buildPhase
@@ -633,7 +640,8 @@ class SourceGenerator {
         knownRegions.formUnion(stringCatalogsLocales)
 
         // create variant groups of the base localisation first
-        var baseLocalisationVariantGroups: [PBXVariantGroup] = []
+        var localisedVariantGroups: [PBXVariantGroup] = []
+        var folderVariantGroups: Set<ObjectIdentifier> = []
 
         if let baseLocalisedDirectory = baseLocalisedDirectory {
             let filePaths = try baseLocalisedDirectory.children()
@@ -642,7 +650,10 @@ class SourceGenerator {
             for filePath in filePaths {
                 let variantGroup = getVariantGroup(path: filePath, inPath: path)
                 groupChildren.append(variantGroup)
-                baseLocalisationVariantGroups.append(variantGroup)
+                localisedVariantGroups.append(variantGroup)
+                if isPlainDirectory(filePath) {
+                    folderVariantGroups.insert(ObjectIdentifier(variantGroup))
+                }
 
                 let sourceFile = generateSourceFile(targetType: targetType,
                                                     targetSource: targetSource,
@@ -653,27 +664,48 @@ class SourceGenerator {
             }
         }
 
-        // add references to localised resources into base localisation variant groups
+        // add references to localised resources into their variant groups
         for localisedDirectory in localisedDirectories {
             let localisationName = localisedDirectory.lastComponentWithoutExtension
             let filePaths = try localisedDirectory.children()
                 .filter { self.isIncludedPath($0, excludePaths: excludePaths, includePaths: includePaths) }
                 .sorted { $0.lastComponent < $1.lastComponent }
             for filePath in filePaths {
-                // find base localisation variant group
+                // find matching localisation variant group
                 // ex: Foo.strings will be added to Foo.strings or Foo.storyboard variant group
-                let variantGroup = baseLocalisationVariantGroups
+                var variantGroup = localisedVariantGroups
                     .first {
                         Path($0.name!).lastComponent == filePath.lastComponent
 
-                    } ?? baseLocalisationVariantGroups.first {
-                        Path($0.name!).lastComponentWithoutExtension == filePath.lastComponentWithoutExtension
+                    } ?? localisedVariantGroups.first {
+                        !isPlainDirectory(filePath) &&
+                            !folderVariantGroups.contains(ObjectIdentifier($0)) &&
+                            Path($0.name!).lastComponentWithoutExtension == filePath.lastComponentWithoutExtension
                     }
+
+                // The folder might not be in the base localization, so create its variant group here if necessary.
+                if variantGroup == nil, isPlainDirectory(filePath) {
+                    let folderVariantGroup = getVariantGroup(path: filePath, inPath: path)
+                    groupChildren.append(folderVariantGroup)
+                    localisedVariantGroups.append(folderVariantGroup)
+                    folderVariantGroups.insert(ObjectIdentifier(folderVariantGroup))
+                    allSourceFiles.append(
+                        generateSourceFile(
+                            targetType: targetType,
+                            targetSource: targetSource,
+                            path: filePath,
+                            fileReference: folderVariantGroup,
+                            buildPhases: buildPhases
+                        )
+                    )
+                    variantGroup = folderVariantGroup
+                }
 
                 let fileReference = getFileReference(
                     path: filePath,
                     inPath: path,
                     name: variantGroup != nil ? localisationName : filePath.lastComponent,
+                    lastKnownFileType: isPlainDirectory(filePath) ? "folder" : nil,
                     localizedIn: variantGroup
                 )
 
