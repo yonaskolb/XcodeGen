@@ -688,6 +688,274 @@ class SourceGeneratorTests: XCTestCase {
                 }
             }
 
+            $0.it("keeps localized variant groups and children owned by their targets") {
+                // Both targets use the same physical resources but select different languages. They
+                // therefore need separate variant groups and child references under the shared group:
+                //
+                //     Resources/
+                //     |-- Localizable.strings [English target]
+                //     |   `-- en   -> en.lproj/Localizable.strings
+                //     `-- Localizable.strings [AllLanguages target]
+                //         |-- Base -> Base.lproj/Localizable.strings
+                //         |-- de   -> de.lproj/Localizable.strings
+                //         `-- en   -> en.lproj/Localizable.strings
+                //
+                // Both same-named variant groups must remain children of `Resources`; treating the
+                // second as a duplicate detaches it and leaves its localized paths without a base.
+                // A PBX file element can have only one parent, so even the two `en` children must be
+                // distinct objects owned by their respective variant groups.
+                let directories = """
+                Resources:
+                    Base.lproj:
+                        - Localizable.strings
+                    de.lproj:
+                        - Localizable.strings
+                    en.lproj:
+                        - Localizable.strings
+                """
+                try createDirectories(directories)
+
+                let englishTarget = Target(
+                    name: "English",
+                    type: .application,
+                    platform: .iOS,
+                    sources: [
+                        TargetSource(
+                            path: "Resources",
+                            includes: ["en.lproj/Localizable.strings"]
+                        )
+                    ]
+                )
+                let allLanguagesTarget = Target(
+                    name: "AllLanguages",
+                    type: .application,
+                    platform: .iOS,
+                    sources: [
+                        TargetSource(
+                            path: "Resources",
+                            includes: [
+                                "Base.lproj/**",
+                                "de.lproj/**",
+                                "en.lproj/**",
+                            ]
+                        )
+                    ]
+                )
+                let project = Project(
+                    basePath: directoryPath,
+                    name: "Test",
+                    targets: [englishTarget, allLanguagesTarget]
+                )
+
+                let outputXcodeProj = try project.generateXcodeProject()
+                try outputXcodeProj.write(path: directoryPath)
+                let pbxProj = try XcodeProj(path: directoryPath).pbxproj
+
+                func localizedVariantGroup(for targetName: String) throws -> PBXVariantGroup {
+                    let target = try unwrap(pbxProj.nativeTargets.first { $0.name == targetName })
+                    let resources = try unwrap(target.buildPhases.compactMap { $0 as? PBXResourcesBuildPhase }.first)
+                    return try unwrap(
+                        resources.files?
+                            .compactMap(\.file)
+                            .first { $0.nameOrPath == "Localizable.strings" } as? PBXVariantGroup
+                    )
+                }
+
+                let englishVariantGroup = try localizedVariantGroup(for: "English")
+                let allLanguagesVariantGroup = try localizedVariantGroup(for: "AllLanguages")
+
+                try expect(englishVariantGroup === allLanguagesVariantGroup) == false
+                try expect(englishVariantGroup.parent == allLanguagesVariantGroup.parent) == true
+                let parentGroup = try unwrap(englishVariantGroup.parent as? PBXGroup)
+                try expect(parentGroup.children.contains { $0 === englishVariantGroup }) == true
+                try expect(parentGroup.children.contains { $0 === allLanguagesVariantGroup }) == true
+                try expect(englishVariantGroup.children.compactMap(\.name)) == ["en"]
+                try expect(allLanguagesVariantGroup.children.compactMap(\.name).sorted()) == ["Base", "de", "en"]
+
+                for variantGroup in [englishVariantGroup, allLanguagesVariantGroup] {
+                    for child in variantGroup.children {
+                        try expect(child.parent === variantGroup) == true
+                    }
+                }
+
+                let englishReference = try unwrap(englishVariantGroup.children.first { $0.name == "en" })
+                let allLanguagesEnglishReference = try unwrap(allLanguagesVariantGroup.children.first { $0.name == "en" })
+                try expect(englishReference === allLanguagesEnglishReference) == false
+            }
+
+            $0.it("keeps localized children owned across source entries") {
+                let directories = """
+                Resources:
+                    Base.lproj:
+                        - LocalizedStoryboard.storyboard
+                    en.lproj:
+                        - LocalizedStoryboard.strings
+                """
+                try createDirectories(directories)
+
+                let target = Target(
+                    name: "Test",
+                    type: .application,
+                    platform: .iOS,
+                    sources: [
+                        TargetSource(
+                            path: "Resources",
+                            includes: [
+                                "Base.lproj/LocalizedStoryboard.storyboard",
+                                "en.lproj/LocalizedStoryboard.strings",
+                            ]
+                        ),
+                        TargetSource(
+                            path: "Resources",
+                            includes: ["en.lproj/LocalizedStoryboard.strings"]
+                        ),
+                    ]
+                )
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target])
+
+                let pbxProj = try project.generatePbxProj()
+                let storyboardGroup = try unwrap(
+                    pbxProj.variantGroups.first { $0.name == "LocalizedStoryboard.storyboard" }
+                )
+                let stringsGroup = try unwrap(
+                    pbxProj.variantGroups.first { $0.name == "LocalizedStoryboard.strings" }
+                )
+
+                try expect(storyboardGroup.parent == stringsGroup.parent) == true
+                try expect(storyboardGroup.children.compactMap(\.name).sorted()) == ["Base", "en"]
+                try expect(stringsGroup.children.compactMap(\.name)) == ["en"]
+                for variantGroup in [storyboardGroup, stringsGroup] {
+                    for child in variantGroup.children {
+                        try expect(child.parent === variantGroup) == true
+                    }
+                }
+                let storyboardStrings = try unwrap(storyboardGroup.children.first { $0.name == "en" })
+                let localizedStrings = try unwrap(stringsGroup.children.first { $0.name == "en" })
+                try expect(storyboardStrings === localizedStrings) == false
+            }
+
+            $0.it("separates project and localized references to the same file") {
+                let directories = """
+                Resources:
+                    Base.lproj:
+                        - Localizable.strings
+                    en.lproj:
+                        - Localizable.strings
+                """
+                try createDirectories(directories)
+
+                let standaloneTarget = Target(
+                    name: "Standalone",
+                    type: .application,
+                    platform: .iOS,
+                    sources: ["Resources/en.lproj/Localizable.strings"]
+                )
+                let localizedTarget = Target(
+                    name: "Localized",
+                    type: .application,
+                    platform: .iOS,
+                    sources: ["Resources"]
+                )
+                let project = Project(
+                    basePath: directoryPath,
+                    name: "Test",
+                    targets: [standaloneTarget, localizedTarget]
+                )
+
+                let pbxProj = try project.generatePbxProj()
+                let standalone = try unwrap(pbxProj.nativeTargets.first { $0.name == "Standalone" })
+                let standaloneResources = try unwrap(
+                    standalone.buildPhases.compactMap { $0 as? PBXResourcesBuildPhase }.first
+                )
+                let standaloneReference = try unwrap(
+                    standaloneResources.files?
+                        .compactMap(\.file)
+                        .first { $0.nameOrPath == "Localizable.strings" } as? PBXFileReference
+                )
+
+                let localized = try unwrap(pbxProj.nativeTargets.first { $0.name == "Localized" })
+                let localizedResources = try unwrap(
+                    localized.buildPhases.compactMap { $0 as? PBXResourcesBuildPhase }.first
+                )
+                let variantGroup = try unwrap(
+                    localizedResources.files?
+                        .compactMap(\.file)
+                        .first { $0.nameOrPath == "Localizable.strings" } as? PBXVariantGroup
+                )
+                let localizedReference = try unwrap(
+                    variantGroup.children.first { $0.name == "en" } as? PBXFileReference
+                )
+
+                try expect(standaloneReference === localizedReference) == false
+                try expect(standaloneReference.parent === variantGroup) == false
+                try expect(localizedReference.parent === variantGroup) == true
+            }
+
+            $0.it("keeps identical localization selections separate across targets") {
+                let directories = """
+                Resources:
+                    Base.lproj:
+                        - Localizable.strings
+                    en.lproj:
+                        - Localizable.strings
+                """
+                try createDirectories(directories)
+
+                let firstTarget = Target(
+                    name: "First",
+                    type: .application,
+                    platform: .iOS,
+                    sources: ["Resources"]
+                )
+                let secondTarget = Target(
+                    name: "Second",
+                    type: .application,
+                    platform: .iOS,
+                    sources: ["Resources"]
+                )
+                let project = Project(
+                    basePath: directoryPath,
+                    name: "Test",
+                    targets: [firstTarget, secondTarget]
+                )
+
+                let pbxProj = try project.generatePbxProj()
+
+                func localizedVariantGroup(for targetName: String) throws -> PBXVariantGroup {
+                    let target = try unwrap(pbxProj.nativeTargets.first { $0.name == targetName })
+                    let resources = try unwrap(
+                        target.buildPhases.compactMap { $0 as? PBXResourcesBuildPhase }.first
+                    )
+                    return try unwrap(
+                        resources.files?
+                            .compactMap(\.file)
+                            .first { $0.nameOrPath == "Localizable.strings" } as? PBXVariantGroup
+                    )
+                }
+
+                let firstVariantGroup = try localizedVariantGroup(for: "First")
+                let secondVariantGroup = try localizedVariantGroup(for: "Second")
+
+                try expect(firstVariantGroup === secondVariantGroup) == false
+                try expect(firstVariantGroup.parent == secondVariantGroup.parent) == true
+                let parentGroup = try unwrap(firstVariantGroup.parent as? PBXGroup)
+                try expect(parentGroup.children.contains { $0 === firstVariantGroup }) == true
+                try expect(parentGroup.children.contains { $0 === secondVariantGroup }) == true
+                try expect(firstVariantGroup.children.compactMap(\.name).sorted()) == ["Base", "en"]
+                try expect(secondVariantGroup.children.compactMap(\.name).sorted()) == ["Base", "en"]
+                for language in ["Base", "en"] {
+                    let firstReference = try unwrap(
+                        firstVariantGroup.children.first { $0.name == language }
+                    )
+                    let secondReference = try unwrap(
+                        secondVariantGroup.children.first { $0.name == language }
+                    )
+                    try expect(firstReference === secondReference) == false
+                    try expect(firstReference.parent === firstVariantGroup) == true
+                    try expect(secondReference.parent === secondVariantGroup) == true
+                }
+            }
+
             $0.it("handles duplicate names") {
                 let directories = """
                 Sources:

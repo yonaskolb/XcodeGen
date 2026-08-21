@@ -13,9 +13,14 @@ struct SourceFile {
 
 class SourceGenerator {
 
+    private enum FileReferenceKey: Hashable {
+        case project(path: String)
+        case localized(variantGroup: ObjectIdentifier, path: String)
+    }
+
     var rootGroups: Set<PBXFileElement> = []
     private let projectDirectory: Path?
-    private var fileReferencesByPath: [String: PBXFileElement] = [:]
+    private var fileReferencesByKey: [FileReferenceKey: PBXFileElement] = [:]
     private var groupsByPath: [Path: PBXGroup] = [:]
     private var variantGroupsByPath: [Path: PBXVariantGroup] = [:]
     private var syncedGroupsByPath: [String: PBXFileSystemSynchronizedRootGroup] = [:]
@@ -94,7 +99,9 @@ class SourceGenerator {
     ///   - sources: The array of sources defined as part of the targets spec.
     ///   - buildPhases: A dictionary containing any build phases that should be applied to source files at specific paths in the event that the associated `TargetSource` didn't already define a `buildPhase`. Values from this dictionary are used in cases where the project generator knows more about a file than the spec/filesystem does (i.e if the file should be treated as the targets Info.plist and so on).
     func getAllSourceFiles(targetType: PBXProductType, sources: [TargetSource], buildPhases: [Path : BuildPhaseSpec]) throws -> [SourceFile] {
-        try sources.flatMap { try getSourceFiles(targetType: targetType, targetSource: $0, buildPhases: buildPhases) }
+        // Localized groups can select different languages in each target, so start each target with an empty cache.
+        variantGroupsByPath.removeAll()
+        return try sources.flatMap { try getSourceFiles(targetType: targetType, targetSource: $0, buildPhases: buildPhases) }
     }
 
     // get groups without build files. Use for Project.fileGroups
@@ -127,7 +134,7 @@ class SourceGenerator {
     }
     
     func generateSourceFile(targetType: PBXProductType, targetSource: TargetSource, path: Path, fileReference: PBXFileElement? = nil, buildPhases: [Path: BuildPhaseSpec]) -> SourceFile {
-        let fileReference = fileReference ?? fileReferencesByPath[path.string.lowercased()]!
+        let fileReference = fileReference ?? fileReferencesByKey[.project(path: path.string.lowercased())]!
         var settings: [String: BuildFileSetting] = [:]
         let fileType = getFileType(path: path)
         var attributes: [String] = targetSource.attributes + (fileType?.attributes ?? [])
@@ -227,9 +234,25 @@ class SourceGenerator {
         return fileReference
     }
 
-    func getFileReference(path: Path, inPath: Path, name: String? = nil, sourceTree: PBXSourceTree = .group, lastKnownFileType: String? = nil) -> PBXFileElement {
-        let fileReferenceKey = path.string.lowercased()
-        if let fileReference = fileReferencesByPath[fileReferenceKey] {
+    func getFileReference(
+        path: Path,
+        inPath: Path,
+        name: String? = nil,
+        sourceTree: PBXSourceTree = .group,
+        lastKnownFileType: String? = nil,
+        localizedIn variantGroup: PBXVariantGroup? = nil
+    ) -> PBXFileElement {
+        let normalizedPath = path.string.lowercased()
+        let fileReferenceKey: FileReferenceKey
+        if let variantGroup {
+            fileReferenceKey = .localized(
+                variantGroup: ObjectIdentifier(variantGroup),
+                path: normalizedPath
+            )
+        } else {
+            fileReferenceKey = .project(path: normalizedPath)
+        }
+        if let fileReference = fileReferencesByKey[fileReferenceKey] {
             return fileReference
         } else {
             let fileReferencePath = (try? path.relativePath(from: inPath)) ?? path
@@ -271,7 +294,7 @@ class SourceGenerator {
                     versionGroupType: "wrapper.xcdatamodel",
                     children: modelFileReferences
                 ))
-                fileReferencesByPath[fileReferenceKey] = versionGroup
+                fileReferencesByKey[fileReferenceKey] = versionGroup
                 return versionGroup
             } else {
                 // For all extensions other than `xcdatamodeld`
@@ -283,7 +306,7 @@ class SourceGenerator {
                         path: fileReferencePath.string
                     )
                 )
-                fileReferencesByPath[fileReferenceKey] = fileReference
+                fileReferencesByKey[fileReferenceKey] = fileReference
                 return fileReference
             }
         }
@@ -339,8 +362,16 @@ class SourceGenerator {
             var cachedGroupChildren = cachedGroup.children
             for child in children {
                 // only add the children that aren't already in the cachedGroup
-                // Check equality by path and sourceTree because XcodeProj.PBXObject.== is very slow.
-                if !cachedGroupChildren.contains(where: { $0.name == child.name && $0.path == child.path && $0.sourceTree == child.sourceTree }) {
+                // Variant groups with the same name may select different localizations for different
+                // targets, so only the same variant group object is a duplicate.
+                let alreadyContainsChild = cachedGroupChildren.contains {
+                    if child is PBXVariantGroup {
+                        return $0 === child
+                    }
+                    // Check equality by path and sourceTree because XcodeProj.PBXObject.== is very slow.
+                    return $0.name == child.name && $0.path == child.path && $0.sourceTree == child.sourceTree
+                }
+                if !alreadyContainsChild {
                     cachedGroupChildren.append(child)
                     child.parent = cachedGroup
                 }
@@ -384,8 +415,10 @@ class SourceGenerator {
 
     /// Creates a variant group or returns an existing one at the path
     private func getVariantGroup(path: Path, inPath: Path) -> PBXVariantGroup {
+        // The base localization can vary by source entry, but the logical resource path remains the same.
+        let variantGroupPath = inPath + path.lastComponent
         let variantGroup: PBXVariantGroup
-        if let cachedGroup = variantGroupsByPath[path] {
+        if let cachedGroup = variantGroupsByPath[variantGroupPath] {
             variantGroup = cachedGroup
         } else {
             let group = PBXVariantGroup(
@@ -393,7 +426,7 @@ class SourceGenerator {
                 name: path.lastComponent
             )
             variantGroup = addObject(group)
-            variantGroupsByPath[path] = variantGroup
+            variantGroupsByPath[variantGroupPath] = variantGroup
         }
         return variantGroup
     }
@@ -640,12 +673,14 @@ class SourceGenerator {
                 let fileReference = getFileReference(
                     path: filePath,
                     inPath: path,
-                    name: variantGroup != nil ? localisationName : filePath.lastComponent
+                    name: variantGroup != nil ? localisationName : filePath.lastComponent,
+                    localizedIn: variantGroup
                 )
 
                 if let variantGroup = variantGroup {
                     if !variantGroup.children.contains(fileReference) {
                         variantGroup.children.append(fileReference)
+                        fileReference.parent = variantGroup
                     }
                 } else {
                     // add SourceFile to group if there is no Base.lproj directory
