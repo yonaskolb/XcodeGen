@@ -359,6 +359,26 @@ class ProjectGeneratorTests: XCTestCase {
                 try expect(targetConfig1.buildSettings["ASSETCATALOG_COMPILER_APPICON_NAME"]?.stringValue) == "AppIcon"
                 try expect(targetConfig1.buildSettings["CODE_SIGN_IDENTITY"]?.stringValue) == "iPhone Developer"
             }
+
+            $0.it("supportedDestinations applies per-platform deployment targets") {
+                let target = try Target(name: "Target", jsonDictionary: [
+                    "type": "application",
+                    "supportedDestinations": ["iOS", "macOS"],
+                    "deploymentTarget": [
+                        "iOS": "18.0",
+                        "macOS": "15.0",
+                        "tvOS": "17.0",
+                    ],
+                ])
+                let project = Project(name: "", targets: [target])
+
+                let pbxProject = try project.generatePbxProj()
+                let targetConfig = try unwrap(pbxProject.nativeTargets.first?.buildConfigurationList?.buildConfigurations.first)
+
+                try expect(targetConfig.buildSettings["IPHONEOS_DEPLOYMENT_TARGET"]?.stringValue) == "18.0"
+                try expect(targetConfig.buildSettings["MACOSX_DEPLOYMENT_TARGET"]?.stringValue) == "15.0"
+                try expect(targetConfig.buildSettings["TVOS_DEPLOYMENT_TARGET"]).beNil()
+            }
             
             $0.it("supportedDestinations merges settings - iOS, visionOS") {
                 let target = Target(name: "Target", type: .application, platform: .auto, supportedDestinations: [.visionOS, .iOS])
