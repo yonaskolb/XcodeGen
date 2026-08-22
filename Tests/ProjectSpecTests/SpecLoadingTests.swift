@@ -1026,6 +1026,7 @@ class SpecLoadingTests: XCTestCase {
                         "parallelizeBuild": false,
                         "buildImplicitDependencies": false,
                         "runPostActionsOnFailure": true,
+                        "buildArchitectures": "matchRunDestination",
                         "targets": [
                             "Target1": "all",
                             "Target2": "testing",
@@ -1100,6 +1101,7 @@ class SpecLoadingTests: XCTestCase {
                 try expect(scheme.build.parallelizeBuild) == false
                 try expect(scheme.build.buildImplicitDependencies) == false
                 try expect(scheme.build.runPostActionsOnFailure) == true
+                try expect(scheme.build.buildArchitectures) == .matchRunDestination
 
                 let expectedRun = Scheme.Run(
                     config: "debug",
@@ -1135,6 +1137,24 @@ class SpecLoadingTests: XCTestCase {
 
                 let expectedManagement = Scheme.Management(shared: true, orderHint: 4, isShown: false)
                 try expect(scheme.management) == expectedManagement
+            }
+
+            $0.it("encodes scheme build architecture overrides") {
+                let architectureOptions: [(BuildArchitectures, String)] = [
+                    (.matchRunDestination, "matchRunDestination"),
+                    (.universal, "universal"),
+                ]
+
+                for (option, expected) in architectureOptions {
+                    let build = Scheme.Build(targets: [], buildArchitectures: option)
+                    let dictionary = try unwrap(build.toJSONValue() as? [String: Any])
+
+                    try expect(dictionary["buildArchitectures"] as? String) == expected
+                }
+
+                let defaultBuild = Scheme.Build(targets: [])
+                let defaultDictionary = try unwrap(defaultBuild.toJSONValue() as? [String: Any])
+                try expect(defaultDictionary["buildArchitectures"]).to.beNil()
             }
 
             $0.it("parses alternate test schemes") {

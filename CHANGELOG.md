@@ -4,6 +4,7 @@
 
 ### Added
 - Added support for Swift package `traits` on remote and local package references, so generated projects preserve the configured trait selections #1629 @philprime
+- Added scheme build architecture overrides #1642 @arhxam
 
 ### Changed
 - Targets in the generated project now follow the declaration order from the source spec (Xcode sidebar, `xcodebuild -list` output). Previously they were always sorted alphabetically. Applies to both YAML and JSON specs. Declaration order is now also preserved for targets whose `platform`/`name` come from a target template and for targets whose key is a `${VARIABLE}`. #1619 @mirkokg
