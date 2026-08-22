@@ -125,6 +125,28 @@ class SchemeGeneratorTests: XCTestCase {
                 try expect(xcscheme.testAction?.testables[1].locationScenarioReference?.identifier) == "New York, NY, USA"
             }
 
+            $0.it("generates scheme build architecture overrides") {
+                let architectureOptions: [(String, XCScheme.BuildAction.Architectures)] = [
+                    ("matchRunDestination", .matchRunDestination),
+                    ("universal", .universal),
+                    ("useTargetSettings", .useTargetSettings),
+                ]
+
+                for (option, expected) in architectureOptions {
+                    let scheme = try Scheme(name: "MyScheme", jsonDictionary: [
+                        "build": [
+                            "targets": [app.name: "all"],
+                            "buildArchitectures": option,
+                        ],
+                    ])
+                    let project = Project(name: "test", targets: [app, framework], schemes: [scheme])
+                    let xcodeProject = try project.generateXcodeProject()
+                    let xcscheme = try unwrap(xcodeProject.sharedData?.schemes.first)
+
+                    try expect(xcscheme.buildAction?.buildArchitectures) == expected
+                }
+            }
+
             let frameworkTarget = Scheme.BuildTarget(target: .local(framework.name), buildTypes: [.archiving])
             $0.it("generates a scheme with the first runnable selected") {
                 let scheme = Scheme(
