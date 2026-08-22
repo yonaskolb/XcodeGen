@@ -239,7 +239,8 @@ public class SchemeGenerator {
             postActions: scheme.build.postActions.map(getExecutionAction),
             parallelizeBuild: scheme.build.parallelizeBuild,
             buildImplicitDependencies: scheme.build.buildImplicitDependencies,
-            runPostActionsOnFailure: scheme.build.runPostActionsOnFailure
+            runPostActionsOnFailure: scheme.build.runPostActionsOnFailure,
+            buildArchitectures: scheme.build.buildArchitectures
         )
 
         let testables: [XCScheme.TestableReference] = zip(testTargets, testBuildTargetEntries).map { testTarget, testBuildEntries in

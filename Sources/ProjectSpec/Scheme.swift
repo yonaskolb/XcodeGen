@@ -4,6 +4,7 @@ import PathKit
 import XcodeProj
 
 public typealias BuildType = XCScheme.BuildAction.Entry.BuildFor
+public typealias BuildArchitectures = XCScheme.BuildAction.Architectures
 
 public struct Scheme: Equatable {
 
@@ -101,6 +102,7 @@ public struct Scheme: Equatable {
         public static let parallelizeBuildDefault = true
         public static let buildImplicitDependenciesDefault = true
         public static let runPostActionsOnFailureDefault = false
+        public static let buildArchitecturesDefault = BuildArchitectures.useTargetSettings
 
         public var targets: [BuildTarget]
         public var parallelizeBuild: Bool
@@ -108,6 +110,7 @@ public struct Scheme: Equatable {
         public var preActions: [ExecutionAction]
         public var postActions: [ExecutionAction]
         public var runPostActionsOnFailure: Bool
+        public var buildArchitectures: BuildArchitectures
 
         public init(
             targets: [BuildTarget],
@@ -115,7 +118,8 @@ public struct Scheme: Equatable {
             buildImplicitDependencies: Bool = buildImplicitDependenciesDefault,
             preActions: [ExecutionAction] = [],
             postActions: [ExecutionAction] = [],
-            runPostActionsOnFailure: Bool = false
+            runPostActionsOnFailure: Bool = runPostActionsOnFailureDefault,
+            buildArchitectures: BuildArchitectures = buildArchitecturesDefault
         ) {
             self.targets = targets
             self.parallelizeBuild = parallelizeBuild
@@ -123,6 +127,7 @@ public struct Scheme: Equatable {
             self.preActions = preActions
             self.postActions = postActions
             self.runPostActionsOnFailure = runPostActionsOnFailure
+            self.buildArchitectures = buildArchitectures
         }
     }
 
@@ -946,6 +951,7 @@ extension Scheme.Build: JSONObjectConvertible {
         parallelizeBuild = jsonDictionary.json(atKeyPath: "parallelizeBuild") ?? Scheme.Build.parallelizeBuildDefault
         buildImplicitDependencies = jsonDictionary.json(atKeyPath: "buildImplicitDependencies") ?? Scheme.Build.buildImplicitDependenciesDefault
         runPostActionsOnFailure = jsonDictionary.json(atKeyPath: "runPostActionsOnFailure") ?? Scheme.Build.runPostActionsOnFailureDefault
+        buildArchitectures = jsonDictionary.json(atKeyPath: "buildArchitectures") ?? Scheme.Build.buildArchitecturesDefault
     }
 }
 
@@ -967,6 +973,9 @@ extension Scheme.Build: JSONEncodable {
         }
         if runPostActionsOnFailure != Scheme.Build.runPostActionsOnFailureDefault {
             dict["runPostActionsOnFailure"] = runPostActionsOnFailure
+        }
+        if buildArchitectures != Scheme.Build.buildArchitecturesDefault {
+            dict["buildArchitectures"] = buildArchitectures.toJSONValue()
         }
 
         return dict
@@ -1001,6 +1010,30 @@ extension BuildType: JSONEncodable {
         case .running: return "running"
         case .archiving: return "archiving"
         case .analyzing: return "analyzing"
+        }
+    }
+}
+
+extension BuildArchitectures: JSONUtilities.JSONPrimitiveConvertible {
+
+    public typealias JSONType = String
+
+    public static func from(jsonValue: String) -> BuildArchitectures? {
+        switch jsonValue {
+        case "matchRunDestination": return .matchRunDestination
+        case "universal": return .universal
+        case "useTargetSettings": return .useTargetSettings
+        default: return nil
+        }
+    }
+}
+
+extension BuildArchitectures: JSONEncodable {
+    public func toJSONValue() -> Any {
+        switch self {
+        case .matchRunDestination: return "matchRunDestination"
+        case .universal: return "universal"
+        case .useTargetSettings: return "useTargetSettings"
         }
     }
 }
