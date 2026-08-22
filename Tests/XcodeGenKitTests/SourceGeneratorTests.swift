@@ -84,6 +84,83 @@ class SourceGeneratorTests: XCTestCase {
                 try pbxProj.expectFile(paths: ["Sources", "A", "C2.0", "c.swift"], buildPhase: .sources)
             }
 
+            $0.it("does not reparent a top-level group discovered by a broader source") {
+                let directories = """
+                Sources:
+                  Resources:
+                    - Localizable.strings
+                """
+                try createDirectories(directories)
+
+                let resourcesTarget = Target(
+                    name: "Resources",
+                    type: .bundle,
+                    platform: .iOS,
+                    sources: ["Sources/Resources"]
+                )
+                let broadTarget = Target(
+                    name: "Broad",
+                    type: .application,
+                    platform: .iOS,
+                    sources: ["Sources"]
+                )
+                let project = Project(
+                    basePath: directoryPath,
+                    name: "Test",
+                    targets: [resourcesTarget, broadTarget]
+                )
+
+                let pbxProj = try project.generatePbxProj()
+                let mainGroup = try pbxProj.getMainGroup()
+                let resourcesGroups = pbxProj.groups.filter { $0.nameOrPath == "Resources" }
+                let resourcesGroup = try unwrap(resourcesGroups.first)
+
+                try expect(resourcesGroups.count) == 1
+                try expect(resourcesGroup.path) == "Sources/Resources"
+                try expect(mainGroup.children.contains { $0 === resourcesGroup }) == true
+                try expect(
+                    pbxProj.groups
+                        .first { $0.nameOrPath == "Sources" }?
+                        .children
+                        .contains { $0 === resourcesGroup }
+                ) == false
+            }
+
+            $0.it("preserves an explicit custom group for a top-level folder reference") {
+                let directories = """
+                Folder:
+                  - resource.txt
+                """
+                try createDirectories(directories)
+
+                let target = Target(
+                    name: "Test",
+                    type: .application,
+                    platform: .iOS,
+                    sources: [
+                        TargetSource(
+                            path: "Folder",
+                            group: "CustomGroup",
+                            type: .folder,
+                            buildPhase: BuildPhaseSpec.none
+                        ),
+                    ]
+                )
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target])
+
+                let pbxProj = try project.generatePbxProj()
+                let mainGroup = try pbxProj.getMainGroup()
+                let customGroup = try unwrap(
+                    pbxProj.groups.first { $0.nameOrPath == "CustomGroup" }
+                )
+                let folderReference = try unwrap(
+                    pbxProj.fileReferences.first { $0.nameOrPath == "Folder" }
+                )
+
+                try expect(mainGroup.children.contains { $0 === folderReference }) == true
+                try expect(customGroup.children.contains { $0 === folderReference }) == true
+            }
+
             $0.it("generates synced folder") {
                 let directories = """
                 Sources:

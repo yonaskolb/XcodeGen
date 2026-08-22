@@ -368,6 +368,12 @@ class SourceGenerator {
         if let cachedGroup = groupsByPath[path] {
             var cachedGroupChildren = cachedGroup.children
             for child in children {
+                guard !(child is PBXGroup)
+                    || (!rootGroups.contains(child)
+                        && (child.parent == nil || child.parent === cachedGroup)) else {
+                    continue
+                }
+
                 // only add the children that aren't already in the cachedGroup
                 // Variant groups with the same name may select different localizations for different
                 // targets, so only the same variant group object is a duplicate.
@@ -403,9 +409,12 @@ class SourceGenerator {
             let groupName = name ?? path.lastComponent
 
             let groupPath = resolveGroupPath(path, isTopLevelGroup: hasCustomParent || isTopLevelGroup)
+            let unattachedChildren = children.filter {
+                !($0 is PBXGroup) || (!rootGroups.contains($0) && $0.parent == nil)
+            }
 
             let group = PBXGroup(
-                children: children,
+                children: unattachedChildren,
                 sourceTree: .group,
                 name: groupName != groupPath ? groupName : nil,
                 path: groupPath
