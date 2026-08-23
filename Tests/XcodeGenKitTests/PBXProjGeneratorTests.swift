@@ -471,6 +471,29 @@ class PBXProjGeneratorTests: XCTestCase {
             XCTAssertEqual(pbxProject.attributes[lastUpgradeKey]?.stringValue, lastUpgradeValue)
         }
     }
+
+    func testNestedTargetAttributesAreGeneratedAsDictionaries() throws {
+        let target = Target(
+            name: "App",
+            type: .application,
+            platform: .iOS,
+            attributes: [
+                "SystemCapabilities": [
+                    "com.apple.HealthKit": ["enabled": 1],
+                ],
+            ]
+        )
+        let pbxProj = try Project(name: "Test", targets: [target]).generatePbxProj()
+        let pbxProject = try XCTUnwrap(pbxProj.projects.first)
+        let pbxTarget = try XCTUnwrap(pbxProject.targets.first)
+
+        XCTAssertEqual(
+            pbxProject.targetAttributes[pbxTarget]?["SystemCapabilities"],
+            .attributeDictionary([
+                "com.apple.HealthKit": ["enabled": .string("1")],
+            ])
+        )
+    }
     
     func testDefaultLastUpgradeCheckWhenUserDidNotSpecifyValue() throws {
         let lastUpgradeKey = "LastUpgradeCheck"
