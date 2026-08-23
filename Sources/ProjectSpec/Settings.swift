@@ -144,6 +144,10 @@ extension ProjectAttribute {
             self = .array(array)
         } else if let object = value as? PBXObject {
             self = .targetReference(object)
+        } else if let dictionary = value as? [String: [String: Any]] {
+            self = .attributeDictionary(
+                dictionary.mapValues { $0.mapValues { ProjectAttribute(any: $0) } }
+            )
         } else {
             self = .string("\(value)")
         }
