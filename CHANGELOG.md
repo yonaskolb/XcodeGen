@@ -1,5 +1,10 @@
 # Change Log
 
+## Unreleased
+
+### Documentation
+- Document how to add the In-App Purchase capability #1644 @Hokila
+
 ## 2.46.0
 
 ### Added
