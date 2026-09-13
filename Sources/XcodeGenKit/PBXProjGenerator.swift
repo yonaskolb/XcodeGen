@@ -1491,6 +1491,13 @@ public class PBXProjGenerator {
         var exceptions: Set<String> = Set(
             sourceGenerator.syncedFolderExceptions(for: targetSource, at: syncedPath)
                 .compactMap { try? $0.relativePath(from: syncedPath).string }
+                .map { rel in
+                    // Xcode only honors localized exclusions in the variant-group form; per-language paths are ignored.
+                    var parts = rel.split(separator: "/")
+                    guard let i = parts.firstIndex(where: { $0.hasSuffix(".lproj") }) else { return rel }
+                    parts.remove(at: i)
+                    return "/Localized: \(parts.joined(separator: "/"))"
+                }
         )
 
         for infoPlistPath in Set(infoPlistFiles.values) {
