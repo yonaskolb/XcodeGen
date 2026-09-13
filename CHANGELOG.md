@@ -8,6 +8,9 @@
 ### Changed
 - Generated schemes now default to `buildArchitectures: matchRunDestination` ("Match Run Destination"), matching Xcode's default for new schemes. Previously schemes used each target's architecture settings. Set `buildArchitectures: useTargetSettings` to keep the previous behaviour #1642 @yonaskolb
 
+### Fixed
+- Fix nested target attributes (e.g. `attributes.SystemCapabilities`) being serialized as a stringified Swift `Dictionary` description instead of a proper nested plist dictionary, which also caused non-deterministic key ordering in generated `project.pbxproj` files across runs #1639 @imadaan @sergeyospanov
+
 ## 2.46.0
 
 ### Added
