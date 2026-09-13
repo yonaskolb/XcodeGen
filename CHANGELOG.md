@@ -4,6 +4,7 @@
 
 ### Added
 - Added `buildArchitectures` to scheme build options and target schemes, to control Xcode's "Override Architectures" scheme setting #1642 @arhxam
+- Added `options.createLocalPackageGroups` (default `true`). When set to `false`, local Swift packages are referenced only via `XCLocalSwiftPackageReference` (shown under "Package Dependencies") without an additional folder/group in the navigator. #1631 @vahanbabayan-bloom
 
 ### Changed
 - Generated schemes now default to `buildArchitectures: matchRunDestination` ("Match Run Destination"), matching Xcode's default for new schemes. Previously schemes used each target's architecture settings. Set `buildArchitectures: useTargetSettings` to keep the previous behaviour #1642 @yonaskolb

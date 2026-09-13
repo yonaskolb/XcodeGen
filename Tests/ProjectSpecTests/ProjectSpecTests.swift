@@ -854,7 +854,8 @@ class ProjectSpecTests: XCTestCase {
                                                         transitivelyLinkDependencies: true,
                                                         groupSortPosition: .top,
                                                         generateEmptyDirectories: true,
-                                                        findCarthageFrameworks: false),
+                                                        findCarthageFrameworks: false,
+                                                        createLocalPackageGroups: false),
                                    fileGroups: ["foo", "bar"],
                                    configFiles: ["configFiles": "bar"],
                                    attributes: ["attributes": "bar"])
