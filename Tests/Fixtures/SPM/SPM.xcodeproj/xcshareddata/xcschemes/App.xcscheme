@@ -45,10 +45,10 @@
             parallelizable = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "XcodeGenKitTests"
-               BuildableName = "XcodeGenKitTests"
-               BlueprintName = "XcodeGenKitTests"
-               ReferencedContainer = "container:../../..">
+               BlueprintIdentifier = "LocalPackageTests"
+               BuildableName = "LocalPackageTests"
+               BlueprintName = "LocalPackageTests"
+               ReferencedContainer = "container:../LocalPackage">
             </BuildableReference>
          </TestableReference>
          <TestableReference
