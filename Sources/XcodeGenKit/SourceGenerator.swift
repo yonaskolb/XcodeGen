@@ -764,7 +764,7 @@ class SourceGenerator {
             sourceReference = group
         case .syncedFolder:
 
-            let relativePath = (try? path.relativePath(from: project.basePath)) ?? path
+            let relativePath = (try? path.relativePath(from: basePath)) ?? path
             let resolvedExplicitFolders = resolveExplicitFolders(targetSource: targetSource)
 
             let syncedRootGroup: PBXFileSystemSynchronizedRootGroup
