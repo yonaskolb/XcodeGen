@@ -8,6 +8,7 @@ public struct TargetScheme: Equatable {
     public static let stopOnEveryMainThreadCheckerIssueDefault = false
     public static let disableThreadPerformanceCheckerDefault = false
     public static let buildImplicitDependenciesDefault = true
+    public static let buildArchitecturesDefault = Scheme.Build.buildArchitecturesDefault
 
     public var testTargets: [Scheme.Test.TestTarget]
     public var configVariants: [String]
@@ -20,6 +21,7 @@ public struct TargetScheme: Equatable {
     public var stopOnEveryMainThreadCheckerIssue: Bool
     public var disableThreadPerformanceChecker: Bool
     public var buildImplicitDependencies: Bool
+    public var buildArchitectures: BuildArchitectures
     public var commandLineArguments: [String: Bool]
     public var environmentVariables: [XCScheme.EnvironmentVariable]
     public var preActions: [Scheme.ExecutionAction]
@@ -40,6 +42,7 @@ public struct TargetScheme: Equatable {
         stopOnEveryMainThreadCheckerIssue: Bool = stopOnEveryMainThreadCheckerIssueDefault,
         disableThreadPerformanceChecker: Bool = disableThreadPerformanceCheckerDefault,
         buildImplicitDependencies: Bool = buildImplicitDependenciesDefault,
+        buildArchitectures: BuildArchitectures = buildArchitecturesDefault,
         commandLineArguments: [String: Bool] = [:],
         environmentVariables: [XCScheme.EnvironmentVariable] = [],
         preActions: [Scheme.ExecutionAction] = [],
@@ -58,6 +61,7 @@ public struct TargetScheme: Equatable {
         self.stopOnEveryMainThreadCheckerIssue = stopOnEveryMainThreadCheckerIssue
         self.disableThreadPerformanceChecker = disableThreadPerformanceChecker
         self.buildImplicitDependencies = buildImplicitDependencies
+        self.buildArchitectures = buildArchitectures
         self.commandLineArguments = commandLineArguments
         self.environmentVariables = environmentVariables
         self.preActions = preActions
@@ -110,6 +114,7 @@ extension TargetScheme: JSONObjectConvertible {
         stopOnEveryMainThreadCheckerIssue = jsonDictionary.json(atKeyPath: "stopOnEveryMainThreadCheckerIssue") ?? TargetScheme.stopOnEveryMainThreadCheckerIssueDefault
         disableThreadPerformanceChecker = jsonDictionary.json(atKeyPath: "disableThreadPerformanceChecker") ?? TargetScheme.disableThreadPerformanceCheckerDefault
         buildImplicitDependencies = jsonDictionary.json(atKeyPath: "buildImplicitDependencies") ?? TargetScheme.buildImplicitDependenciesDefault
+        buildArchitectures = jsonDictionary.json(atKeyPath: "buildArchitectures") ?? TargetScheme.buildArchitecturesDefault
         commandLineArguments = jsonDictionary.json(atKeyPath: "commandLineArguments") ?? [:]
         environmentVariables = try XCScheme.EnvironmentVariable.parseAll(jsonDictionary: jsonDictionary)
         preActions = jsonDictionary.json(atKeyPath: "preActions") ?? []
@@ -153,6 +158,10 @@ extension TargetScheme: JSONEncodable {
 
         if buildImplicitDependencies != TargetScheme.buildImplicitDependenciesDefault {
             dict["buildImplicitDependencies"] = buildImplicitDependencies
+        }
+
+        if buildArchitectures != TargetScheme.buildArchitecturesDefault {
+            dict["buildArchitectures"] = buildArchitectures.toJSONValue()
         }
 
         if let language = language {

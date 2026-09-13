@@ -324,6 +324,27 @@ class ProjectGeneratorTests: XCTestCase {
                 try expect(targetAttributes[appTarget]?["DevelopmentTeam"]?.stringValue) == "123"
             }
 
+            $0.it("generates nested target attributes such as SystemCapabilities") {
+                var appTargetWithAttributes = app
+                appTargetWithAttributes.attributes = [
+                    "SystemCapabilities": [
+                        "com.apple.Push": ["enabled": 1],
+                        "com.apple.Keychain": ["enabled": 1],
+                    ],
+                ]
+                let project = Project(name: "test", targets: [appTargetWithAttributes, framework])
+                let pbxProject = try project.generatePbxProj()
+
+                let targetAttributes = try unwrap(pbxProject.projects.first?.targetAttributes)
+                let appTarget = try unwrap(pbxProject.targets(named: app.name).first)
+
+                guard case let .attributeDictionary(systemCapabilities)? = targetAttributes[appTarget]?["SystemCapabilities"] else {
+                    throw failure("Expected SystemCapabilities to be a nested attribute dictionary, not a string")
+                }
+                try expect(systemCapabilities["com.apple.Push"]?["enabled"]?.stringValue) == "1"
+                try expect(systemCapabilities["com.apple.Keychain"]?["enabled"]?.stringValue) == "1"
+            }
+
             $0.it("generates platform version") {
                 let target = Target(name: "Target", type: .application, platform: .watchOS, deploymentTarget: "2.0")
                 let project = Project(name: "", targets: [target], options: .init(deploymentTarget: DeploymentTarget(iOS: "10.0", watchOS: "3.0")))

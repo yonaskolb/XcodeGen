@@ -1,9 +1,20 @@
 # Change Log
 
-## Unreleased
+## Next Version
 
-### Documentation
-- Document how to add the In-App Purchase capability #1644 @Hokila
+### Added
+- Added `buildArchitectures` to scheme build options and target schemes, to control Xcode's "Override Architectures" scheme setting #1642 @arhxam
+- Added FAQ documentation on how to add an Xcode capability, such as In-App Purchase #1644 @Hokila
+
+### Changed
+- Generated schemes now default to `buildArchitectures: matchRunDestination` ("Match Run Destination"), matching Xcode's default for new schemes. Previously schemes used each target's architecture settings. Set `buildArchitectures: useTargetSettings` to keep the previous behaviour #1642 @yonaskolb
+
+### Fixed
+- Fix `syncedFolder` source paths being relative to the spec directory instead of the project directory when they differ, which caused Xcode to treat the synced folder as empty #1636 @Ckitakishi
+- Fix nested target attributes (e.g. `attributes.SystemCapabilities`) being serialized as a stringified Swift `Dictionary` description instead of a proper nested plist dictionary, which also caused non-deterministic key ordering in generated `project.pbxproj` files across runs #1639 @imadaan @sergeyospanov
+
+### Internal
+- Use a dedicated local package in the SPM fixture so generated fixtures don't depend on the checkout directory name, such as when running tests from a git worktree @yonaskolb
 
 ## 2.46.0
 
@@ -12,6 +23,7 @@
 
 ### Changed
 - Targets in the generated project now follow the declaration order from the source spec (Xcode sidebar, `xcodebuild -list` output). Previously they were always sorted alphabetically. Applies to both YAML and JSON specs. Declaration order is now also preserved for targets whose `platform`/`name` come from a target template and for targets whose key is a `${VARIABLE}`. #1619 @mirkokg
+- Static frameworks (`type: framework.static`, or `type: framework` with `MACH_O_TYPE: staticlib`) are now embedded by default in dependent applications and test targets, the same as dynamic frameworks. Xcode 15 and later strips the static binary from the embedded copy while keeping the framework's resources. Set `embed: false` on the dependency to keep the previous behaviour #1628 @daltonclaybrook
 
 ### Internal
 - Update to XcodeProj 9.14.0 #1629 @philprime
