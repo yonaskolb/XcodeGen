@@ -975,6 +975,7 @@ class SpecLoadingTests: XCTestCase {
                     "disableMainThreadChecker": true,
                     "stopOnEveryMainThreadCheckerIssue": true,
                     "disableThreadPerformanceChecker": true,
+                    "buildArchitectures": "universal",
                     "environmentVariables": [
                         "TEST_VAR": "TEST_VAL",
                     ],
@@ -1010,6 +1011,7 @@ class SpecLoadingTests: XCTestCase {
                     disableMainThreadChecker: true,
                     stopOnEveryMainThreadCheckerIssue: true,
                     disableThreadPerformanceChecker: true,
+                    buildArchitectures: .universal,
                     commandLineArguments: ["ENV1": true],
                     environmentVariables: [XCScheme.EnvironmentVariable(variable: "TEST_VAR", value: "TEST_VAL", enabled: true)],
                     preActions: [.init(name: "Do Thing", script: "dothing", settingsTarget: "test")],
@@ -1141,8 +1143,8 @@ class SpecLoadingTests: XCTestCase {
 
             $0.it("encodes scheme build architecture overrides") {
                 let architectureOptions: [(BuildArchitectures, String)] = [
-                    (.matchRunDestination, "matchRunDestination"),
                     (.universal, "universal"),
+                    (.useTargetSettings, "useTargetSettings"),
                 ]
 
                 for (option, expected) in architectureOptions {

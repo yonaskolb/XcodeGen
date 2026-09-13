@@ -1,10 +1,17 @@
 # Change Log
 
+## Next Version
+
+### Added
+- Added `buildArchitectures` to scheme build options and target schemes, to control Xcode's "Override Architectures" scheme setting #1642 @arhxam
+
+### Changed
+- Generated schemes now default to `buildArchitectures: matchRunDestination` ("Match Run Destination"), matching Xcode's default for new schemes. Previously schemes used each target's architecture settings. Set `buildArchitectures: useTargetSettings` to keep the previous behaviour #1642 @yonaskolb
+
 ## 2.46.0
 
 ### Added
 - Added support for Swift package `traits` on remote and local package references, so generated projects preserve the configured trait selections #1629 @philprime
-- Added scheme build architecture overrides #1642 @arhxam
 
 ### Changed
 - Targets in the generated project now follow the declaration order from the source spec (Xcode sidebar, `xcodebuild -list` output). Previously they were always sorted alphabetically. Applies to both YAML and JSON specs. Declaration order is now also preserved for targets whose `platform`/`name` come from a target template and for targets whose key is a `${VARIABLE}`. #1619 @mirkokg

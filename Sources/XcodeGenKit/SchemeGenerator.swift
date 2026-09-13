@@ -489,7 +489,8 @@ extension Scheme {
                 targets: Scheme.buildTargets(for: target, project: project),
                 buildImplicitDependencies: targetScheme.buildImplicitDependencies,
                 preActions: targetScheme.preActions,
-                postActions: targetScheme.postActions
+                postActions: targetScheme.postActions,
+                buildArchitectures: targetScheme.buildArchitectures
             ),
             run: .init(
                 config: debugConfig,

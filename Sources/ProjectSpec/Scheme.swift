@@ -102,7 +102,7 @@ public struct Scheme: Equatable {
         public static let parallelizeBuildDefault = true
         public static let buildImplicitDependenciesDefault = true
         public static let runPostActionsOnFailureDefault = false
-        public static let buildArchitecturesDefault = BuildArchitectures.useTargetSettings
+        public static let buildArchitecturesDefault = BuildArchitectures.matchRunDestination
 
         public var targets: [BuildTarget]
         public var parallelizeBuild: Bool
