@@ -893,6 +893,7 @@ This is a convenience used to automatically generate schemes for a target based 
 - [ ] **stopOnEveryMainThreadCheckerIssue**: **Bool** - a boolean that indicates if this scheme should stop at every Main Thread Checker issue. This defaults to false
 - [ ] **disableThreadPerformanceChecker**: **Bool** - a boolean that indicates if this scheme should disable the Thread Performance Checker. This defaults to false
 - [ ] **buildImplicitDependencies**: **Bool** - Flag to determine if Xcode should build implicit dependencies of this scheme. By default this is `true` if not set.
+- [ ] **buildArchitectures**: **String** - Overrides the architectures built for all targets in the scheme. Supported values are `matchRunDestination`, `universal`, and `useTargetSettings`. By default this is `matchRunDestination` if not set. See [Build](#build) for details.
 - [ ] **language**: **String** - a String that indicates the language used for running and testing. This defaults to nil
 - [ ] **region**: **String** - a String that indicates the region used for running and testing. This defaults to nil
 - [ ] **commandLineArguments**: **[String:Bool]** - a dictionary from the argument name (`String`) to if it is enabled (`Bool`). These arguments will be added to the Test, Profile and Run scheme actions
@@ -1019,6 +1020,10 @@ Schemes allows for more control than the convenience [Target Scheme](#target-sch
 - [ ] **runPostActionsOnFailure**: **Bool** - Flag to determine if Xcode should run post scripts despite failure build. By default this is `false` if not set.
 - `true`: Run post scripts even if build is failed
 - `false`: Only run post scripts if build success
+- [ ] **buildArchitectures**: **String** - Overrides the architectures built for all targets in the scheme. This is the "Override Architectures" build option in Xcode's scheme editor. By default this is `matchRunDestination` if not set, which matches Xcode's default for new schemes.
+  - `matchRunDestination`: Only build the architecture of the run destination ("Match Run Destination")
+  - `universal`: Build all standard architectures ("Universal")
+  - `useTargetSettings`: Use the architecture build settings of each target, such as `ONLY_ACTIVE_ARCH` ("Use Target Settings")
 
 
 ```yaml
@@ -1027,6 +1032,7 @@ targets:
   FooLib/FooTarget: [test, run]
 parallelizeBuild: true
 buildImplicitDependencies: true
+buildArchitectures: matchRunDestination
 ```
 
 ### Common Build Action options
