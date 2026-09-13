@@ -1,5 +1,13 @@
 # Change Log
 
+## Next Version
+
+### Added
+- Added `buildArchitectures` to scheme build options and target schemes, to control Xcode's "Override Architectures" scheme setting #1642 @arhxam
+
+### Changed
+- Generated schemes now default to `buildArchitectures: matchRunDestination` ("Match Run Destination"), matching Xcode's default for new schemes. Previously schemes used each target's architecture settings. Set `buildArchitectures: useTargetSettings` to keep the previous behaviour #1642 @yonaskolb
+
 ## 2.46.0
 
 ### Added
