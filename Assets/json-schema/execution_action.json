@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "XcodeGen Execution Action Object",
+  "description": "Scheme run scripts added via preActions or postActions. They run before or after a build action, respectively, and in the order defined. ",
+  "type": "object",
+  "properties": {
+    "script": {
+      "description": "an inline shell script",
+      "type": "string"
+    },
+    "name": {
+      "description": "name of a script. Defaults to Run Script",
+      "type": "string"
+    },
+    "settingsTarget": {
+      "description": "name of a build or test target whose settings will be available as environment variables.",
+      "type": "string"
+    }
+  }
+}

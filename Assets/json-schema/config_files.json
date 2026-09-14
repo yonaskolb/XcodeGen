@@ -1,0 +1,7 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "XcodeGen Config Files Object",
+  "description": "XcodeGen Config Files Object.\n https://github.com/yonaskolb/XcodeGen/blob/master/Docs/ProjectSpec.md#config-files",
+  "type": "object",
+  "minProperties": 1
+}

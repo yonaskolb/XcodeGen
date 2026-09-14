@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "XcodeGen GroupOrdering Object",
+  "description": "XcodeGen GroupOrdering Object.\n https://github.com/yonaskolb/XcodeGen/blob/master/Docs/ProjectSpec.md#groupOrdering",
+  "type": "object",
+  "properties": {
+    "pattern": {
+      "description": "A group name pattern. Can be just a single string and also can be a regex pattern. Optional option, if you don't set it, it will pattern for the main group, i.e. the project.",
+      "type": "string",
+      "examples": ["^.*Screen$"]
+    },
+    "order": {
+      "description": "An order of groups.",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minItems": 1,
+        "uniqueItems": true
+      }
+    }
+  }
+}

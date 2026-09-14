@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "XcodeGen Sources Object",
+  "description": "Source directories of the target\nhttps://github.com/yonaskolb/XcodeGen/blob/master/Docs/ProjectSpec.md#sources",
+  "properties": {
+    "path": {
+      "description": "The path to the source file or directory.",
+      "type": "string"
+    },
+    "name": {
+      "description": "Can be used to override the name of the source file or directory. By default the last component of the path is used for the name",
+      "type": "string"
+    },
+    "group": {
+      "description": "Can be used to override the parent group of the source file or directory. By default a group is created at the root with the name of this source file or directory or intermediate groups are created if createIntermediateGroups is set to true. Multiple groups can be created by separating each one using a /. If multiple target sources share the same group, they will be put together in the same parent group.",
+      "type": "string"
+    },
+    "compilerFlags": {
+      "description": "A list of compilerFlags to add to files under this specific path provided as a list or a space delimited string. Defaults to empty.",
+      "oneOf": [
+        { "type": "string" },
+        { "type": "array", "items": { "type": "string" } }
+      ]
+    },
+    "excludes": {
+      "description": "A list of global patterns representing the files to exclude. These rules are relative to path and not the directory where project.yml resides. XcodeGen uses Bash 4's Glob behaviors where globstar (**) is enabled."
+    },
+    "includes": {
+      "description": "A list of global patterns in the same format as excludes representing the files to include. These rules are relative to path and not the directory where project.yml resides. If excludes is present and file conflicts with includes, excludes will override the includes behavior.",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minItems": 1
+      }
+    },
+    "createIntermediateGroups": {
+      "description": "This overrides the value in Options",
+      "type": "boolean"
+    },
+    "optional": {
+      "description": "Disable missing path check. Defaults to false.",
+      "type": "boolean",
+      "default": false
+    },
+    "buildPhase": {
+      "description": "This manually sets the build phase this file or files in this directory will be added to, otherwise XcodeGen will guess based on the file extension. Note that Info.plist files will never be added to any build phases, no matter what this setting is",
+      "oneOf": [
+        {
+          "type": "string",
+          "patternProperties": {
+            "copyFiles": { "type": "object" }
+          },
+          "enum": ["sources", "resources", "headers", "copyFiles", "none"],
+          "examples": ["sources", "resources", "headers", "copyFiles", "none"]
+        },
+        {
+          "type": "object",
+          "properties": {
+            "copyFiles": { "type": "object" }
+          }
+        }
+      ]
+    },
+    "type": {
+      "description": "This can be one of the following values",
+      "type": "string",
+      "enum": ["file", "group", "folder"],
+      "examples": ["file", "group", "folder"]
+    },
+    "headerVisibility": {
+      "description": "The visibility of any headers. This defaults to public",
+      "default": "public",
+      "enum": ["public", "private", "project"],
+      "examples": ["public", "private", "project"]
+    },
+    "attributes": {
+      "description": "Additional settings attributes that will be applied to any build files."
+    },
+    "resourceTags": {
+      "description": "On Demand Resource Tags that will be applied to any resources. This also adds to the project attribute's knownAssetTags"
+    }
+  },
+  "required": ["path"]
+}
