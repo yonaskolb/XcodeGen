@@ -11,6 +11,7 @@
 
 ### Fixed
 - Fix `syncedFolder` source paths being relative to the spec directory instead of the project directory when they differ, which caused Xcode to treat the synced folder as empty #1636 @Ckitakishi
+- Fix `destinationFilters` and `inferDestinationFiltersByPath` being ignored for `syncedFolder` sources. They are now written as `platformFiltersByRelativePath` on the synced folder's exception set #1647 @anandghegde
 - Fix nested target attributes (e.g. `attributes.SystemCapabilities`) being serialized as a stringified Swift `Dictionary` description instead of a proper nested plist dictionary, which also caused non-deterministic key ordering in generated `project.pbxproj` files across runs #1639 @imadaan @sergeyospanov
 
 ### Internal

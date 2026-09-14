@@ -841,6 +841,18 @@
 			);
 			target = 0867B0DACEF28C11442DE8F7 /* App_iOS */;
 		};
+		9A8E6A7891C068692E5463B2 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			platformFiltersByRelativePath = {
+				SyncedFile_iOS.swift = (
+					ios,
+				);
+				SyncedFile_tvOS.swift = (
+					tvos,
+				);
+			};
+			target = C0570E2FB50D830D8D423396 /* App_supportedDestinations */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -867,6 +879,19 @@
 				FeatureBTests,
 			);
 			path = SyncedFolder;
+			sourceTree = "<group>";
+		};
+		E55B4EB82638DF874A0308EC /* SyncedSources */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				9A8E6A7891C068692E5463B2 /* PBXFileSystemSynchronizedBuildFileExceptionSet */,
+			);
+			explicitFileTypes = {
+			};
+			explicitFolders = (
+			);
+			name = SyncedSources;
+			path = SyncedSources;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -1448,6 +1473,7 @@
 			children = (
 				85FEBB7D2103B020423407A2 /* Sources */,
 				69C61547C081D04364A5DE42 /* Storyboards */,
+				E55B4EB82638DF874A0308EC /* SyncedSources */,
 			);
 			path = App_supportedDestinations;
 			sourceTree = "<group>";
@@ -2280,6 +2306,9 @@
 			buildRules = (
 			);
 			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				E55B4EB82638DF874A0308EC /* SyncedSources */,
 			);
 			name = App_supportedDestinations;
 			packageProductDependencies = (

@@ -1,0 +1,1 @@
+let syncedPlatformName = "tvOS"
