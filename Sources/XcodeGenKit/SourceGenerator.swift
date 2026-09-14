@@ -433,6 +433,32 @@ class SourceGenerator {
         return exceptions
     }
 
+    /// Returns the platform filters for each file in a synced folder, keyed by path relative to the synced folder.
+    /// Xcode only honors file paths in `platformFiltersByRelativePath`, so directories are expanded into their files.
+    func syncedFolderPlatformFilters(for targetSource: TargetSource, at syncedPath: Path) -> [String: [String]] {
+        guard targetSource.destinationFilters?.isEmpty == false || targetSource.inferDestinationFiltersByPath == true else {
+            return [:]
+        }
+
+        var platformFilters: [String: [String]] = [:]
+
+        func findFiles(in path: Path) {
+            guard let children = try? path.children() else { return }
+
+            for child in children where !child.lastComponent.hasPrefix(".") {
+                if child.isDirectory && !Xcode.isDirectoryFileWrapper(path: child) {
+                    findFiles(in: child)
+                } else if let filters = makeDestinationFilters(for: child, with: targetSource.destinationFilters, or: targetSource.inferDestinationFiltersByPath),
+                          let relativePath = try? child.relativePath(from: syncedPath) {
+                    platformFilters[relativePath.string] = filters
+                }
+            }
+        }
+
+        findFiles(in: syncedPath)
+        return platformFilters
+    }
+
     /// Collects all the excluded paths within the targetSource
     private func getSourceMatches(targetSource: TargetSource, patterns: [String]) -> Set<Path> {
         let rootSourcePath = project.basePath + targetSource.path
