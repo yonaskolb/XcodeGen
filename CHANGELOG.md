@@ -25,6 +25,9 @@
 - Targets in the generated project now follow the declaration order from the source spec (Xcode sidebar, `xcodebuild -list` output). Previously they were always sorted alphabetically. Applies to both YAML and JSON specs. Declaration order is now also preserved for targets whose `platform`/`name` come from a target template and for targets whose key is a `${VARIABLE}`. #1619 @mirkokg
 - Static frameworks (`type: framework.static`, or `type: framework` with `MACH_O_TYPE: staticlib`) are now embedded by default in dependent applications and test targets, the same as dynamic frameworks. Xcode 15 and later strips the static binary from the embedded copy while keeping the framework's resources. Set `embed: false` on the dependency to keep the previous behaviour #1628 @daltonclaybrook
 
+### Fixed
+- Apply per-platform deployment targets to targets using `supportedDestinations` #1641 @arhxam
+
 ### Internal
 - Update to XcodeProj 9.14.0 #1629 @philprime
 

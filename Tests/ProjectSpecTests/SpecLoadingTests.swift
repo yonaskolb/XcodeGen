@@ -695,6 +695,26 @@ class SpecLoadingTests: XCTestCase {
                 try expect(project.targets) == [target]
                 try expect(project.targets.first?.supportedDestinations) == [.macCatalyst, .iOS]
             }
+
+            $0.it("encodes per-platform deployment targets") {
+                let deploymentTargets = DeploymentTarget(
+                    iOS: Version(major: 18, minor: 0, patch: 0),
+                    macOS: Version(major: 15, minor: 0, patch: 0)
+                )
+                let target = Target(
+                    name: "Framework",
+                    type: .framework,
+                    platform: .auto,
+                    supportedDestinations: [.iOS, .macOS],
+                    deploymentTargets: deploymentTargets
+                )
+
+                let targetJSON = target.toJSONValue() as! [String: Any?]
+                let deploymentTargetJSON = targetJSON["deploymentTarget"] as! [String: String?]
+
+                try expect(deploymentTargetJSON["iOS"]!) == "18.0.0"
+                try expect(deploymentTargetJSON["macOS"]!) == "15.0.0"
+            }
             
             $0.it("invalid target platform because platform is an array and supported destinations is in use") {
                 let expectedError = SpecParsingError.invalidTargetPlatformAsArray
