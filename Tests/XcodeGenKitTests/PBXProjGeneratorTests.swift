@@ -507,6 +507,30 @@ class PBXProjGeneratorTests: XCTestCase {
         }
     }
 
+    func testDefaultProjectFormat() throws {
+        let project = Project(name: "Test")
+
+        let pbxProj = try PBXProjGenerator(project: project).generate()
+        let pbxProject = try XCTUnwrap(pbxProj.rootObject)
+
+        XCTAssertEqual(project.projectFormat, .xcode16_0)
+        XCTAssertEqual(pbxProj.objectVersion, 77)
+        XCTAssertEqual(pbxProject.preferredProjectObjectVersion, 77)
+        XCTAssertNil(pbxProject.compatibilityVersion)
+    }
+
+    func testXcode26_3ProjectFormat() throws {
+        let project = Project(name: "Test", options: SpecOptions(projectFormat: "xcode26_3"))
+
+        let pbxProj = try PBXProjGenerator(project: project).generate()
+        let pbxProject = try XCTUnwrap(pbxProj.rootObject)
+
+        XCTAssertEqual(project.projectFormat, .xcode26_3)
+        XCTAssertEqual(pbxProj.objectVersion, 100)
+        XCTAssertEqual(pbxProject.preferredProjectObjectVersion, 100)
+        XCTAssertNil(pbxProject.compatibilityVersion)
+    }
+
     func testProductsGroupIsSet() throws {
         let target = Target(name: "TestApp", type: .application, platform: .iOS)
         let project = Project(name: "Test", targets: [target])
