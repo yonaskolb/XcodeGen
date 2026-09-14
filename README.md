@@ -74,6 +74,24 @@ targets:
 ```
 A project would be created with 2 connected targets, with all the required configurations and build settings. See the [Project Spec](Docs/ProjectSpec.md) documentation for all the options you can specify, and [Usage](Docs/Usage.md) for more general documentation.
 
+## Schema validation
+
+XcodeGen provides a JSON Schema for validating project specs and enabling editor features such as code completion. Reference the latest schema in a YAML project spec with:
+
+```yaml
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yonaskolb/XcodeGen/master/schema/xcodegen.schema.json
+name: MyProject
+```
+
+For a JSON project spec, use the `$schema` property:
+
+```json
+{
+  "$schema": "https://raw.githubusercontent.com/yonaskolb/XcodeGen/master/schema/xcodegen.schema.json",
+  "name": "MyProject"
+}
+```
+
 ## Installing
 
 Make sure the latest stable (non-beta) version of Xcode is installed first.
