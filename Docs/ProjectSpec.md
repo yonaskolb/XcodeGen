@@ -134,6 +134,7 @@ Note that target names can also be changed by adding a `name` property to a targ
 - [ ] **tabWidth**: **Int** - If this is specified, the Xcode project will override the user's setting for indent width in number of spaces.
 - [ ] **xcodeVersion**: **String** - The version of Xcode. This defaults to the latest version periodically. You can specify it in the format `0910` or `9.1`
 - [ ] **projectFormat**: **String** - The version of Xcode project. By default this is set to `xcode16_0`
+  - `xcode26_3`: Xcode 26.3
   - `xcode16_3`: Xcode 16.3
   - `xcode16_0`: Xcode 16.0
   - `xcode15_3`: Xcode 15.3
