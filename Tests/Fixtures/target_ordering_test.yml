@@ -1,0 +1,14 @@
+name: TargetOrdering
+targets:
+  Zebra:
+    type: framework
+    platform: iOS
+  Apple:
+    type: framework
+    platform: iOS
+  Mango:
+    type: framework
+    platform: iOS
+  Banana:
+    type: framework
+    platform: iOS

@@ -59,21 +59,20 @@ extension PBXProductType {
 
     /// Function to determine when a dependendency should be embedded into the target
     public func shouldEmbed(_ dependencyTarget: Target) -> Bool {
-        switch dependencyTarget.defaultLinkage {
-        case .static:
-            // Static dependencies should never embed
+        guard dependencyTarget.defaultLinkage != .static || dependencyTarget.type.isFramework else {
+            // Non-framework static dependencies should never embed
             return false
-        case .dynamic, .none:
-            if isApp {
-                // If target is an app, all dependencies should be embed (unless they're static)
-                return true
-            } else if isTest, [.framework, .bundle].contains(dependencyTarget.type) {
-                // If target is test, some dependencies should be embed (depending on their type)
-                return true
-            } else {
-                // If none of the above, do not embed the dependency
-                return false
-            }
+        }
+
+        if isApp {
+            // If target is an app, all dependencies should be embed (unless they're static)
+            return true
+        } else if isTest, [.framework, .staticFramework, .bundle].contains(dependencyTarget.type) {
+            // If target is test, some dependencies should be embed (depending on their type)
+            return true
+        } else {
+            // If none of the above, do not embed the dependency
+            return false
         }
     }
 }

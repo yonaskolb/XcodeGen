@@ -102,6 +102,27 @@ class SourceGeneratorTests: XCTestCase {
                 try expect([syncedFolder]) == pbxProj.nativeTargets.first?.fileSystemSynchronizedGroups
             }
 
+            $0.it("generates synced folder with different projectDirectory") {
+                let directories = """
+                SubDir:
+                  Sources:
+                    - a.swift
+                """
+                try createDirectories(directories)
+
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: [.init(path: "Sources", type: .syncedFolder)])
+                let project = Project(basePath: directoryPath + "SubDir", name: "Test", targets: [target])
+
+                let generator = PBXProjGenerator(project: project, projectDirectory: directoryPath)
+                let pbxProj = try generator.generate()
+
+                let syncedFolders = try pbxProj.getMainGroup().children.compactMap { $0 as? PBXFileSystemSynchronizedRootGroup }
+                let syncedFolder = try unwrap(syncedFolders.first)
+
+                try expect(syncedFolder.path) == "SubDir/Sources"
+                try expect([syncedFolder]) == pbxProj.nativeTargets.first?.fileSystemSynchronizedGroups
+            }
+
             $0.it("generates synced folder with explicitFolders") {
                 let directories = """
                 Sources:

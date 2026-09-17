@@ -167,12 +167,12 @@ public class PBXProjGenerator {
 
         for (name, package) in project.packages {
             switch package {
-            case let .remote(url, versionRequirement):
-                let packageReference = XCRemoteSwiftPackageReference(repositoryURL: url, versionRequirement: versionRequirement)
+            case let .remote(url, versionRequirement, traits):
+                let packageReference = XCRemoteSwiftPackageReference(repositoryURL: url, versionRequirement: versionRequirement, traits: traits)
                 packageReferences[name] = packageReference
                 addObject(packageReference)
-            case let .local(path, group, excludeFromProject):
-                let packageReference = XCLocalSwiftPackageReference(relativePath: path)
+            case let .local(path, group, excludeFromProject, traits):
+                let packageReference = XCLocalSwiftPackageReference(relativePath: path, traits: traits)
                 localPackageReferences[name] = packageReference
 
                 if !excludeFromProject {
@@ -322,9 +322,9 @@ public class PBXProjGenerator {
         pbxProject.remotePackages = packageReferences.sorted { $0.key < $1.key }.map { $1 }
         pbxProject.localPackages = localPackageReferences.sorted { $0.key < $1.key }.map { $1 }
 
-        let allTargets: [PBXTarget] = targetObjects.valueArray + targetAggregateObjects.valueArray
-        pbxProject.targets = allTargets
-            .sorted { $0.name < $1.name }
+        let orderedNativeTargets: [PBXTarget] = project.targets.compactMap { targetObjects[$0.name] }
+        let orderedAggregateTargets: [PBXTarget] = project.aggregateTargets.compactMap { targetAggregateObjects[$0.name] }
+        pbxProject.targets = orderedNativeTargets + orderedAggregateTargets
         pbxProject.attributes = projectAttributes
         pbxProject.targetAttributes = generateTargetAttributes()
         return pbxProj

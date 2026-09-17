@@ -396,7 +396,55 @@ class PBXProjGeneratorTests: XCTestCase {
             }
         }
     }
-    
+
+    func testTargetOrdering() {
+        describe {
+            $0.it("honors declaration order in the generated pbxproj") {
+                let project = try Project(
+                    jsonDictionary: [
+                        "name": "Test",
+                        "targets": [
+                            "A": ["type": "framework", "platform": "iOS"],
+                            "B": ["type": "framework", "platform": "iOS"],
+                            "C": ["type": "framework", "platform": "iOS"],
+                        ],
+                    ],
+                    targetDeclarationOrder: ["C", "A", "B"]
+                )
+
+                let pbxProj = try project.generatePbxProj()
+                let targetNames = pbxProj.projects.first?.targets.map { $0.name }
+                try expect(targetNames) == ["C", "A", "B"]
+            }
+
+            $0.it("preserves the order of targets in a programmatically-built project") {
+                let c = Target(name: "C", type: .framework, platform: .iOS)
+                let a = Target(name: "A", type: .framework, platform: .iOS)
+                let b = Target(name: "B", type: .framework, platform: .iOS)
+                let project = Project(name: "Test", targets: [c, a, b])
+
+                let pbxProj = try project.generatePbxProj()
+                let targetNames = pbxProj.projects.first?.targets.map { $0.name }
+                try expect(targetNames) == ["C", "A", "B"]
+            }
+
+            $0.it("places aggregate targets after native targets") {
+                let app = Target(name: "App", type: .application, platform: .iOS)
+                let framework = Target(name: "Framework", type: .framework, platform: .iOS)
+                let aggregate = AggregateTarget(name: "Agg", targets: ["App"])
+                let project = Project(
+                    name: "Test",
+                    targets: [app, framework],
+                    aggregateTargets: [aggregate]
+                )
+
+                let pbxProj = try project.generatePbxProj()
+                let targetNames = pbxProj.projects.first?.targets.map { $0.name }
+                try expect(targetNames) == ["App", "Framework", "Agg"]
+            }
+        }
+    }
+
     func testDefaultLastUpgradeCheckWhenUserDidSpecifyInvalidValue() throws {
         let lastUpgradeKey = "LastUpgradeCheck"
         let attributes: [String: Any] = [lastUpgradeKey: 1234]
@@ -422,6 +470,29 @@ class PBXProjGeneratorTests: XCTestCase {
         for pbxProject in pbxProj.projects {
             XCTAssertEqual(pbxProject.attributes[lastUpgradeKey]?.stringValue, lastUpgradeValue)
         }
+    }
+
+    func testNestedTargetAttributesAreGeneratedAsDictionaries() throws {
+        let target = Target(
+            name: "App",
+            type: .application,
+            platform: .iOS,
+            attributes: [
+                "SystemCapabilities": [
+                    "com.apple.HealthKit": ["enabled": 1],
+                ],
+            ]
+        )
+        let pbxProj = try Project(name: "Test", targets: [target]).generatePbxProj()
+        let pbxProject = try XCTUnwrap(pbxProj.projects.first)
+        let pbxTarget = try XCTUnwrap(pbxProject.targets.first)
+
+        XCTAssertEqual(
+            pbxProject.targetAttributes[pbxTarget]?["SystemCapabilities"],
+            .attributeDictionary([
+                "com.apple.HealthKit": ["enabled": .string("1")],
+            ])
+        )
     }
     
     func testDefaultLastUpgradeCheckWhenUserDidNotSpecifyValue() throws {

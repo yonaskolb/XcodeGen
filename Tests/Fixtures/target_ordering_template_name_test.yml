@@ -1,0 +1,12 @@
+name: TargetOrderingTemplateName
+targets:
+  Zebra:
+    type: framework
+    platform: iOS
+    templates: [Renamed]
+  Apple:
+    type: framework
+    platform: iOS
+targetTemplates:
+  Renamed:
+    name: Zulu

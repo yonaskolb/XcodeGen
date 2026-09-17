@@ -74,6 +74,7 @@ class SchemeGeneratorTests: XCTestCase {
                 try expect(xcscheme.buildAction?.buildImplicitDependencies) == true
                 try expect(xcscheme.buildAction?.parallelizeBuild) == true
                 try expect(xcscheme.buildAction?.runPostActionsOnFailure) == false
+                try expect(xcscheme.buildAction?.buildArchitectures) == .matchRunDestination
                 try expect(xcscheme.buildAction?.preActions.first?.title) == "Script"
                 try expect(xcscheme.buildAction?.preActions.first?.scriptText) == "echo Starting"
                 try expect(xcscheme.buildAction?.preActions.first?.environmentBuildable?.buildableName) == "MyApp.app"
@@ -123,6 +124,28 @@ class SchemeGeneratorTests: XCTestCase {
                 
                 try expect(xcscheme.testAction?.testables[1].locationScenarioReference?.referenceType) == "1"
                 try expect(xcscheme.testAction?.testables[1].locationScenarioReference?.identifier) == "New York, NY, USA"
+            }
+
+            $0.it("generates scheme build architecture overrides") {
+                let architectureOptions: [(String, XCScheme.BuildAction.Architectures)] = [
+                    ("matchRunDestination", .matchRunDestination),
+                    ("universal", .universal),
+                    ("useTargetSettings", .useTargetSettings),
+                ]
+
+                for (option, expected) in architectureOptions {
+                    let scheme = try Scheme(name: "MyScheme", jsonDictionary: [
+                        "build": [
+                            "targets": [app.name: "all"],
+                            "buildArchitectures": option,
+                        ],
+                    ])
+                    let project = Project(name: "test", targets: [app, framework], schemes: [scheme])
+                    let xcodeProject = try project.generateXcodeProject()
+                    let xcscheme = try unwrap(xcodeProject.sharedData?.schemes.first)
+
+                    try expect(xcscheme.buildAction?.buildArchitectures) == expected
+                }
             }
 
             let frameworkTarget = Scheme.BuildTarget(target: .local(framework.name), buildTypes: [.archiving])
@@ -329,6 +352,21 @@ class SchemeGeneratorTests: XCTestCase {
 
                 try expect(xcscheme.launchAction?.preActions.count) == 0
                 try expect(xcscheme.testAction?.postActions.count) == 0
+            }
+
+            $0.it("generates build architectures for target schemes") {
+                let architectureOptions: [BuildArchitectures?] = [nil, .universal, .useTargetSettings]
+
+                for option in architectureOptions {
+                    var target = app
+                    target.scheme = option.map { TargetScheme(buildArchitectures: $0) } ?? TargetScheme()
+
+                    let project = Project(name: "test", targets: [target, framework])
+                    let xcodeProject = try project.generateXcodeProject()
+                    let xcscheme = try unwrap(xcodeProject.sharedData?.schemes.first)
+
+                    try expect(xcscheme.buildAction?.buildArchitectures) == option ?? .matchRunDestination
+                }
             }
 
             $0.it("generates target schemes with code coverage options") {

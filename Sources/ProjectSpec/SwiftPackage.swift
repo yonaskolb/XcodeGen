@@ -9,8 +9,8 @@ public enum SwiftPackage: Equatable {
 
     static let githubPrefix = "https://github.com/"
 
-    case remote(url: String, versionRequirement: VersionRequirement)
-    case local(path: String, group: String?, excludeFromProject: Bool)
+    case remote(url: String, versionRequirement: VersionRequirement, traits: [String]? = nil)
+    case local(path: String, group: String?, excludeFromProject: Bool, traits: [String]? = nil)
 
     public var isLocal: Bool {
         if case .local = self {
@@ -23,10 +23,17 @@ public enum SwiftPackage: Equatable {
 extension SwiftPackage: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
+        var traits: [String]?
+        if jsonDictionary["traits"] != nil {
+            // Need to assign the trait to a non-optional variable first to resolve method overloading ambiguity
+            let decodedTraits: [String] = try jsonDictionary.json(atKeyPath: "traits", invalidItemBehaviour: .fail)
+            traits = decodedTraits
+        }
+
         if let path: String = jsonDictionary.json(atKeyPath: "path") {
             let customLocation: String? = jsonDictionary.json(atKeyPath: "group")
             let excludeFromProject: Bool = jsonDictionary.json(atKeyPath: "excludeFromProject") ?? false
-            self = .local(path: path, group: customLocation, excludeFromProject: excludeFromProject)
+            self = .local(path: path, group: customLocation, excludeFromProject: excludeFromProject, traits: traits)
         } else {
             let versionRequirement: VersionRequirement = try VersionRequirement(jsonDictionary: jsonDictionary)
             try Self.validateVersion(versionRequirement: versionRequirement)
@@ -37,7 +44,7 @@ extension SwiftPackage: JSONObjectConvertible {
             } else {
                 url = try jsonDictionary.json(atKeyPath: "url")
             }
-            self = .remote(url: url, versionRequirement: versionRequirement)
+            self = .remote(url: url, versionRequirement: versionRequirement, traits: traits)
         }
     }
 
@@ -68,7 +75,7 @@ extension SwiftPackage: JSONEncodable {
     public func toJSONValue() -> Any {
         var dictionary: JSONDictionary = [:]
         switch self {
-        case .remote(let url, let versionRequirement):
+        case .remote(let url, let versionRequirement, let traits):
             if url.hasPrefix(Self.githubPrefix) {
                 dictionary["github"] = url.replacingOccurrences(of: Self.githubPrefix, with: "")
             } else {
@@ -91,11 +98,18 @@ extension SwiftPackage: JSONEncodable {
             case .revision(let revision):
                 dictionary["revision"] = revision
             }
+
+            if let traits {
+                dictionary["traits"] = traits
+            }
             return dictionary
-        case let .local(path, group, excludeFromProject):
+        case let .local(path, group, excludeFromProject, traits):
             dictionary["path"] = path
             dictionary["group"] = group
             dictionary["excludeFromProject"] = excludeFromProject
+            if let traits {
+                dictionary["traits"] = traits
+            }
         }
 
         return dictionary

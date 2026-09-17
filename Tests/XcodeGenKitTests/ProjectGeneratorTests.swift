@@ -324,6 +324,27 @@ class ProjectGeneratorTests: XCTestCase {
                 try expect(targetAttributes[appTarget]?["DevelopmentTeam"]?.stringValue) == "123"
             }
 
+            $0.it("generates nested target attributes such as SystemCapabilities") {
+                var appTargetWithAttributes = app
+                appTargetWithAttributes.attributes = [
+                    "SystemCapabilities": [
+                        "com.apple.Push": ["enabled": 1],
+                        "com.apple.Keychain": ["enabled": 1],
+                    ],
+                ]
+                let project = Project(name: "test", targets: [appTargetWithAttributes, framework])
+                let pbxProject = try project.generatePbxProj()
+
+                let targetAttributes = try unwrap(pbxProject.projects.first?.targetAttributes)
+                let appTarget = try unwrap(pbxProject.targets(named: app.name).first)
+
+                guard case let .attributeDictionary(systemCapabilities)? = targetAttributes[appTarget]?["SystemCapabilities"] else {
+                    throw failure("Expected SystemCapabilities to be a nested attribute dictionary, not a string")
+                }
+                try expect(systemCapabilities["com.apple.Push"]?["enabled"]?.stringValue) == "1"
+                try expect(systemCapabilities["com.apple.Keychain"]?["enabled"]?.stringValue) == "1"
+            }
+
             $0.it("generates platform version") {
                 let target = Target(name: "Target", type: .application, platform: .watchOS, deploymentTarget: "2.0")
                 let project = Project(name: "", targets: [target], options: .init(deploymentTarget: DeploymentTarget(iOS: "10.0", watchOS: "3.0")))
@@ -982,8 +1003,8 @@ class ProjectGeneratorTests: XCTestCase {
                 }
             }
             
-            $0.it("ensures static frameworks are not embedded by default") {
-                
+            $0.it("ensures static frameworks are embedded by default") {
+
                 let app = Target(
                     name: "App",
                     type: .application,
@@ -992,9 +1013,9 @@ class ProjectGeneratorTests: XCTestCase {
                         Dependency(type: .target, reference: "DynamicFramework"),
                         Dependency(type: .target, reference: "DynamicFrameworkNotEmbedded", embed: false),
                         Dependency(type: .target, reference: "StaticFramework"),
-                        Dependency(type: .target, reference: "StaticFrameworkExplicitlyEmbedded", embed: true),
+                        Dependency(type: .target, reference: "StaticFrameworkNotEmbedded", embed: false),
                         Dependency(type: .target, reference: "StaticFramework2"),
-                        Dependency(type: .target, reference: "StaticFramework2ExplicitlyEmbedded", embed: true),
+                        Dependency(type: .target, reference: "StaticFramework2NotEmbedded", embed: false),
                         Dependency(type: .target, reference: "StaticLibrary"),
                     ]
                 )
@@ -1018,7 +1039,7 @@ class ProjectGeneratorTests: XCTestCase {
                         settings: Settings(buildSettings: ["MACH_O_TYPE": "staticlib"])
                     ),
                     Target(
-                        name: "StaticFrameworkExplicitlyEmbedded",
+                        name: "StaticFrameworkNotEmbedded",
                         type: .framework,
                         platform: .iOS,
                         settings: Settings(buildSettings: ["MACH_O_TYPE": "staticlib"])
@@ -1029,7 +1050,7 @@ class ProjectGeneratorTests: XCTestCase {
                         platform: .iOS
                     ),
                     Target(
-                        name: "StaticFramework2ExplicitlyEmbedded",
+                        name: "StaticFramework2NotEmbedded",
                         type: .staticFramework,
                         platform: .iOS
                     ),
@@ -1039,21 +1060,21 @@ class ProjectGeneratorTests: XCTestCase {
                         platform: .iOS
                     ),
                 ]
-                                
+
                 let expectedLinkedFiles = Set([
                     "DynamicFramework.framework",
                     "DynamicFrameworkNotEmbedded.framework",
                     "StaticFramework.framework",
-                    "StaticFrameworkExplicitlyEmbedded.framework",
+                    "StaticFrameworkNotEmbedded.framework",
                     "StaticFramework2.framework",
-                    "StaticFramework2ExplicitlyEmbedded.framework",
+                    "StaticFramework2NotEmbedded.framework",
                     "libStaticLibrary.a",
                 ])
-                
+
                 let expectedEmbeddedFrameworks = Set([
                     "DynamicFramework.framework",
-                    "StaticFrameworkExplicitlyEmbedded.framework",
-                    "StaticFramework2ExplicitlyEmbedded.framework"
+                    "StaticFramework.framework",
+                    "StaticFramework2.framework",
                 ])
                                 
                 let project = Project(
@@ -1073,7 +1094,7 @@ class ProjectGeneratorTests: XCTestCase {
                 let linkPackages = (frameworkPhases[0].files ?? []).compactMap { $0.product?.productName }
                 try expect(Set(linkFrameworks + linkPackages)) == expectedLinkedFiles
 
-                // Ensure only dynamic frameworks are embedded (unless there's an explicit override)
+                // Ensure all frameworks are embedded (unless there's an explicit override)
                 let embeddedFrameworks = Set((embedFrameworkPhase?.files ?? []).compactMap { $0.file?.nameOrPath })
                 try expect(embeddedFrameworks) == expectedEmbeddedFrameworks
             }
@@ -1565,9 +1586,9 @@ class ProjectGeneratorTests: XCTestCase {
                 )
 
                 let project = Project(name: "test", targets: [app], packages: [
-                    "XcodeGen": .remote(url: "http://github.com/yonaskolb/XcodeGen", versionRequirement: .branch("master")),
+                    "XcodeGen": .remote(url: "http://github.com/yonaskolb/XcodeGen", versionRequirement: .branch("master"), traits: ["FeatureA", "FeatureB"]),
                     "Codability": .remote(url: "http://github.com/yonaskolb/Codability", versionRequirement: .exact("1.0.0")),
-                    "Yams": .local(path: "../Yams", group: nil, excludeFromProject: false),
+                    "Yams": .local(path: "../Yams", group: nil, excludeFromProject: false, traits: ["NoUIFramework", "Networking"]),
                 ], options: .init(localPackagesGroup: "MyPackages"))
 
                 let pbxProject = try project.generatePbxProj(specValidate: false)
@@ -1577,17 +1598,22 @@ class ProjectGeneratorTests: XCTestCase {
 
                 try expect(projectSpecDependency.package?.name) == "XcodeGen"
                 try expect(projectSpecDependency.package?.versionRequirement) == .branch("master")
+                try expect(projectSpecDependency.package?.traits) == ["FeatureA", "FeatureB"]
 
                 let codabilityDependency = try unwrap(nativeTarget.packageProductDependencies?.first(where: { $0.productName == "Codability" }))
 
                 try expect(codabilityDependency.package?.name) == "Codability"
                 try expect(codabilityDependency.package?.versionRequirement) == .exact("1.0.0")
+                try expect(codabilityDependency.package?.traits).beNil()
 
                 let localPackagesGroup = try unwrap(try pbxProject.getMainGroup().children.first(where: { $0.name == "MyPackages" }) as? PBXGroup)
 
                 let yamsLocalPackageFile = try unwrap(pbxProject.fileReferences.first(where: { $0.path == "../Yams" }))
                 try expect(localPackagesGroup.children.contains(yamsLocalPackageFile)) == true
                 try expect(yamsLocalPackageFile.lastKnownFileType) == "folder"
+
+                let yamsPackageReference = try unwrap(pbxProject.rootObject?.localPackages.first(where: { $0.relativePath == "../Yams" }))
+                try expect(yamsPackageReference.traits) == ["NoUIFramework", "Networking"]
             }
 
             $0.it("generates local swift packages") {
@@ -1610,6 +1636,7 @@ class ProjectGeneratorTests: XCTestCase {
                 let localPackageReference = try unwrap(pbxProject.rootObject?.localPackages.first)
                 try expect(pbxProject.rootObject?.localPackages.count) == 1
                 try expect(localPackageReference.relativePath) == "../XcodeGen"
+                try expect(localPackageReference.traits).beNil()
 
                 let frameworkPhases = nativeTarget.buildPhases.compactMap { $0 as? PBXFrameworksBuildPhase }
 

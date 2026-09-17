@@ -5,6 +5,7 @@
    <BuildAction
       parallelizeBuildables = "NO"
       buildImplicitDependencies = "NO"
+      buildArchitectures = "Automatic"
       runPostActionsOnFailure = "YES">
       <PreActions>
          <ExecutionAction

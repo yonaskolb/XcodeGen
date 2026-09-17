@@ -144,6 +144,14 @@ extension ProjectAttribute {
             self = .array(array)
         } else if let object = value as? PBXObject {
             self = .targetReference(object)
+        } else if let dictionary = value as? [String: [String: Any]] {
+            // e.g. `SystemCapabilities`, which is a dictionary of dictionaries.
+            // Without this case, such values fall through to the `.string("\(value)")`
+            // branch below, which interpolates the raw Swift `Dictionary`. Its
+            // `description` iterates in the process's random hash-seed order, so the
+            // same input can non-deterministically produce a different key order (and
+            // isn't a valid nested plist dictionary in the first place).
+            self = .attributeDictionary(dictionary.mapValues { $0.mapValues { ProjectAttribute(any: $0) } })
         } else {
             self = .string("\(value)")
         }
