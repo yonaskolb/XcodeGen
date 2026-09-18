@@ -30,6 +30,7 @@ private func generateXcodeProject(specPath: Path, file: String = #file, line: In
     let generator = ProjectGenerator(project: project)
     let writer = FileWriter(project: project)
     let xcodeProject = try generator.generateXcodeProject(userName: "someUser")
+    try expectSingleParents(xcodeProject.pbxproj, file: file, line: line)
     try writer.writeXcodeProject(xcodeProject)
     try writer.writePlists()
 }

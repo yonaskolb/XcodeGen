@@ -335,6 +335,9 @@ class SourceGenerator {
     private func getGroup(path: Path, name: String? = nil, mergingChildren children: [PBXFileElement], createIntermediateGroups: Bool, hasCustomParent: Bool, isBaseGroup: Bool) -> PBXGroup {
         let groupReference: PBXGroup
 
+        // A child may already have been registered as top level before being attached to its parent.
+        removeRootGroupMembership(from: children)
+
         if let cachedGroup = groupsByPath[path] {
             var cachedGroupChildren = cachedGroup.children
             for child in children {
@@ -380,6 +383,19 @@ class SourceGenerator {
             }
         }
         return groupReference
+    }
+
+    private func removeRootGroupMembership(from elements: [PBXFileElement]) {
+        for element in elements where rootGroups.contains(element) {
+            rootGroups.remove(element)
+            // Top-level group paths are relative to the project; nested group paths are relative to their parent.
+            guard element is PBXGroup, element.sourceTree == .group, let elementPath = element.path else { continue }
+            let relativePath = Path(elementPath).lastComponent
+            element.path = relativePath
+            if element.name == relativePath {
+                element.name = nil
+            }
+        }
     }
 
     /// Creates a variant group or returns an existing one at the path

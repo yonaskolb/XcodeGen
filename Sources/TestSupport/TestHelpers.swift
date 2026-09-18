@@ -22,6 +22,28 @@ public func unwrap<T>(_ value: T?, file: String = #file, line: Int = #line) thro
     }
 }
 
+public func expectSingleParents(_ pbxProj: PBXProj, function: String = #function, file: String = #file, line: Int = #line) throws {
+    func label(_ element: PBXFileElement) -> String {
+        element.name ?? element.path ?? ""
+    }
+
+    var parentsByElement: [ObjectIdentifier: (element: PBXFileElement, groups: [String])] = [:]
+    let allGroups: [PBXGroup] = pbxProj.groups + pbxProj.variantGroups + pbxProj.versionGroups
+    for group in allGroups {
+        for child in group.children {
+            parentsByElement[ObjectIdentifier(child), default: (child, [])].groups.append(label(group))
+        }
+    }
+    let duplicates = parentsByElement.values.filter { $0.groups.count > 1 }
+    if !duplicates.isEmpty {
+        let description = duplicates
+            .map { "\(label($0.element).quoted) is a child of \($0.groups.map(\.quoted).joined(separator: " and "))" }
+            .sorted()
+            .joined(separator: "\n")
+        throw failure("Elements with more than one parent group:\n\(description)", function: function, file: file, line: line)
+    }
+}
+
 public func expectError<T: Error>(_ expectedError: T, function: String = #function, file: String = #file, line: Int = #line, _ closure: () throws -> Void) throws where T: CustomStringConvertible {
     do {
         try closure()

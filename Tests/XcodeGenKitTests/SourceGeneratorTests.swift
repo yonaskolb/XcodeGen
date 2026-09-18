@@ -84,6 +84,81 @@ class SourceGeneratorTests: XCTestCase {
                 try pbxProj.expectFile(paths: ["Sources", "A", "C2.0", "c.swift"], buildPhase: .sources)
             }
 
+            $0.it("generates a single parent for groups when a source is the base path") {
+                let directories = """
+                Module:
+                  - Extension:
+                    - a.swift
+                  - Model:
+                    - b.swift
+                  - c.swift
+                """
+                try createDirectories(directories)
+
+                let target = Target(name: "Module", type: .framework, platform: .iOS, sources: ["../Module"])
+                let project = Project(basePath: directoryPath + "Module", name: "Module", targets: [target])
+
+                let generator = PBXProjGenerator(project: project, projectDirectory: directoryPath)
+                let pbxProj = try generator.generate()
+
+                try pbxProj.expectFile(paths: ["Module", "Extension", "a.swift"], buildPhase: .sources)
+                try pbxProj.expectFile(paths: ["Module", "Model", "b.swift"], buildPhase: .sources)
+                try pbxProj.expectFile(paths: ["Module", "c.swift"], buildPhase: .sources)
+                try expectSingleParents(pbxProj)
+
+                let mainGroupChildren = try pbxProj.getMainGroup().children.map(\.nameOrPath)
+                try expect(mainGroupChildren.contains("Extension")) == false
+                try expect(mainGroupChildren.contains("Model")) == false
+            }
+
+            $0.it("generates a single parent for a group first referenced as a top level file source") {
+                let directories = """
+                Sources:
+                  - Pages:
+                    - a.swift
+                  - b.swift
+                """
+                try createDirectories(directories)
+
+                // The file source creates Pages at the top level before the directory source reparents it.
+                let fileTarget = Target(name: "A", type: .application, platform: .iOS, sources: ["Sources/Pages/a.swift"])
+                let directoryTarget = Target(name: "B", type: .application, platform: .iOS, sources: ["Sources"])
+                let project = Project(basePath: directoryPath, name: "Test", targets: [fileTarget, directoryTarget])
+
+                let pbxProj = try project.generatePbxProj()
+
+                try pbxProj.expectFile(paths: ["Sources", "Pages", "a.swift"], buildPhase: .sources)
+                try pbxProj.expectFile(paths: ["Sources", "b.swift"], buildPhase: .sources)
+                try expectSingleParents(pbxProj)
+
+                let mainGroupChildren = try pbxProj.getMainGroup().children.map(\.nameOrPath)
+                try expect(mainGroupChildren.contains("Sources/Pages")) == false
+            }
+
+            $0.it("keeps a subdirectory reachable when the base source excludes it and another source adds it") {
+                let directories = """
+                Module:
+                  - Resources:
+                    - a.json
+                  - b.swift
+                """
+                try createDirectories(directories)
+
+                // The excluded directory is skipped by its parent, then populated through a later source.
+                let target = Target(name: "Module", type: .framework, platform: .iOS, sources: [
+                    TargetSource(path: "../Module", excludes: ["Resources/**"]),
+                    TargetSource(path: "Resources", buildPhase: .resources),
+                ])
+                let project = Project(basePath: directoryPath + "Module", name: "Module", targets: [target])
+
+                let generator = PBXProjGenerator(project: project, projectDirectory: directoryPath)
+                let pbxProj = try generator.generate()
+
+                try pbxProj.expectFile(paths: ["Module", "b.swift"], buildPhase: .sources)
+                try pbxProj.expectFile(paths: ["Module/Resources", "a.json"], names: ["Resources", "a.json"], buildPhase: .resources)
+                try expectSingleParents(pbxProj)
+            }
+
             $0.it("generates synced folder") {
                 let directories = """
                 Sources:
