@@ -135,6 +135,70 @@ class ProjectGeneratorTests: XCTestCase {
         }
     }
 
+    func testProjectFormat() throws {
+
+        func writeProject(format: String?, to basePath: Path) throws -> Path {
+            try basePath.mkpath()
+            let project = Project(
+                basePath: basePath,
+                name: "MyProject",
+                targets: [framework],
+                options: SpecOptions(projectFormat: format)
+            )
+            let xcodeProject = try ProjectGenerator(project: project).generateXcodeProject(userName: "someUser")
+            try FileWriter(project: project).writeXcodeProject(xcodeProject)
+            return project.defaultProjectPath
+        }
+
+        describe {
+
+            $0.it("writes project.pbxproj by default") {
+                let basePath = Path.temporary + "projectFormat/default"
+                try? basePath.delete()
+                let projectPath = try writeProject(format: nil, to: basePath)
+
+                try expect(XcodeProj.pbxprojPath(projectPath).exists).beTrue()
+                try expect(XcodeProj.xcprojPath(projectPath).exists).beFalse()
+            }
+
+            $0.it("writes project.xcproj for the json format") {
+                let basePath = Path.temporary + "projectFormat/json"
+                try? basePath.delete()
+                let projectPath = try writeProject(format: "json", to: basePath)
+
+                try expect(XcodeProj.xcprojPath(projectPath).exists).beTrue()
+                try expect(XcodeProj.pbxprojPath(projectPath).exists).beFalse()
+
+                let written = try XcodeProj(path: projectPath)
+                try expect(written.projectFormat) == .xcproj
+                try expect(written.pbxproj.nativeTargets.map(\.name)) == [framework.name]
+            }
+
+            $0.it("writes the same project.xcproj on every generation") {
+                let basePath = Path.temporary + "projectFormat/jsonRepeated"
+                try? basePath.delete()
+                let projectPath = try writeProject(format: "json", to: basePath)
+                let first: Data = try XcodeProj.xcprojPath(projectPath).read()
+
+                _ = try writeProject(format: "json", to: basePath)
+                let second: Data = try XcodeProj.xcprojPath(projectPath).read()
+
+                try expect(first) == second
+            }
+
+            $0.it("removes the file of the format it replaces") {
+                let basePath = Path.temporary + "projectFormat/switching"
+                try? basePath.delete()
+                let projectPath = try writeProject(format: "json", to: basePath)
+                try expect(XcodeProj.xcprojPath(projectPath).exists).beTrue()
+
+                _ = try writeProject(format: "xcode16_0", to: basePath)
+                try expect(XcodeProj.pbxprojPath(projectPath).exists).beTrue()
+                try expect(XcodeProj.xcprojPath(projectPath).exists).beFalse()
+            }
+        }
+    }
+
     func testConfigGenerator() {
         describe {
 

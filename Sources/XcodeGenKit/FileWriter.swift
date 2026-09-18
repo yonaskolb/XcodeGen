@@ -18,7 +18,15 @@ public class FileWriter {
         if projectPath.exists {
             try projectPath.copy(tempPath)
         }
-        try xcodeProject.write(path: tempPath, override: true)
+        let isJSON = project.projectFormat.isJSON
+        if isJSON {
+            // Discarded: encoding the property list is what settles XcodeProj's object identifiers,
+            // without which `project.xcproj` gets fresh UUIDs per run. Drop with XcodeProj#1180.
+            _ = try xcodeProject.pbxproj.dataRepresentation(outputSettings: PBXOutputSettings())
+        }
+        try xcodeProject.write(path: tempPath, override: true, format: isJSON ? .xcproj : .pbxproj)
+        // The copy above may carry the previous format's file, which would win the next read.
+        try? (isJSON ? XcodeProj.pbxprojPath(tempPath) : XcodeProj.xcprojPath(tempPath)).delete()
         try? projectPath.delete()
         try tempPath.copy(projectPath)
         try? tempPath.delete()
