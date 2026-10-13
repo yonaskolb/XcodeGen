@@ -502,8 +502,9 @@ class PBXProjGeneratorTests: XCTestCase {
         
         let pbxProj = try projGenerator.generate()
         
+        XCTAssertEqual(project.xcodeVersion, "1600")
         for pbxProject in pbxProj.projects {
-            XCTAssertEqual(pbxProject.attributes[lastUpgradeKey]?.stringValue, project.xcodeVersion)
+            XCTAssertEqual(pbxProject.attributes[lastUpgradeKey]?.stringValue, "1600")
         }
     }
 
@@ -516,6 +517,18 @@ class PBXProjGeneratorTests: XCTestCase {
         XCTAssertEqual(project.projectFormat, .xcode16_0)
         XCTAssertEqual(pbxProj.objectVersion, 77)
         XCTAssertEqual(pbxProject.preferredProjectObjectVersion, 77)
+        XCTAssertNil(pbxProject.compatibilityVersion)
+    }
+
+    func testXcode27_0ProjectFormat() throws {
+        let project = Project(name: "Test", options: SpecOptions(projectFormat: "xcode27_0"))
+
+        let pbxProj = try PBXProjGenerator(project: project).generate()
+        let pbxProject = try XCTUnwrap(pbxProj.rootObject)
+
+        XCTAssertEqual(project.projectFormat, .xcode27_0)
+        XCTAssertEqual(pbxProj.objectVersion, 110)
+        XCTAssertEqual(pbxProject.preferredProjectObjectVersion, 110)
         XCTAssertNil(pbxProject.compatibilityVersion)
     }
 
