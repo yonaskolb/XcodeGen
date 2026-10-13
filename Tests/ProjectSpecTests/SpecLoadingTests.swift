@@ -1481,6 +1481,7 @@ class SpecLoadingTests: XCTestCase {
                         "name": "My Rule",
                         "script": "my script",
                         "filePattern": "*.swift",
+                        "inputFiles": ["$(SRCROOT)/Source File.swift", "$(DERIVED_FILE_DIR)/Generated.swift"],
                         "outputFiles": ["file1", "file2"],
                         "outputFilesCompilerFlags": ["-a", "-b"],
                     ],
@@ -1488,12 +1489,18 @@ class SpecLoadingTests: XCTestCase {
                         "compilerSpec": "apple.tool",
                         "fileType": "sourcecode.swift",
                     ],
+                    [
+                        "compilerSpec": "apple.other-tool",
+                        "filePattern": "*.metal",
+                        "inputFiles": [],
+                    ],
                 ]
                 target["buildRules"] = buildRules
 
                 let expectedBuildRules = [
-                    BuildRule(fileType: .pattern("*.swift"), action: .script("my script"), name: "My Rule", outputFiles: ["file1", "file2"], outputFilesCompilerFlags: ["-a", "-b"]),
+                    BuildRule(fileType: .pattern("*.swift"), action: .script("my script"), name: "My Rule", inputFiles: ["$(SRCROOT)/Source File.swift", "$(DERIVED_FILE_DIR)/Generated.swift"], outputFiles: ["file1", "file2"], outputFilesCompilerFlags: ["-a", "-b"]),
                     BuildRule(fileType: .type("sourcecode.swift"), action: .compilerSpec("apple.tool")),
+                    BuildRule(fileType: .pattern("*.metal"), action: .compilerSpec("apple.other-tool"), inputFiles: []),
                 ]
 
                 let parsedTarget = try Target(name: "test", jsonDictionary: target)

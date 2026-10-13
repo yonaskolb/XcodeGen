@@ -47,6 +47,7 @@ public struct BuildRule: Equatable {
 
     public var fileType: FileType
     public var action: Action
+    public var inputFiles: [String]?
     public var outputFiles: [String]
     public var outputFilesCompilerFlags: [String]
     public var name: String?
@@ -56,6 +57,7 @@ public struct BuildRule: Equatable {
         fileType: FileType, 
         action: Action, 
         name: String? = nil, 
+        inputFiles: [String]? = nil,
         outputFiles: [String] = [], 
         outputFilesCompilerFlags: [String] = [], 
         runOncePerArchitecture: Bool = runOncePerArchitectureDefault
@@ -63,6 +65,7 @@ public struct BuildRule: Equatable {
         self.fileType = fileType
         self.action = action
         self.name = name
+        self.inputFiles = inputFiles
         self.outputFiles = outputFiles
         self.outputFilesCompilerFlags = outputFilesCompilerFlags
         self.runOncePerArchitecture = runOncePerArchitecture
@@ -85,6 +88,7 @@ extension BuildRule: JSONObjectConvertible {
             action = .script(try jsonDictionary.json(atKeyPath: "script"))
         }
 
+        inputFiles = jsonDictionary.json(atKeyPath: "inputFiles")
         outputFiles = jsonDictionary.json(atKeyPath: "outputFiles") ?? []
         outputFilesCompilerFlags = jsonDictionary.json(atKeyPath: "outputFilesCompilerFlags") ?? []
         name = jsonDictionary.json(atKeyPath: "name")
@@ -95,6 +99,7 @@ extension BuildRule: JSONObjectConvertible {
 extension BuildRule: JSONEncodable {
     public func toJSONValue() -> Any {
         var dict: [String: Any?] = [
+            "inputFiles": inputFiles,
             "outputFiles": outputFiles,
             "outputFilesCompilerFlags": outputFilesCompilerFlags,
             "name": name,

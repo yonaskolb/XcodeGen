@@ -1317,6 +1317,7 @@ public class PBXProjGenerator {
                     filePatterns: buildRule.fileType.pattern,
                     name: buildRule.name ?? "Build Rule",
                     outputFiles: buildRule.outputFiles,
+                    inputFiles: buildRule.inputFiles,
                     outputFilesCompilerFlags: buildRule.outputFilesCompilerFlags,
                     script: buildRule.action.script,
                     runOncePerArchitecture: buildRule.runOncePerArchitecture

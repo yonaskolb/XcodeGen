@@ -862,6 +862,7 @@ targets:
 - [ ] **script**: **String** - The script that will be run on each file. This or `compilerSpec` must be defined.
 - [ ] **compilerSpec**: **String**: A reference to a built in apple tool to run on each file. This is for advanced use and the the values for this must be checked. This or `script` must be defined.
 - [ ] **name**: **String** - The name of a build rule. Defaults to `Build Rule`
+- [ ] **inputFiles**: **[String]** - The list of input files
 - [ ] **outputFiles**: **[String]** - The list of output files
 - [ ] **outputFilesCompilerFlags**: **[String]** - The list of compiler flags to apply to the output files
 - [ ] **runOncePerArchitecture**: **Bool** - a boolean that indicates if this rule should run once per architecture. This defaults to true
@@ -877,6 +878,8 @@ targets:
       - filePattern: "*.txt"
         name: My Build Rule
         compilerSpec: com.apple.xcode.tools.swift.compiler
+        inputFiles:
+          - $(SRCROOT)/Input.txt
         outputFiles:
           - $(SRCROOT)/Generated.swift
         runOncePerArchitecture: false

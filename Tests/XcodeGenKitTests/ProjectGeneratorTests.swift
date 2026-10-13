@@ -1515,6 +1515,7 @@ class ProjectGeneratorTests: XCTestCase {
                         fileType: .type("sourcecode.swift"),
                         action: .script("do thing"),
                         name: "My Rule",
+                        inputFiles: ["$(SRCROOT)/Source File.swift", "$(DERIVED_FILE_DIR)/Generated.swift"],
                         outputFiles: ["file1.swift", "file2.swift"],
                         outputFilesCompilerFlags: ["--zee", "--bee"]
                     ),
@@ -1522,16 +1523,23 @@ class ProjectGeneratorTests: XCTestCase {
                         fileType: .pattern("*.plist"),
                         action: .compilerSpec("com.apple.build-tasks.copy-plist-file")
                     ),
+                    BuildRule(
+                        fileType: .pattern("*.metal"),
+                        action: .compilerSpec("com.apple.compilers.metal"),
+                        inputFiles: []
+                    ),
                 ]
                 let pbxProject = try scriptSpec.generatePbxProj()
 
                 let buildRules = pbxProject.buildRules
-                try expect(buildRules.count) == 2
+                try expect(buildRules.count) == 3
                 let first = buildRules.first { $0.name == "My Rule" }!
-                let second = buildRules.first { $0.name != "My Rule" }!
+                let second = buildRules.first { $0.filePatterns == "*.plist" }!
+                let third = buildRules.first { $0.filePatterns == "*.metal" }!
 
                 try expect(first.name) == "My Rule"
                 try expect(first.isEditable) == true
+                try expect(first.inputFiles) == ["$(SRCROOT)/Source File.swift", "$(DERIVED_FILE_DIR)/Generated.swift"]
                 try expect(first.outputFiles) == ["file1.swift", "file2.swift"]
                 try expect(first.outputFilesCompilerFlags) == ["--zee", "--bee"]
                 try expect(first.script) == "do thing"
@@ -1544,8 +1552,11 @@ class ProjectGeneratorTests: XCTestCase {
                 try expect(second.filePatterns) == "*.plist"
                 try expect(second.compilerSpec) == "com.apple.build-tasks.copy-plist-file"
                 try expect(second.script).beNil()
+                try expect(second.inputFiles).beNil()
                 try expect(second.outputFiles) == []
                 try expect(second.outputFilesCompilerFlags) == []
+
+                try expect(third.inputFiles) == []
             }
 
             $0.it("generates dependency build file settings") {
