@@ -271,28 +271,17 @@ extension Project: PathContainer {
 
 extension Project {
 
-    /// Files excluded from cache tracking to match SourceGenerator's default exclusions.
-    /// Without this filter, changes to these files cause spurious project regeneration.
-    private static let defaultExcludedFileNames: Set<String> = [".DS_Store"]
-    private static let defaultExcludedExtensions: Set<String> = ["orig"]
-
-    private static func isTrackedFile(_ path: Path) -> Bool {
-        if defaultExcludedFileNames.contains(path.lastComponent) {
-            return false
-        }
-        if let ext = path.extension, defaultExcludedExtensions.contains(ext) {
-            return false
-        }
-        return true
-    }
-
     public var allTrackedFiles: [Path] {
+        // Skip files that SourceGenerator never adds to the project. Directories are kept, as they can still become groups
+        func trackedChildren(of path: Path) -> [Path] {
+            ((try? path.recursiveChildren()) ?? []).filter { $0.isDirectory || !FileType.isDefaultExcluded($0) }
+        }
+
         var files: [Path] = []
         files.append(contentsOf: configFilePaths)
         for fileGroup in fileGroups {
             let fileGroupPath = basePath + fileGroup
-            let fileGroupChildren = (try? fileGroupPath.recursiveChildren()) ?? []
-            files.append(contentsOf: fileGroupChildren)
+            files.append(contentsOf: trackedChildren(of: fileGroupPath))
             files.append(fileGroupPath)
         }
 
@@ -307,13 +296,12 @@ extension Project {
 
                 let type = source.type ?? options.defaultSourceDirectoryType ?? .group
                 if type.projectTracksChildren {
-                    let sourceChildren = (try? sourcePath.recursiveChildren()) ?? []
-                    files.append(contentsOf: sourceChildren)
+                    files.append(contentsOf: trackedChildren(of: sourcePath))
                 }
                 files.append(sourcePath)
             }
         }
-        return files.filter(Self.isTrackedFile)
+        return files
     }
 }
 
