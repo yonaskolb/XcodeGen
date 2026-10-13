@@ -998,6 +998,7 @@ class ProjectGeneratorTests: XCTestCase {
                         let copyBundles = (copyBundlesPhase?.files ?? [])
                             .compactMap { $0.file?.nameOrPath }
                         try expect(Set(copyBundles)) == expectedBundlesFiles
+                        try expect(copyBundlesPhase?.dstPath) == ""
                     }
                     try expect(copyFilesPhases.count) == expectedCopyFilesPhasesCount
                 }
@@ -3724,7 +3725,7 @@ class ProjectGeneratorTests: XCTestCase {
                     
                     // then
                     /// XcodeGen ignores embed: false for bundles
-                    try expectCopyPhase(in: pbxProject, withFilePaths: ["bundleA.bundle", "bundleB.bundle"], toSubFolder: .resources)
+                    try expectCopyPhase(in: pbxProject, withFilePaths: ["bundleA.bundle", "bundleB.bundle"], toSubFolder: .resources, dstPath: "")
                 }
                 
                 $0.it("ignores custom copy phase spec") {
@@ -3740,7 +3741,7 @@ class ProjectGeneratorTests: XCTestCase {
                     
                     // then
                     /// XcodeGen ignores embed: false for bundles
-                    try expectCopyPhase(in: pbxProject, withFilePaths: ["bundleA.bundle", "bundleB.bundle"], toSubFolder: .resources)
+                    try expectCopyPhase(in: pbxProject, withFilePaths: ["bundleA.bundle", "bundleB.bundle"], toSubFolder: .resources, dstPath: "")
                 }
             }
         }

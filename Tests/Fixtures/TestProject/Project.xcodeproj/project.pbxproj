@@ -616,6 +616,7 @@
 		E8BC0F358D693454E5027ECC /* Copy Bundle Resources */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
+			dstPath = "";
 			dstSubfolderSpec = 7;
 			files = (
 				3BBCA6F76E5F212E9C55FB78 /* BundleX.bundle in Copy Bundle Resources */,
