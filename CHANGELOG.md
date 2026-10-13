@@ -15,6 +15,7 @@
 
 ### Internal
 - Use a dedicated local package in the SPM fixture so generated fixtures don't depend on the checkout directory name, such as when running tests from a git worktree @yonaskolb
+- Fix a Swift Testing error matcher that failed on Linux CI #1657 @yonaskolb
 
 ## 2.46.0
 
