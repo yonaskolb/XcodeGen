@@ -5,8 +5,10 @@
 ### Added
 - Added `buildArchitectures` to scheme build options and target schemes, to control Xcode's "Override Architectures" scheme setting #1642 @arhxam
 - Added FAQ documentation on how to add an Xcode capability, such as In-App Purchase #1644 @Hokila
+- Added experimental support for the JSON project format Xcode 27.2 writes by default. Set `options.projectFormat: json` to write `project.xcproj` instead of `project.pbxproj`. The generated project opens in Xcode 27 or later only
 
 ### Changed
+- XcodeGen now requires macOS 14 and Swift 6.1, which the XcodeProj 9.17 upgrade behind the JSON project format brings with it
 - Generated schemes now default to `buildArchitectures: matchRunDestination` ("Match Run Destination"), matching Xcode's default for new schemes. Previously schemes used each target's architecture settings. Set `buildArchitectures: useTargetSettings` to keep the previous behaviour #1642 @yonaskolb
 
 ### Fixed

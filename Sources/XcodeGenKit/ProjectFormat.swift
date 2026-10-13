@@ -3,14 +3,21 @@ public extension ProjectFormat {
 }
 
 public enum ProjectFormat: String {
+    case json
     case xcode16_3
     case xcode16_0
     case xcode15_3
     case xcode15_0
     case xcode14_0
 
+    public var isJSON: Bool {
+        self == .json
+    }
+
     public var objectVersion: UInt {
         switch self {
+        // `project.xcproj` stores no object version; 77 is what XcodeProj assigns reading one back.
+        case .json: 77
         case .xcode16_3: 90
         case .xcode16_0: 77
         case .xcode15_3: 63
@@ -22,13 +29,13 @@ public enum ProjectFormat: String {
     public var preferredProjectObjectVersion: UInt? {
         switch self {
         case .xcode16_3, .xcode16_0: objectVersion
-        case .xcode15_3, .xcode15_0, .xcode14_0: nil
+        case .json, .xcode15_3, .xcode15_0, .xcode14_0: nil
         }
     }
 
     public var compatibilityVersion: String? {
         switch self {
-        case .xcode16_3, .xcode16_0: nil
+        case .json, .xcode16_3, .xcode16_0: nil
         case .xcode15_3: "Xcode 15.3"
         case .xcode15_0: "Xcode 15.0"
         case .xcode14_0: "Xcode 14.0"

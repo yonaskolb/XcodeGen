@@ -16,6 +16,7 @@ extension Target {
              .application,
              .bundle,
              .commandLineTool,
+             .hostBuildTool,
              .instrumentsPackage,
              .intentsServiceExtension,
              .messagesApplication,

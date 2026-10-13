@@ -134,11 +134,14 @@ Note that target names can also be changed by adding a `name` property to a targ
 - [ ] **tabWidth**: **Int** - If this is specified, the Xcode project will override the user's setting for indent width in number of spaces.
 - [ ] **xcodeVersion**: **String** - The version of Xcode. This defaults to the latest version periodically. You can specify it in the format `0910` or `9.1`
 - [ ] **projectFormat**: **String** - The version of Xcode project. By default this is set to `xcode16_0`
+  - `json`: experimental, the JSON format Xcode 27.2 writes. Stored as `project.xcproj` and opens only in Xcode 27 and later
   - `xcode16_3`: Xcode 16.3
   - `xcode16_0`: Xcode 16.0
   - `xcode15_3`: Xcode 15.3
   - `xcode15_0`: Xcode 15.0
   - `xcode14_0`: Xcode 14.0
+
+  `json` is built on [XcodeProj's experimental support](https://github.com/tuist/XcodeProj/blob/main/Documentation/json-project-format.md) for [Apple's format](https://developer.apple.com/documentation/xcode/updating-your-xcode-project-configuration-file-format). Two things still generate a project Xcode will not open, so open yours before you commit it: a `copyFiles` [target source](#target-source) ([#1181](https://github.com/tuist/XcodeProj/pull/1181)), and a dependency through a [project reference](#project-reference) ([#1182](https://github.com/tuist/XcodeProj/pull/1182)). Both are fixed upstream but not yet released.
 
 - [ ] **deploymentTarget**: **[[Platform](#platform): String]** - A project wide deployment target can be specified for each platform otherwise the default SDK version in Xcode will be used. This will be overridden by any custom build settings that set the deployment target eg `IPHONEOS_DEPLOYMENT_TARGET`. Target specific deployment targets can also be set with [Target](#target).deploymentTarget.
 - [ ] **disabledValidations**: **[String]** - A list of validations that can be disabled if they're too strict for your use case. By default this is set to an empty array. Currently these are the available options:
