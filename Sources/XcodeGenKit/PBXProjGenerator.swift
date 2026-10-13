@@ -1221,6 +1221,8 @@ public class PBXProjGenerator {
 
         if !copyBundlesReferences.isEmpty {
             let copyBundlesPhase = addObject(PBXCopyFilesBuildPhase(
+                // Xcode expects the key to be present, even when the path is empty.
+                dstPath: "",
                 dstSubfolderSpec: .resources,
                 name: "Copy Bundle Resources",
                 files: copyBundlesReferences

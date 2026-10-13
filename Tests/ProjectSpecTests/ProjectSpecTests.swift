@@ -450,6 +450,21 @@ class ProjectSpecTests: XCTestCase {
                 try expectValidationError(project, .missingDefaultConfig(configName: "foo"))
             }
 
+            $0.it("fails with invalid project format") {
+                var project = baseProject
+                project.options = SpecOptions(projectFormat: "xcode99_0")
+                try expectValidationError(project, .invalidProjectFormat("xcode99_0"))
+                try expect(SpecValidationError.ValidationError.invalidProjectFormat("xcode99_0").description) == "Invalid projectFormat \"xcode99_0\". Valid values are: xcode27_0, xcode26_3, xcode16_3, xcode16_0, xcode15_3, xcode15_0, xcode14_0"
+            }
+
+            $0.it("allows valid project formats") {
+                for projectFormat in ProjectFormat.allCases {
+                    var project = baseProject
+                    project.options = SpecOptions(projectFormat: projectFormat.rawValue)
+                    try expectNoValidationError(project, .invalidProjectFormat(projectFormat.rawValue))
+                }
+            }
+
             $0.it("validates config settings format") {
                 var project = baseProject
                 project.configs = Config.defaultConfigs
@@ -587,6 +602,84 @@ class ProjectSpecTests: XCTestCase {
                     )
                 ]
                 try expectNoValidationError(project, .invalidPluginPackageReference(plugin: "plugin", package: "package"))
+            }
+        }
+    }
+
+    func testAllTrackedFilesExcludesIgnoredFiles() {
+        describe {
+            let directoryPath = Path(components: [NSTemporaryDirectory(), ProcessInfo.processInfo.globallyUniqueString])
+
+            $0.after {
+                try? directoryPath.delete()
+            }
+
+            $0.it("excludes .DS_Store and .orig files from tracked source files") {
+                let sourcesDir = directoryPath + "Sources"
+                let featureDir = sourcesDir + "Feature"
+                let assetsDir = sourcesDir + "Assets.xcassets"
+                try featureDir.mkpath()
+                try assetsDir.mkpath()
+                try (sourcesDir + "main.swift").write("")
+                try (sourcesDir + ".DS_Store").write("")
+                try (sourcesDir + "file.swift.orig").write("")
+                try (featureDir + "Feature.swift").write("")
+                try (featureDir + ".DS_Store").write("")
+                try (assetsDir + ".DS_Store").write("")
+
+                let target = Target(
+                    name: "App",
+                    type: .application,
+                    platform: .iOS,
+                    sources: [TargetSource(path: "Sources")]
+                )
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target])
+
+                try expect(Set(project.allTrackedFiles)) == [
+                    sourcesDir,
+                    sourcesDir + "main.swift",
+                    featureDir,
+                    featureDir + "Feature.swift",
+                    assetsDir,
+                ]
+            }
+
+            $0.it("excludes .DS_Store and .orig files from tracked fileGroup files") {
+                let fileGroupDir = directoryPath + "Resources"
+                try fileGroupDir.mkpath()
+                try (fileGroupDir + "image.png").write("")
+                try (fileGroupDir + ".DS_Store").write("")
+                try (fileGroupDir + "image.png.orig").write("")
+
+                let project = Project(
+                    basePath: directoryPath,
+                    name: "Test",
+                    fileGroups: ["Resources"]
+                )
+
+                try expect(Set(project.allTrackedFiles)) == [
+                    fileGroupDir,
+                    fileGroupDir + "image.png",
+                ]
+            }
+        }
+    }
+
+    func testDefaultExcludedFiles() {
+        describe {
+            $0.it("matches default excluded file names and extensions") {
+                try expect(FileType.isDefaultExcluded(".DS_Store")) == true
+                try expect(FileType.isDefaultExcluded("Sources/.DS_Store")) == true
+                try expect(FileType.isDefaultExcluded("Sources/file.swift.orig")) == true
+            }
+
+            $0.it("doesn't match similar names") {
+                try expect(FileType.isDefaultExcluded("Sources/file.swift")) == false
+                try expect(FileType.isDefaultExcluded("Sources/file.original")) == false
+                try expect(FileType.isDefaultExcluded("Sources/orig")) == false
+                try expect(FileType.isDefaultExcluded("Sources/.orig")) == false
+                try expect(FileType.isDefaultExcluded("Sources/file.ORIG")) == false
+                try expect(FileType.isDefaultExcluded("Sources/DS_Store")) == false
             }
         }
     }
