@@ -36,7 +36,7 @@ struct InvalidConfigsMappingFormatTests {
         #expect {
             try Project(path: arguments.fixturePath)
         } throws: { actualError in
-            (actualError as any CustomStringConvertible).description
+            (actualError as? SpecParsingError)?.description
             == arguments.expectedError.description
         }
     }
