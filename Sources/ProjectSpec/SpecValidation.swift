@@ -71,6 +71,10 @@ extension Project {
             }
         }
 
+        if let projectFormat = options.projectFormat, ProjectFormat(rawValue: projectFormat) == nil {
+            errors.append(.invalidProjectFormat(projectFormat))
+        }
+
         if let configName = options.defaultConfig {
             if !configs.contains(where: { $0.name == configName }) {
                 errors.append(.missingDefaultConfig(configName: configName))

@@ -450,6 +450,21 @@ class ProjectSpecTests: XCTestCase {
                 try expectValidationError(project, .missingDefaultConfig(configName: "foo"))
             }
 
+            $0.it("fails with invalid project format") {
+                var project = baseProject
+                project.options = SpecOptions(projectFormat: "xcode99_0")
+                try expectValidationError(project, .invalidProjectFormat("xcode99_0"))
+                try expect(SpecValidationError.ValidationError.invalidProjectFormat("xcode99_0").description) == "Invalid projectFormat \"xcode99_0\". Valid values are: xcode27_0, xcode26_3, xcode16_3, xcode16_0, xcode15_3, xcode15_0, xcode14_0"
+            }
+
+            $0.it("allows valid project formats") {
+                for projectFormat in ProjectFormat.allCases {
+                    var project = baseProject
+                    project.options = SpecOptions(projectFormat: projectFormat.rawValue)
+                    try expectNoValidationError(project, .invalidProjectFormat(projectFormat.rawValue))
+                }
+            }
+
             $0.it("validates config settings format") {
                 var project = baseProject
                 project.configs = Config.defaultConfigs
