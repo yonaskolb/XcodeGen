@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "XcodeGen Include Object",
+  "description": "One or more specs can be included in the project spec. This can be used to split your project spec into multiple files, for easier structuring or sharing between multiple specs. Included specs can also include other specs and so on.\n https://github.com/yonaskolb/XcodeGen/blob/master/Docs/ProjectSpec.md#include",
+  "oneOf": [
+    {
+      "description": "The path to the included file.",
+      "type": "string",
+      "examples": ["path/to/includedFile.yml"]
+    },
+    {
+      "type": "object",
+      "properties": {
+        "path": {
+          "description": "The path to the included file.",
+          "type": "string",
+          "examples": ["path/to/includedFile.yml"]
+        },
+        "relativePaths": {
+          "description": "Dictates whether the included spec specifies paths relative to itself (the default) or the root spec file.",
+          "type": "boolean"
+        },
+        "enable": {
+          "description": "Dictates whether the specified spec should be included or not. You can also specify it by environment variable.",
+          "oneOf": [{ "type": "boolean" }, { "type": "string" }]
+        }
+      }
+    }
+  ],
+  "required": ["path"]
+}

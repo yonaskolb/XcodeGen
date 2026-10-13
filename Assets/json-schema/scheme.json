@@ -1,0 +1,326 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "XcodeGen Scheme Object",
+  "description": "This is a template that can be referenced from a normal scheme using the templates property. The properties of this template are the same as a Scheme. This functions identically in practice to Target Template. Any instances of ${scheme_name} within each template will be replaced by the final scheme name which references the template. Any attributes defined within a scheme's templateAttributes will be used to replace any attribute references in the template using the syntax ${attribute_name}.\nhttps://github.com/yonaskolb/XcodeGen/blob/master/Docs/ProjectSpec.md#scheme",
+  "type": "object",
+  "properties": {
+    "templates": {
+      "description": "A list of Scheme Templates referenced by name that will be merged with the scheme in order. Any instances of ${scheme_name} within these templates will be replaced with the scheme name.",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minItems": 1,
+        "uniqueItems": true
+      }
+    },
+    "templateAttributes": {
+      "description": "A list of attributes where each instance of ${attributeName} within the templates listed in templates will be replaced with the value specified.",
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "build": {
+      "description": "Build options",
+      "type": "object",
+      "properties": {
+        "targets": {
+          "description": "A map of target names to build and which build types they should be enabled for. The build types can be all, none, or an array of the following types:",
+          "type": "object",
+          "examples": ["${scheme_name}", "${hostTargetName}"],
+          "additionalProperties": {
+            "oneOf": [
+              {
+                "type": "string",
+                "examples": ["all", "none"]
+              },
+              {
+                "type": "array",
+                "examples": [
+                  "[run,running,test,testing,profile,profiling,analyze,analyzing,archive,archiving]"
+                ]
+              }
+            ]
+          }
+        },
+        "parallelizeBuild": {
+          "description": "Whether or not your targets should be built in parallel. By default this is true if not set.",
+          "type": "boolean",
+          "default": true
+        },
+        "buildImplicitDependencies": {
+          "description": "Flag to determine if Xcode should build implicit dependencies of this scheme. By default this is true if not set.",
+          "type": "boolean",
+          "default": true
+        },
+        "runPostActionsOnFailure": {
+          "description": "Flag to determine if Xcode should run post scripts despite failure build. By default this is false if not set.",
+          "type": "boolean",
+          "default": false
+        },
+        "config": { "$ref": "#/$defs/config" },
+        "preActions": { "$ref": "#/$defs/preActions" },
+        "postActions": { "$ref": "#/$defs/postActions" }
+      }
+    },
+    "run": {
+      "description": "Run action.",
+      "type": "object",
+      "properties": {
+        "executable": {
+          "description": "the name of the target to launch as an executable. Defaults to the first runnable build target in the scheme, or the first build target if a runnable build target is not found",
+          "type": "string"
+        },
+        "customLLDBInit": {
+          "description": "the absolute path to the custom .lldbinit file",
+          "type": "string"
+        },
+        "config": { "$ref": "#/$defs/config" },
+        "commandLineArguments": { "$ref": "#/$defs/commandLineArguments" },
+        "preActions": { "$ref": "#/$defs/preActions" },
+        "postActions": { "$ref": "#/$defs/postActions" },
+        "environmentVariables": { "$ref": "#/$defs/environmentVariables" },
+        "enableGPUFrameCaptureMode": {
+          "$ref": "#/$defs/enableGPUFrameCaptureMode"
+        },
+        "disableMainThreadChecker": {
+          "$ref": "#/$defs/disableMainThreadChecker"
+        },
+        "language": { "$ref": "#/$defs/language" },
+        "region": { "$ref": "#/$defs/region" },
+        "debugEnabled": { "$ref": "#/$defs/debugEnabled" },
+        "simulateLocation": { "$ref": "#/$defs/simulateLocation" },
+        "askForAppToLaunch": { "$ref": "#/$defs/askForAppToLaunch" },
+        "launchAutomaticallySubstyle": {
+          "$ref": "#/$defs/launchAutomaticallySubstyle"
+        },
+        "storeKitConfiguration": { "$ref": "#/$defs/storeKitConfiguration" },
+        "macroExpansion": { "$ref": "#/$defs/macroExpansion" }
+      }
+    },
+    "test": {
+      "description": "Test action.",
+      "type": "object",
+      "properties": {
+        "gatherCoverageData": {
+          "description": "a boolean that indicates if this scheme should gather coverage data. This defaults to false",
+          "type": "boolean",
+          "default": false
+        },
+        "coverageTargets": {
+          "description": "a list of targets to gather code coverage. Each entry can either be a simple string, a string using Project Reference or Testable Target Reference",
+          "type": "array"
+        },
+        "targets": {
+          "description": "a list of targets to test. Each entry can either be a simple string, or a Test Target",
+          "type": "array"
+        },
+        "customLLDBInit": {
+          "description": "the absolute path to the custom .lldbinit file",
+          "type": "string"
+        },
+        "captureScreenshotsAutomatically": {
+          "description": "indicates whether screenshots should be captured automatically while UI Testing. This defaults to true.",
+          "type": "boolean",
+          "default": true
+        },
+        "deleteScreenshotsWhenEachTestSucceeds": {
+          "description": "whether successful UI tests should cause automatically-captured screenshots to be deleted. If captureScreenshotsAutomatically is false, this value is ignored. This defaults to true.",
+          "type": "boolean",
+          "default": true
+        },
+        "testPlans": {
+          "description": "List of test plan locations that will be referenced in the scheme.",
+          "type": "array"
+        },
+        "config": { "$ref": "#/$defs/config" },
+        "commandLineArguments": { "$ref": "#/$defs/commandLineArguments" },
+        "preActions": { "$ref": "#/$defs/preActions" },
+        "postActions": { "$ref": "#/$defs/postActions" },
+        "environmentVariables": { "$ref": "#/$defs/environmentVariables" },
+        "disableMainThreadChecker": {
+          "$ref": "#/$defs/disableMainThreadChecker"
+        },
+        "language": { "$ref": "#/$defs/language" },
+        "region": { "$ref": "#/$defs/region" },
+        "debugEnabled": { "$ref": "#/$defs/debugEnabled" }
+      }
+    },
+    "profile": {
+      "description": "Profile action.",
+      "type": "object",
+      "properties": {
+        "config": { "$ref": "#/$defs/config" },
+        "commandLineArguments": { "$ref": "#/$defs/commandLineArguments" },
+        "preActions": { "$ref": "#/$defs/preActions" },
+        "postActions": { "$ref": "#/$defs/postActions" },
+        "environmentVariables": { "$ref": "#/$defs/environmentVariables" },
+        "askForAppToLaunch": { "$ref": "#/$defs/askForAppToLaunch" }
+      }
+    },
+    "analyze": {
+      "description": "Analyze action.",
+      "type": "object",
+      "properties": {
+        "config": { "$ref": "#/$defs/config" },
+        "preActions": { "$ref": "#/$defs/preActions" },
+        "postActions": { "$ref": "#/$defs/postActions" }
+      }
+    },
+    "archive": {
+      "description": "Archive action.",
+      "type": "object",
+      "properties": {
+        "customArchiveName": {
+          "description": "the custom name to give to the archive",
+          "type": "string"
+        },
+        "revealArchiveInOrganizer": {
+          "description": "flag to determine whether the archive will be revealed in Xcode's Organizer after it's done building",
+          "type": "boolean"
+        },
+        "config": { "$ref": "#/$defs/config" },
+        "preActions": { "$ref": "#/$defs/preActions" },
+        "postActions": { "$ref": "#/$defs/postActions" }
+      }
+    },
+    "management": {
+      "description": "Archive action.",
+      "type": "object",
+      "properties": {
+        "shared": {
+          "description": "indicates whether the scheme is shared",
+          "type": "boolean"
+        },
+        "orderHint": {
+          "description": "used by Xcode to sort the schemes",
+          "type": "integer"
+        },
+        "isShown": {
+          "description": "indicates whether the sheme is shown in the scheme list",
+          "type": "boolean"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "config": {
+      "description": "All build actions can be set to use a certain config. If a config, or the build action itself, is not defined the first configuration found of a certain type will be used, depending on the type:\n-debug: run, test, analyze\n-release: profile, archive",
+      "type": "string",
+      "examples": ["debug", "release"]
+    },
+    "commandLineArguments": {
+      "description": "run, test and profile actions have a map of command line arguments to whether they are enabled",
+      "type": "object"
+    },
+    "preActions": {
+      "description": "Scripts that are run before the action",
+      "type": "array",
+      "items": {
+        "$ref": "execution_action.json"
+      }
+    },
+    "postActions": {
+      "description": "Scripts that are run after the action",
+      "type": "array",
+      "items": {
+        "$ref": "execution_action.json"
+      }
+    },
+    "environmentVariables": {
+      "description": "Scripts that are run after the action",
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "properties": {
+              "variable": {
+                "description": "variable's name.",
+                "type": "string"
+              },
+              "value": { "description": "variable's value.", "type": "string" },
+              "isEnabled": {
+                "description": "indicates whether the environment variable is enabled. This defaults to true.",
+                "type": "boolean",
+                "default": true
+              }
+            }
+          }
+        },
+        { "type": "object", "additionalProperties": { "type": "string" } }
+      ]
+    },
+    "enableGPUFrameCaptureMode": {
+      "description": "Property value set for GPU Frame Capture. Possible values are autoEnabled, metal, openGL, disabled. Default is autoEnabled.",
+      "type": "string",
+      "default": "autoEnabled",
+      "enum": ["autoEnabled", "metal", "openGL", "disabled"],
+      "examples": ["autoEnabled", "metal", "openGL", "disabled"]
+    },
+    "disableMainThreadChecker": {
+      "description": "run and test actions can define a boolean that indicates that this scheme should disable the Main Thread Checker. This defaults to false",
+      "type": "boolean",
+      "default": false
+    },
+    "language": {
+      "description": "run and test actions can define a language that is used for Application Language",
+      "type": "string"
+    },
+    "region": {
+      "description": "run and test actions can define a language that is used for Application Region",
+      "type": "string"
+    },
+    "debugEnabled": {
+      "description": "run and test actions can define a whether debugger should be used. This defaults to true.",
+      "type": "boolean",
+      "default": true
+    },
+    "simulateLocation": {
+      "description": "run action can define a simulated location",
+      "type": "object",
+      "properties": {
+        "allow": {
+          "description": "enable location simulation",
+          "type": "boolean"
+        },
+        "defaultLocation": {
+          "description": "set the default location, possible values:",
+          "type": "string",
+          "examples": [
+            "London, England",
+            "Johannesburg, South Africa",
+            "Moscow, Russia",
+            "Mumbai, India",
+            "Tokyo, Japan",
+            "Sydney, Australia",
+            "Hong Kong, China",
+            "Honolulu, HI, USA",
+            "San Francisco, CA, USA",
+            "Mexico City, Mexico",
+            "New York, NY, USA",
+            "Rio de Janeiro, Brazil",
+            "<relative-path-to-gpx-file> (e.g. ./location.gpx) Setting the defaultLocation to a custom gpx file, you also need to add that file to fileGroups for Xcode be able to use it."
+          ]
+        }
+      }
+    },
+    "askForAppToLaunch": {
+      "description": "run and profile actions can define the executable set to ask to launch. This defaults to false.",
+      "type": "boolean",
+      "default": false
+    },
+    "launchAutomaticallySubstyle": {
+      "description": "run action can define the launch automatically substyle ('2' for extensions).",
+      "type": "string"
+    },
+    "storeKitConfiguration": {
+      "description": "run action can specify a storekit configuration. See Options.",
+      "type": "string"
+    },
+    "macroExpansion": {
+      "description": "run action can define the macro expansion from other target. This defaults to nil.",
+      "type": "string"
+    }
+  },
+  "required": []
+}

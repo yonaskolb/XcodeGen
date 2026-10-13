@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "XcodeGen Platform Object",
+  "description": "XcodeGen Platform Object.\n https://github.com/yonaskolb/XcodeGen/blob/master/Docs/ProjectSpec.md#platform",
+  "oneOf": [
+    {
+      "type": "array"
+    },
+    {
+      "type": "string",
+      "enum": ["iOS", "macOS", "tvOS", "watchOS"],
+      "additionalProperties": false
+    }
+  ],
+  "examples": ["iOS", "macOS", "tvOS", "watchOS", "[iOS, tvOS]"]
+}
