@@ -272,12 +272,16 @@ extension Project: PathContainer {
 extension Project {
 
     public var allTrackedFiles: [Path] {
+        // Skip files that SourceGenerator never adds to the project. Directories are kept, as they can still become groups
+        func trackedChildren(of path: Path) -> [Path] {
+            ((try? path.recursiveChildren()) ?? []).filter { $0.isDirectory || !FileType.isDefaultExcluded($0) }
+        }
+
         var files: [Path] = []
         files.append(contentsOf: configFilePaths)
         for fileGroup in fileGroups {
             let fileGroupPath = basePath + fileGroup
-            let fileGroupChildren = (try? fileGroupPath.recursiveChildren()) ?? []
-            files.append(contentsOf: fileGroupChildren)
+            files.append(contentsOf: trackedChildren(of: fileGroupPath))
             files.append(fileGroupPath)
         }
 
@@ -289,11 +293,10 @@ extension Project {
             files.append(contentsOf: target.configFilePaths)
             for source in target.sources {
                 let sourcePath = basePath + source.path
-                
+
                 let type = source.type ?? options.defaultSourceDirectoryType ?? .group
                 if type.projectTracksChildren {
-                    let sourceChildren = (try? sourcePath.recursiveChildren()) ?? []
-                    files.append(contentsOf: sourceChildren)
+                    files.append(contentsOf: trackedChildren(of: sourcePath))
                 }
                 files.append(sourcePath)
             }
