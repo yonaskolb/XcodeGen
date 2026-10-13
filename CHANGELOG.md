@@ -6,12 +6,12 @@
 - Added `buildArchitectures` to scheme build options and target schemes, to control Xcode's "Override Architectures" scheme setting #1642 @arhxam
 - Added FAQ documentation on how to add an Xcode capability, such as In-App Purchase #1644 @Hokila
 - Added `xcode26_3` `projectFormat` option for the Xcode 26.3 project format (`objectVersion = 100`) #1648 @Raymondriter
-- Added `xcode27_0` `projectFormat` option for the Xcode 27.0 project format (`objectVersion = 110`) #XXXX @yonaskolb
+- Added `xcode27_0` `projectFormat` option for the Xcode 27.0 project format (`objectVersion = 110`) #1658 @yonaskolb
 
 ### Changed
 - Generated schemes now default to `buildArchitectures: matchRunDestination` ("Match Run Destination"), matching Xcode's default for new schemes. Previously schemes used each target's architecture settings. Set `buildArchitectures: useTargetSettings` to keep the previous behaviour #1642 @yonaskolb
-- The default `xcodeVersion` is now `16.0` (previously `14.3`), which sets `LastUpgradeCheck` in generated projects and `LastUpgradeVersion` in generated schemes. Set `options.xcodeVersion` to keep the previous value #XXXX @yonaskolb
-- An unknown `options.projectFormat` value is now a spec validation error listing the valid values, instead of silently falling back to the default format #XXXX @yonaskolb
+- The default `xcodeVersion` is now `16.0` (previously `14.3`), which sets `LastUpgradeCheck` in generated projects and `LastUpgradeVersion` in generated schemes. Set `options.xcodeVersion` to keep the previous value #1658 @yonaskolb
+- An unknown `options.projectFormat` value is now a spec validation error listing the valid values, instead of silently falling back to the default format #1658 @yonaskolb
 
 ### Fixed
 - Fix `syncedFolder` source paths being relative to the spec directory instead of the project directory when they differ, which caused Xcode to treat the synced folder as empty #1636 @Ckitakishi
