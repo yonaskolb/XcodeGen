@@ -1492,7 +1492,7 @@ public class PBXProjGenerator {
 
         var exceptions: Set<String> = Set(
             sourceGenerator.syncedFolderExceptions(for: targetSource, at: syncedPath)
-                .compactMap { try? $0.relativePath(from: syncedPath).string }
+                .compactMap { sourceGenerator.syncedFolderExceptionKey(for: $0, in: syncedPath) }
         )
 
         for infoPlistPath in Set(infoPlistFiles.values) {
@@ -1503,15 +1503,19 @@ public class PBXProjGenerator {
             }
         }
 
-        guard !exceptions.isEmpty else { return }
+        let platformFilters = sourceGenerator.syncedFolderPlatformFilters(for: targetSource, at: syncedPath)
+            .filter { !exceptions.contains($0.key) }
+
+        guard !exceptions.isEmpty || !platformFilters.isEmpty else { return }
 
         let exceptionSet = PBXFileSystemSynchronizedBuildFileExceptionSet(
             target: targetObject,
-            membershipExceptions: exceptions.sorted(),
+            membershipExceptions: exceptions.isEmpty ? nil : exceptions.sorted(),
             publicHeaders: nil,
             privateHeaders: nil,
             additionalCompilerFlagsByRelativePath: nil,
-            attributesByRelativePath: nil
+            attributesByRelativePath: nil,
+            platformFiltersByRelativePath: platformFilters.isEmpty ? nil : platformFilters
         )
         addObject(exceptionSet)
         syncedGroup.exceptions = (syncedGroup.exceptions ?? []) + [exceptionSet]
