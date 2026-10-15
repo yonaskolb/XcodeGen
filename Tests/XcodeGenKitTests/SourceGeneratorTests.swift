@@ -398,10 +398,70 @@ class SourceGeneratorTests: XCTestCase {
                 let syncedFolder = try unwrap(syncedFolders.first)
 
                 let exceptionSet = try unwrap(syncedFolder.exceptions?.first as? PBXFileSystemSynchronizedBuildFileExceptionSet)
-                try expect(exceptionSet.membershipExceptions) == nil
+                try expect(exceptionSet.membershipExceptions).to.beNil()
                 try expect(exceptionSet.platformFiltersByRelativePath) == [
                     "File_tvOS.swift": ["tvos"],
                     "iOS/a.swift": ["ios"],
+                ]
+            }
+
+            $0.it("adds platform filters for explicit folders as a single item") {
+                let directories = """
+                Sources:
+                  - a.swift
+                  - Bundle:
+                    - data.txt
+                    - Nested:
+                      - more.txt
+                """
+                try createDirectories(directories)
+
+                let source = TargetSource(path: "Sources", explicitFolders: ["Bundle"], type: .syncedFolder, destinationFilters: [.iOS])
+                let target = Target(name: "Test", type: .application, platform: .auto, supportedDestinations: [.iOS, .macOS], sources: [source])
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target])
+
+                let pbxProj = try project.generatePbxProj()
+                let syncedFolders = try pbxProj.getMainGroup().children.compactMap { $0 as? PBXFileSystemSynchronizedRootGroup }
+                let syncedFolder = try unwrap(syncedFolders.first)
+
+                let exceptionSet = try unwrap(syncedFolder.exceptions?.first as? PBXFileSystemSynchronizedBuildFileExceptionSet)
+                try expect(exceptionSet.platformFiltersByRelativePath) == [
+                    "a.swift": ["ios"],
+                    "Bundle": ["ios"],
+                ]
+            }
+
+            $0.it("adds platform filters for localized files in the variant group form") {
+                let directories = """
+                Sources:
+                  - a.swift
+                  - excluded.swift
+                  - Resources:
+                    - en.lproj:
+                      - Localizable.strings
+                      - Excluded.strings
+                    - de.lproj:
+                      - Localizable.strings
+                      - Excluded.strings
+                """
+                try createDirectories(directories)
+
+                let source = TargetSource(path: "Sources", excludes: ["excluded.swift", "Resources/*.lproj/Excluded.strings"], type: .syncedFolder, destinationFilters: [.iOS])
+                let target = Target(name: "Test", type: .application, platform: .auto, supportedDestinations: [.iOS, .macOS], sources: [source])
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target])
+
+                let pbxProj = try project.generatePbxProj()
+                let syncedFolders = try pbxProj.getMainGroup().children.compactMap { $0 as? PBXFileSystemSynchronizedRootGroup }
+                let syncedFolder = try unwrap(syncedFolders.first)
+
+                let exceptionSet = try unwrap(syncedFolder.exceptions?.first as? PBXFileSystemSynchronizedBuildFileExceptionSet)
+                try expect(exceptionSet.membershipExceptions) == [
+                    "/Localized: Resources/Excluded.strings",
+                    "excluded.swift",
+                ]
+                try expect(exceptionSet.platformFiltersByRelativePath) == [
+                    "a.swift": ["ios"],
+                    "/Localized: Resources/Localizable.strings": ["ios"],
                 ]
             }
 
