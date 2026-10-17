@@ -961,6 +961,26 @@ class SourceGeneratorTests: XCTestCase {
                 try pbxProj.expectFile(paths: ["Sources/B", "b.swift"], names: ["B", "b.swift"], buildPhase: .sources)
             }
 
+            $0.it("generates intermediate groups up to the file system root") {
+                try createDirectories("""
+                Sources:
+                  - a.swift
+                """)
+
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: [
+                    "Sources",
+                    "/usr/bin/env",
+                ])
+                let options = SpecOptions(createIntermediateGroups: true)
+                let basePath = directoryPath.absolute()
+                let project = Project(basePath: basePath, name: "Test", targets: [target], options: options)
+
+                let pbxProj = try project.generatePbxProj()
+                let rootPath = try Path("/").relativePath(from: basePath).string
+                try pbxProj.expectFile(paths: ["Sources", "a.swift"], buildPhase: .sources)
+                try pbxProj.expectFile(paths: [rootPath, "usr", "bin", "env"], names: ["/", "usr", "bin", "env"])
+            }
+
             $0.it("generates intermediate groups with different projectDirectory") {
 
                 let directories = """
