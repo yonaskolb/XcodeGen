@@ -964,12 +964,13 @@ public class PBXProjGenerator {
                         XCSwiftPackageProductDependency(productName: productName, package: packageReference)
                     )
 
-                    // Add package dependency if linking is true.
-                    if dependency.link ?? true {
+                    // Xcode bakes packageProductDependencies into a static framework's
+                    // object code, so exclude them to avoid duplicate symbols at link time.
+                    if dependency.link ?? (target.type != .staticFramework) {
                         packageDependencies.append(packageDependency)
                     }
 
-                    let link = dependency.link ?? (target.type != .staticLibrary)
+                    let link = dependency.link ?? !target.type.isStatic
                     if link {
                         let file = PBXBuildFile(product: packageDependency, settings: getDependencyFrameworkSettings(dependency: dependency))
                         file.platformFilter = platform
