@@ -275,6 +275,20 @@ extension LegacyTarget: JSONEncodable {
 
 extension Target: NamedJSONDictionaryConvertible {
 
+    /// All YAML keys recognized at the top level of a target definition.
+    public static let validYAMLKeys: Set<String> = [
+        "name", "productName", "type", "platform", "supportedDestinations",
+        "isMultiPlatformTarget", "deploymentTarget", "settings", "configFiles",
+        "sources", "dependencies", "buildToolPlugins", "info", "entitlements",
+        "transitivelyLinkDependencies", "directlyEmbedCarthageDependencies",
+        "requiresObjCLinking", "preBuildScripts", "prebuildScripts",
+        "postCompileScripts", "postBuildScripts", "postbuildScripts",
+        "buildRules", "scheme", "legacy", "attributes",
+        "onlyCopyFilesOnInstall", "putResourcesBeforeSourcesBuildPhase",
+        // Template-related keys consumed before Target.init is called.
+        "templates", "templateAttributes",
+    ]
+
     public init(name: String, jsonDictionary: JSONDictionary) throws {
         let resolvedName: String = jsonDictionary.json(atKeyPath: "name") ?? name
         self.name = resolvedName

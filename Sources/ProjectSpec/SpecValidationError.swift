@@ -44,6 +44,7 @@ public struct SpecValidationError: Error, CustomStringConvertible {
         case invalidPluginPackageReference(plugin: String, package: String)
         case emptySourcePath(target: String)
         case invalidProjectFormat(String)
+        case unknownTargetKey(target: String, key: String)
 
         public var description: String {
             switch self {
@@ -116,6 +117,8 @@ public struct SpecValidationError: Error, CustomStringConvertible {
             case let .invalidProjectFormat(projectFormat):
                 let validValues = ProjectFormat.allCases.map(\.rawValue).joined(separator: ", ")
                 return "Invalid projectFormat \(projectFormat.quoted). Valid values are: \(validValues)"
+            case let .unknownTargetKey(target, key):
+                return "Target \(target.quoted) has an unrecognized key \(key.quoted). This key will be ignored. Check the XcodeGen documentation for valid target keys."
             }
         }
     }
