@@ -51,7 +51,17 @@ public class SpecLoader {
 private extension Dictionary where Key == String, Value: Any {
 
     func validateWarnings() throws {
-        let errors: [SpecValidationError.ValidationError] = []
+        var errors: [SpecValidationError.ValidationError] = []
+
+        if let targets = self["targets"] as? [String: Any] {
+            for (targetName, targetValue) in targets {
+                guard let targetDict = targetValue as? JSONDictionary else { continue }
+                let unknownKeys = Set(targetDict.keys).subtracting(Target.validYAMLKeys)
+                for key in unknownKeys.sorted() {
+                    errors.append(.unknownTargetKey(target: targetName, key: key))
+                }
+            }
+        }
 
         if !errors.isEmpty {
             throw SpecValidationError(errors: errors)

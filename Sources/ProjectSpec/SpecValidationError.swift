@@ -46,6 +46,7 @@ public struct SpecValidationError: Error, CustomStringConvertible {
         case invalidProjectFormat(String)
         case invalidProjectFileFormat(String)
         case unsupportedProjectFormatForProjectFileFormat(projectFormat: ProjectFormat, projectFileFormat: ProjectFileFormat)
+        case unknownTargetKey(target: String, key: String)
 
         public var description: String {
             switch self {
@@ -124,6 +125,8 @@ public struct SpecValidationError: Error, CustomStringConvertible {
             case let .unsupportedProjectFormatForProjectFileFormat(projectFormat, projectFileFormat):
                 let minimumProjectFormat = projectFileFormat.minimumProjectFormat?.rawValue ?? ""
                 return "projectFileFormat \(projectFileFormat.rawValue.quoted) requires projectFormat \(minimumProjectFormat) or newer, but projectFormat is \(projectFormat.rawValue.quoted)"
+            case let .unknownTargetKey(target, key):
+                return "Target \(target.quoted) has an unrecognized key \(key.quoted). This key will be ignored. Check the XcodeGen documentation for valid target keys."
             }
         }
     }

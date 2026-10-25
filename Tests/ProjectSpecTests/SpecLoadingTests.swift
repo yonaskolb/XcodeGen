@@ -423,6 +423,36 @@ class SpecLoadingTests: XCTestCase {
                     throw failure("Expected to not throw a validation error. Got: \(error)")
                 }
             }
+
+            $0.it("warns about unrecognized target keys") {
+                let dictionary: [String: Any] = [
+                    "name": "TestUnknownTargetKey",
+                    "targets": [
+                        "App": [
+                            "type": "application",
+                            "platform": "iOS",
+                            "sources": ["Sources/App"],
+                            "resources": ["Resources"],
+                        ],
+                    ],
+                ]
+                try? Yams.dump(object: dictionary).write(toFile: path.string, atomically: true, encoding: .utf8)
+                let specLoader = SpecLoader(version: "1.1.0")
+                do {
+                    _ = try specLoader.loadProject(path: path)
+                } catch {
+                    throw failure("loadProject should not throw for unknown keys. Got: \(error)")
+                }
+                do {
+                    try specLoader.validateProjectDictionaryWarnings()
+                    throw failure("Expected a validation error for the unknown 'resources' key")
+                } catch let error as SpecValidationError {
+                    let expected = SpecValidationError.ValidationError.unknownTargetKey(target: "App", key: "resources")
+                    try expect(error.errors.contains(expected)) == true
+                } catch {
+                    throw failure("Unexpected error type: \(error)")
+                }
+            }
         }
     }
 
