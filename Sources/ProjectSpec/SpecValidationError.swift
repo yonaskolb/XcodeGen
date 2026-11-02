@@ -118,7 +118,8 @@ public struct SpecValidationError: Error, CustomStringConvertible {
                 let validValues = ProjectFormat.allCases.map(\.rawValue).joined(separator: ", ")
                 return "Invalid projectFormat \(projectFormat.quoted). Valid values are: \(validValues)"
             case let .unrecognizedTargetKey(target, key):
-                return "Target \(target.quoted) has unrecognized key \(key.quoted)"
+                let validKeys = Target.recognizedKeys.sorted().joined(separator: ", ")
+                return "Target \(target.quoted) has unrecognized key \(key.quoted). Valid target keys are: \(validKeys)"
             }
         }
     }

@@ -54,9 +54,9 @@ private extension Dictionary where Key == String, Value: Any {
         var errors: [SpecValidationError.ValidationError] = []
 
         if let targets = self["targets"] as? [String: Any] {
-            for (targetName, value) in targets {
+            for (targetName, value) in targets.sorted(by: { $0.key < $1.key }) {
                 if let targetDict = value as? [String: Any] {
-                    for key in targetDict.keys where !Target.recognizedKeys.contains(key) {
+                    for key in targetDict.keys.sorted() where !Target.recognizedKeys.contains(key) {
                         errors.append(.unrecognizedTargetKey(target: targetName, key: key))
                     }
                 }

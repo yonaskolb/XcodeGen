@@ -446,6 +446,10 @@ class SpecLoadingTests: XCTestCase {
                     if !error.errors.contains(expected) {
                         throw failure("Expected warning for unrecognized key \"resources\", got: \(error)")
                     }
+                    let message = expected.description
+                    if !message.contains("\"resources\"") || !message.contains("Valid target keys are:") {
+                        throw failure("Expected message to name the key and list valid keys, got: \(message)")
+                    }
                 }
             }
 
