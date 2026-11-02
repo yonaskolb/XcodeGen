@@ -3,6 +3,7 @@
 ## Next Version
 
 ### Added
+- Added a warning when a target dictionary contains keys not recognized by `Target.init`, helping catch typos such as `resources` instead of `sources` #1660 @FawwazLawal
 - Added `buildArchitectures` to scheme build options and target schemes, to control Xcode's "Override Architectures" scheme setting #1642 @arhxam
 - Added FAQ documentation on how to add an Xcode capability, such as In-App Purchase #1644 @Hokila
 - Added `xcode26_3` `projectFormat` option for the Xcode 26.3 project format (`objectVersion = 100`) #1648 @Raymondriter

@@ -273,6 +273,23 @@ extension LegacyTarget: JSONEncodable {
     }
 }
 
+extension Target {
+
+    public static let recognizedKeys: Set<String> = [
+        "name", "productName", "type", "supportedDestinations",
+        "isMultiPlatformTarget", "platform", "deploymentTarget",
+        "settings", "configFiles", "sources", "dependencies",
+        "buildToolPlugins", "info", "entitlements",
+        "transitivelyLinkDependencies", "directlyEmbedCarthageDependencies",
+        "requiresObjCLinking", "preBuildScripts", "prebuildScripts",
+        "postCompileScripts", "postBuildScripts", "postbuildScripts",
+        "buildRules", "scheme", "legacy", "attributes",
+        "onlyCopyFilesOnInstall", "putResourcesBeforeSourcesBuildPhase",
+        "templates", "templateAttributes",
+        "platformPrefix", "platformSuffix",
+    ]
+}
+
 extension Target: NamedJSONDictionaryConvertible {
 
     public init(name: String, jsonDictionary: JSONDictionary) throws {
