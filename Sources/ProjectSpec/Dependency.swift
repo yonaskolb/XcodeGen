@@ -5,6 +5,7 @@ public struct Dependency: Equatable {
     public static let removeHeadersDefault = true
     public static let implicitDefault = false
     public static let weakLinkDefault = false
+    public static let excludeFromTransitiveLinkingDefault = false
     public static let platformFilterDefault: PlatformFilter = .all
 
     public var type: DependencyType
@@ -15,6 +16,7 @@ public struct Dependency: Equatable {
     public var link: Bool?
     public var implicit: Bool = implicitDefault
     public var weakLink: Bool = weakLinkDefault
+    public var excludeFromTransitiveLinking: Bool = excludeFromTransitiveLinkingDefault
     public var platformFilter: PlatformFilter = platformFilterDefault
     public var destinationFilters: [SupportedDestination]?
     public var platforms: Set<Platform>?
@@ -28,6 +30,7 @@ public struct Dependency: Equatable {
         link: Bool? = nil,
         implicit: Bool = implicitDefault,
         weakLink: Bool = weakLinkDefault,
+        excludeFromTransitiveLinking: Bool = excludeFromTransitiveLinkingDefault,
         platformFilter: PlatformFilter = platformFilterDefault,
         destinationFilters: [SupportedDestination]? = nil,
         platforms: Set<Platform>? = nil,
@@ -40,6 +43,7 @@ public struct Dependency: Equatable {
         self.link = link
         self.implicit = implicit
         self.weakLink = weakLink
+        self.excludeFromTransitiveLinking = excludeFromTransitiveLinking
         self.platformFilter = platformFilter
         self.destinationFilters = destinationFilters
         self.platforms = platforms
@@ -139,13 +143,16 @@ extension Dependency: JSONObjectConvertible {
         if let bool: Bool = jsonDictionary.json(atKeyPath: "weak") {
             weakLink = bool
         }
-        
+        if let bool: Bool = jsonDictionary.json(atKeyPath: "excludeFromTransitiveLinking") {
+            excludeFromTransitiveLinking = bool
+        }
+
         if let platformFilterString: String = jsonDictionary.json(atKeyPath: "platformFilter"), let platformFilter = PlatformFilter(rawValue: platformFilterString) {
             self.platformFilter = platformFilter
         } else {
             self.platformFilter = .all
         }
-        
+
         if let destinationFilters: [SupportedDestination] = jsonDictionary.json(atKeyPath: "destinationFilters") {
             self.destinationFilters = destinationFilters
         }
@@ -179,6 +186,9 @@ extension Dependency: JSONEncodable {
         }
         if weakLink != Dependency.weakLinkDefault {
             dict["weak"] = weakLink
+        }
+        if excludeFromTransitiveLinking != Dependency.excludeFromTransitiveLinkingDefault {
+            dict["excludeFromTransitiveLinking"] = excludeFromTransitiveLinking
         }
 
         switch type {
