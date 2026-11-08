@@ -18,6 +18,7 @@
 - Fix nested target attributes (e.g. `attributes.SystemCapabilities`) being serialized as a stringified Swift `Dictionary` description instead of a proper nested plist dictionary, which also caused non-deterministic key ordering in generated `project.pbxproj` files across runs #1639 @imadaan @sergeyospanov
 - Fix `.DS_Store` and `.orig` files causing projects to be regenerated when using `--use-cache` #1622 @kimjune01
 - Fix generated "Copy Bundle Resources" phases missing `dstPath`, which caused Xcode 27.2 project conversion to fail #1654 @Ckitakishi
+- Fix `make install` failing on Linux by only passing `--arch arm64 --arch x86_64` when building on macOS @vintoware
 
 ### Internal
 - Use a dedicated local package in the SPM fixture so generated fixtures don't depend on the checkout directory name, such as when running tests from a git worktree @yonaskolb
