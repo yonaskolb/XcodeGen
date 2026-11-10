@@ -39,14 +39,43 @@ public class CarthageDependencyResolver {
         versionLoader = CarthageVersionLoader(buildPath: project.basePath + CarthageDependencyResolver.getBuildPath(project))
     }
 
+    func frameworkPath(for name: String, platform: Platform, linkType: Dependency.CarthageLinkType) -> Path {
+        var file = Path(name)
+        var xcFramework = project.options.carthageXCFrameworks
+        switch file.extension {
+        case "xcframework":
+            xcFramework = true
+        case "framework":
+            xcFramework = false
+        case .none:
+            let fileExtension: String
+            if xcFramework {
+                fileExtension = "xcframework"
+            } else {
+                fileExtension = "framework"
+            }
+            file = Path(file.string + ".\(fileExtension)")
+        default:
+            break
+        }
+
+        let parentPath = Path(buildPath(for: platform, linkType: linkType, xcFramework: xcFramework))
+        return parentPath + file
+    }
+
     /// Carthage's build path for the given platform
-    func buildPath(for platform: Platform, linkType: Dependency.CarthageLinkType) -> String {
+    func buildPath(for platform: Platform, linkType: Dependency.CarthageLinkType, xcFramework: Bool) -> String {
+        var path = buildPath
+        if !xcFramework {
+            path += "/\(platform.carthageName)"
+        }
         switch linkType {
         case .static:
-            return "\(buildPath)/\(platform.carthageName)/Static"
+            path += "/Static"
         case .dynamic:
-            return "\(buildPath)/\(platform.carthageName)"
+            break
         }
+        return path
     }
 
     /// Fetches all carthage dependencies for a given target
