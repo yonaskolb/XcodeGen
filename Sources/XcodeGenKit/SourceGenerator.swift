@@ -23,13 +23,6 @@ class SourceGenerator {
     private let project: Project
     let pbxProj: PBXProj
 
-    private var defaultExcludedFiles = [
-        ".DS_Store",
-    ]
-    private let defaultExcludedExtensions = [
-        "orig",
-    ]
-
     private(set) var knownRegions: Set<String> = []
 
     /// The effective base path for resolving group and file paths in the generated project.
@@ -206,7 +199,13 @@ class SourceGenerator {
         let createIntermediateGroups = project.options.createIntermediateGroups
 
         let parentPath = path.parent()
+
+        guard !isInsideSyncedFolder(path: path) else {
+            return getFileReference(path: path, inPath: basePath, sourceTree: .sourceRoot)
+        }
+
         let fileReference = getFileReference(path: path, inPath: parentPath)
+
         let parentGroup = getGroup(
             path: parentPath,
             mergingChildren: [fileReference],
@@ -283,6 +282,19 @@ class SourceGenerator {
         }
     }
 
+    /// Whether the given path falls inside a target source configured as a synced folder.
+    /// Checks the project spec directly because configFiles are resolved before target sources
+    /// populate `syncedGroupsByPath`.
+    private func isInsideSyncedFolder(path: Path) -> Bool {
+        let relativePath = (try? path.relativePath(from: basePath)) ?? path
+        return project.targets.contains { target in
+            target.sources.contains { source in
+                let type = source.type ?? (project.options.defaultSourceDirectoryType ?? .group)
+                return type == .syncedFolder && relativePath.string.hasPrefix(source.path + "/")
+            }
+        }
+    }
+
     /// returns a default build phase for a given path. This is based off the filename
     private func getDefaultBuildPhase(for path: Path, targetType: PBXProductType) -> BuildPhaseSpec? {
         if let buildPhase = getFileType(path: path)?.buildPhase {
@@ -315,6 +327,9 @@ class SourceGenerator {
     /// Any merged children are added to a new group or merged into an existing one.
     private func getGroup(path: Path, name: String? = nil, mergingChildren children: [PBXFileElement], createIntermediateGroups: Bool, hasCustomParent: Bool, isBaseGroup: Bool) -> PBXGroup {
         let groupReference: PBXGroup
+
+        // A child may already have been registered as top level before being attached to its parent.
+        removeRootGroupMembership(from: children)
 
         if let cachedGroup = groupsByPath[path] {
             var cachedGroupChildren = cachedGroup.children
@@ -356,11 +371,24 @@ class SourceGenerator {
             groupReference = addObject(group)
             groupsByPath[path] = groupReference
 
-            if isTopLevelGroup {
+            if isTopLevelGroup && !isInsideSyncedFolder(path: path) {
                 rootGroups.insert(groupReference)
             }
         }
         return groupReference
+    }
+
+    private func removeRootGroupMembership(from elements: [PBXFileElement]) {
+        for element in elements where rootGroups.contains(element) {
+            rootGroups.remove(element)
+            // Top-level group paths are relative to the project; nested group paths are relative to their parent.
+            guard element is PBXGroup, element.sourceTree == .group, let elementPath = element.path else { continue }
+            let relativePath = Path(elementPath).lastComponent
+            element.path = relativePath
+            if element.name == relativePath {
+                element.name = nil
+            }
+        }
     }
 
     /// Creates a variant group or returns an existing one at the path
@@ -385,13 +413,9 @@ class SourceGenerator {
     }
 
     /// Returns the expanded set of exception paths for a synced folder, including excludes and non-included files.
-    func syncedFolderExceptions(for targetSource: TargetSource, at syncedPath: Path) -> Set<Path> {
+    func syncedFolderExceptions(for targetSource: TargetSource, at syncedPath: Path, targetType: PBXProductType) -> Set<Path> {
         let excludePaths = expandedExcludes(for: targetSource)
-        if targetSource.includes.isEmpty {
-            return excludePaths
-        }
-
-        let includePaths = SortedArray(getSourceMatches(targetSource: targetSource, patterns: targetSource.includes))
+        let includePaths = targetSource.includes.isEmpty ? nil : SortedArray(getSourceMatches(targetSource: targetSource, patterns: targetSource.includes))
         var exceptions: Set<Path> = []
 
         func findExceptions(in path: Path) {
@@ -401,7 +425,14 @@ class SourceGenerator {
                 if isIncludedPath(child, excludePaths: excludePaths, includePaths: includePaths) {
                     if child.isDirectory && !Xcode.isDirectoryFileWrapper(path: child) {
                         findExceptions(in: child)
+                    } else {
+                        let buildPhase = getDefaultBuildPhase(for: child, targetType: targetType)
+                        if buildPhase == BuildPhaseSpec.none {
+                            exceptions.insert(child)
+                        }
                     }
+                } else if child.isDirectory && !Xcode.isDirectoryFileWrapper(path: child) {
+                    findExceptions(in: child)
                 } else {
                     exceptions.insert(child)
                 }
@@ -410,6 +441,48 @@ class SourceGenerator {
 
         findExceptions(in: syncedPath)
         return exceptions
+    }
+
+    /// Returns the key Xcode uses for a path in a synced folder's exception set.
+    /// Localized files are keyed by their variant group, e.g. `/Localized: Resources/Localizable.strings`,
+    /// since Xcode ignores per-language paths like `Resources/en.lproj/Localizable.strings`.
+    func syncedFolderExceptionKey(for path: Path, in syncedPath: Path) -> String? {
+        guard let relativePath = try? path.relativePath(from: syncedPath).string else { return nil }
+
+        var components = relativePath.split(separator: "/")
+        guard let localizedIndex = components.firstIndex(where: { $0.hasSuffix(".lproj") }) else { return relativePath }
+        components.remove(at: localizedIndex)
+        return "/Localized: \(components.joined(separator: "/"))"
+    }
+
+    /// Returns the platform filters for each item in a synced folder, keyed by `syncedFolderExceptionKey`.
+    /// Xcode ignores filters on plain folders, so they are expanded into their files. Explicit folders are
+    /// a single item to Xcode, so they get one key and their contents are ignored.
+    func syncedFolderPlatformFilters(for targetSource: TargetSource, at syncedPath: Path) -> [String: [String]] {
+        guard targetSource.destinationFilters?.isEmpty == false || targetSource.inferDestinationFiltersByPath == true else {
+            return [:]
+        }
+
+        let explicitFolders = Set(resolveExplicitFolders(targetSource: targetSource))
+        var platformFilters: [String: [String]] = [:]
+
+        func findFiles(in path: Path) {
+            guard let children = try? path.children() else { return }
+
+            for child in children where !child.lastComponent.hasPrefix(".") {
+                let isExplicitFolder = (try? child.relativePath(from: syncedPath).string).map(explicitFolders.contains) ?? false
+
+                if child.isDirectory && !Xcode.isDirectoryFileWrapper(path: child) && !isExplicitFolder {
+                    findFiles(in: child)
+                } else if let filters = makeDestinationFilters(for: child, with: targetSource.destinationFilters, or: targetSource.inferDestinationFiltersByPath),
+                          let key = syncedFolderExceptionKey(for: child, in: syncedPath) {
+                    platformFilters[key] = filters
+                }
+            }
+        }
+
+        findFiles(in: syncedPath)
+        return platformFilters
     }
 
     /// Collects all the excluded paths within the targetSource
@@ -450,8 +523,7 @@ class SourceGenerator {
 
     /// Checks whether the path is not in any default or TargetSource excludes
     func isIncludedPath(_ path: Path, excludePaths: Set<Path>, includePaths: SortedArray<Path>?) -> Bool {
-        return !defaultExcludedFiles.contains(where: { path.lastComponent == $0 })
-            && !(path.extension.map(defaultExcludedExtensions.contains) ?? false)
+        return !FileType.isDefaultExcluded(path)
             && !excludePaths.contains(path)
             // If includes is empty, it's included. If it's not empty, the path either needs to match exactly, or it needs to be a direct parent of an included path.
             && (includePaths.flatMap { _isIncludedPathSorted(path, sortedPaths: $0) } ?? true)
@@ -743,7 +815,7 @@ class SourceGenerator {
             sourceReference = group
         case .syncedFolder:
 
-            let relativePath = (try? path.relativePath(from: project.basePath)) ?? path
+            let relativePath = (try? path.relativePath(from: basePath)) ?? path
             let resolvedExplicitFolders = resolveExplicitFolders(targetSource: targetSource)
 
             let syncedRootGroup: PBXFileSystemSynchronizedRootGroup

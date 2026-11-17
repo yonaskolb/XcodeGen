@@ -7,6 +7,7 @@
 
 import Foundation
 import JSONUtilities
+import PathKit
 import enum XcodeProj.BuildPhase
 
 public struct FileType: Equatable {
@@ -123,4 +124,23 @@ extension FileType {
         "pch": FileType(buildPhase: BuildPhaseSpec.none),
         "xctestplan": FileType(buildPhase: BuildPhaseSpec.none),
     ]
+}
+
+extension FileType {
+
+    /// File names that are never added to the project or tracked by the cache
+    static let defaultExcludedFiles: Set<String> = [
+        ".DS_Store",
+    ]
+
+    /// File extensions that are never added to the project or tracked by the cache
+    static let defaultExcludedExtensions: Set<String> = [
+        "orig",
+    ]
+
+    /// Checks whether the path is in any default excludes
+    public static func isDefaultExcluded(_ path: Path) -> Bool {
+        defaultExcludedFiles.contains(path.lastComponent)
+            || (path.extension.map(defaultExcludedExtensions.contains) ?? false)
+    }
 }

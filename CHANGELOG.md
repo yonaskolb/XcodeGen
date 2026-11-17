@@ -2,6 +2,50 @@
 
 ## Next Version
 
+### Added
+- Added `buildArchitectures` to scheme build options and target schemes, to control Xcode's "Override Architectures" scheme setting #1642 @arhxam
+- Added FAQ documentation on how to add an Xcode capability, such as In-App Purchase #1644 @Hokila
+- Added `xcode26_3` `projectFormat` option for the Xcode 26.3 project format (`objectVersion = 100`) #1648 @Raymondriter
+- Added `xcode27_0` `projectFormat` option for the Xcode 27.0 project format (`objectVersion = 110`) #1658 @yonaskolb
+
+### Changed
+- Generated schemes now default to `buildArchitectures: matchRunDestination` ("Match Run Destination"), matching Xcode's default for new schemes. Previously schemes used each target's architecture settings. Set `buildArchitectures: useTargetSettings` to keep the previous behaviour #1642 @yonaskolb
+- The default `xcodeVersion` is now `16.0` (previously `14.3`), which sets `LastUpgradeCheck` in generated projects and `LastUpgradeVersion` in generated schemes. Set `options.xcodeVersion` to keep the previous value #1658 @yonaskolb
+- An unknown `options.projectFormat` value is now a spec validation error listing the valid values, instead of silently falling back to the default format #1658 @yonaskolb
+
+### Fixed
+- Fix `syncedFolder` source paths being relative to the spec directory instead of the project directory when they differ, which caused Xcode to treat the synced folder as empty #1636 @Ckitakishi
+- Fix `destinationFilters` and `inferDestinationFiltersByPath` being ignored for `syncedFolder` sources. They are now written as `platformFiltersByRelativePath` on the synced folder's exception set #1647 @anandghegde
+- Fix nested target attributes (e.g. `attributes.SystemCapabilities`) being serialized as a stringified Swift `Dictionary` description instead of a proper nested plist dictionary, which also caused non-deterministic key ordering in generated `project.pbxproj` files across runs #1639 @imadaan @sergeyospanov
+- Fix `.DS_Store` and `.orig` files causing projects to be regenerated when using `--use-cache` #1622 @kimjune01
+- Fix generated "Copy Bundle Resources" phases missing `dstPath`, which caused Xcode 27.2 project conversion to fail #1654 @Ckitakishi
+- Fix `syncedFolder` target membership including files that shouldn't be in the target: default ignored files such as `.DS_Store` are now excluded, as are files with no build phase such as `.xcconfig` and `.entitlements` #1618 @4brunu
+- Fix file elements being added to both the main group and another group, which prevented Xcode 27.2 from opening the generated project. Subdirectory groups of a source that points at the spec directory now appear under that source's group instead of at the project root #1652 @Ckitakishi
+
+### Internal
+- Use a dedicated local package in the SPM fixture so generated fixtures don't depend on the checkout directory name, such as when running tests from a git worktree @yonaskolb
+- Fix a Swift Testing error matcher that failed on Linux CI #1657 @yonaskolb
+
+## 2.46.0
+
+### Added
+- Added support for Swift package `traits` on remote and local package references, so generated projects preserve the configured trait selections #1629 @philprime
+
+### Changed
+- Targets in the generated project now follow the declaration order from the source spec (Xcode sidebar, `xcodebuild -list` output). Previously they were always sorted alphabetically. Applies to both YAML and JSON specs. Declaration order is now also preserved for targets whose `platform`/`name` come from a target template and for targets whose key is a `${VARIABLE}`. #1619 @mirkokg
+- Static frameworks (`type: framework.static`, or `type: framework` with `MACH_O_TYPE: staticlib`) are now embedded by default in dependent applications and test targets, the same as dynamic frameworks. Xcode 15 and later strips the static binary from the embedded copy while keeping the framework's resources. Set `embed: false` on the dependency to keep the previous behaviour #1628 @daltonclaybrook
+
+### Internal
+- Update to XcodeProj 9.14.0 #1629 @philprime
+
+## 2.45.4
+
+### Fixed
+- Fix makePathRelative using wrong base path when projectDirectory differs #1608 @yonaskolb
+- Fix synced folder configFiles creating duplicate groups #1607 @AlexNsbmr
+- Fix synced folder root group duplication for paths referenced by multiple targets #1607 @AlexNsbmr
+- Fix synced folder directory-level membershipExceptions not working #1607 @AlexNsbmr
+
 ## 2.45.3
 
 ### Fixed

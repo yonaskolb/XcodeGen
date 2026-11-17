@@ -167,12 +167,12 @@ public class PBXProjGenerator {
 
         for (name, package) in project.packages {
             switch package {
-            case let .remote(url, versionRequirement):
-                let packageReference = XCRemoteSwiftPackageReference(repositoryURL: url, versionRequirement: versionRequirement)
+            case let .remote(url, versionRequirement, traits):
+                let packageReference = XCRemoteSwiftPackageReference(repositoryURL: url, versionRequirement: versionRequirement, traits: traits)
                 packageReferences[name] = packageReference
                 addObject(packageReference)
-            case let .local(path, group, excludeFromProject):
-                let packageReference = XCLocalSwiftPackageReference(relativePath: path)
+            case let .local(path, group, excludeFromProject, traits):
+                let packageReference = XCLocalSwiftPackageReference(relativePath: path, traits: traits)
                 localPackageReferences[name] = packageReference
 
                 if !excludeFromProject {
@@ -322,9 +322,9 @@ public class PBXProjGenerator {
         pbxProject.remotePackages = packageReferences.sorted { $0.key < $1.key }.map { $1 }
         pbxProject.localPackages = localPackageReferences.sorted { $0.key < $1.key }.map { $1 }
 
-        let allTargets: [PBXTarget] = targetObjects.valueArray + targetAggregateObjects.valueArray
-        pbxProject.targets = allTargets
-            .sorted { $0.name < $1.name }
+        let orderedNativeTargets: [PBXTarget] = project.targets.compactMap { targetObjects[$0.name] }
+        let orderedAggregateTargets: [PBXTarget] = project.aggregateTargets.compactMap { targetAggregateObjects[$0.name] }
+        pbxProject.targets = orderedNativeTargets + orderedAggregateTargets
         pbxProject.attributes = projectAttributes
         pbxProject.targetAttributes = generateTargetAttributes()
         return pbxProj
@@ -1221,6 +1221,8 @@ public class PBXProjGenerator {
 
         if !copyBundlesReferences.isEmpty {
             let copyBundlesPhase = addObject(PBXCopyFilesBuildPhase(
+                // Xcode expects the key to be present, even when the path is empty.
+                dstPath: "",
                 dstSubfolderSpec: .resources,
                 name: "Copy Bundle Resources",
                 files: copyBundlesReferences
@@ -1493,8 +1495,8 @@ public class PBXProjGenerator {
         }) else { return }
 
         var exceptions: Set<String> = Set(
-            sourceGenerator.syncedFolderExceptions(for: targetSource, at: syncedPath)
-                .compactMap { try? $0.relativePath(from: syncedPath).string }
+            sourceGenerator.syncedFolderExceptions(for: targetSource, at: syncedPath, targetType: target.type)
+                .compactMap { sourceGenerator.syncedFolderExceptionKey(for: $0, in: syncedPath) }
         )
 
         for infoPlistPath in Set(infoPlistFiles.values) {
@@ -1505,15 +1507,19 @@ public class PBXProjGenerator {
             }
         }
 
-        guard !exceptions.isEmpty else { return }
+        let platformFilters = sourceGenerator.syncedFolderPlatformFilters(for: targetSource, at: syncedPath)
+            .filter { !exceptions.contains($0.key) }
+
+        guard !exceptions.isEmpty || !platformFilters.isEmpty else { return }
 
         let exceptionSet = PBXFileSystemSynchronizedBuildFileExceptionSet(
             target: targetObject,
-            membershipExceptions: exceptions.sorted(),
+            membershipExceptions: exceptions.isEmpty ? nil : exceptions.sorted(),
             publicHeaders: nil,
             privateHeaders: nil,
             additionalCompilerFlagsByRelativePath: nil,
-            attributesByRelativePath: nil
+            attributesByRelativePath: nil,
+            platformFiltersByRelativePath: platformFilters.isEmpty ? nil : platformFilters
         )
         addObject(exceptionSet)
         syncedGroup.exceptions = (syncedGroup.exceptions ?? []) + [exceptionSet]
