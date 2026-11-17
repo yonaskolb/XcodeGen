@@ -45,12 +45,28 @@ normalize() {
 failed=0
 compare() {
   local description="$1" pbxproj="$2" xcproj="$3"
-  if diff <(echo "$pbxproj") <(echo "$xcproj") > "$work/diff"; then
+  if diff "$pbxproj" "$xcproj" > "$work/diff"; then
     echo "✅  $description"
   else
     echo "❌  $description is different with project.xcproj"
     head -40 "$work/diff"
     failed=1
+  fi
+}
+
+# Saves the normalized output of xcodebuild to a file. Fails when xcodebuild fails or prints nothing,
+# so that projects Xcode can't read in both formats aren't reported as the same.
+xcodebuild_output() {
+  local file="$1"
+  shift
+  if xcodebuild "$@" > "$file" 2> "$work/xcodebuild.log" && [ -s "$file" ]; then
+    normalize < "$file" > "$file.normalized"
+    mv "$file.normalized" "$file"
+  else
+    echo "❌  xcodebuild $* failed"
+    tail -20 "$work/xcodebuild.log"
+    failed=1
+    return 1
   fi
 }
 
@@ -63,18 +79,17 @@ for spec in "${specs[@]}"; do
     continue
   fi
 
-  list() {
-    xcodebuild -list -json -project "$work/$1/$directory/$project" 2>/dev/null | normalize
-  }
-  pbxproj_list="$(list pbxproj)"
-  compare "$directory/$project targets, configurations and schemes" "$pbxproj_list" "$(list xcproj)"
+  for format in pbxproj xcproj; do
+    xcodebuild_output "$work/$format.list" -list -json -project "$work/$format/$directory/$project" || continue 2
+  done
+  compare "$directory/$project targets, configurations and schemes" "$work/pbxproj.list" "$work/xcproj.list"
 
-  configurations="$(echo "$pbxproj_list" | python3 -c 'import json, sys; print("\n".join(json.load(sys.stdin)["project"]["configurations"]))')"
+  configurations="$(python3 -c 'import json, sys; print("\n".join(json.load(sys.stdin)["project"]["configurations"]))' < "$work/pbxproj.list")"
   while read -r configuration; do
-    settings() {
-      xcodebuild -showBuildSettings -json -alltargets -skipPackageUpdates -configuration "$configuration" -project "$work/$1/$directory/$project" 2>/dev/null | normalize
-    }
-    compare "$directory/$project $configuration build settings" "$(settings pbxproj)" "$(settings xcproj)"
+    for format in pbxproj xcproj; do
+      xcodebuild_output "$work/$format.settings" -showBuildSettings -json -alltargets -skipPackageUpdates -configuration "$configuration" -project "$work/$format/$directory/$project" || continue 2
+    done
+    compare "$directory/$project $configuration build settings" "$work/pbxproj.settings" "$work/xcproj.settings"
   done <<< "$configurations"
 
   if diff -r "$work/pbxproj/$directory/$project/xcshareddata" "$work/xcproj/$directory/$project/xcshareddata" > "$work/diff"; then
@@ -87,12 +102,10 @@ for spec in "${specs[@]}"; do
 done
 
 if [ "$1" == "--build" ]; then
-  # build both formats the same way, so that a failure can be attributed to the project file format or not
-  for format in pbxproj xcproj; do
-    echo "⚙️  Building TestProject from project.$format"
-    (cd "$work/$format/TestProject" && ./build.sh)
-    echo "✅  Built TestProject from project.$format"
-  done
+  # the TestProject is already built from its project.pbxproj by scripts/build-fixtures.sh
+  echo "⚙️  Building TestProject from project.xcproj"
+  (cd "$work/xcproj/TestProject" && ./build.sh)
+  echo "✅  Built TestProject from project.xcproj"
 fi
 
 exit $failed

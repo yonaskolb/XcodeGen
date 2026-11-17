@@ -489,7 +489,8 @@ class ProjectSpecTests: XCTestCase {
             }
 
             $0.it("validates every combination of project format and project file format") {
-                let xcprojFormats: Set<ProjectSpec.ProjectFormat> = [.xcode27_0]
+                let minimumXCProjFormat = try unwrap(ProjectFileFormat.xcproj.minimumProjectFormat)
+                let xcprojFormats = Set(ProjectSpec.ProjectFormat.allCases.filter { $0.objectVersion >= minimumXCProjFormat.objectVersion })
                 for projectFileFormat in ProjectFileFormat.allCases {
                     for projectFormat in ProjectSpec.ProjectFormat.allCases {
                         var project = baseProject
