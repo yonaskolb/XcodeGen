@@ -421,7 +421,9 @@ class SourceGenerator {
         func findExceptions(in path: Path) {
             guard let children = try? path.children() else { return }
 
-            for child in children {
+            // Xcode already ignores files like `.DS_Store` in synced folders, so listing them would only
+            // make the project depend on local Finder state
+            for child in children where !FileType.isDefaultExcludedFile(child) {
                 if isIncludedPath(child, excludePaths: excludePaths, includePaths: includePaths) {
                     if child.isDirectory && !Xcode.isDirectoryFileWrapper(path: child) {
                         findExceptions(in: child)

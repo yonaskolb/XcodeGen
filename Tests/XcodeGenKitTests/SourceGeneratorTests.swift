@@ -299,7 +299,7 @@ class SourceGeneratorTests: XCTestCase {
                 try expect(exceptions.contains("a.swift")) == false
             }
 
-            $0.it("excludes .DS_Store and .xcconfig from synced folder membership") {
+            $0.it("excludes .xcconfig from synced folder membership without listing .DS_Store") {
                 let directories = """
                 Sources:
                   - a.swift
@@ -323,7 +323,7 @@ class SourceGeneratorTests: XCTestCase {
 
                 try expect(exceptions.contains("config.xcconfig")) == true
                 try expect(exceptions.contains("Subfolder/nested.xcconfig")) == true
-                try expect(exceptions.contains(".DS_Store")) == true
+                try expect(exceptions.contains(".DS_Store")) == false
             }
 
             $0.it("adds membership exceptions for nested synced folder with intermediate groups") {
@@ -484,12 +484,15 @@ class SourceGeneratorTests: XCTestCase {
                 try expect(exceptions.contains("Nested/a.swift")) == false
             }
 
-            $0.it("includes default excluded files in synced folder membership exceptions") {
+            $0.it("excludes default excluded extensions but not default excluded files from synced folder membership exceptions") {
                let directories = """
                Sources:
                  - a.swift
                  - .DS_Store
                  - a.swift.orig
+                 - Nested:
+                   - .DS_Store
+                   - b.swift
                """
                try createDirectories(directories)
 
@@ -504,7 +507,8 @@ class SourceGeneratorTests: XCTestCase {
                let exceptionSets = try unwrap(syncedFolder.exceptions?.compactMap { $0 as? PBXFileSystemSynchronizedBuildFileExceptionSet })
                let exceptionSet = try unwrap(exceptionSets.first)
                let exceptions = try unwrap(exceptionSet.membershipExceptions)
-               try expect(exceptions.contains(".DS_Store")) == true
+               try expect(exceptions.contains(".DS_Store")) == false
+               try expect(exceptions.contains("Nested/.DS_Store")) == false
                try expect(exceptions.contains("a.swift.orig")) == true
             }
             $0.it("supports includes for synced folders") {
