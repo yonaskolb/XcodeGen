@@ -132,8 +132,10 @@ Note that target names can also be changed by adding a `name` property to a targ
 - [ ] **usesTabs**: **Bool** - If this is specified, the Xcode project will override the user's setting determining whether or not tabs or spaces should be used in the project.
 - [ ] **indentWidth**: **Int** - If this is specified, the Xcode project will override the user's setting for indent width in number of spaces.
 - [ ] **tabWidth**: **Int** - If this is specified, the Xcode project will override the user's setting for indent width in number of spaces.
-- [ ] **xcodeVersion**: **String** - The version of Xcode. This defaults to the latest version periodically. You can specify it in the format `0910` or `9.1`
-- [ ] **projectFormat**: **String** - The version of Xcode project. By default this is set to `xcode16_0`
+- [ ] **xcodeVersion**: **String** - The version of Xcode. This is used for `LastUpgradeCheck` in the project and `LastUpgradeVersion` in schemes. This defaults to `16.0`, and the default is updated periodically. You can specify it in the format `0910` or `9.1`
+- [ ] **projectFormat**: **String** - The version of Xcode project. By default this is set to `xcode16_0`. Must be one of:
+  - `xcode27_0`: Xcode 27.0
+  - `xcode26_3`: Xcode 26.3
   - `xcode16_3`: Xcode 16.3
   - `xcode16_0`: Xcode 16.0
   - `xcode15_3`: Xcode 15.3

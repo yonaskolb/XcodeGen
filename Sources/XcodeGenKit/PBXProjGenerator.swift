@@ -1221,6 +1221,8 @@ public class PBXProjGenerator {
 
         if !copyBundlesReferences.isEmpty {
             let copyBundlesPhase = addObject(PBXCopyFilesBuildPhase(
+                // Xcode expects the key to be present, even when the path is empty.
+                dstPath: "",
                 dstSubfolderSpec: .resources,
                 name: "Copy Bundle Resources",
                 files: copyBundlesReferences
@@ -1489,7 +1491,7 @@ public class PBXProjGenerator {
         }) else { return }
 
         var exceptions: Set<String> = Set(
-            sourceGenerator.syncedFolderExceptions(for: targetSource, at: syncedPath)
+            sourceGenerator.syncedFolderExceptions(for: targetSource, at: syncedPath, targetType: target.type)
                 .compactMap { try? $0.relativePath(from: syncedPath).string }
         )
 
