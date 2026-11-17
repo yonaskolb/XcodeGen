@@ -421,15 +421,11 @@ class SourceGenerator {
         func findExceptions(in path: Path) {
             guard let children = try? path.children() else { return }
 
-            // Xcode already ignores files like `.DS_Store` in synced folders, so listing them would only
-            // make the project depend on local Finder state
             for child in children where !FileType.isDefaultExcludedFile(child) {
                 if isIncludedPath(child, excludePaths: excludePaths, includePaths: includePaths) {
                     if child.isDirectory && !Xcode.isDirectoryFileWrapper(path: child) {
                         findExceptions(in: child)
                     } else {
-                        // Files without a build phase (e.g. `README` or `.gitkeep`) would otherwise be copied
-                        // into the bundle by Xcode, while groups never add them to any build phase
                         let buildPhase = getDefaultBuildPhase(for: child, targetType: targetType)
                         if buildPhase == nil || buildPhase == BuildPhaseSpec.none {
                             exceptions.insert(child)
