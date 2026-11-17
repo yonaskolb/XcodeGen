@@ -15,9 +15,12 @@
 
 ### Fixed
 - Fix `syncedFolder` source paths being relative to the spec directory instead of the project directory when they differ, which caused Xcode to treat the synced folder as empty #1636 @Ckitakishi
+- Fix `destinationFilters` and `inferDestinationFiltersByPath` being ignored for `syncedFolder` sources. They are now written as `platformFiltersByRelativePath` on the synced folder's exception set #1647 @anandghegde
 - Fix nested target attributes (e.g. `attributes.SystemCapabilities`) being serialized as a stringified Swift `Dictionary` description instead of a proper nested plist dictionary, which also caused non-deterministic key ordering in generated `project.pbxproj` files across runs #1639 @imadaan @sergeyospanov
 - Fix `.DS_Store` and `.orig` files causing projects to be regenerated when using `--use-cache` #1622 @kimjune01
 - Fix generated "Copy Bundle Resources" phases missing `dstPath`, which caused Xcode 27.2 project conversion to fail #1654 @Ckitakishi
+- Fix `syncedFolder` target membership including files that shouldn't be in the target: default ignored files such as `.DS_Store` are now excluded, as are files with no build phase such as `.xcconfig` and `.entitlements` #1618 @4brunu
+- Fix file elements being added to both the main group and another group, which prevented Xcode 27.2 from opening the generated project. Subdirectory groups of a source that points at the spec directory now appear under that source's group instead of at the project root #1652 @Ckitakishi
 - Fix `xcodegen generate` hanging when `createIntermediateGroups` is enabled and a source's only common ancestor with the project is the file system root, such as an absolute path like `/usr/bin/xcrun` #1659 @ybai08
 
 ### Internal

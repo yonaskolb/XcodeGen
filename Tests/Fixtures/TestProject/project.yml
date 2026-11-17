@@ -257,6 +257,10 @@ targets:
       - path: App_supportedDestinations/Storyboards
         group: App_supportedDestinations
         destinationFilters: [iOS]
+      - path: App_supportedDestinations/SyncedSources
+        group: App_supportedDestinations
+        type: syncedFolder
+        inferDestinationFiltersByPath: true
     dependencies:
       - package: Swinject
         product: Swinject
