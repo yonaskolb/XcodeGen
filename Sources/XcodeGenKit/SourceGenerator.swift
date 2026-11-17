@@ -397,13 +397,9 @@ class SourceGenerator {
     }
 
     /// Returns the expanded set of exception paths for a synced folder, including excludes and non-included files.
-    func syncedFolderExceptions(for targetSource: TargetSource, at syncedPath: Path) -> Set<Path> {
+    func syncedFolderExceptions(for targetSource: TargetSource, at syncedPath: Path, targetType: PBXProductType) -> Set<Path> {
         let excludePaths = expandedExcludes(for: targetSource)
-        if targetSource.includes.isEmpty {
-            return excludePaths
-        }
-
-        let includePaths = SortedArray(getSourceMatches(targetSource: targetSource, patterns: targetSource.includes))
+        let includePaths = targetSource.includes.isEmpty ? nil : SortedArray(getSourceMatches(targetSource: targetSource, patterns: targetSource.includes))
         var exceptions: Set<Path> = []
 
         func findExceptions(in path: Path) {
@@ -413,6 +409,11 @@ class SourceGenerator {
                 if isIncludedPath(child, excludePaths: excludePaths, includePaths: includePaths) {
                     if child.isDirectory && !Xcode.isDirectoryFileWrapper(path: child) {
                         findExceptions(in: child)
+                    } else {
+                        let buildPhase = getDefaultBuildPhase(for: child, targetType: targetType)
+                        if buildPhase == BuildPhaseSpec.none {
+                            exceptions.insert(child)
+                        }
                     }
                 } else if child.isDirectory && !Xcode.isDirectoryFileWrapper(path: child) {
                     findExceptions(in: child)
