@@ -458,7 +458,7 @@ class ProjectSpecTests: XCTestCase {
             }
 
             $0.it("allows valid project formats") {
-                for projectFormat in ProjectFormat.allCases {
+                for projectFormat in ProjectSpec.ProjectFormat.allCases {
                     var project = baseProject
                     project.options = SpecOptions(projectFormat: projectFormat.rawValue)
                     try expectNoValidationError(project, .invalidProjectFormat(projectFormat.rawValue))
