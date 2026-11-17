@@ -3,6 +3,7 @@
 ## Next Version
 
 ### Added
+- Added support for input files in build rules #1650 @GtechGovind
 - Added `buildArchitectures` to scheme build options and target schemes, to control Xcode's "Override Architectures" scheme setting #1642 @arhxam
 - Added FAQ documentation on how to add an Xcode capability, such as In-App Purchase #1644 @Hokila
 - Added `xcode26_3` `projectFormat` option for the Xcode 26.3 project format (`objectVersion = 100`) #1648 @Raymondriter
@@ -21,6 +22,7 @@
 - Fix generated "Copy Bundle Resources" phases missing `dstPath`, which caused Xcode 27.2 project conversion to fail #1654 @Ckitakishi
 - Fix `syncedFolder` target membership including files that shouldn't be in the target: default ignored files such as `.DS_Store` are now excluded, as are files with no build phase such as `.xcconfig` and `.entitlements` #1618 @4brunu
 - Fix file elements being added to both the main group and another group, which prevented Xcode 27.2 from opening the generated project. Subdirectory groups of a source that points at the spec directory now appear under that source's group instead of at the project root #1652 @Ckitakishi
+- Fix `make install` failing on Linux by only passing `--arch arm64 --arch x86_64` when building on macOS #1665 @vintoware
 - Fix `xcodegen generate` hanging when `createIntermediateGroups` is enabled and a source's only common ancestor with the project is the file system root, such as an absolute path like `/usr/bin/xcrun` #1659 @ybai08
 
 ### Internal

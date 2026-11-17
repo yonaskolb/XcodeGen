@@ -7,7 +7,10 @@ INSTALL_PATH = $(PREFIX)/bin/$(EXECUTABLE_NAME)
 SHARE_PATH = $(PREFIX)/share/$(EXECUTABLE_NAME)
 CURRENT_PATH = $(PWD)
 REPO = https://github.com/yonaskolb/$(TOOL_NAME)
-SWIFT_BUILD_FLAGS = --disable-sandbox -c release --arch arm64 --arch x86_64
+SWIFT_BUILD_FLAGS = --disable-sandbox -c release
+ifeq ($(shell uname -s),Darwin)
+	SWIFT_BUILD_FLAGS += --arch arm64 --arch x86_64
+endif
 BUILD_PATH = $(shell swift build $(SWIFT_BUILD_FLAGS) --show-bin-path)
 EXECUTABLE_PATH = $(BUILD_PATH)/$(EXECUTABLE_NAME)
 
