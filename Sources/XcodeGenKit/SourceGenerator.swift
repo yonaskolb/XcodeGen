@@ -428,8 +428,10 @@ class SourceGenerator {
                     if child.isDirectory && !Xcode.isDirectoryFileWrapper(path: child) {
                         findExceptions(in: child)
                     } else {
+                        // Files without a build phase (e.g. `README` or `.gitkeep`) would otherwise be copied
+                        // into the bundle by Xcode, while groups never add them to any build phase
                         let buildPhase = getDefaultBuildPhase(for: child, targetType: targetType)
-                        if buildPhase == BuildPhaseSpec.none {
+                        if buildPhase == nil || buildPhase == BuildPhaseSpec.none {
                             exceptions.insert(child)
                         }
                     }

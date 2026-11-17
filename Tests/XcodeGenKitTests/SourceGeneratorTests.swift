@@ -454,9 +454,43 @@ class SourceGeneratorTests: XCTestCase {
                 let exceptions = try unwrap(exceptionSet.membershipExceptions)
 
                 try expect(exceptions.contains("Config.xcconfig")) == true
-                try expect(exceptions.contains("README")) == false
+                try expect(exceptions.contains("README")) == true
                 try expect(exceptions.contains("a.swift")) == false
                 try expect(exceptions.contains("Icon.icon")) == false
+            }
+
+            $0.it("excludes files without a build phase from synced folder membership") {
+                let directories = """
+                Sources:
+                  - a.swift
+                  - data.json
+                  - .gitkeep
+                  - Nested:
+                    - .gitkeep
+                """
+                try createDirectories(directories)
+                _ = try createFile(at: "Sources/LICENSE", content: "")
+                _ = try createFile(at: "Sources/Nested/README", content: "")
+
+                let source = TargetSource(path: "Sources", type: .syncedFolder)
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: [source])
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target])
+
+                let pbxProj = try project.generatePbxProj()
+                let syncedFolders = try pbxProj.getMainGroup().children.compactMap { $0 as? PBXFileSystemSynchronizedRootGroup }
+                let syncedFolder = try unwrap(syncedFolders.first)
+
+                let exceptionSets = syncedFolder.exceptions?.compactMap { $0 as? PBXFileSystemSynchronizedBuildFileExceptionSet }
+                let exceptionSet = try unwrap(exceptionSets?.first)
+                let exceptions = try unwrap(exceptionSet.membershipExceptions)
+
+                // Xcode copies these into the bundle, while groups never add them to any build phase
+                try expect(exceptions.contains("LICENSE")) == true
+                try expect(exceptions.contains("Nested/README")) == true
+                try expect(exceptions.contains(".gitkeep")) == true
+                try expect(exceptions.contains("Nested/.gitkeep")) == true
+                try expect(exceptions.contains("a.swift")) == false
+                try expect(exceptions.contains("data.json")) == false
             }
 
             $0.it("excludes nested xcconfig files from synced folder membership") {
