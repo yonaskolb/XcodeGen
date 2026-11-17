@@ -380,6 +380,26 @@ class ProjectGeneratorTests: XCTestCase {
                 try expect(targetConfig1.buildSettings["ASSETCATALOG_COMPILER_APPICON_NAME"]?.stringValue) == "AppIcon"
                 try expect(targetConfig1.buildSettings["CODE_SIGN_IDENTITY"]?.stringValue) == "iPhone Developer"
             }
+
+            $0.it("supportedDestinations applies per-platform deployment targets") {
+                let target = try Target(name: "Target", jsonDictionary: [
+                    "type": "application",
+                    "supportedDestinations": ["iOS", "macOS"],
+                    "deploymentTarget": [
+                        "iOS": "18.0",
+                        "macOS": "15.0",
+                        "tvOS": "17.0",
+                    ],
+                ])
+                let project = Project(name: "", targets: [target])
+
+                let pbxProject = try project.generatePbxProj()
+                let targetConfig = try unwrap(pbxProject.nativeTargets.first?.buildConfigurationList?.buildConfigurations.first)
+
+                try expect(targetConfig.buildSettings["IPHONEOS_DEPLOYMENT_TARGET"]?.stringValue) == "18.0"
+                try expect(targetConfig.buildSettings["MACOSX_DEPLOYMENT_TARGET"]?.stringValue) == "15.0"
+                try expect(targetConfig.buildSettings["TVOS_DEPLOYMENT_TARGET"]).beNil()
+            }
             
             $0.it("supportedDestinations merges settings - iOS, visionOS") {
                 let target = Target(name: "Target", type: .application, platform: .auto, supportedDestinations: [.visionOS, .iOS])
@@ -1516,6 +1536,7 @@ class ProjectGeneratorTests: XCTestCase {
                         fileType: .type("sourcecode.swift"),
                         action: .script("do thing"),
                         name: "My Rule",
+                        inputFiles: ["$(SRCROOT)/Source File.swift", "$(DERIVED_FILE_DIR)/Generated.swift"],
                         outputFiles: ["file1.swift", "file2.swift"],
                         outputFilesCompilerFlags: ["--zee", "--bee"]
                     ),
@@ -1523,16 +1544,23 @@ class ProjectGeneratorTests: XCTestCase {
                         fileType: .pattern("*.plist"),
                         action: .compilerSpec("com.apple.build-tasks.copy-plist-file")
                     ),
+                    BuildRule(
+                        fileType: .pattern("*.metal"),
+                        action: .compilerSpec("com.apple.compilers.metal"),
+                        inputFiles: []
+                    ),
                 ]
                 let pbxProject = try scriptSpec.generatePbxProj()
 
                 let buildRules = pbxProject.buildRules
-                try expect(buildRules.count) == 2
+                try expect(buildRules.count) == 3
                 let first = buildRules.first { $0.name == "My Rule" }!
-                let second = buildRules.first { $0.name != "My Rule" }!
+                let second = buildRules.first { $0.filePatterns == "*.plist" }!
+                let third = buildRules.first { $0.filePatterns == "*.metal" }!
 
                 try expect(first.name) == "My Rule"
                 try expect(first.isEditable) == true
+                try expect(first.inputFiles) == ["$(SRCROOT)/Source File.swift", "$(DERIVED_FILE_DIR)/Generated.swift"]
                 try expect(first.outputFiles) == ["file1.swift", "file2.swift"]
                 try expect(first.outputFilesCompilerFlags) == ["--zee", "--bee"]
                 try expect(first.script) == "do thing"
@@ -1545,8 +1573,11 @@ class ProjectGeneratorTests: XCTestCase {
                 try expect(second.filePatterns) == "*.plist"
                 try expect(second.compilerSpec) == "com.apple.build-tasks.copy-plist-file"
                 try expect(second.script).beNil()
+                try expect(second.inputFiles).beNil()
                 try expect(second.outputFiles) == []
                 try expect(second.outputFilesCompilerFlags) == []
+
+                try expect(third.inputFiles) == []
             }
 
             $0.it("generates dependency build file settings") {

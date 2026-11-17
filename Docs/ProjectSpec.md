@@ -371,7 +371,7 @@ Settings are merged in the following order: `groups`, `base`, `configs` (simple 
 - [x] **type**: **[Product Type](#product-type)** - Product type of the target
 - [x] **platform**: **[Platform](#platform)** - Platform of the target
 - [ ] **supportedDestinations**: **[[Supported Destinations](#supported-destinations)]** - List of supported platform destinations for the target.
-- [ ] **deploymentTarget**: **String** - The deployment target (eg `9.2`). If this is not specified the value from the project set in [Options](#options)`.deploymentTarget.PLATFORM` will be used.
+- [ ] **deploymentTarget**: **String** or **[[Platform](#platform): String]** - The deployment target (eg `9.2`). For targets with multiple platforms or [supportedDestinations](#supported-destinations), this can be a map of platform to version (see [Supported Destinations](#supported-destinations)). If this is not specified the value from the project set in [Options](#options)`.deploymentTarget.PLATFORM` will be used.
 - [ ] **sources**: **[Sources](#sources)** - Source directories of the target
 - [ ] **configFiles**: **[Config Files](#config-files)** - `.xcconfig` files per config
 - [ ] **settings**: **[Settings](#settings)** - Target specific build settings. Default platform and product type settings will be applied first before any custom settings defined here. Other context dependant settings will be set automatically as well:
@@ -531,7 +531,7 @@ A source can be provided via a string (the path) or an object of the form:
 - [ ] **includes**: **[String]** - A list of global patterns in the same format as `excludes` representing the files to include. These rules are relative to `path` and _not the directory where `project.yml` resides_. If **excludes** is present and file conflicts with **includes**, **excludes** will override the **includes** behavior.
 - [ ] **explicitFolders**: **[String]** - Only valid for `syncedFolder` type. A list of global patterns in the same format as `excludes` to child folders that Xcode should treat as folder references.
 - [ ] **destinationFilters**: **[[Supported Destinations](#supported-destinations)]** - List of supported platform destinations the files should filter to. Defaults to all supported destinations.
-- [ ] **inferDestinationFiltersByPath**: **Bool** - This is a convenience filter that helps you to filter the files if their paths match these patterns `**/<supportedDestination>/*` or `*_<supportedDestination>.swift`. Note, if you use `destinationFilters` this flag will be ignored.
+- [ ] **inferDestinationFiltersByPath**: **Bool** - This is a convenience filter that helps you to filter the files if their paths match these patterns `**/<supportedDestination>/*` or `*_<supportedDestination>.swift`. Note, if you use `destinationFilters` this flag will be ignored. For `syncedFolder` sources, `destinationFilters` and `inferDestinationFiltersByPath` are resolved from the files present when the project is generated, so a file added to the folder later is built for all supported destinations until the project is regenerated.
 - [ ] **createIntermediateGroups**: **Bool** - This overrides the value in [Options](#options).
 - [ ] **optional**: **Bool** - Disable missing path check. Defaults to false.
 - [ ] **buildPhase**: **String** - This manually sets the build phase this file or files in this directory will be added to, otherwise XcodeGen will guess based on the file extension. Note that `Info.plist` files will never be added to any build phases, no matter what this setting is. Possible values are:
@@ -863,6 +863,7 @@ targets:
 - [ ] **script**: **String** - The script that will be run on each file. This or `compilerSpec` must be defined.
 - [ ] **compilerSpec**: **String**: A reference to a built in apple tool to run on each file. This is for advanced use and the the values for this must be checked. This or `script` must be defined.
 - [ ] **name**: **String** - The name of a build rule. Defaults to `Build Rule`
+- [ ] **inputFiles**: **[String]** - The list of input files
 - [ ] **outputFiles**: **[String]** - The list of output files
 - [ ] **outputFilesCompilerFlags**: **[String]** - The list of compiler flags to apply to the output files
 - [ ] **runOncePerArchitecture**: **Bool** - a boolean that indicates if this rule should run once per architecture. This defaults to true
@@ -878,6 +879,8 @@ targets:
       - filePattern: "*.txt"
         name: My Build Rule
         compilerSpec: com.apple.xcode.tools.swift.compiler
+        inputFiles:
+          - $(SRCROOT)/Input.txt
         outputFiles:
           - $(SRCROOT)/Generated.swift
         runOncePerArchitecture: false

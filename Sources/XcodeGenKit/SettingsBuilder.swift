@@ -88,16 +88,15 @@ extension Project {
         }
         
         // apply custom platform version
-        if let version = target.deploymentTarget {
-            if !specSupportedDestinations.isEmpty {
-                for supportedDestination in specSupportedDestinations {
-                    if let platform = Platform(rawValue: supportedDestination.rawValue) {
-                        buildSettings[platform.deploymentTargetSetting] = .string(version.deploymentTarget)
-                    }
+        if !specSupportedDestinations.isEmpty {
+            for supportedDestination in specSupportedDestinations {
+                if let platform = Platform(rawValue: supportedDestination.rawValue),
+                   let version = target.deploymentTargets?.version(for: platform) ?? target.deploymentTarget {
+                    buildSettings[platform.deploymentTargetSetting] = .string(version.deploymentTarget)
                 }
-            } else {
-                buildSettings[target.platform.deploymentTargetSetting] = .string(version.deploymentTarget)
             }
+        } else if let version = target.deploymentTargets?.version(for: target.platform) ?? target.deploymentTarget {
+            buildSettings[target.platform.deploymentTargetSetting] = .string(version.deploymentTarget)
         }
 
         // Prevent setting presets from overrwriting settings in target xcconfig files

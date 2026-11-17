@@ -328,6 +328,9 @@ class SourceGenerator {
     private func getGroup(path: Path, name: String? = nil, mergingChildren children: [PBXFileElement], createIntermediateGroups: Bool, hasCustomParent: Bool, isBaseGroup: Bool) -> PBXGroup {
         let groupReference: PBXGroup
 
+        // A child may already have been registered as top level before being attached to its parent.
+        removeRootGroupMembership(from: children)
+
         if let cachedGroup = groupsByPath[path] {
             var cachedGroupChildren = cachedGroup.children
             for child in children {
@@ -375,6 +378,19 @@ class SourceGenerator {
         return groupReference
     }
 
+    private func removeRootGroupMembership(from elements: [PBXFileElement]) {
+        for element in elements where rootGroups.contains(element) {
+            rootGroups.remove(element)
+            // Top-level group paths are relative to the project; nested group paths are relative to their parent.
+            guard element is PBXGroup, element.sourceTree == .group, let elementPath = element.path else { continue }
+            let relativePath = Path(elementPath).lastComponent
+            element.path = relativePath
+            if element.name == relativePath {
+                element.name = nil
+            }
+        }
+    }
+
     /// Creates a variant group or returns an existing one at the path
     private func getVariantGroup(path: Path, inPath: Path) -> PBXVariantGroup {
         let variantGroup: PBXVariantGroup
@@ -397,13 +413,9 @@ class SourceGenerator {
     }
 
     /// Returns the expanded set of exception paths for a synced folder, including excludes and non-included files.
-    func syncedFolderExceptions(for targetSource: TargetSource, at syncedPath: Path) -> Set<Path> {
+    func syncedFolderExceptions(for targetSource: TargetSource, at syncedPath: Path, targetType: PBXProductType) -> Set<Path> {
         let excludePaths = expandedExcludes(for: targetSource)
-        if targetSource.includes.isEmpty {
-            return excludePaths
-        }
-
-        let includePaths = SortedArray(getSourceMatches(targetSource: targetSource, patterns: targetSource.includes))
+        let includePaths = targetSource.includes.isEmpty ? nil : SortedArray(getSourceMatches(targetSource: targetSource, patterns: targetSource.includes))
         var exceptions: Set<Path> = []
 
         func findExceptions(in path: Path) {
@@ -413,6 +425,11 @@ class SourceGenerator {
                 if isIncludedPath(child, excludePaths: excludePaths, includePaths: includePaths) {
                     if child.isDirectory && !Xcode.isDirectoryFileWrapper(path: child) {
                         findExceptions(in: child)
+                    } else {
+                        let buildPhase = getDefaultBuildPhase(for: child, targetType: targetType)
+                        if buildPhase == BuildPhaseSpec.none {
+                            exceptions.insert(child)
+                        }
                     }
                 } else if child.isDirectory && !Xcode.isDirectoryFileWrapper(path: child) {
                     findExceptions(in: child)
@@ -424,6 +441,48 @@ class SourceGenerator {
 
         findExceptions(in: syncedPath)
         return exceptions
+    }
+
+    /// Returns the key Xcode uses for a path in a synced folder's exception set.
+    /// Localized files are keyed by their variant group, e.g. `/Localized: Resources/Localizable.strings`,
+    /// since Xcode ignores per-language paths like `Resources/en.lproj/Localizable.strings`.
+    func syncedFolderExceptionKey(for path: Path, in syncedPath: Path) -> String? {
+        guard let relativePath = try? path.relativePath(from: syncedPath).string else { return nil }
+
+        var components = relativePath.split(separator: "/")
+        guard let localizedIndex = components.firstIndex(where: { $0.hasSuffix(".lproj") }) else { return relativePath }
+        components.remove(at: localizedIndex)
+        return "/Localized: \(components.joined(separator: "/"))"
+    }
+
+    /// Returns the platform filters for each item in a synced folder, keyed by `syncedFolderExceptionKey`.
+    /// Xcode ignores filters on plain folders, so they are expanded into their files. Explicit folders are
+    /// a single item to Xcode, so they get one key and their contents are ignored.
+    func syncedFolderPlatformFilters(for targetSource: TargetSource, at syncedPath: Path) -> [String: [String]] {
+        guard targetSource.destinationFilters?.isEmpty == false || targetSource.inferDestinationFiltersByPath == true else {
+            return [:]
+        }
+
+        let explicitFolders = Set(resolveExplicitFolders(targetSource: targetSource))
+        var platformFilters: [String: [String]] = [:]
+
+        func findFiles(in path: Path) {
+            guard let children = try? path.children() else { return }
+
+            for child in children where !child.lastComponent.hasPrefix(".") {
+                let isExplicitFolder = (try? child.relativePath(from: syncedPath).string).map(explicitFolders.contains) ?? false
+
+                if child.isDirectory && !Xcode.isDirectoryFileWrapper(path: child) && !isExplicitFolder {
+                    findFiles(in: child)
+                } else if let filters = makeDestinationFilters(for: child, with: targetSource.destinationFilters, or: targetSource.inferDestinationFiltersByPath),
+                          let key = syncedFolderExceptionKey(for: child, in: syncedPath) {
+                    platformFilters[key] = filters
+                }
+            }
+        }
+
+        findFiles(in: syncedPath)
+        return platformFilters
     }
 
     /// Collects all the excluded paths within the targetSource
@@ -856,8 +915,8 @@ class SourceGenerator {
     private func createIntermediaGroups(for fileElement: PBXFileElement, at path: Path) {
 
         let parentPath = path.parent()
-        guard parentPath != project.basePath else {
-            // we've reached the top
+        guard parentPath != project.basePath, parentPath != path else {
+            // we've reached the top, or the root of the file system
             return
         }
 

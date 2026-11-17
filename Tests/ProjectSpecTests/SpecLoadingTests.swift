@@ -747,6 +747,26 @@ class SpecLoadingTests: XCTestCase {
                 try expect(project.targets) == [target]
                 try expect(project.targets.first?.supportedDestinations) == [.macCatalyst, .iOS]
             }
+
+            $0.it("encodes per-platform deployment targets") {
+                let deploymentTargets = DeploymentTarget(
+                    iOS: Version(major: 18, minor: 0, patch: 0),
+                    macOS: Version(major: 15, minor: 0, patch: 0)
+                )
+                let target = Target(
+                    name: "Framework",
+                    type: .framework,
+                    platform: .auto,
+                    supportedDestinations: [.iOS, .macOS],
+                    deploymentTargets: deploymentTargets
+                )
+
+                let targetJSON = target.toJSONValue() as! [String: Any?]
+                let deploymentTargetJSON = targetJSON["deploymentTarget"] as! [String: String?]
+
+                try expect(deploymentTargetJSON["iOS"]!) == "18.0.0"
+                try expect(deploymentTargetJSON["macOS"]!) == "15.0.0"
+            }
             
             $0.it("invalid target platform because platform is an array and supported destinations is in use") {
                 let expectedError = SpecParsingError.invalidTargetPlatformAsArray
@@ -1533,6 +1553,7 @@ class SpecLoadingTests: XCTestCase {
                         "name": "My Rule",
                         "script": "my script",
                         "filePattern": "*.swift",
+                        "inputFiles": ["$(SRCROOT)/Source File.swift", "$(DERIVED_FILE_DIR)/Generated.swift"],
                         "outputFiles": ["file1", "file2"],
                         "outputFilesCompilerFlags": ["-a", "-b"],
                     ],
@@ -1540,12 +1561,18 @@ class SpecLoadingTests: XCTestCase {
                         "compilerSpec": "apple.tool",
                         "fileType": "sourcecode.swift",
                     ],
+                    [
+                        "compilerSpec": "apple.other-tool",
+                        "filePattern": "*.metal",
+                        "inputFiles": [],
+                    ],
                 ]
                 target["buildRules"] = buildRules
 
                 let expectedBuildRules = [
-                    BuildRule(fileType: .pattern("*.swift"), action: .script("my script"), name: "My Rule", outputFiles: ["file1", "file2"], outputFilesCompilerFlags: ["-a", "-b"]),
+                    BuildRule(fileType: .pattern("*.swift"), action: .script("my script"), name: "My Rule", inputFiles: ["$(SRCROOT)/Source File.swift", "$(DERIVED_FILE_DIR)/Generated.swift"], outputFiles: ["file1", "file2"], outputFilesCompilerFlags: ["-a", "-b"]),
                     BuildRule(fileType: .type("sourcecode.swift"), action: .compilerSpec("apple.tool")),
+                    BuildRule(fileType: .pattern("*.metal"), action: .compilerSpec("apple.other-tool"), inputFiles: []),
                 ]
 
                 let parsedTarget = try Target(name: "test", jsonDictionary: target)
