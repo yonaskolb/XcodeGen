@@ -518,7 +518,7 @@ class SourceGeneratorTests: XCTestCase {
                 try expect(exceptions.contains("Nested/a.swift")) == false
             }
 
-            $0.it("excludes default excluded extensions but not default excluded files from synced folder membership exceptions") {
+            $0.it("lists .orig files but not .DS_Store in synced folder membership exceptions") {
                let directories = """
                Sources:
                  - a.swift

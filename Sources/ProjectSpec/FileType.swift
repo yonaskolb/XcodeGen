@@ -145,7 +145,7 @@ extension FileType {
 
     /// Checks whether the path is in any default excludes
     public static func isDefaultExcluded(_ path: Path) -> Bool {
-        defaultExcludedFiles.contains(path.lastComponent)
+        isDefaultExcludedFile(path)
             || (path.extension.map(defaultExcludedExtensions.contains) ?? false)
     }
 }
