@@ -11,6 +11,10 @@ extension Project {
         options.projectFormat.flatMap(ProjectFormat.init) ?? .default
     }
 
+    public var projectFileFormat: ProjectFileFormat {
+        options.projectFileFormat.flatMap(ProjectFileFormat.init) ?? .default
+    }
+
     var schemeVersion: String {
         "1.7"
     }

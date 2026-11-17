@@ -141,6 +141,9 @@ Note that target names can also be changed by adding a `name` property to a targ
   - `xcode15_3`: Xcode 15.3
   - `xcode15_0`: Xcode 15.0
   - `xcode14_0`: Xcode 14.0
+- [ ] **projectFileFormat**: **String** - The file format the project is stored in, inside the `.xcodeproj`. By default this is set to `pbxproj`. Must be one of:
+  - `pbxproj`: The property list format, stored in `project.pbxproj`
+  - `xcproj`: **Experimental.** The JSON based format, stored in `project.xcproj`. Support for this format is still experimental, both in XcodeGen and in [XcodeProj](https://github.com/tuist/XcodeProj), so the generated project may change or be missing details in future versions. This format was introduced in Xcode 27.2 and can't be opened by Xcode versions before Xcode 27, so it can't be used with a **projectFormat** older than `xcode27_0`. When switching formats, the project file of the previous format is removed, as Xcode doesn't allow a project to contain both. The format can't store every target [attribute](#target): only `DevelopmentTeam`, `ProvisioningStyle`, `TestTargetID` and `LastSwiftMigration` are kept, and any other attributes are left out of the project.
 
 - [ ] **deploymentTarget**: **[[Platform](#platform): String]** - A project wide deployment target can be specified for each platform otherwise the default SDK version in Xcode will be used. This will be overridden by any custom build settings that set the deployment target eg `IPHONEOS_DEPLOYMENT_TARGET`. Target specific deployment targets can also be set with [Target](#target).deploymentTarget.
 - [ ] **disabledValidations**: **[String]** - A list of validations that can be disabled if they're too strict for your use case. By default this is set to an empty array. Currently these are the available options:

@@ -465,6 +465,57 @@ class ProjectSpecTests: XCTestCase {
                 }
             }
 
+            $0.it("fails with invalid project file format") {
+                var project = baseProject
+                project.options = SpecOptions(projectFileFormat: "json")
+                try expectValidationError(project, .invalidProjectFileFormat("json"))
+                try expect(SpecValidationError.ValidationError.invalidProjectFileFormat("json").description) == "Invalid projectFileFormat \"json\". Valid values are: pbxproj, xcproj"
+            }
+
+            $0.it("allows valid project file formats") {
+                for projectFileFormat in ProjectFileFormat.allCases {
+                    var project = baseProject
+                    project.options = SpecOptions(projectFileFormat: projectFileFormat.rawValue)
+                    try project.validate()
+                }
+            }
+
+            $0.it("fails with a project format older than the project file format supports") {
+                var project = baseProject
+                project.options = SpecOptions(projectFormat: "xcode26_3", projectFileFormat: "xcproj")
+                let error = SpecValidationError.ValidationError.unsupportedProjectFormatForProjectFileFormat(projectFormat: .xcode26_3, projectFileFormat: .xcproj)
+                try expectValidationError(project, error)
+                try expect(error.description) == "projectFileFormat \"xcproj\" requires projectFormat xcode27_0 or newer, but projectFormat is \"xcode26_3\""
+            }
+
+            $0.it("validates every combination of project format and project file format") {
+                let xcprojFormats: Set<ProjectSpec.ProjectFormat> = [.xcode27_0]
+                for projectFileFormat in ProjectFileFormat.allCases {
+                    for projectFormat in ProjectSpec.ProjectFormat.allCases {
+                        var project = baseProject
+                        project.options = SpecOptions(projectFormat: projectFormat.rawValue, projectFileFormat: projectFileFormat.rawValue)
+                        if projectFileFormat == .xcproj && !xcprojFormats.contains(projectFormat) {
+                            try expectValidationError(project, .unsupportedProjectFormatForProjectFileFormat(projectFormat: projectFormat, projectFileFormat: projectFileFormat))
+                        } else {
+                            try project.validate()
+                        }
+                    }
+                }
+            }
+
+            $0.it("allows the xcproj project file format without a project format") {
+                var project = baseProject
+                project.options = SpecOptions(projectFileFormat: "xcproj")
+                try project.validate()
+            }
+
+            $0.it("doesn't validate the project file format against an invalid project format") {
+                var project = baseProject
+                project.options = SpecOptions(projectFormat: "xcode99_0", projectFileFormat: "xcproj")
+                try expectValidationError(project, .invalidProjectFormat("xcode99_0"))
+                try expectNoValidationError(project, .invalidProjectFileFormat("xcproj"))
+            }
+
             $0.it("validates config settings format") {
                 var project = baseProject
                 project.configs = Config.defaultConfigs
@@ -686,6 +737,16 @@ class ProjectSpecTests: XCTestCase {
 
     func testJSONEncodable() {
         describe {
+            $0.it("encodes the project file format") {
+                for projectFileFormat in [nil] + ProjectFileFormat.allCases.map(\.rawValue) {
+                    let options = SpecOptions(projectFormat: "xcode27_0", projectFileFormat: projectFileFormat)
+                    let json = options.toJSONValue() as! [String: Any?]
+                    try expect(json["projectFileFormat"] as? String) == projectFileFormat
+                    let decoded = try SpecOptions(jsonDictionary: json.compactMapValues { $0 })
+                    try expect(decoded) == options
+                }
+            }
+
             $0.it("encodes to json") {
                 let proj = Project(basePath: Path.current,
                                    name: "ToJson",

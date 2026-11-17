@@ -1,0 +1,38 @@
+name: XCProjProject
+options:
+  projectFileFormat: xcproj
+  projectFormat: xcode27_0
+  bundleIdPrefix: com.project
+  deploymentTarget:
+    iOS: "17.0"
+packages:
+  LocalPackage:
+    path: ../LocalPackage
+settings:
+  GENERATE_INFOPLIST_FILE: YES
+targets:
+  App:
+    type: application
+    platform: iOS
+    sources: [App]
+    dependencies:
+      - target: Framework
+      - package: LocalPackage
+    preBuildScripts:
+      - name: Print
+        script: echo "Building App"
+        basedOnDependencyAnalysis: false
+    scheme:
+      testTargets: [AppTests]
+  Framework:
+    type: framework
+    platform: iOS
+    sources:
+      - path: Framework
+        type: syncedFolder
+  AppTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources: [AppTests]
+    dependencies:
+      - target: App

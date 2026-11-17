@@ -3450,7 +3450,7 @@
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 4.0;
+				WATCHOS_DEPLOYMENT_TARGET = 9.0;
 			};
 			name = "Test Debug";
 		};
@@ -3533,7 +3533,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = "DriverKit Driver/Driver.entitlements";
 				COMBINE_HIDPI_IMAGES = YES;
-				DRIVERKIT_DEPLOYMENT_TARGET = 20.4;
+				DRIVERKIT_DEPLOYMENT_TARGET = 21.0;
 				INFOPLIST_FILE = "DriverKit Driver/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -3549,7 +3549,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = "DriverKit Driver/Driver.entitlements";
 				COMBINE_HIDPI_IMAGES = YES;
-				DRIVERKIT_DEPLOYMENT_TARGET = 20.4;
+				DRIVERKIT_DEPLOYMENT_TARGET = 21.0;
 				INFOPLIST_FILE = "DriverKit Driver/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -4102,7 +4102,7 @@
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 4.0;
+				WATCHOS_DEPLOYMENT_TARGET = 9.0;
 			};
 			name = "Production Debug";
 		};
@@ -4264,7 +4264,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = "DriverKit Driver/Driver.entitlements";
 				COMBINE_HIDPI_IMAGES = YES;
-				DRIVERKIT_DEPLOYMENT_TARGET = 20.4;
+				DRIVERKIT_DEPLOYMENT_TARGET = 21.0;
 				INFOPLIST_FILE = "DriverKit Driver/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -4885,7 +4885,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = "DriverKit Driver/Driver.entitlements";
 				COMBINE_HIDPI_IMAGES = YES;
-				DRIVERKIT_DEPLOYMENT_TARGET = 20.4;
+				DRIVERKIT_DEPLOYMENT_TARGET = 21.0;
 				INFOPLIST_FILE = "DriverKit Driver/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -5637,7 +5637,7 @@
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 4.0;
+				WATCHOS_DEPLOYMENT_TARGET = 9.0;
 			};
 			name = "Staging Release";
 		};
@@ -6598,7 +6598,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = "DriverKit Driver/Driver.entitlements";
 				COMBINE_HIDPI_IMAGES = YES;
-				DRIVERKIT_DEPLOYMENT_TARGET = 20.4;
+				DRIVERKIT_DEPLOYMENT_TARGET = 21.0;
 				INFOPLIST_FILE = "DriverKit Driver/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -6617,7 +6617,7 @@
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 4.0;
+				WATCHOS_DEPLOYMENT_TARGET = 9.0;
 			};
 			name = "Production Release";
 		};
@@ -6869,7 +6869,7 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
-				WATCHOS_DEPLOYMENT_TARGET = 4.0;
+				WATCHOS_DEPLOYMENT_TARGET = 9.0;
 			};
 			name = "Production Debug";
 		};
@@ -7185,7 +7185,7 @@
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
-				WATCHOS_DEPLOYMENT_TARGET = 4.0;
+				WATCHOS_DEPLOYMENT_TARGET = 9.0;
 			};
 			name = "Production Release";
 		};
@@ -7197,7 +7197,7 @@
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 4.0;
+				WATCHOS_DEPLOYMENT_TARGET = 9.0;
 			};
 			name = "Staging Debug";
 		};
@@ -7268,7 +7268,7 @@
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
-				WATCHOS_DEPLOYMENT_TARGET = 4.0;
+				WATCHOS_DEPLOYMENT_TARGET = 9.0;
 			};
 			name = "Test Release";
 		};
@@ -7490,7 +7490,7 @@
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = "DriverKit Driver/Driver.entitlements";
 				COMBINE_HIDPI_IMAGES = YES;
-				DRIVERKIT_DEPLOYMENT_TARGET = 20.4;
+				DRIVERKIT_DEPLOYMENT_TARGET = 21.0;
 				INFOPLIST_FILE = "DriverKit Driver/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -7798,7 +7798,7 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
-				WATCHOS_DEPLOYMENT_TARGET = 4.0;
+				WATCHOS_DEPLOYMENT_TARGET = 9.0;
 			};
 			name = "Staging Debug";
 		};
@@ -8071,7 +8071,7 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
-				WATCHOS_DEPLOYMENT_TARGET = 4.0;
+				WATCHOS_DEPLOYMENT_TARGET = 9.0;
 			};
 			name = "Test Debug";
 		};
@@ -8210,7 +8210,7 @@
 				SDKROOT = watchos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 4.0;
+				WATCHOS_DEPLOYMENT_TARGET = 9.0;
 			};
 			name = "Test Release";
 		};
@@ -8386,7 +8386,7 @@
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
-				WATCHOS_DEPLOYMENT_TARGET = 4.0;
+				WATCHOS_DEPLOYMENT_TARGET = 9.0;
 			};
 			name = "Staging Release";
 		};

@@ -57,7 +57,7 @@ class GenerateCommand: ProjectCommand {
             }
         }
 
-        let projectExists = XcodeProj.pbxprojPath(projectPath).exists
+        let projectExists = project.projectFileFormat.projectFilePath(in: projectPath).exists
 
         // check cache
         if let cacheFile = cacheFile,
@@ -111,6 +111,9 @@ class GenerateCommand: ProjectCommand {
         }
 
         // write project
+        if project.projectFileFormat == .xcproj {
+            warning("⚠️  projectFileFormat \"xcproj\" is experimental, so the generated project.xcproj may change or be missing details in future versions")
+        }
         info("⚙️  Writing project...")
         do {
             try fileWriter.writeXcodeProject(xcodeProject, to: projectPath)
