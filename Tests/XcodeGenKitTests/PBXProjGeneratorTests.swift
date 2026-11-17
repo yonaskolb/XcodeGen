@@ -471,6 +471,29 @@ class PBXProjGeneratorTests: XCTestCase {
             XCTAssertEqual(pbxProject.attributes[lastUpgradeKey]?.stringValue, lastUpgradeValue)
         }
     }
+
+    func testNestedTargetAttributesAreGeneratedAsDictionaries() throws {
+        let target = Target(
+            name: "App",
+            type: .application,
+            platform: .iOS,
+            attributes: [
+                "SystemCapabilities": [
+                    "com.apple.HealthKit": ["enabled": 1],
+                ],
+            ]
+        )
+        let pbxProj = try Project(name: "Test", targets: [target]).generatePbxProj()
+        let pbxProject = try XCTUnwrap(pbxProj.projects.first)
+        let pbxTarget = try XCTUnwrap(pbxProject.targets.first)
+
+        XCTAssertEqual(
+            pbxProject.targetAttributes[pbxTarget]?["SystemCapabilities"],
+            .attributeDictionary([
+                "com.apple.HealthKit": ["enabled": .string("1")],
+            ])
+        )
+    }
     
     func testDefaultLastUpgradeCheckWhenUserDidNotSpecifyValue() throws {
         let lastUpgradeKey = "LastUpgradeCheck"
@@ -479,9 +502,46 @@ class PBXProjGeneratorTests: XCTestCase {
         
         let pbxProj = try projGenerator.generate()
         
+        XCTAssertEqual(project.xcodeVersion, "1600")
         for pbxProject in pbxProj.projects {
-            XCTAssertEqual(pbxProject.attributes[lastUpgradeKey]?.stringValue, project.xcodeVersion)
+            XCTAssertEqual(pbxProject.attributes[lastUpgradeKey]?.stringValue, "1600")
         }
+    }
+
+    func testDefaultProjectFormat() throws {
+        let project = Project(name: "Test")
+
+        let pbxProj = try PBXProjGenerator(project: project).generate()
+        let pbxProject = try XCTUnwrap(pbxProj.rootObject)
+
+        XCTAssertEqual(project.projectFormat, .xcode16_0)
+        XCTAssertEqual(pbxProj.objectVersion, 77)
+        XCTAssertEqual(pbxProject.preferredProjectObjectVersion, 77)
+        XCTAssertNil(pbxProject.compatibilityVersion)
+    }
+
+    func testXcode27_0ProjectFormat() throws {
+        let project = Project(name: "Test", options: SpecOptions(projectFormat: "xcode27_0"))
+
+        let pbxProj = try PBXProjGenerator(project: project).generate()
+        let pbxProject = try XCTUnwrap(pbxProj.rootObject)
+
+        XCTAssertEqual(project.projectFormat, .xcode27_0)
+        XCTAssertEqual(pbxProj.objectVersion, 110)
+        XCTAssertEqual(pbxProject.preferredProjectObjectVersion, 110)
+        XCTAssertNil(pbxProject.compatibilityVersion)
+    }
+
+    func testXcode26_3ProjectFormat() throws {
+        let project = Project(name: "Test", options: SpecOptions(projectFormat: "xcode26_3"))
+
+        let pbxProj = try PBXProjGenerator(project: project).generate()
+        let pbxProject = try XCTUnwrap(pbxProj.rootObject)
+
+        XCTAssertEqual(project.projectFormat, .xcode26_3)
+        XCTAssertEqual(pbxProj.objectVersion, 100)
+        XCTAssertEqual(pbxProject.preferredProjectObjectVersion, 100)
+        XCTAssertNil(pbxProject.compatibilityVersion)
     }
 
     func testProductsGroupIsSet() throws {

@@ -43,6 +43,7 @@ public struct SpecValidationError: Error, CustomStringConvertible {
         case duplicateDependencies(target: String, dependencyReference: String)
         case invalidPluginPackageReference(plugin: String, package: String)
         case emptySourcePath(target: String)
+        case invalidProjectFormat(String)
 
         public var description: String {
             switch self {
@@ -112,6 +113,9 @@ public struct SpecValidationError: Error, CustomStringConvertible {
                 return "Plugin \(plugin) has invalid package reference \(package)"
             case let .emptySourcePath(target):
                 return "Target \(target.quoted) has an empty source path entry"
+            case let .invalidProjectFormat(projectFormat):
+                let validValues = ProjectFormat.allCases.map(\.rawValue).joined(separator: ", ")
+                return "Invalid projectFormat \(projectFormat.quoted). Valid values are: \(validValues)"
             }
         }
     }
