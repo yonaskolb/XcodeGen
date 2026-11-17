@@ -23,6 +23,7 @@
 - Fix `syncedFolder` target membership including files that shouldn't be in the target: default ignored files such as `.DS_Store` are now excluded, as are files with no build phase such as `.xcconfig` and `.entitlements` #1618 @4brunu
 - Fix file elements being added to both the main group and another group, which prevented Xcode 27.2 from opening the generated project. Subdirectory groups of a source that points at the spec directory now appear under that source's group instead of at the project root #1652 @Ckitakishi
 - Fix `make install` failing on Linux by only passing `--arch arm64 --arch x86_64` when building on macOS #1665 @vintoware
+- Fix `xcodegen generate` hanging when `createIntermediateGroups` is enabled and a source's only common ancestor with the project is the file system root, such as an absolute path like `/usr/bin/xcrun` #1659 @ybai08
 
 ### Internal
 - Use a dedicated local package in the SPM fixture so generated fixtures don't depend on the checkout directory name, such as when running tests from a git worktree @yonaskolb
