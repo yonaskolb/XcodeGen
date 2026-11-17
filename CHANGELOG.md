@@ -3,6 +3,7 @@
 ## Next Version
 
 ### Added
+- Added support for input files in build rules #1650 @GtechGovind
 - Added `buildArchitectures` to scheme build options and target schemes, to control Xcode's "Override Architectures" scheme setting #1642 @arhxam
 - Added FAQ documentation on how to add an Xcode capability, such as In-App Purchase #1644 @Hokila
 - Added `xcode26_3` `projectFormat` option for the Xcode 26.3 project format (`objectVersion = 100`) #1648 @Raymondriter
