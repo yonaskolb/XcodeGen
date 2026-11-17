@@ -1221,6 +1221,8 @@ public class PBXProjGenerator {
 
         if !copyBundlesReferences.isEmpty {
             let copyBundlesPhase = addObject(PBXCopyFilesBuildPhase(
+                // Xcode expects the key to be present, even when the path is empty.
+                dstPath: "",
                 dstSubfolderSpec: .resources,
                 name: "Copy Bundle Resources",
                 files: copyBundlesReferences
@@ -1490,8 +1492,8 @@ public class PBXProjGenerator {
         }) else { return }
 
         var exceptions: Set<String> = Set(
-            sourceGenerator.syncedFolderExceptions(for: targetSource, at: syncedPath)
-                .compactMap { try? $0.relativePath(from: syncedPath).string }
+            sourceGenerator.syncedFolderExceptions(for: targetSource, at: syncedPath, targetType: target.type)
+                .compactMap { sourceGenerator.syncedFolderExceptionKey(for: $0, in: syncedPath) }
         )
 
         for infoPlistPath in Set(infoPlistFiles.values) {
@@ -1502,15 +1504,19 @@ public class PBXProjGenerator {
             }
         }
 
-        guard !exceptions.isEmpty else { return }
+        let platformFilters = sourceGenerator.syncedFolderPlatformFilters(for: targetSource, at: syncedPath)
+            .filter { !exceptions.contains($0.key) }
+
+        guard !exceptions.isEmpty || !platformFilters.isEmpty else { return }
 
         let exceptionSet = PBXFileSystemSynchronizedBuildFileExceptionSet(
             target: targetObject,
-            membershipExceptions: exceptions.sorted(),
+            membershipExceptions: exceptions.isEmpty ? nil : exceptions.sorted(),
             publicHeaders: nil,
             privateHeaders: nil,
             additionalCompilerFlagsByRelativePath: nil,
-            attributesByRelativePath: nil
+            attributesByRelativePath: nil,
+            platformFiltersByRelativePath: platformFilters.isEmpty ? nil : platformFilters
         )
         addObject(exceptionSet)
         syncedGroup.exceptions = (syncedGroup.exceptions ?? []) + [exceptionSet]
