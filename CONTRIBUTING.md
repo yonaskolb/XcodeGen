@@ -60,3 +60,5 @@ If your change contains any new features or logic changes please add a unit test
 
 ### Submitting your PR
 Please give a small summary of what has changed. Also add any github issues links (`Resolves #100`).
+
+There's no need to add an entry to [CHANGELOG.md](/CHANGELOG.md). A maintainer will add one when your PR is merged, which avoids merge conflicts between open PRs.

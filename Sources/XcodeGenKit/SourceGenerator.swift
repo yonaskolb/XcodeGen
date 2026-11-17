@@ -919,8 +919,8 @@ class SourceGenerator {
     private func createIntermediaGroups(for fileElement: PBXFileElement, at path: Path) {
 
         let parentPath = path.parent()
-        guard parentPath != project.basePath else {
-            // we've reached the top
+        guard parentPath != project.basePath, parentPath != path else {
+            // we've reached the top, or the root of the file system
             return
         }
 

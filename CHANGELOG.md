@@ -2,6 +2,8 @@
 
 ## Next Version
 
+## 2.47.0
+
 ### Added
 - Added support for input files in build rules #1650 @GtechGovind
 - Added `buildArchitectures` to scheme build options and target schemes, to control Xcode's "Override Architectures" scheme setting #1642 @arhxam
@@ -17,16 +19,20 @@
 ### Fixed
 - Fix `syncedFolder` source paths being relative to the spec directory instead of the project directory when they differ, which caused Xcode to treat the synced folder as empty #1636 @Ckitakishi
 - Fix `destinationFilters` and `inferDestinationFiltersByPath` being ignored for `syncedFolder` sources. They are now written as `platformFiltersByRelativePath` on the synced folder's exception set #1647 @anandghegde
+- Fix localized files in `syncedFolder` sources ignoring `includes`/`excludes`, which leaked them into every target syncing the folder. Membership exceptions now use Xcode's `/Localized:` variant group form #1633 #1647 @AlexNsbmr @anandghegde
 - Fix nested target attributes (e.g. `attributes.SystemCapabilities`) being serialized as a stringified Swift `Dictionary` description instead of a proper nested plist dictionary, which also caused non-deterministic key ordering in generated `project.pbxproj` files across runs #1639 @imadaan @sergeyospanov
 - Fix `.DS_Store` and `.orig` files causing projects to be regenerated when using `--use-cache` #1622 @kimjune01
 - Fix generated "Copy Bundle Resources" phases missing `dstPath`, which caused Xcode 27.2 project conversion to fail #1654 @Ckitakishi
 - Fix `syncedFolder` target membership including files that shouldn't be in the target: default ignored files such as `.DS_Store` are now excluded, as are files with no build phase such as `.xcconfig` and `.entitlements` #1618 @4brunu
 - Fix file elements being added to both the main group and another group, which prevented Xcode 27.2 from opening the generated project. Subdirectory groups of a source that points at the spec directory now appear under that source's group instead of at the project root #1652 @Ckitakishi
 - Fix `make install` failing on Linux by only passing `--arch arm64 --arch x86_64` when building on macOS #1665 @vintoware
+- Fix `xcodegen generate` hanging when `createIntermediateGroups` is enabled and a source's only common ancestor with the project is the file system root, such as an absolute path like `/usr/bin/xcrun` #1659 @ybai08
+- Fix per-platform `deploymentTarget` values being ignored on targets using `supportedDestinations` #1641 @arhxam
 
 ### Internal
 - Use a dedicated local package in the SPM fixture so generated fixtures don't depend on the checkout directory name, such as when running tests from a git worktree @yonaskolb
 - Fix a Swift Testing error matcher that failed on Linux CI #1657 @yonaskolb
+- Skip performance tests on Linux CI, where XCTest's variance check made them flaky #1667 @yonaskolb
 
 ## 2.46.0
 
