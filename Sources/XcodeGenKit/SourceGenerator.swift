@@ -195,6 +195,15 @@ class SourceGenerator {
         )
     }
 
+    /// Returns the innermost generated synced folder containing the path, along with the path relative to that folder
+    func syncedFolderAnchor(for path: Path) -> (group: PBXFileSystemSynchronizedRootGroup, relativePath: String)? {
+        let relativePath = ((try? path.relativePath(from: basePath)) ?? path).string
+        guard let (syncedPath, group) = syncedGroupsByPath
+            .filter({ relativePath.hasPrefix($0.key + "/") })
+            .max(by: { $0.key.count < $1.key.count }) else { return nil }
+        return (group, String(relativePath.dropFirst(syncedPath.count + 1)))
+    }
+
     func getContainedFileReference(path: Path) -> PBXFileElement {
         let createIntermediateGroups = project.options.createIntermediateGroups
 
@@ -285,7 +294,7 @@ class SourceGenerator {
     /// Whether the given path falls inside a target source configured as a synced folder.
     /// Checks the project spec directly because configFiles are resolved before target sources
     /// populate `syncedGroupsByPath`.
-    private func isInsideSyncedFolder(path: Path) -> Bool {
+    func isInsideSyncedFolder(path: Path) -> Bool {
         let relativePath = (try? path.relativePath(from: basePath)) ?? path
         return project.targets.contains { target in
             target.sources.contains { source in

@@ -831,6 +831,55 @@ class SourceGeneratorTests: XCTestCase {
                 try expect(syncedFolders.count) == 1
             }
 
+            $0.it("anchors configFiles inside synced folders to the innermost synced folder") {
+                let directories = """
+                Configs:
+                  - project.xcconfig
+                  - Inner:
+                    - target.xcconfig
+                    - aggregate.xcconfig
+                """
+                try createDirectories(directories)
+
+                // the synced folders belong to other targets than the ones using the configs
+                let outerTarget = Target(name: "Outer", type: .framework, platform: .iOS, sources: [TargetSource(path: "Configs", type: .syncedFolder)])
+                let innerTarget = Target(name: "Inner", type: .framework, platform: .iOS, sources: [TargetSource(path: "Configs/Inner", type: .syncedFolder)])
+                let appTarget = Target(name: "App", type: .application, platform: .iOS, configFiles: ["Debug": "Configs/Inner/target.xcconfig"])
+                let aggregateTarget = AggregateTarget(name: "Aggregate", targets: ["App"], configFiles: ["Debug": "Configs/Inner/aggregate.xcconfig"])
+                let project = Project(
+                    basePath: directoryPath,
+                    name: "Test",
+                    targets: [appTarget, outerTarget, innerTarget],
+                    aggregateTargets: [aggregateTarget],
+                    configFiles: ["Debug": "Configs/project.xcconfig"]
+                )
+
+                let pbxProj = try project.generatePbxProj()
+                let outerFolder = try unwrap(pbxProj.fileSystemSynchronizedRootGroups.first { $0.path == "Configs" })
+                let innerFolder = try unwrap(pbxProj.fileSystemSynchronizedRootGroups.first { $0.path == "Configs/Inner" })
+                let projectConfig = try unwrap(pbxProj.rootObject?.buildConfigurationList.buildConfigurations.first { $0.name == "Debug" })
+                let targetConfig = try unwrap(pbxProj.nativeTargets.first { $0.name == "App" }?.buildConfigurationList?.buildConfigurations.first { $0.name == "Debug" })
+                let aggregateConfig = try unwrap(pbxProj.aggregateTargets.first?.buildConfigurationList?.buildConfigurations.first { $0.name == "Debug" })
+
+                try expect(projectConfig.baseConfigurationAnchor === outerFolder) == true
+                try expect(projectConfig.baseConfigurationReferenceRelativePath) == "project.xcconfig"
+                try expect(targetConfig.baseConfigurationAnchor === innerFolder) == true
+                try expect(targetConfig.baseConfigurationReferenceRelativePath) == "target.xcconfig"
+                try expect(aggregateConfig.baseConfigurationAnchor === innerFolder) == true
+                try expect(aggregateConfig.baseConfigurationReferenceRelativePath) == "aggregate.xcconfig"
+                try expect(pbxProj.fileReferences.contains { $0.path?.hasSuffix(".xcconfig") == true }) == false
+
+                // file references outside of any group got a random UUID, which changed the project on every generation
+                func writtenPbxProj() throws -> String {
+                    let projectPath = directoryPath + "Test.xcodeproj"
+                    try project.generateXcodeProject().write(path: projectPath, override: true)
+                    return try (projectPath + "project.pbxproj").read()
+                }
+                let writtenProject = try writtenPbxProj()
+                try expect(writtenProject.contains("TEMP_")) == false
+                try expect(try writtenPbxProj()) == writtenProject
+            }
+
             $0.it("supports frameworks in sources") {
                 let directories = """
                 Sources:

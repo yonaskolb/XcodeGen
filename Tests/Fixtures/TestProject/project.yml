@@ -117,6 +117,8 @@ targets:
   App_iOS:
     type: application
     platform: iOS
+    configFiles:
+      Test Debug: SyncedParent/SyncedChild/SyncedChild.xcconfig
     attributes:
       ProvisioningStyle: Automatic
     sources:
