@@ -19,6 +19,7 @@
 - Fix nested target attributes (e.g. `attributes.SystemCapabilities`) being serialized as a stringified Swift `Dictionary` description instead of a proper nested plist dictionary, which also caused non-deterministic key ordering in generated `project.pbxproj` files across runs #1639 @imadaan @sergeyospanov
 - Fix `.DS_Store` and `.orig` files causing projects to be regenerated when using `--use-cache` #1622 @kimjune01
 - Fix generated "Copy Bundle Resources" phases missing `dstPath`, which caused Xcode 27.2 project conversion to fail #1654 @Ckitakishi
+- Fix `syncedFolder` target membership including files that shouldn't be in the target: default ignored files such as `.DS_Store` are now excluded, as are files with no build phase such as `.xcconfig` and `.entitlements` #1618 @4brunu
 
 ### Internal
 - Use a dedicated local package in the SPM fixture so generated fixtures don't depend on the checkout directory name, such as when running tests from a git worktree @yonaskolb
