@@ -198,6 +198,68 @@ class SourceGeneratorTests: XCTestCase {
                 try expect([syncedFolder]) == pbxProj.nativeTargets.first?.fileSystemSynchronizedGroups
             }
 
+            $0.it("anchors configFiles inside synced folders with a different projectDirectory") {
+                let directories = """
+                SubDir:
+                  Configs:
+                    - Debug.xcconfig
+                """
+                try createDirectories(directories)
+
+                let target = Target(
+                    name: "App",
+                    type: .application,
+                    platform: .iOS,
+                    configFiles: ["Debug": "Configs/Debug.xcconfig"],
+                    sources: [TargetSource(path: "Configs", type: .syncedFolder)]
+                )
+                let project = Project(basePath: directoryPath + "SubDir", name: "Test", targets: [target])
+
+                // the project generated above and below the spec, like with --project-root and --project
+                for projectDirectory in [directoryPath, directoryPath + "SubDir/Build"] {
+                    let pbxProj = try PBXProjGenerator(project: project, projectDirectory: projectDirectory).generate()
+                    let syncedFolder = try unwrap(pbxProj.fileSystemSynchronizedRootGroups.first)
+                    let config = try unwrap(pbxProj.nativeTargets.first?.buildConfigurationList?.buildConfigurations.first { $0.name == "Debug" })
+
+                    try expect(config.baseConfigurationAnchor === syncedFolder) == true
+                    try expect(config.baseConfigurationReferenceRelativePath) == "Debug.xcconfig"
+                    try expect(pbxProj.groups.contains { $0.path?.hasSuffix("Configs") == true }) == false
+                }
+            }
+
+            $0.it("anchors configFiles inside synced folders whose name has an extension") {
+                let directories = """
+                Shared.d:
+                  - Debug.xcconfig
+                """
+                try createDirectories(directories)
+
+                // the folder is synced because of defaultSourceDirectoryType, not an explicit type
+                let target = Target(
+                    name: "App",
+                    type: .application,
+                    platform: .iOS,
+                    configFiles: ["Debug": "Shared.d/Debug.xcconfig"],
+                    sources: [TargetSource(path: "Shared.d")]
+                )
+                let project = Project(
+                    basePath: directoryPath,
+                    name: "Test",
+                    targets: [target],
+                    options: SpecOptions(defaultSourceDirectoryType: .syncedFolder)
+                )
+
+                let pbxProj = try project.generatePbxProj()
+                let config = try unwrap(pbxProj.nativeTargets.first?.buildConfigurationList?.buildConfigurations.first { $0.name == "Debug" })
+
+                // a file path isn't a synced folder, so the config is a regular file reference in a group
+                try expect(pbxProj.fileSystemSynchronizedRootGroups.isEmpty) == true
+                try expect(config.baseConfigurationAnchor).to.beNil()
+                try expect(pbxProj.fileReferences.filter { $0.path?.hasSuffix("Debug.xcconfig") == true }.allSatisfy { ref in
+                    pbxProj.groups.contains { $0.children.contains(ref) }
+                }) == true
+            }
+
             $0.it("generates synced folder with explicitFolders") {
                 let directories = """
                 Sources:

@@ -295,11 +295,11 @@ class SourceGenerator {
     /// Checks the project spec directly because configFiles are resolved before target sources
     /// populate `syncedGroupsByPath`.
     func isInsideSyncedFolder(path: Path) -> Bool {
-        let relativePath = (try? path.relativePath(from: basePath)) ?? path
+        let relativePath = (try? path.relativePath(from: project.basePath)) ?? path
         return project.targets.contains { target in
             target.sources.contains { source in
-                let type = source.type ?? (project.options.defaultSourceDirectoryType ?? .group)
-                return type == .syncedFolder && relativePath.string.hasPrefix(source.path + "/")
+                resolvedTargetSourceType(for: source, at: project.basePath + source.path) == .syncedFolder
+                    && relativePath.string.hasPrefix(source.path + "/")
             }
         }
     }
