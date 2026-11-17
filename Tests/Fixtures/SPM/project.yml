@@ -12,8 +12,8 @@ packages:
   SwiftLocation:
     url: https://github.com/malcommac/SwiftLocation
     exactVersion: 6.0
-  XcodeGen:
-    path: ../../.. #XcodeGen itself
+  LocalPackage:
+    path: ../LocalPackage
     group: SPM
   FooFeature:
     path: FooFeature
@@ -29,7 +29,7 @@ targets:
     sources: [SPM]
     scheme:
       testTargets:
-        - package: XcodeGen/XcodeGenKitTests
+        - package: LocalPackage/LocalPackageTests
         - Tests
     buildToolPlugins:
       - plugin: PrefirePlaybookPlugin
@@ -41,7 +41,7 @@ targets:
         product: SwiftRoaringDynamic
         embed: true
       - target: StaticLibrary
-      - package: XcodeGen
+      - package: LocalPackage
       - package: SwiftLocation
       - package: FooFeature
         products:
@@ -61,7 +61,7 @@ targets:
       - package: Codability
       - package: SwiftRoaring
         product: SwiftRoaringDynamic
-      - package: XcodeGen
+      - package: LocalPackage
       - package: FooFeature
         products:
         - FooDomain

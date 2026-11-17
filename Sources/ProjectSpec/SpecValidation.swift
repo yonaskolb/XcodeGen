@@ -57,7 +57,7 @@ extension Project {
         }
 
         for (name, package) in packages {
-            if case let .local(path, _, _) = package, !(basePath + Path(path).normalize()).exists {
+            if case let .local(path, _, _, _) = package, !(basePath + Path(path).normalize()).exists {
                 errors.append(.invalidLocalPackage(name))
             }
         }
@@ -69,6 +69,10 @@ extension Project {
             if !options.disabledValidations.contains(.missingConfigs) && getConfig(config) == nil {
                 errors.append(.invalidConfigFileConfig(config))
             }
+        }
+
+        if let projectFormat = options.projectFormat, ProjectFormat(rawValue: projectFormat) == nil {
+            errors.append(.invalidProjectFormat(projectFormat))
         }
 
         if let configName = options.defaultConfig {

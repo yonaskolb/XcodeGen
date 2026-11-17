@@ -1,0 +1,8 @@
+name: TargetOrderingVariable
+targets:
+  ${FIRST_TARGET}:
+    type: framework
+    platform: iOS
+  Apple:
+    type: framework
+    platform: iOS

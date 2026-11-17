@@ -23,13 +23,6 @@ class SourceGenerator {
     private let project: Project
     let pbxProj: PBXProj
 
-    private var defaultExcludedFiles = [
-        ".DS_Store",
-    ]
-    private let defaultExcludedExtensions = [
-        "orig",
-    ]
-
     private(set) var knownRegions: Set<String> = []
 
     /// The effective base path for resolving group and file paths in the generated project.
@@ -470,15 +463,9 @@ class SourceGenerator {
         }
     }
 
-    /// Checks whether the path is in any default excludes
-    func isDefaultExcluded(_ path: Path) -> Bool {
-        return defaultExcludedFiles.contains(where: { path.lastComponent == $0 })
-            || (path.extension.map(defaultExcludedExtensions.contains) ?? false)
-    }
-
     /// Checks whether the path is not in any default or TargetSource excludes
     func isIncludedPath(_ path: Path, excludePaths: Set<Path>, includePaths: SortedArray<Path>?) -> Bool {
-        return !isDefaultExcluded(path)
+        return !FileType.isDefaultExcluded(path)
             && !excludePaths.contains(path)
             // If includes is empty, it's included. If it's not empty, the path either needs to match exactly, or it needs to be a direct parent of an included path.
             && (includePaths.flatMap { _isIncludedPathSorted(path, sortedPaths: $0) } ?? true)
@@ -770,7 +757,7 @@ class SourceGenerator {
             sourceReference = group
         case .syncedFolder:
 
-            let relativePath = (try? path.relativePath(from: project.basePath)) ?? path
+            let relativePath = (try? path.relativePath(from: basePath)) ?? path
             let resolvedExplicitFolders = resolveExplicitFolders(targetSource: targetSource)
 
             let syncedRootGroup: PBXFileSystemSynchronizedRootGroup

@@ -4,7 +4,7 @@ import ProjectSpec
 extension Project {
 
     public var xcodeVersion: String {
-        XCodeVersion.parse(options.xcodeVersion ?? "14.3")
+        XCodeVersion.parse(options.xcodeVersion ?? "16.0")
     }
 
     public var projectFormat: ProjectFormat {

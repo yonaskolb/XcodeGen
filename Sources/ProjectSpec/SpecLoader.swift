@@ -19,7 +19,11 @@ public class SpecLoader {
         let projectRoot = projectRoot?.absolute()
         let spec = try SpecFile(path: path, projectRoot: projectRoot, variables: variables)
         let resolvedDictionary = spec.resolvedDictionary()
-        let project = try Project(basePath: projectRoot ?? spec.basePath, jsonDictionary: resolvedDictionary)
+        let project = try Project(
+            basePath: projectRoot ?? spec.basePath,
+            jsonDictionary: resolvedDictionary,
+            targetDeclarationOrder: spec.resolvedTargetDeclarationOrder()
+        )
 
         self.project = project
         projectDictionary = resolvedDictionary

@@ -132,8 +132,10 @@ Note that target names can also be changed by adding a `name` property to a targ
 - [ ] **usesTabs**: **Bool** - If this is specified, the Xcode project will override the user's setting determining whether or not tabs or spaces should be used in the project.
 - [ ] **indentWidth**: **Int** - If this is specified, the Xcode project will override the user's setting for indent width in number of spaces.
 - [ ] **tabWidth**: **Int** - If this is specified, the Xcode project will override the user's setting for indent width in number of spaces.
-- [ ] **xcodeVersion**: **String** - The version of Xcode. This defaults to the latest version periodically. You can specify it in the format `0910` or `9.1`
-- [ ] **projectFormat**: **String** - The version of Xcode project. By default this is set to `xcode16_0`
+- [ ] **xcodeVersion**: **String** - The version of Xcode. This is used for `LastUpgradeCheck` in the project and `LastUpgradeVersion` in schemes. This defaults to `16.0`, and the default is updated periodically. You can specify it in the format `0910` or `9.1`
+- [ ] **projectFormat**: **String** - The version of Xcode project. By default this is set to `xcode16_0`. Must be one of:
+  - `xcode27_0`: Xcode 27.0
+  - `xcode26_3`: Xcode 26.3
   - `xcode16_3`: Xcode 16.3
   - `xcode16_0`: Xcode 16.0
   - `xcode15_3`: Xcode 15.3
@@ -893,6 +895,7 @@ This is a convenience used to automatically generate schemes for a target based 
 - [ ] **stopOnEveryMainThreadCheckerIssue**: **Bool** - a boolean that indicates if this scheme should stop at every Main Thread Checker issue. This defaults to false
 - [ ] **disableThreadPerformanceChecker**: **Bool** - a boolean that indicates if this scheme should disable the Thread Performance Checker. This defaults to false
 - [ ] **buildImplicitDependencies**: **Bool** - Flag to determine if Xcode should build implicit dependencies of this scheme. By default this is `true` if not set.
+- [ ] **buildArchitectures**: **String** - Overrides the architectures built for all targets in the scheme. Supported values are `matchRunDestination`, `universal`, and `useTargetSettings`. By default this is `matchRunDestination` if not set. See [Build](#build) for details.
 - [ ] **language**: **String** - a String that indicates the language used for running and testing. This defaults to nil
 - [ ] **region**: **String** - a String that indicates the region used for running and testing. This defaults to nil
 - [ ] **commandLineArguments**: **[String:Bool]** - a dictionary from the argument name (`String`) to if it is enabled (`Bool`). These arguments will be added to the Test, Profile and Run scheme actions
@@ -1019,6 +1022,10 @@ Schemes allows for more control than the convenience [Target Scheme](#target-sch
 - [ ] **runPostActionsOnFailure**: **Bool** - Flag to determine if Xcode should run post scripts despite failure build. By default this is `false` if not set.
 - `true`: Run post scripts even if build is failed
 - `false`: Only run post scripts if build success
+- [ ] **buildArchitectures**: **String** - Overrides the architectures built for all targets in the scheme. This is the "Override Architectures" build option in Xcode's scheme editor. By default this is `matchRunDestination` if not set, which matches Xcode's default for new schemes.
+  - `matchRunDestination`: Only build the architecture of the run destination ("Match Run Destination")
+  - `universal`: Build all standard architectures ("Universal")
+  - `useTargetSettings`: Use the architecture build settings of each target, such as `ONLY_ACTIVE_ARCH` ("Use Target Settings")
 
 
 ```yaml
@@ -1027,6 +1034,7 @@ targets:
   FooLib/FooTarget: [test, run]
 parallelizeBuild: true
 buildImplicitDependencies: true
+buildArchitectures: matchRunDestination
 ```
 
 ### Common Build Action options
@@ -1256,21 +1264,29 @@ Swift packages are defined at a project level, and then linked to individual tar
   - `branch: master`
   - `revision: xxxxxx`
 - [ ] **github** : **String**- this is an optional helper you can use for github repos. Instead of specifying the full url in `url` you can just specify the github org and repo
+- [ ] **traits**: **[String]** - Optional Swift package traits to enable for this package reference. Trait names are written to the Xcode project in the specified order.
   
 ### Local Package
 
 - [x] **path**: **String** - the path to the package in local. The path must be directory with a `Package.swift`.
 - [ ] **group** : **String**- Optional path that specifies the location where the package will live in your xcode project. Use `""` to specify the project root.
 - [ ] **excludeFromProject** : **String**- Optional flag to exclude the package from the generated project (useful if the package is already added via xcworkspace and the project is not intended for standalone use), defaults to `false`
+- [ ] **traits**: **[String]** - Optional Swift package traits to enable for this package reference. Use the top-level `packages` mapping because the legacy `localPackages` syntax cannot specify traits.
 
 ```yml
 packages:
   Yams:
     url: https://github.com/jpsim/Yams
     from: 2.0.0
+    traits:
+      - StrictConcurrency
   Ink:
     github: JohnSundell/Ink
     from: 0.5.0
+  Sentry:
+    path: ../..
+    traits:
+      - NoUIFramework
   RxClient:
     path: ../RxClient
   AppFeature:

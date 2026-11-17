@@ -164,13 +164,25 @@ extension Project {
     }
 
     public init(spec: SpecFile) throws {
-        try self.init(basePath: spec.basePath, jsonDictionary: spec.resolvedDictionary())
+        try self.init(
+            basePath: spec.basePath,
+            jsonDictionary: spec.resolvedDictionary(),
+            targetDeclarationOrder: spec.resolvedTargetDeclarationOrder()
+        )
     }
 
-    public init(basePath: Path = "", jsonDictionary: JSONDictionary) throws {
+    public init(basePath: Path = "", jsonDictionary: JSONDictionary, targetDeclarationOrder: [String] = []) throws {
         self.basePath = basePath
 
-        let jsonDictionary = Project.resolveProject(jsonDictionary: jsonDictionary)
+        var jsonDictionary = jsonDictionary
+        if var rawTargets = jsonDictionary["targets"] as? [String: JSONDictionary] {
+            for (index, key) in targetDeclarationOrder.enumerated() where rawTargets[key] != nil {
+                rawTargets[key]?[Target.declarationIndexKey] = index
+            }
+            jsonDictionary["targets"] = rawTargets
+        }
+
+        jsonDictionary = Project.resolveProject(jsonDictionary: jsonDictionary)
         let buildSettingsParser = BuildSettingsParser(jsonDictionary: jsonDictionary)
 
         name = try jsonDictionary.json(atKeyPath: "name")
@@ -181,7 +193,14 @@ extension Project {
         let configs: [String: String] = jsonDictionary.json(atKeyPath: "configs") ?? [:]
         self.configs = configs.isEmpty ? Config.defaultConfigs :
             configs.map { Config(name: $0, type: ConfigType(rawValue: $1)) }.sorted { $0.name < $1.name }
-        targets = try jsonDictionary.json(atKeyPath: "targets", parallel: true).sorted { $0.name < $1.name }
+        let parsedTargets: [Target] = try jsonDictionary.json(atKeyPath: "targets", parallel: true)
+        let resolvedTargets = jsonDictionary["targets"] as? [String: JSONDictionary] ?? [:]
+        var targetOrder: [String: Int] = [:]
+        for (key, target) in resolvedTargets {
+            let name = target["name"] as? String ?? key
+            targetOrder[name] = (target[Target.declarationIndexKey] as? Int) ?? .max
+        }
+        targets = parsedTargets.sorted { (targetOrder[$0.name] ?? .max, $0.name) < (targetOrder[$1.name] ?? .max, $1.name) }
         aggregateTargets = try jsonDictionary.json(atKeyPath: "aggregateTargets").sorted { $0.name < $1.name }
         projectReferences = try jsonDictionary.json(atKeyPath: "projectReferences").sorted { $0.name < $1.name }
         schemes = try jsonDictionary.json(atKeyPath: "schemes")
@@ -204,7 +223,7 @@ extension Project {
             packages.merge(localPackages.reduce(into: [String: SwiftPackage]()) {
                 // Project name will be obtained by resolved abstractpath's lastComponent for dealing with some path case, like "../"
                 let packageName = (basePath + Path($1).normalize()).lastComponent
-                $0[packageName] = .local(path: $1, group: nil, excludeFromProject: false)
+                $0[packageName] = .local(path: $1, group: nil, excludeFromProject: false, traits: nil)
             }
             )
         }
@@ -253,12 +272,16 @@ extension Project: PathContainer {
 extension Project {
 
     public var allTrackedFiles: [Path] {
+        // Skip files that SourceGenerator never adds to the project. Directories are kept, as they can still become groups
+        func trackedChildren(of path: Path) -> [Path] {
+            ((try? path.recursiveChildren()) ?? []).filter { $0.isDirectory || !FileType.isDefaultExcluded($0) }
+        }
+
         var files: [Path] = []
         files.append(contentsOf: configFilePaths)
         for fileGroup in fileGroups {
             let fileGroupPath = basePath + fileGroup
-            let fileGroupChildren = (try? fileGroupPath.recursiveChildren()) ?? []
-            files.append(contentsOf: fileGroupChildren)
+            files.append(contentsOf: trackedChildren(of: fileGroupPath))
             files.append(fileGroupPath)
         }
 
@@ -270,11 +293,10 @@ extension Project {
             files.append(contentsOf: target.configFilePaths)
             for source in target.sources {
                 let sourcePath = basePath + source.path
-                
+
                 let type = source.type ?? options.defaultSourceDirectoryType ?? .group
                 if type.projectTracksChildren {
-                    let sourceChildren = (try? sourcePath.recursiveChildren()) ?? []
-                    files.append(contentsOf: sourceChildren)
+                    files.append(contentsOf: trackedChildren(of: sourcePath))
                 }
                 files.append(sourcePath)
             }
