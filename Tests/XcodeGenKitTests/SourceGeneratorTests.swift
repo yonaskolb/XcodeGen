@@ -803,6 +803,67 @@ class SourceGeneratorTests: XCTestCase {
                 try expect(appGroup === testsGroup) == true
             }
 
+            $0.it("keeps the first custom parent for a synced folder shared by two targets") {
+                // Reproduces #1663: the same synced folder is referenced under different groups.
+                let directories = """
+                Sources:
+                  - Shared:
+                    - a.swift
+                AppOnly:
+                  - b.swift
+                """
+                try createDirectories(directories)
+
+                let app = Target(name: "App", type: .application, platform: .iOS, sources: [
+                    TargetSource(path: "Sources/Shared", group: "GroupA", type: .syncedFolder),
+                    TargetSource(path: "AppOnly"),
+                ])
+                let ext = Target(name: "Extension", type: .appExtension, platform: .iOS, sources: [
+                    TargetSource(path: "Sources/Shared", group: "GroupB", type: .syncedFolder),
+                ])
+                let project = Project(basePath: directoryPath, name: "Repro", targets: [app, ext], options: .init(createIntermediateGroups: false))
+                let pbxProj = try project.generatePbxProj()
+
+                let mainGroup = try pbxProj.getMainGroup()
+                let groupA = try unwrap(mainGroup.children.first { $0.nameOrPath == "GroupA" } as? PBXGroup)
+                let groupB = try unwrap(mainGroup.children.first { $0.nameOrPath == "GroupB" } as? PBXGroup)
+                let shared = try unwrap(groupA.children.first as? PBXFileSystemSynchronizedRootGroup)
+
+                try expect(groupA.children.filter { $0 === shared }.count) == 1
+                try expect(groupB.children.contains { $0 === shared }) == false
+                try expectSingleParents(pbxProj)
+
+                let appTarget = try unwrap(pbxProj.nativeTargets.first { $0.name == "App" })
+                let extTarget = try unwrap(pbxProj.nativeTargets.first { $0.name == "Extension" })
+                try expect(appTarget.fileSystemSynchronizedGroups?.first === shared) == true
+                try expect(extTarget.fileSystemSynchronizedGroups?.first === shared) == true
+            }
+
+            $0.it("keeps the first custom parent for a file shared by two targets") {
+                let directories = """
+                Sources:
+                  - a.swift
+                """
+                try createDirectories(directories)
+
+                let first = Target(name: "First", type: .application, platform: .iOS, sources: [
+                    TargetSource(path: "Sources/a.swift", group: "GroupA"),
+                ])
+                let second = Target(name: "Second", type: .application, platform: .iOS, sources: [
+                    TargetSource(path: "Sources/a.swift", group: "GroupB"),
+                ])
+                let project = Project(basePath: directoryPath, name: "Repro", targets: [first, second])
+                let pbxProj = try project.generatePbxProj()
+
+                let mainGroup = try pbxProj.getMainGroup()
+                let groupA = try unwrap(mainGroup.children.first { $0.nameOrPath == "GroupA" } as? PBXGroup)
+                let groupB = try unwrap(mainGroup.children.first { $0.nameOrPath == "GroupB" } as? PBXGroup)
+                let file = try unwrap(groupA.children.first)
+
+                try expect(groupB.children.contains { $0 === file }) == false
+                try expectSingleParents(pbxProj)
+            }
+
             $0.it("does not create duplicate group for configFiles inside synced folder") {
                 let directories = """
                 Sources:
