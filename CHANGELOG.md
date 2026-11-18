@@ -2,9 +2,6 @@
 
 ## Next Version
 
-### Added
-- Added a warning when a target dictionary contains keys not recognized by `Target.init`, helping catch typos such as `resources` instead of `sources` #1660 @FawwazLawal
-
 ## 2.47.0
 
 ### Added
