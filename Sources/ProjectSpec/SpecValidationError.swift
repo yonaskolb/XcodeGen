@@ -44,6 +44,7 @@ public struct SpecValidationError: Error, CustomStringConvertible {
         case invalidPluginPackageReference(plugin: String, package: String)
         case emptySourcePath(target: String)
         case invalidProjectFormat(String)
+        case unrecognizedTargetKey(target: String, key: String)
 
         public var description: String {
             switch self {
@@ -116,6 +117,9 @@ public struct SpecValidationError: Error, CustomStringConvertible {
             case let .invalidProjectFormat(projectFormat):
                 let validValues = ProjectFormat.allCases.map(\.rawValue).joined(separator: ", ")
                 return "Invalid projectFormat \(projectFormat.quoted). Valid values are: \(validValues)"
+            case let .unrecognizedTargetKey(target, key):
+                let validKeys = Target.recognizedKeys.sorted().joined(separator: ", ")
+                return "Target \(target.quoted) has unrecognized key \(key.quoted). Valid target keys are: \(validKeys)"
             }
         }
     }

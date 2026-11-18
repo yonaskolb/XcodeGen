@@ -423,6 +423,58 @@ class SpecLoadingTests: XCTestCase {
                     throw failure("Expected to not throw a validation error. Got: \(error)")
                 }
             }
+
+            $0.it("warns on unrecognized target keys") {
+                let dictionary: [String: Any] = [
+                    "name": "TestUnrecognizedKey",
+                    "targets": [
+                        "MyApp": [
+                            "type": "application",
+                            "platform": "iOS",
+                            "resources": ["Resources/**"],
+                        ],
+                    ],
+                ]
+                try? Yams.dump(object: dictionary).write(toFile: path.string, atomically: true, encoding: .utf8)
+                let specLoader = SpecLoader(version: "1.1.0")
+                _ = try specLoader.loadProject(path: path)
+                do {
+                    try specLoader.validateProjectDictionaryWarnings()
+                    throw failure("Expected a warning for unrecognized key \"resources\"")
+                } catch let error as SpecValidationError {
+                    let expected = SpecValidationError.ValidationError.unrecognizedTargetKey(target: "MyApp", key: "resources")
+                    if !error.errors.contains(expected) {
+                        throw failure("Expected warning for unrecognized key \"resources\", got: \(error)")
+                    }
+                    let message = expected.description
+                    if !message.contains("\"resources\"") || !message.contains("Valid target keys are:") {
+                        throw failure("Expected message to name the key and list valid keys, got: \(message)")
+                    }
+                }
+            }
+
+            $0.it("does not warn on recognized target keys") {
+                let dictionary: [String: Any] = [
+                    "name": "TestRecognizedKeys",
+                    "targets": [
+                        "MyApp": [
+                            "type": "application",
+                            "platform": "iOS",
+                            "sources": ["Sources"],
+                            "dependencies": [],
+                            "settings": ["SWIFT_VERSION": "5"],
+                        ],
+                    ],
+                ]
+                try? Yams.dump(object: dictionary).write(toFile: path.string, atomically: true, encoding: .utf8)
+                let specLoader = SpecLoader(version: "1.1.0")
+                _ = try specLoader.loadProject(path: path)
+                do {
+                    try specLoader.validateProjectDictionaryWarnings()
+                } catch {
+                    throw failure("Unexpected warning for recognized keys: \(error)")
+                }
+            }
         }
     }
 
