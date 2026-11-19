@@ -19,6 +19,8 @@ class SourceGenerator {
     private var groupsByPath: [Path: PBXGroup] = [:]
     private var variantGroupsByPath: [Path: PBXVariantGroup] = [:]
     private var syncedGroupsByPath: [String: PBXFileSystemSynchronizedRootGroup] = [:]
+    // Each file element has a single navigator parent, independent of target membership.
+    private var parentGroupByElement: [ObjectIdentifier: PBXGroup] = [:]
 
     private let project: Project
     let pbxProj: PBXProj
@@ -343,11 +345,16 @@ class SourceGenerator {
         if let cachedGroup = groupsByPath[path] {
             var cachedGroupChildren = cachedGroup.children
             for child in children {
+                let childID = ObjectIdentifier(child)
+                // Keep its first navigator parent if another target references this element.
+                guard parentGroupByElement[childID] == nil else { continue }
+
                 // only add the children that aren't already in the cachedGroup
                 // Check equality by path and sourceTree because XcodeProj.PBXObject.== is very slow.
                 if !cachedGroupChildren.contains(where: { $0.name == child.name && $0.path == child.path && $0.sourceTree == child.sourceTree }) {
                     cachedGroupChildren.append(child)
                     child.parent = cachedGroup
+                    parentGroupByElement[childID] = cachedGroup
                 }
             }
             cachedGroup.children = cachedGroupChildren
@@ -371,14 +378,19 @@ class SourceGenerator {
 
             let groupPath = resolveGroupPath(path, isTopLevelGroup: hasCustomParent || isTopLevelGroup)
 
+            let unparentedChildren = children.filter { parentGroupByElement[ObjectIdentifier($0)] == nil }
             let group = PBXGroup(
-                children: children,
+                children: unparentedChildren,
                 sourceTree: .group,
                 name: groupName != groupPath ? groupName : nil,
                 path: groupPath
             )
             groupReference = addObject(group)
             groupsByPath[path] = groupReference
+            for child in unparentedChildren {
+                child.parent = groupReference
+                parentGroupByElement[ObjectIdentifier(child)] = groupReference
+            }
 
             if isTopLevelGroup && !isInsideSyncedFolder(path: path) {
                 rootGroups.insert(groupReference)
@@ -574,6 +586,7 @@ class SourceGenerator {
         path: Path,
         isBaseGroup: Bool,
         hasCustomParent: Bool,
+        isInsideCustomParent: Bool = false,
         excludePaths: Set<Path>,
         includePaths: SortedArray<Path>?,
         buildPhases: [Path: BuildPhaseSpec]
@@ -620,6 +633,7 @@ class SourceGenerator {
                 path: path,
                 isBaseGroup: false,
                 hasCustomParent: false,
+                isInsideCustomParent: hasCustomParent || isInsideCustomParent,
                 excludePaths: excludePaths,
                 includePaths: includePaths,
                 buildPhases: buildPhases
@@ -727,7 +741,8 @@ class SourceGenerator {
             hasCustomParent: hasCustomParent,
             isBaseGroup: isBaseGroup
         )
-        if createIntermediateGroups {
+        // A custom `group:` replaces the intermediate groups. Creating them would claim the group's first parent.
+        if createIntermediateGroups && !hasCustomParent && !isInsideCustomParent {
             createIntermediaGroups(for: group, at: path)
         }
 
