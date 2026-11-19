@@ -56,6 +56,14 @@ As part of the tests there is a [TestProject](/Tests/Fixtures/TestProject) fixtu
 
 > Note that sometimes having the `TestProject` open in Xcode will generate it's own diffs, so make sure to have it closed when running the tests.
 
+#### Spec keys
+XcodeGen warns about spec keys it never reads, by tracking every key read through `json(atKeyPath:)` while the spec is decoded. When parsing a new spec option:
+- Read keys with `json(atKeyPath:)`. If you need to read one directly, like `jsonDictionary["key"]`, also call `KeyAccessTracking.markRead("key")`.
+- If an object's keys are data rather than spec keys (like a dictionary of build settings), call `KeyAccessTracking.markAllRead()` in its decoder.
+- If you decode a nested object yourself with `Type(jsonDictionary:)`, wrap it in `KeyAccessTracking.scope(dictionary, at: "key") { ... }` so its own keys are checked too.
+
+The fixture specs must load without any unknown keys, which `testFixturesHaveNoUnknownKeys` checks.
+
 If your change contains any new features or logic changes please add a unit test of your own to cover it. If it's a new feature, see if it can be integrated into the `TestProject` by adding any required files and then editing the [project spec](/Tests/Fixtures/TestProject/project.yml).
 
 ### Submitting your PR
