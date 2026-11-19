@@ -586,6 +586,7 @@ class SourceGenerator {
         path: Path,
         isBaseGroup: Bool,
         hasCustomParent: Bool,
+        isInsideCustomParent: Bool = false,
         excludePaths: Set<Path>,
         includePaths: SortedArray<Path>?,
         buildPhases: [Path: BuildPhaseSpec]
@@ -632,6 +633,7 @@ class SourceGenerator {
                 path: path,
                 isBaseGroup: false,
                 hasCustomParent: false,
+                isInsideCustomParent: hasCustomParent || isInsideCustomParent,
                 excludePaths: excludePaths,
                 includePaths: includePaths,
                 buildPhases: buildPhases
@@ -739,7 +741,8 @@ class SourceGenerator {
             hasCustomParent: hasCustomParent,
             isBaseGroup: isBaseGroup
         )
-        if createIntermediateGroups {
+        // A custom `group:` replaces the intermediate groups. Creating them would claim the group's first parent.
+        if createIntermediateGroups && !hasCustomParent && !isInsideCustomParent {
             createIntermediaGroups(for: group, at: path)
         }
 

@@ -978,6 +978,31 @@ class SourceGeneratorTests: XCTestCase {
                 try expectSingleParents(pbxProj)
             }
 
+            $0.it("keeps a group source under its custom parent when creating intermediate groups") {
+                let directories = """
+                Sources:
+                  - Shared:
+                    - a.swift
+                    - Nested:
+                      - b.swift
+                """
+                try createDirectories(directories)
+
+                let target = Target(name: "App", type: .application, platform: .iOS, sources: [
+                    TargetSource(path: "Sources/Shared", group: "GroupA"),
+                ])
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target], options: .init(createIntermediateGroups: true))
+                let pbxProj = try project.generatePbxProj()
+
+                let mainGroup = try pbxProj.getMainGroup()
+                try expect(mainGroup.children.contains { $0.nameOrPath == "Sources" }) == false
+                let groupA = try unwrap(mainGroup.children.first { $0.nameOrPath == "GroupA" } as? PBXGroup)
+                let shared = try unwrap(groupA.children.first as? PBXGroup)
+                try expect(shared.path) == "Sources/Shared"
+                try expect(shared.children.contains { $0.nameOrPath == "Nested" }) == true
+                try expectSingleParents(pbxProj)
+            }
+
             $0.it("does not create duplicate group for configFiles inside synced folder") {
                 let directories = """
                 Sources:
