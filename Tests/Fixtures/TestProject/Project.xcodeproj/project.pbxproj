@@ -857,11 +857,21 @@
 			};
 			target = C0570E2FB50D830D8D423396 /* App_supportedDestinations */;
 		};
+		B4876FFD9E14AD228C192153 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				SyncedChild.xcconfig,
+			);
+			target = 0867B0DACEF28C11442DE8F7 /* App_iOS */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		A2F1B5386E15A261AC8A4DEE /* SyncedChild */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				B4876FFD9E14AD228C192153 /* PBXFileSystemSynchronizedBuildFileExceptionSet */,
+			);
 			explicitFileTypes = {
 			};
 			explicitFolders = (
@@ -5598,6 +5608,8 @@
 		};
 		7931F229200F89B8CDC8A5E3 /* Test Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = A2F1B5386E15A261AC8A4DEE /* SyncedChild */;
+			baseConfigurationReferenceRelativePath = SyncedChild.xcconfig;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";

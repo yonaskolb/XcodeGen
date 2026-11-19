@@ -27,6 +27,7 @@ public class PBXProjGenerator {
     var carthageFrameworksByPlatform: [String: Set<PBXFileElement>] = [:]
     var frameworkFiles: [PBXFileElement] = []
     var bundleFiles: [PBXFileElement] = []
+    private var syncedFolderBaseConfigurations: [(buildConfig: XCBuildConfiguration, path: Path)] = []
 
     var generated = false
 
@@ -61,18 +62,13 @@ public class PBXProjGenerator {
 
         let buildConfigs: [XCBuildConfiguration] = project.configs.map { config in
             let buildSettings = project.getProjectBuildSettings(config: config)
-            var baseConfiguration: PBXFileReference?
-            if let configPath = project.configFiles[config.name],
-                let fileReference = sourceGenerator.getContainedFileReference(path: project.basePath + configPath) as? PBXFileReference {
-                baseConfiguration = fileReference
-            }
             let buildConfig = addObject(
                 XCBuildConfiguration(
                     name: config.name,
                     buildSettings: buildSettings
                 )
             )
-            buildConfig.baseConfiguration = baseConfiguration
+            setBaseConfiguration(project.configFiles[config.name], for: buildConfig)
             return buildConfig
         }
 
@@ -327,6 +323,7 @@ public class PBXProjGenerator {
         pbxProject.targets = orderedNativeTargets + orderedAggregateTargets
         pbxProject.attributes = projectAttributes
         pbxProject.targetAttributes = generateTargetAttributes()
+        resolveSyncedFolderBaseConfigurations()
         return pbxProj
     }
 
@@ -338,15 +335,11 @@ public class PBXProjGenerator {
 
             let buildSettings = project.getBuildSettings(settings: target.settings, config: config)
 
-            var baseConfiguration: PBXFileReference?
-            if let configPath = target.configFiles[config.name] {
-                baseConfiguration = sourceGenerator.getContainedFileReference(path: project.basePath + configPath) as? PBXFileReference
-            }
             let buildConfig = XCBuildConfiguration(
                 name: config.name,
-                baseConfiguration: baseConfiguration,
                 buildSettings: buildSettings
             )
+            setBaseConfiguration(target.configFiles[config.name], for: buildConfig)
             return addObject(buildConfig)
         }
 
@@ -533,6 +526,29 @@ public class PBXProjGenerator {
             files: buildPhaseFiles
         )
         return addObject(copyFilesBuildPhase)
+    }
+
+    /// Sets the base xcconfig of a build configuration. Files inside synced folders are resolved once all synced folders have been generated
+    private func setBaseConfiguration(_ configPath: String?, for buildConfig: XCBuildConfiguration) {
+        guard let configPath else { return }
+        let path = project.basePath + configPath
+        if sourceGenerator.isInsideSyncedFolder(path: path) {
+            syncedFolderBaseConfigurations.append((buildConfig, path))
+        } else {
+            buildConfig.baseConfiguration = sourceGenerator.getContainedFileReference(path: path) as? PBXFileReference
+        }
+    }
+
+    /// Anchors base xcconfigs inside synced folders to their synced folder, like Xcode does, instead of creating file references outside of any group
+    private func resolveSyncedFolderBaseConfigurations() {
+        for (buildConfig, path) in syncedFolderBaseConfigurations {
+            if let anchor = sourceGenerator.syncedFolderAnchor(for: path) {
+                buildConfig.baseConfigurationAnchor = anchor.group
+                buildConfig.baseConfigurationReferenceRelativePath = anchor.relativePath
+            } else {
+                buildConfig.baseConfiguration = sourceGenerator.getContainedFileReference(path: path) as? PBXFileReference
+            }
+        }
     }
 
     func generateTargetAttributes() -> [PBXTarget: [String: ProjectAttribute]] {
@@ -1427,16 +1443,11 @@ public class PBXProjGenerator {
                 }
             }
 
-            var baseConfiguration: PBXFileReference?
-            if let configPath = target.configFiles[config.name],
-                let fileReference = sourceGenerator.getContainedFileReference(path: project.basePath + configPath) as? PBXFileReference {
-                baseConfiguration = fileReference
-            }
             let buildConfig = XCBuildConfiguration(
                 name: config.name,
                 buildSettings: buildSettings
             )
-            buildConfig.baseConfiguration = baseConfiguration
+            setBaseConfiguration(target.configFiles[config.name], for: buildConfig)
             return addObject(buildConfig)
         }
 
