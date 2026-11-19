@@ -19,6 +19,9 @@ public class FileWriter {
             try projectPath.copy(tempPath)
         }
         try xcodeProject.write(path: tempPath, override: true)
+        // a project containing both a project.pbxproj and a project.xcproj is invalid, so remove the file of the other format
+        let otherProjectFilePath = xcodeProject.projectFormat == .xcproj ? XcodeProj.pbxprojPath(tempPath) : XcodeProj.xcprojPath(tempPath)
+        try? otherProjectFilePath.delete()
         try? projectPath.delete()
         try tempPath.copy(projectPath)
         try? tempPath.delete()

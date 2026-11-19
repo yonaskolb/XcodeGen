@@ -36,7 +36,8 @@ extension Target {
              .xpcService,
              .systemExtension,
              .driverExtension,
-             .extensionKitExtension:
+             .extensionKitExtension,
+             .hostBuildTool:
             return .none
         case .framework, .xcFramework:
             // Check the MACH_O_TYPE for "Static Framework"

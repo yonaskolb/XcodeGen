@@ -21,6 +21,9 @@ class FixtureTests: XCTestCase {
             $0.it("generates SPM Project") {
                 try generateXcodeProject(specPath: fixturePath + "SPM/project.yml")
             }
+            $0.it("generates xcproj Project") {
+                try generateXcodeProject(specPath: fixturePath + "XCProjProject/project.yml")
+            }
         }
     }
 }

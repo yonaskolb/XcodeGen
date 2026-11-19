@@ -8,7 +8,18 @@ extension Project {
     }
 
     public var projectFormat: ProjectFormat {
-        options.projectFormat.flatMap(ProjectFormat.init) ?? .default
+        if let projectFormat = options.projectFormat.flatMap(ProjectFormat.init) {
+            return projectFormat
+        }
+        if let minimumProjectFormat = projectFileFormat.minimumProjectFormat,
+           minimumProjectFormat.objectVersion > ProjectFormat.default.objectVersion {
+            return minimumProjectFormat
+        }
+        return .default
+    }
+
+    public var projectFileFormat: ProjectFileFormat {
+        options.projectFileFormat.flatMap(ProjectFileFormat.init) ?? .default
     }
 
     var schemeVersion: String {

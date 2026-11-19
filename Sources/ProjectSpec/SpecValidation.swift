@@ -75,6 +75,18 @@ extension Project {
             errors.append(.invalidProjectFormat(projectFormat))
         }
 
+        if let projectFileFormat = options.projectFileFormat {
+            if let fileFormat = ProjectFileFormat(rawValue: projectFileFormat) {
+                if let minimumProjectFormat = fileFormat.minimumProjectFormat,
+                   let projectFormat = options.projectFormat.flatMap(ProjectFormat.init),
+                   projectFormat.objectVersion < minimumProjectFormat.objectVersion {
+                    errors.append(.unsupportedProjectFormatForProjectFileFormat(projectFormat: projectFormat, projectFileFormat: fileFormat))
+                }
+            } else {
+                errors.append(.invalidProjectFileFormat(projectFileFormat))
+            }
+        }
+
         if let configName = options.defaultConfig {
             if !configs.contains(where: { $0.name == configName }) {
                 errors.append(.missingDefaultConfig(configName: configName))

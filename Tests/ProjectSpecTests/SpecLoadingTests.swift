@@ -1534,6 +1534,7 @@ class SpecLoadingTests: XCTestCase {
                     createIntermediateGroups: true,
                     bundleIdPrefix: "com.test",
                     developmentLanguage: "ja",
+                    projectFileFormat: "xcproj",
                     deploymentTarget: DeploymentTarget(
                         iOS: "11.1",
                         tvOS: "10.0",
@@ -1558,6 +1559,7 @@ class SpecLoadingTests: XCTestCase {
                     "bundleIdPrefix": "com.test",
                     "createIntermediateGroups": true,
                     "developmentLanguage": "ja",
+                    "projectFileFormat": "xcproj",
                     "deploymentTarget": ["iOS": 11.1, "tvOS": 10.0, "watchOS": "3", "macOS": "10.12.1"],
                     "findCarthageFrameworks": true,
                     "preGenCommand": "swiftgen",

@@ -25,6 +25,7 @@ public struct SpecOptions: Equatable {
     public var indentWidth: UInt?
     public var xcodeVersion: String?
     public var projectFormat: String?
+    public var projectFileFormat: String?
     public var deploymentTarget: DeploymentTarget
     public var defaultConfig: String?
     public var transitivelyLinkDependencies: Bool
@@ -90,6 +91,7 @@ public struct SpecOptions: Equatable {
         usesTabs: Bool? = nil,
         xcodeVersion: String? = nil,
         projectFormat: String? = nil,
+        projectFileFormat: String? = nil,
         deploymentTarget: DeploymentTarget = .init(),
         disabledValidations: [ValidationType] = [],
         defaultConfig: String? = nil,
@@ -118,6 +120,7 @@ public struct SpecOptions: Equatable {
         self.usesTabs = usesTabs
         self.xcodeVersion = xcodeVersion
         self.projectFormat = projectFormat
+        self.projectFileFormat = projectFileFormat
         self.deploymentTarget = deploymentTarget
         self.disabledValidations = disabledValidations
         self.defaultConfig = defaultConfig
@@ -152,6 +155,7 @@ extension SpecOptions: JSONObjectConvertible {
         usesTabs = jsonDictionary.json(atKeyPath: "usesTabs")
         xcodeVersion = jsonDictionary.json(atKeyPath: "xcodeVersion")
         projectFormat = jsonDictionary.json(atKeyPath: "projectFormat")
+        projectFileFormat = jsonDictionary.json(atKeyPath: "projectFileFormat")
         indentWidth = (jsonDictionary.json(atKeyPath: "indentWidth") as Int?).flatMap(UInt.init)
         tabWidth = (jsonDictionary.json(atKeyPath: "tabWidth") as Int?).flatMap(UInt.init)
         deploymentTarget = jsonDictionary.json(atKeyPath: "deploymentTarget") ?? DeploymentTarget()
@@ -191,6 +195,7 @@ extension SpecOptions: JSONEncodable {
             "usesTabs": usesTabs,
             "xcodeVersion": xcodeVersion,
             "projectFormat": projectFormat,
+            "projectFileFormat": projectFileFormat,
             "indentWidth": indentWidth.flatMap { Int($0) },
             "tabWidth": tabWidth.flatMap { Int($0) },
             "defaultConfig": defaultConfig,

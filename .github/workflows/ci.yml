@@ -4,11 +4,17 @@ on:
   pull_request: {}
 jobs:
   run:
-    runs-on: macos-15
+    runs-on: ${{ matrix.runner }}
     name: Xcode ${{ matrix.xcode }}
     strategy:
       matrix:
-        xcode: ["16.4", "26.2"]
+        include:
+          - xcode: "16.4"
+            runner: macos-15
+          - xcode: "26.2"
+            runner: macos-15
+          - xcode: "27.2"
+            runner: xcode-27
     env:
       DEVELOPER_DIR: /Applications/Xcode_${{ matrix.xcode }}.app/Contents/Developer
     steps:
@@ -27,6 +33,10 @@ jobs:
         env:
           GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: scripts/build-fixtures.sh
+      - name: Compare project file formats
+        env:
+          GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: scripts/compare-xcproj-fixtures.sh --build
   run-linux:
     runs-on: ubuntu-latest
     name: Linux
