@@ -2,6 +2,8 @@
 
 ## Next Version
 
+## 2.48.0
+
 ### Added
 - Added experimental support for Xcode 27.2's JSON project file format. Set `options.projectFileFormat: xcproj` to write `project.xcproj` instead of `project.pbxproj`. It requires Xcode 27 or later and defaults `projectFormat` to `xcode27_0`. Some custom project and target `attributes` can't be stored in this format and are left out #1669 @4brunu
 
