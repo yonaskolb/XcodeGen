@@ -10,6 +10,7 @@
 
 ### Fixed
 - Fix files without a build phase, such as `README`, `LICENSE` and `.gitkeep`, being copied into the bundle from `syncedFolder` sources. They are now added to the synced folder's membership exceptions, and `.DS_Store` files are no longer listed there #1668 @4brunu
+- Fix `configFiles` inside a `syncedFolder` getting a random reference ID on every generation. They now reference the synced folder plus a relative path, like Xcode does. Also fixes detecting these files when using `--project` with a different directory, and for folders whose name has an extension #1670 @4brunu
 
 ### Internal
 - Fix `make archive` producing an empty `xcodegen.artifactbundle.zip` with Swift 6.4, which moved the universal build folder. `make archive` now also fails if the bundle is missing the binary #1671 @yonaskolb
