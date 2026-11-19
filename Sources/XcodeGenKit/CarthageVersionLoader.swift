@@ -57,8 +57,13 @@ class CarthageVersionLoader {
 struct CarthageVersionFile: Decodable {
 
     private struct Reference: Decodable, Equatable {
-        public let name: String
-        public let hash: String
+        let name: String
+        let hash: String
+        let container: String?
+
+        var frameworkFilename: String {
+            container ?? "\(name).framework"
+        }
     }
 
     private let data: [Platform: [String]]
@@ -67,7 +72,7 @@ struct CarthageVersionFile: Decodable {
         let container = try decoder.container(keyedBy: Platform.self)
         data = try Platform.allCases.reduce(into: [:]) { data, platform in
             let references = try container.decodeIfPresent([Reference].self, forKey: platform) ?? []
-            let frameworks = Set(references.map { $0.name }).sorted()
+            let frameworks = Set(references.map { $0.frameworkFilename }).sorted()
             data[platform] = frameworks
         }
     }
