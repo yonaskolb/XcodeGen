@@ -7,7 +7,7 @@ options:
   tabWidth: 2
   transitivelyLinkDependencies: true
   deploymentTarget:
-    watchOS: 4.0
+    watchOS: 9.0
   groupSortPosition: top
   preGenCommand: echo "This is a pre-gen command"
   postGenCommand: scripts/script.sh
@@ -117,6 +117,8 @@ targets:
   App_iOS:
     type: application
     platform: iOS
+    configFiles:
+      Test Debug: SyncedParent/SyncedChild/SyncedChild.xcconfig
     attributes:
       ProvisioningStyle: Automatic
     sources:
@@ -269,7 +271,7 @@ targets:
   App_watchOS:
       type: application.watchapp2
       platform: watchOS
-      deploymentTarget: 4.0
+      deploymentTarget: 9.0
       sources:
         App_watchOS
       settings:
@@ -317,7 +319,7 @@ targets:
       PRODUCT_BUNDLE_IDENTIFIER: com.project.App-macOS.Driver
       CODE_SIGN_ENTITLEMENTS: DriverKit Driver/Driver.entitlements
       SDKROOT: driverkit
-      DRIVERKIT_DEPLOYMENT_TARGET: 20.4
+      DRIVERKIT_DEPLOYMENT_TARGET: 21.0
     scheme: {}
     dependencies:
       - sdk: DriverKit.framework

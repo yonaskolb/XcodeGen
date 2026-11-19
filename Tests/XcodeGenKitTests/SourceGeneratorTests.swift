@@ -198,6 +198,82 @@ class SourceGeneratorTests: XCTestCase {
                 try expect([syncedFolder]) == pbxProj.nativeTargets.first?.fileSystemSynchronizedGroups
             }
 
+            $0.it("anchors configFiles inside synced folders with a different projectDirectory") {
+                let directories = """
+                SubDir:
+                  Configs:
+                    - Debug.xcconfig
+                """
+                try createDirectories(directories)
+
+                let target = Target(
+                    name: "App",
+                    type: .application,
+                    platform: .iOS,
+                    configFiles: ["Debug": "Configs/Debug.xcconfig"],
+                    sources: [TargetSource(path: "Configs", type: .syncedFolder)]
+                )
+                let project = Project(basePath: directoryPath + "SubDir", name: "Test", targets: [target])
+
+                // the project generated above and below the spec, like with --project-root and --project
+                for projectDirectory in [directoryPath, directoryPath + "SubDir/Build"] {
+                    let pbxProj = try PBXProjGenerator(project: project, projectDirectory: projectDirectory).generate()
+                    let syncedFolder = try unwrap(pbxProj.fileSystemSynchronizedRootGroups.first)
+                    let config = try unwrap(pbxProj.nativeTargets.first?.buildConfigurationList?.buildConfigurations.first { $0.name == "Debug" })
+
+                    try expect(config.baseConfigurationAnchor === syncedFolder) == true
+                    try expect(config.baseConfigurationReferenceRelativePath) == "Debug.xcconfig"
+                    try expect(pbxProj.groups.contains { $0.path?.hasSuffix("Configs") == true }) == false
+                }
+            }
+
+            $0.it("doesn't treat configFiles in folders with an extension as synced when the type is implicit") {
+                let directories = """
+                Shared.d:
+                  - Debug.xcconfig
+                """
+                try createDirectories(directories)
+
+                // defaultSourceDirectoryType is syncedFolder, but a source path with an extension resolves to a file, not a synced folder
+                let target = Target(
+                    name: "App",
+                    type: .application,
+                    platform: .iOS,
+                    configFiles: ["Debug": "Shared.d/Debug.xcconfig"],
+                    sources: [TargetSource(path: "Shared.d")]
+                )
+                let project = Project(
+                    basePath: directoryPath,
+                    name: "Test",
+                    targets: [target],
+                    options: SpecOptions(defaultSourceDirectoryType: .syncedFolder)
+                )
+
+                let pbxProj = try project.generatePbxProj()
+                let config = try unwrap(pbxProj.nativeTargets.first?.buildConfigurationList?.buildConfigurations.first { $0.name == "Debug" })
+
+                // a file path isn't a synced folder, so the config is a regular file reference in a group
+                try expect(pbxProj.fileSystemSynchronizedRootGroups.isEmpty) == true
+                try expect(config.baseConfigurationAnchor).to.beNil()
+                try expect(pbxProj.fileReferences.filter { $0.path?.hasSuffix("Debug.xcconfig") == true }.allSatisfy { ref in
+                    pbxProj.groups.contains { $0.children.contains(ref) }
+                }) == true
+
+                // with an explicit syncedFolder type, a folder with an extension is synced and the config is anchored to it
+                let syncedTarget = Target(
+                    name: "App",
+                    type: .application,
+                    platform: .iOS,
+                    configFiles: ["Debug": "Shared.d/Debug.xcconfig"],
+                    sources: [TargetSource(path: "Shared.d", type: .syncedFolder)]
+                )
+                let syncedPbxProj = try Project(basePath: directoryPath, name: "Test", targets: [syncedTarget]).generatePbxProj()
+                let syncedFolder = try unwrap(syncedPbxProj.fileSystemSynchronizedRootGroups.first)
+                let syncedConfig = try unwrap(syncedPbxProj.nativeTargets.first?.buildConfigurationList?.buildConfigurations.first { $0.name == "Debug" })
+                try expect(syncedConfig.baseConfigurationAnchor === syncedFolder) == true
+                try expect(syncedConfig.baseConfigurationReferenceRelativePath) == "Debug.xcconfig"
+            }
+
             $0.it("generates synced folder with explicitFolders") {
                 let directories = """
                 Sources:
@@ -299,7 +375,7 @@ class SourceGeneratorTests: XCTestCase {
                 try expect(exceptions.contains("a.swift")) == false
             }
 
-            $0.it("excludes .DS_Store and .xcconfig from synced folder membership") {
+            $0.it("excludes .xcconfig from synced folder membership without listing .DS_Store") {
                 let directories = """
                 Sources:
                   - a.swift
@@ -323,7 +399,7 @@ class SourceGeneratorTests: XCTestCase {
 
                 try expect(exceptions.contains("config.xcconfig")) == true
                 try expect(exceptions.contains("Subfolder/nested.xcconfig")) == true
-                try expect(exceptions.contains(".DS_Store")) == true
+                try expect(exceptions.contains(".DS_Store")) == false
             }
 
             $0.it("adds membership exceptions for nested synced folder with intermediate groups") {
@@ -454,9 +530,43 @@ class SourceGeneratorTests: XCTestCase {
                 let exceptions = try unwrap(exceptionSet.membershipExceptions)
 
                 try expect(exceptions.contains("Config.xcconfig")) == true
-                try expect(exceptions.contains("README")) == false
+                try expect(exceptions.contains("README")) == true
                 try expect(exceptions.contains("a.swift")) == false
                 try expect(exceptions.contains("Icon.icon")) == false
+            }
+
+            $0.it("excludes files without a build phase from synced folder membership") {
+                let directories = """
+                Sources:
+                  - a.swift
+                  - data.json
+                  - .gitkeep
+                  - Nested:
+                    - .gitkeep
+                """
+                try createDirectories(directories)
+                _ = try createFile(at: "Sources/LICENSE", content: "")
+                _ = try createFile(at: "Sources/Nested/README", content: "")
+
+                let source = TargetSource(path: "Sources", type: .syncedFolder)
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: [source])
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target])
+
+                let pbxProj = try project.generatePbxProj()
+                let syncedFolders = try pbxProj.getMainGroup().children.compactMap { $0 as? PBXFileSystemSynchronizedRootGroup }
+                let syncedFolder = try unwrap(syncedFolders.first)
+
+                let exceptionSets = syncedFolder.exceptions?.compactMap { $0 as? PBXFileSystemSynchronizedBuildFileExceptionSet }
+                let exceptionSet = try unwrap(exceptionSets?.first)
+                let exceptions = try unwrap(exceptionSet.membershipExceptions)
+
+                // Xcode copies these into the bundle, while groups never add them to any build phase
+                try expect(exceptions.contains("LICENSE")) == true
+                try expect(exceptions.contains("Nested/README")) == true
+                try expect(exceptions.contains(".gitkeep")) == true
+                try expect(exceptions.contains("Nested/.gitkeep")) == true
+                try expect(exceptions.contains("a.swift")) == false
+                try expect(exceptions.contains("data.json")) == false
             }
 
             $0.it("excludes nested xcconfig files from synced folder membership") {
@@ -484,12 +594,15 @@ class SourceGeneratorTests: XCTestCase {
                 try expect(exceptions.contains("Nested/a.swift")) == false
             }
 
-            $0.it("includes default excluded files in synced folder membership exceptions") {
+            $0.it("lists .orig files but not .DS_Store in synced folder membership exceptions") {
                let directories = """
                Sources:
                  - a.swift
                  - .DS_Store
                  - a.swift.orig
+                 - Nested:
+                   - .DS_Store
+                   - b.swift
                """
                try createDirectories(directories)
 
@@ -504,7 +617,8 @@ class SourceGeneratorTests: XCTestCase {
                let exceptionSets = try unwrap(syncedFolder.exceptions?.compactMap { $0 as? PBXFileSystemSynchronizedBuildFileExceptionSet })
                let exceptionSet = try unwrap(exceptionSets.first)
                let exceptions = try unwrap(exceptionSet.membershipExceptions)
-               try expect(exceptions.contains(".DS_Store")) == true
+               try expect(exceptions.contains(".DS_Store")) == false
+               try expect(exceptions.contains("Nested/.DS_Store")) == false
                try expect(exceptions.contains("a.swift.orig")) == true
             }
             $0.it("supports includes for synced folders") {
@@ -890,6 +1004,55 @@ class SourceGeneratorTests: XCTestCase {
 
                 let syncedFolders = mainGroup.children.compactMap { $0 as? PBXFileSystemSynchronizedRootGroup }
                 try expect(syncedFolders.count) == 1
+            }
+
+            $0.it("anchors configFiles inside synced folders to the innermost synced folder") {
+                let directories = """
+                Configs:
+                  - project.xcconfig
+                  - Inner:
+                    - target.xcconfig
+                    - aggregate.xcconfig
+                """
+                try createDirectories(directories)
+
+                // the synced folders belong to other targets than the ones using the configs
+                let outerTarget = Target(name: "Outer", type: .framework, platform: .iOS, sources: [TargetSource(path: "Configs", type: .syncedFolder)])
+                let innerTarget = Target(name: "Inner", type: .framework, platform: .iOS, sources: [TargetSource(path: "Configs/Inner", type: .syncedFolder)])
+                let appTarget = Target(name: "App", type: .application, platform: .iOS, configFiles: ["Debug": "Configs/Inner/target.xcconfig"])
+                let aggregateTarget = AggregateTarget(name: "Aggregate", targets: ["App"], configFiles: ["Debug": "Configs/Inner/aggregate.xcconfig"])
+                let project = Project(
+                    basePath: directoryPath,
+                    name: "Test",
+                    targets: [appTarget, outerTarget, innerTarget],
+                    aggregateTargets: [aggregateTarget],
+                    configFiles: ["Debug": "Configs/project.xcconfig"]
+                )
+
+                let pbxProj = try project.generatePbxProj()
+                let outerFolder = try unwrap(pbxProj.fileSystemSynchronizedRootGroups.first { $0.path == "Configs" })
+                let innerFolder = try unwrap(pbxProj.fileSystemSynchronizedRootGroups.first { $0.path == "Configs/Inner" })
+                let projectConfig = try unwrap(pbxProj.rootObject?.buildConfigurationList.buildConfigurations.first { $0.name == "Debug" })
+                let targetConfig = try unwrap(pbxProj.nativeTargets.first { $0.name == "App" }?.buildConfigurationList?.buildConfigurations.first { $0.name == "Debug" })
+                let aggregateConfig = try unwrap(pbxProj.aggregateTargets.first?.buildConfigurationList?.buildConfigurations.first { $0.name == "Debug" })
+
+                try expect(projectConfig.baseConfigurationAnchor === outerFolder) == true
+                try expect(projectConfig.baseConfigurationReferenceRelativePath) == "project.xcconfig"
+                try expect(targetConfig.baseConfigurationAnchor === innerFolder) == true
+                try expect(targetConfig.baseConfigurationReferenceRelativePath) == "target.xcconfig"
+                try expect(aggregateConfig.baseConfigurationAnchor === innerFolder) == true
+                try expect(aggregateConfig.baseConfigurationReferenceRelativePath) == "aggregate.xcconfig"
+                try expect(pbxProj.fileReferences.contains { $0.path?.hasSuffix(".xcconfig") == true }) == false
+
+                // file references outside of any group got a random UUID, which changed the project on every generation
+                func writtenPbxProj() throws -> String {
+                    let projectPath = directoryPath + "Test.xcodeproj"
+                    try project.generateXcodeProject().write(path: projectPath, override: true)
+                    return try (projectPath + "project.pbxproj").read()
+                }
+                let writtenProject = try writtenPbxProj()
+                try expect(writtenProject.contains("TEMP_")) == false
+                try expect(try writtenPbxProj()) == writtenProject
             }
 
             $0.it("supports frameworks in sources") {

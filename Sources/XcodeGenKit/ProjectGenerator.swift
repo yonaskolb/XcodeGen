@@ -43,7 +43,8 @@ public class ProjectGenerator {
             workspace: workspace,
             pbxproj: pbxProj,
             sharedData: sharedData,
-            userData: userData
+            userData: userData,
+            projectFormat: project.projectFileFormat == .xcproj ? .xcproj : .pbxproj
         )
     }
 

@@ -2,6 +2,19 @@
 
 ## Next Version
 
+### Added
+- Added experimental support for Xcode 27.2's JSON project file format. Set `options.projectFileFormat: xcproj` to write `project.xcproj` instead of `project.pbxproj`. It requires Xcode 27 or later and defaults `projectFormat` to `xcode27_0`. Some custom project and target `attributes` can't be stored in this format and are left out #1669 @4brunu
+
+### Changed
+- XcodeGen now requires macOS 14 and Swift 6.1 to build and run, due to the XcodeProj 9.17.8 update #1669 @4brunu
+
+### Fixed
+- Fix files without a build phase, such as `README`, `LICENSE` and `.gitkeep`, being copied into the bundle from `syncedFolder` sources. They are now added to the synced folder's membership exceptions, and `.DS_Store` files are no longer listed there #1668 @4brunu
+- Fix `configFiles` inside a `syncedFolder` getting a random reference ID on every generation. They now reference the synced folder plus a relative path, like Xcode does. Also fixes detecting these files when using `--project` with a different directory, and for folders whose name has an extension #1670 @4brunu
+
+### Internal
+- Fix `make archive` producing an empty `xcodegen.artifactbundle.zip` with Swift 6.4, which moved the universal build folder. `make archive` now also fails if the bundle is missing the binary #1671 @yonaskolb
+
 ## 2.47.0
 
 ### Added

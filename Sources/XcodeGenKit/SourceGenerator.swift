@@ -197,6 +197,15 @@ class SourceGenerator {
         )
     }
 
+    /// Returns the innermost generated synced folder containing the path, along with the path relative to that folder
+    func syncedFolderAnchor(for path: Path) -> (group: PBXFileSystemSynchronizedRootGroup, relativePath: String)? {
+        let relativePath = ((try? path.relativePath(from: basePath)) ?? path).string
+        guard let (syncedPath, group) = syncedGroupsByPath
+            .filter({ relativePath.hasPrefix($0.key + "/") })
+            .max(by: { $0.key.count < $1.key.count }) else { return nil }
+        return (group, String(relativePath.dropFirst(syncedPath.count + 1)))
+    }
+
     func getContainedFileReference(path: Path) -> PBXFileElement {
         let createIntermediateGroups = project.options.createIntermediateGroups
 
@@ -287,12 +296,12 @@ class SourceGenerator {
     /// Whether the given path falls inside a target source configured as a synced folder.
     /// Checks the project spec directly because configFiles are resolved before target sources
     /// populate `syncedGroupsByPath`.
-    private func isInsideSyncedFolder(path: Path) -> Bool {
-        let relativePath = (try? path.relativePath(from: basePath)) ?? path
+    func isInsideSyncedFolder(path: Path) -> Bool {
+        let relativePath = (try? path.relativePath(from: project.basePath)) ?? path
         return project.targets.contains { target in
             target.sources.contains { source in
-                let type = source.type ?? (project.options.defaultSourceDirectoryType ?? .group)
-                return type == .syncedFolder && relativePath.string.hasPrefix(source.path + "/")
+                resolvedTargetSourceType(for: source, at: project.basePath + source.path) == .syncedFolder
+                    && relativePath.string.hasPrefix(source.path + "/")
             }
         }
     }
@@ -433,13 +442,13 @@ class SourceGenerator {
         func findExceptions(in path: Path) {
             guard let children = try? path.children() else { return }
 
-            for child in children {
+            for child in children where !FileType.isDefaultExcludedFile(child) {
                 if isIncludedPath(child, excludePaths: excludePaths, includePaths: includePaths) {
                     if child.isDirectory && !Xcode.isDirectoryFileWrapper(path: child) {
                         findExceptions(in: child)
                     } else {
                         let buildPhase = getDefaultBuildPhase(for: child, targetType: targetType)
-                        if buildPhase == BuildPhaseSpec.none {
+                        if buildPhase == nil || buildPhase == BuildPhaseSpec.none {
                             exceptions.insert(child)
                         }
                     }

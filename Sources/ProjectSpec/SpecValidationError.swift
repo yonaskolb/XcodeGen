@@ -44,6 +44,8 @@ public struct SpecValidationError: Error, CustomStringConvertible {
         case invalidPluginPackageReference(plugin: String, package: String)
         case emptySourcePath(target: String)
         case invalidProjectFormat(String)
+        case invalidProjectFileFormat(String)
+        case unsupportedProjectFormatForProjectFileFormat(projectFormat: ProjectFormat, projectFileFormat: ProjectFileFormat)
 
         public var description: String {
             switch self {
@@ -116,6 +118,12 @@ public struct SpecValidationError: Error, CustomStringConvertible {
             case let .invalidProjectFormat(projectFormat):
                 let validValues = ProjectFormat.allCases.map(\.rawValue).joined(separator: ", ")
                 return "Invalid projectFormat \(projectFormat.quoted). Valid values are: \(validValues)"
+            case let .invalidProjectFileFormat(projectFileFormat):
+                let validValues = ProjectFileFormat.allCases.map(\.rawValue).joined(separator: ", ")
+                return "Invalid projectFileFormat \(projectFileFormat.quoted). Valid values are: \(validValues)"
+            case let .unsupportedProjectFormatForProjectFileFormat(projectFormat, projectFileFormat):
+                let minimumProjectFormat = projectFileFormat.minimumProjectFormat?.rawValue ?? ""
+                return "projectFileFormat \(projectFileFormat.rawValue.quoted) requires projectFormat \(minimumProjectFormat) or newer, but projectFormat is \(projectFormat.rawValue.quoted)"
             }
         }
     }
