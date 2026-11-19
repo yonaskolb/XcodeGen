@@ -227,14 +227,14 @@ class SourceGeneratorTests: XCTestCase {
                 }
             }
 
-            $0.it("anchors configFiles inside synced folders whose name has an extension") {
+            $0.it("doesn't treat configFiles in folders with an extension as synced when the type is implicit") {
                 let directories = """
                 Shared.d:
                   - Debug.xcconfig
                 """
                 try createDirectories(directories)
 
-                // the folder is synced because of defaultSourceDirectoryType, not an explicit type
+                // defaultSourceDirectoryType is syncedFolder, but a source path with an extension resolves to a file, not a synced folder
                 let target = Target(
                     name: "App",
                     type: .application,
@@ -258,6 +258,20 @@ class SourceGeneratorTests: XCTestCase {
                 try expect(pbxProj.fileReferences.filter { $0.path?.hasSuffix("Debug.xcconfig") == true }.allSatisfy { ref in
                     pbxProj.groups.contains { $0.children.contains(ref) }
                 }) == true
+
+                // with an explicit syncedFolder type, a folder with an extension is synced and the config is anchored to it
+                let syncedTarget = Target(
+                    name: "App",
+                    type: .application,
+                    platform: .iOS,
+                    configFiles: ["Debug": "Shared.d/Debug.xcconfig"],
+                    sources: [TargetSource(path: "Shared.d", type: .syncedFolder)]
+                )
+                let syncedPbxProj = try Project(basePath: directoryPath, name: "Test", targets: [syncedTarget]).generatePbxProj()
+                let syncedFolder = try unwrap(syncedPbxProj.fileSystemSynchronizedRootGroups.first)
+                let syncedConfig = try unwrap(syncedPbxProj.nativeTargets.first?.buildConfigurationList?.buildConfigurations.first { $0.name == "Debug" })
+                try expect(syncedConfig.baseConfigurationAnchor === syncedFolder) == true
+                try expect(syncedConfig.baseConfigurationReferenceRelativePath) == "Debug.xcconfig"
             }
 
             $0.it("generates synced folder with explicitFolders") {
