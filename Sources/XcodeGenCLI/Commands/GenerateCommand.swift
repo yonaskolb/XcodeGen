@@ -33,6 +33,10 @@ class GenerateCommand: ProjectCommand {
         // validate project dictionary
         do {
             try specLoader.validateProjectDictionaryWarnings()
+        } catch let error as SpecValidationError {
+            for validationError in error.errors {
+                warning("Warning: \(validationError)")
+            }
         } catch {
             warning("\(error)")
         }
