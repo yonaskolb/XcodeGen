@@ -74,12 +74,15 @@ public struct TargetScheme: Equatable {
 extension TargetScheme: JSONObjectConvertible {
 
     public init(jsonDictionary: JSONDictionary) throws {
+        KeyAccessTracking.markRead("testTargets", "coverageTargets")
         if let targets = jsonDictionary["testTargets"] as? [Any] {
-            testTargets = try targets.compactMap { target in
+            testTargets = try targets.enumerated().compactMap { index, target in
                 if let string = target as? String {
                     return .init(targetReference: try TestableTargetReference(string))
                 } else if let dictionary = target as? JSONDictionary,
-                          let target: Scheme.Test.TestTarget = try? .init(jsonDictionary: dictionary) {
+                          let target: Scheme.Test.TestTarget = try? KeyAccessTracking.scope(dictionary, at: "testTargets[\(index)]", {
+                              try .init(jsonDictionary: dictionary)
+                          }) {
                     return target
                 } else {
                     return nil
@@ -90,11 +93,13 @@ extension TargetScheme: JSONObjectConvertible {
         }
 
         if let targets = jsonDictionary["coverageTargets"] as? [Any] {
-            coverageTargets = try targets.compactMap { target in
+            coverageTargets = try targets.enumerated().compactMap { index, target in
                 if let string = target as? String {
                     return try TestableTargetReference(string)
                 } else if let dictionary = target as? JSONDictionary,
-                          let target: TestableTargetReference = try? .init(jsonDictionary: dictionary) {
+                          let target: TestableTargetReference = try? KeyAccessTracking.scope(dictionary, at: "coverageTargets[\(index)]", {
+                              try .init(jsonDictionary: dictionary)
+                          }) {
                     return target
                 } else {
                     return nil
@@ -104,7 +109,9 @@ extension TargetScheme: JSONObjectConvertible {
             coverageTargets = []
         }
 
-        testPlans = try (jsonDictionary.json(atKeyPath: "testPlans") ?? []).map { try TestPlan(jsonDictionary: $0) }
+        testPlans = try ((jsonDictionary.json(atKeyPath: "testPlans") as [JSONDictionary]?) ?? []).enumerated().map { index, testPlan in
+            try KeyAccessTracking.scope(testPlan, at: "testPlans[\(index)]") { try TestPlan(jsonDictionary: testPlan) }
+        }
         configVariants = jsonDictionary.json(atKeyPath: "configVariants") ?? []
         gatherCoverageData = jsonDictionary.json(atKeyPath: "gatherCoverageData") ?? TargetScheme.gatherCoverageDataDefault
         storeKitConfiguration = jsonDictionary.json(atKeyPath: "storeKitConfiguration")
