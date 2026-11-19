@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "XcodeGen Build Script Object",
+  "description": "https://github.com/yonaskolb/XcodeGen/blob/master/Docs/ProjectSpec.md#build-script",
+  "type": "object",
+  "properties": {
+    "script": {
+      "description": "an inline shell script",
+      "type": "string"
+    },
+    "name": {
+      "description": "name of a script. Defaults to Run Script",
+      "default": "Run Script",
+      "type": "string"
+    },
+    "inputFiles": {
+      "description": "list of input files",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "examples": ["${TARGET_BUILD_DIR}/${INFOPLIST_PATH}"]
+      }
+    },
+    "outputFiles": {
+      "description": "list of output files",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "examples": ["${TARGET_BUILD_DIR}/${INFOPLIST_PATH}"]
+      }
+    },
+    "inputFileLists": {
+      "description": "list of input .xcfilelist",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "examples": ["${TARGET_BUILD_DIR}/${INFOPLIST_PATH}"]
+      }
+    },
+    "outputFileLists": {
+      "description": "list of output .xcfilelist",
+      "type": "array",
+      "items": {
+        "type": "string",
+        "examples": ["${TARGET_BUILD_DIR}/${INFOPLIST_PATH}"]
+      }
+    },
+    "shell": {
+      "description": "shell used for the script. Defaults to /bin/sh",
+      "type": "string",
+      "default": "/bin/sh"
+    },
+    "showEnvVars": {
+      "description": "whether the environment variables accessible to the script show be printed to the build log. Defaults to true",
+      "type": "boolean",
+      "default": "true"
+    },
+    "runOnlyWhenInstalling": {
+      "description": "whether the script is only run when installing (runOnlyForDeploymentPostprocessing). Defaults to false",
+      "type": "boolean",
+      "default": "false"
+    },
+    "basedOnDependencyAnalysis": {
+      "description": "whether to skip the script if inputs, context, or outputs haven't changed. Defaults to true",
+      "type": "boolean",
+      "default": "true"
+    },
+    "discoveredDependencyFile": {
+      "description": " discovered dependency .d file. Defaults to none",
+      "type": "string",
+      "default": "none"
+    }
+  }
+}
