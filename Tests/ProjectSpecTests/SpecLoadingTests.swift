@@ -5,6 +5,7 @@ import Spectre
 import XcodeProj
 import XCTest
 import Yams
+import JSONUtilities
 import TestSupport
 import Version
 
@@ -370,7 +371,7 @@ class SpecLoadingTests: XCTestCase {
             $0.it("fails validating warnings for deprecated placeholder usage") {
                 let dictionary: [String: Any] = [
                     "name": "TestSpecWarningValidation",
-                    "templates": [
+                    "targetTemplates": [
                         "Framework": [
                             "type": "framework",
                             "sources": ["${target_name}/${platform}/Sources"],
@@ -396,7 +397,7 @@ class SpecLoadingTests: XCTestCase {
             $0.it("successfully validates warnings for new placeholder usage") {
                 let dictionary: [String: Any] = [
                     "name": "TestSpecWarningValidation",
-                    "templates": [
+                    "targetTemplates": [
                         "Framework": [
                             "type": "framework",
                             "sources": ["${target_name}/${platform}/Sources"],
@@ -423,6 +424,135 @@ class SpecLoadingTests: XCTestCase {
                     throw failure("Expected to not throw a validation error. Got: \(error)")
                 }
             }
+        }
+    }
+
+    func testUnknownKeyWarnings() {
+        describe {
+            let path = Path(components: [NSTemporaryDirectory(), "unknown_keys_test.yml"])
+
+            func unknownKeys(_ dictionary: [String: Any]) throws -> [String] {
+                try Yams.dump(object: dictionary).write(toFile: path.string, atomically: true, encoding: .utf8)
+                let specLoader = SpecLoader(version: "1.1.0")
+                _ = try specLoader.loadProject(path: path)
+                do {
+                    try specLoader.validateProjectDictionaryWarnings()
+                    return []
+                } catch let error as SpecValidationError {
+                    return error.errors.compactMap {
+                        guard case let .unknownKey(key) = $0 else { return nil }
+                        return key.description
+                    }
+                }
+            }
+
+            $0.it("warns on unknown keys at every level") {
+                let keys = try unknownKeys([
+                    "name": "UnknownKeys",
+                    "targts": [String: Any](),
+                    "options": ["bundleIdPrefx": "com.example"],
+                    "settings": ["bse": ["SWIFT_VERSION": "5"], "configs": [String: Any]()],
+                    "targets": [
+                        "App": [
+                            "type": "application",
+                            "platform": "iOS",
+                            "sources": [["path": "Sources", "buildphase": "resources"]],
+                            "resources": ["Resources"],
+                            "dependencies": [["target": "Framework", "embedd": true]],
+                        ],
+                        "Framework": [
+                            "type": "framework",
+                            "platform": "iOS",
+                        ],
+                    ],
+                    "schemes": [
+                        "App": [
+                            "build": ["targets": ["App": "all"]],
+                            "test": ["targets": [["name": "App", "parallelizabl": true]]],
+                            "runn": [String: Any](),
+                        ],
+                    ],
+                ])
+                try expect(keys) == [
+                    "options.bundleIdPrefx",
+                    "schemes.App.runn",
+                    "schemes.App.test.targets[0].parallelizabl",
+                    "settings.bse",
+                    "targets.App.dependencies[0].embedd",
+                    "targets.App.resources",
+                    "targets.App.sources[0].buildphase",
+                    "targts",
+                ]
+            }
+
+            $0.it("formats the warning with the path") {
+                let targetKey = SpecValidationError.ValidationError.unknownKey(UnusedKey(path: ["targets", "App"], key: "resources"))
+                try expect(targetKey.description) == "Unknown key \"resources\" in targets.App will be ignored"
+                let rootKey = SpecValidationError.ValidationError.unknownKey(UnusedKey(path: [], key: "targts"))
+                try expect(rootKey.description) == "Unknown key \"targts\" will be ignored"
+            }
+
+            $0.it("doesn't warn on keys that are used before decoding or are data") {
+                let keys = try unknownKeys([
+                    "name": "KnownKeys",
+                    "x-common": ["anything": 1],
+                    "settings": ["SWIFT_VERSION": "5", "ANY_SETTING": "YES"],
+                    "settingGroups": ["group": ["OTHER_SETTING": "1"]],
+                    "targetTemplates": [
+                        "Base": ["sources": ["${target_name}"], "templateAttributes": ["foo": "bar"]],
+                    ],
+                    "schemeTemplates": [
+                        "BaseScheme": ["build": ["targets": ["${scheme_name}": "all"]]],
+                    ],
+                    "targets": [
+                        "App": [
+                            "type": "application",
+                            "platform": ["iOS", "tvOS"],
+                            "platformPrefix": "Pre",
+                            "platformSuffix": "Suf",
+                            "templates": ["Base"],
+                            "templateAttributes": ["foo": "baz"],
+                            "settings": [
+                                "base": ["A": "1"],
+                                "configs": ["Debug": ["B": "2"]],
+                            ],
+                            "info": ["path": "Info.plist", "properties": ["AnyKey": "Value"]],
+                            "attributes": ["AnyAttribute": "Value"],
+                            "scheme": [
+                                "environmentVariables": ["ANY_VAR": "1"],
+                                "commandLineArguments": ["-arg": true],
+                                "testTargets": [["name": "App", "parallelizable": true]],
+                            ],
+                        ],
+                    ],
+                    "schemes": [
+                        "App": [
+                            "templates": ["BaseScheme"],
+                            "run": ["environmentVariables": [["variable": "VAR", "value": "1", "isEnabled": false]]],
+                        ],
+                    ],
+                ])
+                try expect(keys) == []
+            }
+        }
+    }
+
+    func testFixturesHaveNoUnknownKeys() throws {
+        let specs = [
+            "TestProject/project.yml",
+            "TestProject/AnotherProject/project.yml",
+            "CarthageProject/project.yml",
+            "SPM/project.yml",
+            "XCProjProject/project.yml",
+            "scheme_test/test_project.yml",
+            "settings_test.yml",
+            "include_test.yml",
+            "paths_test.yml",
+        ]
+        for spec in specs {
+            let specLoader = SpecLoader(version: "1.1.0")
+            _ = try specLoader.loadProject(path: fixturePath + spec)
+            XCTAssertEqual(specLoader.unusedKeys.map(\.description), [], "Unknown keys in \(spec)")
         }
     }
 

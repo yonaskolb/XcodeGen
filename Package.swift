@@ -13,7 +13,7 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/kylef/PathKit.git", from: "1.0.1"),
         .package(url: "https://github.com/jpsim/Yams.git", from: "5.0.0"),
-        .package(url: "https://github.com/yonaskolb/JSONUtilities.git", from: "4.2.0"),
+        .package(url: "https://github.com/yonaskolb/JSONUtilities.git", branch: "key-access-tracking"),
         .package(url: "https://github.com/kylef/Spectre.git", from: "0.9.2"),
         .package(url: "https://github.com/onevcat/Rainbow.git", from: "4.0.0"),
         .package(url: "https://github.com/tuist/XcodeProj.git", exact: "9.17.8"),
@@ -79,6 +79,7 @@ let package = Package(
         ]),
         .testTarget(name: "ProjectSpecTests", dependencies: [
             "ProjectSpec",
+            .product(name: "JSONUtilities", package: "JSONUtilities"),
             .product(name: "Spectre", package: "Spectre"),
             .product(name: "PathKit", package: "PathKit"),
             "TestSupport",
