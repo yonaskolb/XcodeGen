@@ -23,8 +23,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/yonaskolb/JSONUtilities.git",
       "state" : {
-        "revision" : "128d2ffc22467f69569ef8ff971683e2393191a0",
-        "version" : "4.2.0"
+        "branch" : "key-access-tracking",
+        "revision" : "382f073481f4b7803e2137e48542542844423919"
       }
     },
     {

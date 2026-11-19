@@ -155,7 +155,7 @@ extension Dependency: JSONObjectConvertible {
         }
 
         if let object: JSONDictionary = jsonDictionary.json(atKeyPath: "copy") {
-            copyPhase = try BuildPhaseSpec.CopyFilesSettings(jsonDictionary: object)
+            copyPhase = try KeyAccessTracking.scope(object, at: "copy") { try BuildPhaseSpec.CopyFilesSettings(jsonDictionary: object) }
         }
     }
 }

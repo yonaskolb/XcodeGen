@@ -8,7 +8,16 @@ extension Dictionary where Key: JSONKey {
         guard let dictionary = json(atKeyPath: keyPath) as JSONDictionary? else {
             return []
         }
+        // the keys of this dictionary are names, so mark them all as read
+        return try KeyAccessTracking.scope(dictionary, at: keyPath.key, allKeysRead: true) {
+            try decodeNamedItems(dictionary, parallel: parallel)
+        }
+    }
+
+    private func decodeNamedItems<T: NamedJSONDictionaryConvertible>(_ dictionary: JSONDictionary, parallel: Bool) throws -> [T] {
         if parallel {
+            // worker threads don't inherit the key tracking scope, so hand it over
+            let context = KeyAccessTracking.currentContext
             let defaultError = NSError(domain: "Unspecified error", code: 0, userInfo: nil)
             let keys = Array(dictionary.keys)
             var itemResults: [Result<T, Error>] = Array(repeating: .failure(defaultError), count: keys.count)
@@ -18,7 +27,11 @@ extension Dictionary where Key: JSONKey {
                     do {
                         let key = keys[idx]
                         let jsonDictionary: JSONDictionary = try dictionary.json(atKeyPath: .key(key))
-                        let item = try T(name: key, jsonDictionary: jsonDictionary)
+                        let item = try KeyAccessTracking.withContext(context) {
+                            try KeyAccessTracking.scope(jsonDictionary, at: key) {
+                                try T(name: key, jsonDictionary: jsonDictionary)
+                            }
+                        }
                         bufferWrapper.buffer[idx] = .success(item)
                     } catch {
                         bufferWrapper.buffer[idx] = .failure(error)
@@ -30,7 +43,9 @@ extension Dictionary where Key: JSONKey {
             var items: [T] = []
             for (key, _) in dictionary {
                 let jsonDictionary: JSONDictionary = try dictionary.json(atKeyPath: .key(key))
-                let item = try T(name: key, jsonDictionary: jsonDictionary)
+                let item = try KeyAccessTracking.scope(jsonDictionary, at: key) {
+                    try T(name: key, jsonDictionary: jsonDictionary)
+                }
                 items.append(item)
             }
             return items

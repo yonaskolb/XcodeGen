@@ -9,6 +9,8 @@ public class SpecLoader {
 
     var project: Project!
     public private(set) var projectDictionary: [String: Any]?
+    /// Keys in the spec that were never read while loading the project
+    public private(set) var unusedKeys: [UnusedKey] = []
     let version: Version
 
     public init(version: Version) {
@@ -19,20 +21,32 @@ public class SpecLoader {
         let projectRoot = projectRoot?.absolute()
         let spec = try SpecFile(path: path, projectRoot: projectRoot, variables: variables)
         let resolvedDictionary = spec.resolvedDictionary()
-        let project = try Project(
-            basePath: projectRoot ?? spec.basePath,
-            jsonDictionary: resolvedDictionary,
-            targetDeclarationOrder: spec.resolvedTargetDeclarationOrder()
-        )
+        let (project, unusedKeys) = try KeyAccessTracking.record(root: resolvedDictionary) {
+            try Project(
+                basePath: projectRoot ?? spec.basePath,
+                jsonDictionary: resolvedDictionary,
+                targetDeclarationOrder: spec.resolvedTargetDeclarationOrder()
+            )
+        }
 
         self.project = project
+        // keys starting with `x-` can hold anything, like YAML anchors
+        self.unusedKeys = unusedKeys.filter { !$0.key.hasPrefix("x-") }
         projectDictionary = resolvedDictionary
 
         return project
     }
 
     public func validateProjectDictionaryWarnings() throws {
-        try projectDictionary?.validateWarnings()
+        var errors: [SpecValidationError.ValidationError] = unusedKeys.map { .unknownKey($0) }
+        do {
+            try projectDictionary?.validateWarnings()
+        } catch let error as SpecValidationError {
+            errors += error.errors
+        }
+        if !errors.isEmpty {
+            throw SpecValidationError(errors: errors)
+        }
     }
 
     public func generateCacheFile() throws -> CacheFile? {
