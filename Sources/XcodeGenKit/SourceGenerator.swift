@@ -54,7 +54,7 @@ class SourceGenerator {
         return object
     }
 
-    func createLocalPackage(path: Path, group: Path?) throws {
+    func createLocalPackage(name: String, path: Path, group: Path?) throws {
         var parentGroup: String = project.options.localPackagesGroup ?? "Packages"
         if let group {
           parentGroup = group.string
@@ -68,7 +68,7 @@ class SourceGenerator {
         let fileReference = addObject(
             PBXFileReference(
                 sourceTree: .sourceRoot,
-                name: absolutePath.lastComponent,
+                name: name,
                 lastKnownFileType: "folder",
                 path: fileReferencePath
             )
