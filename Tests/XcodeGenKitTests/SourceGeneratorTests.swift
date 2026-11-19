@@ -299,7 +299,7 @@ class SourceGeneratorTests: XCTestCase {
                 try expect(exceptions.contains("a.swift")) == false
             }
 
-            $0.it("excludes .DS_Store and .xcconfig from synced folder membership") {
+            $0.it("excludes .xcconfig from synced folder membership without listing .DS_Store") {
                 let directories = """
                 Sources:
                   - a.swift
@@ -323,7 +323,7 @@ class SourceGeneratorTests: XCTestCase {
 
                 try expect(exceptions.contains("config.xcconfig")) == true
                 try expect(exceptions.contains("Subfolder/nested.xcconfig")) == true
-                try expect(exceptions.contains(".DS_Store")) == true
+                try expect(exceptions.contains(".DS_Store")) == false
             }
 
             $0.it("adds membership exceptions for nested synced folder with intermediate groups") {
@@ -454,9 +454,43 @@ class SourceGeneratorTests: XCTestCase {
                 let exceptions = try unwrap(exceptionSet.membershipExceptions)
 
                 try expect(exceptions.contains("Config.xcconfig")) == true
-                try expect(exceptions.contains("README")) == false
+                try expect(exceptions.contains("README")) == true
                 try expect(exceptions.contains("a.swift")) == false
                 try expect(exceptions.contains("Icon.icon")) == false
+            }
+
+            $0.it("excludes files without a build phase from synced folder membership") {
+                let directories = """
+                Sources:
+                  - a.swift
+                  - data.json
+                  - .gitkeep
+                  - Nested:
+                    - .gitkeep
+                """
+                try createDirectories(directories)
+                _ = try createFile(at: "Sources/LICENSE", content: "")
+                _ = try createFile(at: "Sources/Nested/README", content: "")
+
+                let source = TargetSource(path: "Sources", type: .syncedFolder)
+                let target = Target(name: "Test", type: .application, platform: .iOS, sources: [source])
+                let project = Project(basePath: directoryPath, name: "Test", targets: [target])
+
+                let pbxProj = try project.generatePbxProj()
+                let syncedFolders = try pbxProj.getMainGroup().children.compactMap { $0 as? PBXFileSystemSynchronizedRootGroup }
+                let syncedFolder = try unwrap(syncedFolders.first)
+
+                let exceptionSets = syncedFolder.exceptions?.compactMap { $0 as? PBXFileSystemSynchronizedBuildFileExceptionSet }
+                let exceptionSet = try unwrap(exceptionSets?.first)
+                let exceptions = try unwrap(exceptionSet.membershipExceptions)
+
+                // Xcode copies these into the bundle, while groups never add them to any build phase
+                try expect(exceptions.contains("LICENSE")) == true
+                try expect(exceptions.contains("Nested/README")) == true
+                try expect(exceptions.contains(".gitkeep")) == true
+                try expect(exceptions.contains("Nested/.gitkeep")) == true
+                try expect(exceptions.contains("a.swift")) == false
+                try expect(exceptions.contains("data.json")) == false
             }
 
             $0.it("excludes nested xcconfig files from synced folder membership") {
@@ -484,12 +518,15 @@ class SourceGeneratorTests: XCTestCase {
                 try expect(exceptions.contains("Nested/a.swift")) == false
             }
 
-            $0.it("includes default excluded files in synced folder membership exceptions") {
+            $0.it("lists .orig files but not .DS_Store in synced folder membership exceptions") {
                let directories = """
                Sources:
                  - a.swift
                  - .DS_Store
                  - a.swift.orig
+                 - Nested:
+                   - .DS_Store
+                   - b.swift
                """
                try createDirectories(directories)
 
@@ -504,7 +541,8 @@ class SourceGeneratorTests: XCTestCase {
                let exceptionSets = try unwrap(syncedFolder.exceptions?.compactMap { $0 as? PBXFileSystemSynchronizedBuildFileExceptionSet })
                let exceptionSet = try unwrap(exceptionSets.first)
                let exceptions = try unwrap(exceptionSet.membershipExceptions)
-               try expect(exceptions.contains(".DS_Store")) == true
+               try expect(exceptions.contains(".DS_Store")) == false
+               try expect(exceptions.contains("Nested/.DS_Store")) == false
                try expect(exceptions.contains("a.swift.orig")) == true
             }
             $0.it("supports includes for synced folders") {

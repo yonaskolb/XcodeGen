@@ -421,13 +421,13 @@ class SourceGenerator {
         func findExceptions(in path: Path) {
             guard let children = try? path.children() else { return }
 
-            for child in children {
+            for child in children where !FileType.isDefaultExcludedFile(child) {
                 if isIncludedPath(child, excludePaths: excludePaths, includePaths: includePaths) {
                     if child.isDirectory && !Xcode.isDirectoryFileWrapper(path: child) {
                         findExceptions(in: child)
                     } else {
                         let buildPhase = getDefaultBuildPhase(for: child, targetType: targetType)
-                        if buildPhase == BuildPhaseSpec.none {
+                        if buildPhase == nil || buildPhase == BuildPhaseSpec.none {
                             exceptions.insert(child)
                         }
                     }

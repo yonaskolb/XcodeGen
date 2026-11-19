@@ -138,9 +138,14 @@ extension FileType {
         "orig",
     ]
 
+    /// Checks whether the path is a default excluded file name such as `.DS_Store`
+    public static func isDefaultExcludedFile(_ path: Path) -> Bool {
+        defaultExcludedFiles.contains(path.lastComponent)
+    }
+
     /// Checks whether the path is in any default excludes
     public static func isDefaultExcluded(_ path: Path) -> Bool {
-        defaultExcludedFiles.contains(path.lastComponent)
+        isDefaultExcludedFile(path)
             || (path.extension.map(defaultExcludedExtensions.contains) ?? false)
     }
 }
