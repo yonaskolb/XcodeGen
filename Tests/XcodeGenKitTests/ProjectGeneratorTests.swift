@@ -1272,7 +1272,57 @@ class ProjectGeneratorTests: XCTestCase {
                     dependencies: [Dependency(type: .target, reference: implicitlyRequiresObjCLinking.name)]
                 )
 
-                let targets = [requiresObjCLinking, doesntRequireObjCLinking, implicitlyRequiresObjCLinking, framework, app1, app2, app3]
+                let staticFramework = Target(
+                    name: "staticFramework",
+                    type: .staticFramework,
+                    platform: .iOS
+                )
+                let machOStaticFramework = Target(
+                    name: "machOStaticFramework",
+                    type: .framework,
+                    platform: .iOS,
+                    settings: Settings(buildSettings: ["MACH_O_TYPE": "staticlib"])
+                )
+                let staticFrameworkOptOut = Target(
+                    name: "staticFrameworkOptOut",
+                    type: .staticFramework,
+                    platform: .iOS,
+                    requiresObjCLinking: false
+                )
+                let dynamicFramework = Target(
+                    name: "dynamicFramework",
+                    type: .framework,
+                    platform: .iOS
+                )
+                let app4 = Target(
+                    name: "app4",
+                    type: .application,
+                    platform: .iOS,
+                    dependencies: [Dependency(type: .target, reference: staticFramework.name)]
+                )
+                let app5 = Target(
+                    name: "app5",
+                    type: .application,
+                    platform: .iOS,
+                    dependencies: [Dependency(type: .target, reference: machOStaticFramework.name)]
+                )
+                let app6 = Target(
+                    name: "app6",
+                    type: .application,
+                    platform: .iOS,
+                    dependencies: [Dependency(type: .target, reference: staticFrameworkOptOut.name)]
+                )
+                let app7 = Target(
+                    name: "app7",
+                    type: .application,
+                    platform: .iOS,
+                    dependencies: [Dependency(type: .target, reference: dynamicFramework.name)]
+                )
+
+                let targets = [
+                    requiresObjCLinking, doesntRequireObjCLinking, implicitlyRequiresObjCLinking, framework, app1, app2, app3,
+                    staticFramework, machOStaticFramework, staticFrameworkOptOut, dynamicFramework, app4, app5, app6, app7,
+                ]
 
                 let project = Project(
                     basePath: fixturePath + "TestProject",
@@ -1302,6 +1352,42 @@ class ProjectGeneratorTests: XCTestCase {
                 try expect(app1OtherLinkerSettings.contains("-ObjC")) == true
                 try expect(app2OtherLinkerSettings.contains("-ObjC")) == false
                 try expect(app3OtherLinkerSettings.contains("-ObjC")) == true
+                let app4OtherLinkerSettings = try buildSettings(for: app4)["OTHER_LDFLAGS"]?.arrayValue ?? []
+                let app5OtherLinkerSettings = try buildSettings(for: app5)["OTHER_LDFLAGS"]?.arrayValue ?? []
+                let app6OtherLinkerSettings = try buildSettings(for: app6)["OTHER_LDFLAGS"]?.arrayValue ?? []
+                let app7OtherLinkerSettings = try buildSettings(for: app7)["OTHER_LDFLAGS"]?.arrayValue ?? []
+
+                try expect(app4OtherLinkerSettings.contains("-ObjC")) == true
+                try expect(app5OtherLinkerSettings.contains("-ObjC")) == true
+                try expect(app6OtherLinkerSettings.contains("-ObjC")) == false
+                try expect(app7OtherLinkerSettings.contains("-ObjC")) == false
+            }
+
+            $0.it("sets -ObjC for targets that depend on a static framework in an external project") {
+                let externalPath = try Path.uniqueTemporary()
+                defer { try? externalPath.delete() }
+
+                let externalProject = Project(
+                    basePath: externalPath,
+                    name: "ExternalProject",
+                    targets: [Target(name: "ExternalStaticFramework", type: .staticFramework, platform: .iOS)]
+                )
+                let xcodeProject = try ProjectGenerator(project: externalProject).generateXcodeProject(userName: "someUser")
+                try FileWriter(project: externalProject).writeXcodeProject(xcodeProject)
+
+                var target = app
+                target.dependencies = [Dependency(type: .target, reference: "ExternalProject/ExternalStaticFramework")]
+                let project = Project(
+                    name: "test",
+                    targets: [target],
+                    projectReferences: [
+                        ProjectReference(name: "ExternalProject", path: (externalPath + "ExternalProject.xcodeproj").string),
+                    ]
+                )
+
+                let pbxProj = try project.generatePbxProj()
+                let buildConfig = try unwrap(pbxProj.targets(named: target.name).first?.buildConfigurationList?.buildConfigurations.first)
+                try expect(buildConfig.buildSettings["OTHER_LDFLAGS"]?.arrayValue?.contains("-ObjC") ?? false) == true
             }
             
             $0.it("filter sources with inferDestinationFiltersByPath") {
