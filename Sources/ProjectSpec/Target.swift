@@ -348,7 +348,7 @@ extension Target: NamedJSONDictionaryConvertible {
                 if let string = source as? String {
                     return TargetSource(path: string)
                 } else if let dictionary = source as? [String: Any] {
-                    return try KeyAccessTracking.scope(dictionary, at: "sources[\(index)]") {
+                    return try KeyAccessTracking.scope(dictionary, at: ["sources", .index(index)]) {
                         try TargetSource(jsonDictionary: dictionary)
                     }
                 } else {

@@ -664,7 +664,7 @@ extension Scheme.Test: JSONObjectConvertible {
                 if let string = target as? String {
                     return try TestableTargetReference(string)
                 } else if let dictionary = target as? JSONDictionary,
-                          let target: TestableTargetReference = try? KeyAccessTracking.scope(dictionary, at: "coverageTargets[\(index)]", {
+                          let target: TestableTargetReference = try? KeyAccessTracking.scope(dictionary, at: ["coverageTargets", .index(index)], {
                               try .init(jsonDictionary: dictionary)
                           }) {
                     return target
@@ -687,7 +687,7 @@ extension Scheme.Test: JSONObjectConvertible {
                 if let string = target as? String {
                     return try TestTarget(targetReference: TestableTargetReference(string))
                 } else if let dictionary = target as? JSONDictionary {
-                    return try KeyAccessTracking.scope(dictionary, at: "targets[\(index)]") {
+                    return try KeyAccessTracking.scope(dictionary, at: ["targets", .index(index)]) {
                         try TestTarget(jsonDictionary: dictionary)
                     }
                 } else {
@@ -701,7 +701,7 @@ extension Scheme.Test: JSONObjectConvertible {
         postActions = jsonDictionary.json(atKeyPath: "postActions") ?? []
         environmentVariables = try XCScheme.EnvironmentVariable.parseAll(jsonDictionary: jsonDictionary)
         testPlans = try ((jsonDictionary.json(atKeyPath: "testPlans") as [JSONDictionary]?) ?? []).enumerated().map { index, testPlan in
-            try KeyAccessTracking.scope(testPlan, at: "testPlans[\(index)]") { try TestPlan(jsonDictionary: testPlan) }
+            try KeyAccessTracking.scope(testPlan, at: ["testPlans", .index(index)]) { try TestPlan(jsonDictionary: testPlan) }
         }
         language = jsonDictionary.json(atKeyPath: "language")
         region = jsonDictionary.json(atKeyPath: "region")
@@ -1081,7 +1081,7 @@ extension XCScheme.EnvironmentVariable: JSONUtilities.JSONObjectConvertible {
                 .sorted { $0.variable < $1.variable }
         } else if let variablesArray: [JSONDictionary] = jsonDictionary.json(atKeyPath: "environmentVariables") {
             return try variablesArray.enumerated().map { index, variable in
-                try KeyAccessTracking.scope(variable, at: "environmentVariables[\(index)]") {
+                try KeyAccessTracking.scope(variable, at: ["environmentVariables", .index(index)]) {
                     try XCScheme.EnvironmentVariable(jsonDictionary: variable)
                 }
             }

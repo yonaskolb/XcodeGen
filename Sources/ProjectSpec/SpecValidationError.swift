@@ -130,7 +130,7 @@ public struct SpecValidationError: Error, CustomStringConvertible {
                 if unusedKey.path.isEmpty {
                     return "Unknown key \(unusedKey.key.quoted) will be ignored"
                 } else {
-                    return "Unknown key \(unusedKey.key.quoted) in \(unusedKey.path.joined(separator: ".")) will be ignored"
+                    return "Unknown key \(unusedKey.key.quoted) in \(JSONPathComponent.format(unusedKey.path)) will be ignored"
                 }
             }
         }

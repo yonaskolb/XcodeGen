@@ -80,7 +80,7 @@ extension TargetScheme: JSONObjectConvertible {
                 if let string = target as? String {
                     return .init(targetReference: try TestableTargetReference(string))
                 } else if let dictionary = target as? JSONDictionary,
-                          let target: Scheme.Test.TestTarget = try? KeyAccessTracking.scope(dictionary, at: "testTargets[\(index)]", {
+                          let target: Scheme.Test.TestTarget = try? KeyAccessTracking.scope(dictionary, at: ["testTargets", .index(index)], {
                               try .init(jsonDictionary: dictionary)
                           }) {
                     return target
@@ -97,7 +97,7 @@ extension TargetScheme: JSONObjectConvertible {
                 if let string = target as? String {
                     return try TestableTargetReference(string)
                 } else if let dictionary = target as? JSONDictionary,
-                          let target: TestableTargetReference = try? KeyAccessTracking.scope(dictionary, at: "coverageTargets[\(index)]", {
+                          let target: TestableTargetReference = try? KeyAccessTracking.scope(dictionary, at: ["coverageTargets", .index(index)], {
                               try .init(jsonDictionary: dictionary)
                           }) {
                     return target
@@ -110,7 +110,7 @@ extension TargetScheme: JSONObjectConvertible {
         }
 
         testPlans = try ((jsonDictionary.json(atKeyPath: "testPlans") as [JSONDictionary]?) ?? []).enumerated().map { index, testPlan in
-            try KeyAccessTracking.scope(testPlan, at: "testPlans[\(index)]") { try TestPlan(jsonDictionary: testPlan) }
+            try KeyAccessTracking.scope(testPlan, at: ["testPlans", .index(index)]) { try TestPlan(jsonDictionary: testPlan) }
         }
         configVariants = jsonDictionary.json(atKeyPath: "configVariants") ?? []
         gatherCoverageData = jsonDictionary.json(atKeyPath: "gatherCoverageData") ?? TargetScheme.gatherCoverageDataDefault

@@ -9,7 +9,7 @@ extension Dictionary where Key: JSONKey {
             return []
         }
         // the keys of this dictionary are names, so mark them all as read
-        return try KeyAccessTracking.scope(dictionary, at: keyPath.key, allKeysRead: true) {
+        return try KeyAccessTracking.scope(dictionary, at: .key(keyPath.key), allKeysRead: true) {
             try decodeNamedItems(dictionary, parallel: parallel)
         }
     }
@@ -28,7 +28,7 @@ extension Dictionary where Key: JSONKey {
                         let key = keys[idx]
                         let jsonDictionary: JSONDictionary = try dictionary.json(atKeyPath: .key(key))
                         let item = try KeyAccessTracking.withContext(context) {
-                            try KeyAccessTracking.scope(jsonDictionary, at: key) {
+                            try KeyAccessTracking.scope(jsonDictionary, at: .key(key)) {
                                 try T(name: key, jsonDictionary: jsonDictionary)
                             }
                         }
@@ -43,7 +43,7 @@ extension Dictionary where Key: JSONKey {
             var items: [T] = []
             for (key, _) in dictionary {
                 let jsonDictionary: JSONDictionary = try dictionary.json(atKeyPath: .key(key))
-                let item = try KeyAccessTracking.scope(jsonDictionary, at: key) {
+                let item = try KeyAccessTracking.scope(jsonDictionary, at: .key(key)) {
                     try T(name: key, jsonDictionary: jsonDictionary)
                 }
                 items.append(item)
