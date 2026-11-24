@@ -479,7 +479,7 @@ public class PBXProjGenerator {
         let settings = Settings(buildSettings: buildSettings, configSettings: [:], groups: [])
         let deploymentTargetString = buildSettings[platform.deploymentTargetSetting]?.stringValue
         let deploymentTarget = deploymentTargetString == nil ? nil : try Version.parse(deploymentTargetString!)
-        let requiresObjCLinking = buildSettings["OTHER_LDFLAGS"]?.stringValue?.contains("-ObjC") ?? (productType == .staticLibrary)
+        let requiresObjCLinking = buildSettings["OTHER_LDFLAGS"]?.stringValue?.contains("-ObjC")
         let dependencyTarget = Target(
             name: targetObject.name,
             type: productType,
@@ -765,7 +765,7 @@ public class PBXProjGenerator {
                 targetFrameworkBuildFiles.append(buildFile)
 
                 if !anyDependencyRequiresObjCLinking
-                    && dependencyTarget.requiresObjCLinking ?? (dependencyTarget.type == .staticLibrary) {
+                    && dependencyTarget.requiresObjCLinking ?? (dependencyLinkage == .static) {
                     anyDependencyRequiresObjCLinking = true
                 }
             }
