@@ -46,7 +46,7 @@ breakpoints:
     column: 13
   - type: Exception
     scope: All
-    stopOnStype: Catch
+    stopOnStyle: Catch
     actions:
       - type: DebuggerCommand
         command: po $arg1

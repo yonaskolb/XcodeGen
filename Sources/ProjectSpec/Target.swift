@@ -280,6 +280,13 @@ extension LegacyTarget: JSONEncodable {
 extension Target: NamedJSONDictionaryConvertible {
 
     public init(name: String, jsonDictionary: JSONDictionary) throws {
+        // keys that are used before a target is decoded
+        KeyAccessTracking.markRead(
+            "platformPrefix", "platformSuffix", // multi-platform target expansion
+            "templates", "templateAttributes", // target templates
+            Target.declarationIndexKey
+        )
+
         let resolvedName: String = jsonDictionary.json(atKeyPath: "name") ?? name
         self.name = resolvedName
         productName = jsonDictionary.json(atKeyPath: "productName") ?? resolvedName
@@ -319,8 +326,11 @@ extension Target: NamedJSONDictionaryConvertible {
         }
         
         if let dictionary = jsonDictionary["deploymentTarget"] as? JSONDictionary {
+            KeyAccessTracking.markRead("deploymentTarget")
             deploymentTarget = nil
-            deploymentTargets = try DeploymentTarget(jsonDictionary: dictionary)
+            deploymentTargets = try KeyAccessTracking.scope(dictionary, at: "deploymentTarget") {
+                try DeploymentTarget(jsonDictionary: dictionary)
+            }
         } else if let string: String = jsonDictionary.json(atKeyPath: "deploymentTarget") {
             deploymentTarget = try Version.parse(string)
             deploymentTargets = nil
@@ -337,11 +347,13 @@ extension Target: NamedJSONDictionaryConvertible {
         if let source: String = jsonDictionary.json(atKeyPath: "sources") {
             sources = [TargetSource(path: source)]
         } else if let array = jsonDictionary["sources"] as? [Any] {
-            sources = try array.compactMap { source in
+            sources = try array.enumerated().compactMap { index, source in
                 if let string = source as? String {
                     return TargetSource(path: string)
                 } else if let dictionary = source as? [String: Any] {
-                    return try TargetSource(jsonDictionary: dictionary)
+                    return try KeyAccessTracking.scope(dictionary, at: ["sources", .index(index)]) {
+                        try TargetSource(jsonDictionary: dictionary)
+                    }
                 } else {
                     return nil
                 }

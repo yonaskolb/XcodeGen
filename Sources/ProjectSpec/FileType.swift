@@ -42,7 +42,7 @@ extension FileType: JSONObjectConvertible {
         if let string: String = jsonDictionary.json(atKeyPath: "buildPhase") {
             buildPhase = try BuildPhaseSpec(string: string)
         } else if let dict: JSONDictionary = jsonDictionary.json(atKeyPath: "buildPhase") {
-            buildPhase = try BuildPhaseSpec(jsonDictionary: dict)
+            buildPhase = try KeyAccessTracking.scope(dict, at: "buildPhase") { try BuildPhaseSpec(jsonDictionary: dict) }
         }
         file = jsonDictionary.json(atKeyPath: "file") ?? Defaults.file
         attributes = jsonDictionary.json(atKeyPath: "attributes") ?? []

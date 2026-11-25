@@ -74,6 +74,13 @@ You can also use environment variables in your configuration file, by using `${S
 - [ ] **packages**: **[String: [Swift Package](#swift-package)]** - a map of Swift packages by name.
 - [ ] **projectReferences**: **[String: [Project Reference](#project-reference)]** - a map of project references by name
 
+XcodeGen prints a warning for any key in the spec that it doesn't recognize, for example `Unknown key "resources" in targets.App will be ignored`, so typos don't go unnoticed. Keys starting with `x-` are never warned about, so they can be used to hold things like YAML anchors:
+
+```yaml
+x-common-settings: &common-settings
+  SWIFT_VERSION: 6.0
+```
+
 ### Include
 
 One or more specs can be included in the project spec. This can be used to split your project spec into multiple files, for easier structuring or sharing between multiple specs. Included specs can also include other specs and so on.

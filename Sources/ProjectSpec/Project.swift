@@ -174,6 +174,9 @@ extension Project {
     public init(basePath: Path = "", jsonDictionary: JSONDictionary, targetDeclarationOrder: [String] = []) throws {
         self.basePath = basePath
 
+        // keys that are used while resolving templates, before the project is decoded
+        KeyAccessTracking.markRead("targetTemplates", "schemeTemplates")
+
         var jsonDictionary = jsonDictionary
         if var rawTargets = jsonDictionary["targets"] as? [String: JSONDictionary] {
             for (index, key) in targetDeclarationOrder.enumerated() where rawTargets[key] != nil {

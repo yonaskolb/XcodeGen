@@ -658,12 +658,15 @@ extension Scheme.Test: JSONObjectConvertible {
         config = jsonDictionary.json(atKeyPath: "config")
         gatherCoverageData = jsonDictionary.json(atKeyPath: "gatherCoverageData") ?? Scheme.Test.gatherCoverageDataDefault
 
+        KeyAccessTracking.markRead("coverageTargets", "targets")
         if let coverages = jsonDictionary["coverageTargets"] as? [Any] {
-            coverageTargets = try coverages.compactMap { target in
+            coverageTargets = try coverages.enumerated().compactMap { index, target in
                 if let string = target as? String {
                     return try TestableTargetReference(string)
                 } else if let dictionary = target as? JSONDictionary,
-                          let target: TestableTargetReference = try? .init(jsonDictionary: dictionary) {
+                          let target: TestableTargetReference = try? KeyAccessTracking.scope(dictionary, at: ["coverageTargets", .index(index)], {
+                              try .init(jsonDictionary: dictionary)
+                          }) {
                     return target
                 } else {
                     return nil
@@ -680,11 +683,13 @@ extension Scheme.Test: JSONObjectConvertible {
         disableMainThreadChecker = jsonDictionary.json(atKeyPath: "disableMainThreadChecker") ?? Scheme.Test.disableMainThreadCheckerDefault
         commandLineArguments = jsonDictionary.json(atKeyPath: "commandLineArguments") ?? [:]
         if let targets = jsonDictionary["targets"] as? [Any] {
-            self.targets = try targets.compactMap { target in
+            self.targets = try targets.enumerated().compactMap { index, target in
                 if let string = target as? String {
                     return try TestTarget(targetReference: TestableTargetReference(string))
                 } else if let dictionary = target as? JSONDictionary {
-                    return try TestTarget(jsonDictionary: dictionary)
+                    return try KeyAccessTracking.scope(dictionary, at: ["targets", .index(index)]) {
+                        try TestTarget(jsonDictionary: dictionary)
+                    }
                 } else {
                     return nil
                 }
@@ -695,7 +700,9 @@ extension Scheme.Test: JSONObjectConvertible {
         preActions = jsonDictionary.json(atKeyPath: "preActions") ?? []
         postActions = jsonDictionary.json(atKeyPath: "postActions") ?? []
         environmentVariables = try XCScheme.EnvironmentVariable.parseAll(jsonDictionary: jsonDictionary)
-        testPlans = try (jsonDictionary.json(atKeyPath: "testPlans") ?? []).map { try TestPlan(jsonDictionary: $0) }
+        testPlans = try ((jsonDictionary.json(atKeyPath: "testPlans") as [JSONDictionary]?) ?? []).enumerated().map { index, testPlan in
+            try KeyAccessTracking.scope(testPlan, at: ["testPlans", .index(index)]) { try TestPlan(jsonDictionary: testPlan) }
+        }
         language = jsonDictionary.json(atKeyPath: "language")
         region = jsonDictionary.json(atKeyPath: "region")
         debugEnabled = jsonDictionary.json(atKeyPath: "debugEnabled") ?? Scheme.Test.debugEnabledDefault
@@ -895,6 +902,9 @@ extension Scheme.Archive: JSONEncodable {
 extension Scheme: NamedJSONDictionaryConvertible {
 
     public init(name: String, jsonDictionary: JSONDictionary) throws {
+        // keys used by scheme templates before a scheme is decoded
+        KeyAccessTracking.markRead("templates", "templateAttributes")
+
         self.name = name
         build = try jsonDictionary.json(atKeyPath: "build")
         run = jsonDictionary.json(atKeyPath: "run")
@@ -1052,6 +1062,7 @@ extension XCScheme.EnvironmentVariable: JSONUtilities.JSONObjectConvertible {
     public init(jsonDictionary: JSONDictionary) throws {
 
         let value: String
+        KeyAccessTracking.markRead("value")
         if let jsonValue = jsonDictionary["value"] {
             value = XCScheme.EnvironmentVariable.parseValue(jsonValue)
         } else {
@@ -1069,7 +1080,11 @@ extension XCScheme.EnvironmentVariable: JSONUtilities.JSONObjectConvertible {
                 .map { XCScheme.EnvironmentVariable(variable: $0.key, value: $0.value, enabled: true) }
                 .sorted { $0.variable < $1.variable }
         } else if let variablesArray: [JSONDictionary] = jsonDictionary.json(atKeyPath: "environmentVariables") {
-            return try variablesArray.map(XCScheme.EnvironmentVariable.init)
+            return try variablesArray.enumerated().map { index, variable in
+                try KeyAccessTracking.scope(variable, at: ["environmentVariables", .index(index)]) {
+                    try XCScheme.EnvironmentVariable(jsonDictionary: variable)
+                }
+            }
         } else {
             return []
         }

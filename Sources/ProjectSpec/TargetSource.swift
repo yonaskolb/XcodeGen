@@ -116,7 +116,7 @@ extension TargetSource: JSONObjectConvertible {
         if let string: String = jsonDictionary.json(atKeyPath: "buildPhase") {
             buildPhase = try BuildPhaseSpec(string: string)
         } else if let dict: JSONDictionary = jsonDictionary.json(atKeyPath: "buildPhase") {
-            buildPhase = try BuildPhaseSpec(jsonDictionary: dict)
+            buildPhase = try KeyAccessTracking.scope(dict, at: "buildPhase") { try BuildPhaseSpec(jsonDictionary: dict) }
         }
 
         createIntermediateGroups = jsonDictionary.json(atKeyPath: "createIntermediateGroups")

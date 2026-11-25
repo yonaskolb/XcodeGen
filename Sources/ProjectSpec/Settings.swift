@@ -19,12 +19,15 @@ public struct Settings: Equatable, JSONObjectConvertible, CustomStringConvertibl
 
     public init(jsonDictionary: JSONDictionary) throws {
         if jsonDictionary["configs"] != nil || jsonDictionary["groups"] != nil || jsonDictionary["base"] != nil {
+            KeyAccessTracking.markRead("configs")
             groups = jsonDictionary.json(atKeyPath: "groups") ?? jsonDictionary.json(atKeyPath: "presets") ?? []
             let buildSettingsDictionary: JSONDictionary = jsonDictionary.json(atKeyPath: "base") ?? [:]
             buildSettings = buildSettingsDictionary.mapValues { BuildSetting(any: $0) }
 
             self.configSettings = try Self.extractValidConfigs(from: jsonDictionary)
         } else {
+            // every key is a build setting
+            KeyAccessTracking.markAllRead()
             buildSettings = jsonDictionary.mapValues { BuildSetting(any: $0) }
             configSettings = [:]
             groups = []
