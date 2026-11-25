@@ -326,8 +326,11 @@ extension Target: NamedJSONDictionaryConvertible {
         }
         
         if let dictionary = jsonDictionary["deploymentTarget"] as? JSONDictionary {
+            KeyAccessTracking.markRead("deploymentTarget")
             deploymentTarget = nil
-            deploymentTargets = try DeploymentTarget(jsonDictionary: dictionary)
+            deploymentTargets = try KeyAccessTracking.scope(dictionary, at: "deploymentTarget") {
+                try DeploymentTarget(jsonDictionary: dictionary)
+            }
         } else if let string: String = jsonDictionary.json(atKeyPath: "deploymentTarget") {
             deploymentTarget = try Version.parse(string)
             deploymentTargets = nil

@@ -462,7 +462,8 @@ class SpecLoadingTests: XCTestCase {
                         ],
                         "Framework": [
                             "type": "framework",
-                            "platform": "iOS",
+                            "supportedDestinations": ["iOS", "tvOS"],
+                            "deploymentTarget": ["iOS": "17.0", "iOSS": "17.0"],
                         ],
                     ],
                     "schemes": [
@@ -481,6 +482,7 @@ class SpecLoadingTests: XCTestCase {
                     "targets.App.dependencies[0].embedd",
                     "targets.App.resources",
                     "targets.App.sources[0].buildphase",
+                    "targets.Framework.deploymentTarget.iOSS",
                     "targts",
                 ]
             }
@@ -490,6 +492,23 @@ class SpecLoadingTests: XCTestCase {
                 try expect(targetKey.description) == "Unknown key \"resources\" in targets.App will be ignored"
                 let rootKey = SpecValidationError.ValidationError.unknownKey(UnusedKey(path: [], key: "targts"))
                 try expect(rootKey.description) == "Unknown key \"targts\" will be ignored"
+            }
+
+            $0.it("doesn't warn on YAML anchors and merge keys") {
+                let yaml = """
+                name: Anchors
+                x-common: &common
+                  type: framework
+                  platform: iOS
+                targets:
+                  Framework:
+                    <<: *common
+                    sources: [Sources]
+                """
+                try yaml.write(toFile: path.string, atomically: true, encoding: .utf8)
+                let specLoader = SpecLoader(version: "1.1.0")
+                _ = try specLoader.loadProject(path: path)
+                try expect(specLoader.unusedKeys.map(\.description)) == []
             }
 
             $0.it("doesn't warn on keys that are used before decoding or are data") {
@@ -548,10 +567,17 @@ class SpecLoadingTests: XCTestCase {
             "settings_test.yml",
             "include_test.yml",
             "paths_test.yml",
+            "legacy_paths_test.yml",
+            "variables_test.yml",
+            "target_ordering_test.yml",
+            "target_ordering_template_test.yml",
+            "target_ordering_template_name_test.yml",
+            "target_ordering_variable_test.yml",
+            "duplicated_include/duplicated_import_sut.yml",
         ]
         for spec in specs {
             let specLoader = SpecLoader(version: "1.1.0")
-            _ = try specLoader.loadProject(path: fixturePath + spec)
+            _ = try specLoader.loadProject(path: fixturePath + spec, variables: ["FIRST_TARGET": "Zebra"])
             XCTAssertEqual(specLoader.unusedKeys.map(\.description), [], "Unknown keys in \(spec)")
         }
     }
