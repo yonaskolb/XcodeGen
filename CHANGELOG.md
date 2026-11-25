@@ -2,6 +2,9 @@
 
 ## Next Version
 
+### Added
+- Spec keys that XcodeGen doesn't recognise are now reported as warnings with their path, at every level of the spec, instead of being silently ignored. For example `Warning: Unknown key "resources" in targets.App will be ignored`, or a typo like `buildphase` in a source entry. Generation still succeeds. Keys starting with `x-` are not reported, so they can hold YAML anchors #1673 @yonaskolb
+
 ### Changed
 - `requiresObjCLinking` now defaults to `true` for static frameworks (`framework.static`, or `framework` with `MACH_O_TYPE: staticlib`), including targets from project references, so apps linking them get `-ObjC`. If this causes duplicate symbol errors or larger binaries, for example when several static frameworks share a package with Objective-C code like Firebase, set `requiresObjCLinking: false` on those frameworks #1674 @toyeshhm
 
