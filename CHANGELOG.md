@@ -2,6 +2,8 @@
 
 ## Next Version
 
+## 2.49.0
+
 ### Added
 - Spec keys that XcodeGen doesn't recognise are now reported as warnings with their path, at every level of the spec, instead of being silently ignored. For example `Warning: Unknown key "resources" in targets.App will be ignored`, or a typo like `buildphase` in a source entry. Generation still succeeds. Keys starting with `x-` are not reported, so they can hold YAML anchors #1673 @yonaskolb
 
