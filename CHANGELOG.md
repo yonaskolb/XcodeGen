@@ -3,7 +3,7 @@
 ## Next Version
 
 ### Changed
-- `requiresObjCLinking` now defaults to `true` for static frameworks (`framework.static`, or `framework` with `MACH_O_TYPE: staticlib`), including targets from project references, so apps linking them get `-ObjC`. Set `requiresObjCLinking: false` to opt out #1674 @toyeshhm
+- `requiresObjCLinking` now defaults to `true` for static frameworks (`framework.static`, or `framework` with `MACH_O_TYPE: staticlib`), including targets from project references, so apps linking them get `-ObjC`. If this causes duplicate symbol errors or larger binaries, for example when several static frameworks share a package with Objective-C code like Firebase, set `requiresObjCLinking: false` on those frameworks #1674 @toyeshhm
 
 ## 2.48.0
 
