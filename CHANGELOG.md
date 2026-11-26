@@ -2,6 +2,9 @@
 
 ## Next Version
 
+### Internal
+- Update ArtifactBundleGen to 0.0.9, which supports the Swift 6.4 build folder and fails instead of producing an empty bundle. `make archive` now passes the build path directly instead of symlinking a fake build folder #1675 @yonaskolb
+
 ## 2.49.0
 
 ### Added
