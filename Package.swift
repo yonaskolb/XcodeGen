@@ -19,7 +19,7 @@ let package = Package(
         .package(url: "https://github.com/tuist/XcodeProj.git", exact: "9.17.8"),
         .package(url: "https://github.com/jakeheis/SwiftCLI.git", from: "6.0.3"),
         .package(url: "https://github.com/mxcl/Version", from: "2.0.0"),
-        .package(url: "https://github.com/freddi-kit/ArtifactBundleGen", exact: "0.0.8")
+        .package(url: "https://github.com/freddi-kit/ArtifactBundleGen", exact: "0.0.9")
     ],
     targets: [
         .executableTarget(name: "XcodeGen", dependencies: [
