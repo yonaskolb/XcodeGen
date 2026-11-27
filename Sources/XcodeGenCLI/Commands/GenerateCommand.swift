@@ -20,6 +20,9 @@ class GenerateCommand: ProjectCommand {
     @Flag("--only-plists", description: "Generate only plist files")
     var onlyPlists: Bool
 
+    @Flag("--dry-run", description: "Generate project in memory and print a JSON diff of what would change without writing any files")
+    var dryRun: Bool
+
     init(version: Version) {
         super.init(version: version,
                    name: "generate",
@@ -112,6 +115,19 @@ class GenerateCommand: ProjectCommand {
             
         } catch {
             throw GenerationError.generationError(error)
+        }
+
+        // dry-run: diff and exit without writing
+        if dryRun {
+            let existingPbxprojPath = XcodeProj.pbxprojPath(projectPath)
+            let existingXcodeprojPath = projectExists ? projectPath : nil
+            let diff = ProjectDiff(from: xcodeProject, against: existingXcodeprojPath)
+            do {
+                stdout.print(try diff.jsonString())
+            } catch {
+                throw GenerationError.writingError(error)
+            }
+            return
         }
 
         // write project
