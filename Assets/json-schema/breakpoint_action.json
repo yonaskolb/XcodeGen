@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "XcodeGen Breakpoint Action Object",
+  "description": "XcodeGen Breakpoint Action Object.\n https://github.com/yonaskolb/XcodeGen/blob/master/Docs/ProjectSpec.md#breakpoint-action",
+  "type": "object",
+  "properties": {
+    "type": {
+      "description": "Breakpoint action type",
+      "type": "string",
+      "enum": [
+        "DebuggerCommand",
+        "Log",
+        "ShellCommand",
+        "GraphicsTrace",
+        "AppleScript",
+        "Sound"
+      ],
+      "examples": [
+        "DebuggerCommand",
+        "Log",
+        "ShellCommand",
+        "GraphicsTrace",
+        "AppleScript",
+        "Sound"
+      ]
+    },
+    "command": {
+      "description": "Debugger command (only used by debugger command breakpoint action)",
+      "type": "string"
+    },
+    "message": {
+      "description": "Log message (only used log message breakpoint action)",
+      "type": "string"
+    },
+    "conveyanceType": {
+      "description": "Conveyance type (only used by log message breakpoint action)",
+      "type": "string",
+      "enum": ["console", "speak"],
+      "examples": ["console", "speak"]
+    },
+    "path": {
+      "description": "Shell command file path (only used by shell command breakpoint action)",
+      "type": "string"
+    },
+    "arguments": {
+      "description": "Shell command arguments (only used by shell command breakpoint action)",
+      "type": "string"
+    },
+    "waitUntilDone": {
+      "description": "Indicates whether it should wait until done (only used by shell command breakpoint action). Default to false",
+      "default": false,
+      "type": "boolean"
+    },
+    "script": {
+      "description": "AppleScript (only used by AppleScript breakpoint action)",
+      "type": "string"
+    },
+    "sound": {
+      "description": "Sound name (only used by sound breakpoint action)",
+      "type": "string",
+      "default": "Basso",
+      "enum": [
+        "Basso",
+        "Blow",
+        "Bottle",
+        "Frog",
+        "Funk",
+        "Glass",
+        "Hero",
+        "Morse",
+        "Ping",
+        "Pop",
+        "Purr",
+        "Sosumi",
+        "Submarine",
+        "Tink"
+      ],
+      "examples": [
+        "Basso",
+        "Blow",
+        "Bottle",
+        "Frog",
+        "Funk",
+        "Glass",
+        "Hero",
+        "Morse",
+        "Ping",
+        "Pop",
+        "Purr",
+        "Sosumi",
+        "Submarine",
+        "Tink"
+      ]
+    },
+    "module": {
+      "description": "Breakpoint module (only used by symbolic breakpoints)",
+      "type": "string"
+    },
+    "scope": {
+      "description": "Breakpoint scope (only used by exception breakpoints)",
+      "type": "string",
+      "default": "Objective-C",
+      "enum": ["All", "Objective-C", "C++"]
+    },
+    "stopOnStyle": {
+      "description": "Indicates if should stop on style (only used by exception breakpoints) -throw (default) -catch",
+      "type": "string"
+    },
+    "condition": {
+      "description": "Breakpoint condition",
+      "type": "string"
+    },
+    "actions": {
+      "description": "breakpoint actions",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "$ref": "breakpoint_action.json"
+      }
+    }
+  },
+  "required": ["type"]
+}
